@@ -232,6 +232,37 @@ ad_form -extend -name register -on_request {
 					 -url $url \
 					 -secret_question $secret_question \
 					 -secret_answer $secret_answer]
+
+
+	set add_to_registered_users_sql "
+DECLARE
+	v_registered_users integer;
+	v_rel_id integer;
+	v_rel_count integer;
+BEGIN
+
+    select object_id
+    into v_registered_users
+    from acs_magic_objects
+	where name='registered_users';
+
+    select count(*)
+    into v_rel_count
+    from acs_rels
+    where object_id_one = v_registered_users
+	and object_id_two = :user_id;
+
+    IF v_rel_count = 0 THEN
+        v_rel_id := membership_rel.new(
+            object_id_one    => v_registered_users,
+            object_id_two    => :user_id,
+            member_state     => 'approved'
+	    );
+    END IF;
+END;"
+	    db_dml add_to_registered_users $add_to_registered_users_sql
+
+
 	} else {
 
 	    # Existing user: Update variables

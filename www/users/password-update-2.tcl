@@ -47,18 +47,10 @@ if { $exception_count > 0 } {
     return
 }
 
-# If we are encrypting passwords in the database, do it now.
-if  [ad_parameter EncryptPasswordsInDBP "" 0] { 
-    set password_1 [ns_crypt $password_1 [ad_crypt_salt]]
-}
 
-set sql "update users set password = :password_1 where user_id = :user_id"
 
-if [catch { db_dml password_update $sql } errmsg] {
-    ad_return_error "Ouch!"  "The database choked on our update:
-	<blockquote>$errmsg</blockquote>"
-    return
-}
+ad_change_password $user_id $password_1
+
 
 set password $password_1
 set offer_to_email_new_password_link ""

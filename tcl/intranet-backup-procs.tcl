@@ -51,14 +51,16 @@ ad_proc -public im_backup_accepted_version_nr { version } {
 ad_proc -public im_import_get_category { category category_type default } {
     Looks up a category or returns the default value
 } {
+    if {"" == $category} { return $default }
     set category_id [util_memoize "im_import_get_category_helper \"$category\" \"$category_type\""]
 
-    if {"" == $cateogry_id} {
+    if {"" == $category_id} {
 	set category_id $default
 	set err "didn't find category '$category' of category type '$category_type'"
-	ns_log Notice "im_import_get_cateogory: $err"
+	ns_log Notice "im_import_get_category: $err"
         upvar 1 err_return err_return
-	append err_return "<li>$err\n"
+	upvar 1 csv_line csv_line
+	append err_return "<li>$csv_line<br>\n$err\n"
     }
     return $category_id
 }
@@ -74,13 +76,15 @@ ad_proc -public im_import_get_category_helper { category category_type } {
 ad_proc -public im_import_get_user { email default } {
     Looks up an email or returns the default value
 } {
+    if {"" == $email} { return $default }
     set user_id [util_memoize "im_import_get_user_helper \"$email\""]
     if {"" == $user_id} {
 	set user_id $default
 	set err "didn't find user '$email'"
 	ns_log Notice "im_import_get_user: $err"
         upvar 1 err_return err_return
-	append err_return "<li>$err\n"
+	upvar 1 csv_line csv_line
+	append err_return "<li>$csv_line<br>\n$err\n"
     }
     return $user_id
 }
@@ -335,8 +339,9 @@ ad_proc -public im_import_categories { filename } {
 
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
-	    append err_return "<li>Error loading customer members:<br>
-            $csv_line<br><pre>\n$err_msg</pre>"
+	    append err_return "<li>Error loading categories:<br>
+            $csv_line<br>
+            <pre>\n$err_msg</pre>"
 	}
 
     }
@@ -425,11 +430,10 @@ ad_proc -public im_import_customers { filename } {
 	set annual_revenue_id [im_import_get_category $annual_revenue "Intranet Annual Revenue" ""]
 
 	set main_office_id [db_string main_office "select office_id from im_offices where office_name=:main_office_name" -default ""]
-	if {"" == $main_office_id} { append err_return "<li>didn't find main office $main_office" }
+	if {"" == $main_office_id} { append err_return "<li>didn't find main office '$main_office_name'" }
 
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {"" == $customer_id} { append err_return "<li>didn't find customer $customer" }
-
+	# Check if the customer already exists..
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
 
 
 	# -------------------------------------------------------
@@ -585,12 +589,7 @@ ad_proc -public im_import_offices { filename } {
 
 	set office_type_id [im_import_get_category $office_type "Intranet Office Type" 170]
 	set office_status_id [im_import_get_category $office_status "Intranet Office Status" 160]
-
 	set contact_person_id [im_import_get_user $contact_person_email ""]
-
-	set office_id [db_string office "select office_id from im_offices where office_name=:office_name" -default 0]
-	if {"" == $office_id} { append err_return "<li>didn't find office $office_name" }
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -642,7 +641,8 @@ WHERE
 
 	if { [catch {
 
-	    if {0 == $office_id} {
+	    set office_id [db_string office "select office_id from im_offices where office_name=:office_name" -default 0]
+	    if {!$office_id} {
 		# The office doesn't exist yet:
 		db_dml office_create $create_office_sql
 	    }
@@ -733,17 +733,12 @@ ad_proc -public im_import_projects { filename } {
 
 	set project_lead_id [im_import_get_user $project_lead_email ""]
 	set supervisor_id [im_import_get_user $supervisor_email ""]
-
 	set project_type_id [im_import_get_category $project_type "Intranet Project Type" ""]
 	set project_status_id [im_import_get_category $project_status "Intranet Project Status" ""]
 	set billing_type_id [im_import_get_category $billing_type "Intranet Billing Type" ""]
 
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {"" == $_id} { append err_return "<li>" }
-
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default 0]
-	if {"" == $_id} { append err_return "<li>" }
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -827,8 +822,6 @@ WHERE
     foreach project_id [array names parent] {
 
 	set parent_id [db_string parent "select project_id from im_projects where project_name=:parent_name" -default ""]
-	if {"" == $_id} { append err_return "<li>" }
-
 	
 	set update_sql "
 UPDATE im_projects
@@ -895,7 +888,6 @@ ad_proc -public im_import_profiles { filename } {
 	    continue
 	}
 
-
 	# -------------------------------------------------------
 	# Extract variables from the CSV file
 	#
@@ -946,7 +938,6 @@ BEGIN
          membership_rel.del(row.rel_id);
      END LOOP;
 
-
      :1 := membership_rel.new(
         object_id_one    => :profile_id,
         object_id_two    => :user_id,
@@ -957,14 +948,12 @@ END;
 	# -------------------------------------------------------
 	# Debugging
 	#
-
-	ns_log Notice "im_import_customer_members: profile_id	$profile_id"
-	ns_log Notice "im_import_customer_members: user_id	$user_id"
+	ns_log Notice "im_import_profiles: profile_id	$profile_id"
+	ns_log Notice "im_import_profiles: user_id	$user_id"
 
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
 	#
-
 	if { [catch {
 
             db_exec_plsql insert_profile $insert_profile_sql
@@ -1053,13 +1042,10 @@ ad_proc -public im_import_customer_members { filename } {
 	#
 
 	set object_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {"" == $_id} { append err_return "<li>" }
+	if {"" == $object_id} { append err_return "<li>didn't find customer '$customer_name'" }
 
 	set user_id [im_import_get_user $user_email ""]
-
 	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
-
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1079,11 +1065,8 @@ END;"
 	# -------------------------------------------------------
 	# Debugging
 	#
-
-	ns_log Notice "im_import_customer_members: object_id	$object_id"
-	ns_log Notice "im_import_customer_members: user_id	$user_id"
-	ns_log Notice "im_import_customer_members: object_role_id $object_role_id"
-
+	set debug "object_id=$object_id\nuser_id=$user_id\nobject_role_id $object_role_id"
+	ns_log Notice "im_import_customer_members: $debug"
 
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
@@ -1099,7 +1082,9 @@ END;"
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
 	    append err_return "<li>Error loading customer members:<br>
-            $csv_line<br><pre>\n$err_msg</pre>"
+            $csv_line<br>
+	    <pre>$debug</pre><br>
+	    <pre>\n$err_msg</pre>"
 	}
     }
     return $err_return
@@ -1180,13 +1165,8 @@ ad_proc -public im_import_project_members { filename } {
 	#
 
 	set object_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
-	if {"" == $_id} { append err_return "<li>" }
-
 	set user_id [im_import_get_user $user_email ""]
-
 	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
-
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1309,12 +1289,8 @@ ad_proc -public im_import_office_members { filename } {
 	#
 
 	set object_id [db_string office "select office_id from im_offices where office_name=:office_name" -default ""]
-	if {"" == $_id} { append err_return "<li>" }
-
 	set user_id [im_import_get_user $user_email ""]
-
 	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1432,9 +1408,7 @@ ad_proc -public im_import_freelancers { filename } {
 	#
 
 	set user_id [im_import_get_user $user_email ""]
-
-	set payment_method_id [im_import_get_category $payment_method" "Intranet Payment Method" ""]
-
+	set payment_method_id [im_import_get_category $payment_method "Intranet Payment Type" ""]
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1556,21 +1530,15 @@ ad_proc -public im_import_freelance_skills { filename } {
 	# Transform categories, email and names into IDs
 	#
 
-	set user_id [im_import_get_user $user_email ""]
-
-	set skill_id [im_import_get_category $skill "Intranet Skill" ""]
-
 	set skill_type_id [im_import_get_category $skill_type "Intranet Skill Type" ""]
-	if {"" == $_id} { append err_return "<li>" }
+	set skill_category_type [db_string skill_category "select category_description from im_categories where category_id=:skill_type_id"]
 
-	set claimed_experience_id [im_import_get_category $claimed_experience "Intranet Experience" ""]
-	if {"" == $_id} { append err_return "<li>" }
+	set skill_id [im_import_get_category $skill $skill_category_type ""]
 
-	set confirmed_experience_id [im_import_get_category $confirmed_experience "Intranet Experience" ""]
-	if {"" == $_id} { append err_return "<li>" }
-
+	set user_id [im_import_get_user $user_email ""]
+	set claimed_experience_id [im_import_get_category $claimed_experience "Intranet Experience Level" ""]
+	set confirmed_experience_id [im_import_get_category $confirmed_experience "Intranet Experience Level" ""]
 	set confirmation_user_id [im_import_get_user $confirmation_user_email ""]
-
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1591,9 +1559,10 @@ INSERT INTO im_freelance_skills (
 	# Debugging
 	#
 
-	ns_log Notice "user_id		$user_id"
-	ns_log Notice "skill_id		$skill_id"
 	ns_log Notice "skill_type_id	$skill_type_id"
+	ns_log Notice "skill_category_tyle	$skill_category_type"
+	ns_log Notice "skill_id		$skill_id"
+	ns_log Notice "user_id		$user_id"
 
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
@@ -1817,6 +1786,9 @@ WHERE
             $csv_line<br>
             <pre>\n$err_msg</pre>"
 	    }
+
+	    ad_change_password $user_id $password
+	    
 	} else {
 	    append err_return "<li>Unable to identify user_id from '$email'\n"
 	}

@@ -57,7 +57,7 @@
 -- 700-799	Intranet Invoice Type
 -- 800-899	Intranet Invoice Payment Method
 -- 900-999	Intranet Invoice Templates
--- 1000-1099	Intranet Payment Type
+-- 1000-1099	Intranet Payment Type (for im_payments)
 -- 1100-1199	Intranet Topic Type
 -- 1200-1299	Intranet Topic Status
 -- 1300-1399	Intranet Project Role

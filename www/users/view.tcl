@@ -362,8 +362,10 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
 
 # append admin_links "<li> User state: $user_state"
 
+set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
+
 append admin_links "
-          <li><a href=/user/password-update?[export_url_vars user_id return_url]>Update this user's password</a>
+          <li><a href=$change_pwd_url>Update this user's password</a>
           <li><a href=become?user_id=$user_id>Become this user!</a>
 <!--
           <li>

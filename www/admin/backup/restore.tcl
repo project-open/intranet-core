@@ -24,7 +24,7 @@ if {!$user_admin_p} {
 set page_body "<ul>\n"
 
 #append page_body [im_import_categories "$path/im_categories.csv"]
-append page_body [im_import_users "$path/im_users.csv"]
+#append page_body [im_import_users "$path/im_users.csv"]
 #append page_body [im_import_profiles "$path/im_profiles.csv"]
 #append page_body [im_import_offices "$path/im_offices.csv"]
 #append page_body [im_import_customers "$path/im_customers.csv"]

@@ -14,6 +14,7 @@
         <vendor url="http://www.project-open.com/">Project/Open</vendor>
 
         <provides url="intranet-core" version="1.0"/>
+        <requires url="acs-subsite" version="5.0"/>
 
         <callbacks>
         </callbacks>

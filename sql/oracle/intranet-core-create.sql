@@ -312,16 +312,3 @@ BEGIN
 END;
 /
 show errors;
-
-
-
-
--- -----------------------------------------------------------
--- advance categories counter
--- drop sequence ad_category_id_seq;
--- create sequence ad_category_id_seq start with 10000;
-
-drop sequence category_id_sequence;
-create sequence category_id_sequence start with 2400;
-
-

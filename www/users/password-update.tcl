@@ -16,29 +16,24 @@ ad_page_contract {
     @cvs-id password-update.tcl,v 3.2.6.3.2.3 2000/09/22 01:36:19 kevin Exp
 } {
     user_id:integer,notnull
-    return_url
+    { return_url "" }
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
 im_user_permissions $current_user_id $user_id view read write admin
-set page_title "Change Password"
-set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
-
-if {!admin} {
+if {!$admin} {
     ad_return_complaint 1 "<li>You have insufficient privileges to see this page"
     return
 }
 
+set page_title "Change Password"
+set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
 
 db_1row user_info_by_id "
 select
-	first_names||' '||last_name as name,
-	email, 
-	url 
-from 
-	users 
-where
-	user_id = :user_id
+	im_name_from_user_id(:user_id) as name
+from
+        dual
 "
 
 set page_body "

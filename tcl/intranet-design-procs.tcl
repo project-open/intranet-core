@@ -741,6 +741,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     append extra_stuff_for_document_head [im_stylesheet]
 
+    set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
+
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
@@ -754,7 +756,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
       <span class=small>
         $user_profile: $user_name <BR>
         <a href='/register/logout'>Log Out</a> |
-        <a href='/pvt/password-update'>Change Password</a> 
+        <a href=$change_pwd_url>Change Password</a> 
       </span>
     </td>
     <td valign=middle align=right> $search_form </TD>
