@@ -251,6 +251,13 @@ prompt *** intranet-permissions - Horizontal and Vertical Permissions
 prompt *** intranet-menus - Dynamic menus
 @intranet-menus.sql
 
+-- -----------------------------------------------------------
+-- Load demo data
+---
+prompt *** intranet-potransdemo-data - Project/Open Translation Demo Data
+@intranet-potransdemo-data.sql
+
+
 
 
 -- -----------------------------------------------------------

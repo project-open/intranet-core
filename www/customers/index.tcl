@@ -72,6 +72,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
+set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set page_title "Clients"
 set context_bar [ad_context_bar $page_title]
@@ -236,7 +237,7 @@ set perm_sql "
 		) r,
 	        (       select  count(*) as see_all
 	                from acs_object_party_privilege_map
-	                where   object_id=400
+	                where   object_id=:subsite_id
 	                        and party_id=:user_id
 	                        and privilege='view_customers_all'
 	        ) see_all

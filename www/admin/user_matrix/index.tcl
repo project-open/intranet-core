@@ -1,4 +1,4 @@
-# /packages/subsite/www/admin/groups/index.tcl
+# /packages/intranet-core/www/admin/user_matrix/index.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -31,8 +31,7 @@ if {!$current_user_is_admin_p} {
 set user_id [ad_maybe_redirect_for_registration]
 set context [list "Groups"]
 set this_url [ad_conn url]
-set package_id [ad_conn package_id]
-set package_id 400
+set subsite_id [ad_conn subsite_id]
 
 set group_url "/intranet/admin/user_matrix/group"
 set toggle_url "/intranet/admin/user_matrix/toggle"
@@ -43,17 +42,10 @@ select DISTINCT
         g.group_id
 from
         acs_objects o,
-        groups g,
-        application_group_element_map app_group,
-        all_object_party_privilege_map perm
+        groups g
 where
-        perm.object_id = g.group_id
-        and perm.party_id = :user_id
-        and perm.privilege = 'read'
-        and g.group_id = o.object_id
+        g.group_id = o.object_id
         and o.object_type = 'im_profile'
-        and app_group.package_id = :package_id
-        and app_group.element_id = g.group_id
 order by lower(g.group_name)
 }
 
@@ -61,7 +53,7 @@ order by lower(g.group_name)
 set group_ids [list]
 set group_names [list]
 set table_header "<tr><td></td>\n"
-set mail_sql_select ""
+set main_sql_select ""
 db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name

@@ -357,14 +357,11 @@ BEGIN
      from groups
      where group_name = p_profile_name;
 
-     -- Get the context_id (package_id)
---     select package_id 
---     into v_object_id
---     from apm_packages
---     where package_key = 'intranet-core';
-
-     -- shortcut: 400 works ... 
-     v_object_id := 400;
+     -- Get the Main Site id, used as the global identified for permissions
+     select package_id
+     into v_object_id
+     from apm_packages 
+     where package_key='acs-subsite';
 
      acs_permission.grant_permission(v_object_id, v_profile_id, p_priv_name);
 END;
@@ -421,62 +418,6 @@ END;
 show errors;
 
 
-BEGIN
---	im_subgroup_create('Project Managers', 'Employees');
-
-    im_priv_create('view_customers', 		'Project Managers');
-    im_priv_create('view_projects', 		'Project Managers');
-    im_priv_create('view_project_members', 	'Project Managers');
-    im_priv_create('view_projects_all', 	'Project Managers');
-    im_priv_create('view_projects_history', 	'Project Managers');
-    im_priv_create('add_projects', 		'Project Managers');
-    im_priv_create('search_intranet', 		'Project Managers');
-    im_priv_create('view_users', 		'Project Managers');
-    im_priv_create('add_users', 		'Project Managers');
-
-    im_priv_create('view_customers', 		'Senior Managers');
-    im_priv_create('view_customer_contacts', 	'Senior Managers');
-    im_priv_create('view_customer_details', 	'Senior Managers');
-    im_priv_create('view_customer_all', 	'Senior Managers');
-    im_priv_create('add_customers', 		'Senior Managers');
-    im_priv_create('view_projects', 		'Senior Managers');
-    im_priv_create('view_project_members', 	'Senior Managers');
-    im_priv_create('view_projects_all', 	'Senior Managers');
-    im_priv_create('view_projects_history', 	'Senior Managers');
-    im_priv_create('add_projects', 		'Senior Managers');
-    im_priv_create('search_intranet', 		'Senior Managers');
-    im_priv_create('view_users', 		'Senior Managers');
-    im_priv_create('add_users', 		'Senior Managers');
-    im_priv_create('view_invoices', 		'Senior Managers');
-    im_priv_create('view_payments', 		'Senior Managers');
-    im_priv_create('view_costs', 		'Senior Managers');
-    im_priv_create('add_invoices', 		'Senior Managers');
-    im_priv_create('add_payments', 		'Senior Managers');
-    im_priv_create('add_costs', 		'Senior Managers');
-
-    im_priv_create('view_customers', 		'Accounting');
-    im_priv_create('view_customer_contacts', 	'Accounting');
-    im_priv_create('view_customer_details', 	'Accounting');
-    im_priv_create('view_customer_all', 	'Accounting');
-    im_priv_create('add_customers', 		'Accounting');
-    im_priv_create('view_projects', 		'Accounting');
-    im_priv_create('view_project_members', 	'Accounting');
-    im_priv_create('view_projects_all', 	'Accounting');
-    im_priv_create('view_projects_history', 	'Accounting');
-    im_priv_create('search_intranet', 		'Accounting');
-    im_priv_create('view_users', 		'Accounting');
-    im_priv_create('add_users', 		'Accounting');
-    im_priv_create('view_invoices', 		'Accounting');
-    im_priv_create('view_payments', 		'Accounting');
-    im_priv_create('view_costs', 		'Accounting');
-    im_priv_create('add_invoices', 		'Accounting');
-    im_priv_create('add_payments', 		'Accounting');
-    im_priv_create('add_costs', 		'Accounting');
-END;
-/
-commit;
-
-
 -- Shortcut to grant privileges about one group to
 -- the memebers or another group.
 -- Example: 
@@ -513,43 +454,4 @@ BEGIN
 END;
 /
 show errors;
-
--- Create the default User Matrix, defining the rights of
--- one user group to read, write or admin other user groups
-BEGIN
-    -- Customers (more precise: customer contacts) have no
-    -- permissions to see anybody else...
-
-    -- Freelancers have no permissions to see anybody else
-
-    -- Employees are allowed to administer freelancers
-    -- and to read other Employees (read names, emails, ...)
-    im_user_matrix_grant('Freelancers','Employees','admin');
-    im_user_matrix_grant('Employees','Employees','read');
-    im_user_matrix_grant('Project Managers','Employees','read');
-
-    -- Project Managers in our sample company are similar to 
-    -- Employees (not very privileged).
-    im_user_matrix_grant('Freelancers','Project Managers','admin');
-    im_user_matrix_grant('Employees','Project Managers','read');
-    im_user_matrix_grant('Project Managers','Project Managers','read');
-
-    -- Senior Managers can administer all groups, regardless
-    -- of their area (may have to be revised in larger orgs.).
-    im_user_matrix_grant('Freelancers','Senior Managers','admin');
-    im_user_matrix_grant('Employees','Senior Managers','admin');
-    im_user_matrix_grant('Project Managers','Senior Managers','admin');
-    im_user_matrix_grant('Customers','Senior Managers','admin');
-    im_user_matrix_grant('Senior Managers','Senior Managers','read');
-
-    -- P/O Admins can administer all groups.
-    im_user_matrix_grant('Freelancers','P/O Admins','admin');
-    im_user_matrix_grant('Employees','P/O Admins','admin');
-    im_user_matrix_grant('Project Managers','P/O Admins','admin');
-    im_user_matrix_grant('Customers','P/O Admins','admin');
-    im_user_matrix_grant('Senior Managers','P/O Admins','admin');
-    im_user_matrix_grant('P/O Admins','P/O Admins','admin');
-END;
-/
-commit;
 

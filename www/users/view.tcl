@@ -37,9 +37,7 @@ set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
 set current_user_id [ad_maybe_redirect_for_registration]
-
-set package_id [ad_conn package_id]
-set package_id 400
+set subsite_id [ad_conn subsite_id]
 
 # Check the permissions that the current_user has on user_id
 im_user_permissions $current_user_id $user_id view read write admin

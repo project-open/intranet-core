@@ -44,6 +44,7 @@ ad_page_contract {
 
 # User id already verified by filters
 set user_id [ad_maybe_redirect_for_registration]
+set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
@@ -168,7 +169,7 @@ set perm_sql "
 		) r,
 	        (       select  count(*) as see_all
 	                from acs_object_party_privilege_map
-	                where   object_id=400
+	                where   object_id=:subsite_id
 	                        and party_id=:user_id
 	                        and privilege='view_projects_all'
 	        ) see_all

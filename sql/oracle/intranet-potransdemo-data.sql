@@ -15,173 +15,587 @@
 -- @author      frank.bergmann@project-open.com
 
 
--- Group_ID:
---  17 - 149: Customers
--- 150 - 199: Varios
-	-- 150: Mataro Office
-	-- ...
--- 200 - 699: Projects
-	-- 200: MySLS
--- 700 - ...: Not defined yet
---1000 - ...: System groups
+
+-- ----------------------------------------------------------------
+prompt Setup a System Administrator
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'system.administrator@project-open.com',
+		username => 'sysadmin',
+		first_names => 'System',
+		last_name => 'Administrator',
+		screen_name => 'SysAdmin',
+		password => '98A5362F10CA8A081B4363CF10EAF1A40A953BE7',
+		salt => '1443DC5C16AEE3B04DD8D110BB069FE13EF1E976',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('P/O Admins',v_user_id);
+
+	-- make SitewideAdmin 
+	acs_permission.grant_permission (
+        	object_id => -4,
+        	grantee_id => v_user_id,
+                privilege => 'admin'
+	);
+end;
+/
 
 
--- SLS Employees 
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (3, 'admin@project-open.org', 'admin', 'Admin', 'Istrator', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (4, 'bigman@project-open.org', 'bigman','Big', 'Manager', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (5, 'pm@project-open.org', 'pm','Project', 'Manager', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (6, 'employee@project-open.org', 'employee','Emplo', 'Yee1', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (7, 'accounting@project-open.org', 'accounting','Accoun', 'Ting', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (8, 'freelance@project-open.org', 'freelance','Free', 'Lance', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, registration_date, registration_ip, user_state) VALUES (9, 'customer@project-open.org', 'customer','Customer', 'Contact', sysdate, '0.0.0.0', 'authorized');
+------------------------------------------------------------------
+prompt Setup a Senior Manager
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'senior.manager@project-open.com',
+		username => 'senman',
+		first_names => 'Senior',
+		last_name => 'Manager',
+		screen_name => 'SenMan',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
 
--- Mark as members of group "Employees"
-INSERT INTO user_group_map VALUES (9, 3, 'administrator', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (9, 4, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (9, 5, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (9, 6, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (9, 7, 'member', sysdate, 1, '0.0.0.0');
-
--- Give some dummy Employee information
-INSERT INTO im_employees (user_id, start_date) VALUES (3,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (4,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (5,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (6,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (7,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (8,sysdate);
-INSERT INTO im_employees (user_id, start_date) VALUES (9,sysdate);
-
--- Mark client as client 
-INSERT INTO user_group_map VALUES (6, 9, 'member', sysdate, 1, '0.0.0.0');
-
--- Mark freelance as freelance
-INSERT INTO user_group_map VALUES (14, 8, 'member', sysdate, 1, '0.0.0.0');
-
--- Make Admin (user_id=3) an 'admin' of Intranet Administration (group_id=5)
-INSERT INTO user_group_map(user_id, group_id, role, mapping_user, mapping_ip_address) 
-VALUES (3, 5, 'administrator', 1, '0.0.0.0');
-
--- Make Admin (user_id=3) an 'admin' of Site Administration (group_id=1)
-INSERT INTO user_group_map(user_id, group_id, role, mapping_user, mapping_ip_address) 
-VALUES (3, 1, 'administrator', 1, '0.0.0.0');
+	im_profile_add_user('Senior Managers',v_user_id);
+end;
+/
 
 
+------------------------------------------------------------------
+prompt Setup a Project Manager
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'project.manager@project-open.com',
+		username => 'proman',
+		first_names => 'Project',
+		last_name => 'Manager',
+		screen_name => 'ProMan',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
 
--- Setup Mataró Facility & Office and add members
-INSERT INTO im_facilities (
-        phone,fax,address_line1,address_line2,address_city,address_postal_code,address_country_code,
-	landlord,security,note,facility_id,facility_name,address_state
-) VALUES (
-	'+34 609 953 751','+34 93 751 1235','Somestreet','','Barcelona','08008','','','','',1,'Barcelona Facility','Barcelona'
-);
-
-INSERT INTO user_groups (
-	creation_ip_address,creation_user,group_id,group_type,approved_p,
-	new_member_policy,parent_group_id,group_name,short_name
-) VALUES (
-	'0.0.0.0', 1, 150, 'intranet', 't', 
-	'closed', '8', 'Barcelona Office', 'Barcelona'
-);
-INSERT INTO im_offices (
-	facility_id,public_p,group_id
-) VALUES (
-	1, 't', 150
-);
-INSERT INTO user_group_map VALUES (150, 3, 'administrator', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 4, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 5, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 6, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 7, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 8, 'member', sysdate, 1, '0.0.0.0');
-INSERT INTO user_group_map VALUES (150, 9, 'member', sysdate, 1, '0.0.0.0');
+	im_profile_add_user('Employees',v_user_id);
+	im_profile_add_user('Project Managers',v_user_id);
+end;
+/
 
 
+------------------------------------------------------------------
+prompt Setup Accounting
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'accounting@project-open.com',
+		username => 'accounting',
+		first_names => 'Ac',
+		last_name => 'Counting',
+		screen_name => 'Accounting',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
 
--- Setup "Internal" client (group_id=17) with Frank Bergmann (user_id=3)
--- as manager
-INSERT INTO user_groups (
-	creation_ip_address, creation_user, group_name, short_name, group_id, 
-	group_type, approved_p, new_member_policy, parent_group_id, 
-	modification_date, modifying_user
-) VALUES (
-	'0.0.0.0', 1, 'Internal', 'internal', 17, 
-	'intranet', 't', 'closed', 6, sysdate, 1
-);
-INSERT INTO im_customers (
-	referral_source, customer_status_id, customer_type_id, annual_revenue_id,
-	billable_p,note,contract_value,site_concept,manager_id,start_date,group_id
-) VALUES (
-	'', 46, 54, 226, 'f', 'Interal Projects', '', '',  3, sysdate, 17
-);
-INSERT INTO user_group_map (
-	group_id, user_id, role, mapping_user, mapping_ip_address
-) VALUES (
-	17, 3, 'administrator', 3, '0.0.0.0'
-);
-
-INSERT INTO user_groups VALUES (19, 'intranet', 'East Bay Communications Ltd', 'client01', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (20, 'intranet', 'Far Way', 'accent', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (21, 'intranet', 'Projects.com', 'agency', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (22, 'intranet', 'Super Important Client', 'agius', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (23, 'intranet', 'Less Important Client', 'agnew', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (24, 'intranet', 'Brown and Company', 'alden', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
-INSERT INTO user_groups VALUES (25, 'intranet', 'George, Rummy and Dick Inc.', 'asist', 'root@localhost', sysdate, 1, '0.0.0.0', 't', 't', 'f', 'closed', 'open', 'f', 'f', 'f', 'f', null, 'f', sysdate, 1, 6);
--- reserving groups 125-139 for more clients
-
-INSERT INTO im_customers VALUES (19, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (20, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (21, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (22, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (23, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (24, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
-INSERT INTO im_customers VALUES (25, 'f', 46, 51, null, '', '', 226, sysdate, null, 't', '', 4, 0, sysdate);
--- reserving groups 125-139 for more clients
+	im_profile_add_user('Employees',v_user_id);
+	im_profile_add_user('Accounting',v_user_id);
+end;
+/
 
 
-INSERT INTO user_group_map VALUES (19, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (20, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (21, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (22, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (23, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (24, 4, 'administrator', sysdate, 1, '0,0,0.0');
-INSERT INTO user_group_map VALUES (25, 4, 'administrator', sysdate, 1, '0,0,0.0');
+------------------------------------------------------------------
+prompt Setup an Employee
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'staff.member1@project-open.com',
+		username => 'staffmem1',
+		first_names => 'Staff',
+		last_name => 'Member1',
+		screen_name => 'StaffMem1',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Employees',v_user_id);
+end;
+/
 
 
--- Add "MySLS" Project
-INSERT INTO user_groups (
-	creation_ip_address,creation_user,group_name,short_name,group_id,group_type,
-	approved_p,new_member_policy,parent_group_id,modification_date,modifying_user,existence_public_p
-) VALUES (
-	'0.0.0.0', 1, 'MySLS', '2003_0001', 200, 'intranet', 't', 'closed', 7, sysdate, 1, 'f'
-);
-INSERT INTO im_projects (
-        customer_id,project_type_id,project_status_id,project_lead_id,supervisor_id,
-	parent_id,project_budget,description,requires_report_p,start_date,end_date,group_id
-) VALUES (
-	17, 92, 76, 3, 3, '', '', 'ERP for SLS...', 'f', sysdate, sysdate, 200
-);
--- Assign Users to the project
-INSERT INTO user_group_map VALUES (200, 3, 'administrator', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 4, 'administrator', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 5, 'member', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 6, 'member', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 7, 'member', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 8, 'member', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (200, 9, 'member', sysdate, 1, '0,0,0,0');
+------------------------------------------------------------------
+prompt Setup an Employee
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'staff.member2@project-open.com',
+		username => 'staffmem2',
+		first_names => 'Staff',
+		last_name => 'Member2',
+		screen_name => 'StaffMem2',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Employees',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup a Customer Contact
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'customer1@project-open.com',
+		username => 'customer1',
+		first_names => 'Cus',
+		last_name => 'Tomer1',
+		screen_name => 'CusTomer1',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Customers',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup a Customer Contact
+declare
+        v_user_id       integer;
+        v_rel_id        integer;
+begin
+        v_user_id := acs.add_user(
+                email => 'customer2@project-open.com',
+                username => 'customer2',
+                first_names => 'Cus',
+                last_name => 'Tomer2',
+                screen_name => 'CusTomer2',
+                password => '99C7819784E7520CF4E527A2307767B727E476BC',
+                salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+                email_verified_p => 't',
+                member_state => 'approved'
+        );
+
+        im_profile_add_user('Customers',v_user_id);
+end;
+/
 
 
 
--- Add a "First"  Project
-INSERT INTO user_groups VALUES (201,'intranet','First Project','2003_0002','root@localhost',sysdate,1,'0.0.0.0','t','t','f','closed','open','f','f','f','f',null,'f',sysdate,1,7);
-INSERT INTO im_projects (
-        customer_id,project_type_id,project_status_id,project_lead_id,supervisor_id,
-	parent_id,project_budget,description,requires_report_p,start_date,end_date,group_id
-) VALUES (
-	17, 86, 76, 5, 4, '', '', 'Dummy Project to test MySLS', 'f', sysdate, sysdate, 201
-);
--- Assign users
-INSERT INTO user_group_map VALUES (201, 4, 'administrator', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (201, 5, 'administrator', sysdate, 1, '0,0,0,0');
-INSERT INTO user_group_map VALUES (201, 6, 'member', sysdate, 1, '0,0,0,0');
+------------------------------------------------------------------
+prompt Setup Freelance1
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'free.lance1@project-open.com',
+		username => 'freelance1',
+		first_names => 'Free',
+		last_name => 'Lance1',
+		screen_name => 'Freelance1',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
 
+	im_profile_add_user('Freelancers',v_user_id);
+end;
+/
+
+------------------------------------------------------------------
+prompt Setup Freelance2
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'free.lance2@project-open.com',
+		username => 'freelance2',
+		first_names => 'Free',
+		last_name => 'Lance2',
+		screen_name => 'Freelance2',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Freelancers',v_user_id);
+end;
+/
+
+
+-- Create an "internal" project implementing P/O
+declare
+	v_project_id		integer;
+	v_internal_customer_id	integer;
+	v_rel_id		integer;
+	v_user_id		integer;
+begin
+	select customer_id
+	into v_internal_customer_id
+	from im_customers
+	where customer_path = 'internal';
+
+	v_project_id := im_project.new(
+		object_type	=> 'im_project',
+		project_name	=> 'Project/Open Installation',
+		project_nr	=> 'po_install',
+		project_path	=> 'po_install',
+		customer_id	=> v_internal_customer_id
+	);
+
+	-- Add some users
+	-- 1300 is full member, 1301 is PM, 1302 is Key Account
+	select party_id	into v_user_id
+	from parties where email='project.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1301
+	);
+
+	select party_id	into v_user_id
+	from parties where email='staff.member1@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='system.administrator@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='senior.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='free.lance1@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+end;
+/
+commit;
+
+
+
+select site_node.node_id('/',null) from dual;
+
+
+begin
+	
+end;
+/
+
+prompt Initializing Employees Permissions
+BEGIN
+    im_priv_create('view_project_members', 	'Employees');
+    im_priv_create('view_projects_all', 	'Employees');
+    im_priv_create('view_projects_history', 	'Employees');
+    im_priv_create('add_projects', 		'Employees');
+    im_priv_create('search_intranet', 		'Employees');
+    im_priv_create('view_users', 		'Employees');
+    im_priv_create('add_users', 		'Employees');
+    im_priv_create('read_private_data', 	'Employees');
+    im_priv_create('view_internal_offices', 	'Employees');
+    im_priv_create('view_trans_tasks', 		'Employees');
+    im_priv_create('view_trans_task_matrix',	'Employees');
+    im_priv_create('view_trans_task_status', 	'Employees');
+END;
+/
+
+prompt Initializing Project Managers Permissions
+BEGIN
+    im_priv_create('view_project_members', 	'Project Managers');
+    im_priv_create('view_projects_all', 	'Project Managers');
+    im_priv_create('view_projects_history', 	'Project Managers');
+    im_priv_create('add_projects', 		'Project Managers');
+    im_priv_create('search_intranet', 		'Project Managers');
+    im_priv_create('view_users', 		'Project Managers');
+    im_priv_create('add_users', 		'Project Managers');
+    im_priv_create('read_private_data', 	'Project Managers');
+    im_priv_create('view_internal_offices', 	'Project Managers');
+    im_priv_create('view_trans_tasks', 		'Project Managers');
+    im_priv_create('view_trans_task_matrix',	'Project Managers');
+    im_priv_create('view_trans_task_status', 	'Project Managers');
+END;
+/
+
+prompt Initializing Senior Managers Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Senior Managers');
+    im_priv_create('view_customer_contacts', 	'Senior Managers');
+    im_priv_create('view_customer_details', 	'Senior Managers');
+    im_priv_create('view_customers_all', 	'Senior Managers');
+    im_priv_create('add_customers', 		'Senior Managers');
+    im_priv_create('view_project_members', 	'Senior Managers');
+    im_priv_create('view_projects_all', 	'Senior Managers');
+    im_priv_create('view_projects_history', 	'Senior Managers');
+    im_priv_create('add_projects', 		'Senior Managers');
+    im_priv_create('search_intranet', 		'Senior Managers');
+    im_priv_create('view_users', 		'Senior Managers');
+    im_priv_create('add_users', 		'Senior Managers');
+    im_priv_create('view_invoices', 		'Senior Managers');
+    im_priv_create('view_payments', 		'Senior Managers');
+    im_priv_create('view_costs', 		'Senior Managers');
+    im_priv_create('add_invoices', 		'Senior Managers');
+    im_priv_create('add_payments', 		'Senior Managers');
+    im_priv_create('add_costs', 		'Senior Managers');
+    im_priv_create('add_offices', 		'Senior Managers');
+    im_priv_create('admin_categories', 		'Senior Managers');
+    im_priv_create('edit_internal_offices',	'Senior Managers');
+    im_priv_create('read_private_data', 	'Senior Managers');
+    im_priv_create('view_internal_offices', 	'Senior Managers');
+    im_priv_create('view_offices', 		'Senior Managers');
+    im_priv_create('view_offices_all', 		'Senior Managers');
+    im_priv_create('view_trans_tasks', 		'Senior Managers');
+    im_priv_create('view_trans_task_matrix',	'Senior Managers');
+    im_priv_create('view_trans_task_status', 	'Senior Managers');
+END;
+/
+
+prompt Initializing Sales Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Sales');
+    im_priv_create('view_customer_contacts', 	'Sales');
+    im_priv_create('view_customer_details', 	'Sales');
+    im_priv_create('view_customers_all', 	'Sales');
+    im_priv_create('add_customers', 		'Sales');
+    im_priv_create('view_project_members', 	'Sales');
+    im_priv_create('view_projects_all', 	'Sales');
+    im_priv_create('add_projects', 		'Sales');
+    im_priv_create('search_intranet', 		'Sales');
+    im_priv_create('view_users', 		'Sales');
+    im_priv_create('add_offices', 		'Sales');
+    im_priv_create('view_offices', 		'Sales');
+    im_priv_create('view_internal_offices', 	'Sales');
+    im_priv_create('view_offices_all', 		'Sales');
+    im_priv_create('view_trans_tasks', 		'Sales');
+    im_priv_create('view_trans_task_matrix',	'Sales');
+    im_priv_create('view_trans_task_status', 	'Sales');
+END;
+/
+
+prompt Initializing P/O Admins Permissions
+BEGIN
+    im_priv_create('view_customers', 		'P/O Admins');
+    im_priv_create('view_customer_contacts', 	'P/O Admins');
+    im_priv_create('view_customer_details', 	'P/O Admins');
+    im_priv_create('view_customers_all', 	'P/O Admins');
+    im_priv_create('add_customers', 		'P/O Admins');
+    im_priv_create('view_project_members', 	'P/O Admins');
+    im_priv_create('view_projects_all', 	'P/O Admins');
+    im_priv_create('view_projects_history', 	'P/O Admins');
+    im_priv_create('add_projects', 		'P/O Admins');
+    im_priv_create('search_intranet', 		'P/O Admins');
+    im_priv_create('view_users', 		'P/O Admins');
+    im_priv_create('add_users', 		'P/O Admins');
+    im_priv_create('view_invoices', 		'P/O Admins');
+    im_priv_create('view_payments', 		'P/O Admins');
+    im_priv_create('view_costs', 		'P/O Admins');
+    im_priv_create('add_invoices', 		'P/O Admins');
+    im_priv_create('add_payments', 		'P/O Admins');
+    im_priv_create('add_costs', 		'P/O Admins');
+
+    im_priv_create('view_offices', 		'P/O Admins');
+    im_priv_create('add_offices', 		'P/O Admins');
+    im_priv_create('admin_categories', 		'P/O Admins');
+    im_priv_create('edit_internal_offices',	'P/O Admins');
+    im_priv_create('read_private_data', 	'P/O Admins');
+    im_priv_create('view_internal_offices', 	'P/O Admins');
+    im_priv_create('view_offices_all', 		'P/O Admins');
+    im_priv_create('view_trans_tasks', 		'P/O Admins');
+    im_priv_create('view_trans_task_matrix',	'P/O Admins');
+    im_priv_create('view_trans_task_status', 	'P/O Admins');
+END;
+/
+
+prompt Initializing Accounting Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Accounting');
+    im_priv_create('view_customer_contacts', 	'Accounting');
+    im_priv_create('view_customer_details', 	'Accounting');
+    im_priv_create('view_customers_all', 	'Accounting');
+    im_priv_create('add_customers', 		'Accounting');
+    im_priv_create('view_project_members', 	'Accounting');
+    im_priv_create('view_projects_all', 	'Accounting');
+    im_priv_create('view_projects_history', 	'Accounting');
+    im_priv_create('search_intranet', 		'Accounting');
+    im_priv_create('view_users', 		'Accounting');
+    im_priv_create('add_users', 		'Accounting');
+    im_priv_create('view_offices', 		'Accounting');
+    im_priv_create('view_invoices', 		'Accounting');
+    im_priv_create('view_payments', 		'Accounting');
+    im_priv_create('view_costs', 		'Accounting');
+    im_priv_create('add_invoices', 		'Accounting');
+    im_priv_create('add_payments', 		'Accounting');
+    im_priv_create('add_costs', 		'Accounting');
+END;
+/
+commit;
+
+
+-- Create the default User Matrix, defining the rights of
+-- one user group to read, write or admin other user groups
+BEGIN
+    -- Customers (more precise: customer contacts) have no
+    -- permissions to see anybody else...
+
+    -- Freelancers have no permissions to see anybody else
+
+    -- Employees are allowed to administer freelancers
+    -- and to read other Employees (read names, emails, ...)
+    im_user_matrix_grant('Freelancers','Employees','admin');
+    im_user_matrix_grant('P/O Admins','Employees','read');
+    im_user_matrix_grant('Senior Managers','Employees','read');
+    im_user_matrix_grant('Project Managers','Employees','read');
+    im_user_matrix_grant('Accounting','Employees','read');
+    im_user_matrix_grant('Employees','Employees','read');
+    im_user_matrix_grant('Sales','Employees','read');
+
+
+    -- Project Managers in our sample company are similar to 
+    -- Employees (not very privileged).
+    im_user_matrix_grant('Freelancers','Project Managers','admin');
+
+    im_user_matrix_grant('P/O Admins','Project Managers','read');
+    im_user_matrix_grant('Senior Managers','Project Managers','read');
+    im_user_matrix_grant('Project Managers','Project Managers','read');
+    im_user_matrix_grant('Accounting','Project Managers','read');
+    im_user_matrix_grant('Employees','Project Managers','read');
+    im_user_matrix_grant('Sales','Project Managers','read');
+
+
+    -- Senior Managers can administer all groups, regardless
+    -- of their area (may have to be revised in larger orgs.).
+    im_user_matrix_grant('Freelancers','Senior Managers','admin');
+    im_user_matrix_grant('Employees','Senior Managers','admin');
+    im_user_matrix_grant('Project Managers','Senior Managers','admin');
+    im_user_matrix_grant('Customers','Senior Managers','admin');
+    im_user_matrix_grant('Senior Managers','Senior Managers','read');
+
+
+    -- Accounting are like Employees, but can see customers
+    im_user_matrix_grant('P/O Admins','Accounting','read');
+    im_user_matrix_grant('Senior Managers','Accounting','read');
+    im_user_matrix_grant('Project Managers','Accounting','read');
+    im_user_matrix_grant('Accounting','Accounting','read');
+    im_user_matrix_grant('Employees','Accounting','read');
+    im_user_matrix_grant('Sales','Accounting','read');
+    im_user_matrix_grant('Freelancers','Accounting','read');
+    im_user_matrix_grant('Customers','Accounting','read');
+
+
+    -- Sales are like Employees, but can see customers. No Freelancers
+    im_user_matrix_grant('P/O Admins','Sales','read');
+    im_user_matrix_grant('Senior Managers','Sales','read');
+    im_user_matrix_grant('Project Managers','Sales','read');
+    im_user_matrix_grant('Accounting','Sales','read');
+    im_user_matrix_grant('Employees','Sales','read');
+    im_user_matrix_grant('Sales','Sales','read');
+    im_user_matrix_grant('Customers','Sales','read');
+
+
+    -- P/O Admins can administer all groups.
+    im_user_matrix_grant('Freelancers','P/O Admins','admin');
+    im_user_matrix_grant('Employees','P/O Admins','admin');
+    im_user_matrix_grant('Project Managers','P/O Admins','admin');
+    im_user_matrix_grant('Customers','P/O Admins','admin');
+    im_user_matrix_grant('Senior Managers','P/O Admins','admin');
+    im_user_matrix_grant('P/O Admins','P/O Admins','admin');
+    im_user_matrix_grant('Sales','P/O Admins','admin');
+    im_user_matrix_grant('Accounting','P/O Admins','admin');
+END;
+/
+commit;
+
+
+-- Instant satisfaction of the "masters of the universe"... :-)
+-- Add all site-wide administrators as P/O-Admins and Employees.
+
+declare
+	v_poadmin_id	integer;
+	v_employee_id	integer;
+begin
+	select group_id
+	into v_poadmin_id
+	from groups
+	where group_name = 'P/O Admins';
+
+	select group_id
+	into v_employee_id
+	from groups
+	where group_name = 'Employees';
+
+    for row in (
+        select grantee_id
+	from acs_permissions
+        where 	object_id = -4
+		and grantee_id not in (
+			select member_id
+			from group_member_map
+			where group_id = v_poadmin_id
+		)
+     ) loop
+	im_profile_add_user('P/O Admins',row.grantee_id);
+     end loop;
+
+    for row in (
+        select grantee_id
+	from acs_permissions
+        where 	object_id = -4
+		and grantee_id not in (
+			select member_id
+			from group_member_map
+			where group_id = v_employee_id
+		)
+     ) loop
+	im_profile_add_user('Employees',row.grantee_id);
+     end loop;
+end;
+/
+commit;
 
