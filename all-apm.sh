@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VER=2.1.3
+VER=3.0.alpha4
 
 rm -f *.apm
 
