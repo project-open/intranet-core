@@ -74,6 +74,21 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 }
 
 
+ad_proc -public im_admin_category_gif { category_type } {
+    Returns a HTML widget with a link to the category administration
+    page for the respective category_type if the user is Admin
+    or "" otherwise.
+} {
+    set html ""
+    set user_id [ad_maybe_redirect_for_registration]
+    set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+    if {$user_admin_p} {
+        set html "
+<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "Admin $category_type"]</A>"
+    }
+    return $html
+}
+
 
 ad_proc -public im_gif_cleardot { {width 1} {height 1} {alt ""} } {
     Creates an &lt;IMG ... &gt; tag of a given size

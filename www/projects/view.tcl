@@ -144,7 +144,7 @@ if { ![empty_string_p $parent_id] } {
 
 append project_base_data_html "
 			  <tr> 
-			    <td>SLS project#</td>
+			    <td>Project#</td>
 			    <td>$project_path</td>
 			  </tr>
 [im_customer_link_tr $user_id $customer_id $customer_name "Client"]
@@ -268,11 +268,11 @@ db_foreach project_hierarchy $hierarchy_sql {
 # Translation Details Component
 # ---------------------------------------------------------------------
 
-set translation_details_html "
+set project_trans_data_html "
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=middle>
-      Project Details
+      Translation Details
     </td>
   </tr>
   <tr> 
@@ -284,25 +284,31 @@ set translation_details_html "
     <td>$final_customer</td>
   </tr>
   <tr> 
-    <td>Client Contact</td>
-    <td>
-      <a href='/intranet/users/view?user_id=$customer_contact_id'>
-        $customer_contact
-     </a>
-    </td>
-  </tr> <tr> 
+    <td>Subject Area</td>
+    <td>[im_category_from_id $subject_area_id]</td>
+  </tr>
+  <tr> 
+    <td>Source Language</td>
+    <td>[im_category_from_id $source_language_id]</td>
+  </tr>
+  <tr> 
+    <td>Target Languages</td>
+    <td>[im_target_languages $project_id]</td>
+  </tr>
+  <tr> 
     <td>Quality Level</td>
-    <td>High Quality</td>
-  </tr><tr> 
+    <td>[im_category_from_id $expected_quality_id]</td>
+  </tr>
+  <tr> 
     <td></td>
     <td>
-      <form action=/intranet/projects/edit-customer-data method=POST>
-	  <input type=hidden name=group_id value=2877>
-<input type=hidden name=return_url value=/intranet/projects/view?group_id=2877>
-	  <input type=submit value=Edit name=submit3>
-      </form>
+<form action=/intranet-translation/projects/edit-trans-data method=POST>
+[export_form_vars project_id return_url]
+<input type=submit value=Edit name=submit3>
+</form>
     </td>
-  </tr></table>
+  </tr>
+</table>
 "
 
 

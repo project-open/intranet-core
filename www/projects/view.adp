@@ -12,6 +12,7 @@
 <tr>
   <td valign=top>
     @project_base_data_html;noquote@
+    @project_trans_data_html;noquote@
     <%= [im_component_bay left] %>
   </td>
   <td valign=top>

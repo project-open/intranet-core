@@ -378,18 +378,13 @@ ad_proc im_currency_select {select_name {default ""}} {
     return [im_selection_to_select_box $bind_vars $statement_name $sql $select_name $default]
 }
 
-# made by guillermo:
 
-#proc im_category_id { category_type category } {
-#    set bind_vars [ns_set create]
-#    ns_set put $bind_vars category_type $category_type
-#    ns_set put $bind_vars category $category
-#    set sql "select category_id
-#             from im_categories
-#             where category_type = :category_type
-#                   and category = :category"
-#    return $sql
-#}
+ad_proc -public im_category_from_id { category_id } {
+    Get a category_name from 
+} {
+    set sql "select im_category_from_id(:category_id) from dual"
+    return [db_string category_from_id $sql -default ""]
+}
 
 ad_proc im_category_select { category_type select_name { default "" } } {
     set bind_vars [ns_set create]
@@ -506,9 +501,6 @@ ad_proc im_partner_type_select { select_name { default "" } } {Returns an html s
     return [im_category_select "Intranet Partner Type" $select_name $default]
 }
 
-# 030708 fraber: Eliminate the --- Please select --- if 
-# there is already a default given.
-#
 ad_proc im_selection_to_select_box { bind_vars statement_name sql select_name { default "" } } {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a select bar named select_name, 

@@ -17,7 +17,7 @@ ad_page_contract {
     /intranet/customers/upload-contacts-2.tcl
     Read a .csv-file with header titles exactly matching
     the data model and insert the data into "users" and
-    "user_group_map".
+    "acs_rels".
 
     @author frank.bergmann@project-open.com
 } {
@@ -129,11 +129,15 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
        sysdate, '0.0.0.0', 'authorized'
     )"
 
-    set mark_as_customer_sql "INSERT INTO user_group_map VALUES (
-    :customer_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0')"
+    set mark_as_customer_sql "
+INSERT INTO user_group_map VALUES (
+    :customer_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
+)"
 
-    set mark_customer_employee_sql "INSERT INTO user_group_map VALUES (
-    :customer_id, :user_id, 'member', sysdate, 1, '0.0.0.0')"
+    set mark_customer_employee_sql "
+INSERT INTO user_group_map VALUES (
+    :customer_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
+)"
 
     # set the current users as the primary contact.
     # Works out in the case that there is only one contact,

@@ -51,9 +51,9 @@ ad_page_contract {
     { limit_to_users_in_group_id "" }
     { subgroups_p "f" }
     { return_url ""}
-    { role "membership_rel" }
+    { role_id 0 }
     { also_add_to_group_id "" }
-    { group_id "" }
+    { object_id "" }
     { notify_asignee "" }
 }
 

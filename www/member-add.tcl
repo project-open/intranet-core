@@ -53,7 +53,7 @@ set locate_form "
 <form method=POST action=/intranet/user-search>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"object_id return_url also_add_to_object_id notify_asignee\">
+<input type=hidden name=passthrough value=\"object_id role_id return_url also_add_to_object_id notify_asignee\">
 
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 

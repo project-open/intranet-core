@@ -166,25 +166,23 @@ ad_proc -public im_customer_contact_select { select_name { default "" } {custome
     $default with the list of all avaiable contact persons of a given
     customer
 } {
+    set customers_group_id [im_customer_group_id]
+
     set bind_vars [ns_set create]
     ns_set put $bind_vars customer_id $customer_id
+    ns_set put $bind_vars customers_group_id $customers_group_id
 
     set query "
 select
-        u.user_id,
-        u.first_names||' '||u.last_name as user_name
+	ur.object_id_two as user_id,
+        im_name_from_user_id(ur.object_id_two) as user_name
 from
-        users u,
-        user_group_map m
+        acs_rels ur,
+	acs_rels gr
 where
-        u.user_id = m.user_id and
-        group_id=:customer_id and
-	u.user_id not in (
-		select u.user_id
-		from users u, user_group_map m
-		where	u.user_id=m.user_id and
-			m.group_id=9
-	)
+        ur.object_id_one = :customer_id
+	and ur.object_id_two = gr.object_id_two
+	and gr.object_id_one = :customers_group_id
 "
     return [im_selection_to_select_box $bind_vars customer_contact_select $query $select_name $default]
 }

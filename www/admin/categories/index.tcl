@@ -41,7 +41,7 @@ select
 	nvl(c.category_type, 'none') as category_type,
 	count(c.category_id) as n_categories
 from
-	categories c
+	im_categories c
 group by c.category_type
 order by c.category_type asc" 
 
@@ -112,7 +112,7 @@ set category_select_sql "
 select
 	c.*
 from 
-	categories c
+	im_categories c
 where 
 	$category_type_criterion
 order by
