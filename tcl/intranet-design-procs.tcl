@@ -743,7 +743,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head [im_stylesheet]
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
-    # Enable "Users Online" mini-component
+    # Enable "Users Online" mini-component for OpenACS 5.1 only
     set users_online_str ""
     if {[publish::proc_exists whos_online num_users]} {
 	set num_users_online [lc_numeric [whos_online::num_users]]
