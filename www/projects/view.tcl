@@ -222,19 +222,21 @@ while {$loop} {
     }
 }
 
-set hierarchy_sql {
+set hierarchy_sql "
 select
 	project_id as subproject_id,
 	project_nr as subproject_nr,
 	project_name as subproject_name,
 	level as subproject_level
 from
-	im_projects 
+	im_projects
+where
+	project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
 start with 
 	project_id=:super_project_id
 connect by 
 	parent_id = PRIOR project_id
-}
+"
 
 set cur_level 1
 set hierarchy_html ""
