@@ -1,9 +1,9 @@
-<master>
+<master src="../../master">
 <property name=title>#acs-subsite.Upload_Portrait#</property>
 <property name="context">@context;noquote@</property>
 <property name="main_navbar_label">user</property>
 
-#acs-subsite.lt_How_would_you_like_the#
+<h1>#acs-subsite.lt_How_would_you_like_the#</h1>
 
 <p>
 

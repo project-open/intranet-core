@@ -211,7 +211,6 @@ set user_l10n_html "
 "
 
 if { $use_timezone_p } {
-#    set timezone_options [db_list_of_lists all_timezones {}]
     set timezone [lang::user::timezone]
 
     append user_l10n_html "
@@ -232,6 +231,7 @@ append user_l10n_html "
 </form>
 "
 
+if {!$write} { set user_l10n_html "" }
 
 # ---------------------------------------------------------------
 # Contact Information
@@ -304,7 +304,7 @@ order by
 
     set ctr 1
     db_foreach column_list_sql $column_sql {
-        if {[eval $visible_for]} {
+        if {"" == $visible_for || [eval $visible_for]} {
 	    append contact_html "
             <tr $td_class([expr $ctr % 2])>
             <td>"
