@@ -176,6 +176,54 @@ if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
 
+
+# ----------------------------------------------------------------
+# Permissions and Performance:
+# This SQL shows office depending on the permissions
+# of the current user: 
+#
+#	IF the user is a office member
+#	OR if the user has the privilege to see all offices.
+#
+# The performance problems are due to the number of offices
+# (several thousands), the number of users (several thousands)
+# and the acs_rels relationship between users and offices.
+# Despite all of these, the page should ideally appear in less
+# then one second, because it is frequently used.
+# 
+# In order to get acceptable load times we use an inner "perm"
+# SQL that selects office_ids "outer-joined" with the membership 
+# information for the current user.
+# This information is then filtered in the outer SQL, using an
+# OR statement, acting as a filter on the returned office_ids.
+# It is important to apply this OR statement outside of the
+# main join (offices and membership relation) in order to
+# reach a reasonable response time.
+
+set perm_sql "
+	select
+	        o.office_id,
+		r.member_p as permission_member,
+		see_all.see_all as permission_all
+	from
+	        im_offices o,
+		(	select	count(rel_id) as member_p,
+				object_id_one as object_id
+			from	acs_rels
+			where	object_id_two = :user_id
+			group by object_id_one
+		) r,
+	        (       select  count(*) as see_all
+	                from	acs_object_party_privilege_map
+	                where   object_id=400
+	                        and party_id=:user_id
+	                        and privilege='view_offices_all'
+	        ) see_all
+	where
+	        o.office_id = r.object_id(+)
+	        $where_clause
+"
+
 set sql "
 select
 	o.*,
@@ -187,10 +235,18 @@ select
 	c.customer_name
 from 
 	im_offices o,
-	im_customers c
+	im_customers c,
+	($perm_sql) perm
 where
-	o.office_id=c.main_office_id(+)
-	$where_clause"
+	perm.office_id = o.office_id
+	and o.office_id = c.main_office_id(+)
+        and (
+		perm.permission_member > 0
+        or
+		perm.permission_all > 0
+        )
+	$where_clause
+"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>

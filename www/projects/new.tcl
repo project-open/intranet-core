@@ -25,8 +25,8 @@ ad_page_contract {
     @creation-date Jan 2000
 } {
     project_id:optional,integer
-    parent_id:optional,integer
-    customer_id:optional,integer
+    { parent_id:integer "" }
+    { customer_id:integer "" }
     project_nr:optional
     return_url:optional
 }
@@ -162,11 +162,7 @@ set page_body "
                     </tr>
 "
 
-# ToDo: The im_project_select shows a "--Please Select--" as the
-# choice for "no parent project". We should replace this by a more
-# appropriate wording.
-#
-if {[parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] > 0} {
+if {"" != $parent_id && [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] > 0} {
     append page_body "
                     <tr> 
                       <td>Parent Project &nbsp;</td>

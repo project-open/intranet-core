@@ -35,8 +35,6 @@ ad_page_contract {
   category_id:naturalnum,notnull
   category:notnull
   category_description
-  mailing_list_info
-  profiling_weight:naturalnum,notnull
   enabled_p:notnull
   category_type
 
@@ -79,14 +77,12 @@ if [catch {
    
    db_dml update_category_properties "
 UPDATE 
-	categories
+	im_categories
 SET 
 	category = :category,
 	category_type = :category_type,
 	category_description = :category_description,
-	mailing_list_info = :mailing_list_info,
-	enabled_p = :enabled_p,
-	profiling_weight = :profiling_weight
+	enabled_p = :enabled_p
 WHERE 
 	category_id = :category_id" 
 } errmsg ] {

@@ -63,6 +63,15 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt='$alt'>" }
 	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt='$alt'>" }
 
+	"left-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"left-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"right-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"right-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-sel-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-notsel-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-sel-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-notsel-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
 	    if {$width > 0} { append result "width=$width " }
@@ -530,30 +539,63 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} } {
 		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by sort_order"
 
-    # make sure at most one field gets selected..
+    # Start formatting the menu bar
     set navbar ""
     set found_selected 0
+    set selected 0
+    set old_sel "notsel"
+    set cur_sel "notsel"
+    set ctr 0
     db_foreach menu_select $menu_select_sql {
+
+	# Construct the URL
 	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
 	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
 		append url "&[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
 	    }
 	}
 
-        set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
+
+        # Shift the old value of cur_sel to old_val
+        set old_sel $cur_sel
+        set cur_sel "notsel"
+
+        # Find out if we need to highligh the current menu item
+        set selected 0
+        set url_length [expr [string length $url] - 1]
+        set url_stub_chopped [string range $url_stub 0 $url_length]
         if {!$found_selected && [string equal $url_stub $url]} {
-            set html "$sel$a_white href=\"$url\"/>$name</a></td>$tdsp\n"
+            # Make sure we only highligh one menu item..
             set found_selected 1
+            # Set for the gif
+            set cur_sel "sel"
+            # Set for the other IF-clause later in this loop
+            set selected 1
         }
-        append navbar $html
+
+        if {$ctr == 0} {
+            set gif "left-$cur_sel"
+        } else {
+            set gif "middle-$old_sel-$cur_sel"
+        }
+
+        if {$selected} {
+            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
+        } else {
+            set html "$nosel<a href=\"$url\">$name</a></td>\n"
+        }
+
+        append navbar "<td>[im_gif $gif]</td>$html"
+        incr ctr
     }
+    append navbar "<td>[im_gif "right-$cur_sel"]</td>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
           <TD align=right>
-            <table border=0 cellspacing=0 cellpadding=3>
-              <tr>
+            <table border=0 cellspacing=0 cellpadding=0>
+              <tr height=19>
                 $navbar
               </tr>
             </table>
@@ -589,7 +631,6 @@ ad_proc -public im_navbar { } {
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
     set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
 
     set navbar ""
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
@@ -609,24 +650,54 @@ order by
 
     # make sure only one field gets selected so...
     # .. check for the first complete match between menu and url.
+    set ctr 0
+    set selected 0
     set found_selected 0
+    set old_sel "notsel"
+    set cur_sel "notsel"
     db_foreach menu_select $menu_select_sql {
-        set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
+
+	# Shift the old value of cur_sel to old_val
+	set old_sel $cur_sel
+	set cur_sel "notsel"
+
+	# Find out if we need to highligh the current menu item
+	set selected 0
 	set url_length [expr [string length $url] - 1]
 	set url_stub_chopped [string range $url_stub 0 $url_length]
         if {!$found_selected && [string equal $url_stub_chopped $url]} {
-            set html "$sel$a_white href=\"$url\"/>$name</a></td>$tdsp\n"
+	    # Make sure we only highligh one menu item..
             set found_selected 1
+	    # Set for the gif
+	    set cur_sel "sel"
+	    # Set for the other IF-clause later in this loop
+	    set selected 1
         }
-        append navbar $html
+
+	if {$ctr == 0} { 
+	    set gif "left-$cur_sel" 
+	} else {
+	    set gif "middle-$old_sel-$cur_sel" 
+	}
+
+        if {$selected} {
+            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
+        } else {
+	    set html "$nosel<a href=\"$url\">$name</a></td>\n"
+	}
+
+        append navbar "<td>[im_gif $gif]</td>$html"
+	incr ctr
     }
+    append navbar "<td>[im_gif "right-$cur_sel"]</td>"
+
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
           <TD align=left>
-            <table border=0 cellspacing=0 cellpadding=3>
-              <tr>
+            <table border=0 cellspacing=0 cellpadding=0>
+              <tr height=19>
                 $navbar
               </tr>
             </table>

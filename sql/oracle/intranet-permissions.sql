@@ -305,6 +305,7 @@ begin
     acs_privilege.create_privilege('view_customer_details','View Customer Details','View Customer Details');
 
     acs_privilege.create_privilege('view_offices','View Offices','View Offices');
+    acs_privilege.create_privilege('view_offices_all','View All Offices','View Offices');
     acs_privilege.create_privilege('add_offices','Add Offices','Add Offices');
     acs_privilege.create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
     acs_privilege.create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');

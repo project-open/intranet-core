@@ -125,8 +125,14 @@ if { $project_nr_exists > 0 } {
 }
 
 
+# Make sure the project name has a minimum length
+if { [string length $project_name] < 5} {
+   incr err_cnt
+   append errors "<li>The project name that you have chosen is too short. <br>
+   Please use a project name with atleast 6 characters"
+}
+
 # Let's make sure the specified name is unique
-set project_name ${project_name}
 set project_name_exists [db_string project_name_exists "
 select 	count(*)
 from	im_projects

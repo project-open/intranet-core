@@ -115,9 +115,16 @@ if { ![empty_string_p $status_id] && $status_id > 0 } {
 if { ![empty_string_p $type_id] && $type_id != 0 } {
     lappend criteria "p.project_type_id=:type_id"
 }
+
+
 if { [string compare $mine_p "t"] == 0 } {
-    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
+#    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
+    set mine_restriction ""
+} else {
+    set mine_restriction "or perm.permission_all > 0"
 }
+
+
 if { ![empty_string_p $letter] && [string compare $letter "all"] != 0 && [string compare $letter "scroll"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
 }
@@ -144,23 +151,56 @@ if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
 
+
+
+set perm_sql "
+	select
+	        p.project_id,
+		r.member_p as permission_member,
+		see_all.see_all as permission_all
+	from
+	        im_projects p,
+		(	select	count(rel_id) as member_p,
+				object_id_one as object_id
+			from	acs_rels
+			where	object_id_two = :user_id
+			group by object_id_one
+		) r,
+	        (       select  count(*) as see_all
+	                from acs_object_party_privilege_map
+	                where   object_id=400
+	                        and party_id=:user_id
+	                        and privilege='view_projects_all'
+	        ) see_all
+	where
+	        p.project_id = r.object_id(+)
+	        $where_clause
+"
+
 set sql "
-select 
+SELECT
 	p.*,
-	c.customer_name,
-        im_name_from_user_id(p.project_lead_id) as lead_name, 
-        im_category_from_id(p.project_type_id) as project_type, 
+        c.customer_name,
+        im_name_from_user_id(project_lead_id) as lead_name,
+        im_category_from_id(p.project_type_id) as project_type,
         im_category_from_id(p.project_status_id) as project_status,
         im_proj_url_from_type(p.project_id, 'website') as url,
         to_char(end_date, 'HH24:MI') as end_date_time
-from 
-	im_projects p, 
-        im_customers c
-where 
-        p.customer_id = c.customer_id
-	$where_clause
+FROM
+	im_projects p,
+	im_customers c,
+	($perm_sql) perm
+WHERE
+	perm.project_id = p.project_id
+	and p.customer_id = c.customer_id(+)
+	and (
+		p.project_status_id = 76
+		and perm.permission_member > 0
+		$mine_restriction
+	)
 	$order_by_clause
 "
+
 
 if { [string compare $letter "all"] == 0 } {
     set selection "$sql $order_by_clause"

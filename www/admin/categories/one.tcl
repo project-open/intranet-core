@@ -38,7 +38,7 @@ select
 	nvl(c.category_type, 'none') as category_for_select,
 	count(c.category_id) as n_categories
 from
-	categories c
+	im_categories c
 group by c.category_type
 order by c.category_type asc" 
     
@@ -52,6 +52,8 @@ order by c.category_type asc"
     set select_categories ""
 }
 
+set profiling_weight 0
+
 if {[info exists category_id] && ![empty_string_p $category_id]} {
 
     set page_title "One Category"
@@ -60,7 +62,7 @@ if {[info exists category_id] && ![empty_string_p $category_id]} {
 select
 	c.*
 from
-	categories c
+	im_categories c
 where
 	c.category_id = :category_id
 "
@@ -80,7 +82,7 @@ where
     set delete_action_html ""
     set category_id [db_nextval category_id_sequence]
     set category_description ""
-    set profiling_weight "0"
+    set profiling_weight 0
     set category ""
     if {![string equal "none" $select_category_type]} {
 	set category_type $select_category_type
@@ -97,15 +99,13 @@ set page_body "
 $select_categories
 <tr><td>Category name</td>
 <td><input size=40 name=category value=\"$category\"></td>
-</tr><tr><td>Profiling weight</td><td>
-<input size=10 name=profiling_weight value=\"$profiling_weight\">
-</td></tr><tr><td>Category description</td><td>
+</tr>
+<tr><td>Category description</td><td>
 <textarea name=category_description rows=5 cols=50 wrap=soft>[ns_quotehtml $category_description]</textarea>
 </td></tr>
 </table>
 
 <input type=hidden name=enabled_p value=\"t\">
-<input type=hidden name=mailing_list_info value=\"$mailing_list_info\">
 <input type=submit name=submit $input_form_html>
 </form>
 $delete_action_html"
@@ -113,3 +113,9 @@ $delete_action_html"
 
 
 doc_return  200 text/html [im_return_template]
+
+
+# this changes are because the new im_categories don't have some
+# entries like profiling_weight, mailing_list_info, etc.
+# <input type=hidden name=mailing_list_info value=\"$mailing_list_info\">
+# <tr><td>Profiling weight</td><td><input size=10 name=profiling_weight value=\"$profiling_weight\" disable></td></tr>

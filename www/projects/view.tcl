@@ -56,15 +56,8 @@ if {!$read} {
 # Prepare Project SQL Query
 # ---------------------------------------------------------------------
 
-# We need to check if the Dev-Tracker is installed.
-if {![empty_string_p [ad_parameter "DevTrackerInstalledP" "DevTracker" ""]]} {
-    set query "select 
-	dt_group_id_project_id(g.group_id) as dev_tracker_project_id, "
-} else {
-    set query "select "
-}
-
-append query   "
+set query "
+select
 	p.*,
 	c.customer_name,
 	c.customer_path,
@@ -201,7 +194,6 @@ set admin_html ""
 if {$admin} {
     set admin_html_content "
 <ul>
-  <li><A href=\"/intranet/projects/new\"> Create a new Project</A>
   <li><A href=\"/intranet/projects/new?parent_id=$project_id\"> Create a Subproject</A>
 </ul>\n"
     set admin_html [im_table_with_title "Admin Project" $admin_html_content]
@@ -262,6 +254,11 @@ db_foreach project_hierarchy $hierarchy_sql {
 }
 
 
+if {$counter > 1} {
+    set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
+} else {
+    set hierarchy_html ""
+}
 
 
 # ---------------------------------------------------------------------
@@ -272,7 +269,7 @@ set project_trans_data_html "
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=middle>
-      Translation Details
+      Project Details
     </td>
   </tr>
   <tr> 
@@ -315,13 +312,6 @@ set project_trans_data_html "
 # ---------------------------------------------------------------------
 # Projects Submenu
 # ---------------------------------------------------------------------
-
-if {$counter > 1} {
-    set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
-} else {
-    set hierarchy_html ""
-}
-
 
 # Setup the subnavbar
 set bind_vars [ns_set create]

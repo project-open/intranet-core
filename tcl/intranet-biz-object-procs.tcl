@@ -216,10 +216,6 @@ ad_proc -public im_group_member_component { object_id current_user_id { add_admi
 
 } {
 
-# ------------------------------------------------------------------
-# Create the feature box for adding and removing employees
-# ------------------------------------------------------------------
-
     # ------------------ limit_to_users_in_group_id ---------------------
     if { [empty_string_p $limit_to_users_in_group_id] } {
 	set limit_to_group_id_sql ""
@@ -236,7 +232,6 @@ and exists (select 1
 	)
 "
     } 
-
 
     # ------------------ dont_allow_users_in_group_id ---------------------
     if { [empty_string_p $dont_allow_users_in_group_id] } {
@@ -257,9 +252,6 @@ and not exists (
     } 
 
     # ------------------ Main SQL ----------------------------------------
-    # Old Comment: We need a "distinct" because there can be more than one
-    # Old Comment: mapping between a user and a group, one for each role.
-    # 
     # fraber: Abolished the "distinct" because the role assignment page 
     # now takes care that a user is assigned only once to a group.
     # We neeed this if we want to show the role of the user.

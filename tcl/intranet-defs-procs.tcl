@@ -382,9 +382,13 @@ ad_proc im_currency_select {select_name {default ""}} {
 ad_proc -public im_category_from_id { category_id } {
     Get a category_name from 
 } {
-    set sql "select im_category_from_id(:category_id) from dual"
-    return [db_string category_from_id $sql -default ""]
+    set sql "select im_category_from_id($category_id) from dual"
+    return [util_memoize "db_string category_from_id \"$sql\" -default {}"]
+
+#    set member_count [util_memoize "db_string member_count \"select count(*) from acs_rels where object_id_two = $user_id and object_id_one = $group_id\""]
+
 }
+
 
 ad_proc im_category_select { category_type select_name { default "" } } {
     set bind_vars [ns_set create]
@@ -873,11 +877,20 @@ ad_proc im_select_row_range {sql firstrow lastrow} {
     a tcl proc curtisg wrote to return a sql query that will only 
     contain rows firstrow - lastrow
 } {
-    return "select im_select_row_range_y.*
-              from (select im_select_row_range_x.*, rownum fake_rownum 
-                      from ($sql) im_select_row_range_x
-                     where rownum <= $lastrow) im_select_row_range_y
-             where fake_rownum >= $firstrow"
+    return "
+SELECT
+	im_select_row_range_y.*
+FROM
+	(select 
+		im_select_row_range_x.*, 
+		rownum fake_rownum 
+	from
+		($sql) im_select_row_range_x
+        where 
+		rownum <= $lastrow
+	) im_select_row_range_y
+WHERE
+	fake_rownum >= $firstrow"
 }
 
 

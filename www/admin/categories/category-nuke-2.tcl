@@ -30,10 +30,10 @@ ad_page_contract {
 
 
 if [ catch {
-    db_1row category_name "select category_type from categories c where category_id = :category_id"
+    db_1row category_name "select category_type from im_categories c where category_id = :category_id"
     
     db_transaction {
-	db_dml delete_category "delete from categories where category_id = :category_id"
+	db_dml delete_category "delete from im_categories where category_id = :category_id"
     }
 } errmsg ] {
     ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"

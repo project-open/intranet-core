@@ -199,6 +199,51 @@ if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
 
+# Permissions and Performance:
+# This SQL shows customer depending on the permissions
+# of the current user:
+#
+#       IF the user is a customer member
+#       OR if the user has the privilege to see all customers.
+#
+# The performance problems are due to the number of customers
+# (several thousands), the number of users (several thousands)
+# and the acs_rels relationship between users and customers.
+# Despite all of these, the page should ideally appear in less
+# then one second because it is frequently used.
+#
+# In order to get acceptable load times we use an inner "perm"
+# SQL that selects customer_ids "outer-joined" with the membership
+# information for the current user.
+# This information is then filtered in the outer SQL, using an
+# OR statement, acting as a filter on the returned customer_ids.
+# It is important to apply this OR statement outside of the
+# main join (customers and membership relation) in order to
+# reach a reasonable response time.
+
+set perm_sql "
+	select
+	        c.customer_id,
+		r.member_p as permission_member,
+		see_all.see_all as permission_all
+	from
+	        im_customers c,
+		(	select	count(rel_id) as member_p,
+				object_id_one as object_id
+			from	acs_rels
+			where	object_id_two = :user_id
+			group by object_id_one
+		) r,
+	        (       select  count(*) as see_all
+	                from acs_object_party_privilege_map
+	                where   object_id=400
+	                        and party_id=:user_id
+	                        and privilege='view_customers_all'
+	        ) see_all
+	where
+	        c.customer_id = r.object_id(+) 
+		$where_clause
+"
 set sql "
 select
 	c.*,
@@ -207,18 +252,20 @@ select
 	im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
 	im_name_from_user_id(c.primary_contact_id) as customer_contact_name,
 	im_email_from_user_id(c.primary_contact_id) as customer_contact_email,
-        '' as customer_phone,
-	status.customer_status,
-        im_category_from_id(c.customer_type_id) as customer_type
+        im_category_from_id(c.customer_type_id) as customer_type,
+        im_category_from_id(c.customer_status_id) as customer_status
 from 
 	im_customers c,
-        im_customer_status status, 
-	im_customer_types customer_type 
-	$extra_table
+	($perm_sql) perm $extra_table
 where
-	c.customer_type_id = customer_type.customer_type_id (+)
-	and c.customer_status_id=status.customer_status_id(+) 
-	$where_clause"
+	c.customer_id = perm.customer_id
+	and (
+		perm.permission_member > 0
+	or
+		perm.permission_all > 0
+	)
+"
+
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
@@ -374,8 +421,8 @@ set ctr 0
 set idx $start_idx
 db_foreach projects_info_query $selection {
 
-    im_customer_permissions $user_id $customer_id customer_view customer_read customer_write customer_admin
-    if {!$customer_read} { continue }
+#    im_customer_permissions $user_id $customer_id customer_view customer_read customer_write customer_admin
+#    if {!$customer_read} { continue }
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

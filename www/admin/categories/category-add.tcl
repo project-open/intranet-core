@@ -36,9 +36,7 @@ ad_page_contract {
   category_id:naturalnum,notnull
   category:notnull
   category_description
-  mailing_list_info
   enabled_p:notnull
-  profiling_weight:naturalnum,notnull
   category_type
 
 }
@@ -87,11 +85,11 @@ if [catch {
     db_transaction {
 	db_dml new_category_entry {
 	    insert into im_categories
-	    (category_id, category, category_type, profiling_weight,
-	     category_description, mailing_list_info, enabled_p)
+	    (category_id, category, category_type,
+	     category_description, enabled_p)
 	    values
-	    (:category_id, :category, :category_type, :profiling_weight,
-	     :category_description, :mailing_list_info, :enabled_p)
+	    (:category_id, :category, :category_type,
+	     :category_description, :enabled_p)
 	}
     }
 } errmsg ] {

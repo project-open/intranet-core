@@ -35,7 +35,7 @@ ad_page_contract {
     { order_by "Project #" }
     { include_subprojects_p "f" }
     { mine_p "f" }
-    { status_id "" } 
+    { status_id 76 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { customer_id:integer "0" } 
@@ -182,9 +182,14 @@ if { 0 != $user_id_from_search} {
 if { ![empty_string_p $customer_id] && $customer_id != 0 } {
     lappend criteria "p.customer_id=:customer_id"
 }
+
 if { [string compare $mine_p "t"] == 0 } {
-    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
+#    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
+    set mine_restriction ""
+} else {
+    set mine_restriction "or perm.permission_all > 0"
 }
+
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
 }
@@ -221,26 +226,15 @@ if { ![empty_string_p $where_clause] } {
 }
 
 
-set sql "
-select
-	p.*,
-        c.customer_name,
-        p.project_status_id,
-	im_name_from_user_id(project_lead_id) as lead_name,
-        im_category_from_id(p.project_type_id) as project_type, 
-        im_category_from_id(p.project_status_id) as project_status,
-        im_proj_url_from_type(p.project_id, 'website') as url,
-	to_char(end_date, 'HH24:MI') as end_date_time,
-	s_create.when as create_date,
-	s_open.when as open_date,
-	s_quote.when as quote_date,
-	s_deliver.when as deliver_date,
-	s_invoice.when as invoice_date,
-	s_close.when as close_date
-from 
-	im_projects p, 
-        im_customers c,
-        -- projects audit table records status changes
+set create_date ""
+set open_date ""
+set quote_date ""
+set deliver_date ""
+set invoice_date ""
+set close_date ""
+
+
+set status_from "
 	(select project_id, min(audit_date) as when from im_projects_status_audit
 	group by project_id) s_create,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
@@ -252,26 +246,97 @@ from
 	(select min(audit_date) as when, project_id from im_projects_status_audit
 	where project_status_id=79 group by project_id) s_invoice,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id in (77,81,82) group by project_id) s_close
-where 
-        p.customer_id=c.customer_id(+)
+	where project_status_id in (77,81,82) group by project_id) s_close,
+"
+
+set status_select "
+	s_create.when as create_date,
+	s_open.when as open_date,
+	s_quote.when as quote_date,
+	s_deliver.when as deliver_date,
+	s_invoice.when as invoice_date,
+	s_close.when as close_date,
+"
+
+set status_where "
 	and p.project_id=s_create.project_id(+)
 	and p.project_id=s_quote.project_id(+)
 	and p.project_id=s_open.project_id(+)
 	and p.project_id=s_deliver.project_id(+)
 	and p.project_id=s_invoice.project_id(+)
 	and p.project_id=s_close.project_id(+)
-        $where_clause
-	$order_by_clause
 "
 
 
-#select 
-#	on_what_id as project_id, 
-#	sum(hours) as spend_hours
-#from im_hours 
-#	where on_which_table='im_projects'
-#group by on_what_id
+# Permissions and Performance:
+# This SQL shows project depending on the permissions
+# of the current user: 
+#
+#	IF the user is a project member
+#	OR if the user has the privilege to see all projects.
+#
+# The performance problems are due to the number of projects
+# (several thousands), the number of users (several thousands)
+# and the acs_rels relationship between users and projects.
+# Despite all of these, the page should ideally appear in less
+# then one second, because it is frequently used.
+# 
+# In order to get acceptable load times we use an inner "perm"
+# SQL that selects project_ids "outer-joined" with the membership 
+# information for the current user.
+# This information is then filtered in the outer SQL, using an
+# OR statement, acting as a filter on the returned project_ids.
+# It is important to apply this OR statement outside of the
+# main join (projects and membership relation) in order to
+# reach a reasonable response time.
+
+set perm_sql "
+	select
+	        p.project_id,
+		r.member_p as permission_member,
+		see_all.see_all as permission_all
+	from
+	        im_projects p,
+		(	select	count(rel_id) as member_p,
+				object_id_one as object_id
+			from	acs_rels
+			where	object_id_two = :user_id
+			group by object_id_one
+		) r,
+	        (       select  count(*) as see_all
+	                from acs_object_party_privilege_map
+	                where   object_id=400
+	                        and party_id=:user_id
+	                        and privilege='view_projects_all'
+	        ) see_all
+	where
+	        p.project_id = r.object_id(+)
+	        $where_clause
+"
+
+set sql "
+SELECT
+	p.*,
+        c.customer_name,
+        im_name_from_user_id(project_lead_id) as lead_name,
+        im_category_from_id(p.project_type_id) as project_type,
+        im_category_from_id(p.project_status_id) as project_status,
+        im_proj_url_from_type(p.project_id, 'website') as url,
+        to_char(end_date, 'HH24:MI') as end_date_time
+FROM
+	im_projects p,
+	im_customers c,
+	($perm_sql) perm
+WHERE
+	perm.project_id = p.project_id
+	and p.customer_id = c.customer_id(+)
+	and (
+		p.project_status_id = 76
+		and perm.permission_member > 0
+		$mine_restriction
+	)
+	$order_by_clause
+"
 
 
 # ---------------------------------------------------------------
@@ -282,9 +347,9 @@ where
 # to be able to manage large sites
 #
 
-# !!!
+ns_log Notice "/intranet/project/index: Before limiting clause"
 
-if {1 || [string compare $letter "ALL"]} {
+if {[string compare $letter "ALL"]} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
@@ -310,6 +375,8 @@ if {1 || [string compare $letter "ALL"]} {
 # Note that we use a nested table because im_slider might
 # return a table with a form in it (if there are too many
 # options
+
+ns_log Notice "/intranet/project/index: Before formatting filter"
 
 set filter_html "
 <form method=get action='/intranet/projects/index'>
@@ -355,6 +422,7 @@ append filter_html "
 # ----------------------------------------------------------
 # Do we have to show administration links?
 
+ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html ""
 
 if {[im_permission $current_user_id "add_projects"]} {
@@ -400,6 +468,7 @@ if {"" != $admin_html} {
 # ---------------------------------------------------------------
 
 # Set up colspan to be the number of headers + 1 for the # column
+ns_log Notice "/intranet/project/index: Before format header"
 set colspan [expr [llength $column_headers] + 1]
 
 set table_header_html ""
@@ -433,6 +502,8 @@ append table_header_html "</tr>\n"
 # 8. Format the Result Data
 # ---------------------------------------------------------------
 
+ns_log Notice "/intranet/project/index: Before db_foreach"
+
 set table_body_html ""
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
@@ -440,8 +511,7 @@ set ctr 0
 set idx $start_idx
 db_foreach projects_info_query $selection {
 
-    im_project_permissions $user_id $project_id project_view project_read project_write project_admin
-    if {!$project_read} { continue }
+#    if {"" == $project_id} { continue }
 
     set url [im_maybe_prepend_http $url]
     if { [empty_string_p $url] } {
@@ -451,14 +521,15 @@ db_foreach projects_info_query $selection {
     }
 
     # Append together a line of data based on the "column_vars" parameter list
-    append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"
+    set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
     foreach column_var $column_vars {
-	append table_body_html "\t<td valign=top>"
-	set cmd "append table_body_html $column_var"
+	append row_html "\t<td valign=top>"
+	set cmd "append row_html $column_var"
 	eval $cmd
-	append table_body_html "</td>\n"
+	append row_html "</td>\n"
     }
-    append table_body_html "</tr>\n"
+    append row_html "</tr>\n"
+    append table_body_html $row_html
 
     incr ctr
     if { $how_many > 0 && $ctr >= $how_many } {
@@ -500,6 +571,7 @@ if { $start_idx > 1 } {
 # 9. Format Table Continuation
 # ---------------------------------------------------------------
 
+ns_log Notice "/intranet/project/index: before table continuation"
 # Check if there are rows that we decided not to return
 # => include a link to go to the next page 
 #
@@ -535,10 +607,6 @@ set table_continuation_html "
 # Navbar
 # ---------------------------------------------------------------
 
-set letter "none"
-set next_page_url ""
-set previous_page_url ""
-
 set project_navbar_html "
 <br>
 [im_project_navbar $letter "/intranet/projects/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
@@ -546,5 +614,6 @@ set project_navbar_html "
 
 
 
+ns_log Notice "/intranet/project/index: before release handes"
 db_release_unused_handles
 

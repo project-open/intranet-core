@@ -7,7 +7,7 @@ ad_page_contract {
     { return_url "" }
 }
 
-if {![string equal "true" [ad_parameter TestDemoDevServer "" false]]} {
+if {0 && ![string equal "true" [ad_parameter TestDemoDevServer "" false]]} {
     ad_return_complaint 1 "<LI>This is not a Test/Demo/Development server.<BR>
     So you probably don't want to destroy all data, right?!?<br>&nbsp;<br>
     If this IS a Test/Demo/Development server, then check '/parameters/*.ini'
@@ -64,6 +64,13 @@ ad_proc anonymize_word { org_word } {
     return $result
 }
 
+ad_proc random_char {} {
+    Return a random character
+} {
+    return [pick_char "abcdefghijklmnopqrstuvwxyz"]
+}
+
+
 ad_proc anonymize_char { org_char } {
     Anonymizes a single character
 } {
@@ -112,7 +119,10 @@ ad_proc pick_char { char_set } {
 
 set im_projects_sql "
 select
-	group_id,
+	project_id,
+	project_name,
+	project_path,
+	project_nr,
 	description,
 	note,
 	customer_project_nr,
@@ -124,14 +134,18 @@ db_foreach im_projects_select $im_projects_sql {
 
     set im_projects_update_sql "
 	update im_projects set
+	project_name = '[anonymize_name $project_name]',
+	project_nr = '[anonymize_name $project_nr]',
+	project_path = '[anonymize_name $project_path]',
         description='[anonymize_name $description]',
         note='[anonymize_name $note]',
         customer_project_nr='[anonymize_name $customer_project_nr]',
         final_customer='[anonymize_name $final_customer]'
-	where group_id=:group_id"
+	where project_id=:project_id"
 
     db_dml im_projects_update $im_projects_update_sql
 }
+
 
 # ---------------------- im_trans_tasks -------------------------------
 
@@ -156,6 +170,7 @@ db_foreach im_trans_tasks_select $im_trans_tasks_sql {
 
 # ---------------------- im_invoice_items -------------------------------
 
+
 set im_invoice_items_sql "
 select
 	item_id,
@@ -178,7 +193,9 @@ db_foreach im_invoice_items_select $im_invoice_items_sql {
     db_dml im_invoice_items_update $im_invoice_items_update_sql
 }
 
+
 # ---------------------- im_prices -------------------------------
+
 
 set im_prices_sql "
 select
@@ -199,9 +216,12 @@ db_foreach im_prices_select $im_prices_sql {
 
 # ---------------------- im_customers -------------------------------
 
+
 set im_customers_sql "
 select
-	group_id,
+	customer_id,
+	customer_name,
+	customer_path,
 	referral_source,
 	site_concept,
 	vat_number,
@@ -213,21 +233,26 @@ db_foreach im_customers_select $im_customers_sql {
 
     set im_customers_update_sql "
 	update im_customers set
+        customer_name='[anonymize_name $customer_name]',
+        customer_path='[anonymize_name $customer_path]',
         referral_source='[anonymize_name $referral_source]',
         site_concept='[anonymize_name $site_concept]',
         vat_number='[anonymize_name $vat_number]',
         note='[anonymize_name $note]'
-	where group_id=:group_id"
+	where customer_id=:customer_id"
 
     db_dml im_customers_update $im_customers_update_sql
 }
 
-# ---------------------- im_facilities -------------------------------
 
-set im_facilities_sql "
+# ---------------------- im_offices -------------------------------
+
+
+set im_offices_sql "
 select
-	facility_id,
-	facility_name,
+	office_id,
+	office_name,
+	office_path,
 	phone,
 	fax,
 	address_line1,
@@ -239,13 +264,18 @@ select
 	security,
 	note
 from
-	im_facilities"
+	im_offices"
 
-db_foreach im_facilities_select $im_facilities_sql {
+db_foreach im_offices_select $im_offices_sql {
 
-    set im_facilities_update_sql "
-	update im_facilities set
-	facility_name='[anonymize_name $facility_name]',
+    if {[string length $office_path] < 5} {
+	append office_path "[random_char][random_char][random_char][random_char]"
+    }
+
+    set im_offices_update_sql "
+	update im_offices set
+	office_name='[anonymize_name $office_name]',
+	office_path='[anonymize_name $office_path]',
 	phone='[anonymize_name $phone]',
 	fax='[anonymize_name $fax]',
 	address_line1='[anonymize_name $address_line1]',
@@ -256,40 +286,14 @@ db_foreach im_facilities_select $im_facilities_sql {
 	landlord='[anonymize_name $landlord]',
 	security='[anonymize_name $security]',
 	note='[anonymize_name $note]'
-    	where facility_id=:facility_id"
+    	where office_id=:office_id"
 
-    db_dml im_facilities_update $im_facilities_update_sql
-}
-
-
-# ---------------------- user_groups -------------------------------
-
-set user_groups_sql "
-select
-	group_id,
-	group_name,
-	short_name
-from
-	user_groups
-where
-	group_id > 18"
-
-db_foreach user_groups_select $user_groups_sql {
-    set group_name_mod [anonymize_name $group_name]
-    set short_name_mod [anonymize_name $short_name]
-
-    set user_groups_update_sql "
-	update user_groups
-	set
-		group_name=:group_name_mod,
-		short_name=:short_name_mod
-	where group_id=:group_id"
-
-    db_dml user_groups_update $user_groups_update_sql
+    db_dml im_offices_update $im_offices_update_sql
 }
 
 
 # ---------------------- users_contact -------------------------------
+
 
 set users_contact_sql "
 select
@@ -349,17 +353,25 @@ db_foreach users_contact_select $users_contact_sql {
 
 # ---------------------- users -------------------------------
 
+
 set user_sql "
 select
-	user_id,
-	email,
-	first_names,
-	last_name,
-	url
+	u.user_id,
+	pa.email,
+	pe.first_names,
+	pe.last_name,
+	pa.url
 from
-	users
+	users u,
+	persons pe,
+	parties pa
 where
-	user_id > 2"
+	u.user_id = pe.person_id
+	and u.user_id = pa.party_id
+	and u.user_id > 2
+	and email != 'fraber@fraber.de'
+	and not (email like '%@project-open.com')
+"
 
 db_foreach user_select $user_sql {
     set first_names_mod [anonymize_name $first_names]
@@ -386,16 +398,32 @@ db_foreach user_select $user_sql {
 		url=:url_mod
 	where user_id=:user_id"
 
-    db_dml user_update $user_update_sql
+#    db_dml user_update $user_update_sql
+
+    set person_update_sql "
+	update persons
+	set
+		first_names=:first_names_mod,
+		last_name=:last_name_mod
+	where person_id=:user_id"
+    db_dml user_update $person_update_sql
+
+    set party_update_sql "
+	update parties
+	set
+		email=:email_mod,
+		url=:url_mod
+	where party_id=:user_id"
+    db_dml user_update $party_update_sql
 }
 
 
-    set user_password_update_sql "
-	update users
-	set password='xxx'
-    "
-
-    db_dml user_password_update $user_password_update_sql
+#    set user_password_update_sql "
+#	update users
+#	set password='xxx'
+#    "
+#
+#    db_dml user_password_update $user_password_update_sql
 
 
 

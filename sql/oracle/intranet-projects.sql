@@ -92,6 +92,10 @@ create table im_projects (
 );
 
 create index im_project_parent_id_idx on im_projects(parent_id);
+-- create index im_project_status_id_idx on im_projects(project_status_id);
+-- create index im_project_project_nr_idx on im_projects(project_nr);
+
+
 
 -- ------------------------------------------------------------
 -- Project Package
@@ -257,6 +261,7 @@ create table im_projects_status_audit (
 	audit_date		date
 );
 create index im_proj_status_aud_id_idx on im_projects_status_audit(project_id);
+-- create index im_proj_status_aud_status_idx on im_projects_status_audit(project_status_id);
 
 create or replace trigger im_projects_status_audit_tr
 before update or delete on im_projects

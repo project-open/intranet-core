@@ -148,6 +148,28 @@ db_foreach column_list_sql $column_sql {
 
 # No filters...
 
+set filter_html "
+
+<table border=0 width=100%>
+<tr><td align=center>
+
+    <table border=0 cellpadding=0 cellspacing=0>
+    <tr>
+      <td class=rowtitle align=center>
+        Admin Users
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <li><a href=/intranet/users/new>Add a new user</a>
+      </td>
+    </tr>
+    </table>
+
+</td></tr>
+</table>
+"
+
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
 # ---------------------------------------------------------------
@@ -159,7 +181,10 @@ set bind_vars [ns_set create]
 
 if { ![empty_string_p $user_group_id] && $user_group_id>0 } {
     append page_title " in group \"$user_group_name\""
-    lappend criteria "ad_group_member_p(u.user_id, :user_group_id) = 't'"
+
+    lappend criteria "u.user_id = m.member_id"
+    lappend criteria "m.group_id = :user_group_id"
+    lappend extra_tables "group_distinct_member_map m"
 }
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
@@ -208,12 +233,13 @@ from
 	users u, 
 	users_contact c,
 	persons p
+	$extra_table
 where 
 	u.user_id=p.person_id
 	and u.user_id=c.user_id(+)
 	$where_clause
-        $order_by_clause"
-
+        $order_by_clause
+"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
@@ -237,11 +263,7 @@ if { [string compare $letter "all"] == 0 } {
 select 
 	count(1) 
 from 
-	users u,
-	persons p
-where 
-	u.user_id = p.person_id
-	$where_clause
+	($sql) t
 "]
 
 }
@@ -251,7 +273,6 @@ where
 # ---------------------------------------------------------------
 
 # No filter except for the alpha-bar
-set filter_html ""
 
 
 # ---------------------------------------------------------------
