@@ -196,19 +196,15 @@ if { ![empty_string_p $limit_to_users_in_group_id] } {
     set query "
 select distinct
 	u.user_id,
-	p.first_names,
-	p.last_name,
-	pa.email
+	u.first_names,
+	u.last_name,
+	u.email
 from 
-	users u,
-	persons p,
-	parties pa,
+	registered_users u,
 	group_member_map ugm
 	$group_table
 where 
 	u.user_id=ugm.member_id
-	and u.user_id = p.person_id
-	and u.user_id = pa.party_id
 	and $group_sql
 	and $search_clause
 "

@@ -63,25 +63,20 @@ if {!$read} {
 
 set result [db_0or1row users_info_query "
 select 
-	pe.first_names, 
-	pe.last_name, 
-        pe.first_names||' '||pe.last_name as name,
-	pa.email,
-        pa.url,
-	o.creation_date as registration_date, 
-	o.creation_ip as registration_ip,
+	u.first_names, 
+	u.last_name, 
+        u.first_names||' '||u.last_name as name,
+	u.email,
+        u.url,
+	u.creation_date as registration_date, 
+	u.creation_ip as registration_ip,
 	u.last_visit,
-	u.screen_name
+	u.screen_name,
+	u.member_state
 from
-	users u,
-	acs_objects o,
-	parties pa,
-	persons pe
+	cc_users u
 where
 	u.user_id = :user_id
-	and u.user_id=o.object_id(+)
-	and u.user_id=pa.party_id(+)
-	and u.user_id=pe.person_id(+)
 "]
 
 if { $result != 1 } {
@@ -192,26 +187,26 @@ set profile_html ""
 
 set result [db_0or1row users_info_query "
 select
-	home_phone,
-	work_phone,
-	cell_phone,
-	pager,
-	fax,
-	aim_screen_name,
-	icq_number,
-	ha_line1,
-	ha_line2,
-	ha_city,
-	ha_state,
-	ha_postal_code,
-	ha_country_code,
-	wa_line1,
-	wa_line2,
-	wa_city,
-	wa_state,
-	wa_postal_code,
-	wa_country_code,
-	note,
+	c.home_phone,
+	c.work_phone,
+	c.cell_phone,
+	c.pager,
+	c.fax,
+	c.aim_screen_name,
+	c.icq_number,
+	c.ha_line1,
+	c.ha_line2,
+	c.ha_city,
+	c.ha_state,
+	c.ha_postal_code,
+	c.ha_country_code,
+	c.wa_line1,
+	c.wa_line2,
+	c.wa_city,
+	c.wa_state,
+	c.wa_postal_code,
+	c.wa_country_code,
+	c.note,
 	ha_cc.country_name as ha_country_name,
 	wa_cc.country_name as wa_country_name
 from
@@ -368,7 +363,15 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
 
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 
+# Return a pretty member state (no normal user understands "banned"...)
+case $member_state {
+	"banned" { set user_state "deleted" }
+	"approved" { set user_state "active" }
+	default { set user_state $member_state }
+}
+
 append admin_links "
+          <li>Member state: $user_state (<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>activate</a>, <a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>delete</a>)
           <li><a href=$change_pwd_url>Update this user's password</a>
           <li><a href=become?user_id=$user_id>Become this user!</a>
 <!--

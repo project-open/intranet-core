@@ -222,10 +222,14 @@ ad_form -extend -name register -on_request {
 
 	    # New user: create from scratch
 	    set email [string trim $email]
-	    set similar_user [db_string similar_user "select count(*) from parties where lower(email) = lower(:email)"]
+	    set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
 	    
 	    if {$similar_user > 0} {
-		ad_return_complaint 1 "<li>There is already a user with this email in the database"
+		ad_return_complaint 1 "<li><b>Duplicate User</B><br>
+                There is already a 
+                <A href=/intranet/users/view?user_id=$similar_user>user</A> 
+                with the email '$email'
+                in the database.<br>"
 		return
 	    }
 
