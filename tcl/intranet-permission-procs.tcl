@@ -502,13 +502,6 @@ ad_proc -public im_permission {user_id action} {
     return $result
 }
 
-
-    set result [ad_permission_p $package_id $action]
-    ns_log Notice "im_permission($action)=$result"
-    return $result
-}
-
-
 ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
     Check wheter a user should be able to see a specific field of another user:
     Return 1 IF:
