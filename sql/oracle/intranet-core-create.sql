@@ -135,9 +135,6 @@ prompt *** intranet-menus - Dynamic menus
 -- -----------------------------------------------------------
 -- Load demo data
 ---
-prompt *** intranet-potransdemo-data - Project/Open Translation Demo Data
-@intranet-potransdemo-data.sql
-
 
 
 

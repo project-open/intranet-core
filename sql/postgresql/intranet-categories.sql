@@ -97,6 +97,6 @@ end;' language 'plpgsql';
 -------------------------------------------------------------
 -- Import category definitions common to all DBs
 
-@../common/intranet-categories.sql
+\i ../common/intranet-categories.sql
 
 

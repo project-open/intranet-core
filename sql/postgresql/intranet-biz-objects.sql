@@ -130,9 +130,7 @@ end;' language 'plpgsql';
 -- neighbours.
 --
 create table im_biz_object_role_map (
-	acs_object_type	varchar
-			constraint im_bizo_rmap_o_type_fk
-			references acs_object_types,
+	acs_object_type	varchar(1000),
 	object_type_id	integer
 			constraint im_bizo_rmap_object_type_fk
 			references im_categories,
@@ -242,7 +240,7 @@ end;' language 'plpgsql';
 --------------------------------------------------------------
 -- Definitions common to all DBs
 
-@../common/intranet-biz-objects.sql
+\i ../common/intranet-biz-objects.sql
 
 
 

@@ -398,6 +398,5 @@ show errors;
 --------------------------------------------------------------
 -- Import definitions common to all DBs
 
-@../common/intranet-projects.sql
 
 

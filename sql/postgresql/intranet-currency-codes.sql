@@ -42,5 +42,5 @@ create table currency_codes (
 );
 
 
-@../common/intrant-currency-codes.sql
+\i ../common/intrant-currency-codes.sql
 

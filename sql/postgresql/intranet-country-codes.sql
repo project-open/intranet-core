@@ -36,5 +36,5 @@ create table country_codes (
 
 
 
-@../common/intranet-country-codes.sql
+\i ../common/intranet-country-codes.sql
 
