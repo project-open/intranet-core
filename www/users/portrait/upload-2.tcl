@@ -142,10 +142,18 @@ values
 
 # let's figure out if this person has a portrait yet
 
-if { ![db_0or1row get_item_id "select object_id_two as item_id
-from acs_rels
-where object_id_one = :user_id
-and rel_type = 'user_portrait_rel'"] } {
+set user_has_portrait_p [db_0or1row get_item_id "
+select 
+	object_id_two as item_id
+from
+	acs_rels
+where
+	object_id_one = :user_id
+	and rel_type = 'user_portrait_rel'
+"] 
+
+
+if {!$user_has_portrait_p} {
     # The user doesn't have a portrait relation yet
     db_transaction {
 	set item_id [db_exec_plsql create_item $create_item]
@@ -155,35 +163,35 @@ and rel_type = 'user_portrait_rel'"] } {
 	db_dml upload_image_info $upload_image_info
     }
         
-} else {
-    #already has a portrait, so all we have to do is to make a new revision for it
+}
 
-    #Let's check if a current revision exists:
-    if {![db_0or1row get_revision_id "select live_revision as revision_id
+#already has a portrait, so all we have to do is to make a new revision for it
+
+#Let's check if a current revision exists:
+if {![db_0or1row get_revision_id "select live_revision as revision_id
     from cr_items
     where item_id = :item_id"] || [empty_string_p $revision_id]} {
-	# It's an insert rather than an update
-	db_transaction {
-	    set revision_id [db_exec_plsql create_revision $create_revision]
-	    db_dml update_photo $update_photo -blob_files [list $tmp_filename]
-	    db_dml upload_image_info $upload_image_info
-	}
-    } else {
-	# it's merely an update
-        db_transaction {
-	    db_dml update_photo $update_photo -blob_files [list $tmp_filename]
-	    db_dml update_image_info "
+    # It's an insert rather than an update
+    db_transaction {
+	set revision_id [db_exec_plsql create_revision $create_revision]
+	db_dml update_photo $update_photo -blob_files [list $tmp_filename]
+	db_dml upload_image_info $upload_image_info
+    }
+} else {
+    # it's merely an update
+    db_transaction {
+	db_dml update_photo $update_photo -blob_files [list $tmp_filename]
+	db_dml update_image_info "
 	    update images
 	    set width = :original_width, height = :original_height
 	    where image_id = :revision_id"
-	    db_dml update_photo_info "
+	db_dml update_photo_info "
 	    update cr_revisions
 	    set description = :portrait_comment,
 	        publish_date = sysdate,
 	        mime_type = :guessed_file_type,
 	        title = :title
 	    where revision_id = :revision_id"
-        }
     }
 }
 
