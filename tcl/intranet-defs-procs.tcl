@@ -29,6 +29,149 @@ ad_proc -public im_uom_day {} { return 321 }
 ad_proc -public im_uom_unit {} { return 322 }
 
 
+# ------------------------------------------------------------------
+# CSV Line Parser
+# ------------------------------------------------------------------
+
+ad_proc im_csv_split { line {separator ","} } {
+    Splits a line from a CSV (Comma Separated Values) file
+    into an array of values. Deals with:
+    <ul>
+    <li>Fields enclosed by double quotes
+    <li>Komma or Semicolon separators
+    <li>Quoted field contents
+    </ul>
+    The state machine can be in one of two states:
+    <ul>
+    <li>"field_start": Starting reading a field, either starting
+        with a quote character (double quote, single quote) or
+        with a non-quote character.
+    <li>"field": Reading a field, either quoted or not quoted
+        The variable "quote" contains the quote character with reading
+        the field content.
+    <li>"separator": Reading a separator, either a "," or a ";"
+    </ul>
+
+} {
+    set debug 0
+
+    set result_list [list]
+    set pos 0
+    set len [string length $line]
+    set quote ""
+    set state "field_start"
+    set field ""
+
+    while {$pos <= $len} {
+	set char [string index $line $pos]
+	set next_char [string index $line [expr $pos+1]]
+	if {$debug} {ns_log notice "im_csv_split: pos=$pos, char=$char, state=$state"}
+
+	switch $state {
+	    "field_start" {
+
+		# We're before a field. Next char may be a quote
+		# or not. Skip white spaces.
+
+		if {[string is space $char]} {
+
+		    if {$debug} {ns_log notice "im_csv_split: field_start: found a space: '$char'"}
+		    incr pos
+
+		} else {
+
+		    # Skip the char if it was a quote
+		    set quote_pos [string first $char "\"'"]
+		    if {$quote_pos >= 0} {
+			if {$debug} {ns_log notice "im_csv_split: field_start: found quote=$char"}
+			# Remember the quote char
+			set quote $char
+			# skip the char
+			incr pos
+		    } else {
+			if {$debug} {ns_log notice "im_csv_split: field_start: unquoted field"}
+			set quote ""
+		    }
+		    # Initialize the field value for the "field" state
+		    set field ""
+		    # "Switch" to reading the field content
+		    set state "field"
+		}
+	    }
+
+	    "field" {
+
+		# We are reading the content of a field until we
+		# reach the end, either marked by a matching quote
+		# or by the "separator" if the field was not quoted
+
+		# Check for a duplicated quote when in quoted mode.
+		if {"" != $quote && [string equal $char $quote] && [string equal $next_char $quote]} {
+
+		    append field $char
+		    incr pos
+		    incr pos
+
+		} else {
+
+
+		    # Check if we have reached the end of the field
+		    # either with the matching quote of with the separator:
+		    if {"" != $quote && [string equal $char $quote] || "" == $quote && [string equal $char $separator]} {
+
+			if {$debug} {ns_log notice "im_csv_split: field: found quote or term: $char"}
+
+			# Skip the character if it was a quote
+			if {"" != $quote} { incr pos }
+
+			# Trim the field if it was not quoted
+			if {"" == $quote} { set field [string trim $field] }
+
+			lappend result_list $field
+			set state "separator"
+
+		    } else {
+
+			if {$debug} {ns_log notice "im_csv_split: field: found a field char: $char"}
+			append field $char
+			incr pos
+
+		    }
+		}
+	    }
+
+	    "separator" {
+
+		# We got here after finding the end of a "field".
+		# Now we expect a separator or we have to throw an
+		# error otherwise. Skip whitespaces.
+		
+		if {[string is space $char]} {
+		    if {$debug} {ns_log notice "im_csv_split: separator: found a space: '$char'"}
+		    incr pos
+		} else {
+		    if {[string equal $char $separator]} {
+			if {$debug} {ns_log notice "im_csv_split: separator: found separator: '$char'"}
+			incr pos
+			set state "field_start"
+		    } else {
+			if {$debug} {ns_log error "im_csv_split: separator: didn't find separator: '$char'"}
+			set state "field_start"
+		    }
+		}
+	    }
+	    # Switch, while and proc ending
+	}
+    }
+    return $result_list
+}
+
+
+
+# ------------------------------------------------------------------
+# System Functions
+# ------------------------------------------------------------------
+
 ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     Execute a DML procedure (function in PostgreSQL) without
     regard of the database type. Basicly, the procedures wraps
