@@ -36,41 +36,23 @@ ad_page_contract {
 # ---------------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
+set return_url [im_url_with_query]
+set current_url [ns_conn url]
 
 # get the current users permissions for this project
 im_project_permissions $user_id $project_id read write admin
 
-ns_log Notice "read=$read"
-ns_log Notice "write=$write"
-ns_log Notice "admin=$admin"
-
-
+# Compatibility with old components...
 set current_user_id $user_id
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-set user_is_group_member_p [ad_user_group_member $project_id $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $project_id $user_id]
-set user_is_employee_p [im_user_is_employee_p $user_id]
-set user_in_project_group_p [db_string user_belongs_to_project "select decode ( ad_group_member_p ( :current_user_id, $project_id ), 'f', 0, 1 ) from dual" ]
-
-# Admin permissions to global + intranet admins + group administrators
-set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
-set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
-
-set project_id $project_id
+set user_admin_p $admin
 
 set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 
-set return_url [im_url_with_query]
-set current_url [ns_conn url]
-
-ns_log Notice "user_is_admin_p=$user_is_admin_p"
-ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
-ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
-ns_log Notice "user_is_employee_p=$user_is_employee_p"
-ns_log Notice "user_admin_p=$user_admin_p"
-
+if {!$read} {
+    ad_return_complaint 1 "You have insufficient permissions to view this page."
+    return
+}
 
 # ---------------------------------------------------------------------
 # Prepare Project SQL Query
@@ -117,32 +99,6 @@ if { ![db_0or1row projects_info_query $query] } {
 }
 
 # ---------------------------------------------------------------------
-# Second Security Check
-# ---------------------------------------------------------------------
-
-# Let the customers see their projects.
-set user_is_project_customer_p [ad_user_group_member $customer_id $user_id]
-
-set allowed 0
-if {$user_admin_p} { set allowed 1}
-if {$user_is_project_customer_p} { set allowed 1}
-if {$user_is_group_member_p} { set allowed 1}
-if {[im_permission $user_id view_projects_all]} { set allowed 1}
-if {!$allowed} {
-    ad_return_complaint 1 "You have insufficient permissions to view this page."
-    return
-}
-
-# customers and freelancers are not allowed to see non-open projects.
-if {![im_permission $user_id view_projects_history] && $project_status_id != [ad_parameter "ProjectStatusOpen" "intranet" "0"]} {
-
-    # Except their own projects...
-    if {!$user_is_project_customer_p} {
-	ad_return_complaint 1 "<li>The project is already closed.<BR>You have insufficient permissions to view this page."
-    }
-}
-
-# ---------------------------------------------------------------------
 # Set display options as a function of the project data
 # ---------------------------------------------------------------------
 
@@ -160,11 +116,10 @@ if { [empty_string_p $parent_id] } {
 }
 
 # Don't show subproject nor a link to the "projects" page to freelancers
-if {![im_permission $current_user_id view_projects]} {
+if {![im_permission $user_id view_projects]} {
     set context_bar [ad_context_bar "One project"]
     set include_subproject_p 0
 }
-
 
 # ---------------------------------------------------------------------
 # Project Base Data
@@ -197,7 +152,7 @@ append project_base_data_html "
                             <td>SLS project#</td>
                             <td>$project_path</td>
                           </tr>"
-if {[im_permission $current_user_id view_customers]} {
+if {[im_permission $user_id view_customers]} {
     append project_base_data_html "  <tr> 
                             <td>Client</td>
                             <td><A HREF='/intranet/customers/view?customer_id=$customer_id'>$customer_name</A>
@@ -209,7 +164,7 @@ append project_base_data_html "
 		          <tr> 
                             <td>Project Manager</td>
                             <td>
-[im_render_user_id $project_lead_id $project_lead $current_user_id $project_id]
+[im_render_user_id $project_lead_id $project_lead $user_id $project_id]
                             </td>
                           </tr>
 		          <tr> 
@@ -234,7 +189,7 @@ if { ![empty_string_p $end_date] } { append project_base_data_html "
                           </tr>"
 }
 
-if {$user_admin_p} {
+if {$write} {
 	append project_base_data_html "
                           <tr> 
                             <td>&nbsp; </td>
@@ -255,15 +210,15 @@ append project_base_data_html "    </table>
 # Admin Box
 # ---------------------------------------------------------------------
 
-set admin_html_content "
+set admin_html ""
+if {$admin} {
+    set admin_html_content "
 <ul>
   <li><A href=\"/intranet/projects/new\"> Create a new Project</A>
   <li><A href=\"/intranet/projects/new?parent_id=$project_id\"> Create a Subproject</A>
-</ul>
-"
-
-set admin_html [im_table_with_title "Admin Project" $admin_html_content]
-
+</ul>\n"
+    set admin_html [im_table_with_title "Admin Project" $admin_html_content]
+}
 
 # ---------------------------------------------------------------------
 # Project Hierarchy
@@ -280,7 +235,6 @@ while {$loop} {
 	set loop 1
     }
 }
-
 
 set hierarchy_sql {
 select
@@ -321,7 +275,6 @@ db_foreach project_hierarchy $hierarchy_sql {
 }
 
 if {$counter > 1} {
-
     set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
 } else {
     set hierarchy_html ""

@@ -1,4 +1,17 @@
 # /www/intranet/projects/new.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The software is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Purpose: form to add a new project or edit an existing one
@@ -6,10 +19,10 @@ ad_page_contract {
     @param project_id group id
     @param parent_id the parent project id
     @param return_url the url to return to
-    @author mbryzek@arsdigita.com
-    @creation-date Jan 2000
 
-    @cvs-id new.tcl,v 3.15.2.12 2000/09/22 01:38:44 kevin Exp
+    @author mbryzek@arsdigita.com
+    @author frank.bergmann@project-open.com
+    @creation-date Jan 2000
 } {
     project_id:optional,integer
     parent_id:optional,integer
@@ -27,7 +40,6 @@ set project_nr_field_size [ad_parameter "ProjectNumberFieldSize" "" 20]
 
 # Make sure the user has the privileges, because this
 # pages shows the list of customers etc.
-#
 if {![im_permission $user_id "add_projects"]} { 
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to see this page."

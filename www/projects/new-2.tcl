@@ -1,10 +1,23 @@
 # /www/intranet/projects/new-2.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The software is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Purpose: verifies and stores project information to db.
-    Based on code from mbryzek@arsdigita.com
 
-    @author Frank Bergmann (fraber@fraber.de)
+    @author mbryzek@arsdigita.com
+    @author Frank Bergmann (frank.bergmann@project-open.com)
     @creation-date Jan 2000
 } {
     return_url:optional
@@ -37,6 +50,13 @@ set user_id [ad_maybe_redirect_for_registration]
 set todays_date [db_string projects_get_date "select sysdate from dual"]
 
 if {"" == $project_path} { set project_path $project_nr }
+
+# Make sure the user has the privileges, because this
+# pages shows the list of customers etc.
+if {![im_permission $user_id "add_projects"]} {
+    ad_return_complaint "Insufficient Privileges" "
+    <li>You don't have sufficient privileges to see this page."
+}
 
 # -----------------------------------------------------------------
 # Check input variables

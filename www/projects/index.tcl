@@ -1,4 +1,17 @@
-# /www/intranet/index.tcl
+# /packages/intranet-core/www/projects/index.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The software is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 # ---------------------------------------------------------------
 # 1. Page Contract
@@ -17,7 +30,7 @@ ad_page_contract {
     @param how_many how many rows to return
 
     @author mbryzek@arsdigita.com
-    @cvs-id index.tcl,v 3.24.2.9 2000/09/22 01:38:44 kevin Exp
+    @author frank.bergmann@project-open.com
 } {
     { order_by "Project #" }
     { include_subprojects_p "f" }
@@ -74,7 +87,6 @@ set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "Projects"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 set letter [string toupper $letter]
 
@@ -86,7 +98,7 @@ if { [empty_string_p $status_id] } {
 
 # Unprivileged users (clients & freelancers) can only see their 
 # own projects and no subprojects.
-if {![im_permission $current_user_id "view_projects_of_others"]} {
+if {![im_permission $current_user_id "view_projects_all"]} {
     set mine_p "t"
     set include_subprojects_p "f"
     
@@ -367,7 +379,7 @@ set filter_html "
   </tr>
 "
 
-if {[im_permission $current_user_id "view_projects_of_others"]} { 
+if {[im_permission $current_user_id "view_projects_all"]} { 
     append filter_html "
   <tr>
     <td valign=top>View:</td>
@@ -376,7 +388,7 @@ if {[im_permission $current_user_id "view_projects_of_others"]} {
 "
 }
 
-if {[im_permission $current_user_id "view_projects_of_others"]} {
+if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
     <td valign=top>Project Status:</td>
@@ -404,11 +416,8 @@ set admin_html ""
 if {[im_permission $current_user_id "add_projects"]} {
     append admin_html "<li><a href=/intranet/projects/new>Add a new project</a>\n"
 }
-if {[im_permission $current_user_id "view_projects_of_others"]} { 
+if {[im_permission $current_user_id "view_projects_all"]} { 
     append admin_html "<li><a href=../allocations/index>Allocations</a> "
-}
-if {[im_permission $current_user_id "view_finance"]} { 
-    append admin_html "<li><a href=money>Financial View</a>"
 }
 
 set project_filter_html $filter_html
