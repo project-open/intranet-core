@@ -30,7 +30,7 @@ ad_page_contract {
 } {
     { user_group_name:trim "Employees" }
     { order_by "Name" }
-    { start_idx:integer "1" }
+    { start_idx:integer "0" }
     { how_many:integer "" }
     { letter:trim "all" }
     { view_name "" }
@@ -167,9 +167,9 @@ set end_idx [expr $start_idx + $how_many - 1]
 set admin_html ""
 if {[im_permission $user_id "add_users"]} {
     append admin_html "
-<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
-<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
-"
+	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
+	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
+    "
 }
 
 
@@ -270,7 +270,7 @@ set bind_vars [ns_set create]
 if { $user_group_id > 0 } {
     append page_title " in group \"$user_group_name\""
     lappend extra_wheres "u.user_id = m.member_id"
-    lappend extra_wheres "m.group_id = :user_group_id"
+    lappend extra_wheres "m.group_id = $user_group_id"
     lappend extra_froms "group_distinct_member_map m"
 }
 
@@ -399,7 +399,10 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set ctr 1
 set idx $start_idx
+
 db_foreach projects_info_query $query {
+
+    ns_log Notice "users/index: user_id=$user_id"
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"
@@ -454,6 +457,29 @@ if { $start_idx > 1 } {
 
 # nothing to do here ... (?)
 set table_continuation_html ""
+
+
+# ---------------------------------------------------------------
+# Check whether we have to add spamming to Admin Links
+# ---------------------------------------------------------------
+
+
+if {"" != $admin_html && [db_table_exists spam_messages]} {
+    set sql_query "
+select
+        u.user_id as party_id
+from
+        users_active u,
+        parties p
+        $extra_from
+where
+        u.user_id = p.party_id
+        $extra_where
+"
+	append admin_html "
+	<li><a href=\"[spam_base]spam-add?[export_url_vars sql_query]\">[_ intranet-core.Spam_Users]</a>
+        "
+}
 
 # ---------------------------------------------------------------
 # 10. Join all parts together

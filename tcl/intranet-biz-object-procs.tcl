@@ -319,6 +319,7 @@ and not exists (
     set sql_query "
 select
 	u.user_id, 
+	u.user_id as party_id,
 	im_email_from_user_id(u.user_id) as email,
 	im_name_from_user_id(u.user_id) as name,
 	im_category_from_id(c.category_id) as member_role,
@@ -330,7 +331,7 @@ from
 	im_biz_object_members bo_rels,
 	im_categories c
 where
-	rels.object_id_one = :object_id
+	rels.object_id_one = $object_id
 	and rels.object_id_two = u.user_id
 	and rels.rel_id = bo_rels.rel_id
 	and bo_rels.object_role_id = c.category_id
@@ -407,9 +408,9 @@ append body_html $name
     if {$add_admin_links} {
 	append footer_html "
     <tr>
-      <td align=right>
-	<A HREF=/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]>
-	  [_ intranet-core.Add_member]</A>&nbsp;
+      <td align=left>
+	<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]\">[_ intranet-core.Add_member]</A>&nbsp;
+	<li><A HREF=\"[spam_base]spam-add?[export_url_vars object_id sql_query]\">[_ intranet-core.Spam_Members]</A>&nbsp;
       </td>"
 	append footer_html "
       <td><input type=submit value='[_ intranet-core.Del]' name=submit></td>

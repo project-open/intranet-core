@@ -4,13 +4,13 @@
 <property name="main_navbar_label">user</property>
 
 <table cellspacing=0 cellpadding=0>
-
+<tr valign=top>
   <td>
 	<form method=get action='/intranet/users/index' name=filter_form>
 	<%= [export_form_vars start_idx order_by how_many letter] %>
 	<input type=hidden name=view_name value="user_list">
 	<table border=0 cellpadding=0 cellspacing=0>
-	<tr>
+	<tr valign=top>
 	  <td colspan='2' class=rowtitle align=center>
 	    #intranet-core.Filter_Users#
 	  </td>
@@ -32,12 +32,12 @@
 
   <td valign=top>
     <table border=0 cellpadding=0 cellspacing=0>
-    <tr>
+    <tr valign=top>
       <td class=rowtitle align=center>
         #intranet-core.Admin_Users#
       </td>
     </tr>
-    <tr>
+    <tr valign=top>
       <td>
         @admin_html;noquote@
       </td>
