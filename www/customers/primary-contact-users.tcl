@@ -40,7 +40,7 @@ set customer_name [db_string customer_name \
 db_release_unused_handles
 
 set page_title "Select primary contact for $customer_name"
-set context_bar [ad_context_bar [list ./ "Clients"] [list view?[export_url_vars group_id] "One customer"] "Select contact"]
+set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars group_id] "One company"] "Select contact"]
 
 set page_body "
 

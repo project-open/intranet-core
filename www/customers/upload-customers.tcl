@@ -22,9 +22,9 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set page_title "Upload Client CSV"
+set page_title "Upload Companies CSV"
 
-set context_bar [ad_context_bar [list "/intranet/customers/" "Customers"] "Upload CSV"]
+set context_bar [ad_context_bar [list "/intranet/customers/" "Companies"] "Upload CSV"]
 
 set page_content "
 <form enctype=multipart/form-data method=POST action=upload-customers-2.tcl>

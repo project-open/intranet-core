@@ -25,7 +25,7 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "Add accounting contact"
-set context_bar [ad_context_bar [list /intranet/customers/ "Clients"] $page_title]
+set context_bar [ad_context_bar [list /intranet/customers/ "Companies"] $page_title]
 
 set customer_name [db_string customer_name {
 select c.customer_name
@@ -59,12 +59,12 @@ db_release_unused_handles
 
 if { [empty_string_p $contact_info] } {
     set page_body "
-<H3>No Client Employees in our Database</H3>
+<H3>No Company Employees in our Database</H3>
 We have no contacts in our database for $customer_name<BR>
 <UL>
   <LI>Please create a <A HREF=/intranet/users/new>new client contact</A>.
 
-  <LI>Make the new client contact a <A HREF=/intranet/customers/view?customer_id=$customer_id>customer employee</A> $customer_name.
+  <LI>Make the new client contact a <A HREF=/intranet/customers/view?customer_id=$customer_id>company employee</A> $customer_name.
 
   <LI>Finally, revisit this page and an option will appear to add the new client contact.
 
@@ -80,7 +80,7 @@ Also, please make sure that the client isn't defined multiple with similar names
 set return_url "[im_url_stub]/customers/view?[export_url_vars customer_id]"
 
 set page_title "Select accounting contact for $customer_name"
-set context_bar [ad_context_bar [list ./ "Clients"] [list view?[export_url_vars customer_id] "One customer"] "Select contact"]
+set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars customer_id] "One company"] "Select contact"]
 
 set page_body "
 <ul>
