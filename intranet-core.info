@@ -33,6 +33,7 @@
 
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="/web/projop/filestorage/backup" description="Path for backup sets"/>
 
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/bin/find" description="Unix 'find' command: /usr/bin/find on Linux, /bin/find on Windows/CygWin"/>
 
         </parameters>
 
