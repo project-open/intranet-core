@@ -53,8 +53,6 @@ set page_focus "im_header_form.keywords"
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
-set return_url [im_url_with_query]
-set current_url [ns_conn url]
 
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
