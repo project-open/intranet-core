@@ -51,7 +51,7 @@ if {[string equal $submit "Del"]} {
     foreach user $delete_user {
 	ns_log Notice "delete user: $user"
 	group::remove_member \
-	    -object_id $object_id \
+	    -group_id $object_id \
 	    -user_id $user
     }
 }

@@ -30,3 +30,10 @@ set url_stub [im_url_with_query]
 # The list of Core privileges
 set privs [im_core_privs]
 # set privs { read write admin }
+
+# Flush the permission cache to make changes active.
+# Putting this command here may cause too many flush
+# actions to be performed (because it is activated
+# when only viewing permission), but otherwise we would
+# have to modify /permissions/perm-modify...
+im_permission_flush

@@ -772,6 +772,7 @@ ad_proc -public im_header_emergency { page_title } {
 } {
     set system_logo [ad_parameter "SystemLogo" "" ""]
     set system_css [ad_parameter "SystemCSS" "" ""]
+    set system_css "<link rel=StyleSheet href=/intranet/style/style.css type=text/css media=screen>"
 
     set html "
 	<html>
@@ -1002,5 +1003,57 @@ ad_proc -public im_show_user_style {group_member_id current_user_id group_id} {
     return 0
 }
 
+
+ad_proc im_report_error { message } {
+    Writes an error to the connection, allowing the user to report the error.
+    This procedure replaces rp_report_error from the request processor.
+    @param message The message to write (pulled from <code>$errorInfo</code> if none is specified).
+} {
+    set error_url [ad_conn url]
+    set system_url [ad_parameter SystemURL "" ""]
+    set publisher_name [ad_parameter PublisherName "" ""]
+    set core_version "2.0"
+    set error_user_id [ad_get_user_id]
+    set error_first_names ""
+    set error_last_name ""
+    set error_user_email ""
+    
+    catch {
+        db_1row get_user_info "
+select
+	pe.first_names as error_first_names,
+        pe.last_name as error_last_name,
+        pa.email as error_user_email
+from
+	persons pe,
+	parties pa
+where
+	pe.person_id = :error_user_id
+	and pa.party_id = pe.person_id
+"
+    } catch_err
+
+    set report_url [ad_parameter -package_id [ad_acs_kernel_id] "ErrorReportURL" "rp" ""]
+    if { [empty_string_p $report_url] } {
+	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
+	set report_url "http://www.projop.com/intranet-forum/forum/new-system-incident"
+    } 
+
+    set error_info ""
+    if {![ad_parameter -package_id [ad_acs_kernel_id] "RestrictErrorsToAdminsP" dummy 0] || [permission::permission_p -object_id [ad_conn package_id] -privilege admin] } {
+	set error_info $message
+    }
+    
+    ns_returnerror 500 "
+[im_header_emergency "Request Error"]
+<form method=post action=$report_url>
+[export_form_vars error_url error_info error_first_names error_last_name error_user_email system_url publisher_name core_version]
+This file has generated an error.  
+<input type=submit value='Report this error' />
+</form>
+<hr />
+<blockquote><pre>[ns_quotehtml $error_info]</pre></blockquote>
+[im_footer]"
+}
 
 

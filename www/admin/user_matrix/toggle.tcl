@@ -95,4 +95,9 @@ switch $action {
     }
 }
 
+# Flush the global permissions cache so that the
+# new changes become active.
+im_permission_flush
+
+
 ad_returnredirect $return_url

@@ -13,15 +13,10 @@
 	<A href="../users/">Manage Individual Users</A><br>
 	Here you can manage users one-by-one.
       <li>
-	<A href=permissions/permissions>Manage Profiles</A><br>
-	Profiles are a kind of groups to which users can belong.
-	Profiles define the which actions that a user can perform.
-      <li>
-	<A href=user_matrix/>Manage the User Matrix</A><br>
-	Define which users can see or manage wich other users.
-      <li>
-	<A href=categories>Manage Categories</A><br>
-	Categories define the types and stati of business objects.
+	<A href=flush_cache>Flush Permission Cache</A><br>
+	Flush (cleanup) the permission cache. You may need to do this 
+	after you have changed the global permissions in Profiles
+	or User Matrix.
       <li>
 	<A href=/admin/>Manage the OpenACS Platform</A><br>
 	Here you find advance management and configuration options

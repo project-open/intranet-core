@@ -93,6 +93,20 @@ ad_proc -public im_view_user_permission {view_user_id current_user_id var_value 
 }
 
 
+ad_proc -public im_permission_flush {} {
+    Cleanup the "memoize" cache for permissions.
+    We have to call this routine after any change in the global
+    permission system such as /admin/permissions/user_matrix/ or
+    /admin/permissions/profiles/.
+} {
+    # Call the global "flusher" with the ".*" regexp which should
+    # match all entries.
+    util_memoize_flush_regexp "ad_permission.*"
+    util_memoize_flush_regexp "db_string.*"
+    util_memoize_flush_regexp "acs_user.*"
+}
+
+
 # Intranet permissions scheme - permissions are associated to groups.
 #
 ad_proc -public im_permission {user_id action} {
@@ -155,8 +169,7 @@ ad_proc -public im_permission {user_id action} {
 </pre>
 } {
     set subsite_id [ad_conn subsite_id]
-#    set result [util_memoize "ad_permission_p $subsite_id $action"]
-    set result [ad_permission_p $subsite_id $action]
+    set result [util_memoize "ad_permission_p $subsite_id $action"]
     ns_log Notice "im_permission($action)=$result"
     return $result
 }

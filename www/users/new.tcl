@@ -24,6 +24,9 @@ ad_page_contract {
     { user_id "" }
     { profile:multiple,optional }
     { return_url "/intranet/users/" }
+    { email ""}
+    { first_names ""}
+    { last_name ""}
 } -properties {
     context:onevalue
     export_vars:onevalue
@@ -219,6 +222,14 @@ ad_form -extend -name register -on_request {
 	if {!$editing_existing_user} {
 
 	    # New user: create from scratch
+	    set email [string trim $email]
+	    set similar_user [db_string similar_user "select count(*) from parties where lower(email) = lower(:email)"]
+	    
+	    if {$similar_user > 0} {
+		ad_return_complaint 1 "<li>There is already a user with this email in the database"
+		return
+	    }
+
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \

@@ -278,7 +278,8 @@ as
   end;
 
   procedure del (
-	rel_id	in im_biz_object_members.rel_id%TYPE
+	object_id	in integer,
+	user_id		in integer
   )
   is
   begin
