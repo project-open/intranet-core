@@ -114,39 +114,39 @@ create or replace function im_project__new (
         varchar, varchar, varchar, integer, integer, integer, integer
 ) returns integer as '
 DECLARE
-        project_id       alias for $1;
-        object_type     alias for $2;
-        creation_date   alias for $3;
-        creation_user   alias for $4;
-        creation_ip     alias for $5;
-        context_id      alias for $6;
+        p_project_id       alias for $1;
+        p_object_type     alias for $2;
+        p_creation_date   alias for $3;
+        p_creation_user   alias for $4;
+        p_creation_ip     alias for $5;
+        p_context_id      alias for $6;
 
-	project_name	alias for $7;
-	project_nr	alias for $8;
-	project_path	alias for $9;
-	parent_id	alias for $10;
-	company_id	alias for $11;
-	project_type_id	alias for $12;
-	project_status_id alias for $13;
+	p_project_name	alias for $7;
+	p_project_nr	alias for $8;
+	p_project_path	alias for $9;
+	p_parent_id	alias for $10;
+	p_company_id	alias for $11;
+	p_project_type_id	alias for $12;
+	p_project_status_id alias for $13;
 
 	v_project_id	  integer;
 BEGIN
-       v_project_id := acs_object.new (
-                project_id,
-                object_type,
-                creation_date,
-                creation_user,
-                creation_ip,
-                context_id
+       v_project_id := acs_object__new (
+                p_project_id,
+                p_object_type,
+                p_creation_date,
+                p_creation_user,
+                p_creation_ip,
+                p_context_id
         );
 	insert into im_projects (
 		project_id, project_name, project_nr, 
 		project_path, parent_id, company_id, project_type_id, 
 		project_status_id 
 	) values (
-		v_project_id, project_name, project_nr, 
-		project_path, parent_id, company_id, project_type_id, 
-		project_status_id
+		v_project_id, p_project_name, p_project_nr, 
+		p_project_path, p_parent_id, p_company_id, p_project_type_id, 
+		p_project_status_id
 	);
 	return v_project_id;
 end;' language 'plpgsql';
