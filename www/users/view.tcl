@@ -56,6 +56,8 @@ if {0 == $user_id} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+
 set subsite_id [ad_conn subsite_id]
 
 # Check the permissions 
@@ -354,13 +356,28 @@ set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id ret
 
 # Return a pretty member state (no normal user understands "banned"...)
 case $member_state {
-	"banned" { set user_state "deleted" }
+	"banned" { set user_state "inactive" }
 	"approved" { set user_state "active" }
 	default { set user_state $member_state }
 }
 
 append admin_links "
-          <li>Member state: $user_state (<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>activate</a>, <a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>delete</a>)
+          <li>Member state: $user_state "
+
+
+if {$current_user_is_admin_p} {
+    case $member_state {
+	"banned" { 
+	    append admin_links "(<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>activate</a>)"
+	}
+	"approved" { 
+	    append admin_links "(<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>deactivate</a>)"
+	}
+	default { set user_state $member_state }
+    }
+}
+
+append admin_links "
           <li><a href=$change_pwd_url>Update this user's password</a>
           <li><a href=become?user_id=$user_id_from_search>Become this user!</a>
 <!--

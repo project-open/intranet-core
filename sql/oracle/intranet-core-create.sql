@@ -310,7 +310,8 @@ BEGIN
     v_max := 1000;
 
     FOR v_i IN 0..v_max-1 LOOP
-	-- for convenience, select out the next start block to insert into a variable
+	-- for convenience, select out the next start block to 
+	-- insert into a variable
 	select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
 	into v_next_start_week 
 	from dual;
