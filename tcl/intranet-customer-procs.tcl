@@ -20,6 +20,22 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+
+# Frequently used Customer Stati
+ad_proc -public im_customer_status_inquiries {} { return 42 }
+ad_proc -public im_customer_status_qualifying {} { return 43 }
+ad_proc -public im_customer_status_quoting {} { return 44 }
+ad_proc -public im_customer_status_quote_out {} { return 45 }
+ad_proc -public im_customer_status_active {} { return 46 }
+ad_proc -public im_customer_status_declined {} { return 47 }
+ad_proc -public im_customer_status_inactive {} { return 48 }
+
+# Frequently used Customer Types
+ad_proc -public im_customer_type_internal {} { return 53 }
+
+
+
+
 ad_proc -public im_customer_link_tr {user_id customer_id customer_name title} {
     Returns a formatted HTML component TR - TD - text - /TD - /TR
     containing a link to a customer depending on the permissions
@@ -226,34 +242,73 @@ where
 
 
 ad_proc -public im_customer_select { select_name { default "" } { status "" } { exclude_status "" } } {
-    
+
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the customers in the system. If status is
     specified, we limit the select box to customers that match that
     status. If exclude status is provided, we limit to states that do not
-    match exclude_status (list of statuses to exclude).
+    match exclude_status (list of statuses to exclude).<br>
+
+    New feature 040527: The customers to be shown depend on the users
+    permissions: The system should show only the users customers, except
+    if the user has the "view_customers_all" permission.
 
 } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars customer_group_id [im_customer_group_id]
+    ns_set put $bind_vars user_id [ad_get_user_id]
+    ns_set put $bind_vars subsite_id [ad_conn subsite_id]
 
-    set sql "
+    set where_clause "	and c.customer_status_id != [im_customer_status_inactive]"
+
+    set perm_sql "
+        select
+                c.customer_id,
+                r.member_p as permission_member,
+                see_all.see_all as permission_all
+        from
+                im_customers c,
+                (       select  count(rel_id) as member_p,
+                                object_id_one as object_id
+                        from    acs_rels
+                        where   object_id_two = :user_id
+                        group by object_id_one
+                ) r,
+                (       select  count(*) as see_all
+                        from acs_object_party_privilege_map
+                        where   object_id=:subsite_id
+                                and party_id=:user_id
+                                and privilege='view_customers_all'
+                ) see_all
+        where
+                c.customer_id = r.object_id(+)
+                $where_clause
+"
+
+set sql "
 select
 	c.customer_id,
 	c.customer_name
 from
-	im_customers c
+        im_customers c,
+        ($perm_sql) perm
 where
-	c.customer_status_id!=48
+        c.customer_id = perm.customer_id
+        and (
+                perm.permission_member > 0
+        or
+                perm.permission_all > 0
+        )
 "
+
     if { ![empty_string_p $status] } {
 	ns_set put $bind_vars status $status
-	append sql " and customer_status_id=(select customer_status_id from im_customer_status where customer_status=:status)"
+	append sql " and c.customer_status_id=(select customer_status_id from im_customer_status where customer_status=:status)"
     }
 
     if { ![empty_string_p $exclude_status] } {
 	set exclude_string [im_append_list_to_ns_set $bind_vars customer_status_type $exclude_status]
-	append sql " and customer_status_id in (select customer_status_id 
+	append sql " and c.customer_status_id in (select customer_status_id 
                                                   from im_customer_status 
                                                  where customer_status not in ($exclude_string)) "
     }
