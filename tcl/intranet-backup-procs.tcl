@@ -1128,17 +1128,6 @@ ad_proc -public im_import_project_members { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_member_sql "
-DECLARE
-    v_rel_id	integer;
-BEGIN
-    v_rel_id := im_biz_object_member.new(
-	object_id	=> :object_id,
-	user_id		=> :user_id,
-	object_role_id	=> :object_role_id
-    );
-END;"
-
 	# -------------------------------------------------------
 	# Debugging
 	#
@@ -1156,7 +1145,7 @@ END;"
 
 	    set count [db_string count_members "select count(*) from acs_rels where object_id_one=:object_id and object_id_two=:user_id"]
 	    if {!$count} {
-		db_dml create_member $create_member_sql
+		set rel_id [db_exec_plsql create_member {}]
 	    }
 	
 	} err_msg] } {
@@ -2193,7 +2182,7 @@ ad_proc -public im_import_user_absences { filename } {
         #
 	set owner_id [im_import_get_user "$owner_email" ""]
 	set absence_type [im_import_get_category $absence_type "Intranet Absence Type" ""]
-
+	set sysdate [db_string "get sysdate" "select sysdate from dual"]
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
@@ -2203,7 +2192,7 @@ INSERT INTO im_user_absences (
         absence_id,
         start_date,
         end_date,
-        absence_type
+        absence_type_id
 ) values (
         :absence_id,
         :start_date,
@@ -2221,8 +2210,8 @@ SET
         description             = :description,
         contact_info	        = :contact_info,
         receive_email_p 	= :receive_email_p,
-        last_modified		= sysdate,
-        absence_type            = :absence_type
+        last_modified		= :sysdate,
+        absence_type_id         = :absence_type
 WHERE
         absence_id = :absence_id
 "
@@ -2491,13 +2480,6 @@ ad_proc -public im_import_trans_tasks { filename } {
 	#
 
 	set insert_sql "
-DECLARE
-    v_task_id	integer;
-BEGIN
-    select im_trans_tasks_seq.nextval
-    into v_task_id
-    from dual;
-
     INSERT INTO im_trans_tasks (
 	task_id,
 	project_id,
@@ -2521,7 +2503,7 @@ BEGIN
 	proof_id,	
 	other_id
     ) VALUES (
-	v_task_id,
+	:task_id,
 	:project_id,
 	:invoice_id,
 	:target_language_id,
@@ -2542,8 +2524,7 @@ BEGIN
 	:edit_id,
 	:proof_id,	
 	:other_id
-    );
-END;
+    )
 "
 
 	set update_sql "
@@ -2597,6 +2578,7 @@ task_name=$task_name
 	if { [catch {
 
 	    if {!$task_id} {
+		set task_id [db_nextval im_trans_tasks_seq]
 #		db_dml update $insert_sql
 	    }
 
@@ -2738,32 +2720,6 @@ ad_proc -public im_import_costs { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_cost_sql "
-DECLARE
-    v_cost_id        integer;
-BEGIN
-    v_cost_id := im_cost.new (
-        cost_name               => :cost_name,
-        customer_id             => :customer_id,
-        provider_id             => :provider_id,
-        cost_status_id          => :cost_status_id,
-        cost_type_id            => :cost_type_id,
-	creation_user		=> :creator_id,
-	creation_ip		=> '[ad_conn peeraddr]'
-    );
-END;"
-	set create_cost_sql "
-BEGIN
-    :1 := im_cost.new (
-        cost_name               => :cost_name,
-        customer_id             => :customer_id,
-        provider_id             => :provider_id,
-        cost_status_id          => :cost_status_id,
-        cost_type_id            => :cost_type_id,
-	creation_user		=> :creator_id,
-	creation_ip		=> '[ad_conn peeraddr]'
-    );
-END;"
 	set update_cost_sql "
 UPDATE im_costs
 SET
@@ -2811,10 +2767,7 @@ WHERE
 
 	    if {0 == $cost_id} {
 		# The invoice doesn't exist yet:
-		#db_dml invoice_cost $create_cost_sql
-		set cost_id [db_exec_plsql invoice_cost $create_cost_sql]
-		#ad_return_error "*****" "$cost_id"
-		#ad_script_abort
+		set cost_id [db_exec_plsql create_cost {}]
 	    }
 	    db_dml update_cost $update_cost_sql
 	    db_dml "update object info" "update acs_objects set
@@ -2828,8 +2781,6 @@ WHERE
 	    ns_log Warning "$err_msg"
 	    append err_return "<li>Error loading costs:<br>
 	    $csv_line<br><pre>\n$err_msg</pre>"
-	    ad_return_error "********" "$err_return"
-	    ad_script_abort
 	}
     }
     # update parent info
@@ -2848,7 +2799,7 @@ WHERE
 		set parent_id "0"
 	    }
 	    if { [catch {
-		db_dml "update parent" "update im_cost set parent_id = :parent_id
+		db_dml "update parent" "update im_costs set parent_id = :parent_id
                                 where cost_id = :c_id"
 	    } err_msg] } {
 		ns_log Warning "$err_msg"
@@ -2859,6 +2810,172 @@ WHERE
     }
     return $err_return
 }
+####
+ad_proc -public im_import_cost_centers { filename } {
+    Import the costs file
+} {
+    set parent_list_of_lists [list]
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_cost_centers"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	set note [ns_urldecode $note]
+	set description [ns_urldecode $description]
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	# continue here
+	
+	set manager_id [im_import_get_user $manager_email ""]
+       
+	set cost_center_id [db_string cost_center "select cost_center_id \
+                           from im_cost_centers \
+                           where cost_center_name = :cost_center_label" -default ""]
+    
+	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
+	set cost_center_status_id [im_import_get_category $cost_status "Intranet Cost Center Status" 0]
+	set cost_center_type_id [im_import_get_category $cost_center_type "Intranet Cost Center Type" ""]
+	
+	####################
+	#
+	# 20041014 avila@digiteix.com
+	# ------------------
+	# in the first step insert null in parent field
+	# update parent info when all costs are in the DB
+
+	set parent_id ""
+	set creator_id ""
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set update_cost_centers_sql "
+UPDATE im_cost_centers
+SET
+        cost_center_name     = :cost_center_name,
+        cost_center_label    = :cost_center_label,
+        cost_center_code     = :cost_center_code,
+        cost_center_status_id       = :cost_center_status_id,
+        cost_center_type_id         = :cost_center_type_id,
+        department_p      = :department_p,
+        parent_id            = :parent_id,
+        manager_id      = :manager_id,
+        note          = :note
+WHERE
+	cost_center_id = :cost_center_id"
+
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "cost_center_id	$cost_center_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+	if { [catch {
+
+	    if {0 == $cost_center_id} {
+		# The cost center doesn't exist yet:
+		set cost_center_id [db_exec_plsql create_cost_center {}]
+	    }
+	    db_dml update_cost_center $update_cost_center_sql
+	    set parent_element [list $cost_center_id $parent_label]
+	    lappend parent_list_of_lists $parent_element
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading cost centers:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	    
+	}
+    }
+    # update parent info
+    
+    foreach parent_l $parent_list_of_lists {
+	set c_center_id [lindex $parent_l 0]
+	set parent_cost_center_label [lindex $parent_l 1]
+	# get parent_cost_center_id
+	if {"" != $parent_cost_center_label} {
+	    if {![db_0or1row "get parent_cost_center_id" "selenct cost_center_id as parent_id \
+                          from im_cost_centers \
+                          where cost_center_label = :parent_cost_center_label"]} {
+		set parent_id "0"
+	    }
+	    if { [catch {
+		db_dml "update parent" "update im_cost_centers set parent_id = :parent_id
+                                where cost_center_id = :c_center_id"
+	    } err_msg] } {
+		ns_log Warning "$err_msg"
+		append err_return "<li>Error updating parent cost centers:<br>
+	    <br><pre>\n$err_msg</pre>"
+	    }
+	}
+    }
+    return $err_return
+}
+
 
 
 # -------------------------------------------------------
@@ -3272,14 +3389,6 @@ ad_proc -public im_import_project_invoice_map { filename } {
 	# Prepare the DB statements
 	#
 	
-	set create_project_invoice_map_sql "
- begin
-       :1 := acs_rel.new(
-                object_id_one => :project_id,
-                object_id_two => :invoice_id
-        );
-end;"
-
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
 	#
@@ -3293,7 +3402,16 @@ end;"
 
 	    if {0 == $exists} {
 		# The invoice doesn't exist yet:
-		set rel [db_exec_plsql "create rel" $create_project_invoice_map_sql]
+		set create_rel_sql "select acs_rel__new(
+		null,		-- rel_id
+		'relationship', -- rel_type
+                :project_id,	-- object_id_one
+                :invoice_id,	-- object_id_two
+		null,		-- context_id
+		null,		-- creation_user
+		null		-- creation_ip
+           );"
+		set rel [db_exec_plsql create_rel $create_rel_sql]
 	    }
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
@@ -3391,7 +3509,7 @@ ad_proc -public im_import_payments { filename } {
 
 	set payment_status_id [im_import_get_category $payment_status "Intranet Payment Status" ""]
 	set payment_type_id [im_import_get_category $payment_type "Intranet Payment Type" ""]
-
+	set sysdate [db_string "get_sysdate" "select sysdate from dual"]
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
@@ -3414,7 +3532,7 @@ INSERT INTO im_payments (
 	:provider_id,
 	:received_date,
 	:payment_type_id,
-	sysdate,
+	:sysdate,
 	:user_id,
 	'[ad_conn peeraddr]'
 )"
@@ -3433,7 +3551,7 @@ SET
         amount                  = :amount,
         currency                = :currency,
         note                    = :note,
-        last_modified           = sysdate,
+        last_modified           = :sysdate,
         last_modifying_user     = :user_id,
         modified_ip_address     = '[ad_conn peeraddr]'
 WHERE
@@ -3744,7 +3862,7 @@ INSERT INTO im_target_languages (
 # Prices
 # -------------------------------------------------------
 
-ad_proc -public im_import_prices { filename } {
+ad_proc -public im_import_trans_prices { filename } {
     Import the prices file
 } {
 

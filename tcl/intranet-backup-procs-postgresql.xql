@@ -135,7 +135,7 @@
        );
     </querytext>
   </fullquery>
-    <fullquery name="im_import_company_members.create_member">
+  <fullquery name="im_import_company_members.create_member">
     <querytext>
     select im_biz_object_member__new(
 	null,		-- rel_id
@@ -146,6 +146,88 @@
 	null,		-- creation_user
 	null		-- creation_ip
        );
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_project_members.create_member">
+    <querytext>
+    select im_biz_object_member__new(
+	null,		-- rel_id
+	'im_biz_object_member', -- rel_type
+	:object_id,	-- object_id
+	:user_id,	-- user_id
+	:object_role_id, -- object_role_id
+	null,		-- creation_user
+	null		-- creation_ip
+       );
+    </querytext>
+  </fullquery>
+    <fullquery name="im_import_costs.create_cost">
+    <querytext>
+      select im_cost__new (
+	null,			-- cost_id
+	'im_cost',		-- cost_type
+	now(),			-- creation_date
+	:creator_id,		-- creation_user
+	'[ad_conn peeraddr]',	-- creation_ip
+	null,			-- context_id
+
+        :cost_name,		-- cost_name
+	null,			-- parent_id
+	null,			-- project_id
+        :customer_id,		-- customer_id
+        :provider_id,		-- provider_id
+	null,			-- investment_id
+
+        :cost_status_id,	-- cost_status_id
+        :cost_type_id,		-- cost_type_id
+	null,			-- template_id
+	
+	now(),			-- effective_date
+	30,			-- payment_days
+	null,			-- amount
+	'EUR',			-- currency
+	0,			-- vat
+	0,			-- tax
+
+	'f',			-- variable_cost_p
+	'f',			-- needs_redistribution_p
+	'f',			-- redistributed_p
+	'f',			-- planning_p
+	null,			-- planning_type_id
+
+	null,			-- note
+	null			-- description
+       );
+    </querytext>
+  </fullquery>
+  </fullquery>
+    <fullquery name="im_import_cost_centers.create_cost_center">
+    <querytext>
+      select im_cost_center__new (
+	null,			-- cost_center_id
+	'im_cost_center',	-- cost_type
+	now(),			-- creation_date
+	:creator_id,		-- creation_user
+	'[ad_conn peeraddr]',	-- creation_ip
+	null,			-- context_id
+
+        :cost_center_name,	-- cost_center_name
+	:cost_center_label,	-- cost_center_label
+	:cost_center_code,	-- cost_center_code
+	:cost_center_type_id,	-- cost_center_type_id
+	:cost_center_status_id,	-- cost_center_status_id
+	null,		-- parent_id
+	null,			-- manager_id
+        't',		-- department_p
+        :provider_id,		-- provider_id
+	null,			-- description
+	null			-- note
+       );
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_project_invoice_map.create_relation">
+    <querytext>
+           
     </querytext>
   </fullquery>
 </queryset>

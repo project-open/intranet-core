@@ -116,4 +116,54 @@
     END;
     </querytext>
   </fullquery>
+  <fullquery name="im_import_project_members.create_member">
+    <querytext>
+     BEGIN
+    :1 := im_biz_object_member.new(
+	object_id	=> :object_id,
+	user_id		=> :user_id,
+	object_role_id	=> :object_role_id
+       );
+    END;
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_costs.create_cost">
+    <querytext>
+     BEGIN
+      :1 := im_cost.new (
+        cost_name               => :cost_name,
+        customer_id             => :customer_id,
+        provider_id             => :provider_id,
+        cost_status_id          => :cost_status_id,
+        cost_type_id            => :cost_type_id,
+	creation_user		=> :creator_id,
+	creation_ip		=> '[ad_conn peeraddr]'
+       );
+    END;
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_cost_centers.create_cost_center">
+    <querytext>
+     BEGIN
+      :1 := im_cost_center.new (
+        cost_center_name               => :cost_center_name,
+        cost_center_label             => :cost_center_label,
+        cost_center_code             => :cost_center_code,
+        type_id             => :cost_center_type_id,
+        status_id          => :cost_center_status_id,
+        parent_id            => :parent_id
+       );
+    END;
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_project_invoice_map.create_rel">
+    <querytext>
+	 begin
+           :1 := acs_rel.new(
+                object_id_one => :project_id,
+                object_id_two => :invoice_id
+           );
+       end;
+    </querytext>
+  </fullquery>
 </queryset>
