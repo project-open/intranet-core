@@ -238,8 +238,8 @@ where
         ur.object_id_one = :company_id
 	and ur.object_id_two = gr.object_id_two
 	and (
-		gr.object_id_one = :companies_group_id
-		or gr.object_id_one = :companies_group_id
+		gr.object_id_one = :customer_group_id
+		or gr.object_id_one = :freelance_group_id
 	)
 "
     return [im_selection_to_select_box $bind_vars company_contact_select $query $select_name $default]
