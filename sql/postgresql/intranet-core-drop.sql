@@ -214,6 +214,32 @@ BEGIN
 
 end;' language 'plpgsql';
 
+
+
+
+select acs_privilege__remove_child('admin', 'view');
+select acs_privilege__remove_child('admin', 'add_companies');
+select acs_privilege__remove_child('admin', 'view_companies');
+select acs_privilege__remove_child('admin', 'view_companies_all');
+select acs_privilege__remove_child('admin', 'view_company_contacts');
+select acs_privilege__remove_child('admin', 'view_company_details');
+select acs_privilege__remove_child('admin', 'view_offices');
+select acs_privilege__remove_child('admin', 'view_offices_all');
+select acs_privilege__remove_child('admin', 'add_offices');
+select acs_privilege__remove_child('admin', 'view_internal_offices');
+select acs_privilege__remove_child('admin', 'edit_internal_offices');
+select acs_privilege__remove_child('admin', 'add_projects');
+select acs_privilege__remove_child('admin', 'view_project_members');
+select acs_privilege__remove_child('admin', 'view_projects_all');
+select acs_privilege__remove_child('admin', 'view_projects_history');
+select acs_privilege__remove_child('admin', 'add_users');
+select acs_privilege__remove_child('admin', 'view_users');
+select acs_privilege__remove_child('admin', 'view_user_regs');
+select acs_privilege__remove_child('admin', 'search_intranet');
+select acs_privilege__remove_child('admin', 'admin_categories');
+select acs_privilege__remove_child('admin', 'view_topics');
+
+
 select inline_revoke_permission ('add_companies');
 select inline_revoke_permission ('view_companies');
 select inline_revoke_permission ('view_companies_all');
@@ -263,7 +289,6 @@ select acs_privilege__drop_privilege('view_user_regs');
 select acs_privilege__drop_privilege('admin_categories');
 select acs_privilege__drop_privilege('view_topics');
 
-select acs_privilege__remove_child('admin', 'view');
 select acs_privilege__drop_privilege('view');
 
 
