@@ -268,15 +268,36 @@ ad_proc -public im_opt_val { var_name } {
     Acts like a "$" to evaluate a variable, but
     returns "" if the variable is not defined,
     instead of an error.<BR>
+    If no value is found, im_opt_val checks wether there is
+    a HTTP variables with the same name, either in the URL or 
+    as part of a POST.<br>
     This function is useful for passing optional
     variables to components, if the component can't
     be sure that the variable exists in the callers
     context.
 } {
+    # Check if the variable exists in the parent's caller environment
     upvar $var_name var
     if [exists_and_not_null var] { 
 	return $var
     }
+    
+    # get the list of all HTTP variables 
+    set form_vars [ns_conn form]
+    set idx [ns_set find $form_vars $var_name]
+    if {$idx >= 0} {
+    	set value [ns_set get $form_vars $var_name]
+    	ns_log Notice "im_opt_val: found variable='$var_name' with value='$value' in HTTL header"
+    	return $value
+    }
+ 
+#    set debug ""
+#    foreach var [ad_ns_set_keys $form_vars] {
+#        set value [ns_set get $form_vars $var]
+#        append debug "form:	$var	= $value\n"
+#    }
+#    ad_return_complaint 1 "<pre>$debug</pre>"
+    
     return ""
 } 
 
