@@ -43,15 +43,16 @@ select
 	im_email_from_user_id(u.user_id) as email
 from
 	users u,
-	group_member_map m1,
-	group_member_map m2
+	acs_rels r,
+	group_member_map m
 where
-	u.user_id=m1.member_id
-	and u.user_id=m2.member_id
-	and m1.group_id=:customer_id
-	and m2.group_id=[im_customer_group_id]
+	r.object_id_one = :customer_id
+	and r.object_id_two = u.user_id
+	and m.member_id = u.user_id
+	and m.group_id=[im_customer_group_id]
 order by lower(name)
 "
+
 
 set contact_info ""
 db_foreach address_book_info $sql  {
