@@ -84,10 +84,6 @@ drop view im_company_status;
 drop view im_company_types;
 drop view im_partner_status;
 drop view im_partner_types;
-drop view im_prior_experiences;
-drop view im_hiring_sources;
-drop view im_job_titles;
-drop view im_departments;
 drop view im_annual_revenue;
 
 
@@ -204,13 +200,23 @@ begin
     acs_privilege.drop_privilege('view_projects_history');
     acs_privilege.drop_privilege('add_users');
     acs_privilege.drop_privilege('view_users');
+    acs_privilege.drop_privilege('view_user_regs');
     acs_privilege.drop_privilege('search_intranet');
+    acs_privilege.drop_privilege('admin_categories');
+    acs_privilege.drop_privilege('view_topics');
+    acs_privilege.drop_privilege('view_internal_offices');
+    acs_privilege.drop_privilege('edit_internal_offices');
+    acs_privilege.drop_privilege('view_offices');
+    acs_privilege.drop_privilege('view_offices_all');
+    acs_privilege.drop_privilege('add_offices');
+
 end;
 /
 commit;
 
 
 begin
+     acs_privilege.remove_child('admin', 'view');
     acs_privilege.drop_privilege('view');
 end;
 /
@@ -244,7 +250,6 @@ drop table im_views;
 -------------------------------------------------------
 -- Helper functions
 --
-drop function im_create_administration_group;
 drop function im_category_from_id;
 drop function ad_group_member_p;
 drop function im_proj_url_from_type;
@@ -340,8 +345,6 @@ BEGIN
 END;
 /
 
-drop table im_member_rels;
-drop package im_member_rel;
 
 drop table im_biz_object_urls;
 drop table im_biz_object_role_map;
@@ -350,7 +353,6 @@ drop package im_biz_object;
 drop table im_biz_objects;
 delete from acs_objects where object_type='im_biz_object';
 
-drop table im_biz_object_roles;
 
 BEGIN
  acs_object_type.drop_type ('im_biz_object');

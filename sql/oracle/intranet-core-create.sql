@@ -217,16 +217,12 @@ show errors;
 -- Populate im_start_months. Start with im_start_weeks
 -- dates and check for the beginning of a new month.
 BEGIN
-    for row in (
-	select unique concat(to_char(start_block, 'YYYY-MM'),'-01') as first_day_in_month
-        from im_start_weeks
-     ) loop
+    for row in (select unique concat(to_char(start_block, 'YYYY-MM'),'-01') as first_day_in_month
+		from im_start_weeks) loop
 
-	insert into im_start_months (
-		start_block
-	) values (
-		to_date(row.first_day_in_month)
-	);
+	insert into im_start_months 
+	       (start_block) 
+	       values (	to_date(row.first_day_in_month, 'YYYY-MM-DD')	);
 
      end loop;
 END;

@@ -257,11 +257,11 @@ extra_select, extra_where, sort_order, visible_for) values (201,10,NULL,'Email',
 -- extra_select, extra_where, sort_order, visible_for) values (202,10,NULL,'Status',
 -- '$status','','',4,'');
 
-insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (203,10,NULL,'MSM',
-'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\">
-<IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\"
-width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'');
+-- insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+-- extra_select, extra_where, sort_order, visible_for) values (203,10,NULL,'MSM',
+-- '"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\">
+-- <IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\"
+-- width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (204,10,NULL,'Work Phone',

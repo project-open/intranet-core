@@ -18,6 +18,7 @@ ad_page_contract {
     of another group).
 
     @author Frank Bergmann (frank.bergmann@project-open.com)
+    @author Juanjo Ruiz (juanjoruizx@yahoo.es)
 } {
     horiz_group_id:integer
     object_id:integer
@@ -34,28 +35,28 @@ if {!$current_user_is_admin_p} {
 
 switch $action {
     add_viewable {
-	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'view') from dual"
+	im_exec_dml grant_viewable "im_grant_permission($object_id,$horiz_group_id,'view')"
     }
     add_readable {
-	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'read') from dual"
+        im_exec_dml grant_readable "im_grant_permission($object_id,$horiz_group_id,'read')"
     }
     add_writable {
-	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'write') from dual"
+	im_exec_dml grant_writable "im_grant_permission($object_id,$horiz_group_id,'write')"
     }
     add_administratable {
-	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'admin') from dual"
+	im_exec_dml grant_administratable "im_grant_permission($object_id,$horiz_group_id,'admin')"
     }
     remove_viewable {
-	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'view') from dual"
+	im_exec_dml revoke_viewable "im_revoke_permission($object_id,$horiz_group_id,'view')"
     }
     remove_readable {
-	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'read') from dual"
+        im_exec_dml revoke_readable "im_revoke_permission($object_id,$horiz_group_id,'read')"
     }
     remove_writable {
-	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'write') from dual"
+	im_exec_dml revoke_writable "im_revoke_permission($object_id,$horiz_group_id,'write')"
     }
     remove_administratable {
-	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'admin') from dual"
+	im_exec_dml revoke_administratable "im_revoke_permission($object_id,$horiz_group_id,'admin')"
     }
     default {
 	ad_return_complaint 1 "Unknown action: '$action'"

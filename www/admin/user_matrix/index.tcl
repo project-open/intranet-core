@@ -34,7 +34,7 @@ set this_url [ad_conn url]
 set subsite_id [ad_conn subsite_id]
 
 set group_url "/admin/groups/one"
-set toggle_url "/intranet/admin/user_matrix/toggle"
+set toggle_url "/intranet/admin/toggle"
 
 set group_list_sql {
 select DISTINCT
@@ -93,27 +93,27 @@ db_foreach group_matrix $main_sql {
 
     foreach horiz_group_id $group_ids {
 	set read_p [expr "\$p${horiz_group_id}_read_p"]
-	set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=add_readable>r</A>\n"
+	set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=add_readable&return_url=user_matrix/index>r</A>\n"
 	if {$read_p == "t"} { 
-	    set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=remove_readable><b>R</b></A>\n"
+	    set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=remove_readable&return_url=user_matrix/index><b>R</b></A>\n"
 	}
 
 	set view_p [expr "\$p${horiz_group_id}_view_p"]
-	set view "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=add_viewable>v</A>\n"
+	set view "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=add_viewable&return_url=user_matrix/index>v</A>\n"
 	if {$view_p == "t"} { 
-	    set view "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=remove_viewable><b>V</b></A>\n"
+	    set view "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=remove_viewable&return_url=user_matrix/index><b>V</b></A>\n"
 	}
 
 	set write_p [expr "\$p${horiz_group_id}_write_p"]
-	set write "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=add_writeable>w</A>\n"
+	set write "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=add_writable&return_url=user_matrix/index>w</A>\n"
 	if {$write_p == "t"} { 
-	    set write "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=remove_writeable><b>W</b></A>\n"
+	    set write "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=remove_writable&return_url=user_matrix/index><b>W</b></A>\n"
 	}
 
 	set admin_p [expr "\$p${horiz_group_id}_admin_p"]
-	set admin "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=add_administratable>a</A>\n"
+	set admin "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=add_administratable&return_url=user_matrix/index>a</A>\n"
 	if {$admin_p == "t"} { 
-	    set admin "<A href=$toggle_url?horiz_group_id=$horiz_group_id&vert_group_id=$group_id&action=remove_administratable><B>A</b></A>\n"
+	    set admin "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$group_id&action=remove_administratable&return_url=user_matrix/index><B>A</b></A>\n"
 	}
 
 	append table "

@@ -38,7 +38,7 @@ set context_bar [ad_context_bar $page_title]
 set context ""
 
 set menu_url "/intranet/admin/menus/new"
-set toggle_url "/intranet/admin/menus/toggle"
+set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
 
 set bgcolor(0) " class=rowodd"
@@ -112,7 +112,7 @@ if {$altleast_one_new_menu} {
 
     # Prepare the top menu
     set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
-    db_dml update_top_menu "update im_menus set tree_sortkey='' where menu_id = :start_menu_id"
+    db_dml update_top_menu "update im_menus set tree_sortkey='.' where menu_id = :start_menu_id"
 
     set maxlevel 3
     set chars "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
@@ -186,7 +186,7 @@ db_foreach menus $main_sql {
 
     append table "
   <td colspan=$colspan_level>
-    <A href=$menu_url?menu_id=$menu_id>$name</A><br>$label
+    <A href=$menu_url?menu_id=$menu_id&return_url=$return_url>$name</A><br>$label
   </td>
   <td>$package_name</td>
 "

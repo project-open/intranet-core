@@ -28,6 +28,7 @@
         , office_type_id => :office_type_id
         , office_status_id => :office_status_id
 	, company_id => :company_id
+	);
     end;
     </querytext>
   </fullquery>

@@ -167,6 +167,16 @@ where	office_name = :office_name
 
 	# -----------------------------------------------------------
 
+	if { [empty_string_p $creation_date] } {
+	    set creation_date [db_string get_sysdate "select sysdate from dual"]
+        }
+        if { [empty_string_p $creation_user] } {
+            set creation_user [auth::get_user_id]
+        }
+        if { [empty_string_p $creation_ip] } {
+            set creation_ip [ns_conn peeraddr]
+        }
+
 	set office_id [db_exec_plsql create_new_office {}]
 	return $office_id
     }

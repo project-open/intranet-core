@@ -178,6 +178,16 @@ where	company_name = :company_name
 
 	# -----------------------------------------------------------
 
+        if { [empty_string_p $creation_date] } {
+            set creation_date [db_string get_sysdate "select sysdate from dual"]
+        }
+        if { [empty_string_p $creation_user] } {
+            set creation_user [auth::get_user_id]
+        }
+        if { [empty_string_p $creation_ip] } {
+            set creation_ip [ns_conn peeraddr]
+        }
+
 	set company_id [db_exec_plsql create_new_company {}]
 	return $company_id
     }

@@ -211,6 +211,17 @@ begin
 	project_status_id => :project_status_id
     );
     end;"
+
+        if { [empty_string_p $creation_date] } {
+	    set creation_date [db_string get_sysdate "select sysdate from dual" -default 0]
+        }
+        if { [empty_string_p $creation_user] } {
+            set creation_user [auth::get_user_id]
+        }
+        if { [empty_string_p $creation_ip] } {
+            set creation_ip [ns_conn peeraddr]
+        }
+
         set project_id [db_exec_plsql create_new_project $sql]
         return $project_id
     }

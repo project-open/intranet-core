@@ -269,13 +269,13 @@ set company_members [im_group_member_component $company_id $user_id $admin $retu
 
 set enable_project_estimates 0
 set also_add_to_group [im_customer_group_id]
-set company_members [im_group_member_component $company_id $user_id $admin $return_url "" [im_employee_group_id] $also_add_to_group]
+set company_clients [im_group_member_component $company_id $user_id $admin $return_url "" [im_employee_group_id] $also_add_to_group]
 
 
 
 set projects_html [im_table_with_title "Projects" $projects_html]
 set company_members_html [im_table_with_title "Employees" $company_members]
-set company_clients_html [im_table_with_title "Client Contacts" $company_members]
+set company_clients_html [im_table_with_title "Client Contacts" $company_clients]
 
 
 

@@ -19,15 +19,15 @@
 begin
     :1 := im_company.new(
         object_type     => 'im_company',
-        company_name    => '$company_name',
-        company_path   => '$company_path',
-        main_office_id  => $main_office_id
-        creation_date => '$creation_date'
-        creation_user => '$creation_user'
-        creation_ip => '$creation_ip'
-        context_id => $context_id
-        company_type_id => $company_type_id
-        company_status_id => $company_status_id
+        company_name    => :company_name,
+        company_path   => :company_path,
+        main_office_id  => :main_office_id,
+        creation_date => :creation_date,
+        creation_user => :creation_user,
+        creation_ip => :creation_ip,
+        context_id => :context_id,
+        company_type_id => :company_type_id,
+        company_status_id => :company_status_id
      );
 end;
 

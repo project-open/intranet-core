@@ -87,7 +87,7 @@ switch [string tolower $user_group_name] {
 	set user_group_id 0 
 	set menu_select_label "users_all"
     }
-    "Unregistered" { set user_group_id -1 }
+    "unregistered" { set user_group_id -1 }
     default {
 	set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 	set menu_select_label "users_[string tolower $user_group_name]"

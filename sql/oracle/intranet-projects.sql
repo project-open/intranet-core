@@ -55,7 +55,6 @@ create table im_projects (
 				references im_projects,
         tree_sortkey		raw(240),
         max_child_sortkey	raw(100),
-
 	company_id		integer not null
 				constraint im_projects_company_fk 
 				references im_companies,
@@ -106,7 +105,7 @@ alter table im_projects add
 -- This is the sortkey code
 --
 create or replace trigger im_project_insert_tr
-before insert on im_forum_topics
+before insert on im_projects
 for each row
 declare
     v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
@@ -115,11 +114,11 @@ begin
 
     if :new.parent_id is null
     then
-        new.tree_sortkey := int_to_tree_key(new.project_id+1000);
+        :new.tree_sortkey := lpad(tree.int_to_hex(:new.project_id + 1000), 6, '0');
 
     else
 
-        select tree_sortkey, tree_increment_key(max_child_sortkey)
+        select tree_sortkey, tree.increment_key(max_child_sortkey)
         into v_parent_sortkey, v_max_child_sortkey
         from im_projects
         where project_id = :new.parent_id
@@ -132,7 +131,7 @@ begin
 	:new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
     end if;
 
-    new.max_child_sortkey := null;
+    :new.max_child_sortkey := null;
 end im_project_insert_tr;
 /
 show errors
@@ -141,44 +140,38 @@ create or replace trigger im_projects_update_tr
 before update on im_projects
 for each row
 declare
-        v_parent_sk     varbit default null;
-        v_max_child_sortkey     varbit;
+        v_parent_sk		im_projects.tree_sortkey%TYPE;
+        v_max_child_sortkey     im_projects.max_child_sortkey%TYPE;
         v_old_parent_length     integer;
 begin
-        if new.project_id = old.project_id
-           and ((new.parent_id = old.parent_id)
-                or (new.parent_id is null
-                    and old.parent_id is null)) then
+	if :new.project_id != :old.project_id 
+	   or ( (:new.parent_id != :old.parent_id) 
+	        and 
+		(:new.parent_id is not null or :old.parent_id is not null) ) then
+	   -- the tree sortkey is going to change so get the new one and update it and all its
+	   -- children to have the new prefix...
+	   v_old_parent_length := length(:new.tree_sortkey) + 1;
 
-           return new;
+	   if :new.parent_id is null then
+	        v_parent_sk := lpad(tree.int_to_hex(:new.project_id + 1000), 6, '0');
+	   else
+		SELECT tree_sortkey, tree.increment_key(max_child_sortkey)
+		INTO v_parent_sk, v_max_child_sortkey
+		FROM im_projects
+		WHERE project_id = :new.parent_id
+		FOR UPDATE;
 
-        end if;
-        -- the tree sortkey is going to change so get the new one and update it and all its
-        -- children to have the new prefix...
-        v_old_parent_length := length(new.tree_sortkey) + 1;
+		UPDATE im_projects
+		SET max_child_sortkey = v_max_child_sortkey
+		WHERE project_id = :new.parent_id;
 
-        if new.parent_id is null then
-            v_parent_sk := int_to_tree_key(new.project_id+1000);
-        else
-            SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
-            INTO v_parent_sk, v_max_child_sortkey
-            FROM im_projects
-            WHERE project_id = new.parent_id
-            FOR UPDATE;
+		v_parent_sk := v_parent_sk || v_max_child_sortkey;
+	   end if;
 
-            UPDATE im_projects
-            SET max_child_sortkey = v_max_child_sortkey
-            WHERE project_id = new.parent_id;
-
-            v_parent_sk := v_parent_sk || v_max_child_sortkey;
-        end if;
-
-        UPDATE im_projects
-        SET tree_sortkey = v_parent_sk || substring(tree_sortkey, v_old_parent_length)
-        WHERE tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
-
-        return new;
-
+	   UPDATE im_projects
+	   SET tree_sortkey = v_parent_sk || substr(tree_sortkey, v_old_parent_length)
+	   WHERE tree_sortkey between :new.tree_sortkey and tree.right(:new.tree_sortkey);
+	end if;
 end im_projects_update_tr;
 /
 show errors
