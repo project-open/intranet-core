@@ -30,13 +30,13 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
-set context_bar [ad_context_bar [list ./ "Clients"] "One company"]
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Clients]"] "[_ intranet-core.One_company]"]
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
 if {0 == $company_id} {set company_id $object_id}
 if {0 == $company_id} {
-    ad_return_complaint 1 "<li>You need to specify a company_id"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_specify_a_1]"
     return
 }
 
@@ -46,8 +46,8 @@ im_company_permissions $user_id $company_id view read write admin
 set see_details $read
 
 if {!$read} {
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You don't have sufficient privileges to see this page."
+    ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+    <li>[_ intranet-core.lt_You_dont_have_suffici_2]"
 }
 
 db_1row company_get_info "
@@ -95,34 +95,34 @@ append left_column "
 <table border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>
-      Client Details
+      [_ intranet-core.Client_Details]
     </td>
   </tr>
-  <tr class=rowodd><td>Name</td><td>$company_name</td></tr>
-  <tr class=roweven><td>Path</td><td>$company_path</td></tr>
-  <tr class=rowodd><td>Status</td><td>$company_status</td></tr>"
+  <tr class=rowodd><td>[_ intranet-core.Name]</td><td>$company_name</td></tr>
+  <tr class=roweven><td>[_ intranet-core.Path]</td><td>$company_path</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Status]</td><td>$company_status</td></tr>"
 
 if {$see_details} {
     append left_column "
-  <tr class=roweven><td>Client Type</td><td>$company_type</td></tr>
-  <tr class=rowodd><td>Key Account</td><td><a href=[im_url_stub]/users/view?user_id=$manager_id>$manager</a></td></tr>
-  <tr class=rowodd><td>Referral source</td><td>$referral_source</td></tr>
-  <tr class=roweven><td>Billable?</td><td> [util_PrettyBoolean $billable_p]</td></tr>
-  <tr class=rowodd><td>Phone</td><td>$phone</td></tr>
-  <tr class=roweven><td>Fax</td><td>$fax</td></tr>
-  <tr class=rowodd><td>Address1</td><td>$address_line1</td></tr>
-  <tr class=roweven><td>Address2</td><td>$address_line2</td></tr>
-  <tr class=rowodd><td>City</td><td>$address_city</td></tr>
-  <tr class=roweven><td>Postal Code</td><td>$address_postal_code</td></tr>
-  <tr class=rowodd><td>Country</td><td>$country_name</td></tr>\n"
+  <tr class=roweven><td>[_ intranet-core.Client_Type]</td><td>$company_type</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Key_Account]</td><td><a href=[im_url_stub]/users/view?user_id=$manager_id>$manager</a></td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Referral_source]</td><td>$referral_source</td></tr>
+  <tr class=roweven><td>[_ intranet-core.Billable]</td><td> [util_PrettyBoolean $billable_p]</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Phone]</td><td>$phone</td></tr>
+  <tr class=roweven><td>[_ intranet-core.Fax]</td><td>$fax</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Address1]</td><td>$address_line1</td></tr>
+  <tr class=roweven><td>[_ intranet-core.Address2]</td><td>$address_line2</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.City]</td><td>$address_city</td></tr>
+  <tr class=roweven><td>[_ intranet-core.Postal_Code]</td><td>$address_postal_code</td></tr>
+  <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>\n"
     if {![empty_string_p $site_concept]} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { set site_concept "http://$site_concept" }
 	append left_column "
-  <tr class=rowodd><td>Web Site</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
+  <tr class=rowodd><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
     }
     append left_column "
-  <tr class=rowodd><td>VAT Number</td><td>$vat_number</td></tr>"
+  <tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>"
 
 # ------------------------------------------------------
 # Primary Contact
@@ -135,7 +135,7 @@ if {$see_details} {
 	if { $admin } {
 	    set primary_contact_text "<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>Add primary contact</a>\n"
 	} else {
-	    set primary_contact_text "<i>none</i>"
+	    set primary_contact_text "<i>[_ intranet-core.none]</i>"
 	}
 
     } else {
@@ -144,11 +144,11 @@ if {$see_details} {
 
 	if { $admin } {
 	    append primary_contact_text "
-	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the primary contact"]</a>)\n"
+	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "[_ intranet-core.lt_Change_the_primary_co]"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "[_ intranet-core.lt_Delete_the_primary_co]"]</a>)\n"
 	}
     }
 
-    append left_column "<tr class=roweven><td>Primary contact</td><td>$primary_contact_text</td></tr>"
+    append left_column "<tr class=roweven><td>[_ intranet-core.Primary_contact]</td><td>$primary_contact_text</td></tr>"
 
 
 # ------------------------------------------------------
@@ -160,33 +160,33 @@ if {$see_details} {
     if { [empty_string_p $accounting_contact_id] } {
 	
 	if { $admin } {
-	    set accounting_contact_text "<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>Add accounting contact</a>\n"
+	    set accounting_contact_text "<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[_ intranet-core.lt_Add_accounting_contac]</a>\n"
 	} else {
-	    set accounting_contact_text "<i>none</i>"
+	    set accounting_contact_text "<i>[_ intranet-core.none]</i>"
 	}
 
     } else {
 
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
 	if { $admin } {
-	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the accounting contact"]</a>)\n"
+	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "[_ intranet-core.lt_Change_the_accounting]"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "[_ intranet-core.lt_Delete_the_accounting]"]</a>)\n"
 	}
     }
 
-    append left_column "<tr class=roweven><td>Accounting contact</td><td>$accounting_contact_text</td></tr>"
+    append left_column "<tr class=roweven><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
 
 
 # ------------------------------------------------------
 # Continuation ...
 # ------------------------------------------------------
 
-    append left_column "<tr class=rowodd><td>Start Date</td><td>$start_date</td></tr>\n"
+    append left_column "<tr class=rowodd><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
     #if { ![empty_string_p $contract_value] } {
-    #   append left_column "<tr><td>Contract Value</td><td>\$[util_commify_number $contract_value] K</td></tr>\n"
+    #   append left_column "<tr><td>[_ intranet-core.Contract_Value]</td><td>\$[util_commify_number $contract_value] K</td></tr>\n"
     #}
     if { ![empty_string_p $note] } {
-	append left_column "<tr><td>Notes</td><td><font size=-1>$note</font>\n</td></tr>\n"
+	append left_column "<tr><td>[_ intranet-core.Notes]</td><td><font size=-1>$note</font>\n</td></tr>\n"
     }
 }
 
@@ -195,7 +195,7 @@ if {$admin} {
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
 	[export_form_vars company_id]
-	<input type=submit value='Edit'>
+	<input type=submit value='[_ intranet-core.Edit]'>
 	</form></td></tr>"
 }
 
@@ -247,15 +247,15 @@ if { [exists_and_not_null level] && $llevel < $current_level } {
     append projects_html "  </ul>\n"
 }	
 if { [empty_string_p $projects_html] } {
-    set projects_html "  <li><i>None</i>\n"
+    set projects_html "  <li><i>[_ intranet-core.None]</i>\n"
 }
 
 if {$ctr > $max_projects} {
-    append projects_html "<li><A HREF='/intranet/projects/index?company_id=$company_id&status_id=0'>more projects...</A>\n"
+    append projects_html "<li><A HREF='/intranet/projects/index?company_id=$company_id&status_id=0'>[_ intranet-core.more_projects]</A>\n"
 }
 
 if { $admin > 0 } {
-    append projects_html "  <p><li><a href=../projects/new?company_id=$company_id>Add a project</a>"
+    append projects_html "  <p><li><a href=../projects/new?company_id=$company_id>[_ intranet-core.Add_a_project]</a>"
 } 
 
 
@@ -273,9 +273,9 @@ set company_clients [im_group_member_component $company_id $user_id $admin $retu
 
 
 
-set projects_html [im_table_with_title "Projects" $projects_html]
-set company_members_html [im_table_with_title "Employees" $company_members]
-set company_clients_html [im_table_with_title "Client Contacts" $company_clients]
+set projects_html [im_table_with_title "[_ intranet-core.Projects]" $projects_html]
+set company_members_html [im_table_with_title "[_ intranet-core.Employees]" $company_members]
+set company_clients_html [im_table_with_title "[_ intranet-core.Client_Contacts]" $company_clients]
 
 
 

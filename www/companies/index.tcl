@@ -82,7 +82,7 @@ set return_url "/intranet/companies/index"
 
 set user_view_page "/intranet/users/view"
 set company_view_page "/intranet/companies/view"
-set view_types [list "mine" "[_ intranet-core.Mine]" "all" "[_ intranet-core.All]" "[_ intranet-core.unassigned]" "[_ intranet-core.Unassigned]"]
+set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
 if { ![exists_and_not_null status_id] } {

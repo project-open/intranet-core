@@ -268,4 +268,4 @@ append page_body "
 </form>
 "
 
-doc_return  200 text/html [im_return_template]
+ad_return_template
