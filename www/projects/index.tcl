@@ -202,8 +202,8 @@ set order_by_clause "order by upper(project_name)"
 switch $order_by {
     "Spend Days" { set order_by_clause "order by spend_days" }
     "Estim. Days" { set order_by_clause "order by estim_days" }
-    "Start Date" { set order_by_clause "order by start_date" }
-    "Delivery Date" { set order_by_clause "order by end_date" }
+    "Start Date" { set order_by_clause "order by start_date DESC" }
+    "Delivery Date" { set order_by_clause "order by end_date DESC" }
     "Create" { set order_by_clause "order by create_date" }
     "Quote" { set order_by_clause "order by quote_date" }
     "Open" { set order_by_clause "order by open_date" }

@@ -16,7 +16,7 @@
 
 -- 100	im_projects
 -- 101	im_project_roles
--- 102	im_customers
+-- 102	im_companies
 -- 103	im_customer_roles
 -- 104	im_offices
 -- 105	im_office_roles
@@ -43,13 +43,13 @@
 
 
 ---------------------------------------------------------
--- Backup Customers
+-- Backup Companies
 --
 
 delete from im_view_columns where view_id = 102;
 delete from im_views where view_id = 102;
 insert into im_views (view_id, view_name, view_sql
-) values (102, 'im_customers', '
+) values (102, 'im_companies', '
 select
         c.*,
         im_email_from_user_id(c.manager_id) as manager_email,
@@ -71,43 +71,61 @@ commit;
 delete from im_view_columns where column_id > 10200 and column_id < 10299;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10201,102,NULL,'customer_name','$customer_name','','',1,'');
+extra_select, extra_where, sort_order, visible_for) values (10201,102,NULL,'customer_name',
+'$customer_name','','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10203,102,NULL,'customer_path','$customer_path','','',3,'');
+extra_select, extra_where, sort_order, visible_for) values (10203,102,NULL,'customer_path',
+'$customer_path','','',3,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10205,102,NULL,'main_office_name','$main_office_name','','',5,'');
+extra_select, extra_where, sort_order, visible_for) values (10205,102,NULL,'main_office_name',
+'$main_office_name','','',5,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10207,102,NULL,'deleted_p','$deleted_p','','',7,'');
+extra_select, extra_where, sort_order, visible_for) values (10207,102,NULL,'deleted_p',
+'$deleted_p','','',7,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10209,102,NULL,'customer_type','$customer_type','','',9,'');
+extra_select, extra_where, sort_order, visible_for) values (10209,102,NULL,'customer_type',
+'$customer_type','','',9,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10211,102,NULL,'customer_status','$customer_status','','',11,'');
+extra_select, extra_where, sort_order, visible_for) values (10211,102,NULL,'customer_status',
+'$customer_status','','',11,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10213,102,NULL,'crm_status','$crm_status','','',13,'');
+extra_select, extra_where, sort_order, visible_for) values (10213,102,NULL,'crm_status',
+'$crm_status','','',13,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10215,102,NULL,'primary_contact_email','$primary_contact_email','','',15,'');
+extra_select, extra_where, sort_order, visible_for) values (10215,102,NULL,'primary_contact_email',
+'$primary_contact_email','','',15,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10217,102,NULL,'accounting_contact_email','$accounting_contact_email','','',17,'');
+extra_select, extra_where, sort_order, visible_for) values (10217,102,NULL,'accounting_contact_email',
+'$accounting_contact_email','','',17,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10219,102,NULL,'manager_email','$manager_email','','',19,'');
+extra_select, extra_where, sort_order, visible_for) values (10219,102,NULL,'manager_email',
+'$manager_email','','',19,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10221,102,NULL,'vat_number','$vat_number','','',21,'');
+extra_select, extra_where, sort_order, visible_for) values (10221,102,NULL,'vat_number',
+'$vat_number','','',21,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10223,102,NULL,'referral_source','$referral_source','','',23,'');
+extra_select, extra_where, sort_order, visible_for) values (10223,102,NULL,'referral_source',
+'$referral_source','','',23,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10225,102,NULL,'annual_revenue','$annual_revenue','','',25,'');
+extra_select, extra_where, sort_order, visible_for) values (10225,102,NULL,'annual_revenue',
+'$annual_revenue','','',25,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10227,102,NULL,'billable_p','$billable_p','','',27,'');
+extra_select, extra_where, sort_order, visible_for) values (10227,102,NULL,'billable_p',
+'$billable_p','','',27,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10229,102,NULL,'site_concept','$site_concept','','',29,'');
+extra_select, extra_where, sort_order, visible_for) values (10229,102,NULL,'site_concept',
+'[ns_urlencode $site_concept]','','',29,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10231,102,NULL,'contract_value','$contract_value','','',31,'');
+extra_select, extra_where, sort_order, visible_for) values (10231,102,NULL,'contract_value',
+'$contract_value','','',31,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10233,102,NULL,'start_date','$start_date','','',33,'');
+extra_select, extra_where, sort_order, visible_for) values (10233,102,NULL,'start_date',
+'$start_date','','',33,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10235,102,NULL,'note','[ns_urlencode $note]','','',35,'');
+extra_select, extra_where, sort_order, visible_for) values (10235,102,NULL,'note',
+'[ns_urlencode $note]','','',35,'');
 --
 commit;
 
@@ -284,11 +302,11 @@ extra_select, extra_where, sort_order, visible_for) values (10425,104,NULL,'phon
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10427,104,NULL,'fax','$fax','','',27,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10429,104,NULL,'address_line1','$address_line1','','',29,'');
+extra_select, extra_where, sort_order, visible_for) values (10429,104,NULL,'address_line1','[ns_urlencode $address_line1]','','',29,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10433,104,NULL,'address_line2','$address_line2','','',33,'');
+extra_select, extra_where, sort_order, visible_for) values (10433,104,NULL,'address_line2','[ns_urlencode $address_line2]','','',33,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10435,104,NULL,'address_city','$address_city','','',35,'');
+extra_select, extra_where, sort_order, visible_for) values (10435,104,NULL,'address_city','[ns_urlencode $address_city]','','',35,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10437,104,NULL,'address_state','$address_state','','',37,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
@@ -298,7 +316,7 @@ extra_select, extra_where, sort_order, visible_for) values (10441,104,NULL,'addr
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10443,104,NULL,'contact_person_email','$contact_person_email','','',43,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10445,104,NULL,'landlord','$landlord','','',45,'');
+extra_select, extra_where, sort_order, visible_for) values (10445,104,NULL,'landlord','[ns_urlencode $landlord]','','',45,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10447,104,NULL,'security','$security','','',47,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
