@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><!-- InstanceBegin template="/Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<HEAD>
+  <!-- InstanceBeginEditable name="doctitle" -->
+<TITLE>Project/Open</TITLE>
+<!-- InstanceEndEditable -->
+  <META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+  <LINK href="style/style.css" rel=stylesheet type=text/css>
+<!-- InstanceBeginEditable name="head" -->
+  
+  <META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+  <LINK href="style/style.css" rel=stylesheet type=text/css>
+<!-- InstanceEndEditable -->
+</HEAD>
+
+<BODY bgColor=white text=black>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+  <TBODY>
+    <TR>
+      <TD align=left><A href="http://www.project-open.com/"><IMG border=0 height=52 
+      src="images/projop-logo.gif" width=230></A>
+      </TD>
+	  <TD align=right>
+<!-- InstanceBeginEditable name="ContextBar" -->
+
+<A href="index.html">Project/Open Core</A>  : Home
+
+<!-- InstanceEndEditable -->
+	  </TD>
+	</TR>
+    <TR>
+      <TD class=pagedesriptionbar colSpan=2>
+      <TABLE cellPadding=1 width="100%">
+          <TBODY>
+            <TR>
+          	  <TD height="20" vAlign=center class=pagedesriptionbar>
+<!-- InstanceBeginEditable name="Title" -->
+
+Project/Open Core<!-- InstanceEndEditable -->
+              </TD>
+			</TR>
+		  </TBODY>
+		</TABLE></TD>
+	</TR>
+  </TBODY>
+</TABLE>
+<!-- InstanceBeginEditable name="Body" -->
+<h1>Dynamic Menus</h1>
+<h3>Requirements</h3>
+<p>Extension modules sometimes need to modify the menu structure of core modules. For example, a human resources modules may want to add a new submenu &quot;Employees&quot; in the &quot;Users&quot; main menu to show information about this specific kind of user.</p>
+<h3>Design</h3>
+We implement configurable menus similar to <a href="views.html">views</a> and <a href="components.html">components</a> by storing all menu information in the database.
+<pre>
+CREATE TABLE im_menus (
+        menu_id                 integer
+                                constraint im_menu_id_pk
+                                primary key
+                                constraint im_menu_id_fk
+                                references acs_objects,
+                                -- the name that should appear on the tab
+        package_name            varchar(200) not null,
+        name                    varchar(200) not null,
+        url                     varchar(200) not null,
+        sort_order              integer,
+                                -- parent_id allows for tree view for navbars
+        parent_menu_id          integer
+                                constraint im_parent_menu_id_fk
+                                references im_menus,
+                                -- Make sure there are no two identical
+                                -- menus on the same _level_.
+                                constraint im_menus_name_un
+                                unique(name, parent_menu_id)
+);
+
+</pre>
+
+
+<!-- InstanceEndEditable -->
+</body>
+<!-- InstanceEnd --></html>

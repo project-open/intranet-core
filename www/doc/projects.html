@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><!-- InstanceBegin template="/Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<HEAD>
+  <!-- InstanceBeginEditable name="doctitle" -->
+<TITLE>Project/Open Projects</TITLE>
+<!-- InstanceEndEditable -->
+  <META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+  <LINK href="style/style.css" rel=stylesheet type=text/css>
+<!-- InstanceBeginEditable name="head" -->
+  
+  <META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+  <LINK href="style/style.css" rel=stylesheet type=text/css>
+<!-- InstanceEndEditable -->
+</HEAD>
+
+<BODY bgColor=white text=black>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+  <TBODY>
+    <TR>
+      <TD align=left><A href="http://www.project-open.com/"><IMG border=0 height=52 
+      src="images/projop-logo.gif" width=230></A>
+      </TD>
+	  <TD align=right>
+<!-- InstanceBeginEditable name="ContextBar" -->
+
+<A href="index.html">Project/Open Core</A>  : Projects<!-- InstanceEndEditable -->
+	  </TD>
+	</TR>
+    <TR>
+      <TD class=pagedesriptionbar colSpan=2>
+      <TABLE cellPadding=1 width="100%">
+          <TBODY>
+            <TR>
+          	  <TD height="20" vAlign=center class=pagedesriptionbar>
+<!-- InstanceBeginEditable name="Title" -->
+
+Project/Open Core<!-- InstanceEndEditable -->
+              </TD>
+			</TR>
+		  </TBODY>
+		</TABLE></TD>
+	</TR>
+  </TBODY>
+</TABLE>
+<!-- InstanceBeginEditable name="Body" -->
+<h1>Projects</h1>
+<p>Projects are the central element of collaboration in Project/Open. 
+              You can use projects to define groups of people who are working 
+              together on a common goal. You can also use projects as the primary 
+              unit of accounting that allows you to register the cost of the project 
+              members activity.</p>
+The diagram below shows a a number of activities related to a <strong>translation</strong> project.
+<p><img src="screenshots/the_project_cycle.gif" width="593" height="450"></p>
+<p>&nbsp;</p>
+<h3>Requirements</h3>
+<p>Check the original <a href="big_picture.html">Big Picture</a> document from ArsDigita for the requirements of the ACS 3.4 Intranet module.</p>
+<p>Additional requirements in Project/Open include:</p>
+<ul>
+  <li>Integration of Customers and Providers:<br>
+	Projects need to facilitate the cooperation across company boundaries, allowing customers and providers to interact (in a &quot;structured&quot; way!) with company staff. </li>
+  <li>Powerful Permission Model:<br>
+In	order to integrate customers and providers into a project we need &quot;structured&quot; interaction because neither customers nor providers should get all information about a project.</li>
+  <li>&quot;Virtual Organization&quot;:<br>
+Today, project teams are more and more distributed spacially.
+The organization of projects in Project/Open should help to overcome these limits:    
+	<ul>
+	  <li>Across several offices of the same company</li>
+	  <li>Across several departmens of the same company</li>
+	  <li>Outsourced to providers at the other end of the world</li>
+	  <li>Open-Source projects are distributed by definition</li>
+	  <li>...</li>
+	</ul>
+  </li>
+  <li>Flexible &quot;Project Rooms&quot;:<br>
+A &quot;project room&quot; is the list of services related to a single project. This list of services needs to be extensible using a modular approach to allow: 
+	<ul>
+	  <li>The extension of services by 3rd party companies who are specialized in specific business sectors</li>
+	  <li>The configuration/customization of services to the needs of a specific company or business sector</li>
+	</ul>
+  </li>
+</ul>
+<h3>Design</h3>
+<p>Projects are implemented as a Project/Open business object just the same as customers, offices etc., using the same <a href="permissions.html">security mechanisms</a> and using the same extension system (<a href="components.html">components</a>, <a href="menus.html">menus</a>, <a href="categories.html">categories</a>, ...).</p>
+<p>So the basic project structure only consists only of the &quot;core&quot; project properties such as customer, start- and end date etc. All advanced functionality is added by extension modules.</p>
+<ul>
+  <li>Admin Group is a group containing all project members (see <a href="permissions.html">permissions</a>).</li>
+  <li>Project Nr is a short unique project identifier (by default something like: &quot;2004_0012&quot;)</li>
+  <li>Project Path is for the filestorage module. I determines where the project files are stored in the filesystem.</li>
+  <li>Parent ID allows to build a project hierarchy.</li>
+</ul>
+<pre>
+create table im_projects (
+        project_id              integer
+                                constraint im_projects_pk
+                                primary key
+                                constraint im_project_prj_fk
+                                references acs_objects,
+                                -- avoid using the OpenACS permission system
+                                -- because we have to ask frequently:
+                                -- "Who has read permissions on this object".
+        admin_group_id          integer not null
+                                constraint im_projects_admin_group_fk
+                                references groups,
+        project_name            varchar(1000) not null
+                                constraint im_projects_name_un unique,
+        project_nr              varchar(100) not null
+                                constraint im_projects_nr_un unique,
+        project_path            varchar(100) not null
+                                constraint im_projects_path_un unique,
+        parent_id               integer
+                                constraint im_projects_parent_fk
+                                references im_projects,
+        customer_id             integer not null
+                                constraint im_projects_customer_fk
+                                references im_customers,
+        project_type_id         not null
+                                constraint im_projects_prj_type_fk
+                                references categories,
+        project_status_id       not null
+                                constraint im_projects_prj_status_fk
+                                references categories,
+        description             varchar(4000),
+        start_date              date,
+        end_date                date,
+                                -- make sure the end date is after the start date
+                                constraint im_projects_date_const
+                                check( end_date - start_date >= 0 ),
+        note                    varchar(4000),
+        project_lead_id         integer
+                                constraint im_projects_prj_lead_fk
+                                references users,
+        supervisor_id           integer
+                                constraint im_projects_supervisor_fk
+                                references users,
+        requires_report_p       char(1) default('t')
+                                constraint im_project_requires_report_p
+                                check (requires_report_p in ('t','f')),
+        project_budget          number(12,2)
+);
+</pre>
+<!-- InstanceEndEditable -->
+</body>
+<!-- InstanceEnd --></html>

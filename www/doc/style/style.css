@@ -1,0 +1,36 @@
+    body, p, td {font-family: verdana, arial, helvetica, sans-serif; font-size: 8pt; color: #000000;}
+    hr {height: 1px;}
+    .pagedesriptionbar {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: 10pt; color: #ffffff; background: #336699; background-color: #336699;}
+    h1 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: large;}
+    h2 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: medium;}
+    h3 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
+    .tabsel {background-color: #336699; color: #ffffff;; font-weight: bold}
+    .tabnotsel {background-color: #BBCFE1; color: #000000;; font-weight: bold}
+
+    .productrow1 {font-family: verdana, arial, helvetica, sans-serif; font-size: 8pt; background-color: #DDDDDD; background: #DDDDDD;}
+    .productrow2 {font-family: verdana, arial, helvetica, sans-serif; font-size: 8pt; background-color: #EEEEEE; background: #EEEEEE;}
+    .header {font-family: verdana, arial, helvetica, sans-serif; font-Size: 9pt; font-weight: bold;; color: #336699}
+
+    .titlerow  {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; background-color: #BBCFE1; background: #BBCFE1;}
+    .list  {font-family: verdana, arial, helvetica, sans-serif; font-Size: 8pt;}
+
+    .rowtitle  {font-size: 10pt; color: #ffffff; background-color: #6699CC; font-weight: bold;}
+
+    .invoiceroweven {font-size: 9pt; background-color: #DDDDDD;}
+    .invoicerowodd {font-size: 9pt; background-color: #EEEEEE;}
+
+    .roweven {font-size: 8pt; background-color: #DDDDDD;}
+    .list-even {font-size: 8pt; background-color: #DDDDDD;}
+    .rowodd {font-size: 8pt; background-color: #EEEEEE;}
+    .list-odd {font-size: 8pt; background-color: #EEEEEE;}
+    .rowplain {font-size: 8pt; background-color: #FFFFFF;}
+
+    .small {font-family: verdana, arial, helvetica, sans-serif; font-Size: xx-small;}
+    .vivcomm {color: #006600}
+    .fabcomm {color: #000066}
+    A.titlerow:link {color: #000000;},   A.titlerow:visited {color: #000000;},  A.titlerow:active {color: #000000;},  A.titlerow:hover  {color: #000000;}
+    A.blacklink:link,  A.blacklink:visited, A.blacklink:active, A.blacklink:hover {color: #000000;}
+    A.whitelink:link,  A.whitelink:visited, A.whitelink:active, A.whitelink:hover {color: #ffffff;}
+    A.paginacion:link, A.paginacion:active, A.paginacion:visited {font-weight: bold; color: #000000; text-decoration: none;}    
+    A.paginacion:hover {font-weight: bold; color: #000000; text-decoration: underline;}
+     .headerBig {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
