@@ -492,21 +492,6 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_trans_tasks', 		'Employees');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_matrix',	'Employees');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_status', 	'Employees');
-END;
-/
-
 prompt Initializing Project Managers Permissions
 BEGIN
     im_priv_create('view_project_members', 	'Project Managers');
@@ -553,20 +538,6 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_trans_tasks', 		'Project Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_matrix',	'Project Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_status', 	'Project Managers');
-END;
-/
 
 prompt Initializing Senior Managers Permissions
 BEGIN
@@ -694,20 +665,6 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_trans_tasks', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_matrix',	'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_status', 	'Senior Managers');
-END;
-/
 
 prompt Initializing Sales Permissions
 BEGIN
@@ -780,20 +737,7 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_trans_tasks', 		'Sales');
-END;
-/
 
-BEGIN
-    im_priv_create('view_trans_task_matrix',	'Sales');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_status', 	'Sales');
-END;
-/
 
 prompt Initializing P/O Admins Permissions
 BEGIN
@@ -921,20 +865,6 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_trans_tasks', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_matrix',	'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('view_trans_task_status', 	'P/O Admins');
-END;
-/
 
 prompt Initializing Accounting Permissions
 BEGIN
