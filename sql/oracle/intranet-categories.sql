@@ -81,8 +81,21 @@
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
 
--- 6000-6999	Intranet RecruitingRecruiting
-
+-- 6000-6999    Intranet RecruitingRecruiting
+-- 7000-7999    Intranet Translation Quality
+-- 8000-8999    Intranet Translation Marketplace
+-- 9000-9999    reserved
+-- 10000-10999  reserved
+-- 11000-11999  reserved
+-- 12000-12999  reserved
+-- 13000-13999  reserved
+-- 14000-14999  reserved
+-- 15000-15999  reserved
+-- 16000-16999  reserved
+-- 17000-17999  reserved
+-- 18000-18999  reserved
+-- 19000-19999  reserved
+-- 20000-99999  reserved
 
 -------------------------------------------------------------
 -- Categories

@@ -29,6 +29,6 @@ cvs checkout intranet-search-pg
 cvs checkout intranet-search-ora
 cvs checkout intranet-timesheet
 cvs checkout intranet-trans-invoices
+cvs checkout intranet-trans-quality
 cvs checkout intranet-translation
-cvs checkout intranet-translation-quality
 cvs checkout intranet-travel
