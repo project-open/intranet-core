@@ -54,7 +54,8 @@ CREATE TABLE im_profiles (
 			constraint im_profiles_pk
 			primary key
 			constraint im_profiles_profile_id_fk
-			references groups(group_id)
+			references groups(group_id),
+	profile_gif	varchar(100)
 );
 
 insert into group_types (group_type) values ('im_profile');
