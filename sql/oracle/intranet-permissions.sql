@@ -114,8 +114,7 @@ create or replace package body im_profile as
                      context_id       => new.context_id,
                      join_policy      => new.join_policy
                    );
-    insert into im_profiles
-    values (v_group_id);
+    insert into im_profiles (profile_id) values (v_group_id);
     return v_group_id;
   end new;
 
