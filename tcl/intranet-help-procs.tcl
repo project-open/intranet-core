@@ -43,7 +43,7 @@ Help is available for you in various ways:
   and briefly explains their functionality.
 </li>
 <li>
-  <A href=\"http://sourceforge.net/project/showfiles.php?group_id=86419&package_id=89751&release_id=281910\"><b>
+  <A href=\"http://sourceforge.net/project/showfiles.php?group_id=86419\"><b>
     Project/Open User Guides</b></a>:<br>
   Please visit the download zone of our
   <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
