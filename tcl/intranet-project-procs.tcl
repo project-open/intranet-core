@@ -81,20 +81,20 @@ begin
         project_nr      => '$project_nr',
         project_path   => '$project_path'
 "
-if {"" != $customer_id} { append sql "\t, customer_id => $customer_id\n" }
-if {"" != $parent_id} { append sql "\t, parent_id => $parent_id\n" }
-if {"" != $project_type_id} { append sql "\t, project_type_id => $project_type_id\n" }
-if {"" != $project_status_id} { append sql "\t, project_status_id => $project_status_id\n" }
-
-if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
-if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
-if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
-if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
+	if {"" != $customer_id} { append sql "\t, customer_id => $customer_id\n" }
+	if {"" != $parent_id} { append sql "\t, parent_id => $parent_id\n" }
+	if {"" != $project_type_id} { append sql "\t, project_type_id => $project_type_id\n" }
+	if {"" != $project_status_id} { append sql "\t, project_status_id => $project_status_id\n" }
+	
+	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
+	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
+	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
+	if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
 
 	append sql "        );
-    end;
-"
-	db_exec_plsql create_new_project $sql
+    end;"
+        set project_id [db_exec_plsql create_new_project $sql]
+        return $project_id
     }
 }
 
@@ -321,8 +321,6 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
     where member_user_id participate in some role.
  } {
      set bind_vars [ns_set create]
-     ns_set put $bind_vars project_group_id [im_project_group_id]
-
 
      set sql "
 	select

@@ -112,7 +112,7 @@ where
 	if { ![exists_and_not_null customer_id] } {
 	    set customer_id ""
 	}
-	set project_type_id 86
+	set project_type_id 85
 	set project_status_id 76
 	set page_title "Add New Project"
 	set context_bar [ad_context_bar [list ./ "Projects"] $page_title]

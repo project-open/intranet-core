@@ -23,7 +23,7 @@ namespace eval customer {
     ad_proc new {
         -customer_name
         -customer_path
-        { -main_office_id "" }
+        -main_office_id
 	{ -customer_type_id "" }
 	{ -customer_status_id "" }
 	{ -creation_date "" }
@@ -68,9 +68,9 @@ begin
     :1 := im_customer.new(
 	object_type	=> 'im_customer',
 	customer_name	=> '$customer_name',
-        customer_path   => '$customer_path'
+        customer_path   => '$customer_path',
+	main_office_id  => $main_office_id
 "
-	if {"" != $main_office_id} { append sql "\t, main_office_id => $main_office_id\n" }
 	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
 	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
 	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
@@ -80,7 +80,8 @@ begin
 	append sql "        );
     end;
 "
-	db_exec_plsql create_new_customer $sql
+	set customer_id [db_exec_plsql create_new_customer $sql]
+	return $customer_id
     }
 }
 

@@ -66,14 +66,6 @@ ad_page_contract {
 }
 
 # -----------------------------------------------------------------
-# Defaults
-# -----------------------------------------------------------------
-
-if {"" == $office_name} {
-    set office_name "$office_name Main Office"
-}
-
-# -----------------------------------------------------------------
 # Check for Errors in Input Variables
 # -----------------------------------------------------------------
 
@@ -124,9 +116,11 @@ set cust_count [db_string cust_count "select count(*) from im_customers where cu
 if {0 == $cust_count} {
 
     # First create a new main_office:
+    set office_name "$customer_name Main Office"
     set main_office_id [office::new \
 	-office_name	$office_name \
 	-office_path	$office_name]
+    ns_log Notice "/customers/new-2: main_office_id=$main_office_id"
 
     # Now create the customer with the new main_office:
     set customer_id [customer::new \

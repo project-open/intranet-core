@@ -250,7 +250,6 @@ show errors;
 begin
    im_create_profile ('P/O Admins');
    im_create_profile ('Customers'); 
-   im_create_profile ('Offices'); 
    im_create_profile ('Employees'); 
    im_create_profile ('Freelancers'); 
    im_create_profile ('Project Managers'); 

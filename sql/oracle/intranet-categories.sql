@@ -284,33 +284,9 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 
 -- Project Type
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '85',  'Trans Only',  '',  'Intranet Project Type');
+('1',  '',  'f',  '85',  'Unknown',  '',  'Intranet Project Type');
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '86',  'Trans + Edit',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '87',  'Edit Only',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '88',  'Trans + Edit + Proof',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '89',  'Linguistic Validation',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '90',  'Localization',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '91',  'Other',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '92',  'Technology',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '93',  'Unknown',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '94',  'Trans + Int. Spotcheck',  '',  'Intranet Project Type');
-
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '95',  'Proof Only',  '',  'Intranet Project Type');
-
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '96',  'Glossary Compilation',  '',  'Intranet Project Type');
-
-
+('1',  '',  'f',  '86',  'Other',  '',  'Intranet Project Type');
 
 
 -- Hiring Source
@@ -369,13 +345,6 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
 ('10',  '',  'f',  134,  'Full Time',  '',  'Intranet Task Board Time Frame');
 
--- Intranet Quality
-INSERT INTO categories VALUES (110,'Premium Quality','Premium Quality','Intranet Quality',1,'f','');
-INSERT INTO categories VALUES (111,'High Quality','High Quality','Intranet Quality',1,'f','');
-INSERT INTO categories VALUES (112,'Average Quality','Average Quality','Intranet Quality',1,'f','');
-INSERT INTO categories VALUES (113,'Draft Quality','Draft Quality','Intranet Quality',1,'f','');
-
-
 -- Intranet Departments
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
 ('1',  '',  'f',  '201',  'Administration',  '',  'Intranet Department');
@@ -417,53 +386,6 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 ('1',  '',  'f',  '226',  'Pre-revenue',  '',  'Intranet Annual Revenue');
 
 
-
--- Setup the most frequently used language (lang, sort_key, name)
-INSERT INTO categories VALUES (250,'es','Spanish','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (251,'es_ES','Castilian Spanish','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (252,'es_LA','Latin Americal Spanish','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (253,'es_US','US Spanish','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (254,'es_MX','Mexican Spanish','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (261,'en','English','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (262,'en_US','US English','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (263,'en_UK','UK English','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (271,'fr','French','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (272,'fr_FR','French French','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (273,'fr_BE','Belgian French','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (274,'fr_CH','Swiss French','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (281,'de','German','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (282,'de_DE','German German','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (283,'de_CH','Swiss German','Intranet Translation Language',1,'f','');
-INSERT INTO categories VALUES (290,'none','No Language','Intranet Translation Language',1,'f','');
-
-
--- Unit or Mesurement
-INSERT INTO categories VALUES (320,'Hour','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (321,'Day','','Intranet Translation UoM',1,'f','');
--- INSERT INTO categories VALUES (322,'Week','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (323,'Page','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (324,'S-Word','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (325,'T-Word','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (326,'S-Line','','Intranet Translation UoM',1,'f','');
-INSERT INTO categories VALUES (327,'T-Line','','Intranet Translation UoM',1,'f','');
-
--- Task Status
-INSERT INTO categories VALUES (340,'Created','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (342,'for Trans','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (344,'Trans-ing','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (346,'for Edit','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (348,'Editing','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (350,'for Proof','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (352,'Proofing','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (354,'for QCing','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (356,'QCing','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (358,'for Deliv','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (360,'Delivered','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (365,'Invoiced','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (370,'Payed','','Intranet Translation Task Status',1,'f','');
-INSERT INTO categories VALUES (372,'Deleted','','Intranet Translation Task Status',1,'f','');
--- reserved until 399
-
 -- Prior Experience
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
 ('1',  '',  'f',  '400',  'Small Project Work',  '',  'Intranet Prior Experience');
@@ -471,93 +393,6 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 ('1',  '',  'f',  '401',  'Medium Project Work',  '',  'Intranet Prior Experience');
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
 ('1',  '',  'f',  '402',  'Large Project Work',  '',  'Intranet Prior Experience');
-
-
--- Employee/Freelance Pipeline Status
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '450',  'Potential',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '451',  'Received Translation Test',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '452',  'Failed Translation Test',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '453',  'Aproved Translation Test',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '454',  'Active',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('0',  '',  'f',  '455',  'Past',  '',  'Intranet Employee Pipeline State');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('0',  '',  'f',  '456',  'Deleted',  '',  'Intranet Employee Pipeline State');
-
--- Subject Areas
-INSERT INTO categories VALUES (500,'Bio','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (505,'Biz','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (510,'Com','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (515,'Eco','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (520,'Gen','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (525,'Law','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (530,'Lit','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (535,'Loc','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (540,'Mkt','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (545,'Med','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (550,'Tec','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (555,'Tec-Auto','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (560,'Tec-Telecos','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (565,'Tec-Gen','','Intranet Translation Subject Area',1,'f','');
-INSERT INTO categories VALUES (570,'Tec-Mech. eng','','Intranet Translation Subject Area',1,'f','');
--- reserved until 599
-
--- Invoice Status
-delete from categories where category_id >= 600 and category_id < 700;
-INSERT INTO categories VALUES (600,'In Process','Set during the creation process to indicate an invalid invoice. Must be pruned periodically.',
-'Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (602,'Created','Set after the successful creation','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (604,'Outstanding','Set after sending the invoice to the client','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (606,'Past Due','Set when an outstanding invoice gets past due','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (608,'Partially Paid','','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (610,'Paid','','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (612,'Deleted','','Intranet Invoice Status',1,'f','');
-INSERT INTO categories VALUES (614,'Filed','','Intranet Invoice Status',1,'f','');
--- reserved until 699
-
-
-
-
--- Invoice Type
-delete from categories where category_id >= 700 and category_id < 800;
-INSERT INTO categories VALUES (700,'Normal','','Intranet Invoice Type',1,'f','');
--- reserved until 799
-
-
--- Invoice Payment Method
-delete from categories where category_id >= 800 and category_id < 900;
-INSERT INTO categories VALUES (800,'Credit Suisse CHF',
-'Wire transfer without charges for the beneficiary, IBAN: CH08 0425 1017 8138 3000 0, Credit Suisse, SWIFT CRESCCHZZ12A.','Intranet Invoice Payment Method',1,'f','');
-INSERT INTO categories VALUES (802,'Credit Suisse EUR',
-'Wire transfer without charges for the beneficiary, IBAN: CH37 0425 1017 8138 3200 0, Credit Suisse, SWIFT CRESCCHZZ12A.','Intranet Invoice Payment Method',1,'f','');
-INSERT INTO categories VALUES (804,'Cheque EUR',
-'Check in EUR payable to SLS international','Intranet Invoice Payment Method',1,'f','');
-INSERT INTO categories VALUES (806,'Cheque USD',
-'Check in US$ payable to SLS international','Intranet Invoice Payment Method',1,'f','');
-INSERT INTO categories VALUES (808,'Patagon EUR',
-'Wire transfer without charges for the beneficiary, IBAN: ES20 0073 0100 5104 2639 7224, Patagon Bank S.A. Madrid.','Intranet Invoice Payment Method',1,'f','');
-INSERT INTO categories VALUES (810,'La Caixa EUR',
-'Wire transfer without charges for the beneficiary, IBAN: ES66 2100 1403 6302 0007 1684, Caja de Ahorros y Pensiones de Barcelona.','Intranet Invoice Payment Method',1,'f','');
-commit;
--- reserved until 899
-
--- Invoice Templates
-delete from categories where category_id >= 900 and category_id < 1000;
-INSERT INTO categories VALUES (900,'invoice-english.adp','','Intranet Invoice Template',1,'f','');
-INSERT INTO categories VALUES (902,'invoice-spanish.adp','','Intranet Invoice Template',1,'f','');
--- reserved until 999
-
--- Payment Type
-delete from categories where category_id >= 1000 and category_id < 1100;
-INSERT INTO categories VALUES (1000,'Bank Transfer','','Intranet Payment Type',1,'f','');
-INSERT INTO categories VALUES (1002,'Cheque','','Intranet Payment Type',1,'f','');
-commit;
--- reserved until 1099
 
 -- reserved 1100 - 1200 for Forum Topic Types
 

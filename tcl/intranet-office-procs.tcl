@@ -59,6 +59,7 @@ namespace eval office {
 	# We asume the application page knows how to deal with
 	# the uniqueness constraint, so we won't generate an error
 	# but just return the duplicated item. 
+	set office_id 0
 	set dup_sql "
 select	office_id 
 from	im_offices 
@@ -67,8 +68,10 @@ where	office_name = :office_name
 	db_foreach dup_offices $dup_sql {  
 	    # nope - sets office_id 
 	}
-	if {0 != $office_id} { return $office_id }
-
+	if {0 != $office_id} { 
+	    ns_log Notice "office::new: found existing office with same name: $office_id"
+	    return $office_id 
+	}
 
 	# -----------------------------------------------------------
 	set sql "
@@ -87,9 +90,10 @@ where	office_name = :office_name
 	append sql "        );
     end;
 "
-	db_exec_plsql create_new_office $sql
+	set office_id [db_exec_plsql create_new_office $sql]
+	return $office_id
     }
-    
+
 }
 
 

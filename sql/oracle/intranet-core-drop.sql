@@ -17,6 +17,28 @@
 -- @author      unknown@arsdigita.com
 -- @author      frank.bergmann@project-open.com
 
+-----------------------------------------------------------
+-- Cleanup Projects
+-- Needs to happen _before_ removing permissions etc.
+--
+begin
+     for row in (
+        select cons.constraint_id
+        from rel_constraints cons, rel_segments segs
+        where
+                segs.segment_id = cons.required_rel_segment
+                and segs.group_id = v_group_id
+     ) loop
+
+        rel_segment.del(row.constraint_id);
+
+     end loop;
+end;
+/
+show errors;
+
+
+
 
 -----------------------------------------------------------
 -- Permissions 

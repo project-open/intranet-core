@@ -123,7 +123,7 @@ ns_set put $customer_defaults billable_p $billable_p
 
 
 set page_body "
-<form method=get action=new-2>
+<form method=post action=new-2>
 [export_form_vars return_url customer_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 

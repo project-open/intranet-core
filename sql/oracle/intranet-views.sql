@@ -222,7 +222,7 @@ insert into im_view_columns values (206,10,NULL,'Home Phone',
 -------------------------------------------------------------------
 -- UsersViewPage
 --
-delete from im_view_columns where column_id > 1100 and column_id < 1199;
+delete from im_view_columns where column_id > 1100 and column_id <= 1199;
 --
 insert into im_view_columns values (1101,11,NULL,'Name','$name','',1,
 'im_view_user_permission $user_id $current_user_id $name view_users');
@@ -232,13 +232,6 @@ insert into im_view_columns values (1103,11,NULL,'Email',
 insert into im_view_columns values (1105,11,NULL,'Home',
 '"<a href=\"$url\">$url</a>"','',3,
 'im_view_user_permission $user_id $current_user_id $url view_users');
---
-insert into im_view_columns values (1199,11,NULL,' ',
-'"<input type=submit value=Edit>"','',4,
-'set a $edit_user');
-
-insert into im_view_columns values (1121,11,NULL,'Profiles','$profile_list','',10,
-'im_view_user_permission $user_id $current_user_id $profile_list view_users');
 --
 commit;
 
@@ -270,8 +263,8 @@ insert into im_view_columns values (417,12,NULL,'Home City','$ha_city','',10,
 'im_view_user_permission $user_id $current_user_id $ha_city view_users');
 insert into im_view_columns values (421,12,NULL,'Home ZIP','$ha_postal_code','',11,
 'im_view_user_permission $user_id $current_user_id $ha_postal_code view_users');
-insert into im_view_columns values (423,12,NULL,'Home Country','$ha_country_name','',12,
-'im_view_user_permission $user_id $current_user_id $ha_country_name view_users');
+insert into im_view_columns values (423,12,NULL,'Home Country','$ha_country_name','',
+12,'im_view_user_permission $user_id $current_user_id $ha_country_name view_users');
 insert into im_view_columns values (425,12,NULL,'Work Line 1','$wa_line1','',13,
 'im_view_user_permission $user_id $current_user_id $wa_line1 view_users');
 insert into im_view_columns values (427,12,NULL,'Work Line 2','$wa_line2','',14,
@@ -280,13 +273,13 @@ insert into im_view_columns values (429,12,NULL,'Work City','$wa_city','',15,
 'im_view_user_permission $user_id $current_user_id $wa_city view_users');
 insert into im_view_columns values (433,12,NULL,'Work ZIP','$wa_postal_code','',16,
 'im_view_user_permission $user_id $current_user_id $wa_postal_code view_users');
-insert into im_view_columns values (435,12,NULL,'Work Country','$wa_country_name','',17,
-'im_view_user_permission $user_id $current_user_id $wa_country_name view_users');
+insert into im_view_columns values (435,12,NULL,'Work Country','$wa_country_name','',
+17,'im_view_user_permission $user_id $current_user_id $wa_country_name view_users');
 insert into im_view_columns values (437,12,NULL,'Note','$note','',18,
 'im_view_user_permission $user_id $current_user_id $note view_users');
 insert into im_view_columns values (439,12,NULL,' ',
 '"<input type=submit value=Edit>"','',99,
-'set a $edit_user');
+'set a $write');
 --
 commit;
 

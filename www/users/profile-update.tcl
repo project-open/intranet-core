@@ -14,173 +14,112 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Adding a user by an administrator
+    @param user_id
+    @param first_names
+    @param last_names
+    @param email
+    @param url
 
+    @author Guillermo Belcic (guillermo.belcic@project-open.com)
 } {
     user_id:integer
-    {return_url "/intranet/users/" }
-    profile:multiple,optional
+    { profile:multiple ""}
+    { return_url "" }
 }
 
-# ---------------------------------------------------------------
-# Defaults & Security
-# ---------------------------------------------------------------
+#--------------------------------------------------------------------
+# Security and Defaults
+#--------------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_employee_p [im_user_is_employee_p $current_user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+set current_user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
-set page_title "Update Profile"
-set context [list [list "." "Users"] $page_title]
-
-if {$user_is_employee_p} {
-    set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
-} else {
-    set context_bar [ad_context_bar $page_title]
+if {!$current_user_admin_p} {
+    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify user $user_id."
+    return
 }
 
-
-# ---------------------------------------------------------------
-# Get the list of profiles that the current_user can create
-# ---------------------------------------------------------------
-
-set option_list [im_profiles_for_new_user $current_user_id]
-set all_profiles_list [im_profiles_all_group_ids]
-
-if {![llength $option_list]} {
-    set err_msg "You have insufficient permissions to create a new user."
-    ad_return_error "Insufficient Permissions" $err_msg
+if {[string equal "" $return_url]} {
+    set return_url "/intranet/users/view?user_id=$user_id"
 }
 
-# Change the order of the inner list elements for
-# the OpenACS 5.0 form elements:
-#
-set profile_list [list]
-foreach option $option_list {
-    set group_id [lindex $option 0]
-    set group_name [lindex $option 1]
-    lappend profile_list [list $group_name $group_id]
-}
+#--------------------------------------------------------------------
+# Update the user profile
+#--------------------------------------------------------------------
 
-# ---------------------------------------------------------------
-# Get users variables if called with a valid user_id
-# ---------------------------------------------------------------
+if {$current_user_admin_p} {
 
-db_1row get_user_info "
-select
-	u.screen_name,
-	pa.email,
-	pa.url,
-	pe.first_names,
-	pe.last_name
-from
-	users u,
-	parties pa,
-	persons pe
-where
-	u.user_id = :user_id
-	and u.user_id = pa.party_id
-	and u.user_id = pe.person_id"
+    # get the list of all profiles in the system
+    set all_profiles [im_profiles_all]
+    set ap [list]
+    foreach p $all_profiles { lappend ap [lindex $p 0] } 
 
-# get the list of group memberships of this user
+    # Get the list of all profiles that the current_user can set
+    set target_profiles [im_profiles_for_new_user $current_user_id]
+    set tp [list]
+    foreach p $target_profiles { lappend tp [lindex $p 0] } 
 
+    # Get the list of current profiles
+    set current_profiles [im_profiles_of_user $user_id]
+    set cp [list]
+    foreach p $current_profiles { lappend cp [lindex $p 0] } 
 
-if {[info exists profile]} {
-    ns_log Notice "profile=$profile"
-} else {
-    ns_log Notice "profile=<does not exist>"
+    set delete_rels_sql "
+BEGIN
+     FOR row IN (
+	select
+		r.rel_id
+	from 
+		acs_rels r,
+		acs_objects o
+	where
+		object_id_two = :user_id
+		and object_id_one = :group_id
+		and r.object_id_one = o.object_id
+		and o.object_type = 'im_profile'
+		and rel_type = 'membership_rel'
+     ) LOOP
+        membership_rel.del(row.rel_id);
+     END LOOP;
+END;"
 
-    # Set profile to the current list of groups
-    set profile [im_user_profile_list $user_id]
-    ns_log Notice "profile=$profile"
-}
-
-
-
-# ------------------------------------------------------
-# Start the form
-# ------------------------------------------------------
-
-template::form create update_user
-
-if {[template::form is_request update_user]} {
-
-}
-
-template::element create update_user user_id \
-    -widget hidden \
-    -datatype text \
-    -value $user_id
-
-template::element create update_user first_names \
-    -widget text \
-    -datatype text \
-    -label "First Names" \
-    -html { size 40 } \
-    -value $first_names
-
-template::element create update_user last_name \
-    -widget text \
-    -datatype text \
-    -label "Last Name" \
-    -html { size 40 } \
-    -value $last_name
-
-template::element create update_user profile \
-    -widget multiselect \
-    -datatype text \
-    -label "Group Membership" \
-    -html {size 8} \
-    -options $profile_list \
-    -values $profile
+	    set add_rel_sql "
+BEGIN
+    :1 := membership_rel.new(
+	object_id_one    => :group_id,
+	object_id_two    => :user_id,
+	member_state     => 'approved'
+    );
+END;"
 
 
-# ------------------------------------------------------
-# Add/update the user
-# ------------------------------------------------------
+    foreach option $target_profiles {
+	set group_id [lindex $option 0]
+	set group_name [lindex $option 1]
 
-if [template::form is_valid update_user] {
+	set current [lsearch -exact $cp $group_id]
+	set target [lsearch -exact $profile $group_id]
 
-#    form get_values update_user profile 
+	ns_log Notice "Processing profile: group_id=$group_id, group_name=$group_name, current=$current, target=$target"
 
-	foreach group_id [im_profiles_all_group_ids] {
-	    ns_log Notice "group_id=$group_id"
-
-	    set is_member 0
-	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:group_id"]
-
-	    set should_be_member 0
-	    if {[lsearch -exact $profile $group_id] >= 0} {
-		set should_be_member 1
-	    }
-
-	    ns_log Notice "/users/new: group_id 	=$group_id"
-	    ns_log Notice "/users/new: should_be_member	=$should_be_member"
-	    ns_log Notice "/users/new: is_member	=$is_member"
-
-	    if {$is_member && !$should_be_member} {
-		# Remove the user from the group
-		ns_log Notice "/users/new: => remove_member\n"
-		group::remove_member \
-		    -group_id $group_id \
-		    -user_id $user_id
-	    }
-
-
-	    if {!$is_member && $should_be_member} {
-		# Add the member to the specified group
-
-		ns_log Notice "/users/new: => add_member\n"
-		group::add_member \
-		    -group_id $group_id \
-		    -user_id $user_id \
-		    -rel_type "membership_rel"
-	    }
+	# Two cases: We have either lost or gained a profile
+	if {$current > -1 && $target == -1} {
+	    ns_log Notice "removing profile $group_name from user $user_id"
+	    db_dml delete_profile $delete_rel_sql
 	}
 
-	ad_returnredirect $return_url
-
+	if {$current == -1 && $target > -1} {
+	    ns_log Notice "adding profile $group_name from user $user_id"
+	    db_exec_plsql insert_profile $delete_rel_sql
+	    db_exec_plsql insert_profile $add_rel_sql
+	}
+    }
 }
-    
+
 db_release_unused_handles
+ad_returnredirect $return_url
+
+
+
+
 

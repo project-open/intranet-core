@@ -1,4 +1,4 @@
-# /packages/intranet-core/tcl/intranet-groups-permissions.tcl
+# /packages/intranet-core/tcl/intranet-permissions-procs.tcl
 #
 # Copyright (C) 2004 Project/Open
 # The code is based on work from ArsDigita ACS 3.4
@@ -29,17 +29,17 @@ ad_library {
           group". "Membership" in this context refers to a variety
           of relationship types with OpenACS the default types 
           membership_rel and admin_rel as predefined relationships.
-          However, other relationship types are specified by 
-          application modules, such as the translator_rel, editor_rel,
-          etc. by the translation modules or analyst_rel, designer_rel,
-          developer_rel etc. by a project methodology module. 
-          These relationship types have an effect on the behaviour of 
-          components  associated to the biz-objects such as the 
-          P/O Filestorage or the P/O Translation Workflow.
+	  However, other relationship types are specified by 
+	  application modules, such as the translator_rel, editor_rel,
+	  etc. by the translation modules or analyst_rel, designer_rel,
+	  developer_rel etc. by a project methodology module. 
+	  These relationship types have an effect on the behaviour of 
+	  components  associated to the biz-objects such as the 
+	  P/O Filestorage or the P/O Translation Workflow.
       <li>"User Permission Matrix":<BR>
-          Define what user group is allowed to manage what
-          other user group. For examples, "Employees" are may
-          be entiteled to manage "Freelancers".
+	  Define what user group is allowed to manage what
+	  other user group. For examples, "Employees" are may
+	  be entiteled to manage "Freelancers".
     </ul>
     @author Frank Bergmann (fraber@fraber.de)
 }
@@ -61,6 +61,169 @@ ad_proc -public im_core_privs {} {
 } {
     return [list add_customers view_customers view_customers_all view_customer_contacts view_customer_details add_projects view_projects view_project_members view_projects_all view_projects_history add_users view_users search_intranet]
 }
+
+
+
+ad_proc -public im_user_permissions { current_user_id user_id read_var write_var admin_var } {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $current_user_id on $user_id
+} {
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    set read 0
+    set write 0
+    set admin 0
+
+    set read 1
+    set write 1
+    set admin 1
+
+    return
+
+# Also accept "user_id_from_search" instead of user_id (the one to edit...)
+if [info exists user_id_from_search] { set user_id $user_id_from_search}
+
+set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+set current_user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
+set current_user_is_employee_p [im_user_is_employee_p $current_user_id]
+set current_user_admin_p [expr $current_user_is_admin_p || $current_user_is_wheel_p]
+
+set user_is_customer_p [ad_user_group_member [im_customer_group_id] $user_id]
+set user_is_freelance_p [ad_user_group_member [im_freelance_group_id] $user_id]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
+set user_is_employee_p [im_user_is_employee_p $user_id]
+
+# Determine the type of the user to view:
+set user_type "none"
+if {$user_is_freelance_p} { set user_type "freelance" }
+if {$user_is_employee_p} { set user_type "employee" }
+if {$user_is_customer_p} { set user_type "customer" }
+if {$user_is_wheel_p} { set user_type "wheel" }
+if {$user_is_admin_p} { set user_type "admin" }
+
+set yourself_p [expr $user_id == $current_user_id]
+
+# --------------------------------------------------------
+# Determine the list of group memberships of this user
+# --------------------------------------------------------
+
+set profile_list [list]
+
+if {[im_site_wide_admin_p $user_id]} {
+    lappend profile_list "SiteAdmin"
+}
+
+foreach group_id [im_profiles_all_group_ids] {
+    if {[ad_user_group_member $group_id $user_id]} {
+	lappend profile_list [db_string group_name "select group_name from groups where group_id=:group_id"]
+    }
+}
+
+
+# --------------------------------------------------------
+# Check if "user" belongs to a group that is administered by 
+# the current users
+set administrated_user_ids [db_list administated_user_ids "
+select distinct
+	m2.member_id
+from
+	group_member_map m,
+	group_distinct_member_map m2
+where
+	m.member_id=:current_user_id
+	and m.rel_type='admin_rel'
+	and m.group_id=m2.group_id
+"]
+
+set user_in_administered_project 0
+if {[lsearch -exact $administrated_user_ids $user_id] > -1} { 
+    set user_in_administered_project 1
+}
+
+# -------------- Permission Matrix ----------------
+
+set view_user 0
+set edit_user 0
+set show_admin_links $current_user_admin_p
+
+switch $user_type {
+    freelance {
+	# Check the freelance access rights directy from im_permissions
+	set view_user [im_permission $current_user_id view_freelancers]
+	set edit_user [im_permission $current_user_id edit_freelancers]
+	if {$user_in_administered_project} {set view_user 1}
+
+	# Allows freelance administrators to delete/... 
+	if {$edit_user} {set show_admin_links 1}
+    }
+
+    employee {
+	set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
+	set edit_user $current_user_admin_p
+	if {$user_in_administered_project} {set view_user 1}
+    }
+
+    customer {
+	set view_user [im_permission $current_user_id view_customer_contacts]
+	set edit_user $current_user_admin_p
+	if {$user_in_administered_project} {set view_user 1}
+    }
+
+    wheel {
+	set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
+	set edit_user $current_user_is_admin_p
+    }
+
+    admin {
+	set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
+	set edit_user $current_user_is_admin_p
+    }
+
+    none {
+	# a user who has registered from the web site
+	set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
+	set edit_user $current_user_admin_p
+    }
+
+    default {
+	ad_return_complaint 1 "
+        <li>Internal Error: Bad user type<br>
+	User \#$user_id does not belong to a known group.<br>
+	Please notify your system administrator."
+	return
+    }
+}
+
+
+# Editing a user implies being able to see it.
+if {$edit_user} {
+    set view_user 1
+}
+
+# Everybody is allowed to see and edit him/herself,
+# so skip all security checks if it's yourself.
+if {$yourself_p} {
+    set view_user 1
+    set edit_user 1
+}
+
+
+ns_log Notice "users/view: user_type=$user_type"
+ns_log Notice "users/view: yourself_p=$yourself_p"
+ns_log Notice "users/view: user_in_administered_project=$user_in_administered_project"
+ns_log Notice "users/view: view_user=$view_user"
+ns_log Notice "users/view: edit_user=$edit_user"
+
+}
+
+
+
+
+
+
 
 
 ad_proc -public im_project_permissions {user_id project_id read_var write_var admin_var} {
@@ -131,11 +294,11 @@ ad_proc -public im_office_permissions {user_id office_id read_var write_var admi
     an internal office:
     <ul>
       <li>Internal Offices:<br>
-          Are readable by all employees
+	  Are readable by all employees
       <li>Customer Offices:<br>
-          Need either global customer access permissions
-          or the user needs to be in the admin_group of
-          the respective customer.
+	  Need either global customer access permissions
+	  or the user needs to be in the admin_group of
+	  the respective customer.
     </ul>
     Write and administration rights are only for administrators
     and the customer key account managers.
@@ -655,7 +818,7 @@ select
 	users.user_id, 
 	im_email_from_user_id(users.user_id) as email,
 	im_name_from_user_id(users.user_id) as name,
-        map.rel_type as member_role
+	map.rel_type as member_role
 from
 	users,
 	group_member_map map
@@ -671,11 +834,11 @@ order by lower(name)"
     set colspan 1
     set header_html "
       <tr> 
-        <td class=rowtitle align=middle>Name</td>"
+	<td class=rowtitle align=middle>Name</td>"
 if {$add_admin_links} {
     incr colspan
     append header_html "
-        <td class=rowtitle align=middle>[im_gif delete]</td>"
+	<td class=rowtitle align=middle>[im_gif delete]</td>"
 }
     append header_html "
       </tr>"
@@ -703,7 +866,7 @@ if {$add_admin_links} {
 
 	if {$show_user == 0} { continue }
 
-        append body_html "
+	append body_html "
 <tr $td_class([expr $count % 2])>
   <input type=hidden name=member_id value=$user_id>
   <td>"
@@ -735,8 +898,8 @@ append body_html $name
 	append footer_html "
     <tr>
       <td align=right>
-        <A HREF=/intranet/member-add?[export_url_vars group_id also_add_to_group_id return_url]>
-          Add member</A>&nbsp;
+	<A HREF=/intranet/member-add?[export_url_vars group_id also_add_to_group_id return_url]>
+	  Add member</A>&nbsp;
       </td>"
 	append footer_html "
       <td><input type=submit value=Del name=submit></td>
@@ -781,7 +944,7 @@ where
 	person_id = :user_id
 
 }] } errmsg] {
-        # no errors
+	# no errors
     }
     return $user_name
 }
@@ -907,8 +1070,8 @@ ad_proc -public im_group_id_from_parameter_helper { short_name } {
 } {
     return [db_string user_group_id_from_short_name \
  	     "select group_id 
-                from user_groups 
-               where short_name=:short_name" -default 0]
+		from user_groups 
+	       where short_name=:short_name" -default 0]
 }
 
 
@@ -1000,14 +1163,14 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 
     set authorized_p [db_string user_in_authorized_intranet_group \
 	    "select decode(count(*),0,0,1) as authorized_p
-             from group_member_map 
-             where 
-                    user_id=:user_id and
-                    (group_id=:employee_group_id or
-                     group_id=:authorized_users_group_id or
-                     group_id=:freelance_group_id or
-                     group_id=:customer_group_id
-                    )"]
+	     from group_member_map 
+	     where 
+		    user_id=:user_id and
+		    (group_id=:employee_group_id or
+		     group_id=:authorized_users_group_id or
+		     group_id=:freelance_group_id or
+		     group_id=:customer_group_id
+		    )"]
 
     if { $authorized_p == 0 } {
 	set authorized_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -1017,10 +1180,10 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 	# We let people look at other people in the same groups as them.
 	set authorized_p [db_string user_in_two_groups \
 		"select decode(count(*),0,0,1) as authorized_p
-                   from group_member_map ugm, group_member_map ugm2
-                  where ugm.user_id=:user_id
-                    and ugm2.user_id=:second_user_id
-                    and ugm.group_id=ugm2.group_id"]
+		   from group_member_map ugm, group_member_map ugm2
+		  where ugm.user_id=:user_id
+		    and ugm2.user_id=:second_user_id
+		    and ugm.group_id=ugm2.group_id"]
     }
     return $authorized_p 
 }
@@ -1028,10 +1191,6 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 
 ad_proc -public im_admin_group_id { } {Returns the group_id of administrators} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\""]
-}
-
-ad_proc -public im_project_group_id { } {Returns the groud_id for projects} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Projects'\""]
 }
 
 ad_proc -public im_employee_group_id { } {Returns the groud_id for employees} {
@@ -1062,126 +1221,8 @@ ad_proc -public im_office_group_id { } {Returns the groud_id for offices} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\""]
 }
 
-ad_proc -public im_team_group_id { } {Returns the groud_id for teams} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Team'\""]
-}
-
-ad_proc -public im_authorized_users_group_id { } {Returns the groud_id for offices} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Authorized Users'\""]
-}
-
 ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\""]
-}
-
-
-ad_proc -public im_user_profile_list { user_id } {
-    Return the list of all group memberships
-} {
-    set all_list [im_profiles_all_group_ids]
-    set group_mem_sql "
-select
-	group_id
-from
-	group_distinct_member_map
-where
-	member_id=:user_id"
-
-    set list [list]
-    db_foreach group_mem $group_mem_sql {
-	if {[lsearch $all_list $group_id] >= 0} {
-	    lappend list $group_id
-	}
-    }
-    return $list
-}
-
-
-
-ad_proc -public im_profiles_all_group_ids {} {
-    Returns the list of all profiles available.
-} {
-    # Determine group ids
-    set admin [im_admin_group_id]
-    set wheel [im_wheel_group_id]
-    set pm [im_pm_group_id]
-    set employee [im_employee_group_id]
-    set accounting [im_accounting_group_id]
-    set customer [im_customer_group_id]
-    set freelance [im_freelance_group_id]
-
-    set options [list]
-
-    lappend options $admin
-    lappend options $wheel
-    lappend options $pm
-    lappend options $accounting
-    lappend options $employee
-    lappend options $customer
-    lappend options $freelance
-
-    return $options
-
-}
-
-
-ad_proc -public im_profiles_for_new_user { user_id } {
-    Returns the list of profiles of new users that a specific user
-    is capable to create.
-} {
-    # Administrators and wheel can do everything
-    # Employees can create new freelancers
-    # Accounting can create new clients
-    # Administrators of any group can create new members
-
-    # Determine group ids
-    set admin [im_admin_group_id]
-    set wheel [im_wheel_group_id]
-    set pm [im_pm_group_id]
-    set employee [im_employee_group_id]
-    set accounting [im_accounting_group_id]
-    set customer [im_customer_group_id]
-    set freelance [im_freelance_group_id]
-
-    # Determine relevant membership
-    set admin_member [ad_user_group_member $admin $user_id]
-    set wheel_member [ad_user_group_member $wheel $user_id]
-    set pm_member [ad_user_group_member $pm $user_id]
-    set employee_member [ad_user_group_member $employee $user_id]
-    set accounting_member [ad_user_group_member $accounting $user_id]
-    set is_admin [expr $admin_member || $wheel_member || [im_is_user_site_wide_or_intranet_admin $user_id]]
-
-    # Determine administratorship of groups
-    set employee_admin [im_can_user_administer_group $employee $user_id]
-    set accounting_admin [im_can_user_administer_group $accounting $user_id]
-    set customer_admin [im_can_user_administer_group $customer $user_id]
-    set accounting_admin [im_can_user_administer_group $accounting $user_id]
-
-    set options [list]
-
-    if {$is_admin} {
-	lappend options [list $admin Administrator]
-	lappend options [list $wheel "Senior Manager"]
-	lappend options [list $pm "Project Manager"]
-    }
-
-    if {$is_admin || $accounting_admin} {
-	lappend options [list $accounting Accountant]
-    }
-
-    if {$is_admin || $employee_admin || $pm_member} {
-	lappend options [list $employee Employee]
-    }
-
-    if {$is_admin || $customer_admin || $accounting_member || $accounting_admin} {
-	lappend options [list $customer Client]
-    }
-
-    if {$is_admin || $employee_member || $employee_admin} {
-	lappend options [list $freelance Freelance]
-    }
-
-    return $options
 }
 
 ad_proc -public im_restricted_access {} {Returns an access denied message and blows out 2 levels} {
@@ -1228,8 +1269,8 @@ ad_proc -public im_customer_group_id_from_user {} {Sets group_id and short_name 
 		  where g.group_id=ugm.group_id
 		    and g.parent_group_id = :customer_group_id
 		    and ugm.user_id=:local_user_id
-             	    and rownum<2"] } {
-            # Define the variables so we won't have errors using them
+	     	    and rownum<2"] } {
+	    # Define the variables so we won't have errors using them
 	    set group_id ""
 	    set short_name ""
 	}
@@ -1261,27 +1302,27 @@ ad_proc -public im_bboard_restrict_access_to_group args {
     set refers_to [ns_set get $form refers_to]
 
     if { ![regexp {^[0-9]+$} $topic_id] } {
-        # topic_id is not an integer
-        set topic_id ""
+	# topic_id is not an integer
+	set topic_id ""
     }
     
     if { [empty_string_p $topic_id] && [empty_string_p $msg_id]  && [empty_string_p $refers_to] } {
-        # Don't have a msg_id or topic_id or refers_to - can't do anything... 
-        # Grant access by default
-        return filter_ok
+	# Don't have a msg_id or topic_id or refers_to - can't do anything... 
+	# Grant access by default
+	return filter_ok
     }
 
     if { [empty_string_p $topic_id] } {
-        # Get the topic id from whatever identifier we have
-        if { [empty_string_p $msg_id] } {
-            set msg_id $refers_to
-        }
-        set topic_id [db_string bboard_topic_from_id \
-                "select topic_id from bboard where msg_id=:msg_id" -default ""]
-        if { [empty_string_p $topic_id] } {
-            # still no way to determine the topic, let bboard handle it
-            return filter_ok
-        }
+	# Get the topic id from whatever identifier we have
+	if { [empty_string_p $msg_id] } {
+	    set msg_id $refers_to
+	}
+	set topic_id [db_string bboard_topic_from_id \
+		"select topic_id from bboard where msg_id=:msg_id" -default ""]
+	if { [empty_string_p $topic_id] } {
+	    # still no way to determine the topic, let bboard handle it
+	    return filter_ok
+	}
     }
     
     set user_id [ad_get_user_id]
@@ -1290,10 +1331,10 @@ ad_proc -public im_bboard_restrict_access_to_group args {
     if { $user_id > 0 } {
 	db_1row user_can_access_bboard_topic \
 		"select decode(count(*),0,0,1) as has_access_p
-	           from bboard_topics t
-                  where t.topic_id = :topic_id
-                  and (t.group_id is null
-	               or ad_group_member_p(:user_id, t.group_id) = 't')"
+		   from bboard_topics t
+		  where t.topic_id = :topic_id
+		  and (t.group_id is null
+		       or ad_group_member_p(:user_id, t.group_id) = 't')"
 
 	if { $has_access_p == 0 } {
 	    # Check if this is an intranet authorized user - they
@@ -1301,12 +1342,12 @@ ad_proc -public im_bboard_restrict_access_to_group args {
 	    set has_access_p [im_user_is_authorized_p $user_id]
 	}
     } elseif {$user_id == 0} {
-        # the user isnt loged in
+	# the user isnt loged in
 	db_1row user_can_access_this_bboard_topic \
 		"select decode(count(*),0,0,1) as has_access_p
-	           from bboard_topics t
-                  where t.topic_id = :topic_id
-                    and t.group_id is null"
+		   from bboard_topics t
+		  where t.topic_id = :topic_id
+		    and t.group_id is null"
     }
 
     if { $has_access_p } {
@@ -1326,11 +1367,11 @@ ad_proc -public im_hours_verify_user_id { { user_id "" } } {
     # Let's make sure the 
     set caller_id [ad_verify_and_get_user_id]
     if { [empty_string_p $user_id] || $caller_id == $user_id } {
-        return $caller_id
+	return $caller_id
     } 
     # Only administrators can edit someone else's hours
     if { [im_is_user_site_wide_or_intranet_admin $caller_id] } {
-        return $user_id
+	return $user_id
     }
 
     # return an error since the logged in user is not editing his/her own hours
