@@ -1,0 +1,130 @@
+Nesta Security Proposal
+(based on material from P/O)
+
+
+1. Role-Based Permissions
+
+
+1.1 Defining Role-Based Permissions
+
+- Package security matrix:
+  An Excel sheet specifying required roles to access all
+  packages.
+
+- Page security matrix:
+  An Excel sheet or similar specifiying required roles on
+  a per-page in the system who should be able to see it
+  or not
+  
+- Object security matrix (?)
+
+
+1.2 Enforcing Role-Based Permissions:
+
+- On the module level: 
+  Impose a restriction on all files of a specific module
+  
+- On the page level:
+  Every page that is not part of a restricted modules should 
+  contain a call to:
+  
+	  set user_id [auth::require_login]
+  
+  in order to make sure that the user is logged on and to
+  avoid errors if the user login has expired.
+  After getting the autenticated user_id, the code can 
+  manually check that a user belongs to a workflow role etc.
+  
+  Please note that the ad_maybe_redirect_for_registration 
+  and ad_verify_and_get_user_id routines are deprecated now.
+  
+- On the object level:
+  I think this is not being required by Quests workflow
+  systems.
+
+- On the object attribute level:
+  Certain object attributes may be restricted to roles.
+
+
+1.3 Auditing Role-Based Permissions
+
+- Manual security testing:
+  Work together with the testing department to veryify 
+  compliance with the security matrices
+  
+- White-box testing:
+  Check with an automatic analysis script that there
+  are [auth::require_login] entries in every file.
+  
+- Automatic testing:
+  Use TclWebTest to test the 
+
+- External Audit:
+  Let an external person try to break into the system
+
+
+
+2. Application Security
+
+
+2.1 Application Security Risks
+
+- SQL statements with "$"-variables from a URL or HTTP
+  parameter may allow intruder to execute SQL statements.
+
+- File I/O operations may allow access to OS-files
+
+- "Exec" may allow intruders to execute Unix/Windows command
+  line commands.
+
+- ... (ToDo: get an exhaustive list of all risky commands)
+
+- The usual buffer overflows are not considered a risk 
+  because we asume that the TCL interpreter and the standard 
+  TCL commands are safe.
+
+
+2.2 Application Security Measures
+
+- Don't publish the proprietary TCL code to avoid that hackers
+  can analyze the code for vulnerabilities
+
+- Enforce autentication on all pages to avoid execution of
+  risky commands by non-authenticated users.
+  
+- ...
+
+
+2.3 Application Security Audit
+
+- Scan all files for risky commands using a global search or
+  and automatic script
+
+- Scan all files for "$"-variables in SQL code
+
+
+
+
+3. System Security
+
+- Run evey AOLServer instance with it's own unprivileged user
+  in order to separate it from possible other instances on the
+  same computer.
+  
+- Check the AOLServer security manual [1]
+
+- Apply patches to the operating system regularly.
+
+- Move/copy access-log files to a save place that can't be 
+  modified from the AOLServer user in oder to be able to
+  track down incidents
+
+
+
+4. References:
+
+[1] AOLServer Security Guide
+    http://www.aolserver.com/docs/admin/security.html
+
+[2] OSSTMM Security Testing Methodology
+    http://www.osstmm.org/
