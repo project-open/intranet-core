@@ -97,7 +97,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set user_is_group_member_p [ad_user_group_member $project_id $user_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $project_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
-    set user_in_project_group_p [db_string user_belongs_to_project "select decode ( ad_group_member_p ( :user_id, $project_id ), 'f', 0, 1 ) from dual" ]
+    set user_in_project_group_p [string compare "t" [db_string user_belongs_to_project "select ad_group_member_p( :user_id, :project_id ) from dual" ] ]
 
     # Admin permissions to global + intranet admins + group administrators
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
@@ -195,22 +195,21 @@ where	upper(trim(project_name)) = upper(trim(:project_name))
 	set sql "
 begin
     :1 := im_project.new(
-	object_type	=> 'im_project',
-	project_name	=> '$project_name',
-        project_nr      => '$project_nr',
-        project_path   => '$project_path'
-"
-	if {"" != $company_id} { append sql "\t, company_id => $company_id\n" }
-	if {"" != $parent_id} { append sql "\t, parent_id => $parent_id\n" }
-	if {"" != $project_type_id} { append sql "\t, project_type_id => $project_type_id\n" }
-	if {"" != $project_status_id} { append sql "\t, project_status_id => $project_status_id\n" }
-	
-	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
-	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
-	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
-	if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
 
-	append sql "        );
+	object_type	=> 'im_project',
+	creation_date => :creation_date,
+	creation_user => :creation_user,
+	creation_ip => :creation_ip,
+	context_id => :context_id,
+
+	project_name	=> :project_name,
+        project_nr      => :project_nr,
+        project_path   => :project_path,
+	parent_id => :parent_id,
+        company_id => :company_id,
+	project_type_id => :project_type_id,
+	project_status_id => :project_status_id
+    );
     end;"
         set project_id [db_exec_plsql create_new_project $sql]
         return $project_id
