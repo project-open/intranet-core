@@ -353,39 +353,39 @@ commit;
 delete from im_view_columns where column_id >= 8100 and column_id <= 8199;
 --
 insert into im_view_columns values (8100,81,NULL,'Office Name','$office_name','','',
-10, 'im_permission $user_id view_customer_details');
+10, '');
 insert into im_view_columns values (8101,81,NULL,'Office Path','$office_path','','',
-15, 'im_permission $user_id view_customer_details');
+15, '');
 insert into im_view_columns values (8102,81,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',
 20, 'im_permission $user_id view_customers');
 insert into im_view_columns values (8104,81,NULL,'Type', '$office_type','','',
-40,'im_permission $user_id view_customer_details');
+40,'');
 insert into im_view_columns values (8106,81,NULL,'Status','$office_status','','',
-60,'im_permission $user_id view_customer_details');
+60,'');
 insert into im_view_columns values (8108,81,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"','','',
-80,'im_permission $user_id view_customer_details');
+80,'');
 
 insert into im_view_columns values (8130,81,NULL,'Phone','$phone','','',
-300,'im_permission $user_id view_customer_details');
+300,'');
 insert into im_view_columns values (8132,81,NULL,'Fax','$fax','','',
-320,'im_permission $user_id view_customer_details');
+320,'');
 
 insert into im_view_columns values (8150,81,NULL,'City','$address_city','','',
-500,'im_permission $user_id view_customer_details');
+500,'');
 insert into im_view_columns values (8152,81,NULL,'State','$address_state','','',
-520,'im_permission $user_id view_customer_details');
+520,'');
 insert into im_view_columns values (8154,81,NULL,'Country','$address_country','','',
-540,'im_permission $user_id view_customer_details');
+540,'');
 insert into im_view_columns values (8156,81,NULL,'ZIP','$address_postal_code','','',
-560,'im_permission $user_id view_customer_details');
+560,'');
 insert into im_view_columns values (8158,81,NULL,'Address',
 '$address_line1 $address_line2','','',
-580,'im_permission $user_id view_customer_details');
+580,'');
 
 insert into im_view_columns values (8170,81,NULL,'Note','$note','','',
-700,'im_permission $user_id view_customer_details');
+700,'');
 
 --
 delete from im_view_columns where column_id >= 8190 and column_id <= 8199;

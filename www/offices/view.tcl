@@ -131,7 +131,7 @@ set office_html "
 
 set ctr 1
 db_foreach column_list_sql $column_sql {
-    if {[eval $visible_for]} {
+    if {"" == $visible_for || [eval $visible_for]} {
 	append office_html "
         <tr $td_class([expr $ctr % 2])>
           <td>$column_name &nbsp;

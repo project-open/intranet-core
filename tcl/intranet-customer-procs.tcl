@@ -80,8 +80,21 @@ ad_proc -public im_customer_permissions {user_id customer_id view_var read_var w
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
     set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
 
+    # Get basic customer information
+    catch {
+	db_1row customer_info "
+select 
+	c.*,
+	c.manager_id as key_account_id
+from
+	im_customers c
+where
+	customer_id = :customer_id
+"
+    } catch_err
+
+
     # Key Account is also a project manager
-    set key_account_id [db_string get_key_account "select manager_id from im_customers where customer_id=:customer_id" -default 0]
     set user_is_key_account_p 0
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
     set admin [expr $user_admin_p || $user_is_key_account_p]
@@ -95,6 +108,8 @@ ad_proc -public im_customer_permissions {user_id customer_id view_var read_var w
 
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_customers_all]} { set read 1 }
+
+    if {$user_is_employee_p && [string equal "internal" $customer_path]} { set read 1 }
     
     if {$admin} {
 	set read 1
