@@ -358,10 +358,10 @@ BEGIN
      where group_name = p_profile_name;
 
      -- Get the context_id (package_id)
-     select package_id 
-     into v_object_id
-     from apm_packages
-     where package_key = 'intranet-core';
+--     select package_id 
+--     into v_object_id
+--     from apm_packages
+--     where package_key = 'intranet-core';
 
      -- shortcut: 400 works ... 
      v_object_id := 400;
