@@ -15,6 +15,7 @@
 --
 -- @author	  unknown@arsdigita.com
 -- @author	  frank.bergmann@project-open.com
+-- @author        juanjoruizx@yahoo.es
 
 -- Projects
 --
@@ -52,6 +53,9 @@ create table im_projects (
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
+        tree_sortkey		varbit,
+        max_child_sortkey	varbit,
+
 	company_id		integer not null
 				constraint im_projects_company_fk 
 				references im_companies,
@@ -99,6 +103,54 @@ alter table im_projects add
 	constraint im_projects_name_un 
 	unique(project_name, company_id, parent_id);
 
+-- This is the sortkey code
+--
+create function im_project_insert_tr ()
+returns opaque as '
+declare
+    v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
+    v_parent_sortkey                im_projects.tree_sortkey%TYPE;
+begin
+
+    if new.parent_id is null
+    then
+
+        select '''', coalesce(max_child_sortkey, '''')
+        into v_parent_sortkey, v_max_child_sortkey
+        from im_projects
+        where parent_id is null
+        for update;
+
+        v_max_child_sortkey := tree_increment_key(v_max_child_sortkey);
+
+        update im_projects
+        set max_child_sortkey = v_max_child_sortkey
+        where project_id = new.project_id;
+
+    else
+
+        select coalesce(tree_sortkey, ''''), max_child_sortkey
+        into v_parent_sortkey, v_max_child_sortkey
+        from im_projects
+        where project_id = new.parent_id
+        for update;
+
+        v_max_child_sortkey := tree_increment_key(v_max_child_sortkey);
+
+        update im_projects
+        set max_child_sortkey = v_max_child_sortkey
+        where project_id = new.parent_id;
+
+    end if;
+    new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
+
+    return new;
+end;' language 'plpgsql';
+
+create trigger im_project_insert_tr
+before insert on im_projects
+for each row
+execute procedure im_project_insert_tr();
 
 
 

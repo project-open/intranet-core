@@ -349,6 +349,10 @@ drop function inline_0 ();
 
 
 -- drop package im_project;
+
+drop trigger im_project_insert_tr on im_projects;
+drop function im_project_insert_tr ();
+
 drop table im_projects;
 drop sequence im_url_types_type_id_seq;
 

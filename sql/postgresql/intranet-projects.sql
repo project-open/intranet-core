@@ -15,6 +15,7 @@
 --
 -- @author	  unknown@arsdigita.com
 -- @author	  frank.bergmann@project-open.com
+-- @author	  juanjoruizx@yahoo.es
 
 -- Projects
 --
@@ -47,6 +48,9 @@ create table im_projects (
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
+        tree_sortkey		raw(240),
+        max_child_sortkey	raw(100),
+
 	company_id		integer not null
 				constraint im_projects_company_fk 
 				references im_companies,
@@ -84,6 +88,54 @@ create table im_projects (
 				check (requires_report_p in ('t','f')),
 	project_budget		float
 );
+
+-- This is the sortkey code
+--
+create or replace trigger im_project_insert_tr
+before insert on im_forum_topics
+for each row
+declare
+    v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
+    v_parent_sortkey                im_projects.tree_sortkey%TYPE;
+begin
+
+    if :new.parent_id is null
+    then
+
+        select '', max_child_sortkey
+        into v_parent_sortkey, v_max_child_sortkey
+        from im_projects
+        where parent_id is null
+        for update of max_child_sortkey;
+
+        v_max_child_sortkey := tree.increment_key(v_max_child_sortkey);
+
+        update im_projects
+        set max_child_sortkey = v_max_child_sortkey
+        where project_id = new.project_id;
+
+    else
+
+        select nvl(tree_sortkey, ''), max_child_sortkey
+        into v_parent_sortkey, v_max_child_sortkey
+        from im_projects
+        where project_id = :new.parent_id
+        for update of max_child_sortkey;
+
+        v_max_child_sortkey := tree.increment_key(v_max_child_sortkey);
+
+        update im_projects
+        set max_child_sortkey = v_max_child_sortkey
+        where project_id = :new.parent_id;
+
+    end if;
+
+    :new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
+
+end im_forum_topic_insert_tr;
+/
+show errors
+
 
 create index im_project_parent_id_idx on im_projects(parent_id);
 -- create index im_project_status_id_idx on im_projects(project_status_id);

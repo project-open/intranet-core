@@ -79,8 +79,8 @@ select
 	im_name_from_user_id(c.manager_id) as manager
 from
 	im_projects p, 
-	im_companies c,
-	im_projects pp
+	im_companies c
+
 where 
 	p.project_id=:project_id
 	and p.company_id = c.company_id
