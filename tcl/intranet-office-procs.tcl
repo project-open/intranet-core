@@ -59,7 +59,7 @@ from
 	im_companies c
 where
 	o.office_id = :office_id
-	and o.company_id = c.company_id(+)
+	and o.company_id = c.company_id
 "]
 
     if {"" == $company_id || !$company_id} {
