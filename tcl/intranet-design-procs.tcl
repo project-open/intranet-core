@@ -745,9 +745,12 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     # Enable "Users Online" mini-component for OpenACS 5.1 only
     set users_online_str ""
-    if {[publish::proc_exists whos_online num_users]} {
+
+    set proc "num_users"
+    set namespace "whos_online"
+
+    if {[string equal $proc [namespace eval $namespace "info procs $proc"]]} {
 	set num_users_online [lc_numeric [whos_online::num_users]]
-	set num_users_online 0
 	set user_str "users"
 	if {1 == $num_users_online} { set user_str "user"}
         set users_online_str "<A href=/intranet/whos-online>$num_users_online $user_str online</A><BR>\n"
