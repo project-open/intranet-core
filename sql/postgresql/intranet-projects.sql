@@ -21,7 +21,7 @@
 -- Each project can have any number of sub-projects
 
 select acs_object_type__create_type (
-        'im_projectoffice',            -- object_type
+        'im_project',            -- object_type
         'Project',               -- pretty_name
         'Projects',              -- pretty_plural
         'im_biz_object',        -- supertype
