@@ -107,35 +107,35 @@ insert into im_views values (81, 'office_view', 'view_offices', '');
 delete from im_view_columns where column_id > 2200 and column_id < 2299;
 --
 insert into im_view_columns values (2201,22,NULL,'Project #',
-'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','',1,
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','','',1,
 'im_permission $user_id view_projects');
 insert into im_view_columns values (2203,22,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','',2,
+'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','','',2,
 'im_permission $user_id view_customers');
 
 insert into im_view_columns values (2207,22,NULL,'Spend Days',
-'$spend_days','',4,'im_permission $user_id view_projects');
+'$spend_days','','',4,'im_permission $user_id view_projects');
 insert into im_view_columns values (2209,22,NULL,'Estim. Days',
-'$est_days','',5,'im_permission $user_id view_projects');
+'$est_days','','',5,'im_permission $user_id view_projects');
 
 insert into im_view_columns values (2213,22,NULL,'Status',
-'$project_status','',14,'im_permission $user_id view_projects');
+'$project_status','','',14,'im_permission $user_id view_projects');
 insert into im_view_columns values (2215,22,NULL,'Start Date',
-'$start_date','',15,'im_permission $user_id view_projects');
+'$start_date','','',15,'im_permission $user_id view_projects');
 insert into im_view_columns values (2217,22,NULL,'Delivery Date',
-'$end_date','',16,'im_permission $user_id view_projects');
+'$end_date','','',16,'im_permission $user_id view_projects');
 insert into im_view_columns values (2219,22,NULL,'Create',
-'$create_date','',17,'im_permission $user_id view_projects');
+'$create_date','','',17,'im_permission $user_id view_projects');
 insert into im_view_columns values (2221,22,NULL,'Quote',
-'$quote_date','',18,'im_permission $user_id view_projects');
+'$quote_date','','',18,'im_permission $user_id view_projects');
 insert into im_view_columns values (2223,22,NULL,'Open',
-'$open_date','',19,'im_permission $user_id view_projects');
+'$open_date','','',19,'im_permission $user_id view_projects');
 insert into im_view_columns values (2225,22,NULL,'Deliver',
-'$deliver_date','',20,'im_permission $user_id view_projects');
+'$deliver_date','','',20,'im_permission $user_id view_projects');
 insert into im_view_columns values (2227,22,NULL,'Invoice',
-'$invoice_date','',21,'im_permission $user_id view_projects');
+'$invoice_date','','',21,'im_permission $user_id view_projects');
 insert into im_view_columns values (2229,22,NULL,'Close',
-'$close_date','',22,'im_permission $user_id view_projects');
+'$close_date','','',22,'im_permission $user_id view_projects');
 --
 commit;
 
@@ -144,25 +144,25 @@ commit;
 delete from im_view_columns where column_id > 2000 and column_id < 2099;
 --
 insert into im_view_columns values (2001,20,NULL,'Project #',
-'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','',1,
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','','',1,
 'im_permission $user_id view_projects');
 insert into im_view_columns values (2003,20,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','',2,
+'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','','',2,
 'im_permission $user_id view_customers');
 insert into im_view_columns values (2007,20,NULL,'Project Name',
-'$project_name','',4,'im_permission $user_id view_projects');
+'$project_name','','',4,'im_permission $user_id view_projects');
 insert into im_view_columns values (2009,20,NULL,'Type',
-'$project_type','',5,'im_permission $user_id view_projects');
+'$project_type','','',5,'im_permission $user_id view_projects');
 insert into im_view_columns values (2013,20,NULL,'Project Manager',
-'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"','',7,
+'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"','','',7,
 'im_permission $user_id view_projects');
 insert into im_view_columns values (2015,20,NULL,'Start Date',
-'$start_date','',8,'im_permission $user_id view_projects');
+'$start_date','','',8,'im_permission $user_id view_projects');
 insert into im_view_columns values (2017,20,NULL,'Delivery Date',
-'$end_date','',9,'im_permission $user_id view_projects');
+'$end_date','','',9,'im_permission $user_id view_projects');
 
 insert into im_view_columns values (2021,20,NULL,'Status',
-'$project_status','',11,'im_permission $user_id view_projects');
+'$project_status','','',11,'im_permission $user_id view_projects');
 commit;
 
 -- CustomerListPage columns.
@@ -170,23 +170,23 @@ commit;
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
 insert into im_view_columns values (1,1,NULL,'Client',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','',1,
+'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',1,
 'im_permission $user_id view_customer_contacts');
 insert into im_view_columns values (2,1,NULL,'Client',
-'$customer_name','',1,
+'$customer_name','','',1,
 'expr 1 - [im_permission $user_id view_customer_names]');
 insert into im_view_columns values (3,1,NULL,'Type',
-'$customer_type','',2,'im_permission $user_id employee');
+'$customer_type','','',2,'im_permission $user_id employee');
 insert into im_view_columns values (4,1,NULL,'Status',
-'$customer_status','',3,'im_permission $user_id employee');
+'$customer_status','','',3,'im_permission $user_id employee');
 insert into im_view_columns values (5,1,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$customer_contact_id>$customer_contact_name</A>"',
-'',4,'im_permission $user_id view_customer_contacts');
+'','',4,'im_permission $user_id view_customer_contacts');
 insert into im_view_columns values (6,1,NULL,'Contact Email',
-'"<A HREF=mailto:$customer_contact_email>$customer_contact_email</A>"','',5,
+'"<A HREF=mailto:$customer_contact_email>$customer_contact_email</A>"','','',5,
 'im_permission $user_id view_customer_contacts');
 -- insert into im_view_columns values (7,1,NULL,'Contact Phone',
--- '$customer_phone','',6,'im_permission $user_id view_customer_contact');
+-- '$customer_phone','','',6,'im_permission $user_id view_customer_contact');
 
 
 --------------------------------------------------------------
@@ -195,29 +195,29 @@ insert into im_view_columns values (6,1,NULL,'Contact Email',
 delete from im_view_columns where column_id > 199 and column_id < 299;
 --
 -- insert into im_view_columns values (207,10,NULL,'#',
--- '$user_id','',6,'im_permission $user_id view_users');
+-- '$user_id','','',6,'im_permission $user_id view_users');
 
 insert into im_view_columns values (200,10,NULL,'Name',
-'"<a href=/intranet/users/view?user_id=$user_id>$name</a>"','',2,
+'"<a href=/intranet/users/view?user_id=$user_id>$name</a>"','','',2,
 'im_permission $user_id view_users');
 
 insert into im_view_columns values (201,10,NULL,'Email',
-'"<a href=mailto:$email>$email</a>"','',3,
+'"<a href=mailto:$email>$email</a>"','','',3,
 'im_permission $user_id view_users');
 -- insert into im_view_columns values (202,10,NULL,'Status',
--- '$status','',4,'im_permission $user_id view_users');
+-- '$status','','',4,'im_permission $user_id view_users');
 
 insert into im_view_columns values (203,10,NULL,'MSM',
-'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\"><IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\" width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','',5,'im_permission $user_id view_users');
+'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\"><IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\" width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'im_permission $user_id view_users');
 
 insert into im_view_columns values (204,10,NULL,'Work Phone',
-'$work_phone','',6,'im_permission $user_id view_users');
+'$work_phone','','',6,'im_permission $user_id view_users');
 
 insert into im_view_columns values (205,10,NULL,'Cell Phone',
-'$cell_phone','',7,'im_permission $user_id view_users');
+'$cell_phone','','',7,'im_permission $user_id view_users');
 
 insert into im_view_columns values (206,10,NULL,'Home Phone',
-'$home_phone','',8,'im_permission $user_id view_users');
+'$home_phone','','',8,'im_permission $user_id view_users');
 
 
 -------------------------------------------------------------------
@@ -225,13 +225,13 @@ insert into im_view_columns values (206,10,NULL,'Home Phone',
 --
 delete from im_view_columns where column_id > 1100 and column_id <= 1199;
 --
-insert into im_view_columns values (1101,11,NULL,'Name','$name','',1,
+insert into im_view_columns values (1101,11,NULL,'Name','$name','','',1,
 'im_view_user_permission $user_id $current_user_id $name view_users');
 insert into im_view_columns values (1103,11,NULL,'Email',
-'"<a href=\"mailto:$email\">$email</a>"','',2,
+'"<a href=\"mailto:$email\">$email</a>"','','',2,
 'im_view_user_permission $user_id $current_user_id $email view_users');
 insert into im_view_columns values (1105,11,NULL,'Home',
-'"<a href=\"$url\">$url</a>"','',3,
+'"<a href=\"$url\">$url</a>"','','',3,
 'im_view_user_permission $user_id $current_user_id $url view_users');
 --
 commit;
@@ -242,44 +242,44 @@ commit;
 --
 delete from im_view_columns where column_id > 399 and column_id < 499;
 --
-insert into im_view_columns values (401,12,NULL,'Home Phone','$home_phone','',1,
+insert into im_view_columns values (401,12,NULL,'Home Phone','$home_phone','','',1,
 'im_view_user_permission $user_id $current_user_id $home_phone view_users');
-insert into im_view_columns values (403,12,NULL,'Cell Phone','$cell_phone','',2,
+insert into im_view_columns values (403,12,NULL,'Cell Phone','$cell_phone','','',2,
 'im_view_user_permission $user_id $current_user_id $cell_phone view_users');
-insert into im_view_columns values (404,12,NULL,'Work Phone','$work_phone','',3,
+insert into im_view_columns values (404,12,NULL,'Work Phone','$work_phone','','',3,
 'im_view_user_permission $user_id $current_user_id $work_phone view_users');
-insert into im_view_columns values (405,12,NULL,'Pager','$pager','',4,
+insert into im_view_columns values (405,12,NULL,'Pager','$pager','','',4,
 'im_view_user_permission $user_id $current_user_id $pager view_users');
-insert into im_view_columns values (407,12,NULL,'Fax','$fax','',5,
+insert into im_view_columns values (407,12,NULL,'Fax','$fax','','',5,
 'im_view_user_permission $user_id $current_user_id $fax view_users');
-insert into im_view_columns values (409,12,NULL,'AIM','$aim_screen_name','',6,
+insert into im_view_columns values (409,12,NULL,'AIM','$aim_screen_name','','',6,
 'im_view_user_permission $user_id $current_user_id $aim_screen_name view_users');
-insert into im_view_columns values (411,12,NULL,'ICQ','$icq_number','',7,
+insert into im_view_columns values (411,12,NULL,'ICQ','$icq_number','','',7,
 'im_view_user_permission $user_id $current_user_id $icq_number view_users');
-insert into im_view_columns values (413,12,NULL,'Home Line 1','$ha_line1','',8,
+insert into im_view_columns values (413,12,NULL,'Home Line 1','$ha_line1','','',8,
 'im_view_user_permission $user_id $current_user_id $ha_line1 view_users');
-insert into im_view_columns values (415,12,NULL,'Home Line 2','$ha_line2','',9,
+insert into im_view_columns values (415,12,NULL,'Home Line 2','$ha_line2','','',9,
 'im_view_user_permission $user_id $current_user_id $ha_line2 view_users');
-insert into im_view_columns values (417,12,NULL,'Home City','$ha_city','',10,
+insert into im_view_columns values (417,12,NULL,'Home City','$ha_city','','',10,
 'im_view_user_permission $user_id $current_user_id $ha_city view_users');
-insert into im_view_columns values (421,12,NULL,'Home ZIP','$ha_postal_code','',11,
+insert into im_view_columns values (421,12,NULL,'Home ZIP','$ha_postal_code','','',11,
 'im_view_user_permission $user_id $current_user_id $ha_postal_code view_users');
-insert into im_view_columns values (423,12,NULL,'Home Country','$ha_country_name','',
+insert into im_view_columns values (423,12,NULL,'Home Country','$ha_country_name','','',
 12,'im_view_user_permission $user_id $current_user_id $ha_country_name view_users');
-insert into im_view_columns values (425,12,NULL,'Work Line 1','$wa_line1','',13,
+insert into im_view_columns values (425,12,NULL,'Work Line 1','$wa_line1','','',13,
 'im_view_user_permission $user_id $current_user_id $wa_line1 view_users');
-insert into im_view_columns values (427,12,NULL,'Work Line 2','$wa_line2','',14,
+insert into im_view_columns values (427,12,NULL,'Work Line 2','$wa_line2','','',14,
 'im_view_user_permission $user_id $current_user_id $wa_line2 view_users');
-insert into im_view_columns values (429,12,NULL,'Work City','$wa_city','',15,
+insert into im_view_columns values (429,12,NULL,'Work City','$wa_city','','',15,
 'im_view_user_permission $user_id $current_user_id $wa_city view_users');
-insert into im_view_columns values (433,12,NULL,'Work ZIP','$wa_postal_code','',16,
+insert into im_view_columns values (433,12,NULL,'Work ZIP','$wa_postal_code','','',16,
 'im_view_user_permission $user_id $current_user_id $wa_postal_code view_users');
-insert into im_view_columns values (435,12,NULL,'Work Country','$wa_country_name','',
+insert into im_view_columns values (435,12,NULL,'Work Country','$wa_country_name','','',
 17,'im_view_user_permission $user_id $current_user_id $wa_country_name view_users');
-insert into im_view_columns values (437,12,NULL,'Note','$note','',18,
+insert into im_view_columns values (437,12,NULL,'Note','$note','','',18,
 'im_view_user_permission $user_id $current_user_id $note view_users');
 insert into im_view_columns values (439,12,NULL,' ',
-'"<input type=submit value=Edit>"','',99,
+'"<input type=submit value=Edit>"','','',99,
 'set a $write');
 --
 commit;
@@ -294,22 +294,22 @@ commit;
 delete from im_view_columns where column_id >= 8000 and column_id <= 8099;
 --
 insert into im_view_columns values (8001,80,NULL,'Office',
-'"<A HREF=$office_view_page?office_id=$office_id>$office_name</A>"','',10,
+'"<A HREF=$office_view_page?office_id=$office_id>$office_name</A>"','','',10,
 'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8002,80,NULL,'Company',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','',20,
+'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',20,
 'im_permission $user_id view_customers');
 insert into im_view_columns values (8003,80,NULL,'Type',
-'$office_type','',30,'im_permission $user_id view_customer_details');
+'$office_type','','',30,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8004,80,NULL,'Status',
-'$office_status','',40,'im_permission $user_id view_customer_details');
+'$office_status','','',40,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8005,80,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"',
-'',50,'im_permission $user_id view_customer_details');
+'','',50,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8006,80,NULL,'City',
-'$address_city','',60,'im_permission $user_id view_customer_details');
+'$address_city','','',60,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8007,80,NULL,'Phone',
-'$phone','',70,'im_permission $user_id view_customer_details');
+'$phone','','',70,'im_permission $user_id view_customer_details');
 --
 commit;
 
@@ -318,42 +318,42 @@ commit;
 --
 delete from im_view_columns where column_id >= 8100 and column_id <= 8199;
 --
-insert into im_view_columns values (8100,81,NULL,'Office Name','$office_name','',
+insert into im_view_columns values (8100,81,NULL,'Office Name','$office_name','','',
 10, 'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8102,81,NULL,'Company',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','',
+'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',
 20, 'im_permission $user_id view_customers');
-insert into im_view_columns values (8104,81,NULL,'Type', '$office_type','',
+insert into im_view_columns values (8104,81,NULL,'Type', '$office_type','','',
 40,'im_permission $user_id view_customer_details');
-insert into im_view_columns values (8106,81,NULL,'Status','$office_status','',
+insert into im_view_columns values (8106,81,NULL,'Status','$office_status','','',
 60,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8108,81,NULL,'Contact',
-'"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"','',
+'"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"','','',
 80,'im_permission $user_id view_customer_details');
 
-insert into im_view_columns values (8130,81,NULL,'Phone','$phone','',
+insert into im_view_columns values (8130,81,NULL,'Phone','$phone','','',
 300,'im_permission $user_id view_customer_details');
-insert into im_view_columns values (8132,81,NULL,'Fax','$fax','',
+insert into im_view_columns values (8132,81,NULL,'Fax','$fax','','',
 320,'im_permission $user_id view_customer_details');
 
-insert into im_view_columns values (8150,81,NULL,'City','$address_city','',
+insert into im_view_columns values (8150,81,NULL,'City','$address_city','','',
 500,'im_permission $user_id view_customer_details');
-insert into im_view_columns values (8152,81,NULL,'State','$address_state','',
+insert into im_view_columns values (8152,81,NULL,'State','$address_state','','',
 520,'im_permission $user_id view_customer_details');
-insert into im_view_columns values (8154,81,NULL,'Country','$address_country','',
+insert into im_view_columns values (8154,81,NULL,'Country','$address_country','','',
 540,'im_permission $user_id view_customer_details');
-insert into im_view_columns values (8156,81,NULL,'ZIP','$address_postal_code','',
+insert into im_view_columns values (8156,81,NULL,'ZIP','$address_postal_code','','',
 560,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8158,81,NULL,'Address',
-'$address_line1 $address_line2','',
+'$address_line1 $address_line2','','',
 580,'im_permission $user_id view_customer_details');
 
-insert into im_view_columns values (8170,81,NULL,'Note','$note','',
+insert into im_view_columns values (8170,81,NULL,'Note','$note','','',
 700,'im_permission $user_id view_customer_details');
 
 --
 delete from im_view_columns where column_id >= 8190 and column_id <= 8199;
-insert into im_view_columns values (8190,81,NULL,' ','"<input type=submit value=Edit>"','',
+insert into im_view_columns values (8190,81,NULL,' ','"<input type=submit value=Edit>"','','',
 900,'set a $admin');
 
 --
