@@ -1,14 +1,27 @@
 # /www/intranet/projects/view.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The software is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     View all the info about a specific project.
-    Code based on ACS 3.4 Intranet from mbryzek@arsdigita.com
 
     @param project_id the group id
     @param orderby the display order
     @param show_all_comments whether to show all comments
 
-    @author Frank Bergmann (fraber@fraber.de)
+    @author mbryzek@arsdigita.com
+    @author Frank Bergmann (frank.bergmann@project-open.com)
     @creation-date Jan 2000
 } {
     project_id:integer
@@ -18,12 +31,20 @@ ad_page_contract {
     { forum_view_name "forum_list_project" }
 }
 
-
 # ---------------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
+
+# get the current users permissions for this project
+im_project_permissions $user_id $project_id read write admin
+
+ns_log Notice "read=$read"
+ns_log Notice "write=$write"
+ns_log Notice "admin=$admin"
+
+
 set current_user_id $user_id
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
@@ -106,7 +127,7 @@ set allowed 0
 if {$user_admin_p} { set allowed 1}
 if {$user_is_project_customer_p} { set allowed 1}
 if {$user_is_group_member_p} { set allowed 1}
-if {[im_permission $user_id view_projects_of_others]} { set allowed 1}
+if {[im_permission $user_id view_projects_all]} { set allowed 1}
 if {!$allowed} {
     ad_return_complaint 1 "You have insufficient permissions to view this page."
     return
