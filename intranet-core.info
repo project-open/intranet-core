@@ -13,7 +13,7 @@
         <release-date>2004-02-17</release-date>
         <vendor url="http://www.project-open.com/">Project/Open</vendor>
 
-        <provides url="intranet-core" version="1.0"/>
+        <provides url="intranet-core" version="2.0.1"/>
         <requires url="acs-subsite" version="5.0"/>
 
         <callbacks>
