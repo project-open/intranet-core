@@ -91,7 +91,7 @@ create table im_projects (
 
 -- This is the sortkey code
 --
-create function im_project_insert_tr ()
+create or replace function im_project_insert_tr ()
 returns opaque as '
 declare
     v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
@@ -130,7 +130,7 @@ execute procedure im_project_insert_tr();
 
 
 
-create function im_projects_update_tr () returns opaque as '
+create or replace function im_projects_update_tr () returns opaque as '
 declare
         v_parent_sk     varbit default null;
         v_max_child_sortkey     varbit;
