@@ -40,18 +40,13 @@ if {[exists_and_not_null profile]} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
-im_user_permissions $current_user_id $user_id view read write admin
+
 set page_title "Add a user"
 set context [list [list "." "Users"] "Add user"]
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
-set return_url "/intranet/users/"
 
-if {!$read} {
-    ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
-    return
-}
 
 if {[im_permission $current_user_id view_users]} {
     set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
@@ -64,8 +59,17 @@ set editing_existing_user 0
 if {"" != $user_id} { 
     set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
 }
+ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
+
 
 if {$editing_existing_user} {
+
+    # Permissions for existing user: We need to be able to admin him:
+    im_user_permissions $current_user_id $user_id view read write admin
+    if {!$admin} {
+	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
+	return
+    }
 
     set user_details_sql "
 select
@@ -95,12 +99,14 @@ where
     ns_log Notice "/users/new: profile_values=$profile_values"
 
 } else {
+
     # Pre-generate user_id for double-click protection
     set user_id [db_nextval acs_object_id_seq]
 
     # Empty set of default values for a new user
     set profile_values [list]
 }
+ns_log Notice "/users/new: user_id=$user_id, current_user_id=$current_user_id"
 
 
 # ---------------------------------------------------------------
@@ -149,8 +155,10 @@ ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
 
 # Change the order of the inner list elements for
 # the OpenACS 5.0 form elements:
-#
+
 set all_profiles [im_profiles_all]
+#set all_profiles [im_profiles_managable_for_user $current_user_id]
+
 ns_log Notice "/users/new: all_profiles=$all_profiles"
 
 set profile_list [list]

@@ -21,11 +21,12 @@ ad_page_contract {
     @param user_id
     @author mobin@mit.edu (Usman Y. Mobin)
 } {
+    { return_url "" }
     user_id:integer,notnull
 }
 
 
-set return_url [ad_pvt_home]
+if {"" == $return_url} { set return_url "/intranet/" }
 
 # Get the password and user ID
 # as of Oracle 8.1 we'll have upper(email) constrained to be unique

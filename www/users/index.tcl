@@ -136,38 +136,12 @@ order by
 	sort_order"
 
 db_foreach column_list_sql $column_sql {
-    if {[eval $visible_for]} {
+    if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
     }
 }
-
-# ---------------------------------------------------------------
-# 4. Define Filter Categories
-# ---------------------------------------------------------------
-
-# No filters...
-
-set filter_html "
-<table border=0 width=100% cellpadding=2 cellspacing=2>
-<tr><td align=right>
-
-    <table border=0 cellpadding=0 cellspacing=0>
-    <tr>
-      <td class=rowtitle align=center>
-        Admin Users
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <li><a href=/intranet/users/new>Add a new user</a>
-      </td>
-    </tr>
-    </table>
-
-</td></tr>
-</table>
-"
+ns_log Notice "/users/index.tcl: column_vars=$column_vars"
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
@@ -264,15 +238,8 @@ select
 from 
 	($sql) t
 "]
-
+    ns_log Notice "/users/index.tcl: total_in_limited=$total_in_limited"
 }
-
-# ---------------------------------------------------------------
-# 6. Format the Filter
-# ---------------------------------------------------------------
-
-# No filter except for the alpha-bar
-
 
 # ---------------------------------------------------------------
 # 7. Format the List Table Header
@@ -373,7 +340,6 @@ set table_continuation_html ""
 set group_id $user_group_id
 
 set page_body "
-$filter_html
 [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list group_id start_idx order_by how_many view_name letter]]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
