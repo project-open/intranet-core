@@ -17,5 +17,5 @@ cvs checkout intranet-riskmanagement
 cvs checkout intranet-timesheet
 cvs checkout intranet-trans-invoices
 cvs checkout intranet-translation
-cvs checkout intranet-translation-quality
+cvs checkout intranet-trans-quality
 cvs checkout intranet-travel

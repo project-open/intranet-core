@@ -20,6 +20,6 @@ tar czf intranet-riskmanagement-$VER.apm --exclude='*CVS*' --exclude='*~' intran
 tar czf intranet-timesheet-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
 tar czf intranet-trans-invoices-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
 tar czf intranet-translation-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-translation
-tar czf intranet-translation-quality-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-translation-quality
+tar czf intranet-trans-quality-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
 tar czf intranet-travel-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-travel
 
