@@ -42,7 +42,7 @@
   <msg key="Address_1">Address 1</msg>
   <msg key="Address_2">Address 2</msg>
   <msg key="Admin">Admin</msg>
-  <msg key="Admin_category_type">Admin %category_type%</msg>
+  <msg key="Admin_category_type">Admin</msg>
   <msg key="Admin_Companies">Admin Companies</msg>
   <msg key="Admin_Home">Admin Home</msg>
   <msg key="Admin_Offices">Admin Offices</msg>
@@ -107,7 +107,9 @@
   <msg key="Comments">Comments?</msg>
   <msg key="Companies">Companies</msg>
   <msg key="Company">Company</msg>
+  <msg key="Company_Documents">Company Documents</msg>
   <msg key="company_employee">company employee</msg>
+  <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
@@ -122,7 +124,12 @@
   <msg key="Costs">Costs</msg>
   <msg key="Country">Country</msg>
   <msg key="Create">Create</msg>
+  <msg key="Create_a_new_Project">Create a new Project</msg>
   <msg key="Create_a_Subproject">Create a Subproject</msg>
+  <msg key="Create_new_Incident">Create new Incident</msg>
+  <msg key="Create_new_News_Item">Create new News Item</msg>
+  <msg key="Create_new_Note">Create new Note</msg>
+  <msg key="Create_new_Task">Create new Task</msg>
   <msg key="Create_Project">Create Project</msg>
   <msg key="Created">Created</msg>
   <msg key="Creation">Creation</msg>
@@ -140,6 +147,7 @@
   <msg key="Del">Del</msg>
   <msg key="delete">delete</msg>
   <msg key="Delete_portrait">Delete portrait</msg>
+  <msg key="Delete_the_Task">Delete the Task</msg>
   <msg key="Deleted">Deleted</msg>
   <msg key="Delinquent_Update">Delinquent Update</msg>
   <msg key="Deliver">Deliver</msg>
@@ -150,6 +158,7 @@
   <msg key="Discussion">Discussion</msg>
   <msg key="display">display</msg>
   <msg key="Done">Done</msg>
+  <msg key="Download_files">Download files</msg>
   <msg key="Draft_Quality">Draft Quality</msg>
   <msg key="Duplicate_UserB">Duplicate User&lt;/B&gt;</msg>
   <msg key="e">e</msg>
@@ -222,6 +231,7 @@
   <msg key="h">h</msg>
   <msg key="Help_Request">Help Request</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
+  <msg key="High">High</msg>
   <msg key="High_Quality">High Quality</msg>
   <msg key="Home">Home</msg>
   <msg key="Home_Address">Home Address</msg>
@@ -239,6 +249,7 @@
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
+  <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inquiries">Inquiries</msg>
   <msg key="Inquiring">Inquiring</msg>
   <msg key="Internal">Internal</msg>
@@ -270,7 +281,9 @@
   <msg key="Log_Out">Log Out</msg>
   <msg key="log_them_now">log them now</msg>
   <msg key="login">login</msg>
+  <msg key="Low">Low</msg>
   <msg key="lt_A_project_number_is_c">A project number is composed by 4 digits for the year plus 4 digits for current identification</msg>
+  <msg key="lt_Add_a_manual_task_to_">Add a 'manual' task to the project.</msg>
   <msg key="lt_Add_a_new_annual_reve">Add a new annual revenue measure</msg>
   <msg key="lt_Add_a_new_company_sta">Add a new company status</msg>
   <msg key="lt_Add_a_new_company_typ">Add a new company type</msg>
@@ -278,11 +291,14 @@
   <msg key="lt_Add_a_new_office_type">Add a new office type</msg>
   <msg key="lt_Add_a_new_project_sta">Add a new project status</msg>
   <msg key="lt_Add_a_new_project_typ">Add a new project type</msg>
+  <msg key="lt_Add_a_new_subject_are">Add a new subject area</msg>
+  <msg key="lt_Add_a_new_value_range">Add new</msg>
   <msg key="lt_Add_accounting_contac">Add accounting contact</msg>
   <msg key="lt_Add_new_member_to_obj">Add new member to %object_name%</msg>
   <msg key="lt_Allintranet-timesheet">All</msg>
   <msg key="lt_Also_please_make_sure">Also, please make sure that the client isn't defined multiple with similar names.</msg>
   <msg key="lt_An_office_with_the_sa">An office with the same name or path already exists. Either choose a new name or go back to the office's page to edit the existing record</msg>
+  <msg key="lt_An_optional_field_spe">An optional field specifying the project reference code of the client. Is used when printing the invoice. Example: 20030310A12478</msg>
   <msg key="lt_Anonymize_this_server">Anonymize this server (Test servers only)</msg>
   <msg key="lt_as_if_the_user_him_or">as if the user him or herself had unsubscribed</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
@@ -292,11 +308,15 @@
   <msg key="lt_Change_the_position_o">Change the position of plugin-components or disable components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
+  <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
   <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&quot;profile&quot;)
 	can do and what they shouldn't do.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirm Nuking %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Confirm the nuking of</msg>
+  <msg key="lt_Create_a_new_Discussi">Create a new Discussion</msg>
+  <msg key="lt_Create_folder_structu">Create folder structure and create a subproject for each language that you have chosen.</msg>
   <msg key="lt_Create_the_new_folder">Create the new folder structure</msg>
+  <msg key="lt_Customersintranet-fil">Customers</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Dear %first_names_from_search%,
 
@@ -317,6 +337,7 @@ Best regards,
   <msg key="lt_Dots__in_Project_Path">Dots ('.') in 'Project Path' are not allowed</msg>
   <msg key="lt_Edit_comments_about_y">Edit comments about you</msg>
   <msg key="lt_Edit_menus_and_change">Edit menus and change their permissions.</msg>
+  <msg key="lt_Employeesintranet-fil">Employees</msg>
   <msg key="lt_End_date_must_be_afte">End date must be after start date</msg>
   <msg key="lt_Error_evaluating_comp">Error evaluating component '%plugin_name%' of module '%package_name%'</msg>
   <msg key="lt_Error_getting_the_ema">Error getting the email address of user %target_id%</msg>
@@ -353,6 +374,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Flush_Permission_Cach">Flush Permission Cache</msg>
   <msg key="lt_For_good_measure_here">For good measure, here's what the database had to say...</msg>
   <msg key="lt_for_name_in_ad_site_h">for %name% in %ad_site_home_link%</msg>
+  <msg key="lt_Freelancersintranet-f">Freelancers</msg>
   <msg key="lt_Futureintranet-timesh">Future</msg>
   <msg key="lt_General_type_of_proje">General type of project. This allows us to create a suitable folder structure.</msg>
   <msg key="lt_has_been_marked_delet">has been marked \&quot;deleted\&quot;.</msg>
@@ -394,6 +416,10 @@ her contributions to the site content.</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV Translation Agency</msg>
   <msg key="lt_Modify_the_access_per">Modify the access permissions for &quot;dynamic variables&quot; or add
 	new dynamic (custom) variables.</msg>
+  <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
+  <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
+  <msg key="lt_New_Purchase_Order_fr">New Purchase Order</msg>
+  <msg key="lt_New_Quote_from_scratc">New Quote from scratc</msg>
   <msg key="lt_New_user_notifiedset_">New user notified#&quot;]
 set export_vars [export_url_vars user_id]
 
@@ -436,6 +462,7 @@ site with fake crud.</msg>
   <msg key="lt_Please_notify_your_sy">Please notify your system administrator.</msg>
   <msg key="lt_Please_upload_a_portr">Please upload a portrait.</msg>
   <msg key="lt_Please_use_a_project_">Please use a project name with atleast 6 characters.</msg>
+  <msg key="lt_Portrait_of_first_nam">Portrait of %first_names% %last_name%</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in 'Project Name' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in 'Project Nr' are not allowed</msg>
@@ -443,6 +470,7 @@ site with fake crud.</msg>
   <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
+  <msg key="lt_Replyintranet-forumRe">Reply</msg>
   <msg key="lt_return_to_user_admini">return to user administration</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
@@ -452,7 +480,9 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Search_for_an_account">Search for an account to merge with this one:</msg>
   <msg key="lt_Select_accounting_con">Select accounting contact for %company_name%</msg>
   <msg key="lt_Select_primary_contac">Select primary contact for $company_name</msg>
+  <msg key="lt_Select_topics_here_fo">Select topics here for action</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
+  <msg key="lt_Senior_Managersintran">Senior Managers</msg>
   <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project Path' are not allowed</msg>
   <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
   <msg key="lt_Software_Company_Comp">Software Company</msg>
@@ -480,9 +510,12 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_This_project_is_part_">This project is part of another project or contains subprojects.</msg>
   <msg key="lt_To_avoid_duplicate_pr">To avoid duplicate projects and to determine where the project data are stored on the local file server</msg>
   <msg key="lt_Todayintranet-timeshe">Today</msg>
+  <msg key="lt_Translation_source_la">Translation source language</msg>
+  <msg key="lt_Translation_target_la">Translation target language</msg>
   <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
   <msg key="lt_Update_Basic_Informat">Update Basic Information</msg>
   <msg key="lt_Update_this_users_pas">Update this user's password</msg>
+  <msg key="lt_Use_the_Browse_button">Use the 'Browse...' button to locate your file, then click 'Open'.</msg>
   <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% is undefined for empty lists.</msg>
   <msg key="lt_View_administrative_p">View administrative page for newly created user,</msg>
@@ -496,6 +529,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_We_have_no_contacts_i">We have no contacts in our database for %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">We need either the short name or the group id to set up the url for the /groups directory</msg>
   <msg key="lt_Weve_nuked_user_user_">We've nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
+  <msg key="lt_Who_is_the_final_cons">Who is the final consumer (when working for an agency)? Examples: &amp;quot;Shell&amp;quot;, &amp;quot;UBS&amp;quot;, ...</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Yes, I'm sure that I want to nuke this person</msg>
   <msg key="lt_You_are_not_allowed_t">You are not allowed to remove members from group '%profile_name%'</msg>
   <msg key="lt_You_are_not_allowed_t_1">You are not allowed to add members to profile '%profile_name%'</msg>
@@ -545,11 +579,13 @@ other way for the user to find out.</msg>
   <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="m">m</msg>
   <msg key="Mail_Failed">Mail Failed</msg>
+  <msg key="Main_Menu">Main Menu</msg>
   <msg key="Main_Office">Main Office</msg>
   <msg key="make_primary_contact">make primary contact</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Med">Med</msg>
+  <msg key="Medium">Medium</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
   <msg key="Menus">Menus</msg>
   <msg key="Mine">Mine</msg>
@@ -560,7 +596,9 @@ other way for the user to find out.</msg>
   <msg key="n">n</msg>
   <msg key="Name">Name</msg>
   <msg key="new_client_contact">new client contact</msg>
+  <msg key="New_Cost">New Cost</msg>
   <msg key="New_Password">New Password</msg>
+  <msg key="New_Payment">New Payment</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_User">New User</msg>
   <msg key="News">News</msg>
@@ -716,6 +754,7 @@ other way for the user to find out.</msg>
   <msg key="Test_received">Test received</msg>
   <msg key="Test_sent">Test sent</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
+  <msg key="Top_Menu">Top Menu</msg>
   <msg key="Trans-ing">Trans-ing</msg>
   <msg key="Trans__Edit">Trans Edit</msg>
   <msg key="Trans__Edit__Proof">Trans Edit Proof</msg>
@@ -728,13 +767,17 @@ other way for the user to find out.</msg>
   <msg key="u">u</msg>
   <msg key="Unassigned">Unassigned</msg>
   <msg key="unassigned">unassigned</msg>
+  <msg key="Unconfirmed">Unconfirmed</msg>
   <msg key="Undefined">Undefined</msg>
   <msg key="Unit">Unit</msg>
+  <msg key="Unit_of_Measure">Unit of Measure</msg>
   <msg key="Unknown">Unknown</msg>
   <msg key="Update">Update</msg>
   <msg key="Update_Password">Update Password</msg>
   <msg key="Upload_Company_CSV">Upload Company CSV</msg>
   <msg key="Upload_Contact_CSV">Upload Contact CSV</msg>
+  <msg key="Upload_file">Upload_file</msg>
+  <msg key="Upload_files">Upload files</msg>
   <msg key="Upload_portrait">Upload portrait</msg>
   <msg key="USD">USD</msg>
   <msg key="User">User</msg>
