@@ -82,8 +82,8 @@ set date_format "YYYY-MM-DD"
 # Default 0 corresponds to the list of all users.
 set user_group_id 0
 set menu_select_label ""
-switch $user_group_name {
-    "All" { 
+switch [string tolower $user_group_name] {
+    "all" { 
 	set user_group_id 0 
 	set menu_select_label "users_all"
     }
@@ -238,7 +238,7 @@ if { -1 == $user_group_id} {
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     set letter [string toupper $letter]
-    lappend extra_wheres "im_first_letter_default_to_a(p.last_name)=:letter"
+    lappend extra_wheres "im_first_letter_default_to_a(u.last_name)=:letter"
 }
 
 # Check for some default order_by fields.
@@ -247,7 +247,7 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 # contain order_by_clauses.
 if {"" == $extra_order_by} {
     switch $order_by {
-	"Name" { set extra_order_by "order by upper(p.last_name||p.first_names)" }
+	"Name" { set extra_order_by "order by upper(u.last_name||u.first_names)" }
 	"Email" { set extra_order_by "order by upper(email)" }
 	"AIM" { set extra_order_by "order by upper(aim_screen_name)" }
 	"Cell Phone" { set extra_order_by "order by upper(cell_phone)" }
@@ -270,53 +270,17 @@ if {"" != $extra_where} { set extra_where "and $extra_where" }
 
 set sql "
 select
-	u.user_id,
-	u.username,
-	u.screen_name,
-	to_char(u.last_visit,:date_format) as last_visit,
-	u.second_to_last_visit,
-	u.n_sessions,
+	u.*,
 	to_char(o.creation_date,:date_format) as creation_date,
 	im_email_from_user_id(u.user_id) as email,
-	im_name_from_user_id(u.user_id) as name,
-	p.first_names,
-	p.last_name,
-	c.msn_screen_name as msn_email, 
-	c.home_phone, 
-	c.work_phone, 
-	c.cell_phone,
-	c.pager,
-	c.fax,
-	c.aim_screen_name,
-	c.msn_screen_name,
-	c.icq_number,
-	c.ha_line1,
-	c.ha_line2,
-	c.ha_city,
-	c.ha_state,
-	c.ha_postal_code,
-	c.ha_country_code,
-	c.wa_line1,
-	c.wa_line2,
-	c.wa_city,
-	c.wa_state,
-	c.wa_postal_code,
-	c.wa_country_code,
-	c.note,
-	c.current_information
+	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
-	registered_users u, 
-	users_contact c,
-	persons p,
+	users_active u, 
 	acs_objects o
 	$extra_from
 where 
-	u.user_id=p.person_id
-	-- inner join with users_contact, so we must make sure 
-	-- the records are there when creating a user.
-	and u.user_id=c.user_id
-	and u.user_id = o.object_id
+	u.user_id = o.object_id
 	$extra_where
 $extra_order_by
 "

@@ -34,60 +34,28 @@ if {!$current_user_is_admin_p} {
 
 switch $action {
     add_viewable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($object_id,$horiz_group_id,'view');
-	    end;
-	"
+	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'view') from dual"
     }
     add_readable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($object_id,$horiz_group_id,'read');
-	    end;
-	"
+	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'read') from dual"
     }
     add_writable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($object_id,$horiz_group_id,'write');
-	    end;
-	"
+	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'write') from dual"
     }
     add_administratable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($object_id,$horiz_group_id,'admin');
-	    end;
-	"
+	db_string grant_permission "select im_grant_permission($object_id,$horiz_group_id,'admin') from dual"
     }
     remove_viewable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.revoke_permission($object_id,$horiz_group_id,'view');
-	    end;
-	"
+	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'view') from dual"
     }
     remove_readable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.revoke_permission($object_id,$horiz_group_id,'read');
-	    end;
-	"
+	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'read') from dual"
     }
     remove_writable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.revoke_permission($object_id,$horiz_group_id,'write');
-	    end;
-	"
+	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'write') from dual"
     }
     remove_administratable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.revoke_permission($object_id,$horiz_group_id,'admin');
-	    end;
-	"
+	db_string grant_permission "select im_revoke_permission($object_id,$horiz_group_id,'admin') from dual"
     }
     default {
 	ad_return_complaint 1 "Unknown action: '$action'"

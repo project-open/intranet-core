@@ -37,10 +37,20 @@ DECLARE
 	p_party_id	alias for $2;
 	p_privilege	alias for $3;
 BEGIN
-    PERFORM acs_permission__grant_permission(p_object_id, p_party_id, ''read'');
+    PERFORM acs_permission__grant_permission(p_object_id, p_party_id, p_privilege);
     return 0;
 END;' language 'plpgsql';
 
+create or replace function im_revoke_permission (integer, integer, varchar)
+returns integer as '
+DECLARE
+	p_object_id	alias for $1;
+	p_party_id	alias for $2;
+	p_privilege	alias for $3;
+BEGIN
+    PERFORM acs_permission__revoke_permission(p_object_id, p_party_id, p_privilege);
+    return 0;
+END;' language 'plpgsql';
 
 
 -------------------------------------------------------------
