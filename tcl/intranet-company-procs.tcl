@@ -262,7 +262,7 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
     ns_set put $bind_vars freelance_group_id [im_freelance_group_id]
 
     set query "
-select
+select DISTINCT
 	ur.object_id_two as user_id,
         im_name_from_user_id(ur.object_id_two) as user_name
 from
