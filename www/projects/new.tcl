@@ -202,7 +202,7 @@ append page_body "
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Project+Type'>
+	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
 	[im_gif new {Add a new project type}]</A>"
 }
 
@@ -216,7 +216,7 @@ append page_body "
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Project+Status'>
+	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
 	[im_gif new {Add a new project status}]</A>"
 }
 

@@ -58,7 +58,7 @@
 -- Populate all the status/type/url with the different types of 
 -- data we are collecting
 
-create or replace function im_first_letter_default_to_a (integer) 
+create or replace function im_first_letter_default_to_a (varchar) 
 returns char as '
 DECLARE
 	p_string	alias for $1;

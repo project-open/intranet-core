@@ -225,18 +225,20 @@ while {$loop} {
 
 set hierarchy_sql "
 select
-	project_id as subproject_id,
-	project_nr as subproject_nr,
-	project_name as subproject_name,
-	level as subproject_level
+        children.project_id as subproject_id,
+        children.project_nr as subproject_nr,
+        children.project_name as subproject_name,
+        tree_level(children.tree_sortkey) -
+        tree_level(parent.tree_sortkey) as subproject_level
 from
-	im_projects
+        im_projects parent,
+        im_projects children
 where
-	project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
-start with 
-	project_id=:super_project_id
-connect by 
-	parent_id = PRIOR project_id
+        children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
+        and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
+        and parent.tree_sortkey <> children.tree_sortkey
+        and parent.project_id = :super_project_id
+order by children.tree_sortkey
 "
 
 set cur_level 1
@@ -264,7 +266,7 @@ db_foreach project_hierarchy $hierarchy_sql {
 }
 
 
-if {$counter > 1} {
+if {$counter > 0} {
     set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
 } else {
     set hierarchy_html ""

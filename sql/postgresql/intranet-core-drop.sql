@@ -350,6 +350,9 @@ drop function inline_0 ();
 
 -- drop package im_project;
 
+drop trigger im_projects_update_tr;
+drop function im_projects_update_tr ();
+
 drop trigger im_project_insert_tr on im_projects;
 drop function im_project_insert_tr ();
 

@@ -130,6 +130,57 @@ execute procedure im_project_insert_tr();
 
 
 
+create function im_projects_update_tr () returns opaque as '
+declare
+        v_parent_sk     varbit default null;
+        v_max_child_sortkey     varbit;
+        v_old_parent_length     integer;
+begin
+        if new.project_id = old.project_id
+           and ((new.parent_id = old.parent_id)
+                or (new.parent_id is null
+                    and old.parent_id is null)) then
+
+           return new;
+
+        end if;
+
+        -- the tree sortkey is going to change so get the new one and update it and all its
+        -- children to have the new prefix...
+        v_old_parent_length := length(new.tree_sortkey) + 1;
+
+        if new.parent_id is null then
+            v_parent_sk := int_to_tree_key(new.project_id+1000);
+        else
+            SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
+            INTO v_parent_sk, v_max_child_sortkey
+            FROM im_projects
+            WHERE project_id = new.parent_id
+            FOR UPDATE;
+
+            UPDATE im_projects
+            SET max_child_sortkey = v_max_child_sortkey
+            WHERE project_id = new.parent_id;
+
+            v_parent_sk := v_parent_sk || v_max_child_sortkey;
+        end if;
+
+        UPDATE im_projects
+        SET tree_sortkey = v_parent_sk || substring(tree_sortkey, v_old_parent_length)
+        WHERE tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
+
+        return new;
+end;' language 'plpgsql';
+
+create trigger im_projects_update_tr after update
+on im_projects
+for each row
+execute procedure im_projects_update_tr ();
+
+
+
+
+
 create index im_project_parent_id_idx on im_projects(parent_id);
 -- create index im_project_status_id_idx on im_projects(project_status_id);
 -- create index im_project_project_nr_idx on im_projects(project_nr);

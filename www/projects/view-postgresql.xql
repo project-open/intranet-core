@@ -30,7 +30,7 @@ where
         and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
         and parent.tree_sortkey <> children.tree_sortkey
         and parent.project_id = :super_project_id
-
+order by children.tree_sortkey
     </querytext>
   </fullquery>
 </queryset>
