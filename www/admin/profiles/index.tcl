@@ -36,4 +36,4 @@ set privs [im_core_privs]
 # actions to be performed (because it is activated
 # when only viewing permission), but otherwise we would
 # have to modify /permissions/perm-modify...
-# im_permission_flush
+im_permission_flush
