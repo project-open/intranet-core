@@ -562,7 +562,7 @@ if {$portrait_p} {
 }
 
 
-if {!$admin} { set portrait_admin "" }
+if {!$admin && !$write} { set portrait_admin "" }
 
 if {$admin && "" == $description} {
 	set description "
