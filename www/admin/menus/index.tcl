@@ -18,7 +18,7 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    { return_url "/intranet/admin/menus/index" }
+    { return_url "" }
 }
 
 # ------------------------------------------------------
@@ -32,6 +32,8 @@ if {!$user_is_admin_p} {
     ad_return_complaint 1 "You have insufficient privileges to use this page"
     return
 }
+
+if {"" == $return_url} { set return_url [ad_conn url] }
 
 set page_title "Menu Permissions"
 set context_bar [ad_context_bar $page_title]
@@ -197,10 +199,14 @@ db_foreach menus $main_sql {
 
     foreach horiz_group_id $group_ids {
         set read_p [expr "\$p${horiz_group_id}_read_p"]
-        set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$menu_id&action=add_readable>r</A>\n"
+	set object_id $menu_id
+	set action "add_readable"
+	set letter "r"
         if {$read_p == "t"} {
-            set read "<A href=$toggle_url?horiz_group_id=$horiz_group_id&object_id=$menu_id&action=remove_readable><b>R</b></A>\n"
+	    set action "remove_readable"
+	    set letter "<b>R</b>"
         }
+	set read "<A href=$toggle_url?[export_url_vars horiz_group_id object_id action return_url]>$letter</A>\n"
 
         append table "
   <td align=center>
