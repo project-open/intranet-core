@@ -204,12 +204,12 @@ INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '54', 'MLV Translation Agency Company', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '55', 'Software Company Company', 'Intranet Company Type');
+('', 'f', '55', 'Software Company', 'Intranet Company Type');
 
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '56', 'Provider', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '57', 'Company', 'Intranet Company Type');
+('', 'f', '57', 'Customer', 'Intranet Company Type');
 
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '58', 'Freelance Provider', 'Intranet Company Type');

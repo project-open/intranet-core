@@ -20,8 +20,8 @@
 
 delete from im_view_columns where view_id = 102;
 delete from im_views where view_id = 102;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (102, 'im_companies', 1410, '
+insert into im_views (view_id, view_name, view_type_id, sort_order, view_sql
+) values (102, 'im_companies', 1410, 10, '
 select
         c.*,
         im_email_from_user_id(c.manager_id) as manager_email,

@@ -436,13 +436,8 @@ ad_proc -public im_project_add_member { object_id user_id role} {
     Make a specified user a member of a (project) group
 } {
     
-    db_transaction {
-	db_exec_plsql insert_user_group_map "
-begin
-  user_group_member_add(:object_id, :user_id, :role);
-end;
-"
-    }
+
+   	im_exec_dml "user_group_member_add(:object_id, :user_id, :role)"
     
     # Second, add an empty "estimations" field that is necessary
     # for every project group member.

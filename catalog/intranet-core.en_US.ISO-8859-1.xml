@@ -53,6 +53,8 @@
   <msg key="administrator">administrator</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">Aim Screen Name</msg>
+  <msg key="Albania">Albania</msg>
+  <msg key="Algeria">Algeria</msg>
   <msg key="All">All</msg>
   <msg key="All_Costs">All Costs</msg>
   <msg key="All_documents_in_H">All documents in H:</msg>
@@ -66,6 +68,7 @@
   <msg key="Average_Quality">Average Quality</msg>
   <msg key="b">b</msg>
   <msg key="B_-_No_the_best">B - No the best</msg>
+  <msg key="Backup_and_Restore_blurb">Backup your current application data or load the application data from a previous backup.</msg>
   <msg key="Bad_Office">Bad Office</msg>
   <msg key="Bad_User">Bad User</msg>
   <msg key="Ban_this_user">Ban this user</msg>
@@ -158,7 +161,6 @@
   <msg key="Delivered">Delivered</msg>
   <msg key="Delivery_Date">Delivery Date</msg>
   <msg key="Description">Description</msg>
-  <msg key="Direct_Client">Direct Customer</msg>
   <msg key="directory_path">directory path</msg>
   <msg key="Discussion">Discussion</msg>
   <msg key="display">display</msg>
@@ -229,7 +231,7 @@
   <msg key="g">g</msg>
   <msg key="Gen">Gen</msg>
   <msg key="gl">gl</msg>
-  <msg key="Glossary_Comp">Glossary Compilation</msg>
+  <msg key="Glossary_Comp">Glossary Comp.</msg>
   <msg key="Glossary_Compilation">Glossary Compilation</msg>
   <msg key="gr">gr</msg>
   <msg key="Group_administration">Group administration</msg>
@@ -264,6 +266,8 @@
   <msg key="Inquiring">Inquiring</msg>
   <msg key="Internal">Internal</msg>
   <msg key="Intranet">Intranet</msg>
+  <msg key="intranet-core.Menu_Backup_Restore">Restore</msg>
+  <msg key="intranet-core.Menu_Restore">Restore</msg>
   <msg key="Intranet_content">Intranet content</msg>
   <msg key="Intranet_users">Intranet users</msg>
   <msg key="Invoice">Invoice</msg>
@@ -271,7 +275,6 @@
   <msg key="invoice-spanishadp">invoice-spanishadp</msg>
   <msg key="Invoiced">Invoiced</msg>
   <msg key="it">it</msg>
-  <msg key="IT_Consulting">IT Consulting</msg>
   <msg key="it_IT">it_IT</msg>
   <msg key="j">j</msg>
   <msg key="JPY">JPY</msg>
@@ -284,7 +287,8 @@
   <msg key="Last_Visit">Last Visit</msg>
   <msg key="Last_visit">Last visit</msg>
   <msg key="Law">Law</msg>
-  <msg key="Linguistic_Val">Linguistic Validation</msg>
+  <msg key="Law_Company">Law Company</msg>
+  <msg key="Linguistic_Val">Linguistic Val.</msg>
   <msg key="Lit">Lit</msg>
   <msg key="Loc">Loc</msg>
   <msg key="Localization">Localization</msg>
@@ -313,6 +317,7 @@
   <msg key="lt_An_optional_field_spe">An optional field specifying the project reference code of the client. Is used when printing the invoice. Example: 20030310A12478</msg>
   <msg key="lt_Anonymize_this_server">Anonymize this server (Test servers only)</msg>
   <msg key="lt_as_if_the_user_him_or">as if the user him or herself had unsubscribed</msg>
+  <msg key="lt_Backup_and_Restore_Data">Backup and Restore Data</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
@@ -387,6 +392,7 @@ her contributions to the site content.</msg>
   <msg key="lt_For_good_measure_here">For good measure, here's what the database had to say...</msg>
   <msg key="lt_for_name_in_ad_site_h">for %name% in %ad_site_home_link%</msg>
   <msg key="lt_Freelancersintranet-f">Freelancers</msg>
+  <msg key="lt_Full_Memberintranet-f">Full Member</msg>
   <msg key="lt_Futureintranet-timesh">Future</msg>
   <msg key="lt_General_type_of_proje">General type of project. This allows us to create a suitable folder structure.</msg>
   <msg key="lt_has_been_marked_delet">has been marked \&quot;deleted\&quot;.</msg>
@@ -408,6 +414,7 @@ her contributions to the site content.</msg>
   <msg key="lt_It_seems_the_table_we">It seems the table we missed is %table_name%.</msg>
   <msg key="lt_Just_enter_any_suitab">Just enter any suitable name for the project. You can even leave this field blank.</msg>
   <msg key="lt_just_mark_the_account">just mark the account deleted</msg>
+  <msg key="lt_Key_Accountintranet-f">Key Accountant</msg>
   <msg key="lt_Last_3_monthsintranet">Last 3 months</msg>
   <msg key="lt_Linguistic_Validation">Linguistic Validation</msg>
   <msg key="lt_Locate_your_new_accou">Locate your new accounting contact by</msg>
@@ -610,6 +617,7 @@ other way for the user to find out.</msg>
   <msg key="MSN_Status">MSN Status</msg>
   <msg key="n">n</msg>
   <msg key="Name">Name</msg>
+  <msg key="new_category">New Category</msg>
   <msg key="new_client_contact">new client contact</msg>
   <msg key="New_Cost">New Cost</msg>
   <msg key="New_Password">New Password</msg>
@@ -748,6 +756,7 @@ other way for the user to find out.</msg>
   <msg key="Send_Notification">Send Notification</msg>
   <msg key="Sick">Sick</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
+  <msg key="Software_Company">Software Company</msg>
   <msg key="Standard">Standard</msg>
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">State</msg>
@@ -781,8 +790,7 @@ other way for the user to find out.</msg>
   <msg key="Trans_Only">Trans Only</msg>
   <msg key="TransEd">Trans+Ed</msg>
   <msg key="TransEdProof">Trans+Ed+Proof</msg>
-  <msg key="TransIntSpot">Trans+ Intl. Spot</msg>
-  <msg key="Translation_Agency">Translation Agency</msg>
+  <msg key="TransIntSpot">Trans+Int.Spotcheck</msg>
   <msg key="Translation_Project">Translation Project</msg>
   <msg key="Travel">Travel</msg>
   <msg key="Travel_Cost">Travel Cost</msg>

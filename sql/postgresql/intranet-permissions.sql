@@ -221,7 +221,7 @@ END;' language 'plpgsql';
 
 
 -- Function to add a new member to a user_group
-create or replace function user_group_member_delete (integer, integer)
+create or replace function user_group_member_del (integer, integer)
 returns integer as '
 DECLARE
 	row		RECORD;
