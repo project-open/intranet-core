@@ -186,6 +186,54 @@ append user_basic_info_html "
 set profile_html ""
 
 # ---------------------------------------------------------------
+# Localization Information
+# ---------------------------------------------------------------
+
+#set list_of_locales [db_list_of_lists locale_loop { select label, locale from enabled_locales order by label }]
+set site_wide_locale [lang::user::site_wide_locale]
+set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
+
+
+set user_l10n_html "
+<form method=POST action=/acs-lang/index>
+[export_form_vars user_id]
+
+<table cellpadding=1 cellspacing=1 border=0>
+<tr>
+  <td colspan=2 class=rowtitle align=center>
+    [_ intranet-core.Localization]
+  </td>
+</tr>
+<tr class=rowodd>
+  <td>[_ intranet-core.Your_Current_Locale]</td>
+  <td>$site_wide_locale</td>
+</tr>
+"
+
+if { $use_timezone_p } {
+#    set timezone_options [db_list_of_lists all_timezones {}]
+    set timezone [lang::user::timezone]
+
+    append user_l10n_html "
+<tr class=roweven>
+  <td>[_ intranet-core.Your_Current_Timezone]</td>
+  <td>$timezone</td>
+</tr>
+"
+}
+
+append user_l10n_html "
+<tr>
+  <td colspan=99 align=right>
+    <input type=submit value='[_ intranet-core.Edit]'>
+  </td>
+</tr>
+</table>
+</form>
+"
+
+
+# ---------------------------------------------------------------
 # Contact Information
 # ---------------------------------------------------------------
 

@@ -11,6 +11,7 @@
   <td valign=top>
 
     <%= $user_basic_info_html %>
+    <%= $user_l10n_html %>
     <%= $profile_html %>
     <%= $contact_html %>
     <%= $admin_links %>

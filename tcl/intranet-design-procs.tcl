@@ -750,6 +750,7 @@ order by
 ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
     The default header for Project/Open
 } {
+
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
     if { [empty_string_p $page_title] } {

@@ -64,7 +64,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 #                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 
     # Start formatting the menu bar
-    set result ""
+    set result "<ul>\n"
     set ctr 0
     db_foreach menu_select $menu_select_sql {
         regsub -all " " $name "_" name_key
@@ -77,6 +77,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 
         append result "<li><a href=\"$url\">[_ intranet-invoices.$name_key]</a></li>\n"
     }
+    append result "</ul>\n"
 
     return $result
 }

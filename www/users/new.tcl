@@ -151,6 +151,7 @@ ad_form -name register -export {next_url user_id return_url} -form {
     {username:text(hidden),optional value {}}
     {first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
     {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
+    {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
 }
 
 if {!$editing_existing_user} {
