@@ -73,6 +73,12 @@
 -- 3200-3299	Intranet CRM Tracking
 
 
+-- 5000-5999	Timesheet Management
+-- 5000-5099	Intranet Absence Type
+
+-- 6000-6999	Intranet RecruitingRecruiting
+
+
 -------------------------------------------------------------
 -- Categories
 --
