@@ -17,7 +17,7 @@
   </tr>
   <tr>
     <td>#intranet-core.Category_translation#</td>
-    <td>@category_translation_component@</td>
+    <td>@category_translation_component;noquote@</td>
   </tr>
   <tr>
     <td>#intranet-core.Category_description#</td>

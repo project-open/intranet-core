@@ -122,5 +122,22 @@ order by c.category_type asc"
 
 }
 
-
 set descr [ns_quotehtml $category_description]
+
+# ---------------------------------------------------------------
+# Category Translation
+# ---------------------------------------------------------------
+
+set category_translation_component ""
+
+set l10n_text_sql "
+    select *
+    from enabled_locales
+"
+
+db_foreach l10n_strings $l10n_text_sql {
+    append category_translation_component "
+$locale: <input type=text name=translation.$locale value=\"\" size=20><br>
+"
+}
+
