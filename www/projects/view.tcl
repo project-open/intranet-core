@@ -71,6 +71,7 @@ append query   "
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
+	c.primary_contact_id as customer_contact_id,
 	im_name_from_user_id(c.primary_contact_id) as customer_contact,
 	im_email_from_user_id(c.primary_contact_id) as customer_contact_email,
 	im_name_from_user_id(p.project_lead_id) as project_lead,
@@ -120,75 +121,75 @@ if {![im_permission $user_id view_projects]} {
 # ---------------------------------------------------------------------
 
 set project_base_data_html "
-                        <table border=0>
-                          <tr> 
-                            <td colspan=2 class=rowtitle align=center>
-                              Project Base Data
-                            </td>
-                          </tr>
-                          <tr> 
-                            <td>Project name</td>
-                            <td>$project_name</td>
-                          </tr>"
+			<table border=0>
+			  <tr> 
+			    <td colspan=2 class=rowtitle align=center>
+			      Project Base Data
+			    </td>
+			  </tr>
+			  <tr> 
+			    <td>Project name</td>
+			    <td>$project_name</td>
+			  </tr>"
 
 if { ![empty_string_p $parent_id] } { 
     append project_base_data_html "
-                          <tr> 
-                            <td>Parent Project</td>
-                            <td>
-                              <a href=/intranet/projects/view?project_id=$parent_id>$parent_name</a>
-                            </td>
-                          </tr>"
+			  <tr> 
+			    <td>Parent Project</td>
+			    <td>
+			      <a href=/intranet/projects/view?project_id=$parent_id>$parent_name</a>
+			    </td>
+			  </tr>"
 }
 
 append project_base_data_html "
-                          <tr> 
-                            <td>SLS project#</td>
-                            <td>$project_path</td>
-                          </tr>
+			  <tr> 
+			    <td>SLS project#</td>
+			    <td>$project_path</td>
+			  </tr>
 [im_customer_link_tr $user_id $customer_id $customer_name "Client"]
-		          <tr> 
-                            <td>Project Manager</td>
-                            <td>
+			  <tr> 
+			    <td>Project Manager</td>
+			    <td>
 [im_render_user_id $project_lead_id $project_lead $user_id $project_id]
-                            </td>
-                          </tr>
-		          <tr> 
-                            <td>Project Type</td>
-                            <td>$project_type</td>
-                          </tr>
-                          <tr> 
-                            <td>Project Status</td>
-                            <td>$project_status</td>
-                          </tr>\n"
+			    </td>
+			  </tr>
+			  <tr> 
+			    <td>Project Type</td>
+			    <td>$project_type</td>
+			  </tr>
+			  <tr> 
+			    <td>Project Status</td>
+			    <td>$project_status</td>
+			  </tr>\n"
 
 if { ![empty_string_p $start_date] } { append project_base_data_html "
-                          <tr>
-                            <td>Start Date</td>
-                            <td>$start_date</td>
-                          </tr>"
+			  <tr>
+			    <td>Start Date</td>
+			    <td>$start_date</td>
+			  </tr>"
 }
 if { ![empty_string_p $end_date] } { append project_base_data_html "
-                          <tr>
-                            <td>Delivery Date</td>
-                            <td>$end_date $end_date_time</td>
-                          </tr>"
+			  <tr>
+			    <td>Delivery Date</td>
+			    <td>$end_date $end_date_time</td>
+			  </tr>"
 }
 
 if {$write} {
 	append project_base_data_html "
-                          <tr> 
-                            <td>&nbsp; </td>
-                            <td> 
-                              <form action=/intranet/projects/new method=POST>
-                                  [export_form_vars project_id return_url]
-                                  <input type=submit value=Edit name=submit3>
-                              </form>
-                            </td>
-                          </tr>"
+			  <tr> 
+			    <td>&nbsp; </td>
+			    <td> 
+			      <form action=/intranet/projects/new method=POST>
+				  [export_form_vars project_id return_url]
+				  <input type=submit value=Edit name=submit3>
+			      </form>
+			    </td>
+			  </tr>"
 }
 append project_base_data_html "    </table>
-                        <br>
+			<br>
 "
 
 
@@ -259,6 +260,55 @@ db_foreach project_hierarchy $hierarchy_sql {
 
     incr counter
 }
+
+
+
+
+# ---------------------------------------------------------------------
+# Translation Details Component
+# ---------------------------------------------------------------------
+
+set translation_details_html "
+<table cellpadding=0 cellspacing=2 border=0>
+  <tr> 
+    <td colspan=2 class=rowtitle align=middle>
+      Project Details
+    </td>
+  </tr>
+  <tr> 
+    <td>Client Project#</td>
+    <td>$customer_project_nr</td>
+  </tr>
+  <tr> 
+    <td>Final User</td>
+    <td>$final_customer</td>
+  </tr>
+  <tr> 
+    <td>Client Contact</td>
+    <td>
+      <a href='/intranet/users/view?user_id=$customer_contact_id'>
+        $customer_contact
+     </a>
+    </td>
+  </tr> <tr> 
+    <td>Quality Level</td>
+    <td>High Quality</td>
+  </tr><tr> 
+    <td></td>
+    <td>
+      <form action=/intranet/projects/edit-customer-data method=POST>
+	  <input type=hidden name=group_id value=2877>
+<input type=hidden name=return_url value=/intranet/projects/view?group_id=2877>
+	  <input type=submit value=Edit name=submit3>
+      </form>
+    </td>
+  </tr></table>
+"
+
+
+# ---------------------------------------------------------------------
+# Projects Submenu
+# ---------------------------------------------------------------------
 
 if {$counter > 1} {
     set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
