@@ -3,7 +3,7 @@
 
 <!-- left - right - bottom  design -->
 
-<!-- project_menu;noquote -->
+@project_menu;noquote@
 
 <!-- 
   There are two "views" on this page: "Summary" and "Files".
