@@ -70,9 +70,9 @@ create table im_projects (
 				constraint im_projects_prj_status_fk 
 				references categories,
 	description		varchar(4000),
-	bill_hourly_p		char(1) 
-				constraint im_projects_bill_hourly_check
-				check (bill_hourly_p in ('t','f')),
+	billing_type_id		integer
+				constraint im_project_billing_fk
+				references categories
 	start_date		date,
 	end_date		date,
 				-- make sure the end date is after the start date
