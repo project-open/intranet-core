@@ -654,7 +654,9 @@ order by
         append navbar "<td>[im_gif $gif]</td>$html"
 	incr ctr
     }
-    append navbar "<td>[im_gif "right-$cur_sel"]</td>"
+    if {"" != $navbar} {
+	append navbar "<td>[im_gif "right-$cur_sel"]</td>"
+    }
 
 
     return "
