@@ -33,6 +33,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set return_url [im_url_with_query]
+set current_url $return_url
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
