@@ -37,19 +37,22 @@ where
 }]
 
 set sql "
-select
-	u.user_id,
-	im_name_from_user_id(u.user_id) as name,
-	im_email_from_user_id(u.user_id) as email
+select distinct
+        u.user_id,
+        im_name_from_user_id(u.user_id) as name,
+        im_email_from_user_id(u.user_id) as email
 from
-	users u,
-	acs_rels r,
-	group_member_map m
+        users u,
+        acs_rels r
 where
-	r.object_id_one = :customer_id
-	and r.object_id_two = u.user_id
-	and m.member_id = u.user_id
-	and m.group_id=[im_customer_group_id]
+        r.object_id_one = :customer_id
+        and r.object_id_two = u.user_id
+        and not exists (
+		select	member_id
+		from	group_member_map m
+		where	m.member_id = u.user_id
+			and m.group_id = [im_employee_group_id]
+	)
 order by lower(name)
 "
 

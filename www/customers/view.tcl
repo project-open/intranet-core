@@ -270,7 +270,7 @@ set company_members [im_group_member_component $customer_id $user_id $admin $ret
 
 set enable_project_estimates 0
 set also_add_to_group [im_customer_group_id]
-set customer_members [im_group_member_component $customer_id $user_id $admin $return_url [im_customer_group_id] [im_employee_group_id] $also_add_to_group]
+set customer_members [im_group_member_component $customer_id $user_id $admin $return_url "" [im_employee_group_id] $also_add_to_group]
 
 
 
