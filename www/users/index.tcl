@@ -348,20 +348,16 @@ if { [string compare $letter "all"] == 0 } {
     set how_many -1
     set query $sql
 } else {
-#    set query [im_select_row_range $sql $start_idx $end_idx]
-    set query $sql
+    set query [im_select_row_range $sql $start_idx $end_idx]
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
     # query results
     set total_in_limited [db_string advance_count "
-select 
-	count(1) 
-from 
-	($sql) t
-"]
-
-    ns_log Notice "/users/index.tcl: sql=$sql"
-    ns_log Notice "/users/index.tcl: total_in_limited=$total_in_limited"
+	select 
+		count(1) 
+	from 
+		($sql) t
+    "]
 }
 
 # ---------------------------------------------------------------
@@ -401,7 +397,7 @@ append table_header_html "</tr>\n"
 set table_body_html ""
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
-set ctr 0
+set ctr 1
 set idx $start_idx
 db_foreach projects_info_query $query {
 

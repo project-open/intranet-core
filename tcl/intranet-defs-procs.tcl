@@ -898,11 +898,13 @@ ad_proc im_maybe_insert_link { previous_page next_page { divider " - " } } {
 
 
 ad_proc im_select_row_range {sql firstrow lastrow} {
-    a tcl proc curtisg wrote to return a sql query that will only 
+    A tcl proc curtisg wrote to return a sql query that will only 
     contain rows firstrow - lastrow
+    2005-03-05 Frank Bergmann: Now extended to work with PostgreSQL
 } {
-    return "$sql"
-    set ttt "
+    set rowlimit [expr $lastrow - $firstrow]
+ 
+    set oracle_sql "
 SELECT
 	im_select_row_range_y.*
 FROM
@@ -916,6 +918,17 @@ FROM
 	) im_select_row_range_y
 WHERE
 	fake_rownum >= $firstrow"
+	
+
+    set postgres_sql "$sql\nLIMIT $rowlimit OFFSET $firstrow"
+
+    set driverkey [db_driverkey ""]
+    switch $driverkey {
+	postgresql { return $postgres_sql }
+        oracle { return $oracle_sql }
+    }
+    
+    return $sql
 }
 
 
