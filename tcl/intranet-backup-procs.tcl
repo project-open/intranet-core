@@ -71,6 +71,7 @@ ad_proc im_backup { } {
 
 
     set report_id [db_string get_report "select view_id from im_views where view_name=:report" -default 0]
+
     if {!$report_id} {
         ad_return_complaint 1 "<li>Invalid backup reprort '$report'. <br>Please see online documentation"
         return
@@ -175,6 +176,123 @@ order by
 
 
 
+ad_proc -public im_import_categories { filename } {
+    Import categories
+} {
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_categories"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set already_exists [db_string cat_already_exists "select count(*) from im_categories where category=:category and category_type=:category_type"]
+	set id_occupied 0
+	if {!$already_exists} {
+	    set id_occupied [db_string id_occupied "select count(*) from im_categories where category_id=:category_id"]
+	}
+
+	ns_log Notice "im_import_categories: category=$category"
+	ns_log Notice "im_import_categories: category_type=$category_type"
+	ns_log Notice "im_import_categories: already_exists=$already_exists"
+	ns_log Notice "im_import_categories: id_occupied=$id_occupied"
+
+	if {!$id_occupied} {
+	    set create_member_sql "
+		insert into im_categories
+			(category_id, category, category_description, category_type, 
+			 category_gif, enabled_p, parent_only_p)
+		values
+			(:category_id, :category, :category_description, :category_type, 
+			 :category_gif, :enabled_p, :parent_only_p)"
+	} else {
+	    set create_member_sql "
+		insert into im_categories
+		    (category_id, category, category_description, category_type, 
+		     category_gif, enabled_p, parent_only_p)
+		values
+		  (im_categories_seq.nextval, :category, :category_description, :category_type,
+		  :category_gif, :enabled_p, :parent_only_p)"
+	}
+
+	if { [catch {
+
+	    if {!$already_exists} {
+		db_dml create_member $create_member_sql
+	    }
+
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading customer members:<br>
+            $csv_line<br><pre>\n$err_msg</pre>"
+	}
+
+    }
+    return $err_return
+}
+
+
+
 
 ad_proc -public im_import_customers { filename } {
     Import the customers file
@@ -247,21 +365,39 @@ ad_proc -public im_import_customers { filename } {
 	#
 
 	set manager_id [db_string manager "select party_id from parties where email=:manager_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set accounting_contact_id [db_string accounting_contact "select party_id from parties where email=:accounting_contact_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+	
 	set primary_contact_id [db_string primary_contact "select party_id from parties where email=:primary_contact_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# Default type is 51="unknow"
 	set customer_type_id [db_string customer_type "select category_id from im_categories where category=:customer_type and category_type='Intranet Customer Type'" -default 51]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# Default type is 46="Active"
 	set customer_status_id [db_string customer_status "select category_id from im_categories where category=:customer_status and category_type='Intranet Customer Status'" -default 46]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set crm_status_id [db_string crm_status "select category_id from im_categories where category=:crm_status and category_type='Intranet Customer CRM Status'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	set annual_revenue_id [db_string annual_revenue "select category_id from im_categories where category=:annual_revenue and category_type='Intranet Annual Revenue'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	set main_office_id [db_string main_office "select office_id from im_offices where office_name=:main_office_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	# -------------------------------------------------------
@@ -416,10 +552,18 @@ ad_proc -public im_import_offices { filename } {
 	#
 
 	set office_type_id [db_string office_type "select category_id from im_categories where category=:office_type and category_type='Intranet Office Type'" -default 170]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set office_status_id [db_string office_status "select category_id from im_categories where category=:office_status and category_type='Intranet Office Status'" -default 160]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set contact_person_id [db_string contact_person "select party_id from parties where email=:contact_person_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	set office_id [db_string contact_person "select office_id from im_offices where office_name=:office_name" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -561,15 +705,29 @@ ad_proc -public im_import_projects { filename } {
 	#
 
 	set project_lead_id [db_string manager "select party_id from parties where email=:project_lead_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set supervisor_id [db_string supervisor "select party_id from parties where email=:supervisor_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	set project_type_id [db_string project_type "select category_id from im_categories where category=:project_type and category_type='Intranet Project Type'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set project_status_id [db_string project_status "select category_id from im_categories where category=:project_status and category_type='Intranet Project Status'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set billing_type_id [db_string billing_type "select category_id from im_categories where category=:billing_type and category_type='Intranet Billing Type'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -653,6 +811,8 @@ WHERE
     foreach project_id [array names parent] {
 
 	set parent_id [db_string parent "select project_id from im_projects where project_name=:parent_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	
 	set update_sql "
 UPDATE im_projects
@@ -665,6 +825,137 @@ WHERE
     }
     return $err_return
 }
+
+
+
+
+
+
+
+ad_proc -public im_import_profiles { filename } {
+    Import the user/profile membership
+} {
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_profiles"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform categories, email and names into IDs
+	#
+
+	set profile_id [db_string profile "select group_id from group where group_name=:profile_name" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
+	if {0 == $_id} { append err_return "<li>" }
+	set user_id [db_string user "select party_id from parties where email=:user_email" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
+
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_member_sql "
+DECLARE
+    v_rel_id	integer;
+BEGIN
+    v_rel_id := im_biz_object_member.new(
+	object_id	=> :object_id,
+	user_id		=> :user_id,
+	object_role_id	=> :object_role_id
+    );
+END;"
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "im_import_customer_members: object_id	$object_id"
+	ns_log Notice "im_import_customer_members: user_id	$user_id"
+	ns_log Notice "im_import_customer_members: object_role_id $object_role_id"
+
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    set count [db_string count_members "select count(*) from acs_rels where object_id_one=:object_id and object_id_two=:user_id"]
+	    if {!$count} {
+		db_dml create_member $create_member_sql
+	    }
+	    
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading customer members:<br>
+            $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+    return $err_return
+}
+
+
 
 
 
@@ -739,8 +1030,14 @@ ad_proc -public im_import_customer_members { filename } {
 	#
 
 	set object_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	# -------------------------------------------------------
@@ -862,8 +1159,14 @@ ad_proc -public im_import_project_members { filename } {
 	#
 
 	set object_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	# -------------------------------------------------------
@@ -987,8 +1290,14 @@ ad_proc -public im_import_office_members { filename } {
 	#
 
 	set object_id [db_string office "select office_id from im_offices where office_name=:office_name" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 
 	# -------------------------------------------------------
@@ -1107,7 +1416,11 @@ ad_proc -public im_import_freelancers { filename } {
 	#
 
 	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set payment_method_id [db_string payment_method "select category_id from im_categories where category=:payment_method" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1230,11 +1543,23 @@ ad_proc -public im_import_freelance_skills { filename } {
 	#
 
 	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set skill_id [db_string office "select category_id from im_categories where category=:skill" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set skill_type_id [db_string office "select category_id from im_categories where category=:skill_type" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set claimed_experience_id [db_string office "select category_id from im_categories where category=:claimed_experience" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set confirmed_experience_id [db_string office "select category_id from im_categories where category=:confirmed_experience" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 	set confirmation_user_id [db_string user "select party_id from parties where email=:confirmation_user_email" -default ""]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
@@ -1468,6 +1793,8 @@ WHERE
 	}
 
 	set user_id [db_string user "select party_id from parties where lower(email)=lower(:email)" -default 0]
+	if {0 == $_id} { append err_return "<li>" }
+
 
 	if {$user_id} {
 	    if { [catch {
