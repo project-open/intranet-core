@@ -50,7 +50,7 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     }
 
     # Determine the sender address
-    set sender_email [ad_parameter SystemOwner "" "webmaster@localhost"]
+    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "webmaster@localhost"]
 
     # Send out the mail
     if [catch { 
