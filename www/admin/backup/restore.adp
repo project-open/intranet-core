@@ -3,7 +3,6 @@
 <property name="title">#intranet-core.Menu_Restore#</property>
 
 <form action="restore-2" method=POST>
-<%= [export_form_vars path] %>
 
 <table cellpadding=1 cellspacing=1 border=0>
 <tr class=rowtitle>

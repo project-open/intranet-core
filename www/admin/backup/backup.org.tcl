@@ -4,18 +4,16 @@ ad_page_contract {
     Changes all clients, users, prices etc to allow
     to convert a productive system into a demo.
 } {
-    view:array
-    { return_url "index" }
+    { path "/tmp/" }
+    { return_url "" }
 }
 
 
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "Backup"
 set context_bar [ad_context_bar $page_title]
-set context ""
 set page_body "<H1>$page_title</H1>"
-set today [db_string today "select to_char(sysdate, 'YYYY-MM-DD.HH-mm') from dual"]
-set path [im_backup_path]
+set today [db_string today "select to_char(sysdate, 'YYYY-MM-DD') from dual"]
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_admin_p} {
@@ -24,16 +22,16 @@ if {!$user_admin_p} {
 }
 
 
-set joined_ids [join [array names view] ","]
-
 set sql "
 select
 	v.*
 from 
 	im_views v
 where 
-	v.view_id in ($joined_ids)
+	view_id >= 100
+	and view_id < 200
 "
+
 
 # Prepare the path for the export
 #
@@ -47,7 +45,7 @@ if {![file isdirectory $path]} {
     }
 }
 
-append path "/$today/"
+append path "$today/"
 if {![file isdirectory $path]} {
     if { [catch {
 	ns_log Notice "/bin/mkdir $path"
@@ -59,11 +57,8 @@ if {![file isdirectory $path]} {
 }
 
 append page_body "<ul>\n"
-ns_log Notice "backup-2: $sql"
 db_foreach foreach_report $sql {
-    append page_body "<li>Exporting $view_name ... to path '$path'"
-    ns_log Notice "backup-2: im_backup_report $view_id"
-
+    append page_body "<li>Exporting $view_name ..."
     set report [im_backup_report $view_id]
     
     if { [catch {
@@ -85,10 +80,10 @@ append page_body "
 Successfully finished
 "
 
-append page_body "
-<pre>
-$sql
-</pre>
-"
 
+if {"" != $return_url} {
+    ad_return_redirect $return_url
+} else {
+    doc_return  200 text/html [im_return_template]
+}
 
