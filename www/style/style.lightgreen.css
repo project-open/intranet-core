@@ -1,0 +1,51 @@
+    body, p, td {font-family: verdana, arial, helvetica, sans-serif; font-size: 8pt; color: #000000;}
+    hr {height: 1px;}
+    h1 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: large;}
+    h2 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: medium;}
+    h3 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
+
+    .pagedesriptionbar {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; color: #ffffff; background-color: #3D5440;}
+
+    .tabsel {background-color: #3D5440; color: #ffffff;}
+    .tabnotsel {background-color: #C9DCCC; color: #000000;}
+    .titlerow  {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; background-color: #BBCFE1; background: #BBCFE1;}
+
+    .rowtitle  {font-size: 10pt; color: #ffffff; background-color: #648E6A; }
+    .rowodd {font-size: 8pt; background-color: #F1F6F2;}
+    .rowplain {font-size: 8pt; background-color: #FFFFFF;}
+    .roweven {font-size: 8pt; background-color: #E3EDE4;}
+
+    .tablebody {font-size: 8pt; background-color: #F1F6F2;}
+    .tableheader {font-size: 8pt; background-color: #E3EDE4;}
+
+    .invoiceroweven {font-size: 9pt; background-color: #E3EDE4;}
+    .invoicerowodd {font-size: 9pt; background-color: #F1F6F2;}
+
+    .small {font-family: verdana, arial, helvetica, sans-serif; font-Size: xx-small;}
+
+    A:link {color: #404040; text-decoration: none;},   
+    A:visited {color: #404040; text-decoration: none;},  
+    A:active {color: #404040; text-decoration: none;},  
+    A:hover  {color: #000000; text-decoration: underline;}
+
+    A.titlerow:link {color: #000000;},   
+    A.titlerow:visited {color: #000000;},  
+    A.titlerow:active {color: #000000;},  
+    A.titlerow:hover  {color: #000000;}
+
+    A.blacklink:link,  
+    A.blacklink:visited, 
+    A.blacklink:active, 
+    A.blacklink:hover {color: #000000;}
+
+    A.whitelink:link {color: #FFFFFF; text-decoration: none;} 
+    A.whitelink:visited  {color: #EEEEEE; text-decoration: none;} 
+    A.whitelink:active {color: #FFFFFF; text-decoration: none;} 
+    A.whitelink:hover {color: #FFFFFF; text-decoration: underline}
+
+    A.paginacion:link, 
+    A.paginacion:active, 
+    A.paginacion:visited {font-weight: bold; color: #000000; text-decoration: none;}    
+    A.paginacion:hover {font-weight: bold; color: #000000; text-decoration: underline;}
+
+    .rowfilestorage {background-color: #ecf5e5; text-align: left;}

@@ -56,11 +56,11 @@ ad_proc -public im_opt_val { var_name } {
 
 # Basic Intranet Parameter Shortcuts
 ad_proc im_url_stub {} {
-    return [ad_parameter -package_id [im_package_core_id] IntranetUrlStub intranet "/intranet"]
+    return [ad_parameter -package_id [im_package_core_id] IntranetUrlStub "" "/intranet"]
 }
 
 ad_proc im_url {} {
-    return [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""][im_url_stub]
+    return [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""][im_url_stub]
 }
 
 
@@ -692,11 +692,11 @@ and u.user_id = salaries.user_id (+)"
 }
 
 ad_proc im_salary_period_input {} {
-    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodInput intranet]
+    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodInput "" ""]
 }
 
 ad_proc im_salary_period_display {} {
-    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodDisplay intranet]
+    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodDisplay "" ""]
 }
 
 ad_proc im_display_salary {salary salary_period} {Formats salary for nice display} {

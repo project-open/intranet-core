@@ -22,7 +22,7 @@ ad_page_contract {
     { return_url "" }
 }
 
-if {0 && ![string equal "true" [ad_parameter -package_id [im_package_core_id] TestDemoDevServer false]]} {
+if {![ad_parameter -package_id [im_package_core_id] TestDemoDevServer "" 0]} {
     ad_return_complaint 1 "<LI>This is not a Test/Demo/Development server.<BR>
     So you probably don't want to destroy all data, right?!?<br>&nbsp;<br>
     If this IS a Test/Demo/Development server, then check '/parameters/*.ini'

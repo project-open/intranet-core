@@ -71,7 +71,7 @@ im_add_to_status_report "Delinquent Employees" im_delinquent_employees f
 im_add_to_status_report "Downloads" im_downloads_status
 im_add_to_status_report "Customers: Bids Out" im_customers_bids_out
 im_add_to_status_report "Customers: Status Changes" im_customers_status_change
-im_add_to_status_report "New Registrants at [ad_parameter -package_id [ad_acs_kernel_id] SystemURL]" im_new_registrants
+im_add_to_status_report "New Registrants at [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]" im_new_registrants
 
 
 # Too much correspondance now!
@@ -240,7 +240,7 @@ ad_proc im_recent_employees {
 	set report_date_sql "to_date(:report_date)"
 	ns_set put $bind_vars report_date $report_date
     }
-    set group_type [ad_parameter -package_id [im_package_core_id] IntranetGroupType intranet intranet]
+    set group_type [ad_parameter -package_id [im_package_core_id] IntranetGroupType "" intranet]
     ns_set put $bind_vars group_type $group_type
 
     # check for killed_offices and update the sql query as necessary
@@ -335,7 +335,7 @@ ad_proc im_future_employees { {coverage ""} {report_date ""} {purpose ""} {user_
          (select job_title from im_job_titles 
           where original_job_id = job_title_id) as job_title, 
          decode(im_employee_percentage_time.percentage_time,NULL,'',im_employee_percentage_time.percentage_time||'% ') as percentage_string, 
-         group_names_of_user_by_type(u.user_id,'[ad_parameter -package_id [im_package_core_id] IntranetGroupType intranet intranet]') as group_names_of_user
+         group_names_of_user_by_type(u.user_id,'[ad_parameter -package_id [im_package_core_id] IntranetGroupType "" intranet]') as group_names_of_user
          from users_active u, im_employees info, im_employee_percentage_time
          where u.user_id = info.user_id
          $sub_sql and im_employee_percentage_time.user_id = info.user_id
@@ -870,7 +870,7 @@ ad_proc im_delinquent_employees { {coverage ""} {report_date ""} {purpose ""} {u
     # b) If not, the project report is a general comment
 
     set project_report_type_as_survey_list ""
-    foreach type_survey_pair [ad_parameter_all_values_as_list ProjectReportTypeSurveyNamePair intranet] {
+    foreach type_survey_pair [ad_parameter_all_values_as_list ProjectReportTypeSurveyNamePair "" ""] {
 	set type_survey_list [split $type_survey_pair ","]
 	set type [lindex $type_survey_list 0]
 	set survey [lindex $type_survey_list 1]

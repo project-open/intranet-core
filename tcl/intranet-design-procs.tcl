@@ -819,8 +819,8 @@ ad_proc -public im_footer {} {
         <TBODY> 
           <TR>
             <TD>Comments? Contact: 
-          <A href='mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner]'>
-          [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner]
+          <A href='mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]'>
+          [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
           </A> 
            </TD>
         </TR>
@@ -835,25 +835,23 @@ ad_proc -public im_footer {} {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    set system_css [ad_parameter -package_id [ad_acs_kernel_id] SystemCSS "/intranet/style/style.css"]
-    set system_css "/intranet/style/style.opus5.css"
+    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
     return "<link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>\n"
 }
+
 
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
-    set system_logo [ad_parameter -package_id [ad_acs_kernel_id] SystemLogo "/intranet/images/projop-logo.gif"]
-    set system_logo "<A href=\"http://www.opus5.net/\"><IMG SRC=\"/intranet/images/logo-opus5.gif\" border=0></A>"
-    return $system_logo
+    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/projop-logo.gif"]
+    return "<img src=$system_logo>"
 }
 
 
 ad_proc -public im_navbar_gif_path {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    set navbar_gif_path [ad_parameter -package_id [ad_acs_kernel_id] SystemNavbarGifPath "/intranet/images/navbar_opus5"]
-    set navbar_gif_path "/intranet/images/navbar_opus5"
+    set navbar_gif_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_lightgreen"]
     return $navbar_gif_path
 }
 
@@ -893,7 +891,7 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
     letter is the number of times that letter appears.  
 } {
 
-    set min_records [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage 50]
+    set min_records [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
     # Let's run through and make sure we have enough records
     set num_records 0
     foreach { l count } $initial_list {
@@ -1021,8 +1019,8 @@ ad_proc im_report_error { message } {
     @param message The message to write (pulled from <code>$errorInfo</code> if none is specified).
 } {
     set error_url [ad_conn url]
-    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
-    set publisher_name [ad_parameter -package_id [ad_acs_kernel_id] PublisherName ""]
+    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
+    set publisher_name [ad_parameter -package_id [ad_acs_kernel_id] PublisherName "" ""]
     set core_version "2.0"
     set error_user_id [ad_get_user_id]
     set error_first_names ""
@@ -1044,14 +1042,14 @@ where
 "
     } catch_err
 
-    set report_url [ad_parameter -package_id [ad_acs_kernel_id] "ErrorReportURL" "rp" ""]
+    set report_url [ad_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { [empty_string_p $report_url] } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
 	set report_url "http://www.projop.com/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""
-    if {![ad_parameter -package_id [ad_acs_kernel_id] "RestrictErrorsToAdminsP" dummy 0] || [permission::permission_p -object_id [ad_conn package_id] -privilege admin] } {
+    if {![ad_parameter -package_id [ad_acs_kernel_id] "RestrictErrorsToAdminsP" "" 0] || [permission::permission_p -object_id [ad_conn package_id] -privilege admin] } {
 	set error_info $message
     }
     

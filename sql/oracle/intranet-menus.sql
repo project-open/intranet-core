@@ -219,6 +219,8 @@ end im_menu;
 show errors
 
 
+set escape \
+
 -- -----------------------------------------------------
 -- Main Menu
 -- -----------------------------------------------------
@@ -488,7 +490,7 @@ begin
 	package_name =>	'intranet',
 	label =>	'users_unassigned',
 	name =>		'Unassigned',
-	url =>		'/intranet/users/index?user_group_name=Unregistered&view_name=user_community&order_by=Creation',
+	url =>		'/intranet/users/index?user_group_name=Unregistered\&view_name=user_community\&order_by=Creation',
 	sort_order =>	4,
 	parent_menu_id => v_user_menu
     );

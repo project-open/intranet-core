@@ -395,10 +395,10 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
 	
      if { ![empty_string_p $status] } {
 	 ns_set put $bind_vars status $status
-	 append sql " and project_status_id=(
+	 append sql " and project_status_id = (
 	     select project_status_id 
 	     from im_project_status 
-	     where lower(project_status)=lower(:status)"
+	     where lower(project_status)=lower(:status))"
     }
 
     if { ![empty_string_p $exclude_status] } {
