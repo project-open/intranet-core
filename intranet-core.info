@@ -12,7 +12,7 @@
     <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
 
 
-    <release-date>2004-08-17</release-date>
+    <release-date>2004-08-24</release-date>
     <vendor url="http://www.project-open.com/">Project/Open</vendor>
 
     <provides url="intranet-core" version="2.1.1"/>
