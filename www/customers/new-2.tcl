@@ -73,7 +73,7 @@ set user_id [ad_maybe_redirect_for_registration]
 set form_setid [ns_getform]
 
 set required_vars [list \
-    [list "customer_name" "You must specify the customer's name"] \
+    [list "customer_name" "You must specify the company's name"] \
     [list "customer_path" "You must specify a short name"]]
 set errors [im_verify_form_variables $required_vars]
 set exception_count 0
@@ -99,7 +99,7 @@ set exists_p [db_string group_exists_p "
 
 if { $exists_p } {
     incr exception_count
-    append errors "  <li> The specified customer short name already exists. Either choose a new name or go back to the customer's page to edit the existing record\n"
+    append errors "  <li> The specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record\n"
 }
 
 if { ![empty_string_p $errors] } {
