@@ -1,4 +1,4 @@
-# /www/user-search.tcl
+# /packages/intranet-core/www/user-search.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -42,7 +42,7 @@ ad_page_contract {
            subgroup of the specified group_id
     
     @author philg@mit.edu and authors
-    @cvs-id user-search.tcl,v 3.3.2.17 2000/09/22 01:34:08 kevin Exp    
+    @author frank.bergmann@project-open.com
 } {    
     { email "" }
     target

@@ -1,4 +1,4 @@
-# /www/intranet/projects/view.tcl
+# /packages/intranet-core/projects/view.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The software is based on ArsDigita ACS 3.4

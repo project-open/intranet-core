@@ -25,7 +25,6 @@ ad_library {
 
     @author unknown@arsdigita.com
     @author frank.bergmann@project-open.com
-    @creation-date  27 June 2003
 }
 
 

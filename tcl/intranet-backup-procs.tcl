@@ -1,7 +1,6 @@
 # /packages/intranet-core/tcl/intranet-backup-procs.tcl
 #
-# Copyright (C) 1998-2004 various parties
-# The code is based on ArsDigita ACS 3.4
+# Copyright (C) 1998-2004 Project/Open
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General

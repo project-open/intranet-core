@@ -1,4 +1,4 @@
-# /www/intranet/index.tcl
+# /packages/intranet-core/www/index.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4

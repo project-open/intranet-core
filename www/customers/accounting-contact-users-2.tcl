@@ -21,6 +21,7 @@ ad_page_contract {
     @param group_id customer's group id
     @param user_id_from_search user we're setting as the accounting contact
 
+    @author various@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     group_id:integer

@@ -28,6 +28,7 @@ ad_page_contract {
     @param start_date
 
     @author mbryzek@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     group_id:naturalnum,notnull
     { role "" }

@@ -1,4 +1,4 @@
-# /www/intranet/customers/primary-contact.tcl
+# /packages/intranet-core/customers/primary-contact.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4

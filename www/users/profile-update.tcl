@@ -21,6 +21,7 @@ ad_page_contract {
     @param url
 
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer
     { profile:multiple ""}

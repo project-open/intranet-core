@@ -1,4 +1,4 @@
-# /intranet/tcl/intranet-component-procs.tcl
+# /packages/intranet-core/tcl/intranet-component-procs.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -19,7 +19,6 @@ ad_library {
     is are plug-ins that should be displayed in this place.
 
     @author frank.bergmann@project-open.com
-    @creation-date  27 January 2004
 }
 
 

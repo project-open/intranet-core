@@ -16,6 +16,7 @@ ad_page_contract {
     Add or remove "User Matrix" permissions<br>
     (permissions for members of one group to manage the members
     of another group).
+
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     horiz_group_id:integer

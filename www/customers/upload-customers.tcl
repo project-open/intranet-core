@@ -1,4 +1,4 @@
-# /intranet/customers/upload.tcl
+# /package/intranet-core/customers/upload-customers.tcl
 #
 # Copyright (C) 2004 Project/Open
 #

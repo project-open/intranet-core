@@ -1,4 +1,4 @@
-# /www/intranet/projects/new.tcl
+# /packages/intranet-core/projects/new.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The software is based on ArsDigita ACS 3.4
@@ -22,7 +22,6 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
-    @creation-date Jan 2000
 } {
     project_id:optional,integer
     { parent_id:integer "" }

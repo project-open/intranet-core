@@ -1,4 +1,4 @@
-# /www/admin/categories/category-update.tcl
+# /packages/intranet-core/www/admin/categories/category-update.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -28,16 +28,13 @@ ad_page_contract {
   
   @author unknown@arsdigita.com
   @author guillermo.belcic@project-open.com
-  @creation-date 030904
-
+  @author frank.bergmann@project-open.com
 } {
-
   category_id:naturalnum,notnull
   category:notnull
   category_description
   enabled_p:notnull
   category_type
-
 }
 
 # ---------------------------------------------------------------

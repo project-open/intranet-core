@@ -1,7 +1,6 @@
--- /packages/intranet/sql/oracle/intranet-object-member.sql
+-- /packages/intranet-core/sql/oracle/intranet-biz-objects.sql
 --
--- Copyright (C) 1999-2004 various parties
--- The code is based on ArsDigita ACS 3.4
+-- Copyright (C) 1999-2004 Project/Open
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General

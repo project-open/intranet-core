@@ -1,4 +1,4 @@
-# /www/admin/categories/one-type.tcl
+# /packages/intranet-core/www/admin/categories/one-type.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,16 +14,14 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-  
   Displays all categories of one category type, if category_type
   form var is supplied.  Otherwise, display all categories
   whose category_type is set to NULL.
-
   @param category_type
 
   @author sskracic@arsdigita.com
   @author michael@yoon.org
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
   category_type:optional
 }

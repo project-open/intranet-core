@@ -1,6 +1,7 @@
 # /packages/intranet-core/tcl/intranet-customer-components.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 various parties
+# The code is based on work from ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -14,8 +15,9 @@
 
 ad_library {
     Bring together all "components" (=HTML + SQL code) related to Customers.
+    
+    @author various@arsdigita.com
     @author frank.bergmann@project-open.com
-    @creation-date  27 June 2003
 }
 
 ad_proc -public im_customer_link_tr {user_id customer_id customer_name title} {

@@ -1,4 +1,4 @@
-# /www/admin/categories/remove-link-to-parent.tcl
+# /packages/intranet-core/www/admin/categories/remove-link-to-parent.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,20 +14,16 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-
   Deletes a parent-child relationship between two categories.
-
   @param category_id Which category is being worked on
   @param parent_category_id Category designated as parent to category_id
 
   @author sskracic@arsdigita.com 
   @author michael@yoon.org 
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
-
   category_id:naturalnum,notnull
   parent_category_id:naturalnum,notnull
-
 }
 
 db_transaction {

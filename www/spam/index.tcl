@@ -1,18 +1,30 @@
-# /www/intranet/spam/index.tcl
+# /packages/intranet-core/www/intranet/spam/index.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Let's a user write spam to people in 1 group (group_id) who 
-aren't in another (limit_to_users_in_group_id)
-We chose not to use the spam module because it's support of 
-complex sql queries is not yet bug-free
+    aren't in another (limit_to_users_in_group_id)
+    We chose not to use the spam module because it's support of 
+    complex sql queries is not yet bug-free
 
     @param group_id_list A list of group_ids to spam.
     @param description A description of the spam.
     @param all_or_any All to spam intersection of group_id_list. Any to spam union of group_id_list.
 
     @author mbryzek@arsdigita.com
-    @creation-date Mar 2000
-    @cvs-id index.tcl,v 1.10.2.8 2000/09/22 01:38:49 kevin Exp
+    @author frank.bergmann@project-open.com
 } {
     group_id_list:notnull,multiple
     description:optional

@@ -1,11 +1,18 @@
--- po-core/sql/po-core-dynviews.sql
+-- /packages/intranet-core/sql/postgres/intranet-core-dynviews.sql
 --
--- Defines a number of views to business objects,
--- implementing configurable reports, similar to
--- the choice of columns in the 3.4 addressbook.
+-- Copyright (C) 1999-2004 Project/Open
 --
--- fraber@fraber.de, 2003-07-24
+-- This program is free software. You can redistribute it
+-- and/or modify it under the terms of the GNU General
+-- Public License as published by the Free Software Foundation;
+-- either version 2 of the License, or (at your option)
+-- any later version. This program is distributed in the
+-- hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or
+-- FITNESS FOR A PARTICULAR PURPOSE.
+-- See the GNU General Public License for more details.
 --
+-- @author      frank.bergmann@project-open.com
 
 ---------------------------------------------------------
 -- Views

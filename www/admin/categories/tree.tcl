@@ -1,4 +1,4 @@
-# /www/admin/categories/tree.tcl
+# /packages/intranet-core/www/admin/categories/tree.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -20,7 +20,7 @@ ad_page_contract {
 
   @author sskracic@arsdigita.com 
   @author michael@yoon.org 
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
 
 }

@@ -1,8 +1,23 @@
-# /www/intranet/anonymize.tcl
+# /packages/intranet-core/www/anonymize.tcl
+#
+# Copyright (C) 1998-2004 Project/Open
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 
 ad_page_contract {
     Changes all clients, users, prices etc to allow
     to convert a productive system into a demo.
+
+    @author frank.bergmann@project-open.com
 } {
     { return_url "" }
 }

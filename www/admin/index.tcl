@@ -1,4 +1,4 @@
-# /www/admin/categories/index.tcl
+# /packages/intranet-core/www/admin/categories/index.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -16,7 +16,7 @@ ad_page_contract {
   Home page for category administration.
 
   @author guillermo.belcic@project-open.com
-  @creation-date 040903
+  @author frank.bergmann@project-open.com
 } {
     { select_category_type "All" }
 }

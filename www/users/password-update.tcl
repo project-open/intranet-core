@@ -13,7 +13,9 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 
 ad_page_contract {
-    @cvs-id password-update.tcl,v 3.2.6.3.2.3 2000/09/22 01:36:19 kevin Exp
+
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
     { return_url "" }

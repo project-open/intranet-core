@@ -18,7 +18,6 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
-    @creation-date Jan 2000
 } {
     return_url:optional
 

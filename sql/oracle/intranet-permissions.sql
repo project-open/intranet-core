@@ -1,4 +1,4 @@
--- /packages/intranet/sql/intranet-permissions.sql
+-- /packages/intranet-core/sql/oracle/intranet-permissions.sql
 --
 -- Copyright (C) 1999-2004 Project/Open
 --

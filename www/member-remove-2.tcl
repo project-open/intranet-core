@@ -24,18 +24,14 @@ ad_page_contract {
     @param return_url:optional
     
     @author Mike Bryzek (mbryzek@arsdigita.com)
-    @creation-date 4/4/2000
-    @cvs-id member-remove-2.tcl,v 3.4.6.7 2000/08/16 21:24:30 mbryzek Exp
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     group_id:integer,notnull
     user_id:integer,notnull
     return_url:optional
 }
 
-
 set mapping_user [ad_verify_and_get_user_id]
-
-
 
 if { ![im_can_user_administer_group $group_id $mapping_user] } {
     ad_return_complaint 1 "<li>Permission Denied<br>You do not have permission to remove a member from this group."

@@ -1,4 +1,4 @@
-# /www/admin/categories/category-nuke.tcl
+# /packages/intranet-core/www/admin/categories/category-nuke.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,13 +14,12 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
+    Confirmation page for nuking a category.
+    @param category_id Category ID we're about to nuke
 
-  Confirmation page for nuking a category.
-
-  @param category_id Category ID we're about to nuke
-
-  @author unknown@arsdigita.com
-  @author gbelcic@sls-international.com
+    @author unknown@arsdigita.com
+    @author gbelcic@sls-international.com
+    @author frank.bergmann@project-open.com
 } {
   category_id:naturalnum,notnull
 }

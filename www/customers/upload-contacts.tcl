@@ -16,7 +16,6 @@ ad_page_contract {
     Serve the user a form to upload a new file or URL
 
     @author frank.bergmann@project-open.com
-    @creation-date July 2003
 } {
     return_url:notnull
 }

@@ -19,6 +19,7 @@ ad_page_contract {
     the data model and insert the data into "users" and
     "acs_rels".
 
+    @author various@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
     return_url

@@ -18,8 +18,7 @@ ad_page_contract {
     @param group_id customer's group id
     @param return_url where to go once we're done
 
-    @author Frank Bergmann (fraber@fraber.de)
-
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     group_id:integer
     return_url

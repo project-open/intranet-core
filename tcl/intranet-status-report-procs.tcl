@@ -18,7 +18,7 @@ ad_library {
     @author Michael Bryzek (mbryzek@arsdigita.com)
     @author Tracy Adams (teadams@mit.edu)
     @author Michael Pih (pihman@arsdigita.com)
-    @cvs-id intranet-status-report-defs.tcl,v 3.16.2.3 2000/07/18 05:21:49 mbryzek Exp
+    @author frank.bergmann@project-open.com
 }
 
 ns_share im_status_report_section_list

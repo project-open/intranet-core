@@ -1,4 +1,17 @@
-# /www/intranet/spam/send.tcl
+# /packages/intranet-core/www/intranet/spam/send.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Sends email to users specified
@@ -11,9 +24,7 @@ ad_page_contract {
     @param message The message in the email.
 
     @author mbryzek@arsdigita.com
-    @creation-date Mar 2000
-
-    @cvs-id send.tcl,v 1.7.2.5 2000/08/16 21:25:05 mbryzek Exp
+    @author frank.bergmann@project-open.com
 } {
     group_id_list:notnull,multiple
     description:optional

@@ -1,8 +1,21 @@
--- /po-core/sql/postgres/po-company-create.sql
+-- /packages/intranet-core/sql/postgres/intranet-company-create.sql
 --
--- Project/Open Core Module, fraber@fraber.de, 030828
--- Based on code from dvr@arsdigita.com
+-- Copyright (C) 1999-2004 Project/Open
+-- The code is based on ArsDigita ACS 3.4
 --
+-- This program is free software. You can redistribute it
+-- and/or modify it under the terms of the GNU General
+-- Public License as published by the Free Software Foundation;
+-- either version 2 of the License, or (at your option)
+-- any later version. This program is distributed in the
+-- hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or
+-- FITNESS FOR A PARTICULAR PURPOSE.
+-- See the GNU General Public License for more details.
+--
+-- @author      various@arsdigita.com
+-- @author      frank.bergmann@project-open.com
+
 
 ---------------------------------------------------------
 -- Companies

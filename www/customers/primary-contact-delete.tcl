@@ -20,8 +20,6 @@ ad_page_contract {
     @param return_url where to go once we're done
 
     @author Frank Bergmann (frank.bergmann@project-open.com)
-    @creation-date Jan 2000
-
 } {
     group_id:integer
     return_url

@@ -1,4 +1,4 @@
-# /www/admin/categories/add-link-to-parent.tcl
+# /packages/intranet-core/www/admin/categories/add-link-to-parent.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,18 +14,14 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-
   Form for designating a parent for a given category.
-
   @param category_id Which category is being worked on
 
   @author sskracic@arsdigita.com 
   @author michael@yoon.org 
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
-
   category_id:naturalnum,notnull
-
 }
 
 set category [db_string category_name "SELECT category FROM categories WHERE category_id=:category_id" ]

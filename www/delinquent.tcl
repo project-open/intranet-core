@@ -1,7 +1,6 @@
-# /www/intranet/delinquent.tcl
+# /packages/intranet-core/www/delinquent.tcl
 #
 # Copyright (C) 1998-2004 various parties
-# The code is based on ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -17,6 +16,7 @@ ad_page_contract {
     Purpose: Update delinquent file /var/log/delinquent when necessary
 
     @author jsotil@competitiveness.com
+    @author frank.bergmann@project-open.com
 } {
     user_id
 }

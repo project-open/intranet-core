@@ -17,6 +17,8 @@ ad_page_contract {
     Read a .csv-file with header titles exactly matching
     the data model and insert the data in im_customers
     and im_customer_exts
+
+    @author frank.bergmann@project-open.com
 } {
     return_url
     upload_file

@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-permissions-procs.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 various authors
 # The code is based on work from ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
@@ -41,7 +41,8 @@ ad_library {
 	  other user group. For examples, "Employees" are may
 	  be entiteled to manage "Freelancers".
     </ul>
-    @author Frank Bergmann (fraber@fraber.de)
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 }
 
 
@@ -111,62 +112,8 @@ ad_proc -public im_permission_flush {} {
 #
 ad_proc -public im_permission {user_id privilege} {
     Returns true or false, depending whether the user can execute
-    the specified action.
+    the specified action.<br>
     Uses a cache to reduce DB traffic.
-
-<pre>
-    Forum Topic related permissions:
-    The security is enforced by allowing different profiles to create
-    topics with different scopes:
-    view_forums:		View messages at all
-    create_topic_scope_public:	Public messages, except customers
-    create_topic_scope_group:	Messages for the entire group
-    create_topic_scope_staff:	Messages to staff members of the group
-    create_topic_scope_client:	Messages to the clients of the group
-    create_topic_scope_non_client: Message to non-clients of the group
-    create_topic_scope_pm:	Message to the project manager only
-
-    Customer related permissions:
-    In Translation the most critical are. We differentiate there between
-    the customer list, contacts and details:
-    add_customers:		Add new customers
-    view_customers:		See the Name of a customer of a single project
-    view_customer_contacts:	See customer contacts
-    view_customer_details:	See the address details of a customer
-    view_customer_crm:		"CRM Light" customer contact events
-
-    Project related Permissions:
-    add_projects
-    view_projects
-    view_project_members	See the project member list
-    view_projects_all
-    view_projects_history
-
-    User related permissions:
-    add_users
-    view_users
-    view_employees
-    edit_freelancers
-    view_freelancers
-    view_admin
-    view_freelance_fs
-    view_employee_fs
-    view_customer_fs
-    edit_freelance_fs
-    edit_employee_fs
-    edit_customer_fs
-
-    Finance related permissions: 
-    Everybody should be able to see (and maintain) his own data
-    view_finance
-    add_hours			Employees, freelancers, Wheel, ...
-    view_hours
-    view_hours_all
-    view_allocations
-
-    Other:
-    search_intranet  
-</pre>
 } {
     set result [util_memoize "im_permission_helper $user_id $privilege"]
     ns_log Notice "im_permission($privilege)=$result"

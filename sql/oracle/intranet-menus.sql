@@ -1,7 +1,11 @@
 -- /packages/intranet/sql/oracle/intranet-menu-create.sql
 --
--- Project/Open Core, fraber@fraber.de, 040129
+-- Copyright (c) 2003-2004 Project/Open
 --
+-- All rights reserved. Please check
+-- http://www.project-open.com/license/ for details.
+--
+-- @author frank.bergmann@project-open.com
 
 ---------------------------------------------------------
 -- Menus

@@ -21,11 +21,9 @@ ad_page_contract {
 
   @author sskracic@arsdigita.com 
   @author michael@yoon.org 
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
-
   category_id:naturalnum,notnull
-
 }
 
 set category [db_string category_name "

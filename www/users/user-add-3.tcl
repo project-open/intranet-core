@@ -30,6 +30,12 @@ ad_page_contract {
     last_name:onevalue
     export_vars:onevalue
 }
+
+set current_user_id [ad_maybe_redirect_for_registration]
+if {![im_permission $current_user_id add_users]} {
+    ad_return_complaint 1 "<li>You have no rights to see this page"
+    return
+}
     
 set admin_user_id [ad_verify_and_get_user_id]
 

@@ -13,6 +13,8 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# @author various@arsdigita.com
+# @author frank.bergmann@project-open.com
 
 
 ad_proc -public im_user_permissions { current_user_id user_id view_var read_var write_var admin_var } {

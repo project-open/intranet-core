@@ -1,6 +1,4 @@
--- ------------------------------------------------------------
--- intranet-country-codes.sql
--- 25.6.2003, Frank Bergmann <fraber@fraber.de>
+-- /packages/intranet-core/sql/oracle/intranet-country-codes.sql
 --
 -- Copyright (C) 1999-2004 various parties
 -- The code is based on ArsDigita ACS 3.4

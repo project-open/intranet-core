@@ -1,4 +1,4 @@
--- /package/intranet/sql/intranet-components.sql
+-- /package/intranet-core/sql/intranet-components.sql
 --
 -- Copyright (C) 2004 Project/Open
 --
@@ -17,9 +17,6 @@
 -- Implements the data structures for component bays
 -- that allow to plug-in components into Project/Open
 -- pages at runtime.
---
--- @author Frank Bergmann (fraber@fraber.de)
---
 
 ---------------------------------------------------------
 -- Component Plugins

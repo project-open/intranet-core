@@ -17,7 +17,6 @@ ad_page_contract {
     
     @author Lars Pind (lars@collaboraid.biz)
     @author Frank Bergmann (frank.bergmann@project-open.com)
-    @creation-date 2003-06-13
 }
 
 set page_title "Profiles"

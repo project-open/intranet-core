@@ -14,12 +14,12 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-  Displays and edits the properties of one category.
-  @param category_id Which category is being worked on
+    Displays and edits the properties of one category.
+    @param category_id Which category is being worked on
 
-  @author unknown@arsdigita.com
-  @author guillermo.belcic@project-open.com
-  @creation-date 030904
+    @author unknown@arsdigita.com
+    @author guillermo.belcic@project-open.com
+    @author frank.bergmann@project-open.com
 } {
     category_id:naturalnum,optional
     { select_category_type "" }

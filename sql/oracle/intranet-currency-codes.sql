@@ -1,4 +1,3 @@
--- ------------------------------------------------------------
 -- /packages/intranet-core/sql/oracle/intranet-currency-codes.sql
 --
 -- Copyright (C) 1999-2004 various parties

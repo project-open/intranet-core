@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-alerts.tcl
 #
-# Copyright (C) 1998-2004 various parties (see authors)
+# Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
@@ -19,7 +19,6 @@ ad_library {
     
     @author unknown@arsdigita.com
     @author frank.bergmann@project-open.com
-    @creation-date October 2003
 }
 
 # -------------------------------------------------------------------

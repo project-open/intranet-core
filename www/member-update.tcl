@@ -13,9 +13,13 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+
 ad_page_contract {
     Allows to delete project members and to update
     their time/cost estimates for this project.
+
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     object_id:integer
     days:array,optional

@@ -1,4 +1,4 @@
-# /www/intranet/customers/primary-contact-users-2.tcl
+# /packages/intranet-core/customers/primary-contact-users-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -21,6 +21,7 @@ ad_page_contract {
     @param group_id customer's group id
     @param user_id_from_search user we're setting as the primary contact
 
+    @author various@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     group_id:integer

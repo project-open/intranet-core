@@ -1,7 +1,6 @@
 # /packages/intranet-core/tcl/intranet-profile-procs.tcl
 #
 # Copyright (C) 2004 Project/Open
-# The code is based on work from ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -13,6 +12,7 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# @author frank.bergmann@project-open.com
 
 
 # ------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# /tcl/intranet-groups-permissions.tcl
+# /packages/intranet-core/tcl/intranet-groups-permissions.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4

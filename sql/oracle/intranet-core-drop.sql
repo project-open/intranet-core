@@ -1,5 +1,4 @@
--- ------------------------------------------------------------
--- /packages/intranet-core/sql/oracle/intranet-drop.yymmdd.sql
+-- /packages/intranet-core/sql/oracle/intranet-core-drop.sql
 --
 -- Copyright (C) 1999-2004 various parties
 -- The code is based on ArsDigita ACS 3.4

@@ -1,4 +1,4 @@
-# /www/admin/categories/category-add-2.tcl
+# /packages/intranet-core/www/admin/categories/category-add-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -29,9 +29,8 @@ ad_page_contract {
 
   @author sskracic@arsdigita.com
   @author michael@yoon.org
-  @creation-date October 31, 1999
+  @author frank.bergmann@project-open.com
 } {
-
   category_id:naturalnum,notnull
   parent_category_id:naturalnum,optional
   category:notnull
@@ -41,7 +40,6 @@ ad_page_contract {
   profiling_weight:naturalnum,notnull
   category_type
   new_category_type:optional
-
 }
 
 set exception_count 0

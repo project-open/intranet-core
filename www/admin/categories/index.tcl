@@ -1,4 +1,4 @@
-# /www/admin/categories/index.tcl
+# /packages/intranet-core/www/admin/categories/index.tcl
 #
 # Copyright (C) 2004 Project/Open
 # The code is based on ArsDigita ACS 3.4
@@ -17,7 +17,7 @@ ad_page_contract {
   Home page for category administration.
 
   @author guillermo.belcic@project-open.com
-  @creation-date 030904
+  @author frank.bergmann@project-open.com
 } {
     { select_category_type "All" }
 }

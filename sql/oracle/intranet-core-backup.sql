@@ -1,4 +1,4 @@
--- /packages/intranet-core/sql/oracle/intranet-views.sql
+-- /packages/intranet-core/sql/oracle/intranet-core-backup.sql
 --
 -- Copyright (C) 2004 Project/Open
 --

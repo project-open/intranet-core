@@ -1,4 +1,4 @@
--- /packages/intranet/sql/oracle/intranet-projects.sql
+-- /packages/intranet-core/sql/oracle/intranet-projects.sql
 --
 -- Copyright (C) 1999-2004 various parties
 -- The code is based on ArsDigita ACS 3.4

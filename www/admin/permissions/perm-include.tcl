@@ -23,6 +23,10 @@
 # privs:optional, defaults to 'read', 'write', 'admin'
 # user_add_url: URL to the page for adding users
 
+# @author unknown@openacs.org
+# @author frank.bergmann@project-open.com
+
+
 set user_id [ad_conn user_id]
 set admin_p [ad_permission_p $object_id admin]
 

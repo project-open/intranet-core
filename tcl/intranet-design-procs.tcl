@@ -19,7 +19,6 @@ ad_library {
 
     @author unknown@arsdigita.com
     @author Frank Bergmann (fraber@fraber.de)
-    @creation-date  January 2004
 }
 
 

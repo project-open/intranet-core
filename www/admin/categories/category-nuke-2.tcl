@@ -14,12 +14,11 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-  Actually nukes a category.
+    Actually nukes a category.
 
-  @param category_id Category ID we're nuking
-  @author guillermo.belcic@project-open.com
-  @creation-date 030905
-
+    @param category_id Category ID we're nuking
+    @author guillermo.belcic@project-open.com
+    @author frank.bergmann@project-open.com
 } {
   category_id:naturalnum,notnull
 }
