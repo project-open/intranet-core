@@ -64,6 +64,8 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt='$alt'>" }
 	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt='$alt'>" }
 
+	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border alt='$alt'>" }
+
 	"left-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 	"left-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 	"right-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
