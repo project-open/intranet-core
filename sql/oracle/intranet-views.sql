@@ -12,8 +12,8 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      guillermo.belcic@project-open.com
--- @author      frank.bergmann@project-open.com
+-- @author	guillermo.belcic@project-open.com
+-- @author	frank.bergmann@project-open.com
 
 
 -- Defines a number of views to business objects,
@@ -43,45 +43,46 @@
 -- Views are a kind of meta-data that determine how a user
 -- can see business objects.
 -- Every view has:
---	 1. Filters - Determine what objects to see
---	 2. Columns - Determine how to render columns.
+--	1. Filters - Determine what objects to see
+--	2. Columns - Determine how to render columns.
 --
 
 create sequence im_views_seq start with 1000;
 create table im_views (
-       view_id			integer 
+	view_id			integer 
 				constraint im_views_pk
 				primary key,
-       view_name		varchar(100) 
+	view_name		varchar(100) 
 				constraint im_views_name_un
 				not null unique,
-       visible_for		varchar(1000),
-       view_sql			varchar(4000)
+	visible_for		varchar(1000),
+	view_sql		varchar(4000)
 );
 
 create sequence im_view_columns_seq start with 1000;
 create table im_view_columns (
-       column_id		integer 
+	column_id		integer 
 				constraint im_view_columns_pk
 				primary key,
-       view_id			integer not null 
+	view_id			integer not null 
 				constraint im_view_view_id_fk
 				references im_views,
-       -- group_id=NULL identifies the default view.
-       -- however, there may be customized views for a specific group
-       group_id			integer
+	-- group_id=NULL identifies the default view.
+	-- however, there may be customized views for a specific group
+	group_id			integer
 				constraint im_view_columns_group_id_fk
 				references groups,
-       column_name		varchar(100) not null,
-       -- tcl command being executed using "eval" for rendering the column
-       column_render_tcl	varchar(4000),
-       -- for when the column name results from an "as" command
-       -- for ex., you can customize viewing columns
-       extra_select		varchar(4000),
-       sort_order		integer not null,
-       -- set of permission tokens that allow viewing this column,
-       -- separated with spaces and OR-joined
-       visible_for		varchar(1000)       
+	column_name		varchar(100) not null,
+	-- tcl command being executed using "eval" for rendering the column
+	column_render_tcl	varchar(4000),
+	-- for when the column name results from an "as" command
+	-- for ex., you can customize viewing columns
+	extra_select		varchar(4000),
+	extra_where		varchar(4000),
+	sort_order		integer not null,
+	-- set of permission tokens that allow viewing this column,
+	-- separated with spaces and OR-joined
+	visible_for		varchar(1000)
 );
 
 
