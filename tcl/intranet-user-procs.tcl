@@ -33,20 +33,21 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     if { $user_id == $current_user_id } { return }
 
     # Get the list of profiles of user_id (the one to be managed)
-    # together with the information if curren_user_id can read/write
+    # together with the information if current_user_id can read/write
     # it.
+    # m.group_id are all the groups to whom user_id belongs
     set profile_perm_sql "
 select
         m.group_id,
-	acs_permission.permission_p(m.group_id, m.member_id, 'view') as view_p,
-	acs_permission.permission_p(m.group_id, m.member_id, 'read') as read_p,
-	acs_permission.permission_p(m.group_id, m.member_id, 'write') as write_p,
-	acs_permission.permission_p(m.group_id, m.member_id, 'admin') as admin_p
+	acs_permission.permission_p(m.group_id, :current_user_id, 'view') as view_p,
+	acs_permission.permission_p(m.group_id, :current_user_id, 'read') as read_p,
+	acs_permission.permission_p(m.group_id, :current_user_id, 'write') as write_p,
+	acs_permission.permission_p(m.group_id, :current_user_id, 'admin') as admin_p
 from
         acs_objects o,
 	group_distinct_member_map m
 where
-	m.member_id=:current_user_id
+	m.member_id=:user_id
      	and m.group_id = o.object_id
         and o.object_type = 'im_profile'
 "
@@ -58,34 +59,14 @@ where
 	if {[string equal f $admin_p]} { set admin 0 }
     }
 
-    # Check if user_id participates in a project where current_user_id
-    # acts as a project manager. In this case the PM needs to be able
-    # to read the user info, atleast while the project is ACTIVE.
-
-    return
-
-    set administrated_user_ids [db_list administated_user_ids "
-select distinct
-        m2.user_id
-from
-        user_group_map m,
-        user_group_map m2
-where
-        m.user_id=:current_user_id
-        and m.role='administrator'
-        and m.group_id=m2.group_id
-"]
-
-    set user_in_administered_project 0
-    if {[lsearch -exact $administrated_user_ids $user_id] > -1} {
-	set read 1
-    }
-
     if {$admin} {
 	set read 1
 	set write 1
     }
     if {$read} { set view 1 }
+
+    ns_log Notice "im_user_permissions: cur=$current_user_id, user=$user_id, view=$view, read=$read, write=$write, admin=$admin"
+
 }
 
 ad_proc im_random_employee_blurb { } "Returns a random employee's photograph and a little bio" {

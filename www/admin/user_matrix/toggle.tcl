@@ -36,56 +36,56 @@ switch $action {
     add_viewable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.grant_permission($horiz_group_id,$vert_group_id,'view');
+	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'view');
 	    end;
 	"
     }
     add_readable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.grant_permission($horiz_group_id,$vert_group_id,'read');
+	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'read');
 	    end;
 	"
     }
     add_writable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.grant_permission($horiz_group_id,$vert_group_id,'write');
+	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'write');
 	    end;
 	"
     }
     add_administratable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.grant_permission($horiz_group_id,$vert_group_id,'admin');
+	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'admin');
 	    end;
 	"
     }
     remove_viewable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.revoke_permission($horiz_group_id,$vert_group_id,'view');
+	        acs_permission.revoke_permission($vert_group_id,$horiz_group_id,'view');
 	    end;
 	"
     }
     remove_readable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.revoke_permission($horiz_group_id,$vert_group_id,'read');
+	        acs_permission.revoke_permission($vert_group_id,$horiz_group_id,'read');
 	    end;
 	"
     }
     remove_writable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.revoke_permission($horiz_group_id,$vert_group_id,'write');
+	        acs_permission.revoke_permission($vert_group_id,$horiz_group_id,'write');
 	    end;
 	"
     }
     remove_administratable {
 	db_dml grant_permission "
 	    begin
-	        acs_permission.revoke_permission($horiz_group_id,$vert_group_id,'admin');
+	        acs_permission.revoke_permission($vert_group_id,$horiz_group_id,'admin');
 	    end;
 	"
     }

@@ -63,35 +63,15 @@ set group_names [list]
 set table_header "<tr><td></td>\n"
 set mail_sql_select ""
 db_foreach group_list $group_list_sql {
-	lappend group_ids $group_id
-	lappend group_names $group_name
-	append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'read') as p${group_id}_read_p,\n"
-	append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'view') as p${group_id}_view_p,\n"
-	append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'write') as p${group_id}_write_p,\n"
-	append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'admin') as p${group_id}_admin_p,\n"
-	append table_header "<td><A href=$group_url?group_id=$group_id>$group_name</A></td>\n"
+    lappend group_ids $group_id
+    lappend group_names $group_name
+    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'read') as p${group_id}_read_p,\n"
+    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'view') as p${group_id}_view_p,\n"
+    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'write') as p${group_id}_write_p,\n"
+    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'admin') as p${group_id}_admin_p,\n"
+    append table_header "<td><A href=$group_url?group_id=$group_id>$group_name</A></td>\n"
 }
 append table_header "</th>\n"
-
-set main_sql_old "
-select DISTINCT
-        g.group_id,
-${main_sql_select}	g.group_name
-from
-        acs_objects o,
-        groups g,
-        application_group_element_map app_group,
-        all_object_party_privilege_map perm
-where
-        perm.object_id = g.group_id
-        and perm.party_id = :user_id
-        and perm.privilege = 'read'
-        and g.group_id = o.object_id
-        and o.object_type = 'im_profile'
-        and app_group.package_id = :package_id
-        and app_group.element_id = g.group_id
-order by lower(g.group_name)
-"
 
 set main_sql "
 select DISTINCT
