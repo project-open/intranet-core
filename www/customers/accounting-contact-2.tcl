@@ -1,4 +1,16 @@
 # /www/intranet/customers/accounting-contact-2.tcl
+#
+# Copyright (C) 2004 Project/Open
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Writes customer's accounting contact to the db
@@ -6,9 +18,7 @@ ad_page_contract {
     @param customer_id customer's group id
     @param address_book_id id of the address_book record to set as the accounting contact
 
-    @author Frank Bergmann (frabe@fraber.de)
-    @creation-date Jan 2000
-
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     customer_id:integer,notnull
     user_id:integer,notnull

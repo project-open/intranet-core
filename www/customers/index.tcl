@@ -1,4 +1,17 @@
-# /www/intranet/customers/index.tcl
+# /packages/intranet-core/www/intranet/customers/index.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 # ---------------------------------------------------------------
 # 1. Page Contract
@@ -13,9 +26,7 @@ ad_page_contract {
     @param view_type Specifies which customers to see
 
     @author mbryzek@arsdigita.com
-    @creation-date Jan 2000
-    @cvs-id index.tcl,v 3.20.2.7 2000/09/22 01:38:28 kevin Exp
-
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { status_id:integer "" }
     { type_id:integer "0" }
