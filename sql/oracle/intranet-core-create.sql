@@ -266,81 +266,92 @@ prompt *** intranet-potransdemo-data - Project/Open Translation Demo Data
 -- im_start_blocks record the dates these blocks will start for 
 -- this system.
 
-create table im_start_blocks (
-	start_block		date not null,
-	block_type		varchar(50)
-				constraint im_start_blocks_type_ck
-				check(block_type in ('week','month')),
+create table im_start_weeks (
+	start_block		date not null
+				constraint im_start_weeks_pk
+				primary key,
 				-- We might want to tag a larger unit
 				-- For example, if start_block is the first
 				-- Sunday of a week, those tagged with
 				-- start_of_larger_unit_p might tag
 				-- the first Sunday of a month
 	start_of_larger_unit_p	char(1) default 'f'
-				constraint im_start_blocks_larger_ck
+				constraint im_start_weeks_larger_ck
 				check (start_of_larger_unit_p in ('t','f')),
-	note			varchar(4000),
-		constraint im_start_blocks_pk
-		primary key (start_block, block_type)
+	note			varchar(4000)
+);
+
+create table im_start_months (
+        start_block             date not null
+                                constraint im_start_months_pk
+                                primary key,
+                                -- We might want to tag a larger unit
+                                -- For example, if start_block is the first
+                                -- Sunday of a week, those tagged with
+                                -- start_of_larger_unit_p might tag
+                                -- the first Sunday of a month
+        start_of_larger_unit_p  char(1) default 'f'
+                                constraint im_start_months_larger_ck
+                                check (start_of_larger_unit_p in ('t','f')),
+        note                    varchar(4000)
 );
 
 
 
-
--- Populate im_start_blocks with weeks. Start with Sunday, 
+-- Populate im_start_weeks. Start with Sunday, 
 -- Jan 7th 1996 and end after inserting 1000 weeks. Note 
 -- that 1000 is a completely arbitrary number. 
 DECLARE
     v_max 			integer;
     v_i				integer;
     v_first_block_of_month	integer;
-    v_next_start_block		date;
+    v_next_start_week		date;
 BEGIN
     v_max := 1000;
 
     FOR v_i IN 0..v_max-1 LOOP
 	-- for convenience, select out the next start block to insert into a variable
 	select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
-	into v_next_start_block 
+	into v_next_start_week 
 	from dual;
 
-	insert into im_start_blocks (
-		start_block,
-		block_type
+	insert into im_start_weeks (
+		start_block
 	) values (
-		to_date(v_next_start_block),
-		'week'
+		to_date(v_next_start_week)
 	);
 
 	-- set the start_of_larger_unit_p flag if this is the first
 	-- start block of the month
-	update im_start_blocks
+	update im_start_weeks
 	   set start_of_larger_unit_p='t'
-	 where start_block=to_date(v_next_start_block)
+	 where start_block=to_date(v_next_start_week)
 	   and not exists (
 	select 1 
-	      from im_start_blocks
+	      from im_start_weeks
 	     where to_char(start_block,'YYYY-MM') = 
-	         to_char(v_next_start_block,'YYYY-MM')
+	         to_char(v_next_start_week,'YYYY-MM')
 	           and start_of_larger_unit_p='t');
     END LOOP;
+END;
+/
+show errors;
 
+-- Populate im_start_months. Start with im_start_weeks
+-- dates and check for the beginning of a new month.
+BEGIN
     for row in (
 	select unique concat(to_char(start_block, 'YYYY-MM'),'-01') as first_day_in_month
-        from im_start_blocks
-	where block_type = 'week'
+        from im_start_weeks
      ) loop
 
-	insert into im_start_blocks (
-		start_block,
-		block_type
+	insert into im_start_months (
+		start_block
 	) values (
-		to_date(row.first_day_in_month),
-		'month'
+		to_date(row.first_day_in_month)
 	);
 
      end loop;
-
 END;
 /
 show errors;

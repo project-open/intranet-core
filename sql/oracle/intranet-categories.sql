@@ -202,39 +202,6 @@ from im_categories
 where category_type = 'Intranet Partner Type';
 
 ------------------------------------------------------
--- HR
---
-create or replace view im_prior_experiences as
-select category_id as experience_id, category as experience
-from im_categories
-where category_type = 'Intranet Prior Experience';
-
-create or replace view im_hiring_sources as
-select category_id as source_id, category as source
-from im_categories
-where category_type = 'Intranet Hiring Source';
-
-create or replace view im_job_titles as
-select category_id as job_title_id, category as job_title
-from im_categories
-where category_type = 'Intranet Job Title';
-
-create or replace view im_departments as
-select category_id as department_id, category as department
-from im_categories
-where category_type = 'Intranet Department';
-
-create or replace view im_qualification_processes as
-select category_id as qualification_id, category as qualification
-from im_categories
-where category_type = 'Intranet Qualification Process';
-
-create or replace view im_employee_pipeline_states as
-select category_id as state_id, category as state
-from im_categories
-where category_type = 'Intranet Employee Pipeline State';
-
-------------------------------------------------------
 -- Offices
 --
 create or replace view im_office_status as 
@@ -421,32 +388,6 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', 133, 'Side Project', 'Intranet Task Board Time Frame');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', 134, 'Full Time', 'Intranet Task Board Time Frame');
-
--- Intranet Departments
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '201', 'Administration', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '202', 'Business Development', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '203', 'Client services', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '204', 'Finance', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '205', 'Internal IT Support', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '206', 'Legal', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '207', 'Marketing', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '208', 'Office management', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '209', 'Operations', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '210', 'Human Resources', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '211', 'Sales', 'Intranet Department');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '212', 'Senior Management', 'Intranet Department');
 
 
 
