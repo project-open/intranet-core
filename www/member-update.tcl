@@ -17,27 +17,41 @@ ad_page_contract {
     Allows to delete project members and to update
     their time/cost estimates for this project.
 } {
-    group_id:integer
+    object_id:integer
     days:array,optional
     { return_url "" }
     { submit "" }
     { delete_user:multiple,integer "" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set current_user_id [ad_maybe_redirect_for_registration]
 
-ns_log Notice "group_id=$group_id"
+# Determine our permissions for the current object_id.
+# We can build the permissions command this ways because
+# all Project/Open object types define procedures
+# im_ObjectType_permissions $user_id $object_id view read write admin.
+#
+set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
+set perm_cmd "${object_type}_permissions \$current_user_id \$object_id view read write admin"
+eval $perm_cmd
+
+if {!$write} {
+    ad_return_complaint 1 "You have no rights to modify members of this object."
+    return
+}
+
+ns_log Notice "object_id=$object_id"
 ns_log Notice "submit=$submit"
 ns_log Notice "delete_user(multiple)=$delete_user"
 
 # "Del" button pressed: delete the marked users
 #
 if {[string equal $submit "Del"]} {
+
     foreach user $delete_user {
 	ns_log Notice "delete user: $user"
-
 	group::remove_member \
-	    -group_id $group_id \
+	    -object_id $object_id \
 	    -user_id $user
     }
 }
@@ -53,7 +67,7 @@ if {[string equal $submit "Save"]} {
 	set sql "
 		update USER_GROUP_MEMBER_FIELD_MAP
 		set field_value='$days($user)'
-		where group_id=:group_id
+		where object_id=:object_id
 		and user_id='$user'
 		and field_name='estimation_days'"
         db_dml update_days $sql

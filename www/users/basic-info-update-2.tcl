@@ -40,18 +40,13 @@ ad_page_contract {
 #--------------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_employee_p [im_user_is_employee_p $current_user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-set yourself_p [expr $user_id == $current_user_id]
+if {"" == $return_url} { set return_url "/intranet/users/view?user_id=$user_id" }
 
-if {!$yourself_p && !$user_is_employee_p && !$user_admin_p} {
-    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify user $user_id."
-    return
+im_user_permissions $current_user_id $user_id view read write admin
+if {!write} {
+    ad_return_complaint 1 "<li>You have insufficient privileges to pursue this operation."
 }
 
-if {[string equal "" $return_url]} {
-    set return_url "/intranet/users/view?user_id=$user_id"
-}
 
 #--------------------------------------------------------------------
 # Check the input parameters

@@ -45,7 +45,7 @@ ad_proc -public im_biz_object_member_ids { user_id object_id } {
 		and object_id_two=:user_id
 "
     set result [db_list im_biz_object_member_ids $sql]
-    return result
+    return $result
 }
 
 ad_proc -public im_biz_object_role_ids { user_id object_id } {
@@ -64,7 +64,7 @@ ad_proc -public im_biz_object_role_ids { user_id object_id } {
 		and r.rel_id = m.rel_id
 "
     set result [db_list im_biz_object_roles $sql]
-    return result
+    return $result
 }
 
 ad_proc -public im_biz_object_roles { user_id object_id } {
@@ -86,44 +86,37 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 		and r.rel_id = m.rel_id
 "
     set result [db_list im_biz_object_roles $sql]
-    return result
+    return $result
 }
 
 ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     Adds a user in a role to a Business Object.
-
-declare
-    v_role_id	integer;
-begin
-    select r.role_id
-    into v_role_id
-    from im_biz_object_role r
-    where
-	r.role = :role;
-    
-    if v_role_id = null then
-	v_role_id := 1300;
-    end if;
-end
 } {
-    # Check if the user already has the role
-    set roles [im_biz_object_role_ids $user_id $object_id]
-    set role_already_taken [lsearch -exact $roles $role_id]
+    # Remove all previous member_rels between user ans object
+    set sql "
+    begin
+	for row in (
+        	select rel_id
+        	from acs_rels
+        	where	object_id_one=:object_id 
+			and object_id_two=:user_id
+	) loop
+		im_biz_object_member.del(row.rel_id);
+   	end loop;
+    end;
+"    
+    db_exec_plsql del_users $sql
 
-    # Add the user unless he's already got this role
-    if {$role_already_taken < 0} {
-	set sql "
-begin 
-    :1 := im_biz_object_member.new(
-	object_id_one	=> :object_id,
-	object_id_two	=> :user_id,
-	object_role_id	=> :role_id
-    );
-
-end;
-"
-	set rel_id [db_exec_plsql add_user $sql]
-    }
+    # Add the user
+    set sql "
+	begin
+	    :1 := im_biz_object_member.new(
+		object_id_one	=> :object_id,
+		object_id_two	=> :user_id,
+		object_role_id	=> :role_id
+	    );
+	end; "
+    db_exec_plsql add_user $sql
 }
 
 

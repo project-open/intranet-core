@@ -28,12 +28,9 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_employee_p [im_user_is_employee_p $current_user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-set yourself_p [expr $user_id == $current_user_id]
-
-if {!$yourself_p && !$user_is_employee_p} {
-    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to pursue this operation."
+im_user_permissions $current_user_id $user_id view read write admin
+if {!write} {
+    ad_return_complaint 1 "<li>You have insufficient privileges to pursue this operation."
 }
 
 # ---------------------------------------------------------------
@@ -56,7 +53,7 @@ where
 # ---- Set the title now that the $name is available after the db query
 
 set page_title "$first_names $last_name"
-if {$user_is_employee_p} {
+if {[im_permission $current_user_id view_users]} {
     set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
 } else {
     set context_bar [ad_context_bar $page_title]
@@ -64,7 +61,7 @@ if {$user_is_employee_p} {
 
 set is_admin "disabled"
 set profile_box ""
-if {$user_admin_p} {
+if {$admin} {
 
     # Get the list of current profiles
     set current_profile_list [db_list current_profiles "select unique group_id from user_group_map where group_id < 20 and user_id=:user_id"]
@@ -88,6 +85,7 @@ if {$user_admin_p} {
     
     set is_admin ""
 }
+
 set body_html "
 <form method=POST action=\"basic-info-update-2\">
 [export_form_vars user_id]

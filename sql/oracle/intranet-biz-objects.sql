@@ -128,6 +128,32 @@ end im_biz_object;
 /
 show errors
 
+-- ------------------------------------------------------------
+-- Roles for all Biz Objects
+-- ------------------------------------------------------------
+
+-- Project/Open Core only knows about Member and PM
+-- Project/Translation adds Translator, Proof Reader, ...
+-- Project/Advertizing adds Producer, Designer, Texter, ...
+-- Project/IT adds Business Analyst, Architect, Developer, ...
+
+insert into categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1300, 'Full Member', 'Intranet Biz Object Role', 
+	'member', 'Full Member');
+
+insert into categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1301, 'Project Manager', 'Intranet Biz Object Role', 
+	'project-manager', 'Project Manager');
+
+insert into categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1302, 'Key Account', 'Intranet Biz Object Role', 
+	'key-account', 'Key Account Manager');
 
 -- ------------------------------------------------------------
 -- Valid Roles for Biz Objects

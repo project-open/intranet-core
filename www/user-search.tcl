@@ -62,10 +62,7 @@ ad_page_contract {
 # --------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-
 set display_title "Member Search"
-
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 

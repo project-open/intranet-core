@@ -34,10 +34,9 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
-set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
-
 # expect commands such as: "im_project_permissions" ...
 #
+set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
 set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write admin"
 eval $perm_cmd
 

@@ -40,18 +40,20 @@ if {[exists_and_not_null profile]} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_employee_p [im_user_is_employee_p $current_user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-
+im_user_permissions $current_user_id $user_id view read write admin
 set page_title "Add a user"
 set context [list [list "." "Users"] "Add user"]
-
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
 set return_url "/intranet/users/"
 
-if {$user_is_employee_p} {
+if {!$read} {
+    ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
+    return
+}
+
+if {[im_permission $current_user_id view_users]} {
     set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
 } else {
     set context_bar [ad_context_bar $page_title]
@@ -201,6 +203,11 @@ ad_form -extend -name register -on_request {
     # Populate elements from local variables
 
 } -on_submit {
+
+    if {!$admin} {
+	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
+	return
+    }
 
     db_transaction {
 	

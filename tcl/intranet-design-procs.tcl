@@ -59,6 +59,9 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border alt='$alt'>" }
 	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border alt='$alt'>" }
 	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 heigth=16 border=$border alt='$alt'>" }
+	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border alt='$alt'>" }
+	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt='$alt'>" }
+	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt='$alt'>" }
 
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "

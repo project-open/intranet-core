@@ -28,10 +28,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_employee_p [im_user_is_employee_p $current_user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+im_user_permissions $current_user_id $user_id view read write admin
 
 set return_url [im_url_with_query]
 
@@ -39,11 +36,11 @@ if [info exists user_id_from_search] {
     set user_id $user_id_from_search
 }
 
-if { ![info exists user_id] } {
+if {![info exists user_id]} {
     ad_return_complaint "Bad User" "<li>You must specify a valid user_id."
 }
 
-if { !$user_admin_p && $user_id != $current_user_id } {
+if {!$write} {
     ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify this user."
 }
 
@@ -58,7 +55,7 @@ where
 "
 
 set page_title "Contact for $first_names"
-if {$user_is_employee_p} {
+if {[im_permission $current_user_id view_users]} {
     set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
 } else {
     set context_bar [ad_context_bar $page_title]

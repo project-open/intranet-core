@@ -20,20 +20,13 @@ ad_page_contract {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
-set user_admin_p [|| $user_is_admin_p $user_is_wheel_p]
-
-set user_is_freelance_p [ad_user_group_member [im_freelance_group_id] $user_id]
-set current_user_is_employee_p [im_user_is_employee_p $current_user_id]
-
+im_user_permissions $current_user_id $user_id view read write admin
 set page_title "Change Password"
 set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
 
-if {$user_admin_p || ($user_is_freelance_p && $current_user_is_employee_p)} {
-    # nothing. Allow access
-} else {
-    ad_return_complaint "Insufficient Privileges" "<li>You must be the system administrator to pursue this operation."
+if {!admin} {
+    ad_return_complaint 1 "<li>You have insufficient privileges to see this page"
+    return
 }
 
 

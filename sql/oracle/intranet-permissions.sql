@@ -255,6 +255,7 @@ begin
    im_create_profile ('Project Managers'); 
    im_create_profile ('Senior Managers'); 
    im_create_profile ('Accounting'); 
+   im_create_profile ('Sales'); 
 end;
 /
 show errors;
@@ -309,7 +310,8 @@ begin
     acs_privilege.create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
 
     acs_privilege.create_privilege('add_projects','Add Projects','Add Projects');
-    acs_privilege.create_privilege('view_projects','View Projects','View Projects');
+-- 040228 fraber: Meaningless because everybody should be able to see (his) projects
+--  acs_privilege.create_privilege('view_projects','View Projects','View Projects');
     acs_privilege.create_privilege('view_project_members','View Project Members','View Project Members');
     acs_privilege.create_privilege('view_projects_all','View All Projects','View All Projects');
     acs_privilege.create_privilege('view_projects_history','View Project History','View Project History');
@@ -318,6 +320,9 @@ begin
     acs_privilege.create_privilege('view_users','View Users','View Users');
 
     acs_privilege.create_privilege('search_intranet','Search Intranet','Search Intranet');
+
+    acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
+
 end;
 /
 

@@ -38,16 +38,16 @@ ad_proc -public im_customer_permissions {user_id customer_id view_var read_var w
     set user_is_group_member_p [ad_user_group_member $customer_id $user_id]
     set user_is_group_admin_p [im_can_user_administer_group $customer_id $user_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
-    set user_in_customer_group_p [db_string user_belongs_to_customer "select decode ( ad_group_member_p ( :user_id, $customer_id ), 'f', 0, 1 ) from dual" ]
-
-    # Admin permissions to global + intranet admins + group administrators
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
     set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
 
-    set view $user_admin_p
-    set read $user_admin_p
-    set write $user_admin_p
-    set admin $user_admin_p
+    # Key Account is also a project manager
+    set key_account_id [db_string get_key_account "select manager_id from im_customers where customer_id=:customer_id" -default 0]
+    set user_is_key_account_p 0
+    if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
+    set user_admin_p [expr $user_admin_p || $user_is_key_account_p]
+    ns_log Notice "key_account_id=$key_account_id"
+    ns_log Notice "user_is_key_account_p=$user_is_key_account_p"
 
     ns_log Notice "user_is_admin_p=$user_is_admin_p"
     ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
@@ -55,23 +55,21 @@ ad_proc -public im_customer_permissions {user_id customer_id view_var read_var w
     ns_log Notice "user_is_employee_p=$user_is_employee_p"
     ns_log Notice "user_admin_p=$user_admin_p"
 
-    if {$user_is_group_member_p} { 
-	set view 1
-	set read 1
-    }
-    if {[im_permission $user_id view_customers_all]} { 
-	set view 1
-	set read 1
+    if {!$user_is_group_member_p && ![im_permission $user_id view_customers]} {
+	ad_return_complaint "Insufficient Privileges" "
+        <li>You don't have sufficient privileges to see this page."
     }
 
-    # No read - no write...
-    if {!$read} {
-	set write 0
-	set admin 0
+    set admin $user_admin_p
+    if {$user_is_group_member_p} { set read 1 }
+    if {[im_permission $user_id view_customers_all]} { set read 1 }
+
+    if {!$admin} {
+	set read 1
+	set write 1
     }
+    if {$read} { set view 1 }
 }
-
-
 
 namespace eval customer {
 

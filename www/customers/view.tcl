@@ -27,40 +27,21 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-set user_is_group_member_p [ad_user_group_member $customer_id $user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $customer_id $user_id]
-set user_is_employee_p [im_user_is_employee_p $user_id]
-set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
-set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
-
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
 set context_bar [ad_context_bar [list ./ "Clients"] "One customer"]
-
-# Key Account is also a project manager
-set key_account_id [db_string get_key_account "
-select manager_id from im_customers where customer_id=:customer_id" -default 0]
-set user_is_key_account_p 0
-if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
-set user_admin_p [expr $user_admin_p || $user_is_key_account_p]
-
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
-ns_log Notice "key_account_id=$key_account_id"
-ns_log Notice "user_is_key_account_p=$user_is_key_account_p"
+# Check permissions. "See details" is an additional check for
+# critical information
+im_customer_permissions $user_id $customer_id view read write admin
+set see_details $read
 
-
-
-# Check View Permissions: This should never be executed, because
-# unprivileged users should't even see the link to this page...
-if {!$user_is_group_member_p && ![im_permission $user_id view_customers]} {
+if {!$read} {
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to see this page."
 }
-
 
 db_1row customer_get_info "
 select 
@@ -104,11 +85,6 @@ where
 set page_title $customer_name
 set left_column ""
 
-# Show customer details only to privileged users or to users
-# assigned as key accounts.
-set see_details [expr [im_permission $user_id view_customer_details] || $user_admin_p]
-set see_details [expr $see_details || $user_is_group_member_p]
- 
 append left_column "
 <table border=0>
   <tr> 
@@ -150,7 +126,7 @@ if {$see_details} {
     set limit_to_users_in_group_id [im_employee_group_id]
     if { [empty_string_p $primary_contact_id] } {
 	
-	if { $user_admin_p } {
+	if { $admin } {
 	    set primary_contact_text "<a href=primary-contact?[export_url_vars customer_id limit_to_users_in_group_id]>Add primary contact</a>\n"
 	} else {
 	    set primary_contact_text "<i>none</i>"
@@ -160,7 +136,7 @@ if {$see_details} {
 
 	append primary_contact_text "<a href=/intranet/users/view?user_id=$primary_contact_id>$primary_contact_name</a>"
 
-	if { $user_admin_p } {
+	if { $admin } {
 	    append primary_contact_text "
 	(<a href=primary-contact?[export_url_vars customer_id limit_to_users_in_group_id]>[im_gif turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_url_vars customer_id return_url]>[im_gif delete "Delete the primary contact"]</a>)\n"
 	}
@@ -177,7 +153,7 @@ if {$see_details} {
     set limit_to_users_in_group_id [im_employee_group_id]
     if { [empty_string_p $accounting_contact_id] } {
 	
-	if { $user_admin_p } {
+	if { $admin } {
 	    set accounting_contact_text "<a href=accounting-contact?[export_url_vars customer_id limit_to_users_in_group_id]>Add accounting contact</a>\n"
 	} else {
 	    set accounting_contact_text "<i>none</i>"
@@ -186,7 +162,7 @@ if {$see_details} {
     } else {
 
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
-	if { $user_admin_p } {
+	if { $admin } {
 	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars customer_id limit_to_users_in_group_id]>[im_gif turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_url_vars customer_id return_url]>[im_gif delete "Delete the accounting contact"]</a>)\n"
 	}
     }
@@ -223,7 +199,7 @@ if {$see_details} {
     }
 }
 
-if {$user_admin_p} {
+if {$admin} {
     append left_column "
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
@@ -284,21 +260,21 @@ if {$ctr > $max_projects} {
     append projects_html "<li><A HREF='/intranet/projects/index?customer_id=$customer_id&status_id=0'>more projects...</A>\n"
 }
 
-if { $user_admin_p > 0 } {
+if { $admin > 0 } {
     append projects_html "  <p><li><a href=../projects/new?customer_id=$customer_id>Add a project</a>"
 } 
 
 
 # ------------------------------------------------------
-# Customer Invoices
+# Components
 # ------------------------------------------------------
 
 
-set company_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_employee_group_id]]
+set company_members [im_group_member_component $customer_id $user_id $admin $return_url [im_employee_group_id]]
 
 set enable_project_estimates 0
 set also_add_to_group [im_customer_group_id]
-set customer_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_customer_group_id] [im_employee_group_id] $also_add_to_group]
+set customer_members [im_group_member_component $customer_id $user_id $admin $return_url [im_customer_group_id] [im_employee_group_id] $also_add_to_group]
 
 
 
