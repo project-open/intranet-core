@@ -35,7 +35,7 @@ ad_page_contract {
     { order_by "Project #" }
     { include_subprojects_p "f" }
     { mine_p "f" }
-    { status_id 76 } 
+    { project_status_id 76 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { company_id:integer "0" } 
@@ -93,9 +93,9 @@ set page_focus "im_header_form.keywords"
 set letter [string toupper $letter]
 
 # Determine the default status if not set
-if { [empty_string_p $status_id] } {
+if { [empty_string_p $project_status_id] } {
     # Default status is open
-    set status_id [im_project_status_open]
+    set project_status_id [im_project_status_open]
 }
 
 # Unprivileged users (clients & freelancers) can only see their 
@@ -105,7 +105,7 @@ if {![im_permission $current_user_id "view_projects_all"]} {
     set include_subprojects_p "f"
     
     # Restrict status to "Open" projects only
-    set status_id [im_project_status_open]
+    set project_status_id [im_project_status_open]
 }
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
@@ -169,12 +169,31 @@ set project_types [linsert $project_types 0 0 All]
 # ---------------------------------------------------------------
 
 set criteria [list]
-if { ![empty_string_p $status_id] && $status_id > 0 } {
-    lappend criteria "p.project_status_id=:status_id"
+if { ![empty_string_p $project_status_id] && $project_status_id > 0 } {
+    lappend criteria "p.project_status_id in (
+	select :project_status_id from dual
+	UNION
+	select child_id
+	from im_category_hierarchy
+	where parent_id = :project_status_id
+    )"
 }
+
 if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
-    lappend criteria "p.project_type_id=:project_type_id"
+    # Select the specified project type and its subtypes
+    lappend criteria "p.project_type_id in (
+	select :project_type_id from dual
+	UNION
+	select child_id 
+	from im_category_hierarchy
+	where parent_id = :project_type_id
+    )
+"
 }
+
+
+
+
 if { 0 != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }
@@ -392,7 +411,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
     <td valign=top>[_ intranet-core.Project_Status]:</td>
-    <td valign=top>[im_select status_id $status_types ""]</td>
+    <td valign=top>[im_select project_status_id $status_types ""]</td>
   </tr>\n"
 }
 
