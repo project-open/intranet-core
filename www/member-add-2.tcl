@@ -23,6 +23,7 @@ ad_page_contract {
     @param also_add_to_group_id Additional groups to which to add
 
     @author mbryzek@arsdigita.com    
+    @author frank.bergmann@project-open.com
 } {
     user_id_from_search:integer
     { notify_asignee "0" }

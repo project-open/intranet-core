@@ -57,7 +57,7 @@ set profiling_weight 0
 if {[info exists category_id] && ![empty_string_p $category_id]} {
 
     set page_title "One Category"
-    set context_bar [ad_context_bar_ws $page_title]
+    set context_bar [ad_context_bar $page_title]
     db_1row category_properties "
 select
 	c.*

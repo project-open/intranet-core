@@ -12,7 +12,7 @@ ad_page_contract {
 
 set user_id [ad_get_user_id]
 set page_title "Backup"
-set context_bar [ad_context_bar_ws $page_title]
+set context_bar [ad_context_bar $page_title]
 set page_body "<H1>$page_title</H1>"
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]

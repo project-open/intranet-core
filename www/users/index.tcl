@@ -149,9 +149,8 @@ db_foreach column_list_sql $column_sql {
 # No filters...
 
 set filter_html "
-
-<table border=0 width=100%>
-<tr><td align=center>
+<table border=0 width=100% cellpadding=2 cellspacing=2>
+<tr><td align=right>
 
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
@@ -374,7 +373,6 @@ set table_continuation_html ""
 set group_id $user_group_id
 
 set page_body "
-<BR>
 $filter_html
 [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list group_id start_idx order_by how_many view_name letter]]
 

@@ -66,26 +66,6 @@ set display_title "Member Search"
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
-set limit_to_groups [list]
-if {![string equal "" $limit_to_users_in_group_id]} {
-    lappend limit_to_groups $limit_to_users_in_group_id
-}
-if {[im_permission $current_user_id view_customer_contacts]} {
-    lappend limit_to_groups [im_customer_group_id]
-}
-if {[im_permission $current_user_id view_employees]} {
-    lappend limit_to_groups [im_employee_group_id]
-}
-if {[im_permission $current_user_id view_freelancers]} {
-    lappend limit_to_groups [im_freelance_group_id]
-}
-
-set limit_to_users_in_group_id [join $limit_to_groups ","]
-
-ns_log Notice "limit_to_users_in_group_id=$limit_to_users_in_group_id"
-
-
-
 # --------------------------------------------------
 # Check input.
 # --------------------------------------------------
@@ -115,6 +95,37 @@ if { $exception_count} {
     ad_return_complaint $exception_count $errors
     return
 }
+
+
+# --------------------------------------------------
+# Calculate the groups that we can search for the user
+# --------------------------------------------------
+
+set limit_to_groups [list]
+
+set profile_sql "
+select DISTINCT
+        g.group_name,
+        g.group_id
+from
+        acs_objects o,
+        groups g,
+        all_object_party_privilege_map perm
+where
+        perm.object_id = g.group_id
+        and perm.party_id = :current_user_id
+        and perm.privilege = 'read'
+        and g.group_id = o.object_id
+        and o.object_type = 'im_profile'
+order by lower(g.group_name)
+"
+
+
+db_foreach profile_list $profile_sql {
+    lappend limit_to_groups $group_id
+}
+set limit_to_users_in_group_id [join $limit_to_groups ","]
+ns_log Notice "limit_to_users_in_group_id=$limit_to_users_in_group_id"
 
 
 # --------------------------------------------------

@@ -19,5 +19,6 @@
 	<%= [im_component_bay bottom] %>
    </td>
 </tr>
-</table><hr>
+</table>
+
 
