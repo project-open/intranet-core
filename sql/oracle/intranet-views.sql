@@ -107,17 +107,12 @@ insert into im_views values (81, 'office_view', 'view_offices', '');
 delete from im_view_columns where column_id > 2200 and column_id < 2299;
 --
 insert into im_view_columns values (2201,22,NULL,'Project #',
-'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','','',1,
-'im_permission $user_id view_projects');
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
+'','',1,'im_permission $user_id view_projects');
 insert into im_view_columns values (2203,22,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','','',2,
-'im_permission $user_id view_customers');
-
-insert into im_view_columns values (2207,22,NULL,'Spend Days',
-'$spend_days','','',4,'im_permission $user_id view_projects');
-insert into im_view_columns values (2209,22,NULL,'Estim. Days',
-'$est_days','','',5,'im_permission $user_id view_projects');
-
+'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
+'','',2,'im_permission $user_id view_customers');
+-- columns to be here inserted by intranet-timesheet
 insert into im_view_columns values (2213,22,NULL,'Status',
 '$project_status','','',14,'im_permission $user_id view_projects');
 insert into im_view_columns values (2215,22,NULL,'Start Date',

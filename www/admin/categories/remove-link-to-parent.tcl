@@ -44,7 +44,7 @@ db_transaction {
     # mysteriously disappear from list etc)
 
     if {$parent_count == 0} {
-	db_dml put_on_top_of_hierarchy "INSERT INTO category_hierarchy
+	db_dml put_on_top_of_hierarchy "INSERT INTO im_category_hierarchy
 	(child_category_id, parent_category_id)
 	VALUES (:category_id, NULL)" 
     }

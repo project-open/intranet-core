@@ -289,11 +289,12 @@ im_project_url_map(url_type_id, project_id);
 
 
 
--- Create the "Internal" project, representing the company itself
+-- Create an "internal" project implementing P/O
 declare
 	v_project_id		integer;
 	v_internal_customer_id	integer;
 	v_rel_id		integer;
+	v_user_id		integer;
 begin
 	select customer_id
 	into v_internal_customer_id
@@ -302,12 +303,113 @@ begin
 
 	v_project_id := im_project.new(
 		object_type	=> 'im_project',
-		project_name	=> 'Internal Test Project',
-		project_nr	=> 'internal',
-		project_path	=> 'internal',
+		project_name	=> 'Project/Open Installation',
+		project_nr	=> 'po_install',
+		project_path	=> 'po_install',
 		customer_id	=> v_internal_customer_id
 	);
 
+	-- Add some users
+	-- 1300 is full member, 1301 is PM, 1302 is Key Account
+	select party_id	into v_user_id
+	from parties where email='project.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1301
+	);
+
+	select party_id	into v_user_id
+	from parties where email='staff.member1@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='system.administrator@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='senior.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='free.lance1@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+end;
+/
+commit;
+
+
+
+
+-- Create an "Tigerpond" project
+declare
+	v_project_id		integer;
+	v_customer_id		integer;
+	v_rel_id		integer;
+	v_user_id		integer;
+begin
+	select customer_id
+	into v_customer_id
+	from im_customers
+	where customer_path = 'tigerpond';
+
+	v_project_id := im_project.new(
+		object_type	=> 'im_project',
+		project_name	=> 'Large Translation Project',
+		project_nr	=> '2004_0001',
+		project_path	=> '2004_0001',
+		customer_id	=> v_customer_id
+	);
+
+	-- Add some users
+	-- 1300 is full member, 1301 is PM, 1302 is Key Account
+	select party_id	into v_user_id
+	from parties where email='project.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1301
+	);
+
+	select party_id	into v_user_id
+	from parties where email='staff.member2@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='senior.manager@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
+
+	select party_id	into v_user_id
+	from parties where email='free.lance2@project-open.com';
+	v_rel_id := im_biz_object_member.new (
+        	object_id       => v_project_id,
+        	user_id         => v_user_id,
+        	object_role_id  => 1300
+	);
 end;
 /
 commit;

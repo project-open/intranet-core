@@ -78,6 +78,7 @@ where
 
     if { [empty_string_p $start_date] } { set start_date $todays_date }
     if { [empty_string_p $end_date] } { set end_date $todays_date }
+    if { [empty_string_p $end_time] } { set end_time "12:00" }
     set button_text "Save Changes"
 
 } else {

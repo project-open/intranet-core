@@ -94,7 +94,7 @@ if { $exception_count > 0 } {
 
 db_transaction {
     db_dml new_category_entry {
-	insert into categories
+	insert into im_categories
 	(category_id, category, category_type, profiling_weight,
 	 category_description, mailing_list_info, enabled_p)
 	values
@@ -109,7 +109,7 @@ db_transaction {
     }
 
     db_dml category_hierarchy_entry {
-	insert into category_hierarchy
+	insert into im_category_hierarchy
 	(child_category_id, parent_category_id)
 	values
 	(:category_id, :parent_category_id)

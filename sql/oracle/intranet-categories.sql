@@ -84,27 +84,45 @@ create table im_categories (
 	category_description	varchar(4000),
 	category_type		varchar(50),
 	category_gif		varchar(100) default 'category',
-	enabled_p		char(1) default 'f'
+	enabled_p		char(1) default 't'
+				constraint im_enabled_p_ck
+				check(enabled_p in ('t','f')),
+                                -- used to indicate "abstract" super-categorys
+                                -- that are not valid values for objects.
+                                -- For example: "Translation Project" is not a
+                                -- project_type, but a class of project_types.
+	parent_only_p		char(1) default 'f'
 				constraint im_enabled_p_ck
 				check(enabled_p in ('t','f'))
 );
 
--- optional system to put categories in a hierarchy
--- (see /doc/user-profiling.html)
--- we use a UNIQUE constraint instead of PRIMARY key
--- because we use rows with NULL parent_category_id to
--- signify the top-level categories
+-- optional system to put categories in a hierarchy.
+-- This table stores the "transitive closure" of the
+-- is-a relationship between categories in a kind of matrix.
+-- Let's asume: B isa A and C isa B. So we'll store
+-- the tupels (C,A), (C,B) and (B,A).
+--
+-- This structure is a very fast structure for asking:
+--
+--	"is category A a subcategory of B?"
+--
+-- but requires n^2 storage space in the worst case and
+-- it's a mess retracting settings from the hierarchy.
+-- We won't have very deep hierarchies, so storage complexity
+-- is not going to be a problem.
 
 create table im_category_hierarchy (
-	parent_category_id	integer
+	parent_id		integer
 				constraint im_parent_category_fk
 				references im_categories,
-	child_category_id	integer
+	child_id		integer
 				constraint im_child_category_fk
 				references im_categories,
 				constraint category_hierarchy_un 
-				unique (parent_category_id, child_category_id)
+				unique (parent_id, child_id)
 );
+create index im_cat_hierarchy_parent_id_idx on im_category_hierarchy(parent_id);
+create index im_cat_hierarchy_child_id_idx on im_category_hierarchy(child_id);
 
 
 -- views on intranet categories to make queries cleaner

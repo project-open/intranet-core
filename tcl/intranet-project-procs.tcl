@@ -33,6 +33,32 @@ ad_library {
 # Project ::new, ::del and ::name procedures
 # -----------------------------------------------------------
 
+ad_proc -public im_project_has_type { project_id project_type } {
+    Returns 1 if the project is of a specific type of subtype.
+    Example: A "Trans + Edit + Proof" project is a "Translation Project".
+} {
+    # Is the projects type_id a sub-category of "Translation Project"?
+    # We take two cases: Either the project is of category "project_type"
+    # OR it is one of the subcategories of "project_type".
+    set sql "
+select  count(*)
+from
+        im_projects p,
+	im_categories c,
+        im_category_hierarchy h
+where
+        p.project_id = :project_id
+	and c.category = :project_type
+	and (
+		p.project_type_id = c.category_id
+	or
+	        p.project_type_id = h.child_id
+		and h.parent_id = c.category_id
+	)
+"
+    return [db_string translation_project_query $sql]
+}
+
 
 
 ad_proc -public im_project_permissions {user_id project_id view_var read_var write_var admin_var} {

@@ -76,43 +76,33 @@ set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set return_url [im_url_with_query]
 set user_view_page "/intranet/users/view"
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+set letter [string toupper $letter]
 
-
-# Get the ID of the group of users to show:
+# Get the ID of the group of users to show
+# Default 0 corresponds to the list of all users.
 set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 
-set letter [string toupper $letter]
-set user_is_group_member_p [ad_user_group_member $user_group_id $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $user_group_id $user_id]
 
-if {![im_permission $user_id view_users]} {
-    ad_return_complaint 1 "You don't have permissions to view this page"
-    return
-}
-
-# redirect unprivileged users of "all users" to "employees".
-if {$user_group_id==0 || [string equal "" $user_group_id]} {
-    if {![im_permission $user_id view_customer_contacts]} {
-	set user_group_id [im_employee_group_id]
+if {$user_group_id > 0} {
+    # We have a group specified to show:
+    # Check whether the user can "read" this group:
+    set sql "select acs_permission.permission_p(:user_group_id, :user_id, 'read') from dual"
+    set read [db_string user_can_read_user_group_p $sql]
+    if {![string equal "t" $read]} {
+	ad_return_complaint 1 "You don't have permissions to view this page"
+	return
     }
-}
+} else {
+    # The user requests to see all groups.
+    # The most critical groups are customer contacts...
+    set customer "Customers"
+    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :customer" -default 0]
 
-if {$user_group_id==[im_customer_group_id] && ![im_permission $user_id view_customer_contacts]} {
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You have insufficient privileges to view group# $user_group_id."
-}
-
-if {$user_group_id==[im_freelance_group_id] && ![im_permission $user_id view_freelancers]} {
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You have insufficient privileges to view group# $user_group_id."
-}
-
-
-if {$user_group_id != [im_freelance_group_id] && $user_group_id != [im_employee_group_id] && $user_group_id != [im_customer_group_id] && $user_group_id != 0} {
-   if {!$user_is_group_member_p && !$user_is_group_admin_p && !$user_admin_p} {
-	ad_return_complaint "Insufficient Privileges" "
-	<li>You have insufficient privileges to view group# $user_group_id."
+    set sql "select acs_permission.permission_p(:customer_group_id, :user_id, 'read') from dual"
+    set read [db_string user_can_read_user_group_p $sql]
+    if {![string equal "t" $read]} {
+	ad_return_complaint 1 "You don't have permissions to view this page"
+	return
     }
 }
 

@@ -34,7 +34,7 @@ ad_page_contract {
 } {
     { order_by "Project #" }
     { include_subprojects_p "f" }
-    { mine_p "t" }
+    { mine_p "f" }
     { status_id "" } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
@@ -221,24 +221,6 @@ if { ![empty_string_p $where_clause] } {
 }
 
 
-set additional_select "
-
-        w.task_words,
-        h.task_hours,
-	ph.spend_hours,
-	ph.spend_hours / 8 as spend_days,
-	ed.est_days,
-
-	s_create.when as create_date,
-	s_open.when as open_date,
-	s_quote.when as quote_date,
-	s_deliver.when as deliver_date,
-	s_invoice.when as invoice_date,
-	s_close.when as close_date
-
-"
-
-
 set sql "
 select
 	p.*,
@@ -248,61 +230,17 @@ select
         im_category_from_id(p.project_type_id) as project_type, 
         im_category_from_id(p.project_status_id) as project_status,
         im_proj_url_from_type(p.project_id, 'website') as url,
-	to_char(end_date, 'HH24:MI') as end_date_time
+	to_char(end_date, 'HH24:MI') as end_date_time,
+	s_create.when as create_date,
+	s_open.when as open_date,
+	s_quote.when as quote_date,
+	s_deliver.when as deliver_date,
+	s_invoice.when as invoice_date,
+	s_close.when as close_date
 from 
 	im_projects p, 
-        im_customers c
-where 
-        p.customer_id=c.customer_id(+)
-        $where_clause
-	$order_by_clause
-"
-
-
-
-
-set additional_where "
-        and p.group_id=w.project_id(+)
-        and p.group_id=h.project_id(+)
-        and p.group_id=ph.project_id(+)
-	and p.group_id=ed.group_id(+)
-
---
-	and p.group_id=s_create.group_id(+)
-	and p.group_id=s_quote.group_id(+)
-	and p.group_id=s_open.group_id(+)
-	and p.group_id=s_deliver.group_id(+)
-	and p.group_id=s_invoice.group_id(+)
-	and p.group_id=s_close.group_id(+)
---
-
-"
-
-
-set additional_tables "
---
--- task words and hours
---
-        (select project_id, sum(task_units) as task_words from im_tasks
-	 where task_uom_id in (324, 325) group by project_id) w,
-        (select project_id, sum(task_units) as task_hours from im_tasks
-	 where task_uom_id in (320) group by project_id) h,
---
--- time spend on the project
---
-	(select on_what_id as project_id, sum(hours) as spend_hours from im_hours 
-	 where on_which_table='im_projects' group by on_what_id) ph,
---
--- project estimations
---
-	(select map.group_id as group_id, sum(to_number(f.field_value)) as est_days
-	 from users_active u, user_group_member_field_map f, user_group_map map
-	 where map.user_id=u.user_id and u.user_id = f.user_id
-	 and f.group_id=map.group_id and f.field_name='estimation_days'
-	 group by map.group_id) ed,
---
--- Status change dates
---
+        im_customers c,
+        -- projects audit table records status changes
 	(select project_id, min(audit_date) as when from im_projects_status_audit
 	group by project_id) s_create,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
@@ -315,12 +253,17 @@ set additional_tables "
 	where project_status_id=79 group by project_id) s_invoice,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
 	where project_status_id in (77,81,82) group by project_id) s_close
+where 
+        p.customer_id=c.customer_id(+)
+	and p.project_id=s_create.project_id(+)
+	and p.project_id=s_quote.project_id(+)
+	and p.project_id=s_open.project_id(+)
+	and p.project_id=s_deliver.project_id(+)
+	and p.project_id=s_invoice.project_id(+)
+	and p.project_id=s_close.project_id(+)
+        $where_clause
+	$order_by_clause
 "
-
-
-
-
-
 
 
 #select 

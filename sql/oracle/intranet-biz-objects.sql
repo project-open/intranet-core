@@ -260,7 +260,7 @@ as
 		rel_type	=> rel_type,
 		object_id_one	=> object_id,
 		object_id_two	=> user_id,
-		context_id	=> object_id_one,
+		context_id	=> object_id,
 		creation_user	=> creation_user,
 		creation_ip	=> creation_ip
 	);

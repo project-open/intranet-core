@@ -384,6 +384,10 @@ begin
     -- Projects Submenu
     -- -----------------------------------------------------
 
+    -- needs to be the first Project menu in order to get selected
+    -- The URL should be /intranet/projects/index?view_name=project_list,
+    -- but project_list is default in projects/index.tcl, so we can
+    -- skip this here.
     v_project_standard_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
@@ -393,7 +397,7 @@ begin
 	context_id =>	null,
 	package_name =>	'intranet',
 	name =>		'Standard',
-	url =>		'/intranet/projects/index?view_name=project_list',
+	url =>		'/intranet/projects/index',
 	sort_order =>	10,
 	parent_menu_id => v_project_menu
     );
@@ -504,26 +508,6 @@ begin
     acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_senman, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_accounting, 'read');
-
-    v_user_orgchart_menu := im_menu.new (
-	menu_id =>	null,
-	object_type =>	'im_menu',
-	creation_date => sysdate,
-	creation_user => 0,
-	creation_ip =>	null,
-	context_id =>	null,
-	package_name =>	'intranet',
-	name =>		'Org Chart',
-	url =>		'/intranet/users/org-chart',
-	sort_order =>	5,
-	parent_menu_id => v_user_menu
-    );
-    acs_permission.grant_permission(v_user_orgchart_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_user_orgchart_menu, v_senman, 'read');
-    acs_permission.grant_permission(v_user_orgchart_menu, v_proman, 'read');
-    acs_permission.grant_permission(v_user_orgchart_menu, v_accounting, 'read');
-    acs_permission.grant_permission(v_user_orgchart_menu, v_employees, 'read');
-
 
     -- -----------------------------------------------------
     -- Administration Submenu

@@ -25,14 +25,13 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     object_id:naturalnum
-    { role_id "" }
+    { role_id "1300" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
     { select_from_group:naturalnum "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set translation_enabled [ad_parameter "EnableTranslationModule" "intranet" "0"]
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
 set page_title "Add new member to $object_name"
 set context_bar [ad_context_bar "Add member"]
@@ -125,37 +124,3 @@ $employee_select
 </form>
 "
 
-
-
-# ---------------------------------------------------------------
-# Make the freelance list:
-# ---------------------------------------------------------------
-
-set freelance_html ""
-if {$translation_enabled} {
-    set freelance_html [im_freelance_member_select_component $object_id $role_options $return_url]
-}
-
-# ---------------------------------------------------------------
-# Join Stuff together
-# ---------------------------------------------------------------
-
-set page_content "
-<table cellpadding=0 cellspacing=2 border=0>
-<tr>
-  <td valign=top>
-    $locate_form
-  </td>
-  <td valign=top>
-    $select_form
-  </td>
-</tr>
-<tr>
-<td colspan=2 valign=top>
-    $freelance_html
-</td>
-</tr>
-</table>
-"
-
-# doc_return  200 text/html [im_return_template]

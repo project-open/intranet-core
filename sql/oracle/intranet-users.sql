@@ -213,6 +213,7 @@ begin
 		member_state => 'approved'
 	);
 
+	im_profile_add_user('Employees',v_user_id);
 	im_profile_add_user('Project Managers',v_user_id);
 end;
 /

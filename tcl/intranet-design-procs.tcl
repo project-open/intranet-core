@@ -138,108 +138,13 @@ ad_proc -public im_table_with_title { title body } {
 ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/users/.
-    The lower part of the navbar also includes an Alpha bar.
-
+    The lower part of the navbar also includes an Alpha bar.<br>
     Default_letter==none marks a special behavious, printing no alpha-bar.
-
-} {
-    # -------- Compile the list of parameters to pass-through-------
-    set bind_vars [ns_set create]
-    foreach var $export_var_list {
-	upvar 1 $var value
-	if { [info exists value] } {
-	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_ustomer_navbar: $var <- $value"
-        }
-    }
-
-    # --------------- Determine the calling page ------------------
-    set user_id [ad_get_user_id]
-    set section ""
-    set url_stub [im_url_with_query]
-
-    switch -regexp $url_stub {
-	{index$} { set section "Employees" }
-	{Employees} { set section "Employees" }
-	{Customers} { set section "Customers" }
-	{All} { set section "All Users" }
-	{org-chart} { set section "Org Chart" }
-	{group_id\=14} { set section "Externals" }
-	{/intranet/users/expense*} { set section "Expense" }
-	default {
-	    # Default: Employees
-	}
-    }
-
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
-
-    set all_users "$tdsp$nosel<a href='index?user_group_name=All'>All Users</a></td>"
-    set employee "$tdsp$nosel<a href=index?user_group_name=Employees>Employees</a></td>"
-    set customers "$tdsp$nosel<a href=index?user_group_name=Customers>Clients</a></td>"
-    set externals "$tdsp$nosel<a href=index?user_group_name=Freelancers>Freelance</a></td>"
-    set expense "$tdsp$nosel<a href='expense'>Expense</a></td>"
-
-    switch $section {
-"All Users" {set all_users "$tdsp$sel All Users</td>"}
-"Expense" {set expense "$tdsp$sel Expense</td>"}
-"Employees" {set employee "$tdsp$sel Employees</td>"}
-"Customers" {set customers "$tdsp$sel Clients</td>"}
-"Externals" {set externals "$tdsp$sel Freelance</td>"}
-default {
-    # Nothing - just let all sections deselected
-}
-    }
-
-    set navbar "
-<table width=100% cellpadding=0 cellspacing=0 border=0>
-  <tr>
-    <td colspan=6 align=right>
-      <table cellpadding=1 cellspacing=0 border=0>
-        <tr>"
-append navbar "$employee\n"
-if {[im_permission $user_id view_customer_contacts]} { append navbar $customers }
-if {[im_permission $user_id view_freelancers]} { append navbar $externals }
-if {[im_permission $user_id view_customer_contacts]} { append navbar $all_users }
-#if {[im_permission $user_id view_finance]} { append navbar $expense }
-append navbar "
-          $tdsp$nosel<a href=new>[im_gif new "Add a new user"]</a></td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=6 class=tabnotsel align=center>"
-if {![string equal "" $prev_page_url]} {
-    append navbar "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
-}
-append navbar $alpha_bar
-if {![string equal "" $next_page_url]} {
-    append navbar "<A HREF=$next_page_url>&gt;&gt;</A>\n"
-}
-append navbar "
-    </td>
-  </tr>
-</table>
-"
-    return $navbar
-}
-
-
-ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list} {
-    Returns rendered HTML code for a horizontal sub-navigation
-    bar for /intranet/projects/.
-    The lower part of the navbar also includes an Alpha bar.
-
-    Default_letter==none marks a special behavious, hiding the alpha-bar.
 } {
     # -------- Defaults -----------------------------
     set user_id [ad_get_user_id]
-    set url_stub [ns_conn url]
+    set url_stub [ns_urldecode [im_url_with_query]]
+    ns_log Notice "im_user_navbar: url_stub=$url_stub"
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
@@ -252,7 +157,92 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_ustomer_navbar: $var <- $value"
+	    ns_log Notice "im_user_navbar: $var <- $value"
+        }
+    }
+    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
+    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
+
+
+    # -------- Compile the list of menus -------
+    set parent_menu_sql "select menu_id from im_menus where name='Users'"
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set menu_select_sql "
+	select	m.*
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id
+		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by sort_order"
+
+    # make sure at most one field gets selected..
+    set navbar ""
+    set found_selected 0
+    db_foreach menu_select $menu_select_sql {
+	ns_log Notice "im_user_navbar: url=$url"
+        set html "$nosel\n<a href=\"$url\">$name</a>\n</td>\n"
+        if {!$found_selected && [string equal $url_stub $url]} {
+            set html "$sel\n$a_white href=\"$url\"/>$name</a>\n</td>\n"
+            set found_selected 1
+        }
+        append navbar "$tdsp\n$html"
+    }
+
+    set navbar_html "
+      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
+        <TR>
+          <TD align=right>
+            <table border=0 cellspacing=0 cellpadding=1>
+              <tr>
+$navbar
+              </tr>
+            </table>
+          </TD>
+        </TR>
+        <TR>
+          <td colspan=6 class=tabnotsel align=center>\n"
+
+if {![string equal "" $prev_page_url]} {
+    append navbar_html "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
+}
+
+append navbar_html $alpha_bar
+
+if {![string equal "" $next_page_url]} {
+    append navbar_html "<A HREF=$next_page_url>&gt;&gt;</A>\n"
+}
+
+append navbar_html "
+          </td>
+        </tr>
+      </table>\n"
+
+    return $navbar_html
+}
+
+ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list} {
+    Returns rendered HTML code for a horizontal sub-navigation
+    bar for /intranet/projects/.
+    The lower part of the navbar also includes an Alpha bar.
+
+    Default_letter==none marks a special behavious, hiding the alpha-bar.
+} {
+    # -------- Defaults -----------------------------
+    set user_id [ad_get_user_id]
+#    set url_stub [ns_conn url]
+    set url_stub [ns_urldecode [im_url_with_query]]
+
+    set sel "<td class=tabsel>"
+    set nosel "<td class=tabnotsel>"
+    set a_white "<a class=whitelink"
+    set tdsp "<td>&nbsp;</td>"
+
+    # -------- Calculate Alpha Bar with Pass-Through params -------
+    set bind_vars [ns_set create]
+    foreach var $export_var_list {
+	upvar 1 $var value
+	if { [info exists value] } {
+	    ns_set put $bind_vars $var $value
+	    ns_log Notice "im_project_navbar: $var <- $value"
         }
     }
     set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
@@ -327,7 +317,7 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_ustomer_navbar: $var <- $value"
+	    ns_log Notice "im_office_navbar: $var <- $value"
         }
     }
 
@@ -413,7 +403,7 @@ ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_ustomer_navbar: $var <- $value"
+	    ns_log Notice "im_customer_navbar: $var <- $value"
         }
     }
 

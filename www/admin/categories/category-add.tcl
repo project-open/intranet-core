@@ -86,7 +86,7 @@ if [catch {
 
     db_transaction {
 	db_dml new_category_entry {
-	    insert into categories
+	    insert into im_categories
 	    (category_id, category, category_type, profiling_weight,
 	     category_description, mailing_list_info, enabled_p)
 	    values

@@ -39,7 +39,7 @@ db_transaction {
 	db_dml delete_current_parents "DELETE FROM category_hierarchy
     WHERE child_category_id = :category_id" 
 
-	db_dml put_on_top_of_hierarchy "INSERT INTO category_hierarchy
+	db_dml put_on_top_of_hierarchy "INSERT INTO im_category_hierarchy
       (child_category_id, parent_category_id)
     VALUES (:category_id, NULL)" 
 
@@ -49,7 +49,7 @@ db_transaction {
     WHERE child_category_id = :category_id
     AND parent_category_id IS NULL" 
 
-	db_dml insert_parent_child_relationship "INSERT INTO category_hierarchy
+	db_dml insert_parent_child_relationship "INSERT INTO im_category_hierarchy
 	(child_category_id, parent_category_id)
     VALUES (:category_id, :parent_category_id)" 
     }
