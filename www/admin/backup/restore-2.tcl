@@ -42,8 +42,11 @@ db_foreach foreach_report $sql {
     set cmd "append page_body \[im_import_$object \"$path/$view_name.csv\"]"
     append page_body "<li>$cmd<br>\n"
 
-    if [catch { eval $cmd } errmsg] {
+    set eval_html ""
+    if [catch { set eval_html [eval $cmd] } errmsg] {
 	append page_body "<pre>$errmsg</pre>\n"
+    } else {
+	append page_body $eval_html
     }
     incr ctr
 }
