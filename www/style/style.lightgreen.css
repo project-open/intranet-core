@@ -17,6 +17,10 @@
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
     .roweven {font-size: 8pt; background-color: #E3EDE4;}
 
+    .rowgreen {font-size:8pt; background-color: #00FF00 }
+    .rowyellow {font-size:8pt; background-color: #FFFF00}
+    .rowred {font-size:8pt; background-color: #FF0000}
+
     .tablebody {font-size: 8pt; background-color: #F1F6F2;}
     .tableheader {font-size: 8pt; background-color: #E3EDE4;}
 
