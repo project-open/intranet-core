@@ -16,6 +16,8 @@
 ad_page_contract {
   Home page for category administration.
 
+  @author sskracic@arsdigita.com
+  @author michael@yoon.org
   @author guillermo.belcic@project-open.com
   @author frank.bergmann@project-open.com
 } {
@@ -89,14 +91,15 @@ append category_select_html "
 set category_list_html "
 <table border=0>
 <tr>
-  <td class=rowtitle>Id</td>
-  <td class=rowtitle>Category</td>"
+  <td class=rowtitle align=center>Id</td>
+  <td class=rowtitle align=center>Category</td>
+  <td class=rowtitle align=center>Is-A</td>"
 
 if {[string equal "All" $select_category_type]} {
-    append category_list_html "<td class=rowtitle>Category Type</td>"
+    append category_list_html "<td class=rowtitle align=center>Category Type</td>"
 }
 append category_list_html "
-  <td class=rowtitle>Description</td>
+  <td class=rowtitle align=center>Description</td>
 </tr>"
 
 # Now let's generate the sql query
@@ -110,33 +113,48 @@ if {![string equal "All" $select_category_type]} {
 
 set category_select_sql "
 select
-	c.*
+	c.*,
+	h.parent_id,
+	im_category_from_id(h.parent_id) as parent
 from 
-	im_categories c
+	im_categories c,
+	im_category_hierarchy h
 where 
 	$category_type_criterion
+	and c.category_id = h.child_id(+)
 order by
 	category_type,
 	category_id
 "
 
 set ctr 1
+set old_id 0
 db_foreach all_categories_of_type $category_select_sql {
 
-append category_list_html "
+    if {$old_id == $category_id} {
+	# We got another is-a for the same category
+	append category_list_html "
 <tr $bgcolor([expr $ctr % 2])>
-  <td>$category_id</td>
-  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>"
-
-if {[string equal "All" $select_category_type]} {
-    append category_list_html "<td>$category_type</td>"
-}
+  <td></td>
+  <td></td>
+  <td>$parent</td>"
+	if {[string equal "All" $select_category_type]} {
+	    append category_list_html "<td></td>"
+	}
+	append category_list_html "<td></td></tr>\n"
+	continue
+    }
 
     append category_list_html "
-  <td>
-    $category_description
-  </td>
-</tr>"
+<tr $bgcolor([expr $ctr % 2])>
+  <td>$category_id</td>
+  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
+  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>\n"
+    if {[string equal "All" $select_category_type]} {
+	append category_list_html "<td>$category_type</td>"
+    }
+    append category_list_html "<td>$category_description</td></tr>\n"
+    set old_id $category_id
     incr ctr
 }
 

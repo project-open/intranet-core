@@ -17,11 +17,12 @@ ad_page_contract {
     Displays and edits the properties of one category.
     @param category_id Which category is being worked on
 
-    @author unknown@arsdigita.com
+    @author sskracic@arsdigita.com
+    @author michael@yoon.org
     @author guillermo.belcic@project-open.com
     @author frank.bergmann@project-open.com
 } {
-    category_id:naturalnum,optional
+    { category_id:naturalnum 0 }
     { select_category_type "" }
 }
 
@@ -32,48 +33,50 @@ set user_id [ad_maybe_redirect_for_registration]
 # Format Category Data 
 # ---------------------------------------------------------------
 
-if {[string equal "none" $select_category_type]} {
-    set select_category_types_sql "
-select
-	nvl(c.category_type, 'none') as category_for_select,
-	count(c.category_id) as n_categories
-from
-	im_categories c
-group by c.category_type
-order by c.category_type asc" 
-    
-    set select_categories "<tr><td>Category type</td><td><select name=category_type>"
-    db_foreach select_kategory_types $select_category_types_sql {
-	append select_categories "<option>$category_for_select</option>\n"
-    }
-    append select_categories "</select></td></tr>"
-
-} else {
-    set select_categories ""
-}
-
 set profiling_weight 0
+set select_categories ""
+set hierarchy_component ""
+ns_log Notice "one: category_id=$category_id"
 
-if {[info exists category_id] && ![empty_string_p $category_id]} {
-
+if {0 != $category_id} {
+    
     set page_title "One Category"
     set context_bar [ad_context_bar $page_title]
+
     db_1row category_properties "
-select
-	c.*
-from
-	im_categories c
-where
-	c.category_id = :category_id
-"
+select	c.*
+from	im_categories c
+where	c.category_id = :category_id"
+
+    ns_log Notice "one: category_description=$category_description"
+    
     set delete_action_html "
       <form action=category-nuke.tcl method=GET>[export_form_vars category_id] 
       <input type=submit name=Submit value=Delete></form>"
     set input_form_html "value=Update"
     set form_action_html "action=\"category-update.tcl\""
 
+    # Get the parents of category_id into an array
+    db_foreach parents "select h.* from im_category_hierarchy h where child_id=:category_id" {
+	set child($parent_id) $child_id
+    }
 
+    set parent_sql "
+select	c.category_id as parent_id,
+	c.category as parent_category
+from	im_categories c
+where	c.category_type = :category_type
+order by category_id"
+    
+    db_foreach parents $parent_sql {
+	set selected ""
+	if {[info exists child($parent_id)]} { set selected "selected" } 
+	append hierarchy_component "<option value=$parent_id $selected>$parent_category</option>\n"
+    }
+    
+    
 } else {
+
 
     set page_title "Add Category"
     set context_bar [ad_context_bar_ws $page_title]
@@ -89,36 +92,23 @@ where
     }
     set enabled_p ""
     set mailing_list_info ""
+
+    set select_category_types_sql "
+select
+	nvl(c.category_type, 'none') as category_for_select
+from
+	im_categories c
+group by c.category_type
+order by c.category_type asc" 
+    
+    set select_categories "<tr><td>Category type</td><td><select name=category_type>"
+    db_foreach select_category_types $select_category_types_sql {
+	append select_categories "<option>$category_for_select</option>\n"
+    }
+    append select_categories "</select></td></tr>"
+
 }
 
-set page_body "
-<form $form_action_html method=GET>
-[export_form_vars category_type]
-<table border=0 cellpadding=0 cellspacing=0>
-<tr><td class=rowtitle colspan=2 align=center>Category</td></tr>
-$select_categories
-<tr><td>Category Nr.</td>
-<td><input size=10 name=category_id value=\"$category_id\"></td>
-</tr>
-<tr><td>Category name</td>
-<td><input size=40 name=category value=\"$category\"></td>
-</tr>
-<tr><td>Category description</td><td>
-<textarea name=category_description rows=5 cols=50 wrap=soft>[ns_quotehtml $category_description]</textarea>
-</td></tr>
-</table>
+set export_form_vars [export_form_vars category_type]
 
-<input type=hidden name=enabled_p value=\"t\">
-<input type=submit name=submit $input_form_html>
-</form>
-$delete_action_html"
-
-
-
-doc_return  200 text/html [im_return_template]
-
-
-# this changes are because the new im_categories don't have some
-# entries like profiling_weight, mailing_list_info, etc.
-# <input type=hidden name=mailing_list_info value=\"$mailing_list_info\">
-# <tr><td>Profiling weight</td><td><input size=10 name=profiling_weight value=\"$profiling_weight\" disable></td></tr>
+set descr [ns_quotehtml $category_description]

@@ -30,11 +30,12 @@ ad_page_contract {
   @author guillermo.belcic@project-open.com
   @author frank.bergmann@project-open.com
 } {
-  category_id:naturalnum,notnull
-  category:notnull
-  category_description
-  enabled_p:notnull
-  category_type
+    category_id:naturalnum,notnull
+    category:notnull
+    category_description
+    enabled_p:notnull
+    category_type
+    { parents:multiple "" }
 }
 
 # ---------------------------------------------------------------
@@ -64,6 +65,23 @@ if { $exception_count > 0 } {
     ad_return_complaint $exception_count "<ul>$exception_text</ul>"
     return
 }
+
+# ---------------------------------------------------------------
+# Update Hierarchy
+# ---------------------------------------------------------------
+
+db_dml delete_parents "
+delete from im_category_hierarchy 
+where child_id=:category_id
+"
+
+foreach parent $parents {
+    db_dml insert_parent "
+insert into im_category_hierarchy
+(parent_id, child_id) values (:parent, :category_id)
+"
+}
+
 
 # ---------------------------------------------------------------
 # 
