@@ -138,7 +138,7 @@ order by
 	sort_order"
 
 db_foreach column_list_sql $column_sql {
-    if {[eval $visible_for]} {
+    if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
     }

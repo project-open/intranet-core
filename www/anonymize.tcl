@@ -133,25 +133,25 @@ db_foreach im_projects_select $im_projects_sql {
     db_dml im_projects_update $im_projects_update_sql
 }
 
-# ---------------------- im_tasks -------------------------------
+# ---------------------- im_trans_tasks -------------------------------
 
-set im_tasks_sql "
+set im_trans_tasks_sql "
 select
 	task_id,
 	task_name,
 	description
 from
-	im_tasks"
+	im_trans_tasks"
 
-db_foreach im_tasks_select $im_tasks_sql {
+db_foreach im_trans_tasks_select $im_trans_tasks_sql {
 
-    set im_tasks_update_sql "
-	update im_tasks set
+    set im_trans_tasks_update_sql "
+	update im_trans_tasks set
         task_name='[anonymize_name $task_name]',
         description='[anonymize_name $description]'
 	where task_id=:task_id"
 
-    db_dml im_tasks_update $im_tasks_update_sql
+    db_dml im_trans_tasks_update $im_trans_tasks_update_sql
 }
 
 # ---------------------- im_invoice_items -------------------------------

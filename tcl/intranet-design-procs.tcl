@@ -496,7 +496,7 @@ ad_proc -public im_admin_navbar { } {
 
 
 
-ad_proc -public im_sub_navbar { parent_menu_id } {
+ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
@@ -508,8 +508,6 @@ ad_proc -public im_sub_navbar { parent_menu_id } {
     set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
-    set navbar ""
-
     set menu_select_sql "
 	select	m.*
 	from	im_menus m
@@ -518,8 +516,15 @@ ad_proc -public im_sub_navbar { parent_menu_id } {
 	order by sort_order"
 
     # make sure at most one field gets selected..
+    set navbar ""
     set found_selected 0
     db_foreach menu_select $menu_select_sql {
+	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
+	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
+		append url "&[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
+	    }
+	}
+
         set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
         if {!$found_selected && [string equal $url_stub $url]} {
             set html "$sel$a_white href=\"$url\"/>$name</a></td>$tdsp\n"
@@ -572,6 +577,7 @@ ad_proc -public im_navbar { } {
     set tdsp "<td>&nbsp;</td>"
 
     set navbar ""
+    set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
 
     # select the toplevel menu items
     set menu_select_sql "
@@ -580,7 +586,7 @@ select
 from
         im_menus m
 where
-        parent_menu_id is null
+        parent_menu_id = :main_menu_id
 	and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
 order by
         sort_order

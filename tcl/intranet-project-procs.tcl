@@ -89,25 +89,30 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set write $user_admin_p
     set admin $user_admin_p
 
+    # Let the customers see their projects.
+    set query "select customer_id, lower(im_category_from_id(project_status_id)) as project_status from im_projects where project_id=:project_id"
+    if {![db_0or1row project_customer $query] } {
+	return
+    }
+
     ns_log Notice "user_is_admin_p=$user_is_admin_p"
     ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
     ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
     ns_log Notice "user_is_employee_p=$user_is_employee_p"
     ns_log Notice "user_admin_p=$user_admin_p"
-
-    # Let the customers see their projects.
-    db_1row project_customer "select customer_id, project_status_id from im_projects where project_id=:project_id"
+    ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
+    ns_log Notice "project_status=$project_status"
 
     set user_is_project_customer_p [ad_user_group_member $customer_id $user_id]
 
-    if {$user_admin_p} { set read 1}
+    if {$user_admin_p} { set admin 1}
     if {$user_is_project_customer_p} { set read 1}
     if {$user_is_group_member_p} { set read 1}
     if {[im_permission $user_id view_projects_all]} { set read 1}
 
     # customers and freelancers are not allowed to see non-open projects.
-    if {![im_permission $user_id view_projects_history] && $project_status_id != [ad_parameter "ProjectStatusOpen" "intranet" "0"]} {
-	
+    # 76 = open
+    if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
 	if {!$user_is_project_customer_p} {
 	    set read 0

@@ -92,8 +92,8 @@ create table im_categories (
                                 -- For example: "Translation Project" is not a
                                 -- project_type, but a class of project_types.
 	parent_only_p		char(1) default 'f'
-				constraint im_enabled_p_ck
-				check(enabled_p in ('t','f'))
+				constraint im_parent_only_p_ck
+				check(parent_only_p in ('t','f'))
 );
 
 -- optional system to put categories in a hierarchy.
@@ -315,6 +315,7 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '85', 'Unknown', 'Intranet Project Type');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '86', 'Other', 'Intranet Project Type');
+-- 87 - 97 reserved for Translation
 
 
 -- Hiring Source

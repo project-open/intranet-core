@@ -23,7 +23,7 @@ ad_library {
 }
 
 
-ad_proc -public im_component_bay { location } {
+ad_proc -public im_component_bay { location {view_name ""} } {
     Checks the database for Plug-ins for this page and component
     bay.
 } {
@@ -57,6 +57,7 @@ from
 where
 	page_url=:url_stub
 	and location=:location
+	and (view_name is null or view_name = :view_name)
 order by sort_order
 "
 
@@ -66,6 +67,36 @@ order by sort_order
 	ns_log Notice "component_tcl=$component_tcl"
 #       append html [uplevel 1 $component_tcl]
 
+	if { [catch {
+	    # "uplevel" evaluates the 2nd argument!!
+	    append html [uplevel 1 $component_tcl]
+	} err_msg] } {
+	    ad_return_complaint 1 "<li>
+        Error evaluating component '$plugin_name' of module '$package_name':<br>
+        <pre>\n$err_msg\n</pre><br>
+        Please contact your system administrator:<br>"
+	}
+    }
+    return $html
+}
+
+
+ad_proc -public im_component_insert { plugin_name } {
+    Insert a particular component.
+    Returns "" if the component doesn't exist.
+} {
+    set plugin_sql "
+select
+	c.*
+from
+	im_component_plugins c
+where
+	plugin_name=:plugin_name
+order by sort_order
+"
+
+    set html ""
+    db_foreach get_plugins $plugin_sql {
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]

@@ -22,11 +22,11 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
-    @creation-date Jan 2000
 } {
     project_id:integer
     { orderby "subproject_name" }
     { show_all_comments 0 }
+    { view_name "standard"}
 }
 
 # ---------------------------------------------------------------------
@@ -265,3 +265,11 @@ if {$counter > 1} {
 } else {
     set hierarchy_html ""
 }
+
+
+# Setup the subnavbar
+set bind_vars [ns_set create]
+ns_set put $bind_vars project_id $project_id
+
+set parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]
+set project_menu [im_sub_navbar $parent_menu_id $bind_vars]

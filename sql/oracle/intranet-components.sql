@@ -64,6 +64,11 @@ create table im_component_plugins (
 				-- go like 10, 20, 30 etc. (like old Basic) to
 				-- allow future modules to insert its components.
 	sort_order		integer not null,
+				-- if not null determines the view_name when
+				-- to show the component. For example the filestorage
+				-- components should only be shown on the "files"
+				-- view of the ProjectViewPage.
+	view_name		varchar(100) default null,
 				-- page url starting with /intranet/, 
 				-- but without the '.tcl' extension.
 				-- page_url currently depends on where the
@@ -92,6 +97,7 @@ is
 	package_name	in varchar,
 	location	in varchar,
 	page_url	in varchar,
+	view_name	in varchar default null,
 	sort_order	in integer,
 	component_tcl	in varchar
     ) return im_component_plugins.plugin_id%TYPE;
@@ -118,6 +124,7 @@ is
 	package_name	in varchar,
 	location	in varchar,
 	page_url	in varchar,
+	view_name	in varchar default null,
 	sort_order	in integer,
 	component_tcl	in varchar
     ) return im_component_plugins.plugin_id%TYPE
@@ -134,10 +141,10 @@ is
 	);
 	insert into im_component_plugins (
 		plugin_id, plugin_name, package_name, sort_order, 
-		page_url, location, component_tcl
+		view_name, page_url, location, component_tcl
 	) values (
 		v_plugin_id, plugin_name, package_name, sort_order, 
-		page_url, location, component_tcl
+		view_name, page_url, location, component_tcl
 	);
 	return v_plugin_id;
     end new;

@@ -34,7 +34,7 @@
 -- 60-69	Quality
 -- 70-79	Marketplace(?)
 -- 80-89	Offices
--- 90-99
+-- 90-99	Translation
 
 
 ---------------------------------------------------------
@@ -108,29 +108,29 @@ delete from im_view_columns where column_id > 2200 and column_id < 2299;
 --
 insert into im_view_columns values (2201,22,NULL,'Project #',
 '"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
-'','',1,'im_permission $user_id view_projects');
+'','',1,'');
 insert into im_view_columns values (2203,22,NULL,'Client',
 '"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
 '','',2,'im_permission $user_id view_customers');
 -- columns to be here inserted by intranet-timesheet
 insert into im_view_columns values (2213,22,NULL,'Status',
-'$project_status','','',14,'im_permission $user_id view_projects');
+'$project_status','','',14,'');
 insert into im_view_columns values (2215,22,NULL,'Start Date',
-'$start_date','','',15,'im_permission $user_id view_projects');
+'$start_date','','',15,'');
 insert into im_view_columns values (2217,22,NULL,'Delivery Date',
-'$end_date','','',16,'im_permission $user_id view_projects');
+'$end_date','','',16,'');
 insert into im_view_columns values (2219,22,NULL,'Create',
-'$create_date','','',17,'im_permission $user_id view_projects');
+'$create_date','','',17,'');
 insert into im_view_columns values (2221,22,NULL,'Quote',
-'$quote_date','','',18,'im_permission $user_id view_projects');
+'$quote_date','','',18,'');
 insert into im_view_columns values (2223,22,NULL,'Open',
-'$open_date','','',19,'im_permission $user_id view_projects');
+'$open_date','','',19,'');
 insert into im_view_columns values (2225,22,NULL,'Deliver',
-'$deliver_date','','',20,'im_permission $user_id view_projects');
+'$deliver_date','','',20,'');
 insert into im_view_columns values (2227,22,NULL,'Invoice',
-'$invoice_date','','',21,'im_permission $user_id view_projects');
+'$invoice_date','','',21,'');
 insert into im_view_columns values (2229,22,NULL,'Close',
-'$close_date','','',22,'im_permission $user_id view_projects');
+'$close_date','','',22,'');
 --
 commit;
 
@@ -139,25 +139,25 @@ commit;
 delete from im_view_columns where column_id > 2000 and column_id < 2099;
 --
 insert into im_view_columns values (2001,20,NULL,'Project #',
-'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"','','',1,
-'im_permission $user_id view_projects');
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
+'','',1,'');
 insert into im_view_columns values (2003,20,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"','','',2,
-'im_permission $user_id view_customers');
+'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
+'','',2,'im_permission $user_id view_customers');
 insert into im_view_columns values (2007,20,NULL,'Project Name',
-'$project_name','','',4,'im_permission $user_id view_projects');
+'$project_name','','',4,'');
 insert into im_view_columns values (2009,20,NULL,'Type',
-'$project_type','','',5,'im_permission $user_id view_projects');
+'$project_type','','',5,'');
 insert into im_view_columns values (2013,20,NULL,'Project Manager',
-'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"','','',7,
-'im_permission $user_id view_projects');
+'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
+'','',7,'');
 insert into im_view_columns values (2015,20,NULL,'Start Date',
-'$start_date','','',8,'im_permission $user_id view_projects');
+'$start_date','','',8,'');
 insert into im_view_columns values (2017,20,NULL,'Delivery Date',
-'$end_date','','',9,'im_permission $user_id view_projects');
+'$end_date','','',9,'');
 
 insert into im_view_columns values (2021,20,NULL,'Status',
-'$project_status','','',11,'im_permission $user_id view_projects');
+'$project_status','','',11,'');
 commit;
 
 
