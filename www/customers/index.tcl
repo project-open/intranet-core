@@ -34,7 +34,7 @@ ad_page_contract {
     { order_by "Company" }
     { how_many "" }
     { view_type "all" }
-    { letter:trim "all" }
+    { letter:trim "ALL" }
     { view_name "customer_list" }
 }
 
@@ -285,7 +285,7 @@ where
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
-if {[string compare $letter "ALL"]} {
+if {[string equal $letter "ALL"]} {
 
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
@@ -294,9 +294,9 @@ if {[string compare $letter "ALL"]} {
 
 } else {
 
-    set limited_query [im_select_row_range $sql $start_idx $end_idx]
+    set limited_query [im_select_row_range "$sql $order_by_clause" $start_idx $end_idx]
     # We can't get around counting in advance if we want to be able to 
-    # sort inside the table on the page for only those users in the 
+    # sort inside the table on the page for only those rows in the 
     # query results
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
@@ -308,13 +308,8 @@ if {[string compare $letter "ALL"]} {
 		$where_clause
 	"]
     
-    set selection "$sql $order_by_clause"
-
-#    set selection "select z.* from ($limited_query) z $order_by_clause"
+    set selection "select z.* from ($limited_query) z $order_by_clause"
 }	
-
-ns_log Notice $selection
-
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
@@ -372,10 +367,8 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
-db_foreach projects_info_query $selection {
 
-#    im_customer_permissions $user_id $customer_id customer_view customer_read customer_write customer_admin
-#    if {!$customer_read} { continue }
+db_foreach projects_info_query $selection {
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

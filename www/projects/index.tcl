@@ -39,7 +39,7 @@ ad_page_contract {
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { customer_id:integer "0" } 
-    { letter:trim "all" }
+    { letter:trim "" }
     { start_idx:integer "1" }
     { how_many "" }
     { view_name "project_list" }
@@ -91,6 +91,9 @@ set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
 set letter [string toupper $letter]
+
+set org_project_type_id $project_type_id
+
 
 # Determine the default status if not set
 if { [empty_string_p $status_id] } {
@@ -336,6 +339,7 @@ WHERE
 		perm.permission_member > 0
 		$mine_restriction
 	)
+$order_by_clause
 "
 
 
@@ -349,12 +353,15 @@ WHERE
 
 ns_log Notice "/intranet/project/index: Before limiting clause"
 
-if {[string compare $letter "ALL"]} {
+if {[string equal $letter "ALL"]} {
+
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
     set selection "select z.* from ($sql) z $order_by_clause"
+
 } else {
+
     set limited_query [im_select_row_range $sql $start_idx $end_idx]
 
     # We can't get around counting in advance if we want to be able to 
@@ -366,6 +373,7 @@ if {[string compare $letter "ALL"]} {
         where 1=1 $where_clause"]
 
     set selection "select z.* from ($limited_query) z $order_by_clause"
+
 }	
 
 # ---------------------------------------------------------------
@@ -380,7 +388,7 @@ ns_log Notice "/intranet/project/index: Before formatting filter"
 
 set filter_html "
 <form method=get action='/intranet/projects/index'>
-[export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
+[export_form_vars customer_id start_idx order_by how_many view_name include_subprojects_p letter]
 
 <table border=0 cellpadding=0 cellspacing=0>
   <tr> 
@@ -608,9 +616,11 @@ set table_continuation_html "
 # Navbar
 # ---------------------------------------------------------------
 
+set project_type_id $org_project_type_id
+
 set project_navbar_html "
 <br>
-[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
+[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by customer_id status_id project_type_id how_many view_name letter]]
 "
 
 
