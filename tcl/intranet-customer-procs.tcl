@@ -153,10 +153,40 @@ begin
 }
 
 
+ad_proc -public im_customer_internal { } {
+    Returns the object_id of the "Internal" customer, identifying
+    the organization (ower or Project/Open) itself.<br>
+    This routine is used during invoicing/payments where documents
+    can be both incoming payments (provider=Internal, customer=...)
+    or outgoing payments (provider=..., customer=Internal).
+} {
+    set customer_id [db_string get_interal_customer "select customer_id from im_customers where customer_path='internal'" -default 0]
+    if {!$customer_id} {
+	ad_return_complaint 1 "<li>Unable to determine 'Internal' customer<br>
+        Maybe somebody has changed the path of the 'Internal' customer
+        who identifies your organization."
+    }
+    return $customer_id
+}
+
+
 ad_proc -public im_customer_type_select { select_name { default "" } } {
     Returns an html select box named $select_name and defaulted to 
     $default with a list of all the project_types in the system
 } {
+    return [im_category_select "Intranet Customer Type" $select_name $default]
+}
+
+
+ad_proc -public im_customer_status_select { select_name { default "" } } {
+    Returns an html select box named $select_name and defaulted to 
+    $default with a list of all the customer status_types in the system
+} {
+    return [im_category_select "Intranet Customer Status" $select_name $default]
+}
+
+
+ad_proc -public im_customer_type_select { select_name { default "" } } {Returns an html select box named $select_name and defaulted to $default with a list of all the customer types in the system} {
     return [im_category_select "Intranet Customer Type" $select_name $default]
 }
 
@@ -223,23 +253,4 @@ where
     append sql " order by lower(c.customer_name)"
     return [im_selection_to_select_box $bind_vars "customer_status_select" $sql $select_name $default]
 }
-
-
-ad_proc -public im_customer_status_select { select_name { default "" } } {
-    Returns an html select box named $select_name and defaulted to 
-    $default with a list of all the customer status_types in the system
-} {
-    return [im_category_select "Intranet Customer Status" $select_name $default]
-}
-
-
-ad_proc -public im_customer_type_select { select_name { default "" } } {Returns an html select box named $select_name and defaulted to $default with a list of all the customer types in the system} {
-    return [im_category_select "Intranet Customer Type" $select_name $default]
-}
-
-
-
-
-
-
 

@@ -42,7 +42,17 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-# User id already verified by filters
+set url_vars [info vars {[a-z]*}]
+set bind_vars [ns_set create]
+foreach var $url_vars { 
+    set value [expr $$var]
+    ns_set put $bind_vars $var $value
+    append html "$var=$value\n"
+}
+
+#ad_return_complaint 1 "<li><pre>$html</pre>"
+#return
+
 set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
@@ -285,7 +295,7 @@ if { $start_idx > 1 } {
 # return a table with a form in it (if there are too many options)
 
 set filter_html "
-<form method=get action='/intranet/index'>
+<form method=POST action='/intranet/index'>
 [export_form_vars include_subprojects_p]
 
 <table border=0 cellpadding=0 cellspacing=0>

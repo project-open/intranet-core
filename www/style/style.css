@@ -34,3 +34,5 @@
     A.paginacion:link, A.paginacion:active, A.paginacion:visited {font-weight: bold; color: #000000; text-decoration: none;}    
     A.paginacion:hover {font-weight: bold; color: #000000; text-decoration: underline;}
      .headerBig {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
+
+    .rowfilestorage {background-color: #ecf5e5; text-align: left;}

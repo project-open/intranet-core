@@ -78,7 +78,9 @@ CREATE TABLE im_menus (
 				-- Make sure there are no two identical
 				-- menus on the same _level_.
 	constraint im_menus_name_un
-	unique(name, parent_menu_id)
+	unique(name, parent_menu_id),
+	constraint im_menus_label_un
+	unique(package_name, label)
 );
 
 create or replace package im_menu
@@ -170,20 +172,32 @@ is
     -- Used in <module-name>-drop.sql
     procedure del_module (module_name in varchar)
     is
-	v_menu_id   integer;
-	CURSOR v_menu_cursor IS
-        	select menu_id
-        	from im_menus
-        	where package_name = del_module.module_name
-        	FOR UPDATE;
     begin
-	OPEN v_menu_cursor;
-	LOOP
-		FETCH v_menu_cursor INTO v_menu_id;
-		EXIT WHEN v_menu_cursor%NOTFOUND;
-		im_menu.del(v_menu_id);
-		END LOOP;
-	CLOSE v_menu_cursor;
+
+     -- First we have to delete the references to parent menus...
+     for row in (
+        select menu_id
+        from im_menus
+        where package_name = del_module.module_name
+     ) loop
+
+	update im_menus 
+	set parent_menu_id = null
+	where menu_id = row.menu_id;
+
+     end loop;
+
+     -- ... then we can delete the menus themseves
+     for row in (
+        select menu_id
+        from im_menus
+        where package_name = del_module.module_name
+     ) loop
+
+	im_menu.del(row.menu_id);
+
+     end loop;
+
     end del_module;
 
 
