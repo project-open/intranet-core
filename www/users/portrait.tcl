@@ -1,11 +1,24 @@
+# /packages/intranet-core/www/users/portrait.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 ad_page_contract {
-    @cvs-id portrait.tcl,v 3.2.2.3.2.4 2000/09/22 01:36:19 kevin Exp
- 
-    /admin/users/portrait.tcl
-
-    by philg@mit.edu on September 26, 1999
-
     offers an admin the option to delete a user's portrait
+
+    @author philg@mit.edu
+    @author frank.bergmann@project-open.com
+
 } {
     user_id:integer,notnull
 }

@@ -1,4 +1,17 @@
-#/admin/users/delete.tcl
+# /packages/intranet-core/www/users/delete.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     present a form that will let an admin mark a user's account deleted
@@ -6,9 +19,8 @@ ad_page_contract {
     
     @param user_id
     @param return_url
+
     @author philg@mit.edu
-    @creation-date  late in 1998
-    @cvs-id delete.tcl,v 3.3.2.3.2.4 2000/09/22 01:36:18 kevin Exp
 } {
     user_id:integer,notnull
     return_url:optional

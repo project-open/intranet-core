@@ -1,11 +1,25 @@
 # /www/intranet/users/view.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Display information about one user
     (makes heavy use of procedures in /tcl/ad-user-contributions-summary.tcl)
-    @cvs-id one.tcl,v 3.5.2.3.2.7 2000/09/22 01:36:19 kevin Exp
-    @author Guillermo Belcic
-    @creation-date October 10, 2003
+
+    @author unknown@arsdigita.com
+    @author Guillermo Belcic (guillermo.belcic@project-open.com)
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,optional,notnull
     user_id_from_search:integer,optional,notnull

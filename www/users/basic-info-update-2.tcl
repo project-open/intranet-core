@@ -1,5 +1,17 @@
-# /www/admin/users/basic-info-update-2.tcl
+# /packages/intranet-core/www/users/basic-info-update-2.tcl
 #
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     @param user_id
@@ -8,9 +20,8 @@ ad_page_contract {
     @param email
     @param url
     @param screen_name
-    @author Guillermo Belcic
-    @creation-date 13-10-2003
-    @cvs-id basic-info-update-2.tcl,v 3.2.2.4.2.6 2000/09/12 20:11:22 cnk Exp
+
+    @author Guillermo Belcic (guillermo.belcic@project-open.com)
 } {
     user_id:integer,optional
     first_names:optional
