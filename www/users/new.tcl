@@ -85,7 +85,8 @@ if {$editing_existing_user} {
 
     # Permissions for existing user: We need to be able to admin him:
     im_user_permissions $current_user_id $user_id view read write admin
-    if {!$admin} {
+
+    if {!$write} {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_3]"
 	return
     }

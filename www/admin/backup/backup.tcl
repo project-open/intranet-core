@@ -32,6 +32,7 @@ where
 	and view_id < 200
 "
 
+
 # Prepare the path for the export
 #
 if {![file isdirectory $path]} {

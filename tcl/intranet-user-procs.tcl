@@ -33,8 +33,11 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     set write 1
     set admin 1
 
-    # Myself - I can do everything with my personal data
-    if { $user_id == $current_user_id } { return }
+    # Myself - I can read and write its data
+    if { $user_id == $current_user_id } { 
+	set admin 0
+	return 
+    }
 
     # Get the list of profiles of user_id (the one to be managed)
     # together with the information if current_user_id can read/write

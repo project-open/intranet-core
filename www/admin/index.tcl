@@ -28,6 +28,7 @@ if {!$user_is_admin_p} {
     return
 }
 
+
 set page_title "[_ intranet-core.Administration]"
 set context_bar [ad_context_bar $page_title]
 

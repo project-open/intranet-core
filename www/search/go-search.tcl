@@ -32,7 +32,12 @@ set query_string [ad_urlencode $query_string]
 
 switch $target {
     "content" {
-	ad_returnredirect "/search/search?sections=im_companies&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
+
+#	ad_returnredirect "../../intranet-search-oracle/search?form%3amode=edit&form%3aid=search%5fform&query%5fstring=$query_string&subsites=2"
+
+	ad_returnredirect "/search/search?sections=im_customers&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
+
+
     }
     "users" {
 	ad_returnredirect "/intranet/user-search?keyword=$query_string"
