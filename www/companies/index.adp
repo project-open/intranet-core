@@ -1,6 +1,6 @@
 <master src="../master">
-<property name="title">Companies</property>
-<property name="context">context</property>
+<property name="title">#intranet-core.Companies#</property>
+<property name="context">#intranet-core.context#</property>
 
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
@@ -12,19 +12,19 @@
 	<table border=0 cellpadding=0 cellspacing=0>
 	<tr> 
 	  <td colspan='2' class=rowtitle align=center>
-	    Filter Companies
+	    #intranet-core.Filter_Companies#
 	  </td>
 	</tr>
 	<tr>
-	  <td valign=top>View: </td>
+	  <td valign=top>#intranet-core.View_1# </td>
 	  <td valign=top><%= [im_select view_type $view_types ""] %></td>
 	</tr>
 	<tr>
-	  <td valign=top>Company Status: </td>
+	  <td valign=top>#intranet-core.Company_Status_1# </td>
 	  <td valign=top><%= [im_select status_id $status_types ""] %></td>
 	</tr>
 	<tr>
-	  <td valign=top>Company Type: </td>
+	  <td valign=top>#intranet-core.Company_Type_1# </td>
 	  <td valign=top>
 	    <%= [im_select type_id $company_types ""] %>
 	    <input type=submit value=Go name=submit>
@@ -40,7 +40,7 @@
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
       <td class=rowtitle align=center>
-        Admin Companies
+        #intranet-core.Admin_Companies#
       </td>
     </tr>
     <tr>
@@ -59,4 +59,5 @@
   <%= $table_body_html %>
   <%= $table_continuation_html %>
 </table>
+
 

@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">Companies</property>
+<property name="title">#intranet-core.Companies#</property>
 
 <%= $user_navbar_html %>
 
@@ -31,5 +31,6 @@
 
 </td></tr>
 </table>
+
 
 

@@ -1,32 +1,20 @@
 <master src="master">
-<property name=title>Add a user</property>
+<property name=title>#intranet-core.Add_a_user#</property>
 <property name="context">@context;noquote@</property>
 
-<H1>Send Notification</H1>
-@first_names_from_search@ @last_name_from_search@ has been added to @system_name@.
-Edit the message below and hit "Send Email" to 
-notify this user.
+<H1>#intranet-core.Send_Notification#</H1>
+#intranet-core.lt_first_names_from_sear#
 </p>
 
 <form method="post" action="member-notify">
 @export_vars;noquote@
 
 <textarea name=subject rows=1 cols=70 wrap=hard>
-@role_name@ of @object_name@
+#intranet-core.lt_role_name_of_object_n#
 </textarea>
 
 <textarea name=message rows=10 cols=70 wrap=hard>
-Dear @first_names_from_search@,
-
-You have been added as a @role_name@
-to @object_name@
-in @system_name@ 
-at @object_url@
-
-Please click on the link above for details.
-
-Best regards,
-@current_user_name@
+#intranet-core.lt_Dear_first_names_from#
 </textarea>
 
 <center>
@@ -35,5 +23,6 @@ Best regards,
 
 </form>
 </p>
+
 
 

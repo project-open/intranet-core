@@ -1,5 +1,5 @@
 <master src="master">
-<property name="title">Add new member</property>
+<property name="title">#intranet-core.Add_new_member#</property>
 
 <table cellpadding=0 cellspacing=0 border=0>
 <tr>
@@ -20,5 +20,6 @@
    </td>
 </tr>
 </table>
+
 
 

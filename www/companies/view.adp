@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">Clients</property>
+<property name="title">#intranet-core.Clients#</property>
 
 <!-- left - right - bottom  design -->
 
@@ -28,4 +28,5 @@
   <%= [im_component_bay bottom] %>
 </td></tr>
 </table>
+
 

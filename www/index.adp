@@ -1,5 +1,5 @@
 <master src="master">
-<property name="title">Home</property>
+<property name="title">#intranet-core.Home#</property>
 
 <!-- left - right - bottom  design -->
 
@@ -25,4 +25,5 @@
 
 </td></tr>
 </table>
+
 

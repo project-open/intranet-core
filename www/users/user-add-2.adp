@@ -1,32 +1,18 @@
 <master src="../master">
-<property name=title>Add a user</property>
+<property name=title>#intranet-core.Add_a_user#</property>
 <property name="context">@context;noquote@</property>
 
 
 <p>
-@first_names@ @last_name@ has been added to @system_name@.
-Edit the message below and hit "Send Email" to 
-notify this user.
+#intranet-core.lt_first_names_last_name#
 </p>
 
 <p>
 <form method="post" action="user-add-3">
 <input type="hidden" name="referer" value="@referer@"></input>
-@export_vars;noquote@
-Message:
+#intranet-core.lt_export_varsnoquoteMes#
 <textarea name=message rows=10 cols=70 wrap=hard>
-@first_names@ @last_name@, 
-
-You have been added as a user to @system_name@
-at @system_url@
-
-Login information:
-Email: @email@
-Password: @password@
-(you may change your password after you log in)
-
-Thank you,
-@administration_name@
+#intranet-core.lt_first_names_last_name_1#
 </textarea>
 
 <center>
@@ -35,5 +21,6 @@ Thank you,
 
 </form>
 </p>
+
 
 

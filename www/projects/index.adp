@@ -1,6 +1,6 @@
 <master src="../master">
-<property name="title">Companies</property>
-<property name="context">context</property>
+<property name="title">#intranet-core.Companies#</property>
+<property name="context">#intranet-core.context#</property>
 
 <%= $project_filter_html %>
 <%= $project_navbar_html %>
@@ -9,4 +9,5 @@
   <%= $table_body_html %>
   <%= $table_continuation_html %>
 </table>
+
 

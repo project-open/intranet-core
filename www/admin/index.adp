@@ -10,57 +10,49 @@
     <H2>@page_title;noquote@</H2>
     <ul>
       <li>
-	<A href="../users/">Manage Individual Users</A><br>
-	Here you can manage users one-by-one.
+	<A href="../users/">#intranet-core.lt_Manage_Individual_Use#</A><br>
+	#intranet-core.lt_Here_you_can_manage_u#
       <li>
-	<A href="profiles/">Manage Profiles</A><br>
-	Configure site-wide defaults on what a group of users ("profile")
-	can do and what they shouldn't do.
+	<A href="profiles/">#intranet-core.Manage_Profiles#</A><br>
+	#intranet-core.lt_Configure_site-wide_d#
       <li>
-	<A href="menus/">Manage Menus</A><br>
-	Edit menus and change their permissions.
+	<A href="menus/">#intranet-core.Manage_Menus#</A><br>
+	#intranet-core.lt_Edit_menus_and_change#
       <li>
-	<A href="parameters/">Manage Global System Parameters</A><br>
-	Change the system parametrization such as directories, URLs, etc...
+	<A href="parameters/">#intranet-core.lt_Manage_Global_System_#</A><br>
+	#intranet-core.lt_Change_the_system_par#
       <li>
-	<A href="components/">Manage Component Layout</A><br>
-	Change the position of plugin-components or disable components.
+	<A href="components/">#intranet-core.lt_Manage_Component_Layo#</A><br>
+	#intranet-core.lt_Change_the_position_o#
       <li>
-	<A href=flush_cache>Flush Permission Cache</A><br>
-	Flush (cleanup) the permission cache. You may need to do this 
-	after you have changed the global permissions in Profiles
-	or User Matrix.
+	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
+	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
-	<A href=/admin/>Manage the OpenACS Platform</A><br>
-	Here you find advance management and configuration options
-	of the underlying 
-	<A href=http://www.openacs.org>OpenACS platform</A>.
+	<A href=/admin/>#intranet-core.lt_Manage_the_OpenACS_Pl#</A><br>
+	#intranet-core.lt_Here_you_find_advance# 
+	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
       <li>
-	<A href=/acs-admin/developer>Manage OpenACS Development</A><br>
-	Here you find advance software configuration options
-	of the underlying 
-	<A href=http://www.openacs.org>OpenACS platform</A>.
+	<A href=/acs-admin/developer>#intranet-core.lt_Manage_OpenACS_Develo#</A><br>
+	#intranet-core.lt_Here_you_find_advance_1# 
+	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
 
 <if [db_table_exists im_dynval_vars]>
       <li>
-	<a href=/intranet-dynvals/admin/>Administer DynVals</a><br>
-	Modify the access permissions for "dynamic variables" or add
-	new dynamic (custom) variables.
+	<a href=/intranet-dynvals/admin/>#intranet-core.Administer_DynVals#</a><br>
+	#intranet-core.lt_Modify_the_access_per#
 </if>
 
       <li>
 	<a href=/intranet/projects/import-project-txt>
-	  Import Projects from H:\\
+	  #intranet-core.lt_Import_Projects_from_#
       </a>
     </ul>
 
-<b>Dangerous!!</b>
+<b>#intranet-core.Dangerous#</b>
     <ul>
 	<li>
-	  <a href=/intranet/anonymize>Anonymize this server (Test servers only)</a>
-	  This command destroys your entire server, replacing all strings (project
-	  names, company names, users, descriptions, ...) by "anonymized" random 
-	  strings in order to generate a demo system.
+	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
+	  #intranet-core.lt_This_command_destroys#
     </ul>
     <%= [im_component_bay left] %>
   </td>
@@ -75,4 +67,5 @@
   <%= [im_component_bay bottom] %>
 </td></tr>
 </table>
+
 

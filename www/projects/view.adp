@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">Companies</property>
+<property name="title">#intranet-core.Companies#</property>
 
 <!-- left - right - bottom  design -->
 
@@ -45,3 +45,4 @@
   <%= [im_component_insert "Project Translation Task Status"] %>
 
 <% } %>
+

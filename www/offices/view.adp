@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">Companies</property>
+<property name="title">#intranet-core.Companies#</property>
 
 <!-- left - right - bottom  design -->
 
@@ -15,7 +15,7 @@
     <%= [im_component_bay right] %>
 
     <p>
-      See the list of <A href=/intranet/offices/>all offices... </A>
+      #intranet-core.See_the_list_of# <A href=/intranet/offices/>#intranet-core.all_offices# </A>
     </p>
 
   </td>
@@ -29,3 +29,4 @@
 
 </td></tr>
 </table>
+

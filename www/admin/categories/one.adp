@@ -4,19 +4,19 @@
 <form @form_action_html;noquote@ method=GET>
 <table border=0 cellpadding=0 cellspacing=1>
   <tr>
-    <td class=rowtitle colspan=2 align=center>Category</td>
+    <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
   </tr>
   @category_type_select;noquote@
   <tr>
-    <td>Category Nr.</td>
+    <td>#intranet-core.Category_Nr#</td>
     <td><input size=10 name=category_id value="@category_id@"></td>
   </tr>
   <tr>
-    <td>Category name</td>
+    <td>#intranet-core.Category_name#</td>
     <td><input size=40 name=category value="@category@"></td>
   </tr>
   <tr>
-    <td>Category description</td>
+    <td>#intranet-core.Category_description#</td>
     <td>
       <textarea name=category_description rows=5 cols=50 wrap=soft>@descr@
       </textarea>
@@ -24,7 +24,7 @@
   </tr>
 <% if {"" != $hierarchy_component} { %>
   <tr>
-    <td>Parents</td>
+    <td>#intranet-core.Parents#</td>
     <td>
       <select name=parents size=20 multiple>
       @hierarchy_component;noquote@
@@ -39,3 +39,4 @@
 <input type=submit name=submit $input_form_html>
 </form>
 @delete_action_html;noquote@
+

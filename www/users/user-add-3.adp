@@ -1,17 +1,18 @@
 <master src="../master">
-<property name=title>Email sent</property>
+<property name=title>#intranet-core.Email_sent#</property>
 <property name="context">@context;noquote@</property>
 
 <p>
-@first_names@ @last_name@ has been notified.
+#intranet-core.lt_first_names_last_name_2#
 </p>
 <p>
 <ul>
-<!-- <li>Return to <a href="@referer@">user administration</a></li> -->
+<!-- <li>#intranet-core.Return_to# <a href="@referer@">#intranet-core.user_administration#</a></li> -->
 
-<li>Return to <a href="/intranet/users/">user administration</a></li>
-<li>View administrative page for newly created user, 
+<li>#intranet-core.Return_to# <a href="/intranet/users/">#intranet-core.user_administration#</a></li>
+<li>#intranet-core.lt_View_administrative_p# 
     <a href="/intranet/users/view?@export_vars@">@first_names@ @last_name@</a></li>
 </ul>
 </p>
+
 
