@@ -184,7 +184,7 @@ if {$write} {
 			    <td> 
 			      <form action=/intranet/projects/new method=POST>
 				  [export_form_vars project_id return_url]
-				  <input type=submit value=Edit name=submit3>
+				  <input type=submit value=\"[_ intranet-core.Edit]\" name=submit3>
 			      </form>
 			    </td>
 			  </tr>"
@@ -236,7 +236,6 @@ from
 where
         children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
         and children.tree_sortkey between parent.tree_sortkey and tree.right(parent.tree_sortkey)
-        and parent.tree_sortkey <> children.tree_sortkey
         and parent.project_id = :super_project_id
 order by children.tree_sortkey
 "
