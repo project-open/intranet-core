@@ -56,9 +56,14 @@ create table im_projects (
 	customer_id		integer not null
 				constraint im_projects_customer_fk 
 				references im_customers,
+	-- type of actions pursued during the project 
+	-- implementation, for example "ERP Installation" or
+	-- "ERP Upgrade", ...
 	project_type_id		not null 
 				constraint im_projects_prj_type_fk 
 				references im_categories,
+	-- status in the project cycle, from "potential", "quoting", ... to
+	-- "open", "invoicing", "paid", "closed"
 	project_status_id	not null 
 				constraint im_projects_prj_status_fk 
 				references im_categories,
@@ -72,9 +77,11 @@ create table im_projects (
 				constraint im_projects_date_const 
 				check( end_date - start_date >= 0 ),	
 	note			varchar(4000),
+	-- project leader is responsible for the operational execution
 	project_lead_id		integer 
 				constraint im_projects_prj_lead_fk 
 				references users,
+	-- supervisor is the manager responsible for the financial success
 	supervisor_id		integer 
 				constraint im_projects_supervisor_fk 
 				references users,
