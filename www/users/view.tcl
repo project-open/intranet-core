@@ -258,18 +258,17 @@ select
 	c.wa_state,
 	c.wa_postal_code,
 	c.wa_country_code,
-	c.note,
-	ha_cc.country_name as ha_country_name,
-	wa_cc.country_name as wa_country_name
+	c.note
 from
-	users_contact c,
-        country_codes ha_cc,
-        country_codes wa_cc
+	users_contact c
 where
 	c.user_id = :user_id_from_search
-	and c.ha_country_code = ha_cc.iso
-	and c.wa_country_code = wa_cc.iso
 "]
+
+# Get CCs outside of main select to avoid outer joins...
+set ha_country_name [db_string ha_country_name "select country_name from country_codes where iso=:ha_country_code" -default ""]
+set wa_country_name [db_string wa_country_name "select country_name from country_codes where iso=:wa_country_code" -default ""]
+
 
 if {$result == 1} {
 

@@ -50,7 +50,7 @@ set bgcolor(1) " class=roweven"
 
 # Get the list of all backup sets under backup_path
 set backup_path [im_backup_path]
-set file_list [fileutil::find $backup_path -type d -maxdepth 1 -mindepth 1]
+set file_list [exec /usr/bin/find $backup_path -type d -maxdepth 1 -mindepth 1]
 
 set backup_sets_html "<ul>\n"
 
