@@ -237,6 +237,9 @@ append user_l10n_html "
 # Contact Information
 # ---------------------------------------------------------------
 
+set ha_country_code ""
+set wa_country_code ""
+
 set result [db_0or1row users_info_query "
 select
 	c.home_phone,
