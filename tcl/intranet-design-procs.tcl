@@ -76,6 +76,15 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"middle-sel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 
+	"admin"		{ return "<img src=$url/admin.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"customer"	{ return "<img src=$url/customer.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"employee"	{ return "<img src=$url/employee.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"freelance"	{ return "<img src=$url/freelance.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"senman"	{ return "<img src=$url/senman.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"proman"	{ return "<img src=$url/proman.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border alt='$alt'>" }
+
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
 	    if {$width > 0} { append result "width=$width " }

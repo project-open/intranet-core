@@ -12,8 +12,8 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      unknown@arsdigita.com
--- @author      frank.bergmann@project-open.com
+-- @author	unknown@arsdigita.com
+-- @author	frank.bergmann@project-open.com
 
 
 -------------------------------------------------------------
@@ -63,22 +63,23 @@ insert into group_types (group_type) values ('im_profile');
 
 create or replace package im_profile as
   function new (
-         group_id        IN integer default null,
-         group_name      IN varchar,
-         email           IN varchar default null,
-         url             IN varchar default null,
-         object_type     IN varchar default 'im_profile',
-         creation_date   IN date default sysdate,
-         creation_ip     IN varchar default null,
-         last_modified   IN date default sysdate,
-         modifying_ip    IN varchar default null,
-         creation_user   IN integer default null,
-         context_id      IN integer default null,
-         join_policy     IN varchar default null
+	group_id	IN integer default null,
+	group_name	IN varchar,
+	email	   IN varchar default null,
+	url	     IN varchar default null,
+	object_type     IN varchar default 'im_profile',
+	creation_date   IN date default sysdate,
+	creation_ip     IN varchar default null,
+	last_modified   IN date default sysdate,
+	modifying_ip    IN varchar default null,
+	creation_user   IN integer default null,
+	context_id	IN integer default null,
+	join_policy     IN varchar default null,
+	profile_gif	IN varchar default 'profile'
  ) return integer;
 
   procedure del (
-    group_id      in integer
+    group_id	in integer
   );
 END im_profile;
 /
@@ -86,35 +87,43 @@ show errors;
 
 create or replace package body im_profile as
   function new (
-         group_id        IN integer default null,
-         group_name      IN varchar,
-         email           IN varchar default null,
-         url             IN varchar default null,
-         object_type     IN varchar default 'im_profile',
-         creation_date   IN date default sysdate,
-         creation_ip     IN varchar default null,
-         last_modified   IN date default sysdate,
-         modifying_ip    IN varchar default null,
-         creation_user   IN integer default null,
-         context_id      IN integer default null,
-         join_policy     IN varchar default null
+	group_id	IN integer default null,
+	group_name	IN varchar,
+	email	   IN varchar default null,
+	url	     IN varchar default null,
+	object_type     IN varchar default 'im_profile',
+	creation_date   IN date default sysdate,
+	creation_ip     IN varchar default null,
+	last_modified   IN date default sysdate,
+	modifying_ip    IN varchar default null,
+	creation_user   IN integer default null,
+	context_id	IN integer default null,
+	join_policy     IN varchar default null,
+	profile_gif	IN varchar default 'profile'
   ) return integer 
   IS
     v_group_id integer;
   begin
     v_group_id := acs_group.new (
-                     group_id         => new.group_id,
-                     group_name       => new.group_name,
-                     email            => new.email,
-                     url              => new.url,
-                     object_type      => new.object_type,
-                     creation_date    => new.creation_date,
-                     creation_ip      => new.creation_ip,
-                     creation_user    => new.creation_user,
-                     context_id       => new.context_id,
-                     join_policy      => new.join_policy
-                   );
-    insert into im_profiles (profile_id) values (v_group_id);
+		     group_id		=> new.group_id,
+		     group_name		=> new.group_name,
+		     email		=> new.email,
+		     url		=> new.url,
+		     object_type	=> new.object_type,
+		     creation_date	=> new.creation_date,
+		     creation_ip	=> new.creation_ip,
+		     creation_user	=> new.creation_user,
+		     context_id		=> new.context_id,
+		     join_policy	=> new.join_policy
+		   );
+    insert into im_profiles (
+	profile_id, 
+	profile_gif
+    ) values (
+	v_group_id, 
+	profile_gif
+    );
+
     return v_group_id;
   end new;
 
@@ -143,12 +152,12 @@ IS
 	v_rel_id		integer;
 BEGIN
 	v_system_user_id := 0;
-        v_rel_id := membership_rel.new(
-                object_id_one    => p_group_id,
-                object_id_two    => p_user_id,
-                creation_user    => v_system_user_id,
-                creation_ip      => '0:0:0:0'
-         );
+	v_rel_id := membership_rel.new(
+		object_id_one    => p_group_id,
+		object_id_two    => p_user_id,
+		creation_user    => v_system_user_id,
+		creation_ip	=> '0:0:0:0'
+	 );
 end;
 /
 show errors
@@ -184,13 +193,14 @@ show errors
 -- user permissions using the intranet-core object.
 
 create or replace procedure im_create_profile (
-        v_pretty_name IN varchar
+	v_pretty_name IN varchar,
+	v_profile_gif IN varchar
 )
 IS
   v_system_user_id  integer;
-  v_group_id        integer;
-  v_rel_id	    integer;
-  n_groups	    integer;
+  v_group_id	integer;
+  v_rel_id	integer;
+  n_groups	integer;
 BEGIN
 
      -- Check that the group doesn't exist before
@@ -206,30 +216,32 @@ BEGIN
 	v_system_user_id := 0;
 
 	v_group_id := im_profile.new(
-		context_id	 => null,
-		group_id	 => null,
-		creation_user    => v_system_user_id,
-		creation_ip	 => '0:0:0:0',
-		group_name	 => v_pretty_name
-	 );
+		context_id	=> null,
+		group_id	=> null,
+		creation_user   => v_system_user_id,
+		creation_ip	=> '0:0:0:0',
+		group_name	=> v_pretty_name,
+		profile_gif	=> v_profile_gif
+	);
 
 	v_rel_id := composition_rel.new(
-		object_id_one    => -2,
-		object_id_two    => v_group_id,
-		creation_user    => v_system_user_id,
-		creation_ip	 => '0:0:0:0'
-	 );
-      end if;
+		object_id_one   => -2,
+		object_id_two   => v_group_id,
+		creation_user   => v_system_user_id,
+		creation_ip	=> '0:0:0:0'
+	);
+     end if;
+
 END;
 /
 show errors;
 
 
 create or replace procedure im_drop_profile (
-        v_pretty_name IN varchar
+	v_pretty_name IN varchar
 )
 IS
-  v_group_id        integer;
+  v_group_id	integer;
 BEGIN
      -- Check that the group doesn't exist before
      select group_id
@@ -264,14 +276,14 @@ show errors;
 
 prompt *** Creating User Profiles
 begin
-   im_create_profile ('P/O Admins');
-   im_create_profile ('Customers'); 
-   im_create_profile ('Employees'); 
-   im_create_profile ('Freelancers'); 
-   im_create_profile ('Project Managers'); 
-   im_create_profile ('Senior Managers'); 
-   im_create_profile ('Accounting'); 
-   im_create_profile ('Sales'); 
+   im_create_profile ('P/O Admins','admin');
+   im_create_profile ('Customers','customer'); 
+   im_create_profile ('Employees','employee'); 
+   im_create_profile ('Freelancers','freelance'); 
+   im_create_profile ('Project Managers','proman'); 
+   im_create_profile ('Senior Managers','senman'); 
+   im_create_profile ('Accounting','accounting'); 
+   im_create_profile ('Sales','sales'); 
 end;
 /
 show errors;
@@ -293,21 +305,21 @@ begin
     -- inferior to read.
     -- This privilege is used:
     --	    - In the ProjectViewPage in order to decide 
-    --	      whether to show or not the customer contact.
-    --	      Read(Customers) means that the user is able
-    --	      to actually read the customer contact information,
-    --        so we have to show a link to the UserViewPage.
-    --        View(Customer) indicates that we can show the
-    --        name of the customer contact, but not display
-    --        a link to the UserViewPage.
-    --        If both privileges are missing, we are not going
-    --        to reveil even the existence of a customer contact.
-    --      - The privilege is also used to decided whether to
-    --        display the submenus for users such as Employees,
-    --        Freelancers etc. The current_user needs to have 
-    --        the view privilege to see the list of users
-    --        (independed to te possible permission to see "read"
-    --        of the users that might be displayed).
+    --		whether to show or not the customer contact.
+    --		Read(Customers) means that the user is able
+    --		to actually read the customer contact information,
+    --	so we have to show a link to the UserViewPage.
+    --	View(Customer) indicates that we can show the
+    --	name of the customer contact, but not display
+    --	a link to the UserViewPage.
+    --	If both privileges are missing, we are not going
+    --	to reveil even the existence of a customer contact.
+    --	- The privilege is also used to decided whether to
+    --	display the submenus for users such as Employees,
+    --	Freelancers etc. The current_user needs to have 
+    --	the view privilege to see the list of users
+    --	(independed to te possible permission to see "read"
+    --	of the users that might be displayed).
     acs_privilege.create_privilege('view','View','View');
     acs_privilege.add_child('admin', 'view');
 
@@ -354,7 +366,7 @@ end;
 --
 create or replace procedure im_priv_create (
 	p_priv_name IN varchar,
-        p_profile_name IN varchar
+	p_profile_name IN varchar
 )
 IS
   v_profile_id		integer;
@@ -381,8 +393,8 @@ show errors;
 -- Shortcut proc define subgroup behaviour
 --
 create or replace procedure im_subgroup_create (
-        p_parent_name IN varchar,
-        p_subgroup_name IN varchar
+	p_parent_name IN varchar,
+	p_subgroup_name IN varchar
 )
 IS
 	v_rel_id		integer;
@@ -402,13 +414,13 @@ BEGIN
      from groups
      where group_name = p_subgroup_name;
 
-        v_system_user_id := 0;
-        v_rel_id := composition_rel.new(
-                object_id_one    => v_parent_id,
-                object_id_two    => v_subgroup_id,
-                creation_user    => v_system_user_id,
-                creation_ip      => '0:0:0:0'
-         );
+	v_system_user_id := 0;
+	v_rel_id := composition_rel.new(
+		object_id_one   => v_parent_id,
+		object_id_two   => v_subgroup_id,
+		creation_user   => v_system_user_id,
+		creation_ip	=> '0:0:0:0'
+	 );
 END;
 /
 show errors;
@@ -422,12 +434,12 @@ show errors;
 --	staff employees.
 --
 create or replace procedure im_user_matrix_grant (
-        p_group_name IN varchar,
-        p_grantee_group_name IN varchar,
+	p_group_name IN varchar,
+	p_grantee_group_name IN varchar,
 	p_privilege IN varchar
 )
 IS
-        v_group_id		integer;
+	v_group_id		integer;
 	v_grantee_id		integer;
 BEGIN
      -- Get the group_id from group_name
