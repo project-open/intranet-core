@@ -37,6 +37,7 @@ ad_page_contract {
     { view_type "all" }
     { letter:trim "all" }
     { view_name "company_list" }
+    { user_id_from_search:integer 0}
 }
 
 # ---------------------------------------------------------------
@@ -159,6 +160,9 @@ if { ![empty_string_p $status_id] && $status_id != 0 } {
     lappend criteria "c.company_status_id=:status_id"
 }
 
+if { 0 != $user_id_from_search} {
+    lappend criteria "c.company_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)\n"
+}
 if { $type_id > 0 } {
     ns_set put $bind_vars type_id $type_id
     lappend criteria "c.company_type_id in (
