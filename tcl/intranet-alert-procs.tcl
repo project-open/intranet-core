@@ -41,9 +41,10 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     # Quick & Dirty implementation: just send out the mail immediately,
     # until there is more time...
 
+    set current_user_id [ad_get_user_id]
+
     # Get the email of the target user
     set user_email_sql "select email from parties where party_id = :target_id"
-
     db_transaction {
 	db_1row user_email $user_email_sql
     } on_error {
@@ -51,13 +52,17 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
 	return
     }
 
-    if {"" == $email} {
-	ad_return_complaint 1 "<li>Error getting the email of user $target_id"
+    # Determine the sender address
+    set sender_email_sql "select email as sender_email from parties where party_id = :current_user_id"
+    db_transaction {
+	db_1row sender_email $sender_email_sql
+    } on_error {
+	set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
+    }
+    if {"" == $sender_email} {
+	ad_return_complaint 1 "<li>Error getting the email of user $current_user_id"
 	return
     }
-
-    # Determine the sender address
-    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
 
     # Send out the mail
     if [catch { 
