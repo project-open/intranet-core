@@ -81,7 +81,7 @@ begin
         name            => :name,
         url             => :url,
         sort_order      => :sort_order,
-        parent_menu_id  => :parent_menu_id,
+        parent_menu_id  => :parent_menu_id
     );
 end;
 "
@@ -94,7 +94,7 @@ end;
 	        name            = :name,
 	        url             = :url,
 	        sort_order      = :sort_order,
-	        parent_menu_id  = :parent_menu_id,
+	        parent_menu_id  = :parent_menu_id
 	where
 		menu_id = :menu_id
 "

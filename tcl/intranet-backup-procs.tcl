@@ -2442,9 +2442,9 @@ ad_proc -public im_import_invoices { filename } {
         set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
 	set creator_id [im_import_get_user $creator_email ""]
 	set customer_contact_id [im_import_get_user $customer_contact_email ""]
-	set invoice_template_id [im_import_get_category $invoice_template "Intranet Invoice Template" 0]
-	set invoice_status_id [im_import_get_category $invoice_status "Intranet Invoice Status" 0]
-	set invoice_type_id [im_import_get_category $invoice_type "Intranet Invoice Type" ""]
+	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
+	set cost_status_id [im_import_get_category $cost_status "Intranet Cost Status" 0]
+	set cost_type_id [im_import_get_category $cost_type "Intranet Cost Type" ""]
 	set payment_method_id [im_import_get_category $payment_method "Intranet Invoice Payment Method" 0]
 
 	# Old style invoices - provider was Internal by default
@@ -2479,7 +2479,7 @@ SET
         invoice_date            = :invoice_date,
 	due_date		= :due_date,
 	invoice_currency	= :invoice_currency,
-        invoice_template_id     = :invoice_template_id,
+        invoice_template_id     = :template_id,
         invoice_status_id       = :invoice_status_id,
         invoice_type_id         = :invoice_type_id,
         payment_method_id       = :payment_method_id,

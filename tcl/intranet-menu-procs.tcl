@@ -23,7 +23,7 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
     ordered and indented according to hierarchy.
 } {
 
-    set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='main'" -default 0]
+    set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
 
     set parent_options_sql "
 	select

@@ -228,6 +228,7 @@ set escape \
 declare
 	-- Menu IDs
 	v_menu			integer;
+	v_top_menu		integer;
 	v_main_menu		integer;
 	v_home_menu		integer;
 	v_user_menu		integer;
@@ -295,20 +296,32 @@ begin
     from groups
     where group_name = 'Freelancers';
 
-    -- The "Main" menu: It's not displayed itself
-    -- but serves as the starting point for the entire
-    -- P/O menu hierarchy.
-    v_main_menu := im_menu.new (
-	package_name =>	'intranet',
-	label =>	'main',
-	name =>		'Project/Open',
+    -- The "top" menu - the father of all menus.
+    -- It is not displayed itself and only serves
+    -- as a parent_menu_id from 'main' and 'project'.
+    v_top_menu := im_menu.new (
+	package_name =>	'intranet-core',
+	label =>	'top',
+	name =>		'Top Menu',
 	url =>		'/',
 	sort_order =>	10,
 	parent_menu_id => null
     );
 
+    -- The "Main" menu: It's not displayed itself neither
+    -- but serves as the starting point for the main menu
+    -- hierarchy.
+    v_main_menu := im_menu.new (
+	package_name =>	'intranet-core',
+	label =>	'main',
+	name =>		'Main Menu',
+	url =>		'/',
+	sort_order =>	10,
+	parent_menu_id => v_top_menu
+    );
+
     v_home_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'home',
 	name =>		'Home',
 	url =>		'/intranet/index',
@@ -324,7 +337,7 @@ begin
     acs_permission.grant_permission(v_home_menu, v_freelancers, 'read');
 
     v_user_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users',
 	name =>		'Users',
 	url =>		'/intranet/users/',
@@ -339,7 +352,7 @@ begin
 
 
     v_project_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'projects',
 	name =>		'Projects',
 	url =>		'/intranet/projects/',
@@ -356,7 +369,7 @@ begin
 
 
     v_customer_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'customers',
 	name =>		'Clients',
 	url =>		'/intranet/customers/',
@@ -373,7 +386,7 @@ begin
 
 
 --    v_office_menu := im_menu.new (
---	package_name =>	'intranet',
+--	package_name =>	'intranet-core',
 --	label =>	'offices',
 --	name =>		'Offices',
 --	url =>		'/intranet/offices/',
@@ -390,7 +403,7 @@ begin
 
 
     v_admin_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin',
 	name =>		'Admin',
 	url =>		'/intranet/admin/',
@@ -409,7 +422,7 @@ begin
     -- but project_list is default in projects/index.tcl, so we can
     -- skip this here.
     v_project_standard_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'projects_standard',
 	name =>		'Summary',
 	url =>		'/intranet/projects/index',
@@ -426,7 +439,7 @@ begin
 
 
     v_project_status_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'projects_status',
 	name =>		'Status',
 	url =>		'/intranet/projects/index?view_name=project_status',
@@ -445,7 +458,7 @@ begin
     -- -----------------------------------------------------
 
     v_user_employees_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_employees',
 	name =>		'Employees',
 	url =>		'/intranet/users/index?user_group_name=Employees',
@@ -460,7 +473,7 @@ begin
 
 
     v_user_customers_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_customers',
 	name =>		'Clients',
 	url =>		'/intranet/users/index?user_group_name=Customers',
@@ -473,7 +486,7 @@ begin
 
 
     v_user_freelancers_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_freelancers',
 	name =>		'Freelancers',
 	url =>		'/intranet/users/index?user_group_name=Freelancers',
@@ -488,7 +501,7 @@ begin
 
 
     v_user_all_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_unassigned',
 	name =>		'Unassigned',
 	url =>		'/intranet/users/index?user_group_name=Unregistered\&view_name=user_community\&order_by=Creation',
@@ -500,7 +513,7 @@ begin
 
 
     v_user_all_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_all',
 	name =>		'All Users',
 	url =>		'/intranet/users/index?user_group_name=All',
@@ -513,7 +526,7 @@ begin
 
 
     v_user_new_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'users_new',
 	name =>		'New User',
 	url =>		'/intranet/users/new',
@@ -531,7 +544,7 @@ begin
     -- -----------------------------------------------------
 
     v_admin_home_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_home',
 	name =>		'Admin Home',
 	url =>		'/intranet/admin/',
@@ -541,7 +554,7 @@ begin
     acs_permission.grant_permission(v_admin_home_menu, v_admins, 'read');
 
     v_admin_profiles_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_profiles',
 	name =>		'Profiles',
 	url =>		'/intranet/admin/profiles/',
@@ -551,7 +564,7 @@ begin
     acs_permission.grant_permission(v_admin_profiles_menu, v_admins, 'read');
 
     v_admin_menus_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_menus',
 	name =>		'Menus',
 	url =>		'/intranet/admin/menus/',
@@ -561,7 +574,7 @@ begin
     acs_permission.grant_permission(v_admin_profiles_menu, v_admins, 'read');
 
     v_admin_matrix_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_usermatrix',
 	name =>		'User Matrix',
 	url =>		'/intranet/admin/user_matrix/',
@@ -571,7 +584,7 @@ begin
     acs_permission.grant_permission(v_admin_matrix_menu, v_admins, 'read');
 
     v_admin_parameters_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_parameters',
 	name =>		'Parameters',
 	url =>		'/intranet/admin/parameters/',
@@ -581,7 +594,7 @@ begin
     acs_permission.grant_permission(v_admin_parameters_menu, v_admins, 'read');
 
     v_admin_categories_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'admin_categories',
 	name =>		'Categories',
 	url =>		'/intranet/admin/categories/',
@@ -603,6 +616,7 @@ declare
 	-- Menu IDs
 	v_menu			integer;
 	v_project_menu		integer;
+	v_main_menu		integer;
 
 	-- Groups
 	v_employees		integer;
@@ -622,19 +636,24 @@ begin
     select group_id into v_customers from groups where group_name = 'Customers';
     select group_id into v_freelancers from groups where group_name = 'Freelancers';
 
+    select menu_id
+    into v_main_menu
+    from im_menus
+    where label='main';
+
     -- The "Project" menu: It's not displayed itself
     -- but serves as the starting point for submenus
     v_project_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'project',
 	name =>		'Project',
 	url =>		'/intranet/projects/view',
 	sort_order =>	10,
-	parent_menu_id => null
+	parent_menu_id => v_main_menu
     );
 
     v_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'project_standard',
 	name =>		'Summary',
 	url =>		'/intranet/projects/view?view_name=standard',
@@ -650,7 +669,7 @@ begin
     acs_permission.grant_permission(v_menu, v_freelancers, 'read');
 
     v_menu := im_menu.new (
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	label =>	'project_files',
 	name =>		'Files',
 	url =>		'/intranet/projects/view?view_name=files',

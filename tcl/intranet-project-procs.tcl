@@ -27,6 +27,22 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+# -----------------------------------------------------------
+# Constant Functions
+# -----------------------------------------------------------
+
+ad_proc -public im_project_type_unknown {} { return 85 }
+ad_proc -public im_project_type_other {} { return 86 }
+
+ad_proc -public im_project_status_quoting {} { return 74 }
+ad_proc -public im_project_status_open {} { return 76 }
+ad_proc -public im_project_status_declined {} { return 77 }
+ad_proc -public im_project_status_delivered {} { return 78 }
+ad_proc -public im_project_status_invoiced {} { return 79 }
+ad_proc -public im_project_status_closed {} { return 81 }
+ad_proc -public im_project_status_deleted {} { return 82 }
+ad_proc -public im_project_status_canceled {} { return 83 }
+
 
 # -----------------------------------------------------------
 # Project ::new, ::del and ::name procedures
@@ -200,17 +216,6 @@ begin
         return $project_id
     }
 }
-
-
-ad_proc -public im_project_status_quoting {} { return 74 }
-ad_proc -public im_project_status_open {} { return 76 }
-ad_proc -public im_project_status_declined {} { return 77 }
-ad_proc -public im_project_status_delivered {} { return 78 }
-ad_proc -public im_project_status_invoiced {} { return 79 }
-ad_proc -public im_project_status_closed {} { return 81 }
-ad_proc -public im_project_status_deleted {} { return 82 }
-ad_proc -public im_project_status_canceled {} { return 83 }
-
 
 # -----------------------------------------------------------
 # Projects Business Logic

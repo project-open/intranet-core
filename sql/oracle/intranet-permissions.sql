@@ -212,14 +212,7 @@ BEGIN
      -- only add the group if it didn't exist before...
      if n_groups = 0 then
 
-	-- call procedure defined in community-core.sql to get system user
-	v_system_user_id := 0;
-
 	v_group_id := im_profile.new(
-		context_id	=> null,
-		group_id	=> null,
-		creation_user   => v_system_user_id,
-		creation_ip	=> '0:0:0:0',
 		group_name	=> v_pretty_name,
 		profile_gif	=> v_profile_gif
 	);

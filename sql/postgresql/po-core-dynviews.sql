@@ -126,7 +126,7 @@ insert into po_dynview_columns values (3207,32,'Received',
 'po-core::security::po_permission_p -privilege payment_read');
 
 insert into po_dynview_columns values (3209,32,'Invoice Amount',
-'$invoice_amount','',9,
+'$amount','',9,
 'po-core::security::po_permission_p  -privilege payment_read');
 
 insert into po_dynview_columns values (3211,32,'Amount Paid',
@@ -157,7 +157,7 @@ insert into po_dynview_columns values (3001,30,'Invoice #',
 'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3003,30,'Preview',
-'"<A HREF=/po-invoicing/invoices/view?invoice_id=$invoice_id${amp}render_template_id=$invoice_template_id>$invoice_nr</A>"',
+'"<A HREF=/po-invoicing/invoices/view?invoice_id=$invoice_id${amp}render_template_id=$template_id>$invoice_nr</A>"',
 '',2,'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3005,30,'Client',
@@ -169,7 +169,7 @@ insert into po_dynview_columns values (3007,30,'Due Date',
 '',4,'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3011,30,'Amount',
-'$invoice_amount_formatted $invoice_currency',
+'$amount_formatted $currency',
 '',6,'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3013,30,'Paid',
@@ -177,7 +177,7 @@ insert into po_dynview_columns values (3013,30,'Paid',
 '',7,'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3017,30,'Status',
-'[po_invoice_status_select "invoice_status.$invoice_id" $invoice_status_id]','',13,
+'[im_cost_status_select "cost_status.$invoice_id" $cost_status_id]','',13,
 'po-core::security::po_permission_p -privilege invoice_read');
 
 insert into po_dynview_columns values (3098,30,'Del',

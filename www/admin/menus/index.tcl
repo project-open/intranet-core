@@ -74,6 +74,7 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
+  <td width=20></td>
   <td class=rowtitle>Package</td>\n"
 
 set main_sql_select ""
@@ -98,14 +99,14 @@ append table_header "
 # Main SQL: Extract the permissions for all Menus
 # ------------------------------------------------------
 
-set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='main'" -default 0]
+set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
 
 set main_sql "
 select
 ${main_sql_select}	m.*,
 	level,
 	(level-1) as indent_level,
-	(5-level) as colspan_level
+	(6-level) as colspan_level
 from
 	im_menus m
 start with
@@ -136,7 +137,7 @@ db_foreach menus $main_sql {
 
     append table "
   <td colspan=$colspan_level>
-    <A href=$menu_url?menu_id=$menu_id>$name - $label</A>
+    <A href=$menu_url?menu_id=$menu_id>$name</A><br>$label
   </td>
   <td>$package_name</td>
 "
