@@ -13,6 +13,7 @@ set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
 set page_title "Categories"
 set context_bar [ad_context_bar_ws $page_title]
+set context ""
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
@@ -137,14 +138,3 @@ if {![string equal "All" $select_category_type]} {
 
 }
 
-# ---------------------------------------------------------------
-# Put parts together
-# ---------------------------------------------------------------
-
-set page_body "
-$category_select_html
-<P>
-$category_list_html
-"
-
-doc_return  200 text/html [im_return_template]

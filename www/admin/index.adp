@@ -1,5 +1,5 @@
-<master src="../master">
-<property name="title">System Administration</property>
+<master src="master">
+<property name="title">@page_title;noquote@</property>
 
 <!-- left - right - bottom  design -->
 
@@ -7,19 +7,18 @@
 <tr>
   <td valign=top>
 
-    <H2>System Administration</H2>
+    <H2>@page_title;noquote@</H2>
     <ul>
       <li>
-	<A href="../users/">Manage Individual Users</A>
+	<A href="../users/">Manage Individual Users</A><br>
+	Here you can manage users one-by-one.
+      <li>
+	<A href=permissions/permissions>Manage Profiles</A><br>
+	Profiles are a kind of groups to which users can belong.
+	Profiles define the which actions that a user can perform.
       <li>
 	<A href=categories>Manage Categories</A><br>
 	Categories define the types and stati of business objects.
-      <li>
-	<A href=profiles>Manage Profiles and Permissions</A><br>
-	Permissions in Project/Open are defined in terms of profiles
-	(a kind of group) to which a user belongs. Here you can adapt 
-	the permissions to your corporate needs and define new types
-	of profiles
       <li>
 	<A href=/admin/>Manage the OpenACS Platform</A><br>
 	Here you find advance management and configuration options
