@@ -39,6 +39,8 @@ ad_proc -public im_project_has_type { project_id project_type } {
     # Is the projects type_id a sub-category of "Translation Project"?
     # We take two cases: Either the project is of category "project_type"
     # OR it is one of the subcategories of "project_type".
+
+    ns_log Notice "im_project_has_type: project_id=$project_id, project_type=$project_type"
     set sql "
 select  count(*)
 from

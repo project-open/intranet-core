@@ -53,6 +53,81 @@ ad_proc -public im_opt_val { var_name } {
 } 
 
 
+ad_proc -public im_parameter {
+    name
+    package_key
+    {default ""}
+} {
+    Not tested or used yet!!!<br>
+    Wrapper for ad_parameter with the extra functionality to create
+    the parameter if it didn't exist before.<br>
+    With Project/Open we don't need package ids because all P/O
+    packages are singletons.
+    im_parameter "SystemCSS" "intranet-core" "/intranet/style/style.default.css"
+} {
+
+    # Get the package_id. That's because a single package (identified
+    # by a "package_key" can be mounted several times in the system.
+    db_1row get_package_id "
+select 
+	count(*) as param_count, 
+	min(package_id) as package_id
+from 
+	apm_packages 
+where 
+	package_key = :package_key
+"
+
+    # Check if the user has specified an non-existing package key.
+    # param_count > 1 is impossible because all intranet packages
+    # are singleton packages
+    if {0 == $param_count} {
+	ad_return_complaint 1 "<li><b>Internal Error</b><br>
+        Unknown package key '$package_key'.<br>
+        Please contact your support partner and report this error."
+	return ""
+    }
+
+    set parameter_p [db_exec_plsql parameter_count {
+        begin
+        :1 := apm.parameter_p(
+		package_key => :package_key,
+		parameter_name => :name
+	);
+	end;
+    }]
+
+    if {!$parameter_p} {
+
+	# didn't exist yet - create the parameter
+
+	set parameter_id [db_exec_plsql create_parameter {
+	    begin
+	    :1 := apm.register_parameter(
+		 parameter_id => :parameter_id,
+		 parameter_name => :parameter_name,
+		 package_key => :package_key,
+		 description => :description,
+		 datatype => :datatype,
+		 default_value => :default_value,
+		 section_name => :section_name,
+		 min_n_values => :min_n_values,
+		 max_n_values => :max_n_values
+	    );
+	    end;
+	}]
+
+	set value $default
+
+    } else {
+
+	# Get the parameter
+	set value [parameter::get -package_id $package_id -parameter $name -default $default]
+
+    }
+    
+    return $value
+}
 
 # Basic Intranet Parameter Shortcuts
 ad_proc im_url_stub {} {
@@ -165,19 +240,19 @@ ad_proc im_num_employees {{since_when ""} {report_date ""} {purpose ""} {user_id
 
     set num_employees [db_string employees_total_number \
 	    "select count(time.percentage_time) 
-               from im_employees_active emp, im_employee_percentage_time time
-              where (time.percentage_time is not null and time.percentage_time > 0)
-                and (emp.start_date < sysdate)
-                and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
-                and time.user_id=emp.user_id"]
+	       from im_employees_active emp, im_employee_percentage_time time
+	      where (time.percentage_time is not null and time.percentage_time > 0)
+		and (emp.start_date < sysdate)
+		and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
+		and time.user_id=emp.user_id"]
 
     set num_fte [db_string employee_total_fte \
 	    "select sum(time.percentage_time) / 100
-               from im_employees_active emp, im_employee_percentage_time time
-              where (time.percentage_time is not null and time.percentage_time > 0)
-                and (emp.start_date < sysdate)
-                and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
-                and time.user_id=emp.user_id"]
+	       from im_employees_active emp, im_employee_percentage_time time
+	      where (time.percentage_time is not null and time.percentage_time > 0)
+		and (emp.start_date < sysdate)
+		and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
+		and time.user_id=emp.user_id"]
 
     if { [empty_string_p $num_fte] } {
 	set num_fte 0
@@ -195,18 +270,18 @@ ad_proc im_num_employees {{since_when ""} {report_date ""} {purpose ""} {user_id
 ad_proc im_num_employees_simple { } "Returns # of employees." {
     return [db_string employees_count_total \
 	    "select count(time.percentage_time) 
-               from im_employees_active info, im_employee_percentage_time  time
-              where (time.percentage_time is not null and time.percentage_time > 0)
-                and (info.start_date < sysdate)
-                and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
-                and time.user_id=info.user_id"]
+	       from im_employees_active info, im_employee_percentage_time  time
+	      where (time.percentage_time is not null and time.percentage_time > 0)
+		and (info.start_date < sysdate)
+		and time.start_block = to_date(next_day(sysdate-8, 'SUNDAY'), 'YYYY-MM-DD')
+		and time.user_id=info.user_id"]
 }
 
 ad_proc im_num_offices_simple { } "Returns # of offices." {
     return [db_string offices_count_total \
 	    "select count(*) 
-               from user_groups
-              where parent_group_id = [im_office_group_id]"]
+	       from user_groups
+	      where parent_group_id = [im_office_group_id]"]
 }
 
 
@@ -235,9 +310,9 @@ ad_proc im_allocation_date_optionlist { {start_block ""} {start_of_larger_unit_p
     # Only go as far as 1 year into the future to save space
     return [db_html_select_value_options -bind $bind_vars -select_option $start_block allocations_near_future \
 	    "select start_block, to_char(start_block,'Month YYYY')
-               from im_start_blocks 
-              where to_char(start_block,'W') = 1 $number_months_sql $start_p_sql
-              order by start_block asc"]
+	       from im_start_blocks 
+	      where to_char(start_block,'W') = 1 $number_months_sql $start_p_sql
+	      order by start_block asc"]
 }
 
 ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" } } {
@@ -371,8 +446,8 @@ ad_proc im_country_select {select_name {default ""}} {
     set bind_vars [ns_set create]
     set statement_name "country_code_select"
     set sql "select iso, country_name
-             from country_codes
-             order by lower(country_name)"
+	     from country_codes
+	     order by lower(country_name)"
 
     return [im_selection_to_select_box $bind_vars $statement_name $sql $select_name $default]
 }
@@ -385,9 +460,9 @@ ad_proc im_currency_select {select_name {default ""}} {
     set bind_vars [ns_set create]
     set statement_name "currency_code_select"
     set sql "select iso, iso
-             from currency_codes
+	     from currency_codes
 	     where supported_p='t'
-             order by lower(currency_name)"
+	     order by lower(currency_name)"
 
     return [im_selection_to_select_box $bind_vars $statement_name $sql $select_name $default]
 }
@@ -409,9 +484,9 @@ ad_proc im_category_select { category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
-             from im_categories
-             where category_type = :category_type
-             order by lower(category)"
+	     from im_categories
+	     where category_type = :category_type
+	     order by lower(category)"
     return [im_selection_to_select_box $bind_vars category_select $sql $select_name $default]
 }    
 
@@ -419,9 +494,9 @@ ad_proc im_category_select_multiple { category_type select_name { default "" } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
-             from im_categories
-             where category_type = :category_type
-             order by lower(category)"
+	     from im_categories
+	     where category_type = :category_type
+	     order by lower(category)"
     return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size multiple]
 }    
 
@@ -459,7 +534,7 @@ ad_proc philg_dateentrywidget {column {default_date "1940-11-03"}} {
 
     set output "<SELECT name=$column.month>\n"
     for {set i 0} {$i < 12} {incr i} {
-        append output "<OPTION> [lindex $NS(months) $i]\n"
+	append output "<OPTION> [lindex $NS(months) $i]\n"
     }
 
     append output \
@@ -499,8 +574,8 @@ ad_proc im_invoice_status_select { select_name { default "" } } {
 } {
     set bind_vars [ns_set create]
     set sql "select invoice_status_id as category_id, invoice_status as category
-             from im_invoice_status
-             order by lower(invoice_status_id)"
+	     from im_invoice_status
+	     order by lower(invoice_status_id)"
     return [im_selection_to_select_box $bind_vars category_select $sql $select_name $default]
 }
 
@@ -672,9 +747,9 @@ ltrim(to_char(sum(salary),'999G999G999G999')) as payroll,
 sum(decode(salary,NULL,1,0)) as num_missing
 from im_monthly_salaries salaries, users u
 where exists (select 1
-              from user_group_map ugm
-              where ugm.user_id = u.user_id
-              and ugm.group_id = :group_id)
+	      from user_group_map ugm
+	      where ugm.user_id = u.user_id
+	      and ugm.group_id = :group_id)
 and u.user_id = salaries.user_id (+)"
 
     if { $num_employees == 0 } {
@@ -682,7 +757,7 @@ and u.user_id = salaries.user_id (+)"
     }
     set html "The company has $num_employees [util_decode $num_employees 1 employee employees]"
     if { ![empty_string_p $payroll] } {
-        append html " and a monthly payroll of \$$payroll"
+	append html " and a monthly payroll of \$$payroll"
     }
     if { $num_missing > 0 } {
 	append html " ($num_missing missing info)"
@@ -704,27 +779,27 @@ ad_proc im_display_salary {salary salary_period} {Formats salary for nice displa
     set display_pref [im_salary_period_display]
 
     switch $salary_period {
-        month {
+	month {
 	    if {$display_pref == "month"} {
-                 return "[format %6.2f $salary] per month"
-            } elseif {$display_pref == "year"} {
-                 return "\$[format %6.2f [expr $salary * 12]] per year"
-            } else {
-                 return "\$[format %6.2f $salary] per $salary_period"
-            }
-        }
-        year {
+		 return "[format %6.2f $salary] per month"
+	    } elseif {$display_pref == "year"} {
+		 return "\$[format %6.2f [expr $salary * 12]] per year"
+	    } else {
+		 return "\$[format %6.2f $salary] per $salary_period"
+	    }
+	}
+	year {
 	    if {$display_pref == "month"} {
-                 return "[format %6.2f [expr $salary/12]] per month"
-            } elseif {$display_pref == "year"} {
-                 return "\$[format %6.2f $salary] per year"
-            } else {
-                 return "\$[format %6.2f $salary] per $salary_period"
-            }
-        }
-        default {
-            return "\$[format %6.2f $salary] per $salary_period"
-        }
+		 return "[format %6.2f [expr $salary/12]] per month"
+	    } elseif {$display_pref == "year"} {
+		 return "\$[format %6.2f $salary] per year"
+	    } else {
+		 return "\$[format %6.2f $salary] per $salary_period"
+	    }
+	}
+	default {
+	    return "\$[format %6.2f $salary] per $salary_period"
+	}
     }
 }
 
@@ -743,25 +818,25 @@ ad_proc im_yes_no_table { yes_action no_action { var_list [list] } { yes_button 
 } {
     set hidden_vars ""
     foreach varname $var_list {
-        if { [eval uplevel {info exists $varname}] } {
-            upvar $varname value
-            if { ![empty_string_p $value] } {
+	if { [eval uplevel {info exists $varname}] } {
+	    upvar $varname value
+	    if { ![empty_string_p $value] } {
 		append hidden_vars "<input type=hidden name=$varname value=\"[ad_quotehtml $value]\">\n"
-            }
-        }
+	    }
+	}
     }
     return "
 <table>
   <tr>
     <td><form method=post action=\"[ad_quotehtml $yes_action]\">
-        $hidden_vars
-        <input type=submit name=operation value=\"[ad_quotehtml $yes_button]\">
-        </form>
+	$hidden_vars
+	<input type=submit name=operation value=\"[ad_quotehtml $yes_button]\">
+	</form>
     </td>
     <td><form method=get action=\"[ad_quotehtml $no_action]\">
-        $hidden_vars
-        <input type=submit name=operation value=\"[ad_quotehtml $no_button]\">
-        </form>
+	$hidden_vars
+	<input type=submit name=operation value=\"[ad_quotehtml $no_button]\">
+	</form>
     </td>
   </tr>
 </table>
@@ -901,7 +976,7 @@ FROM
 		rownum fake_rownum 
 	from
 		($sql) im_select_row_range_x
-        where 
+	where 
 		rownum <= $lastrow
 	) im_select_row_range_y
 WHERE
@@ -931,7 +1006,7 @@ adde	}
     }
     lappend criteria "ad_group_member_p(u.user_id, :group_id) = 't'"
     
-    set where_clause [join $criteria "\n        and "]
+    set where_clause [join $criteria "\n	and "]
 
     set email_list [db_list active_users_list_emails \
 	    "select email from users_active u where $where_clause"]
@@ -956,25 +1031,25 @@ ad_proc num_days_in_month {month {year 1999}} {
     If no year is given, it defaults to 1999 (a non-leap-year).
 } {
     if { [elem_p $month [month_list]] } { 
-        set month [expr [lsearch [month_list] $month]+1]
+	set month [expr [lsearch [month_list] $month]+1]
     }
     if { [elem_p $month [long_month_list]] } { 
-        set month [expr [lsearch [long_month_list] $month]+1]
+	set month [expr [lsearch [long_month_list] $month]+1]
     }
     switch $month {
-        1 { return 31 }
-        2 { return [leap_year_p $year]?29:28 }
-        3 { return 31 }
-        4 { return 30 }
-        5 { return 31 }
-        6 { return 30 }
-        7 { return 31 }
-        8 { return 31 }
-        9 { return 30 }
-        10 { return 31 }
-        11 { return 30 }
-        12 { return 31 }
-        default { error "Month $month invalid. Must be in range 1 - 12." }
+	1 { return 31 }
+	2 { return [leap_year_p $year]?29:28 }
+	3 { return 31 }
+	4 { return 30 }
+	5 { return 31 }
+	6 { return 30 }
+	7 { return 31 }
+	8 { return 31 }
+	9 { return 30 }
+	10 { return 31 }
+	11 { return 30 }
+	12 { return 31 }
+	default { error "Month $month invalid. Must be in range 1 - 12." }
     }
 }
 
@@ -1097,10 +1172,10 @@ ad_proc im_email_aliases { short_name } {
     return "
   <li> Email aliases $help_link:
        <ul> 
-         <li> <a href=mailto:${short_name}@$domain>$short_name@$domain</a>
-         <li> <a href=mailto:${short_name}-employees@$domain>${short_name}-employees@$domain</a>
-         <li> <a href=mailto:${short_name}-customers@$domain>${short_name}-customers@$domain</a>
-         <li> <a href=mailto:${short_name}-all@$domain>${short_name}-all@$domain</a>
+	 <li> <a href=mailto:${short_name}@$domain>$short_name@$domain</a>
+	 <li> <a href=mailto:${short_name}-employees@$domain>${short_name}-employees@$domain</a>
+	 <li> <a href=mailto:${short_name}-customers@$domain>${short_name}-customers@$domain</a>
+	 <li> <a href=mailto:${short_name}-all@$domain>${short_name}-all@$domain</a>
        </ul>
 "
 }
@@ -1161,18 +1236,18 @@ ad_proc bd_formatDateTz { date fmt gmt localTz} {
     set saveTz ""
 
     if {$localTz != ""} {
-        catch { set saveTz $env(TZ) }
-        set env(TZ) $localTz
+	catch { set saveTz $env(TZ) }
+	set env(TZ) $localTz
     }
     
     set r [clock format $date -format $fmt -gmt $gmt]
     
     if {$localTz != ""} {
-        if {$saveTz != ""} {
-            set env(TZ) $saveTz
-        } else {
-            unset env(TZ)
-        }
+	if {$saveTz != ""} {
+	    set env(TZ) $saveTz
+	} else {
+	    unset env(TZ)
+	}
     }
     
     return $r

@@ -9,49 +9,26 @@
     <auto-mount>intranet</auto-mount>
 
     <version name="1.0" url="http://openacs.org/repository/download/apm/intranet-core-1.0.apm">
+        <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2004-02-17</release-date>
         <vendor url="http://www.project-open.com/">Project/Open</vendor>
 
-        <!-- No dependency information -->
+        <provides url="intranet-core" version="1.0"/>
 
         <callbacks>
         </callbacks>
         <parameters>
-
-
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  
-	    name="TestDemoDevServer"  default="0" 
-	    description="TestDemoDevServer"/>
-
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"
-            name="EnableNestedProjectsP"  default="0"
-            description="Do the user need to have projects and subprojects?"/>
-
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"
-            name="SystemLogo"  default="/intranet/images/projop-logo.gif"
-            description="System logo that appears in all screens"/>
-
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"
-            name="SystemCSS"  default="/intranet/style/style.css"
-            description="Global CSS"/>
-
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
-            name="NumberResultsPerPage"  default="50"
-            description="How many lines do we want to show in an index page?"/>
-
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
-            name="ProjectNumberFieldSize"  default="10"
-            description="How many characters can the project number have?"/>
-
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
-            name="SystemNavbarGifPath"  default="/intranet/images/navbar_default"
-            description="Where are the GIFs located for the navbar?"/>
-
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
-            name="ErrorReportURL"  
-	    default="http://www.projop.com/intranet-forum/new-system-incident"
-            description="Where can the system report errors?"/>
-
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNestedProjectsP"  default="0" description="Do the user need to have projects and subprojects, or does this add too much of complexity?"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.projop.com/intranet-forum/new-system-incident" description="Where does the &quot;Report Errors&quot; button go that appears every
+time a system error occured?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumberResultsPerPage"  default="50" description="How many results should appear for each screen by default?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="10" description="Default size for the project number field"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="System wide default stylesheet"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/images/projop-logo.gif" description="System wide default logo"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Default path to the navbar images. 
+Change this to your subdirectory if you want to
+customize the navigation bar.
+"/>
         </parameters>
 
     </version>
