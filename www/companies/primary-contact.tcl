@@ -53,7 +53,6 @@ where
 		where	m.member_id = u.user_id
 			and m.group_id = [im_employee_group_id]
 	)
-order by lower(name)
 "
 
 

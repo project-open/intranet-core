@@ -199,11 +199,11 @@ if {0 == $id_count} {
         -project_type_id	$project_type_id \
 	-project_status_id	$project_status_id]
 
-    # add users to the project as PMs (1301):
+    # add users to the project as PMs
     # - current_user (creator/owner)
     # - project_leader
     # - supervisor
-    set role_id 1301
+    set role_id [im_biz_object_role_project_manager]
     im_biz_object_add_role $user_id $project_id $role_id 
     if {"" != $project_lead_id} {
 	im_biz_object_add_role $project_lead_id $project_id $role_id 

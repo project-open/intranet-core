@@ -35,32 +35,16 @@ if {!$current_user_is_admin_p} {
 
 switch $action {
     add_viewable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'view');
-	    end;
-	"
+	db_1row grant_permission "select im_grant_permission($vert_group_id,$horiz_group_id,'view') from dual"
     }
     add_readable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'read');
-	    end;
-	"
+	db_1row grant_permission "select im_grant_permission($vert_group_id,$horiz_group_id,'read') from dual"
     }
     add_writable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'write');
-	    end;
-	"
+	db_1row grant_permission "select im_grant_permission($vert_group_id,$horiz_group_id,'write') from dual"
     }
     add_administratable {
-	db_dml grant_permission "
-	    begin
-	        acs_permission.grant_permission($vert_group_id,$horiz_group_id,'admin');
-	    end;
-	"
+	db_1row grant_permission "select im_grant_permission($vert_group_id,$horiz_group_id,'admin') from dual"
     }
     remove_viewable {
 	db_dml grant_permission "

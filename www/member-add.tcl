@@ -32,7 +32,7 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
+set object_name [db_string object_name_for_one_object_id "select acs_object__name(:object_id) from dual"]
 set page_title "Add new member to $object_name"
 set context_bar [ad_context_bar "Add member"]
 

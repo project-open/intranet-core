@@ -139,7 +139,7 @@ namespace eval company {
 	{ -creation_user "" }
 	{ -creation_ip "" }
 	{ -context_id "" }
-
+	{ -company_id "" }
     } {
 	Creates a new company including the companies  "Main Office".
 	@author frank.bergmann@project-open.com
@@ -172,24 +172,8 @@ where	company_name = :company_name
 	if {0 != $cid} { return $cid }
 
 	# -----------------------------------------------------------
-	set sql "
-begin
-    :1 := im_company.new(
-	object_type	=> 'im_company',
-	company_name	=> '$company_name',
-        company_path   => '$company_path',
-	main_office_id  => $main_office_id
-"
-	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
-	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
-	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
-	if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
-	if {"" != $company_type_id} { append sql "\t, company_type_id => $company_type_id\n" }
-	if {"" != $company_status_id} { append sql "\t, company_status_id => $company_status_id\n" }
-	append sql "        );
-    end;
-"
-	set company_id [db_exec_plsql create_new_company $sql]
+
+	set company_id [db_exec_plsql create_new_company {}]
 	return $company_id
     }
 }
@@ -274,51 +258,41 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
 
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
+    set user_id [ad_get_user_id]
     set bind_vars [ns_set create]
     ns_set put $bind_vars company_group_id [im_company_group_id]
-    ns_set put $bind_vars user_id [ad_get_user_id]
+    ns_set put $bind_vars user_id $user_id
     ns_set put $bind_vars subsite_id [ad_conn subsite_id]
 
     set where_clause "	and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-        select
-                c.company_id,
-                r.member_p as permission_member,
-                see_all.see_all as permission_all
+        (select
+                c.*
         from
                 im_companies c,
-                (       select  count(rel_id) as member_p,
-                                object_id_one as object_id
-                        from    acs_rels
-                        where   object_id_two = :user_id
-                        group by object_id_one
-                ) r,
-                (       select  count(*) as see_all
-                        from acs_object_party_privilege_map
-                        where   object_id=:subsite_id
-                                and party_id=:user_id
-                                and privilege='view_companies'
-                ) see_all
-        where
-                c.company_id = r.object_id(+)
-                $where_clause
-"
+		acs_rels r
+	where
+		c.company_id = r.object_id_one
+		and r.object_id_two = :user_id
+		$where_clause
+	)
+    "
+
+    if {[im_permission $user_id "view_all_companies"]} {
+	set perm_sql "im_companies"
+    }
+
 
 set sql "
 select
 	c.company_id,
 	c.company_name
 from
-        im_companies c,
-        ($perm_sql) perm
+	$perm_sql c
 where
-        c.company_id = perm.company_id
-        and (
-                perm.permission_member > 0
-        or
-                perm.permission_all > 0
-        )
+	1=1
+	$where_clause
 "
 
     if { ![empty_string_p $status] } {

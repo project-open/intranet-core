@@ -456,3 +456,60 @@ END;
 /
 show errors;
 
+
+
+------------------------------------------------------------
+-- Check whether user_id is (some kind of) member of group_id.
+create or replace function ad_group_member_p (
+    p_user_id IN integer,
+    p_group_id IN integer
+)
+return char
+IS
+    ad_group_member_p    char(1);
+BEGIN
+    select decode(count(*), 0, 'f', 't')
+    into ad_group_member_p
+    from acs_rels
+    where
+	object_id_one = p_group_id
+	and object_id_two = p_user_id;
+
+    return ad_group_member_p;
+
+END ad_group_member_p;
+/
+show errors
+
+
+------------------------------------------------------------
+-- Check whether user_id is an administrator of group_id.
+-- ToDo: Hardcoded implementation - replace by privilege
+-- scheme that works through all types of business objects.
+--
+create or replace function ad_group_member_admin_role_p (
+    p_user_id IN integer,
+    p_group_id IN integer
+)
+return char
+IS
+    ad_group_member_p    char(1);
+BEGIN
+    select decode(count(*), 0, 'f', 't')
+    into ad_group_member_p
+    from
+	acs_rels r,
+	im_biz_object_members m,
+	im_categories c
+    where
+	r.object_id_one = p_group_id
+	and r.object_id_two = p_user_id
+	and r.rel_id = m.rel_id
+	and m.object_role_id = c.category_id
+	and (c.category = 'Project Manager' or c.category = 'Key Account');
+
+    return ad_group_member_p;
+
+END ad_group_member_admin_role_p;
+/
+show errors

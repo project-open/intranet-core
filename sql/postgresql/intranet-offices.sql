@@ -88,37 +88,37 @@ create or replace function im_office__new (
 	varchar, varchar, integer, integer, integer
 ) returns integer as '
 declare
-        office_id       alias for $1;
-        object_type     alias for $2;
-        creation_date   alias for $3;
-        creation_user   alias for $4;
-        creation_ip     alias for $5;
-        context_id      alias for $6;
+        p_office_id     alias for $1;
+        p_object_type     alias for $2;
+        p_creation_date   alias for $3;
+        p_creation_user   alias for $4;
+        p_creation_ip     alias for $5;
+        p_context_id      alias for $6;
 
-	office_name	alias for $7,
-	office_path	alias for $8,
-	office_type_id in  alias for $9,
-	office_status_id alias for $10,
-	company_id	alias for $11,
+	p_office_name	alias for $7;
+	p_office_path	alias for $8;
+	p_office_type_id  alias for $9;
+	p_office_status_id alias for $10;
+	p_company_id	alias for $11;
 
         v_object_id     integer;
 begin
-	v_office_id := acs_object.new (
-		office_id,
-		object_type,
-		creation_date,
-		creation_user,
-		creation_ip,
-		context_id
+	v_object_id := acs_object__new (
+		p_office_id,
+		p_object_type,
+		p_creation_date,
+		p_creation_user,
+		p_creation_ip,
+		p_context_id
 	);
 	insert into im_offices (
 		office_id, office_name, office_path, 
 		office_type_id, office_status_id, company_id
 	) values (
-		v_office_id, office_name, office_path, 
-		office_type_id, office_status_id, company_id
+		v_object_id, p_office_name, p_office_path, 
+		p_office_type_id, p_office_status_id, p_company_id
 	);
-	return v_office_id;
+	return v_object_id;
 end;' language 'plpgsql';
 
 -- Delete a single office (if we know its ID...)

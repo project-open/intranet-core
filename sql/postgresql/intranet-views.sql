@@ -233,10 +233,6 @@ extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Em
 --------------------------------------------------------------
 --
 delete from im_view_columns where column_id > 199 and column_id < 299;
---
--- insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
--- extra_select, extra_where, sort_order, visible_for) values (207,10,NULL,'#',
--- '$user_id','','',6,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (200,10,NULL,'Name',
@@ -250,11 +246,10 @@ extra_select, extra_where, sort_order, visible_for) values (201,10,NULL,'Email',
 -- extra_select, extra_where, sort_order, visible_for) values (202,10,NULL,'Status',
 -- '$status','','',4,'');
 
-insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (203,10,NULL,'MSM',
-'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\">
-<IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\"
-width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'');
+--insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+-- extra_select, extra_where, sort_order, visible_for) values (203,10,NULL,'MSM',
+--'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\"><IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\" width=21 height=22 border=0 ALT=\"MSN Status\"></A>"',
+-- '','',5,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (204,10,NULL,'Work Phone',
@@ -279,11 +274,11 @@ extra_select, extra_where, sort_order, visible_for) values (1101,11,NULL,'Name',
 'im_view_user_permission $user_id $current_user_id $name view_users');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1103,11,NULL,'Email',
-'"<a href=\"mailto:$email\">$email</a>"','','',2,
+'<a href=mailto:$email>$email</a>','','',2,
 'im_view_user_permission $user_id $current_user_id $email view_users');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1105,11,NULL,'Home',
-'"<a href=\"$url\">$url</a>"','','',3,
+'<a href=$url>$url</a>','','',3,
 'im_view_user_permission $user_id $current_user_id $url view_users');
 
 
@@ -353,6 +348,7 @@ extra_select, extra_where, sort_order, visible_for) values (439,12,NULL,' ',
 
 
 -------------------------------------------------------------------
+-- Unassigned Users View
 --
 delete from im_view_columns where column_id > 1300 and column_id <= 1399;
 --
@@ -364,10 +360,10 @@ extra_select, extra_where, sort_order, visible_for) values (1315,13,NULL,'Last V
 '$last_visit','','',15,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1320,13,NULL,'Name',
-'"<a href=$user_view_page?user_id=$user_id>$name</a>"','','',20,'');
+'<a href=$user_view_page?user_id=$user_id>$name</a>','','',20,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1330,13,NULL,'Email',
-'"<a href=\"mailto:$email\">$email</a>"','','',30,'');
+'<a href=mailto:$email>$email</a>','','',30,'');
 
 
 

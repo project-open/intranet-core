@@ -40,7 +40,7 @@ set bgcolor(1) " class=roweven"
 
 set select_category_types_sql "
 select
-	nvl(c.category_type, 'none') as category_type,
+	c.category_type as category_type,
 	count(c.category_id) as n_categories
 from
 	im_categories c
@@ -111,25 +111,9 @@ if {![string equal "All" $select_category_type]} {
     set category_type_criterion "c.category_type = :select_category_type"
 }
 
-set category_select_sql "
-select
-	c.*,
-	h.parent_id,
-	im_category_from_id(h.parent_id) as parent
-from 
-	im_categories c,
-	im_category_hierarchy h
-where 
-	$category_type_criterion
-	and c.category_id = h.child_id(+)
-order by
-	category_type,
-	category_id
-"
-
 set ctr 1
 set old_id 0
-db_foreach all_categories_of_type $category_select_sql {
+db_foreach category_select {} {
 
     if {$old_id == $category_id} {
 	# We got another is-a for the same category

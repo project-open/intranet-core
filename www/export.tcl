@@ -122,7 +122,7 @@ db_foreach projects_info_query $sql {
 	if {$row_ctr > 0} { append results "," }
 	append results "\""
 	set cmd "append results $column_var"
-	eval $cmd
+	eval "$cmd"
 	append results "\""
 	incr row_ctr
     }

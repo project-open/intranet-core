@@ -89,7 +89,7 @@ begin
 end;' language 'plpgsql';
 
 -- Delete a single object (if we know its ID...)
-create or replace function im_biz_object__del (integer)
+create or replace function im_biz_object__delete (integer)
 returns integer as '
 declare
         object_id       alias for $1;
@@ -100,6 +100,7 @@ begin
 	where		object_id = del.object_id;
 
 	PERFORM acs_object.del(del.object_id);
+	return 0;
 end;' language 'plpgsql';
 
 create or replace function im_biz_object__name (integer)
@@ -217,51 +218,54 @@ create or replace function im_biz_object_member__new (
 integer, varchar, integer, integer, integer, integer, varchar)
 returns integer as '
 DECLARE
-	rel_id		alias for $1;
-	rel_type	alias for $2;
-	object_id	alias for $3;
-	user_id		alias for $4;
-	object_role_id	alias for $5;
-	creation_user	alias for $6;
-	creation_ip	alias for $7;
+	p_rel_id		alias for $1;	-- null
+	p_rel_type		alias for $2;	-- im_biz_object_member
+	p_object_id		alias for $3;
+	p_user_id		alias for $4;
+	p_object_role_id	alias for $5;
+	p_creation_user		alias for $6;	-- null
+	p_creation_ip		alias for $7;	-- null
 
 	v_rel_id	integer;
 BEGIN
-	v_rel_id := acs_rel.new (
-		rel_id,
-		rel_type,	
-		object_id,
-		user_id,
-		object_id,
-		creation_user,
-		creation_ip
+	v_rel_id := acs_rel__new (
+		p_rel_id,
+		p_rel_type,	
+		p_object_id,
+		p_user_id,
+		p_object_id,
+		p_creation_user,
+		p_creation_ip
 	);
 
 	insert into im_biz_object_members (
 	       rel_id, object_role_id
 	) values (
-	       v_rel_id, new.object_role_id
+	       v_rel_id, p_object_role_id
 	);
 
 	return v_rel_id;
 end;' language 'plpgsql';
 
 
-create or replace function im_biz_object_member__del (integer)
+create or replace function im_biz_object_member__delete (integer, integer)
 returns integer as '
 DECLARE
-        object_id       alias for $1;
+        p_object_id       alias for $1;
+	p_user_id	  alias for $2;
+
 	v_rel_id	integer;
 BEGIN
 	select	rel_id
 	into	v_rel_id
 	from	acs_rels
-	where	object_id_one = del.object_id
-		and object_id_two = del.user_id;
+	where	object_id_one = p_object_id
+		and object_id_two = p_user_id;
 
 	delete	from im_biz_object_members
 	where	object_role_id = v_rel_id;
 
-	PERFORM acs_rel.del(v_rel_id);
+	PERFORM acs_rel__delete(v_rel_id);
+	return 0;
 end;' language 'plpgsql';
 

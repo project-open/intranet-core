@@ -46,7 +46,6 @@ from
 where
         g.group_id = o.object_id
         and o.object_type = 'im_profile'
-order by lower(g.group_name)
 }
 
 
@@ -57,10 +56,10 @@ set main_sql_select ""
 db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name
-    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'read') as p${group_id}_read_p,\n"
-    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'view') as p${group_id}_view_p,\n"
-    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'write') as p${group_id}_write_p,\n"
-    append main_sql_select "\tacs_permission.permission_p(g.group_id, $group_id, 'admin') as p${group_id}_admin_p,\n"
+    append main_sql_select "\tim_object_permission_p(g.group_id, $group_id, 'read') as p${group_id}_read_p,\n"
+    append main_sql_select "\tim_object_permission_p(g.group_id, $group_id, 'view') as p${group_id}_view_p,\n"
+    append main_sql_select "\tim_object_permission_p(g.group_id, $group_id, 'write') as p${group_id}_write_p,\n"
+    append main_sql_select "\tim_object_permission_p(g.group_id, $group_id, 'admin') as p${group_id}_admin_p,\n"
     append table_header "<td><A href=$group_url?group_id=$group_id>$group_name</A></td>\n"
 }
 append table_header "</th>\n"
@@ -75,7 +74,6 @@ from
 where
         g.group_id = o.object_id
         and o.object_type = 'im_profile'
-order by lower(g.group_name)
 "
 
 set table "

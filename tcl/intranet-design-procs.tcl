@@ -213,7 +213,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where name='Users'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
     set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
     return $navbar
@@ -250,12 +250,12 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
 
     # -------- Compile the list of menus -------
     set parent_menu_sql "select menu_id from im_menus where name='Projects'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
     set menu_select_sql "
 	select	m.*
 	from	im_menus m
 	where	parent_menu_id = :parent_menu_id
-		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by sort_order"
 
     # make sure at most one field gets selected..
@@ -489,7 +489,7 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
 } {
     # select the administration menu items
     set parent_menu_sql "select menu_id from im_menus where name='Admin'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
 
     return [im_sub_navbar $parent_menu_id $select_label]
 }
@@ -518,7 +518,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 	select	m.*
 	from	im_menus m
 	where	parent_menu_id = :parent_menu_id
-		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by sort_order"
 
     # Start formatting the menu bar
@@ -632,7 +632,7 @@ from
         im_menus m
 where
         parent_menu_id = :main_menu_id
-	and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+	and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 order by
         sort_order
 "
@@ -722,7 +722,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     The default header for Project/Open
 } {
     set user_id [ad_get_user_id]
-    set user_name [im_get_user_name $user_id]
+    set user_name [im_name_from_user_id $user_id]
     if { [empty_string_p $page_title] } {
 	set page_title [ad_partner_upvar page_title]
     }
@@ -1017,25 +1017,6 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
     return $html
 }
 
-
-ad_proc -public im_render_user_id { user_id user_name current_user_id group_id } {
-    Return a formatted pice of HTML showing a username according
-    to the permissions of the current user.
-} {
-    if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
-
-    # How to display? -1=name only, 0=none, 1=Link
-    set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
-    ns_log Notice "im_render_user_id: user_id=$user_id, show_user_style=$show_user_style"
-
-    if {$show_user_style==-1} {
-	return $user_name
-    }
-    if {$show_user_style==1} {
-	return "<A HREF=/intranet/users/view?user_id=$user_id>$user_name</A>"
-    }
-    return ""
-}
 
 ad_proc -public im_show_user_style {group_member_id current_user_id object_id} {
     Determine whether the current_user should be able to see

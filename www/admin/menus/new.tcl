@@ -13,7 +13,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     menu_id:integer,optional
-    {return_url "/intranet/admin/menus/index"}
+    return_url
     edit_p:optional
     message:optional
     { form_mode "display" }
@@ -35,6 +35,8 @@ set action_url "/intranet/admin/menus/new"
 set focus "menu.var_name"
 set page_title "New Menu"
 set context [ad_context_bar $page_title]
+
+if {![info exists menu_id]} { set form_mode "edit" }
 
 
 # ------------------------------------------------------------------
@@ -71,20 +73,8 @@ ad_form -extend -name menu -on_request {
 
 } -new_data {
 
-    db_dml menu_insert "
-declare
+    db_exec_plsql menu_insert {}
 
-begin
-    v_menu_id := im_menu.new (
-        package_name    => :package_name,
-        label           => :label,
-        name            => :name,
-        url             => :url,
-        sort_order      => :sort_order,
-        parent_menu_id  => :parent_menu_id
-    );
-end;
-"
 } -edit_data {
 
     db_dml menu_update "
@@ -108,3 +98,4 @@ end;
 	ad_returnredirect $return_url
 	ad_script_abort
 }
+

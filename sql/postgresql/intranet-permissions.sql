@@ -30,6 +30,18 @@ BEGIN
 END;' language 'plpgsql';
 
 
+create or replace function im_grant_permission (integer, integer, varchar)
+returns integer as '
+DECLARE
+	p_object_id	alias for $1;
+	p_party_id	alias for $2;
+	p_privilege	alias for $3;
+BEGIN
+    PERFORM acs_permission__grant_permission(p_object_id, p_party_id, ''read'');
+    return 0;
+END;' language 'plpgsql';
+
+
 
 -------------------------------------------------------------
 -- Project/Open Profiles

@@ -1,4 +1,4 @@
--- /packages/intranet-core/sql/oracle/intranet-categories.sql
+ -- /packages/intranet-core/sql/oracle/intranet-categories.sql
 --
 -- Copyright (C) 1999-2004 various parties
 -- The code is based on ArsDigita ACS 3.4
@@ -145,7 +145,24 @@ create index im_cat_hierarchy_parent_id_idx on im_category_hierarchy(parent_id);
 create index im_cat_hierarchy_child_id_idx on im_category_hierarchy(child_id);
 
 
--- views on intranet categories to make queries cleaner
+
+-- Some helper functions to make our queries easier to read
+create or replace function im_category_from_id (p_category_id IN integer)
+return varchar
+IS
+	v_category	varchar(50);
+BEGIN
+	select category
+	into v_category
+	from im_categories
+	where category_id = p_category_id;
+
+	return v_category;
+
+end im_category_from_id;
+/
+show errors;
+
 
 ------------------------------------------------------
 -- Business Objects

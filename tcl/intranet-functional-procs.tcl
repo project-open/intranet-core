@@ -375,13 +375,15 @@ proc_doc even_p {n} "returns 1 if n is even and 0 otherwise" {
     expr 1-$n%2
 }
 
-proc_doc min {x y} "returns the minimum of x and y" {
-    expr $x<$y ? $x : $y
-}
-
-proc_doc max {x y} "returns the maximum of x and y" {
-    expr $x>$y ? $x : $y
-}
+# Already exist in OpenACS5
+#
+#proc_doc min {x y} "returns the minimum of x and y" {
+#    expr $x<$y ? $x : $y
+#}
+#
+#proc_doc max {x y} "returns the maximum of x and y" {
+#    expr $x>$y ? $x : $y
+#}
 
 # --------------------------------------------------------------------------------
 # List Aggregate Functions

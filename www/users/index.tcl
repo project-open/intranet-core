@@ -76,7 +76,7 @@ set page_focus "im_header_form.keywords"
 set return_url [im_url_with_query]
 set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
-
+set date_format "YYYY-MM-DD"
 
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
@@ -98,7 +98,7 @@ if {$user_group_id > 0} {
 
     # We have a group specified to show:
     # Check whether the user can "read" this group:
-    set sql "select acs_permission.permission_p(:user_group_id, :user_id, 'read') from dual"
+    set sql "select im_object_permission_p(:user_group_id, :user_id, 'read') from dual"
     set read [db_string user_can_read_user_group_p $sql]
     if {![string equal "t" $read]} {
 	ad_return_complaint 1 "You don't have permissions to view this page"
@@ -111,7 +111,7 @@ if {$user_group_id > 0} {
     # The most critical groups are company contacts...
     set company_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 
-    set sql "select acs_permission.permission_p(:company_group_id, :user_id, 'read') from dual"
+    set sql "select im_object_permission_p(:company_group_id, :user_id, 'read') from dual"
     set read [db_string user_can_read_user_group_p $sql]
     if {![string equal "t" $read]} {
 	ad_return_complaint 1 "You don't have permissions to view this page"
@@ -176,6 +176,8 @@ order by
 	sort_order"
 
 db_foreach column_list_sql $column_sql {
+    ns_log Notice "/intranet/users/index: visible_for=$visible_for"
+
     if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
@@ -271,10 +273,10 @@ select
 	u.user_id,
 	u.username,
 	u.screen_name,
-	u.last_visit,
+	to_char(u.last_visit,:date_format) as last_visit,
 	u.second_to_last_visit,
 	u.n_sessions,
-	o.creation_date,
+	to_char(o.creation_date,:date_format) as creation_date,
 	im_email_from_user_id(u.user_id) as email,
 	im_name_from_user_id(u.user_id) as name,
 	p.first_names,
@@ -311,7 +313,9 @@ from
 	$extra_from
 where 
 	u.user_id=p.person_id
-	and u.user_id=c.user_id(+)
+	-- inner join with users_contact, so we must make sure 
+	-- the records are there when creating a user.
+	and u.user_id=c.user_id
 	and u.user_id = o.object_id
 	$extra_where
 $extra_order_by
@@ -331,7 +335,8 @@ if { [string compare $letter "all"] == 0 } {
     set how_many -1
     set query $sql
 } else {
-    set query [im_select_row_range $sql $start_idx $end_idx]
+#    set query [im_select_row_range $sql $start_idx $end_idx]
+    set query $sql
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
     # query results
@@ -389,7 +394,7 @@ db_foreach projects_info_query $query {
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
-	eval $cmd
+	eval "$cmd"
 	append table_body_html "</td>\n"
     }
     append table_body_html "</tr>\n"

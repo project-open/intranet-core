@@ -62,7 +62,6 @@ where
         g.group_id = o.object_id
 	and g.group_id = p.profile_id
         and o.object_type = 'im_profile'
-order by lower(g.group_name)
 }
 
 
@@ -82,7 +81,7 @@ set num_profiles 0
 db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name
-    append main_sql_select "\tacs_permission.permission_p(m.menu_id, $group_id, 'read') as p${group_id}_read_p,\n"
+    append main_sql_select "\tim_object_permission_p(m.menu_id, $group_id, 'read') as p${group_id}_read_p,\n"
     append table_header "
       <td class=rowtitle><A href=$group_url?group_id=$group_id>
       [im_gif $profile_gif $group_name]
@@ -96,27 +95,77 @@ append table_header "
 
 
 # ------------------------------------------------------
-# Main SQL: Extract the permissions for all Menus
+# Calculate the depth of the menus
 # ------------------------------------------------------
 
-set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
+# Only start recalculating if there is alteast
+# one new menu in the hierarchy...
+set altleast_one_new_menu [db_string new_menu "select count(*) from im_menus where tree_sortkey is null"]
+
+if {$altleast_one_new_menu} {
+    # Reset all tree_sortkey to null to indicate that the menu_items
+    # need to be "processed"
+    db_dml reset_menu_hierarchy "
+	update im_menus
+	set tree_sortkey = null
+    "
+
+    # Prepare the top menu
+    set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
+    db_dml update_top_menu "update im_menus set tree_sortkey='' where menu_id = :start_menu_id"
+
+    set maxlevel 3
+    set chars "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
+    set continue 1
+    set level 0
+    while {$continue && $level < $maxlevel} {
+	set continue 0
+	# Get all menu items that have not been processed yet
+	# (tree_sortkey is null) with parents that have been
+	# processed already (tree_sortkey is not null)
+	set sql "
+	select
+		m.menu_id,
+		mm.menu_id as parent_id,
+		mm.tree_sortkey as parent_sortkey
+	from	
+		im_menus m,
+		im_menus mm
+	where
+		m.parent_menu_id = mm.menu_id
+		and m.tree_sortkey is null
+		and mm.tree_sortkey is not null
+	"
+	set ctr 0
+	db_foreach update_menus $sql {
+
+	    # the new tree_sortkey is the parents tree_sortkey plus a 
+	    # current letter starting with "A", "B", ...
+	    set tree_sortkey "$parent_sortkey[string range $chars $ctr $ctr]"
+	    
+	    db_dml update_menu "update im_menus set tree_sortkey=:tree_sortkey where menu_id=:menu_id"
+	    incr ctr
+	    set continue 1
+	}
+	
+	incr level
+    }
+}
+
+
+# ------------------------------------------------------
+# Main SQL: Extract the permissions for all Menus
+# ------------------------------------------------------
 
 set main_sql "
 select
 ${main_sql_select}	m.*,
-	level,
-	(level-1) as indent_level,
-	(6-level) as colspan_level
+	length(tree_sortkey) as indent_level,
+	(5-length(tree_sortkey)) as colspan_level
 from
 	im_menus m
-start with
-        menu_id = :start_menu_id
-connect by
-        parent_menu_id = PRIOR menu_id
+order by tree_sortkey
 "
-
-# ad_return_complaint 1 "<li><pre>$main_sql</pre>"
-
 
 set table "
 <form action=menu-action method=post>
@@ -166,7 +215,9 @@ db_foreach menus $main_sql {
 
 append table "
 <tr>
-  <td colspan=[expr $num_profiles + 5]>&nbsp;</td>
+  <td colspan=[expr $num_profiles + 6] align=right>
+    <A href=new?[export_url_vars return_url]>New Menu</a>
+  </td>
   <td>
     <input type=submit value='Del'>
   </td>

@@ -145,7 +145,7 @@ db_foreach column_list_sql $column_sql {
           <td>$column_name &nbsp;
         </td><td>"
 	set cmd "append user_basic_info_html $column_render_tcl"
-	eval $cmd
+	eval "$cmd"
 	append user_basic_info_html "</td></tr>\n"
         incr ctr
     }
@@ -214,8 +214,8 @@ from
         country_codes wa_cc
 where
 	c.user_id = :user_id_from_search
-	and c.ha_country_code = ha_cc.iso(+)
-	and c.wa_country_code = wa_cc.iso(+)
+	and c.ha_country_code = ha_cc.iso
+	and c.wa_country_code = wa_cc.iso
 "]
 
 if {$result == 1} {

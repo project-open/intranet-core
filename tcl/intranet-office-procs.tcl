@@ -125,6 +125,7 @@ namespace eval office {
 	{ -creation_user "" }
 	{ -creation_ip "" }
 	{ -context_id "" } 
+	{ -company_id "" }
     } {
 	Creates a new office object. Offices can be either of "Internal"
 	company (-> Internal offices) or of regular companies.
@@ -165,23 +166,8 @@ where	office_name = :office_name
 	}
 
 	# -----------------------------------------------------------
-	set sql "
-    begin
-	:1 := im_office.new(
-        object_type     => 'im_office'
-        , office_name     => '$office_name'
-        , office_path     => '$office_path'
-"
-	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
-	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
-	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
-	if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
-	if {"" != $office_type_id} { append sql "\t, office_type_id => $office_type_id\n" }
-	if {"" != $office_status_id} { append sql "\t, office_status_id => $office_status_id\n" }
-	append sql "        );
-    end;
-"
-	set office_id [db_exec_plsql create_new_office $sql]
+
+	set office_id [db_exec_plsql create_new_office {}]
 	return $office_id
     }
 

@@ -77,17 +77,18 @@ select
         o.address_line2,
         o.address_city,
         o.address_postal_code,
-        o.address_country_code,
-	cc.country_name
+        o.address_country_code
 from 
 	im_companies c,
-	im_offices o,
-	country_codes cc
+        im_offices o
 where 
         c.company_id = :company_id
-	and c.main_office_id = o.office_id(+)
-	and o.address_country_code = cc.iso(+)
+	and c.main_office_id = o.office_id
 "
+
+db_0or1row company_get_cc "select cc.country_name \
+	                   from country_codes cc \
+			   where cc.iso = :address_country_code"
 
 set page_title $company_name
 set left_column ""
@@ -216,7 +217,7 @@ from
 	im_categories c
 where 
 	p.company_id=:company_id
-	and p.project_status_id = c.category_id(+)
+	and p.project_status_id = c.category_id
 	and lower(c.category) not in ('deleted')
 order by p.project_nr DESC
 "
@@ -276,7 +277,7 @@ set company_members [im_group_member_component $company_id $user_id $admin $retu
 
 set projects_html [im_table_with_title "Projects" $projects_html]
 set company_members_html [im_table_with_title "Employees" $company_members]
-set company_members_html [im_table_with_title "Client Contacts" $company_members]
+set company_clients_html [im_table_with_title "Client Contacts" $company_members]
 
 
 

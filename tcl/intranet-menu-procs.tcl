@@ -30,13 +30,10 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
 		m.name,
 		m.menu_id,
 		m.label,
-		(level-1) as indent_level
+		length(tree_sortkey) as indent_level
 	from
 		im_menus m
-	start with
-		menu_id = :start_menu_id
-	connect by
-		parent_menu_id = PRIOR menu_id"
+    "
 
     set parent_options [list]
     db_foreach parent_options $parent_options_sql {

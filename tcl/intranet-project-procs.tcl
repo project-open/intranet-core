@@ -235,15 +235,19 @@ ad_proc -public im_next_project_nr { } {
     of the current year (comparing the first 4 digits to the current year),
     adding "+1", and contatenating again with the current year.
 } {
+
+    set sysdate [db_string sysdate "select to_char(sysdate,'YYYY-MM-DD') from dual"]
+
+# ToDo: now() -> db_sysdate
+
     set sql "
 select
-	to_char(sysdate, 'YYYY')||'_'||
-	trim(to_char(1+max(substr(p.project_nr,6,4)),'0000')) as project_nr
+	to_char(now(), 'YYYY') ||'_'|| trim(to_char(1 + cast((max(substr(p.project_nr,6,4))) as integer), '0000')) as project_nr
 from
         im_projects p
 where
         p.project_nr like '200_/_____' escape '/' and
-        substr(p.project_nr, 1,4)=to_char(sysdate, 'YYYY') and
+        substr(p.project_nr, 1,4)=to_char(now(), 'YYYY') and
         ascii(substr(p.project_nr,6,1)) > 47 and
         ascii(substr(p.project_nr,6,1)) < 58 and
         ascii(substr(p.project_nr,7,1)) > 47 and
@@ -251,9 +255,13 @@ where
         ascii(substr(p.project_nr,8,1)) > 47 and
         ascii(substr(p.project_nr,8,1)) < 58 and
         ascii(substr(p.project_nr,9,1)) > 47 and
-        ascii(substr(p.project_nr,9,1)) < 58
-"
+        ascii(substr(p.project_nr,9,1)) < 58"
+
     set project_nr [db_string next_project_nr $sql -default ""]
+    if {"" == $project_nr} { 
+	set project_nr [db_string project_nr_default "select to_char(now(), 'YYYY') ||'_0000' from dual"]
+    }
+
     return $project_nr
 }
 
@@ -344,39 +352,6 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
 } {
     return [im_category_select "Intranet Project Status" $select_name $default]
 }
-
-ad_proc -public im_project_parent_select { select_name { default "" } {current_group_id ""} { status "" } { exclude_status "" } } {
-    Returns an html select box named $select_name and defaulted to 
-    $default with a list of all the eligible projects for parents
-} {
-    set bind_vars [ns_set create]
-    if { [empty_string_p $current_group_id] } {
-	set limit_group_sql ""
-    } else {
-	ns_set put $bind_vars current_group_id $current_group_id
-	set limit_group_sql " and p.group_id != :current_group_id"
-    }
-    set status_sql ""
-    if { ![empty_string_p $status] } {
-	ns_set put $bind_vars status $status
-	set status_sql "and p.project_status_id=(select project_status_id from im_project_status where project_status=:status)"
-    } elseif { ![empty_string_p $exclude_status] } {
-	set exclude_string [im_append_list_to_ns_set $bind_vars project_status $exclude_status] 
-	set status_sql " and p.project_status_id in (
-	    select project_status_id 
-            from im_project_status
-	    where project_status not in ($exclude_string)) "
-    }
-
-    set sql "select g.group_id, g.group_name
-               from user_groups g, im_projects p 
-              where p.parent_id is null 
-                and g.group_id=p.group_id(+) $limit_group_sql $status_sql
-              order by lower(g.group_name)"
-    return [im_selection_to_select_box $bind_vars parent_project_select $sql $select_name $default]
-}
-
-
 
 ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {company_id ""} } {
     Returns an html select box named $select_name and defaulted to

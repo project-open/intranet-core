@@ -221,10 +221,10 @@ alter table im_invoices add
                                 references im_invoices;
 
 
-SQL> update im_costs set cost_status_id=3802 where cost_status_id=602;
-SQL> update im_costs set cost_status_id=3804 where cost_status_id=604;
-SQL> update im_costs set cost_status_id=3810 where cost_status_id=610;
-SQL> update im_costs set cost_status_id=3814 where cost_status_id=614;
+update im_costs set cost_status_id=3802 where cost_status_id=602;
+update im_costs set cost_status_id=3804 where cost_status_id=604;
+update im_costs set cost_status_id=3810 where cost_status_id=610;
+update im_costs set cost_status_id=3814 where cost_status_id=614;
 
 create index im_proj_payments_cost_id_idx on im_payments(cost_id);
 

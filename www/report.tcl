@@ -75,7 +75,7 @@ db_foreach projects_info_query $sql {
     foreach column_var $column_vars {
 	append results "\n\t<td valign=top>"
 	set cmd "append results $column_var"
-	eval $cmd
+	eval "$cmd"
 	append results "\n\t</td>"
     }
     append results "\n</tr>\n"

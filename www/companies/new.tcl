@@ -24,6 +24,7 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
+    @author juanjoruizx@yahoo.es
 } {
     { company_id:integer 0 }
     { return_url "" }
@@ -37,10 +38,11 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 # Make sure the user has the privileges, because this
 # pages shows the list of companies etc.
 #
-if {![im_permission $user_id "add_companies"]} { 
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You don't have sufficient privileges to add a new company."
-}
+#if {![im_permission $user_id "add_companies"]} { 
+ #   ad_return_complaint "Insufficient Privileges" "
+  #  <li>You don't have sufficient privileges to add a new company."
+#}
+##### ToDo : restore permission check
 
 if {$company_id > 0} {
 
@@ -60,10 +62,9 @@ select
 	c.referral_source,
 	c.vat_number,
 	c.manager_id,
-	nvl(c.manager_id,$user_id) as manager, 
 	c.site_concept, 
-	nvl(c.contract_value,600) as contract_value,
-	to_char(nvl(c.start_date,sysdate),'YYYY-MM-DD') as start_date,
+	c.contract_value as contract_value,
+	to_char(c.start_date,'YYYY-MM-DD') as start_date,
 	o.phone,
 	o.fax,
 	o.address_line1,

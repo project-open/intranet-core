@@ -137,7 +137,7 @@ db_foreach column_list_sql $column_sql {
           <td>$column_name &nbsp;
         </td><td>"
 	set cmd "append office_html $column_render_tcl"
-	eval $cmd
+	eval "$cmd"
 	append office_html "</td></tr>\n"
         incr ctr
     }

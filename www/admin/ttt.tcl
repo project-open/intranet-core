@@ -118,7 +118,6 @@ if { ![empty_string_p $type_id] && $type_id != 0 } {
 
 
 if { [string compare $mine_p "t"] == 0 } {
-#    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
     set mine_restriction ""
 } else {
     set mine_restriction "or perm.permission_all > 0"
@@ -246,7 +245,7 @@ db_foreach projects_info_query $selection {
     foreach column_var $column_vars {
 	append results "\n\t<td valign=top>"
 	set cmd "append results $column_var"
-	eval $cmd
+	eval "$cmd"
 	append results "\n\t</td>"
     }
     append results "\n</tr>\n"

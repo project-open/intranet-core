@@ -76,22 +76,23 @@ select
 	im_email_from_user_id(c.primary_contact_id) as company_contact_email,
 	im_name_from_user_id(p.project_lead_id) as project_lead,
 	im_name_from_user_id(p.supervisor_id) as supervisor,
-	im_name_from_user_id(c.manager_id) as manager,
-	pp.project_name as parent_name
+	im_name_from_user_id(c.manager_id) as manager
 from
 	im_projects p, 
 	im_companies c,
 	im_projects pp
 where 
 	p.project_id=:project_id
-	and p.company_id = c.company_id(+)
-	and p.parent_id=pp.project_id(+)
+	and p.company_id = c.company_id
 "
 
 if { ![db_0or1row projects_info_query $query] } {
     ad_return_complaint 1 "Can't find the project with ID '$project_id'"
     return
 }
+
+set parent_name [db_string parent_name "select project_name from im_projects where project_id = parent_project_id" -default ""]
+
 
 # ---------------------------------------------------------------------
 # Set display options as a function of the project data

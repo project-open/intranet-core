@@ -304,3 +304,31 @@ create table im_project_url_map (
 create index im_proj_url_url_proj_idx on 
 im_project_url_map(url_type_id, project_id);
 
+
+
+create or replace function im_proj_url_from_type ( 
+	v_project_id IN integer, 
+	v_url_type IN varchar )
+return varchar
+IS 
+	v_url 		im_project_url_map.url%TYPE;
+BEGIN
+	begin
+	select url 
+	into v_url 
+	from 
+		im_url_types, 
+		im_project_url_map
+	where 
+		project_id=v_project_id
+		and im_url_types.url_type_id=im_project_url_map.url_type_id
+		and url_type=v_url_type;
+	
+	exception when others then null;
+	end;
+	return v_url;
+END;
+/
+show errors;
+
+

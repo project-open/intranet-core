@@ -6,8 +6,6 @@
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
   <td valign=top>
-    @project_filter_html;noquote@
-    @project_list_html;noquote@
     <%= [im_component_bay left] %>
   </td>
   <td valign=top>

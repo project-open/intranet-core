@@ -27,6 +27,7 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
+    @author Juanjo Ruiz (juanjoruizx@yahoo.es)
 } {
     { status_id:integer "" }
     { type_id:integer "[im_company_type_company]" }
@@ -177,17 +178,6 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 }
 
 set extra_tables [list]
-if { [string compare $view_type "mine"] == 0 } {
-
-    ns_set put $bind_vars user_id $user_id
-    lappend criteria "ad_group_member_p ( :user_id, c.company_id ) = 't'"
-
-} elseif { [string compare $view_type "unassigned"] == 0 } {
-
-    ns_set put $bind_vars user_id $user_id
-    lappend criteria "not exists (select 1 from group_member_map m where m.group_id = c.company_id)"
-
-}
 
 set order_by_clause ""
 switch $order_by {
@@ -209,51 +199,30 @@ if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
 
-# Permissions and Performance:
-# This SQL shows company depending on the permissions
-# of the current user:
-#
-#       IF the user is a company member
-#       OR if the user has the privilege to see all companies.
-#
-# The performance problems are due to the number of companies
-# (several thousands), the number of users (several thousands)
-# and the acs_rels relationship between users and companies.
-# Despite all of these, the page should ideally appear in less
-# then one second because it is frequently used.
-#
-# In order to get acceptable load times we use an inner "perm"
-# SQL that selects company_ids "outer-joined" with the membership
-# information for the current user.
-# This information is then filtered in the outer SQL, using an
-# OR statement, acting as a filter on the returned company_ids.
-# It is important to apply this OR statement outside of the
-# main join (companies and membership relation) in order to
-# reach a reasonable response time.
 
-set perm_sql "
-	select
-	        c.company_id,
-		r.member_p as permission_member,
-		see_all.see_all as permission_all
-	from
-	        im_companies c,
-		(	select	count(rel_id) as member_p,
-				object_id_one as object_id
-			from	acs_rels
-			where	object_id_two = :user_id
-			group by object_id_one
-		) r,
-	        (       select  count(*) as see_all
-	                from acs_object_party_privilege_map
-	                where   object_id=:subsite_id
-	                        and party_id=:user_id
-	                        and privilege='view_companies_all'
-	        ) see_all
-	where
-	        c.company_id = r.object_id(+) 
-		$where_clause
-"
+
+# Performance: There are probably relatively few projects
+# that comply to the selection criteria and that include
+# the current user. We apply the $where_clause anyway.
+set perm_sql "(
+		select	
+		        c.*
+		from
+		        im_companies c,
+			acs_rels r
+		where
+		        c.company_id = r.object_id_one
+			and r.object_id_two = :user_id
+			$where_clause
+	) c"
+
+# Show the list of all projects only if the user has the
+# "view_companies_all" privilege AND if he explicitely
+# requests to see all projects.
+if {[im_permission $user_id 'view_companies_all'] && ![string equal $view_type "mine"]} {
+    # Just include the list of all customers
+    set perm_sql "im_companies c"
+}
 
 set sql "
 select
@@ -266,15 +235,10 @@ select
         im_category_from_id(c.company_type_id) as company_type,
         im_category_from_id(c.company_status_id) as company_status
 from 
-	im_companies c,
-	($perm_sql) perm $extra_table
+	$perm_sql $extra_table
 where
-	c.company_id = perm.company_id
-	and (
-		perm.permission_member > 0
-	or
-		perm.permission_all > 0
-	)
+        1=1
+	$where_clause
 "
 
 
@@ -372,6 +336,10 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
+
+
+# ad_return_complaint 1 "<pre>$selection</pre>"
+
 db_foreach projects_info_query $selection {
 
 #    im_company_permissions $user_id $company_id company_view company_read company_write company_admin
@@ -382,7 +350,7 @@ db_foreach projects_info_query $selection {
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
-	eval $cmd
+	eval "$cmd"
 	append table_body_html "</td>\n"
     }
     append table_body_html "</tr>\n"

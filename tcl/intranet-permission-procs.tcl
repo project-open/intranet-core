@@ -116,8 +116,10 @@ ad_proc -public im_permission {user_id privilege} {
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-    set result [util_memoize "im_permission_helper $user_id $privilege"]
-    ns_log Notice "im_permission($privilege)=$result"
+
+    set subsite_id [ad_conn subsite_id]
+    set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
+    ns_log Notice "im_permission($subsite_id,$user_id,$privilege)=$result"
     return $result
 }
 
@@ -178,7 +180,7 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
 ad_proc -public im_user_group_member_p { user_id group_id } {
     Returns 1 if specified user is a member of the specified group. 0 otherwise
 } {
-    return [util_memoize "db_string user_member_of_group \"select decode(ad_group_member_p($user_id, $group_id), 't', 1, 0) from dual\""]
+    return [string equal "t" [util_memoize "db_string user_member_of_group \"select ad_group_member_p($user_id, $group_id) from dual\""]]
 }
 
 
@@ -187,7 +189,7 @@ ad_proc -public im_user_group_admin_p { user_id group_id } {
     Returns 1 if specified user is an administrator of the specified group. 
     0 otherwise
 } {
-    return [util_memoize "db_string user_member_of_group \"select decode(ad_group_member_admin_role_p($user_id, $group_id), 't', 1, 0) from dual\""]
+    return [string equal "t" [util_memoize "db_string user_member_of_group \"select ad_group_member_admin_role_p($user_id, $group_id) from dual\""]]
 }
 
 #!!!
@@ -356,7 +358,7 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
     set authorized_users_group_id [im_authorized_users_group_id]
 
     set authorized_p [db_string user_in_authorized_intranet_group \
-	    "select decode(count(*),0,0,1) as authorized_p
+	    "select count(*) as authorized_p
 	     from group_member_map 
 	     where 
 		    user_id=:user_id and
@@ -373,7 +375,7 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 	# Let's see if this user is looking at someone else in one of their groups...
 	# We let people look at other people in the same groups as them.
 	set authorized_p [db_string user_in_two_groups \
-		"select decode(count(*),0,0,1) as authorized_p
+		"select count(*) as authorized_p
 		   from group_member_map ugm, group_member_map ugm2
 		  where ugm.user_id=:user_id
 		    and ugm2.user_id=:second_user_id

@@ -27,7 +27,6 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
     @param disabled Set to "disabled" to show the widget in a 
     disabled state.
 } {
-
     # get the current profile of this user
     set current_profiles [im_profiles_of_user $user_id]
     set cp [list]
@@ -35,7 +34,7 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
     ns_log Notice "/users/view: current_profiles=$current_profiles"
     ns_log Notice "/users/view: cp=$cp"
 
-    # A list of lists containing group_id/group_name tuples
+    # A list of lists containing profile_id/profile_name tuples
     set all_profiles [im_profiles_all]
     ns_log Notice "/users/view: all_profiles=$all_profiles"
     
@@ -105,7 +104,6 @@ where
         and m.group_id = g.group_id
         and g.group_id = o.object_id
         and o.object_type = 'im_profile'
-order by lower(g.group_name)
     }
 
     # Make a list

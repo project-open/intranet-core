@@ -114,31 +114,41 @@ if { ![empty_string_p $errors] } {
 if {![exists_and_not_null office_name]} {
     set office_name "$company_name Main Office"
 }
-
+if {![exists_and_not_null office_path]} {
+    set office_path "$company_path"
+}
 # Double-Click protection: the company Id was generated at the new.tcl page
 set cust_count [db_string cust_count "select count(*) from im_companies where company_id=:company_id"]
 if {0 == $cust_count} {
 
-    # First create a new main_office:
-    set main_office_id [office::new \
-	-office_name	$office_name \
-	-office_path	$office_name]
-    ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
+    db_transaction {
+	# First create a new main_office:
+	# default Main Office 170 and Active 160 
+	set main_office_id [office::new \
+		-office_name	$office_name \
+		-company_id     $company_id \
+		-office_type_id "170" \
+		-office_status_id "160" \
+		-office_path	$office_path]
+	ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
+	
+	# Now create the company with the new main_office:
+	set company_id [company::new \
+		-company_id $company_id \
+		-company_name	$company_name \
+		-company_path	$company_path \
+		-main_office_id	$main_office_id \
+		-company_type_id $company_type_id \
+		-company_status_id $company_status_id]
+	
+	# add users to the project as PMs
+	# - current_user (creator/owner)
+	# - project_leader
+	# - supervisor
+	set role_id [im_biz_object_role_key_account]
+	im_biz_object_add_role $user_id $company_id $role_id
 
-    # Now create the company with the new main_office:
-    set company_id [company::new \
-	-company_name	$company_name \
-        -company_path	$company_path \
-        -main_office_id	$main_office_id \
-        -company_type_id $company_type_id \
-        -company_status_id $company_status_id]
-
-    # add the creating current user to the group
-    relation_add \
-	-member_state "approved" \
-	"admin_rel" \
-	$company_id \
-	$user_id
+    }
 }
 
 # -----------------------------------------------------------------

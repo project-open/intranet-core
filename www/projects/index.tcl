@@ -293,28 +293,21 @@ set status_where "
 # reach a reasonable response time.
 
 set perm_sql "
-	select
-	        p.project_id,
-		r.member_p as permission_member,
-		see_all.see_all as permission_all
+	(select
+	        p.*
 	from
 	        im_projects p,
-		(	select	count(rel_id) as member_p,
-				object_id_one as object_id
-			from	acs_rels
-			where	object_id_two = :user_id
-			group by object_id_one
-		) r,
-	        (       select  count(*) as see_all
-	                from acs_object_party_privilege_map
-	                where   object_id=:subsite_id
-	                        and party_id=:user_id
-	                        and privilege='view_projects_all'
-	        ) see_all
+		acs_rels r
 	where
-	        p.project_id = r.object_id(+)
-	        $where_clause
-"
+		r.object_id_one = p.project_id
+		and r.object_id_two = :user_id
+		$where_clause
+	)"
+
+if {[im_permission $user_id "view_projects_all"]} {
+	set perm_sql "im_projects"
+}
+
 
 set sql "
 SELECT
@@ -323,21 +316,18 @@ SELECT
         im_name_from_user_id(project_lead_id) as lead_name,
         im_category_from_id(p.project_type_id) as project_type,
         im_category_from_id(p.project_status_id) as project_status,
-        im_proj_url_from_type(p.project_id, 'website') as url,
         to_char(end_date, 'HH24:MI') as end_date_time
 FROM
-	im_projects p,
-	im_companies c,
-	($perm_sql) perm
+	$perm_sql p,
+	im_companies c
 WHERE
-	perm.project_id = p.project_id
-	and p.company_id = c.company_id(+)
-	and (
-		perm.permission_member > 0
-		$mine_restriction
-	)
+	p.company_id = c.company_id
+	$where_clause
 "
 
+#        im_proj_url_from_type(p.project_id, 'website') as url,
+
+#ad_return_complaint 1 "<pre>$sql</pre>"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
@@ -355,7 +345,8 @@ if {[string compare $letter "ALL"]} {
     set how_many -1
     set selection "select z.* from ($sql) z $order_by_clause"
 } else {
-    set limited_query [im_select_row_range $sql $start_idx $end_idx]
+#    set limited_query [im_select_row_range $sql $start_idx $end_idx]
+    set limited_query $sql
 
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
@@ -526,7 +517,7 @@ db_foreach projects_info_query $selection {
     foreach column_var $column_vars {
 	append row_html "\t<td valign=top>"
 	set cmd "append row_html $column_var"
-	eval $cmd
+	eval "$cmd"
 	append row_html "</td>\n"
     }
     append row_html "</tr>\n"

@@ -68,11 +68,14 @@ CREATE TABLE im_menus (
 	name			varchar(200) not null,
 				-- On which pages should the menu appear?
 	url			varchar(200) not null,
+				-- sort order WITHIN the same level
 	sort_order		integer,
 				-- parent_id allows for tree view for navbars
 	parent_menu_id		integer
 				constraint im_parent_menu_id_fk
-				references im_menus,
+				references im_menus,	
+				-- hierarchical codification of menu levels
+	tree_sortkey		varchar(100),
 				-- TCL expression that needs to be either null
 				-- or evaluate (expr *) to 1 in order to display 
 				-- the menu.
@@ -237,40 +240,13 @@ declare
 	v_admins		integer;
 begin
 
-    select group_id
-    into v_admins
-    from groups
-    where group_name = ''P/O Admins'';
-
-    select group_id
-    into v_senman
-    from groups
-    where group_name = ''Senior Managers'';
-
-    select group_id
-    into v_proman
-    from groups
-    where group_name = ''Project Managers'';
-
-    select group_id
-    into v_accounting
-    from groups
-    where group_name = ''Accounting'';
-
-    select group_id
-    into v_employees
-    from groups
-    where group_name = ''Employees'';
-
-    select group_id
-    into v_companies
-    from groups
-    where group_name = ''Companies'';
-
-    select group_id
-    into v_freelancers
-    from groups
-    where group_name = ''Freelancers'';
+    select group_id into v_admins from groups where group_name = ''P/O Admins'';
+    select group_id into v_senman from groups where group_name = ''Senior Managers'';
+    select group_id into v_proman from groups where group_name = ''Project Managers'';
+    select group_id into v_accounting from groups where group_name = ''Accounting'';
+    select group_id into v_employees from groups where group_name = ''Employees'';
+    select group_id into v_companies from groups where group_name = ''Companies'';
+    select group_id into v_freelancers from groups where group_name = ''Freelancers'';
 
     -- The "top" menu - the father of all menus.
     -- It is not displayed itself and only serves
@@ -290,7 +266,6 @@ begin
 	null,			-- parent_menu_id
 	null			-- p_visible_tcl
     );
-
 
     -- The "Main" menu: It''s not displayed itself neither
     -- but serves as the starting point for the main menu
@@ -357,6 +332,7 @@ begin
     PERFORM acs_permission__grant_permission(v_user_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_user_menu, v_employees, ''read'');
 
+
     v_project_menu := im_menu__new (
         null,                   -- p_menu_id
         ''acs_object'',           -- object_type
@@ -397,13 +373,13 @@ begin
         null                    -- p_visible_tcl
     );
 
-    PERFORM acs_permission__grant_permission(v_company_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_accounting, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_companies, ''read'');
-    PERFORM acs_permission__grant_permission(v_company_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_freelancers, ''read'');
 
     v_admin_menu := im_menu__new (
         null,                   -- p_menu_id
@@ -544,6 +520,7 @@ begin
         null                    -- p_visible_tcl
     );
 
+
     PERFORM acs_permission__grant_permission(v_user_freelancers_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_user_freelancers_menu, v_senman, ''read'');
     PERFORM acs_permission__grant_permission(v_user_freelancers_menu, v_proman, ''read'');
@@ -682,7 +659,7 @@ begin
         ''User Matrix'',        -- name
         ''/intranet/admin/user_matrix/'',   -- url
         30,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
+        v_admin_menu,            -- parent_menu_id
         null                    -- p_visible_tcl
     );
 
@@ -701,7 +678,7 @@ begin
         ''Parameters'',         -- name
         ''/intranet/admin/parameters/'',   -- url
         39,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
+        v_admin_menu,            -- parent_menu_id
         null                    -- p_visible_tcl
     );
 
@@ -728,122 +705,7 @@ begin
   
     return 0;
 end;' language 'plpgsql';
-
 select inline_0 ();
-
 drop function inline_0 ();
 
-
-
--- -----------------------------------------------------
--- Project Menu
--- -----------------------------------------------------
-
-create or replace function inline_1 ()
-returns integer as '
-declare
-	-- Menu IDs
-	v_menu			integer;
-	v_project_menu		integer;
-	v_main_menu		integer;
-	v_top_menu		integer;
-
-	-- Groups
-	v_employees		integer;
-	v_accounting		integer;
-	v_senman		integer;
-	v_companies		integer;
-	v_freelancers		integer;
-	v_proman		integer;
-	v_admins		integer;
-begin
-
-    select group_id into v_admins from groups where group_name = ''P/O Admins'';
-    select group_id into v_senman from groups where group_name = ''Senior Managers'';
-    select group_id into v_proman from groups where group_name = ''Project Managers'';
-    select group_id into v_accounting from groups where group_name = ''Accounting'';
-    select group_id into v_employees from groups where group_name = ''Employees'';
-    select group_id into v_companies from groups where group_name = ''Companies'';
-    select group_id into v_freelancers from groups where group_name = ''Freelancers'';
-
-    select menu_id
-    into v_main_menu
-    from im_menus
-    where label=''main'';
-
-    select menu_id
-    into v_top_menu
-    from im_menus
-    where label=''top'';
-
-    -- The "Project" menu: It''s not displayed itself
-    -- but serves as the starting point for submenus
-    v_project_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project'',            -- label
-        ''Project'',            -- name
-        ''/intranet/projects/view'',  -- url
-        10,                     -- sort_order
-        v_top_menu,             -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-
-    v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project_standard'',   -- label
-        ''Summary'',            -- name
-        ''/intranet/projects/view?view_name=standard'',  -- url
-        10,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_companies, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
-
-    v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project_files'',      -- label
-        ''Files'',              -- name
-        ''/intranet/projects/view?view_name=files'',  -- url
-        10,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_companies, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
-
-    return 0;
-end;' language 'plpgsql';
-
-select inline_1 ();
-
-drop function inline_1();
 

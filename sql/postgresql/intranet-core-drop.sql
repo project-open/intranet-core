@@ -32,7 +32,7 @@ BEGIN
                 segs.segment_id = cons.required_rel_segment
     loop
 
-        rel_segment.del(row.constraint_id);
+        rel_segment__delete(row.constraint_id);
 
     end loop;
     return 0;
@@ -53,7 +53,7 @@ BEGIN
     for row in
         select party_id
         from parties
-        where email like '%project-open.com'
+        where email like ''%project-open.com''
     loop
 
         acs.remove_user(row.party_id);
@@ -74,13 +74,13 @@ delete from im_project_url_map;
 
 delete from im_url_types;
 delete from im_projects;
-delete from im_projects_status_audit;
-delete from im_project_status;
+--delete from im_projects_status_audit; (does not exist)
+--delete from im_project_status; (this is a view, cannot delete)
 delete from im_biz_object_role_map;
 delete from im_biz_object_urls;
-delete from im_project_types;
+--delete from im_project_types; (this is a view, cannot delete)
 
-drop table im_projects_status_audit;
+--drop table im_projects_status_audit;
 drop table im_project_url_map;
 drop table im_url_types;
 
@@ -95,10 +95,10 @@ drop view im_company_status;
 drop view im_company_types;
 drop view im_partner_status;
 drop view im_partner_types;
-drop view im_prior_experiences;
-drop view im_hiring_sources;
-drop view im_job_titles;
-drop view im_departments;
+--drop view im_prior_experiences;
+--drop view im_hiring_sources;
+--drop view im_job_titles;
+--drop view im_departments;
 drop view im_annual_revenue;
 
 
@@ -126,9 +126,9 @@ where object_id in (
 	)
 ;
 delete from acs_objects where object_type='im_menu';
-drop package im_menu;
+-- drop package im_menu;
 
-select acs_object_type__drop_type('im_menu');
+select acs_object_type__drop_type('im_menu', 'f');
 
 
 -----------------------------------------------------------
@@ -151,11 +151,13 @@ BEGIN
         select profile_id
 	from im_profiles
      loop
-	im_profile.del(row.profile_id);
+	PERFORM im_profile__delete(row.profile_id);
      end loop;
      return 0;
 END;' language 'plpgsql';
+
 select inline_0 ();
+
 drop function inline_0 ();
 
 
@@ -193,10 +195,52 @@ drop table im_profiles;
 delete from acs_objects where object_type = 'im_profile';
 
 delete from group_types where group_type = 'im_profile';
-drop package im_profile;
-select  acs_object_type__drop_type ('im_profile');
+-- drop package im_profile;
+select  acs_object_type__drop_type ('im_profile', 'f');
 
 
+-- before remove priviliges remove granted permissions
+create or replace function inline_revoke_permission (varchar)
+returns integer as '
+DECLARE
+	p_priv_name	alias for $1;
+BEGIN
+     lock table acs_permissions_lock;
+
+     delete from acs_permissions
+     where privilege = p_priv_name;
+
+     return 0;
+
+end;' language 'plpgsql';
+
+select inline_revoke_permission ('add_companies');
+select inline_revoke_permission ('view_companies');
+select inline_revoke_permission ('view_companies_all');
+select inline_revoke_permission ('view_company_contacts');
+select inline_revoke_permission ('view_company_details');
+select inline_revoke_permission ('add_projects');
+select inline_revoke_permission ('view_projects');
+select inline_revoke_permission ('view_project_members');
+select inline_revoke_permission ('view_projects_all');
+select inline_revoke_permission ('view_projects_history');
+select inline_revoke_permission ('add_users');
+select inline_revoke_permission ('view_users');
+select inline_revoke_permission ('search_intranet');
+select inline_revoke_permission ('view_offices');
+select inline_revoke_permission ('view_offices_all');
+select inline_revoke_permission ('add_offices');
+select inline_revoke_permission ('view_internal_offices');
+select inline_revoke_permission ('edit_internal_offices');
+select inline_revoke_permission ('view_user_regs');
+select inline_revoke_permission ('admin_categories');
+select inline_revoke_permission ('view_topics');
+
+select inline_revoke_permission ('view');
+
+drop function inline_revoke_permission (varchar);
+
+-- remove privileges
 select acs_privilege__drop_privilege('add_companies');
 select acs_privilege__drop_privilege('view_companies');
 select acs_privilege__drop_privilege('view_companies_all');
@@ -210,8 +254,16 @@ select acs_privilege__drop_privilege('view_projects_history');
 select acs_privilege__drop_privilege('add_users');
 select acs_privilege__drop_privilege('view_users');
 select acs_privilege__drop_privilege('search_intranet');
+select acs_privilege__drop_privilege('view_offices');
+select acs_privilege__drop_privilege('view_offices_all');
+select acs_privilege__drop_privilege('add_offices');
+select acs_privilege__drop_privilege('view_internal_offices');
+select acs_privilege__drop_privilege('edit_internal_offices');
+select acs_privilege__drop_privilege('view_user_regs');
+select acs_privilege__drop_privilege('admin_categories');
+select acs_privilege__drop_privilege('view_topics');
 
-
+select acs_privilege__remove_child('admin', 'view');
 select acs_privilege__drop_privilege('view');
 
 
@@ -223,10 +275,10 @@ select acs_privilege__drop_privilege('view');
 
 drop table im_component_plugins;
 delete from acs_objects where object_type='im_component_plugin';
-drop package im_component_plugin;
+-- drop package im_component_plugin;
 
 delete from acs_objects where object_type='im_component_plugin';
-select acs_object_type__drop_type('im_component_plugin');
+select acs_object_type__drop_type('im_component_plugin', 'f');
 
 
 -----------------------------------------------------------
@@ -240,14 +292,14 @@ drop table im_views;
 -------------------------------------------------------
 -- Helper functions
 --
-drop function im_create_administration_group;
-drop function im_category_from_id;
-drop function ad_group_member_p;
-drop function im_proj_url_from_type;
-drop function im_name_from_user_id;
-drop function im_email_from_user_id;
-drop function im_initials_from_user_id;
-drop function im_first_letter_default_to_a;
+--drop function im_create_administration_group;
+--drop function im_category_from_id;
+--drop function ad_group_member_p;
+--drop function im_proj_url_from_type;
+--drop function im_name_from_user_id;
+--drop function im_email_from_user_id;
+--drop function im_initials_from_user_id;
+--drop function im_first_letter_default_to_a;
 
 
 -------------------------------------------------------
@@ -271,12 +323,12 @@ select inline_0 ();
 drop function inline_0 ();
 
 
-drop package im_project;
+-- drop package im_project;
 drop table im_projects;
 drop sequence im_url_types_type_id_seq;
 
 delete from acs_objects where object_type='im_project';
-select acs_object_type__drop_type ('im_project');
+select acs_object_type__drop_type ('im_project', 'f');
 
 
 
@@ -293,7 +345,7 @@ BEGIN
         select company_id
         from im_companies
     loop
-        im_company.del(row.company_id);
+        im_company__delete(row.company_id);
     end loop;
     return 0;
 END;' language 'plpgsql';
@@ -305,43 +357,41 @@ drop function inline_0 ();
 update im_offices set company_id = null;
 
 
-drop package im_company;
+-- drop package im_company;
 drop table im_companies;
 
 delete from acs_objects where object_type='im_company';
-select acs_object_type__drop_type ('im_company');
+select acs_object_type__drop_type ('im_company', 'f');
 
 
 -------------------------------------------------------
 -- Offices
 --
-drop package im_office;
+-- drop package im_office;
 drop table im_offices;
 
 delete from acs_objects where object_type='im_office';
-select acs_object_type__drop_type ('im_office');
-
-
+select acs_object_type__drop_type ('im_office', 'f');
 
 -------------------------------------------------------
 -- P/O Business Objects
 
-select acs_rel_type__drop_type('im_biz_object_member');
+select acs_rel_type__drop_type('im_biz_object_member', 'f');
 
-drop table im_member_rels;
-drop package im_member_rel;
+-- drop table im_member_rels;
+-- drop package im_member_rel;
 
 drop table im_biz_object_urls;
 drop table im_biz_object_role_map;
 drop table im_biz_object_members;
-drop package im_biz_object;
+-- drop package im_biz_object;
 drop table im_biz_objects;
 delete from acs_objects where object_type='im_biz_object';
 
-drop table im_biz_object_roles;
+-- drop table im_biz_object_roles;
 
-select acs_object_type__drop_type ('im_biz_object');
-select acs_object_type__drop_type ('im_member_rel');
+select acs_object_type__drop_type ('im_biz_object', 'f');
+select acs_object_type__drop_type ('im_member_rel', 'f');
 
 
 
@@ -361,5 +411,8 @@ drop table currency_codes;
 --
 drop sequence im_categories_seq;
 drop table im_category_hierarchy;
+drop view im_office_types;
+drop view im_office_status;
+drop view im_biz_object_role;
 drop table im_categories;
 

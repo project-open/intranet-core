@@ -50,7 +50,7 @@ where
 		where	m.member_id = u.user_id
 			and m.group_id = [im_employee_group_id]
 	)       
-order by lower(name)
+order by lower(im_name_from_user_id(u.user_id))
 "
 
 set contact_info ""

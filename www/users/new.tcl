@@ -103,8 +103,8 @@ from
 	users u
 where
 	pe.person_id = :user_id
-	and pe.person_id = pa.party_id(+)
-	and pe.person_id = u.user_id(+)
+	and pe.person_id = pa.party_id
+	and pe.person_id = u.user_id
 "
     db_0or1row get_user_details $user_details_sql
 
@@ -251,34 +251,14 @@ ad_form -extend -name register -on_request {
 					 -secret_answer $secret_answer]
 
 
-	set add_to_registered_users_sql "
-DECLARE
-	v_registered_users integer;
-	v_rel_id integer;
-	v_rel_count integer;
-BEGIN
+	    # Add the user to the "Registered Users" group, because
+	    # (s)he would get strange problems otherwise
+	    set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
 
-    select object_id
-    into v_registered_users
-    from acs_magic_objects
-	where name='registered_users';
-
-    select count(*)
-    into v_rel_count
-    from acs_rels
-    where object_id_one = v_registered_users
-	and object_id_two = :user_id;
-
-    IF v_rel_count = 0 THEN
-        v_rel_id := membership_rel.new(
-            object_id_one    => v_registered_users,
-            object_id_two    => :user_id,
-            member_state     => 'approved'
-	    );
-    END IF;
-END;"
-	    db_dml add_to_registered_users $add_to_registered_users_sql
-
+	    # Add a users_contact record to the user since the 3.0 PostgreSQL
+	    # port, because we have dropped the outer join with it...
+	    db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)"
 
 	} else {
 
@@ -304,38 +284,23 @@ END;"
 	    
 	}
 	
-	
-        set delete_rel_sql "
-BEGIN
-     FOR row IN (
-	select
-		r.rel_id
-	from 
-		acs_rels r,
-		acs_objects o
-	where
-		object_id_two = :user_id
-		and object_id_one = :profile_id
-		and r.object_id_one = o.object_id
-		and o.object_type = 'im_profile'
-		and rel_type = 'membership_rel'
-     ) LOOP
-        membership_rel.del(row.rel_id);
-     END LOOP;
-END;"
-
-	set add_rel_sql "
-BEGIN
-    :1 := membership_rel.new(
-	object_id_one    => :profile_id,
-	object_id_two    => :user_id,
-	member_state     => 'approved'
-    );
-END;"
+        set membership_del_sql "
+        select
+                r.rel_id
+        from
+                acs_rels r,
+                acs_objects o
+        where
+                object_id_two = :user_id
+                and object_id_one = :profile_id
+                and r.object_id_one = o.object_id
+                and o.object_type = 'im_profile'
+                and rel_type = 'membership_rel'
+        "
 
 	# Profile changes its value, possibly because of strange
 	# ad_form sideeffects
-#	ns_log Notice "/users/new: profile=$profile"
+	ns_log Notice "/users/new: profile=$profile"
 	ns_log Notice "/users/new: profile_org=$profile_org"
 
 	foreach profile_tuple [im_profiles_all] {
@@ -372,7 +337,12 @@ END;"
                    return
 		}
 
-		db_dml delete_profile $delete_rel_sql
+		# db_dml delete_profile $delete_rel_sql
+		db_foreach membership_del $membership_del_sql {
+		    ns_log Notice "/users/new: Going to delete rel_id=$rel_id"
+		    membership_rel::delete -rel_id $rel_id
+		}
+
 	    }
 
 	    
@@ -386,8 +356,12 @@ END;"
 		    return
 		}
 
-		db_dml delete_profile $delete_rel_sql
-		db_exec_plsql insert_profile $add_rel_sql
+		# db_exec_plsql insert_profile $add_rel_sql
+
+		# Make the user a member of the group (=profile)
+		ns_log Notice "/users/new: relation_add $profile_id $user_id"
+		relation_add -member_state "approved" "membership_rel" $profile_id $user_id
+
 	    }
 	}
 

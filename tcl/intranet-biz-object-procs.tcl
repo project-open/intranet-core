@@ -177,34 +177,12 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     Adds a user in a role to a Business Object.
 } {
+    set user_ip [ad_conn peeraddr]
     # Remove all previous member_rels between user and object
-    set sql "
-    begin
-	for row in (
-        	select
-			object_id_one as object_id,
-			object_id_two as user_id
-        	from 
-			acs_rels r
-        	where	r.object_id_one=:object_id 
-			and r.object_id_two=:user_id
-	) loop
-		im_biz_object_member.del(row.object_id, row.user_id);
-   	end loop;
-    end;
-"    
-    db_exec_plsql del_users $sql
+    db_exec_plsql del_users {}
 
     # Add the user
-    set sql "
-	begin
-	    :1 := im_biz_object_member.new(
-		object_id	=> :object_id,
-		user_id 	=> :user_id,
-		object_role_id	=> :role_id
-	    );
-	end; "
-    db_exec_plsql add_user $sql
+    db_exec_plsql add_user {}
 
     # Remove all permission related entries in the system cache
     im_permission_flush
@@ -358,7 +336,7 @@ where
 	and bo_rels.object_role_id = c.category_id
 	$limit_to_group_id_sql 
 	$dont_allow_sql
-order by lower(name)"
+order by lower(im_name_from_user_id(u.user_id))"
 
 
     # ------------------ Format the table header ------------------------
