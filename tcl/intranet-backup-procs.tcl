@@ -1332,6 +1332,34 @@ BEGIN
     VALUES (v_user_id);
 END;"
 
+        set add_to_registered_users_sql "
+DECLARE
+        v_registered_users integer;
+        v_rel_id integer;
+        v_rel_count integer;
+BEGIN
+
+    select object_id
+    into v_registered_users
+    from acs_magic_objects
+        where name='registered_users';
+
+    select count(*)
+    into v_rel_count
+    from acs_rels
+    where object_id_one = v_registered_users
+        and object_id_two = :user_id;
+
+    IF v_rel_count = 0 THEN
+        v_rel_id := membership_rel.new(
+            object_id_one    => v_registered_users,
+            object_id_two    => :user_id,
+            member_state     => 'approved'
+            );
+    END IF;
+END;"
+
+
 	set update_users_sql "
 UPDATE
 	users
@@ -1401,6 +1429,7 @@ WHERE
 	if {!$count} {
 	    if { [catch {
 		db_dml create_user $create_user_sql
+		db_dml add_to_registered_users $add_to_registered_users_sql
 	    } err_msg] } {
 		append err_return "<li>Error loading users 1:<br>
 		$csv_line<br>
