@@ -23,6 +23,7 @@ ad_page_contract {
 } {
     { user_id:integer 0}
     { object_id:integer 0}
+    { user_id_from_search 0}
     { view_name "user_view" }
     { contact_view_name "user_contact" }
     { freelance_view_name "user_view_freelance" }
@@ -37,7 +38,18 @@ set current_url $return_url
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
-if {0 == $user_id} {set user_id $object_id}
+# user_id is a bad variable for the object,
+# because it is overwritten by SQL queries.
+# So first find out which user we are talking
+# about...
+
+set vars_set [expr ($user_id > 0) + ($object_id > 0) + ($user_id_from_search > 0)]
+if {$vars_set > 1} {
+    ad_return_complaint 1 "<li>You have set the user_id in more then one of the following parameters: <br>user_id=$user_id, <br>object_id=$object_id and <br>user_id_from_search=$user_id_from_search."
+    return
+}
+if {$object_id} {set user_id_from_search $object_id}
+if {$user_id} {set user_id_from_search $user_id}
 if {0 == $user_id} {
     # The "Unregistered Vistior" user
     # Just continue and show his data...
@@ -46,8 +58,8 @@ if {0 == $user_id} {
 set current_user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 
-# Check the permissions that the current_user has on user_id
-im_user_permissions $current_user_id $user_id view read write admin
+# Check the permissions 
+im_user_permissions $current_user_id $user_id_from_search view read write admin
 
 # ToDo: Cleanup component to use $write instead of $edit_user
 set edit_user $write
@@ -77,12 +89,12 @@ select
 from
 	cc_users u
 where
-	u.user_id = :user_id
+	u.user_id = :user_id_from_search
 "]
 
 if { $result != 1 } {
     ad_return_complaint "Bad User" "
-    <li>We couldn't find user #$user_id; perhaps this person was nuked?"
+    <li>We couldn't find user #$user_id_from_search; perhaps this person was nuked?"
     return
 }
 
@@ -114,11 +126,7 @@ order by
 	sort_order"
 
 
-set ttt "
-<input type=\"hidden\" name=\"form:mode\" value=\"display\" />
-<input type=\"hidden\" name=\"form:id\" value=\"user_info\" />
-"
-
+set user_id $user_id_from_search
 set user_basic_info_html "
 <form method=POST action=new>
 [export_form_vars user_id return_url]
@@ -154,7 +162,7 @@ append user_basic_info_html "
 <tr $td_class([expr $ctr % 2])>
   <td>Profile</td>
   <td>
-    [im_user_profile_component $user_id "disabled"]
+    [im_user_profile_component $user_id_from_search "disabled"]
   </td>
 </tr>
 <tr>
@@ -169,16 +177,6 @@ append user_basic_info_html "
 </tr>
 </table>
 </form>\n"
-
-set ttt "
-<form method=POST action=profile-update>
-[export_form_vars user_id return_url]
-
-<table cellspacing=1 cellpadding=1>
-<tr><td align=center class=rowtitle>Profiles</td></tr>
-</table>
-</form>
-"
 
 set profile_html ""
 
@@ -215,7 +213,7 @@ from
         country_codes ha_cc,
         country_codes wa_cc
 where
-	c.user_id = :user_id
+	c.user_id = :user_id_from_search
 	and c.ha_country_code = ha_cc.iso(+)
 	and c.wa_country_code = wa_cc.iso(+)
 "]
@@ -240,6 +238,7 @@ where
 order by
 	sort_order"
 
+    set user_id $user_id_from_search
     set contact_html "
 <form method=POST action=contact-edit>
 [export_form_vars user_id return_url]
@@ -266,6 +265,7 @@ order by
     # There is no contact information specified
     # => allow the user to set stuff up. "
 
+    set user_id $user_id_from_search
     set contact_html "
 <form method=POST action=contact-edit>
 [export_form_vars user_id return_url]
@@ -294,7 +294,7 @@ from
 	im_projects p,
 	acs_rels r
 where 
-	r.object_id_two = :user_id
+	r.object_id_two = :user_id_from_search
 	and r.object_id_one = p.project_id
 order by p.project_nr desc
 "
@@ -318,7 +318,7 @@ if { [empty_string_p $projects_html] } {
 }
 
 if {$ctr > $max_projects} {
-    append projects_html "<li><A HREF='/intranet/projects/index?user_id_from_search=$user_id&status_id=0'>more projects...</A>\n"
+    append projects_html "<li><A HREF='/intranet/projects/index?user_id_from_search=$user_id_from_search&status_id=0'>more projects...</A>\n"
 }
 
 
@@ -349,6 +349,7 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
 
 # append admin_links "<li> User state: $user_state"
 
+set user_id $user_id_from_search
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 
 # Return a pretty member state (no normal user understands "banned"...)
@@ -361,11 +362,11 @@ case $member_state {
 append admin_links "
           <li>Member state: $user_state (<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>activate</a>, <a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>delete</a>)
           <li><a href=$change_pwd_url>Update this user's password</a>
-          <li><a href=become?user_id=$user_id>Become this user!</a>
+          <li><a href=become?user_id=$user_id_from_search>Become this user!</a>
 <!--
           <li>
               <form method=POST action=search>
-              <input type=hidden name=u1 value=$user_id>
+              <input type=hidden name=u1 value=$user_id_from_search>
               <input type=hidden name=target value=/admin/users/merge/merge-from-search.tcl>
               <input type=hidden name=passthrough value=u1>
                   Search for an account to merge with this one: 
@@ -399,7 +400,7 @@ from
 	cr_items c
 where 
 	a.object_id_two = c.item_id
-	and a.object_id_one = :user_id
+	and a.object_id_one = :user_id_from_search
 	and a.rel_type = 'user_portrait_rel'"] 
     || [empty_string_p $revision_id]
 } {
@@ -441,7 +442,7 @@ if {$portrait_p} {
 	set widthheight ""
     }
     
-    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id\" alt=\"$portrait_alt\">"
+    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id_from_search\" alt=\"$portrait_alt\">"
 
 } else {
 
@@ -451,7 +452,7 @@ if {$portrait_p} {
     if {$admin} { append description "<br>\nPlease upload a portrait."}
 }
 
-
+set user_id $user_id_from_search
 set portrait_admin "
 <li><a href=\"/intranet/users/portrait/upload?$export_vars\">Upload portrait</a></li>
 <li><a href=\"/intranet/users/portrait/erase?$export_vars\">Delete portrait</a></li>\n"

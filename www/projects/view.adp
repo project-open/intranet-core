@@ -35,11 +35,13 @@
 
   <%= [im_component_insert "Project Filestorage Component"] %>
 
+<% } elseif {[string equal "sales" $view_name]} { %>
+
+  <%= [im_component_insert "Project Sales Filestorage Component"] %>
+
 <% } elseif {[string equal "status" $view_name]} { %>
 
   <%= [im_component_insert "Project Translation Error Component"] %>
   <%= [im_component_insert "Project Translation Task Status"] %>
 
 <% } %>
-
-

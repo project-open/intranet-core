@@ -90,7 +90,7 @@ switch $action {
 	    end;
 	"
     }
-    other {
+    default {
 	ad_return_complaint 1 "Unknown 'action': $action"
 	return
     }
