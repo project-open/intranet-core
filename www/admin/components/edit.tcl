@@ -37,10 +37,11 @@ if {!$user_is_admin_p} {
 # Format Component Data 
 # ---------------------------------------------------------------
 
+set page_title "Component Edit"
+set context_bar [ad_context_bar $page_title]
+
 if {[info exists plugin_id] && ![empty_string_p $plugin_id]} {
 
-    set page_title "Component Edit"
-    set context_bar [ad_context_bar $page_title]
     db_1row category_properties "
 select
 	c.*
@@ -101,7 +102,6 @@ set page_body "
 <input type=submit name=submit value=Update>
 </form>
 "
-
 }
 
-doc_return  200 text/html [im_return_template]
+ad_return_template
