@@ -293,7 +293,7 @@ ad_proc -public im_customer_select { select_name { default "" } { status "" } { 
                         from acs_object_party_privilege_map
                         where   object_id=:subsite_id
                                 and party_id=:user_id
-                                and privilege='view_customers_all'
+                                and privilege='view_customers'
                 ) see_all
         where
                 c.customer_id = r.object_id(+)
