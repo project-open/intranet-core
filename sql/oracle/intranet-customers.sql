@@ -62,13 +62,13 @@ create table im_customers (
 				check(deleted_p in ('t','f')),
 	customer_status_id	integer not null
 				constraint im_customers_cust_stat_fk
-				references categories,
+				references im_categories,
 	customer_type_id	integer not null
 				constraint im_customers_cust_type_fk
-				references categories,
+				references im_categories,
 	crm_status_id		integer 
 				constraint im_customers_crm_status_fk
-				references categories,
+				references im_categories,
 	primary_contact_id	integer 
 				constraint im_customers_prim_cont_fk
 				references users,
@@ -79,13 +79,13 @@ create table im_customers (
 	referral_source		varchar(1000),
 	annual_revenue_id	integer 
 				constraint im_customers_ann_rev_fk
-				references categories,
+				references im_categories,
 				-- keep track of when status is changed
 	status_modification_date date,
 				-- and what the old status was
 	old_customer_status_id	integer 
 				constraint im_customers_old_cust_stat_fk
-				references categories,
+				references im_categories,
 				-- is this a customer we can bill?
 	billable_p		char(1) default('f')
 				constraint im_customers_billable_p_ck 
@@ -283,11 +283,39 @@ BEGIN
 	customer_name	=> 'Tigerpond',
 	customer_path	=> 'tigerpond',
 	main_office_id	=> v_office_id,
-	-- 'Internal' customer type
-	customer_type_id => 53,
+	-- Translation Agency
+	customer_type_id => 54,
 	-- 'Active' status
 	customer_status_id => 46
     );
 end;
 /
-show errors;
+commit;
+
+
+prompt *** -- Create the "Tigerpond" customer, a large account with a lot of power...
+DECLARE
+    v_office_id		integer;
+    v_customer_id	integer;
+BEGIN
+    -- First setup the main office
+    v_office_id := im_office.new(
+        object_type     => 'im_office',
+        office_name     => 'TecnoLoge Main Office',
+        office_path     => 'tecnologoe_main_office'
+    );
+
+    v_customer_id := im_customer.new(
+	object_type	=> 'im_customer',
+	customer_name	=> 'TecnoLoge',
+	customer_path	=> 'tecnologe',
+	main_office_id	=> v_office_id,
+	-- IT Consulting
+	customer_type_id => 55,
+	-- 'Active' status
+	customer_status_id => 46
+    );
+end;
+/
+commit;
+

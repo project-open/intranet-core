@@ -70,7 +70,7 @@ IS
 BEGIN
 	select category
 	into v_category
-	from categories
+	from im_categories
 	where category_id = p_category_id;
 
 	return v_category;
@@ -122,7 +122,7 @@ BEGIN
     from
 	acs_rels r,
 	im_biz_object_members m,
-	categories c
+	im_categories c
     where
 	r.object_id_one = p_group_id
 	and r.object_id_two = p_user_id
@@ -251,8 +251,71 @@ prompt *** intranet-permissions - Horizontal and vertical permissions
 @intranet-permissions.sql
 prompt *** intranet-menus - Dynamic menus
 @intranet-menus.sql
-prompt *** intranet-demodata - Sample users
-@intranet-demodata.sql
+
+
+
+
+
+-- -----------------------------------------------------------
+-- We base our allocations, employee count, etc. around
+-- a fundamental unit or block.
+-- im_start_blocks record the dates these blocks
+-- will start for this system.
+
+create table im_start_blocks (
+	start_block		date not null 
+				constraint im_start_blocks_pk
+				primary key,
+				-- We might want to tag a larger unit
+				-- For example, if start_block is the first
+				-- Sunday of a week, those tagged with
+				-- start_of_larger_unit_p might tag
+				-- the first Sunday of a month
+	start_of_larger_unit_p	char(1) default 'f'
+				constraint im_start_blocks_larger_ck
+				check (start_of_larger_unit_p in ('t','f')),
+	note			varchar(4000)
+);
+
+
+-- Populate im_start_blocks. Start with Sunday, Jan 7th 1996
+-- and end after inserting 550 weeks. Note that 550 is a 
+-- completely arbitrary number. 
+DECLARE
+  v_max 			integer;
+  v_i				integer;
+  v_first_block_of_month	integer;
+  v_next_start_block		date;
+BEGIN
+  v_max := 550;
+
+  FOR v_i IN 0..v_max-1 LOOP
+    -- for convenience, select out the next start block to insert into a variable
+    select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
+    into v_next_start_block 
+    from dual;
+
+    insert into im_start_blocks
+    (start_block) 
+    values
+    (to_date(v_next_start_block));
+
+    -- set the start_of_larger_unit_p flag if this is the first
+    -- start block of the month
+    update im_start_blocks
+       set start_of_larger_unit_p='t'
+     where start_block=to_date(v_next_start_block)
+       and not exists (
+	select 1 
+          from im_start_blocks
+         where to_char(start_block,'YYYY-MM') = 
+	         to_char(v_next_start_block,'YYYY-MM')
+               and start_of_larger_unit_p='t');
+  END LOOP;
+END;
+/
+show errors;
+
 
 
 

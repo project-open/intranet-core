@@ -80,8 +80,8 @@ ad_proc -public im_biz_object_role_ids { user_id object_id } {
 		acs_rels r,
 		im_biz_object_members m
 	where
-		object_id_one=:object_id
-		and object_id_two=:user_id
+		r.object_id_one=:object_id
+		and r.object_id_two=:user_id
 		and r.rel_id = m.rel_id
 "
     set result [db_list im_biz_object_roles $sql]
@@ -102,8 +102,8 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 		acs_rels r,
 		im_biz_object_members m
 	where
-		object_id_one=:object_id
-		and object_id_two=:user_id
+		r.object_id_one=:object_id
+		and r.object_id_two=:user_id
 		and r.rel_id = m.rel_id
 "
     set result [db_list im_biz_object_roles $sql]
@@ -118,9 +118,9 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     begin
 	for row in (
         	select rel_id
-        	from acs_rels
-        	where	object_id_one=:object_id 
-			and object_id_two=:user_id
+        	from acs_rels r
+        	where	r.object_id_one=:object_id 
+			and r.object_id_two=:user_id
 	) loop
 		im_biz_object_member.del(row.rel_id);
    	end loop;
@@ -132,8 +132,8 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     set sql "
 	begin
 	    :1 := im_biz_object_member.new(
-		object_id_one	=> :object_id,
-		object_id_two	=> :user_id,
+		object_id	=> :object_id,
+		user_id 	=> :user_id,
 		object_role_id	=> :role_id
 	    );
 	end; "
@@ -276,7 +276,7 @@ from
 	users u,
 	acs_rels rels,
 	im_biz_object_members bo_rels,
-	categories c
+	im_categories c
 where
 	rels.object_id_one = :object_id
 	and rels.object_id_two = u.user_id

@@ -385,7 +385,7 @@ ad_proc im_currency_select {select_name {default ""}} {
 #    ns_set put $bind_vars category_type $category_type
 #    ns_set put $bind_vars category $category
 #    set sql "select category_id
-#             from categories
+#             from im_categories
 #             where category_type = :category_type
 #                   and category = :category"
 #    return $sql
@@ -395,7 +395,7 @@ ad_proc im_category_select { category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
-             from categories
+             from im_categories
              where category_type = :category_type
              order by lower(category)"
     return [im_selection_to_select_box $bind_vars category_select $sql $select_name $default]
@@ -405,7 +405,7 @@ ad_proc im_category_select_multiple { category_type select_name { default "" } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
-             from categories
+             from im_categories
              where category_type = :category_type
              order by lower(category)"
     return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size multiple]

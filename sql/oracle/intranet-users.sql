@@ -146,14 +146,11 @@ BEGIN
 	);
 END;
 /
-show errors;
-
-
 
 
 
 ------------------------------------------------------------------
--- Setup a System Administrator
+prompt Setup a System Administrator
 declare
 	v_user_id	integer;
 	v_rel_id	integer;
@@ -173,13 +170,10 @@ begin
 	im_profile_add_user('P/O Admins',v_user_id);
 end;
 /
-show errors;
-
-
 
 
 ------------------------------------------------------------------
--- Setup a Senior Manager
+prompt Setup a Senior Manager
 declare
 	v_user_id	integer;
 	v_rel_id	integer;
@@ -199,21 +193,67 @@ begin
 	im_profile_add_user('Senior Managers',v_user_id);
 end;
 /
-show errors;
 
 
 ------------------------------------------------------------------
--- Setup an Employee
+prompt Setup a Project Manager
 declare
 	v_user_id	integer;
 	v_rel_id	integer;
 begin
 	v_user_id := acs.add_user(
-		email => 'employee@project-open.com',
-		username => 'employee',
-		first_names => 'Em',
-		last_name => 'Ployee',
-		screen_name => 'Employee',
+		email => 'project.manager@project-open.com',
+		username => 'proman',
+		first_names => 'Project',
+		last_name => 'Manager',
+		screen_name => 'ProMan',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Project Managers',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup Accounting
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'accounting@project-open.com',
+		username => 'accounting',
+		first_names => 'Ac',
+		last_name => 'Counting',
+		screen_name => 'Accounting',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Employees',v_user_id);
+	im_profile_add_user('Accounting',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup an Employee
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'staff.member1@project-open.com',
+		username => 'staffmem1',
+		first_names => 'Staff',
+		last_name => 'Member1',
+		screen_name => 'StaffMem1',
 		password => '99C7819784E7520CF4E527A2307767B727E476BC',
 		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
 		email_verified_p => 't',
@@ -223,4 +263,119 @@ begin
 	im_profile_add_user('Employees',v_user_id);
 end;
 /
-show errors;
+
+
+------------------------------------------------------------------
+prompt Setup an Employee
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'staff.member2@project-open.com',
+		username => 'staffmem2',
+		first_names => 'Staff',
+		last_name => 'Member2',
+		screen_name => 'StaffMem2',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Employees',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup a Customer Contact
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'customer1@project-open.com',
+		username => 'customer1',
+		first_names => 'Cus',
+		last_name => 'Tomer1',
+		screen_name => 'CusTomer1',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Customers',v_user_id);
+end;
+/
+
+
+------------------------------------------------------------------
+prompt Setup a Customer Contact
+declare
+        v_user_id       integer;
+        v_rel_id        integer;
+begin
+        v_user_id := acs.add_user(
+                email => 'customer2@project-open.com',
+                username => 'customer2',
+                first_names => 'Cus',
+                last_name => 'Tomer2',
+                screen_name => 'CusTomer2',
+                password => '99C7819784E7520CF4E527A2307767B727E476BC',
+                salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+                email_verified_p => 't',
+                member_state => 'approved'
+        );
+
+        im_profile_add_user('Customers',v_user_id);
+end;
+/
+
+
+
+------------------------------------------------------------------
+prompt Setup Freelance1
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'free.lance1@project-open.com',
+		username => 'freelance1',
+		first_names => 'Free',
+		last_name => 'Lance1',
+		screen_name => 'Freelance1',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Freelancers',v_user_id);
+end;
+/
+
+------------------------------------------------------------------
+prompt Setup Freelance2
+declare
+	v_user_id	integer;
+	v_rel_id	integer;
+begin
+	v_user_id := acs.add_user(
+		email => 'free.lance2@project-open.com',
+		username => 'freelance2',
+		first_names => 'Free',
+		last_name => 'Lance2',
+		screen_name => 'Freelance2',
+		password => '99C7819784E7520CF4E527A2307767B727E476BC',
+		salt => '2CD5F36548084E5B22B1597643B05B16BD4C3B4F',
+		email_verified_p => 't',
+		member_state => 'approved'
+	);
+
+	im_profile_add_user('Freelancers',v_user_id);
+end;
+/
+

@@ -137,19 +137,19 @@ show errors
 -- Project/Advertizing adds Producer, Designer, Texter, ...
 -- Project/IT adds Business Analyst, Architect, Developer, ...
 
-insert into categories (
+insert into im_categories (
 	category_id, category, category_type, 
 	category_gif, category_description) 
 values (1300, 'Full Member', 'Intranet Biz Object Role', 
 	'member', 'Full Member');
 
-insert into categories (
+insert into im_categories (
 	category_id, category, category_type, 
 	category_gif, category_description) 
 values (1301, 'Project Manager', 'Intranet Biz Object Role', 
 	'project-manager', 'Project Manager');
 
-insert into categories (
+insert into im_categories (
 	category_id, category, category_type, 
 	category_gif, category_description) 
 values (1302, 'Key Account', 'Intranet Biz Object Role', 
@@ -168,10 +168,10 @@ create table im_biz_object_role_map (
 			references acs_object_types,
 	object_type_id	integer
 			constraint im_bizo_rmap_object_type_fk
-			references categories,
+			references im_categories,
 	object_role_id	integer
 			constraint im_bizo_rmap_object_role_fk
-			references categories,
+			references im_categories,
 	constraint im_bizo_rmap_un
 	unique (acs_object_type, object_type_id, object_role_id)
 );
@@ -188,7 +188,7 @@ create table im_biz_object_members (
 			primary key,
 	object_role_id	integer not null
 			constraint im_biz_object_members_role_fk
-			references categories
+			references im_categories
 			-- Intranet Project Role
 );
 
@@ -215,7 +215,6 @@ BEGIN
 	);
 END;
 /
-show errors
 commit;
 
 
@@ -228,8 +227,8 @@ as
 	function new (
 	rel_id		in im_biz_object_members.rel_id%TYPE default null,
 	rel_type	in acs_rels.rel_type%TYPE default 'im_biz_object_member',
-	object_id_one	in integer,
-	object_id_two	in integer,
+	object_id	in integer,
+	user_id		in integer,
 	object_role_id	in integer,
 	creation_user	in acs_objects.creation_user%TYPE default null,
 	creation_ip	in acs_objects.creation_ip%TYPE default null
@@ -238,11 +237,8 @@ as
 	procedure del (
 		rel_id	in im_biz_object_members.rel_id%TYPE
 	);
-
 end im_biz_object_member;
 /
-show errors
-
 
 create or replace package body im_biz_object_member
 as
@@ -250,8 +246,8 @@ as
     function new (
 	rel_id		in im_biz_object_members.rel_id%TYPE default null,
 	rel_type	in acs_rels.rel_type%TYPE default 'im_biz_object_member',
-	object_id_one	in integer,
-	object_id_two	in integer,
+	object_id	in integer,
+	user_id		in integer,
 	object_role_id	in integer,
 	creation_user	in acs_objects.creation_user%TYPE default null,
 	creation_ip	in acs_objects.creation_ip%TYPE default null
@@ -262,8 +258,8 @@ as
 	v_rel_id := acs_rel.new (
 		rel_id		=> rel_id,
 		rel_type	=> rel_type,
-		object_id_one	=> object_id_one,
-		object_id_two	=> object_id_two,
+		object_id_one	=> object_id,
+		object_id_two	=> user_id,
 		context_id	=> object_id_one,
 		creation_user	=> creation_user,
 		creation_ip	=> creation_ip

@@ -39,10 +39,10 @@ create table im_partners (
 				check(deleted_p in ('t','f')),
 	partner_type_id		integer
 				constraint im_partner_type_fk
-				references categories,
+				references im_categories,
 	partner_status_id	integer
 				constraint im_partner_status_fk
-				references categories,
+				references im_categories,
 	primary_contact_id	integer
 				constraint im_partner_contact_fk
 				references users,
@@ -51,6 +51,6 @@ create table im_partners (
 	referral_source		varchar(1000),
 	annual_revenue_id	integer
 				constraint im_partner_ann_rev_fk
-				references categories
+				references im_categories
 );
 

@@ -34,23 +34,25 @@ begin
      end loop;
 end;
 /
-show errors;
+commit;
 
+
+-- ------------------------------------------------------------
+-- Cleanup users
+-- ------------------------------------------------------------
 begin
      for row in (
-        select cons.constraint_id
-        from rel_constraints cons, rel_segments segs
-        where
-                segs.segment_id = cons.required_rel_segment
+        select party_id
+        from parties
+        where email like '%project-open.com'
      ) loop
 
-        rel_segment.del(row.constraint_id);
+        acs.remove_user(row.party_id);
 
      end loop;
 end;
 /
-show errors;
-
+commit;
 
 
 
@@ -92,6 +94,10 @@ drop view im_annual_revenue;
 
 
 
+-----------------------------------------------------------
+-- Auxil tables
+drop table im_start_blocks;
+
 
 -----------------------------------------------------------
 -- Menus
@@ -109,7 +115,7 @@ begin
     acs_object_type.drop_type('im_menu');
 end;
 /
-show errors;
+commit;
 
 
 
@@ -127,7 +133,7 @@ begin
    im_drop_profile ('Accounting'); 
 end;
 /
-show errors;
+commit;
 
 delete from acs_objects where object_type='im_profile';
 delete from group_type_rels where group_type = 'im_profile';
@@ -138,7 +144,7 @@ BEGIN
  acs_object_type.drop_type ('im_profile');
 END;
 /
-show errors;
+commit;
 
 begin
     acs_privilege.drop_privilege('view');
@@ -157,7 +163,7 @@ begin
     acs_privilege.drop_privilege('search_intranet');
 end;
 /
-show errors;
+commit;
 
 
 -----------------------------------------------------------
@@ -174,7 +180,7 @@ begin
     acs_object_type.drop_type('im_component_plugin');
 end;
 /
-show errors;
+commit;
 
 -----------------------------------------------------------
 -- Views
@@ -213,7 +219,7 @@ BEGIN
     im_project.del(v_internal_project_id);
 END;
 /
-show errors;
+commit;
 
 
 drop package im_project;
@@ -225,7 +231,7 @@ BEGIN
  acs_object_type.drop_type ('im_project');
 END;
 /
-show errors;
+commit;
 
 
 -------------------------------------------------------
@@ -244,7 +250,7 @@ BEGIN
     im_customer.del(v_internal_customer_id);
 END;
 /
-show errors;
+commit;
 
 
 -- Remove all possible links to customers from offices
@@ -253,7 +259,7 @@ BEGIN
     set customer_id = null;
 END;
 /
-show errors;
+commit;
 
 
 drop package im_customer;
@@ -264,7 +270,7 @@ BEGIN
  acs_object_type.drop_type ('im_customer');
 END;
 /
-show errors;
+commit;
 
 
 -------------------------------------------------------
@@ -278,7 +284,7 @@ BEGIN
  acs_object_type.drop_type ('im_office');
 END;
 /
-show errors;
+commit;
 
 
 
@@ -301,7 +307,7 @@ BEGIN
  acs_object_type.drop_type ('im_member_rel');
 END;
 /
-show errors;
+commit;
 
 
 -----------------------------------------------------------
@@ -318,7 +324,7 @@ begin
    im_drop_profile ('Accounting'); 
 end;
 /
-show errors;
+commit;
 
 
 -------------------------------------------------------
@@ -335,9 +341,9 @@ drop table currency_codes;
 -------------------------------------------------------
 -- Categories
 --
-drop sequence categories_seq;
-drop table category_hierarchy;
-drop table categories;
+drop sequence im_categories_seq;
+drop table im_category_hierarchy;
+drop table im_categories;
 
 
 

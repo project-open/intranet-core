@@ -58,14 +58,14 @@ create table im_projects (
 				references im_customers,
 	project_type_id		not null 
 				constraint im_projects_prj_type_fk 
-				references categories,
+				references im_categories,
 	project_status_id	not null 
 				constraint im_projects_prj_status_fk 
-				references categories,
+				references im_categories,
 	description		varchar(4000),
 	billing_type_id		integer
 				constraint im_project_billing_fk
-				references categories,
+				references im_categories,
 	start_date		date,
 	end_date		date,
 				-- make sure the end date is after the start date
@@ -293,6 +293,7 @@ im_project_url_map(url_type_id, project_id);
 declare
 	v_project_id		integer;
 	v_internal_customer_id	integer;
+	v_rel_id		integer;
 begin
 	select customer_id
 	into v_internal_customer_id
@@ -300,12 +301,13 @@ begin
 	where customer_path = 'internal';
 
 	v_project_id := im_project.new(
-	object_type	=> 'im_project',
-	project_name	=> 'Internal Test Project',
-	project_nr	=> 'internal',
-	project_path	=> 'internal',
-	customer_id	=> v_internal_customer_id
+		object_type	=> 'im_project',
+		project_name	=> 'Internal Test Project',
+		project_nr	=> 'internal',
+		project_path	=> 'internal',
+		customer_id	=> v_internal_customer_id
 	);
+
 end;
 /
-
+commit;

@@ -53,10 +53,10 @@ create table im_offices (
 				constraint im_offices_path_un unique,
 	office_status_id	integer not null
 				constraint im_offices_cust_stat_fk
-				references categories,
+				references im_categories,
 	office_type_id		integer not null
 				constraint im_offices_cust_type_fk
-				references categories,
+				references im_categories,
 				-- "pointer" back to the company of the office
 				-- no foreign key to customers yet - we still
 				-- need to define the table ..
