@@ -36,15 +36,15 @@
             name="SystemCSS"  default="/intranet/style/style.default.css"
             description="Global CSS"/>
 
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"
             name="NumberResultsPerPage"  default="50"
             description="How many lines do we want to show in an index page?"/>
 
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"
             name="ProjectNumberFieldSize"  default="10"
             description="How many characters can the project number have?"/>
 
-            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"
             name="SystemNavbarGifPath"  default="/intranet/images/navbar_default"
             description="Where are the GIFs located for the navbar?"/>
 
