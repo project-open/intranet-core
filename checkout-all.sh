@@ -15,7 +15,6 @@ cvs checkout intranet-dynvals
 cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
-cvs checkout intranet-freelance-recruiting
 cvs checkout intranet-hr
 cvs checkout intranet-invoices
 cvs checkout intranet-payments
