@@ -86,9 +86,7 @@ where
 	and c.main_office_id = o.office_id
 "
 
-db_0or1row company_get_cc "select cc.country_name \
-	                   from country_codes cc \
-			   where cc.iso = :address_country_code"
+set country_name [db_string company_get_cc "select cc.country_name from country_codes cc where cc.iso = :address_country_code" -default ""]
 
 set page_title $company_name
 set left_column ""
