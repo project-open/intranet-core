@@ -106,7 +106,7 @@ set page_body "
 		    <tr> 
 		      <td>Company</td>
 		      <td> 
-[im_customer_select "customer_id" $customer_id "" [list "Deleted" "Past" "Declined" "Inactive"]]
+[im_customer_select "customer_id" $customer_id "" "" [list "Deleted" "Past" "Declined" "Inactive"]]
 		      </td>
 		    </tr>
 		    <tr> 
