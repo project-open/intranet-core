@@ -43,85 +43,130 @@
 --1000	- ...: System groups
 
 
-
-
- function new (
-  user_id       in users.user_id%TYPE default null,
-  object_type   in acs_objects.object_type%TYPE
-                   default 'user',
-  creation_date in acs_objects.creation_date%TYPE
-                   default sysdate,
-  creation_user in acs_objects.creation_user%TYPE
-                   default null,
-  creation_ip   in acs_objects.creation_ip%TYPE default null,
-  authority_id  in auth_authorities.authority_id%TYPE default null,
-  username      in users.username%TYPE,
-  email         in parties.email%TYPE,
-  url           in parties.url%TYPE default null,
-  first_names   in persons.first_names%TYPE,
-  last_name     in persons.last_name%TYPE,
-  password      in users.password%TYPE,
-  salt          in users.salt%TYPE,
-  screen_name   in users.screen_name%TYPE default null,
-  email_verified_p in users.email_verified_p%TYPE default 't',
-  context_id    in acs_objects.context_id%TYPE default null
- )
- return users.user_id%TYPE;
-
 -- ------------------------------------------------------------
 -- Sample Users
 -- ------------------------------------------------------------
 
 declare
-	v_salt		varchar(100);
 	v_user_id	integer;
 begin
-	select dbms_random.random
-	into v_salt
-	from dual;
-
-	v_user_id := acs_user.new (
-		username	=> 'genman',
-		email		=> 'general.manager@project-open.com',
-		password	=> 'xxx',
-		first_names	=> 'General', 
-		last_name	=> 'Manager',
-		salt		=> v_salt
-	);
+    v_user_id := acs.add_user(
+	email		=> 'general.manager@project-open.com',
+	username	=> 'genman',	
+	first_names	=> 'General',
+	last_name	=> 'Manager',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
 end;
-/
-	
+/	
 
 
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(4, 
-'Manager', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(5, 'project.manager@project-open.com', 'xxx','Project', 
-'Manager', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(6, 'staff.member@project-open.com', 'xxx','Staff', 
-'Member', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(7, 'accounting@project-open.com', 'xxx','Acc', 
-'Aunting', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(8, 'freelance.one@project-open.com', 'xxx','Freelance', 
-'One', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(9, 'freelance.two@project-open.com', 'xxx','Freelance', 
-'Two', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(11, 'client.contact@project-open.com', 'xxx','Client', 
-'Contact', sysdate, '0.0.0.0', 'authorized');
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'project.manager@project-open.com',
+	username	=> 'proman',	
+	first_names	=> 'Project',
+	last_name	=> 'Manager',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
 
+
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'staff.member@project-open.com',
+	username	=> 'staffmem',	
+	first_names	=> 'Staff',
+	last_name	=> 'Member',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
+
+
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'accounting@project-open.com',
+	username	=> 'accounting',	
+	first_names	=> 'Ac',
+	last_name	=> 'Counting',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
+
+
+
+
+
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'freeelance.one@project-open.com',
+	username	=> 'freeone',	
+	first_names	=> 'Freelance',
+	last_name	=> 'One',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
+
+
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'freelance.two@project-open.com',
+	username	=> 'freetwo',	
+	first_names	=> 'Freelance',
+	last_name	=> 'Two',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
+
+
+declare
+	v_user_id	integer;
+begin
+    v_user_id := acs.add_user(
+	email		=> 'client.contact@project-open.com',
+	username	=> 'clicon',	
+	first_names	=> 'Client',
+	last_name	=> 'Contact',
+        email_verified_p => 't',
+        member_state	=> 'approved',
+	password	=> 'xxx',
+        salt		=> '1234'
+    );
+end;
+/	
 
 
 -- ------------------------------------------------------------
