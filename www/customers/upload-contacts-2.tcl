@@ -35,7 +35,7 @@ set context_bar [ad_context_bar [list "/intranet/cusomers/" "Clients"] "Upload C
 # number_of_bytes is the upper-limit
 set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
 set tmp_filename [ns_queryget upload_file.tmpfile]
-if { ![empty_string_p $max_n_bytes] && ([file size $tmp_filename] > $max_n_bytes) } {
+if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
     ad_return_complaint 1 "Your file is larger than the maximum permissible upload size:  [util_commify_number $max_n_bytes] bytes"
     return
 }
