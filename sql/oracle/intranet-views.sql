@@ -140,6 +140,8 @@ insert into im_view_columns values (2229,22,NULL,'Close',
 --
 commit;
 
+
+
 -- Project List Page
 --
 delete from im_view_columns where column_id > 2000 and column_id < 2099;
@@ -147,18 +149,24 @@ delete from im_view_columns where column_id > 2000 and column_id < 2099;
 insert into im_view_columns values (2001,20,NULL,'Project #',
 '"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
 '','',1,'');
-insert into im_view_columns values (2003,20,NULL,'Client',
+
+insert into im_view_columns values (2003,20,NULL,'Project Name',
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_name</A>"','','',3,'');
+
+insert into im_view_columns values (2005,20,NULL,'Client',
 '"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
-'','',2,'im_permission $user_id view_customers');
-insert into im_view_columns values (2007,20,NULL,'Project Name',
-'$project_name','','',4,'');
+'','',4,'im_permission $user_id view_customers');
+
 insert into im_view_columns values (2009,20,NULL,'Type',
 '$project_type','','',5,'');
+
 insert into im_view_columns values (2013,20,NULL,'Project Manager',
 '"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
 '','',7,'');
+
 insert into im_view_columns values (2015,20,NULL,'Start Date',
 '$start_date','','',8,'');
+
 insert into im_view_columns values (2017,20,NULL,'Delivery Date',
 '$end_date','','',9,'');
 

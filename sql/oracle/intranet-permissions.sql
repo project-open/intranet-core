@@ -154,6 +154,27 @@ end;
 show errors
 
 
+-- Function to add a new member to a user_group
+create or replace procedure user_group_member_del (
+	p_group_id IN integer,
+	p_user_id IN integer)
+IS
+	v_rel_id		integer;
+BEGIN
+     for row in (
+	select rel_id
+	from acs_rels
+	where
+		object_id_one = p_group_id
+		and object_id_two = p_user_id
+     ) loop
+	membership_rel.del(row.rel_id);
+     end loop;
+end;
+/
+show errors
+
+
 
 
 -------------------------------------------------------------

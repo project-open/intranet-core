@@ -95,7 +95,7 @@ set letter [string toupper $letter]
 # Determine the default status if not set
 if { [empty_string_p $status_id] } {
     # Default status is open
-    set status_id [ad_parameter ProjectStatusOpen intranet 0]
+    set status_id [im_project_status_open]
 }
 
 # Unprivileged users (clients & freelancers) can only see their 
@@ -105,7 +105,7 @@ if {![im_permission $current_user_id "view_projects_all"]} {
     set include_subprojects_p "f"
     
     # Restrict status to "Open" projects only
-    set status_id [ad_parameter ProjectStatusOpen intranet 0]
+    set status_id [im_project_status_open]
 }
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
@@ -184,8 +184,7 @@ if { ![empty_string_p $customer_id] && $customer_id != 0 } {
     lappend criteria "p.customer_id=:customer_id"
 }
 
-if { [string compare $mine_p "t"] == 0 } {
-#    lappend criteria "ad_group_member_p ( :user_id, p.project_id ) = 't'"
+if {[string equal $mine_p "t"]} {
     set mine_restriction ""
 } else {
     set mine_restriction "or perm.permission_all > 0"
@@ -239,15 +238,17 @@ set status_from "
 	(select project_id, min(audit_date) as when from im_projects_status_audit
 	group by project_id) s_create,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id=74 group by project_id) s_quote,
+	where project_status_id=[im_project_status_quoting] group by project_id) s_quote,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id=76 group by project_id) s_open,
+	where project_status_id=[im_project_status_open] group by project_id) s_open,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id=78 group by project_id) s_deliver,
+	where project_status_id=[im_project_status_delivered] group by project_id) s_deliver,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id=79 group by project_id) s_invoice,
+	where project_status_id=[im_project_status_invoiced] group by project_id) s_invoice,
 	(select min(audit_date) as when, project_id from im_projects_status_audit
-	where project_status_id in (77,81,82) group by project_id) s_close,
+	where project_status_id in (
+		[im_project_status_closed],[im_project_status_canceled],[im_project_status_declined]
+	) group by project_id) s_close,
 "
 
 set status_select "
@@ -332,8 +333,7 @@ WHERE
 	perm.project_id = p.project_id
 	and p.customer_id = c.customer_id(+)
 	and (
-		p.project_status_id = 76
-		and perm.permission_member > 0
+		perm.permission_member > 0
 		$mine_restriction
 	)
 	$order_by_clause

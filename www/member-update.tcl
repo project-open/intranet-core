@@ -44,19 +44,21 @@ if {!$write} {
     return
 }
 
-ns_log Notice "object_id=$object_id"
-ns_log Notice "submit=$submit"
-ns_log Notice "delete_user(multiple)=$delete_user"
+ns_log Notice "member-update: object_id=$object_id"
+ns_log Notice "member-update: submit=$submit"
+ns_log Notice "member-update: delete_user(multiple)=$delete_user"
 
 # "Del" button pressed: delete the marked users
 #
 if {[string equal $submit "Del"]} {
 
     foreach user $delete_user {
-	ns_log Notice "delete user: $user"
-	group::remove_member \
-	    -group_id $object_id \
-	    -user_id $user
+	ns_log Notice "member-update: delete user: $user"
+	db_dml delete_user "
+begin
+    user_group_member_del (:object_id, :user);
+end;
+"
     }
 }
 
@@ -67,7 +69,7 @@ if {[string equal $submit "Save"]} {
     set user_list [array names days]
     foreach user $user_list {
 	regsub {\,} $days($user) {.} days($user)
-	ns_log Notice "days(user)=$days($user)"
+	ns_log Notice "member-update: days(user)=$days($user)"
 	set sql "
 		update USER_GROUP_MEMBER_FIELD_MAP
 		set field_value='$days($user)'

@@ -89,7 +89,7 @@ lappend column_vars {$project_status}
 # Determine the default status if not set
 if { [empty_string_p $status_id] } {
     # Default status is open
-    set status_id [ad_parameter ProjectStatusOpen intranet 0]
+    set status_id [im_project_status_open]
 }
 
 # Reset some values for unprivileged users
@@ -99,7 +99,7 @@ if {![im_permission $current_user_id "view_projects_all"]} {
     set include_subprojects_p "f"
     
     # allow to see only open projects
-    set status_id [ad_parameter ProjectStatusOpen intranet 0]
+    set status_id [im_project_status_open]
 }
 
 # status_types will be a list of pairs of (project_status_id, project_status)

@@ -985,7 +985,7 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
     return ""
 }
 
-ad_proc -public im_show_user_style {group_member_id current_user_id group_id} {
+ad_proc -public im_show_user_style {group_member_id current_user_id object_id} {
     Determine whether the current_user should be able to see
     the group member.
     Returns 1 the name can be shown with a link,
@@ -997,6 +997,13 @@ ad_proc -public im_show_user_style {group_member_id current_user_id group_id} {
 
     # Get the permissions for this user
     im_user_permissions $current_user_id $group_member_id view read write admin
+
+    # Project Managers/admins can read the name of all users in their
+    # projects...
+    if {[im_biz_object_admin_p $current_user_id $object_id]} {
+	set view 1
+    }
+
     if {$read} { return 1 }
     if {$view} { return -1 }
     return 0

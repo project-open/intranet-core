@@ -148,7 +148,12 @@ ad_proc -public im_view_user_permission {view_user_id current_user_id var_value 
 
 
 ad_proc -public im_render_user_id { user_id user_name current_user_id group_id } {
-    
+    Returns a rendered HTML component showing a user according to the
+    viewing users permissions. There are three options:<br>
+    The component can return a link to the UserViewPage if the current
+    user has the permission to view it, it may return an empty string,
+    if the current user has no permissions at all, and it may contain
+    a name only for ???
 } {
     if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
 
