@@ -77,6 +77,20 @@ where
 }
 
 
+ad_proc -public im_user_permissions_admin_freelancers { { current_user_id 0} } {
+    Shortcut for im_user_permissions with the four by-value parameters:
+    Returns 1 if current_user_id can read user_id.
+} {
+    if {0 == $current_user_id} {
+	set currrent_user_id [ad_get_user_id]
+    }
+    set admin_p [db_string admin_freelancers "select acs_permission.permission_p([im_freelance_group_id], :current_user_id, 'admin') from dual"]
+
+    ns_log Notice "im_user_permissions_admin_freelancers: admin_p=$admin_p"
+    return [string equal t $admin_p]
+}
+
+
 ad_proc -public user_permissions { current_user_id user_id view_var read_var write_var admin_var } {
     Helper being called when calling dynamic permissions
     for objects (im_biz_objects...).<br>
