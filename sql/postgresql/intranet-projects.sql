@@ -327,10 +327,9 @@ BEGIN
 	from 	im_url_types, 
 		im_project_url_map
 	where	project_id=v_project_id
-		and im_url_types.url_type_id=im_project_url_map.url_type_id
+		and im_url_types.url_type_id=v_url_type
 		and url_type=v_url_type;
 	
-	exception when others then null;
 	end;
 	return v_url;
 end;' language 'plpgsql';
