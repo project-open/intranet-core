@@ -109,7 +109,7 @@ if {![im_permission $current_user_id "view_projects_all"]} {
 }
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
-    set how_many [ad_parameter -package_id [im_package_filestorage_id] NumberResultsPerPage  "" 50]
+    set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
 set end_idx [expr $start_idx + $how_many - 1]
 

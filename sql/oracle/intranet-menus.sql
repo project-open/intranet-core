@@ -617,6 +617,7 @@ declare
 	v_menu			integer;
 	v_project_menu		integer;
 	v_main_menu		integer;
+	v_top_menu		integer;
 
 	-- Groups
 	v_employees		integer;
@@ -641,6 +642,11 @@ begin
     from im_menus
     where label='main';
 
+    select menu_id
+    into v_top_menu
+    from im_menus
+    where label='top';
+
     -- The "Project" menu: It's not displayed itself
     -- but serves as the starting point for submenus
     v_project_menu := im_menu.new (
@@ -649,7 +655,7 @@ begin
 	name =>		'Project',
 	url =>		'/intranet/projects/view',
 	sort_order =>	10,
-	parent_menu_id => v_main_menu
+	parent_menu_id => v_top_menu
     );
 
     v_menu := im_menu.new (
