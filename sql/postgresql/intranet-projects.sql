@@ -114,7 +114,7 @@ create or replace function im_project__new (
         varchar, varchar, varchar, integer, integer, integer, integer
 ) returns integer as '
 DECLARE
-        office_id       alias for $1;
+        project_id       alias for $1;
         object_type     alias for $2;
         creation_date   alias for $3;
         creation_user   alias for $4;
@@ -132,7 +132,7 @@ DECLARE
 	v_project_id	  integer;
 BEGIN
        v_project_id := acs_object.new (
-                office_id,
+                project_id,
                 object_type,
                 creation_date,
                 creation_user,
