@@ -18,7 +18,7 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    { start_idx:integer "1" }
+    { start_idx:integer 0 }
     { how_many "" }
 }
 

@@ -30,7 +30,7 @@ ad_page_contract {
 } {
     { user_group_name:trim "Employees" }
     { order_by "Name" }
-    { start_idx:integer "0" }
+    { start_idx:integer 0 }
     { how_many:integer "" }
     { letter:trim "all" }
     { view_name "" }
@@ -438,13 +438,11 @@ if { $ctr == $how_many && $end_idx < $total_in_limited } {
     set next_page_url ""
 }
 
-if { $start_idx > 1 } {
+if { $start_idx > 0 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
     set previous_start_idx [expr $start_idx - $how_many]
-    if { $previous_start_idx < 1 } {
-	set previous_start_idx 1
-    }
+    if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page_url "index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
     set previous_page_url ""

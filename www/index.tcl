@@ -34,7 +34,7 @@ ad_page_contract {
     { status_id "" } 
     { type_id:integer "0" } 
     { letter "scroll" }
-    { start_idx:integer "1" }
+    { start_idx:integer 0 }
     { how_many "" }
 }
 
