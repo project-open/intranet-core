@@ -958,42 +958,6 @@ ad_proc num_days_in_month {month {year 1999}} {
     }
 }
 
-ad_proc absence_list_for_user_and_time_period {user_id first_julian_date last_julian_date} {
-    For a given user and time period, this proc
-    returns a list of elements where each element 
-    corresponds to one day and describes its
-    "work/vacation type".
-} {
-    # Select all vacation periods that have at least one day
-    # in the given time period.
-    set sql "
-        select to_char(start_date,'J') as start_date,
-               to_char(end_date,'J') as end_date,
-               vacation_type
-        from user_vacations
-        where user_id = :user_id
-        and   start_date <= to_date(:last_julian_date,'J')
-        and   end_date   >= to_date(:first_julian_date,'J')
-    "
-    # Initialize array with "work" elements.
-    for {set i $first_julian_date} {$i<=$last_julian_date} {incr i} {
-        set vacation($i) work
-    }
-    # Process vacation periods and modify array accordingly.
-    db_foreach vacation_period $sql {
-        for {set i [max $start_date $first_julian_date]} {$i<=[min $end_date $last_julian_date]} {incr i } {
-            set vacation($i) $vacation_type
-        }
-    }
-    # Return the relevant part of the array as a list.
-    set result [list]
-    for {set i $first_julian_date} {$i<=$last_julian_date} {incr i} {
-        lappend result $vacation($i)
-    }
-    return $result
-}
-
-
 ## MJS 8/2
 ad_proc ad_build_url args { 
 

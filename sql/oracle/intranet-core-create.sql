@@ -42,6 +42,13 @@ prompt *** intranet-currency-codes
 
 
 ---------------------------------------------------------
+-- Load User Data
+--
+prompt *** intranet-users
+@intranet-users.sql
+
+
+---------------------------------------------------------
 -- Import Business Objects
 --
 
