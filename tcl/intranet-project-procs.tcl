@@ -241,12 +241,12 @@ ad_proc -public im_next_project_nr { } {
 
     set sql "
 select
-	to_char(now(), 'YYYY') ||'_'|| trim(to_char(1 + cast((max(substr(p.project_nr,6,4))) as integer), '0000')) as project_nr
+	to_char(sysdate, 'YYYY') ||'_'|| trim(to_char(1 + cast((max(substr(p.project_nr,6,4))) as integer), '0000')) as project_nr
 from
-        im_projects p
+        im_projects p, dual
 where
         p.project_nr like '200_/_____' escape '/' and
-        substr(p.project_nr, 1,4)=to_char(now(), 'YYYY') and
+        substr(p.project_nr, 1,4)=to_char(sysdate, 'YYYY') and
         ascii(substr(p.project_nr,6,1)) > 47 and
         ascii(substr(p.project_nr,6,1)) < 58 and
         ascii(substr(p.project_nr,7,1)) > 47 and
