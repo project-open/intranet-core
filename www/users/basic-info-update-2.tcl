@@ -22,6 +22,7 @@ ad_page_contract {
     @param screen_name
 
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,optional
     first_names:optional

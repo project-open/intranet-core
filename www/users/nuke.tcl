@@ -14,7 +14,10 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    @cvs-id nuke.tcl,v 3.3.6.3.2.3 2000/09/22 01:36:19 kevin Exp
+    Try to remove a user completely
+
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
 }

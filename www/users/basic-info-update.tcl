@@ -1,4 +1,4 @@
-# /www/intranet/users/basic-info-update.tcl
+# /packages/intranet-core/users/basic-info-update.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4

@@ -13,7 +13,10 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 
 ad_page_contract {
-    @cvs-id nuke-2.tcl,v 3.2.2.4.2.5 2000/09/22 01:36:18 kevin Exp
+    Remove a user from the system completely
+
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
 }

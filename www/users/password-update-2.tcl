@@ -14,7 +14,9 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    @cvs-id password-update-2.tcl,v 3.2.2.4.2.4 2000/09/22 01:36:19 kevin Exp
+
+    @author various@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
     name:notnull
@@ -23,6 +25,15 @@ ad_page_contract {
     return_url
 }
 
+
+
+# Check the permissions that the current_user has on user_id
+set current_user_id [ad_maybe_redirect_for_registration]
+im_user_permissions $current_user_id $user_id view read write admin
+if {!$admin} {
+    ad_return_complaint 1 "<li>You are not authorized to see this page"
+    return
+}
 
 set exception_text ""
 set exception_count 0

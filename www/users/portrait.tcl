@@ -18,7 +18,6 @@ ad_page_contract {
 
     @author philg@mit.edu
     @author frank.bergmann@project-open.com
-
 } {
     user_id:integer,notnull
 }

@@ -1,4 +1,4 @@
-# /www/intranet/users/index.tcl
+# /packages/intranet-core/users/index.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -27,7 +27,6 @@ ad_page_contract {
 
     @author unknown@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
-    @creation-date Jan 2004
 } {
     { user_group_name:trim "Employees" }
     { order_by "Name" }

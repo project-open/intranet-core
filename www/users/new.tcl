@@ -1,7 +1,7 @@
 # /packages/intranet-core/www/users/new.tcl
 #
-# Copyright (C) 1998-2004 various parties
-# The code is based on ArsDigita ACS 3.4
+# Copyright (C) 2003-2004 various parties
+# The code is based on OpenACS 5
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -14,11 +14,10 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Adding a user by an administrator
+    Adding a user
 
-    @author unknown@arsdigita.com
+    @author unknown@openacs.org
     @author frank.bergmann@project-open.com
-
 } -query {
     { referer "/acs-admin/users" }
     { user_id "" }

@@ -18,7 +18,7 @@ ad_page_contract {
     
     @author unknown@arsdigita.com
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
-
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
 }

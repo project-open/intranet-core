@@ -21,6 +21,7 @@ ad_page_contract {
     @param return_url
 
     @author philg@mit.edu
+    @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
     return_url:optional
