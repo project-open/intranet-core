@@ -2878,9 +2878,9 @@ ad_proc -public im_import_prices { filename } {
     set csv_header_fields [split $csv_header "\""]
     set csv_header_len [llength $csv_header_fields]
     ns_log Notice "csv_header_fields=$csv_header_fields"
-
+    
     for {set i 2} {$i < $csv_lines_len} {incr i} {
-
+	
 	set csv_line [string trim [lindex $csv_lines $i]]
 	set csv_line_fields [split $csv_line "\""]
 	ns_log Notice "csv_line_fields=$csv_line_fields"
@@ -2913,16 +2913,15 @@ ad_proc -public im_import_prices { filename } {
 	# Transform email and names into IDs
 	#
 
-        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
-
-	set customer_id [db_string customer "select customer_id from im_invoices where invoice_id=:invoice_id" -default 0]
-	set provider_id [db_string customer "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
-
-	set price_status_id [im_import_get_category $price_status "Intranet Price Status" ""]
-	set price_type_id [im_import_get_category $price_type "Intranet Price Type" ""]
-
-
-"uom";"customer_name";"target_language";"source_language";"subject_area";"valid_from";"valid_through";"currency";"price"
+	# Use "" as default values because most of these
+	# values are optional.
+        #
+	set uom_id [im_import_get_category $uom "Intranet UoM" ""]
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	set task_type_id [im_import_get_category $task_type "Intranet Project Type" ""]
+	set target_language_id [im_import_get_category $target_language "Intranet Translation Language" ""]
+	set source_language_id [im_import_get_category $source_language "Intranet Translation Language" ""]
+	set subject_area_id  [im_import_get_category $subject_area "Intranet Translation Subject Area" ""]
 
 
 	# -------------------------------------------------------
@@ -2930,45 +2929,46 @@ ad_proc -public im_import_prices { filename } {
 	#
 
 	set create_price_sql "
-INSERT INTO im_prices (
+INSERT INTO im_trans_prices (
         price_id,
-        invoice_id,
+        uom_id,
         customer_id,
-        provider_id,
-	received_date,
-	price_type_id,
-        last_modified,
-        last_modifying_user,
-        modified_ip_address
+        task_type_id,
+        target_language_id,
+        source_language_id,
+        subject_area_id,
+        valid_from,
+        valid_through,
+        currency,
+        price
 ) values (
-	:price_id,
-	:invoice_id,
-	:customer_id,
-	:provider_id,
-	:received_date,
-	:price_type_id,
-	sysdate,
-	:user_id,
-	'[ad_conn peeraddr]'
+        :price_id,
+        :uom_id,
+        :customer_id,
+        :task_type_id,
+        :target_language_id,
+        :source_language_id,
+        :subject_area_id,
+        :valid_from,
+        :valid_through,
+        :currency,
+        :price
 )"
 
 
 	set update_price_sql "
-UPDATE im_prices
+UPDATE im_trans_prices
 SET
-        invoice_id              = :invoice_id,
-        customer_id             = :customer_id,
-        provider_id             = :provider_id,
-        received_date           = :received_date,
-        start_block             = :start_block,
-        price_type_id         = :price_type_id,
-        price_status_id       = :price_status_id,
-        amount                  = :amount,
-        currency                = :currency,
-        note                    = :note,
-        last_modified           = sysdate,
-        last_modifying_user     = :user_id,
-        modified_ip_address     = '[ad_conn peeraddr]'
+        uom_id			= :uom_id,
+        customer_id		= :customer_id,
+        task_type_id		= :task_type_id,
+        target_language_id	= :target_language_id,
+        source_language_id	= :source_language_id,
+        subject_area_id		= :subject_area_id,
+        valid_from		= :valid_from,
+        valid_through		= :valid_through,
+        currency		= :currency,
+        price			= :price
 WHERE
         price_id = :price_id
 "
@@ -2979,11 +2979,24 @@ WHERE
 
 	if { [catch {
 	
-	    set price_id [db_string price_id "select price_id from im_prices where customer_id=:customer_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and price_type_id=:price_type_id and currency=:currency" -default 0]
+	    set price_id [db_string price_id "
+select 
+	price_id 
+from
+	im_trans_prices 
+where 
+	uom_id = :uom_id 
+	and customer_id = :customer_id 
+	and task_type_id = :task_type_id 
+	and target_language_id = :target_language_id 
+	and source_language_id = :source_language_id 
+	and subject_area_id = :subject_area_id 
+	and currency = :currency
+" -default 0]
 
 	    if {0 == $price_id} {
 		# The price doesn't exist yet:
-	        set price_id [db_nextval im_prices_id_seq]
+	        set price_id [db_nextval im_trans_prices_seq]
 		db_dml price_create $create_price_sql
 	    }
 	    db_dml update_price $update_price_sql
@@ -2994,33 +3007,6 @@ WHERE
 	    $csv_line<br><pre>\n$err_msg</pre>"
 	}
     }
-
-
-    # Add relationships between invoices and projects
-    # based on the project_id information of the invoice_items.
-    # Actually, this is redundand, so we should drop it,
-    # but /invoicing/www/new-4 does it, and acs_rel is
-    # easy to browse...
-    set insert_relations_sql "
-declare
-     v_rel_id   integer;
-begin
-     for row in (
-        select distinct
-                project_id,
-                invoice_id
-        from
-                im_invoice_items i
-     ) loop
-
-           v_rel_id := acs_rel.new(
-                   object_id_one => row.project_id,
-                   object_id_two => row.invoice_id
-           );
-     end loop;
-end;
-"
-#    db_dml insert_relations $insert_relations_sql
 
     return $err_return
 }
