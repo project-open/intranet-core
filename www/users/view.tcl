@@ -387,7 +387,7 @@ if {!$admin} {
 # Portrait
 # ---------------------------------------------------------------
 
-set subsite_url     [subsite::get_element -element url]
+set subsite_url [subsite::get_element -element url]
 set export_vars [export_url_vars user_id return_url]
 
 if {![db_0or1row get_item_id "
@@ -441,7 +441,7 @@ if {$portrait_p} {
 	set widthheight ""
     }
     
-    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?$export_vars\" alt=\"$portrait_alt\">"
+    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id\" alt=\"$portrait_alt\">"
 
 } else {
 
@@ -453,7 +453,7 @@ if {$portrait_p} {
 
 
 set portrait_admin "
-<li><a href=\"/intranet/users/portrait/upload?return_url=$return_url\">Upload portrait</a></li>
+<li><a href=\"/intranet/users/portrait/upload?$export_vars\">Upload portrait</a></li>
 <li><a href=\"/intranet/users/portrait/erase?$export_vars\">Delete portrait</a></li>\n"
 
 if {$portrait_p} {
