@@ -22,6 +22,11 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+ad_proc -public im_biz_object_role_full_member {} { return 1300 }
+ad_proc -public im_biz_object_role_project_manager {} { return 1301 }
+ad_proc -public im_biz_object_role_key_account {} { return 1302 }
+ad_proc -public im_biz_object_role_office_admin {} { return 1303 }
+
 
 ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
     Returns a URL to a page to view a specific object_id,
@@ -172,7 +177,7 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     Adds a user in a role to a Business Object.
 } {
-    # Remove all previous member_rels between user ans object
+    # Remove all previous member_rels between user and object
     set sql "
     begin
 	for row in (
@@ -203,6 +208,18 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
 
     # Remove all permission related entries in the system cache
     im_permission_flush
+
+
+    # Recursively add members to super-projects
+    #
+    set object_type [db_string object_type "select object_type from acs_objects where object_id=:object_id"]
+    if {[string equal "im_project" $object_type]} {
+	set super_project_id [db_string super_project "select parent_id from im_projects where project_id = :object_id"]
+	if {"" != $super_project_id} {
+	    set super_role_id [im_biz_object_role_full_member]
+	    im_biz_object_add_role $user_id $super_project_id $super_role_id
+	}
+    }
 }
 
 
