@@ -109,6 +109,19 @@ create table im_customers (
 	vat_number		varchar(100)
 );
 
+
+
+-- Setup the list of roles that a user can take with
+-- respect to a customer:
+--      Full Member (1300) and
+--      Key Account Manager (1302)
+--
+insert into im_biz_object_role_map values ('im_customer',85,1300);
+insert into im_biz_object_role_map values ('im_customer',85,1302);
+
+
+
+
 create or replace package im_customer
 is
     function new (

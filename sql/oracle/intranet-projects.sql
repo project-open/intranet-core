@@ -110,7 +110,7 @@ is
 	project_path	in im_projects.project_path%TYPE,
 	parent_id	in im_projects.parent_id%TYPE default null,
 	customer_id	in im_projects.customer_id%TYPE,
-	project_type_id	in im_projects.project_type_id%TYPE default 93,
+	project_type_id	in im_projects.project_type_id%TYPE default 85,
 	project_status_id in im_projects.project_status_id%TYPE default 76
 	) return im_projects.project_id%TYPE;
 
@@ -120,6 +120,18 @@ is
 end im_project;
 /
 show errors
+
+
+
+-- Setup the list of roles that a user can take with
+-- respect to a project:
+--	Full Member (1300) and
+--	Project Manager (1301)
+--
+insert into im_biz_object_role_map values ('im_project',85,1300);
+insert into im_biz_object_role_map values ('im_project',85,1301);
+insert into im_biz_object_role_map values ('im_project',86,1300);
+insert into im_biz_object_role_map values ('im_project',86,1301);
 
 
 create or replace package body im_project
@@ -317,4 +329,4 @@ begin
 	);
 end;
 /
-show errors;
+

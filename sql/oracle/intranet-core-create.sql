@@ -60,12 +60,9 @@ prompt *** intranet-customers
 @intranet-customers.sql
 prompt *** intranet-projects
 @intranet-projects.sql
-prompt *** intranet-object-member
-@intranet-object-member.sql
 
 
 -- Some helper functions to make our queries easier to read
-
 create or replace function im_category_from_id (p_category_id IN integer)
 return varchar
 IS

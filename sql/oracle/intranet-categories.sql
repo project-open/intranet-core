@@ -341,15 +341,15 @@ insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY,
 
 -- Task Board
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('0', '', 'f', 130, '15 Minutes', 'Intranet Task Board Time Frame');
+('', 'f', 130, '15 Minutes', 'Intranet Task Board Time Frame');
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('2', '', 'f', 131, '1 hour', 'Intranet Task Board Time Frame');
+('', 'f', 131, '1 hour', 'Intranet Task Board Time Frame');
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('3', '', 'f', 132, '1 day', 'Intranet Task Board Time Frame');
+('', 'f', 132, '1 day', 'Intranet Task Board Time Frame');
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('4', '', 'f', 133, 'Side Project', 'Intranet Task Board Time Frame');
+('', 'f', 133, 'Side Project', 'Intranet Task Board Time Frame');
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('10', '', 'f', 134, 'Full Time', 'Intranet Task Board Time Frame');
+('', 'f', 134, 'Full Time', 'Intranet Task Board Time Frame');
 
 -- Intranet Departments
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 

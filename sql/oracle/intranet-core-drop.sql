@@ -273,6 +273,8 @@ show errors;
 drop table im_member_rels;
 drop package im_member_rel;
 
+drop table im_biz_object_role_map;
+drop table im_biz_object_members;
 drop package im_biz_object;
 drop table im_biz_objects;
 delete from acs_objects where object_type='im_biz_object';

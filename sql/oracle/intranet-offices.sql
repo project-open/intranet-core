@@ -221,16 +221,3 @@ end im_office;
 /
 show errors
 
-
--- Create the "Main Office" office, representing the company itself
-declare
-    v_office_id	integer;
-begin
-    v_office_id := im_office.new(
-	object_type	=> 'im_office',
-	office_name	=> 'Project/Open Main Office',
-	office_path	=> 'po_main_office'
-    );
-end;
-/
-show errors;

@@ -177,20 +177,6 @@ create table im_biz_object_role_map (
 );
 
 
--- Both Other and Unknown project can have Members and PMs:
---
--- Project Types: 85=other, 86=unknow
--- Roles: 1300:Member, 1301:PM
-insert into im_biz_object_role_map values ('im_project',85,1300);
-insert into im_biz_object_role_map values ('im_project',85,1301);
-insert into im_biz_object_role_map values ('im_project',86,1300);
-insert into im_biz_object_role_map values ('im_project',86,1301);
-
-insert into im_biz_object_role_map values ('im_customer',85,1300);
-insert into im_biz_object_role_map values ('im_customer',85,1302);
-
-
-
 -- ------------------------------------------------------------
 -- Intranet Membership Relation
 -- ------------------------------------------------------------
