@@ -211,7 +211,7 @@ if { [string compare $letter "all"] == 0 } {
 } else {
     # Set up boundaries to limit the amount of rows we display
     if { [empty_string_p $how_many] || $how_many < 1 } {
-	set how_many [ad_parameter NumberResultsPerPage intranet 50]
+	set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage intranet 50]
     }
     set end_idx [expr $start_idx + $how_many - 1]
     set limited_query [im_select_row_range $sql $start_idx $end_idx]
@@ -463,12 +463,6 @@ if {[im_permission $current_user_id employee] || [im_permission $current_user_id
     append hours_html "<li> <a href=/intranet/absences/>Work absences</a>\n"
 }
 append hours_html "</ul>"
-
-
-set hours_component ""
-if { [ad_parameter TrackHours intranet 0] && [im_permission $current_user_id add_hours]} {
-    set hours_component [im_table_with_title "Work Log" "$hours_html"]
-}
 
 # ----------------------------------------------------------------
 # Administration
