@@ -34,56 +34,56 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
     set url "/intranet/images"
     set navbar_gif_path [im_navbar_gif_path]
     switch [string tolower $name] {
-	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt='$alt'>" }
-	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border alt='$alt'>" }
-	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border alt='$alt'>" }
-	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border alt='$alt'>" }
-	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border alt='$alt'>" }
-	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border alt='$alt'>" }
-	"incident"	{ return "<img src=$url/incident.gif width=20 height=20 border=$border alt='$alt'>" }
-	"1102"		{ return "<img src=$url/incident.gif width=20 height=20 border=$border alt='$alt'>" }
-	"discussion"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt='$alt'>" }
-	"1106"		{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt='$alt'>" }
-	"task"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt='$alt'>" }
-	"1104"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt='$alt'>" }
-	"news"		{ return "<img src=$url/news.gif width=20 height=20 border=$border alt='$alt'>" }
-	"1100"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt='$alt'>" }
-	"note"		{ return "<img src=$url/note.gif width=20 height=20 border=$border alt='$alt'>" }
-	"1108"		{ return "<img src=$url/note.gif width=20 height=20 border=$border alt='$alt'>" }
-	"reply"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border alt='$alt'>" }
-	"1190"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border alt='$alt'>" }
-	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border alt='$alt'>" }
-	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt='$alt'>" }
-	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border alt='$alt'>" }
-	"tool"		{ return "<img src=$url/tool.15.gif widht=20 height=15 border=$border alt='$alt'>" }
-	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 heigth=16 border=$border alt='$alt'>" }
-	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border alt='$alt'>" }
-	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border alt='$alt'>" }
-	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 heigth=16 border=$border alt='$alt'>" }
-	"profile"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt='$alt'>" }
-	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border alt='$alt'>" }
-	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt='$alt'>" }
-	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt='$alt'>" }
+	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt=\"$alt\">" }
+	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border alt=\"$alt\">" }
+	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border alt=\"$alt\">" }
+	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border alt=\"$alt\">" }
+	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border alt=\"$alt\">" }
+	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border alt=\"$alt\">" }
+	"incident"	{ return "<img src=$url/incident.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"1102"		{ return "<img src=$url/incident.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"discussion"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"1106"		{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"task"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt=\"$alt\">" }
+	"1104"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt=\"$alt\">" }
+	"news"		{ return "<img src=$url/news.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"1100"		{ return "<img src=$url/task.gif width=24 height=20 border=$border alt=\"$alt\">" }
+	"note"		{ return "<img src=$url/note.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"1108"		{ return "<img src=$url/note.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"reply"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border alt=\"$alt\">" }
+	"1190"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border alt=\"$alt\">" }
+	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border alt=\"$alt\">" }
+	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt=\"$alt\">" }
+	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border alt=\"$alt\">" }
+	"tool"		{ return "<img src=$url/tool.15.gif widht=20 height=15 border=$border alt=\"$alt\">" }
+	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 heigth=16 border=$border alt=\"$alt\">" }
+	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border alt=\"$alt\">" }
+	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border alt=\"$alt\">" }
+	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 heigth=16 border=$border alt=\"$alt\">" }
+	"profile"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border alt=\"$alt\">" }
+	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border alt=\"$alt\">" }
+	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt=\"$alt\">" }
+	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt=\"$alt\">" }
 
-	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border alt='$alt'>" }
+	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border alt=\"$alt\">" }
 
-	"left-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"left-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"right-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"right-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-sel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-notsel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-sel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"left-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"left-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"right-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"right-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"middle-sel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"middle-notsel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"middle-sel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
+	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt=\"$alt\">" }
 
-	"admin"		{ return "<img src=$url/admin.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"company"	{ return "<img src=$url/company.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"employee"	{ return "<img src=$url/employee.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"freelance"	{ return "<img src=$url/freelance.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"senman"	{ return "<img src=$url/senman.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"proman"	{ return "<img src=$url/proman.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"admin"		{ return "<img src=$url/admin.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"company"	{ return "<img src=$url/company.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"employee"	{ return "<img src=$url/employee.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$url/freelance.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"senman"	{ return "<img src=$url/senman.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"proman"	{ return "<img src=$url/proman.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
+	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border alt=\"$alt\">" }
 
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
@@ -739,7 +739,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     if {[ad_user_group_member [im_employee_group_id] $user_id]} {
 	set search_form "
 	    <form action=/intranet/search/go-search method=post name=surx>
-              <input class=surx name=query_string size=15 value=Search>
+              <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\">
               <select class=surx name=target>"
 	if {[im_permission $user_id "search_intranet"]} {
 	    append search_form "

@@ -28,7 +28,7 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
 if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
-    ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
+    ad_return_complaint 1 "<li><#_ You have insufficient permissions to see this page.#>"
 }
 
 # ----------------------------------------------------------
@@ -37,13 +37,13 @@ if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
 
 set column_headers [list]
 set column_vars [list]
-lappend column_headers "Project #"
+lappend column_headers "<#_ Project ##>"
 lappend column_vars {"<A HREF='/intranet/projects/view?project_id=$project_id'>" $project_nr "</A>"}
-lappend column_headers "Project Name"
+lappend column_headers "<#_ Project Name#>"
 lappend column_vars {$project_name}
-lappend column_headers "Delivery Date"
+lappend column_headers "<#_ Delivery Date#>"
 lappend column_vars {"$end_date $end_date_time"}
-lappend column_headers "Status"
+lappend column_headers "<#_ Status#>"
 lappend column_vars {$project_status}
 
 set sql "
@@ -96,4 +96,4 @@ $results
 
 db_release_unused_handles
 
-doc_return  200 text/html [im_return_template]
+ad_return_template

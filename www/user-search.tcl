@@ -76,19 +76,19 @@ set exception_count 0
 
 if { $email == "" && $last_name == "" } {
     incr exception_count
-    append errors "<li>You must specify either an email address or last name for which to search.\n"
+    append errors "<li><#_ You must specify either an email address or last name for which to search.#>"
 }
 
 if { $email != "" && $last_name != "" } {
     incr exception_count
-    append errors "<li>You can only specify either email or last name, not both.\n"
+    append errors "<li><#_ You can only specify either email or last name, not both.#>"
 }
 
 if { $return_url == "" } {
     incr exception_count
-    append errors "<li>Return_Url was not specified. This shouldn't have happened,
-please contact the <a href=\"mailto:[ad_host_administrator]\">administrator</a>
-and let them know what happened.\n"
+    set mail_to_administrator_link "<a href=\"mailto:[ad_host_administrator]\"><#_ administrator#></a>"
+    append errors "<li><#_ Return_Url was not specified. This shouldn't have happened,
+please contact the %mail_to_administrator_link% and let them know what happened.#>"
 }
 
 
@@ -153,7 +153,7 @@ if { ![empty_string_p $limit_to_users_in_group_id] } {
     if {[empty_string_p [lindex $group_list 0]]} {
 	
 	## No group names found - return
-	set errors "<LI>None of the specified groups exist.\n"
+	set errors "<LI><#_ None of the specified groups exist.#>"
 	ad_return_complaint 1 $errors
 	return
 
@@ -255,13 +255,13 @@ foreach var $passthrough {
 append page_contents "
 <table cellpadding=0 cellspacing=2 border=0>
 	<tr>
-	  <td class=rowtitle align=middle colspan=5>Freelance</td>
+	  <td class=rowtitle align=middle colspan=5><#_ Freelance#></td>
 	</tr>
 	  
 	<tr class=rowtitle>
-	  <td class=rowtitle>Name</td>
-	  <td class=rowtitle>Email</td>
-	  <td class=rowtitle>Select</td>
+	  <td class=rowtitle><#_ Name#></td>
+	  <td class=rowtitle><#_ Email#></td>
+	  <td class=rowtitle><#_ Select#></td>
 	</tr>
 "
 
@@ -284,7 +284,7 @@ if {$ctr > 0} {
     append page_contents "
         <tr>
           <td colspan=2></td>
-	  <td><input type=submit value=\"Select\"></td>
+	  <td><input type=submit value=\"<#_ Select#>\"></td>
 	</tr>
 "
 } else {
@@ -293,7 +293,7 @@ if {$ctr > 0} {
     append page_contents "
 
         <tr$bgcolor([expr $ctr % 2])>
-          <td colspan=3>No members found</td>
+          <td colspan=3><#_ No members found#></td>
 	</tr>
 "
 }

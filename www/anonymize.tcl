@@ -445,6 +445,5 @@ db_foreach user_select $user_sql {
 if {"" != $return_url} {
     ad_return_redirect $return_url
 } else {
-    set page_body "<H1>[_ intranet-core.Anonymize]</H1>[_ intranet-core.lt_Successfully_finished]"
-    doc_return  200 text/html [im_return_template]
+    ad_return_error "<H1>[_ intranet-core.Anonymize]</H1>" "[_ intranet-core.lt_Successfully_finished]"
 }
