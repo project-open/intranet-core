@@ -18,6 +18,7 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
+    { return_url "/intranet/admin/menus/index" }
 }
 
 # ------------------------------------------------------
@@ -51,12 +52,15 @@ set bgcolor(1) " class=roweven"
 set group_list_sql {
 select DISTINCT
         g.group_name,
-        g.group_id
+        g.group_id,
+	p.profile_gif
 from
         acs_objects o,
-        groups g
+        groups g,
+	im_profiles p
 where
         g.group_id = o.object_id
+	and g.group_id = p.profile_id
         and o.object_type = 'im_profile'
 order by lower(g.group_name)
 }
@@ -70,16 +74,24 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
-  <td class=rowtitle>Package</td>
-"
+  <td class=rowtitle>Package</td>\n"
+
 set main_sql_select ""
+set num_profiles 0
 db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name
     append main_sql_select "\tacs_permission.permission_p(m.menu_id, $group_id, 'read') as p${group_id}_read_p,\n"
-    append table_header "<td class=rowtitle><A href=$group_url?group_id=$group_id>$group_name</A></td>\n"
+    append table_header "
+      <td class=rowtitle><A href=$group_url?group_id=$group_id>
+      [im_gif $profile_gif $group_name]
+    </A></td>\n"
+    incr num_profiles
 }
-append table_header "</th>\n"
+append table_header "
+  <td class=rowtitle>[im_gif del "Delete Menu"]</td>
+</tr>
+"
 
 
 # ------------------------------------------------------
@@ -106,6 +118,8 @@ connect by
 
 
 set table "
+<form action=menu-action method=post>
+[export_form_vars return_url]
 <table>
 $table_header\n"
 
@@ -142,7 +156,20 @@ db_foreach menus $main_sql {
     }
 
     append table "
+  <td>
+    <input type=checkbox name=menu_id.$menu_id>
+  </td>
 </tr>
 "
 }
-append table "</table>\n"
+
+append table "
+<tr>
+  <td colspan=[expr $num_profiles + 5]>&nbsp;</td>
+  <td>
+    <input type=submit value='Del'>
+  </td>
+</tr>
+</table>
+</form>
+"
