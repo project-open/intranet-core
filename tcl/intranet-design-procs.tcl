@@ -743,9 +743,15 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head [im_stylesheet]
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
-    set num_users_online [lc_numeric [whos_online::num_users]]
-    set user_str "users"
-    if {1 == $num_users_online} { set user_str "user"}
+    # Enable "Users Online" mini-component
+    set users_online_str ""
+    if {[publish::proc_exists whos_online num_users]} {
+	set num_users_online [lc_numeric [whos_online::num_users]]
+	set num_users_online 0
+	set user_str "users"
+	if {1 == $num_users_online} { set user_str "user"}
+        set users_online_str "<A href=/intranet/whos-online>$num_users_online $user_str online</A><BR>\n"
+    }
 
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
@@ -756,7 +762,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     </td>
     <td align=left valign=middle> 
       <span class=small>
-        <A href=/intranet/whos-online>$num_users_online $user_str online</A><BR>
+        $users_online_str
         $user_profile: $user_name <BR>
         <a href='/register/logout'>Log Out</a> |
         <a href=$change_pwd_url>Change Password</a> 
