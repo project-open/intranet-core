@@ -253,3 +253,42 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_office','edit','/intranet/offices/new?office_id=');
 
 
+-- create function to add_months
+CREATE OR REPLACE FUNCTION add_months(date, int4)
+  RETURNS date AS
+'
+DECLARE 
+	p_date_in alias for $1;		-- date_id
+	p_months alias for $2;		   -- months to add
+
+	v_date_out     date;
+begin
+	select p_date_in + "interval"(p_months || '' months'') into v_date_out;
+	return v_date_out;
+end;'
+  LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION last_day(date)
+  RETURNS date AS
+'
+DECLARE 
+	p_date_in alias for $1;		-- date_id
+
+	v_date_out	date;
+begin
+	select to_date(date_trunc(''month'',add_months(p_date_in,1)),''YYYY-MM-DD'') - 1 into v_date_out;
+	return v_date_out;
+end;'
+  LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION trunc(date,varchar)
+returns date as '
+DECLARE 
+	p_date_in	alias for $1;	-- date_in
+	p_field		alias for $2;	-- field
+
+	v_date_out	date;
+BEGIN
+	select date_trunc("p_field",p_date_in) into v_date_out;
+	return v_date_out;
+END;' language 'plpgsql';
