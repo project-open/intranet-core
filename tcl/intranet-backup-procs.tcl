@@ -102,7 +102,7 @@ ad_proc -public im_import_get_user { email default } {
 ad_proc -public im_import_get_user_helper { email } {
     Performas the DB to looks up an email to be cached
 } {
-    return [db_string get_user "select party_id from parties where lower(email)=lower(:email)" -default ""]
+    return [db_string get_user "select party_id from parties where lower(email)=lower('$email')" -default ""]
 }
 
 
@@ -453,23 +453,10 @@ ad_proc -public im_import_companies { filename } {
 
 	# Check if the company already exists..
 	set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
-
-
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
-
-	set create_company_sql "
-DECLARE
-    v_company_id	integer;
-BEGIN
-    v_company_id := im_company.new(
-	company_name	=> :company_name,
-	company_path	=> :company_path,
-	main_office_id	=> :main_office_id	
-    );
-END;
-"
+	db_1row "get sysdate" "select sysdate as sysdate from dual"
 
 	set update_company_sql "
 UPDATE im_companies
@@ -480,13 +467,12 @@ SET
 	note=:note,
 	referral_source=:referral_source,
 	annual_revenue_id=:annual_revenue_id,
-	status_modification_date=sysdate,
-	old_company_status_id='',
+	status_modification_date=:sysdate,
 	billable_p=:billable_p,
 	site_concept=:site_concept,
 	manager_id=:manager_id,
 	contract_value=:contract_value,
-	start_date=sysdate,
+	start_date=:sysdate,
 	primary_contact_id=:primary_contact_id,
 	main_office_id=:main_office_id,
 	vat_number=:vat_number
@@ -511,7 +497,7 @@ WHERE
 
 	    if {0 == $company_id} {
 		# The company doesn't exist yet:
-		db_dml company_create $create_company_sql
+		set company_id [db_exec_plsql company_create {}]
 	    }
 	    db_dml update_company_sql $update_company_sql
 	
@@ -608,16 +594,6 @@ ad_proc -public im_import_company_members { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_member_sql "
-DECLARE
-    v_rel_id	integer;
-BEGIN
-    v_rel_id := im_biz_object_member.new(
-	object_id	=> :object_id,
-	user_id		=> :user_id,
-	object_role_id	=> :object_role_id
-    );
-END;"
 
 	# -------------------------------------------------------
 	# Debugging
@@ -633,7 +609,7 @@ END;"
 
 	    set count [db_string count_members "select count(*) from acs_rels where object_id_one=:object_id and object_id_two=:user_id"]
 	    if {!$count} {
-		db_dml create_member $create_member_sql
+		set rel_id [db_exec_plsql create_member {}]
 	    }
 	
 	} err_msg] } {
@@ -743,17 +719,6 @@ ad_proc -public im_import_offices { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_office_sql "
-DECLARE
-    v_office_id	integer;
-BEGIN
-    v_office_id := im_office.new(
-	office_name	=> :office_name,
-	office_path	=> :office_path
-    );
-END;
-"
-
 	set update_office_sql "
 UPDATE im_offices
 SET
@@ -792,7 +757,7 @@ WHERE
 	    set office_id [db_string office "select office_id from im_offices where office_name=:office_name" -default 0]
 	    if {!$office_id} {
 		# The office doesn't exist yet:
-		db_dml office_create $create_office_sql
+		set office_id [db_exec_plsql  office_create {}]
 	    }
 	    db_dml update_office_sql $update_office_sql
 	
@@ -886,16 +851,6 @@ ad_proc -public im_import_office_members { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_member_sql "
-DECLARE
-    v_rel_id	integer;
-BEGIN
-    v_rel_id := im_biz_object_member.new(
-	object_id	=> :object_id,
-	user_id		=> :user_id,
-	object_role_id	=> :object_role_id
-    );
-END;"
 
 	# -------------------------------------------------------
 	# Debugging
@@ -914,7 +869,7 @@ END;"
 
 	    set count [db_string count_members "select count(*) from acs_rels where object_id_one=:object_id and object_id_two=:user_id"]
 	    if {!$count} {
-		db_dml create_member $create_member_sql
+		set member_id [db_exec_plsql create_member {}]
 	    }
 	
 	} err_msg] } {
@@ -1015,18 +970,6 @@ ad_proc -public im_import_projects { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_project_sql "
-DECLARE
-    v_project_id	integer;
-BEGIN
-    v_project_id := im_project.new(
-	project_name	=> :project_name,
-	project_nr	=> :project_nr,
-	project_path	=> :project_path,
-	company_id	=> :company_id
-    );
-END;"
-
 	set update_project_sql "
 UPDATE im_projects
 SET
@@ -1075,7 +1018,7 @@ WHERE
 
 	    if {0 == $project_id} {
 		# The project doesn't exist yet:
-		db_dml project_create $create_project_sql
+		set project_id [db_exec_plsql project_create {}]
 	    }
 	    db_dml update_project_sql $update_project_sql
 	
@@ -1515,7 +1458,7 @@ ad_proc -public im_import_profiles { filename } {
 	if {"" == $profile_id} { append err_return "<li>didn't find profile $profile_name" }
 
 	set user_id [im_import_get_user $user_email 0]
-
+	ns_log notice "****************** user_id $user_id ***************"
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
@@ -1555,8 +1498,20 @@ END;
 	# Insert into the DB and deal with errors
 	#
 	if { [catch {
+	db_foreach "get rels" "select r.rel_id
+	from
+		acs_rels r,
+		acs_objects o
+	where
+		object_id_two = :user_id
+		and object_id_one = :profile_id
+		and r.object_id_one = o.object_id
+	        and o.object_type = 'im_profile'
+	        and rel_type = 'membership_rel'" {
 
-	    db_exec_plsql insert_profile $insert_profile_sql
+            db_exec_plsql delete_rels {}
+	}
+	    db_exec_plsql insert_profile {}
 
 	} err_msg] } {
 	    ns_log Warning "$err_msg"

@@ -51,4 +51,101 @@
             );
     </querytext>
   </fullquery>
+    <fullquery name="im_import_profiles.delete_rels">
+      <querytext>
+     	 select membership_rel__delete(:rel_id);
+      </querytext>
+    </fullquery>
+    <fullquery name="im_import_profiles.insert_profile">
+      <querytext>
+         select  membership_rel__new(
+           null,			-- rel_id
+	   'membership_rel',		-- reltype
+	   :profile_id,			-- object_id_one
+	   :user_id,			-- object_id_two
+	   'approved',			-- member_state
+	   null,			--  creation_user
+	   null			-- creation_ip
+         );
+      </querytext>
+   </fullquery>
+   <fullquery name="im_import_offices.office_create">
+    <querytext>
+        select  im_office__new(
+	null,		-- office_id
+	'im_office',	-- object_type
+	now(),		-- creation_date
+	null,		-- creattion_user
+	null,		-- creation_ip
+	null,		-- context_id
+	:office_name,	-- office_name
+	:office_path,	-- office_path
+	170,		-- office_type_id
+	160,		-- office_status_id
+	null		-- company_id
+        );
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_companies.company_create">
+    <querytext>
+      select im_company__new(
+	null,		-- company_id
+	'im_company',	-- object_type
+	now(),		-- creation_date
+	null,		-- creation_user
+	null,		-- creation_ip
+	null,		-- context_id
+	:company_name,	-- company_name
+	:company_path,	-- company_path
+	:main_office_id, -- main_office_id
+	51,		-- company_type_id
+	46		-- company_status_id
+       );
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_projects.project_create">
+    <querytext>
+    select im_project__new(
+	null,		-- project_id
+	'im_project',	-- object_type
+	now(),		-- creation_date
+	null,		-- creation_user
+	null,		-- creation_ip
+	null,		-- context_id
+	:project_name,	-- project_name
+	:project_nr,	-- project_nr
+	:project_path,	-- project_path
+	null,		-- parent_id
+	:company_id,	-- company_id
+	85,		-- project_type_id,
+	76		-- project_status_id
+      );
+    </querytext>
+  </fullquery>
+  <fullquery name="im_import_office_members.create_member">
+    <querytext>
+    select im_biz_object_member__new(
+	null,		-- rel_id
+	'im_biz_object_member', -- rel_type
+	:object_id,	-- object_id
+	:user_id,	-- user_id
+	:object_role_id, -- object_role_id
+	null,		-- creation_user
+	null		-- creation_ip
+       );
+    </querytext>
+  </fullquery>
+    <fullquery name="im_import_company_members.create_member">
+    <querytext>
+    select im_biz_object_member__new(
+	null,		-- rel_id
+	'im_biz_object_member', -- rel_type
+	:object_id,	-- object_id
+	:user_id,	-- user_id
+	:object_role_id, -- object_role_id
+	null,		-- creation_user
+	null		-- creation_ip
+       );
+    </querytext>
+  </fullquery>
 </queryset>
