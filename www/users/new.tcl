@@ -336,12 +336,8 @@ ad_form -extend -name register -on_request {
 		set should_be_member 1
 	    }
 	    
-	    ns_log Notice "/users/new: profile_name 	=$profile_name"
-	    ns_log Notice "/users/new: profile_id 	=$profile_id"
-	    ns_log Notice "/users/new: user_id 		=$user_id"
-	    ns_log Notice "/users/new: should_be_member	=$should_be_member"
-	    ns_log Notice "/users/new: is_member	=$is_member"
-	    
+	    ns_log Notice "/users/new: profile_name=$profile_name, profile_id=$profile_id, should_be_member=$should_be_member, is_member=$is_member"
+
 	    if {$is_member && !$should_be_member} {
 		ns_log Notice "/users/new: => remove_member from $profile_name\n"
 
@@ -357,25 +353,70 @@ ad_form -extend -name register -on_request {
 		    membership_rel::delete -rel_id $rel_id
 		}
 
+		# Special logic: Revoking P/O Admin privileges also removes
+		# Site-Wide-Admin privs
+		if {$profile_id == [im_profile_po_admins]} { 
+		    ns_log Notice "users/new: Remove P/O Admins => Remove Site Wide Admins"
+		    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+		}
+
+
+
 	    }
 
 	    
 	    if {!$is_member && $should_be_member} {
 		ns_log Notice "/users/new: => add_member to profile $profile_name\n"
 
+		# Check if the profile_id belongs to the managable profiles of
+		# the current user. Normally, only the managable profiles are
+		# shown, which means that a user must have played around with
+		# the HTTP variables in oder to fool us...
 		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
-		    # Whooooo, sombody tries to fool us...
 		    ad_return_complaint 1 "<li>
                     [_ intranet-core.lt_You_are_not_allowed_t_1]"
 		    return
 		}
 
-		# db_exec_plsql insert_profile $add_rel_sql
-
 		# Make the user a member of the group (=profile)
-		ns_log Notice "/users/new: relation_add $profile_id $user_id"
-		relation_add -member_state "approved" "membership_rel" $profile_id $user_id
+		ns_log Notice "/users/new: => relation_add $profile_id $user_id"
+		set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
+		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		
 
+		# Special logic for employees and P/O Admins:
+		# PM, Sales, Accounting, SeniorMan => Employee
+		# P/O Admin => Site Wide Admin
+		if {$profile_id == [im_profile_project_managers]} { 
+		    ns_log Notice "users/new: Project Managers => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_accounting]} { 
+		    ns_log Notice "users/new: Accounting => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_sales]} { 
+		    ns_log Notice "users/new: Sales => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_senior_managers]} { 
+		    ns_log Notice "users/new: Senior Managers => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_po_admins]} { 
+		    ns_log Notice "users/new: P/O Admins => Site Wide Admins"
+		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+		}
+
+		
 	    }
 	}
 

@@ -16,6 +16,52 @@
 
 
 # ------------------------------------------------------------------
+# Constant function
+# ------------------------------------------------------------------
+
+ad_proc -public im_profile_employees {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Employees'"] 
+}
+
+ad_proc -public im_profile_project_managers {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Project Managers'"] 
+}
+
+ad_proc -public im_profile_senior_managers {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Senior Managers'"] 
+}
+
+ad_proc -public im_profile_po_admins {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'P/O Admins'"] 
+}
+
+ad_proc -public im_profile_customers {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Customers'"] 
+}
+
+ad_proc -public im_profile_freelancers {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Freelancers'"] 
+}
+
+ad_proc -public im_profile_accounting {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Accounting'"] 
+}
+
+ad_proc -public im_profile_sales {} { 
+    return [im_memoize_one profile_employees \
+    "select group_id from groups where group_name = 'Sales'"] 
+}
+
+
+
+# ------------------------------------------------------------------
 # User Profile Box
 # ------------------------------------------------------------------
 
@@ -29,6 +75,7 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
 } {
     # get the current profile of this user
     set current_profiles [im_profiles_of_user $user_id]
+
     set cp [list]
     foreach p $current_profiles { lappend cp [lindex $p 0] } 
     ns_log Notice "im_user_profile_component: current_profiles=$current_profiles"
@@ -114,6 +161,7 @@ ad_proc -public im_profiles_of_user { user_id } {
     db_foreach profiles $profile_sql {
 	lappend options [list $group_id "$group_name"]
     }
+
     return $options
 }
 
