@@ -437,7 +437,7 @@ if {![exists_and_not_null publish_date]} {
     set portrait_p 0 
 }
 
-set portrait_alt "Portrait of $first_names $last_name"
+set portrait_alt "Portrait"
 
 if {$portrait_p} {
     if { ![empty_string_p $width] && ![empty_string_p $height] } {

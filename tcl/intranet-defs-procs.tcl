@@ -418,7 +418,7 @@ ad_proc -public im_category_from_id { category_id } {
 ad_proc im_category_select { category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
-    set sql "select category_id,category
+    set sql "select category_id,category, category_description
 	     from im_categories
 	     where category_type = :category_type
 	     order by lower(category)"
@@ -509,9 +509,9 @@ ad_proc -public db_html_select_value_options_multiple {
 	    set translated_value [lindex $option $option_index]
 	}
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>$translated_value\n"
+	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>$translated_value</option>\n"
 	} else {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\">$translated_value\n"
+	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\">$translated_value</option>\n"
 	}
     }
     return $select_options
