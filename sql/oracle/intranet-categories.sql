@@ -47,7 +47,7 @@
 -- 200-219	Intranet Department
 -- 220-229	Intranet Annual Revenue
 -- 250-299	Intranet Translation Language
--- 320-329	Intranet Translation UoM
+-- 320-329	Intranet UoM
 -- 340-359	Intranet Translation Task Status
 -- 360-379	Intranet Project Status
 -- 400-409	Intranet Prior Experience
@@ -421,6 +421,13 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '225', '> EUR 100k', 'Intranet Annual Revenue');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '226', 'Pre-revenue', 'Intranet Annual Revenue');
+
+
+
+-- Unit or Mesurement
+INSERT INTO im_categories VALUES (320,'Hour','','Intranet UoM','category','t','f');
+INSERT INTO im_categories VALUES (321,'Day','','Intranet UoM','category','t','f');
+-- Page, S-Word, T-Word, S-Line, T-Line defined in intranet-translation
 
 
 -- Prior Experience

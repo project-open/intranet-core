@@ -2191,7 +2191,7 @@ ad_proc -public im_import_trans_tasks { filename } {
 	set task_type_id [im_import_get_category $task_type "Intranet Project Type" ""]
 	set task_status_id [im_import_get_category $task_status "Intranet Translation Task Status" ""]
 
-	set task_uom_id [im_import_get_category $task_uom "Intranet Translation UoM" ""]
+	set task_uom_id [im_import_get_category $task_uom "Intranet UoM" ""]
 
 	set trans_id [im_import_get_user $trans_email ""]
 	set edit_id [im_import_get_user $edit_email ""]
