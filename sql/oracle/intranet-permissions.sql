@@ -240,13 +240,8 @@ end;
 /
 show errors;
 
---	v_rel_id := composition_rel.new(
---		object_id_one    => -2,
---		object_id_two    => v_group_id,
---		creation_user    => v_system_user_id,
---		creation_ip	 => '0:0:0:0'
---	 );
 
+prompt *** Creating User Profiles
 begin
    im_create_profile ('P/O Admins');
    im_create_profile ('Customers'); 
@@ -269,6 +264,7 @@ show errors;
 -- (package) object "Project/Open Core".
 -- 
 
+prompt *** Creating Privileges
 begin
     -- "View" privilege in addition to "read":
     -- This privilege is used to indicate whether a user has the
@@ -324,7 +320,6 @@ begin
 
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
 
-
     acs_privilege.create_privilege('view_invoices','View Invoices','View Invoices');
     acs_privilege.create_privilege('view_payments','View Payments','View Payments');
     acs_privilege.create_privilege('view_costs','View Costs','View Costs');
@@ -364,19 +359,6 @@ BEGIN
      where package_key='acs-subsite';
 
      acs_permission.grant_permission(v_object_id, v_profile_id, p_priv_name);
-END;
-/
-show errors;
-
-
-BEGIN
-    im_priv_create('view_projects', 		'Employees');
-    im_priv_create('view_project_members', 	'Employees');
-    im_priv_create('view_projects_all', 	'Employees');
-    im_priv_create('view_projects_history', 	'Employees');
-    im_priv_create('add_projects', 		'Employees');
-    im_priv_create('search_intranet', 		'Employees');
-    im_priv_create('view_users', 		'Employees');
 END;
 /
 show errors;
