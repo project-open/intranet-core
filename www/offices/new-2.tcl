@@ -114,7 +114,9 @@ if {0 == $office_count} {
     # create a new Office:
     set office_id [office::new \
 	-office_name	$office_name \
-	-office_path	$office_name]
+	-office_path	$office_name \
+	-office_status_id $office_status_id \
+        -office_type_id $office_type_id]
 }
 
 # -----------------------------------------------------------------
