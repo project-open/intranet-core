@@ -31,6 +31,129 @@ set page_title "Upload New File/URL"
 set page_body "<PRE>\n<A HREF=$return_url>Return to Project Page</A>\n"
 set context_bar [ad_context_bar [list "/intranet/cusomers/" "Companies"] "Upload CSV"]
 
+ad_proc im_csv_split { line {separator ","} } {
+    Splits a line from a CSV (Comma Separated Values) file
+    into an array of values. Deals with:
+    <ul>
+    <li>Fields enclosed by double quotes
+    <li>Komma or Semicolon separators
+    <li>Quoted field contents
+    </ul>
+    The state machine can be in one of two states:
+    <ul>
+    <li>"field_start": Starting reading a field, either starting
+        with a quote character (double quote, single quote) or
+        with a non-quote character.
+    <li>"field": Reading a field, either quoted or not quoted
+        The variable "quote" contains the quote character with reading
+        the field content.
+    <li>"separator": Reading a separator, either a "," or a ";"
+    </ul>
+
+} {
+    set debug 0
+
+    set result_list [list]
+    set pos 0
+    set len [string length $line]
+    set quote ""
+    set state "field_start"
+    set field ""
+
+    while {$pos <= $len} {
+	set char [string index $line $pos]
+	if {$debug} {ns_log notice "im_csv_split: pos=$pos, char=$char, state=$state"}
+
+	switch $state {
+	    "field_start" {
+
+		# We're before a field. Next char may be a quote
+		# or not. Skip white spaces.
+
+		if {[string is space $char]} {
+
+		    if {$debug} {ns_log notice "im_csv_split: field_start: found a space: '$char'"}
+		    incr pos
+
+		} else {
+
+		    # Skip the char if it was a quote
+		    set quote_pos [string first $char "\"'"]
+		    if {$quote_pos >= 0} {
+			if {$debug} {ns_log notice "im_csv_split: field_start: found quote=$char"}
+			# Remember the quote char
+			set quote $char
+			# skip the char
+			incr pos
+		    } else {
+			if {$debug} {ns_log notice "im_csv_split: field_start: unquoted field"}
+			set quote ""
+		    }
+		    # Initialize the field value for the "field" state
+		    set field ""
+		    # "Switch" to reading the field content
+		    set state "field"
+		}
+	    }
+
+	    "field" {
+
+		# We are reading the content of a field until we
+		# reach the end, either marked by a matching quote
+		# or by the "separator" if the field was not quoted
+
+		# Check if we have reached the end of the field
+		# either with the matching quote of with the separator:
+		if {"" != $quote && [string equal $char $quote] || "" == $quote && [string equal $char $separator]} {
+
+		    if {$debug} {ns_log notice "im_csv_split: field: found quote or term: $char"}
+
+		    # Skip the character if it was a quote
+		    if {"" != $quote} { incr pos }
+
+		    # Trim the field if it was not quoted
+#		    if {"" == $quote} { set field [string trim $field] }
+
+		    lappend result_list $field
+		    set state "separator"
+
+		} else {
+
+		    if {$debug} {ns_log notice "im_csv_split: field: found a field char: $char"}
+		    append field $char
+		    incr pos
+
+		}
+	    }
+
+	    "separator" {
+
+		# We got here after finding the end of a "field".
+		# Now we expect a separator or we have to throw an
+		# error otherwise. Skip whitespaces.
+		
+		if {[string is space $char]} {
+		    if {$debug} {ns_log notice "im_csv_split: separator: found a space: '$char'"}
+		    incr pos
+		} else {
+		    if {[string equal $char $separator]} {
+			if {$debug} {ns_log notice "im_csv_split: separator: found separator: '$char'"}
+			incr pos
+			set state "field_start"
+		    } else {
+			if {$debug} {ns_log error "im_csv_split: separator: didn't find separator: '$char'"}
+			set state "field_start"
+		    }
+		}
+	    }
+	    # Switch, while and proc ending
+	}
+    }
+    return $result_list
+}
+
+
+
 # Get the file from the user.
 # number_of_bytes is the upper-limit
 set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
@@ -67,15 +190,19 @@ set csv_headers [split $csv_header ";"]
 
 # Check the length of the title line 
 set header [string trim [lindex $csv_files 0]]
-set header_csv_fields [split $header ";"]
+set header_csv_fields [im_csv_split $header]
 set header_len [llength $header_csv_fields]
+
+
+ad_return_complaint 1 "<pre>$header_csv_fields</pre>"
+return
 
 append page_body "Title-Length=$header_len\n"
 append page_body "\n\n"
 
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    set csv_fields [split $csv_line ";"]
+    set csv_fields [im_csv_split $csv_line ";"]
 
     append page_body "$csv_line\n"
 
