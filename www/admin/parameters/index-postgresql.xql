@@ -8,6 +8,7 @@
 select
         p.package_id,
         p.package_key,
+	m.description,
         p.instance_name,
         v.attr_value,
         m.parameter_name

@@ -287,8 +287,6 @@ BEGIN
 end;' language 'plpgsql';
 
 
-select im_create_profile('Test1','test1');
-
 create or replace function im_drop_profile (varchar) 
 returns integer as '
 DECLARE

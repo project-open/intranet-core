@@ -39,6 +39,7 @@ select
 	p.package_id,
 	p.package_key,
 	p.instance_name,
+	m.description,
 	v.attr_value,
 	m.parameter_name
 from 
@@ -57,7 +58,6 @@ set old_package_key ""
 set ctr 1
 set package_html ""
 db_foreach packages $sql {
-#    if {![regexp {^intranet} $package_key]} { continue }
 	
     if {![string equal $package_key $old_package_key]} {
 
@@ -74,12 +74,24 @@ db_foreach packages $sql {
     }
 
     if {"" == $parameter_name} { set parameter_name "<i>No parameters</i>" }
+
     append package_html "
 <tr $bgcolor([expr $ctr % 2])>
   <td>&nbsp;&nbsp;&nbsp;</td>
-  <td>$parameter_name</td>
-  <td>$attr_value</td>
+  <td><b>$parameter_name</b></td>
+  <td><b>$attr_value</b></td>
 </tr>\n"
+
+    if {![string equal description ""]} {
+	append package_html "
+<tr $bgcolor([expr $ctr % 2])>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td colspan=3>$description</td>
+</tr>\n"
+
+
+    }
+
 
     incr ctr
 }
