@@ -182,21 +182,6 @@ if {$see_details} {
     if { ![empty_string_p $note] } {
 	append left_column "<tr><td>Notes</td><td><font size=-1>$note</font>\n</td></tr>\n"
     }
-
-
-    if { [ad_parameter EnabledP ischecker 0] } {
-	append left_column "  <tr><td>Machines: </td><td> \n<ul>\n"
-	foreach machine [is_machine_list_for_group $customer_id] {
-	    set hostname [lindex $machine 1]
-	    set machine_id [lindex $machine 0]
-	    append left_column "<li><a href=/ischecker/machine-view?[export_url_vars machine_id]>$hostname</a><font size=-1> (<a href=/ischecker/group-machine-map-delete?[export_url_vars customer_id machine_id]&return_url=[ns_urlencode [ns_conn url]?[ns_conn query]]>delete</a>)</font>"
-	}
-	append left_column "
-	<li><a href=/ischecker/group-machine-map?[export_url_vars customer_id]&return_url=[ns_urlencode [ns_conn url]?[ns_conn query]]&pretty_name=[ns_urlencode $customer_name]>Add a machine</a>
-	</ul>
-	</td></tr>\n
-	<tr><td>Annual Revenue</td><td>$annual_revenue_id</td></tr>\n"
-    }
 }
 
 if {$admin} {
