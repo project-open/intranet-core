@@ -9,14 +9,14 @@
 <tr>
   <td valign=top>
 
-    $user_basic_info_html
-    $contact_html
+    <%= $user_basic_info_html %>
+    <%= $contact_html %>
+    <%= $admin_links %>
     <%= [im_component_bay left] %>
 
   </td>
   <td valign=top>
-    $admin_links
-    $projects_html
+    <%= $projects_html %>
     <%= [im_component_bay right] %>
   </td>
 </tr>
@@ -25,7 +25,6 @@
 <table cellpadding=0 cellspacing=0 border=0>
 <tr><td>
 
-  $freelance_skills
   <%= [im_component_bay bottom] %>
 
 </td></tr>
