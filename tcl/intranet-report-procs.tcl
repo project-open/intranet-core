@@ -23,11 +23,39 @@ ad_library {
 ad_register_proc GET /intranet/exports/* im_export
 
 
+ad_proc -public im_export_version_nr { } {
+    Returns a version number
+
+} {
+    return "0.5"
+}
+
+
+ad_proc -public im_export_accepted_version_nr { version } {
+    Returns "" if the version of the import file is accepted
+    or an error message otherwise.
+} {
+    switch $version {
+	"0.5" { return "" }
+	default { return "Unknown backup dump version '$version'<br>" }
+    }
+}
+
+
+
 ad_proc -public im_export { } {
     Receives requests from /intranet/reports,
     exctracts parameters and calls the right report
 
 } {
+    im_export_all
+
+    im_import_customers "/tmp/im_customers.csv"
+    im_import_projects "/tmp/im_projects.csv"
+
+    ad_return_complaint 1 "Successfully Parsed"
+    return
+
     set url "[ns_conn url]"
     set url [im_url_with_query]
     ns_log Notice "intranet_download: url=$url"
@@ -43,11 +71,9 @@ ad_proc -public im_export { } {
 
     set report [im_export_report $report_id]
 
-    im_export_all
-
     db_release_unused_handles
 #    doc_return  200 "application/csv" $report
-    doc_return  200 "html/text" "<pre>\n$report\n</pre>\n"
+    doc_return  200 "text/html" "<pre>\n$report\n</pre>\n"
 }
 
 
@@ -56,39 +82,42 @@ ad_proc -public im_export_all { } {
     and saves them to /tmp/.
 } {
 
-    db_foreach foreach_report "
+    set sql "
 select
 	v.*
 from 
 	im_views v
 where 
 	view_id >= 100
-	and view_id < 200
-" {
-    set report [im_export_report $view_id]
-    set stream [open /tmp/$view_name.csv w]
-    puts $stream $report
-    close $stream
+	and view_id < 200"
+
+    db_foreach foreach_report $sql {
+	set report [im_export_report $view_id]
+	set stream [open /tmp/$view_name.csv w]
+	puts $stream $report
+	close $stream
+    }
 }
 
 
-
-}
 
 ad_proc -public im_export_report { report_id } {
     Execute an export report
 } {
     set user_id [ad_maybe_redirect_for_registration]
+    set separator ";"
+
     if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
 	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
 	return
     }
-    
+
     # Get the Report SQL
     #
     set rows [db_0or1row get_report_info "
 select 
-	view_sql as report_sql
+	view_sql as report_sql,
+	view_name
 from 
 	im_views 
 where 
@@ -118,11 +147,15 @@ order by
 
     set column_headers [list]
     set column_vars [list]
+    set header ""
+    set row_ctr 0
     db_foreach column_list_sql $column_sql {
-	if {"" == $visible_for || [eval $visible_for]} {
-	    lappend column_headers "$column_name"
-	    lappend column_vars "$column_render_tcl"
-	}
+	lappend column_headers "$column_name"
+	lappend column_vars "$column_render_tcl"
+
+	if {$row_ctr > 0} { append header $separator }
+	append header "\"$column_name\""
+	incr row_ctr
     }
 
     # Execute the report
@@ -134,7 +167,7 @@ order by
         # Append a line of data based on the "column_vars" parameter list
         set row_ctr 0
         foreach column_var $column_vars {
-            if {$row_ctr > 0} { append results ", " }
+            if {$row_ctr > 0} { append results $separator }
             append results "\""
             set cmd "append results $column_var"
             eval $cmd
@@ -146,8 +179,354 @@ order by
         incr ctr
     }
 
-    return $results
+    set version "Project/Open [im_export_version_nr] $view_name"
+
+    return "$version\n$header\n$results\n"
 }
+
+
+
+
+ad_proc -public im_import_customers { filename } {
+    Import the customers file
+} {
+    if {![file readable $filename]} {
+	ad_return_complaint 1 "Unable to read file '$filename'"
+	return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_export_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_customers"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	ad_return_complaint 1 "<li>Error reading '$filename': <br>$err_msg"
+	return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	set manager_id [db_string manager "select party_id from parties where email=:manager_email" -default ""]
+	set accounting_contact_id [db_string accounting_contact "select party_id from parties where email=:accounting_contact_email" -default ""]
+	set primary_contact_id [db_string primary_contact "select party_id from parties where email=:primary_contact_email" -default ""]
+
+
+	set customer_type_id [db_string customer_type "select category_id from im_categories where category=:customer_type and category_type='Intranet Customer Type'" -default ""]
+	set customer_status_id [db_string customer_status "select category_id from im_categories where category=:customer_status and category_type='Intranet Customer Status'" -default ""]
+	set crm_status_id [db_string crm_status "select category_id from im_categories where category=:crm_status and category_type='Intranet Customer CRM Status'" -default ""]
+
+	set annual_revenue_id [db_string annual_revenue "select category_id from im_categories where category=:annual_revenue and category_type='Intranet Annual Revenue'" -default ""]
+
+
+	set main_office_id [db_string main_office "select office_id from im_offices where office_name=:main_office_name" -default ""]
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_customer_sql "
+DECLARE
+    v_customer_id	integer;
+BEGIN
+    v_customer_id := im_customer.new(
+	customer_name	=> :customer_name,
+	customer_path	=> :customer_path,
+	main_office_id	=> :main_office_id	
+    );
+END;
+"
+
+	set update_customer_sql "
+UPDATE im_customers 
+SET
+	deleted_p=:deleted_p, 
+	customer_status_id=:customer_status_id, 
+	customer_type_id=:customer_type_id, 
+	note=:note, 
+	referral_source=:referral_source, 
+	annual_revenue_id=:annual_revenue_id, 
+	status_modification_date=sysdate, 
+	old_customer_status_id='', 
+	billable_p=:billable_p, 
+	site_concept=:site_concept, 
+	manager_id=:manager_id,
+	contract_value=:contract_value, 
+	start_date=sysdate, 
+	primary_contact_id=:primary_contact_id, 
+	main_office_id=:main_office_id, 
+	vat_number=:vat_number
+WHERE 
+	customer_name = :customer_name"
+
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "customer_name	$customer_name"
+	ns_log Notice "customer_path	$customer_path"
+	ns_log Notice "main_office_id	$main_office_id"	
+
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    if {0 == $customer_id} {
+		# The customer doesn't exist yet:
+		db_dml customer_create $create_customer_sql
+	    }
+	    db_dml update_customer_sql $update_customer_sql
+	    
+	} err_msg] } {
+	    ns_log Warning $err_msg"
+	    ad_return_complaint 1 "<li>Error loading customers:<br>
+            $err_msg"
+	}
+    }
+}
+
+
+
+
+
+
+
+
+
+
+ad_proc -public im_import_projects { filename } {
+    Import the projects file
+} {
+    if {![file readable $filename]} {
+	ad_return_complaint 1 "Unable to read file '$filename'"
+	return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_export_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_projects"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	ad_return_complaint 1 "<li>Error reading '$filename': <br>$err_msg"
+	return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	set project_lead_id [db_string manager "select party_id from parties where email=:project_lead_email" -default ""]
+	set supervisor_id [db_string supervisor "select party_id from parties where email=:supervisor_email" -default ""]
+
+
+	set project_type_id [db_string project_type "select category_id from im_categories where category=:project_type and category_type='Intranet Project Type'" -default ""]
+	set project_status_id [db_string project_status "select category_id from im_categories where category=:project_status and category_type='Intranet Project Status'" -default ""]
+	set billing_type_id [db_string billing_type "select category_id from im_categories where category=:billing_type and category_type='Intranet Billing Type'" -default ""]
+
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
+	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default 0]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_project_sql "
+DECLARE
+    v_project_id	integer;
+BEGIN
+    v_project_id := im_project.new(
+	project_name	=> :project_name,
+	project_nr	=> :project_nr,
+	project_path	=> :project_path,
+	customer_id	=> :customer_id
+    );
+END;"
+
+	set update_project_sql "
+UPDATE im_projects
+SET
+	project_name		= :project_name,
+	project_nr		= :project_nr,
+	project_path		= :project_path,
+	customer_id		= :customer_id,
+	parent_id		= null,
+	project_type_id		= :project_type_id,
+	project_status_id	= :project_status_id,
+	description		= :description,
+	billing_type_id		= :billing_type_id,
+	start_date		= to_date(:start_date, 'YYYYMMDD HH24:MI'),
+	end_date		= to_date(:end_date, 'YYYYMMDD HH24:MI'),
+	note			= :note,
+	project_lead_id		= :project_lead_id,
+	supervisor_id		= :supervisor_id,
+	requires_report_p	= :requires_report_p,
+	project_budget		= :project_budget
+WHERE
+	project_name = :project_name"
+
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+	ns_log Notice "project_name	$project_name"
+	ns_log Notice "project_nr	$project_nr"
+	ns_log Notice "project_path	$project_path"
+	ns_log Notice "customer_id	$customer_id"
+	ns_log Notice "parent_name	$parent_name"
+
+
+	# ------------------------------------------------------
+	# Store the project hierarchy in an array.
+	# We need to set the hierarchy after all projects
+	# have entered into the system.
+	set parent($project_id) $parent_name
+
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    if {0 == $project_id} {
+		# The project doesn't exist yet:
+		db_dml project_create $create_project_sql
+	    }
+	    db_dml update_project_sql $update_project_sql
+	    
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading projects:<br>$err_msg"
+	}
+
+    }
+
+    # Now we've got all projects in the DB so that we can
+    # establish the project hierarchy.
+
+    foreach project_id [array names parent] {
+
+	set parent_id [db_string parent "select project_id from im_projects where project_name=:parent_name" -default ""]
+	
+	set update_sql "
+UPDATE im_projects
+SET
+	parent_id = :parent_id
+WHERE
+	project_id = :project_id"
+
+	db_dml update_parent $update_sql
+    }
+
+}
+
+
+
+
+
 
 
 
@@ -155,6 +534,8 @@ ad_proc -public im_export_test { report_id } {
     Execute an export report
 } {
     set user_id [ad_maybe_redirect_for_registration]
+    set separator ","
+
     if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
 	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
     }
@@ -220,19 +601,19 @@ select
 	p.*,
 	c.customer_name,
 	parent_p.project_name as parent_name,
-        im_name_from_user_id(p.project_lead_id) as project_lead,
-        im_name_from_user_id(p.supervisor_id) as supervisor,
-        im_category_from_id(p.project_type_id) as project_type,
-        im_category_from_id(p.project_status_id) as project_status,
-        im_category_from_id(p.billing_type_id) as billing_type,
-        to_char(p.end_date, 'YYYYMMDD HH24:MI') as end_date_time,
-        to_char(p.start_date, 'YYYYMMDD HH24:MI') as start_date_time
+	im_name_from_user_id(p.project_lead_id) as project_lead,
+	im_name_from_user_id(p.supervisor_id) as supervisor,
+	im_category_from_id(p.project_type_id) as project_type,
+	im_category_from_id(p.project_status_id) as project_status,
+	im_category_from_id(p.billing_type_id) as billing_type,
+	to_char(p.end_date, 'YYYYMMDD HH24:MI') as end_date_time,
+	to_char(p.start_date, 'YYYYMMDD HH24:MI') as start_date_time
 from 
 	im_projects p, 
 	im_projects parent_p, 
-        im_customers c
+	im_customers c
 where 
-        p.customer_id = c.customer_id
+	p.customer_id = c.customer_id
 	and p.parent_id = parent_p.project_id
 "
     
@@ -247,7 +628,7 @@ where
 	# Append a line of data based on the "column_vars" parameter list
 	set row_ctr 0
 	foreach column_var $column_vars {
-	    if {$row_ctr > 0} { append results ", " }
+	    if {$row_ctr > 0} { append results $separator }
 	    append results "\""
 	    set cmd "append results $column_var"
 	    eval $cmd

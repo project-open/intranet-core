@@ -99,9 +99,9 @@ create index im_project_parent_id_idx on im_projects(parent_id);
 
 create or replace package im_project
 is
-	function new (
+    function new (
 	project_id	in integer default null,
-	object_type	in varchar,
+	object_type	in varchar default 'im_project',
 	creation_date	in date default sysdate,
 	creation_user	in integer default null,
 	creation_ip	in varchar default null,
@@ -113,11 +113,11 @@ is
 	customer_id	in im_projects.customer_id%TYPE,
 	project_type_id	in im_projects.project_type_id%TYPE default 85,
 	project_status_id in im_projects.project_status_id%TYPE default 76
-	) return im_projects.project_id%TYPE;
+    ) return im_projects.project_id%TYPE;
 
-	procedure del (project_id in integer);
-	function name (project_id in integer) return varchar;
-	function type (project_id in integer) return integer;
+    procedure del (project_id in integer);
+    function name (project_id in integer) return varchar;
+    function type (project_id in integer) return integer;
 end im_project;
 /
 show errors
@@ -140,7 +140,7 @@ is
 
 	function new (
 		project_id	in integer default null,
-		object_type	in varchar,
+		object_type	in varchar default 'im_project',
 		creation_date	in date default sysdate,
 		creation_user	in integer default null,
 		creation_ip	in varchar default null,

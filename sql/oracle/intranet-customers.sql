@@ -120,7 +120,7 @@ create or replace package im_customer
 is
     function new (
 	customer_id	in integer default null,
-	object_type	in varchar,
+	object_type	in varchar default 'im_customer',
 	creation_date	in date default sysdate,
 	creation_user	in integer default null,
 	creation_ip	in varchar default null,

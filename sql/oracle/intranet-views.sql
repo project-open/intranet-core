@@ -55,6 +55,12 @@ create table im_views (
 	view_name		varchar(100) 
 				constraint im_views_name_un
 				not null unique,
+	view_type_id		integer
+				constraint im_views_type_fk
+				references im_categories,
+	view_status_id		integer
+				constraint im_views_status_fk
+				references im_categories,
 	visible_for		varchar(1000),
 	view_sql		varchar(4000)
 );
@@ -89,19 +95,26 @@ create table im_view_columns (
 ---------------------------------------------------------
 -- Standard Views for TCL pages
 --
-insert into im_views values (1, 'customer_list', 'view_customers', '');
-insert into im_views values (2, 'customer_view', 'view_customers', '');
-
-insert into im_views values (10, 'user_list', 'view_users', '');
-insert into im_views values (11, 'user_view', 'view_users', '');
-insert into im_views values (12, 'user_contact', 'view_users', '');
-
-insert into im_views values (20, 'project_list', 'view_projects', '');
-insert into im_views values (21, 'project_costs', 'view_projects', '');
-insert into im_views values (22, 'project_status', 'view_projects', '');
-
-insert into im_views values (80, 'office_list', 'view_offices', '');
-insert into im_views values (81, 'office_view', 'view_offices', '');
+insert into im_views (view_id, view_name, visible_for
+) values (1, 'customer_list', 'view_customers');
+insert into im_views (view_id, view_name, visible_for
+) values (2, 'customer_view', 'view_customers');
+insert into im_views (view_id, view_name, visible_for
+) values (10, 'user_list', 'view_users');
+insert into im_views (view_id, view_name, visible_for
+) values (11, 'user_view', 'view_users');
+insert into im_views (view_id, view_name, visible_for
+) values (12, 'user_contact', 'view_users');
+insert into im_views (view_id, view_name, visible_for
+) values (20, 'project_list', 'view_projects');
+insert into im_views (view_id, view_name, visible_for
+) values (21, 'project_costs', 'view_projects');
+insert into im_views (view_id, view_name, visible_for
+) values (22, 'project_status', 'view_projects');
+insert into im_views (view_id, view_name, visible_for
+) values (80, 'office_list', 'view_offices');
+insert into im_views (view_id, view_name, visible_for
+) values (81, 'office_view', 'view_offices');
 
 
 
