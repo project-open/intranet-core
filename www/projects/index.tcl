@@ -481,8 +481,8 @@ if { ![empty_string_p $query_string] } {
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
-    set cmd "set col_txt $col"
-    eval "$cmd"
+    regsub -all " " $col "_" col_txt
+    set col_txt [_ intranet-core.$col_txt]
     if { [string compare $order_by $col] == 0 } {
 	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     } else {

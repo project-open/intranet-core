@@ -319,12 +319,14 @@ if { ![empty_string_p $query_string] } {
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
-    set cmd "set col_text $col"
-    eval "$cmd"
+
+    regsub -all " " $col "_" col_txt
+    set col_txt [_ intranet-core.$col_txt]
+
     if { [string compare $order_by $col] == 0 } {
-	append table_header_html "  <td class=rowtitle>$col_text</td>\n"
+	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     } else {
-	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_text</a></td>\n"
+	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a></td>\n"
     }
 }
 append table_header_html "</tr>\n"
