@@ -35,18 +35,6 @@ if {!$admin} {
 
 if {"" == $return_url} { set return_url "/intranet/" }
 
-# Get the password and user ID
-# as of Oracle 8.1 we'll have upper(email) constrained to be unique
-# in the database (could do it now with a trigger but there is really 
-# no point since users only come in via this form)
-
-db_0or1row user_password "select password from users where user_id = :user_id"
-
-if { ![info exists password] } {
-    ad_return_error "Couldn't find user $user_id" "Couldn't find user $user_id."
-    return
-}
-
 # just set a session cookie
 set expire_state "s"
 
@@ -59,5 +47,3 @@ db_release_unused_handles
 
 ad_user_login $user_id
 ad_returnredirect $return_url
-#ad_returnredirect "/cookie-chain.tcl?cookie_name=[ns_urlencode ad_auth]&cookie_value=[ad_encode_id $user_id $password]&expire_state=$expire_state&final_page=[ns_urlencode $return_url]"
-
