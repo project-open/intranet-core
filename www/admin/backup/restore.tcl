@@ -37,6 +37,7 @@ foreach line $file_list {
     regexp {([^\.]*)\.[^\.]} $file ttt file_body
 
     set existant_files($file_body) $file_body
+    ns_log Notice "backup/restore.tcl: found file: $file_body"
 }
 
 set sql "

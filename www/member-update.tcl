@@ -53,12 +53,8 @@ ns_log Notice "member-update: delete_user(multiple)=$delete_user"
 if {[string equal $submit "Del"]} {
 
     foreach user $delete_user {
-	ns_log Notice "member-update: delete user: $user"
-	db_dml delete_user "
-begin
-    user_group_member_del (:object_id, :user);
-end;
-"
+		ns_log Notice "member-update: delete user: $user"	
+		im_exec_dml delete_user "user_group_member_del ($object_id, $user)"
     }
 
     # Remove all permission related entries in the system cache

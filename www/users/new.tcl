@@ -78,7 +78,7 @@ set editing_existing_user 0
 if {"" != $user_id} { 
     set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
 }
-ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
+ns_log Notice "/users/new: editing_existing_user=$editing_existing_user, user_id=$user_id, email=$email"
 
 
 if {$editing_existing_user} {
@@ -132,7 +132,7 @@ where
     # Empty set of default values for a new user
     set profile_values [list]
 }
-ns_log Notice "/users/new: user_id=$user_id, current_user_id=$current_user_id"
+ns_log Notice "/users/new: user_id=$user_id, current_user_id=$current_user_id, email=$email"
 
 
 # ---------------------------------------------------------------
