@@ -33,6 +33,10 @@
             description="System logo that appears in all screens"/>
 
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"
+            name="SystemLogoLink"  default="http://www.project-open.com/"
+            description="Link for system logo that appears in all screens"/>
+
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"
             name="SystemCSS"  default="/intranet/style/style.default.css"
             description="Global CSS"/>
 
