@@ -48,7 +48,9 @@ ad_proc -public im_office_permissions {user_id office_id view_var read_var write
     upvar $admin_var admin
 
     # Check if the customer is "internal"
-    set customer_type [db_1row customer_type "
+    set customer_type "unknown"
+    set customer_id 0
+    set customer_type [db_0or1row customer_type "
 select
 	im_category_from_id(c.customer_type_id) as customer_type,
 	c.customer_id
@@ -62,7 +64,7 @@ where
 
     # Initialize values with values from customer
     im_customer_permissions $user_id $customer_id view read write admin
-
+    ns_log Notice "im_office_permissions: cust perms: view=$view, read=$read, write=$write, admin=$admin"
 
     # Now there are three options:
     # NULL: not assigned to any customer yet
@@ -81,19 +83,20 @@ where
 
 	if {$admin} { set read 1}
 	set write $admin
+	ns_log Notice "im_office_permissions: internal perms: view=$view, read=$read, write=$write, admin=$admin"
 	return
     }
     
-    # The office if a customers office or a "dangeling" office
-    # (office without a customer)
-    set user_is_customer_member_p [im_biz_object_member_p $user_id $customer_id]
-    set user_is_customer_admin_p [im_biz_object_admin_p $user_id $customer_id]
-
-    set read [expr $user_is_customer_member_p || [im_permission $user_id view_customer_contacts]]
-    set admin $user_is_customer_admin_p
-    set write $admin
-
-    if {$admin} { set read 1 }
+    # A "dangeling" office (without customer) - 
+    # don't give permissions
+    if {0 == $customer_id } {
+	# Give permissions to everybody?
+	set view 1
+	set read 1
+	set write 1
+	set admin 1
+	return
+    }
 }
 
 

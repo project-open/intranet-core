@@ -371,21 +371,21 @@ begin
     acs_permission.grant_permission(v_customer_menu, v_freelancers, 'read');
 
 
-    v_office_menu := im_menu.new (
-	package_name =>	'intranet',
-	label =>	'offices',
-	name =>		'Offices',
-	url =>		'/intranet/offices/',
-	sort_order =>	60,
-	parent_menu_id => v_main_menu
-    );
-    acs_permission.grant_permission(v_office_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_office_menu, v_senman, 'read');
-    acs_permission.grant_permission(v_office_menu, v_proman, 'read');
-    acs_permission.grant_permission(v_office_menu, v_accounting, 'read');
-    acs_permission.grant_permission(v_office_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_office_menu, v_customers, 'read');
-    acs_permission.grant_permission(v_office_menu, v_freelancers, 'read');
+--    v_office_menu := im_menu.new (
+--	package_name =>	'intranet',
+--	label =>	'offices',
+--	name =>		'Offices',
+--	url =>		'/intranet/offices/',
+--	sort_order =>	60,
+--	parent_menu_id => v_main_menu
+--    );
+--    acs_permission.grant_permission(v_office_menu, v_admins, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_senman, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_proman, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_accounting, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_employees, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_customers, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_freelancers, 'read');
 
 
     v_admin_menu := im_menu.new (
