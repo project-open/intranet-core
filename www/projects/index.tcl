@@ -24,7 +24,7 @@ ad_page_contract {
     @param include_subprojects_p whether to include sub projects
     @param mine_p show my projects or all projects
     @param status_id criteria for project status
-    @param type_id criteria for project_type_id
+    @param project_type_id criteria for project_type_id
     @param letter criteria for im_first_letter_default_to_a(project_name)
     @param start_idx the starting index for query
     @param how_many how many rows to return
@@ -36,7 +36,7 @@ ad_page_contract {
     { include_subprojects_p "f" }
     { mine_p "f" }
     { status_id "" } 
-    { type_id:integer "0" } 
+    { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { customer_id:integer "0" } 
     { letter:trim "all" }
@@ -173,8 +173,8 @@ set criteria [list]
 if { ![empty_string_p $status_id] && $status_id > 0 } {
     lappend criteria "p.project_status_id=:status_id"
 }
-if { ![empty_string_p $type_id] && $type_id != 0 } {
-    lappend criteria "p.project_type_id=:type_id"
+if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
+    lappend criteria "p.project_type_id=:project_type_id"
 }
 if { 0 != $user_id_from_search} {
     lappend criteria "p.project_id in (select group_id from group_member_map_map where member_id = :user_id_from_search)"
@@ -401,7 +401,7 @@ append filter_html "
   <tr>
     <td valign=top>Project Type:</td>
     <td valign=top>
-      [im_select type_id $project_types ""]
+      [im_select project_type_id $project_types ""]
 	  <input type=submit value=Go name=submit>
     </td>
   </tr>

@@ -27,7 +27,7 @@ ad_library {
 ad_proc -public ad_user_group_member { group_id user_id} {
 
 } {
-    set member_count [util_memoize "db_string member_count \"select count(*) from group_member_map where member_id=$user_id and group_id=$group_id\""]
+    set member_count [util_memoize "db_string member_count \"select count(*) from acs_rels where object_id_two = $user_id and object_id_one = $group_id\""]
     if {$member_count > 0} { return 1 }
     return 0
 }

@@ -115,6 +115,14 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
 
     return
 
+}
+
+
+ad_proc -public im_user_permissions_ttt { current_user_id user_id view_var read_var write_var admin_var } {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $current_user_id on $user_id
+} {
+
     # --------------------------------------------------
     # Start of logic for "view"
     # --------------------------------------------------
@@ -145,13 +153,6 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     # --------------------------------------------------
     # End of logic for "view"
     # --------------------------------------------------
-
-
-
-
-
-
-
 
 
     # Also accept "user_id_from_search" instead of user_id (the one to edit...)
@@ -697,7 +698,10 @@ ad_proc -public im_can_user_administer_group { { group_id "" } { user_id "" } } 
     return [im_user_group_admin_p $user_id $group_id]
 }
 
-ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { Returns 1 if a user is a site-wide administrator or a member of the intranet administrative group } {
+ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { 
+    Returns 1 if a user is a site-wide administrator or a 
+    member of the intranet administrative group 
+} {
     if { [empty_string_p $user_id] } {
 	set user_id [ad_verify_and_get_user_id]
     }
@@ -849,6 +853,7 @@ ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets 
     }
     return "/groups/[ad_urlencode $short_name]$section"
 }
+
 
 #!!!
 ad_proc -public im_customer_group_id_from_user {} {Sets group_id and short_name in the calling environment of the first customer_id this proc finds for the logged in user} {

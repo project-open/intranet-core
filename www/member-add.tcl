@@ -24,21 +24,17 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
-    project_id:naturalnum
+    object_id:naturalnum
     { role "" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
     { select_from_group:naturalnum "" }
 }
-set object_id $project_id
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_group_member_p [ad_user_group_member $object_id $user_id]
 set user_is_group_admin_p [im_can_user_administer_group $object_id $user_id]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-
-# Check if the current group is a project (as opposed to a customer)
-set project_p [db_string check_if_project "select count(*) from im_projects where project_id=:object_id"]
 
 set translation_enabled [ad_parameter "EnableTranslationModule" "intranet" "0"]
 
@@ -52,24 +48,6 @@ set translation_enabled [ad_parameter "EnableTranslationModule" "intranet" "0"]
 if {!$user_is_group_member_p && !$user_admin_p} {
     ad_return_complaint "Insufficient Permissions" "<li>You need to be member of the group to add members."
 }
-
-set role_options ""
-
-if {$project_p} {
-    set role_options "
-<option value=translator_rel>Translator</option>
-<option value=editor_rel>Editor</option>
-<option value=proofer_rel>Proof Reader</option>
-"
-}
-
-if {$user_admin_p > 0} {
-set role_options "
-<option value=admin_rel>Administrator</option>
-<option value=membership_rel>Member</option>
-$role_options"
-}
-
 
 # Find out the project/customer name and deal with the case that the name
 # may be empty.
@@ -107,9 +85,7 @@ set locate_form "
   <tr> 
     <td>add as</td>
     <td>
-      <select name=role>
-      $role_options
-      </select>
+[im_biz_object_roles_select role $object_id]
     </td>
   </tr>
   <tr> 
@@ -132,7 +108,7 @@ set select_form "
 <form method=POST action=/intranet/member-add-2>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"project_id role return_url also_add_to_object_id\">
+<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td class=rowtitle align=middle>Employee</td>
@@ -144,9 +120,7 @@ $employee_select
   </tr>
   <tr> 
     <td>add as 
-<select name=role>
-$role_options
-</select>
+[im_biz_object_roles_select role $object_id]
     </td>
   </tr>
   <tr> 
@@ -167,7 +141,7 @@ $role_options
 
 set freelance_html ""
 if {$translation_enabled} {
-    set freelance_html [im_freelance_member_select_component $project_id $role_options $return_url]
+    set freelance_html [im_freelance_member_select_component $object_id $role_options $return_url]
 }
 
 # ---------------------------------------------------------------

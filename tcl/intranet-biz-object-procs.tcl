@@ -19,6 +19,34 @@ ad_library {
     extending it by several concepts:
 }
 
+
+
+ad_proc -public im_biz_object_roles_select { select_name object_id { default "" } } {
+    A common drop-down box to select the available roles for 
+    users to be assigned to the object.<br>
+    Returns an html select box named $select_name and defaulted to
+    $default with a list of all available roles for this object.
+} {
+    set bind_vars [ns_set create]
+    set acs_object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
+    ns_set put $bind_vars acs_object_type $acs_object_type
+
+    set sql "
+select distinct
+	r.object_role_id,
+        im_category_from_id(r.object_role_id)
+from
+        im_biz_object_roles r
+where
+        r.acs_object_type = :acs_object_type
+"
+    
+#    set role_options_extra_sql "and r.object_type_id = im_biz_object.type(:object_id)"
+
+
+    return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
+}
+
 # --------------------------------------------------------------
 # Show the members of the Admin Group of the current Business Object.
 # --------------------------------------------------------------
@@ -83,7 +111,7 @@ and exists (select 1
 		groups ug
 	where 
 		map2.group_id = ug.group_id
-		and map2.member_id = users.user_id 
+		and map2.member_id = u.user_id 
 		and map2.group_id = :limit_to_users_in_group_id
 	)
 "
@@ -102,7 +130,7 @@ and not exists (
 		groups ug
 	where 
 		map2.group_id = ug.group_id
-		and map2.member_id = users.user_id 
+		and map2.member_id = u.user_id 
 		and map2.group_id = :dont_allow_users_in_group_id
 	)
 "
@@ -118,16 +146,18 @@ and not exists (
     #
     set sql_query "
 select
-	users.user_id, 
-	im_email_from_user_id(users.user_id) as email,
-	im_name_from_user_id(users.user_id) as name,
-	map.rel_type as member_role
+	u.user_id, 
+	im_email_from_user_id(u.user_id) as email,
+	im_name_from_user_id(u.user_id) as name,
+	im_category_from_id(pm_rels.project_role_id) as member_role
 from
-	users,
-	group_member_map map
+	users u,
+	acs_rels rels,
+	project_member_rels pm_rels
 where
-	map.member_id = users.user_id
-	and map.group_id = :object_id
+	rels.object_id_two = u.user_id
+	and rels.object_id_one = :object_id
+	and rels.rel_id = pm_rels.rel_id
 	$limit_to_group_id_sql 
 	$dont_allow_sql
 order by lower(name)"
