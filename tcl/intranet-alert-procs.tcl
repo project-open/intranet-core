@@ -43,6 +43,7 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
 
     # Get the email of the target user
     set user_email_sql "select email from parties where party_id = :target_id"
+
     db_transaction {
 	db_1row user_email $user_email_sql
     } on_error {
