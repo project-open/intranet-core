@@ -361,27 +361,6 @@ order by
     append contact_html "</table></form>\n"
 }
 
-# ---------------------------------------------------------------
-# Freelance Information
-# ---------------------------------------------------------------
-
-set freelance_info ""
-set freelance_skills ""
-if {$user_is_freelance_p} {
-#    append freelance_info [im_freelance_info_component $current_user_id $user_id $edit_user $return_url $freelance_view_name]
-#    append freelance_skills [im_freelance_skill_component $current_user_id $user_id $edit_user $return_url]
-}
-
-# -------------------------------------------------------------------
-# Display the list of HR files for this user ...
-# ... if a filestorage module has been mounted.
-# -------------------------------------------------------------------
-
-set filestorage_html ""
-#if {[info exists im_filestorage_component]} {
-#    set filestorage_html [im_filestorage_user_component $current_user_id $user_id $name $return_url]
-#}
-
 # ------------------------------------------------------
 # User Project List
 # ------------------------------------------------------
@@ -434,6 +413,15 @@ if {$ctr > $max_projects} {
     append projects_html "<li><A HREF='/intranet/projects/index?user_id_from_search=$user_id&status_id=0'>more projects...</A>\n"
 }
 
+
+
+if {[im_permission $current_user_id view_projects]} {
+    set projects_html [im_table_with_title "Past Projects" $projects_html]
+} else {
+    set projects_html ""
+}
+
+
 # ---------------------------------------------------------------
 # Administration
 # ---------------------------------------------------------------
@@ -470,59 +458,25 @@ append admin_links "
 "
 
 append admin_links "</ul></td></tr>\n"
-
-#if ![empty_string_p $demographics_summary] {
-#    append admin_links "<tr>td>$demographics_summary</td></tr>"
-#}
-
 append admin_links "</table>\n"
 
+if {!$show_admin_links} {
+    set admin_links ""
+}
+
+
+
 # ---------------------------------------------------------------
-# Join all the parts together
+# User-Navbar
 # ---------------------------------------------------------------
 
 set letter "none"
 set next_page_url ""
 set previous_page_url ""
 
-set page_body "
+set user_navbar_html "
 <br>
 [im_user_navbar $letter "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
-
-
-<table cellpadding=1 cellspacing=1 border=0>
-  <tr align=left valign=top>
-    <td>
-      $user_basic_info_html
-      $contact_html
-      $freelance_info
 "
 
-if {$show_admin_links} {
-    append page_body $admin_links
-}
 
-append page_body "
-    </td>
-    <td valign=top align=center>
-"
-
-if {"" != $filestorage_html} {
-    append page_body "<p>
-      [im_table_with_title "User Files" $filestorage_html]
-"
-}
-
-if {[im_permission $current_user_id view_projects]} {
-    append page_body "<p>
-      [im_table_with_title "Past Projects" $projects_html]\n"
-}
-append page_body "
-    </td>
-  </tr>
-</table>
-$freelance_skills
-"
-
-db_release_unused_handles
-doc_return  200 text/html [im_return_template]
