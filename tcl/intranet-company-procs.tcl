@@ -22,6 +22,7 @@ ad_library {
 
 
 # Frequently used Company Stati
+ad_proc -public im_company_status_potential {} { return 41 }
 ad_proc -public im_company_status_inquiries {} { return 42 }
 ad_proc -public im_company_status_qualifying {} { return 43 }
 ad_proc -public im_company_status_quoting {} { return 44 }
@@ -29,6 +30,7 @@ ad_proc -public im_company_status_quote_out {} { return 45 }
 ad_proc -public im_company_status_active {} { return 46 }
 ad_proc -public im_company_status_declined {} { return 47 }
 ad_proc -public im_company_status_inactive {} { return 48 }
+
 
 # Frequently used Company Types
 ad_proc -public im_company_type_other {} { return 52 }
