@@ -85,22 +85,22 @@ select
 	to_char(start_date,'Month DD, YYYY') as start_date, 
 	contract_value, 
 	site_concept,
-        f.phone,
-        f.fax,
-        f.address_line1,
-        f.address_line2,
-        f.address_city,
-        f.address_postal_code,
-        f.address_country_code,
+        o.phone,
+        o.fax,
+        o.address_line1,
+        o.address_line2,
+        o.address_city,
+        o.address_postal_code,
+        o.address_country_code,
 	cc.country_name
 from 
 	im_customers c,
-	im_facilities f,
+	im_offices o,
 	country_codes cc
 where 
         c.customer_id = :customer_id
-	and c.facility_id = f.facility_id(+)
-	and f.address_country_code = cc.iso(+)
+	and c.main_office_id = o.office_id(+)
+	and o.address_country_code = cc.iso(+)
 "
 
 set page_title $customer_name

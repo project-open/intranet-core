@@ -81,8 +81,6 @@ foreach group_id [im_profiles_all_group_ids] {
 
 
 # --------------------------------------------------------
-
-
 # Check if "user" belongs to a group that is administered by 
 # the current users
 set administrated_user_ids [db_list administated_user_ids "
@@ -148,7 +146,7 @@ switch $user_type {
     }
 
     default {
-	ad_return_complaint 1" "
+	ad_return_complaint 1 "
         <li>Internal Error: Bad user type<br>
 	User \#$user_id does not belong to a known group.<br>
 	Please notify your system administrator."
@@ -273,6 +271,52 @@ db_foreach column_list_sql $column_sql {
 }
 
 append user_basic_info_html "
+</table>
+</form>"
+
+# ---------------------------------------------------------------
+# Group Membership
+# ---------------------------------------------------------------
+
+set profile_html "
+<form method=POST action=\"/user/profile-update\">
+[export_form_vars user_id return_url]
+
+<table cellpadding=1 cellspacing=1 border=0>
+  <tr>
+    <td colspan=2 class=rowtitle align=center>Profiles & Security</td>
+  </tr>
+"
+
+set profile_sql {
+select
+	m.group_id as profile_group_id,
+	m.rel_type as profile_rel_type,
+	g.group_name as profile_group_name
+from
+	group_member_map m,
+	groups g
+where
+	m.member_id=:user_id
+	and m.group_id = g.group_id
+}
+
+set ctr 0
+db_foreach profile_sql $profile_sql {
+        append profile_html "
+<tr $td_class([expr $ctr % 2])>
+  <td>
+    $profile_group_name
+  </td>
+  <td>
+    $profile_rel_type
+  </td>
+</tr>\n"
+    incr ctr
+}
+
+
+append profile_html "
 </table>
 </form>"
 

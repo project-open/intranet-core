@@ -87,8 +87,7 @@ set user_is_group_member_p [ad_user_group_member $user_group_id $user_id]
 set user_is_group_admin_p [im_can_user_administer_group $user_group_id $user_id]
 
 if {![im_permission $user_id view_users]} {
-    set err_msg "You don't have permissions to view users"
-    ad_returnredirect "/error?error=$err_msg"
+    ad_return_complaint 1 "You don't have permissions to view this page"
     return
 }
 

@@ -1,4 +1,16 @@
 # /intranet/tcl/intranet-component-procs.tcl
+#
+# Copyright (C) 2004 Project/Open
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_library {
     Procedures to deal with "Plug-ins" and "Component Bays":
@@ -6,7 +18,7 @@ ad_library {
     calls like: im_component_bay("right") to check if there
     is are plug-ins that should be displayed in this place.
 
-    @author fraber@fraber.de
+    @author frank.bergmann@project-open.com
     @creation-date  27 January 2004
 }
 

@@ -1,4 +1,17 @@
-# /www/intranet/member-add-3.tcl
+# /packages/intranet-core/www/member-add-3.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     less stringent on permissions (i.e. any member of the group specified
@@ -15,9 +28,6 @@ ad_page_contract {
     @param start_date
 
     @author mbryzek@arsdigita.com
-    @creation-date 4/4/2000
-
-    @cvs-id member-add-3.tcl,v 3.10.2.7 2000/10/27 00:03:00 tony Exp
 } {
     group_id:naturalnum,notnull
     { role "" }

@@ -1,3 +1,17 @@
+# /packages/intranet-core/www/admin/permissions/perm-include.tcl
+#
+# Copyright (C) various parties
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 # This is a copy of /packages/acs-subsite/www/admin/permissions/perm-include.tcl
 # Unfortunately P/O has to introduce some changes in this code that are
 # not compatible with the rest of OpenACS (such as the URL where to find

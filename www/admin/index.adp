@@ -17,6 +17,9 @@
 	Profiles are a kind of groups to which users can belong.
 	Profiles define the which actions that a user can perform.
       <li>
+	<A href=user_matrix/>Manage the User Matrix</A><br>
+	Define which users can see or manage wich other users.
+      <li>
 	<A href=categories>Manage Categories</A><br>
 	Categories define the types and stati of business objects.
       <li>

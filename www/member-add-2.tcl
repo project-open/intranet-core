@@ -1,4 +1,17 @@
 # /www/intranet/member-add-2.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract {
     Purpose: Confirms adding of person to group
@@ -9,10 +22,7 @@ ad_page_contract {
     @param return_url Return URL
     @param also_add_to_group_id Additional groups to which to add
 
-    @author mbryzek@arsdigita.com
-    @creation-date 4/16/2000
-
-    @cvs-id member-add-2.tcl,v 3.5.2.8 2000/10/27 00:03:00 tony Exp
+    @author mbryzek@arsdigita.com    
 } {
     user_id_from_search:integer
     { notify_asignee "0" }

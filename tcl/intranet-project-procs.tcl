@@ -1,12 +1,103 @@
 # /tcl/intranet-project-components.tcl
+#
+# Copyright (C) 2004 Project/Open
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_library {
     Bring together all "components" (=HTML + SQL code)
     related to Projects.
 
-    @author fraber@fraber.de
+    @author unknown@arsdigita.com
+    @author frank.bergmann@project-open.com
     @creation-date  27 June 2003
 }
+
+
+
+namespace eval project {
+
+    ad_proc new {
+        -project_name
+        -project_nr
+        -project_path
+        -customer_id
+        { -parent_id "" }
+	{ -project_type_id "" }
+	{ -project_status_id "" }
+	{ -creation_date "" }
+	{ -creation_user "" }
+	{ -creation_ip "" }
+	{ -context_id "" }
+
+    } {
+	Creates a new project including the projects  "Main Office".
+	@author frank.bergmann@project-open.com
+
+	@return <code>project_id</code> of the newly created project
+
+	@param project_name Pretty name for the project
+	@param project_nr Current project Nr, such as: "2004_0001".
+	@param project_path Path for project files in the filestorage
+	@param customer_id Who is going to pay for this project?
+	@param parent_id Which is the parent (for subprojects)
+	@param project_type_id Default: "Other": Configurable project
+	       type used for reporting only
+	@param project_status_id Default: "Active": Allows to follow-
+	       up through the project acquistion process
+	@param others The default optional parameters for OpenACS
+	       objects
+    } {
+	# -----------------------------------------------------------
+	# Check for duplicated unique fields (name & path)
+	# We asume the application page knows how to deal with
+	# the uniqueness constraint, so we won't generate an error
+	# but just return the duplicated item. 
+	set dup_sql "
+select	project_id 
+from	im_projects 
+where	upper(trim(project_name)) = upper(trim(:project_name))
+	or upper(trim(project_nr)) = upper(trim(:project_nr))
+	or upper(trim(project_path)) = upper(trim(:project_path))"
+	set pid 0
+	db_foreach dup_projects $dup_sql { set pid $project_id }
+	if {0 != $pid} { return $pid }
+
+	# -----------------------------------------------------------
+	set sql "
+begin
+    :1 := im_project.new(
+	object_type	=> 'im_project',
+	project_name	=> '$project_name',
+        project_nr      => '$project_nr',
+        project_path   => '$project_path'
+"
+if {"" != $customer_id} { append sql "\t, customer_id => $customer_id\n" }
+if {"" != $parent_id} { append sql "\t, parent_id => $parent_id\n" }
+if {"" != $project_type_id} { append sql "\t, project_type_id => $project_type_id\n" }
+if {"" != $project_status_id} { append sql "\t, project_status_id => $project_status_id\n" }
+
+if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
+if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
+if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
+if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
+
+	append sql "        );
+    end;
+"
+	db_exec_plsql create_new_project $sql
+    }
+}
+
 
 
 ad_proc -public im_new_project_html { user_id } {

@@ -251,6 +251,20 @@ begin
 	parent_menu_id => null
     );
 
+    v_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Offices',
+	url =>		'/intranet/offices/',
+	sort_order =>	60,
+	parent_menu_id => null
+    );
+
     v_admin_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
@@ -261,7 +275,7 @@ begin
 	package_name =>	'intranet',
 	name =>		'Admin',
 	url =>		'/intranet/admin/',
-	sort_order =>	30,
+	sort_order =>	70,
 	parent_menu_id => null
     );
 

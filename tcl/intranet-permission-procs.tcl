@@ -1,7 +1,46 @@
-# /tcl/intranet-groups-permissions.tcl
+# /packages/intranet-core/tcl/intranet-groups-permissions.tcl
+#
+# Copyright (C) 2004 Project/Open
+# The code is based on work from ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_library {
-    Intranet definitions wrt groups and permissions
+    Project/Open specific permissions routines.
+    The P/O permission model is based on the OpenACS model,
+    extending it by several concepts:
+    <ul>
+      <li>"Global Permissions":<br>
+          These permissions are not related to any particular
+          object. They are implemented as privileges on the
+          "Main Site" object for the specific groups ("Profiles")
+      <li>"Business Object Permissions":<br>
+          Access permissions for Business Objects such as Projects, 
+          Customers, Offices,... are defined in terms of the
+          membership of individual users to their "administration
+          group". "Membership" in this context refers to a variety
+          of relationship types with OpenACS the default types 
+          membership_rel and admin_rel as predefined relationships.
+          However, other relationship types are specified by 
+          application modules, such as the translator_rel, editor_rel,
+          etc. by the translation modules or analyst_rel, designer_rel,
+          developer_rel etc. by a project methodology module. 
+          These relationship types have an effect on the behaviour of 
+          components  associated to the biz-objects such as the 
+          P/O Filestorage or the P/O Translation Workflow.
+      <li>"User Permission Matrix":<BR>
+          Define what user group is allowed to manage what
+          other user group. For examples, "Employees" are may
+          be entiteled to manage "Freelancers".
+    </ul>
     @author Frank Bergmann (fraber@fraber.de)
 }
 
@@ -21,10 +60,166 @@ ad_proc -public im_core_privs {} {
     used here are defined.
 } {
     return [list add_customers view_customers view_customers_all view_customer_contacts view_customer_details add_projects view_projects view_project_members view_projects_all view_projects_history add_users view_users search_intranet]
-
 }
 
 
+ad_proc -public im_project_permissions {user_id project_id read_var write_var admin_var} {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $user_id on $project_id
+} {
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    set read 0
+    set write 0
+    set admin 0
+
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+    set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
+    set user_is_group_member_p [ad_user_group_member $project_id $user_id]
+    set user_is_group_admin_p [im_can_user_administer_group $project_id $user_id]
+    set user_is_employee_p [im_user_is_employee_p $user_id]
+    set user_in_project_group_p [db_string user_belongs_to_project "select decode ( ad_group_member_p ( :user_id, $project_id ), 'f', 0, 1 ) from dual" ]
+
+    # Admin permissions to global + intranet admins + group administrators
+    set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
+    set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+
+    set write $user_admin_p
+    set admin $user_admin_p
+
+    ns_log Notice "user_is_admin_p=$user_is_admin_p"
+    ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
+    ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
+    ns_log Notice "user_is_employee_p=$user_is_employee_p"
+    ns_log Notice "user_admin_p=$user_admin_p"
+
+    # Let the customers see their projects.
+    db_1row project_customer "select customer_id, project_status_id from im_projects where project_id=:project_id"
+
+    set user_is_project_customer_p [ad_user_group_member $customer_id $user_id]
+
+    if {$user_admin_p} { set read 1}
+    if {$user_is_project_customer_p} { set read 1}
+    if {$user_is_group_member_p} { set read 1}
+    if {[im_permission $user_id view_projects_all]} { set read 1}
+
+    # customers and freelancers are not allowed to see non-open projects.
+    if {![im_permission $user_id view_projects_history] && $project_status_id != [ad_parameter "ProjectStatusOpen" "intranet" "0"]} {
+	
+	# Except their own projects...
+	if {!$user_is_project_customer_p} {
+	    set read 0
+	}
+    }
+
+    # No read - no write...
+    if {!$read} {
+	set write 0
+	set admin 0
+    }
+}
+
+
+
+
+ad_proc -public im_office_permissions {user_id office_id read_var write_var admin_var} {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $user_id on $office_id.<BR>
+    The permissions depend on whether the office is a customers office or
+    an internal office:
+    <ul>
+      <li>Internal Offices:<br>
+          Are readable by all employees
+      <li>Customer Offices:<br>
+          Need either global customer access permissions
+          or the user needs to be in the admin_group of
+          the respective customer.
+    </ul>
+    Write and administration rights are only for administrators
+    and the customer key account managers.
+
+} {
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    set read 0
+    set write 0
+    set admin 0
+
+    # Check if the customer is "internal"
+    set customer_type [db_1row customer_type "
+select
+	im_category_from_id(c.customer_type_id) as customer_type,
+	o.admin_group_id as office_admin_group_id,
+	c.admin_group_id as customer_admin_group_id
+from
+	im_offices o,
+	im_customers c
+where
+	o.office_id = :office_id
+	and o.customer_id = c.customer_id(+)
+"]
+
+    if {"" == $office_admin_group_id} { set office_admin_group_id 0}
+    if {"" == $customer_admin_group_id} { set customer_admin_group_id 0}
+
+    ns_log Notice "im_office_permission: customer_type=$customer_type"
+
+    # Now there are three options:
+    # NULL: not assigned to any customer yet
+    # 'internal': An internal office and
+    # != 'internal': A customers office
+
+    # Internal office: Allow employees to see the offices and
+    # Senior Managers to change them (or similar, as defined
+    # in the permission module)
+    if {[string equal "internal" $customer_type]} {
+	set user_is_office_member_p [ad_user_group_member $office_admin_group_id $user_id]
+	set user_is_office_admin_p [im_can_user_administer_group $office_admin_group $user_id]
+
+	set admin [im_permission $user_id edit_internal_offices]
+	set read [im_permission $user_id view_internal_offices]
+
+	if {$user_is_office_admin_p} { set admin 1 }
+	if {$user_is_office_member_p} { set read 1}
+
+	if {$admin} { set read 1}
+	set write $admin
+	return
+    }
+    
+    # The office if a customers office or a "dangeling" office
+    # (office without a customer)
+
+    set user_is_customer_member_p [ad_user_group_member $customer_admin_group_id $user_id]
+    set user_is_customer_admin_p [im_can_user_administer_group $customer_admin_group_id $user_id]
+
+    set read [expr $user_is_customer_member_p || [im_permission $user_id view_customer_contacts]]
+    set admin $user_is_customer_admin_p
+    set write $admin
+
+    if {$admin} { set read 1 }
+}
+
+
+
+# Intranet permissions scheme - permissions are associated to groups.
+#
+ad_proc -public im_permission_new {user_id action} {
+    Returns true or false, depending whether the user can execute
+    the specified action.
+    Uses a cache to reduce DB traffic.
+} {
+    set package_id [ad_conn package_id]
+    set package_id 400
+
+    set result [ad_permission_p $package_id $action]
+    ns_log Notice "im_permission($action)=$result"
+    return $result
+}
 
 # Intranet permissions scheme - permissions are associated to groups.
 #
@@ -34,12 +229,7 @@ ad_proc -public im_permission {user_id action} {
     Uses a cache to reduce DB traffic.
 } {
     set permission_list [im_permission_list $user_id]
-
-    # The administrator can do all actions
-    if { [lsearch -exact $permission_list admin] >= 0} {
-	return 1
-    }
-
+    if { [lsearch -exact $permission_list admin] >= 0} { return 1 }
     if { [lsearch -exact $permission_list $action] >= 0} {
 	return 1
     } {

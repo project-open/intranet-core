@@ -130,7 +130,11 @@ set project_name ${project_name}
 set project_name_exists [db_string project_name_exists "
 select 	count(*)
 from	im_projects
-where	upper(project_name) = upper(:project_name)
+where	(
+	    upper(trim(project_name)) = upper(trim(:project_name))
+	    or upper(trim(project_nr)) = upper(trim(:project_nr))
+	    or upper(trim(project_path)) = upper(trim(:project_path))
+	)
         and project_id <> :project_id"]
 
 if { $project_name_exists > 0 } {
@@ -138,13 +142,10 @@ if { $project_name_exists > 0 } {
     append errors "  <li> The specified name, \"${project_name},\" already exists - please select another, unique name\n"
 }
 
-
 if { ![empty_string_p $errors] } {
     ad_return_complaint $err_cnt $errors
     return
 }
-
-
 
 # -----------------------------------------------------------------
 # Create a new Project if it didn't exist yet
@@ -159,29 +160,15 @@ set id_count [db_string id_count "select count(*) from im_projects where project
 # The project is going to get the same ID then.
 #
 if {0 == $id_count} {
-    set project_id [group::new \
-	-group_id $project_id \
-        -creation_user $user_id \
-        -group_name "$project_name" \
-	-creation_ip [ad_conn peeraddr]]
 
-# Context ID removed from group creation because
-# it causes problems when trying to uninstall the
-# package.
-# ToDo: Check the uninstall mechanism and delete these
-# groups _before_ the uninstaller tries to delete the
-# package ID.
-#
-# 	-context_id [ad_conn package_id] \
-
-
-    set sql "
-insert into im_projects (
-	project_id, project_name, project_nr, project_path, project_type_id, project_status_id, customer_id
-) values (
-	:project_id,:project_name,:project_nr,:project_path,:project_type_id,:project_status_id, :customer_id
-)"
-    db_dml project_insert $sql
+    set project_id [project::new \
+        -project_name		$project_name \
+        -project_nr		$project_nr \
+        -project_path		$project_path \
+        -customer_id		$customer_id \
+        -parent_id		$parent_id \
+        -project_type_id	$project_type_id \
+	-project_status_id	$project_status_id]
 
     # add the creating current user to the group
     relation_add \

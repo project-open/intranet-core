@@ -1,4 +1,4 @@
-# /www/intranet/customers/new-2.tcl
+# /packages/intranet-core/www/customers/new-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -38,6 +38,7 @@ ad_page_contract {
     { customer_path "" }
     { customer_status_id:integer "" }
     { customer_type_id:integer "" }
+    { main_office_id:integer "" }
     { return_url "" }
     { group_type "" }
     { approved_p "" }
@@ -52,8 +53,6 @@ ad_page_contract {
     { manager_id "" }
     { billable_p "" }
     { start_date "" }
-    { facility_id:integer 0 }
-    { facility_name "" }
     { phone "" }
     { fax "" }
     { address_line1 "" }
@@ -64,6 +63,14 @@ ad_page_contract {
     { start:array,date "" }
     { old_customer_status_id "" }
     { status_modification_date.expr "" }
+}
+
+# -----------------------------------------------------------------
+# Defaults
+# -----------------------------------------------------------------
+
+if {"" == $office_name} {
+    set office_name "$office_name Main Office"
 }
 
 # -----------------------------------------------------------------
@@ -108,31 +115,6 @@ if { ![empty_string_p $errors] } {
     return
 }
 
-
-# -----------------------------------------------------------------
-# Make sure the Facility exists,
-# independed whether it's a new or existing customer
-# -----------------------------------------------------------------
-
-# Make sure the facility exists to be able to store the 
-# Address data
-if {0 == $facility_id} {
-
-    if {"" == $facility_name} { set facility_name "$customer_name Main Facility"}
-
-    set facility_id [group::new \
-	-context_id [ad_conn package_id] \
-	-creation_user $user_id \
-	-group_name "$facility_name Admin Group" \
-	-creation_ip [ad_conn peeraddr]]
-
-    set sql "
-insert into im_facilities (facility_id, facility_name) 
-values (:facility_id, :facility_name)"
-    db_dml facility_insert $sql
-}
-
-
 # -----------------------------------------------------------------
 # Create a new Customer if it didn't exist yet
 # -----------------------------------------------------------------
@@ -141,16 +123,18 @@ values (:facility_id, :facility_name)"
 set cust_count [db_string cust_count "select count(*) from im_customers where customer_id=:customer_id"]
 if {0 == $cust_count} {
 
-    set customer_id [group::new \
-	-context_id [ad_conn package_id] \
-	-creation_user $user_id \
-	-group_name "$customer_name Admin Group" \
-	-creation_ip [ad_conn peeraddr]]
+    # First create a new main_office:
+    set main_office_id [office::new \
+	-office_name	$office_name \
+	-office_path	$office_name]
 
-    set sql "
-insert into im_customers (customer_id, customer_name, customer_path) 
-values (:customer_id,:customer_name,:customer_path)"
-    db_dml customer_insert $sql
+    # Now create the customer with the new main_office:
+    set customer_id [customer::new \
+	-customer_name	$customer_name \
+        -customer_path	$customer_path \
+        -main_office_id	$main_office_id \
+        -customer_type_id $customer_type_id \
+        -customer_status_id $customer_status_id]
 
     # add the creating current user to the group
     relation_add \
@@ -160,14 +144,13 @@ values (:customer_id,:customer_name,:customer_path)"
 	$user_id
 }
 
-
 # -----------------------------------------------------------------
-# Update the Facility
+# Update the Office
 # -----------------------------------------------------------------
 
 set update_sql "
-update im_facilities set
-	facility_name = :facility_name,
+update im_offices set
+	office_name = :office_name,
 	phone = :phone,
 	fax = :fax,
 	address_line1 = :address_line1,
@@ -176,9 +159,9 @@ update im_facilities set
 	address_postal_code = :address_postal_code,
 	address_country_code = :address_country_code
 where
-	facility_id = :facility_id
+	office_id = :main_office_id
 "
-    db_dml update_facilities $update_sql
+    db_dml update_offices $update_sql
 
 
 # -----------------------------------------------------------------
@@ -204,7 +187,7 @@ update im_customers set
 where
 	customer_id = :customer_id
 "
-    db_dml update_facilities $update_sql
+    db_dml update_offices $update_sql
 
 
 

@@ -1,9 +1,23 @@
-# /tcl/intranet-design.tcl
+# /packages/intranet-core/tcl/intranet-design.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_library {
     Design related functions
     Code based on work from Bdoesborg@comeptitiveness.com
 
+    @author unknown@arsdigita.com
     @author Frank Bergmann (fraber@fraber.de)
     @creation-date  January 2004
 }
@@ -389,6 +403,92 @@ append navbar "
 "
     return $navbar
 }
+
+
+ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
+    Returns rendered HTML code for a horizontal sub-navigation
+    bar for /intranet/offices/.
+    The lower part of the navbar also includes an Alpha bar.
+
+    Default_letter==none marks a special behavious, hiding the alpha-bar.
+
+} {
+    # -------- Compile the list of parameters to pass-through-------
+    set bind_vars [ns_set create]
+    foreach var $export_var_list {
+	upvar 1 $var value
+	if { [info exists value] } {
+	    ns_set put $bind_vars $var $value
+	    ns_log Notice "im_ustomer_navbar: $var <- $value"
+        }
+    }
+
+    # --------------- Determine the calling page ------------------
+    set user_id [ad_get_user_id]
+    set section ""
+    set url_stub [im_url_with_query]
+
+    switch -regexp $url_stub {
+	{office%5flist} { set section "Standard" }
+	default {
+	    set section "Standard"
+	}
+    }
+
+    ns_log Notice "url_stub=$url_stub"
+    ns_log Notice "section=$section"
+
+    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
+
+    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
+    set sel "<td class=tabsel>"
+    set nosel "<td class=tabnotsel>"
+    set a_white "<a class=whitelink"
+    set tdsp "<td>&nbsp;</td>"
+
+    set standard "$tdsp$nosel<a href='index?view_name=project_list'>Standard</a></td>"
+    set status "$tdsp$nosel<a href='index?view_name=project_status'>Status</a></td>"
+    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>Costs</a></td>"
+
+    switch $section {
+"Standard" {set standard "$tdsp$sel Standard</td>"}
+default {
+    # Nothing - just let all sections deselected
+}
+    }
+
+    set navbar "
+<table width=100% cellpadding=0 cellspacing=0 border=0>
+  <tr>
+    <td colspan=6 align=right>
+      <table cellpadding=1 cellspacing=0 border=0>
+        <tr> 
+          $standard"
+if {[im_permission $user_id add_offices]} {
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new office"]</a></td>"
+}
+append navbar "
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan=6 class=tabnotsel align=center>"
+if {![string equal "" $prev_page_url]} {
+    append navbar "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
+}
+append navbar $alpha_bar
+if {![string equal "" $next_page_url]} {
+    append navbar "<A HREF=$next_page_url>&gt;&gt;</A>\n"
+}
+append navbar "
+    </td>
+  </tr>
+</table>
+"
+    return $navbar
+}
+
 
 
 ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {

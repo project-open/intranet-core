@@ -1,4 +1,18 @@
 # /www/admin/categories/category-update.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 ad_page_contract {
 
   Updates the properties of an existing category.
@@ -12,7 +26,8 @@ ad_page_contract {
   @param category_type         Dimension of categorization
   @param new_category_type     New type can be specified
   
-  @author gbelcic@sls-international.com
+  @author unknown@arsdigita.com
+  @author guillermo.belcic@project-open.com
   @creation-date 030904
 
 } {

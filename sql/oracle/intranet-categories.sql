@@ -1,7 +1,21 @@
--- ------------------------------------------------------------
--- intranet-categories.sql
--- 25.6.2003, Frank Bergmann <fraber@fraber.de>
--- ------------------------------------------------------------
+-- /packages/intranet-core/sql/oracle/intranet-categories.sql
+--
+-- Copyright (C) 1999-2004 various parties
+-- The code is based on ArsDigita ACS 3.4
+--
+-- This program is free software. You can redistribute it
+-- and/or modify it under the terms of the GNU General
+-- Public License as published by the Free Software Foundation;
+-- either version 2 of the License, or (at your option)
+-- any later version. This program is distributed in the
+-- hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or
+-- FITNESS FOR A PARTICULAR PURPOSE.
+-- See the GNU General Public License for more details.
+--
+-- @author      unknown@arsdigita.com
+-- @author      frank.bergmann@project-open.com
+
 
 -- ------------------------------------------------------------
 -- Categories
@@ -101,6 +115,9 @@ create table category_hierarchy (
 
 -- views on intranet categories to make queries cleaner
 
+------------------------------------------------------
+-- Projects
+--
 create or replace view im_project_status as 
 select category_id as project_status_id, category as project_status
 from categories 
@@ -111,6 +128,9 @@ select category_id as project_type_id, category as project_type
 from categories
 where category_type = 'Intranet Project Type';
 
+------------------------------------------------------
+-- Customers
+--
 create or replace view im_customer_status as 
 select category_id as customer_status_id, category as customer_status
 from categories 
@@ -121,6 +141,14 @@ select category_id as customer_type_id, category as customer_type
 from categories
 where category_type = 'Intranet Customer Type';
 
+create or replace view im_annual_revenue as
+select category_id as revenue_id, category as revenue
+from categories
+where category_type = 'Intranet Annual Revenue';
+
+------------------------------------------------------
+-- Partners
+--
 create or replace view im_partner_status as 
 select category_id as partner_status_id, category as partner_status
 from categories 
@@ -131,6 +159,9 @@ select category_id as partner_type_id, category as partner_type
 from categories
 where category_type = 'Intranet Partner Type';
 
+------------------------------------------------------
+-- HR
+--
 create or replace view im_prior_experiences as
 select category_id as experience_id, category as experience
 from categories
@@ -156,16 +187,23 @@ select category_id as qualification_id, category as qualification
 from categories
 where category_type = 'Intranet Qualification Process';
 
-create or replace view im_annual_revenue as
-select category_id as revenue_id, category as revenue
-from categories
-where category_type = 'Intranet Annual Revenue';
-
 create or replace view im_employee_pipeline_states as
 select category_id as state_id, category as state
 from categories
 where category_type = 'Intranet Employee Pipeline State';
 
+------------------------------------------------------
+-- Offices
+--
+create or replace view im_office_status as 
+select category_id as office_status_id, category as office_status
+from categories 
+where category_type = 'Intranet Office Status';
+
+create or replace view im_office_types as
+select category_id as office_type_id, category as office_type
+from categories
+where category_type = 'Intranet Office Type';
 
 
 
@@ -195,36 +233,12 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 
 -- Intranet Customer Types
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '51',  'Translation Agency',  '',  'Intranet Customer Type');
+('1',  '',  'f',  '51',  'Unknown',  '',  'Intranet Customer Type');
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '52',  'Final Client',  '',  'Intranet Customer Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '53',  'Localization',  '',  'Intranet Customer Type');
+('1',  '',  'f',  '52',  'Other',  '',  'Intranet Customer Type');
 INSERT INTO categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '54',  'Internal',  '',  'Intranet Customer Type');
-INSERT INTO categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '55',  'Milengo',  '',  'Intranet Customer Type');
+('1',  '',  'f',  '53',  'Internal',  '',  'Intranet Customer Type');
 
-
--- Hiring Source
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '121',  'Personal Contact',  '',  'Intranet Hiring Source');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '122',  'Web Site',  '',  'Intranet Hiring Source');
-
--- Job Title
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '151',  'Linguistic Staff Jr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '152',  'Linguistic Staff Sr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '153',  'Project Manager Jr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '154',  'Project Manager Sr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '155',  'Freelance',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '156',  'Managing Director',  '',  'Intranet Job Title');
 
 -- Partner Status
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
@@ -295,6 +309,44 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 
 insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
 ('1',  '',  'f',  '96',  'Glossary Compilation',  '',  'Intranet Project Type');
+
+
+
+
+-- Hiring Source
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '121',  'Personal Contact',  '',  'Intranet Hiring Source');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '122',  'Web Site',  '',  'Intranet Hiring Source');
+
+-- Job Title
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '151',  'Linguistic Staff Jr.',  '',  'Intranet Job Title');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '152',  'Linguistic Staff Sr.',  '',  'Intranet Job Title');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '153',  'Project Manager Jr.',  '',  'Intranet Job Title');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '154',  'Project Manager Sr.',  '',  'Intranet Job Title');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '155',  'Freelance',  '',  'Intranet Job Title');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '156',  'Managing Director',  '',  'Intranet Job Title');
+
+
+
+-- 160-169	Intranet Office Status
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '160',  'Active',  '',  'Intranet Office Status');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '161',  'Inctive',  '',  'Intranet Office Status');
+
+
+-- 170-179	Intranet Office Type
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '170',  'Main Office',  '',  'Intranet Office Type');
+insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
+('1',  '',  'f',  '171',  'Sales Office',  '',  'Intranet Office Type');
 
 
 -- Qualilification Process

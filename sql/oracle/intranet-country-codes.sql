@@ -1,8 +1,9 @@
 -- ------------------------------------------------------------
 -- intranet-country-codes.sql
 -- 25.6.2003, Frank Bergmann <fraber@fraber.de>
-
--- Copyright (C) 1999-2004 ArsDigita, Frank Bergmann and others
+--
+-- Copyright (C) 1999-2004 various parties
+-- The code is based on ArsDigita ACS 3.4
 --
 -- This program is free software. You can redistribute it 
 -- and/or modify it under the terms of the GNU General 
@@ -13,8 +14,9 @@
 -- without even the implied warranty of MERCHANTABILITY or 
 -- FITNESS FOR A PARTICULAR PURPOSE. 
 -- See the GNU General Public License for more details.
-
-
+--
+-- @author	unknown@arsdigita.com
+-- @author	frank.bergmann@project-open.com
 
 -- ------------------------------------------------------------
 -- Countries

@@ -1,5 +1,19 @@
 -- /package/intranet/sql/intranet-components.sql
 --
+-- Copyright (C) 2004 Project/Open
+--
+-- This program is free software. You can redistribute it
+-- and/or modify it under the terms of the GNU General
+-- Public License as published by the Free Software Foundation;
+-- either version 2 of the License, or (at your option)
+-- any later version. This program is distributed in the
+-- hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or
+-- FITNESS FOR A PARTICULAR PURPOSE.
+-- See the GNU General Public License for more details.
+--
+-- @author      frank.bergmann@project-open.com
+
 -- Implements the data structures for component bays
 -- that allow to plug-in components into Project/Open
 -- pages at runtime.
@@ -173,10 +187,8 @@ show errors
 
 
 declare
-    v_user_plugin	integer;
     v_plugin		integer;
 begin
-
     -- -----------------------------------------------------
     -- Setup a few predefined components
     -- -----------------------------------------------------
@@ -185,7 +197,7 @@ begin
     -- page. Sort_order is set to 20, because the forum component 
     -- should go to the first place.
     --
-    v_user_plugin := im_component_plugin.new (
+    v_plugin := im_component_plugin.new (
 	plugin_id =>	null,
 	object_type =>	'im_component_plugin',
 	creation_date => sysdate,
@@ -210,9 +222,36 @@ begin
 			1 \
 		]'
     );
+end;
+/
+show errors;
+
+
+declare
+    v_plugin		integer;
+begin
+    -- Office component for CustomerViewPage
+    v_plugin := im_component_plugin.new (
+	plugin_id =>	null,
+	object_type =>	'im_component_plugin',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	page_url =>	'/intranet/customers/view',
+	location =>	'right',
+	sort_order =>	30,
+	component_tcl =>
+	'im_table_with_title \
+		"Offices" \
+		[im_office_component \
+			$user_id \
+			$customer_id
+		]'
+    );
 
 end;
 /
 show errors
-
 

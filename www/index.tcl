@@ -1,4 +1,17 @@
 # /www/intranet/index.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_page_contract { 
     List all projects with dimensional sliders.
@@ -13,7 +26,7 @@ ad_page_contract {
     @param how_many how many rows to return
 
     @author mbryzek@arsdigita.com
-    @cvs-id index.tcl,v 3.24.2.9 2000/09/22 01:38:44 kevin Exp
+    @author frank.bergmann@project-open.com
 } {
     { order_by "Project #" }
     { include_subprojects_p "f" }
@@ -72,7 +85,7 @@ if { [empty_string_p $status_id] } {
 }
 
 # Reset some values for unprivileged users
-if {![im_permission $current_user_id "view_projects_of_others"]} {
+if {![im_permission $current_user_id "view_projects_all"]} {
     # Don't let clients and freelancers view other projects
     set mine_p "t"
     set include_subprojects_p "f"
@@ -247,7 +260,7 @@ set filter_html "
   <td valign=top>
     <table border=0 cellspacing=0 cellpadding=0>
 "
-if {[im_permission $current_user_id "view_projects_of_others"]} { 
+if {[im_permission $current_user_id "view_projects_all"]} { 
     append filter_html "
       <tr>
         <td valign=top><font size=-1>
@@ -260,7 +273,7 @@ if {[im_permission $current_user_id "view_projects_of_others"]} {
 }
 
 # Don't show the status select box for unprivileged users
-if {[im_permission $current_user_id "view_projects_of_others"]} {
+if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
       <tr>
         <td valign=top><font size=-1>
@@ -397,7 +410,7 @@ if { $num_hours == 0 } {
     append hours_html "You logged $num_hours [util_decode $num_hours 1 hour hours] in the last 7 days."
 }
 
-if {[im_permission $current_user_id view_hours_of_others]} {
+if {[im_permission $current_user_id view_hours_all]} {
     set user_id $current_user_id
     append hours_html "
     <ul>

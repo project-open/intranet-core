@@ -1,4 +1,18 @@
 # /www/admin/categories/one-type.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 ad_page_contract {
   
   Displays all categories of one category type, if category_type
@@ -10,12 +24,8 @@ ad_page_contract {
   @author sskracic@arsdigita.com
   @author michael@yoon.org
   @creation-date October 31, 1999
-  @cvs-id one-type.tcl,v 3.3.2.5 2000/09/22 01:34:27 kevin Exp
-
 } {
-
   category_type:optional
-
 }
 
 if { [info exists category_type] && ![empty_string_p $category_type]} {

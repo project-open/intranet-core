@@ -1,4 +1,18 @@
 # /www/admin/categories/add-link-to-parent.tcl
+#
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+
 ad_page_contract {
 
   Form for designating a parent for a given category.
@@ -8,7 +22,6 @@ ad_page_contract {
   @author sskracic@arsdigita.com 
   @author michael@yoon.org 
   @creation-date October 31, 1999
-  @cvs-id add-link-to-parent.tcl,v 3.5.2.6 2000/09/22 01:34:26 kevin Exp
 } {
 
   category_id:naturalnum,notnull

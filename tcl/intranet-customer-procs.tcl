@@ -1,10 +1,87 @@
-# /tcl/intranet-customer-components.tcl
+# /packages/intranet-core/tcl/intranet-customer-components.tcl
+#
+# Copyright (C) 2004 Project/Open
+#
+# This program is free software. You can redistribute it
+# and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation;
+# either version 2 of the License, or (at your option)
+# any later version. This program is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 ad_library {
-    Bring together all "components" (=HTML + SQL code)
-    related to Customers.
-    @author fraber@fraber.de
+    Bring together all "components" (=HTML + SQL code) related to Customers.
+    @author frank.bergmann@project-open.com
     @creation-date  27 June 2003
+}
+
+namespace eval customer {
+
+    ad_proc new {
+        -customer_name
+        -customer_path
+        { -main_office_id "" }
+	{ -customer_type_id "" }
+	{ -customer_status_id "" }
+	{ -creation_date "" }
+	{ -creation_user "" }
+	{ -creation_ip "" }
+	{ -context_id "" }
+
+    } {
+	Creates a new customer including the customers  "Main Office".
+	@author frank.bergmann@project-open.com
+
+	@return <code>customer_id</code> of the newly created customer
+
+	@param customer_name Pretty name for the customer
+	@param customer_path Path for customer files in the filestorage
+	@param main_office_id Optional: Use this office as the customers
+	       main office.
+	@param customer_type_id Default: "Other": Configurable customer
+	       type used for reporting only
+	@param customer_status_id Default: "Active": Allows to follow-
+	       up through the customer acquistion process
+	@param others The default optional parameters for OpenACS
+	       objects
+    } {
+	# -----------------------------------------------------------
+	# Check for duplicated unique fields (name & path)
+	# We asume the application page knows how to deal with
+	# the uniqueness constraint, so we won't generate an error
+	# but just return the duplicated item. 
+	set dup_sql "
+select	customer_id 
+from	im_customers 
+where	customer_name = :customer_name 
+	or customer_path = :customer_path"
+	set cid 0
+	db_foreach dup_customers $dup_sql { set cid $customer_id }
+	if {0 != $cid} { return $cid }
+
+	# -----------------------------------------------------------
+	set sql "
+begin
+    :1 := im_customer.new(
+	object_type	=> 'im_customer',
+	customer_name	=> '$customer_name',
+        customer_path   => '$customer_path'
+"
+	if {"" != $main_office_id} { append sql "\t, main_office_id => $main_office_id\n" }
+	if {"" != $creation_date} { append sql "\t, creation_date => '$creation_date'\n" }
+	if {"" != $creation_user} { append sql "\t, creation_user => '$creation_user'\n" }
+	if {"" != $creation_ip} { append sql "\t, creation_ip => '$creation_ip'\n" }
+	if {"" != $context_id} { append sql "\t, context_id => $context_id\n" }
+	if {"" != $customer_type_id} { append sql "\t, customer_type_id => $customer_type_id\n" }
+	if {"" != $customer_status_id} { append sql "\t, customer_status_id => $customer_status_id\n" }
+	append sql "        );
+    end;
+"
+	db_exec_plsql create_new_customer $sql
+    }
 }
 
 

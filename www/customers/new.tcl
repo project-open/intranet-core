@@ -1,4 +1,4 @@
-# /www/intranet/customers/new.tcl
+# /packages/intranet-core/www/customers/new.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,7 +14,10 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Lets users add/modify information about our customers
+    Lets users add/modify information about our customers.
+    Contact details are not stored with the customer itself,
+    but with a "main_office" that is a required property
+    (not null).
 
     @param customer_id if specified, we edit the customer with this customer_id
     @param return_url Return URL
@@ -42,7 +45,7 @@ if {![im_permission $user_id "add_customers"]} {
 if {$customer_id > 0} {
 
     # Called with an existing customer_id => Edit the customer
-    #
+    # We know that main_office_id is NOT NULL...
 
     if {![db_0or1row customer_get_info "
 select
@@ -50,30 +53,29 @@ select
 	c.customer_path, 
 	c.customer_status_id, 
 	c.customer_type_id, 
+	c.main_office_id,
 	c.billable_p,
 	c.note, 
 	c.annual_revenue_id, 
 	c.referral_source,
 	c.vat_number,
-	c.facility_id,
 	nvl(c.manager_id,$user_id) as manager, 
 	c.site_concept, 
 	nvl(c.contract_value,600) as contract_value,
 	to_char(nvl(c.start_date,sysdate),'YYYY-MM-DD') as start_date,
-	f.facility_name,
-	f.phone,
-	f.fax,
-	f.address_line1,
-	f.address_line2,
-	f.address_city,
-	f.address_postal_code,
-	f.address_country_code
+	o.phone,
+	o.fax,
+	o.address_line1,
+	o.address_line2,
+	o.address_city,
+	o.address_postal_code,
+	o.address_country_code
 from 
 	im_customers c, 
-	im_facilities f
+	im_offices o
 where 
 	c.customer_id=:customer_id
-	and c.facility_id=f.facility_id(+)
+	and c.main_office_id=o.office_id
 " 
     ]} {
 	ad_return_error "Client #customer_id doesn't exist" "Please back up, and try again"
@@ -82,46 +84,6 @@ where
 
     set page_title "Edit customer"
     set context_bar [ad_context_bar [list index "Clients"] [list "view?[export_url_vars customer_id]" "One customer"] $page_title]
-
-
-
-    # Make sure the Facility exists,
-    # in case an error has occured previously
-
-    # Make sure the facility exists to be able to store the 
-    # Address data
-    if {0 == $facility_id || "" == $facility_id} {
-
-	set facility_name "$customer_name Main Facility"
-
-	set facility_id [group::new \
-	  -context_id [ad_conn package_id] \
-	  -creation_user $user_id \
-	  -group_name "$facility_name Admin Group" \
-	  -creation_ip [ad_conn peeraddr]]
-
-	set sql "insert into im_facilities 
-		(facility_id, facility_name) values 
-		(:facility_id, :facility_name)
-        "
-
-
-        if { [catch {
-	    db_dml facility_insert $sql
-        } err_msg] } {
-	    # don't show the error to the user. Let's asume the facility exists...
-	    ns_log Error "/customers/new: $err_msg"
-        }
-
-	set facility_id [db_string main_facility "select facility_id from im_facilities where facility_name like :facility_name" -default 0]
-
-	set customer_update_sql "
-		update im_customers
-		set facility_id=:facility_id
-		where customer_id=:customer_id"
-	db_dml customer_update $customer_update_sql
-    }
-
 
     
 } else {
@@ -143,10 +105,10 @@ where
     set site_concept ""
     set vat_number ""
 
-    # 41=Potential Client
-    set customer_status_id "41"
-    # 51=Translation Agency
-    set customer_type_id "51"
+    # 46=Active
+    set customer_status_id "46"
+    # 52=Other
+    set customer_type_id "52"
     set annual_revenue_id "224"
     set referral_source "How did we get in contact with the client?"
     set billable_p "t"
@@ -154,9 +116,6 @@ where
     set "creation_user" $user_id
     set customer_id [im_new_object_id]
     set address_country_code ""
-
-    set facility_name ""
-    set facility_id 0
 }
 
 set customer_defaults [ns_set create]
@@ -165,10 +124,7 @@ ns_set put $customer_defaults billable_p $billable_p
 
 set page_body "
 <form method=get action=new-2>
-[export_form_vars return_url customer_id creation_ip_address creation_user]
-<input type=hidden name=facility_name value='$facility_name'>
-<input type=hidden name=facility_id value=$facility_id>
-
+[export_form_vars return_url customer_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 
 		      <td colspan=2 class=rowtitle align=center>Add New Client Project</td>
