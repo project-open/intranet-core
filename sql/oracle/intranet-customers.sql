@@ -239,6 +239,7 @@ show errors
 
 
 -- Create the "Internal" customer, representing the company itself
+prompt *** Creating "Internal" customer, representing the company itself
 DECLARE
     v_office_id		integer;
     v_customer_id	integer;
@@ -254,6 +255,33 @@ BEGIN
 	object_type	=> 'im_customer',
 	customer_name	=> 'Internal',
 	customer_path	=> 'internal',
+	main_office_id	=> v_office_id,
+	-- 'Internal' customer type
+	customer_type_id => 53,
+	-- 'Active' status
+	customer_status_id => 46
+    );
+end;
+/
+
+
+
+prompt *** -- Create the "Tigerpond" customer, a large account with a lot of power...
+DECLARE
+    v_office_id		integer;
+    v_customer_id	integer;
+BEGIN
+    -- First setup the main office
+    v_office_id := im_office.new(
+        object_type     => 'im_office',
+        office_name     => 'Tigerpond Main Office',
+        office_path     => 'tigerpond_main_office'
+    );
+
+    v_customer_id := im_customer.new(
+	object_type	=> 'im_customer',
+	customer_name	=> 'Tigerpond',
+	customer_path	=> 'tigerpond',
 	main_office_id	=> v_office_id,
 	-- 'Internal' customer type
 	customer_type_id => 53,

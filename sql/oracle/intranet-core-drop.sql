@@ -36,6 +36,21 @@ end;
 /
 show errors;
 
+begin
+     for row in (
+        select cons.constraint_id
+        from rel_constraints cons, rel_segments segs
+        where
+                segs.segment_id = cons.required_rel_segment
+     ) loop
+
+        rel_segment.del(row.constraint_id);
+
+     end loop;
+end;
+/
+show errors;
+
 
 
 
