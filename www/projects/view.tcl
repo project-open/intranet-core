@@ -27,6 +27,7 @@ ad_page_contract {
     { object_id:integer 0}
     { orderby "subproject_name"}
     { show_all_comments 0}
+    { forum_order_by "" }
     { view_name "standard"}
 }
 

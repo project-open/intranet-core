@@ -36,6 +36,7 @@ ad_page_contract {
     { letter "scroll" }
     { start_idx:integer 0 }
     { how_many "" }
+    { forum_order_by "" }
 }
 
 # ---------------------------------------------------------------

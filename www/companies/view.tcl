@@ -24,6 +24,7 @@ ad_page_contract {
 } {
     { company_id:integer 0}
     { object_id:integer 0}
+    { forum_order_by "" }
     show_all_correspondance_comments:integer,optional
 }
 
