@@ -218,7 +218,7 @@ where
 	p.customer_id=:customer_id
 	and p.project_status_id = c.category_id(+)
 	and lower(c.category) not in ('deleted')
-order by p.project_nr
+order by p.project_nr DESC
 "
 
 set projects_html ""
