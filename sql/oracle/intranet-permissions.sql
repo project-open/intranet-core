@@ -49,7 +49,6 @@ where
 ;
 
 
-
 CREATE TABLE im_profiles (
 	profile_id	integer not null
 			constraint im_profiles_pk
@@ -217,6 +216,25 @@ BEGIN
      from groups
      where group_name = v_pretty_name;
 
+     -- First we need to remove this dependency ...
+     delete from im_profiles where profile_id = v_group_id;
+     delete from acs_permissions where grantee_id=v_group_id;
+     -- the acs_group package takes care of segments referred
+     -- to by rel_constraints.rel_segment. We delete the ones
+     -- references by rel_constraints.required_rel_segment here.
+     for row in (
+	select cons.constraint_id
+	from rel_constraints cons, rel_segments segs
+	where
+		segs.segment_id = cons.required_rel_segment
+		and segs.group_id = v_group_id
+     ) loop
+
+	rel_segment.del(row.constraint_id);
+
+     end loop;
+
+     -- delete the actual group
      im_profile.del(v_group_id);
 end;
 /

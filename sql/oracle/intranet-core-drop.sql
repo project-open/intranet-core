@@ -18,6 +18,23 @@
 -- @author      frank.bergmann@project-open.com
 
 
+-----------------------------------------------------------
+-- Permissions 
+
+begin
+   im_drop_profile ('P/O Admins');
+   im_drop_profile ('Customers'); 
+   im_drop_profile ('Offices'); 
+   im_drop_profile ('Employees'); 
+   im_drop_profile ('Freelancers'); 
+   im_drop_profile ('Project Managers'); 
+   im_drop_profile ('Senior Managers'); 
+   im_drop_profile ('Accounting'); 
+end;
+/
+show errors;
+
+
 -- ------------------------------------------------------------
 -- Remove contents to deal with cyclical RIs
 -- ------------------------------------------------------------
@@ -29,9 +46,6 @@ delete from im_projects;
 delete from im_projects_status_audit;
 delete from im_project_status;
 delete from im_project_types;
-
-delete from im_offices;
-
 
 drop index im_project_parent_id_idx;
 drop table im_projects_status_audit;
