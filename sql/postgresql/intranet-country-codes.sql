@@ -123,5 +123,3 @@ insert into country_codes values ('uy','Uruguay');
 insert into country_codes values ('ve','Venezuela');
 insert into country_codes values ('yu','Yugoslavia');
 insert into country_codes values ('za','South Africa');
-
-commit;

@@ -156,8 +156,6 @@ extra_select, extra_where, sort_order, visible_for) values (2227,22,NULL,'Invoic
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2229,22,NULL,'Close',
 '$close_date','','',22,'');
---
-commit;
 
 
 
@@ -198,7 +196,6 @@ extra_select, extra_where, sort_order, visible_for) values (2017,20,NULL,'Delive
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status',
 '$project_status','','',11,'');
-commit;
 
 
 --
@@ -231,7 +228,6 @@ extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Em
 -- insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 -- extra_select, extra_where, sort_order, visible_for) values (7,1,NULL,'Contact Phone',
 -- '$company_phone','','',6,'im_permission $user_id view_company_contact');
-commit;
 
 
 --------------------------------------------------------------
@@ -271,8 +267,6 @@ extra_select, extra_where, sort_order, visible_for) values (205,10,NULL,'Cell Ph
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (206,10,NULL,'Home Phone',
 '$home_phone','','',8,'');
---
-commit;
 
 
 
@@ -291,8 +285,6 @@ insert into im_view_columns (column_id, view_id, group_id, column_name, column_r
 extra_select, extra_where, sort_order, visible_for) values (1105,11,NULL,'Home',
 '"<a href=\"$url\">$url</a>"','','',3,
 'im_view_user_permission $user_id $current_user_id $url view_users');
---
-commit;
 
 
 ---------------------------------------------------------------
@@ -357,8 +349,7 @@ insert into im_view_columns (column_id, view_id, group_id, column_name, column_r
 extra_select, extra_where, sort_order, visible_for) values (439,12,NULL,' ',
 '"<input type=submit value=Edit>"','','',99,
 'set a $write');
---
-commit;
+
 
 
 -------------------------------------------------------------------
@@ -377,8 +368,6 @@ extra_select, extra_where, sort_order, visible_for) values (1320,13,NULL,'Name',
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1330,13,NULL,'Email',
 '"<a href=\"mailto:$email\">$email</a>"','','',30,'');
---
-commit;
 
 
 
@@ -416,8 +405,7 @@ extra_select, extra_where, sort_order, visible_for) values (8006,80,NULL,'City',
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (8007,80,NULL,'Phone',
 '$phone','','',70,'');
---
-commit;
+
 
 
 --

@@ -108,15 +108,15 @@ end;' language 'plpgsql';
 --
 
 \i intranet-views.sql
-\i intranet-core-backup.sql
--- \i intranet-components.sql
+-- \i intranet-core-backup.sql
+\i intranet-components.sql
 \i intranet-permissions.sql
 \i intranet-menus.sql
 
 -- -----------------------------------------------------------
 -- Load demo data
 ---
-\i intranet-potransdemo-data.sql
+-- \i intranet-potransdemo-data.sql
 
 
 
@@ -162,6 +162,8 @@ create table im_start_months (
 -- Populate im_start_weeks. Start with Sunday, 
 -- Jan 7th 1996 and end after inserting 1000 weeks. Note 
 -- that 1000 is a completely arbitrary number. 
+create or replace function inline_0 ()
+returns integer as '
 DECLARE
     v_max 			integer;
     v_i				integer;
@@ -172,50 +174,59 @@ BEGIN
 
     FOR v_i IN 0..v_max-1 LOOP
 	-- for convenience, select out the next start block to insert into a variable
-	select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
+	select to_date(''1996-01-07'',''YYYY-MM-DD'') + v_i*7 
 	into v_next_start_week 
 	from dual;
 
 	insert into im_start_weeks (
 		start_block
 	) values (
-		to_date(v_next_start_week)
+		to_date(v_next_start_week,''YYYY-MM-DD'')
 	);
 
 	-- set the start_of_larger_unit_p flag if this is the first
 	-- start block of the month
 	update im_start_weeks
-	   set start_of_larger_unit_p='t'
-	 where start_block=to_date(v_next_start_week)
+	   set start_of_larger_unit_p=''t''
+	 where start_block=to_date(v_next_start_week,''YYYY-MM-DD'')
 	   and not exists (
 	select 1 
 	      from im_start_weeks
-	     where to_char(start_block,'YYYY-MM') = 
-	         to_char(v_next_start_week,'YYYY-MM')
-	           and start_of_larger_unit_p='t');
+	     where to_char(start_block,''YYYY-MM'') = 
+	         to_char(v_next_start_week,''YYYY-MM'')
+	           and start_of_larger_unit_p=''t'');
     END LOOP;
-END;
-/
-show errors;
+    return 0;
+end;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
 
 -- Populate im_start_months. Start with im_start_weeks
 -- dates and check for the beginning of a new month.
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+	row RECORD;
 BEGIN
-    for row in (
-	select unique concat(to_char(start_block, 'YYYY-MM'),'-01') as first_day_in_month
+    for row in
+	select distinct
+	       to_char(start_block, ''YYYY-MM'') || ''-01'' as first_day_in_month
         from im_start_weeks
-     ) loop
-
+    loop
 	insert into im_start_months (
 		start_block
 	) values (
-		to_date(row.first_day_in_month)
+		to_date(row.first_day_in_month,''YYYY-MM-DD'')
 	);
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
 
-     end loop;
-END;
-/
-show errors;
+
 
 
 -- Create these entries at the very end,
@@ -241,6 +252,4 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_office','edit','/intranet/offices/new?office_id=');
 
----
-commit;
 

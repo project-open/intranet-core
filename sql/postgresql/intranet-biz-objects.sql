@@ -28,26 +28,18 @@
 -- to select suitable roles for them in which to assign
 -- members.
 
-CREATE FUNCTION inline_0 ()
-RETURNS integer AS '
-begin
-	PERFORM acs_object_type__create_type (
-		''im_biz_object'',	-- object_type
-		''Business Object'',	-- pretty_name
-		''Business Objects'',	-- pretty_plural
-		''acs_object'',		-- supertype
-		''im_biz_objects'',	-- table_name
-		''object_id'',		-- id_column
-		''im_biz_object'',	-- package_name
-		''f'',			-- abstract_p
-		null,			-- type_extension_table
-		''im_biz_object__name''	-- name_method
-	);
-	return 0;
-end;' LANGUAGE 'plpgsql';
-SELECT inline_0 ();
-DROP FUNCTION inline_0 ();
-
+select acs_object_type__create_type (
+	'im_biz_object',	-- object_type
+	'Business Object',	-- pretty_name
+	'Business Objects',	-- pretty_plural
+	'acs_object',		-- supertype
+	'im_biz_objects',	-- table_name
+	'object_id',		-- id_column
+	'im_biz_object',	-- package_name
+	'f',			-- abstract_p
+	null,			-- type_extension_table
+	'im_biz_object__name'	-- name_method
+);
 
 CREATE TABLE im_biz_objects (
 	object_id 		integer

@@ -15,6 +15,20 @@
 -- @author	unknown@arsdigita.com
 -- @author	frank.bergmann@project-open.com
 
+-------------------------------------------------------------
+-- Convenience procs for Oracle / PG Compatibility
+--
+
+create or replace function im_permission_p (integer, integer, varchar)
+returns char as '
+DELARE
+	p_object_id	alias for $1;
+	p_user_id	alias for $2;
+	p_privilege	alias for $3;
+BEGIN
+	return acs_permission__permission_p(p_object_id, p_user_id, p_privilege);
+END;' language 'plpgsql';
+
 
 -------------------------------------------------------------
 -- Project/Open Profiles
@@ -60,52 +74,83 @@ CREATE TABLE im_profiles (
 
 insert into group_types (group_type) values ('im_profile');
 
+
+
+
+create or replace function im_profile__new (varchar, varchar) 
+returns integer as '
+DELARE
+    pretty_name	alias for $1;
+    profile_gif	alias for $2;
+BEGIN
+    return im_profile__new(
+	null,
+	''im_profile'',
+	now(),
+	0,
+	null,
+	null,
+
+	null,
+	null,
+	pretty_name,
+	''closed'',
+	profile_gif
+    );
+END;' language 'plpgsql';
+
+
+
 create or replace function im_profile__new (
-        integer, varchar, timestamptz, integer, varchar, integer,
-        varchar, varchar, integer, integer, integer
+	integer, varchar, timestamptz, integer, varchar, integer,
+	varchar, varchar, varchar, varchar, varchar
 ) returns integer as '
 DECLARE
-        profile_id      alias for $1;
-        object_type     alias for $2;
-        creation_date   alias for $3;
-        creation_user   alias for $4;
-        creation_ip     alias for $5;
-        context_id      alias for $6;
-	email		alias for $7;
-	url		alias for $8;
-	group_name	alias for $9;
-	join_policy     alias for $10;
-	profile_gif	alias for $11;
+	p_profile_id      alias for $1;
+	p_object_type     alias for $2;
+	p_creation_date   alias for $3;
+	p_creation_user   alias for $4;
+	p_creation_ip     alias for $5;
+	p_context_id      alias for $6;
+
+	p_email		alias for $7;
+	p_url		alias for $8;
+	p_group_name	alias for $9;
+	p_join_policy     alias for $10;
+	p_profile_gif	alias for $11;
 
 	v_group_id integer;
 BEGIN
 	v_group_id := acs_group__new (
-		     profile_id,
-		     object_type,
-		     creation_date,
-		     creation_user,
-		     creation_ip,
-		     email,
-		     url,
-		     group_name,
-		     join_policy,
-		     context_id
+		     p_profile_id,
+		     p_object_type,
+		     p_creation_date,
+		     p_creation_user,
+		     p_creation_ip,
+		     p_email,
+		     p_url,
+		     p_group_name,
+		     p_join_policy,
+		     p_context_id
 	);
-    insert into im_profiles (
-	profile_id, 
-	profile_gif
-    ) values (
-	v_group_id, 
-	profile_gif
-    );
 
-    return v_group_id;
+	insert into im_profiles (
+		profile_id, 
+		profile_gif
+	) values (
+		v_group_id, 
+		p_profile_gif
+	);
+
+	return v_group_id;
+
 end;' language 'plpgsql';
+
 
 
 create or replace function im_profile__del (integer) returns integer as '
 DECLARE
-        v_profile_id             alias for $1;
+	v_profile_id	     alias for $1;
 BEGIN
 	delete from im_profiles
 	where profile_id=group_id;
@@ -184,16 +229,20 @@ BEGIN
 		v_profile_gif
 	);
 
-	v_rel_id := composition_rel__new(
-		-2,		-- object_id_one
-		v_group_id	-- object_id_two
-		0,		-- creation_user
-		null		-- creation_ip
+	v_rel_id := composition_rel__new (
+		null,			-- rel_id
+		''composition_rel'',	-- rel_type
+		-2,			-- object_id_one
+		v_group_id,		-- object_id_two
+		0,			-- creation_user
+		null			-- creation_ip
 	);
      end if;
      return 0;
 end;' language 'plpgsql';
 
+
+select im_create_profile('Test1','test1');
 
 create or replace function im_drop_profile (integer) 
 returns integer as '
@@ -303,8 +352,7 @@ select acs_privilege__create_privilege('view_user_regs','View User Registrations
 select acs_privilege__create_privilege('search_intranet','Search Intranet','Search Intranet');
 select acs_privilege__create_privilege('admin_categories','Admin Categories','Admin Categories');
 select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
-end;
-/
+
 
 
 -------------------------------------------------------------
@@ -335,7 +383,9 @@ BEGIN
      from apm_packages 
      where package_key=''acs-subsite'';
 
-     acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
+     PERFORM acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
+     return 0;
+
 end;' language 'plpgsql';
 
 
@@ -369,6 +419,7 @@ BEGIN
 		0,
 		null
 	 );
+    return 0;
 end;' language 'plpgsql';
 
 
@@ -379,12 +430,12 @@ end;' language 'plpgsql';
 --	grants administration privileges of freelancers to
 --	staff employees.
 --
-create or replace procedure im_user_matrix_grant (
-	p_group_name IN varchar,
-	p_grantee_group_name IN varchar,
-	p_privilege IN varchar
-)
-IS
+create or replace function im_user_matrix_grant (varchar, varchar, varchar)
+returns integer as '
+	p_group_name		alias for $1;
+	p_grantee_group_name	alias for $2;
+	p_privilege		alias for $3;
+
 	v_group_id		integer;
 	v_grantee_id		integer;
 BEGIN
@@ -400,14 +451,14 @@ BEGIN
      from groups
      where group_name = p_grantee_group_name;
 
-     acs_permission__grant_permission(
+     PERFORM acs_permission__grant_permission(
 	v_group_id,
 	v_grantee_id,
 	p_privilege
      );
-END;
-/
-show errors;
+     return 0;
+end;' language 'plpgsql';
+
 
 
 
@@ -419,20 +470,21 @@ DECLARE
 	p_user_id	alias for $1;
 	p_group_id	alias for $2;
 
-	ad_group_member_p     char(1);
+	ad_group_member_count     integer;
 BEGIN
-    select decode(count(*), 0, 'f', 't')
-    into ad_group_member_p
+    select count(*)
+    into ad_group_member_count
     from acs_rels
     where
 	object_id_one = p_group_id
 	and object_id_two = p_user_id;
 
-    return ad_group_member_p;
-
-END ad_group_member_p;
-/
-show errors
+    if ad_group_member_count = 0 then
+       return ''f'';
+    else
+       return ''t'';
+    end if;
+end;' language 'plpgsql';
 
 
 ------------------------------------------------------------
@@ -440,16 +492,15 @@ show errors
 -- ToDo: Hardcoded implementation - replace by privilege
 -- scheme that works through all types of business objects.
 --
-create or replace function ad_group_member_admin_role_p (
-    p_user_id IN integer,
-    p_group_id IN integer
-)
-return char
-IS
-    ad_group_member_p    char(1);
+create or replace function ad_group_member_admin_role_p (integer, integer)
+returns integer as '
+    p_user_id	   alias for $1;
+    p_group_id	   alias for $2;
+
+    ad_group_member_count    integer;
 BEGIN
-    select decode(count(*), 0, 'f', 't')
-    into ad_group_member_p
+    select count(*)
+    into ad_group_member_count
     from
 	acs_rels r,
 	im_biz_object_members m,
@@ -459,11 +510,13 @@ BEGIN
 	and r.object_id_two = p_user_id
 	and r.rel_id = m.rel_id
 	and m.object_role_id = c.category_id
-	and (c.category = 'Project Manager' or c.category = 'Key Account');
+	and (c.category = ''Project Manager'' or c.category = ''Key Account'');
 
-    return ad_group_member_p;
+    if ad_group_member_count = 0 then
+       return ''f'';
+    else
+       return ''t'';
+    end if;
+end;' language 'plpgsql';
 
-END ad_group_member_admin_role_p;
-/
-show errors
 

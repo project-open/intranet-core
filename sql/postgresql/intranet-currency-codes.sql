@@ -205,5 +205,3 @@ insert into currency_codes values ('ZMK','Zambian Kwacha','f','');
 insert into currency_codes values ('ZRZ','Zaire Zaire','f','');
 insert into currency_codes values ('ZWD','Zimbabwe Dollar','f','');
 
-commit;
-
