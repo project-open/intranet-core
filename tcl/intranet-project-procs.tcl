@@ -389,7 +389,7 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
 	 append sql " and project_status_id=(
 	     select project_status_id 
 	     from im_project_status 
-	     where project_status=:status)"
+	     where lower(project_status)=lower(:status)"
     }
 
     if { ![empty_string_p $exclude_status] } {
@@ -411,9 +411,9 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
      if { ![empty_string_p $member_user_id] } {
 	 ns_set put $bind_vars member_user_id $member_user_id
 	 append sql "	and p.project_id in (
-				select project_id
-				from im_projects
-				where project_id=:member_user_id)
+				select object_id_one
+				from acs_rels
+				where object_id_two = :member_user_id)
 		    "
     }
 # and ug.group_id in (

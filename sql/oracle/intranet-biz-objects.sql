@@ -54,6 +54,45 @@ CREATE TABLE im_biz_objects (
 );
 
 
+-- Store a "view" and an "edit" URLs for each object type.
+CREATE TABLE im_biz_object_urls (
+	object_type		varchar(1000)
+				constraint im_biz_obj_urls_object_type_fk
+				references acs_object_types,
+	url_type		varchar(100)
+				constraint im_biz_obj_urls_url_type_ck
+				check(url_type in ('view', 'edit')),
+	url			varchar(1000)
+);
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','view','/intranet/projects/view?project_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','edit','/intranet/projects/new?project_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_customer','view','/intranet/customers/view?customer_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_customer','edit','/intranet/customers/new?customer_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_user','view','/intranet/users/view?user_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_user','edit','/intranet/users/new?user_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','view','/intranet/offices/view?office_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','edit','/intranet/offices/new?office_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_invoice','view','/intranet-invoices/view?invoice_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_invoice','edit','/intranet-invoices/new?invoice_id=');
+
+
+
+
 create or replace package im_biz_object
 is
     function new (
@@ -135,6 +174,9 @@ show errors
 -- Project/Translation adds Translator, Proof Reader, ...
 -- Project/Advertizing adds Producer, Designer, Texter, ...
 -- Project/IT adds Business Analyst, Architect, Developer, ...
+
+-- ToDo: Insert category hierarchy to be able to ask:
+-- Is this an "object administrator" or a "full member"?
 
 insert into im_categories (
 	category_id, category, category_type, 

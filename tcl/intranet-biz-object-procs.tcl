@@ -51,10 +51,44 @@ where
 	r.object_id_one=:object_id
 	and r.object_id_two=:user_id
 	and r.rel_id = m.rel_id
-	and m.object_role_id in (1301,1302)"
+	and m.object_role_id in (1301,1302)
+"
     # 1301=PM, 1302=Key Account
 
     set result [db_string im_biz_object_member_p $sql]
+    return $result
+}
+
+ad_proc -public im_biz_object_admin_ids { object_id } {
+    Returns the list of administrators of the specified object_id
+} {
+    set sql "
+select	object_id_two
+from 
+	acs_rels r,
+	im_biz_object_members m
+where
+	r.object_id_one=:object_id
+	and r.rel_id = m.rel_id
+	and m.object_role_id in (1301,1302)
+"
+    # 1301=PM, 1302=Key Account
+
+    set result [db_list im_biz_object_admin_ids $sql]
+    return $result
+}
+
+ad_proc -public im_biz_object_member_ids { object_id } {
+    Returns the list of members of the specified object_id
+} {
+    set sql "
+select	object_id_two
+from 
+	acs_rels r,
+where
+	r.object_id_one=:object_id
+"
+    set result [db_list im_biz_object_member_ids $sql]
     return $result
 }
 

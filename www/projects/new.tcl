@@ -39,7 +39,7 @@ set project_nr_field_size [ad_parameter "ProjectNumberFieldSize" "" 20]
 
 # Make sure the user has the privileges, because this
 # pages shows the list of customers etc.
-if {![im_permission $user_id "add_projects"]} { 
+if {![im_permission $user_id add_projects]} { 
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to see this page."
 }

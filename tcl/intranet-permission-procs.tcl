@@ -103,6 +103,7 @@ ad_proc -public im_permission_flush {} {
     # Call the global "flusher" with the ".*" regexp which should
     # match all entries.
     util_memoize_flush_regexp "ad_permission.*"
+    util_memoize_flush_regexp "im_permission.*"
     util_memoize_flush_regexp "db_string.*"
     util_memoize_flush_regexp "acs_user.*"
 }
@@ -400,58 +401,47 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 }
 
 
-#!!!
 ad_proc -public im_admin_group_id { } {Returns the group_id of administrators} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\""]
 }
 
-#!!!
 ad_proc -public im_employee_group_id { } {Returns the groud_id for employees} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Employees'\""]
 }
 
-#!!!
 ad_proc -public im_wheel_group_id { } {Returns the groud_id for wheel (=senior managers)} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Senior Managers'\""]
 }
 
-#!!!
 ad_proc -public im_pm_group_id { } {Returns the groud_id for project managers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Project Managers'\""]
 }
 
-#!!!
 ad_proc -public im_accounting_group_id { } {Returns the groud_id for employees} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\""]
 }
 
-#!!!
 ad_proc -public im_customer_group_id { } {Returns the groud_id for customers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\""]
 }
 
-#!!!
 ad_proc -public im_partner_group_id { } {Returns the groud_id for partners} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Partners'\""]
 }
 
-#!!!
 ad_proc -public im_office_group_id { } {Returns the groud_id for offices} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\""]
 }
 
-#!!!
 ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\""]
 }
 
-#!!!
 ad_proc -public im_restricted_access {} {Returns an access denied message and blows out 2 levels} {
     ad_return_forbidden "Access denied" "You must be an authorized user of the [ad_system_name] intranet to see this page. You can <a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>login</a> as someone else if you like."
     return -code return
 }
 
-#!!!
 ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {Returns an error message if the specified user is not able to administer the specified group or the user is not a site-wide/intranet administrator} {
 
     set user_admin_p [im_can_user_administer_group $group_id $current_user_id]

@@ -315,9 +315,7 @@ begin
 
     acs_privilege.create_privilege('add_users','Add Users','Add Users');
     acs_privilege.create_privilege('view_users','View Users','View Users');
-
     acs_privilege.create_privilege('search_intranet','Search Intranet','Search Intranet');
-
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
 
     acs_privilege.create_privilege('view_invoices','View Invoices','View Invoices');
@@ -327,6 +325,13 @@ begin
     acs_privilege.create_privilege('add_payments','View Payments','View Payments');
     acs_privilege.create_privilege('add_costs','View Costs','View Costs');
 
+    acs_privilege.create_privilege('view_topics','General permission to see forum topics','');
+    acs_privilege.create_privilege('add_topic_public','Add global messages','');
+    acs_privilege.create_privilege('add_topic_group','Add essages for the entire (project) group','');
+    acs_privilege.create_privilege('add_topic_staff','Messages to staff members of the group','');
+    acs_privilege.create_privilege('add_topic_client','Messages to the clients of the group','');
+    acs_privilege.create_privilege('add_topic_noncli','Message to non-clients of the group','');
+    acs_privilege.create_privilege('add_topic_pm','Message to the project manager only','');
 end;
 /
 
