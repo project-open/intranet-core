@@ -18,8 +18,6 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     user_id_from_search:integer
-    object_id:integer
-    role_id:integer
     subject
     message
     return_url
