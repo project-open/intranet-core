@@ -76,19 +76,18 @@ set exception_count 0
 
 if { $email == "" && $last_name == "" } {
     incr exception_count
-    append errors "<li><#_ You must specify either an email address or last name for which to search.#>"
+    append errors "<li>[_ intranet-core.lt_You_must_specify_eith]"
 }
 
 if { $email != "" && $last_name != "" } {
     incr exception_count
-    append errors "<li><#_ You can only specify either email or last name, not both.#>"
+    append errors "<li>[_ intranet-core.lt_You_can_only_specify_]"
 }
 
 if { $return_url == "" } {
     incr exception_count
-    set mail_to_administrator_link "<a href=\"mailto:[ad_host_administrator]\"><#_ administrator#></a>"
-    append errors "<li><#_ Return_Url was not specified. This shouldn't have happened,
-please contact the %mail_to_administrator_link% and let them know what happened.#>"
+    set mail_to_administrator_link "<a href=\"mailto:[ad_host_administrator]\">[_ intranet-core.administrator]</a>"
+    append errors "<li>[_ intranet-core.lt_Return_Url_was_not_sp]"
 }
 
 
@@ -153,7 +152,7 @@ if { ![empty_string_p $limit_to_users_in_group_id] } {
     if {[empty_string_p [lindex $group_list 0]]} {
 	
 	## No group names found - return
-	set errors "<LI><#_ None of the specified groups exist.#>"
+	set errors "<LI>[_ intranet-core.lt_None_of_the_specified]"
 	ad_return_complaint 1 $errors
 	return
 
@@ -255,13 +254,13 @@ foreach var $passthrough {
 append page_contents "
 <table cellpadding=0 cellspacing=2 border=0>
 	<tr>
-	  <td class=rowtitle align=middle colspan=5><#_ Freelance#></td>
+	  <td class=rowtitle align=middle colspan=5>[_ intranet-core.Freelance]</td>
 	</tr>
 	  
 	<tr class=rowtitle>
-	  <td class=rowtitle><#_ Name#></td>
-	  <td class=rowtitle><#_ Email#></td>
-	  <td class=rowtitle><#_ Select#></td>
+	  <td class=rowtitle>[_ intranet-core.Name]</td>
+	  <td class=rowtitle>[_ intranet-core.Email]</td>
+	  <td class=rowtitle>[_ intranet-core.Select]</td>
 	</tr>
 "
 
@@ -284,7 +283,7 @@ if {$ctr > 0} {
     append page_contents "
         <tr>
           <td colspan=2></td>
-	  <td><input type=submit value=\"<#_ Select#>\"></td>
+	  <td><input type=submit value=\"[_ intranet-core.Select]\"></td>
 	</tr>
 "
 } else {
@@ -293,7 +292,7 @@ if {$ctr > 0} {
     append page_contents "
 
         <tr$bgcolor([expr $ctr % 2])>
-          <td colspan=3><#_ No members found#></td>
+          <td colspan=3>[_ intranet-core.No_members_found]</td>
 	</tr>
 "
 }

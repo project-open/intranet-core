@@ -121,5 +121,5 @@ append body_html "
 <br>
 <center><input type=submit value=\"[_ intranet-core.Update]\"></center>
 "
-set page_body "$body_html"
-doc_return  200 text/html [im_return_template]
+
+ad_return_template

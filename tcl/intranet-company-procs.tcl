@@ -251,7 +251,7 @@ where
 		or gr.object_id_one = :freelance_group_id
 	)
 "
-    return [im_selection_to_select_box $bind_vars company_contact_select $query $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
 
 

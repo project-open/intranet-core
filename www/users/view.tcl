@@ -364,7 +364,8 @@ set activate_link "<a href=/acs-admin/users/member-state-change?member_state=app
 set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
 
 append admin_links "
-          <li>[_ intranet-core.lt_Member_state_user_sta]</a>
+          <li>[_ intranet-core.lt_Member_state_user_sta]
+          <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>
           <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
 <!--
           <li>

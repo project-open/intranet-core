@@ -33,8 +33,8 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
-set page_title "<#_ Add new member to %object_name%#>"
-set context_bar [ad_context_bar "<#_ Add member#>"]
+set page_title "[_ intranet-core.lt_Add_new_member_to_obj]"
+set context_bar [ad_context_bar "[_ intranet-core.Add_member]"]
 
 
 # expect commands such as: "im_project_permissions" ...
@@ -44,7 +44,7 @@ set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write a
 eval $perm_cmd
 
 if {!$write} {
-    ad_return_complaint 1 "<#_ You have no rights to add members to this object.#>"
+    ad_return_complaint 1 "[_ intranet-core.lt_You_have_no_rights_to_1]"
     return
 }
 
@@ -57,24 +57,24 @@ set locate_form "
 
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=middle><#_ Search for User#></td>
+    <td colspan=2 class=rowtitle align=middle>[_ intranet-core.Search_for_User]</td>
   </tr>
   <tr> 
     <td>
       by Email
-[im_gif help "<#_ Search for a substring in a persons email, for example \"lion\" to search for all users from Lionbridge.#>"]
+[im_gif help "[_ intranet-core.lt_Search_for_a_substrin]"]
     </td>
     <td><input type=text name=email size=20></td>
   </tr>
   <tr> 
     <td>
       or Last Name
-[im_gif help "<#_ Search for a substring in a persons last name, for example \"berg\" to search for all users with a last name containing \"berg\".#>"]
+[im_gif help "[_ intranet-core.lt_Search_for_a_substrin_1]"]
     </td>
     <td><input type=text name=last_name size=20></td>
   </tr>
   <tr> 
-    <td><#_ add as#></td>
+    <td>[_ intranet-core.add_as]</td>
     <td>
 [im_biz_object_roles_select role_id $object_id $role_id]
     </td>
@@ -82,8 +82,8 @@ set locate_form "
   <tr> 
     <td></td>
     <td>
-      <input type=submit value=\"<#_ Search#>\">
-      <input type=checkbox name=notify_asignee value=1 checked><#_ Notify#><br>
+      <input type=submit value=\"[_ intranet-core.Search]\">
+      <input type=checkbox name=notify_asignee value=1 checked>[_ intranet-core.Notify]<br>
     </td>
   </tr>
 
@@ -102,7 +102,7 @@ set select_form "
 <input type=hidden name=passthrough value=\"object_id role_id return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td class=rowtitle align=middle><#_ Employee#></td>
+    <td class=rowtitle align=middle>[_ intranet-core.Employee]</td>
   </tr>
   <tr> 
     <td>
@@ -110,14 +110,14 @@ $employee_select
     </td>
   </tr>
   <tr> 
-    <td><#_ add as#> 
+    <td>[_ intranet-core.add_as] 
 [im_biz_object_roles_select role_id $object_id $role_id]
     </td>
   </tr>
   <tr> 
     <td>
-      <input type=submit value=\"<#_ Add#>\">
-      <input type=checkbox name=notify_asignee value=1 checked><#_ Notify#>
+      <input type=submit value=\"[_ intranet-core.Add]\">
+      <input type=checkbox name=notify_asignee value=1 checked>[_ intranet-core.Notify]
     </td>
   </tr>
 </table>

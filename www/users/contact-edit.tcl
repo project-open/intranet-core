@@ -152,5 +152,5 @@ set whole_page "
 
 set page_body $whole_page
 
-doc_return  200 text/html [im_return_template]
+ad_return_template
 

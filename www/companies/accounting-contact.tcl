@@ -77,7 +77,7 @@ if { [empty_string_p $contact_info] } {
 [_ intranet-core.lt_Also_please_make_sure]
 "
 
-    doc_return  200 text/html [im_return_template]
+    ad_return_template
     return
 }
 

@@ -40,8 +40,8 @@ set company_name [db_string company_name \
 
 db_release_unused_handles
 
-set page_title "Select accounting contact for $company_name"
-set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars group_id] "One company"] "Select contact"]
+set page_title "[_ intranet-core.lt_Select_accounting_con]"
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars group_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 
@@ -65,5 +65,4 @@ set page_body "
 </form>
 
 "
-
-doc_return  200 text/html [im_return_template]
+ad_return_template

@@ -28,7 +28,7 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
 if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
-    ad_return_complaint 1 "<li><#_ You have insufficient permissions to see this page.#>"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_3]"
 }
 
 # ----------------------------------------------------------
@@ -37,13 +37,13 @@ if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
 
 set column_headers [list]
 set column_vars [list]
-lappend column_headers "<#_ Project ##>"
+lappend column_headers "[_ intranet-core.Project_]"
 lappend column_vars {"<A HREF='/intranet/projects/view?project_id=$project_id'>" $project_nr "</A>"}
-lappend column_headers "<#_ Project Name#>"
+lappend column_headers "[_ intranet-core.Project_Name]"
 lappend column_vars {$project_name}
-lappend column_headers "<#_ Delivery Date#>"
+lappend column_headers "[_ intranet-core.Delivery_Date]"
 lappend column_vars {"$end_date $end_date_time"}
-lappend column_headers "<#_ Status#>"
+lappend column_headers "[_ intranet-core.Status]"
 lappend column_vars {$project_status}
 
 set sql "

@@ -40,29 +40,29 @@ set company_name [db_string company_name \
 db_release_unused_handles
 
 set page_title "Select primary contact for $company_name"
-set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars group_id] "One company"] "Select contact"]
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars group_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 
-Locate your new primary contact by
+[_ intranet-core.lt_Locate_your_new_prima]
 
 <form method=get action=/user-search>
 [export_form_vars group_id target limit_to_users_in_group_id]
 <input type=hidden name=passthrough value=group_id>
 
 <table border=0>
-<tr><td>Email address:<td><input type=text name=email size=40></tr>
-<tr><td colspan=2>or by</tr>
-<tr><td>Last name:<td><input type=text name=last_name size=40></tr>
+<tr><td>[_ intranet-core.Email_address]:<td><input type=text name=email size=40></tr>
+<tr><td colspan=2>[_ intranet-core.or_by]</tr>
+<tr><td>[_ intranet-core.Last_name]:<td><input type=text name=last_name size=40></tr>
 </table>
 
 <p>
 
 <center>
-<input type=submit value=Search>
+<input type=submit value=\"[_ intranet-core.Search]\">
 </center>
 </form>
 
 "
 
-doc_return  200 text/html [im_return_template]
+ad_return_template

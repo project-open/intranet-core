@@ -232,7 +232,7 @@ ad_proc -public im_email_from_user_id_helper {user_id} {
 
 ad_proc im_employee_select_optionlist { {user_id ""} } {
     set employee_group_id [im_employee_group_id]
-    return [db_html_select_value_options_multiple -select_option $user_id im_employee_select_options "
+    return [db_html_select_value_options_multiple -translate_p 0 -select_option $user_id im_employee_select_options "
 select
 	u.user_id, 
 	im_name_from_user_id(u.user_id) as name
@@ -306,11 +306,11 @@ ad_proc im_select { field_name pairs { default "" } } {
     set menu_items_select [list]
 
     foreach { value text } $pairs {
-	set text [lang::util::suggest_key $text]
+	set text_txt [lang::util::suggest_key $text]
 	if { [string compare $value $default] == 0 } {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>[_ intranet-core.$text]</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>[_ intranet-core.$text_txt]</option>\n"
 	} else {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">[_ intranet-core.$text]</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">[_ intranet-core.$text_txt]</option>\n"
 	}
     }
     return "
@@ -458,7 +458,7 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
     return [philg_dateentrywidget $column $today]
 }
 
-ad_proc im_selection_to_select_box { bind_vars statement_name sql select_name { default "" } } {
+ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name sql select_name { default "" } } {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a select bar named select_name, 
     defaulted to $default 
@@ -468,7 +468,7 @@ ad_proc im_selection_to_select_box { bind_vars statement_name sql select_name { 
 	append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
     }
     append result "
-[db_html_select_value_options_multiple -bind $bind_vars -select_option $default $statement_name $sql]
+[db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
 "
     return $result
@@ -480,6 +480,7 @@ ad_proc -public db_html_select_value_options_multiple {
     { -select_option "" }
     { -value_index 0 }
     { -option_index 1 }
+    { -translate_p 1 }
     stmt_name
     sql
 } {
@@ -497,7 +498,11 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
-	set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
+	if { $translate_p } {
+	    set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
+	} else {
+	    set translated_value [lindex $option $option_index]
+	}
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
 	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>$translated_value\n"
 	} else {

@@ -68,6 +68,4 @@ reason:  <input type=text size=60 name=banning_note>
 [ad_admin_footer]
 "
 
-
-
-doc_return  200 text/html $page_content
+ad_return_template
