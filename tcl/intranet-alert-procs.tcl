@@ -42,11 +42,17 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     # until there is more time...
 
     # Get the email of the target user
-    set user_email_sql "select email from users where user_id=:target_id"
+    set user_email_sql "select email from parties where party_id = :target_id"
     db_transaction {
 	db_1row user_email $user_email_sql
     } on_error {
-	set email "webmaster@project-open.com"
+	ad_return_complaint 1 "<li>Error getting the email address of user $target_id" 
+	return
+    }
+
+    if {"" == $email} {
+	ad_return_complaint 1 "<li>Error getting the email of user $target_id"
+	return
     }
 
     # Determine the sender address
