@@ -196,16 +196,16 @@ where
 
     return "
 <table border=0 cellspacing=1 cellpadding=1>
-<tr class=rowtitle><td class=rowtitle align=center colspan=99>Recent Registrations</td></tr>
+<tr class=rowtitle><td class=rowtitle align=center colspan=99>[_ intranet-core.Recent_Registrations]</td></tr>
 <tr class=rowtitle>
-  <td align=center class=rowtitle>Date</td>
-  <td align=center class=rowtitle>Name</td>
-  <td align=center class=rowtitle>Email</td>
+  <td align=center class=rowtitle>[_ intranet-core.Date]</td>
+  <td align=center class=rowtitle>[_ intranet-core.Name]</td>
+  <td align=center class=rowtitle>[_ intranet-core.Email]</td>
 </tr>
 $rows_html
 <tr class=rowblank align=right>
   <td colspan=99>
-    <a href=/intranet/users/index?view_name=user_community&order_by=Creation>more...</a>
+    <a href=/intranet/users/index?view_name=user_community&order_by=Creation>[_ intranet-core.more]</a>
   </td>
 </tr>
 </table>
@@ -234,7 +234,7 @@ ad_proc im_print_employee {person rowspan} "print function for org chart" {
 	    return "<a href=/intranet/users/view?[export_url_vars user_id]>$employee_name</a><br>\n"
 #	}
     } else {
-	return "<i>Position Vacant</i>"
+	return "<i>[_ intranet-core.Position_Vacant]</i>"
     }
 }
 

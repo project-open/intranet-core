@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="intranet-core" package_version="3.0.0" locale="en_US" charset="ISO-8859-1">
+
+  <msg key="category_name">%category_name%</msg>
+  <msg key="category_name_1">$category_name</msg>
+  <msg key="Date">Date</msg>
+  <msg key="Email">Email</msg>
+  <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
+  <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
+  <msg key="more">more...</msg>
+  <msg key="more_">more ...</msg>
+  <msg key="Name">Name</msg>
+  <msg key="No_offices_found">No offices found</msg>
+  <msg key="Office">Office</msg>
+  <msg key="Position_Vacant">Position Vacant</msg>
+  <msg key="Recent_Registrations">Recent Registrations</msg>
+  <msg key="Tel">Tel</msg>
+  <msg key="Type">Type</msg>
+  <msg key="value">%value%</msg>
+</message_catalog>

@@ -232,7 +232,7 @@ ad_proc -public im_email_from_user_id_helper {user_id} {
 
 ad_proc im_employee_select_optionlist { {user_id ""} } {
     set employee_group_id [im_employee_group_id]
-    return [db_html_select_value_options -select_option $user_id im_employee_select_options "
+    return [db_html_select_value_options_multiple -select_option $user_id im_employee_select_options "
 select
 	u.user_id, 
 	im_name_from_user_id(u.user_id) as name
@@ -404,7 +404,8 @@ ad_proc -public im_category_from_id { category_id } {
 } {
     if {"" == $category_id} { return "" }
     set sql "select im_category_from_id($category_id) from dual"
-    return [util_memoize "db_string category_from_id \"$sql\" -default {}"]
+    set category_name [lang::util::suggest_key [db_string category_from_id \"$sql\" -default {}]]
+    return [_ intranet-core.$category_name]
 }
 
 
@@ -466,7 +467,7 @@ ad_proc im_selection_to_select_box { bind_vars statement_name sql select_name { 
 	append result "<option value=\"\"> -- Please select -- </option>"
     }
     append result "
-[db_html_select_value_options -bind $bind_vars -select_option $default $statement_name $sql]
+[db_html_select_value_options_multiple -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
 "
     return $result
@@ -495,10 +496,11 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
+	set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>[lindex $option $option_index]\n"
+	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>$translated_value\n"
 	} else {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\">[lindex $option $option_index]\n"
+	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\">$translated_value\n"
 	}
     }
     return $select_options

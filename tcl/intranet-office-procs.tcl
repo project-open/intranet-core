@@ -228,8 +228,8 @@ where
     set component_html "
 <table cellspacing=1 cellpadding=1>
 <tr class=rowtitle>
-  <td class=rowtitle>Office</td>
-  <td class=rowtitle>Tel</td>
+  <td class=rowtitle>[_ intranet-core.Office]</td>
+  <td class=rowtitle>[_ intranet-core.Tel]</td>
 </tr>\n"
 
     set ctr 1
@@ -246,13 +246,13 @@ where
 	incr ctr
     }
     if {$ctr == 1} {
-	append component_html "<tr><td colspan=2>No offices found</td></tr>\n"
+	append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
     }
 
     append component_html "
 <tr>
   <td colspan=99 align=right>
-    <A href=/intranet/offices/>more ...</a>
+    <A href=/intranet/offices/>[_ intranet-core.more_]</a>
   </td>
 </tr>
 </table>
@@ -286,8 +286,8 @@ where
     set component_html "
 <table cellspacing=1 cellpadding=1>
 <tr class=rowtitle>
-  <td class=rowtitle>Office</td>
-  <td class=rowtitle>Type</td>
+  <td class=rowtitle>[_ intranet-core.Office]</td>
+  <td class=rowtitle>[_ intranet-core.Type]</td>
 </tr>\n"
 
     set ctr 1
@@ -304,7 +304,7 @@ where
 	incr ctr
     }
     if {$ctr == 1} {
-	append component_html "<tr><td colspan=2>No offices found</td></tr>\n"
+	append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
     }
     append component_html "</table>\n"
 
