@@ -13,7 +13,7 @@
         <release-date>2004-02-06</release-date>
         <vendor url="http://www.project-open.com/">Project/Open</vendor>
 
-        <provides url="intranet" version="0.3.5d"/>
+        <provides url="intranet-core" version="1.0"/>
 
         <callbacks>
         </callbacks>
