@@ -55,8 +55,7 @@ ad_proc im_send_alert {target_id frequency url subject {message ""} } {
     set sender_email [ad_parameter SystemOwner "" "webmaster@localhost"]
 
     # Compile the message from various alerts
-    set msg_body "
-Subject: $subject
+    set msg_body "Subject: $subject
 URL: $url
 Message:
 "
