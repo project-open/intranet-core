@@ -14,17 +14,24 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Location: 42Å∞21'N 71Å∞04'W
-    Location: 80 PROSPECT ST CAMBRIDGE MA 02139 USA
-    Purpose:  Let's administrator become any user.
+    Let authorized users become any user.
 
     @param user_id
     @author mobin@mit.edu (Usman Y. Mobin)
+    @author frank.bergmann@project-open.com
 } {
     { return_url "" }
     user_id:integer,notnull
 }
 
+
+# Check the permissions that the current_user has on user_id
+set current_user_id [ad_maybe_redirect_for_registration]
+im_user_permissions $current_user_id $user_id view read write admin
+if {!$admin} {
+    ad_return_complaint 1 "<li>You are not authorized to see this page"
+    return
+}
 
 if {"" == $return_url} { set return_url "/intranet/" }
 
