@@ -23,20 +23,20 @@ if {!$user_admin_p} {
 
 set page_body "<ul>\n"
 
-# append page_body [im_import_categories "$path/im_categories.csv"]
+#append page_body [im_import_categories "$path/im_categories.csv"]
 append page_body [im_import_users "$path/im_users.csv"]
-append page_body [im_import_offices "$path/im_offices.csv"]
-append page_body [im_import_customers "$path/im_customers.csv"]
-append page_body [im_import_projects "$path/im_projects.csv"]
-append page_body [im_import_office_members "$path/im_office_members.csv"]
-append page_body [im_import_customer_members "$path/im_customer_members.csv"]
-append page_body [im_import_project_members "$path/im_project_members.csv"]
+#append page_body [im_import_profiles "$path/im_profiles.csv"]
+#append page_body [im_import_offices "$path/im_offices.csv"]
+#append page_body [im_import_customers "$path/im_customers.csv"]
+#append page_body [im_import_projects "$path/im_projects.csv"]
+#append page_body [im_import_office_members "$path/im_office_members.csv"]
+#append page_body [im_import_customer_members "$path/im_customer_members.csv"]
+#append page_body [im_import_project_members "$path/im_project_members.csv"]
+#append page_body [im_import_freelancers "$path/im_freelancers.csv"]
+#append page_body [im_import_freelance_skills "$path/im_freelance_skills.csv"]
 
-append page_body [im_import_freelancers "$path/im_freelancers.csv"]
-append page_body [im_import_freelance_skills "$path/im_freelance_skills.csv"]
 
-
-set page_body "
+append page_body "
 <li>
 <p>Finished</p>
 "

@@ -337,10 +337,8 @@ set table_continuation_html ""
 # 10. Join all parts together
 # ---------------------------------------------------------------
 
-set group_id $user_group_id
-
 set page_body "
-[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list group_id start_idx order_by how_many view_name letter]]
+[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter]]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   $table_header_html

@@ -63,7 +63,10 @@
 -- 1300-1399	Intranet Project Role
 -- 2000-2099	Intranet Freelance Skill Type
 -- 2100-2199	Intranet Freelance TM Tools
--- 2200-2299	Translation Hierarchy
+-- 2200-2299	Intranet Experience Level
+-- 2300-2399	Intranet LOC Tools
+-- 2400-2499	??
+-- 2500-2599	Translation Hierarchy
 
 -- 3000-3099	Intranet Cost Center Type
 -- 3100-3199	Intranet Cost Center Status
@@ -96,6 +99,10 @@ create table im_categories (
 				constraint im_parent_only_p_ck
 				check(parent_only_p in ('t','f'))
 );
+
+-- fraber 040320: Don't allow for duplicated entries!
+create unique index im_categories_cat_cat_type_idx on im_categories(category, category_type);
+
 
 -- optional system to put categories in a hierarchy.
 -- This table stores the "transitive closure" of the

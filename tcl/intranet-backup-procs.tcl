@@ -44,6 +44,58 @@ ad_proc -public im_backup_accepted_version_nr { version } {
 }
 
 
+# -------------------------------------------------------
+# Lookup procedures for faster imports
+# -------------------------------------------------------
+
+ad_proc -public im_import_get_category { category category_type default } {
+    Looks up a category or returns the default value
+} {
+    set category_id [util_memoize "im_import_get_category_helper \"$category\" \"$category_type\""]
+
+    if {"" == $cateogry_id} {
+	set category_id $default
+	set err "didn't find category '$category' of category type '$category_type'"
+	ns_log Notice "im_import_get_cateogory: $err"
+        upvar 1 err_return err_return
+	append err_return "<li>$err\n"
+    }
+    return $category_id
+}
+
+ad_proc -public im_import_get_category_helper { category category_type } {
+    Performs the DB query to be cached
+} {
+    return [db_string get_category "select category_id from im_categories where category=:category and category_type=:category_type" -default ""]
+}
+
+
+
+ad_proc -public im_import_get_user { email default } {
+    Looks up an email or returns the default value
+} {
+    set user_id [util_memoize "im_import_get_user_helper \"$email\""]
+    if {"" == $user_id} {
+	set user_id $default
+	set err "didn't find user '$email'"
+	ns_log Notice "im_import_get_user: $err"
+        upvar 1 err_return err_return
+	append err_return "<li>$err\n"
+    }
+    return $user_id
+}
+
+ad_proc -public im_import_get_user_helper { email } {
+    Performas the DB to looks up an email to be cached
+} {
+    return [db_string get_user "select party_id from parties where lower(email)=lower(:email)" -default ""]
+}
+
+
+
+# -------------------------------------------------------
+# Backup Routines
+# -------------------------------------------------------
 
 ad_proc im_backup { } {
     Receives requests from /intranet/reports,
@@ -364,39 +416,19 @@ ad_proc -public im_import_customers { filename } {
 	# Transform email and names into IDs
 	#
 
-	set manager_id [db_string manager "select party_id from parties where email=:manager_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-	set accounting_contact_id [db_string accounting_contact "select party_id from parties where email=:accounting_contact_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-	
-	set primary_contact_id [db_string primary_contact "select party_id from parties where email=:primary_contact_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-
-	# Default type is 51="unknow"
-	set customer_type_id [db_string customer_type "select category_id from im_categories where category=:customer_type and category_type='Intranet Customer Type'" -default 51]
-	if {0 == $_id} { append err_return "<li>" }
-
-
-	# Default type is 46="Active"
-	set customer_status_id [db_string customer_status "select category_id from im_categories where category=:customer_status and category_type='Intranet Customer Status'" -default 46]
-	if {0 == $_id} { append err_return "<li>" }
-
-	set crm_status_id [db_string crm_status "select category_id from im_categories where category=:crm_status and category_type='Intranet Customer CRM Status'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-
-	set annual_revenue_id [db_string annual_revenue "select category_id from im_categories where category=:annual_revenue and category_type='Intranet Annual Revenue'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-
+	set manager_id [im_import_get_user $manager_email ""]
+	set accounting_contact_id [im_import_get_user $accounting_contact_email ""]
+	set primary_contact_id [im_import_get_user $primary_contact_email ""]
+	set customer_type_id [im_import_get_category $customer_type "Intranet Customer Type" 51]
+	set customer_status_id [im_import_get_category $customer_status "Intranet Customer Status" 46]
+	set crm_status_id [im_import_get_category $crm_status "Intranet Customer CRM Status" ""]
+	set annual_revenue_id [im_import_get_category $annual_revenue "Intranet Annual Revenue" ""]
 
 	set main_office_id [db_string main_office "select office_id from im_offices where office_name=:main_office_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $main_office_id} { append err_return "<li>didn't find main office $main_office" }
 
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
+	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
+	if {"" == $customer_id} { append err_return "<li>didn't find customer $customer" }
 
 
 
@@ -551,18 +583,13 @@ ad_proc -public im_import_offices { filename } {
 	# Transform email and names into IDs
 	#
 
-	set office_type_id [db_string office_type "select category_id from im_categories where category=:office_type and category_type='Intranet Office Type'" -default 170]
-	if {0 == $_id} { append err_return "<li>" }
+	set office_type_id [im_import_get_category $office_type "Intranet Office Type" 170]
+	set office_status_id [im_import_get_category $office_status "Intranet Office Status" 160]
 
-	set office_status_id [db_string office_status "select category_id from im_categories where category=:office_status and category_type='Intranet Office Status'" -default 160]
-	if {0 == $_id} { append err_return "<li>" }
+	set contact_person_id [im_import_get_user $contact_person_email ""]
 
-	set contact_person_id [db_string contact_person "select party_id from parties where email=:contact_person_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-
-	set office_id [db_string contact_person "select office_id from im_offices where office_name=:office_name" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
+	set office_id [db_string office "select office_id from im_offices where office_name=:office_name" -default 0]
+	if {"" == $office_id} { append err_return "<li>didn't find office $office_name" }
 
 
 	# -------------------------------------------------------
@@ -704,29 +731,18 @@ ad_proc -public im_import_projects { filename } {
 	# Transform email and names into IDs
 	#
 
-	set project_lead_id [db_string manager "select party_id from parties where email=:project_lead_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set project_lead_id [im_import_get_user $project_lead_email ""]
+	set supervisor_id [im_import_get_user $supervisor_email ""]
 
-	set supervisor_id [db_string supervisor "select party_id from parties where email=:supervisor_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-
-
-	set project_type_id [db_string project_type "select category_id from im_categories where category=:project_type and category_type='Intranet Project Type'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-	set project_status_id [db_string project_status "select category_id from im_categories where category=:project_status and category_type='Intranet Project Status'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
-	set billing_type_id [db_string billing_type "select category_id from im_categories where category=:billing_type and category_type='Intranet Billing Type'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
+	set project_type_id [im_import_get_category $project_type "Intranet Project Type" ""]
+	set project_status_id [im_import_get_category $project_status "Intranet Project Status" ""]
+	set billing_type_id [im_import_get_category $billing_type "Intranet Billing Type" ""]
 
 	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
 
 	# -------------------------------------------------------
@@ -811,7 +827,7 @@ WHERE
     foreach project_id [array names parent] {
 
 	set parent_id [db_string parent "select project_id from im_projects where project_name=:parent_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
 	
 	set update_sql "
@@ -835,6 +851,7 @@ WHERE
 ad_proc -public im_import_profiles { filename } {
     Import the user/profile membership
 } {
+    ns_log Notice "im_import_profiles $filename"
     set err_return ""
     if {![file readable $filename]} {
 	append err_return "Unable to read file '$filename'"
@@ -902,38 +919,47 @@ ad_proc -public im_import_profiles { filename } {
 	# Transform categories, email and names into IDs
 	#
 
-	set profile_id [db_string profile "select group_id from group where group_name=:profile_name" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
+	set profile_id [db_string profile "select group_id from groups where group_name=:profile_name" -default ""]
+	if {"" == $profile_id} { append err_return "<li>didn't find profile $profile_name" }
 
-	if {0 == $_id} { append err_return "<li>" }
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
-
-
+	set user_id [im_import_get_user $user_email 0]
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
 
-	set create_member_sql "
-DECLARE
-    v_rel_id	integer;
+	set insert_profile_sql "
 BEGIN
-    v_rel_id := im_biz_object_member.new(
-	object_id	=> :object_id,
-	user_id		=> :user_id,
-	object_role_id	=> :object_role_id
-    );
-END;"
+     FOR row IN (
+        select
+                r.rel_id
+        from
+                acs_rels r,
+                acs_objects o
+        where
+                object_id_two = :user_id
+                and object_id_one = :profile_id
+                and r.object_id_one = o.object_id
+                and o.object_type = 'im_profile'
+                and rel_type = 'membership_rel'
+     ) LOOP
+         membership_rel.del(row.rel_id);
+     END LOOP;
 
+
+     :1 := membership_rel.new(
+        object_id_one    => :profile_id,
+        object_id_two    => :user_id,
+        member_state     => 'approved'
+     );
+END;
+"
 	# -------------------------------------------------------
 	# Debugging
 	#
 
-	ns_log Notice "im_import_customer_members: object_id	$object_id"
+	ns_log Notice "im_import_customer_members: profile_id	$profile_id"
 	ns_log Notice "im_import_customer_members: user_id	$user_id"
-	ns_log Notice "im_import_customer_members: object_role_id $object_role_id"
-
 
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
@@ -941,14 +967,11 @@ END;"
 
 	if { [catch {
 
-	    set count [db_string count_members "select count(*) from acs_rels where object_id_one=:object_id and object_id_two=:user_id"]
-	    if {!$count} {
-		db_dml create_member $create_member_sql
-	    }
-	    
+            db_exec_plsql insert_profile $insert_profile_sql
+
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
-	    append err_return "<li>Error loading customer members:<br>
+	    append err_return "<li>Error adding user to profile:<br>
             $csv_line<br><pre>\n$err_msg</pre>"
 	}
     }
@@ -1030,13 +1053,11 @@ ad_proc -public im_import_customer_members { filename } {
 	#
 
 	set object_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set user_id [im_import_get_user $user_email ""]
 
-	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
 
 
 
@@ -1159,13 +1180,11 @@ ad_proc -public im_import_project_members { filename } {
 	#
 
 	set object_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set user_id [im_import_get_user $user_email ""]
 
-	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
 
 
 
@@ -1290,14 +1309,11 @@ ad_proc -public im_import_office_members { filename } {
 	#
 
 	set object_id [db_string office "select office_id from im_offices where office_name=:office_name" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	if {"" == $_id} { append err_return "<li>" }
 
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set user_id [im_import_get_user $user_email ""]
 
-	set object_role_id [db_string role "select category_id from im_categories where category=:role and category_type='Intranet Biz Object Role'" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
-
+	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
 
 
 	# -------------------------------------------------------
@@ -1415,11 +1431,9 @@ ad_proc -public im_import_freelancers { filename } {
 	# Transform categories, email and names into IDs
 	#
 
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set user_id [im_import_get_user $user_email ""]
 
-	set payment_method_id [db_string payment_method "select category_id from im_categories where category=:payment_method" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set payment_method_id [im_import_get_category $payment_method" "Intranet Payment Method" ""]
 
 
 	# -------------------------------------------------------
@@ -1542,23 +1556,20 @@ ad_proc -public im_import_freelance_skills { filename } {
 	# Transform categories, email and names into IDs
 	#
 
-	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set user_id [im_import_get_user $user_email ""]
 
-	set skill_id [db_string office "select category_id from im_categories where category=:skill" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set skill_id [im_import_get_category $skill "Intranet Skill" ""]
 
-	set skill_type_id [db_string office "select category_id from im_categories where category=:skill_type" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set skill_type_id [im_import_get_category $skill_type "Intranet Skill Type" ""]
+	if {"" == $_id} { append err_return "<li>" }
 
-	set claimed_experience_id [db_string office "select category_id from im_categories where category=:claimed_experience" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set claimed_experience_id [im_import_get_category $claimed_experience "Intranet Experience" ""]
+	if {"" == $_id} { append err_return "<li>" }
 
-	set confirmed_experience_id [db_string office "select category_id from im_categories where category=:confirmed_experience" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set confirmed_experience_id [im_import_get_category $confirmed_experience "Intranet Experience" ""]
+	if {"" == $_id} { append err_return "<li>" }
 
-	set confirmation_user_id [db_string user "select party_id from parties where email=:confirmation_user_email" -default ""]
-	if {0 == $_id} { append err_return "<li>" }
+	set confirmation_user_id [im_import_get_user $confirmation_user_email ""]
 
 
 	# -------------------------------------------------------
@@ -1792,9 +1803,7 @@ WHERE
 	    }
 	}
 
-	set user_id [db_string user "select party_id from parties where lower(email)=lower(:email)" -default 0]
-	if {0 == $_id} { append err_return "<li>" }
-
+	set user_id [db_string get_user "select party_id from parties where lower(email)=lower(:email)" -default 0]
 
 	if {$user_id} {
 	    if { [catch {

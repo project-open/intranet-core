@@ -68,7 +68,7 @@ create table users_contact (
 	wa_state		varchar(80),
 	wa_postal_code		varchar(80),
 	wa_country_code		char(2)
-				constraint users_contact_wa_cc
+				constraint users_contact_wa_cc_fk
 				references country_codes(iso),
 	priv_wa			integer,
 				-- used by the intranet module
