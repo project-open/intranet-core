@@ -506,6 +506,11 @@ order by
     # ---------------------------------------------------------------
     # Generate SQL Query
 
+    # Limit the list to open projects only
+    set project_history_restriction "
+	and p.project_status_id = [im_project_status_open]
+    "
+
     set perm_sql "
 	(select
 	        p.*
@@ -532,6 +537,7 @@ order by
 		im_companies c
 	WHERE
 		p.company_id = c.company_id
+		$project_history_restriction
     "
 
     

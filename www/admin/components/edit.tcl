@@ -75,7 +75,7 @@ set page_body "
 [export_form_vars plugin_id return_url]
 
 <TABLE border=0>
-  <TBODY>
+<TBODY>
   <TR>
     <TD class=rowtitle align=middle colSpan=2>Component</TD></TR>
   <TR class=rowodd>
@@ -99,8 +99,15 @@ set page_body "
     <TD><input type=text name=sort_order value=$sort_order></TD></TR>
   <TR class=rowodd>
     <TD>URL</TD>
-    <TD>$page_url</TD></TR>
-</TBODY></TABLE>
+    <TD>$page_url</TD>
+  </TR>
+  <TR class=roweven>
+    <TD>Component TLC</TD>
+    <TD><pre>$component_tcl</pre></TD>
+  </TR>
+
+</TBODY>
+</TABLE>
 <input type=submit name=submit value=Update>
 </form>
 "
