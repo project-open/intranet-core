@@ -9,3 +9,4 @@ update im_view_columns set column_name='Company' where column_id=1;
 
 @../intranet-customers.sql
 @../intranet-categories.sql
+@../intranet-views.sql

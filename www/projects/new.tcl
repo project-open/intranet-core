@@ -177,7 +177,7 @@ append page_body "
                     <tr>
                       <td>Client $required_field </td>
                       <td> 
-[im_customer_select "customer_id" $customer_id "" [list "Deleted" "Past" "Declined"]]
+[im_customer_select "customer_id" $customer_id "" "Customer" [list "Deleted" "Past" "Declined" "Inactive"]]
 "
 if {$user_admin_p} {
     append page_body "

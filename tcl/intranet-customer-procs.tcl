@@ -14,14 +14,14 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-    Bring together all "components" (=HTML + SQL code) related to Customers.
+    Bring together all "components" (=HTML + SQL code) related to Companies.
     
     @author various@arsdigita.com
     @author frank.bergmann@project-open.com
 }
 
 
-# Frequently used Customer Stati
+# Frequently used Company Stati
 ad_proc -public im_customer_status_inquiries {} { return 42 }
 ad_proc -public im_customer_status_qualifying {} { return 43 }
 ad_proc -public im_customer_status_quoting {} { return 44 }
@@ -30,10 +30,16 @@ ad_proc -public im_customer_status_active {} { return 46 }
 ad_proc -public im_customer_status_declined {} { return 47 }
 ad_proc -public im_customer_status_inactive {} { return 48 }
 
-# Frequently used Customer Types
+# Frequently used Company Types
+ad_proc -public im_customer_type_other {} { return 52 }
 ad_proc -public im_customer_type_internal {} { return 53 }
+ad_proc -public im_customer_type_provider {} { return 56 }
+ad_proc -public im_customer_type_customer {} { return 57 }
 
-
+ad_proc -public im_customer_annual_rev_0_1 {} { return 223 }
+ad_proc -public im_customer_annual_rev_1_10 {} { return 224 }
+ad_proc -public im_customer_annual_rev_10_100 {} { return 222 }
+ad_proc -public im_customer_annual_rev_100_ {} { return 225 }
 
 
 ad_proc -public im_customer_link_tr {user_id customer_id customer_name title} {
@@ -224,11 +230,6 @@ ad_proc -public im_customer_status_select { select_name { default "" } } {
 }
 
 
-ad_proc -public im_customer_type_select { select_name { default "" } } {Returns an html select box named $select_name and defaulted to $default with a list of all the customer types in the system} {
-    return [im_category_select "Intranet Customer Type" $select_name $default]
-}
-
-
 ad_proc -public im_customer_contact_select { select_name { default "" } {customer_id "201"} } {
     Returns an html select box named $select_name and defaulted to 
     $default with the list of all avaiable contact persons of a given
@@ -256,7 +257,7 @@ where
 }
 
 
-ad_proc -public im_customer_select { select_name { default "" } { status "" } { exclude_status "" } } {
+ad_proc -public im_customer_select { select_name { default "" } { status "" } { type "" } { exclude_status "" } } {
 
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the customers in the system. If status is
@@ -269,6 +270,7 @@ ad_proc -public im_customer_select { select_name { default "" } { status "" } { 
     if the user has the "view_customers_all" permission.
 
 } {
+    ns_log Notice "im_customer_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
     set bind_vars [ns_set create]
     ns_set put $bind_vars customer_group_id [im_customer_group_id]
     ns_set put $bind_vars user_id [ad_get_user_id]
@@ -326,7 +328,25 @@ where
 	append sql " and c.customer_status_id in (select customer_status_id 
                                                   from im_customer_status 
                                                  where customer_status not in ($exclude_string)) "
+	ns_log Notice "im_customer_select: exclude_string=$exclude_string"
     }
+
+    if { ![empty_string_p $type] } {
+	ns_set put $bind_vars type $type
+	append sql " and c.customer_type_id in (
+		select 	ct.customer_type_id 
+		from	im_customer_types ct
+		where ct.customer_type=:type
+		UNION
+		select 	ch.child_id
+		from	im_customer_types ct,
+			im_category_hierarchy ch
+		where
+			ct.customer_type=:type
+			and ch.parent_id = ct.customer_type_id
+	)"
+    }
+
     append sql " order by lower(c.customer_name)"
     return [im_selection_to_select_box $bind_vars "customer_status_select" $sql $select_name $default]
 }
