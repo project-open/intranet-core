@@ -218,10 +218,12 @@ ad_form -extend -name register -on_request {
 
 } -on_submit {
 
-    db_transaction {
+#	20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
+#    db_transaction {
 	
 	# Do we create a new user or do we edit an existing one?
 	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
+	
 	if {!$editing_existing_user} {
 
 	    # New user: create from scratch
@@ -229,10 +231,10 @@ ad_form -extend -name register -on_request {
 	    set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
 	    
 	    if {$similar_user > 0} {
-		set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
-		ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
-                [_ intranet-core.lt_There_is_already_a_vi]<br>"
-		return
+			set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
+			ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
+        	        [_ intranet-core.lt_There_is_already_a_vi]<br>"
+			return
 	    }
 
 	    array set creation_info [auth::create_user \
@@ -265,8 +267,8 @@ ad_form -extend -name register -on_request {
 
 		# Simply add the record to all users, even it they are not employees...
 		db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
-	    }
 
+	    }
 
 	} else {
 
@@ -274,23 +276,27 @@ ad_form -extend -name register -on_request {
 	    set auth [auth::get_register_authority]
 	    set user_data [list]
 
-	    ns_log Notice "/usrs/new: person::update -person_id='$user_id' -first_names='$first_names' -last_name='$last_name'"
-
+	    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
 	    person::update \
 		-person_id $user_id \
 		-first_names $first_names \
 		-last_name $last_name
 	    
+	    ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email"
 	    party::update \
 		-party_id $user_id \
 		-url $url \
 		-email $email
 	    
+	    ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name"
 	    acs_user::update \
 		-user_id $user_id \
 		-screen_name $screen_name
 	    
 	}
+
+	ns_log Notice "/users/new: finished big IF clause"
+
 	
         set membership_del_sql "
         select
@@ -373,8 +379,10 @@ ad_form -extend -name register -on_request {
 	    }
 	}
 
+
+# 20041124 fraber: disabled db_transaction for PostgreSQL
 	# Close db_transaction
-    }
+#    }
     
 
     # Handle registration problems

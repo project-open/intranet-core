@@ -31,16 +31,14 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
     set current_profiles [im_profiles_of_user $user_id]
     set cp [list]
     foreach p $current_profiles { lappend cp [lindex $p 0] } 
-    ns_log Notice "/users/view: current_profiles=$current_profiles"
-    ns_log Notice "/users/view: cp=$cp"
+    ns_log Notice "im_user_profile_component: current_profiles=$current_profiles"
+    ns_log Notice "im_user_profile_component: cp=$cp"
 
     # A list of lists containing profile_id/profile_name tuples
     set all_profiles [im_profiles_all]
-    ns_log Notice "/users/view: all_profiles=$all_profiles"
+    ns_log Notice "im_user_profile_component: all_profiles=$all_profiles"
     
-    set profile_html "
-<select name=profile size=8 multiple $disabled>
-"
+    set profile_html "<select name=profile size=8 multiple $disabled>"
 
     foreach profile $all_profiles {
         set group_id [lindex $profile 0]
@@ -53,6 +51,8 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
         }
     }
     append profile_html "</select>\n"
+    
+    return $profile_html
 }
 
 
@@ -92,18 +92,21 @@ ad_proc -public im_profiles_of_user { user_id } {
 } {
     # Get the list of profiles for the current user
     set profile_sql {
-select DISTINCT
-        g.group_id,
-	g.group_name
-from
-        acs_objects o,
-        groups g,
-        group_member_map m
-where
-        m.member_id = :user_id
-        and m.group_id = g.group_id
-        and g.group_id = o.object_id
-        and o.object_type = 'im_profile'
+	select DISTINCT
+	        g.group_id,
+		g.group_name
+	from
+	        acs_objects o,
+	        groups g,
+	        group_member_map m,
+	        membership_rels mr
+	where
+	        m.member_id = :user_id
+	        and m.group_id = g.group_id
+	        and g.group_id = o.object_id
+	        and o.object_type = 'im_profile'
+	        and m.rel_id = mr.rel_id
+	        and mr.member_state = 'approved'
     }
 
     # Make a list

@@ -237,6 +237,7 @@ if {"" == $extra_order_by} {
 	"Work Phone" { set extra_order_by "order by upper(work_phone)" }
 	"Last Visit" { set extra_order_by "order by last_visit DESC" }
 	"Creation" { set extra_order_by "order by creation_date DESC" }
+	"Supervisor" { set extra_order_by "order by e.supervisor_id" }
     }
 }
 
@@ -254,15 +255,17 @@ set sql "
 select
 	u.*,
 	to_char(o.creation_date,:date_format) as creation_date,
-	im_email_from_user_id(u.user_id) as email,
+	p.email,
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
 	users_active u, 
-	acs_objects o
+	acs_objects o,
+	parties p
 	$extra_from
 where 
 	u.user_id = o.object_id
+	and u.user_id = p.party_id
 	$extra_where
 $extra_order_by
 "
