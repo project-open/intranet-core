@@ -759,6 +759,9 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 "
     }
 
+    set search_form ""
+
+
     # Determine a pretty string for the type of user that it is:
     set user_profile "[_ intranet-core.User]"
     if {[im_permission $user_id "freelance"]} {

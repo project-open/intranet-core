@@ -32,7 +32,6 @@ if {!$user_is_admin_p} {
     return
 }
 
-
 # ---------------------------------------------------------------
 # Format Component Data 
 # ---------------------------------------------------------------
@@ -70,6 +69,7 @@ switch $location {
 # TODO add correct URL
 set return_url ""
 
+
 set page_body "
 <form action=\"component-update.tcl\" method=GET>
 [export_form_vars plugin_id return_url]
@@ -104,6 +104,5 @@ set page_body "
 <input type=submit name=submit value=Update>
 </form>
 "
-}
 
 ad_return_template

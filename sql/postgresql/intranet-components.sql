@@ -259,8 +259,8 @@ SELECT  im_component_plugin__new (
         null,                           -- context_id
         'Recent Registrations',         -- plugin_name
         'intranet',                     -- package_name
-        'left',                        -- location
-        '/intranet/index',              -- page_url
+        'right',                        -- location
+        '/intranet/admin/index',        -- page_url
         null,                           -- view_name
         30,                             -- sort_order
 	'im_user_registration_component $user_id' -- component_tcl

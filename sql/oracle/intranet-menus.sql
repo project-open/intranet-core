@@ -476,9 +476,9 @@ begin
 
     v_user_companies_menu := im_menu.new (
 	package_name =>	'intranet-core',
-	label =>	'users_companies',
-	name =>		'Clients',
-	url =>		'/intranet/users/index?user_group_name=Companies',
+	label =>	'users_customers',
+	name =>		'Customers',
+	url =>		'/intranet/users/index?user_group_name=Customers',
 	sort_order =>	2,
 	parent_menu_id => v_user_menu
     );

@@ -21,10 +21,17 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+
+ad_proc -public im_office_status_active {} { return 160 }
+ad_proc -public im_office_status_inactive {} { return 161 }
+
+ad_proc -public im_office_type_main {} { return 170 }
+ad_proc -public im_office_type_sales {} { return 171 }
+
+
 # -----------------------------------------------------------
 # Office OO methods new, del and name
 # -----------------------------------------------------------
-
 
 ad_proc -public im_office_permissions {user_id office_id view_var read_var write_var admin_var} {
     Fill the "by-reference" variables read, write and admin

@@ -536,7 +536,7 @@ begin
         null,                   -- creation_ip
         null,                   -- context_id
         ''intranet-core'',      -- package_name
-        ''users_companies'',    -- label
+        ''users_customers'',    -- label
         ''Clients'',            -- name
         ''/intranet/users/index?user_group_name=Customers'',   -- url
         2,                      -- sort_order

@@ -314,8 +314,8 @@ begin
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Recent Registrations',
 	package_name =>	'intranet',
-	page_url =>	'/intranet/index',
-	location =>	'left',
+	page_url =>	'/intranet/admin/index',
+	location =>	'right',
 	sort_order =>	30,
 	component_tcl =>
 	'im_user_registration_component $user_id'

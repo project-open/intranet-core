@@ -421,7 +421,7 @@ ad_proc im_country_select {select_name {default ""}} {
 	     from country_codes
 	     order by lower(country_name)"
 
-    return [im_selection_to_select_box $bind_vars $statement_name $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 1 $bind_vars $statement_name $sql $select_name $default]
 }
 
 
@@ -436,7 +436,7 @@ ad_proc im_currency_select {select_name {default ""}} {
 	     where supported_p='t'
 	     order by lower(currency_name)"
 
-    return [im_selection_to_select_box $bind_vars $statement_name $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 1 $bind_vars $statement_name $sql $select_name $default]
 }
 
 
@@ -450,14 +450,15 @@ ad_proc -public im_category_from_id { category_id } {
 }
 
 
-ad_proc im_category_select { category_type select_name { default "" } } {
+
+ad_proc im_category_select { {-translate_p 1} category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category, category_description
 	     from im_categories
 	     where category_type = :category_type
 	     order by lower(category)"
-    return [im_selection_to_select_box $bind_vars category_select $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
 }    
 
 ad_proc im_category_select_multiple { category_type select_name { default "" } { size "6"} { multiple ""}} {
