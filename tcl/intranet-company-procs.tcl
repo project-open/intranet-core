@@ -335,6 +335,6 @@ where
     }
 
     append sql " order by lower(c.company_name)"
-    return [im_selection_to_select_box $bind_vars "company_status_select" $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars "company_status_select" $sql $select_name $default]
 }
 
