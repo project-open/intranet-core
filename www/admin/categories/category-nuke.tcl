@@ -47,4 +47,4 @@ set page_body "
 <input type=submit value=\"Yes, nuke this category now\"></form><hr>
 "
 
-doc_return  200 text/html [im_return_template]
+ad_return_template

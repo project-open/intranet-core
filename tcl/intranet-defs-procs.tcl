@@ -62,7 +62,7 @@ ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     switch $driverkey {
         postgresql {
             set script "
-                db_dml $sql_name \"select $sql;\"
+                db_string $sql_name \"select $sql\"
             "
             uplevel 1 $script
         }
@@ -290,7 +290,7 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
 "
 }
 
-ad_proc im_select { field_name pairs { default "" } } {
+ad_proc im_select { {-translate_p 1} field_name pairs { default "" } } {
     Formats a "select" tag
 } {
     if { [llength $pairs] == 0 } {
@@ -306,11 +306,16 @@ ad_proc im_select { field_name pairs { default "" } } {
     set menu_items_select [list]
 
     foreach { value text } $pairs {
-	set text_txt [lang::util::suggest_key $text]
+	if { $translate_p } {
+            set text_tr [_ intranet-core.[lang::util::suggest_key $text]]
+        } else {
+            set text_tr $text
+        }
+
 	if { [string compare $value $default] == 0 } {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>[_ intranet-core.$text_txt]</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>\n"
 	} else {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">[_ intranet-core.$text_txt]</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">$text_tr</option>\n"
 	}
     }
     return "

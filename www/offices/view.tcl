@@ -89,8 +89,8 @@ if { $result != 1 } {
 
 
 # Set the title now that the $name is available after the db query
-set page_title [lang::util::suggest_key $office_name]
-set context_bar [ad_context_bar [list /intranet/offices/ "[_ intranet-core.Offices]"] [_ intranet-core.$page_title]]
+set page_title $office_name
+set context_bar [ad_context_bar [list /intranet/offices/ "[_ intranet-core.Offices]"] $page_title]
 
 # ---------------------------------------------------------------
 # Show Basic Office Information
@@ -133,7 +133,7 @@ db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
 	append office_html "
         <tr $td_class([expr $ctr % 2])>
-          <td>[_ intranet_core.$column_name] &nbsp;
+          <td>[_ intranet-core.$column_name] &nbsp;
         </td><td>"
 	set cmd "append office_html $column_render_tcl"
 	eval "$cmd"

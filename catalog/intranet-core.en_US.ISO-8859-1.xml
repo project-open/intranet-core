@@ -2,9 +2,11 @@
 <message_catalog package_key="intranet-core" package_version="3.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
+  <msg key="_"></msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record</msg>
   <msg key="a">a</msg>
+  <msg key="A_-_Test_approved">A - Test approved</msg>
   <msg key="About_You">About You</msg>
   <msg key="Ac_Counting">Accounting</msg>
   <msg key="Access_denied">Access denied</msg>
@@ -34,6 +36,7 @@
   <msg key="Add_primary_contact">Add primary contact</msg>
   <msg key="Add_subproject">Add subproject</msg>
   <msg key="Add_user">Add user</msg>
+  <msg key="Address">Address</msg>
   <msg key="Address1">Address1</msg>
   <msg key="Address2">Address2</msg>
   <msg key="Address_1">Address 1</msg>
@@ -61,9 +64,11 @@
   <msg key="AUD">AUD</msg>
   <msg key="Average_Quality">Average Quality</msg>
   <msg key="b">b</msg>
+  <msg key="B_-_No_the_best">B - No the best</msg>
   <msg key="Bad_Office">Bad Office</msg>
   <msg key="Bad_User">Bad User</msg>
   <msg key="Ban_this_user">Ban this user</msg>
+  <msg key="Bank_Transfer">Bank Transfer</msg>
   <msg key="Basic_Information">Basic Information</msg>
   <msg key="Become_this_user">Become this user!</msg>
   <msg key="Billable">Billable?</msg>
@@ -84,6 +89,7 @@
   <msg key="Cell_Phone">Cell Phone</msg>
   <msg key="Cell_phone">Cell phone</msg>
   <msg key="Change_Password">Change Password</msg>
+  <msg key="Cheque">Cheque</msg>
   <msg key="Cheque_EUR">Cheque EUR</msg>
   <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Choose_a_Country">Choose a Country</msg>
@@ -95,6 +101,7 @@
   <msg key="Client_Main_Office">Client Main Office</msg>
   <msg key="Client_Type">Client Type</msg>
   <msg key="Clients">Clients</msg>
+  <msg key="Close">Close</msg>
   <msg key="Closed">Closed</msg>
   <msg key="Com">Com</msg>
   <msg key="Comments">Comments?</msg>
@@ -114,6 +121,7 @@
   <msg key="Contract_Value">Contract Value</msg>
   <msg key="Costs">Costs</msg>
   <msg key="Country">Country</msg>
+  <msg key="Create">Create</msg>
   <msg key="Create_a_Subproject">Create a Subproject</msg>
   <msg key="Create_Project">Create Project</msg>
   <msg key="Created">Created</msg>
@@ -134,6 +142,7 @@
   <msg key="Delete_portrait">Delete portrait</msg>
   <msg key="Deleted">Deleted</msg>
   <msg key="Delinquent_Update">Delinquent Update</msg>
+  <msg key="Deliver">Deliver</msg>
   <msg key="Delivered">Delivered</msg>
   <msg key="Delivery_Date">Delivery Date</msg>
   <msg key="Description">Description</msg>
@@ -236,6 +245,7 @@
   <msg key="Intranet">Intranet</msg>
   <msg key="Intranet_content">Intranet content</msg>
   <msg key="Intranet_users">Intranet users</msg>
+  <msg key="Invoice">Invoice</msg>
   <msg key="invoice-englishadp">invoice-englishadp</msg>
   <msg key="invoice-spanishadp">invoice-spanishadp</msg>
   <msg key="Invoiced">Invoiced</msg>
@@ -275,6 +285,7 @@
   <msg key="lt_An_office_with_the_sa">An office with the same name or path already exists. Either choose a new name or go back to the office's page to edit the existing record</msg>
   <msg key="lt_Anonymize_this_server">Anonymize this server (Test servers only)</msg>
   <msg key="lt_as_if_the_user_him_or">as if the user him or herself had unsubscribed</msg>
+  <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
@@ -376,8 +387,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Manage_OpenACS_Develo">Manage OpenACS Development</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Manage the OpenACS Platform</msg>
   <msg key="lt_Maybe_somebody_has_ch">Maybe somebody has changed the path of the 'Internal' company who identifies your organization.</msg>
-  <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)
-          &lt;li&gt;&lt;a href=$change_pwd_url&gt;&lt;#_ Update this user's password</msg>
+  <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Mineintranet-timeshee">Mine</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
@@ -571,8 +581,10 @@ other way for the user to find out.</msg>
   <msg key="Office">Office</msg>
   <msg key="office_info">office_info</msg>
   <msg key="Office_Information">Office Information</msg>
+  <msg key="Office_Manager">Office Manager</msg>
   <msg key="Office_Members">Office Members</msg>
   <msg key="Office_Name">Office Name</msg>
+  <msg key="Office_Path">Office Path</msg>
   <msg key="Office_Status">Office Status</msg>
   <msg key="Office_Type">Office Type</msg>
   <msg key="Offices">Offices</msg>
@@ -614,6 +626,7 @@ other way for the user to find out.</msg>
   <msg key="Position_Vacant">Position Vacant</msg>
   <msg key="Postal_Code">Postal Code</msg>
   <msg key="Potential">Potential</msg>
+  <msg key="Potential_Freelancer">Potential Freelancer</msg>
   <msg key="Pre-revenue">Pre-revenue</msg>
   <msg key="Premium_Quality">Premium Quality</msg>
   <msg key="Primary_contact">Primary contact</msg>
@@ -681,6 +694,7 @@ other way for the user to find out.</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
   <msg key="Standard">Standard</msg>
   <msg key="Start_Date">Start Date</msg>
+  <msg key="State">State</msg>
   <msg key="Status">Status</msg>
   <msg key="Summary">Summary</msg>
   <msg key="Supervisor">Supervisor</msg>
@@ -698,6 +712,9 @@ other way for the user to find out.</msg>
   <msg key="Tec-Telecos">Tec-Telecos</msg>
   <msg key="Technology">Technology</msg>
   <msg key="Tel">Tel</msg>
+  <msg key="Test_evaluated">Test evaluated</msg>
+  <msg key="Test_received">Test received</msg>
+  <msg key="Test_sent">Test sent</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
   <msg key="Trans-ing">Trans-ing</msg>
   <msg key="Trans__Edit">Trans Edit</msg>
@@ -751,5 +768,6 @@ other way for the user to find out.</msg>
   <msg key="Yes">Yes</msg>
   <msg key="You_can_return_to">You can return to</msg>
   <msg key="z">z</msg>
+  <msg key="ZIP">ZIP</msg>
   <msg key="ZIP_and_City">ZIP and City</msg>
 </message_catalog>
