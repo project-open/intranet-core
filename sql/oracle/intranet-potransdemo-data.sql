@@ -181,7 +181,7 @@ begin
 		member_state => 'approved'
 	);
 
-	im_profile_add_user('Companies',v_user_id);
+	im_profile_add_user('Customers',v_user_id);
 end;
 /
 
@@ -204,7 +204,7 @@ begin
                 member_state => 'approved'
         );
 
-        im_profile_add_user('Companies',v_user_id);
+        im_profile_add_user('Customers',v_user_id);
 end;
 /
 
@@ -357,7 +357,7 @@ BEGIN
     im_user_matrix_grant('Freelancers','Senior Managers','admin');
     im_user_matrix_grant('Employees','Senior Managers','admin');
     im_user_matrix_grant('Project Managers','Senior Managers','admin');
-    im_user_matrix_grant('Companies','Senior Managers','admin');
+    im_user_matrix_grant('Customers','Senior Managers','admin');
     im_user_matrix_grant('Senior Managers','Senior Managers','read');
 
 
@@ -369,7 +369,7 @@ BEGIN
     im_user_matrix_grant('Employees','Accounting','read');
     im_user_matrix_grant('Sales','Accounting','read');
     im_user_matrix_grant('Freelancers','Accounting','read');
-    im_user_matrix_grant('Companies','Accounting','read');
+    im_user_matrix_grant('Customers','Accounting','read');
 
 
     -- Sales are like Employees, but can see companies. No Freelancers
@@ -379,14 +379,14 @@ BEGIN
     im_user_matrix_grant('Accounting','Sales','read');
     im_user_matrix_grant('Employees','Sales','read');
     im_user_matrix_grant('Sales','Sales','read');
-    im_user_matrix_grant('Companies','Sales','read');
+    im_user_matrix_grant('Customers','Sales','read');
 
 
     -- P/O Admins can administer all groups.
     im_user_matrix_grant('Freelancers','P/O Admins','admin');
     im_user_matrix_grant('Employees','P/O Admins','admin');
     im_user_matrix_grant('Project Managers','P/O Admins','admin');
-    im_user_matrix_grant('Companies','P/O Admins','admin');
+    im_user_matrix_grant('Customers','P/O Admins','admin');
     im_user_matrix_grant('Senior Managers','P/O Admins','admin');
     im_user_matrix_grant('P/O Admins','P/O Admins','admin');
     im_user_matrix_grant('Sales','P/O Admins','admin');

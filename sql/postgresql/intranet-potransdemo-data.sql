@@ -181,7 +181,7 @@ begin
 		member_state => 'approved'
 	);
 
-	im_profile_add_user('Companies',v_user_id);
+	im_profile_add_user('Customers',v_user_id);
 end;
 /
 
@@ -204,7 +204,7 @@ begin
                 member_state => 'approved'
         );
 
-        im_profile_add_user('Companies',v_user_id);
+        im_profile_add_user('Customers',v_user_id);
 end;
 /
 
