@@ -203,6 +203,7 @@ db_foreach menus $main_sql {
 	set action "add_readable"
 	set letter "r"
         if {$read_p == "t"} {
+            set read "<A href=$toggle_url?object_id=$menu_id&action=remove_readable&[export_url_vars horiz_group_id return_url]><b>R</b></A>\n"
 	    set action "remove_readable"
 	    set letter "<b>R</b>"
         }
