@@ -24,6 +24,9 @@
     .rowodd {font-size: 8pt; background-color: #EEEEEE;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
 
+    .form-label {font-size: 8pt; background-color: #DDDDDD;}
+    .form-widget {font-size: 8pt; background-color: #EEEEEE;}
+
     .rowgreen {font-size:8pt; background-color: #00FF00 }
     .rowyellow {font-size:8pt; background-color: #FFFF00}
     .rowred {font-size:8pt; background-color: #FF0000}
