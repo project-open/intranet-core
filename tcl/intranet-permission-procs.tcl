@@ -9,6 +9,23 @@ ad_library {
 # Core Permissions
 # ------------------------------------------------------------------
 
+# Define the set of Core privileges
+#
+ad_proc -public im_core_privs {} {
+    Returns the list of all available privileges for P/O Core.
+    These privs only cover the core functionality, additional
+    modules define their own privs with respect to their own
+    "subsite" (package).<BR>
+    The content of this list must by synced with the 
+    /sql/intranet-permissions.sql file so that all privileges
+    used here are defined.
+} {
+    return [list add_customers view_customers view_customers_all view_customer_contacts view_customer_details add_projects view_projects view_project_members view_projects_all view_projects_history add_users view_users search_intranet]
+
+}
+
+
+
 # Intranet permissions scheme - permissions are associated to groups.
 #
 ad_proc -public im_permission {user_id action} {
@@ -72,7 +89,7 @@ ad_proc -public im_permission_list_helper {user_id} {
     add_projects
     view_projects
     view_project_members	See the project member list
-    view_projects_of_others
+    view_projects_all
     view_projects_history
 
     User related permissions:
@@ -94,7 +111,7 @@ ad_proc -public im_permission_list_helper {user_id} {
     view_finance
     add_hours			Employees, freelancers, Wheel, ...
     view_hours
-    view_hours_of_others
+    view_hours_all
     view_allocations
 
     Other:
@@ -127,7 +144,7 @@ ad_proc -public im_permission_list_helper {user_id} {
 
 	lappend permissions "view_projects"
 	lappend permissions "view_project_members"
-	lappend permissions "view_projects_of_others"
+	lappend permissions "view_projects_all"
 	lappend permissions "view_projects_history"
 	lappend permissions "add_projects"
 	lappend permissions "view_allocations"
@@ -160,7 +177,7 @@ ad_proc -public im_permission_list_helper {user_id} {
 
 	lappend permissions "view_projects"
 	lappend permissions "view_project_members"
-	lappend permissions "view_projects_of_others"
+	lappend permissions "view_projects_all"
 	lappend permissions "view_projects_history"
 	lappend permissions "add_projects"
 	lappend permissions "view_allocations"
@@ -193,9 +210,9 @@ ad_proc -public im_permission_list_helper {user_id} {
 
 	lappend permissions "view_projects"
 	lappend permissions "view_project_members"
-	lappend permissions "view_projects_of_others"
+	lappend permissions "view_projects_all"
 	lappend permissions "view_projects_history"
-	lappend permissions "view_hours_of_others"
+	lappend permissions "view_hours_all"
 	lappend permissions "add_projects"
 	lappend permissions "view_allocations"
 	lappend permissions "view_finance"
@@ -237,9 +254,9 @@ ad_proc -public im_permission_list_helper {user_id} {
 
 	lappend permissions "view_projects"
 	lappend permissions "view_project_members"
-	lappend permissions "view_projects_of_others"
+	lappend permissions "view_projects_all"
 	lappend permissions "view_projects_history"
-	lappend permissions "view_hours_of_others"
+	lappend permissions "view_hours_all"
 	lappend permissions "view_finance"
 	lappend permissions "search_intranet"
 	lappend permissions "view_admin"

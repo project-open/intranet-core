@@ -185,8 +185,9 @@ show errors
 
 
 declare
-    v_user_menu	integer;
-    v_menu	integer;
+    v_user_menu		integer;
+    v_admin_menu	integer;
+    v_menu		integer;
 begin
 
     -- -----------------------------------------------------
@@ -202,7 +203,7 @@ begin
 	context_id =>	null,
 	package_name =>	'intranet',
 	name =>		'Home',
-	url =>		'/intranet/',
+	url =>		'/intranet/index',
 	sort_order =>	10,
 	parent_menu_id => null
     );
@@ -250,7 +251,7 @@ begin
 	parent_menu_id => null
     );
 
-    v_menu := im_menu.new (
+    v_admin_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -263,7 +264,6 @@ begin
 	sort_order =>	30,
 	parent_menu_id => null
     );
-
 
 
     -- -----------------------------------------------------
@@ -338,6 +338,74 @@ begin
 	url =>		'/intranet/users/org-chart',
 	sort_order =>	5,
 	parent_menu_id => v_user_menu
+    );
+
+
+    -- -----------------------------------------------------
+    -- Administration Submenu
+    -- -----------------------------------------------------
+
+-- declare
+--     v_user_menu		integer;
+--     v_admin_menu	integer;
+--     v_menu		integer;
+-- begin
+--    v_admin_menu := 733;
+
+    v_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Admin Home',
+	url =>		'/intranet/admin/',
+	sort_order =>	10,
+	parent_menu_id => v_admin_menu
+    );
+
+    v_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Profiles',
+	url =>		'/intranet/admin/profiles/',
+	sort_order =>	20,
+	parent_menu_id => v_admin_menu
+    );
+
+    v_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'User Matrix',
+	url =>		'/intranet/admin/user_matrix/',
+	sort_order =>	30,
+	parent_menu_id => v_admin_menu
+    );
+
+    v_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Categories',
+	url =>		'/intranet/admin/categories/',
+	sort_order =>	40,
+	parent_menu_id => v_admin_menu
     );
 
 end;

@@ -641,25 +641,6 @@ END im_create_administration_group;
 show errors;
 
 
-
--- Create the basic groups for intranet
-begin
-   im_create_intranet_group ('P/O Admins');
-   im_create_intranet_group ('Customers'); 
-   im_create_intranet_group ('Offices'); 
-   im_create_intranet_group ('Employees'); 
-   im_create_intranet_group ('Freelancers'); 
-   im_create_intranet_group ('Project Managers'); 
-   im_create_intranet_group ('Senior Managers'); 
-   im_create_intranet_group ('Accounting'); 
-end;
-/
-show errors;
-
-
-
-
-
 -- -----------------------------------------------------------
 -- Source additional files for Project/Open Core
 -- 

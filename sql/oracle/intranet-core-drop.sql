@@ -120,3 +120,23 @@ drop table currency_codes;
 
 
 
+-----------------------------------------------------------
+-- Privileges
+
+begin
+    acs_privilege.drop_privilege('add_customers');
+    acs_privilege.drop_privilege('view_customers');
+    acs_privilege.drop_privilege('view_customers_all');
+    acs_privilege.drop_privilege('view_customer_contacts');
+    acs_privilege.drop_privilege('view_customer_details');
+    acs_privilege.drop_privilege('add_projects');
+    acs_privilege.drop_privilege('view_projects');
+    acs_privilege.drop_privilege('view_project_members');
+    acs_privilege.drop_privilege('view_projects_all');
+    acs_privilege.drop_privilege('view_projects_history');
+    acs_privilege.drop_privilege('add_users');
+    acs_privilege.drop_privilege('view_users');
+    acs_privilege.drop_privilege('search_intranet');
+end;
+/
+

@@ -485,6 +485,77 @@ append navbar "
 
 
 
+ad_proc -public im_admin_navbar { } {
+    Setup a sub-navbar with tabs for each area, highlighted depending
+    on the local URL and enabled depending on the user permissions.
+} {
+    # select the administration menu items
+    set parent_menu_sql "select menu_id from im_menus where name='Admin'"
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+
+    return [im_sub_navbar $parent_menu_id]
+}
+
+
+ad_proc -public im_sub_navbar { parent_menu_id } {
+    Setup a sub-navbar with tabs for each area, highlighted depending
+    on the local URL and enabled depending on the user permissions.
+} {
+    set user_id [ad_get_user_id]
+    set url_stub [ns_conn url]
+
+    set sel "<td class=tabsel>"
+    set nosel "<td class=tabnotsel>"
+    set a_white "<a class=whitelink"
+    set tdsp "<td>&nbsp;</td>"
+
+    set navbar ""
+
+    set menu_select_sql {
+	select	m.*
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id
+	order by sort_order
+    }
+    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
+
+    # make sure only one field gets selected..
+    set found_selected 0
+    db_foreach menu_select $menu_select_sql {
+        set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
+        if {!$found_selected && [string equal $url_stub $url]} {
+            set html "$sel$a_white href=\"$url\"/>$name</a></td>$tdsp\n"
+            set found_selected 1
+        }
+        append navbar $html
+    }
+
+    return "
+      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
+        <TR>
+          <TD align=right>
+            <table border=0 cellspacing=0 cellpadding=3>
+              <tr>
+                $navbar
+              </tr>
+            </table>
+          </TD>
+          <TD align=right>
+          </TD>
+        </TR>
+        <TR>
+          <td colspan=2 class=pagedesriptionbar>
+            <table cellpadding=1 width='100%'>
+              <tr>
+                <td class=pagedesriptionbar valign=middle>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </TR>
+      </table>\n"
+}
+
 
 ad_proc -public im_navbar { } {
     Setup a top navbar with tabs for each area, highlighted depending
@@ -521,11 +592,14 @@ set extra_sql "
 "
 
 
-    # make sure only one field gets selected..
+    # make sure only one field gets selected so...
+    # .. check for the first complete match between menu and url.
     set found_selected 0
     db_foreach menu_select $menu_select_sql {
         set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
-        if {!$found_selected && [string equal $url_stub $url]} {
+	set url_length [expr [string length $url] - 1]
+	set url_stub_chopped [string range $url_stub 0 $url_length]
+        if {!$found_selected && [string equal $url_stub_chopped $url]} {
             set html "$sel$a_white href=\"$url\"/>$name</a></td>$tdsp\n"
             set found_selected 1
         }
