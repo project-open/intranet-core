@@ -344,81 +344,81 @@ select im_create_profile ('Sales','sales');
 -- (package) object "Project/Open Core".
 -- 
 
-    -- "View" privilege in addition to "read":
-    -- This privilege is used to indicate whether a user has the
-    -- right to see the existence of a type of objects, a privilege 
-    -- inferior to read.
-    -- This privilege is used:
-    --	    - In the ProjectViewPage in order to decide 
-    --		whether to show or not the company contact.
-    --		Read(Companies) means that the user is able
-    --		to actually read the company contact information,
-    --	so we have to show a link to the UserViewPage.
-    --	View(Company) indicates that we can show the
-    --	name of the company contact, but not display
-    --	a link to the UserViewPage.
-    --	If both privileges are missing, we are not going
-    --	to reveil even the existence of a company contact.
-    --	- The privilege is also used to decided whether to
-    --	display the submenus for users such as Employees,
-    --	Freelancers etc. The current_user needs to have 
-    --	the view privilege to see the list of users
-    --	(independed to te possible permission to see "read"
-    --	of the users that might be displayed).
+-- "View" privilege in addition to "read":
+-- This privilege is used to indicate whether a user has the
+-- right to see the existence of a type of objects, a privilege 
+-- inferior to read.
+-- This privilege is used:
+--	- In the ProjectViewPage in order to decide 
+--		whether to show or not the company contact.
+--		Read(Companies) means that the user is able
+--		to actually read the company contact information,
+--	so we have to show a link to the UserViewPage.
+--	View(Company) indicates that we can show the
+--	name of the company contact, but not display
+--	a link to the UserViewPage.
+--	If both privileges are missing, we are not going
+--	to reveil even the existence of a company contact.
+--	- The privilege is also used to decided whether to
+--	display the submenus for users such as Employees,
+--	Freelancers etc. The current_user needs to have 
+--	the view privilege to see the list of users
+--	(independed to te possible permission to see "read"
+--	of the users that might be displayed).
 
-    select acs_privilege__create_privilege('view','View','View');
-    select acs_privilege__add_child('admin', 'view');
+select acs_privilege__create_privilege('view','View','View');
+select acs_privilege__add_child('admin', 'view');
 
-    -- Global Privileges
-    -- These privileges are applied only to the "Main Site" object.
-    -- They determine global user characteristics independet of
-    -- individual objects (such as companies, users, ...)
-    select acs_privilege__create_privilege('add_companies','Add Companies','Add Companies');
-    select acs_privilege__add_child('admin', 'add_companies');
-    select acs_privilege__create_privilege('view_companies','View Companies','View Companies');
-    select acs_privilege__add_child('admin', 'view_companies');
-    select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
-    select acs_privilege__add_child('admin', 'view_companies_all');
-    select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
-    select acs_privilege__add_child('admin', 'view_company_contacts');
-    select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
-    select acs_privilege__add_child('admin', 'view_company_details');
-    
-    select acs_privilege__create_privilege('view_offices','View Offices','View Offices');
-    select acs_privilege__add_child('admin', 'view_offices');
-    select acs_privilege__create_privilege('view_offices_all','View All Offices','View Offices');
-    select acs_privilege__add_child('admin', 'view_offices_all');
-    select acs_privilege__create_privilege('add_offices','Add Offices','Add Offices');
-    select acs_privilege__add_child('admin', 'add_offices');
-    select acs_privilege__create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
-    select acs_privilege__add_child('admin', 'view_internal_offices');
-    select acs_privilege__create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
-    select acs_privilege__add_child('admin', 'edit_internal_offices');
-    
-    select acs_privilege__create_privilege('add_projects','Add Projects','Add Projects');
-    select acs_privilege__add_child('admin', 'add_projects');
-    -- 040228 fraber: Meaningless because everybody should be able to see (his) projects
-    --  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
-    select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
-    select acs_privilege__add_child('admin', 'view_project_members');
-    select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
-    select acs_privilege__add_child('admin', 'view_projects_all');
-    select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
-    select acs_privilege__add_child('admin', 'view_projects_history');
-    
-    select acs_privilege__create_privilege('add_users','Add Users','Add Users');
-    select acs_privilege__add_child('admin', 'add_users');
-    select acs_privilege__create_privilege('view_users','View Users','View Users');
-    select acs_privilege__add_child('admin', 'view_users');
-    select acs_privilege__create_privilege('view_user_regs','View User Registrations','View User Registrations');
-    select acs_privilege__add_child('admin', 'view_user_regs');
-    
-    select acs_privilege__create_privilege('search_intranet','Search Intranet','Search Intranet');
-    select acs_privilege__add_child('admin', 'search_intranet');
-    select acs_privilege__create_privilege('admin_categories','Admin Categories','Admin Categories');
-    select acs_privilege__add_child('admin', 'admin_categories');
-    select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
-    select acs_privilege__add_child('admin', 'view_topics');
+-- Global Privileges
+-- These privileges are applied only to the "Main Site" object.
+-- They determine global user characteristics independet of
+-- individual objects (such as companies, users, ...)
+select acs_privilege__create_privilege('add_companies','Add Companies','Add Companies');
+select acs_privilege__add_child('admin', 'add_companies');
+select acs_privilege__create_privilege('view_companies','View Companies','View Companies');
+select acs_privilege__add_child('admin', 'view_companies');
+select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
+select acs_privilege__add_child('admin', 'view_companies_all');
+select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
+select acs_privilege__add_child('admin', 'view_company_contacts');
+select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
+select acs_privilege__add_child('admin', 'view_company_details');
+
+select acs_privilege__create_privilege('view_offices','View Offices','View Offices');
+select acs_privilege__add_child('admin', 'view_offices');
+select acs_privilege__create_privilege('view_offices_all','View All Offices','View Offices');
+select acs_privilege__add_child('admin', 'view_offices_all');
+select acs_privilege__create_privilege('add_offices','Add Offices','Add Offices');
+select acs_privilege__add_child('admin', 'add_offices');
+select acs_privilege__create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
+select acs_privilege__add_child('admin', 'view_internal_offices');
+select acs_privilege__create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
+select acs_privilege__add_child('admin', 'edit_internal_offices');
+
+select acs_privilege__create_privilege('add_projects','Add Projects','Add Projects');
+select acs_privilege__add_child('admin', 'add_projects');
+-- 040228 fraber: Meaningless because everybody should be able to see (his) projects
+--  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
+select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
+select acs_privilege__add_child('admin', 'view_project_members');
+select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
+select acs_privilege__add_child('admin', 'view_projects_all');
+select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
+select acs_privilege__add_child('admin', 'view_projects_history');
+
+select acs_privilege__create_privilege('add_users','Add Users','Add Users');
+select acs_privilege__add_child('admin', 'add_users');
+select acs_privilege__create_privilege('view_users','View Users','View Users');
+select acs_privilege__add_child('admin', 'view_users');
+select acs_privilege__create_privilege('view_user_regs','View User Registrations','View User Registrations');
+select acs_privilege__add_child('admin', 'view_user_regs');
+
+select acs_privilege__create_privilege('search_intranet','Search Intranet','Search Intranet');
+select acs_privilege__add_child('admin', 'search_intranet');
+select acs_privilege__create_privilege('admin_categories','Admin Categories','Admin Categories');
+select acs_privilege__add_child('admin', 'admin_categories');
+select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
+select acs_privilege__add_child('admin', 'view_topics');
 
 
 

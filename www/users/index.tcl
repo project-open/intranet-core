@@ -210,24 +210,6 @@ if { $user_group_id > 0 } {
     lappend extra_froms "group_distinct_member_map m"
 }
 
-# Show DynVal variables
-# Disabled because it's very slow (8 seconds for an empty query...)
-if { 0 } {
-    set dynval_sql "
-	select	v.*
-	from	im_dynval_vars v
-	where	var_object_type='user'"
-
-    db_foreach dynvals $dynval_sql {
-	lappend extra_selects "dynval_$var_shortname.int_value as $var_shortname"
-	lappend extra_wheres "u.user_id = dynval_$var_shortname.object_id(+)"
-	lappend extra_froms "(
-		select *
-		from im_dynval_values
-		where var_id = $var_id
-	) dynval_$var_shortname"
-    }
-}
 
 if { -1 == $user_group_id} {
     # "Unregistered users

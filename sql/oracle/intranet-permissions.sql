@@ -362,31 +362,72 @@ begin
     -- They determine global user characteristics independet of
     -- individual objects (such as companies, users, ...)
     acs_privilege.create_privilege('add_companies','Add Companies','Add Companies');
+    acs_privilege.add_child('admin', 'add_companies');
+
     acs_privilege.create_privilege('view_companies','View Companies','View Companies');
+    acs_privilege.add_child('admin', 'view_companies');
+
     acs_privilege.create_privilege('view_companies_all','View All Companies','View All Companies');
+    acs_privilege.add_child('admin', 'view_companies_all');
+
     acs_privilege.create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
+    acs_privilege.add_child('admin', 'view_company_contacts');
+
     acs_privilege.create_privilege('view_company_details','View Company Details','View Company Details');
+    acs_privilege.add_child('admin', 'view_company_details');
+
 
     acs_privilege.create_privilege('view_offices','View Offices','View Offices');
+    acs_privilege.add_child('admin', 'view_offices');
+
     acs_privilege.create_privilege('view_offices_all','View All Offices','View Offices');
+    acs_privilege.add_child('admin', 'view_offices_all');
+
     acs_privilege.create_privilege('add_offices','Add Offices','Add Offices');
+    acs_privilege.add_child('admin', 'add_offices');
+
     acs_privilege.create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
+    acs_privilege.add_child('admin', 'view_internal_offices');
+
     acs_privilege.create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
+    acs_privilege.add_child('admin', 'edit_internal_offices');
+
 
     acs_privilege.create_privilege('add_projects','Add Projects','Add Projects');
+    acs_privilege.add_child('admin', 'add_projects');
+
 -- 040228 fraber: Meaningless because everybody should be able to see (his) projects
 --  acs_privilege.create_privilege('view_projects','View Projects','View Projects');
+--  acs_privilege.add_child('admin', 'view_projects');
+
     acs_privilege.create_privilege('view_project_members','View Project Members','View Project Members');
+    acs_privilege.add_child('admin', 'view_project_members');
+
     acs_privilege.create_privilege('view_projects_all','View All Projects','View All Projects');
+    acs_privilege.add_child('admin', 'view_projects_all');
+
     acs_privilege.create_privilege('view_projects_history','View Project History','View Project History');
+    acs_privilege.add_child('admin', 'view_projects_history');
+
 
     acs_privilege.create_privilege('add_users','Add Users','Add Users');
+    acs_privilege.add_child('admin', 'add_users');
+
     acs_privilege.create_privilege('view_users','View Users','View Users');
+    acs_privilege.add_child('admin', 'view_users');
+
     acs_privilege.create_privilege('view_user_regs','View User Registrations','View User Registrations');
+    acs_privilege.add_child('admin', 'view_user_regs');
+
 
     acs_privilege.create_privilege('search_intranet','Search Intranet','Search Intranet');
+    acs_privilege.add_child('admin', 'search_intranet');
+
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
+    acs_privilege.add_child('admin', 'admin_categories');
+
     acs_privilege.create_privilege('view_topics','General permission to see forum topics','');
+    acs_privilege.add_child('admin', 'view_topics');
 end;
 /
 
