@@ -20,7 +20,8 @@ ad_page_contract {
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
     @author frank.bergmann@project-open.com
 } {
-    office_id:integer
+    { office_id:integer 0}
+    { object_id:integer 0}
     { view_name "office_view" }
 }
 
@@ -32,6 +33,12 @@ set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
+
+if {0 == $office_id} {set office_id $object_id}
+if {0 == $office_id} {
+    ad_return_complaint 1 "<li>You need to specify a office_id"
+    return
+}
 
 set customer_view_page "/intranet/customers/view"
 set user_view_page "/intranet/users/view"

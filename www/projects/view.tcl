@@ -23,9 +23,10 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
-    project_id:integer
-    { orderby "subproject_name" }
-    { show_all_comments 0 }
+    { project_id:integer 0}
+    { object_id:integer 0}
+    { orderby "subproject_name"}
+    { show_all_comments 0}
     { view_name "standard"}
 }
 
@@ -36,6 +37,12 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
+
+if {0 == $project_id} {set project_id $object_id}
+if {0 == $project_id} {
+    ad_return_complaint 1 "<li>You need to specify a project_id "
+    return
+}
 
 # get the current users permissions for this project
 im_project_permissions $user_id $project_id view read write admin
@@ -48,7 +55,7 @@ set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 
 if {!$read} {
-    ad_return_complaint 1 "You have insufficient permissions to view this page."
+    ad_return_complaint 1 "<li>You have insufficient permissions to view this page."
     return
 }
 

@@ -21,8 +21,8 @@ ad_page_contract {
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
     @author frank.bergmann@project-open.com
 } {
-    user_id:integer,optional,notnull
-    user_id_from_search:integer,optional,notnull
+    { user_id:integer 0}
+    { object_id:integer 0}
     { view_name "user_view" }
     { contact_view_name "user_contact" }
     { freelance_view_name "user_view_freelance" }
@@ -35,6 +35,12 @@ ad_page_contract {
 set return_url [im_url_with_query]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
+
+if {0 == $user_id} {set user_id $object_id}
+if {0 == $user_id} {
+    ad_return_complaint 1 "<li>You need to specify a user_id"
+    return
+}
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]

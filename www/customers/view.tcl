@@ -22,7 +22,8 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 
 } {
-    customer_id:integer
+    { customer_id:integer 0}
+    { object_id:integer 0}
     show_all_correspondance_comments:integer,optional
 }
 
@@ -32,6 +33,12 @@ set current_url [ns_conn url]
 set context_bar [ad_context_bar [list ./ "Clients"] "One customer"]
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
+
+if {0 == $customer_id} {set customer_id $object_id}
+if {0 == $customer_id} {
+    ad_return_complaint 1 "<li>You need to specify a customer_id"
+    return
+}
 
 # Check permissions. "See details" is an additional check for
 # critical information
