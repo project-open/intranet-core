@@ -851,7 +851,7 @@ ad_proc -public im_logo {} {
 ad_proc -public im_navbar_gif_path {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    set navbar_gif_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_lightgreen"]
+    set navbar_gif_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]
     return $navbar_gif_path
 }
 
