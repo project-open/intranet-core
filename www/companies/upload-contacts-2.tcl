@@ -28,7 +28,7 @@ ad_page_contract {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload New File/URL"
-set page_body "<PRE>\n<A HREF=$return_url>Return to Project Page</A>\n"
+set page_body ""
 set context_bar [ad_context_bar [list "/intranet/cusomers/" "Companies"] "Upload CSV"]
 
 
@@ -69,22 +69,20 @@ set csv_header [string trim [lindex $csv_files 0]]
 set csv_header_fields [im_csv_split $csv_header]
 set csv_header_len [llength $csv_header_fields]
 
-
-append page_body "Title-Length=$csv_header_len\n"
-append page_body "\n\n"
-
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    set csv_line_fields [im_csv_split $csv_line ";"]
+    set csv_line_fields [im_csv_split $csv_line ","]
 
-    append page_body "$csv_line\n"
+    if {"" == $csv_line} {
+	ns_log Notice "skipping empty line"
+	continue
+    }
 
 
 	# Preset values, defined by CSV sheet:
 	set user_id ""
 	set email ""
 	set password ""
-	set first_names ""
 	set last_name ""
 	set registration_date ""
 	set registration_ip ""
@@ -193,44 +191,51 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	ns_log notice "upload-contacts: varname([lindex $csv_header_fields $j]) = $var_name"
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
+	if {[string equal "NULL" $var_value]} { set var_value ""}
 	
 	set cmd "set $var_name \"$var_value\""
 	ns_log Notice "cmd=$cmd"
 	set result [eval $cmd]
     }
 
+    # Set additional variables not in Outlook
+    set password $first_name
+    set password_confirm $password
+    set screen_name [string tolower "$first_name $last_name"]
+    regsub -all {[^A-Za-z0-9_]} $screen_name "_" username
+    set secret_question ""
+    set secret_answer ""
+
 
     # Check if the user already exists
-    set found_n [db_string person_count "select count(*) from persons where lower(first_name) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
+    set found_n [db_string person_count "select count(*) from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
 
     if {$found_n > 1} {
-	append page_body "We have found $found_n users with the name '$first_name $last_name',<br>
-        so we are sSkipping this update.<p>"
+	append page_body "<li>'$first_name $last_name': Skipping, because we have found $found_n users with this name.\n"
 	continue
     }
 
+
+    # -------------------------------------------------------
+    # Create a new user if necessary
+    #
     if {0 == $found_n} {
 
 	# Create a new user
 	set user_id [db_nextval acs_object_id_seq]
-
-	set password $first_names
-	ns_log Notice "email=$email"
-	ns_log Notice "password=$password"
-	ns_log Notice "first_names=$first_names"
-	ns_log Notice "last_name=$last_name"
+	append page_body "<li>'$first_name $last_name': Creating a new user with ID \#$user_id\n"
 
 	array set creation_info [auth::create_user \
                                          -user_id $user_id \
                                          -verify_password_confirm \
                                          -username $username \
                                          -email $e_mail_address \
-                                         -first_names $first_names \
+                                         -first_names $first_name \
                                          -last_name $last_name \
                                          -screen_name $screen_name \
                                          -password $password \
                                          -password_confirm $password_confirm \
-                                         -url $url \
+                                         -url $web_page \
                                          -secret_question $secret_question \
 				 -secret_answer $secret_answer]
 
@@ -238,7 +243,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	# Add the user to the "Registered Users" group, because
 	# (s)he would get strange problems otherwise
 	set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
-	relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+#	relation_add -member_state "approved" "membership_rel" $registered_users $user_id
 
 	# Add a users_contact record to the user since the 3.0 PostgreSQL
 	# port, because we have dropped the outer join with it...
@@ -251,121 +256,129 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	    db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
 	}
 
-    } else {
+    }
 
-	# Existing user: Update variables
-	set auth [auth::get_register_authority]
-	set user_data [list]
+    # -------------------------------------------------------
+    # Update the user's information 
+    # Execute this no matter whether it's a new or an existing user
+    #
 
-	person::update \
+    set user_id [db_string person_id "select person_id from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
+    append page_body "<li>'$first_name $last_name': Updating user\n"
+
+    set auth [auth::get_register_authority]
+    set user_data [list]
+
+    person::update \
                 -person_id $user_id \
-                -first_names $first_names \
+                -first_names $first_name \
                 -last_name $last_name
 
-	party::update \
+    party::update \
                 -party_id $user_id \
-                -url $url \
+                -url $web_page \
                 -email $e_mail_address
 
-	acs_user::update \
+    acs_user::update \
                 -user_id $user_id \
                 -screen_name $screen_name
 
-    }
+    if {"" != $other_street} {append note "other_street = $other_street\n" }
+    if {"" != $other_street_2} {append note "other_street_2 = $other_street_2\n" }
+    if {"" != $other_street_3} {append note "other_street_3 = $other_street_3\n" }
+    if {"" != $other_city} {append note "other_city = $other_city\n" }
+    if {"" != $other_state} {append note "other_state = $other_state\n" }
+    if {"" != $other_postal_code} {append note "other_postal_code = $other_postal_code\n" }
+    if {"" != $other_country} {append note "other_country = $other_country\n" }
+
+    if {"" != $assistants_phone} {append note "assistants_phone = $assistants_phone\n" }
+    if {"" != $title} {append note "title = $title\n" }
+    if {"" != $middle_name} {append note "middle_name = $middle_name\n" }
+    if {"" != $suffix} {append note "suffix = $suffix\n" }
+    if {"" != $company} {append note "company = $company\n" }
+    if {"" != $department} {append note "department = $department\n" }
+    if {"" != $job_title} {append note "job_title = $job_title\n" }
+    if {"" != $business_phone_2} {append note "business_phone_2 = $business_phone_2\n" }
+    if {"" != $callback} {append note "callback = $callback\n" }
+    if {"" != $car_phone} {append note "car_phone = $car_phone\n" }
+    if {"" != $company_main_phone} {append note "company_main_phone = $company_main_phone\n" }
+    if {"" != $home_fax} {append note "home_fax = $home_fax\n" }
+    if {"" != $home_phone_2} {append note "home_phone_2 = $home_phone_2\n" }
+    if {"" != $isdn} {append note "isdn = $isdn\n" }
+
+    if {"" != $other_fax} {append note "other_fax = $other_fax\n" }
+    if {"" != $other_phone} {append note "other_phone = $other_phone\n" }
+    if {"" != $primary_phone} {append note "primary_phone = $primary_phone\n" }
+    if {"" != $radio_phone} {append note "radio_phone = $radio_phone\n" }
+    if {"" != $tty_tdd_phone} {append note "tty_tdd_phone = $tty_tdd_phone\n" }
+    if {"" != $telex} {append note "telex = $telex\n" }
+    if {"" != $account} {append note "account = $account\n" }
+    if {"" != $anniversary} {append note "anniversary = $anniversary\n" }
+    if {"" != $assistants_name} {append note "assistants_name = $assistants_name\n" }
+
+    if {"" != $billing_information} {append note "billing_information = $billing_information\n" }
+    if {"" != $birthday} {append note "birthday = $birthday\n" }
+    if {"" != $categories} {append note "categories = $categories\n" }
+    if {"" != $children} {append note "children = $children\n" }
+    if {"" != $directory_server} {append note "directory_server = $directory_server\n" }
 
 
-    if {"" != other_street} {append note "other_street = $other_street\n" }
-    if {"" != other_street_2} {append note "other_street_2 = $other_street_2\n" }
-    if {"" != other_street_3} {append note "other_street_3 = $other_street_3\n" }
-    if {"" != other_city} {append note "other_city = $other_city\n" }
-    if {"" != other_state} {append note "other_state = $other_state\n" }
-    if {"" != other_postal_code} {append note "other_postal_code = $other_postal_code\n" }
-    if {"" != other_country} {append note "other_country = $other_country\n" }
-
-    if {"" != assistants_phone} {append note "assistants_phone = $assistants_phone\n" }
-    if {"" != title} {append note "title = $title\n" }
-    if {"" != middle_name} {append note "middle_name = $middle_name\n" }
-    if {"" != suffix} {append note "suffix = $suffix\n" }
-    if {"" != company} {append note "company = $company\n" }
-    if {"" != department} {append note "department = $department\n" }
-    if {"" != job_title} {append note "job_title = $job_title\n" }
-    if {"" != business_phone_2} {append note "business_phone_2 = $business_phone_2\n" }
-    if {"" != callback} {append note "callback = $callback\n" }
-    if {"" != car_phone} {append note "car_phone = $car_phone\n" }
-    if {"" != company_main_phone} {append note "company_main_phone = $company_main_phone\n" }
-    if {"" != home_fax} {append note "home_fax = $home_fax\n" }
-    if {"" != home_phone_2} {append note "home_phone_2 = $home_phone_2\n" }
-    if {"" != isdn} {append note "isdn = $isdn\n" }
-
-    if {"" != other_fax} {append note "other_fax = $other_fax\n" }
-    if {"" != other_phone} {append note "other_phone = $other_phone\n" }
-    if {"" != primary_phone} {append note "primary_phone = $primary_phone\n" }
-    if {"" != radio_phone} {append note "radio_phone = $radio_phone\n" }
-    if {"" != tty_tdd_phone} {append note "tty_tdd_phone = $tty_tdd_phone\n" }
-    if {"" != telex} {append note "telex = $telex\n" }
-    if {"" != account} {append note "account = $account\n" }
-    if {"" != anniversary} {append note "anniversary = $anniversary\n" }
-    if {"" != assistants_name} {append note "assistants_name = $assistants_name\n" }
-
-    if {"" != billing_information} {append note "billing_information = $billing_information\n" }
-    if {"" != birthday} {append note "birthday = $birthday\n" }
-    if {"" != categories} {append note "categories = $categories\n" }
-    if {"" != children} {append note "children = $children\n" }
-    if {"" != directory_server} {append note "directory_server = $directory_server\n" }
+    if {"" != $e_mail_2_address} {append note "e_mail_2_address = $e_mail_2_address\n" }
+    if {"" != $e_mail_3_address} {append note "e_mail_3_address = $e_mail_3_address\n" }
+    if {"" != $gender} {append note "gender = $gender\n" }
+    if {"" != $government_id_number} {append note "government_id_number = $government_id_number\n" }
+    if {"" != $hobby} {append note "hobby = $hobby\n" }
+    if {"" != $initials} {append note "initials = $initials\n" }
+    if {"" != $internet_free_busy} {append note "internet_free_busy = $internet_free_busy\n" }
+    if {"" != $keywords} {append note "keywords = $keywords\n" }
+    if {"" != $language} {append note "language = $language\n" }
+    if {"" != $location} {append note "location = $location\n" }
+    if {"" != $managers_name} {append note "managers_name = $managers_name\n" }
+    if {"" != $mileage} {append note "mileage = $mileage\n" }
+    if {"" != $office_location} {append note "office_location = $office_location\n" }
+    if {"" != $organizational_id_number} {append note "organizational_id_number = $organizational_id_number\n" }
+    if {"" != $po_box} {append note "po_box = $po_box\n" }
+    if {"" != $priority} {append note "priority = $priority\n" }
+    if {"" != $private} {append note "private = $private\n" }
+    if {"" != $profession} {append note "profession = $profession\n" }
+    if {"" != $referred_by} {append note "referred_by = $referred_by\n" }
+    if {"" != $sensitivity} {append note "sensitivity = $sensitivity\n" }
+    if {"" != $spouse} {append note "spouse = $spouse\n" }
+    if {"" != $user_1} {append note "user_1 = $user_1\n" }
+    if {"" != $user_2} {append note "user_2 = $user_2\n" }
+    if {"" != $user_3} {append note "user_3 = $user_3\n" }
+    if {"" != $user_4} {append note "user_4 = $user_4\n" }
+    if {"" != $web_page} {append note "web_page = $web_page\n" }
 
 
-    if {"" != e_mail_2_address} {append note "e_mail_2_address = $e_mail_2_address\n" }
-    if {"" != e_mail_3_address} {append note "e_mail_3_address = $e_mail_3_address\n" }
-    if {"" != gender} {append note "gender = $gender\n" }
-    if {"" != government_id_number} {append note "government_id_number = $government_id_number\n" }
-    if {"" != hobby} {append note "hobby = $hobby\n" }
-    if {"" != initials} {append note "initials = $initials\n" }
-    if {"" != internet_free_busy} {append note "internet_free_busy = $internet_free_busy\n" }
-    if {"" != keywords} {append note "keywords = $keywords\n" }
-    if {"" != language} {append note "language = $language\n" }
-    if {"" != location} {append note "location = $location\n" }
-    if {"" != managers_name} {append note "managers_name = $managers_name\n" }
-    if {"" != mileage} {append note "mileage = $mileage\n" }
-    if {"" != office_location} {append note "office_location = $office_location\n" }
-    if {"" != organizational_id_number} {append note "organizational_id_number = $organizational_id_number\n" }
-    if {"" != po_box} {append note "po_box = $po_box\n" }
-    if {"" != priority} {append note "priority = $priority\n" }
-    if {"" != private} {append note "private = $private\n" }
-    if {"" != profession} {append note "profession = $profession\n" }
-    if {"" != referred_by} {append note "referred_by = $referred_by\n" }
-    if {"" != sensitivity} {append note "sensitivity = $sensitivity\n" }
-    if {"" != spouse} {append note "spouse = $spouse\n" }
-    if {"" != user_1} {append note "user_1 = $user_1\n" }
-    if {"" != user_2} {append note "user_2 = $user_2\n" }
-    if {"" != user_3} {append note "user_3 = $user_3\n" }
-    if {"" != user_4} {append note "user_4 = $user_4\n" }
-    if {"" != web_page} {append note "web_page = $web_page\n" }
-
+    # Get the country code
+    set home_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:home_country)" -default ""]
+    set business_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:business_country)" -default ""]
+    set other_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:other_country)" -default ""]
+    
 
     db_dml update_users_contact "
-	update users_contact set 
-
+    update users_contact set 
 	home_phone = :home_phone,
 	work_phone = :business_phone,
 	cell_phone = :mobile_phone,
 	pager = :pager,
 	fax = :business_fax,
-
 	ha_line1 = :home_street,
 	ha_line2 = trim(:home_street_2 || ' ' || :home_street_3),
 	ha_city = :home_city,
 	ha_state = :home_state,
 	ha_postal_code = :home_postal_code,
-	ha_country_code = :home_country
-
+	ha_country_code = :home_country_code,
 	wa_line1 = :business_street,
 	wa_line2 = trim(:business_street_2 || ' ' || :business_street_3),
 	wa_city = :business_city,
 	wa_state = :business_state,
 	wa_postal_code = :business_postal_code,
-	wa_country_code = :business_country,
-
+	wa_country_code = :business_country_code,
 	note = :note
+    where
+	user_id = :user_id	
 "
 
 #	aim_screen_name      
@@ -373,58 +386,27 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 #	icq_number           
 #	current_information  
 
+    # -------------------------------------------------------
+    # Deal with the users's company
+    #
 
-#    set customer_group_id [im_customer_group_id]
-#    set employee_group_id [im_employee_group_id]
-#    set get_company_id_sql "
-#		select group_id 
-#		from user_groups 
-#		where group_name=:company_name"
+    if {"" != $company} {
+	set company_id [db_string find_company "select company_id from im_companies where lower(company_name) = lower(:company)" -default 0]
+	
+	if {0 != $company_id} {
+	
+	    set relationship_count [db_string relationship_count "select count(*) from acs_rels where object_id_one = :company_id and object_id_two = :user_id"]
+	    if {0 == $relationship_count} {
 
-    set mark_as_company_sql "
-INSERT INTO user_group_map VALUES (
-    :customer_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
-)"
+		append page_body "<li>'$first_name $last_name': Adding as member to '$company'\n"
+		im_biz_object_add_role $user_id $company_id [im_biz_object_role_full_member]
+	    } else {
+		append page_body "<li>'$first_name $last_name': Is already a member of '$company'\n"
+	    }
 
-    set mark_company_employee_sql "
-INSERT INTO user_group_map VALUES (
-    :company_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
-)"
-
-    # set the current users as the primary contact.
-    # Works out in the case that there is only one contact,
-    # and picks the last user of a specific company if there
-    # are severals.
-    set update_company_primary_contact "UPDATE im_companies SET 
-    primary_contact_id=:user_id where group_id=:company_id"
-
-
-    if { [catch {
-	db_transaction {
-	   # make sure the user doesn't exist already (second time
-	   # we upload the same CSV...
-	   set user_id [db_string exists_sql "select user_id from users where email=:email" -default ""]
-	   if {[string equal $user_id ""]} {
-		set user_id [db_nextval "user_id_sequence"]
-		set company_id [db_string get_company_id $get_company_id_sql -default ""]
-		if {[string equal company_id ""]} {
-		   append page_body "\n<font color=red>
-			 didn't find client '$company_name'
-			 </font>\n\n"
-		} else {
-		   db_dml insert_users_sql $insert_users_sql
-		   db_dml mark_as_company_sql $mark_as_company_sql
-		   db_dml mark_company_employee_sql $mark_company_employee_sql
-		   db_dml update_company_primary_contact $update_company_primary_contact
-		}
-	   } else {
-		append page_body "\nUser $email already exists\n"
-	   }
+	} else {
+	    append page_body "<li>'$first_name $last_name': Unable to find the users' company '$company'\n"
 	}
-    } err_msg] } {
-	append page_body \n<font color=red>$err_msg</font>\n";
     }
 }
 
-append page_body "\n<A HREF=$return_url>Return to Project Page</A>\n"
-doc_return  200 text/html [im_return_template]
