@@ -17,6 +17,8 @@
 # @author frank.bergmann@project-open.com
 
 
+
+
 ad_proc -public im_user_permissions { current_user_id user_id view_var read_var write_var admin_var } {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $current_user_id on $user_id
@@ -70,6 +72,21 @@ where
     ns_log Notice "im_user_permissions: cur=$current_user_id, user=$user_id, view=$view, read=$read, write=$write, admin=$admin"
 
 }
+
+
+ad_proc -public user_permissions { current_user_id user_id view_var read_var write_var admin_var } {
+    Helper being called when calling dynamic permissions
+    for objects (im_biz_objects...).<br>
+    This procedure is identical to im_user_permissions.
+} {
+    upvar $view_var view
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    im_user_permissions $current_user_id $user_id view read write admin
+}
+
 
 ad_proc im_random_employee_blurb { } "Returns a random employee's photograph and a little bio" {
 
