@@ -69,6 +69,7 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
+  <td width=20></td>
   <td class=rowtitle>Package</td>
 "
 set main_sql_select ""
@@ -92,7 +93,7 @@ select
 ${main_sql_select}	m.*,
 	level,
 	(level-1) as indent_level,
-	(4-level) as colspan_level
+	(5-level) as colspan_level
 from
 	im_menus m
 start with

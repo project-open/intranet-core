@@ -409,6 +409,7 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 -- Unit or Mesurement
 INSERT INTO im_categories VALUES (320,'Hour','','Intranet UoM','category','t','f');
 INSERT INTO im_categories VALUES (321,'Day','','Intranet UoM','category','t','f');
+INSERT INTO im_categories VALUES (322,'Unit','','Intranet UoM','category','t','f');
 -- Page, S-Word, T-Word, S-Line, T-Line defined in intranet-translation
 
 

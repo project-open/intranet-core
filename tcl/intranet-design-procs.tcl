@@ -472,7 +472,7 @@ append navbar "
 
 
 
-ad_proc -public im_admin_navbar { } {
+ad_proc -public im_admin_navbar { {select_label ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
@@ -480,7 +480,7 @@ ad_proc -public im_admin_navbar { } {
     set parent_menu_sql "select menu_id from im_menus where name='Admin'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
 
-    return [im_sub_navbar $parent_menu_id]
+    return [im_sub_navbar $parent_menu_id $select_label]
 }
 
 
