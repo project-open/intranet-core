@@ -229,17 +229,18 @@ commit;
 create or replace package im_biz_object_member
 as
 	function new (
-	rel_id		in im_biz_object_members.rel_id%TYPE default null,
-	rel_type	in acs_rels.rel_type%TYPE default 'im_biz_object_member',
-	object_id	in integer,
-	user_id		in integer,
-	object_role_id	in integer,
-	creation_user	in acs_objects.creation_user%TYPE default null,
-	creation_ip	in acs_objects.creation_ip%TYPE default null
+		rel_id		in im_biz_object_members.rel_id%TYPE default null,
+		rel_type	in acs_rels.rel_type%TYPE default 'im_biz_object_member',
+		object_id	in integer,
+		user_id		in integer,
+		object_role_id	in integer,
+		creation_user	in acs_objects.creation_user%TYPE default null,
+		creation_ip	in acs_objects.creation_ip%TYPE default null
 	) return im_biz_object_members.rel_id%TYPE;
 
 	procedure del (
-		rel_id	in im_biz_object_members.rel_id%TYPE
+		object_id	in integer,
+		user_id		in integer
 	);
 end im_biz_object_member;
 /
@@ -282,12 +283,19 @@ as
 	user_id		in integer
   )
   is
+	v_rel_id	integer;
   begin
+	select rel_id
+	into v_rel_id
+	from acs_rels
+	where	object_id_one = del.object_id
+		and object_id_two = del.user_id;
+
 	delete
 	from im_biz_object_members
-	where rel_id = del.rel_id;
+	where object_role_id = v_rel_id;
 
-	acs_rel.del(rel_id);
+	acs_rel.del(v_rel_id);
   end;
 
 end im_biz_object_member;
