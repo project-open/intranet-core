@@ -45,9 +45,9 @@ if {!$write} {
     ad_return_complaint 1 "You have no rights to add members to this object."
     return
 }
-
+ns_log notice "********************* add user $user_id_from_search in company $object_id as role $role_id *********************"
 im_biz_object_add_role $user_id_from_search $object_id $role_id
-
+ns_log notice "********************* after user $user_id_from_search in company $object_id as role $role_id *********************"
 
 # --------------------------------------------------------
 # Prepare to send out an email alert

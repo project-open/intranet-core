@@ -106,6 +106,6 @@ set admin_html ""
 append admin_html "
   <li> <a href=/intranet/users/view?user_id=$current_user_id>[_ intranet-core.About_You]</A>\n"
 
-set administration_component [im_table_with_title "Administration" $admin_html]
+set administration_component [im_table_with_title "[_ intranet-core.Administration]" $admin_html]
 
 db_release_unused_handles

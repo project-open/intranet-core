@@ -51,6 +51,7 @@
   <msg key="Administer_DynVals">Administer DynVals</msg>
   <msg key="Administration">Administration</msg>
   <msg key="administrator">administrator</msg>
+  <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">Aim Screen Name</msg>
   <msg key="All">All</msg>
   <msg key="All_Costs">All Costs</msg>
@@ -118,7 +119,9 @@
   <msg key="Company_Type_1">Company Type:</msg>
   <msg key="Confirm">Confirm</msg>
   <msg key="Contact">Contact</msg>
+  <msg key="Contact_Email">Contact Email</msg>
   <msg key="Contact_Information">Contact Information</msg>
+  <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
   <msg key="Contract_Value">Contract Value</msg>
   <msg key="Costs">Costs</msg>
@@ -238,12 +241,16 @@
   <msg key="Home_address">Home address</msg>
   <msg key="Home_City">Home City</msg>
   <msg key="Home_Country">Home Country</msg>
+  <msg key="Home_Line_1">Home Line 1</msg>
+  <msg key="Home_Line_2">Home Line 2</msg>
   <msg key="Home_Page">Home Page</msg>
   <msg key="Home_Phone">Home Phone</msg>
   <msg key="Home_phone">Home phone</msg>
   <msg key="Home_Postal_Code">Home Postal Code</msg>
+  <msg key="Home_ZIP">Home ZIP</msg>
   <msg key="Hour">Hour</msg>
   <msg key="i">i</msg>
+  <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
   <msg key="in">in</msg>
@@ -483,6 +490,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Select_topics_here_fo">Select topics here for action</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
   <msg key="lt_Senior_Managersintran">Senior Managers</msg>
+  <msg key="lt_Shows_the_status_of_a">It shows the status of a project</msg>
   <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project Path' are not allowed</msg>
   <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
   <msg key="lt_Software_Company_Comp">Software Company</msg>
@@ -593,6 +601,8 @@ other way for the user to find out.</msg>
   <msg key="more">more...</msg>
   <msg key="more_">more ...</msg>
   <msg key="more_projects">more projects...</msg>
+  <msg key="MSM">MSM</msg>
+  <msg key="MSN_Status">MSN Status</msg>
   <msg key="n">n</msg>
   <msg key="Name">Name</msg>
   <msg key="new_client_contact">new client contact</msg>
@@ -602,6 +612,7 @@ other way for the user to find out.</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_User">New User</msg>
   <msg key="News">News</msg>
+  <msg key="Next_Absence">Next Absence</msg>
   <msg key="nl">nl</msg>
   <msg key="nl_BE">nl_BE</msg>
   <msg key="nl_NL">nl_NL</msg>
@@ -678,6 +689,7 @@ other way for the user to find out.</msg>
   <msg key="Project_Members">Project Members</msg>
   <msg key="Project_Name">Project Name</msg>
   <msg key="Project_name">Project name</msg>
+  <msg key="Project_nr">Project nr</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Status">Project Status</msg>
   <msg key="Project_Type">Project Type</msg>
@@ -803,9 +815,12 @@ other way for the user to find out.</msg>
   <msg key="Work_address">Work address</msg>
   <msg key="Work_City">Work City</msg>
   <msg key="Work_Country">Work Country</msg>
+  <msg key="Work_Line_1">Work Line 1</msg>
+  <msg key="Work_Line_2">Work Line 2</msg>
   <msg key="Work_Phone">Work Phone</msg>
   <msg key="Work_phone">Work phone</msg>
   <msg key="Work_Postal_Code">Work Postal Code</msg>
+  <msg key="Work_ZIP">Work ZIP</msg>
   <msg key="x">x</msg>
   <msg key="y">y</msg>
   <msg key="Yes">Yes</msg>

@@ -481,12 +481,13 @@ if { ![empty_string_p $query_string] } {
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
-    set col_txt [lang::util::suggest_key $col]
+    set cmd "set col_txt $col"
+    eval "$cmd"
     if { [string compare $order_by $col] == 0 } {
-	append table_header_html "  <td class=rowtitle>[_ intranet-core.$col_txt]</td>\n"
+	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     } else {
-	set col [lang::util::suggest_key $col]
-	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">[_ intranet-core.$col_txt]</a></td>\n"
+	#set col [lang::util::suggest_key $col]
+	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a></td>\n"
     }
 }
 append table_header_html "</tr>\n"

@@ -142,7 +142,10 @@ db_foreach column_list_sql $column_sql {
     if {[eval $visible_for]} {
 	append user_basic_info_html "
         <tr $td_class([expr $ctr % 2])>
-          <td>$column_name &nbsp;
+          <td>"
+	set cmd0 "append user_basic_info_html $column_name"
+	eval "$cmd0"
+	append user_basic_info_html " &nbsp;
         </td><td>"
 	set cmd "append user_basic_info_html $column_render_tcl"
 	eval "$cmd"
@@ -160,7 +163,7 @@ append user_basic_info_html "
 
 append user_basic_info_html "
 <tr $td_class([expr $ctr % 2])>
-  <td>Profile</td>
+  <td>[_ intranet-core.Profile]</td>
   <td>
     [im_user_profile_component $user_id_from_search "disabled"]
   </td>
@@ -252,7 +255,10 @@ order by
         if {[eval $visible_for]} {
 	    append contact_html "
             <tr $td_class([expr $ctr % 2])>
-            <td>$column_name &nbsp;</td><td>"
+            <td>"
+            set cmd0 "append contact_html $column_name"
+            eval "$cmd0"
+            append contact_html " &nbsp;</td><td>"
 	    set cmd "append contact_html $column_render_tcl"
 	    eval $cmd
 	    append contact_html "</td></tr>\n"

@@ -177,7 +177,7 @@ append page_body "
                     <tr>
                       <td>[_ intranet-core.Client] $required_field </td>
                       <td> 
-[im_company_select "company_id" $company_id "" "[_ intranet-core.Company]" [list "[_ intranet-core.Deleted]" "[_ intranet-core.Past]" "[_ intranet-core.Declined]" "[_ intranet-core.Inactive]"]]
+[im_company_select "company_id" $company_id "" "Company" [list "Deleted" "Past" "Declined" "Inactive"]]
 "
 if {$user_admin_p} {
     append page_body "
