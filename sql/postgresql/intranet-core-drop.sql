@@ -350,10 +350,13 @@ drop function inline_0 ();
 
 -- drop package im_project;
 
-drop trigger im_projects_update_tr;
-drop function im_projects_update_tr ();
+-- Do not drop triggers because they are deleted 
+-- together with their table when it is dropped.
+--
+-- drop trigger im_projects_update_tr on im_projects;
+-- drop trigger im_project_insert_tr on im_projects;
 
-drop trigger im_project_insert_tr on im_projects;
+drop function im_projects_update_tr ();
 drop function im_project_insert_tr ();
 
 drop table im_projects;
