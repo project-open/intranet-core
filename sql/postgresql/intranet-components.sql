@@ -145,12 +145,13 @@ end;' language 'plpgsql';
 create or replace function im_component_plugin__del_module (varchar) returns integer as '
 DECLARE
 	p_module_name	alias for $1;
+	row		RECORD;
 BEGIN
-	for row in (
+	for row in 
             select plugin_id
             from im_component_plugins
             where package_name = p_module_name
-	) loop
+	loop
 	    PERFORM im_component_plugin__delete(row.plugin_id);
 	end loop;
 
