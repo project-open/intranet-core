@@ -91,7 +91,7 @@ if { ![db_0or1row projects_info_query $query] } {
     return
 }
 
-set parent_name [db_string parent_name "select project_name from im_projects where project_id = parent_project_id" -default ""]
+set parent_name [db_string parent_name "select project_name from im_projects where project_id = :parent_id" -default ""]
 
 
 # ---------------------------------------------------------------------
