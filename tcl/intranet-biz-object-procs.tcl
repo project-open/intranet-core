@@ -31,7 +31,7 @@ ad_proc -public im_biz_object_member_p { user_id object_id } {
 		and object_id_two=:user_id
 "
     set result [db_string im_biz_object_member_p $sql]
-    return result
+    return $result
 }
 
 ad_proc -public im_biz_object_admin_p { user_id object_id } {
@@ -48,11 +48,11 @@ where
 	r.object_id_one=:object_id
 	and r.object_id_two=:user_id
 	and r.rel_id = m.rel_id
-	and r.object_role_id in (1301,1302)"
+	and m.object_role_id in (1301,1302)"
     # 1301=PM, 1302=Key Account
 
     set result [db_string im_biz_object_member_p $sql]
-    return result
+    return $result
 }
 
 ad_proc -public im_biz_object_member_ids { user_id object_id } {

@@ -37,6 +37,7 @@ ad_proc -public im_backup_accepted_version_nr { version } {
 } {
     switch $version {
 	"0.5" { return "" }
+	"1.3" { return "" }
 	"ACS3.4" { return "" }
 	default { return "Unknown backup dump version '$version'<br>" }
     }
@@ -86,7 +87,7 @@ ad_proc im_backup { } {
     }
 }
 
-ad_proc -public im_backup_backup { backup_id } {
+ad_proc -public im_backup_report { backup_id } {
     Execute an export backup
 } {
     set user_id [ad_maybe_redirect_for_registration]
@@ -376,6 +377,13 @@ ad_proc -public im_import_offices { filename } {
 
 
 	# -------------------------------------------------------
+	# Set default variables that are not filled by older
+	# backup versions
+	#
+	set office_type ""
+	set office_status ""
+
+	# -------------------------------------------------------
 	# Extract variables from the CSV file
 	#
 
@@ -398,8 +406,8 @@ ad_proc -public im_import_offices { filename } {
 	# Transform email and names into IDs
 	#
 
-	set office_type_id [db_string office_type "select category_id from im_categories where category=:office_type and category_type='Intranet Office Type'" -default ""]
-	set office_status_id [db_string office_status "select category_id from im_categories where category=:office_status and category_type='Intranet Office Status'" -default ""]
+	set office_type_id [db_string office_type "select category_id from im_categories where category=:office_type and category_type='Intranet Office Type'" -default 170]
+	set office_status_id [db_string office_status "select category_id from im_categories where category=:office_status and category_type='Intranet Office Status'" -default 160]
 	set contact_person_id [db_string contact_person "select party_id from parties where email=:contact_person_email" -default ""]
 
 	set office_id [db_string contact_person "select office_id from im_offices where office_name=:office_name" -default 0]
@@ -463,6 +471,7 @@ WHERE
 	} err_msg] } {
 	    ns_log Warning $err_msg"
 	    ad_return_complaint 1 "<li>Error loading offices:<br>
+	    $csv_line<br>
             $err_msg"
 	}
     }

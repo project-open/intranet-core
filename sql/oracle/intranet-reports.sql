@@ -186,8 +186,7 @@ from
 	im_biz_object_members m,
 	im_projects p
 where
-	object_id_one=567
-	and r.rel_id = m.rel_id
+	r.rel_id = m.rel_id
 	and r.object_id_one = p.project_id
 ');
 

@@ -162,7 +162,11 @@ values (1302, 'Key Account', 'Intranet Biz Object Role',
 -- Maps from (acs_object_type + object_type_id) into object_role_id.
 -- For example projects (im_project) with type "translation" can 
 -- have the object_roles "Translator", "Editor", "Project Manager" etc.
----
+-- This table doesn't actually restrict (RI) the roles between
+-- business objects and members, but serves to select "appropriate"
+-- membership relationships in the add_member.tcl page and its
+-- neighbours.
+--
 create table im_biz_object_role_map (
 	acs_object_type	constraint im_bizo_rmap_o_type_fk
 			references acs_object_types,
