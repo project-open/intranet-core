@@ -516,6 +516,7 @@ order by
 		r.object_id_one = p.project_id
 		and r.object_id_two = :user_id
 		and p.parent_id is null
+		and p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
 	)"
 
     set personal_project_query "

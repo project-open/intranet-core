@@ -282,23 +282,13 @@ ad_proc -public im_opt_val { var_name } {
 	return $var
     }
     
-    # get the list of all HTTP variables 
+    # get from the list of all HTTP variables.
+    # ns_set get returns "" if not found
     set form_vars [ns_conn form]
-    set idx [ns_set find $form_vars $var_name]
-    if {$idx >= 0} {
-    	set value [ns_set get $form_vars $var_name]
-    	ns_log Notice "im_opt_val: found variable='$var_name' with value='$value' in HTTL header"
-    	return $value
-    }
- 
-#    set debug ""
-#    foreach var [ad_ns_set_keys $form_vars] {
-#        set value [ns_set get $form_vars $var]
-#        append debug "form:	$var	= $value\n"
-#    }
-#    ad_return_complaint 1 "<pre>$debug</pre>"
-    
-    return ""
+    if {"" == $form_vars} { set form_vars [ns_set create] }
+    set value [ns_set get $form_vars $var_name]
+    ns_log Notice "im_opt_val: found variable='$var_name' with value='$value' in HTTL header"
+    return $value
 } 
 
 
