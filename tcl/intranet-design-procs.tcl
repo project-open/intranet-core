@@ -155,6 +155,8 @@ ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} 
 ad_proc -public im_table_with_title { title body } {
     Returns a two row table with background colors
 } {
+    if {"" == $body} { return "" }
+
     return "
 <table cellpadding=5 cellspacing=0 border=0 width='100%'>
  <tr>
@@ -603,10 +605,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 }
 
 
-ad_proc -public im_navbar { } {
+ad_proc -public im_navbar { { main_navbar_label "" } } {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
+    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
 
@@ -651,7 +654,13 @@ order by
 	set selected 0
 	set url_length [expr [string length $url] - 1]
 	set url_stub_chopped [string range $url_stub 0 $url_length]
-        if {!$found_selected && [string equal $url_stub_chopped $url]} {
+
+	# Check if we should select this one:
+	set select_this_one 0
+	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
+	if {[string equal $url_stub_chopped $url]} { set select_this_one 1 }
+
+        if {!$found_selected && $select_this_one} {
 	    # Make sure we only highligh one menu item..
             set found_selected 1
 	    # Set for the gif

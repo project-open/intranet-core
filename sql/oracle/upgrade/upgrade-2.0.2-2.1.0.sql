@@ -233,3 +233,14 @@ set category_type='Intranet Cost Template'
 where category_type='Intranet Invoice Template';
 
 
+alter table im_costs add 
+	paid_amount             number(12,3);
+alter table im_costs add
+	paid_currency           char(3)
+                                constraint im_costs_paid_currency_fk
+                                references currency_codes(iso);
+
+
+alter table im_trans_prices modify (price number(14,4));
+
+
