@@ -17,13 +17,16 @@
         <callbacks>
         </callbacks>
         <parameters>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNestedProjectsP"  default="0" description="Do the user need to have projects and subprojects?"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.projop.com/intranet-forum/new-system-incident" description="ErrorReportURL"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.css" description="Global CSS"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/www/images/projop-logo.gif" description="System logo that appears in all screens"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.opus5.net/" description="SystemLogoLink"/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_lightgreen" description="SystemNavbarGifPath"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNestedProjectsP"  default="0" description="Do the user need to have projects and subprojects, or does this add too much of complexity?"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.projop.com/intranet-forum/new-system-incident" description="Error Report URL"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumberResultsPerPage"  default="50" description="How many lines do we want to show in an index page?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="10" description="How many characters can the project number have?"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/images/projop-logo.gif" description="System logo that appears in all screens"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
+
         </parameters>
 
     </version>
