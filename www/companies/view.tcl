@@ -270,7 +270,7 @@ if { $admin > 0 } {
 set company_members [im_group_member_component $company_id $user_id $admin $return_url [im_employee_group_id]]
 
 set enable_project_estimates 0
-set also_add_to_group [im_company_group_id]
+set also_add_to_group [im_customer_group_id]
 set company_members [im_group_member_component $company_id $user_id $admin $return_url "" [im_employee_group_id] $also_add_to_group]
 
 

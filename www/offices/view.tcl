@@ -67,26 +67,24 @@ select
 	o.*,
 	im_category_from_id(office_status_id) as office_status,
 	im_category_from_id(office_type_id) as office_type,
-	cc.country_name as address_country_name,
 	im_name_from_user_id(o.contact_person_id) as contact_person_name,
 	im_email_from_user_id(o.contact_person_id) as contact_person_email,
 	c.company_id,
-	c.company_name,
-	cc.country_name as address_country
+	c.company_name
 from
 	im_offices o,
-	im_companies c,
-	country_codes cc
+	im_companies c
 where
 	o.office_id = :office_id
-	and o.company_id = c.company_id(+)
-	and o.address_country_code = cc.iso(+)
+	and o.company_id = c.company_id
 "]
 
 if { $result != 1 } {
     ad_return_complaint "Bad Office" "
     <li>We couldn't find office #$office_id; perhaps this office was nuked?"
     return
+} else {
+    set address_country [db_string get_country_code "select country_name from country_codes where iso=:address_country_code" -default ""]
 }
 
 

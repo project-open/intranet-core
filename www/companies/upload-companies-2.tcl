@@ -130,7 +130,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     set index_page_enabled_p "f"
     set body ""
     set html_p "f"
-    set parent_group_id [im_company_group_id]
+    set parent_group_id [im_customer_group_id]
 
     for {set j 0} {$j < $header_len} {incr j} {
 	set var_name [lindex $header_csv_fields $j]

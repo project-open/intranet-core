@@ -183,7 +183,7 @@ BEGIN
 	select	company_name
 	into	v_name
 	from	im_companies
-	where	company_id = name.company_id;
+	where	company_id = v_company_id;
 
 	return v_name;
 end;' language 'plpgsql';

@@ -43,6 +43,7 @@ ad_page_contract {
     
     @author philg@mit.edu and authors
     @author frank.bergmann@project-open.com
+    @author juanjoruizx@yahoo.es
 } {    
     { email "" }
     target
@@ -117,7 +118,6 @@ where
         and perm.privilege = 'read'
         and g.group_id = o.object_id
         and o.object_type = 'im_profile'
-order by lower(g.group_name)
 "
 
 

@@ -318,7 +318,7 @@ end;' language 'plpgsql';
 
 
 select im_create_profile ('P/O Admins','admin');
-select im_create_profile ('Companies','company'); 
+select im_create_profile ('Customers','customer'); 
 select im_create_profile ('Employees','employee'); 
 select im_create_profile ('Freelancers','freelance'); 
 select im_create_profile ('Project Managers','proman'); 

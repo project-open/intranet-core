@@ -161,8 +161,8 @@ set order_by_clause ""
 switch $order_by {
     "Phone" { set order_by_clause "order by upper(phone_work), upper(office_name)" }
     "Email" { set order_by_clause "order by upper(email), upper(office_name)" }
-    "Type" { set order_by_clause "order by upper(office_type), upper(office_name)" }
-    "Status" { set order_by_clause "order by upper(office_status), upper(office_name)" }
+    "Type" { set order_by_clause "order by upper(im_category_from_id(o.office_type_id)), upper(office_name)" }
+    "Status" { set order_by_clause "order by upper(im_category_from_id(o.office_status_id)), upper(office_name)" }
     "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(office_name)" }
     "Office" { set order_by_clause "order by upper(office_name)" }
 }
@@ -216,7 +216,7 @@ set perm_sql "
 	                        and privilege='view_offices_all'
 	        ) see_all
 	where
-	        o.office_id = r.object_id(+)
+	        o.office_id = r.object_id
 	        $where_clause
 "
 
@@ -235,7 +235,7 @@ from
 	($perm_sql) perm
 where
 	perm.office_id = o.office_id
-	and o.company_id = c.company_id(+)
+	and o.company_id = c.company_id
         and (
 		perm.permission_member > 0
         or

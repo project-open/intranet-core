@@ -111,12 +111,19 @@ if { ![empty_string_p $errors] } {
 set office_count [db_string office_count "select count(*) from im_offices where office_id=:office_id"]
 if {0 == $office_count} {
 
-    # create a new Office:
-    set office_id [office::new \
-	-office_name	$office_name \
-	-office_path	$office_name \
-	-office_status_id $office_status_id \
-        -office_type_id $office_type_id]
+    db_transaction {
+	# create a new Office:
+	set office_id [office::new \
+		-office_name	$office_name \
+		-office_path	$office_name \
+		-office_status_id $office_status_id \
+		-office_type_id $office_type_id]
+	
+	# add users to the office as office_admin
+        set role_id [im_biz_object_role_office_admin]
+        im_biz_object_add_role $user_id $office_id $role_id
+
+    }
 }
 
 # -----------------------------------------------------------------

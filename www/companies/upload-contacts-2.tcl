@@ -115,7 +115,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     ns_log Notice "first_names=$first_names"
     ns_log Notice "last_name=$last_name"
     
-    set company_group_id [im_company_group_id]
+    set customer_group_id [im_customer_group_id]
     set employee_group_id [im_employee_group_id]
     set get_company_id_sql "
 		select group_id 
@@ -132,7 +132,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 
     set mark_as_company_sql "
 INSERT INTO user_group_map VALUES (
-    :company_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
+    :customer_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
 )"
 
     set mark_company_employee_sql "

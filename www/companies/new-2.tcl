@@ -130,8 +130,14 @@ if {0 == $cust_count} {
 		-office_type_id "170" \
 		-office_status_id "160" \
 		-office_path	$office_path]
+
+	# add users to the office as 
+        set role_id [im_biz_object_role_office_admin]
+        im_biz_object_add_role $user_id $main_office_id $role_id
+
 	ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
 	
+
 	# Now create the company with the new main_office:
 	set company_id [company::new \
 		-company_id $company_id \
@@ -141,10 +147,7 @@ if {0 == $cust_count} {
 		-company_type_id $company_type_id \
 		-company_status_id $company_status_id]
 	
-	# add users to the project as PMs
-	# - current_user (creator/owner)
-	# - project_leader
-	# - supervisor
+	# add users to the company as key account
 	set role_id [im_biz_object_role_key_account]
 	im_biz_object_add_role $user_id $company_id $role_id
 

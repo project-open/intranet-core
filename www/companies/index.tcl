@@ -30,7 +30,7 @@ ad_page_contract {
     @author Juanjo Ruiz (juanjoruizx@yahoo.es)
 } {
     { status_id:integer "" }
-    { type_id:integer "[im_company_type_company]" }
+    { type_id:integer "[im_company_type_customer]" }
     { start_idx:integer "1" }
     { order_by "Company" }
     { how_many "" }

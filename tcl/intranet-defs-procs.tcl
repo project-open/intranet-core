@@ -697,7 +697,7 @@ ad_proc im_email_people_in_group { group_id role from subject message } {
     set second_group_id ""
     switch $role {
 	"employees" { set second_group_id [im_employee_group_id] }
-	"companies" { set second_group_id [im_company_group_id] }
+	"companies" { set second_group_id [im_customer_group_id] }
     }
 	
     set criteria [list]

@@ -34,9 +34,14 @@ ad_proc -public im_company_status_inactive {} { return 48 }
 ad_proc -public im_company_type_other {} { return 52 }
 ad_proc -public im_company_type_internal {} { return 53 }
 ad_proc -public im_company_type_provider {} { return 56 }
-ad_proc -public im_company_type_company {} { return 57 }
+ad_proc -public im_company_type_customer {} { return 57 }
 ad_proc -public im_company_type_freelance {} { return 58 }
 ad_proc -public im_company_type_office_equip {} { return 59 }
+
+
+# Suitable roles for a company object
+ad_proc -public im_company_role_key_account { } { return 1302 }
+ad_proc -public im_company_role_member { } { return 1300 }
 
 
 ad_proc -public im_company_annual_rev_0_1 {} { return 223 }
@@ -179,11 +184,6 @@ where	company_name = :company_name
 }
 
 
-# Suitable roles for a company object
-ad_proc -public im_company_role_key_account { } { return 1302 }
-ad_proc -public im_company_role_member { } { return 1300 }
-
-
 ad_proc -public im_company_internal { } {
     Returns the object_id of the "Internal" company, identifying
     the organization (ower or Project/Open) itself.<br>
@@ -222,11 +222,10 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
     $default with the list of all avaiable contact persons of a given
     company
 } {
-    set companies_group_id [im_company_group_id]
-
     set bind_vars [ns_set create]
     ns_set put $bind_vars company_id $company_id
-    ns_set put $bind_vars companies_group_id $companies_group_id
+    ns_set put $bind_vars customer_group_id [im_customer_group_id]
+    ns_set put $bind_vars freelance_group_id [im_freelance_group_id]
 
     set query "
 select
@@ -238,7 +237,10 @@ from
 where
         ur.object_id_one = :company_id
 	and ur.object_id_two = gr.object_id_two
-	and gr.object_id_one = :companies_group_id
+	and (
+		gr.object_id_one = :companies_group_id
+		or gr.object_id_one = :companies_group_id
+	)
 "
     return [im_selection_to_select_box $bind_vars company_contact_select $query $select_name $default]
 }
@@ -260,7 +262,6 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
     set user_id [ad_get_user_id]
     set bind_vars [ns_set create]
-    ns_set put $bind_vars company_group_id [im_company_group_id]
     ns_set put $bind_vars user_id $user_id
     ns_set put $bind_vars subsite_id [ad_conn subsite_id]
 
