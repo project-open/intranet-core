@@ -38,7 +38,7 @@ set mapping_user [ad_verify_and_get_user_id]
 
 
 if { ![im_can_user_administer_group $group_id $mapping_user] } {
-    ad_return_error "Permission Denied" "You do not have permission to remove a member from this group."
+    ad_return_complaint 1 "<li>Permission Denied<br>You do not have permission to remove a member from this group."
     return
 }
 

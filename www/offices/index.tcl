@@ -81,7 +81,7 @@ set user_view_page "/intranet/users/view"
 set office_view_page "/intranet/offices/view"
 set letter [string toupper $letter]
 
-if {![im_permission $user_id view_offices]} {
+if {![im_permission $user_id view_customer_details]} {
     ad_return_complaint 1 "You don't have permissions to view offices"
     return
 }

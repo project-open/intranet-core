@@ -116,13 +116,23 @@ ad_form -name register -export {next_url user_id return_url} -form {
     {username:text(hidden),optional value {}}
     {first_names:text(text) {label {First names}} {html {size 30}}}
     {last_name:text(text) {label {Last name}} {html {size 30}}} 
-    {password:text(password),optional {label Password} {html {size 20}}} 
-    {password_confirm:text(password),optional {label {Password Confirmation}} {html {size 20}}} 
-    {secret_question:text(hidden),optional value {}} 
-    {secret_answer:text(hidden),optional value {}}
+}
+
+if {!$editing_existing_user} {
+    ad_form -extend -name register -form {
+	{password:text(password),optional {label Password} {html {size 20}}} 
+	{password_confirm:text(password),optional {label {Password Confirmation}} {html {size 20}}} 
+	{secret_question:text(hidden),optional value {}} 
+	{secret_answer:text(hidden),optional value {}}
+    }
+}
+
+ad_form -extend -name register -form {
     {screen_name:text(text),optional {label {Screen name}} {html {size 30}}} 
     {url:text(text),optional {label {Personal Home Page URL:}} {html {size 50 value "http://"}}} 
 }
+
+
 
 # ad_form -name register -export {next_url user_id return_url} -form [auth::get_registration_form_elements]
 
@@ -192,27 +202,48 @@ ad_form -extend -name register -on_request {
 } -on_submit {
 
     db_transaction {
-        array set creation_info [auth::create_user \
-                                     -user_id $user_id \
-                                     -verify_password_confirm \
-                                     -username $username \
-                                     -email $email \
-                                     -first_names $first_names \
-                                     -last_name $last_name \
-                                     -screen_name $screen_name \
-                                     -password $password \
-                                     -password_confirm $password_confirm \
-                                     -url $url \
-                                     -secret_question $secret_question \
-                                     -secret_answer $secret_answer]
+	
+	if {!$editing_existing_user} {
+	    array set creation_info [auth::create_user \
+					 -user_id $user_id \
+					 -verify_password_confirm \
+					 -username $username \
+					 -email $email \
+					 -first_names $first_names \
+					 -last_name $last_name \
+					 -screen_name $screen_name \
+					 -password $password \
+					 -password_confirm $password_confirm \
+					 -url $url \
+					 -secret_question $secret_question \
+					 -secret_answer $secret_answer]
      
-        if { [string equal $creation_info(creation_status) "ok"] && [exists_and_not_null rel_group_id] } {
-            group::add_member \
-                -group_id $rel_group_id \
-                -user_id $user_id \
-                -rel_type $rel_type
-        }
-
+	    if { [string equal $creation_info(creation_status) "ok"] && [exists_and_not_null rel_group_id] } {
+		group::add_member \
+		    -group_id $rel_group_id \
+		    -user_id $user_id \
+		    -rel_type $rel_type
+	    }
+	} else {
+	    set auth [auth::get_register_authority]
+	    set user_data [list]
+	    person::update \
+		-person_id $user_id \
+		-first_names $first_names \
+		-last_name $last_name
+	    
+	    party::update \
+		-party_id $user_id \
+		-url $url \
+		-email $email
+	    
+	    acs_user::update \
+		-user_id $user_id \
+		-screen_name $screen_name
+	    
+	}
+	
+	
         set delete_rel_sql "
 BEGIN
      FOR row IN (
@@ -244,7 +275,7 @@ END;"
 	foreach profile_tuple [im_profiles_all] {
 	    ns_log Notice "profile_tuple=$profile_tuple"
 	    set group_id [lindex $profile_tuple 0]
-
+	    
 	    set is_member 0
 	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:group_id"]
 
@@ -252,12 +283,12 @@ END;"
 	    if {[lsearch -exact $profile $group_id] >= 0} {
 		set should_be_member 1
 	    }
-
+	    
 	    ns_log Notice "/users/new: group_id 	=$group_id"
 	    ns_log Notice "/users/new: user_id 		=$user_id"
 	    ns_log Notice "/users/new: should_be_member	=$should_be_member"
 	    ns_log Notice "/users/new: is_member	=$is_member"
-
+	    
 	    if {$is_member && !$should_be_member} {
 		# Remove the user from the group
 		ns_log Notice "/users/new: => remove_member\n"
@@ -265,9 +296,9 @@ END;"
 #		group::remove_member \
 #		    -group_id $group_id \
 #		    -user_id $user_id
-#	    }
+	    }
 
-
+	    
 	    if {!$is_member && $should_be_member} {
 		# Add the member to the specified group
 		ns_log Notice "/users/new: => add_member\n"
@@ -281,72 +312,64 @@ END;"
 #		    -creation_user $current_user_id \
 #		    -creation_ip $ip_address
 	    }
-
 	}
 
+	# Close db_transaction
     }
-
-
-if {0} {
-
+    
 
     # Handle registration problems
-    
-    switch $creation_info(creation_status) {
-        ok {
-            # Continue below
-        }
-        default {
-            # Adding the error to the first element, but only if there are no element messages
-            if { [llength $creation_info(element_messages)] == 0 } {
-                array set reg_elms [auth::get_registration_elements]
-                set first_elm [lindex [concat $reg_elms(required) $reg_elms(optional)] 0]
-                form set_error register $first_elm $creation_info(creation_message)
-            }
+    if {!$editing_existing_user} {
+	
+	switch $creation_info(creation_status) {
+	    ok {
+		# Continue below
+	    }
+	    default {
+		# Adding the error to the first element, but only 
+		# if there are no element messages
+		if { [llength $creation_info(element_messages)] == 0 } {
+		    array set reg_elms [auth::get_registration_elements]
+		    set first_elm [lindex [concat $reg_elms(required) $reg_elms(optional)] 0]
+		    form set_error register $first_elm $creation_info(creation_message)
+		}
                 
-            # Element messages
-            foreach { elm_name elm_error } $creation_info(element_messages) {
-                form set_error register $elm_name $elm_error
-            }
-            break
-        }
+		# Element messages
+		foreach { elm_name elm_error } $creation_info(element_messages) {
+		    form set_error register $elm_name $elm_error
+		}
+		break
+	    }
+	}
+
+	switch $creation_info(account_status) {
+	    ok {
+		# Continue below
+	    }
+	    default {
+		# Display the message on a separate page
+		ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-closed" { { message $creation_info(account_message) } }]
+		ad_script_abort
+	    }
+	}
     }
-
-    switch $creation_info(account_status) {
-        ok {
-            # Continue below
-        }
-        default {
-            # Display the message on a separate page
-            ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-closed" { { message $creation_info(account_message) } }]
-            ad_script_abort
-        }
-    }
-
-
-}
-
-
+    
 } -after_submit {
 
-
-
-if {0} {
-
-    if { ![empty_string_p $next_url] } {
-        # Add user_id and account_message to the URL
-        
-        ad_returnredirect [export_vars -base $next_url {user_id password {account_message $creation_info(account_message)}}]
-        ad_script_abort
-    } 
-
+    if {!$editing_existing_user} {
+	if { ![empty_string_p $next_url] } {
+	    # Add user_id and account_message to the URL
+	    ad_returnredirect [export_vars -base $next_url {user_id password {account_message $creation_info(account_message)}}]
+	    ad_script_abort
+	}
+    }
 
     # User is registered and logged in
     if { ![exists_and_not_null return_url] } {
-        # Redirect to subsite home page.
-        set return_url [subsite::get_element -element url]
+	# Redirect to subsite home page.
+	set return_url [subsite::get_element -element url]
     }
-
+    
     # If the user is self registering, then try to set the preferred
     # locale (assuming the user has set it as a anonymous visitor
     # before registering).
@@ -360,22 +383,29 @@ if {0} {
 	    ad_set_cookie -replace t -max_age 0 "ad_locale" ""
 	}
     }
-
+    
     # Handle account_message
-    if { ![empty_string_p $creation_info(account_message)] && $self_register_p } {
-        # Only do this if user is self-registering
-        # as opposed to creating an account for someone else
-        ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-message" { { message $creation_info(account_message) } return_url }]
-        ad_script_abort
+    if {!$editing_existing_user} {
+	if { ![empty_string_p $creation_info(account_message)] && $self_register_p } {
+	    # Only do this if user is self-registering
+	    # as opposed to creating an account for someone else
+	    ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-message" { { message $creation_info(account_message) } return_url }]
+	    ad_script_abort
+	} else {
+	    # No messages
+	    ad_returnredirect $return_url
+	    ad_script_abort
+	}
+    }    
+
+    # Fallback:
+    if { ![exists_and_not_null return_url] } {
+	ad_returnredirect $return_url
     } else {
-        # No messages
-        ad_returnredirect $return_url
-        ad_script_abort
+	ad_returnredirect "/intranet/users/"
     }
-
 }
 
-}
 
 
 

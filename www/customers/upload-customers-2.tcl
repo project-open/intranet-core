@@ -236,9 +236,9 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	# Make sure the cusomer exists
 	set customer_count [db_string customer_count "select count(*) from im_customers where group_id=:group_id"]
 	if {$customer_count == 0} {
-	    set err_msg "There is a customer group without im_customer entry.
-	    This is a DB-inconsistency and should never occur."
-	    ad_returnredirect "/error?error=$err_msg"
+	    ad_return_complaint 1 "<li>There is a customer group without a
+            im_customer entry. This is a DB-inconsistency that should never 
+            occur. Please contact your system administrator."
 	    return
 	}
 	

@@ -36,10 +36,6 @@ ad_page_contract {
     { letter "scroll" }
     { start_idx:integer "1" }
     { how_many "" }
-    { forum_start_idx 1}
-    { forum_order_by "P" }
-    { forum_how_many 0 }
-    { forum_view_name "forum_list_home"}
 }
 
 # ---------------------------------------------------------------
@@ -432,42 +428,6 @@ set hours_component ""
 if { [ad_parameter TrackHours intranet 0] && [im_permission $current_user_id add_hours]} {
     set hours_component [im_table_with_title "Work Log" "$hours_html"]
 }
-
-# -------------- Format the Forum box ---------------------
-
-set forum_component ""
-
-if { 0 } {
-
-# How to present the forum items?
-set group_id 0
-set restrict_to_group_id 0
-set restrict_to_mine_p "t"
-
-set forum_title_text "<B>Forum Items</B>"
-set forum_title [im_forum_create_bar $forum_title_text $group_id $return_url]
-
-# 0=all, 1="Tasks & Incidents", ...
-set restrict_to_topic_type_id 0
-
-# status not used yet
-set restrict_to_topic_status_id 0
-set restrict_to_asignee_id 0
-set max_entries_per_page 0
-
-# Show only topics not marked as "read".
-set restrict_to_new_topics 1
-
-set export_var_list [list group_id forum_order_by forum_how_many forum_view_name]
-
-set forum_content [im_forum_component $current_user_id $restrict_to_group_id $current_url $return_url $export_var_list $forum_view_name $forum_order_by $restrict_to_mine_p $restrict_to_topic_type_id $restrict_to_topic_status_id $restrict_to_asignee_id $forum_how_many $forum_start_idx $restrict_to_new_topics]
-
-
-set forum_component [im_table_with_title $forum_title $forum_content]
-
-
-}
-
 
 # ----------------------------------------------------------------
 # Administration

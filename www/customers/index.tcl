@@ -84,8 +84,7 @@ set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
 if {![im_permission $user_id view_customer_contacts]} {
-    set err_msg "You don't have permissions to view customers"
-    ad_returnredirect "/error?error=$err_msg"
+    ad_return_complaint 1 "<li>You have insufficient permissions to see this page"
     return
 }
 

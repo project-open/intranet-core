@@ -24,8 +24,6 @@ ad_page_contract {
 } {
     customer_id:integer
     show_all_correspondance_comments:integer,optional
-    {forum_order_by ""}
-    {forum_view_name "forum_list_project"}
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -305,25 +303,6 @@ if {[im_permission $user_id view_finance]} {
 # ------------------------------------------------------
 # Forum Component
 # ------------------------------------------------------
-
-set forum_html ""
-if {0} {
-
-    set current_user_id $user_id
-    set forum_title_text "<B>Forum Items</B>"
-    set forum_title [im_forum_create_bar $forum_title_text $customer_id $return_url]
-
-    # Variables of this page to pass through im_forum_component to maintain the
-    # current selection and view of the current project
-    set export_var_list [list customer_id forum_start_idx forum_order_by forum_how_many forum_view_name]
-
-    set forum_content [im_forum_component $current_user_id $customer_id $current_url $return_url $export_var_list $forum_view_name $forum_order_by]
-
-    # im_forum_component {user_id customer_id current_page_url return_url export_var_list {view_name "forum_list_short"} {forum_order_by "priority"} {restrict_to_mine_p f} {restrict_to_topic_type_id 0} {restrict_to_topic_status_id 0} {restrict_to_asignee_id 0} {max_entries_per_page 0} {start_idx 1} }
-
-    set forum_html [im_table_with_title $forum_title $forum_content]
-}
-
 
 set company_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_employee_group_id]]
 

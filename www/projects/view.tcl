@@ -27,8 +27,6 @@ ad_page_contract {
     project_id:integer
     { orderby "subproject_name" }
     { show_all_comments 0 }
-    { forum_order_by "" }
-    { forum_view_name "forum_list_project" }
 }
 
 # ---------------------------------------------------------------------

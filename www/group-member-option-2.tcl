@@ -51,7 +51,7 @@ set intranet_group_type_p [db_string group_type_check \
 	"select count(*) from user_groups where group_id = :group_id and group_type = :group_type"]
 
 if { !$intranet_group_type_p } {
-    ad_return_error "Invalid group type" "The group you selected is not of type [ad_parameter IntranetGroupType intranet intranet]. You cannot add yourself to this group through this interface"
+    ad_return_complaint 1 "Invalid group type<br>The group you selected is not of type [ad_parameter IntranetGroupType intranet intranet].<br> You cannot add yourself to this group through this interface"
     return
 }
 

@@ -16,31 +16,30 @@
 ad_page_contract {
     Presents a search form to find a user to add to a group.
 
-    @param group_id group to which to add
+    @param object_id group to which to add
     @param role role in which to add
-    @param also_add_to_group_id Additional groups to which to add
+    @param also_add_to_object_id Additional groups to which to add
     @param return_url Return URL
 
-    @author        mbryzek@arsdigita.com
-    @creation-date 16 April 2000
-    @cvs-id        member-add.tcl,v 3.5.2.6 2000/09/22 01:38:22 kevin Exp
+    @author mbryzek@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
-    group_id:naturalnum
+    object_id:naturalnum
     { role "" }
     { return_url "" }
-    { also_add_to_group_id:naturalnum "" }
+    { also_add_to_object_id:naturalnum "" }
     { select_from_group:naturalnum "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-set user_is_group_member_p [ad_user_group_member $group_id $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $group_id $user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
+set user_is_group_member_p [ad_user_group_member $object_id $user_id]
+set user_is_group_admin_p [im_can_user_administer_group $object_id $user_id]
+set user_is_wheel_p [ad_user_group_member [im_wheel_object_id] $user_id]
 set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p || $user_is_wheel_p]
 
 # Check if the current group is a project (as opposed to a customer)
-set project_p [db_string check_if_project "select count(*) from im_projects where project_id=:group_id"]
+set project_p [db_string check_if_project "select count(*) from im_projects where project_id=:object_id"]
 
 set translation_enabled [ad_parameter "EnableTranslationModule" "intranet" "0"]
 
@@ -76,7 +75,7 @@ $role_options"
 # Find out the project/customer name and deal with the case that the name
 # may be empty.
 #
-set group_name [db_string group_name_for_one_group_id "select group_name from groups where group_id = :group_id"]
+set group_name [db_string group_name_for_one_object_id "select group_name from groups where object_id = :object_id"]
 
 set page_title "Add new member to $group_name"
 set context_bar [ad_context_bar "Add member"]
@@ -85,7 +84,7 @@ set locate_form "
 <form method=POST action=/intranet/user-search>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"group_id role return_url also_add_to_group_id notify_asignee\">
+<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id notify_asignee\">
 
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
@@ -133,7 +132,7 @@ set select_form "
 <form method=POST action=/intranet/member-add-2>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"group_id role return_url also_add_to_group_id\">
+<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td class=rowtitle align=middle>Employee</td>
@@ -168,7 +167,7 @@ $role_options
 
 set freelance_html ""
 if {$translation_enabled} {
-    set freelance_html [im_freelance_member_select_component $group_id $role_options $return_url]
+    set freelance_html [im_freelance_member_select_component $object_id $role_options $return_url]
 }
 
 # ---------------------------------------------------------------

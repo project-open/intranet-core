@@ -78,7 +78,7 @@ where
 	and c.main_office_id=o.office_id
 " 
     ]} {
-	ad_return_error "Client #customer_id doesn't exist" "Please back up, and try again"
+	ad_return_complaint 1 "<li>Client #customer_id doesn't exist."
 	return
     }
 

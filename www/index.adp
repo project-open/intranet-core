@@ -11,8 +11,6 @@
     <%= [im_component_bay left] %>
   </td>
   <td valign=top>
-    @forum_component;noquote@
-    @hours_component;noquote@
     @administration_component;noquote@
     <%= [im_component_bay right] %>
   </td>
