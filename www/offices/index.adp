@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="title">#intranet-core.Companies#</property>
 <property name="context">#intranet-core.context#</property>
+<property name="main_navbar_label">offices</property>
 
 <%= $office_filter_html %>
 

@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="title">#intranet-core.Companies#</property>
 <property name="context">#intranet-core.context#</property>
+<property name="main_navbar_label">companies</property>
 
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
@@ -16,16 +17,16 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td valign=top>#intranet-core.View_1# </td>
-	  <td valign=top><%= [im_select view_type $view_types ""] %></td>
+	  <td>#intranet-core.View_1#  &nbsp;</td>
+	  <td><%= [im_select view_type $view_types ""] %></td>
 	</tr>
 	<tr>
-	  <td valign=top>#intranet-core.Company_Status_1# </td>
-	  <td valign=top><%= [im_select status_id $status_types ""] %></td>
+	  <td>#intranet-core.Company_Status_1#  &nbsp;</td>
+	  <td><%= [im_select status_id $status_types ""] %></td>
 	</tr>
 	<tr>
-	  <td valign=top>#intranet-core.Company_Type_1# </td>
-	  <td valign=top>
+	  <td>#intranet-core.Company_Type_1#  &nbsp;</td>
+	  <td>
 	    <%= [im_select type_id $company_types ""] %>
 	    <input type=submit value=Go name=submit>
 	  </td>

@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="context">@context;noquote@</property>
 <property name="title">#intranet-core.Menu_Restore#</property>
+<property name="admin_navbar_label">admin_backup</property>
 
 <form action="restore-2" method=POST>
 <%= [export_form_vars path] %>

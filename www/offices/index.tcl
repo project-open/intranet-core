@@ -196,29 +196,10 @@ if { ![empty_string_p $where_clause] } {
 # main join (offices and membership relation) in order to
 # reach a reasonable response time.
 
-set perm_sql "
-	select
-	        o.office_id,
-		r.member_p as permission_member,
-		see_all.see_all as permission_all
-	from
-	        im_offices o,
-		(	select	count(rel_id) as member_p,
-				object_id_one as object_id
-			from	acs_rels
-			where	object_id_two = :user_id
-			group by object_id_one
-		) r,
-	        (       select  count(*) as see_all
-	                from	acs_object_party_privilege_map
-	                where   object_id=:subsite_id
-	                        and party_id=:user_id
-	                        and privilege='view_offices_all'
-	        ) see_all
-	where
-	        o.office_id = r.object_id
-	        $where_clause
-"
+# Get the inner "perm_sql" statement
+set perm_statement [db_qd_get_fullname "perm_sql" 0]
+set perm_sql_uneval [db_qd_replace_sql $perm_statement {}]
+set perm_sql [expr "\"$perm_sql_uneval\""]
 
 set sql "
 select
@@ -401,6 +382,8 @@ db_foreach projects_info_query $selection {
     }
     incr idx
 }
+
+ns_log Notice "offices/index: subsite_id=$subsite_id"
 
 # Show a reasonable message when there are no result rows:
 if { [empty_string_p $table_body_html] } {

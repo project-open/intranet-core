@@ -1,5 +1,6 @@
 <master src="master">
 <property name="title">#intranet-core.Add_new_member#</property>
+<property name="main_navbar_label">user</property>
 
 <table cellpadding=0 cellspacing=0 border=0>
 <tr>

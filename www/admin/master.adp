@@ -1,10 +1,7 @@
 <%= [im_header $title] %>
-<%= [im_navbar] %>
+<%= [im_navbar "admin"] %>
 <br>
-<%= [im_admin_navbar] %>
+<% if {![info exists admin_navbar_label]} { set admin_navbar_label "" } %>
+<%= [im_admin_navbar $admin_navbar_label] %>
 <slave>
 <%= [im_footer] %>
-
-
-
-

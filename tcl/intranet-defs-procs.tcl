@@ -997,7 +997,7 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 	Takes a number in "Amercian" format (decimals separated by ".") and
 	returns a string formatted according to the current locale.
 } {
-    ns_log Notice "im_date_format_locale($cur, $min_decimals, $max_decimals)"
+#    ns_log Notice "im_date_format_locale($cur, $min_decimals, $max_decimals)"
 
     # Remove thousands separating comas eventually
     regsub "\," $cur "" cur
@@ -1034,4 +1034,19 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 
     return "$digits.$decimals"
 }
+
+
+
+ad_proc im_mangle_user_group_name { user_group_name } {
+	Returns the input string in lowercase and with " "
+	being replaced by "_".
+} {
+	set user_group_name [string tolower $user_group_name]
+	regsub -all { } $user_group_name "_" user_group_name
+	regsub -all {/} $user_group_name "" user_group_name
+	regsub -all {\+} $user_group_name "_" user_group_name
+	return $user_group_name
+}
+
+
 

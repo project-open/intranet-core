@@ -29,7 +29,8 @@ if {!$current_user_is_admin_p} {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set context [list "Groups"]
+set page_title "User Permission Matrix"
+set context [list $page_title]
 set this_url [ad_conn url]
 set subsite_id [ad_conn subsite_id]
 

@@ -1,5 +1,6 @@
 <master src="../master">
 <property name="title">#intranet-core.Clients#</property>
+<property name="main_navbar_label">companies</property>
 
 <!-- left - right - bottom  design -->
 

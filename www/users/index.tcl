@@ -65,6 +65,7 @@ ad_page_contract {
 #    9. Format Table Continuation
 #   10. Join Everything Together
 
+
 # ---------------------------------------------------------------
 # 2. Defaults & Security
 # ---------------------------------------------------------------
@@ -80,6 +81,9 @@ set date_format "YYYY-MM-DD"
 
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
+# Use a normalized group_name in lowercase and with
+# all special characters replaced by "_".
+set user_group_name [im_mangle_user_group_name $user_group_name]
 set user_group_id 0
 set menu_select_label ""
 switch [string tolower $user_group_name] {
@@ -87,12 +91,23 @@ switch [string tolower $user_group_name] {
 	set user_group_id 0 
 	set menu_select_label "users_all"
     }
-    "unregistered" { set user_group_id -1 }
+    "unregistered" { 
+    	set user_group_id -1 
+    }
     default {
-	set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+    	# Search for the right group name.
+    	# It's an ugly TCL loop instead of a single SQL statement,
+    	# because we use the "mangele_user_group_name" function.
+	set user_group_id 0
+	db_foreach search_user_group "select group_id, group_name from groups" {
+		if {[string equal $user_group_name [im_mangle_user_group_name $group_name]]} {
+			set user_group_id $group_id
+		}
+	}
 	set menu_select_label "users_[string tolower $user_group_name]"
     }
 }
+
 
 if {$user_group_id > 0} {
 
@@ -145,6 +160,19 @@ if { [empty_string_p $how_many] || $how_many < 1 } {
 }
 set end_idx [expr $start_idx + $how_many - 1]
 
+
+# ----------------------------------------------------------
+# Do we have to show administration links?
+
+set admin_html ""
+if {[im_permission $user_id "add_users"]} {
+    append admin_html "
+<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
+<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
+"
+}
+
+
 # ---------------------------------------------------------------
 # 3. Define Table Columns
 # ---------------------------------------------------------------
@@ -195,6 +223,42 @@ db_foreach column_list_sql $column_sql {
     }
 }
 ns_log Notice "/users/index.tcl: column_vars=$column_vars"
+
+
+# ---------------------------------------------------------------
+# 4. Define Filter Categories
+# ---------------------------------------------------------------
+
+# status_types will be a list of pairs of (project_status_id, project_status)
+set user_status_types [im_memoize_list select_user_status_types \
+	"select company_status_id, company_status
+           from im_company_status
+          order by lower(company_status)"]
+set user_status_types [linsert $user_status_types 0 0 All]
+
+set user_types [list 0 All]
+db_foreach select_user_types "
+	select
+		group_id,
+		group_name
+	from
+		groups,
+		im_profiles
+	where
+		group_id = profile_id" {
+		
+	lappend user_types [im_mangle_user_group_name $group_name]
+	lappend user_types $group_name
+}
+
+# company_types will be a list of pairs of (company_type_id, company_type)
+#set user_types [im_memoize_list select_companies_types \
+#	"select company_type_id, company_type
+#           from im_company_types
+#          order by lower(company_type)"]
+#set company_types [linsert $company_types 0 0 All]
+
+
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query

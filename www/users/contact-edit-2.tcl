@@ -27,8 +27,7 @@ ad_page_contract {
 # user_id and everything in user_contract
 # to do: this page will probably break!!!  what are the form vars?
 
-set num_rows [db_string user_contact_list_size "select count(user_id)
-from users_contact where user_id = :user_id"]
+set num_rows [db_string user_contact_list_size "select count(user_id) from users_contact where user_id = :user_id"]
 ns_set delkey [ns_getform] submit
 if {$num_rows == 0} {
     set statement_name "contact_insert"
@@ -40,15 +39,7 @@ if {$num_rows == 0} {
 set sql_statement [lindex $sql_statement_and_bind_vars 0]
 set bind_vars [lindex $sql_statement_and_bind_vars 1]
 db_dml $statement_name $sql_statement -bind $bind_vars
-if {$num_rows > 0 && [string equal "Update" $update_note]} {
-    db_dml update_notes "
-	update
-		users_contact
-	set
-		note = $notes
-	where
-		user_id = :user_id
-"}
+
 db_release_unused_handles
 ad_returnredirect "/intranet/users/view.tcl?[export_url_vars user_id]"
 

@@ -18,21 +18,21 @@
     <querytext>
 
 select im_project__new (
-        NULL,         -- project_id
-        'im_project', -- object_type
-        :creation_date, -- creation_date
-        :creation_user, -- creation_user
-        :creation_ip, -- creation_ip
-        :context_id, -- context_id
-
-        :project_name, -- project_name
-        :project_nr, -- project_nr
-        :project_path, -- project_path
-        :parent_id, -- parent_id
-        :company_id, -- company_id
-        :project_type_id, -- project_type_id
-        :project_status_id -- project_status_id
+        NULL,         
+        'im_project',
+        :creation_date,
+        :creation_user,
+        :creation_ip,
+        :context_id,
+        :project_name,
+        :project_nr,
+        :project_path,
+        :parent_id,
+        :company_id,
+        :project_type_id,
+        :project_status_id
 );
+
 
     </querytext>
   </fullquery>

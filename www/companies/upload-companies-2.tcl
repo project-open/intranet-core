@@ -1,6 +1,7 @@
 # /packages/intranet-core/www/companies/upload-companies-2.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 1998-2004 various parties
+# The code is based on ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -13,21 +14,23 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    /intranet/companies/upload-2.tcl
+    /intranet/companies/upload-contacts-2.tcl
     Read a .csv-file with header titles exactly matching
-    the data model and insert the data in im_companies
-    and im_company_exts
+    the data model and insert the data into "users" and
+    "acs_rels".
 
+    @author various@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
     return_url
     upload_file
 } 
 
-set user_id [ad_maybe_redirect_for_registration]
-set page_title "Upload New File/URL"
-set page_body "<PRE>\n<A HREF=$return_url>Return to Project Page</A>\n"
-set context_bar [ad_context_bar [list "/intranet/cusomers/" "Companies"] "Upload CSV"]
+set current_user_id [ad_maybe_redirect_for_registration]
+set page_title "Upload Companies CSV"
+set page_body "<ul>"
+set context_bar [ad_context_bar [list "/intranet/cusomers/" "Companies"] $page_title]
+
 
 # Get the file from the user.
 # number_of_bytes is the upper-limit
@@ -39,20 +42,16 @@ if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
 }
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match client_filename] {
+if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
     # couldn't find a match
-    set client_filename $upload_file
+    set company_filename $upload_file
 }
 
-ns_log Notice "/intranet/filestorage/upload-2.tcl: tmp_filename=$tmp_filename"
-ns_log Notice "/intranet/filestorage/upload-2.tcl: client_filename=$client_filename"
-ns_log Notice "/intranet/filestorage/upload-2.tcl: upload_file=$upload_file"
-
-if {[regexp {\.\.} $client_filename]} {
+if {[regexp {\.\.} $company_filename]} {
     set error "Filename contains forbidden characters"
     ad_returnredirect "/error.tcl?[export_url_vars error]"
 }
-  
+
 if {![file readable $tmp_filename]} {
     set err_msg "Unable to read the file '$tmp_filename'. 
 Please check the file permissions or contact your system administrator.\n"
@@ -61,211 +60,261 @@ Please check the file permissions or contact your system administrator.\n"
     return
 }
     
-set csv_files_content [exec /bin/cat $tmp_filename]
+set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
-set csv_header [lindex $csv_files 1]
-set csv_headers [split $csv_header ";"]
 
-# Check the length of the title line 
-set header [string trim [lindex $csv_files 0]]
-set header_csv_fields [split $header ";"]
-set header_len [llength $header_csv_fields]
-
-append page_body "Title-Length=$header_len\n"
-append page_body "\n\n"
+# Split the header into its fields
+set csv_header [string trim [lindex $csv_files 0]]
+set csv_header_fields [im_csv_split $csv_header]
+set csv_header_len [llength $csv_header_fields]
 
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    set csv_fields [split $csv_line ";"]
+    set csv_line_fields [im_csv_split $csv_line ","]
 
-    append page_body "$csv_line\n"
+    if {"" == $csv_line} {
+	ns_log Notice "skipping empty line"
+	continue
+    }
 
-    # Values for im_companies
-    set group_id ""
-    set deleted_p "f"
-    set company_status_id ""
-    set company_type_id ""
-    set note ""
-    set referral_source ""
-    set annual_revenue_id ""
-    set billable_p "t"
-    set manager_id ""
-    set contract_value ""
-    set primary_contact_id ""
-    set facility_id ""
-    set vat_number ""
 
-    # Values from im_facilities
-    # facility_id defined above
-    set facility_name ""
-    set phone ""
-    set fax ""
-    set address_line1 ""
-    set address_line2 ""
-    set address_city ""
-    set address_state ""
-    set address_postal_code ""
-    set contact_person_id ""
-    set landlord ""
-    set security ""
-    set note ""
+	# Preset values, defined by CSV sheet:
+	set user_id ""
+	set email ""
+	set password ""
+	set last_name ""
+	set registration_date ""
+	set registration_ip ""
+	set user_state ""
+	set company_name ""
+	set title ""
+	set first_name ""
+	set middle_name ""
+	set last_name ""
+	set suffix ""
+	set company ""
+	set department ""
+	set job_title ""
+	set business_street ""
+	set business_street_2 ""
+	set business_street_3 ""
+	set business_city ""
+	set business_state ""
+	set business_postal_code ""
+	set business_country ""
+	set assistants_phone ""
+	set business_fax ""
+	set business_phone ""
+	set business_phone_2 ""
+	set callback ""
+	set car_phone ""
+	set company_main_phone ""
+	set home_fax ""
+	set home_phone ""
+	set home_phone_2 ""
+	set isdn ""
+	set mobile_phone ""
+	set other_fax ""
+	set other_phone ""
+	set pager ""
+	set primary_phone ""
+	set radio_phone ""
+	set tty_tdd_phone ""
+	set telex ""
+	set account ""
+	set anniversary ""
+	set assistants_name ""
+	set billing_information ""
+	set birthday ""
+	set categories ""
+	set children ""
+	set directory_server ""
+	set e_mail_address ""
+	set e_mail_display_name ""
+	set e_mail_2_address ""
+	set e_mail_2_display_name ""
+	set e_mail_3_address ""
+	set e_mail_3_display_name ""
+	set gender ""
+	set government_id_number ""
+	set hobby ""
+	set initials ""
+	set internet_free_busy ""
+	set keywords ""
+	set language ""
+	set location ""
+	set managers_name ""
+	set mileage ""
+	set notes ""
+	set office_location ""
+	set organizational_id_number ""
+	set po_box ""
+	set priority ""
+	set private ""
+	set profession ""
+	set referred_by ""
+	set sensitivity ""
+	set spouse ""
+	set user_1 ""
+	set user_2 ""
+	set user_3 ""
+	set user_4 ""
+	set web_page ""
 
-    # Values from user_groups
-    # group_id defined above
-    set short_name ""
-    set group_name ""
-    set group_type "intranet"
-    set admin_email "root@localhost"
-    set creation_user $user_id
-    set creation_ip_address "0.0.0.0"
-    set approved_p "t"
-    set active_p "t"
-    set existence_public_p "f"
-    set new_member_policy "closed"
-    set spam_policy "open"
-    set email_alert_p "f"
-    set multi_role_p "f"
-    set group_admin_permissions_p "f"
-    set index_page_enabled_p "f"
-    set body ""
-    set html_p "f"
-    set parent_group_id [im_customer_group_id]
 
-    for {set j 0} {$j < $header_len} {incr j} {
-	set var_name [lindex $header_csv_fields $j]
-	set var_value [lindex $csv_fields $j]
-	set cmd "set $var_name "
-	append cmd "\""
-	append cmd $var_value
-	append cmd "\""
+    # -------------------------------------------------------
+    # Extract variables from the CSV file
+    #
+
+    set var_name_list [list]
+    for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	set var_name [string trim [lindex $csv_header_fields $j]]
+	set var_name [string tolower $var_name]
+	set var_name [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $var_name]
+	lappend var_name_list $var_name
+	ns_log notice "upload-contacts: varname([lindex $csv_header_fields $j]) = $var_name"
+
+	set var_value [string trim [lindex $csv_line_fields $j]]
+	if {[string equal "NULL" $var_value]} { set var_value ""}
+	
+	set cmd "set $var_name \"$var_value\""
+	ns_log Notice "cmd=$cmd"
 	set result [eval $cmd]
-	append page_body "set $var_name '$var_value' : $result\n"
     }
-    
-    # The facilites need a separate name, formed here by adding "Facility"
-    # Kinda dirty, but should be better then putting "Facility XXX"
-    set facility_name "$group_name Facility"
-    
-    set insert_group_sql "INSERT INTO user_groups VALUES (
-    :group_id, :group_type, :group_name, :short_name, :admin_email,
-    sysdate, :creation_user, :creation_ip_address, :approved_p,
-    :active_p, :existence_public_p, :new_member_policy, :spam_policy,
-    :email_alert_p, :multi_role_p, :group_admin_permissions_p,
-    :index_page_enabled_p, :body, :html_p, sysdate, :user_id,
-    :parent_group_id)"
 
-    set update_group_sql "UPDATE user_groups SET
-    (group_name) = (:group_name) 
-    WHERE short_name=:short_name"
+    # Set company name and path.
+    # The path has anything strange replaced by "_".
+    set company_name $company
+    set company_path [im_mangle_user_group_name $company_name]
 
-
-    set insert_facility_sql "INSERT INTO im_facilities VALUES (
-    :facility_id, :facility_name, :phone, :fax, :address_line1,
-    :address_line2, :address_city, :address_state, 
-    :address_postal_code, :address_country_code,
-    :contact_person_id, :landlord, :security, :note)"
-
-    set update_facility_sql "UPDATE im_facilities SET
-    facility_name=:facility_name, phone=:phone, fax=:fax, 
-    address_line1=:address_line1, address_line2=:address_line2,
-    address_city=:address_city, address_state=:address_state, 
-    address_postal_code=:address_postal_code, 
-    address_country_code=:address_country_code,
-    contact_person_id=:contact_person_id, landlord=:landlord, 
-    security=:security, note=:note
-    WHERE facility_id=:facility_id"
-
-    set insert_company_sql "INSERT INTO im_companies VALUES (
-    :group_id, :deleted_p, :company_status_id, :company_type_id,
-    :note, :referral_source, :annual_revenue_id, sysdate, '', :billable_p,
-    :site_concept, :manager_id, :contract_value, sysdate,
-    :primary_contact_id, :facility_id, :vat_number)"
-
-    set update_company_sql "UPDATE im_companies SET
-    deleted_p=:deleted_p, company_status_id=:company_status_id, 
-    company_type_id=:company_type_id, note=:note, 
-    referral_source=:referral_source, annual_revenue_id=:annual_revenue_id, 
-    status_modification_date=sysdate, old_company_status_id='', 
-    billable_p=:billable_p, site_concept=:site_concept, manager_id=:manager_id,
-    contract_value=:contract_value, start_date=sysdate, 
-    primary_contact_id=:primary_contact_id, facility_id=:facility_id, 
-    vat_number=:vat_number
-    WHERE group_id=:group_id"
-
-	# Values from im_facilities
-	ns_log Notice "facility_id=$facility_id"
-	ns_log Notice "facility_name=$facility_name"
-	ns_log Notice "phone=$phone"
-	ns_log Notice "fax=$fax"
-	ns_log Notice "address_line1=$address_line1"
-	ns_log Notice "address_line2=$address_line2"
-	ns_log Notice "address_city=$address_city"
-	ns_log Notice "address_state=$address_state"
-	ns_log Notice "address_postal_code=$address_postal_code"
-	ns_log Notice "contact_person_id=$contact_person_id"
-	ns_log Notice "landlord=$landlord"
-	ns_log Notice "security=$security"
-	ns_log Notice "note=$note"
-
-
-
-    # check if the company already exists, either by short or by
-    # full name
-    if { [catch {
-	set group_id [db_string group_id "select group_id from user_groups where short_name=:short_name or group_name=:group_name"]
-    } err_msg] } {
-	set group_id ""
+    set business_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:business_country)" -default ""]
+    if {"" == $business_country_code} {
+	append page_body "<li>Didn't find '$business_country' in the country database. Please enter manually.\n"
     }
-    ns_log Notice "group_id=$group_id"
-    
-    if {[string equal $group_id ""]} {
-	# The company doesn't exist yet:
-	# => Setup user_groups, im_company and im_facility
-	#
-	db_transaction {
-	    set group_id [db_nextval "user_group_sequence"]
-	    db_dml insert_group_sql $insert_group_sql
-	    set facility_id [db_nextval "im_facilities_seq"]
-	    db_dml facility_sql $insert_facility_sql
-	    db_dml cusomter_sql $insert_company_sql
-	}
+
+    if {![exists_and_not_null office_name]} {
+        set office_name "$company_name [_ intranet-core.Main_Office]"
+    }
+    if {![exists_and_not_null office_path]} {
+        set office_path "$company_path"
+    }
+
+    # Check if the company already exists
+    set found_n [db_string company_count "select count(*) from im_companies where lower(company_name) = lower(:company_name)"]
+
+    # -------------------------------------------------------
+    # Two or more companies with the same name
+    # => Skip it completely
+    if {$found_n > 1} {
+	append page_body "<li>'$company_name': Skipping, we have found already $found_n companies with this name. Please check and change the names.\n"
+	continue
+    }
+
+    # -------------------------------------------------------
+    # Create a new company if necessary
+    #
+    if {0 == $found_n} {
+
+	set company_id [im_new_object_id]
+	
+
+	# First create a new main_office:
+	set main_office_id [office::new \
+		-office_name	$office_name \
+		-company_id     $company_id \
+		-office_type_id [im_office_type_main] \
+		-office_status_id [im_office_status_active] \
+		-office_path	$office_path]
+
+	# Now create the company with the new main_office:
+	set company_id [company::new \
+		-company_id $company_id \
+		-company_name	$company_name \
+		-company_path	$company_path \
+		-main_office_id	$main_office_id \
+		-company_type_id [im_company_type_other] \
+		-company_status_id [im_company_status_active]]	
     } else {
-	# There is already a company with this short name.
-	# => Update the already existing objects
-	#
 
-	# Make sure the cusomer exists
-	set company_count [db_string company_count "select count(*) from im_companies where group_id=:group_id"]
-	if {$company_count == 0} {
-	    ad_return_complaint 1 "<li>There is a company group without a
-            im_company entry. This is a DB-inconsistency that should never 
-            occur. Please contact your system administrator."
-	    return
-	}
-	
-	# Make sure the facility exists
-	set facility_id [db_string facility_id "select facility_id from im_companies where group_id=:group_id"]
-	if {[string equal $facility_id ""]} {
-	    # We have to add a new facility
-	    set facility_id [db_nextval "im_facilities_seq"]
-	    db_dml facility_sql $insert_facility_sql
-	    db_dml facility_company_update "update im_companies set facility_id=:facility_id where group_id=:group_id"
-	}
-	
-	# And finally we can update the company object:
-	# for convenience reasons we also update the other
-	# objects again.
-	#
-	db_transaction {
-	    db_dml update_group_sql $update_group_sql
-	    set facility_id [db_string facility_id "select facility_id from im_companies where group_id=:group_id"]
-	    append page_body "facility_id=$facility_id\n"
-	    db_dml facility_sql $update_facility_sql
-	    db_dml company_sql $update_company_sql
-	}
+	db_1row company_info "
+		select company_id, main_office_id
+		from im_companies
+		where lower(company_name) = lower(:company_name)
+	"
     }
+
+    # -----------------------------------------------------------------
+    # Update the Office
+    # -----------------------------------------------------------------
+
+    set update_sql "
+    update im_offices set
+	office_name = :office_name,
+	phone = :business_phone,
+	fax = :business_fax,
+	address_line1 = trim(:business_street),
+	address_line2 = trim(:business_street_2 || ' ' || :business_street_3),
+	address_city = :business_city,
+	address_postal_code = :business_postal_code,
+	address_country_code = :business_country_code
+    where
+	office_id = :main_office_id
+"
+    db_dml update_offices $update_sql
+
+    # -------------------------------------------------------
+    # Deal with the users's company
+    #
+    set user_id 0
+    set users_n [db_string person_count "select count(*) from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
+    if {0 != $users_n} {
+
+        set user_id [db_string person_select "select person_id from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)" -default 0]
+        set relationship_count [db_string relationship_count "select count(*) from acs_rels where object_id_one = :company_id and object_id_two = :user_id"]
+        if {0 == $relationship_count} {
+    	append page_body "<li>'$first_name $last_name': Adding as member to '$company'\n"
+        im_biz_object_add_role $user_id $company_id [im_biz_object_role_full_member]
+        } else {
+    	append page_body "<li>'$first_name $last_name': Is already a member of company '$company'\n"
+        }
+
+    } else {
+    
+        append page_body "<li>The user '$first_name $last_name' doesn't exist in our database. <br>
+        Please use the 'Import Users CSV' link in the users page to upload a list of users.\n"
+        
+    }
+
+    # -----------------------------------------------------------------
+    # Update the Company
+    # -----------------------------------------------------------------
+
+    # get everything about the company
+    db_1row company_info "
+    	select * 
+    	from im_companies 
+    	where company_id = :company_id
+    "
+
+    if {$primary_contact_id == "" && $user_id != 0} {
+    	db_dml update_company_prim_contact "
+    		update im_companies
+    		set primary_contact_id = :user_id
+    		where company_id = :company_id
+    	"
+    }
+
+    if {$accounting_contact_id == "" && $user_id != 0} {
+    	db_dml update_company_acc_contact "
+    		update im_companies
+    		set accounting_contact_id = :user_id
+    		where company_id = :company_id
+    	"
+    }
+
 }
 
-append page_body "\n<A HREF=$return_url>Return to Project Page</A>\n"
+append page_body "\n</ul><p>\n<A HREF=$return_url>Return to Project Page</A>\n"
 doc_return  200 text/html [im_return_template]

@@ -38,6 +38,8 @@ set current_url $return_url
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
+set date_format "YYYY-MM-DD"
+
 # user_id is a bad variable for the object,
 # because it is overwritten by SQL queries.
 # So first find out which user we are talking
@@ -83,7 +85,7 @@ select
         u.url,
 	u.creation_date as registration_date, 
 	u.creation_ip as registration_ip,
-	u.last_visit,
+	to_char(u.last_visit, :date_format) as last_visit,
 	u.screen_name,
 	u.member_state
 from
@@ -336,6 +338,43 @@ if {[im_permission $current_user_id view_projects_all]} {
 
 
 # ---------------------------------------------------------------
+# Filestorage & Forums
+# These need special permissions because:
+# Freelancer, Customers and Employees shouldn't see the
+# discussions around them.
+# ---------------------------------------------------------------
+
+set filestorage_html ""
+set forum_html ""
+
+# Human Resources Files and Forum Items are only visible IF:
+#	1. The viewing user can "administer" the user OR
+#	2. If the user has the "view_hr" permission
+#
+
+if {$admin || [im_permission $user_id "view_hr"]} {
+    set filestorage_html [im_table_with_title \
+	"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
+	[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
+    ]
+    set forum_html [im_table_with_title \
+	[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url ] \
+	[im_forum_component \
+		-user_id $current_user_id \
+		-object_id $user_id \
+		-current_page_url $current_url \
+		-return_url $return_url \
+		-export_var_list [list user_id forum_start_idx forum_order_by forum_how_many forum_view_name ] \
+		-forum_type user \
+		-view_name [im_opt_val forum_view_name] \
+		-forum_order_by [im_opt_val forum_order_by] \
+		-restrict_to_mine_p "f" \
+		-restrict_to_new_topics 0 \
+	] \
+    ]
+}
+
+# ---------------------------------------------------------------
 # Administration
 # ---------------------------------------------------------------
 
@@ -350,7 +389,7 @@ if { ![empty_string_p $last_visit] } {
 }
 
 if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
-    set registration_ip_link "<a href=/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
+    set registration_ip_link "<a href=/intranet/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
     append admin_links "<li>[_ intranet-core.lt_Registered_from_regis]"
 }
 

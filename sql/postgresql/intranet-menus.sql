@@ -220,7 +220,6 @@ declare
 	v_office_menu		integer;
 	v_user_orgchart_menu	integer;
 	v_user_all_menu		integer;
-	v_user_new_menu		integer;
 	v_user_freelancers_menu	integer;
 	v_user_companies_menu	integer;
 	v_user_employees_menu	integer;
@@ -537,7 +536,7 @@ begin
         null,                   -- context_id
         ''intranet-core'',      -- package_name
         ''users_customers'',    -- label
-        ''Clients'',            -- name
+        ''Customers'',          -- name
         ''/intranet/users/index?user_group_name=Customers'',   -- url
         2,                      -- sort_order
         v_user_menu,            -- parent_menu_id
@@ -610,28 +609,6 @@ begin
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_senman, ''read'');
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_accounting, ''read'');
-
-    v_user_new_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_new'',          -- label
-        ''New User'',           -- name
-        ''/intranet/users/new'',   -- url
-        9,                    -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-
-    PERFORM acs_permission__grant_permission(v_user_new_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_user_new_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_user_new_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_user_new_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_user_new_menu, v_accounting, ''read'');
 
     -- -----------------------------------------------------
     -- Administration Submenu

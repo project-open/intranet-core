@@ -1,5 +1,6 @@
 <master src="../master">
   <property name="title">@page_title@</property>
+<property name="admin_navbar_label">admin_categories</property>
 
 <form @form_action_html;noquote@ method=GET>
 <table border=0 cellpadding=0 cellspacing=1>

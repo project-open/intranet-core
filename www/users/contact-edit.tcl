@@ -81,10 +81,9 @@ set ha_state ""
 set ha_country_code ""
 
 db_0or1row user_contact_info {
-    select home_phone, work_phone, cell_phone, pager, fax, aim_screen_name,
-           icq_number, ha_line1, ha_line2, ha_city, ha_state, ha_country_code,
-           ha_postal_code, wa_line1, wa_line2, wa_city, wa_state, wa_postal_code, wa_country_code
-      from users_contact where user_id = :user_id
+    select *
+    from users_contact 
+    where user_id = :user_id
 }
 
 if { [empty_string_p $ha_state] && [empty_string_p $ha_country_code] } {
@@ -136,21 +135,23 @@ set work_html "
 </table>"
 
 
-# <tr><td>Work State</td>	<td>[im_state_widget $wa_state wa_state]</td></tr>
-# <tr><td>Home State</td>	<td>[im_state_widget $ha_state ha_state]</td></tr>
-
-
-set whole_page "
-<form action=contact-edit-2 method=POST>
-[export_form_vars user_id]
-<table cellpadding=0 cellspacing=2 border=0>
-<tr valign=top><td>$contact_html</td><td>$home_html</td><td>$work_html</td></tr>
+set note_html "
+<table cellpadding=0 cellspacing=2 border=0 width=\"100%\">
+<tr>
+  <td colspan=5 class=rowtitle align=center>
+    [_ intranet-core.Users_Contact_Note]
+  </td>
+</tr>
+<tr>
+  <td colspan=5 align=center>
+    <textarea rows=8 cols=80 name=note>$note</textarea>
+  </td>
+</tr>
 </table>
-<input type=submit name=submit value=Submit>
-</form>
 "
 
-set page_body $whole_page
+# <tr><td>Work State</td>	<td>[im_state_widget $wa_state wa_state]</td></tr>
+# <tr><td>Home State</td>	<td>[im_state_widget $ha_state ha_state]</td></tr>
 
 ad_return_template
 

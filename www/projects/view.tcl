@@ -177,6 +177,13 @@ if { ![empty_string_p $end_date] } { append project_base_data_html "
 			  </tr>"
 }
 
+if { ![empty_string_p $description] } { append project_base_data_html "
+			  <tr>
+			    <td>[_ intranet-core.Description]</td>
+			    <td width=250>$description</td>
+			  </tr>"
+}
+
 if {$write} {
 	append project_base_data_html "
 			  <tr> 

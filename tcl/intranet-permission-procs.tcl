@@ -119,7 +119,7 @@ ad_proc -public im_permission {user_id privilege} {
 
     set subsite_id [ad_conn subsite_id]
     set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
-    ns_log Notice "im_permission($subsite_id,$user_id,$privilege)=$result"
+#    ns_log Notice "im_permission($subsite_id,$user_id,$privilege)=$result"
     return $result
 }
 

@@ -326,3 +326,19 @@ show errors
 commit;
 
 
+declare
+    v_plugin		integer;
+begin
+    v_plugin := im_component_plugin.new (
+	plugin_name =>	'Home Page Help Blurb',
+	package_name =>	'intranet',
+	page_url =>	'/intranet/index',
+	location =>	'left',
+	sort_order =>	10,
+	component_tcl =>
+	'im_help_home_page_blurb_component'
+    );
+end;
+/
+show errors
+commit;

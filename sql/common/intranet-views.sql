@@ -131,7 +131,7 @@ values (81, 'office_view', 'view_offices', 1405);
 delete from im_view_columns where column_id > 2200 and column_id < 2299;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2201,22,NULL,'Project nr',
+extra_select, extra_where, sort_order, visible_for) values (2201,22,NULL,'Project Nr',
 '"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
 '','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,

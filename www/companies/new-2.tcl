@@ -123,12 +123,11 @@ if {0 == $cust_count} {
 
     db_transaction {
 	# First create a new main_office:
-	# default Main Office 170 and Active 160 
 	set main_office_id [office::new \
 		-office_name	$office_name \
 		-company_id     $company_id \
-		-office_type_id "170" \
-		-office_status_id "160" \
+		-office_type_id [im_office_type_main] \
+		-office_status_id [im_office_status_active] \
 		-office_path	$office_path]
 
 	# add users to the office as 

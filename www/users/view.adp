@@ -1,5 +1,6 @@
 <master src="../master">
 <property name="title">#intranet-core.Companies#</property>
+<property name="main_navbar_label">user</property>
 
 <%= $user_navbar_html %>
 
@@ -19,6 +20,8 @@
   <td valign=top>
     <%= $portrait_html %>
     <%= $projects_html %>
+    <%= $forum_html %>
+    <%= $filestorage_html %>
     <%= [im_component_bay right] %>
   </td>
 </tr>

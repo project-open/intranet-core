@@ -74,6 +74,10 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
+  <td width=20></td>
+  <td width=20></td>
+  <td width=20></td>
+  <td width=20></td>
   <td class=rowtitle>Package</td>\n"
 
 set main_sql_select ""
@@ -114,7 +118,7 @@ if {$altleast_one_new_menu} {
     set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
     db_dml update_top_menu "update im_menus set tree_sortkey='.' where menu_id = :start_menu_id"
 
-    set maxlevel 3
+    set maxlevel 9
     set chars "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
     set continue 1
     set level 0
@@ -161,7 +165,7 @@ set main_sql "
 select
 ${main_sql_select}	m.*,
 	length(tree_sortkey) as indent_level,
-	(5-length(tree_sortkey)) as colspan_level
+	(9-length(tree_sortkey)) as colspan_level
 from
 	im_menus m
 order by tree_sortkey

@@ -64,6 +64,10 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
 	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-excel"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-word"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-text"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"profile"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -496,7 +500,7 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     set parent_menu_sql "select menu_id from im_menus where name='Admin'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
 
-    return [im_sub_navbar $parent_menu_id $select_label]
+    return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label]
 }
 
 
@@ -509,7 +513,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     @title string to go into the line below the menu tabs
     @title_class CSS class of the title line
 } {
-    ns_log Notice "im_sub_navbar: parent_menu_id=$parent_menu_id, bind_vars=$bind_vars, title=$title, select_label=$select_label"
+#    ns_log Notice "im_sub_navbar: parent_menu_id=$parent_menu_id, bind_vars=$bind_vars, title=$title, select_label=$select_label"
 
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
@@ -535,7 +539,22 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 
-	ns_log Notice "im_sub_navbar: menu_name='$name'"
+	ns_log Notice "im_sub_navbar: menu_name='$name', menu_label='$label', visible_tcl='$visible_tcl'"
+	
+	if {"" != $visible_tcl} {
+	    # Interpret empty visible_tcl menus as always visible
+	    
+	    set errmsg ""
+	    set visible 0
+	    if [catch {
+	    	set visible [expr $visible_tcl]
+	    } errmsg] {
+		ad_return_complaint 1 "<pre>$errmsg</pre>"	    
+	    }
+	    	    
+	    if {!$visible} { continue }
+	}	
+	
 	# Construct the URL
 	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
 	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
@@ -552,11 +571,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-	ns_log Notice "im_sub_navbar: check select for label='$label' against select_label='$select_label'"
+#	ns_log Notice "im_sub_navbar: check select for label='$label' against select_label='$select_label'"
 
         if {[string equal $label $select_label]} {
 	    
-	    ns_log Notice "im_sub_navbar: highlight menu_name='$name'"
+#	    ns_log Notice "im_sub_navbar: highlight menu_name='$name'"
             # Make sure we only highligh one menu item..
             set found_selected 1
             # Set for the gif
@@ -609,6 +628,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         </TR>
       </table>\n"
 }
+
 
 
 ad_proc -public im_navbar { { main_navbar_label "" } } {
@@ -664,7 +684,9 @@ order by
 	# Check if we should select this one:
 	set select_this_one 0
 	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
-	if {[string equal $url_stub_chopped $url]} { set select_this_one 1 }
+
+# 050128 fraber: Changing completely to labels
+#	if {[string equal $url_stub_chopped $url]} { set select_this_one 1 }
 
         if {!$found_selected && $select_this_one} {
 	    # Make sure we only highligh one menu item..

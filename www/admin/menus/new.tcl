@@ -59,6 +59,7 @@ ad_form \
 	{url:text(text) {label URL} {html {size 100}}}
 	{sort_order:text(text) {label "Sort Order"} {html {size 10}}}
 	{parent_menu_id:text(select) {label "Parent Menu"} {options $parent_options} }
+	{visible_tcl:text(text),optional {label "Visible TCL"} {html {size 100}}}
     }
 
 
@@ -84,7 +85,8 @@ ad_form -extend -name menu -on_request {
 	        name            = :name,
 	        url             = :url,
 	        sort_order      = :sort_order,
-	        parent_menu_id  = :parent_menu_id
+	        parent_menu_id  = :parent_menu_id,
+	        visible_tcl	= :visible_tcl
 	where
 		menu_id = :menu_id
 "

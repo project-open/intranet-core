@@ -1,6 +1,7 @@
 <master src="../master">
 <property name=title>#intranet-core.Email_sent#</property>
 <property name="context">@context;noquote@</property>
+<property name="main_navbar_label">user</property>
 
 <p>
 #intranet-core.lt_first_names_last_name_2#

@@ -239,7 +239,6 @@ declare
 	v_office_menu		integer;
 	v_user_orgchart_menu	integer;
 	v_user_all_menu		integer;
-	v_user_new_menu		integer;
 	v_user_freelancers_menu	integer;
 	v_user_companies_menu	integer;
 	v_user_employees_menu	integer;
@@ -326,7 +325,7 @@ begin
 	package_name =>	'intranet-core',
 	label =>	'home',
 	name =>		'Home',
-	url =>		'/intranet/index',
+	url =>		'/intranet/',
 	sort_order =>	10,
 	parent_menu_id => v_main_menu
     );
@@ -373,7 +372,7 @@ begin
     v_company_menu := im_menu.new (
 	package_name =>	'intranet-core',
 	label =>	'companies',
-	name =>		'Clients',
+	name =>		'Companies',
 	url =>		'/intranet/companies/',
 	sort_order =>	50,
 	parent_menu_id => v_main_menu
@@ -525,21 +524,6 @@ begin
     acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_senman, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_accounting, 'read');
-
-
-    v_user_new_menu := im_menu.new (
-	package_name =>	'intranet-core',
-	label =>	'users_new',
-	name =>		'New User',
-	url =>		'/intranet/users/new',
-	sort_order =>	9,
-	parent_menu_id => v_user_menu
-    );
-    acs_permission.grant_permission(v_user_new_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_user_new_menu, v_senman, 'read');
-    acs_permission.grant_permission(v_user_new_menu, v_proman, 'read');
-    acs_permission.grant_permission(v_user_new_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_user_new_menu, v_accounting, 'read');
 
     -- -----------------------------------------------------
     -- Administration Submenu

@@ -195,7 +195,6 @@ where	upper(trim(project_name)) = upper(trim(:project_name))
 	set sql "
 begin
     :1 := im_project.new(
-
 	object_type	=> 'im_project',
 	creation_date => :creation_date,
 	creation_user => :creation_user,
@@ -210,7 +209,7 @@ begin
 	project_type_id => :project_type_id,
 	project_status_id => :project_status_id
     );
-    end;"
+end;"
 
         if { [empty_string_p $creation_date] } {
 	    set creation_date [db_string get_sysdate "select sysdate from dual" -default 0]
