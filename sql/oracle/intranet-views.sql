@@ -35,7 +35,52 @@
 --  70- 79	Marketplace(?)
 --  80- 89	Offices
 --  90- 99	Translation
--- 100-199	Backup Exports
+
+--------------------------------------------------------
+-- Backup Views
+--
+-- 100  im_projects
+-- 101  im_project_roles
+-- 102  im_customers
+-- 103  im_customer_roles
+-- 104  im_offices
+-- 105  im_office_roles
+-- 106  im_categories
+--
+-- 110  users
+-- 111  im_profiles
+--
+-- 120  im_freelancers
+-- 121  im_freelance_skills
+--
+-- 130  im_forum_topics
+-- 131	im_forum_folders
+-- 132	im_forum_topic_user_map
+--
+-- 140  im_filestorage
+--
+-- 150  im_translation
+-- 151	im_target_languages
+-- 152	im_project_trans_details
+--
+-- 160  im_quality
+--
+-- 170  im_marketplace
+--
+-- 180  im_hours
+-- 181  im_absences
+--
+-- 190  im_costs
+-- 191  im_payments
+-- 192  im_invoices
+-- 193  im_invoice_items
+-- 194  im_project_invoice_map
+-- 195  im_trans_prices
+-- 196	im_cost_centers
+-- 197	im_investments
+
+
+--------------------------------------------------------
 -- 200-209	Timesheet
 -- 210-219	Riskmanagement
 -- 220-249	Costs
