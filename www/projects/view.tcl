@@ -265,4 +265,3 @@ if {$counter > 1} {
 } else {
     set hierarchy_html ""
 }
-

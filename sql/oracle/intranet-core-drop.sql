@@ -27,7 +27,6 @@ begin
         from rel_constraints cons, rel_segments segs
         where
                 segs.segment_id = cons.required_rel_segment
-                and segs.group_id = v_group_id
      ) loop
 
         rel_segment.del(row.constraint_id);
@@ -38,23 +37,6 @@ end;
 show errors;
 
 
-
-
------------------------------------------------------------
--- Permissions 
-
-begin
-   im_drop_profile ('P/O Admins');
-   im_drop_profile ('Customers'); 
-   im_drop_profile ('Offices'); 
-   im_drop_profile ('Employees'); 
-   im_drop_profile ('Freelancers'); 
-   im_drop_profile ('Project Managers'); 
-   im_drop_profile ('Senior Managers'); 
-   im_drop_profile ('Accounting'); 
-end;
-/
-show errors;
 
 
 -- ------------------------------------------------------------
@@ -305,8 +287,25 @@ END;
 show errors;
 
 
+-----------------------------------------------------------
+-- Permissions 
+
+begin
+   im_drop_profile ('P/O Admins');
+   im_drop_profile ('Customers'); 
+   im_drop_profile ('Offices'); 
+   im_drop_profile ('Employees'); 
+   im_drop_profile ('Freelancers'); 
+   im_drop_profile ('Project Managers'); 
+   im_drop_profile ('Senior Managers'); 
+   im_drop_profile ('Accounting'); 
+end;
+/
+show errors;
+
+
 -------------------------------------------------------
--- Legacy Tables
+-- Users
 drop table users_contact;
 
 

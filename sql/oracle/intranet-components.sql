@@ -164,7 +164,7 @@ is
 	CURSOR v_comp_cursor IS
         	select plugin_id
         	from im_component_plugins
-        	where package_name = module_name
+        	where package_name = del_module.module_name
         	FOR UPDATE;
     begin
 	OPEN v_comp_cursor;
