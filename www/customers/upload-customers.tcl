@@ -34,7 +34,7 @@ set page_content "
                         <td align=right>Filename: </td>
                         <td> 
                           <input type=file name=upload_file size=30>
-                          <img src=/images/help.gif width=16 height=16 alt='Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;.'> 
+                         [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
                         </td>
                       </tr>
                       <tr> 

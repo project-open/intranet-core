@@ -22,6 +22,20 @@ ad_library {
 
 
 
+ad_proc -public im_package_core_id {} {
+    Returns the package id of the intranet-core module
+} {
+    return [util_memoize "im_package_core_id_helper"]
+}
+
+ad_proc -private im_package_core_id_helper {} {
+    return [db_string im_package_core_id {
+        select package_id from apm_packages
+        where package_key = 'intranet-core'
+    } -default 0]
+}
+
+
 ad_proc -public im_opt_val { var_name } {
     Acts like a "$" to evaluate a variable, but
     returns "" if the variable is not defined,
@@ -42,11 +56,11 @@ ad_proc -public im_opt_val { var_name } {
 
 # Basic Intranet Parameter Shortcuts
 ad_proc im_url_stub {} {
-    return [ad_parameter IntranetUrlStub intranet "/intranet"]
+    return [ad_parameter -package_id [im_package_core_id] IntranetUrlStub intranet "/intranet"]
 }
 
 ad_proc im_url {} {
-    return [ad_parameter SystemURL][im_url_stub]
+    return [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""][im_url_stub]
 }
 
 
@@ -678,11 +692,11 @@ and u.user_id = salaries.user_id (+)"
 }
 
 ad_proc im_salary_period_input {} {
-    return [ad_parameter SalaryPeriodInput intranet]
+    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodInput intranet]
 }
 
 ad_proc im_salary_period_display {} {
-    return [ad_parameter SalaryPeriodDisplay intranet]
+    return [ad_parameter -package_id [im_package_core_id] SalaryPeriodDisplay intranet]
 }
 
 ad_proc im_display_salary {salary salary_period} {Formats salary for nice display} {
@@ -1070,8 +1084,8 @@ ad_proc im_email_aliases { short_name } {
     Returns an html string describing the intranet email alias system,
     if it's turned on.  
 } {
-    set domain [ad_parameter EmailDomain intranet ""]
-    if { [empty_string_p $domain] || ![ad_parameter LogEmailToGroupsP intranet 0] } {
+    set domain [ad_parameter -package_id [im_package_core_id] EmailDomain ""]
+    if { [empty_string_p $domain] || ![ad_parameter -package_id [im_package_core_id] LogEmailToGroupsP 0] } {
 	# No email aliases set up
 	return "  <li> Project short name: $short_name\n"
     } 

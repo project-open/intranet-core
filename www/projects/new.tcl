@@ -35,7 +35,7 @@ set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 
-set project_nr_field_size [ad_parameter "ProjectNumberFieldSize" "" 20]
+set project_nr_field_size [ad_parameter -package_id [im_package_core_id] "ProjectNumberFieldSize" 20]
 
 # Make sure the user has the privileges, because this
 # pages shows the list of customers etc.

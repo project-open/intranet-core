@@ -510,14 +510,6 @@ ad_proc im_user_information { user_id } {
 	</ul>
 	"
 	}
-
-	if { [ad_parameter TrackHours intranet 0] && [im_user_is_employee_p $user_id] } {
-	    append page_content "
-	<p><a href=[im_url]/hours/index?on_which_table=im_projects&[export_url_vars user_id]>View this person's work log</a>
-	</ul>
-	"
-	}
-
     }
 
     append page_content "</ul>\n"

@@ -32,6 +32,7 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
     frequently used by the Intranet
 } {
     set url "/intranet/images"
+    set navbar_gif_path [im_navbar_gif_path]
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt='$alt'>" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border alt='$alt'>" }
@@ -62,14 +63,14 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border alt='$alt'>" }
 	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border alt='$alt'>" }
 
-	"left-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"left-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"right-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"right-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-sel-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-notsel-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-sel-sel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
-	"middle-notsel-notsel"	{ return "<img src=$url/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"left-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"left-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"right-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"right-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-sel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-notsel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-sel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
+	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
@@ -144,10 +145,10 @@ ad_proc -public im_table_with_title { title body } {
     return "
 <table cellpadding=5 cellspacing=0 border=0 width='100%'>
  <tr>
-  <td bgcolor=#cccccc><b>$title</b></td>
+  <td class=tableheader>$title</td>
  </tr>
  <tr>
-  <td bgcolor=#dddddd><font size=-1>$body</font></td>
+  <td class=tablebody><font size=-1>$body</font></td>
  </tr>
 </table><br>
 "
@@ -697,8 +698,6 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
-#   set logo [im_tablex [ad_parameter "SystemLogo" "" ""] "2" "\#cccccc"]
-    set logo [ad_parameter "SystemLogo" "" ""]
 
     set search_form ""
     if {[ad_user_group_member [im_employee_group_id] $user_id]} {
@@ -739,7 +738,6 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
-
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
     return "
@@ -747,9 +745,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
     <td> 
-      <a href='index.html'> 
-        [ad_parameter "SystemLogo" "" ""]
-      </a> 
+    [im_logo]
     </td>
     <td align=center valign=middle> 
       <span class=small>
@@ -769,21 +765,17 @@ ad_proc -public im_header_emergency { page_title } {
     A header to display for error pages that do not have access to the DB
     Only the parameter file is available by default.
 } {
-    set system_logo [ad_parameter "SystemLogo" "" ""]
-    set system_css [ad_parameter "SystemCSS" "" ""]
-    set system_css "<link rel=StyleSheet href=/intranet/style/style.css type=text/css media=screen>"
-
     set html "
 	<html>
 	<head>
 	  <title>$page_title</title>
-	  $system_css
+          [im_stylesheet]
 	</head>
 	<body bgcolor=white text=black>
 	<table>
 	  <tr>
 	    <td> 
-	      <a href='index.html'>$system_logo</a> 
+	      <a href='index.html'>[im_logo]</a> 
 	    </td>
 	  </tr>
 	</table>
@@ -819,18 +811,16 @@ ad_proc -public im_header_emergency { page_title } {
 
 
 
-
 ad_proc -public im_footer {} {
     Default Project/Open footer.
 } {
-
     return "
       <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
         <TBODY> 
           <TR>
             <TD>Comments? Contact: 
-          <A href='mailto:[ad_parameter SystemOwner]'>
-          [ad_parameter SystemOwner]
+          <A href='mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner]'>
+          [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner]
           </A> 
            </TD>
         </TR>
@@ -845,12 +835,27 @@ ad_proc -public im_footer {} {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    return "
-    <link rel=StyleSheet href=/intranet/style/style.css type=text/css media=screen>
-"
+    set system_css [ad_parameter -package_id [ad_acs_kernel_id] SystemCSS "/intranet/style/style.css"]
+    set system_css "/intranet/style/style.opus5.css"
+    return "<link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>\n"
+}
+
+ad_proc -public im_logo {} {
+    Intranet System Logo
+} {
+    set system_logo [ad_parameter -package_id [ad_acs_kernel_id] SystemLogo "/intranet/images/projop-logo.gif"]
+    set system_logo "<A href=\"http://www.opus5.net/\"><IMG SRC=\"/intranet/images/logo-opus5.gif\" border=0></A>"
+    return $system_logo
 }
 
 
+ad_proc -public im_navbar_gif_path {} {
+    Path to access the Navigation Bar corner GIFs
+} {
+    set navbar_gif_path [ad_parameter -package_id [ad_acs_kernel_id] SystemNavbarGifPath "/intranet/images/navbar_opus5"]
+    set navbar_gif_path "/intranet/images/navbar_opus5"
+    return $navbar_gif_path
+}
 
 
 
@@ -888,7 +893,7 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
     letter is the number of times that letter appears.  
 } {
 
-    set min_records [ad_parameter NumberResultsPerPage intranet 50]
+    set min_records [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage 50]
     # Let's run through and make sure we have enough records
     set num_records 0
     foreach { l count } $initial_list {
@@ -1016,8 +1021,8 @@ ad_proc im_report_error { message } {
     @param message The message to write (pulled from <code>$errorInfo</code> if none is specified).
 } {
     set error_url [ad_conn url]
-    set system_url [ad_parameter SystemURL "" ""]
-    set publisher_name [ad_parameter PublisherName "" ""]
+    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
+    set publisher_name [ad_parameter -package_id [ad_acs_kernel_id] PublisherName ""]
     set core_version "2.0"
     set error_user_id [ad_get_user_id]
     set error_first_names ""

@@ -342,7 +342,11 @@ set filter_html "
 
 set admin_html ""
 if {[im_permission $current_user_id "add_customers"]} {
-    append admin_html "<li><a href=/intranet/customers/new>Add a new Customer</a>\n"
+    append admin_html "
+<li><a href=/intranet/customers/new>Add a new Customer</a>
+<li><a href=/intranet/customers/upload-customers?[export_url_vars return_url]>Import Customer CVS</a>
+<li><a href=/intranet/customers/upload-contacts?[export_url_vars return_url]>Import Customer Contact CVS</a>
+"
 }
 
 if {[im_permission $user_id admin_customers]} {

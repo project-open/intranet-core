@@ -23,6 +23,9 @@
     .rowodd {font-size: 8pt; background-color: #EEEEEE;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
 
+    .tablebody {font-size: 8pt; background-color: #EEEEEE;}
+    .tableheader {font-size: 8pt; background-color: #DDDDDD;}
+
     .list-even {font-size: 8pt; background-color: #DDDDDD;}
     .list-odd {font-size: 8pt; background-color: #EEEEEE;}
 
