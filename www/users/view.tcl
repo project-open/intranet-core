@@ -120,7 +120,7 @@ set ttt "
 "
 
 set user_basic_info_html "
-<form method=GET action=new>
+<form method=POST action=new>
 [export_form_vars user_id return_url]
 
 <table cellpadding=1 cellspacing=1 border=0>
