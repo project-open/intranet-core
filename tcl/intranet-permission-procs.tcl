@@ -441,13 +441,105 @@ ad_proc -public im_permission {user_id action} {
     Returns true or false, depending whether the user can execute
     the specified action.
     Uses a cache to reduce DB traffic.
+
+<pre>
+    Forum Topic related permissions:
+    The security is enforced by allowing different profiles to create
+    topics with different scopes:
+    view_forums:		View messages at all
+    create_topic_scope_public:	Public messages, except customers
+    create_topic_scope_group:	Messages for the entire group
+    create_topic_scope_staff:	Messages to staff members of the group
+    create_topic_scope_client:	Messages to the clients of the group
+    create_topic_scope_non_client: Message to non-clients of the group
+    create_topic_scope_pm:	Message to the project manager only
+
+    Customer related permissions:
+    In Translation the most critical are. We differentiate there between
+    the customer list, contacts and details:
+    add_customers:		Add new customers
+    view_customers:		See the Name of a customer of a single project
+    view_customer_contacts:	See customer contacts
+    view_customer_details:	See the address details of a customer
+    view_customer_crm:		"CRM Light" customer contact events
+
+    Project related Permissions:
+    add_projects
+    view_projects
+    view_project_members	See the project member list
+    view_projects_all
+    view_projects_history
+
+    User related permissions:
+    add_users
+    view_users
+    view_employees
+    edit_freelancers
+    view_freelancers
+    view_admin
+    view_freelance_fs
+    view_employee_fs
+    view_customer_fs
+    edit_freelance_fs
+    edit_employee_fs
+    edit_customer_fs
+
+    Finance related permissions: 
+    Everybody should be able to see (and maintain) his own data
+    view_finance
+    add_hours			Employees, freelancers, Wheel, ...
+    view_hours
+    view_hours_all
+    view_allocations
+
+    Other:
+    search_intranet  
+</pre>
 } {
     set subsite_id [ad_conn subsite_id]
-#    set subsite_id [ad_conn node_id]
-
     set result [ad_permission_p $subsite_id $action]
     ns_log Notice "im_permission($action)=$result"
     return $result
+}
+
+
+    set result [ad_permission_p $package_id $action]
+    ns_log Notice "im_permission($action)=$result"
+    return $result
+}
+
+
+ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
+    Check wheter a user should be able to see a specific field of another user:
+    Return 1 IF:
+    - EITHER you have associated the $perm_token permission
+    - OR you are the user himself (view_user == current_user)
+    Return 0 IF:
+    - if the above doesn't hold for your OR:
+    - The variable $var_value is empty (don't show lines with empty variables)
+} {
+    if {[empty_string_p $var_value]} { return 0 }
+    if {$view_user_id == $current_user_id} { return 1 }
+    return [im_permission $current_user_id $perm_token]
+}
+
+
+ad_proc -public im_render_user_id { user_id user_name current_user_id group_id } {
+    
+} {
+    if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
+
+    # How to display? -1=name only, 0=none, 1=Link
+    set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
+    ns_log Notice "im_render_user_id: user_id=$user_id, show_user_style=$show_user_style"
+
+    if {$show_user_style==-1} {
+	return $user_name
+    }
+    if {$show_user_style==1} {
+	return "<A HREF=/intranet/users/view?user_id=$user_id>$user_name</A>"
+    }
+    return ""
 }
 
 # ------------------------------------------------------------------

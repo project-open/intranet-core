@@ -24,12 +24,13 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
-    object_id:naturalnum
+    project_id:naturalnum
     { role "" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
     { select_from_group:naturalnum "" }
 }
+set object_id $project_id
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_group_member_p [ad_user_group_member $object_id $user_id]
@@ -73,11 +74,10 @@ $role_options"
 # Find out the project/customer name and deal with the case that the name
 # may be empty.
 #
-#set object_name [db_string object_name_for_one_object_id "select group_name from groups where object_id = :object_id"]
-
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
-
 set page_title "Add new member to $object_name"
+
+
 set context_bar [ad_context_bar "Add member"]
 
 set locate_form "
@@ -132,7 +132,7 @@ set select_form "
 <form method=POST action=/intranet/member-add-2>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id\">
+<input type=hidden name=passthrough value=\"project_id role return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td class=rowtitle align=middle>Employee</td>
@@ -167,7 +167,7 @@ $role_options
 
 set freelance_html ""
 if {$translation_enabled} {
-    set freelance_html [im_freelance_member_select_component $object_id $role_options $return_url]
+    set freelance_html [im_freelance_member_select_component $project_id $role_options $return_url]
 }
 
 # ---------------------------------------------------------------
@@ -192,4 +192,4 @@ set page_content "
 </table>
 "
 
-doc_return  200 text/html [im_return_template]
+# doc_return  200 text/html [im_return_template]
