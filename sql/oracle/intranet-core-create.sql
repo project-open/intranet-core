@@ -243,16 +243,16 @@ show errors;
 --	menu entries to the main and submenus
 --
 
-prompt *** intranet-views - Dynamic views for ListPages
+prompt *** intranet-views - Dynamic Views for ListPages
 @intranet-views.sql
-prompt *** intranet-components - Dynamic plug-in components
+prompt *** intranet-reports - More Views for Reports & Backup
+@intranet-reports.sql
+prompt *** intranet-components - Dynamic Plug-in Components
 @intranet-components.sql
-prompt *** intranet-permissions - Horizontal and vertical permissions
+prompt *** intranet-permissions - Horizontal and Vertical Permissions
 @intranet-permissions.sql
 prompt *** intranet-menus - Dynamic menus
 @intranet-menus.sql
-
-
 
 
 

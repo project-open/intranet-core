@@ -25,17 +25,17 @@
 
 -- ViewIDs: IDs < 1000 are reserved for Project/Open modules.
 --
--- 0 - 9	Customers
--- 10-19	Users
--- 20-29	Projects
--- 30-39	Invoices & Payments
--- 40-49	Forum
--- 50-59	Freelance
--- 60-69	Quality
--- 70-79	Marketplace(?)
--- 80-89	Offices
--- 90-99	Translation
-
+--  0 -  9	Customers
+--  10- 19	Users
+--  20- 29	Projects
+--  30- 39	Invoices & Payments
+--  40- 49	Forum
+--  50- 59	Freelance
+--  60- 69	Quality
+--  70- 79	Marketplace(?)
+--  80- 89	Offices
+--  90- 99	Translation
+-- 100-199	Backup Exports
 
 ---------------------------------------------------------
 -- Views
@@ -86,6 +86,9 @@ create table im_view_columns (
 );
 
 
+---------------------------------------------------------
+-- Standard Views for TCL pages
+--
 insert into im_views values (1, 'customer_list', 'view_customers', '');
 insert into im_views values (2, 'customer_view', 'view_customers', '');
 
@@ -352,10 +355,3 @@ insert into im_view_columns values (8190,81,NULL,' ','"<input type=submit value=
 
 --
 commit;
-
-
-
-/*
-
-*/
-
