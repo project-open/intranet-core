@@ -153,13 +153,16 @@ is
     procedure del (plugin_id in integer)
     is
     begin
+
 	-- Erase the im_component_plugins item associated with the id
 	delete from 	im_component_plugins
-	where		plugin_id = plugin_id;
+	where		plugin_id = del.plugin_id;
+
 	-- Erase all the priviledges
 	delete from 	acs_permissions
-	where		object_id = plugin_id;
-	acs_object.del(plugin_id);
+	where		object_id = del.plugin_id;
+
+	acs_object.del(del.plugin_id);
     end del;
 
 
