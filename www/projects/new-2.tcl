@@ -75,6 +75,30 @@ if { [empty_string_p $errors] == 0 } {
     set err_cnt 0
 }
 
+ad_proc var_contains_quotes { var } {
+    if {[regexp {"} $var]} { return 1 }
+    if {[regexp {'} $var]} { return 1 }
+    return 0
+}
+
+# check that no variable contains double or single quotes
+if {[var_contains_quotes $project_name]} { 
+    append errors "<li>Quotes in 'Project Name' are not allowed"
+}
+if {[var_contains_quotes $project_nr]} { 
+    append errors "<li>Quotes in 'Project Nr' are not allowed"
+}
+if {[var_contains_quotes $project_path]} { 
+    append errors "<li>Quotes in 'Project Path' are not allowed"
+}
+if {[regexp {/} $project_path]} { 
+    append errors "<li>Slashes ('/') in 'Project Path' are not allowed"
+}
+if {[regexp {\.} $project_path]} { 
+    append errors "<li>Dots ('.') in 'Project Path' are not allowed"
+}
+
+
 # check for not null start date
 if { [info exists start(date) ] } {
    set start_date $start(date)
