@@ -306,8 +306,6 @@ ad_form -extend -name register -on_request {
 
 	# Profile changes its value, possibly because of strange
 	# ad_form sideeffects
-	ns_log Notice "/users/new: profile=$profile"
-	ns_log Notice "/users/new: profile_org=$profile_org"
 
 	foreach profile_tuple [im_profiles_all] {
 

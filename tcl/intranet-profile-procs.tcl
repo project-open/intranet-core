@@ -192,7 +192,6 @@ where
 	and perm.privilege = 'admin'
 	and g.group_id = o.object_id
 	and o.object_type = 'im_profile'
-order by lower(g.group_name)
 "
 
     # We need a special treatment for Admin in order to
