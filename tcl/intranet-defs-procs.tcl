@@ -550,45 +550,8 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
     return [philg_dateentrywidget $column $today]
 }
 
-
-
-
-
-
-
-
 ad_proc im_partner_status_select { select_name { default "" } } {Returns an html select box named $select_name and defaulted to $default with a list of all the partner statuses in the system} {
     return [im_category_select "Intranet Partner Status" $select_name $default]
-}
-
-ad_proc im_invoice_payment_method_select { select_name { default "" } } {
-    Returns an html select box named $select_name and defaulted to $default 
-    with a list of all the partner statuses in the system
-} {
-    return [im_category_select "Intranet Invoice Payment Method" $select_name $default]
-}
-
-ad_proc im_invoice_status_select { select_name { default "" } } {
-    Returns an html select box named $select_name and defaulted to $default 
-    with a list of all the reasonable stati for an invoice
-} {
-    set bind_vars [ns_set create]
-    set sql "select invoice_status_id as category_id, invoice_status as category
-	     from im_invoice_status
-	     order by lower(invoice_status_id)"
-    return [im_selection_to_select_box $bind_vars category_select $sql $select_name $default]
-}
-
-ad_proc im_payment_type_select { select_name { default "" } } {
-} {
-    return [im_category_select "Intranet Payment Type" $select_name $default]
-}
-
-ad_proc im_invoice_template_select { select_name { default "" } } {
-    Returns an html select box named $select_name and defaulted to $default 
-    with a list of all the partner statuses in the system
-} {
-    return [im_category_select "Intranet Invoice Template" $select_name $default]
 }
 
 ad_proc im_partner_type_select { select_name { default "" } } {Returns an html select box named $select_name and defaulted to $default with a list of all the project_types in the system} {
