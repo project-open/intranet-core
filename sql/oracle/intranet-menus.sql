@@ -77,8 +77,6 @@ CREATE TABLE im_menus (
 	visible_tcl		varchar(1000) default null,
 				-- Make sure there are no two identical
 				-- menus on the same _level_.
-	constraint im_menus_name_un
-	unique(name, parent_menu_id),
 	constraint im_menus_label_un
 	unique(package_name, label)
 );

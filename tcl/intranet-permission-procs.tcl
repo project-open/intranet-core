@@ -109,7 +109,7 @@ ad_proc -public im_permission_flush {} {
 
 # Intranet permissions scheme - permissions are associated to groups.
 #
-ad_proc -public im_permission {user_id action} {
+ad_proc -public im_permission {user_id privilege} {
     Returns true or false, depending whether the user can execute
     the specified action.
     Uses a cache to reduce DB traffic.
@@ -168,11 +168,21 @@ ad_proc -public im_permission {user_id action} {
     search_intranet  
 </pre>
 } {
-    set subsite_id [ad_conn subsite_id]
-    set result [util_memoize "ad_permission_p $subsite_id $action"]
-    ns_log Notice "im_permission($action)=$result"
+    set result [util_memoize "im_permission_helper $user_id $privilege"]
+    ns_log Notice "im_permission($privilege)=$result"
     return $result
 }
+
+
+ad_proc im_permission_helper {user_id privilege} {
+
+} {
+    set subsite_id [ad_conn subsite_id]
+    set result [permission::permission_p -party_id $user_id -object_id $subsite_id -privilege $privilege]
+    return $result
+}
+
+
 
 ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
     Check wheter a user should be able to see a specific field of another user:

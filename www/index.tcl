@@ -50,7 +50,7 @@ foreach var $url_vars {
     append html "$var=$value\n"
 }
 
-#ad_return_complaint 1 "<li><pre>$html</pre>"
+#ad_return_complaint 1 "<li><pre>[ad_conn location]</pre>"
 #return
 
 set user_id [ad_maybe_redirect_for_registration]
