@@ -359,7 +359,7 @@ order by p.project_nr desc
 
 set projects_html ""
 set ctr 1
-set max_projects 15
+set max_projects 10
 db_foreach user_list_projects $sql  {
     append projects_html "<li>
 	<a href=../projects/view?project_id=$project_id>$project_nr $project_name</a>
@@ -384,6 +384,50 @@ if {[im_permission $current_user_id view_projects_all]} {
     set projects_html [im_table_with_title "[_ intranet-core.Past_Projects]" $projects_html]
 } else {
     set projects_html ""
+}
+
+# ------------------------------------------------------
+# User Company List
+# ------------------------------------------------------
+
+set sql "
+select
+	c.company_id,
+	c.company_name
+from
+	im_companies c,
+	acs_rels r
+where 
+	r.object_id_two = :user_id_from_search
+	and r.object_id_one = c.company_id
+order by c.company_name desc
+"
+
+set companies_html ""
+set ctr 1
+set max_companies 0
+db_foreach user_list_companies $sql  {
+    append companies_html "<li>
+	<a href=../companies/view?company_id=$company_id>$company_name</a>
+    "
+    incr ctr
+    if {$ctr > $max_companies} { break }
+}
+
+if { [empty_string_p $companies_html] } {
+    set companies_html "  <li><i>[_ intranet-core.None]</i>\n"
+}
+
+if {$ctr > $max_companies} {
+    set status_id 0
+    set type_id 0
+    append companies_html "<li><A HREF='/intranet/companies/index?[export_url_vars user_id_from_search status_id type_id]'>[_ intranet-core.more_companies]</A>\n"
+}
+
+if {[im_permission $current_user_id view_companies_all]} {
+    set companies_html [im_table_with_title "[_ intranet-core.Companies]" $companies_html]
+} else {
+    set companies_html ""
 }
 
 
