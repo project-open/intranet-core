@@ -34,6 +34,7 @@
 
 <% } elseif {[string equal "files" $view_name]} { %>
 
+  <%= [im_component_insert "Project Sales Filestorage Component"] %>
   <%= [im_component_insert "Project Filestorage Component"] %>
 
 <% } elseif {[string equal "status" $view_name]} { %>
