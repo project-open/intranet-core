@@ -343,7 +343,7 @@ order by lower(im_name_from_user_id(u.user_id))"
     set colspan 1
     set header_html "
       <tr> 
-	<td class=rowtitle align=middle>Name</td>"
+	<td class=rowtitle align=middle>[_ intranet-core.Name]</td>"
 if {$add_admin_links} {
     incr colspan
     append header_html "

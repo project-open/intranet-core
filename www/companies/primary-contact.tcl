@@ -24,8 +24,8 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set page_title "<#_ Add primary contact#>"
-set context_bar [ad_context_bar [list /intranet/companies/ "<#_ Companies#>"] $page_title]
+set page_title "[_ intranet-core.Add_primary_contact]"
+set context_bar [ad_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 
 set company_name [db_string company_name {
 select
@@ -58,28 +58,28 @@ where
 
 set contact_info ""
 db_foreach address_book_info $sql  {
-    append contact_info "<li>$name, $email  </a>(<a href=primary-contact-2?[export_url_vars company_id user_id]><#_ make primary contact#></a>)"
+    append contact_info "<li>$name, $email  </a>(<a href=primary-contact-2?[export_url_vars company_id user_id]>[_ intranet-core.make_primary_contact]</a>)"
 } 
 
 db_release_unused_handles
 
 
 if { [empty_string_p $contact_info] } {
-    set new_client_contact_link "<A HREF=/intranet/users/new><#_ new client contact#></A>"
-    set company_employee_link "<A HREF=/intranet/companies/view?company_id=$company_id><#_ company employee#></A>"
+    set new_client_contact_link "<A HREF=/intranet/users/new>[_ intranet-core.new_client_contact]</A>"
+    set company_employee_link "<A HREF=/intranet/companies/view?company_id=$company_id>[_ intranet-core.company_employee]</A>"
     set page_body "
-<H3><#_ No Company Employees in our Database#></H3>
-<#_ We have no contacts in our database for %company_name%#><BR>
+<H3>[_ intranet-core.lt_No_Company_Employees_]</H3>
+[_ intranet-core.lt_We_have_no_contacts_i]<BR>
 <UL>
-  <LI><#_ Please create a %new_client_contact_link%#>.
+  <LI>[_ intranet-core.lt_Please_create_a_new_c_1].
 
-  <LI><#_ Make the new client contact a %company_employee_link% %company_name%.#>
+  <LI>[_ intranet-core.lt_Make_the_new_client_c_1]
 
-  <LI><#_ Finally, revisit this page and an option will appear to add the new client contact.#>
+  <LI>[_ intranet-core.lt_Finally_revisit_this_]
 
 </UL>
 
-<#_ Also, please make sure that the client isn't defined multiple with similar names.#>
+[_ intranet-core.lt_Also_please_make_sure]
 "
 
     ad_return_template
@@ -88,8 +88,8 @@ if { [empty_string_p $contact_info] } {
 
 set return_url "[im_url_stub]/companies/view?[export_url_vars company_id]"
 
-set page_title "<#_ Select primary contact for $company_name#>"
-set context_bar [ad_context_bar [list ./ "<#_ Companies#>"] [list view?[export_url_vars company_id] "<#_ One company#>"] "<#_ Select contact#>"]
+set page_title "[_ intranet-core.lt_Select_primary_contac]"
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars company_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

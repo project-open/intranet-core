@@ -68,7 +68,7 @@ set locate_form "
   </tr>
   <tr> 
     <td>
-      or Last Name
+      [_ intranet-core.or_Last_Name]
 [im_gif help "[_ intranet-core.lt_Search_for_a_substrin_1]"]
     </td>
     <td><input type=text name=last_name size=20></td>

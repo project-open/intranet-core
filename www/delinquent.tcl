@@ -21,20 +21,20 @@ ad_page_contract {
     user_id
 }
 
-set page_title "<#_ Remove Delinquent User from List#>"
-set context_bar [ad_context_bar "<#_ Delinquent Update#>"]
+set page_title "[_ intranet-core.lt_Remove_Delinquent_Use]"
+set context_bar [ad_context_bar "[_ intranet-core.Delinquent_Update]"]
 
 set delinquent_user [cl_rm_user_from_delinquent $user_id]
 
 
 if { $delinquent_user == 1 } {
-    append page_body "<b><#_ You have been removed from the delinquent list#></b>"
+    append page_body "<b>[_ intranet-core.lt_You_have_been_removed]</b>"
 } elseif { $delinquent_user == 0 } {
-    append page_body "<b><#_ You cannot be removed from the delinquent list... Log your hours !!!#></b>"
+    append page_body "<b>[_ intranet-core.lt_You_cannot_be_removed]</b>"
 } elseif { $delinquent_user == -1 } {
-    append page_body "<b><#_ User not found in the delinquent list. May be you have already been removed ?!!#></b>"
+    append page_body "<b>[_ intranet-core.lt_User_not_found_in_the]</b>"
 }
 
-append page_body "<br><hr><h3><#_ REMEMBER: total of 10 units per day! (all the days)#></h3>"
+append page_body "<br><hr><h3>[_ intranet-core.lt_REMEMBER_total_of_10_]</h3>"
 
 ad_return_template

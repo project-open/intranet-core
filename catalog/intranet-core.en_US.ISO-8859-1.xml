@@ -29,6 +29,7 @@
   <msg key="Add_New_Project">Add New Project</msg>
   <msg key="Add_New_User">Add New User</msg>
   <msg key="Add_office">Add office</msg>
+  <msg key="Add_primary_contact">Add primary contact</msg>
   <msg key="Add_subproject">Add subproject</msg>
   <msg key="Add_user">Add user</msg>
   <msg key="Address1">Address1</msg>
@@ -112,6 +113,7 @@
   <msg key="delete">delete</msg>
   <msg key="Delete_portrait">Delete portrait</msg>
   <msg key="Deleted">Deleted</msg>
+  <msg key="Delinquent_Update">Delinquent Update</msg>
   <msg key="Delivered">Delivered</msg>
   <msg key="Delivery_Date">Delivery Date</msg>
   <msg key="Description">Description</msg>
@@ -172,6 +174,7 @@
   <msg key="Inquiries">Inquiries</msg>
   <msg key="Inquiring">Inquiring</msg>
   <msg key="Internal">Internal</msg>
+  <msg key="Intranet">Intranet</msg>
   <msg key="Intranet_content">Intranet content</msg>
   <msg key="Intranet_users">Intranet users</msg>
   <msg key="Invoiced">Invoiced</msg>
@@ -184,6 +187,7 @@
   <msg key="Lit">Lit</msg>
   <msg key="Loc">Loc</msg>
   <msg key="Localization">Localization</msg>
+  <msg key="Locate_user_by">Locate user by</msg>
   <msg key="Log_hours">Log hours</msg>
   <msg key="Log_Out">Log Out</msg>
   <msg key="log_them_now">log them now</msg>
@@ -294,6 +298,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Locate_your_new_prima">Locate your new primary contact by</msg>
   <msg key="lt_make_accounting_conta">make accounting contact</msg>
   <msg key="lt_Make_the_new_client_c">Make the new client contact a %new_company_employee_link% %company_name%.</msg>
+  <msg key="lt_Make_the_new_client_c_1">Make the new client contact a %company_employee_link% %company_name%.</msg>
   <msg key="lt_Manage_Component_Layo">Manage Component Layout</msg>
   <msg key="lt_Manage_Global_System_">Manage Global System Parameters</msg>
   <msg key="lt_Manage_Individual_Use">Manage Individual Users</msg>
@@ -340,6 +345,7 @@ site with fake crud.</msg>
   <msg key="lt_Please_click_above_to">Please click above to add a short comment.</msg>
   <msg key="lt_Please_contact_your_s">Please contact your system administrator</msg>
   <msg key="lt_Please_create_a_new_c">Please create a %new_client_link%.</msg>
+  <msg key="lt_Please_create_a_new_c_1">Please create a %new_client_contact_link%</msg>
   <msg key="lt_Please_log_hours_link">Please %log_hours_link%</msg>
   <msg key="lt_Please_make_sure_the_">Please make sure the start date is not empty</msg>
   <msg key="lt_Please_make_sure_the__1">Please make sure the end date is not empty</msg>
@@ -351,6 +357,8 @@ site with fake crud.</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in 'Project Nr' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Pat">Quotes in 'Project Path' are not allowed</msg>
   <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
+  <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
+  <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_return_to_user_admini">return to user administration</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
@@ -359,6 +367,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&quot;berg\&quot; to search for all users with a last name containing \&quot;berg\&quot;.</msg>
   <msg key="lt_Search_for_an_account">Search for an account to merge with this one:</msg>
   <msg key="lt_Select_accounting_con">Select accounting contact for %company_name%</msg>
+  <msg key="lt_Select_primary_contac">Select primary contact for $company_name</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
   <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project Path' are not allowed</msg>
   <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
@@ -389,6 +398,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
   <msg key="lt_Update_Basic_Informat">Update Basic Information</msg>
   <msg key="lt_Update_this_users_pas">Update this user's password</msg>
+  <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% is undefined for empty lists.</msg>
   <msg key="lt_View_administrative_p">View administrative page for newly created user,</msg>
   <msg key="lt_View_the_hours_logged">View the hours logged by someone else</msg>
@@ -407,10 +417,12 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_You_are_not_authorize">You are not authorized to see this page</msg>
   <msg key="lt_You_are_trying_to_acc">You are trying to access a view that has not been defined in the database.</msg>
   <msg key="lt_You_can_only_specify_">You can only specify either email or last name, not both.</msg>
+  <msg key="lt_You_cannot_be_removed">You cannot be removed from the delinquent list... Log your hours !!!</msg>
   <msg key="lt_You_dont_have_permiss">You don't have permissions to view this page</msg>
   <msg key="lt_You_dont_have_suffici">You don't have sufficient privileges to add a new company.</msg>
   <msg key="lt_You_dont_have_suffici_1">You don't have sufficient privileges to add a new office.</msg>
   <msg key="lt_You_dont_have_suffici_2">You don't have sufficient privileges to see this page.</msg>
+  <msg key="lt_You_have_been_removed">You have been removed from the delinquent list</msg>
   <msg key="lt_You_have_insufficient">You have insufficient privileges to view this user.</msg>
   <msg key="lt_You_have_insufficient_1">You have insufficient privileges to pursue this operation.</msg>
   <msg key="lt_You_have_insufficient_2">You have insufficient privileges to modify this user.</msg>
@@ -448,6 +460,7 @@ other way for the user to find out.</msg>
   <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="Mail_Failed">Mail Failed</msg>
   <msg key="Main_Office">Main Office</msg>
+  <msg key="make_primary_contact">make primary contact</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Med">Med</msg>
@@ -545,6 +558,7 @@ other way for the user to find out.</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
   <msg key="Search">Search</msg>
+  <msg key="Search_for_a_user">Search for a user</msg>
   <msg key="Search_for_User">Search for User</msg>
   <msg key="See_the_list_of">See the list of</msg>
   <msg key="Select">Select</msg>
@@ -588,6 +602,7 @@ other way for the user to find out.</msg>
   <msg key="user_administration">user administration</msg>
   <msg key="User_Matrix">User Matrix</msg>
   <msg key="User_name">User name</msg>
+  <msg key="User_search">User search</msg>
   <msg key="User_state">User state</msg>
   <msg key="Users">Users</msg>
   <msg key="value">%value%</msg>

@@ -29,8 +29,8 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
-set page_title "<#_ Search for a user#>"
-set context_bar [ad_context_bar [list ./ "<#_ Intranet#>"] "<#_ User search#>"]
+set page_title "[_ intranet-core.Search_for_a_user]"
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Intranet]"] "[_ intranet-core.User_search]"]
 
 #jruiz 20020610: select user
 if { [info exist keyword] && ![empty_string_p $keyword]} {
@@ -52,21 +52,21 @@ if { [info exist keyword] && ![empty_string_p $keyword]} {
 
     set page_body "
 
-    <#_ Locate user by#>:
+    [_ intranet-core.Locate_user_by]:
 
     <form method=get action=/user-search>
     [export_ns_set_vars form]
 
     <table border=0>
-    <tr><td><#_ Email address#>:<td><input type=text name=email size=40></tr>
+    <tr><td>[_ intranet-core.Email_address]:<td><input type=text name=email size=40></tr>
     <tr><td colspan=2>or by</tr>
-    <tr><td><#_ Last name#>:<td><input type=text name=last_name size=40></tr>
+    <tr><td>[_ intranet-core.Last_name]:<td><input type=text name=last_name size=40></tr>
     </table>
     
     <p>
     
     <center>
-    <input type=submit value=\"<#_ Search#>\">
+    <input type=submit value=\"[_ intranet-core.Search]\">
     </center>
     </form>
     "
