@@ -121,7 +121,7 @@ begin
 end;' language 'plpgsql';
 
 -- Delete a single component
-create or replace function im_component_plugin__del (integer) returns integer as '
+create or replace function im_component_plugin__delete (integer) returns integer as '
 DECLARE
 	p_plugin_id	alias for $1;
 BEGIN
@@ -134,7 +134,7 @@ BEGIN
 	delete from 	acs_permissions
 	where		object_id = p_plugin_id;
 
-	acs_object.del(p_plugin_id);
+	PERFORM acs_object__delete(p_plugin_id);
 
 	return 0;
 end;' language 'plpgsql';
@@ -151,7 +151,7 @@ BEGIN
             from im_component_plugins
             where package_name = p_module_name
 	) loop
-	    im_component_plugin.del(row.plugin_id);
+	    PERFORM im_component_plugin__delete(row.plugin_id);
 	end loop;
 
 	return 0;
