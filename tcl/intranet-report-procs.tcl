@@ -50,12 +50,15 @@ ad_proc -public im_export { } {
 } {
     im_export_all
 
+    im_import_users "/tmp/im_users.csv"
     im_import_offices "/tmp/im_offices.csv"
     im_import_office_members "/tmp/im_office_members.csv"
     im_import_customers "/tmp/im_customers.csv"
     im_import_customer_members "/tmp/im_customer_members.csv"
     im_import_projects "/tmp/im_projects.csv"
     im_import_project_members "/tmp/im_project_members.csv"
+    im_import_freelancers "/tmp/im_freelancers.csv"
+    im_import_freelance_skills "/tmp/im_freelance_skills.csv"
 
     ad_return_complaint 1 "Successfully Parsed"
     return
@@ -337,9 +340,10 @@ WHERE
 	    db_dml update_customer_sql $update_customer_sql
 	    
 	} err_msg] } {
-	    ns_log Warning $err_msg"
+	    ns_log Warning "$err_msg"
 	    ad_return_complaint 1 "<li>Error loading customers:<br>
             $err_msg"
+	    return
 	}
     }
 }
@@ -480,9 +484,10 @@ WHERE
 	    db_dml update_office_sql $update_office_sql
 	    
 	} err_msg] } {
-	    ns_log Warning $err_msg"
+	    ns_log Warning "$err_msg"
 	    ad_return_complaint 1 "<li>Error loading offices:<br>
             $err_msg"
+	    return
 	}
     }
 }
@@ -642,6 +647,7 @@ WHERE
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
 	    ad_return_complaint 1 "<li>Error loading projects:<br>$err_msg"
+	    return
 	}
 
     }
@@ -782,9 +788,10 @@ END;"
 	    }
 	    
 	} err_msg] } {
-	    ns_log Warning $err_msg"
-	    ad_return_complaint 1 "<li>Error loading members:<br>
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading customer members:<br>
             $err_msg"
+	    return
 	}
     }
 }
@@ -905,9 +912,10 @@ END;"
 	    }
 	    
 	} err_msg] } {
-	    ns_log Warning $err_msg"
-	    ad_return_complaint 1 "<li>Error loading members:<br>
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading project members:<br>
             $err_msg"
+	    return
 	}
     }
 }
@@ -1028,10 +1036,451 @@ END;"
 	    }
 	    
 	} err_msg] } {
-	    ns_log Warning $err_msg"
-	    ad_return_complaint 1 "<li>Error loading members:<br>
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading office members:<br>
             $err_msg"
+	    return
 	}
+    }
+}
+
+
+
+ad_proc -public im_import_freelancers { filename } {
+    Import the freelancer information
+} {
+    if {![file readable $filename]} {
+	ad_return_complaint 1 "Unable to read file '$filename'"
+	return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_export_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_freelancers"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	ad_return_complaint 1 "<li>Error reading '$filename': <br>$err_msg"
+	return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform categories, email and names into IDs
+	#
+
+	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	set payment_method_id [db_string payment_method "select category_id from im_categories where category=:payment_method" -default ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_sql "INSERT INTO im_freelancers (user_id) values (:user_id)"
+	set update_sql "
+UPDATE im_freelancers
+SET
+        translation_rate	= :translation_rate,
+        editing_rate		= :editing_rate,
+        hourly_rate		= :hourly_rate,
+        bank_account		= :bank_account,
+        bank			= :bank,
+        payment_method_id	= :payment_method_id,
+        note			= :note,
+        private_note		= :private_note
+WHERE
+	user_id=:user_id
+"
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "user_id			$user_id"
+	ns_log Notice "payment_method_id	$payment_method_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    set count [db_string count_members "select count(*) from im_freelancers where user_id=:user_id"]
+	    if {!$count} {
+		db_dml create_member $create_sql
+	    }
+	    db_dml update_freelancer $update_sql
+	    
+	 } err_msg] } {
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading freelancers:<br> $err_msg"
+	    return
+	}
+    }
+}
+
+
+
+
+ad_proc -public im_import_freelance_skills { filename } {
+    Import the freelance skill database
+} {
+    if {![file readable $filename]} {
+	ad_return_complaint 1 "Unable to read file '$filename'"
+	return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_export_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_freelance_skills"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	ad_return_complaint 1 "<li>Error reading '$filename': <br>$err_msg"
+	return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform categories, email and names into IDs
+	#
+
+	set user_id [db_string user "select party_id from parties where email=:user_email" -default ""]
+	set skill_id [db_string office "select category_id from im_categories where category=:skill" -default ""]
+	set skill_type_id [db_string office "select category_id from im_categories where category=:skill_type" -default ""]
+	set claimed_experience_id [db_string office "select category_id from im_categories where category=:claimed_experience" -default ""]
+	set confirmed_experience_id [db_string office "select category_id from im_categories where category=:confirmed_experience" -default ""]
+	set confirmation_user_id [db_string user "select party_id from parties where email=:confirmation_user_email" -default ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_sql "
+INSERT INTO im_freelance_skills (
+	user_id, skill_id, skill_type_id,
+	claimed_experience_id, confirmed_experience_id,
+	confirmation_user_id, confirmation_date
+) values (
+	:user_id, :skill_id, :skill_type_id,
+	:claimed_experience_id, :confirmed_experience_id,
+	:confirmation_user_id, :confirmation_date
+)"	
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "user_id		$user_id"
+	ns_log Notice "skill_id		$skill_id"
+	ns_log Notice "skill_type_id	$skill_type_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    set count [db_string freelance_skill_count "select count(*) from im_freelance_skills where user_id=:user_id and skill_id=:skill_id and skill_type_id=:skill_type_id"]
+	    if {!$count} {
+		db_dml create_freelance_skill $create_sql
+	    }
+	    
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading freelance_skills:<br>
+            $err_msg"
+            return
+	}
+    }
+}
+
+
+
+
+
+
+ad_proc -public im_import_users { filename } {
+    Import the user information
+} {
+    ns_log Notice "im_import_users $filename"
+
+    if {![file readable $filename]} {
+	ad_return_complaint 1 "Unable to read file '$filename'"
+	return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_export_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} { 
+	append err_msg "'$csv_system' invalid backup dump<br>" 
+    }
+    if {![string equal $csv_table "im_users"]} { 
+	append err_msg "Invalid backup table: '$csv_table'<br>" 
+    }
+    if {"" != $err_msg} {
+	ad_return_complaint 1 "<li>Error reading '$filename': <br>$err_msg"
+	return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+        ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} { 
+		continue 
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform categories, email and names into IDs
+	#
+
+	if {"" == $email} {
+	    # Special case for users without email
+	    ad_return_complaint 1 "<li>Found a user without email address:<br>
+            User '$first_names $last_name' doesn't have an email address
+            and thus cannot be inserted into the database."
+	    return
+	}
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_user_sql "
+DECLARE
+    v_user_id	integer;
+BEGIN
+    v_user_id := acs_user.new(
+	username      => :username,
+	email         => :email,
+	first_names   => :first_names,
+	last_name     => :last_name,
+	password      => :password,
+	salt          => :salt
+    );
+
+    INSERT INTO users_contact (user_id) 
+    VALUES (v_user_id);
+END;"
+
+	set update_users_sql "
+UPDATE
+	users
+SET
+	username	= :username,
+	screen_name	= :screen_name,
+	password	= :password,
+	salt		= :salt,
+        password_question = :password_question,
+        password_answer	= :password_answer
+WHERE
+	user_id=:user_id
+"
+
+	set update_parties_sql "
+UPDATE
+	parties
+SET
+	url=:url
+WHERE
+	party_id=:user_id
+"
+
+	set update_persons_sql "
+UPDATE
+	persons
+SET
+	first_names	= :first_names,
+	last_name	= :last_name
+WHERE
+	person_id=:user_id
+"	
+
+	set update_users_contact_sql "
+UPDATE
+	users_contact
+SET
+        home_phone              = :home_phone,
+        work_phone              = :work_phone,
+        cell_phone              = :cell_phone,
+        pager                   = :pager,
+        fax                     = :fax,
+        aim_screen_name         = :aim_screen_name,
+        msn_screen_name         = :msn_screen_name,
+        icq_number              = :icq_number,
+        ha_line1                = :ha_line1,
+        ha_line2                = :ha_line2,
+        ha_city                 = :ha_city,
+        ha_state                = :ha_state,
+        ha_postal_code          = :ha_postal_code,
+        ha_country_code         = :ha_country_code,
+        wa_line1                = :wa_line1,
+        wa_line2                = :wa_line2,
+        wa_city                 = :wa_city,
+        wa_state                = :wa_state,
+        wa_postal_code          = :wa_postal_code,
+        wa_country_code         = :wa_country_code,
+        note                    = :note
+WHERE
+	user_id=:user_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	set count [db_string user "select count(*) from parties where email=:email"]
+        if {!$count} {
+	    if { [catch {
+		db_dml create_user $create_user_sql
+	    } err_msg] } {
+	        ad_return_complaint 1 "<li>Error loading users 1:<br>$err_msg"
+	        return
+	    }
+	}
+
+	set user_id [db_string user "select party_id from parties where email=:email"]
+
+	if { [catch {
+	    db_dml update_users $update_users_sql
+	    db_dml update_parties $update_parties_sql
+	    db_dml update_persons $update_persons_sql
+	    db_dml update_users_contact $update_users_contact_sql
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    ad_return_complaint 1 "<li>Error loading users 2:<br>$err_msg"
+	    return
+	}
+
+
     }
 }
 
