@@ -105,4 +105,15 @@
     END;
     </querytext>
   </fullquery>
+  <fullquery name="im_import_company_members.create_member">
+    <querytext>
+     BEGIN
+    :1 := im_biz_object_member.new(
+	object_id	=> :object_id,
+	user_id		=> :user_id,
+	object_role_id	=> :object_role_id
+       );
+    END;
+    </querytext>
+  </fullquery>
 </queryset>
