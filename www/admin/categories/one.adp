@@ -2,12 +2,11 @@
   <property name="title">@page_title@</property>
 
 <form @form_action_html;noquote@ method=GET>
-@export_form_vars;noquote@
 <table border=0 cellpadding=0 cellspacing=1>
   <tr>
     <td class=rowtitle colspan=2 align=center>Category</td>
   </tr>
-  @select_categories;noquote@
+  @category_type_select;noquote@
   <tr>
     <td>Category Nr.</td>
     <td><input size=10 name=category_id value="@category_id@"></td>

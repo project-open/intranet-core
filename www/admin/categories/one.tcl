@@ -23,7 +23,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { category_id:naturalnum 0 }
-    { select_category_type "" }
+    { category_type "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -34,7 +34,6 @@ set user_id [ad_maybe_redirect_for_registration]
 # ---------------------------------------------------------------
 
 set profiling_weight 0
-set select_categories ""
 set hierarchy_component ""
 ns_log Notice "one: category_id=$category_id"
 
@@ -73,12 +72,11 @@ order by category_id"
 	if {[info exists child($parent_id)]} { set selected "selected" } 
 	append hierarchy_component "<option value=$parent_id $selected>$parent_category</option>\n"
     }
-    
-    
+        
 } else {
 
-
     set page_title "Add Category"
+    if {"" != $category_type} { append page_title " for '$category_type'" }
     set context_bar [ad_context_bar_ws $page_title]
     set form_action_html "action=\"category-add.tcl\""
     set input_form_html "value=Add"
@@ -87,28 +85,37 @@ order by category_id"
     set category_description ""
     set profiling_weight 0
     set category ""
-    if {![string equal "none" $select_category_type]} {
-	set category_type $select_category_type
-    }
     set enabled_p ""
     set mailing_list_info ""
+}
+
+# ---------------------------------------------------------------
+# Category Select Component
+# ---------------------------------------------------------------
+
+if {"" != $category_type && ![string equal "All" $category_type]} {
+
+    set category_type_select [export_form_vars category_type]
+
+} else {
 
     set select_category_types_sql "
 select
-	nvl(c.category_type, 'none') as category_for_select
+	c.category_type as category_for_select
 from
 	im_categories c
 group by c.category_type
 order by c.category_type asc" 
     
-    set select_categories "<tr><td>Category type</td><td><select name=category_type>"
+    set category_type_select "<tr><td>Category type</td><td><select name=category_type>"
     db_foreach select_category_types $select_category_types_sql {
-	append select_categories "<option>$category_for_select</option>\n"
+	set selected ""
+	if {[string equal $category_for_select $category_type]} { set selected "selected" }
+	append category_type_select "<option>$category_for_select</option>\n"
     }
-    append select_categories "</select></td></tr>"
+    append category_type_select "</select></td></tr>"
 
 }
 
-set export_form_vars [export_form_vars category_type]
 
 set descr [ns_quotehtml $category_description]

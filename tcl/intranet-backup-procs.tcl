@@ -2895,7 +2895,7 @@ ad_proc -public im_import_prices { filename } {
     if {![string equal $csv_system "Project/Open"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_prices"]} {
+    if {![string equal $csv_table "im_trans_prices"]} {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {

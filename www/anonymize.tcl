@@ -209,24 +209,24 @@ db_foreach im_invoice_items_select $im_invoice_items_sql {
 }
 
 
-# ---------------------- im_prices -------------------------------
+# ---------------------- im_trans_prices -------------------------------
 
 
-set im_prices_sql "
+set im_trans_prices_sql "
 select
 	price_id
 from
-	im_prices"
+	im_trans_prices"
 
 db_foreach im_prices_select $im_prices_sql {
 
     set new_price [expr round(100*rand()) / 100]
-    set im_prices_update_sql "
-	update im_prices set
+    set im_trans_prices_update_sql "
+	update im_trans_prices set
         price=:new_price
 	where price_id=:price_id"
 
-    db_dml im_prices_update $im_prices_update_sql
+    db_dml im_trans_prices_update $im_trans_prices_update_sql
 }
 
 # ---------------------- im_customers -------------------------------

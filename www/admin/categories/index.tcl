@@ -55,7 +55,7 @@ set category_select_html "
   <td class=rowtitle align=center>
     Filter Categories
   </td>
-  <td class=rowtitle align=center><a href=one?select_category_type=none>[im_gif new "new category"]</a></td>
+  <td class=rowtitle align=center><a href=one>[im_gif new "new category"]</a></td>
 </tr>
 <tr>
   <td>
@@ -161,9 +161,10 @@ db_foreach all_categories_of_type $category_select_sql {
 append category_list_html "</table>"
 
 if {![string equal "All" $select_category_type]} {
+    set category_type $select_category_type
     append category_list_html "
 <ul>
-  <a href=\"one.tcl?[export_url_vars select_category_type]\">
+  <a href=\"one.tcl?[export_url_vars category_type]\">
   Add a category
   </a>
 </ul>"
