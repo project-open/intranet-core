@@ -340,11 +340,11 @@ END;"
 
 	foreach profile_tuple [im_profiles_all] {
 
-	    # don't enter into setting and unsetting profile
-	    # values of $profile doesn't exist, 
-	    # probably because it's a freelancer or customer
+	    # don't enter into setting and unsetting profiles
+	    # if the user has no right to change profiles.
+	    # Probably this is a freelancer or customer
 	    # who is editing himself.
-	    if {![info exists profile]} { break }
+	    if {0 == [llength $managable_profiles]} { break }
 
 	    ns_log Notice "profile_tuple=$profile_tuple"
 	    set profile_id [lindex $profile_tuple 0]
