@@ -125,6 +125,13 @@ if {$user_group_id == [im_freelance_group_id]} {
     set view_name "freelancer_list"
 }
 
+# temporary fix: Check if the "freelancer_list" view exists
+# and revert to "user_list" if not.
+if {0 == [db_string exists_freelance_list "select count(*) from im_views where view_name=:view_name"]} {
+    set view_name "user_list"
+}
+
+
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage intranet 50]
 }
