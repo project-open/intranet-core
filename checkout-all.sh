@@ -14,6 +14,8 @@ cvs checkout intranet-crm-tracking
 cvs checkout intranet-dynvals
 cvs checkout intranet-expfind-pg
 cvs checkout intranet-expfind-ora
+cvs checkout intranet-expfind2-pg
+cvs checkout intranet-expfind2-ora
 cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
