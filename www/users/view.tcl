@@ -411,7 +411,7 @@ if {$admin || [im_permission $user_id "view_hr"]} {
 	[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url ] \
 	[im_forum_component \
 		-user_id $current_user_id \
-		-object_id $user_id \
+		-forum_object_id $user_id \
 		-current_page_url $current_url \
 		-return_url $return_url \
 		-export_var_list [list user_id forum_start_idx forum_order_by forum_how_many forum_view_name ] \

@@ -206,22 +206,10 @@ if { ![empty_string_p $where_clause] } {
 # the current user. We apply the $where_clause anyway.
 
 # Get the inner "perm_sql" statement
-#set perm_statement [db_qd_get_fullname "perm_sql" 0]
-#set perm_sql_uneval [db_qd_replace_sql $perm_statement {}]
-#set perm_sql [expr "\"$perm_sql_uneval\""]
+set perm_statement [db_qd_get_fullname "perm_sql" 0]
+set perm_sql_uneval [db_qd_replace_sql $perm_statement {}]
+set perm_sql [expr "\"$perm_sql_uneval\""]
 
-
-set perm_sql "(
-		select	
-		        c.*
-		from
-		        im_companies c,
-			acs_rels r
-		where
-		        c.company_id = r.object_id_one
-			and r.object_id_two = :user_id
-			$where_clause
-	) c"
 
 # Show the list of all projects only if the user has the
 # "view_companies_all" privilege AND if he explicitely
