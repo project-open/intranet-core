@@ -601,36 +601,6 @@ END;
 /
 
 BEGIN
-    im_priv_create('view_invoices', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_payments', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('view_costs', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('add_invoices', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('add_payments', 		'Senior Managers');
-END;
-/
-
-BEGIN
-    im_priv_create('add_costs', 		'Senior Managers');
-END;
-/
-
-BEGIN
     im_priv_create('add_offices', 		'Senior Managers');
 END;
 /
@@ -801,36 +771,6 @@ END;
 /
 
 BEGIN
-    im_priv_create('view_invoices', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('view_payments', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('view_costs', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('add_invoices', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('add_payments', 		'P/O Admins');
-END;
-/
-
-BEGIN
-    im_priv_create('add_costs', 		'P/O Admins');
-END;
-/
-
-BEGIN
     im_priv_create('view_offices', 		'P/O Admins');
 END;
 /
@@ -927,35 +867,6 @@ BEGIN
 END;
 /
 
-BEGIN
-    im_priv_create('view_invoices', 		'Accounting');
-END;
-/
-
-BEGIN
-    im_priv_create('view_payments', 		'Accounting');
-END;
-/
-
-BEGIN
-    im_priv_create('view_costs', 		'Accounting');
-END;
-/
-
-BEGIN
-    im_priv_create('add_invoices', 		'Accounting');
-END;
-/
-
-BEGIN
-    im_priv_create('add_payments', 		'Accounting');
-END;
-/
-
-BEGIN
-    im_priv_create('add_costs', 		'Accounting');
-END;
-/
 commit;
 
 

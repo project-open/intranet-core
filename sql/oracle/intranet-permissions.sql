@@ -340,12 +340,6 @@ begin
 
     acs_privilege.create_privilege('search_intranet','Search Intranet','Search Intranet');
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
-    acs_privilege.create_privilege('view_invoices','View Invoices','View Invoices');
-    acs_privilege.create_privilege('view_payments','View Payments','View Payments');
-    acs_privilege.create_privilege('view_costs','View Costs','View Costs');
-    acs_privilege.create_privilege('add_invoices','View Invoices','View Invoices');
-    acs_privilege.create_privilege('add_payments','View Payments','View Payments');
-    acs_privilege.create_privilege('add_costs','View Costs','View Costs');
     acs_privilege.create_privilege('view_topics','General permission to see forum topics','');
 end;
 /
