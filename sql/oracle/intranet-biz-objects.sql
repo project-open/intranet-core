@@ -218,10 +218,10 @@ create table im_biz_object_members (
 			-- Intranet Project Role
 );
 
-BEGIN
-    acs_rel_type.create_role ('pm', 'Project Manager', 'Project Managers');
-END;
-/
+-- BEGIN
+--    acs_rel_type.create_role ('pm', 'Project Manager', 'Project Managers');
+-- END;
+-- /
 
 
 BEGIN

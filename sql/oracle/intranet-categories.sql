@@ -270,15 +270,16 @@ INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 
 -- The "Translation Agency" is a customer
 insert into im_category_hierarchy values (57,54);
+
 -- The "IT Consulting" company is a customer.
 insert into im_category_hierarchy values (57,55);
+
 -- The "Internal" is a customer (internal projects...)
 insert into im_category_hierarchy values (57,53);
 
 -- The "Freelance" company is a provider
 insert into im_category_hierarchy values (56,58);
--- The "SLV Translation Agency" company is a provider
-insert into im_category_hierarchy values (56,58);
+
 -- The "Office Equipment Provider" company is a provider
 insert into im_category_hierarchy values (56,59);
 

@@ -65,11 +65,11 @@ delete from im_url_types;
 delete from im_projects;
 delete from im_projects_status_audit;
 delete from im_project_status;
+delete from im_biz_object_role_map;
+delete from im_biz_object_urls;
 delete from im_project_types;
 
-drop index im_project_parent_id_idx;
 drop table im_projects_status_audit;
-
 drop table im_project_url_map;
 drop table im_url_types;
 
@@ -95,7 +95,8 @@ drop view im_annual_revenue;
 
 -----------------------------------------------------------
 -- Auxil tables
-drop table im_start_blocks;
+drop table im_start_weeks;
+drop table im_start_months;
 
 
 -----------------------------------------------------------
@@ -106,10 +107,15 @@ drop table im_start_blocks;
 -- we can delete them early.
 
 drop table im_menus;
+delete from acs_permissions 
+where object_id in (
+		select object_id 
+		from acs_objects 
+		where object_type='im_menu'
+	)
+;
 delete from acs_objects where object_type='im_menu';
 drop package im_menu;
-
-delete from acs_objects where object_type='im_menu';
 begin
     acs_object_type.drop_type('im_menu');
 end;
@@ -124,7 +130,6 @@ commit;
 begin
    im_drop_profile ('P/O Admins');
    im_drop_profile ('Customers'); 
-   im_drop_profile ('Offices'); 
    im_drop_profile ('Employees'); 
    im_drop_profile ('Freelancers'); 
    im_drop_profile ('Project Managers'); 
@@ -132,11 +137,50 @@ begin
    im_drop_profile ('Accounting'); 
 end;
 /
-commit;
 
-delete from acs_objects where object_type='im_profile';
+begin
+     for row in (
+        select profile_id
+	from im_profiles
+     ) loop
+	im_profile.del(row.profile_id);
+     end loop;
+end;
+/
+
+delete from composition_rels where rel_id in (
+	select rel_id from acs_rels where object_id_two in (
+		select object_id from acs_objects where object_type='im_profile'
+	)
+);
+delete from composition_rels where rel_id in (
+	select rel_id from acs_rels where object_id_one in (
+		select object_id from acs_objects where object_type='im_profile'
+	)
+);
+delete from acs_rels where object_id_two in (
+	select object_id from acs_objects where object_type='im_profile'
+);
+delete from acs_rels where object_id_one in (
+	select object_id from acs_objects where object_type='im_profile'
+);
+delete from acs_permissions where grantee_id in (
+	select object_id from acs_objects where object_type = 'im_profile'
+);
+delete from group_element_index where element_id in (
+	select object_id from acs_objects where object_type='im_profile'
+);
+delete from groups where group_id in (
+	select object_id from acs_objects where object_type='im_profile'
+);
+delete from parties where party_id in (
+	select object_id from acs_objects where object_type='im_profile'
+);
+
 delete from group_type_rels where group_type = 'im_profile';
 drop table im_profiles;
+delete from acs_objects where object_type = 'im_profile';
+
 delete from group_types where group_type = 'im_profile';
 drop package im_profile;
 BEGIN
@@ -145,8 +189,9 @@ END;
 /
 commit;
 
+
+
 begin
-    acs_privilege.drop_privilege('view');
     acs_privilege.drop_privilege('add_customers');
     acs_privilege.drop_privilege('view_customers');
     acs_privilege.drop_privilege('view_customers_all');
@@ -163,6 +208,13 @@ begin
 end;
 /
 commit;
+
+
+begin
+    acs_privilege.drop_privilege('view');
+end;
+/
+
 
 
 -----------------------------------------------------------
@@ -206,19 +258,16 @@ drop function im_first_letter_default_to_a;
 -- Projects
 --
 
--- Drop the "Internal Project"
-DECLARE
-    v_internal_project_id      integer;
-BEGIN
-    select project_id
-    into v_internal_project_id
-    from im_projects
-    where project_path = 'internal';
 
-    im_project.del(v_internal_project_id);
-END;
+begin
+     for row in (
+        select project_id
+        from im_projects
+     ) loop
+        im_project.del(row.project_id);
+     end loop;
+end;
 /
-commit;
 
 
 drop package im_project;
@@ -237,20 +286,16 @@ commit;
 -- Customers
 --
 
--- Test delete of a know customer
-DECLARE
-    v_internal_customer_id	integer;
-BEGIN
-    select customer_id
-    into v_internal_customer_id
-    from im_customers
-    where customer_path = 'internal';
-
-    im_customer.del(v_internal_customer_id);
-END;
+begin
+     for row in (
+        select customer_id
+        from im_customers
+     ) loop
+        im_customer.del(row.customer_id);
+     end loop;
+end;
 /
 commit;
-
 
 -- Remove all possible links to customers from offices
 BEGIN
@@ -290,9 +335,15 @@ commit;
 -------------------------------------------------------
 -- P/O Business Objects
 
+BEGIN
+    acs_rel_type.drop_type('im_biz_object_member');
+END;
+/
+
 drop table im_member_rels;
 drop package im_member_rel;
 
+drop table im_biz_object_urls;
 drop table im_biz_object_role_map;
 drop table im_biz_object_members;
 drop package im_biz_object;
@@ -305,23 +356,6 @@ BEGIN
  acs_object_type.drop_type ('im_biz_object');
  acs_object_type.drop_type ('im_member_rel');
 END;
-/
-commit;
-
-
------------------------------------------------------------
--- Permissions 
-
-begin
-   im_drop_profile ('P/O Admins');
-   im_drop_profile ('Customers'); 
-   im_drop_profile ('Offices'); 
-   im_drop_profile ('Employees'); 
-   im_drop_profile ('Freelancers'); 
-   im_drop_profile ('Project Managers'); 
-   im_drop_profile ('Senior Managers'); 
-   im_drop_profile ('Accounting'); 
-end;
 /
 commit;
 

@@ -35,7 +35,7 @@ begin
 	);
 end;
 /
-show errors
+show errors;
 
 
 create table im_projects (
@@ -87,16 +87,18 @@ create table im_projects (
 	requires_report_p	char(1) default('t')
 				constraint im_project_requires_report_p 
 				check (requires_report_p in ('t','f')),
-	project_budget		number(12,2),
-		-- Don't allow the same name for the same customer+level
-		constraint im_projects_name_un 
-		unique(project_name, customer_id, parent_id)
-
+	project_budget		number(12,2)
 );
 
 create index im_project_parent_id_idx on im_projects(parent_id);
 -- create index im_project_status_id_idx on im_projects(project_status_id);
 -- create index im_project_project_nr_idx on im_projects(project_nr);
+
+-- Dont allow the same name for the same customer+level
+alter table im_projects add
+	constraint im_projects_name_un 
+	unique(project_name, customer_id, parent_id);
+
 
 
 
