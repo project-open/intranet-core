@@ -136,6 +136,7 @@
   <msg key="Create_Project">Create Project</msg>
   <msg key="Created">Created</msg>
   <msg key="Creation">Creation</msg>
+  <msg key="Customer">Customer</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="d">d</msg>
@@ -157,6 +158,7 @@
   <msg key="Delivered">Delivered</msg>
   <msg key="Delivery_Date">Delivery Date</msg>
   <msg key="Description">Description</msg>
+  <msg key="Direct_Client">Direct Customer</msg>
   <msg key="directory_path">directory path</msg>
   <msg key="Discussion">Discussion</msg>
   <msg key="display">display</msg>
@@ -227,6 +229,7 @@
   <msg key="g">g</msg>
   <msg key="Gen">Gen</msg>
   <msg key="gl">gl</msg>
+  <msg key="Glossary_Comp">Glossary Compilation</msg>
   <msg key="Glossary_Compilation">Glossary Compilation</msg>
   <msg key="gr">gr</msg>
   <msg key="Group_administration">Group administration</msg>
@@ -268,6 +271,7 @@
   <msg key="invoice-spanishadp">invoice-spanishadp</msg>
   <msg key="Invoiced">Invoiced</msg>
   <msg key="it">it</msg>
+  <msg key="IT_Consulting">IT Consulting</msg>
   <msg key="it_IT">it_IT</msg>
   <msg key="j">j</msg>
   <msg key="JPY">JPY</msg>
@@ -280,6 +284,7 @@
   <msg key="Last_Visit">Last Visit</msg>
   <msg key="Last_visit">Last visit</msg>
   <msg key="Law">Law</msg>
+  <msg key="Linguistic_Val">Linguistic Validation</msg>
   <msg key="Lit">Lit</msg>
   <msg key="Loc">Loc</msg>
   <msg key="Localization">Localization</msg>
@@ -637,6 +642,7 @@ other way for the user to find out.</msg>
   <msg key="Office_Status">Office Status</msg>
   <msg key="Office_Type">Office Type</msg>
   <msg key="Offices">Offices</msg>
+  <msg key="On_Hold">On Hold</msg>
   <msg key="One_company">One company</msg>
   <msg key="One_office">One office</msg>
   <msg key="One_project">One project</msg>
@@ -771,7 +777,12 @@ other way for the user to find out.</msg>
   <msg key="Trans__Edit">Trans Edit</msg>
   <msg key="Trans__Edit__Proof">Trans Edit Proof</msg>
   <msg key="Trans__Int_Spotcheck">Trans Int Spotcheck</msg>
+  <msg key="Trans_Management">Trans Management</msg>
   <msg key="Trans_Only">Trans Only</msg>
+  <msg key="TransEd">Trans+Ed</msg>
+  <msg key="TransEdProof">Trans+Ed+Proof</msg>
+  <msg key="TransIntSpot">Trans+ Intl. Spot</msg>
+  <msg key="Translation_Agency">Translation Agency</msg>
   <msg key="Translation_Project">Translation Project</msg>
   <msg key="Travel">Travel</msg>
   <msg key="Travel_Cost">Travel Cost</msg>
