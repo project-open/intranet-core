@@ -302,7 +302,7 @@ ad_proc -public im_import_categories { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-
+	set category_description [ns_urldecode $category_description]
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
@@ -344,7 +344,7 @@ ad_proc -public im_import_categories { filename } {
 
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
-	    append err_return "<li>Error loading categories:<br>
+	    append err_return "<li>Error loading categories: line $i<br>
 	    $csv_line<br>
 	    <pre>\n$err_msg</pre>"
 	}
@@ -425,7 +425,7 @@ ad_proc -public im_import_companies { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
@@ -712,12 +712,15 @@ ad_proc -public im_import_offices { filename } {
 	    if {"" == $var_name || [string equal $var_name ";"]} {
 		continue
 	    }
-
 	    set cmd "set $var_name \"$var_value\""
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set address_line1 [ns_urldecode $address_line1]
+	set address_line2 [ns_urldecode $address_line2]
+	set address_city [ns_urldecode $address_city]
+	set landlord [ns_urldecode $landlord]
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
@@ -987,7 +990,8 @@ ad_proc -public im_import_projects { filename } {
 	    ns_log Notice "$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set description [ns_urldecode $description]
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
@@ -1666,7 +1670,7 @@ ad_proc -public im_import_freelancers { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
 	#
@@ -1716,6 +1720,171 @@ WHERE
 	 } err_msg] } {
 	    ns_log Warning "$err_msg"
 	    append err_return "<li>Error loading freelancers:<br> <pre>\n$err_msg</pre>"
+	}
+    }
+    return $err_return
+}
+
+####### 
+# -------------------------------------------------------
+# Freelancers
+# -------------------------------------------------------
+
+
+ad_proc -public im_import_employees { filename } {
+    Import the employees information
+} {
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified export version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_employees"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	set job_description [ns_urldecode $job_description]
+	#set note [ns_urldecode $note]
+	# -------------------------------------------------------
+	# Transform categories, email and names into IDs
+	#
+
+	set employee_id [im_import_get_user $employee_email ""]
+	set department_id [db_string deparment "select cost_center_id \
+                             from im_cost_centers where cost_center_label = :department_label" -default ""]
+	set supervisor_id [im_import_get_user $supervisor_email ""]
+	set referred_by [im_import_get_user $referred_by_email ""]
+	
+	set employee_status_id [im_import_get_category $employee_status "Intranet Employee Pipeline State" ""]
+	set experience_id [im_import_get_category $experience "Intranet Prior Experience" ""]
+	
+	set source_id [im_import_get_category $source "Intranet Hiring Source" ""]
+	set original_job_id [im_import_get_category $original_job "Intranet Job Title" ""]
+
+	set current_job_id [im_import_get_category $current_job "Intranet Job Title" ""]
+	set qualification_id [im_import_get_category $qualification "Intranet Qualification Process" ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_sql "INSERT INTO im_employees (employee_id) values (:employee_id)"
+	set update_sql "
+UPDATE im_employees
+SET
+	department_id	        = :department_id,
+	job_title		= :job_title,
+	job_description		= :job_description,
+	availability		= :availability,
+	supervisor_id		= :supervisor_id,
+	ss_number	        = :ss_number,
+	salary			= :salary,
+	social_security		= :social_security,
+        insurance               = :insurance,
+        other_costs             = :other_costs,
+        currency                = :currency,
+        salary_period           = :salary_period,
+        salary_payments_per_year = :salary_payments_per_year,
+        dependant_p             = :dependant_p,
+        only_job_p              = :only_job_p,
+        married_p               = :married_p,
+        dependants              = :dependants,
+        head_of_household_p     = :head_of_household_p,     
+        birthdate               = :birthdate,               
+        skills                  = :skills,                  
+        first_experience        = :first_experience,        
+        years_experience        = :years_experience,        
+        educational_history     = :educational_history,
+        last_degree_completed   = :last_degree_completed,   
+        employee_status_id      = :employee_status_id,      
+        termination_reason      = :termination_reason,      
+        voluntary_termination_p = :voluntary_termination_p, 
+        signed_nda_p            = :signed_nda_p,            
+        referred_by             = :referred_by,             
+        experience_id           = :experience_id,
+        source_id               = :source_id,               
+        original_job_id         = :original_job_id,         
+        current_job_id          = :current_job_id,          
+        qualification_id        = :qualification_id        
+
+WHERE
+	employee_id = :employee_id
+"
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "user_id			$employee_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    set count [db_string count_members "select count(*) from im_employees where employee_id=:employee_id"]
+	    if {!$count} {
+		db_dml create_member $create_sql
+	    }
+	    db_dml update_freelancer $update_sql
+	
+	 } err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading employees:<br> <pre>\n$err_msg</pre>"
 	}
     }
     return $err_return
@@ -1939,7 +2108,7 @@ ad_proc -public im_import_hours { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
 	#
@@ -2012,6 +2181,158 @@ WHERE
     }
     return $err_return
 }
+
+
+# -------------------------------------------------------
+# user absences
+# -------------------------------------------------------
+
+ad_proc -public im_import_user_absences { filename } {
+    Import the user absences file
+} {
+    
+    set user_id [ad_maybe_redirect_for_registration]
+    
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+    
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+    
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_user_absences"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+    
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+    
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+  
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    append err_return "<li>Skipping line '$csv_line'"
+	    continue
+	}
+   
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	set description [ns_urldecode $description]
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	# Use "" as default values because most of these
+	# values are optional.
+        #
+	set owner_id [im_import_get_user "$owner_email" ""]
+	set absence_type [im_import_get_category $absence_type "Intranet Absence Type" ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_absence_sql "
+INSERT INTO im_user_absences (
+        absence_id,
+        start_date,
+        end_date,
+        absence_type
+) values (
+        :absence_id,
+        :start_date,
+        :end_date,
+        :absence_type
+)"
+
+
+	set update_absence_sql "
+UPDATE im_user_absences
+SET
+        owner_id                = :owner_id,
+        start_date		= :start_date,
+        end_date		= :end_date,
+        description             = :description,
+        contact_info	        = :contact_info,
+        receive_email_p 	= :receive_email_p,
+        last_modified		= sysdate,
+        absence_type            = :absence_type
+WHERE
+        absence_id = :absence_id
+"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+	
+	    set absence_id [db_string absence_id "
+select 
+	absence_id 
+from
+	im_user_absences
+where 
+	owner_id = :owner_id 
+	and start_date = :start_date 
+	" -default 0]
+
+	    if {0 == $absence_id} {
+		# The absence doesn't exist yet:
+	        set absence_id [db_nextval im_user_absences_id_seq]
+		db_dml absence_create $create_absence_sql
+	    }
+	    db_dml update_absence $update_absence_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading absence:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
 
 
 
@@ -2209,7 +2530,9 @@ ad_proc -public im_import_trans_tasks { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set task_name [ns_urldecode $task_name]
+	set task_filename [ns_urldecode $task_filename]
+	set description [ns_urldecode $description]
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
 	#
@@ -2307,9 +2630,13 @@ SET
 	task_units		= :task_units,
 	billable_units		= :billable_units,
 	task_uom_id		= :task_uom_id,
+        match_x                 = :match_x,
+        match_rep               = :match_rep,
 	match100		= :match100,
 	match95			= :match95,
 	match85			= :match85,
+        match75                 = :match75,
+        match50                 = :match50,
 	match0			= :match0,
 	trans_id		= :trans_id,
 	edit_id			= :edit_id,	
@@ -2359,6 +2686,252 @@ task_name=$task_name
     return $err_return
 }
 
+# -------------------------------------------------------
+# Costs
+# -------------------------------------------------------
+
+ad_proc -public im_import_costs { filename } {
+    Import the costs file
+} {
+    set parent_list_of_lists [list]
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_costs"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	set note [ns_urldecode $note]
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	# continue here
+	
+	set cost_id [db_string cost_id "select cost_id \
+                        from im_costs where cost_nr=:cost_nr" -default 0]
+
+        set customer_id [db_string customer "select company_id \
+                        from im_companies where company_name=:customer_name" -default 0]
+
+	set provider_id [db_string provider "select company_id \
+                        from im_companies where company_name=:provider_name" -default 0]
+
+	set creator_id [im_import_get_user $creator_email ""]
+	
+	set project_id [db_string project "select project_id \
+                        from im_projects where project_name = :project_name" -default ""]
+	
+	set investment_id [db_string investment {\
+			   select investment_id \
+			   from im_investments \
+			   where name = :investment_name} -default 0]
+	set cost_center_id [db_string cost_center "select cost_center_id \
+                           from im_cost_centers \
+                           where cost_center_name = :cost_center_label" -default ""]
+    
+	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
+	set cost_status_id [im_import_get_category $cost_status "Intranet Cost Status" 0]
+	set cost_type_id [im_import_get_category $cost_type "Intranet Cost Type" ""]
+	
+	####################
+	#
+	# 20041014 avila@digiteix.com
+	# ------------------
+	# in the first step insert null in parent field
+	# update parent info when all costs are in the DB
+
+	set parent_id ""
+
+	set modifying_user [im_import_get_user $last_modifying_email ""]
+	
+	# Old style invoices - provider was Internal by default
+	# set provider_id [im_company_internal]
+
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_cost_sql "
+DECLARE
+    v_cost_id        integer;
+BEGIN
+    v_cost_id := im_cost.new (
+        cost_name               => :cost_name,
+        customer_id             => :customer_id,
+        provider_id             => :provider_id,
+        cost_status_id          => :cost_status_id,
+        cost_type_id            => :cost_type_id,
+	creation_user		=> :creator_id,
+	creation_ip		=> '[ad_conn peeraddr]'
+    );
+END;"
+	set create_cost_sql "
+BEGIN
+    :1 := im_cost.new (
+        cost_name               => :cost_name,
+        customer_id             => :customer_id,
+        provider_id             => :provider_id,
+        cost_status_id          => :cost_status_id,
+        cost_type_id            => :cost_type_id,
+	creation_user		=> :creator_id,
+	creation_ip		=> '[ad_conn peeraddr]'
+    );
+END;"
+	set update_cost_sql "
+UPDATE im_costs
+SET
+        cost_name            = :cost_name,
+        cost_nr              = :cost_nr,
+        customer_id          = :customer_id,
+        provider_id          = :provider_id,
+        project_id           = :project_id,
+        start_block          = :start_block,
+        effective_date       = :effective_date,
+        investment_id        = :investment_id,
+        cost_center_id       = :cost_center_id,
+        currency             = :currency,
+        template_id          = :template_id,
+        cost_status_id       = :cost_status_id,
+        cost_type_id         = :cost_type_id,
+        payment_days         = :payment_days,
+        vat                  = :vat,
+        tax                  = :tax,
+	note		     = :note,
+        amount               = :amount,
+        variable_cost_p      = :variable_cost_p,
+        needs_redistribution_p = :needs_redistribution_p,
+        parent_id            = :parent_id,
+        redistributed_p      = :redistributed_p,
+        planning_p           = :planning_p,
+        planning_type_id     = :planning_type_id,
+        description          = :description,
+        paid_amount          = :paid_amount,
+        paid_currency        = :paid_currency        
+WHERE
+	cost_id = :cost_id"
+
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "cost_id	$cost_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+	if { [catch {
+
+	    if {0 == $cost_id} {
+		# The invoice doesn't exist yet:
+		#db_dml invoice_cost $create_cost_sql
+		set cost_id [db_exec_plsql invoice_cost $create_cost_sql]
+		#ad_return_error "*****" "$cost_id"
+		#ad_script_abort
+	    }
+	    db_dml update_cost $update_cost_sql
+	    db_dml "update object info" "update acs_objects set
+                       modifying_user = :modifying_user,
+                       last_modified = :last_modified,
+                       modifying_ip = :modifying_ip
+                    where object_id = :cost_id"
+	    set parent_element [list $cost_id $parent_cost_nr]
+	    lappend parent_list_of_lists $parent_element
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading costs:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	    ad_return_error "********" "$err_return"
+	    ad_script_abort
+	}
+    }
+    # update parent info
+    
+    foreach parent_l $parent_list_of_lists {
+	set c_id [lindex $parent_l 0]
+	set parent_cost_nr [lindex $parent_l 1]
+	#set parent_cost_nr [lindex $p_info_list 0]
+	#set start_block [lindex $p_info_list 1]
+
+	# get parent_cost_id
+	if {"" != $parent_cost_nr} {
+	    if {![db_0or1row "get parent_cost_id" "selenct cost_id as parent_id \
+                          from im_costs \
+                          where cost_nr = :parent_cost_nr"]} {
+		set parent_id "0"
+	    }
+	    if { [catch {
+		db_dml "update parent" "update im_cost set parent_id = :parent_id
+                                where cost_id = :c_id"
+	    } err_msg] } {
+		ns_log Warning "$err_msg"
+		append err_return "<li>Error updating parent costs:<br>
+	    <br><pre>\n$err_msg</pre>"
+	    }
+	}
+    }
+    return $err_return
+}
+
 
 # -------------------------------------------------------
 # Invoices
@@ -2369,7 +2942,7 @@ ad_proc -public im_import_invoices { filename } {
 } {
 
     set user_id [ad_maybe_redirect_for_registration]
-
+    set ref_doc_list_of_list [list]
     set err_return ""
     if {![file readable $filename]} {
 	append err_return "Unable to read file '$filename'"
@@ -2436,59 +3009,55 @@ ad_proc -public im_import_invoices { filename } {
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
-
-	set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
-
-        set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
-	set creator_id [im_import_get_user $creator_email ""]
+	if {![empty_string_p $start_block]} {
+	    set start_block_cond " = :start_block"
+	} else {
+	    set start_block_cond " is null"
+	}
+	set invoice_id [db_string invoice_id "select cost_id \
+                       from im_costs where cost_nr = :cost_nr \
+                       and start_block $start_block_cond" -default 0]
+	#ad_return_error "***********" "cost_nr $cost_nr start_block $start_block -----> $invoice_id ******"
+	#ad_script_abort
 	set company_contact_id [im_import_get_user $company_contact_email ""]
-	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
-	set cost_status_id [im_import_get_category $cost_status "Intranet Cost Status" 0]
-	set cost_type_id [im_import_get_category $cost_type "Intranet Cost Type" ""]
-	set payment_method_id [im_import_get_category $payment_method "Intranet Invoice Payment Method" 0]
+	
+	set payment_method_id [im_import_get_category $payment_method "Intranet Invoice Payment Method" ""]
 
-	# Old style invoices - provider was Internal by default
-	set provider_id [im_company_internal]
-
+	####################
+	#
+	# 20041014 avila@digiteix.com
+	# ------------------
+	# in the first step insert null in reference_document field
+	# update reference info when all invoices are in the DB
+	
+	set reference_document_id ""
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
 
 	set create_invoice_sql "
-DECLARE
-    v_invoice_id        integer;
-BEGIN
-    v_invoice_id := im_invoice.new (
-        invoice_nr              => :invoice_nr,
-        company_id             => :company_id,
-        provider_id             => :provider_id,
-	creation_user		=> :user_id,
-	creation_ip		=> '[ad_conn peeraddr]'
-    );
-END;"
+insert into im_invoices (
+                invoice_id,
+                company_contact_id,
+                invoice_nr,
+                payment_method_id
+       ) values (
+                :invoice_id,
+                :company_contact_id,
+                :invoice_nr,
+                :payment_method_id
+		)
+"
 
 	set update_invoice_sql "
 UPDATE im_invoices
 SET
         invoice_nr              = :invoice_nr,
-        company_id             = :company_id,
-        provider_id             = :provider_id,
-	creator_id		= :creator_id,
-	company_contact_id	= :company_contact_id,
-        invoice_date            = :invoice_date,
-	due_date		= :due_date,
-	invoice_currency	= :invoice_currency,
-        invoice_template_id     = :template_id,
-        invoice_status_id       = :invoice_status_id,
-        invoice_type_id         = :invoice_type_id,
-        payment_method_id       = :payment_method_id,
-        payment_days            = :payment_days,
-        vat                     = :vat,
-        tax                     = :tax,
-	note			= :note
+        company_contact_id      = :company_contact_id,
+        payment_method_id       = :payment_method_id
 WHERE
-	invoice_nr = :invoice_nr"
+	invoice_id = :invoice_id"
 
 
 	# -------------------------------------------------------
@@ -2502,20 +3071,35 @@ WHERE
 	#
 
 	if { [catch {
-
-	    if {0 == $invoice_id} {
+            db_1row "exist invoice_id" "select count(*) as exist_invoice from im_invoices where invoice_id = :invoice_id"
+	    if {0 == $exist_invoice} {
 		# The invoice doesn't exist yet:
 		db_dml invoice_create $create_invoice_sql
 	    }
 	    db_dml update_invoice $update_invoice_sql
-	
+	    set reference_document_list [list $invoice_id $reference_document_nr]
+            lappend ref_doc_list_of_list $reference_document_list
+
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
 	    append err_return "<li>Error loading invoices:<br>
 	    $csv_line<br><pre>\n$err_msg</pre>"
 	}
     }
+    # update reference_document info
+    foreach ref_doc_list $ref_doc_list_of_list {
+        set invoice_id [lindex $ref_doc_list 0]
+        set ref_doc_nr [lindex $ref_doc_list 1]
 
+        set reference_document_id [db_string reference_document "select invoice_id from im_invoices where invoice_nr = :ref_doc_nr" -default ""]
+        if { [catch {
+             db_dml "update reference_document" "update im_invoices set reference_document_id = :reference_document_id where invoice_id = :invoice_id"
+        } err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error updating reference document invoices:<br>
+	    $ref_doc_nr<br><pre>\n$err_msg</pre>"
+	}
+    }
     return $err_return
 }
 
@@ -2588,7 +3172,9 @@ ad_proc -public im_import_invoice_items { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set item_name [ns_urldecode $item_name]
+	set description [ns_urldecode $description]
+
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
@@ -2678,6 +3264,120 @@ WHERE
 }
 
 
+ad_proc -public im_import_project_invoice_map { filename } {
+    Import the project_invoice_map  file
+} {
+    
+    set user_id [ad_maybe_redirect_for_registration]
+    
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+    
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+    
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_project_invoice_map"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+    
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+    
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+	
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+	
+	
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+	
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+	    
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+	    
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+	    
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+	
+        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+        set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
+	
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+	
+	set create_project_invoice_map_sql "
+ begin
+       :1 := acs_rel.new(
+                object_id_one => :project_id,
+                object_id_two => :invoice_id
+        );
+end;"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	# Check if we have already created the item
+        set exists [db_string item_id "select count(*) \ 
+                    from acs_rels \  
+                    where object_id_two=:invoice_id and object_id_one=:project_id and rel_type = 'relationship'" -default 0]
+
+	if { [catch {
+
+	    if {0 == $exists} {
+		# The invoice doesn't exist yet:
+		set rel [db_exec_plsql "create rel" $create_project_invoice_map_sql]
+	    }
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading project_company_map:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
+
 
 # -------------------------------------------------------
 # Payments
@@ -2751,15 +3451,15 @@ ad_proc -public im_import_payments { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set note [ns_urldecode $note]
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
 
-        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+        set cost_id [db_string invoice_id "select cost_id from im_costs where cost_nr=:cost_nr" -default 0]
 
-	set company_id [db_string company "select company_id from im_invoices where invoice_id=:invoice_id" -default 0]
-	set provider_id [db_string company "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
+	set company_id [db_string company "select customer_id from im_costs where cost_id=:cost_id" -default 0]
+	set provider_id [db_string provider "select provider_id from im_costs where cost_id=:cost_id" -default 0]
 
 	set payment_status_id [im_import_get_category $payment_status "Intranet Payment Status" ""]
 	set payment_type_id [im_import_get_category $payment_type "Intranet Payment Type" ""]
@@ -2771,7 +3471,7 @@ ad_proc -public im_import_payments { filename } {
 	set create_payment_sql "
 INSERT INTO im_payments (
         payment_id,
-        invoice_id,
+        cost_id,
         company_id,
         provider_id,
 	received_date,
@@ -2781,7 +3481,7 @@ INSERT INTO im_payments (
         modified_ip_address
 ) values (
 	:payment_id,
-	:invoice_id,
+	:cost_id,
 	:company_id,
 	:provider_id,
 	:received_date,
@@ -2795,7 +3495,7 @@ INSERT INTO im_payments (
 	set update_payment_sql "
 UPDATE im_payments
 SET
-        invoice_id              = :invoice_id,
+        cost_id              = :cost_id,
         company_id             = :company_id,
         provider_id             = :provider_id,
         received_date           = :received_date,
@@ -2818,7 +3518,7 @@ WHERE
 
 	if { [catch {
 	
-	    set payment_id [db_string payment_id "select payment_id from im_payments where company_id=:company_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and payment_type_id=:payment_type_id and currency=:currency" -default 0]
+	    set payment_id [db_string payment_id "select payment_id from im_payments where company_id=:company_id and cost_id=:cost_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and payment_type_id=:payment_type_id and currency=:currency" -default 0]
 
 	    if {0 == $payment_id} {
 		# The payment doesn't exist yet:
@@ -2863,6 +3563,253 @@ end;
 
     return $err_return
 }
+
+# -------------------------------------------------------
+# Investments
+# -------------------------------------------------------
+
+ad_proc -public im_import_investments { filename } {
+    Import the investments file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_investments"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    append err_return "<li>Skipping line '$csv_line'"
+	    continue
+	}
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	set investment_id [db_string investment_id "select investment_id from im_investments where investment_name_nr=:investment_name" -default 0]
+
+	set investment_status_id [im_import_get_category $investment_status "Intranet Investment Status" ""]
+	set investment_type_id [im_import_get_category $investment_type "Intranet Investment Type" ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_investment_sql "
+INSERT INTO im_investment (
+        investment_id,
+        name,
+        investment_status_id,
+        investment_type_id
+) values (
+	:investment_id,
+	:investment_name,
+	:investment_status_id,
+	:investment_type_id
+)"
+
+
+	set update_investment_sql "
+UPDATE im_investment
+SET
+        name                    = :investment_name,
+        investment_status_id    = :investment_status_id,
+        investment_type__id     = :investment_type_id
+WHERE
+        investment_id = :investment_id
+"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    if {0 == $investment_id} {
+		# The investment doesn't exist yet:
+	        set investment_id [db_nextval im_investment_id_seq]
+		db_dml investment_create $create_investment_sql
+	    }
+	    db_dml update_investment $update_investment_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading investment:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
+# -------------------------------------------------------
+# Target languages
+# -------------------------------------------------------
+
+ad_proc -public im_import_target_languages { filename } {
+    Import the investments file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_target_languages"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    append err_return "<li>Skipping line '$csv_line'"
+	    continue
+	}
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	set project_id [db_string project_id "select project_id from im_projects where project_name=:project_name" -default 0]
+
+	set language_id [im_import_get_category $language "Intranet Translation Language" ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_target_language_sql "
+INSERT INTO im_target_languages (
+        project_id,
+        language_id
+) values (
+	:project_id,
+	:language_id
+)"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+            set exists [db_string "exist project language" "select count(*) \
+                         from im_target_languages \
+                         where project_id = :project_id and language_id = :language_id" -default 0]
+	    if {0 == $exists} {
+		# The project language doesn't exist yet:
+		db_dml target_language_create $create_target_language_sql
+	    }
+	    	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading target language:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
 
 
 # -------------------------------------------------------
