@@ -161,7 +161,6 @@ commit;
 
 
 
-prompt Project List Page
 --
 delete from im_view_columns where column_id > 2000 and column_id < 2099;
 --
@@ -202,7 +201,6 @@ extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status
 commit;
 
 
-prompt CompanyListPage columns.
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
@@ -237,7 +235,6 @@ commit;
 
 
 --------------------------------------------------------------
-prompt UsersListPage
 --
 delete from im_view_columns where column_id > 199 and column_id < 299;
 --
@@ -280,7 +277,6 @@ commit;
 
 
 -------------------------------------------------------------------
-prompt UsersViewPage
 --
 delete from im_view_columns where column_id > 1100 and column_id <= 1199;
 --
@@ -300,7 +296,6 @@ commit;
 
 
 ---------------------------------------------------------------
-prompt UsersContactViewPage
 --
 delete from im_view_columns where column_id > 399 and column_id < 499;
 --
@@ -367,7 +362,6 @@ commit;
 
 
 -------------------------------------------------------------------
-prompt UsersCommunityView
 --
 delete from im_view_columns where column_id > 1300 and column_id <= 1399;
 --
@@ -395,7 +389,6 @@ commit;
 -- Offices
 --
 
-prompt OfficeListPage columns.
 --
 delete from im_view_columns where column_id >= 8000 and column_id <= 8099;
 --
@@ -427,7 +420,6 @@ extra_select, extra_where, sort_order, visible_for) values (8007,80,NULL,'Phone'
 commit;
 
 
-prompt OfficeViewPage columns.
 --
 delete from im_view_columns where column_id >= 8100 and column_id <= 8199;
 --

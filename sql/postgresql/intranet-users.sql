@@ -83,7 +83,7 @@ DECLARE
 	v_user_id	alias for $1;
 	v_full_name	varchar(8000);
 BEGIN
-	select first_names || " " || last_name into v_full_name 
+	select first_names || '' '' || last_name into v_full_name 
 	from persons
 	where person_id = v_user_id;
 
@@ -123,11 +123,12 @@ END;' language 'plpgsql';
 -- Example:
 --	im_profile_add_user('Employees', 456)
 --
-create or replace procedure im_profile_add_user (
-		p_group_name IN varchar,
-		p_grantee_id IN integer
-)
-IS
+create or replace function im_profile_add_user (varchar, integer) 
+returns integer as '
+DECLARE
+	p_group_name	alias for $1;
+	p_grantee_id	alias for $2;
+
 	v_group_id	integer;
 	v_rel_id	integer;
 BEGIN
@@ -140,7 +141,6 @@ BEGIN
 	v_rel_id := membership_rel.new(
 		object_id_one	=> v_group_id,
 		object_id_two	=> p_grantee_id,
-		member_state	=> 'approved'
+		member_state	=> ''approved''
 	);
-END;
-/
+end;' language 'plpgsql';

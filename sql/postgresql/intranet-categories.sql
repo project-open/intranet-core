@@ -145,7 +145,21 @@ create index im_cat_hierarchy_parent_id_idx on im_category_hierarchy(parent_id);
 create index im_cat_hierarchy_child_id_idx on im_category_hierarchy(child_id);
 
 
--- views on intranet categories to make queries cleaner
+-- Some helper functions to make our queries easier to read
+create or replace function im_category_from_id (integer)
+returns varchar as '
+DECLARE
+	p_category_id	alias for $1;
+	v_category	varchar(50);
+BEGIN
+	select category
+	into v_category
+	from im_categories
+	where category_id = p_category_id;
+
+	return v_category;
+end;' language 'plpgsql';
+
 
 ------------------------------------------------------
 -- Business Objects

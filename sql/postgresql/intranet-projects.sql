@@ -182,7 +182,7 @@ end;' language 'plpgsql';
 
 -- What types of urls do we ask for when creating a new project
 -- and in what order?
-create sequence im_url_types_type_id_seq start with 1;
+create sequence im_url_types_type_id_seq start 1;
 create table im_url_types (
 	url_type_id		integer not null primary key,
 	url_type		varchar(200) not null 
@@ -215,3 +215,24 @@ create table im_project_url_map (
 create index im_proj_url_url_proj_idx on 
 im_project_url_map(url_type_id, project_id);
 
+
+create or replace function im_proj_url_from_type ( integer, varchar) 
+returns varchar as '
+DECLARE
+	v_project_id	alias for $1;
+	v_url_type	alias for $2;
+	v_url 		varchar;
+BEGIN
+	begin
+	select url 
+	into v_url 
+	from 	im_url_types, 
+		im_project_url_map
+	where	project_id=v_project_id
+		and im_url_types.url_type_id=im_project_url_map.url_type_id
+		and url_type=v_url_type;
+	
+	exception when others then null;
+	end;
+	return v_url;
+end;' language 'plpgsql';
