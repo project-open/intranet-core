@@ -228,31 +228,6 @@ drop function inline_0 ();
 
 
 
-
--- Create these entries at the very end,
--- because the objects types need to be there first.
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'user','view','/intranet/users/view?user_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'user','edit','/intranet/users/new?user_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','view','/intranet/projects/view?project_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','edit','/intranet/projects/new?project_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','view','/intranet/companies/view?company_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','edit','/intranet/companies/new?company_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','view','/intranet/offices/view?office_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','edit','/intranet/offices/new?office_id=');
-
-
 -- create function to add_months
 CREATE OR REPLACE FUNCTION add_months(date, int4)
   RETURNS date AS

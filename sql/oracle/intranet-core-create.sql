@@ -119,12 +119,16 @@ show errors;
 
 prompt *** intranet-views - Dynamic Views for ListPages
 @intranet-views.sql
+
 prompt *** intranet-core-backup - More Views for Reports and Backup
-@intranet-core-backup.sql
+@../common/intranet-core-backup.sql
+
 prompt *** intranet-components - Dynamic Plug-in Components
 @intranet-components.sql
+
 prompt *** intranet-permissions - Horizontal and Vertical Permissions
 @intranet-permissions.sql
+
 prompt *** intranet-menus - Dynamic menus
 @intranet-menus.sql
 
@@ -228,31 +232,4 @@ BEGIN
 END;
 /
 show errors;
-
-
--- Create these entries at the very end,
--- because the objects types need to be there first.
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'user','view','/intranet/users/view?user_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'user','edit','/intranet/users/new?user_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','view','/intranet/projects/view?project_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','edit','/intranet/projects/new?project_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','view','/intranet/companies/view?company_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','edit','/intranet/companies/new?company_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','view','/intranet/offices/view?office_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','edit','/intranet/offices/new?office_id=');
-
----
-commit;
 

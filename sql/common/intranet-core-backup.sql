@@ -1,4 +1,4 @@
--- /packages/intranet-core/sql/oracle/intranet-core-backup.sql
+-- /packages/intranet-core/sql/common/intranet-core-backup.sql
 --
 -- Copyright (C) 2004 Project/Open
 --
@@ -14,32 +14,7 @@
 --
 -- @author	frank.bergmann@project-open.com
 
--- 100	im_projects
--- 101	im_project_roles
--- 102	im_companies
--- 103	im_company_roles
--- 104	im_offices
--- 105	im_office_roles
--- 106	im_categories
---
--- 110	users
--- 111	im_profiles
---
--- 120	im_freelancers
---
--- 130	im_forums
---
--- 140	im_filestorage
---
--- 150	im_translation
---
--- 160	im_quality
---
--- 170	im_marketplace
---
--- 180	im_hours
---
--- 190
+-- for an overview of backup views check intranet-views.sql
 
 
 ---------------------------------------------------------
@@ -48,8 +23,8 @@
 
 delete from im_view_columns where view_id = 102;
 delete from im_views where view_id = 102;
-insert into im_views (view_id, view_name, view_sql
-) values (102, 'im_companies', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (102, 'im_companies', 1410, '
 select
         c.*,
         im_email_from_user_id(c.manager_id) as manager_email,
@@ -115,8 +90,8 @@ commit;
 
 delete from im_view_columns where view_id = 103;
 delete from im_views where view_id = 103;
-insert into im_views (view_id, view_name, visible_for, view_sql
-) values (103, 'im_company_members', '', '
+insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
+) values (103, 'im_company_members', 1410, ''', '
 select
 	c.company_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -147,8 +122,8 @@ commit;
 
 delete from im_view_columns where view_id = 100;
 delete from im_views where view_id = 100;
-insert into im_views (view_id, view_name, view_sql
-) values (100, 'im_projects', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (100, 'im_projects', 1410, ''
 select
         p.*,
         c.company_name,
@@ -212,8 +187,8 @@ commit;
 
 delete from im_view_columns where view_id = 101;
 delete from im_views where view_id = 101;
-insert into im_views (view_id, view_name, visible_for, view_sql
-) values (101, 'im_project_members', '', '
+insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
+) values (101, 'im_project_members', 1410, ''', '
 select
 	p.project_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -254,8 +229,8 @@ commit;
 
 delete from im_view_columns where view_id = 104;
 delete from im_views where view_id = 104;
-insert into im_views (view_id, view_name, view_sql
-) values (104, 'im_offices', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (104, 'im_offices', 1410, ''
 select
         o.*,
 	im_email_from_user_id(o.contact_person_id) as contact_person_email,
@@ -310,8 +285,8 @@ commit;
 
 delete from im_view_columns where view_id = 105;
 delete from im_views where view_id = 105;
-insert into im_views (view_id, view_name, visible_for, view_sql
-) values (105, 'im_office_members', '', '
+insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
+) values (105, 'im_office_members', 1410, ''', '
 select
 	p.office_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -352,8 +327,8 @@ commit;
 
 delete from im_view_columns where view_id = 106;
 delete from im_views where view_id = 106;
-insert into im_views (view_id, view_name, view_sql
-) values (106, 'im_categories', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (106, 'im_categories', 1410, ''
 select	c.*
 from	im_categories c
 ');
@@ -383,8 +358,8 @@ commit;
 
 delete from im_view_columns where view_id = 110;
 delete from im_views where view_id = 110;
-insert into im_views (view_id, view_name, view_sql
-) values (110, 'im_users', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (110, 'im_users', 1410, ''
 SELECT
         pe.first_names,
         pe.last_name,
@@ -504,8 +479,8 @@ commit;
 
 delete from im_view_columns where view_id = 111;
 delete from im_views where view_id = 111;
-insert into im_views (view_id, view_name, view_sql
-) values (111, 'im_profiles', '
+insert into im_views (view_id, view_name, view_type_id, view_sql
+) values (111, 'im_profiles', 1410, ''
 SELECT
 	g.group_name as profile_name,
 	im_email_from_user_id(m.member_id) as user_email

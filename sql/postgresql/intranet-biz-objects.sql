@@ -51,10 +51,14 @@ CREATE TABLE im_biz_objects (
 
 
 -- Store a "view" and an "edit" URLs for each object type.
+--
+-- fraber 041015: referential integrity to acs_object_types
+-- removed because this would require to insert elements into
+-- this table _after_ the objects have been created, which is
+-- very error prone for DM creation.
+--
 CREATE TABLE im_biz_object_urls (
-	object_type		varchar(1000)
-				constraint im_biz_obj_urls_object_type_fk
-				references acs_object_types,
+	object_type		varchar(1000),
 	url_type		varchar(100)
 				constraint im_biz_obj_urls_url_type_ck
 				check(url_type in ('view', 'edit')),
@@ -112,42 +116,6 @@ begin
 end;' language 'plpgsql';
 
 
-
--- ------------------------------------------------------------
--- Roles for all Biz Objects
--- ------------------------------------------------------------
-
--- Project/Open Core only knows about Member and PM
--- Project/Translation adds Translator, Proof Reader, ...
--- Project/Advertizing adds Producer, Designer, Texter, ...
--- Project/IT adds Business Analyst, Architect, Developer, ...
-
--- ToDo: Insert category hierarchy to be able to ask:
--- Is this an "object administrator" or a "full member"?
-
-insert into im_categories (
-	category_id, category, category_type, 
-	category_gif, category_description) 
-values (1300, 'Full Member', 'Intranet Biz Object Role', 
-	'member', 'Full Member');
-
-insert into im_categories (
-	category_id, category, category_type, 
-	category_gif, category_description) 
-values (1301, 'Project Manager', 'Intranet Biz Object Role', 
-	'project-manager', 'Project Manager');
-
-insert into im_categories (
-	category_id, category, category_type, 
-	category_gif, category_description) 
-values (1302, 'Key Account', 'Intranet Biz Object Role', 
-	'key-account', 'Key Account Manager');
-
-insert into im_categories (
-	category_id, category, category_type, 
-	category_gif, category_description) 
-values (1303, 'Office Manager', 'Intranet Biz Object Role', 
-	'office-manager', 'Office Manager');
 
 -- ------------------------------------------------------------
 -- Valid Roles for Biz Objects
@@ -268,4 +236,13 @@ BEGIN
 	PERFORM acs_rel__delete(v_rel_id);
 	return 0;
 end;' language 'plpgsql';
+
+
+
+--------------------------------------------------------------
+-- Definitions common to all DBs
+
+@../common/intranet-biz-objects.sql
+
+
 

@@ -152,13 +152,3 @@ BEGIN
 	return v_name;
 end;' language 'plpgsql';
 
-
--- Setup the list of roles that a user can take with
--- respect to a office:
---	Full Member (1300) and
---	Office Manager (1303)
---
-insert into im_biz_object_role_map values ('im_office',85,1300);
-insert into im_biz_object_role_map values ('im_office',85,1303);
-
-

@@ -195,16 +195,6 @@ alter table im_projects add
 -- Project Package
 -- ------------------------------------------------------------
 
--- Setup the list of roles that a user can take with
--- respect to a project:
---	Full Member (1300) and
---	Project Manager (1301)
---
-insert into im_biz_object_role_map values ('im_project',85,1300);
-insert into im_biz_object_role_map values ('im_project',85,1301);
-insert into im_biz_object_role_map values ('im_project',86,1300);
-insert into im_biz_object_role_map values ('im_project',86,1301);
-
 create or replace function im_project__new (
         integer, varchar, timestamptz, integer, varchar, integer,
         varchar, varchar, varchar, integer, integer, integer, integer

@@ -35,6 +35,9 @@
 	<A href=/acs-admin/developer>#intranet-core.lt_Manage_OpenACS_Develo#</A><br>
 	#intranet-core.lt_Here_you_find_advance_1# 
 	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
+      <li>
+	<A href=backup/>#intranet-core.lt_Backup_and_Restore_Data#</A><br>
+	#intranet-core.Backup_and_Restore_blurb# 
 
 <if [db_table_exists im_dynval_vars]>
       <li>

@@ -100,15 +100,6 @@ create table im_companies (
 );
 
 
--- Setup the list of roles that a user can take with
--- respect to a company:
---      Full Member (1300) and
---      Key Account Manager (1302)
---
-insert into im_biz_object_role_map values ('im_company',85,1300);
-insert into im_biz_object_role_map values ('im_company',85,1302);
-
-
 create or replace function im_company__new (
         integer, varchar, timestamptz, integer, varchar, integer,
         varchar, varchar, integer, integer, integer
