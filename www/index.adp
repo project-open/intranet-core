@@ -10,40 +10,14 @@
 <br>
 <h1>Welcome to Project/Open</h1>
 
-<p>
-We have prepared for you this sample system configuration
-in order to present you Project/Open in a realistic environment.
-So we have included a lot of invented sample data such as
-users, project, customers etc. Just click around to explore
-the system. 
-</P>
-
-<h1>The "Tigerpond" Sample Company</h1>
-
-We have created a sample company for your called "Tigerpond". Tigerpond
-is a small consulting company in the area of software localization.
-Tigerpond performs both consulting project, software development 
-projects and translation projects for its customers. Please click
-on the blue tabs above to explore details:
-
-<ul>
-<li><b>Users</b>: The people working for Tigerpond</li>
-<li><b>Projects</b>: The currently running projects</li>
-<li><b>Companies</b>: Customer, providers and business partners of Tigerpond</li>
-<li><b>Finance</b>: The financial situation of Tigerpond</li>
-</ul>
-
-
-
-<h1>Getting Help</h1>
+<h2>Getting Help</h2>
 
 Help is available for you in various ways:
 
 <ul>
 <li>
   <A href="http://www.project-open.com/product/modules/"><B>
-    Project/Open Feature Overview
-  </b></a>:<br>
+    Project/Open Feature Overview</b></a>:<br>
   Our web page gives you an overview over the 
   different Project/Open modules 
   and briefly explains their functionality.
@@ -51,8 +25,7 @@ Help is available for you in various ways:
 </li>
 <li>
   <A href="http://sourceforge.net/project/showfiles.php?group_id=86419&package_id=89751&release_id=281910"><b>
-    Project/Open User Guides
-  </b></a>:<br>
+    Project/Open User Guides</b></a>:<br>
   Please visit the download zone of our 
   <a href="http://sourceforge.net/projects/project-open/">developer community</a>.
   Here you will find several system guides in ".pdf" or ".doc" format.
@@ -61,14 +34,44 @@ Help is available for you in various ways:
 
 <li>
   <A href="http://www.project-open.org/doc/"><b>
-    Complete List of Documentation
-  </b></a>:<br>
+    Complete List of Documentation</b></a>:<br>
   Please see the list of all available documentation.
   <br>&nbsp;
 </li>
 
 </ul>
 
+
+<h2>Configuring Your System</h2>
+
+<p>
+In order to configure your new system, please follow the
+instructions of the 
+<a href="http://prdownloads.sourceforge.net/project-open/PO-Configuration-Guide.050113.pdf?download">Project/Open Configuration Guide </a>
+and download the other files from the "Project/Open User Guides" 
+download zone mentioned above. Or contact us for more information.
+</p>
+
+<p>
+After the basic configuration you can start setting up
+your corporate environment. We recommend that you start
+in the following order:
+
+<ul>
+<li>Set up some employees, customers and freelancers
+    in the "Users" menu, using sample values from your
+    corporate environment.
+<li>Set up your own company in the "Companies" menu.
+    Please note that your own company needs to have
+    Company Path="internal" (lower case letters) and
+    Company Type="Internal", in order to be identified
+    as such.
+<li>Set up some customer and provider companies in the
+    "Companies" menu.
+<li>Set up some projects in the "Projects" menu, using
+    sample values from your corporate environment
+</ul>
+</p>
   
   
     <%= [im_component_bay left] %>
