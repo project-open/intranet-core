@@ -75,7 +75,7 @@ create table im_component_plugins (
 				-- One of "left", "right" or "bottom".
 	location		varchar(100) not null,
 				-- constraint im_comp_plugin_location_check
-				-- check(location in ('left','right','bottom')),
+				-- check(location in ('left','right','bottom','none')),
 	component_tcl		varchar(4000),
 		constraint im_component_plugins_un
 		unique (plugin_name, package_name)
