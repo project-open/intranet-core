@@ -155,7 +155,7 @@ ad_proc -public im_permission {user_id action} {
 </pre>
 } {
     set subsite_id [ad_conn subsite_id]
-    set result [ad_permission_p $subsite_id $action]
+    set result [util_memoize "ad_permission_p $subsite_id $action"]
     ns_log Notice "im_permission($action)=$result"
     return $result
 }

@@ -48,7 +48,7 @@
 -- 220-229	Intranet Annual Revenue
 -- 250-299	Intranet Translation Language
 -- 320-329	Intranet Translation UoM
--- 340-399	Intranet Translation Task Status
+-- 340-359	Intranet Translation Task Status
 -- 360-379	Intranet Project Status
 -- 400-409	Intranet Prior Experience
 -- 450-459	Intranet Employee Pipeline Status
@@ -63,6 +63,7 @@
 -- 1300-1399	Intranet Project Role
 -- 2000-2099	Intranet Freelance Skill Type
 -- 2100-2199	Intranet Freelance TM Tools
+-- 2200-2299	Translation Hierarchy
 
 -- 3000-3099	Intranet Cost Center Type
 -- 3100-3199	Intranet Cost Center Status
@@ -75,7 +76,7 @@
 -- object states and types, instead of a zillion of 
 -- tables like 'im_project_status' and 'im_project_type'.
 
-create sequence im_categories_seq start with 1;
+create sequence im_categories_seq start with 10000;
 create table im_categories (
 	category_id		integer 
 				constraint im_categories_pk

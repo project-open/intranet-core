@@ -324,6 +324,14 @@ begin
 
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
 
+
+    acs_privilege.create_privilege('view_invoices','View Invoices','View Invoices');
+    acs_privilege.create_privilege('view_payments','View Payments','View Payments');
+    acs_privilege.create_privilege('view_costs','View Costs','View Costs');
+    acs_privilege.create_privilege('add_invoices','View Invoices','View Invoices');
+    acs_privilege.create_privilege('add_payments','View Payments','View Payments');
+    acs_privilege.create_privilege('add_costs','View Costs','View Costs');
+
 end;
 /
 
@@ -364,15 +372,14 @@ END;
 show errors;
 
 
-
 BEGIN
-    im_priv_create('view_projects', 'Employees');
-    im_priv_create('view_project_members', 'Employees');
-    im_priv_create('view_projects_all', 'Employees');
-    im_priv_create('view_projects_history', 'Employees');
-    im_priv_create('add_projects', 'Employees');
-    im_priv_create('search_intranet', 'Employees');
-    im_priv_create('view_users', 'Employees');
+    im_priv_create('view_projects', 		'Employees');
+    im_priv_create('view_project_members', 	'Employees');
+    im_priv_create('view_projects_all', 	'Employees');
+    im_priv_create('view_projects_history', 	'Employees');
+    im_priv_create('add_projects', 		'Employees');
+    im_priv_create('search_intranet', 		'Employees');
+    im_priv_create('view_users', 		'Employees');
 END;
 /
 show errors;
@@ -417,30 +424,54 @@ show errors;
 BEGIN
 --	im_subgroup_create('Project Managers', 'Employees');
 
-    im_priv_create('view_customers', 'Project Managers');
-    im_priv_create('view_projects', 'Project Managers');
-    im_priv_create('view_project_members', 'Project Managers');
-    im_priv_create('view_projects_all', 'Project Managers');
-    im_priv_create('view_projects_history', 'Project Managers');
-    im_priv_create('add_projects', 'Project Managers');
-    im_priv_create('search_intranet', 'Project Managers');
-    im_priv_create('view_users', 'Project Managers');
-    im_priv_create('add_users', 'Project Managers');
+    im_priv_create('view_customers', 		'Project Managers');
+    im_priv_create('view_projects', 		'Project Managers');
+    im_priv_create('view_project_members', 	'Project Managers');
+    im_priv_create('view_projects_all', 	'Project Managers');
+    im_priv_create('view_projects_history', 	'Project Managers');
+    im_priv_create('add_projects', 		'Project Managers');
+    im_priv_create('search_intranet', 		'Project Managers');
+    im_priv_create('view_users', 		'Project Managers');
+    im_priv_create('add_users', 		'Project Managers');
 
-    im_priv_create('view_customers', 'Senior Managers');
-    im_priv_create('view_customer_contacts', 'Senior Managers');
-    im_priv_create('view_customer_details', 'Senior Managers');
-    im_priv_create('view_customer_all', 'Senior Managers');
-    im_priv_create('add_customers', 'Senior Managers');
-    im_priv_create('view_projects', 'Senior Managers');
-    im_priv_create('view_project_members', 'Senior Managers');
-    im_priv_create('view_projects_all', 'Senior Managers');
-    im_priv_create('view_projects_history', 'Senior Managers');
-    im_priv_create('add_projects', 'Senior Managers');
-    im_priv_create('search_intranet', 'Senior Managers');
-    im_priv_create('view_users', 'Senior Managers');
-    im_priv_create('add_users', 'Senior Managers');
+    im_priv_create('view_customers', 		'Senior Managers');
+    im_priv_create('view_customer_contacts', 	'Senior Managers');
+    im_priv_create('view_customer_details', 	'Senior Managers');
+    im_priv_create('view_customer_all', 	'Senior Managers');
+    im_priv_create('add_customers', 		'Senior Managers');
+    im_priv_create('view_projects', 		'Senior Managers');
+    im_priv_create('view_project_members', 	'Senior Managers');
+    im_priv_create('view_projects_all', 	'Senior Managers');
+    im_priv_create('view_projects_history', 	'Senior Managers');
+    im_priv_create('add_projects', 		'Senior Managers');
+    im_priv_create('search_intranet', 		'Senior Managers');
+    im_priv_create('view_users', 		'Senior Managers');
+    im_priv_create('add_users', 		'Senior Managers');
+    im_priv_create('view_invoices', 		'Senior Managers');
+    im_priv_create('view_payments', 		'Senior Managers');
+    im_priv_create('view_costs', 		'Senior Managers');
+    im_priv_create('add_invoices', 		'Senior Managers');
+    im_priv_create('add_payments', 		'Senior Managers');
+    im_priv_create('add_costs', 		'Senior Managers');
 
+    im_priv_create('view_customers', 		'Accounting');
+    im_priv_create('view_customer_contacts', 	'Accounting');
+    im_priv_create('view_customer_details', 	'Accounting');
+    im_priv_create('view_customer_all', 	'Accounting');
+    im_priv_create('add_customers', 		'Accounting');
+    im_priv_create('view_projects', 		'Accounting');
+    im_priv_create('view_project_members', 	'Accounting');
+    im_priv_create('view_projects_all', 	'Accounting');
+    im_priv_create('view_projects_history', 	'Accounting');
+    im_priv_create('search_intranet', 		'Accounting');
+    im_priv_create('view_users', 		'Accounting');
+    im_priv_create('add_users', 		'Accounting');
+    im_priv_create('view_invoices', 		'Accounting');
+    im_priv_create('view_payments', 		'Accounting');
+    im_priv_create('view_costs', 		'Accounting');
+    im_priv_create('add_invoices', 		'Accounting');
+    im_priv_create('add_payments', 		'Accounting');
+    im_priv_create('add_costs', 		'Accounting');
 END;
 /
 commit;

@@ -95,26 +95,16 @@ create table im_view_columns (
 ---------------------------------------------------------
 -- Standard Views for TCL pages
 --
-insert into im_views (view_id, view_name, visible_for
-) values (1, 'customer_list', 'view_customers');
-insert into im_views (view_id, view_name, visible_for
-) values (2, 'customer_view', 'view_customers');
-insert into im_views (view_id, view_name, visible_for
-) values (10, 'user_list', 'view_users');
-insert into im_views (view_id, view_name, visible_for
-) values (11, 'user_view', 'view_users');
-insert into im_views (view_id, view_name, visible_for
-) values (12, 'user_contact', 'view_users');
-insert into im_views (view_id, view_name, visible_for
-) values (20, 'project_list', 'view_projects');
-insert into im_views (view_id, view_name, visible_for
-) values (21, 'project_costs', 'view_projects');
-insert into im_views (view_id, view_name, visible_for
-) values (22, 'project_status', 'view_projects');
-insert into im_views (view_id, view_name, visible_for
-) values (80, 'office_list', 'view_offices');
-insert into im_views (view_id, view_name, visible_for
-) values (81, 'office_view', 'view_offices');
+insert into im_views (view_id, view_name, visible_for) values (1, 'customer_list', 'view_customers');
+insert into im_views (view_id, view_name, visible_for) values (2, 'customer_view', 'view_customers');
+insert into im_views (view_id, view_name, visible_for) values (10, 'user_list', 'view_users');
+insert into im_views (view_id, view_name, visible_for) values (11, 'user_view', 'view_users');
+insert into im_views (view_id, view_name, visible_for) values (12, 'user_contact', 'view_users');
+insert into im_views (view_id, view_name, visible_for) values (20, 'project_list', 'view_projects');
+insert into im_views (view_id, view_name, visible_for) values (21, 'project_costs', 'view_projects');
+insert into im_views (view_id, view_name, visible_for) values (22, 'project_status', 'view_projects');
+insert into im_views (view_id, view_name, visible_for) values (80, 'office_list', 'view_offices');
+insert into im_views (view_id, view_name, visible_for) values (81, 'office_view', 'view_offices');
 
 
 
@@ -205,29 +195,33 @@ commit;
 delete from im_view_columns where column_id > 199 and column_id < 299;
 --
 -- insert into im_view_columns values (207,10,NULL,'#',
--- '$user_id','','',6,'im_permission $user_id view_users');
+-- '$user_id','','',6,'');
 
 insert into im_view_columns values (200,10,NULL,'Name',
-'"<a href=/intranet/users/view?user_id=$user_id>$name</a>"','','',2,
-'im_permission $user_id view_users');
+'"<a href=/intranet/users/view?user_id=$user_id>$name</a>"','','',2,'');
 
 insert into im_view_columns values (201,10,NULL,'Email',
-'"<a href=mailto:$email>$email</a>"','','',3,
-'im_permission $user_id view_users');
+'"<a href=mailto:$email>$email</a>"','','',3,'');
+
 -- insert into im_view_columns values (202,10,NULL,'Status',
--- '$status','','',4,'im_permission $user_id view_users');
+-- '$status','','',4,'');
 
 insert into im_view_columns values (203,10,NULL,'MSM',
-'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\"><IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\" width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'im_permission $user_id view_users');
+'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\">
+<IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\"
+width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'');
 
 insert into im_view_columns values (204,10,NULL,'Work Phone',
-'$work_phone','','',6,'im_permission $user_id view_users');
+'$work_phone','','',6,'');
 
 insert into im_view_columns values (205,10,NULL,'Cell Phone',
-'$cell_phone','','',7,'im_permission $user_id view_users');
+'$cell_phone','','',7,'');
 
 insert into im_view_columns values (206,10,NULL,'Home Phone',
-'$home_phone','','',8,'im_permission $user_id view_users');
+'$home_phone','','',8,'');
+--
+commit;
+
 
 
 -------------------------------------------------------------------

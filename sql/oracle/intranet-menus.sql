@@ -218,6 +218,7 @@ declare
 	v_office_menu		integer;
 	v_user_orgchart_menu	integer;
 	v_user_all_menu		integer;
+	v_user_new_menu		integer;
 	v_user_freelancers_menu	integer;
 	v_user_customers_menu	integer;
 	v_user_employees_menu	integer;
@@ -373,7 +374,7 @@ begin
 	label =>	'admin',
 	name =>		'Admin',
 	url =>		'/intranet/admin/',
-	sort_order =>	70,
+	sort_order =>	999,
 	parent_menu_id => v_main_menu
     );
     acs_permission.grant_permission(v_admin_menu, v_admins, 'read');
@@ -477,6 +478,21 @@ begin
     acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_senman, 'read');
     acs_permission.grant_permission(v_user_all_menu, v_accounting, 'read');
+
+
+    v_user_new_menu := im_menu.new (
+	package_name =>	'intranet',
+	label =>	'users_new',
+	name =>		'New User',
+	url =>		'/intranet/users/new',
+	sort_order =>	5,
+	parent_menu_id => v_user_menu
+    );
+    acs_permission.grant_permission(v_user_new_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_new_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_new_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_user_new_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_user_new_menu, v_accounting, 'read');
 
     -- -----------------------------------------------------
     -- Administration Submenu

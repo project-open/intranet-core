@@ -40,7 +40,7 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
     ns_log Notice "/users/view: all_profiles=$all_profiles"
     
     set profile_html "
-<select name=profile size=7 multiple $disabled>
+<select name=profile size=8 multiple $disabled>
 "
 
     foreach profile $all_profiles {
@@ -118,8 +118,8 @@ order by lower(g.group_name)
 
 
 ad_proc -public im_profiles_managable_for_user { user_id } {
-    Returns the list of profiles that a user has available to manage 
-    other users.<br>
+    Returns the list of (group_name - group_id) tupels for
+    all profiles that a user can manage<br>
     This function allows for a kind of "sub-administrators"
     where for example Employees are able to manage Freelancers.<BR>
     This list may be empty in the case of unprivileged users
@@ -129,7 +129,7 @@ ad_proc -public im_profiles_managable_for_user { user_id } {
 
     # Get the list of all profiles administratable
     # by the current user.
-    set profile_sql {
+    set profile_sql "
 select DISTINCT
 	g.group_name,
 	g.group_id
@@ -140,11 +140,12 @@ from
 where
 	perm.object_id = g.group_id
 	and perm.party_id = :user_id
-	and perm.privilege = 'read'
+	and perm.privilege = 'admin'
 	and g.group_id = o.object_id
 	and o.object_type = 'im_profile'
 order by lower(g.group_name)
-}
+"
+
     # We need a special treatment for Admin in order to
     # bootstrap the system...
     if {$user_is_admin_p} {

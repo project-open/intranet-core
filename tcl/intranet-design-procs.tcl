@@ -186,61 +186,20 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     }
     set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
     if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-
-
-    # -------- Compile the list of menus -------
-    set parent_menu_sql "select menu_id from im_menus where name='Users'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
-    set menu_select_sql "
-	select	m.*
-	from	im_menus m
-	where	parent_menu_id = :parent_menu_id
-		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
-	order by sort_order"
-
-    # make sure at most one field gets selected..
-    set navbar ""
-    set found_selected 0
-    db_foreach menu_select $menu_select_sql {
-	ns_log Notice "im_user_navbar: url=$url"
-        set html "$nosel\n<a href=\"$url\">$name</a>\n</td>\n"
-        if {!$found_selected && [string equal $url_stub $url]} {
-            set html "$sel\n$a_white href=\"$url\"/>$name</a>\n</td>\n"
-            set found_selected 1
-        }
-        append navbar "$tdsp\n$html"
+    if {![string equal "" $prev_page_url]} {
+	set alpha_bar "<A HREF=$prev_page_url>&lt;&lt;</A>\n$alpha_bar"
+    }
+  
+    if {![string equal "" $next_page_url]} {
+	set alpha_bar "$alpha_bar\n<A HREF=$next_page_url>&gt;&gt;</A>\n"
     }
 
-    set navbar_html "
-      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
-        <TR>
-          <TD align=right>
-            <table border=0 cellspacing=0 cellpadding=1>
-              <tr>
-$navbar
-              </tr>
-            </table>
-          </TD>
-        </TR>
-        <TR>
-          <td colspan=6 class=tabnotsel align=center>\n"
+    # Get the Subnavbar
+    set parent_menu_sql "select menu_id from im_menus where name='Users'"
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel"]
 
-if {![string equal "" $prev_page_url]} {
-    append navbar_html "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
-}
-
-append navbar_html $alpha_bar
-
-if {![string equal "" $next_page_url]} {
-    append navbar_html "<A HREF=$next_page_url>&gt;&gt;</A>\n"
-}
-
-append navbar_html "
-          </td>
-        </tr>
-      </table>\n"
-
-    return $navbar_html
+    return $navbar
 }
 
 ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list} {
@@ -520,9 +479,13 @@ ad_proc -public im_admin_navbar { } {
 
 
 
-ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} } {
+ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
+    @param parent_menu_id id of the parent menu in im_menus
+    @param bind_vars a list of variables to pass-through
+    @title string to go into the line below the menu tabs
+    @title_class CSS class of the title line
 } {
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
@@ -548,13 +511,13 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} } {
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 
+	ns_log Notice "im_sub_navbar: menu_name='$name'"
 	# Construct the URL
 	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
 	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
 		append url "&[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
 	    }
 	}
-
 
         # Shift the old value of cur_sel to old_val
         set old_sel $cur_sel
@@ -604,10 +567,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} } {
           </TD>
         </TR>
         <TR>
-          <td colspan=2 class=pagedesriptionbar>
+          <td colspan=2 class=$title_class>
             <table cellpadding=1 width='100%'>
               <tr>
-                <td class=pagedesriptionbar valign=middle>
+                <td class=$title_class align=center valign=middle>
+		    $title
                 </td>
               </tr>
             </table>
