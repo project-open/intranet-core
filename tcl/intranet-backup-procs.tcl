@@ -2151,6 +2151,8 @@ ad_proc -public im_import_trans_tasks { filename } {
 
     for {set i 2} {$i < $csv_lines_len} {incr i} {
 
+#	if {$i > 50} { return $err_return }
+
 	set csv_line [string trim [lindex $csv_lines $i]]
 	set csv_line_fields [split $csv_line "\""]
 	ns_log Notice "csv_line_fields=$csv_line_fields"
@@ -2184,6 +2186,8 @@ ad_proc -public im_import_trans_tasks { filename } {
 	#
 
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
+        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default ""]
+
 	set source_language_id [im_import_get_category $source_language "Intranet Translation Language" 290]
 	set target_language_id [im_import_get_category $target_language "Intranet Translation Language" 290]
 
@@ -2217,6 +2221,7 @@ BEGIN
     INSERT INTO im_trans_tasks (
 	task_id,
 	project_id,
+	invoice_id,
 	target_language_id,
 	task_name,
 	task_filename,
@@ -2238,6 +2243,7 @@ BEGIN
     ) VALUES (
 	v_task_id,
 	:project_id,
+	:invoice_id,
 	:target_language_id,
 	:task_name,
 	:task_filename,
@@ -2263,7 +2269,7 @@ END;
 	set update_sql "
 UPDATE im_trans_tasks
 SET
-	task_id			= :task_id,
+	invoice_id		= :invoice_id,
 	task_filename		= :task_filename,
 	task_type_id		= :task_type_id,
 	task_status_id		= :task_status_id,
@@ -2307,10 +2313,11 @@ task_name=$task_name
 	if { [catch {
 
 	    if {!$task_id} {
-		db_dml update $insert_sql
-	    } else {
-		db_dml update $update_sql
+#		db_dml update $insert_sql
 	    }
+
+	    db_dml update $update_sql
+
 
 	 } err_msg] } {
 	    ns_log Warning "$err_msg"
@@ -2794,6 +2801,196 @@ WHERE
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
 	    append err_return "<li>Error loading payments:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+
+    # Add relationships between invoices and projects
+    # based on the project_id information of the invoice_items.
+    # Actually, this is redundand, so we should drop it,
+    # but /invoicing/www/new-4 does it, and acs_rel is
+    # easy to browse...
+    set insert_relations_sql "
+declare
+     v_rel_id   integer;
+begin
+     for row in (
+        select distinct
+                project_id,
+                invoice_id
+        from
+                im_invoice_items i
+     ) loop
+
+           v_rel_id := acs_rel.new(
+                   object_id_one => row.project_id,
+                   object_id_two => row.invoice_id
+           );
+     end loop;
+end;
+"
+#    db_dml insert_relations $insert_relations_sql
+
+    return $err_return
+}
+
+
+# -------------------------------------------------------
+# Prices
+# -------------------------------------------------------
+
+ad_proc -public im_import_prices { filename } {
+    Import the prices file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_prices"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line || [regexp {^#} $csv_line]} {
+	    append err_return "<li>Skipping line '$csv_line'"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+
+	set customer_id [db_string customer "select customer_id from im_invoices where invoice_id=:invoice_id" -default 0]
+	set provider_id [db_string customer "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
+
+	set price_status_id [im_import_get_category $price_status "Intranet Price Status" ""]
+	set price_type_id [im_import_get_category $price_type "Intranet Price Type" ""]
+
+
+"uom";"customer_name";"target_language";"source_language";"subject_area";"valid_from";"valid_through";"currency";"price"
+
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_price_sql "
+INSERT INTO im_prices (
+        price_id,
+        invoice_id,
+        customer_id,
+        provider_id,
+	received_date,
+	price_type_id,
+        last_modified,
+        last_modifying_user,
+        modified_ip_address
+) values (
+	:price_id,
+	:invoice_id,
+	:customer_id,
+	:provider_id,
+	:received_date,
+	:price_type_id,
+	sysdate,
+	:user_id,
+	'[ad_conn peeraddr]'
+)"
+
+
+	set update_price_sql "
+UPDATE im_prices
+SET
+        invoice_id              = :invoice_id,
+        customer_id             = :customer_id,
+        provider_id             = :provider_id,
+        received_date           = :received_date,
+        start_block             = :start_block,
+        price_type_id         = :price_type_id,
+        price_status_id       = :price_status_id,
+        amount                  = :amount,
+        currency                = :currency,
+        note                    = :note,
+        last_modified           = sysdate,
+        last_modifying_user     = :user_id,
+        modified_ip_address     = '[ad_conn peeraddr]'
+WHERE
+        price_id = :price_id
+"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+	
+	    set price_id [db_string price_id "select price_id from im_prices where customer_id=:customer_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and price_type_id=:price_type_id and currency=:currency" -default 0]
+
+	    if {0 == $price_id} {
+		# The price doesn't exist yet:
+	        set price_id [db_nextval im_prices_id_seq]
+		db_dml price_create $create_price_sql
+	    }
+	    db_dml update_price $update_price_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading prices:<br>
 	    $csv_line<br><pre>\n$err_msg</pre>"
 	}
     }

@@ -9,7 +9,7 @@ ad_page_contract {
 }
 
 
-set user_id [ad_get_user_id]
+set user_id [ad_maybe_redirect_for_registration]
 set page_title "Backup"
 set context_bar [ad_context_bar $page_title]
 set page_body "<H1>$page_title</H1>"

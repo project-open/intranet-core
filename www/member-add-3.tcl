@@ -90,8 +90,7 @@ if { ![ad_administrator_p $user_id] } {
     }
 }
 
-set mapping_user [ad_get_user_id]
-
+set mapping_user [ad_maybe_redirect_for_registration]
 set mapping_ip_address [ns_conn peeraddr]
 
 if { [info exists start_date(date)] } {
