@@ -47,6 +47,7 @@
 -- 104  im_offices
 -- 105  im_office_roles
 -- 106  im_categories
+-- 107	im_employees
 --
 -- 110  users
 -- 111  im_profiles

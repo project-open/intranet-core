@@ -26,7 +26,7 @@ ad_proc -public im_backup_version_nr { } {
     Returns a version number
 
 } {
-    return "0.5"
+    return "3.0"
 }
 
 
@@ -40,6 +40,15 @@ ad_proc -public im_backup_accepted_version_nr { version } {
 	"ACS3.4" { return "" }
 	default { return "Unknown backup dump version '$version'<br>" }
     }
+}
+
+
+ad_proc -public im_backup_path { } {
+    Returns the default path for the backup sets
+} {
+    set path [parameter::get -package_id [im_package_core_id] -parameter "BackupBasePathUnix" -default "/tmp"]
+
+    return $path
 }
 
 

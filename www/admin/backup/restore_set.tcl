@@ -44,34 +44,44 @@ set group_url "/admin/groups/one"
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+set backup_path [im_backup_path]
+
 # ------------------------------------------------------
-# Get the list of backup sets for restore
+# Get the list of objects to backup/restore
 # ------------------------------------------------------
 
+set sql "
+select
+	v.*
+from 
+	im_views v
+where 
+	v.view_type_id = [im_dynview_type_backup]
+"
+
+# Prepare the path for the export
+#
+if {![file isdirectory $backup_path]} {
+    if { [catch {
+	ns_log Notice "/bin/mkdir $backup_path"
+	exec /bin/mkdir "$backup_path"
+    } err_msg] } {
+	ad_return_complaint 1 "Error creating subfolder $backup_path:<br><pre>$err_msg\m</pre>"
+	return
+    }
+}
+
+
 # Get the list of all backup sets under backup_path
-set backup_path [im_backup_path]
-set file_list [exec /usr/bin/find $backup_path -type d -maxdepth 1 -mindepth 1]
+set file_list [exec /usr/bin/find $backup_path -type d -maxdepth 1]
 
 set backup_sets_html "<ul>\n"
 
 foreach file $file_list {
-
-    append backup_sets_html "<li>Restore from: <A href=restore?path=[ns_urlencode $file]>$file</a></li>\n"
+    append backup_sets_html "<li><A href=restore_set?set=$file>Restore from $file</a></li>\n"
 }
 
 append backup_sets_html "
 </ul>
-"
-
-
-
-set sql "
-select
-        v.*
-from
-        im_views v
-where
-        view_id >= 100
-        and view_id < 200
 "
 
