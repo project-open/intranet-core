@@ -386,7 +386,7 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '160', 'Active', 'Intranet Office Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '161', 'Inctive', 'Intranet Office Status');
+('', 'f', '161', 'Inactive', 'Intranet Office Status');
 
 
 -- 170-179	Intranet Office Type

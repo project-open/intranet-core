@@ -405,7 +405,7 @@ ad_proc -public im_category_from_id { category_id } {
 } {
     if {"" == $category_id} { return "" }
     set sql "select im_category_from_id($category_id) from dual"
-    set category_name [lang::util::suggest_key [db_string category_from_id \"$sql\" -default {}]]
+    set category_name [lang::util::suggest_key [db_string category_from_id $sql -default {}]]
     return [_ intranet-core.$category_name]
 }
 
