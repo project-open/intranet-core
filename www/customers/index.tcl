@@ -31,7 +31,7 @@ ad_page_contract {
     { status_id:integer "" }
     { type_id:integer "0" }
     { start_idx:integer "1" }
-    { order_by "Client" }
+    { order_by "Company" }
     { how_many "" }
     { view_type "all" }
     { letter:trim "all" }
@@ -39,7 +39,7 @@ ad_page_contract {
 }
 
 # ---------------------------------------------------------------
-# Customer List Page
+# Company List Page
 #
 # This is a "classical" List-Page. It consists of the sections:
 #    1. Page Contract: 
@@ -74,7 +74,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
-set page_title "Clients"
+set page_title "Companies"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set return_url "/intranet/customers/index"
@@ -187,7 +187,7 @@ switch $order_by {
     "Type" { set order_by_clause "order by upper(customer_type), upper(customer_name)" }
     "Status" { set order_by_clause "order by upper(customer_status), upper(customer_name)" }
     "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(customer_name)" }
-    "Client" { set order_by_clause "order by upper(customer_name)" }
+    "Company" { set order_by_clause "order by upper(customer_name)" }
 }
 
 set extra_table ""
@@ -315,7 +315,7 @@ set filter_html "
 <table border=0 cellpadding=0 cellspacing=0>
 <tr> 
   <td colspan='2' class=rowtitle align=center>
-    Filter Clients
+    Filter Companies
   </td>
 </tr>
 <tr>
@@ -323,11 +323,11 @@ set filter_html "
   <td valign=top>[im_select view_type $view_types ""]</td>
 </tr>
 <tr>
-  <td valign=top>Client Status: </td>
+  <td valign=top>Company Status: </td>
   <td valign=top>[im_select status_id $status_types ""]</td>
 </tr>
 <tr>
-  <td valign=top>Client Type: </td>
+  <td valign=top>Company Type: </td>
   <td valign=top>
     [im_select type_id $customer_types ""]
     <input type=submit value=Go name=submit>
@@ -343,15 +343,15 @@ set filter_html "
 set admin_html ""
 if {[im_permission $current_user_id "add_customers"]} {
     append admin_html "
-<li><a href=/intranet/customers/new>Add a new Customer</a>
-<li><a href=/intranet/customers/upload-customers?[export_url_vars return_url]>Import Customer CVS</a>
-<li><a href=/intranet/customers/upload-contacts?[export_url_vars return_url]>Import Customer Contact CVS</a>
+<li><a href=/intranet/customers/new>Add a new Company</a>
+<li><a href=/intranet/customers/upload-customers?[export_url_vars return_url]>Import Company CVS</a>
+<li><a href=/intranet/customers/upload-contacts?[export_url_vars return_url]>Import Company Contact CVS</a>
 "
 }
 
 if {[im_permission $user_id admin_customers]} {
     append admin_html "
-<li><a href=upload-customers?[export_url_vars return_url]>Upload Clients CSV</a>
+<li><a href=upload-customers?[export_url_vars return_url]>Upload Company CSV</a>
 <li><a href=upload-contacts?[export_url_vars return_url]>Upload Contact CSV</a>
 "
 }
@@ -372,7 +372,7 @@ if {"" != $admin_html} {
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
       <td class=rowtitle align=center>
-        Admin Clients
+        Admin Companies
       </td>
     </tr>
     <tr>
