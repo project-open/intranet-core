@@ -44,10 +44,11 @@ select
 from 
 	apm_packages p,
 	apm_parameters m,
-	apm_parameter_values v
+        apm_parameter_values v
 where
-	p.package_key = m.package_key(+)
-	and m.parameter_id = v.parameter_id(+)
+	p.package_key = m.package_key
+and
+        m.parameter_id = v.parameter_id(+)
 order by
 	p.package_key
 "
