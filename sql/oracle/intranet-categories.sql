@@ -68,10 +68,17 @@
 -- 2400-2499	??
 -- 2500-2599	Translation Hierarchy
 
--- 3000-3099	Intranet Cost Center Type
--- 3100-3199	Intranet Cost Center Status
--- 3200-3299	Intranet CRM Tracking
-
+-- 3000-3099    Intranet Cost Center Type
+-- 3100-3199    Intranet Cost Center Status
+-- 3200-3299    Intranet CRM Tracking
+-- 3300-3399    reserved for cost centers
+-- 3400-3499    Intranet Investment Type
+-- 3500-3599    Intranet Investment Status
+-- 3600-3699    Intranet Investment Amortization Interval (reserved)
+-- 3700-3799    Intranet Cost Item Type
+-- 3800-3899    Intranet Cost Item Status
+-- 3900-3999    Intranet Cost Item Planning Type
+-- 4000-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
