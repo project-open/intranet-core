@@ -148,6 +148,7 @@
        );
     </querytext>
   </fullquery>
+  
   <fullquery name="im_import_project_members.create_member">
     <querytext>
     select im_biz_object_member__new(
@@ -161,7 +162,8 @@
        );
     </querytext>
   </fullquery>
-    <fullquery name="im_import_costs.create_cost">
+  
+  <fullquery name="im_import_costs.create_cost">
     <querytext>
       select im_cost__new (
 	null,			-- cost_id
@@ -200,8 +202,8 @@
        );
     </querytext>
   </fullquery>
-  </fullquery>
-    <fullquery name="im_import_cost_centers.create_cost_center">
+  
+  <fullquery name="im_import_cost_centers.create_cost_center">
     <querytext>
       select im_cost_center__new (
 	null,			-- cost_center_id
