@@ -259,7 +259,7 @@ begin
 	context_id =>	null,
 	package_name =>	'intranet',
 	name =>		'Admin',
-	url =>		'/admin/',
+	url =>		'/intranet/admin/',
 	sort_order =>	30,
 	parent_menu_id => null
     );
