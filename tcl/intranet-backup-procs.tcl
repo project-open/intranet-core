@@ -917,10 +917,6 @@ END;"
 }
 
 
-
-
-
-
 # -------------------------------------------------------
 # Projects
 # -------------------------------------------------------
@@ -1099,7 +1095,6 @@ WHERE
     }
     return $err_return
 }
-
 
 
 ad_proc -public im_import_project_members { filename } {
@@ -1725,11 +1720,10 @@ WHERE
     return $err_return
 }
 
-####### 
+ 
 # -------------------------------------------------------
 # Freelancers
 # -------------------------------------------------------
-
 
 ad_proc -public im_import_employees { filename } {
     Import the employees information
@@ -2407,12 +2401,13 @@ ad_proc -public im_import_trans_project_details { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	
+	set final_company [ns_urldecode $final_company]
+	set company_project_nr [ns_urldecode $company_project_nr]
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
 	#
 
-	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
+	set project_id [db_string project "select project_id from im_projects where project_nr=:project_nr" -default ""]
 	set company_contact_id [im_import_get_user $company_contact_email ""]
 
 	set source_language_id [im_import_get_category $source_language "Intranet Translation Language" ""]
