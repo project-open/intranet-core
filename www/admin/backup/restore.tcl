@@ -11,7 +11,7 @@ ad_page_contract {
 
 
 set user_id [ad_get_user_id]
-set page_title "Backup"
+set page_title "Restore"
 set context_bar [ad_context_bar $page_title]
 set page_body "<H1>$page_title</H1>"
 
@@ -36,7 +36,12 @@ set page_body "<ul>\n"
 #append page_body [im_import_freelance_skills "$path/im_freelance_skills.csv"]
 #append page_body [im_import_hours "$path/im_hours.csv"]
 #append page_body [im_import_trans_project_details "$path/im_trans_project_details.csv"]
-append page_body [im_import_trans_tasks "$path/im_trans_tasks.csv"]
+
+#append page_body [im_import_trans_tasks "$path/im_trans_tasks.csv"]
+#append page_body [im_import_invoices "$path/im_invoices.csv"]
+#append page_body [im_import_invoice_items "$path/im_invoice_items.csv"]
+
+append page_body [im_import_payments "$path/im_payments.csv"]
 
 
 append page_body "

@@ -2324,3 +2324,508 @@ task_name=$task_name
 }
 
 
+# -------------------------------------------------------
+# Invoices
+# -------------------------------------------------------
+
+ad_proc -public im_import_invoices { filename } {
+    Import the invoices file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_invoices"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+	set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+
+        set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	set creator_id [im_import_get_user $creator_email ""]
+	set customer_contact_id [im_import_get_user $customer_contact_email ""]
+	set invoice_template_id [im_import_get_category $invoice_template "Intranet Invoice Template" 0]
+	set invoice_status_id [im_import_get_category $invoice_status "Intranet Invoice Status" 0]
+	set invoice_type_id [im_import_get_category $invoice_type "Intranet Invoice Type" ""]
+	set payment_method_id [im_import_get_category $payment_method "Intranet Invoice Payment Method" 0]
+
+	# Old style invoices - provider was Internal by default
+	set provider_id [im_customer_internal]
+
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_invoice_sql "
+DECLARE
+    v_invoice_id        integer;
+BEGIN
+    v_invoice_id := im_invoice.new (
+        invoice_nr              => :invoice_nr,
+        customer_id             => :customer_id,
+        provider_id             => :provider_id,
+	creation_user		=> :user_id,
+	creation_ip		=> '[ad_conn peeraddr]'
+    );
+END;"
+
+	set update_invoice_sql "
+UPDATE im_invoices
+SET
+        invoice_nr              = :invoice_nr,
+        customer_id             = :customer_id,
+        provider_id             = :provider_id,
+	creator_id		= :creator_id,
+	customer_contact_id	= :customer_contact_id,
+        invoice_date            = :invoice_date,
+	due_date		= :due_date,
+	invoice_currency	= :invoice_currency,
+        invoice_template_id     = :invoice_template_id,
+        invoice_status_id       = :invoice_status_id,
+        invoice_type_id         = :invoice_type_id,
+        payment_method_id       = :payment_method_id,
+        payment_days            = :payment_days,
+        vat                     = :vat,
+        tax                     = :tax,
+	note			= :note
+WHERE
+	invoice_nr = :invoice_nr"
+
+
+	# -------------------------------------------------------
+	# Debugging
+	#
+
+	ns_log Notice "invoice_nr	$invoice_nr"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+
+	    if {0 == $invoice_id} {
+		# The invoice doesn't exist yet:
+		db_dml invoice_create $create_invoice_sql
+	    }
+	    db_dml update_invoice $update_invoice_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading invoices:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
+
+ad_proc -public im_import_invoice_items { filename } {
+    Import the invoice_items file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_invoice_items"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line} {
+	    ns_log Notice "skipping empty line"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+        set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
+	set item_uom_id [im_import_get_category $item_uom "Intranet UoM" 0]
+
+	# There are no categories defined yet for invoice item status and type.
+	# So we use invoice status and project type meanwhile...
+	# 
+	set item_status_id [im_import_get_category $item_status "Intranet Invoice Status" ""]
+	set item_type_id [im_import_get_category $item_type "Intranet Project Type" ""]
+
+	
+	if {"" == $item_units} { set item_units 0 }
+
+	# Skip empty invoice_item lines if quantity and UoM are null
+	if {0 == $item_units && "" == $item_uom } {
+	    append err_return "<li>Skipping im_invoice_item with 
+		item_name=$item_name<br>
+		item_units=$item_units<br>
+		item_uom=$item_uom"
+	    continue
+	}
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_invoice_item_sql "
+INSERT INTO im_invoice_items (
+	item_id,
+	item_name,
+	project_id,
+	invoice_id,
+	item_uom_id
+) values (
+	:item_id,
+	:item_name,
+	:project_id,
+	:invoice_id,
+	:item_uom_id
+)"
+	
+	set update_invoice_item_sql "
+UPDATE im_invoice_items
+SET
+        item_name               = :item_name,
+        project_id              = :project_id,
+        invoice_id              = :invoice_id,
+        item_units              = :item_units,
+        item_uom_id             = :item_uom_id,
+        price_per_unit          = :price_per_unit,
+        currency                = :currency,
+        sort_order              = :sort_order,
+        item_type_id            = :item_type_id,
+        item_status_id          = :item_status_id,
+        description             = :description
+WHERE
+	item_id = :item_id"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	# Check if we have already created the item
+        set item_id [db_string item_id "select item_id from im_invoice_items where item_name=:item_name and invoice_id=:invoice_id and project_id=:project_id and item_uom_id=:item_uom_id" -default 0]
+
+	if { [catch {
+
+	    if {0 == $item_id} {
+		# The invoice doesn't exist yet:
+		set item_id [db_nextval im_invoice_items_seq]
+		db_dml invoice_item_create $create_invoice_item_sql
+	    }
+	    db_dml update_invoice_item $update_invoice_item_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading invoice_items:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+    return $err_return
+}
+
+
+
+# -------------------------------------------------------
+# Payments
+# -------------------------------------------------------
+
+ad_proc -public im_import_payments { filename } {
+    Import the payments file
+} {
+
+    set user_id [ad_maybe_redirect_for_registration]
+
+    set err_return ""
+    if {![file readable $filename]} {
+	append err_return "Unable to read file '$filename'"
+	return $err_return
+    }
+
+    set csv_content [exec /bin/cat $filename]
+    set csv_lines [split $csv_content "\n"]
+    set csv_lines_len [llength $csv_lines]
+
+    # Check whether we accept the specified backup version
+    set csv_version_line [lindex $csv_lines 0]
+    set csv_version_fields [split $csv_version_line " "]
+    set csv_system [lindex $csv_version_fields 0]
+    set csv_version [lindex $csv_version_fields 1]
+    set csv_table [lindex $csv_version_fields 2]
+    set err_msg [im_backup_accepted_version_nr $csv_version]
+    if {![string equal $csv_system "Project/Open"]} {
+	append err_msg "'$csv_system' invalid backup dump<br>"
+    }
+    if {![string equal $csv_table "im_payments"]} {
+	append err_msg "Invalid backup table: '$csv_table'<br>"
+    }
+    if {"" != $err_msg} {
+	append err_return "<li>Error reading '$filename': <br><pre>\n$err_msg</pre>"
+	return $err_return
+    }
+
+    set csv_header [lindex $csv_lines 1]
+    set csv_header_fields [split $csv_header "\""]
+    set csv_header_len [llength $csv_header_fields]
+    ns_log Notice "csv_header_fields=$csv_header_fields"
+
+    for {set i 2} {$i < $csv_lines_len} {incr i} {
+
+	set csv_line [string trim [lindex $csv_lines $i]]
+	set csv_line_fields [split $csv_line "\""]
+	ns_log Notice "csv_line_fields=$csv_line_fields"
+	if {"" == $csv_line || [regexp {^#} $csv_line]} {
+	    append err_return "<li>Skipping line '$csv_line'"
+	    continue
+	}
+
+
+	# -------------------------------------------------------
+	# Extract variables from the CSV file
+	#
+
+	for {set j 0} {$j < $csv_header_len} {incr j} {
+
+	    set var_name [string trim [lindex $csv_header_fields $j]]
+	    set var_value [string trim [lindex $csv_line_fields $j]]
+
+	    # Skip empty columns caused by double quote separation
+	    if {"" == $var_name || [string equal $var_name ";"]} {
+		continue
+	    }
+
+	    set cmd "set $var_name \"$var_value\""
+	    ns_log Notice "cmd=$cmd"
+	    set result [eval $cmd]
+	}
+	
+	# -------------------------------------------------------
+	# Transform email and names into IDs
+	#
+
+        set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
+
+	set customer_id [db_string customer "select customer_id from im_invoices where invoice_id=:invoice_id" -default 0]
+	set provider_id [db_string customer "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
+
+	set payment_status_id [im_import_get_category $payment_status "Intranet Payment Status" ""]
+	set payment_type_id [im_import_get_category $payment_type "Intranet Payment Type" ""]
+
+	# -------------------------------------------------------
+	# Prepare the DB statements
+	#
+
+	set create_payment_sql "
+INSERT INTO im_payments (
+        payment_id,
+        invoice_id,
+        customer_id,
+        provider_id,
+	received_date,
+	payment_type_id,
+        last_modified,
+        last_modifying_user,
+        modified_ip_address
+) values (
+	:payment_id,
+	:invoice_id,
+	:customer_id,
+	:provider_id,
+	:received_date,
+	:payment_type_id,
+	sysdate,
+	:user_id,
+	'[ad_conn peeraddr]'
+)"
+
+
+	set update_payment_sql "
+UPDATE im_payments
+SET
+        invoice_id              = :invoice_id,
+        customer_id             = :customer_id,
+        provider_id             = :provider_id,
+        received_date           = :received_date,
+        start_block             = :start_block,
+        payment_type_id         = :payment_type_id,
+        payment_status_id       = :payment_status_id,
+        amount                  = :amount,
+        currency                = :currency,
+        note                    = :note,
+        last_modified           = sysdate,
+        last_modifying_user     = :user_id,
+        modified_ip_address     = '[ad_conn peeraddr]'
+WHERE
+        payment_id = :payment_id
+"
+
+	# -------------------------------------------------------
+	# Insert into the DB and deal with errors
+	#
+
+	if { [catch {
+	
+	    set payment_id [db_string payment_id "select payment_id from im_payments where customer_id=:customer_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and payment_type_id=:payment_type_id and currency=:currency" -default 0]
+
+	    if {0 == $payment_id} {
+		# The payment doesn't exist yet:
+	        set payment_id [db_nextval im_payments_id_seq]
+		db_dml payment_create $create_payment_sql
+	    }
+	    db_dml update_payment $update_payment_sql
+	
+	} err_msg] } {
+	    ns_log Warning "$err_msg"
+	    append err_return "<li>Error loading payments:<br>
+	    $csv_line<br><pre>\n$err_msg</pre>"
+	}
+    }
+
+
+    # Add relationships between invoices and projects
+    # based on the project_id information of the invoice_items.
+    # Actually, this is redundand, so we should drop it,
+    # but /invoicing/www/new-4 does it, and acs_rel is
+    # easy to browse...
+    set insert_relations_sql "
+declare
+     v_rel_id   integer;
+begin
+     for row in (
+        select distinct
+                project_id,
+                invoice_id
+        from
+                im_invoice_items i
+     ) loop
+
+           v_rel_id := acs_rel.new(
+                   object_id_one => row.project_id,
+                   object_id_two => row.invoice_id
+           );
+     end loop;
+end;
+"
+#    db_dml insert_relations $insert_relations_sql
+
+    return $err_return
+}
+
+
