@@ -309,7 +309,7 @@ begin
         ''intranet-core'',      -- package_name
         ''home'',               -- label
         ''Home'',               -- name
-        ''/'',                  -- url
+        ''/intranet/'',         -- url
         10,                     -- sort_order
         v_main_menu,            -- parent_menu_id
         null                    -- p_visible_tcl
