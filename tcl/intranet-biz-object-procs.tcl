@@ -364,7 +364,8 @@ if {$add_admin_links} {
 	# Account, ...
 	set descr $role_description
 	if {"" == $descr} { set descr $member_role }
-	set profile_gif [im_gif $role_gif $descr]
+	set descr_tr [lang::util::suggest_key $descr]
+	set profile_gif [im_gif $role_gif [_ intranet-core.$descr_tr]]
 
 	incr count
 	if { $current_user_id == $user_id } { set found 1 }
