@@ -262,9 +262,10 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
     set navbar ""
     set found_selected 0
     db_foreach menu_select $menu_select_sql {
-        set html "$nosel\n<a href=\"$url\">$name</a>\n</td>\n"
+	set name [lang::util::suggest_key $name]
+        set html "$nosel\n<a href=\"$url\">[_ intranet-core.$name]</a>\n</td>\n"
         if {!$found_selected && [string equal $url_stub $url]} {
-            set html "$sel\n$a_white href=\"$url\"/>$name</a>\n</td>\n"
+            set html "$sel\n$a_white href=\"$url\"/>[_ intranet-core.$name]</a>\n</td>\n"
             set found_selected 1
         }
         append navbar "$tdsp\n$html"
@@ -566,10 +567,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
             set gif "middle-$old_sel-$cur_sel"
         }
 
+        set name [lang::util::suggest_key $name]
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\">$name</a></td>\n"
+            set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -675,10 +677,11 @@ order by
 	    set gif "middle-$old_sel-$cur_sel" 
 	}
 
+        set name [lang::util::suggest_key $name]
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
         } else {
-	    set html "$nosel<a href=\"$url\">$name</a></td>\n"
+	    set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
 	}
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -1008,11 +1011,12 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
 
     set html "&nbsp;"
     foreach letter $alpha_list {
+	set letter_txt [lang::util::suggest_key $letter]
 	if {[string equal $letter $default_letter]} {
-	    append html "<font color=white>$letter</font> &nbsp; \n"
+	    append html "<font color=white>[_ intranet-core.$letter]</font> &nbsp; \n"
 	} else {
 	    set url "$target_url?letter=$letter&$param_html"
-	    append html "<A HREF=$url>$letter</A>&nbsp;\n"
+	    append html "<A HREF=$url>[_ intranet-core.$letter]</A>&nbsp;\n"
 	}
     }
     append html ""

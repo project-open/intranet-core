@@ -306,10 +306,11 @@ ad_proc im_select { field_name pairs { default "" } } {
     set menu_items_select [list]
 
     foreach { value text } $pairs {
+	set text [lang::util::suggest_key $text]
 	if { [string compare $value $default] == 0 } {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>$text</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>[_ intranet-core.$text]</option>\n"
 	} else {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">$text</option>\n"
+	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">[_ intranet-core.$text]</option>\n"
 	}
     }
     return "
@@ -464,7 +465,7 @@ ad_proc im_selection_to_select_box { bind_vars statement_name sql select_name { 
 } {
     set result "<select name=\"$select_name\">"
     if {[string equal $default ""]} {
-	append result "<option value=\"\"> -- Please select -- </option>"
+	append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
     }
     append result "
 [db_html_select_value_options_multiple -bind $bind_vars -select_option $default $statement_name $sql]

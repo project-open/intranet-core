@@ -33,23 +33,14 @@ ad_page_contract {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 if {![im_permission $current_user_id add_users]} {
-    ad_return_complaint 1 "<li><#_ You have no rights to see this page#>"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
     return
 }
     
 set admin_user_id [ad_verify_and_get_user_id]
 
-set context [list [list "./" "<#_ Users#>"] "<#_ New user notified#"]
-set export_vars [export_url_vars user_id]
-
-set admin_email [db_string unused "select email from 
-parties where party_id = :admin_user_id"]
-
-set ad_system_name [ad_system_name]
-set ad_url [ad_url]
-
-if [catch {ns_sendmail "$email" "$admin_email" "<#_ You have been added as a user to %ad_system_name% at %ad_url%#>" "$message"} errmsg] {
-    ad_return_error "<#_ Mail Failed#>" "<#_ The system was unable to send email.  Please notify the user personally.  This problem is probably caused by a misconfiguration of your email system.#>  <#_ Here is the error:#>
+set context [list [list "./" "[_ intranet-core.Users]"] "[_ intranet-core.lt_New_user_notifiedset_]" "$message"} errmsg] {
+    ad_return_error "[_ intranet-core.Mail_Failed]" "[_ intranet-core.lt_The_system_was_unable]  [_ intranet-core.Here_is_the_error]
 <blockquote><pre>
 [ad_quotehtml $errmsg]
 </pre></blockquote>"

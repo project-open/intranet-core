@@ -55,7 +55,7 @@ ad_page_contract {
 # -----------------------------------------------------------------
 
 if {"" == $office_name} {
-    set office_name "$office_name Main Office"
+    set office_name "[_ intranet-core.lt_office_name_Main_Offi]"
 }
 
 
@@ -78,7 +78,7 @@ if { ![empty_string_p $errors] } {
 
 if { [string length ${note}] > 4000 } {
     incr exception_count
-    append errors "  <li> The note you entered is too long. Please limit the note to 4000 characters\n"
+    append errors "  <li>[_ intranet-core.lt_The_note_you_entered_]"
 }
 
 # Periods don't work in bind variables...
@@ -95,7 +95,7 @@ set exists_p [db_string group_exists_p "
 
 if { $exists_p } {
     incr exception_count
-    append errors "  <li> An office with the same name or path already exists. Either choose a new name or go back to the office's page to edit the existing record\n"
+    append errors "  <li>[_ intranet-core.lt_An_office_with_the_sa]"
 }
 
 if { ![empty_string_p $errors] } {

@@ -40,7 +40,7 @@ set current_url [ns_conn url]
 
 if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
-    ad_return_complaint 1 "<li>You need to specify a project_id "
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_specify_a] "
     return
 }
 
@@ -55,7 +55,7 @@ set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 
 if {!$read} {
-    ad_return_complaint 1 "<li>You have insufficient permissions to view this page."
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_6]"
     return
 }
 
@@ -87,7 +87,7 @@ where
 "
 
 if { ![db_0or1row projects_info_query $query] } {
-    ad_return_complaint 1 "Can't find the project with ID '$project_id'"
+    ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
     return
 }
 
@@ -98,22 +98,22 @@ set parent_name [db_string parent_name "select project_name from im_projects whe
 # Set display options as a function of the project data
 # ---------------------------------------------------------------------
 
-set page_title "Project: $project_name"
+set page_title "[_ intranet-core.Project_project_name]"
 
 
 # Set the context bar as a function on whether this is a subproject or not:
 #
 if { [empty_string_p $parent_id] } {
-    set context_bar [ad_context_bar [list /intranet/projects/ "Projects"] "One project"]
+    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
     set include_subproject_p 1
 } else {
-    set context_bar [ad_context_bar [list /intranet/projects/ "Projects"] [list "/intranet/projects/view?project_id=$parent_id" "One project"] "One subproject"]
+    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
     set include_subproject_p 0
 }
 
 # Don't show subproject nor a link to the "projects" page to freelancers
 if {![im_permission $user_id view_projects]} {
-    set context_bar [ad_context_bar "One project"]
+    set context_bar [ad_context_bar "[_ intranet-core.One_project]"]
     set include_subproject_p 0
 }
 
@@ -125,18 +125,18 @@ set project_base_data_html "
 			<table border=0>
 			  <tr> 
 			    <td colspan=2 class=rowtitle align=center>
-			      Project Base Data
+			      [_ intranet-core.Project_Base_Data]
 			    </td>
 			  </tr>
 			  <tr> 
-			    <td>Project name</td>
+			    <td>[_ intranet-core.Project_name]</td>
 			    <td>$project_name</td>
 			  </tr>"
 
 if { ![empty_string_p $parent_id] } { 
     append project_base_data_html "
 			  <tr> 
-			    <td>Parent Project</td>
+			    <td>[_ intranet-core.Parent_Project]</td>
 			    <td>
 			      <a href=/intranet/projects/view?project_id=$parent_id>$parent_name</a>
 			    </td>
@@ -145,34 +145,34 @@ if { ![empty_string_p $parent_id] } {
 
 append project_base_data_html "
 			  <tr> 
-			    <td>Project#</td>
+			    <td>[_ intranet-core.Project]</td>
 			    <td>$project_path</td>
 			  </tr>
-[im_company_link_tr $user_id $company_id $company_name "Client"]
+[im_company_link_tr $user_id $company_id $company_name "[_ intranet-core.Client]"]
 			  <tr> 
-			    <td>Project Manager</td>
+			    <td>[_ intranet-core.Project_Manager]</td>
 			    <td>
 [im_render_user_id $project_lead_id $project_lead $user_id $project_id]
 			    </td>
 			  </tr>
 			  <tr> 
-			    <td>Project Type</td>
+			    <td>[_ intranet-core.Project_Type]</td>
 			    <td>$project_type</td>
 			  </tr>
 			  <tr> 
-			    <td>Project Status</td>
+			    <td>[_ intranet-core.Project_Status]</td>
 			    <td>$project_status</td>
 			  </tr>\n"
 
 if { ![empty_string_p $start_date] } { append project_base_data_html "
 			  <tr>
-			    <td>Start Date</td>
+			    <td>[_ intranet-core.Start_Date]</td>
 			    <td>$start_date</td>
 			  </tr>"
 }
 if { ![empty_string_p $end_date] } { append project_base_data_html "
 			  <tr>
-			    <td>Delivery Date</td>
+			    <td>[_ intranet-core.Delivery_Date]</td>
 			    <td>$end_date $end_date_time</td>
 			  </tr>"
 }
@@ -202,9 +202,9 @@ set admin_html ""
 if {$admin} {
     set admin_html_content "
 <ul>
-  <li><A href=\"/intranet/projects/new?parent_id=$project_id\"> Create a Subproject</A>
+  <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
 </ul>\n"
-    set admin_html [im_table_with_title "Admin Project" $admin_html_content]
+    set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
 
 # ---------------------------------------------------------------------
@@ -267,7 +267,7 @@ db_foreach project_hierarchy $hierarchy_sql {
 
 
 if {$counter > 0} {
-    set hierarchy_html [im_table_with_title "Project Hierarchy [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
+    set hierarchy_html [im_table_with_title "[_ intranet-core.Project_Hierarchy] [im_gif help "[_ intranet-core.lt_This_project_is_part_]"]" "<ul>$hierarchy_html</ul>"]
 } else {
     set hierarchy_html ""
 }

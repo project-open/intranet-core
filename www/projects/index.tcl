@@ -86,7 +86,7 @@ set current_user_id $user_id
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
-set page_title "Projects"
+set page_title "[_ intranet-core.Projects]"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
@@ -376,7 +376,7 @@ set filter_html "
 <table border=0 cellpadding=0 cellspacing=0>
   <tr> 
     <td colspan='2' class=rowtitle align=center>
-      Filter Projects
+      [_ intranet-core.Filter_Projects]
     </td>
   </tr>
 "
@@ -384,7 +384,7 @@ set filter_html "
 if {[im_permission $current_user_id "view_projects_all"]} { 
     append filter_html "
   <tr>
-    <td valign=top>View:</td>
+    <td valign=top>[_ intranet-core.View]:</td>
     <td valign=top>[im_select mine_p $view_types ""]</td>
   </tr>
 "
@@ -393,14 +393,14 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
-    <td valign=top>Project Status:</td>
+    <td valign=top>[_ intranet-core.Project_Status]:</td>
     <td valign=top>[im_select status_id $status_types ""]</td>
   </tr>\n"
 }
 
 append filter_html "
   <tr>
-    <td valign=top>Project Type:</td>
+    <td valign=top>[_ intranet-core.Project_Type]:</td>
     <td valign=top>
       [im_select project_type_id $project_types ""]
 	  <input type=submit value=Go name=submit>
@@ -417,11 +417,11 @@ ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html ""
 
 if {[im_permission $current_user_id "add_projects"]} {
-    append admin_html "<li><a href=/intranet/projects/new>Add a new project</a>\n"
+    append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
 }
 
 #if {[im_permission $current_user_id "view_projects_all"]} { 
-#    append admin_html "<li><a href=../allocations/index>Allocations</a> "
+#    append admin_html "<li><a href=../allocations/index>[_ intranet-core.Allocations]</a> "
 #}
 
 set project_filter_html $filter_html
@@ -439,7 +439,7 @@ if {"" != $admin_html} {
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
       <td class=rowtitle align=center>
-        Admin Projects
+        [_ intranet-core.Admin_Projects]
       </td>
     </tr>
     <tr>
@@ -481,10 +481,12 @@ if { ![empty_string_p $query_string] } {
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
+    set col_txt [lang::util::suggest_key $col]
     if { [string compare $order_by $col] == 0 } {
-	append table_header_html "  <td class=rowtitle>$col</td>\n"
+	append table_header_html "  <td class=rowtitle>[_ intranet-core.$col_txt]</td>\n"
     } else {
-	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col</a></td>\n"
+	set col [lang::util::suggest_key $col]
+	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">[_ intranet-core.$col_txt]</a></td>\n"
     }
 }
 append table_header_html "</tr>\n"

@@ -62,11 +62,11 @@ if {![im_permission $user_id "add_projects"]} {
 # -----------------------------------------------------------------
 
 set required_vars [list \
-[list "project_id" "You must specify the project_id"] \
-[list "company_id" "You must specify the client"] \
-[list "project_type_id" "You must specify the project type"] \
-[list "project_nr" "You must specify the project #"]\
-[list "project_status_id" "You must specify the project status"]]
+[list "project_id" "[_ intranet-core.lt_You_must_specify_the_]"] \
+[list "company_id" "[_ intranet-core.lt_You_must_specify_the__1]"] \
+[list "project_type_id" "[_ intranet-core.lt_You_must_specify_the__2]"] \
+[list "project_nr" "[_ intranet-core.lt_You_must_specify_the__3]"]\
+[list "project_status_id" "[_ intranet-core.lt_You_must_specify_the__4]"]]
 
 set errors [im_verify_form_variables $required_vars]
 if { [empty_string_p $errors] == 0 } {
@@ -83,19 +83,19 @@ ad_proc var_contains_quotes { var } {
 
 # check that no variable contains double or single quotes
 if {[var_contains_quotes $project_name]} { 
-    append errors "<li>Quotes in 'Project Name' are not allowed"
+    append errors "<li>[_ intranet-core.lt_Quotes_in_Project_Nam]"
 }
 if {[var_contains_quotes $project_nr]} { 
-    append errors "<li>Quotes in 'Project Nr' are not allowed"
+    append errors "<li>[_ intranet-core.lt_Quotes_in_Project_Nr_]"
 }
 if {[var_contains_quotes $project_path]} { 
-    append errors "<li>Quotes in 'Project Path' are not allowed"
+    append errors "<li>[_ intranet-core.lt_Quotes_in_Project_Pat]"
 }
 if {[regexp {/} $project_path]} { 
-    append errors "<li>Slashes ('/') in 'Project Path' are not allowed"
+    append errors "<li>[_ intranet-core.lt_Slashes__in_Project_P]"
 }
 if {[regexp {\.} $project_path]} { 
-    append errors "<li>Dots ('.') in 'Project Path' are not allowed"
+    append errors "<li>[_ intranet-core.lt_Dots__in_Project_Path]"
 }
 
 
@@ -104,7 +104,7 @@ if { [info exists start(date) ] } {
    set start_date $start(date)
 } else {
    incr err_cnt
-   append errors "<li> Please make sure the start date is not empty"
+   append errors "<li>[_ intranet-core.lt_Please_make_sure_the_]"
 }
 
 # check for not null end date 
@@ -112,14 +112,14 @@ if [info exists end(date)] {
    set end_date $end(date)
 } else {
    incr err_cnt
-   append errors "<li> Please make sure the end date is not empty"
+   append errors "<li>[_ intranet-core.lt_Please_make_sure_the__1]"
 }
 
 # check for a valid time
 set end_date_time "00:00"
 if [info exists end_time(time)] {
     if { ![regexp {[0-9][0-9]\:[0-9][0-9]$} $end_time(time)] } {
-	ad_return_complaint 1 "<li> Invalid time format '$end_time(time)': Please enter the time in format '12:30'"
+	ad_return_complaint 1 "<li>[_ intranet-core.lt_Invalid_time_format_e]"
     }
     set end_date_time $end_time(time)
 }
@@ -130,7 +130,7 @@ if { ![empty_string_p $end_date] && ![empty_string_p $start_date] } {
 	    "select to_date(:end_date,'YYYY-MM-DD') - to_date(:start_date,'YYYY-MM-DD') from dual"]
     if { $difference < 0 } {
 	incr err_cnt
-	append errors "  <li> End date must be after start date\n"
+	append errors "  <li>[_ intranet-core.lt_End_date_must_be_afte]"
     }
 }
 
@@ -144,15 +144,15 @@ where	project_nr = :project_nr
 
 if { $project_nr_exists > 0 } {
     incr err_cnt
-    append errors "  <li> The specified project_nr, \"${project_nr},\" already exists - please select another, unique project_nr\n"
+    append errors "  <li>[_ intranet-core.lt_The_specified_project]"
 }
 
 
 # Make sure the project name has a minimum length
 if { [string length $project_name] < 5} {
    incr err_cnt
-   append errors "<li>The project name that you have chosen is too short. <br>
-   Please use a project name with atleast 6 characters"
+   append errors "<li>[_ intranet-core.lt_The_project_name_that] <br>
+   [_ intranet-core.lt_Please_use_a_project_]"
 }
 
 # Let's make sure the specified name is unique
@@ -168,7 +168,7 @@ where	(
 
 if { $project_name_exists > 0 } {
     incr err_cnt
-    append errors "  <li> The specified name, \"${project_name},\" already exists - please select another, unique name\n"
+    append errors "  <li>[_ intranet-core.lt_The_specified_name_pr]"
 }
 
 if { ![empty_string_p $errors] } {
@@ -259,4 +259,3 @@ if { ![exists_and_not_null return_url] } {
 
 ad_returnredirect $return_url
 
-# doc_return  200 text/html "<body></body>"

@@ -290,15 +290,15 @@ set filter_html "
 <table border=0 cellpadding=0 cellspacing=0>
 <tr> 
   <td colspan='2' class=rowtitle align=center>
-    Filter Offices
+    [_ intranet-core.Filter_Offices]
   </td>
 </tr>
 <tr>
-  <td valign=top>Office Status: </td>
+  <td valign=top>[_ intranet-core.Office_Status]: </td>
   <td valign=top>[im_select status_id $status_types $status_id]</td>
 </tr>
 <tr>
-  <td valign=top>Office Type: </td>
+  <td valign=top>[_ intranet-core.Office_Type]: </td>
   <td valign=top>
     [im_select type_id $office_types ""]
     <input type=submit value=Go name=submit>
@@ -313,7 +313,7 @@ set filter_html "
 
 set admin_html ""
 if {[im_permission $current_user_id "add_offices"]} {
-    append admin_html "<li><a href=/intranet/offices/new>Add a new Office</a>\n"
+    append admin_html "<li><a href=/intranet/offices/new>[_ intranet-core.Add_a_new_Office]</a>\n"
 }
 
 set office_filter_html $filter_html
@@ -331,7 +331,7 @@ if {"" != $admin_html} {
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
       <td class=rowtitle align=center>
-        Admin Offices
+        [_ intranet-core.Admin_Offices]
       </td>
     </tr>
     <tr>
@@ -406,7 +406,7 @@ db_foreach projects_info_query $selection {
 if { [empty_string_p $table_body_html] } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
-        There are currently no entries matching the selected criteria
+        [_ intranet-core.lt_There_are_currently_n]
         </b></ul></td></tr>"
 }
 

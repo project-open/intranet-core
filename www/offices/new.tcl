@@ -34,8 +34,8 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 # pages shows the list of offices etc.
 #
 if {![im_permission $user_id "add_offices"]} { 
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You don't have sufficient privileges to add a new office."
+    ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+    <li>[_ intranet-core.lt_You_dont_have_suffici_1]"
 }
 
 if {$office_id > 0} {
@@ -49,19 +49,19 @@ from	im_offices o
 where	o.office_id=:office_id
 " 
     ]} {
-	ad_return_error "Office #office_id doesn't exist" "Please back up, and try again"
+	ad_return_error "[_ intranet-core.lt_Office_office_id_does]" "[_ intranet-core.lt_Please_back_up_and_tr]"
 	return
     }
 
-    set page_title "Edit office"
-    set context_bar [ad_context_bar [list index "Offices"] [list "view?[export_url_vars office_id]" "One office"] $page_title]
+    set page_title "[_ intranet-core.Edit_office]"
+    set context_bar [ad_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_url_vars office_id]" "[_ intranet-core.One_office]"] $page_title]
 
     
 } else {
 
     # Completely new office. Set some reasonable defaults:
-    set page_title "Add office"
-    set context_bar [ad_context_bar [list index "Offices"] $page_title]
+    set page_title "[_ intranet-core.Add_office]"
+    set context_bar [ad_context_bar [list index "[_ intranet-core.Offices]"] $page_title]
     set office_name ""
     set company_id ""
     set office_path ""
@@ -89,93 +89,93 @@ set page_body "
 [export_form_vars return_url office_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 
-		      <td colspan=2 class=rowtitle align=center>Add New Office</td>
+		      <td colspan=2 class=rowtitle align=center>[_ intranet-core.Add_New_Office]</td>
 		    </tr>
 		    <tr> 
-		      <td>Office Name</td>
+		      <td>[_ intranet-core.Office_Name]</td>
 		      <td> 
 <input type=text size=30 name=office_name value=\"$office_name\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Office Directory Path</td>
+		      <td>[_ intranet-core.lt_Office_Directory_Path]</td>
 		      <td> 
 <input type=text size=20 name=office_path value=\"$office_path\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Company</td>
+		      <td>[_ intranet-core.Company]</td>
 		      <td> 
 [im_company_select "company_id" $company_id "" "" [list "Deleted" "Past" "Declined" "Inactive"]]
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Office Status</td>
+		      <td>[_ intranet-core.Office_Status]</td>
 		      <td> 
 [im_office_status_select "office_status_id" $office_status_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Office+Status'>
-	[im_gif new {Add a new office status}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_office_stat]"]</A>"
 }
 
 append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Office Type</td>
+		      <td>[_ intranet-core.Office_Type]</td>
 		      <td> 
 [im_office_type_select "office_type_id" $office_type_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Office+Type'>
-	[im_gif new {Add a new office type}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_office_type]"]</A>"
 }
 
 append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Phone</td>
+		      <td>[_ intranet-core.Phone]</td>
 		      <td> 
 <input type=text size=15 name=phone value=\"$phone\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Fax</td>
+		      <td>[_ intranet-core.Fax]</td>
 		      <td> 
 <input type=text size=15 name=fax value=\"$fax\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Address 1</td>
+		      <td>[_ intranet-core.Address_1]</td>
 		      <td> 
 <input type=text size=30 name=address_line1 value=\"$address_line1\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Address 2</td>
+		      <td>[_ intranet-core.Address_2]</td>
 		      <td> 
 <input type=text size=30 name=address_line2 value=\"$address_line2\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>ZIP and City</td>
+		      <td>[_ intranet-core.ZIP_and_City]</td>
 		      <td> 
 <input type=text size=5 name=address_postal_code value=\"$address_postal_code\" >
 <input type=text size=30 name=address_city value=\"$address_city\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Country</td>
+		      <td>[_ intranet-core.Country]</td>
 		      <td> 
 [im_country_select address_country_code $address_country_code]
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Notes</td>
+		      <td>[_ intranet-core.Notes]</td>
 		      <td> 
 <textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
 		      </td>
@@ -185,4 +185,4 @@ append page_body "
 </form>
 "
 
-doc_return  200 text/html [im_return_template]
+#doc_return  200 text/html [im_return_template]

@@ -214,7 +214,7 @@ begin
 	sort_order =>	20,
 	component_tcl =>
 	'im_table_with_title \
-		"Project Members" \
+		"#intranet-core.Project_Members#" \
 		[im_group_member_component \
 			$project_id \
 			$current_user_id \
@@ -243,7 +243,7 @@ begin
 	sort_order =>	20,
 	component_tcl =>
 	'im_table_with_title \
-		"Office Members" \
+		"#intranet-core.Office_Members#" \
 		[im_group_member_component \
 			$office_id \
 			$user_id \
@@ -274,7 +274,7 @@ begin
 	sort_order =>	30,
 	component_tcl =>
 	'im_table_with_title \
-		"Offices" \
+		"#intranet-core.Offices#" \
 		[im_office_company_component \
 			$user_id \
 			$company_id
@@ -298,7 +298,7 @@ begin
 	sort_order =>	80,
 	component_tcl =>
 	'im_table_with_title \
-		"Offices" \
+		"#intranet-core.Offices#" \
 		[im_office_user_component $current_user_id $user_id]'
     );
 

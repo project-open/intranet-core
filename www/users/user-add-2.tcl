@@ -32,7 +32,7 @@ ad_page_contract {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 if {![im_permission $current_user_id add_users]} {
-    ad_return_complaint 1 "<li><#_ You have no rights to see this page#>"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
     return
 }
 
@@ -52,7 +52,7 @@ if { [empty_string_p $password] } {
 set administration_name [db_string admin_name "select
 first_names || ' ' || last_name from persons where person_id = :admin_user_id"]
 
-set context [list [list "./" "<#_ Users#>"] "<#_ Notify added user#>"]
+set context [list [list "./" "[_ intranet-core.Users]"] "[_ intranet-core.Notify_added_user]"]
 set system_name [ad_system_name]
 set export_vars [export_form_vars email first_names last_name user_id]
 set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]

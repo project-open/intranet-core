@@ -72,13 +72,13 @@ where
 	p.project_id=:project_id
 }
 
-    set page_title "Edit project"
-    set context_bar [ad_context_bar [list /intranet/projects/ "Projects"] [list "/intranet/projects/view?[export_url_vars project_id]" "One project"] $page_title]
+    set page_title "[_ intranet-core.Edit_project]"
+    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_url_vars project_id]" "One project"] $page_title]
 
     if { [empty_string_p $start_date] } { set start_date $todays_date }
     if { [empty_string_p $end_date] } { set end_date $todays_date }
     if { [empty_string_p $end_time] } { set end_time "12:00" }
-    set button_text "Save Changes"
+    set button_text "[_ intranet-core.Save_Changes]"
 
 } else {
 
@@ -102,7 +102,7 @@ where
     set "creation_user" $user_id
     set project_id [im_new_object_id]
     set project_name ""
-    set button_text "Create Project"
+    set button_text "[_ intranet-core.Create_Project]"
 
     if { ![exists_and_not_null parent_id] } {
 
@@ -114,8 +114,8 @@ where
 	}
 	set project_type_id 85
 	set project_status_id 76
-	set page_title "Add New Project"
-	set context_bar [ad_context_bar [list ./ "Projects"] $page_title]
+	set page_title "[_ intranet-core.Add_New_Project]"
+	set context_bar [ad_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
 
     } else {
 
@@ -133,8 +133,8 @@ where
 	}
 
 	set requires_report_p "f"
-	set page_title "Add subproject"
-	set context_bar [ad_context_bar [list ./ "Projects"] [list "view?project_id=$parent_id" "One project"] $page_title]
+	set page_title "[_ intranet-core.Add_subproject]"
+	set context_bar [ad_context_bar [list ./ "[_ intranet-core.Projects]"] [list "view?project_id=$parent_id" "[_ intranet-core.One_project]"] $page_title]
     }
 }
 
@@ -143,20 +143,20 @@ set page_body "
 [export_form_vars return_url project_id creation_ip_address creation_user]
                   <table border=0>
                     <tr> 
-                      <td colspan=2 class=rowtitle>Project Base Data [im_gif help "To avoid duplicate projects and to determine where the project data are stored on the local file server"]</td>
+                      <td colspan=2 class=rowtitle>[_ intranet-core.Project_Base_Data] [im_gif help "[_ intranet-core.lt_To_avoid_duplicate_pr]"]</td>
                     </tr>
                     <tr> 
-                      <td>Project Name</td>
+                      <td>[_ intranet-core.Project_Name]</td>
                       <td> 
                         <input type=text size=40 name=project_name value=\"$project_name\">
-                        [im_gif help "Just enter any suitable name for the project. You can even leave this field blank."]
+                        [im_gif help "[_ intranet-core.lt_Just_enter_any_suitab]"]
                       </td>
                     </tr>
                     <tr> 
-                      <td>Project # $required_field &nbsp;</td>
+                      <td>[_ intranet-core.Project_] $required_field &nbsp;</td>
                       <td> 
                         <input type=text size=\"$project_nr_field_size\" name=project_nr value=\"$project_nr\" maxlength=\"$project_nr_field_size\" >
-                        [im_gif help "A project number is composed by 4 digits for the year plus plus 4 digits for current identification"] &nbsp; 
+                        [im_gif help "[_ intranet-core.lt_A_project_number_is_c]"] &nbsp; 
                       </td>
                     </tr>
 "
@@ -164,10 +164,10 @@ set page_body "
 if {"" != $parent_id && [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] > 0} {
     append page_body "
                     <tr> 
-                      <td>Parent Project &nbsp;</td>
+                      <td>[_ intranet-core.Parent_Project] &nbsp;</td>
                       <td> 
-[im_project_select "parent_id" $parent_id "Open"]
-                        [im_gif help "Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure."] &nbsp; 
+[im_project_select "parent_id" $parent_id "[_ intranet-core.Open]"]
+                        [im_gif help "[_ intranet-core.lt_Do_you_want_to_create]"] &nbsp; 
                       </td>
                     </tr>
 "
@@ -175,67 +175,67 @@ if {"" != $parent_id && [parameter::get -parameter EnableNestedProjectsP -packag
 
 append page_body "  
                     <tr>
-                      <td>Client $required_field </td>
+                      <td>[_ intranet-core.Client] $required_field </td>
                       <td> 
-[im_company_select "company_id" $company_id "" "Company" [list "Deleted" "Past" "Declined" "Inactive"]]
+[im_company_select "company_id" $company_id "" "[_ intranet-core.Company]" [list "[_ intranet-core.Deleted]" "[_ intranet-core.Past]" "[_ intranet-core.Declined]" "[_ intranet-core.Inactive]"]]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/companies/new'>
-	[im_gif new {Add a new client}]</A>"
+	[im_gif new "[_ intranet-core.Add_a_new_client]"]</A>"
 }
 
 append page_body "
-                        <font size=-1>[im_gif help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]</font> 
+                        <font size=-1>[im_gif help "[_ intranet-core.lt_There_is_a_difference]"]</font> 
                       </td>
                     </tr>
                     <tr> 
-                      <td>Project Manager</td>
+                      <td>[_ intranet-core.Project_Manager]</td>
                       <td> 
 [im_employee_select_multiple "project_lead_id" $project_lead_id "" ""]
                       </td>
                     </tr>
                     <tr> 
-                      <td>Project Type  $required_field </td>
+                      <td>[_ intranet-core.Project_Type]  $required_field </td>
                       <td> <font size=-1> 
 [im_project_type_select "project_type_id" $project_type_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
-	[im_gif new {Add a new project type}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_project_typ]"]</A>"
 }
 
 append page_body "
-                        [im_gif help "General type of project. This allows us to create a suitable folder structure."]</font></td>
+                        [im_gif help "[_ intranet-core.lt_General_type_of_proje]"]</font></td>
                     </tr>
                     <tr> 
-                      <td>Project Status $required_field </td>
+                      <td>[_ intranet-core.Project_Status] $required_field </td>
                       <td>
 [im_project_status_select "project_status_id" $project_status_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
-	[im_gif new {Add a new project status}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_project_sta]"]</A>"
 }
 
 append page_body "
-                        [im_gif help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]
+                        [im_gif help "[_ intranet-core.lt_In_Process_Work_is_st]"]
                       </td>
                     </tr>\n"
 
 
 append page_body "
                     <tr> 
-                      <td>Start Date $required_field </td>
+                      <td>[_ intranet-core.Start_Date] $required_field </td>
                       <td> 
 [philg_dateentrywidget start $start_date]
                       </td>
                     </tr>
 
                     <tr> 
-                      <td>Delivery Date $required_field </td>
+                      <td>[_ intranet-core.Delivery_Date] $required_field </td>
                       <td> 
 [philg_dateentrywidget end $end_date]
                       , &nbsp;
@@ -243,7 +243,7 @@ append page_body "
                       </td>
                     </tr>
                     <tr> 
-                      <td>Description<br>(publicly searchable) </td>
+                      <td>[_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable]) </td>
                       <td> 
                       <textarea NAME=description rows=5 cols=50 wrap=soft>$description</textarea>
                       </td>
@@ -256,7 +256,7 @@ append page_body "
                       <td> 
                           <p> 
                             <input type=submit value='$button_text' name=submit2>
-                            [im_gif help "Create the new folder structure"]
+                            [im_gif help "[_ intranet-core.lt_Create_the_new_folder]"]
                           </p>
                       </td>
                     </tr>
@@ -264,5 +264,4 @@ append page_body "
                 </form>
 "
 
-# doc_return  200 text/html [im_return_template]
 

@@ -146,16 +146,16 @@ if { [security::RestrictLoginToSSLP] } {
 
 
 ad_form -name register -export {next_url user_id return_url} -form { 
-    {email:text(text) {label Email} {html {size 30}}}
+    {email:text(text) {label "[_ intranet-core.Email]"} {html {size 30}}}
     {username:text(hidden),optional value {}}
-    {first_names:text(text) {label {First names}} {html {size 30}}}
-    {last_name:text(text) {label {Last name}} {html {size 30}}} 
+    {first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
+    {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
 }
 
 if {!$editing_existing_user} {
     ad_form -extend -name register -form {
-	{password:text(password),optional {label Password} {html {size 20}}} 
-	{password_confirm:text(password),optional {label {Password Confirmation}} {html {size 20}}} 
+	{password:text(password),optional {label "[_ intranet-core.Password]"} {html {size 20}}} 
+	{password_confirm:text(password),optional {label "[_ intranet-core.lt_Password_Confirmation]"} {html {size 20}}} 
 	{secret_question:text(hidden),optional value {}} 
 	{secret_answer:text(hidden),optional value {}}
     }
@@ -163,11 +163,11 @@ if {!$editing_existing_user} {
 
 # Screen Name is not being used in P/O...
 ad_form -extend -name register -form {
-    {screen_name:text(hidden),optional {label {Screen name}} {html {size 30}}} 
+    {screen_name:text(hidden),optional {label "[_ intranet-core.Screen_name]"} {html {size 30}}} 
 }
 
 ad_form -extend -name register -form {
-    {url:text(text),optional {label {Personal Home Page URL:}} {html {size 50 value "http://"}}} 
+    {url:text(text),optional {label "[_ intranet-core.lt_Personal_Home_Page_UR]"} {html {size 50 value "http://"}}} 
 }
 
 
@@ -199,7 +199,7 @@ if {[llength $managable_profiles_reverse] > 0} {
     # the current user can administer
     ad_form -extend -name register -form {
 	{profile:text(multiselect),multiple
-	    {label "Group Membership"}
+	    {label "[_ intranet-core.Group_Membership]"}
 	    {options $managable_profiles_reverse }
 	    {values $profile_values }
 	    {-html {size 8}}

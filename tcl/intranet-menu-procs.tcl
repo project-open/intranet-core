@@ -38,10 +38,11 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
     set parent_options [list]
     db_foreach parent_options $parent_options_sql {
 	set spaces ""
+	set name  [lang::util::suggest_key $name]
 	for {set i 0} {$i < $indent_level} { incr i } {
 	    append spaces "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 	}
-	lappend parent_options [list "$spaces$name - $label" $menu_id]
+	lappend parent_options [list "$spaces[_ intranet-core.$name] - $label" $menu_id]
     }
     return $parent_options
 }

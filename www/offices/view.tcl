@@ -54,7 +54,7 @@ im_office_permissions $user_id $office_id view read write admin
 ns_log Notice "offices/view: view=$view, read=$read, write=$write, admin=$admin"
 
 if {!$read} {
-    ad_return_complaint 1 "You don't have permissions to view this page"
+    ad_return_complaint 1 "[_ intranet-core.lt_You_dont_have_permiss]"
     return
 }
 
@@ -80,8 +80,8 @@ where
 "]
 
 if { $result != 1 } {
-    ad_return_complaint "Bad Office" "
-    <li>We couldn't find office #$office_id; perhaps this office was nuked?"
+    ad_return_complaint "[_ intranet-core.Bad_Office]" "
+    <li>[_ intranet-core.lt_We_couldnt_find_offic]"
     return
 } else {
     set address_country [db_string get_country_code "select country_name from country_codes where iso=:address_country_code" -default ""]
@@ -89,8 +89,8 @@ if { $result != 1 } {
 
 
 # Set the title now that the $name is available after the db query
-set page_title $office_name
-set context_bar [ad_context_bar [list /intranet/offices/ "Offices"] $page_title]
+set page_title [lang::util::suggest_key $office_name]
+set context_bar [ad_context_bar [list /intranet/offices/ "[_ intranet-core.Offices]"] [_ intranet-core.$page_title]]
 
 # ---------------------------------------------------------------
 # Show Basic Office Information
@@ -118,21 +118,22 @@ order by
 set office_html "
 <form method=POST action=\"$office_new_page\">
 [export_form_vars office_id return_url]
-<input type=\"hidden\" name=\"form:mode\" value=\"display\" />
-<input type=\"hidden\" name=\"form:id\" value=\"office_info\" />
+<input type=\"hidden\" name=\"form:mode\" value=\"[_ intranet-core.display]\" />
+<input type=\"hidden\" name=\"form:id\" value=\"[_ intranet-core.office_info]\" />
 
 <table cellpadding=1 cellspacing=1 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Office Information</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Office_Information]</td>
   </tr>
 "
 
 set ctr 1
 db_foreach column_list_sql $column_sql {
+    set column_name [lang::util::suggest_key $column_name]
     if {"" == $visible_for || [eval $visible_for]} {
 	append office_html "
         <tr $td_class([expr $ctr % 2])>
-          <td>$column_name &nbsp;
+          <td>[_ intranet_core.$column_name] &nbsp;
         </td><td>"
 	set cmd "append office_html $column_render_tcl"
 	eval "$cmd"
