@@ -107,7 +107,7 @@ extra_select, extra_where, sort_order, visible_for) values (10231,102,NULL,'cont
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10233,102,NULL,'start_date','$start_date','','',33,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10235,102,NULL,'note','$note','','',35,'');
+extra_select, extra_where, sort_order, visible_for) values (10235,102,NULL,'note','[ns_urlencode $note]','','',35,'');
 --
 commit;
 
@@ -188,7 +188,7 @@ extra_select, extra_where, sort_order, visible_for) values (10019,100,NULL,'proj
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10021,100,NULL,'project_status','$project_status','','',21,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10023,100,NULL,'description','$description','','',23,'');
+extra_select, extra_where, sort_order, visible_for) values (10023,100,NULL,'description','[ns_urlencode $description]','','',23,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10025,100,NULL,'billing_type','$billing_type','','',25,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
@@ -196,7 +196,7 @@ extra_select, extra_where, sort_order, visible_for) values (10027,100,NULL,'star
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10029,100,NULL,'end_date','$end_date_time','','',29,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10031,100,NULL,'note','$note','','',31,'');
+extra_select, extra_where, sort_order, visible_for) values (10031,100,NULL,'note','[ns_urlencode $note]','','',31,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10033,100,NULL,'project_lead_email','$project_lead_email','','',33,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
@@ -302,7 +302,7 @@ extra_select, extra_where, sort_order, visible_for) values (10445,104,NULL,'land
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10447,104,NULL,'security','$security','','',47,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10449,104,NULL,'note','$note','','',49,'');
+extra_select, extra_where, sort_order, visible_for) values (10449,104,NULL,'note','[ns_urlencode $note]','','',49,'');
 --
 commit;
 
@@ -358,20 +358,29 @@ select	c.*
 from	im_categories c
 ');
 
-delete from im_view_columns where column_id > 10604 and column_id < 10699;
+delete from im_view_columns where column_id >= 10600 and column_id < 10699;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10601,106,NULL,'category','$category','','',1,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10601,106,NULL,'category_id','$category_id','','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10603,106,NULL,'category_type','$category_type','','',3,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10602,106,NULL,'category','$category','','',2,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10605,106,NULL,'category_gif','$category_gif','','',5,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10603,106,NULL,'category_type','$category_type','','',3,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10607,106,NULL,'enabled_p','$enabled_p','','',7,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10605,106,NULL,'category_gif','$category_gif','','',5,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10609,106,NULL,'parent_only_p','$parent_only_p','','',9,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10607,106,NULL,'enabled_p','$enabled_p','','',7,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10611,106,NULL,'category_description','$category_description','','',11,'');
+extra_select, extra_where, sort_order, visible_for) values (
+10609,106,NULL,'parent_only_p','$parent_only_p','','',9,'');
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (
+10611,106,NULL,'category_description','[ns_urlencode $category_description]','','',11,'');
 --
 commit;
 
@@ -492,7 +501,7 @@ extra_select, extra_where, sort_order, visible_for) values (11067,110,NULL,'wa_p
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (11069,110,NULL,'wa_country_code','$wa_country_code','','',69,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (11071,110,NULL,'note','$note','','',71,'');
+extra_select, extra_where, sort_order, visible_for) values (11071,110,NULL,'note','[ns_urlencode $note]','','',71,'');
 --
 commit;
 
