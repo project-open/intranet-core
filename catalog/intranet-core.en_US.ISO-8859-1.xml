@@ -289,6 +289,7 @@
   <msg key="Group_Membership">Group Membership</msg>
   <msg key="Guatemala">Guatemala</msg>
   <msg key="h">h</msg>
+  <msg key="Help">Help</msg>
   <msg key="Help_Request">Help Request</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
   <msg key="High">High</msg>
@@ -441,6 +442,8 @@ Best regards,
   <msg key="lt_Expected_Annual_Reven">(Expected) Annual Revenue</msg>
   <msg key="lt_export_varsnoquoteMes">%export_vars;noquote%
 Message:</msg>
+  <msg key="lt_File_editing_Converti">File editing: Converting the total wordcount into editing hours using 1000 words per hour</msg>
+  <msg key="lt_File_translation_Trad">File translation: Trados wordcount multiplied with provider Trados matrix</msg>
   <msg key="lt_Finally_revisit_this_">Finally, revisit this page and an option will appear to add the new client contact.</msg>
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% has been added to %system_name%.
 Edit the message below and hit &quot;Send Email&quot; to 
@@ -527,6 +530,8 @@ her contributions to the site content.</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
   <msg key="lt_New_Purchase_Order_fr">New Purchase Order</msg>
   <msg key="lt_New_Quote_from_scratc">New Quote from scratc</msg>
+  <msg key="lt_New_Translation_Invoi">New Translation Invoice</msg>
+  <msg key="lt_New_Translation_Quote">New Translation Quote</msg>
   <msg key="lt_New_user_notifiedset_">New user notified</msg>
   <msg key="lt_Next_Monthintranet-ti">Next Month</msg>
   <msg key="lt_No_comments_about_fir">No comments about %first_names% %last_name%.</msg>
@@ -534,6 +539,7 @@ her contributions to the site content.</msg>
   <msg key="lt_No_contact_informatio">No contact information</msg>
   <msg key="lt_None_of_the_specified">None of the specified groups exist.</msg>
   <msg key="lt_Note_You_can_find_all">Note: You can find all the current intranet parameters at %arsdigita_link%, though this file may be more recent than your version of the ACS.</msg>
+  <msg key="lt_Noteintranet-forumNot">Note</msg>
   <msg key="lt_Nuke_first_names_last">Nuke %first_names% %last_name%</msg>
   <msg key="lt_Nuking_is_a_violent_i">Nuking is a violent irreversible action.  You are instructing the
 system to remove the user and any content that he or she has
@@ -800,7 +806,7 @@ other way for the user to find out.</msg>
   <msg key="Profile">Profile</msg>
   <msg key="Profiles">Profiles</msg>
   <msg key="Project">Project#</msg>
-  <msg key="Project_">Project #</msg>
+  <msg key="Project_">Project Nr.</msg>
   <msg key="Project_Base_Data">Project Base Data</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
   <msg key="Project_Manager">Project Manager</msg>
@@ -908,6 +914,7 @@ other way for the user to find out.</msg>
   <msg key="Test_received">Test received</msg>
   <msg key="Test_sent">Test sent</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
+  <msg key="Timesheet_Cost">Timesheet Cost</msg>
   <msg key="Today">Today</msg>
   <msg key="Top_Menu">Top Menu</msg>
   <msg key="Trans-ing">Trans-ing</msg>

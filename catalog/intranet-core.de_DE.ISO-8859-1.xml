@@ -5,6 +5,7 @@
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="a">A</msg>
   <msg key="A_-_Test_approved">A - Test bestanden</msg>
+  <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">Persönliche Daten</msg>
   <msg key="Ac_Counting">Rechnungswesen</msg>
   <msg key="Access_denied">Zugang verweigert</msg>
@@ -97,6 +98,7 @@
   <msg key="c">C</msg>
   <msg key="ca_ES">ca_ES</msg>
   <msg key="CAD">CAD</msg>
+  <msg key="Caja_Ahorros_EUR">Sparkasse EUR</msg>
   <msg key="Canada">Kanada</msg>
   <msg key="Canceled">Abgebrochen</msg>
   <msg key="Cash">Cash</msg>
@@ -269,6 +271,7 @@
   <msg key="fr_FR">fr_FR</msg>
   <msg key="France">Frankreich</msg>
   <msg key="Freelance">Freiberufler</msg>
+  <msg key="Freelance_Managers">Resourcenmanager</msg>
   <msg key="Freelance_Provider">Freiberuflicher Zulieferer</msg>
   <msg key="Freelancers">Freiberufler</msg>
   <msg key="Full_Member">Vollmitglied</msg>
@@ -287,6 +290,7 @@
   <msg key="Group_Membership">Gruppenmitgliedschaft</msg>
   <msg key="Guatemala">Guatemala</msg>
   <msg key="h">H</msg>
+  <msg key="Help">Hilfe</msg>
   <msg key="Help_Request">Hilfe Anfrage</msg>
   <msg key="Here_is_the_error">Hier ist der Fehler</msg>
   <msg key="High">Hoch</msg>
@@ -429,6 +433,8 @@
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% wurde benachrichtigt.</msg>
+  <msg key="lt_Flush_cleanup_the_per">Leeren des Cache-Zwischenspeichers. Das ist nötig, wenn sie globale Berechtigungen im Menüpunkt Profile oder Benutzermatrix geändert haben</msg>
+  <msg key="lt_Flush_Permission_Cach">Leeren des Cache-Zwischenspeichers</msg>
   <msg key="lt_for_name_in_ad_site_h">für %name% in %ad_site_home_link% </msg>
   <msg key="lt_Freelancersintranet-f">Freiberufler</msg>
   <msg key="lt_Freiberuflerintranet-">Freiberufler</msg>
@@ -477,6 +483,8 @@
   <msg key="lt_New_Provider_Bill_fro">Neue Zuliefererrechnung</msg>
   <msg key="lt_New_Purchase_Order_fr">Neuer Auftrag</msg>
   <msg key="lt_New_Quote_from_scratc">Neues Angebot</msg>
+  <msg key="lt_New_Translation_Invoi">Neue Übersetzungsrechnung</msg>
+  <msg key="lt_New_Translation_Quote">Neues Übersetzungsangebot</msg>
   <msg key="lt_New_user_notifiedset_">Der neue Benutzer wurde benachrichtigt</msg>
   <msg key="lt_Next_Monthintranet-ti">Nächster Monat</msg>
   <msg key="lt_No_comments_about_fir">Keine Kommentare über %first_names% %last_name%. </msg>
@@ -524,6 +532,7 @@
   <msg key="lt_Software_Company_Cust">Software Firma (Kunde)</msg>
   <msg key="lt_Successfully_finished">Erfolgreich beendet</msg>
   <msg key="lt_The_English_translati">Die englische 'Übersetzung' sollte mit dem Kategorienamen übereinstimmen.</msg>
+  <msg key="lt_This_command_destroys">Dieses Kommando &quot;zerstört&quot; das gesamte System und ersetzt alle Namen und Text (Projeknamen, Projektbeschreibungen, Kunden, Benutzer, ...) mit &quot;anonymisierten&quot; Zeichenketten. Diese Funktion dient dazu, auf Basis von echten Daten Demonstrationssystem zu erzeugen.</msg>
   <msg key="lt_This_file_has_generat">Diese Datei hat einen Fehler erzeugt.</msg>
   <msg key="lt_This_is_not_a_TestDem">Dies ist kein Test-/Demo-/Developmentsystem</msg>
   <msg key="lt_This_project_is_part_">Dieses Projekt ist ein Unterprojekt oder hat Unterprojekte</msg>
@@ -533,6 +542,7 @@
   <msg key="lt_Unable_to_determine_I">Das System konnte die Firma mit &quot;Internal&quot; nicht finden.</msg>
   <msg key="lt_Update_Basic_Informat">Basisinformationen ändern</msg>
   <msg key="lt_Update_this_users_pas">Password ändern</msg>
+  <msg key="lt_Use_the_Browse_button">Bitte benutzen sie die &quot;Browse&quot;-Taste, um eine Trados-Wordcount-Datei zu suchen und drücken sie &quot;Öffnen&quot;.</msg>
   <msg key="lt_var_is_undefined_for_">%var% ist undefiniert in leeren Listen.</msg>
   <msg key="lt_View_administrative_p">Verwalten des neuen Benutzers,</msg>
   <msg key="lt_View_the_hours_logged">Anzeige der erfaßten Stunden eines anderen Benutzers</msg>
@@ -733,11 +743,13 @@
   <msg key="Sick">Krank</msg>
   <msg key="Singapore">Singapur</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
+  <msg key="Size">Größe</msg>
   <msg key="Slovak Republic">Slowakische Republik</msg>
   <msg key="Slovak_Republic">Slowakische Republik</msg>
   <msg key="Slovenia">Slowenien</msg>
   <msg key="Software_Company">Software Firma</msg>
   <msg key="Software_Development">Softwareentwicklung</msg>
+  <msg key="Software_Maintenance">Softwarewartung</msg>
   <msg key="South Africa">Südafrika</msg>
   <msg key="South_Africa">Südafrika</msg>
   <msg key="Spain">Spanien</msg>
@@ -745,6 +757,7 @@
   <msg key="Start_Date">Startdatum</msg>
   <msg key="State">Staat</msg>
   <msg key="Status">Status</msg>
+  <msg key="Strategic_Consulting">Strategische Beratung</msg>
   <msg key="Submit">Absenden</msg>
   <msg key="Summary">Übersicht</msg>
   <msg key="Supervisor">Betreuer</msg>
@@ -770,6 +783,7 @@
   <msg key="Test_received">Test empfangen</msg>
   <msg key="Test_sent">Test gesendet</msg>
   <msg key="The_web_with_Google">Das Internet mit Google</msg>
+  <msg key="Timesheet_Cost">Zeiterfassung</msg>
   <msg key="Today">Heute</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
   <msg key="Trans-ing">wird übersetzt</msg>
