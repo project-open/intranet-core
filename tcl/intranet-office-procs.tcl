@@ -36,8 +36,7 @@ ad_proc -public im_office_permissions {user_id office_id view_var read_var write
 	  Are readable by all employees
       <li>Customer Offices:<br>
 	  Need either global customer access permissions
-	  or the user needs to be in the admin_group of
-	  the respective customer.
+	  or the be the Key account of the respective customer.
     </ul>
     Write and administration rights are only for administrators
     and the customer key account managers.
@@ -57,8 +56,7 @@ ad_proc -public im_office_permissions {user_id office_id view_var read_var write
     set customer_type [db_1row customer_type "
 select
 	im_category_from_id(c.customer_type_id) as customer_type,
-	o.admin_group_id as office_admin_group_id,
-	c.admin_group_id as customer_admin_group_id
+	c.customer_id
 from
 	im_offices o,
 	im_customers c
@@ -66,9 +64,6 @@ where
 	o.office_id = :office_id
 	and o.customer_id = c.customer_id(+)
 "]
-
-    if {"" == $office_admin_group_id} { set office_admin_group_id 0}
-    if {"" == $customer_admin_group_id} { set customer_admin_group_id 0}
 
     ns_log Notice "im_office_permission: customer_type=$customer_type"
 
@@ -81,9 +76,6 @@ where
     # Senior Managers to change them (or similar, as defined
     # in the permission module)
     if {[string equal "internal" $customer_type]} {
-	set user_is_office_member_p [ad_user_group_member $office_admin_group_id $user_id]
-	set user_is_office_admin_p [im_can_user_administer_group $office_admin_group $user_id]
-
 	set admin [im_permission $user_id edit_internal_offices]
 	set read [im_permission $user_id view_internal_offices]
 
@@ -97,9 +89,8 @@ where
     
     # The office if a customers office or a "dangeling" office
     # (office without a customer)
-
-    set user_is_customer_member_p [ad_user_group_member $customer_admin_group_id $user_id]
-    set user_is_customer_admin_p [im_can_user_administer_group $customer_admin_group_id $user_id]
+    set user_is_customer_member_p [im_biz_object_member_p $user_id $customer_id]
+    set user_is_customer_admin_p [im_biz_object_admin_p $user_id $customer_id]
 
     set read [expr $user_is_customer_member_p || [im_permission $user_id view_customer_contacts]]
     set admin $user_is_customer_admin_p
@@ -107,9 +98,6 @@ where
 
     if {$admin} { set read 1 }
 }
-
-
-
 
 
 namespace eval office {

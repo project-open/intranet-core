@@ -22,7 +22,7 @@
 --
 -- We store simple information about a customer.
 -- All contact information goes in the associated
--- admin_group and offices.
+-- offices.
 --
 
 
@@ -49,12 +49,6 @@ create table im_customers (
 				primary key 
 				constraint im_customers_cust_id_fk
 				references acs_objects,
-				-- avoid using the OpenACS permission system
-				-- because we have to ask frequently:
-				-- "Who has read permissions on this object".
-	admin_group_id		integer not null
-				constraint im_customers_admin_group_fk
-				references groups,
 	customer_name		varchar(1000) not null
 				constraint im_customers_name_un unique,
 				-- where are the files in the filesystem?
@@ -164,7 +158,6 @@ is
     ) return integer
     is
 	v_customer_id		integer;
-	v_admin_group_id	integer;
     begin
 	v_customer_id := acs_object.new (
 		object_id =>		customer_id,
@@ -175,15 +168,11 @@ is
 		context_id =>		context_id
 	);
 
-	v_admin_group_id := acs_group.new(
-		group_name => customer_name
-	);
-
 	insert into im_customers (
-		customer_id, admin_group_id, customer_name, customer_path, 
+		customer_id, customer_name, customer_path, 
 		customer_type_id, customer_status_id, main_office_id
 	) values (
-		v_customer_id, v_admin_group_id, customer_name, customer_path, 
+		v_customer_id, customer_name, customer_path, 
 		customer_type_id, customer_status_id, main_office_id
 	);
 
@@ -200,7 +189,6 @@ is
     procedure del (customer_id in integer)
     is
 	v_customer_id		integer;
-	v_admin_group_id	integer;
     begin
 	-- copy the variable to desambiguate the var name
 	v_customer_id := customer_id;
@@ -210,18 +198,9 @@ is
 	set customer_id = null
 	where customer_id = v_customer_id;
 
-	-- determine the admin group
-	select admin_group_id
-	into v_admin_group_id
-	from im_customers
-	where customer_id = v_customer_id;
-
 	-- Erase the im_customers item associated with the id
 	delete from im_customers
 	where customer_id = v_customer_id;
-
-	-- now: delete the administration group
-	acs_group.del(v_admin_group_id);
 
 	-- Erase all the priviledges
 	delete from 	acs_permissions

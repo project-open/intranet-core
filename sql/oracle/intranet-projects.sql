@@ -44,12 +44,6 @@ create table im_projects (
 				primary key 
 				constraint im_project_prj_fk 
 				references acs_objects,
-				-- avoid using the OpenACS permission system
-				-- because we have to ask frequently:
-				-- "Who has read permissions on this object".
-	admin_group_id		integer not null
-				constraint im_projects_admin_group_fk
-				references groups,
 	project_name		varchar(1000) not null
 				constraint im_projects_name_un unique,
 	project_nr		varchar(100) not null
@@ -154,7 +148,6 @@ is
 	) return im_projects.project_id%TYPE
 	is
 		v_project_id		im_projects.project_id%TYPE;
-		v_admin_group_id	integer;
 	begin
 		v_project_id := acs_object.new (
 			object_id	=>		project_id,
@@ -165,16 +158,12 @@ is
 			context_id	=>		context_id
 		);
 
-		v_admin_group_id := acs_group.new(
-			group_name	=> project_name
-		);
-
 		insert into im_projects (
-			project_id, admin_group_id, project_name, project_nr, 
+			project_id, project_name, project_nr, 
 			project_path, parent_id, customer_id, project_type_id, 
 			project_status_id 
 		) values (
-			v_project_id, v_admin_group_id, project_name, project_nr, 
+			v_project_id, project_name, project_nr, 
 			project_path, parent_id, customer_id, project_type_id, 
 			project_status_id
 		);
@@ -186,23 +175,13 @@ is
 	procedure del (project_id in integer)
 	is
 		v_project_id		integer;
-		v_admin_group_id	integer;
 	begin
 		-- copy the variable to desambiguate the var name
 		v_project_id := project_id;
 
-		-- delete the administration group
-		select admin_group_id
-		into v_admin_group_id
-		from im_projects
-		where project_id=v_project_id;	
-
 		-- Erase the im_projects item associated with the id
 		delete from 	im_projects
 		where		project_id = v_project_id;
-
-		-- Now delete the admin group
-		acs_group.del(v_admin_group_id);
 
 		-- Erase all the priviledges
 		delete from 	acs_permissions

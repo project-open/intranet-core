@@ -434,31 +434,10 @@ if { [ad_parameter TrackHours intranet 0] && [im_permission $current_user_id add
 # Administration
 # ----------------------------------------------------------------
 
-set admin_items ""
+set admin_html ""
+append admin_html "
+  <li> <a href=/intranet/users/view?user_id=$current_user_id>About You</A>\n"
 
-if { 0 } {
-    set admin_items "
-  <li> <a href=/intranet/employees/admin>Employee administration</a>
-  <li> <a href=/intranet/projects/import-project-txt>Import Projects from H:\\ </a>
-  <li> <a href=/intranet/anonymize>Anonymize this server (Test server only!!)</a>"
-
-    db_foreach admin_groups_user_belongs_to \
-	    "select ug.group_id, ug.group_name, ai.url as ai_url
-               from  user_groups ug, administration_info ai
-              where ug.group_id = ai.group_id
-                and ad_group_member_p ( :user_id, ug.group_id ) = 't'" {
-	append admin_items "<li><a href=\"$ai_url\">$group_name</a>\n"
-    }
-}
-
-append admin_items "<li> <a href=/intranet/users/view?user_id=$current_user_id>About You</A>\n"
-
-set admin_info "
-<ul>
-$admin_items
-</ul>
-"
-
-set administration_component [im_table_with_title "Administration" $admin_info]
+set administration_component [im_table_with_title "Administration" $admin_html]
 
 db_release_unused_handles

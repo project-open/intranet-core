@@ -32,6 +32,18 @@
 	Here you find advance software configuration options
 	of the underlying 
 	<A href=http://www.openacs.org>OpenACS platform</A>.
+	<li>
+	  <a href=/intranet/projects/import-project-txt>Import Projects from H:\\</a>
+
+
+      </ul>
+<b>Dangerous!!</b>
+      <ul>
+	<li>
+	  <a href=/intranet/anonymize>Anonymize this server (Test servers only)</a>
+	  This command destroys your entire server, replacing all strings (project
+	  names, customer names, users, descriptions, ...) by "anonymized" random 
+	  strings in order to generate a demo system.
     </ul>
     <%= [im_component_bay left] %>
   </td>

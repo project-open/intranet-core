@@ -47,12 +47,6 @@ create table im_offices (
 				primary key
 				constraint im_offices_office_id_fk 
 				references acs_objects,
-				-- avoid using the OpenACS permission system
-				-- because we have to ask frequently:
-				-- "Who has read permissions on this object".
-	admin_group_id		integer not null
-				constraint im_offices_admin_group_fk
-				references groups,
 	office_name		varchar(1000) not null
 				constraint im_offices_name_un unique,
 	office_path		varchar(100) not null
@@ -138,7 +132,6 @@ is
     ) return integer
     is
 	v_office_id		integer;
-	v_admin_group_id	integer;
     begin
 
 	v_office_id := acs_object.new (
@@ -150,15 +143,11 @@ is
 		context_id =>		context_id
 	);
 
-	v_admin_group_id := acs_group.new(
-		group_name => office_name
-	);
-
 	insert into im_offices (
-		office_id, admin_group_id, office_name, office_path, 
+		office_id, office_name, office_path, 
 		office_type_id, office_status_id, customer_id
 	) values (
-		v_office_id, v_admin_group_id, office_name, office_path, 
+		v_office_id, office_name, office_path, 
 		office_type_id, office_status_id, customer_id
 	);
 	return v_office_id;
@@ -169,23 +158,13 @@ is
     procedure del (office_id in integer)
     is
 	v_office_id		integer;
-	v_admin_group_id	integer;
     begin
 	-- copy the variable to desambiguate the var name
 	v_office_id := office_id;
 
-	-- determine the admin group
-	select admin_group_id
-	into v_admin_group_id
-	from im_offices
-	where office_id = v_office_id;
-
 	-- Erase the im_offices item associated with the id
 	delete from im_offices
 	where office_id = v_office_id;
-
-	-- now: delete the administration group
-	acs_group.del(v_admin_group_id);
 
 	-- Erase all the priviledges
 	delete from 	acs_permissions
