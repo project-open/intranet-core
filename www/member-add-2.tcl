@@ -69,7 +69,7 @@ if {[string equal "/" $last_char]} {
     set system_url "[string range $system_url 0 [expr $sysurl_len-2]]"
 }
 
-set object_url "$system_url$object_rel_url?$object_id"
+set object_url "$system_url$object_rel_url$object_id"
 
 db_1row user_name "
 select 
