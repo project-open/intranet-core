@@ -55,6 +55,7 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border alt='$alt'>" }
 	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt='$alt'>" }
 	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border alt='$alt'>" }
+	"tool"		{ return "<img src=$url/tool.15.gif widht=20 height=15 border=$border alt='$alt'>" }
 	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 heigth=16 border=$border alt='$alt'>" }
 	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border alt='$alt'>" }
 	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border alt='$alt'>" }
