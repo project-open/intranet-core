@@ -119,6 +119,8 @@ if {$user_group_id > 0} {
     }
 }
 
+# Check if we are going to show freelancers
+# (additional fields) and different view.
 set show_freelancers 0
 if {$user_group_id == [im_freelance_group_id]} {
     set show_freelancers 1
@@ -182,12 +184,30 @@ ns_log Notice "/users/index.tcl: column_vars=$column_vars"
 set criteria [list]
 set extra_tables [list]
 set bind_vars [ns_set create]
+set extra_selects [list]
 
 if { $user_group_id > 0 } {
     append page_title " in group \"$user_group_name\""
     lappend criteria "u.user_id = m.member_id"
     lappend criteria "m.group_id = :user_group_id"
     lappend extra_tables "group_distinct_member_map m"
+}
+
+if { $show_freelancers } {
+    set dynval_sql "
+	select	v.*
+	from	im_dynval_vars v
+	where	var_object_type='user'"
+
+    db_foreach dynvals $dynval_sql {
+	lappend extra_selects "dynval_$var_shortname.int_value as $var_shortname"
+	lappend criteria "u.user_id = dynval_$var_shortname.object_id(+)"
+	lappend extra_tables "(
+		select *
+		from im_dynval_values
+		where var_id = $var_id
+	) dynval_$var_shortname"
+    }
 }
 
 if { -1 == $user_group_id} {
@@ -202,8 +222,9 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
     lappend criteria "im_first_letter_default_to_a(p.last_name)=:letter"
 }
 
+ns_log Notice "criteria=$criteria"
 if { [llength $criteria] > 0 } {
-    set where_clause [join $criteria "\n         and "]
+    set where_clause [join $criteria "\n\tand "]
 } else {
     set where_clause "1=1"
 }
@@ -220,12 +241,13 @@ switch $order_by {
     "Creation" { set order_by_clause "order by creation_date DESC" }
 }
 
-set extra_table ""
-if { [llength $extra_tables] > 0 } {
-    set extra_table ", [join $extra_tables ","]"
+set extra_table ", [join $extra_tables ",\n\t"]"
+set extra_select [join $extra_selects ",\n\t"]
+if {"" != $extra_select} { 
+    set extra_select ", $extra_select"
 }
 
-set where_clause [join $criteria " and\n            "]
+set where_clause [join $criteria " and\n\t"]
 if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
@@ -266,6 +288,7 @@ select
 	c.wa_country_code,
 	c.note,
 	c.current_information
+	$extra_select
 from 
 	registered_users u, 
 	users_contact c,
@@ -279,6 +302,8 @@ where
 	$where_clause
         $order_by_clause
 "
+
+ns_log Notice "sql=$sql"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
