@@ -152,7 +152,7 @@ set page_body "
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Company+Status'>
+	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Status'>
 	[im_gif new {Add a new company status}]</A>"
 }
 
@@ -166,7 +166,7 @@ append page_body "
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Company+Type'>
+	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Type'>
 	[im_gif new {Add a new company type}]</A>"
 }
 
@@ -231,7 +231,7 @@ append page_body "
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Annual+Revenue'>
+	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Annual+Revenue'>
 	[im_gif new {Add a new annual revenue measure}]</A>"
 }
 
