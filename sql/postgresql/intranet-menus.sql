@@ -323,6 +323,61 @@ begin
     PERFORM acs_permission__grant_permission(v_home_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_freelancers, ''read'');
 
+
+
+    v_project_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',           -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''projects'',               -- label
+        ''Projects'',              -- name
+        ''/intranet/projects/'',   -- url
+        40,                     -- sort_order
+        v_main_menu,            -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_project_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_freelancers, ''read'');
+
+
+
+
+    v_company_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',           -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''companies'',               -- label
+        ''Companies'',              -- name
+        ''/intranet/companies/'',   -- url
+        50,                     -- sort_order
+        v_main_menu,            -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_company_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_freelancers, ''read'');
+
+
+
     v_user_menu := im_menu__new (
         null,                   -- p_menu_id
         ''acs_object'',           -- object_type
@@ -344,6 +399,7 @@ begin
     PERFORM acs_permission__grant_permission(v_user_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_user_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_user_menu, v_employees, ''read'');
+
 
 
     v_office_menu := im_menu__new (
