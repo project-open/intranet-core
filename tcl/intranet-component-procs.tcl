@@ -69,10 +69,13 @@ order by sort_order
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
-	    ad_return_complaint 1 "<li>
-        Error evaluating component '$plugin_name' of module '$package_name':<br>
-        <pre>\n$err_msg\n</pre><br>
-        Please contact your system administrator:<br>"
+	    set html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
+	    set html [im_table_with_title $plugin_name $html]
+
+#	    ad_return_complaint 1 "<li>
+#        Error evaluating component '$plugin_name' of module '$package_name':<br>
+#        <pre>\n$err_msg\n</pre><br>
+#        Please contact your system administrator:<br>"
 	}
     }
     return $html
