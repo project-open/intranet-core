@@ -104,12 +104,12 @@ declare
         v_object_id     integer;
 begin
 	v_office_id := acs_object.new (
-		object_id =>		office_id,
-		object_type =>		object_type,
-		creation_date =>	creation_date,
-		creation_user =>	creation_user,
-		creation_ip =>		creation_ip,
-		context_id =>		context_id
+		office_id,
+		object_type,
+		creation_date,
+		creation_user,
+		creation_ip,
+		context_id
 	);
 	insert into im_offices (
 		office_id, office_name, office_path, 
