@@ -1,26 +1,23 @@
-#!/bin/bash
-
-VER=3.0.beta5
-
+#!/bin/csh
+POVER="3.0.beta5"
+export POVER
 rm -f *.apm
-
-
-tar czf intranet-big-brother-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-big-brother
-tar czf intranet-core-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-core
-tar czf intranet-cost-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-cost
-tar czf intranet-crm-tracking-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-crm-tracking
-tar czf intranet-dynvals-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-dynvals
-tar czf intranet-filestorage-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-filestorage
-tar czf intranet-forum-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-forum
-tar czf intranet-freelance-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-freelance
-tar czf intranet-hr-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-hr
-tar czf intranet-invoices-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-invoices
-tar czf intranet-payments-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-payments
-tar czf intranet-riskmanagement-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-riskmanagement
-tar czf intranet-timesheet-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
-tar czf intranet-spam-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-spam
-tar czf intranet-trans-invoices-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
-tar czf intranet-translation-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-translation
-tar czf intranet-trans-quality-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
-tar czf intranet-travel-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-travel
+/bin/tar czf intranet-big-brother-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-big-brother
+/bin/tar czf intranet-core-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-core
+/bin/tar czf intranet-cost-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-cost
+/bin/tar czf intranet-crm-tracking-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-crm-tracking
+/bin/tar czf intranet-dynvals-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-dynvals
+/bin/tar czf intranet-filestorage-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-filestorage
+/bin/tar czf intranet-forum-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-forum
+/bin/tar czf intranet-freelance-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-freelance
+/bin/tar czf intranet-hr-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-hr
+/bin/tar czf intranet-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-invoices
+/bin/tar czf intranet-payments-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-payments
+/bin/tar czf intranet-riskmanagement-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-riskmanagement
+/bin/tar czf intranet-timesheet-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
+/bin/tar czf intranet-spam-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-spam
+/bin/tar czf intranet-trans-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
+/bin/tar czf intranet-translation-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-translation
+/bin/tar czf intranet-trans-quality-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
+/bin/tar czf intranet-travel-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-travel
 
