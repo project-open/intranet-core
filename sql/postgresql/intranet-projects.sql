@@ -48,8 +48,8 @@ create table im_projects (
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
-        tree_sortkey		raw(240),
-        max_child_sortkey	raw(100),
+        tree_sortkey		varbit,
+        max_child_sortkey	varbit,
 
 	company_id		integer not null
 				constraint im_projects_company_fk 
@@ -91,50 +91,43 @@ create table im_projects (
 
 -- This is the sortkey code
 --
-create or replace trigger im_project_insert_tr
-before insert on im_forum_topics
-for each row
+create function im_project_insert_tr ()
+returns opaque as '
 declare
     v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
     v_parent_sortkey                im_projects.tree_sortkey%TYPE;
 begin
 
-    if :new.parent_id is null
+    if new.parent_id is null
     then
-
-        select '', max_child_sortkey
-        into v_parent_sortkey, v_max_child_sortkey
-        from im_projects
-        where parent_id is null
-        for update of max_child_sortkey;
-
-        v_max_child_sortkey := tree.increment_key(v_max_child_sortkey);
-
-        update im_projects
-        set max_child_sortkey = v_max_child_sortkey
-        where project_id = new.project_id;
+        new.tree_sortkey := int_to_tree_key(new.project_id+1000);
 
     else
 
-        select nvl(tree_sortkey, ''), max_child_sortkey
+        select tree_sortkey, tree_increment_key(max_child_sortkey)
         into v_parent_sortkey, v_max_child_sortkey
         from im_projects
-        where project_id = :new.parent_id
-        for update of max_child_sortkey;
-
-        v_max_child_sortkey := tree.increment_key(v_max_child_sortkey);
+        where project_id = new.parent_id
+        for update;
 
         update im_projects
         set max_child_sortkey = v_max_child_sortkey
-        where project_id = :new.parent_id;
+        where project_id = new.parent_id;
+
+        new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
 
     end if;
 
-    :new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
+    new.max_child_sortkey := null;
 
-end im_forum_topic_insert_tr;
-/
-show errors
+    return new;
+end;' language 'plpgsql';
+
+create trigger im_project_insert_tr
+before insert on im_projects
+for each row
+execute procedure im_project_insert_tr();
+
 
 
 create index im_project_parent_id_idx on im_projects(parent_id);
