@@ -120,12 +120,15 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     set sql "
     begin
 	for row in (
-        	select rel_id
-        	from acs_rels r
+        	select
+			object_id_one as object_id,
+			object_id_two as user_id
+        	from 
+			acs_rels r
         	where	r.object_id_one=:object_id 
 			and r.object_id_two=:user_id
 	) loop
-		im_biz_object_member.del(row.rel_id);
+		im_biz_object_member.del(row.object_id, row.user_id);
    	end loop;
     end;
 "    
