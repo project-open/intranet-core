@@ -33,10 +33,14 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
+# "Profile" changes its value, possibly because of strange
+# ad_form sideeffects
 if {[exists_and_not_null profile]} {
     ns_log Notice "/users/new: profile=$profile"
+    set profile_org $profile
 } else {
     ns_log Notice "/users/new: profile=NULL"
+    set profile_org [list]
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -46,6 +50,19 @@ set context [list [list "." "Users"] "Add user"]
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
+
+
+# Get the list of profiles managable for current_user_id
+set managable_profiles [im_profiles_managable_for_user $current_user_id]
+ns_log Notice "/users/new: managable_profiles=$managable_profiles"
+
+# Extract only the profile_ids from the managable profiles
+set managable_profile_ids [list]
+foreach g $managable_profiles {
+    lappend managable_profile_ids [lindex $g 0]
+}
+ns_log Notice "/users/new: managable_profile_ids=$managable_profile_ids"
+
 
 
 if {[im_permission $current_user_id view_users]} {
@@ -100,6 +117,12 @@ where
 
 } else {
 
+    # Check if current_user_id can create new users
+    if {![im_permission $current_user_id add_users]} {
+	ad_return_complaint 1 "<li>You have insufficient permissions to create a new user."
+	return
+    }
+
     # Pre-generate user_id for double-click protection
     set user_id [db_nextval acs_object_id_seq]
 
@@ -136,8 +159,12 @@ if {!$editing_existing_user} {
     }
 }
 
+# Screen Name is not being used in P/O...
 ad_form -extend -name register -form {
-    {screen_name:text(text),optional {label {Screen name}} {html {size 30}}} 
+    {screen_name:text(hidden),optional {label {Screen name}} {html {size 30}}} 
+}
+
+ad_form -extend -name register -form {
     {url:text(text),optional {label {Personal Home Page URL:}} {html {size 50 value "http://"}}} 
 }
 
@@ -155,19 +182,13 @@ ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
 
 # Change the order of the inner list elements for
 # the OpenACS 5.0 form elements:
-
-set all_profiles [im_profiles_all]
-#set all_profiles [im_profiles_managable_for_user $current_user_id]
-
-ns_log Notice "/users/new: all_profiles=$all_profiles"
-
-set profile_list [list]
-foreach option $all_profiles {
-    set group_id [lindex $option 0]
+set managable_profiles_reverse [list]
+foreach option $managable_profiles {
+    set profile_id [lindex $option 0]
     set group_name [lindex $option 1]
-    lappend profile_list [list $group_name $group_id]
+    lappend managable_profiles_reverse [list $group_name $profile_id]
 }
-ns_log Notice "/users/new: profile_list=$profile_list"
+ns_log Notice "/users/new: managable_profiles_reverse=$managable_profiles_reverse"
 
 
 # fraber 20040123: Adding the list of profiles that
@@ -175,7 +196,7 @@ ns_log Notice "/users/new: profile_list=$profile_list"
 ad_form -extend -name register -form {
     {profile:text(multiselect),multiple
         {label "Group Membership"}
-        {options $profile_list }
+        {options $managable_profiles_reverse }
 	{values $profile_values }
 	{-html {size 8}}
     }
@@ -186,36 +207,10 @@ ad_form -extend -name register -form {
 # Other elements...
 # ---------------------------------------------------------------
 
-if { [exists_and_not_null rel_group_id] } {
-    ad_form -extend -name register -form {
-        {rel_group_id:integer(hidden),optional}
-    }
-
-    if { [permission::permission_p -object_id $rel_group_id -privilege "admin"] } {
-        ad_form -extend -name register -form {
-            {rel_type:text(select)
-                {label "Role"}
-                {options {[group::get_rel_types_options -group_id $rel_group_id]}}
-            }
-        }
-    } else {
-        ad_form -extend -name register -form {
-            {rel_type:text(hidden)
-                {value "membership_rel"}
-            }
-        }
-    }
-}
-
 ad_form -extend -name register -on_request {
     # Populate elements from local variables
 
 } -on_submit {
-
-    if {!$admin} {
-	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
-	return
-    }
 
     db_transaction {
 	
@@ -237,15 +232,6 @@ ad_form -extend -name register -on_request {
 					 -url $url \
 					 -secret_question $secret_question \
 					 -secret_answer $secret_answer]
-     
-	    if { [string equal $creation_info(creation_status) "ok"] && [exists_and_not_null rel_group_id] } {
-		group::add_member \
-		    -group_id $rel_group_id \
-		    -user_id $user_id \
-		    -rel_type $rel_type
-	    }
-
-
 	} else {
 
 	    # Existing user: Update variables
@@ -281,7 +267,7 @@ BEGIN
 		acs_objects o
 	where
 		object_id_two = :user_id
-		and object_id_one = :group_id
+		and object_id_one = :profile_id
 		and r.object_id_one = o.object_id
 		and o.object_type = 'im_profile'
 		and rel_type = 'membership_rel'
@@ -293,51 +279,60 @@ END;"
 	set add_rel_sql "
 BEGIN
     :1 := membership_rel.new(
-	object_id_one    => :group_id,
+	object_id_one    => :profile_id,
 	object_id_two    => :user_id,
 	member_state     => 'approved'
     );
 END;"
 
+	# Profile changes its value, possibly because of strange
+	# ad_form sideeffects
+	ns_log Notice "/users/new: profile=$profile"
+	ns_log Notice "/users/new: profile_org=$profile_org"
+
 	foreach profile_tuple [im_profiles_all] {
 	    ns_log Notice "profile_tuple=$profile_tuple"
-	    set group_id [lindex $profile_tuple 0]
+	    set profile_id [lindex $profile_tuple 0]
+	    set profile_name [lindex $profile_tuple 1]
 	    
-	    set is_member 0
-	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:group_id"]
+	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:profile_id"]
 
 	    set should_be_member 0
-	    if {[lsearch -exact $profile $group_id] >= 0} {
+	    if {[lsearch -exact $profile_org $profile_id] >= 0} {
 		set should_be_member 1
 	    }
 	    
-	    ns_log Notice "/users/new: group_id 	=$group_id"
+	    ns_log Notice "/users/new: profile_name 	=$profile_name"
+	    ns_log Notice "/users/new: profile_id 	=$profile_id"
 	    ns_log Notice "/users/new: user_id 		=$user_id"
 	    ns_log Notice "/users/new: should_be_member	=$should_be_member"
 	    ns_log Notice "/users/new: is_member	=$is_member"
 	    
 	    if {$is_member && !$should_be_member} {
-		# Remove the user from the group
-		ns_log Notice "/users/new: => remove_member\n"
+		ns_log Notice "/users/new: => remove_member from $profile_name\n"
+
+		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		    ad_return_complaint 1 "<li>
+                    You are not allowed to remove members from group '$profile_name'"
+                   return
+		}
+
 		db_dml delete_profile $delete_rel_sql
-#		group::remove_member \
-#		    -group_id $group_id \
-#		    -user_id $user_id
 	    }
 
 	    
 	    if {!$is_member && $should_be_member} {
-		# Add the member to the specified group
-		ns_log Notice "/users/new: => add_member\n"
+		ns_log Notice "/users/new: => add_member to profile $profile_name\n"
+
+		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		    # Whooooo, sombody tries to fool us...
+		    ad_return_complaint 1 "<li>
+                    You are not allowed to add members to profile '$profile_name'"
+		    return
+		}
+
 		db_dml delete_profile $delete_rel_sql
 		db_exec_plsql insert_profile $add_rel_sql
-#		group::add_member \
-#		    -group_id $group_id \
-#		    -user_id $user_id \
-#		    -rel_type "membership_rel"
-#		    -member_state "approved" \
-#		    -creation_user $current_user_id \
-#		    -creation_ip $ip_address
 	    }
 	}
 
