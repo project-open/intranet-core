@@ -604,16 +604,171 @@ ad_proc -public im_category_from_id { category_id } {
 }
 
 
+# Hierarchical category select:
+# Uses the im_category_hierarchy table to determine 
+# the hierarchical structure of the category type.
+#
+ad_proc im_category_select { 
+    {-translate_p 1} 
+    {-include_empty_p 0} 
+    category_type 
+    select_name 
+    { default "" } 
+} {
+    Returns a formatted "option" widget with hierarchical
+    contents
+} {
+    # Read the categories into the a hash cache
+    # Initialize parent and level to "0"
+    set sql "
+	select 
+		category_id,
+		category, 
+		category_description,
+		parent_only_p,
+		enabled_p
+	from 
+		im_categories
+	where 
+		category_type = :category_type
+	order by lower(category)
+    "
+    db_foreach category_select $sql {
+	set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+	set level($category_id) 0
+    }
 
-ad_proc im_category_select { {-translate_p 1} category_type select_name { default "" } } {
+    # Get the hierarchy into a hash cache
+    set sql "
+	select 
+		h.parent_id,
+		h.child_id
+	from 
+		im_categories c,
+		im_category_hierarchy h
+	where 
+		c.category_id = h.parent_id
+		and c.category_type = :category_type
+	order by lower(category)
+    "
+
+    # setup maps child->parent and parent->child for 
+    # performance reasons
+    set children [list]
+    db_foreach hierarchy_select $sql {
+	lappend children [list $parent_id $child_id]
+    }
+
+
+    set count 0
+    set modified 1
+    while {$modified} {
+
+	set modified 0
+	foreach rel $children {
+	    set p [lindex $rel 0]
+	    set c [lindex $rel 1]
+	    set parent_level $level($p)
+	    set child_level $level($c)
+	    
+	    ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
+	    
+	    if {[expr $parent_level+1] > $child_level} {
+		set level($c) [expr $parent_level+1]
+		set direct_parent($c) $p
+		set modified 1
+	    }
+	}
+	incr count
+	if {$count > 1000} { 
+	    ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+            The category type '$category_type' is badly configured and contains
+            and infinite loop. Please notify your system administrator."
+	    return "Infinite Loop Error"
+	}
+    }
+
+    set base_level 0
+    
+    set html ""
+    if {$include_empty_p} {
+	append html "<option value=\"\">All</option>\n"
+	incr base_level
+    }
+
+    foreach p [array names cat] {
+	set p [lindex $cat($p) 0]
+	set p_level $level($p)
+
+	if {0 == $p_level} {
+	    append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
+	}
+    }
+
+    return "
+<select name=\"$select_name\">
+$html
+</select>
+"
+} 
+
+
+ad_proc im_category_select_branch { parent default level cat_array direct_parent_array } {
+    Returns a list of html "options" displaying an options hierarchy.
+} {
+    if {$level > 10} { return "" }
+
+    array set cat $cat_array
+    array set direct_parent $direct_parent_array
+
+#   set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+    set category [lindex $cat($parent) 1]
+    set parent_only_p [lindex $cat($parent) 3]
+
+    set spaces ""
+    for {set i 0} { $i < $level} { incr i} {
+	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
+    }
+
+    set selected ""
+    if {$parent == $default} { set selected "selected" }
+    set html ""
+    if {"f" == $parent_only_p} {
+        set html "<option value=\"$parent\" $selected>$spaces $category</option>\n"
+	incr level
+    }
+
+    foreach cat_id [array names cat] {
+	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
+	    append html [im_category_select_branch $cat_id $default $level $cat_array $direct_parent_array]
+	}
+    }
+
+    return $html
+}
+
+
+
+
+ad_proc im_category_select_plain { {-translate_p 1} category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
-    set sql "select category_id,category, category_description
-	     from im_categories
-	     where category_type = :category_type
-	     order by lower(category)"
-    return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
-}    
+
+    set sql "
+	select 
+		category_id,
+		category, 
+		category_description
+	from 
+		im_categories		
+	where 
+		category_type = :category_type
+	order by lower(category)
+    "
+ 
+   return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
+} 
+
 
 ad_proc im_category_select_multiple { category_type select_name { default "" } { size "6"} { multiple ""}} {
     set bind_vars [ns_set create]

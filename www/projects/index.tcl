@@ -35,7 +35,7 @@ ad_page_contract {
     { order_by "Project #" }
     { include_subprojects_p "f" }
     { mine_p "f" }
-    { project_status_id 76 } 
+    { project_status_id 0 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { company_id:integer "0" } 
@@ -93,7 +93,7 @@ set page_focus "im_header_form.keywords"
 set letter [string toupper $letter]
 
 # Determine the default status if not set
-if { [empty_string_p $project_status_id] } {
+if { 0 == $project_status_id } {
     # Default status is open
     set project_status_id [im_project_status_open]
 }
@@ -144,25 +144,6 @@ db_foreach column_list_sql $column_sql {
 	lappend column_vars "$column_render_tcl"
     }
 }
-
-# ---------------------------------------------------------------
-# 4. Define Filter Categories
-# ---------------------------------------------------------------
-
-# status_types will be a list of pairs of (project_status_id, project_status)
-set status_types [im_memoize_list select_project_status_types \
-	"select project_status_id, project_status
-         from im_project_status
-         order by lower(project_status)"]
-set status_types [linsert $status_types 0 0 All]
-
-# project_types will be a list of pairs of (project_type_id, project_type)
-set project_types [im_memoize_list select_project_types \
-	"select project_type_id, project_type
-         from im_project_types
-        order by lower(project_type)"]
-set project_types [linsert $project_types 0 0 All]
-
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
@@ -411,7 +392,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
     <td valign=top>[_ intranet-core.Project_Status]:</td>
-    <td valign=top>[im_select project_status_id $status_types ""]</td>
+    <td valign=top>[im_category_select -include_empty_p 1 "Intranet Project Status" project_status_id $project_status_id]</td>
   </tr>\n"
 }
 
@@ -419,7 +400,7 @@ append filter_html "
   <tr>
     <td valign=top>[_ intranet-core.Project_Type]:</td>
     <td valign=top>
-      [im_select project_type_id $project_types ""]
+      [im_category_select -include_empty_p 1 "Intranet Project Type" project_type_id $project_type_id]
 	  <input type=submit value=Go name=submit>
     </td>
   </tr>

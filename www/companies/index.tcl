@@ -129,25 +129,6 @@ db_foreach column_list_sql $column_sql {
 }
 
 # ---------------------------------------------------------------
-# 4. Define Filter Categories
-# ---------------------------------------------------------------
-
-# status_types will be a list of pairs of (project_status_id, project_status)
-set status_types [im_memoize_list select_company_status_types \
-	"select company_status_id, company_status
-           from im_company_status
-          order by lower(company_status)"]
-set status_types [linsert $status_types 0 0 All]
-
-
-# company_types will be a list of pairs of (company_type_id, company_type)
-set company_types [im_memoize_list select_companies_types \
-	"select company_type_id, company_type
-           from im_company_types
-          order by lower(company_type)"]
-set company_types [linsert $company_types 0 0 All]
-
-# ---------------------------------------------------------------
 # 5. Generate SQL Query
 # ---------------------------------------------------------------
 
