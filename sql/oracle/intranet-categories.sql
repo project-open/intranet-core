@@ -53,12 +53,15 @@
 -- 400-409	Intranet Prior Experience
 -- 450-459	Intranet Employee Pipeline Status
 -- 500-599	Intranet Translation Subject Area
+-- 600-699	Intranet Invoice Status
+-- 700-799	Intranet Invoice Type
 -- 800-899	Intranet Invoice Payment Method
 -- 900-999	Intranet Cost Templates
 -- 1000-1099	Intranet Payment Type (for im_payments)
 -- 1100-1199	Intranet Topic Type
 -- 1200-1299	Intranet Topic Status
 -- 1300-1399	Intranet Project Role
+-- 1400-1499	Intranet DynView Type
 -- 2000-2099	Intranet Freelance Skill Type
 -- 2100-2199	Intranet Freelance TM Tools
 -- 2200-2299	Intranet Experience Level
@@ -73,9 +76,9 @@
 -- 3400-3499    Intranet Investment Type
 -- 3500-3599    Intranet Investment Status
 -- 3600-3699    Intranet Investment Amortization Interval (reserved)
--- 3700-3799    Intranet Cost Item Type
--- 3800-3899    Intranet Cost Item Status
--- 3900-3999    Intranet Cost Item Planning Type
+-- 3700-3799    Intranet Cost Type
+-- 3800-3899    Intranet Cost Status
+-- 3900-3999    Intranet Cost Planning Type
 -- 4000-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
@@ -441,6 +444,7 @@ INSERT INTO im_categories VALUES (322,'Unit','','Intranet UoM','category','t','f
 -- Page, S-Word, T-Word, S-Line, T-Line defined in intranet-translation
 
 
+
 -- Prior Experience
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '400', 'Small Project Work', 'Intranet Prior Experience');
@@ -448,7 +452,19 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '401', 'Medium Project Work', 'Intranet Prior Experience');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '402', 'Large Project Work', 'Intranet Prior Experience');
-
 -- reserved 1100 - 1200 for Forum Topic Types
+
+
+
+-- DynView (system views) Type
+insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('1400', 'ObjectList', 'Intranet DynView Type');
+
+insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('1405', 'ObjectView', 'Intranet DynView Type');
+
+insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('1410', 'Backup', 'Intranet DynView Type');
+-- reserved 1400 - 1499 for DynView Types
 
 
