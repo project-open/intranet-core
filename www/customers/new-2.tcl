@@ -184,8 +184,15 @@ update im_customers set
 where
 	customer_id = :customer_id
 "
-    db_dml update_offices $update_sql
+    db_dml update_customer $update_sql
 
+# -----------------------------------------------------------------
+# Make sure the creator and the manager become Key Accounts
+# -----------------------------------------------------------------
+
+set role_id [im_customer_role_key_account]
+im_biz_object_add_role $manager_id $customer_id $role_id
+im_biz_object_add_role $user_id $customer_id $role_id
 
 
 db_release_unused_handles

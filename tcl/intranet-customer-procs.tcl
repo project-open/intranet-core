@@ -155,6 +155,11 @@ begin
 }
 
 
+# Suitable roles for a customer object
+ad_proc -public im_customer_role_key_account { } { return 1302 }
+ad_proc -public im_customer_role_member { } { return 1300 }
+
+
 ad_proc -public im_customer_internal { } {
     Returns the object_id of the "Internal" customer, identifying
     the organization (ower or Project/Open) itself.<br>

@@ -59,6 +59,7 @@ select
 	c.annual_revenue_id, 
 	c.referral_source,
 	c.vat_number,
+	c.manager_id,
 	nvl(c.manager_id,$user_id) as manager, 
 	c.site_concept, 
 	nvl(c.contract_value,600) as contract_value,
@@ -116,6 +117,8 @@ where
     set "creation_user" $user_id
     set customer_id [im_new_object_id]
     set address_country_code ""
+    set manager_id ""
+
 }
 
 set customer_defaults [ns_set create]
@@ -253,7 +256,7 @@ append page_body "
 		      <td>Key Account Manager</td>
 		      <td> 
 <select name=manager_id size=8>
-[im_employee_select_optionlist [value_if_exists manager_id]]
+[im_employee_select_optionlist $manager_id]
 </select>
 		      </td>
 		    </tr>
