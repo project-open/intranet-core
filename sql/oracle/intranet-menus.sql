@@ -169,7 +169,7 @@ is
     end del_module;
 
 
-    function name (menu_id in integer)
+    function name (menu_id in integer) return varchar
     is
 	v_name	im_menus.name%TYPE;
     begin
