@@ -319,3 +319,29 @@ BEGIN
 END;
 /
 show errors;
+
+
+
+
+
+-- Create these entries at the very end,
+-- because the objects types need to be there first.
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','view','/intranet/projects/view?project_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','edit','/intranet/projects/new?project_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_customer','view','/intranet/customers/view?customer_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_customer','edit','/intranet/customers/new?customer_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','view','/intranet/offices/view?office_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','edit','/intranet/offices/new?office_id=');
+
+---
+commit;
+
