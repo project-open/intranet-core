@@ -25,7 +25,7 @@ set page_title "Upload Company Contacts CSV"
 
 set context_bar [ad_context_bar [list "/intranet/companies/" "Companies"] "Upload CSV"]
 
-set page_content "
+set page_body "
 <form enctype=multipart/form-data method=POST action=upload-contacts-2.tcl>
 [export_form_vars return_url]
                     <table border=0>
@@ -46,6 +46,3 @@ set page_content "
 </form>
 "
 
-db_release_unused_handles
-
-doc_return  200 text/html [im_return_template]
