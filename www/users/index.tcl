@@ -250,7 +250,7 @@ select
 	c.note,
 	c.current_information
 from 
-	users u, 
+	registered_users u, 
 	users_contact c,
 	persons p,
 	acs_objects o
