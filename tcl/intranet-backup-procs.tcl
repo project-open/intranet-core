@@ -319,7 +319,7 @@ ad_proc -public im_import_categories { filename } {
 	set already_exists [db_string cat_already_exists "select count(*) from im_categories where category=:category and category_type=:category_type"]
 	set id_occupied 0
 	if {!$already_exists} {
-	    set id_occupied [db_string id_occupied "select count(*) from im_categories where category_id=:category_id"]
+	    set id_occupied [db_string id_occupied "select count(*) from im_categories where category_id = :category_id"]
 	}
 
 	ns_log Notice "im_import_categories: category=$category"
@@ -2700,7 +2700,7 @@ ad_proc -public im_import_costs { filename } {
                            from im_cost_centers \
                            where cost_center_name = :cost_center_label" -default ""]
     
-	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
+	set template_id [im_import_get_category $template "Intranet Cost Template" ""]
 	set cost_status_id [im_import_get_category $cost_status "Intranet Cost Status" 0]
 	set cost_type_id [im_import_get_category $cost_type "Intranet Cost Type" ""]
 	
@@ -2813,6 +2813,7 @@ WHERE
     }
     return $err_return
 }
+
 ####
 ad_proc -public im_import_cost_centers { filename } {
     Import the costs file
@@ -2896,8 +2897,7 @@ ad_proc -public im_import_cost_centers { filename } {
                            from im_cost_centers \
                            where cost_center_name = :cost_center_label" -default ""]
     
-	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
-	set cost_center_status_id [im_import_get_category $cost_status "Intranet Cost Center Status" 0]
+	set cost_center_status_id [im_import_get_category $cost_center_status "Intranet Cost Center Status" 0]
 	set cost_center_type_id [im_import_get_category $cost_center_type "Intranet Cost Center Type" ""]
 	
 	####################
@@ -2944,7 +2944,7 @@ WHERE
 		# The cost center doesn't exist yet:
 		set cost_center_id [db_exec_plsql create_cost_center {}]
 	    }
-	    db_dml update_cost_center $update_cost_center_sql
+	    db_dml update_cost_center $update_cost_centers_sql
 	    set parent_element [list $cost_center_id $parent_label]
 	    lappend parent_list_of_lists $parent_element
 	} err_msg] } {

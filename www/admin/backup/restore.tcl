@@ -48,6 +48,8 @@ from
         im_views v
 where
         v.view_type_id = [im_dynview_type_backup]
+order by
+	sort_order
 "
 
 set object_list_html ""

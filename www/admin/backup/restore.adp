@@ -24,10 +24,12 @@
 
 <h1>Attention</h1>
 <blockquote>
-By "restoring" data you are going to overwrite the data
-in this system.
-All changes made to your system since the backup
-are going to be lost.<br>
+By "restoring" data you are going to overwrite the data in this system.
+All changes made to your system since the backup are going to be lost.
+<p>
+This restore process can take several minutes of even hours.
+Please do not interrupt the browser.
+<p>
 
 <font color=red>Please make sure you know exactly what you are doing.</font>
 </blockquote>

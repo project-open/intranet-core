@@ -34,6 +34,8 @@ from
         im_views v
 where
         v.view_id in ($joined_ids)
+order by
+	sort_order
 "
 
 set page_body "<ul>\n"
@@ -45,9 +47,11 @@ db_foreach foreach_report $sql {
     set cmd "append page_body \[im_import_$object \"$path/$view_name.csv\"]"
     append page_body "<li>$cmd<br>\n"
 
-    if [catch { eval $cmd } errmsg] {
-	append page_body "<pre>$errmsg</pre>\n"
-    }
+    eval $cmd
+
+#    if [catch { eval $cmd } errmsg] {
+#	append page_body "<pre>$errmsg</pre>\n"
+#    }
     incr ctr
 }
 
