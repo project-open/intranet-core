@@ -152,7 +152,7 @@ select
 	u.user_id, 
 	im_name_from_user_id(u.user_id) name
 from
-	users u,
+	registered_users u,
 	group_distinct_member_map gm
 where
 	u.user_id = gm.member_id
@@ -433,7 +433,7 @@ select
 	u.user_id,
 	im_name_from_user_id(u.user_id) as employee_name
 from
-	users u,
+	registered_users u,
 	group_distinct_member_map gm
 where
 	u.user_id = gm.member_id
