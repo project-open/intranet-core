@@ -328,6 +328,11 @@ show errors;
 -- because the objects types need to be there first.
 
 insert into im_biz_object_urls (object_type, url_type, url) values (
+'user','view','/intranet/users/view?user_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'user','edit','/intranet/users/new?user_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_project','view','/intranet/projects/view?project_id=');
 insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_project','edit','/intranet/projects/new?project_id=');
