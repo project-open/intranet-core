@@ -292,3 +292,44 @@ BEGIN
 	select date_trunc("p_field",p_date_in) into v_date_out;
 	return v_date_out;
 END;' language 'plpgsql';
+
+create or replace function next_day (date, varchar) returns date as '
+declare
+	p_date_in alias for $1;		-- date_in
+	p_day	  alias for $2;		   -- day
+
+	v_date_out	date;
+	value_to_add integer;
+	
+begin
+	if lower(p_day) = ''sunday'' or lower(p_day) = ''sun'' then 
+	   value_to_add := 0;
+	   else
+		if lower(p_day) = ''monday'' or lower(p_day) = ''mon'' then 
+		   value_to_add := 1;
+		else
+		   if lower(p_day) = ''tuesday'' or lower(p_day) = ''tue'' then 
+		      value_to_add := 2;
+		   else 
+		      if lower(p_day) = ''wednesday'' or lower(p_day) = ''wed'' then 
+			value_to_add := 3;
+		      else
+			if lower(p_day) = ''thursday'' or lower(p_day) = ''thu'' then 
+			   value_to_add := 4;
+			else
+			   if lower(p_day) = ''friday'' or lower(p_day) = ''fri'' then 
+			      value_to_add := 5;
+			   else
+			      if lower(p_day) = ''saturday'' or lower(p_day) = ''sat'' then 
+			         value_to_add := 6;   
+			      end if;
+			   end if;
+			end if;
+		      end if;
+		   end if;
+	    end if;
+	 end if;
+
+	 select p_date_in - date_part(''dow'', p_date_in)::int + value_to_add into v_date_out;
+	 return v_date_out;
+end;' language 'plpgsql';
