@@ -152,3 +152,14 @@ if {![string equal "All" $select_category_type]} {
 
 }
 
+
+set page_body "
+[im_admin_navbar]
+$category_select_html
+<P>
+$category_list_html
+"
+
+
+# db_release_unused_handles
+# doc_return  200 text/html [im_return_template]
