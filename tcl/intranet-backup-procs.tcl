@@ -341,13 +341,14 @@ ad_proc -public im_import_categories { filename } {
 		    (category_id, category, category_description, category_type,
 		     category_gif, enabled_p, parent_only_p)
 		values
-		  (im_categories_seq.nextval, :category, :category_description, :category_type,
+		  (:category_id, :category, :category_description, :category_type,
 		  :category_gif, :enabled_p, :parent_only_p)"
 	}
 
 	if { [catch {
 
 	    if {!$already_exists} {
+		set category_id [db_nextval im_categories_seq]
 		db_dml create_member $create_member_sql
 	    }
 
@@ -1323,51 +1324,6 @@ ad_proc -public im_import_users { filename } {
 	# Prepare the DB statements
 	#
 
-	set create_user_sql "
-DECLARE
-    v_user_id	integer;
-BEGIN
-    v_user_id := acs_user.new(
-	username      => :username,
-	email	 => :email,
-	first_names   => :first_names,
-	last_name     => :last_name,
-	password      => :password,
-	salt	  => :salt
-    );
-
-    INSERT INTO users_contact (user_id)
-    VALUES (v_user_id);
-END;"
-
-        set add_to_registered_users_sql "
-DECLARE
-        v_registered_users integer;
-        v_rel_id integer;
-        v_rel_count integer;
-BEGIN
-
-    select object_id
-    into v_registered_users
-    from acs_magic_objects
-        where name='registered_users';
-
-    select count(*)
-    into v_rel_count
-    from acs_rels
-    where object_id_one = v_registered_users
-        and object_id_two = :user_id;
-
-    IF v_rel_count = 0 THEN
-        v_rel_id := membership_rel.new(
-            object_id_one    => v_registered_users,
-            object_id_two    => :user_id,
-            member_state     => 'approved'
-            );
-    END IF;
-END;"
-
-
 	set update_users_sql "
 UPDATE
 	users
@@ -1436,8 +1392,21 @@ WHERE
 	set count [db_string user "select count(*) from parties where lower(email)=lower(:email)"]
 	if {!$count} {
 	    if { [catch {
-		db_dml create_user $create_user_sql
-		db_dml add_to_registered_users $add_to_registered_users_sql
+		set user_id [db_exec_plsql create_user {}]
+		
+		#db_dml create_user create_user_sql
+		db_dml create_contact "INSERT INTO users_contact (user_id) 
+                                       VALUES (:user_id);"
+		db_1row "registered_user " "select object_id as registered_users
+                                            from acs_magic_objects
+                                            where name='registered_users'"
+		db_1row "is registered" "    select count(*) as rel_count
+                                             from acs_rels
+                                             where object_id_one = :registered_users
+                                             and object_id_two = :user_id"
+		if {0 == $rel_count} {
+		    set rel_id [db_exec_plsql  add_to_registered_users {}]
+		}
 	    } err_msg] } {
 		append err_return "<li>Error loading users 1:<br>
 		$csv_line<br>

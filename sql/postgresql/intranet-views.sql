@@ -83,5 +83,6 @@ create table im_view_columns (
 -- Import view definitions common for all DBs
 
 \i ../common/intranet-views.sql
+\i ../common/intranet-core-backup.sql
 
 
