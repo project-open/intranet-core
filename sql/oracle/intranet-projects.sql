@@ -13,8 +13,8 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      unknown@arsdigita.com
--- @author      frank.bergmann@project-open.com
+-- @author	  unknown@arsdigita.com
+-- @author	  frank.bergmann@project-open.com
 
 -- Projects
 --
@@ -22,17 +22,17 @@
 
 
 begin
-    acs_object_type.create_type (
-	supertype =>		'acs_object',
-	object_type =>		'im_project',
-	pretty_name =>		'Project',
-	pretty_plural =>	'Projects',
-	table_name =>		'im_projects',
-	id_column =>		'project_id',
-	package_name =>		'im_project',
-	type_extension_table =>	null,
-	name_method =>		'im_project.name'
-    );
+	acs_object_type.create_type (
+		supertype =>		'im_biz_object',
+		object_type =>		'im_project',
+		pretty_name =>		'Project',
+		pretty_plural =>	'Projects',
+		table_name =>		'im_projects',
+		id_column =>		'project_id',
+		package_name =>		'im_project',
+		type_extension_table=>	null,
+		name_method =>		'im_project.name'
+	);
 end;
 /
 show errors
@@ -92,11 +92,13 @@ create table im_projects (
 
 create index im_project_parent_id_idx on im_projects(parent_id);
 
---------------------------------------------------------------
+-- ------------------------------------------------------------
+-- Project Package
+-- ------------------------------------------------------------
 
 create or replace package im_project
 is
-    function new (
+	function new (
 	project_id	in integer default null,
 	object_type	in varchar,
 	creation_date	in date default sysdate,
@@ -108,12 +110,13 @@ is
 	project_path	in im_projects.project_path%TYPE,
 	parent_id	in im_projects.parent_id%TYPE default null,
 	customer_id	in im_projects.customer_id%TYPE,
-        project_type_id	in im_projects.project_type_id%TYPE default 93,
-        project_status_id in im_projects.project_status_id%TYPE default 76
-    ) return im_projects.project_id%TYPE;
+	project_type_id	in im_projects.project_type_id%TYPE default 93,
+	project_status_id in im_projects.project_status_id%TYPE default 76
+	) return im_projects.project_id%TYPE;
 
-    procedure del (project_id in integer);
-    function name (project_id in integer) return varchar;
+	procedure del (project_id in integer);
+	function name (project_id in integer) return varchar;
+	function type (project_id in integer) return integer;
 end im_project;
 /
 show errors
@@ -122,94 +125,108 @@ show errors
 create or replace package body im_project
 is
 
-    function new (
-	project_id	in integer default null,
-	object_type	in varchar,
-	creation_date	in date default sysdate,
-	creation_user	in integer default null,
-	creation_ip	in varchar default null,
-	context_id	in integer default null,
-	project_name	in im_projects.project_name%TYPE,
-	project_nr	in im_projects.project_nr%TYPE,
-	project_path	in im_projects.project_path%TYPE,
-	parent_id	in im_projects.parent_id%TYPE default null,
-	customer_id	in im_projects.customer_id%TYPE,
-        project_type_id	in im_projects.project_type_id%TYPE default 93,
-        project_status_id in im_projects.project_status_id%TYPE default 76
-    ) return im_projects.project_id%TYPE
-    is
-	v_project_id		im_projects.project_id%TYPE;
-	v_admin_group_id	integer;
-    begin
-	v_project_id := acs_object.new (
-		object_id =>		project_id,
-		object_type =>		object_type,
-		creation_date =>	creation_date,
-		creation_user =>	creation_user,
-		creation_ip =>		creation_ip,
-		context_id =>		context_id
-	);
+	function new (
+		project_id	in integer default null,
+		object_type	in varchar,
+		creation_date	in date default sysdate,
+		creation_user	in integer default null,
+		creation_ip	in varchar default null,
+		context_id	in integer default null,
+		project_name	in im_projects.project_name%TYPE,
+		project_nr	in im_projects.project_nr%TYPE,
+		project_path	in im_projects.project_path%TYPE,
+		parent_id	in im_projects.parent_id%TYPE default null,
+		customer_id	in im_projects.customer_id%TYPE,
+		project_type_id	in im_projects.project_type_id%TYPE default 93,
+		project_status_id in im_projects.project_status_id%TYPE default 76
+	) return im_projects.project_id%TYPE
+	is
+		v_project_id		im_projects.project_id%TYPE;
+		v_admin_group_id	integer;
+	begin
+		v_project_id := acs_object.new (
+			object_id	=>		project_id,
+			object_type	=>		object_type,
+			creation_date	=>	creation_date,
+			creation_user	=>	creation_user,
+			creation_ip	=>		creation_ip,
+			context_id	=>		context_id
+		);
 
-	v_admin_group_id := acs_group.new(
-		group_name => project_name
-	);
+		v_admin_group_id := acs_group.new(
+			group_name	=> project_name
+		);
 
-	insert into im_projects (
-		project_id, admin_group_id, project_name, project_nr, 
-		project_path, parent_id, customer_id, project_type_id, 
-		project_status_id 
-	) values (
-		v_project_id, v_admin_group_id, project_name, project_nr, 
-		project_path, parent_id, customer_id, project_type_id, 
-		project_status_id
-	);
-	return v_project_id;
-    end new;
+		insert into im_projects (
+			project_id, admin_group_id, project_name, project_nr, 
+			project_path, parent_id, customer_id, project_type_id, 
+			project_status_id 
+		) values (
+			v_project_id, v_admin_group_id, project_name, project_nr, 
+			project_path, parent_id, customer_id, project_type_id, 
+			project_status_id
+		);
+		return v_project_id;
+	end new;
 
 
-    -- Delete a single project (if we know its ID...)
-    procedure del (project_id in integer)
-    is
-	v_project_id		integer;
-	v_admin_group_id	integer;
-    begin
-	-- copy the variable to desambiguate the var name
-	v_project_id := project_id;
+	-- Delete a single project (if we know its ID...)
+	procedure del (project_id in integer)
+	is
+		v_project_id		integer;
+		v_admin_group_id	integer;
+	begin
+		-- copy the variable to desambiguate the var name
+		v_project_id := project_id;
 
-	-- delete the administration group
-	select admin_group_id
-	into v_admin_group_id
-	from im_projects
-	where project_id=v_project_id;
+		-- delete the administration group
+		select admin_group_id
+		into v_admin_group_id
+		from im_projects
+		where project_id=v_project_id;	
 
-	-- Erase the im_projects item associated with the id
-	delete from 	im_projects
-	where		project_id = v_project_id;
+		-- Erase the im_projects item associated with the id
+		delete from 	im_projects
+		where		project_id = v_project_id;
 
-	-- Now delete the admin group
-	acs_group.del(v_admin_group_id);
+		-- Now delete the admin group
+		acs_group.del(v_admin_group_id);
 
-	-- Erase all the priviledges
-	delete from 	acs_permissions
-	where		object_id = v_project_id;
+		-- Erase all the priviledges
+		delete from 	acs_permissions
+		where		object_id = v_project_id;
 
-	acs_object.del(v_project_id);
-    end del;
+		acs_object.del(v_project_id);
+	end del;
 
-    function name (project_id in integer) return varchar
-    is
-	v_project_id	integer;
-	v_name		im_projects.project_name%TYPE;
-    begin
-	v_project_id := project_id;
+	function name (project_id in integer) return varchar
+	is
+		v_project_id	integer;
+		v_name		im_projects.project_name%TYPE;
+	begin
+		v_project_id := project_id;
 
-	select	project_name
-	into	v_name
-	from	im_projects
-	where	project_id = v_project_id;
+		select	project_name
+		into	v_name
+		from	im_projects
+		where	project_id = v_project_id;
 	
-	return v_name;
-    end name;
+		return v_name;
+	end name;
+
+	function type (project_id in integer) return integer
+	is
+		v_type_id	integer;
+	begin
+		select	project_type_id
+		into	v_type_id
+		from	im_projects
+		where	project_id = type.project_id;
+	
+		return v_type_id;
+	end type;
+
+
 end im_project;
 /
 show errors
@@ -283,21 +300,21 @@ im_project_url_map(url_type_id, project_id);
 
 -- Create the "Internal" project, representing the company itself
 declare
-    v_project_id		integer;
-    v_internal_customer_id	integer;
+	v_project_id		integer;
+	v_internal_customer_id	integer;
 begin
-    select customer_id
-    into v_internal_customer_id
-    from im_customers
-    where customer_path = 'internal';
+	select customer_id
+	into v_internal_customer_id
+	from im_customers
+	where customer_path = 'internal';
 
-    v_project_id := im_project.new(
-        object_type	=> 'im_project',
-        project_name	=> 'Internal Test Project',
-        project_nr	=> 'internal',
-        project_path	=> 'internal',
+	v_project_id := im_project.new(
+	object_type	=> 'im_project',
+	project_name	=> 'Internal Test Project',
+	project_nr	=> 'internal',
+	project_path	=> 'internal',
 	customer_id	=> v_internal_customer_id
-    );
+	);
 end;
 /
 show errors;

@@ -106,12 +106,16 @@ create table users_contact (
 -- Import Business Objects
 --
 
+prompt *** intranet-biz-objects
+@intranet-biz-objects.sql
 prompt *** intranet-offices
 @intranet-offices.sql
 prompt *** intranet-customers
 @intranet-customers.sql
 prompt *** intranet-projects
 @intranet-projects.sql
+prompt *** intranet-object-member
+@intranet-object-member.sql
 
 
 -- Some helper functions to make our queries easier to read
@@ -307,21 +311,16 @@ show errors;
 --	menu entries to the main and submenus
 --
 
-prompt *** intranet-views
+prompt *** intranet-views - Dynamic views for ListPages
 @intranet-views.sql
-prompt *** intranet-components
+prompt *** intranet-components - Dynamic plug-in components
 @intranet-components.sql
-prompt *** intranet-permissions
+prompt *** intranet-permissions - Horizontal and vertical permissions
 @intranet-permissions.sql
-prompt *** intranet-menus
+prompt *** intranet-menus - Dynamic menus
 @intranet-menus.sql
-
-
--- demodata:
---	Creates the users, customers and projects of a sample
---	company.
---
--- @intranet-demodata.sql
+prompt *** intranet-demodata - Sample users
+@intranet-demodata.sql
 
 
 

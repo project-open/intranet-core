@@ -286,6 +286,26 @@ show errors;
 
 
 -------------------------------------------------------
+-- P/O Business Objects
+
+drop table im_member_rels;
+drop package im_member_rel;
+
+drop package im_biz_object;
+drop table im_biz_objects;
+delete from acs_objects where object_type='im_biz_object';
+
+drop table im_biz_object_roles;
+
+BEGIN
+ acs_object_type.drop_type ('im_biz_object');
+ acs_object_type.drop_type ('im_member_rel');
+END;
+/
+show errors;
+
+
+-------------------------------------------------------
 -- Legacy Tables
 drop table users_contact;
 

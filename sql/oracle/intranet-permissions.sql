@@ -357,6 +357,8 @@ END;
 /
 show errors;
 
+
+
 BEGIN
     im_priv_create('view_projects', 'Employees');
     im_priv_create('view_project_members', 'Employees');

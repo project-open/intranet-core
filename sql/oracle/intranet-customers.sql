@@ -28,7 +28,7 @@
 
 begin
     acs_object_type.create_type (
-	supertype =>		'acs_object',
+	supertype =>		'im_biz_object',
 	object_type =>		'im_customer',
 	pretty_name =>		'Customer',
 	pretty_plural =>	'Customers',
@@ -127,6 +127,7 @@ is
 
     procedure del (customer_id in integer);
     function name (customer_id in integer) return varchar;
+    function type (customer_id in integer) return integer;
 end im_customer;
 /
 show errors
@@ -227,6 +228,18 @@ is
 	return v_name;
 
     end name;
+
+    function type (customer_id in integer) return integer
+    is
+	v_type_id	integer;
+    begin
+	select	customer_type_id
+	into	v_type_id
+	from	im_customers
+	where	customer_id = type.customer_id;
+
+	return v_type_id;
+    end type;
 
 end im_customer;
 /

@@ -60,6 +60,7 @@
 -- 1000-1099	Intranet Payment Type
 -- 1100-1199	Intranet Topic Type
 -- 1200-1299	Intranet Topic Status
+-- 1300-1399	Intranet Project Role
 -- 2000-2099	Intranet Freelance Skill Type
 -- 2100-2199	Intranet Freelance TM Tools
 
@@ -395,5 +396,41 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 ('1',  '',  'f',  '402',  'Large Project Work',  '',  'Intranet Prior Experience');
 
 -- reserved 1100 - 1200 for Forum Topic Types
+
+
+-- ------------------------------------------------------------
+-- Categories for Project Role
+-- ------------------------------------------------------------
+
+-- Project/Open Core only knows about Full Member and Admin.
+-- Project/Translation adds Translator, Proof Reader, ...
+-- Project/Advertizing adds Producer, Designer, Texter, ...
+-- Project/IT adds Business Analyst, Architect, Developer, ...
+
+
+insert into categories (
+	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
+	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+) values (
+	'1',  '',  'f',  '1300',  
+	'Member (full)',  '',  'Intranet Project Role'
+);
+
+insert into categories (
+	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
+	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+) values (
+	'1',  '',  'f',  '1301',  
+	'Project Manager',  '',  'Intranet Project Role'
+);
+
+
+insert into categories (
+	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
+	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+) values (
+	'1',  '',  'f',  '1302',
+	'Key Account',  '',  'Intranet Project Role'
+);
 
 

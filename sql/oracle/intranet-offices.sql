@@ -26,7 +26,7 @@
 
 begin
     acs_object_type.create_type (
-	supertype =>		'acs_object',
+	supertype =>		'im_biz_object',
 	object_type =>		'im_office',
 	pretty_name =>		'Office',
 	pretty_plural =>	'Offices',
@@ -112,7 +112,8 @@ is
     ) return integer;
 
     procedure del (office_id in integer);
-    procedure name (office_id in integer);
+    function name (office_id in integer) return varchar;
+    function type (office_id in integer) return integer;
 end im_office;
 /
 show errors
@@ -192,7 +193,7 @@ is
 	acs_object.del(v_office_id);
     end del;
 
-    procedure name (office_id in integer)
+    function name (office_id in integer) return varchar
     is
 	v_name	im_offices.office_name%TYPE;
     begin
@@ -200,7 +201,22 @@ is
 	into	v_name
 	from	im_offices
 	where	office_id = office_id;
+
+	return v_name;
     end name;
+
+    function type (office_id in integer) return integer
+    is
+	v_type_id	integer;
+    begin
+	select	office_type_id
+	into	v_type_id
+	from	im_offices
+	where	office_id = type.office_id;
+
+	return v_type_id;
+    end type;
+
 end im_office;
 /
 show errors
