@@ -15,11 +15,6 @@
     <%= [im_component_bay right] %>
   </td>
 </tr>
-<tr>
-  <td>
-    <%= [im_random_employee_blurb] %>
-  </td>
-</tr>
 
 <tr>
   <td colspan=2>

@@ -98,6 +98,8 @@ if {[im_permission $current_user_id employee] || [im_permission $current_user_id
 }
 append hours_html "</ul>"
 
+
+
 # ----------------------------------------------------------------
 # Administration
 # ----------------------------------------------------------------

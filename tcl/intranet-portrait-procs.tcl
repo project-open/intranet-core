@@ -23,37 +23,96 @@ ad_library {
 # Random User Portrait
 # ----------------------------------------------------------------------
 
-ad_proc -public im_random_employee_blurb { } {
+ad_proc -public im_random_employee_component { } {
     Returns a random employee's photograph and a little bio
 } {
     # Get the current user id to not show the current user's portrait
+    set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
 
+    # Get the list of all users that have a portrait 
+    # AND that are within the permission skope of the
+    # current user.
+    # The SQL check the im_object_permissions_p of the users _group_
+    # and checks whether the current user can "read" the members of
+    # this group. The current user must be able to read _all_
+    # groups of a member in order to get final read permission.
     set portrait_sql "
 	select
 	        live_revision as revision_id,
 		a.object_id_one as portrait_user_id,
-	        item_id
+	        item_id,
+		m.group_id,
+	        im_object_permission_p(m.group_id, :current_user_id, 'read') as read_p
 	from
 	        acs_rels a,
-	        cr_items c
+	        cr_items c,
+		im_profiles p,
+	        group_distinct_member_map m
 	where
 	        a.object_id_two = c.item_id
 	        and a.rel_type = 'user_portrait_rel'
+		and m.member_id = a.object_id_one
+		and m.group_id = p.profile_id
     "
 
-    set user_list [list]
-    db_foreach portrait_users $portrait_sql  {
-	lappend user_list $portrait_user_id
+    db_foreach portrait_perms $portrait_sql {
+	ns_log Notice "im_random_employee_component: portrait_user_id=$portrait_user_id, group_id=$group_id, read_p=$read_p"
+	set user_hash($portrait_user_id) $portrait_user_id
+        if {[string equal "f" $read_p]} { 
+	    set read($portrait_user_id) "f" 
+	} else {
+	    if {![info exists read($portrait_user_id)]} { set read($portrait_user_id) "t" }
+	}
     }
+
+    # Select only those users in the user list that can be read:
+    set user_list [list]
+    foreach portrait_user_id [array names user_hash] {
+	set read_p "f"
+	if {[info exists read($portrait_user_id)]} {
+	    set read_p $read($portrait_user_id)
+	}
+	if {[string equal "t" $read_p]} { lappend user_list $portrait_user_id }
+    }
+
+    if {0 == [llength $user_list]} {return ""}
 
     # Select a random user from the list
     set user_list_len [llength $user_list]
     set random_user_pos [randomRange $user_list_len]
     set random_user_id [lindex $user_list $random_user_pos]
 
-    return [im_portrait_component $random_user_id "/intranet/" 1 0 0]
+    db_1row user_info "
+	select
+		im_email_from_user_id(:random_user_id) as user_email,
+		im_name_from_user_id (:random_user_id) as user_name
+	from dual
+    "
+
+    set portrait_html [im_portrait_component $random_user_id "/intranet/" 1 0 0]
+    set portrait_title [_ intranet-core.Learn_About_Your_Company] 
+    set portrait_html "
+	<table>
+        <tr>
+	  <td>Portrait of <a href=/intranet/users/view?user_id=$random_user_id>$user_name</a></td>
+	</tr>
+        <tr>
+          <td>
+            $portrait_html
+          </td>
+        </tr>
+	<tr>
+	  <td>
+	    <b>[_ intranet-core.Learn_About_Your_Company]</b><br>
+	    [_ intranet-core.Learn_About_Your_Company_Blurb]
+	  </td>
+	</tr>
+	</table>
+    "
+    set portrait_html [im_table_with_title $portrait_title $portrait_html]
+    return $portrait_html
 }
 
 # ----------------------------------------------------------------------
@@ -68,17 +127,23 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
+    set first_names ""
+    set last_name ""
 
     if {![db_0or1row get_item_id "
 	select
+		u.first_names,
+		u.last_name,
 		live_revision as revision_id, 
 		item_id
 	from 
 		acs_rels a, 
-		cr_items c
+		cr_items c,
+		cc_users u
 	where 
 		a.object_id_two = c.item_id
 		and a.object_id_one = :user_id
+		and u.user_id = :user_id
 		and a.rel_type = 'user_portrait_rel'
     "] || [empty_string_p $revision_id]
     } {
