@@ -39,7 +39,7 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 #
 if {![im_permission $user_id "add_customers"]} { 
     ad_return_complaint "Insufficient Privileges" "
-    <li>You don't have sufficient privileges to add a new client."
+    <li>You don't have sufficient privileges to add a new company."
 }
 
 if {$customer_id > 0} {
@@ -79,19 +79,17 @@ where
 	and c.main_office_id=o.office_id
 " 
     ]} {
-	ad_return_complaint 1 "<li>Client #customer_id doesn't exist."
+	ad_return_complaint 1 "<li>Company doesn't exist."
 	return
     }
 
-    set page_title "Edit customer"
-    set context_bar [ad_context_bar [list index "Clients"] [list "view?[export_url_vars customer_id]" "One customer"] $page_title]
+    set page_title "Edit Company"
+    set context_bar [ad_context_bar [list index "Companies"] [list "view?[export_url_vars customer_id]" "One company"] $page_title]
 
-    
 } else {
-
-    # Completely new customer. Set some reasonable defaults:
-    set page_title "Add customer"
-    set context_bar [ad_context_bar [list index "Clients"] $page_title]
+    # Completely new company. Set some reasonable defaults:
+    set page_title "Add Company"
+    set context_bar [ad_context_bar [list index "Companies"] $page_title]
     set customer_name ""
     set customer_path ""
     # Grab today's date
@@ -106,19 +104,16 @@ where
     set site_concept ""
     set vat_number ""
 
-    # 46=Active
-    set customer_status_id "46"
-    # 52=Other
-    set customer_type_id "52"
-    set annual_revenue_id "224"
-    set referral_source "How did we get in contact with the client?"
+    set customer_status_id [im_customer_status_active]
+    set customer_type_id [im_customer_type_other]
+    set annual_revenue_id [im_customer_annual_rev_1_10]
+    set referral_source "How did we get in contact with the company?"
     set billable_p "t"
     set "creation_ip_address" [ns_conn peeraddr]
     set "creation_user" $user_id
     set customer_id [im_new_object_id]
     set address_country_code ""
     set manager_id ""
-
 }
 
 set customer_defaults [ns_set create]
@@ -130,16 +125,16 @@ set page_body "
 [export_form_vars return_url customer_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 
-		      <td colspan=2 class=rowtitle align=center>Add New Client Project</td>
+		      <td colspan=2 class=rowtitle align=center>Add New Company</td>
 		    </tr>
 		    <tr> 
-		      <td>Client Name</td>
+		      <td>Company Name</td>
 		      <td> 
 <input type=text size=30 name=customer_name value=\"$customer_name\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Client Short Name<BR><font size=-2>(directory path)</font></td>
+		      <td>Company Short Name<BR><font size=-2>(directory path)</font></td>
 		      <td> 
 <input type=text size=10 name=customer_path value=\"$customer_path\">
 		      </td>
@@ -151,7 +146,7 @@ set page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Client Status</td>
+		      <td>Company Status</td>
 		      <td> 
 [im_customer_status_select "customer_status_id" $customer_status_id]
 "
@@ -165,14 +160,14 @@ append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Client Type</td>
+		      <td>Company Type</td>
 		      <td> 
 [im_customer_type_select "customer_type_id" $customer_type_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/admin/categories/?select_category_type=Intranet+Customer+Type'>
-	[im_gif new {Add a new customer type}]</A>"
+	[im_gif new {Add a new company type}]</A>"
 }
 
 append page_body "
