@@ -30,7 +30,6 @@ from
 where 
 	view_id >= 100
 	and view_id < 200
-	and view_id in (152)
 "
 
 
