@@ -863,7 +863,9 @@ ad_proc -public im_logo {} {
     Intranet System Logo
 } {
     set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/projop-logo.gif"]
-    return "<img src=$system_logo>"
+    set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
+    
+    return "\n<a href=\"$system_logo_link\"><img src=$system_logo border=0></a>\n"
 }
 
 
