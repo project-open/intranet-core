@@ -378,7 +378,7 @@ ad_proc -public im_project_parent_select { select_name { default "" } {current_g
 
 
 
-ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} } {
+ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {customer_id ""} } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
     specified, we limit the select box to projects matching that
@@ -424,6 +424,11 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
 	"
      }	
 
+
+     if { ![empty_string_p $customer_id] } {
+	 ns_set put $bind_vars customer_id $customer_id
+	 append sql " and p.customer_id = :customer_id"
+     }
 
      if { ![empty_string_p $status] } {
 	 ns_set put $bind_vars status $status
