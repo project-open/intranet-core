@@ -34,6 +34,9 @@ set page_body "<ul>\n"
 #append page_body [im_import_project_members "$path/im_project_members.csv"]
 #append page_body [im_import_freelancers "$path/im_freelancers.csv"]
 #append page_body [im_import_freelance_skills "$path/im_freelance_skills.csv"]
+#append page_body [im_import_hours "$path/im_hours.csv"]
+#append page_body [im_import_trans_project_details "$path/im_trans_project_details.csv"]
+append page_body [im_import_trans_tasks "$path/im_trans_tasks.csv"]
 
 
 append page_body "

@@ -64,9 +64,7 @@ order by sort_order
     set html ""
     db_foreach get_plugins $plugin_sql {
 
-	ns_log Notice "component_tcl=$component_tcl"
-#       append html [uplevel 1 $component_tcl]
-
+	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
