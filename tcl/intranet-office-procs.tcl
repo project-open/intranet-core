@@ -62,8 +62,21 @@ where
 	and o.customer_id = c.customer_id(+)
 "]
 
-    # Initialize values with values from customer
-    im_customer_permissions $user_id $customer_id view read write admin
+    if {"" == $customer_id || !$customer_id} {
+	# It is possible that we got here an office without
+	# a customer.
+	# Let's asume they are internal and use the corresponding
+	# security check.
+	set admin [im_permission $user_id edit_internal_offices]
+	set write $admin
+	set read [expr $admin || [im_permission $user_id view_internal_offices]]
+	set view $read
+    } else {
+	
+	# Initialize values with values from customer
+	im_customer_permissions $user_id $customer_id view read write admin
+    }
+
     ns_log Notice "im_office_permissions: cust perms: view=$view, read=$read, write=$write, admin=$admin"
 
     # Now there are three options:
@@ -208,16 +221,19 @@ select
 	o.*,
 	im_category_from_id(o.office_type_id) as office_type
 from
-	im_offices o
+	im_offices o,
+	im_categories c
 where
 	o.customer_id = :customer_id
+	and o.office_status_id = c.category_id
+	and lower(c.category) not in ('inactive')
 "
 
     set component_html "
 <table cellspacing=1 cellpadding=1>
 <tr class=rowtitle>
   <td class=rowtitle>Office</td>
-  <td class=rowtitle>Type</td>
+  <td class=rowtitle>Tel</td>
 </tr>\n"
 
     set ctr 1
@@ -228,7 +244,7 @@ where
     <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
   </td>
   <td>
-    $office_type
+    $phone
   </td>
 </tr>\n"
 	incr ctr
@@ -237,7 +253,14 @@ where
 	append component_html "<tr><td colspan=2>No offices found</td></tr>\n"
     }
 
-    append component_html "</table>\n"
+    append component_html "
+<tr>
+  <td colspan=99 align=right>
+    <A href=/intranet/offices/>more ...</a>
+  </td>
+</tr>
+</table>
+"
 
     return $component_html
 }

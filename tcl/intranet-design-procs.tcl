@@ -741,6 +741,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head [im_stylesheet]
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
+    set num_users_online [lc_numeric [whos_online::num_users]]
+    set user_str "users"
+    if {1 == $num_users_online} { set user_str "user"}
+
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
@@ -748,8 +752,9 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     <td> 
     [im_logo]
     </td>
-    <td align=center valign=middle> 
+    <td align=left valign=middle> 
       <span class=small>
+        <A href=/intranet/whos-online>$num_users_online $user_str online</A><BR>
         $user_profile: $user_name <BR>
         <a href='/register/logout'>Log Out</a> |
         <a href=$change_pwd_url>Change Password</a> 

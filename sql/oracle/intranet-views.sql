@@ -354,6 +354,8 @@ delete from im_view_columns where column_id >= 8100 and column_id <= 8199;
 --
 insert into im_view_columns values (8100,81,NULL,'Office Name','$office_name','','',
 10, 'im_permission $user_id view_customer_details');
+insert into im_view_columns values (8101,81,NULL,'Office Path','$office_path','','',
+15, 'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8102,81,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',
 20, 'im_permission $user_id view_customers');
