@@ -20,7 +20,7 @@ namespace eval ::cmdline {
 }
 
 # Load the typed versions of these functions
-source [file join [file dirname [info script]] typedCmdline.tcl]
+#source [file join [file dirname [info script]] typedCmdline.tcl]
 
 # ::cmdline::getopt --
 #

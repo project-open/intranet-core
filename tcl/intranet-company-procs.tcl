@@ -269,6 +269,7 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
 
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
+
     set user_id [ad_get_user_id]
     set bind_vars [ns_set create]
     ns_set put $bind_vars user_id $user_id
@@ -335,6 +336,7 @@ where
     }
 
     append sql " order by lower(c.company_name)"
+
     return [im_selection_to_select_box -translate_p 0 $bind_vars "company_status_select" $sql $select_name $default]
 }
 
