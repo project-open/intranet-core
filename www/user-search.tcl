@@ -1,0 +1,287 @@
+# /www/user-search.tcl
+
+ad_page_contract {
+    
+    Reusable page for searching the users table.
+    
+    Takes email or last_name as search arguments. 
+    Can be constrained with the argument limit_to_users_in_group, 
+    which accepts a comma-separated list of group_names.
+
+    Generates a list of matching users and prints the names 
+    of the groups searched.
+
+    Each user is a link to $return_url, with user_id, email, last_name, 
+    and first_names passed as URL vars. By default these values are 
+    passed as user_id_from_search, etc. but the variable names can 
+    be set by specifying userid_returnas, etc.
+    
+    @param email     (search string)
+    @param last_name (search strings)
+    @param return_url    (URL to return to)
+    @param passthrough  (form variables to pass along from caller)
+    @param custom_title (if you're doing a passthrough, 
+           this title can help inform users for what we searched
+    @param limit_to_users_in_group_id (optional, limits our search to
+           users in the specified group id. can be a comma separated list.)
+    @param subgroups_p t/f - optional. If specified along with
+           limit_to_users_in_group_id, searches users who are members of a
+           subgroup of the specified group_id
+    
+    @author philg@mit.edu and authors
+    @cvs-id user-search.tcl,v 3.3.2.17 2000/09/22 01:34:08 kevin Exp    
+} {    
+    { email "" }
+    target
+    { last_name "" }
+    { passthrough {} }
+    { limit_to_users_in_group_id "" }
+    { subgroups_p "f" }
+    { return_url ""}
+    { role "membership_rel" }
+    { also_add_to_group_id "" }
+    { group_id "" }
+    { notify_asignee "" }
+}
+
+# --------------------------------------------------
+# Defaults & Security
+# --------------------------------------------------
+
+set current_user_id [ad_maybe_redirect_for_registration]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+
+set display_title "Member Search"
+
+set bgcolor(0) " class=roweven "
+set bgcolor(1) " class=rowodd "
+
+set limit_to_groups [list]
+if {![string equal "" $limit_to_users_in_group_id]} {
+    lappend limit_to_groups $limit_to_users_in_group_id
+}
+if {[im_permission $current_user_id view_customer_contacts]} {
+    lappend limit_to_groups [im_customer_group_id]
+}
+if {[im_permission $current_user_id view_employees]} {
+    lappend limit_to_groups [im_employee_group_id]
+}
+if {[im_permission $current_user_id view_freelancers]} {
+    lappend limit_to_groups [im_freelance_group_id]
+}
+
+set limit_to_users_in_group_id [join $limit_to_groups ","]
+
+ns_log Notice "limit_to_users_in_group_id=$limit_to_users_in_group_id"
+
+
+
+# --------------------------------------------------
+# Check input.
+# --------------------------------------------------
+
+set errors ""
+set exception_count 0
+
+if { $email == "" && $last_name == "" } {
+    incr exception_count
+    append errors "<li>You must specify either an email address or last name for which to search.\n"
+}
+
+if { $email != "" && $last_name != "" } {
+    incr exception_count
+    append errors "<li>You can only specify either email or last name, not both.\n"
+}
+
+if { $return_url == "" } {
+    incr exception_count
+    append errors "<li>Return_Url was not specified. This shouldn't have happened,
+please contact the <a href=\"mailto:[ad_host_administrator]\">administrator</a>
+and let them know what happened.\n"
+}
+
+
+if { $exception_count} {
+    ad_return_complaint $exception_count $errors
+    return
+}
+
+
+# --------------------------------------------------
+# Build the query
+# --------------------------------------------------
+
+if { $email != "" } {
+    set query_string "%[string tolower $email]%"
+    set search_html "email \"$email\""
+    set search_clause "lower(email) like :query_string"
+} else {
+    set query_string "%[string tolower $last_name]%"
+    set search_html "last name \"$last_name\""
+    set search_clause "lower(last_name) like :query_string"
+}
+
+
+### build the search query
+if { ![empty_string_p $limit_to_users_in_group_id] } {    
+
+
+    ## Retrieve the names of specified groups -MJS 7/28
+    set group_list [db_list groups "select group_name from groups where group_id in ($limit_to_users_in_group_id)"]    
+    
+    if {[empty_string_p [lindex $group_list 0]]} {
+	
+	## No group names found - return
+	set errors "<LI>None of the specified groups exist.\n"
+	ad_return_complaint 1 $errors
+	return
+
+    } else {
+
+	## Group name/s found
+	
+	if {[empty_string_p [lindex $group_list 1]] } {
+
+	    ## Only one group found
+
+	    set group_html "in group [lindex $group_list 0]"
+
+	} else {
+
+	    ## Multiple groups found
+
+	    set group_html "in groups [join $group_list ", "]"
+
+	}	
+
+	# Let's build up the groups sql query we need. Only include
+	# the user_groups table if we need to include members 
+	# of subgroups.
+	if { [string compare $subgroups_p "t"] == 0 } {
+	    # Include subgroups - set some text to tell the user we are looking in subgroups
+	    append group_html " and any of its subgroups"
+	    
+	    set group_table ", user_groups ug"
+	    set group_sql "ug.group_id = ugm.group_id and (ugm.group_id in ($limit_to_users_in_group_id) or ug.parent_group_id in ($limit_to_users_in_group_id))"
+	} else {
+	    set group_table ""
+	    set group_sql "ugm.group_id in ($limit_to_users_in_group_id)"
+	}
+
+    }
+
+    
+    # Need the distinct for the join with user_group_map
+    set query "
+select distinct
+	u.user_id,
+	p.first_names,
+	p.last_name,
+	pa.email
+from 
+	users u,
+	persons p,
+	parties pa,
+	group_member_map ugm
+	$group_table
+where 
+	u.user_id=ugm.member_id
+	and u.user_id = p.person_id
+	and u.user_id = pa.party_id
+	and $group_sql
+	and $search_clause
+"
+
+} else {
+    
+    ## No groups specified
+
+    set group_html "in all groups"
+
+    set query "
+select 
+	u.user_id,
+	p.first_names,
+	p.last_name,
+	pa.email,
+from 
+	users u,
+	persons p,
+	parties pa
+where
+	u.user_id = p.person_id
+	and u.user_id = pa.party_id
+	$search_clause"
+}
+
+
+# ---------------------------------------------------
+# Format the Selection Table
+# ---------------------------------------------------
+
+set ctr 0
+
+set page_contents "
+<h2>$display_title</h2>
+for $search_html $group_html
+<br>
+
+<form action=\"$target\">
+[export_form_vars passthrough]
+"
+
+foreach var $passthrough {
+    append page_contents "[export_form_vars $var]\n"
+}
+
+
+append page_contents "
+<table cellpadding=0 cellspacing=2 border=0>
+	<tr>
+	  <td class=rowtitle align=middle colspan=5>Freelance</td>
+	</tr>
+	  
+	<tr class=rowtitle>
+	  <td class=rowtitle>Name</td>
+	  <td class=rowtitle>Email</td>
+	  <td class=rowtitle>Select</td>
+	</tr>
+"
+
+
+db_foreach user_search_query $query {
+
+    append page_contents "
+
+	<tr$bgcolor([expr $ctr % 2])>
+	  <td>$first_names $last_name</td>
+	  <td>$email</td>
+	  <td align=center><input type=radio name=user_id_from_search value=$user_id></td>
+	</tr>\n"
+    incr ctr
+}
+
+
+if {$ctr > 0} {
+    # We need a "submit" button:
+    append page_contents "
+        <tr>
+          <td colspan=2></td>
+	  <td><input type=submit value=\"Select\"></td>
+	</tr>
+"
+} else {
+
+    # Show a no-member message
+    append page_contents "
+
+        <tr$bgcolor([expr $ctr % 2])>
+          <td colspan=3>No members found</td>
+	</tr>
+"
+}
+
+
+
+append page_contents "\n</ul>\n"
+

@@ -1,0 +1,143 @@
+ad_page_contract {
+    @param user_id
+    @author Guillermo Belcic
+    @creation-date 10-13-2003
+    @cvs-id contact-edit.tcl,v 3.3.2.3.2.5 2000/09/22 01:36:17 kevin Exp
+} {
+    user_id:integer,notnull
+}
+
+# ---------------------------------------------------------------
+# Defaults & Security
+# ---------------------------------------------------------------
+
+set current_user_id [ad_maybe_redirect_for_registration]
+set user_is_employee_p [im_user_is_employee_p $current_user_id]
+set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
+set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+
+set return_url [im_url_with_query]
+
+if [info exists user_id_from_search] {
+    set user_id $user_id_from_search
+}
+
+if { ![info exists user_id] } {
+    ad_return_complaint "Bad User" "<li>You must specify a valid user_id."
+}
+
+if { !$user_admin_p && $user_id != $current_user_id } {
+    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify this user."
+}
+
+db_0or1row user_full_name "
+select 
+	first_names, 
+	last_name 
+from 
+	persons 
+where 
+	person_id = :user_id
+"
+
+set page_title "Contact for $first_names"
+if {$user_is_employee_p} {
+    set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
+} else {
+    set context_bar [ad_context_bar $page_title]
+}
+
+# use [info exists ] here?
+if { [empty_string_p $first_names] && [empty_string_p $last_name] } {
+    ad_return_complaint 1 "<li>We couldn't find user #$user_id; perhaps this person was nuke?"
+    return
+}
+
+# ---------------------------------------------------------------
+# Get contact information
+# ---------------------------------------------------------------
+
+set users_contact_exists [db_string select_users_contact_exists "select count(*) from users_contact where user_id=:user_id"]
+
+if {0 == $users_contact_exists} {
+	db_dml insert_users_contact "insert into users_contact (user_id) values (:user_id)"
+}
+
+set ha_state ""
+set ha_country_code ""
+
+db_0or1row user_contact_info {
+    select home_phone, work_phone, cell_phone, pager, fax, aim_screen_name,
+           icq_number, ha_line1, ha_line2, ha_city, ha_state, ha_country_code,
+           ha_postal_code, wa_line1, wa_line2, wa_city, wa_state, wa_postal_code, wa_country_code
+      from users_contact where user_id = :user_id
+}
+
+if { [empty_string_p $ha_state] && [empty_string_p $ha_country_code] } {
+    set ha_state ""
+    set ha_country_code ""
+    set wa_state ""
+    set wa_country_code ""
+}
+
+# ---------------------------------------------------------------
+# Format the table
+# ---------------------------------------------------------------
+
+set contact_html "
+<table cellpadding=0 cellspacing=2 border=0>
+<tr><td colspan=2 class=rowtitle align=center>Contact Information</td></tr>
+<tr><td>Home phone</td>	<td><input type=text name=home_phone value=\"$home_phone\" ></td></tr>
+<tr><td>Work phone</td>	<td><input type=text name=work_phone value=\"$work_phone\" ></td></tr>
+<tr><td>Cell phone</td>	<td><input type=text name=cell_phone value=\"$cell_phone\" ></td></tr>
+<tr><td>Pager</td>	<td><input type=text name=pager value=\"$pager\" ></td></tr>
+<tr><td>Fax</td>	<td><input type=text name=fax value=\"$fax\" ></td></tr>
+<tr><td>Aim Screen Name</td><td><input type=text name=aim_screen_name value=\"$aim_screen_name\" ></td></tr>
+<tr><td>ICQ Number</td>	<td><input type=text name=icq_number value=\"$icq_number\" ></td></tr>
+<tr><td colspan=2>&nbsp;</td></tr>
+</table>"
+
+set home_html "
+<table cellpadding=0 cellspacing=2 border=0>
+<tr><td colspan=2 class=rowtitle align=center>Home Address</td></tr>
+<tr><td valign=top>Home address</td><td>
+			<input type=text name=ha_line1 value=\"$ha_line1\" >
+			<input type=text name=ha_line2 value=\"$ha_line2\" ></td></tr>
+<tr><td>Home City</td>	<td><input type=text name=ha_city value=\"$ha_city\" ></td></tr>
+<tr><td>Home Country</td><td>[im_country_widget $ha_country_code ha_country_code]</td></tr>
+<tr><td>Home Postal Code</td><td><input type=text name=ha_postal_code value=\"$ha_postal_code\" ></td></tr>
+<tr><td colspan=2>&nbsp;</td></tr>
+</table>"
+
+set work_html "
+<table cellpadding=0 cellspacing=2 border=0>
+<tr><td colspan=2 class=rowtitle align=center>Work Address</td></tr>
+<tr><td valign=top>Work address</td><td>
+			<input type=text name=wa_line1 value=\"$wa_line1\" >
+			<input type=text name=wa_line2 value=\"$wa_line2\" ></td></tr>
+<tr><td>Work City</td>	<td><input type=text name=wa_city value=\"$ha_city\" ></td></tr>
+<tr><td>Work Postal Code</td><td><input type=text name=wa_postal_code value=\"$wa_postal_code\" ></td></tr>
+<tr><td>Work Country</td><td>[im_country_widget $wa_country_code wa_country_code]</td></tr>
+<tr><td colspan=2>&nbsp;</td></tr>
+</table>"
+
+
+# <tr><td>Work State</td>	<td>[im_state_widget $wa_state wa_state]</td></tr>
+# <tr><td>Home State</td>	<td>[im_state_widget $ha_state ha_state]</td></tr>
+
+
+set whole_page "
+<form action=contact-edit-2 method=POST>
+[export_form_vars user_id]
+<table cellpadding=0 cellspacing=2 border=0>
+<tr valign=top><td>$contact_html</td><td>$home_html</td><td>$work_html</td></tr>
+</table>
+<input type=submit name=submit value=Submit>
+</form>
+"
+
+set page_body $whole_page
+
+doc_return  200 text/html [im_return_template]
+
