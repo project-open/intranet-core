@@ -10,6 +10,8 @@
 # 
 # RCS: @(#) $Id$
 
+# http://tcllib.sourceforge.net/doc/index.html
+
 # package require Tcl 8.2
 # package require cmdline
 # package provide fileutil 1.7
