@@ -178,7 +178,7 @@ if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
     lappend criteria "p.project_type_id=:project_type_id"
 }
 if { 0 != $user_id_from_search} {
-    lappend criteria "p.project_id in (select group_id from group_member_map_map where member_id = :user_id_from_search)"
+    lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }
 if { ![empty_string_p $customer_id] && $customer_id != 0 } {
     lappend criteria "p.customer_id=:customer_id"

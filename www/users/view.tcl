@@ -289,32 +289,20 @@ set sql "
 select
 	p.project_id,
 	p.project_name,
-	p.project_nr,
-	level
+	p.project_nr
 from
 	im_projects p,
-	group_distinct_member_map m
+	acs_rels r
 where 
-	m.member_id=:user_id
-	and m.group_id = p.project_id
+	r.object_id_two = :user_id
+	and r.object_id_one = p.project_id
 order by p.project_nr desc
 "
 
 set projects_html ""
-set current_level 1
 set ctr 1
 set max_projects 15
 db_foreach user_list_projects $sql  {
-    ns_log Notice "name=$project_name"
-    ns_log Notice "level=$level"
-
-    if { $level > $current_level } {
-	append projects_html "  <ul>\n"
-	incr current_level
-    } elseif { $level < $current_level } {
-	append projects_html "  </ul>\n"
-	set current_level [expr $current_level - 1]
-    }	
     append projects_html "<li>
 	<a href=../projects/view?project_id=$project_id>$project_nr $project_name</a>
     "
@@ -334,8 +322,7 @@ if {$ctr > $max_projects} {
 }
 
 
-
-if {[im_permission $current_user_id view_projects]} {
+if {[im_permission $current_user_id view_projects_all]} {
     set projects_html [im_table_with_title "Past Projects" $projects_html]
 } else {
     set projects_html ""
