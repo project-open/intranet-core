@@ -40,8 +40,7 @@ set page_body "<ul>\n"
 #append page_body [im_import_invoices "$path/im_invoices.csv"]
 #append page_body [im_import_invoice_items "$path/im_invoice_items.csv"]
 #append page_body [im_import_payments "$path/im_payments.csv"]
-
-append page_body [im_import_prices "$path/im_prices.csv"]
+#append page_body [im_import_prices "$path/im_prices.csv"]
 
 
 append page_body "

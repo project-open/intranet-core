@@ -191,8 +191,11 @@ where
 # -----------------------------------------------------------------
 
 set role_id [im_customer_role_key_account]
-im_biz_object_add_role $manager_id $customer_id $role_id
+
 im_biz_object_add_role $user_id $customer_id $role_id
+if {"" != $manager_id } {
+    im_biz_object_add_role $manager_id $customer_id $role_id
+}
 
 
 db_release_unused_handles

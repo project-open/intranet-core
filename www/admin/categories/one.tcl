@@ -80,7 +80,7 @@ where
     set form_action_html "action=\"category-add.tcl\""
     set input_form_html "value=Add"
     set delete_action_html ""
-    set category_id [db_nextval category_id_sequence]
+    set category_id [db_nextval im_categories_seq]
     set category_description ""
     set profiling_weight 0
     set category ""
@@ -93,10 +93,13 @@ where
 
 set page_body "
 <form $form_action_html method=GET>
-[export_form_vars category_id category_type]
+[export_form_vars category_type]
 <table border=0 cellpadding=0 cellspacing=0>
 <tr><td class=rowtitle colspan=2 align=center>Category</td></tr>
 $select_categories
+<tr><td>Category Nr.</td>
+<td><input size=10 name=category_id value=\"$category_id\"></td>
+</tr>
 <tr><td>Category name</td>
 <td><input size=40 name=category value=\"$category\"></td>
 </tr>
