@@ -43,66 +43,59 @@
 --1000	- ...: System groups
 
 
--- ------------------------------------------------------------
--- User Profiles
--- ------------------------------------------------------------
 
-begin
-   user_group_add ('intranet', 'Customers', 'customer', 'f'); 
-   user_group_add ('intranet', 'Projects', 'project', 'f'); 
-   user_group_add ('intranet', 'Offices', 'office', 'f'); 
-   user_group_add ('intranet', 'Employees', 'employee', 'f'); 
-   user_group_add ('intranet', 'Procedure', 'procedure', 'f'); 
-   user_group_add ('intranet', 'Partners', 'partner', 'f'); 
-   user_group_add ('intranet', 'Authorized Users', 'authorized_users', 'f'); 
-   user_group_add ('intranet', 'Team', 'team', 'f'); 
-   user_group_add ('intranet', 'Freelancers', 'freelance', 'f'); 
-   user_group_add ('intranet', 'Project Managers', 'pm', 'f'); 
-   user_group_add ('intranet', 'Wheel', 'wheel', 'f'); 
-   user_group_add ('intranet', 'dummy', 'dummy', 'f'); 
-   user_group_add ('intranet', 'Accounting', 'accounting', 'f'); 
-end;
-/
-show errors;
 
-begin
-   user_group_add ('intranet', 'reserved19', 'reserved19', 'f'); 
-   user_group_add ('intranet', 'reserved20', 'reserved20', 'f'); 
-   user_group_add ('intranet', 'reserved21', 'reserved21', 'f'); 
-   user_group_add ('intranet', 'reserved22', 'reserved22', 'f'); 
-   user_group_add ('intranet', 'reserved23', 'reserved23', 'f'); 
-   user_group_add ('intranet', 'reserved24', 'reserved24', 'f'); 
-   user_group_add ('intranet', 'reserved25', 'reserved25', 'f'); 
-   user_group_add ('intranet', 'reserved26', 'reserved26', 'f'); 
-   user_group_add ('intranet', 'reserved27', 'reserved27', 'f'); 
-   user_group_add ('intranet', 'reserved28', 'reserved28', 'f'); 
-   user_group_add ('intranet', 'reserved29', 'reserved29', 'f'); 
-   user_group_add ('intranet', 'reserved30', 'reserved30', 'f'); 
-   user_group_add ('intranet', 'reserved31', 'reserved31', 'f'); 
-   user_group_add ('intranet', 'reserved32', 'reserved32', 'f'); 
-   user_group_add ('intranet', 'reserved33', 'reserved33', 'f'); 
-   user_group_add ('intranet', 'reserved34', 'reserved34', 'f'); 
-   user_group_add ('intranet', 'reserved35', 'reserved35', 'f'); 
-   user_group_add ('intranet', 'reserved36', 'reserved36', 'f'); 
-   user_group_add ('intranet', 'reserved37', 'reserved37', 'f'); 
-   user_group_add ('intranet', 'reserved38', 'reserved38', 'f'); 
-   user_group_add ('intranet', 'reserved39', 'reserved39', 'f'); 
-end;
-/
-show errors;
-
+ function new (
+  user_id       in users.user_id%TYPE default null,
+  object_type   in acs_objects.object_type%TYPE
+                   default 'user',
+  creation_date in acs_objects.creation_date%TYPE
+                   default sysdate,
+  creation_user in acs_objects.creation_user%TYPE
+                   default null,
+  creation_ip   in acs_objects.creation_ip%TYPE default null,
+  authority_id  in auth_authorities.authority_id%TYPE default null,
+  username      in users.username%TYPE,
+  email         in parties.email%TYPE,
+  url           in parties.url%TYPE default null,
+  first_names   in persons.first_names%TYPE,
+  last_name     in persons.last_name%TYPE,
+  password      in users.password%TYPE,
+  salt          in users.salt%TYPE,
+  screen_name   in users.screen_name%TYPE default null,
+  email_verified_p in users.email_verified_p%TYPE default 't',
+  context_id    in acs_objects.context_id%TYPE default null
+ )
+ return users.user_id%TYPE;
 
 -- ------------------------------------------------------------
 -- Sample Users
 -- ------------------------------------------------------------
 
+declare
+	v_salt		varchar(100);
+	v_user_id	integer;
+begin
+	select dbms_random.random
+	into v_salt
+	from dual;
+
+	v_user_id := acs_user.new (
+		username	=> 'genman',
+		email		=> 'general.manager@project-open.com',
+		password	=> 'xxx',
+		first_names	=> 'General', 
+		last_name	=> 'Manager',
+		salt		=> v_salt
+	);
+end;
+/
+	
+
+
 INSERT INTO users (user_id, email, password, first_names,last_name, 
 registration_date, registration_ip, user_state) VALUES 
-(3, 'system.administrator@project-open.com', 'xxx', 'System', 
-'Administrator', sysdate, '0.0.0.0', 'authorized');
-INSERT INTO users (user_id, email, password, first_names,last_name, 
-registration_date, registration_ip, user_state) VALUES 
-(4, 'general.manager@project-open.com', 'xxx','General', 
+(4, 
 'Manager', sysdate, '0.0.0.0', 'authorized');
 INSERT INTO users (user_id, email, password, first_names,last_name, 
 registration_date, registration_ip, user_state) VALUES 

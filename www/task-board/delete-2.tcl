@@ -26,7 +26,8 @@ if { ![db_0or1row select_posting_id_for_task \
 
 
 # Already verified by filters
-set user_id [ad_get_user_id]
+set user_id [ad_maybe_redirect_for_registration]
+
 
 # ONly the posting user or an admin can edit/delete a task
 if { $poster_id != $user_id && ![im_is_user_site_wide_or_intranet_admin $user_id] } {

@@ -37,7 +37,6 @@ end;
 /
 show errors
 
---------------------------------------------------------------
 
 create table im_projects (
 	project_id		integer
@@ -72,7 +71,7 @@ create table im_projects (
 	description		varchar(4000),
 	billing_type_id		integer
 				constraint im_project_billing_fk
-				references categories
+				references categories,
 	start_date		date,
 	end_date		date,
 				-- make sure the end date is after the start date
@@ -90,6 +89,7 @@ create table im_projects (
 				check (requires_report_p in ('t','f')),
 	project_budget		number(12,2)
 );
+
 create index im_project_parent_id_idx on im_projects(parent_id);
 
 --------------------------------------------------------------

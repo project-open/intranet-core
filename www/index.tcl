@@ -43,7 +43,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 # User id already verified by filters
-set user_id [ad_get_user_id]
+set user_id [ad_maybe_redirect_for_registration]
 set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]

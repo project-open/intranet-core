@@ -38,7 +38,7 @@ set user_view_page "/intranet/users/view"
 set office_new_page "/intranet/offices/new"
 
 # Get the permissions of the curret user on this object
-im_office_permissions $user_id $office_id read write admin
+im_office_permissions $user_id $office_id view read write admin
 
 if {!$read} {
     ad_return_complaint 1 "You don't have permissions to view this page"

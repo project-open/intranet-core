@@ -52,7 +52,7 @@ ad_page_contract {
     
 
 if { [empty_string_p $user_id_from_search] } {
-    set user_id_from_search [ad_get_user_id]
+    set user_id_from_search [ad_maybe_redirect_for_registration]
 }
 
 if { ![exists_and_not_null role] } {
@@ -66,8 +66,7 @@ if { ![exists_and_not_null role] } {
     }
 }
 
-
-set user_id [ad_verify_and_get_user_id]
+set user_id [ad_maybe_redirect_for_registration]
 
 if { ![db_0or1row get_group_type_policy \
 	"select group_type, new_member_policy from user_groups where group_id = :group_id"] } {

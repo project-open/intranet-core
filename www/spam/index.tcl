@@ -19,6 +19,8 @@ complex sql queries is not yet bug-free
     {all_or_any all}    
 }
 
+set user_id [ad_maybe_redirect_for_registration]
+
 ### Create bind variables for every group id in group_id_list
 set bind_vars [ns_set create]
 
@@ -56,7 +58,7 @@ if { $number_users_to_spam == 0 } {
     return
 }
 
-set from_address [db_string intranet_spam_get_email_address "select email from users where user_id='[ad_get_user_id]'"]
+set from_address [db_string intranet_spam_get_email_address "select email from users where user_id=:user_id"]
 
 db_release_unused_handles
 

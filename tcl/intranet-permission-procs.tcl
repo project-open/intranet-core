@@ -44,6 +44,7 @@ ad_library {
     @author Frank Bergmann (fraber@fraber.de)
 }
 
+
 # ------------------------------------------------------------------
 # Core Permissions
 # ------------------------------------------------------------------
@@ -59,28 +60,99 @@ ad_proc -public im_core_privs {} {
     /sql/intranet-permissions.sql file so that all privileges
     used here are defined.
 } {
-    return [list add_customers view_customers view_customers_all view_customer_contacts view_customer_details add_projects view_projects view_project_members view_projects_all view_projects_history add_users view_users search_intranet]
+    set privilege_sql "select privilege from acs_privileges order by upper(privilege)"
+    set privileges [list]
+    db_foreach privileges_loop $privilege_sql {
+
+	# Skip privileges that start with "acs_"
+	if {[regexp {acs_.*} $privilege]} { continue }
+
+	# Skip privileges view, read, write, admin, delete
+	set plen [string length $privilege]
+	if {$plen < 7} { continue }
+
+	lappend privileges $privilege
+    }
+    return $privileges
+}
+
+
+#!!! remove!
+ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
+    Check wheter a user should be able to see a specific field of another user:
+    Return 1 IF:
+    - EITHER you have associated the $perm_token permission
+    - OR you are the user himself (view_user == current_user)
+    Return 0 IF:
+    - if the above doesn't hold for your OR:
+    - The variable $var_value is empty (don't show lines with empty variables)
+} {
+    if {[empty_string_p $var_value]} { return 0 }
+    if {$view_user_id == $current_user_id} { return 1 }
+    return [im_permission $current_user_id $perm_token]
 }
 
 
 
-ad_proc -public im_user_permissions { current_user_id user_id read_var write_var admin_var } {
+ad_proc -public im_user_permissions { current_user_id user_id view_var read_var write_var admin_var } {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $current_user_id on $user_id
 } {
+    upvar $view_var view
     upvar $read_var read
     upvar $write_var write
     upvar $admin_var admin
 
+    set view 0
     set read 0
     set write 0
     set admin 0
 
+    set view 1
     set read 1
     set write 1
     set admin 1
 
     return
+
+    # --------------------------------------------------
+    # Start of logic for "view"
+    # --------------------------------------------------
+
+    # Don't show even names of customer contacts to an unprivileged user.
+    # ... except he's the administrator of this group...
+    if {$group_member_is_customer_p} {
+	return [expr $user_is_group_admin_p || [im_permission $current_user_id view_customer_contacts]]
+    }
+
+    # Show freelance names or links, depending on permissions
+    if {$group_member_is_freelance_p} {
+	if {[im_permission $current_user_id view_freelancers]} {
+	    return 1
+	} else {
+	    return -1
+	}
+    }
+
+    # Default for non-employees: show only names
+    if {!$user_is_employee_p} {
+	return -1
+    }
+
+    # Employees Default: show the link
+    return 1
+
+    # --------------------------------------------------
+    # End of logic for "view"
+    # --------------------------------------------------
+
+
+
+
+
+
+
+
 
     # Also accept "user_id_from_search" instead of user_id (the one to edit...)
     if [info exists user_id_from_search] { set user_id $user_id_from_search}
@@ -217,14 +289,16 @@ where
 
 
 
-ad_proc -public im_project_permissions {user_id project_id read_var write_var admin_var} {
+ad_proc -public im_project_permissions {user_id project_id view_var read_var write_var admin_var} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $project_id
 } {
+    upvar $view_var view
     upvar $read_var read
     upvar $write_var write
     upvar $admin_var admin
 
+    set view 1
     set read 0
     set write 0
     set admin 0
@@ -277,7 +351,7 @@ ad_proc -public im_project_permissions {user_id project_id read_var write_var ad
 
 
 
-ad_proc -public im_office_permissions {user_id office_id read_var write_var admin_var} {
+ad_proc -public im_office_permissions {user_id office_id view_var read_var write_var admin_var} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $office_id.<BR>
     The permissions depend on whether the office is a customers office or
@@ -294,10 +368,12 @@ ad_proc -public im_office_permissions {user_id office_id read_var write_var admi
     and the customer key account managers.
 
 } {
+    upvar $view_var view
     upvar $read_var read
     upvar $write_var write
     upvar $admin_var admin
 
+    set view 1
     set read 0
     set write 0
     set admin 0
@@ -366,302 +442,19 @@ ad_proc -public im_permission {user_id action} {
     the specified action.
     Uses a cache to reduce DB traffic.
 } {
-    set package_id [ad_conn package_id]
-    set package_id 400
+    set subsite_id [ad_conn subsite_id]
+#    set subsite_id [ad_conn node_id]
 
-    set result [ad_permission_p $package_id $action]
+    set result [ad_permission_p $subsite_id $action]
     ns_log Notice "im_permission($action)=$result"
     return $result
 }
-
-
-# Intranet permissions scheme - permissions are associated to groups.
-#
-ad_proc -public im_permission_old {user_id action} {
-    Returns true or false, depending whether the user can execute
-    the specified action.
-    Uses a cache to reduce DB traffic.
-} {
-    set permission_list [im_permission_list $user_id]
-    if { [lsearch -exact $permission_list admin] >= 0} { return 1 }
-    if { [lsearch -exact $permission_list $action] >= 0} {
-	return 1
-    } {
-	return 0
-    }
-}
-
-ad_proc -public im_permission_list {user_id} {
-    Return a list of permission tokens based on the user profile.
-    Uses a cache not to bring down the DB due to the amount of
-    such queries.
-} {
-    return [util_memoize "im_permission_list_helper $user_id"]    
-}
-
-
-ad_proc -public im_permission_list_helper {user_id} {
-    Return a list of permission tokens based on the user profile:
-
-    Should not be used for permission handling:
-    freelance:
-    employee:
-    customer:	This is a customer...
-    wheel:	This is a Wheel...
-
-    Forum Topic related permissions:
-    The security is enforced by allowing different profiles to create
-    topics with different scopes:
-    view_forums:		View messages at all
-    create_topic_scope_public:	Public messages, except customers
-    create_topic_scope_group:	Messages for the entire group
-    create_topic_scope_staff:	Messages to staff members of the group
-    create_topic_scope_client:	Messages to the clients of the group
-    create_topic_scope_non_client: Message to non-clients of the group
-    create_topic_scope_pm:	Message to the project manager only
-
-    Customer related permissions:
-    In Translation the most critical are. We differentiate there between
-    the customer list, contacts and details:
-    add_customers:		Add new customers
-    view_customers:		See the Name of a customer of a single project
-    view_customer_contacts:	See customer contacts
-    view_customer_details:	See the address details of a customer
-    view_customer_crm:		"CRM Light" customer contact events
-
-    Project related Permissions:
-    add_projects
-    view_projects
-    view_project_members	See the project member list
-    view_projects_all
-    view_projects_history
-
-    User related permissions:
-    add_users
-    view_users
-    view_employees
-    edit_freelancers
-    view_freelancers
-    view_admin
-    view_freelance_fs
-    view_employee_fs
-    view_customer_fs
-    edit_freelance_fs
-    edit_employee_fs
-    edit_customer_fs
-
-    Finance related permissions: 
-    Everybody should be able to see (and maintain) his own data
-    view_finance
-    add_hours			Employees, freelancers, Wheel, ...
-    view_hours
-    view_hours_all
-    view_allocations
-
-    Other:
-    search_intranet   
-} {
-
-    set permissions [list]
-    lappend permissions "user"
-
-    if { [ad_user_group_member [im_freelance_group_id] $user_id] } {
-	lappend permissions "freelance"
-
-	# Limit the scope of forum topics:
-	# Only allow to post to non-client project members
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_staff"
-	lappend permissions "create_topic_scope_pm"
-	lappend permissions "add_hours"
-    }
-    if { [ad_user_group_member [im_customer_group_id] $user_id] } {
-	lappend permissions "customer"
-
-	# Limit the scope of forum topics
-	# Only allows to post to other clients the PM.
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_pm"
-    }
-    if { [ad_user_group_member [im_employee_group_id] $user_id] } {
-	lappend permissions "employee"
-
-	lappend permissions "view_projects"
-	lappend permissions "view_project_members"
-	lappend permissions "view_projects_all"
-	lappend permissions "view_projects_history"
-	lappend permissions "add_projects"
-	lappend permissions "view_allocations"
-	lappend permissions "search_intranet"
-	lappend permissions "view_users"
-	lappend permissions "view_employees"
-	lappend permissions "add_users"
-	lappend permissions "edit_freelancers"
-	lappend permissions "view_freelancers"
-	lappend permissions "view_freelance_fs"
-	lappend permissions "edit_freelance_fs"
-	lappend permissions "add_hours"
-	lappend permissions "view_hours"
-
-	# generally allowed to see customer names in specific
-	# project, but not necessary allowed to see the list of 
-	# customers, nor customer contacts.
-	lappend permissions "view_customers"
-
-	# Limit the scope of forum topics
-	# No public postings and no postings to clients
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_staff"
-	lappend permissions "create_topic_scope_pm"
-	lappend permissions "create_topic_scope_non_client"
-    }
-
-    if { [ad_user_group_member [im_pm_group_id] $user_id] } {
-	lappend permissions "pm"
-
-	lappend permissions "view_projects"
-	lappend permissions "view_project_members"
-	lappend permissions "view_projects_all"
-	lappend permissions "view_projects_history"
-	lappend permissions "add_projects"
-	lappend permissions "view_allocations"
-	lappend permissions "search_intranet"
-	lappend permissions "view_users"
-	lappend permissions "view_employees"
-	lappend permissions "add_users"
-	lappend permissions "edit_freelancers"
-	lappend permissions "view_freelancers"
-	lappend permissions "view_freelance_fs"
-	lappend permissions "edit_freelance_fs"
-	lappend permissions "add_hours"
-	lappend permissions "view_hours"
-
-	# generally allowed to see customer names in specific
-	# project, but not necessary allowed to see the list of 
-	# customers, nor customer contacts.
-	lappend permissions "view_customers"
-
-	# Limit the scope of forum topics
-	# No public postings, 
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_staff"
-	lappend permissions "create_topic_scope_non_client"
-	lappend permissions "create_topic_scope_pm"
-    }
-
-    if { [ad_user_group_member [im_wheel_group_id] $user_id] } {
-	lappend permissions "wheel"
-
-	lappend permissions "view_projects"
-	lappend permissions "view_project_members"
-	lappend permissions "view_projects_all"
-	lappend permissions "view_projects_history"
-	lappend permissions "view_hours_all"
-	lappend permissions "add_projects"
-	lappend permissions "view_allocations"
-	lappend permissions "view_finance"
-	lappend permissions "search_intranet"
-	lappend permissions "view_employees"
-	lappend permissions "view_users"
-	lappend permissions "add_users"
-	lappend permissions "edit_freelancers"
-	lappend permissions "view_freelancers"
-	lappend permissions "view_freelance_fs"
-	lappend permissions "view_employee_fs"
-	lappend permissions "view_customer_fs"
-	lappend permissions "edit_freelance_fs"
-	lappend permissions "edit_employee_fs"
-	lappend permissions "edit_customer_fs"
-	lappend permissions "view_admin"
-	lappend permissions "add_hours"
-	lappend permissions "view_hours"
-	
-	# Show the customer contact information in the CustomerViewPage?
-	# ... and the ProjectMemberComponent?
-	lappend permissions "view_customers"
-	lappend permissions "view_customer_contacts"
-	lappend permissions "view_customer_details"
-	lappend permissions "view_customer_crm"
-
-	# Limit the scope of forum topics
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_public"
-	lappend permissions "create_topic_scope_group"
-	lappend permissions "create_topic_scope_staff"
-	lappend permissions "create_topic_scope_client"
-	lappend permissions "create_topic_scope_non_client"
-	lappend permissions "create_topic_scope_pm"
-    }
-
-    if { [ad_user_group_member [im_accounting_group_id] $user_id] } {
-	lappend permissions "accounting"
-
-	lappend permissions "view_projects"
-	lappend permissions "view_project_members"
-	lappend permissions "view_projects_all"
-	lappend permissions "view_projects_history"
-	lappend permissions "view_hours_all"
-	lappend permissions "view_finance"
-	lappend permissions "search_intranet"
-	lappend permissions "view_admin"
-	lappend permissions "view_users"
-	lappend permissions "view_employees"
-	lappend permissions "view_customers"
-	lappend permissions "add_hours"
-	lappend permissions "view_hours"
-
-	# Limit the scope of forum topics
-	lappend permissions "view_forums"
-	lappend permissions "create_topic_scope_staff"
-	lappend permissions "create_topic_scope_pm"
-    }
-
-    if {[im_is_user_site_wide_or_intranet_admin $user_id]} {
-	lappend permissions "admin"
-    }
-
-    return $permissions
-}
-
-
-ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
-    Check wheter a user should be able to see a specific field of another user:
-    Return 1 IF:
-    - EITHER you have associated the $perm_token permission
-    - OR you are the user himself (view_user == current_user)
-    Return 0 IF:
-    - if the above doesn't hold for your OR:
-    - The variable $var_value is empty (don't show lines with empty variables)
-} {
-    if {[empty_string_p $var_value]} { return 0 }
-    if {$view_user_id == $current_user_id} { return 1 }
-    return [im_permission $current_user_id $perm_token]
-}
-
-
-ad_proc -public im_render_user_id { user_id user_name current_user_id group_id } {
-    
-} {
-    if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
-
-    # How to display? -1=name only, 0=none, 1=Link
-    set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
-    ns_log Notice "im_render_user_id: user_id=$user_id, show_user_style=$show_user_style"
-
-    if {$show_user_style==-1} {
-	return $user_name
-    }
-    if {$show_user_style==1} {
-	return "<A HREF=/intranet/users/view?user_id=$user_id>$user_name</A>"
-    }
-    return ""
-}
-
 
 # ------------------------------------------------------------------
 # 
 # ------------------------------------------------------------------
 
+#!!!
 ad_proc -public im_user_group_member_p { user_id group_id } {
     Returns 1 if specified user is a member of the specified group. 0 otherwise
 } {
@@ -669,6 +462,7 @@ ad_proc -public im_user_group_member_p { user_id group_id } {
 }
 
 
+#!!!
 ad_proc -public im_user_group_admin_p { user_id group_id } {
     Returns 1 if specified user is an administrator of the specified group. 
     0 otherwise
@@ -676,7 +470,7 @@ ad_proc -public im_user_group_admin_p { user_id group_id } {
     return [util_memoize "db_string user_member_of_group \"select decode(ad_group_member_admin_role_p($user_id, $group_id), 't', 1, 0) from dual\""]
 }
 
-
+#!!!
 ad_proc -public im_user_is_employee_p { user_id } {
     Returns 1 if a the user is in the employee group. 0 Otherwise
 } {
@@ -684,6 +478,7 @@ ad_proc -public im_user_is_employee_p { user_id } {
 }
 
 
+#!!!
 ad_proc -public im_user_is_freelance_p { user_id } {
     Returns 1 if a the user is in the freelance group. 0 Otherwise
 } {
@@ -696,6 +491,7 @@ ad_proc -public im_user_is_freelance_p { user_id } {
 
 # Check if a user is authorized to enter the Intranet pages
 #
+#!!!
 ad_proc -public im_user_is_authorized {conn args why} {
     Returns filter_ok if user is employee
 } {
@@ -715,6 +511,7 @@ ad_proc -public im_user_is_authorized {conn args why} {
     }
 }
 
+#!!!
 ad_proc -public im_user_is_customer_p { user_id } {
     Returns 1 if a the user is in a customer group. 0 Otherwise
 } {
@@ -723,6 +520,7 @@ ad_proc -public im_user_is_customer_p { user_id } {
 }
 
 
+#!!!
 ad_proc -public im_user_is_customer {conn args why} {
     Returns filter_of if user is customer
 } {
@@ -742,6 +540,7 @@ ad_proc -public im_user_is_customer {conn args why} {
     }
 }
 
+#!!!
 ad_proc -public im_verify_user_is_admin { conn args why } {
     Returns 1 if a the user is either a site-wide administrator or 
     in the Intranet administration group
@@ -762,6 +561,7 @@ ad_proc -public im_verify_user_is_admin { conn args why } {
     }
 }
 
+#!!!
 ad_proc -public im_group_id_from_parameter { parameter } {
     Returns the group_id for the group with the GroupShortName
     specified in the server .ini file for $parameter. That is, we look up
@@ -778,6 +578,7 @@ ad_proc -public im_group_id_from_parameter { parameter } {
     return [util_memoize "im_group_id_from_parameter_helper $short_name"]
 }
 
+#!!!
 ad_proc -public im_group_id_from_parameter_helper { short_name } {
     Returns the group_id for the user_group with the specified
     short_name. If no such group exists, returns 0 
@@ -789,6 +590,7 @@ ad_proc -public im_group_id_from_parameter_helper { short_name } {
 }
 
 
+#!!!
 ad_proc -public im_can_user_administer_group { { group_id "" } { user_id "" } } { 
     An intranet user can administer a given group if thery are a site-wide 
     intranet user, a general site-wide administrator, or if they belong to 
@@ -826,12 +628,14 @@ ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { Retu
     return 0
 }
 
+#!!!
 ad_proc -public im_user_intranet_admin_p { user_id } {
     returns 1 if the user is an intranet admin 
 } {
     return [ad_user_group_member [im_admin_group_id] $user_id]
 }
 
+#!!!
 ad_proc -public im_site_wide_admin_p { user_id } {
     returns 1 if the user is an intranet admin 
 } {
@@ -839,6 +643,7 @@ ad_proc -public im_site_wide_admin_p { user_id } {
 }
 
 
+#!!!
 ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
     Returns 1 if a the user is authorized for the system. 0
     Otherwise. Note that the second_user_id gives us a way to say that
@@ -878,47 +683,58 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 }
 
 
+#!!!
 ad_proc -public im_admin_group_id { } {Returns the group_id of administrators} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\""]
 }
 
+#!!!
 ad_proc -public im_employee_group_id { } {Returns the groud_id for employees} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Employees'\""]
 }
 
+#!!!
 ad_proc -public im_wheel_group_id { } {Returns the groud_id for wheel (=senior managers)} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Senior Managers'\""]
 }
 
+#!!!
 ad_proc -public im_pm_group_id { } {Returns the groud_id for project managers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Project Managers'\""]
 }
 
+#!!!
 ad_proc -public im_accounting_group_id { } {Returns the groud_id for employees} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\""]
 }
 
+#!!!
 ad_proc -public im_customer_group_id { } {Returns the groud_id for customers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\""]
 }
 
+#!!!
 ad_proc -public im_partner_group_id { } {Returns the groud_id for partners} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Partners'\""]
 }
 
+#!!!
 ad_proc -public im_office_group_id { } {Returns the groud_id for offices} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\""]
 }
 
+#!!!
 ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\""]
 }
 
+#!!!
 ad_proc -public im_restricted_access {} {Returns an access denied message and blows out 2 levels} {
     ad_return_forbidden "Access denied" "You must be an authorized user of the [ad_system_name] intranet to see this page. You can <a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>login</a> as someone else if you like."
     return -code return
 }
 
+#!!!
 ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {Returns an error message if the specified user is not able to administer the specified group or the user is not a site-wide/intranet administrator} {
 
     set user_admin_p [im_can_user_administer_group $group_id $current_user_id]
@@ -934,6 +750,7 @@ ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {
     }
 }
 
+#!!!
 ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets up the proper url for the /groups stuff in acs} {
     if { [empty_string_p $group_id] && [empty_string_p $short_name] } {
 	ad_return_error "Missing group_id and short_name" "We need either the short name or the group id to set up the url for the /groups directory"
@@ -948,6 +765,7 @@ ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets 
     return "/groups/[ad_urlencode $short_name]$section"
 }
 
+#!!!
 ad_proc -public im_customer_group_id_from_user {} {Sets group_id and short_name in the calling environment of the first customer_id this proc finds for the logged in user} {
     uplevel {
 	set customer_group_id [im_customer_group_id]

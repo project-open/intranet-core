@@ -120,7 +120,6 @@ show errors
 
 create or replace package body im_office
 is
-
     function new (
 	office_id	in integer default null,
 	object_type	in varchar,
@@ -219,9 +218,3 @@ begin
 end;
 /
 show errors;
-
-
-
-
-
-

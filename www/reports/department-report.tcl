@@ -11,7 +11,7 @@ ad_page_contract {
 }
 
 # User_id already verified by the /intranet filters
-set current_user_id [ad_get_user_id]
+set user_id [ad_maybe_redirect_for_registration]
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 

@@ -26,14 +26,14 @@ ad_library {
 # set company_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_employee_group_id]]
 
 
-ad_proc -public im_group_member_component { group_id current_user_id { add_admin_links 0 } { return_url "" } { limit_to_users_in_group_id "" } { dont_allow_users_in_group_id "" } {also_add_to_group_id "" } } {
+ad_proc -public im_group_member_component { object_id current_user_id { add_admin_links 0 } { return_url "" } { limit_to_users_in_group_id "" } { dont_allow_users_in_group_id "" } {also_add_to_group_id "" } } {
 
     Returns an html formatted list of all the users in the specified
     group. 
 
     Required Arguments:
     -------------------
-    - group_id: Group we're interested in.
+    - object_id: Group we're interested in.
     - current_user_id: The user_id of the person viewing the page that
       called this function. 
 
@@ -42,23 +42,23 @@ ad_proc -public im_group_member_component { group_id current_user_id { add_admin
     - description: A description of the group. We use pass this to the
       spam function for UI
     - add_admin_links: Boolean. If 1, we add links to add/email
-      people. Current user must be member of the specified group_id to add
+      people. Current user must be member of the specified object_id to add
       him/herself
     - return_url: Where to go after we do something like add a user
     - limit_to_users_in_group_id: Only shows users who belong to
       group_id and who are also members of the group specified in
-      limit_to_users_in_group_id. For example, if group_id is an intranet
-      project, and limit_to_users_group_id is the group_id of the employees
+      limit_to_users_in_group_id. For example, if object_id is an intranet
+      project, and limit_to_users_group_id is the object_id of the employees
       group, we only display users who are members of both the employees and
       this project groups
     - dont_allow_users_in_group_id: Similar to
       limit_to_users_in_group_id, but says that if a user belongs to the
-      group_id specified by dont_allow_users_in_group_id, then don't display
+      object_id specified by dont_allow_users_in_group_id, then don't display
       that user.  
     - also_add_to_group_id: If we're adding users to a group, we might
       also want to add them to another group at the same time. If you set
-      also _add_to_group_id to a group_id, the user will be added first to
-      group_id, then to also_add_to_group_id. Note that adding the person to
+      also _add_to_group_id to a object_id, the user will be added first to
+      object_id, then to also_add_to_group_id. Note that adding the person to
       both groups is NOT atomic.
 
     Notes:
@@ -127,7 +127,7 @@ from
 	group_member_map map
 where
 	map.member_id = users.user_id
-	and map.group_id = :group_id
+	and map.group_id = :object_id
 	$limit_to_group_id_sql 
 	$dont_allow_sql
 order by lower(name)"
@@ -164,7 +164,7 @@ if {$add_admin_links} {
 
 	# determine how to show the user: 
 	# -1: Show name only, 0: don't show, 1:Show link
-	set show_user [im_show_user_style $user_id $current_user_id $group_id]
+	set show_user [im_show_user_style $user_id $current_user_id $object_id]
 	ns_log Notice "im_group_member_component: user_id=$user_id, show_user=$show_user"
 
 	if {$show_user == 0} { continue }
@@ -201,7 +201,7 @@ append body_html $name
 	append footer_html "
     <tr>
       <td align=right>
-	<A HREF=/intranet/member-add?[export_url_vars group_id also_add_to_group_id return_url]>
+	<A HREF=/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]>
 	  Add member</A>&nbsp;
       </td>"
 	append footer_html "
@@ -213,7 +213,7 @@ append body_html $name
     # ------------------ Join table header, body and footer ----------------
     set html "
 <form method=POST action=/intranet/member-update>
-[export_form_vars group_id return_url]
+[export_form_vars object_id return_url]
     <table bgcolor=white cellpadding=1 cellspacing=1 border=0>
       $header_html
       $body_html
@@ -225,14 +225,14 @@ append body_html $name
 }
 
 
-ad_proc -public im_project_add_member { group_id user_id role} {
+ad_proc -public im_project_add_member { object_id user_id role} {
     Make a specified user a member of a (project) group
 } {
     
     db_transaction {
 	db_exec_plsql insert_user_group_map "
 begin
-  user_group_member_add(:group_id, :user_id, :role);
+  user_group_member_add(:object_id, :user_id, :role);
 end;
 "
     }
@@ -241,7 +241,7 @@ end;
     # for every project group member.
 #    set sql "
 #	insert into user_group_member_field_map values
-#	(:group_id, :user_id, 'estimation_days', '')"	
+#	(:object_id, :user_id, 'estimation_days', '')"	
 #    db_transaction {
 #	db_dml insert_user_member_field_map $sql
 #    }

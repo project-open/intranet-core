@@ -32,11 +32,9 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set user_is_group_member_p [ad_user_group_member $object_id $user_id]
 set user_is_group_admin_p [im_can_user_administer_group $object_id $user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_object_id] $user_id]
-set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p || $user_is_wheel_p]
+set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
 # Check if the current group is a project (as opposed to a customer)
 set project_p [db_string check_if_project "select count(*) from im_projects where project_id=:object_id"]
@@ -75,9 +73,11 @@ $role_options"
 # Find out the project/customer name and deal with the case that the name
 # may be empty.
 #
-set group_name [db_string group_name_for_one_object_id "select group_name from groups where object_id = :object_id"]
+#set object_name [db_string object_name_for_one_object_id "select group_name from groups where object_id = :object_id"]
 
-set page_title "Add new member to $group_name"
+set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
+
+set page_title "Add new member to $object_name"
 set context_bar [ad_context_bar "Add member"]
 
 set locate_form "

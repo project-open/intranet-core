@@ -21,6 +21,9 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+# -----------------------------------------------------------
+# Office OO methods new, del and name
+# -----------------------------------------------------------
 
 namespace eval office {
 
@@ -98,7 +101,7 @@ where	office_name = :office_name
 
 
 # ----------------------------------------------------------------------
-# Office Category Selectors
+# Office HTML Components
 # ---------------------------------------------------------------------
 
 ad_proc -public im_office_type_select { select_name { default "" } } {
@@ -115,10 +118,6 @@ ad_proc -public im_office_status_select { select_name { default "" } } {
     return [im_category_select "Intranet Office Status" $select_name $default]
 }
 
-
-# ----------------------------------------------------------------------
-# Office Component for CustomerViewPage
-# ---------------------------------------------------------------------
 
 ad_proc -public im_office_component { user_id customer_id } {
     Creates a HTML table showing the table of offices related to the

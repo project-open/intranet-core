@@ -21,7 +21,7 @@ ad_page_contract {
 
 } -query {
     { referer "/acs-admin/users" }
-    { user_id 0 }
+    { user_id "" }
     { profile:multiple,optional }
     { return_url "/intranet/users/" }
 } -properties {
@@ -58,8 +58,10 @@ if {$user_is_employee_p} {
 }
 
 # Check if we are editing an already existing user...
-set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
-
+set editing_existing_user 0
+if {"" != $user_id} { 
+    set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
+}
 
 if {$editing_existing_user} {
 

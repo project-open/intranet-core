@@ -22,6 +22,12 @@ ad_library {
     @creation-date  January 2004
 }
 
+
+
+# --------------------------------------------------------
+# HTML Components
+# --------------------------------------------------------
+
 ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
     Create an <IMG ...> tag to correctly render a range of GIFs
     frequently used by the Intranet
@@ -63,6 +69,8 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
     }
 }
 
+
+
 ad_proc -public im_gif_cleardot { {width 1} {height 1} {alt ""} } {
     Creates an &lt;IMG ... &gt; tag of a given size
 } {
@@ -71,54 +79,10 @@ ad_proc -public im_gif_cleardot { {width 1} {height 1} {alt ""} } {
 }
 
 
-#ad_proc -public im_employee_submenu { current_url } {
-#    Displays a submenu that lets the user choose between
-#    various views to the users of the system
-#} {
-#	
-#}
-
-
-ad_proc -public im_portrait_html { user_id } {
-    Return a HTML piece that renders the original Portrait file
-    that the user has provided.
-    Or "" if there was not portrait.
-} {
-
-    if {![db_0or1row get_user_info "
-select
-	u.first_names, 
-	u.last_name, 
-	gp.portrait_id,
-	gp.portrait_upload_date,
-	gp.portrait_comment,
-	gp.portrait_original_width,
-	gp.portrait_original_height,
-	gp.portrait_client_file_name
-from 
-	users u,
-	general_portraits gp
-where
-	u.user_id = :user_id
-	and u.user_id = gp.on_what_id(+)
-	and 'USERS' = gp.on_which_table(+)
-	and 't' = gp.portrait_primary_p(+)"]} { return "" }
-    if  {[empty_string_p $portrait_id]} { return "" }
-    
-    if { ![empty_string_p $portrait_original_width] && ![empty_string_p $portrait_original_height] } {
-	set widthheight "width=$portrait_original_width height=$portrait_original_height"
-    } else {
-	set widthheight ""
-    }
-
-    return "<img $widthheight src=\"/shared/portrait-bits.tcl?[export_url_vars portrait_id]\">"
-}
-
-
-# 2003.06.09 SLS international Design
-#
 ad_proc -public im_return_template {} {
-    Wrapper that adds page contents to header and footer 
+    Wrapper that adds page contents to header and footer<p>
+    040221 fraber: Should not be called anymore - should
+    be replaced by .adp files containing the same calls...
 } {
     uplevel { 
 
@@ -127,12 +91,45 @@ ad_proc -public im_return_template {} {
 [im_navbar]
 [value_if_exists page_body]
 [value_if_exists page_content]
-[im_footer]
-"
+[im_footer]\n"
     }
-
 }
 
+ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} {bor "0"} {wid "100%"}} {
+    Make a quick table
+} {
+
+    return "
+    <table cellpadding=$pad cellspacing=$spa border=$bor bgcolor=$col width=$wid>
+    <tr>
+    <td>
+    $content
+    </td>
+    </tr>
+    </table>"
+    
+}
+
+
+ad_proc -public im_table_with_title { title body } {
+    Returns a two row table with background colors
+} {
+    return "
+<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+ <tr>
+  <td bgcolor=#cccccc><b>$title</b></td>
+ </tr>
+ <tr>
+  <td bgcolor=#dddddd><font size=-1>$body</font></td>
+ </tr>
+</table><br>
+"
+}
+
+
+# --------------------------------------------------------
+# Navigation Bars
+# --------------------------------------------------------
 
 ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
     Returns rendered HTML code for a horizontal sub-navigation
@@ -318,93 +315,6 @@ append navbar "
 }
 
 
-ad_proc -public im_invoice_navbar { default_letter base_url next_page_url prev_page_url export_var_list} {
-    Returns rendered HTML code for a horizontal sub-navigation
-    bar for /intranet/projects/.
-    The lower part of the navbar also includes an Alpha bar.
-
-    Default_letter==none marks a special behavious, hiding the alpha-bar.
-} {
-    # -------- Compile the list of parameters to pass-through-------
-    set bind_vars [ns_set create]
-    foreach var $export_var_list {
-	upvar 1 $var value
-	if { [info exists value] } {
-	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_ustomer_navbar: $var <- $value"
-        }
-    }
-
-    # --------------- Determine the calling page ------------------
-    set user_id [ad_get_user_id]
-    set section ""
-    set url_stub [im_url_with_query]
-
-    switch -regexp $url_stub {
-	{/intranet/invoicing/$} { set section "Invoices" }
-	{/intranet/invoicing/new} { set section "New Invoice" }
-	{/intranet/invoicing/payments} { set section "Payments" }
-	{invoice%5fnew} { set section "New Invoice" }
-	{invoice%5flist} { set section "Invoices" }
-	{invoice%5fpayments} { set section "Payments" }
-	{index$} { set section "New Invoice" }
-	default {
-	    set section "none"
-	}
-    }
-
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
-
-    set status "$tdsp$nosel<a href='index?view_name=invoice_list'>Invoices</a></td>"
-    set new_invoice "$tdsp$nosel<a href='new'>New Invoice</a></td>"
-    set payments "$tdsp$nosel<a href='payments'>Payments</a></td>"
-
-    switch $section {
-	"Invoices" {set status "$tdsp$sel Invoices</td>"}
-	"New Invoice" {set new_invoice "$tdsp$sel New Invoice</td>"}
-	"Payments" {set payments "$tdsp$sel Payments</td>"}
-	default {
-	    # Nothing - just let all sections deselected
-	}
-    }
-
-    set navbar "
-<table width=100% cellpadding=0 cellspacing=0 border=0>
-  <tr>
-    <td colspan=6 align=right>
-      <table cellpadding=1 cellspacing=0 border=0>
-        <tr>\n"
-if {[im_permission $user_id view_finance]} { append navbar $status }
-if {[im_permission $user_id view_finance]} { append navbar $payments }
-if {[im_permission $user_id view_finance]} { append navbar $new_invoice }
-append navbar "
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=6 class=tabnotsel align=center>"
-if {![string equal "" $prev_page_url]} {
-    append navbar "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
-}
-append navbar $alpha_bar
-if {![string equal "" $next_page_url]} {
-    append navbar "<A HREF=$next_page_url>&gt;&gt;</A>\n"
-}
-append navbar "
-    </td>
-  </tr>
-</table>
-"
-    return $navbar
-}
-
-
 ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/offices/.
@@ -541,12 +451,12 @@ ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_
     set costs "$tdsp$nosel<a href='index?view_name=project_costs'>Costs</a></td>"
 
     switch $section {
-"Standard" {set standard "$tdsp$sel Standard</td>"}
-"Status" {set status "$tdsp$sel Status</td>"}
-"Costs" {set costs "$tdsp$sel Costs</td>"}
-default {
-    # Nothing - just let all sections deselected
-}
+	"Standard" {set standard "$tdsp$sel Standard</td>"}
+	"Status" {set status "$tdsp$sel Status</td>"}
+	"Costs" {set costs "$tdsp$sel Costs</td>"}
+	default {
+	    # Nothing - just let all sections deselected
+	}
     }
 
     set navbar "
@@ -597,6 +507,7 @@ ad_proc -public im_admin_navbar { } {
 }
 
 
+
 ad_proc -public im_sub_navbar { parent_menu_id } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
@@ -617,7 +528,8 @@ ad_proc -public im_sub_navbar { parent_menu_id } {
 	where	parent_menu_id = :parent_menu_id
 	order by sort_order
     }
-    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
+
+#    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
 
     # make sure only one field gets selected..
     set found_selected 0
@@ -687,9 +599,8 @@ order by
         sort_order
 "
 
-set extra_sql "
-        and im_permission_p(m.menu_id, :user_id, 'read') = 't'
-"
+#    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
+
 
 
     # make sure only one field gets selected so...
@@ -735,10 +646,8 @@ set extra_sql "
 }
 
 
-# 2003.06.09 Frank Bergmann
-#
 ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
-    The header for SLS
+    The default header for Project/Open
 } {
     set user_id [ad_get_user_id]
     set user_name [im_get_user_name $user_id]
@@ -815,6 +724,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 "
 }
 
+
 ad_proc -public im_header_emergency { page_title } {
     A header to display for error pages that do not have access to the DB
     Only the parameter file is available by default.
@@ -870,7 +780,7 @@ ad_proc -public im_header_emergency { page_title } {
 
 
 ad_proc -public im_footer {} {
-    SLS Intranet footer.
+    Default Project/Open footer.
 } {
 
     return "
@@ -900,38 +810,156 @@ ad_proc -public im_stylesheet {} {
 }
 
 
-# 2002.06.06 Boris Doesborg
-# Changing intranet design
-#
-ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} {bor "0"} {wid "100%"}} {
-    Make a quick table
-} {
 
-    return "
-    <table cellpadding=$pad cellspacing=$spa border=$bor bgcolor=$col width=$wid>
-    <tr>
-    <td>
-    $content
-    </td>
-    </tr>
-    </table>"
+
+
+ad_proc im_all_letters { } {
+    returns a list of all A-Z letters in uppercase
+} {
+    return [list A B C D E F G H I J K L M N O P Q R S T U V W X Y Z] 
+}
+
+ad_proc im_all_letters_lowercase { } {
+    returns a list of all A-Z letters in uppercase
+} {
+    return [list a b c d e f g h i j k l m n o p q r s t u v w x y z] 
+}
+
+ad_proc im_employees_alpha_bar { { letter "" } { vars_to_ignore "" } } {
+    Returns the alpha bar for employees.
+} {
+    return [im_alpha_nav_bar $letter [im_employees_initial_list] $vars_to_ignore]
+}
+
+ad_proc im_groups_alpha_bar { parent_group_id { letter "" } { vars_to_ignore "" } } {
+    Returns the alpha bar for user_groups whose parent group is as
+    specified.  
+} {
+    return [im_alpha_nav_bar $letter [im_groups_initial_list $parent_group_id] $vars_to_ignore]
+}
+
+ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
+    Returns an A-Z bar with greyed out letters not
+    in initial_list and bolds "letter". Note that this proc returns the
+    empty string if there are fewer than NumberResultsPerPage records.
     
-}
-
-
-ad_proc -public im_table_with_title { title body } {
-    Returns a two row table with background colors
+    inital_list is a list where the ith element is a letter and the i+1st
+    letter is the number of times that letter appears.  
 } {
-    return "
-<table cellpadding=5 cellspacing=0 border=0 width='100%'>
- <tr>
-  <td bgcolor=#cccccc><b>$title</b></td>
- </tr>
- <tr>
-  <td bgcolor=#dddddd><font size=-1>$body</font></td>
- </tr>
-</table><br>
-"
+
+    set min_records [ad_parameter NumberResultsPerPage intranet 50]
+    # Let's run through and make sure we have enough records
+    set num_records 0
+    foreach { l count } $initial_list {
+	incr num_records $count
+    }
+    if { $num_records < $min_records } {
+	return ""
+    }
+
+    set url "[ns_conn url]?"
+    set vars_to_ignore_list [list "letter"]
+    foreach v $vars_to_ignore { 
+	lappend vars_to_ignore_list $v
+    }
+
+    set query_args [export_ns_set_vars url $vars_to_ignore_list]
+    if { ![empty_string_p $query_args] } {
+	append url "$query_args&"
+    }
+    
+    set html_list [list]
+    foreach l [im_all_letters_lowercase] {
+	if { [lsearch -exact $initial_list $l] == -1 } {
+	    # This means no user has this initial
+	    lappend html_list "<font color=gray>$l</font>"
+	} elseif { [string compare $l $letter] == 0 } {
+	    lappend html_list "<b>$l</b>"
+	} else {
+	    lappend html_list "<a href=${url}letter=$l>$l</a>"
+	}
+    }
+    if { [empty_string_p $letter] || [string compare $letter "all"] == 0 } {
+	lappend html_list "<b>All</b>"
+    } else {
+	lappend html_list "<a href=${url}letter=all>All</a>"
+    }
+    if { [string compare $letter "scroll"] == 0 } {
+	lappend html_list "<b>Scroll</b>"
+    } else {
+	lappend html_list "<a href=${url}letter=scroll>Scroll</a>"
+    }
+    return [join $html_list " | "]
 }
+
+ad_proc im_alpha_bar { target_url default_letter bind_vars} {
+    Returns a horizontal alpha bar with links
+} {
+    set alpha_list [im_all_letters_lowercase]
+    set alpha_list [linsert $alpha_list 0 All]
+    set default_letter [string tolower $default_letter]
+
+    ns_set delkey $bind_vars "letter"
+    set params [list]
+    set len [ns_set size $bind_vars]
+    for {set i 0} {$i < $len} {incr i} {
+	set key [ns_set key $bind_vars $i]
+	set value [ns_set value $bind_vars $i]
+	if {![string equal $value ""]} {
+	    lappend params "$key=[ns_urlencode $value]"
+	}
+    }
+    set param_html [join $params "&"]
+
+    set html "&nbsp;"
+    foreach letter $alpha_list {
+	if {[string equal $letter $default_letter]} {
+	    append html "<font color=white>$letter</font> &nbsp; \n"
+	} else {
+	    set url "$target_url?letter=$letter&$param_html"
+	    append html "<A HREF=$url>$letter</A>&nbsp;\n"
+	}
+    }
+    append html ""
+    return $html
+}
+
+
+ad_proc -public im_render_user_id { user_id user_name current_user_id group_id } {
+    Return a formatted pice of HTML showing a username according
+    to the permissions of the current user.
+} {
+    if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
+
+    # How to display? -1=name only, 0=none, 1=Link
+    set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
+    ns_log Notice "im_render_user_id: user_id=$user_id, show_user_style=$show_user_style"
+
+    if {$show_user_style==-1} {
+	return $user_name
+    }
+    if {$show_user_style==1} {
+	return "<A HREF=/intranet/users/view?user_id=$user_id>$user_name</A>"
+    }
+    return ""
+}
+
+ad_proc -public im_show_user_style {group_member_id current_user_id group_id} {
+    Determine whether the current_user should be able to see
+    the group member.
+    Returns 1 the name can be shown with a link,
+    Returns -1 if the name should be shown without link and
+    Returns 0 if the name should not be shown at all.
+} {
+    # Show the user itself with a link.
+    if {$current_user_id == $group_member_id} { return 1}
+
+    # Get the permissions for this user
+    im_user_permissions $current_user_id $group_member_id view read write admin
+    if {$read} { return 1 }
+    if {$view} { return -1 }
+    return 0
+}
+
 
 
