@@ -315,7 +315,7 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
 	)
     "
 
-    if {[im_permission $user_id "view_all_companies"]} {
+    if {[im_permission $user_id "view_companies_all"]} {
 	set perm_sql "im_companies"
     }
 
@@ -346,17 +346,18 @@ where
 
     if { ![empty_string_p $type] } {
 	ns_set put $bind_vars type $type
-	append sql " and c.company_type_id in (
+	append sql " 
+	and c.company_type_id in (
 		select 	ct.company_type_id 
 		from	im_company_types ct
-		where ct.company_type=:type
-		UNION
+		where ct.company_type = :type
+	UNION
 		select 	ch.child_id
 		from	im_company_types ct,
 			im_category_hierarchy ch
 		where
-			ct.company_type=:type
-			and ch.parent_id = ct.company_type_id
+			ch.parent_id = ct.company_type_id
+			and ct.company_type = :type
 	)"
     }
 
