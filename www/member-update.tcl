@@ -60,6 +60,9 @@ begin
 end;
 "
     }
+
+    # Remove all permission related entries in the system cache
+    im_permission_flush
 }
 
 
@@ -80,17 +83,5 @@ if {[string equal $submit "Save"]} {
     }
 }
 
-#doc_return  200 text/html ""
 ad_returnredirect $return_url
-
-
-
-
-
-
-
-
-
-
-
 
