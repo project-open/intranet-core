@@ -235,7 +235,7 @@ declare
 	v_employees		integer;
 	v_accounting		integer;
 	v_senman		integer;
-	v_companies		integer;
+	v_customers		integer;
 	v_freelancers		integer;
 	v_proman		integer;
 	v_admins		integer;
@@ -246,7 +246,7 @@ begin
     select group_id into v_proman from groups where group_name = ''Project Managers'';
     select group_id into v_accounting from groups where group_name = ''Accounting'';
     select group_id into v_employees from groups where group_name = ''Employees'';
-    select group_id into v_companies from groups where group_name = ''Companies'';
+    select group_id into v_customers from groups where group_name = ''Customers'';
     select group_id into v_freelancers from groups where group_name = ''Freelancers'';
 
     -- The "top" menu - the father of all menus.
@@ -267,6 +267,15 @@ begin
 	null,			-- parent_menu_id
 	null			-- p_visible_tcl
     );
+
+    PERFORM acs_permission__grant_permission(v_top_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_freelancers, ''read'');
+
 
     -- The "Main" menu: It''s not displayed itself neither
     -- but serves as the starting point for the main menu
@@ -308,7 +317,7 @@ begin
     PERFORM acs_permission__grant_permission(v_home_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_home_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_home_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_freelancers, ''read'');
 
     v_user_menu := im_menu__new (
@@ -355,7 +364,7 @@ begin
     PERFORM acs_permission__grant_permission(v_project_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_project_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_project_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_project_menu, v_freelancers, ''read'');
 
     v_office_menu := im_menu__new (
@@ -379,7 +388,7 @@ begin
     PERFORM acs_permission__grant_permission(v_office_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_office_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_office_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_office_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_office_menu, v_freelancers, ''read'');
 
     v_admin_menu := im_menu__new (
@@ -430,7 +439,7 @@ begin
     PERFORM acs_permission__grant_permission(v_project_standard_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_project_standard_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_project_standard_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_project_standard_menu, v_freelancers, ''read'');
 
 
@@ -455,7 +464,7 @@ begin
     PERFORM acs_permission__grant_permission(v_project_status_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_project_status_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_project_status_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_companies, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_status_menu, v_customers, ''read'');
 
     -- -----------------------------------------------------
     -- Users Submenu
@@ -494,7 +503,7 @@ begin
         ''intranet-core'',      -- package_name
         ''users_companies'',    -- label
         ''Clients'',            -- name
-        ''/intranet/users/index?user_group_name=Companies'',   -- url
+        ''/intranet/users/index?user_group_name=Customers'',   -- url
         2,                      -- sort_order
         v_user_menu,            -- parent_menu_id
         null                    -- p_visible_tcl
