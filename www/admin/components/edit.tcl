@@ -36,19 +36,14 @@ if {[info exists plugin_id] && ![empty_string_p $plugin_id]} {
 
     set page_title "Component Edit"
     set context_bar [ad_context_bar $page_title]
-
-    if [catch {db_1row category_properties "
+    db_1row category_properties "
 select
 	c.*
 from
 	im_component_plugins c
 where
 	c.plugin_id = :plugin_id
-" } errmsg] {
-	ad_return_complaint 1 "<li>Internal Error<br>
-        Component \#$plugin_id does not exist (anymore)"
-	return
-    }
+" 
 
 set left_selected ""
 set right_selected ""
