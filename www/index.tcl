@@ -42,17 +42,6 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set url_vars [info vars {[a-z]*}]
-set bind_vars [ns_set create]
-foreach var $url_vars { 
-    set value [expr $$var]
-    ns_set put $bind_vars $var $value
-    append html "$var=$value\n"
-}
-
-#ad_return_complaint 1 "<li><pre>[ad_conn location]</pre>"
-#return
-
 set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id

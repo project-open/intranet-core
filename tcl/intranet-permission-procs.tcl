@@ -309,29 +309,6 @@ ad_proc -public im_group_id_from_parameter_helper { short_name } {
 	       where short_name=:short_name" -default 0]
 }
 
-
-#!!!
-ad_proc -public im_can_user_administer_group { { group_id "" } { user_id "" } } { 
-    An intranet user can administer a given group if thery are a site-wide 
-    intranet user, a general site-wide administrator, or if they belong to 
-    the specified user group 
-} {
-    if { [empty_string_p $user_id] } {
-	set user_id [ad_get_user_id]
-    }
-    if { $user_id == 0 } {
-	return 0
-    }
-    set site_wide_or_intranet_user [im_is_user_site_wide_or_intranet_admin $user_id] 
-    
-    if { $site_wide_or_intranet_user } {
-	return 1
-    }
-
-    # Else, if the user is a group admin
-    return [im_user_group_admin_p $user_id $group_id]
-}
-
 ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { 
     Returns 1 if a user is a site-wide administrator or a 
     member of the intranet administrative group 
@@ -449,7 +426,7 @@ ad_proc -public im_restricted_access {} {Returns an access denied message and bl
 
 ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {Returns an error message if the specified user is not able to administer the specified group or the user is not a site-wide/intranet administrator} {
 
-    set user_admin_p [im_can_user_administer_group $group_id $current_user_id]
+    set user_admin_p [im_biz_object_admin_p $user_id $group_id]
 
     if { ! $user_admin_p } {
 	# We let all authorized users have full administrative control

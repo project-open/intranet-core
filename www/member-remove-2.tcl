@@ -33,7 +33,7 @@ ad_page_contract {
 
 set mapping_user [ad_verify_and_get_user_id]
 
-if { ![im_can_user_administer_group $group_id $mapping_user] } {
+if { ![im_biz_object_admin_p $mapping_user $group_id] } {
     ad_return_complaint 1 "<li>Permission Denied<br>You do not have permission to remove a member from this group."
     return
 }

@@ -194,7 +194,8 @@ ad_proc -public im_office_status_select { select_name { default "" } } {
 }
 
 
-ad_proc -public im_office_component { user_id customer_id } {
+
+ad_proc -public im_office_customer_component { user_id customer_id } {
     Creates a HTML table showing the table of offices related to the
     specified customer.
 } {
@@ -231,6 +232,60 @@ where
   </td>
 </tr>\n"
 	incr ctr
+    }
+    if {$ctr == 1} {
+	append component_html "<tr><td colspan=2>No offices found</td></tr>\n"
+    }
+
+    append component_html "</table>\n"
+
+    return $component_html
+}
+
+
+
+ad_proc -public im_office_user_component { current_user_id user_id } {
+    Creates a HTML table showing the table of offices related to the
+    specified user.
+} {
+    set bgcolor(0) " class=roweven"
+    set bgcolor(1) " class=rowodd"
+    set office_view_page "/intranet/offices/view"
+
+    set sql "
+select
+	o.*,
+	im_category_from_id(o.office_type_id) as office_type
+from
+	im_offices o,
+	acs_rels r
+where
+	r.object_id_one = o.office_id
+	and r.object_id_two = :user_id
+"
+
+    set component_html "
+<table cellspacing=1 cellpadding=1>
+<tr class=rowtitle>
+  <td class=rowtitle>Office</td>
+  <td class=rowtitle>Type</td>
+</tr>\n"
+
+    set ctr 1
+    db_foreach office_list $sql {
+	append component_html "
+<tr$bgcolor([expr $ctr % 2])>
+  <td>
+    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
+  </td>
+  <td>
+    $office_type
+  </td>
+</tr>\n"
+	incr ctr
+    }
+    if {$ctr == 1} {
+	append component_html "<tr><td colspan=2>No offices found</td></tr>\n"
     }
     append component_html "</table>\n"
 

@@ -111,12 +111,15 @@ if { ![empty_string_p $errors] } {
 # Create a new Customer if it didn't exist yet
 # -----------------------------------------------------------------
 
+if {![exists_and_not_null office_name]} {
+    set office_name "$customer_name Main Office"
+}
+
 # Double-Click protection: the customer Id was generated at the new.tcl page
 set cust_count [db_string cust_count "select count(*) from im_customers where customer_id=:customer_id"]
 if {0 == $cust_count} {
 
     # First create a new main_office:
-    set office_name "$customer_name Main Office"
     set main_office_id [office::new \
 	-office_name	$office_name \
 	-office_path	$office_name]

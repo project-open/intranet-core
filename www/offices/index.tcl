@@ -82,11 +82,6 @@ set user_view_page "/intranet/users/view"
 set office_view_page "/intranet/offices/view"
 set letter [string toupper $letter]
 
-if {![im_permission $user_id view_customer_details]} {
-    ad_return_complaint 1 "You don't have permissions to view offices"
-    return
-}
-
 set end_idx [expr $start_idx + $how_many - 1]
 
 
@@ -115,7 +110,7 @@ order by
 	sort_order"
 
 db_foreach column_list_sql $column_sql {
-    if {[eval $visible_for]} {
+    if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
     }

@@ -51,9 +51,9 @@ where
 	r.object_id_one=:object_id
 	and r.object_id_two=:user_id
 	and r.rel_id = m.rel_id
-	and m.object_role_id in (1301,1302)
+	and m.object_role_id in (1301,1302,1303)
 "
-    # 1301=PM, 1302=Key Account
+    # 1301=PM, 1302=Key Account, 1303=Office Man.
 
     set result [db_string im_biz_object_member_p $sql]
     return $result
@@ -70,9 +70,9 @@ from
 where
 	r.object_id_one=:object_id
 	and r.rel_id = m.rel_id
-	and m.object_role_id in (1301,1302)
+	and m.object_role_id in (1301,1302,1303)
 "
-    # 1301=PM, 1302=Key Account
+    # 1301=PM, 1302=Key Account, 1303=Office Man.
 
     set result [db_list im_biz_object_admin_ids $sql]
     return $result

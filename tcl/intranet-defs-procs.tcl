@@ -534,8 +534,8 @@ ad_proc -public db_html_select_value_options_multiple {
     Generate html option tags with values for an html selection widget. 
     If one of the elements of the select_option list coincedes with one 
     value for it in the  values list, this option will be marked as selected.
-    @author yon [yon@arsdigita.com]
-    @author Fraber [fraber@fraber.de]
+    @author yon@arsdigita.com
+    @author frank.bergmann@project-open.com
 } {
     set select_options ""
     if { ![empty_string_p $bind] } {

@@ -89,7 +89,8 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_invoice','view','/intranet-invoices/view?invoice_id=');
 insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_invoice','edit','/intranet-invoices/new?invoice_id=');
-
+---
+commit;
 
 
 
@@ -195,6 +196,12 @@ insert into im_categories (
 	category_gif, category_description) 
 values (1302, 'Key Account', 'Intranet Biz Object Role', 
 	'key-account', 'Key Account Manager');
+
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1303, 'Office Manager', 'Intranet Biz Object Role', 
+	'office-manager', 'Office Manager');
 
 -- ------------------------------------------------------------
 -- Valid Roles for Biz Objects

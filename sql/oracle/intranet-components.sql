@@ -230,6 +230,38 @@ end;
 show errors;
 
 
+
+
+declare
+    v_plugin		integer;
+begin
+    v_plugin := im_component_plugin.new (
+	plugin_name =>	'Office Members',
+	package_name =>	'intranet',
+	page_url =>	'/intranet/offices/view',
+	location =>	'right',
+	sort_order =>	20,
+	component_tcl =>
+	'im_table_with_title \
+		"Office Members" \
+		[im_group_member_component \
+			$office_id \
+			$user_id \
+			$admin \
+			$return_url \
+			"" \
+			"" \
+			1 \
+		]'
+    );
+end;
+/
+show errors;
+commit;
+
+
+
+
 declare
     v_plugin		integer;
 begin
@@ -243,7 +275,7 @@ begin
 	component_tcl =>
 	'im_table_with_title \
 		"Offices" \
-		[im_office_component \
+		[im_office_customer_component \
 			$user_id \
 			$customer_id
 		]'
@@ -252,4 +284,27 @@ begin
 end;
 /
 show errors
+
+
+declare
+    v_plugin		integer;
+begin
+    -- Office component for UserViewPage
+    v_plugin := im_component_plugin.new (
+	plugin_name =>	'User Offices',
+	package_name =>	'intranet',
+	page_url =>	'/intranet/users/view',
+	location =>	'right',
+	sort_order =>	80,
+	component_tcl =>
+	'im_table_with_title \
+		"Offices" \
+		[im_office_user_component $current_user_id $user_id]'
+    );
+
+end;
+/
+show errors
+commit;
+
 

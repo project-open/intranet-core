@@ -179,7 +179,7 @@ is
 	select	office_name
 	into	v_name
 	from	im_offices
-	where	office_id = office_id;
+	where	office_id = name.office_id;
 
 	return v_name;
     end name;
@@ -199,4 +199,15 @@ is
 end im_office;
 /
 show errors
+
+
+
+-- Setup the list of roles that a user can take with
+-- respect to a office:
+--      Full Member (1300) and
+--      Office Manager (1303)
+--
+insert into im_biz_object_role_map values ('im_office',85,1300);
+insert into im_biz_object_role_map values ('im_office',85,1303);
+
 

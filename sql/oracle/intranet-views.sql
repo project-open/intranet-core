@@ -307,21 +307,21 @@ delete from im_view_columns where column_id >= 8000 and column_id <= 8099;
 --
 insert into im_view_columns values (8001,80,NULL,'Office',
 '"<A HREF=$office_view_page?office_id=$office_id>$office_name</A>"','','',10,
-'im_permission $user_id view_customer_details');
+'');
 insert into im_view_columns values (8002,80,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',20,
-'im_permission $user_id view_customers');
+'');
 insert into im_view_columns values (8003,80,NULL,'Type',
-'$office_type','','',30,'im_permission $user_id view_customer_details');
+'$office_type','','',30,'');
 insert into im_view_columns values (8004,80,NULL,'Status',
-'$office_status','','',40,'im_permission $user_id view_customer_details');
+'$office_status','','',40,'');
 insert into im_view_columns values (8005,80,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"',
-'','',50,'im_permission $user_id view_customer_details');
+'','',50,'');
 insert into im_view_columns values (8006,80,NULL,'City',
-'$address_city','','',60,'im_permission $user_id view_customer_details');
+'$address_city','','',60,'');
 insert into im_view_columns values (8007,80,NULL,'Phone',
-'$phone','','',70,'im_permission $user_id view_customer_details');
+'$phone','','',70,'');
 --
 commit;
 

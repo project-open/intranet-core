@@ -79,7 +79,7 @@ if { ![ad_administrator_p $user_id] } {
 
     # Is the person an authorized intranet user?
     if { ![im_user_is_authorized_p $user_id] } {
-	if { ![info exists limit_to_users_in_group_id] || ![im_can_user_administer_group $limit_to_users_in_group_id $user_id] } {
+	if { ![info exists limit_to_users_in_group_id] || ![im_biz_object_admin_p $user_id $limit_to_users_in_group_id] } {
 	
 	    if { $new_member_policy != "open" } {
 		ad_return_complaint 1 "<li>The group you are attempting to add a member to 
