@@ -16,18 +16,19 @@
 -- @author	frank.bergmann@project-open.com
 
 -------------------------------------------------------------
--- Convenience procs for Oracle / PG Compatibility
+-- DB-neutral API for permissions
 --
 
-create or replace function im_permission_p (integer, integer, varchar)
+create or replace function im_object_permission_p (integer, integer, varchar)
 returns char as '
-DELARE
+DECLARE
 	p_object_id	alias for $1;
 	p_user_id	alias for $2;
 	p_privilege	alias for $3;
 BEGIN
 	return acs_permission__permission_p(p_object_id, p_user_id, p_privilege);
 END;' language 'plpgsql';
+
 
 
 -------------------------------------------------------------
@@ -51,16 +52,16 @@ select acs_object_type__create_type (
 );
 
 -- add the same relation types for im_profile as for "group".
-insert into group_type_rels (group_rel_type_id, rel_type, group_type)
-select 
-	acs_object_id_seq.nextval, 
-	r.rel_type, 
-	'im_profile' as group_type
-from
-	group_type_rels r
-where 
-	r.group_type = 'group'
-;
+--insert into group_type_rels (group_rel_type_id, rel_type, group_type)
+--select 
+--	acs_object_id_seq.nextval, 
+--	r.rel_type, 
+--	'im_profile' as group_type
+--from
+--	group_type_rels r
+--where 
+--	r.group_type = 'group'
+--;
 
 
 CREATE TABLE im_profiles (
@@ -79,7 +80,7 @@ insert into group_types (group_type) values ('im_profile');
 
 create or replace function im_profile__new (varchar, varchar) 
 returns integer as '
-DELARE
+DECLARE
     pretty_name	alias for $1;
     profile_gif	alias for $2;
 BEGIN
@@ -97,6 +98,22 @@ BEGIN
 	''closed'',
 	profile_gif
     );
+END;' language 'plpgsql';
+
+
+create or replace function im_profile__name (integer) 
+returns varchar as '
+DECLARE
+    p_profile_id		alias for $1;
+   
+    v_profile_name		varchar;
+BEGIN
+    select	group_name
+    into	v_profile_name
+    from	groups
+    where	group_id = p_profile_id;
+
+    return v_profile_name;
 END;' language 'plpgsql';
 
 
@@ -148,14 +165,16 @@ end;' language 'plpgsql';
 
 
 
-create or replace function im_profile__del (integer) returns integer as '
+create or replace function im_profile__delete (integer) returns integer as '
 DECLARE
 	v_profile_id	     alias for $1;
 BEGIN
 	delete from im_profiles
-	where profile_id=group_id;
+	where profile_id=v_profile_id;
 
-	PERFORM acs_group__del( v_profile_id );
+	PERFORM acs_group__delete( v_profile_id );
+
+     return 0;
 end;' language 'plpgsql';
 
 
@@ -180,22 +199,26 @@ END;' language 'plpgsql';
 
 
 -- Function to add a new member to a user_group
-create or replace function user_group_member_del (integer, integer)
+create or replace function user_group_member_delete (integer, integer)
 returns integer as '
+DECLARE
+	row		RECORD;
 	p_group_id	alias for $1;
 	p_user_id	alias for $2;
 
 	v_rel_id	integer;
 BEGIN
-     for row in (
+     for row in 
 	select rel_id
 	from acs_rels
 	where
 		object_id_one = p_group_id
 		and object_id_two = p_user_id
-     ) loop
-	PERFORM membership_rel__del(row.rel_id);
+     loop
+	PERFORM membership_rel__delete(row.rel_id);
      end loop;
+
+     return 0;
 end;' language 'plpgsql';
 
 
@@ -244,9 +267,10 @@ end;' language 'plpgsql';
 
 select im_create_profile('Test1','test1');
 
-create or replace function im_drop_profile (integer) 
+create or replace function im_drop_profile (varchar) 
 returns integer as '
 DECLARE
+	row		RECORD;
 	v_pretty_name	alias for $1;
 
 	v_group_id	integer;
@@ -263,20 +287,21 @@ BEGIN
      -- the acs_group package takes care of segments referred
      -- to by rel_constraints__rel_segment. We delete the ones
      -- references by rel_constraints__required_rel_segment here.
-     for row in (
+     for row in 
 	select cons.constraint_id
 	from rel_constraints cons, rel_segments segs
 	where
 		segs.segment_id = cons.required_rel_segment
 		and segs.group_id = v_group_id
-     ) loop
+     loop
 
-	PERFORM rel_segment__del(row.constraint_id);
+	PERFORM rel_segment__delete(row.constraint_id);
 
      end loop;
 
      -- delete the actual group
-     im_profile__del(v_group_id);
+     PERFORM im_profile__delete(v_group_id);
+     return 0;
 end;' language 'plpgsql';
 
 
@@ -319,39 +344,59 @@ select im_create_profile ('Sales','sales');
     --	(independed to te possible permission to see "read"
     --	of the users that might be displayed).
 
-select acs_privilege__create_privilege('view','View','View');
-select acs_privilege__add_child('admin', 'view');
+    select acs_privilege__create_privilege('view','View','View');
+    select acs_privilege__add_child('admin', 'view');
 
     -- Global Privileges
     -- These privileges are applied only to the "Main Site" object.
     -- They determine global user characteristics independet of
     -- individual objects (such as companies, users, ...)
-select acs_privilege__create_privilege('add_companies','Add Companies','Add Companies');
-select acs_privilege__create_privilege('view_companies','View Companies','View Companies');
-select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
-select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
-select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
-
-select acs_privilege__create_privilege('view_offices','View Offices','View Offices');
-select acs_privilege__create_privilege('view_offices_all','View All Offices','View Offices');
-select acs_privilege__create_privilege('add_offices','Add Offices','Add Offices');
-select acs_privilege__create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
-select acs_privilege__create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
-
-select acs_privilege__create_privilege('add_projects','Add Projects','Add Projects');
--- 040228 fraber: Meaningless because everybody should be able to see (his) projects
---  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
-select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
-select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
-select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
-
-select acs_privilege__create_privilege('add_users','Add Users','Add Users');
-select acs_privilege__create_privilege('view_users','View Users','View Users');
-select acs_privilege__create_privilege('view_user_regs','View User Registrations','View User Registrations');
-
-select acs_privilege__create_privilege('search_intranet','Search Intranet','Search Intranet');
-select acs_privilege__create_privilege('admin_categories','Admin Categories','Admin Categories');
-select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
+    select acs_privilege__create_privilege('add_companies','Add Companies','Add Companies');
+    select acs_privilege__add_child('admin', 'add_companies');
+    select acs_privilege__create_privilege('view_companies','View Companies','View Companies');
+    select acs_privilege__add_child('admin', 'view_companies');
+    select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
+    select acs_privilege__add_child('admin', 'view_companies_all');
+    select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
+    select acs_privilege__add_child('admin', 'view_company_contacts');
+    select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
+    select acs_privilege__add_child('admin', 'view_company_details');
+    
+    select acs_privilege__create_privilege('view_offices','View Offices','View Offices');
+    select acs_privilege__add_child('admin', 'view_offices');
+    select acs_privilege__create_privilege('view_offices_all','View All Offices','View Offices');
+    select acs_privilege__add_child('admin', ''view_offices_all);
+    select acs_privilege__create_privilege('add_offices','Add Offices','Add Offices');
+    select acs_privilege__add_child('admin', 'add_offices');
+    select acs_privilege__create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
+    select acs_privilege__add_child('admin', 'view_internal_offices');
+    select acs_privilege__create_privilege('edit_internal_offices','Edit Internal Offices','Edit Internal Offices');
+    select acs_privilege__add_child('admin', 'edit_internal_offices');
+    
+    select acs_privilege__create_privilege('add_projects','Add Projects','Add Projects');
+    select acs_privilege__add_child('admin', 'add_projects');
+    -- 040228 fraber: Meaningless because everybody should be able to see (his) projects
+    --  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
+    select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
+    select acs_privilege__add_child('admin', 'view_project_members');
+    select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
+    select acs_privilege__add_child('admin', 'view_projects_all');
+    select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
+    select acs_privilege__add_child('admin', 'view_projects_history');
+    
+    select acs_privilege__create_privilege('add_users','Add Users','Add Users');
+    select acs_privilege__add_child('admin', 'add_users');
+    select acs_privilege__create_privilege('view_users','View Users','View Users');
+    select acs_privilege__add_child('admin', 'view_users');
+    select acs_privilege__create_privilege('view_user_regs','View User Registrations','View User Registrations');
+    select acs_privilege__add_child('admin', 'view_user_regs');
+    
+    select acs_privilege__create_privilege('search_intranet','Search Intranet','Search Intranet');
+    select acs_privilege__add_child('admin', 'search_intranet');
+    select acs_privilege__create_privilege('admin_categories','Admin Categories','Admin Categories');
+    select acs_privilege__add_child('admin', 'admin_categories');
+    select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
+    select acs_privilege__add_child('admin', 'view_topics');
 
 
 
