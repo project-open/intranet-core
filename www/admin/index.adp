@@ -13,6 +13,12 @@
 	<A href="../users/">Manage Individual Users</A><br>
 	Here you can manage users one-by-one.
       <li>
+	<A href="parameters/">Manage Global System Parameters</A><br>
+	Change the system parametrization such as directories, URLs, etc...
+      <li>
+	<A href="components/">Manage Component Layout</A><br>
+	Change the position of plugin-components or disable components.
+      <li>
 	<A href=flush_cache>Flush Permission Cache</A><br>
 	Flush (cleanup) the permission cache. You may need to do this 
 	after you have changed the global permissions in Profiles
