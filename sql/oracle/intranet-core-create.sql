@@ -30,7 +30,7 @@ prompt *** intranet-categories
 
 
 -------------------------------------------------------------
--- Countries & Currencies
+-- Countries and Currencies
 --
 -- Required for im_offices etc. to be able to define
 -- a physical location.
@@ -242,7 +242,7 @@ show errors;
 
 prompt *** intranet-views - Dynamic Views for ListPages
 @intranet-views.sql
-prompt *** intranet-core-backup - More Views for Reports & Backup
+prompt *** intranet-core-backup - More Views for Reports and Backup
 @intranet-core-backup.sql
 prompt *** intranet-components - Dynamic Plug-in Components
 @intranet-components.sql
