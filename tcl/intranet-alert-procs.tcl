@@ -16,7 +16,7 @@
 
 ad_library {
     API for sending out email alerts for various Intranet functions
-    
+
     @author unknown@arsdigita.com
     @author frank.bergmann@project-open.com
 }
@@ -24,7 +24,6 @@ ad_library {
 # -------------------------------------------------------------------
 # Add an alert to the database alert queue
 # -------------------------------------------------------------------
-
 ad_proc im_send_alert {target_id frequency subject {message ""} } {
     Add a new alert to the queue for a specific user.
     The idea is to aggregate several alerts into a single email,
@@ -35,7 +34,7 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     intermediate header.
     The "message" is suposed to be plain text only. We are going to
     preserve line break, but we will add a "\t" before each line.
-    "Frequency" can be one of: now (minutely), hourly, daily, weekly, 
+    "Frequency" can be one of: now (minutely), hourly, daily, weekly,
     biweekly, monthly, trimesterly, semesterly, yearly.
 } {
     # Quick & Dirty implementation: just send out the mail immediately,
@@ -46,30 +45,29 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     # Get the email of the target user
     set user_email_sql "select email from parties where party_id = :target_id"
     db_transaction {
-	db_1row user_email $user_email_sql
+        db_1row user_email $user_email_sql
     } on_error {
-	ad_return_complaint 1 "<li>Error getting the email address of user $target_id" 
-	return
+        ad_return_complaint 1 "<li>Error getting the email address of user $target_id"
+        return
     }
 
     # Determine the sender address
-    set sender_email_sql "select email as sender_email from parties where party_id = :current_user_id"
-    db_transaction {
-	db_1row sender_email $sender_email_sql
-    } on_error {
-	set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
-    }
-    if {"" == $sender_email} {
-	ad_return_complaint 1 "<li>Error getting the email of user $current_user_id"
-	return
+    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@local\
+host"]
+    if [catch {
+        set sender_email [db_string sender_email "select email as sender_email from parties where\
+ party_id = :current_user_id" -default "asfd@asdf.com"]
+    } errmsg] {
+        # nothing - use default
     }
 
+
     # Send out the mail
-    if [catch { 
-	ns_sendmail $email $sender_email $subject $message
+    if [catch {
+        ns_sendmail $email $sender_email $subject $message
     } errmsg] {
-	ns_log Notice "im_send_alert: Error sending to \"$email\": $errmsg"
+        ns_log Notice "im_send_alert: Error sending to \"$email\": $errmsg"
     } else {
-	ns_log Notice "im_send_alert: Sent mail to $email\n"
+        ns_log Notice "im_send_alert: Sent mail to $email\n"
     }
 }
