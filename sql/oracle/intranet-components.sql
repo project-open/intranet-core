@@ -52,6 +52,10 @@ create table im_component_plugins (
 				primary key
 				constraint im_component_plugin_id_fk
 				references acs_objects,
+				-- A unique (future!) name that identifies
+				-- the plugin in case an error occurs and
+				-- to avoid duplicate installation of plugins.
+	plugin_name		varchar(200) not null,
 				-- The name of the package that creates the plugin
 				-- ... used to cleanup when uninstalling a package.
 	package_name		varchar(200) not null,
@@ -70,18 +74,21 @@ create table im_component_plugins (
 	location		varchar(100) not null
 				constraint im_comp_plugin_location_check
 				check(location in ('left','right','bottom')),
-	component_tcl		varchar(4000)
+	component_tcl		varchar(4000),
+		constraint im_component_plugins_un
+		unique (plugin_name, package_name)
 );
 
 create or replace package im_component_plugin
 is
     function new (
-	plugin_id	in integer,
-	object_type	in varchar,
-	creation_date	in date,
-	creation_user	in integer,
-	creation_ip	in varchar,
-	context_id	in integer,
+	plugin_id	in integer default null,
+	object_type	in varchar default 'im_component_plugin',
+	creation_date	in date default sysdate,
+	creation_user	in integer default null,
+	creation_ip	in varchar default null,
+	context_id	in integer default null,
+	plugin_name	in varchar,
 	package_name	in varchar,
 	location	in varchar,
 	page_url	in varchar,
@@ -101,12 +108,13 @@ show errors
 create or replace package body im_component_plugin
 is
     function new (
-	plugin_id	in integer,
-	object_type	in varchar,
-	creation_date	in date,
-	creation_user	in integer,
-	creation_ip	in varchar,
-	context_id	in integer,
+	plugin_id	in integer default null,
+	object_type	in varchar default 'im_component_plugin',
+	creation_date	in date default sysdate,
+	creation_user	in integer default null,
+	creation_ip	in varchar default null,
+	context_id	in integer default null,
+	plugin_name	in varchar,
 	package_name	in varchar,
 	location	in varchar,
 	page_url	in varchar,
@@ -125,9 +133,11 @@ is
 		context_id =>		context_id
 	);
 	insert into im_component_plugins (
-    plugin_id, package_name, sort_order, page_url, location, component_tcl
+		plugin_id, plugin_name, package_name, sort_order, 
+		page_url, location, component_tcl
 	) values (
-    v_plugin_id, package_name, sort_order, page_url, location, component_tcl
+		v_plugin_id, plugin_name, package_name, sort_order, 
+		page_url, location, component_tcl
 	);
 	return v_plugin_id;
     end new;
@@ -198,18 +208,12 @@ begin
     -- should go to the first place.
     --
     v_plugin := im_component_plugin.new (
-	plugin_id =>	null,
-	object_type =>	'im_component_plugin',
-	creation_date => sysdate,
-	creation_user => 0,
-	creation_ip =>	null,
-	context_id =>	null,
+	plugin_name =>	'Project Members',
 	package_name =>	'intranet',
 	page_url =>	'/intranet/projects/view',
 	location =>	'right',
 	sort_order =>	20,
 	component_tcl =>
-
 	'im_table_with_title \
 		"Project Members" \
 		[im_group_member_component \
@@ -232,12 +236,7 @@ declare
 begin
     -- Office component for CustomerViewPage
     v_plugin := im_component_plugin.new (
-	plugin_id =>	null,
-	object_type =>	'im_component_plugin',
-	creation_date => sysdate,
-	creation_user => 0,
-	creation_ip =>	null,
-	context_id =>	null,
+	plugin_name =>	'Customer Offices',
 	package_name =>	'intranet',
 	page_url =>	'/intranet/customers/view',
 	location =>	'right',

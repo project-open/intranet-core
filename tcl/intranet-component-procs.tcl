@@ -64,14 +64,16 @@ order by sort_order
     db_foreach get_plugins $plugin_sql {
 
 	ns_log Notice "component_tcl=$component_tcl"
+#       append html [uplevel 1 $component_tcl]
 
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
 	    ad_return_complaint 1 "<li>
-        Error evaluating component plugin, please contact your system 
-        administrator:<br><pre>\n$err_msg\n</pre><br>"
+        Error evaluating component '$plugin_name' of module '$package_name':<br>
+        <pre>\n$err_msg\n</pre><br>
+        Please contact your system administrator:<br>"
 	}
     }
     return $html

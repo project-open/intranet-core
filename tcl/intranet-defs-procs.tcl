@@ -21,6 +21,25 @@ ad_library {
 }
 
 
+
+ad_proc -public im_opt_val { var_name } {
+    Acts like a "$" to evaluate a variable, but
+    returns "" if the variable is not defined,
+    instead of an error.<BR>
+    This function is useful for passing optional
+    variables to components, if the component can't
+    be sure that the variable exists in the callers
+    context.
+} {
+    upvar $var_name var
+    if [exists_and_not_null var] { 
+	return $var
+    }
+    return ""
+} 
+
+
+
 # Basic Intranet Parameter Shortcuts
 ad_proc im_url_stub {} {
     return [ad_parameter IntranetUrlStub intranet "/intranet"]
@@ -146,6 +165,81 @@ ad_proc im_name_paren_email {user_id} {
     }    
     return $text
 }
+
+
+# ------------------------------------------------------------------
+# Show the users in a project or customer plus a lot of added
+# functionality.
+# ------------------------------------------------------------------
+
+ad_proc -public im_show_user_style {group_member_id current_user_id group_id} {
+    Determine whether the current_user should be able to see
+    the group member.
+    Returns 1 the name can be shown with a link,
+    Returns -1 if the name should be shown without link and
+    Returns 0 if the name should not be shown at all.
+} {
+    # Show the user itself with a link.
+    if {$current_user_id == $group_member_id} { return 1}
+
+    set group_member_is_customer_p [ad_user_group_member [im_customer_group_id] $group_member_id]
+    set group_member_is_freelance_p [ad_user_group_member [im_freelance_group_id] $group_member_id]
+    set group_member_is_employee_p [ad_user_group_member [im_employee_group_id] $group_member_id]
+
+    set user_is_group_admin_p [im_can_user_administer_group $group_id $current_user_id]
+    set user_is_employee_p [ad_user_group_member [im_employee_group_id] $current_user_id]
+
+    ns_log Notice "im_show_user_style: group_member:$group_member_id, current_user_id:$current_user_id, group_id:$group_id, member_is_customer:$group_member_is_customer_p, member_is_freelance:$group_member_is_freelance_p, member_is_employee:$group_member_is_employee_p, user_is_employee:$user_is_employee_p"
+
+    # Don't show even names of customer contacts to an unprivileged user.
+    # ... except he's the administrator of this group...
+    if {$group_member_is_customer_p} {
+	return [expr $user_is_group_admin_p || [im_permission $current_user_id view_customer_contacts]]
+    }
+
+    # Show freelance names or links, depending on permissions
+    if {$group_member_is_freelance_p} {
+	if {[im_permission $current_user_id view_freelancers]} {
+	    return 1
+	} else {
+	    return -1
+	}
+    }
+
+    # Default for non-employees: show only names
+    if {!$user_is_employee_p} {
+	return -1
+    }
+
+    # Employees Default: show the link
+    return 1
+}
+
+
+
+# Find out the user name
+ad_proc -public im_get_user_name {user_id} {
+    return [util_memoize "im_get_user_name_helper $user_id"]
+}
+
+
+ad_proc -public im_get_user_name_helper {user_id} {
+    set user_name "&lt;unknown&gt;"
+    if ![catch { set user_name [db_string index_get_user_first_names {
+select
+	first_names || ' ' || last_name as name
+from
+	persons
+where
+	person_id = :user_id
+
+}] } errmsg] {
+	# no errors
+    }
+    return $user_name
+}
+
+
 
 ad_proc im_db_html_select_value_options_plus_hidden {query list_name {select_option ""} {value_index 0} {label_index 1}} {
     #this is html to be placed into a select tag

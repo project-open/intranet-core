@@ -113,7 +113,7 @@ is
     ) return im_projects.project_id%TYPE;
 
     procedure del (project_id in integer);
-    procedure name (project_id in integer);
+    function name (project_id in integer) return varchar;
 end im_project;
 /
 show errors
@@ -196,14 +196,19 @@ is
 	acs_object.del(v_project_id);
     end del;
 
-    procedure name (project_id in integer)
+    function name (project_id in integer) return varchar
     is
-	v_name	im_projects.project_name%TYPE;
+	v_project_id	integer;
+	v_name		im_projects.project_name%TYPE;
     begin
+	v_project_id := project_id;
+
 	select	project_name
 	into	v_name
 	from	im_projects
-	where	project_id = project_id;
+	where	project_id = v_project_id;
+	
+	return v_name;
     end name;
 end im_project;
 /

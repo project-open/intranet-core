@@ -294,21 +294,21 @@ delete from im_view_columns where column_id >= 8000 and column_id <= 8099;
 --
 insert into im_view_columns values (8001,80,NULL,'Office',
 '"<A HREF=$office_view_page?office_id=$office_id>$office_name</A>"','',10,
-'im_permission $user_id view_offices');
+'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8002,80,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','',20,
 'im_permission $user_id view_customers');
 insert into im_view_columns values (8003,80,NULL,'Type',
-'$office_type','',30,'im_permission $user_id view_offices');
+'$office_type','',30,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8004,80,NULL,'Status',
-'$office_status','',40,'im_permission $user_id view_offices');
+'$office_status','',40,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8005,80,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"',
-'',50,'im_permission $user_id view_offices');
+'',50,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8006,80,NULL,'City',
-'$address_city','',60,'im_permission $user_id view_offices');
+'$address_city','',60,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8007,80,NULL,'Phone',
-'$phone','',70,'im_permission $user_id view_offices');
+'$phone','',70,'im_permission $user_id view_customer_details');
 --
 commit;
 
@@ -318,37 +318,37 @@ commit;
 delete from im_view_columns where column_id >= 8100 and column_id <= 8199;
 --
 insert into im_view_columns values (8100,81,NULL,'Office Name','$office_name','',
-10, 'im_permission $user_id view_offices');
+10, 'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8102,81,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','',
 20, 'im_permission $user_id view_customers');
 insert into im_view_columns values (8104,81,NULL,'Type', '$office_type','',
-40,'im_permission $user_id view_offices');
+40,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8106,81,NULL,'Status','$office_status','',
-60,'im_permission $user_id view_offices');
+60,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8108,81,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$contact_person_id>$contact_person_name</A>"','',
-80,'im_permission $user_id view_offices');
+80,'im_permission $user_id view_customer_details');
 
 insert into im_view_columns values (8130,81,NULL,'Phone','$phone','',
-300,'im_permission $user_id view_offices');
+300,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8132,81,NULL,'Fax','$fax','',
-320,'im_permission $user_id view_offices');
+320,'im_permission $user_id view_customer_details');
 
 insert into im_view_columns values (8150,81,NULL,'City','$address_city','',
-500,'im_permission $user_id view_offices');
+500,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8152,81,NULL,'State','$address_state','',
-520,'im_permission $user_id view_offices');
+520,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8154,81,NULL,'Country','$address_country','',
-540,'im_permission $user_id view_offices');
+540,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8156,81,NULL,'ZIP','$address_postal_code','',
-560,'im_permission $user_id view_offices');
+560,'im_permission $user_id view_customer_details');
 insert into im_view_columns values (8158,81,NULL,'Address',
 '$address_line1 $address_line2','',
-580,'im_permission $user_id view_offices');
+580,'im_permission $user_id view_customer_details');
 
 insert into im_view_columns values (8170,81,NULL,'Note','$note','',
-700,'im_permission $user_id view_offices');
+700,'im_permission $user_id view_customer_details');
 
 --
 delete from im_view_columns where column_id >= 8190 and column_id <= 8199;

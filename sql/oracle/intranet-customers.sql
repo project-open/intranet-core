@@ -126,7 +126,7 @@ is
     ) return integer;
 
     procedure del (customer_id in integer);
-    procedure name (customer_id in integer);
+    function name (customer_id in integer) return varchar;
 end im_customer;
 /
 show errors
@@ -215,7 +215,7 @@ is
 	acs_object.del(v_customer_id);
     end del;
 
-    procedure name (customer_id in integer)
+    function name (customer_id in integer) return varchar
     is
 	v_name	im_customers.customer_name%TYPE;
     begin
@@ -223,7 +223,11 @@ is
 	into	v_name
 	from	im_customers
 	where	customer_id = customer_id;
+
+	return v_name;
+
     end name;
+
 end im_customer;
 /
 show errors

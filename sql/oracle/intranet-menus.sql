@@ -87,7 +87,7 @@ is
 
     procedure del (menu_id in integer);
     procedure del_module (module_name in varchar);
-    procedure name (menu_id in integer);
+    function name (menu_id in integer) return varchar;
 end im_menu;
 /
 show errors
@@ -169,7 +169,7 @@ is
     end del_module;
 
 
-    procedure name (menu_id in integer)
+    function name (menu_id in integer)
     is
 	v_name	im_menus.name%TYPE;
     begin
@@ -177,6 +177,8 @@ is
 	into	v_name
 	from	im_menus
 	where	menu_id = menu_id;
+
+	return v_name;
     end name;
 end im_menu;
 /
