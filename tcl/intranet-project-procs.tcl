@@ -461,3 +461,137 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
     append sql " order by lower(p.project_name)"
     return [im_selection_to_select_box -translate_p 0 $bind_vars project_select $sql $select_name $default]
 }
+
+
+
+
+ad_proc -public im_project_personal_active_projects_component {
+    { -view_name "project_personal_list" }
+} {
+    Returns a HTML table with the list of projects of the
+    current user. Don't do any fancy with sorting and
+    pagination, because a single user won't be a member of
+    many active projects.
+} {
+    set user_id [ad_get_user_id]
+    set page_focus "im_header_form.keywords"
+
+    # ---------------------------------------------------------------
+    # Columns to show:
+
+    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set column_headers [list]
+    set column_vars [list]
+    
+    set column_sql "
+select
+	column_name,
+	column_render_tcl,
+	visible_for
+from
+	im_view_columns
+where
+	view_id=:view_id
+	and group_id is null
+order by
+	sort_order"
+
+    db_foreach column_list_sql $column_sql {
+	if {"" == $visible_for || [eval $visible_for]} {
+	    lappend column_headers "$column_name"
+	    lappend column_vars "$column_render_tcl"
+	}
+    }
+
+    # ---------------------------------------------------------------
+    # Generate SQL Query
+
+    set perm_sql "
+	(select
+	        p.*
+	from
+	        im_projects p,
+		acs_rels r
+	where
+		r.object_id_one = p.project_id
+		and r.object_id_two = :user_id
+		and p.parent_id is null
+	)"
+
+    set personal_project_query "
+	SELECT
+		p.*,
+	        c.company_name,
+	        im_name_from_user_id(project_lead_id) as lead_name,
+	        im_category_from_id(p.project_type_id) as project_type,
+	        im_category_from_id(p.project_status_id) as project_status,
+	        to_char(end_date, 'HH24:MI') as end_date_time
+	FROM
+		$perm_sql p,
+		im_companies c
+	WHERE
+		p.company_id = c.company_id
+    "
+
+    
+    # ---------------------------------------------------------------
+    # Format the List Table Header
+
+    # Set up colspan to be the number of headers + 1 for the # column
+    set colspan [expr [llength $column_headers] + 1]
+
+    set table_header_html "<tr>\n"
+    foreach col $column_headers {
+	regsub -all " " $col "_" col_txt
+	set col_txt [_ intranet-core.$col_txt]
+	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
+    }
+    append table_header_html "</tr>\n"
+
+
+    # ---------------------------------------------------------------
+    # Format the Result Data
+
+    set url "index?"
+    set table_body_html ""
+    set bgcolor(0) " class=roweven "
+    set bgcolor(1) " class=rowodd "
+    set ctr 0
+    db_foreach personal_project_query $personal_project_query {
+
+	set url [im_maybe_prepend_http $url]
+	if { [empty_string_p $url] } {
+	    set url_string "&nbsp;"
+	} else {
+	    set url_string "<a href=\"$url\">$url</a>"
+	}
+	
+	# Append together a line of data based on the "column_vars" parameter list
+	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+	foreach column_var $column_vars {
+	    append row_html "\t<td valign=top>"
+	    set cmd "append row_html $column_var"
+	    eval "$cmd"
+	    append row_html "</td>\n"
+	}
+	append row_html "</tr>\n"
+	append table_body_html $row_html
+	
+	incr ctr
+    }
+
+    # Show a reasonable message when there are no result rows:
+    if { [empty_string_p $table_body_html] } {
+	set table_body_html "
+        <tr><td colspan=$colspan><ul><li><b> 
+        There are currently no projects matching the selected criteria
+        </b></ul></td></tr>"
+    }
+    return "
+	<table width=100% cellpadding=2 cellspacing=2 border=0>
+	  $table_header_html
+	  $table_body_html
+	</table>
+    "
+}
+

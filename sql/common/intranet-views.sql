@@ -121,6 +121,8 @@ values (21, 'project_costs', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (22, 'project_status', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
+values (23, 'project_personal_list', 'view_projects', 1400);
+insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (80, 'office_list', 'view_offices', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (81, 'office_view', 'view_offices', 1405);
@@ -208,10 +210,32 @@ extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status
 '$project_status','','',11,'');
 
 
+
+--
+delete from im_view_columns where column_id > 2300 and column_id < 2399;
+--
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2301,23,NULL,'Project nr',
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
+'','',1,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2303,23,NULL,'Project Name',
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_name</A>"','','',3,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2309,23,NULL,'Type',
+'$project_type','','',5,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2313,23,NULL,'Project Manager',
+'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
+'','',7,'');
+
+
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
-
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1,1,NULL,'Client',
 '"<A HREF=$company_view_page?company_id=$company_id>$company_name</A>"','','',1,

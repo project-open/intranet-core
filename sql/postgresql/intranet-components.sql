@@ -274,12 +274,29 @@ SELECT  im_component_plugin__new (
         null,                           -- creation_user
         null,                           -- creation_ip
         null,                           -- context_id
-        'Home Page Help Blurb',         -- plugin_name
+        'Home Help Blurb',              -- plugin_name
         'intranet',                     -- package_name
         'left',                         -- location
         '/intranet/index',              -- page_url
         null,                           -- view_name
         10,                             -- sort_order
 	'im_help_home_page_blurb_component'       -- component_tcl
+    );
+
+
+SELECT  im_component_plugin__new (
+        null,                           -- plugin_id
+        'acs_object',                   -- object_type
+        now(),                          -- creation_date
+        null,                           -- creation_user
+        null,                           -- creation_ip
+        null,                           -- context_id
+        'Home Project Component',       -- plugin_name
+        'intranet',                     -- package_name
+        'left',                         -- location
+        '/intranet/index',              -- page_url
+        null,                           -- view_name
+        15,                             -- sort_order
+	'im_project_personal_active_projects_component'   -- component_tcl
     );
 
