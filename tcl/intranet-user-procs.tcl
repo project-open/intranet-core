@@ -121,7 +121,7 @@ where
 	and gm.group_id = $employee_group_id
 order by lower(im_name_from_user_id(u.user_id))
 "
-    return [im_selection_to_list_box $bind_vars category_select $sql $select_name $defaults $size $multiple]
+    return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }    
 
 

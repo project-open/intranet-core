@@ -512,14 +512,14 @@ ad_proc -public db_html_select_value_options_multiple {
     return $select_options
 }
 
-ad_proc im_selection_to_list_box { bind_vars statement_name sql select_name { default "" } {size "6"} {multiple ""} } {
+ad_proc im_selection_to_list_box { {-translate_p "1"} bind_vars statement_name sql select_name { default "" } {size "6"} {multiple ""} } {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a list bar named select_name, 
     defaulted to $default 
 } {
     return "
 <select name=\"$select_name\" size=\"$size\" $multiple>
-[db_html_select_value_options_multiple -bind $bind_vars -select_option $default $statement_name $sql]
+[db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
 "
 }
