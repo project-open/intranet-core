@@ -70,50 +70,34 @@ Help is available for you in various ways:
     Project/Open offers three different support levels for
     companies of all sizes.
 </li>
-
 </ul>
 
-
-<h2>Configuring Your System</h2>
-
-<p>
-In order to configure your new system, please follow the
-instructions in the
-<a href=\"http://prdownloads.sourceforge.net/project-open/PO-Configuration-Guide.050113.pdf?download\">Project/Open Configuration Guide</a>.
-Please <a href=\"http://www.project-open.com/contact/\">contact us</a>
-for more information.
-</p>
+<h2>Exploring the System</h2>
 
 <p>
-After the basic configuration you can start setting up
-your corporate environment. We recommend that you start
-in the following order:
-
-<ul>
-<li>Set up some employees, customers and freelancers
-    in the \"Users\" menu, using sample values from your
-    corporate environment.
-<li>Set up your own company in the \"Companies\" menu.
-    Please note that your own company needs to have
-    Company Short Name = \"internal\" (lower case letters!) and
-    Company Type = \"Internal\", in order to be identified
-    as such.
-<li>Set up some customers and providers in the
-    \"Companies\" menu and use \"Add member\" link to add some
-    of the system users that you have set up above.
-<li>Set up some projects in the \"Projects\" menu, using
-    sample values from your corporate environment.
-<li>Start reading the users guides from the download zone
-    above for detailed configuration of the other modules
-    or <a href=\"http://www.project-open.com/contact/\">contact us</a>
-    for professional training.
-</ul>
+We have set up a sample system for you in order to show you how
+a typical company could look like. Please follow the links to
+explore the (freely invented) sample contents.
 </p>
 
 
+<h2>Using Project/Open in Your Company</h2>
+
+<p>
+This sample configuration could already serve you as the base for a
+small company's system if you change the data of the existing users, 
+customers and providers and replace them with your real data.
+</p><p>
+However, the security settings and the database of this demo are not 
+suitable for production use. For a more suitable configuration please 
+consult the system documentation above or 
+<A href=\"http://www.project-open.com/contact/\">contact us</a>
+in order to plan and execute a more formal implantation project
+covering aspects such as training, maintenance, Internet connectivity,
+backup and recovery etc. 
+</p>
 </td></tr>
 </table>    
+<br>
 "
 }
-
-
