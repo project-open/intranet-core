@@ -31,13 +31,13 @@ ad_page_contract {
   @author guillermo.belcic@project-open.com
   @author frank.bergmann@project-open.com
 } {
-  category_id:naturalnum,notnull
-  category:notnull
-  category_description
-  enabled_p:notnull
-  category_type
+    category_id:naturalnum,notnull
+    category:notnull
+    category_description
+    enabled_p:notnull
+    category_type
+    translation:array
 }
-
 
 # ---------------------------------------------------------------
 # Check Arguments
@@ -49,6 +49,8 @@ if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
     return
 }
+
+set package_key "intranet-core"
 
 set exception_count 0
 set exception_text ""
@@ -80,10 +82,9 @@ if { $exception_count > 0 } {
 }
 
 # ---------------------------------------------------------------
-# 
+# Update the category
 # ---------------------------------------------------------------
 
-    
 if [catch {
 
     db_transaction {
@@ -99,6 +100,32 @@ if [catch {
 } errmsg ] {
     ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"
     return
+}
+
+
+# ---------------------------------------------------------------
+# Add translations
+# ---------------------------------------------------------------
+
+
+# Treat en_US first - as always :-)
+# The system requires it for some reason, probably as a default
+set locale "en_US"
+set msg [string trim $translation($locale)]
+set msg_key [lang::util::suggest_key $category]
+
+if {"" != $msg} {
+    lang::message::register -comment $category_description $locale $package_key $msg_key $msg
+}
+
+# Now add all the other locales
+foreach locale [array names translation] {
+    set msg [string trim $translation($locale)]
+    set msg_key [lang::util::suggest_key $category]
+
+    if {"" != $msg} {
+	lang::message::register -comment $category_description $locale $package_key $msg_key $msg
+    }
 }
 
 

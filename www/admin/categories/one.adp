@@ -17,8 +17,13 @@
     <td><input size=40 name=category value="@category@"></td>
   </tr>
   <tr>
-    <td>#intranet-core.Category_translation#</td>
-    <td>@category_translation_component;noquote@</td>
+    <td>
+      #intranet-core.Category_translation#
+      <%= [im_gif help "The English 'translation' should be identical with the category name"] %>
+    </td>
+    <td>
+      @category_translation_component;noquote@
+   </td>
   </tr>
   <tr>
     <td>#intranet-core.Category_description#</td>
@@ -29,7 +34,7 @@
   </tr>
 <% if {"" != $hierarchy_component} { %>
   <tr>
-    <td>#intranet-core.Parents#</td>
+    <td>#intranet-core.Parent_Categories#</td>
     <td>
       <select name=parents size=20 multiple>
       @hierarchy_component;noquote@
@@ -45,3 +50,9 @@
 </form>
 @delete_action_html;noquote@
 
+<h2>Please Note</h2>
+<p><blockquote>
+Categories are frequently cached for performance reasons.<br>
+You may have to restart the server after adding or modifying a category <br>
+in order for the changes to take effect.
+</blockquote></p>

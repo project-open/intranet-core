@@ -36,6 +36,7 @@ ad_page_contract {
     enabled_p:notnull
     category_type
     { parents:multiple "" }
+    translation:trim,array
 }
 
 # ---------------------------------------------------------------
@@ -48,6 +49,8 @@ if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
     return
 }
+
+set package_key "intranet-core"
 
 set exception_count 0
 set exception_text ""
@@ -111,6 +114,33 @@ WHERE
     return
 
 }
+
+# ---------------------------------------------------------------
+# Update Translations
+# ---------------------------------------------------------------
+
+
+# Treat en_US first - as always :-)
+# The system requires it for some reason, probably as a default
+set locale "en_US"
+set msg [string trim $translation($locale)]
+set msg_key [lang::util::suggest_key $category]
+
+if {"" != $msg} {
+    lang::message::register -comment $category_description $locale $package_key $msg_key $msg
+}
+
+# Now add all the other locales
+foreach locale [array names translation] {
+    set msg [string trim $translation($locale)]
+    set msg_key [lang::util::suggest_key $category]
+
+    if {"" != $msg} {
+	lang::message::register -comment $category_description $locale $package_key $msg_key $msg
+    }
+}
+
+
 
 db_release_unused_handles
 set select_category_type $category_type

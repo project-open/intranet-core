@@ -33,6 +33,7 @@ if {!$user_is_admin_p} {
     return
 }
 
+set package_key "intranet-core"
 
 # ---------------------------------------------------------------
 # Format Category Data 
@@ -130,14 +131,28 @@ set descr [ns_quotehtml $category_description]
 
 set category_translation_component ""
 
+
+set msg_key [lang::util::suggest_key $category]
+
 set l10n_text_sql "
-    select *
-    from enabled_locales
+	select
+		el.*,
+		lm.message
+	from
+		enabled_locales el left outer join (
+			select * 
+			from lang_messages lm
+			where 
+				lm.package_key = :package_key
+				and lm.message_key = :msg_key
+		) lm on (el.locale = lm.locale)
+	order by
+		el.locale
 "
 
 db_foreach l10n_strings $l10n_text_sql {
     append category_translation_component "
-$locale: <input type=text name=translation.$locale value=\"\" size=20><br>
+$locale: <input type=text name=translation.$locale value=\"$message\" size=40><br>
 "
 }
 
