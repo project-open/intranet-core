@@ -226,7 +226,7 @@ set perm_sql "(
 # Show the list of all projects only if the user has the
 # "view_companies_all" privilege AND if he explicitely
 # requests to see all projects.
-if {[im_permission $user_id 'view_companies_all'] && ![string equal $view_type "mine"]} {
+if {[im_permission $user_id view_companies_all] && ![string equal $view_type "mine"]} {
     # Just include the list of all customers
     set perm_sql "im_companies c"
 }

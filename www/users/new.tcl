@@ -151,7 +151,6 @@ ad_form -name register -export {next_url user_id return_url} -form {
     {username:text(hidden),optional value {}}
     {first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
     {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
-    {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
 }
 
 if {!$editing_existing_user} {
@@ -260,7 +259,8 @@ ad_form -extend -name register -on_request {
 
 	    # Add a users_contact record to the user since the 3.0 PostgreSQL
 	    # port, because we have dropped the outer join with it...
-	    db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)"
+	    catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
+	    catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
 
 	} else {
 
