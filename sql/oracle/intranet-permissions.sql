@@ -15,6 +15,47 @@
 -- @author	unknown@arsdigita.com
 -- @author	frank.bergmann@project-open.com
 
+-------------------------------------------------------------
+-- DB-neutral API for permissions
+--
+
+create or replace function im_object_permission_p (
+       p_object_id  IN integer, 
+       p_user_id    IN integer, 
+       p_privilege  IN varchar
+)
+return char
+IS
+BEGIN
+	return acs_permission.permission_p(p_object_id, p_user_id, p_privilege);
+END im_object_permission_p;
+/
+show errors
+
+create or replace procedure im_grant_permission (
+       p_object_id  IN integer,
+       p_party_id    IN integer,
+       p_privilege  IN varchar
+)
+IS
+BEGIN
+    acs_permission.grant_permission(p_object_id, p_party_id, p_privilege);
+END im_grant_permission;
+/
+show errors
+
+create or replace procedure im_revoke_permission (
+       p_object_id  IN integer,
+       p_party_id    IN integer,
+       p_privilege  IN varchar
+)
+IS
+BEGIN
+    acs_permission.revoke_permission(p_object_id, p_party_id, p_privilege);
+END im_revoke_permission;
+/
+show errors
+
 
 -------------------------------------------------------------
 -- Project/Open Profiles
@@ -270,7 +311,7 @@ show errors;
 prompt *** Creating User Profiles
 begin
    im_create_profile ('P/O Admins','admin');
-   im_create_profile ('Companies','company'); 
+   im_create_profile ('Customers','customer'); 
    im_create_profile ('Employees','employee'); 
    im_create_profile ('Freelancers','freelance'); 
    im_create_profile ('Project Managers','proman'); 

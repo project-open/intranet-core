@@ -290,7 +290,7 @@ begin
     select group_id
     into v_companies
     from groups
-    where group_name = 'Companies';
+    where group_name = 'Customers';
 
     select group_id
     into v_freelancers
@@ -635,7 +635,7 @@ begin
     select group_id into v_proman from groups where group_name = 'Project Managers';
     select group_id into v_accounting from groups where group_name = 'Accounting';
     select group_id into v_employees from groups where group_name = 'Employees';
-    select group_id into v_companies from groups where group_name = 'Companies';
+    select group_id into v_companies from groups where group_name = 'Customers';
     select group_id into v_freelancers from groups where group_name = 'Freelancers';
 
     select menu_id
