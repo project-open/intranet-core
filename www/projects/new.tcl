@@ -157,7 +157,7 @@ set page_body "
                       <td>Project # $required_field &nbsp;</td>
                       <td> 
                         <input type=text size=$project_nr_field_size name=project_nr value=\"$project_nr\" maxlength=$project_nr_field_size >
-                        [im_gif help "A SLS project number is composed by 4 digits for the year plus plus 4 digits for current identification"] &nbsp; 
+                        [im_gif help "A project number is composed by 4 digits for the year plus plus 4 digits for current identification"] &nbsp; 
                       </td>
                     </tr>
 "

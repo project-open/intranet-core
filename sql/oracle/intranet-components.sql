@@ -167,21 +167,13 @@ is
     -- Used in <module-name>-drop.sql
     procedure del_module (module_name in varchar)
     is
-	v_comp_id   integer;
-	CURSOR v_comp_cursor IS
-        	select plugin_id
-        	from im_component_plugins
-        	where package_name = del_module.module_name
-        	FOR UPDATE;
     begin
 	for row in (
             select plugin_id
             from im_component_plugins
             where package_name = del_module.module_name
 	) loop
-
 	    im_component_plugin.del(plugin_id => row.plugin_id);
-
 	end loop;
     end del_module;
 
