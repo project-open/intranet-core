@@ -21,6 +21,9 @@
     .rowyellow {font-size:8pt; background-color: #FFFF00}
     .rowred {font-size:8pt; background-color: #FF0000}
 
+    .form-error {font-size:8pt; color: #FF0000}
+    .form-required-mark {font-size:8pt; color: #FF0000}
+
     .tablebody {font-size: 8pt; background-color: #F1F6F2;}
     .tableheader {font-size: 8pt; background-color: #E3EDE4;}
 
