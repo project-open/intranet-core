@@ -29,7 +29,7 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { status_id:integer "" }
-    { type_id:integer "0" }
+    { type_id:integer "[im_customer_type_customer]" }
     { start_idx:integer "1" }
     { order_by "Company" }
     { how_many "" }
@@ -160,7 +160,16 @@ if { ![empty_string_p $status_id] && $status_id != 0 } {
 
 if { $type_id > 0 } {
     ns_set put $bind_vars type_id $type_id
-    lappend criteria "c.customer_type_id=:type_id"
+    lappend criteria "c.customer_type_id in (
+	select	category_id
+	from	im_categories
+	where	category_id= :type_id
+      UNION
+	select distinct
+		child_id
+	from	im_category_hierarchy
+	where	parent_id = :type_id
+      )"
 }
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
@@ -245,6 +254,7 @@ set perm_sql "
 	        c.customer_id = r.object_id(+) 
 		$where_clause
 "
+
 set sql "
 select
 	c.*,
@@ -305,37 +315,6 @@ if {[string compare $letter "ALL"]} {
 
 ns_log Notice $selection
 
-# ---------------------------------------------------------------
-# 6. Format the Filter
-# ---------------------------------------------------------------
-
-set filter_html "
-<form method=get action='/intranet/customers/index' name=filter_form>
-[export_form_vars start_idx order_by how_many letter view_name]
-<table border=0 cellpadding=0 cellspacing=0>
-<tr> 
-  <td colspan='2' class=rowtitle align=center>
-    Filter Companies
-  </td>
-</tr>
-<tr>
-  <td valign=top>View: </td>
-  <td valign=top>[im_select view_type $view_types ""]</td>
-</tr>
-<tr>
-  <td valign=top>Company Status: </td>
-  <td valign=top>[im_select status_id $status_types ""]</td>
-</tr>
-<tr>
-  <td valign=top>Company Type: </td>
-  <td valign=top>
-    [im_select type_id $customer_types ""]
-    <input type=submit value=Go name=submit>
-  </td>
-</tr>
-</table>
-</form>"
-
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
@@ -353,37 +332,6 @@ if {[im_permission $user_id admin_customers]} {
     append admin_html "
 <li><a href=upload-customers?[export_url_vars return_url]>Upload Company CSV</a>
 <li><a href=upload-contacts?[export_url_vars return_url]>Upload Contact CSV</a>
-"
-}
-
-
-set customer_filter_html $filter_html
-
-if {"" != $admin_html} {
-    set customer_filter_html "
-
-<table border=0 cellpadding=0 cellspacing=0>
-<tr>
-  <td> <!-- TD for the left hand filter HTML -->
-    $filter_html
-  </td> <!-- end of left hand filter TD -->
-  <td>&nbsp;</td>
-  <td valign=top>
-    <table border=0 cellpadding=0 cellspacing=0>
-    <tr>
-      <td class=rowtitle align=center>
-        Admin Companies
-      </td>
-    </tr>
-    <tr>
-      <td>
-        $admin_html
-      </td>
-    </tr>
-    </table>
-  </td>
-</tr>
-</table>
 "
 }
 
@@ -476,15 +424,6 @@ if { $start_idx > 1 } {
 }
 
 
-# ---------------------------------------------------------------
-# 9. Format Table Continuation
-# ---------------------------------------------------------------
-
-# nothing to do here ... (?)
 set table_continuation_html ""
-
-# ---------------------------------------------------------------
-# 10. Join all parts together
-# ---------------------------------------------------------------
 
 db_release_unused_handles

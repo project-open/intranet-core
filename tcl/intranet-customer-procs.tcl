@@ -35,6 +35,9 @@ ad_proc -public im_customer_type_other {} { return 52 }
 ad_proc -public im_customer_type_internal {} { return 53 }
 ad_proc -public im_customer_type_provider {} { return 56 }
 ad_proc -public im_customer_type_customer {} { return 57 }
+ad_proc -public im_customer_type_freelance {} { return 58 }
+ad_proc -public im_customer_type_office_equip {} { return 59 }
+
 
 ad_proc -public im_customer_annual_rev_0_1 {} { return 223 }
 ad_proc -public im_customer_annual_rev_1_10 {} { return 224 }
