@@ -634,6 +634,8 @@ ad_proc -public im_import_company_members { filename } {
 ad_proc -public im_import_offices { filename } {
     Import the offices file
 } {
+    ns_log Notice "im_import_offices($filename)"
+
     set err_return ""
     if {![file readable $filename]} {
 	append err_return "Unable to read file '$filename'"
@@ -663,14 +665,16 @@ ad_proc -public im_import_offices { filename } {
     }
 
     set csv_header [lindex $csv_lines 1]
-    set csv_header_fields [split $csv_header "\""]
+    # Splits a line from a CSV (Comma Separated Format)
+    set csv_header_fields [im_csv_split $csv_header ";"]
+
     set csv_header_len [llength $csv_header_fields]
     ns_log Notice "csv_header_fields=$csv_header_fields"
 
     for {set i 2} {$i < $csv_lines_len} {incr i} {
 
 	set csv_line [string trim [lindex $csv_lines $i]]
-	set csv_line_fields [split $csv_line "\""]
+	set csv_line_fields [im_csv_split $csv_line ";"]
 	ns_log Notice "csv_line_fields=$csv_line_fields"
 	if {"" == $csv_line} {
 	    ns_log Notice "skipping empty line"
@@ -1244,7 +1248,6 @@ ad_proc -public im_import_users { filename } {
 	    append err_return "<li>Found a user without email address:<br>
 	    User '$first_names $last_name' doesn't have an email address
 	    and thus cannot be inserted into the database."
-	    return $err_return
 	}
 
 	if {"" == $username} {

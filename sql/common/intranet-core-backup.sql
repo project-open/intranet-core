@@ -20,8 +20,10 @@
 
 delete from im_view_columns where view_id = 102;
 delete from im_views where view_id = 102;
-insert into im_views (view_id, view_name, view_type_id, sort_order, view_sql
-) values (102, 'im_companies', 1410, 10, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	102, 'im_companies', 1410, 50, '
 select
         c.*,
         im_email_from_user_id(c.manager_id) as manager_email,
@@ -105,8 +107,10 @@ commit;
 
 delete from im_view_columns where view_id = 103;
 delete from im_views where view_id = 103;
-insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
-) values (103, 'im_company_members', 1410, '', '
+insert into im_views (
+	view_id, view_name, view_type_id, visible_for, sort_order, view_sql
+) values (
+	103, 'im_company_members', 1410, '', 80, '
 select
 	c.company_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -140,8 +144,10 @@ commit;
 
 delete from im_view_columns where view_id = 100;
 delete from im_views where view_id = 100;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (100, 'im_projects', 1410, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	100, 'im_projects', 1410, 60, '
 select
         p.*,
         c.company_name,
@@ -221,8 +227,10 @@ commit;
 
 delete from im_view_columns where view_id = 101;
 delete from im_views where view_id = 101;
-insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
-) values (101, 'im_project_members', 1410, '', '
+insert into im_views (
+	view_id, view_name, view_type_id, visible_for, sort_order, view_sql
+) values (
+	101, 'im_project_members', 1410, '', 90, '
 select
 	p.project_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -263,8 +271,10 @@ commit;
 
 delete from im_view_columns where view_id = 104;
 delete from im_views where view_id = 104;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (104, 'im_offices', 1410, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	104, 'im_offices', 1410, 40, '
 select
         o.*,
 	im_email_from_user_id(o.contact_person_id) as contact_person_email,
@@ -336,8 +346,10 @@ commit;
 
 delete from im_view_columns where view_id = 105;
 delete from im_views where view_id = 105;
-insert into im_views (view_id, view_name, view_type_id, visible_for, view_sql
-) values (105, 'im_office_members', 1410, '', '
+insert into im_views (
+	view_id, view_name, view_type_id, visible_for, sort_order, view_sql
+) values (
+	105, 'im_office_members', 1410, '', 70, '
 select
 	p.office_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
@@ -378,8 +390,10 @@ commit;
 
 delete from im_view_columns where view_id = 106;
 delete from im_views where view_id = 106;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (106, 'im_categories', 1410, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	106, 'im_categories', 1410, 10, '
 select	c.*
 from	im_categories c
 ');
@@ -418,8 +432,10 @@ commit;
 
 delete from im_view_columns where view_id = 110;
 delete from im_views where view_id = 110;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (110, 'im_users', 1410, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	110, 'im_users', 1410, 20, '
 SELECT
         pe.first_names,
         pe.last_name,
@@ -570,8 +586,10 @@ commit;
 
 delete from im_view_columns where view_id = 111;
 delete from im_views where view_id = 111;
-insert into im_views (view_id, view_name, view_type_id, view_sql
-) values (111, 'im_profiles', 1410, '
+insert into im_views (
+	view_id, view_name, view_type_id, sort_order, view_sql
+) values (
+	111, 'im_profiles', 1410, 30, '
 SELECT
 	g.group_name as profile_name,
 	im_email_from_user_id(m.member_id) as user_email
