@@ -42,6 +42,14 @@ ad_proc -public im_backup_accepted_version_nr { version } {
     }
 }
 
+ad_proc -public im_backup_path { } {
+    Returns the default path for the backup sets
+} {
+    set path [parameter::get -package_id [im_package_core_id] -parameter "BackupBasePathUnix" -default "/tmp"]
+
+    return $path
+}
+
 
 # -------------------------------------------------------
 # Lookup procedures for faster imports
