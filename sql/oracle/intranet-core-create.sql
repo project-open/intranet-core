@@ -24,6 +24,7 @@
 -- major business objects such as project, customer,
 -- user, ...
 --
+prompt *** intranet-categories
 @intranet-categories.sql
 
 
@@ -34,7 +35,9 @@
 -- Required for im_offices etc. to be able to define
 -- a physical location.
 
+prompt *** intranet-country-codes
 @intranet-country-codes.sql
+prompt *** intranet-currency-codes
 @intranet-currency-codes.sql
 
 
@@ -103,8 +106,11 @@ create table users_contact (
 -- Import Business Objects
 --
 
+prompt *** intranet-offices
 @intranet-offices.sql
+prompt *** intranet-customers
 @intranet-customers.sql
+prompt *** intranet-projects
 @intranet-projects.sql
 
 
@@ -301,9 +307,13 @@ show errors;
 --	menu entries to the main and submenus
 --
 
+prompt *** intranet-views
 @intranet-views.sql
+prompt *** intranet-components
 @intranet-components.sql
+prompt *** intranet-permissions
 @intranet-permissions.sql
+prompt *** intranet-menus
 @intranet-menus.sql
 
 
