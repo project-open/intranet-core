@@ -277,10 +277,34 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '52', 'Other', 'Intranet Customer Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '53', 'Internal', 'Intranet Customer Type');
+
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '54', 'Translation Agency', 'Intranet Customer Type');
+('', 'f', '54', 'MLV Translation Agency Customer', 'Intranet Customer Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '55', 'IT Consulting', 'Intranet Customer Type');
+('', 'f', '55', 'Software Company Customer', 'Intranet Customer Type');
+
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '56', 'Provider', 'Intranet Customer Type');
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '57', 'Customer', 'Intranet Customer Type');
+
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '58', 'Freelance Provider', 'Intranet Customer Type');
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '59', 'Office Equipment Provider', 'Intranet Customer Type');
+
+
+-- The "Translation Agency" is a customer
+insert into im_category_hierarchy values (57,54);
+-- The "IT Consulting" company is a customer.
+insert into im_category_hierarchy values (57,55);
+
+-- The "Freelance" company is a provider
+insert into im_category_hierarchy values (56,58);
+-- The "SLV Translation Agency" company is a provider
+insert into im_category_hierarchy values (56,58);
+-- The "Office Equipment Provider" company is a provider
+insert into im_category_hierarchy values (56,59);
 
 
 -- Partner Status
