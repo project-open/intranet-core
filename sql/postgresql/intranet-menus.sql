@@ -150,13 +150,14 @@ end;' language 'plpgsql';
 create or replace function im_menu__del_module (varchar) returns integer as '
 DECLARE
 	p_module_name   alias for $1;
+        row             RECORD;
 BEGIN
      -- First we have to delete the references to parent menus...
-     for row in (
+     for row in 
         select menu_id
         from im_menus
         where package_name = p_module_name
-     ) loop
+     loop
 
 	update im_menus 
 	set parent_menu_id = null
@@ -165,11 +166,11 @@ BEGIN
      end loop;
 
      -- ... then we can delete the menus themseves
-     for row in (
+     for row in 
         select menu_id
         from im_menus
         where package_name = p_module_name
-     ) loop
+     loop
 
 	PERFORM im_menu__delete(row.menu_id);
 
