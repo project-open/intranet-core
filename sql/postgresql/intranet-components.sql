@@ -195,17 +195,7 @@ SELECT  im_component_plugin__new (
 	'/intranet/projects/view',	-- page_url
 	null,				-- view_name	
 	20,				-- sort_order
-	'im_table_with_title \
-		"Project Members" \
-		[im_group_member_component \
-			$project_id \
-			$current_user_id \
-			$user_admin_p \
-			$return_url \
-			"" \
-			"" \
-			1 \
-		]'			-- component_tcl
+	'im_table_with_title "Project Members" [im_group_member_component $project_id 	$current_user_id $user_admin_p $return_url "" "" 1 ]'			-- component_tcl
     );
 
 
@@ -222,17 +212,7 @@ SELECT  im_component_plugin__new (
         '/intranet/offices/view',	-- page_url
         null,                           -- view_name
         20,                             -- sort_order
-	'im_table_with_title \
-		"Office Members" \
-		[im_group_member_component \
-			$office_id \
-			$user_id \
-			$admin \
-			$return_url \
-			"" \
-			"" \
-			1 \
-		]'			-- component_tcl
+	'im_table_with_title "Office Members" [im_group_member_component $office_id $user_id $admin $return_url "" "" 1 ]'			-- component_tcl
     );
 
 SELECT  im_component_plugin__new (
@@ -248,12 +228,7 @@ SELECT  im_component_plugin__new (
         '/intranet/companies/view',     -- page_url
         null,                           -- view_name
         30,                             -- sort_order
-	'im_table_with_title \
-		"Offices" \
-		[im_office_company_component \
-			$user_id \
-			$company_id
-		]'			-- component_tcl
+	'im_table_with_title "Offices" [im_office_company_component $user_id $company_id]' -- component_tcl
     );
 
 -- Office component for UserViewPage
@@ -270,9 +245,7 @@ SELECT  im_component_plugin__new (
         '/intranet/users/view',		-- page_url
         null,                           -- view_name
         80,                             -- sort_order
-	'im_table_with_title \
-		"Offices" \
-		[im_office_user_component $current_user_id $user_id]' -- component_tcl
+	'im_table_with_title "Offices" [im_office_user_component $current_user_id $user_id]' -- component_tcl
     );
 
 
