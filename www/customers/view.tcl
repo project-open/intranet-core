@@ -294,16 +294,6 @@ if { $user_admin_p > 0 } {
 # ------------------------------------------------------
 
 
-# Append the list of invoices
-if {[im_permission $user_id view_finance]} {
-#    append left_column [im_invoice_component $customer_id]
-}
-
-
-# ------------------------------------------------------
-# Forum Component
-# ------------------------------------------------------
-
 set company_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_employee_group_id]]
 
 set enable_project_estimates 0

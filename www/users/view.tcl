@@ -44,6 +44,9 @@ set package_id 400
 # Check the permissions that the current_user has on user_id
 im_user_permissions $current_user_id $user_id read write admin
 
+# ToDo: Cleanup component to use $write instead of $edit_user
+set edit_user $write
+
 if {!$read} {
     ad_return_complaint 1 "<li>You have insufficient privileges to view this user."
     return

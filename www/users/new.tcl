@@ -49,7 +49,6 @@ set context [list [list "." "Users"] "Add user"]
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
-set editing_existing_user 0
 set return_url "/intranet/users/"
 
 if {$user_is_employee_p} {
@@ -59,10 +58,10 @@ if {$user_is_employee_p} {
 }
 
 # Check if we are editing an already existing user...
-if {$user_id > 0} {
+set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
 
-    # We are not creating a new user...
-    set editing_existing_user 1
+
+if {$editing_existing_user} {
 
     set user_details_sql "
 select
@@ -203,7 +202,11 @@ ad_form -extend -name register -on_request {
 
     db_transaction {
 	
+	# Do we create a new user or do we edit an existing one?
+	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
 	if {!$editing_existing_user} {
+
+	    # New user: create from scratch
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \
@@ -224,9 +227,16 @@ ad_form -extend -name register -on_request {
 		    -user_id $user_id \
 		    -rel_type $rel_type
 	    }
+
+
 	} else {
+
+	    # Existing user: Update variables
 	    set auth [auth::get_register_authority]
 	    set user_data [list]
+
+	    ns_log Notice "/usrs/new: person::update -person_id='$user_id' -first_names='$first_names' -last_name='$last_name'"
+
 	    person::update \
 		-person_id $user_id \
 		-first_names $first_names \
