@@ -4,6 +4,7 @@ ad_page_contract {
     Changes all clients, users, prices etc to allow
     to convert a productive system into a demo.
 } {
+    path
     view:array
     { return_url "index" }
 }
@@ -14,7 +15,6 @@ set context_bar [ad_context_bar $page_title]
 set context ""
 set page_body "<H1>$page_title</H1>"
 set today [db_string today "select to_char(sysdate, 'YYYY-MM-DD.HH-mm') from dual"]
-set path [im_backup_path]
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_admin_p} {
