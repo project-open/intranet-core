@@ -552,6 +552,7 @@ end;' language 'plpgsql';
 --
 create or replace function ad_group_member_admin_role_p (integer, integer)
 returns integer as '
+DECLARE
     p_user_id	   alias for $1;
     p_group_id	   alias for $2;
 
