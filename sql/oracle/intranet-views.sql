@@ -101,6 +101,7 @@ insert into im_views (view_id, view_name, visible_for) values (10, 'user_list', 
 insert into im_views (view_id, view_name, visible_for) values (11, 'user_view', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (12, 'user_contact', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (13, 'user_community', 'view_users');
+insert into im_views (view_id, view_name, visible_for) values (14, 'freelancer_list', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (20, 'project_list', 'view_projects');
 insert into im_views (view_id, view_name, visible_for) values (21, 'project_costs', 'view_projects');
 insert into im_views (view_id, view_name, visible_for) values (22, 'project_status', 'view_projects');
@@ -227,6 +228,40 @@ insert into im_view_columns values (205,10,NULL,'Cell Phone',
 '$cell_phone','','',7,'');
 
 insert into im_view_columns values (206,10,NULL,'Home Phone',
+'$home_phone','','',8,'');
+--
+commit;
+
+
+--------------------------------------------------------------
+-- FreelancersListPage
+--
+delete from im_view_columns where column_id >= 1400 and column_id < 1499;
+--
+-- insert into im_view_columns values (1407,14,NULL,'#',
+-- '$user_id','','',6,'');
+
+insert into im_view_columns values (1400,14,NULL,'Name',
+'"<a href=/intranet/users/view?user_id=$user_id>$name</a>"','','',2,'');
+
+insert into im_view_columns values (1401,14,NULL,'Email',
+'"<a href=mailto:$email>$email</a>"','','',3,'');
+
+-- insert into im_view_columns values (1402,14,NULL,'Status',
+-- '$status','','',4,'');
+
+insert into im_view_columns values (1403,14,NULL,'MSM',
+'"<A HREF=\"http://arkansasmall.tcworks.net:8080/message/msn/$msn_email\">
+<IMG SRC=\"http://arkansasmall.tcworks.net:8080/msn/$msn_email\"
+width=21 height=22 border=0 ALT=\"MSN Status\"></A>"','','',5,'');
+
+insert into im_view_columns values (1404,14,NULL,'Work Phone',
+'$work_phone','','',6,'');
+
+insert into im_view_columns values (1405,14,NULL,'Cell Phone',
+'$cell_phone','','',7,'');
+
+insert into im_view_columns values (1406,14,NULL,'Home Phone',
 '$home_phone','','',8,'');
 --
 commit;

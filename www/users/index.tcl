@@ -81,18 +81,21 @@ set letter [string toupper $letter]
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
 set user_group_id 0
+set menu_select_label ""
 switch $user_group_name {
-    "All" { set user_group_id 0 }
+    "All" { 
+	set user_group_id 0 
+	set menu_select_label "users_all"
+    }
     "Unregistered" { set user_group_id -1 }
     default {
 	set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+	set menu_select_label "users_[string tolower $user_group_name]"
     }
 }
 
-
-
-
 if {$user_group_id > 0} {
+
     # We have a group specified to show:
     # Check whether the user can "read" this group:
     set sql "select acs_permission.permission_p(:user_group_id, :user_id, 'read') from dual"
@@ -101,11 +104,12 @@ if {$user_group_id > 0} {
 	ad_return_complaint 1 "You don't have permissions to view this page"
 	return
     }
+
 } else {
+
     # The user requests to see all groups.
     # The most critical groups are customer contacts...
-    set customer "Customers"
-    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :customer" -default 0]
+    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 
     set sql "select acs_permission.permission_p(:customer_group_id, :user_id, 'read') from dual"
     set read [db_string user_can_read_user_group_p $sql]
@@ -113,6 +117,12 @@ if {$user_group_id > 0} {
 	ad_return_complaint 1 "You don't have permissions to view this page"
 	return
     }
+}
+
+set show_freelancers 0
+if {$user_group_id == [im_freelance_group_id]} {
+    set show_freelancers 1
+    set view_name "freelancer_list"
 }
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
@@ -387,7 +397,8 @@ set table_continuation_html ""
 # ---------------------------------------------------------------
 
 set page_body "
-[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter]]
+<br>
+[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter] $menu_select_label]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   $table_header_html

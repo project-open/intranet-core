@@ -163,11 +163,13 @@ ad_proc -public im_table_with_title { title body } {
 # Navigation Bars
 # --------------------------------------------------------
 
-ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
+ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/users/.
     The lower part of the navbar also includes an Alpha bar.<br>
     Default_letter==none marks a special behavious, printing no alpha-bar.
+
+    @param select_label Label of a menu item to highlight
 } {
     # -------- Defaults -----------------------------
     set user_id [ad_get_user_id]
@@ -201,7 +203,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where name='Users'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
-    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel"]
+    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
     return $navbar
 }
@@ -483,7 +485,7 @@ ad_proc -public im_admin_navbar { } {
 
 
 
-ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} } {
+ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} {select_label ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
     @param parent_menu_id id of the parent menu in im_menus
@@ -491,6 +493,8 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     @title string to go into the line below the menu tabs
     @title_class CSS class of the title line
 } {
+    ns_log Notice "im_sub_navbar: parent_menu_id=$parent_menu_id, bind_vars=$bind_vars, title=$title, select_label=$select_label"
+
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
 
@@ -531,7 +535,12 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         set selected 0
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
-        if {!$found_selected && [string equal $url_stub $url]} {
+
+	ns_log Notice "im_sub_navbar: check select for label='$label' against select_label='$select_label'"
+
+        if {[string equal $label $select_label]} {
+	    
+	    ns_log Notice "im_sub_navbar: highlight menu_name='$name'"
             # Make sure we only highligh one menu item..
             set found_selected 1
             # Set for the gif
