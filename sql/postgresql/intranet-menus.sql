@@ -218,6 +218,7 @@ declare
 	v_project_menu		integer;
 	v_company_menu		integer;
 	v_office_menu		integer;
+	v_help_menu		integer;
 	v_user_orgchart_menu	integer;
 	v_user_all_menu		integer;
 	v_user_freelancers_menu	integer;
@@ -400,7 +401,6 @@ begin
     PERFORM acs_permission__grant_permission(v_user_menu, v_employees, ''read'');
 
 
-
     v_office_menu := im_menu__new (
         null,                   -- p_menu_id
         ''acs_object'',           -- object_type
@@ -427,7 +427,7 @@ begin
 
     v_admin_menu := im_menu__new (
         null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
+        ''acs_object'',         -- object_type
         now(),                  -- creation_date
         null,                   -- creation_user
         null,                   -- creation_ip
@@ -442,6 +442,30 @@ begin
     );
 
     PERFORM acs_permission__grant_permission(v_admin_menu, v_admins, ''read'');
+
+    v_help_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''help'',               -- label
+        ''Help'',               -- name
+        ''/intranet/help/'',	-- url
+        990,                    -- sort_order
+        v_main_menu,            -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_help_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_freelancers, ''read'');
 
 
     -- -----------------------------------------------------
@@ -805,6 +829,7 @@ begin
         v_project_menu,         -- parent_menu_id
         null                    -- p_visible_tcl
     );
+
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
@@ -824,10 +849,11 @@ begin
         ''project_files'',      -- label
         ''Files'',              -- name
         ''/intranet/projects/view?view_name=files'',  -- url
-        10,                     -- sort_order
+        20,                     -- sort_order
         v_project_menu,         -- parent_menu_id
         null                    -- p_visible_tcl
     );
+
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
