@@ -377,7 +377,7 @@ select im_create_profile ('Sales','sales');
     select acs_privilege__create_privilege('view_offices','View Offices','View Offices');
     select acs_privilege__add_child('admin', 'view_offices');
     select acs_privilege__create_privilege('view_offices_all','View All Offices','View Offices');
-    select acs_privilege__add_child('admin', ''view_offices_all);
+    select acs_privilege__add_child('admin', 'view_offices_all');
     select acs_privilege__create_privilege('add_offices','Add Offices','Add Offices');
     select acs_privilege__add_child('admin', 'add_offices');
     select acs_privilege__create_privilege('view_internal_offices','View Internal Offices','View Internal Offices');
