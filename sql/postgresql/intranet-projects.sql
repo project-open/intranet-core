@@ -247,7 +247,7 @@ BEGIN
 	return v_project_id;
 end;' language 'plpgsql';
 
-create or replace function im_project__del (integer) returns integer as '
+create or replace function im_project__delete (integer) returns integer as '
 DECLARE
         v_project_id             alias for $1;
 BEGIN
@@ -259,7 +259,9 @@ BEGIN
 	delete from 	acs_permissions
 	where		object_id = v_project_id;
 
-	acs_object.del(v_project_id);
+	PERFORM	acs_object__delete(v_project_id);
+
+	return 0;
 end;' language 'plpgsql';
 
 create or replace function im_project__name (integer) returns varchar as '

@@ -122,7 +122,7 @@ begin
 end;' language 'plpgsql';
 
 -- Delete a single office (if we know its ID...)
-create or replace function im_office__del (integer) returns integer as '
+create or replace function im_office__delete (integer) returns integer as '
 DECLARE
 	v_office_id		alias for $1;
 BEGIN
@@ -134,7 +134,9 @@ BEGIN
 	delete from 	acs_permissions
 	where		object_id = v_office_id;
 
-	acs_object.del(v_office_id);
+	PERFORM	acs_object__delete(v_office_id);
+
+	return 0;
 end;' language 'plpgsql';
 
 create or replace function im_office__name (integer) returns varchar as '

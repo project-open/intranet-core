@@ -155,7 +155,7 @@ BEGIN
 end;' language 'plpgsql';
 
 
-create or replace function im_company__del (integer) returns integer as '
+create or replace function im_company__delete (integer) returns integer as '
 DECLARE
         v_company_id             alias for $1;
 BEGIN
@@ -172,7 +172,9 @@ BEGIN
 	delete from 	acs_permissions
 	where		object_id = v_company_id;
 
-	PERFORM acs_object.del(v_company_id);
+	PERFORM acs_object__delete(v_company_id);
+
+	return 0;
 end;' language 'plpgsql';
 
 create or replace function im_company__name (integer) returns varchar as '
