@@ -198,7 +198,7 @@ if { $include_subprojects_p == "f" } {
 }
 
 
-set order_by_clause "order by upper(group_name)"
+set order_by_clause "order by upper(project_name)"
 switch $order_by {
     "Spend Days" { set order_by_clause "order by spend_days" }
     "Estim. Days" { set order_by_clause "order by estim_days" }
@@ -217,7 +217,7 @@ switch $order_by {
     "Project #" { set order_by_clause "order by project_nr desc" }
     "Project Manager" { set order_by_clause "order by upper(lead_name)" }
     "URL" { set order_by_clause "order by upper(url)" }
-    "Project Name" { set order_by_clause "order by upper(group_name)" }
+    "Project Name" { set order_by_clause "order by upper(project_name)" }
 }
 
 set where_clause [join $criteria " and\n            "]
@@ -336,7 +336,6 @@ WHERE
 		perm.permission_member > 0
 		$mine_restriction
 	)
-	$order_by_clause
 "
 
 
@@ -354,7 +353,7 @@ if {[string compare $letter "ALL"]} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
-    set selection "$sql"
+    set selection "select z.* from ($sql) z $order_by_clause"
 } else {
     set limited_query [im_select_row_range $sql $start_idx $end_idx]
 
