@@ -33,7 +33,7 @@ set context [list "Groups"]
 set this_url [ad_conn url]
 set subsite_id [ad_conn subsite_id]
 
-set group_url "/intranet/admin/user_matrix/group"
+set group_url "/admin/groups/one"
 set toggle_url "/intranet/admin/user_matrix/toggle"
 
 set group_list_sql {
