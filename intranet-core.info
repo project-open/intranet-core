@@ -24,7 +24,7 @@
 	    description="Do the user need to have projects and subprojects?"/>
 
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"
-	    name="SystemLogo"  default="/intranet/www/images/projop-logo.gif" 
+	    name="SystemLogo"  default="/intranet/images/projop-logo.gif" 
 	    description="System logo that appears in all screens"/>
 
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  
@@ -38,6 +38,10 @@
             <parameter datatype="integer"  min_n_values="1"  max_n_values="1"  
 	    name="ProjectNumberFieldSize"  default="10" 
 	    description="How many characters can the project number have?"/>
+
+            <parameter datatype="integer"  min_n_values="1"  max_n_values="1"  
+	    name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" 
+	    description="Where are the GIFs located for the navbar?"/>
 
         </parameters>
 
