@@ -47,7 +47,7 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     db_transaction {
         db_1row user_email $user_email_sql
     } on_error {
-        ad_return_complaint 1 "<li>Error getting the email address of user $target_id"
+        ad_return_complaint 1 "<li>[_ intranet-core.lt_Error_getting_the_ema]"
         return
     }
 

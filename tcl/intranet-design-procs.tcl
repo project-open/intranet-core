@@ -106,7 +106,7 @@ ad_proc -public im_admin_category_gif { category_type } {
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
         set html "
-<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "Admin $category_type"]</A>"
+<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "[_ intranet-core.Admin_category_type]"]</A>"
     }
     return $html
 }
@@ -344,12 +344,12 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
     set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
-    set standard "$tdsp$nosel<a href='index?view_name=project_list'>Standard</a></td>"
-    set status "$tdsp$nosel<a href='index?view_name=project_status'>Status</a></td>"
-    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>Costs</a></td>"
+    set standard "$tdsp$nosel<a href='index?view_name=project_list'>[_ intranet-core.Standard]</a></td>"
+    set status "$tdsp$nosel<a href='index?view_name=project_status'>[_ intranet-core.Status]</a></td>"
+    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>[_ intranet-core.Costs]</a></td>"
 
     switch $section {
-"Standard" {set standard "$tdsp$sel Standard</td>"}
+"Standard" {set standard "$tdsp$sel [_ intranet-core.Standard]</td>"}
 default {
     # Nothing - just let all sections deselected
 }
@@ -363,7 +363,7 @@ default {
         <tr> 
           $standard"
 if {[im_permission $user_id add_offices]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new office"]</a></td>"
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "[_ intranet-core.Add_a_new_office]"]</a></td>"
 }
 append navbar "
         </tr>
@@ -434,14 +434,14 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
-    set standard "$tdsp$nosel<a href='index?view_name=project_list'>Standard</a></td>"
-    set status "$tdsp$nosel<a href='index?view_name=project_status'>Status</a></td>"
-    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>Costs</a></td>"
+    set standard "$tdsp$nosel<a href='index?view_name=project_list'>[_ intranet-core.Standard]</a></td>"
+    set status "$tdsp$nosel<a href='index?view_name=project_status'>[_ intranet-core.Status]</a></td>"
+    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>[_ intranet-core.Costs]</a></td>"
 
     switch $section {
-	"Standard" {set standard "$tdsp$sel Standard</td>"}
-	"Status" {set status "$tdsp$sel Status</td>"}
-	"Costs" {set costs "$tdsp$sel Costs</td>"}
+	"Standard" {set standard "$tdsp$sel [_ intranet-core.Standard]</td>"}
+	"Status" {set status "$tdsp$sel [_ intranet-core.Status]</td>"}
+	"Costs" {set costs "$tdsp$sel [_ intranet-core.Costs]</td>"}
 	default {
 	    # Nothing - just let all sections deselected
 	}
@@ -457,7 +457,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 # if {[im_permission $user_id view_hours]} { append navbar $status }
 # if {[im_permission $user_id view_finance]} { append navbar $costs }
 if {[im_permission $user_id add_companies]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new company"]</a></td>"
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "[_ intranet-core.Add_a_new_company]"]</a></td>"
 }
 append navbar "
         </tr>
@@ -740,12 +740,12 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
               <select class=surx name=target>"
 	if {[im_permission $user_id "search_intranet"]} {
 	    append search_form "
-                <option class=surx selected value=content>Intranet content</option>
-                <option class=surx value=users>Intranet users</option>
-                <option class=surx value=htsearch>All documents in H:</option>"
+                <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
+                <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
+                <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>"
 	}
 	append search_form "
-                <option class=surx value=google>The web with Google</option>
+                <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
               </select>
               <input alt=go type=submit value=go name='image'>
             </form>
@@ -753,21 +753,21 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     # Determine a pretty string for the type of user that it is:
-    set user_profile "User"
+    set user_profile "[_ intranet-core.User]"
     if {[im_permission $user_id "freelance"]} {
-	set user_profile "Freelance"
+	set user_profile "[_ intranet-core.Freelance]"
     }
     if {[im_permission $user_id "client"]} {
-	set user_profile "Client"
+	set user_profile "[_ intranet-core.Client]"
     }
     if {[im_permission $user_id "employee"]} {
-	set user_profile "Employee"
+	set user_profile "[_ intranet-core.Employee]"
     }
     if {[ad_user_group_member [im_admin_group_id] $user_id]} {
-	set user_profile "Admin"
+	set user_profile "[_ intranet-core.Admin]"
     }
     if {[im_site_wide_admin_p $user_id]} {
-	set user_profile "SiteAdmin"
+	set user_profile "[_ intranet-core.SiteAdmin]"
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
@@ -781,9 +781,11 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     if {[string equal $proc [namespace eval $namespace "info procs $proc"]]} {
 	set num_users_online [lc_numeric [whos_online::num_users]]
-	set user_str "users"
-	if {1 == $num_users_online} { set user_str "user"}
-        set users_online_str "<A href=/intranet/whos-online>$num_users_online $user_str online</A><BR>\n"
+	if {1 == $num_users_online} { 
+	    set users_online_str "<A href=/intranet/whos-online>[_ intranet-core.lt_num_users_online_user]</A><BR>\n"
+	} else {
+	    set users_online_str "<A href=/intranet/whos-online>[_ intranet-core.lt_num_users_online_user_1]</A><BR>\n"
+	}
     }
 
     return "
@@ -797,8 +799,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
       <span class=small>
         $users_online_str
         $user_profile: $user_name <BR>
-        <a href='/register/logout'>Log Out</a> |
-        <a href=$change_pwd_url>Change Password</a> 
+        <a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
+        <a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
       </span>
     </td>
     <td valign=middle align=right> $search_form </TD>
@@ -832,7 +834,7 @@ ad_proc -public im_header_emergency { page_title } {
           <TD align=left> 
             <table border=0 cellspacing=0 cellpadding=3>
               <tr> 
-                <td class=tabnotsel><a href=/intranet/>Home</a></td><td>&nbsp;</td>
+                <td class=tabnotsel><a href=/intranet/>[_ intranet-core.Home]</a></td><td>&nbsp;</td>
 	        <td>&nbsp;</td>
 	      </tr>
 
@@ -865,7 +867,7 @@ ad_proc -public im_footer {} {
       <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
         <TBODY> 
           <TR>
-            <TD>Comments? Contact: 
+            <TD>[_ intranet-core.Comments] [_ intranet-core.Contact]: 
           <A href='mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]'>
           [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
           </A> 
@@ -973,14 +975,14 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
 	}
     }
     if { [empty_string_p $letter] || [string compare $letter "all"] == 0 } {
-	lappend html_list "<b>All</b>"
+	lappend html_list "<b>[_ intranet-core.All]</b>"
     } else {
 	lappend html_list "<a href=${url}letter=all>All</a>"
     }
     if { [string compare $letter "scroll"] == 0 } {
-	lappend html_list "<b>Scroll</b>"
+	lappend html_list "<b>[_ intranet-core.Scroll]</b>"
     } else {
-	lappend html_list "<a href=${url}letter=scroll>Scroll</a>"
+	lappend html_list "<a href=${url}letter=scroll>[_ intranet-core.Scroll]</a>"
     }
     return [join $html_list " | "]
 }
@@ -1084,11 +1086,11 @@ where
     }
     
     ns_returnerror 500 "
-[im_header_emergency "Request Error"]
+[im_header_emergency "[_ intranet-core.Request_Error]"]
 <form method=post action=$report_url>
 [export_form_vars error_url error_info error_first_names error_last_name error_user_email system_url publisher_name core_version]
-This file has generated an error.  
-<input type=submit value='Report this error' />
+[_ intranet-core.lt_This_file_has_generat]  
+<input type=submit value='[_ intranet-core.Report_this_error]' />
 </form>
 <hr />
 <blockquote><pre>[ns_quotehtml $error_info]</pre></blockquote>

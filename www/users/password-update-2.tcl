@@ -31,7 +31,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 im_user_permissions $current_user_id $user_id view read write admin
 if {!$admin} {
-    ad_return_complaint 1 "<li>You are not authorized to see this page"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_are_not_authorize]"
     return
 }
 
@@ -39,17 +39,17 @@ set exception_text ""
 set exception_count 0
 
 if { ![info exists password_1] || [empty_string_p $password_1] } {
-    append exception_text "<li>You need to type in a password\n"
+    append exception_text "<li>[_ intranet-core.lt_You_need_to_type_in_a_3]"
     incr exception_count
 }
 
 if { ![info exists password_2] || [empty_string_p $password_2] } {
-    append exception_text "<li>You need to confirm the password that you typed.  (Type the same thing again.) \n"
+    append exception_text "<li>[_ intranet-core.lt_You_need_to_confirm_t]"
     incr exception_count
 }
 
 if { [string compare $password_2 $password_1] != 0 } {
-    append exception_text "<li>Your passwords don't match!  Presumably, you made a typo while entering one of them.\n"
+    append exception_text "<li>[_ intranet-core.lt_Your_passwords_dont_m]"
     incr exception_count
 }
 
@@ -66,17 +66,16 @@ ad_change_password $user_id $password_1
 set password $password_1
 set offer_to_email_new_password_link ""
 if {[ad_parameter EmailChangedPasswordP "" 1]} { 
-    set offer_to_email_new_password_link "<a href=\"email-changed-password?[export_url_vars user_id password]\">Send user new password by email</a>"
+    set offer_to_email_new_password_link "<a href=\"email-changed-password?[export_url_vars user_id password]\">[_ intranet-core.lt_Send_user_new_passwor]</a>"
 }
 
 set page_body "
-[ad_admin_header "Password Updated"]
-<h2>Password Updated</h2>
-in [ad_site_home_link]
+[ad_admin_header "[_ intranet-core.Password_Updated]"]
+<h2>[_ intranet-core.Password_Updated]</h2>
+[_ intranet-core.in] [ad_site_home_link]
 <hr>
-You must inform the user of their new password as there is currently no 
-other way for the user to find out.
-You can return to <a href=\"one?[export_url_vars user_id]\">$name</a>
+[_ intranet-core.lt_You_must_inform_the_u]
+[_ intranet-core.You_can_return_to] <a href=\"one?[export_url_vars user_id]\">$name</a>
 <p> $offer_to_email_new_password_link
 [ad_admin_footer]
 "

@@ -39,24 +39,24 @@ if { $admin_user_id == 0 } {
 
 db_1row user_full_name "select first_names, last_name from users where user_id = :user_id"
 
-set page_content "[ad_admin_header "Deleting $first_names $last_name"]
+set page_content "[ad_admin_header "[_ intranet-core.lt_Deleting_first_names_]"]
 
-<h2>Deleting $first_names $last_name</h2>
+<h2>[_ intranet-core.lt_Deleting_first_names_]</h2>
 
 <hr>
 
-You have two options here:
+[_ intranet-core.lt_You_have_two_options_]
 
 <ul>
 
-<li><a href=\"delete-2?[export_url_vars user_id return_url]\">just mark the account deleted</a> 
-(as if the user him or herself had unsubscribed)
+<li><a href=\"delete-2?[export_url_vars user_id return_url]\">[_ intranet-core.lt_just_mark_the_account]</a> 
+([_ intranet-core.lt_as_if_the_user_him_or])
 
 <p>
 
 <li><form method=POST action=\"delete-2\">
 [export_form_vars return_url]
-<input type=submit value=\"Ban this user\">
+<input type=submit value=\"[_ intranet-core.Ban_this_user]\">
 [export_form_vars user_id]
 <input type=hidden name=banned_p value=\"t\">
 <br>

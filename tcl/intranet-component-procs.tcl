@@ -102,9 +102,9 @@ order by sort_order
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
 	    ad_return_complaint 1 "<li>
-        Error evaluating component '$plugin_name' of module '$package_name':<br>
+        [_ intranet-core.lt_Error_evaluating_comp]:<br>
         <pre>\n$err_msg\n</pre><br>
-        Please contact your system administrator:<br>"
+        [_ intranet-core.lt_Please_contact_your_s]:<br>"
 	}
     }
     return $html

@@ -30,7 +30,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 im_user_permissions $current_user_id $user_id view read write admin
 if {!write} {
-    ad_return_complaint 1 "<li>You have insufficient privileges to pursue this operation."
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_1]"
 }
 
 # ---------------------------------------------------------------
@@ -54,7 +54,7 @@ where
 
 set page_title "$first_names $last_name"
 if {[im_permission $current_user_id view_users]} {
-    set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
+    set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 } else {
     set context_bar [ad_context_bar $page_title]
 }
@@ -92,26 +92,26 @@ set body_html "
 
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Update Basic Information</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.lt_Update_Basic_Informat]</td>
   </tr>
   <tr>
-    <td>Name</td>
+    <td>[_ intranet-core.Name]</td>
     <td><input type=text name=first_names size=20 value=\"$first_names\"> 
         <input type=text name=last_name size=25 value=\"$last_name\">
     </td>
   </tr>
   <tr>
-    <td>Email</td>
+    <td>[_ intranet-core.Email]</td>
     <td><input type=text name=email size=30 value=\"$email\" $is_admin></td>
   </tr>
   <tr>
-    <td>Home Page</td>
+    <td>[_ intranet-core.Home_Page]</td>
     <td><input type=text name=url size=50 value=\"$url\"></td>
   </tr>"
 if {![string equal "" $profile_box]} {
     append body_html "
   <tr>
-    <td>Profile</td>
+    <td>[_ intranet-core.Profile]</td>
     <td>$profile_box</td>
   </tr>"
 }
@@ -119,7 +119,7 @@ append body_html "
 </table>
 <br>
 <br>
-<center><input type=submit value=\"Update\"></center>
+<center><input type=submit value=\"[_ intranet-core.Update]\"></center>
 "
 set page_body "$body_html"
 doc_return  200 text/html [im_return_template]

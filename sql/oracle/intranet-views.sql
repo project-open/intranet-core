@@ -360,7 +360,7 @@ extra_select, extra_where, sort_order, visible_for) values (437,12,NULL,'Note','
 'im_view_user_permission $user_id $current_user_id $note view_users');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (439,12,NULL,' ',
-'"<input type=submit value=Edit>"','','',99,
+'"<input type=\"submit\" value=\"#intranet-core.Edit#\">"','','',99,
 'set a $write');
 --
 commit;
@@ -483,7 +483,7 @@ extra_select, extra_where, sort_order, visible_for) values (8170,81,NULL,'Note',
 --
 delete from im_view_columns where column_id >= 8190 and column_id <= 8199;
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (8190,81,NULL,' ','"<input type=submit value=Edit>"','','',
+extra_select, extra_where, sort_order, visible_for) values (8190,81,NULL,' ','"<input type=\"submit\" value=\"#intranet-core.Edit#\">"','','',
 900,'set a $admin');
 
 --

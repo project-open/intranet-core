@@ -29,37 +29,32 @@ where user_id = :user_id"
 
 db_release_unused_handles
 
-set page_content "[ad_admin_header "Nuke $first_names $last_name"]
+set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 
-<h2>Confirm Nuking $first_names $last_name</h2>
+set page_content "[ad_admin_header "[_ intranet-core.lt_Nuke_first_names_last]"]
 
-[ad_admin_context_bar [list "index.tcl" "Users"] [list "one.tcl?[export_url_vars user_id]" "One User"] "Nuke user"]
+<h2>[_ intranet-core.lt_Confirm_Nuking_first_]</h2>
+
+[ad_admin_context_bar [list "index.tcl" "[_ intranet-core.Users]"] [list "one.tcl?[export_url_vars user_id]" "[_ intranet-core.One_User]"] "[_ intranet-core.Nuke_user]"]
 
 <hr>
 
-Confirm the nuking of <a href=\"one?user_id=$user_id\">$first_names $last_name</a>
+[_ intranet-core.lt_Confirm_the_nuking_of]<a href=\"one?user_id=$user_id\">$first_names $last_name</a>
 
 <p>
 
-First, unless $first_names $last_name is a test user, you should
-probably <a href=\"delete?user_id=$user_id\">delete this user
-instead</a>.  Deleting marks the user deleted but leaves intact his or
-her contributions to the site content.
+[_ intranet-core.lt_First_unless_first_na]
 
 <p>
 
-Nuking is a violent irreversible action.  You are instructing the
-system to remove the user and any content that he or she has
-contributed to the site.  This is generally only appropriate in the
-case of test users and, perhaps, dishonest people who've flooded a
-site with fake crud.
+[_ intranet-core.lt_Nuking_is_a_violent_i]
 
 <P>
 
 <center>
 <form method=get action=nuke-2>
 <input type=hidden name=user_id value=\"$user_id\">
-<input type=submit value=\"Yes, I'm sure that I want to nuke this person\">
+<input type=submit value=\"[_ intranet-core.lt_Yes_Im_sure_that_I_wa]\">
 </form>
 </center>
 

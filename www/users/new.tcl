@@ -47,8 +47,8 @@ if {[exists_and_not_null profile]} {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 
-set page_title "Add a user"
-set context [list [list "." "Users"] "Add user"]
+set page_title "[_ intranet-core.Add_a_user]"
+set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_user]"]
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
@@ -86,7 +86,7 @@ if {$editing_existing_user} {
     # Permissions for existing user: We need to be able to admin him:
     im_user_permissions $current_user_id $user_id view read write admin
     if {!$admin} {
-	ad_return_complaint 1 "<li>You have insufficient permissions to see this page."
+	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_3]"
 	return
     }
 
@@ -121,7 +121,7 @@ where
 
     # Check if current_user_id can create new users
     if {![im_permission $current_user_id add_users]} {
-	ad_return_complaint 1 "<li>You have insufficient permissions to create a new user."
+	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_4]"
 	return
     }
 
@@ -228,11 +228,9 @@ ad_form -extend -name register -on_request {
 	    set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
 	    
 	    if {$similar_user > 0} {
-		ad_return_complaint 1 "<li><b>Duplicate User</B><br>
-                There is already a 
-                <A href=/intranet/users/view?user_id=$similar_user>user</A> 
-                with the email '$email'
-                in the database.<br>"
+		set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
+		ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
+                [_ intranet-core.lt_There_is_already_a_vi]<br>"
 		return
 	    }
 
@@ -333,7 +331,7 @@ ad_form -extend -name register -on_request {
 
 		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		    ad_return_complaint 1 "<li>
-                    You are not allowed to remove members from group '$profile_name'"
+                    [_ intranet-core.lt_You_are_not_allowed_t]"
                    return
 		}
 
@@ -352,7 +350,7 @@ ad_form -extend -name register -on_request {
 		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		    # Whooooo, sombody tries to fool us...
 		    ad_return_complaint 1 "<li>
-                    You are not allowed to add members to profile '$profile_name'"
+                    [_ intranet-core.lt_You_are_not_allowed_t_1]"
 		    return
 		}
 

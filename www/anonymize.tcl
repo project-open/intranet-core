@@ -23,10 +23,9 @@ ad_page_contract {
 }
 
 if {![ad_parameter -package_id [im_package_core_id] TestDemoDevServer "" 0]} {
-    ad_return_complaint 1 "<LI>This is not a Test/Demo/Development server.<BR>
-    So you probably don't want to destroy all data, right?!?<br>&nbsp;<br>
-    If this IS a Test/Demo/Development server, then check '/parameters/*.ini'
-    and set the TestDemoDevServer flag to 'true'."
+    ad_return_complaint 1 "<LI>[_ intranet-core.lt_This_is_not_a_TestDem]<BR>
+    [_ intranet-core.lt_So_you_probably_dont_]<br>&nbsp;<br>
+    [_ intranet-core.lt_If_this_IS_a_TestDemo]"
     return
 }
 
@@ -446,6 +445,6 @@ db_foreach user_select $user_sql {
 if {"" != $return_url} {
     ad_return_redirect $return_url
 } else {
-    set page_body "<H1>Anonymize</H1>Successfully finished"
+    set page_body "<H1>[_ intranet-core.Anonymize]</H1>[_ intranet-core.lt_Successfully_finished]"
     doc_return  200 text/html [im_return_template]
 }

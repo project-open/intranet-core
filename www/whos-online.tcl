@@ -8,8 +8,8 @@ ad_page_contract {
     context:onevalue
 }
 
-set title "Who's Online?"
-set context [list "Who's Online"]
+set title "[_ intranet-core.Whos_Online]"
+set context [list $title]
 
 set whos_online_interval [whos_online::interval]
 
@@ -19,11 +19,11 @@ template::list::create \
     -no_data "No registered users online" \
     -elements {
         name {
-            label "User name"
+            label "[_ intranet-core.User_name]"
             link_url_col url
         }
         online_time_pretty {
-            label "Online Time"
+            label "[_ intranet-core.Online_Time]"
             html { align right }
         }
     }

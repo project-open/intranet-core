@@ -204,8 +204,7 @@ ad_proc -public im_company_internal { } {
     set company_id [db_string get_interal_company "select company_id from im_companies where company_path='internal'" -default 0]
     if {!$company_id} {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_Unable_to_determine_I]<br>
-        Maybe somebody has changed the path of the 'Internal' company
-        who identifies your organization."
+        [_ intranet-core.lt_Maybe_somebody_has_ch]"
     }
     return $company_id
 }

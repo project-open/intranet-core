@@ -84,7 +84,7 @@ if { ![empty_string_p $errors] } {
 
 if { [string length ${note}] > 4000 } {
     incr exception_count
-    append errors "  <li> The note you entered is too long. Please limit the note to 4000 characters\n"
+    append errors "  <li>[_ intranet-core.lt_The_note_you_entered_]"
 }
 
 # Periods don't work in bind variables...
@@ -99,7 +99,7 @@ set exists_p [db_string group_exists_p "
 
 if { $exists_p } {
     incr exception_count
-    append errors "  <li> The specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record\n"
+    append errors "  <li>[_ intranet-core._The]"
 }
 
 if { ![empty_string_p $errors] } {
@@ -112,7 +112,7 @@ if { ![empty_string_p $errors] } {
 # -----------------------------------------------------------------
 
 if {![exists_and_not_null office_name]} {
-    set office_name "$company_name Main Office"
+    set office_name "$company_name [_ intranet-core.Main_Office]"
 }
 if {![exists_and_not_null office_path]} {
     set office_path "$company_path"

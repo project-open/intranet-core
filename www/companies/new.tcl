@@ -39,8 +39,8 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 # pages shows the list of companies etc.
 #
 if {![im_permission $user_id "add_companies"]} { 
-   ad_return_complaint "Insufficient Privileges" "
-  <li>You don't have sufficient privileges to add a new company."
+   ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+  <li>[_ intranet-core.lt_You_dont_have_suffici]"
 }
 
 if {$company_id > 0} {
@@ -83,12 +83,12 @@ where
 	return
     }
 
-    set page_title "Edit Company"
-    set context_bar [ad_context_bar [list index "Companies"] [list "view?[export_url_vars company_id]" "One company"] $page_title]
+    set page_title "[_ intranet-core.Edit_Company]"
+    set context_bar [ad_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
 } else {
     # Completely new company. Set some reasonable defaults:
-    set page_title "Add Company"
+    set page_title "[_ intranet-core.Add_Company]"
     set context_bar [ad_context_bar [list index "Companies"] $page_title]
     set company_name ""
     set company_path ""
@@ -107,7 +107,7 @@ where
     set company_status_id [im_company_status_active]
     set company_type_id [im_company_type_other]
     set annual_revenue_id [im_company_annual_rev_1_10]
-    set referral_source "How did we get in contact with the company?"
+    set referral_source "[_ intranet-core.lt_How_did_we_get_in_con]"
     set billable_p "t"
     set "creation_ip_address" [ns_conn peeraddr]
     set "creation_user" $user_id
@@ -125,99 +125,99 @@ set page_body "
 [export_form_vars return_url company_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 
-		      <td colspan=2 class=rowtitle align=center>Add New Company</td>
+		      <td colspan=2 class=rowtitle align=center>[_ intranet-core.Add_New_Company]</td>
 		    </tr>
 		    <tr> 
-		      <td>Company Name</td>
+		      <td>[_ intranet-core.Company_Name]</td>
 		      <td> 
 <input type=text size=30 name=company_name value=\"$company_name\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Company Short Name<BR><font size=-2>(directory path)</font></td>
+		      <td>[_ intranet-core.Company_Short_Name]<BR><font size=-2>([_ intranet-core.directory_path])</font></td>
 		      <td> 
 <input type=text size=10 name=company_path value=\"$company_path\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Referral Source</td>
+		      <td>[_ intranet-core.Referral_Source]</td>
 		      <td> 
 <input type=text size=30 name=referral_source value=\"$referral_source\">
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Company Status</td>
+		      <td>[_ intranet-core.Company_Status]</td>
 		      <td> 
 [im_company_status_select "company_status_id" $company_status_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Status'>
-	[im_gif new {Add a new company status}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_company_sta]"]</A>"
 }
 
 append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Company Type</td>
+		      <td>[_ intranet-core.Company_Type]</td>
 		      <td> 
 [im_company_type_select "company_type_id" $company_type_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Type'>
-	[im_gif new {Add a new company type}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_company_typ]"]</A>"
 }
 
 append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Phone</td>
+		      <td>[_ intranet-core.Phone]</td>
 		      <td> 
 <input type=text size=15 name=phone value=\"$phone\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Fax</td>
+		      <td>[_ intranet-core.Fax]</td>
 		      <td> 
 <input type=text size=15 name=fax value=\"$fax\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Address 1</td>
+		      <td>[_ intranet-core.Address_1]</td>
 		      <td> 
 <input type=text size=30 name=address_line1 value=\"$address_line1\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Address 2</td>
+		      <td>[_ intranet-core.Address_2]</td>
 		      <td> 
 <input type=text size=30 name=address_line2 value=\"$address_line2\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>ZIP and City</td>
+		      <td>[_ intranet-core.ZIP_and_City]</td>
 		      <td> 
 <input type=text size=5 name=address_postal_code value=\"$address_postal_code\" >
 <input type=text size=30 name=address_city value=\"$address_city\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Country</td>
+		      <td>[_ intranet-core.Country]</td>
 		      <td> 
 [im_country_select address_country_code $address_country_code]
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Web Site</td>
+		      <td>[_ intranet-core.Web_Site]</td>
 		      <td> 
 <input type=text size=30 name=site_concept value=\"$site_concept\" >
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>VAT Number</td>
+		      <td>[_ intranet-core.VAT_Number]</td>
 		      <td> 
 <input type=text size=20 name=vat_number value=\"$vat_number\" >
 		      </td>
@@ -225,30 +225,30 @@ append page_body "
 
 
 		    <tr> 
-		      <td>(Expected) Annual Revenue</td>
+		      <td>[_ intranet-core.lt_Expected_Annual_Reven]</td>
 		      <td> 
 [im_category_select "Intranet Annual Revenue" annual_revenue_id $annual_revenue_id]
 "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Annual+Revenue'>
-	[im_gif new {Add a new annual revenue measure}]</A>"
+	[im_gif new "[_ intranet-core.lt_Add_a_new_annual_reve]"]</A>"
 }
 
 append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Is this a billable company?</td>
+		      <td>[_ intranet-core.lt_Is_this_a_billable_co]</td>
 		      <td> 
 
-<input type=radio name=billable_p value=t> Yes &nbsp;</input>
-<input type=radio name=billable_p value=f> No </input>
+<input type=radio name=billable_p value=t>[_ intranet-core.Yes]&nbsp;</input>
+<input type=radio name=billable_p value=f>[_ intranet-core.No]</input>
 
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Key Account Manager</td>
+		      <td>[_ intranet-core.Key_Account_Manager]</td>
 		      <td> 
 <select name=manager_id size=8>
 [im_employee_select_optionlist $manager_id]
@@ -256,7 +256,7 @@ append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Notes</td>
+		      <td>[_ intranet-core.Notes]</td>
 		      <td> 
 <textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
 		      </td>

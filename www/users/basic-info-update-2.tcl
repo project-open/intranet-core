@@ -45,7 +45,7 @@ if {"" == $return_url} { set return_url "/intranet/users/view?user_id=$user_id" 
 
 im_user_permissions $current_user_id $user_id view read write admin
 if {!write} {
-    ad_return_complaint 1 "<li>You have insufficient privileges to pursue this operation."
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_1]"
 }
 
 
@@ -57,22 +57,22 @@ set exception_text ""
 set exception_count 0
 
 if { ![info exists first_names] || $first_names == "" } {
-    append exception_text "<li>You need to type in a first name\n"
+    append exception_text "<li>[_ intranet-core.lt_You_need_to_type_in_a]"
     incr exception_count
 }
 
 if { ![info exists last_name] || $last_name == "" } {
-    append exception_text "<li>You need to type in a last name\n"
+    append exception_text "<li>[_ intranet-core.lt_You_need_to_type_in_a_1]"
     incr exception_count
 }
 
 if { ![info exists email] || $email == "" } {
-    append exception_text "<li>You need to type in an email address\n"
+    append exception_text "<li>[_ intranet-core.lt_You_need_to_type_in_a_2]"
     incr exception_count
 }
 
 if { [db_string check_email_in_use "select count(user_id) from users where upper(email) = upper(:email) and user_id <> :user_id"] > 0 } {
-    append exception_text "<li>the email $email is already in the database\n"
+    append exception_text "<li>[_ intranet-core.lt_the_email_email_is_al]"
     incr exception_count
 }
 
@@ -81,7 +81,7 @@ if {![empty_string_p $screen_name]} {
     set sn_unique_p [db_string check_screen_name_in_use "
     select count(*) from users where screen_name = :screen_name and user_id != :user_id"]
     if {$sn_unique_p != 0} {
-	append exception_text "<li>The screen name you have selected is already taken.\n"
+	append exception_text "<li>[_ intranet-core.lt_The_screen_name_you_h]"
 	incr exception_count
     }
 }
@@ -124,7 +124,7 @@ where
 
 if [catch { db_dml set_user_info $sql } errmsg] {
     db_release_unused_handles
-    ad_return_error "Ouch!"  "The database choked on our update:
+    ad_return_error "[_ intranet-core.Ouch]"  "[_ intranet-core.lt_The_database_choked_o]
 <blockquote>
 $errmsg
 </blockquote>

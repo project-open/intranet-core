@@ -79,7 +79,7 @@ proc_doc im_state_widget { {default ""} {select_name "usps_abbrev"}} "Returns a 
 
     set widget_value "<select name=\"$select_name\">\n"
     if { $default == "" } {
-        append widget_value "<option value=\"\" selected=\"selected\">Choose a State</option>\n"
+        append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_State]</option>\n"
     }
 
     db_foreach all_states {
@@ -99,7 +99,7 @@ proc_doc im_country_widget { {default ""} {select_name "country_code"} {size_sub
 
     set widget_value "<select name=\"$select_name\" $size_subtag>\n"
     if { $default == "" } {
-	append widget_value "<option value=\"\" selected=\"selected\">Choose a Country</option>\n"
+	append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_Country]</option>\n"
     }
     db_foreach all_countries {
 	select country_name, iso from country_codes order by country_name 

@@ -65,7 +65,7 @@ im_user_permissions $current_user_id $user_id_from_search view read write admin
 set edit_user $write
 
 if {!$read} {
-    ad_return_complaint 1 "<li>You have insufficient privileges to view this user."
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
     return
 }
 
@@ -93,15 +93,15 @@ where
 "]
 
 if { $result != 1 } {
-    ad_return_complaint "Bad User" "
-    <li>We couldn't find user #$user_id_from_search; perhaps this person was nuked?"
+    ad_return_complaint "[_ intranet-core.Bad_User]" "
+    <li>[_ intranet-core.lt_We_couldnt_find_user_]"
     return
 }
 
 
 # Set the title now that the $name is available after the db query
 set page_title $name
-set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
+set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 
 # ---------------------------------------------------------------
 # Show Basic User Information (name & email)
@@ -133,7 +133,7 @@ set user_basic_info_html "
 
 <table cellpadding=1 cellspacing=1 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Basic Information</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Basic_Information]</td>
   </tr>
 "
 
@@ -170,7 +170,7 @@ append user_basic_info_html "
   <td>\n"
 if {$write} {
     append user_basic_info_html "
-    <input type=submit value=Edit>\n"
+    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">\n"
 }
 append user_basic_info_html "
   </td>
@@ -244,7 +244,7 @@ order by
 [export_form_vars user_id return_url]
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Contact Information</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td>
   </tr>"
 
     set ctr 1
@@ -271,12 +271,12 @@ order by
 [export_form_vars user_id return_url]
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Contact Information</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td>
   </tr>
-  <tr><td colspan=2>No contact information</td></tr>\n"
+  <tr><td colspan=2>[_ intranet-core.lt_No_contact_informatio]</td></tr>\n"
     if {$write} {
         append contact_html "
-  <tr><td></td><td><input type=submit value='Edit'></td></tr>\n"
+  <tr><td></td><td><input type=submit value='[_ intranet-core.Edit]'></td></tr>\n"
     }
     append contact_html "</table></form>\n"
 }
@@ -314,16 +314,16 @@ if { [exists_and_not_null level] && $level < $current_level } {
     append projects_html "  </ul>\n"
 }	
 if { [empty_string_p $projects_html] } {
-    set projects_html "  <li><i>None</i>\n"
+    set projects_html "  <li><i>[_ intranet-core.None]</i>\n"
 }
 
 if {$ctr > $max_projects} {
-    append projects_html "<li><A HREF='/intranet/projects/index?user_id_from_search=$user_id_from_search&status_id=0'>more projects...</A>\n"
+    append projects_html "<li><A HREF='/intranet/projects/index?user_id_from_search=$user_id_from_search&status_id=0'>[_ intranet-core.more_projects]</A>\n"
 }
 
 
 if {[im_permission $current_user_id view_projects_all]} {
-    set projects_html [im_table_with_title "Past Projects" $projects_html]
+    set projects_html [im_table_with_title "[_ intranet-core.Past_Projects]" $projects_html]
 } else {
     set projects_html ""
 }
@@ -335,19 +335,20 @@ if {[im_permission $current_user_id view_projects_all]} {
 
 append admin_links "
 <table cellpadding=0 cellspacing=2 border=0>
-   <tr><td class=rowtitle align=center>User Administration</td></tr>
+   <tr><td class=rowtitle align=center>[_ intranet-core.User_Administration]</td></tr>
    <tr><td>
           <ul>\n"
 
 if { ![empty_string_p $last_visit] } {
-    append admin_links "<li>Last visit: $last_visit\n"
+    append admin_links "<li>[_ intranet-core.Last_visit]: $last_visit\n"
 }
 
 if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
-    append admin_links "<li>Registered from <a href=/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>\n"
+    set registration_ip_link "<a href=/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
+    append admin_links "<li>[_ intranet-core.lt_Registered_from_regis]"
 }
 
-# append admin_links "<li> User state: $user_state"
+# append admin_links "<li>[_ intranet-core.User_state]: $user_state"
 
 set user_id $user_id_from_search
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
@@ -359,17 +360,19 @@ case $member_state {
 	default { set user_state $member_state }
 }
 
+set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
+
 append admin_links "
-          <li>Member state: $user_state (<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>activate</a>, <a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>delete</a>)
-          <li><a href=$change_pwd_url>Update this user's password</a>
-          <li><a href=become?user_id=$user_id_from_search>Become this user!</a>
+          <li>[_ intranet-core.lt_Member_state_user_sta]</a>
+          <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
 <!--
           <li>
               <form method=POST action=search>
               <input type=hidden name=u1 value=$user_id_from_search>
               <input type=hidden name=target value=/admin/users/merge/merge-from-search.tcl>
               <input type=hidden name=passthrough value=u1>
-                  Search for an account to merge with this one: 
+                  [_ intranet-core.lt_Search_for_an_account]
  	      <input type=text name=keyword size=20>
               </form>
 -->
@@ -449,17 +452,17 @@ if {$portrait_p} {
     set portrait_gif [im_gif anon_portrait $portrait_alt]
     set description "No portrait for <br>\n$first_names $last_name."
 
-    if {$admin} { append description "<br>\nPlease upload a portrait."}
+    if {$admin} { append description "<br>\n[_ intranet-core.lt_Please_upload_a_portr]"}
 }
 
 set user_id $user_id_from_search
 set portrait_admin "
-<li><a href=\"/intranet/users/portrait/upload?$export_vars\">Upload portrait</a></li>
-<li><a href=\"/intranet/users/portrait/erase?$export_vars\">Delete portrait</a></li>\n"
+<li><a href=\"/intranet/users/portrait/upload?$export_vars\">[_ intranet-core.Upload_portrait]</a></li>
+<li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>\n"
 
 if {$portrait_p} {
     append portrait_admin "
-<li><a href=\"/intranet/users/portrait/comment-edit?$export_vars\">Edit comments about you</a></li>\n"
+<li><a href=\"/intranet/users/portrait/comment-edit?$export_vars\">[_ intranet-core.lt_Edit_comments_about_y]</a></li>\n"
 }
 
 
@@ -467,8 +470,8 @@ if {!$admin} { set portrait_admin "" }
 
 if {$admin && "" == $description} {
 	set description "
-No comments about $first_names $last_name.<br>
-Please click above to add a short comment.
+[_ intranet-core.lt_No_comments_about_fir]<br>
+[_ intranet-core.lt_Please_click_above_to]
 "
 }
 
@@ -486,7 +489,7 @@ set portrait_html "
 </table>
 "
 
-set portrait_html [im_table_with_title "Portrait" $portrait_html]
+set portrait_html [im_table_with_title "[_ intranet-core.Portrait]" $portrait_html]
 
 
 # ---------------------------------------------------------------

@@ -584,7 +584,7 @@ ad_proc im_reduce_spaces { string } {Replaces all consecutive spaces with one} {
     return $string
 }
 
-ad_proc im_yes_no_table { yes_action no_action { var_list [list] } { yes_button " Yes " } {no_button " No "} } {
+ad_proc im_yes_no_table { yes_action no_action { var_list [list] } { yes_button " [_ intranet-core.Yes] " } {no_button " [_ intranet-core.No] "} } {
     Returns a 2 column table with 2 actions - one for yes and one 
     for no. All the variables in var_list are exported into the to 
     forms. If you want to change the text of either the yes or no 

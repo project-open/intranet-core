@@ -36,7 +36,7 @@ set current_user_id [ad_maybe_redirect_for_registration]
 set current_user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 if {!$current_user_admin_p} {
-    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify user $user_id."
+    ad_return_complaint "<#_ Insufficient Privileges#>" "<li><#_ You have insufficient privileges to modify user %user_id%.#>"
     return
 }
 

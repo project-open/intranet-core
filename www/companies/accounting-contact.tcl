@@ -24,8 +24,8 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set page_title "Add accounting contact"
-set context_bar [ad_context_bar [list /intranet/companies/ "Companies"] $page_title]
+set page_title "[_ intranet-core.lt_Add_accounting_contac]"
+set context_bar [ad_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 
 set company_name [db_string company_name {
 select c.company_name
@@ -54,25 +54,27 @@ where
 
 set contact_info ""
 db_foreach address_book_info $sql  {
-    append contact_info "<li>$name, $email  </a>(<a href=accounting-contact-2?[export_url_vars company_id user_id]>make accounting contact</a>)"
+    append contact_info "<li>$name, $email  </a>(<a href=accounting-contact-2?[export_url_vars company_id user_id]>[_ intranet-core.lt_make_accounting_conta]</a>)"
 } 
 db_release_unused_handles
 
 
 if { [empty_string_p $contact_info] } {
+    set new_client_link "<A HREF=/intranet/users/new>[_ intranet-core.new_client_contact]</A>"
+    set new_company_employee_link "<A HREF=/intranet/companies/view?company_id=$company_id>[_ intranet-core.company_employee]</A>"
     set page_body "
-<H3>No Company Employees in our Database</H3>
-We have no contacts in our database for $company_name<BR>
+<H3>[_ intranet-core.lt_No_Company_Employees_]</H3>
+[_ intranet-core.lt_We_have_no_contacts_i]<BR>
 <UL>
-  <LI>Please create a <A HREF=/intranet/users/new>new client contact</A>.
+  <LI>[_ intranet-core.lt_Please_create_a_new_c]
 
-  <LI>Make the new client contact a <A HREF=/intranet/companies/view?company_id=$company_id>company employee</A> $company_name.
+  <LI>[_ intranet-core.lt_Make_the_new_client_c]
 
-  <LI>Finally, revisit this page and an option will appear to add the new client contact.
+  <LI>[_ intranet-core.lt_Finally_revisit_this_]
 
 </UL>
 
-Also, please make sure that the client isn't defined multiple with similar names.
+[_ intranet-core.lt_Also_please_make_sure]
 "
 
     doc_return  200 text/html [im_return_template]
@@ -81,8 +83,8 @@ Also, please make sure that the client isn't defined multiple with similar names
 
 set return_url "[im_url_stub]/companies/view?[export_url_vars company_id]"
 
-set page_title "Select accounting contact for $company_name"
-set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars company_id] "One company"] "Select contact"]
+set page_title "[_ intranet-core.lt_Select_accounting_con]"
+set context_bar [ad_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars company_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

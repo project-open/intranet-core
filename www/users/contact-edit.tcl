@@ -37,11 +37,11 @@ if [info exists user_id_from_search] {
 }
 
 if {![info exists user_id]} {
-    ad_return_complaint "Bad User" "<li>You must specify a valid user_id."
+    ad_return_complaint "[_ intranet-core.Bad_User]" "<li>[_ intranet-core.lt_You_must_specify_a_va]"
 }
 
 if {!$write} {
-    ad_return_complaint "Insufficient Privileges" "<li>You have insufficient privileges to modify this user."
+    ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "<li>[_ intranet-core.lt_You_have_insufficient_2]"
 }
 
 db_0or1row user_full_name "
@@ -63,7 +63,7 @@ if {[im_permission $current_user_id view_users]} {
 
 # use [info exists ] here?
 if { [empty_string_p $first_names] && [empty_string_p $last_name] } {
-    ad_return_complaint 1 "<li>We couldn't find user #$user_id; perhaps this person was nuke?"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_We_couldnt_find_user__1]"
     return
 }
 
@@ -100,38 +100,38 @@ if { [empty_string_p $ha_state] && [empty_string_p $ha_country_code] } {
 
 set contact_html "
 <table cellpadding=0 cellspacing=2 border=0>
-<tr><td colspan=2 class=rowtitle align=center>Contact Information</td></tr>
-<tr><td>Home phone</td>	<td><input type=text name=home_phone value=\"$home_phone\" ></td></tr>
-<tr><td>Work phone</td>	<td><input type=text name=work_phone value=\"$work_phone\" ></td></tr>
-<tr><td>Cell phone</td>	<td><input type=text name=cell_phone value=\"$cell_phone\" ></td></tr>
-<tr><td>Pager</td>	<td><input type=text name=pager value=\"$pager\" ></td></tr>
-<tr><td>Fax</td>	<td><input type=text name=fax value=\"$fax\" ></td></tr>
-<tr><td>Aim Screen Name</td><td><input type=text name=aim_screen_name value=\"$aim_screen_name\" ></td></tr>
-<tr><td>ICQ Number</td>	<td><input type=text name=icq_number value=\"$icq_number\" ></td></tr>
+<tr><td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td></tr>
+<tr><td>[_ intranet-core.Home_phone]</td>	<td><input type=text name=home_phone value=\"$home_phone\" ></td></tr>
+<tr><td>[_ intranet-core.Work_phone]</td>	<td><input type=text name=work_phone value=\"$work_phone\" ></td></tr>
+<tr><td>[_ intranet-core.Cell_phone]</td>	<td><input type=text name=cell_phone value=\"$cell_phone\" ></td></tr>
+<tr><td>[_ intranet-core.Pager]</td>	<td><input type=text name=pager value=\"$pager\" ></td></tr>
+<tr><td>[_ intranet-core.Fax]</td>	<td><input type=text name=fax value=\"$fax\" ></td></tr>
+<tr><td>[_ intranet-core.Aim_Screen_Name]</td><td><input type=text name=aim_screen_name value=\"$aim_screen_name\" ></td></tr>
+<tr><td>[_ intranet-core.ICQ_Number]</td>	<td><input type=text name=icq_number value=\"$icq_number\" ></td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
 </table>"
 
 set home_html "
 <table cellpadding=0 cellspacing=2 border=0>
-<tr><td colspan=2 class=rowtitle align=center>Home Address</td></tr>
-<tr><td valign=top>Home address</td><td>
+<tr><td colspan=2 class=rowtitle align=center>[_ intranet-core.Home_Address]</td></tr>
+<tr><td valign=top>[_ intranet-core.Home_address]</td><td>
 			<input type=text name=ha_line1 value=\"$ha_line1\" >
 			<input type=text name=ha_line2 value=\"$ha_line2\" ></td></tr>
-<tr><td>Home City</td>	<td><input type=text name=ha_city value=\"$ha_city\" ></td></tr>
-<tr><td>Home Country</td><td>[im_country_widget $ha_country_code ha_country_code]</td></tr>
-<tr><td>Home Postal Code</td><td><input type=text name=ha_postal_code value=\"$ha_postal_code\" ></td></tr>
+<tr><td>[_ intranet-core.Home_City]</td>	<td><input type=text name=ha_city value=\"$ha_city\" ></td></tr>
+<tr><td>[_ intranet-core.Home_Country]</td><td>[im_country_widget $ha_country_code ha_country_code]</td></tr>
+<tr><td>[_ intranet-core.Home_Postal_Code]</td><td><input type=text name=ha_postal_code value=\"$ha_postal_code\" ></td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
 </table>"
 
 set work_html "
 <table cellpadding=0 cellspacing=2 border=0>
-<tr><td colspan=2 class=rowtitle align=center>Work Address</td></tr>
-<tr><td valign=top>Work address</td><td>
+<tr><td colspan=2 class=rowtitle align=center>[_ intranet-core.Work_Address]</td></tr>
+<tr><td valign=top>[_ intranet-core.Work_address]</td><td>
 			<input type=text name=wa_line1 value=\"$wa_line1\" >
 			<input type=text name=wa_line2 value=\"$wa_line2\" ></td></tr>
-<tr><td>Work City</td>	<td><input type=text name=wa_city value=\"$ha_city\" ></td></tr>
-<tr><td>Work Postal Code</td><td><input type=text name=wa_postal_code value=\"$wa_postal_code\" ></td></tr>
-<tr><td>Work Country</td><td>[im_country_widget $wa_country_code wa_country_code]</td></tr>
+<tr><td>[_ intranet-core.Work_City]</td>	<td><input type=text name=wa_city value=\"$ha_city\" ></td></tr>
+<tr><td>[_ intranet-core.Work_Postal_Code]</td><td><input type=text name=wa_postal_code value=\"$wa_postal_code\" ></td></tr>
+<tr><td>[_ intranet-core.Work_Country]</td><td>[im_country_widget $wa_country_code wa_country_code]</td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
 </table>"
 

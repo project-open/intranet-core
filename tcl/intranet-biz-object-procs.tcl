@@ -397,7 +397,7 @@ append body_html $name
     }
 
     if { [empty_string_p $body_html] } {
-	set body_html "<tr><td colspan=$colspan><i>none</i></td></tr>\n"
+	set body_html "<tr><td colspan=$colspan><i>[_ intranet-core.none]</i></td></tr>\n"
     }
 
 
@@ -408,10 +408,10 @@ append body_html $name
     <tr>
       <td align=right>
 	<A HREF=/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]>
-	  Add member</A>&nbsp;
+	  [_ intranet-core.Add_member]</A>&nbsp;
       </td>"
 	append footer_html "
-      <td><input type=submit value=Del name=submit></td>
+      <td><input type=submit value='[_ intranet-core.Del]' name=submit></td>
       </td>
     </tr>"
 }

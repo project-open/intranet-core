@@ -184,7 +184,8 @@ proc_doc fold1 {f xs} {
     </ul>
 } {
     if { [null_p $xs] } {
-	error "ERROR: fold1 is undefined for empty lists."
+	set var fold1
+	error "[_ intranet-core.ERROR]: [_ intranet-core.lt_var_is_undefined_for_]"
     } else { 
 	fold $f [head $xs] [tail $xs]
     }
@@ -212,7 +213,8 @@ proc_doc scanl {f e xs} "takes a binary function f, a start element e and a list
 proc_doc scanl1 {f xs} "takes a binary function f and a list {x1 x2 x3 ...}
                        and returns {x1 (f x1 x2) (f (f x1 x2) x3) ...}" {
     if { [null_p $xs] } {
-	error "ERROR: scanl1 is undefined for empty lists."
+	set var scanl1
+	error "[_ intranet-core.ERROR]: [_ intranet-core.lt_var_is_undefined_for_]"
     } else { 
 	scanl $f [head $xs] [tail $xs]
     }

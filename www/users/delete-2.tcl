@@ -54,7 +54,7 @@ where user_id = :user_id"
 deleting_user = :admin_user_id,
 user_state = 'deleted'
 where user_id = :user_id"
-    set action_report "has been marked \"deleted\"."
+    set action_report "[_ intranet-core.lt_has_been_marked_delet]"
 }
 
 if { [exists_and_not_null return_url] } {
@@ -62,9 +62,9 @@ if { [exists_and_not_null return_url] } {
     return
 }
 
-doc_return  200 text/html "[ad_admin_header "Account deleted"]
+doc_return  200 text/html "[ad_admin_header "[_ intranet-core.Account_deleted]"]
 
-<h2>Account Deleted</h2>
+<h2>[_ intranet-core.Account_Deleted]</h2>
 
 <hr>
 

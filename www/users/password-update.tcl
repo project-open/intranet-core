@@ -24,12 +24,12 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 im_user_permissions $current_user_id $user_id view read write admin
 if {!$admin} {
-    ad_return_complaint 1 "<li>You have insufficient privileges to see this page"
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_5]"
     return
 }
 
-set page_title "Change Password"
-set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
+set page_title "[_ intranet-core.Change_Password]"
+set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 
 db_1row user_info_by_id "
 select
@@ -38,25 +38,27 @@ from
         dual
 "
 
+set ad_site_home_link [ad_site_home_link]
+
 set page_body "
 <form method=POST action=\"password-update-2\">
 [export_form_vars user_id name return_url]
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
-    <td colspan=2 class=rowtitle align=center>Update Password</td>
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Update_Password]</td>
   </tr>
-  <tr><td colspan=2>for $name in [ad_site_home_link]</td></tr>
+  <tr><td colspan=2>[_ intranet-core.lt_for_name_in_ad_site_h]</td></tr>
   <tr>
-    <td>New Password</td>
+    <td>[_ intranet-core.New_Password]</td>
     <td><input type=password name=password_1 size=15></td>
   </tr>
   <tr>
-    <td>Confirm</td>
+    <td>[_ intranet-core.Confirm]</td>
     <td><input type=password name=password_2 size=15></td>
   </tr>
   <tr>
     <td></td>
-    <td><input type=submit value=\"Update\"></td>
+    <td><input type=submit value=\"[_ intranet-core.Update]\"></td>
   </tr>
 </table>"
 

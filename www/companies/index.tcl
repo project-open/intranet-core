@@ -75,14 +75,14 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
-set page_title "Companies"
+set page_title "[_ intranet-core.Companies]"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set return_url "/intranet/companies/index"
 
 set user_view_page "/intranet/users/view"
 set company_view_page "/intranet/companies/view"
-set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
+set view_types [list "mine" "[_ intranet-core.Mine]" "all" "[_ intranet-core.All]" "[_ intranet-core.unassigned]" "[_ intranet-core.Unassigned]"]
 set letter [string toupper $letter]
 
 if { ![exists_and_not_null status_id] } {
@@ -286,16 +286,16 @@ ns_log Notice $selection
 set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
     append admin_html "
-<li><a href=/intranet/companies/new>Add a new Company</a>
-<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>Import Company CVS</a>
-<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>Import Company Contact CVS</a>
+<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
+<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CVS]</a>
+<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
 "
 }
 
 if {[im_permission $user_id admin_companies]} {
     append admin_html "
-<li><a href=upload-companies?[export_url_vars return_url]>Upload Company CSV</a>
-<li><a href=upload-contacts?[export_url_vars return_url]>Upload Contact CSV</a>
+<li><a href=upload-companies?[export_url_vars return_url]>[_ intranet-core.Upload_Company_CSV]</a>
+<li><a href=upload-contacts?[export_url_vars return_url]>[_ intranet-core.Upload_Contact_CSV]</a>
 "
 }
 
@@ -366,7 +366,7 @@ db_foreach projects_info_query $selection {
 if { [empty_string_p $table_body_html] } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
-        There are currently no entries matching the selected criteria
+        [_ intranet-core.lt_There_are_currently_n]
         </b></ul></td></tr>"
 }
 

@@ -28,7 +28,7 @@ set n_orders 0
 
 # Don't nuke anyone who pays us money ...
 if { $n_orders > 0 } {
-    ad_return_error "Can't Nuke a Paying Company" "We can't nuke a paying company because to do so would screw up accounting records."
+    ad_return_error "[_ intranet-core.lt_Cant_Nuke_a_Paying_Co]" "[_ intranet-core.lt_We_cant_nuke_a_paying]"
     return
 }
 
@@ -129,17 +129,17 @@ with_transaction {
 
 	db_foreach user_constraints_by_name $sql {
 	    set detailed_explanation "<p>
-	    It seems the table we missed is $table_name."
+	    [_ intranet-core.lt_It_seems_the_table_we]"
 	}
     }
 
-    ad_return_error "Failed to nuke" "The nuking of user $user_id failed.  Probably this is because your installation of the ArsDigita Community System has been customized and there are new tables that reference the users table.  Complain to your programmer!  
+    ad_return_error "[_ intranet-core.Failed_to_nuke]" "[_ intranet-core.lt_The_nuking_of_user_us]
 
 $detailed_explanation
 
 <p>
 
-For good measure, here's what the database had to say...
+[_ intranet-core.lt_For_good_measure_here]
 
 <blockquote>
 <pre>
@@ -149,14 +149,15 @@ $errmsg
     return
 }
 
-set page_content "[ad_admin_header "Done"]
+set return_to_admin_link "<a href=\"/intranet/users/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 
-<h2>Done</h2>
+set page_content "[ad_admin_header "[_ intranet-core.Done]"]
+
+<h2>[_ intranet-core.Done]</h2>
 
 <hr>
 
-We've nuked user $user_id.  You can <a href=\"/intranet/users/\">return
-to user administration</a> now.
+[_ intranet-core.lt_Weve_nuked_user_user_]
 
 [ad_admin_footer]
 "

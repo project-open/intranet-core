@@ -229,8 +229,8 @@ ad_proc -public im_user_is_authorized {conn args why} {
 	return filter_ok
     } else {
 	set ad_system_name [ad_system_name]
-	set login_link "<a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]><#_ login#></a>"a
-	ad_return_forbidden "<#_ Access denied#>" "You must be an employee or otherwise authorized member of %ad_system_name% to see this page. You can %login_link% as someone else if you like."
+	set login_link "<a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>[_ intranet-core.login]</a>"
+	ad_return_forbidden "[_ intranet-core.Access_denied]" "You must be an employee or otherwise authorized member of %ad_system_name% to see this page. You can %login_link% as someone else if you like."
 	return filter_return	
     }
 }
@@ -259,7 +259,8 @@ ad_proc -public im_user_is_customer {conn args why} {
     if { $is_customer_p > 0 } {
 	return filter_ok
     } else {
-	ad_return_forbidden "Access denied" "You must be a customer of [ad_system_name] to see this page"
+        set ad_system_name [ad_system_name]
+	ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_a_custome]"
 	return filter_return	
     }
 }
@@ -281,7 +282,7 @@ ad_proc -public im_verify_user_is_admin { conn args why } {
 	return filter_ok
     } else {
 	set ad_system_name [ad_system_name]
-	ad_return_forbidden "Access denied" "You must be an administrator of %ad_system_name% to see this page"
+	ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_an_admini]"
 	return filter_return	
     }
 }
@@ -296,8 +297,8 @@ ad_proc -public im_group_id_from_parameter { parameter } {
     set short_name [ad_parameter $parameter intranet]
     if { [empty_string_p $short_name] } {
 	set arsdigita_link "<a href=http://software.arsdigita.com/parameters/ad.ini>http://software.arsdigita.com/parameters/ad.ini</a>"
-	ad_return_error "<#_ Error: Missing parameter#>" "<#_ The parameter '%parameter%' is not defined in the intranet section of your server's parameters file. Please define this parameter, restart your server, and try again.#> 
-<p><#_ Note: You can find all the current intranet parameters at %arsdigita_link%, though this file may be more recent than your version of the ACS.#>"
+	ad_return_error "[_ intranet-core.lt_Error_Missing_paramet]" "[_ intranet-core.lt_The_parameter_paramet] 
+<p>[_ intranet-core.lt_Note_You_can_find_all]"
 	ad_script_abort
     }
 
@@ -426,7 +427,10 @@ ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers}
 }
 
 ad_proc -public im_restricted_access {} {Returns an access denied message and blows out 2 levels} {
-    ad_return_forbidden "Access denied" "You must be an authorized user of the [ad_system_name] intranet to see this page. You can <a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>login</a> as someone else if you like."
+    set ad_system_name [ad_system_name]
+    set login_link "<a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>[_ intranet-core.login]</a>"a
+    
+    ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_an_author]"
     return -code return
 }
 
@@ -448,7 +452,7 @@ ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {
 #!!!
 ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets up the proper url for the /groups stuff in acs} {
     if { [empty_string_p $group_id] && [empty_string_p $short_name] } {
-	ad_return_error "<#_ Missing group_id and short_name#>" "<#_ We need either the short name or the group id to set up the url for the /groups directory#>"
+	ad_return_error "[_ intranet-core.lt_Missing_group_id_and_]" "[_ intranet-core.lt_We_need_either_the_sh]"
     }
     if { [empty_string_p $short_name] } {
 	set short_name [db_string groups_get_short_name \

@@ -70,26 +70,31 @@ if { [catch {
 }
 
 if { $num_hours == 0 } {
-    append hours_html "<b>You haven't logged your hours in the last week. <BR>
-     Please <a href=hours/index?[export_url_vars on_which_table]>log them now</a></b>\n"
+    set log_hours_link "<a href=hours/index?[export_url_vars on_which_table]>[_ intranet-core.log_them_now]</a>"
+    append hours_html "<b>[_ intranet-core.lt_You_havent_logged_you] <BR>
+     [_ intranet-core.lt_Please_log_hours_link]</b>\n"
 } else {
-    append hours_html "You logged $num_hours [util_decode $num_hours 1 hour hours] in the last 7 days."
+    if { $num_hours == 1 } {
+	append hours_html "[_ intranet-core.lt_You_logged_num_hours_]"
+    } else {
+	 append hours_html "[_ intranet-core.lt_You_logged_num_hours__1]"
+    }
 }
 
 if {[im_permission $current_user_id view_hours_all]} {
     set user_id $current_user_id
     append hours_html "
     <ul>
-    <li><a href=hours/projects?[export_url_vars on_which_table user_id]>View your hours on all projects</a>
-    <li><a href=hours/total?[export_url_vars on_which_table]>View time spent on all projects by everyone</a>
-    <li><a href=hours/projects?[export_url_vars on_which_table]>View the hours logged by someone else</a>\n"
+    <li><a href=hours/projects?[export_url_vars on_which_table user_id]>[_ intranet-core.lt_View_your_hours_on_al]</a>
+    <li><a href=hours/total?[export_url_vars on_which_table]>[_ intranet-core.lt_View_time_spent_on_al]</a>
+    <li><a href=hours/projects?[export_url_vars on_which_table]>[_ intranet-core.lt_View_the_hours_logged]</a>\n"
 }
-append hours_html "<li><a href=hours/index?[export_url_vars on_which_table]>Log hours</a>\n"
+append hours_html "<li><a href=hours/index?[export_url_vars on_which_table]>[_ intranet-core.Log_hours]</a>\n"
 
 # Show the "Work Absences" link only to in-house staff.
 # Clients and Freelancers do not necessarily need it.
 if {[im_permission $current_user_id employee] || [im_permission $current_user_id wheel] || [im_permission $current_user_id accounting]} {
-    append hours_html "<li> <a href=/intranet/absences/>Work absences</a>\n"
+    append hours_html "<li> <a href=/intranet/absences/>[_ intranet-core.Work_absences]</a>\n"
 }
 append hours_html "</ul>"
 
@@ -99,7 +104,7 @@ append hours_html "</ul>"
 
 set admin_html ""
 append admin_html "
-  <li> <a href=/intranet/users/view?user_id=$current_user_id>About You</A>\n"
+  <li> <a href=/intranet/users/view?user_id=$current_user_id>[_ intranet-core.About_You]</A>\n"
 
 set administration_component [im_table_with_title "Administration" $admin_html]
 
