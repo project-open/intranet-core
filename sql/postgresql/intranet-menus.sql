@@ -487,7 +487,7 @@ begin
         ''projects_standard'',   -- label
         ''Summary'',            -- name
         ''/intranet/projects/index'', -- url
-        10,                     -- sort_order
+        1,                     -- sort_order
         v_project_menu,         -- parent_menu_id
         null                    -- p_visible_tcl
     );
