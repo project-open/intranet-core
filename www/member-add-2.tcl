@@ -18,7 +18,7 @@ ad_page_contract {
 
     @param user_id_from_search user_id to add
     @param object_id group to which to add
-    @param role role in which to add
+    @param role_id role in which to add
     @param return_url Return URL
     @param also_add_to_group_id Additional groups to which to add
 
@@ -27,42 +27,27 @@ ad_page_contract {
     user_id_from_search:integer
     { notify_asignee "0" }
     object_id:integer
-    role
+    role_id:integer
     return_url
     { also_add_to_group_id:integer "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-set user_is_group_member_p [ad_user_group_member $object_id $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $object_id $user_id]
-set user_admin_p [expr $user_is_admin_p + $user_is_group_admin_p]
 
-ns_log Notice "member-add-2: notify_asignee=$notify_asignee"
+set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
 
-if {!$user_admin_p} {
-    set err_msg "You are not an administator of this group.<br>\
+# expect commands such as: "im_project_permissions" ...
+#
+set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write admin"
+eval $perm_cmd
+
+if {!$write} {
+    ad_return_complaint 1 "You have no rights to add members to this object.<br>
     The system administator will be notified."
-
-    ad_return_error "Insufficient Permissions" $err_msg
+    return
 }
 
-db_transaction {
-
-    set already_member [db_string select_already_member "select count(*) from group_distinct_member_map where object_id=:object_id and member_id=:user_id_from_search"]
-
-    if {$already_member} {
-	group::remove_member \
-	    -group_id $object_id \
-	    -user_id $user_id_from_search
-    }
-
-    group::add_member \
-	-group_id $object_id \
-	-user_id $user_id_from_search \
-	-rel_type $role
-}
-
+im_biz_object_add_role $user_id_from_search $object_id $role_id
 
 if {0} {
 

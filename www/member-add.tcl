@@ -17,7 +17,7 @@ ad_page_contract {
     Presents a search form to find a user to add to a group.
 
     @param object_id group to which to add
-    @param role role in which to add
+    @param role_id role_id in which to add
     @param also_add_to_object_id Additional groups to which to add
     @param return_url Return URL
 
@@ -25,7 +25,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     object_id:naturalnum
-    { role "" }
+    { role_id "" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
     { select_from_group:naturalnum "" }
@@ -62,7 +62,7 @@ set locate_form "
 <form method=POST action=/intranet/user-search>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id notify_asignee\">
+<input type=hidden name=passthrough value=\"object_id return_url also_add_to_object_id notify_asignee\">
 
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
@@ -85,7 +85,7 @@ set locate_form "
   <tr> 
     <td>add as</td>
     <td>
-[im_biz_object_roles_select role $object_id]
+[im_biz_object_roles_select role_id $object_id $role_id]
     </td>
   </tr>
   <tr> 
@@ -108,7 +108,7 @@ set select_form "
 <form method=POST action=/intranet/member-add-2>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
-<input type=hidden name=passthrough value=\"object_id role return_url also_add_to_object_id\">
+<input type=hidden name=passthrough value=\"object_id role_id return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td class=rowtitle align=middle>Employee</td>
@@ -120,7 +120,7 @@ $employee_select
   </tr>
   <tr> 
     <td>add as 
-[im_biz_object_roles_select role $object_id]
+[im_biz_object_roles_select role_id $object_id $role_id]
     </td>
   </tr>
   <tr> 

@@ -36,6 +36,7 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt='$alt'>" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border alt='$alt'>" }
+	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border alt='$alt'>" }
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border alt='$alt'>" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border alt='$alt'>" }
 	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border alt='$alt'>" }

@@ -84,6 +84,7 @@ create table categories (
 	category		varchar(50) not null,
 	category_description	varchar(4000),
 	category_type		varchar(50),
+	category_gif		varchar(100) default 'category',
 	profiling_weight	integer default 1
 				constraint im_profiling_weight_ck
 				check(profiling_weight >= 0),
@@ -112,9 +113,15 @@ create table category_hierarchy (
 );
 
 
-
-
 -- views on intranet categories to make queries cleaner
+
+------------------------------------------------------
+-- Business Objects
+--
+create or replace view im_biz_object_role as 
+select category_id as role_id, category as role
+from categories 
+where category_type = 'Intranet Biz Object Role';
 
 ------------------------------------------------------
 -- Projects
@@ -207,6 +214,10 @@ from categories
 where category_type = 'Intranet Office Type';
 
 
+
+------------------------------------------------------
+-- Setup Categories
+--
 
 -- Intranet Customer Status
 insert into categories (
@@ -399,7 +410,7 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 
 
 -- ------------------------------------------------------------
--- Categories for Project Role
+-- Categories for Object Roles
 -- ------------------------------------------------------------
 
 -- Project/Open Core only knows about Full Member and Admin.
@@ -407,30 +418,26 @@ insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CA
 -- Project/Advertizing adds Producer, Designer, Texter, ...
 -- Project/IT adds Business Analyst, Architect, Developer, ...
 
-
 insert into categories (
-	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
-	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+	category_id, category, category_type, 
+	category_gif, category_description
 ) values (
-	'1',  '',  'f',  '1300',  
-	'Member (full)',  '',  'Intranet Project Role'
+	1300, 'Full Member', 'Intranet Biz Object Role', 
+	'member', 'Full Member'
 );
 
 insert into categories (
-	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
-	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+	category_id, category, category_type, 
+	category_gif, category_description
 ) values (
-	'1',  '',  'f',  '1301',  
-	'Project Manager',  '',  'Intranet Project Role'
+	1301, 'Project Manager', 'Intranet Biz Object Role', 
+	'project_manager', 'Project Manager'
 );
-
 
 insert into categories (
-	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
-	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+	category_id, category, category_type, 
+	category_gif, category_description
 ) values (
-	'1',  '',  'f',  '1302',
-	'Key Account',  '',  'Intranet Project Role'
+	1302, 'Key Account', 'Intranet Biz Object Role', 
+	'key_account', 'Key Account Manager'
 );
-
-

@@ -18,6 +18,61 @@ ad_library {
     @creation-date  27 June 2003
 }
 
+
+ad_proc -public im_customer_permissions {user_id customer_id view_var read_var write_var admin_var} {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $user_id on $customer_id
+} {
+    upvar $view_var view
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    set view 0
+    set read 0
+    set write 0
+    set admin 0
+
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+    set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
+    set user_is_group_member_p [ad_user_group_member $customer_id $user_id]
+    set user_is_group_admin_p [im_can_user_administer_group $customer_id $user_id]
+    set user_is_employee_p [im_user_is_employee_p $user_id]
+    set user_in_customer_group_p [db_string user_belongs_to_customer "select decode ( ad_group_member_p ( :user_id, $customer_id ), 'f', 0, 1 ) from dual" ]
+
+    # Admin permissions to global + intranet admins + group administrators
+    set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
+    set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+
+    set view $user_admin_p
+    set read $user_admin_p
+    set write $user_admin_p
+    set admin $user_admin_p
+
+    ns_log Notice "user_is_admin_p=$user_is_admin_p"
+    ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
+    ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
+    ns_log Notice "user_is_employee_p=$user_is_employee_p"
+    ns_log Notice "user_admin_p=$user_admin_p"
+
+    if {$user_is_group_member_p} { 
+	set view 1
+	set read 1
+    }
+    if {[im_permission $user_id view_customers_all]} { 
+	set view 1
+	set read 1
+    }
+
+    # No read - no write...
+    if {!$read} {
+	set write 0
+	set admin 0
+    }
+}
+
+
+
 namespace eval customer {
 
     ad_proc new {

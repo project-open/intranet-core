@@ -20,6 +20,112 @@ ad_library {
 }
 
 
+ad_proc -public im_biz_object_member_p { user_id object_id } {
+    Returns >0 if the user has some type of relationship with
+    the specified object.
+} {
+    set sql "
+	select count(*)
+	from acs_rels
+	where	object_id_one=:object_id
+		and object_id_two=:user_id
+"
+    set result [db_string im_biz_object_member_p $sql]
+    return result
+}
+
+ad_proc -public im_biz_object_member_ids { user_id object_id } {
+    Returns the list of acs_rel_ids that the user has 
+    with the specified object.
+} {
+    set sql "
+	select rel_id
+	from acs_rels
+	where	object_id_one=:object_id
+		and object_id_two=:user_id
+"
+    set result [db_list im_biz_object_member_ids $sql]
+    return result
+}
+
+ad_proc -public im_biz_object_role_ids { user_id object_id } {
+    Returns the list of "biz-object"-role IDs that the user has 
+    with the specified object.<br>
+} {
+    set sql "
+	select distinct
+		m.object_role_id
+	from
+		acs_rels r,
+		im_biz_object_members m
+	where
+		object_id_one=:object_id
+		and object_id_two=:user_id
+		and r.rel_id = m.rel_id
+"
+    set result [db_list im_biz_object_roles $sql]
+    return result
+}
+
+ad_proc -public im_biz_object_roles { user_id object_id } {
+    Returns the list of "biz-object"-roles that the user has 
+    with the specified object.<br>
+    For example, this procedure could return {Developer PM}
+    as the roles(!) of a specific user in a project or
+    {Key Account} for the roles in a customer.
+} {
+    set sql "
+	select distinct
+		im_category_from_id(m.object_role_id)
+	from
+		acs_rels r,
+		im_biz_object_members m
+	where
+		object_id_one=:object_id
+		and object_id_two=:user_id
+		and r.rel_id = m.rel_id
+"
+    set result [db_list im_biz_object_roles $sql]
+    return result
+}
+
+ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
+    Adds a user in a role to a Business Object.
+
+declare
+    v_role_id	integer;
+begin
+    select r.role_id
+    into v_role_id
+    from im_biz_object_role r
+    where
+	r.role = :role;
+    
+    if v_role_id = null then
+	v_role_id := 1300;
+    end if;
+end
+} {
+    # Check if the user already has the role
+    set roles [im_biz_object_role_ids $user_id $object_id]
+    set role_already_taken [lsearch -exact $roles $role_id]
+
+    # Add the user unless he's already got this role
+    if {$role_already_taken < 0} {
+	set sql "
+begin 
+    :1 := im_biz_object_member.new(
+	object_id_one	=> :object_id,
+	object_id_two	=> :user_id,
+	object_role_id	=> :role_id
+    );
+
+end;
+"
+	set rel_id [db_exec_plsql add_user $sql]
+    }
+}
+
 
 ad_proc -public im_biz_object_roles_select { select_name object_id { default "" } } {
     A common drop-down box to select the available roles for 
@@ -36,7 +142,7 @@ select distinct
 	r.object_role_id,
         im_category_from_id(r.object_role_id)
 from
-        im_biz_object_roles r
+        im_biz_object_role_map r
 where
         r.acs_object_type = :acs_object_type
 "
@@ -149,15 +255,19 @@ select
 	u.user_id, 
 	im_email_from_user_id(u.user_id) as email,
 	im_name_from_user_id(u.user_id) as name,
-	im_category_from_id(pm_rels.project_role_id) as member_role
+	im_category_from_id(c.category_id) as member_role,
+	c.category_gif as role_gif,
+	c.category_description as role_description
 from
 	users u,
 	acs_rels rels,
-	project_member_rels pm_rels
+	im_biz_object_members bo_rels,
+	categories c
 where
-	rels.object_id_two = u.user_id
-	and rels.object_id_one = :object_id
-	and rels.rel_id = pm_rels.rel_id
+	rels.object_id_one = :object_id
+	and rels.object_id_two = u.user_id
+	and rels.rel_id = bo_rels.rel_id
+	and bo_rels.object_role_id = c.category_id
 	$limit_to_group_id_sql 
 	$dont_allow_sql
 order by lower(name)"
@@ -184,10 +294,11 @@ if {$add_admin_links} {
     set body_html ""
     db_foreach users_in_group $sql_query {
 
-	# Return the first letter of the role (admin, member, ...)
-	# defaulting to a "-" if there was not role...
-	append $member_role "-"
-	set profile_letter [string toupper [string range $member_role 0 0]]
+	# Make up a GIF with ALT text to explain the role (Member, Key 
+	# Account, ...
+	set descr $role_description
+	if {"" == $descr} { set descr $member_role }
+	set profile_gif [im_gif $role_gif $descr]
 
 	incr count
 	if { $current_user_id == $user_id } { set found 1 }
@@ -209,8 +320,7 @@ append body_html "<A HREF=/intranet/users/view?user_id=$user_id>$name</A>"
 append body_html $name
 	}
 
-	append body_html "($profile_letter)
-  </td>"
+	append body_html "$profile_gif</td>"
 	if {$add_admin_links} {
 	    append body_html "
   <td align=middle>

@@ -25,6 +25,93 @@ ad_library {
 # Office OO methods new, del and name
 # -----------------------------------------------------------
 
+
+ad_proc -public im_office_permissions {user_id office_id view_var read_var write_var admin_var} {
+    Fill the "by-reference" variables read, write and admin
+    with the permissions of $user_id on $office_id.<BR>
+    The permissions depend on whether the office is a customers office or
+    an internal office:
+    <ul>
+      <li>Internal Offices:<br>
+	  Are readable by all employees
+      <li>Customer Offices:<br>
+	  Need either global customer access permissions
+	  or the user needs to be in the admin_group of
+	  the respective customer.
+    </ul>
+    Write and administration rights are only for administrators
+    and the customer key account managers.
+
+} {
+    upvar $view_var view
+    upvar $read_var read
+    upvar $write_var write
+    upvar $admin_var admin
+
+    set view 1
+    set read 0
+    set write 0
+    set admin 0
+
+    # Check if the customer is "internal"
+    set customer_type [db_1row customer_type "
+select
+	im_category_from_id(c.customer_type_id) as customer_type,
+	o.admin_group_id as office_admin_group_id,
+	c.admin_group_id as customer_admin_group_id
+from
+	im_offices o,
+	im_customers c
+where
+	o.office_id = :office_id
+	and o.customer_id = c.customer_id(+)
+"]
+
+    if {"" == $office_admin_group_id} { set office_admin_group_id 0}
+    if {"" == $customer_admin_group_id} { set customer_admin_group_id 0}
+
+    ns_log Notice "im_office_permission: customer_type=$customer_type"
+
+    # Now there are three options:
+    # NULL: not assigned to any customer yet
+    # 'internal': An internal office and
+    # != 'internal': A customers office
+
+    # Internal office: Allow employees to see the offices and
+    # Senior Managers to change them (or similar, as defined
+    # in the permission module)
+    if {[string equal "internal" $customer_type]} {
+	set user_is_office_member_p [ad_user_group_member $office_admin_group_id $user_id]
+	set user_is_office_admin_p [im_can_user_administer_group $office_admin_group $user_id]
+
+	set admin [im_permission $user_id edit_internal_offices]
+	set read [im_permission $user_id view_internal_offices]
+
+	if {$user_is_office_admin_p} { set admin 1 }
+	if {$user_is_office_member_p} { set read 1}
+
+	if {$admin} { set read 1}
+	set write $admin
+	return
+    }
+    
+    # The office if a customers office or a "dangeling" office
+    # (office without a customer)
+
+    set user_is_customer_member_p [ad_user_group_member $customer_admin_group_id $user_id]
+    set user_is_customer_admin_p [im_can_user_administer_group $customer_admin_group_id $user_id]
+
+    set read [expr $user_is_customer_member_p || [im_permission $user_id view_customer_contacts]]
+    set admin $user_is_customer_admin_p
+    set write $admin
+
+    if {$admin} { set read 1 }
+}
+
+
+
+
+
 namespace eval office {
 
     ad_proc -public new {
