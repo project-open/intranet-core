@@ -65,8 +65,8 @@ order by sort_order
 
 	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
 	if { [catch {
-	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
+	    # "uplevel" evaluates the 2nd argument!!
 	} err_msg] } {
 	    set html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
 	    set html [im_table_with_title $plugin_name $html]
