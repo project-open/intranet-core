@@ -41,8 +41,7 @@ set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write a
 eval $perm_cmd
 
 if {!$write} {
-    ad_return_complaint 1 "You have no rights to add members to this object.<br>
-    The system administator will be notified."
+    ad_return_complaint 1 "You have no rights to add members to this object."
     return
 }
 

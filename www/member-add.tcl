@@ -32,31 +32,23 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-set user_is_group_member_p [ad_user_group_member $object_id $user_id]
-set user_is_group_admin_p [im_can_user_administer_group $object_id $user_id]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-
 set translation_enabled [ad_parameter "EnableTranslationModule" "intranet" "0"]
-
-# --------------- Permissions Stuff --------------------------
-#
-# - System or Intranet admins can give all permissions
-# - Manager and member rights can only be given by Managers or SysAdmins
-# - Sub-Roles (Translator, ...) can be given by managers and
-#   members
-
-if {!$user_is_group_member_p && !$user_admin_p} {
-    ad_return_complaint "Insufficient Permissions" "<li>You need to be member of the group to add members."
-}
-
-# Find out the project/customer name and deal with the case that the name
-# may be empty.
-#
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
 set page_title "Add new member to $object_name"
-
-
 set context_bar [ad_context_bar "Add member"]
+
+
+# expect commands such as: "im_project_permissions" ...
+#
+set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
+set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write admin"
+eval $perm_cmd
+
+if {!$write} {
+    ad_return_complaint 1 "You have no rights to add members to this object."
+    return
+}
+
 
 set locate_form "
 <form method=POST action=/intranet/user-search>

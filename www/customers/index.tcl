@@ -83,11 +83,6 @@ set customer_view_page "/intranet/customers/view"
 set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
-if {![im_permission $user_id view_customer_contacts]} {
-    ad_return_complaint 1 "<li>You have insufficient permissions to see this page"
-    return
-}
-
 if { ![exists_and_not_null status_id] } {
     # Default status is Current - select the id once and memoize it
     set status_id [im_memoize_one select_customer_status_id \
@@ -378,6 +373,9 @@ set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
 db_foreach projects_info_query $selection {
+
+    im_customer_permissions $user_id $customer_id customer_view customer_read customer_write customer_admin
+    if {!$customer_read} { continue }
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

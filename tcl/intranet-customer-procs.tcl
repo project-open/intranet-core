@@ -18,6 +18,27 @@ ad_library {
     @creation-date  27 June 2003
 }
 
+ad_proc -public im_customer_link_tr {user_id customer_id customer_name title} {
+    Returns a formatted HTML component TR - TD - text - /TD - /TR
+    containing a link to a customer depending on the permissions
+    of the current user.<br>
+    Returns "" if the current user has no rights to see the customer.
+} {
+    im_customer_permissions $user_id $customer_id view read write admin
+    if {!$view} { return "" }
+
+    # Default link for "view" - show only the name
+    set link $customer_name
+    if {$read} {
+	set link "<A HREF='/intranet/customers/view?customer_id=$customer_id'>$customer_name</A>"
+    }
+    return "
+<tr>
+  <td>$title</td>
+  <td>$link</td>
+</tr>"
+}
+
 
 ad_proc -public im_customer_permissions {user_id customer_id view_var read_var write_var admin_var} {
     Fill the "by-reference" variables read, write and admin
@@ -45,26 +66,19 @@ ad_proc -public im_customer_permissions {user_id customer_id view_var read_var w
     set key_account_id [db_string get_key_account "select manager_id from im_customers where customer_id=:customer_id" -default 0]
     set user_is_key_account_p 0
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
-    set user_admin_p [expr $user_admin_p || $user_is_key_account_p]
-    ns_log Notice "key_account_id=$key_account_id"
-    ns_log Notice "user_is_key_account_p=$user_is_key_account_p"
+    set admin [expr $user_admin_p || $user_is_key_account_p]
 
-    ns_log Notice "user_is_admin_p=$user_is_admin_p"
-    ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
-    ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
-    ns_log Notice "user_is_employee_p=$user_is_employee_p"
-    ns_log Notice "user_admin_p=$user_admin_p"
+    ns_log Notice "im_customer_permissions: user_is_key_account_p=$user_is_key_account_p"
+    ns_log Notice "im_customer_permissions: user_is_admin_p=$user_is_admin_p"
+    ns_log Notice "im_customer_permissions: user_is_group_member_p=$user_is_group_member_p"
+    ns_log Notice "im_customer_permissions: user_is_group_admin_p=$user_is_group_admin_p"
+    ns_log Notice "im_customer_permissions: user_is_employee_p=$user_is_employee_p"
+    ns_log Notice "im_customer_permissions: user_admin_p=$user_admin_p"
 
-    if {!$user_is_group_member_p && ![im_permission $user_id view_customers]} {
-	ad_return_complaint "Insufficient Privileges" "
-        <li>You don't have sufficient privileges to see this page."
-    }
-
-    set admin $user_admin_p
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_customers_all]} { set read 1 }
-
-    if {!$admin} {
+    
+    if {$admin} {
 	set read 1
 	set write 1
     }

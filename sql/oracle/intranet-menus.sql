@@ -187,16 +187,77 @@ show errors
 
 
 declare
-    v_user_menu		integer;
-    v_admin_menu	integer;
-    v_menu		integer;
+	-- Menu IDs
+	v_menu			integer;
+	v_home_menu		integer;
+	v_user_menu		integer;
+	v_project_menu		integer;
+	v_customer_menu		integer;
+	v_office_menu		integer;
+	v_user_orgchart_menu	integer;
+	v_user_all_menu		integer;
+	v_user_freelancers_menu	integer;
+	v_user_customers_menu	integer;
+	v_user_employees_menu	integer;
+	v_project_status_menu	integer;
+	v_project_standard_menu	integer;
+	v_admin_menu		integer;
+	v_admin_categories_menu	integer;
+	v_admin_matrix_menu	integer;
+	v_admin_profiles_menu	integer;
+	v_admin_home_menu	integer;
+
+	-- Groups
+	v_employees		integer;
+	v_accounting		integer;
+	v_senman		integer;
+	v_customers		integer;
+	v_freelancers		integer;
+	v_proman		integer;
+	v_admins		integer;
 begin
 
     -- -----------------------------------------------------
     -- Main Menu
     -- -----------------------------------------------------
 
-    v_user_menu := im_menu.new (
+    select group_id
+    into v_admins
+    from groups
+    where group_name = 'P/O Admins';
+
+    select group_id
+    into v_senman
+    from groups
+    where group_name = 'Senior Managers';
+
+    select group_id
+    into v_proman
+    from groups
+    where group_name = 'Project Managers';
+
+    select group_id
+    into v_accounting
+    from groups
+    where group_name = 'Accounting';
+
+    select group_id
+    into v_employees
+    from groups
+    where group_name = 'Employees';
+
+    select group_id
+    into v_customers
+    from groups
+    where group_name = 'Customers';
+
+    select group_id
+    into v_freelancers
+    from groups
+    where group_name = 'Freelancers';
+
+
+    v_home_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -209,9 +270,15 @@ begin
 	sort_order =>	10,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_home_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_home_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_home_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_home_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_home_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_home_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_home_menu, v_freelancers, 'read');
 
-
-    v_menu := im_menu.new (
+    v_user_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -224,8 +291,14 @@ begin
 	sort_order =>	30,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_user_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_user_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_user_menu, v_employees, 'read');
 
-    v_menu := im_menu.new (
+
+    v_project_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -238,8 +311,16 @@ begin
 	sort_order =>	40,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_project_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_project_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_project_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_project_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_project_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_project_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_project_menu, v_freelancers, 'read');
 
-    v_menu := im_menu.new (
+
+    v_customer_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -252,8 +333,16 @@ begin
 	sort_order =>	50,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_customer_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_customer_menu, v_freelancers, 'read');
 
-    v_menu := im_menu.new (
+
+    v_office_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -266,6 +355,14 @@ begin
 	sort_order =>	60,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_office_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_office_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_office_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_office_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_office_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_office_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_office_menu, v_freelancers, 'read');
+
 
     v_admin_menu := im_menu.new (
 	menu_id =>	null,
@@ -280,13 +377,60 @@ begin
 	sort_order =>	70,
 	parent_menu_id => null
     );
+    acs_permission.grant_permission(v_admin_menu, v_admins, 'read');
 
+
+    -- -----------------------------------------------------
+    -- Projects Submenu
+    -- -----------------------------------------------------
+
+    v_project_standard_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Standard',
+	url =>		'/intranet/projects/index?view_name=project_list',
+	sort_order =>	10,
+	parent_menu_id => v_project_menu
+    );
+    acs_permission.grant_permission(v_project_standard_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_freelancers, 'read');
+
+
+    v_project_status_menu := im_menu.new (
+	menu_id =>	null,
+	object_type =>	'im_menu',
+	creation_date => sysdate,
+	creation_user => 0,
+	creation_ip =>	null,
+	context_id =>	null,
+	package_name =>	'intranet',
+	name =>		'Status',
+	url =>		'/intranet/projects/index?view_name=project_status',
+	sort_order =>	20,
+	parent_menu_id => v_project_menu
+    );
+    acs_permission.grant_permission(v_project_status_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_customers, 'read');
 
     -- -----------------------------------------------------
     -- Users Submenu
     -- -----------------------------------------------------
 
-    v_menu := im_menu.new (
+    v_user_employees_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -299,8 +443,14 @@ begin
 	sort_order =>	1,
 	parent_menu_id => v_user_menu
     );
+    acs_permission.grant_permission(v_user_employees_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_employees_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_employees_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_user_employees_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_user_employees_menu, v_employees, 'read');
 
-    v_menu := im_menu.new (
+
+    v_user_customers_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -313,8 +463,12 @@ begin
 	sort_order =>	2,
 	parent_menu_id => v_user_menu
     );
+    acs_permission.grant_permission(v_user_customers_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_customers_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_customers_menu, v_accounting, 'read');
 
-    v_menu := im_menu.new (
+
+    v_user_freelancers_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -327,8 +481,14 @@ begin
 	sort_order =>	3,
 	parent_menu_id => v_user_menu
     );
+    acs_permission.grant_permission(v_user_freelancers_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_freelancers_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_freelancers_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_user_freelancers_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_user_freelancers_menu, v_employees, 'read');
 
-    v_menu := im_menu.new (
+
+    v_user_all_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -341,8 +501,11 @@ begin
 	sort_order =>	4,
 	parent_menu_id => v_user_menu
     );
+    acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_all_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_all_menu, v_accounting, 'read');
 
-    v_menu := im_menu.new (
+    v_user_orgchart_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -355,20 +518,18 @@ begin
 	sort_order =>	5,
 	parent_menu_id => v_user_menu
     );
+    acs_permission.grant_permission(v_user_orgchart_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_orgchart_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_orgchart_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_user_orgchart_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_user_orgchart_menu, v_employees, 'read');
 
 
     -- -----------------------------------------------------
     -- Administration Submenu
     -- -----------------------------------------------------
 
--- declare
---     v_user_menu		integer;
---     v_admin_menu	integer;
---     v_menu		integer;
--- begin
---    v_admin_menu := 733;
-
-    v_menu := im_menu.new (
+    v_admin_home_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -381,8 +542,10 @@ begin
 	sort_order =>	10,
 	parent_menu_id => v_admin_menu
     );
+    acs_permission.grant_permission(v_admin_home_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_admin_home_menu, v_senman, 'read');
 
-    v_menu := im_menu.new (
+    v_admin_profiles_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -395,8 +558,10 @@ begin
 	sort_order =>	20,
 	parent_menu_id => v_admin_menu
     );
+    acs_permission.grant_permission(v_admin_profiles_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_admin_profiles_menu, v_senman, 'read');
 
-    v_menu := im_menu.new (
+    v_admin_matrix_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -409,8 +574,11 @@ begin
 	sort_order =>	30,
 	parent_menu_id => v_admin_menu
     );
+    acs_permission.grant_permission(v_admin_matrix_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_admin_matrix_menu, v_senman, 'read');
 
-    v_menu := im_menu.new (
+
+    v_admin_categories_menu := im_menu.new (
 	menu_id =>	null,
 	object_type =>	'im_menu',
 	creation_date => sysdate,
@@ -423,7 +591,8 @@ begin
 	sort_order =>	40,
 	parent_menu_id => v_admin_menu
     );
-
+    acs_permission.grant_permission(v_admin_categories_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_admin_categories_menu, v_senman, 'read');
 end;
 /
 show errors

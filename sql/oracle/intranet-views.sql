@@ -165,20 +165,18 @@ insert into im_view_columns values (2021,20,NULL,'Status',
 '$project_status','','',11,'im_permission $user_id view_projects');
 commit;
 
+
 -- CustomerListPage columns.
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
 insert into im_view_columns values (1,1,NULL,'Client',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',1,
-'im_permission $user_id view_customer_contacts');
-insert into im_view_columns values (2,1,NULL,'Client',
-'$customer_name','','',1,
-'expr 1 - [im_permission $user_id view_customer_names]');
+'expr 1');
 insert into im_view_columns values (3,1,NULL,'Type',
-'$customer_type','','',2,'im_permission $user_id employee');
+'$customer_type','','',2,'expr 1');
 insert into im_view_columns values (4,1,NULL,'Status',
-'$customer_status','','',3,'im_permission $user_id employee');
+'$customer_status','','',3,'expr 1');
 insert into im_view_columns values (5,1,NULL,'Contact',
 '"<A HREF=$user_view_page?user_id=$customer_contact_id>$customer_contact_name</A>"',
 '','',4,'im_permission $user_id view_customer_contacts');
@@ -187,6 +185,7 @@ insert into im_view_columns values (6,1,NULL,'Contact Email',
 'im_permission $user_id view_customer_contacts');
 -- insert into im_view_columns values (7,1,NULL,'Contact Phone',
 -- '$customer_phone','','',6,'im_permission $user_id view_customer_contact');
+commit;
 
 
 --------------------------------------------------------------

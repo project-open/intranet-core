@@ -16,7 +16,9 @@
     @projects_html;noquote@
     @company_members_html;noquote@
     @customer_members_html;noquote@
+    <!-- Component Bay Right -->
     <%= [im_component_bay right] %>
+    <!-- End Component Bay Right -->
 
   </td>
 </tr>

@@ -228,8 +228,8 @@ where
 <table cellspacing=1 cellpadding=1>
 <tr class=rowtitle>
   <td class=rowtitle>Office</td>
-  <td class=rowtitle>Type</td></tr>
-"
+  <td class=rowtitle>Type</td>
+</tr>\n"
 
     set ctr 1
     db_foreach office_list $sql {
@@ -241,10 +241,10 @@ where
   <td>
     $office_type
   </td>
-</tr>
-"
-    incr ctr
+</tr>\n"
+	incr ctr
     }
+    append component_html "</table>\n"
 
     return $component_html
 }

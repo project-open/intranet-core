@@ -71,10 +71,9 @@
 -------------------------------------------------------------
 -- Categories
 --
--- we use these for categorizing content, registering user interest
--- in particular areas, organizing archived Q&A threads
--- we also may use this as a mailing list to keep users up
--- to date with what goes on at the site
+-- we use categories as a universal storage for business
+-- object states and types, instead of a zillion of 
+-- tables like 'im_project_status' and 'im_project_type'.
 
 create sequence categories_seq start with 1;
 create table categories (
@@ -216,11 +215,11 @@ where category_type = 'Intranet Office Type';
 
 -- Intranet Customer Status
 insert into categories (
-	PROFILING_WEIGHT, CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, 
-	CATEGORY, MAILING_LIST_INFO, CATEGORY_TYPE
+	CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, 
+	CATEGORY, CATEGORY_TYPE
 ) values (
-	'1', '', 'f', '41', 
-	'Potential', '', 'Intranet Customer Status'
+	'', 'f', '41', 
+	'Potential', 'Intranet Customer Status'
 );
 
 insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 

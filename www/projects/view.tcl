@@ -88,11 +88,7 @@ where
 "
 
 if { ![db_0or1row projects_info_query $query] } {
-    # redirect to customers if exists
-    set customer_p [db_string exists_customer "select count(*) from im_customers where customer_id=:project_id"]
-    if {$customer_p} { ad_returnredirect "/intranet/customers/view?customer_id=$customer_id" }
-
-    ad_return_complaint 1 "Can't find the project with group id of $project_id"
+    ad_return_complaint 1 "Can't find the project with ID '$project_id'"
     return
 }
 
@@ -149,16 +145,8 @@ append project_base_data_html "
                           <tr> 
                             <td>SLS project#</td>
                             <td>$project_path</td>
-                          </tr>"
-if {[im_permission $user_id view_customers]} {
-    append project_base_data_html "  <tr> 
-                            <td>Client</td>
-                            <td><A HREF='/intranet/customers/view?customer_id=$customer_id'>$customer_name</A>
-                            </td>
-                          </tr>"
-}
-
-append project_base_data_html "
+                          </tr>
+[im_customer_link_tr $user_id $customer_id $customer_name "Client"]
 		          <tr> 
                             <td>Project Manager</td>
                             <td>
@@ -277,3 +265,4 @@ if {$counter > 1} {
 } else {
     set hierarchy_html ""
 }
+

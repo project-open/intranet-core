@@ -237,7 +237,16 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
 
     Default_letter==none marks a special behavious, hiding the alpha-bar.
 } {
-    # -------- Compile the list of parameters to pass-through-------
+    # -------- Defaults -----------------------------
+    set user_id [ad_get_user_id]
+    set url_stub [ns_conn url]
+
+    set sel "<td class=tabsel>"
+    set nosel "<td class=tabnotsel>"
+    set a_white "<a class=whitelink"
+    set tdsp "<td>&nbsp;</td>"
+
+    # -------- Calculate Alpha Bar with Pass-Through params -------
     set bind_vars [ns_set create]
     foreach var $export_var_list {
 	upvar 1 $var value
@@ -246,76 +255,61 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
 	    ns_log Notice "im_ustomer_navbar: $var <- $value"
         }
     }
-
-    # --------------- Determine the calling page ------------------
-    set user_id [ad_get_user_id]
-    set section ""
-    set url_stub [im_url_with_query]
-
-    switch -regexp $url_stub {
-	{project%5flist} { set section "Standard" }
-	{project%5fstatus} { set section "Status" }
-	{project%5fcosts} { set section "Costs" }
-	{index$} { set section "Standard" }
-	{/intranet/projects/$} { set section "Standard" }
-	default {
-	    set section "Standard"
-	}
-    }
-
     set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
     if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
 
-    set standard "$tdsp$nosel<a href='index?view_name=project_list'>Standard</a></td>"
-    set status "$tdsp$nosel<a href='index?view_name=project_status'>Status</a></td>"
-    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>Costs</a></td>"
+    # -------- Compile the list of menus -------
+    set parent_menu_sql "select menu_id from im_menus where name='Projects'"
+    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql]
+    set menu_select_sql "
+	select	m.*
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id
+		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by sort_order"
 
-    switch $section {
-"Standard" {set standard "$tdsp$sel Standard</td>"}
-"Status" {set status "$tdsp$sel Status</td>"}
-"Costs" {set costs "$tdsp$sel Costs</td>"}
-default {
-    # Nothing - just let all sections deselected
-}
+    # make sure at most one field gets selected..
+    set navbar ""
+    set found_selected 0
+    db_foreach menu_select $menu_select_sql {
+        set html "$nosel\n<a href=\"$url\">$name</a>\n</td>\n"
+        if {!$found_selected && [string equal $url_stub $url]} {
+            set html "$sel\n$a_white href=\"$url\"/>$name</a>\n</td>\n"
+            set found_selected 1
+        }
+        append navbar "$tdsp\n$html"
     }
 
-    set navbar "
-<table width=100% cellpadding=0 cellspacing=0 border=0>
-  <tr>
-    <td colspan=6 align=right>
-      <table cellpadding=1 cellspacing=0 border=0>
-        <tr> 
-          $standard"
-if {[im_permission $user_id view_hours]} { append navbar $status }
-if {[im_permission $user_id view_finance]} { append navbar $costs }
+    set navbar_html "
+      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
+        <TR>
+          <TD align=right>
+            <table border=0 cellspacing=0 cellpadding=1>
+              <tr>
+$navbar
+              </tr>
+            </table>
+          </TD>
+        </TR>
+        <TR>
+          <td colspan=6 class=tabnotsel align=center>\n"
 
-if {[im_permission $user_id add_projects]} { 
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new project"]</a></td>\n"
-}
-append navbar "
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=6 class=tabnotsel align=center>"
 if {![string equal "" $prev_page_url]} {
-    append navbar "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
+    append navbar_html "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
 }
-append navbar $alpha_bar
+
+append navbar_html $alpha_bar
+
 if {![string equal "" $next_page_url]} {
-    append navbar "<A HREF=$next_page_url>&gt;&gt;</A>\n"
+    append navbar_html "<A HREF=$next_page_url>&gt;&gt;</A>\n"
 }
-append navbar "
-    </td>
-  </tr>
-</table>
-"
-    return $navbar
+
+append navbar_html "
+          </td>
+        </tr>
+      </table>\n"
+
+    return $navbar_html
 }
 
 
@@ -526,16 +520,14 @@ ad_proc -public im_sub_navbar { parent_menu_id } {
 
     set navbar ""
 
-    set menu_select_sql {
+    set menu_select_sql "
 	select	m.*
 	from	im_menus m
 	where	parent_menu_id = :parent_menu_id
-	order by sort_order
-    }
+		and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by sort_order"
 
-#    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
-
-    # make sure only one field gets selected..
+    # make sure at most one field gets selected..
     set found_selected 0
     db_foreach menu_select $menu_select_sql {
         set html "$nosel<a href=\"$url\">$name</a></td>$tdsp\n"
@@ -599,13 +591,10 @@ from
         im_menus m
 where
         parent_menu_id is null
+	and acs_permission.permission_p(m.menu_id, :user_id, 'read') = 't'
 order by
         sort_order
 "
-
-#    set extra_sql "and im_permission_p(m.menu_id, :user_id, 'read') = 't'"
-
-
 
     # make sure only one field gets selected so...
     # .. check for the first complete match between menu and url.

@@ -34,7 +34,7 @@ ad_page_contract {
 } {
     { order_by "Project #" }
     { include_subprojects_p "f" }
-    { mine_p "f" }
+    { mine_p "t" }
     { status_id "" } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
@@ -375,7 +375,7 @@ set filter_html "
 <table border=0 cellpadding=0 cellspacing=0>
   <tr> 
     <td colspan='2' class=rowtitle align=center>
-      Filter Projects [im_new_project_html $user_id]
+      Filter Projects
     </td>
   </tr>
 "
@@ -496,6 +496,10 @@ set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
 db_foreach projects_info_query $selection {
+
+    im_project_permissions $user_id $project_id project_view project_read project_write project_admin
+    if {!$project_read} { continue }
+
     set url [im_maybe_prepend_http $url]
     if { [empty_string_p $url] } {
 	set url_string "&nbsp;"
@@ -583,6 +587,20 @@ set table_continuation_html "
     [im_maybe_insert_link $previous_page $next_page]
   </td>
 </tr>"
+
+# ---------------------------------------------------------------
+# Navbar
+# ---------------------------------------------------------------
+
+set letter "none"
+set next_page_url ""
+set previous_page_url ""
+
+set project_navbar_html "
+<br>
+[im_project_navbar $letter "/intranet/projects/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
+"
+
 
 
 db_release_unused_handles
