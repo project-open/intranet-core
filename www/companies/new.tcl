@@ -119,6 +119,11 @@ where
 set company_defaults [ns_set create]
 ns_set put $company_defaults billable_p $billable_p
 
+set billable_checked ""
+set nonbillable_checked ""
+if {$billable_p == "t"} { set billable_checked "checked" }
+if {$billable_p == "f"} { set nonbillable_checked "checked" }
+
 
 set page_body "
 <form method=post action=new-2>
@@ -242,8 +247,8 @@ append page_body "
 		      <td>[_ intranet-core.lt_Is_this_a_billable_co]</td>
 		      <td> 
 
-<input type=radio name=billable_p value=t>[_ intranet-core.Yes]&nbsp;</input>
-<input type=radio name=billable_p value=f>[_ intranet-core.No]</input>
+<input type=radio name=billable_p value=t $billable_checked>[_ intranet-core.Yes]&nbsp;</input>
+<input type=radio name=billable_p value=f $nonbillable_checked>[_ intranet-core.No]</input>
 
 		      </td>
 		    </tr>

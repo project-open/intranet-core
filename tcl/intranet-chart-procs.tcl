@@ -128,7 +128,7 @@ append html "<div class=\"yAxis\" style=\"margin-top:[expr $margin_top + -10]px;
         } else { 
              set curr_image "images/bullet-red.gif"
         }
-	append html "<div class=\"data\" style=\"margin-top:[expr $curr_margin_top]px;margin-left:[expr $curr_margin_left]px\"><a href=\"[lindex $curr_data 4]\"><img src=\"$curr_image\" width=\"[lindex $curr_data 2]\" height=\"[lindex $curr_data 2]\" alt=\"[lindex $curr_data 3]\" border=\"0\"/></a></div>\n"
+	append html "<div class=\"data\" style=\"margin-top:[expr $curr_margin_top]px;margin-left:[expr $curr_margin_left]px\"><a href=\"[lindex $curr_data 4]\"><img src=\"$curr_image\" width=\"[lindex $curr_data 2]\" height=\"[lindex $curr_data 2]\" alt=\"[lindex $curr_data 3]\" title=\"[lindex $curr_data 3]\" border=\"0\"/></a></div>\n"
     }
 
 # close div section

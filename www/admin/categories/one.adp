@@ -16,6 +16,10 @@
     <td><input size=40 name=category value="@category@"></td>
   </tr>
   <tr>
+    <td>#intranet-core.Category_translation#</td>
+    <td>@category_translation_component@</td>
+  </tr>
+  <tr>
     <td>#intranet-core.Category_description#</td>
     <td>
       <textarea name=category_description rows=5 cols=50 wrap=soft>@descr@

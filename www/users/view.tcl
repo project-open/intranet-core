@@ -452,7 +452,7 @@ if {$portrait_p} {
 	set widthheight ""
     }
     
-    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id_from_search\" alt=\"$portrait_alt\">"
+    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id_from_search\" alt=\"$portrait_alt\" title=\"$portrait_alt\" >"
 
 } else {
 
