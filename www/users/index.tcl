@@ -77,9 +77,19 @@ set return_url [im_url_with_query]
 set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
 
+
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
-set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+set user_group_id 0
+switch $user_group_name {
+    "All" { set user_group_id 0 }
+    "Unregistered" { set user_group_id -1 }
+    default {
+	set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+    }
+}
+
+
 
 
 if {$user_group_id > 0} {
@@ -151,13 +161,19 @@ set criteria [list]
 set extra_tables [list]
 set bind_vars [ns_set create]
 
-if { ![empty_string_p $user_group_id] && $user_group_id>0 } {
+if { $user_group_id > 0 } {
     append page_title " in group \"$user_group_name\""
-
     lappend criteria "u.user_id = m.member_id"
     lappend criteria "m.group_id = :user_group_id"
     lappend extra_tables "group_distinct_member_map m"
 }
+
+if { -1 == $user_group_id} {
+    # "Unregistered users
+    append page_title " Unregistered"
+    lappend criteria "u.user_id not in (select distinct member_id from group_distinct_member_map where group_id >= 0)"
+}
+
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     set letter [string toupper $letter]
@@ -178,6 +194,8 @@ switch $order_by {
     "Cell Phone" { set order_by_clause "order by upper(cell_phone)" }
     "Home Phone" { set order_by_clause "order by upper(home_phone)" }
     "Work Phone" { set order_by_clause "order by upper(work_phone)" }
+    "Last Visit" { set order_by_clause "order by last_visit DESC" }
+    "Creation" { set order_by_clause "order by creation_date DESC" }
 }
 
 set extra_table ""
@@ -193,6 +211,12 @@ if { ![empty_string_p $where_clause] } {
 set sql "
 select 
 	u.user_id,
+	u.username,
+	u.screen_name,
+	u.last_visit,
+	u.second_to_last_visit,
+	u.n_sessions,
+	o.creation_date,
 	im_email_from_user_id(u.user_id) as email,
 	im_name_from_user_id(u.user_id) as name,
 	p.first_names,
@@ -200,15 +224,36 @@ select
 	c.msn_screen_name as msn_email, 
 	c.home_phone, 
 	c.work_phone, 
-	c.cell_phone
+	c.cell_phone,
+	c.pager,
+	c.fax,
+	c.aim_screen_name,
+	c.msn_screen_name,
+	c.icq_number,
+	c.ha_line1,
+	c.ha_line2,
+	c.ha_city,
+	c.ha_state,
+	c.ha_postal_code,
+	c.ha_country_code,
+	c.wa_line1,
+	c.wa_line2,
+	c.wa_city,
+	c.wa_state,
+	c.wa_postal_code,
+	c.wa_country_code,
+	c.note,
+	c.current_information
 from 
 	users u, 
 	users_contact c,
-	persons p
+	persons p,
+	acs_objects o
 	$extra_table
 where 
 	u.user_id=p.person_id
 	and u.user_id=c.user_id(+)
+	and u.user_id = o.object_id
 	$where_clause
         $order_by_clause
 "

@@ -25,16 +25,14 @@ ad_library {
 # Add an alert to the database alert queue
 # -------------------------------------------------------------------
 
-ad_proc im_send_alert {target_id frequency url subject {message ""} } {
+ad_proc im_send_alert {target_id frequency subject {message ""} } {
     Add a new alert to the queue for a specific user.
     The idea is to aggregate several alerts into a single email,
     to avoid hundereds or emails, for example if a user has been
     assigned a lot of tasks.
-    So "Subject" in not suposed to go into the subject of the message
+    So "subject" in not suposed to go into the subject of the message
     (except if there is a mail with a single alert), but as an
     intermediate header.
-    The "url" has to be provided to the user, so that he gets directed
-    to the right page immediately.
     The "message" is suposed to be plain text only. We are going to
     preserve line break, but we will add a "\t" before each line.
     "Frequency" can be one of: now (minutely), hourly, daily, weekly, 
@@ -54,21 +52,9 @@ ad_proc im_send_alert {target_id frequency url subject {message ""} } {
     # Determine the sender address
     set sender_email [ad_parameter SystemOwner "" "webmaster@localhost"]
 
-    # Compile the message from various alerts
-    set msg_body "Subject: $subject
-URL: $url
-Message:
-"
-    # Append the message with tabulators "\t" before each line
-    set message_lines [split $message "\n"]
-    foreach message_line $message_lines {
-	append msg_body "\t$message_line\n"
-    }
-    append msg_body "\n"
-
     # Send out the mail
     if [catch { 
-	ns_sendmail $email $sender_email $subject $msg_body
+	ns_sendmail $email $sender_email $subject $message
     } errmsg] {
 	ns_log Notice "im_send_alert: Error sending to \"$email\": $errmsg"
     } else {

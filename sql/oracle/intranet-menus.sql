@@ -485,10 +485,22 @@ begin
 
     v_user_all_menu := im_menu.new (
 	package_name =>	'intranet',
+	label =>	'users_unassigned',
+	name =>		'Unassigned',
+	url =>		'/intranet/users/index?user_group_name=Unregistered&view_name=user_community&order_by=Creation',
+	sort_order =>	4,
+	parent_menu_id => v_user_menu
+    );
+    acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_all_menu, v_senman, 'read');
+
+
+    v_user_all_menu := im_menu.new (
+	package_name =>	'intranet',
 	label =>	'users_all',
 	name =>		'All Users',
 	url =>		'/intranet/users/index?user_group_name=All',
-	sort_order =>	4,
+	sort_order =>	5,
 	parent_menu_id => v_user_menu
     );
     acs_permission.grant_permission(v_user_all_menu, v_admins, 'read');
@@ -501,7 +513,7 @@ begin
 	label =>	'users_new',
 	name =>		'New User',
 	url =>		'/intranet/users/new',
-	sort_order =>	5,
+	sort_order =>	9,
 	parent_menu_id => v_user_menu
     );
     acs_permission.grant_permission(v_user_new_menu, v_admins, 'read');

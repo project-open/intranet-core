@@ -26,7 +26,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     user_id_from_search:integer
-    { notify_asignee "0" }
+    { notify_asignee 0 }
     object_id:integer
     role_id:integer
     return_url
@@ -48,19 +48,44 @@ if {!$write} {
 
 im_biz_object_add_role $user_id_from_search $object_id $role_id
 
-if {0} {
+# --------------------------------------------------------
+# Prepare to send out an email alert
+# --------------------------------------------------------
 
-    # Send out an email alert
-    if {"" != $notify_asignee && ![string equal "0" $notify_asignee]} {
-	set url "[ad_parameter SystemUrl]intranet/projects/view?object_id=$object_id"
-	set sql "select group_name from user_groups where object_id=:object_id"
-	set project_name [db_string project_name $sql]
-	set subject "You have been added to project \"$project_name\""
-	set message "Please click on the link above to access the project pages."
-	
-	im_send_alert $user_id_from_search "hourly" $url $subject $message
-    }
+set system_name [ad_system_name]
+set object_name [db_string project_name "select acs_object.name(:object_id) from dual"]
+set page_title "Notify user"
+set context [list $page_title]
+set export_vars [export_form_vars user_id_from_search object_id role_id return_url]
+set current_user_name [db_string cur_user "select im_name_from_user_id(:user_id) from dual"]
+set object_rel_url [db_string object_url "select url from im_biz_object_urls where url_type = 'view' and object_type = :object_type"]
+set role_name [db_string role_name "select im_category_from_id(:role_id) from dual" -default "Member"]
+
+# Get the SystemUrl without trailing "/"
+set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
+set sysurl_len [string length $system_url]
+set last_char [string range $system_url [expr $sysurl_len-1] $sysurl_len]
+if {[string equal "/" $last_char]} {
+    set system_url "[string range $system_url 0 [expr $sysurl_len-2]]"
 }
 
-ad_returnredirect $return_url
+set object_url "$system_url$object_rel_url?$object_id"
 
+db_1row user_name "
+select 
+	im_name_from_user_id(person_id) as user_name,
+	first_names,
+	last_name
+from
+	persons
+where
+	person_id=:user_id_from_search"
+
+
+if {"" != $notify_asignee && ![string equal "0" $notify_asignee]} {
+    # Show a textarea to edit the alert at member-add-2.tcl
+    ad_return_template
+} else {
+    ad_returnredirect $return_url
+}
+return

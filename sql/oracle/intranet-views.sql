@@ -100,6 +100,7 @@ insert into im_views (view_id, view_name, visible_for) values (2, 'customer_view
 insert into im_views (view_id, view_name, visible_for) values (10, 'user_list', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (11, 'user_view', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (12, 'user_contact', 'view_users');
+insert into im_views (view_id, view_name, visible_for) values (13, 'user_community', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (20, 'project_list', 'view_projects');
 insert into im_views (view_id, view_name, visible_for) values (21, 'project_costs', 'view_projects');
 insert into im_views (view_id, view_name, visible_for) values (22, 'project_status', 'view_projects');
@@ -295,6 +296,27 @@ insert into im_view_columns values (439,12,NULL,' ',
 'set a $write');
 --
 commit;
+
+
+-------------------------------------------------------------------
+-- UsersCommunityView
+--
+delete from im_view_columns where column_id > 1300 and column_id <= 1399;
+--
+insert into im_view_columns values (1310,13,NULL,'Creation',
+'$creation_date','','',10,'');
+insert into im_view_columns values (1315,13,NULL,'Last Visit',
+'$last_visit','','',15,'');
+insert into im_view_columns values (1320,13,NULL,'Name',
+'"<a href=$user_view_page?user_id=$user_id>$name</a>"','','',20,'');
+insert into im_view_columns values (1330,13,NULL,'Email',
+'"<a href=\"mailto:$email\">$email</a>"','','',30,'');
+--
+commit;
+
+
+
+
 
 
 ----------------------------------------------------------------

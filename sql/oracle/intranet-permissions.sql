@@ -337,6 +337,8 @@ begin
 
     acs_privilege.create_privilege('add_users','Add Users','Add Users');
     acs_privilege.create_privilege('view_users','View Users','View Users');
+    acs_privilege.create_privilege('view_user_regs','View User Registrations','View User Registrations');
+
     acs_privilege.create_privilege('search_intranet','Search Intranet','Search Intranet');
     acs_privilege.create_privilege('admin_categories','Admin Categories','Admin Categories');
 

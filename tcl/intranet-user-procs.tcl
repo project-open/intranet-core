@@ -40,18 +40,18 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     # m.group_id are all the groups to whom user_id belongs
     set profile_perm_sql "
 select
-        m.group_id,
+	m.group_id,
 	acs_permission.permission_p(m.group_id, :current_user_id, 'view') as view_p,
 	acs_permission.permission_p(m.group_id, :current_user_id, 'read') as read_p,
 	acs_permission.permission_p(m.group_id, :current_user_id, 'write') as write_p,
 	acs_permission.permission_p(m.group_id, :current_user_id, 'admin') as admin_p
 from
-        acs_objects o,
+	acs_objects o,
 	group_distinct_member_map m
 where
 	m.member_id=:user_id
      	and m.group_id = o.object_id
-        and o.object_type = 'im_profile'
+	and o.object_type = 'im_profile'
 "
     db_foreach profile_perm_check $profile_perm_sql {
 	ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p"
@@ -80,7 +80,7 @@ return ""
 
     # How many photos are there?
     set number_photos [db_string number_employees_with_photos {
-        select count(emp.user_id)
+	select count(emp.user_id)
 	  from im_employees_active emp, general_portraits  gp
  	 where emp.user_id <> :current_user_id
 	   and emp.user_id = gp.on_what_id
@@ -89,7 +89,7 @@ return ""
 	   and gp.portrait_primary_p = 't'}]
 
     if { $number_photos == 0 } {
-        return ""
+	return ""
     }
 
     # get the lucky user
@@ -100,9 +100,9 @@ return ""
     # Using im_select_row_range means we actually only will retrieve the
     # 1 row we care about
     set sql "select emp.user_id
-               from im_employees_active emp, general_portraits gp
-              where emp.user_id <> :current_user_id
-	        and emp.user_id = gp.on_what_id
+	       from im_employees_active emp, general_portraits gp
+	      where emp.user_id <> :current_user_id
+		and emp.user_id = gp.on_what_id
 		and gp.on_which_table = 'USERS'
 		and gp.approved_p = 't'
 		and gp.portrait_primary_p = 't'"
@@ -115,15 +115,15 @@ return ""
     set office_group_id [im_office_group_id]
     if { ![db_0or1row random_employee_get_info \
 	    "select u.first_names || ' ' || u.last_name as name, u.bio, u.skills, 
-                    NVL(u.msn_email, u.email) as msn_email,
-                    ug.group_name as office, ug.group_id as office_id
-               from im_employees_active u, user_groups ug, user_group_map ugm
-              where u.user_id = ugm.user_id(+)
-                and ug.group_id = ugm.group_id
-                and ug.parent_group_id = :office_group_id
-                and u.user_id = :portrait_user_id
-                and rownum < 2"] } {
-        # No lucky employee :(
+		    NVL(u.msn_email, u.email) as msn_email,
+		    ug.group_name as office, ug.group_id as office_id
+	       from im_employees_active u, user_groups ug, user_group_map ugm
+	      where u.user_id = ugm.user_id(+)
+		and ug.group_id = ugm.group_id
+		and ug.parent_group_id = :office_group_id
+		and u.user_id = :portrait_user_id
+		and rownum < 2"] } {
+	# No lucky employee :(
 	return ""
     }
 
@@ -152,12 +152,106 @@ return "
 }
 
 
+# ------------------------------------------------------
+# User Community Component
+# Show the most recent user registrations.
+# This allows to detect duplicat registrations
+# of users with multiple emails
+# ------------------------------------------------------
+
+ad_proc -public im_user_registration_component { current_user_id { max_rows 4} } {
+    Shows the list of the last n registrations
+
+    This allows to detect duplicat registrations
+    of users with multiple emails
+} {
+    set bgcolor(0) " class=roweven"
+    set bgcolor(1) " class=rowodd"
+    set user_view_page "/intranet/users/view"
+    
+    set user_id [ad_get_user_id]
+    
+    if {![im_permission $user_id view_user_regs]} { return "" }
+
+    set sql "
+select
+	u.user_id,
+	u.username,
+	u.screen_name,
+	u.last_visit,
+	u.second_to_last_visit,
+	u.n_sessions,
+	o.creation_date,
+	im_email_from_user_id(u.user_id) as email,
+	im_name_from_user_id(u.user_id) as name
+from
+	users u,
+	acs_objects o
+where
+	u.user_id = o.object_id
+order by
+	o.creation_date DESC"
+
+    set limited_sql "
+select
+	s.*
+from
+	(select
+		r.*,
+		rownum row_num
+	from
+		($sql) r
+	) s
+where
+	row_num <= :max_rows
+"
+
+    set rows_html ""
+    set ctr 1
+    db_foreach registered_users $limited_sql {
+	append rows_html "
+<tr $bgcolor([expr $ctr % 2])>
+  <td>$creation_date</td>
+  <td><A href=$user_view_page?user_id=$user_id>$name</A></td>
+  <td><A href=mailto:$email>$email</A></td>
+</tr>
+"
+	incr ctr
+    }
+
+
+    return "
+<table border=0 cellspacing=1 cellpadding=1>
+<tr class=rowtitle><td class=rowtitle align=center colspan=99>Recent Registrations</td></tr>
+<tr class=rowtitle>
+  <td align=center class=rowtitle>Date</td>
+  <td align=center class=rowtitle>Name</td>
+  <td align=center class=rowtitle>Email</td>
+</tr>
+$rows_html
+<tr class=rowblank align=right>
+  <td colspan=99>
+    <a href=/intranet/users/index?view_name=user_community&order_by=Creation>more...</a>
+  </td>
+</tr>
+</table>
+"
+}
+
+
+
+# ------------------------------------------------------
+#
+# ------------------------------------------------------
 
 ad_proc im_user_information { user_id } {
-Returns an html string of all the intranet applicable information for one 
-user. This information can be used in the shared community member page, for 
-example, to give intranet users a better understanding of what other people
-are doing in the site.
+
+    040505 fraber: Obsolete: Not used in P/O anywhere...
+
+    Returns an html string of all the intranet applicable information for one 
+    user. This information can be used in the shared community member page, for 
+    example, to give intranet users a better understanding of what other people
+    are doing in the site.
 } {
 
     set caller_id [ad_get_user_id]
@@ -182,12 +276,12 @@ are doing in the site.
 
     if { ![db_0or1row employee_info \
 	    "select u.*, uc.*, info.*,
-                    ((sysdate - info.first_experience)/365) as years_experience
-               from users u, users_contact uc, im_employees info
-              where u.user_id = :user_id 
-                and u.user_id = uc.user_id(+)
-                and u.user_id = info.user_id(+)"] } {
-        # Can't find the user		    
+		    ((sysdate - info.first_experience)/365) as years_experience
+	       from users u, users_contact uc, im_employees info
+	      where u.user_id = :user_id 
+		and u.user_id = uc.user_id(+)
+		and u.user_id = info.user_id(+)"] } {
+	# Can't find the user		    
 	ad_return_error "Error" "User doesn't exist"
 	ad_script_abort
     }
@@ -196,7 +290,7 @@ are doing in the site.
        select portrait_id,
 	      portrait_upload_date,
 	      portrait_client_file_name
-         from general_portraits
+	 from general_portraits
 	where on_what_id = :user_id
 	  and upper(on_which_table) = 'USERS'
 	  and approved_p = 't'
@@ -251,8 +345,8 @@ are doing in the site.
 	# Let's offer a link to the people this person manages, if s/he manages somebody
 	db_1row subordinates_for_user \
 		"select decode(count(*),0,0,1) as number_subordinates
-                   from im_employees_active 
-                  where supervisor_id=:user_id"
+		   from im_employees_active 
+		  where supervisor_id=:user_id"
 	if { $number_subordinates == 0 } {
 	    append page_content "  <li> <a href=[im_url_stub]/employees/org-chart>Org chart</a>: This user does not supervise any employees.\n"
 	} else {
@@ -261,9 +355,9 @@ are doing in the site.
 
 	set number_superiors [db_string employee_count_superiors \
 		"select max(level)-1 
-                   from im_employees
-                  start with user_id = :user_id
-                connect by user_id = PRIOR supervisor_id"]
+		   from im_employees
+		  start with user_id = :user_id
+		connect by user_id = PRIOR supervisor_id"]
 	if { [empty_string_p $number_superiors] } {
 	    set number_superiors 0
 	}
@@ -360,16 +454,16 @@ are doing in the site.
 
 	set sql \
 	    "select user_group_name_from_id(group_id) as project_name, parent_id,
-                    decode(parent_id,null,null,user_group_name_from_id(parent_id)) as parent_project_name,
-                    group_id as project_id
-               from im_projects p
-              where p.project_status_id in (select project_status_id
-                                              from im_project_status 
-                                             where project_status='Open' 
-                                                or project_status='Future')
-                and ad_group_member_p ( :user_id, p.group_id ) = 't'
-            connect by prior group_id=parent_id
-              start with parent_id is null"
+		    decode(parent_id,null,null,user_group_name_from_id(parent_id)) as parent_project_name,
+		    group_id as project_id
+	       from im_projects p
+	      where p.project_status_id in (select project_status_id
+					      from im_project_status 
+					     where project_status='Open' 
+						or project_status='Future')
+		and ad_group_member_p ( :user_id, p.group_id ) = 't'
+	    connect by prior group_id=parent_id
+	      start with parent_id is null"
 
 	set projects_html ""
 	db_foreach current_projects_for_employee $sql {
@@ -415,14 +509,14 @@ are doing in the site.
 	$office_absences
 	</ul>
 	"
-        }
+	}
 
 	if { [ad_parameter TrackHours intranet 0] && [im_user_is_employee_p $user_id] } {
 	    append page_content "
 	<p><a href=[im_url]/hours/index?on_which_table=im_projects&[export_url_vars user_id]>View this person's work log</a>
 	</ul>
 	"
-        }
+	}
 
     }
 
@@ -430,9 +524,9 @@ are doing in the site.
 
     # Append a list of all the user's groups
     set sql "select ug.group_id, ug.group_name 
-               from user_groups ug
-              where ad_group_member_p ( :user_id, ug.group_id ) = 't'
-              order by lower(group_name)"
+	       from user_groups ug
+	      where ad_group_member_p ( :user_id, ug.group_id ) = 't'
+	      order by lower(group_name)"
     set groups ""
     db_foreach groups_user_belong_to $sql {
 	append groups "  <li> $group_name\n"

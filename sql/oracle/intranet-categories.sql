@@ -70,6 +70,7 @@
 
 -- 3000-3099	Intranet Cost Center Type
 -- 3100-3199	Intranet Cost Center Status
+-- 3200-3299	Intranet CRM Tracking
 
 
 -------------------------------------------------------------
