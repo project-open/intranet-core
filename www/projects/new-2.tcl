@@ -218,17 +218,6 @@ where
     db_dml project_update $project_update_sql
 
 
-# ---------------------------------------------------------------------
-# Now create the directory structure necessary for the project
-# ---------------------------------------------------------------------
-
-# ToDo: Enable filestorage module
-if {0} {
-    set err_msg [im_filestorage_create_directories $project_id]
-    ns_log Notice $err_msg
-}
-
-
 if { [exists_and_not_null project_lead_id] } {
 
     # add the creating current user to the group
@@ -239,6 +228,7 @@ if { [exists_and_not_null project_lead_id] } {
         $project_lead_id
 
 }
+
 
 if { ![exists_and_not_null return_url] } {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
