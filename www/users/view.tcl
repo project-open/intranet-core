@@ -38,8 +38,8 @@ set td_class(1) "class=rowodd"
 
 if {0 == $user_id} {set user_id $object_id}
 if {0 == $user_id} {
-    ad_return_complaint 1 "<li>You need to specify a user_id"
-    return
+    # The "Unregistered Vistior" user
+    # Just continue and show his data...
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
