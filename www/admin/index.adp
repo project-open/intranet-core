@@ -33,13 +33,22 @@
 	Here you find advance software configuration options
 	of the underlying 
 	<A href=http://www.openacs.org>OpenACS platform</A>.
-	<li>
-	  <a href=/intranet/projects/import-project-txt>Import Projects from H:\\</a>
 
+<if [db_table_exists im_dynval_vars]>
+      <li>
+	<a href=/intranet-dynvals/admin/>Administer DynVals</a><br>
+	Modify the access permissions for "dynamic variables" or add
+	new dynamic (custom) variables.
+</if>
 
-      </ul>
+      <li>
+	<a href=/intranet/projects/import-project-txt>
+	  Import Projects from H:\\
+      </a>
+    </ul>
+
 <b>Dangerous!!</b>
-      <ul>
+    <ul>
 	<li>
 	  <a href=/intranet/anonymize>Anonymize this server (Test servers only)</a>
 	  This command destroys your entire server, replacing all strings (project
