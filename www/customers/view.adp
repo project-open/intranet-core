@@ -9,9 +9,6 @@
 
     @left_column;noquote@
     <%= [im_component_bay left] %>
-    <br>
-    @price_list_html;noquote@
-
   </td>
   <td valign=top>
 

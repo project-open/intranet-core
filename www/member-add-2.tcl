@@ -73,9 +73,9 @@ set object_url "$system_url$object_rel_url$object_id"
 
 db_1row user_name "
 select 
-	im_name_from_user_id(person_id) as user_name,
-	first_names,
-	last_name
+	im_name_from_user_id(person_id) as user_name_from_search,
+	first_names as first_names_from_search,
+	last_name as last_name_from_search
 from
 	persons
 where

@@ -3,7 +3,7 @@
 <property name="context">@context;noquote@</property>
 
 <H1>Send Notification</H1>
-@first_names@ @last_name@ has been added to @system_name@.
+@first_names_from_search@ @last_name_from_search@ has been added to @system_name@.
 Edit the message below and hit "Send Email" to 
 notify this user.
 </p>
@@ -16,7 +16,7 @@ notify this user.
 </textarea>
 
 <textarea name=message rows=10 cols=70 wrap=hard>
-Dear @first_names@,
+Dear @first_names_from_search@,
 
 You have been added as a @role_name@
 to @object_name@

@@ -127,7 +127,12 @@ set end_idx [expr $start_idx + $how_many - 1]
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+if {!$view_id} { 
+    ad_return_complaint 1 "<li>Internal error: unknown view '$view_name'<br>
+    You are trying to access a view that has not been defined in the database.<br>
+    Please notify your system administrator."
+}
 set column_headers [list]
 set column_vars [list]
 
