@@ -62,7 +62,9 @@ CREATE TABLE im_biz_object_urls (
 	url_type		varchar(100)
 				constraint im_biz_obj_urls_url_type_ck
 				check(url_type in ('view', 'edit')),
-	url			varchar(1000)
+	url			varchar(1000),
+		constraint im_biz_obj_urls_pk
+		primary key(object_type, url_type)
 );
 
 
