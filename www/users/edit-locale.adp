@@ -1,6 +1,7 @@
-<master>
-  <property name="title">@instance_name;noquote@</property>
-  <property name="context_bar">@context_bar;noquote@</property>
+<master src="../master">
+<property name="title">#intranet-core.Users#</property>
+<property name="main_navbar_label">user</property>
+
 
 <if @admin_p@>
   <div style="float: right;">
@@ -8,4 +9,4 @@
   </div>
 </if>
 
-<include src="/packages/acs-lang/www/change-locale-include" return_url="@return_url;noquote@" return_p="@return_p;noquote@">
+<formtemplate id="locale"></formtemplate>
