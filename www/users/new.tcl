@@ -191,16 +191,19 @@ foreach option $managable_profiles {
     lappend managable_profiles_reverse [list $group_name $profile_id]
 }
 ns_log Notice "/users/new: managable_profiles_reverse=$managable_profiles_reverse"
+ns_log Notice "/users/new: profile_values=$profile_values"
 
 
-# fraber 20040123: Adding the list of profiles that
-# the current user can administer
-ad_form -extend -name register -form {
-    {profile:text(multiselect),multiple
-        {label "Group Membership"}
-        {options $managable_profiles_reverse }
-	{values $profile_values }
-	{-html {size 8}}
+if {[llength $managable_profiles_reverse] > 0} {
+    # fraber 20040123: Adding the list of profiles that
+    # the current user can administer
+    ad_form -extend -name register -form {
+	{profile:text(multiselect),multiple
+	    {label "Group Membership"}
+	    {options $managable_profiles_reverse }
+	    {values $profile_values }
+	    {-html {size 8}}
+	}
     }
 }
 
@@ -332,10 +335,17 @@ END;"
 
 	# Profile changes its value, possibly because of strange
 	# ad_form sideeffects
-	ns_log Notice "/users/new: profile=$profile"
+#	ns_log Notice "/users/new: profile=$profile"
 	ns_log Notice "/users/new: profile_org=$profile_org"
 
 	foreach profile_tuple [im_profiles_all] {
+
+	    # don't enter into setting and unsetting profile
+	    # values of $profile doesn't exist, 
+	    # probably because it's a freelancer or customer
+	    # who is editing himself.
+	    if {![info exists profile]} { break }
+
 	    ns_log Notice "profile_tuple=$profile_tuple"
 	    set profile_id [lindex $profile_tuple 0]
 	    set profile_name [lindex $profile_tuple 1]
@@ -466,7 +476,7 @@ END;"
     }    
 
     # Fallback:
-    if { ![exists_and_not_null return_url] } {
+    if { [exists_and_not_null return_url] } {
 	ad_returnredirect $return_url
     } else {
 	ad_returnredirect "/intranet/users/"
