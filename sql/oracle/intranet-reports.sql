@@ -145,7 +145,7 @@ from
         im_customers c
 where
         p.customer_id = c.customer_id
-        and p.parent_id = parent_p.project_id
+        and p.parent_id = parent_p.project_id(+)
 ');
 commit;
 

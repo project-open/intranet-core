@@ -91,7 +91,7 @@ create or replace package im_office
 is
     function new (
 	office_id	in integer default null,
-	object_type	in varchar,
+	object_type	in varchar default 'im_office',
 	creation_date	in date default sysdate,
 	creation_user	in integer default null,
 	creation_ip	in varchar default null,
