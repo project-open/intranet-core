@@ -137,9 +137,6 @@ END ad_group_member_admin_role_p;
 show errors
 
 
-ad_group_member_admin_role_p(602, 643
-
-
 create or replace function im_proj_url_from_type ( 
 	v_project_id IN integer, 
 	v_url_type IN varchar )
@@ -245,8 +242,8 @@ show errors;
 
 prompt *** intranet-views - Dynamic Views for ListPages
 @intranet-views.sql
-prompt *** intranet-reports - More Views for Reports & Backup
-@intranet-reports.sql
+prompt *** intranet-core-backup - More Views for Reports & Backup
+@intranet-core-backup.sql
 prompt *** intranet-components - Dynamic Plug-in Components
 @intranet-components.sql
 prompt *** intranet-permissions - Horizontal and Vertical Permissions

@@ -382,6 +382,7 @@ ad_proc im_currency_select {select_name {default ""}} {
 ad_proc -public im_category_from_id { category_id } {
     Get a category_name from 
 } {
+    if {"" == $category_id} { return "" }
     set sql "select im_category_from_id($category_id) from dual"
     return [util_memoize "db_string category_from_id \"$sql\" -default {}"]
 

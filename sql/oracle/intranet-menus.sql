@@ -390,7 +390,7 @@ begin
     v_project_standard_menu := im_menu.new (
 	package_name =>	'intranet',
 	label =>	'projects_standard',
-	name =>		'Standard',
+	name =>		'Summary',
 	url =>		'/intranet/projects/index',
 	sort_order =>	10,
 	parent_menu_id => v_project_menu
@@ -573,7 +573,7 @@ begin
     v_menu := im_menu.new (
 	package_name =>	'intranet',
 	label =>	'project_standard',
-	name =>		'Standard',
+	name =>		'Summary',
 	url =>		'/intranet/projects/view?view_name=standard',
 	sort_order =>	10,
 	parent_menu_id => v_project_menu

@@ -262,54 +262,6 @@ if {$counter > 1} {
 
 
 # ---------------------------------------------------------------------
-# Translation Details Component
-# ---------------------------------------------------------------------
-
-set project_trans_data_html "
-<table cellpadding=0 cellspacing=2 border=0>
-  <tr> 
-    <td colspan=2 class=rowtitle align=middle>
-      Project Details
-    </td>
-  </tr>
-  <tr> 
-    <td>Client Project#</td>
-    <td>$customer_project_nr</td>
-  </tr>
-  <tr> 
-    <td>Final User</td>
-    <td>$final_customer</td>
-  </tr>
-  <tr> 
-    <td>Subject Area</td>
-    <td>[im_category_from_id $subject_area_id]</td>
-  </tr>
-  <tr> 
-    <td>Source Language</td>
-    <td>[im_category_from_id $source_language_id]</td>
-  </tr>
-  <tr> 
-    <td>Target Languages</td>
-    <td>[im_target_languages $project_id]</td>
-  </tr>
-  <tr> 
-    <td>Quality Level</td>
-    <td>[im_category_from_id $expected_quality_id]</td>
-  </tr>
-  <tr> 
-    <td></td>
-    <td>
-<form action=/intranet-translation/projects/edit-trans-data method=POST>
-[export_form_vars project_id return_url]
-<input type=submit value=Edit name=submit3>
-</form>
-    </td>
-  </tr>
-</table>
-"
-
-
-# ---------------------------------------------------------------------
 # Projects Submenu
 # ---------------------------------------------------------------------
 
