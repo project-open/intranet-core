@@ -84,6 +84,7 @@ create table im_view_columns (
 	-- for when the column name results from an "as" command
 	-- for ex., you can customize viewing columns
 	extra_select		varchar(4000),
+	extra_from		varchar(4000),
 	extra_where		varchar(4000),
 	sort_order		integer not null,
 	-- set of permission tokens that allow viewing this column,
