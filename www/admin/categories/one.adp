@@ -46,7 +46,7 @@
 </table>
 
 <input type=hidden name=enabled_p value="t">
-<input type=submit name=submit $input_form_html>
+<input type=submit name=submit value="#intranet-core.Create_Category#" $input_form_html>
 </form>
 @delete_action_html;noquote@
 

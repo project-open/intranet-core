@@ -92,6 +92,17 @@ ad_proc -public user_permissions { current_user_id user_id view_var read_var wri
 }
 
 
+ad_proc -public im_employee_options { {include_empty 1} } {
+    Cost provider options
+} {
+    set options [db_list_of_lists provider_options "
+        select first_names || ' ' || last_name, user_id
+        from im_employees_active
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
 ad_proc im_user_select { select_name { default "" } } {
     Returns an html select box named $select_name and defaulted to 
     $default with a list of all the available project_leads in 
@@ -107,7 +118,6 @@ from im_employees_active emp
 order by lower(name)"
     return [im_selection_to_select_box $bind_vars project_lead_list $sql $select_name $default]
 }
-
 
 
 ad_proc im_employee_select_multiple { select_name { defaults "" } { size "6"} {multiple ""}} {

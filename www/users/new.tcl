@@ -261,15 +261,6 @@ ad_form -extend -name register -on_request {
 	    # port, because we have dropped the outer join with it...
 	    db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)"
 
-	    if {[db_table_exists im_employees]} {
-		# Add a im_employees record to the user since the 3.0 PostgreSQL
-		# port, because we have dropped the outer join with it...
-
-		# Simply add the record to all users, even it they are not employees...
-		db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
-
-	    }
-
 	} else {
 
 	    # Existing user: Update variables
@@ -420,6 +411,17 @@ ad_form -extend -name register -on_request {
 	    }
 	}
 
+
+	# Add a im_employees record to the user since the 3.0 PostgreSQL
+	# port, because we have dropped the outer join with it...
+	if {[db_table_exists im_employees]} {
+	    
+	    # Simply add the record to all users, even it they are not employees...
+	    set im_employees_exist [db_string im_employees_exist "select count(*) from im_employees where employee_id = :user_id"]
+	    if {!$im_employees_exist} {
+		db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
+	    }
+	}
 
 # 20041124 fraber: disabled db_transaction for PostgreSQL
 	# Close db_transaction

@@ -210,6 +210,29 @@ ad_proc -public im_company_internal { } {
 }
 
 
+ad_proc -public im_company_options { {include_empty 1} } { 
+    Cost company options
+} {
+    set options [db_list_of_lists company_options "
+	select company_name, company_id
+	from im_companies
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
+ad_proc -public im_provider_options { {include_empty 1} } { 
+    Cost provider options
+} {
+    set options [db_list_of_lists provider_options "
+	select company_name, company_id
+	from im_companies
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
+
 ad_proc -public im_company_type_select { select_name { default "" } } {
     Returns an html select box named $select_name and defaulted to 
     $default with a list of all the project_types in the system

@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/admin/menus/toggle.tcl
+# /packages/intranet-core/www/admin/toggle.tcl
 #
 # Copyright (C) 2004 Project/Open 
 #
