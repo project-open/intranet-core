@@ -243,6 +243,7 @@ declare
 	v_admin_menu		integer;
 	v_admin_categories_menu	integer;
 	v_admin_matrix_menu	integer;
+	v_admin_parameters_menu	integer;
 	v_admin_profiles_menu	integer;
 	v_admin_home_menu	integer;
 
@@ -535,7 +536,6 @@ begin
 	parent_menu_id => v_admin_menu
     );
     acs_permission.grant_permission(v_admin_home_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_admin_home_menu, v_senman, 'read');
 
     v_admin_profiles_menu := im_menu.new (
 	package_name =>	'intranet',
@@ -546,7 +546,6 @@ begin
 	parent_menu_id => v_admin_menu
     );
     acs_permission.grant_permission(v_admin_profiles_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_admin_profiles_menu, v_senman, 'read');
 
     v_admin_matrix_menu := im_menu.new (
 	package_name =>	'intranet',
@@ -557,19 +556,26 @@ begin
 	parent_menu_id => v_admin_menu
     );
     acs_permission.grant_permission(v_admin_matrix_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_admin_matrix_menu, v_senman, 'read');
 
+    v_admin_parameters_menu := im_menu.new (
+	package_name =>	'intranet',
+	label =>	'admin_parameters',
+	name =>		'Parameters',
+	url =>		'/intranet/admin/parameters/',
+	sort_order =>	39,
+	parent_menu_id => v_admin_menu
+    );
+    acs_permission.grant_permission(v_admin_parameters_menu, v_admins, 'read');
 
     v_admin_categories_menu := im_menu.new (
 	package_name =>	'intranet',
 	label =>	'admin_categories',
 	name =>		'Categories',
 	url =>		'/intranet/admin/categories/',
-	sort_order =>	40,
+	sort_order =>	50,
 	parent_menu_id => v_admin_menu
     );
     acs_permission.grant_permission(v_admin_categories_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_admin_categories_menu, v_senman, 'read');
 end;
 /
 show errors
