@@ -261,15 +261,16 @@ prompt *** intranet-potransdemo-data - Project/Open Translation Demo Data
 
 
 -- -----------------------------------------------------------
--- We base our allocations, employee count, etc. around
+-- We base our financial information, allocations, etc. around
 -- a fundamental unit or block.
--- im_start_blocks record the dates these blocks
--- will start for this system.
+-- im_start_blocks record the dates these blocks will start for 
+-- this system.
 
 create table im_start_blocks (
-	start_block		date not null 
-				constraint im_start_blocks_pk
-				primary key,
+	start_block		date not null,
+	block_type		varchar(50)
+				constraint im_start_blocks_type_ck
+				check(block_type in ('week','month')),
 				-- We might want to tag a larger unit
 				-- For example, if start_block is the first
 				-- Sunday of a week, those tagged with
@@ -278,50 +279,71 @@ create table im_start_blocks (
 	start_of_larger_unit_p	char(1) default 'f'
 				constraint im_start_blocks_larger_ck
 				check (start_of_larger_unit_p in ('t','f')),
-	note			varchar(4000)
+	note			varchar(4000),
+		constraint im_start_blocks_pk
+		primary key (start_block, block_type)
 );
 
 
--- Populate im_start_blocks. Start with Sunday, Jan 7th 1996
--- and end after inserting 550 weeks. Note that 550 is a 
--- completely arbitrary number. 
+
+
+-- Populate im_start_blocks with weeks. Start with Sunday, 
+-- Jan 7th 1996 and end after inserting 1000 weeks. Note 
+-- that 1000 is a completely arbitrary number. 
 DECLARE
-  v_max 			integer;
-  v_i				integer;
-  v_first_block_of_month	integer;
-  v_next_start_block		date;
+    v_max 			integer;
+    v_i				integer;
+    v_first_block_of_month	integer;
+    v_next_start_block		date;
 BEGIN
-  v_max := 550;
+    v_max := 1000;
 
-  FOR v_i IN 0..v_max-1 LOOP
-    -- for convenience, select out the next start block to insert into a variable
-    select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
-    into v_next_start_block 
-    from dual;
+    FOR v_i IN 0..v_max-1 LOOP
+	-- for convenience, select out the next start block to insert into a variable
+	select to_date('1996-01-07','YYYY-MM-DD') + v_i*7 
+	into v_next_start_block 
+	from dual;
 
-    insert into im_start_blocks
-    (start_block) 
-    values
-    (to_date(v_next_start_block));
+	insert into im_start_blocks (
+		start_block,
+		block_type
+	) values (
+		to_date(v_next_start_block),
+		'week'
+	);
 
-    -- set the start_of_larger_unit_p flag if this is the first
-    -- start block of the month
-    update im_start_blocks
-       set start_of_larger_unit_p='t'
-     where start_block=to_date(v_next_start_block)
-       and not exists (
+	-- set the start_of_larger_unit_p flag if this is the first
+	-- start block of the month
+	update im_start_blocks
+	   set start_of_larger_unit_p='t'
+	 where start_block=to_date(v_next_start_block)
+	   and not exists (
 	select 1 
-          from im_start_blocks
-         where to_char(start_block,'YYYY-MM') = 
+	      from im_start_blocks
+	     where to_char(start_block,'YYYY-MM') = 
 	         to_char(v_next_start_block,'YYYY-MM')
-               and start_of_larger_unit_p='t');
-  END LOOP;
+	           and start_of_larger_unit_p='t');
+    END LOOP;
+
+    for row in (
+	select unique concat(to_char(start_block, 'YYYY-MM'),'-01') as first_day_in_month
+        from im_start_blocks
+	where block_type = 'week'
+     ) loop
+
+	insert into im_start_blocks (
+		start_block,
+		block_type
+	) values (
+		to_date(row.first_day_in_month),
+		'month'
+	);
+
+     end loop;
+
 END;
 /
 show errors;
-
-
-
 
 
 -- Create these entries at the very end,
