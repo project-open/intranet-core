@@ -18,6 +18,7 @@ set page_body "<H1>$page_title</H1>"
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
+set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_admin_p} {
@@ -29,7 +30,7 @@ if {!$user_admin_p} {
 # get the list of all backups of business objects i
 # in the backup set
 #
-set file_list [exec /usr/bin/find $path -type f]
+set file_list [exec $find_cmd $path -type f]
 foreach line $file_list {
     set files [split $line "/"]
     set last_file_idx [expr [llength $files] - 1]

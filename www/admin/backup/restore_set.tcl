@@ -40,6 +40,7 @@ set context ""
 set menu_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
+set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
@@ -73,7 +74,7 @@ if {![file isdirectory $backup_path]} {
 
 
 # Get the list of all backup sets under backup_path
-set file_list [exec /usr/bin/find $backup_path -type d -maxdepth 1]
+set file_list [exec $find_cmd $backup_path -type d -maxdepth 1]
 
 set backup_sets_html "<ul>\n"
 

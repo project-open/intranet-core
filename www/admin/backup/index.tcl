@@ -36,6 +36,7 @@ if {!$user_is_admin_p} {
 set page_title "Backup & Restore"
 set context_bar [ad_context_bar $page_title]
 set context ""
+set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]
 
 set menu_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
@@ -50,7 +51,7 @@ set bgcolor(1) " class=roweven"
 
 # Get the list of all backup sets under backup_path
 set backup_path [im_backup_path]
-set file_list [exec /usr/bin/find $backup_path -type d -maxdepth 1 -mindepth 1]
+set file_list [exec $find_cmd $backup_path -type d -maxdepth 1 -mindepth 1]
 
 set backup_sets_html "<ul>\n"
 
