@@ -11,7 +11,7 @@ ad_library {
 }
 
 
-ad_proc -public im_component_bay { bay_name } {
+ad_proc -public im_component_bay { location } {
     Checks the database for Plug-ins for this page and component
     bay.
 } {
@@ -44,7 +44,7 @@ from
 	im_component_plugins c
 where
 	page_url=:url_stub
-	and bay_name=:bay_name
+	and location=:location
 order by sort_order
 "
 

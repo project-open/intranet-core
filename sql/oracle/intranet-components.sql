@@ -38,7 +38,13 @@ create table im_component_plugins (
 				primary key
 				constraint im_component_plugin_id_fk
 				references acs_objects,
+				-- The name of the package that creates the plugin
+				-- ... used to cleanup when uninstalling a package.
 	package_name		varchar(200) not null,
+				-- An integer inicating the order of the
+				-- component in a component bay. Values should
+				-- go like 10, 20, 30 etc. (like old Basic) to
+				-- allow future modules to insert its components.
 	sort_order		integer not null,
 				-- page url starting with /intranet/, 
 				-- but without the '.tcl' extension.
@@ -46,10 +52,10 @@ create table im_component_plugins (
 				-- module is mounted. Bad but not better
 				-- idea around yet...
 	page_url		varchar(200) not null,
-	bay_name		varchar(100) not null,
-				-- Impose "German" order or leave some freedom?
-				-- constraint im_comp_plugin_bay_name_check
-				-- check(bay_name in ('left','right','bottom'))
+				-- One of "left", "right" or "bottom".
+	location		varchar(100) not null
+				constraint im_comp_plugin_location_check
+				check(location in ('left','right','bottom')),
 	component_tcl		varchar(4000)
 );
 
@@ -63,7 +69,7 @@ is
 	creation_ip	in varchar,
 	context_id	in integer,
 	package_name	in varchar,
-	bay_name	in varchar,
+	location	in varchar,
 	page_url	in varchar,
 	sort_order	in integer,
 	component_tcl	in varchar
@@ -88,7 +94,7 @@ is
 	creation_ip	in varchar,
 	context_id	in integer,
 	package_name	in varchar,
-	bay_name	in varchar,
+	location	in varchar,
 	page_url	in varchar,
 	sort_order	in integer,
 	component_tcl	in varchar
@@ -105,9 +111,9 @@ is
 		context_id =>		context_id
 	);
 	insert into im_component_plugins (
-    plugin_id, package_name, sort_order, page_url, bay_name, component_tcl
+    plugin_id, package_name, sort_order, page_url, location, component_tcl
 	) values (
-    v_plugin_id, package_name, sort_order, page_url, bay_name, component_tcl
+    v_plugin_id, package_name, sort_order, page_url, location, component_tcl
 	);
 	return v_plugin_id;
     end new;
@@ -153,7 +159,7 @@ is
     is
 	v_name	varchar(200);
     begin
-	select	page_url || '.' || bay_name
+	select	page_url || '.' || location
 	into	v_name
 	from	im_component_plugins
 	where	plugin_id = plugin_id;
@@ -188,7 +194,7 @@ begin
 	context_id =>	null,
 	package_name =>	'intranet',
 	page_url =>	'/intranet/projects/view',
-	bay_name =>	'right',
+	location =>	'right',
 	sort_order =>	20,
 	component_tcl =>
 
