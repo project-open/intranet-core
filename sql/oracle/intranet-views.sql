@@ -41,7 +41,9 @@ create table im_views (
 				constraint im_views_status_fk
 				references im_categories,
 	visible_for		varchar(1000),
-	view_sql		varchar(4000)
+	view_sql		varchar(4000),
+				-- order for restore
+	sort_order		integer
 );
 
 create sequence im_view_columns_seq start with 1000;
