@@ -212,9 +212,12 @@ select
 	p.*,
 	1 as llevel
 from
-	im_projects p
+	im_projects p,
+	im_categories c
 where 
 	p.customer_id=:customer_id
+	and p.project_status_id = c.category_id(+)
+	and lower(c.category) not in ('deleted')
 order by p.project_nr
 "
 

@@ -13,6 +13,11 @@
   </td>
   <td valign=top>
     <%= [im_component_bay right] %>
+
+    <p>
+      See the list of <A href=/intranet/offices/>all offices... </A>
+    </p>
+
   </td>
 </tr>
 </table><br>

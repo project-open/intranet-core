@@ -38,6 +38,7 @@ ad_page_contract {
     { office_path "" }
     { office_status_id:integer "" }
     { office_type_id:integer "" }
+    { customer_id:integer "" }
     { return_url "" }
     { note "" }
     { phone "" }
@@ -107,11 +108,11 @@ if { ![empty_string_p $errors] } {
 # -----------------------------------------------------------------
 
 # Double-Click protection: the office Id was generated at the new.tcl page
-set cust_count [db_string cust_count "select count(*) from im_offices where office_id=:office_id"]
-if {0 == $cust_count} {
+set office_count [db_string office_count "select count(*) from im_offices where office_id=:office_id"]
+if {0 == $office_count} {
 
     # create a new Office:
-    set main_office_id [office::new \
+    set office_id [office::new \
 	-office_name	$office_name \
 	-office_path	$office_name]
 }
@@ -123,13 +124,18 @@ if {0 == $cust_count} {
 set update_sql "
 update im_offices set
 	office_name = :office_name,
+	office_path = :office_path,
+	office_status_id = :office_status_id,
+	office_type_id = :office_type_id,
+	customer_id = :customer_id,
 	phone = :phone,
 	fax = :fax,
 	address_line1 = :address_line1,
 	address_line2 = :address_line2,
 	address_city = :address_city,
 	address_postal_code = :address_postal_code,
-	address_country_code = :address_country_code
+	address_country_code = :address_country_code,
+	note = :note
 where
 	office_id = :office_id
 "

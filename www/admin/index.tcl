@@ -29,5 +29,3 @@ set context_bar [ad_context_bar $page_title]
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
-
-ttt

@@ -63,6 +63,7 @@ where	o.office_id=:office_id
     set page_title "Add office"
     set context_bar [ad_context_bar [list index "Offices"] $page_title]
     set office_name ""
+    set customer_id ""
     set office_path ""
     # Grab today's date
     set note ""
@@ -97,9 +98,15 @@ set page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Office Directory Path<BR><font size=-2></font></td>
+		      <td>Office Directory Path</td>
 		      <td> 
 <input type=text size=20 name=office_path value=\"$office_path\">
+		      </td>
+		    </tr>
+		    <tr> 
+		      <td>Company</td>
+		      <td> 
+[im_customer_select "customer_id" $customer_id "" [list "Deleted" "Past" "Declined" "Inactive"]]
 		      </td>
 		    </tr>
 		    <tr> 

@@ -27,7 +27,7 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
-    { status_id:integer 0 }
+    { status_id:integer 160 }
     { type_id:integer 0 }
     { start_idx:integer 1 }
     { order_by "Office" }
@@ -145,12 +145,12 @@ set criteria [list]
 set bind_vars [ns_set create]
 if { ![empty_string_p $status_id] && $status_id != 0 } {
     ns_set put $bind_vars status_id $status_id
-    lappend criteria "c.office_status_id=:status_id"
+    lappend criteria "o.office_status_id=:status_id"
 }
 
 if { $type_id > 0 } {
     ns_set put $bind_vars type_id $type_id
-    lappend criteria "c.office_type_id=:type_id"
+    lappend criteria "o.office_type_id=:type_id"
 }
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
@@ -235,7 +235,7 @@ from
 	($perm_sql) perm
 where
 	perm.office_id = o.office_id
-	and o.office_id = c.main_office_id(+)
+	and o.customer_id = c.customer_id(+)
         and (
 		perm.permission_member > 0
         or
@@ -267,7 +267,7 @@ if {[string compare $letter "ALL"]} {
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from
-		im_offices c
+		im_offices o
         where 
 		1=1
 		$where_clause
@@ -295,7 +295,7 @@ set filter_html "
 </tr>
 <tr>
   <td valign=top>Office Status: </td>
-  <td valign=top>[im_select status_id $status_types ""]</td>
+  <td valign=top>[im_select status_id $status_types $status_id]</td>
 </tr>
 <tr>
   <td valign=top>Office Type: </td>

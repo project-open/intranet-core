@@ -11,6 +11,8 @@
     .titlerow  {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; background-color: #BBCFE1; background: #BBCFE1;}
 
     .rowtitle  {font-size: 10pt; color: #ffffff; background-color: #648E6A; }
+    .list-header  {font-size: 10pt; color: #ffffff; background-color: #648E6A; }
+
     .rowodd {font-size: 8pt; background-color: #F1F6F2;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
     .roweven {font-size: 8pt; background-color: #E3EDE4;}

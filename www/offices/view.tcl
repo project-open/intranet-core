@@ -23,6 +23,7 @@ ad_page_contract {
     { office_id:integer 0}
     { object_id:integer 0}
     { view_name "office_view" }
+    { return_url ""}
 }
 
 # ---------------------------------------------------------------
@@ -30,9 +31,13 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
-set return_url [im_url_with_query]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
+
+if {"" == $return_url} {
+#    set return_url [im_url_with_query]
+    set return_url "/intranet/offices/index"
+}
 
 if {0 == $office_id} {set office_id $object_id}
 if {0 == $office_id} {
@@ -74,7 +79,7 @@ from
 	country_codes cc
 where
 	o.office_id = :office_id
-	and o.office_id = c.main_office_id(+)
+	and o.customer_id = c.customer_id(+)
 	and o.address_country_code = cc.iso(+)
 "]
 
