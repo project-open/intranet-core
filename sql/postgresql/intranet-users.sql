@@ -76,6 +76,57 @@ create table users_contact (
 	current_information	varchar(4000)
 );
 
+------------------------------------------------------
+-- A unified view on active users
+-- (not deleted or banned)
+--
+create or replace view users_active as 
+select
+	u.user_id,
+	u.username,
+	u.screen_name,
+	u.last_visit,
+	u.second_to_last_visit,
+	u.n_sessions,
+	u.first_names,
+	u.last_name,
+	c.home_phone,
+	c.priv_home_phone,
+	c.work_phone,
+	c.priv_work_phone,
+	c.cell_phone,
+	c.priv_cell_phone,
+	c.pager,
+	c.priv_pager,
+	c.fax,
+	c.priv_fax,
+	c.aim_screen_name,
+	c.priv_aim_screen_name,
+	c.msn_screen_name,
+	c.priv_msn_screen_name,
+	c.icq_number,
+	c.priv_icq_number,
+	c.m_address,
+	c.ha_line1,
+	c.ha_line2,
+	c.ha_city,
+	c.ha_state,
+	c.ha_postal_code,
+	c.ha_country_code,
+	c.priv_ha,
+	c.wa_line1,
+	c.wa_line2,
+	c.wa_city,
+	c.wa_state,
+	c.wa_postal_code,
+	c.wa_country_code,
+	c.priv_wa,
+	c.note,
+ 	c.current_information
+from 
+	registered_users u left outer join users_contact c on u.user_id = c.user_id
+;
+
 
 create or replace function im_name_from_user_id(integer)
 returns varchar as '
