@@ -174,16 +174,16 @@ is
         	where package_name = del_module.module_name
         	FOR UPDATE;
     begin
-	OPEN v_comp_cursor;
-	LOOP
-		FETCH v_comp_cursor INTO v_comp_id;
-		EXIT WHEN v_comp_cursor%NOTFOUND;
-		im_component_plugin.del(plugin_id => v_comp_id);
-		END LOOP;
-	CLOSE v_comp_cursor;
+	for row in (
+            select plugin_id
+            from im_component_plugins
+            where package_name = del_module.module_name
+	) loop
+
+	    im_component_plugin.del(plugin_id => row.plugin_id);
+
+	end loop;
     end del_module;
-
-
 
     function name (plugin_id in integer) 
     return varchar
