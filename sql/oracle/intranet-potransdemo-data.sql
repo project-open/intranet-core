@@ -321,155 +321,6 @@ end;
 commit;
 
 
-
-prompt Initializing Employees Permissions
-BEGIN
-    im_priv_create('view_project_members', 	'Employees');
-    im_priv_create('view_projects_all', 	'Employees');
-    im_priv_create('view_projects_history', 	'Employees');
-    im_priv_create('add_projects', 		'Employees');
-    im_priv_create('search_intranet', 		'Employees');
-    im_priv_create('view_users', 		'Employees');
-    im_priv_create('add_users', 		'Employees');
-    im_priv_create('read_private_data', 	'Employees');
-    im_priv_create('view_internal_offices', 	'Employees');
-    im_priv_create('view_trans_tasks', 		'Employees');
-    im_priv_create('view_trans_task_matrix',	'Employees');
-    im_priv_create('view_trans_task_status', 	'Employees');
-END;
-/
-
-prompt Initializing Project Managers Permissions
-BEGIN
-    im_priv_create('view_project_members', 	'Project Managers');
-    im_priv_create('view_projects_all', 	'Project Managers');
-    im_priv_create('view_projects_history', 	'Project Managers');
-    im_priv_create('add_projects', 		'Project Managers');
-    im_priv_create('search_intranet', 		'Project Managers');
-    im_priv_create('view_users', 		'Project Managers');
-    im_priv_create('add_users', 		'Project Managers');
-    im_priv_create('read_private_data', 	'Project Managers');
-    im_priv_create('view_internal_offices', 	'Project Managers');
-    im_priv_create('view_trans_tasks', 		'Project Managers');
-    im_priv_create('view_trans_task_matrix',	'Project Managers');
-    im_priv_create('view_trans_task_status', 	'Project Managers');
-END;
-/
-
-prompt Initializing Senior Managers Permissions
-BEGIN
-    im_priv_create('view_customers', 		'Senior Managers');
-    im_priv_create('view_customer_contacts', 	'Senior Managers');
-    im_priv_create('view_customer_details', 	'Senior Managers');
-    im_priv_create('view_customers_all', 	'Senior Managers');
-    im_priv_create('add_customers', 		'Senior Managers');
-    im_priv_create('view_project_members', 	'Senior Managers');
-    im_priv_create('view_projects_all', 	'Senior Managers');
-    im_priv_create('view_projects_history', 	'Senior Managers');
-    im_priv_create('add_projects', 		'Senior Managers');
-    im_priv_create('search_intranet', 		'Senior Managers');
-    im_priv_create('view_users', 		'Senior Managers');
-    im_priv_create('add_users', 		'Senior Managers');
-    im_priv_create('view_invoices', 		'Senior Managers');
-    im_priv_create('view_payments', 		'Senior Managers');
-    im_priv_create('view_costs', 		'Senior Managers');
-    im_priv_create('add_invoices', 		'Senior Managers');
-    im_priv_create('add_payments', 		'Senior Managers');
-    im_priv_create('add_costs', 		'Senior Managers');
-    im_priv_create('add_offices', 		'Senior Managers');
-    im_priv_create('admin_categories', 		'Senior Managers');
-    im_priv_create('edit_internal_offices',	'Senior Managers');
-    im_priv_create('read_private_data', 	'Senior Managers');
-    im_priv_create('view_internal_offices', 	'Senior Managers');
-    im_priv_create('view_offices', 		'Senior Managers');
-    im_priv_create('view_offices_all', 		'Senior Managers');
-    im_priv_create('view_trans_tasks', 		'Senior Managers');
-    im_priv_create('view_trans_task_matrix',	'Senior Managers');
-    im_priv_create('view_trans_task_status', 	'Senior Managers');
-END;
-/
-
-prompt Initializing Sales Permissions
-BEGIN
-    im_priv_create('view_customers', 		'Sales');
-    im_priv_create('view_customer_contacts', 	'Sales');
-    im_priv_create('view_customer_details', 	'Sales');
-    im_priv_create('view_customers_all', 	'Sales');
-    im_priv_create('add_customers', 		'Sales');
-    im_priv_create('view_project_members', 	'Sales');
-    im_priv_create('view_projects_all', 	'Sales');
-    im_priv_create('add_projects', 		'Sales');
-    im_priv_create('search_intranet', 		'Sales');
-    im_priv_create('view_users', 		'Sales');
-    im_priv_create('add_offices', 		'Sales');
-    im_priv_create('view_offices', 		'Sales');
-    im_priv_create('view_internal_offices', 	'Sales');
-    im_priv_create('view_offices_all', 		'Sales');
-    im_priv_create('view_trans_tasks', 		'Sales');
-    im_priv_create('view_trans_task_matrix',	'Sales');
-    im_priv_create('view_trans_task_status', 	'Sales');
-END;
-/
-
-prompt Initializing P/O Admins Permissions
-BEGIN
-    im_priv_create('view_customers', 		'P/O Admins');
-    im_priv_create('view_customer_contacts', 	'P/O Admins');
-    im_priv_create('view_customer_details', 	'P/O Admins');
-    im_priv_create('view_customers_all', 	'P/O Admins');
-    im_priv_create('add_customers', 		'P/O Admins');
-    im_priv_create('view_project_members', 	'P/O Admins');
-    im_priv_create('view_projects_all', 	'P/O Admins');
-    im_priv_create('view_projects_history', 	'P/O Admins');
-    im_priv_create('add_projects', 		'P/O Admins');
-    im_priv_create('search_intranet', 		'P/O Admins');
-    im_priv_create('view_users', 		'P/O Admins');
-    im_priv_create('add_users', 		'P/O Admins');
-    im_priv_create('view_invoices', 		'P/O Admins');
-    im_priv_create('view_payments', 		'P/O Admins');
-    im_priv_create('view_costs', 		'P/O Admins');
-    im_priv_create('add_invoices', 		'P/O Admins');
-    im_priv_create('add_payments', 		'P/O Admins');
-    im_priv_create('add_costs', 		'P/O Admins');
-
-    im_priv_create('view_offices', 		'P/O Admins');
-    im_priv_create('add_offices', 		'P/O Admins');
-    im_priv_create('admin_categories', 		'P/O Admins');
-    im_priv_create('edit_internal_offices',	'P/O Admins');
-    im_priv_create('read_private_data', 	'P/O Admins');
-    im_priv_create('view_internal_offices', 	'P/O Admins');
-    im_priv_create('view_offices_all', 		'P/O Admins');
-    im_priv_create('view_trans_tasks', 		'P/O Admins');
-    im_priv_create('view_trans_task_matrix',	'P/O Admins');
-    im_priv_create('view_trans_task_status', 	'P/O Admins');
-END;
-/
-
-prompt Initializing Accounting Permissions
-BEGIN
-    im_priv_create('view_customers', 		'Accounting');
-    im_priv_create('view_customer_contacts', 	'Accounting');
-    im_priv_create('view_customer_details', 	'Accounting');
-    im_priv_create('view_customers_all', 	'Accounting');
-    im_priv_create('add_customers', 		'Accounting');
-    im_priv_create('view_project_members', 	'Accounting');
-    im_priv_create('view_projects_all', 	'Accounting');
-    im_priv_create('view_projects_history', 	'Accounting');
-    im_priv_create('search_intranet', 		'Accounting');
-    im_priv_create('view_users', 		'Accounting');
-    im_priv_create('add_users', 		'Accounting');
-    im_priv_create('view_offices', 		'Accounting');
-    im_priv_create('view_invoices', 		'Accounting');
-    im_priv_create('view_payments', 		'Accounting');
-    im_priv_create('view_costs', 		'Accounting');
-    im_priv_create('add_invoices', 		'Accounting');
-    im_priv_create('add_payments', 		'Accounting');
-    im_priv_create('add_costs', 		'Accounting');
-END;
-/
-commit;
-
-
 -- Create the default User Matrix, defining the rights of
 -- one user group to read, write or admin other user groups
 BEGIN
@@ -590,4 +441,591 @@ begin
 end;
 /
 commit;
+
+
+
+
+
+prompt Initializing Employees Permissions
+BEGIN
+    im_priv_create('view_project_members', 	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_history', 	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('add_projects', 		'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('add_users', 		'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('read_private_data', 	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_internal_offices', 	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_tasks', 		'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_matrix',	'Employees');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_status', 	'Employees');
+END;
+/
+
+prompt Initializing Project Managers Permissions
+BEGIN
+    im_priv_create('view_project_members', 	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_history', 	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_projects', 		'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_users', 		'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('read_private_data', 	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_internal_offices', 	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_tasks', 		'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_matrix',	'Project Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_status', 	'Project Managers');
+END;
+/
+
+prompt Initializing Senior Managers Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_contacts', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_details', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customers_all', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_customers', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_project_members', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_history', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_projects', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_users', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_invoices', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_payments', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_costs', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_invoices', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_payments', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_costs', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('add_offices', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('admin_categories', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('edit_internal_offices',	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('read_private_data', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_internal_offices', 	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices_all', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_tasks', 		'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_matrix',	'Senior Managers');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_status', 	'Senior Managers');
+END;
+/
+
+prompt Initializing Sales Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_contacts', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_details', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customers_all', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('add_customers', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_project_members', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('add_projects', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('add_offices', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_internal_offices', 	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices_all', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_tasks', 		'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_matrix',	'Sales');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_status', 	'Sales');
+END;
+/
+
+prompt Initializing P/O Admins Permissions
+BEGIN
+    im_priv_create('view_customers', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_contacts', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_details', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customers_all', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_customers', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_project_members', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_history', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_projects', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_users', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_invoices', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_payments', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_costs', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_invoices', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_payments', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_costs', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('add_offices', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('admin_categories', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('edit_internal_offices',	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('read_private_data', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_internal_offices', 	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices_all', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_tasks', 		'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_matrix',	'P/O Admins');
+END;
+/
+
+BEGIN
+    im_priv_create('view_trans_task_status', 	'P/O Admins');
+END;
+/
+
+prompt Initializing Accounting Permissions
+BEGIN
+    im_priv_create('view_customers', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_contacts', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customer_details', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_customers_all', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('add_customers', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_project_members', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_all', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_projects_history', 	'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('search_intranet', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_users', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('add_users', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_offices', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_invoices', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_payments', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('view_costs', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('add_invoices', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('add_payments', 		'Accounting');
+END;
+/
+
+BEGIN
+    im_priv_create('add_costs', 		'Accounting');
+END;
+/
+commit;
+
 
