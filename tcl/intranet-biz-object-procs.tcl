@@ -200,6 +200,9 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
 	    );
 	end; "
     db_exec_plsql add_user $sql
+
+    # Remove all permission related entries in the system cache
+    im_permission_flush
 }
 
 
