@@ -14,6 +14,7 @@ cvs checkout intranet-payments
 cvs checkout intranet-planning
 cvs checkout intranet-procedures
 cvs checkout intranet-riskmanagement
+cvs checkout intranet-spam
 cvs checkout intranet-timesheet
 cvs checkout intranet-trans-invoices
 cvs checkout intranet-translation

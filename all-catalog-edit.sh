@@ -16,6 +16,7 @@ cvs edit intranet-payments/catalog/intranet-payments.en_US.ISO-8859-1.xml
 cvs edit intranet-planning/catalog/intranet-planning.en_US.ISO-8859-1.xml
 cvs edit intranet-procedures/catalog/intranet-procedures.en_US.ISO-8859-1.xml
 cvs edit intranet-riskmanagement/catalog/intranet-riskmanagement.en_US.ISO-8859-1.xml
+cvs edit intranet-spam/catalog/intranet-timesheet.en_US.ISO-8859-1.xml
 cvs edit intranet-timesheet/catalog/intranet-timesheet.en_US.ISO-8859-1.xml
 cvs edit intranet-trans-invoices/catalog/intranet-trans-invoices.en_US.ISO-8859-1.xml
 cvs edit intranet-translation/catalog/intranet-translation.en_US.ISO-8859-1.xml
@@ -38,6 +39,7 @@ cvs edit intranet-payments/catalog/intranet-payments.de_DE.ISO-8859-1.xml
 cvs edit intranet-planning/catalog/intranet-planning.de_DE.ISO-8859-1.xml
 cvs edit intranet-procedures/catalog/intranet-procedures.de_DE.ISO-8859-1.xml
 cvs edit intranet-riskmanagement/catalog/intranet-riskmanagement.de_DE.ISO-8859-1.xml
+cvs edit intranet-spam/catalog/intranet-timesheet.de_DE.ISO-8859-1.xml
 cvs edit intranet-timesheet/catalog/intranet-timesheet.de_DE.ISO-8859-1.xml
 cvs edit intranet-trans-invoices/catalog/intranet-trans-invoices.de_DE.ISO-8859-1.xml
 cvs edit intranet-translation/catalog/intranet-translation.de_DE.ISO-8859-1.xml

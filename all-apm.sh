@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VER=3.0.alpha4
+VER=3.0.beta5
 
 rm -f *.apm
 
@@ -18,6 +18,7 @@ tar czf intranet-invoices-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-inv
 tar czf intranet-payments-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-payments
 tar czf intranet-riskmanagement-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-riskmanagement
 tar czf intranet-timesheet-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
+tar czf intranet-spam-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-spam
 tar czf intranet-trans-invoices-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
 tar czf intranet-translation-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-translation
 tar czf intranet-trans-quality-$VER.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
