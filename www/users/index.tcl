@@ -33,7 +33,7 @@ ad_page_contract {
     { start_idx:integer "1" }
     { how_many:integer "" }
     { letter:trim "all" }
-    { view_name "user_list" }
+    { view_name "" }
 }
 
 # ---------------------------------------------------------------
@@ -81,18 +81,21 @@ set letter [string toupper $letter]
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
 set user_group_id 0
+set menu_select_label ""
 switch $user_group_name {
-    "All" { set user_group_id 0 }
+    "All" { 
+	set user_group_id 0 
+	set menu_select_label "users_all"
+    }
     "Unregistered" { set user_group_id -1 }
     default {
 	set user_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+	set menu_select_label "users_[string tolower $user_group_name]"
     }
 }
 
-
-
-
 if {$user_group_id > 0} {
+
     # We have a group specified to show:
     # Check whether the user can "read" this group:
     set sql "select acs_permission.permission_p(:user_group_id, :user_id, 'read') from dual"
@@ -101,11 +104,12 @@ if {$user_group_id > 0} {
 	ad_return_complaint 1 "You don't have permissions to view this page"
 	return
     }
+
 } else {
+
     # The user requests to see all groups.
     # The most critical groups are customer contacts...
-    set customer "Customers"
-    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :customer" -default 0]
+    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 
     set sql "select acs_permission.permission_p(:customer_group_id, :user_id, 'read') from dual"
     set read [db_string user_can_read_user_group_p $sql]
@@ -114,6 +118,27 @@ if {$user_group_id > 0} {
 	return
     }
 }
+
+# If no view_name was explicitely specified
+# Then check if there is a specific view for 
+# the user_group.
+if {"" == $view_name} {
+
+    # Check if there is a specific view for this user group:
+    set specific_view_name "[string tolower $user_group_name]_list"
+    ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
+    set expcific_view_exists [db_string specific_view_exists "select count(*) from im_views where view_name=:specific_view_name"]
+    if {$expcific_view_exists} {
+	set view_name $specific_view_name
+    }
+}
+
+# Check if there was no specific view_name:
+# In this case just show the default user_view
+if {"" == $view_name} {
+    set view_name "user_list"
+}
+
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage intranet 50]
@@ -124,6 +149,14 @@ set end_idx [expr $start_idx + $how_many - 1]
 # 3. Define Table Columns
 # ---------------------------------------------------------------
 
+set extra_wheres [list]
+set extra_froms [list]
+set extra_selects [list]
+
+set extra_order_by ""
+set column_headers [list]
+set column_vars [list]
+
 # Define the column headers and column contents that 
 # we want to show:
 #
@@ -133,18 +166,11 @@ if {!$view_id} {
     You are trying to access a view that has not been defined in the database.<br>
     Please notify your system administrator."
 }
-set column_headers [list]
-set column_vars [list]
 
 set column_sql "
-select
-	column_name,
-	column_render_tcl,
-	visible_for
-from
-	im_view_columns
-where
-	view_id=:view_id
+select	c.*
+from	im_view_columns c
+where	view_id=:view_id
 	and group_id is null
 order by
 	sort_order"
@@ -153,6 +179,17 @@ db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
+
+	if [exists_and_not_null extra_from] { lappend extra_froms $extra_from }
+	if [exists_and_not_null extra_select] { lappend extra_selects $extra_select }
+	if [exists_and_not_null extra_where] { lappend extra_wheres $extra_where }
+
+	if [exists_and_not_null order_by_clause] { 
+	    if {[string equal $order_by $column_name]} {
+		# We need to sort the list by this column
+		set extra_order_by $order_by_clause
+	    }
+	}
     }
 }
 ns_log Notice "/users/index.tcl: column_vars=$column_vars"
@@ -162,59 +199,75 @@ ns_log Notice "/users/index.tcl: column_vars=$column_vars"
 # ---------------------------------------------------------------
 
 # Now let's generate the sql query
-set criteria [list]
-set extra_tables [list]
 set bind_vars [ns_set create]
 
 if { $user_group_id > 0 } {
     append page_title " in group \"$user_group_name\""
-    lappend criteria "u.user_id = m.member_id"
-    lappend criteria "m.group_id = :user_group_id"
-    lappend extra_tables "group_distinct_member_map m"
+    lappend extra_wheres "u.user_id = m.member_id"
+    lappend extra_wheres "m.group_id = :user_group_id"
+    lappend extra_froms "group_distinct_member_map m"
+}
+
+# Show DynVal variables
+# Disabled because it's very slow (8 seconds for an empty query...)
+if { 0 } {
+    set dynval_sql "
+	select	v.*
+	from	im_dynval_vars v
+	where	var_object_type='user'"
+
+    db_foreach dynvals $dynval_sql {
+	lappend extra_selects "dynval_$var_shortname.int_value as $var_shortname"
+	lappend extra_wheres "u.user_id = dynval_$var_shortname.object_id(+)"
+	lappend extra_froms "(
+		select *
+		from im_dynval_values
+		where var_id = $var_id
+	) dynval_$var_shortname"
+    }
 }
 
 if { -1 == $user_group_id} {
     # "Unregistered users
     append page_title " Unregistered"
-    lappend criteria "u.user_id not in (select distinct member_id from group_distinct_member_map where group_id >= 0)"
+    lappend extra_wheres "u.user_id not in (select distinct member_id from group_distinct_member_map where group_id >= 0)"
 }
 
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     set letter [string toupper $letter]
-    lappend criteria "im_first_letter_default_to_a(p.last_name)=:letter"
+    lappend extra_wheres "im_first_letter_default_to_a(p.last_name)=:letter"
 }
 
-if { [llength $criteria] > 0 } {
-    set where_clause [join $criteria "\n         and "]
-} else {
-    set where_clause "1=1"
+# Check for some default order_by fields.
+# This switch statement should be eliminated 
+# in the future as soon as all im_view_columns
+# contain order_by_clauses.
+if {"" == $extra_order_by} {
+    switch $order_by {
+	"Name" { set extra_order_by "order by upper(p.last_name||p.first_names)" }
+	"Email" { set extra_order_by "order by upper(email)" }
+	"AIM" { set extra_order_by "order by upper(aim_screen_name)" }
+	"Cell Phone" { set extra_order_by "order by upper(cell_phone)" }
+	"Home Phone" { set extra_order_by "order by upper(home_phone)" }
+	"Work Phone" { set extra_order_by "order by upper(work_phone)" }
+	"Last Visit" { set extra_order_by "order by last_visit DESC" }
+	"Creation" { set extra_order_by "order by creation_date DESC" }
+    }
 }
 
-set order_by_clause ""
-switch $order_by {
-    "Name" { set order_by_clause "order by upper(p.last_name||p.first_names)" }
-    "Email" { set order_by_clause "order by upper(email)" }
-    "AIM" { set order_by_clause "order by upper(aim_screen_name)" }
-    "Cell Phone" { set order_by_clause "order by upper(cell_phone)" }
-    "Home Phone" { set order_by_clause "order by upper(home_phone)" }
-    "Work Phone" { set order_by_clause "order by upper(work_phone)" }
-    "Last Visit" { set order_by_clause "order by last_visit DESC" }
-    "Creation" { set order_by_clause "order by creation_date DESC" }
-}
+# Join the "extra_" SQL pieces 
+set extra_from [join $extra_froms ",\n\t"]
+set extra_select [join $extra_selects ",\n\t"]
+set extra_where [join $extra_wheres "\n\tand "]
 
-set extra_table ""
-if { [llength $extra_tables] > 0 } {
-    set extra_table ", [join $extra_tables ","]"
-}
+if {"" != $extra_from} { set extra_from ",$extra_from" }
+if {"" != $extra_select} { set extra_select ",$extra_select" }
+if {"" != $extra_where} { set extra_where "and $extra_where" }
 
-set where_clause [join $criteria " and\n            "]
-if { ![empty_string_p $where_clause] } {
-    set where_clause " and $where_clause"
-}
 
 set sql "
-select 
+select
 	u.user_id,
 	u.username,
 	u.screen_name,
@@ -249,18 +302,19 @@ select
 	c.wa_country_code,
 	c.note,
 	c.current_information
+	$extra_select
 from 
 	registered_users u, 
 	users_contact c,
 	persons p,
 	acs_objects o
-	$extra_table
+	$extra_from
 where 
 	u.user_id=p.person_id
 	and u.user_id=c.user_id(+)
 	and u.user_id = o.object_id
-	$where_clause
-        $order_by_clause
+	$extra_where
+$extra_order_by
 "
 
 # ---------------------------------------------------------------
@@ -287,6 +341,8 @@ select
 from 
 	($sql) t
 "]
+
+    ns_log Notice "/users/index.tcl: sql=$sql"
     ns_log Notice "/users/index.tcl: total_in_limited=$total_in_limited"
 }
 
@@ -387,6 +443,7 @@ set table_continuation_html ""
 # ---------------------------------------------------------------
 
 set page_body "
+<br>
 [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter]]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
