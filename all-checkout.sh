@@ -1,12 +1,5 @@
 #!/bin/bash
 
-#
-# checkout-all.sh
-# V1.1, 2004-07-30
-#
-# Checks out all packages that make up P/O
-#
-
 cvs checkout intranet-big-brother
 cvs checkout intranet-core
 cvs checkout intranet-cost
