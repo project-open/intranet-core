@@ -322,14 +322,6 @@ commit;
 
 
 
-select site_node.node_id('/',null) from dual;
-
-
-begin
-	
-end;
-/
-
 prompt Initializing Employees Permissions
 BEGIN
     im_priv_create('view_project_members', 	'Employees');
