@@ -47,11 +47,6 @@ ad_proc -public im_office_permissions {user_id office_id view_var read_var write
     upvar $write_var write
     upvar $admin_var admin
 
-    set view 1
-    set read 0
-    set write 0
-    set admin 0
-
     # Check if the customer is "internal"
     set customer_type [db_1row customer_type "
 select
@@ -65,7 +60,9 @@ where
 	and o.customer_id = c.customer_id(+)
 "]
 
-    ns_log Notice "im_office_permission: customer_type=$customer_type"
+    # Initialize values with values from customer
+    im_customer_permissions $user_id $customer_id view read write admin
+
 
     # Now there are three options:
     # NULL: not assigned to any customer yet
@@ -76,8 +73,8 @@ where
     # Senior Managers to change them (or similar, as defined
     # in the permission module)
     if {[string equal "internal" $customer_type]} {
-	set admin [im_permission $user_id edit_internal_offices]
-	set read [im_permission $user_id view_internal_offices]
+	set admin [expr $admin || [im_permission $user_id edit_internal_offices]]
+	set read [expr $read || [im_permission $user_id view_internal_offices]]
 
 	if {$user_is_office_admin_p} { set admin 1 }
 	if {$user_is_office_member_p} { set read 1}

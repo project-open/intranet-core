@@ -50,6 +50,8 @@ set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "Projects"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
+set current_url [ns_conn url]
+set return_url "/intranet/"
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
