@@ -38,7 +38,7 @@ set return_url [im_url_with_query]
 set current_url [ns_conn url]
 
 # get the current users permissions for this project
-im_project_permissions $user_id $project_id read write admin
+im_project_permissions $user_id $project_id view read write admin
 
 # Compatibility with old components...
 set current_user_id $user_id
