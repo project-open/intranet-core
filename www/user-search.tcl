@@ -200,10 +200,13 @@ select distinct
 	u.email
 from 
 	registered_users u,
-	group_member_map ugm
+	group_member_map ugm,
+	membership_rels mr
 	$group_table
 where 
 	u.user_id=ugm.member_id
+	and ugm.rel_id = mr.rel_id
+	and mr.member_state = 'approved'
 	and $group_sql
 	and $search_clause
 "

@@ -284,9 +284,12 @@ ad_proc -public im_group_member_component { object_id current_user_id { add_admi
 and exists (select 1 
 	from 
 		group_member_map map2,
+	        membership_rels mr,
 		groups ug
 	where 
 		map2.group_id = ug.group_id
+		and map2.rel_id = mr.rel_id
+		and mr.member_state = 'approved'
 		and map2.member_id = u.user_id 
 		and map2.group_id = :limit_to_users_in_group_id
 	)
@@ -302,9 +305,12 @@ and not exists (
 	select 1 
 	from 
 		group_member_map map2, 
+		membership_rels mr,
 		groups ug
 	where 
 		map2.group_id = ug.group_id
+		and map2.rel_id = mr.rel_id
+		and mr.member_state = 'approved'
 		and map2.member_id = u.user_id 
 		and map2.group_id = :dont_allow_users_in_group_id
 	)

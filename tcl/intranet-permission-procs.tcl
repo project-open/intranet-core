@@ -211,109 +211,12 @@ ad_proc -public im_user_is_freelance_p { user_id } {
 }
 
 
-# Check if a user is authorized to enter the Intranet pages
-#
-#!!!
-ad_proc -public im_user_is_authorized {conn args why} {
-    Returns filter_ok if user is employee
-} {
-    set user_id [ad_verify_and_get_user_id]
-    if { $user_id == 0 } {
-	# Not logged in
-	ad_returnredirect "/register/index?return_url=[ns_urlencode [ns_conn url]?[ns_conn query]]"
-	return filter_return
-    }
-
-    set is_authorized_p [im_user_is_authorized_p $user_id]
-    if { $is_authorized_p > 0 } {
-	return filter_ok
-    } else {
-	set ad_system_name [ad_system_name]
-	set login_link "<a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>[_ intranet-core.login]</a>"
-	ad_return_forbidden "[_ intranet-core.Access_denied]" "You must be an employee or otherwise authorized member of %ad_system_name% to see this page. You can %login_link% as someone else if you like."
-	return filter_return	
-    }
-}
-
 #!!!
 ad_proc -public im_user_is_customer_p { user_id } {
     Returns 1 if a the user is in a customer group. 0 Otherwise
 } {
     set customer_group_id [im_customer_group_id]
     return [im_user_group_member_p $user_id [im_customer_group_id]]
-}
-
-
-#!!!
-ad_proc -public im_user_is_customer {conn args why} {
-    Returns filter_of if user is customer
-} {
-    set user_id [ad_get_user_id]
-    if { $user_id == 0 } {
-	# Not logged in
-	ad_returnredirect "/register/index?return_url=[ns_urlencode [ns_conn url]?[ns_conn query]]"
-	return filter_return
-    }
-    
-    set is_customer_p [im_user_is_customer_p $user_id]
-    if { $is_customer_p > 0 } {
-	return filter_ok
-    } else {
-        set ad_system_name [ad_system_name]
-	ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_a_custome]"
-	return filter_return	
-    }
-}
-
-#!!!
-ad_proc -public im_verify_user_is_admin { conn args why } {
-    Returns 1 if a the user is either a site-wide administrator or 
-    in the Intranet administration group
-} {
-    set user_id [ad_verify_and_get_user_id]
-    if { $user_id == 0 } {
-	# Not logged in
-	ad_returnredirect "/register/index?return_url=[ns_urlencode [ns_conn url]?[ns_conn query]]"
-	return filter_return
-    }
-    
-    set val [im_is_user_site_wide_or_intranet_admin $user_id]
-    if { $val > 0 } {
-	return filter_ok
-    } else {
-	set ad_system_name [ad_system_name]
-	ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_an_admini]"
-	return filter_return	
-    }
-}
-
-#!!!
-ad_proc -public im_group_id_from_parameter { parameter } {
-    Returns the group_id for the group with the GroupShortName
-    specified in the server .ini file for $parameter. That is, we look up
-    the specified parameter in the intranet module of the parameters file,
-    and use that short_name to find a group id. Memoizes the result
-} {
-    set short_name [ad_parameter $parameter intranet]
-    if { [empty_string_p $short_name] } {
-	set arsdigita_link "<a href=http://software.arsdigita.com/parameters/ad.ini>http://software.arsdigita.com/parameters/ad.ini</a>"
-	ad_return_error "[_ intranet-core.lt_Error_Missing_paramet]" "[_ intranet-core.lt_The_parameter_paramet] 
-<p>[_ intranet-core.lt_Note_You_can_find_all]"
-	ad_script_abort
-    }
-
-    return [util_memoize "im_group_id_from_parameter_helper $short_name"]
-}
-
-#!!!
-ad_proc -public im_group_id_from_parameter_helper { short_name } {
-    Returns the group_id for the user_group with the specified
-    short_name. If no such group exists, returns 0 
-} {
-    return [db_string user_group_id_from_short_name \
- 	     "select group_id 
-		from user_groups 
-	       where short_name=:short_name" -default 0]
 }
 
 ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { 
@@ -347,46 +250,6 @@ ad_proc -public im_site_wide_admin_p { user_id } {
     returns 1 if the user is an intranet admin 
 } {
     return [util_memoize "acs_user::site_wide_admin_p -user_id $user_id"]
-}
-
-
-#!!!
-ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
-    Returns 1 if a the user is authorized for the system. 0
-    Otherwise. Note that the second_user_id gives us a way to say that
-    this user is inded authorized to see information about another
-    particular user (by being in a common group with that user).
-} {
-    set employee_group_id [im_employee_group_id]
-    set freelance_group_id [im_freelance_group_id]
-    set customer_group_id [im_customer_group_id]
-    set authorized_users_group_id [im_authorized_users_group_id]
-
-    set authorized_p [db_string user_in_authorized_intranet_group \
-	    "select count(*) as authorized_p
-	     from group_member_map 
-	     where 
-		    user_id=:user_id and
-		    (group_id=:employee_group_id or
-		     group_id=:authorized_users_group_id or
-		     group_id=:freelance_group_id or
-		     group_id=:customer_group_id
-		    )"]
-
-    if { $authorized_p == 0 } {
-	set authorized_p [im_is_user_site_wide_or_intranet_admin $user_id]
-    }
-    if { $authorized_p == 0 && $second_user_id > 0 } {
-	# Let's see if this user is looking at someone else in one of their groups...
-	# We let people look at other people in the same groups as them.
-	set authorized_p [db_string user_in_two_groups \
-		"select count(*) as authorized_p
-		   from group_member_map ugm, group_member_map ugm2
-		  where ugm.user_id=:user_id
-		    and ugm2.user_id=:second_user_id
-		    and ugm.group_id=ugm2.group_id"]
-    }
-    return $authorized_p 
 }
 
 
@@ -424,65 +287,4 @@ ad_proc -public im_office_group_id { } {Returns the groud_id for offices} {
 
 ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers} {
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\""]
-}
-
-ad_proc -public im_restricted_access {} {Returns an access denied message and blows out 2 levels} {
-    set ad_system_name [ad_system_name]
-    set login_link "<a href=/register/index?return_url=[ad_urlencode [im_url_with_query]]>[_ intranet-core.login]</a>"a
-    
-    ad_return_forbidden "[_ intranet-core.Access_denied]" "[_ intranet-core.lt_You_must_be_an_author]"
-    return -code return
-}
-
-ad_proc -public im_allow_authorized_or_admin_only { group_id current_user_id } {Returns an error message if the specified user is not able to administer the specified group or the user is not a site-wide/intranet administrator} {
-
-    set user_admin_p [im_biz_object_admin_p $user_id $group_id]
-
-    if { ! $user_admin_p } {
-	# We let all authorized users have full administrative control
-	set user_admin_p [im_user_is_authorized_p $current_user_id]
-    }
-
-    if { $user_admin_p == 0 } {
-	im_restricted_access
-	return
-    }
-}
-
-#!!!
-ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets up the proper url for the /groups stuff in acs} {
-    if { [empty_string_p $group_id] && [empty_string_p $short_name] } {
-	ad_return_error "[_ intranet-core.lt_Missing_group_id_and_]" "[_ intranet-core.lt_We_need_either_the_sh]"
-    }
-    if { [empty_string_p $short_name] } {
-	set short_name [db_string groups_get_short_name \
-		"select short_name from user_groups where group_id=:group_id"]
-    }
-    if { ![empty_string_p $section] } {
-	set section "/$section"
-    }
-    return "/groups/[ad_urlencode $short_name]$section"
-}
-
-
-#!!!
-ad_proc -public im_customer_group_id_from_user {} {
-    Sets group_id and short_name in the calling environment of the first 
-    customer_id this proc finds for the logged in user
-} {
-    uplevel {
-	set customer_group_id [im_customer_group_id]
-	set local_user_id [ad_get_user_id]
-	if { ![db_0or1row customer_name_from_user \
-		"select g.group_id, g.short_name
-		   from user_groups g, group_member_map ugm 
-		  where g.group_id=ugm.group_id
-		    and g.parent_group_id = :customer_group_id
-		    and ugm.user_id=:local_user_id
-	     	    and rownum<2"] } {
-	    # Define the variables so we won't have errors using them
-	    set group_id ""
-	    set short_name ""
-	}
-    }
 }
