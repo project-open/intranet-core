@@ -247,7 +247,7 @@ db_foreach project_hierarchy $hierarchy_sql {
 
     while {$subproject_level < $cur_level} {
 	append hierarchy_html "</ul>\n"
-	decr cur_level
+	set cur_level [expr $cur_level - 1]
     }
     
     # Render the project itself in bold
