@@ -489,6 +489,7 @@ end;' language 'plpgsql';
 --
 create or replace function im_user_matrix_grant (varchar, varchar, varchar)
 returns integer as '
+DECLARE
 	p_group_name		alias for $1;
 	p_grantee_group_name	alias for $2;
 	p_privilege		alias for $3;
