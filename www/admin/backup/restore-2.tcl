@@ -11,7 +11,7 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "Restore"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set context ""
 set page_body "<H1>$page_title</H1>"
 set today [db_string today "select to_char(sysdate, 'YYYY-MM-DD.HH-mm') from dual"]

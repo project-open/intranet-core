@@ -80,7 +80,7 @@ if { [exists_and_not_null description] } {
     set page_title "Spam users"
 }
 
-set context_bar [ad_context_bar "Spam users"]
+set context_bar [im_context_bar "Spam users"]
 
 set page_body "
 <b>This email will go to $number_users_to_spam [util_decode $number_users_to_spam 1 "user" "users"]

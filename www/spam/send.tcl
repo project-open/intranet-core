@@ -87,7 +87,7 @@ if { [exists_and_not_null description] } {
 
 # Start streaming out data - we have released the db handle and are going to send email
 
-set context_bar [ad_context_bar [list index?[export_ns_set_vars url] "Spam users"] "Sending email"]
+set context_bar [im_context_bar [list index?[export_ns_set_vars url] "Spam users"] "Sending email"]
 ReturnHeaders
 ns_write "
 [im_header]

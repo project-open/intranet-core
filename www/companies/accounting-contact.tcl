@@ -25,7 +25,7 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "[_ intranet-core.lt_Add_accounting_contac]"
-set context_bar [ad_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
+set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 
 set company_name [db_string company_name {
 select c.company_name
@@ -84,7 +84,7 @@ if { [empty_string_p $contact_info] } {
 set return_url "[im_url_stub]/companies/view?[export_url_vars company_id]"
 
 set page_title "[_ intranet-core.lt_Select_accounting_con]"
-set context_bar [ad_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars company_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars company_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

@@ -34,7 +34,7 @@ if {!$user_is_admin_p} {
 }
 
 set page_title "Backup & Restore"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set context ""
 
 set menu_url "/intranet/admin/menus/new"

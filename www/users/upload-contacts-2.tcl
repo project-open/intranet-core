@@ -30,7 +30,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Users CSV"
 set page_body ""
-set context_bar [ad_context_bar [list "/intranet/users/" "Users"] $page_title]
+set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
 
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 if {!$user_is_admin_p} {

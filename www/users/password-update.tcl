@@ -29,7 +29,7 @@ if {!$admin} {
 }
 
 set page_title "[_ intranet-core.Change_Password]"
-set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
+set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 
 db_1row user_info_by_id "
 select

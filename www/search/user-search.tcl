@@ -30,7 +30,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 
 set page_title "[_ intranet-core.Search_for_a_user]"
-set context_bar [ad_context_bar [list ./ "[_ intranet-core.Intranet]"] "[_ intranet-core.User_search]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Intranet]"] "[_ intranet-core.User_search]"]
 
 #jruiz 20020610: select user
 if { [info exist keyword] && ![empty_string_p $keyword]} {

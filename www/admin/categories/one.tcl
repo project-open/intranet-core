@@ -46,7 +46,7 @@ ns_log Notice "one: category_id=$category_id"
 if {0 != $category_id} {
     
     set page_title "One Category"
-    set context_bar [ad_context_bar $page_title]
+    set context_bar [im_context_bar $page_title]
 
     db_1row category_properties "
 select	c.*
@@ -83,7 +83,7 @@ order by category_id"
 
     set page_title "Add Category"
     if {"" != $category_type} { append page_title " for '$category_type'" }
-    set context_bar [ad_context_bar_ws $page_title]
+    set context_bar [im_context_bar $page_title]
     set form_action_html "action=\"category-add.tcl\""
     set input_form_html "value=Add"
     set delete_action_html ""

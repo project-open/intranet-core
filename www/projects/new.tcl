@@ -73,7 +73,7 @@ where
 }
 
     set page_title "[_ intranet-core.Edit_project]"
-    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_url_vars project_id]" "One project"] $page_title]
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_url_vars project_id]" "One project"] $page_title]
 
     if { [empty_string_p $start_date] } { set start_date $todays_date }
     if { [empty_string_p $end_date] } { set end_date $todays_date }
@@ -115,7 +115,7 @@ where
 	set project_type_id 85
 	set project_status_id 76
 	set page_title "[_ intranet-core.Add_New_Project]"
-	set context_bar [ad_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
+	set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
 
     } else {
 
@@ -134,7 +134,7 @@ where
 
 	set requires_report_p "f"
 	set page_title "[_ intranet-core.Add_subproject]"
-	set context_bar [ad_context_bar [list ./ "[_ intranet-core.Projects]"] [list "view?project_id=$parent_id" "[_ intranet-core.One_project]"] $page_title]
+	set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] [list "view?project_id=$parent_id" "[_ intranet-core.One_project]"] $page_title]
     }
 }
 

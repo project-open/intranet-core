@@ -30,7 +30,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
-set context_bar [ad_context_bar [list ./ "[_ intranet-core.Clients]"] "[_ intranet-core.One_company]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] "[_ intranet-core.One_company]"]
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 

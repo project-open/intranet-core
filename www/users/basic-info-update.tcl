@@ -54,9 +54,9 @@ where
 
 set page_title "$first_names $last_name"
 if {[im_permission $current_user_id view_users]} {
-    set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
+    set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 } else {
-    set context_bar [ad_context_bar $page_title]
+    set context_bar [im_context_bar $page_title]
 }
 
 set is_admin "disabled"

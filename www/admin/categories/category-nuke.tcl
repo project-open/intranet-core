@@ -37,7 +37,7 @@ if {!$user_is_admin_p} {
 
 set category [db_string category_name "select category from im_categories where category_id = :category_id" ]
 set page_title "Categories - Delete $category"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
 set page_body "

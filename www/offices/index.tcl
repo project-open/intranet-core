@@ -73,7 +73,7 @@ set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set page_title "Offices"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set return_url "/intranet/offices/index"
 

@@ -84,12 +84,12 @@ where
     }
 
     set page_title "[_ intranet-core.Edit_Company]"
-    set context_bar [ad_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
+    set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
 } else {
     # Completely new company. Set some reasonable defaults:
     set page_title "[_ intranet-core.Add_Company]"
-    set context_bar [ad_context_bar [list index "Companies"] $page_title]
+    set context_bar [im_context_bar [list index "Companies"] $page_title]
     set company_name ""
     set company_path ""
     # Grab today's date

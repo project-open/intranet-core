@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Companies#</property>
+<property name="title">#intranet-core.Offices#</property>
 <property name="main_navbar_label">offices</property>
 
 <!-- left - right - bottom  design -->

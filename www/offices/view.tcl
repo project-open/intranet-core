@@ -90,7 +90,7 @@ if { $result != 1 } {
 
 # Set the title now that the $name is available after the db query
 set page_title $office_name
-set context_bar [ad_context_bar [list /intranet/offices/ "[_ intranet-core.Offices]"] $page_title]
+set context_bar [im_context_bar [list /intranet/offices/ "[_ intranet-core.Offices]"] $page_title]
 
 # ---------------------------------------------------------------
 # Show Basic Office Information

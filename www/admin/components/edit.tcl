@@ -37,7 +37,7 @@ if {!$user_is_admin_p} {
 # ---------------------------------------------------------------
 
 set page_title "Component Edit"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 
 if [catch {db_1row category_properties "
 	select

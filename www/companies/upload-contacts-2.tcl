@@ -29,7 +29,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload New File/URL"
 set page_body ""
-set context_bar [ad_context_bar [list "/intranet/cusomers/" "Companies"] "Upload CSV"]
+set context_bar [im_context_bar [list "/intranet/cusomers/" "Companies"] "Upload CSV"]
 
 
 # Get the file from the user.

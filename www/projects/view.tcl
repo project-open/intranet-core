@@ -104,16 +104,16 @@ set page_title "[_ intranet-core.Project_project_name]"
 # Set the context bar as a function on whether this is a subproject or not:
 #
 if { [empty_string_p $parent_id] } {
-    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
     set include_subproject_p 1
 } else {
-    set context_bar [ad_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
     set include_subproject_p 0
 }
 
 # Don't show subproject nor a link to the "projects" page to freelancers
 if {![im_permission $user_id view_projects]} {
-    set context_bar [ad_context_bar "[_ intranet-core.One_project]"]
+    set context_bar [im_context_bar "[_ intranet-core.One_project]"]
     set include_subproject_p 0
 }
 

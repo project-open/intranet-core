@@ -87,7 +87,7 @@ set today [lindex [split [ns_localsqltimestamp] " "] 0]
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "[_ intranet-core.Projects]"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
 set letter [string toupper $letter]

@@ -22,7 +22,7 @@ ad_page_contract {
 }
 
 set page_title "[_ intranet-core.lt_Remove_Delinquent_Use]"
-set context_bar [ad_context_bar "[_ intranet-core.Delinquent_Update]"]
+set context_bar [im_context_bar "[_ intranet-core.Delinquent_Update]"]
 
 set delinquent_user [cl_rm_user_from_delinquent $user_id]
 

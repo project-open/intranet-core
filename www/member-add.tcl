@@ -34,7 +34,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
 set page_title "[_ intranet-core.lt_Add_new_member_to_obj]"
-set context_bar [ad_context_bar "[_ intranet-core.Add_member]"]
+set context_bar [im_context_bar "[_ intranet-core.Add_member]"]
 
 
 # expect commands such as: "im_project_permissions" ...

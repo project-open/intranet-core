@@ -103,7 +103,7 @@ if { $result != 1 } {
 
 # Set the title now that the $name is available after the db query
 set page_title $name
-set context_bar [ad_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
+set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 
 # ---------------------------------------------------------------
 # Show Basic User Information (name & email)

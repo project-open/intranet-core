@@ -68,9 +68,9 @@ ns_log Notice "/users/new: managable_profile_ids=$managable_profile_ids"
 
 
 if {[im_permission $current_user_id view_users]} {
-    set context_bar [ad_context_bar [list /intranet/users/ "Users"] $page_title]
+    set context_bar [im_context_bar [list /intranet/users/ "Users"] $page_title]
 } else {
-    set context_bar [ad_context_bar $page_title]
+    set context_bar [im_context_bar $page_title]
 }
 
 # Check if we are editing an already existing user...

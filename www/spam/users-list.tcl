@@ -45,7 +45,7 @@ from users_active u, user_group_map ugm
 where u.user_id=ugm.user_id $group_list_clause"
 
 set page_title "Users who are about to receive your spam"
-set context_bar [ad_context_bar [list index?[export_ns_set_vars url] "Spam users"] "View users"]
+set context_bar [im_context_bar [list index?[export_ns_set_vars url] "Spam users"] "View users"]
 
 set page_body "<ol>\n"
 

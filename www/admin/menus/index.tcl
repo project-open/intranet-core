@@ -36,7 +36,7 @@ if {!$user_is_admin_p} {
 if {"" == $return_url} { set return_url [ad_conn url] }
 
 set page_title "Menu Permissions"
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set context ""
 
 set menu_url "/intranet/admin/menus/new"

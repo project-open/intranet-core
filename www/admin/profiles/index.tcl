@@ -23,7 +23,7 @@ set page_title "Profiles"
 set context [list "Permissions"]
 
 set subsite_id [ad_conn subsite_id]
-set context_bar [ad_context_bar $page_title]
+set context_bar [im_context_bar $page_title]
 set url_stub [im_url_with_query]
 
 # The list of Core privileges

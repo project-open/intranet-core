@@ -54,14 +54,14 @@ where	o.office_id=:office_id
     }
 
     set page_title "[_ intranet-core.Edit_office]"
-    set context_bar [ad_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_url_vars office_id]" "[_ intranet-core.One_office]"] $page_title]
+    set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_url_vars office_id]" "[_ intranet-core.One_office]"] $page_title]
 
     
 } else {
 
     # Completely new office. Set some reasonable defaults:
     set page_title "[_ intranet-core.Add_office]"
-    set context_bar [ad_context_bar [list index "[_ intranet-core.Offices]"] $page_title]
+    set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] $page_title]
     set office_name ""
     set company_id ""
     set office_path ""
