@@ -141,12 +141,13 @@ end;' language 'plpgsql';
 
 create or replace function im_office__name (integer) returns varchar as '
 DECLARE
+	p_office_id	alias for $1;
 	v_name	im_offices.office_name%TYPE;
 BEGIN
 	select	office_name
 	into	v_name
 	from	im_offices
-	where	office_id = name.office_id;
+	where	office_id = p_office_id;
 
 	return v_name;
 end;' language 'plpgsql';
