@@ -247,6 +247,7 @@ declare
 	v_admin_matrix_menu	integer;
 	v_admin_parameters_menu	integer;
 	v_admin_profiles_menu	integer;
+	v_admin_menus_menu	integer;
 	v_admin_home_menu	integer;
 
 	-- Groups
@@ -544,6 +545,16 @@ begin
 	label =>	'admin_profiles',
 	name =>		'Profiles',
 	url =>		'/intranet/admin/profiles/',
+	sort_order =>	15,
+	parent_menu_id => v_admin_menu
+    );
+    acs_permission.grant_permission(v_admin_profiles_menu, v_admins, 'read');
+
+    v_admin_menus_menu := im_menu.new (
+	package_name =>	'intranet',
+	label =>	'admin_menus',
+	name =>		'Menus',
+	url =>		'/intranet/admin/menus/',
 	sort_order =>	20,
 	parent_menu_id => v_admin_menu
     );

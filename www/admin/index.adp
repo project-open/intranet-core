@@ -13,6 +13,13 @@
 	<A href="../users/">Manage Individual Users</A><br>
 	Here you can manage users one-by-one.
       <li>
+	<A href="profiles/">Manage Profiles</A><br>
+	Configure site-wide defaults on what a group of users ("profile")
+	can do and what they shouldn't do.
+      <li>
+	<A href="menus/">Manage Menus</A><br>
+	Edit menus and change their permissions.
+      <li>
 	<A href="parameters/">Manage Global System Parameters</A><br>
 	Change the system parametrization such as directories, URLs, etc...
       <li>
