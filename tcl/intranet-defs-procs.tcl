@@ -20,6 +20,13 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+# ------------------------------------------------------------------
+# Constant Functions
+# ------------------------------------------------------------------
+
+ad_proc -public im_uom_hour {} { return 320 }
+ad_proc -public im_uom_day {} { return 321 }
+ad_proc -public im_uom_unit {} { return 322 }
 
 
 ad_proc -public im_package_core_id {} {
@@ -35,6 +42,11 @@ ad_proc -private im_package_core_id_helper {} {
     } -default 0]
 }
 
+
+
+# ------------------------------------------------------------------
+# 
+# ------------------------------------------------------------------
 
 ad_proc -public im_opt_val { var_name } {
     Acts like a "$" to evaluate a variable, but
@@ -163,6 +175,7 @@ ad_proc im_name_paren_email {user_id} {
 
 
 # ------------------------------------------------------------------
+#
 # ------------------------------------------------------------------
 
 # Find out the user name
