@@ -44,8 +44,7 @@ create table im_projects (
 				primary key 
 				constraint im_project_prj_fk 
 				references acs_objects,
-	project_name		varchar(1000) not null
-				constraint im_projects_name_un unique,
+	project_name		varchar(1000) not null,
 	project_nr		varchar(100) not null
 				constraint im_projects_nr_un unique,
 	project_path		varchar(100) not null
@@ -88,7 +87,11 @@ create table im_projects (
 	requires_report_p	char(1) default('t')
 				constraint im_project_requires_report_p 
 				check (requires_report_p in ('t','f')),
-	project_budget		number(12,2)
+	project_budget		number(12,2),
+		-- Don't allow the same name for the same customer+level
+		constraint im_projects_name_un 
+		unique(project_name, customer_id, parent_id)
+
 );
 
 create index im_project_parent_id_idx on im_projects(parent_id);
