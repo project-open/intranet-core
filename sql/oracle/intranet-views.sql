@@ -180,7 +180,7 @@ commit;
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
-insert into im_view_columns values (1,1,NULL,'Client',
+insert into im_view_columns values (1,1,NULL,'Company',
 '"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',1,
 'expr 1');
 insert into im_view_columns values (3,1,NULL,'Type',
