@@ -189,10 +189,10 @@ set profile_html ""
 # Localization Information
 # ---------------------------------------------------------------
 
-#set list_of_locales [db_list_of_lists locale_loop { select label, locale from enabled_locales order by label }]
 set site_wide_locale [lang::user::site_wide_locale]
 set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
 
+if {"" == $site_wide_locale} { set site_wide_locale "en_US" }
 
 set user_l10n_html "
 <form method=POST action=/acs-lang/index>
