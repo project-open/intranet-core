@@ -48,6 +48,7 @@ if {!$write} {
 
 im_biz_object_add_role $user_id_from_search $object_id $role_id
 
+
 # --------------------------------------------------------
 # Prepare to send out an email alert
 # --------------------------------------------------------
