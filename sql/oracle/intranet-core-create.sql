@@ -1,4 +1,4 @@
--- /packages/intranet/sql/intranet.sql
+-- /packages/intranet/sql/intranet-core-create.sql
 --
 -- Project/Open Core Module, fraber@fraber.de, 030828
 -- A complete revision of June 1999 by dvr@arsdigita.com
@@ -646,12 +646,8 @@ show errors;
 begin
    im_create_intranet_group ('P/O Admins');
    im_create_intranet_group ('Customers'); 
-   im_create_intranet_group ('Projects'); 
    im_create_intranet_group ('Offices'); 
    im_create_intranet_group ('Employees'); 
-   im_create_intranet_group ('Partners'); 
-   im_create_intranet_group ('Authorized Users'); 
-   im_create_intranet_group ('Team'); 
    im_create_intranet_group ('Freelancers'); 
    im_create_intranet_group ('Project Managers'); 
    im_create_intranet_group ('Senior Managers'); 
