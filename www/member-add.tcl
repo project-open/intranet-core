@@ -62,14 +62,14 @@ set locate_form "
   <tr> 
     <td>
       by Email
-[im_gif help "[_ intranet-core.lt_Search_for_a_substrin]"]
+[im_gif help "Search for a substring in a persons email, for example \"lion\" to search for all users from Lionbridge."]
     </td>
     <td><input type=text name=email size=20></td>
   </tr>
   <tr> 
     <td>
       [_ intranet-core.or_Last_Name]
-[im_gif help "[_ intranet-core.lt_Search_for_a_substrin_1]"]
+[im_gif help "Search for a substring in a persons last name, for example \"berg\" to search for all users with a last name containing \"berg\"."]
     </td>
     <td><input type=text name=last_name size=20></td>
   </tr>

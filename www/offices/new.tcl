@@ -117,7 +117,7 @@ set page_body "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Office+Status'>
-	[im_gif new "[_ intranet-core.lt_Add_a_new_office_stat]"]</A>"
+	[im_gif new "Add a new office status"]</A>"
 }
 
 append page_body "
@@ -131,7 +131,7 @@ append page_body "
 if {$user_admin_p} {
     append page_body "
 	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Office+Type'>
-	[im_gif new "[_ intranet-core.lt_Add_a_new_office_type]"]</A>"
+	[im_gif new "Add a new office type"]</A>"
 }
 
 append page_body "

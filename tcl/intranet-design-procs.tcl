@@ -27,12 +27,16 @@ ad_library {
 # HTML Components
 # --------------------------------------------------------
 
-ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
+ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {height 0} } {
     Create an <IMG ...> tag to correctly render a range of GIFs
     frequently used by the Intranet
 } {
     set url "/intranet/images"
     set navbar_gif_path [im_navbar_gif_path]
+    if { $translate_p && ![empty_string_p $alt] } {
+	set alt_key [lang::util::suggest_key $alt]
+	set alt [_ intranet-core.$alt_key]
+    }
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border alt=\"$alt\">" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border alt=\"$alt\">" }
@@ -106,7 +110,7 @@ ad_proc -public im_admin_category_gif { category_type } {
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
         set html "
-<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "[_ intranet-core.Admin_category_type]"]</A>"
+<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "Admin category type"]</A>"
     }
     return $html
 }
@@ -364,7 +368,7 @@ default {
         <tr> 
           $standard"
 if {[im_permission $user_id add_offices]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "[_ intranet-core.Add_a_new_office]"]</a></td>"
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new office"]</a></td>"
 }
 append navbar "
         </tr>
@@ -458,7 +462,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 # if {[im_permission $user_id view_hours]} { append navbar $status }
 # if {[im_permission $user_id view_finance]} { append navbar $costs }
 if {[im_permission $user_id add_companies]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "[_ intranet-core.Add_a_new_company]"]</a></td>"
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new company"]</a></td>"
 }
 append navbar "
         </tr>

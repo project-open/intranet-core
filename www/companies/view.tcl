@@ -144,7 +144,7 @@ if {$see_details} {
 
 	if { $admin } {
 	    append primary_contact_text "
-	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "[_ intranet-core.lt_Change_the_primary_co]"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "[_ intranet-core.lt_Delete_the_primary_co]"]</a>)\n"
+	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the primary contact"]</a>)\n"
 	}
     }
 
@@ -169,7 +169,7 @@ if {$see_details} {
 
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
 	if { $admin } {
-	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "[_ intranet-core.lt_Change_the_accounting]"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "[_ intranet-core.lt_Delete_the_accounting]"]</a>)\n"
+	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the accounting contact"]</a>)\n"
 	}
     }
 
