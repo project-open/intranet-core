@@ -34,8 +34,8 @@
 -- category_ids are neither very elegant...
 
 --   0- 10	Intranet Task Board Time Frame
---  40- 49	Intranet Customer Status
---  51-	59	Intranet Customer Types
+--  40- 49	Intranet Company Status
+--  51-	59	Intranet Company Types
 --  60- 69	Intranet Partner Status
 --  71- 83	Intranet Project Status
 --  85- 96	Intranet Project Type
@@ -169,17 +169,17 @@ from im_categories
 where category_type = 'Intranet Project Type';
 
 ------------------------------------------------------
--- Customers
+-- Companies
 --
-create or replace view im_customer_status as 
-select category_id as customer_status_id, category as customer_status
+create or replace view im_company_status as 
+select category_id as company_status_id, category as company_status
 from im_categories 
-where category_type = 'Intranet Customer Status';
+where category_type = 'Intranet Company Status';
 
-create or replace view im_customer_types as
-select category_id as customer_type_id, category as customer_type
+create or replace view im_company_types as
+select category_id as company_type_id, category as company_type
 from im_categories
-where category_type = 'Intranet Customer Type';
+where category_type = 'Intranet Company Type';
 
 create or replace view im_annual_revenue as
 select category_id as revenue_id, category as revenue
@@ -218,61 +218,61 @@ where category_type = 'Intranet Office Type';
 -- Setup Categories
 --
 
--- Intranet Customer Status
+-- Intranet Company Status
 insert into im_categories (
 	CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, 
 	CATEGORY, CATEGORY_TYPE
 ) values (
 	'', 'f', '41', 
-	'Potential', 'Intranet Customer Status'
+	'Potential', 'Intranet Company Status'
 );
 
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '42', 'Inquiries', 'Intranet Customer Status');
+('', 'f', '42', 'Inquiries', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '43', 'Qualifying', 'Intranet Customer Status');
+('', 'f', '43', 'Qualifying', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '44', 'Quoting', 'Intranet Customer Status');
+('', 'f', '44', 'Quoting', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '45', 'Quote out', 'Intranet Customer Status');
+('', 'f', '45', 'Quote out', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '46', 'Active', 'Intranet Customer Status');
+('', 'f', '46', 'Active', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '47', 'Declined', 'Intranet Customer Status');
+('', 'f', '47', 'Declined', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '48', 'Inactive', 'Intranet Customer Status');
+('', 'f', '48', 'Inactive', 'Intranet Company Status');
 
--- Intranet Customer Types
+-- Intranet Company Types
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '51', 'Unknown', 'Intranet Customer Type');
+('', 'f', '51', 'Unknown', 'Intranet Company Type');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '52', 'Other', 'Intranet Customer Type');
+('', 'f', '52', 'Other', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '53', 'Internal', 'Intranet Customer Type');
-
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '54', 'MLV Translation Agency Customer', 'Intranet Customer Type');
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '55', 'Software Company Customer', 'Intranet Customer Type');
+('', 'f', '53', 'Internal', 'Intranet Company Type');
 
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '56', 'Provider', 'Intranet Customer Type');
+('', 'f', '54', 'MLV Translation Agency Company', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '57', 'Customer', 'Intranet Customer Type');
+('', 'f', '55', 'Software Company Company', 'Intranet Company Type');
 
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '58', 'Freelance Provider', 'Intranet Customer Type');
+('', 'f', '56', 'Provider', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '59', 'Office Equipment Provider', 'Intranet Customer Type');
+('', 'f', '57', 'Company', 'Intranet Company Type');
+
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '58', 'Freelance Provider', 'Intranet Company Type');
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '59', 'Office Equipment Provider', 'Intranet Company Type');
 
 
--- The "Translation Agency" is a customer
+-- The "Translation Agency" is a company
 insert into im_category_hierarchy values (57,54);
 
--- The "IT Consulting" company is a customer.
+-- The "IT Consulting" company is a company.
 insert into im_category_hierarchy values (57,55);
 
--- The "Internal" is a customer (internal projects...)
+-- The "Internal" is a company (internal projects...)
 insert into im_category_hierarchy values (57,53);
 
 -- The "Freelance" company is a provider

@@ -123,7 +123,7 @@ ad_proc -public im_profiles_managable_for_user { user_id } {
     This function allows for a kind of "sub-administrators"
     where for example Employees are able to manage Freelancers.<BR>
     This list may be empty in the case of unprivileged users
-    such as customers or freelancers.
+    such as companies or freelancers.
 } {
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 

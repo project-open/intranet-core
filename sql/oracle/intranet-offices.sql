@@ -21,7 +21,7 @@
 -- Offices
 --
 -- An office is a physical place belonging to the company itself
--- or to a customer.
+-- or to a company.
 --
 
 begin
@@ -58,9 +58,9 @@ create table im_offices (
 				constraint im_offices_cust_type_fk
 				references im_categories,
 				-- "pointer" back to the company of the office
-				-- no foreign key to customers yet - we still
+				-- no foreign key to companies yet - we still
 				-- need to define the table ..
-	customer_id		integer,
+	company_id		integer,
 				-- is this office and contact information public?
 	public_p		char(1) default 'f'
 				constraint im_offices_public_p_ck 
@@ -102,7 +102,7 @@ is
 	office_type_id in  integer default 170,
 	-- "Active" office status
 	office_status_id in integer default 160,
-	customer_id	in integer default null
+	company_id	in integer default null
     ) return integer;
 
     procedure del (office_id in integer);
@@ -128,7 +128,7 @@ is
 	office_type_id in  integer default 170,
 	-- "Active" office status
 	office_status_id in integer default 160,
-	customer_id	in integer default null
+	company_id	in integer default null
     ) return integer
     is
 	v_office_id		integer;
@@ -145,10 +145,10 @@ is
 
 	insert into im_offices (
 		office_id, office_name, office_path, 
-		office_type_id, office_status_id, customer_id
+		office_type_id, office_status_id, company_id
 	) values (
 		v_office_id, office_name, office_path, 
-		office_type_id, office_status_id, customer_id
+		office_type_id, office_status_id, company_id
 	);
 	return v_office_id;
     end new;

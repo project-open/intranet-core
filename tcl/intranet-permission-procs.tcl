@@ -24,7 +24,7 @@ ad_library {
           "Main Site" object for the specific groups ("Profiles")
       <li>"Business Object Permissions":<br>
           Access permissions for Business Objects such as Projects, 
-          Customers, Offices,... are defined in terms of the
+          Companies, Offices,... are defined in terms of the
           membership of individual users to their "administration
           group". "Membership" in this context refers to a variety
           of relationship types with OpenACS the default types 
@@ -232,17 +232,17 @@ ad_proc -public im_user_is_authorized {conn args why} {
 }
 
 #!!!
-ad_proc -public im_user_is_customer_p { user_id } {
-    Returns 1 if a the user is in a customer group. 0 Otherwise
+ad_proc -public im_user_is_company_p { user_id } {
+    Returns 1 if a the user is in a company group. 0 Otherwise
 } {
-    set customer_group_id [im_customer_group_id]
-    return [im_user_group_member_p $user_id [im_customer_group_id]]
+    set company_group_id [im_company_group_id]
+    return [im_user_group_member_p $user_id [im_company_group_id]]
 }
 
 
 #!!!
-ad_proc -public im_user_is_customer {conn args why} {
-    Returns filter_of if user is customer
+ad_proc -public im_user_is_company {conn args why} {
+    Returns filter_of if user is company
 } {
     set user_id [ad_get_user_id]
     if { $user_id == 0 } {
@@ -251,11 +251,11 @@ ad_proc -public im_user_is_customer {conn args why} {
 	return filter_return
     }
     
-    set is_customer_p [im_user_is_customer_p $user_id]
-    if { $is_customer_p > 0 } {
+    set is_company_p [im_user_is_company_p $user_id]
+    if { $is_company_p > 0 } {
 	return filter_ok
     } else {
-	ad_return_forbidden "Access denied" "You must be a customer of [ad_system_name] to see this page"
+	ad_return_forbidden "Access denied" "You must be a company of [ad_system_name] to see this page"
 	return filter_return	
     }
 }
@@ -352,7 +352,7 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 } {
     set employee_group_id [im_employee_group_id]
     set freelance_group_id [im_freelance_group_id]
-    set customer_group_id [im_customer_group_id]
+    set company_group_id [im_company_group_id]
     set authorized_users_group_id [im_authorized_users_group_id]
 
     set authorized_p [db_string user_in_authorized_intranet_group \
@@ -363,7 +363,7 @@ ad_proc -public im_user_is_authorized_p { user_id { second_user_id "0" } } {
 		    (group_id=:employee_group_id or
 		     group_id=:authorized_users_group_id or
 		     group_id=:freelance_group_id or
-		     group_id=:customer_group_id
+		     group_id=:company_group_id
 		    )"]
 
     if { $authorized_p == 0 } {
@@ -403,8 +403,8 @@ ad_proc -public im_accounting_group_id { } {Returns the groud_id for employees} 
     return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\""]
 }
 
-ad_proc -public im_customer_group_id { } {Returns the groud_id for customers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\""]
+ad_proc -public im_company_group_id { } {Returns the groud_id for companies} {
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Companies'\""]
 }
 
 ad_proc -public im_partner_group_id { } {Returns the groud_id for partners} {
@@ -456,15 +456,15 @@ ad_proc -public im_groups_url {{-section "" -group_id "" -short_name ""}} {Sets 
 
 
 #!!!
-ad_proc -public im_customer_group_id_from_user {} {Sets group_id and short_name in the calling environment of the first customer_id this proc finds for the logged in user} {
+ad_proc -public im_company_group_id_from_user {} {Sets group_id and short_name in the calling environment of the first company_id this proc finds for the logged in user} {
     uplevel {
-	set customer_group_id [im_customer_group_id]
+	set company_group_id [im_company_group_id]
 	set local_user_id [ad_get_user_id]
-	if { ![db_0or1row customer_name_from_user \
+	if { ![db_0or1row company_name_from_user \
 		"select g.group_id, g.short_name
 		   from user_groups g, group_member_map ugm 
 		  where g.group_id=ugm.group_id
-		    and g.parent_group_id = :customer_group_id
+		    and g.parent_group_id = :company_group_id
 		    and ugm.user_id=:local_user_id
 	     	    and rownum<2"] } {
 	    # Define the variables so we won't have errors using them

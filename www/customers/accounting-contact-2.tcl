@@ -1,4 +1,4 @@
-# /www/intranet/customers/accounting-contact-2.tcl
+# /www/intranet/companies/accounting-contact-2.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -13,24 +13,24 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Writes customer's accounting contact to the db
+    Writes company's accounting contact to the db
 
-    @param customer_id customer's group id
+    @param company_id company's group id
     @param address_book_id id of the address_book record to set as the accounting contact
 
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
-    customer_id:integer,notnull
+    company_id:integer,notnull
     user_id:integer,notnull
 }
 
 ad_maybe_redirect_for_registration
 
-db_dml customers_set_accounting_contact \
-	"update im_customers 
+db_dml companies_set_accounting_contact \
+	"update im_companies 
             set accounting_contact_id=:user_id
-          where customer_id=:customer_id" 
+          where company_id=:company_id" 
 
 db_release_unused_handles
 
-ad_returnredirect view?[export_url_vars customer_id]
+ad_returnredirect view?[export_url_vars company_id]

@@ -37,7 +37,7 @@
 -- 300-399	Project Status
 -- 400-499	Project Type
 -- 500-599	Departments
--- 600-699	Customer Anual Revenues
+-- 600-699	Company Anual Revenues
 
 
 -- Company Status

@@ -140,8 +140,8 @@ select
 	project_nr,
 	description,
 	note,
-	customer_project_nr,
-	final_customer
+	company_project_nr,
+	final_company
 from
 	im_projects"
 
@@ -154,8 +154,8 @@ db_foreach im_projects_select $im_projects_sql {
 	project_path = '[anonymize_name $project_path]',
         description='[anonymize_name $description]',
         note='[anonymize_name $note]',
-        customer_project_nr='[anonymize_name $customer_project_nr]',
-        final_customer='[anonymize_name $final_customer]'
+        company_project_nr='[anonymize_name $company_project_nr]',
+        final_company='[anonymize_name $final_company]'
 	where project_id=:project_id"
 
     db_dml im_projects_update $im_projects_update_sql
@@ -229,34 +229,34 @@ db_foreach im_prices_select $im_prices_sql {
     db_dml im_trans_prices_update $im_trans_prices_update_sql
 }
 
-# ---------------------- im_customers -------------------------------
+# ---------------------- im_companies -------------------------------
 
 
-set im_customers_sql "
+set im_companies_sql "
 select
-	customer_id,
-	customer_name,
-	customer_path,
+	company_id,
+	company_name,
+	company_path,
 	referral_source,
 	site_concept,
 	vat_number,
 	note
 from
-	im_customers"
+	im_companies"
 
-db_foreach im_customers_select $im_customers_sql {
+db_foreach im_companies_select $im_companies_sql {
 
-    set im_customers_update_sql "
-	update im_customers set
-        customer_name='[anonymize_name $customer_name]',
-        customer_path='[anonymize_name $customer_path]',
+    set im_companies_update_sql "
+	update im_companies set
+        company_name='[anonymize_name $company_name]',
+        company_path='[anonymize_name $company_path]',
         referral_source='[anonymize_name $referral_source]',
         site_concept='[anonymize_name $site_concept]',
         vat_number='[anonymize_name $vat_number]',
         note='[anonymize_name $note]'
-	where customer_id=:customer_id"
+	where company_id=:company_id"
 
-    db_dml im_customers_update $im_customers_update_sql
+    db_dml im_companies_update $im_companies_update_sql
 }
 
 

@@ -52,9 +52,9 @@ create table im_projects (
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
-	customer_id		integer not null
-				constraint im_projects_customer_fk 
-				references im_customers,
+	company_id		integer not null
+				constraint im_projects_company_fk 
+				references im_companies,
 	-- type of actions pursued during the project 
 	-- implementation, for example "ERP Installation" or
 	-- "ERP Upgrade", ...
@@ -94,10 +94,10 @@ create index im_project_parent_id_idx on im_projects(parent_id);
 -- create index im_project_status_id_idx on im_projects(project_status_id);
 -- create index im_project_project_nr_idx on im_projects(project_nr);
 
--- Dont allow the same name for the same customer+level
+-- Dont allow the same name for the same company+level
 alter table im_projects add
 	constraint im_projects_name_un 
-	unique(project_name, customer_id, parent_id);
+	unique(project_name, company_id, parent_id);
 
 
 
@@ -119,7 +119,7 @@ is
 	project_nr	in im_projects.project_nr%TYPE,
 	project_path	in im_projects.project_path%TYPE,
 	parent_id	in im_projects.parent_id%TYPE default null,
-	customer_id	in im_projects.customer_id%TYPE,
+	company_id	in im_projects.company_id%TYPE,
 	project_type_id	in im_projects.project_type_id%TYPE default 85,
 	project_status_id in im_projects.project_status_id%TYPE default 76
     ) return im_projects.project_id%TYPE;
@@ -158,7 +158,7 @@ is
 		project_nr	in im_projects.project_nr%TYPE,
 		project_path	in im_projects.project_path%TYPE,
 		parent_id	in im_projects.parent_id%TYPE default null,
-		customer_id	in im_projects.customer_id%TYPE,
+		company_id	in im_projects.company_id%TYPE,
 		project_type_id	in im_projects.project_type_id%TYPE default 93,
 		project_status_id in im_projects.project_status_id%TYPE default 76
 	) return im_projects.project_id%TYPE
@@ -176,11 +176,11 @@ is
 
 		insert into im_projects (
 			project_id, project_name, project_nr, 
-			project_path, parent_id, customer_id, project_type_id, 
+			project_path, parent_id, company_id, project_type_id, 
 			project_status_id 
 		) values (
 			v_project_id, project_name, project_nr, 
-			project_path, parent_id, customer_id, project_type_id, 
+			project_path, parent_id, company_id, project_type_id, 
 			project_status_id
 		);
 		return v_project_id;

@@ -58,8 +58,8 @@ create table po_projects (
 	status_id		integer not null
 				constraint po_project_status_fk
 				references po_categories,
-	customer_id		integer
-				constraint po_customer_fk
+	company_id		integer
+				constraint po_company_fk
 				references po_companies,
 	parent_id		integer
 				constraint po_parent_fk

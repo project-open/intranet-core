@@ -1,4 +1,4 @@
-# /www/intranet/customers/primary-contact-2.tcl
+# /www/intranet/companies/primary-contact-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,27 +14,27 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Writes customer's primary contact to the db
+    Writes company's primary contact to the db
 
-    @param customer_id customer's group id
+    @param company_id company's group id
 
     @author unknown@arsdigita.com
     @author Frank Bergmann (fraber@fraber.de)
 } {
-    customer_id:integer,notnull
+    company_id:integer,notnull
     user_id:integer,notnull
 }
 
 ad_maybe_redirect_for_registration
 
-db_dml customers_set_primary_contact "
+db_dml companies_set_primary_contact "
 update 
-	im_customers 
+	im_companies 
 set
 	primary_contact_id=:user_id
 where
-	customer_id=:customer_id" 
+	company_id=:company_id" 
 
 db_release_unused_handles
 
-ad_returnredirect view?[export_url_vars customer_id]
+ad_returnredirect view?[export_url_vars company_id]

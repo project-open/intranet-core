@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/customers/new-2.tcl
+# /packages/intranet-core/www/companies/new-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,30 +14,30 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Writes all the customer information to the db. 
+    Writes all the company information to the db. 
 
-    @param customer_id The group this customer belongs to 
-    @param start Date this customer starts.
+    @param company_id The group this company belongs to 
+    @param start Date this company starts.
     @param return_url The Return URL
     @param creation_ip_address IP Address of the creating user (if we're creating this group)
     @param creation_user User ID of the creating user (if we're creating this group)
-    @param group_name Customer's name
-    @param customer_path Group short name for things like email aliases
-    @param referral_source How did this customer find us
-    @param customer_status_id What's the customer's status
-    @param customer_type_id The type of the customer
+    @param group_name Company's name
+    @param company_path Group short name for things like email aliases
+    @param referral_source How did this company find us
+    @param company_status_id What's the company's status
+    @param company_type_id The type of the company
     @param annual_revenue.money How much they make
-    @param note General notes about the customer
+    @param note General notes about the company
 
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 
 } {
-    customer_id:integer,notnull
-    { customer_name "" }
-    { customer_path "" }
-    { customer_status_id:integer "" }
-    { customer_type_id:integer "" }
+    company_id:integer,notnull
+    { company_name "" }
+    { company_path "" }
+    { company_status_id:integer "" }
+    { company_type_id:integer "" }
     { main_office_id:integer "" }
     { return_url "" }
     { group_type "" }
@@ -61,7 +61,7 @@ ad_page_contract {
     { address_postal_code "" }
     { address_country_code "" }
     { start:array,date "" }
-    { old_customer_status_id "" }
+    { old_company_status_id "" }
     { status_modification_date.expr "" }
 }
 
@@ -73,8 +73,8 @@ set user_id [ad_maybe_redirect_for_registration]
 set form_setid [ns_getform]
 
 set required_vars [list \
-    [list "customer_name" "You must specify the company's name"] \
-    [list "customer_path" "You must specify a short name"]]
+    [list "company_name" "You must specify the company's name"] \
+    [list "company_path" "You must specify a short name"]]
 set errors [im_verify_form_variables $required_vars]
 set exception_count 0
 
@@ -88,13 +88,13 @@ if { [string length ${note}] > 4000 } {
 }
 
 # Periods don't work in bind variables...
-set customer_path ${customer_path}
-# Make sure customer name is unique
+set company_path ${company_path}
+# Make sure company name is unique
 set exists_p [db_string group_exists_p "
 	select count(*)
-	from im_customers
-	where lower(trim(customer_path))=lower(trim(:customer_path))
-            and customer_id != :customer_id
+	from im_companies
+	where lower(trim(company_path))=lower(trim(:company_path))
+            and company_id != :company_id
 "]
 
 if { $exists_p } {
@@ -108,36 +108,36 @@ if { ![empty_string_p $errors] } {
 }
 
 # -----------------------------------------------------------------
-# Create a new Customer if it didn't exist yet
+# Create a new Company if it didn't exist yet
 # -----------------------------------------------------------------
 
 if {![exists_and_not_null office_name]} {
-    set office_name "$customer_name Main Office"
+    set office_name "$company_name Main Office"
 }
 
-# Double-Click protection: the customer Id was generated at the new.tcl page
-set cust_count [db_string cust_count "select count(*) from im_customers where customer_id=:customer_id"]
+# Double-Click protection: the company Id was generated at the new.tcl page
+set cust_count [db_string cust_count "select count(*) from im_companies where company_id=:company_id"]
 if {0 == $cust_count} {
 
     # First create a new main_office:
     set main_office_id [office::new \
 	-office_name	$office_name \
 	-office_path	$office_name]
-    ns_log Notice "/customers/new-2: main_office_id=$main_office_id"
+    ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
 
-    # Now create the customer with the new main_office:
-    set customer_id [customer::new \
-	-customer_name	$customer_name \
-        -customer_path	$customer_path \
+    # Now create the company with the new main_office:
+    set company_id [company::new \
+	-company_name	$company_name \
+        -company_path	$company_path \
         -main_office_id	$main_office_id \
-        -customer_type_id $customer_type_id \
-        -customer_status_id $customer_status_id]
+        -company_type_id $company_type_id \
+        -company_status_id $company_status_id]
 
     # add the creating current user to the group
     relation_add \
 	-member_state "approved" \
 	"admin_rel" \
-	$customer_id \
+	$company_id \
 	$user_id
 }
 
@@ -162,17 +162,17 @@ where
 
 
 # -----------------------------------------------------------------
-# Update the Customer
+# Update the Company
 # -----------------------------------------------------------------
 
 set update_sql "
-update im_customers set
-	customer_name		= :customer_name,
-	customer_path		= :customer_path,
+update im_companies set
+	company_name		= :company_name,
+	company_path		= :company_path,
 	vat_number		= :vat_number,
-	customer_status_id	= :customer_status_id,
-	old_customer_status_id	= :old_customer_status_id,
-	customer_type_id	= :customer_type_id,
+	company_status_id	= :company_status_id,
+	old_company_status_id	= :old_company_status_id,
+	company_type_id	= :company_type_id,
 	referral_source		= :referral_source,
 	start_date		= :start_date,
 	annual_revenue_id	= :annual_revenue_id,
@@ -182,19 +182,19 @@ update im_customers set
 	billable_p		= :billable_p,
 	note			= :note
 where
-	customer_id = :customer_id
+	company_id = :company_id
 "
-    db_dml update_customer $update_sql
+    db_dml update_company $update_sql
 
 # -----------------------------------------------------------------
 # Make sure the creator and the manager become Key Accounts
 # -----------------------------------------------------------------
 
-set role_id [im_customer_role_key_account]
+set role_id [im_company_role_key_account]
 
-im_biz_object_add_role $user_id $customer_id $role_id
+im_biz_object_add_role $user_id $company_id $role_id
 if {"" != $manager_id } {
-    im_biz_object_add_role $manager_id $customer_id $role_id
+    im_biz_object_add_role $manager_id $company_id $role_id
 }
 
 

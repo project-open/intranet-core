@@ -56,10 +56,10 @@ The diagram below shows a a number of activities related to a <strong>translatio
 <p>Check the original <a href="big_picture.html">Big Picture</a> document from ArsDigita for the requirements of the ACS 3.4 Intranet module.</p>
 <p>Additional requirements in Project/Open include:</p>
 <ul>
-  <li>Integration of Customers and Providers:<br>
-	Projects need to facilitate the cooperation across company boundaries, allowing customers and providers to interact (in a &quot;structured&quot; way!) with company staff. </li>
+  <li>Integration of Companies and Providers:<br>
+	Projects need to facilitate the cooperation across company boundaries, allowing companies and providers to interact (in a &quot;structured&quot; way!) with company staff. </li>
   <li>Powerful Permission Model:<br>
-In	order to integrate customers and providers into a project we need &quot;structured&quot; interaction because neither customers nor providers should get all information about a project.</li>
+In	order to integrate companies and providers into a project we need &quot;structured&quot; interaction because neither companies nor providers should get all information about a project.</li>
   <li>&quot;Virtual Organization&quot;:<br>
 Today, project teams are more and more distributed spacially.
 The organization of projects in Project/Open should help to overcome these limits:    
@@ -80,8 +80,8 @@ A &quot;project room&quot; is the list of services related to a single project. 
   </li>
 </ul>
 <h3>Design</h3>
-<p>Projects are implemented as a Project/Open business object just the same as customers, offices etc., using the same <a href="permissions.html">security mechanisms</a> and using the same extension system (<a href="components.html">components</a>, <a href="menus.html">menus</a>, <a href="categories.html">categories</a>, ...).</p>
-<p>So the basic project structure only consists only of the &quot;core&quot; project properties such as customer, start- and end date etc. All advanced functionality is added by extension modules.</p>
+<p>Projects are implemented as a Project/Open business object just the same as companies, offices etc., using the same <a href="permissions.html">security mechanisms</a> and using the same extension system (<a href="components.html">components</a>, <a href="menus.html">menus</a>, <a href="categories.html">categories</a>, ...).</p>
+<p>So the basic project structure only consists only of the &quot;core&quot; project properties such as company, start- and end date etc. All advanced functionality is added by extension modules.</p>
 <ul>
   <li>Admin Group is a group containing all project members (see <a href="permissions.html">permissions</a>).</li>
   <li>Project Nr is a short unique project identifier (by default something like: &quot;2004_0012&quot;)</li>
@@ -110,9 +110,9 @@ create table im_projects (
         parent_id               integer
                                 constraint im_projects_parent_fk
                                 references im_projects,
-        customer_id             integer not null
-                                constraint im_projects_customer_fk
-                                references im_customers,
+        company_id             integer not null
+                                constraint im_projects_company_fk
+                                references im_companies,
         project_type_id         not null
                                 constraint im_projects_prj_type_fk
                                 references categories,

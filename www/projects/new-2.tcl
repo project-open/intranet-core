@@ -27,7 +27,7 @@ ad_page_contract {
     project_nr
     project_type_id:integer
     project_status_id:integer
-    customer_id:integer
+    company_id:integer
     { project_lead_id:integer ""}
     { supervisor_id:integer  ""}
     { parent_id:integer ""}
@@ -51,7 +51,7 @@ set todays_date [db_string projects_get_date "select sysdate from dual"]
 if {"" == $project_path} { set project_path $project_nr }
 
 # Make sure the user has the privileges, because this
-# pages shows the list of customers etc.
+# pages shows the list of companies etc.
 if {![im_permission $user_id "add_projects"]} {
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to see this page."
@@ -63,7 +63,7 @@ if {![im_permission $user_id "add_projects"]} {
 
 set required_vars [list \
 [list "project_id" "You must specify the project_id"] \
-[list "customer_id" "You must specify the client"] \
+[list "company_id" "You must specify the client"] \
 [list "project_type_id" "You must specify the project type"] \
 [list "project_nr" "You must specify the project #"]\
 [list "project_status_id" "You must specify the project status"]]
@@ -194,7 +194,7 @@ if {0 == $id_count} {
         -project_name		$project_name \
         -project_nr		$project_nr \
         -project_path		$project_path \
-        -customer_id		$customer_id \
+        -company_id		$company_id \
         -parent_id		$parent_id \
         -project_type_id	$project_type_id \
 	-project_status_id	$project_status_id]
@@ -226,7 +226,7 @@ update im_projects set
 	project_type_id =:project_type_id,
 	project_status_id =:project_status_id,
 	project_lead_id =:project_lead_id,
-	customer_id =	:customer_id,
+	company_id =	:company_id,
 	supervisor_id =	:supervisor_id,
 	parent_id =	:parent_id,
 	description =	:description,

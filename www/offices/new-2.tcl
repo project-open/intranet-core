@@ -38,7 +38,7 @@ ad_page_contract {
     { office_path "" }
     { office_status_id:integer "" }
     { office_type_id:integer "" }
-    { customer_id:integer "" }
+    { company_id:integer "" }
     { return_url "" }
     { note "" }
     { phone "" }
@@ -127,7 +127,7 @@ update im_offices set
 	office_path = :office_path,
 	office_status_id = :office_status_id,
 	office_type_id = :office_type_id,
-	customer_id = :customer_id,
+	company_id = :company_id,
 	phone = :phone,
 	fax = :fax,
 	address_line1 = :address_line1,

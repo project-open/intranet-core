@@ -2,7 +2,7 @@
 alter table im_view_columns add
 	extra_from		varchar(4000);
 
-@../intranet-customers.sql
+@../intranet-companies.sql
 @../intranet-categories.sql
 @../intranet-views.sql
 

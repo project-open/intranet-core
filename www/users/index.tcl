@@ -108,10 +108,10 @@ if {$user_group_id > 0} {
 } else {
 
     # The user requests to see all groups.
-    # The most critical groups are customer contacts...
-    set customer_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
+    # The most critical groups are company contacts...
+    set company_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
 
-    set sql "select acs_permission.permission_p(:customer_group_id, :user_id, 'read') from dual"
+    set sql "select acs_permission.permission_p(:company_group_id, :user_id, 'read') from dual"
     set read [db_string user_can_read_user_group_p $sql]
     if {![string equal "t" $read]} {
 	ad_return_complaint 1 "You don't have permissions to view this page"

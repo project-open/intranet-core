@@ -32,13 +32,13 @@ set query_string [ad_urlencode $query_string]
 
 switch $target {
     "content" {
-	ad_returnredirect "/search/search?sections=im_customers&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
+	ad_returnredirect "/search/search?sections=im_companies&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
     }
     "users" {
 	ad_returnredirect "/intranet/user-search?keyword=$query_string"
     }
     "htsearch" {
-	ad_returnredirect "/search/search?sections=im_customers&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
+	ad_returnredirect "/search/search?sections=im_companies&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
     }
     "google" {
 	ad_returnredirect "http://www.google.com/search?q=$query_string&hl=es"

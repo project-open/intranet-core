@@ -265,19 +265,19 @@ commit;
 declare
     v_plugin		integer;
 begin
-    -- Office component for CustomerViewPage
+    -- Office component for CompanyViewPage
     v_plugin := im_component_plugin.new (
-	plugin_name =>	'Customer Offices',
+	plugin_name =>	'Company Offices',
 	package_name =>	'intranet',
-	page_url =>	'/intranet/customers/view',
+	page_url =>	'/intranet/companies/view',
 	location =>	'right',
 	sort_order =>	30,
 	component_tcl =>
 	'im_table_with_title \
 		"Offices" \
-		[im_office_customer_component \
+		[im_office_company_component \
 			$user_id \
-			$customer_id
+			$company_id
 		]'
     );
 

@@ -170,7 +170,7 @@ begin
 	-- Companies Submenu
 	select po_menu__new (
 		null,''po_menu'',now(),0,null,null,
-		''Customers'',''/po-core/companies/index?'',1,v_companies
+		''Companies'',''/po-core/companies/index?'',1,v_companies
 	) into v_menu;
 
 	select po_menu__new (

@@ -119,7 +119,7 @@ insert into po_dynview_columns values (3203,32,'Invoice',
 
 insert into po_dynview_columns values (3205,32,'Client',
 '"<A HREF=/po-core/companies/view?company_id=$company_id>$company_name</A>"','',5,
-'po-core::security::po_permission_p -privilege customer_read');
+'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (3207,32,'Received',
 '$received_date','',7,
@@ -162,7 +162,7 @@ insert into po_dynview_columns values (3003,30,'Preview',
 
 insert into po_dynview_columns values (3005,30,'Client',
 '"<A HREF=/po-core/companies/view?company_id=$company_id>$company_name</A>"','',3,
-'po-core::security::po_permission_p -privilege customer_read');
+'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (3007,30,'Due Date',
 '[if {$overdue > 0} {set t "<font color=red>$due_date_calculated</font>"} else {set t "$due_date_calculated"}]',
@@ -199,11 +199,11 @@ insert into po_dynview_columns values (3101,31,'Project #',
 
 insert into po_dynview_columns values (3103,31,'Client',
 '"<A HREF=/po-core/companies/view?company_id=$company_id>$company_name</A>"','',2,
-'po-core::security::po_permission_p -privilege customer_read');
+'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (3105,31,'Final User',
 '$final_company',
-'',3,'po-core::security::po_permission_p -privilege customer_read');
+'',3,'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (3107,31,'Project Name',
 '$group_name',
@@ -242,10 +242,10 @@ insert into po_dynview_columns values (2201,22,'Project #',
 
 insert into po_dynview_columns values (2203,22,'Client',
 '"<A HREF=/po-core/companies/view?company_id=$company_id>$company_name</A>"',
-'',2,'po-core::security::po_permission_p -privilege customer_read');
+'',2,'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (2205,22,'Final User',
-'$final_company','',3,'po-core::security::po_permission_p -privilege customer_read');
+'$final_company','',3,'po-core::security::po_permission_p -privilege company_read');
 
 insert into po_dynview_columns values (2207,22,'Spend Days',
 '$spend_days','',4,'po-core::security::po_permission_p -privilege project_read');
@@ -294,9 +294,9 @@ insert into po_dynview_columns values (2001,20,'Project #',
 'po-core::security::po_permission_p -privilege project_read');
 insert into po_dynview_columns values (2003,20,'Client',
 '"<A HREF=/po-core/companies/view?company_id=$company_id>$company_name</A>"','',2,
-'po-core::security::po_permission_p -privilege customer_read');
+'po-core::security::po_permission_p -privilege company_read');
 insert into po_dynview_columns values (2005,20,'Final User',
-'$final_company','',3,'po-core::security::po_permission_p -privilege customer_read');
+'$final_company','',3,'po-core::security::po_permission_p -privilege company_read');
 insert into po_dynview_columns values (2007,20,'Project Name',
 '$group_name','',4,'po-core::security::po_permission_p -privilege project_read');
 insert into po_dynview_columns values (2009,20,'Type',

@@ -164,14 +164,14 @@ end;
 
 
 ------------------------------------------------------------------
-prompt Setup a Customer Contact
+prompt Setup a Company Contact
 declare
 	v_user_id	integer;
 	v_rel_id	integer;
 begin
 	v_user_id := acs.add_user(
-		email => 'customer1@project-open.com',
-		username => 'customer1',
+		email => 'company1@project-open.com',
+		username => 'company1',
 		first_names => 'Cus',
 		last_name => 'Tomer1',
 		screen_name => 'CusTomer1',
@@ -181,20 +181,20 @@ begin
 		member_state => 'approved'
 	);
 
-	im_profile_add_user('Customers',v_user_id);
+	im_profile_add_user('Companies',v_user_id);
 end;
 /
 
 
 ------------------------------------------------------------------
-prompt Setup a Customer Contact
+prompt Setup a Company Contact
 declare
         v_user_id       integer;
         v_rel_id        integer;
 begin
         v_user_id := acs.add_user(
-                email => 'customer2@project-open.com',
-                username => 'customer2',
+                email => 'company2@project-open.com',
+                username => 'company2',
                 first_names => 'Cus',
                 last_name => 'Tomer2',
                 screen_name => 'CusTomer2',
@@ -204,7 +204,7 @@ begin
                 member_state => 'approved'
         );
 
-        im_profile_add_user('Customers',v_user_id);
+        im_profile_add_user('Companies',v_user_id);
 end;
 /
 
@@ -258,21 +258,21 @@ end;
 -- Create an "internal" project implementing P/O
 declare
 	v_project_id		integer;
-	v_internal_customer_id	integer;
+	v_internal_company_id	integer;
 	v_rel_id		integer;
 	v_user_id		integer;
 begin
-	select customer_id
-	into v_internal_customer_id
-	from im_customers
-	where customer_path = 'internal';
+	select company_id
+	into v_internal_company_id
+	from im_companies
+	where company_path = 'internal';
 
 	v_project_id := im_project.new(
 		object_type	=> 'im_project',
 		project_name	=> 'Project/Open Installation',
 		project_nr	=> 'po_install',
 		project_path	=> 'po_install',
-		customer_id	=> v_internal_customer_id
+		company_id	=> v_internal_company_id
 	);
 
 	-- Add some users
@@ -324,7 +324,7 @@ commit;
 -- Create the default User Matrix, defining the rights of
 -- one user group to read, write or admin other user groups
 BEGIN
-    -- Customers (more precise: customer contacts) have no
+    -- Companies (more precise: company contacts) have no
     -- permissions to see anybody else...
 
     -- Freelancers have no permissions to see anybody else
@@ -357,11 +357,11 @@ BEGIN
     im_user_matrix_grant('Freelancers','Senior Managers','admin');
     im_user_matrix_grant('Employees','Senior Managers','admin');
     im_user_matrix_grant('Project Managers','Senior Managers','admin');
-    im_user_matrix_grant('Customers','Senior Managers','admin');
+    im_user_matrix_grant('Companies','Senior Managers','admin');
     im_user_matrix_grant('Senior Managers','Senior Managers','read');
 
 
-    -- Accounting are like Employees, but can see customers
+    -- Accounting are like Employees, but can see companies
     im_user_matrix_grant('P/O Admins','Accounting','read');
     im_user_matrix_grant('Senior Managers','Accounting','read');
     im_user_matrix_grant('Project Managers','Accounting','read');
@@ -369,24 +369,24 @@ BEGIN
     im_user_matrix_grant('Employees','Accounting','read');
     im_user_matrix_grant('Sales','Accounting','read');
     im_user_matrix_grant('Freelancers','Accounting','read');
-    im_user_matrix_grant('Customers','Accounting','read');
+    im_user_matrix_grant('Companies','Accounting','read');
 
 
-    -- Sales are like Employees, but can see customers. No Freelancers
+    -- Sales are like Employees, but can see companies. No Freelancers
     im_user_matrix_grant('P/O Admins','Sales','read');
     im_user_matrix_grant('Senior Managers','Sales','read');
     im_user_matrix_grant('Project Managers','Sales','read');
     im_user_matrix_grant('Accounting','Sales','read');
     im_user_matrix_grant('Employees','Sales','read');
     im_user_matrix_grant('Sales','Sales','read');
-    im_user_matrix_grant('Customers','Sales','read');
+    im_user_matrix_grant('Companies','Sales','read');
 
 
     -- P/O Admins can administer all groups.
     im_user_matrix_grant('Freelancers','P/O Admins','admin');
     im_user_matrix_grant('Employees','P/O Admins','admin');
     im_user_matrix_grant('Project Managers','P/O Admins','admin');
-    im_user_matrix_grant('Customers','P/O Admins','admin');
+    im_user_matrix_grant('Companies','P/O Admins','admin');
     im_user_matrix_grant('Senior Managers','P/O Admins','admin');
     im_user_matrix_grant('P/O Admins','P/O Admins','admin');
     im_user_matrix_grant('Sales','P/O Admins','admin');
@@ -541,27 +541,27 @@ END;
 
 prompt Initializing Senior Managers Permissions
 BEGIN
-    im_priv_create('view_customers', 		'Senior Managers');
+    im_priv_create('view_companies', 		'Senior Managers');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_contacts', 	'Senior Managers');
+    im_priv_create('view_company_contacts', 	'Senior Managers');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_details', 	'Senior Managers');
+    im_priv_create('view_company_details', 	'Senior Managers');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customers_all', 	'Senior Managers');
+    im_priv_create('view_companies_all', 	'Senior Managers');
 END;
 /
 
 BEGIN
-    im_priv_create('add_customers', 		'Senior Managers');
+    im_priv_create('add_companies', 		'Senior Managers');
 END;
 /
 
@@ -638,27 +638,27 @@ END;
 
 prompt Initializing Sales Permissions
 BEGIN
-    im_priv_create('view_customers', 		'Sales');
+    im_priv_create('view_companies', 		'Sales');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_contacts', 	'Sales');
+    im_priv_create('view_company_contacts', 	'Sales');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_details', 	'Sales');
+    im_priv_create('view_company_details', 	'Sales');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customers_all', 	'Sales');
+    im_priv_create('view_companies_all', 	'Sales');
 END;
 /
 
 BEGIN
-    im_priv_create('add_customers', 		'Sales');
+    im_priv_create('add_companies', 		'Sales');
 END;
 /
 
@@ -711,27 +711,27 @@ END;
 
 prompt Initializing P/O Admins Permissions
 BEGIN
-    im_priv_create('view_customers', 		'P/O Admins');
+    im_priv_create('view_companies', 		'P/O Admins');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_contacts', 	'P/O Admins');
+    im_priv_create('view_company_contacts', 	'P/O Admins');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_details', 	'P/O Admins');
+    im_priv_create('view_company_details', 	'P/O Admins');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customers_all', 	'P/O Admins');
+    im_priv_create('view_companies_all', 	'P/O Admins');
 END;
 /
 
 BEGIN
-    im_priv_create('add_customers', 		'P/O Admins');
+    im_priv_create('add_companies', 		'P/O Admins');
 END;
 /
 
@@ -808,27 +808,27 @@ END;
 
 prompt Initializing Accounting Permissions
 BEGIN
-    im_priv_create('view_customers', 		'Accounting');
+    im_priv_create('view_companies', 		'Accounting');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_contacts', 	'Accounting');
+    im_priv_create('view_company_contacts', 	'Accounting');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customer_details', 	'Accounting');
+    im_priv_create('view_company_details', 	'Accounting');
 END;
 /
 
 BEGIN
-    im_priv_create('view_customers_all', 	'Accounting');
+    im_priv_create('view_companies_all', 	'Accounting');
 END;
 /
 
 BEGIN
-    im_priv_create('add_customers', 		'Accounting');
+    im_priv_create('add_companies', 		'Accounting');
 END;
 /
 

@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/customers/upload-contacts-2.tcl
+# /packages/intranet-core/www/companies/upload-contacts-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    /intranet/customers/upload-contacts-2.tcl
+    /intranet/companies/upload-contacts-2.tcl
     Read a .csv-file with header titles exactly matching
     the data model and insert the data into "users" and
     "acs_rels".
@@ -41,12 +41,12 @@ if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
 }
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match customer_filename] {
+if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
     # couldn't find a match
-    set customer_filename $upload_file
+    set company_filename $upload_file
 }
 
-if {[regexp {\.\.} $customer_filename]} {
+if {[regexp {\.\.} $company_filename]} {
     set error "Filename contains forbidden characters"
     ad_returnredirect "/error.tcl?[export_url_vars error]"
 }
@@ -88,7 +88,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     set registration_date ""
     set registration_ip ""
     set user_state ""
-    set customer_name ""
+    set company_name ""
     set categories ""
     set notes ""
 
@@ -115,12 +115,12 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     ns_log Notice "first_names=$first_names"
     ns_log Notice "last_name=$last_name"
     
-    set customer_group_id [im_customer_group_id]
+    set company_group_id [im_company_group_id]
     set employee_group_id [im_employee_group_id]
-    set get_customer_id_sql "
+    set get_company_id_sql "
 		select group_id 
 		from user_groups 
-		where group_name=:customer_name"
+		where group_name=:company_name"
 
     set insert_users_sql "INSERT INTO users (
        user_id, email, password, first_names, last_name, 
@@ -130,22 +130,22 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
        sysdate, '0.0.0.0', 'authorized'
     )"
 
-    set mark_as_customer_sql "
+    set mark_as_company_sql "
 INSERT INTO user_group_map VALUES (
-    :customer_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
+    :company_group_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
 )"
 
-    set mark_customer_employee_sql "
+    set mark_company_employee_sql "
 INSERT INTO user_group_map VALUES (
-    :customer_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
+    :company_id, :user_id, 'member', sysdate, 1, '0.0.0.0'
 )"
 
     # set the current users as the primary contact.
     # Works out in the case that there is only one contact,
-    # and picks the last user of a specific customer if there
+    # and picks the last user of a specific company if there
     # are severals.
-    set update_customer_primary_contact "UPDATE im_customers SET 
-    primary_contact_id=:user_id where group_id=:customer_id"
+    set update_company_primary_contact "UPDATE im_companies SET 
+    primary_contact_id=:user_id where group_id=:company_id"
 
 
     if { [catch {
@@ -155,16 +155,16 @@ INSERT INTO user_group_map VALUES (
 	    set user_id [db_string exists_sql "select user_id from users where email=:email" -default ""]
 	    if {[string equal $user_id ""]} {
 		set user_id [db_nextval "user_id_sequence"]
-		set customer_id [db_string get_customer_id $get_customer_id_sql -default ""]
-		if {[string equal customer_id ""]} {
+		set company_id [db_string get_company_id $get_company_id_sql -default ""]
+		if {[string equal company_id ""]} {
 		    append page_body "\n<font color=red>
-			  didn't find client '$customer_name'
+			  didn't find client '$company_name'
 			  </font>\n\n"
 		} else {
 		    db_dml insert_users_sql $insert_users_sql
-		    db_dml mark_as_customer_sql $mark_as_customer_sql
-		    db_dml mark_customer_employee_sql $mark_customer_employee_sql
-		    db_dml update_customer_primary_contact $update_customer_primary_contact
+		    db_dml mark_as_company_sql $mark_as_company_sql
+		    db_dml mark_company_employee_sql $mark_company_employee_sql
+		    db_dml update_company_primary_contact $update_company_primary_contact
 		}
 	    } else {
 		append page_body "\nUser $email already exists\n"

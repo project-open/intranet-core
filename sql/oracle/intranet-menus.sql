@@ -234,13 +234,13 @@ declare
 	v_home_menu		integer;
 	v_user_menu		integer;
 	v_project_menu		integer;
-	v_customer_menu		integer;
+	v_company_menu		integer;
 	v_office_menu		integer;
 	v_user_orgchart_menu	integer;
 	v_user_all_menu		integer;
 	v_user_new_menu		integer;
 	v_user_freelancers_menu	integer;
-	v_user_customers_menu	integer;
+	v_user_companies_menu	integer;
 	v_user_employees_menu	integer;
 	v_project_status_menu	integer;
 	v_project_standard_menu	integer;
@@ -256,7 +256,7 @@ declare
 	v_employees		integer;
 	v_accounting		integer;
 	v_senman		integer;
-	v_customers		integer;
+	v_companies		integer;
 	v_freelancers		integer;
 	v_proman		integer;
 	v_admins		integer;
@@ -288,9 +288,9 @@ begin
     where group_name = 'Employees';
 
     select group_id
-    into v_customers
+    into v_companies
     from groups
-    where group_name = 'Customers';
+    where group_name = 'Companies';
 
     select group_id
     into v_freelancers
@@ -334,7 +334,7 @@ begin
     acs_permission.grant_permission(v_home_menu, v_proman, 'read');
     acs_permission.grant_permission(v_home_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_home_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_home_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_home_menu, v_companies, 'read');
     acs_permission.grant_permission(v_home_menu, v_freelancers, 'read');
 
     v_user_menu := im_menu.new (
@@ -365,25 +365,25 @@ begin
     acs_permission.grant_permission(v_project_menu, v_proman, 'read');
     acs_permission.grant_permission(v_project_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_project_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_project_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_project_menu, v_companies, 'read');
     acs_permission.grant_permission(v_project_menu, v_freelancers, 'read');
 
 
-    v_customer_menu := im_menu.new (
+    v_company_menu := im_menu.new (
 	package_name =>	'intranet-core',
-	label =>	'customers',
+	label =>	'companies',
 	name =>		'Clients',
-	url =>		'/intranet/customers/',
+	url =>		'/intranet/companies/',
 	sort_order =>	50,
 	parent_menu_id => v_main_menu
     );
-    acs_permission.grant_permission(v_customer_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_senman, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_proman, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_accounting, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_customers, 'read');
-    acs_permission.grant_permission(v_customer_menu, v_freelancers, 'read');
+    acs_permission.grant_permission(v_company_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_company_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_company_menu, v_proman, 'read');
+    acs_permission.grant_permission(v_company_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_company_menu, v_employees, 'read');
+    acs_permission.grant_permission(v_company_menu, v_companies, 'read');
+    acs_permission.grant_permission(v_company_menu, v_freelancers, 'read');
 
 
 --    v_office_menu := im_menu.new (
@@ -399,7 +399,7 @@ begin
 --    acs_permission.grant_permission(v_office_menu, v_proman, 'read');
 --    acs_permission.grant_permission(v_office_menu, v_accounting, 'read');
 --    acs_permission.grant_permission(v_office_menu, v_employees, 'read');
---    acs_permission.grant_permission(v_office_menu, v_customers, 'read');
+--    acs_permission.grant_permission(v_office_menu, v_companies, 'read');
 --    acs_permission.grant_permission(v_office_menu, v_freelancers, 'read');
 
 
@@ -435,7 +435,7 @@ begin
     acs_permission.grant_permission(v_project_standard_menu, v_proman, 'read');
     acs_permission.grant_permission(v_project_standard_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_project_standard_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_project_standard_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_project_standard_menu, v_companies, 'read');
     acs_permission.grant_permission(v_project_standard_menu, v_freelancers, 'read');
 
 
@@ -452,7 +452,7 @@ begin
     acs_permission.grant_permission(v_project_status_menu, v_proman, 'read');
     acs_permission.grant_permission(v_project_status_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_project_status_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_project_status_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_project_status_menu, v_companies, 'read');
 
     -- -----------------------------------------------------
     -- Users Submenu
@@ -473,17 +473,17 @@ begin
     acs_permission.grant_permission(v_user_employees_menu, v_employees, 'read');
 
 
-    v_user_customers_menu := im_menu.new (
+    v_user_companies_menu := im_menu.new (
 	package_name =>	'intranet-core',
-	label =>	'users_customers',
+	label =>	'users_companies',
 	name =>		'Clients',
-	url =>		'/intranet/users/index?user_group_name=Customers',
+	url =>		'/intranet/users/index?user_group_name=Companies',
 	sort_order =>	2,
 	parent_menu_id => v_user_menu
     );
-    acs_permission.grant_permission(v_user_customers_menu, v_admins, 'read');
-    acs_permission.grant_permission(v_user_customers_menu, v_senman, 'read');
-    acs_permission.grant_permission(v_user_customers_menu, v_accounting, 'read');
+    acs_permission.grant_permission(v_user_companies_menu, v_admins, 'read');
+    acs_permission.grant_permission(v_user_companies_menu, v_senman, 'read');
+    acs_permission.grant_permission(v_user_companies_menu, v_accounting, 'read');
 
 
     v_user_freelancers_menu := im_menu.new (
@@ -624,7 +624,7 @@ declare
 	v_employees		integer;
 	v_accounting		integer;
 	v_senman		integer;
-	v_customers		integer;
+	v_companies		integer;
 	v_freelancers		integer;
 	v_proman		integer;
 	v_admins		integer;
@@ -635,7 +635,7 @@ begin
     select group_id into v_proman from groups where group_name = 'Project Managers';
     select group_id into v_accounting from groups where group_name = 'Accounting';
     select group_id into v_employees from groups where group_name = 'Employees';
-    select group_id into v_customers from groups where group_name = 'Customers';
+    select group_id into v_companies from groups where group_name = 'Companies';
     select group_id into v_freelancers from groups where group_name = 'Freelancers';
 
     select menu_id
@@ -672,7 +672,7 @@ begin
     acs_permission.grant_permission(v_menu, v_proman, 'read');
     acs_permission.grant_permission(v_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_menu, v_companies, 'read');
     acs_permission.grant_permission(v_menu, v_freelancers, 'read');
 
     v_menu := im_menu.new (
@@ -688,7 +688,7 @@ begin
     acs_permission.grant_permission(v_menu, v_proman, 'read');
     acs_permission.grant_permission(v_menu, v_accounting, 'read');
     acs_permission.grant_permission(v_menu, v_employees, 'read');
-    acs_permission.grant_permission(v_menu, v_customers, 'read');
+    acs_permission.grant_permission(v_menu, v_companies, 'read');
     acs_permission.grant_permission(v_menu, v_freelancers, 'read');
 
 

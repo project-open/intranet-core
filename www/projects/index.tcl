@@ -38,7 +38,7 @@ ad_page_contract {
     { status_id 76 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
-    { customer_id:integer "0" } 
+    { company_id:integer "0" } 
     { letter:trim "all" }
     { start_idx:integer "1" }
     { how_many "" }
@@ -57,7 +57,7 @@ ad_page_contract {
 #    3. Define Table Columns:
 #	Define the table columns that the user can see.
 #	Again, restrictions may apply for unprivileged users,
-#	for example hiding customer names to freelancers.
+#	for example hiding company names to freelancers.
 #    4. Define Filter Categories:
 #	Extract from the database the filter categories that
 #	are available for a specific user.
@@ -180,8 +180,8 @@ if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
 if { 0 != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }
-if { ![empty_string_p $customer_id] && $customer_id != 0 } {
-    lappend criteria "p.customer_id=:customer_id"
+if { ![empty_string_p $company_id] && $company_id != 0 } {
+    lappend criteria "p.company_id=:company_id"
 }
 
 if {[string equal $mine_p "t"]} {
@@ -212,7 +212,7 @@ switch $order_by {
     "Type" { set order_by_clause "order by project_type" }
     "Status" { set order_by_clause "order by project_status_id" }
     "Delivery Date" { set order_by_clause "order by end_date" }
-    "Client" { set order_by_clause "order by customer_name" }
+    "Client" { set order_by_clause "order by company_name" }
     "Words" { set order_by_clause "order by task_words" }
     "Project #" { set order_by_clause "order by project_nr desc" }
     "Project Manager" { set order_by_clause "order by upper(lead_name)" }
@@ -319,7 +319,7 @@ set perm_sql "
 set sql "
 SELECT
 	p.*,
-        c.customer_name,
+        c.company_name,
         im_name_from_user_id(project_lead_id) as lead_name,
         im_category_from_id(p.project_type_id) as project_type,
         im_category_from_id(p.project_status_id) as project_status,
@@ -327,11 +327,11 @@ SELECT
         to_char(end_date, 'HH24:MI') as end_date_time
 FROM
 	im_projects p,
-	im_customers c,
+	im_companies c,
 	($perm_sql) perm
 WHERE
 	perm.project_id = p.project_id
-	and p.customer_id = c.customer_id(+)
+	and p.company_id = c.company_id(+)
 	and (
 		perm.permission_member > 0
 		$mine_restriction

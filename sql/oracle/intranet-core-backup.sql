@@ -16,8 +16,8 @@
 
 -- 100	im_projects
 -- 101	im_project_roles
--- 102	im_customers
--- 103	im_customer_roles
+-- 102	im_companies
+-- 103	im_company_roles
 -- 104	im_offices
 -- 105	im_office_roles
 -- 106	im_categories
@@ -43,25 +43,25 @@
 
 
 ---------------------------------------------------------
--- Backup Customers
+-- Backup Companies
 --
 
 delete from im_view_columns where view_id = 102;
 delete from im_views where view_id = 102;
 insert into im_views (view_id, view_name, view_sql
-) values (102, 'im_customers', '
+) values (102, 'im_companies', '
 select
         c.*,
         im_email_from_user_id(c.manager_id) as manager_email,
         im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
         im_email_from_user_id(c.primary_contact_id) as primary_contact_email,
-        im_category_from_id(c.customer_type_id) as customer_type,
-        im_category_from_id(c.customer_status_id) as customer_status,
+        im_category_from_id(c.company_type_id) as company_type,
+        im_category_from_id(c.company_status_id) as company_status,
         im_category_from_id(c.crm_status_id) as crm_status,
         im_category_from_id(c.annual_revenue_id) as annual_revenue,
 	o.office_name as main_office_name
 from
-        im_customers c,
+        im_companies c,
 	im_offices o
 where
 	c.main_office_id = o.office_id
@@ -71,17 +71,17 @@ commit;
 delete from im_view_columns where column_id > 10200 and column_id < 10299;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10201,102,NULL,'customer_name','$customer_name','','',1,'');
+extra_select, extra_where, sort_order, visible_for) values (10201,102,NULL,'company_name','$company_name','','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10203,102,NULL,'customer_path','$customer_path','','',3,'');
+extra_select, extra_where, sort_order, visible_for) values (10203,102,NULL,'company_path','$company_path','','',3,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10205,102,NULL,'main_office_name','$main_office_name','','',5,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10207,102,NULL,'deleted_p','$deleted_p','','',7,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10209,102,NULL,'customer_type','$customer_type','','',9,'');
+extra_select, extra_where, sort_order, visible_for) values (10209,102,NULL,'company_type','$company_type','','',9,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10211,102,NULL,'customer_status','$customer_status','','',11,'');
+extra_select, extra_where, sort_order, visible_for) values (10211,102,NULL,'company_status','$company_status','','',11,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10213,102,NULL,'crm_status','$crm_status','','',13,'');
 
@@ -116,22 +116,22 @@ commit;
 delete from im_view_columns where view_id = 103;
 delete from im_views where view_id = 103;
 insert into im_views (view_id, view_name, visible_for, view_sql
-) values (103, 'im_customer_members', '', '
+) values (103, 'im_company_members', '', '
 select
-	c.customer_name,
+	c.company_name,
 	im_email_from_user_id(r.object_id_two) as user_email,
 	im_category_from_id(m.object_role_id) as role
 from
 	acs_rels r,
 	im_biz_object_members m,
-	im_customers c
+	im_companies c
 where
 	r.rel_id = m.rel_id
-	and r.object_id_one = c.customer_id
+	and r.object_id_one = c.company_id
 ');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10301,103,NULL,'customer_name','$customer_name','','',1,'');
+extra_select, extra_where, sort_order, visible_for) values (10301,103,NULL,'company_name','$company_name','','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10303,103,NULL,'user_email','$user_email','','',3,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
@@ -151,7 +151,7 @@ insert into im_views (view_id, view_name, view_sql
 ) values (100, 'im_projects', '
 select
         p.*,
-        c.customer_name,
+        c.company_name,
         parent_p.project_name as parent_name,
         im_email_from_user_id(p.project_lead_id) as project_lead_email,
         im_email_from_user_id(p.supervisor_id) as supervisor_email,
@@ -163,9 +163,9 @@ select
 from
         im_projects p,
         im_projects parent_p,
-        im_customers c
+        im_companies c
 where
-        p.customer_id = c.customer_id
+        p.company_id = c.company_id
         and p.parent_id = parent_p.project_id(+)
 ');
 commit;
@@ -182,7 +182,7 @@ extra_select, extra_where, sort_order, visible_for) values (10013,100,NULL,'proj
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10015,100,NULL,'parent_name','$parent_name','','',15,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (10017,100,NULL,'customer_name','$customer_name','','',17,'');
+extra_select, extra_where, sort_order, visible_for) values (10017,100,NULL,'company_name','$company_name','','',17,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10019,100,NULL,'project_type','$project_type','','',19,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,

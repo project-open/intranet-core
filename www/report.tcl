@@ -49,7 +49,7 @@ lappend column_vars {$project_status}
 set sql "
 select 
 	p.*,
-	c.customer_name,
+	c.company_name,
         im_name_from_user_id(p.project_lead_id) as lead_name, 
         im_category_from_id(p.project_type_id) as project_type, 
         im_category_from_id(p.project_status_id) as project_status,
@@ -57,9 +57,9 @@ select
         to_char(end_date, 'HH24:MI') as end_date_time
 from 
 	im_projects p, 
-        im_customers c
+        im_companies c
 where 
-        p.customer_id = c.customer_id
+        p.company_id = c.company_id
 "
 
 # ----------------------------------------------------------

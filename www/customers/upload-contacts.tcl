@@ -1,4 +1,4 @@
-# /intranet/customers/upload-contacts.tcl
+# /intranet/companies/upload-contacts.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -23,7 +23,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Company Contacts CSV"
 
-set context_bar [ad_context_bar [list "/intranet/customers/" "Companies"] "Upload CSV"]
+set context_bar [ad_context_bar [list "/intranet/companies/" "Companies"] "Upload CSV"]
 
 set page_content "
 <form enctype=multipart/form-data method=POST action=upload-contacts-2.tcl>

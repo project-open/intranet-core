@@ -66,25 +66,25 @@ if {!$read} {
 set query "
 select
 	p.*,
-	c.customer_name,
-	c.customer_path,
+	c.company_name,
+	c.company_path,
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
-	c.primary_contact_id as customer_contact_id,
-	im_name_from_user_id(c.primary_contact_id) as customer_contact,
-	im_email_from_user_id(c.primary_contact_id) as customer_contact_email,
+	c.primary_contact_id as company_contact_id,
+	im_name_from_user_id(c.primary_contact_id) as company_contact,
+	im_email_from_user_id(c.primary_contact_id) as company_contact_email,
 	im_name_from_user_id(p.project_lead_id) as project_lead,
 	im_name_from_user_id(p.supervisor_id) as supervisor,
 	im_name_from_user_id(c.manager_id) as manager,
 	pp.project_name as parent_name
 from
 	im_projects p, 
-	im_customers c,
+	im_companies c,
 	im_projects pp
 where 
 	p.project_id=:project_id
-	and p.customer_id = c.customer_id(+)
+	and p.company_id = c.company_id(+)
 	and p.parent_id=pp.project_id(+)
 "
 
@@ -147,7 +147,7 @@ append project_base_data_html "
 			    <td>Project#</td>
 			    <td>$project_path</td>
 			  </tr>
-[im_customer_link_tr $user_id $customer_id $customer_name "Client"]
+[im_company_link_tr $user_id $company_id $company_name "Client"]
 			  <tr> 
 			    <td>Project Manager</td>
 			    <td>

@@ -80,8 +80,8 @@ drop table im_url_types;
 
 drop view im_project_status;
 drop view im_project_types;
-drop view im_customer_status;
-drop view im_customer_types;
+drop view im_company_status;
+drop view im_company_types;
 drop view im_partner_status;
 drop view im_partner_types;
 drop view im_prior_experiences;
@@ -129,7 +129,7 @@ commit;
 
 begin
    im_drop_profile ('P/O Admins');
-   im_drop_profile ('Customers'); 
+   im_drop_profile ('Companies'); 
    im_drop_profile ('Employees'); 
    im_drop_profile ('Freelancers'); 
    im_drop_profile ('Project Managers'); 
@@ -192,11 +192,11 @@ commit;
 
 
 begin
-    acs_privilege.drop_privilege('add_customers');
-    acs_privilege.drop_privilege('view_customers');
-    acs_privilege.drop_privilege('view_customers_all');
-    acs_privilege.drop_privilege('view_customer_contacts');
-    acs_privilege.drop_privilege('view_customer_details');
+    acs_privilege.drop_privilege('add_companies');
+    acs_privilege.drop_privilege('view_companies');
+    acs_privilege.drop_privilege('view_companies_all');
+    acs_privilege.drop_privilege('view_company_contacts');
+    acs_privilege.drop_privilege('view_company_details');
     acs_privilege.drop_privilege('add_projects');
     acs_privilege.drop_privilege('view_projects');
     acs_privilege.drop_privilege('view_project_members');
@@ -283,35 +283,35 @@ commit;
 
 
 -------------------------------------------------------
--- Customers
+-- Companies
 --
 
 begin
      for row in (
-        select customer_id
-        from im_customers
+        select company_id
+        from im_companies
      ) loop
-        im_customer.del(row.customer_id);
+        im_company.del(row.company_id);
      end loop;
 end;
 /
 commit;
 
--- Remove all possible links to customers from offices
+-- Remove all possible links to companies from offices
 BEGIN
     update im_offices
-    set customer_id = null;
+    set company_id = null;
 END;
 /
 commit;
 
 
-drop package im_customer;
-drop table im_customers;
+drop package im_company;
+drop table im_companies;
 
-delete from acs_objects where object_type='im_customer';
+delete from acs_objects where object_type='im_company';
 BEGIN
- acs_object_type.drop_type ('im_customer');
+ acs_object_type.drop_type ('im_company');
 END;
 /
 commit;

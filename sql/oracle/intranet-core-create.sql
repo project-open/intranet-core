@@ -21,7 +21,7 @@
 -- Categories
 --
 -- Values for ObjectType/ObjectStatus of all
--- major business objects such as project, customer,
+-- major business objects such as project, company,
 -- user, ...
 --
 prompt *** intranet-categories
@@ -56,8 +56,8 @@ prompt *** intranet-biz-objects
 @intranet-biz-objects.sql
 prompt *** intranet-offices
 @intranet-offices.sql
-prompt *** intranet-customers
-@intranet-customers.sql
+prompt *** intranet-companies
+@intranet-companies.sql
 prompt *** intranet-projects
 @intranet-projects.sql
 
@@ -371,9 +371,9 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_project','edit','/intranet/projects/new?project_id=');
 
 insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_customer','view','/intranet/customers/view?customer_id=');
+'im_company','view','/intranet/companies/view?company_id=');
 insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_customer','edit','/intranet/customers/new?customer_id=');
+'im_company','edit','/intranet/companies/new?company_id=');
 
 insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_office','view','/intranet/offices/view?office_id=');

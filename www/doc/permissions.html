@@ -71,9 +71,9 @@ Project/Open Core<!-- InstanceEndEditable -->
 <p>The permission primitives mean:</p>
 <ul>
   <li>View (read object name):<br>
-The user may see the name of the business object. This is used for example in a project page where the user may see the name of the customer, but not see customer details.</li>
+The user may see the name of the business object. This is used for example in a project page where the user may see the name of the company, but not see company details.</li>
   <li>Read (read the object specific data fields):<br>
-This does not mean that the user can see associated information, as in the project-customer example above.</li>
+This does not mean that the user can see associated information, as in the project-company example above.</li>
   <li>Write (write/edit the object specific data fields)</li>
   <li>Admin (=view + read + write)</li>
 </ul>
@@ -88,11 +88,11 @@ This does not mean that the user can see associated information, as in the proje
 	<TR class=list-header>
         
 	  <TH class=list>Name </TH>
-	  <TH align=middle class=list>Add customers </TH>
-	  <TH align=middle class=list>View customers </TH>
-	  <TH align=middle class=list>View customers all </TH>
-	  <TH align=middle class=list>View customer contacts </TH>
-	  <TH align=middle class=list>View customer details </TH>
+	  <TH align=middle class=list>Add companies </TH>
+	  <TH align=middle class=list>View companies </TH>
+	  <TH align=middle class=list>View companies all </TH>
+	  <TH align=middle class=list>View company contacts </TH>
+	  <TH align=middle class=list>View company details </TH>
 	  <TH align=middle class=list>Remove All </TH>
 	</TR>
   	  
@@ -100,15 +100,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list><FONT color=gray>Main Site Administrators</FONT> </TD>
 	  <TD align=middle class=list><INPUT name=perm type=checkbox 
-      value=433,add_customers> </TD>
+      value=433,add_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=433,view_customers> </TD>
+      value=433,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=433,view_customers_all> </TD>
+      value=433,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=433,view_customer_contacts> </TD>
+      value=433,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=433,view_customer_details> </TD>
+      value=433,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=433,remove> </TD>
 	</TR>
@@ -117,15 +117,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list><FONT color=gray>Main Site Members</FONT> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=432,add_customers> </TD>
+      value=432,add_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=432,view_customers> </TD>
+      value=432,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=432,view_customers_all> </TD>
+      value=432,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=432,view_customer_contacts> </TD>
+      value=432,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=432,view_customer_details> </TD>
+      value=432,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=432,remove> </TD>
 	</TR>
@@ -134,32 +134,32 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list>Accounting </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=481,add_customers> </TD>
+      value=481,add_companies> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=481,view_customers> </TD>
+      value=481,view_companies> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=481,view_customers_all> </TD>
+      value=481,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=481,view_customer_contacts> </TD>
+      value=481,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=481,view_customer_details> </TD>
+      value=481,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=481,remove> </TD>
 	</TR>
   	  
 	<TR class=list-even>
         
-	  <TD class=list>Customers </TD>
+	  <TD class=list>Companies </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=461,add_customers> </TD>
+      value=461,add_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=461,view_customers> </TD>
+      value=461,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=461,view_customers_all> </TD>
+      value=461,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=461,view_customer_contacts> </TD>
+      value=461,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=461,view_customer_details> </TD>
+      value=461,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=461,remove> </TD>
 	</TR>
@@ -168,15 +168,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list>Employees </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=465,add_customers> </TD>
+      value=465,add_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=465,view_customers> </TD>
+      value=465,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=465,view_customers_all> </TD>
+      value=465,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=465,view_customer_contacts> </TD>
+      value=465,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=465,view_customer_details> </TD>
+      value=465,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=465,remove> </TD>
 	</TR>
@@ -185,15 +185,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list>Freelancers </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=469,add_customers> </TD>
+      value=469,add_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=469,view_customers> </TD>
+      value=469,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=469,view_customers_all> </TD>
+      value=469,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=469,view_customer_contacts> </TD>
+      value=469,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=469,view_customer_details> </TD>
+      value=469,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=469,remove> </TD>
 	</TR>
@@ -202,15 +202,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list>P/O Admins </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=457,add_customers> </TD>
+      value=457,add_companies> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=457,view_customers> </TD>
+      value=457,view_companies> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=457,view_customers_all> </TD>
+      value=457,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=457,view_customer_contacts> </TD>
+      value=457,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=457,view_customer_details> </TD>
+      value=457,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=457,remove> </TD>
 	</TR>
@@ -219,15 +219,15 @@ This does not mean that the user can see associated information, as in the proje
         
 	  <TD class=list>Project Managers </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=473,add_customers> </TD>
+      value=473,add_companies> </TD>
 	  <TD align=middle class=list><INPUT CHECKED name=perm2 type=checkbox 
-      value=473,view_customers> </TD>
+      value=473,view_companies> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=473,view_customers_all> </TD>
+      value=473,view_companies_all> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=473,view_customer_contacts> </TD>
+      value=473,view_company_contacts> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
-      value=473,view_customer_details> </TD>
+      value=473,view_company_details> </TD>
 	  <TD align=middle class=list><INPUT name=perm2 type=checkbox 
       value=473,remove> </TD>
 	</TR>
@@ -252,7 +252,7 @@ This does not mean that the user can see associated information, as in the proje
 	  <TD><A 
       href="#">Accounting</A></TD>
 	  <TD><A 
-      href="#">Customers</A></TD>
+      href="#">Companies</A></TD>
 	  <TD><A 
       href="#">Employees</A></TD>
 	  <TD><A 
@@ -336,7 +336,7 @@ This does not mean that the user can see associated information, as in the proje
 	</TR>
     <TR>
       <TD><A 
-      href="profiles.html?group_id=461">Customers</A> 
+      href="profiles.html?group_id=461">Companies</A> 
     </TD>
 	  <TD align=middle><A 
       href="profiles.html?horiz_group_id=481&amp;vert_group_id=461&amp;action=add_viewable">v</A> 

@@ -77,7 +77,7 @@ ad_proc -public im_gif { name {alt ""} { border 0} {width 0} {height 0} } {
 	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border alt='$alt'>" }
 
 	"admin"		{ return "<img src=$url/admin.gif width=20 heigth=20 border=$border alt='$alt'>" }
-	"customer"	{ return "<img src=$url/customer.gif width=20 heigth=20 border=$border alt='$alt'>" }
+	"company"	{ return "<img src=$url/company.gif width=20 heigth=20 border=$border alt='$alt'>" }
 	"employee"	{ return "<img src=$url/employee.gif width=20 heigth=20 border=$border alt='$alt'>" }
 	"freelance"	{ return "<img src=$url/freelance.gif width=20 heigth=20 border=$border alt='$alt'>" }
 	"senman"	{ return "<img src=$url/senman.gif width=20 heigth=20 border=$border alt='$alt'>" }
@@ -389,7 +389,7 @@ append navbar "
 
 
 
-ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
+ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_page_url export_var_list } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/projects/.
     The lower part of the navbar also includes an Alpha bar.
@@ -403,7 +403,7 @@ ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-	    ns_log Notice "im_customer_navbar: $var <- $value"
+	    ns_log Notice "im_company_navbar: $var <- $value"
         }
     }
 
@@ -456,8 +456,8 @@ ad_proc -public im_customer_navbar { default_letter base_url next_page_url prev_
           $standard"
 # if {[im_permission $user_id view_hours]} { append navbar $status }
 # if {[im_permission $user_id view_finance]} { append navbar $costs }
-if {[im_permission $user_id add_customers]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new customer"]</a></td>"
+if {[im_permission $user_id add_companies]} {
+    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new company"]</a></td>"
 }
 append navbar "
         </tr>

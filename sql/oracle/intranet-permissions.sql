@@ -270,7 +270,7 @@ show errors;
 prompt *** Creating User Profiles
 begin
    im_create_profile ('P/O Admins','admin');
-   im_create_profile ('Customers','customer'); 
+   im_create_profile ('Companies','company'); 
    im_create_profile ('Employees','employee'); 
    im_create_profile ('Freelancers','freelance'); 
    im_create_profile ('Project Managers','proman'); 
@@ -298,15 +298,15 @@ begin
     -- inferior to read.
     -- This privilege is used:
     --	    - In the ProjectViewPage in order to decide 
-    --		whether to show or not the customer contact.
-    --		Read(Customers) means that the user is able
-    --		to actually read the customer contact information,
+    --		whether to show or not the company contact.
+    --		Read(Companies) means that the user is able
+    --		to actually read the company contact information,
     --	so we have to show a link to the UserViewPage.
-    --	View(Customer) indicates that we can show the
-    --	name of the customer contact, but not display
+    --	View(Company) indicates that we can show the
+    --	name of the company contact, but not display
     --	a link to the UserViewPage.
     --	If both privileges are missing, we are not going
-    --	to reveil even the existence of a customer contact.
+    --	to reveil even the existence of a company contact.
     --	- The privilege is also used to decided whether to
     --	display the submenus for users such as Employees,
     --	Freelancers etc. The current_user needs to have 
@@ -319,12 +319,12 @@ begin
     -- Global Privileges
     -- These privileges are applied only to the "Main Site" object.
     -- They determine global user characteristics independet of
-    -- individual objects (such as customers, users, ...)
-    acs_privilege.create_privilege('add_customers','Add Customers','Add Customers');
-    acs_privilege.create_privilege('view_customers','View Customers','View Customers');
-    acs_privilege.create_privilege('view_customers_all','View All Customers','View All Customers');
-    acs_privilege.create_privilege('view_customer_contacts','View Customer Contacts','View Customer Contacts');
-    acs_privilege.create_privilege('view_customer_details','View Customer Details','View Customer Details');
+    -- individual objects (such as companies, users, ...)
+    acs_privilege.create_privilege('add_companies','Add Companies','Add Companies');
+    acs_privilege.create_privilege('view_companies','View Companies','View Companies');
+    acs_privilege.create_privilege('view_companies_all','View All Companies','View All Companies');
+    acs_privilege.create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
+    acs_privilege.create_privilege('view_company_details','View Company Details','View Company Details');
 
     acs_privilege.create_privilege('view_offices','View Offices','View Offices');
     acs_privilege.create_privilege('view_offices_all','View All Offices','View Offices');

@@ -44,7 +44,7 @@ Project/Open Core<!-- InstanceEndEditable -->
 </TABLE>
 <!-- InstanceBeginEditable name="Body" -->
 <h1>Offices</h1>
-<p>Offices represent physical locations associated with <a href="customers.html">customers</a>. There's not a lot of magic to offices...</p>
+<p>Offices represent physical locations associated with <a href="companies.html">companies</a>. There's not a lot of magic to offices...</p>
 <p>Officepermissions are managed using membership of the <a href="permissions.html">&quot;admin_group&quot;</a> similar to projects.</p>
 <pre>
 create table im_offices (
@@ -70,7 +70,7 @@ create table im_offices (
                                 constraint im_offices_cust_type_fk
                                 references categories,
                                 -- "pointer" back to the company of the office
-        customer_id             integer,
+        company_id             integer,
         phone                   varchar(50),
         fax                     varchar(50),
         address_line1           varchar(80),

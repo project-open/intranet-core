@@ -28,7 +28,7 @@ set n_orders 0
 
 # Don't nuke anyone who pays us money ...
 if { $n_orders > 0 } {
-    ad_return_error "Can't Nuke a Paying Customer" "We can't nuke a paying customer because to do so would screw up accounting records."
+    ad_return_error "Can't Nuke a Paying Company" "We can't nuke a paying company because to do so would screw up accounting records."
     return
 }
 

@@ -45,7 +45,7 @@ if {0 == $office_id} {
     return
 }
 
-set customer_view_page "/intranet/customers/view"
+set company_view_page "/intranet/companies/view"
 set user_view_page "/intranet/users/view"
 set office_new_page "/intranet/offices/new"
 
@@ -70,16 +70,16 @@ select
 	cc.country_name as address_country_name,
 	im_name_from_user_id(o.contact_person_id) as contact_person_name,
 	im_email_from_user_id(o.contact_person_id) as contact_person_email,
-	c.customer_id,
-	c.customer_name,
+	c.company_id,
+	c.company_name,
 	cc.country_name as address_country
 from
 	im_offices o,
-	im_customers c,
+	im_companies c,
 	country_codes cc
 where
 	o.office_id = :office_id
-	and o.customer_id = c.customer_id(+)
+	and o.company_id = c.company_id(+)
 	and o.address_country_code = cc.iso(+)
 "]
 

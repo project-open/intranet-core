@@ -25,7 +25,7 @@
 
 -- ViewIDs: IDs < 1000 are reserved for Project/Open modules.
 --
---  0 -  9	Customers
+--  0 -  9	Companies
 --  10- 19	Users
 --  20- 29	Projects
 --  30- 39	Invoices & Payments
@@ -102,8 +102,8 @@ create table im_view_columns (
 ---------------------------------------------------------
 -- Standard Views for TCL pages
 --
-insert into im_views (view_id, view_name, visible_for) values (1, 'customer_list', 'view_customers');
-insert into im_views (view_id, view_name, visible_for) values (2, 'customer_view', 'view_customers');
+insert into im_views (view_id, view_name, visible_for) values (1, 'company_list', 'view_companies');
+insert into im_views (view_id, view_name, visible_for) values (2, 'company_view', 'view_companies');
 insert into im_views (view_id, view_name, visible_for) values (10, 'user_list', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (11, 'user_view', 'view_users');
 insert into im_views (view_id, view_name, visible_for) values (12, 'user_contact', 'view_users');
@@ -126,8 +126,8 @@ extra_select, extra_where, sort_order, visible_for) values (2201,22,NULL,'Projec
 '','',1,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2203,22,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
-'','',2,'im_permission $user_id view_customers');
+'"<A HREF=/intranet/companies/view?company_id=$company_id>$company_name</A>"',
+'','',2,'im_permission $user_id view_companies');
 -- columns to be here inserted by intranet-timesheet
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2213,22,NULL,'Status',
@@ -176,8 +176,8 @@ extra_select, extra_where, sort_order, visible_for) values (2003,20,NULL,'Projec
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2005,20,NULL,'Client',
-'"<A HREF=/intranet/customers/view?customer_id=$customer_id>$customer_name</A>"',
-'','',4,'im_permission $user_id view_customers');
+'"<A HREF=/intranet/companies/view?company_id=$company_id>$company_name</A>"',
+'','',4,'im_permission $user_id view_companies');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2009,20,NULL,'Type',
@@ -202,37 +202,37 @@ extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status
 commit;
 
 
-prompt CustomerListPage columns.
+prompt CompanyListPage columns.
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1,1,NULL,'Client',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',1,
+'"<A HREF=$company_view_page?company_id=$company_id>$company_name</A>"','','',1,
 'expr 1');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (3,1,NULL,'Type',
-'$customer_type','','',2,'expr 1');
+'$company_type','','',2,'expr 1');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (4,1,NULL,'Status',
-'$customer_status','','',3,'expr 1');
+'$company_status','','',3,'expr 1');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (5,1,NULL,'Contact',
-'"<A HREF=$user_view_page?user_id=$customer_contact_id>$customer_contact_name</A>"',
-'','',4,'im_permission $user_id view_customer_contacts');
+'"<A HREF=$user_view_page?user_id=$company_contact_id>$company_contact_name</A>"',
+'','',4,'im_permission $user_id view_company_contacts');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Email',
-'"<A HREF=mailto:$customer_contact_email>$customer_contact_email</A>"','','',5,
-'im_permission $user_id view_customer_contacts');
+'"<A HREF=mailto:$company_contact_email>$company_contact_email</A>"','','',5,
+'im_permission $user_id view_company_contacts');
 
 -- insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 -- extra_select, extra_where, sort_order, visible_for) values (7,1,NULL,'Contact Phone',
--- '$customer_phone','','',6,'im_permission $user_id view_customer_contact');
+-- '$company_phone','','',6,'im_permission $user_id view_company_contact');
 commit;
 
 
@@ -405,7 +405,7 @@ extra_select, extra_where, sort_order, visible_for) values (8001,80,NULL,'Office
 '');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (8002,80,NULL,'Company',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',20,
+'"<A HREF=$company_view_page?company_id=$company_id>$company_name</A>"','','',20,
 '');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (8003,80,NULL,'Type',
@@ -439,8 +439,8 @@ extra_select, extra_where, sort_order, visible_for) values (8101,81,NULL,'Office
 15, '');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (8102,81,NULL,'Company',
-'"<A HREF=$customer_view_page?customer_id=$customer_id>$customer_name</A>"','','',
-20, 'im_permission $user_id view_customers');
+'"<A HREF=$company_view_page?company_id=$company_id>$company_name</A>"','','',
+20, 'im_permission $user_id view_companies');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (8104,81,NULL,'Type', '$office_type','','',
 40,'');

@@ -77,7 +77,7 @@ set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set return_url "/intranet/offices/index"
 
-set customer_view_page "/intranet/customers/view"
+set company_view_page "/intranet/companies/view"
 set user_view_page "/intranet/users/view"
 set office_view_page "/intranet/offices/view"
 set letter [string toupper $letter]
@@ -227,15 +227,15 @@ select
 	im_email_from_user_id(o.contact_person_id) as contact_person_email,
         im_category_from_id(o.office_type_id) as office_type,
         im_category_from_id(o.office_status_id) as office_status,
-	c.customer_id,
-	c.customer_name
+	c.company_id,
+	c.company_name
 from 
 	im_offices o,
-	im_customers c,
+	im_companies c,
 	($perm_sql) perm
 where
 	perm.office_id = o.office_id
-	and o.customer_id = c.customer_id(+)
+	and o.company_id = c.company_id(+)
         and (
 		perm.permission_member > 0
         or

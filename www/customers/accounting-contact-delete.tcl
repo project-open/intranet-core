@@ -1,4 +1,4 @@
-# /www/intranet/customers/accounting-contact-delete.tcl
+# /www/intranet/companies/accounting-contact-delete.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -13,23 +13,23 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Removes customer's accounting contact
+    Removes company's accounting contact
 
-    @param customer_id customer's group id
+    @param company_id company's group id
     @param return_url where to go once we're done
 
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
-    customer_id:integer
+    company_id:integer
     return_url
 }
 
 ad_maybe_redirect_for_registration
 
-db_dml customers_delete_accounting_contact \
-	"update im_customers
+db_dml companies_delete_accounting_contact \
+	"update im_companies
             set accounting_contact_id=null
-          where customer_id=:customer_id" 
+          where company_id=:company_id" 
 
 db_release_unused_handles
 

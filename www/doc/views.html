@@ -45,7 +45,7 @@ Project/Open Core<!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="Body" -->
 <h1>Dynamic Views</h1>
 <h3>Requirements</h3>
-<p>Frequent new modules need to extend the <a href="list_pages.html">ListPages</a> of important business objects (such as customers, projects, ...) by their additional columns. For example the P/O Timesheet module may need to add a column to the ProjectListPage with the amount of hours spend on every projects. The P/O Core module may not know about this future necessity in the moment is is implemented. So we want to allow a-posteriori extension of <a href="list_pages.html">ListPages</a>.</p>
+<p>Frequent new modules need to extend the <a href="list_pages.html">ListPages</a> of important business objects (such as companies, projects, ...) by their additional columns. For example the P/O Timesheet module may need to add a column to the ProjectListPage with the amount of hours spend on every projects. The P/O Core module may not know about this future necessity in the moment is is implemented. So we want to allow a-posteriori extension of <a href="list_pages.html">ListPages</a>.</p>
 <p>Dynamic Views are also required/desired when showing information about subclasses of objects, such as an EmployeeListPage. The EmployeeListPage may want to add a column such as &quot;Monthly Salary&quot;, which does not make sense in the general UserListPage. Dynamic Views allow to have a single .tcl/.adp page showing different views, depending on URL runtime parameters.</p>
 <h3>Design</h3>
 <p>To allow for dynamic extensibility, we keep all column information in a database table:</p>

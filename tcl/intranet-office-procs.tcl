@@ -29,17 +29,17 @@ ad_library {
 ad_proc -public im_office_permissions {user_id office_id view_var read_var write_var admin_var} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $office_id.<BR>
-    The permissions depend on whether the office is a customers office or
+    The permissions depend on whether the office is a companies office or
     an internal office:
     <ul>
       <li>Internal Offices:<br>
 	  Are readable by all employees
-      <li>Customer Offices:<br>
-	  Need either global customer access permissions
-	  or the be the Key account of the respective customer.
+      <li>Company Offices:<br>
+	  Need either global company access permissions
+	  or the be the Key account of the respective company.
     </ul>
     Write and administration rights are only for administrators
-    and the customer key account managers.
+    and the company key account managers.
 
 } {
     upvar $view_var view
@@ -47,24 +47,24 @@ ad_proc -public im_office_permissions {user_id office_id view_var read_var write
     upvar $write_var write
     upvar $admin_var admin
 
-    # Check if the customer is "internal"
-    set customer_type "unknown"
-    set customer_id 0
-    set customer_type [db_0or1row customer_type "
+    # Check if the company is "internal"
+    set company_type "unknown"
+    set company_id 0
+    set company_type [db_0or1row company_type "
 select
-	im_category_from_id(c.customer_type_id) as customer_type,
-	c.customer_id
+	im_category_from_id(c.company_type_id) as company_type,
+	c.company_id
 from
 	im_offices o,
-	im_customers c
+	im_companies c
 where
 	o.office_id = :office_id
-	and o.customer_id = c.customer_id(+)
+	and o.company_id = c.company_id(+)
 "]
 
-    if {"" == $customer_id || !$customer_id} {
+    if {"" == $company_id || !$company_id} {
 	# It is possible that we got here an office without
-	# a customer.
+	# a company.
 	# Let's asume they are internal and use the corresponding
 	# security check.
 	set admin [im_permission $user_id edit_internal_offices]
@@ -73,21 +73,21 @@ where
 	set view $read
     } else {
 	
-	# Initialize values with values from customer
-	im_customer_permissions $user_id $customer_id view read write admin
+	# Initialize values with values from company
+	im_company_permissions $user_id $company_id view read write admin
     }
 
     ns_log Notice "im_office_permissions: cust perms: view=$view, read=$read, write=$write, admin=$admin"
 
     # Now there are three options:
-    # NULL: not assigned to any customer yet
+    # NULL: not assigned to any company yet
     # 'internal': An internal office and
-    # != 'internal': A customers office
+    # != 'internal': A companies office
 
     # Internal office: Allow employees to see the offices and
     # Senior Managers to change them (or similar, as defined
     # in the permission module)
-    if {[string equal "internal" $customer_type]} {
+    if {[string equal "internal" $company_type]} {
 	set admin [expr $admin || [im_permission $user_id edit_internal_offices]]
 	set read [expr $read || [im_permission $user_id view_internal_offices]]
 
@@ -100,9 +100,9 @@ where
 	return
     }
     
-    # A "dangeling" office (without customer) - 
+    # A "dangeling" office (without company) - 
     # don't give permissions
-    if {0 == $customer_id } {
+    if {0 == $company_id } {
 	# Give permissions to everybody?
 	set view 1
 	set read 1
@@ -127,9 +127,9 @@ namespace eval office {
 	{ -context_id "" } 
     } {
 	Creates a new office object. Offices can be either of "Internal"
-	customer (-> Internal offices) or of regular customers.
+	company (-> Internal offices) or of regular companies.
 	This difference determines the access permissions, because internal
-	offices should be seen by all employees, while customer offices
+	offices should be seen by all employees, while company offices
 	are more sensitive data.
 
 	@author frank.bergmann@project-open.com
@@ -208,9 +208,9 @@ ad_proc -public im_office_status_select { select_name { default "" } } {
 
 
 
-ad_proc -public im_office_customer_component { user_id customer_id } {
+ad_proc -public im_office_company_component { user_id company_id } {
     Creates a HTML table showing the table of offices related to the
-    specified customer.
+    specified company.
 } {
     set bgcolor(0) " class=roweven"
     set bgcolor(1) " class=rowodd"
@@ -224,7 +224,7 @@ from
 	im_offices o,
 	im_categories c
 where
-	o.customer_id = :customer_id
+	o.company_id = :company_id
 	and o.office_status_id = c.category_id
 	and lower(c.category) not in ('inactive')
 "

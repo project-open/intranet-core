@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/intranet/customers/index.tcl
+# /packages/intranet-core/www/intranet/companies/index.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -18,24 +18,24 @@
 # ---------------------------------------------------------------
 
 ad_page_contract {
-    Shows all customers. Lots of dimensional sliders
+    Shows all companies. Lots of dimensional sliders
 
     @param status_id if specified, limits view to those of this status
     @param type_id   if specified, limits view to those of this type
     @param order_by  Specifies order for the table
-    @param view_type Specifies which customers to see
+    @param view_type Specifies which companies to see
 
     @author mbryzek@arsdigita.com
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { status_id:integer "" }
-    { type_id:integer "[im_customer_type_customer]" }
+    { type_id:integer "[im_company_type_company]" }
     { start_idx:integer "1" }
     { order_by "Company" }
     { how_many "" }
     { view_type "all" }
     { letter:trim "all" }
-    { view_name "customer_list" }
+    { view_name "company_list" }
 }
 
 # ---------------------------------------------------------------
@@ -50,7 +50,7 @@ ad_page_contract {
 #    3. Define Table Columns:
 #	Define the table columns that the user can see.
 #	Again, restrictions may apply for unprivileged users,
-#	for example hiding customer names to freelancers.
+#	for example hiding company names to freelancers.
 #    4. Define Filter Categories:
 #	Extract from the database the filter categories that
 #	are available for a specific user.
@@ -77,19 +77,19 @@ set current_user_id $user_id
 set page_title "Companies"
 set context_bar [ad_context_bar $page_title]
 set page_focus "im_header_form.keywords"
-set return_url "/intranet/customers/index"
+set return_url "/intranet/companies/index"
 
 set user_view_page "/intranet/users/view"
-set customer_view_page "/intranet/customers/view"
+set company_view_page "/intranet/companies/view"
 set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
 if { ![exists_and_not_null status_id] } {
     # Default status is Current - select the id once and memoize it
-    set status_id [im_memoize_one select_customer_status_id \
-	    "select customer_status_id 
-               from im_customer_status
-              where upper(customer_status) = 'ACTIVE'"]
+    set status_id [im_memoize_one select_company_status_id \
+	    "select company_status_id 
+               from im_company_status
+              where upper(company_status) = 'ACTIVE'"]
 }
 
 set end_idx [expr $start_idx + $how_many - 1]
@@ -131,19 +131,19 @@ db_foreach column_list_sql $column_sql {
 # ---------------------------------------------------------------
 
 # status_types will be a list of pairs of (project_status_id, project_status)
-set status_types [im_memoize_list select_customer_status_types \
-	"select customer_status_id, customer_status
-           from im_customer_status
-          order by lower(customer_status)"]
+set status_types [im_memoize_list select_company_status_types \
+	"select company_status_id, company_status
+           from im_company_status
+          order by lower(company_status)"]
 set status_types [linsert $status_types 0 0 All]
 
 
-# customer_types will be a list of pairs of (customer_type_id, customer_type)
-set customer_types [im_memoize_list select_customers_types \
-	"select customer_type_id, customer_type
-           from im_customer_types
-          order by lower(customer_type)"]
-set customer_types [linsert $customer_types 0 0 All]
+# company_types will be a list of pairs of (company_type_id, company_type)
+set company_types [im_memoize_list select_companies_types \
+	"select company_type_id, company_type
+           from im_company_types
+          order by lower(company_type)"]
+set company_types [linsert $company_types 0 0 All]
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
@@ -155,12 +155,12 @@ set criteria [list]
 set bind_vars [ns_set create]
 if { ![empty_string_p $status_id] && $status_id != 0 } {
     ns_set put $bind_vars status_id $status_id
-    lappend criteria "c.customer_status_id=:status_id"
+    lappend criteria "c.company_status_id=:status_id"
 }
 
 if { $type_id > 0 } {
     ns_set put $bind_vars type_id $type_id
-    lappend criteria "c.customer_type_id in (
+    lappend criteria "c.company_type_id in (
 	select	category_id
 	from	im_categories
 	where	category_id= :type_id
@@ -173,30 +173,30 @@ if { $type_id > 0 } {
 }
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
-    lappend criteria "im_first_letter_default_to_a(c.customer_name)=:letter"
+    lappend criteria "im_first_letter_default_to_a(c.company_name)=:letter"
 }
 
 set extra_tables [list]
 if { [string compare $view_type "mine"] == 0 } {
 
     ns_set put $bind_vars user_id $user_id
-    lappend criteria "ad_group_member_p ( :user_id, c.customer_id ) = 't'"
+    lappend criteria "ad_group_member_p ( :user_id, c.company_id ) = 't'"
 
 } elseif { [string compare $view_type "unassigned"] == 0 } {
 
     ns_set put $bind_vars user_id $user_id
-    lappend criteria "not exists (select 1 from group_member_map m where m.group_id = c.customer_id)"
+    lappend criteria "not exists (select 1 from group_member_map m where m.group_id = c.company_id)"
 
 }
 
 set order_by_clause ""
 switch $order_by {
-    "Phone" { set order_by_clause "order by upper(phone_work), upper(customer_name)" }
-    "Email" { set order_by_clause "order by upper(email), upper(customer_name)" }
-    "Type" { set order_by_clause "order by upper(customer_type), upper(customer_name)" }
-    "Status" { set order_by_clause "order by upper(customer_status), upper(customer_name)" }
-    "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(customer_name)" }
-    "Company" { set order_by_clause "order by upper(customer_name)" }
+    "Phone" { set order_by_clause "order by upper(phone_work), upper(company_name)" }
+    "Email" { set order_by_clause "order by upper(email), upper(company_name)" }
+    "Type" { set order_by_clause "order by upper(company_type), upper(company_name)" }
+    "Status" { set order_by_clause "order by upper(company_status), upper(company_name)" }
+    "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(company_name)" }
+    "Company" { set order_by_clause "order by upper(company_name)" }
 }
 
 set extra_table ""
@@ -210,34 +210,34 @@ if { ![empty_string_p $where_clause] } {
 }
 
 # Permissions and Performance:
-# This SQL shows customer depending on the permissions
+# This SQL shows company depending on the permissions
 # of the current user:
 #
-#       IF the user is a customer member
-#       OR if the user has the privilege to see all customers.
+#       IF the user is a company member
+#       OR if the user has the privilege to see all companies.
 #
-# The performance problems are due to the number of customers
+# The performance problems are due to the number of companies
 # (several thousands), the number of users (several thousands)
-# and the acs_rels relationship between users and customers.
+# and the acs_rels relationship between users and companies.
 # Despite all of these, the page should ideally appear in less
 # then one second because it is frequently used.
 #
 # In order to get acceptable load times we use an inner "perm"
-# SQL that selects customer_ids "outer-joined" with the membership
+# SQL that selects company_ids "outer-joined" with the membership
 # information for the current user.
 # This information is then filtered in the outer SQL, using an
-# OR statement, acting as a filter on the returned customer_ids.
+# OR statement, acting as a filter on the returned company_ids.
 # It is important to apply this OR statement outside of the
-# main join (customers and membership relation) in order to
+# main join (companies and membership relation) in order to
 # reach a reasonable response time.
 
 set perm_sql "
 	select
-	        c.customer_id,
+	        c.company_id,
 		r.member_p as permission_member,
 		see_all.see_all as permission_all
 	from
-	        im_customers c,
+	        im_companies c,
 		(	select	count(rel_id) as member_p,
 				object_id_one as object_id
 			from	acs_rels
@@ -248,28 +248,28 @@ set perm_sql "
 	                from acs_object_party_privilege_map
 	                where   object_id=:subsite_id
 	                        and party_id=:user_id
-	                        and privilege='view_customers_all'
+	                        and privilege='view_companies_all'
 	        ) see_all
 	where
-	        c.customer_id = r.object_id(+) 
+	        c.company_id = r.object_id(+) 
 		$where_clause
 "
 
 set sql "
 select
 	c.*,
-	c.primary_contact_id as customer_contact_id,
+	c.primary_contact_id as company_contact_id,
 	im_name_from_user_id(c.accounting_contact_id) as accounting_contact_name,
 	im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
-	im_name_from_user_id(c.primary_contact_id) as customer_contact_name,
-	im_email_from_user_id(c.primary_contact_id) as customer_contact_email,
-        im_category_from_id(c.customer_type_id) as customer_type,
-        im_category_from_id(c.customer_status_id) as customer_status
+	im_name_from_user_id(c.primary_contact_id) as company_contact_name,
+	im_email_from_user_id(c.primary_contact_id) as company_contact_email,
+        im_category_from_id(c.company_type_id) as company_type,
+        im_category_from_id(c.company_status_id) as company_status
 from 
-	im_customers c,
+	im_companies c,
 	($perm_sql) perm $extra_table
 where
-	c.customer_id = perm.customer_id
+	c.company_id = perm.company_id
 	and (
 		perm.permission_member > 0
 	or
@@ -301,7 +301,7 @@ if {[string compare $letter "ALL"]} {
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from
-		im_customers c
+		im_companies c
 		$extra_table
         where 
 		1=1
@@ -320,17 +320,17 @@ ns_log Notice $selection
 # Do we have to show administration links?
 
 set admin_html ""
-if {[im_permission $current_user_id "add_customers"]} {
+if {[im_permission $current_user_id "add_companies"]} {
     append admin_html "
-<li><a href=/intranet/customers/new>Add a new Company</a>
-<li><a href=/intranet/customers/upload-customers?[export_url_vars return_url]>Import Company CVS</a>
-<li><a href=/intranet/customers/upload-contacts?[export_url_vars return_url]>Import Company Contact CVS</a>
+<li><a href=/intranet/companies/new>Add a new Company</a>
+<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>Import Company CVS</a>
+<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>Import Company Contact CVS</a>
 "
 }
 
-if {[im_permission $user_id admin_customers]} {
+if {[im_permission $user_id admin_companies]} {
     append admin_html "
-<li><a href=upload-customers?[export_url_vars return_url]>Upload Company CSV</a>
+<li><a href=upload-companies?[export_url_vars return_url]>Upload Company CSV</a>
 <li><a href=upload-contacts?[export_url_vars return_url]>Upload Contact CSV</a>
 "
 }
@@ -374,8 +374,8 @@ set ctr 0
 set idx $start_idx
 db_foreach projects_info_query $selection {
 
-#    im_customer_permissions $user_id $customer_id customer_view customer_read customer_write customer_admin
-#    if {!$customer_read} { continue }
+#    im_company_permissions $user_id $company_id company_view company_read company_write company_admin
+#    if {!$company_read} { continue }
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

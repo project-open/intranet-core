@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/customers/new.tcl
+# /packages/intranet-core/www/companies/new.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -14,18 +14,18 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Lets users add/modify information about our customers.
-    Contact details are not stored with the customer itself,
+    Lets users add/modify information about our companies.
+    Contact details are not stored with the company itself,
     but with a "main_office" that is a required property
     (not null).
 
-    @param customer_id if specified, we edit the customer with this customer_id
+    @param company_id if specified, we edit the company with this company_id
     @param return_url Return URL
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
-    { customer_id:integer 0 }
+    { company_id:integer 0 }
     { return_url "" }
 }
 
@@ -35,24 +35,24 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 
 
 # Make sure the user has the privileges, because this
-# pages shows the list of customers etc.
+# pages shows the list of companies etc.
 #
-if {![im_permission $user_id "add_customers"]} { 
+if {![im_permission $user_id "add_companies"]} { 
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to add a new company."
 }
 
-if {$customer_id > 0} {
+if {$company_id > 0} {
 
-    # Called with an existing customer_id => Edit the customer
+    # Called with an existing company_id => Edit the company
     # We know that main_office_id is NOT NULL...
 
-    if {![db_0or1row customer_get_info "
+    if {![db_0or1row company_get_info "
 select
-	c.customer_name, 
-	c.customer_path, 
-	c.customer_status_id, 
-	c.customer_type_id, 
+	c.company_name, 
+	c.company_path, 
+	c.company_status_id, 
+	c.company_type_id, 
 	c.main_office_id,
 	c.billable_p,
 	c.note, 
@@ -72,10 +72,10 @@ select
 	o.address_postal_code,
 	o.address_country_code
 from 
-	im_customers c, 
+	im_companies c, 
 	im_offices o
 where 
-	c.customer_id=:customer_id
+	c.company_id=:company_id
 	and c.main_office_id=o.office_id
 " 
     ]} {
@@ -84,14 +84,14 @@ where
     }
 
     set page_title "Edit Company"
-    set context_bar [ad_context_bar [list index "Companies"] [list "view?[export_url_vars customer_id]" "One company"] $page_title]
+    set context_bar [ad_context_bar [list index "Companies"] [list "view?[export_url_vars company_id]" "One company"] $page_title]
 
 } else {
     # Completely new company. Set some reasonable defaults:
     set page_title "Add Company"
     set context_bar [ad_context_bar [list index "Companies"] $page_title]
-    set customer_name ""
-    set customer_path ""
+    set company_name ""
+    set company_path ""
     # Grab today's date
     set start_date [lindex [split [ns_localsqltimestamp] " "] 0]
     set note ""
@@ -104,25 +104,25 @@ where
     set site_concept ""
     set vat_number ""
 
-    set customer_status_id [im_customer_status_active]
-    set customer_type_id [im_customer_type_other]
-    set annual_revenue_id [im_customer_annual_rev_1_10]
+    set company_status_id [im_company_status_active]
+    set company_type_id [im_company_type_other]
+    set annual_revenue_id [im_company_annual_rev_1_10]
     set referral_source "How did we get in contact with the company?"
     set billable_p "t"
     set "creation_ip_address" [ns_conn peeraddr]
     set "creation_user" $user_id
-    set customer_id [im_new_object_id]
+    set company_id [im_new_object_id]
     set address_country_code ""
     set manager_id ""
 }
 
-set customer_defaults [ns_set create]
-ns_set put $customer_defaults billable_p $billable_p
+set company_defaults [ns_set create]
+ns_set put $company_defaults billable_p $billable_p
 
 
 set page_body "
 <form method=post action=new-2>
-[export_form_vars return_url customer_id creation_ip_address creation_user main_office_id]
+[export_form_vars return_url company_id creation_ip_address creation_user main_office_id]
 		  <table border=0>
 		    <tr> 
 		      <td colspan=2 class=rowtitle align=center>Add New Company</td>
@@ -130,13 +130,13 @@ set page_body "
 		    <tr> 
 		      <td>Company Name</td>
 		      <td> 
-<input type=text size=30 name=customer_name value=\"$customer_name\">
+<input type=text size=30 name=company_name value=\"$company_name\">
 		      </td>
 		    </tr>
 		    <tr> 
 		      <td>Company Short Name<BR><font size=-2>(directory path)</font></td>
 		      <td> 
-<input type=text size=10 name=customer_path value=\"$customer_path\">
+<input type=text size=10 name=company_path value=\"$company_path\">
 		      </td>
 		    </tr>
 		    <tr> 
@@ -148,12 +148,12 @@ set page_body "
 		    <tr> 
 		      <td>Company Status</td>
 		      <td> 
-[im_customer_status_select "customer_status_id" $customer_status_id]
+[im_company_status_select "company_status_id" $company_status_id]
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Customer+Status'>
-	[im_gif new {Add a new customer status}]</A>"
+	<A HREF='/admin/categories/?select_category_type=Intranet+Company+Status'>
+	[im_gif new {Add a new company status}]</A>"
 }
 
 append page_body "
@@ -162,11 +162,11 @@ append page_body "
 		    <tr> 
 		      <td>Company Type</td>
 		      <td> 
-[im_customer_type_select "customer_type_id" $customer_type_id]
+[im_company_type_select "company_type_id" $company_type_id]
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/admin/categories/?select_category_type=Intranet+Customer+Type'>
+	<A HREF='/admin/categories/?select_category_type=Intranet+Company+Type'>
 	[im_gif new {Add a new company type}]</A>"
 }
 
@@ -239,7 +239,7 @@ append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td>Is this a billable customer?</td>
+		      <td>Is this a billable company?</td>
 		      <td> 
 
 <input type=radio name=billable_p value=t> Yes &nbsp;</input>

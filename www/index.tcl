@@ -64,9 +64,9 @@ set column_headers [list]
 set column_vars [list]
 lappend column_headers "Project #"
 lappend column_vars {"<A HREF='/intranet/projects/view?project_id=$project_id'>" $project_nr "</A>"}
-if {[im_permission $user_id view_customers]} {
+if {[im_permission $user_id view_companies]} {
     lappend column_headers "Client"
-    lappend column_vars {"<A HREF='/intranet/customers/view?customer_id=$customer_id'>" $customer_name "</A>"}
+    lappend column_vars {"<A HREF='/intranet/companies/view?company_id=$company_id'>" $company_name "</A>"}
 }
 lappend column_headers "Project Name"
 lappend column_vars {$project_name}
@@ -139,7 +139,7 @@ switch $order_by {
     "Type" { set order_by_clause "order by project_type" }
     "Status" { set order_by_clause "order by project_status_id" }
     "Delivery Date" { set order_by_clause "order by end_date" }
-    "Client" { set order_by_clause "order by customer_name" }
+    "Client" { set order_by_clause "order by company_name" }
     "Project #" { set order_by_clause "order by project_nr desc" }
     "Project Manager" { set order_by_clause "order by upper(last_name), upper(first_names)" }
     "URL" { set order_by_clause "order by upper(url)" }
@@ -180,7 +180,7 @@ set perm_sql "
 set sql "
 SELECT
 	p.*,
-        c.customer_name,
+        c.company_name,
         im_name_from_user_id(project_lead_id) as lead_name,
         im_category_from_id(p.project_type_id) as project_type,
         im_category_from_id(p.project_status_id) as project_status,
@@ -188,11 +188,11 @@ SELECT
         to_char(end_date, 'HH24:MI') as end_date_time
 FROM
 	im_projects p,
-	im_customers c,
+	im_companies c,
 	($perm_sql) perm
 WHERE
 	perm.project_id = p.project_id
-	and p.customer_id = c.customer_id(+)
+	and p.company_id = c.company_id(+)
 	and (
 		p.project_status_id = 76
 		and perm.permission_member > 0

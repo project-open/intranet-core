@@ -66,7 +66,7 @@ ad_proc -public im_biz_object_member_p { user_id object_id } {
 
 ad_proc -public im_biz_object_admin_p { user_id object_id } {
     Returns >0 if the user is a PM of a project or a Key
-    Account of a customer
+    Account of a company
     the specified object.
 } {
     set sql "
@@ -157,7 +157,7 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
     with the specified object.<br>
     For example, this procedure could return {Developer PM}
     as the roles(!) of a specific user in a project or
-    {Key Account} for the roles in a customer.
+    {Key Account} for the roles in a company.
 } {
     set sql "
 	select distinct
@@ -253,7 +253,7 @@ where
 # Show the members of the Admin Group of the current Business Object.
 # --------------------------------------------------------------
 #
-# set company_members [im_group_member_component $customer_id $user_id $user_admin_p $return_url [im_employee_group_id]]
+# set company_members [im_group_member_component $company_id $user_id $user_admin_p $return_url [im_employee_group_id]]
 
 
 ad_proc -public im_group_member_component { object_id current_user_id { add_admin_links 0 } { return_url "" } { limit_to_users_in_group_id "" } { dont_allow_users_in_group_id "" } {also_add_to_group_id "" } } {

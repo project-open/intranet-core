@@ -969,7 +969,7 @@ ad_proc im_email_people_in_group { group_id role from subject message } {
     set second_group_id ""
     switch $role {
 	"employees" { set second_group_id [im_employee_group_id] }
-	"customers" { set second_group_id [im_customer_group_id] }
+	"companies" { set second_group_id [im_company_group_id] }
     }
 	
     set criteria [list]
@@ -1150,7 +1150,7 @@ ad_proc im_email_aliases { short_name } {
        <ul> 
 	 <li> <a href=mailto:${short_name}@$domain>$short_name@$domain</a>
 	 <li> <a href=mailto:${short_name}-employees@$domain>${short_name}-employees@$domain</a>
-	 <li> <a href=mailto:${short_name}-customers@$domain>${short_name}-customers@$domain</a>
+	 <li> <a href=mailto:${short_name}-companies@$domain>${short_name}-companies@$domain</a>
 	 <li> <a href=mailto:${short_name}-all@$domain>${short_name}-all@$domain</a>
        </ul>
 "

@@ -18,9 +18,9 @@
 
 
 ---------------------------------------------------------
--- Customers
+-- Companies
 --
--- We store simple information about a customer.
+-- We store simple information about a company.
 -- All contact information goes in the associated
 -- offices.
 --
@@ -29,76 +29,76 @@
 begin
     acs_object_type.create_type (
 	supertype =>		'im_biz_object',
-	object_type =>		'im_customer',
-	pretty_name =>		'Customer',
-	pretty_plural =>	'Customers',
-	table_name =>		'im_customers',
-	id_column =>		'customer_id',
-	package_name =>		'im_customer',
+	object_type =>		'im_company',
+	pretty_name =>		'Company',
+	pretty_plural =>	'Companies',
+	table_name =>		'im_companies',
+	id_column =>		'company_id',
+	package_name =>		'im_company',
 	type_extension_table =>	null,
-	name_method =>		'im_customer.name'
+	name_method =>		'im_company.name'
     );
 end;
 /
 show errors
 
 
-create table im_customers (
-	customer_id 		integer
-				constraint im_customers_pk
+create table im_companies (
+	company_id 		integer
+				constraint im_companies_pk
 				primary key 
-				constraint im_customers_cust_id_fk
+				constraint im_companies_cust_id_fk
 				references acs_objects,
-	customer_name		varchar(1000) not null
-				constraint im_customers_name_un unique,
+	company_name		varchar(1000) not null
+				constraint im_companies_name_un unique,
 				-- where are the files in the filesystem?
-	customer_path		varchar(100) not null
-				constraint im_customers_path_un unique,
+	company_path		varchar(100) not null
+				constraint im_companies_path_un unique,
 	main_office_id		integer not null
-				constraint im_customers_office_fk
+				constraint im_companies_office_fk
 				references im_offices,
 	deleted_p		char(1) default('f')
-				constraint im_customers_deleted_p 
+				constraint im_companies_deleted_p 
 				check(deleted_p in ('t','f')),
-	customer_status_id	integer not null
-				constraint im_customers_cust_stat_fk
+	company_status_id	integer not null
+				constraint im_companies_cust_stat_fk
 				references im_categories,
-	customer_type_id	integer not null
-				constraint im_customers_cust_type_fk
+	company_type_id	integer not null
+				constraint im_companies_cust_type_fk
 				references im_categories,
 	crm_status_id		integer 
-				constraint im_customers_crm_status_fk
+				constraint im_companies_crm_status_fk
 				references im_categories,
 	primary_contact_id	integer 
-				constraint im_customers_prim_cont_fk
+				constraint im_companies_prim_cont_fk
 				references users,
 	accounting_contact_id	integer 
-				constraint im_customers_acc_cont_fk
+				constraint im_companies_acc_cont_fk
 				references users,
 	note			varchar(4000),
 	referral_source		varchar(1000),
 	annual_revenue_id	integer 
-				constraint im_customers_ann_rev_fk
+				constraint im_companies_ann_rev_fk
 				references im_categories,
 				-- keep track of when status is changed
 	status_modification_date date,
 				-- and what the old status was
-	old_customer_status_id	integer 
-				constraint im_customers_old_cust_stat_fk
+	old_company_status_id	integer 
+				constraint im_companies_old_cust_stat_fk
 				references im_categories,
-				-- is this a customer we can bill?
+				-- is this a company we can bill?
 	billable_p		char(1) default('f')
-				constraint im_customers_billable_p_ck 
+				constraint im_companies_billable_p_ck 
 				check(billable_p in ('t','f')),
-				-- What kind of site does the customer want?
+				-- What kind of site does the company want?
 	site_concept		varchar(100),
 				-- Who in Client Services is the manager?
 	manager_id		integer 
-				constraint im_customers_manager_fk
+				constraint im_companies_manager_fk
 				references users,
 				-- How much do they pay us?
 	contract_value		integer,
-				-- When does the customer start?
+				-- When does the company start?
 	start_date		date,
 	vat_number		varchar(100)
 );
@@ -106,61 +106,61 @@ create table im_customers (
 
 
 -- Setup the list of roles that a user can take with
--- respect to a customer:
+-- respect to a company:
 --      Full Member (1300) and
 --      Key Account Manager (1302)
 --
-insert into im_biz_object_role_map values ('im_customer',85,1300);
-insert into im_biz_object_role_map values ('im_customer',85,1302);
+insert into im_biz_object_role_map values ('im_company',85,1300);
+insert into im_biz_object_role_map values ('im_company',85,1302);
 
 
 
 
-create or replace package im_customer
+create or replace package im_company
 is
     function new (
-	customer_id	in integer default null,
-	object_type	in varchar default 'im_customer',
+	company_id	in integer default null,
+	object_type	in varchar default 'im_company',
 	creation_date	in date default sysdate,
 	creation_user	in integer default null,
 	creation_ip	in varchar default null,
 	context_id	in integer default null,
-	customer_name	in varchar,
-	customer_path	in varchar,
+	company_name	in varchar,
+	company_path	in varchar,
 	main_office_id	in integer,
-	customer_type_id in  integer default 51,
-	customer_status_id in integer default 46
+	company_type_id in  integer default 51,
+	company_status_id in integer default 46
     ) return integer;
 
-    procedure del (customer_id in integer);
-    function name (customer_id in integer) return varchar;
-    function type (customer_id in integer) return integer;
-end im_customer;
+    procedure del (company_id in integer);
+    function name (company_id in integer) return varchar;
+    function type (company_id in integer) return integer;
+end im_company;
 /
 show errors
 
 
-create or replace package body im_customer
+create or replace package body im_company
 is
 
     function new (
-	customer_id	in integer default null,
+	company_id	in integer default null,
 	object_type	in varchar,
 	creation_date	in date default sysdate,
 	creation_user	in integer default null,
 	creation_ip	in varchar default null,
 	context_id	in integer default null,
-	customer_name	in varchar,
-	customer_path	in varchar,
+	company_name	in varchar,
+	company_path	in varchar,
 	main_office_id	in integer,
-	customer_type_id in  integer default 51,
-	customer_status_id in integer default 46
+	company_type_id in  integer default 51,
+	company_status_id in integer default 46
     ) return integer
     is
-	v_customer_id		integer;
+	v_company_id		integer;
     begin
-	v_customer_id := acs_object.new (
-		object_id =>		customer_id,
+	v_company_id := acs_object.new (
+		object_id =>		company_id,
 		object_type =>		object_type,
 		creation_date =>	creation_date,
 		creation_user =>	creation_user,
@@ -168,72 +168,72 @@ is
 		context_id =>		context_id
 	);
 
-	insert into im_customers (
-		customer_id, customer_name, customer_path, 
-		customer_type_id, customer_status_id, main_office_id
+	insert into im_companies (
+		company_id, company_name, company_path, 
+		company_type_id, company_status_id, main_office_id
 	) values (
-		v_customer_id, customer_name, customer_path, 
-		customer_type_id, customer_status_id, main_office_id
+		v_company_id, company_name, company_path, 
+		company_type_id, company_status_id, main_office_id
 	);
 
-	-- Set the link back from the office to the customer
+	-- Set the link back from the office to the company
 	update im_offices
-	set customer_id = v_customer_id
+	set company_id = v_company_id
 	where office_id = main_office_id;
 
-	return v_customer_id;
+	return v_company_id;
     end new;
 
 
-    -- Delete a single customer (if we know its ID...)
-    procedure del (customer_id in integer)
+    -- Delete a single company (if we know its ID...)
+    procedure del (company_id in integer)
     is
-	v_customer_id		integer;
+	v_company_id		integer;
     begin
 	-- copy the variable to desambiguate the var name
-	v_customer_id := customer_id;
+	v_company_id := company_id;
 
-	-- make sure to remove links from all offices to this customer.
+	-- make sure to remove links from all offices to this company.
 	update im_offices
-	set customer_id = null
-	where customer_id = v_customer_id;
+	set company_id = null
+	where company_id = v_company_id;
 
-	-- Erase the im_customers item associated with the id
-	delete from im_customers
-	where customer_id = v_customer_id;
+	-- Erase the im_companies item associated with the id
+	delete from im_companies
+	where company_id = v_company_id;
 
 	-- Erase all the priviledges
 	delete from 	acs_permissions
-	where		object_id = v_customer_id;
-	acs_object.del(v_customer_id);
+	where		object_id = v_company_id;
+	acs_object.del(v_company_id);
     end del;
 
-    function name (customer_id in integer) return varchar
+    function name (company_id in integer) return varchar
     is
-	v_name	im_customers.customer_name%TYPE;
+	v_name	im_companies.company_name%TYPE;
     begin
-	select	customer_name
+	select	company_name
 	into	v_name
-	from	im_customers
-	where	customer_id = name.customer_id;
+	from	im_companies
+	where	company_id = name.company_id;
 
 	return v_name;
 
     end name;
 
-    function type (customer_id in integer) return integer
+    function type (company_id in integer) return integer
     is
 	v_type_id	integer;
     begin
-	select	customer_type_id
+	select	company_type_id
 	into	v_type_id
-	from	im_customers
-	where	customer_id = type.customer_id;
+	from	im_companies
+	where	company_id = type.company_id;
 
 	return v_type_id;
     end type;
 
-end im_customer;
+end im_company;
 /
 show errors
 
@@ -243,10 +243,10 @@ show errors
 -- Setup Demo Data
 ---------------------------------------------------------
 
-prompt *** Creating "Internal" customer, representing the company itself
+prompt *** Creating "Internal" company, representing the company itself
 DECLARE
     v_office_id		integer;
-    v_customer_id	integer;
+    v_company_id	integer;
 BEGIN
     -- First setup the main office
     v_office_id := im_office.new(
@@ -255,25 +255,25 @@ BEGIN
         office_path     => 'po_main_office'
     );
 
-    v_customer_id := im_customer.new(
-	object_type	=> 'im_customer',
-	customer_name	=> 'Internal',
-	customer_path	=> 'internal',
+    v_company_id := im_company.new(
+	object_type	=> 'im_company',
+	company_name	=> 'Internal',
+	company_path	=> 'internal',
 	main_office_id	=> v_office_id,
-	-- 'Internal' customer type
-	customer_type_id => 53,
+	-- 'Internal' company type
+	company_type_id => 53,
 	-- 'Active' status
-	customer_status_id => 46
+	company_status_id => 46
     );
 end;
 /
 
 
 
-prompt *** -- Create the "TecnoLoge" customer
+prompt *** -- Create the "TecnoLoge" company
 DECLARE
     v_office_id		integer;
-    v_customer_id	integer;
+    v_company_id	integer;
 BEGIN
     -- First setup the main office
     v_office_id := im_office.new(
@@ -282,15 +282,15 @@ BEGIN
         office_path     => 'tecnologoe_main_office'
     );
 
-    v_customer_id := im_customer.new(
-	object_type	=> 'im_customer',
-	customer_name	=> 'TecnoLoge',
-	customer_path	=> 'tecnologe',
+    v_company_id := im_company.new(
+	object_type	=> 'im_company',
+	company_name	=> 'TecnoLoge',
+	company_path	=> 'tecnologe',
 	main_office_id	=> v_office_id,
 	-- IT Consulting
-	customer_type_id => 55,
+	company_type_id => 55,
 	-- 'Active' status
-	customer_status_id => 46
+	company_status_id => 46
     );
 end;
 /

@@ -100,7 +100,7 @@ show errors;
 
 
 update im_profiles set profile_gif='admin' where profile_id=474;
-update im_profiles set profile_gif='customer' where profile_id=478;
+update im_profiles set profile_gif='company' where profile_id=478;
 update im_profiles set profile_gif='employee' where profile_id=482;
 update im_profiles set profile_gif='freelance' where profile_id=486;
 update im_profiles set profile_gif='proman' where profile_id=490;
@@ -143,7 +143,7 @@ insert into im_costs
 		invoice_id as cost_id,
 		invoice_nr as cost_name,		
 		null as project_id,
-		customer_id,
+		company_id,
 		null as cost_center_id,
 		provider_id,
 		null as investment_id,
@@ -180,7 +180,7 @@ alter table im_payments drop column invoice_id;
 
 alter table im_payments add 
 		constraint im_payments_un
-                unique (customer_id, cost_id, provider_id, received_date,
+                unique (company_id, cost_id, provider_id, received_date,
                         start_block, payment_type_id, currency);
 
 alter table im_payments drop constraint im_payments_start_block;
@@ -198,7 +198,7 @@ add constraint im_menus_label_unn unique(label);
 
 
 
-alter table im_invoices drop column customer_id;
+alter table im_invoices drop column company_id;
 alter table im_invoices drop column provider_id;
 alter table im_invoices drop column creator_id;
 alter table im_invoices drop column invoice_date;

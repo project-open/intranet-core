@@ -26,7 +26,7 @@ ns_share im_status_report_section_list
 # the following 3 procedure within this tcl file are never called:
 #   im_vacationing_employees
 #   im_future_vacationing_employees
-#   im_customer_comments
+#   im_company_comments
 
 ad_proc im_add_to_status_report { title proc_name { cache_p "f" } } {
     Adds proc_name to the list of procs needed to generete the
@@ -44,18 +44,18 @@ ad_proc im_add_to_status_report { title proc_name { cache_p "f" } } {
 
 
 ad_proc set_status_report_user_preferences {} {
-    Sets the variables killed_sections, killed_offices, my_projects_only_p, my_customers_only_p in the environment.  If the user has no preferences, then set these as empty lists
+    Sets the variables killed_sections, killed_offices, my_projects_only_p, my_companies_only_p in the environment.  If the user has no preferences, then set these as empty lists
 } {
     uplevel {
 	set sql "select killed_sections, killed_offices,
-                 my_projects_only_p, my_customers_only_p
+                 my_projects_only_p, my_companies_only_p
                  from im_status_report_preferences
                  where user_id = :user_id"
 	if { ![db_0or1row status_report_preferences $sql] } {
 	    set killed_sections ""
 	    set killed_offices ""
 	    set my_projects_only_p "f"
-	    set my_customers_only_p "f"
+	    set my_companies_only_p "f"
 	}
 	db_release_unused_handles
     }
@@ -69,13 +69,13 @@ im_add_to_status_report "Employees Out of the Office" im_absent_employees
 im_add_to_status_report "Future Office Excursions" im_future_absent_employees
 im_add_to_status_report "Delinquent Employees" im_delinquent_employees f
 im_add_to_status_report "Downloads" im_downloads_status
-im_add_to_status_report "Customers: Bids Out" im_customers_bids_out
-im_add_to_status_report "Customers: Status Changes" im_customers_status_change
+im_add_to_status_report "Companies: Bids Out" im_companies_bids_out
+im_add_to_status_report "Companies: Status Changes" im_companies_status_change
 im_add_to_status_report "New Registrants at [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]" im_new_registrants
 
 
 # Too much correspondance now!
-# im_add_to_status_report "Customers: Correspondence" im_customers_comments t
+# im_add_to_status_report "Companies: Correspondence" im_companies_comments t
 # this conflicted with some security stuff (ad_sec_user_id) that I didn't understand
 # im_add_to_status_report "News" im_news_status t
 
@@ -131,7 +131,7 @@ ad_proc im_status_report {{coverage ""} {report_date ""} {purpose "web_display"}
     set module_name_proc_history [list]
 
     set_status_report_user_preferences
-    # killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+    # killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 
     foreach sublist [set $ns_share_list] {
 	
@@ -247,7 +247,7 @@ ad_proc im_recent_employees {
     set sub_sql ""
     if { ![empty_string_p $user_id] } {
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p    
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p    
 
 	if { ![empty_string_p $killed_offices] } {
 	    set killed_offices_csv [join $killed_offices ","]    
@@ -319,7 +319,7 @@ ad_proc im_future_employees { {coverage ""} {report_date ""} {purpose ""} {user_
     set sub_sql ""
     if { ![empty_string_p $user_id] } {
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 	if { ![empty_string_p $killed_offices] } {
 	    set killed_offices_csv [join $killed_offices ","]
 	    set sub_sql "and (not exists (select 1
@@ -459,7 +459,7 @@ ad_proc im_absent_employees { {coverage ""} {report_date ""} {purpose ""} {user_
     if { ![empty_string_p $user_id] } {
 	ns_set put $bind_vars user_id $user_id
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 
 	if { ![empty_string_p $killed_offices] } {
 	    set killed_offices_csv [join $killed_offices ","]
@@ -509,7 +509,7 @@ ad_proc im_future_absent_employees { {coverage ""} {report_date ""} {purpose ""}
     if { ![empty_string_p $user_id] } {
 	ns_set put $bind_vars user_id $user_id
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 
 	if { ![empty_string_p $killed_offices] } {
 	    set killed_offices_csv [join $killed_offices ","]
@@ -537,8 +537,8 @@ ad_proc im_future_absent_employees { {coverage ""} {report_date ""} {purpose ""}
     return [im_absent_employees_helper $bind_vars $sql $purpose $sub_sql]
 }
 
-ad_proc im_customers_comments { {coverage ""} { report_date ""} {purpose ""} {user_id ""}} {
-    "Returns a string that gives a list  of customer profiles that have had correspondences - comments - addedto them with in the period of the coverage date from the report date" 
+ad_proc im_companies_comments { {coverage ""} { report_date ""} {purpose ""} {user_id ""}} {
+    "Returns a string that gives a list  of company profiles that have had correspondences - comments - addedto them with in the period of the coverage date from the report date" 
 } {
     if { [empty_string_p $report_date] } {
 	set report_date [db_string sysdate_from_dual "select sysdate from dual"] 
@@ -556,8 +556,8 @@ ad_proc im_customers_comments { {coverage ""} { report_date ""} {purpose ""} {us
       /* coverage = $coverage */ order by lower(group_name), comment_date"
 
     set return_list [list]
-    set return_url "[im_url]/customers/view?[export_url_vars group_id]"
-    db_foreach select_customer_comments $sql {
+    set return_url "[im_url]/companies/view?[export_url_vars group_id]"
+    db_foreach select_company_comments $sql {
 	
 	if { [string compare $purpose "web_display"] == 0 } {
 	    lappend return_list "<a href=/general-comments/view-one?[export_url_vars comment_id]&item=[ns_urlencode $group_name]&[export_url_vars return_url]>$one_line</a> -  <a href=[im_url_stub]/project-info?[export_url_vars project_id]>$name</a> by <a href=[im_url_stub]/users/view?[export_url_vars user_id]>$first_names $last_name</a> on [util_AnsiDatetoPrettyDate $comment_date]<br>
@@ -578,7 +578,7 @@ ad_proc im_customers_comments { {coverage ""} { report_date ""} {purpose ""} {us
     set end_date [db_string sysdate_minus_coverage "select sysdate-$coverage from dual"]
     
     if {[llength $return_list] == 0} {
-	return "No customer correspondences in period [util_AnsiDatetoPrettyDate $end_date] -  [util_AnsiDatetoPrettyDate $report_date].\n"
+	return "No company correspondences in period [util_AnsiDatetoPrettyDate $end_date] -  [util_AnsiDatetoPrettyDate $report_date].\n"
     }
     
     if { [string compare $purpose "web_display"] == 0 } {
@@ -617,20 +617,20 @@ ad_proc im_new_registrants { {coverage ""} {report_date ""} {purpose ""} {user_i
     return "[util_decode $num_users 0 "No new registrants" 1 "1 new registrant" "$num_users new registrants"] in period [util_AnsiDatetoPrettyDate $end_date] -  [util_AnsiDatetoPrettyDate $report_date].\n"
 }
 
-ad_proc im_customers_status_change { {coverage ""} {report_date ""} {purpose ""} {user_id ""} } {
-    "Returns a string that gives a list of customers that have had a status change with in the coverage date from the report date.  It also displays what status change they have undergone.  Note that the most recent status change is listed for the given period." 
+ad_proc im_companies_status_change { {coverage ""} {report_date ""} {purpose ""} {user_id ""} } {
+    "Returns a string that gives a list of companies that have had a status change with in the coverage date from the report date.  It also displays what status change they have undergone.  Note that the most recent status change is listed for the given period." 
 } {
 
     set bind_vars [ns_set create]
     ns_set put $bind_vars coverage $coverage
     ns_set put $bind_vars report_date $report_date
 
-    # check killed customers and update the sql query as necessary
+    # check killed companies and update the sql query as necessary
     set user_id_sql ""
     if { ![empty_string_p $user_id] } {
         set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
-	if { [string compare $my_customers_only_p "t"] == 0 } {
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
+	if { [string compare $my_companies_only_p "t"] == 0 } {
 	    set user_id_sql "and ugm.user_id = :user_id"
 	    ns_set put $bind_vars user_id $user_id
 	}
@@ -638,12 +638,12 @@ ad_proc im_customers_status_change { {coverage ""} {report_date ""} {purpose ""}
 
     set sql "select g.group_name, g.group_id, 
       to_char(status_modification_date,'Mon DD, YYYY') as status_modification_date,
-      im_cust_status_from_id(customer_status_id) as status,
-      im_cust_status_from_id(old_customer_status_id) as old_status
-      from im_customers c, user_groups g, user_group_map ugm
+      im_cust_status_from_id(company_status_id) as status,
+      im_cust_status_from_id(old_company_status_id) as old_status
+      from im_companies c, user_groups g, user_group_map ugm
       where status_modification_date > to_date([util_decode $report_date "" sysdate ":report_date"],'YYYY-MM-DD')-[util_decode $coverage "" 1 :coverage]
-      and old_customer_status_id is not null
-      and old_customer_status_id <> customer_status_id
+      and old_company_status_id is not null
+      and old_company_status_id <> company_status_id
       and c.group_id = g.group_id
       and ugm.group_id = g.group_id
       /* coverage = $coverage */ $user_id_sql 
@@ -654,17 +654,17 @@ ad_proc im_customers_status_change { {coverage ""} {report_date ""} {purpose ""}
 	# Memoize the sql query since it takes so long...
 	foreach { group_name group_id status_modification_date \
 		status old_status} \
-		[im_memoize_list -bind $bind_vars customer_status_changes $sql] {
+		[im_memoize_list -bind $bind_vars company_status_changes $sql] {
 	    if { [string compare $purpose "web_display"] == 0 } {
-		lappend return_list "<a href=[im_url_stub]/customers/view?[export_url_vars group_id]>$group_name</a> went from <b>$old_status</b> to <b>$status</b> on $status_modification_date." 
+		lappend return_list "<a href=[im_url_stub]/companies/view?[export_url_vars group_id]>$group_name</a> went from <b>$old_status</b> to <b>$status</b> on $status_modification_date." 
 	    } else {
 		lappend return_list "$group_name went from $old_status to $status on $status_modification_date."
 	    }
 	}
     } else {
-	db_foreach customer_status_changes $sql {
+	db_foreach company_status_changes $sql {
 	    if { [string compare $purpose "web_display"] == 0 } {
-		lappend return_list "<a href=[im_url_stub]/customers/view?[export_url_vars group_id]>$group_name</a> went from <b>$old_status</b> to <b>$status</b> on $status_modification_date." 
+		lappend return_list "<a href=[im_url_stub]/companies/view?[export_url_vars group_id]>$group_name</a> went from <b>$old_status</b> to <b>$status</b> on $status_modification_date." 
 	    } else {
 		lappend return_list "$group_name went from $old_status to $status on $status_modification_date."
 	    }
@@ -686,18 +686,18 @@ ad_proc im_customers_status_change { {coverage ""} {report_date ""} {purpose ""}
     }    
 }
 
-ad_proc im_customers_bids_out {{coverage ""} {report_date ""} {purpose ""} {user_id ""} } {
-    "Returns a string that gives a list of bids given out to customers" 
+ad_proc im_companies_bids_out {{coverage ""} {report_date ""} {purpose ""} {user_id ""} } {
+    "Returns a string that gives a list of bids given out to companies" 
 } {
     
     set bind_vars [ns_set create]
 
-    # check killed customers and update the sql query as necessary
+    # check killed companies and update the sql query as necessary
     set user_id_sql ""
     if { ![empty_string_p $user_id] } {
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
-	if { [string compare $my_customers_only_p "t"] == 0 } {
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
+	if { [string compare $my_companies_only_p "t"] == 0 } {
 	    set user_id_sql " and ugm.user_id = :user_id "
 	    ns_set put $bind_vars user_id $user_id
 	}
@@ -707,16 +707,16 @@ ad_proc im_customers_bids_out {{coverage ""} {report_date ""} {purpose ""} {user
       to_char(c.status_modification_date, 'Mon DD, YYYY') as bid_out_date,
       u.first_names||' '||u.last_name as contact_name, u.email,
       decode(uc.work_phone,null,uc.home_phone,uc.work_phone) as contact_phone
-      from user_groups g, im_customers c, users_active u, users_contact uc, 
+      from user_groups g, im_companies c, users_active u, users_contact uc, 
         user_group_map ugm
-      where g.parent_group_id = [im_customer_group_id]
+      where g.parent_group_id = [im_company_group_id]
       and g.group_id = c.group_id
       and ugm.group_id = c.group_id
       and c.primary_contact_id = u.user_id(+)
       and c.primary_contact_id = uc.user_id(+)
-      and c.customer_status_id = (select customer_status_id 
-        from im_customer_status
-        where upper(customer_status) = 'BID OUT')
+      and c.company_status_id = (select company_status_id 
+        from im_company_status
+        where upper(company_status) = 'BID OUT')
       $user_id_sql order by lower(group_name)"
 
 
@@ -726,17 +726,17 @@ ad_proc im_customers_bids_out {{coverage ""} {report_date ""} {purpose ""} {user
 	# Memoize the sql query since it takes so long...
 	foreach { group_id group_name bid_out_date contact_name \
 		email contact_phone} \
-		[im_memoize_list -bind $bind_vars customer_bids_out $sql] {
+		[im_memoize_list -bind $bind_vars company_bids_out $sql] {
 	    if { [string compare $purpose "web_display"] == 0 } {
-		lappend return_list "<a href=[im_url_stub]/customers/view?[export_url_vars group_id]>$group_name</a>, $bid_out_date[util_decode $contact_name  " " "" ", $contact_name"][util_decode $email "" "" ", <a href=mailto:$email>$email</a>"][util_decode $contact_phone "" "" ", $contact_phone"]"
+		lappend return_list "<a href=[im_url_stub]/companies/view?[export_url_vars group_id]>$group_name</a>, $bid_out_date[util_decode $contact_name  " " "" ", $contact_name"][util_decode $email "" "" ", <a href=mailto:$email>$email</a>"][util_decode $contact_phone "" "" ", $contact_phone"]"
 	    } else {
 		lappend return_list "$group_name, $bid_out_date[util_decode $contact_name " " "" ", $contact_name"][util_decode $email "" "" ", $email"][util_decode $contact_phone "" "" ", $contact_phone"]\n"
 	    }
 	}
     } else {
-	db_foreach customer_bids_out $sql {
+	db_foreach company_bids_out $sql {
 	    if { [string compare $purpose "web_display"] == 0 } {
-		lappend return_list "<a href=[im_url_stub]/customers/view?[export_url_vars group_id]>$group_name</a>, $bid_out_date[util_decode $contact_name  " " "" ", $contact_name"][util_decode $email "" "" ", <a href=mailto:$email>$email</a>"][util_decode $contact_phone "" "" ", $contact_phone"]"
+		lappend return_list "<a href=[im_url_stub]/companies/view?[export_url_vars group_id]>$group_name</a>, $bid_out_date[util_decode $contact_name  " " "" ", $contact_name"][util_decode $email "" "" ", <a href=mailto:$email>$email</a>"][util_decode $contact_phone "" "" ", $contact_phone"]"
 	    } else {
 		lappend return_list "$group_name, $bid_out_date[util_decode $contact_name " " "" ", $contact_name"][util_decode $email "" "" ", $email"][util_decode $contact_phone "" "" ", $contact_phone"]\n"
 	    }
@@ -776,7 +776,7 @@ ad_proc im_delinquent_employees { {coverage ""} {report_date ""} {purpose ""} {u
     set sub_sql ""
     if { ![empty_string_p $user_id] } {
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 
 	if { ![empty_string_p $killed_offices] } {
 	    set killed_offices_csv [join $killed_offices ","]
@@ -984,7 +984,7 @@ ad_proc im_project_reports {{coverage ""} {report_date ""} {purpose ""} { user_i
     set user_id_sql ""
     if { ![empty_string_p $user_id] } {
 	set_status_report_user_preferences
-	# killed_sections, killed_offices, my_projects_only_p, my_customers_only_p
+	# killed_sections, killed_offices, my_projects_only_p, my_companies_only_p
 
 	if { [string compare $my_projects_only_p "t"] == 0 } {
 	    set user_id_sql " and (u.user_id = :user_id

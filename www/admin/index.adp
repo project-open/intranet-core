@@ -59,7 +59,7 @@
 	<li>
 	  <a href=/intranet/anonymize>Anonymize this server (Test servers only)</a>
 	  This command destroys your entire server, replacing all strings (project
-	  names, customer names, users, descriptions, ...) by "anonymized" random 
+	  names, company names, users, descriptions, ...) by "anonymized" random 
 	  strings in order to generate a demo system.
     </ul>
     <%= [im_component_bay left] %>

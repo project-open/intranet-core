@@ -23,7 +23,7 @@
 	  <TD align=right>
 <!-- InstanceBeginEditable name="ContextBar" -->
 
-<A href="index.html">Project/Open Core</A>  : Customers<!-- InstanceEndEditable -->
+<A href="index.html">Project/Open Core</A>  : Companies<!-- InstanceEndEditable -->
 	  </TD>
 	</TR>
     <TR>
@@ -43,67 +43,67 @@ Project/Open Core<!-- InstanceEndEditable -->
   </TBODY>
 </TABLE>
 <!-- InstanceBeginEditable name="Body" -->
-<h1>Customers</h1>
-<p>Customers represent legal units, as oposed to <a href="offices.html">offices</a> that represent physical locations. So every customer needs to have atleast one &quot;main office&quot;, but may have associated several offices.</p>
-<p>Customers permissions are managed using membership of the <a href="permissions.html">&quot;admin_group&quot;</a> similar to projects.</p>
+<h1>Companies</h1>
+<p>Companies represent legal units, as oposed to <a href="offices.html">offices</a> that represent physical locations. So every company needs to have atleast one &quot;main office&quot;, but may have associated several offices.</p>
+<p>Companies permissions are managed using membership of the <a href="permissions.html">&quot;admin_group&quot;</a> similar to projects.</p>
 <pre>
-create table im_customers (
-        customer_id             integer
-                                constraint im_customers_pk
+create table im_companies (
+        company_id             integer
+                                constraint im_companies_pk
                                 primary key
-                                constraint im_customers_cust_id_fk
+                                constraint im_companies_cust_id_fk
                                 references acs_objects,
                                 -- avoid using the OpenACS permission system
                                 -- because we have to ask frequently:
                                 -- "Who has read permissions on this object".
         admin_group_id          integer not null
-                                constraint im_customers_admin_group_fk
+                                constraint im_companies_admin_group_fk
                                 references groups,
-        customer_name           varchar(1000) not null
-                                constraint im_customers_name_un unique,
+        company_name           varchar(1000) not null
+                                constraint im_companies_name_un unique,
                                 -- where are the files in the filesystem?
-        customer_path           varchar(100) not null
-                                constraint im_customers_path_un unique,
+        company_path           varchar(100) not null
+                                constraint im_companies_path_un unique,
         main_office_id          integer not null
-                                constraint im_customers_office_fk
+                                constraint im_companies_office_fk
                                 references im_offices,
-        customer_status_id      integer not null
-                                constraint im_customers_cust_stat_fk
+        company_status_id      integer not null
+                                constraint im_companies_cust_stat_fk
                                 references categories,
-        customer_type_id        integer not null
-                                constraint im_customers_cust_type_fk
+        company_type_id        integer not null
+                                constraint im_companies_cust_type_fk
                                 references categories,
         crm_status_id           integer
-                                constraint im_customers_crm_status_fk
+                                constraint im_companies_crm_status_fk
                                 references categories,
         primary_contact_id      integer
-                                constraint im_customers_prim_cont_fk
+                                constraint im_companies_prim_cont_fk
                                 references users,
         accounting_contact_id   integer
-                                constraint im_customers_acc_cont_fk
+                                constraint im_companies_acc_cont_fk
                                 references users,
         note                    varchar(4000),
         referral_source         varchar(1000),
         annual_revenue_id       integer
-                                constraint im_customers_ann_rev_fk
+                                constraint im_companies_ann_rev_fk
                                 references categories,
                                 -- keep track of when status is changed
         status_modification_date date,
                                 -- and what the old status was
-        old_customer_status_id  integer
-                                constraint im_customers_old_cust_stat_fk
+        old_company_status_id  integer
+                                constraint im_companies_old_cust_stat_fk
                                 references categories,
-                                -- is this a customer we can bill?
+                                -- is this a company we can bill?
         billable_p              char(1) default('f')
-                                constraint im_customers_billable_p_ck
+                                constraint im_companies_billable_p_ck
                                 check(billable_p in ('t','f')),
                                 -- Who in Client Services is the manager?
         manager_id              integer
-                                constraint im_customers_manager_fk
+                                constraint im_companies_manager_fk
                                 references users,
                                 -- How much do they pay us?
         contract_value          integer,
-                                -- When does the customer start?
+                                -- When does the company start?
         start_date              date,
         vat_number              varchar(100)
 );

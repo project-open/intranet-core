@@ -357,11 +357,11 @@ ad_proc -public im_import_categories { filename } {
 
 
 # -------------------------------------------------------
-# Customers
+# Companies
 # -------------------------------------------------------
 
-ad_proc -public im_import_customers { filename } {
-    Import the customers file
+ad_proc -public im_import_companies { filename } {
+    Import the companies file
 } {
     set err_return ""
     if {![file readable $filename]} {
@@ -383,7 +383,7 @@ ad_proc -public im_import_customers { filename } {
     if {![string equal $csv_system "Project/Open"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_customers"]} {
+    if {![string equal $csv_table "im_companies"]} {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -433,45 +433,45 @@ ad_proc -public im_import_customers { filename } {
 	set manager_id [im_import_get_user $manager_email ""]
 	set accounting_contact_id [im_import_get_user $accounting_contact_email ""]
 	set primary_contact_id [im_import_get_user $primary_contact_email ""]
-	set customer_type_id [im_import_get_category $customer_type "Intranet Customer Type" 51]
-	set customer_status_id [im_import_get_category $customer_status "Intranet Customer Status" 46]
-	set crm_status_id [im_import_get_category $crm_status "Intranet Customer CRM Status" ""]
+	set company_type_id [im_import_get_category $company_type "Intranet Company Type" 51]
+	set company_status_id [im_import_get_category $company_status "Intranet Company Status" 46]
+	set crm_status_id [im_import_get_category $crm_status "Intranet Company CRM Status" ""]
 	set annual_revenue_id [im_import_get_category $annual_revenue "Intranet Annual Revenue" ""]
 
 	set main_office_id [db_string main_office "select office_id from im_offices where office_name=:main_office_name" -default ""]
 	if {"" == $main_office_id} { append err_return "<li>didn't find main office '$main_office_name'" }
 
-	# Check if the customer already exists..
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	# Check if the company already exists..
+	set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
 
 
 	# -------------------------------------------------------
 	# Prepare the DB statements
 	#
 
-	set create_customer_sql "
+	set create_company_sql "
 DECLARE
-    v_customer_id	integer;
+    v_company_id	integer;
 BEGIN
-    v_customer_id := im_customer.new(
-	customer_name	=> :customer_name,
-	customer_path	=> :customer_path,
+    v_company_id := im_company.new(
+	company_name	=> :company_name,
+	company_path	=> :company_path,
 	main_office_id	=> :main_office_id	
     );
 END;
 "
 
-	set update_customer_sql "
-UPDATE im_customers
+	set update_company_sql "
+UPDATE im_companies
 SET
 	deleted_p=:deleted_p,
-	customer_status_id=:customer_status_id,
-	customer_type_id=:customer_type_id,
+	company_status_id=:company_status_id,
+	company_type_id=:company_type_id,
 	note=:note,
 	referral_source=:referral_source,
 	annual_revenue_id=:annual_revenue_id,
 	status_modification_date=sysdate,
-	old_customer_status_id='',
+	old_company_status_id='',
 	billable_p=:billable_p,
 	site_concept=:site_concept,
 	manager_id=:manager_id,
@@ -481,15 +481,15 @@ SET
 	main_office_id=:main_office_id,
 	vat_number=:vat_number
 WHERE
-	customer_name = :customer_name"
+	company_name = :company_name"
 
 
 	# -------------------------------------------------------
 	# Debugging
 	#
 
-	ns_log Notice "customer_name	$customer_name"
-	ns_log Notice "customer_path	$customer_path"
+	ns_log Notice "company_name	$company_name"
+	ns_log Notice "company_path	$company_path"
 	ns_log Notice "main_office_id	$main_office_id"	
 
 
@@ -499,15 +499,15 @@ WHERE
 
 	if { [catch {
 
-	    if {0 == $customer_id} {
-		# The customer doesn't exist yet:
-		db_dml customer_create $create_customer_sql
+	    if {0 == $company_id} {
+		# The company doesn't exist yet:
+		db_dml company_create $create_company_sql
 	    }
-	    db_dml update_customer_sql $update_customer_sql
+	    db_dml update_company_sql $update_company_sql
 	
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
-	    append err_return "<li>Error loading customers:<br>
+	    append err_return "<li>Error loading companies:<br>
 	    $csv_line<br><pre>\n$err_msg</pre>"
 	}
     }
@@ -518,8 +518,8 @@ WHERE
 
 
 
-ad_proc -public im_import_customer_members { filename } {
-    Import the users associated with customers
+ad_proc -public im_import_company_members { filename } {
+    Import the users associated with companies
 } {
     set err_return ""
     if {![file readable $filename]} {
@@ -541,7 +541,7 @@ ad_proc -public im_import_customer_members { filename } {
     if {![string equal $csv_system "Project/Open"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_customer_members"]} {
+    if {![string equal $csv_table "im_company_members"]} {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -588,8 +588,8 @@ ad_proc -public im_import_customer_members { filename } {
 	# Transform categories, email and names into IDs
 	#
 
-	set object_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default ""]
-	if {"" == $object_id} { append err_return "<li>didn't find customer '$customer_name'" }
+	set object_id [db_string company "select company_id from im_companies where company_name=:company_name" -default ""]
+	if {"" == $object_id} { append err_return "<li>didn't find company '$company_name'" }
 
 	set user_id [im_import_get_user $user_email ""]
 	set object_role_id [im_import_get_category $role "Intranet Biz Object Role" ""]
@@ -613,7 +613,7 @@ END;"
 	# Debugging
 	#
 	set debug "object_id=$object_id\nuser_id=$user_id\nobject_role_id $object_role_id"
-	ns_log Notice "im_import_customer_members: $debug"
+	ns_log Notice "im_import_company_members: $debug"
 
 	# -------------------------------------------------------
 	# Insert into the DB and deal with errors
@@ -628,7 +628,7 @@ END;"
 	
 	} err_msg] } {
 	    ns_log Warning "$err_msg"
-	    append err_return "<li>Error loading customer members:<br>
+	    append err_return "<li>Error loading company members:<br>
 	    $csv_line<br>
 	    <pre>$debug</pre><br>
 	    <pre>\n$err_msg</pre>"
@@ -998,7 +998,7 @@ ad_proc -public im_import_projects { filename } {
 	set project_status_id [im_import_get_category $project_status "Intranet Project Status" ""]
 	set billing_type_id [im_import_get_category $billing_type "Intranet Billing Type" ""]
 
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default 0]
 
 	# -------------------------------------------------------
@@ -1013,7 +1013,7 @@ BEGIN
 	project_name	=> :project_name,
 	project_nr	=> :project_nr,
 	project_path	=> :project_path,
-	customer_id	=> :customer_id
+	company_id	=> :company_id
     );
 END;"
 
@@ -1023,7 +1023,7 @@ SET
 	project_name		= :project_name,
 	project_nr		= :project_nr,
 	project_path		= :project_path,
-	customer_id		= :customer_id,
+	company_id		= :company_id,
 	parent_id		= null,
 	project_type_id		= :project_type_id,
 	project_status_id	= :project_status_id,
@@ -1046,7 +1046,7 @@ WHERE
 	ns_log Notice "project_name	$project_name"
 	ns_log Notice "project_nr	$project_nr"
 	ns_log Notice "project_path	$project_path"
-	ns_log Notice "customer_id	$customer_id"
+	ns_log Notice "company_id	$company_id"
 	ns_log Notice "parent_name	$parent_name"
 
 
@@ -2092,7 +2092,7 @@ ad_proc -public im_import_trans_project_details { filename } {
 	#
 
 	set project_id [db_string project "select project_id from im_projects where project_name=:project_name" -default ""]
-	set customer_contact_id [im_import_get_user $customer_contact_email ""]
+	set company_contact_id [im_import_get_user $company_contact_email ""]
 
 	set source_language_id [im_import_get_category $source_language "Intranet Translation Language" ""]
 	set subject_area_id [im_import_get_category $subject_area "Intranet Translation Subject Area" ""]
@@ -2105,12 +2105,12 @@ ad_proc -public im_import_trans_project_details { filename } {
 	set update_sql "
 UPDATE im_projects
 SET
-	customer_project_nr	= :customer_project_nr,
-	customer_contact_id	= :customer_contact_id,
+	company_project_nr	= :company_project_nr,
+	company_contact_id	= :company_contact_id,
 	source_language_id	= :source_language_id,
 	subject_area_id		= :subject_area_id,
 	expected_quality_id	= :expected_quality_id,
-	final_customer		= :final_customer
+	final_company		= :final_company
 WHERE
 	project_id = :project_id
 "
@@ -2439,16 +2439,16 @@ ad_proc -public im_import_invoices { filename } {
 
 	set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
 
-        set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+        set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
 	set creator_id [im_import_get_user $creator_email ""]
-	set customer_contact_id [im_import_get_user $customer_contact_email ""]
+	set company_contact_id [im_import_get_user $company_contact_email ""]
 	set template_id [im_import_get_category $template "Intranet Cost Template" 0]
 	set cost_status_id [im_import_get_category $cost_status "Intranet Cost Status" 0]
 	set cost_type_id [im_import_get_category $cost_type "Intranet Cost Type" ""]
 	set payment_method_id [im_import_get_category $payment_method "Intranet Invoice Payment Method" 0]
 
 	# Old style invoices - provider was Internal by default
-	set provider_id [im_customer_internal]
+	set provider_id [im_company_internal]
 
 
 	# -------------------------------------------------------
@@ -2461,7 +2461,7 @@ DECLARE
 BEGIN
     v_invoice_id := im_invoice.new (
         invoice_nr              => :invoice_nr,
-        customer_id             => :customer_id,
+        company_id             => :company_id,
         provider_id             => :provider_id,
 	creation_user		=> :user_id,
 	creation_ip		=> '[ad_conn peeraddr]'
@@ -2472,10 +2472,10 @@ END;"
 UPDATE im_invoices
 SET
         invoice_nr              = :invoice_nr,
-        customer_id             = :customer_id,
+        company_id             = :company_id,
         provider_id             = :provider_id,
 	creator_id		= :creator_id,
-	customer_contact_id	= :customer_contact_id,
+	company_contact_id	= :company_contact_id,
         invoice_date            = :invoice_date,
 	due_date		= :due_date,
 	invoice_currency	= :invoice_currency,
@@ -2758,8 +2758,8 @@ ad_proc -public im_import_payments { filename } {
 
         set invoice_id [db_string invoice_id "select invoice_id from im_invoices where invoice_nr=:invoice_nr" -default 0]
 
-	set customer_id [db_string customer "select customer_id from im_invoices where invoice_id=:invoice_id" -default 0]
-	set provider_id [db_string customer "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
+	set company_id [db_string company "select company_id from im_invoices where invoice_id=:invoice_id" -default 0]
+	set provider_id [db_string company "select provider_id from im_invoices where invoice_id=:invoice_id" -default 0]
 
 	set payment_status_id [im_import_get_category $payment_status "Intranet Payment Status" ""]
 	set payment_type_id [im_import_get_category $payment_type "Intranet Payment Type" ""]
@@ -2772,7 +2772,7 @@ ad_proc -public im_import_payments { filename } {
 INSERT INTO im_payments (
         payment_id,
         invoice_id,
-        customer_id,
+        company_id,
         provider_id,
 	received_date,
 	payment_type_id,
@@ -2782,7 +2782,7 @@ INSERT INTO im_payments (
 ) values (
 	:payment_id,
 	:invoice_id,
-	:customer_id,
+	:company_id,
 	:provider_id,
 	:received_date,
 	:payment_type_id,
@@ -2796,7 +2796,7 @@ INSERT INTO im_payments (
 UPDATE im_payments
 SET
         invoice_id              = :invoice_id,
-        customer_id             = :customer_id,
+        company_id             = :company_id,
         provider_id             = :provider_id,
         received_date           = :received_date,
         start_block             = :start_block,
@@ -2818,7 +2818,7 @@ WHERE
 
 	if { [catch {
 	
-	    set payment_id [db_string payment_id "select payment_id from im_payments where customer_id=:customer_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and payment_type_id=:payment_type_id and currency=:currency" -default 0]
+	    set payment_id [db_string payment_id "select payment_id from im_payments where company_id=:company_id and invoice_id=:invoice_id and provider_id=:provider_id and received_date=:received_date and start_block=:start_block and payment_type_id=:payment_type_id and currency=:currency" -default 0]
 
 	    if {0 == $payment_id} {
 		# The payment doesn't exist yet:
@@ -2946,7 +2946,7 @@ ad_proc -public im_import_prices { filename } {
 	# values are optional.
         #
 	set uom_id [im_import_get_category $uom "Intranet UoM" ""]
-	set customer_id [db_string customer "select customer_id from im_customers where customer_name=:customer_name" -default 0]
+	set company_id [db_string company "select company_id from im_companies where company_name=:company_name" -default 0]
 	set task_type_id [im_import_get_category $task_type "Intranet Project Type" ""]
 	set target_language_id [im_import_get_category $target_language "Intranet Translation Language" ""]
 	set source_language_id [im_import_get_category $source_language "Intranet Translation Language" ""]
@@ -2961,7 +2961,7 @@ ad_proc -public im_import_prices { filename } {
 INSERT INTO im_trans_prices (
         price_id,
         uom_id,
-        customer_id,
+        company_id,
         task_type_id,
         target_language_id,
         source_language_id,
@@ -2973,7 +2973,7 @@ INSERT INTO im_trans_prices (
 ) values (
         :price_id,
         :uom_id,
-        :customer_id,
+        :company_id,
         :task_type_id,
         :target_language_id,
         :source_language_id,
@@ -2989,7 +2989,7 @@ INSERT INTO im_trans_prices (
 UPDATE im_trans_prices
 SET
         uom_id			= :uom_id,
-        customer_id		= :customer_id,
+        company_id		= :company_id,
         task_type_id		= :task_type_id,
         target_language_id	= :target_language_id,
         source_language_id	= :source_language_id,
@@ -3015,7 +3015,7 @@ from
 	im_trans_prices 
 where 
 	uom_id = :uom_id 
-	and customer_id = :customer_id 
+	and company_id = :company_id 
 	and task_type_id = :task_type_id 
 	and target_language_id = :target_language_id 
 	and source_language_id = :source_language_id 

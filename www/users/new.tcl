@@ -342,7 +342,7 @@ END;"
 
 	    # don't enter into setting and unsetting profiles
 	    # if the user has no right to change profiles.
-	    # Probably this is a freelancer or customer
+	    # Probably this is a freelancer or company
 	    # who is editing himself.
 	    if {0 == [llength $managable_profiles]} { break }
 

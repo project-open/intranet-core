@@ -106,9 +106,9 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set write $user_admin_p
     set admin $user_admin_p
 
-    # Let the customers see their projects.
-    set query "select customer_id, lower(im_category_from_id(project_status_id)) as project_status from im_projects where project_id=:project_id"
-    if {![db_0or1row project_customer $query] } {
+    # Let the companies see their projects.
+    set query "select company_id, lower(im_category_from_id(project_status_id)) as project_status from im_projects where project_id=:project_id"
+    if {![db_0or1row project_company $query] } {
 	return
     }
 
@@ -120,18 +120,18 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
     ns_log Notice "project_status=$project_status"
 
-    set user_is_project_customer_p [ad_user_group_member $customer_id $user_id]
+    set user_is_project_company_p [ad_user_group_member $company_id $user_id]
 
     if {$user_admin_p} { set admin 1}
-    if {$user_is_project_customer_p} { set read 1}
+    if {$user_is_project_company_p} { set read 1}
     if {$user_is_group_member_p} { set read 1}
     if {[im_permission $user_id view_projects_all]} { set read 1}
 
-    # customers and freelancers are not allowed to see non-open projects.
+    # companies and freelancers are not allowed to see non-open projects.
     # 76 = open
     if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
-	if {!$user_is_project_customer_p} {
+	if {!$user_is_project_company_p} {
 	    set read 0
 	}
     }
@@ -150,7 +150,7 @@ namespace eval project {
         -project_name
         -project_nr
         -project_path
-        -customer_id
+        -company_id
         { -parent_id "" }
 	{ -project_type_id "" }
 	{ -project_status_id "" }
@@ -168,7 +168,7 @@ namespace eval project {
 	@param project_name Pretty name for the project
 	@param project_nr Current project Nr, such as: "2004_0001".
 	@param project_path Path for project files in the filestorage
-	@param customer_id Who is going to pay for this project?
+	@param company_id Who is going to pay for this project?
 	@param parent_id Which is the parent (for subprojects)
 	@param project_type_id Default: "Other": Configurable project
 	       type used for reporting only
@@ -200,7 +200,7 @@ begin
         project_nr      => '$project_nr',
         project_path   => '$project_path'
 "
-	if {"" != $customer_id} { append sql "\t, customer_id => $customer_id\n" }
+	if {"" != $company_id} { append sql "\t, company_id => $company_id\n" }
 	if {"" != $parent_id} { append sql "\t, parent_id => $parent_id\n" }
 	if {"" != $project_type_id} { append sql "\t, project_type_id => $project_type_id\n" }
 	if {"" != $project_status_id} { append sql "\t, project_status_id => $project_status_id\n" }
@@ -378,7 +378,7 @@ ad_proc -public im_project_parent_select { select_name { default "" } {current_g
 
 
 
-ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {customer_id ""} } {
+ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {company_id ""} } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
     specified, we limit the select box to projects matching that
@@ -425,9 +425,9 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
      }	
 
 
-     if { ![empty_string_p $customer_id] } {
-	 ns_set put $bind_vars customer_id $customer_id
-	 append sql " and p.customer_id = :customer_id"
+     if { ![empty_string_p $company_id] } {
+	 ns_set put $bind_vars company_id $company_id
+	 append sql " and p.company_id = :company_id"
      }
 
      if { ![empty_string_p $status] } {

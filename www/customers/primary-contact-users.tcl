@@ -1,4 +1,4 @@
-# /www/intranet/customers/primary-contact-users.tcl
+# /www/intranet/companies/primary-contact-users.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -16,9 +16,9 @@
 ad_page_contract {
     Allows you to have a primary contact that references the users
     table. We don't use this yet, but it will indeed be good once all
-    customers are in the users table
+    companies are in the users table
 
-    @param group_id group id of the customer
+    @param group_id group id of the company
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
@@ -29,17 +29,17 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 
 # Avoid hardcoding the url stub
-set target "[im_url_stub]/customers/primary-contact-users-2"
+set target "[im_url_stub]/companies/primary-contact-users-2"
 
-set customer_name [db_string customer_name \
+set company_name [db_string company_name \
 	"select g.group_name
-           from im_customers c, user_groups g
+           from im_companies c, user_groups g
           where c.group_id = :group_id
             and c.group_id=g.group_id"]
 
 db_release_unused_handles
 
-set page_title "Select primary contact for $customer_name"
+set page_title "Select primary contact for $company_name"
 set context_bar [ad_context_bar [list ./ "Companies"] [list view?[export_url_vars group_id] "One company"] "Select contact"]
 
 set page_body "

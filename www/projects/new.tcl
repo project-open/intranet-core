@@ -25,7 +25,7 @@ ad_page_contract {
 } {
     project_id:optional,integer
     { parent_id:integer "" }
-    { customer_id:integer "" }
+    { company_id:integer "" }
     project_nr:optional
     return_url:optional
 }
@@ -38,7 +38,7 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 
 # Make sure the user has the privileges, because this
-# pages shows the list of customers etc.
+# pages shows the list of companies etc.
 if {![im_permission $user_id add_projects]} { 
     ad_return_complaint "Insufficient Privileges" "
     <li>You don't have sufficient privileges to see this page."
@@ -53,7 +53,7 @@ if { [exists_and_not_null project_id] } {
     db_1row projects_info_query { 
 select 
 	p.parent_id, 
-	p.customer_id, 
+	p.company_id, 
 	p.project_name,
 	p.project_type_id, 
 	p.project_status_id, 
@@ -109,8 +109,8 @@ where
 	# A brand new project (not a subproject)
 	set requires_report_p "f"
 	set parent_id ""
-	if { ![exists_and_not_null customer_id] } {
-	    set customer_id ""
+	if { ![exists_and_not_null company_id] } {
+	    set company_id ""
 	}
 	set project_type_id 85
 	set project_status_id 76
@@ -123,7 +123,7 @@ where
 	# Let's select out some defaults for this page
 	db_1row projects_by_parent_id_query {
 	    select 
-		p.customer_id, 
+		p.company_id, 
 		p.project_type_id, 
 		p.project_status_id
 	    from
@@ -177,11 +177,11 @@ append page_body "
                     <tr>
                       <td>Client $required_field </td>
                       <td> 
-[im_customer_select "customer_id" $customer_id "" "Customer" [list "Deleted" "Past" "Declined" "Inactive"]]
+[im_company_select "company_id" $company_id "" "Company" [list "Deleted" "Past" "Declined" "Inactive"]]
 "
 if {$user_admin_p} {
     append page_body "
-	<A HREF='/intranet/customers/new'>
+	<A HREF='/intranet/companies/new'>
 	[im_gif new {Add a new client}]</A>"
 }
 

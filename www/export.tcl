@@ -50,8 +50,8 @@ lappend column_vars {$project_path}
 lappend column_headers "parent_name"
 lappend column_vars {$parent_name}
 
-lappend column_headers "customer_name"
-lappend column_vars {$customer_name}
+lappend column_headers "company_name"
+lappend column_vars {$company_name}
 
 lappend column_headers "project_type"
 lappend column_vars {$project_type}
@@ -90,7 +90,7 @@ lappend column_vars {$project_budget}
 set sql "
 select 
 	p.*,
-	c.customer_name,
+	c.company_name,
 	parent_p.project_name as parent_name,
         im_name_from_user_id(p.project_lead_id) as project_lead,
         im_name_from_user_id(p.supervisor_id) as supervisor,
@@ -102,9 +102,9 @@ select
 from 
 	im_projects p, 
 	im_projects parent_p, 
-        im_customers c
+        im_companies c
 where 
-        p.customer_id = c.customer_id
+        p.company_id = c.company_id
 	and p.parent_id = parent_p.project_id
 "
 

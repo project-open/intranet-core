@@ -7,7 +7,7 @@
   <td>
 
 
-	<form method=get action='/intranet/customers/index' name=filter_form>
+	<form method=get action='/intranet/companies/index' name=filter_form>
 	<%= [export_form_vars start_idx order_by how_many letter view_name] %>
 	<table border=0 cellpadding=0 cellspacing=0>
 	<tr> 
@@ -26,7 +26,7 @@
 	<tr>
 	  <td valign=top>Company Type: </td>
 	  <td valign=top>
-	    <%= [im_select type_id $customer_types ""] %>
+	    <%= [im_select type_id $company_types ""] %>
 	    <input type=submit value=Go name=submit>
 	  </td>
 	</tr>

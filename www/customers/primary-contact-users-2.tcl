@@ -1,4 +1,4 @@
-# /packages/intranet-core/customers/primary-contact-users-2.tcl
+# /packages/intranet-core/companies/primary-contact-users-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -16,9 +16,9 @@
 ad_page_contract {
     Allows you to have a primary contact that references the users
     table. We don't use this yet, but it will indeed be good once all
-    customers are in the users table
+    companies are in the users table
 
-    @param group_id customer's group id
+    @param group_id company's group id
     @param user_id_from_search user we're setting as the primary contact
 
     @author various@arsdigita.com
@@ -32,8 +32,8 @@ ad_page_contract {
 ad_maybe_redirect_for_registration
 
 
-db_dml customers_set_primary_contact \
-	"update im_customers 
+db_dml companies_set_primary_contact \
+	"update im_companies 
             set primary_contact_id=:user_id_from_search
           where group_id=:group_id" 
 db_release_unused_handles
