@@ -13,7 +13,7 @@
   <msg key="Accounting">Rechnungswesen</msg>
   <msg key="Accounting_contact">Rechnungskontakt</msg>
   <msg key="activate">aktivieren</msg>
-  <msg key="Active">aktiv</msg>
+  <msg key="Active">Aktiv</msg>
   <msg key="Add">Zufügen</msg>
   <msg key="Add_a_new_client">Neuer Kunde</msg>
   <msg key="Add_a_new_Company">Neue Firma</msg>
@@ -44,7 +44,8 @@
   <msg key="Admin">Administation</msg>
   <msg key="Admin_category_type">Kategorien administrieren</msg>
   <msg key="Admin_Companies">Firmen administrieren</msg>
-  <msg key="Admin_Home">Administration Homepage</msg>
+  <msg key="Admin_Home">Admin Home</msg>
+  <msg key="Admin_Links">Administration</msg>
   <msg key="Admin_Offices">Firmensitze administrieren</msg>
   <msg key="Admin_Project">Projekte administrieren</msg>
   <msg key="Admin_Projects">Projekte administrieren</msg>
@@ -106,6 +107,7 @@
   <msg key="category_name">%category_name%</msg>
   <msg key="category_name_1">$category_name </msg>
   <msg key="Category_Nr">Kategorienr.</msg>
+  <msg key="Category_translation">Kategorie Übersetzungen</msg>
   <msg key="Cell_Phone">Handy</msg>
   <msg key="Cell_phone">Handy</msg>
   <msg key="Change_Password">Passwort ändern</msg>
@@ -154,6 +156,7 @@
   <msg key="Create">Erstellen</msg>
   <msg key="Create_a_new_Project">Neues Projekt</msg>
   <msg key="Create_a_Subproject">Neues Unterprojekt</msg>
+  <msg key="Create_Category">Neue Kategorie</msg>
   <msg key="Create_new_Incident">Neuer Zwischenfall</msg>
   <msg key="Create_new_News_Item">Neue Nachricht</msg>
   <msg key="Create_new_Note">Neue Notiz</msg>
@@ -182,6 +185,7 @@
   <msg key="Declined">Abgelehnt</msg>
   <msg key="Del">Löschen</msg>
   <msg key="delete">löschen</msg>
+  <msg key="Delete_Cost_Center">Kostenstelle</msg>
   <msg key="Delete_Menu">Menü löschen</msg>
   <msg key="Delete_portrait">Portrait löschen</msg>
   <msg key="Delete_the_Task">Aufgabe löschen</msg>
@@ -258,7 +262,7 @@
   <msg key="for_Proof">zum Korrekturlesen</msg>
   <msg key="for_QCing">zur Qualitätskontrolle</msg>
   <msg key="for_Trans">zur Übersetzung</msg>
-  <msg key="Forum">Forum</msg>
+  <msg key="Forum">Foren</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
   <msg key="fr_CH">fr_CH</msg>
@@ -268,6 +272,8 @@
   <msg key="Freelance_Provider">Freiberuflicher Zulieferer</msg>
   <msg key="Freelancers">Freiberufler</msg>
   <msg key="Full_Member">Vollmitglied</msg>
+  <msg key="Functionality">Funktionstest</msg>
+  <msg key="Future">Zukunft</msg>
   <msg key="g">G</msg>
   <msg key="Gen">Gen</msg>
   <msg key="Georgia">Georgien</msg>
@@ -346,6 +352,7 @@
   <msg key="Kuwait">Kuwait</msg>
   <msg key="l">L</msg>
   <msg key="La_Caixa_EUR">La Caixa EUR</msg>
+  <msg key="Last_3_months">Letzte 4 Monate</msg>
   <msg key="Last_name">Nachname</msg>
   <msg key="Last_Visit">Letzer Besuch</msg>
   <msg key="Last_visit">Letzer Besuch</msg>
@@ -379,6 +386,7 @@
   <msg key="lt_Add_a_new_value_range">Neuer Wertebereich</msg>
   <msg key="lt_Add_accounting_contac">Neuer Rechnungskontakt</msg>
   <msg key="lt_Add_new_member_to_obj">Neues Mitglied für %object_name%</msg>
+  <msg key="lt_Alleintranet-timeshee">Alle</msg>
   <msg key="lt_Allintranet-timesheet">Alle</msg>
   <msg key="lt_Also_please_make_sure">Bitte stellen sie sicher, daß der Kunde nicht mehrfach mit ähnlichen Namen definiert wurde.</msg>
   <msg key="lt_An_office_with_the_sa">Ein Firmensitz mit dem selben Namen oder Pfad existiert bereits. Bitte wählen sie einen anderen Namen oder Pfad.</msg>
@@ -423,22 +431,29 @@
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% wurde benachrichtigt.</msg>
   <msg key="lt_for_name_in_ad_site_h">für %name% in %ad_site_home_link% </msg>
   <msg key="lt_Freelancersintranet-f">Freiberufler</msg>
+  <msg key="lt_Freiberuflerintranet-">Freiberufler</msg>
   <msg key="lt_Full_Memberintranet-f">Vollmitglied</msg>
   <msg key="lt_Futureintranet-timesh">Zukünftig</msg>
   <msg key="lt_General_type_of_proje">Allgemeiner Projekttyp. Dieser Typ erlaubt es uns, eine geeignete Verzeichnisstruktur anzulegen.</msg>
+  <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
+  <msg key="lt_Hardware_Manufacturer">Hardware Hersteller</msg>
   <msg key="lt_has_been_marked_delet">wurde als 'gelöscht' markiert.</msg>
   <msg key="lt_Here_you_can_manage_u">Hier können sie Benutzer einzeln bearbeiten.</msg>
   <msg key="lt_Here_you_find_advance">Hier finden sie weitere Konfigurationsoptionen</msg>
   <msg key="lt_Here_you_find_advance_1">Hier finden sie weitere Konfigurationsoptionen</msg>
-  <msg key="lt_How_did_we_get_in_con">Initialer Kontakt</msg>
-  <msg key="lt_Import_Company_Contac">Kundendaten (CSV) importieren</msg>
+  <msg key="lt_Heuteintranet-timeshe">Heute</msg>
+  <msg key="lt_How_did_we_get_in_con">Wie sind sie in Kontakt mit dieser Firma gekommen?</msg>
+  <msg key="lt_Import_Company_Contac">Kontaktliste (CSV) importieren</msg>
   <msg key="lt_Import_Projects_from_">Projekt von H:\\ importieren</msg>
   <msg key="lt_Insufficient_Privileg">Unzureichene Zugriffsrechte</msg>
   <msg key="lt_Internal_error_unknow">Interner Fehler: Unbekannter View: '%view_name%' </msg>
   <msg key="lt_Invalid_time_format_e">Ungültiges Zeitformat '%end_time(time)%': Bitte geben sie de Zeit ein im Format: '12:30' </msg>
+  <msg key="lt_Is_this_a_billable_co">Können dieser Firma Rechnungen geschrieben werden?</msg>
   <msg key="lt_Just_enter_any_suitab">Bitte einen einigermaßen geeigneten Projektnamen eintragen. Sie können das Feld sogar leer lassen.</msg>
   <msg key="lt_just_mark_the_account">Benutzer als gelöscht markieren</msg>
   <msg key="lt_Key_Accountintranet-f">Kundenbetreuer</msg>
+  <msg key="lt_Kundenbetreuerintrane">Kundenbetreuer</msg>
+  <msg key="lt_Kundenintranet-filest">Kunden</msg>
   <msg key="lt_Last_3_monthsintranet">Letze drei Monate</msg>
   <msg key="lt_Linguistic_Validation">Linguistische Validierung</msg>
   <msg key="lt_Locate_your_new_accou">Rechnungskontakt angeben</msg>
@@ -450,10 +465,12 @@
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
+  <msg key="lt_Meineintranet-timeshe">Meine</msg>
   <msg key="lt_Member_state_user_sta">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
   <msg key="lt_Member_state_user_sta_1">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
   <msg key="lt_Mineintranet-timeshee">Meine</msg>
   <msg key="lt_Missing_group_id_and_">Fehlende Gruppen-ID und Pfad</msg>
+  <msg key="lt_Mitarbeiterintranet-f">Mitarbeiter</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV Übersetzungsagentur</msg>
   <msg key="lt_New_Company_Invoice_f">Neuer Rechnung</msg>
   <msg key="lt_New_Customer_Invoice_">Neue Kundenrechnung</msg>
@@ -504,7 +521,9 @@
   <msg key="lt_Shows_the_status_of_a">Projektstatus anzeigen</msg>
   <msg key="lt_Slashes__in_Project_P">Schrägstriche ('/') sind im Projektpfad nicht erlaubt</msg>
   <msg key="lt_Software_Company_Comp">Softwarefirma</msg>
+  <msg key="lt_Software_Company_Cust">Software Firma (Kunde)</msg>
   <msg key="lt_Successfully_finished">Erfolgreich beendet</msg>
+  <msg key="lt_The_English_translati">Die englische 'Übersetzung' sollte mit dem Kategorienamen übereinstimmen.</msg>
   <msg key="lt_This_file_has_generat">Diese Datei hat einen Fehler erzeugt.</msg>
   <msg key="lt_This_is_not_a_TestDem">Dies ist kein Test-/Demo-/Developmentsystem</msg>
   <msg key="lt_This_project_is_part_">Dieses Projekt ist ein Unterprojekt oder hat Unterprojekte</msg>
@@ -519,6 +538,7 @@
   <msg key="lt_View_the_hours_logged">Anzeige der erfaßten Stunden eines anderen Benutzers</msg>
   <msg key="lt_View_time_spent_on_al">Anzeige der erfaßten Stunden des gesamten Projektteams</msg>
   <msg key="lt_View_your_hours_on_al">Anzeige ihrer erfaßten Studen in allen Projekten</msg>
+  <msg key="lt_Vollmitgliedintranet-">Vollmitglied </msg>
   <msg key="lt_Wire_Transfer_La_Caix">Überweisung La Caixa</msg>
   <msg key="lt_You_are_not_authorize">Sie haben nicht die notwendige Berechtigung, diese Seite zu sehen</msg>
   <msg key="lt_You_have_two_options_">Sie haben hier zwei Möglichkeiten:</msg>
@@ -562,6 +582,7 @@
   <msg key="New_Zealand">Neuseeland</msg>
   <msg key="News">Nachricht</msg>
   <msg key="Next_Absence">Nächste Abwesenheit</msg>
+  <msg key="Next_Month">Nächster Monat</msg>
   <msg key="Nicaragua">Nicaragua</msg>
   <msg key="nl">nl</msg>
   <msg key="nl_BE">nl_BE</msg>
@@ -609,7 +630,9 @@
   <msg key="Paid">Bezahlt</msg>
   <msg key="Paraguay">Parguay</msg>
   <msg key="Parameters">Parameter</msg>
+  <msg key="Parent_Categories">Übergeordnete Kategorien</msg>
   <msg key="Parent_Project">Oberprojekt</msg>
+  <msg key="Parents">Eltern</msg>
   <msg key="Partially_Paid">Teilweise Bezahlt</msg>
   <msg key="Password">Password</msg>
   <msg key="Password_Updated">Password Änderung</msg>
@@ -747,6 +770,7 @@
   <msg key="Test_received">Test empfangen</msg>
   <msg key="Test_sent">Test gesendet</msg>
   <msg key="The_web_with_Google">Das Internet mit Google</msg>
+  <msg key="Today">Heute</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
   <msg key="Trans-ing">wird übersetzt</msg>
   <msg key="Trans__Edit">Übersetzung Edit</msg>
@@ -758,6 +782,7 @@
   <msg key="TransEdProof">Übers+Edit+Proof</msg>
   <msg key="TransIntSpot">Übers+Int.Check</msg>
   <msg key="Translation_Project">Übersetzungsprojekt</msg>
+  <msg key="Transport_Provider">Transport Provider</msg>
   <msg key="Travel">Reise</msg>
   <msg key="Travel_Cost">Reisekosten</msg>
   <msg key="Travel_Costs">Reisekosten</msg>
@@ -796,6 +821,7 @@
   <msg key="User_state">Benutzer Status</msg>
   <msg key="User_Types">Benutzer Typen</msg>
   <msg key="Users">Benutzer</msg>
+  <msg key="Users_Contact_Note">Kontact Notizen</msg>
   <msg key="v">V</msg>
   <msg key="Vacation">Urlaub</msg>
   <msg key="value">%value% </msg>
@@ -821,6 +847,8 @@
   <msg key="y">Y</msg>
   <msg key="Yes">Ja</msg>
   <msg key="You_can_return_to">Sie können zurückkehren zu</msg>
+  <msg key="Your_Current_Locale">Aktuelle Sprache</msg>
+  <msg key="Your_Current_Timezone">Aktuelle Zeitzone</msg>
   <msg key="Yugoslavia">Jugoslawien</msg>
   <msg key="z">Z</msg>
   <msg key="ZIP">PLZ</msg>
