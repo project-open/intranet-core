@@ -41,67 +41,6 @@ prompt *** intranet-currency-codes
 @intranet-currency-codes.sql
 
 
--------------------------------------------------------------
--- Users_Contact information
---
--- Table from ACS 3.4 data model copied into the Intranet 
--- in order to facilitate the porting process. However, this
--- information should be incorporated into a im_users table
--- or something similar in the future.
-
-create table users_contact (
-	user_id			integer 
-				constraint users_contact_pk
-				primary key
-				constraint users_contact_pk_fk
-				references users,
-	home_phone		varchar(100),
-	priv_home_phone		integer,
-	work_phone		varchar(100),
-	priv_work_phone 	integer,
-	cell_phone		varchar(100),
-	priv_cell_phone 	integer,
-	pager			varchar(100),
-	priv_pager		integer,
-	fax			varchar(100),
-	priv_fax		integer,
-				-- AOL Instant Messenger
-	aim_screen_name		varchar(50),
-	priv_aim_screen_name	integer,
-				-- MSN Instanet Messenger
-	msn_screen_name		varchar(50),
-	priv_msn_screen_name	integer,
-				-- also ICQ
-	icq_number		varchar(50),
-	priv_icq_number		integer,
-				-- Which address should we mail to?
-	m_address		char(1) check (m_address in ('w','h')),
-				-- home address
-	ha_line1		varchar(80),
-	ha_line2		varchar(80),
-	ha_city			varchar(80),
-	ha_state		varchar(80),
-	ha_postal_code		varchar(80),
-	ha_country_code		char(2) 
-				constraint users_contact_ha_cc_fk
-				references country_codes(iso),
-	priv_ha			integer,
-				-- work address
-	wa_line1		varchar(80),
-	wa_line2		varchar(80),
-	wa_city			varchar(80),
-	wa_state		varchar(80),
-	wa_postal_code		varchar(80),
-	wa_country_code		char(2)
-				constraint users_contact_wa_cc
-				references country_codes(iso),
-	priv_wa			integer,
-				-- used by the intranet module
-	note			varchar(4000),
-	current_information	varchar(4000)
-);
-
-
 ---------------------------------------------------------
 -- Import Business Objects
 --
@@ -137,6 +76,8 @@ end im_category_from_id;
 show errors;
 
 
+------------------------------------------------------------
+-- Check whether user_id is (some kind of) member of group_id.
 create or replace function ad_group_member_p (
     p_user_id IN integer,
     p_group_id IN integer
@@ -147,15 +88,52 @@ IS
 BEGIN
     select decode(count(*), 0, 'f', 't')
     into ad_group_member_p
-    from group_member_map
-    where     group_id = p_group_id
-              and member_id = p_user_id;
+    from acs_rels
+    where
+	object_id_one = p_group_id
+	and object_id_two = p_user_id;
 
     return ad_group_member_p;
 
 END ad_group_member_p;
 /
 show errors
+
+
+------------------------------------------------------------
+-- Check whether user_id is an administrator of group_id.
+-- ToDo: Hardcoded implementation - replace by privilege
+-- scheme that works through all types of business objects.
+--
+create or replace function ad_group_member_admin_role_p (
+    p_user_id IN integer,
+    p_group_id IN integer
+)
+return char
+IS
+    ad_group_member_p    char(1);
+BEGIN
+    select decode(count(*), 0, 'f', 't')
+    into ad_group_member_p
+    from
+	acs_rels r,
+	im_biz_object_members m,
+	categories c
+    where
+	r.object_id_one = p_group_id
+	and r.object_id_two = p_user_id
+	and r.rel_id = m.rel_id
+	and m.object_role_id = c.category_id
+	and (c.category = 'Project Manager' or c.category = 'Key Account');
+
+    return ad_group_member_p;
+
+END ad_group_member_admin_role_p;
+/
+show errors
+
+
+ad_group_member_admin_role_p(602, 643
 
 
 create or replace function im_proj_url_from_type ( 
@@ -182,56 +160,6 @@ BEGIN
 END;
 /
 show errors;
-
-
-
-
--- you can't do a JOIN with a CONNECT BY so we need a PL/SQL proc to
--- pull out user's name from user_id
-
-create or replace function im_name_from_user_id(v_user_id IN integer)
-return varchar
-is
-	v_full_name varchar(8000);
-BEGIN
-	select first_names || ' ' || last_name into v_full_name 
-	from persons
-	where person_id = v_user_id;
-	return v_full_name;
-END im_name_from_user_id;
-/
-show errors
-
-
-create or replace function im_email_from_user_id(v_user_id IN integer)
-return varchar
-is
-	v_email varchar(100);
-BEGIN
-	select email
-	into v_email
-	from parties
-	where party_id = v_user_id;
-
-	return v_email;
-END im_email_from_user_id;
-/
-show errors
-
-
-create or replace function im_initials_from_user_id(v_user_id IN integer)
-return varchar
-is
-	v_initials varchar(2);
-BEGIN
-	select substr(first_names,1,1) || substr(last_name,1,1) into v_initials
-	from persons
-	where person_id = v_user_id;
-	return v_initials;
-END im_initials_from_user_id;
-/
-show errors
-
 
 
 -- Populate all the status/type/url with the different types of 

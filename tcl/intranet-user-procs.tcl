@@ -24,52 +24,45 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     upvar $write_var write
     upvar $admin_var admin
 
-    set view 0
-    set read 0
-    set write 0
-    set admin 0
-
     set view 1
     set read 1
     set write 1
     set admin 1
 
+    # Myself - I can do everything with my personal data
+#    if { $user_id == $current_user_id } { return }
+
+    # Get the list of profiles of user_id (the one to be managed)
+    # together with the information if curren_user_id can read/write
+    # it.
+    set profile_perm_sql "
+select
+        m.group_id,
+	acs_permission.permission_p(m.group_id, m.member_id, 'view') as view_p,
+	acs_permission.permission_p(m.group_id, m.member_id, 'read') as read_p,
+	acs_permission.permission_p(m.group_id, m.member_id, 'write') as write_p,
+	acs_permission.permission_p(m.group_id, m.member_id, 'admin') as admin_p
+from
+        acs_objects o,
+	group_distinct_member_map m
+where
+	m.member_id=:current_user_id
+     	and m.group_id = o.object_id
+        and o.object_type = 'im_profile'
+"
+    db_foreach profile_perm_check $profile_perm_sql {
+	ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p"
+	if {[string equal f $view_p]} { set view 0 }
+	if {[string equal f $read_p]} { set read 0 }
+	if {[string equal f $write_p]} { set write 0 }
+	if {[string equal f $admin_p]} { set admin 0 }
+    }
+
+    # Check if user_id participates in a project where current_user_id
+    # acts as a project manager. In this case the PM needs to be able
+    # to read the user info, atleast while the project is ACTIVE.
+
     return
-
-}
-
-ad_proc -public im_user_permissions_tttt { current_user_id user_id view_var read_var write_var admin_var } {
-    Fill the "by-reference" variables read, write and admin
-    with the permissions of $current_user_id on $user_id
-} {
-
-
-set myself_p 0
-if { $user_id == $current_user_id } { set myself_p 1}
-
-set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-set current_user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
-set current_user_is_employee_p [im_user_is_employee_p $current_user_id]
-set current_user_admin_p [expr $current_user_is_admin_p || $current_user_is_wheel_p]
-
-set user_is_customer_p [ad_user_group_member [im_customer_group_id] $user_id]
-set user_is_freelance_p [ad_user_group_member [im_freelance_group_id] $user_id]
-set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-set user_is_employee_p [im_user_is_employee_p $user_id]
-
-# Determine the type of the user to view:
-set user_type "none"
-if {$user_is_freelance_p} { set user_type "freelance" }
-if {$user_is_employee_p} { set user_type "employee" }
-if {$user_is_customer_p} { set user_type "customer" }
-if {$user_is_wheel_p} { set user_type "wheel" }
-if {$user_is_admin_p} { set user_type "admin" }
-
-# Check if "user" belongs to a group that is administered by
-# the current users
-
-if { 0 } {
 
     set administrated_user_ids [db_list administated_user_ids "
 select distinct
@@ -83,206 +76,17 @@ where
         and m.group_id=m2.group_id
 "]
 
-set user_in_administered_project 0
-    if {[lsearch -exact $administrated_user_ids $user_id] > -1} {
-    set user_in_administered_project 1
-    }
-
-# -------------- Permission Matrix ----------------
-
-    # permission_matrix = [$view_user $edit_user]
-    set permission_matrix [im_user_permission_matrix $current_user_id $user_id $user_type $cu\
-			       rrent_user_admin_p $user_in_administered_project]
-    set view_user [lindex $permission_matrix 0]
-    set edit_user [lindex $permission_matrix 1]
-set show_admin_links $current_user_admin_p
-
-
-# Create an error if the current_user isn't allowed to see the user
-    if {!$edit_user} {
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You have insufficient privileges to view this user."
-    return
-    }
-
-}
-
-
-
-}
-
-ad_proc -public im_user_permissions_ttt { current_user_id user_id view_var read_var write_var admin_var } {
-    Fill the "by-reference" variables read, write and admin
-    with the permissions of $current_user_id on $user_id
-} {
-
-    # --------------------------------------------------
-    # Start of logic for "view"
-    # --------------------------------------------------
-
-    # Don't show even names of customer contacts to an unprivileged user.
-    # ... except he's the administrator of this group...
-    if {$group_member_is_customer_p} {
-	return [expr $user_is_group_admin_p || [im_permission $current_user_id view_customer_contacts]]
-    }
-
-    # Show freelance names or links, depending on permissions
-    if {$group_member_is_freelance_p} {
-	if {[im_permission $current_user_id view_freelancers]} {
-	    return 1
-	} else {
-	    return -1
-	}
-    }
-
-    # Default for non-employees: show only names
-    if {!$user_is_employee_p} {
-	return -1
-    }
-
-    # Employees Default: show the link
-    return 1
-
-    # --------------------------------------------------
-    # End of logic for "view"
-    # --------------------------------------------------
-
-
-    # Also accept "user_id_from_search" instead of user_id (the one to edit...)
-    if [info exists user_id_from_search] { set user_id $user_id_from_search}
-    
-    set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-    set current_user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $current_user_id]
-    set current_user_is_employee_p [im_user_is_employee_p $current_user_id]
-    set current_user_admin_p [expr $current_user_is_admin_p || $current_user_is_wheel_p]
-    
-    set user_is_customer_p [ad_user_group_member [im_customer_group_id] $user_id]
-    set user_is_freelance_p [ad_user_group_member [im_freelance_group_id] $user_id]
-    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-    set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-    set user_is_employee_p [im_user_is_employee_p $user_id]
-
-    # Determine the type of the user to view:
-    set user_type "none"
-    if {$user_is_freelance_p} { set user_type "freelance" }
-    if {$user_is_employee_p} { set user_type "employee" }
-    if {$user_is_customer_p} { set user_type "customer" }
-    if {$user_is_wheel_p} { set user_type "wheel" }
-    if {$user_is_admin_p} { set user_type "admin" }
-
-    set yourself_p [expr $user_id == $current_user_id]
-
-    # Determine the list of group memberships of this user
-    
-    set profile_list [list]
-
-    if {[im_site_wide_admin_p $user_id]} {
-	lappend profile_list "SiteAdmin"
-    }
-
-    foreach group_id [im_profiles_all_group_ids] {
-	if {[ad_user_group_member $group_id $user_id]} {
-	    lappend profile_list [db_string group_name "select group_name from groups where group_id=:group_id"]
-	}
-    }
-
-
-    # --------------------------------------------------------
-    # Check if "user" belongs to a group that is administered by 
-    # the current users
-    set administrated_user_ids [db_list administated_user_ids "
-select distinct
-	m2.member_id
-from
-	group_member_map m,
-	group_distinct_member_map m2
-where
-	m.member_id=:current_user_id
-	and m.rel_type='admin_rel'
-	and m.group_id=m2.group_id
-"]
-
     set user_in_administered_project 0
-    if {[lsearch -exact $administrated_user_ids $user_id] > -1} { 
-	set user_in_administered_project 1
+    if {[lsearch -exact $administrated_user_ids $user_id] > -1} {
+	set read 1
     }
 
-    # -------------- Permission Matrix ----------------
-
-    set view_user 0
-    set edit_user 0
-    set show_admin_links $current_user_admin_p
-
-    switch $user_type {
-	freelance {
-	    # Check the freelance access rights directy from im_permissions
-	    set view_user [im_permission $current_user_id view_freelancers]
-	    set edit_user [im_permission $current_user_id edit_freelancers]
-	    if {$user_in_administered_project} {set view_user 1}
-
-	    # Allows freelance administrators to delete/... 
-	    if {$edit_user} {set show_admin_links 1}
-	}
-
-	employee {
-	    set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
-	    set edit_user $current_user_admin_p
-	    if {$user_in_administered_project} {set view_user 1}
-	}
-
-	customer {
-	    set view_user [im_permission $current_user_id view_customer_contacts]
-	    set edit_user $current_user_admin_p
-	    if {$user_in_administered_project} {set view_user 1}
-	}
-
-	wheel {
-	    set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
-	    set edit_user $current_user_is_admin_p
-	}
-
-	admin {
-	    set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
-	    set edit_user $current_user_is_admin_p
-	}
-
-	none {
-	    # a user who has registered from the web site
-	    set view_user [expr $current_user_is_employee_p || $current_user_admin_p]
-	    set edit_user $current_user_admin_p
-	}
-
-	default {
-	    ad_return_complaint 1 "
-        <li>Internal Error: Bad user type<br>
-	User \#$user_id does not belong to a known group.<br>
-	Please notify your system administrator."
-	    return
-	}
+    if {$admin} {
+	set read 1
+	set write 1
     }
-
-
-    # Editing a user implies being able to see it.
-    if {$edit_user} {
-	set view_user 1
-    }
-
-    # Everybody is allowed to see and edit him/herself,
-    # so skip all security checks if it's yourself.
-    if {$yourself_p} {
-	set view_user 1
-	set edit_user 1
-    }
-
-    ns_log Notice "users/view: user_type=$user_type"
-    ns_log Notice "users/view: yourself_p=$yourself_p"
-    ns_log Notice "users/view: user_in_administered_project=$user_in_administered_project"
-    ns_log Notice "users/view: view_user=$view_user"
-    ns_log Notice "users/view: edit_user=$edit_user"
+    if {$read} { set view 1 }
 }
-
-
-
 
 ad_proc im_random_employee_blurb { } "Returns a random employee's photograph and a little bio" {
 

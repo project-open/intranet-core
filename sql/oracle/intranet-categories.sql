@@ -13,8 +13,8 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      unknown@arsdigita.com
--- @author      frank.bergmann@project-open.com
+-- @author	unknown@arsdigita.com
+-- @author	frank.bergmann@project-open.com
 
 
 -- ------------------------------------------------------------
@@ -27,7 +27,7 @@
 -- ------------------------------------------------------------
 
 
---------- Category Ranges  ----------------------------------
+--------- Category Ranges ----------------------------------
 -- Somethimes we want to use category IDs directly in 
 -- program code, so we need to define reserved category spaces
 -- for each module. Not very clean, but clumsy SQL to get
@@ -85,15 +85,10 @@ create table categories (
 	category_description	varchar(4000),
 	category_type		varchar(50),
 	category_gif		varchar(100) default 'category',
-	profiling_weight	integer default 1
-				constraint im_profiling_weight_ck
-				check(profiling_weight >= 0),
 	enabled_p		char(1) default 'f'
 				constraint im_enabled_p_ck
-				check(enabled_p in ('t','f')),
-	mailing_list_info	varchar(4000)
+				check(enabled_p in ('t','f'))
 );
-
 
 -- optional system to put categories in a hierarchy
 -- (see /doc/user-profiling.html)
@@ -221,190 +216,190 @@ where category_type = 'Intranet Office Type';
 
 -- Intranet Customer Status
 insert into categories (
-	PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  
-	CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE
+	PROFILING_WEIGHT, CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, 
+	CATEGORY, MAILING_LIST_INFO, CATEGORY_TYPE
 ) values (
-	'1',  '',  'f',  '41',  
-	'Potential',  '',  'Intranet Customer Status'
+	'1', '', 'f', '41', 
+	'Potential', '', 'Intranet Customer Status'
 );
 
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '42',  'Inquiries',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '43',  'Qualifying',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '44',  'Quoting',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '45',  'Quote out',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '46',  'Active',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '47',  'Declined',  '',  'Intranet Customer Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '48',  'Inactive',  '',  'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '42', 'Inquiries', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '43', 'Qualifying', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '44', 'Quoting', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '45', 'Quote out', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '46', 'Active', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '47', 'Declined', 'Intranet Customer Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '48', 'Inactive', 'Intranet Customer Status');
 
 -- Intranet Customer Types
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '51',  'Unknown',  '',  'Intranet Customer Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '52',  'Other',  '',  'Intranet Customer Type');
-INSERT INTO categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '53',  'Internal',  '',  'Intranet Customer Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '51', 'Unknown', 'Intranet Customer Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '52', 'Other', 'Intranet Customer Type');
+INSERT INTO categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '53', 'Internal', 'Intranet Customer Type');
 
 
 -- Partner Status
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '60',  'Targeted',  '',  'Intranet Partner Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '61',  'In Discussion',  '',  'Intranet Partner Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '62',  'Active',  '',  'Intranet Partner Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '63',  'Announced',  '',  'Intranet Partner Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '64',  'Dormant',  '',  'Intranet Partner Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '65',  'Dead',  '',  'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '60', 'Targeted', 'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '61', 'In Discussion', 'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '62', 'Active', 'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '63', 'Announced', 'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '64', 'Dormant', 'Intranet Partner Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '65', 'Dead', 'Intranet Partner Status');
 
 -- Project Status
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '71',  'Potential',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '72',  'Inquiring',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '73',  'Qualifying',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '74',  'Quoting',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '75',  'Quote Out',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '76',  'Open',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '77',  'Declined',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '78',  'Delivered',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '79',  'Invoiced',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '80',  'Partially Paid',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '81',  'Closed',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '82',  'Deleted',  '',  'Intranet Project Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '83',  'Canceled',  '',  'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '71', 'Potential', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '72', 'Inquiring', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '73', 'Qualifying', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '74', 'Quoting', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '75', 'Quote Out', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '76', 'Open', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '77', 'Declined', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '78', 'Delivered', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '79', 'Invoiced', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '80', 'Partially Paid', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '81', 'Closed', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '82', 'Deleted', 'Intranet Project Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '83', 'Canceled', 'Intranet Project Status');
 
 -- Project Type
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '85',  'Unknown',  '',  'Intranet Project Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '86',  'Other',  '',  'Intranet Project Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '85', 'Unknown', 'Intranet Project Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '86', 'Other', 'Intranet Project Type');
 
 
 -- Hiring Source
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '121',  'Personal Contact',  '',  'Intranet Hiring Source');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '122',  'Web Site',  '',  'Intranet Hiring Source');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '121', 'Personal Contact', 'Intranet Hiring Source');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '122', 'Web Site', 'Intranet Hiring Source');
 
 -- Job Title
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '151',  'Linguistic Staff Jr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '152',  'Linguistic Staff Sr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '153',  'Project Manager Jr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '154',  'Project Manager Sr.',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '155',  'Freelance',  '',  'Intranet Job Title');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '156',  'Managing Director',  '',  'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '151', 'Linguistic Staff Jr.', 'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '152', 'Linguistic Staff Sr.', 'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '153', 'Project Manager Jr.', 'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '154', 'Project Manager Sr.', 'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '155', 'Freelance', 'Intranet Job Title');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '156', 'Managing Director', 'Intranet Job Title');
 
 
 
 -- 160-169	Intranet Office Status
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '160',  'Active',  '',  'Intranet Office Status');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '161',  'Inctive',  '',  'Intranet Office Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '160', 'Active', 'Intranet Office Status');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '161', 'Inctive', 'Intranet Office Status');
 
 
 -- 170-179	Intranet Office Type
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '170',  'Main Office',  '',  'Intranet Office Type');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '171',  'Sales Office',  '',  'Intranet Office Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '170', 'Main Office', 'Intranet Office Type');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '171', 'Sales Office', 'Intranet Office Type');
 
 
 -- Qualilification Process
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '191',  'University Studies',  '',  'Intranet Qualification Process');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '192',  'Domain Expert',  '',  'Intranet Qualification Process');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '193',  'None',  '',  'Intranet Qualification Process');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '191', 'University Studies', 'Intranet Qualification Process');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '192', 'Domain Expert', 'Intranet Qualification Process');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '193', 'None', 'Intranet Qualification Process');
 
 -- Task Board
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('0',  '',  'f',  130,  '15 Minutes',  '',  'Intranet Task Board Time Frame');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('2',  '',  'f',  131,  '1 hour',  '',  'Intranet Task Board Time Frame');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('3',  '',  'f',  132,  '1 day',  '',  'Intranet Task Board Time Frame');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('4',  '',  'f',  133,  'Side Project',  '',  'Intranet Task Board Time Frame');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('10',  '',  'f',  134,  'Full Time',  '',  'Intranet Task Board Time Frame');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('0', '', 'f', 130, '15 Minutes', 'Intranet Task Board Time Frame');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('2', '', 'f', 131, '1 hour', 'Intranet Task Board Time Frame');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('3', '', 'f', 132, '1 day', 'Intranet Task Board Time Frame');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('4', '', 'f', 133, 'Side Project', 'Intranet Task Board Time Frame');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('10', '', 'f', 134, 'Full Time', 'Intranet Task Board Time Frame');
 
 -- Intranet Departments
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '201',  'Administration',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '202',  'Business Development',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '203',  'Client services',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '204',  'Finance',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '205',  'Internal IT Support',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '206',  'Legal',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '207',  'Marketing',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '208',  'Office management',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '209',  'Operations',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '210',  'Human Resources',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '211',  'Sales',  '',  'Intranet Department');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '212',  'Senior Management',  '',  'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '201', 'Administration', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '202', 'Business Development', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '203', 'Client services', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '204', 'Finance', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '205', 'Internal IT Support', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '206', 'Legal', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '207', 'Marketing', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '208', 'Office management', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '209', 'Operations', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '210', 'Human Resources', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '211', 'Sales', 'Intranet Department');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '212', 'Senior Management', 'Intranet Department');
 
 
 
 -- Intranet Anual Revenue
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '223',  'EUR 0-1k',  '',  'Intranet Annual Revenue');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '224',  'EUR 1-10k',  '',  'Intranet Annual Revenue');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '222',  'EUR 10-100k',  '',  'Intranet Annual Revenue');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '225',  '> EUR 100k',  '',  'Intranet Annual Revenue');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '226',  'Pre-revenue',  '',  'Intranet Annual Revenue');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '223', 'EUR 0-1k', 'Intranet Annual Revenue');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '224', 'EUR 1-10k', 'Intranet Annual Revenue');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '222', 'EUR 10-100k', 'Intranet Annual Revenue');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '225', '> EUR 100k', 'Intranet Annual Revenue');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '226', 'Pre-revenue', 'Intranet Annual Revenue');
 
 
 -- Prior Experience
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '400',  'Small Project Work',  '',  'Intranet Prior Experience');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '401',  'Medium Project Work',  '',  'Intranet Prior Experience');
-insert into categories (PROFILING_WEIGHT,  CATEGORY_DESCRIPTION,  ENABLED_P,  CATEGORY_ID,  CATEGORY,  MAILING_LIST_INFO,  CATEGORY_TYPE) values 
-('1',  '',  'f',  '402',  'Large Project Work',  '',  'Intranet Prior Experience');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '400', 'Small Project Work', 'Intranet Prior Experience');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '401', 'Medium Project Work', 'Intranet Prior Experience');
+insert into categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '402', 'Large Project Work', 'Intranet Prior Experience');
 
 -- reserved 1100 - 1200 for Forum Topic Types
 

@@ -205,7 +205,7 @@ ad_proc -public im_user_group_member_p { user_id group_id } {
 }
 
 
-#!!!
+###!!!
 ad_proc -public im_user_group_admin_p { user_id group_id } {
     Returns 1 if specified user is an administrator of the specified group. 
     0 otherwise

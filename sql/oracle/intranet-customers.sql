@@ -223,7 +223,7 @@ is
 	select	customer_name
 	into	v_name
 	from	im_customers
-	where	customer_id = customer_id;
+	where	customer_id = name.customer_id;
 
 	return v_name;
 
