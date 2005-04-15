@@ -641,6 +641,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 
     set context_bar [ad_partner_upvar context_bar]
     set page_title [ad_partner_upvar page_title]
+#    if {"" != $title} { set page_title $title }
     set section [ad_partner_upvar section]
 
     set sel "<td class=tabsel>"
@@ -809,6 +810,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
+
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
     # Enable "Users Online" mini-component for OpenACS 5.1 only

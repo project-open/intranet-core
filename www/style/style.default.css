@@ -68,3 +68,99 @@
 	font-size: 8pt;
 	font-weight: bold;
     }
+
+
+
+/* Subsite Name */
+
+#subsite-name { 
+  font-weight: bold; 
+  font-size: 120%;
+  font-family: verdana; 
+  padding-left: 8px;
+}
+a.subsite-name {
+  color: black;
+  text-decoration: none;
+}
+a.subsite-name:hover {
+  color: black;
+  text-decoration: none;
+}
+
+/* This wraps everything except site-header and site-footer, and is used to ensure proper margins */
+/* Only used on non-tabbed (navbar and subnavbar) pages */
+
+#page-body {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+
+
+/* Second level tabs */
+
+#subnavbar-div {
+  border-bottom: 1px solid #666;
+}
+
+#subnavbar-container {
+  height: 35px;
+  width: 742px;
+  position: relative;
+}
+
+#subnavbar {
+  position: absolute;
+  width: 720px;
+  height: 21px;
+  margin: 0px;
+  padding: 0px 0px 0px 0px;
+  right: 0px;
+  bottom: -2px;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 100%;
+  font-weight: bold;
+}
+
+html>body #subnavbar { bottom: 0px }
+
+#subnavbar .tab { 
+  height: 16px;
+  float: left; 
+  background-color: #eeeeee; 
+  border: 1px solid #666;
+  padding: 2px 5px 2px 5px;
+  margin: 0px 2px 0px 2px;
+}
+#subnavbar a {
+  text-decoration: none;
+  color: black;
+}
+#subnavbar a:hover {
+  text-decoration: underline;
+}
+#subnavbar #subnavbar-here { 
+  border-bottom-color: white;
+  background-color: white;
+}
+#subnavbar #subnavbar-here a {
+  color: black;
+}
+
+
+#subnavbar-body { 
+  border-bottom: 1px solid #016799;
+  border-left: 1px solid #016799;
+  border-right: 1px solid #016799;
+  background-color: white;
+  clear: both;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+
+
