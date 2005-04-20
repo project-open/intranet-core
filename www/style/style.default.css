@@ -16,6 +16,7 @@
 
     .rowtitle  {font-size: 10pt; color: #ffffff; background-color: #6699CC; font-weight: bold;}
     .list-header  {font-size: 10pt; color: #ffffff; background-color: #6699CC; font-weight: bold;}
+    .table-header  {font-size: 10pt; color: #ffffff; background-color: #6699CC; font-weight: bold;}
 
     .invoiceroweven {font-size: 9pt; background-color: #DDDDDD;}
     .invoicerowodd {font-size: 9pt; background-color: #EEEEEE;}
