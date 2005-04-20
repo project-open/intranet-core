@@ -925,7 +925,15 @@ ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
     set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
-    return "<link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>\n"
+    return "
+<link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
+<link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+"
+
+# <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
+# <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=all>
+# <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/default-master.css\" media=all>
+
 }
 
 
