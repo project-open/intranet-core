@@ -28,10 +28,10 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     upvar $write_var write
     upvar $admin_var admin
 
-    set view 1
-    set read 1
-    set write 1
-    set admin 1
+    set view 0
+    set read 0
+    set write 0
+    set admin 0
 
     # Get the list of profiles of user_id (the one to be managed)
     # together with the information if current_user_id can read/write
@@ -52,18 +52,31 @@ where
      	and m.group_id = o.object_id
 	and o.object_type = 'im_profile'
 "
+    set first_loop 1
     db_foreach profile_perm_check $profile_perm_sql {
 	ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p"
+	if {$first_loop} {
+	    # set the variables to 1 if current_user_id is member of atleast
+	    # one group. Otherwise, an unpriviliged user could read the data
+	    # of another unpriv user
+	    set view 1
+	    set read 1
+	    set write 1
+	    set admin 1
+	}
+
 	if {[string equal f $view_p]} { set view 0 }
 	if {[string equal f $read_p]} { set read 0 }
 	if {[string equal f $write_p]} { set write 0 }
 	if {[string equal f $admin_p]} { set admin 0 }
+	set first_loop 0
     }
 
     # Myself - I can read and write its data
 	    if { $user_id == $current_user_id } { 
 		set read 1
 		set write 1
+		set admin 0
     }
 
 
@@ -147,66 +160,44 @@ order by lower(im_name_from_user_id(u.user_id))
 # of users with multiple emails
 # ------------------------------------------------------
 
-ad_proc -public im_user_registration_component { current_user_id { max_rows 4} } {
+ad_proc -public im_user_registration_component { current_user_id { max_rows 8} } {
     Shows the list of the last n registrations
 
     This allows to detect duplicat registrations
     of users with multiple emails
 } {
+    set date_format "YYYY-MM-DD"
     set bgcolor(0) " class=roweven"
     set bgcolor(1) " class=rowodd"
     set user_view_page "/intranet/users/view"
+    set return_url [ad_conn url]?[ad_conn query]
     
     set user_id [ad_get_user_id]
     
     if {![im_permission $user_id view_user_regs]} { return "" }
 
-    set sql "
-select
-	u.user_id,
-	u.username,
-	u.screen_name,
-	u.last_visit,
-	u.second_to_last_visit,
-	u.n_sessions,
-	o.creation_date,
-	im_email_from_user_id(u.user_id) as email,
-	im_name_from_user_id(u.user_id) as name
-from
-	users u,
-	acs_objects o
-where
-	u.user_id = o.object_id
-order by
-	o.creation_date DESC"
-
-    set limited_sql "
-select
-	s.*
-from
-	(select
-		r.*,
-		rownum row_num
-	from
-		($sql) r
-	) s
-where
-	row_num <= :max_rows
-"
-
     set rows_html ""
     set ctr 1
-    db_foreach registered_users $limited_sql {
+    db_foreach registered_users "" {
+
+	regexp {(.*)\@(.*)} $email match email_name email_url
+	set email_breakable "$email_name \@ $email_url"
+
+	# Allow to approve non-approved members
+	set approve_link ""
+	if {"approved" != $member_state} { set approve_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+	}
+
 	append rows_html "
 <tr $bgcolor([expr $ctr % 2])>
   <td>$creation_date</td>
   <td><A href=$user_view_page?user_id=$user_id>$name</A></td>
-  <td><A href=mailto:$email>$email</A></td>
+  <td><A href=mailto:$email>$email_breakable</A></td>
+  <td>$member_state $approve_link</td>
 </tr>
 "
 	incr ctr
     }
-
 
     return "
 <table border=0 cellspacing=1 cellpadding=1>
@@ -215,6 +206,7 @@ where
   <td align=center class=rowtitle>[_ intranet-core.Date]</td>
   <td align=center class=rowtitle>[_ intranet-core.Name]</td>
   <td align=center class=rowtitle>[_ intranet-core.Email]</td>
+  <td align=center class=rowtitle>[_ intranet-core.State]</td>
 </tr>
 $rows_html
 <tr class=rowblank align=right>

@@ -31,16 +31,14 @@ select
         u.last_visit,
         u.second_to_last_visit,
         u.n_sessions,
-        o.creation_date,
+        u.creation_date,
+	u.member_state,
         im_email_from_user_id(u.user_id) as email,
         im_name_from_user_id(u.user_id) as name
 from
-        users u,
-        acs_objects o
-where
-        u.user_id = o.object_id
+        cc_users u
 order by
-        o.creation_date DESC
+        u.creation_date DESC
                 ) r
         ) s
       where

@@ -827,6 +827,17 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	    set users_online_str "<A href=/intranet/whos-online>[_ intranet-core.lt_num_users_online_user_1]</A><BR>\n"
 	}
     }
+    
+    set logout_pwchange_str "
+        <a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
+        <a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
+    "
+
+    # Disable who's online for "anonymous visitor"
+    if {0 == $user_id} {
+	set users_online_str ""
+	set logout_pwchange_str ""
+    }
 
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
@@ -839,8 +850,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
       <span class=small>
         $users_online_str
         $user_profile: $user_name <BR>
-        <a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
-        <a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
+        $logout_pwchange_str
       </span>
     </td>
     <td valign=middle align=right> $search_form </TD>

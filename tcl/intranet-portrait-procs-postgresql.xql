@@ -13,6 +13,29 @@
     <type>postgresql</type>
     <version>7.2</version>
   </rdbms>
+
+  <fullquery name="im_portrait_component.get_cr_item">
+    <querytext>
+
+        select
+                u.first_names,
+                u.last_name,
+                live_revision as revision_id,
+                item_id
+        from
+                acs_rels a,
+                cr_items c,
+                cc_users u
+        where
+                a.object_id_two = c.item_id
+                and a.object_id_one = :user_id
+                and u.user_id = :user_id
+                and a.rel_type = 'user_portrait_rel'
+
+    </querytext>
+  </fullquery>
+
+
   
   <fullquery name="im_portrait_component.get_user_info">
     <querytext>

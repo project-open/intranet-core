@@ -130,23 +130,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     set first_names ""
     set last_name ""
 
-    if {![db_0or1row get_item_id "
-	select
-		u.first_names,
-		u.last_name,
-		live_revision as revision_id, 
-		item_id
-	from 
-		acs_rels a, 
-		cr_items c,
-		cc_users u
-	where 
-		a.object_id_two = c.item_id
-		and a.object_id_one = :user_id
-		and u.user_id = :user_id
-		and a.rel_type = 'user_portrait_rel'
-    "] || [empty_string_p $revision_id]
-    } {
+    if {![db_0or1row get_cr_item ""] || [empty_string_p $revision_id]} {
 	# The user doesn't have a portrait yet
 	set portrait_p 0
     } else {
@@ -191,7 +175,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     } else {
 	
 	set portrait_gif [im_gif anon_portrait $portrait_alt]
-	set description "No portrait for <br>\n$first_names $last_name."
+	set description "No portrait for this user."
 	
 	if {$admin} { append description "<br>\n[_ intranet-core.lt_Please_upload_a_portr]"}
     }

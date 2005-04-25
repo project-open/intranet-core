@@ -10,6 +10,7 @@ ad_page_contract {
 
 set title "[_ intranet-core.Whos_Online]"
 set context [list $title]
+set user_id [auth::require_login]
 
 set whos_online_interval [whos_online::interval]
 
