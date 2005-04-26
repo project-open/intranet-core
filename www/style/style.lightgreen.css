@@ -4,6 +4,18 @@
     h2 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: medium;}
     h3 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
 
+.brandfirst{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:#320033; 
+	font-weight: bold;
+}
+
+.brandsec{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:#336699; 
+	font-weight: bold;
+}
+
     .pagedesriptionbar {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; color: #ffffff; background-color: #3D5440;}
 
     .tabsel {background-color: #3D5440; color: #ffffff;}

@@ -8,6 +8,10 @@ if { ![info exists section] } {
     set section {}
 }
 
+if { ![info exists title] } {
+    set title "Project/Open"
+}
+
 if { ![info exists header_stuff] } {
     set header_stuff {}
 }
