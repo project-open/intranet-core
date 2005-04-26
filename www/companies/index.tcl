@@ -29,7 +29,7 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
     @author Juanjo Ruiz (juanjoruizx@yahoo.es)
 } {
-    { status_id:integer "" }
+    { status_id:integer "[im_company_status_active]" }
     { type_id:integer "[im_company_type_customer]" }
     { start_idx:integer 0 }
     { order_by "Company" }
@@ -85,14 +85,6 @@ set user_view_page "/intranet/users/view"
 set company_view_page "/intranet/companies/view"
 set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
-
-if { ![exists_and_not_null status_id] } {
-    # Default status is Current - select the id once and memoize it
-    set status_id [im_memoize_one select_company_status_id \
-	    "select company_status_id 
-               from im_company_status
-              where upper(company_status) = 'ACTIVE'"]
-}
 
 set end_idx [expr $start_idx + $how_many - 1]
 

@@ -18,7 +18,7 @@ ad_page_contract {
     @param category_id Category ID we're about to nuke
 
     @author unknown@arsdigita.com
-    @author gbelcic@sls-international.com
+    @author gbelcic@project-open.com
     @author frank.bergmann@project-open.com
 } {
   category_id:naturalnum,notnull

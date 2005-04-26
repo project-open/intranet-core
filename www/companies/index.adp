@@ -22,12 +22,12 @@
 	</tr>
 	<tr>
 	  <td>#intranet-core.Company_Status_1#  &nbsp;</td>
-	  <td><%= [im_category_select -include_empty_p 1 "Intranet Company Status" status_id] %></td>
+	  <td><%= [im_category_select -include_empty_p 1 "Intranet Company Status" status_id $status_id] %></td>
 	</tr>
 	<tr>
 	  <td>#intranet-core.Company_Type_1#  &nbsp;</td>
 	  <td>
-	    <%= [im_category_select -include_empty_p 1 "Intranet Company Type" type_id] %>
+	    <%= [im_category_select -include_empty_p 1 "Intranet Company Type" type_id $type_id] %>
 	    <input type=submit value=Go name=submit>
 	  </td>
 	</tr>

@@ -620,6 +620,8 @@ ad_proc im_category_select {
 } {
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
+    ns_log Notice "im_category_select: category_type=$category_type, select_name=$select_name, default=$default"
+
     set sql "
 	select 
 		category_id,
