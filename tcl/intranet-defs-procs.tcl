@@ -172,6 +172,37 @@ ad_proc im_csv_split { line {separator ","} } {
 # System Functions
 # ------------------------------------------------------------------
 
+ad_proc -public im_bash_command { } {
+    Returns the path to the BASH command shell, depending on the
+    operating system (Windows, Linux or Solaris).
+    The resulting bash command can be used with the "-c" option 
+    to execute arbitrary bash commands.
+} {
+
+    # Find out if platform is "unix" or "windows"
+    global tcl_platform
+    set platform [lindex $tcl_platform(platform) 0]
+
+    switch $platform {
+	unix
+	{
+	    # windows means running under CygWin
+	    return "/bin/bash"
+	}
+	windows {
+	    # windows means running under CygWin
+	    return "[acs_root_dir]/cygwin/bin/bash"
+	}
+	
+	default {
+	    ad_return_complaint 1 "Internal Error:<br>
+            Unknown platform '$platform' found.<br>
+            Expected 'windows' or 'unix'."
+	}    
+    }
+}
+
+
 ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     Execute a DML procedure (function in PostgreSQL) without
     regard of the database type. Basicly, the procedures wraps
