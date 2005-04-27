@@ -638,10 +638,8 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
-
     set context_bar [ad_partner_upvar context_bar]
     set page_title [ad_partner_upvar page_title]
-#    if {"" != $title} { set page_title $title }
     set section [ad_partner_upvar section]
 
     set sel "<td class=tabsel>"
