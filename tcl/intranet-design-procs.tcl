@@ -638,6 +638,8 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
+    set page_title [ad_partner_upvar page_title]
+    set section [ad_partner_upvar section]
 
     # There are two ways to publish a context bar:
     # 1. Via "context_bar". This var contains a fully formatted context bar
@@ -648,13 +650,14 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 
     if {"" == $context_bar} {
 	set context [ad_partner_upvar context]
+	if {"" == $context} {
+	    set context [list $page_title]
+	}
+
 	set context_root [list [list "/intranet/" "Project/Open"]]
 	set context [concat $context_root $context]
 	set context_bar [im_context_bar_html $context]
     }
-
-    set page_title [ad_partner_upvar page_title]
-    set section [ad_partner_upvar section]
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
@@ -1188,8 +1191,6 @@ ad_proc -public im_context_bar {
     if { ![exists_and_not_null node_id] } {
         set node_id [ad_conn node_id]
     }
-
-#    set context [ad_context_node_list -from_node $from_node $node_id]
 
     set context [list [list "/intranet/" "Project/Open"]]
 
