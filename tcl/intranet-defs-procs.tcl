@@ -190,8 +190,12 @@ ad_proc -public im_bash_command { } {
 	    return "/bin/bash"
 	}
 	windows {
-	    # windows means running under CygWin
-	    return "[acs_root_dir]/cygwin/bin/bash"
+	    # "windows" means running under CygWin
+	    set acs_root_dir [acs_root_dir]
+	    set acs_root_dir_list [split $acs_root_dir "/"]
+	    set acs_install_dir_list [lrange $acs_root_dir_list 0 end-1]
+	    set acs_install_dir [join $acs_install_dir_list "/"]
+	    return "$acs_install_dir/cygwin/bin/bash"
 	}
 	
 	default {
