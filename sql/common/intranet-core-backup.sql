@@ -40,7 +40,7 @@ from
 where
 	c.main_office_id = o.office_id
 ');
-commit;
+
 
 delete from im_view_columns where column_id > 10200 and column_id < 10299;
 --
@@ -100,8 +100,7 @@ extra_select, extra_where, sort_order, visible_for) values (10233,102,NULL,'star
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10235,102,NULL,'note',
 '[ns_urlencode $note]','','',35,'');
---
-commit;
+
 
 
 
@@ -133,8 +132,7 @@ extra_select, extra_where, sort_order, visible_for) values (10303,103,NULL,'user
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10305,103,NULL,'role',
 '$role','','',5,'');
---
-commit;
+
 
 
 
@@ -151,7 +149,7 @@ insert into im_views (
 select
         p.*,
         c.company_name,
-        parent_p.project_name as parent_name,
+        im_project_name_from_id(p.parent_id) as parent_name,
         im_email_from_user_id(p.project_lead_id) as project_lead_email,
         im_email_from_user_id(p.supervisor_id) as supervisor_email,
         im_category_from_id(p.project_type_id) as project_type,
@@ -165,9 +163,7 @@ from
         im_companies c
 where
         p.company_id = c.company_id
-        and p.parent_id = parent_p.project_id(+)
 ');
-commit;
 
 
 delete from im_view_columns where column_id > 10000 and column_id < 10099;
@@ -221,7 +217,6 @@ insert into im_view_columns (column_id, view_id, group_id, column_name, column_r
 extra_select, extra_where, sort_order, visible_for) values (10039,100,NULL,'project_budget',
 '$project_budget','','',39,'');
 --
-commit;
 
 
 
@@ -258,10 +253,6 @@ insert into im_view_columns (column_id, view_id, group_id, column_name, column_r
 extra_select, extra_where, sort_order, visible_for) values (
 10105,101,NULL,'role','$role','','',5,'');
 
---
-commit;
-
-
 
 
 
@@ -283,7 +274,6 @@ select
 from
         im_offices o
 ');
-commit;
 
 
 delete from im_view_columns where column_id > 10400 and column_id < 10499;
@@ -339,8 +329,6 @@ extra_select, extra_where, sort_order, visible_for) values (10447,104,NULL,'secu
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (10449,104,NULL,'note',
 '[ns_urlencode $note]','','',49,'');
---
-commit;
 
 
 
@@ -377,9 +365,6 @@ extra_select, extra_where, sort_order, visible_for) values (
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (
 10505,105,NULL,'role','$role','','',5,'');
-
---
-commit;
 
 
 
@@ -421,8 +406,6 @@ extra_select, extra_where, sort_order, visible_for) values (
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (
 10611,106,NULL,'category_description','[ns_urlencode $category_description]','','',11,'');
---
-commit;
 
 
 
@@ -469,16 +452,14 @@ SELECT
 	c.wa_country_code,
 	c.note
 FROM
-        users u,
+        users u LEFT OUTER JOIN users_contact c ON u.user_id = c.user_id,
         parties pa,
-        persons pe,
-	users_contact c
+        persons pe
 WHERE
         u.user_id = pa.party_id
         and u.user_id = pe.person_id
-	and u.user_id = c.user_id(+)
 ');
-commit;
+
 
 delete from im_view_columns where column_id > 11000 and column_id < 11099;
 --
@@ -575,8 +556,7 @@ extra_select, extra_where, sort_order, visible_for) values (11069,110,NULL,'wa_c
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (11071,110,NULL,'note',
 '[ns_urlencode $note]','','',71,'');
---
-commit;
+
 
 
 
@@ -611,7 +591,6 @@ extra_select, extra_where, sort_order, visible_for) values (11101,111,NULL,'prof
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (11103,111,NULL,'user_email',
 '$user_email','','',3,'');
---
-commit;
+
 
 
