@@ -13,8 +13,7 @@ set user_id [ad_maybe_redirect_for_registration]
 set page_title "Backup"
 set context_bar [im_context_bar $page_title]
 set context ""
-set page_body "<H1>$page_title</H1>"
-set today [db_string today "select to_char(sysdate, 'YYYY-MM-DD.HH-mm') from dual"]
+set today [db_string today "select to_char(sysdate, 'YYYYMMDD.HHmm') from dual"]
 set path [im_backup_path]
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -23,6 +22,14 @@ if {!$user_admin_p} {
     return
 }
 
+
+# ------------------------------------------------------------
+# Return the page header.
+#
+
+ad_return_top_of_page "[im_header]\n[im_navbar]"
+ns_write "<H1>$page_title</H1>\n"
+ns_write "<p>Exporting to path: <tt>$path/$today/</tt></p>\n"
 
 set joined_ids [join [array names view] ","]
 
@@ -58,10 +65,10 @@ if {![file isdirectory $path]} {
     }
 }
 
-append page_body "<ul>\n"
+ns_write "<ul>\n"
 ns_log Notice "backup-2: $sql"
 db_foreach foreach_report $sql {
-    append page_body "<li>Exporting $view_name ..."
+    ns_write "<li>Exporting $view_name ..."
     ns_log Notice "backup-2: im_backup_report $view_id"
 
     set report [im_backup_report $view_id]
@@ -80,15 +87,11 @@ db_foreach foreach_report $sql {
     }
 }
 
-append page_body "
+ns_write "
 </ul>
 Successfully finished
 "
 
-append page_body "
-<pre>
-$sql
-</pre>
-"
+ns_write [im_footer]
 
 
