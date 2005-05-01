@@ -100,6 +100,15 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set user_is_employee_p [im_user_is_employee_p $user_id]
     set user_in_project_group_p [string compare "t" [db_string user_belongs_to_project "select ad_group_member_p( :user_id, :project_id ) from dual" ] ]
 
+    # Treat the project mangers_fields
+    # A user many for some reason not be the group PM
+    if {!$user_is_group_admin_p} {
+	set project_manager_id [db_string project_manager "select project_lead_id from im_projects where project_id = :project_id" -default 0]
+	if {$user_id == $project_manager_id} {
+	    set user_is_group_admin_p 1
+	}
+    }
+    
     # Admin permissions to global + intranet admins + group administrators
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
     set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
