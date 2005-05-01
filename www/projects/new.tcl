@@ -64,8 +64,10 @@ select
 	p.supervisor_id, 
 	p.project_nr,
 	p.project_budget, 
+	p.project_budget_currency, 
 	p.on_track_status_id, 
 	p.percent_completed, 
+        to_char(p.percent_completed, '99.9%') as percent_completed_formatted,
 	to_char(p.start_date,'YYYY-MM-DD') as start_date, 
 	to_char(p.end_date,'YYYY-MM-DD') as end_date, 
 	to_char(p.end_date,'HH24:MI') as end_time,
@@ -102,6 +104,9 @@ where
     set supervisor_id ""
     set description ""
     set project_budget ""
+    set project_budget_currency ""
+    set on_track_status_id ""
+    set percent_completed "0"
     set "creation_ip_address" [ns_conn peeraddr]
     set "creation_user" $user_id
     set project_id [im_new_object_id]
@@ -142,3 +147,10 @@ where
     }
 }
 
+if {"" == $on_track_status_id} {
+    set on_track_status_id [im_project_on_track_status_green]
+}
+
+if {"" == $percent_completed} {
+    set percent_completed 0
+}

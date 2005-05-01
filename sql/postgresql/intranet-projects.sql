@@ -86,8 +86,16 @@ create table im_projects (
 	requires_report_p	char(1) default('t')
 				constraint im_project_requires_report_p 
 				check (requires_report_p in ('t','f')),
+				-- total project budget (top-down planned)
 	project_budget		float,
-	percent_completed	float,
+	project_budget_currency	char(3)
+				constraint im_costs_paid_currency_fk
+				references currency_codes(iso),
+				-- completion perc. estimation
+	percent_completed	float
+				constraint im_project_percent_completed_ck
+				check (percent_completed >= 0 and percent_completed <= 100),
+				-- green, yellow or red?
 	on_track_status_id	integer
 				constraint im_project_on_track_status_id_fk
 				references im_categories

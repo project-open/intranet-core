@@ -20,7 +20,6 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     return_url:optional
-
     project_id:integer
     project_name
     { project_path "" }
@@ -34,7 +33,9 @@ ad_page_contract {
     { description "" }
     { requires_report_p "f" }
     { on_track_status_id "" }
-    { project_budget "" }
+    { project_budget:float "" }
+    { project_budget_currency "" }
+    { percent_completed:float "" }
     start:array,date,notnull
     end:array,date,notnull
     end_time:array
@@ -233,6 +234,8 @@ update im_projects set
 	description =	:description,
 	requires_report_p =:requires_report_p,
 	project_budget =:project_budget,
+	project_budget_currency =:project_budget_currency,
+	percent_completed = :percent_completed,
 	on_track_status_id =:on_track_status_id,
 	start_date =	:start_date,
 	end_date =	to_date('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')

@@ -105,9 +105,17 @@
     </tr>
 
     <tr> 
+      <td>#intranet-core.Percent_Completed#</td>
+      <td>
+	<input type=text size=5 name=percent_completed value="@percent_completed@"> %
+      </td>
+    </tr>
+
+    <tr> 
       <td>#intranet-core.Project_Budget#</td>
       <td>
 	<input type=text size=20 name=project_budget value="@project_budget@">
+	<%= [im_currency_select project_budget_currency $project_budget_currency] %>
       </td>
     </tr>
 

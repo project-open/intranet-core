@@ -93,11 +93,11 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
 	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"bb_clear"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_red"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_blue"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_yellow"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_purple"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_clear"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_red"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_blue"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_yellow"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
@@ -1159,6 +1159,7 @@ ad_proc -public im_context_bar_html {
 
 
 ad_proc -public in_project_on_track_bb {
+    {-size 16}
     on_track_status_id
     { alt_text "" }
 } {
@@ -1169,8 +1170,9 @@ ad_proc -public in_project_on_track_bb {
     if {$on_track_status_id == [im_project_on_track_status_green]} { set color "green" }
     if {$on_track_status_id == [im_project_on_track_status_yellow]} { set color "yellow" }
     if {$on_track_status_id == [im_project_on_track_status_red]} { set color "red" }
-	return [im_gif "bb_$color" $alt_text]
-    }
+
+    set border 0
+    return [im_gif "bb_$color" $alt_text $border $size $size]
 }
 
 
