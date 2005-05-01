@@ -36,7 +36,8 @@
 --   0- 10	Intranet Task Board Time Frame
 --  40- 49	Intranet Company Status
 --  51-	59	Intranet Company Types
---  60- 69	Intranet Partner Status
+--  60- 65	Intranet Partner Status
+--  66- 69	Intranet Project On Track Status
 --  71- 83	Intranet Project Status
 --  85- 96	Intranet Project Type
 -- 110-119	Intranet Quality
@@ -264,6 +265,16 @@ insert into im_category_hierarchy values (56,59);
 -- ('', 'f', '64', 'Dormant', 'Intranet Partner Status');
 -- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 -- ('', 'f', '65', 'Dead', 'Intranet Partner Status');
+
+
+-- Project On Track Status
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '66', 'Green', 'Intranet Project On Track Status');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '67', 'Yellow', 'Intranet Project On Track Status');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '68', 'Red', 'Intranet Project On Track Status');
+
 
 -- Project Status
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 

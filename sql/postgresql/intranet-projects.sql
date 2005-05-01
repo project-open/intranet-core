@@ -86,8 +86,15 @@ create table im_projects (
 	requires_report_p	char(1) default('t')
 				constraint im_project_requires_report_p 
 				check (requires_report_p in ('t','f')),
-	project_budget		float
+	project_budget		float,
+	percent_completed	float,
+	on_track_status_id	integer
+				constraint im_project_on_track_status_id_fk
+				references im_categories
 );
+
+
+
 
 -- This is the sortkey code
 --

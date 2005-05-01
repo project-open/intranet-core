@@ -93,6 +93,12 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
 	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
 
+	"bb_clear"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_red"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_blue"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_yellow"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_purple"	{ return "<img src=$url/$name.gif width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+
 	default		{ 
 	    set result "<img src=\"$url/$name.gif\" border=$border "
 	    if {$width > 0} { append result "width=$width " }
@@ -1150,4 +1156,21 @@ ad_proc -public im_context_bar_html {
     append out "<span class=contextbar>[lindex $context end]<span>"
     return $out
 }
+
+
+ad_proc -public in_project_on_track_bb {
+    on_track_status_id
+    { alt_text "" }
+} {
+    Returns a traffic light GIF from "Big Brother" (bb)
+    in green, yellow or red
+} {
+    set color "clear"
+    if {$on_track_status_id == [im_project_on_track_status_green]} { set color "green" }
+    if {$on_track_status_id == [im_project_on_track_status_yellow]} { set color "yellow" }
+    if {$on_track_status_id == [im_project_on_track_status_red]} { set color "red" }
+	return [im_gif "bb_$color" $alt_text]
+    }
+}
+
 

@@ -95,6 +95,22 @@
         <INPUT NAME=end_time.time TYPE=text SIZE=8 MAXLENGTH=8 value="@end_time@">
       </td>
     </tr>
+
+    <tr> 
+      <td>#intranet-core.On_Track_Status# &nbsp;</td>
+      <td> 
+	<%= [im_category_select -include_empty_p 1 -include_empty_name "" "Intranet Project On Track Status" on_track_status_id $on_track_status_id] %>
+	<%= [im_gif help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"] %> &nbsp; 
+      </td>
+    </tr>
+
+    <tr> 
+      <td>#intranet-core.Project_Budget#</td>
+      <td>
+	<input type=text size=20 name=project_budget value="@project_budget@">
+      </td>
+    </tr>
+
     <tr> 
       <td>#intranet-core.Description#<br>(#intranet-core.publicly_searchable#) </td>
       <td> 

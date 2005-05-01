@@ -70,6 +70,7 @@ select
 	c.company_name,
 	c.company_path,
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
+	to_char(p.percent_completed, '99.9%') as percent_completed_formatted,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
 	c.primary_contact_id as company_contact_id,
@@ -175,6 +176,20 @@ if { ![empty_string_p $end_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Delivery_Date]</td>
 			    <td>$end_date $end_date_time</td>
+			  </tr>"
+}
+
+append project_base_data_html "
+			  <tr>
+			    <td>[_ intranet-core.On_Track_Status]</td>
+			    <td>[in_project_on_track_bb $on_track_status_id]</td>
+			  </tr>"
+
+
+if { ![empty_string_p $percent_completed] } { append project_base_data_html "
+			  <tr>
+			    <td>[_ intranet-core.Percent_Completed]</td>
+			    <td>$percent_completed_formatted</td>
 			  </tr>"
 }
 

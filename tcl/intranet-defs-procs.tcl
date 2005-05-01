@@ -646,6 +646,7 @@ ad_proc -public im_category_from_id { category_id } {
 ad_proc im_category_select { 
     {-translate_p 1} 
     {-include_empty_p 0} 
+    {-include_empty_name "All"} 
     category_type 
     select_name 
     { default "" } 
@@ -729,8 +730,10 @@ ad_proc im_category_select {
     
     set html ""
     if {$include_empty_p} {
-	append html "<option value=\"\">All</option>\n"
-	incr base_level
+	append html "<option value=\"\">$include_empty_name</option>\n"
+	if {"" != $include_empty_name} {
+	    incr base_level
+	}
     }
 
     foreach p [array names cat] {

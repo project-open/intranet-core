@@ -33,6 +33,7 @@ ad_page_contract {
     { parent_id:integer ""}
     { description "" }
     { requires_report_p "f" }
+    { on_track_status_id "" }
     { project_budget "" }
     start:array,date,notnull
     end:array,date,notnull
@@ -232,6 +233,7 @@ update im_projects set
 	description =	:description,
 	requires_report_p =:requires_report_p,
 	project_budget =:project_budget,
+	on_track_status_id =:on_track_status_id,
 	start_date =	:start_date,
 	end_date =	to_date('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')
 where

@@ -45,6 +45,11 @@ ad_proc -public im_project_status_deleted {} { return 82 }
 ad_proc -public im_project_status_canceled {} { return 83 }
 
 
+ad_proc -public im_project_on_track_status_green {} { return 66 }
+ad_proc -public im_project_on_track_status_yellow {} { return 67 }
+ad_proc -public im_project_on_track_status_red {} { return 68 }
+
+
 # -----------------------------------------------------------
 # Project ::new, ::del and ::name procedures
 # -----------------------------------------------------------

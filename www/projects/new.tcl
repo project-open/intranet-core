@@ -64,6 +64,8 @@ select
 	p.supervisor_id, 
 	p.project_nr,
 	p.project_budget, 
+	p.on_track_status_id, 
+	p.percent_completed, 
 	to_char(p.start_date,'YYYY-MM-DD') as start_date, 
 	to_char(p.end_date,'YYYY-MM-DD') as end_date, 
 	to_char(p.end_date,'HH24:MI') as end_time,
