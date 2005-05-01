@@ -114,6 +114,20 @@ if { [empty_string_p $how_many] || $how_many < 1 } {
 set end_idx [expr $start_idx + $how_many - 1]
 
 
+
+# Set the "menu_select_label" for the project navbar:
+# projects_open, projects_closed and projects_potential
+# depending on type_id and status_id:
+#
+set menu_select_label ""
+switch $project_status_id {
+    71 { set menu_select_label "projects_potential" }
+    76 { set menu_select_label "projects_open" }
+    81 { set menu_select_label "projects_closed" }
+    default { set menu_select_label "" }
+}
+
+
 # ---------------------------------------------------------------
 # 3. Defined Table Fields
 # ---------------------------------------------------------------
@@ -598,7 +612,7 @@ set table_continuation_html "
 
 set project_navbar_html "
 <br>
-[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
+[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter] $menu_select_label]
 "
 
 

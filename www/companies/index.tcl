@@ -88,6 +88,19 @@ set letter [string toupper $letter]
 
 set end_idx [expr $start_idx + $how_many - 1]
 
+# Set the "menu_select_label" for the company navbar:
+# customers_active, customer_inactive and customers_potential
+# depending on type_id and status_id:
+#
+set menu_select_label ""
+if {$type_id == [im_company_type_customer]} {
+    switch $status_id {
+	41 { set menu_select_label "customers_potential" }
+	46 { set menu_select_label "customers_active" }
+	48 { set menu_select_label "customers_inactive" }
+	default { set menu_select_label "" }
+    }
+}
 
 # ---------------------------------------------------------------
 # 3. Define Table Columns
@@ -128,14 +141,24 @@ db_foreach column_list_sql $column_sql {
 set criteria [list]
 
 set bind_vars [ns_set create]
-if { ![empty_string_p $status_id] && $status_id != 0 } {
+if { $status_id > 0 } {
     ns_set put $bind_vars status_id $status_id
-    lappend criteria "c.company_status_id=:status_id"
+    lappend criteria "c.company_status_id in (
+        select  category_id
+        from    im_categories
+        where   category_id= :status_id
+      UNION
+        select distinct
+                child_id
+        from    im_category_hierarchy
+        where   parent_id = :status_id
+      )"
 }
 
 if { 0 != $user_id_from_search} {
     lappend criteria "c.company_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)\n"
 }
+
 if { $type_id > 0 } {
     ns_set put $bind_vars type_id $type_id
     lappend criteria "c.company_type_id in (

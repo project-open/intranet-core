@@ -54,7 +54,8 @@
 </tr>
 </table>
 
-<%= [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id]] %>
+<br>
+<%= [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id] $menu_select_label] %>
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   <%= $table_header_html %>

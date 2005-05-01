@@ -179,7 +179,7 @@ insert into im_categories (
 );
 
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '42', 'Inquiries', 'Intranet Company Status');
+('', 'f', '42', 'Inquiring', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '43', 'Qualifying', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
@@ -192,6 +192,24 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '47', 'Declined', 'Intranet Company Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '48', 'Inactive', 'Intranet Company Status');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '49', 'Deleted', 'Intranet Company Status');
+
+-- Introduce hierarchical company stati
+-- Basicly, we've got not three super-states:
+--	potential	everything before the company becomes "active"
+--	active		when the company is a valid customer or provider
+--	close		all possible outcomes when a business relation finishes
+--
+insert into im_category_hierarchy values (41,42);
+insert into im_category_hierarchy values (41,43);
+insert into im_category_hierarchy values (41,44);
+insert into im_category_hierarchy values (41,45);
+
+insert into im_category_hierarchy values (48,47);
+insert into im_category_hierarchy values (48,49);
+
+
 
 -- Intranet Company Types
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
@@ -234,24 +252,24 @@ insert into im_category_hierarchy values (56,59);
 
 
 -- Partner Status
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '60', 'Targeted', 'Intranet Partner Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '61', 'In Discussion', 'Intranet Partner Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '62', 'Active', 'Intranet Partner Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '63', 'Announced', 'Intranet Partner Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '64', 'Dormant', 'Intranet Partner Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '65', 'Dead', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '60', 'Targeted', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '61', 'In Discussion', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '62', 'Active', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '63', 'Announced', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '64', 'Dormant', 'Intranet Partner Status');
+-- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+-- ('', 'f', '65', 'Dead', 'Intranet Partner Status');
 
 -- Project Status
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '71', 'Potential', 'Intranet Project Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '72', 'Inquiring', 'Intranet Project Status');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '72', 'Inquiring', 'Intranet Project Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '73', 'Qualifying', 'Intranet Project Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
@@ -274,6 +292,24 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '82', 'Deleted', 'Intranet Project Status');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '83', 'Canceled', 'Intranet Project Status');
+
+-- Introduce hierarchical project states.
+-- Basicly, we've got not three super-states:
+--	potential	everything before the project gets "open"
+--	open		when the project is executed and
+--	close		all possible outcomes when execution is finished
+--
+insert into im_category_hierarchy values (71,72);
+insert into im_category_hierarchy values (71,73);
+insert into im_category_hierarchy values (71,74);
+insert into im_category_hierarchy values (71,75);
+insert into im_category_hierarchy values (81,77);
+insert into im_category_hierarchy values (81,78);
+insert into im_category_hierarchy values (81,79);
+insert into im_category_hierarchy values (81,80);
+insert into im_category_hierarchy values (81,82);
+insert into im_category_hierarchy values (81,83);
+
 
 -- Project Type
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 

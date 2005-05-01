@@ -469,62 +469,6 @@ begin
 
 
     -- -----------------------------------------------------
-    -- Projects Submenu
-    -- -----------------------------------------------------
-
-    -- needs to be the first Project menu in order to get selected
-    -- The URL should be /intranet/projects/index?view_name=project_list,
-    -- but project_list is default in projects/index.tcl, so we can
-    -- skip this here.
-    v_project_standard_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_standard'',   -- label
-        ''Summary'',            -- name
-        ''/intranet/projects/index'', -- url
-        1,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_accounting, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_customers, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_standard_menu, v_freelancers, ''read'');
-
-
-    v_project_status_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_status'',     -- label
-        ''Status'',            -- name
-        ''/intranet/projects/index?view_name=project_status'', -- url
-        20,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
-    );
-
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_admins, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_senman, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_proman, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_accounting, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_project_status_menu, v_customers, ''read'');
-
-    -- -----------------------------------------------------
     -- Users Submenu
     -- -----------------------------------------------------
 
@@ -868,3 +812,242 @@ end;' language 'plpgsql';
 select inline_1 ();
 
 drop function inline_1();
+
+
+
+
+-- -----------------------------------------------------
+-- Companies Menu
+-- -----------------------------------------------------
+
+create or replace function inline_1 ()
+returns integer as '
+declare
+      -- Menu IDs
+      v_menu                  integer;
+      v_companies_menu          integer;
+
+      -- Groups
+      v_employees             integer;
+      v_accounting            integer;
+      v_senman                integer;
+      v_customers             integer;
+      v_freelancers           integer;
+      v_proman                integer;
+      v_admins                integer;
+begin
+
+    select group_id into v_admins from groups where group_name = ''P/O Admins'';
+    select group_id into v_senman from groups where group_name = ''Senior Managers'';
+    select group_id into v_proman from groups where group_name = ''Project Managers'';
+    select group_id into v_accounting from groups where group_name = ''Accounting'';
+    select group_id into v_employees from groups where group_name = ''Employees'';
+    select group_id into v_customers from groups where group_name = ''Customers'';
+    select group_id into v_freelancers from groups where group_name = ''Freelancers'';
+
+    select menu_id
+    into v_companies_menu
+    from im_menus
+    where label=''companies'';
+
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''customers_potential'', -- label
+        ''Potential Customers'', -- name
+        ''/intranet/companies/index?status_id=41&type_id=57'',  -- url
+        10,                     -- sort_order
+        v_companies_menu,         -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''customers_active'',   -- label
+        ''Active Customers'',      -- name
+        ''/intranet/companies/index?status_id=46&type_id=57'',  -- url
+        20,                     -- sort_order
+        v_companies_menu,       -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+
+
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''customers_inactive'',   -- label
+        ''Inctive Customers'',      -- name
+        ''/intranet/companies/index?status_id=48&type_id=57'',  -- url
+        30,                     -- sort_order
+        v_companies_menu,       -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+    return 0;
+end;' language 'plpgsql';
+
+select inline_1 ();
+
+drop function inline_1();
+
+
+
+
+
+-- -----------------------------------------------------
+-- Projects Menu (project index page)
+-- -----------------------------------------------------
+
+create or replace function inline_1 ()
+returns integer as '
+declare
+      -- Menu IDs
+      v_menu                  integer;
+      v_projects_menu          integer;
+
+      -- Groups
+      v_employees             integer;
+      v_accounting            integer;
+      v_senman                integer;
+      v_customers             integer;
+      v_freelancers           integer;
+      v_proman                integer;
+      v_admins                integer;
+begin
+
+    select group_id into v_admins from groups where group_name = ''P/O Admins'';
+    select group_id into v_senman from groups where group_name = ''Senior Managers'';
+    select group_id into v_proman from groups where group_name = ''Project Managers'';
+    select group_id into v_accounting from groups where group_name = ''Accounting'';
+    select group_id into v_employees from groups where group_name = ''Employees'';
+    select group_id into v_customers from groups where group_name = ''Customers'';
+    select group_id into v_freelancers from groups where group_name = ''Freelancers'';
+
+    select menu_id
+    into v_projects_menu
+    from im_menus
+    where label=''projects'';
+
+    -- needs to be the first Project menu in order to get selected
+    -- The URL should be /intranet/projects/index?view_name=project_list,
+    -- but project_list is default in projects/index.tcl, so we can
+    -- skip this here.
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',           -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''projects_potential'',   -- label
+        ''Potential'',            -- name
+        ''/intranet/projects/index?project_status_id=71'', -- url
+        10,                     -- sort_order
+        v_projects_menu,         -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''projects_open'',    -- label
+        ''Open'',             -- name
+        ''/intranet/projects/index?project_status_id=76'', -- url
+        20,                     -- sort_order
+        v_projects_menu,         -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+
+
+    v_menu := im_menu__new (
+        null,                   -- p_menu_id
+        ''acs_object'',         -- object_type
+        now(),                  -- creation_date
+        null,                   -- creation_user
+        null,                   -- creation_ip
+        null,                   -- context_id
+        ''intranet-core'',      -- package_name
+        ''projects_closed'',    -- label
+        ''Closed'',             -- name
+        ''/intranet/projects/index?project_status_id=81'', -- url
+        30,                     -- sort_order
+        v_projects_menu,         -- parent_menu_id
+        null                    -- p_visible_tcl
+    );
+
+    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
+    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+
+    return 0;
+end;' language 'plpgsql';
+
+select inline_1 ();
+
+drop function inline_1();
+
+
