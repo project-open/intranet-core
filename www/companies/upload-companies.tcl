@@ -25,24 +25,3 @@ set user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Companies CSV"
 
 set context_bar [im_context_bar [list "/intranet/companies/" "Companies"] "Upload CSV"]
-
-set page_body "
-<form enctype=multipart/form-data method=POST action=upload-companies-2.tcl>
-[export_form_vars return_url]
-                    <table border=0>
-                      <tr> 
-                        <td align=right>Filename: </td>
-                        <td> 
-                          <input type=file name=upload_file size=30>
-                         [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
-                        </td>
-                      </tr>
-                      <tr> 
-                        <td></td>
-                        <td> 
-                          <input type=submit value=Submit and Upload>
-                        </td>
-                      </tr>
-                    </table>
-</form>
-"
