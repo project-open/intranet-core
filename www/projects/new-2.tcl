@@ -53,11 +53,18 @@ set todays_date [db_string projects_get_date "select sysdate from dual"]
 
 if {"" == $project_path} { set project_path $project_nr }
 
+
 # Make sure the user has the privileges, because this
 # pages shows the list of companies etc.
-if {![im_permission $user_id "add_projects"]} {
-    ad_return_complaint "Insufficient Privileges" "
-    <li>You don't have sufficient privileges to see this page."
+if {![im_permission $user_id add_projects]} {
+
+    # Double check for the case that this guy is a freelance
+    # project manager of the project or similar...
+    im_project_permissions $user_id $project_id view read write admin
+    if {!$write} {
+        ad_return_complaint "Insufficient Privileges" "
+        <li>You don't have sufficient privileges to see this page."
+    }
 }
 
 # -----------------------------------------------------------------
