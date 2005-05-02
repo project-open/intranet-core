@@ -200,9 +200,6 @@ if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
 			  </tr>"
 }
 
-# ad_return_complaint 1 "view_finance=[im_permission $current_user_id view_finance]"
-
-
 if {[im_permission $current_user_id view_finance]} {
     if { ![empty_string_p $project_budget] } { append project_base_data_html "
 			  <tr>
