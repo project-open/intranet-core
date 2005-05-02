@@ -38,6 +38,8 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
 
+set view_finance_p [im_permission $user_id view_finance]
+
 
 # Make sure the user has the privileges, because this
 # pages shows the list of companies etc.
@@ -65,6 +67,7 @@ select
 	p.project_nr,
 	p.project_budget, 
 	p.project_budget_currency, 
+	p.project_budget_hours,
 	p.on_track_status_id, 
 	p.percent_completed, 
         to_char(p.percent_completed, '99.9%') as percent_completed_formatted,
@@ -105,6 +108,7 @@ where
     set description ""
     set project_budget ""
     set project_budget_currency ""
+    set project_budget_hours ""
     set on_track_status_id ""
     set percent_completed "0"
     set "creation_ip_address" [ns_conn peeraddr]

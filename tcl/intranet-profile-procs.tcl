@@ -65,7 +65,7 @@ ad_proc -public im_profile_sales {} {
 # User Profile Box
 # ------------------------------------------------------------------
 
-ad_proc -public im_user_profile_component { user_id { disabled "" }} {
+ad_proc -public im_user_profile_component { {-size 12} user_id { disabled "" }} {
     Returns a piece of HTML representing a multi-
     select box with the profiles of the user.
 
@@ -85,7 +85,7 @@ ad_proc -public im_user_profile_component { user_id { disabled "" }} {
     set all_profiles [im_profiles_all]
     ns_log Notice "im_user_profile_component: all_profiles=$all_profiles"
     
-    set profile_html "<select name=profile size=8 multiple $disabled>"
+    set profile_html "<select name=profile size=$size multiple $disabled>"
 
     foreach profile $all_profiles {
         set group_id [lindex $profile 0]

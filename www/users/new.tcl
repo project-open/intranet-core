@@ -203,7 +203,7 @@ if {[llength $managable_profiles_reverse] > 0} {
 	    {label "[_ intranet-core.Group_Membership]"}
 	    {options $managable_profiles_reverse }
 	    {values $profile_values }
-	    {-html {size 8}}
+	    {html {size 12}}
 	}
     }
 }

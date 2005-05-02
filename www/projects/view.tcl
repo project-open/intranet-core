@@ -193,11 +193,23 @@ if { ![empty_string_p $percent_completed] } { append project_base_data_html "
 			  </tr>"
 }
 
-if { ![empty_string_p $project_budget] } { append project_base_data_html "
+if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
+			  <tr>
+			    <td>[_ intranet-core.Project_Budget_Hours]</td>
+			    <td>$project_budget_hours</td>
+			  </tr>"
+}
+
+# ad_return_complaint 1 "view_finance=[im_permission $current_user_id view_finance]"
+
+
+if {[im_permission $current_user_id view_finance]} {
+    if { ![empty_string_p $project_budget] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
 			    <td>$project_budget $project_budget_currency</td>
 			  </tr>"
+    }
 }
 
 if { ![empty_string_p $description] } { append project_base_data_html "

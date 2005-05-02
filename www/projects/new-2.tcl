@@ -35,6 +35,7 @@ ad_page_contract {
     { on_track_status_id "" }
     { project_budget:float "" }
     { project_budget_currency "" }
+    { project_budget_hours:float "" }
     { percent_completed:float "" }
     start:array,date,notnull
     end:array,date,notnull
@@ -235,6 +236,7 @@ update im_projects set
 	requires_report_p =:requires_report_p,
 	project_budget =:project_budget,
 	project_budget_currency =:project_budget_currency,
+	project_budget_hours =:project_budget_hours,
 	percent_completed = :percent_completed,
 	on_track_status_id =:on_track_status_id,
 	start_date =	:start_date,

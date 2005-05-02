@@ -112,12 +112,24 @@
     </tr>
 
     <tr> 
+      <td>#intranet-core.Project_Budget_Hours#</td>
+      <td>
+	<input type=text size=20 name=project_budget_hours value="@project_budget_hours@">
+	<%= [im_gif help "How many hours can be logged on this project (both internal and external resource)?"] %> &nbsp; 
+      </td>
+    </tr>
+
+
+<if @view_finance_p@>
+    <tr> 
       <td>#intranet-core.Project_Budget#</td>
       <td>
 	<input type=text size=20 name=project_budget value="@project_budget@">
 	<%= [im_currency_select project_budget_currency $project_budget_currency] %>
+	<%= [im_gif help "What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs."] %> &nbsp; 
       </td>
     </tr>
+</if>
 
     <tr> 
       <td>#intranet-core.Description#<br>(#intranet-core.publicly_searchable#) </td>
