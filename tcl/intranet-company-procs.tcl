@@ -298,22 +298,31 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
     set user_id [ad_get_user_id]
     set bind_vars [ns_set create]
     ns_set put $bind_vars user_id $user_id
+    ns_set put $bind_vars default $default
     ns_set put $bind_vars subsite_id [ad_conn subsite_id]
 
     set where_clause "	and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-        (select
-                c.*
-        from
-                im_companies c,
-		acs_rels r
-	where
-		c.company_id = r.object_id_one
-		and r.object_id_two = :user_id
-		$where_clause
+        (	select
+		       c.*
+        	from
+        	        im_companies c,
+			acs_rels r
+		where
+			c.company_id = r.object_id_one
+			and r.object_id_two = :user_id
+			$where_clause
+
+	UNION
+		select
+			c.*
+		from
+			im_companies c
+		where
+			c.company_id = :default
 	)
-    "
+"
 
     if {[im_permission $user_id "view_companies_all"]} {
 	set perm_sql "im_companies"
