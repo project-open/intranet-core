@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.0.4" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -107,7 +107,6 @@
   <msg key="Category_description">Kategoriebeschreibung</msg>
   <msg key="Category_name">Kategoriename</msg>
   <msg key="category_name">%category_name%</msg>
-  <msg key="category_name_1">$category_name </msg>
   <msg key="Category_Nr">Kategorienr.</msg>
   <msg key="Category_translation">Kategorie Übersetzungen</msg>
   <msg key="Cell_Phone">Handy</msg>
@@ -178,6 +177,7 @@
   <msg key="Czech_Republic">Tschechische Republik</msg>
   <msg key="d">D</msg>
   <msg key="da">da</msg>
+  <msg key="da_DK">da_DK</msg>
   <msg key="Dangerous">Vorsicht!!</msg>
   <msg key="Date">datum</msg>
   <msg key="Day">Tag</msg>
@@ -186,6 +186,7 @@
   <msg key="de_DE">de_DE</msg>
   <msg key="Declined">Abgelehnt</msg>
   <msg key="Del">Löschen</msg>
+  <msg key="Delete">Löschen</msg>
   <msg key="delete">löschen</msg>
   <msg key="Delete_Cost_Center">Kostenstelle</msg>
   <msg key="Delete_Menu">Menü löschen</msg>
@@ -216,6 +217,7 @@
   <msg key="Edit_project">Projekt bearbeiten</msg>
   <msg key="Editing">Bearbeiten</msg>
   <msg key="Egypt">Ägypten</msg>
+  <msg key="el">el</msg>
   <msg key="El Salvador">El Salvador</msg>
   <msg key="El_Salvador">El Salvador</msg>
   <msg key="Email">E-Mail</msg>
@@ -257,6 +259,7 @@
   <msg key="Filter_Users">Benutzer filtern</msg>
   <msg key="Finance">Finanzen</msg>
   <msg key="Finance_Home">Finanzen Homepage</msg>
+  <msg key="Finished">Beendet</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">Vorname</msg>
   <msg key="for_Deliv">zur Auslieferung</msg>
@@ -344,6 +347,7 @@
   <msg key="it_IT">it_IT</msg>
   <msg key="Italy">Italien</msg>
   <msg key="j">J</msg>
+  <msg key="ja">ja</msg>
   <msg key="Japan">Japan</msg>
   <msg key="JPY">JPY</msg>
   <msg key="k">K</msg>
@@ -430,6 +434,7 @@
   <msg key="lt_Error_Missing_paramet">Fehler: Fehlender Parameter</msg>
   <msg key="lt_Expected_Annual_Reven">(Erwarteter) Jährlicher Umsatz</msg>
   <msg key="lt_export_varsnoquoteMes">%export_vars;noquote% Meldung: </msg>
+  <msg key="lt_File_translation_Trad">Übersetzung: Trados Wortzahl multipliziert mit der Trados-Matrix des Zulieferers</msg>
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% wurde benachrichtigt.</msg>
@@ -575,6 +580,7 @@
   <msg key="Mkt">Mkt</msg>
   <msg key="more">weitere...</msg>
   <msg key="more_">weitere...</msg>
+  <msg key="more_companies">mehr Firmen...</msg>
   <msg key="more_projects">weitere Projekte...</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
@@ -620,6 +626,7 @@
   <msg key="Office_Type">Firmensitz Typ</msg>
   <msg key="Offices">Firmensitze</msg>
   <msg key="On_Hold">Angehalten</msg>
+  <msg key="On_Hold1">Angehalten</msg>
   <msg key="One_company">Eine Firma</msg>
   <msg key="One_office">Ein Firmensitz</msg>
   <msg key="One_project">Ein Projekt</msg>
@@ -866,6 +873,8 @@
   <msg key="Your_Current_Timezone">Aktuelle Zeitzone</msg>
   <msg key="Yugoslavia">Jugoslawien</msg>
   <msg key="z">Z</msg>
+  <msg key="zh_cn">zh_cn</msg>
+  <msg key="zh_tw">zh_tw</msg>
   <msg key="ZIP">PLZ</msg>
   <msg key="ZIP_and_City">PLZ und Stadt</msg>
 </message_catalog>

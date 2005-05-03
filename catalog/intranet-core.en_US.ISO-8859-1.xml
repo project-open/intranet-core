@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.0.4" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -16,6 +16,7 @@
   <msg key="Accounting_contact">Accounting contact</msg>
   <msg key="activate">activate</msg>
   <msg key="Active">Active</msg>
+  <msg key="Active_Customers">Active Customers</msg>
   <msg key="Add">Add</msg>
   <msg key="Add_a_new_client">Add a new client</msg>
   <msg key="Add_a_new_Company">Add a new Company</msg>
@@ -23,7 +24,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">Neuer Benutzer</msg>
+  <msg key="Add_a_new_User">New User</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
@@ -107,12 +108,12 @@
   <msg key="Category_description">Category description</msg>
   <msg key="Category_name">Category name</msg>
   <msg key="category_name">%category_name%</msg>
-  <msg key="category_name_1">$category_name</msg>
   <msg key="Category_Nr">Category Nr.</msg>
   <msg key="Category_translation">Category translations</msg>
   <msg key="Cell_Phone">Cell Phone</msg>
   <msg key="Cell_phone">Cell phone</msg>
   <msg key="Change_Password">Change Password</msg>
+  <msg key="Check">Cheque</msg>
   <msg key="Cheque">Cheque</msg>
   <msg key="Cheque_EUR">Cheque EUR</msg>
   <msg key="Cheque_USD">Cheque USD</msg>
@@ -257,6 +258,7 @@
   <msg key="Filter_Users">Filter Users</msg>
   <msg key="Finance">Finance</msg>
   <msg key="Finance_Home">Finance Home</msg>
+  <msg key="Finished">Finished</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">First names</msg>
   <msg key="for_Deliv">for Delivery</msg>
@@ -315,11 +317,12 @@
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
+  <msg key="Import_User_CSV">Import User List (CSV)</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
   <msg key="Include_in_Invoice">Include in Invoice</msg>
+  <msg key="Inctive_Customers">Inctive Customers</msg>
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Inquiries</msg>
@@ -362,6 +365,8 @@
   <msg key="Latvia">Latvia</msg>
   <msg key="Law">Law</msg>
   <msg key="Law_Company">Law Company</msg>
+  <msg key="Learn_About_Your_Company">Learn About Your Company</msg>
+  <msg key="Learn_About_Your_Company_Blurb">This component shows you a different company member every time. This way, members of different offices can start to know each other and employees learn about the freelancers that work with the company. User access permissions are maintained, and you can remove or modify _this_ text when you change into 'translation mode'.</msg>
   <msg key="Lebanon">Lebanon</msg>
   <msg key="Liechtenstein">Liechtenstein</msg>
   <msg key="Linguistic_Val">Linguistic Val.</msg>
@@ -430,6 +435,7 @@ Best regards,
   <msg key="lt_Delete_the_primary_co">Delete the primary contact</msg>
   <msg key="lt_delete_this_user_inst">delete this user instead</msg>
   <msg key="lt_Deleting_first_names_">Deleting %first_names% %last_name%</msg>
+  <msg key="lt_Discussionintranet-fo">Discussion</msg>
   <msg key="lt_Do_you_want_to_create">Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure.</msg>
   <msg key="lt_Dots__in_Project_Path">Dots ('.') in 'Project Path' are not allowed</msg>
   <msg key="lt_Edit_comments_about_y">Edit comments about you</msg>
@@ -488,14 +494,17 @@ her contributions to the site content.</msg>
 	of the underlying</msg>
   <msg key="lt_Heuteintranet-timeshe">Today</msg>
   <msg key="lt_How_did_we_get_in_con">How did we get in contact with the company?</msg>
+  <msg key="lt_How_many_hours_can_be">How many hours can be logged on this project (both internal and external resource)?</msg>
   <msg key="lt_If_this_IS_a_TestDemo">If this IS a Test/Demo/Development server, then check '/parameters/*.ini'
     and set the TestDemoDevServer flag to 'true'.</msg>
   <msg key="lt_Import_Company_Contac">Import Company Contact CVS</msg>
   <msg key="lt_Import_Projects_from_">Import Projects from H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already...</msg>
+  <msg key="lt_Incidentintranet-foru">Incident</msg>
   <msg key="lt_Insufficient_Privileg">Insufficient Privileges</msg>
   <msg key="lt_Internal_error_unknow">Internal error: unknown view '%view_name%'</msg>
   <msg key="lt_Invalid_time_format_e">Invalid time format '%end_time(time)%': Please enter the time in format '12:30'</msg>
+  <msg key="lt_Is_the_project_going_">Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?</msg>
   <msg key="lt_Is_this_a_billable_co">Is this a billable company?</msg>
   <msg key="lt_It_seems_the_table_we">It seems the table we missed is %table_name%.</msg>
   <msg key="lt_Just_enter_any_suitab">Just enter any suitable name for the project. You can even leave this field blank.</msg>
@@ -528,11 +537,14 @@ her contributions to the site content.</msg>
   <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
   <msg key="lt_New_Customer_Invoice_">New Customer Invoice</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
+  <msg key="lt_New_Provider_Invoice_">New Provider Invoice from Translation Tasks</msg>
   <msg key="lt_New_Purchase_Order_fr">New Purchase Order</msg>
-  <msg key="lt_New_Quote_from_scratc">New Quote from scratc</msg>
+  <msg key="lt_New_Quote_from_scratc">New Quote from scratch</msg>
+  <msg key="lt_New_Quote_from_Transl">New Quote from Translation Tasks</msg>
   <msg key="lt_New_Translation_Invoi">New Translation Invoice</msg>
   <msg key="lt_New_Translation_Quote">New Translation Quote</msg>
   <msg key="lt_New_user_notifiedset_">New user notified</msg>
+  <msg key="lt_Newsintranet-forumNew">News</msg>
   <msg key="lt_Next_Monthintranet-ti">Next Month</msg>
   <msg key="lt_No_comments_about_fir">No comments about %first_names% %last_name%.</msg>
   <msg key="lt_No_Company_Employees_">No Company Employees in our Database</msg>
@@ -560,6 +572,7 @@ site with fake crud.</msg>
   <msg key="lt_Please_contact_your_s">Please contact your system administrator</msg>
   <msg key="lt_Please_create_a_new_c">Please create a %new_client_link%.</msg>
   <msg key="lt_Please_create_a_new_c_1">Please create a %new_client_contact_link%</msg>
+  <msg key="lt_Please_enter_any_suit">Please enter a suitable name for the project. The name must be unique.</msg>
   <msg key="lt_Please_log_hours_link">Please %log_hours_link%</msg>
   <msg key="lt_Please_make_sure_the_">Please make sure the start date is not empty</msg>
   <msg key="lt_Please_make_sure_the__1">Please make sure the end date is not empty</msg>
@@ -584,7 +597,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&quot;berg\&quot; to search for all users with a last name containing \&quot;berg\&quot;.</msg>
   <msg key="lt_Search_for_an_account">Search for an account to merge with this one:</msg>
   <msg key="lt_Select_accounting_con">Select accounting contact for %company_name%</msg>
-  <msg key="lt_Select_primary_contac">Select primary contact for $company_name</msg>
+  <msg key="lt_Select_primary_contac">Select primary contact for %company_name%</msg>
   <msg key="lt_Select_topics_here_fo">Select topics here for action</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
   <msg key="lt_Senior_Managersintran">Senior Managers</msg>
@@ -594,8 +607,9 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Software_Company_Comp">Software Company</msg>
   <msg key="lt_Software_Company_Cust">Software Company Customer</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
+  <msg key="lt_Taskintranet-forumTas">Tasks</msg>
   <msg key="lt_The_database_choked_o">The database choked on our update:</msg>
-  <msg key="lt_the_email_email_is_al">the email $email is already in the database</msg>
+  <msg key="lt_the_email_email_is_al">The email %email% is already in the database</msg>
   <msg key="lt_The_English_translati">The English 'translation' should be identical with the category name.</msg>
   <msg key="lt_The_note_you_entered_">The note you entered is too long. Please limit the note to 4000 characters</msg>
   <msg key="lt_The_nuking_of_user_us">The nuking of user %user_id% failed.  Probably this is because your installation of the ArsDigita Community System has been customized and there are new tables that reference the users table.  Complain to your programmer!</msg>
@@ -618,6 +632,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_This_project_is_part_">This project is part of another project or contains subprojects.</msg>
   <msg key="lt_To_avoid_duplicate_pr">To avoid duplicate projects and to determine where the project data are stored on the local file server</msg>
   <msg key="lt_Todayintranet-timeshe">Today</msg>
+  <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Translation source language</msg>
   <msg key="lt_Translation_target_la">Translation target language</msg>
   <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
@@ -638,6 +653,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_We_have_no_contacts_i">We have no contacts in our database for %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">We need either the short name or the group id to set up the url for the /groups directory</msg>
   <msg key="lt_Weve_nuked_user_user_">We've nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
+  <msg key="lt_What_is_the_financial">What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs.</msg>
   <msg key="lt_Who_is_the_final_cons">Who is the final consumer (when working for an agency)? Examples: &amp;quot;Shell&amp;quot;, &amp;quot;UBS&amp;quot;, ...</msg>
   <msg key="lt_Wire_Transfer_La_Caix">Wire Transfer La Caixa</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Yes, I'm sure that I want to nuke this person</msg>
@@ -702,12 +718,14 @@ other way for the user to find out.</msg>
   <msg key="Med">Med</msg>
   <msg key="Medium">Medium</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
+  <msg key="Menu_Backup_Restore">Backup &amp; Restore Menu</msg>
   <msg key="Menus">Menus</msg>
   <msg key="Mexico">Mexico</msg>
   <msg key="Mine">Mine</msg>
   <msg key="Mkt">Mkt</msg>
   <msg key="more">more...</msg>
   <msg key="more_">more ...</msg>
+  <msg key="more_companies">more companies...</msg>
   <msg key="more_projects">more projects...</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
@@ -752,7 +770,11 @@ other way for the user to find out.</msg>
   <msg key="Office_Status">Office Status</msg>
   <msg key="Office_Type">Office Type</msg>
   <msg key="Offices">Offices</msg>
+  <msg key="Ok">Ok</msg>
   <msg key="On_Hold">On Hold</msg>
+  <msg key="On_Hold1">On Hold</msg>
+  <msg key="On_Track_Status">On Track Status</msg>
+  <msg key="One">One</msg>
   <msg key="One_company">One company</msg>
   <msg key="One_office">One office</msg>
   <msg key="One_project">One project</msg>
@@ -787,10 +809,12 @@ other way for the user to find out.</msg>
   <msg key="Payed">Payed</msg>
   <msg key="Payments">Payments</msg>
   <msg key="PayPal">PayPal</msg>
+  <msg key="Percent_Completed">Percent Completed</msg>
   <msg key="Personal">Personal</msg>
   <msg key="Peru">Peru</msg>
   <msg key="Philippines">Philippines</msg>
   <msg key="Phone">Phone</msg>
+  <msg key="Please_Select">Please select</msg>
   <msg key="PO_Admins">P/O Admins</msg>
   <msg key="Poland">Poland</msg>
   <msg key="Portrait">Portrait</msg>
@@ -799,6 +823,7 @@ other way for the user to find out.</msg>
   <msg key="Position_Vacant">Position Vacant</msg>
   <msg key="Postal_Code">Postal Code</msg>
   <msg key="Potential">Potential</msg>
+  <msg key="Potential_Customers">Potential Customers</msg>
   <msg key="Potential_Freelancer">Potential Freelancer</msg>
   <msg key="Pre-revenue">Pre-revenue</msg>
   <msg key="Premium_Quality">Premium Quality</msg>
@@ -808,6 +833,8 @@ other way for the user to find out.</msg>
   <msg key="Project">Project#</msg>
   <msg key="Project_">Project Nr.</msg>
   <msg key="Project_Base_Data">Project Base Data</msg>
+  <msg key="Project_Budget">Project Budget</msg>
+  <msg key="Project_Budget_Hours">Project Budget Hours</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
   <msg key="Project_Manager">Project Manager</msg>
   <msg key="Project_Managers">Project Managers</msg>
@@ -890,6 +917,7 @@ other way for the user to find out.</msg>
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">State</msg>
   <msg key="Status">Status</msg>
+  <msg key="Strategic_Consulting">Strategic Consulting</msg>
   <msg key="Submit">Submit</msg>
   <msg key="Summary">Summary</msg>
   <msg key="Supervisor">Supervisor</msg>
@@ -978,6 +1006,8 @@ other way for the user to find out.</msg>
   <msg key="w">w</msg>
   <msg key="Web_Site">Web Site</msg>
   <msg key="Whos_Online">Who's Online?</msg>
+  <msg key="Wiki">Wiki</msg>
+  <msg key="Wire_Transfer">Banktransfer</msg>
   <msg key="Work_absences">Work absences</msg>
   <msg key="Work_Address">Work Address</msg>
   <msg key="Work_address">Work address</msg>
