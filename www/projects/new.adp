@@ -37,7 +37,7 @@
 </if>
 
     <tr>
-      <td>#intranet-core.Client# @required_field;noquote@ </td>
+      <td>#intranet-core.Customer# @required_field;noquote@ </td>
       <td> 
 	<%= [im_company_select "company_id" $company_id "" "Customer" [list "Deleted" "Past" "Declined" "Inactive"]] %>
 
