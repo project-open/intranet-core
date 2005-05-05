@@ -904,6 +904,7 @@ other way for the user to find out.</msg>
   <msg key="Sick">Sick</msg>
   <msg key="Singapore">Singapore</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
+  <msg key="Size">Size</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
   <msg key="Slovenia">Slovenia</msg>
@@ -978,6 +979,8 @@ other way for the user to find out.</msg>
   <msg key="Unknown">Unknown</msg>
   <msg key="Update">Update</msg>
   <msg key="Update_Password">Update Password</msg>
+  <msg key="Update_Server">Update Server</msg>
+  <msg key="Update_User">Update User</msg>
   <msg key="Upload_Company_CSV">Upload Company CSV</msg>
   <msg key="Upload_Contact_CSV">Upload Contact CSV</msg>
   <msg key="Upload_file">Upload_file</msg>
