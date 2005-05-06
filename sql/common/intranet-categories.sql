@@ -85,7 +85,7 @@
 -- 6000-6999	Intranet RecruitingRecruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
--- 9000-9999	reserved
+-- 9000-9999	Intranet Material
 -- 10000-10999	reserved
 -- 11000-11999	reserved
 -- 12000-12999	reserved
