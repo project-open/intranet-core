@@ -81,12 +81,16 @@
 -- 196	im_cost_centers
 -- 197	im_investments
 
-
---------------------------------------------------------
 -- 200-209	Timesheet
 -- 210-219	Riskmanagement
 -- 220-249	Costs
 -- 250-259	Translation Quality
+
+-- 900 - 999 Intranet Materials Reserved
+-- 900	im_material_list
+
+-- 1000-1099
+
 
 
 ---------------------------------------------------------
