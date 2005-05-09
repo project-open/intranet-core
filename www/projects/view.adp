@@ -3,9 +3,19 @@
 <property name="main_navbar_label">projects</property>
 
 
-<!-- left - right - bottom  design -->
+<%
+set menu_label "project_summary"
+# ad_return_complaint 1 "'$menu_label'"
+switch $view_name {
+    "" { set menu_label "project_summary" }
+    "files" { set menu_label "project_files" }
+    "finance" { set menu_label "project_finance" }
+}
+%>
 
-@project_menu;noquote@
+<br>
+<%= [im_sub_navbar $parent_menu_id $bind_vars "" "pagedesriptionbar" $menu_label] %>
+
 
 <!-- 
   There are two "views" on this page: "Summary" and "Files".

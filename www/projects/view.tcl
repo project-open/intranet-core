@@ -100,24 +100,13 @@ set parent_name [db_string parent_name "select project_name from im_projects whe
 # Set display options as a function of the project data
 # ---------------------------------------------------------------------
 
-set page_title "[_ intranet-core.Project_project_name]"
-
-
-# Set the context bar as a function on whether this is a subproject or not:
-#
-if { [empty_string_p $parent_id] } {
-    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
-    set include_subproject_p 1
+set page_title "[_ intranet-core.One_project]"
+if {[im_permission $user_id view_projects_all]} {
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 } else {
-    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
-    set include_subproject_p 0
+    set context_bar [im_context_bar $context_bar_list]
 }
 
-# Don't show subproject nor a link to the "projects" page to freelancers
-if {![im_permission $user_id view_projects]} {
-    set context_bar [im_context_bar "[_ intranet-core.One_project]"]
-    set include_subproject_p 0
-}
 
 # ---------------------------------------------------------------------
 # Project Base Data
@@ -304,6 +293,5 @@ set bind_vars [ns_set create]
 ns_set put $bind_vars project_id $project_id
 
 set parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]
-set project_menu [im_sub_navbar $parent_menu_id $bind_vars]
 
 ns_log Notice "/project/view: end of view.tcl"

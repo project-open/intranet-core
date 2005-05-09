@@ -86,8 +86,11 @@
 -- 220-249	Costs
 -- 250-259	Translation Quality
 
--- 900 - 999 Intranet Materials Reserved
--- 900	im_material_list
+-- 900 - 909	Intranet Materials Reserved
+-- 900		im_material_list
+
+-- 910 - 919	Intranet Materials Reserved
+-- 910		im_translation_task_list
 
 -- 1000-1099
 
