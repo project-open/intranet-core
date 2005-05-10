@@ -387,7 +387,7 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
     return [im_category_select "Intranet Project Status" $select_name $default]
 }
 
-ad_proc -public im_project_select { select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {company_id ""} } {
+ad_proc -public im_project_select { {-include_all 0} select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {company_id ""} } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
     specified, we limit the select box to projects matching that
@@ -472,8 +472,12 @@ ad_proc -public im_project_select { select_name { default "" } { status "" } {ty
 		    "
     }
 
-    append sql " order by lower(p.project_name)"
-    return [im_selection_to_select_box -translate_p 0 $bind_vars project_select $sql $select_name $default]
+#     if {1} {
+#	 append sql "UNION select 0 as project_id, '' as project_name\n"
+#     }
+
+     append sql " order by lower(project_name)"
+     return [im_selection_to_select_box -translate_p 0 $bind_vars project_select $sql $select_name $default]
 }
 
 
