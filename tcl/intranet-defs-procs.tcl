@@ -865,6 +865,28 @@ ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name s
 }
 
 
+
+ad_proc im_options_to_select_box { select_name options { default "" } } {
+    Takes an "options" list (list of list, the inner containing a 
+    (category, category_id) as for formbuilder) and returns a formatted
+    select box.
+} {
+    set result "\n<select name=\"$select_name\">\n"
+    foreach option $options {
+	set value [lindex $option 0]
+	set index [lindex $option 1]
+
+	set selected ""
+	if {$index == $default} { set selected "selected" }
+	append result "<option value=\"$index\" $selected>$value</option>\n"
+    }
+    append result "</select>\n"
+    return $result
+}
+
+
+
+
 ad_proc -public db_html_select_value_options_multiple {
     { -bind "" }
     { -select_option "" }
