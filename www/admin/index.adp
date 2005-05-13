@@ -39,6 +39,9 @@
       <li>
 	<A href=backup/>#intranet-core.lt_Backup_and_Restore_Data#</A><br>
 	#intranet-core.Backup_and_Restore_blurb# 
+      <li>
+	<A href=backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
+	#intranet-core.PostgreSQL_Backup_blurb# 
 
 <if [db_table_exists im_dynval_vars]>
       <li>

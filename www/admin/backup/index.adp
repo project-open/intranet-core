@@ -39,7 +39,9 @@
 	  <td valign=top>
 	    <ul>
 	      <li>
-		<A href="backup">Backup</a> the current application data
+		<A href="backup">Backup your current application data to CSV files</a> 
+	      <li>
+		<A href="pg_dump">Full PostgreSQL Database Backup</a> 
 	    </ul>
 	  </td>
 	</tr>
