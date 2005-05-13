@@ -32,21 +32,31 @@ set query_string [ad_urlencode $query_string]
 
 switch $target {
     "content" {
-
-#	ad_returnredirect "../../intranet-search-oracle/search?form%3amode=edit&form%3aid=search%5fform&query%5fstring=$query_string&subsites=2"
-
-	ad_returnredirect "/search/search?sections=im_customers&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
-
-
+	if {![im_permission $user_id search_intranet]} {
+	    ad_return_complaint 1 "Permission Error:<br>You don't have sufficient privileges to search for Intranet Contents."
+	    return
+	}
+	ad_returnredirect "/intranet-search/search?type=all&q=$query_string"
     }
     "users" {
-	ad_returnredirect "/intranet/user-search?keyword=$query_string"
+	if {![im_permission $user_id search_intranet]} {
+	    ad_return_complaint 1 "Permission Error:<br>You don't have sufficient privileges to search for Intranet Users."
+	    return
+	}
+	ad_returnredirect "/intranet-search/search?type=users&q=$query_string"
     }
     "htsearch" {
-	ad_returnredirect "/search/search?sections=im_companies&sections=bboard&sections=im_facilities&sections=im_offices&sections=im_partners&sections=im_projects&sections=static_pages&sections=comments&sections=wp_slides&query_string=$query_string"
+	if {![im_permission $user_id search_intranet]} {
+	    ad_return_complaint 1 "Permission Error:<br>You don't have sufficient privileges to search for Intranet Content."
+	    return
+	}
+	ad_returnredirect "/intranet-search/search?type=im_document&q=$query_string"
     }
     "google" {
 	ad_returnredirect "http://www.google.com/search?q=$query_string&hl=es"
+    }
+    default {
+	ad_return_complaint 1 "Error:<br>You have chosen to search for target '$target' that doesn't exist."
     }
 }
 
