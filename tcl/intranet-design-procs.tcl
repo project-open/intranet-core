@@ -696,7 +696,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     set search_form ""
-    if {[ad_user_group_member [im_employee_group_id] $user_id]} {
+    if {0 < [llength [info procs im_package_search_id]]} {
 	set search_form "
 	    <form action=/intranet/search/go-search method=post name=surx>
               <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\">
@@ -710,13 +710,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	append search_form "
                 <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
               </select>
-              <input alt=go type=submit value=go name='image'>
+              <input alt=go type=submit value=Go name='image'>
             </form>
-"
+        "
     }
-
-    set search_form ""
-
 
     # Determine a pretty string for the type of user that it is:
     set user_profile "[_ intranet-core.User]"
