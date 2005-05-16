@@ -38,10 +38,10 @@ if {![im_permission $current_user_id add_users]} {
     return
 }
     
-set admin_user_id [ad_verify_and_get_user_id]
-set admin_email [db_string unused "select email from parties where party_id = :admin_user_id"] 
 set ad_system_name [ad_system_name]
 set ad_url [ad_url]
+set admin_user_id [ad_verify_and_get_user_id]
+set admin_email [db_string unused "select email from parties where party_id = :admin_user_id"] 
 
 
 set page_title [_ intranet-core.lt_New_user_notifiedset_]
