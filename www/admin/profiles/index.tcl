@@ -19,9 +19,15 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
+set user_id [ad_maybe_redirect_for_registration]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+if {!$user_is_admin_p} {
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_be_a_syst]">
+    return
+}
+
 set page_title "Profiles"
 set context [list "Permissions"]
-
 set subsite_id [ad_conn subsite_id]
 set context_bar [im_context_bar $page_title]
 set url_stub [im_url_with_query]

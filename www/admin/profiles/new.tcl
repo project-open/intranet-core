@@ -17,6 +17,13 @@ ad_page_contract {
     {group_rel_type_list ""}
 } 
 
+set user_id [ad_maybe_redirect_for_registration]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+if {!$user_is_admin_p} {
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_be_a_syst]">
+    return
+}
+
 set context [list [list "[ad_conn package_url]admin/groups/" "Groups"] "Add a group"]
 
 db_1row select_type_info {

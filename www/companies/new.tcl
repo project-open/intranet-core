@@ -135,13 +135,13 @@ set page_body "
 		    <tr> 
 		      <td>[_ intranet-core.Company_Name]</td>
 		      <td> 
-<input type=text size=30 name=company_name value=\"$company_name\">
+<input type=text size=40 name=company_name value=\"$company_name\">
 		      </td>
 		    </tr>
 		    <tr> 
 		      <td>[_ intranet-core.Company_Short_Name]<BR><font size=-2>([_ intranet-core.directory_path])</font></td>
 		      <td> 
-<input type=text size=10 name=company_path value=\"$company_path\">
+<input type=text size=15 name=company_path value=\"$company_path\">
 		      </td>
 		    </tr>
 		    <tr> 
