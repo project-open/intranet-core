@@ -69,8 +69,8 @@ create table im_projects (
 	billing_type_id		integer
 				constraint im_project_billing_fk
 				references im_categories,
-	start_date		date,
-	end_date		date,
+	start_date		timestamptz,
+	end_date		timestamptz,
 				-- make sure the end date is after the start date
 				constraint im_projects_date_const 
 				check( end_date - start_date >= 0 ),	
