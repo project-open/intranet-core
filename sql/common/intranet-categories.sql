@@ -222,7 +222,7 @@ INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '53', 'Internal', 'Intranet Company Type');
 
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '54', 'MLV Translation Agency Company', 'Intranet Company Type');
+('', 'f', '54', 'MLV Translation Agency Customer', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '55', 'Software Company', 'Intranet Company Type');
 
@@ -235,6 +235,15 @@ INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 ('', 'f', '58', 'Freelance Provider', 'Intranet Company Type');
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '59', 'Office Equipment Provider', 'Intranet Company Type');
+
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', '60', 'CustOrIntl', 'Intranet Company Type');
+
+
+-- Establish CustOrIntl super-category
+-- CustOrIntl is used by the customers select box
+insert into im_category_hierarchy values (60,53);
+insert into im_category_hierarchy values (60,57);
 
 
 -- The "Translation Agency" is a company
