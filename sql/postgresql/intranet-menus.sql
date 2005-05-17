@@ -242,6 +242,7 @@ declare
 	v_freelancers		integer;
 	v_proman		integer;
 	v_admins		integer;
+	v_reg_users		integer;
 begin
 
     select group_id into v_admins from groups where group_name = ''P/O Admins'';
@@ -251,6 +252,8 @@ begin
     select group_id into v_employees from groups where group_name = ''Employees'';
     select group_id into v_customers from groups where group_name = ''Customers'';
     select group_id into v_freelancers from groups where group_name = ''Freelancers'';
+    select group_id into v_reg_users from groups where group_name = ''Registered Users'';
+
 
     -- The "top" menu - the father of all menus.
     -- It is not displayed itself and only serves
@@ -278,6 +281,7 @@ begin
     PERFORM acs_permission__grant_permission(v_top_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_top_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_top_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_top_menu, v_reg_users, ''read'');
 
 
     -- The "Main" menu: It''s not displayed itself neither
@@ -322,6 +326,7 @@ begin
     PERFORM acs_permission__grant_permission(v_home_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_home_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_home_menu, v_reg_users, ''read'');
 
 
 
@@ -348,6 +353,7 @@ begin
     PERFORM acs_permission__grant_permission(v_project_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_project_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_project_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_project_menu, v_reg_users, ''read'');
 
 
 
@@ -375,6 +381,7 @@ begin
     PERFORM acs_permission__grant_permission(v_company_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_company_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_company_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_company_menu, v_reg_users, ''read'');
 
 
 
@@ -424,6 +431,7 @@ begin
     PERFORM acs_permission__grant_permission(v_office_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_office_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_office_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_office_menu, v_reg_users, ''read'');
 
     v_admin_menu := im_menu__new (
         null,                   -- p_menu_id
@@ -466,6 +474,7 @@ begin
     PERFORM acs_permission__grant_permission(v_help_menu, v_employees, ''read'');
     PERFORM acs_permission__grant_permission(v_help_menu, v_customers, ''read'');
     PERFORM acs_permission__grant_permission(v_help_menu, v_freelancers, ''read'');
+    PERFORM acs_permission__grant_permission(v_help_menu, v_reg_users, ''read'');
 
 
     -- -----------------------------------------------------
@@ -835,6 +844,7 @@ declare
       v_freelancers           integer;
       v_proman                integer;
       v_admins                integer;
+      v_reg_users	      integer;
 begin
 
     select group_id into v_admins from groups where group_name = ''P/O Admins'';
@@ -844,6 +854,8 @@ begin
     select group_id into v_employees from groups where group_name = ''Employees'';
     select group_id into v_customers from groups where group_name = ''Customers'';
     select group_id into v_freelancers from groups where group_name = ''Freelancers'';
+    select group_id into v_reg_users from groups where group_name = ''Registered Users'';
+
 
     select menu_id
     into v_companies_menu
