@@ -33,6 +33,15 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     set write 0
     set admin 0
 
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    if {$user_is_admin_p} {
+	set view 1
+	set read 1
+	set write 1
+	set admin 1
+	return
+    }
+
     # Get the list of profiles of user_id (the one to be managed)
     # together with the information if current_user_id can read/write
     # it.
