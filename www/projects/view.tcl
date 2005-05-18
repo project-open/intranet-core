@@ -70,7 +70,7 @@ select
 	c.company_name,
 	c.company_path,
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
-	to_char(p.percent_completed, '90.9%') as percent_completed_formatted,
+	to_char(p.percent_completed, '990%') as percent_completed_formatted,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
 	c.primary_contact_id as company_contact_id,
