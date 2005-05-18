@@ -696,7 +696,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     set search_form ""
-    if {0 < [llength [info procs im_package_search_id]]} {
+    if {$user_id > 0 && 0 < [llength [info procs im_package_search_id]]} {
 	set search_form "
 	    <form action=/intranet/search/go-search method=post name=surx>
               <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\">
