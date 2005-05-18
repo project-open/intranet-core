@@ -34,7 +34,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set return_url [im_url_with_query]
-set current_url $return_url
+set current_url [ad_conn url]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
@@ -460,7 +460,7 @@ if {$admin || [im_permission $user_id "view_hr"]} {
 		-forum_object_id $user_id \
 		-current_page_url $current_url \
 		-return_url $return_url \
-		-export_var_list [list user_id forum_start_idx forum_order_by forum_how_many forum_view_name ] \
+		-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
 		-forum_type user \
 		-view_name [im_opt_val forum_view_name] \
 		-forum_order_by [im_opt_val forum_order_by] \
