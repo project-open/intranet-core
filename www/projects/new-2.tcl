@@ -48,6 +48,12 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
+if {$percent_completed > 100 || $percent_completed < 0} {
+    ad_return_complaint 1 "Error with '$percent_completed'% completed:<br>
+    Number must be in range (0 .. 100)"
+    return
+}
+
 # Log who's making changes and when
 set todays_date [db_string projects_get_date "select sysdate from dual"]
 
