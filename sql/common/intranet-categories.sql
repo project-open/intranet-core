@@ -236,29 +236,24 @@ INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
 ('', 'f', '59', 'Office Equipment Provider', 'Intranet Company Type');
 
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '60', 'CustOrIntl', 'Intranet Company Type');
+-- This is a "parent_only_p" category that doesn't appear on the drop-down boxes
+INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, PARENT_ONLY_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
+('', 'f', 't', '60', 'CustOrIntl', 'Intranet Company Type');
 
 
 -- Establish CustOrIntl super-category
 -- CustOrIntl is used by the customers select box
 insert into im_category_hierarchy values (60,53);
 insert into im_category_hierarchy values (60,57);
+insert into im_category_hierarchy values (60,54);
+insert into im_category_hierarchy values (60,55);
 
-
--- The "Translation Agency" is a company
+-- Customers
 insert into im_category_hierarchy values (57,54);
-
--- The "IT Consulting" company is a company.
 insert into im_category_hierarchy values (57,55);
 
--- The "Internal" is a company (internal projects...)
-insert into im_category_hierarchy values (57,53);
-
--- The "Freelance" company is a provider
+-- Providers
 insert into im_category_hierarchy values (56,58);
-
--- The "Office Equipment Provider" company is a provider
 insert into im_category_hierarchy values (56,59);
 
 
