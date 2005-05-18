@@ -43,7 +43,7 @@ switch $target {
 	    ad_return_complaint 1 "Permission Error:<br>You don't have sufficient privileges to search for Intranet Users."
 	    return
 	}
-	ad_returnredirect "/intranet-search/search?type=users&q=$query_string"
+	ad_returnredirect "/intranet-search/search?type=user&q=$query_string"
     }
     "htsearch" {
 	if {![im_permission $user_id search_intranet]} {
