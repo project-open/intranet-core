@@ -115,6 +115,9 @@ values (1, 'company_list', 'view_companies', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (2, 'company_view', 'view_companies', 1405);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
+values (3, 'company_csv', 'view_companies', 1400);
+
+insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (10, 'user_list', 'view_users', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (11, 'user_view', 'view_users', 1405);
@@ -122,6 +125,7 @@ insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (12, 'user_contact', 'view_users', 1405);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (13, 'user_community', 'view_users', 1405);
+
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (20, 'project_list', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
@@ -130,6 +134,7 @@ insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (22, 'project_status', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (23, 'project_personal_list', 'view_projects', 1400);
+
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (80, 'office_list', 'view_offices', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
@@ -251,7 +256,7 @@ extra_select, extra_where, sort_order, visible_for) values (2313,23,NULL,'Projec
 delete from im_view_columns where column_id > 0 and column_id < 8;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (1,1,NULL,'Client',
+extra_select, extra_where, sort_order, visible_for) values (1,1,NULL,'Company',
 '"<A HREF=$company_view_page?company_id=$company_id>$company_name</A>"','','',1,
 'expr 1');
 

@@ -281,9 +281,12 @@ ns_log Notice $selection
 set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
     append admin_html "
-<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
-<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CVS]</a>
-<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
+	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
+	<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
+	<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
+	<li><a href=\"/intranet/companies/companies.csv\">[_ intranet-core.lt_Export_Companies_CSV]</a>
+
+
 "
 }
 
@@ -340,9 +343,6 @@ set idx $start_idx
 # ad_return_complaint 1 "<pre>$selection</pre>"
 
 db_foreach projects_info_query $selection {
-
-#    im_company_permissions $user_id $company_id company_view company_read company_write company_admin
-#    if {!$company_read} { continue }
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

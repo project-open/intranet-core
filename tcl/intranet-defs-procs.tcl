@@ -916,9 +916,9 @@ ad_proc -public db_html_select_value_options_multiple {
 	    set translated_value [lindex $option $option_index]
 	}
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\" selected>$translated_value</option>\n"
+	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\" selected>$translated_value</option>\n"
 	} else {
-	    append select_options "<option value=\"[util_quote_double_quotes [lindex $option $value_index]]\">$translated_value</option>\n"
+	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\">$translated_value</option>\n"
 	}
     }
     return $select_options
@@ -1291,3 +1291,12 @@ ad_proc im_mangle_user_group_name { user_group_name } {
 
 
 
+ad_proc im_cvs_duplicate_double_quotes {arg} {
+    This proc duplicates double quotes so that the resulting
+    string becomes suitable to be written to a CVS file
+    according to the Microsoft Excel CVS conventions
+    @see ad_quotehtml
+} {
+    regsub -all {"} $arg {""} result
+    return $result
+}
