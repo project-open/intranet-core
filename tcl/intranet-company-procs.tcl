@@ -417,7 +417,7 @@ ad_proc im_companies_cvs1 {
     Pivot-Table friendly.
 } {
     ns_log Notice "im_companies_cvs: "
-#    set current_user_id [ad_maybe_redirect_for_registration]
+    set current_user_id [ad_maybe_redirect_for_registration]
     set cvs_separator ";"
     
     # ---------------------------------------------------------------
@@ -576,23 +576,3 @@ Content-Type: $app_type; charset=$charset\r\n"
     ns_write $string_latin1
 
 }
-
-ad_proc im_unicode2html {s} {
-    Converts the TCL unicode characters in a string beyond
-    127 into HTML characters.
-    Doesn't work with MS-Excel though...
-} {
-    set res ""
-    foreach u [split $s ""] {
-        scan $u %c t
-        if {$t>127} {
-            append res "&\#$t;"
-        } else {
-            append res $u
-        }
-    }
-    set res
-}
-
-
-
