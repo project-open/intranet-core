@@ -425,6 +425,7 @@ ad_proc im_companies_cvs1 {
     # we want to show:
     #
     set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+    
     set column_headers [list]
     set column_vars [list]
     
@@ -557,47 +558,24 @@ ad_proc im_companies_cvs1 {
     }
 
     set string "$cvs_header\r\n$cvs_body\r\n"
-    set string_latin1 [im_unicode2latin1 $string]
-
-    set app_type "text/plain"
-#    set app_type "application/csv"
-
+    set string_latin1 [encoding convertto "iso8859-1" $string]
+    
+    set app_type "application/csv"
+#    set app_type "text/plain"
     set charset "latin1"
-#    set charset "utf-8"
 
+    # For some reason we have to send out a "hard" HTTP
+    # header. ns_return and ns_respond don't seem to convert
+    # the content string into the right Latin1 encoding.
+    # So we do this manually here...
     set all_the_headers "HTTP/1.0 200 OK
 MIME-Version: 1.0
 Content-Type: $app_type; charset=$charset\r\n"
     util_WriteWithExtraOutputHeaders $all_the_headers
 
-    ns_write $string
+    ns_write $string_latin1
 
 }
-
-
-ad_proc im_unicode2latin1 {s} {
-    Converts the TCL unicode characters in a string beyond
-    127 into HTML characters.
-    Doesn't work with MS-Excel though...
-} {
-    set res ""
-    foreach u [split $s ""] {
-        scan $u %c t
-        if {$t>127} {
-
-#	    ad_return_complaint 1 "<pre>t=$t\nres=$res</pre>"
-
-            append res "&\#$t;"
-
-
-
-        } else {
-            append res $u
-        }
-    }
-    set res
-}
-
 
 ad_proc im_unicode2html {s} {
     Converts the TCL unicode characters in a string beyond
