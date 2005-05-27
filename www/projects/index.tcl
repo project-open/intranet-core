@@ -432,9 +432,23 @@ if {[im_permission $current_user_id "add_projects"]} {
     append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
 }
 
-#if {[im_permission $current_user_id "view_projects_all"]} { 
-#    append admin_html "<li><a href=../allocations/index>[_ intranet-core.Allocations]</a> "
-#}
+set parent_menu_sql "select menu_id from im_menus where label= 'projects_admin'"
+set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+
+set menu_select_sql "
+        select  m.*
+        from    im_menus m
+        where   parent_menu_id = :parent_menu_id
+                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+        order by sort_order"
+
+# Start formatting the menu bar
+set ctr 0
+db_foreach menu_select $menu_select_sql {
+    regsub -all " " $name "_" name_key
+    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
+}
+
 
 set project_filter_html $filter_html
 

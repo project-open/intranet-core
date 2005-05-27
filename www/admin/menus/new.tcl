@@ -34,7 +34,7 @@ if {!$user_is_admin_p} {
 set action_url "/intranet/admin/menus/new"
 set focus "menu.var_name"
 set page_title "New Menu"
-set context [im_context_bar $page_title]
+set context $page_title
 
 if {![info exists menu_id]} { set form_mode "edit" }
 

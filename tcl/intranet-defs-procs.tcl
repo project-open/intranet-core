@@ -1291,12 +1291,33 @@ ad_proc im_mangle_user_group_name { user_group_name } {
 
 
 
-ad_proc im_cvs_duplicate_double_quotes {arg} {
+ad_proc im_csv_duplicate_double_quotes {arg} {
     This proc duplicates double quotes so that the resulting
-    string becomes suitable to be written to a CVS file
-    according to the Microsoft Excel CVS conventions
+    string becomes suitable to be written to a CSV file
+    according to the Microsoft Excel CSV conventions
     @see ad_quotehtml
 } {
     regsub -all {"} $arg {""} result
     return $result
 }
+
+
+ad_proc im_unicode2html {s} {
+    Converts the TCL unicode characters in a string beyond
+    127 into HTML characters.
+    Doesn't work with MS-Excel though...
+} {
+    set res ""
+    foreach u [split $s ""] {
+        scan $u %c t
+        if {$t>127} {
+            append res "&\#$t;"
+        } else {
+            append res $u
+        }
+    }
+    set res
+}
+
+
+

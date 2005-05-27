@@ -353,7 +353,7 @@ create or replace function im_project_name_from_id (integer)
 returns varchar as '
 DECLARE
         p_project_id	alias for $1;
-        v_project_name	varchar(50);
+        v_project_name	varchar(1000);
 BEGIN
         select project_name
         into v_project_name
@@ -361,5 +361,20 @@ BEGIN
         where project_id = p_project_id;
 
         return v_project_name;
+end;' language 'plpgsql';
+
+
+create or replace function im_project_nr_from_id (integer)
+returns varchar as '
+DECLARE
+        p_project_id	alias for $1;
+        v_name		varchar(100);
+BEGIN
+        select project_nr
+        into v_name
+        from im_projects
+        where project_id = p_project_id;
+
+        return v_name;
 end;' language 'plpgsql';
 

@@ -114,8 +114,7 @@ insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (1, 'company_list', 'view_companies', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (2, 'company_view', 'view_companies', 1405);
-insert into im_views (view_id, view_name, visible_for, view_type_id)
-values (3, 'company_csv', 'view_companies', 1400);
+-- 3 reserved for company_csv
 
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (10, 'user_list', 'view_users', 1400);
@@ -134,6 +133,7 @@ insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (22, 'project_status', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (23, 'project_personal_list', 'view_projects', 1400);
+-- 24 reserved for project_csv
 
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (80, 'office_list', 'view_offices', 1400);
@@ -141,6 +141,9 @@ insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (81, 'office_view', 'view_offices', 1405);
 
 
+
+---------------------------------------------------------
+-- Project Status List
 
 --
 delete from im_view_columns where column_id > 2200 and column_id < 2299;

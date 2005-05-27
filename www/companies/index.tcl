@@ -74,6 +74,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set page_title "[_ intranet-core.Companies]"
@@ -282,20 +283,33 @@ set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
     append admin_html "
 	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
-	<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
-	<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
-	<li><a href=\"/intranet/companies/companies.csv\">[_ intranet-core.lt_Export_Companies_CSV]</a>
-
-
 "
 }
 
-if {[im_permission $user_id admin_companies]} {
+if {$user_is_admin_p} {
     append admin_html "
-<li><a href=upload-companies?[export_url_vars return_url]>[_ intranet-core.Upload_Company_CSV]</a>
-<li><a href=upload-contacts?[export_url_vars return_url]>[_ intranet-core.Upload_Contact_CSV]</a>
-"
+<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
+<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
+"}
+
+
+set parent_menu_sql "select menu_id from im_menus where label= 'companies_admin'"
+set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+
+set menu_select_sql "
+        select  m.*
+        from    im_menus m
+        where   parent_menu_id = :parent_menu_id
+                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+        order by sort_order"
+
+# Start formatting the menu bar
+set ctr 0
+db_foreach menu_select $menu_select_sql {
+    regsub -all " " $name "_" name_key
+    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
 }
+
 
 
 # ---------------------------------------------------------------
