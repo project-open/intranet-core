@@ -24,7 +24,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">New User</msg>
+  <msg key="Add_a_new_User">Neuer Benutzer</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
@@ -247,6 +247,7 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
+  <msg key="Export_Companies_CSV">Export Companies CSV</msg>
   <msg key="f">f</msg>
   <msg key="Failed_to_nuke">Failed to nuke</msg>
   <msg key="Fax">Fax</msg>
@@ -258,7 +259,6 @@
   <msg key="Filter_Users">Filter Users</msg>
   <msg key="Finance">Finance</msg>
   <msg key="Finance_Home">Finance Home</msg>
-  <msg key="Finished">Finished</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">First names</msg>
   <msg key="for_Deliv">for Delivery</msg>
@@ -316,8 +316,9 @@
   <msg key="Iceland">Iceland</msg>
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
+  <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Import User List (CSV)</msg>
+  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
@@ -446,6 +447,9 @@ Best regards,
   <msg key="lt_Error_getting_the_ema">Error getting the email address of user %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Error: Missing parameter</msg>
   <msg key="lt_Expected_Annual_Reven">(Expected) Annual Revenue</msg>
+  <msg key="lt_Export_Companies">Export Companies</msg>
+  <msg key="lt_Export_Companies_CSV">Export Companies CSV</msg>
+  <msg key="lt_Export_Invoices_CSV">Export Invoices CSV</msg>
   <msg key="lt_export_varsnoquoteMes">%export_vars;noquote%
 Message:</msg>
   <msg key="lt_File_editing_Converti">File editing: Converting the total wordcount into editing hours using 1000 words per hour</msg>
@@ -537,10 +541,8 @@ her contributions to the site content.</msg>
   <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
   <msg key="lt_New_Customer_Invoice_">New Customer Invoice</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
-  <msg key="lt_New_Provider_Invoice_">New Provider Invoice from Translation Tasks</msg>
   <msg key="lt_New_Purchase_Order_fr">New Purchase Order</msg>
-  <msg key="lt_New_Quote_from_scratc">New Quote from scratch</msg>
-  <msg key="lt_New_Quote_from_Transl">New Quote from Translation Tasks</msg>
+  <msg key="lt_New_Quote_from_scratc">New Quote from scratc</msg>
   <msg key="lt_New_Translation_Invoi">New Translation Invoice</msg>
   <msg key="lt_New_Translation_Quote">New Translation Quote</msg>
   <msg key="lt_New_user_notifiedset_">New user notified</msg>
@@ -572,7 +574,7 @@ site with fake crud.</msg>
   <msg key="lt_Please_contact_your_s">Please contact your system administrator</msg>
   <msg key="lt_Please_create_a_new_c">Please create a %new_client_link%.</msg>
   <msg key="lt_Please_create_a_new_c_1">Please create a %new_client_contact_link%</msg>
-  <msg key="lt_Please_enter_any_suit">Please enter a suitable name for the project. The name must be unique.</msg>
+  <msg key="lt_Please_enter_any_suit">Please enter any suitable name for the project. The name must be unique.</msg>
   <msg key="lt_Please_log_hours_link">Please %log_hours_link%</msg>
   <msg key="lt_Please_make_sure_the_">Please make sure the start date is not empty</msg>
   <msg key="lt_Please_make_sure_the__1">Please make sure the end date is not empty</msg>
@@ -771,8 +773,8 @@ other way for the user to find out.</msg>
   <msg key="Office_Type">Office Type</msg>
   <msg key="Offices">Offices</msg>
   <msg key="Ok">Ok</msg>
+  <msg key="Ok?">Ok?</msg>
   <msg key="On_Hold">On Hold</msg>
-  <msg key="On_Hold1">On Hold</msg>
   <msg key="On_Track_Status">On Track Status</msg>
   <msg key="One">One</msg>
   <msg key="One_company">One company</msg>
@@ -822,6 +824,8 @@ other way for the user to find out.</msg>
   <msg key="POs">POs</msg>
   <msg key="Position_Vacant">Position Vacant</msg>
   <msg key="Postal_Code">Postal Code</msg>
+  <msg key="PostgreSQL_Backup">PostgreSQL Backup</msg>
+  <msg key="PostgreSQL_Backup_blurb">Backup your current database content or load the restore data from a previous backup.</msg>
   <msg key="Potential">Potential</msg>
   <msg key="Potential_Customers">Potential Customers</msg>
   <msg key="Potential_Freelancer">Potential Freelancer</msg>
@@ -904,7 +908,6 @@ other way for the user to find out.</msg>
   <msg key="Sick">Sick</msg>
   <msg key="Singapore">Singapore</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
-  <msg key="Size">Size</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
   <msg key="Slovenia">Slovenia</msg>
@@ -979,8 +982,6 @@ other way for the user to find out.</msg>
   <msg key="Unknown">Unknown</msg>
   <msg key="Update">Update</msg>
   <msg key="Update_Password">Update Password</msg>
-  <msg key="Update_Server">Update Server</msg>
-  <msg key="Update_User">Update User</msg>
   <msg key="Upload_Company_CSV">Upload Company CSV</msg>
   <msg key="Upload_Contact_CSV">Upload Contact CSV</msg>
   <msg key="Upload_file">Upload_file</msg>

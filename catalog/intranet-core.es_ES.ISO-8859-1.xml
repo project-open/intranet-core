@@ -18,6 +18,7 @@
   <msg key="Accounting_contact">Persona contacto Contabilidad</msg>
   <msg key="activate">activar</msg>
   <msg key="Active">Activa</msg>
+  <msg key="Active_Customers">Clientes activos</msg>
   <msg key="Add">Añadir</msg>
   <msg key="Add_a_new_client">Añadir un nuevo cliente</msg>
   <msg key="Add_a_new_Company">Añadir una nueva empresa</msg>
@@ -73,7 +74,7 @@
   <msg key="Anonymize">Hacer anónimo</msg>
   <msg key="Appr_Size">Tamaño Appr</msg>
   <msg key="Argentina">Argentina</msg>
-  <msg key="Assignments">Encargos</msg>
+  <msg key="Assignments">Asignaciones</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Australia">Australia</msg>
@@ -311,15 +312,15 @@
   <msg key="High">Alta</msg>
   <msg key="High_Quality">Calidad alta</msg>
   <msg key="Home">Portada</msg>
-  <msg key="Home_Address">Dirección</msg>
+  <msg key="Home_Address">Dirección particular</msg>
   <msg key="Home_address">Dirección</msg>
   <msg key="Home_City">Población</msg>
   <msg key="Home_Country">País</msg>
   <msg key="Home_Line_1">Dirección Línea 1</msg>
   <msg key="Home_Line_2">Dirección Línea 2</msg>
   <msg key="Home_Page">Portada</msg>
-  <msg key="Home_Phone">Teléfono</msg>
-  <msg key="Home_phone">Teléfono</msg>
+  <msg key="Home_Phone">Teléfono particular</msg>
+  <msg key="Home_phone">Teléfono particular</msg>
   <msg key="Home_Postal_Code">CP</msg>
   <msg key="Home_ZIP">CP</msg>
   <msg key="Honduras">Honduras</msg>
@@ -337,6 +338,7 @@
   <msg key="Inactive">Inactivo</msg>
   <msg key="Incident">Incidencia</msg>
   <msg key="Include_in_Invoice">Incluir en factura</msg>
+  <msg key="Inctive_Customers">Clientes no activos</msg>
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Consultas</msg>
@@ -489,6 +491,7 @@
   <msg key="lt_Here_you_find_advance_1">Aquí encontrará opciones de configuración avanzada de software de los ... básicos</msg>
   <msg key="lt_Heuteintranet-timeshe">Hoy</msg>
   <msg key="lt_How_did_we_get_in_con">¿Cómo entramos en contacto con la empresa?</msg>
+  <msg key="lt_How_many_hours_can_be">¿Cuántas horas se pueden registrar en este proyecto (recursos internos y externos)?</msg>
   <msg key="lt_IBM_Translation_Workb">IBM Translation Workbench</msg>
   <msg key="lt_If_this_IS_a_TestDemo">Si ES un servidor de pruebas/demostración/desarrollo, compruebe '/parameters/*.ini' y ajuste el indicador TestDemoDevServer a 'true'.</msg>
   <msg key="lt_Import_Company_Contac">Importar CVS de datos de contacto de la empresa</msg>
@@ -498,6 +501,7 @@
   <msg key="lt_Insufficient_Privileg">Privilegios insuficientes</msg>
   <msg key="lt_Internal_error_unknow">Error interno: Vista '%view_name%' desconocida</msg>
   <msg key="lt_Invalid_time_format_e">Formato de hora '%end_time(time)%' no válido: Entre la hora conforme al formato '12:30'</msg>
+  <msg key="lt_Is_the_project_going_">¿Va a cumplir el proyecto el plazo y el presupuesto (verde), requiere estar atento (amarillo) o va a incumplirlos (rojo)?</msg>
   <msg key="lt_Is_this_a_billable_co">¿Se pueden emitir facturas a esta empresa?</msg>
   <msg key="lt_It_seems_the_table_we">Parece que la tabla que nos faltaba es %table_name%.</msg>
   <msg key="lt_Just_enter_any_suitab">Simplemente entre cualquier nombre apropiado para el proyecto. Incluso puede dejar este campo en blanco.</msg>
@@ -561,6 +565,7 @@
   <msg key="lt_Please_contact_your_s">Póngase en contacto con el administrador de su sistema</msg>
   <msg key="lt_Please_create_a_new_c">Por favor, cree un %new_client_link%.</msg>
   <msg key="lt_Please_create_a_new_c_1">Por favor, cree un %new_client_contact_link%</msg>
+  <msg key="lt_Please_enter_any_suit">Especifique un nombre adecuado para el proyecto. Este nombre debe ser único y exclusivo.</msg>
   <msg key="lt_Please_log_hours_link">Por favor, %log_hours_link%</msg>
   <msg key="lt_Please_make_sure_the_">Asegúrese de que la fecha inicial no está en blanco</msg>
   <msg key="lt_Please_make_sure_the__1">Asegúrese de que la fecha final no está en blanco</msg>
@@ -642,6 +647,7 @@
   <msg key="lt_We_have_no_contacts_i">Nuestra base de datos no contiene personas de contacto en %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">Para crear la url para la carpeta /grupos necesitamos o bien el identificativo o la id del grupo</msg>
   <msg key="lt_Weve_nuked_user_user_">Hemos eliminado el usuario %user_id%. Ahora puede volver a %return_to_admin_link%.</msg>
+  <msg key="lt_What_is_the_financial">¿Cuál es el presupuesto financiero de este proyecto? Se deben incluir los costes tanto externos (facturas) como internos (hoja de tiempos).</msg>
   <msg key="lt_Who_is_the_final_cons">¿Quién es el cliente final (en caso de trabajar para una agencia)? Ejemplos: &amp;quot;Telefónica&amp;quot;, &amp;quot;Zara&amp;quot;, ...</msg>
   <msg key="lt_Wire_Transfer_La_Caix">Transferencia bancaria La Caixa</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Sí, estoy seguro de que deseo borrar esta persona</msg>
@@ -745,7 +751,7 @@
   <msg key="Norway">Noruega</msg>
   <msg key="Note">Nota</msg>
   <msg key="Notes">Notas</msg>
-  <msg key="Notify">Informar</msg>
+  <msg key="Notify">Enviar correo</msg>
   <msg key="Notify_added_user">Informar a nuevo usuario</msg>
   <msg key="Nuke_user">Borrar usuario</msg>
   <msg key="o">o</msg>
@@ -759,7 +765,10 @@
   <msg key="Office_Status">Status de la oficina</msg>
   <msg key="Office_Type">Tipo de oficina</msg>
   <msg key="Offices">Oficinas</msg>
+  <msg key="Ok">Aceptar</msg>
+  <msg key="Ok?">¿Aceptar?</msg>
   <msg key="On_Hold">En espera</msg>
+  <msg key="On_Track_Status">Status de seguimiento</msg>
   <msg key="One">Una</msg>
   <msg key="One_company">Una empresa</msg>
   <msg key="One_office">Una empresa</msg>
@@ -801,6 +810,7 @@
   <msg key="Payed">Pagado</msg>
   <msg key="Payments">Pagos</msg>
   <msg key="PayPal">PayPal</msg>
+  <msg key="Percent_Completed">Porcentaje completado</msg>
   <msg key="Personal">Personal</msg>
   <msg key="Peru">Perú</msg>
   <msg key="Philippines">Filipinas</msg>
@@ -815,6 +825,7 @@
   <msg key="Position_Vacant">Puesto libre</msg>
   <msg key="Postal_Code">CP</msg>
   <msg key="Potential">Potencial</msg>
+  <msg key="Potential_Customers">Clientes potenciales</msg>
   <msg key="Potential_Freelancer">Freelancer potencial</msg>
   <msg key="Pre-revenue">Cifra de ventas previa</msg>
   <msg key="Premium_Quality">Calidad máxima</msg>
@@ -823,7 +834,9 @@
   <msg key="Profiles">Perfiles</msg>
   <msg key="Project">Proyecto#</msg>
   <msg key="Project_">Proyecto no.</msg>
-  <msg key="Project_Base_Data">Datos básicos de proyecto</msg>
+  <msg key="Project_Base_Data">Datos básicos del proyecto</msg>
+  <msg key="Project_Budget">Presupuesto del proyecto</msg>
+  <msg key="Project_Budget_Hours">Horas de presupuesto del proyecto</msg>
   <msg key="Project_Hierarchy">Jerarquía de proyecto</msg>
   <msg key="Project_Manager">Coordinador de proyecto</msg>
   <msg key="Project_Managers">Coordinadores de proyecto</msg>
@@ -909,6 +922,7 @@
   <msg key="Software_Company">Empresa de software</msg>
   <msg key="Software_Development">Desarrollo de software</msg>
   <msg key="Software_Maintenance">Mantenimiento de software</msg>
+  <msg key="Software_Updates">Actualizaciones de software</msg>
   <msg key="South Africa">Sudáfrica</msg>
   <msg key="South_Africa">Sudáfrica</msg>
   <msg key="Spain">España</msg>
@@ -1025,6 +1039,7 @@
   <msg key="Web_Site">Sitio web</msg>
   <msg key="Web_Site_Design">Diseño de sitios web</msg>
   <msg key="Whos_Online">¿Quién está conectado?</msg>
+  <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
   <msg key="Windows_98">Windows 98</msg>
   <msg key="Windows_2000">Windows 2000</msg>
@@ -1036,14 +1051,14 @@
   <msg key="Wordfast_3">Wordfast 3</msg>
   <msg key="Wordfast_4">Wordfast 4</msg>
   <msg key="Work_absences">Ausencias de palabras</msg>
-  <msg key="Work_Address">Dirección</msg>
+  <msg key="Work_Address">Dirección de trabajo</msg>
   <msg key="Work_address">Dirección</msg>
   <msg key="Work_City">Ciudad</msg>
   <msg key="Work_Country">País</msg>
   <msg key="Work_Line_1">Línea de trabajo 1</msg>
   <msg key="Work_Line_2">Línea de trabajo 2</msg>
-  <msg key="Work_Phone">Teléfono</msg>
-  <msg key="Work_phone">Teléfono</msg>
+  <msg key="Work_Phone">Teléfono trabajo</msg>
+  <msg key="Work_phone">Teléfono trabajo</msg>
   <msg key="Work_Postal_Code">CP</msg>
   <msg key="Work_ZIP">CP de trabajo</msg>
   <msg key="x">x</msg>

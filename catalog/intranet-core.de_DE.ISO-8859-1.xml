@@ -15,6 +15,7 @@
   <msg key="Accounting_contact">Rechnungskontakt</msg>
   <msg key="activate">aktivieren</msg>
   <msg key="Active">Aktiv</msg>
+  <msg key="Active_Customers">Aktive Kunden</msg>
   <msg key="Add">Zufügen</msg>
   <msg key="Add_a_new_client">Neuer Kunde</msg>
   <msg key="Add_a_new_Company">Neue Firma</msg>
@@ -112,6 +113,7 @@
   <msg key="Cell_Phone">Handy</msg>
   <msg key="Cell_phone">Handy</msg>
   <msg key="Change_Password">Passwort ändern</msg>
+  <msg key="Check">Cheque</msg>
   <msg key="Cheque">Check</msg>
   <msg key="Cheque_EUR">Check EUR</msg>
   <msg key="Cheque_USD">Check USD</msg>
@@ -248,6 +250,7 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
+  <msg key="Export_Companies_CSV">Firmen-CSV exportieren</msg>
   <msg key="f">F</msg>
   <msg key="Failed_to_nuke">Löschprozess fehlgeschlagen</msg>
   <msg key="Fax">Fax</msg>
@@ -259,7 +262,6 @@
   <msg key="Filter_Users">Benutzer filtern</msg>
   <msg key="Finance">Finanzen</msg>
   <msg key="Finance_Home">Finanzen Homepage</msg>
-  <msg key="Finished">Beendet</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">Vorname</msg>
   <msg key="for_Deliv">zur Auslieferung</msg>
@@ -318,12 +320,14 @@
   <msg key="Iceland">Island</msg>
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Nummer</msg>
+  <msg key="Import_Company_CSV">Firmen-CSV importieren</msg>
   <msg key="Import_Company_CVS">Firmenliste (CVS) importieren</msg>
   <msg key="Import_User_CSV">Benutzerliste (CVS) importieren </msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inaktiv</msg>
   <msg key="Incident">Vorfall</msg>
   <msg key="Include_in_Invoice">In die Rechnung aufnehmen</msg>
+  <msg key="Inctive_Customers">Inaktive Kunden</msg>
   <msg key="India">Indien</msg>
   <msg key="Indonesia">Indonesien</msg>
   <msg key="Inquiries">Anfragen</msg>
@@ -367,6 +371,8 @@
   <msg key="Latvia">Lettland</msg>
   <msg key="Law">Recht</msg>
   <msg key="Law_Company">Rechtsanwaltsbüro</msg>
+  <msg key="Learn_About_Your_Company">Mehr über Ihre Firma</msg>
+  <msg key="Learn_About_Your_Company_Blurb">Diese Komponente zeigt zufällig verschieden Firmenmitarbeiter an. Auf diese Weise lernen Sie Mitarbeiter anderer Abteilungen und Niederlassungen kennen. </msg>
   <msg key="Lebanon">Libanon</msg>
   <msg key="Liechtenstein">Liechtenstein</msg>
   <msg key="Linguistic_Val">Linguistische Validierung</msg>
@@ -423,6 +429,7 @@
   <msg key="lt_Delete_the_primary_co">Löschen Primärkontakt</msg>
   <msg key="lt_delete_this_user_inst">löschen diese Benutzer anstatt</msg>
   <msg key="lt_Deleting_first_names_">Löschen %first_names% %last_name% </msg>
+  <msg key="lt_Discussionintranet-fo">Diskussion</msg>
   <msg key="lt_Do_you_want_to_create">Wollen sie ein Unterprojekt anlegen? Lassen sie das Feld leer, falls sie sich nicht sicher sind</msg>
   <msg key="lt_Dots__in_Project_Path">Punkte ('.') sind im Projektpfad nicht erlaubt</msg>
   <msg key="lt_Edit_comments_about_y">Bearbeiten Komentar</msg>
@@ -433,8 +440,13 @@
   <msg key="lt_Error_getting_the_ema">Fehler in der E-Mail des Benutzers %target_id% </msg>
   <msg key="lt_Error_Missing_paramet">Fehler: Fehlender Parameter</msg>
   <msg key="lt_Expected_Annual_Reven">(Erwarteter) Jährlicher Umsatz</msg>
+  <msg key="lt_Export_Companies">Firmen exportieren</msg>
+  <msg key="lt_Export_Companies_CSV">Firmen-CSV exportieren</msg>
+  <msg key="lt_Export_Invoices_CSV">Rechnungs-CSV exportieren</msg>
   <msg key="lt_export_varsnoquoteMes">%export_vars;noquote% Meldung: </msg>
+  <msg key="lt_File_editing_Converti">Editieren von Texten: Wortzahl dividiert durch 1000 Wörter pro Stunde</msg>
   <msg key="lt_File_translation_Trad">Übersetzung: Trados Wortzahl multipliziert mit der Trados-Matrix des Zulieferers</msg>
+  <msg key="lt_Finally_revisit_this_">Schließlich kommen Sie auf diese Seite zurück und Sie werden eine Option finden um einen neuen Kundenkontakt zu erzeugen.</msg>
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% wurde benachrichtigt.</msg>
@@ -456,6 +468,7 @@
   <msg key="lt_How_did_we_get_in_con">Wie sind sie in Kontakt mit dieser Firma gekommen?</msg>
   <msg key="lt_Import_Company_Contac">Kontaktliste (CSV) importieren</msg>
   <msg key="lt_Import_Projects_from_">Projekt von H:\\ importieren</msg>
+  <msg key="lt_Incidentintranet-foru">Zwischenfall</msg>
   <msg key="lt_Insufficient_Privileg">Unzureichene Zugriffsrechte</msg>
   <msg key="lt_Internal_error_unknow">Interner Fehler: Unbekannter View: '%view_name%' </msg>
   <msg key="lt_Invalid_time_format_e">Ungültiges Zeitformat '%end_time(time)%': Bitte geben sie de Zeit ein im Format: '12:30' </msg>
@@ -491,11 +504,13 @@
   <msg key="lt_New_Translation_Invoi">Neue Übersetzungsrechnung</msg>
   <msg key="lt_New_Translation_Quote">Neues Übersetzungsangebot</msg>
   <msg key="lt_New_user_notifiedset_">Der neue Benutzer wurde benachrichtigt</msg>
+  <msg key="lt_Newsintranet-forumNew">Nachrichten</msg>
   <msg key="lt_Next_Monthintranet-ti">Nächster Monat</msg>
   <msg key="lt_No_comments_about_fir">Keine Kommentare über %first_names% %last_name%. </msg>
   <msg key="lt_No_Company_Employees_">Keine Firmenangestellten in unserer Datenbank</msg>
   <msg key="lt_No_contact_informatio">Keine Kontaktinformation</msg>
   <msg key="lt_None_of_the_specified">Keine der angegebenen Gruppen existiert.</msg>
+  <msg key="lt_Noteintranet-forumNot">Notiz</msg>
   <msg key="lt_Nuke_first_names_last">Löschen %first_names% %last_name%  </msg>
   <msg key="lt_num_users_online_user">%num_users_online% Benutzer angemeldet</msg>
   <msg key="lt_num_users_online_user_1">%num_users_online% Benutzer angemeldet</msg>
@@ -536,6 +551,7 @@
   <msg key="lt_Software_Company_Comp">Softwarefirma</msg>
   <msg key="lt_Software_Company_Cust">Software Firma (Kunde)</msg>
   <msg key="lt_Successfully_finished">Erfolgreich beendet</msg>
+  <msg key="lt_Taskintranet-forumTas">Aufgaben</msg>
   <msg key="lt_The_English_translati">Die englische 'Übersetzung' sollte mit dem Kategorienamen übereinstimmen.</msg>
   <msg key="lt_This_command_destroys">Dieses Kommando &quot;zerstört&quot; das gesamte System und ersetzt alle Namen und Text (Projeknamen, Projektbeschreibungen, Kunden, Benutzer, ...) mit &quot;anonymisierten&quot; Zeichenketten. Diese Funktion dient dazu, auf Basis von echten Daten Demonstrationssystem zu erzeugen.</msg>
   <msg key="lt_This_file_has_generat">Diese Datei hat einen Fehler erzeugt.</msg>
@@ -574,6 +590,7 @@
   <msg key="Med">Med</msg>
   <msg key="Medium">Mittel</msg>
   <msg key="Menu_Administration">Menüs verwalten</msg>
+  <msg key="Menu_Backup_Restore">Backup &amp;amp; Restore Menu</msg>
   <msg key="Menus">Menüs</msg>
   <msg key="Mexico">Mexico</msg>
   <msg key="Mine">Meine</msg>
@@ -625,8 +642,11 @@
   <msg key="Office_Status">Firmensitz Status</msg>
   <msg key="Office_Type">Firmensitz Typ</msg>
   <msg key="Offices">Firmensitze</msg>
+  <msg key="Ok">Ok</msg>
+  <msg key="Ok?">Ok?</msg>
   <msg key="On_Hold">Angehalten</msg>
-  <msg key="On_Hold1">Angehalten</msg>
+  <msg key="On_Track_Status">On Track Status</msg>
+  <msg key="One">Ein</msg>
   <msg key="One_company">Eine Firma</msg>
   <msg key="One_office">Ein Firmensitz</msg>
   <msg key="One_project">Ein Projekt</msg>
@@ -661,10 +681,12 @@
   <msg key="Payed">Bezahlt</msg>
   <msg key="Payments">Zahlungen</msg>
   <msg key="PayPal">PayPal</msg>
+  <msg key="Percent_Completed">Prozent fertig</msg>
   <msg key="Personal">Persönlich</msg>
   <msg key="Peru">Peru</msg>
   <msg key="Philippines">Philippinen</msg>
   <msg key="Phone">Telefon</msg>
+  <msg key="Please_Select">Bitte wählen</msg>
   <msg key="PO_Admins">P/O Admins</msg>
   <msg key="Poland">Polen</msg>
   <msg key="Portrait">Porträt</msg>
@@ -672,7 +694,9 @@
   <msg key="POs">Aufträge</msg>
   <msg key="Position_Vacant">Offene Stelle</msg>
   <msg key="Postal_Code">Postleitzahl</msg>
+  <msg key="PostgreSQL_Backup">PostgreSQL Backup</msg>
   <msg key="Potential">Potentiell</msg>
+  <msg key="Potential_Customers">Potentielle Kunden</msg>
   <msg key="Potential_Freelancer">Potentieller Freiberufler</msg>
   <msg key="Pre-revenue">Vor Umsatz</msg>
   <msg key="Premium_Quality">Höchste Qualität</msg>
@@ -682,6 +706,8 @@
   <msg key="Project">Projekt#</msg>
   <msg key="Project_">Projekt #</msg>
   <msg key="Project_Base_Data">Basisdaten</msg>
+  <msg key="Project_Budget">Projekt Budget</msg>
+  <msg key="Project_Budget_Hours">Projekt Stundenbudget</msg>
   <msg key="Project_Hierarchy">Projekthierarchie</msg>
   <msg key="Project_Manager">Projektmanager</msg>
   <msg key="Project_Managers">Projektmanager</msg>
@@ -738,6 +764,7 @@
   <msg key="Saudi_Arabia">Saudi Arabien</msg>
   <msg key="Save_Changes">Änderungen speichern</msg>
   <msg key="Screen_name">Seitenname</msg>
+  <msg key="Scroll">Scrollen</msg>
   <msg key="Search">Suchen</msg>
   <msg key="Search_for_a_user">Benutzersuche</msg>
   <msg key="Search_for_User">Benutzersuche</msg>
@@ -854,6 +881,8 @@
   <msg key="w">W</msg>
   <msg key="Web_Site">Webseite</msg>
   <msg key="Whos_Online">Wer ist Online?</msg>
+  <msg key="Wiki">Wiki</msg>
+  <msg key="Wire_Transfer">Banktransfer</msg>
   <msg key="Work_absences">Abwesenheiten</msg>
   <msg key="Work_Address">Arbeit Adresse</msg>
   <msg key="Work_address">Arbeit Adresse</msg>
