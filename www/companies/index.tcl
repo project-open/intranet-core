@@ -250,7 +250,7 @@ if {[string compare $letter "ALL"]} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
-    set selection "$sql $order_by_clause"
+    set selection "select * from ($sql) s $order_by_clause"
 
 } else {
 
@@ -268,7 +268,7 @@ if {[string compare $letter "ALL"]} {
 		$where_clause
 	"]
     
-    set selection "$sql $order_by_clause"
+    set selection "select * from ($sql) s $order_by_clause"
 
 #    set selection "select z.* from ($limited_query) z $order_by_clause"
 }	
