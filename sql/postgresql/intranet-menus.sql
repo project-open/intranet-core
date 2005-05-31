@@ -883,8 +883,13 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+-- Freelancers and Customers shouldn't see non-"activ" companies,
+-- neither suppliers nor customers, even if it's their own
+-- companies.
+--
+--    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+--    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
 
     v_menu := im_menu__new (
@@ -907,8 +912,10 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+-- Customers & Freelancers see only "active" companies
+--    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+--    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
 
 
@@ -921,7 +928,7 @@ begin
         null,                   -- context_id
         ''intranet-core'',      -- package_name
         ''customers_inactive'',   -- label
-        ''Inctive Customers'',      -- name
+        ''Inactive Customers'',      -- name
         ''/intranet/companies/index?status_id=48&type_id=57'',  -- url
         30,                     -- sort_order
         v_companies_menu,       -- parent_menu_id
@@ -932,8 +939,10 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
-    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
+
+-- Customers & Freelancers see only "active" companies
+--  PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
+--  PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
     return 0;
 end;' language 'plpgsql';
