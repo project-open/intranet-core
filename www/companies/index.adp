@@ -16,6 +16,8 @@
 	    #intranet-core.Filter_Companies#
 	  </td>
 	</tr>
+
+<if @view_companies_all_p@>
 	<tr>
 	  <td>#intranet-core.View_1#  &nbsp;</td>
 	  <td><%= [im_select view_type $view_types ""] %></td>
@@ -24,6 +26,8 @@
 	  <td>#intranet-core.Company_Status_1#  &nbsp;</td>
 	  <td><%= [im_category_select -include_empty_p 1 "Intranet Company Status" status_id $status_id] %></td>
 	</tr>
+</if>
+
 	<tr>
 	  <td>#intranet-core.Company_Type_1#  &nbsp;</td>
 	  <td>
