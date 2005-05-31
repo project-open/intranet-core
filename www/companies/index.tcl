@@ -89,6 +89,14 @@ set letter [string toupper $letter]
 
 set end_idx [expr $start_idx + $how_many - 1]
 
+# Restrict access of unprivileged users to active companies only
+set view_companies_all_p [im_permission $user_id view_companies_all]
+if {!$view_companies_all_p} {
+    set status_id [im_company_status_active]
+    set view_type "mine"
+}
+
+
 # Set the "menu_select_label" for the company navbar:
 # customers_active, customer_inactive and customers_potential
 # depending on type_id and status_id:
