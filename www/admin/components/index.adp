@@ -4,4 +4,8 @@
   <property name="admin_navbar_label">admin_components</property>
 
 <P>
-@component_list_html;noquote@
+<table>
+@table_header;noquote@
+@table;noquote@
+</table>
+

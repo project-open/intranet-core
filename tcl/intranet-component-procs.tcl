@@ -28,6 +28,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 } {
     # Get the ID of the current page
     set full_url [ns_conn url]
+    set user_id [ad_get_user_id]
 
     # Add an "index" to the url_stub if it ends with a "/".
     # This way we simulate the brwoser behavious of showing
@@ -48,9 +49,21 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     #no util_memoize yet while we are developing...
     #set plugin-list [util_memoize "im_component_page_plugins $url_stub"]
 
+    # Check if there is atleast one permission set for im_plugin_components
+    set any_perms_set_p [db_string any_perms_set "
+	select	count(*) 
+	from	acs_permissions ap, 
+		im_profiles p, 
+		im_component_plugins cp 
+	where 
+		ap.object_id = cp.plugin_id 
+		and ap.grantee_id = p.profile_id
+    "]
+
     set plugin_sql "
 select
-	c.*
+	c.*,
+	im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
 from
 	im_component_plugins c
 where
@@ -62,6 +75,10 @@ order by sort_order
 
     set html ""
     db_foreach get_plugins $plugin_sql {
+
+	if {$any_perms_set_p > 0} {
+	    if {"f" == $perm} {	continue }
+	}
 
 	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
 	    append html [uplevel 1 $component_tcl]
