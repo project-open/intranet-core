@@ -104,7 +104,7 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
     set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
 
     # Get basic company information
-    catch {
+    if {[catch {
 	db_1row company_info "
 select 
 	c.*,
@@ -114,7 +114,11 @@ from
 where
 	company_id = :company_id
 "
-    } catch_err
+    } catch_err]} {
+	ad_return_complaint 1 "Bad Company:<br>
+        We can not find information about the specified company."
+	return
+    }
 
 
     # Key Account is also a project manager
