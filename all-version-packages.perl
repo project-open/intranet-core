@@ -7,7 +7,31 @@
 # 2005-05-03 
 # Frank Bergmann <frank.bergmann@project-open.com>
 
-$version = "3.0.0.0.4";
+if (@ARGV != 1) {
+    die "
+all-version-packages: You need to specify exactly one argument.
+Usage:
+	all-version-packages <VersionNumber>
+
+VersionNumber = Maj.Min.Serv.Bug.Intl\n\n"
+}
+
+$version = $ARGV[0];
+
+if ($version =~ /^\d+\.\d+\.\d+\.\d+\.\d+$/) {
+    # Nothing, seems OK
+} else {
+    die "
+all-version-packages: Wrong version number format
+Usage:
+	all-version-packages <VersionNumber>
+
+VersionNumber = Maj.Min.Serv.Bug.Intl\n\n"
+}
+
+print "ver=$version\n";
+exit 0;
+
 $date = `/bin/date +"%Y-%m-%d"`;
 $time = `/bin/date +"%H-%M"`;
 $debug = 0;
