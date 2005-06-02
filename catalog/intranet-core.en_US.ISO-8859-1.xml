@@ -24,7 +24,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">New User</msg>
+  <msg key="Add_a_new_User">Neuer Benutzer</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
@@ -318,13 +318,12 @@
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Import User CSV</msg>
+  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
   <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inctive_Customers">Inctive Customers</msg>
-  <msg key="Inactive_Customers">Inactive Customers</msg>
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Inquiries</msg>
@@ -409,7 +408,7 @@
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
-  <msg key="lt_Change_the_position_o">Change the position of plugin-components or disable components.</msg>
+  <msg key="lt_Change_the_position_o">Enable, disable, change the position and change the access permissions of plugin-components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
@@ -524,7 +523,7 @@ her contributions to the site content.</msg>
   <msg key="lt_make_accounting_conta">make accounting contact</msg>
   <msg key="lt_Make_the_new_client_c">Make the new client contact a %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Make the new client contact a %company_employee_link% %company_name%.</msg>
-  <msg key="lt_Manage_Component_Layo">Manage Component Layout</msg>
+  <msg key="lt_Manage_Component_Layo">Plugin Components</msg>
   <msg key="lt_Manage_Global_System_">Manage Global System Parameters</msg>
   <msg key="lt_Manage_Individual_Use">Manage Individual Users</msg>
   <msg key="lt_Manage_OpenACS_Develo">Manage OpenACS Development</msg>
