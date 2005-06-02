@@ -26,7 +26,7 @@
 -- to find out about its submenus items to display by checking 
 -- the super-menu that points to the page and by selecting
 -- all of its sub-menu-items. However, the develpers needs to
--- avoid multiple "menu pointers" to the same page because
+-- avoid multiple menu pointers to the same page because
 -- this leads to an ambiguity about the supermenu.
 -- These ambiguities are resolved by taking the menu from
 -- the highest possible hierarchy level and then using the
@@ -62,7 +62,7 @@ CREATE TABLE im_menus (
 				-- symbolic name of the menu that cannot be
 				-- changed using the menu editor.
 				-- It cat be used as a constant by TCL pages to
-				-- locate "their" menus.
+				-- locate their menus.
 	label			varchar(200) not null,
 				-- the name that should appear on the tab
 	name			varchar(200) not null,
@@ -256,7 +256,7 @@ begin
     select group_id into v_reg_users from groups where group_name = ''Registered Users'';
 
 
-    -- The "top" menu - the father of all menus.
+    -- The top menu - the father of all menus.
     -- It is not displayed itself and only serves
     -- as a parent_menu_id from ''main'' and ''project''.
     v_top_menu := im_menu__new (
@@ -285,7 +285,7 @@ begin
     PERFORM acs_permission__grant_permission(v_top_menu, v_reg_users, ''read'');
 
 
-    -- The "Main" menu: It''s not displayed itself neither
+    -- The Main menu: It''s not displayed itself neither
     -- but serves as the starting point for the main menu
     -- hierarchy.
     v_main_menu := im_menu__new (
@@ -750,7 +750,7 @@ begin
     from im_menus
     where label=''top'';
 
-    -- The "Project" menu: It''s not displayed itself
+    -- The Project menu: It''s not displayed itself
     -- but serves as the starting point for submenus
     v_project_menu := im_menu__new (
         null,                   -- p_menu_id
@@ -878,14 +878,15 @@ begin
         v_companies_menu,         -- parent_menu_id
         null                    -- p_visible_tcl
     );
+
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_proman, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
 
--- Freelancers and Customers shouldn't see non-"activ" companies,
--- neither suppliers nor customers, even if it's their own
+-- Freelancers and Customers shouldnt see non-activ companies,
+-- neither suppliers nor customers, even if its their own
 -- companies.
 --
 --    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
@@ -913,7 +914,7 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
 
--- Customers & Freelancers see only "active" companies
+-- Customers & Freelancers see only active companies
 --    PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
 --    PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
@@ -940,7 +941,7 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_accounting, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_employees, ''read'');
 
--- Customers & Freelancers see only "active" companies
+-- Customers & Freelancers see only active companies
 --  PERFORM acs_permission__grant_permission(v_menu, v_customers, ''read'');
 --  PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
