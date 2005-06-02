@@ -24,7 +24,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">Neuer Benutzer</msg>
+  <msg key="Add_a_new_User">New User</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
@@ -318,7 +318,7 @@
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
+  <msg key="Import_User_CSV">Import User CSV</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
