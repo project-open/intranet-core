@@ -24,7 +24,7 @@ mkdir -p ${POVER}
 /bin/tar czf ${POVER}/intranet-timesheet-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
 /bin/tar czf ${POVER}/intranet-timesheet2-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet2
 /bin/tar czf ${POVER}/intranet-timesheet2-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet2-invoices
-/bin/tar czf ${POVER}/intranet-timesheet2-tasks-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet-tasks
+/bin/tar czf ${POVER}/intranet-timesheet2-tasks-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet2-tasks
 /bin/tar czf ${POVER}/intranet-trans-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
 /bin/tar czf ${POVER}/intranet-translation-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-translation
 # /bin/tar czf ${POVER}/intranet-trans-quality-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
