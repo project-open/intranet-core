@@ -1,5 +1,5 @@
-#!/bin/csh
-POVER="3.0.0.0.3"
+#!/bin/bash
+POVER="3.0.0.1.1"
 export POVER
 
 mkdir -p ${POVER}
@@ -16,9 +16,15 @@ mkdir -p ${POVER}
 /bin/tar czf ${POVER}/intranet-hr-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-hr
 /bin/tar czf ${POVER}/intranet-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-invoices
 /bin/tar czf ${POVER}/intranet-payments-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-payments
+# /bin/tar czf ${POVER}/intranet-planning-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-planning
+# /bin/tar czf ${POVER}/intranet-procedures-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-procedures
 /bin/tar czf ${POVER}/intranet-riskmanagement-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-riskmanagement
-/bin/tar czf ${POVER}/intranet-timesheet-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
+/bin/tar czf ${POVER}/intranet-search-pg-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-search-pg
 /bin/tar czf ${POVER}/intranet-spam-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-spam
+/bin/tar czf ${POVER}/intranet-timesheet-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet
+/bin/tar czf ${POVER}/intranet-timesheet2-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet2
+/bin/tar czf ${POVER}/intranet-timesheet2-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet2-invoices
+/bin/tar czf ${POVER}/intranet-timesheet2-tasks-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-timesheet-tasks
 /bin/tar czf ${POVER}/intranet-trans-invoices-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-invoices
 /bin/tar czf ${POVER}/intranet-translation-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-translation
 # /bin/tar czf ${POVER}/intranet-trans-quality-${POVER}.apm --exclude='*CVS*' --exclude='*~' intranet-trans-quality
