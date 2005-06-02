@@ -61,7 +61,7 @@ sub update_info_file {
     $filename = $packages_dir . "/" . $module_name . "/" . $module_name . ".info";
     print "update_info_file: filename=$filename\n" if ($debug);
 
-    my $cmd = "cd $packages_dir/$module_name; cp $module_name.info $module_name.$date.$time.info; cvs edit $module_name.info";
+    my $cmd = "cd $packages_dir/$module_name; cvs edit $module_name.info";
     print "update_info_file: cmd=$cmd\n";
     system($cmd);
 
