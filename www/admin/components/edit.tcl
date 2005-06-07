@@ -1,4 +1,4 @@
-# /www/admin/categories/one.tcl
+# /www/admin/components/edit.tcl
 #
 # Copyright (C) 2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -99,7 +99,7 @@ set page_body "
     <TD><input type=text name=sort_order value=$sort_order></TD></TR>
   <TR class=rowodd>
     <TD>URL</TD>
-    <TD>$page_url</TD>
+    <TD><input type=text name=url value=\"$page_url\"></TD>
   </TR>
   <TR class=roweven>
     <TD>Component TLC</TD>

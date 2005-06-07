@@ -25,9 +25,10 @@ ad_page_contract {
   @author frank.bergmann@project-open.com
   @author mai-bee@gmx.net
 } {
-  plugin_id:naturalnum,notnull
-  sort_order:naturalnum,notnull
-  location:notnull
+    plugin_id:naturalnum,notnull
+    sort_order:naturalnum,notnull
+    location:notnull
+    url:trim
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -63,7 +64,8 @@ UPDATE
         im_component_plugins
 SET
         location = :location,
-        sort_order = :sort_order
+        sort_order = :sort_order,
+	page_url = :url
 WHERE
         plugin_id = :plugin_id"
 } errmsg ] {
