@@ -87,7 +87,7 @@
 -- 8000-8999	Intranet Translation Marketplace
 -- 9000-9499	Intranet Material
 -- 9500-9999	Intranet Timesheet Tasks
--- 10000-10999	reserved
+-- 10000-10999	Intranet DynField
 -- 11000-11999	reserved
 -- 12000-12999	reserved
 -- 13000-13999	reserved
