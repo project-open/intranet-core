@@ -24,7 +24,7 @@ ad_page_contract {
 } {
     return_url
     upload_file
-    { profile_id ""}
+    profile_id
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -38,6 +38,11 @@ if {!$user_is_admin_p} {
     return
 }
 
+if {"" == $profile_id || 0 == $profile_id} {
+    ad_return_complaint 1 "Profile not set:<br>
+    you have not specified a value for Profile".
+    return
+}
 
 # Get the file from the user.
 # number_of_bytes is the upper-limit
@@ -236,19 +241,37 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     set secret_answer ""
 
 
-    # Check if the user already exists
-    set found_n [db_string person_count "select count(*) from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
+    # Check if the email already exists
+    # Emails are unique.
+    set found_n 0
+    set user_id [db_string check_email_exists "select party_id from parties where lower(email) = lower(:e_mail_address)" -default 0]
 
-    if {$found_n > 1} {
-	append page_body "<li>'$first_name $last_name': Skipping, because we have found $found_n users with this name.\n"
-	continue
+    if {0 == $user_id} {
+
+	# Checking for equal first+last name.
+	# Names are not unique...
+	set found_n [db_string person_count "
+		select count(*) 
+		from persons 
+		where 	lower(first_names) = lower(:first_name) 
+			and lower(last_name) = lower(:last_name)
+	"]
+	if {$found_n > 1} {
+	    append page_body "<li>'$first_name $last_name': 
+	    Skipping, because we have found $found_n users with this name.\n"
+	    continue
+	}
+
+	if {1 == $found_n} {
+	    set user_id [db_string person_id "select person_id from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
+	}
     }
 
 
     # -------------------------------------------------------
     # Create a new user if necessary
     #
-    if {0 == $found_n} {
+    if {0 == $user_id} {
 
 	# Create a new user
 	set user_id [db_nextval acs_object_id_seq]
@@ -292,7 +315,6 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     # Execute this no matter whether it's a new or an existing user
     #
 
-    set user_id [db_string person_id "select person_id from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
     append page_body "<li>'$first_name $last_name': Updating user\n"
 
     # Add a users_contact record to the user since the 3.0 PostgreSQL
