@@ -7,6 +7,23 @@
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">user</property>
 
+
+<if @reg_req_email_verify@ >
+<h1>WARNING!!</h1>
+<p>
+Your system is configured in such a way that new users will 
+receive an email message to ask them to verify their password.<br>
+This means that all of the new users will receive emails.
+This is probably not what you want.
+</p>
+<p>
+Please go to Admin / Parameters and set "RegistrationRequiresEmailVerificationP"
+to "0".
+</p>
+</if>
+
+
+
 @page_body;noquote@
 
 <table border=0 cellspacing=0 cellpadding=1 width="70%">

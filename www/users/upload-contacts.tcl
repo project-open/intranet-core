@@ -30,6 +30,11 @@ if {!$user_is_admin_p} {
     return
 }
 
+array set main_site [site_node::get -url /]
+set main_site_id $main_site(package_id)
+set reg_req_email_verify [parameter::get -package_id $main_site_id -parameter RegistrationRequiresEmailVerificationP -default 0]
+
+
 set managable_profiles [im_profiles_managable_for_user $user_id]
 set profile_select "<select name=profile_id>\n"
 append profile_select "<option value=\"\">[_ intranet-core.Please_Select]</option>\n"

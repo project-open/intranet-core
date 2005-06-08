@@ -24,6 +24,7 @@ ad_page_contract {
 } {
     return_url
     upload_file
+    profile_id
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -48,8 +49,7 @@ if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
 }
 
 if {[regexp {\.\.} $company_filename]} {
-    set error "Filename contains forbidden characters"
-    ad_returnredirect "/error.tcl?[export_url_vars error]"
+    ad_return_complaint 1 "Filename contains forbidden characters"
 }
 
 if {![file readable $tmp_filename]} {
@@ -59,123 +59,136 @@ Please check the file permissions or contact your system administrator.\n"
     doc_return  200 text/html [im_return_template]
     return
 }
-    
+
 set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
+
+set separator ";"
+ns_log Notice "upload-companies-2: trying separator=$separator"
+
+
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
-set csv_header_fields [im_csv_split $csv_header]
+set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
+
+
+if {$csv_header_len <= 1} {
+    # Probably got the wrong separator
+    set separator ","
+    ns_log Notice "upload-companies-2: changing to separator=$separator"
+    set csv_header_fields [im_csv_split $csv_header $separator]
+    set csv_header_len [llength $csv_header_fields]
+}
 
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    set csv_line_fields [im_csv_split $csv_line ","]
+    set csv_line_fields [im_csv_split $csv_line $separator]
 
     if {"" == $csv_line} {
 	ns_log Notice "skipping empty line"
 	continue
     }
 
+    # Preset values, defined by CSV sheet:
+    set user_id ""
+    set email ""
+    set password ""
+    set last_name ""
+    set registration_date ""
+    set registration_ip ""
+    set user_state ""
+    set company_name ""
 
-	# Preset values, defined by CSV sheet:
-	set user_id ""
-	set email ""
-	set password ""
-	set last_name ""
-	set registration_date ""
-	set registration_ip ""
-	set user_state ""
-	set company_name ""
-
-	set title ""
-	set first_name ""
-	set middle_name ""
-	set last_name ""
-	set suffix ""
-	set company ""
-	set department ""
-	set job_title ""
-	set business_street ""
-	set business_street_2 ""
-	set business_street_3 ""
-	set business_city ""
-	set business_state ""
-	set business_postal_code ""
-	set business_country ""
-	set home_street ""
-	set home_street_2 ""
-	set home_street_3 ""
-	set home_city ""
-	set home_state ""
-	set home_postal_code ""
-	set home_country ""
-	set other_street ""
-	set other_street_2 ""
-	set other_street_3 ""
-	set other_city ""
-	set other_state ""
-	set other_postal_code ""
-	set other_country ""
-	set assistants_phone ""
-	set business_fax ""
-	set business_phone ""
-	set business_phone_2 ""
-	set callback ""
-	set car_phone ""
-	set company_main_phone ""
-	set home_fax ""
-	set home_phone ""
-	set home_phone_2 ""
-	set isdn ""
-	set mobile_phone ""
-	set other_fax ""
-	set other_phone ""
-	set pager ""
-	set primary_phone ""
-	set radio_phone ""
-	set tty_tdd_phone ""
-	set telex ""
-	set account ""
-	set anniversary ""
-	set assistants_name ""
-	set billing_information ""
-	set birthday ""
-	set categories ""
-	set children ""
-	set directory_server ""
-	set e_mail_address ""
-	set e_mail_display_name ""
-	set e_mail_2_address ""
-	set e_mail_2_display_name ""
-	set e_mail_3_address ""
-	set e_mail_3_display_name ""
-	set gender ""
-	set government_id_number ""
-	set hobby ""
-	set initials ""
-	set internet_free_busy ""
-	set keywords ""
-	set language ""
-	set location ""
-	set managers_name ""
-	set mileage ""
-	set notes ""
-	set office_location ""
-	set organizational_id_number ""
-	set po_box ""
-	set priority ""
-	set private ""
-	set profession ""
-	set referred_by ""
-	set sensitivity ""
-	set spouse ""
-	set user_1 ""
-	set user_2 ""
-	set user_3 ""
-	set user_4 ""
-	set web_page ""
+    set title ""
+    set first_name ""
+    set middle_name ""
+    set last_name ""
+    set suffix ""
+    set company ""
+    set department ""
+    set job_title ""
+    set business_street ""
+    set business_street_2 ""
+    set business_street_3 ""
+    set business_city ""
+    set business_state ""
+    set business_postal_code ""
+    set business_country ""
+    set home_street ""
+    set home_street_2 ""
+    set home_street_3 ""
+    set home_city ""
+    set home_state ""
+    set home_postal_code ""
+    set home_country ""
+    set other_street ""
+    set other_street_2 ""
+    set other_street_3 ""
+    set other_city ""
+    set other_state ""
+    set other_postal_code ""
+    set other_country ""
+    set assistants_phone ""
+    set business_fax ""
+    set business_phone ""
+    set business_phone_2 ""
+    set callback ""
+    set car_phone ""
+    set company_main_phone ""
+    set home_fax ""
+    set home_phone ""
+    set home_phone_2 ""
+    set isdn ""
+    set mobile_phone ""
+    set other_fax ""
+    set other_phone ""
+    set pager ""
+    set primary_phone ""
+    set radio_phone ""
+    set tty_tdd_phone ""
+    set telex ""
+    set account ""
+    set anniversary ""
+    set assistants_name ""
+    set billing_information ""
+    set birthday ""
+    set categories ""
+    set children ""
+    set directory_server ""
+    set e_mail_address ""
+    set e_mail_display_name ""
+    set e_mail_2_address ""
+    set e_mail_2_display_name ""
+    set e_mail_3_address ""
+    set e_mail_3_display_name ""
+    set gender ""
+    set government_id_number ""
+    set hobby ""
+    set initials ""
+    set internet_free_busy ""
+    set keywords ""
+    set language ""
+    set location ""
+    set managers_name ""
+    set mileage ""
+    set note ""
+    set office_location ""
+    set organizational_id_number ""
+    set po_box ""
+    set priority ""
+    set private ""
+    set profession ""
+    set referred_by ""
+    set sensitivity ""
+    set spouse ""
+    set user_1 ""
+    set user_2 ""
+    set user_3 ""
+    set user_4 ""
+    set web_page ""
 
     # -------------------------------------------------------
     # Extract variables from the CSV file
@@ -188,15 +201,17 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	set var_name [string tolower $var_name]
 	set var_name [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $var_name]
 	lappend var_name_list $var_name
-	ns_log notice "upload-contacts: varname([lindex $csv_header_fields $j]) = $var_name"
+	ns_log notice "upload-contacts-2: varname([lindex $csv_header_fields $j]) = $var_name"
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
 	if {[string equal "NULL" $var_value]} { set var_value ""}
 	
 	set cmd "set $var_name \"$var_value\""
-	ns_log Notice "cmd=$cmd"
+	ns_log Notice "upload-contacts-2: cmd=$cmd"
 	set result [eval $cmd]
     }
+
+
 
     # Set additional variables not in Outlook
     set password $first_name
@@ -408,5 +423,20 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	    append page_body "<li>'$first_name $last_name': Unable to find the users' company '$company'\n"
 	}
     }
+
+    # -------------------------------------------------------
+    # Deal with the users's profile membership
+    #
+    if {0 != $profile_id} {
+        # Make the user a member of the group (=profile)
+        ns_log Notice "upload-contacts-2: => relation_add $profile_id $user_id"
+        set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
+        db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+        append page_body "<li>'$first_name $last_name': Added to group '$profile_id'.\n"
+    } else {
+        append page_body "<li>'$first_name $last_name': Not adding the user to any group.\n"
+    }
+
+
 }
 

@@ -24,7 +24,8 @@ ad_page_contract {
 } {
     return_url
     upload_file
-} 
+    company_type_id:integer
+}
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Companies CSV"
@@ -59,109 +60,119 @@ Please check the file permissions or contact your system administrator.\n"
     doc_return  200 text/html [im_return_template]
     return
 }
-    
+
 set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
+
+
+set separator ";"
+ns_log Notice "upload-companies-2: trying with separator=$separator"
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
-set csv_header_fields [im_csv_split $csv_header]
+set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
+if {1 == $csv_header_len} {
+    # Probably got the wrong separator
+    set separator ","
+    ns_log Notice "upload-companies-2: changing to separator=$separator"
+    set csv_header_fields [im_csv_split $csv_header $separator]
+    set csv_header_len [llength $csv_header_fields]
+}
 
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    set csv_line_fields [im_csv_split $csv_line ","]
+    set csv_line_fields [im_csv_split $csv_line $separator]
 
     if {"" == $csv_line} {
-	ns_log Notice "skipping empty line"
+	ns_log Notice "upload-companies-2: skipping empty line"
 	continue
     }
+    
 
-
-	# Preset values, defined by CSV sheet:
-	set user_id ""
-	set email ""
-	set password ""
-	set last_name ""
-	set registration_date ""
-	set registration_ip ""
-	set user_state ""
-	set company_name ""
-	set title ""
-	set first_name ""
-	set middle_name ""
-	set last_name ""
-	set suffix ""
-	set company ""
-	set department ""
-	set job_title ""
-	set business_street ""
-	set business_street_2 ""
-	set business_street_3 ""
-	set business_city ""
-	set business_state ""
-	set business_postal_code ""
-	set business_country ""
-	set assistants_phone ""
-	set business_fax ""
-	set business_phone ""
-	set business_phone_2 ""
-	set callback ""
-	set car_phone ""
-	set company_main_phone ""
-	set home_fax ""
-	set home_phone ""
-	set home_phone_2 ""
-	set isdn ""
-	set mobile_phone ""
-	set other_fax ""
-	set other_phone ""
-	set pager ""
-	set primary_phone ""
-	set radio_phone ""
-	set tty_tdd_phone ""
-	set telex ""
-	set account ""
-	set anniversary ""
-	set assistants_name ""
-	set billing_information ""
-	set birthday ""
-	set categories ""
-	set children ""
-	set directory_server ""
-	set e_mail_address ""
-	set e_mail_display_name ""
-	set e_mail_2_address ""
-	set e_mail_2_display_name ""
-	set e_mail_3_address ""
-	set e_mail_3_display_name ""
-	set gender ""
-	set government_id_number ""
-	set hobby ""
-	set initials ""
-	set internet_free_busy ""
-	set keywords ""
-	set language ""
-	set location ""
-	set managers_name ""
-	set mileage ""
-	set notes ""
-	set office_location ""
-	set organizational_id_number ""
-	set po_box ""
-	set priority ""
-	set private ""
-	set profession ""
-	set referred_by ""
-	set sensitivity ""
-	set spouse ""
-	set user_1 ""
-	set user_2 ""
-	set user_3 ""
-	set user_4 ""
-	set web_page ""
-
+    # Preset values, defined by CSV sheet:
+    set user_id ""
+    set email ""
+    set password ""
+    set last_name ""
+    set registration_date ""
+    set registration_ip ""
+    set user_state ""
+    set company_name ""
+    set title ""
+    set first_name ""
+    set middle_name ""
+    set last_name ""
+    set suffix ""
+    set company ""
+    set department ""
+    set job_title ""
+    set business_street ""
+    set business_street_2 ""
+    set business_street_3 ""
+    set business_city ""
+    set business_state ""
+    set business_postal_code ""
+    set business_country ""
+    set assistants_phone ""
+    set business_fax ""
+    set business_phone ""
+    set business_phone_2 ""
+    set callback ""
+    set car_phone ""
+    set company_main_phone ""
+    set home_fax ""
+    set home_phone ""
+    set home_phone_2 ""
+    set isdn ""
+    set mobile_phone ""
+    set other_fax ""
+    set other_phone ""
+    set pager ""
+    set primary_phone ""
+    set radio_phone ""
+    set tty_tdd_phone ""
+    set telex ""
+    set account ""
+    set anniversary ""
+    set assistants_name ""
+    set billing_information ""
+    set birthday ""
+    set categories ""
+    set children ""
+    set directory_server ""
+    set e_mail_address ""
+    set e_mail_display_name ""
+    set e_mail_2_address ""
+    set e_mail_2_display_name ""
+    set e_mail_3_address ""
+    set e_mail_3_display_name ""
+    set gender ""
+    set government_id_number ""
+    set hobby ""
+    set initials ""
+    set internet_free_busy ""
+    set keywords ""
+    set language ""
+    set location ""
+    set managers_name ""
+    set mileage ""
+    set notes ""
+    set office_location ""
+    set organizational_id_number ""
+    set po_box ""
+    set priority ""
+    set private ""
+    set profession ""
+    set referred_by ""
+    set sensitivity ""
+    set spouse ""
+    set user_1 ""
+    set user_2 ""
+    set user_3 ""
+    set user_4 ""
+    set web_page ""
 
     # -------------------------------------------------------
     # Extract variables from the CSV file
@@ -171,16 +182,21 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     for {set j 0} {$j < $csv_header_len} {incr j} {
 
 	set var_name [string trim [lindex $csv_header_fields $j]]
+	if {"" == $var_name} {
+	    # No variable name - probably an empty column
+	    continue
+	}
+
 	set var_name [string tolower $var_name]
 	set var_name [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $var_name]
 	lappend var_name_list $var_name
-	ns_log notice "upload-contacts: varname([lindex $csv_header_fields $j]) = $var_name"
+	ns_log notice "upload-companies-2: varname([lindex $csv_header_fields $j]) = $var_name"
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
 	if {[string equal "NULL" $var_value]} { set var_value ""}
 	
 	set cmd "set $var_name \"$var_value\""
-	ns_log Notice "cmd=$cmd"
+	ns_log Notice "upload-companies-2: cmd=$cmd"
 	set result [eval $cmd]
     }
 
@@ -194,12 +210,8 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	append page_body "<li>Didn't find '$business_country' in the country database. Please enter manually.\n"
     }
 
-    if {![exists_and_not_null office_name]} {
-        set office_name "$company_name [_ intranet-core.Main_Office]"
-    }
-    if {![exists_and_not_null office_path]} {
-        set office_path "$company_path"
-    }
+    set office_name "$company_name [_ intranet-core.Main_Office]"
+    set office_path "$company_path"
 
     # Check if the company already exists
     set found_n [db_string company_count "select count(*) from im_companies where lower(company_name) = lower(:company_name)"]
@@ -234,7 +246,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 		-company_name	$company_name \
 		-company_path	$company_path \
 		-main_office_id	$main_office_id \
-		-company_type_id [im_company_type_other] \
+		-company_type_id $company_type_id \
 		-company_status_id [im_company_status_active]]	
     } else {
 

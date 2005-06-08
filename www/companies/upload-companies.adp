@@ -11,12 +11,18 @@
 <%= [export_form_vars return_url] %>
     <table border=0>
      <tr> 
-	<td align=right>Filename: </td>
+	<td align=right>Filename</td>
 	<td> 
 	  <input type=file name=upload_file size=30>
 	<%= [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."] %>
 	</td>
      </tr>
+      <tr> 
+	<td>Company Type</td>
+	<td> 
+	  <%= [im_company_type_select "company_type_id" 0] %>
+	</td>
+      </tr>
       <tr> 
 	<td></td>
 	<td> 

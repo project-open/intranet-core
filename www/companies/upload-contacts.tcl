@@ -25,6 +25,21 @@ set page_title "Upload Company Contacts CSV"
 
 set context_bar [im_context_bar [list "/intranet/companies/" "Companies"] "Upload CSV"]
 
+
+set managable_profiles [im_profiles_managable_for_user $user_id]
+set profile_select "<select name=profile_id>\n"
+append profile_select "<option value=\"\">[_ intranet-core.Please_Select]</option>\n"
+foreach profile $managable_profiles {
+    set profile_id [lindex $profile 0]
+    set profile_name [lindex $profile 1]
+    append profile_select "\t<option value=\"$profile_id\">$profile_name</option>\n"
+}
+append profile_select "</select>\n"
+
+array set main_site [site_node::get -url /]
+set main_site_id $main_site(package_id)
+set reg_req_email_verify [parameter::get -package_id $main_site_id -parameter RegistrationRequiresEmailVerificationP -default 0]
+
 set page_body "
 <form enctype=multipart/form-data method=POST action=upload-contacts-2.tcl>
 [export_form_vars return_url]
@@ -34,6 +49,13 @@ set page_body "
                         <td> 
                           <input type=file name=upload_file size=30>
                           [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align=right>Profile: </td>
+                        <td>
+                          $profile_select
+[im_gif help "Determine the profile for new users"]
                         </td>
                       </tr>
                       <tr> 
