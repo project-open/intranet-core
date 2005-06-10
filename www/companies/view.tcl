@@ -29,6 +29,8 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
+set user_is_employee_p [im_user_is_employee_p $user_id]
+
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
 set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] "[_ intranet-core.One_company]"]
@@ -270,6 +272,7 @@ if { $admin > 0 } {
 
 
 set company_members [im_group_member_component $company_id $user_id $admin $return_url [im_employee_group_id]]
+if {!$user_is_employee_p} { set company_members "" }
 
 set enable_project_estimates 0
 set also_add_to_group [im_customer_group_id]
