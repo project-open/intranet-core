@@ -24,6 +24,7 @@ ad_page_contract {
 } {
     { category_id:naturalnum 0 }
     { category_type "" }
+    { new_category 0 }
 }
 
 set user_id [ad_maybe_redirect_for_registration]

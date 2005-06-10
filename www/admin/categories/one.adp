@@ -7,7 +7,19 @@
   <tr>
     <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
   </tr>
+
+<if 0 eq @new_category@>
   @category_type_select;noquote@
+</if>
+<else>
+  <td>
+    New Category Type
+  </td>
+  <td>
+    <input type=text name=category_type size=50 value="">
+  </td>
+</else>
+
   <tr>
     <td>#intranet-core.Category_Nr#</td>
     <td><input size=10 name=category_id value="@category_id@"></td>

@@ -31,6 +31,8 @@ set page_title "Categories"
 set context_bar [im_context_bar $page_title]
 set context ""
 
+set new_href "one"
+
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
@@ -48,19 +50,12 @@ group by c.category_type
 order by c.category_type asc" 
 
 
+# ---------------------------------------------------------------
+# Format category type drop-down
+# ---------------------------------------------------------------
+
 set category_select_html "
-<form method=GET action=index.tcl>
-<table border=0 cellpadding=0 cellspacing=0>
-<tr> 
-  <td class=rowtitle align=center>
-    Filter Categories
-  </td>
-  <td class=rowtitle align=center><a href=one>[im_gif new "new category"]</a></td>
-</tr>
-<tr>
-  <td>
-    <select name=select_category_type>
-"
+    <select name=select_category_type>\n"
 
 # Render the "All" categories option
 if {[string equal "All" $select_category_type]} {
@@ -76,13 +71,10 @@ db_foreach select_kategory_types $select_category_types_sql {
 	append category_select_html "<option>$category_type</option>\n"
     }
 }
+
 append category_select_html "
     </select>
-    <input type=submit name=Submit value=go></td>
-</tr>
-</table>
-</form>"
-
+"
 
 # ---------------------------------------------------------------
 # Render Category List
@@ -146,23 +138,15 @@ append category_list_html "</table>"
 
 if {![string equal "All" $select_category_type]} {
     set category_type $select_category_type
+
+    set new_href "one.tcl?[export_url_vars category_type]"
+
     append category_list_html "
 <ul>
-  <a href=\"one.tcl?[export_url_vars category_type]\">
+  <a href=\"$new_href\">
   Add a category
   </a>
 </ul>"
 
 }
 
-
-set page_body "
-[im_admin_navbar]
-$category_select_html
-<P>
-$category_list_html
-"
-
-
-# db_release_unused_handles
-# doc_return  200 text/html [im_return_template]
