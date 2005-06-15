@@ -24,7 +24,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.projop.com/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumberResultsPerPage"  default="50" description="How many lines do we want to show in an index page?"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="10" description="How many characters can the project number have?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="20" description="How many characters can the project number have?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/images/projop-logo.gif" description="System logo that appears in all screens"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
