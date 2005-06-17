@@ -832,6 +832,59 @@ ad_proc im_category_select_multiple { category_type select_name { default "" } {
     return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size multiple]
 }    
 
+
+ad_proc -public template::widget::im_category_tree { element_reference tag_attributes } {
+    Category Tree Widget
+
+    @param category_type The name of the category type (see categories
+           package) for valid choice options.
+
+    The widget takes a tree from the categories package and displays all
+    of its leaves in an indented drop-down box. For details on creating
+    and modifying widgets please see the documentation.
+} {
+    upvar $element_reference element
+    if { [info exists element(custom)] } {
+    	set params $element(custom)
+    } else {
+	return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
+        Please use a Parameter such as: 
+        <tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
+    }
+
+    set category_type_pos [lsearch $params category_type]
+    if { $category_type_pos >= 0 } {
+    	set category_type [lindex $params [expr $category_type_pos + 1]]
+    } else {
+	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
+    }
+
+    array set attributes $tag_attributes
+    set category_html ""
+    set field_name $element(name)
+    set default_value_list $element(values)  	
+    set default_value $element(value)
+
+    if {0} {
+	set debug ""
+	foreach key [array names element] {
+	    set value $element($key)
+	    append debug "$key = $value\n"
+	}
+	ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
+	return
+    }
+
+
+    if { "edit" == $element(mode)} {
+	append category_html [im_category_select $category_type $field_name $default_value]
+    } else {
+	append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+    }
+    return $category_html
+}
+
+
 # usage:
 #   suppose the variable is called "expiration_date"
 #   put "[philg_dateentrywidget expiration_date]" in your form
