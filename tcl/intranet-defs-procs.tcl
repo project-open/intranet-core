@@ -614,6 +614,18 @@ ad_proc im_country_select {select_name {default ""}} {
 }
 
 
+ad_proc im_country_options {} {
+    Return a list of lists with country_code - country_name
+    suitable for ad_form
+} {
+    set sql "select country_name, iso
+	     from country_codes
+	     order by lower(country_name)"
+
+    return [db_list_of_lists country_options $sql]
+}
+
+
 ad_proc im_currency_select {select_name {default ""}} {
     Return a HTML widget that selects a currency code from
     the list of global countries.
