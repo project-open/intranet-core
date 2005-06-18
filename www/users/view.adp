@@ -11,6 +11,21 @@
   <td valign=top>
 
     <%= $user_basic_info_html %>
+
+<if @dynamic_fields_p@>
+    <table cellspacing=0 cellpadding=0>
+    <tr>
+      <td class=rowtitle>
+	Additional Information
+      </td>
+    </tr>
+    <tr><td>
+      <formtemplate id="person_view"></formtemplate>
+    </td></tr>
+    </table>
+    <br>
+</if>
+
     <%= $user_l10n_html %>
     <%= $profile_html %>
     <%= $contact_html %>

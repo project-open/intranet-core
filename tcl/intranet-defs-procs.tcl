@@ -879,7 +879,9 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     if { "edit" == $element(mode)} {
 	append category_html [im_category_select $category_type $field_name $default_value]
     } else {
-	append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+	if {"" != $default_value} {
+	    append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+	}
     }
     return $category_html
 }
