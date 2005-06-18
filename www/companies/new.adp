@@ -7,4 +7,7 @@
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">companies</property>
 
-@page_body;noquote@
+<if @dynamic_fields_p@>
+   <formtemplate id="company"></formtemplate>
+</if>
+

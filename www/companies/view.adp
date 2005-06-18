@@ -9,6 +9,11 @@
   <td valign=top>
 
     @left_column;noquote@
+
+<if @dynamic_fields_p@>
+   <formtemplate id="company_view"></formtemplate>
+</if>
+
     <%= [im_component_bay left] %>
   </td>
   <td valign=top>
