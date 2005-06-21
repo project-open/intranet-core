@@ -862,8 +862,13 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     array set attributes $tag_attributes
     set category_html ""
     set field_name $element(name)
-    set default_value_list $element(values)  	
-    set default_value $element(value)
+
+    set default_value_list $element(values)
+
+    set default_value ""
+    if {[info exists element(value)]} {
+	set default_value $element(values)
+    }
 
     if {0} {
 	set debug ""
