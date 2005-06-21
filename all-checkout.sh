@@ -8,6 +8,7 @@ cvs checkout acs-bootstrap-installer
 cvs checkout acs-content-repository
 cvs checkout acs-core-docs
 cvs checkout acs-datetime
+cvs checkout acs-developer-support
 cvs checkout acs-kernel
 cvs checkout acs-lang
 cvs checkout acs-mail
@@ -18,7 +19,6 @@ cvs checkout acs-subsite
 cvs checkout acs-tcl
 cvs checkout acs-templating
 cvs checkout acs-workflow
-cvs checkout acs_admin_tools
 
 cvs checkout cms
 
@@ -27,11 +27,11 @@ cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-crm-tracking
 cvs checkout intranet-dw-light
+cvs checkout intranet-dynvals
 cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
-cvs checkout intranet-freelance-recruiting
 cvs checkout intranet-hr
 cvs checkout intranet-invoices
 cvs checkout intranet-material
