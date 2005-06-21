@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/users/upload-contacts-2.tcl
+# /packages/intranet-core/www/companies/upload-contacts-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The code is based on ArsDigita ACS 3.4
@@ -28,9 +28,9 @@ ad_page_contract {
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
-set page_title "Upload Users CSV"
+set page_title "Upload Contacts CSV"
 set page_body ""
-set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
+set context_bar [im_context_bar $page_title]
 
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 if {!$user_is_admin_p} {
@@ -60,8 +60,7 @@ if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
 }
 
 if {[regexp {\.\.} $company_filename]} {
-    set error "Filename contains forbidden characters"
-    ad_returnredirect "/error.tcl?[export_url_vars error]"
+    ad_return_complaint 1 "Filename contains forbidden characters"
 }
 
 if {![file readable $tmp_filename]} {
@@ -71,127 +70,137 @@ Please check the file permissions or contact your system administrator.\n"
     doc_return  200 text/html [im_return_template]
     return
 }
-    
+
 set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
+
+set separator ";"
+ns_log Notice "upload-companies-2: trying separator=$separator"
+
+
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
-set csv_header_fields [im_csv_split $csv_header]
-ns_log Notice "upload-contacts-2: csv_header_fields=$csv_header_fields"
+set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
+
+
+if {$csv_header_len <= 1} {
+    # Probably got the wrong separator
+    set separator ","
+    ns_log Notice "upload-companies-2: changing to separator=$separator"
+    set csv_header_fields [im_csv_split $csv_header $separator]
+    set csv_header_len [llength $csv_header_fields]
+}
 
 for {set i 1} {$i < $csv_files_len} {incr i} {
     set csv_line [string trim [lindex $csv_files $i]]
-    ns_log Notice "upload-contacts-2: csv_line=$csv_line"
-
-    set csv_line_fields [im_csv_split $csv_line ","]
-    ns_log Notice "upload-contacts-2: csv_line_fields=$csv_line_fields"
+    set csv_line_fields [im_csv_split $csv_line $separator]
 
     if {"" == $csv_line} {
 	ns_log Notice "skipping empty line"
 	continue
     }
 
+    # Preset values, defined by CSV sheet:
+    set user_id ""
+    set email ""
+    set password ""
+    set last_name ""
+    set registration_date ""
+    set registration_ip ""
+    set user_state ""
+    set company_name ""
 
-	# Preset values, defined by CSV sheet:
-	set user_id ""
-	set email ""
-	set password ""
-	set last_name ""
-	set registration_date ""
-	set registration_ip ""
-	set user_state ""
-	set company_name ""
-
-	set title ""
-	set first_name ""
-	set middle_name ""
-	set last_name ""
-	set suffix ""
-	set company ""
-	set department ""
-	set job_title ""
-	set business_street ""
-	set business_street_2 ""
-	set business_street_3 ""
-	set business_city ""
-	set business_state ""
-	set business_postal_code ""
-	set business_country ""
-	set home_street ""
-	set home_street_2 ""
-	set home_street_3 ""
-	set home_city ""
-	set home_state ""
-	set home_postal_code ""
-	set home_country ""
-	set other_street ""
-	set other_street_2 ""
-	set other_street_3 ""
-	set other_city ""
-	set other_state ""
-	set other_postal_code ""
-	set other_country ""
-	set assistants_phone ""
-	set business_fax ""
-	set business_phone ""
-	set business_phone_2 ""
-	set callback ""
-	set car_phone ""
-	set company_main_phone ""
-	set home_fax ""
-	set home_phone ""
-	set home_phone_2 ""
-	set isdn ""
-	set mobile_phone ""
-	set other_fax ""
-	set other_phone ""
-	set pager ""
-	set primary_phone ""
-	set radio_phone ""
-	set tty_tdd_phone ""
-	set telex ""
-	set account ""
-	set anniversary ""
-	set assistants_name ""
-	set billing_information ""
-	set birthday ""
-	set categories ""
-	set children ""
-	set directory_server ""
-	set e_mail_address ""
-	set e_mail_display_name ""
-	set e_mail_2_address ""
-	set e_mail_2_display_name ""
-	set e_mail_3_address ""
-	set e_mail_3_display_name ""
-	set gender ""
-	set government_id_number ""
-	set hobby ""
-	set initials ""
-	set internet_free_busy ""
-	set keywords ""
-	set language ""
-	set location ""
-	set managers_name ""
-	set mileage ""
-	set notes ""
-	set office_location ""
-	set organizational_id_number ""
-	set po_box ""
-	set priority ""
-	set private ""
-	set profession ""
-	set referred_by ""
-	set sensitivity ""
-	set spouse ""
-	set user_1 ""
-	set user_2 ""
-	set user_3 ""
-	set user_4 ""
-	set web_page ""
+    set title ""
+    set first_name ""
+    set middle_name ""
+    set last_name ""
+    set suffix ""
+    set company ""
+    set department ""
+    set job_title ""
+    set business_street ""
+    set business_street_2 ""
+    set business_street_3 ""
+    set business_city ""
+    set business_state ""
+    set business_postal_code ""
+    set business_country ""
+    set home_street ""
+    set home_street_2 ""
+    set home_street_3 ""
+    set home_city ""
+    set home_state ""
+    set home_postal_code ""
+    set home_country ""
+    set other_street ""
+    set other_street_2 ""
+    set other_street_3 ""
+    set other_city ""
+    set other_state ""
+    set other_postal_code ""
+    set other_country ""
+    set assistants_phone ""
+    set business_fax ""
+    set business_phone ""
+    set business_phone_2 ""
+    set callback ""
+    set car_phone ""
+    set company_main_phone ""
+    set home_fax ""
+    set home_phone ""
+    set home_phone_2 ""
+    set isdn ""
+    set mobile_phone ""
+    set other_fax ""
+    set other_phone ""
+    set pager ""
+    set primary_phone ""
+    set radio_phone ""
+    set tty_tdd_phone ""
+    set telex ""
+    set account ""
+    set anniversary ""
+    set assistants_name ""
+    set billing_information ""
+    set birthday ""
+    set categories ""
+    set children ""
+    set directory_server ""
+    set e_mail_address ""
+    set e_mail_display_name ""
+    set e_mail_2_address ""
+    set e_mail_2_display_name ""
+    set e_mail_3_address ""
+    set e_mail_3_display_name ""
+    set gender ""
+    set government_id_number ""
+    set hobby ""
+    set initials ""
+    set internet_free_busy ""
+    set keywords ""
+    set language ""
+    set location ""
+    set managers_name ""
+    set mileage ""
+    set note ""
+    set notes ""
+    set office_location ""
+    set organizational_id_number ""
+    set po_box ""
+    set priority ""
+    set private ""
+    set profession ""
+    set referred_by ""
+    set sensitivity ""
+    set spouse ""
+    set user_1 ""
+    set user_2 ""
+    set user_3 ""
+    set user_4 ""
+    set web_page ""
 
     # -------------------------------------------------------
     # Extract variables from the CSV file
@@ -210,10 +219,10 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	if {[string equal "NULL" $var_value]} { set var_value ""}
 	append pretty_field_string "$var_name\t\t$var_value\n"
 
-	ns_log notice "upload-contacts: [lindex $csv_header_fields $j] => $var_name => $var_value"
-	
+	ns_log notice "upload-contacts: [lindex $csv_header_fields $j] => $var_name => $var_value"	
+
 	set cmd "set $var_name \"$var_value\""
-	ns_log Notice "cmd=$cmd"
+	ns_log Notice "upload-contacts-2: cmd=$cmd"
 	set result [eval $cmd]
     }
 
@@ -239,7 +248,6 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     regsub -all {[^A-Za-z0-9_]} $screen_name "_" username
     set secret_question ""
     set secret_answer ""
-
 
     # Check if the email already exists
     # Emails are unique.
@@ -276,8 +284,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	# Create a new user
 	set user_id [db_nextval acs_object_id_seq]
 	append page_body "<li>'$first_name $last_name': Creating a new user with ID \#$user_id\n"
-	
-	ns_log Notice "upload-contacts-2: creating new user: first_names=$first_name, last_name=$last_name, email=$email"
+
 	array set creation_info [auth::create_user \
                                          -user_id $user_id \
                                          -verify_password_confirm \
@@ -307,7 +314,6 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 		db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
 	    }
 	}
-
     }
 
     # -------------------------------------------------------
@@ -329,19 +335,16 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     set auth [auth::get_register_authority]
     set user_data [list]
 
-    ns_log Notice "Update Person: person_id=$user_id, first_names=$first_name, last_name=$last_name"
     person::update \
                 -person_id $user_id \
                 -first_names $first_name \
                 -last_name $last_name
 
-    ns_log Notice "Update Parties: party_id=$user_id, url=$web_page, email=$e_mail_address"
     party::update \
                 -party_id $user_id \
                 -url $web_page \
                 -email $e_mail_address
 
-    ns_log Notice "Update User: user_id=$user_id, screen_name $screen_name"
     acs_user::update \
                 -user_id $user_id \
                 -screen_name $screen_name
@@ -354,6 +357,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     if {"" != $other_state} {append note "other_state = $other_state\n" }
     if {"" != $other_postal_code} {append note "other_postal_code = $other_postal_code\n" }
     if {"" != $other_country} {append note "other_country = $other_country\n" }
+
     if {"" != $assistants_phone} {append note "assistants_phone = $assistants_phone\n" }
     if {"" != $title} {append note "title = $title\n" }
     if {"" != $middle_name} {append note "middle_name = $middle_name\n" }
@@ -368,6 +372,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     if {"" != $home_fax} {append note "home_fax = $home_fax\n" }
     if {"" != $home_phone_2} {append note "home_phone_2 = $home_phone_2\n" }
     if {"" != $isdn} {append note "isdn = $isdn\n" }
+
     if {"" != $other_fax} {append note "other_fax = $other_fax\n" }
     if {"" != $other_phone} {append note "other_phone = $other_phone\n" }
     if {"" != $primary_phone} {append note "primary_phone = $primary_phone\n" }
@@ -377,11 +382,14 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     if {"" != $account} {append note "account = $account\n" }
     if {"" != $anniversary && "0/0/00" != $anniversary} {append note "anniversary = $anniversary\n" }
     if {"" != $assistants_name} {append note "assistants_name = $assistants_name\n" }
+
     if {"" != $billing_information} {append note "billing_information = $billing_information\n" }
     if {"" != $birthday && "0/0/00" != $birthday} {append note "birthday = $birthday\n" }
     if {"" != $categories} {append note "categories = $categories\n" }
     if {"" != $children} {append note "children = $children\n" }
     if {"" != $directory_server} {append note "directory_server = $directory_server\n" }
+
+
     if {"" != $e_mail_2_address} {append note "e_mail_2_address = $e_mail_2_address\n" }
     if {"" != $e_mail_3_address} {append note "e_mail_3_address = $e_mail_3_address\n" }
     if {"" != $gender && "Unspecified" != $gender} {append note "gender = $gender\n" }
@@ -409,6 +417,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     if {"" != $user_4} {append note "user_4 = $user_4\n" }
     if {"" != $web_page} {append note "web_page = $web_page\n" }
 
+
     # Get the country code
     set home_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:home_country)" -default ""]
     set business_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:business_country)" -default ""]
@@ -435,7 +444,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	note = $note"
 
 
-    db_dml update_users_contact "    	
+    db_dml update_users_contact "
     update users_contact set 
 	home_phone = :home_phone,
 	work_phone = :business_phone,
@@ -459,7 +468,6 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	user_id = :user_id	
 "
 
-# Fields that we haven't set yet:
 #	aim_screen_name      
 #	msn_screen_name      
 #	icq_number           
@@ -480,33 +488,36 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 		append page_body "<li>'$first_name $last_name': Adding as member to '$company'\n"
 		im_biz_object_add_role $user_id $company_id [im_biz_object_role_full_member]
 	    } else {
-		append page_body "<li>'$first_name $last_name': Is already a member of company '$company'\n"
+		append page_body "<li>'$first_name $last_name': Is already a member of '$company'\n"
 	    }
 
 	} else {
+
 	    set company_name $company
 
 	    set company_type 0
 	    if {$profile_id == [im_profile_customers]} { set company_type_id [im_company_type_customer]}
+	    if {$profile_id == [im_profile_freelancers]} { set company_type_id [im_company_type_freelance]}
 	    set company_status_id [im_company_status_potential]
 
 	    append page_body "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_url_vars user_id company_type_id company_status_id company_name]\">click here to create it</a>.\n"
+
 	}
     }
-
 
     # -------------------------------------------------------
     # Deal with the users's profile membership
     #
-
-    if {"" != $profile_id} {
-	# Make the user a member of the group (=profile)
-	ns_log Notice "upload-contacts-2: => relation_add $profile_id $user_id"
-	set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
-	db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
-	append page_body "<li>'$first_name $last_name': Added to group '$profile_id'.\n"
+    if {0 != $profile_id} {
+        # Make the user a member of the group (=profile)
+        ns_log Notice "upload-contacts-2: => relation_add $profile_id $user_id"
+        set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
+        db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+        append page_body "<li>'$first_name $last_name': Added to group '$profile_id'.\n"
     } else {
-	append page_body "<li>'$first_name $last_name': Not adding the user to any group.\n"
+        append page_body "<li>'$first_name $last_name': Not adding the user to any group.\n"
     }
 
+
 }
+

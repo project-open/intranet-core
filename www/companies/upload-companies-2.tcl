@@ -14,7 +14,6 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    /intranet/companies/upload-contacts-2.tcl
     Read a .csv-file with header titles exactly matching
     the data model and insert the data into "users" and
     "acs_rels".
