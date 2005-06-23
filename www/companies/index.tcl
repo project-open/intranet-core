@@ -38,6 +38,7 @@ ad_page_contract {
     { letter:trim "all" }
     { view_name "company_list" }
     { user_id_from_search:integer 0}
+    { filter_advanced_p:integer 0 }
 }
 
 # ---------------------------------------------------------------
@@ -89,6 +90,8 @@ set letter [string toupper $letter]
 
 set end_idx [expr $start_idx + $how_many - 1]
 
+set criteria [list]
+
 # Restrict access of unprivileged users to active companies only
 set view_companies_all_p [im_permission $user_id view_companies_all]
 if {!$view_companies_all_p} {
@@ -110,6 +113,53 @@ if {$type_id == [im_company_type_customer]} {
 	default { set menu_select_label "" }
     }
 }
+
+# ---------------------------------------------------------------
+# Filter with Dynamic Fields
+# ---------------------------------------------------------------
+
+set dynamic_fields_p 1
+set form_id "company_filter"
+set object_type "im_company"
+set action_url "/intranet/companies/index"
+set form_mode "edit"
+set mine_p_options {{"All" "all"} {"Mine" "mine"}}
+
+ad_form \
+    -name $form_id \
+    -action $action_url \
+    -mode $form_mode \
+    -export {start_idx order_by how_many letter view_name filter_advanced_p} \
+    -form {
+	{mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
+    }
+
+
+if {$view_companies_all_p} {
+
+    ad_form -extend -name $form_id -form {
+        {status_id:text(im_category_tree),optional {label "Status"} {custom {category_type "Intranet Company Status" } } }
+        {type_id:text(im_category_tree),optional {label "Type"} {custom {category_type "Intranet Company Type"} } }
+    }
+
+}
+
+if {[db_table_exists im_dynfield_attributes]} {
+
+    im_dynfield::append_attributes_to_form \
+        -object_type $object_type \
+        -form_id $form_id \
+        -object_id 0
+
+    # Set the form values from the HTTP form variable frame
+    im_dynfield::set_form_values_from_http -form_id $form_id
+
+    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+	-form_id $form_id \
+	-object_type "im_company"
+    ]
+}
+
 
 # ---------------------------------------------------------------
 # 3. Define Table Columns
@@ -147,11 +197,7 @@ db_foreach column_list_sql $column_sql {
 # ---------------------------------------------------------------
 
 # Now let's generate the sql query
-set criteria [list]
-
-set bind_vars [ns_set create]
 if { $status_id > 0 } {
-    ns_set put $bind_vars status_id $status_id
     lappend criteria "c.company_status_id in (
         select  category_id
         from    im_categories
@@ -169,7 +215,6 @@ if { 0 != $user_id_from_search} {
 }
 
 if { $type_id > 0 } {
-    ns_set put $bind_vars type_id $type_id
     lappend criteria "c.company_type_id in (
 	select	category_id
 	from	im_categories
@@ -206,6 +251,21 @@ if { [llength $extra_tables] > 0 } {
 set where_clause [join $criteria " and\n            "]
 if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
+}
+
+
+
+if {[db_table_exists im_dynfield_attributes]} {
+
+    set dynfield_extra_where $extra_sql_array(where)
+    set ns_set_vars $extra_sql_array(bind_vars)
+    set form_vars [util_list_to_ns_set $ns_set_vars]
+    append where_clause "
+	and company_id in $dynfield_extra_where
+    "
+
+#    ad_return_complaint 1 $ns_set_vars
+#    ad_return_complaint 1 $dynfield_extra_where
 }
 
 
@@ -250,6 +310,14 @@ where
 # 5a. Limit the SQL query to MAX rows and provide << and >>
 # ---------------------------------------------------------------
 
+ns_set put $form_vars type_id $type_id
+
+#    ad_return_complaint 1 $where_clause
+#    ad_return_complaint 1 $ns_set_vars
+
+
+
+
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
@@ -274,7 +342,7 @@ if {[string compare $letter "ALL"]} {
         where 
 		1=1
 		$where_clause
-	"]
+	" -bind $form_vars ]
     
     set selection "select * from ($sql) s $order_by_clause"
 
@@ -289,8 +357,10 @@ ns_log Notice $selection
 
 set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
+
     append admin_html "
 	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
+	<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 "
 }
 
@@ -364,7 +434,7 @@ set idx $start_idx
 
 # ad_return_complaint 1 "<pre>$selection</pre>"
 
-db_foreach projects_info_query $selection {
+db_foreach company_info_query $selection -bind $form_vars {
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"

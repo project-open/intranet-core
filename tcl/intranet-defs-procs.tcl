@@ -659,6 +659,7 @@ ad_proc im_category_select {
     {-translate_p 1} 
     {-include_empty_p 0} 
     {-include_empty_name "All"} 
+    {-plain_p 0}
     category_type 
     select_name 
     { default "" } 
@@ -666,6 +667,11 @@ ad_proc im_category_select {
     Returns a formatted "option" widget with hierarchical
     contents
 } {
+
+    if {$plain_p} {
+	return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
+    }
+
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
     ns_log Notice "im_category_select: category_type=$category_type, select_name=$select_name, default=$default"
@@ -802,22 +808,43 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 
 
 
-ad_proc im_category_select_plain { {-translate_p 1} category_type select_name { default "" } } {
+ad_proc im_category_select_plain { {-translate_p 1} {-include_empty_p 0} {-include_empty_name "All"} category_type select_name { default "" } } {
+
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
+    ns_set put $bind_vars include_empty_name $include_empty_name
 
+	set include_empty_p 1
+
+    set include_empty_sql ""
+    if {$include_empty_p} {
+	set include_empty_sql "
+	select
+		null as category_id,
+		:include_empty_name as category,
+		'' as category_description
+	from
+		dual
+	UNION
+	"
+    }
+	
     set sql "
-	select 
-		category_id,
-		category, 
-		category_description
-	from 
-		im_categories		
-	where 
-		category_type = :category_type
+	select *
+	from
+		($include_empty_sql
+		select
+			category_id,
+			category, 
+			category_description
+		from 
+			im_categories		
+		where 
+			category_type = :category_type
+		) c
 	order by lower(category)
     "
- 
+
    return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
 } 
 
@@ -852,11 +879,27 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
         <tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
     }
 
+    # Get the "category_type" parameter that defines which
+    # category to display
     set category_type_pos [lsearch $params category_type]
     if { $category_type_pos >= 0 } {
     	set category_type [lindex $params [expr $category_type_pos + 1]]
     } else {
 	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
+    }
+
+    # Get the "plain_p" parameter to determine if we should
+    # display the categories as an (ordered!) plain list
+    # instead of a hierarchy.
+    #
+    set plain_p 0
+    set plain_p_pos [lsearch $params plain_p]
+    if { $plain_p_pos >= 0 } {
+    	set plain_p [lindex $params [expr $plain_p_pos + 1]]
+    } 
+
+    if {"language" == $element(name)} {
+#	ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
     }
 
     array set attributes $tag_attributes
@@ -882,9 +925,11 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select $category_type $field_name $default_value]
+	append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
+
+
     } else {
-	if {"" != $default_value} {
+	if {"" != $default_value && "\{\}" != $default_value} {
 	    append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
 	}
     }
@@ -919,6 +964,7 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
     set today [lindex [split [ns_localsqltimestamp] " "] 0]
     return [philg_dateentrywidget $column $today]
 }
+
 
 ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name sql select_name { default "" } } {
     Expects selection to have a column named id and another named name. 
@@ -982,7 +1028,7 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
-	if { $translate_p } {
+	if { $translate_p && "" != [lindex $option $option_index]} {
 	    set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
 	} else {
 	    set translated_value [lindex $option $option_index]

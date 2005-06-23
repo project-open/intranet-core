@@ -26,7 +26,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
     @author juanjoruizx@yahoo.es
 } {
-    { company_id:integer 0 }
+    company_id:integer,optional
     { form_mode "edit" }
     { return_url "" }
 }
@@ -131,10 +131,13 @@ if {[db_table_exists im_dynfield_attributes]} {
     set dynamic_fields_p 1
     set form_id "company"
     set object_type "im_company"
+    set my_company_id 0
+    if {[info exists company_id]} { set my_company_id $company_id }
+
 
     im_dynfield::append_attributes_to_form \
 	-object_type $object_type \
         -form_id $form_id \
-        -object_id $company_id
+        -object_id $my_company_id
 }
 
