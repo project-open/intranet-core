@@ -1,55 +1,55 @@
 #!/bin/bash
 
-cvs checkout acs-admin
-cvs checkout acs-api-browser
-cvs checkout acs-authentication
-cvs checkout acs-automated-testing
-cvs checkout acs-bootstrap-installer
-cvs checkout acs-content-repository
-cvs checkout acs-core-docs
-cvs checkout acs-datetime
-cvs checkout acs-developer-support
-cvs checkout acs-kernel
-cvs checkout acs-lang
-cvs checkout acs-mail
-cvs checkout acs-messaging
-cvs checkout acs-reference
-cvs checkout acs-service-contract
-cvs checkout acs-subsite
-cvs checkout acs-tcl
-cvs checkout acs-templating
-cvs checkout acs-workflow
+cvs checkout -r b3-0-0-patches acs-admin
+cvs checkout -r b3-0-0-patches acs-api-browser
+cvs checkout -r b3-0-0-patches acs-authentication
+cvs checkout -r b3-0-0-patches acs-automated-testing
+cvs checkout -r b3-0-0-patches acs-bootstrap-installer
+cvs checkout -r b3-0-0-patches acs-content-repository
+cvs checkout -r b3-0-0-patches acs-core-docs
+cvs checkout -r b3-0-0-patches acs-datetime
+cvs checkout -r b3-0-0-patches acs-developer-support
+cvs checkout -r b3-0-0-patches acs-kernel
+cvs checkout -r b3-0-0-patches acs-lang
+cvs checkout -r b3-0-0-patches acs-mail
+cvs checkout -r b3-0-0-patches acs-messaging
+cvs checkout -r b3-0-0-patches acs-reference
+cvs checkout -r b3-0-0-patches acs-service-contract
+cvs checkout -r b3-0-0-patches acs-subsite
+cvs checkout -r b3-0-0-patches acs-tcl
+cvs checkout -r b3-0-0-patches acs-templating
+cvs checkout -r b3-0-0-patches acs-workflow
 
-cvs checkout cms
+cvs checkout -r b3-0-0-patches cms
 
-cvs checkout intranet-big-brother
-cvs checkout intranet-core
-cvs checkout intranet-cost
-cvs checkout intranet-crm-tracking
-cvs checkout intranet-dw-light
-cvs checkout intranet-dynvals
-cvs checkout intranet-filestorage
-cvs checkout intranet-forum
-cvs checkout intranet-freelance
-cvs checkout intranet-freelance-invoices
-cvs checkout intranet-hr
-cvs checkout intranet-invoices
-cvs checkout intranet-material
-cvs checkout intranet-payments
-cvs checkout intranet-riskmanagement
-cvs checkout intranet-search-pg
-cvs checkout intranet-spam
-cvs checkout intranet-timesheet
-cvs checkout intranet-timesheet2
-cvs checkout intranet-timesheet2-invoices
-cvs checkout intranet-timesheet2-tasks
-cvs checkout intranet-trans-invoices
-cvs checkout intranet-trans-quality
-cvs checkout intranet-translation
-cvs checkout intranet-update-client
-cvs checkout intranet-update-server
-cvs checkout intranet-wiki
+cvs checkout -r b3-0-0-patches intranet-big-brother
+cvs checkout -r b3-0-0-patches intranet-core
+cvs checkout -r b3-0-0-patches intranet-cost
+cvs checkout -r b3-0-0-patches intranet-crm-tracking
+cvs checkout -r b3-0-0-patches intranet-dw-light
+cvs checkout -r b3-0-0-patches intranet-dynvals
+cvs checkout -r b3-0-0-patches intranet-filestorage
+cvs checkout -r b3-0-0-patches intranet-forum
+cvs checkout -r b3-0-0-patches intranet-freelance
+cvs checkout -r b3-0-0-patches intranet-freelance-invoices
+cvs checkout -r b3-0-0-patches intranet-hr
+cvs checkout -r b3-0-0-patches intranet-invoices
+cvs checkout -r b3-0-0-patches intranet-material
+cvs checkout -r b3-0-0-patches intranet-payments
+cvs checkout -r b3-0-0-patches intranet-riskmanagement
+cvs checkout -r b3-0-0-patches intranet-search-pg
+cvs checkout -r b3-0-0-patches intranet-spam
+cvs checkout -r b3-0-0-patches intranet-timesheet
+cvs checkout -r b3-0-0-patches intranet-timesheet2
+cvs checkout -r b3-0-0-patches intranet-timesheet2-invoices
+cvs checkout -r b3-0-0-patches intranet-timesheet2-tasks
+cvs checkout -r b3-0-0-patches intranet-trans-invoices
+cvs checkout -r b3-0-0-patches intranet-trans-quality
+cvs checkout -r b3-0-0-patches intranet-translation
+cvs checkout -r b3-0-0-patches intranet-update-client
+cvs checkout -r b3-0-0-patches intranet-update-server
+cvs checkout -r b3-0-0-patches intranet-wiki
 
-cvs checkout ref-timezones
-cvs checkout search
-cvs checkout wiki
+cvs checkout -r b3-0-0-patches ref-timezones
+cvs checkout -r b3-0-0-patches search
+cvs checkout -r b3-0-0-patches wiki
