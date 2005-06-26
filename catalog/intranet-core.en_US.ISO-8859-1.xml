@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.0.4" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.1.1" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -152,6 +152,7 @@
   <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
   <msg key="Contract_Value">Contract Value</msg>
+  <msg key="Cost_Centers">Cost Centers</msg>
   <msg key="Costa Rica">Costa Rica</msg>
   <msg key="Costa_Rica">Costa Rica</msg>
   <msg key="Costs">Costs</msg>
@@ -408,7 +409,7 @@
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
-  <msg key="lt_Change_the_position_o">Enable, disable, change the position and change the access permissions of plugin-components.</msg>
+  <msg key="lt_Change_the_position_o">Change the position of plugin-components or disable components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
@@ -523,7 +524,7 @@ her contributions to the site content.</msg>
   <msg key="lt_make_accounting_conta">make accounting contact</msg>
   <msg key="lt_Make_the_new_client_c">Make the new client contact a %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Make the new client contact a %company_employee_link% %company_name%.</msg>
-  <msg key="lt_Manage_Component_Layo">Plugin Components</msg>
+  <msg key="lt_Manage_Component_Layo">Manage Component Layout</msg>
   <msg key="lt_Manage_Global_System_">Manage Global System Parameters</msg>
   <msg key="lt_Manage_Individual_Use">Manage Individual Users</msg>
   <msg key="lt_Manage_OpenACS_Develo">Manage OpenACS Development</msg>
@@ -917,6 +918,7 @@ other way for the user to find out.</msg>
   <msg key="South Africa">South Africa</msg>
   <msg key="South_Africa">South Africa</msg>
   <msg key="Spain">Spain</msg>
+  <msg key="Spam_Users">Spam Users</msg>
   <msg key="Standard">Standard</msg>
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">State</msg>
