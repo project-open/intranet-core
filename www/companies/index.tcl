@@ -254,19 +254,47 @@ if { ![empty_string_p $where_clause] } {
 }
 
 
+# Create a ns_set with all local variables in order
+# to pass it to the SQL query
+set form_vars [ns_set create]
+foreach varname [info locals] {
 
+    # Don't consider variables that start with a "_", that
+    # contain a ":" or that are array variables:
+    if {"_" == [string range $varname 0 0]} { continue }
+    if {[regexp {:} $varname]} { continue }
+    if {[array exists $varname]} { continue }
+
+    # Get the value of the variable and add to the form_vars set
+    set value [expr "\$$varname"]
+    ns_set put $form_vars $varname $value
+}
+
+
+# Deal with DynField Vars and add constraint to SQL
+#
 if {[db_table_exists im_dynfield_attributes]} {
 
+    # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
     set ns_set_vars $extra_sql_array(bind_vars)
-    set form_vars [util_list_to_ns_set $ns_set_vars]
+    set tmp_vars [util_list_to_ns_set $ns_set_vars]
+    set tmp_var_size [ns_set size $tmp_vars]
+    for {set i 0} {$i < $tmp_var_size} { incr i } {
+	set key [ns_set key $tmp_vars $i]
+	set value [ns_set get $tmp_vars $key]
+	ns_set put $form_vars $key $value
+    }
+
+    # Add the additional condition to the "where_clause"
     append where_clause "
 	and company_id in $dynfield_extra_where
     "
-
-#    ad_return_complaint 1 $ns_set_vars
-#    ad_return_complaint 1 $dynfield_extra_where
 }
+
+
+
+
 
 
 
@@ -310,13 +338,6 @@ where
 # 5a. Limit the SQL query to MAX rows and provide << and >>
 # ---------------------------------------------------------------
 
-ns_set put $form_vars type_id $type_id
-
-#    ad_return_complaint 1 $where_clause
-#    ad_return_complaint 1 $ns_set_vars
-
-
-
 
 # Limit the search results to N data sets only
 # to be able to manage large sites
@@ -334,6 +355,7 @@ if {[string compare $letter "ALL"]} {
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
     # query results
+
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from
@@ -345,8 +367,6 @@ if {[string compare $letter "ALL"]} {
 	" -bind $form_vars ]
     
     set selection "select * from ($sql) s $order_by_clause"
-
-#    set selection "select z.* from ($limited_query) z $order_by_clause"
 }	
 
 ns_log Notice $selection
