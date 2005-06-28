@@ -62,7 +62,6 @@ Please check the file permissions or contact your system administrator.\n"
 
 set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
-set csv_files_len [llength $csv_files]
 
 
 
@@ -80,15 +79,9 @@ if {1 == $csv_header_len} {
     set csv_header_len [llength $csv_header_fields]
 }
 
-for {set i 1} {$i < $csv_files_len} {incr i} {
-    set csv_line [string trim [lindex $csv_files $i]]
-    set csv_line_fields [im_csv_split $csv_line $separator]
+set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
 
-    if {"" == $csv_line} {
-	ns_log Notice "upload-companies-2: skipping empty line"
-	continue
-    }
-    
+foreach csv_line_fields $values_list_of_lists {
 
     # Preset values, defined by CSV sheet:
     set user_id ""
@@ -202,11 +195,20 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     # Set company name and path.
     # The path has anything strange replaced by "_".
     set company_name $company
+    
+    # -------------------------------------------------------
+    # Empty company_name
+    # => Skip it completely
+    if {[empty_string_p $company_name]} {
+    	append page_body "<li>'$company_name': Skipping, company name can not be empty.\n"
+		continue	
+    }
+    
     set company_path [im_mangle_user_group_name $company_name]
 
     set business_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:business_country)" -default ""]
     if {"" == $business_country_code} {
-	append page_body "<li>Didn't find '$business_country' in the country database. Please enter manually.\n"
+		append page_body "<li>Didn't find '$business_country' in the country database. Please enter manually.\n"
     }
 
     set office_name "$company_name [_ intranet-core.Main_Office]"
@@ -219,8 +221,8 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     # Two or more companies with the same name
     # => Skip it completely
     if {$found_n > 1} {
-	append page_body "<li>'$company_name': Skipping, we have found already $found_n companies with this name. Please check and change the names.\n"
-	continue
+		append page_body "<li>'$company_name': Skipping, we have found already $found_n companies with this name. Please check and change the names.\n"
+		continue
     }
 
     # -------------------------------------------------------

@@ -77,8 +77,6 @@ set csv_files_len [llength $csv_files]
 
 
 set separator ";"
-ns_log Notice "upload-companies-2: trying separator=$separator"
-
 
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
@@ -94,14 +92,9 @@ if {$csv_header_len <= 1} {
     set csv_header_len [llength $csv_header_fields]
 }
 
-for {set i 1} {$i < $csv_files_len} {incr i} {
-    set csv_line [string trim [lindex $csv_files $i]]
-    set csv_line_fields [im_csv_split $csv_line $separator]
+set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
 
-    if {"" == $csv_line} {
-	ns_log Notice "skipping empty line"
-	continue
-    }
+foreach csv_line_fields $values_list_of_lists {
 
     # Preset values, defined by CSV sheet:
     set user_id ""
@@ -227,18 +220,18 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     }
 
     if {"" == $first_name} {
-	ad_return_complaint 1 "We have found an empty 'First Name'.<br>We can not add users with an empty first name, Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-	return
+		ad_return_complaint 1 "We have found an empty 'First Name'.<br>We can not add users with an empty first name, Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
+		return
     }
 
     if {"" == $last_name} {
-	ad_return_complaint 1 "We have found an empty 'Last Name'.<br>We can not add users with an empty last name. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-	return
+		ad_return_complaint 1 "We have found an empty 'Last Name'.<br>We can not add users with an empty last name. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
+		return
     }
 
     if {"" == $e_mail_address} {
-	ad_return_complaint 1 "We have found an empty 'e_mail_address'.<br>We can not add users with an empty email. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-	return
+		ad_return_complaint 1 "We have found an empty 'e_mail_address'.<br>We can not add users with an empty email. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
+		return
     }
 
     # Set additional variables not in Outlook
@@ -269,6 +262,20 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 	    Skipping, because we have found $found_n users with this name.\n"
 	    continue
 	}
+
+
+	# Checking for equal screen name.
+	set found_screen_n [db_string person_count "
+		select count(*) 
+		from users 
+		where lower(screen_name) = lower(:screen_name) 
+	"]
+	if {$found_screen_n > 0} {
+	    append page_body "<li>'$screen_name': 
+	    Skipping, because we have found another user with this screen name.\n"
+	    continue
+	}
+
 
 	if {1 == $found_n} {
 	    set user_id [db_string person_id "select person_id from persons where lower(first_names) = lower(:first_name) and lower(last_name) = lower(:last_name)"]
@@ -321,8 +328,10 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     # Execute this no matter whether it's a new or an existing user
     #
 
-    append page_body "<li>'$first_name $last_name': Updating user\n"
 
+
+    append page_body "<li>'$first_name $last_name': Updating user ... \n"
+    
     # Add a users_contact record to the user since the 3.0 PostgreSQL
     # port, because we have dropped the outer join with it...
     # Execute this separately from creating a new user because there
@@ -344,6 +353,18 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
                 -party_id $user_id \
                 -url $web_page \
                 -email $e_mail_address
+                
+	# Checking for equal screen name.
+	set found_screen_n [db_string person_count "
+		select count(*) 
+		from users 
+		where lower(screen_name) = lower(:screen_name) and user_id != :user_id
+	"]
+	if {$found_screen_n > 0} {
+	    append page_body "
+	    Skipping, because we have found another user with this screen name '$screen_name'.\n"
+	    continue
+	}
 
     acs_user::update \
                 -user_id $user_id \
