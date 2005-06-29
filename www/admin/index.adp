@@ -37,9 +37,6 @@
 	#intranet-core.lt_Here_you_find_advance_1# 
 	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
       <li>
-	<A href=backup/>#intranet-core.lt_Backup_and_Restore_Data#</A><br>
-	#intranet-core.Backup_and_Restore_blurb# 
-      <li>
 	<A href=backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
 	#intranet-core.PostgreSQL_Backup_blurb# 
 
