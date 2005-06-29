@@ -73,16 +73,36 @@ ns_write "</ul>\n<ul>\n"
 
 
 set pgbin [db_get_pgbin]
-
 set dest_file "$path/$today/$filename"
-ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>${pgbin}pg_dump projop -U projop -h localhost -c -O -F p -f $dest_file</tt>\n"
 
-ns_write "</ul>\n"
+global tcl_platform
+set platform [lindex $tcl_platform(platform) 0]
+
 
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path/$today"
-	
-    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
+
+    switch $platform {
+	windows {
+	    # Windows CygWin default
+	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
+	    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
+                      </tt>\n"
+	    ns_write "</ul>\n"
+
+	    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
+	}
+
+	default {
+	    # Probably Linux or some kind of Unix derivate
+	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
+	    exec /usr/bin/pg_dump -c -O -F p -f $dest_file
+                      </tt>\n"
+	    ns_write "</ul>\n"
+
+	    exec pg_dump -c -O -F p -f $dest_file
+	}
+    }
 
 } err_msg] } {
     ns_write "<p>Error writing report to file $path/$today/$filename:<p>
@@ -97,4 +117,3 @@ Finished
 "
 
 ns_write [im_footer]
-
