@@ -72,15 +72,17 @@ if {![file isdirectory "$path/$today"]} {
 ns_write "</ul>\n<ul>\n"
 
 
+set pgbin [db_get_pgbin]
+
 set dest_file "$path/$today/$filename"
-ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>/usr/bin/pg_dump -c -O -F p -f $dest_file</tt>\n"
+ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>${pgbin}pg_dump projop -U projop -h localhost -c -O -F p -f $dest_file</tt>\n"
 
 ns_write "</ul>\n"
 
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path/$today"
 	
-    exec /usr/bin/pg_dump -c -O -F p -f $dest_file
+    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
 
 } err_msg] } {
     ns_write "<p>Error writing report to file $path/$today/$filename:<p>
