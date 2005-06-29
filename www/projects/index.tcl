@@ -43,6 +43,7 @@ ad_page_contract {
     { start_idx:integer 0 }
     { how_many "" }
     { view_name "project_list" }
+    { filter_advanced_p:integer 0 }
 }
 
 # ---------------------------------------------------------------
@@ -160,6 +161,51 @@ db_foreach column_list_sql $column_sql {
 }
 
 # ---------------------------------------------------------------
+# Filter with Dynamic Fields
+# ---------------------------------------------------------------
+
+set dynamic_fields_p 1
+set form_id "project_filter"
+set object_type "im_project"
+set action_url "/intranet/projects/index"
+set form_mode "edit"
+set mine_p_options {{"All" "all"} {"Mine" "mine"}}
+
+#ns_log notice "-----------> '$user_group_name'"
+ad_form \
+    -name $form_id \
+    -action $action_url \
+    -mode $form_mode \
+    -export {start_idx order_by how_many view_name include_subprojects_p letter filter_advanced_p}\
+    -form {
+    	{mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
+    }
+    
+if {[im_permission $current_user_id "view_projects_all"]} {  
+	ad_form -extend -name $form_id -form {
+		{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" }} }
+		{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" }} }
+	}
+}
+if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+
+    im_dynfield::append_attributes_to_form \
+        -object_type $object_type \
+        -form_id $form_id \
+        -object_id 0
+
+    # Set the form values from the HTTP form variable frame
+    im_dynfield::set_form_values_from_http -form_id $form_id
+
+    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+	-form_id $form_id \
+	-object_type $object_type
+    ]
+}
+
+
+
+# ---------------------------------------------------------------
 # 5. Generate SQL Query
 # ---------------------------------------------------------------
 
@@ -236,6 +282,50 @@ set where_clause [join $criteria " and\n            "]
 if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
+
+
+
+# Create a ns_set with all local variables in order
+# to pass it to the SQL query
+set form_vars [ns_set create]
+foreach varname [info locals] {
+
+    # Don't consider variables that start with a "_", that
+    # contain a ":" or that are array variables:
+    if {"_" == [string range $varname 0 0]} { continue }
+    if {[regexp {:} $varname]} { continue }
+    if {[array exists $varname]} { continue }
+
+    # Get the value of the variable and add to the form_vars set
+    set value [expr "\$$varname"]
+    ns_set put $form_vars $varname $value
+}
+
+
+# Deal with DynField Vars and add constraint to SQL
+#
+if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+
+    # Add the DynField variables to $form_vars
+    set dynfield_extra_where $extra_sql_array(where)
+    ns_log notice "-------------------> bind vars $extra_sql_array(bind_vars)"
+    set ns_set_vars $extra_sql_array(bind_vars)
+    set tmp_vars [util_list_to_ns_set $ns_set_vars]
+    set tmp_var_size [ns_set size $tmp_vars]
+    for {set i 0} {$i < $tmp_var_size} { incr i } {
+	set key [ns_set key $tmp_vars $i]
+	set value [ns_set get $tmp_vars $key]
+	ns_set put $form_vars $key $value
+    }
+
+    # Add the additional condition to the "where_clause"
+    append where_clause "
+	and project_id in $dynfield_extra_where
+    "
+    #ad_return_error "error" "$where_clause"
+}
+
+
 
 
 set create_date ""
@@ -366,7 +456,7 @@ if {[string compare $letter "ALL"]} {
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from im_projects p 
-        where 1=1 $where_clause"]
+        where 1=1 $where_clause" -bind $form_vars]
 
     set selection "select z.* from ($limited_query) z $order_by_clause"
 }	
@@ -448,38 +538,9 @@ db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
     append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
 }
-
+append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
 
 set project_filter_html $filter_html
-
-if {"" != $admin_html} {
-    set project_filter_html "
-
-<table border=0 cellpadding=0 cellspacing=0>
-<tr>
-  <td> <!-- TD for the left hand filter HTML -->
-    $filter_html
-  </td> <!-- end of left hand filter TD -->
-  <td>&nbsp;</td>
-  <td valign=top width='30%'>
-    <table border=0 cellpadding=0 cellspacing=0>
-    <tr>
-      <td class=rowtitle align=center>
-        [_ intranet-core.Admin_Projects]
-      </td>
-    </tr>
-    <tr>
-      <td>
-        $admin_html
-      </td>
-    </tr>
-    </table>
-  </td>
-</tr>
-</table>
-"
-}
-
 
 # ---------------------------------------------------------------
 # 7. Format the List Table Header
@@ -530,7 +591,7 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
-db_foreach projects_info_query $selection {
+db_foreach projects_info_query $selection -bind $form_vars {
 
 #    if {"" == $project_id} { continue }
 
