@@ -209,7 +209,6 @@ if {"" != $manager_id } {
     im_biz_object_add_role $manager_id $company_id $role_id
 }
 
-
 db_release_unused_handles
 
 ad_returnredirect $return_url
