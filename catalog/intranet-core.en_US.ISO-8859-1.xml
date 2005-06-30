@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.1.1" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -24,17 +24,19 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">Add a new user</msg>
+  <msg key="Add_a_new_User">Neuer Benutzer</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
   <msg key="Add_Company">Add Company</msg>
   <msg key="Add_member">Add member</msg>
+  <msg key="Add_new_Column">Add new Column</msg>
   <msg key="Add_New_Company">Add New Company</msg>
   <msg key="Add_new_member">Add new member</msg>
   <msg key="Add_New_Office">Add New Office</msg>
   <msg key="Add_New_Project">Add New Project</msg>
   <msg key="Add_New_User">Add New User</msg>
+  <msg key="Add_new_View">Add new View</msg>
   <msg key="Add_office">Add office</msg>
   <msg key="Add_primary_contact">Add primary contact</msg>
   <msg key="Add_subproject">Add subproject</msg>
@@ -131,6 +133,10 @@
   <msg key="Close">Close</msg>
   <msg key="Closed">Closed</msg>
   <msg key="Colombia">Colombia</msg>
+  <msg key="Column_Id">Column Id</msg>
+  <msg key="Column_Name">Column Name</msg>
+  <msg key="Column_render_tcl">Column render tcl</msg>
+  <msg key="Column_sql">Column sql</msg>
   <msg key="Com">Com</msg>
   <msg key="Comments">Comments?</msg>
   <msg key="Companies">Companies</msg>
@@ -152,7 +158,6 @@
   <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
   <msg key="Contract_Value">Contract Value</msg>
-  <msg key="Cost_Centers">Cost Centers</msg>
   <msg key="Costa Rica">Costa Rica</msg>
   <msg key="Costa_Rica">Costa Rica</msg>
   <msg key="Costs">Costs</msg>
@@ -249,6 +254,8 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Export_Companies_CSV">Export Companies CSV</msg>
+  <msg key="Extra_from">Extra from</msg>
+  <msg key="Extra_where">Extra where</msg>
   <msg key="f">f</msg>
   <msg key="Failed_to_nuke">Failed to nuke</msg>
   <msg key="Fax">Fax</msg>
@@ -289,6 +296,7 @@
   <msg key="gr">gr</msg>
   <msg key="Greece">Greece</msg>
   <msg key="Group_administration">Group administration</msg>
+  <msg key="Group_Id">Group Id</msg>
   <msg key="Group_Membership">Group Membership</msg>
   <msg key="Guatemala">Guatemala</msg>
   <msg key="h">h</msg>
@@ -319,7 +327,7 @@
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Import User CSV</msg>
+  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
@@ -409,7 +417,7 @@
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
-  <msg key="lt_Change_the_position_o">Change the position of plugin-components or disable components.</msg>
+  <msg key="lt_Change_the_position_o">Enable, disable, change the position and change the access permissions of plugin-components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
@@ -442,6 +450,7 @@ Best regards,
   <msg key="lt_Dots__in_Project_Path">Dots ('.') in 'Project Path' are not allowed</msg>
   <msg key="lt_Edit_comments_about_y">Edit comments about you</msg>
   <msg key="lt_Edit_menus_and_change">Edit menus and change their permissions.</msg>
+  <msg key="lt_Edit_views_and_change">Edit view and add columns.</msg>
   <msg key="lt_Employeesintranet-fil">Employees</msg>
   <msg key="lt_End_date_must_be_afte">End date must be after start date</msg>
   <msg key="lt_Error_evaluating_comp">Error evaluating component '%plugin_name%' of module '%package_name%'</msg>
@@ -524,7 +533,7 @@ her contributions to the site content.</msg>
   <msg key="lt_make_accounting_conta">make accounting contact</msg>
   <msg key="lt_Make_the_new_client_c">Make the new client contact a %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Make the new client contact a %company_employee_link% %company_name%.</msg>
-  <msg key="lt_Manage_Component_Layo">Manage Component Layout</msg>
+  <msg key="lt_Manage_Component_Layo">Plugin Components</msg>
   <msg key="lt_Manage_Global_System_">Manage Global System Parameters</msg>
   <msg key="lt_Manage_Individual_Use">Manage Individual Users</msg>
   <msg key="lt_Manage_OpenACS_Develo">Manage OpenACS Development</msg>
@@ -718,6 +727,7 @@ other way for the user to find out.</msg>
   <msg key="Malta">Malta</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
+  <msg key="Manage_Views">Manage Views</msg>
   <msg key="Med">Med</msg>
   <msg key="Medium">Medium</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
@@ -738,11 +748,13 @@ other way for the user to find out.</msg>
   <msg key="New Zealand">New Zealand</msg>
   <msg key="new_category">New Category</msg>
   <msg key="new_client_contact">new client contact</msg>
+  <msg key="New_column">New column</msg>
   <msg key="New_Cost">New Cost</msg>
   <msg key="New_Password">New Password</msg>
   <msg key="New_Payment">New Payment</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_User">New User</msg>
+  <msg key="New_view">New view</msg>
   <msg key="New_Zealand">New Zealand</msg>
   <msg key="News">News</msg>
   <msg key="Next_Absence">Next Absence</msg>
@@ -788,6 +800,7 @@ other way for the user to find out.</msg>
   <msg key="OpenACS_platform">OpenACS platform</msg>
   <msg key="or_by">or by</msg>
   <msg key="or_Last_Name">or Last Name</msg>
+  <msg key="Order_by_clause">Order by clause</msg>
   <msg key="Org_Chart">Org Chart</msg>
   <msg key="Other">Other</msg>
   <msg key="Ouch">Ouch!</msg>
@@ -915,10 +928,10 @@ other way for the user to find out.</msg>
   <msg key="Software_Company">Software Company</msg>
   <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Updates">Software Updates</msg>
+  <msg key="Sort_Order">Sort Order</msg>
   <msg key="South Africa">South Africa</msg>
   <msg key="South_Africa">South Africa</msg>
   <msg key="Spain">Spain</msg>
-  <msg key="Spam_Users">Spam Users</msg>
   <msg key="Standard">Standard</msg>
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">State</msg>
@@ -1009,6 +1022,11 @@ other way for the user to find out.</msg>
   <msg key="Venezuela">Venezuela</msg>
   <msg key="View">View</msg>
   <msg key="View_1">View:</msg>
+  <msg key="View_Id">View Id</msg>
+  <msg key="View_Name">View Name</msg>
+  <msg key="View_sql">View sql</msg>
+  <msg key="View_Status">View Status</msg>
+  <msg key="View_Type">View Type</msg>
   <msg key="w">w</msg>
   <msg key="Web_Site">Web Site</msg>
   <msg key="Whos_Online">Who's Online?</msg>
