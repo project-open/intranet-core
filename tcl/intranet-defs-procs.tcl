@@ -833,61 +833,68 @@ ad_proc -public im_category_from_id { category_id } {
 
 
 # Hierarchical category select:
-# Uses the im_category_hierarchy table to determine 
+# Uses the im_category_hierarchy table to determine
 # the hierarchical structure of the category type.
 #
-ad_proc im_category_select { 
-    {-translate_p 1} 
-    {-include_empty_p 0} 
-    {-include_empty_name "All"} 
-    category_type 
-    select_name 
-    { default "" } 
+ad_proc im_category_select {
+    {-translate_p 1}
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-plain_p 0}
+    category_type
+    select_name
+    { default "" }
 } {
     Returns a formatted "option" widget with hierarchical
     contents
 } {
+
+    if {$plain_p} {
+        return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $in\
+clude_empty_name $category_type $select_name $default]
+    }
+
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
     ns_log Notice "im_category_select: category_type=$category_type, select_name=$select_name, default=$default"
 
     set sql "
-	select 
-		category_id,
-		category, 
-		category_description,
-		parent_only_p,
-		enabled_p
-	from 
-		im_categories
-	where 
-		category_type = :category_type
-	order by lower(category)
+        select
+                category_id,
+                category,
+                category_description,
+                parent_only_p,
+                enabled_p
+        from
+                im_categories
+        where
+                category_type = :category_type
+        order by lower(category)
     "
     db_foreach category_select $sql {
-	set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
-	set level($category_id) 0
+        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+        set level($category_id) 0
     }
 
     # Get the hierarchy into a hash cache
     set sql "
-	select 
-		h.parent_id,
-		h.child_id
-	from 
-		im_categories c,
-		im_category_hierarchy h
-	where 
-		c.category_id = h.parent_id
-		and c.category_type = :category_type
-	order by lower(category)
+        select
+                h.parent_id,
+                h.child_id
+        from
+                im_categories c,
+                im_category_hierarchy h
+        where
+                c.category_id = h.parent_id
+                and c.category_type = :category_type
+        order by lower(category)
     "
 
-    # setup maps child->parent and parent->child for 
+    # setup maps child->parent and parent->child for
     # performance reasons
     set children [list]
     db_foreach hierarchy_select $sql {
-	lappend children [list $parent_id $child_id]
+        lappend children [list $parent_id $child_id]
     }
 
 
@@ -895,47 +902,47 @@ ad_proc im_category_select {
     set modified 1
     while {$modified} {
 
-	set modified 0
-	foreach rel $children {
-	    set p [lindex $rel 0]
-	    set c [lindex $rel 1]
-	    set parent_level $level($p)
-	    set child_level $level($c)
-	    
-	    ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
-	    
-	    if {[expr $parent_level+1] > $child_level} {
-		set level($c) [expr $parent_level+1]
-		set direct_parent($c) $p
-		set modified 1
-	    }
-	}
-	incr count
-	if {$count > 1000} { 
-	    ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+        set modified 0
+        foreach rel $children {
+            set p [lindex $rel 0]
+            set c [lindex $rel 1]
+            set parent_level $level($p)
+            set child_level $level($c)
+
+            ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
+
+            if {[expr $parent_level+1] > $child_level} {
+                set level($c) [expr $parent_level+1]
+                set direct_parent($c) $p
+                set modified 1
+            }
+        }
+        incr count
+        if {$count > 1000} {
+            ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
             The category type '$category_type' is badly configured and contains
             and infinite loop. Please notify your system administrator."
-	    return "Infinite Loop Error"
-	}
+            return "Infinite Loop Error"
+        }
     }
 
     set base_level 0
-    
+
     set html ""
     if {$include_empty_p} {
-	append html "<option value=\"\">$include_empty_name</option>\n"
-	if {"" != $include_empty_name} {
-	    incr base_level
-	}
+        append html "<option value=\"\">$include_empty_name</option>\n"
+        if {"" != $include_empty_name} {
+            incr base_level
+        }
     }
 
     foreach p [array names cat] {
-	set p [lindex $cat($p) 0]
-	set p_level $level($p)
+        set p [lindex $cat($p) 0]
+        set p_level $level($p)
 
-	if {0 == $p_level} {
-	    append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
-	}
+        if {0 == $p_level} {
+            append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
+        }
     }
 
     return "
@@ -943,7 +950,8 @@ ad_proc im_category_select {
 $html
 </select>
 "
-} 
+}
+
 
 
 ad_proc im_category_select_branch { parent default level cat_array direct_parent_array } {
@@ -1026,44 +1034,71 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 } {
     upvar $element_reference element
     if { [info exists element(custom)] } {
-    	set params $element(custom)
+        set params $element(custom)
     } else {
-	return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
-        Please use a Parameter such as: 
+        return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
+        Please use a Parameter such as:
         <tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
     }
 
+    # Get the "category_type" parameter that defines which
+    # category to display
     set category_type_pos [lsearch $params category_type]
     if { $category_type_pos >= 0 } {
-    	set category_type [lindex $params [expr $category_type_pos + 1]]
+        set category_type [lindex $params [expr $category_type_pos + 1]]
     } else {
-	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
+        return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
+    }
+
+    # Get the "plain_p" parameter to determine if we should
+    # display the categories as an (ordered!) plain list
+    # instead of a hierarchy.
+    #
+    set plain_p 0
+    set plain_p_pos [lsearch $params plain_p]
+    if { $plain_p_pos >= 0 } {
+        set plain_p [lindex $params [expr $plain_p_pos + 1]]
+    }
+
+    if {"language" == $element(name)} {
+#       ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
     }
 
     array set attributes $tag_attributes
     set category_html ""
     set field_name $element(name)
-    set default_value_list $element(values)  	
-    set default_value $element(value)
+
+    set default_value_list $element(values)
+
+    set default_value ""
+    if {[info exists element(value)]} {
+        set default_value $element(values)
+    }
 
     if {0} {
-	set debug ""
-	foreach key [array names element] {
-	    set value $element($key)
-	    append debug "$key = $value\n"
-	}
-	ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
-	return
+        set debug ""
+        foreach key [array names element] {
+            set value $element($key)
+            append debug "$key = $value\n"
+        }
+        ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
+        return
     }
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select $category_type $field_name $default_value]
+        append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
+$field_name $default_value]
+
+
     } else {
-	append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+        if {"" != $default_value && "\{\}" != $default_value} {
+            append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+        }
     }
     return $category_html
 }
+
 
 
 # usage:
