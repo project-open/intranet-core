@@ -76,22 +76,22 @@ ad_form \
 	{main_office_id:text(hidden)}
 	{company_name:text(text) {label "Company Name"} {html {size 60}}}
 	{company_path:text(text) {label "Company Short Name"} {html {size 40}}}
-	{referral_source:text(text) {label "Referral Source"} {html {size 60}}}
+	{referral_source:text(text),optional {label "Referral Source"} {html {size 60}}}
 	{company_status_id:text(im_category_tree) {label "Company Status"} {custom {category_type "Intranet Company Status" } } }
 	{company_type_id:text(im_category_tree) {label "Company Type"} {custom {category_type "Intranet Company Type"} } }
-	{manager_id:text(select) {label "Key Account"} {options $employee_options} }
+	{manager_id:text(select),optional {label "Key Account"} {options $employee_options} }
 	
-	{phone:text(text) {label "Phone"} {html {size 20}}}
-	{fax:text(text) {label "Fax"} {html {size 20}}}
-	{address_line1:text(text) {label "Address 1"} {html {size 40}}}
-	{address_line2:text(text) {label "Address 2"} {html {size 40}}}
-	{address_city:text(text) {label "City"} {html {size 30}}}
-	{address_postal_code:text(text) {label "ZIP"} {html {size 6}}}
-	{address_country_code:text(select) {label "Country"} {options $country_options} }
-	{site_concept:text(text) {label "Web Site"} {html {size 60}}}
-	{vat_number:text(text) {label "VAT Number"} {html {size 60}}}
-	{annual_revenue_id:text(im_category_tree) {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
-	{note:text(textarea) {label "Note"} {}}
+	{phone:text(text),optional {label "Phone"} {html {size 20}}}
+	{fax:text(text),optional {label "Fax"} {html {size 20}}}
+	{address_line1:text(text),optional {label "Address 1"} {html {size 40}}}
+	{address_line2:text(text),optional {label "Address 2"} {html {size 40}}}
+	{address_city:text(text),optional {label "City"} {html {size 30}}}
+	{address_postal_code:text(text),optional {label "ZIP"} {html {size 6}}}
+	{address_country_code:text(select),optional {label "Country"} {options $country_options} }
+	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
+	{vat_number:text(text),optional {label "VAT Number"} {html {size 60}}}
+	{annual_revenue_id:text(im_category_tree),optional {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
+	{note:text(textarea),optional {label "Note"} {}}
     }
 
 
