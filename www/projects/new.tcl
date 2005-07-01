@@ -41,6 +41,17 @@ set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -p
 set view_finance_p [im_permission $user_id view_finance]
 
 
+if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
+    set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
+}
+
+if {![exists_and_not_null return_url]} {
+    set return_url "[im_url_stub]/projects/index"
+}
+     
+
+
+
 # Make sure the user has the privileges, because this
 # pages shows the list of companies etc.
 if {![im_permission $user_id add_projects]} { 
@@ -131,7 +142,7 @@ template::element::create $form_id project_type_id \
 set help_text "[im_gif help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]"
 if {$user_admin_p} {
 	set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
-	<%= [im_gif new "Add a new project status"] %></A>$help_text"
+	[im_gif new "Add a new project status"]</A>$help_text"
 }
 
 template::element::create $form_id project_status_id \
@@ -169,7 +180,7 @@ if {$view_finance_p} {
 	template::element::create $form_id project_budget_currency -optional \
 		-widget "select"\
 		-datatype "text" \
-		-label "[_ intranet-core.Project_Currency]"\
+		-label "[_ intranet-core.Project_Budget_Currency]"\
 		-options "[im_currency_options]" \
 	     	-after_html "[im_gif help "What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs."]"
 
@@ -190,6 +201,7 @@ template::element::create $form_id description -optional -datatype text\
 
 
 set dynamic_fields_p 0
+set my_project_id 0
 if {[db_table_exists im_dynfield_attributes]} {
 
     set dynamic_fields_p 1
@@ -527,22 +539,18 @@ if {[form is_request $form_id]} {
 	
 }
 	
-	if { [exists_and_not_null project_lead_id] } {
-	
-	    # add the creating current user to the group
-	    relation_add \
-	        -member_state "approved" \
-	        "admin_rel" \
-	        $project_id \
-	        $project_lead_id
-	
-	}
-	
-	
-	if { ![exists_and_not_null return_url] } {
-	    set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
-	}
-	
-	ad_returnredirect $return_url
-
+     if { [exists_and_not_null project_lead_id] } {
+	 
+	 # add the creating current user to the group
+	 relation_add \
+	     -member_state "approved" \
+	     "admin_rel" \
+	     $project_id \
+	     $project_lead_id
+	 
+     }
+     
+     
+     ad_returnredirect $return_url
+     
  }
