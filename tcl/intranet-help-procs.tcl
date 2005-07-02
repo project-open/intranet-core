@@ -36,7 +36,7 @@ Help is available for you in various ways:
 
 <ul>
 <li>
-  <A href=\"http://www.project-open.com/product/modules/\"><B>
+  <A href=\"http://www.project-open.org/product/modules/\"><B>
     Project/Open Feature Overview</b></a>:<br>
   Our web page gives you an overview over the
   different Project/Open modules
