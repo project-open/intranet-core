@@ -19,7 +19,7 @@
         <callbacks>
         </callbacks>
         <parameters>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="C:/ProjectOpen/projop/filestorage/backup" description="Path for backup sets"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="C:/ProjectOpen/filestorage/backup" description="Path for backup sets"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNestedProjectsP"  default="0" description="Do the user need to have projects and subprojects, or does this add too much of complexity?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.projop.com/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
