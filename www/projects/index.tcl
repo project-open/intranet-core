@@ -138,7 +138,9 @@ switch $project_status_id {
 set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
 if {!$view_id } {
     ad_return_complaint 1 "<b>Unknown View Name</b>:<br>
-    The view '$view_name' is not defined. Please notify your system administrator."
+    The view '$view_name' is not defined. <br>
+    Maybe you need to upgrade the database. <br>
+    Please notify your system administrator."
     return
 }
 set column_headers [list]
@@ -434,6 +436,10 @@ set admin_html ""
 
 if {[im_permission $current_user_id "add_projects"]} {
     append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
+}
+
+if {[im_permission $current_user_id "view_finance"]} {
+    append admin_html "<li><a href=/intranet/projects/index?view_name=project_costs>[_ intranet-core.Profit_and_Loss]</a>\n"
 }
 
 set parent_menu_sql "select menu_id from im_menus where label= 'projects_admin'"
