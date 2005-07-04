@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.1.1" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -7,12 +7,14 @@
   <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record</msg>
   <msg key="a">a</msg>
   <msg key="A_-_Test_approved">A - Test approved</msg>
+  <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">About You</msg>
   <msg key="Ac_Counting">Accounting</msg>
   <msg key="Access_denied">Access denied</msg>
   <msg key="Account_Deleted">Account Deleted</msg>
   <msg key="Account_deleted">Account deleted</msg>
   <msg key="Accounting">Accounting</msg>
+  <msg key="accounting">Accounting</msg>
   <msg key="Accounting_contact">Accounting contact</msg>
   <msg key="activate">activate</msg>
   <msg key="Active">Active</msg>
@@ -24,7 +26,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
-  <msg key="Add_a_new_User">Neuer Benutzer</msg>
+  <msg key="Add_a_new_User">New User</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
   <msg key="add_as">add as</msg>
@@ -75,6 +77,7 @@
   <msg key="Appr_Size">Appr Size</msg>
   <msg key="Argentina">Argentina</msg>
   <msg key="Assignments">Assignments</msg>
+  <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Australia">Australia</msg>
   <msg key="Austria">Austria</msg>
@@ -99,17 +102,21 @@
   <msg key="Bosnia and Herzegovina">Bosnia and Herzegovina</msg>
   <msg key="Brazil">Brazil</msg>
   <msg key="Bulgaria">Bulgaria</msg>
+  <msg key="Business">Business</msg>
   <msg key="c">c</msg>
   <msg key="ca_ES">ca_ES</msg>
   <msg key="CAD">CAD</msg>
+  <msg key="Caja_Ahorros_EUR">Caja Ahorros EUR</msg>
   <msg key="Canada">Canada</msg>
   <msg key="Canceled">Canceled</msg>
   <msg key="Cash">Cash</msg>
+  <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categories</msg>
   <msg key="Category">Category</msg>
   <msg key="Category_description">Category description</msg>
   <msg key="Category_name">Category name</msg>
   <msg key="category_name">%category_name%</msg>
+  <msg key="category_name_1">$category_name</msg>
   <msg key="Category_Nr">Category Nr.</msg>
   <msg key="Category_translation">Category translations</msg>
   <msg key="Cell_Phone">Cell Phone</msg>
@@ -158,6 +165,8 @@
   <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
   <msg key="Contract_Value">Contract Value</msg>
+  <msg key="Corel_Catalyst__30">Corel Catalyst 3.0</msg>
+  <msg key="Cost_Centers">Cost Centers</msg>
   <msg key="Costa Rica">Costa Rica</msg>
   <msg key="Costa_Rica">Costa Rica</msg>
   <msg key="Costs">Costs</msg>
@@ -179,12 +188,14 @@
   <msg key="Customer_Documents">Customer Documents</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="Customers">Customers</msg>
+  <msg key="customers">Customers</msg>
   <msg key="CustOrIntl">Cust. or Intl.</msg>
   <msg key="Cyprus">Cyprus</msg>
   <msg key="Czech Republic">Czech Republic</msg>
   <msg key="Czech_Republic">Czech Republic</msg>
   <msg key="d">d</msg>
   <msg key="da">da</msg>
+  <msg key="da_DK">da_DK</msg>
   <msg key="Dangerous">Dangerous!!</msg>
   <msg key="Date">Date</msg>
   <msg key="Day">Day</msg>
@@ -193,6 +204,7 @@
   <msg key="de_DE">de_DE</msg>
   <msg key="Declined">Declined</msg>
   <msg key="Del">Del</msg>
+  <msg key="Delete">Delete</msg>
   <msg key="delete">delete</msg>
   <msg key="Delete_Cost_Center">Delete Cost Center</msg>
   <msg key="Delete_Menu">Delete Menu</msg>
@@ -208,6 +220,7 @@
   <msg key="directory_path">directory path</msg>
   <msg key="Discussion">Discussion</msg>
   <msg key="display">display</msg>
+  <msg key="Dominican Republic">Dominican Republic</msg>
   <msg key="Dominican_Republic">Dominican Republic</msg>
   <msg key="Done">Done</msg>
   <msg key="Download_files">Download files</msg>
@@ -223,6 +236,7 @@
   <msg key="Edit_project">Edit project</msg>
   <msg key="Editing">Editing</msg>
   <msg key="Egypt">Egypt</msg>
+  <msg key="el">el</msg>
   <msg key="El Salvador">El Salvador</msg>
   <msg key="El_Salvador">El Salvador</msg>
   <msg key="Email">Email</msg>
@@ -231,6 +245,7 @@
   <msg key="Employee">Employee</msg>
   <msg key="Employee_Salary">Employee Salary</msg>
   <msg key="Employees">Employees</msg>
+  <msg key="employees">Employees</msg>
   <msg key="en">en</msg>
   <msg key="en_AU">en_AU</msg>
   <msg key="en_CA">en_CA</msg>
@@ -281,8 +296,10 @@
   <msg key="fr_FR">fr_FR</msg>
   <msg key="France">France</msg>
   <msg key="Freelance">Freelance</msg>
+  <msg key="Freelance_Managers">Freelance Managers</msg>
   <msg key="Freelance_Provider">Freelance Provider</msg>
   <msg key="Freelancers">Freelancers</msg>
+  <msg key="freelancers">Freelancers</msg>
   <msg key="Full_Member">Full Member</msg>
   <msg key="Functionality">Functionality</msg>
   <msg key="Future">Future</msg>
@@ -320,6 +337,7 @@
   <msg key="Honduras">Honduras</msg>
   <msg key="Hour">Hour</msg>
   <msg key="HR_Managers">HR Managers</msg>
+  <msg key="hr_managers">HR Managers</msg>
   <msg key="Hungary">Hungary</msg>
   <msg key="i">i</msg>
   <msg key="Iceland">Iceland</msg>
@@ -327,7 +345,7 @@
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
-  <msg key="Import_User_CSV">Benutzerliste (CVS) importieren</msg>
+  <msg key="Import_User_CSV">Import User CSV</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Incident">Incident</msg>
@@ -356,11 +374,14 @@
   <msg key="it_IT">it_IT</msg>
   <msg key="Italy">Italy</msg>
   <msg key="j">j</msg>
+  <msg key="ja">ja</msg>
   <msg key="Japan">Japan</msg>
   <msg key="JPY">JPY</msg>
   <msg key="k">k</msg>
   <msg key="Key_Account">Key Account</msg>
   <msg key="Key_Account_Manager">Key Account Manager</msg>
+  <msg key="Korea  values (North)">Korea  values (North)</msg>
+  <msg key="Korea  values (South)">Korea  values (South)</msg>
   <msg key="Korea_(North)">Korea (North)</msg>
   <msg key="Korea_(South)">Korea (South)</msg>
   <msg key="Korea__values_North">North Korea</msg>
@@ -380,6 +401,7 @@
   <msg key="Lebanon">Lebanon</msg>
   <msg key="Liechtenstein">Liechtenstein</msg>
   <msg key="Linguistic_Val">Linguistic Val.</msg>
+  <msg key="Linux">Linux</msg>
   <msg key="Lit">Lit</msg>
   <msg key="Lithuania">Lithuania</msg>
   <msg key="Loc">Loc</msg>
@@ -404,6 +426,12 @@
   <msg key="lt_Add_a_new_value_range">Add new</msg>
   <msg key="lt_Add_accounting_contac">Add accounting contact</msg>
   <msg key="lt_Add_new_member_to_obj">Add new member to %object_name%</msg>
+  <msg key="lt_Alchemy_Catalyst_31_A">Alchemy Catalyst 3.1 A</msg>
+  <msg key="lt_Alchemy_Catalyst_31_F">Alchemy Catalyst 3.1 F</msg>
+  <msg key="lt_Alchemy_Catalyst_40_A">Alchemy Catalyst 4.0 A</msg>
+  <msg key="lt_Alchemy_Catalyst_40_D">Alchemy Catalyst 4.0 D</msg>
+  <msg key="lt_Alchemy_Catalyst_40_T">Alchemy Catalyst 4.0 T</msg>
+  <msg key="lt_Alchemy_Catalyst_50__">Alchemy Catalyst 5.0</msg>
   <msg key="lt_Alleintranet-timeshee">All</msg>
   <msg key="lt_Allintranet-timesheet">All</msg>
   <msg key="lt_Also_please_make_sure">Also, please make sure that the client isn't defined multiple with similar names.</msg>
@@ -411,6 +439,9 @@
   <msg key="lt_An_optional_field_spe">An optional field specifying the project reference code of the client. Is used when printing the invoice. Example: 20030310A12478</msg>
   <msg key="lt_Anonymize_this_server">Anonymize this server (Test servers only)</msg>
   <msg key="lt_as_if_the_user_him_or">as if the user him or herself had unsubscribed</msg>
+  <msg key="lt_Atril_Dj_Vu_X_Profess">Atril Déjà Vu X Professional</msg>
+  <msg key="lt_Atril_Dj_Vu_X_Standar">Atril Déjà Vu X Standard</msg>
+  <msg key="lt_Atril_Dj_Vu_X_Workgro">Atril Déjà Vu X Workgroup</msg>
   <msg key="lt_Backup_and_Restore_Data">Backup and Restore Data</msg>
   <msg key="lt_Bosnia_and_Herzegovin">Bosnia and Herzegovina</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
@@ -425,6 +456,7 @@
 	can do and what they shouldn't do.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirm Nuking %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Confirm the nuking of</msg>
+  <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
   <msg key="lt_Create_a_new_Discussi">Create a new Discussion</msg>
   <msg key="lt_Create_folder_structu">Create folder structure and create a subproject for each language that you have chosen.</msg>
   <msg key="lt_Create_the_new_folder">Create the new folder structure</msg>
@@ -509,6 +541,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Heuteintranet-timeshe">Today</msg>
   <msg key="lt_How_did_we_get_in_con">How did we get in contact with the company?</msg>
   <msg key="lt_How_many_hours_can_be">How many hours can be logged on this project (both internal and external resource)?</msg>
+  <msg key="lt_IBM_Translation_Workb">IBM Translation Workbench</msg>
   <msg key="lt_If_this_IS_a_TestDemo">If this IS a Test/Demo/Development server, then check '/parameters/*.ini'
     and set the TestDemoDevServer flag to 'true'.</msg>
   <msg key="lt_Import_Company_Contac">Import Company Contact CVS</msg>
@@ -548,6 +581,9 @@ her contributions to the site content.</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV Translation Agency</msg>
   <msg key="lt_Modify_the_access_per">Modify the access permissions for &quot;dynamic variables&quot; or add
 	new dynamic (custom) variables.</msg>
+  <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
+  <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator</msg>
+  <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows</msg>
   <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
   <msg key="lt_New_Customer_Invoice_">New Customer Invoice</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
@@ -597,6 +633,10 @@ site with fake crud.</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in 'Project Name' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in 'Project Nr' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Pat">Quotes in 'Project Path' are not allowed</msg>
+  <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
+  <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
+  <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
+  <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
@@ -605,6 +645,7 @@ site with fake crud.</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
   <msg key="lt_role_name_of_object_n">%role_name% of %object_name%</msg>
+  <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
   <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&quot;lion\&quot; to search for all users from Lionbridge.</msg>
   <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&quot;berg\&quot; to search for all users with a last name containing \&quot;berg\&quot;.</msg>
   <msg key="lt_Search_for_an_account">Search for an account to merge with this one:</msg>
@@ -618,6 +659,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
   <msg key="lt_Software_Company_Comp">Software Company</msg>
   <msg key="lt_Software_Company_Cust">Software Company Customer</msg>
+  <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
   <msg key="lt_Taskintranet-forumTas">Tasks</msg>
   <msg key="lt_The_database_choked_o">The database choked on our update:</msg>
@@ -717,7 +759,9 @@ other way for the user to find out.</msg>
   <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="Luxembourg">Luxembourg</msg>
   <msg key="m">m</msg>
+  <msg key="Mac_OS_X">Mac OS X</msg>
   <msg key="Macedonia">Macedonia</msg>
+  <msg key="Machine_Translation">Machine Translation</msg>
   <msg key="Mail_Failed">Mail Failed</msg>
   <msg key="Main_Menu">Main Menu</msg>
   <msg key="Main_Office">Main Office</msg>
@@ -815,6 +859,12 @@ other way for the user to find out.</msg>
   <msg key="Parent_Project">Parent Project</msg>
   <msg key="Parents">Parents</msg>
   <msg key="Partially_Paid">Partially Paid</msg>
+  <msg key="Pasolo_">Pasolo</msg>
+  <msg key="Pasolo_10">Pasolo 1.0</msg>
+  <msg key="Pasolo_20">Pasolo 2.0</msg>
+  <msg key="Passolo_30">Pasolo 3.0</msg>
+  <msg key="Passolo_35">Pasolo 3.5</msg>
+  <msg key="Passolo_40">Pasolo 4.0</msg>
   <msg key="Password">Password</msg>
   <msg key="Password_Updated">Password Updated</msg>
   <msg key="Past">Past</msg>
@@ -832,6 +882,7 @@ other way for the user to find out.</msg>
   <msg key="Phone">Phone</msg>
   <msg key="Please_Select">Please select</msg>
   <msg key="PO_Admins">P/O Admins</msg>
+  <msg key="po_admins">P/O Admins</msg>
   <msg key="Poland">Poland</msg>
   <msg key="Portrait">Portrait</msg>
   <msg key="Portugal">Portugal</msg>
@@ -856,9 +907,11 @@ other way for the user to find out.</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
   <msg key="Project_Manager">Project Manager</msg>
   <msg key="Project_Managers">Project Managers</msg>
+  <msg key="project_managers">Project Managers</msg>
   <msg key="Project_Members">Project Members</msg>
   <msg key="Project_Name">Project Name</msg>
   <msg key="Project_name">Project name</msg>
+  <msg key="Project_Nr">Project Nr</msg>
   <msg key="Project_nr">Project nr</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Status">Project Status</msg>
@@ -892,7 +945,6 @@ other way for the user to find out.</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
   <msg key="Reply">Reply</msg>
   <msg key="Report_this_error">Report this error</msg>
-  <msg key="Reporting">Reporting</msg>
   <msg key="Request_Error">Request Error</msg>
   <msg key="Return_to">Return to</msg>
   <msg key="Romania">Romania</msg>
@@ -905,12 +957,18 @@ other way for the user to find out.</msg>
   <msg key="S-Line">S-Line</msg>
   <msg key="S-Word">S-Word</msg>
   <msg key="Sales">Sales</msg>
+  <msg key="sales">Sales</msg>
   <msg key="Sales_Office">Sales Office</msg>
   <msg key="Saudi Arabia">Saudi Arabia</msg>
   <msg key="Saudi_Arabia">Saudi Arabia</msg>
   <msg key="Save_Changes">Save Changes</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
+  <msg key="SDLX_4_Elite">SDLX 4 Elite</msg>
+  <msg key="SDLX_4_Professional">SDLX 4 Professional</msg>
+  <msg key="SDLX_4_Standard">SDLX 4 Standard</msg>
+  <msg key="SDLX_2003_Elite">SDLX 2003 Elite</msg>
+  <msg key="SDLX_2003_Standard">SDLX 2003 Standard</msg>
   <msg key="Search">Search</msg>
   <msg key="Search_for_a_user">Search for a user</msg>
   <msg key="Search_for_User">Search for User</msg>
@@ -920,20 +978,29 @@ other way for the user to find out.</msg>
   <msg key="Select_contact">Select contact</msg>
   <msg key="Send_Notification">Send Notification</msg>
   <msg key="Senior_Managers">Senior Managers</msg>
+  <msg key="senior_managers">Senior Managers</msg>
   <msg key="Sick">Sick</msg>
   <msg key="Singapore">Singapore</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
+  <msg key="Size">Size</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
   <msg key="Slovenia">Slovenia</msg>
   <msg key="Software_Company">Software Company</msg>
   <msg key="Software_Development">Software Development</msg>
+  <msg key="Software_Maintenance">Software Maintenance</msg>
   <msg key="Software_Updates">Software Updates</msg>
   <msg key="Sort_Order">Sort Order</msg>
   <msg key="South Africa">South Africa</msg>
   <msg key="South_Africa">South Africa</msg>
   <msg key="Spain">Spain</msg>
+  <msg key="Spam_Members">Spam Members</msg>
+  <msg key="Spam_Users">Spam Users</msg>
   <msg key="Standard">Standard</msg>
+  <msg key="Standard_Quality">Standard Quality</msg>
+  <msg key="Star_Transit_27">Star Transit 2.7</msg>
+  <msg key="Star_Transit_30">Star Transit 3.0</msg>
+  <msg key="Star_Transit_XV">Star Transit XV</msg>
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">State</msg>
   <msg key="Status">Status</msg>
@@ -966,6 +1033,20 @@ other way for the user to find out.</msg>
   <msg key="Timesheet_Cost">Timesheet Cost</msg>
   <msg key="Today">Today</msg>
   <msg key="Top_Menu">Top Menu</msg>
+  <msg key="Trados_3x">Trados 3.x</msg>
+  <msg key="Trados_5x">Trados 5.x</msg>
+  <msg key="Trados_6x">Trados 6.x</msg>
+  <msg key="Trados_30_Freelance">Trados 3.0 Freelance</msg>
+  <msg key="Trados_30_Team">Trados 3.0 Team</msg>
+  <msg key="Trados_50_Freelance">Trados 5.0 Freelance</msg>
+  <msg key="Trados_50_Team">Trados 5.0 Team</msg>
+  <msg key="Trados_55">Trados 5.5</msg>
+  <msg key="Trados_55_LSP">Trados 5.5 LSP</msg>
+  <msg key="Trados_55_Team">Trados 5.5 Team</msg>
+  <msg key="Trados_60_Freelance">Trados 6.0 Freelance</msg>
+  <msg key="Trados_60_LSP">Trados 6.0 LSP</msg>
+  <msg key="Trados_65_Freelance">Trados 6.5 Freelance</msg>
+  <msg key="Trados_MultiTerm_Ix">Trados MultiTerm lx</msg>
   <msg key="Trans-ing">Trans-ing</msg>
   <msg key="Trans__Edit">Trans Edit</msg>
   <msg key="Trans__Edit__Proof">Trans Edit Proof</msg>
@@ -977,6 +1058,7 @@ other way for the user to find out.</msg>
   <msg key="TransIntSpot">Trans+Int.Spotcheck</msg>
   <msg key="Translation_Project">Translation Project</msg>
   <msg key="Transport_Provider">Transport Provider</msg>
+  <msg key="Transweb_Express">Transweb Express</msg>
   <msg key="Travel">Travel</msg>
   <msg key="Travel_Cost">Travel Cost</msg>
   <msg key="Travel_Costs">Travel Costs</msg>
@@ -1030,9 +1112,19 @@ other way for the user to find out.</msg>
   <msg key="View_Type">View Type</msg>
   <msg key="w">w</msg>
   <msg key="Web_Site">Web Site</msg>
+  <msg key="Web_Site_Design">Web Site Design</msg>
   <msg key="Whos_Online">Who's Online?</msg>
   <msg key="Wiki">Wiki</msg>
+  <msg key="Windows_95">Windows 95</msg>
+  <msg key="Windows_98">Windows 98</msg>
+  <msg key="Windows_2000">Windows 2000</msg>
+  <msg key="Windows_Millenium">Windows ME</msg>
+  <msg key="Windows_NT">Windows NT</msg>
+  <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
+  <msg key="Wordfast_2">Wordfast 2</msg>
+  <msg key="Wordfast_3">Wordfast 3</msg>
+  <msg key="Wordfast_4">Wordfast 4</msg>
   <msg key="Work_absences">Work absences</msg>
   <msg key="Work_Address">Work Address</msg>
   <msg key="Work_address">Work address</msg>
@@ -1052,6 +1144,8 @@ other way for the user to find out.</msg>
   <msg key="Your_Current_Timezone">Current timezone</msg>
   <msg key="Yugoslavia">Yugoslavia</msg>
   <msg key="z">z</msg>
+  <msg key="zh_cn">zh_cn</msg>
+  <msg key="zh_tw">zh_tw</msg>
   <msg key="ZIP">ZIP</msg>
   <msg key="ZIP_and_City">ZIP and City</msg>
 </message_catalog>

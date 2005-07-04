@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.1.1" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -108,6 +108,7 @@
   <msg key="Category_description">Kategoriebeschreibung</msg>
   <msg key="Category_name">Kategoriename</msg>
   <msg key="category_name">%category_name%</msg>
+  <msg key="category_name_1">$category_name </msg>
   <msg key="Category_Nr">Kategorienr.</msg>
   <msg key="Category_translation">Kategorie Übersetzungen</msg>
   <msg key="Cell_Phone">Handy</msg>

@@ -357,8 +357,7 @@ if {[string compare $letter "ALL"]} {
     set how_many -1
     set selection "select z.* from ($sql) z $order_by_clause"
 } else {
-#    set limited_query [im_select_row_range $sql $start_idx $end_idx]
-    set limited_query $sql
+    set limited_query [im_select_row_range $sql $start_idx $end_idx]
 
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
@@ -525,10 +524,12 @@ append table_header_html "</tr>\n"
 
 ns_log Notice "/intranet/project/index: Before db_foreach"
 
+# ad_return_complaint 1 "<pre>$selection</pre>"
+
 set table_body_html ""
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
-set ctr 0
+set ctr 1
 set idx $start_idx
 db_foreach projects_info_query $selection {
 
