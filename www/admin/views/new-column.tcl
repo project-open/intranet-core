@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/admin/views/new.tcl
+# /packages/intranet-core/www/admin/views/new-column.tcl
 #
 # Copyright (C) 2003-2004 Project/Open
 #
@@ -54,11 +54,11 @@ ad_form \
     -form {
 		column_id:key(im_view_columns_seq)
 		{column_name:text(text) {label #intranet-core.Column_Name#} }
+		{sort_order:integer(text) {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
 		{column_render_tcl:text(textarea),optional {label #intranet-core.Column_render_tcl#} {html {cols 50 rows 5}}}
 		{extra_select:text(textarea),optional {label #intranet-core.Column_sql#} {html {cols 50 rows 5}}}
 		{extra_from:text(textarea),optional {label #intranet-core.Extra_from#} {html {cols 50 rows 5}}}
 		{extra_where:text(textarea),optional {label #intranet-core.Extra_where#} {html {cols 50 rows 5}}}
-		{sort_order:integer(text) {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
 		{order_by_clause:text(textarea),optional {label #intranet-core.Order_by_clause#} {html {cols 50 rows 5}}}
     }
 

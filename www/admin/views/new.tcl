@@ -139,6 +139,13 @@ if { [exists_and_not_null view_id] } {
 	  sort_order {
 		label "[_ intranet-core.Sort_Order]"
 	  }
+	  attrib_del {
+	  	label ""
+		display_template {
+			<a href="@columns.del_column_url@">#intranet-core.Delete#</a>
+		}
+	  	
+	  }
 	}
 
 	list::create \
@@ -151,7 +158,7 @@ if { [exists_and_not_null view_id] } {
 				return_url
 			}
 
-	db_multirow -extend {column_url} columns get_columns { 
+	db_multirow -extend {column_url del_column_url} columns get_columns { 
 		select vc.column_id,
 			vc.column_name,
 			vc.group_id,
@@ -161,5 +168,6 @@ if { [exists_and_not_null view_id] } {
 		order by vc.column_name
 	} {
 		set column_url [export_vars -base "new-column" {view_id column_id return_url}]
+		set del_column_url [export_vars -base "del-column" {view_id column_id return_url}]
 	}
 }
