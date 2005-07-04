@@ -135,7 +135,12 @@ switch $project_status_id {
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+if {!$view_id } {
+    ad_return_complaint 1 "<b>Unknown View Name</b>:<br>
+    The view '$view_name' is not defined. Please notify your system administrator."
+    return
+}
 set column_headers [list]
 set column_vars [list]
 
