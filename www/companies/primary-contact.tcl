@@ -69,7 +69,7 @@ db_release_unused_handles
 
 if { [empty_string_p $contact_info] } {
     set new_client_contact_link "<A HREF=/intranet/users/new>[_ intranet-core.new_client_contact]</A>"
-    set company_employee_link "<A HREF=/intranet/companies/view?company_id=$company_id>[_ intranet-core.company_employee]</A>"
+    set company_employee_link "<A HREF=\"/intranet/member-add?object_id=$company_id&also_add_to_group_id=461&return_url=/intranet/companies/view?company%5fid=$company_id\">[_ intranet-core.company_employee]</A>"
     set page_body "
 <H3>[_ intranet-core.lt_No_Company_Employees_]</H3>
 [_ intranet-core.lt_We_have_no_contacts_i]<BR>
