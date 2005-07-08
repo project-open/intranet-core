@@ -95,12 +95,15 @@
   <msg key="Belgium">Belgium</msg>
   <msg key="Belize">Belize</msg>
   <msg key="Billable">Billable?</msg>
+  <msg key="Bills">Bills</msg>
   <msg key="Bio">Bio</msg>
   <msg key="Biz">Biz</msg>
   <msg key="Body_Shopping">Body Shopping</msg>
   <msg key="Bolivia">Bolivia</msg>
   <msg key="Bosnia and Herzegovina">Bosnia and Herzegovina</msg>
   <msg key="Brazil">Brazil</msg>
+  <msg key="Budget">Budget</msg>
+  <msg key="Budget_Hours">Budget Hours</msg>
   <msg key="Bulgaria">Bulgaria</msg>
   <msg key="Business">Business</msg>
   <msg key="c">c</msg>
@@ -365,6 +368,7 @@
   <msg key="invoice-englishadp">invoice-englishadp</msg>
   <msg key="invoice-spanishadp">invoice-spanishadp</msg>
   <msg key="Invoiced">Invoiced</msg>
+  <msg key="Invoices">Invoices</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Iraq</msg>
   <msg key="Ireland">Ireland</msg>
@@ -875,6 +879,7 @@ other way for the user to find out.</msg>
   <msg key="Payed">Payed</msg>
   <msg key="Payments">Payments</msg>
   <msg key="PayPal">PayPal</msg>
+  <msg key="Perc_Compl">% Compl.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
   <msg key="Personal">Personal</msg>
   <msg key="Peru">Peru</msg>
@@ -895,14 +900,18 @@ other way for the user to find out.</msg>
   <msg key="Potential_Customers">Potential Customers</msg>
   <msg key="Potential_Freelancer">Potential Freelancer</msg>
   <msg key="Pre-revenue">Pre-revenue</msg>
+  <msg key="Prelim_Profit">Prelim Profit</msg>
   <msg key="Premium_Quality">Premium Quality</msg>
   <msg key="Primary_contact">Primary contact</msg>
   <msg key="Profile">Profile</msg>
   <msg key="Profiles">Profiles</msg>
+  <msg key="Profit">Profit</msg>
+  <msg key="Profit_and_Loss">Profit &amp; Loss</msg>
   <msg key="Project">Project#</msg>
   <msg key="Project_">Project Nr.</msg>
   <msg key="Project_Base_Data">Project Base Data</msg>
   <msg key="Project_Budget">Project Budget</msg>
+  <msg key="Project_Budget_Currency">Project Budget Currency</msg>
   <msg key="Project_Budget_Hours">Project Budget Hours</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
   <msg key="Project_Manager">Project Manager</msg>
@@ -936,6 +945,7 @@ other way for the user to find out.</msg>
   <msg key="Quote">Quote</msg>
   <msg key="Quote_Out">Quote Out</msg>
   <msg key="Quote_out">Quote out</msg>
+  <msg key="Quotes">Quotes</msg>
   <msg key="Quoting">Quoting</msg>
   <msg key="r">r</msg>
   <msg key="Recent_Registrations">Recent Registrations</msg>
@@ -994,6 +1004,7 @@ other way for the user to find out.</msg>
   <msg key="South Africa">South Africa</msg>
   <msg key="South_Africa">South Africa</msg>
   <msg key="Spain">Spain</msg>
+  <msg key="Spam">Spam</msg>
   <msg key="Spam_Members">Spam Members</msg>
   <msg key="Spam_Users">Spam Users</msg>
   <msg key="Standard">Standard</msg>
@@ -1030,6 +1041,9 @@ other way for the user to find out.</msg>
   <msg key="Test_received">Test received</msg>
   <msg key="Test_sent">Test sent</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
+  <msg key="Time_plan">Time plan</msg>
+  <msg key="Time_sheet">Time sheet</msg>
+  <msg key="Timesheet">Timesheet</msg>
   <msg key="Timesheet_Cost">Timesheet Cost</msg>
   <msg key="Today">Today</msg>
   <msg key="Top_Menu">Top Menu</msg>
