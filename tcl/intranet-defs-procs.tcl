@@ -1135,9 +1135,9 @@ ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name s
     defaulted to $default 
 } {
     set result "<select name=\"$select_name\">"
-    if {[string equal $default ""]} {
-	append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
-    }
+    
+    append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
+    
     append result "
 [db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
