@@ -94,8 +94,10 @@ if {$csv_header_len <= 1} {
 
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
 
+set linecount 0
 foreach csv_line_fields $values_list_of_lists {
-
+    incr linecount
+    
     # Preset values, defined by CSV sheet:
     set user_id ""
     set email ""
@@ -178,8 +180,8 @@ foreach csv_line_fields $values_list_of_lists {
     set location ""
     set managers_name ""
     set mileage ""
-    set note ""
     set notes ""
+    set note ""
     set office_location ""
     set organizational_id_number ""
     set po_box ""
@@ -220,18 +222,24 @@ foreach csv_line_fields $values_list_of_lists {
     }
 
     if {"" == $first_name} {
-		ad_return_complaint 1 "We have found an empty 'First Name'.<br>We can not add users with an empty first name, Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-		return
+	append page_body "<li>We have found an empty 'First Name' in line $linecount.<br>
+        We can not add users with an empty first name, Please correct the CSV file.
+        <br><pre>$pretty_field_string</pre>"
+	continue
     }
 
     if {"" == $last_name} {
-		ad_return_complaint 1 "We have found an empty 'Last Name'.<br>We can not add users with an empty last name. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-		return
+	append page_body "<li>We have found an empty 'Last Name' in line $linecount.<br>
+        We can not add users with an empty last name. Please correct the CSV file.<br>
+        <pre>$pretty_field_string</pre>"
+	continue
     }
 
     if {"" == $e_mail_address} {
-		ad_return_complaint 1 "We have found an empty 'e_mail_address'.<br>We can not add users with an empty email. Please correct the CSV file.<br><pre>$pretty_field_string</pre>"
-		return
+	append page_body "<li>We have found an empty 'e_mail_address' in line $linecount.<br>
+        We can not add users with an empty email. Please correct the CSV file.<br>
+        <pre>$pretty_field_string</pre>"
+	continue
     }
 
     # Set additional variables not in Outlook
@@ -370,7 +378,7 @@ foreach csv_line_fields $values_list_of_lists {
                 -user_id $user_id \
                 -screen_name $screen_name
 
-    set note ""
+    if {"" != $notes} {append note "$notes\n" }
     if {"" != $other_street} {append note "other_street = $other_street\n" }
     if {"" != $other_street_2} {append note "other_street_2 = $other_street_2\n" }
     if {"" != $other_street_3} {append note "other_street_3 = $other_street_3\n" }
