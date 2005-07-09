@@ -239,26 +239,6 @@ ad_form -extend -name register -on_request {
 
 #	20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
 #    db_transaction {
-
-
-    # Store dynamic fields
-    if {[db_table_exists im_dynfield_attributes]} {
-
-	set form_id "register"
-	set object_type "person"
-
-	im_dynfield::append_attributes_to_form \
-	    -object_type $object_type \
-	    -form_id $form_id \
-	    -object_id $user_id
-	
-	im_dynfield::attribute_store \
-	    -object_type $object_type \
-	    -object_id $user_id \
-	    -form_id $form_id
-	
-    }
-
 	
 	# Do we create a new user or do we edit an existing one?
 	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
@@ -502,6 +482,28 @@ ad_form -extend -name register -on_request {
 	}
     }
     
+
+
+    # Store dynamic fields
+    if {[db_table_exists im_dynfield_attributes]} {
+
+	set form_id "register"
+	set object_type "person"
+
+	im_dynfield::append_attributes_to_form \
+	    -object_type $object_type \
+	    -form_id $form_id \
+	    -object_id $user_id
+	
+	im_dynfield::attribute_store \
+	    -object_type $object_type \
+	    -object_id $user_id \
+	    -form_id $form_id
+	
+    }
+
+
+
 } -after_submit {
 
     if {!$editing_existing_user} {

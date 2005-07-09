@@ -400,6 +400,7 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 set sql "
 select
 	u.*,
+	to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
 	to_char(o.creation_date,:date_format) as creation_date,
 	p.email,
 	im_name_from_user_id(u.user_id) as name

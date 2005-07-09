@@ -73,7 +73,7 @@ template::form::create $form_id
 template::form::section $form_id "[_ intranet-core.Project_Base_Data] [im_gif help "To avoid duplicate projects and to determine where the project data are stored on the local file server"]"
 template::element::create $form_id project_id -widget "hidden"
 template::element::create $form_id supervisor_id -widget "hidden" -optional
-template::element::create $form_id requires_report_p -widget "hidden" -optional
+template::element::create $form_id requires_report_p -widget "hidden" -optional -datatype text
 template::element::create $form_id return_url -widget "hidden" -optional -datatype text
 template::element::create $form_id project_name -datatype text\
 	-label "[_ intranet-core.Project_Name]" \
@@ -105,7 +105,7 @@ if {$enable_nested_projects_p} {
 #
 
 set customer_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
-set customer_list_options [concat $customer_options [im_company_options 0]]
+set customer_list_options [concat $customer_options [im_company_options -include_empty 0 -status "Active" -type "CustOrIntl"]]
 set help_text "[im_gif help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]"
 if {$user_admin_p} {
 	set  help_text "<A HREF='/intranet/companies/new'>[im_gif new "Add a new client"]</A> $help_text"
@@ -530,10 +530,10 @@ if {[form is_request $form_id]} {
 	
 	if {[db_table_exists im_dynfield_attributes]} {
 	
-	    ns_log Notice "companies/new: before attribute_store"
+	    ns_log Notice "companies/new: before attribute_store: object_type=$object_type, object_id=$company_id, form_id=$form_id"
 	    im_dynfield::attribute_store \
 		-object_type $object_type \
-		-object_id $company_id \
+		-object_id $my_project_id \
 		-form_id $form_id
 	    ns_log Notice "companies/new-2: after attribute_store"
 	

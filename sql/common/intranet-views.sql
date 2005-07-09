@@ -413,7 +413,7 @@ extra_select, extra_where, sort_order, visible_for) values (1310,13,NULL,'Creati
 '$creation_date','','',10,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1315,13,NULL,'Last Visit',
-'$last_visit','','',15,'');
+'$last_visit_formatted','','',15,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1320,13,NULL,'Name',
 '<a href=$user_view_page?user_id=$user_id>$name</a>','','',20,'');
