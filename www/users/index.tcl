@@ -93,6 +93,7 @@ switch [string tolower $user_group_name] {
     }
     "unregistered" { 
     	set user_group_id -1 
+	set menu_select_label "users_unassigned"
     }
     default {
     	# Search for the right group name.

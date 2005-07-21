@@ -10,6 +10,8 @@ switch $view_name {
     "" { set menu_label "project_summary" }
     "files" { set menu_label "project_files" }
     "finance" { set menu_label "project_finance" }
+    "standard" { set menu_label "project_standard" }
+    "" { set menu_label "project_standard" }
 }
 %>
 

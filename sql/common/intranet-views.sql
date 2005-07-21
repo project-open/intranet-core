@@ -162,10 +162,10 @@ extra_select, extra_where, sort_order, visible_for) values (2213,22,NULL,'Status
 '$project_status','','',14,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2215,22,NULL,'Start Date',
-'$start_date','','',15,'');
+'$start_date_formatted','','',15,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2217,22,NULL,'Delivery Date',
-'$end_date','','',16,'');
+'$end_date_formatted','','',16,'');
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2219,22,NULL,'Create',
 '$create_date','','',17,'');
@@ -221,11 +221,11 @@ extra_select, extra_where, sort_order, visible_for) values (2013,20,NULL,'Projec
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2015,20,NULL,'Start Date',
-'$start_date','','',8,'');
+'$start_date_formatted','','',8,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2017,20,NULL,'Delivery Date',
-'$end_date','','',9,'');
+'$end_date_formatted','','',9,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status',
