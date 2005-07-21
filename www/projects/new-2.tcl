@@ -133,7 +133,9 @@ if [info exists end(date)] {
 
 # check for a valid time
 set end_date_time "00:00"
+
 if [info exists end_time(time)] {
+
     if { ![regexp {[0-9][0-9]\:[0-9][0-9]$} $end_time(time)] } {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_Invalid_time_format_e]"
     }
@@ -253,13 +255,10 @@ update im_projects set
 	percent_completed = :percent_completed,
 	on_track_status_id =:on_track_status_id,
 	start_date =	:start_date,
-	end_date =	to_date('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')
+	end_date =	to_timestamp('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')
 where
 	project_id = :project_id
 "
-
-#    ad_return_complaint 1 "Test:<br>end_time=$end_date_time"
-
 
     db_dml project_update $project_update_sql
 
