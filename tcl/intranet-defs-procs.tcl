@@ -818,7 +818,7 @@ ad_proc im_currency_select {select_name {default ""}} {
 	     where supported_p='t'
 	     order by lower(currency_name)"
 
-    return [im_selection_to_select_box -translate_p 1 $bind_vars $statement_name $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars $statement_name $sql $select_name $default]
 }
 
 
