@@ -468,7 +468,7 @@ ad_form -extend -name register -on_request {
     if {!$editing_existing_user} {
 	if { ![empty_string_p $next_url] } {
 	    # Add user_id and account_message to the URL
-	    ad_returnredirect [export_vars -base $next_url {user_id password {account_message $creation_info(account_message)}}]
+	    ad_returnredirect [export_vars -base $next_url {user_id password return_url {account_message $creation_info(account_message)}}]
 	    ad_script_abort
 	}
     }

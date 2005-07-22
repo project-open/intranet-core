@@ -26,6 +26,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set page_title "[_ intranet-core.Add_primary_contact]"
 set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
+set return_url [im_url_with_query]
 
 set company_name [db_string company_name {
 select
@@ -68,19 +69,19 @@ db_release_unused_handles
 
 
 if { [empty_string_p $contact_info] } {
-    set new_client_contact_link "<A HREF=/intranet/users/new>[_ intranet-core.new_client_contact]</A>"
+    set new_client_contact_link "<A HREF=/intranet/users/new?[export_url_vars return_url]>[_ intranet-core.new_client_contact]</A>"
     set company_employee_link "<A HREF=\"/intranet/member-add?object_id=$company_id&also_add_to_group_id=461&return_url=/intranet/companies/view?company%5fid=$company_id\">[_ intranet-core.company_employee]</A>"
     set page_body "
 <H3>[_ intranet-core.lt_No_Company_Employees_]</H3>
 [_ intranet-core.lt_We_have_no_contacts_i]<BR>
-<UL>
+<OL>
   <LI>[_ intranet-core.lt_Please_create_a_new_c_1].
 
   <LI>[_ intranet-core.lt_Make_the_new_client_c_1]
 
   <LI>[_ intranet-core.lt_Finally_revisit_this_]
 
-</UL>
+</OL>
 
 [_ intranet-core.lt_Also_please_make_sure]
 "

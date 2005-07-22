@@ -10,14 +10,16 @@
 
 <p>
 <form method="post" action="user-add-3">
-<input type="hidden" name="referer" value="@referer@"></input>
-#intranet-core.lt_export_varsnoquoteMes#
+
+<%= [export_form_vars email first_names last_name user_id return_url] %>
+
 <textarea name=message rows=10 cols=70 wrap=hard>
 #intranet-core.lt_first_names_last_name_1#
 </textarea>
 
 <center>
-<input type="submit" value="Send Email" />
+<input type="submit" name=submit_nosend value="Don't Send Email" />
+<input type="submit" name=submit_send value="Send Email" />
 </center>
 
 </form>
