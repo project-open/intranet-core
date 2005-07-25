@@ -55,6 +55,12 @@ set user_admin_p $admin
 set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 
+
+if {![db_string ex "select count(*) from im_projects where project_id=:project_id"]} {
+    ad_return_complaint 1 "<li>Project doesn't exist"
+    return
+}
+
 if {!$read} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_6]"
     return

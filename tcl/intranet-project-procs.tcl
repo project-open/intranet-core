@@ -135,10 +135,15 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
     ns_log Notice "project_status=$project_status"
 
-    set user_is_project_company_p [ad_user_group_member $company_id $user_id]
+    set user_is_project_member_p [ad_user_group_member $company_id $user_id]
 
-    if {$user_admin_p} { set admin 1}
-    if {$user_is_project_company_p} { set read 1}
+    if {$user_admin_p} { 
+	set admin 1
+	set write 1
+	set read 1
+	set view 1
+    }
+    if {$user_is_project_member_p} { set read 1}
     if {$user_is_group_member_p} { set read 1}
     if {[im_permission $user_id view_projects_all]} { set read 1}
 
@@ -146,7 +151,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     # 76 = open
     if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
-	if {!$user_is_project_company_p} {
+	if {!$user_is_project_member_p} {
 	    set read 0
 	}
     }

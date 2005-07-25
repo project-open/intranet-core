@@ -489,8 +489,6 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
     append admin_links "<li>[_ intranet-core.lt_Registered_from_regis]"
 }
 
-# append admin_links "<li>[_ intranet-core.User_state]: $user_state"
-
 set user_id $user_id_from_search
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 
@@ -504,29 +502,25 @@ case $member_state {
 set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
 set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
 
+
+if {$admin} {
+    append admin_links "<li>[_ intranet-core.lt_Member_state_user_sta]"
+} else {
+    append admin_links "<li>[_ intranet-core.User_state]: $user_state"
+}
+
 append admin_links "
-          <li>[_ intranet-core.lt_Member_state_user_sta]
           <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>
-          <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
-<!--
-          <li>
-              <form method=POST action=search>
-              <input type=hidden name=u1 value=$user_id_from_search>
-              <input type=hidden name=target value=/admin/users/merge/merge-from-search.tcl>
-              <input type=hidden name=passthrough value=u1>
-                  [_ intranet-core.lt_Search_for_an_account]
- 	      <input type=text name=keyword size=20>
-              </form>
--->
 "
+
+if {$admin} {
+    append admin_links "
+          <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
+    "
+}
 
 append admin_links "</ul></td></tr>\n"
 append admin_links "</table>\n"
-
-if {!$admin} {
-    set admin_links ""
-}
-
 
 
 # ---------------------------------------------------------------
