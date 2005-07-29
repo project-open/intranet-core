@@ -121,8 +121,13 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set write $user_admin_p
     set admin $user_admin_p
 
-    # Let the companies see their projects.
-    set query "select company_id, lower(im_category_from_id(project_status_id)) as project_status from im_projects where project_id=:project_id"
+    # Get the projects's company and the project status
+    set query "
+	select	company_id, 
+		lower(im_category_from_id(project_status_id)) as project_status 
+	from	im_projects
+	where	project_id=:project_id
+    "
     if {![db_0or1row project_company $query] } {
 	return
     }
@@ -135,7 +140,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
     ns_log Notice "project_status=$project_status"
 
-    set user_is_project_member_p [ad_user_group_member $company_id $user_id]
+    set user_is_company_member_p [ad_user_group_member $company_id $user_id]
 
     if {$user_admin_p} { 
 	set admin 1
@@ -143,7 +148,11 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
 	set read 1
 	set view 1
     }
-    if {$user_is_project_member_p} { set read 1}
+
+# 20050729 fraber: Don't let customer's contacts see their project
+# without exlicit permission...
+#    if {$user_is_company_member_p} { set read 1}
+
     if {$user_is_group_member_p} { set read 1}
     if {[im_permission $user_id view_projects_all]} { set read 1}
 
@@ -151,7 +160,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     # 76 = open
     if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
-	if {!$user_is_project_member_p} {
+	if {!$user_is_company_member_p} {
 	    set read 0
 	}
     }
