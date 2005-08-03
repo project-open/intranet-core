@@ -97,7 +97,7 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
 
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-    set user_is_group_member_p [ad_user_group_member $company_id $user_id]
+    set user_is_group_member_p [im_biz_object_member_p $user_id $company_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $company_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]

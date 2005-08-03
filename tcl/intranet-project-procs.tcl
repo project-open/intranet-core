@@ -100,7 +100,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
 
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-    set user_is_group_member_p [ad_user_group_member $project_id $user_id]
+    set user_is_group_member_p [im_biz_object_member_p $user_id $project_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $project_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
     set user_in_project_group_p [string compare "t" [db_string user_belongs_to_project "select ad_group_member_p( :user_id, :project_id ) from dual" ] ]
@@ -140,7 +140,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
     ns_log Notice "project_status=$project_status"
 
-    set user_is_company_member_p [ad_user_group_member $company_id $user_id]
+    set user_is_company_member_p [im_biz_object_member_p $user_id $company_id]
 
     if {$user_admin_p} { 
 	set admin 1

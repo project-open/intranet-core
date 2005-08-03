@@ -35,33 +35,25 @@ ad_proc -public ad_user_group_member { group_id user_id} {
 ad_proc -public ad_user_group_member_helper { group_id user_id} {
 
 } {
+
     set member_count [db_string member_count "
-select count(*) 
-from	acs_rels ar
-where	ar.object_id_two = :user_id 
-	and ar.object_id_one = :group_id
-"]
+	select 
+		count(*) 
+	from 
+		acs_rels ar,
+		membership_rels mr
+	where 
+		ar.rel_id = mr.rel_id
+		and ar.object_id_two = $user_id 
+		and ar.object_id_one = $group_id
+		and mr.member_state = 'approved'
+    "]
 
     if {$member_count > 0} { return 1 }
     return 0
 }
 
-# This one doesn't work because the relationship between
-# a business object (company) and a user is defined on
-# the base of a acs_rels, but not a membership-rel.
-#
-#    set member_count [db_string member_count "
-#select 
-#	count(*) 
-#from 
-#	acs_rels ar,
-#	membership_rels mr
-#where 
-#	ar.rel_id = mr.rel_id
-#	and ar.object_id_two = $user_id 
-#	and ar.object_id_one = $group_id
-#	and mr.member_state = 'approved'
-#"]
+
 
 
 
