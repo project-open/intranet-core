@@ -370,7 +370,7 @@ foreach csv_line_fields $values_list_of_lists {
 	# Add the user to the "Registered Users" group, because
 	# (s)he would get strange problems otherwise
 	set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
-#	relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+	relation_add -member_state "approved" "membership_rel" $registered_users $user_id
 
 	if {[db_table_exists im_employees]} {
 	    # Add a im_employees record to the user since the 3.0 PostgreSQL
