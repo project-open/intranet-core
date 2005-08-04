@@ -197,6 +197,7 @@ foreach csv_line_fields $values_list_of_lists {
     set user_4 ""
     set web_page ""
 
+
     # -------------------------------------------------------
     # Extract variables from the CSV file
     #
@@ -261,6 +262,25 @@ foreach csv_line_fields $values_list_of_lists {
     if {"" != $web_page && ![regexp {http:} $web_page]} {
 	set web_page "http://$web_page"
     }
+
+
+    set userinfo "email = $e_mail_address, "
+    if {"" != $title} {append userinfo "title = $title, " }
+    append userinfo "first_name = $first_name, "
+    if {"" != $middle_name} {append userinfo "middle_name = $middle_name, " }
+    append userinfo "last_name = $last_name, "
+    if {"" != $suffix} {append userinfo "suffix = $suffix, " }
+    append userinfo "username = $username, "
+    append userinfo "screen_name = $screen_name, "
+    if {"" != $web_page} {append userinfo "web_page = $web_page, " }
+    if {"" != $company} {append userinfo "company = $company, " }
+    if {"" != $company_name} {append userinfo "company_name = $company_name, " }
+    if {"" != $department} {append userinfo "department = $department, " }
+    if {"" != $job_title} {append userinfo "job_title = $job_title, " }
+    append userinfo "user_id = $user_id"
+
+    append page_body "<li>$userinfo\n"
+
 
     if {0 == $user_id} {
 
