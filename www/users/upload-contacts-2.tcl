@@ -315,6 +315,32 @@ foreach csv_line_fields $values_list_of_lists {
 				 -secret_answer $secret_answer]
 
 
+
+        switch $creation_info(creation_status) {
+            ok {
+                # Continue below
+            }
+            default {
+                # Adding the error to the first element, but only
+                # if there are no element messages
+                if { [llength $creation_info(element_messages)] == 0 } {
+                    array set reg_elms [auth::get_registration_elements]
+                    set first_elm [lindex [concat $reg_elms(required) $reg_elms(optional)] 0]
+		    append page_body "<li>'$first_name $last_name': Error creating new user: <br>
+                    $creation_info(creation_message)\n"
+                }
+
+                # Element messages
+                foreach { elm_name elm_error } $creation_info(element_messages) {
+		    append page_body "<li>'$first_name $last_name': Error creating new user: <br>
+                    $elm_name $elm_error\n"
+                }
+                continue
+            }
+        }
+
+
+
 	# Add the user to the "Registered Users" group, because
 	# (s)he would get strange problems otherwise
 	set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
