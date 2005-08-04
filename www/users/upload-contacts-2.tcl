@@ -314,8 +314,7 @@ foreach csv_line_fields $values_list_of_lists {
                                          -secret_question $secret_question \
 				 -secret_answer $secret_answer]
 
-
-
+	ns_log Notice "upload-contacts-2: creation_status=$creation_info(creation_status)"
         switch $creation_info(creation_status) {
             ok {
                 # Continue below
