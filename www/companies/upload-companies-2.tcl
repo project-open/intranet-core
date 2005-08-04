@@ -31,6 +31,8 @@ set page_title "Upload Companies CSV"
 set page_body "<ul>"
 set context_bar [im_context_bar [list "/intranet/cusomers/" "Companies"] $page_title]
 
+# gets destroyed when selecting all information from a company
+set company_type_id_org $company_type_id
 
 # Get the file from the user.
 # number_of_bytes is the upper-limit
@@ -247,7 +249,7 @@ foreach csv_line_fields $values_list_of_lists {
 		-company_name	$company_name \
 		-company_path	$company_path \
 		-main_office_id	$main_office_id \
-		-company_type_id $company_type_id \
+		-company_type_id $company_type_id_org \
 		-company_status_id [im_company_status_active]]	
     } else {
 
