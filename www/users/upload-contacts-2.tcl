@@ -255,6 +255,13 @@ foreach csv_line_fields $values_list_of_lists {
     set found_n 0
     set user_id [db_string check_email_exists "select party_id from parties where lower(email) = lower(:e_mail_address)" -default 0]
 
+
+    # Add a "http://" before the WebPage in order to satisfy some
+    # strange constraints in the auth::create_user procedure...
+    if {"" != $web_page && ![regexp {http:} $web_page]} {
+	set web_page "http://$web_page"
+    }
+
     if {0 == $user_id} {
 
 	# Checking for equal first+last name.
