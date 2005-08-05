@@ -735,6 +735,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     append extra_stuff_for_document_head [im_stylesheet]
 
+    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
     # Enable "Users Online" mini-component for OpenACS 5.1 only

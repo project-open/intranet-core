@@ -51,6 +51,7 @@ if {0 == $company_id} {
 # critical information
 im_company_permissions $user_id $company_id view read write admin
 set see_details $read
+set see_sales_details $admin
 
 if {!$read} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
@@ -120,8 +121,19 @@ if {$see_details} {
     append left_column "
   <tr class=roweven><td>[_ intranet-core.Client_Type]</td><td>$company_type</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Key_Account]</td><td><a href=[im_url_stub]/users/view?user_id=$manager_id>$manager</a></td></tr>
+"
+}
+
+if {$see_sales_details} {
+    append left_column "
   <tr class=rowodd><td>[_ intranet-core.Referral_source]</td><td>$referral_source</td></tr>
   <tr class=roweven><td>[_ intranet-core.Billable]</td><td> [util_PrettyBoolean $billable_p]</td></tr>
+"
+}
+
+
+if {$see_details} {
+    append left_column "
   <tr class=rowodd><td>[_ intranet-core.Phone]</td><td>$phone</td></tr>
   <tr class=roweven><td>[_ intranet-core.Fax]</td><td>$fax</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Address1]</td><td>$address_line1</td></tr>
