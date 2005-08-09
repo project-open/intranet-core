@@ -855,8 +855,8 @@ ad_proc im_category_select_multiple { category_type select_name { default "" } {
     set sql "select category_id,category
 	     from im_categories
 	     where category_type = :category_type
-	     order by lower(category)"
-    return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size multiple]
+	     order by category_id"
+    return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size $multiple]
 }    
 
 
@@ -898,22 +898,36 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     	set plain_p [lindex $params [expr $plain_p_pos + 1]]
     } 
 
-    if {"language" == $element(name)} {
-#	ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
-    }
+    set multiple_p 0
+    set multiple_p_pos [lsearch $params multiple_p]
+    if { $multiple_p_pos >= 0 } {
+    	set multiple_p [lindex $params [expr $multiple_p_pos + 1]]
+    } 
+    set multiple ""
+    if {$multiple_p} { set multiple "multiple" }
+
+    # Size only relevant for multi-select
+    set size 8
+    set size_pos [lsearch $params size]
+    if { $size_pos >= 0 } {
+    	set size [lindex $params [expr $size_pos + 1]]
+    } 
 
     array set attributes $tag_attributes
     set category_html ""
     set field_name $element(name)
-
     set default_value_list $element(values)
+
+#    if {$element(id) == "company_pipeline_status_widget"} {
+#	ad_return_complaint 1 "<pre>[array get element]</pre>"
+#    }
 
     set default_value ""
     if {[info exists element(value)]} {
 	set default_value $element(values)
     }
 
-    if {0} {
+    if {0 && "" != $multiple} {
 	set debug ""
 	foreach key [array names element] {
 	    set value $element($key)
@@ -923,15 +937,31 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	return
     }
 
+    
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
 
+	if {$multiple_p} {
+
+#	    ad_return_complaint 1 "default_value_list='$default_value_list'"
+	    append category_html [im_category_select_multiple $category_type $field_name $default_value_list $size $multiple]
+
+	} else {
+
+	    append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
+
+	}
 
     } else {
+
+	set category ""
 	if {"" != $default_value && "\{\}" != $default_value} {
-	    append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+	    set category [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
 	}
+	    append category_html "default_value='$category'"
+
+	append category_html "<br>default_value_list='$default_value_list'"
+
     }
     return $category_html
 }

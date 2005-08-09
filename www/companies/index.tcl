@@ -287,15 +287,12 @@ if {[db_table_exists im_dynfield_attributes]} {
     }
 
     # Add the additional condition to the "where_clause"
-    append where_clause "
-	and company_id in $dynfield_extra_where
-    "
+    if {"" != $dynfield_extra_where} {
+	append where_clause "
+	    and company_id in $dynfield_extra_where
+        "
+    }
 }
-
-
-
-
-
 
 
 # Performance: There are probably relatively few projects
@@ -451,8 +448,6 @@ set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
 
-
-# ad_return_complaint 1 "<pre>$selection</pre>"
 
 db_foreach company_info_query $selection -bind $form_vars {
 
