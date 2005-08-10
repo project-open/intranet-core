@@ -918,10 +918,6 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     set field_name $element(name)
     set default_value_list $element(values)
 
-#    if {$element(id) == "company_pipeline_status_widget"} {
-#	ad_return_complaint 1 "<pre>[array get element]</pre>"
-#    }
-
     set default_value ""
     if {[info exists element(value)]} {
 	set default_value $element(values)
@@ -937,30 +933,48 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	return
     }
 
-    
-
     if { "edit" == $element(mode)} {
 
 	if {$multiple_p} {
-
-#	    ad_return_complaint 1 "default_value_list='$default_value_list'"
-	    append category_html [im_category_select_multiple $category_type $field_name $default_value_list $size $multiple]
-
+	    append category_html [im_category_select_multiple \
+		$category_type \
+		$field_name \
+		$default_value_list \
+		$size \
+		$multiple \
+	    ]
 	} else {
-
-	    append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
-
+	    append category_html [im_category_select \
+		-include_empty_p 1 \
+		-include_empty_name "" \
+		-plain_p $plain_p \
+		$category_type \
+		$field_name \
+		$default_value \
+	    ]
 	}
 
     } else {
 
-	set category ""
-	if {"" != $default_value && "\{\}" != $default_value} {
-	    set category [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
-	}
-	    append category_html "default_value='$category'"
+	if {$multiple_p} {
 
-	append category_html "<br>default_value_list='$default_value_list'"
+	    # Make sure there is atleast one element in the list...
+	    lappend default_value_list 0
+
+	    set category_list [db_list category_list "
+		select	category
+		from	im_categories
+		where	category_id in ([join $default_value_list ","])
+		order by category_id
+	    "]
+	    append category_html [join $category_list ",<br>"]
+	} else {
+	    set category ""
+	    if {"" != $default_value && "\{\}" != $default_value} {
+		set category [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+	    }
+	    append category_html "$category"
+	}
 
     }
     return $category_html
