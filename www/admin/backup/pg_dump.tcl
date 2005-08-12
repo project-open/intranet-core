@@ -12,7 +12,7 @@ set user_id [ad_maybe_redirect_for_registration]
 set page_title "PostgreSQL Full Database Dump"
 set context_bar [im_context_bar $page_title]
 set context ""
-set today [db_string today "select to_char(sysdate, 'YYYYMMDD.HH24mmSS') from dual"]
+set today [db_string today "select to_char(sysdate, 'YYYYMMDD.HH24MISS') from dual"]
 set path [im_backup_path]
 set filename "pg_dump.$today.sql"
 
