@@ -46,21 +46,24 @@
 	#intranet-core.lt_Modify_the_access_per#
 </if>
 
+<!--
       <li>
 	<a href=/intranet/projects/import-project-txt>
 	  #intranet-core.lt_Import_Projects_from_#
       </a>
+-->
     </ul>
     <%= [im_component_bay left] %>
 
-
-
+<!--
 <b>#intranet-core.Dangerous#</b>
     <ul>
 	<li>
 	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
 	  #intranet-core.lt_This_command_destroys#
     </ul>
+-->
+
   </td>
   <td valign=top>
     <%= [im_component_bay right] %>
