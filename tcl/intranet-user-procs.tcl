@@ -220,7 +220,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 $rows_html
 <tr class=rowblank align=right>
   <td colspan=99>
-    <a href=/intranet/users/index?view_name=user_community&order_by=Creation>[_ intranet-core.more]</a>
+    <a href=/intranet/users/index?view_name=user_community&user_group_name=all&order_by=Creation>[_ intranet-core.more]</a>
   </td>
 </tr>
 </table>
