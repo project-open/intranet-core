@@ -3,12 +3,15 @@
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">projects</property>
 
+<%= [im_gif cleardot "" 0 1 3] %>
 
+<!--
 <if "" ne @action_html@>
 <p>
 @action_html;noquote@
 </p>
 </if>
+-->
 
 <%= $project_filter_html %>
 <%= $project_navbar_html %>

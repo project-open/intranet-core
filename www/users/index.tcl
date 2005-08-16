@@ -496,7 +496,7 @@ where
 
 set page_body "
 <br>
-[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter] $menu_select_label]
+[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter] $menu_select_label $action_html]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   $table_header_html

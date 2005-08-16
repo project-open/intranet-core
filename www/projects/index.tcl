@@ -630,7 +630,7 @@ set table_continuation_html "
 
 set project_navbar_html "
 <br>
-[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter] $menu_select_label]
+[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter] $menu_select_label $action_html]
 "
 
 

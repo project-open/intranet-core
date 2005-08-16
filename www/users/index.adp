@@ -3,13 +3,15 @@
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">user</property>
 
-
+<!--
 <if "" ne @action_html@>
 <p>
 @action_html;noquote@
 </p>
 </if>
+-->
 
+<%= [im_gif cleardot "" 0 1 3] %>
 
 <table cellspacing=0 cellpadding=0>
 <tr valign=top>

@@ -188,7 +188,7 @@ ad_proc -public im_table_with_title { title body } {
 # Navigation Bars
 # --------------------------------------------------------
 
-ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
+ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} {action_html ""} } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/users/.
     The lower part of the navbar also includes an Alpha bar.<br>
@@ -227,13 +227,13 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where name='Users'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
-    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
+    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label $action_html]
 
     return $navbar
 }
 
 
-ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
+ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} {action_html ""} } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/projects/.
     The lower part of the navbar also includes an Alpha bar.
@@ -270,7 +270,7 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='projects'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
-    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
+    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label $action_html]
 
     return $navbar
 }
@@ -361,7 +361,7 @@ append navbar "
 
 
 
-ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
+ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} {action_html ""} } {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/companies/.
     The lower part of the navbar also includes an Alpha bar.
@@ -398,7 +398,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='companies'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
-    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
+    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label $action_html]
 
     return $navbar
 }
@@ -418,7 +418,7 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
 
 
 
-ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} {select_label ""} } {
+ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} {select_label ""} {action_html ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
     @param parent_menu_id id of the parent menu in im_menus
@@ -505,9 +505,9 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
         set name [lang::util::suggest_key $name]
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
+            set html "$nosel<a href=\"$url\"><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -521,15 +521,16 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
-        <TR>
+        <TR valign=bottom>
+          <TD align=left>
+            $action_html
+          </TD>
           <TD align=right>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
                 $navbar
               </tr>
             </table>
-          </TD>
-          <TD align=right>
           </TD>
         </TR>
         <TR>

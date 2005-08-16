@@ -287,17 +287,18 @@ ns_log Notice $selection
 # ----------------------------------------------------------
 # Do we have to show administration links?
 
+set action_html ""
 set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
-    append admin_html "
-	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
+    append action_html "
+	<a class=button href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
 "
 }
 
 if {$user_is_admin_p} {
-    append admin_html "
-<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
-<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
+    append action_html "
+        <a class=button href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
+        <a class=button href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
 "}
 
 
@@ -315,7 +316,7 @@ set menu_select_sql "
 set ctr 0
 db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
-    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
+    append action_html "<a class=button href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
 }
 
 

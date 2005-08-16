@@ -3,10 +3,11 @@
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">companies</property>
 
+<%= [im_gif cleardot "" 0 1 3] %>
+
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
   <td>
-
 
 	<form method=get action='/intranet/companies/index' name=filter_form>
 	<%= [export_form_vars start_idx order_by how_many letter view_name] %>
@@ -41,6 +42,8 @@
 
   </td>
   <td>&nbsp;</td>
+
+<if "" ne @admin_html@>
   <td valign=top>
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
@@ -55,11 +58,13 @@
     </tr>
     </table>
   </td>
+</if>
+
 </tr>
 </table>
 
 <br>
-<%= [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id] $menu_select_label] %>
+<%= [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id] $menu_select_label $action_html] %>
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   <%= $table_header_html %>
