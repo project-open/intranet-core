@@ -171,10 +171,11 @@ set end_idx [expr $start_idx + $how_many - 1]
 # Do we have to show administration links?
 
 set admin_html ""
+set action_html ""
 if {[im_permission $user_id "add_users"]} {
-    append admin_html "
-	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
-	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
+    append action_html "
+	<a class=button href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
+	<a class=button href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
     "
 }
 

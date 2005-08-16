@@ -427,13 +427,16 @@ append filter_html "
 
 ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html ""
+set action_html ""
 
 if {[im_permission $current_user_id "add_projects"]} {
-    append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
+    set text [_ intranet-core.Add_a_new_project]
+    append action_html "<a title=\"$text\" class=button href=/intranet/projects/new>$text</a>\n"
 }
 
 if {[im_permission $current_user_id "view_finance"]} {
-    append admin_html "<li><a href=/intranet/projects/index?view_name=project_costs>[_ intranet-core.Profit_and_Loss]</a>\n"
+    set text [_ intranet-core.Profit_and_Loss]
+    append admin_html "<li><a title=\"text\" href=/intranet/projects/index?view_name=project_costs>$text</a>\n"
 }
 
 set parent_menu_sql "select menu_id from im_menus where label= 'projects_admin'"
@@ -450,7 +453,8 @@ set menu_select_sql "
 set ctr 0
 db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
-    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
+    set text [_ $package_name.$name_key]
+    append action_html "<a title=\"$text\" class=button href=\"$url\">$text</a>\n"
 }
 
 

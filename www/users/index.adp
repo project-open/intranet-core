@@ -3,6 +3,14 @@
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">user</property>
 
+
+<if "" ne @action_html@>
+<p>
+@action_html;noquote@
+</p>
+</if>
+
+
 <table cellspacing=0 cellpadding=0>
 <tr valign=top>
   <td>
@@ -26,7 +34,7 @@
 	</form>
   </td>
 
-<if @admin_html@ ne "">
+<if "" ne @admin_html@>
 
   <td>&nbsp;</td>
 
@@ -45,7 +53,7 @@
     </table>
   </td>
 
-<endif>
+</if>
 
 </tr>
 </table>
