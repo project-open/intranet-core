@@ -17,7 +17,9 @@
 </textarea>
 
 <center>
-<input type="submit" value="Send Email" />
+
+<input type="submit" name=submit_dont_send value="Don't Send Email" />
+<input type="submit" name=submit_send value="Send Email" />
 </center>
 
 </form>
