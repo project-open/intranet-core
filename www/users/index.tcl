@@ -79,7 +79,6 @@ set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
 
-
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
 # Use a normalized group_name in lowercase and with
@@ -144,11 +143,7 @@ if {"" == $view_name} {
     # Check if there is a specific view for this user group:
     set specific_view_name "[string tolower $user_group_name]_list"
     ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
-    set expcific_view_exists [db_string specific_view_exists "
-	select count(*) 
-	from im_views 
-	where view_name=:specific_view_name
-    "]
+    set expcific_view_exists [db_string specific_view_exists "select count(*) from im_views where view_name=:specific_view_name"]
     if {$expcific_view_exists} {
 	set view_name $specific_view_name
     }
@@ -194,11 +189,7 @@ set column_vars [list]
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "
-	select view_id 
-	from im_views 
-	where view_name=:view_name
-" -default 0]
+set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
 if {!$view_id} { 
     ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
     [_ intranet-core.lt_You_are_trying_to_acc]<br>
