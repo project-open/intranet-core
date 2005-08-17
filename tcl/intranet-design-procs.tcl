@@ -521,11 +521,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
-        <TR valign=bottom>
-          <TD align=left>
+        <TR>
+          <TD align=left valign=top>
             $action_html
           </TD>
-          <TD align=right>
+          <TD align=right valign=bottom>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
                 $navbar
