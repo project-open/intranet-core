@@ -505,9 +505,9 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
         set name [lang::util::suggest_key $name]
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
+            set html "$nosel<a href=\"$url\"><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
