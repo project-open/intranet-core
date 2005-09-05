@@ -120,7 +120,6 @@ where
 	return
     }
 
-
     # Key Account is also a project manager
     set user_is_key_account_p 0
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
@@ -136,7 +135,10 @@ where
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_companies_all]} { set read 1 }
 
-    if {$user_is_employee_p && [string equal "internal" $company_path]} { set read 1 }
+    # All employees have the right to see the "internal" company
+    if {$user_is_employee_p && [string equal "internal" $company_path]} { 
+	set read 1 
+    }
     
     if {$admin} {
 	set read 1
