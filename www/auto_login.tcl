@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/login_redirect.tcl
+# /packages/intranet-core/www/auto_login.tcl
 #
 # Copyright (C) 2005 ]project-open[
 #
@@ -13,13 +13,9 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Purpose: Confirms adding of person to group
-
-    @param user_id_from_search user_id to add
-    @param object_id group to which to add
-    @param role_id role in which to add
-    @param return_url Return URL
-    @param also_add_to_group_id Additional groups to which to add
+    Purpose: login & redirect a user, based on a "auto_login"
+    field that contains the information about the user's password
+    in a sha1 HASH.
 
     @param user_id	Login as this user
     @param url		What page to go to
