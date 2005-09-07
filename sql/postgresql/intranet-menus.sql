@@ -181,15 +181,11 @@ end;' language 'plpgsql';
 
 
 -- Returns the name of the menu
-create or replace function im_menu__name (integer) returns integer as '
+create or replace function im_menu__name (integer) returns varchar as '
 DECLARE
         p_menu_id   alias for $1;
 	v_name	    im_menus.name%TYPE;
 BEGIN
-
-    function name (menu_id in integer) return varchar
-    is
-    begin
 	select	name
 	into	v_name
 	from	im_menus
