@@ -1482,4 +1482,37 @@ ad_proc im_unicode2html {s} {
 }
 
 
+# ---------------------------------------------------------------
+# Auto-Login
+# ---------------------------------------------------------------
+
+ad_proc -public im_generate_auto_login {
+        -user_id:required
+} {
+    Generates the auto_login for auto-login
+} {
+    set user_data_sql "
+	select
+		u.password as user_password, 
+		u.salt as user_salt
+	from
+		users u
+	where
+		u.user_id = :user_id"
+    db_1row get_user_data $user_data_sql
+
+    # generate the expected auto_login variable
+    return [ns_sha1 "$user_id $user_password $user_salt"]
+}
+
+ad_proc -public im_valid_auto_login_p {
+        -user_id:required
+        -auto_login:required
+} {
+    Verifies the auto_login in auto-login variables
+    @author Timo Hentschel (thentschel@sussdorff-roy.com)
+} {
+    set expected_auto_login [im_generate_auto_login -user_id $user_id]
+    return [string equal $auto_login $expected_auto_login]
+}
 
