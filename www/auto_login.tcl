@@ -17,25 +17,27 @@ ad_page_contract {
     field that contains the information about the user's password
     in a sha1 HASH.
 
+    Example use:
+    http://projop.dnsalias.com/intranet/auto_login?user_id=1234&url=/intranet-forum/&token=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
+
     @param user_id	Login as this user
     @param url		What page to go to
-    @param x		A hashed combination of user_id, passwd & salt
+    @param token	A hashed combination of user_id, passwd & salt
 
     @author frank.bergmann@project-open.com
 } {
     user_id:integer
     { url "/intranet/" }
-    { x "" }
+    { token "" }
 }
 
 
-set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $x]
+set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $token]
 
 if {$valid_login} {
     ad_user_login -forever=0 $user_id
     ad_returnredirect $url
 } else {
-    ad_return_complaint 1 "
-
- " 
+    ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
+    Your security token is not valid. Please contact the system owner." 
 }

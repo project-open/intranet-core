@@ -538,7 +538,10 @@ db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
     append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
 }
-append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
+
+
+#    append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
+
 
 set project_filter_html $filter_html
 
