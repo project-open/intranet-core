@@ -894,20 +894,33 @@ ad_proc im_category_select {
         lappend children [list $parent_id $child_id]
     }
 
+    # Calculate the level(category) and direct_parent(category)
+    # hash arrays. Please keep in mind that categories from a DAG 
+    # (directed acyclic graph), which is a generalization of a tree, 
+    # with "multiple inheritance" (one category may have more then
+    # one direct parent).
+    # The algorithm loops through all categories and determines
+    # the depth-"level" of the category by the level of a direct
+    # parent+1.
+    # The "direct_parent" relationship is different from the
+    # "category_hierarchy" relationship stored in the database: 
+    # The category_hierarchy is the "transitive closure" of the
+    # "direct_parent" relationship. This means that it also 
+    # contains the parent's parent of a category etc. This is
+    # useful in order to quickly answer SQL queries such as
+    # "is this catagory a subcategory of that one", because the
+    # this can be mapped to a simple lookup in category_hierarchy 
+    # (because it contains the entire chain). 
 
     set count 0
     set modified 1
     while {$modified} {
-
         set modified 0
         foreach rel $children {
             set p [lindex $rel 0]
             set c [lindex $rel 1]
             set parent_level $level($p)
             set child_level $level($c)
-
-            ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
-
             if {[expr $parent_level+1] > $child_level} {
                 set level($c) [expr $parent_level+1]
                 set direct_parent($c) $p
@@ -921,10 +934,10 @@ ad_proc im_category_select {
             and infinite loop. Please notify your system administrator."
             return "Infinite Loop Error"
         }
+#	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
     }
 
     set base_level 0
-
     set html ""
     if {$include_empty_p} {
         append html "<option value=\"\">$include_empty_name</option>\n"
@@ -933,10 +946,16 @@ ad_proc im_category_select {
         }
     }
 
-    foreach p [array names cat] {
+    # Sort the category list's top level. We currently sort by category_id,
+    # but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+    set category_list_sorted [lsort $category_list]
+
+    # Now recursively descend and draw the tree, starting
+    # with the top level
+    foreach p $category_list_sorted {
         set p [lindex $cat($p) 0]
         set p_level $level($p)
-
         if {0 == $p_level} {
             append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
         }
@@ -976,7 +995,12 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 	incr level
     }
 
-    foreach cat_id [array names cat] {
+
+    # Sort by category_id, but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+    set category_list_sorted [lsort $category_list]
+
+    foreach cat_id $category_list_sorted {
 	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
 	    append html [im_category_select_branch $cat_id $default $level $cat_array $direct_parent_array]
 	}
