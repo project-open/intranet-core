@@ -850,8 +850,7 @@ ad_proc im_category_select {
 } {
 
     if {$plain_p} {
-        return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $in\
-clude_empty_name $category_type $select_name $default]
+        return [im_category_select_plain -translate_p $translate_p $category_type $select_name $default]
     }
 
     # Read the categories into the a hash cache
