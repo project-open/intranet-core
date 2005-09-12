@@ -691,7 +691,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	set page_title [ad_partner_upvar page_title]
     }
     set context_bar [ad_partner_upvar context_bar]
-    set page_focus [ad_partner_upvar page_focus]
+    set page_focus [ad_partner_upvar focus]
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
@@ -767,7 +767,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     return "
-[ad_header $page_title $extra_stuff_for_document_head]
+[ad_header -focus $page_focus $page_title $extra_stuff_for_document_head]
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
     <td> 
