@@ -571,7 +571,8 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 	    set context [list $page_title]
 	}
 
-	set context_root [list [list "/intranet/" "Project/Open"]]
+	set po "<span color=white>&\#93;project-open&\#91;</span>"
+	set context_root [list [list "/intranet/" $po]]
 	set context [concat $context_root $context]
 	set context_bar [im_context_bar_html $context]
     }
@@ -681,7 +682,7 @@ order by
 
 
 ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
-    The default header for Project/Open
+    The default header for ProjectOpen
 } {
 
     set user_id [ad_get_user_id]
@@ -837,7 +838,7 @@ ad_proc -public im_header_emergency { page_title } {
 
 
 ad_proc -public im_footer {} {
-    Default Project/Open footer.
+    Default ProjectOpen footer.
 } {
     return "
       <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
@@ -1091,7 +1092,7 @@ ad_proc -public im_context_bar {
     args
 } {
     Returns a Yahoo-style hierarchical navbar. 
-    This is the Project/Open specific version of the OpenACS ad_context_bar.
+    This is the ProjectOpen specific version of the OpenACS ad_context_bar.
     Here we actually don't want to show anything about "admin".
 
     'args' can be either one or more lists, or a simple string.
@@ -1108,7 +1109,8 @@ ad_proc -public im_context_bar {
         set node_id [ad_conn node_id]
     }
 
-    set context [list [list "/intranet/" "Project/Open"]]
+    set po "<span color=white>&\#93;project-open&\#91;</span>"
+    set context [list [list "/intranet/" $po]]
 
     if {[llength $args] == 0} {
         # fix last element to just be literal string
