@@ -692,6 +692,11 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
     set context_bar [ad_partner_upvar context_bar]
     set page_focus [ad_partner_upvar focus]
+
+    if { [empty_string_p $page_focus] } {
+	set page_focus "surx.query_string"
+    }
+
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
@@ -735,6 +740,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
+
+    append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
 
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
 

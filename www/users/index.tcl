@@ -549,20 +549,13 @@ set table_continuation_html ""
 
 
 if {"" != $admin_html && [db_table_exists spam_messages]} {
-    set sql_query "
-select
-        u.user_id as party_id
-from
-        users_active u,
-        parties p
-        $extra_from
-where
-        u.user_id = p.party_id
-        $extra_where
-"
-	append admin_html "
-	<li><a href=\"[spam_base]spam-add?[export_url_vars sql_query]\">[_ intranet-core.Spam_Users]</a>
-        "
+
+    set selector_short_name "[string tolower $user_group_name]_all"
+    append admin_html "
+    <li><a href=\"[spam_base]spam-add?[export_url_vars selector_short_name]\"
+      >[_ intranet-core.Spam_Users]
+    </a>\n"
+
 }
 
 # ---------------------------------------------------------------
