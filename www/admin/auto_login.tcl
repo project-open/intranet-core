@@ -27,4 +27,4 @@ if {0 == $user_id} {
 
 set auto_login [im_generate_auto_login -user_id $user_id]
 
-ad_return_complaint 1 "auto_login for user $user_id is '$auto_login'"
+ad_return_complaint 1 "<pre>user_id: $user_id\nauto_login: '$auto_login'</pre>"

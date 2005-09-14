@@ -18,7 +18,7 @@ ad_page_contract {
     in a sha1 HASH.
 
     Example use:
-    http://projop.dnsalias.com/intranet/auto_login?user_id=1234&url=/intranet-forum/&token=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
+    http://projop.dnsalias.com/intranet/auto_login?user_id=1234&url=/intranet-forum/&auto_login=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
 
     @param user_id	Login as this user
     @param url		What page to go to
@@ -28,16 +28,17 @@ ad_page_contract {
 } {
     user_id:integer
     { url "/intranet/" }
-    { token "" }
+    { auto_login "" }
 }
 
 
-set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $token]
+set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
 
 if {$valid_login} {
     ad_user_login -forever=0 $user_id
     ad_returnredirect $url
 } else {
     ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
-    Your security token is not valid. Please contact the system owner." 
+    Your security token is not valid. Please contact the system owner.<br>
+    " 
 }
