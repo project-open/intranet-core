@@ -287,6 +287,14 @@ ad_form -extend -name register -on_request {
 	    
 	}
 
+	# TSearch2: We need to update "persons" in order to trigger the TSearch2
+	# triggers
+	db_dml update_persons "
+		update persons
+		set first_names = first_names
+		where person_id = :user_id
+        "
+
 	ns_log Notice "/users/new: finished big IF clause"
 
 	
