@@ -351,6 +351,7 @@
   <msg key="Import_User_CSV">Import User CSV</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
+  <msg key="Inactive_Customers">Inactive Customers</msg>
   <msg key="Incident">Incident</msg>
   <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inctive_Customers">Inctive Customers</msg>
@@ -776,6 +777,7 @@ other way for the user to find out.</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Manage_Views">Manage Views</msg>
+  <msg key="Materials">Materials</msg>
   <msg key="Med">Med</msg>
   <msg key="Medium">Medium</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
