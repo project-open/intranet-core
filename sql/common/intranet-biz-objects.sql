@@ -52,6 +52,35 @@ values (1303, 'Office Manager', 'Intranet Biz Object Role',
 	'office-manager', 'Office Manager');
 
 
+-- Being used for "Final Customers" of projects, where 
+-- the final customer and the invoicing customer are
+-- different
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1304, 'Final Customer', 'Intranet Biz Object Role', 
+	'member', 'Final Customer');
+
+
+-- Generic association between objects.
+-- Dunno what this maybe used for in the future...
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1305, 'Generic Association', 'Intranet Biz Object Role', 
+	'member', 'Generic Association');
+
+
+-- Mail Association - Mails assocated with a BizObject
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1306, 'Mail Association', 'Intranet Biz Object Role', 
+	'member', 'Related Mail');
+
+
+
+
 -------------------------------------------------------------
 -- Create these entries at the very end,
 -- because the objects types need to be there first.
