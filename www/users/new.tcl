@@ -358,8 +358,8 @@ ad_form -extend -name register -on_request {
 		    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 		}
 
-
-
+		# Remove all permission related entries in the system cache
+		im_permission_flush
 	    }
 
 	    
@@ -414,7 +414,9 @@ ad_form -extend -name register -on_request {
 		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 		}
 
-		
+		# Remove all permission related entries in the system cache
+		im_permission_flush
+	       
 	    }
 	}
 
