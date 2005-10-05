@@ -594,6 +594,7 @@ her contributions to the site content.</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
   <msg key="lt_New_Purchase_Order_fr">New Purchase Order</msg>
   <msg key="lt_New_Quote_from_scratc">New Quote from scratc</msg>
+  <msg key="lt_New_Timesheet_Invoice">New Timesheet Invoice</msg>
   <msg key="lt_New_Translation_Invoi">New Translation Invoice</msg>
   <msg key="lt_New_Translation_Quote">New Translation Quote</msg>
   <msg key="lt_New_user_notifiedset_">New user notified</msg>
@@ -763,6 +764,7 @@ other way for the user to find out.</msg>
   <msg key="lt_You_need_to_type_in_a_3">You need to type in a password</msg>
   <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="Luxembourg">Luxembourg</msg>
+  <msg key="Licenses">Licences</msg>
   <msg key="m">m</msg>
   <msg key="Mac_OS_X">Mac OS X</msg>
   <msg key="Macedonia">Macedonia</msg>
@@ -782,6 +784,7 @@ other way for the user to find out.</msg>
   <msg key="Medium">Medium</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
   <msg key="Menu_Backup_Restore">Backup &amp; Restore Menu</msg>
+  <msg key="Menu_Restore">Menu Restore</msg>
   <msg key="Menus">Menus</msg>
   <msg key="Mexico">Mexico</msg>
   <msg key="Mine">Mine</msg>
