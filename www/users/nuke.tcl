@@ -20,6 +20,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     user_id:integer,notnull
+    { return_url "/intranet/users" }
 }
 
 
@@ -36,5 +37,6 @@ set page_title [_ intranet-core.lt_Nuke_first_names_last]
 set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
 
 
-set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
+# set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 
+set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
