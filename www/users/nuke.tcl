@@ -35,7 +35,8 @@ db_1row user_full_name "
 
 set page_title [_ intranet-core.lt_Nuke_first_names_last]
 set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"] $page_title]
-
+set object_name "$first_names $last_name"
+set object_type "user"
 
 # set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 

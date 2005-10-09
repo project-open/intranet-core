@@ -38,6 +38,8 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
+set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+
 
 if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
@@ -229,14 +231,19 @@ append project_base_data_html "    </table>
 # Admin Box
 # ---------------------------------------------------------------------
 
-set admin_html ""
-if {$admin} {
-    set admin_html_content "
-<ul>
-  <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
-</ul>\n"
-    set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
+set admin_html_content "
+    <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
+"
+
+if {$user_is_admin_p} {
+    append admin_html_content "
+    <li><A href=\"/intranet/projects/nuke?[export_url_vars project_id return_url]\">[_ intranet-core.Nuke_this_project]</A>
+    "
 }
+
+set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" "  <ul>\n$admin_html_content\n</ul>"]
+if {!$admin} { set admin_html "" }
+
 
 # ---------------------------------------------------------------------
 # Project Hierarchy
