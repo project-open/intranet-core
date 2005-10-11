@@ -10,15 +10,24 @@
 #intranet-core.lt_Confirm_the_nuking_of#
 <a href="one?project_id=@project_id@">@project_name@</a>
 <p>
-#intranet-core.lt_First_unless_first_na#
-<p>
-#intranet-core.lt_Nuking_is_a_violent_i#
 
-<P>
+
+First, unless @object_name@ is a test @object_type@, you 
+should probably delete this user instead. Deleting marks 
+the @object_type@ deleted but leaves intact its
+relationship with other objects such as forums, filestorage etc.
+
+<p>
+Nuking is a violent irreversible action. 
+You are instructing the system to remove the user and any content 
+that he or she has contributed to the site. This is generally only 
+appropriate in the case of test users and, perhaps, dishonest people 
+who've flooded a site with fake crud.
+<p>
 
 <center>
 <form method=get action=nuke-2>
 <input type=hidden name=project_id value="@project_id@">
-<input type=submit value="#intranet-core.lt_Yes_Im_sure_that_I_wa#">
+<input type=submit value="Yes I am sure that I want to delete this @object_type@">
 </form>
 </center>

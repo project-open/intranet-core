@@ -197,9 +197,14 @@ with_transaction {
 
     # Reassign objects to a default user...
     set default_user 0
+    db_dml reassign_objects "update acs_objects set modifying_user = :default_user where modifying_user = :user_id"
     db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_project' and creation_user = :user_id"
     db_dml reassign_cr_revisions "update acs_objects set creation_user = :default_user where object_type = 'content_revision' and creation_user = :user_id"
 
+
+    # Lang_message_audit
+    db_dml lang_message_audit "update lang_messages_audit set overwrite_user = null where overwrite_user = :user_id"
+    db_dml lang_message "update lang_messages set creation_user = null where creation_user = :user_id"
 
     # Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
     # entry in im_costs. These might have been created during manual deletion of objects
@@ -234,18 +239,28 @@ with_transaction {
     db_dml remove_from_projects "update im_projects set supervisor_id = null where supervisor_id = :user_id"
     db_dml remove_from_projects "update im_projects set project_lead_id = null where project_lead_id = :user_id"
 
+
+    db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_office' and creation_user = :user_id"
+    db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_company' and creation_user = :user_id"
+    db_dml remove_from_companies "update im_offices set contact_person_id = null where contact_person_id = :user_id"
+
+
+
     # Translation
-    db_dml trans_tasks "update im_trans_tasks set trans_id = null where trans_id = :user_id"
-    db_dml trans_tasks "update im_trans_tasks set edit_id = null where edit_id = :user_id"
-    db_dml trans_tasks "update im_trans_tasks set proof_id = null where proof_id = :user_id"
-    db_dml trans_tasks "update im_trans_tasks set other_id = null where other_id = :user_id"
-    db_dml task_actions "delete from im_task_actions where user_id = :user_id"
+    if {[db_table_exists im_trans_tasks]} {
+	db_dml trans_tasks "update im_trans_tasks set trans_id = null where trans_id = :user_id"
+	db_dml trans_tasks "update im_trans_tasks set edit_id = null where edit_id = :user_id"
+	db_dml trans_tasks "update im_trans_tasks set proof_id = null where proof_id = :user_id"
+	db_dml trans_tasks "update im_trans_tasks set other_id = null where other_id = :user_id"
+	db_dml task_actions "delete from im_task_actions where user_id = :user_id"
+    }
 
-    db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
-	select report_id from im_trans_quality_reports where reviewer_id = :user_id
-    )"
-
-    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id";
+    if {[db_table_exists im_trans_quality_reports]} {
+	db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
+	    select report_id from im_trans_quality_reports where reviewer_id = :user_id
+        )"
+	db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id";
+    }
 
 
     # Filestorage
