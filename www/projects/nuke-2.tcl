@@ -55,7 +55,12 @@ with_transaction {
     db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 
 
+    # Payments
+    db_dml reset_payments "update im_payments set cost_id=null where cost_id in (select cost_id from im_costs where project_id = :project_id)"
+
+    
     # Costs
+    db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :project_id"
     set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and project_id = :project_id"]
     foreach cost_info $cost_infos {
 	set cost_id [lindex $cost_info 0]
@@ -111,6 +116,7 @@ with_transaction {
     ns_log Notice "projects/nuke-2: im_fs_folder_status"
     db_dml filestorage "delete from im_fs_folder_status where folder_id in (select folder_id from im_fs_folders where object_id = :project_id)"
     ns_log Notice "projects/nuke-2: im_fs_folders"
+    db_dml filestorage "delete from im_fs_folder_perms where folder_id in (select folder_id from im_fs_folders where object_id = :project_id)"
     db_dml filestorage "delete from im_fs_folders where object_id = :project_id"
 
 
