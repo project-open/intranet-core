@@ -55,13 +55,20 @@
     </ul>
     <%= [im_component_bay left] %>
 
-<!--
 <b>#intranet-core.Dangerous#</b>
     <ul>
 	<li>
-	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
-	  #intranet-core.lt_This_command_destroys#
+	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a>
+	  This commands deletes all the data in the system and leaves
+	  the database completely empty, except for the administrator
+	  accounts. <br>
+	  This command is useful in order to start production
+	  operations from a demo system, but should never
+	  be used otherwise.
     </ul>
+<!--
+	<li>
+	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
 -->
 
   </td>
