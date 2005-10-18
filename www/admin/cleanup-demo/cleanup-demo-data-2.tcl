@@ -146,6 +146,37 @@ if {[db_table_exists users_preferences]} {
 if {[db_table_exists users_contact]} {
     db_dml delete_user_users_contact "delete from users_contact"
 }
+
+
+
+# Content Repository etc.
+
+db_dml acs_mail_body_headers "delete from acs_mail_body_headers"
+db_dml acs_mail_bodies "delete from acs_mail_bodies"
+db_dml acs_mail_body_headers "delete from acs_mail_body_headers"
+db_dml acs_mail_gc_objects "delete from acs_mail_gc_objects"
+db_dml acs_mail_links "delete from acs_mail_links"
+db_dml acs_mail_multipart_parts "delete from acs_mail_multipart_parts"
+db_dml acs_mail_multiparts "delete from acs_mail_multiparts"
+db_dml acs_messages "delete from acs_messages"
+
+
+# ToDo:
+# images (leaves empty cr_items)
+# cr_items (also want to delete cr_templates)
+# cr_revisions
+# cr_item_rels
+# cr_item_publish_audit
+# cr_scheduled_release_log
+# lob_data
+# lobs
+# acs_permissions
+# acs_object_context_index
+# acs_objects (cleanup)
+# acs_rels (cleanup)
+
+
+
     
 # Reassign objects to a default user...
 set default_user 0
@@ -155,6 +186,11 @@ set default_user 0
 # Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
 # entry in im_costs. These might have been created during manual deletion of objects
 # Very dirty...
+
+
+
+db_dml payments "delete from im_payments"
+db_dml im_payments_audit "delete from im_payments_audit"
 
 db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 
@@ -172,17 +208,28 @@ db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' an
 
 
 # Forum
-db_dml forum "delete from im_forum_topic_user_map"
+db_dml im_forum_folders "delete from im_forum_folders"
+db_dml im_forum_topic_user_map "delete from im_forum_topic_user_map"
 db_dml forum "delete from im_forum_topics"
 
 # Timesheet
 db_dml timesheet "delete from im_hours"
 db_dml timesheet "delete from im_user_absences"
 
+# Translation
+db_dml im_target_languages "delete from im_target_languages"
+db_dml im_task_actions "delete from im_task_actions"
+db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
+db_dml im_trans_quality_reports "delete from im_trans_quality_reports"
+db_dml im_trans_tasks "delete from im_trans_tasks"
+db_dml im_trans_prices "delete from im_trans_prices"
+
 # Remove user from business objects that we don't want to delete...
-db_dml remove_from_companies "delete from im_companies where company_nr != 'internal'"
+
+db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects "update im_projects set parent_id = null"
-db_dml remove_from_projects "delete from projects"
+db_dml remove_from_projects "delete from im_projects"
+db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
 db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
 
@@ -200,7 +247,13 @@ if {[db_table_exists im_trans_quality_reports]} {
 # Filestorage
 db_dml forum "delete from im_fs_folder_status"
 db_dml filestorage "delete from im_fs_actions"
+db_dml im_fs_folder_perms "delete from im_fs_folder_perms"
+db_dml forum "delete from im_fs_folders"
 
-if {[db_table_exists im_employees]} {
-    db_dml delete_employees "delete from im_employees"
+
+# TSearch2 Search Engine
+if {[db_table_exists im_search_objects]} {
+    db_dml im_search_objects "delete from im_search_objects"
 }
+
+set page_body "Cleaned up database completely"

@@ -10,6 +10,7 @@
 
     <H2><font color=red>@page_title;noquote@</font></H2>
 
+
     <h3><font color=red>
       Are you really sure to delete all data in your system?
     </font></h3>
