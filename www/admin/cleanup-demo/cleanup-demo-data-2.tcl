@@ -208,6 +208,7 @@ db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' an
 
 
 # Forum
+db_dml im_forum_topic_user_map "delete from im_forum_topic_user_map"
 db_dml im_forum_folders "delete from im_forum_folders"
 db_dml im_forum_topic_user_map "delete from im_forum_topic_user_map"
 db_dml forum "delete from im_forum_topics"
