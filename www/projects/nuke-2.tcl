@@ -24,6 +24,9 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
+set page_title [_ intranet-core.Done]
+set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
+
 set current_user_id [ad_maybe_redirect_for_registration]
 im_project_permissions $current_user_id $project_id view read write admin
 
@@ -173,16 +176,3 @@ $errmsg
 
 set return_to_admin_link "<a href=\"/intranet/projects/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 
-set page_content "[ad_admin_header "[_ intranet-core.Done]"]
-
-<h2>[_ intranet-core.Done]</h2>
-
-<hr>
-
-[_ intranet-core.lt_Weve_nuked_user_user_]
-
-[ad_admin_footer]
-"
-
-
-doc_return  200 text/html $page_content
