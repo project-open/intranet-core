@@ -58,10 +58,10 @@
 <b>#intranet-core.Dangerous#</b>
     <ul>
 	<li>
-	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a>
-	  This commands deletes all the data in the system and leaves
-	  the database completely empty, except for the administrator
-	  accounts. <br>
+	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a><br>
+	  This menu allows you to delete all the data in the system and leaves
+	  the database completely empty, except for master data, 
+	  permissions and the administrator accounts. <br>
 	  This command is useful in order to start production
 	  operations from a demo system, but should never
 	  be used otherwise.

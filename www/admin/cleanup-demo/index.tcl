@@ -29,7 +29,7 @@ if {!$user_is_admin_p} {
 }
 
 
-set page_title "Cleanup Demo Data"
+set page_title "Nuke Demo Data"
 set context_bar [im_context_bar $page_title]
 
 set bgcolor(0) " class=rowodd"
