@@ -292,8 +292,7 @@ ad_proc -public im_user_nuke {user_id} {
     Delete a user from the database -
     Extremely dangerous!
 } {
-
-    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_is_admin_p} {
 	return "User is an administrator - you can't nuke an administrator"
     }
@@ -466,6 +465,8 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# Remove user from business objects that we don't want to delete...
 	db_dml remove_from_companies "update im_companies set manager_id = null where manager_id = :user_id"
+	db_dml remove_from_companies "update im_companies set accounting_contact_id = null where accounting_contact_id = :user_id"
+	db_dml remove_from_companies "update im_companies set primary_contact_id = null where primary_contact_id = :user_id"
 	db_dml remove_from_projects "update im_projects set supervisor_id = null where supervisor_id = :user_id"
 	db_dml remove_from_projects "update im_projects set project_lead_id = null where project_lead_id = :user_id"
 	

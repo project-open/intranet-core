@@ -4,7 +4,7 @@
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<table cellpadding=0 cellspacing=0 border=0 width=70%>
 <tr>
   <td valign=top>
 
@@ -16,23 +16,26 @@
 
       <li>
         <A href=../backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
-        #intranet-core.PostgreSQL_Backup_blurb#
+	Please backup your current database contents before continuing
+	with any of the following commands.
         <br>&nbsp;<br>
 
       <li>
-	<A href="cleanup-demo-data">Cleanup all demo data in the system.</A><br>
-          This commands deletes all the user data data (projects, companies,
-	  forum discussions, invoices, timesheet, ) in the system and leaves
-          the database completely empty, except for the basic system configuration
-	  (permissions, categories, parametes, ...) and user
+        <A href="cleanup-demo-data">Nuke all demo data in the system.</A><br>
+          This commands nukes (permanently deletes) all data in the system
+	  such as projects, companies, forum discussions, invoices, timesheet, etc.
+	  It leaves the database completely empty, except for the basic 
+	  system configuration (permissions, categories, parametes, ...) and user
           accounts (delete them selectively below). <br>
           This command is useful in order to start production
           operations from a demo system, but should never
           be used otherwise.<br>&nbsp;<br>
+
       <li>
-	<A href="cleanup-users">Cleanup Remaining Users</A><br>
-	Cleanup up demo data above will leave a certain number of
-	users still in the system. Use this page to delete them.
+	<A href="cleanup-users">Nuke Demo Users</A><br>
+          This commands allows you to selectively "nuke" (permanently delete) 
+	  users from the system, including all of their associated data such
+	  as (tasks, forum discussions, invoices, timesheet, ...).
     </ul>
 
   </td>

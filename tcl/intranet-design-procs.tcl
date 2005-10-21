@@ -862,6 +862,7 @@ ad_proc -public im_stylesheet {} {
     return "
 <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
 <link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>
 "
 
 # <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
