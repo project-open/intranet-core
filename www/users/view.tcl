@@ -516,7 +516,7 @@ append admin_links "
 if {$admin} {
     append admin_links "
           <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
-          <li><a href=nuke?user_id=$user_id_from_search&return_url=[ns_urlencode $return_url]>[_ intranet-core.Nuke_this_user]</a>
+<!--          <li><a href=nuke?user_id=$user_id_from_search&return_url=[ns_urlencode $return_url]>[_ intranet-core.Nuke_this_user]</a> -->
     "
 }
 

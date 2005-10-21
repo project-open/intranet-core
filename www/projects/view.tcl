@@ -237,7 +237,7 @@ set admin_html_content "
 
 if {$user_is_admin_p} {
     append admin_html_content "
-    <li><A href=\"/intranet/projects/nuke?[export_url_vars project_id return_url]\">[_ intranet-core.Nuke_this_project]</A>
+<!--    <li><A href=\"/intranet/projects/nuke?[export_url_vars project_id return_url]\">[_ intranet-core.Nuke_this_project]</A> -->
     "
 }
 
