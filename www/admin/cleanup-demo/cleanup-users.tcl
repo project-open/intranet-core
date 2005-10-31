@@ -73,6 +73,7 @@ list::create \
         -elements $elements_list \
 	-bulk_actions [list [_ intranet-core.Nuke_Checked_Users] cleanup-users-2 [_ intranet-core.Nuke_Checked_Users]] \
 	-bulk_action_export_vars { return_url } \
+        -bulk_action_method post \
         -filters {
         	return_url
         }

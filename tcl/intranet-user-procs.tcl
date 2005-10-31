@@ -473,7 +473,13 @@ ad_proc -public im_user_nuke {user_id} {
     	db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_office' and creation_user = :user_id"
 	db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_company' and creation_user = :user_id"
 	db_dml remove_from_companies "update im_offices set contact_person_id = null where contact_person_id = :user_id"
-	
+
+
+	# Freelance
+	if {[db_table_exists im_freelance_skills]} {
+	    db_dml trans_tasks "delete from im_freelance_skills where user_id = :user_id"
+	}
+
 	
 	# Translation
 	if {[db_table_exists im_trans_tasks]} {
