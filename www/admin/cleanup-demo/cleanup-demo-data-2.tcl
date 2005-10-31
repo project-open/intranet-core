@@ -217,11 +217,15 @@ db_dml forum "delete from im_forum_topics"
 db_dml timesheet "delete from im_hours"
 db_dml timesheet "delete from im_user_absences"
 
+# Translation Quality
+if {[db_table_exists im_trans_quality_reports]} {
+    db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
+    db_dml im_trans_quality_reports "delete from im_trans_quality_reports"
+}
+
 # Translation
 db_dml im_target_languages "delete from im_target_languages"
 db_dml im_task_actions "delete from im_task_actions"
-db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
-db_dml im_trans_quality_reports "delete from im_trans_quality_reports"
 db_dml im_trans_tasks "delete from im_trans_tasks"
 db_dml im_trans_prices "delete from im_trans_prices"
 
