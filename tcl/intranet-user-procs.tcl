@@ -514,6 +514,7 @@ ad_proc -public im_user_nuke {user_id} {
 	db_dml party_approved_member_map "delete from party_approved_member_map where member_id = :user_id"
 	
 	if {[db_table_exists im_employees]} {
+	    db_dml update_dependent_employees "update im_employees set supervisor_id = null where supervisor_id = :user_id"
 	    db_dml delete_employees "delete from im_employees where employee_id = :user_id"
 	}
 	
