@@ -232,7 +232,12 @@ append project_base_data_html "    </table>
 # ---------------------------------------------------------------------
 
 set admin_html_content "
-    <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
+    <li><A href=\"/intranet/projects/new?parent_id=$project_id\">
+      [_ intranet-core.Create_a_Subproject]
+    </A>
+    <li><A href=\"/intranet/projects/clone?parent_project_id=$project_id\">
+      [lang::message::lookup "" intranet-core.Clone_Project "Clone Project"]
+    </A>
 "
 
 if {$user_is_admin_p} {

@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Companies#</property>
+<property name="title">@page_title@</property>
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">projects</property>
 
