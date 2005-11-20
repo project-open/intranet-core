@@ -30,22 +30,80 @@ ad_page_contract {
 }
 
 
-# ad_return_complaint 1 "project_copy $parent_project_id $project_name $project_nr $clone_postfix" 
-
 # ---------------------------------------------------------------------
 # Local procs
 # ---------------------------------------------------------------------
 
 
-ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
-    copy project structure
+ad_proc im_project_clone {parent_project_id project_name project_nr clone_postfix} {
+    Clone project main routine
 } {
+    ns_log Notice "im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
+
+    set errors "<li>Starting to clone project \#$parent_project_id => $project_nr / $project_name"
+#    set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $clone_postfix]
+
+    set parent_project_id 10745
+    set new_project_id 13375
+
+    # --------------------------------------------
+    # Delete Costs
+    ns_log Notice "im_project_clone: reset_invoice_items"
+    db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :new_project_id"
+
+    ns_log Notice "im_project_clone: cost_infos"
+    set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and project_id = :new_project_id"]
+    foreach cost_info $cost_infos {
+        set cost_id [lindex $cost_info 0]
+        set object_type [lindex $cost_info 1]
+        ns_log Notice "im_projects_clone: deleting cost: ${object_type}__delete($cost_id)"
+        im_exec_dml del_cost "${object_type}__delete($cost_id)"
+    }
+    ns_log Notice "im_project_clone: finished deleting old costs"
+
+    # --------------------------------------------
+    # Delete Trans Tasks
+    db_dml delete_trans_tasks "delete from im_trans_tasks where project_id = :new_project_id"
+
+
+    append errors [im_project_clone_forum_topics $parent_project_id $new_project_id]
+    
+    append errors [im_project_clone_base2 $parent_project_id $new_project_id]
+    append errors [im_project_clone_members $parent_project_id $new_project_id]
+    append errors [im_project_clone_url_map $parent_project_id $new_project_id]
+    append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
+    append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
+
+
+
+#    append errors [im_project_clone_subprojects $parent_project_id $new_project_id]
+
+# Skipped meanwhile
+
+#    append errors [im_project_clone_costs $parent_project_id $new_project_id]
+#    append errors [im_project_clone_timesheet $parent_project_id $new_project_id]
+#    append errors [im_project_clone_timesheet2_tasks $parent_project_id $new_project_id]
+
+
+    append errors "<li>Finished to clone project \#$parent_project_id"
+
+    return $errors
+}
+
+
+
+
+ad_proc im_project_clone_base {parent_project_id project_name project_nr clone_postfix} {
+    Create the minimum information for a clone project
+    with a new name and project_nr for unique constraint reasons.
+} {
+    ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
 
     set org_project_name $project_name
     set org_project_nr $project_nr
     set current_user_id [ad_get_user_id]
 
-    # ---------------------------------------------------------------------
+    # --------------------------
     # Prepare Project SQL Query
     
     set query "
@@ -93,9 +151,32 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
     ]
     if {0 == $project_id} {
 	ad_return_complaint 1 "Error creating clone project with name '$org_project_name' and nr '$org_project_nr'"
-	return
+	return 0
     }
-    set new_project_id $project_id
+
+    return $project_id
+}
+
+
+
+
+ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
+    copy project structure
+} {
+    ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone base2 information: parent_project_id=$parent_project_id new_project_id=$new_project_id"
+
+    set query "
+	select	p.*
+	from	im_projects p
+	where 	p.project_id = :parent_project_id
+    "
+
+    if { ![db_0or1row projects_info_query $query] } {
+	append errors "<li>[_ intranet-core.lt_Cant_find_the_project]"
+	return $errors
+    }
+
 
     # -----------------------------------------
     # Update project fields
@@ -103,15 +184,8 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 
     set project_update_sql "
 	update im_projects set
-		project_name =		:project_name,
-		project_path =		:project_path,
-		project_nr =		:project_nr,
-		project_type_id =	:project_type_id,
-		project_status_id =	:project_status_id,
 		project_lead_id =	:project_lead_id,
-		company_id =		:company_id,
 		supervisor_id =		:supervisor_id,
-		parent_id =		:parent_id,
 		description =		:description,
 		note =			:note,
 		requires_report_p =	:requires_report_p,
@@ -148,7 +222,6 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 
     # ToDo: Add stuff for consulting projects
 
-
     # Costs Stuff
     if {[db_table_exists im_costs]} {
 	set project_update_sql "
@@ -165,7 +238,28 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 	db_dml project_update $project_update_sql
     }
 
+    append errors "<li>Finished to clone base2 information"
+    return $errors
+}
 
+
+
+
+ad_proc im_project_clone_members {parent_project_id new_project_id} {
+    Copy projects members and administrators
+} {
+    ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone member information"
+    set current_user_id [ad_get_user_id]
+
+    if {![db_0or1row project_info "
+        select  p.*
+        from    im_projects p
+        where   p.project_id = :parent_project_id
+    "]} {
+        ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
+        return
+    }
 
     # -----------------------------------------------
     # Add Project Manager roles
@@ -202,10 +296,17 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 	    im_biz_object_add_role $object_id_two $new_project_id $object_role_id
 	}
     }
+    append errors "<li>Finished to clone member information"
+    return $errors
+}
+
     
-    # ------------------------------------------------
-    # create project url map
-    # ------------------------------------------------
+ad_proc im_project_clone_url_map {parent_project_id new_project_id} {
+    Copy projects URL Map
+} {
+    ns_log Notice "im_project_clone_url_map parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone url map information"
+
     set url_map_sql "
 	select url_type_id, url
 	from im_project_url_map
@@ -219,16 +320,21 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 		(:project_id,:url_type_id,:url)
 	"
     }
+    append errors "<li>Finished to clone url map information"
+    return $errors
+}
 
-    # ------------------------------------------------
-    # create costs
-    # ------------------------------------------------
-    
+
+ad_proc im_project_clone_costs {parent_project_id new_project_id} {
+    Copy cost items and invoices
+} {
+    ns_log Notice "im_project_clone_costs parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set current_user_id [ad_get_user_id]
+
     # ToDo: There are costs _associated_ with a project, 
     # but without project_id! (?)
     #
 
-    set new_project_id $project_id	
     set costs_sql "
 	select	c.*,
 		i.*,
@@ -360,13 +466,14 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 	}			
 	
     }
+}
 
-    return
+ad_proc im_project_clone_trans_tasks {parent_project_id new_project_id} {
+    Copy translation tasks and assignments
+} {
+    ns_log Notice "im_project_clone_trans_tasks parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone translation tasks"
 
-
-    # ------------------------------------------------
-    # create trans task
-    # ------------------------------------------------
     db_dml trans_tasks "insert into im_trans_tasks (
 		task_id,
 		project_id,
@@ -400,24 +507,61 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 		task_units,
 		billable_units,
 		task_uom_id,
-		:new_invoice_id,
+		null as invoice_id,
 		match_x,match_rep,match100,match95,match85,match75,match50,match0,
 		trans_id,edit_id,proof_id,other_id 
 	    from 
 		im_trans_tasks 
 	    where 
-		invoice_id = :old_invoice_id
+		project_id = :parent_project_id
 	)
     "
+    append errors "<li>Finished to clone translation tasks"
+    return $errors
+}
+
+ad_proc im_project_clone_target_languages {parent_project_id new_project_id} {
+    Copy target languages and assignments
+} {
+    ns_log Notice "im_project_clone_target_languages parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone target languages"
+
+    if {[catch { db_dml target_languages "insert into im_target_languages (
+		project_id,
+		language_id
+	    ) (
+            select 
+		:new_project_id,
+		language_id
+	    from 
+		im_target_languages 
+	    where 
+		project_id = :parent_project_id
+	)
+    "} errmsg ]} {
+	append errors "<li><pre>$errmsg\n</pre>"
+    }
+    append errors "<li>Finished to clone target languages"
+    return $errors
+}
+
+ad_proc im_project_clone_timesheet2_tasks {parent_project_id new_project_id} {
+    Copy translation tasks and assignments
+} {
+    ns_log Notice "im_project_clone_timesheet2 parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
     # ------------------------------------------------
-    # create timesheet tasks
+    # create timesheet2 tasks
     # ------------------------------------------------
-			
-	
-    # ------------------------------------------------
-    # create payments
-    # ------------------------------------------------
+}
+
+
+ad_proc im_project_clone_payments {parent_project_id new_project_id} {
+    Copy payments
+} {
+    ns_log Notice "im_project_clone_payments parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone payments"
+
     set payments_sql "select * from im_payments where cost_id = :old_cost_id"
     db_foreach add_payments $payments_sql {
 	set old_payment_id $payment_id
@@ -452,11 +596,15 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 			)"
 		
     }
+    append errors "<li>Finished to clone payments \#$parent_project_id"
+    return $errors
+}
 
-	
-    # ------------------------------------------------
-    # Timesheet
-    # ------------------------------------------------
+
+ad_proc im_project_clone_timesheet {parent_project_id new_project_id} {
+    Copy timesheet information(?)
+} {
+    ns_log Notice "im_project_clone_timesheet parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
     set timesheet_sql "
 	select 
@@ -479,14 +627,36 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 		(:usr,:new_project_id,:day,:hours,:billing_rate, :billing_currency, :note)
 	    "
     }
+}
+
 	
-    # ------------------------------------------------
-    # create forums topics
-    # ------------------------------------------------
-	
-    db_foreach "get topics for this project" "select * from im_forum_topics where object_id = :old_project_id" {
+ad_proc im_project_clone_forum_topics {parent_project_id new_project_id} {
+    Copy forum topics
+} {
+    ns_log Notice "im_project_clone_forum_topics parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone forum topics"
+
+    db_dml topic_delete "delete from im_forum_topics where object_id=:new_project_id"
+
+    set forum_sql "
+	select
+		* 
+	from
+		im_forum_topics 
+	where 
+		object_id = :parent_project_id
+		and not exists (
+			select topic_id
+			from im_forum_topics
+			where object_id = 1111
+		)
+    " 
+    db_foreach forum_topics $forum_sql {
 	set old_topic_id $topic_id
 	set topic_id [db_nextval "im_forum_topics_seq"]
+
+	append errors "<li>Cloning forum topic #$topic_id"
+
 	db_dml topic_insert {
 		insert into im_forum_topics (
 			topic_id, object_id, topic_type_id, 
@@ -516,7 +686,6 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 		
 	}
 		
-		
 	# ------------------------------------------------
 	# create forums folders
 	# ------------------------------------------------
@@ -525,14 +694,29 @@ ad_proc project_copy {parent_project_id project_name project_nr clone_postfix} {
 	# create forum topics user map
 	# ------------------------------------------------
 	
-	
     }
-	
-    db_foreach "get project sons" "select project_id as next_project_id 
-								   from im_projects 
-								   where parent_id = :old_project_id" {
+
+    append errors "<li>Finished to clone forum topics \#$parent_project_id"
+    return $errors
+}
+
+
+ad_proc im_project_clone_subprojects {parent_project_id new_project_id} {
+    Copy subprojects
+} {
+    ns_log Notice "im_project_clone_subprojects parent_project_id=$parent_project_id new_project_id=$new_project_id"
+
+    subprojects_sql "
+	select
+		project_id as next_project_id
+	from 
+		im_projects
+	where 
+		parent_id = :parent_project_id
+    "
+    db_foreach subprojects $subprojects_sql {
 		# go for the next project
-		project_copy $next_project_id
+		im_project_clone $next_project_id
     }
 }
 
@@ -563,5 +747,9 @@ if {!$parent_read} {
 }
 
 
-project_copy $parent_project_id $project_name $project_nr $clone_postfix
+set page_body [im_project_clone $parent_project_id $project_name $project_nr $clone_postfix]
+
+doc_return 200 text/html [im_return_template]
+
+
 
