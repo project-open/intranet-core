@@ -241,7 +241,7 @@ where
 
 set role_id [im_company_role_key_account]
 
-im_biz_object_add_role $user_id $company_id $role_id
+im_biz_object_add_role $freelance_id $company_id $role_id
 
 #if {"" != $manager_id } {
 #    im_biz_object_add_role $manager_id $company_id $role_id
