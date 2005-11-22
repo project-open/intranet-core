@@ -400,7 +400,7 @@ ad_proc -public im_project_template_select { select_name { default "" } } {
 		lower(project_name)
     "
 
-    return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars "project_member_select" $sql $select_name $default]
 }
 
 
