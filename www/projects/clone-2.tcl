@@ -62,4 +62,6 @@ set page_body [im_project_clone \
 	$clone_postfix \
 ]
 
-doc_return 200 text/html [im_return_template]
+# doc_return 200 text/html [im_return_template]
+
+ad_returnredirect $return_url
