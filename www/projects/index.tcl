@@ -429,7 +429,11 @@ ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html ""
 
 if {[im_permission $current_user_id "add_projects"]} {
-    append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
+    append admin_html "<li><a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>\n"
+    set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
+    if {$new_from_template_p} {
+	append admin_html "<li><a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>\n"
+    }
 }
 
 if {[im_permission $current_user_id "view_finance"]} {
@@ -465,7 +469,7 @@ if {"" != $admin_html} {
     $filter_html
   </td> <!-- end of left hand filter TD -->
   <td>&nbsp;</td>
-  <td valign=top width='30%'>
+  <td valign=top>
     <table border=0 cellpadding=0 cellspacing=0>
     <tr>
       <td class=rowtitle align=center>

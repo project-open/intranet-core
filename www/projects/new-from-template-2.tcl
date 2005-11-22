@@ -89,5 +89,5 @@ while {[db_string count "select count(*) from im_projects where project_name = :
 
 set parent_project_id $template_project_id
 set page_title [lang::message::lookup "" intranet-core.Template_Project "Template Project"]
-set button_text "[lang::message::lookup "" intranet-core.Create "Create"] $template_postfix"
+set button_text [lang::message::lookup "" intranet-core.Create "Create"]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
