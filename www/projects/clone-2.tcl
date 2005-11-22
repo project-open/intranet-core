@@ -25,10 +25,10 @@ ad_page_contract {
     parent_project_id:integer
     project_nr
     project_name
+    { company_id:integer 0 }
     { clone_postfix "Clone" }
     { return_url "" }
 }
-
 
 # ---------------------------------------------------------------------
 # Defaults & Security
@@ -55,6 +55,7 @@ if {!$parent_read} {
 
 
 set page_body [im_project_clone \
+	-company_id $company_id \
 	$parent_project_id \
 	$project_name \
 	$project_nr \

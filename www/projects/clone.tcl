@@ -27,6 +27,7 @@ ad_page_contract {
     parent_project_id:integer
     { project_nr "" }
     { project_name "" }
+    { company_id 0 }
     { clone_postfix "Clone" }
     { return_url "" }
 }
@@ -88,5 +89,5 @@ while {[db_string count "select count(*) from im_projects where project_name = :
 
 
 set page_title [lang::message::lookup "" intranet-core.Clone_Project "Clone Project"]
-set button_text $page_title
+set button_text "[lang::message::lookup "" intranet-core.Create "Create"] $clone_postfix"
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]

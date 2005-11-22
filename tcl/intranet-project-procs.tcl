@@ -663,7 +663,7 @@ ad_proc im_project_clone {
     ns_log Notice "im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
 
     set errors "<li>Starting to clone project \#$parent_project_id => $project_nr / $project_name"
-    set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $clone_postfix]
+    set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
 
 #    set parent_project_id 10745
 #    set new_project_id 13375
@@ -727,11 +727,11 @@ ad_proc im_project_clone {
 }
 
 
-ad_proc im_project_clone_base {parent_project_id project_name project_nr clone_postfix} {
+ad_proc im_project_clone_base {parent_project_id project_name project_nr new_company_id clone_postfix} {
     Create the minimum information for a clone project
     with a new name and project_nr for unique constraint reasons.
 } {
-    ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
+    ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix"
 
     set org_project_name $project_name
     set org_project_nr $project_nr
@@ -751,7 +751,13 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr clone_p
 	ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
 	return
     }
-	
+
+    # Take the new company_id and overwrite the information from
+    # the parent project
+    if {0 != $new_company_id && "" != $new_company_id} {
+	set company_id $new_company_id
+    }
+
     # ------------------------------------------
     # Fix name and project_nr
     
