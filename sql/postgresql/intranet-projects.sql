@@ -104,7 +104,11 @@ create table im_projects (
 				-- green, yellow or red?
 	on_track_status_id	integer
 				constraint im_project_on_track_status_id_fk
-				references im_categories
+				references im_categories,
+				-- Should this project appear in the list of templates?
+	template_p		char(1) default('f')
+				constraint im_project_template_p
+				check (requires_report_p in ('t','f'))
 );
 
 
