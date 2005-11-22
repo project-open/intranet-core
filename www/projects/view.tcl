@@ -245,14 +245,14 @@ set admin_html_content "
       [_ intranet-core.Create_a_Subproject]
     </A>\n"
 
-if {$clone_project_enabled_p} {
+if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">
       [lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]
     </A>[im_gif -translate_p 0 help $clone_pr_help]\n"
 }
 
-if {$execution_project_enabled_p} {
+if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">
       [lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
