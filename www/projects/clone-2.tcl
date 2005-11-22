@@ -38,7 +38,6 @@ set current_user_id [ad_maybe_redirect_for_registration]
 set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 
-if {"" == $return_url} { set return_url "/intranet/projects/view?project_id=parent_id" }
 set current_url [ns_conn url]
 
 if {![im_permission $current_user_id add_projects]} { 
@@ -53,7 +52,6 @@ if {!$parent_read} {
 	<li>You don't have sufficient privileges to see this page."
 }
 
-
 set page_body [im_project_clone \
 	-company_id $company_id \
 	$parent_project_id \
@@ -62,6 +60,17 @@ set page_body [im_project_clone \
 	$clone_postfix \
 ]
 
-# doc_return 200 text/html [im_return_template]
+set clone_project_id [db_string project_id "select project_id from im_projects where project_nr = :project_nr" -default 0]
+
+if {"" == $return_url && 0 != $clone_project_id} { 
+    set return_url "/intranet/projects/view?project_id=$clone_project_id" 
+}
+
+if {"" == $return_url } { 
+    set return_url "/intranet/projects/"
+}
 
 ad_returnredirect $return_url
+
+# doc_return 200 text/html [im_return_template]
+
