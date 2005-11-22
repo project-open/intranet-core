@@ -55,6 +55,7 @@ if {!$parent_read} {
 }
 
 set page_body [im_project_clone \
+	-company_id $company_id \
 	$parent_project_id \
 	$project_name \
 	$project_nr \
