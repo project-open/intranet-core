@@ -352,7 +352,7 @@ ad_proc -public im_format_project_duration { words {lines ""} {hours ""} {days "
 
 
 ad_proc -public im_project_options { {include_empty 1} } { 
-    Cost project options
+    Get a list of projects
 } {
     set options [db_list_of_lists project_options "
 	select project_name, project_id
@@ -360,6 +360,47 @@ ad_proc -public im_project_options { {include_empty 1} } {
     "]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
+}
+
+ad_proc -public im_project_template_options { {include_empty 1} } {
+    Get a list of template projects
+} {
+    set options [db_list_of_lists project_options "
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
+
+
+
+ad_proc -public im_project_template_select { select_name { default "" } } {
+    Returns an html select box named $select_name and defaulted to
+    $default with a list of all projects that qualify as templates.
+} {
+    set bind_vars [ns_set create]
+#    ns_set put $bind_vars project_id $project_id
+
+    # Include the "template_p" field of im_projects IF its defined
+    set template_p_sql ""
+    if {[db_column_exists im_projects template_p]} {
+	set template_p_sql "or template_p='t'"
+    }
+
+    set sql "
+        select
+		project_id,
+		project_name
+        from
+		im_projects
+	where
+		lower(project_name) like '%template%'
+		$template_p_sql
+	order by
+		lower(project_name)
+    "
+
+    return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
 }
 
 
