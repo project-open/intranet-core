@@ -43,6 +43,7 @@ set current_url [ns_conn url]
 if {![im_permission $current_user_id add_projects]} { 
     ad_return_complaint "Insufficient Privileges" "
 	<li>You don't have sufficient privileges to see this page."
+    return
 }
 
 # Make sure the user can read the parent_project
@@ -50,10 +51,10 @@ im_project_permissions $current_user_id $parent_project_id parent_view parent_re
 if {!$parent_read} {
     ad_return_complaint "Insufficient Privileges" "
 	<li>You don't have sufficient privileges to see this page."
+    return
 }
 
 set page_body [im_project_clone \
-	-company_id $company_id \
 	$parent_project_id \
 	$project_name \
 	$project_nr \
