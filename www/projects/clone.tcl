@@ -39,7 +39,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 
-if {"" == $return_url} { set return_url "/intranet/projects/view?project_id=parent_project_id" }
+if {"" == $return_url} { set return_url "/intranet/projects/view?project_id=$parent_project_id" }
 set current_url [ns_conn url]
 
 if {![im_permission $user_id add_projects]} {
