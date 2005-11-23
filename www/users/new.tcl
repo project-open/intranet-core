@@ -199,12 +199,11 @@ ns_log Notice "/users/new: profile_values=$profile_values"
 
 # Fraber 051123: Don't show the profiles for the user
 # himself, unless it's an administrator.
-set show_profiles 0
-if {[llength $managable_profiles_reverse] > 0} { set show_profiles 1 }
-if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set show_profiles 0}
+set edit_profiles_p 0
+if {[llength $managable_profiles_reverse] > 0} { set edit_profiles_p 1 }
+if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set edit_profiles_p 0}
 
-if {$show_profiles} {
-
+if {$edit_profiles_p} {
     ad_form -extend -name register -form {
 	{profile:text(multiselect),multiple
 	    {label "[_ intranet-core.Group_Membership]"}
@@ -328,7 +327,7 @@ ad_form -extend -name register -on_request {
 	    # if the user has no right to change profiles.
 	    # Probably this is a freelancer or company
 	    # who is editing himself.
-	    if {0 == [llength $managable_profiles]} { break }
+	    if {!$edit_profiles_p} { break }
 
 	    ns_log Notice "profile_tuple=$profile_tuple"
 	    set profile_id [lindex $profile_tuple 0]
