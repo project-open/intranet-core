@@ -1077,7 +1077,7 @@ ad_proc im_project_clone_costs {parent_project_id new_project_id} {
 
 	if {"im_invoice" == $object_type} {
 
-	    set invoice_nr [im_next_invoice_nr]
+	    set invoice_nr [im_next_invoice_nr -invoice_type_id $cost_type_id]
 
 	    set invoice_sql "
 	        insert into im_invoices (
