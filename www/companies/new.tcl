@@ -269,7 +269,7 @@ append page_body "
 
 </table>
 
-<p><center><input type=submit value=\"$page_title\"></center>
+<p><center><input type=submit value=\"[_ intranet-core.Submit]\"></center>
 </form>
 "
 
