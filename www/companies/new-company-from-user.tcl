@@ -6,14 +6,14 @@
 # http://www.project-open.com/license/ for details.
 
 ad_page_contract {
-    Creates and updates a company for a specific freelancer.
+    Creates and updates a company for a specific user
+    (Freelance or Customer).
     This is necessary because invoicing and financial documents
     work on the level of companies while user log-in and 
     task assignments work on the level of users (natural
     persons).
 
     @author Frank Bergmann (frank.bergmann@project-open.com)
-
 } {
     user_id:integer
     {company_name ""}
@@ -34,36 +34,50 @@ if {![im_permission $current_user_id add_companies]} {
 }
 
 # -----------------------------------------------------------------
-# Get everything about the freelancer
+# Get everything about the user
 # -----------------------------------------------------------------
 
-set freelance_select ""
-set freelance_from ""
-set freelance_where ""
-set freelance_pg_join ""
+set user_is_customer_p [db_string is_customer "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_customer_group_id]"]
 
-if {[db_table_exists im_freelancers]} {
-    set freelance_select "f.*,"
-    set freelance_from "im_freelancers f,"
-    set freelance_where ""
-    set freelance_pg_join "LEFT JOIN im_freelancers f USING (user_id)"
+set user_is_freelance_p [db_string is_freelance "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_freelance_group_id]"]
+
+if {$user_is_customer_p && $user_is_freelance_p} {
+    ad_return_complaint 1 [lang::message::lookup "" intranet-core.Both_Customer_nor_Freelance "The user is both a customer and a freelancer. We can't decide what company type to create."]
+    return
 }
+
+if {!$user_is_customer_p && !$user_is_freelance_p} {
+    ad_return_complaint 1 [lang::message::lookup "" intranet-core.Neither_Customer_nor_Freelance "The user is neither a customer nor a freelancer. We can't decide what company type to create."]
+    return
+}
+
+set path_prefix ""
+set name_prefix ""
+if {0 == $company_type_id} {
+    if {$user_is_customer_p} { 
+	set company_type_id [im_company_type_customer] 
+	set path_prefix "customer"
+	set name_prefix "Customer"
+    }
+    if {$user_is_freelance_p} { 
+	set company_type_id [im_company_type_freelance] 
+	set path_prefix "freelance"
+	set name_prefix "Freelance"
+    }
+}
+
 
 db_1row freelancer_info "
 select
 	u.*,
-	$freelance_select
 	c.*
 from
 	cc_users u,
-	$freelance_from
 	users_contact c,
         country_codes ha_cc,
         country_codes wa_cc
 where
-	u.user_id = :freelance_id
-	$freelance_where
-	and u.user_id = c.user_id(+)
+	u.user_id = c.user_id(+)
 	and u.user_id = pe.person_id(+)
 	and u.user_id = pa.party_id(+)
         and c.ha_country_code = ha_cc.iso(+)
@@ -84,7 +98,7 @@ if {"" != $company_name} {
     set company_path [string tolower [string trim $company_name]]
     set company_path [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $company_path]
 } else {
-    set company_path "freelance_${freelance_id}"
+    set company_path "${path_prefix}_${freelance_id}"
 }
 
 if {[regexp {\ } $company_path]} {
@@ -106,17 +120,14 @@ set company_id [db_string company_id "select company_id from im_companies where 
 if {!$company_id} {
     
     if {"" == $company_name} {
-	set company_name "Freelance $first_names $last_name"
-    }
-    if {0 == $company_type_id} {
-	set company_type_id [im_company_type_freelance]
+	set company_name "$name_prefix $first_names $last_name"
     }
     if {0 == $company_status_id} {
 	set company_status_id [im_company_status_active]
     }
 
     set office_name "$company_name Main Office"
-    set office_path "freelance_office_${freelance_id}"
+    set office_path "${path_prefix}_office_${freelance_id}"
 
     set office_id [db_string office_id "select office_id from im_offices where office_path=:office_path" -default 0]
     if {!$office_id} {

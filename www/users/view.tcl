@@ -490,7 +490,6 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
 }
 
 set user_id $user_id_from_search
-set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 
 # Return a pretty member state (no normal user understands "banned"...)
 case $member_state {
@@ -509,8 +508,11 @@ if {$admin} {
     append admin_links "<li>[_ intranet-core.User_state]: $user_state"
 }
 
+set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
+set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
 append admin_links "
           <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>
+          <li><a href=$new_company_from_user_url>[lang::message::lookup "" intranet-core.Create_New_Company_for_User "Create New Company for this User"]</a>
 "
 
 if {$admin} {
