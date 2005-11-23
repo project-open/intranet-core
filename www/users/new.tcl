@@ -46,6 +46,7 @@ if {[exists_and_not_null profile]} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 set page_title "[_ intranet-core.Add_a_user]"
 set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_user]"]
@@ -195,9 +196,15 @@ ns_log Notice "/users/new: managable_profiles_reverse=$managable_profiles_revers
 ns_log Notice "/users/new: profile_values=$profile_values"
 
 
-if {[llength $managable_profiles_reverse] > 0} {
-    # fraber 20040123: Adding the list of profiles that
-    # the current user can administer
+
+# Fraber 051123: Don't show the profiles for the user
+# himself, unless it's an administrator.
+set show_profiles 0
+if {[llength $managable_profiles_reverse] > 0} { set show_profiles 1 }
+if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set show_profiles 0}
+
+if {$show_profiles} {
+
     ad_form -extend -name register -form {
 	{profile:text(multiselect),multiple
 	    {label "[_ intranet-core.Group_Membership]"}
