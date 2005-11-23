@@ -111,6 +111,8 @@
       </td>
     </tr>
 
+
+<if @add_budget_hours_p@>
     <tr> 
       <td>#intranet-core.Project_Budget_Hours#</td>
       <td>
@@ -118,9 +120,10 @@
 	<%= [im_gif help "How many hours can be logged on this project (both internal and external resource)?"] %> &nbsp; 
       </td>
     </tr>
+</if>
 
 
-<if @view_finance_p@>
+<if @add_budget_p@>
     <tr> 
       <td>#intranet-core.Project_Budget#</td>
       <td>

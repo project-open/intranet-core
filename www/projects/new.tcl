@@ -38,7 +38,13 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
 
+
+# Get some permissions for convenience
 set view_finance_p [im_permission $user_id view_finance]
+set view_budget_p [im_permission $user_id view_budget]
+set view_budget_hours_p [im_permission $user_id view_budget_hours]
+set add_budget_p [im_permission $user_id add_budget]
+set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
 
 # Make sure the user has the privileges, because this

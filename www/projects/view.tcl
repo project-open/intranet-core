@@ -68,6 +68,16 @@ if {!$read} {
     return
 }
 
+
+# Get some permissions for convenience
+set view_finance_p [im_permission $current_user_id view_finance]
+set view_budget_p [im_permission $current_user_id view_budget]
+set view_budget_hours_p [im_permission $current_user_id view_budget_hours]
+set add_budget_p [im_permission $current_user_id add_budget]
+set add_budget_hours_p [im_permission $current_user_id add_budget_hours]
+
+set add_projects_p [im_permission $current_user_id add_projects]
+
 # ---------------------------------------------------------------------
 # Prepare Project SQL Query
 # ---------------------------------------------------------------------
@@ -187,14 +197,17 @@ if { ![empty_string_p $percent_completed] } { append project_base_data_html "
 			  </tr>"
 }
 
-if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
+if {$view_budget_p} {
+    if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget_Hours]</td>
 			    <td>$project_budget_hours</td>
 			  </tr>"
+    }
 }
 
-if {[im_permission $current_user_id view_finance]} {
+
+if {$view_budget_p} {
     if { ![empty_string_p $project_budget] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
@@ -245,14 +258,14 @@ set admin_html_content "
       [_ intranet-core.Create_a_Subproject]
     </A>\n"
 
-if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
+if {$clone_project_enabled_p && $add_projects_p} {
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">
       [lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]
     </A>[im_gif -translate_p 0 help $clone_pr_help]\n"
 }
 
-if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
+if {$execution_project_enabled_p && $add_projects_p} {
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">
       [lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
