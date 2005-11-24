@@ -530,10 +530,10 @@ if {[form is_request $form_id]} {
 	
 	if {[db_table_exists im_dynfield_attributes]} {
 	
-	    ns_log Notice "companies/new: before attribute_store: object_type=$object_type, object_id=$company_id, form_id=$form_id"
+	    ns_log Notice "companies/new: before attribute_store: object_type=$object_type, object_id=$project_id, form_id=$form_id"
 	    im_dynfield::attribute_store \
 		-object_type $object_type \
-		-object_id $my_project_id \
+		-object_id $project_id \
 		-form_id $form_id
 	    ns_log Notice "companies/new-2: after attribute_store"
 	
