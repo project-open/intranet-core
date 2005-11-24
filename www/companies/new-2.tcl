@@ -58,6 +58,7 @@ ad_page_contract {
     { address_line1 "" }
     { address_line2 "" }
     { address_city "" }
+    { address_state "" }
     { address_postal_code "" }
     { address_country_code "" }
     { start:array,date "" }
@@ -165,6 +166,7 @@ update im_offices set
 	address_line1 = :address_line1,
 	address_line2 = :address_line2,
 	address_city = :address_city,
+	address_state = :address_state,
 	address_postal_code = :address_postal_code,
 	address_country_code = :address_country_code
 where
@@ -208,6 +210,36 @@ im_biz_object_add_role $user_id $company_id $role_id
 if {"" != $manager_id } {
     im_biz_object_add_role $manager_id $company_id $role_id
 }
+
+
+# -----------------------------------------------------------------
+# Store dynamic fields
+# -----------------------------------------------------------------
+
+if {[db_table_exists im_dynfield_attributes]} {
+
+    set form_id "company"
+    set object_type "im_company"
+
+    ns_log Notice "companies/new-2: before append_attributes_to_form"
+    im_dynfield::append_attributes_to_form \
+        -object_type $object_type \
+        -form_id $form_id \
+        -object_id $company_id
+
+    ns_log Notice "companies/new-2: before attribute_store"
+    im_dynfield::attribute_store \
+	-object_type $object_type \
+	-object_id $company_id \
+	-form_id $form_id
+    ns_log Notice "companies/new-2: after attribute_store"
+
+}
+
+
+# ------------------------------------------------------
+# Finish
+# ------------------------------------------------------
 
 db_release_unused_handles
 

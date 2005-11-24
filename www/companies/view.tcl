@@ -28,6 +28,10 @@ ad_page_contract {
     show_all_correspondance_comments:integer,optional
 }
 
+# -----------------------------------------------------------
+# Defaults & Security
+# -----------------------------------------------------------
+
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_employee_p [im_user_is_employee_p $user_id]
 
@@ -47,11 +51,16 @@ if {0 == $company_id} {
 # critical information
 im_company_permissions $user_id $company_id view read write admin
 set see_details $read
+set see_sales_details $admin
 
 if {!$read} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
     <li>[_ intranet-core.lt_You_dont_have_suffici_2]"
 }
+
+# -----------------------------------------------------------
+# Get everything about the company
+# -----------------------------------------------------------
 
 db_1row company_get_info "
 select 
@@ -112,8 +121,19 @@ if {$see_details} {
     append left_column "
   <tr class=roweven><td>[_ intranet-core.Client_Type]</td><td>$company_type</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Key_Account]</td><td><a href=[im_url_stub]/users/view?user_id=$manager_id>$manager</a></td></tr>
+"
+}
+
+if {$see_sales_details} {
+    append left_column "
   <tr class=rowodd><td>[_ intranet-core.Referral_source]</td><td>$referral_source</td></tr>
   <tr class=roweven><td>[_ intranet-core.Billable]</td><td> [util_PrettyBoolean $billable_p]</td></tr>
+"
+}
+
+
+if {$see_details} {
+    append left_column "
   <tr class=rowodd><td>[_ intranet-core.Phone]</td><td>$phone</td></tr>
   <tr class=roweven><td>[_ intranet-core.Fax]</td><td>$fax</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Address1]</td><td>$address_line1</td></tr>
@@ -128,7 +148,31 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
     }
     append left_column "
-  <tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>"
+  <tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>
+"
+
+# ------------------------------------------------------
+# Show extension fields
+# ------------------------------------------------------
+
+set dynamic_fields_p 0
+if {[db_table_exists im_dynfield_attributes]} {
+
+    set dynamic_fields_p 1
+    set object_type "im_company"
+    set form_id "company_view"
+
+    template::form create $form_id \
+	-mode "display" \
+	-display_buttons {}
+
+    im_dynfield::append_attributes_to_form \
+	-object_type $object_type \
+        -form_id $form_id \
+        -object_id $company_id
+
+}
+
 
 # ------------------------------------------------------
 # Primary Contact
@@ -200,7 +244,7 @@ if {$admin} {
     append left_column "
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
-	[export_form_vars company_id]
+	[export_form_vars company_id return_url]
 	<input type=submit value='[_ intranet-core.Edit]'>
 	</form></td></tr>"
 }

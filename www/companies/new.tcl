@@ -26,14 +26,18 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
     @author juanjoruizx@yahoo.es
 } {
-    { company_id:integer 0 }
+    company_id:integer,optional
+    { form_mode "edit" }
     { return_url "" }
 }
+
+# ------------------------------------------------------
+# Defaults & Security
+# ------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
-
 
 # Make sure the user has the privileges, because this
 # pages shows the list of companies etc.
@@ -43,27 +47,59 @@ if {![im_permission $user_id "add_companies"]} {
   <li>[_ intranet-core.lt_You_dont_have_suffici]"
 }
 
-if {$company_id > 0} {
+set action_url "/intranet/companies/new-2"
+set focus "menu.var_name"
 
-    # Called with an existing company_id => Edit the company
-    # We know that main_office_id is NOT NULL...
+set page_title "[_ intranet-core.Edit_Company]"
+set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
-    if {![db_0or1row company_get_info "
+
+
+# ------------------------------------------------------------------
+# Build the form
+# ------------------------------------------------------------------
+
+set company_status_options [list]
+set company_type_options [list]
+set annual_revenue_options [list]
+set country_options [im_country_options]
+set employee_options [im_employee_options]
+
+ad_form \
+    -name company \
+    -cancel_url $return_url \
+    -action $action_url \
+    -mode $form_mode \
+    -export {next_url user_id return_url} \
+    -form {
+	company_id:key
+	{main_office_id:text(hidden)}
+	{company_name:text(text) {label "Company Name"} {html {size 60}}}
+	{company_path:text(text) {label "Company Short Name"} {html {size 40}}}
+	{referral_source:text(text),optional {label "Referral Source"} {html {size 60}}}
+	{company_status_id:text(im_category_tree) {label "Company Status"} {custom {category_type "Intranet Company Status" } } }
+	{company_type_id:text(im_category_tree) {label "Company Type"} {custom {category_type "Intranet Company Type"} } }
+	{manager_id:text(select),optional {label "Key Account"} {options $employee_options} }
+	
+	{phone:text(text),optional {label "Phone"} {html {size 20}}}
+	{fax:text(text),optional {label "Fax"} {html {size 20}}}
+	{address_line1:text(text),optional {label "Address 1"} {html {size 40}}}
+	{address_line2:text(text),optional {label "Address 2"} {html {size 40}}}
+	{address_city:text(text),optional {label "City"} {html {size 30}}}
+	{address_postal_code:text(text),optional {label "ZIP"} {html {size 6}}}
+	{address_country_code:text(select),optional {label "Country"} {options $country_options} }
+	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
+	{vat_number:text(text),optional {label "VAT Number"} {html {size 60}}}
+	{annual_revenue_id:text(im_category_tree),optional {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
+	{note:text(textarea),optional {label "Note"} {}}
+    }
+
+
+ad_form -extend -name company -select_query {
+
 select
-	c.company_name, 
-	c.company_path, 
-	c.company_status_id, 
-	c.company_type_id, 
-	c.main_office_id,
-	c.billable_p,
-	c.note, 
-	c.annual_revenue_id, 
-	c.referral_source,
-	c.vat_number,
-	c.manager_id,
-	c.site_concept, 
-	c.contract_value as contract_value,
-	to_char(c.start_date,'YYYY-MM-DD') as start_date,
+	c.*,
+	to_char(c.start_date,'YYYY-MM-DD') as start_date_formatted,
 	o.phone,
 	o.fax,
 	o.address_line1,
@@ -75,202 +111,33 @@ from
 	im_companies c, 
 	im_offices o
 where 
-	c.company_id=:company_id
-	and c.main_office_id=o.office_id
-" 
-    ]} {
-	ad_return_complaint 1 "<li>Company doesn't exist."
-	return
-    }
+	c.company_id = :company_id
+	and c.main_office_id = o.office_id
 
-    set page_title "[_ intranet-core.Edit_Company]"
-    set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
+} -after_submit {
 
-} else {
-    # Completely new company. Set some reasonable defaults:
-    set page_title "[_ intranet-core.Add_Company]"
-    set context_bar [im_context_bar [list index "Companies"] $page_title]
-    set company_name ""
-    set company_path ""
-    # Grab today's date
-    set start_date [lindex [split [ns_localsqltimestamp] " "] 0]
-    set note ""
-    set phone ""
-    set fax ""
-    set address_line1 ""
-    set address_line2 ""
-    set address_postal_code ""
-    set address_city ""
-    set site_concept ""
-    set vat_number ""
-
-    set company_status_id [im_company_status_active]
-    set company_type_id [im_company_type_other]
-    set annual_revenue_id [im_company_annual_rev_1_10]
-    set referral_source "[_ intranet-core.lt_How_did_we_get_in_con]"
-    set billable_p "t"
-    set "creation_ip_address" [ns_conn peeraddr]
-    set "creation_user" $user_id
-    set company_id [im_new_object_id]
-    set address_country_code ""
-    set manager_id ""
+	ad_returnredirect $return_url
+	ad_script_abort
 }
 
-set company_defaults [ns_set create]
-ns_set put $company_defaults billable_p $billable_p
-
-set billable_checked ""
-set nonbillable_checked ""
-if {$billable_p == "t"} { set billable_checked "checked" }
-if {$billable_p == "f"} { set nonbillable_checked "checked" }
+# ------------------------------------------------------
+# Dynamic Fields
+# ------------------------------------------------------
 
 
-set page_body "
-<form method=post action=new-2>
-[export_form_vars return_url company_id creation_ip_address creation_user main_office_id]
-		  <table border=0>
-		    <tr> 
-		      <td colspan=2 class=rowtitle align=center>[_ intranet-core.Add_New_Company]</td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Company_Name]</td>
-		      <td> 
-<input type=text size=40 name=company_name value=\"$company_name\">
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Company_Short_Name]<BR><font size=-2>([_ intranet-core.directory_path])</font></td>
-		      <td> 
-<input type=text size=15 name=company_path value=\"$company_path\">
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Referral_Source]</td>
-		      <td> 
-<input type=text size=30 name=referral_source value=\"$referral_source\">
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Company_Status]</td>
-		      <td> 
-[im_company_status_select "company_status_id" $company_status_id]
-"
-if {$user_admin_p} {
-    append page_body "
-	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Status'>
-	[im_gif new "Add a new company type"]</A>"
+set dynamic_fields_p 0
+if {[db_table_exists im_dynfield_attributes]} {
+
+    set dynamic_fields_p 1
+    set form_id "company"
+    set object_type "im_company"
+    set my_company_id 0
+    if {[info exists company_id]} { set my_company_id $company_id }
+
+
+    im_dynfield::append_attributes_to_form \
+	-object_type $object_type \
+        -form_id $form_id \
+        -object_id $my_company_id
 }
 
-append page_body "
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Company_Type]</td>
-		      <td> 
-[im_company_type_select "company_type_id" $company_type_id]
-"
-if {$user_admin_p} {
-    append page_body "
-	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Company+Type'>
-	[im_gif new "Add a new company type"]</A>"
-}
-
-append page_body "
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Phone]</td>
-		      <td> 
-<input type=text size=15 name=phone value=\"$phone\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Fax]</td>
-		      <td> 
-<input type=text size=15 name=fax value=\"$fax\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Address_1]</td>
-		      <td> 
-<input type=text size=30 name=address_line1 value=\"$address_line1\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Address_2]</td>
-		      <td> 
-<input type=text size=30 name=address_line2 value=\"$address_line2\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.ZIP_and_City]</td>
-		      <td> 
-<input type=text size=5 name=address_postal_code value=\"$address_postal_code\" >
-<input type=text size=30 name=address_city value=\"$address_city\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Country]</td>
-		      <td> 
-[im_country_select address_country_code $address_country_code]
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Web_Site]</td>
-		      <td> 
-<input type=text size=30 name=site_concept value=\"$site_concept\" >
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.VAT_Number]</td>
-		      <td> 
-<input type=text size=20 name=vat_number value=\"$vat_number\" >
-		      </td>
-		    </tr>
-
-
-		    <tr> 
-		      <td>[_ intranet-core.lt_Expected_Annual_Reven]</td>
-		      <td> 
-[im_category_select "Intranet Annual Revenue" annual_revenue_id $annual_revenue_id]
-"
-if {$user_admin_p} {
-    append page_body "
-	<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Annual+Revenue'>
-	[im_gif new "Add a new annual revenue measure"]</A>"
-}
-
-append page_body "
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.lt_Is_this_a_billable_co]</td>
-		      <td> 
-
-<input type=radio name=billable_p value=t $billable_checked>[_ intranet-core.Yes]&nbsp;</input>
-<input type=radio name=billable_p value=f $nonbillable_checked>[_ intranet-core.No]</input>
-
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Key_Account_Manager]</td>
-		      <td> 
-<select name=manager_id size=8>
-[im_employee_select_optionlist $manager_id]
-</select>
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td>[_ intranet-core.Notes]</td>
-		      <td> 
-<textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
-		      </td>
-		    </tr>
-
-</table>
-
-<p><center><input type=submit value=\"[_ intranet-core.Submit]\"></center>
-</form>
-"
-
-ad_return_template
