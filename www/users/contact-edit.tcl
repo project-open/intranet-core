@@ -86,13 +86,6 @@ db_0or1row user_contact_info {
     where user_id = :user_id
 }
 
-if { [empty_string_p $ha_state] && [empty_string_p $ha_country_code] } {
-    set ha_state ""
-    set ha_country_code ""
-    set wa_state ""
-    set wa_country_code ""
-}
-
 # ---------------------------------------------------------------
 # Format the table
 # ---------------------------------------------------------------
@@ -128,7 +121,7 @@ set work_html "
 <tr><td valign=top>[_ intranet-core.Work_address]</td><td>
 			<input type=text name=wa_line1 value=\"$wa_line1\" >
 			<input type=text name=wa_line2 value=\"$wa_line2\" ></td></tr>
-<tr><td>[_ intranet-core.Work_City]</td>	<td><input type=text name=wa_city value=\"$ha_city\" ></td></tr>
+<tr><td>[_ intranet-core.Work_City]</td>	<td><input type=text name=wa_city value=\"$wa_city\" ></td></tr>
 <tr><td>[_ intranet-core.Work_Postal_Code]</td><td><input type=text name=wa_postal_code value=\"$wa_postal_code\" ></td></tr>
 <tr><td>[_ intranet-core.Work_Country]</td><td>[im_country_widget $wa_country_code wa_country_code]</td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
