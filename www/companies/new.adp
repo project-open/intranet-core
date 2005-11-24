@@ -4,7 +4,4 @@
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">companies</property>
 
-<if @dynamic_fields_p@>
-   <formtemplate id="company"></formtemplate>
-</if>
-
+<formtemplate id="company"></formtemplate>
