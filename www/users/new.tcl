@@ -145,7 +145,6 @@ if { [security::RestrictLoginToSSLP] } {
     security::require_secure_conn
 }
 
-
 ad_form -name register -export {next_url user_id return_url} -form { 
     {email:text(text) {label "[_ intranet-core.Email]"} {html {size 30}}}
     {username:text(hidden),optional value {}}
