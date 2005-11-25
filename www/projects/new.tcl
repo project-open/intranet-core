@@ -48,8 +48,12 @@ if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
 if {![exists_and_not_null return_url]} {
     set return_url "[im_url_stub]/projects/index"
 }
-     
 
+     
+set view_budget_p [im_permission $user_id view_budget]
+set view_budget_hours_p [im_permission $user_id view_budget_hours]
+set add_budget_p [im_permission $user_id add_budget]
+set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
 
 # Make sure the user has the privileges, because this
@@ -70,7 +74,7 @@ if {![im_permission $user_id add_projects]} {
 set form_id "project-ae"
 
 template::form::create $form_id
-template::form::section $form_id "[_ intranet-core.Project_Base_Data] [im_gif help "To avoid duplicate projects and to determine where the project data are stored on the local file server"]"
+template::form::section $form_id ""
 template::element::create $form_id project_id -widget "hidden"
 template::element::create $form_id supervisor_id -widget "hidden" -optional
 template::element::create $form_id requires_report_p -widget "hidden" -optional -datatype text
@@ -493,7 +497,7 @@ if {[form is_request $form_id]} {
 	# Update the Project
 	# -----------------------------------------------------------------
 	set start_date [template::util::date get_property sql_date $start]
-	set end_date [template::util::date get_property sql_date $end]
+	set end_date [template::util::date get_property sql_timestamp $end]
 	
 	    set project_update_sql "
 	update im_projects set
