@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Projects#</property>
+<property name="title">@page_title@</property>
 <property name="main_navbar_label">projects</property>
 
 
@@ -11,8 +11,6 @@ switch $view_name {
     "finance" { set menu_label "project_finance" }
     default { set menu_label "project_summary" }
 }
-
-
 %>
 
 <br>
