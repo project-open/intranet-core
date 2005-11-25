@@ -225,16 +225,99 @@ ad_proc -public im_company_internal { } {
 }
 
 
-ad_proc -public im_company_options { {include_empty 1} } { 
+ad_proc -public im_company_options {
+    {-include_empty 1}
+    {-status "" }
+    {-type "" }
+    {-exclude_status "" }
+} {
     Cost company options
 } {
-    set options [db_list_of_lists company_options "
-	select company_name, company_id
-	from im_companies
-    "]
+
+    set user_id [ad_get_user_id]
+    set bind_vars [ns_set create]
+    ns_set put $bind_vars user_id $user_id
+
+    set where_clause "  and c.company_status_id != [im_company_status_inactive]"
+
+    set perm_sql "
+        (       select
+                       c.*
+                from
+                        im_companies c,
+                        acs_rels r
+                where
+                        c.company_id = r.object_id_one
+                        and r.object_id_two = :user_id
+                        $where_clause
+
+        UNION
+                select
+                        c.*
+                from
+                        im_companies c
+                where
+                        c.company_id = :default
+        )
+"
+
+    if {[im_permission $user_id "view_companies_all"]} {
+        set perm_sql "im_companies"
+    }
+
+
+set sql "
+select
+        c.company_name,
+        c.company_id
+from
+        $perm_sql c
+where
+        1=1
+        $where_clause
+"
+
+    if { ![empty_string_p $status] } {
+        ns_set put $bind_vars status $status
+        append sql " and c.company_status_id=(select company_status_id from im_company_status where company_status=:status)"
+    }
+
+    if { ![empty_string_p $exclude_status] } {
+        set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
+        append sql " and c.company_status_id in (
+                select  company_status_id
+                from    im_company_status
+                where   company_status not in ($exclude_string)
+        )"
+    }
+
+
+    if { ![empty_string_p $type] } {
+        ns_set put $bind_vars type $type
+        append sql "
+        and c.company_type_id in (
+                select  ct.company_type_id
+                from    im_company_types ct
+                where ct.company_type = :type
+        UNION
+                select  ch.child_id
+                from    im_company_types ct,
+                        im_category_hierarchy ch
+                where
+                        ch.parent_id = ct.company_type_id
+                        and ct.company_type = :type
+        )"
+    }
+
+    append sql " order by lower(c.company_name)"
+
+
+    set options [db_list_of_lists company_options $sql]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
 }
+
+
 
 ad_proc -public im_provider_options { {include_empty 1} } { 
     Cost provider options

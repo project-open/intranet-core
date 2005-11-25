@@ -253,7 +253,7 @@ update im_projects set
 	percent_completed = :percent_completed,
 	on_track_status_id =:on_track_status_id,
 	start_date =	:start_date,
-	end_date =	to_date('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')
+	end_date =	to_timestamp('$end_date $end_date_time', 'YYYY-MM-DD HH24:MI')
 where
 	project_id = :project_id
 "
