@@ -107,7 +107,6 @@ set page_title $company_name
 set left_column ""
 
 append left_column "
-<table border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>
       [_ intranet-core.Client_Details]
@@ -240,8 +239,9 @@ if {[db_table_exists im_dynfield_attributes]} {
     }
 }
 
+set left_column_action ""
 if {$admin} {
-    append left_column "
+    set left_column_action "
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
 	[export_form_vars company_id return_url]
@@ -249,7 +249,7 @@ if {$admin} {
 	</form></td></tr>"
 }
 
-append left_column "</table>"
+# append left_column "</table>"
 
 
 # ------------------------------------------------------
