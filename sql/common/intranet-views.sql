@@ -188,7 +188,7 @@ extra_select, extra_where, sort_order, visible_for) values (2229,22,NULL,'Close'
 
 
 --
-delete from im_view_columns where column_id > 2000 and column_id < 2099;
+delete from im_view_columns where column_id >= 2000 and column_id < 2099;
 --
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
@@ -197,39 +197,43 @@ extra_select, extra_where, sort_order, visible_for) values (2000,20,NULL,'Ok',
 '','',0,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2001,20,NULL,'Project nr',
+extra_select, extra_where, sort_order, visible_for) values (2002,20,NULL,'Per',
+'[im_date_format_locale $percent_completed 2 1] %','','',2,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2005,20,NULL,'Project nr',
 '"<A HREF=/intranet/projects/view?project_id=$project_id>$project_nr</A>"',
-'','',1,'');
+'','',5,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2003,20,NULL,'Project Name',
-'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_name</A>"','','',3,'');
+extra_select, extra_where, sort_order, visible_for) values (2010,20,NULL,'Project Name',
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_name</A>"','','',10,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2005,20,NULL,'Client',
+extra_select, extra_where, sort_order, visible_for) values (2015,20,NULL,'Client',
 '"<A HREF=/intranet/companies/view?company_id=$company_id>$company_name</A>"',
-'','',4,'im_permission $user_id view_companies');
+'','',15,'im_permission $user_id view_companies');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2009,20,NULL,'Type',
-'$project_type','','',5,'');
+extra_select, extra_where, sort_order, visible_for) values (2020,20,NULL,'Type',
+'$project_type','','',20,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2013,20,NULL,'Project Manager',
+extra_select, extra_where, sort_order, visible_for) values (2025,20,NULL,'Project Manager',
 '"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
-'','',7,'');
+'','',25,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2015,20,NULL,'Start Date',
-'$start_date_formatted','','',8,'');
+extra_select, extra_where, sort_order, visible_for) values (2030,20,NULL,'Start Date',
+'$start_date_formatted','','',30,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2017,20,NULL,'Delivery Date',
-'$end_date_formatted','','',9,'');
+extra_select, extra_where, sort_order, visible_for) values (2035,20,NULL,'Delivery Date',
+'$end_date_formatted','','',35,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
-extra_select, extra_where, sort_order, visible_for) values (2021,20,NULL,'Status',
-'$project_status','','',11,'');
+extra_select, extra_where, sort_order, visible_for) values (2040,20,NULL,'Status',
+'$project_status','','',40,'');
 
 
 
