@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -326,10 +326,10 @@
   <msg key="Import_User_CSV">Benutzerliste (CVS) importieren </msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inaktiv</msg>
+  <msg key="Inactive_Customers">Inaktive Kunden</msg>
   <msg key="Incident">Vorfall</msg>
   <msg key="Include_in_Invoice">In die Rechnung aufnehmen</msg>
   <msg key="Inctive_Customers">Inaktive Kunden</msg>
-  <msg key="Inactive_Customers">Inaktive Kunden</msg>
   <msg key="India">Indien</msg>
   <msg key="Indonesia">Indonesien</msg>
   <msg key="Inquiries">Anfragen</msg>
@@ -618,11 +618,13 @@
   <msg key="News">Nachricht</msg>
   <msg key="Next_Absence">Nächste Abwesenheit</msg>
   <msg key="Next_Month">Nächster Monat</msg>
+  <msg key="Next_Steps">Nächste Schritte</msg>
   <msg key="Nicaragua">Nicaragua</msg>
   <msg key="nl">nl</msg>
   <msg key="nl_BE">nl_BE</msg>
   <msg key="nl_NL">nl_NL</msg>
   <msg key="No">Nein</msg>
+  <msg key="No_Email_Has_Been_Sent">Es wurde keine Email ausgesandt</msg>
   <msg key="No_members_found">Keine Mitglieder gefunden</msg>
   <msg key="No_offices_found">Keine Firmensitze gefunden</msg>
   <msg key="None">Kein</msg>
@@ -751,6 +753,7 @@
   <msg key="Report_this_error">Berichten sie diesen Fehler</msg>
   <msg key="Request_Error">Fehler in der Anfrage</msg>
   <msg key="Return_to">Zurück zu</msg>
+  <msg key="Return_To_Previous_Page">Zurück zur letzten Seite</msg>
   <msg key="Romania">Rumänien</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>

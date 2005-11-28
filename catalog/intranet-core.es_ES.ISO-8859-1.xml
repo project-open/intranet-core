@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -336,10 +336,10 @@
   <msg key="Import_User_CSV">Importar lista usuarios (CSV)</msg>
   <msg key="in">en</msg>
   <msg key="Inactive">Inactivo</msg>
+  <msg key="Inactive_Customers">Clientes no activos</msg>
   <msg key="Incident">Incidencia</msg>
   <msg key="Include_in_Invoice">Incluir en factura</msg>
   <msg key="Inctive_Customers">Clientes no activos</msg>
-  <msg key="Inactive_Customers">Clientes no activos</msg>
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Consultas</msg>

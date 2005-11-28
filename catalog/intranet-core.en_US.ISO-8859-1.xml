@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.2.1" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -134,6 +134,8 @@
   <msg key="Choose_a_Country">Choose a Country</msg>
   <msg key="Choose_a_State">Choose a State</msg>
   <msg key="City">City</msg>
+  <msg key="Cleanup_All_Demo_Users">Cleanup all Demo Users</msg>
+  <msg key="Cleanup_Demo_Users">Cleanup Demo Users</msg>
   <msg key="Client">Client</msg>
   <msg key="Client_Contacts">Client Contacts</msg>
   <msg key="Client_Details">Client Details</msg>
@@ -160,6 +162,7 @@
   <msg key="Company_Status_1">Company Status:</msg>
   <msg key="Company_Type">Company Type</msg>
   <msg key="Company_Type_1">Company Type:</msg>
+  <msg key="Company_Types">Company Types</msg>
   <msg key="Confirm">Confirm</msg>
   <msg key="Consulting_Project">Consulting Project</msg>
   <msg key="Contact">Contact</msg>
@@ -209,7 +212,9 @@
   <msg key="Del">Del</msg>
   <msg key="Delete">Delete</msg>
   <msg key="delete">delete</msg>
+  <msg key="Delete_checked_users">Delete checked users</msg>
   <msg key="Delete_Cost_Center">Delete Cost Center</msg>
+  <msg key="Delete_Dynfield">Delete DynField</msg>
   <msg key="Delete_Menu">Delete Menu</msg>
   <msg key="Delete_portrait">Delete portrait</msg>
   <msg key="Delete_the_Task">Delete the Task</msg>
@@ -229,6 +234,7 @@
   <msg key="Download_files">Download files</msg>
   <msg key="Draft_Quality">Draft Quality</msg>
   <msg key="Duplicate_UserB">Duplicate User&lt;/B&gt;</msg>
+  <msg key="DynField">DynField</msg>
   <msg key="e">e</msg>
   <msg key="Eco">Eco</msg>
   <msg key="Ecuador">Ecuador</msg>
@@ -355,7 +361,6 @@
   <msg key="Incident">Incident</msg>
   <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inctive_Customers">Inctive Customers</msg>
-  <msg key="Inactive_Customers">Inactive Customers</msg>
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Inquiries</msg>
@@ -405,6 +410,7 @@
   <msg key="Learn_About_Your_Company">Learn About Your Company</msg>
   <msg key="Learn_About_Your_Company_Blurb">This component shows you a different company member every time. This way, members of different offices can start to know each other and employees learn about the freelancers that work with the company. User access permissions are maintained, and you can remove or modify _this_ text when you change into 'translation mode'.</msg>
   <msg key="Lebanon">Lebanon</msg>
+  <msg key="Licenses">Licences</msg>
   <msg key="Liechtenstein">Liechtenstein</msg>
   <msg key="Linguistic_Val">Linguistic Val.</msg>
   <msg key="Linux">Linux</msg>
@@ -765,7 +771,6 @@ other way for the user to find out.</msg>
   <msg key="lt_You_need_to_type_in_a_3">You need to type in a password</msg>
   <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="Luxembourg">Luxembourg</msg>
-  <msg key="Licenses">Licences</msg>
   <msg key="m">m</msg>
   <msg key="Mac_OS_X">Mac OS X</msg>
   <msg key="Macedonia">Macedonia</msg>
@@ -813,11 +818,13 @@ other way for the user to find out.</msg>
   <msg key="News">News</msg>
   <msg key="Next_Absence">Next Absence</msg>
   <msg key="Next_Month">Next Month</msg>
+  <msg key="Next_Steps">Next Steps</msg>
   <msg key="Nicaragua">Nicaragua</msg>
   <msg key="nl">nl</msg>
   <msg key="nl_BE">nl_BE</msg>
   <msg key="nl_NL">nl_NL</msg>
   <msg key="No">No</msg>
+  <msg key="No_Email_Has_Been_Sent">No Email has been sent</msg>
   <msg key="No_members_found">No members found</msg>
   <msg key="No_offices_found">No offices found</msg>
   <msg key="None">None</msg>
@@ -827,7 +834,13 @@ other way for the user to find out.</msg>
   <msg key="Notes">Notes</msg>
   <msg key="Notify">Notify</msg>
   <msg key="Notify_added_user">Notify added user</msg>
+  <msg key="Nuke_All_Demo_Users">Nuke All Demo Users</msg>
+  <msg key="Nuke_Checked_Users">Nuke Checked Users</msg>
+  <msg key="Nuke_Demo_Users">Nuke Demo Users</msg>
+  <msg key="Nuke_this_project">Nuke this project</msg>
+  <msg key="Nuke_this_user">Nuke this user</msg>
   <msg key="Nuke_user">Nuke user</msg>
+  <msg key="Nuking_Users">Nuking Users</msg>
   <msg key="o">o</msg>
   <msg key="Office">Office</msg>
   <msg key="office_info">office_info</msg>
@@ -885,6 +898,7 @@ other way for the user to find out.</msg>
   <msg key="Payed">Payed</msg>
   <msg key="Payments">Payments</msg>
   <msg key="PayPal">PayPal</msg>
+  <msg key="Per">%%</msg>
   <msg key="Perc_Compl">% Compl.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
   <msg key="Personal">Personal</msg>
@@ -961,8 +975,10 @@ other way for the user to find out.</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
   <msg key="Reply">Reply</msg>
   <msg key="Report_this_error">Report this error</msg>
+  <msg key="Reporting">Reporting</msg>
   <msg key="Request_Error">Request Error</msg>
   <msg key="Return_to">Return to</msg>
+  <msg key="Return_To_Previous_Page">Return to previous page</msg>
   <msg key="Romania">Romania</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>
@@ -1111,10 +1127,13 @@ other way for the user to find out.</msg>
   <msg key="user">user</msg>
   <msg key="User_Administration">User Administration</msg>
   <msg key="user_administration">user administration</msg>
+  <msg key="User_Id">User ID</msg>
   <msg key="User_Matrix">User Matrix</msg>
   <msg key="User_name">User name</msg>
   <msg key="User_search">User search</msg>
   <msg key="User_state">User state</msg>
+  <msg key="User_Status">User Status</msg>
+  <msg key="User_Type">User Type</msg>
   <msg key="User_Types">User Types</msg>
   <msg key="Users">Users</msg>
   <msg key="Users_Contact_Note">Users Contact Note</msg>
