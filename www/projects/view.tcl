@@ -78,7 +78,7 @@ select
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
 	to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
 	to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
-	to_char(p.percent_completed, '90.9%') as percent_completed_formatted,
+	to_char(p.percent_completed, '999990.9%') as percent_completed_formatted,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
 	c.primary_contact_id as company_contact_id,
