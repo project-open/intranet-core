@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="pt_BR" charset="ISO-8859-1">
+
+  <msg key="All">Todos</msg>
+  <msg key="Mine">Meu</msg>
+  <msg key="Potential">Potencial</msg>
+  <msg key="Project_Status">Status do Projeto</msg>
+</message_catalog>
