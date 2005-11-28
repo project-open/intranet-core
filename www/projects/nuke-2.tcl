@@ -102,18 +102,41 @@ with_transaction {
     }
 
     # Translation
-    ns_log Notice "projects/nuke-2: im_task_actions"
-    db_dml task_actions "
+    if {[db_table_exists im_trans_tasks]} {
+	ns_log Notice "projects/nuke-2: im_task_actions"
+	db_dml task_actions "
 	delete from im_task_actions 
 	where task_id in (
 		select task_id 
 		from im_trans_tasks
 		where project_id = :project_id
 	)"
-    ns_log Notice "projects/nuke-2: im_trans_tasks"
-    db_dml trans_tasks "delete from im_trans_tasks where project_id = :project_id"
+	ns_log Notice "projects/nuke-2: im_trans_tasks"
+	db_dml trans_tasks "delete from im_trans_tasks where project_id = :project_id"
 
-    db_dml project_target_languages "delete from im_target_languages where project_id = :project_id"
+	db_dml project_target_languages "delete from im_target_languages where project_id = :project_id"
+    }
+
+    # Consulting
+    if {[db_table_exists im_timesheet_tasks]} {
+
+
+	ns_log Notice "projects/nuke-2: im_hours - for timesheet tasks"
+	db_dml task_actions "
+		delete from im_hours
+		where timesheet_task_id in (
+			select task_id
+			from im_timesheet_tasks
+			where project_id = :project_id
+	)"
+
+	ns_log Notice "projects/nuke-2: im_timesheet_tasks"
+	db_dml task_actions "
+	    delete from im_timesheet_tasks
+	    where project_id = :project_id
+	"
+    }
+
 
     # Filestorage
     ns_log Notice "projects/nuke-2: im_fs_folder_status"
