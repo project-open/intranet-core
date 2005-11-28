@@ -63,6 +63,9 @@ set elements_list {
 	    <a href="@projects.project_url@">@projects.project_name@</a>
     }
   }
+  num_subprojects {
+  	label "[_ intranet-core.Num_Subprojects]"
+  }
   parent_project_name {
   	label "[_ intranet-core.Parent_Project]"
 	display_template {
@@ -91,12 +94,27 @@ list::create \
         }
         
 db_multirow -extend {project_url parent_project_url} projects get_projects "
-	select 	p.*,
+	select
+	 	p.*,
 		im_category_from_id(p.project_status_id) as project_status,
 		im_category_from_id(p.project_type_id) as project_type,
 		im_project_name_from_id(p.parent_id) as parent_project_name,
-		im_project_nr_from_id(p.parent_id) as parent_project_nr
-	from	im_projects p
+		im_project_nr_from_id(p.parent_id) as parent_project_nr,
+		subp.num_subprojects
+	from
+		im_projects p
+		left outer join
+		(select	
+			count(*) as num_subprojects,
+			proj.project_id
+		from
+			im_projects proj,
+			im_projects sub_p
+		where
+			sub_p.parent_id = proj.project_id
+		group by
+			proj.project_id
+		) subp on (p.project_id = subp.project_id)
 	where	1=1
 	order by p.project_id
 " {
