@@ -352,6 +352,7 @@
   <msg key="Iceland">Iceland</msg>
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
+  <msg key="Id">Id</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
   <msg key="Import_User_CSV">Import User CSV</msg>
@@ -654,7 +655,7 @@ site with fake crud.</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
-  <msg key="lt_return_to_user_admini">return to user administration</msg>
+  <msg key="lt_return_to_user_admini">Return to user administration</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
   <msg key="lt_role_name_of_object_n">%role_name% of %object_name%</msg>
@@ -835,11 +836,14 @@ other way for the user to find out.</msg>
   <msg key="Notify">Notify</msg>
   <msg key="Notify_added_user">Notify added user</msg>
   <msg key="Nuke_All_Demo_Users">Nuke All Demo Users</msg>
+  <msg key="Nuke_Checked_Projects">Nuke Checked Projects</msg>
   <msg key="Nuke_Checked_Users">Nuke Checked Users</msg>
+  <msg key="Nuke_Demo_Projects">Nuke Demo Projects</msg>
   <msg key="Nuke_Demo_Users">Nuke Demo Users</msg>
   <msg key="Nuke_this_project">Nuke this project</msg>
   <msg key="Nuke_this_user">Nuke this user</msg>
   <msg key="Nuke_user">Nuke user</msg>
+  <msg key="Nuking_Projects">Nuking Projects</msg>
   <msg key="Nuking_Users">Nuking Users</msg>
   <msg key="o">o</msg>
   <msg key="Office">Office</msg>
