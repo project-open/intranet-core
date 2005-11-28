@@ -35,13 +35,13 @@
 	<A href="cleanup-users">Nuke Demo Users</A><br>
           This commands allows you to selectively "nuke" (permanently delete) 
 	  users from the system, including all of their associated data such
-	  as (portraits, tasks, forum discussions, timesheet, ...).
+	  as (portraits, tasks, forum discussions, timesheet, ...).<br>&nbsp;<br>
 
       <li>
 	<A href="cleanup-projects">Nuke Demo Projects</A><br>
           This commands allows you to selectively "nuke" (permanently delete) 
 	  projects from the system, including all of their associated data such
-	  as (tasks, forum discussions, invoices, timesheet, ...).
+	  as (tasks, forum discussions, invoices, timesheet, ...).<br>&nbsp;<br>
     </ul>
 
   </td>

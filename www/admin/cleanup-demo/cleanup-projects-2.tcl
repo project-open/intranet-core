@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/admin/cleanup-demo/cleanup-users.tcl
+# /packages/intranet-core/www/admin/cleanup-demo/cleanup-projects.tcl
 #
 # Copyright (C) 2004 Project/Open
 #
@@ -16,10 +16,9 @@
 ad_page_contract {
     Install packages - dependency check
 } {
-    user_id:multiple
+    project_id:multiple
     return_url
 }
-
 
 # ------------------------------------------------------
 # Defaults & Security
@@ -34,12 +33,12 @@ if {!$user_is_admin_p} {
 }
 
 
-set page_title [_ intranet-core.Nuking_Users]
+set page_title [_ intranet-core.Nuking_Projects]
 
 # ------------------------------------------------------------
 # Return the page header.
 # This technique allows us to write out HTML output while
-# the processes are runnin. Otherwise, the user would
+# the processes are runnin. Otherwise, the project would
 # not see any intermediate results, but only a screen
 # after possibly many minutes of waiting...
 #
@@ -50,10 +49,10 @@ ns_write "<h1>$page_title</h1>\n"
 ns_write "<ul>\n"
 
 
-foreach id $user_id {
+foreach id $project_id {
 
-  ns_write "<li>Nuking user \#$id ...<br>\n"
-  set error [im_user_nuke $id]
+  ns_write "<li>Nuking project \#$id ...<br>\n"
+  set error [im_project_nuke $id]
   if {"" == $error} {
       ns_write "... successful\n"
   } else {
@@ -64,9 +63,7 @@ foreach id $user_id {
 
 
 ns_write "</ul>\n"
-
 ns_write "<p>You can now return to the <a href=$return_url>previous page</a>.</p>"
-
 ns_write [im_footer]
 
 
