@@ -711,7 +711,9 @@ ad_proc im_project_clone {
 
     # --------------------------------------------
     # Delete Trans Tasks
-    db_dml delete_trans_tasks "delete from im_trans_tasks where project_id = :new_project_id"
+    if {[db_table_exists im_trans_tasks]} {
+	db_dml delete_trans_tasks "delete from im_trans_tasks where project_id = :new_project_id"
+    }
 
     # --------------------------------------------
     # Delete Costs
