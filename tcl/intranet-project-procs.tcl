@@ -690,6 +690,7 @@ ad_proc im_project_clone {
     {-clone_members_p 1}
     {-clone_costs_p 1}
     {-clone_trans_tasks_p 1}
+    {-clone_timesheet_tasks_p 1}
     {-clone_target_languages_p 1}
     {-clone_timesheet2_tasks_p 1}
     {-clone_forum_topics_p 1}
@@ -710,18 +711,25 @@ ad_proc im_project_clone {
 #    set new_project_id 13375
 
     # --------------------------------------------
-    # Delete Trans Tasks
+    # Delete Trans Tasks for the NEW project
+    # (when using the same project over and over again for debugging purposes)
     if {[db_table_exists im_trans_tasks]} {
 	db_dml delete_trans_tasks "delete from im_trans_tasks where project_id = :new_project_id"
     }
 
     # --------------------------------------------
     # Delete Costs
+    # (when using the same project over and over again for debugging purposes)
     ns_log Notice "im_project_clone: reset_invoice_items"
     db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :new_project_id"
 
     ns_log Notice "im_project_clone: cost_infos"
-    set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and project_id = :new_project_id"]
+    set cost_infos [db_list_of_lists costs "
+	select cost_id, object_type 
+	from im_costs, acs_objects 
+	where cost_id = object_id 
+	      and project_id = :new_project_id
+    "]
     foreach cost_info $cost_infos {
         set cost_id [lindex $cost_info 0]
         set object_type [lindex $cost_info 1]
@@ -741,6 +749,9 @@ ad_proc im_project_clone {
 
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
 	append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
+    }
+    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
+	append errors [im_project_clone_timesheet_tasks $parent_project_id $new_project_id]
     }
     if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
 	append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
@@ -776,8 +787,8 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 } {
     ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix"
 
-    set org_project_name $project_name
-    set org_project_nr $project_nr
+    set new_project_name $project_name
+    set new_project_nr $project_nr
     set current_user_id [ad_get_user_id]
 
     # --------------------------
@@ -788,15 +799,16 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 	from	im_projects p
 	where 	p.project_id = :parent_project_id
     "
-
     if { ![db_0or1row projects_info_query $query] } {
 	set project_id $parent_project_id
 	ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
 	return
     }
 
-    # Take the new company_id and overwrite the information from
-    # the parent project
+    # Take the new_company_id from the procedure parameters
+    # and overwrite the information from the parent project
+    # This is useful if somebody wants to "clone" a project,
+    # but execute the project for the "internal" company.
     if {0 != $new_company_id && "" != $new_company_id} {
 	set company_id $new_company_id
     }
@@ -805,18 +817,18 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
     # Fix name and project_nr
     
     # Create a new project_nr if it wasn't specified
-    if {"" == $org_project_nr} {
-	set org_project_nr [im_next_project_nr]
+    if {"" == $new_project_nr} {
+	set new_project_nr [im_next_project_nr]
     }
 
     # Use the parents project name if none was specified
-    if {"" == $org_project_name} {
-	set org_project_name $project_name
+    if {"" == $new_project_name} {
+	set new_project_name $project_name
     }
 
     # Append "Postfix" to project name if it already exists:
-    while {[db_string count "select count(*) from im_projects where project_name = :org_project_name"]} {
-	set org_project_name "$org_project_name - $clone_postfix"
+    while {[db_string count "select count(*) from im_projects where project_name = :new_project_name"]} {
+	set new_project_name "$new_project_name - $clone_postfix"
     }
 
 
@@ -824,18 +836,39 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
     # Create the new project
 	
     set project_id [project::new \
-		-project_name		$org_project_name \
-		-project_nr		$org_project_nr \
-		-project_path		$org_project_nr \
+		-project_name		$new_project_name \
+		-project_nr		$new_project_nr \
+		-project_path		$new_project_nr \
 		-company_id		$company_id \
 		-parent_id		$parent_id \
 		-project_type_id	$project_type_id \
 		-project_status_id	$project_status_id \
     ]
     if {0 == $project_id} {
-	ad_return_complaint 1 "Error creating clone project with name '$org_project_name' and nr '$org_project_nr'"
+	ad_return_complaint 1 "Error creating clone project with name '$new_project_name' and nr '$new_project_nr'"
 	return 0
     }
+
+    db_dml update_project "
+	update im_project set
+		parent_id = :parent_id,
+		description = :description,
+		billing_type_id = :billing_type_id,
+		start_date = :start_date,
+		end_date = :end_date,
+		note = :note,
+		project_lead_id = :project_lead_id,
+		supervisor_id = :supervisor_id,
+		requires_report_p = :requires_report_p,
+		project_budget = :project_budget,
+		project_budget_currency = :project_budget_currency,
+		project_budget_hours = :project_budget_hours,
+		percent_completed = :percent_completed,
+		on_track_status_id = :on_track_status_id,
+		template_p = :template_p
+	where
+		project_id = :project_id
+    "
 
     return $project_id
 }
@@ -865,26 +898,6 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
     # Update project fields
     # Cover all fields that are not been used in project generation
 
-    set project_update_sql "
-	update im_projects set
-		project_lead_id =	:project_lead_id,
-		supervisor_id =		:supervisor_id,
-		description =		:description,
-		note =			:note,
-		requires_report_p =	:requires_report_p,
-		project_budget =	:project_budget,
-		project_budget_currency=:project_budget_currency,
-		project_budget_hours =	:project_budget_hours,
-		percent_completed = 	:percent_completed,
-		on_track_status_id =	:on_track_status_id,
-		start_date =		:start_date,
-		end_date =		:end_date
-	where
-		project_id = :new_project_id
-    "
-    db_dml project_update $project_update_sql
-
-
     # Translation Only
     if {[db_table_exists im_trans_tasks]} {
 	set project_update_sql "
@@ -899,7 +912,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 		trans_project_hours =	:trans_project_hours
 	where
 		project_id = :new_project_id
-        "
+	"
 	db_dml project_update $project_update_sql
     }
 
@@ -917,7 +930,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 		cost_timesheet_logged_cache =	:cost_timesheet_logged_cache
 	where
 		project_id = :new_project_id
-        "
+	"
 	db_dml project_update $project_update_sql
     }
 
@@ -936,12 +949,12 @@ ad_proc im_project_clone_members {parent_project_id new_project_id} {
     set current_user_id [ad_get_user_id]
 
     if {![db_0or1row project_info "
-        select  p.*
-        from    im_projects p
-        where   p.project_id = :parent_project_id
+	select  p.*
+	from    im_projects p
+	where   p.project_id = :parent_project_id
     "]} {
-        ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
-        return
+	ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
+	return
     }
 
     # -----------------------------------------------
@@ -1082,17 +1095,17 @@ ad_proc im_project_clone_costs {parent_project_id new_project_id} {
 	    set invoice_nr [im_next_invoice_nr -invoice_type_id $cost_type_id]
 
 	    set invoice_sql "
-	        insert into im_invoices (
-	                invoice_id,
-	                company_contact_id,
-	                invoice_nr,
-	                payment_method_id
-	        ) values (
-	                :new_cost_id,
-	                :company_contact_id,
-	                :invoice_nr,
-	                :payment_method_id
-	        )
+		insert into im_invoices (
+			invoice_id,
+			company_contact_id,
+			invoice_nr,
+			payment_method_id
+		) values (
+			:new_cost_id,
+			:company_contact_id,
+			:invoice_nr,
+			:payment_method_id
+		)
 	    "
 	    db_dml invoice_insert $invoice_sql
 	
@@ -1175,7 +1188,7 @@ ad_proc im_project_clone_trans_tasks {parent_project_id new_project_id} {
 		proof_id,
 		other_id
 	    ) (
-            select 
+	    select 
 		nextval('im_trans_tasks_seq'),
 		:new_project_id,
 		target_language_id,
@@ -1211,7 +1224,7 @@ ad_proc im_project_clone_target_languages {parent_project_id new_project_id} {
 		project_id,
 		language_id
 	    ) (
-            select 
+	    select 
 		:new_project_id,
 		language_id
 	    from 
@@ -1411,19 +1424,19 @@ ad_proc im_project_clone_files {parent_project_id new_project_id} {
 
 
     if { [catch {
-        # Copy all files from parent to new project
+	# Copy all files from parent to new project
 	# "cp" behaves a bit strange, it creates the parents
 	# directory in the new_base_path if the new_base_path
 	# exist. So DON't create the target directory.
 	# "cp -a" preserves the ownership information of
 	# the original file, so permissions should be OK.
 	#
-#        exec /bin/mkdir -p $new_base_path
-        exec /bin/cp -a $parent_base_path $new_base_path
+#	exec /bin/mkdir -p $new_base_path
+	exec /bin/cp -a $parent_base_path $new_base_path
 
     } err_msg] } {
-        append errors "<li>Error whily copying files from $parent_base_path to $new_base_path: 
-        <pre>$err_msg</pre>\n"
+	append errors "<li>Error whily copying files from $parent_base_path to $new_base_path: 
+	<pre>$err_msg</pre>\n"
     }
 
     append errors "<li>Finished to clone files \#$parent_project_id"
@@ -1525,7 +1538,7 @@ ad_proc im_project_nuke {project_id} {
 				from im_trans_tasks 
 				where project_id = :project_id
 			)
-	        )
+		)
 	    "
 	    ns_log Notice "projects/nuke-2: im_trans_quality_reports"
 	    db_dml trans_quality "
@@ -1648,7 +1661,7 @@ ad_proc im_project_nuke {project_id} {
 	    }
 	    
 	}
-        ad_return_error "[_ intranet-core.Failed_to_nuke]" "
+	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
 		[_ intranet-core.lt_The_nuking_of_user_us]
 		$detailed_explanation
 		<p>
