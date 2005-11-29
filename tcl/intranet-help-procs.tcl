@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-help-procs.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -28,7 +28,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 <table cellpadding=2 cellspacing=2 border=0 width=100%>
 <tr><td>
 
-<h1>Welcome to Project/Open</h1>
+<h1>Welcome to <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr></h1>
 
 <h2>Getting Help</h2>
 
@@ -37,14 +37,14 @@ Help is available for you in various ways:
 <ul>
 <li>
   <A href=\"http://www.project-open.org/product/modules/\"><B>
-    Project/Open Feature Overview</b></a>:<br>
+    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
   Our web page gives you an overview over the
-  different Project/Open modules
+  different &\#93;project-open&\#91; modules
   and briefly explains their functionality.
 </li>
 <li>
   <A href=\"http://sourceforge.net/project/showfiles.php?group_id=86419\"><b>
-    Project/Open User Guides</b></a>:<br>
+    &\#93;project-open&\#91; User Guides</b></a>:<br>
   Please visit the download zone of our
   <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
   Here you will find all relevant guides and manuals in \".pdf\" format.
@@ -67,7 +67,7 @@ Help is available for you in various ways:
   <A href=\"http://www.project-open.com/product/services/support/\"><b>
     Professional Support</b></a>:<br>
     Please consider to contract professional support.
-    Project/Open offers three different support levels for
+    &\#93;project-open&\#91; offers three different support levels for
     companies of all sizes.
 </li>
 </ul>
@@ -81,7 +81,7 @@ explore the (freely invented) sample contents.
 </p>
 
 
-<h2>Using Project/Open in Your Company</h2>
+<h2>Using <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr> in Your Company</h2>
 
 <p>
 This sample configuration could already serve you as the base for a
