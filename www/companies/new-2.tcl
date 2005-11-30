@@ -65,7 +65,9 @@ ad_page_contract {
     { old_company_status_id "" }
     { status_modification_date.expr "" }
     { vat:float "0" }
+    { payment_days:integer "0" }
     { invoice_template_id:integer "" }
+    { payment_method_id:integer "" }
 }
 
 # -----------------------------------------------------------------
@@ -197,7 +199,9 @@ update im_companies set
 	manager_id		= :manager_id,
 	billable_p		= :billable_p,
 	vat			= :vat,
+	payment_days		= :payment_days,
 	invoice_template_id	= :invoice_template_id,
+	payment_method_id	= :payment_method_id,
 	note			= :note
 where
 	company_id = :company_id

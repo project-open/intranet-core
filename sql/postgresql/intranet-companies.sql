@@ -99,9 +99,15 @@ create table im_companies (
 	vat_number		varchar(100),
 				-- Default value for VAT
 	vat			numeric(12,1) default 0,
+				-- default payment days
+	payment_days		integer,
 				-- Default invoice template
 	invoice_template_id	integer
 				constraint im_companies_invoice_template_fk
+				references im_categories
+				-- Default payment method
+	payment_method_id	integer
+				constraint im_companies_invoice_payment_fk
 				references im_categories
 );
 
