@@ -98,7 +98,7 @@ create table im_companies (
 	start_date		date,
 	vat_number		varchar(100),
 				-- Default value for VAT
-	vat			numeric(12,5) default 0,
+	vat			numeric(12,1) default 0,
 				-- Default invoice template
 	invoice_template_id	integer
 				constraint im_companies_invoice_template_fk

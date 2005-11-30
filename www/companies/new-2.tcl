@@ -64,6 +64,8 @@ ad_page_contract {
     { start:array,date "" }
     { old_company_status_id "" }
     { status_modification_date.expr "" }
+    { vat:float "0" }
+    { invoice_template_id:integer "" }
 }
 
 # -----------------------------------------------------------------
@@ -194,6 +196,8 @@ update im_companies set
 	site_concept		= :site_concept,
 	manager_id		= :manager_id,
 	billable_p		= :billable_p,
+	vat			= :vat,
+	invoice_template_id	= :invoice_template_id,
 	note			= :note
 where
 	company_id = :company_id
