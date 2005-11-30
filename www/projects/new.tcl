@@ -305,7 +305,7 @@ if {[form is_request $form_id]} {
 	set end_date $todays_date
 	set end_time "12:00"
 	set billable_type_id ""
-	set project_lead_id "5"
+	set project_lead_id $user_id
 	set supervisor_id ""
 	set description ""
 	set project_budget ""
