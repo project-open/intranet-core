@@ -34,6 +34,7 @@ ad_page_contract {
     { how_many:integer "" }
     { letter:trim "all" }
     { view_name "" }
+    { filter_advanced_p:integer 0 }
 }
 
 # ---------------------------------------------------------------
@@ -87,6 +88,7 @@ set date_format "YYYY-MM-DD"
 set user_group_name [im_mangle_user_group_name $user_group_name]
 set user_group_id 0
 set menu_select_label ""
+set group_pretty_name ""
 switch [string tolower $user_group_name] {
     "all" { 
 	set user_group_id 0 
@@ -103,7 +105,8 @@ switch [string tolower $user_group_name] {
 	set user_group_id 0
 	db_foreach search_user_group "select group_id, group_name from groups" {
 		if {[string equal $user_group_name [im_mangle_user_group_name $group_name]]} {
-			set user_group_id $group_id
+		    set user_group_id $group_id
+		    set group_pretty_name "$group_name"
 		}
 	}
 	set menu_select_label "users_[string tolower $user_group_name]"
@@ -174,6 +177,7 @@ set admin_html ""
 if {[im_permission $user_id "add_users"]} {
     append admin_html "
 	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
+        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
     "
 }
@@ -247,6 +251,7 @@ set user_status_types [im_memoize_list select_user_status_types \
 set user_status_types [linsert $user_status_types 0 0 All]
 
 set user_types [list 0 All]
+# set user_types [list [list All all]]
 db_foreach select_user_types "
 	select
 		group_id,
@@ -271,14 +276,48 @@ db_foreach select_user_types "
 
 
 # ---------------------------------------------------------------
+# Filter with Dynamic Fields
+# ---------------------------------------------------------------
+
+set dynamic_fields_p 1
+set form_id "user_filter"
+set object_type "person"
+set action_url "/intranet/users/index"
+set form_mode "edit"
+ad_form \
+    -name $form_id \
+    -action $action_url \
+    -mode $form_mode \
+    -export {start_idx order_by how_many letter view_name filter_advanced_p} \
+    -form {
+        {user_group_name:text(select),optional {label "\#intranet-core.User_Types\#"} {options $user_types} {value $user_group_name}}
+    }
+
+if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+
+    im_dynfield::append_attributes_to_form \
+        -object_type $object_type \
+        -form_id $form_id \
+        -object_id 0
+
+    # Set the form values from the HTTP form variable frame
+    im_dynfield::set_form_values_from_http -form_id $form_id
+
+    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+        -form_id $form_id \
+        -object_type $object_type
+			       ]
+}
+
+
+# ---------------------------------------------------------------
 # 5. Generate SQL Query
 # ---------------------------------------------------------------
 
-# Now let's generate the sql query
-set bind_vars [ns_set create]
-
 if { $user_group_id > 0 } {
-    append page_title " in group \"$user_group_name\""
+    append page_title " in group \"$group_pretty_name\""
+    set context_bar [im_context_bar $page_title]
+
     lappend extra_wheres "u.user_id = m.member_id"
     lappend extra_wheres "m.group_id = $user_group_id"
     lappend extra_froms "group_distinct_member_map m"
@@ -325,9 +364,52 @@ if {"" != $extra_select} { set extra_select ",$extra_select" }
 if {"" != $extra_where} { set extra_where "and $extra_where" }
 
 
+# Create a ns_set with all local variables in order
+# to pass it to the SQL query
+set form_vars [ns_set create]
+foreach varname [info locals] {
+
+    # Don't consider variables that start with a "_", that
+    # contain a ":" or that are array variables:
+    if {"_" == [string range $varname 0 0]} { continue }
+    if {[regexp {:} $varname]} { continue }
+    if {[array exists $varname]} { continue }
+
+    # Get the value of the variable and add to the form_vars set
+    set value [expr "\$$varname"]
+    ns_set put $form_vars $varname $value
+}
+
+
+# Deal with DynField Vars and add constraint to SQL
+#
+if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+
+    # Add the DynField variables to $form_vars
+    set dynfield_extra_where $extra_sql_array(where)
+    set ns_set_vars $extra_sql_array(bind_vars)
+    set tmp_vars [util_list_to_ns_set $ns_set_vars]
+    set tmp_var_size [ns_set size $tmp_vars]
+    for {set i 0} {$i < $tmp_var_size} { incr i } {
+        set key [ns_set key $tmp_vars $i]
+        set value [ns_set get $tmp_vars $key]
+        ns_set put $form_vars $key $value
+    }
+
+    # Add the additional condition to the "where_clause"
+    append extra_where "
+        and person_id in $dynfield_extra_where
+    "
+    #ad_return_error "error" "$where_clause"
+}
+
+
+
+
 set sql "
 select
 	u.*,
+        to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
 	to_char(o.creation_date,:date_format) as creation_date,
 	p.email,
 	im_name_from_user_id(u.user_id) as name
@@ -335,11 +417,13 @@ select
 from 
 	users_active u, 
 	acs_objects o,
-	parties p
+	parties p,
+        persons pe
 	$extra_from
 where 
 	u.user_id = o.object_id
 	and u.user_id = p.party_id
+        and p.party_id = pe.person_id
 	$extra_where
 $extra_order_by
 "
@@ -367,7 +451,7 @@ if { [string compare $letter "all"] == 0 } {
 		count(1) 
 	from 
 		($sql) t
-    "]
+    " -bind $form_vars]
 }
 
 # ---------------------------------------------------------------
@@ -410,7 +494,7 @@ set bgcolor(1) " class=rowodd "
 set ctr 1
 set idx $start_idx
 
-db_foreach projects_info_query $query {
+db_foreach projects_info_query $query -bind $form_vars {
 
     ns_log Notice "users/index: user_id=$user_id"
 
@@ -471,22 +555,13 @@ set table_continuation_html ""
 # Check whether we have to add spamming to Admin Links
 # ---------------------------------------------------------------
 
-
 if {"" != $admin_html && [db_table_exists spam_messages]} {
-    set sql_query "
-select
-        u.user_id as party_id
-from
-        users_active u,
-        parties p
-        $extra_from
-where
-        u.user_id = p.party_id
-        $extra_where
-"
-	append admin_html "
-	<li><a href=\"[spam_base]spam-add?[export_url_vars sql_query]\">[_ intranet-core.Spam_Users]</a>
-        "
+
+    set selector_short_name "[string tolower $user_group_name]_all"
+    append admin_html "
+    <li><a href=\"[spam_base]spam-add?[export_url_vars selector_short_name]\"
+      >[_ intranet-core.Spam_Users]
+    </a>\n"
 }
 
 # ---------------------------------------------------------------
@@ -495,7 +570,7 @@ where
 
 set page_body "
 <br>
-[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter] $menu_select_label]
+[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
 
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   $table_header_html

@@ -850,7 +850,7 @@ ad_proc im_category_select {
 } {
 
     if {$plain_p} {
-        return [im_category_select_plain -translate_p $translate_p $category_type $select_name $default]
+	return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
     }
 
     # Read the categories into the a hash cache
@@ -1010,26 +1010,43 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 }
 
 
+ad_proc im_category_select_plain { {-translate_p 1} {-include_empty_p 1} {-include_empty_name "All"} category_type select_name { default "" } } {
 
-
-ad_proc im_category_select_plain { {-translate_p 1} category_type select_name { default "" } } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
+    ns_set put $bind_vars include_empty_name $include_empty_name
+
+    set include_empty_sql ""
+    if {$include_empty_p} {
+	set include_empty_sql "
+	select
+		null as category_id,
+		:include_empty_name as category,
+		'' as category_description
+	from
+		dual
+	UNION
+	"
+    }
 
     set sql "
-	select 
-		category_id,
-		category, 
-		category_description
-	from 
-		im_categories		
-	where 
-		category_type = :category_type
+	select *
+	from
+		($include_empty_sql
+		select
+			category_id,
+			category,
+			category_description
+		from
+			im_categories
+		where
+			category_type = :category_type
+		) c
 	order by lower(category)
     "
- 
-   return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
-} 
+
+    return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
+}
 
 
 ad_proc im_category_select_multiple { category_type select_name { default "" } { size "6"} { multiple ""}} {
@@ -1047,7 +1064,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     Category Tree Widget
 
     @param category_type The name of the category type (see categories
-           package) for valid choice options.
+	   package) for valid choice options.
 
     The widget takes a tree from the categories package and displays all
     of its leaves in an indented drop-down box. For details on creating
@@ -1055,20 +1072,20 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 } {
     upvar $element_reference element
     if { [info exists element(custom)] } {
-        set params $element(custom)
+	set params $element(custom)
     } else {
-        return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
-        Please use a Parameter such as:
-        <tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
+	return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
+	Please use a Parameter such as:
+	<tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
     }
 
     # Get the "category_type" parameter that defines which
     # category to display
     set category_type_pos [lsearch $params category_type]
     if { $category_type_pos >= 0 } {
-        set category_type [lindex $params [expr $category_type_pos + 1]]
+	set category_type [lindex $params [expr $category_type_pos + 1]]
     } else {
-        return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
+	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
     }
 
     # Get the "plain_p" parameter to determine if we should
@@ -1078,7 +1095,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     set plain_p 0
     set plain_p_pos [lsearch $params plain_p]
     if { $plain_p_pos >= 0 } {
-        set plain_p [lindex $params [expr $plain_p_pos + 1]]
+	set plain_p [lindex $params [expr $plain_p_pos + 1]]
     }
 
     if {"language" == $element(name)} {
@@ -1093,29 +1110,29 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
     set default_value ""
     if {[info exists element(value)]} {
-        set default_value $element(values)
+	set default_value $element(values)
     }
 
     if {0} {
-        set debug ""
-        foreach key [array names element] {
-            set value $element($key)
-            append debug "$key = $value\n"
-        }
-        ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
-        return
+	set debug ""
+	foreach key [array names element] {
+	    set value $element($key)
+	    append debug "$key = $value\n"
+	}
+	ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
+	return
     }
 
 
     if { "edit" == $element(mode)} {
-        append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
+	append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
 $field_name $default_value]
 
 
     } else {
-        if {"" != $default_value && "\{\}" != $default_value} {
-            append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
-        }
+	if {"" != $default_value && "\{\}" != $default_value} {
+	    append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
+	}
     }
     return $category_html
 }
@@ -1212,7 +1229,7 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
-	if { $translate_p } {
+	if { $translate_p && "" != [lindex $option $option_index] } {
 	    set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
 	} else {
 	    set translated_value [lindex $option $option_index]
@@ -1455,7 +1472,7 @@ WHERE
     set driverkey [db_driverkey ""]
     switch $driverkey {
 	postgresql { return $postgres_sql }
-        oracle { return $oracle_sql }
+	oracle { return $oracle_sql }
     }
     
     return $sql
@@ -1552,7 +1569,7 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 	set decimals ""
     } else {
 	# Split the digits from the decimals
-        regexp {([^\.]*)\.(.*)} $cur match digits decimals
+	regexp {([^\.]*)\.(.*)} $cur match digits decimals
     }
 
     if {![string equal "" $min_decimals]} {
@@ -1611,15 +1628,52 @@ ad_proc im_unicode2html {s} {
 } {
     set res ""
     foreach u [split $s ""] {
-        scan $u %c t
-        if {$t>127} {
-            append res "&\#$t;"
-        } else {
-            append res $u
-        }
+	scan $u %c t
+	if {$t>127} {
+	    append res "&\#$t;"
+	} else {
+	    append res $u
+	}
     }
     set res
 }
+
+
+# ---------------------------------------------------------------
+# Auto-Login
+# ---------------------------------------------------------------
+
+ad_proc -public im_generate_auto_login {
+        -user_id:required
+} {
+    Generates the auto_login for auto-login
+} {
+    set user_data_sql "
+        select
+                u.password as user_password,
+                u.salt as user_salt
+        from
+                users u
+        where
+                u.user_id = :user_id"
+    db_1row get_user_data $user_data_sql
+
+    # generate the expected auto_login variable
+    return [ns_sha1 "$user_id $user_password $user_salt"]
+}
+
+ad_proc -public im_valid_auto_login_p {
+        -user_id:required
+        -auto_login:required
+} {
+    Verifies the auto_login in auto-login variables
+    @author Timo Hentschel (thentschel@sussdorff-roy.com)
+} {
+    set expected_auto_login [im_generate_auto_login -user_id $user_id]
+    return [string equal $auto_login $expected_auto_login]
+}
+
+
 
 
 

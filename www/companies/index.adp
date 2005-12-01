@@ -7,6 +7,13 @@
 <tr>
   <td>
 
+<if @filter_advanced_p@>
+
+   <formtemplate id="company_filter"></formtemplate>
+
+</if>
+<else>
+
 
 	<form method=get action='/intranet/companies/index' name=filter_form>
 	<%= [export_form_vars start_idx order_by how_many letter view_name] %>
@@ -37,6 +44,8 @@
 	</tr>
 	</table>
 	</form>
+
+</else>
 
 
   </td>

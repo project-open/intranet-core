@@ -85,19 +85,29 @@
 -- 6000-6999	Intranet RecruitingRecruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
+
 -- 9000-9499	Intranet Material
 -- 9500-9999	Intranet Timesheet Tasks
 -- 10000-10999	Intranet DynField
--- 11000-11999	reserved
--- 12000-12999	reserved
--- 13000-13999	reserved
--- 14000-14999	reserved
--- 15000-15999	reserved
--- 16000-16999	reserved
--- 17000-17999	reserved
--- 18000-18999	reserved
--- 19000-19999	reserved
--- 20000-99999	reserved
+-- 11000-11099	Intranet SQL Selectors
+-- 11100-11199	reserved (100)
+-- 11200-11299	reserved (100)
+-- 11300-11399	reserved (100)
+-- 11400-11499	reserved (100)
+-- 11500-11599	reserved (100)
+-- 11600-11699	reserved (100)
+-- 11700-11799	reserved (100)
+-- 11800-11899	reserved (100)
+-- 11900-11999	reserved (100)
+-- 12000-12999	reserved (1000)
+-- 13000-13999	reserved (1000)
+-- 14000-14999	reserved (1000)
+-- 15000-15999	reserved (1000)
+-- 16000-16999	reserved (1000)
+-- 17000-17999	reserved (1000)
+-- 18000-18999	reserved (1000)
+-- 19000-19999	reserved (1000)
+-- 20000-99999	reserved (80000)
 
 
 ------------------------------------------------------

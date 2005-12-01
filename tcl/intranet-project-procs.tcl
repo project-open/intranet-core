@@ -521,21 +521,17 @@ ad_proc -public im_project_select { {-include_all 0} select_name { default "" } 
 	    where project_type=:type)"
     }
 
-     if { ![empty_string_p $member_user_id] } {
-	 ns_set put $bind_vars member_user_id $member_user_id
-	 append sql "	and p.project_id in (
+    if { ![empty_string_p $member_user_id] } {
+	ns_set put $bind_vars member_user_id $member_user_id
+	append sql "	and p.project_id in (
 				select object_id_one
 				from acs_rels
 				where object_id_two = :member_user_id)
 		    "
     }
 
-#     if {1} {
-#	 append sql "UNION select 0 as project_id, '' as project_name\n"
-#     }
-
-     append sql " order by lower(project_name)"
-     return [im_selection_to_select_box -translate_p 0 $bind_vars project_select $sql $select_name $default]
+    append sql " order by lower(p.project_name)"
+    return [im_selection_to_select_box -translate_p 0 $bind_vars project_select $sql $select_name $default]
 }
 
 

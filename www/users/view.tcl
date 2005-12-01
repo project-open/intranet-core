@@ -34,7 +34,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set return_url [im_url_with_query]
-set current_url [ad_conn url]
+set current_url $return_url
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
@@ -184,6 +184,29 @@ append user_basic_info_html "
 </form>\n"
 
 set profile_html ""
+
+# ------------------------------------------------------
+# Show extension fields
+# ------------------------------------------------------
+
+set dynamic_fields_p 0
+if {[db_table_exists im_dynfield_attributes]} {
+
+    set dynamic_fields_p 1
+    set object_type "person"
+    set form_id "person_view"
+
+    template::form create $form_id \
+        -mode "display" \
+        -display_buttons {}
+
+    im_dynfield::append_attributes_to_form \
+        -object_type $object_type \
+        -form_id $form_id \
+        -object_id $user_id_from_search
+
+}
+
 
 # ---------------------------------------------------------------
 # Localization Information

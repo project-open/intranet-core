@@ -111,9 +111,6 @@ if {![im_permission $current_user_id "view_projects_all"]} {
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
-
-    set how_many 5
-
 }
 set end_idx [expr $start_idx + $how_many]
 
@@ -320,7 +317,6 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
     # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
-    ns_log notice "-------------------> bind vars $extra_sql_array(bind_vars)"
     set ns_set_vars $extra_sql_array(bind_vars)
     set tmp_vars [util_list_to_ns_set $ns_set_vars]
     set tmp_var_size [ns_set size $tmp_vars]

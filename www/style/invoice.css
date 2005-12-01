@@ -115,3 +115,17 @@ A.paginacion:hover {
 .headerBig {
 	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: small; FONT-WEIGHT: bold
 }
+
+.brandfirst{
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color:#320033;
+        font-weight: bold;
+}
+
+.brandsec{
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color:#336699;
+        font-weight: bold;
+}
+
+

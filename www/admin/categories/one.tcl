@@ -88,7 +88,19 @@ order by category_id"
     set form_action_html "action=\"category-add.tcl\""
     set input_form_html "value=Add"
     set delete_action_html ""
-    set category_id [db_nextval im_categories_seq]
+
+    # Increase the category counter until up to date
+    set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default 100000]
+
+
+    # Increase the category counter until up to date
+    set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default\
+			 10000]
+    set category_id [expr $category_id + 1]
+    while {[db_string max_cat_id "select max(category_id) from im_categories"] >= $category_id} {
+	set category_id [db_nextval im_categories_seq]
+    }
+
     set category_description ""
     set profiling_weight 0
     set category ""

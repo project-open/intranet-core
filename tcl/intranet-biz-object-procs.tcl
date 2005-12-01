@@ -28,6 +28,18 @@ ad_proc -public im_biz_object_role_key_account {} { return 1302 }
 ad_proc -public im_biz_object_role_office_admin {} { return 1303 }
 
 
+# The final customer of a project when the invoicing customer is
+# in the middle
+ad_proc -public im_biz_object_role_final_customer {} { return 1304 }
+
+# A generic association between business objects.
+# Don't know what this might be good for in the future...
+ad_proc -public im_biz_object_role_generic {} { return 1305 }
+
+# Associated Email
+ad_proc -public im_biz_object_role_email {} { return 1306 }
+
+
 ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
     Returns a URL to a page to view a specific object_id,
     independent of the object type.

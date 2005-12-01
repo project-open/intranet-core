@@ -505,9 +505,9 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
         set name [lang::util::suggest_key $name]
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
+            set html "$nosel<a href=\"$url\"><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -690,7 +690,12 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	set page_title [ad_partner_upvar page_title]
     }
     set context_bar [ad_partner_upvar context_bar]
-    set page_focus [ad_partner_upvar page_focus]
+    set page_focus [ad_partner_upvar focus]
+    if { [empty_string_p $page_focus] } {
+	# Default: Focus on Search form at the top of the page
+	set page_focus "surx.query_string"
+    }
+
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
@@ -734,6 +739,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
+    append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
+    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
 
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
@@ -764,7 +771,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     return "
-[ad_header $page_title $extra_stuff_for_document_head]
+[ad_header -focus $page_focus $page_title $extra_stuff_for_document_head]
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
     <td> 

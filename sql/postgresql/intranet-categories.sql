@@ -24,7 +24,7 @@
 -- object states and types, instead of a zillion of 
 -- tables like 'im_project_status' and 'im_project_type'.
 
-create sequence im_categories_seq start 10000;
+create sequence im_categories_seq start 100000;
 create table im_categories (
 	category_id		integer 
 				constraint im_categories_pk
