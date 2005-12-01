@@ -42,7 +42,7 @@
 
 <p>
 This function is capable of importing a number of 
-<span class=brandfirst>Project/</span><span class=brandsec>Open</span>
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 "Companies" from Microsoft Outlook 2000 (English). For other versions 
 of Outlook please 
 <A href="http://www.project-open.com/contact/">contact us</a>.
@@ -51,7 +51,7 @@ of Outlook please
 <p>
 This function will look at the "Company" field of the Outlook contact 
 and create a 
-<span class=brandfirst>Project/</span><span class=brandsec>Open</span>
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 company with the same name. 
 In addition, it will create a user from the rest of
 the contact information and add this user as member of the company.
