@@ -20,6 +20,7 @@ cvs checkout -r b3-0-0-patches acs-tcl
 cvs checkout -r b3-0-0-patches acs-templating
 cvs checkout -r b3-0-0-patches acs-workflow
 
+cvs checkout -r b3-0-0-patches chat
 cvs checkout -r b3-0-0-patches cms
 
 cvs checkout -r b3-0-0-patches intranet-big-brother
@@ -27,15 +28,18 @@ cvs checkout -r b3-0-0-patches intranet-core
 cvs checkout -r b3-0-0-patches intranet-cost
 cvs checkout -r b3-0-0-patches intranet-crm-tracking
 cvs checkout -r b3-0-0-patches intranet-dw-light
-cvs checkout -r b3-0-0-patches intranet-dynvals
+cvs checkout -r b3-0-0-patches intranet-dynfield
+cvs checkout -r b3-0-0-patches intranet-exchange-rate
 cvs checkout -r b3-0-0-patches intranet-filestorage
 cvs checkout -r b3-0-0-patches intranet-forum
 cvs checkout -r b3-0-0-patches intranet-freelance
 cvs checkout -r b3-0-0-patches intranet-freelance-invoices
 cvs checkout -r b3-0-0-patches intranet-hr
 cvs checkout -r b3-0-0-patches intranet-invoices
+cvs checkout -r b3-0-0-patches intranet-mail-import
 cvs checkout -r b3-0-0-patches intranet-material
 cvs checkout -r b3-0-0-patches intranet-payments
+cvs checkout -r b3-0-0-patches intranet-reporting
 cvs checkout -r b3-0-0-patches intranet-riskmanagement
 cvs checkout -r b3-0-0-patches intranet-search-pg
 cvs checkout -r b3-0-0-patches intranet-spam
