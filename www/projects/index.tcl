@@ -327,10 +327,11 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     }
 
     # Add the additional condition to the "where_clause"
-    append where_clause "
-	and project_id in $dynfield_extra_where
-    "
-    #ad_return_error "error" "$where_clause"
+    if {"" != $dynfield_extra_where} {
+	append where_clause "
+	    and project_id in $dynfield_extra_where
+        "
+    }
 }
 
 
@@ -441,6 +442,7 @@ FROM
 $order_by_clause
 "
 
+
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
 # ---------------------------------------------------------------
@@ -462,7 +464,7 @@ if {[string equal $letter "ALL"]} {
     # query results
     set total_in_limited [db_string total_in_limited "
         select count(*)
-        from ($sql) sql
+        from ($sql) s
     "]
     set selection [im_select_row_range $sql $start_idx $end_idx]
 }	
