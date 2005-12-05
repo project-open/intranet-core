@@ -349,7 +349,7 @@ if {"" == $extra_order_by} {
 	"Home Phone" { set extra_order_by "order by upper(home_phone)" }
 	"Work Phone" { set extra_order_by "order by upper(work_phone)" }
 	"Last Visit" { set extra_order_by "order by last_visit DESC" }
-	"Creation" { set extra_order_by "order by creation_date DESC" }
+	"Creation" { set extra_order_by "order by u.creation_date DESC" }
 	"Supervisor" { set extra_order_by "order by e.supervisor_id" }
     }
 }
@@ -409,13 +409,20 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 set sql "
 select
 	u.*,
+	c.home_phone, c.work_phone, c.cell_phone, c.pager,
+	c.fax, c.aim_screen_name, c.msn_screen_name,
+	c.icq_number, c.m_address,
+	c.ha_line1, c.ha_line2, c.ha_city, c.ha_state, c.ha_postal_code, c.ha_country_code,
+	c.wa_line1, c.wa_line2, c.wa_city, c.wa_state, c.wa_postal_code, c.wa_country_code,
+	c.note, c.current_information,
         to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
 	to_char(o.creation_date,:date_format) as creation_date,
 	p.email,
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
-	users_active u, 
+	cc_users u
+	LEFT JOIN users_contact c ON (u.user_id = c.user_id),
 	acs_objects o,
 	parties p,
         persons pe

@@ -412,7 +412,7 @@ extra_select, extra_where, sort_order, visible_for) values (439,12,NULL,' ',
 -------------------------------------------------------------------
 -- Unassigned Users View
 --
-delete from im_view_columns where column_id > 1300 and column_id <= 1399;
+delete from im_view_columns where view_id = 13;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1310,13,NULL,'Creation',
@@ -420,7 +420,7 @@ extra_select, extra_where, sort_order, visible_for) values (1310,13,NULL,'Creati
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1315,13,NULL,'Last Visit',
-'[string range $last_visit 0 9]','','',15,'');
+'$last_visit_formatted','','',15,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1320,13,NULL,'Name',
@@ -429,6 +429,10 @@ extra_select, extra_where, sort_order, visible_for) values (1320,13,NULL,'Name',
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1330,13,NULL,'Email',
 '"<a href=mailto:$email>$email</a>"','','',30,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (1340,13,NULL,'State',
+'$member_state','','',30,'');
 
 
 
