@@ -230,6 +230,7 @@ ad_proc -public im_company_options {
     {-status "" }
     {-type "" }
     {-exclude_status "" }
+    {default 0}
 } {
     Cost company options
 } {

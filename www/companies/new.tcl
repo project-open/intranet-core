@@ -39,14 +39,6 @@ set user_id [ad_maybe_redirect_for_registration]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 
-# Make sure the user has the privileges, because this
-# pages shows the list of companies etc.
-#
-if {![im_permission $user_id "add_companies"]} { 
-   ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-  <li>[_ intranet-core.lt_You_dont_have_suffici]"
-}
-
 set action_url "/intranet/companies/new-2"
 set focus "menu.var_name"
 
@@ -54,6 +46,39 @@ set page_title "[_ intranet-core.Edit_Company]"
 set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
 
+# ------------------------------------------------------------------
+# Permissions
+# ------------------------------------------------------------------
+
+# Check if we are creating a new company or editing an existing one:
+set company_exists_p 0
+if {[info exists company_id]} {
+    set company_exists_p [db_string company_exists "
+	select count(*) 
+	from im_companies 
+	where company_id = :company_id
+    "]
+}
+
+if {$company_exists_p} {
+
+    # Check company permissions for this user
+    im_company_permissions $user_id $company_id view read write admin
+    if {!$write} {
+	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+	return
+    }
+
+} else {
+
+    if {![im_permission $user_id add_companies]} {
+	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+	return
+    }
+    
+}
 
 # ------------------------------------------------------------------
 # Build the form

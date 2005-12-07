@@ -67,29 +67,37 @@ set view_budget_hours_p [im_permission $user_id view_budget_hours]
 set add_budget_p [im_permission $user_id add_budget]
 set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
-# Editing an existing projects
+
+set project_exists_p 0
 if {[info exists project_id]} {
-    set project_exists_p [db_string project_exists "select count(*) from im_projects where project_id = :project_id"]
-    if {$project_exists_p} {
-	# Check project permissions for this user
-	im_project_permissions $user_id $project_id view read write admin
-	if {!$write} {
-	    ad_return_complaint "Insufficient Privileges" "
-            <li>You don't have sufficient privileges to see this page."
-	    return
-	}
-    }
+    set project_exists_p [db_string project_exists "
+	select count(*) 
+	from im_projects 
+	where project_id = :project_id
+    "]
 }
 
-# Adding a new project:
-# Check if the user has the "add_projects" privilege...
-if {![info exists project_id]} {
-    if {![im_permission $user_id add_projects]} { 
+if {$project_exists_p} {
+
+    # Check project permissions for this user
+    im_project_permissions $user_id $project_id view read write admin
+    if {!$write} {
 	ad_return_complaint "Insufficient Privileges" "
-        <li>You don't have sufficient privileges to see this page."
+            <li>You don't have sufficient privileges to see this page."
 	return
     }
+
+} else {
+
+    # Check if the user has the "add_projects" privilege...
+    if {![im_permission $user_id add_projects]} { 
+	ad_return_complaint "Insufficient Privileges" "
+            <li>You don't have sufficient privileges to see this page."
+	return
+    }
+
 }
+
 
 # -----------------------------------------------------------
 # Create the Form

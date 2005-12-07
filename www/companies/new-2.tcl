@@ -112,6 +112,42 @@ if { ![empty_string_p $errors] } {
     return
 }
 
+
+# ------------------------------------------------------------------
+# Permissions
+# ------------------------------------------------------------------
+
+# Check if we are creating a new company or editing an existing one:
+set company_exists_p 0
+if {[info exists company_id]} {
+    set company_exists_p [db_string company_exists "
+        select count(*)
+        from im_companies
+        where company_id = :company_id
+    "]
+}
+
+if {$company_exists_p} {
+
+    # Check company permissions for this user
+    im_company_permissions $user_id $company_id view read write admin
+    if {!$write} {
+        ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+        return
+    }
+
+} else {
+
+    if {![im_permission $user_id add_companies]} {
+        ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+        return
+    }
+
+}
+
+
 # -----------------------------------------------------------------
 # Create a new Company if it didn't exist yet
 # -----------------------------------------------------------------
@@ -122,9 +158,9 @@ if {![exists_and_not_null office_name]} {
 if {![exists_and_not_null office_path]} {
     set office_path "$company_path"
 }
+
 # Double-Click protection: the company Id was generated at the new.tcl page
-set cust_count [db_string cust_count "select count(*) from im_companies where company_id=:company_id"]
-if {0 == $cust_count} {
+if {0 == $company_exists_p} {
 
     db_transaction {
 	# First create a new main_office:
