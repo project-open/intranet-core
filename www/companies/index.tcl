@@ -239,7 +239,8 @@ switch $order_by {
     "Email" { set order_by_clause "order by upper(email), upper(company_name)" }
     "Type" { set order_by_clause "order by upper(company_type), upper(company_name)" }
     "Status" { set order_by_clause "order by upper(company_status), upper(company_name)" }
-    "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(company_name)" }
+    "Contact" { set order_by_clause "order by upper(company_contact_name)" }
+    "Contact Email" { set order_by_clause "order by upper(company_contact_email)" }
     "Company" { set order_by_clause "order by upper(company_name)" }
 }
 

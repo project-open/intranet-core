@@ -343,7 +343,7 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 if {"" == $extra_order_by} {
     switch $order_by {
 	"Name" { set extra_order_by "order by upper(u.last_name||u.first_names)" }
-	"Email" { set extra_order_by "order by upper(email)" }
+	"Email" { set extra_order_by "order by upper(u.email)" }
 	"AIM" { set extra_order_by "order by upper(aim_screen_name)" }
 	"Cell Phone" { set extra_order_by "order by upper(cell_phone)" }
 	"Home Phone" { set extra_order_by "order by upper(home_phone)" }
