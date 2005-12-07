@@ -36,6 +36,10 @@ ad_proc var_contains_quotes { var } {
     return 0
 }
 
+# -----------------------------------------------------------
+# Defaults
+# -----------------------------------------------------------
+
 set user_id [ad_maybe_redirect_for_registration]
 set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -43,9 +47,6 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
-
-set view_finance_p [im_permission $user_id view_finance]
-
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
@@ -55,28 +56,45 @@ if {![exists_and_not_null return_url]} {
     set return_url "[im_url_stub]/projects/index"
 }
 
+
+# -----------------------------------------------------------
+# Permissions
+# -----------------------------------------------------------
      
+set view_finance_p [im_permission $user_id view_finance]
 set view_budget_p [im_permission $user_id view_budget]
 set view_budget_hours_p [im_permission $user_id view_budget_hours]
 set add_budget_p [im_permission $user_id add_budget]
 set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
-
-# Make sure the user has the privileges, because this
-# pages shows the list of companies etc.
-if {![im_permission $user_id add_projects]} { 
-
-    # Double check for the case that this guy is a freelance 
-    # project manager of the project or similar...
-    im_project_permissions $user_id $project_id view read write admin
-    if {!$write} {
-	ad_return_complaint "Insufficient Privileges" "
-        <li>You don't have sufficient privileges to see this page."
+# Editing an existing projects
+if {[info exists project_id]} {
+    set project_exists_p [db_string project_exists "select count(*) from im_projects where project_id = :project_id"]
+    if {$project_exists_p} {
+	# Check project permissions for this user
+	im_project_permissions $user_id $project_id view read write admin
+	if {!$write} {
+	    ad_return_complaint "Insufficient Privileges" "
+            <li>You don't have sufficient privileges to see this page."
+	    return
+	}
     }
 }
 
-# create form
-#
+# Adding a new project:
+# Check if the user has the "add_projects" privilege...
+if {![info exists project_id]} {
+    if {![im_permission $user_id add_projects]} { 
+	ad_return_complaint "Insufficient Privileges" "
+        <li>You don't have sufficient privileges to see this page."
+	return
+    }
+}
+
+# -----------------------------------------------------------
+# Create the Form
+# -----------------------------------------------------------
+
 set form_id "project-ae"
 
 template::form::create $form_id
@@ -120,7 +138,7 @@ if {$enable_nested_projects_p} {
     template::element::create $form_id parent_id -optional -widget "hidden"
 }
 
-# craete customer query
+# create customer query
 #
 
 set customer_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
