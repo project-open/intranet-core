@@ -40,7 +40,7 @@ if {!$user_is_admin_p} {
 
 if {"" == $profile_id || 0 == $profile_id} {
     ad_return_complaint 1 "Profile not set:<br>
-    you have not specified a value for Profile".
+    You have not specified a value for Profile"
     return
 }
 
