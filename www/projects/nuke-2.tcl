@@ -31,7 +31,7 @@ set current_user_id [ad_maybe_redirect_for_registration]
 im_project_permissions $current_user_id $project_id view read write admin
 
 if {!$admin} {
-    ad_return_complaint "You need to have administration rights for this project."
+    ad_return_complaint 1 "You need to have administration rights for this project."
     return
 }
 
