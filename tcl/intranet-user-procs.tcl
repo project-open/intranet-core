@@ -210,7 +210,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 
     return "
 <table border=0 cellspacing=1 cellpadding=1>
-<tr class=rowtitle><td class=rowtitle align=center colspan=99>[_ intranet-core.Recent_Registrations]</td></tr>
+<tr class=rowtitle><td class=rowtitle align=center colspan=5>[_ intranet-core.Recent_Registrations]</td></tr>
 <tr class=rowtitle>
   <td align=center class=rowtitle>[_ intranet-core.Date]</td>
   <td align=center class=rowtitle>[_ intranet-core.Name]</td>
@@ -219,7 +219,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 </tr>
 $rows_html
 <tr class=rowblank align=right>
-  <td colspan=99>
+  <td colspan=5>
     <a href=/intranet/users/index?view_name=user_community&user_group_name=all&order_by=Creation>[_ intranet-core.more]</a>
   </td>
 </tr>
