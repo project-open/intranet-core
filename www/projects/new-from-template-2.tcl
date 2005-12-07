@@ -45,8 +45,13 @@ if {![im_permission $user_id add_projects]} {
         <li>You don't have sufficient privileges to see this page."
 }
 
-# Make sure the user can read the template_project
 
+if {"" == $template_project_id} {
+    ad_return_complaint 1 "<li>You haven't chosen a valid template."
+    return
+}
+
+# Make sure the user can read the template_project
 if {$template_project_id} {
     im_project_permissions $user_id $template_project_id template_view template_read template_write template_admin
     if {!$template_read} {
