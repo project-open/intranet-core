@@ -197,7 +197,7 @@ ns_log Notice "/users/new: profile_values=$profile_values"
 
 
 
-# Fraber 051123: Don't show the profiles for the user
+# Fraber 051123: Don't show the profile to the user
 # himself, unless it's an administrator.
 set edit_profiles_p 0
 if {[llength $managable_profiles_reverse] > 0} { set edit_profiles_p 1 }
