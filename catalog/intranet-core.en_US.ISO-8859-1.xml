@@ -26,6 +26,7 @@
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
+  <msg key="Add_a_new_project_from_Template">Add a new project from Template</msg>
   <msg key="Add_a_new_User">New User</msg>
   <msg key="Add_a_project">Add a project</msg>
   <msg key="Add_a_user">Add a user</msg>
@@ -60,6 +61,7 @@
   <msg key="Administer_DynVals">Administer DynVals</msg>
   <msg key="Administration">Administration</msg>
   <msg key="administrator">administrator</msg>
+  <msg key="Advanced_Filtering">Advanced Filtering</msg>
   <msg key="Advertizing_Project">Advertizing Project</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">Aim Screen Name</msg>
@@ -142,6 +144,7 @@
   <msg key="Client_Main_Office">Client Main Office</msg>
   <msg key="Client_Type">Client Type</msg>
   <msg key="Clients">Clients</msg>
+  <msg key="Clone_Project_Help">You can 'clone' a project in order to save time to setup a similar project.</msg>
   <msg key="Close">Close</msg>
   <msg key="Closed">Closed</msg>
   <msg key="Colombia">Colombia</msg>
@@ -277,6 +280,7 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
+  <msg key="Execution_Project_Help">An 'Execution Project' is a copy of a project designed to be completely separated from any references to the initial project in order to keep the customer anonymous.</msg>
   <msg key="Export_Companies_CSV">Export Companies CSV</msg>
   <msg key="Extra_from">Extra from</msg>
   <msg key="Extra_where">Extra where</msg>
@@ -431,6 +435,7 @@
   <msg key="lt_Add_a_new_annual_reve">Add a new annual revenue measure</msg>
   <msg key="lt_Add_a_new_company_sta">Add a new company status</msg>
   <msg key="lt_Add_a_new_company_typ">Add a new company type</msg>
+  <msg key="lt_Add_a_new_file_to_the">Add a new file to the project</msg>
   <msg key="lt_Add_a_new_office_stat">Add a new office status</msg>
   <msg key="lt_Add_a_new_office_type">Add a new office type</msg>
   <msg key="lt_Add_a_new_project_sta">Add a new project status</msg>
