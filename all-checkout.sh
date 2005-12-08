@@ -9,9 +9,11 @@ cvs checkout -r b3-0-0-patches acs-content-repository
 cvs checkout -r b3-0-0-patches acs-core-docs
 cvs checkout -r b3-0-0-patches acs-datetime
 cvs checkout -r b3-0-0-patches acs-developer-support
+cvs checkout -r b3-0-0-patches acs-events
 cvs checkout -r b3-0-0-patches acs-kernel
 cvs checkout -r b3-0-0-patches acs-lang
 cvs checkout -r b3-0-0-patches acs-mail
+cvs checkout -r b3-0-0-patches acs-mail-lite
 cvs checkout -r b3-0-0-patches acs-messaging
 cvs checkout -r b3-0-0-patches acs-reference
 cvs checkout -r b3-0-0-patches acs-service-contract
@@ -20,8 +22,10 @@ cvs checkout -r b3-0-0-patches acs-tcl
 cvs checkout -r b3-0-0-patches acs-templating
 cvs checkout -r b3-0-0-patches acs-workflow
 
+cvs checkout -r b3-0-0-patches bulk-mail
 cvs checkout -r b3-0-0-patches chat
 cvs checkout -r b3-0-0-patches cms
+cvs checkout -r b3-0-0-patches events
 
 cvs checkout -r b3-0-0-patches intranet-big-brother
 cvs checkout -r b3-0-0-patches intranet-core
@@ -54,6 +58,12 @@ cvs checkout -r b3-0-0-patches intranet-update-client
 cvs checkout -r b3-0-0-patches intranet-update-server
 cvs checkout -r b3-0-0-patches intranet-wiki
 
+cvs checkout -r b3-0-0-patches ref-countries
+cvs checkout -r b3-0-0-patches ref-language
 cvs checkout -r b3-0-0-patches ref-timezones
+cvs checkout -r b3-0-0-patches ref-us-counties
+cvs checkout -r b3-0-0-patches ref-us-states
+cvs checkout -r b3-0-0-patches ref-us-zipcodes
+
 cvs checkout -r b3-0-0-patches search
 cvs checkout -r b3-0-0-patches wiki
