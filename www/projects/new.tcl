@@ -265,8 +265,7 @@ if {[db_table_exists im_dynfield_attributes]} {
     set object_type "im_project"
     set my_company_id 0
     if {[info exists project_id]} { set my_project_id $project_id }
-    
-    
+        
     im_dynfield::append_attributes_to_form \
 	-object_type $object_type \
         -form_id $form_id \

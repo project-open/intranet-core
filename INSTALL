@@ -1,0 +1,182 @@
+]project-open[ Linux Installer
+
+Sorry that this installer doesn't comply to the usual standars.
+However, it's the first Linux installer in many years...
+Maybe you want to contribute to improve it?
+
+
+
+1. Prerequisits:
+
+- Any recent Linux implementation (2.6.x) 
+- PostgreSQL 8.0.x
+
+
+
+2. Contents
+
+- INSTALL			- This file
+- aolserver3.3oacs.tgz		- The AOLServer binary
+- po31.3-1-0-0-1.tgz		- The OpenACS and ]po[ source
+- potrans.preconf.sql		- ]project-translation[ sample company
+- pctrans.preconf.sql		- ]project-consulting[ sample company
+
+
+
+3. Installation Procedure Overview
+
+3.1. Install AOLServer
+
+AOLServer is the application server of ]project-open[. It is similar
+to Apache, but includes a built-in compiler for the language "TCL".
+AOLServer is _the_ server of AOL and is know to deliver up to 
+2.5 Million pages/second.
+
+# cd /usr/local/
+# tar xzf aolserver3.3oacs.tgz 
+
+Check that AOLServer is working:
+
+# /usr/local/aolserver3.3oacs/bin/nsd -h
+=> ....
+
+
+3.1. Install ]project-open[ and OpenACS Source
+
+The default location for ]project-open[ is /web/. This is handy if
+you have several servers and if the main purpose of your computer
+is to run web servers. You can use a different directory, but you'll
+have to change pathes in the config.tcl and later in the application
+configuration. So we RECOMMEND that you stick with /web/, atleast for 
+the first installation.
+
+# cd /
+# mkdir /web
+# cd /web
+# tar xzf po31.3-1-0-0-1.tgz
+
+
+
+3.2. Create a new User and Group
+
+]project-open[ should be run via its own user and group by default.
+Both the user and the group should have the same name as the directory
+and the "server" name (see config file below):
+
+# groupadd po31
+# useradd -g po31 -d /web/po31 po31
+
+
+
+3.3. Verify the Config File
+
+The config.tcl config file in /web/po31/etc/ tells AOLServer where to 
+start action. Please verify the first 10 or so lines to for IP address, 
+port etc. 
+Here are the sample values that are delivered with the installer:
+
+
+	#------------------------------------------------------
+	# change to 80 and 443 for production use
+	set httpport                  8080
+	set httpsport                 8443
+	
+	# The name of the server and its location
+	set server                    "po31"
+	set servername                "ProjectOpen Test Server"
+	
+	# The hostname and address should be set to actual values.
+	set hostname                  [ns_info hostname]
+	set address                   "0.0.0.0"
+
+
+
+3.4. Set Permissions and Owner
+
+All files in /web/po31/ should be owned by po31:
+
+# cd /web
+# chmod -R po31:po31 po31
+
+
+
+3.5. Setup the PostgreSQL Database
+
+We are going to create a database "po31" and load a preconfigured demo
+system into this database:
+
+Check that PostgreSQL is up and running
+
+# su - postgres
+# psql --help
+=> ...
+
+Create a new user. The new user should be a database admin (-a, -d)
+because these privileges are needed in order to setup the full-text
+search engine:
+
+#postgres:~> createuser -a -d po31
+
+Create a new database:
+
+#postgres:~> createdb --owner=po31 po31
+
+Create the database language:
+
+#postgres:~> createlang plpgsql po31
+=> May say that "plpgsql" is already installed
+
+
+
+
+3.6. Load the Demo Data into the Database
+
+There are two demo configurations coming with this server:
+
+- ]project-consulting[ is a small consulting company with
+  some 10 employees. This setup is also suitable for 
+  advertising agencies, engineering offices, IT departments
+  of larger companies etc.
+
+
+- ]project-translation[ is a small translation company with
+  some 10 employees. This setup is also suitable for
+  localization companies and translation departments of
+  larger companies.
+
+
+#su - po31
+#po31:~> psql -f pocons.3-1-0-0-1.preconf.sql (]project-consulting[)
+
+or 
+
+#po31:~> psql -f potrans.3-1-0-0-1.preconf.sql (]project-translation[)
+
+
+
+
+3.5. Test the server
+
+Now we are ready to start the server. We are going to run it in
+"foreground mode" to get all debugging messages on the terminal.
+(The "\" indicates a continuation of the same line):
+
+# /usr/local/aolserver3.3oacs/bin/nsd -f -t /web/po31/etc/config.tcl \
+  -u po31 -g po31
+=> You should get hundereds of lines of debugging output.
+
+
+Please check the output for first occurrence of an "error:" string.
+]po[ gives quite detailed error messages that allow you track down
+any error.
+However, if everything goes well you should see a line like this
+after ~1 minute:
+
+
+[...][...][...]	Notice: nssock: listening on 0.0.0.0:8080
+
+Congratulations!
+
+The rest of these instructions it to solidify the installation.
+
+
