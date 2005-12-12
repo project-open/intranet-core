@@ -189,10 +189,14 @@ ad_form \
     }
     
 if {[im_permission $current_user_id "view_projects_all"]} {  
-	ad_form -extend -name $form_id -form {
-		{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" }} }
-		{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" }} }
-	}
+    ad_form -extend -name $form_id -form {
+	{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" }} }
+	{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" }} }
+    }
+
+    template::element::set_value $form_id project_status_id $project_status_id
+    template::element::set_value $form_id project_type_id $project_type_id
+
 }
 
 if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
