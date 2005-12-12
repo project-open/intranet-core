@@ -47,6 +47,8 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
+set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
@@ -385,6 +387,11 @@ if {[form is_request $form_id]} {
     if {"" == $percent_completed} {
 	set percent_completed 0
     }
+
+    if {"" == $project_budget_currency} {
+	set project_budget_currency $default_currency
+    }
+
     template::element::set_value $form_id project_id $project_id
     template::element::set_value $form_id supervisor_id $supervisor_id
     template::element::set_value $form_id requires_report_p $requires_report_p
