@@ -483,6 +483,9 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# Translation
 	if {[db_table_exists im_trans_tasks]} {
+
+	    db_dml remove_from_projects "update im_projects set company_contact_id = null where company_contact_id = :user_id"
+
 	    db_dml trans_tasks "update im_trans_tasks set trans_id = null where trans_id = :user_id"
 	    db_dml trans_tasks "update im_trans_tasks set edit_id = null where edit_id = :user_id"
 	    db_dml trans_tasks "update im_trans_tasks set proof_id = null where proof_id = :user_id"
