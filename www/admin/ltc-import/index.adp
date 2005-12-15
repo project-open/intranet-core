@@ -75,22 +75,25 @@ You need to proceed with the following steps:
 	    Press "Test Connection" to check the connection.
 	    <br>&nbsp;<br>
 	
-	<li><b>Use the "MSDAO Import Data" Wizard to import the Access
-	    database into PostgreSQL</b>:<br>
-	    DBManager (only the Enterprise version) provides this wizard in 
-	    "Tools" - "Data Management" - "Wizard Manager". 
-	    Please specify the 
-	    Access database, "Select All" tables, use the standard
+	<li><b>Import the Access Database into PostgreSQL</b>:<br>
+	    The DBManager (only the Enterprise version) provides a 
+	    "MSDAO Import Wizard" in the 
+	    "Tools" - "Data Management" - "Wizard Manager" section 
+	    that allows you to import the entire LTC-Organiser database
+	    into PostgreSQL.
+	    Please specify the Access database, "Select All" tables, 
+	    use the standard
 	    options for the import ("Import Data" and "Create Tables")
 	    and use the standard table mapping (Source Table -&gt;
 	    Target Table). Finally please select the existing "projop"
-	    database as the target for the data import.
-	
+	    database as the target for the data import.<br>
+	    After the import you should be able to see a number of
+	    additional tables in the "projop" database, written with all 
+	    capital letters such as "ACTION", "CONTACT", ...
 
-	<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>.
-
-
-
+	<li><b><a href="ltc-convert">Convert the LTC Data to 
+	    <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr></a></b>:<br>
+	    
 	</ul>
 
     </ul>
