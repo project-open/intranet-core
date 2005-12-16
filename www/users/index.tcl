@@ -318,9 +318,9 @@ if { $user_group_id > 0 } {
     append page_title " in group \"$group_pretty_name\""
     set context_bar [im_context_bar $page_title]
 
+    lappend extra_froms "(select member_id from group_distinct_member_map m where group_id = :user_group_id) m"
+
     lappend extra_wheres "u.user_id = m.member_id"
-    lappend extra_wheres "m.group_id = $user_group_id"
-    lappend extra_froms "group_distinct_member_map m"
 }
 
 
@@ -403,9 +403,6 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     #ad_return_error "error" "$where_clause"
 }
 
-
-
-
 set sql "
 select
 	u.*,
@@ -416,20 +413,18 @@ select
 	c.wa_line1, c.wa_line2, c.wa_city, c.wa_state, c.wa_postal_code, c.wa_country_code,
 	c.note, c.current_information,
         to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
-	to_char(o.creation_date,:date_format) as creation_date,
+	to_char(u.creation_date,:date_format) as creation_date,
 	p.email,
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
 	cc_users u
 	LEFT JOIN users_contact c ON (u.user_id = c.user_id),
-	acs_objects o,
 	parties p,
         persons pe
 	$extra_from
 where 
-	u.user_id = o.object_id
-	and u.user_id = p.party_id
+	u.user_id = p.party_id
         and p.party_id = pe.person_id
 	$extra_where
 $extra_order_by
