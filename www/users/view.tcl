@@ -533,10 +533,17 @@ if {$admin} {
 
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
-append admin_links "
-          <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>
-          <li><a href=$new_company_from_user_url>[lang::message::lookup "" intranet-core.Create_New_Company_for_User "Create New Company for this User"]</a>
-"
+
+if {$admin} {
+    append admin_links "
+          <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>\n"
+}
+
+if {$admin && [im_permission $current_user_id add_companies]} {
+
+    append admin_links "
+          <li><a href=$new_company_from_user_url>[lang::message::lookup "" intranet-core.Create_New_Company_for_User "Create New Company for this User"]</a>\n"
+}
 
 if {$admin} {
     append admin_links "
