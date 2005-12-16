@@ -44,7 +44,7 @@ if {!$admin} {
 # Delete
 # ---------------------------------------------------------------
 
-db_1row user_full_name "select first_names, last_name from users where user_id = :user_id"
+db_1row user_full_name "select first_names, last_name from cc_users where user_id = :user_id"
 
 set page_content "[ad_admin_header "[_ intranet-core.lt_Deleting_first_names_]"]
 
