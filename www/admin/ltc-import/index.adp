@@ -96,6 +96,45 @@ You need to proceed with the following steps:
 	    
 	</ul>
 
+
+      <li><b>Comments</b>:<br>
+	<ul>
+	<li>Field Sizes:<br>
+  LTC Organizer and ]project-open[ have different field
+  sizes. This shouldt lead to issues with normal data,
+  but exceptionally long fields may caus an error.
+
+	<li>Countries:
+  LTC Organizier allows the user to specified country
+  names as a text field, while ]project-open[ requires 
+  unique country_code.
+  So spelling errors or non-English named countries will 
+  lead to empty country fields in ]project-open[.
+  
+
+	<li>Contact_type:<br>
+  1-User, 2-Provider, 3-Customer, 4-Other
+  is converted into 1-Registered User, 2-Freelancer,
+  3-Customer. These contact types are hard coded and 
+  cant easily be changed.
+
+	<li>Employees and Senior managers are not fully treated:<br>
+  You need to add manually additional privileges to these
+  user classes.
+
+	<li>Skipped:<br>
+  The following tables are not (yet) imported into ]po[:
+<pre>
+	- Translator_Details: Few entries
+	- Translator_Software: Few entries
+	- Trans_Soft: Defines the types of Software 
+	  that a translator can install
+	- Trans_Soft_Source & Trans_Soft_Target:
+	  Source- and target language information for
+	  Trans_Soft. May be used to describe automatic
+	  translation software in more detail.
+</pre>
+
     </ul>
 
   </td>

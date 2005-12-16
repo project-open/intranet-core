@@ -44,7 +44,18 @@ set context ""
 # Check whether the tables are in place
 # ------------------------------------------------------
 
-set ltc_data_p 0
-if {[db_table_exists "CONTACT"]} {
-    set ltc_data_p 1
-}
+# Check whether the table "CONTACT" exists.
+# db_table_exists doesn't work here, because CONTACT
+# is in capital letters from LTC import with DBTools
+#
+set ltc_data_p [db_string ltc_data "
+	select count(*) 
+	from pg_class
+	where	relname = 'CONTACT' 
+		and relname !~ '^pg_'
+		and relkind = 'r'
+"]
+
+
+
+
