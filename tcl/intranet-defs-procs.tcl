@@ -957,7 +957,7 @@ ad_proc im_category_select {
         set p [lindex $cat($p) 0]
         set p_level $level($p)
         if {0 == $p_level} {
-            append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
+            append html [im_category_select_branch -translate_p $translate_p $p $default $base_level [array get cat] [array get direct_parent]]
         }
     }
 
@@ -969,8 +969,14 @@ $html
 }
 
 
-
-ad_proc im_category_select_branch { parent default level cat_array direct_parent_array } {
+ad_proc im_category_select_branch { 
+    {-translate_p 0}
+    parent 
+    default 
+    level 
+    cat_array 
+    direct_parent_array 
+} {
     Returns a list of html "options" displaying an options hierarchy.
 } {
     if {$level > 10} { return "" }
@@ -978,8 +984,12 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
     array set cat $cat_array
     array set direct_parent $direct_parent_array
 
-#   set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
     set category [lindex $cat($parent) 1]
+    if {$translate_p} {
+	set category_key "intranet-core.[lang::util::suggest_key $category]"
+	set category [lang::message::lookup "" $category_key $category]
+    }
+
     set parent_only_p [lindex $cat($parent) 3]
 
     set spaces ""
@@ -1002,7 +1012,7 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 
     foreach cat_id $category_list_sorted {
 	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-	    append html [im_category_select_branch $cat_id $default $level $cat_array $direct_parent_array]
+	    append html [im_category_select_branch -translate_p $translate_p $cat_id $default $level $cat_array $direct_parent_array]
 	}
     }
 
@@ -1098,6 +1108,15 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	set plain_p [lindex $params [expr $plain_p_pos + 1]]
     }
 
+    # Get the "translate_p" parameter to determine if we should
+    # translate the category items
+    #
+    set translate_p 0
+    set translate_p_pos [lsearch $params translate_p]
+    if { $translate_p_pos >= 0 } {
+	set translate_p [lindex $params [expr $translate_p_pos + 1]]
+    }
+
     if {"language" == $element(name)} {
 #       ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
     }
@@ -1125,7 +1144,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
+	append category_html [im_category_select -translate_p 1 -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
 $field_name $default_value]
 
 
