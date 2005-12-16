@@ -64,7 +64,14 @@
 	  permissions and the administrator accounts. <br>
 	  This command is useful in order to start production
 	  operations from a demo system, but should never
-	  be used otherwise.
+	  be used otherwise.<br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/ltc-import/>Import data from LTC-Organiser</a><br>
+	  This wizard allows you to import data from the MS-Access 
+	  based LTC-Organiser into 
+	  <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>.
+	  <br>&nbsp;<br>
     </ul>
 <!--
 	<li>
