@@ -452,8 +452,6 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 
-#	ns_log Notice "im_sub_navbar: menu_name='$name', menu_label='$label', visible_tcl='$visible_tcl'"
-	
 	if {"" != $visible_tcl} {
 	    # Interpret empty visible_tcl menus as always visible
 	    
@@ -484,11 +482,8 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-#	ns_log Notice "im_sub_navbar: check select for label='$label' against select_label='$select_label'"
-
         if {[string equal $label $select_label]} {
 	    
-#	    ns_log Notice "im_sub_navbar: highlight menu_name='$name'"
             # Make sure we only highligh one menu item..
             set found_selected 1
             # Set for the gif
@@ -503,11 +498,13 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
             set gif "middle-$old_sel-$cur_sel"
         }
 
-        set name [lang::util::suggest_key $name]
+        set name_key [lang::util::suggest_key $name]
+        set name [lang::message::lookup "" $name $name]
+
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\"><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
+            set html "$nosel<a href=\"$url\"><nobr>$name</nobr></a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -618,9 +615,6 @@ order by
 	set select_this_one 0
 	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
 
-# 050128 fraber: Changing completely to labels
-#	if {[string equal $url_stub_chopped $url]} { set select_this_one 1 }
-
         if {!$found_selected && $select_this_one} {
 	    # Make sure we only highligh one menu item..
             set found_selected 1
@@ -636,11 +630,13 @@ order by
 	    set gif "middle-$old_sel-$cur_sel" 
 	}
 
-        set name [lang::util::suggest_key $name]
+        set name_key [lang::util::suggest_key $name]
+        set name [lang::message::lookup "" $name $name]
+
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
         } else {
-	    set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
+	    set html "$nosel<a href=\"$url\">$name</a></td>\n"
 	}
 
         append navbar "<td>[im_gif $gif]</td>$html"
