@@ -262,6 +262,12 @@ ad_form -extend -name register -on_request {
 			return
 	    }
 
+	    if {![info exists password] || [empty_string_p $password]} {
+		set password [ad_generate_random_string]
+		set password_confirm $password
+	    }
+
+	    ns_log Notice "/users/new: Before auth::create_user password='$password'"
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \
