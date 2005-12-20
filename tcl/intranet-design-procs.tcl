@@ -34,8 +34,8 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
     set url "/intranet/images"
     set navbar_gif_path [im_navbar_gif_path]
     if { $translate_p && ![empty_string_p $alt] } {
-	set alt_key [lang::util::suggest_key $alt]
-	set alt [_ intranet-core.$alt_key]
+	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
+        set alt [lang::message::lookup "" $alt_key $alt]
     }
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -498,8 +498,8 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
             set gif "middle-$old_sel-$cur_sel"
         }
 
-        set name_key [lang::util::suggest_key $name]
-        set name [lang::message::lookup "" $name $name]
+        set name_key "intranet-core.[lang::util::suggest_key $name]"
+        set name [lang::message::lookup "" $name_key $name]
 
         if {$selected} {
             set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
@@ -630,8 +630,8 @@ order by
 	    set gif "middle-$old_sel-$cur_sel" 
 	}
 
-        set name_key [lang::util::suggest_key $name]
-        set name [lang::message::lookup "" $name $name]
+        set name_key "intranet-core.[lang::util::suggest_key $name]"
+        set name [lang::message::lookup "" $name_key $name]
 
         if {$selected} {
             set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
@@ -994,12 +994,13 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
 
     set html "&nbsp;"
     foreach letter $alpha_list {
-	set letter_txt [lang::util::suggest_key $letter]
+	set letter_key "intranet-core.[lang::util::suggest_key $letter]"
+	set letter_trans [lang::message::lookup "" $letter_key $letter]
 	if {[string equal $letter $default_letter]} {
-	    append html "<font color=white>[_ intranet-core.$letter]</font> &nbsp; \n"
+	    append html "<font color=white>$letter_trans</font> &nbsp; \n"
 	} else {
 	    set url "$target_url?letter=$letter&$param_html"
-	    append html "<A HREF=$url>[_ intranet-core.$letter]</A>&nbsp;\n"
+	    append html "<A HREF=$url>$letter_trans</A>&nbsp;\n"
 	}
     }
     append html ""
