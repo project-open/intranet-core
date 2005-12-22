@@ -397,10 +397,11 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     }
 
     # Add the additional condition to the "where_clause"
-    append extra_where "
-        and person_id in $dynfield_extra_where
-    "
-    #ad_return_error "error" "$where_clause"
+    if {"" != $dynfield_extra_where} { 
+	    append extra_where "
+                and person_id in $dynfield_extra_where
+            "
+    }
 }
 
 set sql "
@@ -414,18 +415,13 @@ select
 	c.note, c.current_information,
         to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
 	to_char(u.creation_date,:date_format) as creation_date,
-	p.email,
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
 	cc_users u
-	LEFT JOIN users_contact c ON (u.user_id = c.user_id),
-	parties p,
-        persons pe
+	LEFT JOIN users_contact c ON (u.user_id = c.user_id)
 	$extra_from
-where 
-	u.user_id = p.party_id
-        and p.party_id = pe.person_id
+where	1=1
 	$extra_where
 $extra_order_by
 "
