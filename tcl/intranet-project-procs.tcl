@@ -846,7 +846,7 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
     }
 
     db_dml update_project "
-	update im_project set
+	update im_projects set
 		parent_id = :parent_id,
 		description = :description,
 		billing_type_id = :billing_type_id,
