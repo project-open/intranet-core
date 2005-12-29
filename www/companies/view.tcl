@@ -64,28 +64,16 @@ if {!$read} {
 
 db_1row company_get_info "
 select 
-	c.company_name,
-	c.company_path,
-	c.note, 
-	c.vat_number,
-	c.company_path, 
-	c.billable_p,
+	c.*,
 	im_name_from_user_id(c.primary_contact_id) as primary_contact_name,
 	im_email_from_user_id(c.primary_contact_id) as primary_contact_email,
 	im_name_from_user_id(c.accounting_contact_id) as accounting_contact_name,
 	im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
-	c.manager_id,
 	im_name_from_user_id(c.manager_id) as manager,
-	primary_contact_id,
-	accounting_contact_id,
 	im_category_from_id(c.company_status_id) as company_status,
 	im_category_from_id(c.company_type_id) as company_type,
-	c.annual_revenue_id,
 	im_category_from_id(c.annual_revenue_id) as annual_revenue,
-	referral_source,
 	to_char(start_date,'Month DD, YYYY') as start_date, 
-	contract_value, 
-	site_concept,
         o.phone,
         o.fax,
         o.address_line1,
@@ -140,15 +128,15 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.City]</td><td>$address_city</td></tr>
   <tr class=roweven><td>[_ intranet-core.Postal_Code]</td><td>$address_postal_code</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>\n"
+
     if {![empty_string_p $site_concept]} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { set site_concept "http://$site_concept" }
 	append left_column "
-  <tr class=rowodd><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
+  <tr class=roweven><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
     }
-    append left_column "
-  <tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>
-"
+    append left_column "<tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>\n"
+
 
 # ------------------------------------------------------
 # Show extension fields
@@ -222,14 +210,13 @@ if {[db_table_exists im_dynfield_attributes]} {
 	}
     }
 
-    append left_column "<tr class=roweven><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
+    append left_column "<tr class=rowodd><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
 
+    append left_column "<tr class=roweven><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
 # ------------------------------------------------------
 # Continuation ...
 # ------------------------------------------------------
-
-    append left_column "<tr class=rowodd><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
     #if { ![empty_string_p $contract_value] } {
     #   append left_column "<tr><td>[_ intranet-core.Contract_Value]</td><td>\$[util_commify_number $contract_value] K</td></tr>\n"

@@ -116,10 +116,6 @@ ad_form \
 	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
 	{vat_number:text(text),optional {label "VAT Number"} {html {size 60}}}
 	{annual_revenue_id:text(im_category_tree),optional {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
-	{vat:text(text),optional {label "Default<br>VAT (Percent)"} {html {size 10}}}
-	{payment_days:text(text),optional {label "Default<br>Payment Days"} {html {size 10}}}
-	{payment_method_id:text(im_category_tree),optional {label "Default<br>Payment Method"} {custom {category_type "Intranet Invoice Payment Method"} } }
-	{invoice_template_id:text(im_category_tree),optional {label "Default<br>Invoice Template"} {custom {category_type "Intranet Cost Template"} } }
 	{note:text(textarea),optional {label "Note"} {}}
     }
 
