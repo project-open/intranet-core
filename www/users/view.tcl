@@ -129,11 +129,8 @@ order by
 
 
 set user_id $user_id_from_search
+set user_basic_info_vars [export_form_vars user_id return_url]
 set user_basic_info_html "
-<form method=POST action=new>
-[export_form_vars user_id return_url]
-
-<table cellpadding=1 cellspacing=1 border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>[_ intranet-core.Basic_Information]</td>
   </tr>
@@ -163,27 +160,29 @@ append user_basic_info_html "
 # Profile Management
 # ---------------------------------------------------------------
 
-append user_basic_info_html "
+set user_basic_profile_html "
 <tr $td_class([expr $ctr % 2])>
   <td>[_ intranet-core.Profile]</td>
   <td>
     [im_user_profile_component $user_id_from_search "disabled"]
   </td>
 </tr>
+"
+
+set user_basic_edit_html ""
+if {$write} {
+    set user_basic_edit_html "
 <tr>
   <td></td>
-  <td>\n"
-if {$write} {
-    append user_basic_info_html "
-    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">\n"
-}
-append user_basic_info_html "
+  <td>
+    <form method=POST action=new>
+    $user_basic_info_vars
+    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">
+    </form>
   </td>
-</tr>
-</table>
-</form>\n"
+</tr>\n"
 
-set profile_html ""
+}
 
 # ------------------------------------------------------
 # Show extension fields

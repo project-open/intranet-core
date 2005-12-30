@@ -8,7 +8,7 @@
 <tr>
   <td valign=top>
 
-    <table
+    <table>
         @left_column;noquote@
         <if @dynamic_fields_p@>
             <formtemplate id="company_view" style="standard-withouttabletab"></formtemplate>
