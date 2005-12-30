@@ -323,6 +323,12 @@ if { $user_group_id > 0 } {
     lappend extra_wheres "u.user_id = m.member_id"
 }
 
+# Don't show deleted users unless specified (in the future)
+if {1} {
+    lappend extra_wheres "u.member_state = 'approved'"
+}
+
+
 
 if { -1 == $user_group_id} {
     # "Unregistered users
