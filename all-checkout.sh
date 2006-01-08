@@ -44,16 +44,19 @@ cvs checkout -r b3-0-0-patches intranet-mail-import
 cvs checkout -r b3-0-0-patches intranet-material
 cvs checkout -r b3-0-0-patches intranet-payments
 cvs checkout -r b3-0-0-patches intranet-reporting
+cvs checkout -r b3-0-0-patches intranet-reporting-dashboard
 cvs checkout -r b3-0-0-patches intranet-riskmanagement
 cvs checkout -r b3-0-0-patches intranet-search-pg
+cvs checkout -r b3-0-0-patches intranet-security-update-client
 cvs checkout -r b3-0-0-patches intranet-spam
+cvs checkout -r b3-0-0-patches intranet-simple-survey
 cvs checkout -r b3-0-0-patches intranet-timesheet
 cvs checkout -r b3-0-0-patches intranet-timesheet2
 cvs checkout -r b3-0-0-patches intranet-timesheet2-invoices
 cvs checkout -r b3-0-0-patches intranet-timesheet2-tasks
+cvs checkout -r b3-0-0-patches intranet-translation
 cvs checkout -r b3-0-0-patches intranet-trans-invoices
 cvs checkout -r b3-0-0-patches intranet-trans-quality
-cvs checkout -r b3-0-0-patches intranet-translation
 cvs checkout -r b3-0-0-patches intranet-update-client
 cvs checkout -r b3-0-0-patches intranet-update-server
 cvs checkout -r b3-0-0-patches intranet-wiki
@@ -66,4 +69,5 @@ cvs checkout -r b3-0-0-patches ref-us-states
 cvs checkout -r b3-0-0-patches ref-us-zipcodes
 
 cvs checkout -r b3-0-0-patches search
+cvs checkout -r b3-0-0-patches simple-survey
 cvs checkout -r b3-0-0-patches wiki

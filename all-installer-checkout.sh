@@ -25,12 +25,17 @@ cvs checkout -r b3-0-0-patches cms
 cvs checkout -r b3-0-0-patches intranet-core
 cvs checkout -r b3-0-0-patches intranet-cost
 cvs checkout -r b3-0-0-patches intranet-dw-light
+cvs checkout -r b3-0-0-patches intranet-dynfield
+cvs checkout -r b3-0-0-patches intranet-exchange-rate
 cvs checkout -r b3-0-0-patches intranet-filestorage
 cvs checkout -r b3-0-0-patches intranet-forum
 cvs checkout -r b3-0-0-patches intranet-hr
 cvs checkout -r b3-0-0-patches intranet-invoices
 cvs checkout -r b3-0-0-patches intranet-material
 cvs checkout -r b3-0-0-patches intranet-payments
+cvs checkout -r b3-0-0-patches intranet-search-pg
+cvs checkout -r b3-0-0-patches intranet-security-update-client
+cvs checkout -r b3-0-0-patches intranet-simple-survey
 cvs checkout -r b3-0-0-patches intranet-timesheet
 cvs checkout -r b3-0-0-patches intranet-timesheet2
 cvs checkout -r b3-0-0-patches intranet-timesheet2-invoices
@@ -41,4 +46,5 @@ cvs checkout -r b3-0-0-patches intranet-wiki
 
 cvs checkout -r b3-0-0-patches ref-timezones
 cvs checkout -r b3-0-0-patches search
+cvs checkout -r b3-0-0-patches simple-survey
 cvs checkout -r b3-0-0-patches wiki
