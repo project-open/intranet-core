@@ -43,12 +43,8 @@ ad_proc im_freelance_member_select_dummy_component { object_id return_url } {
 </tr>
 <tr><td colspan=5>
 
-<nobr>
-  <span class=brandsec>&\#93;</span>
-  <span class=brandfirst>project-open</span>
-  <span class=brandsec>&\#91;</span>
-</nobr>
 <p>
+<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>
 Freelance Database Extension not available:<br>
 The Freelance Database allows you to quickly select the right
 freelancers for your project, based on characteristics such
