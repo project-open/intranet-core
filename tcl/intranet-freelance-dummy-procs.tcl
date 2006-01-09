@@ -35,13 +35,33 @@ ad_proc im_freelance_member_select_dummy_component { object_id return_url } {
 <tr>
 <td class=rowtitle align=middle colspan=5>Freelance</td>
 <tr>
-  <td class=rowtitle>Freelance</td>
-  <td class=rowtitle>Source Language</td>
-  <td class=rowtitle>Target Language</td>
-  <td class=rowtitle>Subject Area</td>
-  <td class=rowtitle>Select</td>
+  <td>Freelance</td>
+  <td>Source Language</td>
+  <td>Target Language</td>
+  <td>Subject Area</td>
+  <td>Select</td>
 </tr>
-<tr><td colspan=5>asdf</td></tr>
+<tr><td colspan=5>
+
+<nobr>
+  <span class=brandsec>&\#93;</span>
+  <span class=brandfirst>project-open</span>
+  <span class=brandsec>&\#91;</span>
+</nobr>
+Freelance Database Extension not available
+<p>
+The Freelance Database allows you to quickly select the right
+freelancers for your project, based on characteristics such
+as their source- and target language combination, their 
+relative price and their availablility (using the Freelance
+RFQ Extension).
+</p>
+
+Please visit the
+<a href=\"http://www.project-open.org/product/modules/freelance/\"
+>Freelance Extension</a> web site for more information.
+
+</td></tr>
 </table>
 \n"
 
