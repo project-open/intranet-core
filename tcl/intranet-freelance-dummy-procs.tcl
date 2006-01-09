@@ -31,10 +31,10 @@ ad_proc im_freelance_member_select_dummy_component { object_id return_url } {
     in the add-members.tcl page
 } {
     set select_freelance "
-<table cellpadding=0 cellspacing=2 border=0>
+<table cellpadding=0 cellspacing=2 border=0 width=\"70%\">
 <tr>
 <td class=rowtitle align=middle colspan=5>Freelance</td>
-<tr>
+<tr class=rowtitle>
   <td>Freelance</td>
   <td>Source Language</td>
   <td>Target Language</td>
