@@ -360,18 +360,18 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 
     set query "
 select DISTINCT
-	ur.object_id_two as user_id,
-        im_name_from_user_id(ur.object_id_two) as user_name
+	u.user_id,
+        im_name_from_user_id(u.user_id) as user_name
 from
-        acs_rels ur,
-	acs_rels gr
+	cc_users u,
+	group_distinct_member_map m,
+        acs_rels ur
 where
-        ur.object_id_one = :company_id
-	and ur.object_id_two = gr.object_id_two
-	and (
-		gr.object_id_one = :customer_group_id
-		or gr.object_id_one = :freelance_group_id
-	)
+	u.member_state = 'approved'
+	and u.user_id = m.member_id
+	and m.group_id in (:customer_group_id, :freelance_group_id)
+	and u.user_id = ur.object_id_two
+	and ur.object_id_one = :company_id
 "
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
