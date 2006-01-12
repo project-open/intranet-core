@@ -20,6 +20,7 @@ ad_page_contract {
     user_id_from_search:integer
     subject
     message
+    { send_me_a_copy "" }
     return_url
 }
 
@@ -27,5 +28,11 @@ set user_id [ad_maybe_redirect_for_registration]
 
 # Send out an email alert
 im_send_alert $user_id_from_search "hourly" $subject $message
+
+
+# Send a copy to myself
+if {"" != $send_me_a_copy} {
+    im_send_alert $user_id "hourly" $subject $message
+}
 
 ad_returnredirect $return_url
