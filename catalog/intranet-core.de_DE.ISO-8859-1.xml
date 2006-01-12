@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.1.0.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -89,6 +89,8 @@
   <msg key="Belgium">Belgien</msg>
   <msg key="Belize">Belize</msg>
   <msg key="Billable">Billable?</msg>
+  <msg key="billenadp">bill.en.adp</msg>
+  <msg key="billesadp">bill.es.adp</msg>
   <msg key="Bio">Bio</msg>
   <msg key="Biz">Biz</msg>
   <msg key="Body_Shopping">Body Shopping</msg>
@@ -344,6 +346,9 @@
   <msg key="invoice-englishadp">invoice-english.adp</msg>
   <msg key="invoice-spanishadp">invoice-spanish.adp</msg>
   <msg key="Invoiced">Ausgestellt</msg>
+  <msg key="invoiceenadp">invoice.en.adp</msg>
+  <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
+  <msg key="invoiceesadp">invoice.es.adp</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Irak</msg>
   <msg key="Ireland">Irland</msg>
@@ -692,6 +697,9 @@
   <msg key="Phone">Telefon</msg>
   <msg key="Please_Select">Bitte wählen</msg>
   <msg key="PO_Admins">P/O Admins</msg>
+  <msg key="poenadp">po.en.adp</msg>
+  <msg key="poesadp">po.es.adp</msg>
+  <msg key="poessadp">po.es.adp</msg>
   <msg key="Poland">Polen</msg>
   <msg key="Portrait">Porträt</msg>
   <msg key="Portugal">Portugal</msg>
@@ -742,6 +750,8 @@
   <msg key="Quote">Angebot</msg>
   <msg key="Quote_Out">Angebot ausgesendet</msg>
   <msg key="Quote_out">Angebot ausgesendet</msg>
+  <msg key="quoteenadp">quote.en.adp</msg>
+  <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quoting">Angebotserstellung</msg>
   <msg key="r">R</msg>
   <msg key="Recent_Registrations">Letzte Registrierungen</msg>

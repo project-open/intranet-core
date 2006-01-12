@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.1.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.1.0.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -97,6 +97,8 @@
   <msg key="Belgium">Belgium</msg>
   <msg key="Belize">Belize</msg>
   <msg key="Billable">Billable?</msg>
+  <msg key="billenadp">bill.en.adp</msg>
+  <msg key="billesadp">bill.es.adp</msg>
   <msg key="Bills">Bills</msg>
   <msg key="Bio">Bio</msg>
   <msg key="Biz">Biz</msg>
@@ -380,6 +382,9 @@
   <msg key="invoice-englishadp">invoice-englishadp</msg>
   <msg key="invoice-spanishadp">invoice-spanishadp</msg>
   <msg key="Invoiced">Invoiced</msg>
+  <msg key="invoiceenadp">invoice.en.adp</msg>
+  <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
+  <msg key="invoiceesadp">invoice.es.adp</msg>
   <msg key="Invoices">Invoices</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Iraq</msg>
@@ -917,6 +922,9 @@ other way for the user to find out.</msg>
   <msg key="Please_Select">Please select</msg>
   <msg key="PO_Admins">P/O Admins</msg>
   <msg key="po_admins">P/O Admins</msg>
+  <msg key="poenadp">po.en.adp</msg>
+  <msg key="poesadp">po.es.adp</msg>
+  <msg key="poessadp">po.es.adp</msg>
   <msg key="Poland">Poland</msg>
   <msg key="Portrait">Portrait</msg>
   <msg key="Portugal">Portugal</msg>
@@ -974,6 +982,8 @@ other way for the user to find out.</msg>
   <msg key="Quote">Quote</msg>
   <msg key="Quote_Out">Quote Out</msg>
   <msg key="Quote_out">Quote out</msg>
+  <msg key="quoteenadp">quote.en.adp</msg>
+  <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quotes">Quotes</msg>
   <msg key="Quoting">Quoting</msg>
   <msg key="r">r</msg>
