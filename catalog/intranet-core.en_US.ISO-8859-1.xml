@@ -489,8 +489,8 @@
 
 You have been added as a %role_name%
 to %object_name%
-in %system_name% 
-at %object_url%
+in %system_name% at 
+%object_url%
 
 Please click on the link above for details.
 
@@ -528,8 +528,8 @@ Edit the message below and hit &quot;Send Email&quot; to
 notify this user.</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name%, 
 
-You have been added as a user to %system_name%
-at %system_url%
+You have been added as a user to %system_name% at 
+%system_url%
 
 Login information:
 Email: %email%
