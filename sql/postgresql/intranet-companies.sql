@@ -104,7 +104,7 @@ create table im_companies (
 				-- Default invoice template
 	default_invoice_template_id	integer
 				constraint im_companies_def_invoice_template_fk
-				references im_categories
+				references im_categories,
 				-- Default payment method
 	default_payment_method_id	integer
 				constraint im_companies_def_invoice_payment_fk
