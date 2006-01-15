@@ -23,9 +23,20 @@ Maybe you want to contribute to improve it?
 
 
 
-3. Installation Procedure Overview
+3. Installation Overview
 
-3.1. Install AOLServer
+The installation procedure consists of the following steps
+
+	1. Check the the prerequisites are OK
+	1. Setup of AOLServer. AOLServer is a webserver,
+	   similar to Apache.
+
+
+
+
+4. Installation Procedure Overview
+
+4.1. Install AOLServer
 
 AOLServer is the application server of ]project-open[. It is similar
 to Apache, but includes a built-in compiler for the language "TCL".
@@ -41,7 +52,7 @@ Check that AOLServer is working:
 => ....
 
 
-3.1. Install ]project-open[ and OpenACS Source
+4.1. Install ]project-open[ and OpenACS Source
 
 The default location for ]project-open[ is /web/. This is handy if
 you have several servers and if the main purpose of your computer
@@ -57,7 +68,7 @@ the first installation.
 
 
 
-3.2. Create a new User and Group
+4.2. Create a new User and Group
 
 ]project-open[ should be run via its own user and group by default.
 Both the user and the group should have the same name as the directory
@@ -68,7 +79,7 @@ and the "server" name (see config file below):
 
 
 
-3.3. Verify the Config File
+4.3. Verify the Config File
 
 The config.tcl config file in /web/po31/etc/ tells AOLServer where to 
 start action. Please verify the first 10 or so lines to for IP address, 
@@ -91,7 +102,7 @@ Here are the sample values that are delivered with the installer:
 
 
 
-3.4. Set Permissions and Owner
+4.4. Set Permissions and Owner
 
 All files in /web/po31/ should be owned by po31:
 
@@ -100,7 +111,7 @@ All files in /web/po31/ should be owned by po31:
 
 
 
-3.5. Setup the PostgreSQL Database
+4.5. Setup the PostgreSQL Database
 
 We are going to create a database "po31" and load a preconfigured demo
 system into this database:
@@ -129,7 +140,7 @@ Create the database language:
 
 
 
-3.6. Load the Demo Data into the Database
+4.6. Load the Demo Data into the Database
 
 There are two demo configurations coming with this server:
 
@@ -155,7 +166,7 @@ or
 
 
 
-3.5. Test the server
+4.5. Test the server
 
 Now we are ready to start the server. We are going to run it in
 "foreground mode" to get all debugging messages on the terminal.
