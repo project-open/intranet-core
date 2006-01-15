@@ -1,4 +1,4 @@
-
+%
   ]project-open[ Installer
   Frank Bergmann <frank.bergmann@project-open.com>
   Version V3.1.0, 2006-01-15
@@ -57,24 +57,24 @@
   whether the step has been executed successfully:
   
   
-        - Check that the prerequisites are OK
+	- Check that the prerequisites are OK
   
-        - Setup "AOLServer". AOLServer is a webserver, similar to 
-  	Apache. It acts as the application server that interprets 
-  	the ]project-open[ source code.
+	- Setup "AOLServer". AOLServer is a webserver, similar to 
+	Apache. It acts as the application server that interprets 
+	the ]project-open[ source code.
   
-        - Extract the ]project-open[ source code tree
+	- Extract the ]project-open[ source code tree
   
-        - Setup the PostgreSQL database and import the ]po[ demo
-  	system.
+	- Setup the PostgreSQL database and import the ]po[ demo
+	system.
   
-        - Start the system for the first time
+	- Start the system for the first time
   
-        - Automate backup, maintenance and system restart.
-  	This is only necessary for a production installation
-  	of the server.
+	- Automate backup, maintenance and system restart.
+	This is only necessary for a production installation
+	of the server.
   
-        - Check for the latest version and updates
+	- Check for the latest version and updates
   
   
   The complexity of a ]project-open[ installation until now was
@@ -96,24 +96,24 @@
   The finished directory tree will look like this:
   
   / usr / local / aolserver3.3oacs / bin			# Binaries
-  				 / lib			# Libraries
-  				 / log			# Not used
-  				 / modules		# The TCL interpreter
-  				 / include		# Header files
+				 / lib			# Libraries
+				 / log			# Not used
+				 / modules		# The TCL interpreter
+				 / include		# Header files
   
   / web / projop / apm-workspace				# Tmp space
-  	       / bin					# Utilities
-  	       / etc					# Config files
-  	       / filestorage				# Filestorage
-  	       / log					# Log files
-  	       / packages				# Package home
-  	       / packages / <package_name>		# A single package
-  	       / packages / <package_name> / catalog	# Localization
-  	       / packages / <package_name> / sql	# SQL satamodel
-  	       / packages / <package_name> / tcl	# Library
-  	       / packages / <package_name> / www	# Pages
-  	       / tcl					# Global libraries
-  	       / www					# 1st page and templates
+	       / bin					# Utilities
+	       / etc					# Config files
+	       / filestorage				# Filestorage
+	       / log					# Log files
+	       / packages				# Package home
+	       / packages / <package_name>		# A single package
+	       / packages / <package_name> / catalog	# Localization
+	       / packages / <package_name> / sql	# SQL satamodel
+	       / packages / <package_name> / tcl	# Library
+	       / packages / <package_name> / www	# Pages
+	       / tcl					# Global libraries
+	       / www					# 1st page and templates
   
   
     
@@ -187,18 +187,18 @@
   Here are the sample values that are delivered with the installer:
   
   
-  	#------------------------------------------------------
-  	# change to 80 and 443 for production use
-  	set httpport                  8080
-  	set httpsport                 8443
-  	
-  	# The name of the server and its location
-  	set server                    "projop"
-  	set servername                "ProjectOpen Test Server"
-  	
-  	# The hostname and address should be set to actual values.
-  	set hostname                  [ns_info hostname]
-  	set address                   "0.0.0.0"
+	#------------------------------------------------------
+	# change to 80 and 443 for production use
+	set httpport		8080
+	set httpsport		8443
+	
+	# The name of the server and its location
+	set server		"projop"
+	set servername		"ProjectOpen Test Server"
+	
+	# The hostname and address should be set to actual values.
+	set hostname		[ns_info hostname]
+	set address		"0.0.0.0"
   
   
   
@@ -366,32 +366,32 @@
   
   Here is a sample file to initiate the backup:
   
-  	#
-  	# /root/bin/backup-postgres
-  	# V1.1, 060115 Frank Bergmann <frank.bergmann@project-open.com>
-  	#
-  	
-  	# Backup to a directory that is written to tape every day:
-  	exportdir=/web/projop/filestorage/backup
+	#
+	# /root/bin/backup-postgres
+	# V1.1, 060115 Frank Bergmann <frank.bergmann@project-open.com>
+	#
+	
+	# Backup to a directory that is written to tape every day:
+	exportdir=/web/projop/filestorage/backup
   
-  	# Make sure this log directory is writable for user "postgres"
-  	logdir=/var/log/backup
+	# Make sure this log directory is writable for user "postgres"
+	logdir=/var/log/backup
   
-  	# PostgreSQL Admin account
-  	PG_OWNER=postgres
+	# PostgreSQL Admin account
+	PG_OWNER=postgres
   
-  	# Add a timestamp to all database dumps:
-  	CURRENT_TIME=`/bin/date +\%Y\%m\%d.\%H\%M`
-  	
-  	# --------------- "projop" Database on "berlin" ----------------
-  	#
-  	COMPUTER_NAME=berlin
-  	SERVICE_NAME=projop
-  	export_file=$exportdir/pgback.$COMPUTER_NAME.$SERVICE_NAME.$CURRENT_TIME.sql
-  	log_file=$logdir/export-postgres.$SERVICE_NAME.$CURRENT_TIME.log
-  	echo su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file"
-  	su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file" > $log_file 2>&1
-  	bzip2 $export_file
+	# Add a timestamp to all database dumps:
+	CURRENT_TIME=`/bin/date +\%Y\%m\%d.\%H\%M`
+	
+	# --------------- "projop" Database on "berlin" ----------------
+	#
+	COMPUTER_NAME=berlin
+	SERVICE_NAME=projop
+	export_file=$exportdir/pgback.$COMPUTER_NAME.$SERVICE_NAME.$CURRENT_TIME.sql
+	log_file=$logdir/export-postgres.$SERVICE_NAME.$CURRENT_TIME.log
+	echo su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file"
+	su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file" > $log_file 2>&1
+	bzip2 $export_file
   
   
   
