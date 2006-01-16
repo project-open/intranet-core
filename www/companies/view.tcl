@@ -111,14 +111,6 @@ if {$see_details} {
 "
 }
 
-if {$see_sales_details} {
-    append left_column "
-  <tr class=rowodd><td>[_ intranet-core.Referral_source]</td><td>$referral_source</td></tr>
-  <tr class=roweven><td>[_ intranet-core.Billable]</td><td> [util_PrettyBoolean $billable_p]</td></tr>
-"
-}
-
-
 if {$see_details} {
     append left_column "
   <tr class=rowodd><td>[_ intranet-core.Phone]</td><td>$phone</td></tr>
