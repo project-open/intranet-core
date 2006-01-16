@@ -120,6 +120,41 @@ where
 }
 
 
+
+# -----------------------------------------------------------
+# Select a delivery/invoice/... address for a company
+# -----------------------------------------------------------
+
+ad_proc -public im_company_office_select { select_name default company_id {office_type_id ""} } {
+    Returns an html select box named $select_name and defaulted to
+    $default with the list of all avaiable offices for a company.
+} {
+    set bind_vars [ns_set create]
+    ns_set put $bind_vars company_id $company_id
+    ns_set put $bind_vars office_type_id $office_type_id
+
+    if {"" == $default} {
+	set default [db_string main_office "select main_office_id from im_companies where company_id = :company_id" -default ""]
+    }
+
+    set query "
+select DISTINCT
+        o.office_id,
+	o.office_name
+from
+	im_offices o
+where
+	o.company_id = :company_id
+"
+    return [im_selection_to_select_box -translate_p 0 $bind_vars company_office_select $query $select_name $default]
+}
+
+
+
+# -----------------------------------------------------------
+# 
+# -----------------------------------------------------------
+
 namespace eval office {
 
     ad_proc -public new {
