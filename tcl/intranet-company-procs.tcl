@@ -472,3 +472,183 @@ where
     return [im_selection_to_select_box -translate_p 0 $bind_vars "company_status_select" $sql $select_name $default]
 }
 
+
+
+# -----------------------------------------------------------
+# Nuke a company
+# -----------------------------------------------------------
+
+
+ad_proc im_company_nuke {company_id} {
+    Nuke (complete delete from the database) a company
+} {
+    ns_log Notice "im_company_nuke company_id=$company_id"
+    
+    set current_user_id [ad_get_user_id]
+    im_company_permissions $current_user_id $company_id view read write admin
+    if {!$admin} { return }
+
+
+    # ---------------------------------------------------------------
+    # Delete
+    # ---------------------------------------------------------------
+    
+    # if this fails, it will probably be because the installation has 
+    # added tables that reference the users table
+
+    # Delete the projects for this company
+    set companys_projects_sql "
+	select project_id
+	from im_projects
+	where company_id = :company_id"
+    db_foreach delete_projects $companys_projects_sql {
+	im_project_nuke $project_id
+    }
+
+    # Delete the offices for this company
+    set companies_offices_sql "
+	select	office_id
+	from	im_offices o,
+		acs_rels r
+	where
+		r.object_id_one = o.office_id
+		and r.object_id_one = :company_id
+    "
+    db_foreach delete_offices $companies_offices_sql {
+	im_office_nuke $office_id
+    }
+
+    with_transaction {
+    
+	# Permissions
+	ns_log Notice "companys/nuke-2: acs_permissions"
+	db_dml perms "delete from acs_permissions where object_id = :company_id"
+	
+	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
+	# entry in im_costs. These might have been created during manual deletion of objects
+	# Very dirty...
+	ns_log Notice "companys/nuke-2: dangeling_costs"
+	db_dml dangeling_costs "
+		delete from acs_objects 
+		where	object_type = 'im_cost' 
+			and object_id not in (select cost_id from im_costs)"
+	
+
+	# Payments
+	db_dml reset_payments "
+		update im_payments 
+		set cost_id=null 
+		where cost_id in (
+			select cost_id 
+			from im_costs 
+			where (customer_id = :company_id or provider_id = :company_id)
+		)"
+	
+	# Costs
+	set cost_infos [db_list_of_lists costs "
+		select cost_id, object_type 
+		from im_costs, acs_objects 
+		where cost_id = object_id 
+		      and (customer_id = :company_id or provider_id = :company_id)
+	"]
+	foreach cost_info $cost_infos {
+	    set cost_id [lindex $cost_info 0]
+	    set object_type [lindex $cost_info 1]
+	    ns_log Notice "companys/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
+	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
+	}
+	
+	
+	# Forum
+	ns_log Notice "companys/nuke-2: im_forum_topic_user_map"
+	db_dml forum "
+		delete from im_forum_topic_user_map 
+		where topic_id in (
+			select topic_id 
+			from im_forum_topics 
+			where object_id = :company_id
+		)
+	"
+	ns_log Notice "companys/nuke-2: im_forum_topics"
+	db_dml forum "delete from im_forum_topics where object_id = :company_id"
+
+	# Filestorage
+	ns_log Notice "companys/nuke-2: im_fs_folder_status"
+	db_dml filestorage "
+		delete from im_fs_folder_status 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :company_id
+		)
+	"
+	ns_log Notice "companys/nuke-2: im_fs_folders"
+	db_dml filestorage "
+		delete from im_fs_folder_perms 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :company_id
+		)
+	"
+	db_dml filestorage "delete from im_fs_folders where object_id = :company_id"
+
+
+	ns_log Notice "companys/nuke-2: rels"
+	set rels [db_list rels "
+		select rel_id 
+		from acs_rels 
+		where object_id_one = :company_id 
+			or object_id_two = :company_id
+	"]
+	foreach rel_id $rels {
+	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
+	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
+	}
+
+	
+	ns_log Notice "companys/nuke-2: party_approved_member_map"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where party_id = :company_id"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where member_id = :company_id"
+	
+	db_dml delete_companys "
+		delete from im_companys 
+		where company_id = :company_id"
+
+	# End "with_transaction"
+    } {
+    
+	set detailed_explanation ""
+	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
+	    
+	    set sql "select table_name from user_constraints 
+		     where constraint_name=:constraint_name"
+	    db_foreach user_constraints_by_name $sql {
+		set detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
+	    }
+	    
+	}
+	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
+		[_ intranet-core.lt_The_nuking_of_user_us]
+		$detailed_explanation
+		<p>
+		[_ intranet-core.lt_For_good_measure_here]
+		<blockquote>
+		<pre>
+		$errmsg
+		</pre>
+		</blockquote>
+	"
+	return
+    }
+    set return_to_admin_link "<a href=\"/intranet/companys/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
+}
+
+
