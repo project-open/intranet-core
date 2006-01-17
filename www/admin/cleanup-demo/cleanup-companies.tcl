@@ -63,6 +63,12 @@ set elements_list {
 	    <a href="@companies.company_url@">@companies.company_name@</a>
     }
   }
+  num_projects {
+  	label "Num Projects"
+  }
+  num_offices {
+  	label "Num Offices"
+  }
   company_type {
   	label "[_ intranet-core.Company_Type]"
   }
@@ -89,9 +95,27 @@ db_multirow -extend {company_url} companies get_companies "
 	 	c.*,
 		im_category_from_id(c.company_status_id) as company_status,
 		im_category_from_id(c.company_type_id) as company_type,
-		c.company_path as company_nr
+		c.company_path as company_nr,
+		num_projects.num_projects,
+		num_offices.num_offices
 	from
 		im_companies c
+		LEFT OUTER JOIN (
+			select	count(*) as num_projects,
+				p.company_id
+			from	im_projects p
+			group by p.company_id
+
+		) num_projects on (c.company_id = num_projects.company_id)
+		LEFT OUTER JOIN (
+			select
+				count(*) as num_offices,
+				o.company_id
+			from
+				im_offices o
+			group by o.company_id
+
+		) num_offices on (c.company_id = num_offices.company_id)
 	where
 		1=1
 	order by 

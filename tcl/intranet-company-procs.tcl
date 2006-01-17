@@ -485,6 +485,10 @@ ad_proc im_company_nuke {company_id} {
     ns_log Notice "im_company_nuke company_id=$company_id"
     
     set current_user_id [ad_get_user_id]
+    set user_id $current_user_id
+    set company_exists_p [db_string exists "select count(*) from im_companies where company_id = :company_id"]
+    if {!$company_exists_p} { return }
+
     im_company_permissions $current_user_id $company_id view read write admin
     if {!$admin} { return }
 
@@ -497,11 +501,11 @@ ad_proc im_company_nuke {company_id} {
     # added tables that reference the users table
 
     # Delete the projects for this company
-    set companys_projects_sql "
+    set companies_projects_sql "
 	select project_id
 	from im_projects
 	where company_id = :company_id"
-    db_foreach delete_projects $companys_projects_sql {
+    db_foreach delete_projects $companies_projects_sql {
 	im_project_nuke $project_id
     }
 
@@ -521,13 +525,13 @@ ad_proc im_company_nuke {company_id} {
     with_transaction {
     
 	# Permissions
-	ns_log Notice "companys/nuke-2: acs_permissions"
+	ns_log Notice "companies/nuke-2: acs_permissions"
 	db_dml perms "delete from acs_permissions where object_id = :company_id"
 	
 	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
 	# entry in im_costs. These might have been created during manual deletion of objects
 	# Very dirty...
-	ns_log Notice "companys/nuke-2: dangeling_costs"
+	ns_log Notice "companies/nuke-2: dangeling_costs"
 	db_dml dangeling_costs "
 		delete from acs_objects 
 		where	object_type = 'im_cost' 
@@ -535,14 +539,8 @@ ad_proc im_company_nuke {company_id} {
 	
 
 	# Payments
-	db_dml reset_payments "
-		update im_payments 
-		set cost_id=null 
-		where cost_id in (
-			select cost_id 
-			from im_costs 
-			where (customer_id = :company_id or provider_id = :company_id)
-		)"
+	db_dml delete_payments "delete from im_payments where company_id = :company_id"
+
 	
 	# Costs
 	set cost_infos [db_list_of_lists costs "
@@ -554,13 +552,13 @@ ad_proc im_company_nuke {company_id} {
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
-	    ns_log Notice "companys/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
+	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	
 	
 	# Forum
-	ns_log Notice "companys/nuke-2: im_forum_topic_user_map"
+	ns_log Notice "companies/nuke-2: im_forum_topic_user_map"
 	db_dml forum "
 		delete from im_forum_topic_user_map 
 		where topic_id in (
@@ -569,11 +567,11 @@ ad_proc im_company_nuke {company_id} {
 			where object_id = :company_id
 		)
 	"
-	ns_log Notice "companys/nuke-2: im_forum_topics"
+	ns_log Notice "companies/nuke-2: im_forum_topics"
 	db_dml forum "delete from im_forum_topics where object_id = :company_id"
 
 	# Filestorage
-	ns_log Notice "companys/nuke-2: im_fs_folder_status"
+	ns_log Notice "companies/nuke-2: im_fs_folder_status"
 	db_dml filestorage "
 		delete from im_fs_folder_status 
 		where folder_id in (
@@ -582,7 +580,7 @@ ad_proc im_company_nuke {company_id} {
 			where object_id = :company_id
 		)
 	"
-	ns_log Notice "companys/nuke-2: im_fs_folders"
+	ns_log Notice "companies/nuke-2: im_fs_folders"
 	db_dml filestorage "
 		delete from im_fs_folder_perms 
 		where folder_id in (
@@ -594,7 +592,7 @@ ad_proc im_company_nuke {company_id} {
 	db_dml filestorage "delete from im_fs_folders where object_id = :company_id"
 
 
-	ns_log Notice "companys/nuke-2: rels"
+	ns_log Notice "companies/nuke-2: rels"
 	set rels [db_list rels "
 		select rel_id 
 		from acs_rels 
@@ -610,7 +608,7 @@ ad_proc im_company_nuke {company_id} {
 	}
 
 	
-	ns_log Notice "companys/nuke-2: party_approved_member_map"
+	ns_log Notice "companies/nuke-2: party_approved_member_map"
 	db_dml party_approved_member_map "
 		delete from party_approved_member_map 
 		where party_id = :company_id"
@@ -618,8 +616,8 @@ ad_proc im_company_nuke {company_id} {
 		delete from party_approved_member_map 
 		where member_id = :company_id"
 	
-	db_dml delete_companys "
-		delete from im_companys 
+	db_dml delete_companies "
+		delete from im_companies 
 		where company_id = :company_id"
 
 	# End "with_transaction"
@@ -648,7 +646,7 @@ ad_proc im_company_nuke {company_id} {
 	"
 	return
     }
-    set return_to_admin_link "<a href=\"/intranet/companys/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
+    set return_to_admin_link "<a href=\"/intranet/companies/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 }
 
 
