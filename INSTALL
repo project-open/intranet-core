@@ -35,8 +35,9 @@
     and Debian (Sarge). For installation on different systems
     please see http://openacs.org/doc/current/acs-admin.html.
   - PostgreSQL 7.4.x or 8.0.x.
-    PostgreSQL comes comes as part of all Linux distributions above.
-  
+    PostgreSQL comes as part of all Linux distributions above.
+  - CVS 1.12.x
+    CVS comes as part of all major Linux distributions.
   
   
   ______________________________________________________________________
@@ -396,11 +397,23 @@
   Please send us your email address if you are planning to use ]po[ in your company.
   This way we will send you a ~quarterly newsletter and alert you in urgent cases.
   
-  Also, there is a "Automated Software Update Service" (ASUS) that provides you
-  with selected information about security patches and new packages. ASUS is free
-  at the moment, but we plan to charge a small amount per month for it in the
-  future.
-  
+  On Sourceforge check for the latest announcement of a stable release.
+  For example the lates while writing this document is "v3-1-1-0-0". The
+  upgrade to this release (this is also necesary for if you install this
+  installer - there are updates with respect to Invoices):
+
+  # su - projop
+  # cd /web/projop/packages
+  # cvs update -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-1-0-0 -Pd
+
+  After this please go to your your server URL http://localhost/acs-admin/apm/,
+  choose "Install Packages" and select all packages that "Upgrade" (please don't
+  install packages if you don't know what they are doing).
+
+  The same process is available as the "Automated Software Update Service".
+  ASUS is free at the moment, but we plan to charge a small amount per month 
+  for its use in the future.
+
   
 
   ______________________________________________________________________
