@@ -177,7 +177,7 @@ set form_id "project_filter"
 set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
-set mine_p_options {{"All" "all"} {"Mine" "mine"}}
+set mine_p_options {{"All" "f"} {"Mine" "t"}}
 
 ad_form \
     -name $form_id \
@@ -252,12 +252,6 @@ if { 0 != $user_id_from_search} {
 }
 if { ![empty_string_p $company_id] && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
-}
-
-if {[string equal $mine_p "t"]} {
-    set mine_restriction ""
-} else {
-    set mine_restriction "or perm.permission_all > 0"
 }
 
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
@@ -419,7 +413,7 @@ set perm_sql "
 		$where_clause
 	)"
 
-if {[im_permission $user_id "view_projects_all"]} {
+if {[im_permission $user_id "view_projects_all"] && [string equal $mine_p "f"]} {
 	set perm_sql "im_projects"
 }
 
