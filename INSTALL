@@ -220,17 +220,12 @@
   because these privileges are needed in order to setup the full-text
   search engine:
   
+  Create a new user, a new database and a language in the database:
+
   #postgres:~> createuser -a -d projop
-  
-  Create a new database:
-  
   #postgres:~> createdb --owner=projop projop
-  
-  Create the database language:
-  
   #postgres:~> createlang plpgsql projop
   => May say that "plpgsql" is already installed, that's OK.
-  
   
   
   
