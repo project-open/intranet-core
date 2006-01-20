@@ -199,7 +199,7 @@
   All files in /web/projop/ should be owned by projop:
   
   # cd /web
-  # chmod -R projop:projop projop
+  # chown -R projop:projop projop
   
   
   
@@ -299,9 +299,24 @@
   on your local computer with the URL "http://localhost:8080" or choose
   a suitable URL if you start the browser at a different computer.
   
+
+
+  4.8. Update the Parameters and Configuration
+
+  Please point your favourite Web browser to "Admin" -> "Parameters"
+  and check the parameters. In particular check for filestorage pathes
+  ("C:/ProjectOpen/...") and replace them by "/web/projop/...".
+
+  Also, decide whether you want to allow people to register themselves
+  to accesss your server or whether you want to confirm membership.
+
+  For more information on parameters and configuration please check
+  the PO-Configuration-Guide in the /web/projop/filestorage/home
+  folder or just check in Google for "project-open configuration-guide".
   
+
   
-  4.8. Automate Server Restart
+  4.9. Automate Server Restart
   
   AOLServer in our productive installations usually run weeks without a 
   restart. However, you want to make sure the server "comes back" if
@@ -331,7 +346,7 @@
   
   
   
-  4.9. Automate PostgreSQL Maintenance
+  4.10. Automate PostgreSQL Maintenance
   
   PostgreSQL requires you to execute a "vacuumdb" command regularly
   in order to reorganize and cleanup the database. Please add a line to your
@@ -345,7 +360,7 @@
   
   
   
-  4.10. Automate PostgreSQL Backup
+  4.11. Automate PostgreSQL Backup
   
   It is advisable to schedule PostgreSQL backups every day, or even
   every few hours (the database is usually quite small, so that it's
@@ -387,7 +402,7 @@
   
   
   
-  4.11. Check for the Latest Version and Updates
+  4.12. Check for the Latest Version and Updates
   
   
   Please check http://www.sourceforge.net/projects/project-open/ for news
@@ -420,6 +435,8 @@
 
   5. Where to go from Here
 
+      - Check SourceForge: http://sourceforge.net/projects/project-open/
+	and consult the "Open Discussions" forum.
 
       - Play around with the system:
 	We have provided you with the sample company configurations
