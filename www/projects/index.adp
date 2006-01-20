@@ -6,7 +6,14 @@
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
   <td> <!-- TD for the left hand filter HTML -->
+
+<if @filter_advanced_p@>
     <formtemplate id=@form_id@></formtemplate>
+</if>
+<else>
+    @filter_html;noquote@
+</else>
+
   </td> <!-- end of left hand filter TD -->
   <td>&nbsp;</td>
   <td valign=top width='30%'>
