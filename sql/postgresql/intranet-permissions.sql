@@ -401,6 +401,11 @@ select acs_privilege__create_privilege('view_project_members','View Project Memb
 select acs_privilege__add_child('admin', 'view_project_members');
 select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
 select acs_privilege__add_child('admin', 'view_projects_all');
+
+
+select acs_privilege__create_privilege('edit_projects_all','Edit All Projects','Edit All Projects');
+select acs_privilege__add_child('admin', 'edit_projects_all');
+
 select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
 select acs_privilege__add_child('admin', 'view_projects_history');
 
