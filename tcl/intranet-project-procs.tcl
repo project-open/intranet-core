@@ -106,7 +106,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set user_in_project_group_p [string compare "t" [db_string user_belongs_to_project "select ad_group_member_p( :user_id, :project_id ) from dual" ] ]
 
     # Treat the project mangers_fields
-    # A user many for some reason not be the group PM
+    # A user may for some reason not be the group PM
     if {!$user_is_group_admin_p} {
 	set project_manager_id [db_string project_manager "select project_lead_id from im_projects where project_id = :project_id" -default 0]
 	if {$user_id == $project_manager_id} {
@@ -154,7 +154,14 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
 #    if {$user_is_company_member_p} { set read 1}
 
     if {$user_is_group_member_p} { set read 1}
-    if {[im_permission $user_id view_projects_all]} { set read 1}
+    if {[im_permission $user_id view_projects_all]} { 
+	set read 1
+    }
+
+    if {[im_permission $user_id edit_projects_all]} { 
+	set read 1
+	set write 1
+    }
 
     # companies and freelancers are not allowed to see non-open projects.
     # 76 = open
