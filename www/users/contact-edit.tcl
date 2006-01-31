@@ -38,11 +38,19 @@ if [info exists user_id_from_search] {
 
 if {![info exists user_id]} {
     ad_return_complaint "[_ intranet-core.Bad_User]" "<li>[_ intranet-core.lt_You_must_specify_a_va]"
+    return
 }
 
 if {!$write} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "<li>[_ intranet-core.lt_You_have_insufficient_2]"
+    return
 }
+
+
+# Should we bother about State and ZIP fields?
+set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
+
+set some_american_readers_p 1
 
 db_0or1row user_full_name "
 select 
@@ -78,6 +86,7 @@ if {0 == $users_contact_exists} {
 }
 
 set ha_state ""
+set wa_state ""
 set ha_country_code ""
 
 db_0or1row user_contact_info {
@@ -109,9 +118,15 @@ set home_html "
 <tr><td valign=top>[_ intranet-core.Home_address]</td><td>
 			<input type=text name=ha_line1 value=\"$ha_line1\" >
 			<input type=text name=ha_line2 value=\"$ha_line2\" ></td></tr>
-<tr><td>[_ intranet-core.Home_City]</td>	<td><input type=text name=ha_city value=\"$ha_city\" ></td></tr>
-<tr><td>[_ intranet-core.Home_Country]</td><td>[im_country_widget $ha_country_code ha_country_code]</td></tr>
+<tr><td>[_ intranet-core.Home_City]</td>	<td><input type=text name=ha_city value=\"$ha_city\" ></td></tr>"
+
+if {$some_american_readers_p} { append home_html "
+<tr><td>[lang::message::lookup "" intranet-core.Home_State "Home State"]</td><td><input type=text name=ha_state value=\"$ha_state\" ></td></tr>" 
+}
+
+append home_html "
 <tr><td>[_ intranet-core.Home_Postal_Code]</td><td><input type=text name=ha_postal_code value=\"$ha_postal_code\" ></td></tr>
+<tr><td>[_ intranet-core.Home_Country]</td><td>[im_country_widget $ha_country_code ha_country_code]</td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
 </table>"
 
@@ -121,7 +136,13 @@ set work_html "
 <tr><td valign=top>[_ intranet-core.Work_address]</td><td>
 			<input type=text name=wa_line1 value=\"$wa_line1\" >
 			<input type=text name=wa_line2 value=\"$wa_line2\" ></td></tr>
-<tr><td>[_ intranet-core.Work_City]</td>	<td><input type=text name=wa_city value=\"$wa_city\" ></td></tr>
+<tr><td>[_ intranet-core.Work_City]</td>	<td><input type=text name=wa_city value=\"$wa_city\" ></td></tr>"
+
+if {$some_american_readers_p} { append work_html "
+<tr><td>[lang::message::lookup "" intranet-core.Work_State "Work State"]</td><td><input type=text name=wa_state value=\"$wa_state\" ></td></tr>" 
+}
+
+append work_html "
 <tr><td>[_ intranet-core.Work_Postal_Code]</td><td><input type=text name=wa_postal_code value=\"$wa_postal_code\" ></td></tr>
 <tr><td>[_ intranet-core.Work_Country]</td><td>[im_country_widget $wa_country_code wa_country_code]</td></tr>
 <tr><td colspan=2>&nbsp;</td></tr>
