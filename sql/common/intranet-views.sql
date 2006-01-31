@@ -375,9 +375,16 @@ extra_select, extra_where, sort_order, visible_for) values (413,12,NULL,'Home Li
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (415,12,NULL,'Home Line 2','$ha_line2','','',9,
 'im_view_user_permission $user_id $current_user_id $ha_line2 view_users');
+
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (417,12,NULL,'Home City','$ha_city','','',10,
 'im_view_user_permission $user_id $current_user_id $ha_city view_users');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (419,12,NULL,'Home State','$ha_state','','',11,
+'im_view_user_permission $user_id $current_user_id $ha_state view_users');
+
+
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (421,12,NULL,'Home ZIP','$ha_postal_code','','',11,
 'im_view_user_permission $user_id $current_user_id $ha_postal_code view_users');
@@ -390,9 +397,15 @@ extra_select, extra_where, sort_order, visible_for) values (425,12,NULL,'Work Li
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (427,12,NULL,'Work Line 2','$wa_line2','','',14,
 'im_view_user_permission $user_id $current_user_id $wa_line2 view_users');
+
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (429,12,NULL,'Work City','$wa_city','','',15,
 'im_view_user_permission $user_id $current_user_id $wa_city view_users');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (431,12,NULL,'Work State','$wa_state','','',16,
+'im_view_user_permission $user_id $current_user_id $wa_state view_users');
+
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (433,12,NULL,'Work ZIP','$wa_postal_code','','',16,
 'im_view_user_permission $user_id $current_user_id $wa_postal_code view_users');
