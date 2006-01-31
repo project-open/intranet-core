@@ -209,7 +209,7 @@ if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
 			  </tr>"
 }
 
-if {[im_permission $current_user_id view_finance]} {
+if {[im_permission $current_user_id view_budget]} {
     if { ![empty_string_p $project_budget] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
