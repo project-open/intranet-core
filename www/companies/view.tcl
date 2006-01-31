@@ -56,7 +56,12 @@ set see_sales_details $admin
 if {!$read} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
     <li>[_ intranet-core.lt_You_dont_have_suffici_2]"
+    return
 }
+
+# Should we bother about State and ZIP fields?
+set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
+
 
 # -----------------------------------------------------------
 # Get everything about the company
@@ -79,6 +84,7 @@ select
         o.address_line1,
         o.address_line2,
         o.address_city,
+        o.address_state,
         o.address_postal_code,
         o.address_country_code
 from 
@@ -111,6 +117,11 @@ if {$see_details} {
 "
 }
 
+set state_column ""
+if {$some_american_readers_p} { set state_column "
+  <tr class=rowodd><td>[_ intranet-core.State]</td><td>$address_state</td></tr>\n"
+}
+
 if {$see_details} {
     append left_column "
   <tr class=rowodd><td>[_ intranet-core.Phone]</td><td>$phone</td></tr>
@@ -118,6 +129,7 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.Address1]</td><td>$address_line1</td></tr>
   <tr class=roweven><td>[_ intranet-core.Address2]</td><td>$address_line2</td></tr>
   <tr class=rowodd><td>[_ intranet-core.City]</td><td>$address_city</td></tr>
+  $state_column
   <tr class=roweven><td>[_ intranet-core.Postal_Code]</td><td>$address_postal_code</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>\n"
 

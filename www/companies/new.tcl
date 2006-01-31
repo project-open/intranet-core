@@ -45,6 +45,8 @@ set focus "menu.var_name"
 set page_title "[_ intranet-core.Edit_Company]"
 set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
+# Should we bother about State and ZIP fields?
+set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
 
 # ------------------------------------------------------------------
 # Permissions
@@ -111,6 +113,19 @@ ad_form \
 	{address_line1:text(text),optional {label "Address 1"} {html {size 40}}}
 	{address_line2:text(text),optional {label "Address 2"} {html {size 40}}}
 	{address_city:text(text),optional {label "City"} {html {size 30}}}
+    }
+
+if {$some_american_readers_p} {
+    ad_form -extend -name company -form {
+	{address_state:text(text),optional {label "State"} {html {size 30}}}
+    }
+} else {
+    ad_form -extend -name company -form {
+	{address_state:text(hidden),optional}
+    }    
+}
+
+ad_form -extend -name company -form {
 	{address_postal_code:text(text),optional {label "ZIP"} {html {size 6}}}
 	{address_country_code:text(select),optional {label "Country"} {options $country_options} }
 	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
@@ -130,6 +145,7 @@ select
 	o.address_line1,
 	o.address_line2,
 	o.address_city,
+	o.address_state,
 	o.address_postal_code,
 	o.address_country_code
 from 
