@@ -700,7 +700,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     if {$user_id > 0 && 0 < [llength [info procs im_package_search_id]]} {
 	set search_form "
 	    <form action=/intranet/search/go-search method=post name=surx>
-              <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\">
+              <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
               <select class=surx name=target>"
 	if {[im_permission $user_id "search_intranet"]} {
 	    append search_form "
