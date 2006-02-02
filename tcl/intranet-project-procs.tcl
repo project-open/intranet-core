@@ -753,9 +753,13 @@ ad_proc im_project_clone {
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
 	append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
     }
-    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
-	append errors [im_project_clone_timesheet_tasks $parent_project_id $new_project_id]
-    }
+
+# Fraber 060202: There are no timesheet_tasks (?)
+#    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
+#	append errors [im_project_clone_timesheet_tasks $parent_project_id $new_project_id]
+#    }
+
+
     if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
 	append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
     }
