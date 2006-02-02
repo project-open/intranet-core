@@ -1020,8 +1020,14 @@ ad_proc im_category_select_branch {
 }
 
 
-ad_proc im_category_select_plain { {-translate_p 1} {-include_empty_p 1} {-include_empty_name "All"} category_type select_name { default "" } } {
-
+ad_proc im_category_select_plain { 
+    {-translate_p 1} 
+    {-include_empty_p 1} 
+    {-include_empty_name "--_Please_select_--"} 
+    category_type 
+    select_name 
+    { default "" } 
+} {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     ns_set put $bind_vars include_empty_name $include_empty_name
@@ -1055,7 +1061,7 @@ ad_proc im_category_select_plain { {-translate_p 1} {-include_empty_p 1} {-inclu
 	order by lower(category)
     "
 
-    return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
 }
 
 
@@ -1186,14 +1192,26 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
     return [philg_dateentrywidget $column $today]
 }
 
-ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name sql select_name { default "" } } {
+ad_proc im_selection_to_select_box { 
+    {-translate_p 1} 
+    {-include_empty_p 1}
+    {-include_empty_name "--_Please_select_--"}
+    bind_vars
+    statement_name
+    sql 
+    select_name 
+    { default "" } 
+} {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a select bar named select_name, 
     defaulted to $default 
 } {
     set result "<select name=\"$select_name\">"
     
-    append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
+    append result "<option value=\"\">
+	[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]
+	</option>
+    "
     
     append result "
 [db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
