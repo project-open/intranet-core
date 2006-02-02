@@ -254,37 +254,37 @@ ad_proc -public im_site_wide_admin_p { user_id } {
 
 
 ad_proc -public im_admin_group_id { } {Returns the group_id of administrators} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\" -default 0"]
 }
 
 ad_proc -public im_employee_group_id { } {Returns the groud_id for employees} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Employees'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Employees'\" -default 0"]
 }
 
 ad_proc -public im_wheel_group_id { } {Returns the groud_id for wheel (=senior managers)} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Senior Managers'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Senior Managers'\" -default 0"]
 }
 
 ad_proc -public im_pm_group_id { } {Returns the groud_id for project managers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Project Managers'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Project Managers'\" -default 0"]
 }
 
 ad_proc -public im_accounting_group_id { } {Returns the groud_id for employees} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\" -default 0"]
 }
 
 ad_proc -public im_customer_group_id { } {Returns the groud_id for customers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\" -default 0"]
 }
 
 ad_proc -public im_partner_group_id { } {Returns the groud_id for partners} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Partners'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Partners'\" -default 0"]
 }
 
 ad_proc -public im_office_group_id { } {Returns the groud_id for offices} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\" -default 0"]
 }
 
 ad_proc -public im_freelance_group_id { } {Returns the groud_id for freelancers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\""]
+    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\" -default 0"]
 }

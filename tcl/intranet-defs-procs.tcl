@@ -1030,26 +1030,11 @@ ad_proc im_category_select_plain {
 } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
-    ns_set put $bind_vars include_empty_name $include_empty_name
-
-    set include_empty_sql ""
-    if {$include_empty_p} {
-	set include_empty_sql "
-	select
-		null as category_id,
-		:include_empty_name as category,
-		'' as category_description
-	from
-		dual
-	UNION
-	"
-    }
 
     set sql "
 	select *
 	from
-		($include_empty_sql
-		select
+		(select
 			category_id,
 			category,
 			category_description
