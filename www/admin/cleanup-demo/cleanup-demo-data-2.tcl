@@ -224,13 +224,14 @@ if {[db_table_exists im_trans_quality_reports]} {
 }
 
 # Translation
-db_dml im_target_languages "delete from im_target_languages"
-db_dml im_task_actions "delete from im_task_actions"
-db_dml im_trans_tasks "delete from im_trans_tasks"
-db_dml im_trans_prices "delete from im_trans_prices"
+if {[db_table_exists im_trans_tasks]} {
+    db_dml im_target_languages "delete from im_target_languages"
+    db_dml im_task_actions "delete from im_task_actions"
+    db_dml im_trans_tasks "delete from im_trans_tasks"
+    db_dml im_trans_prices "delete from im_trans_prices"
+}
 
 # Remove user from business objects that we don't want to delete...
-
 db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects "update im_projects set parent_id = null"
 db_dml remove_from_projects "delete from im_projects"
