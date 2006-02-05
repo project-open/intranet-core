@@ -265,9 +265,23 @@
   
   => 192
   
+
+  4.7. Customized your Login Screen
+
+  There are two demo configurations for the login screens, one for
+  ]project-consulting[ and one for ]project-translation[.
+
+
+  # su - projop
+  # cp /web/projop/packages/intranet-core/preconf/pt.index.tcl /web/projop/www/index.tcl
+  # cp /web/projop/packages/intranet-core/preconf/pt.index.adp /web/projop/www/index.adp
+
+  You can check the availability of the screen when starting AOLServer
+  in the next step.
+
+
   
-  
-  4.7. Start the Server for the First Time
+  4.8. Start the Server for the First Time
   
   Now we are ready to start the server. We are going to run it in
   "foreground mode" to get all debugging messages on the terminal.
@@ -296,11 +310,13 @@
   
 
 
-  4.8. Update the Parameters and Configuration
+  4.9. Update the Parameters and Configuration
 
   Please point your favourite Web browser to "Admin" -> "Parameters"
   and check the parameters. In particular check for filestorage pathes
   ("C:/ProjectOpen/...") and replace them by "/web/projop/...".
+  Please check the "HomeBasePathUnix". It should become
+  "/web/projop/filestorage/home".
 
   Also, decide whether you want to allow people to register themselves
   to accesss your server or whether you want to confirm membership.
@@ -311,7 +327,7 @@
   
 
   
-  4.9. Automate Server Restart
+  4.10. Automate Server Restart
   
   AOLServer in our productive installations usually run weeks without a 
   restart. However, you want to make sure the server "comes back" if
@@ -335,13 +351,19 @@
   
   
   Check with "top" or "tail -f /web/projop/log/error.log" that the server
-  starts. You can test the restart behavious by killing AOLServer the "hard way":
+  starts. 
+  There have been reports that "init q" wouldn't work on a Debian 
+  system. In this case please reboot your system. Let us know if you
+  have found/resolved this behaviour.
+
+  You can test the restart behaviour by killing AOLServer the "hard way".
+  Your server should "come back" withing 1-2 minutes automatically.
   
   #killall -9 nsd
   
   
   
-  4.10. Automate PostgreSQL Maintenance
+  4.11. Automate PostgreSQL Maintenance
   
   PostgreSQL requires you to execute a "vacuumdb" command regularly
   in order to reorganize and cleanup the database. Please add a line to your
@@ -355,16 +377,21 @@
   
   
   
-  4.11. Automate PostgreSQL Backup
+  4.12. Automate PostgreSQL Backup
   
   It is advisable to schedule PostgreSQL backups every day, or even
   every few hours (the database is usually quite small, so that it's
   save to backup during times of low system use such as 5am, 1pm, 9pm).
   
-  Add to your crontab a line like this (make sure /var/log/backup/ exists
-  and is writable for the user "postgres"):
+  Load your "crontab" into an editor:
+
+  #crontab -e
+
+  Then add a line like this (make sure /var/log/backup/ exists and is 
+  writable for the user "postgres"):
   
-  9 5 * * * /root/bin/backup-postgres > /var/log/backup/export_postgres.`/bin/date +\%Y\%m\%d.\%H\%M`.log 2>&1
+  9 5 * * * /root/bin/backup-postgres > /var/log/backup/export_postgres.`/bin/date \
+  +\%Y\%m\%d.\%H\%M`.log 2>&1
   
   Here is a sample file to initiate the backup:
   
@@ -394,10 +421,15 @@
 	echo su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file"
 	su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file" > $log_file 2>&1
 	bzip2 $export_file
+
+  You need to make this file writable:
+
+  #chmod ug+x /root/bin/backup-postgres  
   
+
+
   
-  
-  4.12. Check for the Latest Version and Updates
+  4.13. Check for the Latest Version and Updates
   
   
   Please check http://www.sourceforge.net/projects/project-open/ for news
@@ -408,13 +440,14 @@
   This way we will send you a ~quarterly newsletter and alert you in urgent cases.
   
   On Sourceforge check for the latest announcement of a stable release.
-  For example the lates while writing this document is "v3-1-1-0-0". The
+
+  For example the lates while writing this document is "v3-1-0-1-0". The
   upgrade to this release (this is also necesary for if you install this
   installer - there are updates with respect to Invoices):
 
   # su - projop
   # cd /web/projop/packages
-  # cvs update -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-1-0-0 -Pd
+  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-0-1-0 -Pd
 
   After this please go to your your server URL http://localhost/acs-admin/apm/,
   choose "Install Packages" and select all packages that "Upgrade" (please don't
