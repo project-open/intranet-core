@@ -33,15 +33,15 @@ ad_page_contract {
 
     @author Frank Bergmann
 } {
-    user_ids
-    subject
-    message
-    message_mime_type
-    attachment
-    attachment_filename
-    attachment_mime_type
+    {user_ids 11180}
+    { subject "fraber test"}
+    { message "fraber test message"}
+    { message_mime_type "text/plain"}
+    { attachment "attachment"}
+    { attachment_filename "test.txt"}
+    { attachment_mime_type "text/plain"}
     { send_me_a_copy ""}
-    return_url
+    { return_url "" }
 }
 
 # ---------------------------------------------------------------

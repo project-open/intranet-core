@@ -34,16 +34,27 @@ ad_page_contract {
     @author Frank Bergmann
 } {
     user_id_from_search:integer
-    subject
-    message
+    {subject:notnull "Subject"}
+    {message:allhtml "Message"}
     {message_mime_type "text/plain"}
     {attachment:allhtml ""}
     {attachment_filename ""}
     {attachment_mime_type ""}
     {send_me_a_copy ""}
     return_url
-    {process_mail_queue_now_p 0}
+    {process_mail_queue_now_p 1}
 }
+
+ns_log Notice "subject='$subject'"
+ns_log Notice "message_mime_type='$message_mime_type'"
+ns_log Notice "attachment_filename='$attachment_filename'"
+ns_log Notice "attachment_mime_type='$attachment_mime_type'"
+ns_log Notice "send_me_a_copy='$send_me_a_copy'"
+ns_log Notice "return_url='$return_url'"
+ns_log Notice "process_mail_queue_now_p='$process_mail_queue_now_p'"
+ns_log Notice "message='$message'"
+ns_log Notice "attachment='$attachment'"
+
 
 # ---------------------------------------------------------------
 # Defaults & Security
@@ -54,7 +65,7 @@ set ip_addr [ad_conn peeraddr]
 set locale [ad_conn locale]
 set creation_ip [ad_conn peeraddr]
 
-set date [exec date "+%s.%N"]
+set time_date [exec date "+%s.%N"]
 
 im_user_permissions $current_user_id $user_id_from_search view read write admin
 if {!$read} {
@@ -101,7 +112,7 @@ db_transaction {
     # Create the main mail "content_item" and
     # add the content_item to the multipart email
     set content_item_id [content::item::new \
-			     -name "$subject $date" \
+			     -name "$subject $time_date" \
 			     -title $subject \
 			     -mime_type $message_mime_type \
 			     -text $message \
@@ -123,7 +134,7 @@ db_transaction {
     if {"" != $attachment_mime_type} {
 
 	set content_item_attach_id [content::item::new \
-			     -name "$subject $date - attachment1" \
+			     -name "$subject $time_date - attachment1" \
 			     -title "$subject" \
 			     -mime_type $attachment_mime_type \
 			     -text $attachment \
@@ -197,7 +208,4 @@ if {$process_mail_queue_now_p} {
 # ---------------------------------------------------------------
 
 ad_returnredirect $return_url
-
-
-
 
