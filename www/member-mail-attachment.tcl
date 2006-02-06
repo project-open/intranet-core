@@ -16,33 +16,30 @@
 ad_page_contract {
     Sends an email with an attachment to a user
 
-    So this is the plan:
-    
-    1. Setup CR_Revision with the file attachment or empty
-    
-    2. For each user: Create a new General Comment manually
-	by setting up a CR_Item with the CR_Revision from 1.,
-	setting up an ACS_Message with the CR_Item and finally
-	a General_Comment.
-
-    3. Setup a ACS_Message 
-  
-    4. Send the ACS_Message by inserting it in the outgoing queue
-
-    ToDo:
-  	- Replace contact_id_string by an array
-  	- Implement GCs with identical CR_Revisions
-
-    @param  contact_list - list of contact_ids
-    @param upload_file The name of the file
+    @param user_ids A list of user ids
+    @subject A subject line
+    @message A message that can be either plain text or html
+    @message_mime_type "text/plain" or "text/html"
+    @attachment A plaint text file to attach. This only works
+	if the file is a text file such as .txt or .pdf
+    @attachment_filename How should the attachment appear in the
+	user's mail client?
+    @attachment_mime_type Should go together with the extension
+	of the attachment_filename
+    @send_me_a_copy Should be different from "" in order to send
+	a copy to the sender.
+    @return_url Where whould the script go after finishing its
+	task?
 
     @author Frank Bergmann
 } {
-    {contact_ids "11180"}
-    {subject "Test with attachment"}
-    {message "This is a plain text"}
+    {user_ids "11180"}
+    {subject ""}
+    {message ""}
     {message_mime_type "text/plain"}
-    {attachment "attachment"}
+    {attachment ""}
+    {attachment_filename ""}
+    {attachment_mime_type ""}
     { send_me_a_copy "" }
     { return_url ""}
 }
@@ -71,40 +68,76 @@ set date [exec date "+%s.%N"]
 
 
 # Get user list and email list
-set contact_id_list [split $contact_ids ","]
-set email_list [db_list email_list "select email from parties where party_id in ($contact_ids)"]
+set contact_id_list [split $user_ids ","]
+set email_list [db_list email_list "select email from parties where party_id in ($user_ids)"]
 
 
 # db_transaction {
+
     set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
 
     # create the multipart message ('multipart/mixed')
     set multipart_id [acs_mail_multipart_new -multipart_kind "mixed"]
     ns_log Notice "member-mail: multipart_id=$multipart_id"
-    
+
+    # ---------------------------------------------------------------    
     # create an acs_mail_body (with content_item_id = multipart_id )
     set body_id [acs_mail_body_new \
 	-header_subject $subject \
 	-content_item_id $multipart_id]
     ns_log Notice "member-mail: body_id=$body_id"
 
-    set content_item_id [::content::item::new \
+
+    # ---------------------------------------------------------------    
+    # Create the main mail "content_item" and
+    # add the content_item to the multipart email
+    set content_item_id [content::item::new \
 			     -name "$subject $date" \
 			     -title $subject \
 			     -mime_type $message_mime_type \
 			     -text $message \
 			     -storage_type text \
     ]
-    ns_log Notice "member-mail: content_item_id=$content_item_id"
-    
-    
-    # add the content_item to the multipart email
     set sequence_num [acs_mail_multipart_add_content \
 			  -multipart_id $multipart_id \
 			  -content_item_id $content_item_id]
+    ns_log Notice "member-mail: content_item_id=$content_item_id"
+    ns_log Notice "member-mail: sequence_num=$sequence_num"
+
+
+    # ---------------------------------------------------------------    
+    # Create the attachment content_item and
+    # add the content_item to the multipart email.
+    # We execute the multipart-add "manually", because
+    # we need to set the "mime_filename" field, so that
+    # the attachment shows up with the right filename
+    set content_item_attach_id [content::item::new \
+			     -name "$subject $date - attachment1" \
+			     -title "$subject" \
+			     -mime_type $attachment_mime_type \
+			     -text $attachment \
+			     -storage_type text \
+    ]
+    # Get last multipart sequence no - should be 0
+    set sequence_num [db_string multipart_sequence_nr "
+	select max(sequence_number) 
+	from acs_mail_multipart_parts 
+	where multipart_id = :multipart_id
+    " -default 0]
+    db_dml insert_multipart_part "
+	insert into acs_mail_multipart_parts (
+		multipart_id, mime_filename, sequence_number, content_item_id
+	) values (
+		:multipart_id, :attachment_filename, :sequence_num + 1, :content_item_attach_id
+	)
+    "
+    ns_log Notice "member-mail: content_item_attach_id=$content_item_attach_id"
+    ns_log Notice "member-mail: sequence_num=$sequence_num"
+
+
     
     # send to contacts
-    ns_log notice "export-mail: contact_ids='$contact_ids'"
+    ns_log notice "export-mail: user_ids='$user_ids'"
     
     foreach email $email_list {
 
