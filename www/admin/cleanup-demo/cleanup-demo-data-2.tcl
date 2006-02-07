@@ -217,6 +217,12 @@ db_dml forum "delete from im_forum_topics"
 db_dml timesheet "delete from im_hours"
 db_dml timesheet "delete from im_user_absences"
 
+# Timesheet Prices
+if {[db_table_exists im_timesheet_prices]} {
+    db_dml im_timsheet_prices "delete from im_timesheet_prices"
+}
+
+
 # Translation Quality
 if {[db_table_exists im_trans_quality_reports]} {
     db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
