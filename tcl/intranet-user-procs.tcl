@@ -452,6 +452,8 @@ ad_proc -public im_user_nuke {user_id} {
 	    ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
+
+	db_dml reset_cost_center_managers "update im_cost_centers set manager_id = null where manager_id = :user_id"
 	
 	# Forum
 	db_dml forum "delete from im_forum_topic_user_map where user_id = :user_id"
