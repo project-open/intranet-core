@@ -48,9 +48,8 @@ create table im_projects (
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
-        tree_sortkey		varbit,
-        max_child_sortkey	varbit,
-
+	tree_sortkey		varbit,
+	max_child_sortkey	varbit,
 	company_id		integer not null
 				constraint im_projects_company_fk 
 				references im_companies,
@@ -108,10 +107,11 @@ create table im_projects (
 				-- Should this project appear in the list of templates?
 	template_p		char(1) default('f')
 				constraint im_project_template_p
-				check (requires_report_p in ('t','f'))
+				check (requires_report_p in ('t','f')),
+	company_contact_id	integer
+				constraint im_project_company_contact_id_fk
+				references users
 );
-
-
 
 
 -- This is the sortkey code
@@ -119,27 +119,27 @@ create table im_projects (
 create or replace function im_project_insert_tr ()
 returns opaque as '
 declare
-    v_max_child_sortkey             im_projects.max_child_sortkey%TYPE;
-    v_parent_sortkey                im_projects.tree_sortkey%TYPE;
+    v_max_child_sortkey	     im_projects.max_child_sortkey%TYPE;
+    v_parent_sortkey		im_projects.tree_sortkey%TYPE;
 begin
 
     if new.parent_id is null
     then
-        new.tree_sortkey := int_to_tree_key(new.project_id+1000);
+	new.tree_sortkey := int_to_tree_key(new.project_id+1000);
 
     else
 
-        select tree_sortkey, tree_increment_key(max_child_sortkey)
-        into v_parent_sortkey, v_max_child_sortkey
-        from im_projects
-        where project_id = new.parent_id
-        for update;
+	select tree_sortkey, tree_increment_key(max_child_sortkey)
+	into v_parent_sortkey, v_max_child_sortkey
+	from im_projects
+	where project_id = new.parent_id
+	for update;
 
-        update im_projects
-        set max_child_sortkey = v_max_child_sortkey
-        where project_id = new.parent_id;
+	update im_projects
+	set max_child_sortkey = v_max_child_sortkey
+	where project_id = new.parent_id;
 
-        new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
+	new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
 
     end if;
 
@@ -157,44 +157,44 @@ execute procedure im_project_insert_tr();
 
 create or replace function im_projects_update_tr () returns opaque as '
 declare
-        v_parent_sk     varbit default null;
-        v_max_child_sortkey     varbit;
-        v_old_parent_length     integer;
+	v_parent_sk     varbit default null;
+	v_max_child_sortkey     varbit;
+	v_old_parent_length     integer;
 begin
-        if new.project_id = old.project_id
-           and ((new.parent_id = old.parent_id)
-                or (new.parent_id is null
-                    and old.parent_id is null)) then
+	if new.project_id = old.project_id
+	   and ((new.parent_id = old.parent_id)
+		or (new.parent_id is null
+		    and old.parent_id is null)) then
 
-           return new;
+	   return new;
 
-        end if;
+	end if;
 
-        -- the tree sortkey is going to change so get the new one and update it and all its
-        -- children to have the new prefix...
-        v_old_parent_length := length(new.tree_sortkey) + 1;
+	-- the tree sortkey is going to change so get the new one and update it and all its
+	-- children to have the new prefix...
+	v_old_parent_length := length(new.tree_sortkey) + 1;
 
-        if new.parent_id is null then
-            v_parent_sk := int_to_tree_key(new.project_id+1000);
-        else
-            SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
-            INTO v_parent_sk, v_max_child_sortkey
-            FROM im_projects
-            WHERE project_id = new.parent_id
-            FOR UPDATE;
+	if new.parent_id is null then
+	    v_parent_sk := int_to_tree_key(new.project_id+1000);
+	else
+	    SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
+	    INTO v_parent_sk, v_max_child_sortkey
+	    FROM im_projects
+	    WHERE project_id = new.parent_id
+	    FOR UPDATE;
 
-            UPDATE im_projects
-            SET max_child_sortkey = v_max_child_sortkey
-            WHERE project_id = new.parent_id;
+	    UPDATE im_projects
+	    SET max_child_sortkey = v_max_child_sortkey
+	    WHERE project_id = new.parent_id;
 
-            v_parent_sk := v_parent_sk || v_max_child_sortkey;
-        end if;
+	    v_parent_sk := v_parent_sk || v_max_child_sortkey;
+	end if;
 
-        UPDATE im_projects
-        SET tree_sortkey = v_parent_sk || substring(tree_sortkey, v_old_parent_length)
-        WHERE tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
+	UPDATE im_projects
+	SET tree_sortkey = v_parent_sk || substring(tree_sortkey, v_old_parent_length)
+	WHERE tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
 
-        return new;
+	return new;
 end;' language 'plpgsql';
 
 create trigger im_projects_update_tr after update
@@ -221,16 +221,16 @@ alter table im_projects add
 -- ------------------------------------------------------------
 
 create or replace function im_project__new (
-        integer, varchar, timestamptz, integer, varchar, integer,
-        varchar, varchar, varchar, integer, integer, integer, integer
+	integer, varchar, timestamptz, integer, varchar, integer,
+	varchar, varchar, varchar, integer, integer, integer, integer
 ) returns integer as '
 DECLARE
-        p_project_id       alias for $1;
-        p_object_type     alias for $2;
-        p_creation_date   alias for $3;
-        p_creation_user   alias for $4;
-        p_creation_ip     alias for $5;
-        p_context_id      alias for $6;
+	p_project_id       alias for $1;
+	p_object_type     alias for $2;
+	p_creation_date   alias for $3;
+	p_creation_user   alias for $4;
+	p_creation_ip     alias for $5;
+	p_context_id      alias for $6;
 
 	p_project_name	alias for $7;
 	p_project_nr	alias for $8;
@@ -243,13 +243,13 @@ DECLARE
 	v_project_id	  integer;
 BEGIN
        v_project_id := acs_object__new (
-                p_project_id,
-                p_object_type,
-                p_creation_date,
-                p_creation_user,
-                p_creation_ip,
-                p_context_id
-        );
+		p_project_id,
+		p_object_type,
+		p_creation_date,
+		p_creation_user,
+		p_creation_ip,
+		p_context_id
+	);
 	insert into im_projects (
 		project_id, project_name, project_nr, 
 		project_path, parent_id, company_id, project_type_id, 
@@ -264,7 +264,7 @@ end;' language 'plpgsql';
 
 create or replace function im_project__delete (integer) returns integer as '
 DECLARE
-        v_project_id             alias for $1;
+	v_project_id	     alias for $1;
 BEGIN
 	-- Erase the im_projects item associated with the id
 	delete from 	im_projects
@@ -282,7 +282,7 @@ end;' language 'plpgsql';
 create or replace function im_project__name (integer) returns varchar as '
 DECLARE
 	v_project_id	alias for $1;
-        v_name		varchar;
+	v_name		varchar;
 BEGIN
 	select	project_name
 	into	v_name
@@ -356,29 +356,29 @@ end;' language 'plpgsql';
 create or replace function im_project_name_from_id (integer)
 returns varchar as '
 DECLARE
-        p_project_id	alias for $1;
-        v_project_name	varchar(1000);
+	p_project_id	alias for $1;
+	v_project_name	varchar(1000);
 BEGIN
-        select project_name
-        into v_project_name
-        from im_projects
-        where project_id = p_project_id;
+	select project_name
+	into v_project_name
+	from im_projects
+	where project_id = p_project_id;
 
-        return v_project_name;
+	return v_project_name;
 end;' language 'plpgsql';
 
 
 create or replace function im_project_nr_from_id (integer)
 returns varchar as '
 DECLARE
-        p_project_id	alias for $1;
-        v_name		varchar(100);
+	p_project_id	alias for $1;
+	v_name		varchar(100);
 BEGIN
-        select project_nr
-        into v_name
-        from im_projects
-        where project_id = p_project_id;
+	select project_nr
+	into v_name
+	from im_projects
+	where project_id = p_project_id;
 
-        return v_name;
+	return v_name;
 end;' language 'plpgsql';
 

@@ -55,7 +55,6 @@ ns_log Notice "process_mail_queue_now_p='$process_mail_queue_now_p'"
 ns_log Notice "message='$message'"
 ns_log Notice "attachment='$attachment'"
 
-
 # ---------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------
