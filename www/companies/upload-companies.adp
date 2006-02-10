@@ -38,6 +38,19 @@
 <table border=0 cellspacing=0 cellpadding=1 width="70%">
 <tr><td>
 
+<font color=red>
+Please read carefully the following text. Importing data into a system like 
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
+is not an easy task, because it employes much "tigher" rules 
+for data consistency then Outlook or other PIM applications.
+<p>
+Also, please
+<a href=/intranet/admin/backup/pg_dump>backup your data</a> before
+importing.
+</font>
+
+
+
 <h3>Import Companies From Microsoft Outlook 2000</h3>
 
 <p>
