@@ -679,25 +679,27 @@ order by
 ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
     The default header for ProjectOpen
 } {
-
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
+
+    # Is any of the "search" package installed?
+    set search_installed_p [llength [info procs im_package_search_id]]
+
     if { [empty_string_p $page_title] } {
 	set page_title [ad_partner_upvar page_title]
     }
     set context_bar [ad_partner_upvar context_bar]
     set page_focus [ad_partner_upvar focus]
-    if { [empty_string_p $page_focus] } {
+    if {$search_installed_p && [empty_string_p $page_focus] } {
 	# Default: Focus on Search form at the top of the page
 	set page_focus "surx.query_string"
     }
-
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
     set search_form ""
-    if {$user_id > 0 && 0 < [llength [info procs im_package_search_id]]} {
+    if {$user_id > 0 && $search_installed_p} {
 	set search_form "
 	    <form action=/intranet/search/go-search method=post name=surx>
               <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
