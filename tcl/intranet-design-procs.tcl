@@ -701,6 +701,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     set search_form ""
     if {$user_id > 0 && $search_installed_p} {
 	set search_form "
+	    <nobr>
 	    <form action=/intranet/search/go-search method=post name=surx>
               <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
               <select class=surx name=target>"
@@ -714,6 +715,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
                 <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
               </select>
               <input alt=go type=submit value=Go name='image'>
+	      </nobr>
             </form>
         "
     }
@@ -777,9 +779,9 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     </td>
     <td align=left valign=middle> 
       <span class=small>
-        $users_online_str
-        $user_profile: $user_name <BR>
-        $logout_pwchange_str
+        <nobr>$users_online_str</nobr>
+        <nobr>$user_profile: $user_name</nobr><br>
+        <nobr>$logout_pwchange_str</nobr>
       </span>
     </td>
     <td valign=middle align=right> $search_form </TD>
