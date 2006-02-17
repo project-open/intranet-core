@@ -460,7 +460,7 @@ ad_proc -public im_user_nuke {user_id} {
 	db_dml forum "update im_forum_topics set owner_id = :default_user where owner_id = :user_id"
 	db_dml forum "update im_forum_topics set asignee_id = null where asignee_id = :user_id"
 	db_dml forum "update im_forum_topics set object_id = :default_user where object_id = :user_id"
-	
+
 	# Timesheet
 	db_dml timesheet "delete from im_hours where user_id = :user_id"
 	db_dml timesheet "delete from im_user_absences where owner_id = :user_id"
@@ -503,9 +503,11 @@ ad_proc -public im_user_nuke {user_id} {
 	}
 	
 	# Filestorage
-	db_dml forum "delete from im_fs_folder_status where user_id = :user_id"
+	db_dml filestorage "delete from im_fs_folder_status where user_id = :user_id"
 	db_dml filestorage "delete from im_fs_actions where user_id = :user_id"
-	
+	db_dml filestorage "update im_fs_folders set object_id = null where object_id = :user_id"
+
+
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
