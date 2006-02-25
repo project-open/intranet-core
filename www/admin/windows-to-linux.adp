@@ -4,7 +4,7 @@
 
 <h1>Convert Parameters to Linux</h1>
 
-<table cellpadding=0 cellspacing=0 border=0 width=80%>
+<table cellpadding=0 cellspacing=0 border=1 width=80%>
 <tr>
   <td colspan=2 valign=top>
 <p>
@@ -21,8 +21,8 @@ installation with Linux. In particular this command does:
 </tr>
 
 <tr>
-  <td>Server Name</td>
-  <td>
+  <td align=left>Server Name</td>
+  <td align=left>
     <form action=windows-to-linux-2 method=POST>
     <input type=text name=server_name value="projop"><br>
     <input type=submit>
