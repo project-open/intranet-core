@@ -26,6 +26,7 @@
   Please see LICENSE.ProjectOpen in the /web/projop/ directory for details 
   about the licensing of the contained software.
   
+
   ______________________________________________________________________
 
   1. Prerequisits:
@@ -43,11 +44,9 @@
   ______________________________________________________________________
 
   2. Installation Overview
-  
-  The installation procedure consists of the following steps. 
-  Each step consists of a few instructions and a test to determine 
-  whether the step has been executed successfully:
-  
+
+  It will probably take you 15 minutes to go through the following 
+  steps:
   
 	- Check that the prerequisites are OK
   
@@ -67,33 +66,26 @@
 	of the server.
   
 	- Check for the latest version and updates
-  
-  
-  The complexity of a ]project-open[ installation until now was
-  due to the  multitude of extensions to AOLServer that are necessary 
-  to run the system. However, this installer comes with a AOLServer
-  binary, so that you should be done in 15 minutes and less.
-  
-  
-    
+
+
   ______________________________________________________________________
 
   3. Installer File Contents
   
   - INSTALL			# This file
-  - aolserver3.3oacs.tgz		# The AOLServer binary
+  - aolserver3.3oacs.tgz	# The AOLServer binary
   - project-open.3-1-0-1-0.tgz	# ]project-open[ source tree
   
   
   The finished directory tree will look like this:
   
-  / usr / local / aolserver3.3oacs / bin			# Binaries
+  / usr / local / aolserver3.3oacs / bin		# Binaries
 				 / lib			# Libraries
 				 / log			# Not used
 				 / modules		# The TCL interpreter
 				 / include		# Header files
   
-  / web / projop / apm-workspace				# Tmp space
+  / web / projop / apm-workspace			# Tmp space
 	       / bin					# Utilities
 	       / etc					# Config files
 	       / filestorage				# Filestorage
@@ -107,7 +99,7 @@
 	       / tcl					# Global libraries
 	       / www					# 1st page and templates
   
-  
+
     
   ______________________________________________________________________
 
@@ -449,23 +441,25 @@
   
   4.13. Check for the Latest Version and Updates
   
-  
-  Please check http://www.sourceforge.net/projects/project-open/ for news
+
+  Please check http://www.project-open.org/download/win/3.1.2.0.html for
+  release notes and http://www.sourceforge.net/projects/project-open/ for news
   and announcements. You can subscribe yourself to the project to get updated
   about new packages, security updates etc.
   
-  Please send us your email address if you are planning to use ]po[ in your company.
-  This way we will send you a ~quarterly newsletter and alert you in urgent cases.
+  Please send us your email address if you are planning to use ]po[ in your 
+  company. This way we will send you a ~quarterly newsletter and alert you in 
+  urgent cases.
   
   On Sourceforge check for the latest announcement of a stable release.
 
-  For example the lates while writing this document is "v3-1-0-1-0". The
+  For example the lates while writing this document is "v3-1-2-0-0". The
   upgrade to this release (this is also necesary for if you install this
   installer - there are updates with respect to Invoices):
 
   # su - projop
   # cd /web/projop/packages
-  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-0-1-0 -Pd
+  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-2-0-0 -Pd
 
   After this please go to your your server URL http://localhost/acs-admin/apm/,
   choose "Install Packages" and select all packages that "Upgrade" (please don't
@@ -482,13 +476,16 @@
   5. Where to go from Here
 
 
-      - !!! Please check for comments on this release !!!
-        http://www.project-open.org/download/win/3.1.2.0.html
-        This is the location where we are going to post comments from 
-        others who have used this installer.
+      - Please check http://www.project-open.org/download/win/3.1.2.0.html
+        This is the location where we are posting release notes and comments 
+        from others users on this particular version of the installer.
 
       - Check SourceForge: http://sourceforge.net/projects/project-open/
-	and consult the "Open Discussions" forum.
+	and consult the "Open Discussions" forum. Here you will find a lot
+	of other users, discussing the product.
+	Please leave us a message in this forum if you like this software.
+	You can do this anonymously, just telling everybody about your 
+        experience and how you would like to use the system.
 
       - Play around with the system:
 	We have provided you with the sample company configurations
