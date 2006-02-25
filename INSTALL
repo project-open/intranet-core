@@ -1,7 +1,7 @@
 
   ]project-open[ Installer
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.1.0, 2006-01-15
+  Version V3.1.2, 2006-02-25
   Copyright (c) 2006 ]project-open[
 
   This is the ]project-open[ Linux installer. This document describes
@@ -13,9 +13,10 @@
   0. About the Installer
 
 
-  Version V3.1.0, 2006-01-15
+  Version V3.1.2, 2006-02-25
   Copyright (c) 2006 ]project-open[
   Frank Bergmann <frank.bergmann@project-open.com>
+  http://www.project-open.org/download/win/3.1.2.0.html
   
   Permission is granted to copy, distribute and/or modify this document 
   under the terms of the GNU Free Documentation License, Version 1.1 or 
@@ -24,7 +25,6 @@
   
   Please see LICENSE.ProjectOpen in the /web/projop/ directory for details 
   about the licensing of the contained software.
-  
   
   ______________________________________________________________________
 
@@ -480,6 +480,12 @@
   ______________________________________________________________________
 
   5. Where to go from Here
+
+
+      - !!! Please check for comments on this release !!!
+        http://www.project-open.org/download/win/3.1.2.0.html
+        This is the location where we are going to post comments from 
+        others who have used this installer.
 
       - Check SourceForge: http://sourceforge.net/projects/project-open/
 	and consult the "Open Discussions" forum.
