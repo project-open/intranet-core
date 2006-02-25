@@ -475,21 +475,27 @@ if {$admin || [im_permission $user_id "view_hr"]} {
 	"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
 	[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
     ]
-    set forum_html [im_table_with_title \
-	[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url ] \
-	[im_forum_component \
-		-user_id $current_user_id \
-		-forum_object_id $user_id \
-		-current_page_url $current_url \
-		-return_url $return_url \
-		-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
-		-forum_type user \
-		-view_name [im_opt_val forum_view_name] \
-		-forum_order_by [im_opt_val forum_order_by] \
-		-restrict_to_mine_p "f" \
-		-restrict_to_new_topics 0 \
-	] \
-    ]
+
+    set forum_installed_p [llength [info procs im_package_forum_id]]
+    if {$forum_installed_p} {
+	    set forum_html [im_table_with_title \
+		[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url] \
+		[im_forum_component \
+			-user_id $current_user_id \
+			-forum_object_id $user_id \
+			-current_page_url $current_url \
+			-return_url $return_url \
+			-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
+			-forum_type user \
+			-view_name [im_opt_val forum_view_name] \
+			-forum_order_by [im_opt_val forum_order_by] \
+			-restrict_to_mine_p "f" \
+			-restrict_to_new_topics 0 \
+		] \
+	    ]
+    }
+
+
 }
 
 # ---------------------------------------------------------------
