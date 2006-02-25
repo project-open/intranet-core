@@ -16,7 +16,7 @@
 ad_page_contract {
     Convert some parameters values from Windows to Linux
 } {
-    { server_name "projop" }
+    { server_name "" }
     { return_url "/intranet/admin/" }
 }
 
@@ -34,3 +34,9 @@ if {!$user_is_admin_p} {
 
 set page_title "Windows - to - Linux"
 
+
+
+
+if {"" == $server_name} {
+    set server_name [ns_info server]
+}
