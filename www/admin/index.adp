@@ -79,7 +79,14 @@
 	  to this Linux system.
 	  This script simplemented sets the operating specific parameters
 	  such as pathces and commands. You could do this manually, but
-          it's more comfortable this way.
+          it's more comfortable this way.<br>
+          The command assumes that Windows installations are found in X:/ProjectOpen/projop/,
+	  while Linux installations are in /web/projop/.
+	  <br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/linux-to-windows>Convert parameters from Linux to Windows</a><br>
+          The reverse of the command above. 
 	  <br>&nbsp;<br>
 
     </ul>
