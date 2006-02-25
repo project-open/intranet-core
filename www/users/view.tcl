@@ -471,11 +471,14 @@ set forum_html ""
 #
 
 if {$admin || [im_permission $user_id "view_hr"]} {
-    set filestorage_html [im_table_with_title \
-	"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
-	[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
-    ]
 
+    set filestorage_installed_p [llength [info procs im_package_filestorage_id]]
+    if {$filestorage_installed_p} {
+	    set filestorage_html [im_table_with_title \
+		"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
+		[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
+	    ]
+    }
     set forum_installed_p [llength [info procs im_package_forum_id]]
     if {$forum_installed_p} {
 	    set forum_html [im_table_with_title \
