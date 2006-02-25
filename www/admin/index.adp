@@ -72,7 +72,16 @@
 	  based LTC-Organiser into 
 	  <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>.
 	  <br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/windows-to-linux>Set parameters for a Linux server</a> (when loading from a Windows backup dump or demo system</a><br>
+	  This script simplemented sets the operating specific parameters
+	  such as pathces and commands. You could do this manually, but
+          it's more comfortable this way.
+	  <br>&nbsp;<br>
+
     </ul>
+
 <!--
 	<li>
 	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
