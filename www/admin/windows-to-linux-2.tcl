@@ -47,13 +47,27 @@ ad_return_top_of_page "[im_header]\n[im_navbar]"
 ns_write "<h1>$page_title</h1>\n"
 ns_write "<ul>\n"
 
+
 # Convert all pathes to the Linux style, asuming "$server_name" as the name
 # of the server
+#
+ns_write "<li>Converting pathes from \"C:/ProjectOpen/ to /web/$server_name/\n"
 db_dml update_pathes "
 update apm_parameter_values
 set attr_value = '/web/$server_name' || substring(attr_value from 'C:/ProjectOpen(.*)')
 where attr_value ~* '^C:/ProjectOpen/'
 "
+
+
+
+# Convert the find command
+ns_write "<li>Converting /usr/find to /usr/bin/find\n"
+db_dml update_pathes "
+update apm_parameter_values
+set attr_value = '/usr/bin/find'
+where attr_value = '/usr/find'
+"
+
 
 
 ns_write "</ul>\n"
