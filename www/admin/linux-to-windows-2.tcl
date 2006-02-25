@@ -55,7 +55,7 @@ ns_write "<li>Converting pathes from /web/&lt;server&gt;/ to \"$install_dir/ \n"
 db_dml update_pathes "
 update apm_parameter_values
 set attr_value = '$install_dir/' || substring(attr_value from '^/web/\[a-zA-Z\]+/(.*)')
-where attr_value ~* '^/web/\[a-zA-Z\]/'
+where attr_value ~* '^/web/\[a-zA-Z\]+/'
 "
 
 
