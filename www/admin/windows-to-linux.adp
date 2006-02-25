@@ -4,7 +4,7 @@
 
 <h1>Convert Parameters to Linux</h1>
 
-<table cellpadding=0 cellspacing=0 border=1 width=80%>
+<table cellpadding=0 cellspacing=0 border=0 width=80%>
 <tr>
   <td colspan=2 valign=top>
 <p>
