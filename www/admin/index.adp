@@ -76,7 +76,7 @@
 	<li>
 	  <a href=/intranet/admin/windows-to-linux>Convert parameters from Windows to Linux</a><br>
           Use this if you have imported a backup dump from a Windows system
-	  to a Linux system (this running on Linux).
+	  to this Linux system.
 	  This script simplemented sets the operating specific parameters
 	  such as pathces and commands. You could do this manually, but
           it's more comfortable this way.
