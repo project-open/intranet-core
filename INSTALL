@@ -158,6 +158,14 @@
   # groupadd projop
   # useradd -g projop -d /web/projop projop
   
+  Check that the new user is working:
+
+  # su - projop
+  => You should get a permission warning like: 
+	"su: warning: cannot change directory to /web/projop: Permission denied"
+     That is OK because you haven't set the permissions yet 
+     (section below)
+
   However, there is a configuration option where you may want to
   allow ]project-open[ to read and write to your existing Samba
   fileserver, that is located on the same computer.
@@ -201,7 +209,11 @@
   # cd /web
   # chown -R projop:projop projop
   
-  
+  Now you should be able to login as "projop" without error message:
+  # su - projop
+  => No error
+
+
   
   4.5. Setup the PostgreSQL Database
   
@@ -312,11 +324,17 @@
 
   4.9. Update the Parameters and Configuration
 
-  Please point your favourite Web browser to "Admin" -> "Parameters"
-  and check the parameters. In particular check for filestorage pathes
-  ("C:/ProjectOpen/...") and replace them by "/web/projop/...".
-  Please check the "HomeBasePathUnix". It should become
-  "/web/projop/filestorage/home".
+  The parameters in your system should be set for a Windows installation
+  right now (after importing the preconfigured demo contents).
+  To convert these parameters to Linus please use the 
+  "Convert parameters from Windows to Linux" link in the "Admin"
+  menu.
+
+  Please point your favourinte web browser to "Admin" -> "Parameters" 
+  in order to check the parameters manually. The filestorage pathes should 
+  now all be set to /web/projop/... (instead of "C:/ProjectOpen/..." in 
+  Windows). Please check the "HomeBasePathUnix". It should become
+  "/web/projop/filestorage/home" under Linux.
 
   Also, decide whether you want to allow people to register themselves
   to accesss your server or whether you want to confirm membership.
