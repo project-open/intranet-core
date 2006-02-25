@@ -61,11 +61,11 @@ where attr_value ~* '^C:/ProjectOpen/'
 
 
 # Convert the find command
-ns_write "<li>Converting /usr/find to /usr/bin/find\n"
+ns_write "<li>Converting /bin/find to /usr/bin/find\n"
 db_dml update_pathes "
 update apm_parameter_values
 set attr_value = '/usr/bin/find'
-where attr_value = '/usr/find'
+where attr_value = '/bin/find'
 "
 
 
