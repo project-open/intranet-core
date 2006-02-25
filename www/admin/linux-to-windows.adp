@@ -23,7 +23,7 @@ installation from Linux with Windows. In particular this command does:
 <tr>
   <td align=left>Server Name</td>
   <td align=left>
-    <form action=linux-to-windows method=POST>
+    <form action=linux-to-windows-2 method=POST>
     <input type=text name=install_dir value="@install_dir@"><br>
     <input type=submit>
     </form>
