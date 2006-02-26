@@ -248,7 +248,11 @@
     localization companies and translation departments of
     larger companies.
   
-  
+  - For ]project-lifecycle[ or ]project-agency[ please use the
+    ]project-consulting[ demo. These three products are very
+    similar and distinguished mainly by configuration.
+
+
   #su - projop
   #projop:~> cd /web/projop/packages/intranet-core/preconf
   #projop:~> psql projop -f pc.preconf.sql	# ]project-consulting[
