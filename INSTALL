@@ -35,7 +35,7 @@
     The system in known to work with SuSE (> 9.1), RedHat (> 8.0)
     and Debian (Sarge). For installation on different systems
     please see http://openacs.org/doc/current/acs-admin.html.
-  - PostgreSQL 7.4.x or 8.0.x.
+  - PostgreSQL 7.4.x or 8.0.1.
     PostgreSQL comes as part of all Linux distributions above.
   - CVS 1.12.x
     CVS comes as part of all major Linux distributions.
