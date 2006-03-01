@@ -77,7 +77,7 @@ if {[im_permission $current_user_id view_users]} {
 # Check if we are editing an already existing user...
 set editing_existing_user 0
 if {"" != $user_id} { 
-    set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
+    set editing_existing_user [db_string get_user_count "select count(*) from parties where party_id = :user_id"]
 }
 ns_log Notice "/users/new: editing_existing_user=$editing_existing_user, user_id=$user_id, email=$email"
 
@@ -100,13 +100,11 @@ select
 	pa.url,
 	u.screen_name
 from
-	persons pe,
-	parties pa,
-	users u
+	parties pa
+	left outer join persons pe on (pa.party_id = pe.person_id)
+	left outer join users u on (pa.party_id = u.user_id)
 where
-	pe.person_id = :user_id
-	and pe.person_id = pa.party_id
-	and pe.person_id = u.user_id
+	pa.party_id = :user_id
 "
     db_0or1row get_user_details $user_details_sql
 
@@ -248,7 +246,7 @@ ad_form -extend -name register -on_request {
 	
 	# Do we create a new user or do we edit an existing one?
 	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
-	
+
 	if {!$editing_existing_user} {
 
 	    # New user: create from scratch
@@ -298,6 +296,32 @@ ad_form -extend -name register -on_request {
 	    # Existing user: Update variables
 	    set auth [auth::get_register_authority]
 	    set user_data [list]
+
+	    # Make sure the "person" exists.
+	    # This may be not the case when creating a user from a party.
+	    set person_exists_p [db_string person_exists "select count(*) from persons where person_id = :user_id"]
+	    if {!$person_exists_p} {
+		db_dml insert_person "
+		    insert into persons (
+			person_id, first_names, last_name
+		    ) values (
+			:user_id, :first_names, :last_name
+		    )
+		"	
+	    }
+
+	    set user_exists_p [db_string user_exists "select count(*) from users where user_id = :user_id"]
+	    if {!$user_exists_p} {
+		if {"" == $username} { set username $email} 
+		db_dml insert_user "
+		    insert into users (
+			user_id, username
+		    ) values (
+			:user_id, :username
+		    )
+		"
+	    }
+
 
 	    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
 	    person::update \

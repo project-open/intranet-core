@@ -22,6 +22,24 @@ ad_library {
 }
 
 
+
+ad_proc -public im_component_any_perms_set_p { } {
+    Checks if any permissions at all are set 
+    for the components (this is usually not the case...
+} {
+
+    set any_perms_set_p [util_memoize "db_string any_perms_set {
+        select  count(*)
+        from    acs_permissions ap,
+                im_profiles p,
+                im_component_plugins cp
+        where
+                ap.object_id = cp.plugin_id
+                and ap.grantee_id = p.profile_id
+    }"]
+    return $any_perms_set_p
+}
+
 ad_proc -public im_component_bay { location {view_name ""} } {
     Checks the database for Plug-ins for this page and component
     bay.

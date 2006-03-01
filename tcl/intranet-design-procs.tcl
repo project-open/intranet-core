@@ -698,6 +698,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
+    # --------------------------------------------------------
     set search_form ""
     if {$user_id > 0 && $search_installed_p} {
 	set search_form "
@@ -760,14 +761,43 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
     
     set logout_pwchange_str "
-        <a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
-        <a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
+	<a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
+	<a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
     "
 
     # Disable who's online for "anonymous visitor"
     if {0 == $user_id} {
 	set users_online_str ""
 	set logout_pwchange_str ""
+    }
+
+    # --------------------------------------------------------
+    # Header Plugins
+    #
+    set any_perms_set_p [im_component_any_perms_set_p]
+    set plugin_sql "
+	select	c.*,
+		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+	from	im_component_plugins c
+	where	page_url = 'header'
+	order by sort_order
+    "
+
+    set plugin_html ""
+    db_foreach get_plugins $plugin_sql {
+
+	if {$any_perms_set_p > 0} {
+	    if {"f" == $perm} { continue }
+	}
+
+	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
+	if { [catch {
+	    # "uplevel" evaluates the 2nd argument!!
+	    append plugin_html [uplevel 1 $component_tcl]
+	} err_msg] } {
+	    set plugin_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
+	    set plugin_html [im_table_with_title $plugin_name $plugin_html]
+        }
     }
 
     return "
@@ -784,7 +814,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
         <nobr>$logout_pwchange_str</nobr>
       </span>
     </td>
-    <td valign=middle align=right> $search_form </TD>
+    <td valign=middle align=right> 
+	$search_form 
+	$plugin_html
+    </TD>
   </tr>
 </table>
 "
