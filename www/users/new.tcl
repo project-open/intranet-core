@@ -241,6 +241,13 @@ ad_form -extend -name register -on_request {
 
 } -on_submit {
 
+
+    if {![string equal $password $password_confirm]} {
+	ad_return_complaint 1 [lang::message::lookup "" intranet-core.Passwords_Dont_Match "The password confirmation doesn't match the password"]
+	return
+    }
+
+
 #	20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
 #    db_transaction {
 	
