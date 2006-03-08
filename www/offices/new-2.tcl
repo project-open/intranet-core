@@ -118,10 +118,14 @@ if {0 == $office_count} {
 		-office_path	$office_name \
 		-office_status_id $office_status_id \
 		-office_type_id $office_type_id]
-	
-	# add users to the office as office_admin
-        set role_id [im_biz_object_role_office_admin]
-        im_biz_object_add_role $user_id $office_id $role_id
+
+# fraber 060307: Dont make the user a member of the office-
+# its not used very frequently and freelancers who can see
+# employees may get the list of customers from the offices...
+#	
+#	 add users to the office as office_admin
+#        set role_id [im_biz_object_role_office_admin]
+#        im_biz_object_add_role $user_id $office_id $role_id
 
     }
 }
