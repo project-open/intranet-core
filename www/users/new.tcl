@@ -242,7 +242,7 @@ ad_form -extend -name register -on_request {
 } -on_submit {
 
 
-    if {![string equal $password $password_confirm]} {
+    if {[info exists password] && [info exists password_confirm] && ![string equal $password $password_confirm]} {
 	ad_return_complaint 1 [lang::message::lookup "" intranet-core.Passwords_Dont_Match "The password confirmation doesn't match the password"]
 	return
     }
