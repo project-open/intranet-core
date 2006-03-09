@@ -43,6 +43,16 @@ ad_proc -public im_company_type_customer {} { return 57 }
 ad_proc -public im_company_type_freelance {} { return 58 }
 ad_proc -public im_company_type_office_equip {} { return 59 }
 
+ad_proc -public im_company_type_partner {} { 
+    return [db_string parter_type "
+	select category_id
+	from im_categories
+	where category_type = 'Intranet Company Type'
+	      and category = 'Partner'
+    " -default 0]
+}
+
+
 
 # Suitable roles for a company object
 ad_proc -public im_company_role_key_account { } { return 1302 }
