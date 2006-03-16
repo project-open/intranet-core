@@ -38,6 +38,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
+set clone_url "/intranet/projects/clone"
 
 if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
@@ -246,14 +247,34 @@ append project_base_data_html "    </table>
 # Admin Box
 # ---------------------------------------------------------------------
 
-set admin_html ""
+set admin_html_content ""
 if {$admin} {
-    set admin_html_content "
-<ul>
-  <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
-</ul>\n"
+    append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>\n"
+}
+
+set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
+
+set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 'Clone' is an exact copy of your project. You can use this function to standardize repeating projects."]
+
+set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
+set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
+
+if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    append admin_html_content "
+    <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]</A>[im_gif -translate_p 0 help $clone_pr_help]\n"
+}
+
+if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    append admin_html_content "
+    <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">[lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
+</A>[im_gif -translate_p 0 help $exec_pr_help]\n"
+}
+
+set admin_html ""
+if {"" != $admin_html_content} {
     set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
+
 
 # ---------------------------------------------------------------------
 # Project Hierarchy
