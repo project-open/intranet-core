@@ -60,6 +60,7 @@ cvs checkout -r b3-0-0-patches intranet-trans-invoices
 cvs checkout -r b3-0-0-patches intranet-trans-quality
 cvs checkout -r b3-0-0-patches intranet-update-client
 cvs checkout -r b3-0-0-patches intranet-wiki
+cvs checkout -r b3-0-0-patches intranet-workflow
 
 cvs checkout -r b3-0-0-patches ref-countries
 cvs checkout -r b3-0-0-patches ref-language
