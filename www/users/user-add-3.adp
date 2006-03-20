@@ -29,6 +29,9 @@
     #intranet-core.Return_to# 
     <a href="/intranet/users/">#intranet-core.user_administration#</a>
   </li>
+  <li>
+    <a href="/intranet/users/new">#intranet-core.Add_a_new_User#</a>
+  </li>
 </ul>
 </p>
 
