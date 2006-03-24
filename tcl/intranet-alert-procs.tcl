@@ -1,6 +1,6 @@
-# /packages/intranet-core/tcl/intranet-alerts.tcl
+# /packages/intranet-core/tcl/intranet-alert-procs.tcl
 #
-# Copyright (C) 1998-2004 various parties
+# Copyright (C) 1998-2006 various parties
 # The code is based on ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
@@ -24,7 +24,7 @@ ad_library {
 # -------------------------------------------------------------------
 # Add an alert to the database alert queue
 # -------------------------------------------------------------------
-ad_proc im_send_alert {target_id frequency subject {message ""} } {
+ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     Add a new alert to the queue for a specific user.
     The idea is to aggregate several alerts into a single email,
     to avoid hundereds or emails, for example if a user has been
@@ -52,13 +52,14 @@ ad_proc im_send_alert {target_id frequency subject {message ""} } {
     }
 
     # Determine the sender address
-    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@local\
-host"]
+    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
     if [catch {
-        set sender_email [db_string sender_email "select email as sender_email from parties where\
- party_id = :current_user_id" -default "asfd@asdf.com"]
+        set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]
     } errmsg] {
-        # nothing - use default
+        ns_log Notice "im_send_alert: Error determining email for sender $current_user_id: $errmsg"
+	ad_return_complaint 1 "Error determining email for sender $current_user_id:<br>
+        <pre>$errmsg</pre>"
+	return
     }
 
 
@@ -67,6 +68,11 @@ host"]
         ns_sendmail $email $sender_email $subject $message
     } errmsg] {
         ns_log Notice "im_send_alert: Error sending to \"$email\": $errmsg"
+
+#	ad_return_complaint 1 " Error sending email to '$email':<br>
+#        <pre>$errmsg</pre>"
+#	return
+
     } else {
         ns_log Notice "im_send_alert: Sent mail to $email\n"
     }
