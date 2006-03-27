@@ -287,17 +287,6 @@ ad_form -extend -name register -on_request {
 					 -secret_question $secret_question \
 					 -secret_answer $secret_answer]
 
-
-	    # Add the user to the "Registered Users" group, because
-	    # (s)he would get strange problems otherwise
-	    set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
-	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
-
-	    # Add a users_contact record to the user since the 3.0 PostgreSQL
-	    # port, because we have dropped the outer join with it...
-	    catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
-	    catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
-
 	} else {
 
 	    # Existing user: Update variables
@@ -339,16 +328,6 @@ ad_form -extend -name register -on_request {
 		    set object_type = 'user'
 		    where object_id = :user_id
 		"
-
-		# Add the user to the "Registered Users" group, because
-		# (s)he would get strange problems otherwise
-		set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
-		relation_add -member_state "approved" "membership_rel" $registered_users $user_id
-		
-		# Add a users_contact record to the user since the 3.0 PostgreSQL
-		# port, because we have dropped the outer join with it...
-		catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
-		catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
 	    }
 
 
@@ -370,6 +349,30 @@ ad_form -extend -name register -on_request {
 		-screen_name $screen_name
 	    
 	}
+
+	# For all users (new and existing one):
+        # Add a users_contact record to the user since the 3.0 PostgreSQL
+        # port, because we have dropped the outer join with it...
+        catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
+        catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
+
+
+        # Add the user to the "Registered Users" group, because
+        # (s)he would get strange problems otherwise
+        set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+        set reg_users_rel_exists_p [db_string member_of_reg_users "
+		select	count(*) 
+		from	group_member_map m, membership_rels mr
+		where	m.member_id = :user_id
+			and m.group_id = :registered_users
+			and m.rel_id = mr.rel_id 
+			and m.container_id = m.group_id 
+			and m.rel_type::text = 'membership_rel'::text
+	"]
+	if {!$reg_users_rel_exists_p} {
+	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+	}
+
 
 	# TSearch2: We need to update "persons" in order to trigger the TSearch2
 	# triggers
