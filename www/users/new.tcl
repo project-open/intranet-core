@@ -315,6 +315,12 @@ ad_form -extend -name register -on_request {
 			:user_id, :first_names, :last_name
 		    )
 		"	
+		# Convert the party into a person
+		db_dml person2party "
+		    update acs_objects
+		    set object_type = 'person'
+		    where object_id = :user_id
+		"	
 	    }
 
 	    set user_exists_p [db_string user_exists "select count(*) from users where user_id = :user_id"]
@@ -327,6 +333,22 @@ ad_form -extend -name register -on_request {
 			:user_id, :username
 		    )
 		"
+		# Convert the person into a user
+		db_dml party2user "
+		    update acs_objects
+		    set object_type = 'user'
+		    where object_id = :user_id
+		"
+
+		# Add the user to the "Registered Users" group, because
+		# (s)he would get strange problems otherwise
+		set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+		relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+		
+		# Add a users_contact record to the user since the 3.0 PostgreSQL
+		# port, because we have dropped the outer join with it...
+		catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
+		catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
 	    }
 
 

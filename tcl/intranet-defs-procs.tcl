@@ -1676,6 +1676,9 @@ ad_proc -public im_generate_auto_login {
 } {
     Generates a security token for auto_login
 } {
+    set user_password ""
+    set user_salt ""
+
     set user_data_sql "
         select
                 u.password as user_password,
@@ -1684,7 +1687,7 @@ ad_proc -public im_generate_auto_login {
                 users u
         where
                 u.user_id = :user_id"
-    db_1row get_user_data $user_data_sql
+    db_0or1row get_user_data $user_data_sql
 
     # generate the expected auto_login variable
     return [ns_sha1 "$user_id$user_password$user_salt$expiry_date"]
