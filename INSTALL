@@ -74,7 +74,7 @@
   
   - INSTALL			# This file
   - aolserver3.3oacs.tgz	# The AOLServer binary
-  - project-open.3-1-0-1-0.tgz	# ]project-open[ source tree
+  - project-open.3-1-2-0-0.tgz	# ]project-open[ source tree
   
   
   The finished directory tree will look like this:
@@ -136,7 +136,7 @@
   # cd /
   # mkdir /web
   # cd /web
-  # tar xzf project-open.3-1-0-1-0.tgz
+  # tar xzf project-open.3-1-2-0-0.tgz
   
   
   
