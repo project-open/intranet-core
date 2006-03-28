@@ -109,10 +109,9 @@ if { $result == 0 } {
 
     ad_return_complaint "[_ intranet-core.Bad_User]" "
     <li>[_ intranet-core.lt_We_couldnt_find_user_]
-    <li>ObjectType: $object_type
-    <li>UserId: $user_id
-    <li>PersonId: $person_id
-    <li>PartyId: $party_id
+    <li>You can 
+	<a href='/intranet/users/new?user_id=$user_id_from_search'>try to create this user</a>
+    now.
     "
     return
 }
