@@ -258,6 +258,10 @@ extra_select, extra_where, sort_order, visible_for) values (2313,23,NULL,'Projec
 '"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
 '','',7,'');
 
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2335,23,NULL,'Delivery Date',
+'$end_date_formatted','','',35,'');
+
 
 --
 delete from im_view_columns where column_id > 0 and column_id < 8;
