@@ -105,8 +105,10 @@ ad_proc -public im_random_employee_component { } {
         </tr>
 	<tr>
 	  <td>
+<!--
 	    <b>[_ intranet-core.Learn_About_Your_Company]</b><br>
 	    [_ intranet-core.Learn_About_Your_Company_Blurb]
+-->
 	  </td>
 	</tr>
 	</table>

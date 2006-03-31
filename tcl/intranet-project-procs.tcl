@@ -603,6 +603,7 @@ order by
     set personal_project_query "
 	SELECT
 		p.*,
+		to_char(p.end_date, 'YYYY-MM-DD HH24:MI') as end_date_formatted,
 	        c.company_name,
 	        im_name_from_user_id(project_lead_id) as lead_name,
 	        im_category_from_id(p.project_type_id) as project_type,
@@ -614,7 +615,7 @@ order by
 	WHERE
 		p.company_id = c.company_id
 		$project_history_restriction
-	order by end_date DESC
+	order by end_date
     "
 
     
