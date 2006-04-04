@@ -305,25 +305,49 @@ where
 
 
 
-ad_proc -public im_office_user_component { current_user_id user_id } {
+ad_proc -public im_office_user_component { 
+    current_user_id 
+    user_id 
+} {
     Creates a HTML table showing the table of offices related to the
     specified user.
 } {
     set bgcolor(0) " class=roweven"
     set bgcolor(1) " class=rowodd"
     set office_view_page "/intranet/offices/view"
+    set subsite_id [ad_conn subsite_id]
 
     set sql "
-select
-	o.*,
-	im_category_from_id(o.office_type_id) as office_type
-from
-	im_offices o,
-	acs_rels r
-where
-	r.object_id_one = o.office_id
-	and r.object_id_two = :user_id
-"
+	select
+		o.*,
+		im_category_from_id(o.office_type_id) as office_type
+	from
+		(select
+			o.*,
+			m.member_p as permission_member,
+			see_all.see_all as permission_all
+		from
+			acs_rels r,
+			( select count(*) as see_all
+			  from	acs_object_party_privilege_map
+			  where	object_id = :subsite_id
+				and party_id = :current_user_id
+				and privilege='view_offices_all'
+			) see_all,
+			im_offices o left outer join
+			( select count(rel_id) as member_p,
+				object_id_one as object_id
+			  from	acs_rels
+			  where	object_id_two = :current_user_id
+			  group by object_id_one
+			) m on (o.office_id = m.object_id)
+		where
+			r.object_id_one = o.office_id
+			and r.object_id_two = :user_id
+	        ) o
+	where
+	        (o.permission_member > 0 OR o.permission_all > 0)
+    "
 
     set component_html "
 <table cellspacing=1 cellpadding=1>
@@ -346,21 +370,22 @@ where
 	incr ctr
     }
     if {$ctr == 1} {
-	append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
+	# Skip the office component completely, because
+	# the current_user probably doesn't have permissions
+	# to see anything
+	# append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
+
+	return ""
     }
     append component_html "</table>\n"
-
     return $component_html
 }
-
-
 
 
 
 # -----------------------------------------------------------
 # Nuke a office
 # -----------------------------------------------------------
-
 
 ad_proc im_office_nuke {office_id} {
     Nuke (complete delete from the database) a office
