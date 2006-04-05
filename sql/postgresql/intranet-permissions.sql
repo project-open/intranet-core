@@ -377,6 +377,9 @@ select acs_privilege__create_privilege('view_companies','View Companies','View C
 select acs_privilege__add_child('admin', 'view_companies');
 select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
 select acs_privilege__add_child('admin', 'view_companies_all');
+select acs_privilege__create_privilege('edit_companies_all','Edit All Companies','Edit All Companies');
+select acs_privilege__add_child('admin', 'edit_companies_all');
+
 select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
 select acs_privilege__add_child('admin', 'view_company_contacts');
 select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
@@ -399,9 +402,9 @@ select acs_privilege__add_child('admin', 'add_projects');
 --  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
 select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
 select acs_privilege__add_child('admin', 'view_project_members');
+
 select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
 select acs_privilege__add_child('admin', 'view_projects_all');
-
 
 select acs_privilege__create_privilege('edit_projects_all','Edit All Projects','Edit All Projects');
 select acs_privilege__add_child('admin', 'edit_projects_all');
