@@ -26,6 +26,11 @@
 	<A href="components/">#intranet-core.lt_Manage_Component_Layo#</A><br>
 	#intranet-core.lt_Change_the_position_o#
       <li>
+	<A href="views/"><%= 
+		[lang::message::lookup "" intranet-core.Manage_Views "Manage Views"] 
+	%></A><br>
+	Enable, disable and edit system \"views\" (the columns in lists and reports).
+      <li>
 	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
 	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
