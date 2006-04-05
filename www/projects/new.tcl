@@ -27,7 +27,7 @@ ad_page_contract {
     { parent_id:integer "" }
     { company_id:integer "" }
     project_nr:optional
-    return_url:optional
+    { return_url "" }
 }
 
 ad_proc var_contains_quotes { var } {
@@ -53,11 +53,6 @@ set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurr
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
 }
-
-if {![exists_and_not_null return_url]} {
-    set return_url "[im_url_stub]/projects/index"
-}
-
 
 # -----------------------------------------------------------
 # Permissions
@@ -620,6 +615,11 @@ if {[form is_valid $form_id]} {
 	    "admin_rel" \
 	    $project_id \
 	    $project_lead_id 
+    }
+
+
+    if {"" == $return_url} {
+	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
     }
     ad_returnredirect $return_url
 }

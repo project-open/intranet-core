@@ -279,4 +279,10 @@ if {[db_table_exists im_dynfield_attributes]} {
 
 db_release_unused_handles
 
+
+# Return to the new company page after creating
+if {"" == $return_url} {
+    set return_url [export_vars -base "/intranet/companies/view?" {company_id}]
+}
+
 ad_returnredirect $return_url
