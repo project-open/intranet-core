@@ -144,6 +144,7 @@ where
 
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_companies_all]} { set read 1 }
+    if {[im_permission $user_id edit_companies_all]} { set admin 1 }
 
     # All employees have the right to see the "internal" company
     if {$user_is_employee_p && [string equal "internal" $company_path]} { 
