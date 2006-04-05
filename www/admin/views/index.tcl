@@ -78,19 +78,6 @@ list::create \
         	return_url
         }
         
-db_multirow -extend {view_url} views get_views { 
-	select 	v.view_id,
-		v.view_name,
-		c.category as view_type,
-		c2.category as view_status,
-		v.view_sql,
-		v.sort_order
-	from im_views v
-		LEFT JOIN
-	     im_categories c ON v.view_type_id = c.category_id
-	     	LEFT JOIN
-	     im_categories c2 ON v.view_status_id = c2.category_id
-	order by v.view_name
-} {
+db_multirow -extend {view_url} views get_views "" {
 	set view_url [export_vars -base "new" {view_id return_url}]
 }
