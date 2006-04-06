@@ -1050,14 +1050,21 @@ ad_proc im_category_select_plain {
 }
 
 
-ad_proc im_category_select_multiple { category_type select_name { default "" } { size "6"} { multiple ""}} {
+ad_proc im_category_select_multiple { 
+    {-translate_p 1}
+    category_type 
+    select_name 
+    { default "" } 
+    { size "6"} 
+    { multiple ""}
+} {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
 	     from im_categories
 	     where category_type = :category_type
 	     order by lower(category)"
-    return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size multiple]
+    return [im_selection_to_list_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default $size multiple]
 }    
 
 
