@@ -278,6 +278,13 @@ INSERT INTO im_categories (category_id, category, category_type,category_descrip
 (nextval('im_categories_seq'),'sq','Intranet Translation Language','Albanian');
 
 
+
+INSERT INTO im_categories (category_id, category, category_type,category_description) VALUES
+(nextval('im_categories_seq'),'is','Intranet Translation Language','Islandic');
+INSERT INTO im_categories (category_id, category, category_type,category_description) VALUES
+(nextval('im_categories_seq'),'ms_MY','Intranet Translation Language','Malaysian');
+
+
 ---------------------------------------------------------------------------------
 -- Contacts
 ---------------------------------------------------------------------------------
