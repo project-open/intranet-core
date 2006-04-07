@@ -51,12 +51,12 @@ ad_form \
     -mode $form_mode \
     -export {user_id return_url} \
     -form {
-	view_id:key(im_views_seq)
-	{view_name:text(text) {label #intranet-core.View_Name#} }
-	{view_type_id:text(im_category_tree),optional {label #intranet-core.View_Type#} {custom {category_type "Intranet DynView Type"}} {value ""} }
-	{view_status_id:text(im_category_tree),optional {label #intranet-core.View_Status#} {custom {category_type "Intranet DynView Status"}} {value ""} }
-	{sort_order:integer(text),optional {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
-	{view_sql:text(textarea),optional {label #intranet-core.View_sql#} {html {cols 50 rows 5}}}
+		view_id:key(im_views_seq)
+		{view_name:text(text) {label #intranet-core.View_Name#} }
+		{view_type_id:text(im_category_tree),optional {label #intranet-core.View_Type#} {custom {category_type "Intranet DynView Type"}} {value ""} }
+		{view_status_id:text(im_category_tree),optional {label #intranet-core.View_Status#} {custom {category_type "Intranet DynView Status"}} {value ""} }
+		{sort_order:integer(text),optional {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
+		{view_sql:text(textarea),optional {label #intranet-core.View_sql#} {html {cols 50 rows 5}}}
     }
 
 
@@ -66,20 +66,20 @@ ad_form -extend -name view -on_request {
 
 } -select_query {
 
-	select	v.*
+	select	v.view_id,
+			v.view_name,
+			v.view_type_id,
+			v.view_status_id,
+			v.sort_order,
+			v.view_sql
 	from	im_views v
 	where	v.view_id = :view_id
 
 } -validate {
 
         {view_name
-            {![db_string unique_name_check "
-		select count(*)
-		from im_views 
-		where
-			view_name = :view_name 
-			and view_id != :view_id"]
-	    }
+            {![db_string unique_name_check "select count(*) from im_views 
+                                            where view_name = :view_name and view_id != :view_id"]}
             "Duplicate View Name. Please use a new name."
         }
 
@@ -144,22 +144,28 @@ if { [exists_and_not_null view_id] } {
 		display_template {
 			<a href="@columns.del_column_url@">#intranet-core.Delete#</a>
 		}
+	  	
 	  }
 	}
 
 	list::create \
-		-name column_list \
-		-multirow columns \
-		-key column_id \
-		-actions $action_list \
-		-elements $elements_list \
-		-filters { return_url }
+			-name column_list \
+			-multirow columns \
+			-key column_id \
+			-actions $action_list \
+			-elements $elements_list \
+			-filters {
+				return_url
+			}
 
 	db_multirow -extend {column_url del_column_url} columns get_columns { 
-		select vc.*
+		select vc.column_id,
+			vc.column_name,
+			vc.group_id,
+			vc.sort_order
 		from im_view_columns vc
 		where vc.view_id = :view_id
-		order by vc.sort_order
+		order by vc.column_name
 	} {
 		set column_url [export_vars -base "new-column" {view_id column_id return_url}]
 		set del_column_url [export_vars -base "del-column" {view_id column_id return_url}]

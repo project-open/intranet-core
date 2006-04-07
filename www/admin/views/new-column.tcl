@@ -52,15 +52,14 @@ ad_form \
     -mode $form_mode \
     -export {user_id view_id return_url} \
     -form {
-	column_id:key(im_view_columns_seq)
-	{column_name:text(text) {label #intranet-core.Column_Name#} }
-	{sort_order:integer(text) {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
-	{column_render_tcl:text(textarea),optional {label #intranet-core.Column_render_tcl#} {html {cols 50 rows 5}}}
-	{extra_select:text(textarea),optional {label "Extra Select"} {html {cols 50 rows 5}}}
-	{extra_from:text(textarea),optional {label #intranet-core.Extra_from#} {html {cols 50 rows 5}}}
-	{extra_where:text(textarea),optional {label #intranet-core.Extra_where#} {html {cols 50 rows 5}}}
-	{order_by_clause:text(textarea),optional {label #intranet-core.Order_by_clause#} {html {cols 50 rows 5}}}
-	{visible_for:text(textarea),optional {label "Visible For"} {html {cols 50 rows 5}}}
+		column_id:key(im_view_columns_seq)
+		{column_name:text(text) {label #intranet-core.Column_Name#} }
+		{sort_order:integer(text) {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
+		{column_render_tcl:text(textarea),optional {label #intranet-core.Column_render_tcl#} {html {cols 50 rows 5}}}
+		{extra_select:text(textarea),optional {label #intranet-core.Column_sql#} {html {cols 50 rows 5}}}
+		{extra_from:text(textarea),optional {label #intranet-core.Extra_from#} {html {cols 50 rows 5}}}
+		{extra_where:text(textarea),optional {label #intranet-core.Extra_where#} {html {cols 50 rows 5}}}
+		{order_by_clause:text(textarea),optional {label #intranet-core.Order_by_clause#} {html {cols 50 rows 5}}}
     }
 
 
@@ -70,21 +69,23 @@ ad_form -extend -name column -on_request {
 
 } -select_query {
 
-	select	vc.*
+	select	vc.column_id,
+			vc.column_name,
+			vc.column_render_tcl,
+			vc.extra_select,
+			vc.extra_from,
+			vc.extra_where,
+			vc.sort_order,
+			vc.order_by_clause
 	from	IM_VIEW_COLUMNS vc
 	where	vc.column_id = :column_id
-		and vc.view_id = :view_id
+	and		vc.view_id = :view_id
 
 } -validate {
 
         {column_name
-            {![db_string unique_name_check "
-		select count(*) 
-		from im_view_columns 
-                where	column_name = :column_name 
-			and view_id = :view_id 
-			and column_id != :column_id"]
-	}
+            {![db_string unique_name_check "select count(*) from im_view_columns 
+                                            where column_name = :column_name and view_id = :view_id and column_id != :column_id"]}
             "Duplicate column Name. Please use a new name."
         }
 
@@ -92,29 +93,22 @@ ad_form -extend -name column -on_request {
 
     db_dml column_insert "
     insert into IM_VIEW_COLUMNS
-	(column_id, view_id, column_name, 
-	column_render_tcl, extra_select, extra_from, 
-	extra_where, sort_order, order_by_clause,
-	visible_for
-    ) values (
-	:column_id, :view_id, :column_name, 
-	:column_render_tcl, :extra_select, :extra_from, 
-	:extra_where, :sort_order, :order_by_clause,
-	:visible_for
-    )"
+    (column_id, view_id, column_name, column_render_tcl, extra_select, extra_from, extra_where, sort_order, order_by_clause)
+    values
+    (:column_id, :view_id, :column_name, :column_render_tcl, :extra_select, :extra_from, :extra_where, :sort_order, :order_by_clause)
+    "
 
 } -edit_data {
 
     db_dml column_update "
 	update IM_VIEW_COLUMNS set
-	        column_name		= :column_name,
-	        column_render_tcl	= :column_render_tcl,
-	        extra_select		= :extra_select,
-	        extra_from		= :extra_from,
+	        column_name    = :column_name,
+	        column_render_tcl  = :column_render_tcl,
+	        extra_select    = :extra_select,
+	        extra_from    = :extra_from,
 	        extra_where		= :extra_where,
-	        sort_order		= :sort_order,
-	        order_by_clause		= :order_by_clause,
-		visible_for		= :visible_for
+	        sort_order      = :sort_order,
+	        order_by_clause  = :order_by_clause
 	where
 		column_id = :column_id
 		and view_id = :view_id
@@ -130,3 +124,6 @@ ad_form -extend -name column -on_request {
 	ad_script_abort
 }
 
+
+#      (select population_id, area_id, sum(gdp) from country_fact group by population_id, area_id)
+#union (select population_id, null,    sum(gdp) from country_fact group by population_id);
