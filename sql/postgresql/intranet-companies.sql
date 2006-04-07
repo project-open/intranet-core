@@ -96,21 +96,33 @@ create table im_companies (
 	contract_value		integer,
 				-- When does the company start?
 	start_date		date,
-	vat_number		varchar(100)
+	vat_number		varchar(100),
+				-- Default value for VAT
+	default_vat		numeric(12,1) default 0,
+				-- default payment days
+	default_payment_days	integer,
+				-- Default invoice template
+	default_invoice_template_id	integer
+				constraint im_companies_def_invoice_template_fk
+				references im_categories,
+				-- Default payment method
+	default_payment_method_id	integer
+				constraint im_companies_def_invoice_payment_fk
+				references im_categories
 );
 
 
 create or replace function im_company__new (
-        integer, varchar, timestamptz, integer, varchar, integer,
-        varchar, varchar, integer, integer, integer
+	integer, varchar, timestamptz, integer, varchar, integer,
+	varchar, varchar, integer, integer, integer
 ) returns integer as '
 DECLARE
 	p_company_id      alias for $1;
-        p_object_type     alias for $2;
-        p_creation_date   alias for $3;
-        p_creation_user   alias for $4;
-        p_creation_ip     alias for $5;
-        p_context_id      alias for $6;
+	p_object_type     alias for $2;
+	p_creation_date   alias for $3;
+	p_creation_user   alias for $4;
+	p_creation_ip     alias for $5;
+	p_context_id      alias for $6;
 
 	p_company_name	      alias for $7;
 	p_company_path	      alias for $8;
@@ -120,14 +132,14 @@ DECLARE
 
 	v_company_id	      integer;
 BEGIN
-        v_company_id := acs_object__new (
-                p_company_id,
-                p_object_type,
-                p_creation_date,
-                p_creation_user,
-                p_creation_ip,
-                p_context_id
-        );
+	v_company_id := acs_object__new (
+		p_company_id,
+		p_object_type,
+		p_creation_date,
+		p_creation_user,
+		p_creation_ip,
+		p_context_id
+	);
 
 	insert into im_companies (
 		company_id, company_name, company_path, 
@@ -148,7 +160,7 @@ end;' language 'plpgsql';
 
 create or replace function im_company__delete (integer) returns integer as '
 DECLARE
-        v_company_id             alias for $1;
+	v_company_id	     alias for $1;
 BEGIN
 	-- make sure to remove links from all offices to this company.
 	update im_offices
@@ -171,7 +183,7 @@ end;' language 'plpgsql';
 create or replace function im_company__name (integer) returns varchar as '
 DECLARE
 	v_company_id	alias for $1;
-        v_name		varchar;
+	v_name		varchar;
 BEGIN
 	select	company_name
 	into	v_name

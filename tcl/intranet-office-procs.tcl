@@ -120,6 +120,41 @@ where
 }
 
 
+
+# -----------------------------------------------------------
+# Select a delivery/invoice/... address for a company
+# -----------------------------------------------------------
+
+ad_proc -public im_company_office_select { select_name default company_id {office_type_id ""} } {
+    Returns an html select box named $select_name and defaulted to
+    $default with the list of all avaiable offices for a company.
+} {
+    set bind_vars [ns_set create]
+    ns_set put $bind_vars company_id $company_id
+    ns_set put $bind_vars office_type_id $office_type_id
+
+    if {"" == $default} {
+	set default [db_string main_office "select main_office_id from im_companies where company_id = :company_id" -default ""]
+    }
+
+    set query "
+select DISTINCT
+        o.office_id,
+	o.office_name
+from
+	im_offices o
+where
+	o.company_id = :company_id
+"
+    return [im_selection_to_select_box -translate_p 0 $bind_vars company_office_select $query $select_name $default]
+}
+
+
+
+# -----------------------------------------------------------
+# 
+# -----------------------------------------------------------
+
 namespace eval office {
 
     ad_proc -public new {
@@ -270,25 +305,49 @@ where
 
 
 
-ad_proc -public im_office_user_component { current_user_id user_id } {
+ad_proc -public im_office_user_component { 
+    current_user_id 
+    user_id 
+} {
     Creates a HTML table showing the table of offices related to the
     specified user.
 } {
     set bgcolor(0) " class=roweven"
     set bgcolor(1) " class=rowodd"
     set office_view_page "/intranet/offices/view"
+    set subsite_id [ad_conn subsite_id]
 
     set sql "
-select
-	o.*,
-	im_category_from_id(o.office_type_id) as office_type
-from
-	im_offices o,
-	acs_rels r
-where
-	r.object_id_one = o.office_id
-	and r.object_id_two = :user_id
-"
+	select
+		o.*,
+		im_category_from_id(o.office_type_id) as office_type
+	from
+		(select
+			o.*,
+			m.member_p as permission_member,
+			see_all.see_all as permission_all
+		from
+			acs_rels r,
+			( select count(*) as see_all
+			  from	acs_object_party_privilege_map
+			  where	object_id = :subsite_id
+				and party_id = :current_user_id
+				and privilege='view_offices_all'
+			) see_all,
+			im_offices o left outer join
+			( select count(rel_id) as member_p,
+				object_id_one as object_id
+			  from	acs_rels
+			  where	object_id_two = :current_user_id
+			  group by object_id_one
+			) m on (o.office_id = m.object_id)
+		where
+			r.object_id_one = o.office_id
+			and r.object_id_two = :user_id
+	        ) o
+	where
+	        (o.permission_member > 0 OR o.permission_all > 0)
+    "
 
     set component_html "
 <table cellspacing=1 cellpadding=1>
@@ -311,11 +370,136 @@ where
 	incr ctr
     }
     if {$ctr == 1} {
-	append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
+	# Skip the office component completely, because
+	# the current_user probably doesn't have permissions
+	# to see anything
+	# append component_html "<tr><td colspan=2>[_ intranet-core.No_offices_found]</td></tr>\n"
+
+	return ""
     }
     append component_html "</table>\n"
-
     return $component_html
+}
+
+
+
+# -----------------------------------------------------------
+# Nuke a office
+# -----------------------------------------------------------
+
+ad_proc im_office_nuke {office_id} {
+    Nuke (complete delete from the database) a office
+} {
+    ns_log Notice "im_office_nuke office_id=$office_id"
+    
+    set current_user_id [ad_get_user_id]
+    im_office_permissions $current_user_id $office_id view read write admin
+    if {!$admin} { return }
+
+
+    # ---------------------------------------------------------------
+    # Delete
+    # ---------------------------------------------------------------
+    
+    # if this fails, it will probably be because the installation has 
+    # added tables that reference the users table
+
+    with_transaction {
+    
+	# Permissions
+	ns_log Notice "offices/nuke-2: acs_permissions"
+	db_dml perms "delete from acs_permissions where object_id = :office_id"
+	
+	# Forum
+	ns_log Notice "offices/nuke-2: im_forum_topic_user_map"
+	db_dml forum "
+		delete from im_forum_topic_user_map 
+		where topic_id in (
+			select topic_id 
+			from im_forum_topics 
+			where object_id = :office_id
+		)
+	"
+	ns_log Notice "offices/nuke-2: im_forum_topics"
+	db_dml forum "delete from im_forum_topics where object_id = :office_id"
+
+	# Filestorage
+	ns_log Notice "offices/nuke-2: im_fs_folder_status"
+	db_dml filestorage "
+		delete from im_fs_folder_status 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :office_id
+		)
+	"
+	ns_log Notice "offices/nuke-2: im_fs_folders"
+	db_dml filestorage "
+		delete from im_fs_folder_perms 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :office_id
+		)
+	"
+	db_dml filestorage "delete from im_fs_folders where object_id = :office_id"
+
+
+	ns_log Notice "offices/nuke-2: rels"
+	set rels [db_list rels "
+		select rel_id 
+		from acs_rels 
+		where object_id_one = :office_id 
+			or object_id_two = :office_id
+	"]
+	foreach rel_id $rels {
+	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
+	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
+	}
+
+	
+	ns_log Notice "offices/nuke-2: party_approved_member_map"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where party_id = :office_id"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where member_id = :office_id"
+	
+	db_dml delete_offices "
+		delete from im_offices 
+		where office_id = :office_id"
+
+	# End "with_transaction"
+    } {
+    
+	set detailed_explanation ""
+	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
+	    
+	    set sql "select table_name from user_constraints 
+		     where constraint_name=:constraint_name"
+	    db_foreach user_constraints_by_name $sql {
+		set detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
+	    }
+	    
+	}
+	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
+		[_ intranet-core.lt_The_nuking_of_user_us]
+		$detailed_explanation
+		<p>
+		[_ intranet-core.lt_For_good_measure_here]
+		<blockquote>
+		<pre>
+		$errmsg
+		</pre>
+		</blockquote>
+	"
+	return
+    }
+    set return_to_admin_link "<a href=\"/intranet/offices/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 }
 
 

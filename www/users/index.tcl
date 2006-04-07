@@ -80,11 +80,11 @@ set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
 
+
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
 # Use a normalized group_name in lowercase and with
 # all special characters replaced by "_".
-
 set user_group_name [im_mangle_user_group_name $user_group_name]
 set user_group_id 0
 set menu_select_label ""
@@ -95,8 +95,8 @@ switch [string tolower $user_group_name] {
 	set menu_select_label "users_all"
     }
     "unregistered" { 
-    	set user_group_id -1
-    	set menu_select_label "users_unassigned"
+    	set user_group_id -1 
+	set menu_select_label "users_unassigned"
     }
     default {
     	# Search for the right group name.
@@ -105,8 +105,8 @@ switch [string tolower $user_group_name] {
 	set user_group_id 0
 	db_foreach search_user_group "select group_id, group_name from groups" {
 		if {[string equal $user_group_name [im_mangle_user_group_name $group_name]]} {
-			set user_group_id $group_id
-			set group_pretty_name "$group_name"
+		    set user_group_id $group_id
+		    set group_pretty_name "$group_name"
 		}
 	}
 	set menu_select_label "users_[string tolower $user_group_name]"
@@ -147,7 +147,11 @@ if {"" == $view_name} {
     # Check if there is a specific view for this user group:
     set specific_view_name "[string tolower $user_group_name]_list"
     ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
-    set expcific_view_exists [db_string specific_view_exists "select count(*) from im_views where view_name=:specific_view_name"]
+    set expcific_view_exists [db_string specific_view_exists "
+	select count(*) 
+	from im_views 
+	where view_name=:specific_view_name
+    "]
     if {$expcific_view_exists} {
 	set view_name $specific_view_name
     }
@@ -173,7 +177,7 @@ set admin_html ""
 if {[im_permission $user_id "add_users"]} {
     append admin_html "
 	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
-	<li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
+        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
     "
 }
@@ -194,7 +198,11 @@ set column_vars [list]
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+set view_id [db_string get_view_id "
+	select view_id 
+	from im_views 
+	where view_name=:view_name
+" -default 0]
 if {!$view_id} { 
     ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
     [_ intranet-core.lt_You_are_trying_to_acc]<br>
@@ -242,7 +250,8 @@ set user_status_types [im_memoize_list select_user_status_types \
           order by lower(company_status)"]
 set user_status_types [linsert $user_status_types 0 0 All]
 
-set user_types [list [list All all]]
+set user_types [list 0 All]
+# set user_types [list [list All all]]
 db_foreach select_user_types "
 	select
 		group_id,
@@ -252,9 +261,9 @@ db_foreach select_user_types "
 		im_profiles
 	where
 		group_id = profile_id" {
-	
-	lappend user_types [list $group_name [im_mangle_user_group_name $group_name]]
-	#lappend user_types [im_mangle_user_group_name $group_name]
+		
+	lappend user_types [im_mangle_user_group_name $group_name]
+	lappend user_types $group_name
 }
 
 # company_types will be a list of pairs of (company_type_id, company_type)
@@ -263,6 +272,8 @@ db_foreach select_user_types "
 #           from im_company_types
 #          order by lower(company_type)"]
 #set company_types [linsert $company_types 0 0 All]
+
+
 
 # ---------------------------------------------------------------
 # Filter with Dynamic Fields
@@ -273,16 +284,15 @@ set form_id "user_filter"
 set object_type "person"
 set action_url "/intranet/users/index"
 set form_mode "edit"
-#ns_log notice "-----------> '$user_group_name'"
 ad_form \
     -name $form_id \
     -action $action_url \
     -mode $form_mode \
     -export {start_idx order_by how_many letter view_name filter_advanced_p} \
     -form {
-    	{user_group_name:text(select),optional {label "#intranet-core.User_Types#"} {options $user_types} {value $user_group_name}}
+        {user_group_name:text(select),optional {label "\#intranet-core.User_Types\#"} {options $user_types} {value $user_group_name}}
     }
-    
+
 if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
     im_dynfield::append_attributes_to_form \
@@ -294,9 +304,9 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     im_dynfield::set_form_values_from_http -form_id $form_id
 
     array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
-	-form_id $form_id \
-	-object_type $object_type
-    ]
+        -form_id $form_id \
+        -object_type $object_type
+			       ]
 }
 
 
@@ -304,15 +314,20 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 # 5. Generate SQL Query
 # ---------------------------------------------------------------
 
-# Now let's generate the sql query
-#set bind_vars [ns_set create]
-
 if { $user_group_id > 0 } {
     append page_title " in group \"$group_pretty_name\""
+    set context_bar [im_context_bar $page_title]
+
+    lappend extra_froms "(select member_id from group_distinct_member_map m where group_id = :user_group_id) m"
+
     lappend extra_wheres "u.user_id = m.member_id"
-    lappend extra_wheres "m.group_id = $user_group_id"
-    lappend extra_froms "group_distinct_member_map m"
 }
+
+# Don't show deleted users unless specified (in the future)
+if {1} {
+    lappend extra_wheres "u.member_state = 'approved'"
+}
+
 
 
 if { -1 == $user_group_id} {
@@ -334,13 +349,13 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 if {"" == $extra_order_by} {
     switch $order_by {
 	"Name" { set extra_order_by "order by upper(u.last_name||u.first_names)" }
-	"Email" { set extra_order_by "order by upper(email)" }
+	"Email" { set extra_order_by "order by upper(u.email)" }
 	"AIM" { set extra_order_by "order by upper(aim_screen_name)" }
 	"Cell Phone" { set extra_order_by "order by upper(cell_phone)" }
 	"Home Phone" { set extra_order_by "order by upper(home_phone)" }
 	"Work Phone" { set extra_order_by "order by upper(work_phone)" }
 	"Last Visit" { set extra_order_by "order by last_visit DESC" }
-	"Creation" { set extra_order_by "order by creation_date DESC" }
+	"Creation" { set extra_order_by "order by u.creation_date DESC" }
 	"Supervisor" { set extra_order_by "order by e.supervisor_id" }
     }
 }
@@ -353,7 +368,6 @@ set extra_where [join $extra_wheres "\n\tand "]
 if {"" != $extra_from} { set extra_from ",$extra_from" }
 if {"" != $extra_select} { set extra_select ",$extra_select" }
 if {"" != $extra_where} { set extra_where "and $extra_where" }
-
 
 
 # Create a ns_set with all local variables in order
@@ -379,46 +393,44 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
     # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
-    ns_log notice "-------------------> bind vars $extra_sql_array(bind_vars)"
     set ns_set_vars $extra_sql_array(bind_vars)
     set tmp_vars [util_list_to_ns_set $ns_set_vars]
     set tmp_var_size [ns_set size $tmp_vars]
     for {set i 0} {$i < $tmp_var_size} { incr i } {
-	set key [ns_set key $tmp_vars $i]
-	set value [ns_set get $tmp_vars $key]
-	ns_set put $form_vars $key $value
+        set key [ns_set key $tmp_vars $i]
+        set value [ns_set get $tmp_vars $key]
+        ns_set put $form_vars $key $value
     }
 
     # Add the additional condition to the "where_clause"
-    append extra_where "
-	and person_id in $dynfield_extra_where
-    "
-    #ad_return_error "error" "$where_clause"
+    if {"" != $dynfield_extra_where} { 
+	    append extra_where "
+                and person_id in $dynfield_extra_where
+            "
+    }
 }
-
 
 set sql "
 select
 	u.*,
-	to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
-	to_char(o.creation_date,:date_format) as creation_date,
-	p.email,
+	c.home_phone, c.work_phone, c.cell_phone, c.pager,
+	c.fax, c.aim_screen_name, c.msn_screen_name,
+	c.icq_number, c.m_address,
+	c.ha_line1, c.ha_line2, c.ha_city, c.ha_state, c.ha_postal_code, c.ha_country_code,
+	c.wa_line1, c.wa_line2, c.wa_city, c.wa_state, c.wa_postal_code, c.wa_country_code,
+	c.note, c.current_information,
+        to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
+	to_char(u.creation_date,:date_format) as creation_date,
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
-	users_active u, 
-	acs_objects o,
-	parties p,
-	persons pe
+	cc_users u
+	LEFT JOIN users_contact c ON (u.user_id = c.user_id)
 	$extra_from
-where 
-	u.user_id = o.object_id
-	and u.user_id = p.party_id
-	and p.party_id = pe.person_id
+where	1=1
 	$extra_where
 $extra_order_by
 "
-#ad_return_error "error" "$sql"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
@@ -547,7 +559,6 @@ set table_continuation_html ""
 # Check whether we have to add spamming to Admin Links
 # ---------------------------------------------------------------
 
-
 if {"" != $admin_html && [db_table_exists spam_messages]} {
 
     set selector_short_name "[string tolower $user_group_name]_all"
@@ -555,7 +566,6 @@ if {"" != $admin_html && [db_table_exists spam_messages]} {
     <li><a href=\"[spam_base]spam-add?[export_url_vars selector_short_name]\"
       >[_ intranet-core.Spam_Users]
     </a>\n"
-
 }
 
 # ---------------------------------------------------------------
@@ -565,6 +575,7 @@ if {"" != $admin_html && [db_table_exists spam_messages]} {
 set page_body "
 <br>
 [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
+
 <table width=100% cellpadding=2 cellspacing=2 border=0>
   $table_header_html
   $table_body_html

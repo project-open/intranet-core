@@ -90,7 +90,12 @@ order by category_id"
     set delete_action_html ""
 
     # Increase the category counter until up to date
-    set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default 10000]
+    set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default 100000]
+
+
+    # Increase the category counter until up to date
+    set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default\
+			 10000]
     set category_id [expr $category_id + 1]
     while {[db_string max_cat_id "select max(category_id) from im_categories"] >= $category_id} {
 	set category_id [db_nextval im_categories_seq]

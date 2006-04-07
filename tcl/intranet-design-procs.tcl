@@ -34,8 +34,8 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
     set url "/intranet/images"
     set navbar_gif_path [im_navbar_gif_path]
     if { $translate_p && ![empty_string_p $alt] } {
-	set alt_key [lang::util::suggest_key $alt]
-	set alt [_ intranet-core.$alt_key]
+	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
+        set alt [lang::message::lookup "" $alt_key $alt]
     }
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -452,8 +452,6 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 
-#	ns_log Notice "im_sub_navbar: menu_name='$name', menu_label='$label', visible_tcl='$visible_tcl'"
-	
 	if {"" != $visible_tcl} {
 	    # Interpret empty visible_tcl menus as always visible
 	    
@@ -484,11 +482,8 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-#	ns_log Notice "im_sub_navbar: check select for label='$label' against select_label='$select_label'"
-
         if {[string equal $label $select_label]} {
 	    
-#	    ns_log Notice "im_sub_navbar: highlight menu_name='$name'"
             # Make sure we only highligh one menu item..
             set found_selected 1
             # Set for the gif
@@ -503,11 +498,13 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
             set gif "middle-$old_sel-$cur_sel"
         }
 
-        set name [lang::util::suggest_key $name]
+        set name_key "intranet-core.[lang::util::suggest_key $name]"
+        set name [lang::message::lookup "" $name_key $name]
+
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
         } else {
-            set html "$nosel<a href=\"$url\"><nobr>[_ intranet-core.$name]</nobr></a></td>\n"
+            set html "$nosel<a href=\"$url\"><nobr>$name</nobr></a></td>\n"
         }
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -571,8 +568,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 	    set context [list $page_title]
 	}
 
-	set po "<span color=white>&\#93;project-open&\#91;</span>"
-	set context_root [list [list "/intranet/" $po]]
+	set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
 	set context [concat $context_root $context]
 	set context_bar [im_context_bar_html $context]
     }
@@ -619,9 +615,6 @@ order by
 	set select_this_one 0
 	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
 
-# 050128 fraber: Changing completely to labels
-#	if {[string equal $url_stub_chopped $url]} { set select_this_one 1 }
-
         if {!$found_selected && $select_this_one} {
 	    # Make sure we only highligh one menu item..
             set found_selected 1
@@ -637,11 +630,13 @@ order by
 	    set gif "middle-$old_sel-$cur_sel" 
 	}
 
-        set name [lang::util::suggest_key $name]
+        set name_key "intranet-core.[lang::util::suggest_key $name]"
+        set name [lang::message::lookup "" $name_key $name]
+
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>[_ intranet-core.$name]</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
         } else {
-	    set html "$nosel<a href=\"$url\">[_ intranet-core.$name]</a></td>\n"
+	    set html "$nosel<a href=\"$url\">$name</a></td>\n"
 	}
 
         append navbar "<td>[im_gif $gif]</td>$html"
@@ -684,28 +679,32 @@ order by
 ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
     The default header for ProjectOpen
 } {
-
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
+
+    # Is any of the "search" package installed?
+    set search_installed_p [llength [info procs im_package_search_id]]
+
     if { [empty_string_p $page_title] } {
 	set page_title [ad_partner_upvar page_title]
     }
     set context_bar [ad_partner_upvar context_bar]
     set page_focus [ad_partner_upvar focus]
-
-    if { [empty_string_p $page_focus] } {
+    if {$search_installed_p && [empty_string_p $page_focus] } {
+	# Default: Focus on Search form at the top of the page
 	set page_focus "surx.query_string"
     }
-
     if { [empty_string_p $extra_stuff_for_document_head] } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
+    # --------------------------------------------------------
     set search_form ""
-    if {$user_id > 0 && 0 < [llength [info procs im_package_search_id]]} {
+    if {$user_id > 0 && $search_installed_p} {
 	set search_form "
+	    <nobr>
 	    <form action=/intranet/search/go-search method=post name=surx>
-              <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\">
+              <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
               <select class=surx name=target>"
 	if {[im_permission $user_id "search_intranet"]} {
 	    append search_form "
@@ -717,6 +716,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
                 <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
               </select>
               <input alt=go type=submit value=Go name='image'>
+	      </nobr>
             </form>
         "
     }
@@ -740,9 +740,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
-
     append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
-
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
 
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
@@ -763,14 +761,43 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
     
     set logout_pwchange_str "
-        <a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
-        <a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
+	<a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
+	<a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
     "
 
     # Disable who's online for "anonymous visitor"
     if {0 == $user_id} {
 	set users_online_str ""
 	set logout_pwchange_str ""
+    }
+
+    # --------------------------------------------------------
+    # Header Plugins
+    #
+    set any_perms_set_p [im_component_any_perms_set_p]
+    set plugin_sql "
+	select	c.*,
+		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+	from	im_component_plugins c
+	where	page_url = 'header'
+	order by sort_order
+    "
+
+    set plugin_html ""
+    db_foreach get_plugins $plugin_sql {
+
+	if {$any_perms_set_p > 0} {
+	    if {"f" == $perm} { continue }
+	}
+
+	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
+	if { [catch {
+	    # "uplevel" evaluates the 2nd argument!!
+	    append plugin_html [uplevel 1 $component_tcl]
+	} err_msg] } {
+	    set plugin_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
+	    set plugin_html [im_table_with_title $plugin_name $plugin_html]
+        }
     }
 
     return "
@@ -782,12 +809,15 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     </td>
     <td align=left valign=middle> 
       <span class=small>
-        $users_online_str
-        $user_profile: $user_name <BR>
-        $logout_pwchange_str
+        <nobr>$users_online_str</nobr>
+        <nobr>$user_profile: $user_name</nobr><br>
+        <nobr>$logout_pwchange_str</nobr>
       </span>
     </td>
-    <td valign=middle align=right> $search_form </TD>
+    <td valign=middle align=right> 
+	$search_form 
+	$plugin_html
+    </TD>
   </tr>
 </table>
 "
@@ -872,6 +902,7 @@ ad_proc -public im_stylesheet {} {
     return "
 <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
 <link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>
 "
 
 # <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
@@ -884,7 +915,7 @@ ad_proc -public im_stylesheet {} {
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
-    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/projop-logo.gif"]
+    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/project_open.38.10frame.gif"]
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
     
     return "\n<a href=\"$system_logo_link\"><img src=$system_logo border=0></a>\n"
@@ -1000,12 +1031,13 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
 
     set html "&nbsp;"
     foreach letter $alpha_list {
-	set letter_txt [lang::util::suggest_key $letter]
+	set letter_key "intranet-core.[lang::util::suggest_key $letter]"
+	set letter_trans [lang::message::lookup "" $letter_key $letter]
 	if {[string equal $letter $default_letter]} {
-	    append html "<font color=white>[_ intranet-core.$letter]</font> &nbsp; \n"
+	    append html "<font color=white>$letter_trans</font> &nbsp; \n"
 	} else {
 	    set url "$target_url?letter=$letter&$param_html"
-	    append html "<A HREF=$url>[_ intranet-core.$letter]</A>&nbsp;\n"
+	    append html "<A HREF=$url>$letter_trans</A>&nbsp;\n"
 	}
     }
     append html ""
@@ -1070,7 +1102,7 @@ where
     set report_url [ad_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { [empty_string_p $report_url] } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
-	set report_url "http://www.projop.com/intranet-forum/forum/new-system-incident"
+	set report_url "http://projop.dnsalias.com/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""
@@ -1099,7 +1131,7 @@ ad_proc -public im_context_bar {
     args
 } {
     Returns a Yahoo-style hierarchical navbar. 
-    This is the ProjectOpen specific version of the OpenACS ad_context_bar.
+    This is the project-open specific version of the OpenACS ad_context_bar.
     Here we actually don't want to show anything about "admin".
 
     'args' can be either one or more lists, or a simple string.
@@ -1116,8 +1148,7 @@ ad_proc -public im_context_bar {
         set node_id [ad_conn node_id]
     }
 
-    set po "<span color=white>&\#93;project-open&\#91;</span>"
-    set context [list [list "/intranet/" $po]]
+    set context [list [list "/intranet/" "&\#93;project-open&\#91;"]]
 
     if {[llength $args] == 0} {
         # fix last element to just be literal string
@@ -1142,7 +1173,7 @@ ad_proc -public im_context_bar_html {
     context
 } {
     Generate the an html fragement for a context bar.
-    This is the Project/Open specific variant of the OpenACS ad_context_bar_html
+    This is the ProjectOpen specific variant of the OpenACS ad_context_bar_html
     This is the function that takes a list in the format
     <pre>
     [list [list url1 text1] [list url2 text2] ... "terminal text"]

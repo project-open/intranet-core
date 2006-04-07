@@ -46,6 +46,7 @@ if {[exists_and_not_null profile]} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 set page_title "[_ intranet-core.Add_a_user]"
 set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_user]"]
@@ -76,7 +77,7 @@ if {[im_permission $current_user_id view_users]} {
 # Check if we are editing an already existing user...
 set editing_existing_user 0
 if {"" != $user_id} { 
-    set editing_existing_user [db_string get_user_count "select count(*) from users where user_id=:user_id"]
+    set editing_existing_user [db_string get_user_count "select count(*) from parties where party_id = :user_id"]
 }
 ns_log Notice "/users/new: editing_existing_user=$editing_existing_user, user_id=$user_id, email=$email"
 
@@ -99,13 +100,11 @@ select
 	pa.url,
 	u.screen_name
 from
-	persons pe,
-	parties pa,
-	users u
+	parties pa
+	left outer join persons pe on (pa.party_id = pe.person_id)
+	left outer join users u on (pa.party_id = u.user_id)
 where
-	pe.person_id = :user_id
-	and pe.person_id = pa.party_id
-	and pe.person_id = u.user_id
+	pa.party_id = :user_id
 "
     db_0or1row get_user_details $user_details_sql
 
@@ -194,9 +193,14 @@ ns_log Notice "/users/new: managable_profiles_reverse=$managable_profiles_revers
 ns_log Notice "/users/new: profile_values=$profile_values"
 
 
-if {[llength $managable_profiles_reverse] > 0} {
-    # fraber 20040123: Adding the list of profiles that
-    # the current user can administer
+
+# Fraber 051123: Don't show the profile to the user
+# himself, unless it's an administrator.
+set edit_profiles_p 0
+if {[llength $managable_profiles_reverse] > 0} { set edit_profiles_p 1 }
+if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set edit_profiles_p 0}
+
+if {$edit_profiles_p} {
     ad_form -extend -name register -form {
 	{profile:text(multiselect),multiple
 	    {label "[_ intranet-core.Group_Membership]"}
@@ -236,12 +240,19 @@ ad_form -extend -name register -on_request {
 
 } -on_submit {
 
+
+    if {[info exists password] && [info exists password_confirm] && ![string equal $password $password_confirm]} {
+	ad_return_complaint 1 [lang::message::lookup "" intranet-core.Passwords_Dont_Match "The password confirmation doesn't match the password"]
+	return
+    }
+
+
 #	20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
 #    db_transaction {
 	
 	# Do we create a new user or do we edit an existing one?
 	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
-	
+
 	if {!$editing_existing_user} {
 
 	    # New user: create from scratch
@@ -255,6 +266,12 @@ ad_form -extend -name register -on_request {
 			return
 	    }
 
+	    if {![info exists password] || [empty_string_p $password]} {
+		set password [ad_generate_random_string]
+		set password_confirm $password
+	    }
+
+	    ns_log Notice "/users/new: Before auth::create_user password='$password'"
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \
@@ -269,22 +286,49 @@ ad_form -extend -name register -on_request {
 					 -secret_question $secret_question \
 					 -secret_answer $secret_answer]
 
-
-	    # Add the user to the "Registered Users" group, because
-	    # (s)he would get strange problems otherwise
-	    set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
-	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
-
-	    # Add a users_contact record to the user since the 3.0 PostgreSQL
-	    # port, because we have dropped the outer join with it...
-	    catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
-	    catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
-
 	} else {
 
 	    # Existing user: Update variables
 	    set auth [auth::get_register_authority]
 	    set user_data [list]
+
+	    # Make sure the "person" exists.
+	    # This may be not the case when creating a user from a party.
+	    set person_exists_p [db_string person_exists "select count(*) from persons where person_id = :user_id"]
+	    if {!$person_exists_p} {
+		db_dml insert_person "
+		    insert into persons (
+			person_id, first_names, last_name
+		    ) values (
+			:user_id, :first_names, :last_name
+		    )
+		"	
+		# Convert the party into a person
+		db_dml person2party "
+		    update acs_objects
+		    set object_type = 'person'
+		    where object_id = :user_id
+		"	
+	    }
+
+	    set user_exists_p [db_string user_exists "select count(*) from users where user_id = :user_id"]
+	    if {!$user_exists_p} {
+		if {"" == $username} { set username $email} 
+		db_dml insert_user "
+		    insert into users (
+			user_id, username
+		    ) values (
+			:user_id, :username
+		    )
+		"
+		# Convert the person into a user
+		db_dml party2user "
+		    update acs_objects
+		    set object_type = 'user'
+		    where object_id = :user_id
+		"
+	    }
+
 
 	    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
 	    person::update \
@@ -304,6 +348,38 @@ ad_form -extend -name register -on_request {
 		-screen_name $screen_name
 	    
 	}
+
+	# For all users (new and existing one):
+        # Add a users_contact record to the user since the 3.0 PostgreSQL
+        # port, because we have dropped the outer join with it...
+        catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
+        catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
+
+
+        # Add the user to the "Registered Users" group, because
+        # (s)he would get strange problems otherwise
+        set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+        set reg_users_rel_exists_p [db_string member_of_reg_users "
+		select	count(*) 
+		from	group_member_map m, membership_rels mr
+		where	m.member_id = :user_id
+			and m.group_id = :registered_users
+			and m.rel_id = mr.rel_id 
+			and m.container_id = m.group_id 
+			and m.rel_type::text = 'membership_rel'::text
+	"]
+	if {!$reg_users_rel_exists_p} {
+	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+	}
+
+
+	# TSearch2: We need to update "persons" in order to trigger the TSearch2
+	# triggers
+	db_dml update_persons "
+		update persons
+		set first_names = first_names
+		where person_id = :user_id
+        "
 
 	ns_log Notice "/users/new: finished big IF clause"
 
@@ -331,7 +407,7 @@ ad_form -extend -name register -on_request {
 	    # if the user has no right to change profiles.
 	    # Probably this is a freelancer or company
 	    # who is editing himself.
-	    if {0 == [llength $managable_profiles]} { break }
+	    if {!$edit_profiles_p} { break }
 
 	    ns_log Notice "profile_tuple=$profile_tuple"
 	    set profile_id [lindex $profile_tuple 0]
@@ -368,8 +444,8 @@ ad_form -extend -name register -on_request {
 		    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 		}
 
-
-
+		# Remove all permission related entries in the system cache
+		im_permission_flush
 	    }
 
 	    
@@ -424,7 +500,9 @@ ad_form -extend -name register -on_request {
 		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 		}
 
-		
+		# Remove all permission related entries in the system cache
+		im_permission_flush
+	       
 	    }
 	}
 
@@ -482,33 +560,29 @@ ad_form -extend -name register -on_request {
     }
     
 
-
     # Store dynamic fields
-    if {[db_table_exists im_dynfield_attributes]} {
+	if {[db_table_exists im_dynfield_attributes]} {
 
-	set form_id "register"
-	set object_type "person"
+        set form_id "register"
+        set object_type "person"
 
-	im_dynfield::append_attributes_to_form \
-	    -object_type $object_type \
-	    -form_id $form_id \
-	    -object_id $user_id
-	
-	im_dynfield::attribute_store \
-	    -object_type $object_type \
-	    -object_id $user_id \
-	    -form_id $form_id
-	
+        im_dynfield::append_attributes_to_form \
+            -object_type $object_type \
+            -form_id $form_id \
+            -object_id $user_id
+
+        im_dynfield::attribute_store \
+            -object_type $object_type \
+            -object_id $user_id \
+            -form_id $form_id
     }
-
-
 
 } -after_submit {
 
     if {!$editing_existing_user} {
 	if { ![empty_string_p $next_url] } {
 	    # Add user_id and account_message to the URL
-	    ad_returnredirect [export_vars -base $next_url {user_id password {account_message $creation_info(account_message)}}]
+	    ad_returnredirect [export_vars -base $next_url {user_id password return_url {account_message $creation_info(account_message)}}]
 	    ad_script_abort
 	}
     }

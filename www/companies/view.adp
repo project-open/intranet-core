@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Clients#</property>
+<property name="title">@company_name@</property>
 <property name="main_navbar_label">companies</property>
 
 <!-- left - right - bottom  design -->
@@ -8,11 +8,13 @@
 <tr>
   <td valign=top>
 
-    @left_column;noquote@
-
-<if @dynamic_fields_p@>
-   <formtemplate id="company_view"></formtemplate>
-</if>
+    <table>
+        @left_column;noquote@
+        <if @dynamic_fields_p@>
+            <formtemplate id="company_view" style="standard-withouttabletab"></formtemplate>
+        </if>
+	@left_column_action;noquote@
+    </table>
 
     <%= [im_component_bay left] %>
   </td>

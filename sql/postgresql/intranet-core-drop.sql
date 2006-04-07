@@ -221,6 +221,7 @@ select acs_privilege__remove_child('admin', 'view');
 select acs_privilege__remove_child('admin', 'add_companies');
 select acs_privilege__remove_child('admin', 'view_companies');
 select acs_privilege__remove_child('admin', 'view_companies_all');
+select acs_privilege__remove_child('admin', 'edit_companies_all');
 select acs_privilege__remove_child('admin', 'view_company_contacts');
 select acs_privilege__remove_child('admin', 'view_company_details');
 select acs_privilege__remove_child('admin', 'view_offices');

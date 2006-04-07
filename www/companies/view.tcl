@@ -56,7 +56,12 @@ set see_sales_details $admin
 if {!$read} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
     <li>[_ intranet-core.lt_You_dont_have_suffici_2]"
+    return
 }
+
+# Should we bother about State and ZIP fields?
+set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
+
 
 # -----------------------------------------------------------
 # Get everything about the company
@@ -64,33 +69,22 @@ if {!$read} {
 
 db_1row company_get_info "
 select 
-	c.company_name,
-	c.company_path,
-	c.note, 
-	c.vat_number,
-	c.company_path, 
-	c.billable_p,
+	c.*,
 	im_name_from_user_id(c.primary_contact_id) as primary_contact_name,
 	im_email_from_user_id(c.primary_contact_id) as primary_contact_email,
 	im_name_from_user_id(c.accounting_contact_id) as accounting_contact_name,
 	im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
-	c.manager_id,
 	im_name_from_user_id(c.manager_id) as manager,
-	primary_contact_id,
-	accounting_contact_id,
 	im_category_from_id(c.company_status_id) as company_status,
 	im_category_from_id(c.company_type_id) as company_type,
-	c.annual_revenue_id,
 	im_category_from_id(c.annual_revenue_id) as annual_revenue,
-	referral_source,
 	to_char(start_date,'Month DD, YYYY') as start_date, 
-	contract_value, 
-	site_concept,
         o.phone,
         o.fax,
         o.address_line1,
         o.address_line2,
         o.address_city,
+        o.address_state,
         o.address_postal_code,
         o.address_country_code
 from 
@@ -107,7 +101,6 @@ set page_title $company_name
 set left_column ""
 
 append left_column "
-<table border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>
       [_ intranet-core.Client_Details]
@@ -124,13 +117,10 @@ if {$see_details} {
 "
 }
 
-if {$see_sales_details} {
-    append left_column "
-  <tr class=rowodd><td>[_ intranet-core.Referral_source]</td><td>$referral_source</td></tr>
-  <tr class=roweven><td>[_ intranet-core.Billable]</td><td> [util_PrettyBoolean $billable_p]</td></tr>
-"
+set state_column ""
+if {$some_american_readers_p} { set state_column "
+  <tr class=rowodd><td>[_ intranet-core.State]</td><td>$address_state</td></tr>\n"
 }
-
 
 if {$see_details} {
     append left_column "
@@ -139,17 +129,19 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.Address1]</td><td>$address_line1</td></tr>
   <tr class=roweven><td>[_ intranet-core.Address2]</td><td>$address_line2</td></tr>
   <tr class=rowodd><td>[_ intranet-core.City]</td><td>$address_city</td></tr>
+  $state_column
   <tr class=roweven><td>[_ intranet-core.Postal_Code]</td><td>$address_postal_code</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>\n"
+
     if {![empty_string_p $site_concept]} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { set site_concept "http://$site_concept" }
 	append left_column "
-  <tr class=rowodd><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
+  <tr class=roweven><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
     }
-    append left_column "
-  <tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>
-"
+
+    append left_column "<tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>\n"
+
 
 # ------------------------------------------------------
 # Show extension fields
@@ -223,14 +215,13 @@ if {[db_table_exists im_dynfield_attributes]} {
 	}
     }
 
-    append left_column "<tr class=roweven><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
+    append left_column "<tr class=rowodd><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
 
+    append left_column "<tr class=roweven><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
 # ------------------------------------------------------
 # Continuation ...
 # ------------------------------------------------------
-
-    append left_column "<tr class=rowodd><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
     #if { ![empty_string_p $contract_value] } {
     #   append left_column "<tr><td>[_ intranet-core.Contract_Value]</td><td>\$[util_commify_number $contract_value] K</td></tr>\n"
@@ -240,8 +231,9 @@ if {[db_table_exists im_dynfield_attributes]} {
     }
 }
 
+set left_column_action ""
 if {$admin} {
-    append left_column "
+    set left_column_action "
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
 	[export_form_vars company_id return_url]
@@ -249,7 +241,7 @@ if {$admin} {
 	</form></td></tr>"
 }
 
-append left_column "</table>"
+# append left_column "</table>"
 
 
 # ------------------------------------------------------

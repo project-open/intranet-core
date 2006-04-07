@@ -58,7 +58,7 @@ CREATE TABLE im_biz_objects (
 -- very error prone for DM creation.
 --
 CREATE TABLE im_biz_object_urls (
-	object_type		varchar(100),
+	object_type		varchar(1000),
 	url_type		varchar(100)
 				constraint im_biz_obj_urls_url_type_ck
 				check(url_type in ('view', 'edit')),
@@ -107,6 +107,7 @@ begin
 	return 0;
 end;' language 'plpgsql';
 
+
 create or replace function im_biz_object__name (integer)
 returns varchar as '
 declare
@@ -114,6 +115,50 @@ declare
 begin
 	return "undefined for im_biz_object";
 end;' language 'plpgsql';
+
+
+-- Function to determine the type_id of a "im_biz_object".
+-- It's a bit ugly to do this via SWITCH, but there aren't many
+-- new "Biz Objects" to be added to the system...
+
+create or replace function im_biz_object__type (integer)
+returns integer as '
+declare
+        p_object_id             alias for $1;
+        v_object_type           varchar;
+        v_biz_object_type_id    integer;
+begin
+
+        -- get the object type
+        select  object_type
+        into    v_object_type
+        from    acs_objects
+        where   object_id = p_object_id;
+
+        -- Initialize the return value
+        v_biz_object_type_id = null;
+
+        IF ''im_project'' = v_object_type THEN
+
+                select  project_type_id
+                into    v_biz_object_type_id
+                from    im_projects
+                where   project_id = p_object_id;
+
+        ELSIF ''im_company'' = v_object_type THEN
+
+                select  company_type_id
+                into    v_biz_object_type_id
+                from    im_companies
+                where   company_id = p_object_id;
+
+        END IF;
+
+        return v_biz_object_type_id;
+
+end;' language 'plpgsql';
+
+
 
 
 
@@ -130,7 +175,7 @@ end;' language 'plpgsql';
 -- neighbours.
 --
 create table im_biz_object_role_map (
-	acs_object_type	varchar(100),
+	acs_object_type	varchar(1000),
 	object_type_id	integer
 			constraint im_bizo_rmap_object_type_fk
 			references im_categories,

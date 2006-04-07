@@ -85,12 +85,13 @@
 -- 6000-6999	Intranet RecruitingRecruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
+
 -- 9000-9499	Intranet Material
 -- 9500-9999	Intranet Timesheet Tasks
 -- 10000-10999	Intranet DynField
 -- 11000-11099	Intranet SQL Selectors
--- 11100-11199	reserved (100)
--- 11200-11299	reserved (100)
+-- 11100-11199	CRM IP Type
+-- 11200-11299	CRM IP Status
 -- 11300-11399	reserved (100)
 -- 11400-11499	reserved (100)
 -- 11500-11599	reserved (100)

@@ -1,0 +1,535 @@
+
+  ]project-open[ Installer
+  Frank Bergmann <frank.bergmann@project-open.com>
+  Version V3.1.4, 2006-04-04
+  Copyright (c) 2006 ]project-open[
+
+  This is the ]project-open[ Linux installer. This document describes
+  how to install ]project-open[, and open-source based project management
+  and Professional Service Automation (PSA) system.
+
+  ______________________________________________________________________
+
+  0. About the Installer
+
+
+  Version V3.1.4, 2006-04-04
+  Copyright (c) 2006 ]project-open[
+  Frank Bergmann <frank.bergmann@project-open.com>
+  http://www.project-open.org/download/win/3.1.4.0.html
+  
+  Permission is granted to copy, distribute and/or modify this document 
+  under the terms of the GNU Free Documentation License, Version 1.1 or 
+  any later version published by the Free Software Foundation.
+  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html. 
+  
+  Please see LICENSE.ProjectOpen in the /web/projop/ directory for details 
+  about the licensing of the contained software.
+  
+
+  ______________________________________________________________________
+
+  1. Prerequisits:
+  
+  - Any recent Linux distibution (Kernel 2.4.x and 2.6.x).
+    The system in known to work with SuSE (> 9.1), RedHat (> 8.0)
+    and Debian (Sarge). For installation on different systems
+    please see http://openacs.org/doc/current/acs-admin.html.
+  - PostgreSQL 7.4.x or 8.0.1 (8.0.3 or higher DOES NOT WORK!)
+    PostgreSQL comes as part of all Linux distributions above.
+  - CVS 1.12.x
+    CVS comes as part of all major Linux distributions.
+
+  Other recommended software include:
+
+  - Pound reverse proxy
+    
+  
+  ______________________________________________________________________
+
+  2. Installation Overview
+
+  It will probably take you 15 minutes to go through the following 
+  steps:
+  
+	- Check that the prerequisites are OK
+  
+	- Setup "AOLServer". AOLServer is a webserver, similar to 
+	Apache. It acts as the application server that interprets 
+	the ]project-open[ source code.
+  
+	- Extract the ]project-open[ source code tree
+  
+	- Setup the PostgreSQL database and import the ]po[ demo
+	system.
+  
+	- Start the system for the first time
+  
+	- Automate backup, maintenance and system restart.
+	This is only necessary for a production installation
+	of the server.
+  
+	- Check for the latest version and updates
+
+
+  ______________________________________________________________________
+
+  3. Installer File Contents
+  
+  - INSTALL			# This file
+  - aolserver3.3oacs.tgz	# The AOLServer binary
+  - project-open.3-1-2-0-0.tgz	# ]project-open[ source tree
+  
+  
+  The finished directory tree will look like this:
+  
+  / usr / local / aolserver3.3oacs / bin		# Binaries
+				 / lib			# Libraries
+				 / log			# Not used
+				 / modules		# The TCL interpreter
+				 / include		# Header files
+  
+  / web / projop / apm-workspace			# Tmp space
+	       / bin					# Utilities
+	       / etc					# Config files
+	       / filestorage				# Filestorage
+	       / log					# Log files
+	       / packages				# Package home
+	       / packages / <package_name>		# A single package
+	       / packages / <package_name> / catalog	# Localization
+	       / packages / <package_name> / sql	# SQL satamodel
+	       / packages / <package_name> / tcl	# Library
+	       / packages / <package_name> / www	# Pages
+	       / tcl					# Global libraries
+	       / www					# 1st page and templates
+  
+
+    
+  ______________________________________________________________________
+
+  4. Main Installation Procedure
+  
+  
+  4.1. Install AOLServer
+  
+  AOLServer is the application server of ]project-open[. It is similar
+  to Apache, but includes a built-in compiler for the TCL language.
+  AOLServer is _the_ server of AOL and is know to deliver up to 
+  2.5 million pages/second (no typo!).
+  
+  # cd /usr/local/
+  # tar xzf aolserver3.3oacs.tgz 
+  
+  Check that AOLServer is working:
+  
+  # /usr/local/aolserver3.3oacs/bin/nsd -h
+  => Usage: /usr/local/aolserver3.3oacs/bin/nsd [...] 
+  
+  
+  
+  
+  4.1. UnTar the ]project-open[ Source Tree
+  
+  The default location for ]project-open[ is /web/. This is handy if
+  you have several servers and if the main purpose of your computer
+  is to run web servers. You can use a different directory, but you'll
+  have to change pathes in the config.tcl and later in the application
+  configuration. So we RECOMMEND that you stick with /web/, atleast for 
+  the purpose of the first installation.
+  
+  # cd /
+  # mkdir /web
+  # cd /web
+  # tar xzf project-open.3-1-2-0-0.tgz
+  
+  
+  
+  4.2. Create a new User and Group
+  
+  You can run ]project-open[ using any user/group that you want.
+  So we recommend you to create a separate user/group for it for
+  security reasons. We usually choose the same name for the user
+  and the group:
+  
+  # groupadd projop
+  # useradd -g projop -d /web/projop projop
+  
+  Check that the new user is working:
+
+  # su - projop
+  => You should get a permission warning like: 
+	"su: warning: cannot change directory to /web/projop: Permission denied"
+     That is OK because you haven't set the permissions yet 
+     (section below)
+
+  However, there is a configuration option where you may want to
+  allow ]project-open[ to read and write to your existing Samba
+  fileserver, that is located on the same computer.
+  This configuration is convenient for many companies, because it
+  allows users to work with the same files from within the office
+  and from outside the office.
+  In this case you will have to run ]po[ with the group "users" 
+  (or whatever is your main employee group), so that the files
+  created by ]po[ can be read and written by the Samba users.
+  
+  
+  
+  
+  4.3. Verify the Config File
+  
+  The config.tcl configuration file in /web/projop/etc/ tells AOLServer 
+  where to start action. Please verify the first 10 or so lines to for 
+  IP address and port and adapt the values to your configuration.
+  Here are the sample values that are delivered with the installer:
+  
+  
+	#------------------------------------------------------
+	# change to 80 and 443 for production use
+	set httpport		8080
+	set httpsport		8443
+	
+	# The name of the server and its location
+	set server		"projop"
+	set servername		"ProjectOpen Test Server"
+	
+	# The hostname and address should be set to actual values.
+	set hostname		[ns_info hostname]
+	set address		"0.0.0.0"
+  
+  
+  
+  4.4. Set Permissions and Owner
+  
+  All files in /web/projop/ should be owned by projop:
+  
+  # cd /web
+  # chown -R projop:projop projop
+  
+  Now you should be able to login as "projop" without error message:
+  # su - projop
+  => No error
+
+
+  
+  4.5. Setup the PostgreSQL Database
+  
+  We are going to create a database "projop" and load a preconfigured demo
+  system into this database:
+  
+  Check that PostgreSQL up and running ("postgres" is the default
+  database administrator account. All PostgreSQL installers on SuSE, 
+  RedHat and Debian setup this account by default).
+  
+  # su - postgres
+  # psql --help
+  => This is psql 7.4.7, the PostgreSQL interactive terminal. [...]
+  
+  Create a new user. The new user should be a database admin (-a, -d)
+  because these privileges are needed in order to setup the full-text
+  search engine:
+  
+  Create a new user, a new database and a language in the database:
+
+  #postgres:~> createuser -a -d projop
+  #postgres:~> createdb --owner=projop projop
+  #postgres:~> createlang plpgsql projop
+  => May say that "plpgsql" is already installed, that's OK.
+  
+  
+  
+  4.6. Load the Demo Data into the Database
+  
+  There are two demo configurations coming with this server:
+  
+  - ]project-consulting[ is a small consulting company with
+    some 10 employees. This setup is also suitable for 
+    advertising agencies, engineering offices, IT departments
+    of larger companies etc.
+  
+  
+  - ]project-translation[ is a small translation company with
+    some 10 employees. This setup is also suitable for
+    localization companies and translation departments of
+    larger companies.
+  
+  - For ]project-lifecycle[ or ]project-agency[ please use the
+    ]project-consulting[ demo. These three products are very
+    similar and distinguished mainly by configuration.
+
+
+  #su - projop
+  #projop:~> cd /web/projop/packages/intranet-core/preconf
+  #projop:~> psql projop -f pc.preconf.sql	# ]project-consulting[
+  
+  or 
+  
+  #projop:~> psql projop -f pt.preconf.sql	# ]project-translation[
+  
+  
+  Loading the files may take some 1-2 minutes. It is OK if you
+  see ERROR messages in the beginning talking about missing "tables"
+  or missing "functions".
+  
+  Check that the file has been loaded OK:
+  
+  #projop:~> psql projop
+  #projop => select count(*) from users;
+  
+  => 192
+  
+
+  4.7. Customized your Login Screen
+
+  There are two demo configurations for the login screens, one for
+  ]project-consulting[ and one for ]project-translation[.
+
+
+  # su - projop
+  # cp /web/projop/packages/intranet-core/preconf/pt.index.tcl /web/projop/www/index.tcl
+  # cp /web/projop/packages/intranet-core/preconf/pt.index.adp /web/projop/www/index.adp
+
+  You can check the availability of the screen when starting AOLServer
+  in the next step.
+
+
+  
+  4.8. Start the Server for the First Time
+  
+  Now we are ready to start the server. We are going to run it in
+  "foreground mode" to get all debugging messages on the terminal.
+  (The "\" indicates a continuation of the command line):
+  
+  # /usr/local/aolserver3.3oacs/bin/nsd -f -t /web/projop/etc/config.tcl \
+    -u projop -g projop
+  
+  => You should get hundereds of lines of debugging output.
+  => After about 30 seconds you should see a line like this:
+     [...][...][...]	Notice: nssock: listening on 0.0.0.0:8080
+  
+  Congratulations!
+  
+  
+  If you should enconter errors please check the output for occurrence 
+  of the "error:" string. ]po[ gives quite detailed error messages that 
+  allow you track down any error. Please check the "Open Discussion" forum 
+  at http://sourceforge.net/projects/project-open for help. 
+  Please include the first(!) line of your log file containing "error:"
+  if you post.
+  
+  To check that the server is running file please start a Web browser
+  on your local computer with the URL "http://localhost:8080" or choose
+  a suitable URL if you start the browser at a different computer.
+  
+
+
+  4.9. Update the Parameters and Configuration
+
+  The parameters in your system should be set for a Windows installation
+  right now (after importing the preconfigured demo contents).
+  To convert these parameters to Linus please use the 
+  "Convert parameters from Windows to Linux" link in the "Admin"
+  menu.
+
+  Please point your favourinte web browser to "Admin" -> "Parameters" 
+  in order to check the parameters manually. The filestorage pathes should 
+  now all be set to /web/projop/... (instead of "C:/ProjectOpen/..." in 
+  Windows). Please check the "HomeBasePathUnix". It should become
+  "/web/projop/filestorage/home" under Linux.
+
+  Also, decide whether you want to allow people to register themselves
+  to accesss your server or whether you want to confirm membership.
+
+  For more information on parameters and configuration please check
+  the PO-Configuration-Guide in the /web/projop/filestorage/home
+  folder or just check in Google for "project-open configuration-guide".
+  
+
+  
+  4.10. Automate Server Restart
+  
+  AOLServer in our productive installations usually run weeks without a 
+  restart. However, you want to make sure the server "comes back" if
+  it's been stopped (for example after the installation of a new package).
+  
+  To do this, please stop any running AOLServer instances and include 
+  the following line in your "InitTab" (the "\" indicates a continuation 
+  of the same line):
+  
+  #vi /etc/inittab
+  
+  And add somewhere the line:
+  
+  ns1:345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
+  -u projop -g users
+  
+  This line tells "Init" to restart the server in case it has stopped.
+  Then tell "init" to read the InitTab again:
+  
+  #init q
+  
+  
+  Check with "top" or "tail -f /web/projop/log/error.log" that the server
+  starts. 
+  There have been reports that "init q" wouldn't work on a Debian 
+  system. In this case please reboot your system. Let us know if you
+  have found/resolved this behaviour.
+
+  You can test the restart behaviour by killing AOLServer the "hard way".
+  Your server should "come back" withing 1-2 minutes automatically.
+  
+  #killall -9 nsd
+  
+  
+  
+  4.11. Automate PostgreSQL Maintenance
+  
+  PostgreSQL requires you to execute a "vacuumdb" command regularly
+  in order to reorganize and cleanup the database. Please add a line to your
+  "crontab":
+  
+  #crontab -e
+  
+  And then add the following line to schedule a "vacuum" at 3:20am every day:
+  
+  20 3 * * * su - postgres -c "/usr/bin/vacuumdb -a -f" >> /var/log/vacuumdb.log 2>&1
+  
+  
+  
+  4.12. Automate PostgreSQL Backup
+  
+  It is advisable to schedule PostgreSQL backups every day, or even
+  every few hours (the database is usually quite small, so that it's
+  save to backup during times of low system use such as 5am, 1pm, 9pm).
+  
+  Load your "crontab" into an editor:
+
+  #crontab -e
+
+  Then add a line like this (make sure /var/log/backup/ exists and is 
+  writable for the user "postgres"):
+  
+  9 5 * * * /root/bin/backup-postgres > /var/log/backup/export_postgres.`/bin/date \
+  +\%Y\%m\%d.\%H\%M`.log 2>&1
+  
+  Here is a sample file to initiate the backup:
+  
+	#
+	# /root/bin/backup-postgres
+	# V1.1, 060115 Frank Bergmann <frank.bergmann@project-open.com>
+	#
+	
+	# Backup to a directory that is written to tape every day:
+	exportdir=/web/projop/filestorage/backup
+  
+	# Make sure this log directory is writable for user "postgres"
+	logdir=/var/log/backup
+  
+	# PostgreSQL Admin account
+	PG_OWNER=postgres
+  
+	# Add a timestamp to all database dumps:
+	CURRENT_TIME=`/bin/date +\%Y\%m\%d.\%H\%M`
+	
+	# --------------- "projop" Database on "berlin" ----------------
+	#
+	COMPUTER_NAME=berlin
+	SERVICE_NAME=projop
+	export_file=$exportdir/pgback.$COMPUTER_NAME.$SERVICE_NAME.$CURRENT_TIME.sql
+	log_file=$logdir/export-postgres.$SERVICE_NAME.$CURRENT_TIME.log
+	echo su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file"
+	su - $SERVICE_NAME --command="pg_dump -c -O -F p -f $export_file" > $log_file 2>&1
+	bzip2 $export_file
+
+  You need to make this file writable:
+
+  #chmod ug+x /root/bin/backup-postgres  
+  
+
+
+  
+  4.13. Check for the Latest Version and Updates
+  
+
+  Please check http://www.project-open.org/download/win/3.1.4.0.html for
+  release notes and http://www.sourceforge.net/projects/project-open/ for news
+  and announcements. You can subscribe yourself to the project to get updated
+  about new packages, security updates etc.
+  
+  Please send us your email address if you are planning to use ]po[ in your 
+  company. This way we will send you a ~quarterly newsletter and alert you in 
+  urgent cases.
+  
+  On Sourceforge check for the latest announcement of a stable release.
+
+  For example the lates while writing this document is "v3-1-2-0-0". The
+  upgrade to this release (this is also necesary for if you install this
+  installer - there are updates with respect to Invoices):
+
+  # su - projop
+  # cd /web/projop/packages
+  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-2-0-0 -Pd
+
+  After this please go to your your server URL http://localhost/acs-admin/apm/,
+  choose "Install Packages" and select all packages that "Upgrade" (please don't
+  install packages if you don't know what they are doing).
+
+  The same process is available as the "Automated Software Update Service".
+  ASUS is free at the moment, but we plan to charge a small amount per month 
+  for its use in the future.
+
+  
+
+  ______________________________________________________________________
+
+  5. Where to go from Here
+
+
+      - Please check http://www.project-open.org/download/win/3.1.4.0.html
+        This is the location where we are posting release notes and comments 
+        from others users on this particular version of the installer.
+
+      - Check SourceForge: http://sourceforge.net/projects/project-open/
+	and consult the "Open Discussions" forum. Here you will find a lot
+	of other users, discussing the product.
+	Please leave us a message in this forum if you like this software.
+	You can do this anonymously, just telling everybody about your 
+        experience and how you would like to use the system.
+
+      - Play around with the system:
+	We have provided you with the sample company configurations
+	so that it is easy (and even fun) to browse around and explore
+	the projects of the "Tigerpond" company.
+	Checkout the "Iteligent Software Localization" project in 
+	]project-translation[ and the "Distribution System for door-locks"
+	project in ]project-consulting[. These projects have been setup
+	up based on real-world experience. 
+
+      - Read the PDF manuals:
+	A full set of PDF manuals is included with this distribution 
+	in the "Home Filestorage" located at /web/projop/filestorage/home/.
+
+      - Complete List of Documentation:
+	For complete documentation please go to http://www.project-open.org/
+	The "]po[ overview" diagram on the first page lists all components 
+	that are involved in running ]po[.
+
+      - Start to use the system for "production":
+	Once you have found that the system suits your needs you can
+	delete the "demo data" in "Admin" -> "Delete Demo Data".
+	Only projects and companies are deleted. All master data configuration
+	and the users will remain.
+
+      - Buy Training and Configuration support from us:
+	A day of consulting work will allow us to talk with you about
+	your configuration details and your rollout strategy.
+	Also, we can help you with training and to avoid any "people issues" 
+	that frequently show up when employees have to start to use a 
+	new system.
+
+      - Get a Support Contract:
+	A support contract allows us to respond quickly to your support
+	questions. See http://www.project-open.com/product/services/
+
+Have Fun!
+Frank
+

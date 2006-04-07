@@ -38,11 +38,24 @@
 <table border=0 cellspacing=0 cellpadding=1 width="70%">
 <tr><td>
 
+<font color=red>
+Please read carefully the following text. Importing data into a system like 
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
+is not an easy task, because it employes much "tigher" rules 
+for data consistency then Outlook or other PIM applications.
+<p>
+Also, please
+<a href=/intranet/admin/backup/pg_dump>backup your data</a> before
+importing.
+</font>
+
+
+
 <h3>Import Companies From Microsoft Outlook 2000</h3>
 
 <p>
 This function is capable of importing a number of 
-<span class=brandfirst>Project/</span><span class=brandsec>Open</span>
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 "Companies" from Microsoft Outlook 2000 (English). For other versions 
 of Outlook please 
 <A href="http://www.project-open.com/contact/">contact us</a>.
@@ -51,7 +64,7 @@ of Outlook please
 <p>
 This function will look at the "Company" field of the Outlook contact 
 and create a 
-<span class=brandfirst>Project/</span><span class=brandsec>Open</span>
+<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 company with the same name. 
 In addition, it will create a user from the rest of
 the contact information and add this user as member of the company.

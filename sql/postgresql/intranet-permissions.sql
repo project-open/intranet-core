@@ -377,6 +377,9 @@ select acs_privilege__create_privilege('view_companies','View Companies','View C
 select acs_privilege__add_child('admin', 'view_companies');
 select acs_privilege__create_privilege('view_companies_all','View All Companies','View All Companies');
 select acs_privilege__add_child('admin', 'view_companies_all');
+select acs_privilege__create_privilege('edit_companies_all','Edit All Companies','Edit All Companies');
+select acs_privilege__add_child('admin', 'edit_companies_all');
+
 select acs_privilege__create_privilege('view_company_contacts','View Company Contacts','View Company Contacts');
 select acs_privilege__add_child('admin', 'view_company_contacts');
 select acs_privilege__create_privilege('view_company_details','View Company Details','View Company Details');
@@ -399,8 +402,13 @@ select acs_privilege__add_child('admin', 'add_projects');
 --  select acs_privilege__create_privilege('view_projects','View Projects','View Projects');
 select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
 select acs_privilege__add_child('admin', 'view_project_members');
+
 select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
 select acs_privilege__add_child('admin', 'view_projects_all');
+
+select acs_privilege__create_privilege('edit_projects_all','Edit All Projects','Edit All Projects');
+select acs_privilege__add_child('admin', 'edit_projects_all');
+
 select acs_privilege__create_privilege('view_projects_history','View Project History','View Project History');
 select acs_privilege__add_child('admin', 'view_projects_history');
 
@@ -417,6 +425,45 @@ select acs_privilege__create_privilege('admin_categories','Admin Categories','Ad
 select acs_privilege__add_child('admin', 'admin_categories');
 select acs_privilege__create_privilege('view_topics','General permission to see forum topics','');
 select acs_privilege__add_child('admin', 'view_topics');
+
+-- -----------------------------------------------------
+-- Add privileges for budget and budget_hours
+--
+select acs_privilege__create_privilege('add_budget','Add Budget','Add Budget');
+select acs_privilege__add_child('admin', 'add_budget');
+select acs_privilege__create_privilege('view_budget','View Budget','View Budget');
+select acs_privilege__add_child('admin', 'view_budget');
+
+select acs_privilege__create_privilege('add_budget_hours','Add Budget Hours','Add Budget Hours');
+select acs_privilege__add_child('admin', 'add_budget_hours');
+select acs_privilege__create_privilege('view_budget_hours','View Budget Hours','View Budget Hours');
+select acs_privilege__add_child('admin', 'view_budget_hours');
+
+-- Set preliminary privileges to setup the
+-- permission matrix
+
+select im_priv_create('view_budget','Accounting');
+select im_priv_create('view_budget','P/O Admins');
+select im_priv_create('view_budget','Project Managers');
+select im_priv_create('view_budget','Senior Managers');
+
+select im_priv_create('add_budget','Accounting');
+select im_priv_create('add_budget','P/O Admins');
+select im_priv_create('add_budget','Senior Managers');
+
+
+select im_priv_create('view_budget_hours','Employees');
+select im_priv_create('view_budget_hours','Accounting');
+select im_priv_create('view_budget_hours','P/O Admins');
+select im_priv_create('view_budget_hours','Project Managers');
+select im_priv_create('view_budget_hours','Senior Managers');
+
+select im_priv_create('add_budget_hours','Accounting');
+select im_priv_create('add_budget_hours','P/O Admins');
+select im_priv_create('add_budget_hours','Senior Managers');
+
+
+
 
 
 

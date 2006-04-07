@@ -239,7 +239,8 @@ switch $order_by {
     "Email" { set order_by_clause "order by upper(email), upper(company_name)" }
     "Type" { set order_by_clause "order by upper(company_type), upper(company_name)" }
     "Status" { set order_by_clause "order by upper(company_status), upper(company_name)" }
-    "Contact Person" { set order_by_clause "order by upper(last_name), upper(first_names), upper(company_name)" }
+    "Contact" { set order_by_clause "order by upper(company_contact_name)" }
+    "Contact Email" { set order_by_clause "order by upper(company_contact_email)" }
     "Company" { set order_by_clause "order by upper(company_name)" }
 }
 
@@ -376,15 +377,14 @@ set admin_html ""
 if {[im_permission $current_user_id "add_companies"]} {
 
     append admin_html "
-	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>
-	<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
-"
+	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>\n"
 }
 
 if {$user_is_admin_p} {
     append admin_html "
 <li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
-<li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a>
+<!-- <li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
+<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 "}
 
 

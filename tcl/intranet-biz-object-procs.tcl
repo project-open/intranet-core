@@ -27,9 +27,10 @@ ad_proc -public im_biz_object_role_project_manager {} { return 1301 }
 ad_proc -public im_biz_object_role_key_account {} { return 1302 }
 ad_proc -public im_biz_object_role_office_admin {} { return 1303 }
 
-# The final customer of a project when the invoicing customer is 
+
+# The final customer of a project when the invoicing customer is
 # in the middle
-ad_proc -public im_biz_object_role_final_customer {} { return 1303 }
+ad_proc -public im_biz_object_role_final_customer {} { return 1304 }
 
 # A generic association between business objects.
 # Don't know what this might be good for in the future...
@@ -37,8 +38,6 @@ ad_proc -public im_biz_object_role_generic {} { return 1305 }
 
 # Associated Email
 ad_proc -public im_biz_object_role_email {} { return 1306 }
-
-
 
 
 ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
@@ -243,8 +242,6 @@ where
 # --------------------------------------------------------------
 # Show the members of the Admin Group of the current Business Object.
 # --------------------------------------------------------------
-#
-# set company_members [im_group_member_component $company_id $user_id $user_admin_p $return_url [im_employee_group_id]]
 
 
 ad_proc -public im_group_member_component { object_id current_user_id { add_admin_links 0 } { return_url "" } { limit_to_users_in_group_id "" } { dont_allow_users_in_group_id "" } {also_add_to_group_id "" } } {
@@ -345,7 +342,7 @@ select
 	c.category_gif as role_gif,
 	c.category_description as role_description
 from
-	users u,
+	cc_users u,
 	acs_rels rels,
 	im_biz_object_members bo_rels,
 	im_categories c
@@ -354,6 +351,7 @@ where
 	and rels.object_id_two = u.user_id
 	and rels.rel_id = bo_rels.rel_id
 	and bo_rels.object_role_id = c.category_id
+	and u.member_state = 'approved'
 	$limit_to_group_id_sql 
 	$dont_allow_sql
 order by lower(im_name_from_user_id(u.user_id))"

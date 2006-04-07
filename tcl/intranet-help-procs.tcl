@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-help-procs.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -28,7 +28,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 <table cellpadding=2 cellspacing=2 border=0 width=100%>
 <tr><td>
 
-<h1>Welcome to Project/Open</h1>
+<h1>Welcome to <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr></h1>
 
 <h2>Getting Help</h2>
 
@@ -36,15 +36,16 @@ Help is available for you in various ways:
 
 <ul>
 <li>
-  <A href=\"http://www.project-open.com/product/modules/\"><B>
-    Project/Open Feature Overview</b></a>:<br>
-  Our web page gives you an overview over the
-  different Project/Open modules
-  and briefly explains their functionality.
+  <A href=\"http://www.project-open.org/product/modules/\"><B>
+    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
+  Our web page gives you an overview over the different
+<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
+  modules and briefly explains their functionality.
 </li>
 <li>
   <A href=\"http://sourceforge.net/project/showfiles.php?group_id=86419\"><b>
-    Project/Open User Guides</b></a>:<br>
+<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
+  User Guides</b></a>:<br>
   Please visit the download zone of our
   <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
   Here you will find all relevant guides and manuals in \".pdf\" format.
@@ -66,9 +67,9 @@ Help is available for you in various ways:
 <li>
   <A href=\"http://www.project-open.com/product/services/support/\"><b>
     Professional Support</b></a>:<br>
-    Please consider to contract professional support.
-    Project/Open offers three different support levels for
-    companies of all sizes.
+    Please consider to contract professional support. 
+    <nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
+    offers three different support levels for companies of all sizes.
 </li>
 </ul>
 
@@ -81,20 +82,21 @@ explore the (freely invented) sample contents.
 </p>
 
 
-<h2>Using Project/Open in Your Company</h2>
+<h2>Using <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr> in Your Company</h2>
 
 <p>
-This sample configuration could already serve you as the base for a
-small company's system if you change the data of the existing users, 
-customers and providers and replace them with your real data.
-</p><p>
-However, the security settings and the database of this demo are not 
-suitable for production use. For a more suitable configuration please 
-consult the system documentation above or 
-<A href=\"http://www.project-open.com/contact/\">contact us</a>
-in order to plan and execute a more formal implantation project
-covering aspects such as training, maintenance, Internet connectivity,
-backup and recovery etc. 
+This sample configuration is a suitable starting point if you want to use 
+<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
+in your company. The 'Admin' -> 'Cleanup Demo Data' option allows you to
+delete the sample data in this system and allows you to start using the system 
+in your company. However, you usually want to configure a number of
+configuration options such as permissions, prices lists, templates etc. 
+You can read more about these options in the 'PO-Configuration-Manual'
+(see above) or you can 
+<A href=\"http://www.project-open.com/contact/\">contract us</a>, 
+which may save you a certain amount of time 
+and will help us to finance further improvements to the system...
+
 </p>
 </td></tr>
 </table>    

@@ -34,7 +34,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set return_url [im_url_with_query]
-set current_url [ad_conn url]
+set current_url $return_url
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
@@ -94,9 +94,25 @@ where
 	u.user_id = :user_id_from_search
 "]
 
-if { $result != 1 } {
+if { $result > 1 } {
     ad_return_complaint "[_ intranet-core.Bad_User]" "
-    <li>[_ intranet-core.lt_We_couldnt_find_user_]"
+    <li>There is more then one user with the ID $user_id_from_search"
+    return
+}
+
+if { $result == 0 } {
+
+    set party_id [db_string party "select party_id from parties where party_id=:user_id_from_search" -default 0]
+    set person_id [db_string person "select person_id from persons where person_id=:user_id_from_search" -default 0]
+    set user_id [db_string user "select user_id from users where user_id=:user_id_from_search" -default 0]
+    set object_type [db_string object_type "select object_type from acs_objects where object_id=:user_id_from_search" -default "unknown"]
+
+    ad_return_complaint "[_ intranet-core.Bad_User]" "
+    <li>[_ intranet-core.lt_We_couldnt_find_user_]
+    <li>You can 
+	<a href='/intranet/users/new?user_id=$user_id_from_search'>try to create this user</a>
+    now.
+    "
     return
 }
 
@@ -129,11 +145,8 @@ order by
 
 
 set user_id $user_id_from_search
+set user_basic_info_vars [export_form_vars user_id return_url]
 set user_basic_info_html "
-<form method=POST action=new>
-[export_form_vars user_id return_url]
-
-<table cellpadding=1 cellspacing=1 border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>[_ intranet-core.Basic_Information]</td>
   </tr>
@@ -163,29 +176,29 @@ append user_basic_info_html "
 # Profile Management
 # ---------------------------------------------------------------
 
-append user_basic_info_html "
+set user_basic_profile_html "
 <tr $td_class([expr $ctr % 2])>
   <td>[_ intranet-core.Profile]</td>
   <td>
     [im_user_profile_component $user_id_from_search "disabled"]
   </td>
 </tr>
+"
+
+set user_basic_edit_html ""
+if {$write} {
+    set user_basic_edit_html "
 <tr>
   <td></td>
-  <td>\n"
-if {$write} {
-    append user_basic_info_html "
-    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">\n"
-}
-append user_basic_info_html "
+  <td>
+    <form method=POST action=new>
+    $user_basic_info_vars
+    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">
+    </form>
   </td>
-</tr>
-</table>
-</form>\n"
+</tr>\n"
 
-set profile_html ""
-
-
+}
 
 # ------------------------------------------------------
 # Show extension fields
@@ -474,25 +487,34 @@ set forum_html ""
 #
 
 if {$admin || [im_permission $user_id "view_hr"]} {
-    set filestorage_html [im_table_with_title \
-	"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
-	[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
-    ]
-    set forum_html [im_table_with_title \
-	[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url ] \
-	[im_forum_component \
-		-user_id $current_user_id \
-		-forum_object_id $user_id \
-		-current_page_url $current_url \
-		-return_url $return_url \
-		-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
-		-forum_type user \
-		-view_name [im_opt_val forum_view_name] \
-		-forum_order_by [im_opt_val forum_order_by] \
-		-restrict_to_mine_p "f" \
-		-restrict_to_new_topics 0 \
-	] \
-    ]
+
+    set filestorage_installed_p [llength [info procs im_package_filestorage_id]]
+    if {$filestorage_installed_p} {
+	    set filestorage_html [im_table_with_title \
+		"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
+		[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
+	    ]
+    }
+    set forum_installed_p [llength [info procs im_package_forum_id]]
+    if {$forum_installed_p} {
+	    set forum_html [im_table_with_title \
+		[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url] \
+		[im_forum_component \
+			-user_id $current_user_id \
+			-forum_object_id $user_id \
+			-current_page_url $current_url \
+			-return_url $return_url \
+			-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
+			-forum_type user \
+			-view_name [im_opt_val forum_view_name] \
+			-forum_order_by [im_opt_val forum_order_by] \
+			-restrict_to_mine_p "f" \
+			-restrict_to_new_topics 0 \
+		] \
+	    ]
+    }
+
+
 }
 
 # ---------------------------------------------------------------
@@ -514,10 +536,7 @@ if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
     append admin_links "<li>[_ intranet-core.lt_Registered_from_regis]"
 }
 
-# append admin_links "<li>[_ intranet-core.User_state]: $user_state"
-
 set user_id $user_id_from_search
-set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 
 # Return a pretty member state (no normal user understands "banned"...)
 case $member_state {
@@ -529,29 +548,36 @@ case $member_state {
 set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
 set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
 
-append admin_links "
-          <li>[_ intranet-core.lt_Member_state_user_sta]
-          <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>
+
+if {$admin} {
+    append admin_links "<li>[_ intranet-core.lt_Member_state_user_sta]"
+} else {
+    append admin_links "<li>[_ intranet-core.User_state]: $user_state"
+}
+
+set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
+set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
+
+if {$admin} {
+    append admin_links "
+          <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>\n"
+}
+
+if {$admin && [im_permission $current_user_id add_companies]} {
+
+    append admin_links "
+          <li><a href=$new_company_from_user_url>[lang::message::lookup "" intranet-core.Create_New_Company_for_User "Create New Company for this User"]</a>\n"
+}
+
+if {$admin} {
+    append admin_links "
           <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
-<!--
-          <li>
-              <form method=POST action=search>
-              <input type=hidden name=u1 value=$user_id_from_search>
-              <input type=hidden name=target value=/admin/users/merge/merge-from-search.tcl>
-              <input type=hidden name=passthrough value=u1>
-                  [_ intranet-core.lt_Search_for_an_account]
- 	      <input type=text name=keyword size=20>
-              </form>
--->
-"
+<!--          <li><a href=nuke?user_id=$user_id_from_search&return_url=[ns_urlencode $return_url]>[_ intranet-core.Nuke_this_user]</a> -->
+    "
+}
 
 append admin_links "</ul></td></tr>\n"
 append admin_links "</table>\n"
-
-if {!$admin} {
-    set admin_links ""
-}
-
 
 
 # ---------------------------------------------------------------

@@ -39,21 +39,48 @@ set user_id [ad_maybe_redirect_for_registration]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 
-# Make sure the user has the privileges, because this
-# pages shows the list of companies etc.
-#
-if {![im_permission $user_id "add_companies"]} { 
-   ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-  <li>[_ intranet-core.lt_You_dont_have_suffici]"
-}
-
 set action_url "/intranet/companies/new-2"
 set focus "menu.var_name"
 
 set page_title "[_ intranet-core.Edit_Company]"
 set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
 
+# Should we bother about State and ZIP fields?
+set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
 
+# ------------------------------------------------------------------
+# Permissions
+# ------------------------------------------------------------------
+
+# Check if we are creating a new company or editing an existing one:
+set company_exists_p 0
+if {[info exists company_id]} {
+    set company_exists_p [db_string company_exists "
+	select count(*) 
+	from im_companies 
+	where company_id = :company_id
+    "]
+}
+
+if {$company_exists_p} {
+
+    # Check company permissions for this user
+    im_company_permissions $user_id $company_id view read write admin
+    if {!$write} {
+	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+	return
+    }
+
+} else {
+
+    if {![im_permission $user_id add_companies]} {
+	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
+            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+	return
+    }
+    
+}
 
 # ------------------------------------------------------------------
 # Build the form
@@ -86,6 +113,19 @@ ad_form \
 	{address_line1:text(text),optional {label "Address 1"} {html {size 40}}}
 	{address_line2:text(text),optional {label "Address 2"} {html {size 40}}}
 	{address_city:text(text),optional {label "City"} {html {size 30}}}
+    }
+
+if {$some_american_readers_p} {
+    ad_form -extend -name company -form {
+	{address_state:text(text),optional {label "State"} {html {size 30}}}
+    }
+} else {
+    ad_form -extend -name company -form {
+	{address_state:text(hidden),optional}
+    }    
+}
+
+ad_form -extend -name company -form {
 	{address_postal_code:text(text),optional {label "ZIP"} {html {size 6}}}
 	{address_country_code:text(select),optional {label "Country"} {options $country_options} }
 	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
@@ -93,7 +133,6 @@ ad_form \
 	{annual_revenue_id:text(im_category_tree),optional {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
 	{note:text(textarea),optional {label "Note"} {}}
     }
-
 
 ad_form -extend -name company -select_query {
 
@@ -105,6 +144,7 @@ select
 	o.address_line1,
 	o.address_line2,
 	o.address_city,
+	o.address_state,
 	o.address_postal_code,
 	o.address_country_code
 from 

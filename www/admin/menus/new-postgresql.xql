@@ -14,7 +14,7 @@
 		null,			-- creation_user
 		null,			-- creation_ip
 		null,			-- context_id
-		:package_name'',	-- package_name
+		:package_name,		-- package_name
 		:label,			-- label
 		:name,			-- name
 		:url,			-- url

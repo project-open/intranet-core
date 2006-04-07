@@ -19,13 +19,11 @@
 
 select
 	u.*,
-	$freelance_select
 	c.*,
 	pe.*,
 	pa.*
 from
 	users u
-	$freelance_pg_join
       LEFT JOIN
 	persons pe ON u.user_id = pe.person_id
       LEFT JOIN

@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Projects#</property>
+<property name="title">@page_title@</property>
 <property name="main_navbar_label">projects</property>
 
 
@@ -7,9 +7,9 @@
 set menu_label "project_summary"
 # ad_return_complaint 1 "'$menu_label'"
 switch $view_name {
-    "" { set menu_label "project_summary" }
     "files" { set menu_label "project_files" }
     "finance" { set menu_label "project_finance" }
+    default { set menu_label "project_summary" }
 }
 %>
 

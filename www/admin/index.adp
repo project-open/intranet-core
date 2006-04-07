@@ -26,6 +26,9 @@
 	<A href="components/">#intranet-core.lt_Manage_Component_Layo#</A><br>
 	#intranet-core.lt_Change_the_position_o#
       <li>
+	<A href="views/"><%= [lang::message::lookup "" intranet-core.Manage_Views "Manage Views"] %></A><br>
+	Enable, disable and edit system \"views\" (the columns in lists and reports).
+      <li>
 	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
 	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
@@ -37,9 +40,6 @@
 	#intranet-core.lt_Here_you_find_advance_1# 
 	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
       <li>
-	<A href=backup/>#intranet-core.lt_Backup_and_Restore_Data#</A><br>
-	#intranet-core.Backup_and_Restore_blurb# 
-      <li>
 	<A href=backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
 	#intranet-core.PostgreSQL_Backup_blurb# 
 
@@ -49,21 +49,56 @@
 	#intranet-core.lt_Modify_the_access_per#
 </if>
 
+<!--
       <li>
 	<a href=/intranet/projects/import-project-txt>
 	  #intranet-core.lt_Import_Projects_from_#
       </a>
+-->
     </ul>
     <%= [im_component_bay left] %>
-
-
 
 <b>#intranet-core.Dangerous#</b>
     <ul>
 	<li>
-	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
-	  #intranet-core.lt_This_command_destroys#
+	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a><br>
+	  This menu allows you to delete all the data in the system and leaves
+	  the database completely empty, except for master data, 
+	  permissions and the administrator accounts. <br>
+	  This command is useful in order to start production
+	  operations from a demo system, but should never
+	  be used otherwise.<br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/ltc-import/>Import data from LTC-Organiser</a><br>
+	  This wizard allows you to import data from the MS-Access 
+	  based LTC-Organiser into 
+	  <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>.
+	  <br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/windows-to-linux>Convert parameters from Windows to Linux</a><br>
+          Use this if you have imported a backup dump from a Windows system
+	  to this Linux system.
+	  This script simplemented sets the operating specific parameters
+	  such as pathces and commands. You could do this manually, but
+          it's more comfortable this way.<br>
+          The command assumes that Windows installations are found in X:/ProjectOpen/projop/,
+	  while Linux installations are in /web/projop/.
+	  <br>&nbsp;<br>
+
+	<li>
+	  <a href=/intranet/admin/linux-to-windows>Convert parameters from Linux to Windows</a><br>
+          The reverse of the command above. 
+	  <br>&nbsp;<br>
+
     </ul>
+
+<!--
+	<li>
+	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
+-->
+
   </td>
   <td valign=top>
     <%= [im_component_bay right] %>

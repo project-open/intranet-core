@@ -10,24 +10,16 @@
 <tr>
   <td valign=top>
 
+    <table cellpadding=1 cellspacing=1 border=0>
     <%= $user_basic_info_html %>
-
-<if @dynamic_fields_p@>
-    <table cellspacing=0 cellpadding=0>
-    <tr>
-      <td class=rowtitle>
-	Additional Information
-      </td>
-    </tr>
-    <tr><td>
-      <formtemplate id="person_view"></formtemplate>
-    </td></tr>
+    <%= $user_basic_profile_html %>
+    <if @dynamic_fields_p@>
+      <formtemplate id="person_view" style="standard-withouttabletab"></formtemplate>
+    </if>
+    <%= $user_basic_edit_html %>
     </table>
-    <br>
-</if>
 
     <%= $user_l10n_html %>
-    <%= $profile_html %>
     <%= $contact_html %>
     <%= $admin_links %>
     <%= [im_component_bay left] %>

@@ -20,7 +20,7 @@ if [empty_string_p $user_id] {
 im_user_permissions $current_user_id $user_id view read write admin
 
 if {!$write} {
-    ad_returncomplaint 1 "<li>You have insufficient permissions to modify comments of this user."
+    ad_return_complaint 1 "<li>You have insufficient permissions to modify comments of this user."
     return
 }
 

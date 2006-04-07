@@ -5,3 +5,10 @@
 
 
 <p><listtemplate name="online_users"></listtemplate></p>
+
+<if @not_shown@>
+<p>
+@not_shown@ user(s) not shown.
+</p>
+
+</if>

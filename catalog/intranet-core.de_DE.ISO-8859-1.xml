@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.0.0.0.4" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.1.0.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -89,6 +89,8 @@
   <msg key="Belgium">Belgien</msg>
   <msg key="Belize">Belize</msg>
   <msg key="Billable">Billable?</msg>
+  <msg key="billenadp">bill.en.adp</msg>
+  <msg key="billesadp">bill.es.adp</msg>
   <msg key="Bio">Bio</msg>
   <msg key="Biz">Biz</msg>
   <msg key="Body_Shopping">Body Shopping</msg>
@@ -108,6 +110,7 @@
   <msg key="Category_description">Kategoriebeschreibung</msg>
   <msg key="Category_name">Kategoriename</msg>
   <msg key="category_name">%category_name%</msg>
+  <msg key="category_name_1">$category_name </msg>
   <msg key="Category_Nr">Kategorienr.</msg>
   <msg key="Category_translation">Kategorie Übersetzungen</msg>
   <msg key="Cell_Phone">Handy</msg>
@@ -325,6 +328,7 @@
   <msg key="Import_User_CSV">Benutzerliste (CVS) importieren </msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inaktiv</msg>
+  <msg key="Inactive_Customers">Inaktive Kunden</msg>
   <msg key="Incident">Vorfall</msg>
   <msg key="Include_in_Invoice">In die Rechnung aufnehmen</msg>
   <msg key="Inctive_Customers">Inaktive Kunden</msg>
@@ -342,6 +346,9 @@
   <msg key="invoice-englishadp">invoice-english.adp</msg>
   <msg key="invoice-spanishadp">invoice-spanish.adp</msg>
   <msg key="Invoiced">Ausgestellt</msg>
+  <msg key="invoiceenadp">invoice.en.adp</msg>
+  <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
+  <msg key="invoiceesadp">invoice.es.adp</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Irak</msg>
   <msg key="Ireland">Irland</msg>
@@ -616,11 +623,13 @@
   <msg key="News">Nachricht</msg>
   <msg key="Next_Absence">Nächste Abwesenheit</msg>
   <msg key="Next_Month">Nächster Monat</msg>
+  <msg key="Next_Steps">Nächste Schritte</msg>
   <msg key="Nicaragua">Nicaragua</msg>
   <msg key="nl">nl</msg>
   <msg key="nl_BE">nl_BE</msg>
   <msg key="nl_NL">nl_NL</msg>
   <msg key="No">Nein</msg>
+  <msg key="No_Email_Has_Been_Sent">Es wurde keine Email ausgesandt</msg>
   <msg key="No_members_found">Keine Mitglieder gefunden</msg>
   <msg key="No_offices_found">Keine Firmensitze gefunden</msg>
   <msg key="None">Kein</msg>
@@ -688,6 +697,9 @@
   <msg key="Phone">Telefon</msg>
   <msg key="Please_Select">Bitte wählen</msg>
   <msg key="PO_Admins">P/O Admins</msg>
+  <msg key="poenadp">po.en.adp</msg>
+  <msg key="poesadp">po.es.adp</msg>
+  <msg key="poessadp">po.es.adp</msg>
   <msg key="Poland">Polen</msg>
   <msg key="Portrait">Porträt</msg>
   <msg key="Portugal">Portugal</msg>
@@ -738,6 +750,8 @@
   <msg key="Quote">Angebot</msg>
   <msg key="Quote_Out">Angebot ausgesendet</msg>
   <msg key="Quote_out">Angebot ausgesendet</msg>
+  <msg key="quoteenadp">quote.en.adp</msg>
+  <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quoting">Angebotserstellung</msg>
   <msg key="r">R</msg>
   <msg key="Recent_Registrations">Letzte Registrierungen</msg>
@@ -749,6 +763,7 @@
   <msg key="Report_this_error">Berichten sie diesen Fehler</msg>
   <msg key="Request_Error">Fehler in der Anfrage</msg>
   <msg key="Return_to">Zurück zu</msg>
+  <msg key="Return_To_Previous_Page">Zurück zur letzten Seite</msg>
   <msg key="Romania">Rumänien</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>

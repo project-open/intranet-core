@@ -32,14 +32,14 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
-    { order_by "Project #" }
+    { order_by "Project nr" }
     { include_subprojects_p "f" }
     { mine_p "f" }
     { project_status_id 0 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
     { company_id:integer "0" } 
-    { letter:trim "all" }
+    { letter:trim "" }
     { start_idx:integer 0 }
     { how_many "" }
     { view_name "project_list" }
@@ -112,7 +112,7 @@ if {![im_permission $current_user_id "view_projects_all"]} {
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
-set end_idx [expr $start_idx + $how_many - 1]
+set end_idx [expr $start_idx + $how_many]
 
 
 
@@ -136,7 +136,15 @@ switch $project_status_id {
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+if {!$view_id } {
+    ad_return_complaint 1 "<b>Unknown View Name</b>:<br>
+    The view '$view_name' is not defined. <br>
+    Maybe you need to upgrade the database. <br>
+    Please notify your system administrator."
+    return
+}
+
 set column_headers [list]
 set column_vars [list]
 
@@ -169,9 +177,8 @@ set form_id "project_filter"
 set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
-set mine_p_options {{"All" "all"} {"Mine" "mine"}}
+set mine_p_options {{"All" "f"} {"Mine" "t"}}
 
-#ns_log notice "-----------> '$user_group_name'"
 ad_form \
     -name $form_id \
     -action $action_url \
@@ -182,11 +189,16 @@ ad_form \
     }
     
 if {[im_permission $current_user_id "view_projects_all"]} {  
-	ad_form -extend -name $form_id -form {
-		{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" }} }
-		{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" }} }
-	}
+    ad_form -extend -name $form_id -form {
+	{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" translate_p 1}} }
+	{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" translate_p 1} } }
+    }
+
+    template::element::set_value $form_id project_status_id $project_status_id
+    template::element::set_value $form_id project_type_id $project_type_id
+
 }
+
 if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
     im_dynfield::append_attributes_to_form \
@@ -242,12 +254,6 @@ if { ![empty_string_p $company_id] && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
 }
 
-if {[string equal $mine_p "t"]} {
-    set mine_restriction ""
-} else {
-    set mine_restriction "or perm.permission_all > 0"
-}
-
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
 }
@@ -256,26 +262,27 @@ if { $include_subprojects_p == "f" } {
 }
 
 
-set order_by_clause "order by upper(project_name)"
-switch $order_by {
-    "Spend Days" { set order_by_clause "order by spend_days" }
-    "Estim. Days" { set order_by_clause "order by estim_days" }
-    "Start Date" { set order_by_clause "order by start_date DESC" }
-    "Delivery Date" { set order_by_clause "order by end_date DESC" }
-    "Create" { set order_by_clause "order by create_date" }
-    "Quote" { set order_by_clause "order by quote_date" }
-    "Open" { set order_by_clause "order by open_date" }
-    "Deliver" { set order_by_clause "order by deliver_date" }
-    "Close" { set order_by_clause "order by close_date" }
-    "Type" { set order_by_clause "order by project_type" }
-    "Status" { set order_by_clause "order by project_status_id" }
-    "Delivery Date" { set order_by_clause "order by end_date" }
-    "Client" { set order_by_clause "order by company_name" }
-    "Words" { set order_by_clause "order by task_words" }
-    "Project #" { set order_by_clause "order by project_nr desc" }
-    "Project Manager" { set order_by_clause "order by upper(lead_name)" }
-    "URL" { set order_by_clause "order by upper(url)" }
-    "Project Name" { set order_by_clause "order by upper(project_name)" }
+
+set order_by_clause "order by lower(project_nr) DESC"
+switch [string tolower $order_by] {
+    "ok" { set order_by_clause "order by on_track_status_id DESC" }
+    "spend days" { set order_by_clause "order by spend_days" }
+    "estim. days" { set order_by_clause "order by estim_days" }
+    "start date" { set order_by_clause "order by start_date DESC" }
+    "delivery date" { set order_by_clause "order by end_date DESC" }
+    "create" { set order_by_clause "order by create_date" }
+    "quote" { set order_by_clause "order by quote_date" }
+    "open" { set order_by_clause "order by open_date" }
+    "deliver" { set order_by_clause "order by deliver_date" }
+    "close" { set order_by_clause "order by close_date" }
+    "type" { set order_by_clause "order by project_type" }
+    "status" { set order_by_clause "order by project_status_id" }
+    "client" { set order_by_clause "order by lower(company_name)" }
+    "words" { set order_by_clause "order by task_words" }
+    "project nr" { set order_by_clause "order by project_nr desc" }
+    "project manager" { set order_by_clause "order by lower(lead_name)" }
+    "url" { set order_by_clause "order by upper(url)" }
+    "project name" { set order_by_clause "order by lower(project_name)" }
 }
 
 set where_clause [join $criteria " and\n            "]
@@ -308,7 +315,6 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
     # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
-    ns_log notice "-------------------> bind vars $extra_sql_array(bind_vars)"
     set ns_set_vars $extra_sql_array(bind_vars)
     set tmp_vars [util_list_to_ns_set $ns_set_vars]
     set tmp_var_size [ns_set size $tmp_vars]
@@ -319,10 +325,11 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     }
 
     # Add the additional condition to the "where_clause"
-    append where_clause "
-	and project_id in $dynfield_extra_where
-    "
-    #ad_return_error "error" "$where_clause"
+    if {"" != $dynfield_extra_where} {
+	append where_clause "
+	    and project_id in $dynfield_extra_where
+        "
+    }
 }
 
 
@@ -406,30 +413,33 @@ set perm_sql "
 		$where_clause
 	)"
 
-if {[im_permission $user_id "view_projects_all"]} {
+if {[im_permission $user_id "view_projects_all"] && [string equal $mine_p "f"]} {
 	set perm_sql "im_projects"
 }
 
 
 set sql "
-SELECT
-	p.*,
-        c.company_name,
-        im_name_from_user_id(project_lead_id) as lead_name,
-        im_category_from_id(p.project_type_id) as project_type,
-        im_category_from_id(p.project_status_id) as project_status,
-        to_char(end_date, 'HH24:MI') as end_date_time
+SELECT *
 FROM
-	$perm_sql p,
-	im_companies c
-WHERE
-	p.company_id = c.company_id
-	$where_clause
+        ( SELECT
+                p.*,
+                c.company_name,
+                im_name_from_user_id(project_lead_id) as lead_name,
+                im_category_from_id(p.project_type_id) as project_type,
+                im_category_from_id(p.project_status_id) as project_status,
+                to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
+                to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
+                to_char(p.end_date, 'HH24:MI') as end_date_time
+        FROM
+                $perm_sql p,
+                im_companies c
+        WHERE
+                p.company_id = c.company_id
+                $where_clause
+        ) projects
+$order_by_clause
 "
 
-#        im_proj_url_from_type(p.project_id, 'website') as url,
-
-#ad_return_complaint 1 "<pre>$sql</pre>"
 
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
@@ -441,24 +451,20 @@ WHERE
 
 ns_log Notice "/intranet/project/index: Before limiting clause"
 
-if {[string compare $letter "ALL"]} {
+if {[string equal $letter "ALL"]} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
-    set selection "select z.* from ($sql) z $order_by_clause"
+    set selection $sql
 } else {
-#    set limited_query [im_select_row_range $sql $start_idx $end_idx]
-    set limited_query $sql
-
-    # We can't get around counting in advance if we want to be able to 
-    # sort inside the table on the page for only those users in the 
+    # We can't get around counting in advance if we want to be able to
+    # sort inside the table on the page for only those users in the
     # query results
-    set total_in_limited [db_string projects_total_in_limited "
-	select count(*) 
-        from im_projects p 
-        where 1=1 $where_clause" -bind $form_vars]
-
-    set selection "select z.* from ($limited_query) z $order_by_clause"
+    set total_in_limited [db_string total_in_limited "
+        select count(*)
+        from ($sql) s
+    "]
+    set selection [im_select_row_range $sql $start_idx $end_idx]
 }	
 
 # ---------------------------------------------------------------
@@ -518,9 +524,20 @@ append filter_html "
 ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html ""
 
+
 if {[im_permission $current_user_id "add_projects"]} {
-    append admin_html "<li><a href=/intranet/projects/new>[_ intranet-core.Add_a_new_project]</a>\n"
+    append admin_html "<li><a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>\n"
+    set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
+    if {$new_from_template_p} {
+        append admin_html "<li><a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>\n"
+    }
 }
+
+if {[im_permission $current_user_id "view_finance"]} {
+    append admin_html "<li><a href=/intranet/projects/index?view_name=project_costs>[_ intranet-core.Profit_and_Loss]</a>\n"
+}
+
+
 
 set parent_menu_sql "select menu_id from im_menus where label= 'projects_admin'"
 set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
@@ -540,8 +557,7 @@ db_foreach menu_select $menu_select_sql {
 }
 
 
-#    append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
-
+append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
 
 set project_filter_html $filter_html
 
@@ -617,7 +633,7 @@ db_foreach projects_info_query $selection -bind $form_vars {
     append table_body_html $row_html
 
     incr ctr
-    if { $how_many > 0 && $ctr >= $how_many } {
+    if { $how_many > 0 && $ctr > $how_many } {
 	break
     }
     incr idx
@@ -631,10 +647,10 @@ if { [empty_string_p $table_body_html] } {
         </b></ul></td></tr>"
 }
 
-if { $ctr == $how_many && $end_idx < $total_in_limited } {
+if { $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
-    set next_start_idx [expr $end_idx + 1]
+    set next_start_idx [expr $end_idx + 0]
     set next_page_url "index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
@@ -656,16 +672,16 @@ if { $start_idx > 0 } {
 
 ns_log Notice "/intranet/project/index: before table continuation"
 # Check if there are rows that we decided not to return
-# => include a link to go to the next page 
+# => include a link to go to the next page
 #
-if {$ctr==$how_many && $total_in_limited > 0 && $end_idx < $total_in_limited} {
-    set next_start_idx [expr $end_idx + 1]
+if {$total_in_limited > 0 && $end_idx < $total_in_limited} {
+    set next_start_idx [expr $end_idx + 0]
     set next_page "<a href=index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]>Next Page</a>"
 } else {
     set next_page ""
 }
 
-# Check if this is the continuation of a table (we didn't start with the 
+# Check if this is the continuation of a table (we didn't start with the
 # first row - there is at least 1 previous row.
 # => add a previous page link
 #
@@ -683,6 +699,7 @@ set table_continuation_html "
     [im_maybe_insert_link $previous_page $next_page]
   </td>
 </tr>"
+
 
 # ---------------------------------------------------------------
 # Navbar

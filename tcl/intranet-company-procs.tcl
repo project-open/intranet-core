@@ -43,6 +43,16 @@ ad_proc -public im_company_type_customer {} { return 57 }
 ad_proc -public im_company_type_freelance {} { return 58 }
 ad_proc -public im_company_type_office_equip {} { return 59 }
 
+ad_proc -public im_company_type_partner {} { 
+    return [db_string parter_type "
+	select category_id
+	from im_categories
+	where category_type = 'Intranet Company Type'
+	      and category = 'Partner'
+    " -default 0]
+}
+
+
 
 # Suitable roles for a company object
 ad_proc -public im_company_role_key_account { } { return 1302 }
@@ -97,7 +107,7 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
 
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [ad_user_group_member [im_wheel_group_id] $user_id]
-    set user_is_group_member_p [ad_user_group_member $company_id $user_id]
+    set user_is_group_member_p [im_biz_object_member_p $user_id $company_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $company_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
@@ -120,7 +130,6 @@ where
 	return
     }
 
-
     # Key Account is also a project manager
     set user_is_key_account_p 0
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
@@ -135,8 +144,12 @@ where
 
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_companies_all]} { set read 1 }
+    if {[im_permission $user_id edit_companies_all]} { set admin 1 }
 
-    if {$user_is_employee_p && [string equal "internal" $company_path]} { set read 1 }
+    # All employees have the right to see the "internal" company
+    if {$user_is_employee_p && [string equal "internal" $company_path]} { 
+	set read 1 
+    }
     
     if {$admin} {
 	set read 1
@@ -223,12 +236,13 @@ ad_proc -public im_company_internal { } {
 }
 
 
-ad_proc -public im_company_options { 
-	{-include_empty 1} 
-	{-status "" } 
-	{-type "" } 
-	{-exclude_status "" } 
-} { 
+ad_proc -public im_company_options {
+    {-include_empty 1}
+    {-status "" }
+    {-type "" }
+    {-exclude_status "" }
+    {default 0}
+} {
     Cost company options
 } {
 
@@ -236,74 +250,75 @@ ad_proc -public im_company_options {
     set bind_vars [ns_set create]
     ns_set put $bind_vars user_id $user_id
 
-    set where_clause "	and c.company_status_id != [im_company_status_inactive]"
+    set where_clause "  and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-        (	select
-		       c.*
-        	from
-        	        im_companies c,
-			acs_rels r
-		where
-			c.company_id = r.object_id_one
-			and r.object_id_two = :user_id
-			$where_clause
+        (       select
+                       c.*
+                from
+                        im_companies c,
+                        acs_rels r
+                where
+                        c.company_id = r.object_id_one
+                        and r.object_id_two = :user_id
+                        $where_clause
 
-	UNION
-		select
-			c.*
-		from
-			im_companies c
-		where
-			c.company_id = :default
-	)
+        UNION
+                select
+                        c.*
+                from
+                        im_companies c
+                where
+                        c.company_id = :default
+        )
 "
 
     if {[im_permission $user_id "view_companies_all"]} {
-	set perm_sql "im_companies"
+        set perm_sql "im_companies"
     }
 
 
 set sql "
 select
-	c.company_name,
-	c.company_id
+        c.company_name,
+        c.company_id
 from
-	$perm_sql c
+        $perm_sql c
 where
-	1=1
-	$where_clause
+        1=1
+        $where_clause
 "
 
     if { ![empty_string_p $status] } {
-	ns_set put $bind_vars status $status
-	append sql " and c.company_status_id=(select company_status_id from im_company_status where company_status=:status)"
+        ns_set put $bind_vars status $status
+        append sql " and c.company_status_id=(select company_status_id from im_company_status where company_status=:status)"
     }
 
     if { ![empty_string_p $exclude_status] } {
-	set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
-	append sql " and c.company_status_id in (
-		select	company_status_id 
-                from	im_company_status 
-                where	company_status not in ($exclude_string)
-	)"
+        set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
+        append sql " and c.company_status_id in (
+                select  company_status_id
+                from    im_company_status
+                where   company_status not in ($exclude_string)
+        )"
     }
 
+
     if { ![empty_string_p $type] } {
-	ns_set put $bind_vars type $type
-	append sql " 
-	and c.company_type_id in (
-		select 	ct.company_type_id 
-		from	im_company_types ct
-		where ct.company_type = :type
-	UNION
-		select 	ch.child_id
-		from	im_company_types ct,
-			im_category_hierarchy ch
-		where
-			ch.parent_id = ct.company_type_id
-			and ct.company_type = :type
-	)"
+        ns_set put $bind_vars type $type
+        append sql "
+        and c.company_type_id in (
+                select  ct.company_type_id
+                from    im_company_types ct
+                where ct.company_type = :type
+        UNION
+                select  ch.child_id
+                from    im_company_types ct,
+                        im_category_hierarchy ch
+                where
+                        ch.parent_id = ct.company_type_id
+                        and ct.company_type = :type
+        )"
     }
 
     append sql " order by lower(c.company_name)"
@@ -313,6 +328,19 @@ where
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
 }
+
+
+ad_proc -public im_provider_options { {include_empty 1} } { 
+    Cost provider options
+} {
+    set options [db_list_of_lists provider_options "
+	select company_name, company_id
+	from im_companies
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
 
 ad_proc -public im_company_type_select { select_name { default "" } } {
     Returns an html select box named $select_name and defaulted to 
@@ -342,18 +370,18 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 
     set query "
 select DISTINCT
-	ur.object_id_two as user_id,
-        im_name_from_user_id(ur.object_id_two) as user_name
+	u.user_id,
+        im_name_from_user_id(u.user_id) as user_name
 from
-        acs_rels ur,
-	acs_rels gr
+	cc_users u,
+	group_distinct_member_map m,
+        acs_rels ur
 where
-        ur.object_id_one = :company_id
-	and ur.object_id_two = gr.object_id_two
-	and (
-		gr.object_id_one = :customer_group_id
-		or gr.object_id_one = :freelance_group_id
-	)
+	u.member_state = 'approved'
+	and u.user_id = m.member_id
+	and m.group_id in (:customer_group_id, :freelance_group_id)
+	and u.user_id = ur.object_id_two
+	and ur.object_id_one = :company_id
 "
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
@@ -453,4 +481,182 @@ where
 
     return [im_selection_to_select_box -translate_p 0 $bind_vars "company_status_select" $sql $select_name $default]
 }
+
+
+
+# -----------------------------------------------------------
+# Nuke a company
+# -----------------------------------------------------------
+
+
+ad_proc im_company_nuke {company_id} {
+    Nuke (complete delete from the database) a company
+} {
+    ns_log Notice "im_company_nuke company_id=$company_id"
+    
+    set current_user_id [ad_get_user_id]
+    set user_id $current_user_id
+    set company_exists_p [db_string exists "select count(*) from im_companies where company_id = :company_id"]
+    if {!$company_exists_p} { return }
+
+    im_company_permissions $current_user_id $company_id view read write admin
+    if {!$admin} { return }
+
+
+    # ---------------------------------------------------------------
+    # Delete
+    # ---------------------------------------------------------------
+    
+    # if this fails, it will probably be because the installation has 
+    # added tables that reference the users table
+
+    # Delete the projects for this company
+    set companies_projects_sql "
+	select project_id
+	from im_projects
+	where company_id = :company_id"
+    db_foreach delete_projects $companies_projects_sql {
+	im_project_nuke $project_id
+    }
+
+    # Delete the offices for this company
+    set companies_offices_sql "
+	select	office_id
+	from	im_offices o,
+		acs_rels r
+	where
+		r.object_id_one = o.office_id
+		and r.object_id_one = :company_id
+    "
+    db_foreach delete_offices $companies_offices_sql {
+	im_office_nuke $office_id
+    }
+
+    with_transaction {
+    
+	# Permissions
+	ns_log Notice "companies/nuke-2: acs_permissions"
+	db_dml perms "delete from acs_permissions where object_id = :company_id"
+	
+	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
+	# entry in im_costs. These might have been created during manual deletion of objects
+	# Very dirty...
+	ns_log Notice "companies/nuke-2: dangeling_costs"
+	db_dml dangeling_costs "
+		delete from acs_objects 
+		where	object_type = 'im_cost' 
+			and object_id not in (select cost_id from im_costs)"
+	
+
+	# Payments
+	db_dml delete_payments "delete from im_payments where company_id = :company_id"
+
+	
+	# Costs
+	set cost_infos [db_list_of_lists costs "
+		select cost_id, object_type 
+		from im_costs, acs_objects 
+		where cost_id = object_id 
+		      and (customer_id = :company_id or provider_id = :company_id)
+	"]
+	foreach cost_info $cost_infos {
+	    set cost_id [lindex $cost_info 0]
+	    set object_type [lindex $cost_info 1]
+	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
+	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
+	}
+	
+	
+	# Forum
+	ns_log Notice "companies/nuke-2: im_forum_topic_user_map"
+	db_dml forum "
+		delete from im_forum_topic_user_map 
+		where topic_id in (
+			select topic_id 
+			from im_forum_topics 
+			where object_id = :company_id
+		)
+	"
+	ns_log Notice "companies/nuke-2: im_forum_topics"
+	db_dml forum "delete from im_forum_topics where object_id = :company_id"
+
+	# Filestorage
+	ns_log Notice "companies/nuke-2: im_fs_folder_status"
+	db_dml filestorage "
+		delete from im_fs_folder_status 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :company_id
+		)
+	"
+	ns_log Notice "companies/nuke-2: im_fs_folders"
+	db_dml filestorage "
+		delete from im_fs_folder_perms 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :company_id
+		)
+	"
+	db_dml filestorage "delete from im_fs_folders where object_id = :company_id"
+
+
+	ns_log Notice "companies/nuke-2: rels"
+	set rels [db_list rels "
+		select rel_id 
+		from acs_rels 
+		where object_id_one = :company_id 
+			or object_id_two = :company_id
+	"]
+	foreach rel_id $rels {
+	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
+	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
+	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
+	}
+
+	
+	ns_log Notice "companies/nuke-2: party_approved_member_map"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where party_id = :company_id"
+	db_dml party_approved_member_map "
+		delete from party_approved_member_map 
+		where member_id = :company_id"
+	
+	db_dml delete_companies "
+		delete from im_companies 
+		where company_id = :company_id"
+
+	# End "with_transaction"
+    } {
+    
+	set detailed_explanation ""
+	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
+	    
+	    set sql "select table_name from user_constraints 
+		     where constraint_name=:constraint_name"
+	    db_foreach user_constraints_by_name $sql {
+		set detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
+	    }
+	    
+	}
+	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
+		[_ intranet-core.lt_The_nuking_of_user_us]
+		$detailed_explanation
+		<p>
+		[_ intranet-core.lt_For_good_measure_here]
+		<blockquote>
+		<pre>
+		$errmsg
+		</pre>
+		</blockquote>
+	"
+	return
+    }
+    set return_to_admin_link "<a href=\"/intranet/companies/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
+}
+
 

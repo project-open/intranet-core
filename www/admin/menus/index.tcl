@@ -17,8 +17,12 @@ ad_page_contract {
     Show the permissions for all menus in the system
 
     @author frank.bergmann@project-open.com
+
+    @param top_menu_id Show only menus below "top_menu_id"
 } {
     { return_url "" }
+    { top_menu_id 0 }
+    { top_menu_label "" }
 }
 
 # ------------------------------------------------------
@@ -163,6 +167,22 @@ if {$altleast_one_new_menu} {
 # Main SQL: Extract the permissions for all Menus
 # ------------------------------------------------------
 
+# Restrict the list of menus to the tree starting
+# with "top_menu_id":
+#
+set top_menu_sql ""
+
+if {"" != $top_menu_label} {
+    set top_menu_id [db_string top_menu_id "select menu_id from im_menus where label = :top_menu_label" -default 0]
+}
+
+if {$top_menu_id} {
+    set top_menu_sortkey [db_string top_menu_sortkey "select tree_sortkey from im_menus where menu_id=:top_menu_id" -default ""]
+
+    set top_menu_sql "and 
+	m.tree_sortkey like '$top_menu_sortkey%'"
+}
+
 set main_sql "
 select
 ${main_sql_select}	m.*,
@@ -170,6 +190,8 @@ ${main_sql_select}	m.*,
 	(9-length(tree_sortkey)) as colspan_level
 from
 	im_menus m
+where
+	1=1 $top_menu_sql
 order by tree_sortkey
 "
 

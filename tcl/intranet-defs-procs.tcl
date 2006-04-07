@@ -30,10 +30,193 @@ ad_proc -public im_uom_unit {} { return 322 }
 
 
 # ------------------------------------------------------------------
+# CSV File Parser
+# ------------------------------------------------------------------
+
+ad_proc im_csv_get_values { file_content {separator ","}} {
+    Get the values from a CSV (Comma Separated Values) file
+    and generate an list of list of values. Deals with:
+    <ul>
+    <li>Fields enclosed by double quotes
+    <li>Komma or Semicolon separators
+    <li>Quoted field contents
+    </ul>
+    The state machine can be in one of two states:
+    <ul>
+    <li>"field_start": Starting reading a field, either starting
+        with a quote character (double quote, single quote) or
+        with a non-quote character.
+    <li>"field": Reading a field, either quoted or not quoted
+        The variable "quote" contains the quote character with reading
+        the field content.
+    <li>"separator": Reading a separator, either a "," or a ";"
+    </ul>
+
+} {
+    set debug 0
+
+    set csv_files [split $file_content "\n"]
+    set csv_files_len [llength $csv_files]
+    set result_list_of_lists [list]
+	
+	# get start with 1 because we use the function im_csv_split to get the header
+	for {set line_num 1} {$line_num < $csv_files_len} {incr line_num} {
+
+		set line [lindex $csv_files $line_num]
+		
+		if {[empty_string_p $line]} {
+			incr line_num
+			continue
+		}
+		
+		if {$debug} {ns_log notice "im_csv_get_values: line=$line num=$line_num"}
+    	set result_list [list]
+    	set pos 0
+    	set len [string length $line]
+    	set quote ""
+    	set state "field_start"
+    	set field ""
+
+		set line_not_finished_p 1
+		while {$line_not_finished_p} {
+
+			while {$pos <= $len} {
+				set char [string index $line $pos]
+				set next_char [string index $line [expr $pos+1]]
+				#if {$debug} {ns_log notice "im_csv_get_values: pos=$pos, char=$char, state=$state"}
+
+				switch $state {
+					"field_start" {
+
+						# We're before a field. Next char may be a quote
+						# or not. Skip white spaces.
+
+						if {[string is space $char]} {
+
+							if {$debug} {ns_log notice "im_csv_get_values: field_start: found a space: '$char'"}
+							incr pos
+
+						} else {
+
+							# Skip the char if it was a quote
+							set quote_pos [string first $char "\"'"]
+							if {$quote_pos >= 0} {
+								if {$debug} {ns_log notice "im_csv_get_values: field_start: found quote=$char"}
+									# Remember the quote char
+									set quote $char
+									# skip the char
+									incr pos
+							} else {
+								if {$debug} {ns_log notice "im_csv_get_values: field_start: unquoted field"}
+								set quote ""
+							}
+							# Initialize the field value for the "field" state
+							set field ""
+							# "Switch" to reading the field content
+							set state "field"
+						}
+					}
+
+					"field" {
+
+						# We are reading the content of a field until we
+						# reach the end, either marked by a matching quote
+						# or by the "separator" if the field was not quoted
+
+						# Check for a duplicated quote when in quoted mode.
+						if {"" != $quote && [string equal $char $quote] && [string equal $next_char $quote]} {
+								append field $char
+								incr pos
+								incr pos    
+						} else {
+
+
+							# Check if we have reached the end of the field
+							# either with the matching quote of with the separator:
+							if {"" != $quote && [string equal $char $quote] || "" == $quote && [string equal $char $separator]} {
+
+								if {$debug} {ns_log notice "im_csv_get_values: field: found quote or term: $char"}
+
+								# Skip the character if it was a quote
+								if {"" != $quote} { incr pos }
+
+								# Trim the field if it was not quoted
+								if {"" == $quote} { set field [string trim $field] }
+
+								lappend result_list $field
+								set state "separator"
+
+							} else {
+
+								if {$debug} {ns_log notice "im_csv_get_values: field: found a field char: $char"}
+								append field $char
+								incr pos
+
+							}
+						}
+					}
+
+					"separator" {
+
+						# We got here after finding the end of a "field".
+						# Now we expect a separator or we have to throw an
+						# error otherwise. Skip whitespaces.
+
+						if {[string is space $char]} {
+							if {$debug} {ns_log notice "im_csv_get_values: separator: found a space: '$char'"}
+							incr pos
+						} else {
+							if {[string equal $char $separator]} {
+								if {$debug} {ns_log notice "im_csv_get_values: separator: found separator: '$char'"}
+								incr pos
+								set state "field_start"
+							} else {
+								if {$debug} {ns_log error "im_csv_get_values: separator: didn't find separator: '$char'"}
+								set state "field_start"
+							}
+						}
+					}
+				}
+				# Switch, while and proc ending
+			}
+			# While pos, len
+
+			# By default exit from the outer while loop unless there
+			# is the special condition that follows.
+			set line_not_finished_p 0
+
+			# We have left the state machine "while" loop while 
+			# still being in state "field" (quoted or non-quoted
+			# field). There are the following cases:
+			# - Non-quoted field: This was just then last field,
+			#   parsing stops here. We don't have to do anything.
+			# - Quoted field: We didn't reach the closing quotes,
+			#   so we have to continue parsing the next line until
+			#   we get the closing quotes...
+			if {$state == "field" && $quote != ""} {
+				# We are still in a quoted field. Continue parsing...
+				append field "\n"
+				incr line_num
+				set line [lindex $csv_files $line_num]
+				set pos 0
+				set len [string length $line]
+				set line_not_finished_p 1
+			}
+
+		}
+		if {![empty_string_p $result_list]} {
+			lappend result_list_of_lists $result_list
+		}
+    }
+	return $result_list_of_lists
+}
+
+
+# ------------------------------------------------------------------
 # CSV Line Parser
 # ------------------------------------------------------------------
 
-ad_proc im_csv_split { line {separator ","} } {
+ad_proc im_csv_split { line {separator ","}} {
     Splits a line from a CSV (Comma Separated Values) file
     into an array of values. Deals with:
     <ul>
@@ -107,11 +290,9 @@ ad_proc im_csv_split { line {separator ","} } {
 
 		# Check for a duplicated quote when in quoted mode.
 		if {"" != $quote && [string equal $char $quote] && [string equal $next_char $quote]} {
-
 		    append field $char
 		    incr pos
-		    incr pos
-
+		    incr pos    
 		} else {
 
 
@@ -637,7 +818,7 @@ ad_proc im_currency_select {select_name {default ""}} {
 	     where supported_p='t'
 	     order by lower(currency_name)"
 
-    return [im_selection_to_select_box -translate_p 1 $bind_vars $statement_name $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars $statement_name $sql $select_name $default]
 }
 
 
@@ -652,17 +833,17 @@ ad_proc -public im_category_from_id { category_id } {
 
 
 # Hierarchical category select:
-# Uses the im_category_hierarchy table to determine 
+# Uses the im_category_hierarchy table to determine
 # the hierarchical structure of the category type.
 #
-ad_proc im_category_select { 
-    {-translate_p 1} 
-    {-include_empty_p 0} 
-    {-include_empty_name "All"} 
+ad_proc im_category_select {
+    {-translate_p 1}
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
     {-plain_p 0}
-    category_type 
-    select_name 
-    { default "" } 
+    category_type
+    select_name
+    { default "" }
 } {
     Returns a formatted "option" widget with hierarchical
     contents
@@ -674,93 +855,110 @@ ad_proc im_category_select {
 
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
-    ns_log Notice "im_category_select: category_type=$category_type, select_name=$select_name, default=$default"
-
     set sql "
-	select 
-		category_id,
-		category, 
-		category_description,
-		parent_only_p,
-		enabled_p
-	from 
-		im_categories
-	where 
-		category_type = :category_type
-	order by lower(category)
+        select
+                category_id,
+                category,
+                category_description,
+                parent_only_p,
+                enabled_p
+        from
+                im_categories
+        where
+                category_type = :category_type
+        order by lower(category)
     "
     db_foreach category_select $sql {
-	set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
-	set level($category_id) 0
+        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+        set level($category_id) 0
     }
 
     # Get the hierarchy into a hash cache
     set sql "
-	select 
-		h.parent_id,
-		h.child_id
-	from 
-		im_categories c,
-		im_category_hierarchy h
-	where 
-		c.category_id = h.parent_id
-		and c.category_type = :category_type
-	order by lower(category)
+        select
+                h.parent_id,
+                h.child_id
+        from
+                im_categories c,
+                im_category_hierarchy h
+        where
+                c.category_id = h.parent_id
+                and c.category_type = :category_type
+        order by lower(category)
     "
 
-    # setup maps child->parent and parent->child for 
+    # setup maps child->parent and parent->child for
     # performance reasons
     set children [list]
     db_foreach hierarchy_select $sql {
-	lappend children [list $parent_id $child_id]
+        lappend children [list $parent_id $child_id]
     }
 
+    # Calculate the level(category) and direct_parent(category)
+    # hash arrays. Please keep in mind that categories from a DAG 
+    # (directed acyclic graph), which is a generalization of a tree, 
+    # with "multiple inheritance" (one category may have more then
+    # one direct parent).
+    # The algorithm loops through all categories and determines
+    # the depth-"level" of the category by the level of a direct
+    # parent+1.
+    # The "direct_parent" relationship is different from the
+    # "category_hierarchy" relationship stored in the database: 
+    # The category_hierarchy is the "transitive closure" of the
+    # "direct_parent" relationship. This means that it also 
+    # contains the parent's parent of a category etc. This is
+    # useful in order to quickly answer SQL queries such as
+    # "is this catagory a subcategory of that one", because the
+    # this can be mapped to a simple lookup in category_hierarchy 
+    # (because it contains the entire chain). 
 
     set count 0
     set modified 1
     while {$modified} {
-
-	set modified 0
-	foreach rel $children {
-	    set p [lindex $rel 0]
-	    set c [lindex $rel 1]
-	    set parent_level $level($p)
-	    set child_level $level($c)
-	    
-	    ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
-	    
-	    if {[expr $parent_level+1] > $child_level} {
-		set level($c) [expr $parent_level+1]
-		set direct_parent($c) $p
-		set modified 1
-	    }
-	}
-	incr count
-	if {$count > 1000} { 
-	    ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+        set modified 0
+        foreach rel $children {
+            set p [lindex $rel 0]
+            set c [lindex $rel 1]
+            set parent_level $level($p)
+            set child_level $level($c)
+            if {[expr $parent_level+1] > $child_level} {
+                set level($c) [expr $parent_level+1]
+                set direct_parent($c) $p
+                set modified 1
+            }
+        }
+        incr count
+        if {$count > 1000} {
+            ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
             The category type '$category_type' is badly configured and contains
             and infinite loop. Please notify your system administrator."
-	    return "Infinite Loop Error"
-	}
+            return "Infinite Loop Error"
+        }
+#	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
     }
 
     set base_level 0
-    
     set html ""
     if {$include_empty_p} {
-	append html "<option value=\"\">$include_empty_name</option>\n"
-	if {"" != $include_empty_name} {
-	    incr base_level
-	}
+        append html "<option value=\"\">$include_empty_name</option>\n"
+        if {"" != $include_empty_name} {
+            incr base_level
+        }
     }
 
-    foreach p [array names cat] {
-	set p [lindex $cat($p) 0]
-	set p_level $level($p)
+    # Sort the category list's top level. We currently sort by category_id,
+    # but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+    set category_list_sorted [lsort $category_list]
 
-	if {0 == $p_level} {
-	    append html [im_category_select_branch $p $default $base_level [array get cat] [array get direct_parent]]
-	}
+    # Now recursively descend and draw the tree, starting
+    # with the top level
+    foreach p $category_list_sorted {
+        set p [lindex $cat($p) 0]
+        set p_level $level($p)
+        if {0 == $p_level} {
+            append html [im_category_select_branch -translate_p $translate_p $p $default $base_level [array get cat] [array get direct_parent]]
+        }
     }
 
     return "
@@ -768,10 +966,17 @@ ad_proc im_category_select {
 $html
 </select>
 "
-} 
+}
 
 
-ad_proc im_category_select_branch { parent default level cat_array direct_parent_array } {
+ad_proc im_category_select_branch { 
+    {-translate_p 0}
+    parent 
+    default 
+    level 
+    cat_array 
+    direct_parent_array 
+} {
     Returns a list of html "options" displaying an options hierarchy.
 } {
     if {$level > 10} { return "" }
@@ -779,8 +984,12 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
     array set cat $cat_array
     array set direct_parent $direct_parent_array
 
-#   set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
     set category [lindex $cat($parent) 1]
+    if {$translate_p} {
+	set category_key "intranet-core.[lang::util::suggest_key $category]"
+	set category [lang::message::lookup "" $category_key $category]
+    }
+
     set parent_only_p [lindex $cat($parent) 3]
 
     set spaces ""
@@ -796,9 +1005,14 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 	incr level
     }
 
-    foreach cat_id [array names cat] {
+
+    # Sort by category_id, but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+    set category_list_sorted [lsort $category_list]
+
+    foreach cat_id $category_list_sorted {
 	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-	    append html [im_category_select_branch $cat_id $default $level $cat_array $direct_parent_array]
+	    append html [im_category_select_branch -translate_p $translate_p $cat_id $default $level $cat_array $direct_parent_array]
 	}
     }
 
@@ -806,57 +1020,51 @@ ad_proc im_category_select_branch { parent default level cat_array direct_parent
 }
 
 
-
-
-ad_proc im_category_select_plain { {-translate_p 1} {-include_empty_p 0} {-include_empty_name "All"} category_type select_name { default "" } } {
-
+ad_proc im_category_select_plain { 
+    {-translate_p 1} 
+    {-include_empty_p 1} 
+    {-include_empty_name "--_Please_select_--"} 
+    category_type 
+    select_name 
+    { default "" } 
+} {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
-    ns_set put $bind_vars include_empty_name $include_empty_name
 
-	set include_empty_p 1
-
-    set include_empty_sql ""
-    if {$include_empty_p} {
-	set include_empty_sql "
-	select
-		null as category_id,
-		:include_empty_name as category,
-		'' as category_description
-	from
-		dual
-	UNION
-	"
-    }
-	
     set sql "
 	select *
 	from
-		($include_empty_sql
-		select
+		(select
 			category_id,
-			category, 
+			category,
 			category_description
-		from 
-			im_categories		
-		where 
+		from
+			im_categories
+		where
 			category_type = :category_type
 		) c
 	order by lower(category)
     "
 
-   return [im_selection_to_select_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default]
-} 
+    return [im_selection_to_select_box -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
+}
 
 
-ad_proc im_category_select_multiple { category_type select_name { default "" } { size "6"} { multiple ""}} {
+ad_proc im_category_select_multiple { 
+    {-translate_p 1}
+    category_type 
+    select_name 
+    { default "" } 
+    { size "6"} 
+    { multiple ""}
+} {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
     set sql "select category_id,category
 	     from im_categories
 	     where category_type = :category_type
-	     order by category_id"
-    return [im_selection_to_list_box $bind_vars category_select $sql $select_name $default $size $multiple]
+	     order by lower(category)"
+    return [im_selection_to_list_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default $size multiple]
 }    
 
 
@@ -864,7 +1072,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     Category Tree Widget
 
     @param category_type The name of the category type (see categories
-           package) for valid choice options.
+	   package) for valid choice options.
 
     The widget takes a tree from the categories package and displays all
     of its leaves in an indented drop-down box. For details on creating
@@ -872,18 +1080,18 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 } {
     upvar $element_reference element
     if { [info exists element(custom)] } {
-    	set params $element(custom)
+	set params $element(custom)
     } else {
 	return "Intranet Category Widget: Error: Didn't find 'custom' parameter.<br>
-        Please use a Parameter such as: 
-        <tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
+	Please use a Parameter such as:
+	<tt>{custom {category_type \"Intranet Company Type\"}} </tt>"
     }
 
     # Get the "category_type" parameter that defines which
     # category to display
     set category_type_pos [lsearch $params category_type]
     if { $category_type_pos >= 0 } {
-    	set category_type [lindex $params [expr $category_type_pos + 1]]
+	set category_type [lindex $params [expr $category_type_pos + 1]]
     } else {
 	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
     }
@@ -895,27 +1103,26 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
     set plain_p 0
     set plain_p_pos [lsearch $params plain_p]
     if { $plain_p_pos >= 0 } {
-    	set plain_p [lindex $params [expr $plain_p_pos + 1]]
-    } 
+	set plain_p [lindex $params [expr $plain_p_pos + 1]]
+    }
 
-    set multiple_p 0
-    set multiple_p_pos [lsearch $params multiple_p]
-    if { $multiple_p_pos >= 0 } {
-    	set multiple_p [lindex $params [expr $multiple_p_pos + 1]]
-    } 
-    set multiple ""
-    if {$multiple_p} { set multiple "multiple" }
+    # Get the "translate_p" parameter to determine if we should
+    # translate the category items
+    #
+    set translate_p 0
+    set translate_p_pos [lsearch $params translate_p]
+    if { $translate_p_pos >= 0 } {
+	set translate_p [lindex $params [expr $translate_p_pos + 1]]
+    }
 
-    # Size only relevant for multi-select
-    set size 8
-    set size_pos [lsearch $params size]
-    if { $size_pos >= 0 } {
-    	set size [lindex $params [expr $size_pos + 1]]
-    } 
+    if {"language" == $element(name)} {
+#       ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
+    }
 
     array set attributes $tag_attributes
     set category_html ""
     set field_name $element(name)
+
     set default_value_list $element(values)
 
     set default_value ""
@@ -923,7 +1130,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	set default_value $element(values)
     }
 
-    if {0 && "" != $multiple} {
+    if {0} {
 	set debug ""
 	foreach key [array names element] {
 	    set value $element($key)
@@ -933,52 +1140,20 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	return
     }
 
-    if { "edit" == $element(mode)} {
 
-	if {$multiple_p} {
-	    append category_html [im_category_select_multiple \
-		$category_type \
-		$field_name \
-		$default_value_list \
-		$size \
-		$multiple \
-	    ]
-	} else {
-	    append category_html [im_category_select \
-		-include_empty_p 1 \
-		-include_empty_name "" \
-		-plain_p $plain_p \
-		$category_type \
-		$field_name \
-		$default_value \
-	    ]
-	}
+    if { "edit" == $element(mode)} {
+	append category_html [im_category_select -translate_p 1 -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
+$field_name $default_value]
+
 
     } else {
-
-	if {$multiple_p} {
-
-	    # Make sure there is atleast one element in the list...
-	    lappend default_value_list 0
-
-	    set category_list [db_list category_list "
-		select	category
-		from	im_categories
-		where	category_id in ([join $default_value_list ","])
-		order by category_id
-	    "]
-	    append category_html [join $category_list ",<br>"]
-	} else {
-	    set category ""
-	    if {"" != $default_value && "\{\}" != $default_value} {
-		set category [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
-	    }
-	    append category_html "$category"
+	if {"" != $default_value && "\{\}" != $default_value} {
+	    append category_html [db_string cat "select im_category_from_id($default_value) from dual" -default ""]
 	}
-
     }
     return $category_html
 }
+
 
 
 # usage:
@@ -1009,16 +1184,27 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
     return [philg_dateentrywidget $column $today]
 }
 
-
-ad_proc im_selection_to_select_box { {-translate_p 1} bind_vars statement_name sql select_name { default "" } } {
+ad_proc im_selection_to_select_box { 
+    {-translate_p 1} 
+    {-include_empty_p 1}
+    {-include_empty_name "--_Please_select_--"}
+    bind_vars
+    statement_name
+    sql 
+    select_name 
+    { default "" } 
+} {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a select bar named select_name, 
     defaulted to $default 
 } {
     set result "<select name=\"$select_name\">"
-    if {[string equal $default ""]} {
-	append result "<option value=\"\">[_ intranet-core.--_Please_select_--]</option>"
-    }
+    
+    append result "<option value=\"\">
+	[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]
+	</option>
+    "
+    
     append result "
 [db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
@@ -1072,7 +1258,7 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
-	if { $translate_p && "" != [lindex $option $option_index]} {
+	if { $translate_p && "" != [lindex $option $option_index] } {
 	    set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
 	} else {
 	    set translated_value [lindex $option $option_index]
@@ -1315,7 +1501,7 @@ WHERE
     set driverkey [db_driverkey ""]
     switch $driverkey {
 	postgresql { return $postgres_sql }
-        oracle { return $oracle_sql }
+	oracle { return $oracle_sql }
     }
     
     return $sql
@@ -1412,7 +1598,7 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 	set decimals ""
     } else {
 	# Split the digits from the decimals
-        regexp {([^\.]*)\.(.*)} $cur match digits decimals
+	regexp {([^\.]*)\.(.*)} $cur match digits decimals
     }
 
     if {![string equal "" $min_decimals]} {
@@ -1471,12 +1657,12 @@ ad_proc im_unicode2html {s} {
 } {
     set res ""
     foreach u [split $s ""] {
-        scan $u %c t
-        if {$t>127} {
-            append res "&\#$t;"
-        } else {
-            append res $u
-        }
+	scan $u %c t
+	if {$t>127} {
+	    append res "&\#$t;"
+	} else {
+	    append res $u
+	}
     }
     set res
 }
@@ -1484,35 +1670,71 @@ ad_proc im_unicode2html {s} {
 
 # ---------------------------------------------------------------
 # Auto-Login
+#
+# These procedures generate security tokens for the auto-login 
+# process. This process uses a cryptgraphica hash code of the
+# user_id and a password in order to let a user login during
+# a certain time period.
 # ---------------------------------------------------------------
 
 ad_proc -public im_generate_auto_login {
-        -user_id:required
+    {-expiry_date ""}
+    -user_id:required
 } {
-    Generates the auto_login for auto-login
+    Generates a security token for auto_login
 } {
+    set user_password ""
+    set user_salt ""
+
     set user_data_sql "
-	select
-		u.password as user_password, 
-		u.salt as user_salt
-	from
-		users u
-	where
-		u.user_id = :user_id"
-    db_1row get_user_data $user_data_sql
+        select
+                u.password as user_password,
+                u.salt as user_salt
+        from
+                users u
+        where
+                u.user_id = :user_id"
+    db_0or1row get_user_data $user_data_sql
 
     # generate the expected auto_login variable
-    return [ns_sha1 "$user_id $user_password $user_salt"]
+    return [ns_sha1 "$user_id$user_password$user_salt$expiry_date"]
 }
 
 ad_proc -public im_valid_auto_login_p {
-        -user_id:required
-        -auto_login:required
+    {-expiry_date ""}
+    -user_id:required
+    -auto_login:required
 } {
     Verifies the auto_login in auto-login variables
+    @param expiry_date Expiry date in YYYY-MM-DD format
+    @param user_id The users ID
+    @param auto_login The security token generated by im_generate_auto_login.
+
     @author Timo Hentschel (thentschel@sussdorff-roy.com)
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     set expected_auto_login [im_generate_auto_login -user_id $user_id]
-    return [string equal $auto_login $expected_auto_login]
+    if {![string equal $auto_login $expected_auto_login]} { return 0 }
+
+    # Ok, the tokens are identical, we can log the dude in if
+    # the "expiry_date" is OK.
+    if {"" == $expiry_date} { return 1 }
+
+    if {![regexp {[0-9]{4}-[0-9]{2}-[0-9]{2}-} $expiry_date]} { 
+	ad_return_complaint 1 "<b>im_valid_auto_login_p</b>:
+        You have specified a bad date syntax"
+	return 0
+    }
+
+    set current_date [db_string current_date "select to_char(sysdate, 'YYYY-MM-DD') from dual"]
+
+    if {[string compare $current_date $expiry_date]} {
+	return 0
+    }
+    return 1
 }
+
+
+
+
 

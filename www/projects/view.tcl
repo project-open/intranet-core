@@ -38,6 +38,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
+set clone_url "/intranet/projects/clone"
 
 if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
@@ -55,6 +56,11 @@ set user_admin_p $admin
 set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 
+if {![db_string ex "select count(*) from im_projects where project_id=:project_id"]} {
+    ad_return_complaint 1 "<li>Project doesn't exist"
+    return
+}
+
 if {!$read} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_6]"
     return
@@ -64,13 +70,16 @@ if {!$read} {
 # Prepare Project SQL Query
 # ---------------------------------------------------------------------
 
+
 set query "
 select
 	p.*,
 	c.company_name,
 	c.company_path,
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
-	to_char(p.percent_completed, '990%') as percent_completed_formatted,
+	to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
+	to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
+	to_char(p.percent_completed, '999990.9%') as percent_completed_formatted,
 	im_category_from_id(p.project_type_id) as project_type, 
 	im_category_from_id(p.project_status_id) as project_status,
 	c.primary_contact_id as company_contact_id,
@@ -97,11 +106,28 @@ set parent_name [db_string parent_name "select project_name from im_projects whe
 
 
 # ---------------------------------------------------------------------
-# Set display options as a function of the project data
+# Set the context bar as a function on whether this is a subproject or not:
 # ---------------------------------------------------------------------
 
 set page_title $project_name
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
+
+if { [empty_string_p $parent_id] } {
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
+    set include_subproject_p 1
+} else {
+    set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
+    set include_subproject_p 0
+}
+
+# Fraber: 051125: There is no "view_projects" privilege...
+# Don't show subproject nor a link to the "projects" page to freelancers
+#if {![im_permission $user_id view_projects]} {
+#    set context_bar [im_context_bar "[_ intranet-core.One_project]"]
+#    set include_subproject_p 0
+#}
+
+
 
 # ---------------------------------------------------------------------
 # Project Base Data
@@ -153,13 +179,13 @@ append project_base_data_html "
 if { ![empty_string_p $start_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Start_Date]</td>
-			    <td>$start_date</td>
+			    <td>$start_date_formatted</td>
 			  </tr>"
 }
 if { ![empty_string_p $end_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Delivery_Date]</td>
-			    <td>$end_date $end_date_time</td>
+			    <td>$end_date_formatted $end_date_time</td>
 			  </tr>"
 }
 
@@ -184,7 +210,7 @@ if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
 			  </tr>"
 }
 
-if {[im_permission $current_user_id view_finance]} {
+if {[im_permission $current_user_id view_budget]} {
     if { ![empty_string_p $project_budget] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
@@ -221,14 +247,34 @@ append project_base_data_html "    </table>
 # Admin Box
 # ---------------------------------------------------------------------
 
-set admin_html ""
+set admin_html_content ""
 if {$admin} {
-    set admin_html_content "
-<ul>
-  <li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>
-</ul>\n"
+    append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>\n"
+}
+
+set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
+
+set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 'Clone' is an exact copy of your project. You can use this function to standardize repeating projects."]
+
+set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
+set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
+
+if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    append admin_html_content "
+    <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]</A>[im_gif -translate_p 0 help $clone_pr_help]\n"
+}
+
+if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    append admin_html_content "
+    <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">[lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
+</A>[im_gif -translate_p 0 help $exec_pr_help]\n"
+}
+
+set admin_html ""
+if {"" != $admin_html_content} {
     set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
+
 
 # ---------------------------------------------------------------------
 # Project Hierarchy
@@ -236,6 +282,7 @@ if {$admin} {
 
 set super_project_id $project_id
 set loop 1
+set ctr 0
 while {$loop} {
     set loop 0
     set parent_id [db_string parent_id "select parent_id from im_projects where project_id=:super_project_id"]
@@ -244,8 +291,13 @@ while {$loop} {
 	set super_project_id $parent_id
 	set loop 1
     }
-}
 
+    # Check for recursive loop
+    if {$ctr > 20} {
+	set loop 0
+    }
+    incr ctr
+}
 
 set cur_level 1
 set hierarchy_html ""

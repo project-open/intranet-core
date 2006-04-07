@@ -186,6 +186,10 @@ DECLARE
         p_menu_id   alias for $1;
 	v_name	    im_menus.name%TYPE;
 BEGIN
+
+    function name (menu_id in integer) return varchar
+    is
+    begin
 	select	name
 	into	v_name
 	from	im_menus
