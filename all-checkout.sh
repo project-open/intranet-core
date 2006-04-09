@@ -50,6 +50,7 @@ cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
 cvs checkout intranet-security-update-client
+cvs checkout intranet-security-update-server
 cvs checkout intranet-simple-survey
 cvs checkout intranet-spam
 cvs checkout intranet-sql-selectors
