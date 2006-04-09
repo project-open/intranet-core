@@ -25,6 +25,7 @@ cvs checkout -r b3-0-0-patches acs-workflow
 cvs checkout -r b3-0-0-patches bulk-mail
 cvs checkout -r b3-0-0-patches chat
 cvs checkout -r b3-0-0-patches cms
+cvs checkout -r b3-0-0-patches ecommerce
 cvs checkout -r b3-0-0-patches events
 
 cvs checkout -r b3-0-0-patches intranet-big-brother
@@ -40,6 +41,7 @@ cvs checkout -r b3-0-0-patches intranet-freelance
 cvs checkout -r b3-0-0-patches intranet-freelance-invoices
 cvs checkout -r b3-0-0-patches intranet-hr
 cvs checkout -r b3-0-0-patches intranet-invoices
+cvs checkout -r b3-0-0-patches intranet-invoices-templates
 cvs checkout -r b3-0-0-patches intranet-mail-import
 cvs checkout -r b3-0-0-patches intranet-material
 cvs checkout -r b3-0-0-patches intranet-payments
@@ -55,10 +57,12 @@ cvs checkout -r b3-0-0-patches intranet-timesheet
 cvs checkout -r b3-0-0-patches intranet-timesheet2
 cvs checkout -r b3-0-0-patches intranet-timesheet2-invoices
 cvs checkout -r b3-0-0-patches intranet-timesheet2-tasks
+cvs checkout -r b3-0-0-patches intranet-timesheet2-task-popup
 cvs checkout -r b3-0-0-patches intranet-translation
 cvs checkout -r b3-0-0-patches intranet-trans-invoices
 cvs checkout -r b3-0-0-patches intranet-trans-quality
 cvs checkout -r b3-0-0-patches intranet-update-client
+cvs checkout -r b3-0-0-patches intranet-update-server
 cvs checkout -r b3-0-0-patches intranet-wiki
 cvs checkout -r b3-0-0-patches intranet-workflow
 
