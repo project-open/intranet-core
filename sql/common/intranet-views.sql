@@ -21,7 +21,7 @@
 -- implementing configurable reports, similar to
 -- the choice of columns in the old addressbook.
 --
--- fraber@fraber.de, 2003-07-24
+-- frank.bergmann@project-open.com, 2003-07-24
 --
 
 -- ViewIDs: IDs < 1000 are reserved for Project/Open modules.

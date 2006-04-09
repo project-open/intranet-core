@@ -18,7 +18,7 @@ ad_library {
     Code based on work from Bdoesborg@comeptitiveness.com
 
     @author unknown@arsdigita.com
-    @author Frank Bergmann (fraber@fraber.de)
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
 

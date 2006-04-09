@@ -19,7 +19,7 @@ ad_page_contract {
     @param company_id company's group id
 
     @author unknown@arsdigita.com
-    @author Frank Bergmann (fraber@fraber.de)
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     company_id:integer,notnull
     user_id:integer,notnull

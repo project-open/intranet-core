@@ -383,7 +383,7 @@ where
 	u.user_id = pe.person_id
 	and u.user_id = pa.party_id
 	and u.user_id > 2
-	and email != 'fraber@fraber.de'
+	and email != 'frank.bergmann@project-open.com'
 	and not (email like '%@project-open.com')
 "
 

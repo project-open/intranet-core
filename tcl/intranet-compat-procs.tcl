@@ -18,7 +18,7 @@ ad_library {
     (ACS 3.4 Intranet) to OpenACS
 
     @author unknown@arsdigita.com
-    @author Frank Bergmann (fraber@fraber.de)
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
 # ------------------------------------------------------------------
