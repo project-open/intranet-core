@@ -41,8 +41,7 @@ create table im_projects (
 				constraint im_project_prj_fk 
 				references acs_objects,
 	project_name		varchar(1000) not null,
-	project_nr		varchar(100) not null
-				constraint im_projects_nr_un unique,
+	project_nr		varchar(100) not null,
 	project_path		varchar(100) not null
 				constraint im_projects_path_un unique,
 	parent_id		integer 
@@ -214,6 +213,14 @@ create index im_project_parent_id_idx on im_projects(parent_id);
 alter table im_projects add
 	constraint im_projects_name_un 
 	unique(project_name, company_id, parent_id);
+
+
+-- Dont allow the same project_nr  for the same company+level
+alter table im_projects add
+        constraint im_projects_nr_un
+        unique(project_nr, company_id, parent_id);
+
+
 
 
 -- ------------------------------------------------------------
