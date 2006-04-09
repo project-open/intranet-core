@@ -28,7 +28,7 @@ cvs checkout cms
 cvs checkout ecommerce
 cvs checkout events
 
-vs checkout intranet-big-brother
+cvs checkout intranet-big-brother
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-crm-tracking
