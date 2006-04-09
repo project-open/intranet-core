@@ -25,9 +25,10 @@ cvs checkout acs-workflow
 cvs checkout bulk-mail
 cvs checkout chat
 cvs checkout cms
+cvs checkout ecommerce
 cvs checkout events
 
-cvs checkout intranet-big-brother
+vs checkout intranet-big-brother
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-crm-tracking
@@ -40,6 +41,7 @@ cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
 cvs checkout intranet-hr
 cvs checkout intranet-invoices
+cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import
 cvs checkout intranet-material
 cvs checkout intranet-payments
@@ -55,10 +57,12 @@ cvs checkout intranet-timesheet
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
 cvs checkout intranet-timesheet2-tasks
+cvs checkout intranet-timesheet2-task-popup
 cvs checkout intranet-translation
 cvs checkout intranet-trans-invoices
 cvs checkout intranet-trans-quality
 cvs checkout intranet-update-client
+cvs checkout intranet-update-server
 cvs checkout intranet-wiki
 cvs checkout intranet-workflow
 
