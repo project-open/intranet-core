@@ -109,7 +109,8 @@ create table im_projects (
 				check (requires_report_p in ('t','f')),
 	company_contact_id	integer
 				constraint im_project_company_contact_id_fk
-				references users
+				references users,
+	sort_order		integer
 );
 
 
