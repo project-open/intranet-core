@@ -99,11 +99,11 @@ set page_body "
     <TD><input type=text name=sort_order value=$sort_order></TD></TR>
   <TR class=rowodd>
     <TD>URL</TD>
-    <TD><input type=text name=url value=\"$page_url\"></TD>
+    <TD><input type=text name=page_url value=\"$page_url\"></TD>
   </TR>
   <TR class=roweven>
     <TD>Component TLC</TD>
-    <TD><pre>$component_tcl</pre></TD>
+    <TD><textarea name=component_tcl cols=60 rows=10>$component_tcl</textarea></TD>
   </TR>
 
 </TBODY>

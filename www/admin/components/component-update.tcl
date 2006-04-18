@@ -25,10 +25,13 @@ ad_page_contract {
   @author frank.bergmann@project-open.com
   @author mai-bee@gmx.net
 } {
-    plugin_id:naturalnum,notnull
-    sort_order:naturalnum,notnull
-    location:notnull
-    url:trim
+    plugin_id:naturalnum
+    {sort_order:integer ""}
+    {location ""}
+    {page_url:trim ""}
+    {component_tcl:allhtml ""}
+    {action "none"}
+    {return_url ""}
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -38,45 +41,114 @@ if {!$user_is_admin_p} {
     return
 }
 
-set exception_count 0
-set exception_text ""
+set updates [list]
+if {"" != $page_url} { lappend updates "page_url = :page_url" }
+if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
+if {"" != $location} { lappend updates "location = :location" }
+if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
 
-if {![info exists plugin_id] || [empty_string_p $plugin_id]} {
-    incr exception_count
-    append exception_text "<li>Plugin_ID is somehow missing.  This is probably a bug in our software."
+if {[llength $updates] > 0} {
+    if [catch {
+    db_dml update_category_properties "
+	UPDATE	im_component_plugins
+	SET	[join $updates ",\n\t"]
+	WHERE	plugin_id = :plugin_id"
+    } errmsg ] {
+	ad_return_complaint "Argument Error" "<pre>$errmsg</pre>"
+	return
+    }
 }
 
-if {![info exists sort_order] || [empty_string_p $sort_order]} {
-    incr exception_count
-    append exception_text "<li>sort_order is somehow missing.  This is probably a bug in our software."
+# Get everything about the current plugin
+db_1row component_info "
+	select	p.*
+	from	im_component_plugins p
+	where	plugin_id = :plugin_id
+"
+
+switch $action {
+    down { 
+	# get the next component further up
+	set above_sort_order [db_string above "
+		select	min(sort_order)
+		from	im_component_plugins
+		where	page_url = :page_url
+			and location = :location
+			and sort_order > :sort_order
+	" -default ""]
+
+	if {"" != $above_sort_order} {
+
+	    # Get the ID of the component above
+	    set above_ids [db_list above_list "
+		select	plugin_id
+		from	im_component_plugins
+		where	page_url = :page_url
+			and location = :location
+			and sort_order = :above_sort_order
+	    "]
+	    set above_plugin_id [lindex $above_ids 0]
+
+	    # Exchange the sort orders
+	    db_dml update "
+		update im_component_plugins 
+		set sort_order=:above_sort_order 
+		where plugin_id = :plugin_id
+	    "
+	    db_dml update "
+		update im_component_plugins 
+		set sort_order=:sort_order 
+		where plugin_id = :above_plugin_id
+	    "
+	}
+    }
+    up { 
+	# get the next component further down
+	set below_sort_order [db_string below "
+		select	max(sort_order)
+		from	im_component_plugins
+		where	page_url = :page_url
+			and location = :location
+			and sort_order < :sort_order
+	" -default ""]
+
+	if {"" != $below_sort_order} {
+
+	    # Get the ID of the component below
+	    set below_ids [db_list below_list "
+		select	plugin_id
+		from	im_component_plugins
+		where	page_url = :page_url
+			and location = :location
+			and sort_order = :below_sort_order
+	    "]
+	    set below_plugin_id [lindex $below_ids 0]
+
+	    # Exchange the sort orders
+	    db_dml update "
+		update im_component_plugins 
+		set sort_order=:below_sort_order 
+		where plugin_id = :plugin_id
+	    "
+	    db_dml update "
+		update im_component_plugins 
+		set sort_order=:sort_order 
+		where plugin_id = :below_plugin_id
+	    "
+	}
+    }
+    left {
+	db_dml left "update im_component_plugins set location='left' where plugin_id=:plugin_id"
+    }
+    right { 
+	db_dml left "update im_component_plugins set location='right' where plugin_id=:plugin_id"
+    }
 }
 
-
-if { $exception_count > 0 } {
-    ad_return_complaint $exception_count $exception_text 
-    return
-}
-
-if [catch {
-
-   db_dml update_category_properties "
-UPDATE
-        im_component_plugins
-SET
-        location = :location,
-        sort_order = :sort_order,
-	page_url = :url
-WHERE
-        plugin_id = :plugin_id"
-} errmsg ] {
-    ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"
-    return
-
-}
 
 db_release_unused_handles
 
-if { [info exists return_url] } {
+if {"" != $return_url} {
     ad_returnredirect "$return_url"
 } else {
     ad_returnredirect "index"

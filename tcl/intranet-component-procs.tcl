@@ -55,7 +55,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	append full_url "index"
     }
 
-    ns_log Notice "full_url=$full_url"
+#    ns_log Notice "im_component_bay: full_url=$full_url"
 
     # Remove the trailing ".tcl" if present by only accepting 
     # characters until a "." appears
@@ -79,17 +79,17 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     "]
 
     set plugin_sql "
-select
-	c.*,
-	im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
-from
-	im_component_plugins c
-where
-	page_url=:url_stub
-	and location=:location
-	and (view_name is null or view_name = :view_name)
-order by sort_order
-"
+	select
+		c.*,
+		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+	from
+		im_component_plugins c
+	where
+		page_url=:url_stub
+		and location=:location
+		and (view_name is null or view_name = :view_name)
+	order by sort_order
+    "
 
     set html ""
     db_foreach get_plugins $plugin_sql {
@@ -97,6 +97,12 @@ order by sort_order
 	if {$any_perms_set_p > 0} {
 	    if {"f" == $perm} {	continue }
 	}
+	
+	# Very very ugly: We set the "plugin_id" in the calling procedure
+	# in order to allow the plugin code to check for this variable.
+	#
+	upvar 1 plugin_id upvar_plugin_id
+	set upvar_plugin_id $plugin_id
 
 	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
 	    append html [uplevel 1 $component_tcl]

@@ -27,7 +27,15 @@ ad_library {
 # HTML Components
 # --------------------------------------------------------
 
-ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {height 0} } {
+ad_proc -public im_gif { 
+    {-translate_p 1} 
+    {-type "gif"}
+    name 
+    {alt ""} 
+    {border 0} 
+    {width 0} 
+    {height 0} 
+} {
     Create an <IMG ...> tag to correctly render a range of GIFs
     frequently used by the Intranet
 } {
@@ -100,7 +108,7 @@ ad_proc -public im_gif { {-translate_p 1} name {alt ""} { border 0} {width 0} {h
 	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	default		{ 
-	    set result "<img src=\"$url/$name.gif\" border=$border "
+	    set result "<img src=\"$url/$name.$type\" border=$border "
 	    if {$width > 0} { append result "width=$width " }
 	    if {$height > 0} { append result "height=$height " }
 	    append result "title=\"$alt\" alt=\"$alt\">"
@@ -161,24 +169,70 @@ ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} 
     $content
     </td>
     </tr>
-    </table>"
-    
+    </table>"    
 }
 
-
-ad_proc -public im_table_with_title { title body } {
+ad_proc -public im_table_with_title { 
+    {-plugin_id 0}
+    title 
+    body 
+} {
     Returns a two row table with background colors
 } {
     if {"" == $body} { return "" }
 
+
+    # Get the ID of the current page and normalize
+    set full_url [ns_conn url]
+    if {[regexp {.*\/$} $full_url]} { append full_url "index" }
+    regexp {([^\.]*)} $full_url page_url
+    ns_log Notice "im_table_with_title: norm_url=$page_url"
+
+    set return_url [im_url_with_query]
+    set base_url "/intranet/admin/components/component-update"
+
+    # Check for upvar'ed plugin_id
+    #
+    upvar plugin_id upvar_plugin_id
+    if {[info exists upvar_plugin_id]} {
+        db_0or1row plugin_info "
+	select	plugin_id,
+		location,
+		sort_order
+	from	im_component_plugins
+	where	plugin_id = :upvar_plugin_id"
+    } else {
+	set sort_order ""
+	set location ""
+    }
+
+    set plugin_url [export_vars -base $base_url {plugin_id page_url return_url}]
+
+    set right_icons "
+        <nobr>
+	<a href=\"$plugin_url&action=left\">[im_gif -type png fam/arrow_left "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=up\">[im_gif -type png fam/arrow_up "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=down\">[im_gif -type png fam/arrow_down "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=right\">[im_gif -type png fam/arrow_right "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=close\">[im_gif -type png fam/cancel "" 0 16 16]</a>
+        </nobr>
+    "
+    if {0 == $plugin_id} { set right_icons ""}
+
     return "
 <table cellpadding=5 cellspacing=0 border=0 width='100%'>
- <tr>
-  <td class=tableheader>$title</td>
- </tr>
- <tr>
-  <td class=tablebody><font size=-1>$body</font></td>
- </tr>
+<tr>
+   <td class=tableheader width=16>
+	<a href=\"$plugin_url&action=minimize\">[im_gif -type png fam/arrow_in "" 0 16 16]</a>
+   </td>
+   <td class=tableheader align=left width='99%'>$title</td>
+   <td class=tableheader width=80>
+       $right_icons
+   </td>
+</tr>
+<tr>
+  <td class=tablebody colspan=2><font size=-1>$body</font></td>
+</tr>
 </table><br>
 "
 }
