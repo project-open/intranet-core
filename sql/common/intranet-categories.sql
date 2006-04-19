@@ -77,7 +77,9 @@
 -- 3700-3799    Intranet Cost Item Type
 -- 3800-3899    Intranet Cost Item Status
 -- 3900-3999    Intranet Cost Item Planning Type
--- 4000-4599    (reserved)
+-- 4000-4099	Intranet Expense Type
+-- 4100-4199	Intranet Expense Payment Type
+-- 4200-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
