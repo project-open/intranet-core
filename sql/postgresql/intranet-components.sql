@@ -75,13 +75,17 @@ create table im_component_plugins (
 	location		varchar(100) not null,
 				-- constraint im_comp_plugin_location_check
 				-- check(location in ('left','right','bottom','none')),
+	title_tcl		varchar(4000),
 	component_tcl		varchar(4000),
 		constraint im_component_plugins_un
 		unique (plugin_name, package_name)
 );
 
-create or replace function im_component_plugin__new (integer, varchar, timestamptz, integer, varchar, integer, 
-varchar, varchar, varchar, varchar, varchar, integer, varchar) returns integer as '
+create or replace function im_component_plugin__new (
+	integer, varchar, timestamptz, integer, varchar, integer, 
+	varchar, varchar, varchar, varchar, varchar, integer, 
+	varchar, varchar
+) returns integer as '
 declare
 	p_plugin_id	alias for $1;	-- default null
 	p_object_type	alias for $2;	-- default ''acs_object''
@@ -97,6 +101,7 @@ declare
 	p_view_name	alias for $11;	-- default null
 	p_sort_order	alias for $12;
 	p_component_tcl	alias for $13;
+	p_title_tcl	alias for $14;
 
 	v_plugin_id	im_component_plugins.plugin_id%TYPE;
 begin
@@ -111,10 +116,12 @@ begin
 
 	insert into im_component_plugins (
 		plugin_id, plugin_name, package_name, sort_order, 
-		view_name, page_url, location, component_tcl
+		view_name, page_url, location, 
+		component_tcl, title_tcl
 	) values (
 		v_plugin_id, p_plugin_name, p_package_name, p_sort_order, 
-		p_view_name, p_page_url, p_location, p_component_tcl
+		p_view_name, p_page_url, p_location, 
+		p_component_tcl, p_title_tcl
 	);
 
 	return v_plugin_id;

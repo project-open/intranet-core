@@ -173,7 +173,6 @@ ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} 
 }
 
 ad_proc -public im_table_with_title { 
-    {-plugin_id 0}
     title 
     body 
 } {
@@ -181,57 +180,15 @@ ad_proc -public im_table_with_title {
 } {
     if {"" == $body} { return "" }
 
-
-    # Get the ID of the current page and normalize
-    set full_url [ns_conn url]
-    if {[regexp {.*\/$} $full_url]} { append full_url "index" }
-    regexp {([^\.]*)} $full_url page_url
-    ns_log Notice "im_table_with_title: norm_url=$page_url"
-
-    set return_url [im_url_with_query]
-    set base_url "/intranet/admin/components/component-update"
-
-    # Check for upvar'ed plugin_id
-    #
-    upvar plugin_id upvar_plugin_id
-    if {[info exists upvar_plugin_id]} {
-        db_0or1row plugin_info "
-	select	plugin_id,
-		location,
-		sort_order
-	from	im_component_plugins
-	where	plugin_id = :upvar_plugin_id"
-    } else {
-	set sort_order ""
-	set location ""
-    }
-
-    set plugin_url [export_vars -base $base_url {plugin_id page_url return_url}]
-
-    set right_icons "
-        <nobr>
-	<a href=\"$plugin_url&action=left\">[im_gif -type png fam/arrow_left "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=up\">[im_gif -type png fam/arrow_up "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=down\">[im_gif -type png fam/arrow_down "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=right\">[im_gif -type png fam/arrow_right "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=close\">[im_gif -type png fam/cancel "" 0 16 16]</a>
-        </nobr>
-    "
-    if {0 == $plugin_id} { set right_icons ""}
+    set page_url [im_component_page_url]
 
     return "
 <table cellpadding=5 cellspacing=0 border=0 width='100%'>
 <tr>
-   <td class=tableheader width=16>
-	<a href=\"$plugin_url&action=minimize\">[im_gif -type png fam/arrow_in "" 0 16 16]</a>
-   </td>
    <td class=tableheader align=left width='99%'>$title</td>
-   <td class=tableheader width=80>
-       $right_icons
-   </td>
 </tr>
 <tr>
-  <td class=tablebody colspan=2><font size=-1>$body</font></td>
+  <td class=tablebody><font size=-1>$body</font></td>
 </tr>
 </table><br>
 "
@@ -815,6 +772,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
     
     set logout_pwchange_str "
+	<a href='/intranet/users/view?user_id=$user_id'>[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
 	<a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
 	<a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
     "

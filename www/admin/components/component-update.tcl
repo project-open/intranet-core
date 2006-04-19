@@ -29,6 +29,7 @@ ad_page_contract {
     {sort_order:integer ""}
     {location ""}
     {page_url:trim ""}
+    {title_tcl:allhtml ""}
     {component_tcl:allhtml ""}
     {action "none"}
     {return_url ""}
@@ -43,6 +44,7 @@ if {!$user_is_admin_p} {
 
 set updates [list]
 if {"" != $page_url} { lappend updates "page_url = :page_url" }
+if {"" != $title_tcl} { lappend updates "title_tcl = :title_tcl" }
 if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
 if {"" != $location} { lappend updates "location = :location" }
 if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
@@ -59,6 +61,43 @@ if {[llength $updates] > 0} {
     }
 }
 
+# Get everything about the component
+db_1row comp_info "
+	select * 
+	from im_component_plugins 
+	where plugin_id=:plugin_id
+"
+
+
+# Check if there are several components with the same sort_order
+# as the current one
+set same_comps [db_list same_comps "
+	select	plugin_id 
+	from	im_component_plugins
+	where	page_url = :page_url
+		and location = :location
+		and sort_order = :sort_order
+		and plugin_id != :plugin_id
+"]
+
+if {[llength $same_comps] > 0} {
+
+    # Update the components and add random values to their
+    # sort order
+
+    foreach pid $same_comps {
+	# Generate a random number between -10 and +10
+	set r [expr [ns_rand 20] - 10]
+	
+	db_dml rand_update "
+		update im_component_plugins 
+		set sort_order = sort_order + :r 
+		where plugin_id = :pid
+	"
+    }
+}
+
+
 # Get everything about the current plugin
 db_1row component_info "
 	select	p.*
@@ -68,7 +107,7 @@ db_1row component_info "
 
 switch $action {
     down { 
-	# get the next component further up
+	# get the next component further down
 	set above_sort_order [db_string above "
 		select	min(sort_order)
 		from	im_component_plugins
@@ -103,7 +142,7 @@ switch $action {
 	}
     }
     up { 
-	# get the next component further down
+	# get the next component further up
 	set below_sort_order [db_string below "
 		select	max(sort_order)
 		from	im_component_plugins

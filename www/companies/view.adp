@@ -18,6 +18,7 @@
 
     <%= [im_component_bay left] %>
   </td>
+  <td width=2>&nbsp;</td>
   <td valign=top>
 
     @projects_html;noquote@

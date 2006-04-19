@@ -113,7 +113,7 @@ ad_proc -public im_random_employee_component { } {
 	</tr>
 	</table>
     "
-    set portrait_html [im_table_with_title $portrait_title $portrait_html]
+#    set portrait_html [im_table_with_title $portrait_title $portrait_html]
     return $portrait_html
 }
 

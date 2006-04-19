@@ -40,13 +40,11 @@ ad_proc -public im_component_any_perms_set_p { } {
     return $any_perms_set_p
 }
 
-ad_proc -public im_component_bay { location {view_name ""} } {
-    Checks the database for Plug-ins for this page and component
-    bay.
+ad_proc -public im_component_page_url { } {
+    Returns the "page_url" of the current page in a normalized form
 } {
-    # Get the ID of the current page
+    # Get the full URL of the current page
     set full_url [ns_conn url]
-    set user_id [ad_get_user_id]
 
     # Add an "index" to the url_stub if it ends with a "/".
     # This way we simulate the brwoser behavious of showing
@@ -55,13 +53,76 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	append full_url "index"
     }
 
-#    ns_log Notice "im_component_bay: full_url=$full_url"
-
     # Remove the trailing ".tcl" if present by only accepting 
     # characters until a "." appears
     # This asumes that there is no "." in the main url!
-    regexp {([^\.]*)} $full_url url_stub
-    ns_log Notice "url_stub=$url_stub"
+    regexp {([^\.]*)} $full_url page_url
+
+    ns_log Notice "im_component_page_url: page_url=$page_url"
+    return $page_url
+}
+
+
+ad_proc -public im_component_box { 
+    plugin_id
+    title 
+    body 
+} {
+    Returns a two row table with background colors
+} {
+    if {"" == $body} { return "" }
+
+    set page_url [im_component_page_url]
+    set return_url [im_url_with_query]
+    set base_url "/intranet/admin/components/component-update"
+
+    set plugin_url [export_vars -base $base_url {plugin_id page_url return_url}]
+
+    set right_icons "
+        <nobr>
+	<a href=\"$plugin_url&action=left\">[im_gif -type png fam/arrow_left "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=up\">[im_gif -type png fam/arrow_up "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=down\">[im_gif -type png fam/arrow_down "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=right\">[im_gif -type png fam/arrow_right "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=close\">[im_gif -type png fam/cancel "" 0 16 16]</a>
+        </nobr>
+    "
+    if {0 == $plugin_id} { set right_icons ""}
+
+
+    db_1row component_info "select c.* from im_component_plugins c where plugin_id = :plugin_id"
+
+    return "
+	<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+	<tr>
+	   <td class=tableheader width=16>
+		<a href=\"$plugin_url&action=minimize\"
+		>[im_gif -type png fam/arrow_in "" 0 16 16]</a>
+
+<!--		<a href=\"$plugin_url&action=normal\"
+		>[im_gif -type png fam/arrow_out "" 0 16 16]</a>
+-->
+	   </td>
+	   <td class=tableheader align=left>$title</td>
+	   <td class=tableheader width=80 align=right>$right_icons</td>
+	</tr>
+	<tr>
+	  <td class=tablebody colspan=3><font size=-1>$body</font></td>
+	</tr>
+	</table><br>
+    "
+}
+
+
+
+ad_proc -public im_component_bay { location {view_name ""} } {
+    Checks the database for Plug-ins for this page and component
+    bay.
+} {
+    set user_id [ad_get_user_id]
+
+    # Get the URL of the current page
+    set url_stub [im_component_page_url]
 
     # get the list of plugins for this page
     #no util_memoize yet while we are developing...
@@ -94,29 +155,23 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     set html ""
     db_foreach get_plugins $plugin_sql {
 
-	if {$any_perms_set_p > 0} {
-	    if {"f" == $perm} {	continue }
-	}
+	if {$any_perms_set_p > 0 && "f" == $perm} { continue }
 	
-	# Very very ugly: We set the "plugin_id" in the calling procedure
-	# in order to allow the plugin code to check for this variable.
-	#
-	upvar 1 plugin_id upvar_plugin_id
-	set upvar_plugin_id $plugin_id
+	set component_html [uplevel 1 $component_tcl]
+	set title_html $plugin_name
+	if {"" != $title_tcl} {
+	    set title_html [uplevel 1 $title_tcl]
+	}
 
-	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
-	    append html [uplevel 1 $component_tcl]
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
 	} err_msg] } {
 	    set html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
 	    set html [im_table_with_title $plugin_name $html]
-
-#	    ad_return_complaint 1 "<li>
-#        Error evaluating component '$plugin_name' of module '$package_name':<br>
-#        <pre>\n$err_msg\n</pre><br>
-#        Please contact your system administrator:<br>"
 	}
+
+	append html [im_component_box $plugin_id $title_html $component_html]
+
     }
     return $html
 }
@@ -127,14 +182,14 @@ ad_proc -public im_component_insert { plugin_name } {
     Returns "" if the component doesn't exist.
 } {
     set plugin_sql "
-select
-	c.*
-from
-	im_component_plugins c
-where
-	plugin_name=:plugin_name
-order by sort_order
-"
+	select
+		c.*
+	from
+		im_component_plugins c
+	where
+		plugin_name=:plugin_name
+	order by sort_order
+    "
 
     set html ""
     db_foreach get_plugins $plugin_sql {

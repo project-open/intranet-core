@@ -30,6 +30,7 @@ switch $view_name {
     @project_base_data_html;noquote@
     <%= [im_component_bay left] %>
   </td>
+  <td width=2>&nbsp;</td>
   <td valign=top>
     @admin_html;noquote@
     @hierarchy_html;noquote@

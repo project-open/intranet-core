@@ -467,10 +467,4 @@ append hours_html "</ul>"
 # Administration
 # ----------------------------------------------------------------
 
-set admin_html ""
-append admin_html "
-  <li> <a href=/intranet/users/view?user_id=$current_user_id><#_ About You#></A>\n"
-
-set administration_component [im_table_with_title "<#_ Administration#>" $admin_html]
-
 db_release_unused_handles
