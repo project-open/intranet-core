@@ -565,6 +565,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
+    set return_url [im_url_with_query]
 
     # There are two ways to publish a context bar:
     # 1. Via "context_bar". This var contains a fully formatted context bar
@@ -657,7 +658,9 @@ order by
 	append navbar "<td>[im_gif "right-$cur_sel"]</td>"
     }
 
-    set add_components "<a href=\"/intranet/admin/components/add-stuff\">[im_gif -type png fam/add "Add Stuff" 0 16 16] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
+    set page_url [im_component_page_url]
+    set add_comp_url [export_vars -base "/intranet/admin/components/add-stuff" {page_url return_url}]
+    set add_components "<a href=\"$add_comp_url\">[im_gif -type png fam/add "Add Stuff" 0 16 16] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
