@@ -657,6 +657,7 @@ order by
 	append navbar "<td>[im_gif "right-$cur_sel"]</td>"
     }
 
+    set add_components "<a href=\"/intranet/admin/components/add-stuff\">[im_gif -type png fam/add "Add Stuff" 0 16 16] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
@@ -668,6 +669,9 @@ order by
               </tr>
             </table>
           </TD>
+	  <td align=right>
+	     $add_components
+	  </td>
         </TR>
         <TR>
           <td colspan=2 class=pagedesriptionbar>

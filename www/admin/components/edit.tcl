@@ -71,7 +71,7 @@ set return_url ""
 
 
 set page_body "
-<form action=\"component-update.tcl\" method=GET>
+<form action=\"edit-2.tcl\" method=GET>
 [export_form_vars plugin_id return_url]
 
 <TABLE border=0>

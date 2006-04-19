@@ -325,7 +325,7 @@ db_foreach project_hierarchy {} {
 
 
 if {$counter > 1} {
-    set hierarchy_html [im_table_with_title "[_ intranet-core.Project_Hierarchy] [im_gif help "This project is part of another project or contains subprojects."]" "<ul>$hierarchy_html</ul>"]
+    set hierarchy_html [im_table_with_title "[_ intranet-core.Project_Hierarchy] [im_gif help "This project is part of another project or contains subprojects."]" $hierarchy_html]
 } else {
     set hierarchy_html ""
 }

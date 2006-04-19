@@ -81,6 +81,38 @@ create table im_component_plugins (
 		unique (plugin_name, package_name)
 );
 
+comment on table im_component_plugins is '
+ Components Plugins are handeled in the database in order to allow
+ customizations to survive system updates.
+';
+
+
+create table im_component_plugin_user_map (
+	plugin_id		integer
+				constraint im_comp_plugin_user_map_plugin_fk
+				references im_component_plugins,
+	user_id			integer 
+				constraint im_comp_plugin_user_map_user_fk
+				references users,
+	sort_order		integer not null,
+	minimized_p		char(1)
+				constraint im_comp_plugin_user_map_min_p_ck
+				check(minimized_p in ('t','f'))
+				default 'f',
+	location		varchar(100) not null,
+		constraint im_comp_plugin_user_map_plugin_pk
+		primary key (plugin_id, user_id)
+);
+
+comment on table im_component_plugin_user_map is '
+ This table maps Component Plugins to particular users,
+ effectively allowing users to customize their GUI
+ layout.
+';
+
+
+
+
 create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, 

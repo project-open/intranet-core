@@ -72,11 +72,12 @@ ad_proc -public im_component_box {
 } {
     if {"" == $body} { return "" }
 
+    set user_id [ad_get_user_id]
     set page_url [im_component_page_url]
     set return_url [im_url_with_query]
-    set base_url "/intranet/admin/components/component-update"
+    set base_url "/intranet/admin/components/component-action"
 
-    set plugin_url [export_vars -base $base_url {plugin_id page_url return_url}]
+    set plugin_url [export_vars -base $base_url {plugin_id return_url}]
 
     set right_icons "
         <nobr>
@@ -90,27 +91,55 @@ ad_proc -public im_component_box {
     if {0 == $plugin_id} { set right_icons ""}
 
 
-    db_1row component_info "select c.* from im_component_plugins c where plugin_id = :plugin_id"
+    # Only for debugging purposes!
+    db_1row component_info "
+	select
+		c.plugin_id,
+		c.plugin_name,
+		c.component_tcl,
+		c.title_tcl,
+		m.minimized_p,
+		coalesce(m.sort_order, c.sort_order) as sort_order,
+		coalesce(m.location, c.location) as location
+	from
+		im_component_plugins c
+		left outer join (
+			select  *
+			from    im_component_plugin_user_map
+			where   user_id = :user_id
+		) m on (c.plugin_id = m.plugin_id)
+	where
+		c.plugin_id = :plugin_id
+    "
 
-    return "
-	<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+    if {"f" == $minimized_p} {
+	set min_gif "<a href=\"$plugin_url&action=minimize\">[im_gif -type png fam/arrow_in "" 0 16 16]</a>"
+    } else {
+	set min_gif "<a href=\"$plugin_url&action=normal\">[im_gif -type png fam/arrow_out "" 0 16 16]</a>"
+    }
+
+    set header "
 	<tr>
-	   <td class=tableheader width=16>
-		<a href=\"$plugin_url&action=minimize\"
-		>[im_gif -type png fam/arrow_in "" 0 16 16]</a>
-
-<!--		<a href=\"$plugin_url&action=normal\"
-		>[im_gif -type png fam/arrow_out "" 0 16 16]</a>
--->
-	   </td>
+	   <td class=tableheader width=16>$min_gif</td>
 	   <td class=tableheader align=left>$title</td>
 	   <td class=tableheader width=80 align=right>$right_icons</td>
 	</tr>
+    "
+
+    set body "
 	<tr>
 	  <td class=tablebody colspan=3><font size=-1>$body</font></td>
 	</tr>
+    "
+    if {"t" == $minimized_p} { set body "" }
+
+    return "
+	<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+	$header
+	$body
 	</table><br>
     "
+
 }
 
 
@@ -140,16 +169,32 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     "]
 
     set plugin_sql "
-	select
-		c.*,
-		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
-	from
-		im_component_plugins c
-	where
-		page_url=:url_stub
-		and location=:location
-		and (view_name is null or view_name = :view_name)
-	order by sort_order
+	select	*
+	from (
+		select
+			c.plugin_id,
+			c.plugin_name,
+			c.component_tcl,
+			c.title_tcl,
+			coalesce(m.sort_order, c.sort_order) as sort_order,
+			coalesce(m.location, c.location) as location,
+			im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+		from
+			im_component_plugins c
+			left outer join
+			    (	select	* 
+				from	im_component_plugin_user_map 
+				where	user_id = :user_id
+			    ) m
+			    on (c.plugin_id = m.plugin_id)
+		where
+			c.page_url = :url_stub
+			and (view_name is null or view_name = :view_name)
+	    ) p
+	where	
+		location = :location
+	order by 
+		sort_order
     "
 
     set html ""
@@ -157,6 +202,9 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 
 	if {$any_perms_set_p > 0 && "f" == $perm} { continue }
 	
+	if {"" == $sort_order} { set sort_order $default_sort_order }
+	if {"" == $location} { set location $default_location }
+
 	set component_html [uplevel 1 $component_tcl]
 	set title_html $plugin_name
 	if {"" != $title_tcl} {
@@ -198,9 +246,9 @@ ad_proc -public im_component_insert { plugin_name } {
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
 	    ad_return_complaint 1 "<li>
-        [_ intranet-core.lt_Error_evaluating_comp]:<br>
-        <pre>\n$err_msg\n</pre><br>
-        [_ intranet-core.lt_Please_contact_your_s]:<br>"
+	[_ intranet-core.lt_Error_evaluating_comp]:<br>
+	<pre>\n$err_msg\n</pre><br>
+	[_ intranet-core.lt_Please_contact_your_s]:<br>"
 	}
     }
     return $html
