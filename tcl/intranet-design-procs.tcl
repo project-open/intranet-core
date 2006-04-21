@@ -52,18 +52,12 @@ ad_proc -public im_gif {
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"incident"	{ return "<img src=$url/incident.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1102"		{ return "<img src=$url/incident.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"discussion"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1106"		{ return "<img src=$url/discussion.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"task"		{ return "<img src=$url/task.gif width=24 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1104"		{ return "<img src=$url/task.gif width=24 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"news"		{ return "<img src=$url/news.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1100"		{ return "<img src=$url/task.gif width=24 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"note"		{ return "<img src=$url/note.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1108"		{ return "<img src=$url/note.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"reply"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"1190"		{ return "<img src=$url/reply.gif width=22 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"incident"	{ return "<img src=$navbar_gif_path/lightning.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"discussion"	{ return "<img src=$navbar_gif_path/group.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"task"		{ return "<img src=$navbar_gif_path/tick.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"news"		{ return "<img src=$navbar_gif_path/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"note"		{ return "<img src=$navbar_gif_path/pencil.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"reply"		{ return "<img src=$navbar_gif_path/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -76,7 +70,7 @@ ad_proc -public im_gif {
 	"exp-word"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-text"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"profile"	{ return "<img src=$url/discussion.gif width=20 height=20 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"profile"	{ return "<img src=$navbar_gif_path/user.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -92,20 +86,32 @@ ad_proc -public im_gif {
 	"middle-sel-sel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_path/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"admin"		{ return "<img src=$url/admin.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"company"	{ return "<img src=$url/company.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"employee"	{ return "<img src=$url/employee.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$url/freelance.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"senman"	{ return "<img src=$url/senman.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"proman"	{ return "<img src=$url/proman.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"accounting"	{ return "<img src=$url/accounting.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"sales"		{ return "<img src=$url/sales.gif width=20 heigth=20 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"admin"		{ return "<img src=$navbar_gif_path/tux.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"customer"	{ return "<img src=$navbar_gif_path/coins.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"employee"	{ return "<img src=$navbar_gif_path/user_orange.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_path/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_path/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"senman"	{ return "<img src=$navbar_gif_path/user_suit.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"proman"	{ return "<img src=$navbar_gif_path/user_comment.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"accounting"	{ return "<img src=$navbar_gif_path/money_dollar.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"sales"		{ return "<img src=$navbar_gif_path/telephone.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"bb_clear"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_red"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_blue"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_yellow"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+
+
+	"comp_add"	{ return "<img src=$navbar_gif_path/comp_add.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_left" { return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_right" { return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_up"	{ return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_down" { return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_minimize"	{ return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_maximize"	{ return "<img src=$navbar_gif_path/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_delete"	{ return "<img src=$navbar_gif_path/comp_delete.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+
 
 	default		{ 
 	    set result "<img src=\"$url/$name.$type\" border=$border "
@@ -660,7 +666,7 @@ order by
 
     set page_url [im_component_page_url]
     set add_comp_url [export_vars -base "/intranet/admin/components/add-stuff" {page_url return_url}]
-    set add_components "<a href=\"$add_comp_url\">[im_gif -type png fam/add "Add Stuff" 0 16 16] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
+    set add_components "<a href=\"$add_comp_url\">[im_gif comp_add "Add Stuff"] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>

@@ -81,13 +81,14 @@ ad_proc -public im_component_box {
 
     set right_icons "
         <nobr>
-	<a href=\"$plugin_url&action=left\">[im_gif -type png fam/arrow_left "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=up\">[im_gif -type png fam/arrow_up "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=down\">[im_gif -type png fam/arrow_down "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=right\">[im_gif -type png fam/arrow_right "" 0 16 16]</a>
-	<a href=\"$plugin_url&action=close\">[im_gif -type png fam/cancel "" 0 16 16]</a>
+	<a href=\"$plugin_url&action=left\">[im_gif arrow_comp_left]</a>
+	<a href=\"$plugin_url&action=up\">[im_gif arrow_comp_up]</a>
+	<a href=\"$plugin_url&action=down\">[im_gif arrow_comp_down]</a>
+	<a href=\"$plugin_url&action=right\">[im_gif arrow_comp_right]</a>
+	<a href=\"$plugin_url&action=close\">[im_gif comp_delete]</a>
         </nobr>
     "
+
     if {0 == $plugin_id} { set right_icons ""}
 
 
@@ -113,9 +114,9 @@ ad_proc -public im_component_box {
     "
 
     if {"f" == $minimized_p} {
-	set min_gif "<a href=\"$plugin_url&action=minimize\">[im_gif -type png fam/arrow_in "" 0 16 16]</a>"
+	set min_gif "<a href=\"$plugin_url&action=minimize\">[im_gif arrow_comp_minimize]</a>"
     } else {
-	set min_gif "<a href=\"$plugin_url&action=normal\">[im_gif -type png fam/arrow_out "" 0 16 16]</a>"
+	set min_gif "<a href=\"$plugin_url&action=normal\">[im_gif arrow_comp_maximize]</a>"
     }
 
     set header "
@@ -134,7 +135,7 @@ ad_proc -public im_component_box {
     if {"t" == $minimized_p} { set body "" }
 
     return "
-	<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+	<table cellpadding=2 cellspacing=0 border=0 width='100%'>
 	$header
 	$body
 	</table><br>
