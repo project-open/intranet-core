@@ -33,6 +33,8 @@ ad_library {
 
 ad_proc -public im_project_type_unknown {} { return 85 }
 ad_proc -public im_project_type_other {} { return 86 }
+ad_proc -public im_project_type_task {} { return 100 }
+
 
 ad_proc -public im_project_status_potential {} { return 71 }
 ad_proc -public im_project_status_quoting {} { return 74 }

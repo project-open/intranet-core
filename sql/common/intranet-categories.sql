@@ -39,7 +39,7 @@
 --  60- 65	Intranet Partner Status
 --  66- 69	Intranet Project On Track Status
 --  71- 83	Intranet Project Status
---  85- 96	Intranet Project Type
+--  85-109	Intranet Project Type
 -- 110-119	Intranet Quality
 -- 120-129	Intranet Hiring Source
 -- 130-149	Intranet Task Board
@@ -338,18 +338,18 @@ insert into im_category_hierarchy values (81,83);
 
 
 -- Project Type
-insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('84', 'Project Task', 'Intranet Project Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '85', 'Unknown', 'Intranet Project Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '86', 'Other', 'Intranet Project Type');
-
+insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('84', 'Project Task', 'Intranet Project Type');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('', 'f', '85', 'Unknown', 'Intranet Project Type');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('', 'f', '86', 'Other', 'Intranet Project Type');
 
 -- 87 - 97 reserved for Translation
 -- 97 - Strategic Consulting  	Consulting Project 	
 -- 98 - Software Maintenance 		
 -- 99 - Software Development 
+-- 100 - Task (for timesheet tasks)
 
 
 -- Hiring Source
