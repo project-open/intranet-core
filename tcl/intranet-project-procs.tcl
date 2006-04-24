@@ -451,7 +451,17 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
     return [im_category_select "Intranet Project Status" $select_name $default]
 }
 
-ad_proc -public im_project_select { {-include_all 0} select_name { default "" } { status "" } {type ""} { exclude_status "" } {member_user_id ""} {company_id ""} } {
+ad_proc -public im_project_select { 
+    {-include_all 0} 
+    {-exclude_subprojects_p 1}
+    select_name 
+    { default "" } 
+    { status "" } 
+    {type ""} 
+    { exclude_status "" } 
+    { member_user_id ""} 
+    {company_id ""} 
+} {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
     specified, we limit the select box to projects matching that
@@ -501,6 +511,10 @@ ad_proc -public im_project_select { {-include_all 0} select_name { default "" } 
      if { ![empty_string_p $company_id] } {
 	 ns_set put $bind_vars company_id $company_id
 	 append sql " and p.company_id = :company_id"
+     }
+
+     if { $exclude_subprojects_p } {
+	 append sql " and p.parent_id is null"
      }
 
      if { ![empty_string_p $status] } {
