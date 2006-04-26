@@ -28,7 +28,7 @@ switch $view_name {
 
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
-  <td valign=top>
+  <td valign=top width='50%'>
     <%= [im_table_with_title "Main Data" $project_base_data_html] %>
     <%= [im_component_bay left] %>
   </td>

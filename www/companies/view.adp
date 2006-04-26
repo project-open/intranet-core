@@ -7,7 +7,7 @@
 <img src="/intranet/images/cleardot.gif" width=2 height=2>
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
-  <td valign=top>
+  <td valign=top width='50%'>
 
    <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
      <tr><td colspan=2 class=tableheader>Company Information</td></tr>
@@ -21,6 +21,8 @@
         </table>
       </td></tr>
     </table>
+
+    <img src="/intranet/images/cleardot.gif" width=2 height=2>
 
     <%= [im_component_bay left] %>
   </td>

@@ -10,7 +10,7 @@
 
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
-  <td valign=top>
+  <td valign=top width='50%'>
 
     <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
      <tr><td colspan=2 class=tableheader>Basic Information</td></tr>

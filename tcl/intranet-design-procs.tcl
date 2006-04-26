@@ -665,8 +665,16 @@ order by
     }
 
     set page_url [im_component_page_url]
+
+    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
+    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+
     set add_comp_url [export_vars -base "/intranet/admin/components/add-stuff" {page_url return_url}]
-    set add_components "<a href=\"$add_comp_url\">[im_gif comp_add "Add Stuff"][lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
+    set reset_comp_url [export_vars -base "/intranet/admin/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
+
+
+    set add_components "<a href=\"$reset_comp_url\">$reset_stuff_text</a>"
+    append add_components "<a href=\"$add_comp_url\">[im_gif comp_add $add_stuff_text]$add_stuff_text</a>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>

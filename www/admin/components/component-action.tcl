@@ -21,20 +21,50 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     plugin_id:naturalnum
+    { page_url "" }
     action
     return_url
 }
 
 # -----------------------------------------------------------
-# Permissions - Only Admins can change the default order
+#
 # -----------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
 
 
 # -----------------------------------------------------------
+# Generic Action
+# -----------------------------------------------------------
+
+
+switch $action {
+    reset {
+	# Delete all specific settings for the given user and 
+	# the give page.
+	db_dml reset "
+		delete from im_component_plugin_user_map
+		where	user_id = :user_id
+			and plugin_id in (
+				select	plugin_id
+				from	im_component_plugins
+				where	page_url = :page_url
+			)
+	"
+	ad_returnredirect "$return_url"
+	ad_script_abort
+    }
+}
+
+
+
+# -----------------------------------------------------------
 # Make sure there are no components with the same sort-order
 # -----------------------------------------------------------
+
+# This is a situation that can occur due to wrong package
+# setup. We just add random values to duplicate components,
+# so that it will even out...
 
 # Get everything about the component
 db_1row component_info "
@@ -76,26 +106,29 @@ if {[llength $same_comps] > 0} {
 # Check if there are already values for the user
 
 set map_count [db_string map_count "
-	select count(*) 
-	from im_component_plugin_user_map 
-	where user_id = :user_id
+	select	count(*) 
+	from	im_component_plugin_user_map 
+	where	user_id = :user_id
+		and plugin_id in (
+			select plugin_id
+			from im_component_plugins
+			where page_url = :page_url
+		)
 "]
 
 if {0 == $map_count} {
     db_dml copy_map "
 	insert into im_component_plugin_user_map 
 	(plugin_id, user_id, sort_order, location)
-	select	plugin_id,
-		:user_id as user_id,
-		sort_order,
-		location
-	from
-	im_component_plugins
+	select	plugin_id, :user_id as user_id,
+		sort_order, location
+	from	im_component_plugins
+	where	page_url = :page_url
     "
 }
 
 # -----------------------------------------------------------
-# Action!
+# Component sepecific Action!
 # -----------------------------------------------------------
 
 # We can be sure that we're working on a copy of the 
@@ -124,8 +157,9 @@ db_1row component_info "
 
 switch $action {
     down {
-	# get the next component further down
-	set above_sort_order [db_string below "
+	# get the "sort_order" (=position) of the next 
+	# below the current one
+	set below_sort_order [db_string below "
 		select	min(m.sort_order)
 		from	im_component_plugin_user_map m,
 			im_component_plugins p
@@ -136,52 +170,9 @@ switch $action {
 			and m.sort_order > :sort_order
 	" -default ""]
 
-	if {"" != $above_sort_order} {
-
-	    # Get the ID of the component above
-	    set above_ids [db_list above_list "
-		select	m.plugin_id
-		from	im_component_plugin_user_map m,
-			im_component_plugins c
-		where	m.plugin_id = c.plugin_id
-			and m.user_id = :user_id
-			and c.page_url = :page_url
-			and m.location = :location
-			and m.sort_order = :above_sort_order
-	    "]
-	    set above_plugin_id [lindex $above_ids 0]
-
-	    # Exchange the sort orders of the user_map table
-	    db_dml update "
-			update	im_component_plugin_user_map 
-			set	sort_order = :above_sort_order 
-			where	plugin_id = :plugin_id
-				and user_id = :user_id
-	    "
-	    db_dml update "
-			update	im_component_plugin_user_map
-			set	sort_order = :sort_order 
-			where	plugin_id = :above_plugin_id
-				and user_id = :user_id
-	    "
-
-	}
-    }
-    up {
-	# Get the next component further up
-	set below_sort_order [db_string below "
-		select	max(m.sort_order)
-		from	im_component_plugin_user_map m,
-			im_component_plugins p
-		where	m.plugin_id = p.plugin_id
-			and m.user_id = :user_id
-			and p.page_url = :page_url
-			and m.location = :location
-			and m.sort_order < :sort_order
-	" -default ""]
-
 	if {"" != $below_sort_order} {
 
+	    # IF there is an element below the current one: 
 	    # Get the ID of the component below
 	    set below_ids [db_list below_list "
 		select	m.plugin_id
@@ -195,9 +186,9 @@ switch $action {
 	    "]
 	    set below_plugin_id [lindex $below_ids 0]
 
-	    # Exchange the sort orders of the user_map
+	    # Exchange the sort orders of the user_map table
 	    db_dml update "
-			update	im_component_plugin_user_map
+			update	im_component_plugin_user_map 
 			set	sort_order = :below_sort_order 
 			where	plugin_id = :plugin_id
 				and user_id = :user_id
@@ -208,7 +199,81 @@ switch $action {
 			where	plugin_id = :below_plugin_id
 				and user_id = :user_id
 	    "
+	} else {
 
+	    # Didn't find any element below the current one:
+	    # Check if this is either "left" or "right" and 
+	    # move the component to "bottom".
+
+	    if {"left" == $location || "right" == $location} {
+
+		# move to "bottom"
+		db_dml send_to_bottom "
+			update	im_component_plugin_user_map 
+			set	location = 'bottom'
+			where	plugin_id = :plugin_id
+				and user_id = :user_id
+		"
+	    }
+	}
+    }
+    up {
+	# Get the next "sort_order" (=position) of the next
+	# component further up
+	set above_sort_order [db_string above "
+		select	max(m.sort_order)
+		from	im_component_plugin_user_map m,
+			im_component_plugins p
+		where	m.plugin_id = p.plugin_id
+			and m.user_id = :user_id
+			and p.page_url = :page_url
+			and m.location = :location
+			and m.sort_order < :sort_order
+	" -default ""]
+
+	if {"" != $above_sort_order} {
+	    # Get the ID of the component above
+	    set above_ids [db_list above_list "
+		select	m.plugin_id
+		from	im_component_plugin_user_map m,
+			im_component_plugins c
+		where	m.plugin_id = c.plugin_id
+			and m.user_id = :user_id
+			and c.page_url = :page_url
+			and m.location = :location
+			and m.sort_order = :above_sort_order
+	    "]
+	    set above_plugin_id [lindex $above_ids 0]
+
+	    # Exchange the sort orders of the user_map
+	    db_dml update "
+			update	im_component_plugin_user_map
+			set	sort_order = :above_sort_order 
+			where	plugin_id = :plugin_id
+				and user_id = :user_id
+	    "
+	    db_dml update "
+			update	im_component_plugin_user_map
+			set	sort_order = :sort_order 
+			where	plugin_id = :above_plugin_id
+				and user_id = :user_id
+	    "
+	} else {
+
+	    # Didn't find any element above the current one:
+	    # Check if this is "bottom" and move the component 
+	    # to the "top".
+
+	    if {"bottom" == $location} {
+
+		# move to "right"
+		db_dml send_to_right "
+			update	im_component_plugin_user_map 
+			set	location = 'right'
+			where	plugin_id = :plugin_id
+				and user_id = :user_id
+		"
+	    }
 	}
     }
     left {
