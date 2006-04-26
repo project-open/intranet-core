@@ -241,8 +241,6 @@ if {$admin} {
 	</form></td></tr>"
 }
 
-# append left_column "</table>"
-
 
 # ------------------------------------------------------
 # Company Project List

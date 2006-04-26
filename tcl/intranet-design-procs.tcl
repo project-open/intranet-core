@@ -189,7 +189,7 @@ ad_proc -public im_table_with_title {
     set page_url [im_component_page_url]
 
     return "
-<table cellpadding=5 cellspacing=0 border=0 width='100%'>
+<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
 <tr>
    <td class=tableheader align=left width='99%'>$title</td>
 </tr>
@@ -666,7 +666,7 @@ order by
 
     set page_url [im_component_page_url]
     set add_comp_url [export_vars -base "/intranet/admin/components/add-stuff" {page_url return_url}]
-    set add_components "<a href=\"$add_comp_url\">[im_gif comp_add "Add Stuff"] [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
+    set add_components "<a href=\"$add_comp_url\">[im_gif comp_add "Add Stuff"][lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]</a>"
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>

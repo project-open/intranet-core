@@ -17,6 +17,8 @@ switch $view_name {
 <%= [im_sub_navbar $parent_menu_id $bind_vars "" "pagedesriptionbar" $menu_label] %>
 
 
+<img src="/intranet/images/cleardot.gif" width=2 height=2>
+
 <!-- 
   There are two "views" on this page: "Summary" and "Files".
   More views may be added by extension modules, but they are
@@ -27,7 +29,7 @@ switch $view_name {
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
   <td valign=top>
-    @project_base_data_html;noquote@
+    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
     <%= [im_component_bay left] %>
   </td>
   <td width=2>&nbsp;</td>

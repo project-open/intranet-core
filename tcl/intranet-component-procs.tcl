@@ -121,9 +121,9 @@ ad_proc -public im_component_box {
 
     set header "
 	<tr>
-	   <td class=tableheader width=16>$min_gif</td>
+	   <td class=tableheader width=25>$min_gif</td>
 	   <td class=tableheader align=left>$title</td>
-	   <td class=tableheader width=80 align=right>$right_icons</td>
+	   <td class=tableheader width=100 align=right><nobr>$right_icons</td>
 	</tr>
     "
 
@@ -135,9 +135,17 @@ ad_proc -public im_component_box {
     if {"t" == $minimized_p} { set body "" }
 
     return "
-	<table cellpadding=2 cellspacing=0 border=0 width='100%'>
-	$header
+	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
+        <thead>
+        <tr><td class=tableheader>
+          <table cellpadding=0 cellspacing=0 width='100%'>
+	  $header
+	  </table>
+        </td></tr>
+        </thead>
+        <tbody>
 	$body
+        </tbody>
 	</table><br>
     "
 
