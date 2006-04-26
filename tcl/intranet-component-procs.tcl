@@ -75,7 +75,7 @@ ad_proc -public im_component_box {
     set user_id [ad_get_user_id]
     set page_url [im_component_page_url]
     set return_url [im_url_with_query]
-    set base_url "/intranet/admin/components/component-action"
+    set base_url "/intranet/components/component-action"
 
     set plugin_url [export_vars -base $base_url {plugin_id return_url}]
 

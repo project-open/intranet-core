@@ -669,8 +669,8 @@ order by
     set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
     set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
 
-    set add_comp_url [export_vars -base "/intranet/admin/components/add-stuff" {page_url return_url}]
-    set reset_comp_url [export_vars -base "/intranet/admin/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
+    set add_comp_url [export_vars -base "/intranet/components/add-stuff" {page_url return_url}]
+    set reset_comp_url [export_vars -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
 
     set add_components "<a href=\"$reset_comp_url\">$reset_stuff_text</a>"
