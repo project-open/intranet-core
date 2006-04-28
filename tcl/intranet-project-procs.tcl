@@ -1596,16 +1596,13 @@ ad_proc im_project_nuke {project_id} {
 	    ns_log Notice "projects/nuke-2: im_hours - for timesheet tasks"
 	    db_dml task_actions "
 		delete from im_hours
-		where timesheet_task_id in (
-			select task_id
-			from im_timesheet_tasks
-			where project_id = :project_id
-	    )"
+		where project_id = :project_id
+	    "
 
 	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
 	    db_dml task_actions "
 		    delete from im_timesheet_tasks
-		    where project_id = :project_id
+		    where task_id = :project_id
 	    "
 	}
 
@@ -1668,7 +1665,7 @@ ad_proc im_project_nuke {project_id} {
 
 	# End "with_transaction"
     } {
-    
+
 	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
 	    
@@ -1680,10 +1677,9 @@ ad_proc im_project_nuke {project_id} {
 	    
 	}
 	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
-		[_ intranet-core.lt_The_nuking_of_user_us]
+		[_ intranet-core.Failed_to_nuke] Project: $project_id:<br>
 		$detailed_explanation
 		<p>
-		[_ intranet-core.lt_For_good_measure_here]
 		<blockquote>
 		<pre>
 		$errmsg

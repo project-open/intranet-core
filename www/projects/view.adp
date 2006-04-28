@@ -35,7 +35,7 @@ switch $view_name {
   <td width=2>&nbsp;</td>
   <td valign=top>
     @admin_html;noquote@
-<!--    @hierarchy_html;noquote@  -->
+    @hierarchy_html;noquote@
     <%= [im_component_bay right] %>
   </td>
 </tr>
