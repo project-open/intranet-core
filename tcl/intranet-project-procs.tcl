@@ -718,15 +718,14 @@ ad_proc im_project_clone {
     project_nr 
     clone_postfix
 } {
-    Clone project main routine
+    Clone project main routine.
+    ToDo: Start working with Service Contracts to allow other modules
+    to include their clone routines.
 } {
     ns_log Notice "im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
 
     set errors "<li>Starting to clone project \#$parent_project_id => $project_nr / $project_name"
     set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
-
-#    set parent_project_id 10745
-#    set new_project_id 13375
 
     # --------------------------------------------
     # Delete Trans Tasks for the NEW project
@@ -882,11 +881,15 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		project_budget_currency = :project_budget_currency,
 		project_budget_hours = :project_budget_hours,
 		percent_completed = :percent_completed,
-		on_track_status_id = :on_track_status_id,
-		template_p = :template_p
+		on_track_status_id = :on_track_status_id
 	where
 		project_id = :project_id
     "
+
+
+# Not cloning the template_p anymore. This is actually 
+# meta-information that shouldn't get copied.
+#		template_p = :template_p
 
     return $project_id
 }
@@ -1180,54 +1183,17 @@ ad_proc im_project_clone_costs {parent_project_id new_project_id} {
     }
 }
 
-ad_proc im_project_clone_trans_tasks {parent_project_id new_project_id} {
+ad_proc im_project_clone_trans_tasks {
+    parent_project_id 
+    new_project_id
+} {
     Copy translation tasks and assignments
 } {
     ns_log Notice "im_project_clone_trans_tasks parent_project_id=$parent_project_id new_project_id=$new_project_id"
     set errors "<li>Starting to clone translation tasks"
 
-    db_dml trans_tasks "insert into im_trans_tasks (
-		task_id,
-		project_id,
-		target_language_id,
-		task_name,
-		task_filename,
-		task_type_id,
-		task_status_id,
-		description,
-		source_language_id,
-		task_units,
-		billable_units,
-		task_uom_id,
-		invoice_id,
-		match_x,match_rep,match100,match95,match85,match75,match50,match0,
-		trans_id,
-		edit_id,
-		proof_id,
-		other_id
-	    ) (
-	    select 
-		nextval('im_trans_tasks_seq'),
-		:new_project_id,
-		target_language_id,
-		task_name,
-		task_filename,
-		task_type_id,
-		task_status_id,
-		description,
-		source_language_id,
-		task_units,
-		billable_units,
-		task_uom_id,
-		null as invoice_id,
-		match_x,match_rep,match100,match95,match85,match75,match50,match0,
-		trans_id,edit_id,proof_id,other_id 
-	    from 
-		im_trans_tasks 
-	    where 
-		project_id = :parent_project_id
-	)
-    "
+    im_exec_dml clone_project_tasks "im_trans_task__project_clone (:parent_project_id, :new_project_id)"
+
     append errors "<li>Finished to clone translation tasks"
     return $errors
 }
@@ -1583,7 +1549,16 @@ ad_proc im_project_nuke {project_id} {
 	    db_dml trans_tasks "
 		delete from im_trans_tasks 
 		where project_id = :project_id"
-	    
+
+	    db_dml trans_tasks "
+		delete from acs_objects
+		where	object_type = 'im_trans_task'
+			and object_id not in (
+				select task_id
+				from im_trans_tasks
+			)
+		"
+
 	    db_dml project_target_languages "
 		delete from im_target_languages 
 		where project_id = :project_id"
