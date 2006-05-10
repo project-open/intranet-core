@@ -577,6 +577,20 @@ ad_form -extend -name register -on_request {
             -form_id $form_id
     }
 
+
+	    # fraber 060510: Adding "user_exit" for creating a user
+	    ns_log Notice "auth::create_user: Calling user exit user_create"
+	    set user_exit_path "[acs_root_dir]/user_exits"
+	    set user_exit_path [parameter::get -parameter UserExitPath -package_id [im_package_core_id] -default $user_exit_path]
+	    set user_exit [parameter::get -parameter UserExitUserCreate -package_id [im_package_core_id] -default "user_create"]
+
+	    if { [catch {
+		exec "$user_exit_path/$user_exit" $creation_info(user_id)
+	    } err_msg] } {
+		ns_log Error "auth::create_user: Failed to execute user exit: path='$user_exit_path', exit='$user_exit', errmsg='$err_msg'"
+	    }
+
+
 } -after_submit {
 
     if {!$editing_existing_user} {
