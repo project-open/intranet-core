@@ -34,6 +34,7 @@ cvs checkout intranet-cost
 cvs checkout intranet-crm-tracking
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
+cvs checkout intranet-expenses
 cvs checkout intranet-exchange-rate
 cvs checkout intranet-filestorage
 cvs checkout intranet-forum
