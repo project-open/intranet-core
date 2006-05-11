@@ -85,7 +85,7 @@ ad_proc -public im_user_exit_call {
                 # exited with a non-zero exit status, $code.
 
 		im_exec_dml log "acs_log__warn('user_exit', :log_str||:result)"
-		return $code
+		return $status
             }
 
             CHILDSUSP {
@@ -98,7 +98,7 @@ ad_proc -public im_user_exit_call {
                 # signal appears in $msg.
 
 		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||': '||:result)"
-		return $code
+		return $status
             }
 
             POSIX {
@@ -110,13 +110,14 @@ ad_proc -public im_user_exit_call {
                 # human-readable message is in $msg.
 
 		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||': '||:result)"
-		return $code
+		return $status
             }
 
         }
     }
 
-    return $retstr
+    im_exec_dml log "acs_log__warn('user_exit', ':log_str||': Unknown error - should never have got here')"
+    return $status
 }
 
 
@@ -135,10 +136,11 @@ ad_proc -public im_user_exit_list {
 	[list company_create company_id] \
 	[list company_update company_id] \
 	[list company_delete company_id] \
-	[list task_create task_id] \
-	[list task_update task_id] \
-	[list task_delete task_id] \
-	[list task_assign task_id user_id] \
+	[list trans_task_create trans_task_id] \
+	[list trans_task_update trans_task_id] \
+	[list trans_task_delete trans_task_id] \
+	[list trans_task_assign trans_task_id user_id] \
+	[list trans_task_complete trans_task_id] \
     ]
 }
 

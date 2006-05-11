@@ -10,13 +10,12 @@
 <table>
 <tr valign=top>
 <td>
-	<h1>"User Exits" &amp; Their Status</h1>
+	<h1>"User Exits"</h1>
 
 	<table class="list">
 	  <tr class="list-header">
 	    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Name "Name"] %></th>
-	    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Exists "Exists"] %></th>
-	    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Executable "Execut<br>able"] %></th>
+	    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Status "Status"] %></th>
 	    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Invoke "Invoke"] %></th>
 	  </tr>
 	  <multiple name=exits>
@@ -29,14 +28,11 @@
 		@exits.exit_name@
 	    </td>
 	    <td class="list-narrow">
-	      <if @exits.exists_p@>exists</if>
-	      <else>-</else>
-	    </td>
-	    <td class="list-narrow">
-	      <if @exits.executable_p@>exec</if>
+
+	      <if @exits.executable_p@>OK</if>
 	      <else>
-		<if @exits.exists_p@><font color=red>not executable</font></if>
-		<else>-</else>
+		<if @exits.exists_p@><font color=red>Not Executable</font></if>
+		<else>Not defined</else>
 	      </else>
 	    </td>
 	    <td class="list-narrow">
@@ -50,7 +46,7 @@
 
 </td><td>
 
-	<h1>Invokation Parameters</h1>
+	<h1>Test Parameters</h1>
 
 	<table class="list">
 	  <tr class="list-header">
@@ -73,6 +69,12 @@
 	    <td class="list-narrow">Company_Id</td>
 	    <td class="list-narrow">
 	      <input type=text name=company_id value=@default_company_id@ size=6>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="list-narrow">Trans_Task_Id</td>
+	    <td class="list-narrow">
+	      <input type=text name=trans_task_id value=@default_trans_task_id@ size=6>
 	    </td>
 	  </tr>
 	</table>

@@ -7,6 +7,7 @@ ad_page_contract {
     user_id
     project_id
     company_id
+    trans_task_id
 }
 
 # ------------------------------------------------------

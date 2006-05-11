@@ -621,5 +621,13 @@ if {[form is_valid $form_id]} {
     if {"" == $return_url} {
 	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
     }
+
+    # Call the "project_create" or "project_update" user_exit
+    if {0 == $id_count} {
+	im_user_exit_call project_create $project_id
+    } else {
+	im_user_exit_call project_update $project_id
+    }
+
     ad_returnredirect $return_url
 }
