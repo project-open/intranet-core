@@ -21,48 +21,41 @@ if {!$user_is_admin_p} {
     return
 }
 
+# Default values for the test
+set default_user_id $user_id
+set default_project_id [db_string project_id "select min(project_id) from im_projects" -default 0]
+set default_company_id [db_string company_id "select min(company_id) from im_companies" -default 0]
+
+
 # ******************************************************
 # Create the list of Widgets
 # ******************************************************
 
-set user_exits [list \
-	user_create \
-	user_modify \
-	user_delete \
-	project_create \
-	project_modify \
-	project_delete \
-	task_create \
-	task_modify \
-	task_delete \
-]
+# A list of lists with [name param1 param2 ...]
+set user_exits [im_user_exit_list]
 
 
 set user_exit_path "[acs_root_dir]/user_exits"
 set user_exit_path [parameter::get -parameter UserExitPath -package_id [im_package_core_id] -default $user_exit_path]
-# set exit_files [fileutil::find $user_exit_path]
 
 multirow create exits exit_name exists_p executable_p
-foreach user_exit $user_exits {
+foreach user_exit_def $user_exits {
 
+    set user_exit [lindex $user_exit_def 0]
     set exit_file "$user_exit_path/$user_exit"
+
     set exists_p [file exists $exit_file]
+    set exit_exists "-"
+    if {$exists_p} { set exit_exists "exists" }
+
     set executable_p [file executable $exit_file]
+    set exit_executable "-"
+    if {$executable_p} { set exit_executable "exec" }
 
     multirow append exits $user_exit $exists_p $executable_p
 }
 
 ad_return_template
-
-
-
-
-#    set exit_paths [split $exit_file "/"]
-#    set exit_paths_len [llength $exit_paths]
-#    set exit [lindex $exit_paths [expr $exit_paths_len-1]]
-
-#    if {[regexp {\~} $exit]} { continue }
-#    if {[regexp {.*\.pm$} $exit]} { continue }
 
 
 
