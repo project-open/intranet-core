@@ -51,7 +51,23 @@ foreach user_exit_def $user_exit_list {
 }
 
 set user_exit_call "$user_exit $object_id"
-set err_str [im_user_exit_call $user_exit $object_id]
+set err_code [im_user_exit_call $user_exit $object_id]
+
+
+# ------------------------------------------------------
+# Show the trace
+# ------------------------------------------------------
+
+set query "
+        select	*,
+		to_char(log_date, 'YYYY-MM-DD HH24:MM') as log_date_pretty
+        from	acs_logs
+	order by
+		log_date DESC
+	limit 10
+"
+db_multirow logs log_query $query
+
 
 ad_return_template
 

@@ -3,7 +3,6 @@
 <property name="context">@context_bar@</property>
 
 
-<h1>User Exits &amp; Their Status</h1>
 
 <form name=user_exits action=invoke method=POST>
 <input type=hidden name=user_exit value="">
@@ -11,6 +10,7 @@
 <table>
 <tr valign=top>
 <td>
+	<h1>"User Exits" &amp; Their Status</h1>
 
 	<table class="list">
 	  <tr class="list-header">
@@ -41,7 +41,7 @@
 	    </td>
 	    <td class="list-narrow">
 		<if @exits.executable_p@>
-		<input type=image src=/intranet/images/newfol.gif width=21 height=21 onClick="window.document.user_exits.user_exit.value='@exits.exit_name@'; submit();" title='Invoke' alt='Invoke'>
+		<input type=submit value="Invoke" onClick="window.document.user_exits.user_exit.value='@exits.exit_name@'; submit();">
 	        </if>
 	    </td>
 	  </tr>
@@ -49,6 +49,8 @@
 	</table>
 
 </td><td>
+
+	<h1>Invokation Parameters</h1>
 
 	<table class="list">
 	  <tr class="list-header">
@@ -104,7 +106,7 @@
 
 
 
-<h1>Parameters</h1>
+<h1>Global Parameters</h1>
 
 <table class="list">
   <tr class="list-header">
@@ -117,4 +119,42 @@
     <td class="list-narrow">@user_exit_path@</td>
     <td class="list-narrow">Where are the User Exits located?</td>
   </tr>
+</table>
+
+
+
+
+<h1>Trace Log</h1>
+
+<table class="list">
+  <tr class="list-header">
+    <th class="list-narrow">#intranet-core.Id#</th>
+    <th class="list-narrow">#intranet-core.Date#</th>
+    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Level "Level"] %></th>
+    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Key "Key"] %></th>
+    <th class="list-narrow"><%= [lang::message::lookup "" intranet-core.Message "Message"] %></th>
+  </tr>
+  <multiple name=logs>
+    <if @logs.rownum@ odd>
+      <tr class="list-odd">
+    </if> <else>
+      <tr class="list-even">
+    </else>
+    <td class="list-narrow">
+	@logs.log_id@
+    </td>
+    <td class="list-narrow">
+	@logs.log_date_pretty@
+    </td>
+    <td class="list-narrow">
+	@logs.log_level@
+    </td>
+    <td class="list-narrow">
+	@logs.log_key@
+    </td>
+    <td class="list-narrow">
+	<pre>@logs.message@</pre>
+    </td>
+  </tr>
+  </multiple>
 </table>
