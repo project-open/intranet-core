@@ -117,12 +117,12 @@
   AOLServer is _the_ server of AOL and is know to deliver up to 
   2.5 million pages/second (no typo!).
   
-  # cd /usr/local/
-  # tar xzf aolserver3.3oacs.tgz 
+  root# cd /usr/local/
+  root# tar xzf aolserver3.3oacs.tgz 
   
   Check that AOLServer is working:
   
-  # /usr/local/aolserver3.3oacs/bin/nsd -h
+  root# /usr/local/aolserver3.3oacs/bin/nsd -h
   => Usage: /usr/local/aolserver3.3oacs/bin/nsd [...] 
   
   
@@ -137,10 +137,10 @@
   configuration. So we RECOMMEND that you stick with /web/, atleast for 
   the purpose of the first installation.
   
-  # cd /
-  # mkdir /web
-  # cd /web
-  # tar xzf project-open.3-1-2-0-0.tgz
+  root# cd /
+  root# mkdir /web
+  root# cd /web
+  root# tar xzf project-open.3-1-2-0-0.tgz
   
   
   
@@ -151,12 +151,12 @@
   security reasons. We usually choose the same name for the user
   and the group:
   
-  # groupadd projop
-  # useradd -g projop -d /web/projop projop
+  root# groupadd projop
+  root# useradd -g projop -d /web/projop projop
   
   Check that the new user is working:
 
-  # su - projop
+  root# su - projop
   => You should get a permission warning like: 
 	"su: warning: cannot change directory to /web/projop: Permission denied"
      That is OK because you haven't set the permissions yet 
@@ -192,7 +192,9 @@
 	set server		"projop"
 	set servername		"ProjectOpen Test Server"
 	
-	# The hostname and address should be set to actual values.
+	# Set hostname and address. The following two lines 
+	# are OK as a default. Change only if you know what
+	# you do.
 	set hostname		[ns_info hostname]
 	set address		"0.0.0.0"
   
@@ -202,11 +204,11 @@
   
   All files in /web/projop/ should be owned by projop:
   
-  # cd /web
-  # chown -R projop:projop projop
+  root# cd /web
+  root# chown -R projop:projop projop
   
   Now you should be able to login as "projop" without error message:
-  # su - projop
+  root# su - projop
   => No error
 
 
@@ -220,8 +222,8 @@
   database administrator account. All PostgreSQL installers on SuSE, 
   RedHat and Debian setup this account by default).
   
-  # su - postgres
-  # psql --help
+  root# su - postgres
+  postgres# psql --help
   => This is psql 7.4.7, the PostgreSQL interactive terminal. [...]
   
   Create a new user. The new user should be a database admin (-a, -d)
@@ -230,12 +232,29 @@
   
   Create a new user, a new database and a language in the database:
 
-  #postgres:~> createuser -a -d projop
-  #postgres:~> createdb --owner=projop projop
-  #postgres:~> createlang plpgsql projop
+  postgres# createuser -a -d projop
+  postgres# createdb --owner=projop projop
+  postgres# createlang plpgsql projop
   => May say that "plpgsql" is already installed, that's OK.
   
-  
+  Known Issues:
+  - PostgreSQL 8.1.x: Don't use this version, it won't work.
+  - PostgreSQL 8.0.x: There is a function missing in 8.0.x.
+    Please add the function by executing the following steps:
+	root# su - projop
+	projop# psql projop
+
+	Then enter:
+
+        create or replace function bitfromint4 (integer) returns bit varying as ''
+        begin
+            return $1::bit(32);
+        end;'' language ''plpgsql'' immutable strict;
+  - PostgreSQL 7.4.x: There is a bug in TSearch2, which breaks
+    backup/restore if you install it. So don't install the
+    "Intranet-Search-Pg" package. The package contains another
+    warning message.
+
   
   4.6. Load the Demo Data into the Database
   
@@ -257,13 +276,13 @@
     similar and distinguished mainly by configuration.
 
 
-  #su - projop
-  #projop:~> cd /web/projop/packages/intranet-core/preconf
-  #projop:~> psql projop -f pc.preconf.sql	# ]project-consulting[
+  root# su - projop
+  projop# cd /web/projop/packages/intranet-core/preconf
+  projop# psql projop -f pc.preconf.sql		# ]project-consulting[
   
   or 
   
-  #projop:~> psql projop -f pt.preconf.sql	# ]project-translation[
+  projop# psql projop -f pt.preconf.sql		# ]project-translation[
   
   
   Loading the files may take some 1-2 minutes. It is OK if you
@@ -272,8 +291,8 @@
   
   Check that the file has been loaded OK:
   
-  #projop:~> psql projop
-  #projop => select count(*) from users;
+  projop# psql projop
+  projop=# select count(*) from users;
   
   => 192
   
@@ -283,10 +302,12 @@
   There are two demo configurations for the login screens, one for
   ]project-consulting[ and one for ]project-translation[.
 
-
-  # su - projop
-  # cp /web/projop/packages/intranet-core/preconf/pt.index.tcl /web/projop/www/index.tcl
-  # cp /web/projop/packages/intranet-core/preconf/pt.index.adp /web/projop/www/index.adp
+  root# rm /web/projop/www/index.tcl
+  root# rm /web/projop/www/index.adp
+  root# su - projop
+  projop# cd /web/projop/packages/intranet-core/
+  projop# cp preconf/pt.index.tcl /web/projop/www/index.tcl
+  projop# cp preconf/pt.index.adp /web/projop/www/index.adp
 
   You can check the availability of the screen when starting AOLServer
   in the next step.
@@ -299,7 +320,7 @@
   "foreground mode" to get all debugging messages on the terminal.
   (The "\" indicates a continuation of the command line):
   
-  # /usr/local/aolserver3.3oacs/bin/nsd -f -t /web/projop/etc/config.tcl \
+  root# /usr/local/aolserver3.3oacs/bin/nsd -f -t /web/projop/etc/config.tcl \
     -u projop -g projop
   
   => You should get hundereds of lines of debugging output.
@@ -319,7 +340,12 @@
   To check that the server is running file please start a Web browser
   on your local computer with the URL "http://localhost:8080" or choose
   a suitable URL if you start the browser at a different computer.
-  
+
+  Known issues.
+  - RHEL4: Please replace the link /usr/local/aolserver/bin/libtdom.so
+    by a copy of libtdom0.7.8.so. No idea why this doesn't work on RHEL,
+    it's fine with SuSE and Debian...
+
 
 
   4.9. Update the Parameters and Configuration
@@ -355,17 +381,17 @@
   the following line in your "InitTab" (the "\" indicates a continuation 
   of the same line):
   
-  #vi /etc/inittab
+  root# vi /etc/inittab
   
   And add somewhere the line:
   
-  ns1:345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
+  ns1:2345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
   -u projop -g users
   
   This line tells "Init" to restart the server in case it has stopped.
   Then tell "init" to read the InitTab again:
   
-  #init q
+  root# init q
   
   
   Check with "top" or "tail -f /web/projop/log/error.log" that the server
@@ -377,7 +403,7 @@
   You can test the restart behaviour by killing AOLServer the "hard way".
   Your server should "come back" withing 1-2 minutes automatically.
   
-  #killall -9 nsd
+  root# killall -9 nsd
   
   
   
@@ -387,7 +413,7 @@
   in order to reorganize and cleanup the database. Please add a line to your
   "crontab":
   
-  #crontab -e
+  root# crontab -e
   
   And then add the following line to schedule a "vacuum" at 3:20am every day:
   
@@ -403,7 +429,7 @@
   
   Load your "crontab" into an editor:
 
-  #crontab -e
+  root# crontab -e
 
   Then add a line like this (make sure /var/log/backup/ exists and is 
   writable for the user "postgres"):
@@ -442,7 +468,7 @@
 
   You need to make this file writable:
 
-  #chmod ug+x /root/bin/backup-postgres  
+  root# chmod ug+x /root/bin/backup-postgres  
   
 
 
@@ -465,9 +491,10 @@
   upgrade to this release (this is also necesary for if you install this
   installer - there are updates with respect to Invoices):
 
-  # su - projop
-  # cd /web/projop/packages
-  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-2-0-0 -Pd
+  root# su - projop
+  projop# cd /web/projop/packages
+  projop# cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot \
+	update -r v3-1-2-0-0 -Pd
 
   After this please go to your your server URL http://localhost/acs-admin/apm/,
   choose "Install Packages" and select all packages that "Upgrade" (please don't
