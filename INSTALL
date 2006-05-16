@@ -385,7 +385,7 @@
   
   And add somewhere the line:
   
-  ns1:2345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
+  ns1:345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
   -u projop -g users
   
   This line tells "Init" to restart the server in case it has stopped.
