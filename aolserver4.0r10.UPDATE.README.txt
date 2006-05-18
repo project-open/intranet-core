@@ -1,0 +1,102 @@
+
+  AOLServer 4.0r10 README
+  Frank Bergmann <frank.bergmann@project-open.com>
+
+  This README and aolserver4.0r10.tar.bz2 are part of the ]project-open[ 
+  Linux installer.
+  This document describes the use of aolserver4.0r10.tar.bz2.
+
+  ______________________________________________________________________
+
+  0. About the aolserver4.0r10
+
+
+  AOLServer is the "application server" of ]project-open[, handling
+  Web request, database pooling, overload behaviour etc.
+  
+  aolserver4.0r10.tar.bz2 is a newer version and replaces aolserver3.3oacs.
+  This file describes how to switch a server from aolserver3.3oacs
+  to aolserver4.0r10.tar.bz2.
+
+  This file is NOT the ]project-open[ installer. It is just an add-on
+  to deal with issues of aolserver3.3oacs.
+
+  ______________________________________________________________________
+
+  1. Prerequisits:
+
+  - We asume that you are running a standard ]project-open[
+    installation as after successfully installing the ]po[ Linux
+    installer.
+  
+  - The aolserver4.0r10.tar.bz2 file, to be downloaded from 
+    www.SourceForge.net
+
+  
+  ______________________________________________________________________
+
+  2. Installation Instructions
+
+
+  It will probably take you 15 minutes to go through the following 
+  steps:
+
+	- Change directory to /usr/local/
+
+	- Unpack the aolserver4.0r10.tar.bz2:
+		- bzip2 -d aolserver4.0r10.tar.bz2
+		- tar xf aolserver4.0r10.tar
+	  You should now have two "aolserver" directories in
+	  /usr/local/ with the version numbers "3.3oacs" and "4.0r10".
+
+	- Modify /web/projop/etc/config.tcl:
+		- Replace any occurrence of "3.3oacs" by "4.0r10"
+	  We assume that your server is named "projop". Please
+	  replace with your respective servers.
+
+	- Modify /etc/inittab:
+		- Replace any occurrence of "3.3oacs" by "4.0r10"
+
+  That's it. aolserver4.0r10 is upward compatible with aolserver3.3oacs
+  with respect to ]project-open[
+
+
+  ______________________________________________________________________
+
+  3. Trouble Shooting
+  
+  - Please make sure to monitor the AOLServer log file. Any issues 
+    can be found there: /web/projop/log/error.log. To monitor this
+    file please open up a new window and issue the command: 
+    "tail -f /web/projop/log/error.log"
+
+  - Make sure that you don't start a new aolserver when there is still
+    the old version running. Make sure that "aolserver/4.0.10"
+    appears in your log files.
+
+  - You can manually start aolserver by issuing:
+    /usr/local/aolserver4.0r10/bin/nsd -f -t /web/projop/etc/config.tcl \
+    -u projop -g projop (or similar, depending on your server name).
+
+
+  ______________________________________________________________________
+
+  4. Where to go from Here
+
+
+      - If you encounter difficulties during the upgrade: 
+	Please contact us at support@project-open.com. We can help you 
+	with the update. We can provide you with one-time support if you
+	don't have a support contract already.
+
+      - Please subscribe yourself to the SourceForge ]project-open[ news.
+	We only sparcely publish news there, so you shouldn't receive a
+	lot of spam.
+
+      - Register yourself at http://www.project-open.com/contact/ so that
+	you will receive quarterly (or emergency) updates.
+
+
+  Bests,
+  Frank
+
