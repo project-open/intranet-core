@@ -1,0 +1,237 @@
+#!/usr/bin/perl
+
+# --------------------------------------------------------
+#
+# trans_task_create
+#
+# ]project-open[ ERP/Project Management System
+# (c) 2006 ]project-open[, frank.bergmann@project-open.com
+# All rights reserved.
+# --------------------------------------------------------
+
+
+# --------------------------------------------------------
+# Check for libraries (below) in the local directory
+use FindBin;
+use lib $FindBin::Bin;
+
+
+# --------------------------------------------------------
+# Include constants for all user exits
+#
+# Customize common_constants to set database name and user.
+#
+require common_constants;
+use DBI;
+
+
+# --------------------------------------------------------
+# Usage...
+$usage = "
+Usage:
+	trans_task_create <task_id>
+
+This user exit is called every time after a new task
+has been created successfully in ]po[.
+
+Arguments:
+	<task_id> is the ]po[ translation task_id.\n
+";
+
+
+# --------------------------------------------------------
+# Check and extract arguments from the command line.
+# task_id is an integer that is used to access user
+# information from the parties, persons and users tables.
+die "trans_task_create: Invalid number of arguments.\n$usage" if (0 != $#ARGV);
+$task_id = $ARGV[0];
+
+
+# --------------------------------------------------------
+# Write a debug line to the log file
+open(L, ">> $logfile") || die "trans_task_create: Couldn't open $logfile";
+print L "$date: trans_task_create $task_id\n";
+
+
+# --------------------------------------------------------
+# Establish the database connection
+# The parameters are defined in common_constants.pm
+$dbh = DBI->connect($db_datasource, $db_username, $db_pwd) ||
+    die "trans_task_create: Unable to connect to database.\n";
+
+
+# --------------------------------------------------------
+# Prepare a SQL statement for execution.
+# cc_users is a view that contains everything about a user
+$sth = $dbh->prepare("
+	SELECT	t.*,
+		im_category_from_id(task_type_id) as task_type,
+		im_category_from_id(task_status_id) as task_status,
+		im_category_from_id(target_language_id) as target_language,
+		im_category_from_id(source_language_id) as source_language
+	FROM	im_trans_tasks t
+	WHERE	t.task_id = $task_id
+");
+
+# Execute the statement in the database
+$sth->execute();
+
+
+# --------------------------------------------------------
+# Retrieve the returned rows of data. There should be
+# exactly one returned row.
+$numres = $sth->rows;
+die "trans_task_create: Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+
+
+# --------------------------------------------------------
+# Extract the user information from the returned row.
+
+my $row = $sth->fetchrow_hashref;
+
+my $project_id         = $row->{project_id};
+my $source_language_id = $row->{source_language_id};
+my $target_language_id = $row->{target_language_id};
+my $source_language    = $row->{source_language};
+my $target_language    = $row->{target_language};
+my $task_name          = $row->{task_name};
+my $task_filename      = $row->{task_filename};
+my $task_type_id       = $row->{task_type_id};
+my $task_status_id     = $row->{task_status_id};
+my $task_type          = $row->{task_type};
+my $task_status        = $row->{task_status};
+my $description        = $row->{description};
+my $task_units         = $row->{task_units};
+my $billable_units     = $row->{billable_units};
+my $task_uom_id        = $row->{task_uom_id};
+my $invoice_id         = $row->{invoice_id};
+my $match_x            = $row->{match_x};
+my $match_rep          = $row->{match_rep};
+my $match100           = $row->{match100};
+my $match95            = $row->{match95};
+my $match85            = $row->{match85};
+my $match75            = $row->{match75};
+my $match50            = $row->{match50};
+my $match0             = $row->{match0};
+my $trans_id           = $row->{trans_id};
+my $edit_id            = $row->{edit_id};
+my $proof_id           = $row->{proof_id};
+my $other_id           = $row->{other_id};
+my $end_date           = $row->{end_date};
+my $quote_id           = $row->{quote_id};
+
+$sth->finish;
+
+# check for problems which may have terminated the fetch early
+warn $DBI::errstr if $DBI::err;
+
+
+
+# --------------------------------------------------------
+#
+#	Here goes your code!
+#
+#
+print "task_id=$task_id, task_name=$task_name, $source_language => $target_language\n";
+
+#---------------------------------------------------------
+$user_id = $trans_id;
+#---------------------------------------------------------
+$sth = $dbh->prepare(" SELECT	u.*, pa.*, pe.* FROM users u, parties pa, persons pe WHERE u.user_id = $user_id and pa.party_id = u.user_id and pe.person_id = u.user_id ");
+$sth->execute();
+$numres = $sth->rows;
+die "Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+my $row = $sth->fetchrow_hashref;
+my $trans_email = $row->{email};
+$sth->finish;
+warn $DBI::errstr if $DBI::err;
+#---------------------------------------------------------
+$user_id = $edit_id;
+#---------------------------------------------------------
+$sth = $dbh->prepare(" SELECT	u.*, pa.*, pe.* FROM users u, parties pa, persons pe WHERE u.user_id = $user_id and pa.party_id = u.user_id and pe.person_id = u.user_id ");
+$sth->execute();
+$numres = $sth->rows;
+die "Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+my $row = $sth->fetchrow_hashref;
+my $edit_email = $row->{email};
+$sth->finish;
+warn $DBI::errstr if $DBI::err;
+#--------------------------------------------------------
+$user_id = $proof_id;
+#---------------------------------------------------------
+$sth = $dbh->prepare(" SELECT	u.*, pa.*, pe.* FROM users u, parties pa, persons pe WHERE u.user_id = $user_id and pa.party_id = u.user_id and pe.person_id = u.user_id ");
+$sth->execute();
+$numres = $sth->rows;
+die "Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+my $row = $sth->fetchrow_hashref;
+my $proof_email = $row->{email};
+$sth->finish;
+warn $DBI::errstr if $DBI::err;
+#--------------------------------------------------------
+
+
+#Usage: pctrl.rb [options] -project <name>  -client <name>  -status <status>  -user <email>  -tln <country>  -pre <pre>
+print "$task_status\n";
+
+if ($task_status eq "for Trans")
+{
+	print "for Trans\n";
+	$user_id = "0";
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status pre -user $user_id -tln $target_language -pre 1\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status pre -user $user_id -tln $target_language -pre 1";
+}
+elsif ($task_status eq "Trans-ing")
+{
+	$user_id = $trans_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status trans -user $user_id -tln $target_language -pre 0\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status trans -user $user_id -tln $target_language -pre 0";
+}
+elsif ($task_status eq "for Edit")
+{
+	$user_id = $trans_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status trans -user $user_id -tln $target_language -pre 1\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status trans -user $user_id -tln $target_language -pre 1";
+}
+elsif ($task_status eq "Editing")
+{
+	$user_id = $edit_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status edit -user $user_id -tln $target_language -pre 0\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status edit -user $user_id -tln $target_language -pre 0";
+}
+elsif ($task_status eq "for Proof")
+{
+	$user_id = $edit_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status edit -user $user_id -tln $target_language -pre 1\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status edit -user $user_id -tln $target_language -pre 1";
+}
+elsif ($task_status eq "Proofing")
+{
+	$user_id = $proof_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status proof -user $user_id -tln $target_language -pre 0\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status proof -user $user_id -tln $target_language -pre 0";
+}
+elsif ($task_status eq "for QCing")
+{
+	$user_id = $proof_email;
+	print "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status proof -user $user_id -tln $target_language -pre 1\n";
+	system "cd /opt/ophelia/workflow/_wf; ./pctrl.rb -project $task_id -client client1 -status proof -user $user_id -tln $target_language -pre 1";
+}
+
+
+
+# --------------------------------------------------------
+# Close the database connection
+$dbh->disconnect ||
+    warn "Disconnection failed: $DBI::errstr\n";
+
+
+# --------------------------------------------------------
+# Close open filehandles
+close(L);
+
+
+# --------------------------------------------------------
+# Return a successful execution ("0"). Any other value
+# indicates an error. Return code meaning still needs
+# to be determined, so returning "1" is fine.
+exit(0);

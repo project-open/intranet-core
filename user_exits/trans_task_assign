@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 
 # --------------------------------------------------------
+#
+# trans_task_create
+#
 # ]project-open[ ERP/Project Management System
 # (c) 2006 ]project-open[, frank.bergmann@project-open.com
 # All rights reserved.
@@ -26,53 +29,48 @@ use DBI;
 # Usage...
 $usage = "
 Usage:
-	user_create <user_id>
+	trans_task_create <task_id>
 
-This user exit is called every time after a new user
-has been created successfully in ]po[ or an existing
-user has been updated.
+This user exit is called every time after a new task
+has been created successfully in ]po[.
 
 Arguments:
-	<user_id> is the OpenACS user_id.\n
+	<task_id> is the ]po[ translation task_id.\n
 ";
 
 
 # --------------------------------------------------------
 # Check and extract arguments from the command line.
-# user_id is an integer that is used to access user
+# task_id is an integer that is used to access user
 # information from the parties, persons and users tables.
-die "Invalid number of arguments.\n$usage" if (0 != $#ARGV);
-$user_id = $ARGV[0];
+die "trans_task_create: Invalid number of arguments.\n$usage" if (0 != $#ARGV);
+$task_id = $ARGV[0];
 
 
 # --------------------------------------------------------
 # Write a debug line to the log file
-open(L, ">> $logfile") || die "user_create: Couldn't open $logfile";
-print L "$date: user_create $user_id\n";
+open(L, ">> $logfile") || die "trans_task_create: Couldn't open $logfile";
+print L "$date: trans_task_create $task_id\n";
 
 
 # --------------------------------------------------------
 # Establish the database connection
 # The parameters are defined in common_constants.pm
 $dbh = DBI->connect($db_datasource, $db_username, $db_pwd) ||
-    die "Unable to connect to database.\n";
+    die "trans_task_create: Unable to connect to database.\n";
 
 
 # --------------------------------------------------------
 # Prepare a SQL statement for execution.
 # cc_users is a view that contains everything about a user
 $sth = $dbh->prepare("
-	SELECT	u.*,
-		pa.*,
-		pe.*
-	FROM
-		users u,
-		parties pa,
-		persons pe
-	WHERE
-		u.user_id = $user_id
-		and pa.party_id = u.user_id
-		and pe.person_id = u.user_id
+	SELECT	t.*,
+		im_category_from_id(task_type_id) as task_type,
+		im_category_from_id(task_status_id) as task_status,
+		im_category_from_id(target_language_id) as target_language,
+		im_category_from_id(source_language_id) as source_language
+	FROM	im_trans_tasks t
+	WHERE	t.task_id = $task_id
 ");
 
 # Execute the statement in the database
@@ -83,21 +81,44 @@ $sth->execute();
 # Retrieve the returned rows of data. There should be
 # exactly one returned row.
 $numres = $sth->rows;
-die "Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+die "trans_task_create: Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
 
 
 # --------------------------------------------------------
 # Extract the user information from the returned row.
+
 my $row = $sth->fetchrow_hashref;
 
-my $email = $row->{email};
-my $url = $row->{url};
-my $first_names = $row->{first_names};
-my $last_name = $row->{last_name};
-my $username = $row->{username};
-my $password = $row->{password};
-my $salt = $row->{salt};
-my $member_state = $row->{member_state};
+my $project_id         = $row->{project_id};
+my $source_language_id = $row->{source_language_id};
+my $target_language_id = $row->{target_language_id};
+my $source_language    = $row->{source_language};
+my $target_language    = $row->{target_language};
+my $task_name          = $row->{task_name};
+my $task_filename      = $row->{task_filename};
+my $task_type_id       = $row->{task_type_id};
+my $task_status_id     = $row->{task_status_id};
+my $task_type          = $row->{task_type};
+my $task_status        = $row->{task_status};
+my $description        = $row->{description};
+my $task_units         = $row->{task_units};
+my $billable_units     = $row->{billable_units};
+my $task_uom_id        = $row->{task_uom_id};
+my $invoice_id         = $row->{invoice_id};
+my $match_x            = $row->{match_x};
+my $match_rep          = $row->{match_rep};
+my $match100           = $row->{match100};
+my $match95            = $row->{match95};
+my $match85            = $row->{match85};
+my $match75            = $row->{match75};
+my $match50            = $row->{match50};
+my $match0             = $row->{match0};
+my $trans_id           = $row->{trans_id};
+my $edit_id            = $row->{edit_id};
+my $proof_id           = $row->{proof_id};
+my $other_id           = $row->{other_id};
+my $end_date           = $row->{end_date};
+my $quote_id           = $row->{quote_id};
 
 $sth->finish;
 
@@ -111,12 +132,7 @@ warn $DBI::errstr if $DBI::err;
 #	Here goes your code!
 #
 #
-print "user_id=$user_id, email=$email, url=$url, first=$first_names, last=$last_name, username=$username, state=$member_state\n";
-print L "$date: user_create: user_id=$user_id, email=$email, url=$url, first=$first_names, last=$last_name, username=$username, state=$member_state\n";
-
-system "cd /opt/ophelia/workflow/_wf; ./create_user.rb client1 $email";
-
-
+print "task_id=$task_id, task_name=$task_name, $source_language => $target_language\n";
 
 
 # --------------------------------------------------------
