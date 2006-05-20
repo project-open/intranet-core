@@ -442,6 +442,10 @@ ad_proc -public im_user_nuke {user_id} {
 	# entry in im_costs. These might have been created during manual deletion of objects
 	# Very dirty...
 	db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
+
+	# Invoices - Contact_id
+	db_dml invoice_contact "update im_invoices set company_contact_id = :default_user where company_contact_id = :user_id"
+
 	
 	# Costs
 	set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and (creation_user = :user_id or cause_object_id = :user_id)"]
