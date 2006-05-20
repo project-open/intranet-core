@@ -26,42 +26,51 @@ switch $view_name {
 -->
 <% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
-<table cellpadding=0 cellspacing=0 border=0 width=100%>
-<tr>
-  <td valign=top width='50%'>
-    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
-    <%= [im_component_bay left] %>
-  </td>
-  <td width=2>&nbsp;</td>
-  <td valign=top>
-    @admin_html;noquote@
-    @hierarchy_html;noquote@
-    <%= [im_component_bay right] %>
-  </td>
-</tr>
-</table><br>
-<table cellpadding=0 cellspacing=0 border=0>
-<tr><td>
-  <%= [im_component_bay bottom] %>
-</td></tr>
-</table>
+	<table cellpadding=0 cellspacing=0 border=0 width="100%">
+	<tr>
+	  <td valign=top width='50%'>
+
+	    <!--Project Base Data -->
+	    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
+
+	    <!-- Left Component Bay -->
+	    <%= [im_component_bay left] %>
+	  </td>
+	  <td width=2>&nbsp;</td>
+	  <td valign=top>
+	    @admin_html;noquote@
+	    @hierarchy_html;noquote@
+
+	    <!-- Right Component Bay -->
+	    <%= [im_component_bay right] %>
+
+	  </td>
+	</tr>
+	</table><br>
+
+	<table cellpadding=0 cellspacing=0 border=0>
+	<tr><td>
+	  <!-- Bottom Component Bay -->
+	  <%= [im_component_bay bottom] %>
+	</td></tr>
+	</table>
 
 <% } elseif {[string equal "files" $view_name]} { %>
 
-  <%= [im_component_insert "Project Filestorage Component"] %>
+	<%= [im_component_insert "Project Filestorage Component"] %>
 
 <% } elseif {[string equal "sales" $view_name]} { %>
 
-  <%= [im_component_insert "Project Sales Filestorage Component"] %>
+	<%= [im_component_insert "Project Sales Filestorage Component"] %>
 
 <% } elseif {[string equal "finance" $view_name]} { %>
 
-  <%= [im_component_insert "Project Finance Component"] %>
+	<%= [im_component_insert "Project Finance Component"] %>
 
 <% } elseif {[string equal "status" $view_name]} { %>
 
-  <%= [im_component_insert "Project Translation Error Component"] %>
-  <%= [im_component_insert "Project Translation Task Status"] %>
+	<%= [im_component_insert "Project Translation Error Component"] %>
+	<%= [im_component_insert "Project Translation Task Status"] %>
 
 <% } %>
 

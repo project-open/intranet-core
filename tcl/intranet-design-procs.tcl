@@ -1226,7 +1226,7 @@ ad_proc -public im_context_bar_html {
     foreach element [lrange $context 0 [expr [llength $context] - 2]] {
         append out "<a class=contextbar href=\"[lindex $element 0]\">[lindex $element 1]</a>$separator"
     }
-    append out "<span class=contextbar>[lindex $context end]<span>"
+    append out "<span class=contextbar>[lindex $context end]</span>"
     return $out
 }
 
