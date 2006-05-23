@@ -430,7 +430,7 @@ if {[im_permission $current_user_id view_projects_all]} {
 # User Company List
 # ------------------------------------------------------
 
-set sql "
+set companies_sql "
 select
 	c.company_id,
 	c.company_name
@@ -445,8 +445,8 @@ order by c.company_name desc
 
 set companies_html ""
 set ctr 1
-set max_companies 0
-db_foreach user_list_companies $sql  {
+set max_companies 10
+db_foreach user_list_companies $companies_sql  {
     append companies_html "<li>
 	<a href=../companies/view?company_id=$company_id>$company_name</a>
     "
