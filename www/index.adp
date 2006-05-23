@@ -13,7 +13,7 @@
   </td>
   <td width=2>&nbsp;</td>
   <td valign=top width="50%">
-<!--    administration_component;noquote -->
+    @administration_component;noquote@
     <%= [im_component_bay right] %>
   </td>
 </tr>

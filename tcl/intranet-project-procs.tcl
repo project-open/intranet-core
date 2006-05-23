@@ -357,16 +357,106 @@ ad_proc -public im_format_project_duration { words {lines ""} {hours ""} {days "
 }
 
 
-ad_proc -public im_project_options { {include_empty 1} } { 
+ad_proc -public im_project_options { 
+    {-include_empty 1}
+    {-include_empty_name ""}
+    {-exclude_subprojects_p 1}
+    {-project_status 0}
+    {-project_type 0}
+    {-exclude_status 0}
+    {-member_user_id 0}
+    {-company_id 0}
+} { 
     Get a list of projects
 } {
-    set options [db_list_of_lists project_options "
-	select project_name, project_id
-	from im_projects
-    "]
-    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+     set bind_vars [ns_set create]
+     set user_id [ad_get_user_id]
+     ns_set put $bind_vars user_id $user_id
+
+     if {[im_permission $user_id view_projects_all]} {
+	 # The user can see all projects
+	 # This is particularly important for sub-projects.
+	 set sql "
+		select
+			p.project_name,
+			p.project_id
+		from
+			im_projects p
+		where
+			1=1
+	"
+     } else {
+	 # The user should see only his own projects
+	 set sql "
+		select
+			p.project_id,
+			p.project_name
+		from
+			im_projects p,
+	                (       select  count(rel_id) as member_p,
+	                                object_id_one as object_id
+	                        from    acs_rels
+	                        where   object_id_two = :user_id
+	                        group by object_id_one
+	                ) r
+		where
+			p.project_id = r.object_id
+			and r.member_p > 0
+	"
+     }	
+
+
+     if {$company_id} {
+	 ns_set put $bind_vars company_id $company_id
+	 append sql " and p.company_id = :company_id"
+     }
+
+     if {$exclude_subprojects_p} {
+	 append sql " and p.parent_id is null"
+     }
+
+     if {$project_status} {
+	 ns_set put $bind_vars status $project_status
+	 append sql " and p.project_status_id = (
+	     select project_status_id 
+	     from im_project_status 
+	     where lower(project_status)=lower(:status))"
+    }
+
+    if {$exclude_status} {
+	set exclude_string [im_append_list_to_ns_set $bind_vars project_status $exclude_status]
+	append sql " and p.project_status_id in (
+	    select project_status_id 
+            from im_project_status 
+            where project_status not in ($exclude_string)) "
+    }
+
+    if {$project_type} {
+	ns_set put $bind_vars type $project_type
+	append sql " and p.project_type_id = (
+	    select project_type_id 
+	    from im_project_types 
+	    where project_type=:type)"
+    }
+
+    if {$member_user_id} {
+	ns_set put $bind_vars member_user_id $member_user_id
+	append sql "	and p.project_id in (
+				select object_id_one
+				from acs_rels
+				where object_id_two = :member_user_id)
+		    "
+    }
+
+    append sql " order by lower(p.project_name)"
+
+    set options [db_list_of_lists project_options $sql]
+    if {$include_empty} { set options [linsert $options 0 [list $include_empty_name ""]] }
     return $options
 }
+
+
+
 
 ad_proc -public im_project_template_options { {include_empty 1} } {
     Get a list of template projects

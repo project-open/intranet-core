@@ -132,8 +132,11 @@ if {$enable_nested_projects_p} {
     # create project list query
     #
 	
-    set project_parent_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
-    set project_parent_options [concat $project_parent_options [im_project_options 0]]
+#    set project_parent_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
+#    set project_parent_options [concat $project_parent_options [im_project_options 0]]
+
+    set project_parent_options [im_project_options]
+
     template::element::create $form_id parent_id -optional \
     	-label "[_ intranet-core.Parent_Project]" \
         -widget "select" \
