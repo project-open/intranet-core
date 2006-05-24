@@ -44,7 +44,7 @@ ad_proc -public im_gif {
 
     set navbar_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
 
-    set navbar_gif_path [im_navbar_gif_path]
+    set navbar_gif_path "/intranet/images/[im_navbar_gif_path]"
     if { $translate_p && ![empty_string_p $alt] } {
 	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
         set alt [lang::message::lookup "" $alt_key $alt]
@@ -990,6 +990,15 @@ ad_proc -public im_navbar_gif_path {} {
     Path to access the Navigation Bar corner GIFs
 } {
     set navbar_gif_path "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
+    set org_navbar_gif_path $navbar_gif_path
+
+    # Old parameter? Shell out a warning and use the last part
+    set navbar_pieces [split $navbar_gif_path "/"]
+    set navbar_pieces_len [llength $navbar_pieces]
+    if {$navbar_pieces_len > 1} {
+	set navbar_gif_path [lindex $navbar_pieces [expr $navbar_pieces_len-1] ]
+	ns_log Error "im_navbar_gif_path: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_path' -> '$navbar_gif_path'"
+    }
 
     return $navbar_gif_path
 }
