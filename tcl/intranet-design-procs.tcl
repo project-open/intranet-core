@@ -798,12 +798,11 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     append extra_stuff_for_document_head [im_stylesheet]
     append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
-    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
-    append extra_stuff_for_document_head "
-	<!--\[if lt IE 7.\]>
-	  <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
-	<!\[endif\]-->
-    "
+    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+    append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
+    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
+
+    set extra_stuff_for_body "onLoad=\"javascript:initPortlet();\" "
 
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
@@ -864,7 +863,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     return "
-[ad_header -focus $page_focus $page_title $extra_stuff_for_document_head]
+[ad_header -focus $page_focus -extra_stuff_for_body $extra_stuff_for_body $page_title $extra_stuff_for_document_head]
 <div id=header_class>
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>

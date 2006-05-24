@@ -81,11 +81,13 @@ ad_proc -public im_component_box {
 
     set right_icons "
         <nobr>
+	<div id=\"showPortletButn_$plugin_id\">
 	<a href=\"$plugin_url&action=left\">[im_gif arrow_comp_left]</a>
 	<a href=\"$plugin_url&action=up\">[im_gif arrow_comp_up]</a>
 	<a href=\"$plugin_url&action=down\">[im_gif arrow_comp_down]</a>
 	<a href=\"$plugin_url&action=right\">[im_gif arrow_comp_right]</a>
 	<a href=\"$plugin_url&action=close\">[im_gif comp_delete]</a>
+	</div>
         </nobr>
     "
 
@@ -135,10 +137,10 @@ ad_proc -public im_component_box {
     if {"t" == $minimized_p} { set body "" }
 
     return "
-	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
+	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%' class='tablePortletElement'>
         <thead>
         <tr><td class=tableheader>
-          <table cellpadding=0 cellspacing=0 width='100%'>
+          <table cellpadding=0 cellspacing=0 width='100%' onMouseOut=\"javascript:ShowLayer('showPortletButn_$plugin_id','hidden')\" onMouseOver=\"javascript:ShowLayer('showPortletButn_$plugin_id','visible')\">
 	  $header
 	  </table>
         </td></tr>
