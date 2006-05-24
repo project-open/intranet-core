@@ -799,6 +799,11 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head [im_stylesheet]
     append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+    append extra_stuff_for_document_head "
+	<!--\[if lt IE 7.\]>
+	  <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
+	<!\[endif\]-->
+    "
 
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
