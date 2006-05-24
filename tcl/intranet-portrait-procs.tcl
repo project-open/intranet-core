@@ -49,9 +49,12 @@ ad_proc -public im_random_employee_component { } {
 	        acs_rels a,
 	        cr_items c,
 		im_profiles p,
-	        group_distinct_member_map m
+	        group_distinct_member_map m,
+		cc_users u
 	where
 	        a.object_id_two = c.item_id
+		and a.object_id_one = u.user_id
+		and u.member_state = 'approved'
 	        and a.rel_type = 'user_portrait_rel'
 		and m.member_id = a.object_id_one
 		and m.group_id = p.profile_id
