@@ -41,6 +41,9 @@ ad_proc -public im_gif {
     frequently used by the Intranet
 } {
     set url "/intranet/images"
+
+    set navbar_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
+
     set navbar_gif_path [im_navbar_gif_path]
     if { $translate_p && ![empty_string_p $alt] } {
 	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
@@ -115,7 +118,22 @@ ad_proc -public im_gif {
 
 
 	default		{ 
-	    set result "<img src=\"$url/$name.$type\" border=$border "
+
+	    # Check if the FamFamFam gif exists
+	    set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_path/$name.png"
+	    set png_url "/intranet/images/$navbar_path/$name.png"
+#	    if {[regexp {blue} $png_path match]} { ad_return_complaint 1 $png_path }
+
+	    if {[util_memoize "file exists $png_path"]} {
+		set result "<img src=\"$png_url\" border=$border "
+		if {$width > 0} { append result "width=$width " }
+		if {$height > 0} { append result "height=$height " }
+		append result "title=\"$alt\" alt=\"$alt\">"
+		return $result
+	    }
+
+	    # default - check for GIF in /images
+	    set result "<img src=\"$navbar_gif_path/$name.$type\" border=$border "
 	    if {$width > 0} { append result "width=$width " }
 	    if {$height > 0} { append result "height=$height " }
 	    append result "title=\"$alt\" alt=\"$alt\">"
@@ -538,11 +556,13 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
           <TD align=right>
+	    <div id=subnavbar_class>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
                 $navbar
               </tr>
             </table>
+	    </div>
           </TD>
           <TD align=right>
           </TD>
@@ -681,14 +701,18 @@ order by
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
           <TD align=left>
+	    <div id=navbar_class>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
                 $navbar
               </tr>
             </table>
+	    </div>
           </TD>
 	  <td align=right>
+	    <div id=navbar_right_class>
 	     $add_components
+	    </div>
 	  </td>
         </TR>
         <TR>
@@ -836,17 +860,20 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 
     return "
 [ad_header -focus $page_focus $page_title $extra_stuff_for_document_head]
+<div id=header_class>
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
     <td> 
     [im_logo]
     </td>
     <td align=left valign=middle> 
+      <div id=whosonline_class>
       <span class=small>
         <nobr>$users_online_str</nobr>
         <nobr>$user_profile: $user_name</nobr><br>
         <nobr>$logout_pwchange_str</nobr>
       </span>
+      </div>
     </td>
     <td valign=middle align=right> 
 	$search_form 
@@ -854,6 +881,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     </TD>
   </tr>
 </table>
+</div>
 "
 }
 
@@ -912,6 +940,7 @@ ad_proc -public im_footer {} {
     Default ProjectOpen footer.
 } {
     return "
+      <div id=footer_klass>
       <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
         <TBODY> 
           <TR>
@@ -923,6 +952,7 @@ ad_proc -public im_footer {} {
         </TR>
       </TBODY>
     </TABLE>
+    </div>
   </BODY>
 </HTML>
 "
@@ -959,7 +989,8 @@ ad_proc -public im_logo {} {
 ad_proc -public im_navbar_gif_path {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    set navbar_gif_path [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]
+    set navbar_gif_path "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
+
     return $navbar_gif_path
 }
 
