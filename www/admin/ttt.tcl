@@ -42,6 +42,9 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
+ad_return_complaint 1 [im_random_employee_component]
+
+
 sett user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
@@ -52,6 +55,8 @@ set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set return_url "/intranet/"
+
+
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
