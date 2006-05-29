@@ -106,6 +106,11 @@ order by category_id"
     set category ""
     set enabled_p ""
     set mailing_list_info ""
+
+    set aux_int1 ""
+    set aux_int2 ""
+    set aux_string1 ""
+    set aux_string2 ""
 }
 
 # ---------------------------------------------------------------

@@ -37,6 +37,10 @@ ad_page_contract {
     enabled_p:notnull
     category_type
     translation:array
+    aux_int1
+    aux_int2
+    aux_string1
+    aux_string2
 }
 
 # ---------------------------------------------------------------
@@ -89,16 +93,21 @@ if [catch {
 
     db_transaction {
 	db_dml new_category_entry {
-	    insert into im_categories
-	    (category_id, category, category_type,
-	     category_description, enabled_p)
-	    values
-	    (:category_id, :category, :category_type,
-	     :category_description, :enabled_p)
+	    insert into im_categories (
+		category_id, category, category_type,
+		category_description, enabled_p,
+		aux_int1, aux_int2,
+		aux_string1, aux_string2
+	    ) values (
+		:category_id, :category, :category_type,
+		:category_description, :enabled_p,
+		:aux_int1, :aux_int2,
+		:aux_string1, :aux_string2
+	    )
 	}
     }
 } errmsg ] {
-    ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"
+    ad_return_complaint "Argument Error" "<pre>$errmsg</pre>"
     return
 }
 

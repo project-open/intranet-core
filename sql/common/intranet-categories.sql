@@ -77,7 +77,8 @@
 -- 3700-3799    Intranet Cost Item Type
 -- 3800-3899    Intranet Cost Item Status
 -- 3900-3999    Intranet Cost Item Planning Type
--- 4000-4599    (reserved)
+-- 4000-4099	Intranet Trans Task Type
+-- 4100-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
@@ -89,6 +90,11 @@
 -- 9000-9499	Intranet Material
 -- 9500-9999	Intranet Timesheet Tasks
 -- 10000-10999	Intranet DynField
+
+-- Ugly: This range has been "polluted" because previous
+-- systems had the im_categories_seq set to 10000.
+-- However, none of the value should have exceeded 10099
+
 -- 11000-11099	Intranet SQL Selectors
 -- 11100-11199	CRM IP Type
 -- 11200-11299	CRM IP Status
@@ -108,7 +114,11 @@
 -- 18000-18999	reserved (1000)
 -- 19000-19999	reserved (1000)
 -- 20000-99999	reserved (80000)
+--100000-999999 reserved (900000)
+--1000000-9999999 reserved (9000000)
 
+-- Here starts the free values for im_categories_seq
+-- since 2006-05-26
 
 ------------------------------------------------------
 -- Business Objects
