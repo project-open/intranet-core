@@ -20,32 +20,51 @@
   </td>
 </else>
 
-  <tr>
+  <tr class=roweven>
     <td>#intranet-core.Category_Nr#</td>
     <td><input size=10 name=category_id value="@category_id@"></td>
   </tr>
-  <tr>
+  <tr class=rowodd>
     <td>#intranet-core.Category_name#</td>
     <td><input size=40 name=category value="@category@"></td>
   </tr>
-  <tr>
+  <tr class=roweven>
     <td>
-      #intranet-core.Category_translation#
+      #intranet-core.Category_translation#<br>
       <%= [im_gif help "The English 'translation' should be identical with the category name"] %>
     </td>
     <td>
       @category_translation_component;noquote@
    </td>
   </tr>
-  <tr>
+
+  <tr class=rowodd>
+    <td>Int1</td>
+    <td><input size=20 name=aux_int1 value="@aux_int1@"></td>
+  </tr>
+  <tr class=roweven>
+    <td>Int2</td>
+    <td><input size=20 name=aux_int2 value="@aux_int2@"></td>
+  </tr>
+
+  <tr class=rowodd>
+    <td>String1</td>
+    <td><input size=60 name=aux_string1 value="@aux_string1@"></td>
+  </tr>
+  <tr class=roweven>
+    <td>String2</td>
+    <td><input size=60 name=aux_string2 value="@aux_string2@"></td>
+  </tr>
+
+
+  <tr class=rowodd>
     <td>#intranet-core.Category_description#</td>
     <td>
-      <textarea name=category_description rows=5 cols=50 wrap=soft>@descr@
-      </textarea>
+      <textarea name=category_description rows=5 cols=50 wrap=soft>@descr@</textarea>
     </td>
   </tr>
 <% if {"" != $hierarchy_component} { %>
-  <tr>
+  <tr class=roweven>
     <td>#intranet-core.Parent_Categories#</td>
     <td>
       <select name=parents size=20 multiple>
@@ -54,11 +73,15 @@
     </td>
   </tr>
 <% } %>
+<tr class=roweven>
+  <td colspan=2>
+	<input type=hidden name=enabled_p value="t">
+	<input type=submit name=submit value="#intranet-core.Create_Category#" $input_form_html>
+  </td>
+</tr>
 
 </table>
 
-<input type=hidden name=enabled_p value="t">
-<input type=submit name=submit value="#intranet-core.Create_Category#" $input_form_html>
 </form>
 @delete_action_html;noquote@
 

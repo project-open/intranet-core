@@ -32,6 +32,10 @@ ad_page_contract {
 } {
     category_id:naturalnum,notnull
     category:notnull
+    aux_int1:integer
+    aux_int2:integer
+    aux_string1
+    aux_string2
     category_description
     enabled_p:notnull
     category_type
@@ -105,6 +109,10 @@ UPDATE
 SET 
 	category = :category,
 	category_type = :category_type,
+	aux_int1 = :aux_int1,
+	aux_int2 = :aux_int2,
+	aux_string1 = :aux_string1,
+	aux_string2 = :aux_string2,
 	category_description = :category_description,
 	enabled_p = :enabled_p
 WHERE 

@@ -8,6 +8,8 @@
 
 	select
 		c.*,
+		im_category_from_id(aux_int1) as aux_int1_cat,
+		im_category_from_id(aux_int2) as aux_int2_cat,
 		h.parent_id,
 		im_category_from_id(h.parent_id) as parent
 	from 

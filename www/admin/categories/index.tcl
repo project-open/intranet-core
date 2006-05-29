@@ -85,7 +85,12 @@ set category_list_html "
 <tr>
   <td class=rowtitle align=center>Id</td>
   <td class=rowtitle align=center>Category</td>
-  <td class=rowtitle align=center>Is-A</td>"
+  <td class=rowtitle align=center>Is-A</td>
+  <td class=rowtitle align=center>Int1</td>
+  <td class=rowtitle align=center>Int2</td>
+  <td class=rowtitle align=center>String1</td>
+  <td class=rowtitle align=center>String2</td>
+"
 
 if {[string equal "All" $select_category_type]} {
     append category_list_html "<td class=rowtitle align=center>Category Type</td>"
@@ -110,10 +115,15 @@ db_foreach category_select {} {
     if {$old_id == $category_id} {
 	# We got another is-a for the same category
 	append category_list_html "
-<tr $bgcolor([expr $ctr % 2])>
-  <td></td>
-  <td></td>
-  <td>$parent</td>"
+	<tr $bgcolor([expr $ctr % 2])>
+	  <td></td>
+	  <td></td>
+	  <td>$parent</td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	"
 	if {[string equal "All" $select_category_type]} {
 	    append category_list_html "<td></td>"
 	}
@@ -122,10 +132,15 @@ db_foreach category_select {} {
     }
 
     append category_list_html "
-<tr $bgcolor([expr $ctr % 2])>
-  <td>$category_id</td>
-  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
-  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>\n"
+	<tr $bgcolor([expr $ctr % 2])>
+	  <td>$category_id</td>
+	  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
+	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
+	  <td>$aux_int1 $aux_int1_cat</td>
+	  <td>$aux_int2 $aux_int2_cat</td>
+	  <td>$aux_string1</td>
+	  <td>$aux_string2</td>
+    "
     if {[string equal "All" $select_category_type]} {
 	append category_list_html "<td>$category_type</td>"
     }
