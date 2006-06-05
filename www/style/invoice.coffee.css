@@ -1,0 +1,142 @@
+BODY {
+	COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+	margin: 0px;
+}
+P {
+	COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+}
+TD {
+	COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+}
+HR {
+	HEIGHT: 1px
+}
+.pagedesriptionbar {
+	BACKGROUND: #336699; COLOR: #ffffff; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: small; FONT-WEIGHT: bold
+}
+#header_class{
+ background-color: #13416E;
+}
+#footer_klass{
+ background-color: #336699;
+}
+#footer_klass P{
+ color : white;
+}
+
+H1 {
+	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: large; FONT-WEIGHT: bold
+}
+H2 {
+	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: medium; FONT-WEIGHT: bold
+}
+H3 {
+	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: small; FONT-WEIGHT: bold
+}
+.tabsel {
+	BACKGROUND-COLOR: #336699; COLOR: #ffffff; FONT-WEIGHT: bold
+}
+.tabnotsel {
+	BACKGROUND-COLOR: #bbcfe1; COLOR: #000000; FONT-WEIGHT: bold
+}
+.productrow1 {
+	BACKGROUND: #dddddd; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+}
+.productrow2 {
+	BACKGROUND: #eeeeee; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+}
+.header {
+	COLOR: #336699; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small; FONT-WEIGHT: bold
+}
+.titlerow {
+	BACKGROUND: #bbcfe1; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: x-small
+}
+.rowtitle {
+	BACKGROUND-COLOR: #FFFFFF; COLOR: #000000; FONT-SIZE: 10pt; FONT-WEIGHT: bold
+}
+.roweven {
+	BACKGROUND-COLOR: #FFFFFF; FONT-SIZE: 10pt
+}
+.rowodd {
+	BACKGROUND-COLOR: #FFFFFF; FONT-SIZE: 10pt
+}
+.invoiceroweven {
+	BACKGROUND-COLOR: #FFFFFF; FONT-SIZE: 10pt
+}
+.invoicerowodd {
+	BACKGROUND-COLOR: #EEEEEE; FONT-SIZE: 10pt
+}
+.small {
+	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: xx-small
+}
+.vivcomm {
+	COLOR: #006600
+}
+.fabcomm {
+	COLOR: #000066
+}
+A.titlerow:link {
+	COLOR: #000000
+}
+A.titlerow:visited {
+	COLOR: #000000
+}
+A.titlerow:active {
+	COLOR: #000000
+}
+A.titlerow:hover {
+	COLOR: #000000
+}
+A.blacklink:link {
+	COLOR: #000000
+}
+A.blacklink:visited {
+	COLOR: #000000
+}
+A.blacklink:active {
+	COLOR: #000000
+}
+A.blacklink:hover {
+	COLOR: #000000
+}
+A.whitelink:link {
+	COLOR: #ffffff
+}
+A.whitelink:visited {
+	COLOR: #ffffff
+}
+A.whitelink:active {
+	COLOR: #ffffff
+}
+A.whitelink:hover {
+	COLOR: #ffffff
+}
+A.paginacion:link {
+	COLOR: #000000; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.paginacion:active {
+	COLOR: #000000; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.paginacion:visited {
+	COLOR: #000000; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.paginacion:hover {
+	COLOR: #000000; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+.headerBig {
+	FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: small; FONT-WEIGHT: bold
+}
+
+.brandfirst{
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color:#320033;
+        font-weight: bold;
+}
+
+.brandsec{
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color:#336699;
+        font-weight: bold;
+}
+
+
