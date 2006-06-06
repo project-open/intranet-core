@@ -78,7 +78,8 @@
 -- 3800-3899    Intranet Cost Item Status
 -- 3900-3999    Intranet Cost Item Planning Type
 -- 4000-4099	Intranet Trans Task Type
--- 4100-4599    (reserved)
+-- 4100-4199	Intranet Translation Memory Type
+-- 4200-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
@@ -93,7 +94,7 @@
 
 -- Ugly: This range has been "polluted" because previous
 -- systems had the im_categories_seq set to 10000.
--- However, none of the value should have exceeded 10099
+-- However, none of the value should have exceeded 10999
 
 -- 11000-11099	Intranet SQL Selectors
 -- 11100-11199	CRM IP Type
