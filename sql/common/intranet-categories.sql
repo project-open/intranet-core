@@ -78,7 +78,7 @@
 -- 3800-3899    Intranet Cost Item Status
 -- 3900-3999    Intranet Cost Item Planning Type
 -- 4000-4099	Intranet Trans Task Type
--- 4100-4199	Intranet Translation Memory Type
+-- 4100-4199	Intranet TM Integration Type
 -- 4200-4599    (reserved)
 
 -- 5000-5999	Timesheet Management

@@ -848,7 +848,6 @@ ad_proc im_category_select {
     Returns a formatted "option" widget with hierarchical
     contents
 } {
-
     if {$plain_p} {
 	return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
     }
