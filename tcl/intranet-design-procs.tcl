@@ -54,7 +54,7 @@ ad_proc -public im_gif {
     ns_log Notice "im_gif: name=$name"
 
     set url "/intranet/images"
-    set navbar_url [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
+    set navbar_postfix [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
     set navbar_gif_url "/intranet/images/[im_navbar_gif_url]"
     set base_path "[acs_root_dir]/packages/intranet-core/www/images/"
     set navbar_path "[acs_root_dir]/packages/intranet-core/www/images/[im_navbar_gif_url]"
@@ -65,14 +65,14 @@ ad_proc -public im_gif {
     }
 
     # 1. Check for a static GIF - it's been given without extension.
-    set gif [im_gif_static $name $alt $url $navbar_path $navbar_url $border $width $height]
+    set gif [im_gif_static $name $alt $url $navbar_path $navbar_gif_url $border $width $height]
     if {"" != $gif} { 
 	ns_log Notice "im_gif: static: $name"
 	return $gif 
     }
 
     # 2. Check in the "navbar" path to see if the navbar specifies a GIF
-    set gif [im_gif_navbar $name $alt $url $navbar_path $navbar_url $border $width $height]
+    set gif [im_gif_navbar $name $alt $url $navbar_path $navbar_gif_url $border $width $height]
     if {"" != $gif} { 
 	ns_log Notice "im_gif: navbar: $name"
 	return $gif 
@@ -82,8 +82,8 @@ ad_proc -public im_gif {
 
 
     # 3. Check if the FamFamFam gif exists
-    set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_url/$name.png"
-    set png_url "/intranet/images/$navbar_url/$name.png"
+    set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_postfix/$name.png"
+    set png_url "/intranet/images/$navbar_postfix/$name.png"
     if {[file exists $png_path]} {
 	set result "<img src=\"$png_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
@@ -93,7 +93,7 @@ ad_proc -public im_gif {
     }
 
     # 4. Default - check for GIF in /images
-    set result "<img src=\"$navbar_url/$name.$type\" border=$border "
+    set result "<img src=\"$navbar_postfix/$name.$type\" border=$border "
     if {$width > 0} { append result "width=$width " }
     if {$height > 0} { append result "height=$height " }
     append result "title=\"$alt\" alt=\"$alt\">"
@@ -107,7 +107,7 @@ ad_proc -public im_gif_navbar {
     alt
     url 
     navbar_path 
-    navbar_url 
+    navbar_gif_url 
     {border 0} 
     {width 0} 
     {height 0} 
@@ -122,11 +122,11 @@ ad_proc -public im_gif_navbar {
     set png_exists_p [file readable $png_file]
 
     if {$gif_exists_p} { 
-	return "<img src=$navbar_url/$name.gif border=0 title=\"$alt\" alt=\"$alt\">" 
+	return "<img src=$navbar_gif_url/$name.gif border=0 title=\"$alt\" alt=\"$alt\">" 
     }
 
     if {$png_exists_p} { 
-	return "<img src=$navbar_url/$name.png border=0 title=\"$alt\" alt=\"$alt\">" 
+	return "<img src=$navbar_gif_url/$name.png border=0 title=\"$alt\" alt=\"$alt\">" 
     }
     
     return ""
@@ -138,7 +138,7 @@ ad_proc -public im_gif_static {
     alt
     url 
     navbar_path
-    navbar_url 
+    navbar_gif_url 
     {border 0} 
     {width 0} 
     {height 0} 
@@ -146,6 +146,7 @@ ad_proc -public im_gif_static {
     Part of im_gif. Checks whether the gif is a hard-coded
     special GIF. Returns an empty string if GIF not found.
 } {
+    ns_log Notice "im_gif_static: name=$name, navbar_gif_url=$navbar_gif_url, navbar_path=$navbar_path"
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -153,12 +154,12 @@ ad_proc -public im_gif_static {
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"incident"	{ return "<img src=$navbar_url/lightning.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"discussion"	{ return "<img src=$navbar_url/group.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"task"		{ return "<img src=$navbar_url/tick.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"news"		{ return "<img src=$navbar_url/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"note"		{ return "<img src=$navbar_url/pencil.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"reply"		{ return "<img src=$navbar_url/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"incident"	{ return "<img src=$navbar_gif_url/lightning.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"discussion"	{ return "<img src=$navbar_gif_url/group.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"task"		{ return "<img src=$navbar_gif_url/tick.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"news"		{ return "<img src=$navbar_gif_url/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"note"		{ return "<img src=$navbar_gif_url/pencil.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"reply"		{ return "<img src=$navbar_gif_url/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -171,31 +172,31 @@ ad_proc -public im_gif_static {
 	"exp-word"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-text"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"profile"	{ return "<img src=$navbar_url/user.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"profile"	{ return "<img src=$navbar_gif_url/user.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"left-sel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"left-notsel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-sel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-notsel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-notsel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-sel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-sel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-notsel"	{ return "<img src=$navbar_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"admin"		{ return "<img src=$navbar_url/tux.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"customer"	{ return "<img src=$navbar_url/coins.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"employee"	{ return "<img src=$navbar_url/user_orange.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$navbar_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$navbar_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"senman"	{ return "<img src=$navbar_url/user_suit.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"proman"	{ return "<img src=$navbar_url/user_comment.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"accounting"	{ return "<img src=$navbar_url/money_dollar.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"sales"		{ return "<img src=$navbar_url/telephone.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"admin"		{ return "<img src=$navbar_gif_url/tux.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"customer"	{ return "<img src=$navbar_gif_url/coins.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"employee"	{ return "<img src=$navbar_gif_url/user_orange.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"senman"	{ return "<img src=$navbar_gif_url/user_suit.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"proman"	{ return "<img src=$navbar_gif_url/user_comment.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"accounting"	{ return "<img src=$navbar_gif_url/money_dollar.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"sales"		{ return "<img src=$navbar_gif_url/telephone.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"bb_clear"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_red"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -204,14 +205,14 @@ ad_proc -public im_gif_static {
 	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 
 
-	"comp_add"	{ return "<img src=$navbar_url/comp_add.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_left" { return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_right" { return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_up"	{ return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_down" { return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_minimize"	{ return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_maximize"	{ return "<img src=$navbar_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"comp_delete"	{ return "<img src=$navbar_url/comp_delete.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_left" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_right" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_up"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_down" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_minimize"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_maximize"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_delete"	{ return "<img src=$navbar_gif_url/comp_delete.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	default		{ return "" }
     }
@@ -1070,7 +1071,14 @@ ad_proc -public im_logo {} {
 }
 
 
-ad_proc -public im_navbar_url {} {
+
+ad_proc -public im_navbar_gif_url {} {
+    Path to access the Navigation Bar corner GIFs
+} {
+    return [util_memoize "im_navbar_gif_url_helper"]
+}
+
+ad_proc -public im_navbar_gif_url_helper {} {
     Path to access the Navigation Bar corner GIFs
 } {
     set navbar_gif_url "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
