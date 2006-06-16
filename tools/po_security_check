@@ -15,6 +15,9 @@ my $debug = 0;
 my $folder_root = "/web/projop/packages/intranet-*";
 
 
+print "ToDo: Add a search for 'eval' and 'exec' to the security check to see potential vulnerabilities\n";
+
+
 # Write a .CSV Header line so that the output can 
 # be opened by Excel directly.
 print "filename;status;require_login;ad_maybe_redirect_for_registration;ad_verify_and_get_user_id;unsave_dollar;im_permission;comment\n";
