@@ -36,8 +36,8 @@ ad_page_contract {
     company_id:integer,notnull
     { company_name "" }
     { company_path "" }
-    { company_status_id:integer "" }
-    { company_type_id:integer "" }
+    company_status_id:integer,notnull
+    company_type_id:integer,notnull
     { main_office_id:integer "" }
     { return_url "" }
     { group_type "" }
@@ -88,8 +88,22 @@ if { [string length ${note}] > 4000 } {
     append errors "  <li>[_ intranet-core.lt_The_note_you_entered_]"
 }
 
-# Periods don't work in bind variables...
-set company_path ${company_path}
+
+# -----------------------------------------------------------------
+# To-Lower the company path and check for alphanum characters
+#
+set normalize_company_path_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeCompanyPathP" -default 1]
+
+if {$normalize_company_path_p} {
+    set company_path [string tolower [string trim $company_path]]
+    
+    if {![regexp {^[a-z0-9_]+$} $company_path match]} {
+	incr exception_count
+	append errors "  <li>[lang::message::lookup "" intranet-core.Non_alphanum_chars_in_path "The specified path contains invalid characters. Allowed are only aphanumeric characters from a-z, 0-9 and '_'."]: '$company_path'"
+    }
+}
+
+
 # Make sure company name is unique
 set exists_p [db_string group_exists_p "
 	select count(*)
