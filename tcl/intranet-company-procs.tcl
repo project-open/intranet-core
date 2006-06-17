@@ -223,6 +223,7 @@ where	company_name = :company_name
 ad_proc -public im_company_internal { } {
     Returns the object_id of the "Internal" company, identifying
     the organization (ower or Project/Open) itself.<br>
+
     This routine is used during invoicing/payments where documents
     can be both incoming payments (provider=Internal, company=...)
     or outgoing payments (provider=..., company=Internal).
@@ -231,6 +232,23 @@ ad_proc -public im_company_internal { } {
     if {!$company_id} {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_Unable_to_determine_I]<br>
         [_ intranet-core.lt_Maybe_somebody_has_ch]"
+    }
+    return $company_id
+}
+
+
+ad_proc -public im_company_freelance { } {
+    Returns the object_id of the "Freelance" company, identifying
+    default setting for foreelance companies.
+
+    This routine is used during invoicing/payments for
+    default information such as Trados Matrix and price list.
+} {
+    set company_id [db_string get_interal_company "select company_id from im_companies where company_path='default_freelance'" -default 0]
+
+    if {!$company_id} {
+	ns_log Error "im_company_freelance: Did not find a company with path 'default_freelance'. Using 'internal' instead."
+	return [im_company_internal]
     }
     return $company_id
 }
