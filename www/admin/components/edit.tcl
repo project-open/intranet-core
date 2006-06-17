@@ -57,6 +57,7 @@ set right_selected ""
 set bottom_selected ""
 set none_selected ""
 set files_selected ""
+set header_selected ""
 
 switch $location {
     "left" { set left_selected " selected" }
@@ -64,6 +65,7 @@ switch $location {
     "bottom" { set bottom_selected " selected" }
     "none" { set none_selected " selected" }
     "files" { set none_selected " selected" }
+    "header" { set header_selected " selected" }
 }
 
 # TODO add correct URL
@@ -91,6 +93,7 @@ set page_body "
         <option $right_selected>right</option>
         <option $bottom_selected>bottom</option>
         <option $files_selected>files</option>
+        <option $header_selected>header</option>
         <option $none_selected>none</option>
         </select>
     </TD></TR>

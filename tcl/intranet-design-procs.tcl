@@ -922,7 +922,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	select	c.*,
 		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
 	from	im_component_plugins c
-	where	page_url = 'header'
+	where	location = 'header'
 	order by sort_order
     "
 
