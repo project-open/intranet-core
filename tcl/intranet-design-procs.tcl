@@ -78,13 +78,11 @@ ad_proc -public im_gif {
 	return $gif 
     }
 
-    ns_log Notice "im_gif: not_found: $name"
-
-
     # 3. Check if the FamFamFam gif exists
     set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_postfix/$name.png"
     set png_url "/intranet/images/$navbar_postfix/$name.png"
-    if {[file exists $png_path]} {
+    if {[util_memoize "file exists $png_path"]} {
+	ns_log Notice "im_gif: famfamfam: $name"
 	set result "<img src=\"$png_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
 	if {$height > 0} { append result "height=$height " }
@@ -93,6 +91,20 @@ ad_proc -public im_gif {
     }
 
     # 4. Default - check for GIF in /images
+    set gif_path "[acs_root_dir]/packages/intranet-core/www/images/$name.gif"
+    set gif_url "/intranet/images/$name.gif"
+    if {[util_memoize "file exists $gif_path"]} {
+	ns_log Notice "im_gif: images_main: $name"
+	set result "<img src=\"$gif_url\" border=$border "
+	if {$width > 0} { append result "width=$width " }
+	if {$height > 0} { append result "height=$height " }
+	append result "title=\"$alt\" alt=\"$alt\">"
+	return $result
+    }
+
+
+    ns_log Notice "im_gif: not_found: $name"
+
     set result "<img src=\"$navbar_postfix/$name.$type\" border=$border "
     if {$width > 0} { append result "width=$width " }
     if {$height > 0} { append result "height=$height " }
@@ -116,10 +128,10 @@ ad_proc -public im_gif_navbar {
     the navbar path, either as a GIF or a PNG.
 } {
     set gif_file "$navbar_path/${name}.gif"
-    set gif_exists_p [file readable $gif_file]
+    set gif_exists_p [util_memoize "file readable $gif_file"]
 
     set png_file "$navbar_path/${name}.png"
-    set png_exists_p [file readable $png_file]
+    set png_exists_p [util_memoize "file readable $png_file"]
 
     if {$gif_exists_p} { 
 	return "<img src=$navbar_gif_url/$name.gif border=0 title=\"$alt\" alt=\"$alt\">" 
@@ -775,8 +787,13 @@ order by
     set reset_comp_url [export_vars -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
 
-    set add_components "<a href=\"$reset_comp_url\">$reset_stuff_text</a>"
-    append add_components "<a href=\"$add_comp_url\">[im_gif comp_add $add_stuff_text]$add_stuff_text</a>"
+    set add_components "
+	<nobr>
+	<a href=\"$reset_comp_url\">$reset_stuff_text</a>
+	<a href=\"$add_comp_url\">[im_gif comp_add $add_stuff_text]</a>
+	<a href=\"$add_comp_url\">$add_stuff_text</a>
+	</nobr>
+    "
 
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>

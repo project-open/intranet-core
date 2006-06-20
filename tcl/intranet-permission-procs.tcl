@@ -102,10 +102,17 @@ ad_proc -public im_permission_flush {} {
 } {
     # Call the global "flusher" with the ".*" regexp which should
     # match all entries.
-    util_memoize_flush_regexp "ad_permission.*"
-    util_memoize_flush_regexp "im_permission.*"
-    util_memoize_flush_regexp "db_string.*"
-    util_memoize_flush_regexp "acs_user.*"
+
+    util_memoize_flush_regexp "ad.*"
+    util_memoize_flush_regexp "im.*"
+    util_memoize_flush_regexp "db.*"
+    util_memoize_flush_regexp "acs.*"
+    util_memoize_flush_regexp "file.*"
+
+#    util_memoize_flush_regexp "ad_permission.*"
+#    util_memoize_flush_regexp "im_permission.*"
+#    util_memoize_flush_regexp "db_string.*"
+#    util_memoize_flush_regexp "acs_user.*"
 }
 
 
