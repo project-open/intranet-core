@@ -128,6 +128,8 @@ from
 ;
 
 
+-- ToDo: Localize this function for Japanese
+--
 create or replace function im_name_from_user_id(integer)
 returns varchar as '
 DECLARE
