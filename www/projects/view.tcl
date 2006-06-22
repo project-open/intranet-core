@@ -299,6 +299,19 @@ while {$loop} {
     incr ctr
 }
 
+# Permissions for showing subprojects
+set perm_sql "
+	(select	p.*
+	from	im_projects p,
+		acs_rels r
+	where	r.object_id_one = p.project_id
+		and r.object_id_two = :user_id
+	)
+"
+if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
+
+
+
 set cur_level 1
 set hierarchy_html ""
 set counter 0

@@ -24,7 +24,7 @@
         tree_level(parent.tree_sortkey) as subproject_level
       from
         im_projects parent,
-        im_projects children
+        $perm_sql children
       where
         children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
         and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)

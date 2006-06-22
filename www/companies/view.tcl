@@ -256,6 +256,7 @@ from
 where 
 	p.company_id=:company_id
 	and p.project_status_id = c.category_id
+        and p.parent_id is null
 	and lower(c.category) not in ('deleted')
 order by p.project_nr DESC
 "
