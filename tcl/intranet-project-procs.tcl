@@ -282,31 +282,48 @@ ad_proc -public im_next_project_nr { } {
     of the current year (comparing the first 4 digits to the current year),
     adding "+1", and contatenating again with the current year.
 } {
+    set date_format [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDateFormat" -default "YYYY_"]
+    set todate [db_string today "select to_char(now(), :date_format)"]
 
-    set today [db_string sysdate "select to_char(sysdate,'YYYY') from dual"]
+    set nr_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDigits" -default "4"]
+    
+    # ----------------------------------------------------
+    # Calculate the next invoice Nr by finding out the last
+    # one +1
 
-    set sql "
-select
-	'$today' ||'_'|| trim(to_char(1 + cast((max(substr(p.project_nr,6,4))) as integer), '0000')) as project_nr
-from
-        im_projects p
-where
-        p.project_nr like '200_/_____' escape '/' and
-        substr(p.project_nr, 1,4)='$today' and
-        ascii(substr(p.project_nr,6,1)) > 47 and
-        ascii(substr(p.project_nr,6,1)) < 58 and
-        ascii(substr(p.project_nr,7,1)) > 47 and
-        ascii(substr(p.project_nr,7,1)) < 58 and
-        ascii(substr(p.project_nr,8,1)) > 47 and
-        ascii(substr(p.project_nr,8,1)) < 58 and
-        ascii(substr(p.project_nr,9,1)) > 47 and
-        ascii(substr(p.project_nr,9,1)) < 58"
+    # Adjust the position of the start of date and nr in the invoice_nr
+    set date_format_len [string length $date_format]
+    set nr_start_idx [expr 1+$date_format_len]
+    set date_start_idx 1
 
-    set project_nr [db_string next_project_nr $sql -default ""]
-    if {"" == $project_nr} { 
-	set project_nr [db_string project_nr_default "select to_char(now(), 'YYYY') ||'_0000' from dual"]
+    set num_check_sql ""
+    set zeros ""
+    for {set i 0} {$i < $nr_digits} {incr i} {
+	append num_check_sql "\t\tand ascii(substr(p.nr,:i,1)) > 47 and ascii(substr(p.nr,:i,1)) < 58\n"
+	append zeros "0"
     }
 
+    set sql "
+	select
+		trim(max(p.nr)) as last_project_nr
+	from (
+		 select substr(project_nr, :nr_start_idx, :nr_digits) as nr
+		 from   im_projects
+		 where	parent_id is null
+			and substr(project_nr, :date_start_idx, :date_format_len) = '$todate'
+	     ) p
+	where	1=1
+		$num_check_sql
+    "
+    set last_project_nr [db_string max_project_nr $sql -default $zeros]
+    set last_project_nr [string trimleft $last_project_nr "0"]
+    if {[empty_string_p $last_project_nr]} { set last_project_nr 0 }
+    set next_number [expr $last_project_nr + 1]
+
+    # ----------------------------------------------------
+    # Put together the new project_nr
+    set nr_sql "select '$todate' || trim(to_char($next_number,:zeros)) as project_nr"
+    set project_nr [db_string next_project_nr $nr_sql -default ""]
     return $project_nr
 }
 
@@ -321,8 +338,8 @@ ad_proc -public im_new_project_html { user_id } {
 } {
     if {![im_permission $user_id add_projects]} { return "" }
     return "<a href='/intranet/projects/new'>
-           [im_gif new "Create a new Project"]
-           </a>"
+	   [im_gif new "Create a new Project"]
+	   </a>"
 }
 
 
