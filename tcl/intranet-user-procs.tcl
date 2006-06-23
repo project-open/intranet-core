@@ -120,6 +120,7 @@ ad_proc -public im_employee_options { {include_empty 1} } {
     set options [db_list_of_lists provider_options "
         select first_names || ' ' || last_name, user_id
         from im_employees_active
+	order by first_names, last_name
     "]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
