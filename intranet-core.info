@@ -37,6 +37,8 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectNrDateFormat"  default="YYYY_" description="Date format for project number prefix. Example is '' (empty string) for a pure number, 'YYYY_' for a 4 digit year plus an underscore or 'YY' as a 2 digit year prefix"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectNrDigits"  default="4" description="Number of digits of the project number numeration"/>
         </parameters>
 
     </version>
