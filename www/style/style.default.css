@@ -54,6 +54,7 @@
 
     .list-even {font-size: 8pt; background-color: #DDDDDD;}
     .list-odd {font-size: 8pt; background-color: #EEEEEE;}
+    .list-bold {font-size: 8pt; background-color: #E0E0E0; font-weight: bold }
 
     .small {font-family: verdana, arial, helvetica, sans-serif; font-Size: xx-small;}
     .vivcomm {color: #006600}

@@ -110,6 +110,10 @@ H3 {
 .list-odd {
 	FONT-SIZE: 8pt; BACKGROUND-COLOR: #eeeeee
 }
+.list-gold {
+	FONT-SIZE: 8pt; BACKGROUND-COLOR: #e0e0e0
+	font-weight: bold
+}
 .small {
 	FONT-SIZE: xx-small; FONT-FAMILY: verdana, arial, helvetica, sans-serif
 }

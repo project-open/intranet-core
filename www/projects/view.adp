@@ -38,8 +38,59 @@ switch $view_name {
 	  </td>
 	  <td width=2>&nbsp;</td>
 	  <td valign=top>
-	    @admin_html;noquote@
-	    @hierarchy_html;noquote@
+
+	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
+	<tr>
+	   <td class=tableheader align=left width='99%'><%= [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"] %></td>
+	</tr>
+	<tr>
+	  <td class=tablebody><font size=-1>
+
+		<table class="list">
+		  <tr class="list-header">
+		    <th class="list-narrow"> &nbsp; </th>
+		    <th class="list-narrow">#intranet-core.Project#</th>
+		    <th class="list-narrow">#intranet-core.Name#</th>
+		    <th class="list-narrow">#intranet-core.Status#</th>
+		  </tr>
+		  <multiple name=subprojects>
+
+		  <if @subprojects.subproject_bold_p@>
+		    <tr class="list-bold">
+		  </if>
+		  <else>
+			  <if @subprojects.rownum@ odd>
+			    <tr class="list-odd">
+			  </if> <else>
+			    <tr class="list-even">
+			  </else>
+		  </else>
+
+		  <td class="list-narrow">
+		    <if @subprojects.subproject_bold_p@>
+		      <%= [im_gif arrow_right] %>
+		    </if>
+		  </td>
+		  <td class="list-narrow">
+		      <a href="@subprojects.subproject_url@">@subprojects.subproject_nr@</a>
+		  </td>
+		  <td class="list-narrow">
+		      @subprojects.subproject_indent;noquote@
+		      <a href="@subprojects.subproject_url@">@subprojects.subproject_name@</a>
+		  </td>
+		  <td class="list-narrow">
+		      @subprojects.subproject_status@
+		  </td>
+		  </tr>
+		  </multiple>
+
+		</table>
+
+	    @admin_html_content;noquote@
+
+	</font></td>
+	</tr>
+	</table>
 
 	    <!-- Right Component Bay -->
 	    <%= [im_component_bay right] %>

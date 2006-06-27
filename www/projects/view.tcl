@@ -280,6 +280,8 @@ if {"" != $admin_html_content} {
 # Project Hierarchy
 # ---------------------------------------------------------------------
 
+# Determine the Top superproject of the current
+# project.
 set super_project_id $project_id
 set loop 1
 set ctr 0
@@ -299,7 +301,8 @@ while {$loop} {
     incr ctr
 }
 
-# Permissions for showing subprojects
+
+# Check permissions for showing subprojects
 set perm_sql "
 	(select	p.*
 	from	im_projects p,
@@ -311,36 +314,16 @@ set perm_sql "
 if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
 
 
+set project_url "/intranet/projects/view"
+set space "&nbsp; &nbsp; &nbsp; "
 
-set cur_level 1
-set hierarchy_html ""
-set counter 0
-db_foreach project_hierarchy {} {
-    while {$subproject_level > $cur_level} {
-	append hierarchy_html "<ul>\n"
-	incr cur_level
-    }
-
-    while {$subproject_level < $cur_level} {
-	append hierarchy_html "</ul>\n"
-	set cur_level [expr $cur_level - 1]
-    }
+db_multirow -extend {subproject_indent subproject_url subproject_bold_p} subprojects project_hierarchy {} {
     
-    # Render the project itself in bold
-    if {$project_id == $subproject_id} {
-	append hierarchy_html "<li><B><A HREF=\"/intranet/projects/view?project_id=$subproject_id\">$subproject_name</A></B>\n"
-    } else {
-	append hierarchy_html "<li><A HREF=\"/intranet/projects/view?project_id=$subproject_id\">$subproject_name</A>\n"
-    }
+    set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
+    set subproject_indent ""
+    for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
+    set subproject_bold_p [expr $project_id == $subproject_id]
 
-    incr counter
-}
-
-
-if {$counter > 1} {
-    set hierarchy_html [im_table_with_title "[_ intranet-core.Project_Hierarchy] [im_gif help "This project is part of another project or contains subprojects."]" $hierarchy_html]
-} else {
-    set hierarchy_html ""
 }
 
 

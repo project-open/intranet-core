@@ -20,13 +20,21 @@
         children.project_id as subproject_id,
         children.project_nr as subproject_nr,
         children.project_name as subproject_name,
+        im_category_from_id(children.project_status_id) as subproject_status,
+        im_category_from_id(children.project_type_id) as subproject_type,
         tree_level(children.tree_sortkey) -
         tree_level(parent.tree_sortkey) as subproject_level
       from
         im_projects parent,
         $perm_sql children
       where
-        children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
+        children.project_status_id not in (
+		[im_project_status_deleted],
+		[im_project_status_canceled]
+	)
+        and children.project_type_id not in (
+		84, [im_project_type_task]
+	)
         and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
         and parent.project_id = :super_project_id
       order by children.tree_sortkey
