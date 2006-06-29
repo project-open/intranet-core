@@ -123,7 +123,7 @@ if {!$read} {
 # Set the context bar as a function on whether this is a subproject or not:
 # ---------------------------------------------------------------------
 
-set page_title $project_name
+set page_title "$project_nr - $project_name"
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 
 if { [empty_string_p $parent_id] } {
