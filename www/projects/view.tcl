@@ -40,34 +40,17 @@ set return_url [im_url_with_query]
 set current_url [ns_conn url]
 set clone_url "/intranet/projects/clone"
 
+set bgcolor(0) " class=roweven"
+set bgcolor(1) " class=rowodd"
+
 if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_specify_a] "
     return
 }
 
-# get the current users permissions for this project
-im_project_permissions $user_id $project_id view read write admin
-
-# Compatibility with old components...
-set current_user_id $user_id
-set user_admin_p $admin
-
-set bgcolor(0) " class=roweven"
-set bgcolor(1) " class=rowodd"
-
-if {![db_string ex "select count(*) from im_projects where project_id=:project_id"]} {
-    ad_return_complaint 1 "<li>Project doesn't exist"
-    return
-}
-
-if {!$read} {
-    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_6]"
-    return
-}
-
 # ---------------------------------------------------------------------
-# Prepare Project SQL Query
+# Get Everything about the project
 # ---------------------------------------------------------------------
 
 
@@ -104,6 +87,37 @@ if { ![db_0or1row projects_info_query $query] } {
 
 set parent_name [db_string parent_name "select project_name from im_projects where project_id = :parent_id" -default ""]
 
+
+# ---------------------------------------------------------------------
+# Redirect to timesheet if this is timesheet
+# ---------------------------------------------------------------------
+
+# Redirect if this is a timesheet task (subtype of project)
+if {$project_type_id == [im_project_type_task] || $project_type_id == 84} {
+    ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{task_id $project_id}}]
+
+}
+
+# ---------------------------------------------------------------------
+# Check permissions
+# ---------------------------------------------------------------------
+
+# get the current users permissions for this project
+im_project_permissions $user_id $project_id view read write admin
+
+# Compatibility with old components...
+set current_user_id $user_id
+set user_admin_p $admin
+
+if {![db_string ex "select count(*) from im_projects where project_id=:project_id"]} {
+    ad_return_complaint 1 "<li>Project doesn't exist"
+    return
+}
+
+if {!$read} {
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_6]"
+    return
+}
 
 # ---------------------------------------------------------------------
 # Set the context bar as a function on whether this is a subproject or not:
