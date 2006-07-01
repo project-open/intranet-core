@@ -344,6 +344,13 @@ ad_proc im_csv_split { line {separator ","}} {
 	    # Switch, while and proc ending
 	}
     }
+
+    # Add the field to the result if we reach the end of the line
+    # in state "field".
+    if {"field" == $state} {
+	lappend result_list $field	
+    }
+
     return $result_list
 }
 
