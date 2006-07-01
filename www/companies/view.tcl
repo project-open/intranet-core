@@ -316,8 +316,12 @@ set company_clients [im_group_member_component $company_id $user_id $admin $retu
 
 
 set projects_html [im_table_with_title "[_ intranet-core.Projects]" $projects_html]
-set company_members_html [im_table_with_title "[_ intranet-core.Employees]" $company_members]
-set company_clients_html [im_table_with_title "[_ intranet-core.Client_Contacts]" $company_clients]
+
+set our_employees_str [lang::message::lookup "" intranet-core.Our_employees_related "Our Employees (managing the company)"]
+set companys_employees_str [lang::message::lookup "" intranet-core.Companys_Contacts "Company's Contacts"]
+
+set company_members_html [im_table_with_title $our_employees_str $company_members]
+set company_clients_html [im_table_with_title $companys_employees_str $company_clients]
 
 
 

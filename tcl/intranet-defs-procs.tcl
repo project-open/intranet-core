@@ -59,156 +59,19 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
     set csv_files_len [llength $csv_files]
     set result_list_of_lists [list]
 	
-	# get start with 1 because we use the function im_csv_split to get the header
-	for {set line_num 1} {$line_num < $csv_files_len} {incr line_num} {
+    # get start with 1 because we use the function im_csv_split to get the header
+    for {set line_num 1} {$line_num < $csv_files_len} {incr line_num} {
 
-		set line [lindex $csv_files $line_num]
-		
-		if {[empty_string_p $line]} {
-			incr line_num
-			continue
-		}
-		
-		if {$debug} {ns_log notice "im_csv_get_values: line=$line num=$line_num"}
-    	set result_list [list]
-    	set pos 0
-    	set len [string length $line]
-    	set quote ""
-    	set state "field_start"
-    	set field ""
-
-		set line_not_finished_p 1
-		while {$line_not_finished_p} {
-
-			while {$pos <= $len} {
-				set char [string index $line $pos]
-				set next_char [string index $line [expr $pos+1]]
-				#if {$debug} {ns_log notice "im_csv_get_values: pos=$pos, char=$char, state=$state"}
-
-				switch $state {
-					"field_start" {
-
-						# We're before a field. Next char may be a quote
-						# or not. Skip white spaces.
-
-						if {[string is space $char]} {
-
-							if {$debug} {ns_log notice "im_csv_get_values: field_start: found a space: '$char'"}
-							incr pos
-
-						} else {
-
-							# Skip the char if it was a quote
-							set quote_pos [string first $char "\"'"]
-							if {$quote_pos >= 0} {
-								if {$debug} {ns_log notice "im_csv_get_values: field_start: found quote=$char"}
-									# Remember the quote char
-									set quote $char
-									# skip the char
-									incr pos
-							} else {
-								if {$debug} {ns_log notice "im_csv_get_values: field_start: unquoted field"}
-								set quote ""
-							}
-							# Initialize the field value for the "field" state
-							set field ""
-							# "Switch" to reading the field content
-							set state "field"
-						}
-					}
-
-					"field" {
-
-						# We are reading the content of a field until we
-						# reach the end, either marked by a matching quote
-						# or by the "separator" if the field was not quoted
-
-						# Check for a duplicated quote when in quoted mode.
-						if {"" != $quote && [string equal $char $quote] && [string equal $next_char $quote]} {
-								append field $char
-								incr pos
-								incr pos    
-						} else {
-
-
-							# Check if we have reached the end of the field
-							# either with the matching quote of with the separator:
-							if {"" != $quote && [string equal $char $quote] || "" == $quote && [string equal $char $separator]} {
-
-								if {$debug} {ns_log notice "im_csv_get_values: field: found quote or term: $char"}
-
-								# Skip the character if it was a quote
-								if {"" != $quote} { incr pos }
-
-								# Trim the field if it was not quoted
-								if {"" == $quote} { set field [string trim $field] }
-
-								lappend result_list $field
-								set state "separator"
-
-							} else {
-
-								if {$debug} {ns_log notice "im_csv_get_values: field: found a field char: $char"}
-								append field $char
-								incr pos
-
-							}
-						}
-					}
-
-					"separator" {
-
-						# We got here after finding the end of a "field".
-						# Now we expect a separator or we have to throw an
-						# error otherwise. Skip whitespaces.
-
-						if {[string is space $char]} {
-							if {$debug} {ns_log notice "im_csv_get_values: separator: found a space: '$char'"}
-							incr pos
-						} else {
-							if {[string equal $char $separator]} {
-								if {$debug} {ns_log notice "im_csv_get_values: separator: found separator: '$char'"}
-								incr pos
-								set state "field_start"
-							} else {
-								if {$debug} {ns_log error "im_csv_get_values: separator: didn't find separator: '$char'"}
-								set state "field_start"
-							}
-						}
-					}
-				}
-				# Switch, while and proc ending
-			}
-			# While pos, len
-
-			# By default exit from the outer while loop unless there
-			# is the special condition that follows.
-			set line_not_finished_p 0
-
-			# We have left the state machine "while" loop while 
-			# still being in state "field" (quoted or non-quoted
-			# field). There are the following cases:
-			# - Non-quoted field: This was just then last field,
-			#   parsing stops here. We don't have to do anything.
-			# - Quoted field: We didn't reach the closing quotes,
-			#   so we have to continue parsing the next line until
-			#   we get the closing quotes...
-			if {$state == "field" && $quote != ""} {
-				# We are still in a quoted field. Continue parsing...
-				append field "\n"
-				incr line_num
-				set line [lindex $csv_files $line_num]
-				set pos 0
-				set len [string length $line]
-				set line_not_finished_p 1
-			}
-
-		}
-		if {![empty_string_p $result_list]} {
-			lappend result_list_of_lists $result_list
-		}
+	set line [lindex $csv_files $line_num]
+	if {[empty_string_p $line]} {
+	    incr line_num
+	    continue
+	}
+	if {$debug} {ns_log notice "im_csv_get_values: line=$line num=$line_num"}
+	set result_list [im_csv_split $line $separator]
+	lappend result_list_of_lists $result_list
     }
-	return $result_list_of_lists
+    return $result_list_of_lists
 }
 
 
