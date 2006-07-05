@@ -1057,6 +1057,7 @@ ad_proc im_selection_to_select_box {
     {-translate_p 1} 
     {-include_empty_p 1}
     {-include_empty_name "--_Please_select_--"}
+    {-size "" }
     bind_vars
     statement_name
     sql 
@@ -1067,8 +1068,11 @@ ad_proc im_selection_to_select_box {
     Runs through the selection and return a select bar named select_name, 
     defaulted to $default 
 } {
-    set result "<select name=\"$select_name\">"
-    
+    # Size set? Then add to <select>
+    set size_html ""
+    if {"" != $size} { set size_html "size=$size" }
+
+    set result "<select name=\"$select_name\" $size_html>"
     append result "<option value=\"\">
 	[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]
 	</option>

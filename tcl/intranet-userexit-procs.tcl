@@ -43,7 +43,7 @@ ad_proc -public im_user_exit_call {
 
     set log_str "${user_exit}($object_id):\n"
 
-    set result ""
+    set result 0
     set status [catch { set retstr [exec $user_exit $object_id]} result]
 
     if { $status == 0 } {
