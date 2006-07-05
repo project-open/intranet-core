@@ -23,6 +23,46 @@ ad_library {
 # Random User Portrait
 # ----------------------------------------------------------------------
 
+ad_proc -public im_portrait_user_file { user_id } {
+    Return the user's portrait file
+} {
+    # Get the current user id to not show the current user's portrait
+#    return [util_memoize "im_portrait_user_file_helper $user_id"]
+    im_portrait_user_file_helper $user_id
+}
+
+ad_proc -public im_portrait_user_file_helper { user_id } {
+    Return the user's portrait file - Helper
+} {
+    # Get the current user id to not show the current user's portrait
+    set base_path [im_filestorage_user_path $object_id]
+    set find_cmd [im_filestorage_find_cmd]
+
+    if { [catch {
+        ns_log Notice "im_portrait_user_file_helper: Checking $base_path"
+        exec /bin/mkdir -p $base_path
+        exec /bin/chmod ug+w $base_path
+        set file_list [exec $find_cmd $base_path -type f]
+    } err_msg] } {
+        # Probably some permission errors - return empty string
+        set file_list ""
+    }
+
+    set files [lsort [split $file_list "\n"]]
+    set full ""
+    foreach file $files {
+        set file_paths [split $file "/"]
+        set file_paths_len [llength $file_paths]
+        set rel_path_list [lrange $file_paths $base_path_len $file_paths_len]
+        set rel_path [join $rel_path_list "/"]
+	ns_log Notice "im_portrait_user_file_helper: rel_path=$rel_path"
+        if {[regexp "^portrait\....\$" $rel_path match]} { set full $rel_path}
+    }
+
+    return $full
+}
+
+
 ad_proc -public im_random_employee_component { } {
     Returns a random employee's photograph and a little bio
 } {
@@ -30,6 +70,27 @@ ad_proc -public im_random_employee_component { } {
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
+
+    # Make sure that there are no users with checkdate==null
+    set empty_portrait_sql "
+	select	p.*,
+		person_id as portrait_user_id
+	from	persons p
+	where	portrait_checkdate is null
+	limit 1
+    "
+    db_foreach empty_portraits $empty_portrait_sql {
+	set portrait_file [im_portrait_user_file $person_id]
+	db_dml update_empty_portrait "
+	    update persons set
+		portrait_checkdate = now()::date,
+		portrait_file = :portrait_file
+	    where
+		person_id = :portrait_user_id
+	"
+    }
+
+    return ""
 
     # Get the list of all users that have a portrait 
     # AND that are within the permission skope of the
@@ -40,49 +101,36 @@ ad_proc -public im_random_employee_component { } {
     # groups of a member in order to get final read permission.
     set portrait_sql "
 	select
-	        live_revision as revision_id,
-		a.object_id_one as portrait_user_id,
-	        item_id,
-		m.group_id,
-	        im_object_permission_p(m.group_id, :current_user_id, 'read') as read_p
+		p.*,
+		p.person_id as portrait_user_id,
+		p.profile_id as group_id
 	from
-	        acs_rels a,
-	        cr_items c,
+		persons p,
+		registered_users u
 		im_profiles p,
 	        group_distinct_member_map m
 	where
-	        a.object_id_two = c.item_id
-	        and a.rel_type = 'user_portrait_rel'
-		and m.member_id = a.object_id_one
+		m.member_id = u.user_id
+		and p.person_id = u.user_id
 		and m.group_id = p.profile_id
+		and im_object_permission_p(m.group_id, :current_user_id, 'read') = 't'
     "
 
+    set user_list [list]
     db_foreach portrait_perms $portrait_sql {
 	ns_log Notice "im_random_employee_component: portrait_user_id=$portrait_user_id, group_id=$group_id, read_p=$read_p"
-	set user_hash($portrait_user_id) $portrait_user_id
-        if {[string equal "f" $read_p]} { 
-	    set read($portrait_user_id) "f" 
-	} else {
-	    if {![info exists read($portrait_user_id)]} { set read($portrait_user_id) "t" }
-	}
+	lappend user_list $portrait_user_id
     }
 
-    # Select only those users in the user list that can be read:
-    set user_list [list]
-    foreach portrait_user_id [array names user_hash] {
-	set read_p "f"
-	if {[info exists read($portrait_user_id)]} {
-	    set read_p $read($portrait_user_id)
-	}
-	if {[string equal "t" $read_p]} { lappend user_list $portrait_user_id }
-    }
-
-    if {0 == [llength $user_list]} {return ""}
+    # Skip if no users
+    set user_list_len [llength $user_list]
+    if {0 == $user_list_len} {return ""}
 
     # Select a random user from the list
-    set user_list_len [llength $user_list]
-    set random_user_pos [randomRange $user_list_len]
-    set random_user_id [lindex $user_list $random_user_pos]
+    # Try 10 times and check whether the 
+    for {set i 0} {$i < 10} {incr i} {
+	set random_user_pos [randomRange $user_list_len]
+	set random_user_id [lindex $user_list $random_user_pos]
 
     db_1row user_info "
 	select

@@ -45,4 +45,17 @@ if {$admin} {
 
 set export_vars [export_form_vars user_id return_url]
 
+
+# --------------------------------
+# New code - FS upload
+
+set thumbnail_size "360x360"
+
+set bread_crum_path ""
+set folder_type "user"
+set object_id $user_id
+set fs_filename "asdf"
+
+
+
 ad_return_template

@@ -36,14 +36,12 @@ if { ![info exists upload_file] || [empty_string_p $upload_file] } {
 } else {
     # this stuff only makes sense to do if we know the file exists
     set tmp_filename [ns_queryget upload_file.tmpfile]
-
     set file_extension [string tolower [file extension $upload_file]]
 
     # remove the first . from the file extension
     regsub "\." $file_extension "" file_extension
 
     set guessed_file_type [ns_guesstype $upload_file]
-
     set n_bytes [file size $tmp_filename]
 
     # check to see if this is one of the favored MIME types,
@@ -88,6 +86,16 @@ if { ![empty_string_p $what_aolserver_told_us] && [lindex $what_aolserver_told_u
     set original_height ""
 }
 
+# ---------------------------------------------
+# New Code - Store the Portrait in the user's FS
+
+set user_path [im_filestorage_user_path $user_id]
+
+
+
+
+# ---------------------------------------------
+# Old code - Store the portrait in the Content Repository
 ## The portrait is ready. Let's now figure out how to insert into the system
 
 set creation_ip [ad_conn peeraddr]
