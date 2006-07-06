@@ -24,8 +24,19 @@ ad_page_contract {
     { notes "" }
 }
 
-# user_id and everything in user_contract
-# to do: this page will probably break!!!  what are the form vars?
+# ---------------------------------------------------------------
+# Defaults & Security
+# ---------------------------------------------------------------
+
+set current_user_id [ad_maybe_redirect_for_registration]
+im_user_permissions $current_user_id $user_id view read write admin
+
+if {!$write} {
+    ad_return_complaint 1 "[_ intranet-hr.lt_You_have_insufficient]"
+    return
+}
+
+
 
 set num_rows [db_string user_contact_list_size "select count(user_id) from users_contact where user_id = :user_id"]
 ns_set delkey [ns_getform] submit
