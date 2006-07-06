@@ -49,9 +49,16 @@ create table im_projects (
 				references im_projects,
 	tree_sortkey		varbit,
 	max_child_sortkey	varbit,
+
+	-- Should be customer_id, but got renamed badly...
 	company_id		integer not null
 				constraint im_projects_company_fk 
 				references im_companies,
+	-- Should be customer_project_nr. Refers to the customers
+	-- reference to our project.
+	company_project_nr	varchar(200),
+	-- Field indicating the final_customer if we are a subcontractor
+	final_company		varchar(200),
 	-- type of actions pursued during the project 
 	-- implementation, for example "ERP Installation" or
 	-- "ERP Upgrade", ...
