@@ -90,8 +90,6 @@ ad_proc -public im_random_employee_component { } {
 	"
     }
 
-    return ""
-
     # Get the list of all users that have a portrait 
     # AND that are within the permission skope of the
     # current user.

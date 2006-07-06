@@ -1,210 +1,151 @@
+# /packages/intranet-filestorage/www/upload-2.tcl
+#
+# Copyright (C) 2003-2004 Project/Open
+#
+# All rights reserved. Please check
+# http://www.project-open.com/license/ for details.
+
 ad_page_contract {
-    adds (or replaces) a user's portrait
+    insert a file into the file system
 
-    @author philg@mit.edu
-    @creation-date 26 Sept 1999
-    @cvs-id $Id$
+    @author frank.bergmann@project-open.com
 } {
+    folder_type
+    bread_crum_path
+    object_id:integer
+    return_url
     upload_file
-    {user_id ""}
-    {portrait_comment ""}
-    {return_url ""}
-    {title ""}
-}
-
-set current_user_id [ad_maybe_redirect_for_registration]
-
-if [empty_string_p $user_id] {
-    set user_id $current_user_id
+    {file_title:trim ""}
+    {description ""}
 } 
 
-# Check the permissions that the current_user has on user_id
-im_user_permissions $current_user_id $user_id view read write admin
 
-if {!$write} {
-    ad_return_complaint 1 "<li>You have insufficient permissions to upload a portrait for this user."
+set current_user_id [ad_maybe_redirect_for_registration]
+set page_title [lang::message::lookup "" intranet-core.Upload_Portrait "Upload Portrait"]
+set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
+
+
+
+
+# Get the list of all relevant roles and profiles for permissions
+set roles [im_filestorage_roles $user_id $object_id]
+set profiles [im_filestorage_profiles $user_id $object_id]
+
+# Get the group membership of the current (viewing) user
+set user_memberships [im_filestorage_user_memberships $user_id $object_id]
+
+# Get the list of all (known) permission of all folders of the FS
+# of the current object
+set perm_hash_array [im_filestorage_get_perm_hash $user_id $object_id $user_memberships]
+array set perm_hash $perm_hash_array
+
+
+# Check permissions and skip
+set user_perms [im_filestorage_folder_permissions $user_id $object_id $bread_crum_path $user_memberships $roles $profiles $perm_hash_array]
+set write_p [lindex $user_perms 2]
+if {!$write_p} {
+    ad_return_complaint 1 "You don't have permission to write to folder '$bread_crum_path'"
     return
 }
 
 
+# -------------------- Check the user input first ----------------------------
+#
 set exception_text ""
 set exception_count 0
-
-if { ![info exists upload_file] || [empty_string_p $upload_file] } {
-    append exception_text "<li>Please specify a file to upload\n"
+if {"" == $folder_type} {
+    append exception_text "<LI>Internal Error: folder_type not specified"
     incr exception_count
-} else {
-    # this stuff only makes sense to do if we know the file exists
-    set tmp_filename [ns_queryget upload_file.tmpfile]
-    set file_extension [string tolower [file extension $upload_file]]
-
-    # remove the first . from the file extension
-    regsub "\." $file_extension "" file_extension
-
-    set guessed_file_type [ns_guesstype $upload_file]
-    set n_bytes [file size $tmp_filename]
-
-    # check to see if this is one of the favored MIME types,
-    # e.g., image/gif or image/jpeg
-    if { ![empty_string_p [ad_parameter AcceptablePortraitMIMETypes "user-info"]] && [lsearch [ad_parameter AcceptablePortraitMIMETypes "user-info"] $guessed_file_type] == -1 } {
-	incr exception_count
-	append exception_text "<li>Your image wasn't one of the acceptable MIME types:   [ad_parameter AcceptablePortraitMIMETypes "user-info"]"
-    }
-
-    # strip off the C:\directories... crud and just get the file name
-    if ![regexp {([^/\\]+)$} $upload_file match client_filename] {
-	# couldn't find a match
-	set client_filename $upload_file
-    }
-
-    if { ![empty_string_p [ad_parameter MaxPortraitBytes "user-info"]] && $n_bytes > [ad_parameter MaxPortraitBytes "user-info"] } {
-	append exception_text "<li>Your file is too large.  The publisher of [ad_system_name] has chosen to limit portraits to [util_commify_number [ad_parameter MaxPortraitBytes "user-info"]] bytes.  You can use PhotoShop or the GIMP (free) to shrink your image.\n"
-	incr exception_count
-    }
+}
+if { $exception_count > 0 } {
+    ad_return_complaint $exception_count $exception_text
+    return 0
 }
 
 
-if { $exception_count > 0 } {
-    ad_return_complaint $exception_count $exception_text
+# Get the file from the user.
+# number_of_bytes is the upper-limit
+set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
+set tmp_filename [ns_queryget upload_file.tmpfile]
+ns_log Notice "upload-2: tmp_filename=$tmp_filename"
+
+if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
+    ad_return_complaint 1 "Your file is larger than the maximum permissible upload size:  [util_commify_number $max_n_bytes] bytes"
+    return 0
+}
+
+set file_extension [string tolower [file extension $upload_file]]
+# remove the first . from the file extension
+regsub "\." $file_extension "" file_extension
+set guessed_file_type [ns_guesstype $upload_file]
+set n_bytes [file size $tmp_filename]
+
+# strip off the C:\directories... crud and just get the file name
+if ![regexp {([^//\\]+)$} $upload_file match client_filename] {
+    # couldn't find a match
+    set client_filename $upload_file
+}
+
+if {[regexp {\.\.} $client_filename]} {
+    set error "<li>Path contains forbidden characters<br>
+    Please don't use '.' characters."
+    ad_return_complaint "User Error" $error
+}
+
+# ---------- Determine the location where to save the file -----------
+
+
+set base_path [im_filestorage_base_path $folder_type $object_id]
+if {"" == $base_path} {
+    ad_return_complaint 1 "<LI>Unknown folder type \"$folder_type\"."
+    return
+}
+set dest_path "$base_path/$bread_crum_path/$client_filename"
+
+
+# --------------- Let's copy the file into the FS --------------------
+
+ns_log Notice "dest_path=$dest_path"
+
+if { [catch {
+    ns_log Notice "/bin/mv $tmp_filename $dest_path"
+    exec /bin/cp $tmp_filename $dest_path
+    ns_log Notice "/bin/chmod ug+w $dest_path"
+    exec /bin/chmod ug+w $dest_path
+} err_msg] } {
+    # Probably some permission errors
+    ad_return_complaint  "Error writing upload file"  $err_msg
     return
 }
 
-set what_aolserver_told_us ""
-if { $file_extension == "jpeg" || $file_extension == "jpg" } {
-    catch { set what_aolserver_told_us [ns_jpegsize $tmp_filename] }
-} elseif { $file_extension == "gif" } {
-    catch { set what_aolserver_told_us [ns_gifsize $tmp_filename] }
-}
 
-# the AOLserver jpegsize command has some bugs where the height comes 
-# through as 1 or 2 
-if { ![empty_string_p $what_aolserver_told_us] && [lindex $what_aolserver_told_us 0] > 10 && [lindex $what_aolserver_told_us 1] > 10 } {
-    set original_width [lindex $what_aolserver_told_us 0]
-    set original_height [lindex $what_aolserver_told_us 1]
-} else {
-    set original_width ""
-    set original_height ""
-}
+# --------------- Log the interaction --------------------
 
-# ---------------------------------------------
-# New Code - Store the Portrait in the user's FS
-
-set user_path [im_filestorage_user_path $user_id]
+db_dml insert_action "
+insert into im_fs_actions (
+        action_type_id,
+        user_id,
+        action_date,
+        file_name
+) values (
+        [im_file_action_upload],
+        :user_id,
+        :today,
+        '$dest_path/$client_filename'
+)"
 
 
 
+set page_content "
+<H2>Upload Successful</H2>
 
-# ---------------------------------------------
-# Old code - Store the portrait in the Content Repository
-## The portrait is ready. Let's now figure out how to insert into the system
+You have successfully uploaded $n_bytes bytes of '$client_filename'.<br>
+You can now return to the project page.
+<P>
 
-set creation_ip [ad_conn peeraddr]
-set name "portrait-of-user-$user_id"
+<A href=\"$return_url\">Return to Previous Page</a>
 
-set create_item "
-begin
-  :1 := content_item.new(
-         name => :name,
-         creation_ip => :creation_ip);
-end;"
-
-set create_rel "
-begin
-  :1 := acs_rel.new (
-         rel_type => 'user_portrait_rel',
-         object_id_one => :user_id,
-         object_id_two => :item_id);
-end;
 "
 
-set create_revision "
-begin
-  :1 := content_revision.new(
-     title => :title,
-     description => :portrait_comment,
-     text => 'not_important',
-     mime_type => :guessed_file_type,
-     item_id => :item_id,
-     creation_user => :user_id,
-     creation_ip => :creation_ip
-  );
-
-  update cr_items
-  set live_revision = :1
-  where item_id = :item_id;
-end;"
-
-set update_photo "
-update cr_revisions
-set content = empty_blob()
-where revision_id = :revision_id
-returning content into :1
-"
-
-set upload_image_info "
-insert into images
-(image_id, width, height)
-values
-(:revision_id, :original_width, :original_height)
-"
-
-# let's figure out if this person has a portrait yet
-
-set user_has_portrait_p [db_0or1row get_item_id "
-select 
-	object_id_two as item_id
-from
-	acs_rels
-where
-	object_id_one = :user_id
-	and rel_type = 'user_portrait_rel'
-"] 
-
-
-if {!$user_has_portrait_p} {
-    # The user doesn't have a portrait relation yet
-    db_transaction {
-	set item_id [db_exec_plsql create_item $create_item]
-	set rel_id [db_exec_plsql create_rel $create_rel]
-	set revision_id [db_exec_plsql create_revision $create_revision]
-	db_dml update_photo $update_photo -blob_files [list $tmp_filename]
-	db_dml upload_image_info $upload_image_info
-    }
-        
-}
-
-#already has a portrait, so all we have to do is to make a new revision for it
-
-#Let's check if a current revision exists:
-if {![db_0or1row get_revision_id "select live_revision as revision_id
-    from cr_items
-    where item_id = :item_id"] || [empty_string_p $revision_id]} {
-    # It's an insert rather than an update
-    db_transaction {
-	set revision_id [db_exec_plsql create_revision $create_revision]
-	db_dml update_photo $update_photo -blob_files [list $tmp_filename]
-	db_dml upload_image_info $upload_image_info
-    }
-} else {
-    # it's merely an update
-    db_transaction {
-	db_dml update_photo $update_photo -blob_files [list $tmp_filename]
-	db_dml update_image_info "
-	    update images
-	    set width = :original_width, height = :original_height
-	    where image_id = :revision_id"
-	db_dml update_photo_info "
-	    update cr_revisions
-	    set description = :portrait_comment,
-	        publish_date = sysdate,
-	        mime_type = :guessed_file_type,
-	        title = :title
-	    where revision_id = :revision_id"
-    }
-}
-
-if { [exists_and_not_null return_url] } {
-    ad_returnredirect $return_url
-} else {
-    ad_returnredirect [ad_pvt_home]
-}
+db_release_unused_handles
+doc_return  200 text/html [im_return_template]

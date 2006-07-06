@@ -36,7 +36,7 @@
 </form>
 -->
 
-<form enctype=multipart/form-data method=POST action=/intranet-filestorage/upload-2.tcl>
+<form enctype=multipart/form-data method=POST action=upload-2.tcl>
 <%= [export_form_vars user_id project_id return_url folder_type fs_filename object_id thumbnail_size bread_crum_path] %>
 <table cellspacing=0 cellpadding=0>
 <tr>
