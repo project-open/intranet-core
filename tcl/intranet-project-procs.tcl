@@ -384,14 +384,16 @@ ad_proc -public im_project_options {
     {-exclude_status 0}
     {-member_user_id 0}
     {-company_id 0}
+    {-project_id 0}
 } { 
     Get a list of projects
 } {
-     set bind_vars [ns_set create]
-     set user_id [ad_get_user_id]
-     ns_set put $bind_vars user_id $user_id
-
-     if {[im_permission $user_id view_projects_all]} {
+    set current_project_id $project_id
+    set bind_vars [ns_set create]
+    set user_id [ad_get_user_id]
+    ns_set put $bind_vars user_id $user_id
+    
+    if {[im_permission $user_id view_projects_all]} {
 	 # The user can see all projects
 	 # This is particularly important for sub-projects.
 	 set sql "
@@ -424,18 +426,69 @@ ad_proc -public im_project_options {
      }	
 
 
-     if {$company_id} {
-	 ns_set put $bind_vars company_id $company_id
-	 append sql " and p.company_id = :company_id"
-     }
+    if {$company_id} {
+	ns_set put $bind_vars company_id $company_id
+	append sql " and p.company_id = :company_id"
+    }
 
-     if {$exclude_subprojects_p} {
-	 append sql " and p.parent_id is null"
-     }
+    # Exclude subprojects does not work with subprojects,
+    # if we are showing this box for a sub-sub-project.
+    set subsubproject_sql ""
+    if {0 != $current_project_id} {
 
-     if {$project_status} {
-	 ns_set put $bind_vars status $project_status
-	 append sql " and p.project_status_id = (
+	# Determine the topmost project in the hierarchy
+	set super_project_id $current_project_id
+	set loop 1
+	set ctr 0
+	while {$loop && $ctr < 20} {
+	    set loop 0
+	    set parent_id [db_string parent_id "
+		select parent_id 
+		from im_projects
+		where project_id = :super_project_id
+	    "]
+	    if {"" != $parent_id} {
+		set super_project_id $parent_id
+		set loop 1
+	    }
+	    incr ctr
+	}
+
+	# Check permissions for showing subprojects
+	set perm_sql "
+	        (select p.*
+	        from    im_projects p,
+	                acs_rels r
+	        where   r.object_id_one = p.project_id
+	                and r.object_id_two = :user_id
+	        )
+	"
+	if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
+
+
+	set subprojects [db_list subprojects "
+	select	children.project_id
+	from	im_projects parent,
+		$perm_sql children
+	where
+		children.tree_sortkey 
+			between parent.tree_sortkey 
+			and tree_right(parent.tree_sortkey)
+		and parent.project_id = :super_project_id
+	"]
+
+	set subsubproject_sql "
+	    OR p.parent_id in ([join $subprojects ","])
+	"
+    }
+
+    if {$exclude_subprojects_p} {
+	append sql " and (p.parent_id is null $subsubproject_sql)"
+    }
+    
+    if {$project_status} {
+	ns_set put $bind_vars status $project_status
+	append sql " and p.project_status_id = (
 	     select project_status_id 
 	     from im_project_status 
 	     where lower(project_status)=lower(:status))"
