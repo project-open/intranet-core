@@ -474,6 +474,13 @@ ad_proc -public im_project_options {
 		children.tree_sortkey 
 			between parent.tree_sortkey 
 			and tree_right(parent.tree_sortkey)
+		and children.project_status_id not in (
+	                [im_project_status_deleted],
+	                [im_project_status_canceled]
+	        )
+	        and children.project_type_id not in (
+	                84, [im_project_type_task]
+	        )
 		and parent.project_id = :super_project_id
 	"]
 
