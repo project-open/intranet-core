@@ -190,6 +190,13 @@ ad_proc -public im_biz_object_add_role { user_id object_id role_id } {
     Adds a user in a role to a Business Object.
 } {
     set user_ip [ad_conn peeraddr]
+
+    # Check if user is already a member and only continue
+    # if the new role is "higher":
+    set admins [im_biz_object_admin_ids $object_id]
+    if {[lsearch $admins $user_id] >= 0} { return }
+
+
     # Remove all previous member_rels between user and object
     db_exec_plsql del_users {}
 
@@ -226,11 +233,11 @@ ad_proc -public im_biz_object_roles_select { select_name object_id { default "" 
     set sql "
 select distinct
 	r.object_role_id,
-        im_category_from_id(r.object_role_id)
+	im_category_from_id(r.object_role_id)
 from
-        im_biz_object_role_map r
+	im_biz_object_role_map r
 where
-        r.acs_object_type = :acs_object_type
+	r.acs_object_type = :acs_object_type
 "
     
 #    set role_options_extra_sql "and r.object_type_id = im_biz_object.type(:object_id)"
