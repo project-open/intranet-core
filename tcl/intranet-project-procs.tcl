@@ -446,7 +446,7 @@ ad_proc -public im_project_options {
 		select parent_id 
 		from im_projects
 		where project_id = :super_project_id
-	    "]
+	    " -default ""]
 	    if {"" != $parent_id} {
 		set super_project_id $parent_id
 		set loop 1
@@ -467,22 +467,26 @@ ad_proc -public im_project_options {
 
 
 	set subprojects [db_list subprojects "
-	select	children.project_id
-	from	im_projects parent,
-		$perm_sql children
-	where
-		children.tree_sortkey 
-			between parent.tree_sortkey 
-			and tree_right(parent.tree_sortkey)
-		and children.project_status_id not in (
-	                [im_project_status_deleted],
-	                [im_project_status_canceled]
-	        )
-	        and children.project_type_id not in (
-	                84, [im_project_type_task]
-	        )
-		and parent.project_id = :super_project_id
+		select	children.project_id
+		from	im_projects parent,
+			$perm_sql children
+		where
+			children.tree_sortkey 
+				between parent.tree_sortkey 
+				and tree_right(parent.tree_sortkey)
+			and children.project_status_id not in (
+		                [im_project_status_deleted],
+		                [im_project_status_canceled]
+		        )
+		        and children.project_type_id not in (
+		                84, [im_project_type_task]
+		        )
+			and parent.project_id = :super_project_id
 	"]
+
+	# Add an invalid project in order to avoid an empty list of subprojects
+	# and a resulting SQL syntax error in "parent_id in ()"
+	lappend subprojects 0
 
 	set subsubproject_sql "
 	    OR p.parent_id in ([join $subprojects ","])

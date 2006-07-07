@@ -66,6 +66,8 @@ ad_proc -public im_portrait_user_file_helper { user_id } {
 ad_proc -public im_random_employee_component { } {
     Returns a random employee's photograph and a little bio
 } {
+    return ""
+
     # Get the current user id to not show the current user's portrait
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
@@ -129,6 +131,7 @@ ad_proc -public im_random_employee_component { } {
     for {set i 0} {$i < 10} {incr i} {
 	set random_user_pos [randomRange $user_list_len]
 	set random_user_id [lindex $user_list $random_user_pos]
+    }
 
     db_1row user_info "
 	select
@@ -171,6 +174,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     Show the portrait and a short bio (comments) about a user
 } {
     if {!$read} { return ""}
+    return ""
 
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]

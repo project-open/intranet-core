@@ -129,13 +129,14 @@ template::element::create $form_id project_nr \
 
 if {$enable_nested_projects_p} {
 	
-    # create project list query
-    #
-	
-#    set project_parent_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
-#    set project_parent_options [concat $project_parent_options [im_project_options 0]]
-
-    set project_parent_options [im_project_options]
+    # Create project list query.
+    # The list has to include subprojects in the case of nested projects,
+    # either the superprojects of this project, or the the subprojects
+    # of the parent, in the case of creating a sub-subproject.
+    set super_project_id 0
+    if {"" != $parent_id} { set super_project_id $parent_id }
+    if {[info exists project_id]} { set super_project_id $project_id }
+    set project_parent_options [im_project_options -project_id $super_project_id]
 
     template::element::create $form_id parent_id -optional \
     	-label "[_ intranet-core.Parent_Project]" \
