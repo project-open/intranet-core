@@ -458,6 +458,11 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id project_nr "[_ intranet-core.lt_Dots__in_Project_Path]"
 	incr n_error
     }
+
+    if {$parent_id == $project_id} { 
+	template::element::set_error $form_id parent_id "Parent Project = Project"
+	incr n_error
+    }
 	
     if {$percent_completed > 100 || $percent_completed < 0} {
 	#ad_return_complaint 1 "Error with '$percent_completed'% completed:<br>

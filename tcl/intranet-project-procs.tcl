@@ -310,8 +310,7 @@ ad_proc -public im_next_project_nr { } {
 	from (
 		 select substr(project_nr, :nr_start_idx, :nr_digits) as nr
 		 from   im_projects
-		 where	parent_id is null
-			and substr(project_nr, :date_start_idx, :date_format_len) = '$todate'
+		 where	substr(project_nr, :date_start_idx, :date_format_len) = '$todate'
 	     ) p
 	where	1=1
 		$num_check_sql
@@ -440,7 +439,7 @@ ad_proc -public im_project_options {
 	set super_project_id $current_project_id
 	set loop 1
 	set ctr 0
-	while {$loop && $ctr < 20} {
+	while {$loop && $ctr < 100} {
 	    set loop 0
 	    set parent_id [db_string parent_id "
 		select parent_id 
@@ -482,6 +481,19 @@ ad_proc -public im_project_options {
 		                84, [im_project_type_task]
 		        )
 			and parent.project_id = :super_project_id
+
+			-- exclude the projects own subprojects
+			-- to avoid circular loops
+			and children.project_id not in (
+				select	subchild.project_id
+				from	im_projects subparent,
+					im_projects subchild
+				where
+					subchild.tree_sortkey 
+						between subparent.tree_sortkey 
+						and tree_right(subparent.tree_sortkey)
+					and subparent.project_id = :current_project_id
+			)
 	"]
 
 	# Add an invalid project in order to avoid an empty list of subprojects
