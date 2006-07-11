@@ -153,28 +153,18 @@
   
   # groupadd projop
   # useradd -g projop -d /web/projop projop
-  
-  Check that the new user is working:
 
+  Once we've created the user we can set the permissions for the 
+  /web/projop/ directory:
+  
+  # cd /web
+  # chown -R projop:projop projop
+  
+  Now you should be able to login as "projop":
   # su - projop
-  => You should get a permission warning like: 
-	"su: warning: cannot change directory to /web/projop: Permission denied"
-     That is OK because you haven't set the permissions yet 
-     (section below)
 
-  However, there is a configuration option where you may want to
-  allow ]project-open[ to read and write to your existing Samba
-  fileserver, that is located on the same computer.
-  This configuration is convenient for many companies, because it
-  allows users to work with the same files from within the office
-  and from outside the office.
-  In this case you will have to run ]po[ with the group "users" 
-  (or whatever is your main employee group), so that the files
-  created by ]po[ can be read and written by the Samba users.
-  
-  
-  
-  
+
+
   4.3. Verify the Config File
   
   The config.tcl configuration file in /web/projop/etc/ tells AOLServer 
@@ -198,20 +188,7 @@
   
   
   
-  4.4. Set Permissions and Owner
-  
-  All files in /web/projop/ should be owned by projop:
-  
-  # cd /web
-  # chown -R projop:projop projop
-  
-  Now you should be able to login as "projop" without error message:
-  # su - projop
-  => No error
-
-
-  
-  4.5. Setup the PostgreSQL Database
+  4.4. Setup the PostgreSQL Database
   
   We are going to create a database "projop" and load a preconfigured demo
   system into this database:
@@ -237,7 +214,7 @@
   
   
   
-  4.6. Load the Demo Data into the Database
+  4.5. Load the Demo Data into the Database
   
   There are two demo configurations coming with this server:
   
@@ -278,7 +255,7 @@
   => 192
   
 
-  4.7. Customized your Login Screen
+  4.6. Customized your Login Screen
 
   There are two demo configurations for the login screens, one for
   ]project-consulting[ and one for ]project-translation[.
@@ -293,7 +270,7 @@
 
 
   
-  4.8. Start the Server for the First Time
+  4.7. Start the Server for the First Time
   
   Now we are ready to start the server. We are going to run it in
   "foreground mode" to get all debugging messages on the terminal.
@@ -322,7 +299,7 @@
   
 
 
-  4.9. Update the Parameters and Configuration
+  4.8. Update the Parameters and Configuration
 
   The parameters in your system should be set for a Windows installation
   right now (after importing the preconfigured demo contents).
@@ -345,7 +322,7 @@
   
 
   
-  4.10. Automate Server Restart
+  4.9. Automate Server Restart
   
   AOLServer in our productive installations usually run weeks without a 
   restart. However, you want to make sure the server "comes back" if
@@ -360,7 +337,7 @@
   And add somewhere the line:
   
   ns1:345:respawn:/usr/local/aolserver3.3oacs/bin/nsd -it /web/projop/etc/config.tcl \
-  -u projop -g users
+  -u projop -g projop
   
   This line tells "Init" to restart the server in case it has stopped.
   Then tell "init" to read the InitTab again:
@@ -381,7 +358,7 @@
   
   
   
-  4.11. Automate PostgreSQL Maintenance
+  4.10. Automate PostgreSQL Maintenance
   
   PostgreSQL requires you to execute a "vacuumdb" command regularly
   in order to reorganize and cleanup the database. Please add a line to your
@@ -395,7 +372,7 @@
   
   
   
-  4.12. Automate PostgreSQL Backup
+  4.11. Automate PostgreSQL Backup
   
   It is advisable to schedule PostgreSQL backups every day, or even
   every few hours (the database is usually quite small, so that it's
@@ -447,7 +424,7 @@
 
 
   
-  4.13. Check for the Latest Version and Updates
+  4.12. Check for the Latest Version and Updates
   
 
   Please check http://www.project-open.org/download/win/3.1.4.0.html for
