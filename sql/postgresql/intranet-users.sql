@@ -16,6 +16,15 @@
 -- @author      unknown@arsdigita.com
 -- @author      frank.bergmann@project-open.com
 
+
+-------------------------------------------------------------
+-- Portrait Fields
+--
+alter table persons add portrait_checkdate date;
+alter table persons add portrait_file varchar(400);
+
+
+
 -------------------------------------------------------------
 -- Users_Contact information
 --

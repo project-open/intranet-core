@@ -10,67 +10,46 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    folder_type
-    bread_crum_path
-    object_id:integer
+    user_id:integer
     return_url
     upload_file
-    {file_title:trim ""}
-    {description ""}
-} 
+}
 
+
+# ---------------------------------------------------------------
+# Defaults & Security
+# ---------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title [lang::message::lookup "" intranet-core.Upload_Portrait "Upload Portrait"]
 set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
 
-
-
-
-# Get the list of all relevant roles and profiles for permissions
-set roles [im_filestorage_roles $user_id $object_id]
-set profiles [im_filestorage_profiles $user_id $object_id]
-
-# Get the group membership of the current (viewing) user
-set user_memberships [im_filestorage_user_memberships $user_id $object_id]
-
-# Get the list of all (known) permission of all folders of the FS
-# of the current object
-set perm_hash_array [im_filestorage_get_perm_hash $user_id $object_id $user_memberships]
-array set perm_hash $perm_hash_array
-
-
-# Check permissions and skip
-set user_perms [im_filestorage_folder_permissions $user_id $object_id $bread_crum_path $user_memberships $roles $profiles $perm_hash_array]
-set write_p [lindex $user_perms 2]
-if {!$write_p} {
-    ad_return_complaint 1 "You don't have permission to write to folder '$bread_crum_path'"
+im_user_permissions $current_user_id $user_id view read write admin
+if {!$write} {
+    ad_return_complaint 1 "[_ intranet-hr.lt_You_have_insufficient]"
     return
 }
 
-
-# -------------------- Check the user input first ----------------------------
-#
-set exception_text ""
-set exception_count 0
-if {"" == $folder_type} {
-    append exception_text "<LI>Internal Error: folder_type not specified"
-    incr exception_count
-}
-if { $exception_count > 0 } {
-    ad_return_complaint $exception_count $exception_text
-    return 0
-}
-
-
+# ---------------------------------------------------------------
 # Get the file from the user.
+# ---------------------------------------------------------------
+
+
 # number_of_bytes is the upper-limit
-set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
+set max_n_bytes [parameter::get_from_package_key -package_key "acs-subsite" -parameter "MaxPortraitBytes" -default 0]
 set tmp_filename [ns_queryget upload_file.tmpfile]
 ns_log Notice "upload-2: tmp_filename=$tmp_filename"
 
-if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
+set file_size [file size $tmp_filename]
+
+if { $max_n_bytes && ($file_size > $max_n_bytes) } {
     ad_return_complaint 1 "Your file is larger than the maximum permissible upload size:  [util_commify_number $max_n_bytes] bytes"
+    return 0
+}
+
+if { $file_size == 0 } {
+    ad_return_complaint 1 "<b>Your file is empty</b>:<br>
+    Please upload a different file."
     return 0
 }
 
@@ -92,48 +71,54 @@ if {[regexp {\.\.} $client_filename]} {
     ad_return_complaint "User Error" $error
 }
 
+
+# ---------- Make sure client_filename starts with "portrait" -----------
+set client_filename_pieces [split $client_filename "."]
+set client_filename_pices_len [llength $client_filename_pieces]
+set client_filename_ext [lindex $client_filename_pieces [expr $client_filename_pices_len-1]]
+set client_filename "portrait.$client_filename_ext"
+
+
 # ---------- Determine the location where to save the file -----------
-
-
-set base_path [im_filestorage_base_path $folder_type $object_id]
+set base_path [im_filestorage_user_path $user_id]
 if {"" == $base_path} {
-    ad_return_complaint 1 "<LI>Unknown folder type \"$folder_type\"."
+    ad_return_complaint 1 "<LI>Unknown folder for user $user_id."
     return
 }
-set dest_path "$base_path/$bread_crum_path/$client_filename"
+set dest_file "$base_path/$client_filename"
+ns_log Notice "dest_file=$dest_file"
+
+
+
+# --------------- Delete portraits from FS --------------------
+set find_cmd [im_filestorage_find_cmd]
+set dest_path "$base_path/"
+
+if { [catch {
+    set file_list [exec $find_cmd $dest_path -type f -maxdepth 1]
+    foreach file $file_list {
+	if {[regexp {portrait} $file match]} {
+	    ns_log Notice "portraits/upload-2: /bin/rm $file"
+	    exec /bin/rm $file
+	}
+    }
+} err_msg] } {
+    ad_return_complaint 1 "<b>Error deleting portrait file</b>:<br><pre>$err_msg</pre>"
+    return
+}
 
 
 # --------------- Let's copy the file into the FS --------------------
-
-ns_log Notice "dest_path=$dest_path"
-
 if { [catch {
-    ns_log Notice "/bin/mv $tmp_filename $dest_path"
-    exec /bin/cp $tmp_filename $dest_path
-    ns_log Notice "/bin/chmod ug+w $dest_path"
-    exec /bin/chmod ug+w $dest_path
+    ns_log Notice "/bin/mv $tmp_filename $dest_file"
+    exec /bin/cp $tmp_filename $dest_file
+    ns_log Notice "/bin/chmod ug+w $dest_file"
+    exec /bin/chmod ug+w $dest_file
 } err_msg] } {
     # Probably some permission errors
     ad_return_complaint  "Error writing upload file"  $err_msg
     return
 }
-
-
-# --------------- Log the interaction --------------------
-
-db_dml insert_action "
-insert into im_fs_actions (
-        action_type_id,
-        user_id,
-        action_date,
-        file_name
-) values (
-        [im_file_action_upload],
-        :user_id,
-        :today,
-        '$dest_path/$client_filename'
-)"
-
 
 
 set page_content "

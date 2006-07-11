@@ -27,22 +27,17 @@ ad_proc -public im_portrait_user_file { user_id } {
     Return the user's portrait file
 } {
     # Get the current user id to not show the current user's portrait
-#    return [util_memoize "im_portrait_user_file_helper $user_id"]
-    im_portrait_user_file_helper $user_id
-}
+    set base_path [im_filestorage_user_path $user_id]
+    set base_paths [split $base_path "/"]
+    set base_paths_len [llength $base_paths]
 
-ad_proc -public im_portrait_user_file_helper { user_id } {
-    Return the user's portrait file - Helper
-} {
-    # Get the current user id to not show the current user's portrait
-    set base_path [im_filestorage_user_path $object_id]
     set find_cmd [im_filestorage_find_cmd]
 
     if { [catch {
-        ns_log Notice "im_portrait_user_file_helper: Checking $base_path"
+        ns_log Notice "im_portrait_user_file: Checking $base_path"
         exec /bin/mkdir -p $base_path
         exec /bin/chmod ug+w $base_path
-        set file_list [exec $find_cmd $base_path -type f]
+        set file_list [exec $find_cmd "$base_path/" -maxdepth 1 -type f]
     } err_msg] } {
         # Probably some permission errors - return empty string
         set file_list ""
@@ -53,9 +48,9 @@ ad_proc -public im_portrait_user_file_helper { user_id } {
     foreach file $files {
         set file_paths [split $file "/"]
         set file_paths_len [llength $file_paths]
-        set rel_path_list [lrange $file_paths $base_path_len $file_paths_len]
+        set rel_path_list [lrange $file_paths $base_paths_len $file_paths_len]
         set rel_path [join $rel_path_list "/"]
-	ns_log Notice "im_portrait_user_file_helper: rel_path=$rel_path"
+	ns_log Notice "im_portrait_user_file: rel_path=$rel_path"
         if {[regexp "^portrait\....\$" $rel_path match]} { set full $rel_path}
     }
 
@@ -73,13 +68,14 @@ ad_proc -public im_random_employee_component { } {
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
 
+    # --------------------------------------------------------
     # Make sure that there are no users with checkdate==null
     set empty_portrait_sql "
 	select	p.*,
 		person_id as portrait_user_id
 	from	persons p
 	where	portrait_checkdate is null
-	limit 1
+	limit 10
     "
     db_foreach empty_portraits $empty_portrait_sql {
 	set portrait_file [im_portrait_user_file $person_id]
@@ -92,6 +88,7 @@ ad_proc -public im_random_employee_component { } {
 	"
     }
 
+    # --------------------------------------------------------
     # Get the list of all users that have a portrait 
     # AND that are within the permission skope of the
     # current user.
@@ -103,22 +100,22 @@ ad_proc -public im_random_employee_component { } {
 	select
 		p.*,
 		p.person_id as portrait_user_id,
-		p.profile_id as group_id
+		pr.profile_id as group_id
 	from
 		persons p,
-		registered_users u
-		im_profiles p,
+		registered_users u,
+		im_profiles pr,
 	        group_distinct_member_map m
 	where
-		m.member_id = u.user_id
+		p.portrait_file is not null
+		and m.member_id = u.user_id
 		and p.person_id = u.user_id
-		and m.group_id = p.profile_id
+		and m.group_id = pr.profile_id
 		and im_object_permission_p(m.group_id, :current_user_id, 'read') = 't'
     "
-
     set user_list [list]
     db_foreach portrait_perms $portrait_sql {
-	ns_log Notice "im_random_employee_component: portrait_user_id=$portrait_user_id, group_id=$group_id, read_p=$read_p"
+	ns_log Notice "im_random_employee_component: portrait_user_id=$portrait_user_id, group_id=$group_id"
 	lappend user_list $portrait_user_id
     }
 
@@ -128,9 +125,14 @@ ad_proc -public im_random_employee_component { } {
 
     # Select a random user from the list
     # Try 10 times and check whether the 
-    for {set i 0} {$i < 10} {incr i} {
+    set ctr 10
+    set random_user_id 0
+    set random_portrait_file ""
+    while {$ctr && ("" == $random_portrait_file)} {
 	set random_user_pos [randomRange $user_list_len]
 	set random_user_id [lindex $user_list $random_user_pos]
+	set random_portrait_file [db_string portrait "select portrait_file from persons where person_id = :random_user_id" -default ""]
+	set ctr [expr $ctr-1]
     }
 
     db_1row user_info "
@@ -174,7 +176,6 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     Show the portrait and a short bio (comments) about a user
 } {
     if {!$read} { return ""}
-    return ""
 
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
@@ -182,19 +183,32 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     set first_names ""
     set last_name ""
 
-    if {![db_0or1row get_cr_item ""] || [empty_string_p $revision_id]} {
-	# The user doesn't have a portrait yet
-	set portrait_p 0
-    } else {
-	set portrait_p 1
-    }
+    set portrait_alt "Portrait"
+    set user_fs_url "/intranet/download/user/$user_id"
+    set portrait_p 0
+    set portrait_gif ""
+    set description ""
 
-    if [catch {db_1row get_picture_info "
+    # ------------ Check if there is a portrait in the FS --------
+    set portrait_file [im_portrait_user_file $user_id]
+    if {"" != $portrait_file} {
+	set portrait_gif "<img  src=\"$user_fs_url/$portrait_file\" alt=\"$portrait_alt\" title=\"$portrait_alt\" >"
+    }
+    
+    # ------------ Check if there is a portrait in the CR --------
+    if {"" == $portrait_gif} {
+	if {![db_0or1row get_cr_item ""] || [empty_string_p $revision_id]} {
+	    # The user doesn't have a portrait yet
+	    set portrait_p 0
+	} else {
+	    set portrait_p 1
+	}
+	
+	if [catch {db_1row get_picture_info "
 	select 
 		i.width, 
 		i.height, 
 		cr.title, 
-		cr.description, 
 		cr.publish_date
 	from 
 		images i, 
@@ -203,52 +217,42 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
 		i.image_id = cr.revision_id
 		and image_id = :revision_id
 	"
-    } errmsg] {
-	# There was an error obtaining the picture information
-	set portrait_p 0
-    }
-
-    # Check if there was a portrait
-    if {![exists_and_not_null publish_date]} { 
-	set portrait_p 0 
-    }
-
-    set portrait_alt "Portrait"
-
-    if {$portrait_p} {
-	if { ![empty_string_p $width] && ![empty_string_p $height] } {
-	    set widthheight "width=$width height=$height"
-	} else {
-	    set widthheight ""
+	} errmsg] {
+	    # There was an error obtaining the picture information
+	    set portrait_p 0
 	}
-    
-	set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id\" alt=\"$portrait_alt\" title=\"$portrait_alt\" >"
 
-    } else {
-	
+	# Check if there was a portrait
+	if {![exists_and_not_null publish_date]} { 
+	    set portrait_p 0 
+	}
+
+	if {$portrait_p} {
+	    if { ![empty_string_p $width] && ![empty_string_p $height] } {
+		set widthheight "width=$width height=$height"
+	    } else {
+		set widthheight ""
+	    }
+    
+	    set portrait_gif "<img $widthheight src=\"/shared/portrait-bits.tcl?user_id=$user_id\" alt=\"$portrait_alt\" title=\"$portrait_alt\" >"
+
+	} 
+    }
+
+
+    # ------------ Set anonymous portrait  --------
+    if {"" == $portrait_gif} {
 	set portrait_gif [im_gif anon_portrait $portrait_alt]
 	set description "No portrait for this user."
-	
 	if {$admin} { append description "<br>\n[_ intranet-core.lt_Please_upload_a_portr]"}
     }
     
+    # ------------ Frame and admin  --------
     set portrait_admin "
 <li><a href=\"/intranet/users/portrait/upload?$export_vars\">[_ intranet-core.Upload_portrait]</a></li>
 <li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>\n"
 
-    if {$portrait_p} {
-	append portrait_admin "
-<li><a href=\"/intranet/users/portrait/comment-edit?$export_vars\">[_ intranet-core.lt_Edit_comments_about_y]</a></li>\n"
-    }
-    
-
     if {!$admin && !$write} { set portrait_admin "" }
-
-    if {$admin && "" == $description} {
-	set description "
-[_ intranet-core.lt_No_comments_about_fir]<br>
-[_ intranet-core.lt_Please_click_above_to]
-"}
 
     set portrait_html "
 <table border=0 cellspacing=1 cellpadding=1>

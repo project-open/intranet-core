@@ -584,9 +584,9 @@ append admin_links "</table>\n"
 # Portrait
 # ---------------------------------------------------------------
 
-# set portrait_html [im_portrait_component $user_id_from_search $return_url $read $write $admin]
-# set portrait_html [im_table_with_title "[_ intranet-core.Portrait]" $portrait_html]
-set portrait_html ""
+set portrait_html [im_portrait_component $user_id_from_search $return_url $read $write $admin]
+set portrait_html [im_table_with_title "[_ intranet-core.Portrait]" $portrait_html]
+# set portrait_html ""
 
 # ---------------------------------------------------------------
 # User-Navbar
