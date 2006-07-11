@@ -61,12 +61,42 @@ ad_proc -public im_portrait_user_file { user_id } {
 ad_proc -public im_random_employee_component { } {
     Returns a random employee's photograph and a little bio
 } {
-    return ""
-
     # Get the current user id to not show the current user's portrait
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
+
+
+    # --------------------------------------------------------
+    # Get the list of "old" Content Repository Portraits
+    set portrait_sql "
+        select
+                live_revision as revision_id,
+                a.object_id_one as portrait_user_id,
+                item_id,
+                m.group_id
+        from
+                acs_rels a,
+                cr_items c,
+                im_profiles p,
+                group_distinct_member_map m,
+                cc_users u
+        where
+                a.object_id_two = c.item_id
+                and a.object_id_one = u.user_id
+                and u.member_state = 'approved'
+                and a.rel_type = 'user_portrait_rel'
+                and m.member_id = a.object_id_one
+                and m.group_id = p.profile_id
+		and im_object_permission_p(m.group_id, :current_user_id, 'read') = 't'
+
+    "
+
+    db_foreach portrait_perms $portrait_sql {
+	lappend asdf $portrait_user_id
+    }
+
+
 
     # --------------------------------------------------------
     # Make sure that there are no users with checkdate==null
@@ -115,13 +145,12 @@ ad_proc -public im_random_employee_component { } {
     "
     set user_list [list]
     db_foreach portrait_perms $portrait_sql {
-	ns_log Notice "im_random_employee_component: portrait_user_id=$portrait_user_id, group_id=$group_id"
 	lappend user_list $portrait_user_id
     }
 
     # Skip if no users
     set user_list_len [llength $user_list]
-    if {0 == $user_list_len} {return ""}
+    if {0 == $user_list_len} { return "" }
 
     # Select a random user from the list
     # Try 10 times and check whether the 
@@ -131,7 +160,11 @@ ad_proc -public im_random_employee_component { } {
     while {$ctr && ("" == $random_portrait_file)} {
 	set random_user_pos [randomRange $user_list_len]
 	set random_user_id [lindex $user_list $random_user_pos]
-	set random_portrait_file [db_string portrait "select portrait_file from persons where person_id = :random_user_id" -default ""]
+	set random_portrait_file [db_string portrait "
+		select portrait_file 
+		from persons 
+		where person_id = :random_user_id
+	" -default ""]
 	set ctr [expr $ctr-1]
     }
 
