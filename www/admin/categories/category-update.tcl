@@ -133,6 +133,8 @@ WHERE
 set locale "en_US"
 set msg [string trim $translation($locale)]
 set msg_key [lang::util::suggest_key $category]
+set msg_key_len [string length $msg_key]
+set cat_len [string length $category]
 
 if {"" != $msg} {
     lang::message::register -comment $category_description $locale $package_key $msg_key $msg
@@ -148,7 +150,16 @@ foreach locale [array names translation] {
     }
 }
 
-
+# Emit a warning if the msg_key_len is > 24.
+if {$msg_key_len >= 24} {
+    ad_return_complaint 1 "<b>Warning:</b>
+    Your category is quite long ($cat_len Characters).<br>
+    We cannot guarantee a unique translation for a category of this length
+    because our translation are restricted in size.<br>
+    Please try to use a shorter 'category' if possible or ignore this
+    warning if you know what you are doing."
+    return
+}
 
 db_release_unused_handles
 set select_category_type $category_type
