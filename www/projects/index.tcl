@@ -611,7 +611,7 @@ if { ![empty_string_p $query_string] } {
 append table_header_html "<tr>\n"
 foreach col $column_headers {
     regsub -all " " $col "_" col_txt
-    set col_txt [_ intranet-core.$col_txt]
+    set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
     if { [string compare $order_by $col] == 0 } {
 	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     } else {
