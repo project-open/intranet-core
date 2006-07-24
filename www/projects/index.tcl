@@ -147,14 +147,15 @@ if {!$view_id } {
 
 set column_headers [list]
 set column_vars [list]
+set extra_selects [list]
+set extra_froms [list]
+set extra_wheres [list]
 
 set column_sql "
 select
-	column_name,
-	column_render_tcl,
-	visible_for
+	vc.*
 from
-	im_view_columns
+	im_view_columns vc
 where
 	view_id=:view_id
 	and group_id is null
@@ -165,6 +166,9 @@ db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
+	if {"" != $extra_select} { lappend extra_selects $extra_select }
+	if {"" != $extra_from} { lappend extra_froms $extra_from }
+	if {"" != $extra_where} { lappend extra_wheres $extra_where }
     }
 }
 
@@ -289,6 +293,22 @@ set where_clause [join $criteria " and\n            "]
 if { ![empty_string_p $where_clause] } {
     set where_clause " and $where_clause"
 }
+
+set extra_select [join $extra_selects ",\n\t"]
+if { ![empty_string_p $extra_select] } {
+    set extra_select ",\n\t$extra_select"
+}
+
+set extra_from [join $extra_froms ",\n\t"]
+if { ![empty_string_p $extra_from] } {
+    set extra_from ",\n\t$extra_from"
+}
+
+set extra_where [join $extra_wheres "and\n\t"]
+if { ![empty_string_p $extra_where] } {
+    set extra_where ",\n\t$extra_where"
+}
+
 
 
 
@@ -430,12 +450,15 @@ FROM
                 to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
                 to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
                 to_char(p.end_date, 'HH24:MI') as end_date_time
+		$extra_select
         FROM
                 $perm_sql p,
                 im_companies c
+		$extra_from
         WHERE
                 p.company_id = c.company_id
                 $where_clause
+		$extra_where
         ) projects
 $order_by_clause
 "
