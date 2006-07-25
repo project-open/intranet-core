@@ -300,8 +300,11 @@ ad_proc -public im_next_project_nr { } {
     set num_check_sql ""
     set zeros ""
     for {set i 0} {$i < $nr_digits} {incr i} {
-	set digit_idx [expr $nr_start_idx + $i]
-	append num_check_sql "\t\tand ascii(substr(p.nr,$digit_idx,1)) > 47 and ascii(substr(p.nr,$digit_idx,1)) < 58\n"
+	set digit_idx [expr 1 + $i]
+	append num_check_sql "
+		and ascii(substr(p.nr,$digit_idx,1)) > 47 
+		and ascii(substr(p.nr,$digit_idx,1)) < 58
+	"
 	append zeros "0"
     }
 
