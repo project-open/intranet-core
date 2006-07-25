@@ -42,21 +42,23 @@ cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
 cvs checkout intranet-ganttproject
 cvs checkout intranet-hr
+cvs checkout intranet-html2pdf
 cvs checkout intranet-invoices
 cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import
 cvs checkout intranet-material
+cvs checkout intranet-ophelia
 cvs checkout intranet-payments
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
+cvs checkout intranet-secure-login
 cvs checkout intranet-security-update-client
 cvs checkout intranet-security-update-server
 cvs checkout intranet-simple-survey
 cvs checkout intranet-spam
 cvs checkout intranet-sql-selectors
-cvs checkout intranet-timesheet
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
 cvs checkout intranet-timesheet2-tasks
@@ -68,6 +70,7 @@ cvs checkout intranet-update-client
 cvs checkout intranet-update-server
 cvs checkout intranet-wiki
 cvs checkout intranet-workflow
+cvs checkout intranet-xmlrpc
 
 cvs checkout ref-countries
 cvs checkout ref-language
@@ -79,3 +82,4 @@ cvs checkout ref-us-zipcodes
 cvs checkout search
 cvs checkout simple-survey
 cvs checkout wiki
+cvs checkout xml-rpc
