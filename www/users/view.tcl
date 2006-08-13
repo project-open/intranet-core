@@ -586,12 +586,13 @@ set otp_installed_p [db_string otp_installed "
 if {$otp_installed_p} {
 
     append admin_links "</ul><ul>\n"
-    set change_otp_pwd_url "/intranet-otp/create-otps"
+    set list_otp_pwd_base_url "/intranet-otp/list-otps"
+    set list_otp_pwd_url [export_vars -base $list_otp_pwd_base_url {user_id {return_url $current_url}}]
+
     append admin_links "
-        <li><a href=[export_vars -base $change_otp_pwd_url {user_id}]
-	>[lang::message::lookup "" intranet-otp.Print_current_OTP_list "Print the current One Time Password list for this user"]</a>
-        <li><a href=[export_vars -base $change_otp_pwd_url {user_id {new_otp_p 1}}]
-	>[lang::message::lookup "" intranet-otp.Create_new_OTP_list "Create a new One Time Password list for this user"]</a>\n"
+        <li><a href=\"$list_otp_pwd_url\"
+	>[lang::message::lookup "" intranet-otp.Print_OTP_list "Print the One Time Password list for this User"]</a>
+    "
 
 }
 
