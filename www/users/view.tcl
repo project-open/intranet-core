@@ -71,15 +71,6 @@ if {!$read} {
     return
 }
 
-# Check if there is a OTP (one time password) module installed
-set otp_installed_p [db_string otp_installed "
-        select count(*)
-        from apm_enabled_package_versions
-        where package_key = 'intranet-otp'
-" -default 0]
-
-
-
 # ---------------------------------------------------------------
 # Get everything about the user
 # ---------------------------------------------------------------
@@ -584,11 +575,18 @@ if {$admin} {
     "
 }
 
+
+# Check if there is a OTP (one time password) module installed
+set otp_installed_p [db_string otp_installed "
+        select count(*)
+        from apm_enabled_package_versions
+        where package_key = 'intranet-otp'
+" -default 0]
+
 if {$otp_installed_p} {
 
     append admin_links "</ul><ul>\n"
-
-    set change_otp_pwd_url "/intranet-otp/create-tans"
+    set change_otp_pwd_url "/intranet-otp/create-otps"
     append admin_links "
         <li><a href=[export_vars -base $change_otp_pwd_url {user_id}]
 	>[lang::message::lookup "" intranet-otp.Print_current_OTP_list "Print the current One Time Password list for this user"]</a>
@@ -596,11 +594,6 @@ if {$otp_installed_p} {
 	>[lang::message::lookup "" intranet-otp.Create_new_OTP_list "Create a new One Time Password list for this user"]</a>\n"
 
 }
-
-
-
-
-
 
 
 append admin_links "</ul></td></tr>\n"

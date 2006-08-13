@@ -1556,6 +1556,7 @@ ad_proc -public im_generate_auto_login {
 } {
     Generates a security token for auto_login
 } {
+    ns_log Notice "im_generate_auto_login: expiry_date=$expiry_date, user_id=$user_id"
     set user_password ""
     set user_salt ""
 
