@@ -25,15 +25,18 @@ ad_library {
 # ad_user_group_member 
 
 ad_proc -public ad_user_group_member { group_id user_id} {
-
+    Frequently used procedure to determine if a user is a 
+    member of a group
 } {
-    set member_p [ad_user_group_member_helper $group_id $user_id]
+    set member_p [util_memoize "ad_user_group_member_helper $group_id $user_id" 60]
     return $member_p
 }
 
 
-ad_proc -public ad_user_group_member_helper { group_id user_id} {
-
+ad_proc -public ad_user_group_member_helper {group_id user_id} {
+    Helper-functionn for:
+    Frequently used procedure to determine if a user is a 
+    member of a group.
 } {
 
     set member_count [db_string member_count "

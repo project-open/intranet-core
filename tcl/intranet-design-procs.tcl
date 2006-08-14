@@ -51,7 +51,8 @@ ad_proc -public im_gif {
     subsequent calls are faster. You'll need to restart the server
     if you change the pathes...
 } {
-    ns_log Notice "im_gif: name=$name"
+    set debug 0
+    if {$debug} { ns_log Notice "im_gif: name=$name" }
 
     set url "/intranet/images"
     set navbar_postfix [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
@@ -67,14 +68,14 @@ ad_proc -public im_gif {
     # 1. Check for a static GIF - it's been given without extension.
     set gif [im_gif_static $name $alt $url $navbar_path $navbar_gif_url $border $width $height]
     if {"" != $gif} { 
-	ns_log Notice "im_gif: static: $name"
+	if {$debug} { ns_log Notice "im_gif: static: $name" }
 	return $gif 
     }
 
     # 2. Check in the "navbar" path to see if the navbar specifies a GIF
     set gif [im_gif_navbar $name $alt $url $navbar_path $navbar_gif_url $border $width $height]
     if {"" != $gif} { 
-	ns_log Notice "im_gif: navbar: $name"
+	if {$debug} { ns_log Notice "im_gif: navbar: $name" }
 	return $gif 
     }
 
@@ -82,7 +83,7 @@ ad_proc -public im_gif {
     set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_postfix/$name.png"
     set png_url "/intranet/images/$navbar_postfix/$name.png"
     if {[util_memoize "file exists $png_path"]} {
-	ns_log Notice "im_gif: famfamfam: $name"
+	if {$debug} { ns_log Notice "im_gif: famfamfam: $name" }
 	set result "<img src=\"$png_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
 	if {$height > 0} { append result "height=$height " }
@@ -94,7 +95,7 @@ ad_proc -public im_gif {
     set gif_path "[acs_root_dir]/packages/intranet-core/www/images/$name.gif"
     set gif_url "/intranet/images/$name.gif"
     if {[util_memoize "file exists $gif_path"]} {
-	ns_log Notice "im_gif: images_main: $name"
+	if {$debug} { ns_log Notice "im_gif: images_main: $name" }
 	set result "<img src=\"$gif_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
 	if {$height > 0} { append result "height=$height " }
@@ -103,7 +104,7 @@ ad_proc -public im_gif {
     }
 
 
-    ns_log Notice "im_gif: not_found: $name"
+    if {$debug} { ns_log Notice "im_gif: not_found: $name" }
 
     set result "<img src=\"$navbar_postfix/$name.$type\" border=$border "
     if {$width > 0} { append result "width=$width " }
@@ -158,7 +159,8 @@ ad_proc -public im_gif_static {
     Part of im_gif. Checks whether the gif is a hard-coded
     special GIF. Returns an empty string if GIF not found.
 } {
-    ns_log Notice "im_gif_static: name=$name, navbar_gif_url=$navbar_gif_url, navbar_path=$navbar_path"
+    set debug 0
+    if {$debug} { ns_log Notice "im_gif_static: name=$name, navbar_gif_url=$navbar_gif_url, navbar_path=$navbar_path" }
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -354,7 +356,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     }
 
     # Get the Subnavbar
-    set parent_menu_sql "select menu_id from im_menus where name='Users'"
+    set parent_menu_sql "select menu_id from im_menus where label='user'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
     set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
@@ -565,12 +567,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
-    set menu_select_sql "
-	select	m.*
-	from	im_menus m
-	where	parent_menu_id = :parent_menu_id
-		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
-	order by sort_order"
+    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 60]
 
     # Start formatting the menu bar
     set navbar ""
@@ -579,7 +576,14 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set old_sel "notsel"
     set cur_sel "notsel"
     set ctr 0
-    db_foreach menu_select $menu_select_sql {
+    foreach menu_list $menu_list_list {
+
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
 
 	if {"" != $visible_tcl} {
 	    # Interpret empty visible_tcl menus as always visible
@@ -673,6 +677,32 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         </TR>
       </table>\n"
 }
+
+ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
+    Get the list of menus in the sub-navbar for the given user.
+    This routine is only called every approx 64 seconds
+} {
+    set menu_select_sql "
+	select
+		menu_id,
+		package_name,
+		label,
+		name,
+		url,
+		visible_tcl
+	from
+		im_menus m
+	where
+		parent_menu_id = :parent_menu_id
+		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by
+		 sort_order
+    "
+
+    return [db_list_of_lists subnavbar_menus $menu_select_sql]
+}
+
+
 
 
 
@@ -1092,7 +1122,7 @@ ad_proc -public im_logo {} {
 ad_proc -public im_navbar_gif_url {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    return [util_memoize "im_navbar_gif_url_helper"]
+    return [util_memoize "im_navbar_gif_url_helper" 60]
 }
 
 ad_proc -public im_navbar_gif_url_helper {} {

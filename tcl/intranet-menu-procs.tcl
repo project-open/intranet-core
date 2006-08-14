@@ -22,7 +22,6 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
     Returns a list of all menus,
     ordered and indented according to hierarchy.
 } {
-
     set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
 
     set parent_options_sql "
@@ -38,11 +37,12 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
     set parent_options [list]
     db_foreach parent_options $parent_options_sql {
 	set spaces ""
-	set name  [lang::util::suggest_key $name]
+	set suggest_name  [lang::util::suggest_key $name]
+	set l10n_name [lang::message::lookup "" intranet-core.$suggest_name $name]
 	for {set i 0} {$i < $indent_level} { incr i } {
 	    append spaces "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 	}
-	lappend parent_options [list "$spaces[_ intranet-core.$name] - $label" $menu_id]
+	lappend parent_options [list "$spaces$l10n_name - $label" $menu_id]
     }
     return $parent_options
 }

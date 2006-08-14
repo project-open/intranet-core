@@ -33,11 +33,16 @@ if {!$user_is_admin_p} {
 
 set action_url "/intranet/admin/menus/new"
 set focus "menu.var_name"
-set page_title "New Menu"
+set page_title "Edit Menu"
+set current_url [ad_conn url]?[ad_conn query]
+
+
+if {![info exists menu_id]} { 
+    set form_mode "edit" 
+    set page_title "New Menu"
+}
+
 set context [im_context_bar $page_title]
-
-if {![info exists menu_id]} { set form_mode "edit" }
-
 
 # ------------------------------------------------------------------
 # Build the form

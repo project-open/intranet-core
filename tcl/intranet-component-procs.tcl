@@ -36,7 +36,7 @@ ad_proc -public im_component_any_perms_set_p { } {
         where
                 ap.object_id = cp.plugin_id
                 and ap.grantee_id = p.profile_id
-    }"]
+    }" 60]
     return $any_perms_set_p
 }
 

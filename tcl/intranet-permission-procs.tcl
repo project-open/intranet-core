@@ -123,19 +123,19 @@ ad_proc -public im_permission {user_id privilege} {
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-
-    set subsite_id [ad_conn subsite_id]
-    set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
-#    ns_log Notice "im_permission($subsite_id,$user_id,$privilege)=$result"
+    set result [util_memoize "im_permission_helper $user_id $privilege" 60]
     return $result
 }
 
 
 ad_proc im_permission_helper {user_id privilege} {
-
+    Cached helper for:
+    Returns true or false, depending whether the user can execute
+    the specified action.<br>
+    Uses a cache to reduce DB traffic.
 } {
     set subsite_id [ad_conn subsite_id]
-    set result [permission::permission_p -party_id $user_id -object_id $subsite_id -privilege $privilege]
+    set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
     return $result
 }
 
@@ -256,7 +256,7 @@ ad_proc -public im_user_intranet_admin_p { user_id } {
 ad_proc -public im_site_wide_admin_p { user_id } {
     returns 1 if the user is an intranet admin 
 } {
-    return [util_memoize "acs_user::site_wide_admin_p -user_id $user_id"]
+    return [util_memoize "acs_user::site_wide_admin_p -user_id $user_id" 60]
 }
 
 
