@@ -715,6 +715,22 @@ ad_proc im_category_select {
     select_name
     { default "" }
 } {
+    Hierarchical category select:
+    Uses the im_category_hierarchy table to determine
+    the hierarchical structure of the category type.
+} {
+    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $select_name $default] 60]
+}
+
+ad_proc im_category_select_helper {
+    {-translate_p 1}
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-plain_p 0}
+    category_type
+    select_name
+    { default "" }
+} {
     Returns a formatted "option" widget with hierarchical
     contents
 } {

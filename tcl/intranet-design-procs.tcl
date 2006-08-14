@@ -567,8 +567,6 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
-    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 60]
-
     # Start formatting the menu bar
     set navbar ""
     set found_selected 0
@@ -576,6 +574,11 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set old_sel "notsel"
     set cur_sel "notsel"
     set ctr 0
+
+
+    # Replaced the db_foreach by this construct to save
+    # the relatively high amount of SQLs to get the menus
+    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 60]
     foreach menu_list $menu_list_list {
 
 	set menu_id [lindex $menu_list 0]
@@ -742,19 +745,6 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     set navbar ""
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
 
-    # select the toplevel menu items
-    set menu_select_sql "
-select
-        m.*
-from
-        im_menus m
-where
-        parent_menu_id = :main_menu_id
-	and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
-order by
-        sort_order
-"
-
     # make sure only one field gets selected so...
     # .. check for the first complete match between menu and url.
     set ctr 0
@@ -762,7 +752,17 @@ order by
     set found_selected 0
     set old_sel "notsel"
     set cur_sel "notsel"
-    db_foreach menu_select $menu_select_sql {
+
+    # select the toplevel menu items
+    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $main_menu_id" 60]
+    foreach menu_list $menu_list_list {
+
+        set menu_id [lindex $menu_list 0]
+        set package_name [lindex $menu_list 1]
+        set label [lindex $menu_list 2]
+        set name [lindex $menu_list 3]
+        set url [lindex $menu_list 4]
+        set visible_tcl [lindex $menu_list 5]
 
 	# Shift the old value of cur_sel to old_val
 	set old_sel $cur_sel
