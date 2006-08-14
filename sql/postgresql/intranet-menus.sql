@@ -1194,8 +1194,8 @@ begin
         null,                   -- creation_ip
         null,                   -- context_id
         ''intranet-core'',      -- package_name
-        ''admin_user_exists'',   -- label
-        ''User Exists'',            -- name
+        ''admin_user_exits'',   -- label
+        ''User Exits'',            -- name
         ''/intranet/admin/user_exits'', -- url
         110,                     -- sort_order
         v_admin_menu,         -- parent_menu_id
