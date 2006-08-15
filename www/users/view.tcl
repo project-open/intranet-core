@@ -562,6 +562,22 @@ if {$admin} {
           <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>\n"
 }
 
+# Check if there is a OTP (one time password) module installed
+set otp_installed_p [db_string otp_installed "
+        select count(*)
+        from apm_enabled_package_versions
+        where package_key = 'intranet-otp'
+" -default 0]
+
+if {$otp_installed_p} {
+    set list_otp_pwd_base_url "/intranet-otp/list-otps"
+    set list_otp_pwd_url [export_vars -base $list_otp_pwd_base_url {user_id {return_url $current_url}}]
+    append admin_links "
+        <li><a href=\"$list_otp_pwd_url\"
+	>[lang::message::lookup "" intranet-otp.Print_OTP_list "Update this user's OTP (one time password) list"]</a>
+    "
+}
+
 if {$admin && [im_permission $current_user_id add_companies]} {
 
     append admin_links "
@@ -573,27 +589,6 @@ if {$admin} {
           <li><a href=become?user_id=$user_id_from_search>[_ intranet-core.Become_this_user]</a>
 <!--          <li><a href=nuke?user_id=$user_id_from_search&return_url=[ns_urlencode $return_url]>[_ intranet-core.Nuke_this_user]</a> -->
     "
-}
-
-
-# Check if there is a OTP (one time password) module installed
-set otp_installed_p [db_string otp_installed "
-        select count(*)
-        from apm_enabled_package_versions
-        where package_key = 'intranet-otp'
-" -default 0]
-
-if {$otp_installed_p} {
-
-    append admin_links "</ul><ul>\n"
-    set list_otp_pwd_base_url "/intranet-otp/list-otps"
-    set list_otp_pwd_url [export_vars -base $list_otp_pwd_base_url {user_id {return_url $current_url}}]
-
-    append admin_links "
-        <li><a href=\"$list_otp_pwd_url\"
-	>[lang::message::lookup "" intranet-otp.Print_OTP_list "Print the One Time Password list for this User"]</a>
-    "
-
 }
 
 
