@@ -574,7 +574,7 @@ if {$otp_installed_p} {
     set list_otp_pwd_url [export_vars -base $list_otp_pwd_base_url {user_id {return_url $current_url}}]
     append admin_links "
         <li><a href=\"$list_otp_pwd_url\"
-	>[lang::message::lookup "" intranet-otp.Print_OTP_list "Update this user's OTP (one time password) list"]</a>
+	>[lang::message::lookup "" intranet-otp.Print_OTP_list "Manage this user's OTP (one time password) list"]</a>
     "
 }
 
