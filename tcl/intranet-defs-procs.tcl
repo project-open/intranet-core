@@ -1147,16 +1147,20 @@ ad_proc -public db_html_select_value_options_multiple {
     }
 
     foreach option $options {
+	set option_string [lindex $option $option_index]
+
 	if { $translate_p && "" != [lindex $option $option_index] } {
-	    set translated_value [_ intranet-core.[lang::util::suggest_key [lindex $option $option_index]]]
+	    set translated_value [lang::message::lookup "" intranet-core.[lang::util::suggest_key $option_string] $option_string ]
 	} else {
-	    set translated_value [lindex $option $option_index]
+	    set translated_value $option_string
 	}
+
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
 	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\" selected>$translated_value</option>\n"
 	} else {
 	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\">$translated_value</option>\n"
 	}
+
     }
     return $select_options
 }
