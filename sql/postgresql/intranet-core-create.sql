@@ -323,14 +323,11 @@ declare
 	p_start_date		alias for $1;
 	p_end_date		alias for $2;
 	v_date			date;
-	v_counter		integer;
 BEGIN
 	v_date := p_start_date;
-	v_counter := 100;
-	WHILE (v_date < p_end_date AND v_counter > 0) LOOP
+	WHILE (v_date < p_end_date) LOOP
 		RETURN NEXT v_date;
 		v_date := v_date + 1;
-		v_counter := v_counter - 1;
 	END LOOP;
 	RETURN;
 end;' language 'plpgsql';
