@@ -200,6 +200,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 			    on (c.plugin_id = m.plugin_id)
 		where
 			c.page_url = :url_stub
+			and c.enabled_p = 't'
 			and (view_name is null or view_name = :view_name)
 	    ) p
 	where	
@@ -247,6 +248,7 @@ ad_proc -public im_component_insert { plugin_name } {
 		im_component_plugins c
 	where
 		plugin_name=:plugin_name
+		and c.enabled_p = 't'
 	order by sort_order
     "
 
