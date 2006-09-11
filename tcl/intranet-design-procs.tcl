@@ -683,7 +683,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 
 ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
     Get the list of menus in the sub-navbar for the given user.
-    This routine is only called every approx 64 seconds
+    This routine is cached and called every approx 60 seconds
 } {
     set menu_select_sql "
 	select
@@ -697,6 +697,7 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
 		im_menus m
 	where
 		parent_menu_id = :parent_menu_id
+		and enabled_p = 't'
 		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by
 		 sort_order
@@ -796,9 +797,9 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
         set name [lang::message::lookup "" $name_key $name]
 
         if {$selected} {
-            set html "$sel$a_white href=\"$url\"/>$name</a></td>\n"
+            set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
         } else {
-	    set html "$nosel<a href=\"$url\">$name</a></td>\n"
+	    set html "$nosel<a href=\"$url\"><nobr>$name</nobr></a></td>\n"
 	}
 
         append navbar "<td>[im_gif $gif]</td>$html"

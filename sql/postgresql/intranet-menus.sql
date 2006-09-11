@@ -80,6 +80,10 @@ CREATE TABLE im_menus (
 				-- or evaluate (expr *) to 1 in order to display 
 				-- the menu.
 	visible_tcl		varchar(1000) default null,
+				-- Managmenent of different configurations
+	enabled_p		char(1) default('t')
+                                constraint im_menus_enabled_ck
+                                check (enabled_p in ('t','f')),
 				-- Make sure there are no two identical
 				-- menus on the same _level_.
 	constraint im_menus_label_un

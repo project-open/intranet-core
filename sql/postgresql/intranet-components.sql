@@ -77,6 +77,10 @@ create table im_component_plugins (
 				-- check(location in ('left','right','bottom','none')),
 	title_tcl		varchar(4000),
 	component_tcl		varchar(4000),
+	enabled_p		char(1) default('t')
+                                constraint im_comp_plugin_enabled_ck
+                                check (enabled_p in ('t','f')),
+				-- Make sure there are no two identical
 		constraint im_component_plugins_un
 		unique (plugin_name, package_name)
 );
