@@ -56,20 +56,35 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label"]
 
     set menu_select_sql "
-        select  m.*
-        from    im_menus m
-        where   parent_menu_id = :parent_menu_id
-        order by sort_order"
+        select
+		m.*
+        from
+		im_menus m
+        where
+		parent_menu_id = :parent_menu_id
+		and enabled_p = 't'
+                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+        order by
+		sort_order"
 
-#                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 
     # Start formatting the menu bar
     set result "<ul>\n"
     set ctr 0
     db_foreach menu_select $menu_select_sql {
-        regsub -all " " $name "_" name_key
-        
 
+	if {"" != $visible_tcl} {
+	    set visible 0
+	    set errmsg ""
+	    if [catch {
+		set visible [expr $visible_tcl]
+	    } errmsg] {
+		ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>"
+	    }
+	    if {!$visible} { continue }
+	}
+
+        regsub -all " " $name "_" name_key
 	foreach var [ad_ns_set_keys $bind_vars] {
 	    set value [ns_set get $bind_vars $var]
 	    append url "&$var=[ad_urlencode $value]"
