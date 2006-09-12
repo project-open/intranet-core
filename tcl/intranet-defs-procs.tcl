@@ -1108,6 +1108,8 @@ ad_proc im_options_to_select_box { select_name options { default "" } } {
     (category, category_id) as for formbuilder) and returns a formatted
     select box.
 } {
+#   ad_return_complaint 1 "select_name=$select_name, options=$options, default=$default"
+
     set result "\n<select name=\"$select_name\">\n"
     foreach option $options {
 	set value [lindex $option 0]

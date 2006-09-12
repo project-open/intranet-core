@@ -817,6 +817,20 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     set add_comp_url [export_vars -base "/intranet/components/add-stuff" {page_url return_url}]
     set reset_comp_url [export_vars -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
+    # Maintenance Bar -
+    # Display a maintenance message in red when performing updates etc...   
+    set maintenance_message [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
+    set maintenance_message [string trim $maintenance_message]
+    set maintenance_bar ""
+    if {"" != $maintenance_message} {
+	set maintenance_bar "
+	<TR>
+          <td colspan=2 class=maintenancebar>
+		$maintenance_message
+          </td>
+	</TR>
+        "
+    }
 
     set add_components "
 	<nobr>
@@ -858,6 +872,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
             </table>
           </td>
         </TR>
+        $maintenance_bar
       </table>\n"
 }
 

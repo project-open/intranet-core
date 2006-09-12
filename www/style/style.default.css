@@ -7,6 +7,16 @@
     .tabsel {background-color: #336699; color: #ffffff;; font-weight: bold}
     .tabnotsel {background-color: #BBCFE1; color: #000000;; font-weight: bold}
 
+
+.maintenancebar {
+	font-family: verdana, arial, helvetica, sans-serif; 
+	font-weight: bold; 
+	font-Size: 10pt; 
+	color: #ffffff;
+	background: #FF0000; 
+	background-color: #FF0000;
+}
+
 .brandfirst{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	color:#320033; 

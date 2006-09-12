@@ -14,6 +14,14 @@ HR {
 .pagedesriptionbar {
 	FONT-WEIGHT: bold; FONT-SIZE: 10pt; BACKGROUND: #336699; COLOR: #ffffff; FONT-FAMILY: verdana, arial, helvetica, sans-serif
 }
+.maintenancebar {
+	font-family: verdana, arial, helvetica, sans-serif; 
+	font-weight: bold; 
+	font-Size: 10pt; 
+	color: #ffffff;
+	background: #FF0000; 
+	background-color: #FF0000;
+}
 H1 {
 	FONT-WEIGHT: bold; FONT-SIZE: large; FONT-FAMILY: verdana, arial, helvetica, sans-serif
 }
