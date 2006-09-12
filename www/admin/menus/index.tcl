@@ -214,7 +214,9 @@ db_foreach menus $main_sql {
 
     append table "
   <td colspan=$colspan_level>
-    <A href=$menu_url?menu_id=$menu_id&return_url=$return_url>$name</A><br>$label
+    <A href=$menu_url?menu_id=$menu_id&return_url=$return_url>$name</A><br>
+    $label<br>
+    <tt>$visible_tcl</tt>
   </td>
   <td>$package_name</td>
 "
