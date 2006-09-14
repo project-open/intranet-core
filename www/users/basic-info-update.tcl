@@ -29,7 +29,7 @@ ad_page_contract {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 im_user_permissions $current_user_id $user_id view read write admin
-if {!write} {
+if {!$write} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_1]"
 }
 
