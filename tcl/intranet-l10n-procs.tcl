@@ -22,10 +22,14 @@ ad_library {
 ad_proc -public im_l10n_sql_currency_format { 
     {-locale ""} 
     {-digits 12}
+    {-style simple}
 } {
     Returns a currency format string for the locale
     to be used in (Postgres) SQL queries.
     Example: 99,999,999,999.00 for "en" locale
+    @param locale Locale. "" defaults to user's locale
+    @param digits Default 12.
+    @param style Default "simple" {simple|separators}
 } {
     if {"" == $locale} {
 	set locale [lang::conn::locale]
@@ -42,15 +46,27 @@ ad_proc -public im_l10n_sql_currency_format {
     }
     set cur_format "$decimal_point$cur_format"
 
-
     # Format the integer part in groups of 3
     set cur_format "999$cur_format"
     for {set i 0} {$i < [expr $digits-3]} {incr i} {
-	if {0 == [expr $i % 3]} {
+	if {("separators" == $style) && (0 == [expr $i % 3])} {
 	    set cur_format "$thousands_sep$cur_format"
 	}
 	set cur_format "9$cur_format"
     }
 
     return $cur_format
+}
+
+
+ad_proc -public im_l10n_sql_date_format { 
+    {-locale ""} 
+    {-digits 12}
+    {-style "simple"}
+} {
+    Returns a date format string for the locale
+    to be used in (Postgres) SQL queries.
+    Example: YYYY-MM-DD
+} {
+    return "YYYY-MM-DD"
 }
