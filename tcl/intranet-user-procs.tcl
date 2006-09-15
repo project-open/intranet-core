@@ -146,7 +146,7 @@ ad_proc im_user_select { select_name { default "" } } {
 		lower(emp.last_name),
 		lower(emp.first_names)
     "
-    return [im_selection_to_select_box $bind_vars project_lead_list $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 $bind_vars project_lead_list $sql $select_name $default]
 }
 
 
