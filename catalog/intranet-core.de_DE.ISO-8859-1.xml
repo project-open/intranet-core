@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.1.0.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.0.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -43,7 +43,7 @@
   <msg key="Address2">Adresse2</msg>
   <msg key="Address_1">Adresse1</msg>
   <msg key="Address_2">Adresse2</msg>
-  <msg key="Admin">Administation</msg>
+  <msg key="Admin">Administration</msg>
   <msg key="Admin_category_type">Kategorien administrieren</msg>
   <msg key="Admin_Companies">Firmen administrieren</msg>
   <msg key="Admin_Home">Admin Home</msg>
@@ -58,6 +58,7 @@
   <msg key="Advertizing_Project">Werbeprojekt</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Benutzername</msg>
+  <msg key="al">al</msg>
   <msg key="Albania">Albanien</msg>
   <msg key="Algeria">Algerien</msg>
   <msg key="All">Alle</msg>
@@ -75,6 +76,8 @@
   <msg key="AUD">AUD</msg>
   <msg key="Australia">Australen</msg>
   <msg key="Austria">Österreich</msg>
+  <msg key="Authoring">Redaktion</msg>
+  <msg key="Autoedicin">Autoedición</msg>
   <msg key="Average_Quality">Durchschnittliche Qualität</msg>
   <msg key="b">B</msg>
   <msg key="B_-_No_the_best">B - Nicht besonders gut</msg>
@@ -82,7 +85,7 @@
   <msg key="Bad_Office">Fehlerhafter Firmensitz</msg>
   <msg key="Bad_User">Fehlerhafter Benutzer</msg>
   <msg key="Ban_this_user">Benutzer vom System ausschließen</msg>
-  <msg key="Bank_Transfer">Banktransfer</msg>
+  <msg key="Bank_Transfer">Überweisung</msg>
   <msg key="Basic_Information">Basisinformationen</msg>
   <msg key="Become_this_user">Einloggen als dieser Benutzer</msg>
   <msg key="Belarus">Weißrussland</msg>
@@ -170,14 +173,21 @@
   <msg key="Create_Project">Neues Projekt</msg>
   <msg key="Created">Erstellt</msg>
   <msg key="Creation">Registriert</msg>
+  <msg key="creditenadp">credit.en.adp</msg>
+  <msg key="creditesadp">credit.es.adp</msg>
+  <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
+  <msg key="creditSEAT_VWesadp">credit.SEAT_VW.es.adp</msg>
   <msg key="Croatia">Kroatien</msg>
+  <msg key="cs">cs</msg>
   <msg key="Cuba">Kuba</msg>
   <msg key="Customer">Kunde</msg>
+  <msg key="Customer_Contact">Kundenkontakt</msg>
   <msg key="Customer_Documents">Kundendokumente</msg>
   <msg key="Customer_Invoice">Kundenrechnung</msg>
   <msg key="Customers">Kunden</msg>
   <msg key="CustOrIntl">Kunde oder Intern</msg>
   <msg key="Cyprus">Zypern</msg>
+  <msg key="cz">cz</msg>
   <msg key="Czech Republic">Tschechische Republik</msg>
   <msg key="Czech_Republic">Tschechische Republik</msg>
   <msg key="d">D</msg>
@@ -189,6 +199,7 @@
   <msg key="de">de</msg>
   <msg key="de_CH">de_CH</msg>
   <msg key="de_DE">de_DE</msg>
+  <msg key="Debit_advice">Lastschrift</msg>
   <msg key="Declined">Abgelehnt</msg>
   <msg key="Del">Löschen</msg>
   <msg key="Delete">Löschen</msg>
@@ -202,6 +213,9 @@
   <msg key="Deliver">Ausliefern</msg>
   <msg key="Delivered">Ausgeliefert</msg>
   <msg key="Delivery_Date">Auslieferungsdatum</msg>
+  <msg key="Delivery_Note">Liefereschein</msg>
+  <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
+  <msg key="deliverynoteesadp">deliverynote.es.adp</msg>
   <msg key="Denmark">Dänemark</msg>
   <msg key="Description">Beschreibung</msg>
   <msg key="directory_path">Verzeichnispfad</msg>
@@ -211,6 +225,7 @@
   <msg key="Done">Fertig</msg>
   <msg key="Download_files">Dateien herunterladen</msg>
   <msg key="Draft_Quality">Entwurfsqualität</msg>
+  <msg key="DTP">DTP</msg>
   <msg key="Duplicate_UserB">Doppelter Benutzer</msg>
   <msg key="e">E</msg>
   <msg key="Eco">Eco</msg>
@@ -323,6 +338,7 @@
   <msg key="Iceland">Island</msg>
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Nummer</msg>
+  <msg key="Illustration">Illustration</msg>
   <msg key="Import_Company_CSV">Firmen-CSV importieren</msg>
   <msg key="Import_Company_CVS">Firmenliste (CVS) importieren</msg>
   <msg key="Import_User_CSV">Benutzerliste (CVS) importieren </msg>
@@ -342,13 +358,16 @@
   <msg key="intranet-core.Menu_Restore">Wiederherstellen</msg>
   <msg key="Intranet_content">Intranet Inhalt</msg>
   <msg key="Intranet_users">Intranet Benutzer</msg>
+  <msg key="Invoicable">Abrechenbar</msg>
   <msg key="Invoice">Rechnung</msg>
   <msg key="invoice-englishadp">invoice-english.adp</msg>
   <msg key="invoice-spanishadp">invoice-spanish.adp</msg>
-  <msg key="Invoiced">Ausgestellt</msg>
+  <msg key="Invoiced">Berechnet</msg>
   <msg key="invoiceenadp">invoice.en.adp</msg>
   <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
   <msg key="invoiceesadp">invoice.es.adp</msg>
+  <msg key="invoiceSEAT_VWenadp">invoice.SEAT_VW.en.adp</msg>
+  <msg key="invoiceSEAT_VWesadp">invoice.SEAT_VW.es.adp</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Irak</msg>
   <msg key="Ireland">Irland</msg>
@@ -436,6 +455,8 @@
   <msg key="lt_Delete_the_primary_co">Löschen Primärkontakt</msg>
   <msg key="lt_delete_this_user_inst">löschen diese Benutzer anstatt</msg>
   <msg key="lt_Deleting_first_names_">Löschen %first_names% %last_name% </msg>
+  <msg key="lt_deliverynoteSEAT_VWen">deliverynote.SEAT_VW.en.adp</msg>
+  <msg key="lt_deliverynoteSEAT_VWes">deliverynote.SEAT_VW.es.adp</msg>
   <msg key="lt_Discussionintranet-fo">Diskussion</msg>
   <msg key="lt_Do_you_want_to_create">Wollen sie ein Unterprojekt anlegen? Lassen sie das Feld leer, falls sie sich nicht sicher sind</msg>
   <msg key="lt_Dots__in_Project_Path">Punkte ('.') sind im Projektpfad nicht erlaubt</msg>
@@ -496,6 +517,7 @@
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
+  <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
   <msg key="lt_Meineintranet-timeshe">Meine</msg>
   <msg key="lt_Member_state_user_sta">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
   <msg key="lt_Member_state_user_sta_1">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
@@ -588,6 +610,7 @@
   <msg key="Mail_Failed">Mailversand hat nicht funktioniert</msg>
   <msg key="Main_Menu">Hauptmenü</msg>
   <msg key="Main_Office">Hauptsitz</msg>
+  <msg key="Main_Project">Hauptprojekt</msg>
   <msg key="Maintenance_Project">Wartungsprojekt</msg>
   <msg key="make_primary_contact">zum Primärkontakt machen</msg>
   <msg key="Malaysia">Malaysia</msg>
@@ -667,7 +690,7 @@
   <msg key="or_by">oder </msg>
   <msg key="or_Last_Name">oder Nachname</msg>
   <msg key="Org_Chart">Organigramm</msg>
-  <msg key="Other">Andere</msg>
+  <msg key="Other">Other</msg>
   <msg key="Ouch">Autsch!</msg>
   <msg key="Outstanding">Herausragend</msg>
   <msg key="p">P</msg>
@@ -721,6 +744,7 @@
   <msg key="Project_Budget">Projekt Budget</msg>
   <msg key="Project_Budget_Hours">Projekt Stundenbudget</msg>
   <msg key="Project_Hierarchy">Projekthierarchie</msg>
+  <msg key="Project_Management">Projektmanagement</msg>
   <msg key="Project_Manager">Projektmanager</msg>
   <msg key="Project_Managers">Projektmanager</msg>
   <msg key="Project_Members">Projektteam</msg>
@@ -752,9 +776,12 @@
   <msg key="Quote_out">Angebot ausgesendet</msg>
   <msg key="quoteenadp">quote.en.adp</msg>
   <msg key="quoteesadp">quote.es.adp</msg>
+  <msg key="quoteSEAT_VWenadp">quote.SEAT_VW.en.adp</msg>
+  <msg key="quoteSEAT_VWesadp">quote.SEAT_VW.es.adp</msg>
   <msg key="Quoting">Angebotserstellung</msg>
   <msg key="r">R</msg>
   <msg key="Recent_Registrations">Letzte Registrierungen</msg>
+  <msg key="Redaccin">Redacción</msg>
   <msg key="Referral_Source">Kontaktaufnahme</msg>
   <msg key="Referral_source">Kontaktaufnahme</msg>
   <msg key="Repeating_Cost">Wiederkehrende Kosten</msg>
@@ -780,6 +807,7 @@
   <msg key="Save_Changes">Änderungen speichern</msg>
   <msg key="Screen_name">Seitenname</msg>
   <msg key="Scroll">Scrollen</msg>
+  <msg key="se">sv</msg>
   <msg key="Search">Suchen</msg>
   <msg key="Search_for_a_user">Benutzersuche</msg>
   <msg key="Search_for_User">Benutzersuche</msg>
@@ -811,6 +839,7 @@
   <msg key="Submit">Absenden</msg>
   <msg key="Summary">Übersicht</msg>
   <msg key="Supervisor">Betreuer</msg>
+  <msg key="sv">sv</msg>
   <msg key="Sweden">Schweden</msg>
   <msg key="Switzerland">Schweiz</msg>
   <msg key="Syria">Syrien</msg>
@@ -836,6 +865,8 @@
   <msg key="Timesheet_Cost">Zeiterfassung</msg>
   <msg key="Today">Heute</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
+  <msg key="Trad_Corrida_Gamesa">Trad. Corrida (Gamesa)</msg>
+  <msg key="Trados">Trados</msg>
   <msg key="Trans-ing">wird übersetzt</msg>
   <msg key="Trans__Edit">Übersetzung Edit</msg>
   <msg key="Trans__Edit__Proof">Übersetzung Edit Proof</msg>
@@ -859,6 +890,7 @@
   <msg key="unassigned">nicht zugewiesen</msg>
   <msg key="Unconfirmed">Unbestätigt</msg>
   <msg key="Undefined">Undefiniert</msg>
+  <msg key="Undefined2">Undefiniert</msg>
   <msg key="Unit">Einheit</msg>
   <msg key="Unit_of_Measure">Maßeinheit</msg>
   <msg key="United Kingdom">Vereinigtes Königreich</msg>
@@ -889,6 +921,8 @@
   <msg key="v">V</msg>
   <msg key="Vacation">Urlaub</msg>
   <msg key="value">%value% </msg>
+  <msg key="VAS">VAS</msg>
+  <msg key="VAS_5051">VAS 5051</msg>
   <msg key="VAT_Number">MwSt. Nummer</msg>
   <msg key="Venezuela">Venezuela</msg>
   <msg key="View">Sicht</msg>
@@ -917,7 +951,9 @@
   <msg key="Your_Current_Timezone">Aktuelle Zeitzone</msg>
   <msg key="Yugoslavia">Jugoslawien</msg>
   <msg key="z">Z</msg>
+  <msg key="zh_CN">zh_CN</msg>
   <msg key="zh_cn">zh_cn</msg>
+  <msg key="zh_TW">zh_TW</msg>
   <msg key="zh_tw">zh_tw</msg>
   <msg key="ZIP">PLZ</msg>
   <msg key="ZIP_and_City">PLZ und Stadt</msg>
