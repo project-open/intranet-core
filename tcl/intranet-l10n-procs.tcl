@@ -70,3 +70,70 @@ ad_proc -public im_l10n_sql_date_format {
 } {
     return "YYYY-MM-DD"
 }
+
+
+
+ad_proc im_l10n_normalize_string {
+    {-style alphanum}
+    filename
+} {
+    Normalize a string by removing non-supported characters.
+    A parameter determines the supported and non-supported characters.
+    Supported styles include:
+	alphanum_lower, alphanum, alphanum_space, latin, utf8, none
+} {
+    switch $style {
+	alphanum_lower {
+	    set filename [im_l10n_asciiize_string $filename]
+	    set filename [string tolower $filename]
+	    regsub -all {[^a-z0-9]+} $filename "_" filename
+	}
+	alphanum {
+	    set filename [im_l10n_asciiize_string $filename]
+	    regsub -all {[^a-zA-Z0-9]+} $filename "_" filename
+	}
+	alphanum_space {
+	    set filename [im_l10n_asciiize_string $filename]
+	    regsub -all {[^a-zA-Z0-9\ ]+} $filename "_" filename
+	}
+	latin {
+	}
+	utf8 {
+	}
+	none {
+	}
+	default {
+	    set filename [im_l10n_asciiize_string $filename]
+	    regsub -all {[^a-zA-Z0-9]+} $filename "_" filename
+	}
+    }
+    
+    if {"none" != $style} {
+	# Remove multiple occurrences of "_"
+	regsub -all {_+} $filename "_" filename
+	
+	# Remove a leading and trailing "_"
+	regsub {^_} $filename "" filename
+	regsub {_$} $filename "" filename
+    }
+
+    return $filename
+}
+
+ad_proc im_l10n_asciiize_string {s} {
+    Replaces accented and characters with diaresis with
+    standard ASCII characters.
+} {
+    regsub -all {\u00E1|\u00C1|\u00E2|\u00C2|\u00E0|\u00C0|\u00E5|\u00C5|\u00E3|\u00C3|\u00E4|\u00C4} $s "a" s
+    regsub -all {\u00E7|\u00C7} $s "c" s
+    regsub -all {\u00E9|\u00C9|\u00EA|\u00CA|\u00E8|\u00C8|\u00EB|\u00CB} $s "e" s
+    regsub -all {\u00ED|\u00CD|\u00EE|\u00CE|\u00CC|\u00EF|\u00CF} $s "i" s
+    regsub -all {\u00F1|\u00D1} $s "n" s
+    regsub -all {\u00F3|\u00D3|\u00F4|\u00D4|\u00F2|\u00D2|\u00F8|\u00D8|\u00F5|\u00D5|\u00F6|\u00D6} $s "o" s
+    regsub -all {\u00DF} $s "s" s
+    regsub -all {\u00FA|\u00DA|\u00FB|\u00DB|\u00F9|\u00D9|\u00FC|\u00DC} $s "u" s
+    regsub -all {\u00FD|\u00DD|\u00FF} $s "y" s
+    return $s
+}
+
+
