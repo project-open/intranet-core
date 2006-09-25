@@ -45,12 +45,18 @@ if { [info exists category_type] && ![empty_string_p $category_type]} {
 set category_list_html ""
 
 db_foreach all_categories_of_type "
-select c.category, c.category_id, count(ui.user_id) as n_interested_users
-from users_interests ui, categories c
-where ui.category_id (+) = c.category_id
-and $category_type_criterion
-group by c.category, c.category_id
-order by n_interested_users desc" {
+	select
+		c.category, 
+		c.category_id, 
+		count(ui.user_id) as n_interested_users
+	from
+		users_interests ui, 
+		categories c
+	where 
+		ui.category_id (+) = c.category_id
+		and $category_type_criterion
+	group by c.category, c.category_id
+	order by n_interested_users desc" {
 
     append category_list_html "<li><a href=\"one?[export_url_vars category_id]\">$category</a>\n"
 
