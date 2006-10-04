@@ -24,7 +24,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
-    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_be_a_syst]">
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_be_a_syst]"
     return
 }
 
