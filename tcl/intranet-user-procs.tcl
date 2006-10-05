@@ -114,6 +114,32 @@ ad_proc -public user_permissions { current_user_id user_id view_var read_var wri
 }
 
 
+ad_proc -public im_sysadmin_user_default { } {
+    Determines the default system Administrator account
+    Just takes the lowest user_id from the members of
+    the Admin group...
+} {
+
+    set user_id [db_string default_admin "
+        select
+                min(user_id) as user_id
+        from
+                acs_rels ar,
+                membership_rels mr,
+		users u
+        where
+                ar.rel_id = mr.rel_id
+                and u.user_id = ar.object_id_two
+                and ar.object_id_one = [im_admin_group_id]
+                and mr.member_state = 'approved'
+    " -default 0]
+
+    return $user_id
+}
+
+
+
+
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
 } {
