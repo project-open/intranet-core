@@ -120,7 +120,7 @@ ad_proc -public im_sysadmin_user_default { } {
     the Admin group...
 } {
 
-    set user_id [db_string default_admin "
+    set user_id [util_memoize "db_string default_admin \"
         select
                 min(user_id) as user_id
         from
@@ -132,7 +132,7 @@ ad_proc -public im_sysadmin_user_default { } {
                 and u.user_id = ar.object_id_two
                 and ar.object_id_one = [im_admin_group_id]
                 and mr.member_state = 'approved'
-    " -default 0]
+    \" -default 0" 60]
 
     return $user_id
 }
