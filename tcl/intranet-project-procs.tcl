@@ -409,8 +409,8 @@ ad_proc -public im_project_options {
 			1=1
 	"
      } else {
-	 # The user should see only his own projects
-	 set sql "
+	# The user should see only his own projects
+	set sql "
 		select
 			p.project_id,
 			p.project_name
@@ -426,8 +426,7 @@ ad_proc -public im_project_options {
 			p.project_id = r.object_id
 			and r.member_p > 0
 	"
-     }	
-
+    }	
 
     if {$company_id} {
 	ns_set put $bind_vars company_id $company_id
@@ -538,11 +537,20 @@ ad_proc -public im_project_options {
     }
 
     if {$member_user_id} {
+
+	# Show the default project always
+	set project_sql ""
+	if {"" != $project_id} {
+	    set project_sql "UNION select :project_id"
+	}
+
 	ns_set put $bind_vars member_user_id $member_user_id
 	append sql "	and p.project_id in (
 				select object_id_one
 				from acs_rels
-				where object_id_two = :member_user_id)
+				where object_id_two = :member_user_id
+			    $project_sql
+			)
 		    "
     }
 
