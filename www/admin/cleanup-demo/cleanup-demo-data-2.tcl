@@ -1,6 +1,6 @@
-# /packages/intranet-core/www/admin/categories/index.tcl
+# /packages/intranet-core/www/admin/cleanup-demo/ cleanup-demo-data-2.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2003 - 2006 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -13,10 +13,10 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-  Home page for category administration.
+    Delete all demo data in the system in order to prepare
+    for production rollout
 
-  @author guillermo.belcic@project-open.com
-  @author frank.bergmann@project-open.com
+    @author frank.bergmann@project-open.com
 } {
     { select_category_type "All" }
 }
