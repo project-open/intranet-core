@@ -147,6 +147,9 @@ if {[db_table_exists users_contact]} {
     db_dml delete_user_users_contact "delete from users_contact"
 }
 
+if {[db_table_exists im_component_plugin_user_map]} {
+    db_dml delete_im_component_plugin_user_map "delete from im_component_plugin_user_map"
+}
 
 
 # Content Repository etc.
@@ -240,6 +243,7 @@ if {[db_table_exists im_trans_tasks]} {
 # Remove user from business objects that we don't want to delete...
 db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects "update im_projects set parent_id = null"
+db_dml remove_from_projects "delete from im_timesheet_tasks"
 db_dml remove_from_projects "delete from im_projects"
 db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
 db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
