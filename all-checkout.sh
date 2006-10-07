@@ -48,8 +48,10 @@ cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import
 cvs checkout intranet-material
 cvs checkout intranet-ophelia
+cvs checkout intranet-otp
 cvs checkout intranet-payments
 cvs checkout intranet-reporting
+cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
