@@ -9,10 +9,17 @@
   <td valign=top>
 
     <H2><font color=red>@page_title;noquote@</font></H2>
-    Intentionally destroy your system!
+    <p>
+    <h5>Intentionally destroy your system!</h5>
+    </p>
+    Please follow the step below to entirely cleanup your system.
+    The order of the steps is important, because there are many
+    dependencies between objects. Objects (for example: a user) 
+    can only be deleted if all 'referencing' objects have been
+    deleted (for example: projects, forum items, timesheet hours,...
+    created by this user).
 
-
-    <ul>
+    <ol>
 
       <li>
         <A href=../backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
@@ -30,6 +37,19 @@
           This command is useful in order to start production
           operations from a demo system, but should never
           be used otherwise.<br>&nbsp;<br>
+
+      <li>
+	<A href="cleanup-users">Nuke Demo Users</A><br>
+	  Remove any remaining demo users. <br>
+          You can't delete System Administrator
+          users (so that you can't "lock yourself out" of the system...). 
+          In order to delete Admins please remove them from the "P/O Admins" groups
+          one-by-one in their users's page.
+     </ol>
+
+     <h5>Delete Individual Objects</h5>
+
+     <ul>
 
       <li>
 	<A href="cleanup-users">Nuke Demo Users</A><br>
