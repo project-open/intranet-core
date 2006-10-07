@@ -38,6 +38,11 @@ set bgcolor(1) " class=roweven"
 # Delete all data
 # ---------------------------------------------------------------
 
+# Cleanup existing security tokens.
+# A new set of tokens will be generated with the next server restart.
+db_dml delete_sec_tokens "delete from secret_tokens"
+db_string reset_token_seq "SELECT pg_catalog.setval('t_sec_security_token_id_seq', 1, true)"
+
 
 ns_log Notice "users/nuke2: bboard_email_alerts"
 if {[db_table_exists bboard_email_alerts]} {
