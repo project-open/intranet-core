@@ -277,4 +277,3 @@ if {[db_table_exists im_search_objects]} {
     db_dml im_search_objects "delete from im_search_objects"
 }
 
-set page_body "Cleaned up database completely"
