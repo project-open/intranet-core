@@ -233,6 +233,17 @@ if {[im_permission $current_user_id view_budget]} {
     }
 }
 
+
+
+if { ![empty_string_p $company_project_nr] } { 
+    append project_base_data_html "
+			  <tr>
+			    <td>[lang::message::lookup "" intranet-core.Company_Project_Nr "Customer Project Nr"]</td>
+			    <td>$company_project_nr</td>
+			  </tr>"
+}
+
+
 if { ![empty_string_p $description] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Description]</td>
