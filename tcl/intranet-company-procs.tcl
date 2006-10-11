@@ -376,31 +376,43 @@ ad_proc -public im_company_status_select { select_name { default "" } } {
 }
 
 
-ad_proc -public im_company_contact_select { select_name { default "" } {company_id "201"} } {
+ad_proc -public im_company_contact_select { select_name { default "" } {company_id ""} } {
     Returns an html select box named $select_name and defaulted to 
     $default with the list of all avaiable contact persons of a given
     company
 } {
     set bind_vars [ns_set create]
+    ns_set put $bind_vars default_id $default
     ns_set put $bind_vars company_id $company_id
     ns_set put $bind_vars customer_group_id [im_customer_group_id]
     ns_set put $bind_vars freelance_group_id [im_freelance_group_id]
 
     set query "
-select DISTINCT
-	u.user_id,
-        im_name_from_user_id(u.user_id) as user_name
-from
-	cc_users u,
-	group_distinct_member_map m,
-        acs_rels ur
-where
-	u.member_state = 'approved'
-	and u.user_id = m.member_id
-	and m.group_id in (:customer_group_id, :freelance_group_id)
-	and u.user_id = ur.object_id_two
-	and ur.object_id_one = :company_id
-"
+	select DISTINCT
+		u.user_id,
+	        im_name_from_user_id(u.user_id) as user_name
+	from
+		cc_users u,
+		group_distinct_member_map m,
+	        acs_rels ur
+	where
+		u.member_state = 'approved'
+		and u.user_id = m.member_id
+		and m.group_id in (:customer_group_id, :freelance_group_id)
+		and u.user_id = ur.object_id_two
+		and ur.object_id_one = :company_id
+    "
+
+    # Include the default user in the list, even if he's not a member
+    # of the company
+    if {"" != $default} {
+	append query "
+    UNION
+	select	:default_id as user_id,
+		im_name_from_user_id(:default_id) as user_name
+        "
+    }
+
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
 
