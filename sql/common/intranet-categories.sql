@@ -91,9 +91,10 @@
 -- 8000-8999	Intranet Translation Marketplace
 
 -- 9000-9499	Intranet Material
--- 9500-9599	Intranet Cust-Baselkb
-
 -- 9500-9999	Intranet Timesheet Tasks
+
+-- 9700-9799	Intranet Cust-Baselkb
+
 -- 10000-10999	Intranet DynField
 
 -- Ugly: This range has been "polluted" because previous
