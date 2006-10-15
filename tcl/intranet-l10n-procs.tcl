@@ -158,3 +158,54 @@ proc im_u2i s {
     }
     return $res
 }
+
+
+# ---------------------------------------------------------------
+# Pad number with trailing "0" to meet rounding_precision
+# ---------------------------------------------------------------
+
+ad_proc -public im_numeric_add_trailing_zeros {
+    num
+    rounding_precision
+} {
+    Add trailing "0" until the number has reached the "rounding_precision".
+    "num" comes in TCL numeric format (after adding an "expr num+0").
+    Example: 1524163.8 => 1524163.80
+} {
+#    set num "1524163"
+#    set rounding_precision -3
+
+    # Check if there is a "." in the format, checking from the rear
+    set pos [string first "." $num]
+
+    # Deal with the case of no fraction - this may be OK if the case
+    # of negative fraction "rounding_precision".
+    if {-1 == $pos} {
+	if {$rounding_precision >= 0} { set num "${num}." }
+	set pos [string first "." $num]
+    }
+
+    # Determine the other stuff of the number
+    set len [string length $num]
+    set frac [expr $len-$pos-1]
+    set missing_frac [expr $rounding_precision-$frac]
+
+    # Deal with the case of no fraction - this may be OK if the case
+    # of negative fraction "rounding_precision".
+    if {-1 == $pos} {
+	if {$rounding_precision >= 0} { set num "${num}." }
+    }
+    
+    set result $num
+
+    while {$missing_frac > 0} {
+	set result "${result}0"
+	set missing_frac [expr $missing_frac-1]
+    }
+
+#    ad_return_complaint 1 "num=$num, prec=$rounding_precision, len=$len, pos=$pos, frac=$frac, mis_frac=$missing_frac, res=$result"
+
+    return $result
+}
+
+
