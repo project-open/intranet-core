@@ -137,3 +137,24 @@ ad_proc im_l10n_asciiize_string {s} {
 }
 
 
+proc im_u2shashu s {
+    set res ""
+    foreach i [split $s ""] {
+        scan $i %c int
+        if {$int<128} {
+           append res $i
+        } else {
+	    append res \\u[format %04.4X $int]
+        }
+    }
+    return $res
+}
+
+proc im_u2i s {
+    set res ""
+    foreach i [split $s ""] {
+        scan $i %c int
+	append res "$int."
+    }
+    return $res
+}
