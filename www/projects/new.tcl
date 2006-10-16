@@ -253,8 +253,6 @@ template::element::create $form_id company_project_nr \
     -label "[lang::message::lookup "" intranet-core.Company_Project_Nr "Customer's ProjectNr"]" \
     -after_html "[im_gif help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]  ]"
 
-
-
 template::element::create $form_id description -optional -datatype text\
     -widget textarea \
     -label "[_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable])"\
@@ -297,6 +295,7 @@ if {[form is_request $form_id]} {
 		p.project_type_id, 
 		p.project_status_id, 
 		p.description,
+	        p.company_project_nr,
 		p.project_lead_id, 
 		p.supervisor_id, 
 		p.project_nr,
@@ -342,6 +341,7 @@ if {[form is_request $form_id]} {
 	set project_lead_id $user_id
 	set supervisor_id ""
 	set description ""
+	set company_project_nr ""
 	set project_budget ""
 	set project_budget_currency ""
 	set project_budget_hours ""
@@ -421,6 +421,7 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id project_budget $project_budget
     template::element::set_value $form_id project_budget_currency $project_budget_currency
     template::element::set_value $form_id description $description
+    template::element::set_value $form_id company_project_nr $company_project_nr
 }
 
 template::form::set_properties $form_id edit_buttons "[list [list "$button_text" ok]]"
@@ -578,6 +579,7 @@ if {[form is_valid $form_id]} {
 		supervisor_id =	:supervisor_id,
 		parent_id =	:parent_id,
 		description =	:description,
+		company_project_nr = :company_project_nr,
 		requires_report_p =:requires_report_p,
 		percent_completed = :percent_completed,
 		on_track_status_id =:on_track_status_id,

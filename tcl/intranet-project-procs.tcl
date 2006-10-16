@@ -904,7 +904,7 @@ ad_proc im_project_clone {
     {-clone_members_p 1}
     {-clone_costs_p 1}
     {-clone_trans_tasks_p 1}
-    {-clone_timesheet_tasks_p 1}
+    {-clone_timesheet_tasks_p 0}
     {-clone_target_languages_p 1}
     {-clone_timesheet2_tasks_p 1}
     {-clone_forum_topics_p 1}
