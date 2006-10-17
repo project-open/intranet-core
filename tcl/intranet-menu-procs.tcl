@@ -53,6 +53,25 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
+
+
+    # ToDo: Remove with version 4.0 or later
+    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
+    # We need to be able to read the old DB model, otherwise the
+    # users won't be able to upgrade...
+    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+        select  count(*)
+	from	user_tab_columns
+        where   lower(table_name) = 'im_component_plugins'
+                and lower(column_name) = 'enabled_p'
+    \""]
+    if {$enabled_present_p} {
+        set enabled_sql "and enabled_p = 't'"
+    } else {
+        set enabled_sql ""
+    }
+
+
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label"]
 
     set menu_select_sql "
@@ -62,7 +81,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 		im_menus m
         where
 		parent_menu_id = :parent_menu_id
-		and enabled_p = 't'
+		$enabled_sql
                 and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
         order by
 		sort_order"

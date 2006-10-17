@@ -1629,8 +1629,3 @@ ad_proc -public im_valid_auto_login_p {
     }
     return 1
 }
-
-
-
-
-

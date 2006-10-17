@@ -179,6 +179,24 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 		and ap.grantee_id = p.profile_id
     "]
 
+
+    # ToDo: Remove with version 4.0 or later
+    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
+    # We need to be able to read the old DB model, otherwise the
+    # users won't be able to upgrade...
+    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+	select	count(*)
+	from	user_tab_columns
+	where	lower(table_name) = 'im_component_plugins'
+		and lower(column_name) = 'enabled_p'
+    \""]
+    if {$enabled_present_p} { 
+	set enabled_sql "and c.enabled_p = 't'"
+    } else {
+	set enabled_sql ""
+    }
+
+
     set plugin_sql "
 	select	*
 	from (
@@ -200,7 +218,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 			    on (c.plugin_id = m.plugin_id)
 		where
 			c.page_url = :url_stub
-			and c.enabled_p = 't'
+			$enabled_sql
 			and (view_name is null or view_name = :view_name)
 	    ) p
 	where	
@@ -241,6 +259,24 @@ ad_proc -public im_component_insert { plugin_name } {
     Insert a particular component.
     Returns "" if the component doesn't exist.
 } {
+
+    # ToDo: Remove with version 4.0 or later
+    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
+    # We need to be able to read the old DB model, otherwise the
+    # users won't be able to upgrade...
+    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+	select	count(*)
+	from	user_tab_columns
+	where	lower(table_name) = 'im_component_plugins'
+		and lower(column_name) = 'enabled_p'
+    \""]
+    if {$enabled_present_p} { 
+	set enabled_sql "and c.enabled_p = 't'"
+    } else {
+	set enabled_sql ""
+    }
+
+
     set plugin_sql "
 	select
 		c.*
@@ -248,7 +284,7 @@ ad_proc -public im_component_insert { plugin_name } {
 		im_component_plugins c
 	where
 		plugin_name=:plugin_name
-		and c.enabled_p = 't'
+		$enabled_sql
 	order by sort_order
     "
 

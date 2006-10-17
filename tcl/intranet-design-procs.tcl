@@ -685,6 +685,23 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
     Get the list of menus in the sub-navbar for the given user.
     This routine is cached and called every approx 60 seconds
 } {
+
+    # ToDo: Remove with version 4.0 or later
+    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
+    # We need to be able to read the old DB model, otherwise the
+    # users won't be able to upgrade...
+    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+        select  count(*)
+	from	user_tab_columns
+        where   lower(table_name) = 'im_component_plugins'
+                and lower(column_name) = 'enabled_p'
+    \""]
+    if {$enabled_present_p} {
+        set enabled_sql "and enabled_p = 't'"
+    } else {
+        set enabled_sql ""
+    }
+
     set menu_select_sql "
 	select
 		menu_id,
@@ -697,7 +714,7 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
 		im_menus m
 	where
 		parent_menu_id = :parent_menu_id
-		and enabled_p = 't'
+		$enabled_sql
 		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by
 		 sort_order
