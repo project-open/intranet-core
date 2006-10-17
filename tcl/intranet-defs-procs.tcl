@@ -711,6 +711,7 @@ ad_proc im_category_select {
     {-include_empty_p 0}
     {-include_empty_name "All"}
     {-plain_p 0}
+    {-super_category_id 0}
     category_type
     select_name
     { default "" }
@@ -719,7 +720,7 @@ ad_proc im_category_select {
     Uses the im_category_hierarchy table to determine
     the hierarchical structure of the category type.
 } {
-    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $select_name $default] 60]
+    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] 60]
 }
 
 ad_proc im_category_select_helper {
@@ -727,15 +728,28 @@ ad_proc im_category_select_helper {
     {-include_empty_p 0}
     {-include_empty_name "All"}
     {-plain_p 0}
+    {-super_category_id 0}
     category_type
     select_name
     { default "" }
 } {
     Returns a formatted "option" widget with hierarchical
-    contents
+    contents.
+    @param super_category_id determines where to start in the category hierarchy
 } {
     if {$plain_p} {
 	return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
+    }
+
+    set super_category_sql ""
+    if {0 != $super_category_id} {
+	set super_category_sql "
+	    and category_id in (
+		select child_id
+		from im_category_hierarchy
+		where parent_id = :super_category_id
+	    )
+	"
     }
 
     # Read the categories into the a hash cache
@@ -751,6 +765,7 @@ ad_proc im_category_select_helper {
                 im_categories
         where
                 category_type = :category_type
+		$super_category_sql
         order by lower(category)
     "
     db_foreach category_select $sql {
@@ -769,6 +784,7 @@ ad_proc im_category_select_helper {
         where
                 c.category_id = h.parent_id
                 and c.category_type = :category_type
+		$super_category_sql
         order by lower(category)
     "
 
