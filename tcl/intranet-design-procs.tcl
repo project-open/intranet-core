@@ -1461,3 +1461,19 @@ ad_proc -public in_project_on_track_bb {
 }
 
 
+
+# --------------------------------------------------------
+# HTML depending on browser
+# --------------------------------------------------------
+
+
+ad_proc -public im_html_textarea_wrap  { } {
+    Returns a suitable value for the <textarea wrap=$wrap> wrap
+    value. Default is "soft", which is interpreted by both 
+    Firefox and IE5/6 as to NOT to convert displayed line wraps
+    into line breaks in the textarea breaks.
+    Reference: http://de.selfhtml.org/html/formulare/eingabe.htm
+} {
+    return "soft"
+}
+
