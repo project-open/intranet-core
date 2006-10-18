@@ -10,11 +10,11 @@
 <form method="post" action="member-notify">
 @export_vars;noquote@
 
-<textarea name=subject rows=1 cols=70 wrap=hard>
+<textarea name=subject rows=1 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
 #intranet-core.lt_role_name_of_object_n#
 </textarea>
 
-<textarea name=message rows=10 cols=70 wrap=hard>
+<textarea name=message rows=10 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
 #intranet-core.lt_Dear_first_names_from#
 </textarea>
 

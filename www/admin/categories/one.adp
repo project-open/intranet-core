@@ -60,7 +60,7 @@
   <tr class=rowodd>
     <td>#intranet-core.Category_description#</td>
     <td>
-      <textarea name=category_description rows=5 cols=50 wrap=soft>@descr@</textarea>
+      <textarea name=category_description rows=5 cols=50 wrap="<%=[im_html_textarea_wrap]%>">@descr@</textarea>
     </td>
   </tr>
 <% if {"" != $hierarchy_component} { %>

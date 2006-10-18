@@ -25,7 +25,7 @@
     <td valign=top align=right>#acs-subsite.Story_Behind_Photo#<br>
        <font size=-1>#acs-subsite.optional#</font>
     </td>
-    <td><textarea rows=6 cols=50 wrap=soft name=portrait_comment></textarea></td>
+    <td><textarea rows=6 cols=50 wrap="<%=[im_html_textarea_wrap]%>" name=portrait_comment></textarea></td>
   </tr>
 </table>
 <p>

@@ -105,7 +105,7 @@ set page_body "
 <tr>
 <td valign=top align=right>Message:</td>
 <td>
-<textarea name=message rows=10 cols=70 wrap=soft></textarea>
+<textarea name=message rows=10 cols=70 wrap=[im_html_textarea_wrap]></textarea>
 </td>
 </tr>
 

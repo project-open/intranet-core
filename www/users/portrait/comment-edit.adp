@@ -6,9 +6,7 @@
 <form method="post" action="comment-edit-2.tcl">
 @export_vars;noquote@
 #acs-subsite.Story_behind_photo#:<br />
-<textarea rows="6" cols="50" wrap="soft" name="description">
-@description@
-</textarea>
+<textarea rows="6" cols="50" wrap="<%=[im_html_textarea_wrap]%>" name="description">@description@</textarea>
 
 
 <p><center>
