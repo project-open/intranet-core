@@ -91,8 +91,7 @@
 -- 8000-8999	Intranet Translation Marketplace
 
 -- 9000-9499	Intranet Material
--- 9500-9999	Intranet Timesheet Tasks
-
+-- 9500-9699	Intranet Timesheet Tasks
 -- 9700-9799	Intranet Cust-Baselkb
 
 -- 10000-10999	Intranet DynField
@@ -101,10 +100,10 @@
 -- systems had the im_categories_seq set to 10000.
 -- However, none of the value should have exceeded 10999
 
--- 11000-11099	Intranet SQL Selectors
--- 11100-11199	CRM IP Type
--- 11200-11299	CRM IP Status
--- 11300-11399	reserved (100)
+-- 11000-11099	Intranet SQL Selectors (100)
+-- 11100-11199	CRM IP Type (100)
+-- 11200-11299	CRM IP Status (100)
+-- 11300-11399	Intranet Trans Invoices VAW (100)
 -- 11400-11499	reserved (100)
 -- 11500-11599	reserved (100)
 -- 11600-11699	reserved (100)
