@@ -143,7 +143,8 @@ if { [empty_string_p $parent_id] } {
 
 
 # VAW Special: Dont show dates to non-employees
-set user_can_see_start_end_date_p [im_user_is_employee_p $current_user_id]
+# ToDo: Replace with DynField dynamic field perms
+set user_can_see_start_end_date_p [expr [im_user_is_employee_p $current_user_id] || [im_user_is_customer_p $current_user_id]]
 
 
 # ---------------------------------------------------------------------
