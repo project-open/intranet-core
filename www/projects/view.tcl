@@ -142,6 +142,9 @@ if { [empty_string_p $parent_id] } {
 #}
 
 
+# VAW Special: Dont show dates to non-employees
+set user_can_see_start_end_date_p [im_user_is_employee_p $current_user_id]
+
 
 # ---------------------------------------------------------------------
 # Project Base Data
@@ -190,13 +193,17 @@ append project_base_data_html "
 			    <td>$project_status</td>
 			  </tr>\n"
 
-if { ![empty_string_p $start_date] } { append project_base_data_html "
+# VAW Special: Freelancers shouldnt see star and end date
+# ToDo: Replace this hard coded condition with DynField
+# permissions per field.
+if { $user_can_see_start_end_date_p && ![empty_string_p $start_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Start_Date]</td>
 			    <td>$start_date_formatted</td>
 			  </tr>"
 }
-if { ![empty_string_p $end_date] } { append project_base_data_html "
+
+if { $user_can_see_start_end_date_p && ![empty_string_p $end_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Delivery_Date]</td>
 			    <td>$end_date_formatted $end_date_time</td>
