@@ -22,6 +22,7 @@ cvs checkout acs-tcl
 cvs checkout acs-templating
 cvs checkout acs-workflow
 
+cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout chat
 cvs checkout cms
@@ -74,6 +75,8 @@ cvs checkout intranet-wiki
 cvs checkout intranet-workflow
 cvs checkout intranet-xmlrpc
 
+cvs checkout notifications
+
 cvs checkout ref-countries
 cvs checkout ref-language
 cvs checkout ref-timezones
@@ -84,4 +87,5 @@ cvs checkout ref-us-zipcodes
 cvs checkout search
 cvs checkout simple-survey
 cvs checkout wiki
+cvs checkout workflow
 cvs checkout xml-rpc
