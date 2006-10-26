@@ -48,11 +48,13 @@ set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
 }
+
 
 # -----------------------------------------------------------
 # Permissions
@@ -444,6 +446,16 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id project_name "[_ intranet-core.lt_Quotes_in_Project_Nam]"
 	incr n_error
     }
+
+    if {[info exists project_nr] && $normalize_project_nr_p} {
+	set project_nr [string tolower [string trim $project_nr]]
+	if {![regexp {^[a-z0-9_]+$} $project_nr match]} {
+	    incr n_error
+	    template::element::set_error $form_id project_nr [lang::message::lookup "" intranet-core.Non_alphanum_chars_in_nr "The specified path contains invalid characters.<br> Allowed are only aphanumeric characters including a-z, 0-9 and '_'."]
+
+	}
+    }
+
     if {[var_contains_quotes $project_nr]} { 
 	template::element::set_error $form_id project_nr "[_ intranet-core.lt_Quotes_in_Project_Nr_]"
 	incr n_error
