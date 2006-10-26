@@ -34,6 +34,8 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeProjectNrP"  default="1" description="Limit the project_nr to lower case alphanum characters?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeCompanyPathP"  default="1" description="Limit the company_path to lower case alphanum characters?"/>
         </parameters>
 
     </version>
