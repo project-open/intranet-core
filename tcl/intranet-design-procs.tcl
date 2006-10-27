@@ -1130,8 +1130,8 @@ ad_proc -public im_stylesheet {} {
     set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
     return "
 <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
-<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
 <link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
 <script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>
 "
 
