@@ -123,8 +123,8 @@ ad_proc -public im_permission {user_id privilege} {
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-    set result [util_memoize "im_permission_helper $user_id $privilege" 60]
-    return $result
+    return [util_memoize "im_permission_helper $user_id $privilege" 60]
+#    return [im_permission_helper $user_id $privilege]
 }
 
 
