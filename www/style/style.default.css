@@ -188,4 +188,61 @@ html>body #subnavbar { bottom: 0px }
 }
 
 
+.list-filter {
+  font-size: 70%;
+  font-family: tahoma,verdana,arial,helvetica;
+}
+tr.list-filter-selected {
+  background-color: #eeeeff;
+}
+span.list-filter-selected {
+  color: black;
+}
+.list-filter-header {
+  font-size: 70%;
+  font-family: tahoma,verdana,arial,helvetica;
+  font-weight: bold;
+}
+.list-filter-section {
+  font-size: 70%;
+  font-family: tahoma,verdana,arial,helvetica;
+  font-weight: bold;
+  background-color: #bbbbff;
+  padding-left: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 0px;
+  margin-bottom: 8px;
+}
+td.list-filter-pane {
+  background-color: #ddddff;
+  vertical-align: top;
+}
+
+
+td.list-list-pane {
+  background-color: white;
+  valign: center;
+  padding-left: 10px;
+}
+
+table.list-tiny {
+  font-family: tahoma, verdana, helvetica;
+  font-size: 75%;
+  border-collapse: collapse;
+}
+
+
+th.list-narrow a {
+  color: black;
+}
+
+p.list-row {
+  font-family: tahoma, verdana, helvetica;
+  font-size: 85%;
+}
+
+span.list-label {
+  color: #6f6f6f;
+}
 
