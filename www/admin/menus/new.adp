@@ -5,7 +5,7 @@
 
 <h2>@page_title@</h2>
 
-<li><a href="<%= [export_vars -base "/intranet/admin/permissions/one" {{object_id menu_id}}]%>">Detailed Permissions</a><br>&nbsp;
+<li><a href="<%= [export_vars -base "/intranet/admin/permissions/one" {{object_id $menu_id}}]%>">Detailed Permissions</a><br>&nbsp;
 
 <if @message@ not nil>
   <div class="general-message">@message@</div>
