@@ -35,9 +35,9 @@ ad_proc -public im_backup_accepted_version_nr { version } {
     or an error message otherwise.
 } {
     switch $version {
-	"0.5" { return "" }
-	"1.3" { return "" }
-	"ACS3.4" { return "" }
+	"3.0" { return "" }
+	"3.1" { return "" }
+	"3.2" { return "" }
 	default { return "Unknown backup dump version '$version'<br>" }
     }
 }
