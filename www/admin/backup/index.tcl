@@ -36,7 +36,7 @@ if {!$user_is_admin_p} {
 set page_title "Backup & Restore"
 set context_bar [im_context_bar $page_title]
 set context ""
-set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]
+set find_cmd [im_filestorage_find_cmd]
 
 set menu_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
