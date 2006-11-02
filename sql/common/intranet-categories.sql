@@ -82,7 +82,8 @@
 -- 4200-4299	Intranet TM Integration Type
 -- 4300-4399	Intranet Trans Task Type
 -- 4300-4499    Intranet Bug-Tracker
--- 4400-4599    (reserved)
+-- 4400-4499    Intranet Trans RFQ
+-- 4500-4599    (reserved)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
