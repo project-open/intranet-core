@@ -1169,7 +1169,7 @@ ad_proc -public im_navbar_gif_url_helper {} {
     set navbar_pieces_len [llength $navbar_pieces]
     if {$navbar_pieces_len > 1} {
 	set navbar_gif_url [lindex $navbar_pieces [expr $navbar_pieces_len-1] ]
-	ns_log Error "im_navbar_gif_url: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_url' -> '$navbar_gif_url'"
+	ns_log Notice "im_navbar_gif_url: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_url' -> '$navbar_gif_url'"
     }
 
     return $navbar_gif_url
