@@ -16,7 +16,7 @@ ad_page_contract {
     return_url
     edit_p:optional
     message:optional
-    { form_mode "display" }
+    { form_mode "edit" }
 }
 
 

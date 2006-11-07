@@ -84,6 +84,7 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
+  <td class=rowtitle>Sort</td>
   <td class=rowtitle>Package</td>\n"
 
 set main_sql_select ""
@@ -218,6 +219,7 @@ db_foreach menus $main_sql {
     $label<br>
     <tt>$visible_tcl</tt>
   </td>
+  <td>$sort_order</td>
   <td>$package_name</td>
 "
 
