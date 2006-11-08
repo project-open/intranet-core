@@ -512,21 +512,15 @@ if {[form is_submission $form_id]} {
     set project_name_exists [db_string project_name_exists "
 	select 	count(*)
 	from	im_projects
-	where	(
-		    upper(trim(project_name)) = upper(trim(:project_name))
-		    or upper(trim(project_nr)) = upper(trim(:project_nr))
-		    or upper(trim(project_path)) = upper(trim(:project_nr))
-		)
+	where	upper(trim(project_name)) = upper(trim(:project_name))
 	        and project_id <> :project_id
     "]
 	
     if { $project_name_exists > 0 } {
 	incr n_error
 	template::element::set_error $form_id project_name "[_ intranet-core.lt_The_specified_name_pr]"
-	template::element::set_error $form_id project_nr "[_ intranet-core.lt_The_specified_name_pr]"
     }
-	
-	
+		
     if {$n_error >0} {
 	return
     }
