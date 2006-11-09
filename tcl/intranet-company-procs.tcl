@@ -95,6 +95,8 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $company_id
 } {
+    set debug 0
+
     upvar $view_var view
     upvar $read_var read
     upvar $write_var write
@@ -135,12 +137,14 @@ where
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
     set admin [expr $user_admin_p || $user_is_key_account_p]
 
-    ns_log Notice "im_company_permissions: user_is_key_account_p=$user_is_key_account_p"
-    ns_log Notice "im_company_permissions: user_is_admin_p=$user_is_admin_p"
-    ns_log Notice "im_company_permissions: user_is_group_member_p=$user_is_group_member_p"
-    ns_log Notice "im_company_permissions: user_is_group_admin_p=$user_is_group_admin_p"
-    ns_log Notice "im_company_permissions: user_is_employee_p=$user_is_employee_p"
-    ns_log Notice "im_company_permissions: user_admin_p=$user_admin_p"
+    if {$debug} {
+	ns_log Notice "im_company_permissions: user_is_key_account_p=$user_is_key_account_p"
+	ns_log Notice "im_company_permissions: user_is_admin_p=$user_is_admin_p"
+	ns_log Notice "im_company_permissions: user_is_group_member_p=$user_is_group_member_p"
+	ns_log Notice "im_company_permissions: user_is_group_admin_p=$user_is_group_admin_p"
+	ns_log Notice "im_company_permissions: user_is_employee_p=$user_is_employee_p"
+	ns_log Notice "im_company_permissions: user_admin_p=$user_admin_p"
+    }
 
     if {$user_is_group_member_p} { set read 1 }
     if {[im_permission $user_id view_companies_all]} { set read 1 }
