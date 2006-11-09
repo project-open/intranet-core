@@ -1645,3 +1645,28 @@ ad_proc -public im_valid_auto_login_p {
     }
     return 1
 }
+
+
+
+# ---------------------------------------------------------------
+# Ad-hoc execution of SQL-Queries
+# Format for "Developer Service" "pre" display
+# ---------------------------------------------------------------
+
+ad_proc -public im_ad_hoc_query {
+    sql
+} {
+    Ad-hoc execution of SQL-Queries
+    Format for browser "pre" display
+} {
+    set lol [db_list_of_lists ad_hoc_query $sql]
+
+    set result ""
+    foreach row $lol {
+	foreach col $row {
+	    append result "$col\t"
+	}
+	append result "\n"
+    }
+    return $result
+}
