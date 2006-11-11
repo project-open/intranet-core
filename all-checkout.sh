@@ -79,6 +79,7 @@ cvs checkout intranet-security-update-client
 cvs checkout intranet-simple-survey
 # cvs checkout intranet-spam
 # cvs checkout intranet-sql-selectors
+cvs checkout intranet-sysconfig
 # cvs checkout intranet-timesheet
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
