@@ -28,13 +28,14 @@
         im_projects parent,
         $perm_sql children
       where
-        children.project_status_id not in (
+        children.project_type_id not in (
+		[im_project_type_task]
+	)
+        and children.project_status_id not in (
 		[im_project_status_deleted],
 		[im_project_status_canceled]
 	)
-        and children.project_type_id not in (
-		84, [im_project_type_task]
-	)
+	$subproject_status_sql
         and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
         and parent.project_id = :super_project_id
       order by children.tree_sortkey

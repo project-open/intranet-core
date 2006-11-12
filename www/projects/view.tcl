@@ -29,6 +29,7 @@ ad_page_contract {
     { show_all_comments 0}
     { forum_order_by "" }
     { view_name "standard"}
+    { subproject_status_id "76" }
 }
 
 # ---------------------------------------------------------------------
@@ -93,7 +94,7 @@ set parent_name [db_string parent_name "select project_name from im_projects whe
 # ---------------------------------------------------------------------
 
 # Redirect if this is a timesheet task (subtype of project)
-if {$project_type_id == [im_project_type_task] || $project_type_id == 84} {
+if {$project_type_id == [im_project_type_task]} {
     ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{task_id $project_id}}]
 
 }
@@ -349,6 +350,20 @@ if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
 
 set project_url "/intranet/projects/view"
 set space "&nbsp; &nbsp; &nbsp; "
+
+
+set subproject_status_sql ""
+if {"" != $subproject_status_id && 0 != $subproject_status_id} {
+    set subproject_status_sql "
+        and children.project_status_id in (
+		select	child_id
+		from	im_category_hierarchy
+		where	parent_id = :subproject_status_id
+	    UNION
+		select	:subproject_status_id as child_id
+	)
+    "
+}
 
 db_multirow -extend {subproject_indent subproject_url subproject_bold_p} subprojects project_hierarchy {} {
     
