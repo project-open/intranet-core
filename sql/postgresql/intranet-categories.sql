@@ -95,6 +95,39 @@ end;' language 'plpgsql';
 
 
 -------------------------------------------------------------
+-- Helper function/view to return all sub-categories of a main category
+-------------------------------------------------------------
+
+
+create or replace function im_sub_categories (
+	integer
+) returns setof integer as '
+declare
+	p_cat			alias for $1;
+	v_cat			integer;
+	row			RECORD;
+BEGIN
+	FOR row IN
+		select  child_id
+		from    im_category_hierarchy
+		where   parent_id = p_cat
+		UNION
+		select  p_cat
+	LOOP
+	    RETURN NEXT row.child_id;
+	END LOOP;
+
+	RETURN;
+end;' language 'plpgsql';
+
+-- Test query
+-- select * from im_sub_categories(81);
+
+
+
+
+
+-------------------------------------------------------------
 -- Import category definitions common to all DBs
 
 \i ../common/intranet-categories.sql
