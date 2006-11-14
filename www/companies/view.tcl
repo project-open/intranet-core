@@ -251,13 +251,14 @@ select
 	p.*,
 	1 as llevel
 from
-	im_projects p,
-	im_categories c
+	im_projects p
 where 
-	p.company_id=:company_id
-	and p.project_status_id = c.category_id
+	p.company_id = :company_id
         and p.parent_id is null
-	and lower(c.category) not in ('deleted')
+	and p.project_status_id not in (
+		[im_project_status_canceled], 
+		[im_project_status_deleted]
+	)
 order by p.project_nr DESC
 "
 
