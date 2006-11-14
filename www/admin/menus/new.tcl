@@ -36,10 +36,12 @@ set focus "menu.var_name"
 set page_title "Edit Menu"
 set current_url [ad_conn url]?[ad_conn query]
 
-
+set object_id 0
 if {![info exists menu_id]} { 
     set form_mode "edit" 
     set page_title "New Menu"
+} else {
+    set object_id $menu_id
 }
 
 set context [im_context_bar $page_title]
