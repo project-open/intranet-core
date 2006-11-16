@@ -3,7 +3,7 @@
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">projects</property>
 
-<table border=0 cellpadding=0 cellspacing=0>
+<table border=0 cellpadding=0 cellspacing=1>
 <tr>
   <td> <!-- TD for the left hand filter HTML -->
 
