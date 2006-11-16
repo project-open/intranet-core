@@ -504,7 +504,7 @@ set filter_html "
 <form method=get action='/intranet/projects/index'>
 [export_form_vars start_idx order_by how_many view_name company_id include_subprojects_p letter]
 
-<table border=0 cellpadding=0 cellspacing=0>
+<table border=0 cellpadding=0 cellspacing=1>
   <tr> 
     <td colspan='2' class=rowtitle align=center>
       [_ intranet-core.Filter_Projects]
@@ -515,8 +515,8 @@ set filter_html "
 if {[im_permission $current_user_id "view_projects_all"]} { 
     append filter_html "
   <tr>
-    <td valign=top>[_ intranet-core.View]:</td>
-    <td valign=top>[im_select mine_p $view_types ""]</td>
+    <td class=form-label>[_ intranet-core.View]:</td>
+    <td class=form-widget>[im_select mine_p $view_types ""]</td>
   </tr>
 "
 }
@@ -524,15 +524,15 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
-    <td valign=top>[_ intranet-core.Project_Status]:</td>
-    <td valign=top>[im_category_select -include_empty_p 1 "Intranet Project Status" project_status_id $project_status_id]</td>
+    <td class=form-label>[_ intranet-core.Project_Status]:</td>
+    <td class=form-widget>[im_category_select -include_empty_p 1 "Intranet Project Status" project_status_id $project_status_id]</td>
   </tr>\n"
 }
 
 append filter_html "
   <tr>
-    <td valign=top>[_ intranet-core.Project_Type]:</td>
-    <td valign=top>
+    <td class=form-label>[_ intranet-core.Project_Type]:</td>
+    <td class=form-widget>
       [im_category_select -include_empty_p 1 "Intranet Project Type" project_type_id $project_type_id]
 	  <input type=submit value=Go name=submit>
     </td>
