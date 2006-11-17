@@ -273,7 +273,7 @@ switch [string tolower $order_by] {
     "spend days" { set order_by_clause "order by spend_days" }
     "estim. days" { set order_by_clause "order by estim_days" }
     "start date" { set order_by_clause "order by start_date DESC" }
-    "delivery date" { set order_by_clause "order by end_date DESC" }
+    "delivery date" { set order_by_clause "order by end_date" }
     "create" { set order_by_clause "order by create_date" }
     "quote" { set order_by_clause "order by quote_date" }
     "open" { set order_by_clause "order by open_date" }
