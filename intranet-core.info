@@ -13,7 +13,7 @@
         <release-date>2004-08-24</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="3.2.2.0.0"/>
+        <provides url="intranet-core" version="3.2.4.0.0"/>
         <requires url="acs-subsite" version="5.0"/>
 
         <callbacks>
@@ -27,15 +27,19 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://projop.dnsalias.com/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="MaintenanceMessage"  description="The system will display the maintenance message (if it is not empty) in a red bar on top of the screen for all users. For example: 'Maintenance Mode - Please do not enter any new data into the system. Any changes will be lost.'"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeCompanyPathP"  default="1" description="Limit the company_path to lower case alphanum characters?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeProjectNrP"  default="1" description="Limit the project_nr to lower case alphanum characters?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NumberResultsPerPage"  default="50" description="How many lines do we want to show in an index page?"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectNrDateFormat"  default="YYYY_" description="Date format for project number prefix. Example is '' (empty string) for a pure number, 'YYYY_' for a 4 digit year plus an underscore, 'YY' as a 2 digit year prefix or the string 'none' for no date prefix."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrDigits"  default="4" description="How many digits should the incrementing project_nr have? Default is four."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="20" description="How many characters can the project number have?"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringDefaultType"  description="What is the default type for subproject filtering? Choose &quot;&quot; to show everything, or &quot;76&quot; for Open."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringEnabledP"  default="0" description="Should we show a filter widget to select the status for subprojects? This is useful if a company uses many subprojects per main projects, such as the case of &quot;maintenance&quot; projects."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/images/project_open.38.10frame.gif" description="System logo that appears in all screens"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeProjectNrP"  default="1" description="Limit the project_nr to lower case alphanum characters?"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeCompanyPathP"  default="1" description="Limit the company_path to lower case alphanum characters?"/>
         </parameters>
 
     </version>
