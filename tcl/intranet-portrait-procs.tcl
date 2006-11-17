@@ -61,6 +61,8 @@ ad_proc -public im_portrait_user_file { user_id } {
 ad_proc -public im_random_employee_component { } {
     Returns a random employee's photograph and a little bio
 } {
+    return ""
+
     # Get the current user id to not show the current user's portrait
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
