@@ -29,7 +29,7 @@ ad_page_contract {
     { show_all_comments 0}
     { forum_order_by "" }
     { view_name "standard"}
-    { subproject_status_id "76" }
+    { subproject_status_id "" }
 }
 
 # ---------------------------------------------------------------------
@@ -48,6 +48,13 @@ if {0 == $project_id} {set project_id $object_id}
 if {0 == $project_id} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_specify_a] "
     return
+}
+
+set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
+set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
+
+if {$subproject_filtering_enabled_p} {
+    if {"" == $subproject_status_id} { set subproject_status_id $subproject_filtering_default_status_id }
 }
 
 # ---------------------------------------------------------------------

@@ -46,6 +46,7 @@ switch $view_name {
 	<tr>
 	  <td class=tablebody><font size=-1>
 
+<if @subproject_filtering_enabled_p@>
 		<table>
 		<form action="@current_url;noquote@" method=GET>
 		<%= [export_form_vars project_id] %>
@@ -58,7 +59,7 @@ switch $view_name {
 		</tr>
 		</form>
 		</table>
-
+</if>
 		<table class="list">
 		  <tr class="list-header">
 		    <th class="list-narrow"> &nbsp; </th>
