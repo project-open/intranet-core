@@ -827,7 +827,7 @@ order by
 	WHERE
 		p.company_id = c.company_id
 		$project_history_restriction
-	order by end_date
+	order by project_nr DESC
     "
 
     
