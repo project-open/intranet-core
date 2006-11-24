@@ -856,6 +856,8 @@ ad_proc im_category_select_helper {
     # with the top level
     foreach p $category_list_sorted {
         set p [lindex $cat($p) 0]
+        set enabled_p [lindex $cat($p) 4]
+	if {"f" == $enabled_p} { continue }
         set p_level $level($p)
         if {0 == $p_level} {
             append html [im_category_select_branch -translate_p $translate_p $p $default $base_level [array get cat] [array get direct_parent]]

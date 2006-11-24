@@ -86,6 +86,7 @@ select
 	u.creation_ip as registration_ip,
 	to_char(u.last_visit, :date_format) as last_visit,
 	u.screen_name,
+	u.username,
 	u.member_state
 from
 	cc_users u

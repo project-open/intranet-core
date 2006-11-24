@@ -144,9 +144,36 @@ ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
 } {
     set options [db_list_of_lists provider_options "
-        select first_names || ' ' || last_name, user_id
+        select im_name_from_user_id(user_id), user_id
         from im_employees_active
 	order by first_names, last_name
+    "]
+    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
+ad_proc -public im_project_manager_options { 
+    {-include_empty 1} 
+    {-current_pm_id 0}
+} {
+    Cost provider options
+} {
+    set options [db_list_of_lists provider_options "
+	select * from (
+	        select	im_name_from_user_id(user_id) as name, user_id
+	        from	im_employees_active
+	    UNION
+	        select	im_name_from_user_id(user_id) as name, user_id
+	        from	users_active u,
+			group_distinct_member_map gm
+		where	u.user_id = gm.member_id
+			and gm.group_id = [im_pm_group_id]
+	    UNION
+		select	im_name_from_user_id(user_id) as name, user_id
+		from	users_active u
+		where	u.user_id = :current_pm_id
+	) t
+	order by name
     "]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options

@@ -25,6 +25,7 @@ ad_page_contract {
     days:array,optional
     { return_url "" }
     { submit "" }
+    { submit_del "" }
     { delete_user:multiple,integer "" }
 }
 
@@ -43,6 +44,9 @@ if {!$write} {
     ad_return_complaint 1 "You have no rights to modify members of this object."
     return
 }
+
+# Ugly but HTML... The value of the buttons changes with the L10n.
+if {"" != $submit_del} { set submit "Del" }
 
 ns_log Notice "member-update: object_id=$object_id"
 ns_log Notice "member-update: submit=$submit"

@@ -165,9 +165,16 @@ template::element::create $form_id company_id \
     -options $customer_list_options \
     -after_html $help_text
 
-
+# Include current PM in list of potential PMs if not there
+# already ...
+#
 set project_lead_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
-set project_lead_list_options [concat $project_lead_options [im_employee_options 0]]
+set project_lead_id 0
+if {[info exists project_id]} {
+    set project_lead_id [db_string project_lead "select	project_lead_id from im_projects where project_id = :project_id" -default 0]
+}
+set project_lead_list_options [concat $project_lead_options [im_project_manager_options -include_empty 0 -current_pm_id $project_lead_id]]
+
 template::element::create $form_id project_lead_id -optional\
     -label "[_ intranet-core.Project_Manager]" \
     -widget "select" \

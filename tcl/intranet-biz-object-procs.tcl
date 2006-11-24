@@ -443,7 +443,7 @@ append body_html $name
         $spam_members_html
       </td>"
 	append footer_html "
-      <td><input type=submit value='[_ intranet-core.Del]' name=submit></td>
+      <td><input type=submit value='[_ intranet-core.Del]' name=submit_del></td>
       </td>
     </tr>"
 }

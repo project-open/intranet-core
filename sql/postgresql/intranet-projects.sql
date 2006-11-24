@@ -210,11 +210,11 @@ for each row
 execute procedure im_projects_update_tr ();
 
 
-
-
-
 create index im_project_parent_id_idx on im_projects(parent_id);
+
+-- Optional Indices for larger systems:
 -- create index im_project_status_id_idx on im_projects(project_status_id);
+-- create index im_project_type_id_idx on im_projects(project_type_id);
 -- create index im_project_project_nr_idx on im_projects(project_nr);
 
 -- Dont allow the same name for the same company+level

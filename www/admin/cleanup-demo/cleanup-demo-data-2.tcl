@@ -202,6 +202,9 @@ db_dml im_payments_audit "delete from im_payments_audit"
 
 db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 
+# Timesheet
+db_dml timesheet_cost_refs "update im_hours set cost_id = null"
+
 # Costs
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
 foreach cost_info $cost_infos {
@@ -280,4 +283,13 @@ db_dml forum "delete from im_fs_folders"
 if {[db_table_exists im_search_objects]} {
     db_dml im_search_objects "delete from im_search_objects"
 }
+
+# Workflow
+db_dml wf_case_assignments "delete from wf_case_assignments"
+db_dml wf_task_assignments "delete from wf_task_assignments"
+db_dml wf_tokens "delete from wf_tokens"
+db_dml wf_tasks "delete from wf_tasks"
+db_dml wf_cases "delete from wf_cases"
+db_dml wf_attribute_value_audits "delete from wf_attribute_value_audit"
+db_dml wf_case_deadlines "delete from wf_case_deadlines"
 

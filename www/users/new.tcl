@@ -25,6 +25,7 @@ ad_page_contract {
     { return_url "/intranet/users/" }
     { email ""}
     { first_names ""}
+    { username ""}
     { last_name ""}
 } -properties {
     context:onevalue
@@ -53,6 +54,15 @@ set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_use
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
+
+# Should we show the "Username" field of the user?
+set show_username_p [parameter::get_from_package_key \
+	-package_key intranet-core \
+	-parameter EnableUsersUsernameP \
+	-default 0]
+
+# We need the field if we go for non-email login...
+if {![auth::UseEmailForLoginP]} { set show_username_p 1 }
 
 
 # Get the list of profiles managable for current_user_id
@@ -98,7 +108,8 @@ select
 	pe.last_name,
 	pa.email,
 	pa.url,
-	u.screen_name
+	u.screen_name,
+	u.username
 from
 	parties pa
 	left outer join persons pe on (pa.party_id = pe.person_id)
@@ -146,7 +157,14 @@ if { [security::RestrictLoginToSSLP] } {
 
 ad_form -name register -export {next_url user_id return_url} -form { 
     {email:text(text) {label "[_ intranet-core.Email]"} {html {size 30}}}
-    {username:text(hidden),optional value {}}
+}
+
+# !!!
+ad_form -extend -name register -form {
+    {username:text(text),optional {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
+}
+
+ad_form -extend -name register -form {
     {first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
     {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
 }
@@ -345,8 +363,8 @@ ad_form -extend -name register -on_request {
 	    ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name"
 	    acs_user::update \
 		-user_id $user_id \
-		-screen_name $screen_name
-	    
+		-screen_name $screen_name \
+		-username $username
 	}
 
 	# For all users (new and existing one):
