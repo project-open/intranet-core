@@ -267,7 +267,8 @@ if { ![empty_string_p $description] } { append project_base_data_html "
 			  </tr>"
 }
 
-if {$write} {
+
+if {$write && [im_permission $current_user_id edit_project_basedata]} {
 	append project_base_data_html "
 			  <tr> 
 			    <td>&nbsp; </td>
