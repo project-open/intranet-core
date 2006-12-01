@@ -1002,21 +1002,31 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	select	c.*,
 		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
 	from	im_component_plugins c
-	where	location = 'header'
+	where	location like 'header%'
 	order by sort_order
     "
 
-    set plugin_html ""
+    set plugin_left_html ""
+    set plugin_right_html ""
     db_foreach get_plugins $plugin_sql {
 
 	if {$any_perms_set_p > 0} {
 	    if {"f" == $perm} { continue }
 	}
 
-	ns_log Notice "im_component_bay: component_tcl=$component_tcl"
+	ns_log Notice "im_component_bay: component_tcl=$component_tcl, location=$location"
 	if { [catch {
+
 	    # "uplevel" evaluates the 2nd argument!!
-	    append plugin_html [uplevel 1 $component_tcl]
+	    switch $location {
+		"header-left" {
+		    append plugin_left_html [uplevel 1 $component_tcl]
+		}
+		default {
+		    append plugin_right_html [uplevel 1 $component_tcl]
+		}
+	    }
+
 	} err_msg] } {
 	    set plugin_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
 	    set plugin_html [im_table_with_title $plugin_name $plugin_html]
@@ -1028,9 +1038,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 <div id=header_class>
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
-    <td> 
-    [im_logo]
-    </td>
+    <td>[im_logo]</td>
+    <td>$plugin_left_html</td>
     <td align=left valign=middle> 
       <div id=whosonline_class>
       <span class=small>
@@ -1042,7 +1051,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     </td>
     <td valign=middle align=right> 
 	$search_form 
-	$plugin_html
+	$plugin_right_html
     </TD>
   </tr>
 </table>
