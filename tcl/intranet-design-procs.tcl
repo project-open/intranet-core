@@ -1028,8 +1028,8 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	    }
 
 	} err_msg] } {
-	    set plugin_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
-	    set plugin_html [im_table_with_title $plugin_name $plugin_html]
+	    set plugin_right_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
+	    set plugin_right_html [im_table_with_title $plugin_name $plugin_right_html]
         }
     }
 
