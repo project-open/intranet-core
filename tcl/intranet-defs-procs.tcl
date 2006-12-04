@@ -1057,8 +1057,6 @@ $field_name $default_value]
     return $category_html
 }
 
-
-
 # usage:
 #   suppose the variable is called "expiration_date"
 #   put "[philg_dateentrywidget expiration_date]" in your form
@@ -1081,6 +1079,7 @@ TYPE=text SIZE=5 MAXLENGTH=4>"
 
     return [ns_dbformvalueput $output $column date $default_date]
 }
+
 
 ad_proc philg_dateentrywidget_default_to_today {column} {
     set today [lindex [split [ns_localsqltimestamp] " "] 0]
