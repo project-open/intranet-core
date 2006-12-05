@@ -84,6 +84,7 @@ set category_list_html "
 <table border=0>
 <tr>
   <td class=rowtitle align=center>Id</td>
+  <td class=rowtitle align=center>En</td>
   <td class=rowtitle align=center>Category</td>
   <td class=rowtitle align=center>Is-A</td>
   <td class=rowtitle align=center>Int1</td>
@@ -112,10 +113,13 @@ set ctr 1
 set old_id 0
 db_foreach category_select {} {
 
+    if {"t" == $enabled_p } { set enabled_p "" }
+
     if {$old_id == $category_id} {
 	# We got another is-a for the same category
 	append category_list_html "
 	<tr $bgcolor([expr $ctr % 2])>
+	  <td></td>
 	  <td></td>
 	  <td></td>
 	  <td>$parent</td>
@@ -134,6 +138,7 @@ db_foreach category_select {} {
     append category_list_html "
 	<tr $bgcolor([expr $ctr % 2])>
 	  <td>$category_id</td>
+	  <td>$enabled_p</td>
 	  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
 	  <td>$aux_int1 $aux_int1_cat</td>
