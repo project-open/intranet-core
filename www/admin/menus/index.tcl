@@ -84,6 +84,7 @@ set table_header "
   <td width=20></td>
   <td width=20></td>
   <td width=20></td>
+  <td class=rowtitle>En</td>
   <td class=rowtitle>Sort</td>
   <td class=rowtitle>Package</td>\n"
 
@@ -205,10 +206,10 @@ $table_header\n"
 set ctr 0
 set old_package_name ""
 db_foreach menus $main_sql {
+
+    if {"t" == $enabled_p} { set enabled_p "" }
     incr ctr
-
     append table "\n<tr$bgcolor([expr $ctr % 2])>\n"
-
     if {0 != $indent_level} {
 	append table "\n<td colspan=$indent_level>&nbsp;</td>"
     }
@@ -219,6 +220,7 @@ db_foreach menus $main_sql {
     $label<br>
     <tt>$visible_tcl</tt>
   </td>
+  <td>$enabled_p</td>
   <td>$sort_order</td>
   <td>$package_name</td>
 "
