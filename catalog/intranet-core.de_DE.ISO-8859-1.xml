@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.0.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.3.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -7,6 +7,7 @@
   <msg key="A_-_Test_approved">A - Test bestanden</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">Persönliche Daten</msg>
+  <msg key="Absences">Abwesenheiten</msg>
   <msg key="Ac_Counting">Rechnungswesen</msg>
   <msg key="Access_denied">Zugang verweigert</msg>
   <msg key="Account_Deleted">Konto gelöscht</msg>
@@ -36,6 +37,7 @@
   <msg key="Add_New_User">Neuer Benutzer</msg>
   <msg key="Add_office">Neuer Firmensitz</msg>
   <msg key="Add_primary_contact">Neuer Hauptkontakt</msg>
+  <msg key="Add_Stuff">Hinzufügen</msg>
   <msg key="Add_subproject">Neues Unterprojekt</msg>
   <msg key="Add_user">Neuer Benutzer</msg>
   <msg key="Address">Adresse</msg>
@@ -151,6 +153,7 @@
   <msg key="Company_Type">Firmentyp</msg>
   <msg key="Company_Type_1">Firmentyp</msg>
   <msg key="Confirm">Bestätigen</msg>
+  <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
   <msg key="Consulting_Project">Beratungsprojekt</msg>
   <msg key="Contact">Kontakt</msg>
   <msg key="Contact_Email">E-Mail</msg>
@@ -166,6 +169,7 @@
   <msg key="Create_a_new_Project">Neues Projekt</msg>
   <msg key="Create_a_Subproject">Neues Unterprojekt</msg>
   <msg key="Create_Category">Neue Kategorie</msg>
+  <msg key="Create_New_Company_for_User">Neue Firma erstellen für diesen Benutzer</msg>
   <msg key="Create_new_Incident">Neuer Zwischenfall</msg>
   <msg key="Create_new_News_Item">Neue Nachricht</msg>
   <msg key="Create_new_Note">Neue Notiz</msg>
@@ -282,6 +286,7 @@
   <msg key="Finance_Home">Finanzen Homepage</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">Vorname</msg>
+  <msg key="for">für</msg>
   <msg key="for_Deliv">zur Auslieferung</msg>
   <msg key="for_Edit">zum Editieren</msg>
   <msg key="for_Proof">zum Korrekturlesen</msg>
@@ -302,6 +307,7 @@
   <msg key="Future">Zukunft</msg>
   <msg key="g">G</msg>
   <msg key="Gen">Gen</msg>
+  <msg key="Generic_PM">Generic PM</msg>
   <msg key="Georgia">Georgien</msg>
   <msg key="Germany">Deutschland</msg>
   <msg key="gl">gl</msg>
@@ -587,6 +593,7 @@
   <msg key="lt_This_is_not_a_TestDem">Dies ist kein Test-/Demo-/Developmentsystem</msg>
   <msg key="lt_This_project_is_part_">Dieses Projekt ist ein Unterprojekt oder hat Unterprojekte</msg>
   <msg key="lt_Todayintranet-timeshe">Heute</msg>
+  <msg key="lt_Trans_Only_Dynamic_WF">Trans Only (Dynamic WF)</msg>
   <msg key="lt_Translation_source_la">Quellsprache</msg>
   <msg key="lt_Translation_target_la">Zielsprache</msg>
   <msg key="lt_Unable_to_determine_I">Das System konnte die Firma mit &quot;Internal&quot; nicht finden.</msg>
@@ -599,6 +606,7 @@
   <msg key="lt_View_time_spent_on_al">Anzeige der erfaßten Stunden des gesamten Projektteams</msg>
   <msg key="lt_View_your_hours_on_al">Anzeige ihrer erfaßten Studen in allen Projekten</msg>
   <msg key="lt_Vollmitgliedintranet-">Vollmitglied </msg>
+  <msg key="lt_Web_Site_Development2">Web Site Development2</msg>
   <msg key="lt_Wire_Transfer_La_Caix">Überweisung La Caixa</msg>
   <msg key="lt_You_are_not_authorize">Sie haben nicht die notwendige Berechtigung, diese Seite zu sehen</msg>
   <msg key="lt_You_have_two_options_">Sie haben hier zwei Möglichkeiten:</msg>
@@ -611,6 +619,7 @@
   <msg key="Main_Menu">Hauptmenü</msg>
   <msg key="Main_Office">Hauptsitz</msg>
   <msg key="Main_Project">Hauptprojekt</msg>
+  <msg key="Maintenance">Maintenance</msg>
   <msg key="Maintenance_Project">Wartungsprojekt</msg>
   <msg key="make_primary_contact">zum Primärkontakt machen</msg>
   <msg key="Malaysia">Malaysia</msg>
@@ -625,12 +634,14 @@
   <msg key="Mexico">Mexico</msg>
   <msg key="Mine">Meine</msg>
   <msg key="Mkt">Mkt</msg>
+  <msg key="Month">Month</msg>
   <msg key="more">weitere...</msg>
   <msg key="more_">weitere...</msg>
   <msg key="more_companies">mehr Firmen...</msg>
   <msg key="more_projects">weitere Projekte...</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
+  <msg key="My_Account">Mein Konto</msg>
   <msg key="n">N</msg>
   <msg key="Name">Name</msg>
   <msg key="Netherlands">Niederlande</msg>
@@ -691,6 +702,7 @@
   <msg key="or_Last_Name">oder Nachname</msg>
   <msg key="Org_Chart">Organigramm</msg>
   <msg key="Other">Other</msg>
+  <msg key="Otherr">Other</msg>
   <msg key="Ouch">Autsch!</msg>
   <msg key="Outstanding">Herausragend</msg>
   <msg key="p">P</msg>
@@ -788,7 +800,9 @@
   <msg key="Repeating_Costs">Wiederkehrende Kosten</msg>
   <msg key="Reply">Antwort</msg>
   <msg key="Report_this_error">Berichten sie diesen Fehler</msg>
+  <msg key="Reporting">Berichte</msg>
   <msg key="Request_Error">Fehler in der Anfrage</msg>
+  <msg key="Reset_Stuff">Zurücksetzen</msg>
   <msg key="Return_to">Zurück zu</msg>
   <msg key="Return_To_Previous_Page">Zurück zur letzten Seite</msg>
   <msg key="Romania">Rumänien</msg>
@@ -820,12 +834,11 @@
   <msg key="Sick">Krank</msg>
   <msg key="Singapore">Singapur</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
-  <msg key="Size">Größe</msg>
   <msg key="Slovak Republic">Slowakische Republik</msg>
   <msg key="Slovak_Republic">Slowakische Republik</msg>
   <msg key="Slovenia">Slowenien</msg>
   <msg key="Software_Company">Software Firma</msg>
-  <msg key="Software_Development">Softwareentwicklung</msg>
+  <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Maintenance">Softwarewartung</msg>
   <msg key="Software_Updates">Softwareupdates</msg>
   <msg key="South Africa">Südafrika</msg>
@@ -862,6 +875,7 @@
   <msg key="Test_received">Test empfangen</msg>
   <msg key="Test_sent">Test gesendet</msg>
   <msg key="The_web_with_Google">Das Internet mit Google</msg>
+  <msg key="Timesheet">Zeiterfassung</msg>
   <msg key="Timesheet_Cost">Zeiterfassung</msg>
   <msg key="Today">Heute</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
@@ -929,6 +943,8 @@
   <msg key="View_1">Sicht</msg>
   <msg key="w">W</msg>
   <msg key="Web_Site">Webseite</msg>
+  <msg key="Web_Site_Development">Web Site Development</msg>
+  <msg key="Week">Woche</msg>
   <msg key="Whos_Online">Wer ist Online?</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
@@ -943,7 +959,9 @@
   <msg key="Work_phone">Arbeit Telefon</msg>
   <msg key="Work_Postal_Code">Arbeit Postleitzahl</msg>
   <msg key="Work_ZIP">Arbeit Postleitzahl</msg>
+  <msg key="Workflow">Workflow</msg>
   <msg key="x">X</msg>
+  <msg key="XML-RPC">XML-RPC</msg>
   <msg key="y">Y</msg>
   <msg key="Yes">Ja</msg>
   <msg key="You_can_return_to">Sie können zurückkehren zu</msg>
