@@ -43,7 +43,7 @@ Help is available for you in various ways:
   modules and briefly explains their functionality.
 </li>
 <li>
-  <A href=\"http://sourceforge.net/project/showfiles.php?group_id=86419\"><b>
+  <A href=\"http://www.project-open.org/doc/\"><b>
 <nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
   User Guides</b></a>:<br>
   Please visit the download zone of our
