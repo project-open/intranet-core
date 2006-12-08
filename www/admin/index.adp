@@ -8,11 +8,20 @@
 <tr>
   <td valign=top>
 
-    <H2>@page_title;noquote@</H2>
+    <H2>Documentation</H2>
     <ul>
       <li>
-	<A href="../users/">#intranet-core.lt_Manage_Individual_Use#</A><br>
-	#intranet-core.lt_Here_you_can_manage_u#
+	<A href="/doc/">OpenACS System & Developer Documentation</a><br>
+	Complete documentation of the OpenACS underlying platform.
+      <li>
+	<A href="/intranet-filestorage/"><nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span> Documentation</a><br>
+	Documentation of the OpenACS underlying platform.
+
+    </ul>
+
+    <H2>Administration</H2>
+
+    <ul>
       <li>
 	<A href="profiles/">#intranet-core.Manage_Profiles#</A><br>
 	#intranet-core.lt_Configure_site-wide_d#
@@ -32,22 +41,34 @@
 	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
 	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
-	<A href=/admin/>#intranet-core.lt_Manage_the_OpenACS_Pl#</A><br>
-	#intranet-core.lt_Here_you_find_advance# 
-	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
-      <li>
-	<A href=/acs-admin/developer>#intranet-core.lt_Manage_OpenACS_Develo#</A><br>
-	#intranet-core.lt_Here_you_find_advance_1# 
-	<A href=http://www.openacs.org>#intranet-core.OpenACS_platform#</A>.
+	<a href=/intranet-dynvals/admin/>Admin DynField</a><br>
+	Add new fields to projects, customers and users. New fields can be
+	associated to certain object sub-types. Access can be restricted to
+	certain user groups.
       <li>
 	<A href=backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
 	#intranet-core.PostgreSQL_Backup_blurb# 
 
-<if [db_table_exists im_dynval_vars]>
+    </ul>
+
+    <H2>OpenACS Administration</H2>
+
+    <ul>
+
       <li>
-	<a href=/intranet-dynvals/admin/>#intranet-core.Administer_DynVals#</a><br>
-	#intranet-core.lt_Modify_the_access_per#
-</if>
+	<A href="/acs-admin/apm/"><%= [lang::message::lookup "" intranet-core.OpenACS_Package_Manager "OpenACS Package Manager"] %></A><br>
+	Update, install and uninstall software packages.
+      <li>
+	<A href="/acs-admin/developer"><%= [lang::message::lookup "" intranet-core.OpenACS_Sitemap "OpenACS Developer Tools"] %></A><br>
+	Utilities for developers and access to developer documentation and the API-Browser.
+      <li>
+	<A href="/admin/site-map/"><%= [lang::message::lookup "" intranet-core.OpenACS_Sitemap "OpenACS Sitemap"] %></A><br>
+	The Sitemap defines where modules are "mounted" on the server.
+	<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=b\
+randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved.
+      <li>
+	<A href=/cms/">Content Management Home</a><br>
+	This module is used as part of the Wiki and CRM packages.
 
 <!--
       <li>
@@ -58,7 +79,7 @@
     </ul>
     <%= [im_component_bay left] %>
 
-<b>#intranet-core.Dangerous#</b>
+<h2><font color=red>#intranet-core.Dangerous#</font></h2>
     <ul>
 	<li>
 	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a><br>
