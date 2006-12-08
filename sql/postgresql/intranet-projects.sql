@@ -42,8 +42,7 @@ create table im_projects (
 				references acs_objects,
 	project_name		varchar(1000) not null,
 	project_nr		varchar(100) not null,
-	project_path		varchar(100) not null
-				constraint im_projects_path_un unique,
+	project_path		varchar(100) not null,
 	parent_id		integer 
 				constraint im_projects_parent_fk 
 				references im_projects,
