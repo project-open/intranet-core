@@ -559,11 +559,9 @@ if {[im_permission $current_user_id "add_projects"]} {
 	set wf_sql "
 		select	t.pretty_name as wf_name,
 			w.*
-		from
-			wf_workflows w,
+		from	wf_workflows w,
 			acs_object_types t
-		where
-			w.workflow_key = t.object_type
+		where	w.workflow_key = t.object_type
 			and w.object_type = 'im_project'
 	"
 	db_foreach wfs $wf_sql {
