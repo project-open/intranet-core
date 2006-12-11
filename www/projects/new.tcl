@@ -27,6 +27,7 @@ ad_page_contract {
     { parent_id:integer "" }
     { company_id:integer "" }
     project_nr:optional
+    { workflow_key "" }
     { return_url "" }
 }
 
@@ -111,6 +112,9 @@ template::element::create $form_id project_id \
 template::element::create $form_id supervisor_id \
     -widget "hidden" -optional
 template::element::create $form_id requires_report_p \
+    -widget "hidden" -optional \
+    -datatype text
+template::element::create $form_id workflow_key \
     -widget "hidden" -optional \
     -datatype text
 template::element::create $form_id return_url \
@@ -412,6 +416,7 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id supervisor_id $supervisor_id
     template::element::set_value $form_id requires_report_p $requires_report_p
     template::element::set_value $form_id return_url $return_url
+    template::element::set_value $form_id workflow_key $workflow_key
     template::element::set_value $form_id project_name $project_name
     template::element::set_value $form_id project_nr $project_nr
     template::element::set_value $form_id parent_id $parent_id
@@ -551,9 +556,9 @@ if {[form is_valid $form_id]} {
     if {0 == $id_count} {
 	
 	set project_id [project::new \
-			    -project_name		$project_name \
+			    -project_name	$project_name \
 			    -project_nr		$project_nr \
-			    -project_path		$project_path \
+			    -project_path	$project_path \
 			    -company_id		$company_id \
 			    -parent_id		$parent_id \
 			    -project_type_id	$project_type_id \
@@ -571,6 +576,14 @@ if {[form is_valid $form_id]} {
 	if {"" != $supervisor_id} {
 	    im_biz_object_add_role $supervisor_id $project_id $role_id 
 	}
+
+	# Create a new Workflow for the project if specified
+	if {"" != $workflow_key} {
+	    # Create a new workflow case (instance)
+	    set context_key ""
+	    set case_id [wf_case_new $workflow_key $context_key $project_id]
+	}
+
     }
 	
 	

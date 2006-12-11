@@ -565,7 +565,7 @@ if {[im_permission $current_user_id "add_projects"]} {
 			and w.object_type = 'im_project'
 	"
 	db_foreach wfs $wf_sql {
-	    set new_from_wf_url [export_vars -base "/intranet-workflow/new-workflow" {workflow_key}]
+	    set new_from_wf_url [export_vars -base "/intranet/projects/new" {workflow_key}]
 	    append admin_html "<li><a href=\"$new_from_wf_url\">[lang::message::lookup "" intranet-core.New_workflow "New %wf_name%"]</a>\n"
 	}
     }
