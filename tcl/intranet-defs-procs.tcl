@@ -565,12 +565,27 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
 "
 }
 
-ad_proc im_select { {-translate_p 1} field_name pairs { default "" } } {
+ad_proc im_select { 
+    {-multiple_p 0} 
+    {-size 6}
+    {-translate_p 1} 
+    field_name 
+    pairs 
+    { default "" } 
+} {
     Formats a "select" tag
 } {
     if { [llength $pairs] == 0 } {
 	# Get out early as there's nothing to do
 	return ""
+    }
+
+    set multiple ""
+    if {$multiple_p} { 
+	set multiple "multiple" 
+	set size "size=\"$size\""
+    } else {
+	set size ""
     }
 
     if { [empty_string_p $default] } {
@@ -594,7 +609,7 @@ ad_proc im_select { {-translate_p 1} field_name pairs { default "" } } {
 	}
     }
     return "
-    <select name=\"[ad_quotehtml $field_name]\">
+    <select name=\"[ad_quotehtml $field_name]\" $size $multiple>
     [join $menu_items_select ""]
     </select>
 "
