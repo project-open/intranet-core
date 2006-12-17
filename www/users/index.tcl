@@ -182,6 +182,25 @@ if {[im_permission $user_id "add_users"]} {
     "
 }
 
+set parent_menu_sql "select menu_id from im_menus where label= 'users_admin'"
+set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+
+set menu_select_sql "
+        select  m.*
+        from    im_menus m
+        where   parent_menu_id = :parent_menu_id
+                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+        order by sort_order
+"
+
+# Start formatting the menu bar
+set ctr 0
+db_foreach menu_select $menu_select_sql {
+    regsub -all " " $name "_" name_key
+    append admin_html "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
+}
+
+
 
 # ---------------------------------------------------------------
 # 3. Define Table Columns
