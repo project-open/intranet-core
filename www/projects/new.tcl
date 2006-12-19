@@ -281,12 +281,18 @@ set dynamic_fields_p 0
 set my_project_id 0
 if {[db_table_exists im_dynfield_attributes]} {
     
+    set project_type_id ""
+    if {[info exists project_id]} {
+	set project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+    }
+
     set dynamic_fields_p 1
     set object_type "im_project"
     set my_company_id 0
     if {[info exists project_id]} { set my_project_id $project_id }
         
     im_dynfield::append_attributes_to_form \
+	-object_type_id $project_type_id \
 	-object_type $object_type \
         -form_id $form_id \
         -object_id $my_project_id
