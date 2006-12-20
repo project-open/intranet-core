@@ -113,7 +113,7 @@ switch $view_name {
 	</tr>
 	</table><br>
 
-	<table cellpadding=0 cellspacing=0 border=0>
+	<table cellpadding=0 cellspacing=0 border=0 width='100%'>
 	<tr><td>
 	  <!-- Bottom Component Bay -->
 	  <%= [im_component_bay bottom] %>

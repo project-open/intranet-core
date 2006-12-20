@@ -2,7 +2,6 @@
 
 cvs checkout acs-admin
 cvs checkout acs-api-browser
-# cvs checkout acs_admin_tools
 cvs checkout acs-authentication
 cvs checkout acs-automated-testing
 cvs checkout acs-bootstrap-installer
@@ -27,9 +26,11 @@ cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout chat
 cvs checkout cms
+cvs checkout diagram
 cvs checkout ecommerce
 cvs checkout events
 
+cvs checkout intranet-amberjack
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-core
@@ -39,13 +40,12 @@ cvs checkout intranet-crm-tracking
 cvs checkout intranet-cvs-integration
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
-cvs checkout intranet-expenses
 cvs checkout intranet-exchange-rate
+cvs checkout intranet-expenses
 # cvs checkout intranet-expfind2-ora
 # cvs checkout intranet-expfind2-pg
 # cvs checkout intranet-expfind-ora
 # cvs checkout intranet-expfind-pg
-# cvs checkout intranet-filestorage
 cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
