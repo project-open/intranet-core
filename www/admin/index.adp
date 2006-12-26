@@ -59,7 +59,7 @@
 	<A href="/acs-admin/apm/"><%= [lang::message::lookup "" intranet-core.OpenACS_Package_Manager "OpenACS Package Manager"] %></A><br>
 	Update, install and uninstall software packages.
       <li>
-	<A href="/acs-admin/developer"><%= [lang::message::lookup "" intranet-core.OpenACS_Sitemap "OpenACS Developer Tools"] %></A><br>
+	<A href="/acs-admin/developer"><%= [lang::message::lookup "" intranet-core.OpenACS_Developer_Tools "OpenACS Developer Tools"] %></A><br>
 	Utilities for developers and access to developer documentation and the API-Browser.
       <li>
 	<A href="/admin/site-map/"><%= [lang::message::lookup "" intranet-core.OpenACS_Sitemap "OpenACS Sitemap"] %></A><br>

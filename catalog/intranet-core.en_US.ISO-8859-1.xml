@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.4.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -255,6 +255,7 @@
   <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
   <msg key="deliverynoteesadp">deliverynote.es.adp</msg>
   <msg key="Denmark">Denmark</msg>
+  <msg key="Departments">Departments</msg>
   <msg key="Description">Description</msg>
   <msg key="directory_path">directory path</msg>
   <msg key="Discussion">Discussion</msg>
@@ -941,7 +942,10 @@ other way for the user to find out.</msg>
   <msg key="One_User">One User</msg>
   <msg key="Online_Time">Online Time</msg>
   <msg key="Open">Open</msg>
+  <msg key="OpenACS_Developer_Tools">OpenACS Developer Tools</msg>
+  <msg key="OpenACS_Package_Manager">OpenACS Package Manager</msg>
   <msg key="OpenACS_platform">OpenACS platform</msg>
+  <msg key="OpenACS_Sitemap">OpenACS Sitemap</msg>
   <msg key="or_by">or by</msg>
   <msg key="or_Last_Name">or Last Name</msg>
   <msg key="Order_by_clause">Order by clause</msg>

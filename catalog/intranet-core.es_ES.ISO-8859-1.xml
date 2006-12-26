@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.4.0.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -861,6 +861,8 @@
   <msg key="One_User">Un usuario</msg>
   <msg key="Online_Time">Tiempo online</msg>
   <msg key="Open">Abierto</msg>
+  <msg key="OpenACS_Developer_Tools">OpenACS herramientas de desarroladores</msg>
+  <msg key="OpenACS_Package_Manager">OpenACS Gestor de Paquetes</msg>
   <msg key="OpenACS_platform">Plataforma OpenACS</msg>
   <msg key="or_by">o por</msg>
   <msg key="or_Last_Name">o Apellidos</msg>

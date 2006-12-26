@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.4.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
@@ -55,6 +55,7 @@
   <msg key="Administer_DynVals">DynVals administrieren</msg>
   <msg key="Administration">Administration</msg>
   <msg key="administrator">Administrator</msg>
+  <msg key="Advanced_Filtering">Erweitert filtern</msg>
   <msg key="Advertizing_Project">Werbeprojekt</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Benutzername</msg>
@@ -268,6 +269,8 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
+  <msg key="Exchange_Rates">Wechselkurse</msg>
+  <msg key="Expenses">Ausgaben</msg>
   <msg key="Export_Companies_CSV">Firmen-CSV exportieren</msg>
   <msg key="f">F</msg>
   <msg key="Failed_to_nuke">Löschprozess fehlgeschlagen</msg>
