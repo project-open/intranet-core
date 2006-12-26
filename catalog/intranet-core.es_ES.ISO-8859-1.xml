@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.3.0.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.4.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -9,7 +9,6 @@
   <msg key="A_-_Test_approved">A - Verificación aprobada</msg>
   <msg key="ABC-Bank_EUR">Banco ABC EUR</msg>
   <msg key="About_You">Acerca de Ud.</msg>
-  <msg key="Absences">Absencias</msg>
   <msg key="Ac_Counting">Contabilidad</msg>
   <msg key="Access_denied">Acceso denegado</msg>
   <msg key="Account_Deleted">Cuenta borrada</msg>
@@ -27,7 +26,7 @@
   <msg key="Add_a_new_Office">Añadir una nueva oficina</msg>
   <msg key="Add_a_new_office">Añadir una nueva oficina</msg>
   <msg key="Add_a_new_project">Añadir un nuevo proyecto</msg>
-  <msg key="Add_a_new_project_from_Template">Añadir un nuevo proyecto desde una plantilla</msg>
+  <msg key="Add_a_new_project_from_Template">Añadir un nuevo proyecto a partir de plantilla</msg>
   <msg key="Add_a_new_User">Nuevo usuario</msg>
   <msg key="Add_a_project">Añadir un proyecto</msg>
   <msg key="Add_a_user">Añadir un usuario</msg>
@@ -36,7 +35,7 @@
   <msg key="Add_member">Añadir un miembro</msg>
   <msg key="Add_new_Column">Añadir nueva columna</msg>
   <msg key="Add_New_Company">Añadir una nueva empresa</msg>
-  <msg key="Add_new_member">Añadir a un nuevo miembro</msg>
+  <msg key="Add_new_member">Añadir un nuevo miembro</msg>
   <msg key="Add_New_Office">Añadir una nueva oficina</msg>
   <msg key="Add_New_Project">Añadir un nuevo proyecto</msg>
   <msg key="Add_New_User">Añadir un nuevo usuario</msg>
@@ -54,13 +53,13 @@
   <msg key="Address_2">Dirección 2</msg>
   <msg key="Admin">Administrador</msg>
   <msg key="Admin_category_type">Administrador</msg>
-  <msg key="Admin_Companies">Administración de Empresas</msg>
+  <msg key="Admin_Companies">Administrar empresas</msg>
   <msg key="Admin_Home">Portada Administración</msg>
   <msg key="Admin_Links">Enlaces de Administración</msg>
   <msg key="Admin_Offices">Oficinas de Administración</msg>
   <msg key="Admin_Project">Proyecto de administración</msg>
   <msg key="Admin_Projects">Gestión de proyectos</msg>
-  <msg key="Admin_Users">Administración de Usuarios</msg>
+  <msg key="Admin_Users">Usuarios de Administración</msg>
   <msg key="Administer_DynVals">Administrar DynVals</msg>
   <msg key="Administration">Administración</msg>
   <msg key="administrator">administrador</msg>
@@ -156,7 +155,6 @@
   <msg key="Client_Main_Office">Oficina principal del cliente</msg>
   <msg key="Client_Type">Tipo de cliente</msg>
   <msg key="Clients">Clientes</msg>
-  <msg key="Clone_Project">Clonar este Proyecto</msg>
   <msg key="Clone_Project_Help">Es posible 'clonar' un proyecto para ahorrar tiempo a la hora de crear uno parecido.</msg>
   <msg key="Close">Cerrar</msg>
   <msg key="Closed">Cerrado</msg>
@@ -236,6 +234,7 @@
   <msg key="Del">Del</msg>
   <msg key="Delete">Borrar</msg>
   <msg key="delete">borrar</msg>
+  <msg key="Delete_checked_users">Delete checked users</msg>
   <msg key="Delete_Cost_Center">Borrar Centro Costes</msg>
   <msg key="Delete_Menu">Borrar menú</msg>
   <msg key="Delete_portrait">Borrar fotografía</msg>
@@ -245,7 +244,7 @@
   <msg key="Deliver">Entregar</msg>
   <msg key="Delivered">Entregado</msg>
   <msg key="Delivery_Date">Fecha de entrega</msg>
-  <msg key="Delivery_Note">Alvaran</msg>
+  <msg key="Delivery_Note">Albarán</msg>
   <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
   <msg key="deliverynoteesadp">deliverynote.es.adp</msg>
   <msg key="Denmark">Dinamarca</msg>
@@ -321,13 +320,12 @@
   <msg key="Finance_Home">Portada de Finanzas</msg>
   <msg key="Finland">Finlandia</msg>
   <msg key="First_names">Nombre</msg>
-  <msg key="for">de</msg>
   <msg key="for_Deliv">para Entrega</msg>
   <msg key="for_Edit">para Edición</msg>
   <msg key="for_Proof">para Revisión</msg>
   <msg key="for_QCing">para Control Calidad</msg>
   <msg key="for_Trans">para Traducción</msg>
-  <msg key="Forum">Foros</msg>
+  <msg key="Forum">Foro</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
   <msg key="fr_CH">fr_CH</msg>
@@ -394,7 +392,7 @@
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Consultas</msg>
-  <msg key="Inquiring">Consultar</msg>
+  <msg key="Inquiring">Consultando</msg>
   <msg key="Internal">Interno</msg>
   <msg key="Intranet">Intranet</msg>
   <msg key="intranet-core.Menu_Backup_Restore">Restaurar</msg>
@@ -511,6 +509,7 @@
   <msg key="lt_Create_a_new_Discussi">Crear nuevo tema</msg>
   <msg key="lt_Create_folder_structu">Crear una estructura de carpetas y un subproyecto para cada lenguaje que ha seleccionado.</msg>
   <msg key="lt_Create_the_new_folder">Crear la nueva estructura de carpetas</msg>
+  <msg key="lt_Customer_and_Provider">Cliente y Proveedor</msg>
   <msg key="lt_Customersintranet-fil">Clientes</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Apreciada/o %first_names_from_search%, Ha sido incluida/o como %role_name% en %object_name% dentro de %system_name% bajo la dirección %object_url% Por favor haga clic sobre el enlace para ver más detalles. Saludos cordiales, %current_user_name%</msg>
@@ -701,7 +700,6 @@
   <msg key="lt_This_project_is_part_">Este proyecto forma parte de otro proyecto o contiene subproyectos.</msg>
   <msg key="lt_To_avoid_duplicate_pr">Para evitar proyectos duplicados y determinar dónde están guardados los datos del proyecto en el servidor de archivos local</msg>
   <msg key="lt_Todayintranet-timeshe">Hoy</msg>
-  <msg key="lt_Trans_Only_Dynamic_WF">Trans Only (Dynamic WF)</msg>
   <msg key="lt_Translation_of_a_manu">Traducción de una tarea añadida manualmente: Simplemente se toman las unidades de tarea especificadas manualmente</msg>
   <msg key="lt_Translation_source_la">Idioma de partida de la traducción</msg>
   <msg key="lt_Translation_target_la">Idioma de destino de la traducción</msg>
@@ -965,16 +963,16 @@
   <msg key="Purchase_Order">Orden de compra</msg>
   <msg key="q">q</msg>
   <msg key="QCing">QCing</msg>
-  <msg key="Qualifying">En cualificación</msg>
+  <msg key="Qualifying">Pendiente respuesta cliente</msg>
   <msg key="Quote">Presupuesto</msg>
-  <msg key="Quote_Out">Presupuestar</msg>
+  <msg key="Quote_Out">Presupuestado</msg>
   <msg key="Quote_out">Presupuestado</msg>
   <msg key="quoteenadp">quote.en.adp</msg>
   <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quotes">Ofertas</msg>
   <msg key="quoteSEAT_VWenadp">quote.SEAT_VW.en.adp</msg>
   <msg key="quoteSEAT_VWesadp">quote.SEAT_VW.es.adp</msg>
-  <msg key="Quoting">Pte. presupuestar</msg>
+  <msg key="Quoting">En valoración</msg>
   <msg key="r">r</msg>
   <msg key="Random_Portrait">Retrato Aleatorio</msg>
   <msg key="Recent_Registrations">Registros recientes</msg>
@@ -1017,6 +1015,8 @@
   <msg key="Search">Buscar</msg>
   <msg key="Search_for_a_user">Buscar un usuario</msg>
   <msg key="Search_for_User">Buscar un usuario</msg>
+  <msg key="Seat_Actualization">Seat Actualización</msg>
+  <msg key="Seat_New">Seat Nuevo</msg>
   <msg key="See_the_list_of">Ver la lista de</msg>
   <msg key="Sel">Sel</msg>
   <msg key="Select">Seleccionar</msg>
@@ -1051,7 +1051,6 @@
   <msg key="State">Estado</msg>
   <msg key="Status">Status</msg>
   <msg key="Strategic_Consulting">Consultoría estratégica</msg>
-  <msg key="Sub_Projects">Jerarquía de Proyectos</msg>
   <msg key="Submit">Enviar</msg>
   <msg key="Summary">Resumen</msg>
   <msg key="Supervisor">Supervisor</msg>
@@ -1080,7 +1079,7 @@
   <msg key="The_web_with_Google">En la web con Google</msg>
   <msg key="Time_plan">Planificación de tiempos</msg>
   <msg key="Time_sheet">Parte de trabajo</msg>
-  <msg key="Timesheet">Timesheet</msg>
+  <msg key="Timesheet">Parte de trabajo</msg>
   <msg key="Timesheet_Cost">Coste según hoja de tiempos</msg>
   <msg key="Today">Hoy</msg>
   <msg key="Top_Menu">Menú principal</msg>
@@ -1106,7 +1105,7 @@
   <msg key="Trans__Int_Spotcheck">Trad + Spotcheck int</msg>
   <msg key="Trans_Management">Gestión de trad.</msg>
   <msg key="Trans_Only">Trad solo</msg>
-  <msg key="Trans_Tasks">Trad Tareas</msg>
+  <msg key="Trans_Tasks">Tareas Trad.</msg>
   <msg key="TransEd">Trad+ed</msg>
   <msg key="TransEdProof">Trad+ed+corr</msg>
   <msg key="TransIntSpot">Trad+CC int.</msg>
@@ -1200,7 +1199,6 @@
   <msg key="Work_ZIP">CP de trabajo</msg>
   <msg key="Workflow">Workflow</msg>
   <msg key="x">x</msg>
-  <msg key="XML-RPC">XML-RPC</msg>
   <msg key="y">y</msg>
   <msg key="Yellow">Amarillo</msg>
   <msg key="Yes">Sí</msg>

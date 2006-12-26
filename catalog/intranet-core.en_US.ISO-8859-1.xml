@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.3.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.4.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="_"></msg>
@@ -9,7 +9,6 @@
   <msg key="A_-_Test_approved">A - Test approved</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">About You</msg>
-  <msg key="Absences">Absences</msg>
   <msg key="Ac_Counting">Accounting</msg>
   <msg key="Access_denied">Access denied</msg>
   <msg key="Account_Deleted">Account Deleted</msg>
@@ -159,7 +158,7 @@
   <msg key="Client_Main_Office">Client Main Office</msg>
   <msg key="Client_Type">Client Type</msg>
   <msg key="Clients">Clients</msg>
-  <msg key="Clone_Project">Clone this project</msg>
+  <msg key="Clone_Project">Clonear Proyecto</msg>
   <msg key="Clone_Project_Help">You can 'clone' a project in order to save time to setup a similar project.</msg>
   <msg key="Close">Close</msg>
   <msg key="Closed">Closed</msg>
@@ -171,21 +170,19 @@
   <msg key="Com">Com</msg>
   <msg key="Comments">Comments?</msg>
   <msg key="Companies">Companies</msg>
-  <msg key="Companies_Admin">Companies Admin</msg>
   <msg key="Company">Company</msg>
   <msg key="Company_Documents">Company Documents</msg>
   <msg key="company_employee">company employee</msg>
   <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
+  <msg key="Company_Project_Nr">Núm. Proyecto Cliente</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
   <msg key="Company_Status_1">Company Status:</msg>
   <msg key="Company_Type">Company Type</msg>
   <msg key="Company_Type_1">Company Type:</msg>
   <msg key="Company_Types">Company Types</msg>
-  <msg key="Companys_Contacts">Company's Contacts</msg>
   <msg key="Confirm">Confirm</msg>
-  <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
   <msg key="Consulting_Project">Consulting Project</msg>
   <msg key="Contact">Contact</msg>
   <msg key="Contact_Email">Contact Email</msg>
@@ -313,13 +310,11 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
-  <msg key="Exchange_Rates">Exchange Rates</msg>
   <msg key="Execution_Project_Help">An 'Execution Project' is a copy of a project designed to be completely separated from any references to the initial project in order to keep the customer anonymous.</msg>
   <msg key="Expense_Item">Expense Item</msg>
   <msg key="Expense_Report">Expense Report</msg>
   <msg key="Expenses">Expenses</msg>
   <msg key="Export_Companies_CSV">Export Companies CSV</msg>
-  <msg key="Export_Projects_CSV">Export Projects CSV</msg>
   <msg key="Extra_from">Extra from</msg>
   <msg key="Extra_where">Extra where</msg>
   <msg key="f">f</msg>
@@ -337,7 +332,6 @@
   <msg key="Finance_Home">Finance Home</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_names">First names</msg>
-  <msg key="for">for</msg>
   <msg key="for_Deliv">for Delivery</msg>
   <msg key="for_Edit">for Edit</msg>
   <msg key="for_Proof">for Proof</msg>
@@ -359,7 +353,6 @@
   <msg key="Future">Future</msg>
   <msg key="g">g</msg>
   <msg key="Gen">Gen</msg>
-  <msg key="Generic_PM">Generic PM</msg>
   <msg key="Georgia">Georgia</msg>
   <msg key="Germany">Germany</msg>
   <msg key="gl">gl</msg>
@@ -420,7 +413,6 @@
   <msg key="Intranet">Intranet</msg>
   <msg key="intranet-core.Menu_Backup_Restore">Restore</msg>
   <msg key="intranet-core.Menu_Restore">Restore</msg>
-  <msg key="intranet-core.User_Exits">User Exits</msg>
   <msg key="Intranet_content">Intranet content</msg>
   <msg key="Intranet_users">Intranet users</msg>
   <msg key="Invoicable">Invoiceable</msg>
@@ -540,6 +532,7 @@
   <msg key="lt_Create_a_new_Discussi">Create a new Discussion</msg>
   <msg key="lt_Create_folder_structu">Create folder structure and create a subproject for each language that you have chosen.</msg>
   <msg key="lt_Create_the_new_folder">Create the new folder structure</msg>
+  <msg key="lt_Customer_and_Provider">Customer and Provider</msg>
   <msg key="lt_Customersintranet-fil">Customers</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Dear %first_names_from_search%,
@@ -773,7 +766,6 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_This_project_is_part_">This project is part of another project or contains subprojects.</msg>
   <msg key="lt_To_avoid_duplicate_pr">To avoid duplicate projects and to determine where the project data are stored on the local file server</msg>
   <msg key="lt_Todayintranet-timeshe">Today</msg>
-  <msg key="lt_Trans_Only_Dynamic_WF">Trans Only (Dynamic WF)</msg>
   <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Translation source language</msg>
   <msg key="lt_Translation_target_la">Translation target language</msg>
@@ -794,7 +786,6 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_We_couldnt_find_user__1">We couldn't find user #%user_id%; perhaps this person was nuke?</msg>
   <msg key="lt_We_have_no_contacts_i">We have no contacts in our database for %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">We need either the short name or the group id to set up the url for the /groups directory</msg>
-  <msg key="lt_Web_Site_Development2">Web Site Development2</msg>
   <msg key="lt_Weve_nuked_user_user_">We've nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
   <msg key="lt_What_is_the_financial">What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs.</msg>
   <msg key="lt_Who_is_the_final_cons">Who is the final consumer (when working for an agency)? Examples: &amp;quot;Shell&amp;quot;, &amp;quot;UBS&amp;quot;, ...</msg>
@@ -856,7 +847,6 @@ other way for the user to find out.</msg>
   <msg key="Main_Menu">Main Menu</msg>
   <msg key="Main_Office">Main Office</msg>
   <msg key="Main_Project">Main Project</msg>
-  <msg key="Maintenance">Maintenance</msg>
   <msg key="Maintenance_Project">Maintenance Project</msg>
   <msg key="make_primary_contact">make primary contact</msg>
   <msg key="Malaysia">Malaysia</msg>
@@ -877,7 +867,6 @@ other way for the user to find out.</msg>
   <msg key="mk">mk</msg>
   <msg key="Mkt">Mkt</msg>
   <msg key="mo">mo</msg>
-  <msg key="Month">Monat</msg>
   <msg key="more">more...</msg>
   <msg key="more_">more ...</msg>
   <msg key="more_companies">more companies...</msg>
@@ -958,7 +947,6 @@ other way for the user to find out.</msg>
   <msg key="Order_by_clause">Order by clause</msg>
   <msg key="Org_Chart">Org Chart</msg>
   <msg key="Other">Other</msg>
-  <msg key="Otherr">Other</msg>
   <msg key="Ouch">Ouch!</msg>
   <msg key="Outstanding">Outstanding</msg>
   <msg key="p">p</msg>
@@ -1042,7 +1030,6 @@ other way for the user to find out.</msg>
   <msg key="Project_Task">Project Task</msg>
   <msg key="Project_Type">Project Type</msg>
   <msg key="Projects">Projects</msg>
-  <msg key="Projects_Admin">Projects Admin</msg>
   <msg key="Proof_Only">Proof Only</msg>
   <msg key="Proofing">Proofing</msg>
   <msg key="Provider">Provider</msg>
@@ -1084,7 +1071,6 @@ other way for the user to find out.</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
   <msg key="Return_to">Return to</msg>
   <msg key="Return_To_Previous_Page">Return to previous page</msg>
-  <msg key="RFQs">RFQs</msg>
   <msg key="ro">ro</msg>
   <msg key="Romania">Romania</msg>
   <msg key="ru">ru</msg>
@@ -1112,6 +1098,8 @@ other way for the user to find out.</msg>
   <msg key="Search">Search</msg>
   <msg key="Search_for_a_user">Search for a user</msg>
   <msg key="Search_for_User">Search for User</msg>
+  <msg key="Seat_Actualization">Seat Actualization</msg>
+  <msg key="Seat_New">Seat New</msg>
   <msg key="See_the_list_of">See the list of</msg>
   <msg key="Sel">Sel</msg>
   <msg key="Select">Select</msg>
@@ -1133,7 +1121,6 @@ other way for the user to find out.</msg>
   <msg key="Software_Company">Software Company</msg>
   <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Maintenance">Software Maintenance</msg>
-  <msg key="Software_Testing">Software Testing</msg>
   <msg key="Software_Updates">Software Updates</msg>
   <msg key="Sort_Order">Sort Order</msg>
   <msg key="South Africa">South Africa</msg>
@@ -1153,7 +1140,7 @@ other way for the user to find out.</msg>
   <msg key="State">State</msg>
   <msg key="Status">Status</msg>
   <msg key="Strategic_Consulting">Strategic Consulting</msg>
-  <msg key="Sub_Projects">Project Hierarchy</msg>
+  <msg key="Sub_Projects">Sub-Proyectos</msg>
   <msg key="Submit">Submit</msg>
   <msg key="Summary">Summary</msg>
   <msg key="Supervisor">Supervisor</msg>
@@ -1162,14 +1149,13 @@ other way for the user to find out.</msg>
   <msg key="Sweden">Sweden</msg>
   <msg key="Switzerland">Switzerland</msg>
   <msg key="Syria">Syria</msg>
-  <msg key="SysConfig">Sys Config</msg>
   <msg key="System_Administrator">System Administrator</msg>
   <msg key="t">t</msg>
   <msg key="T-Line">T-Line</msg>
   <msg key="T-Word">T-Word</msg>
   <msg key="Taiwan">Taiwan</msg>
   <msg key="Task">Task</msg>
-  <msg key="Tasks">Trans Tasks</msg>
+  <msg key="Tasks">Tasks</msg>
   <msg key="Tasks__Incidents">Tasks / Incidents</msg>
   <msg key="Tec">Tec</msg>
   <msg key="Tec-Auto">Tec-Auto</msg>
@@ -1255,7 +1241,6 @@ other way for the user to find out.</msg>
   <msg key="User_Administration">User Administration</msg>
   <msg key="user_administration">user administration</msg>
   <msg key="User_Exists">User Exits</msg>
-  <msg key="User_Exits">User Exits</msg>
   <msg key="User_Id">User ID</msg>
   <msg key="User_Matrix">User Matrix</msg>
   <msg key="User_name">User name</msg>
@@ -1284,8 +1269,6 @@ other way for the user to find out.</msg>
   <msg key="w">w</msg>
   <msg key="Web_Site">Web Site</msg>
   <msg key="Web_Site_Design">Web Site Design</msg>
-  <msg key="Web_Site_Development">Web Site Development</msg>
-  <msg key="Week">Week</msg>
   <msg key="Whos_Online">Who's Online?</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
@@ -1311,7 +1294,6 @@ other way for the user to find out.</msg>
   <msg key="Work_ZIP">Work ZIP</msg>
   <msg key="Workflow">Workflow</msg>
   <msg key="x">x</msg>
-  <msg key="XML-RPC">XML-RPC</msg>
   <msg key="y">y</msg>
   <msg key="Yellow">Yellow</msg>
   <msg key="Yes">Yes</msg>
