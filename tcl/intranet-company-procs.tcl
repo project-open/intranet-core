@@ -25,6 +25,7 @@ ad_library {
 # -----------------------------------------------------------
 
 # Frequently used Company Stati
+ad_proc -public im_company_status_active_or_potential {} { return 40 }
 ad_proc -public im_company_status_potential {} { return 41 }
 ad_proc -public im_company_status_inquiries {} { return 42 }
 ad_proc -public im_company_status_qualifying {} { return 43 }
@@ -267,7 +268,6 @@ ad_proc -public im_company_options {
 } {
     Cost company options
 } {
-
     set user_id [ad_get_user_id]
     set bind_vars [ns_set create]
     ns_set put $bind_vars user_id $user_id
@@ -275,72 +275,72 @@ ad_proc -public im_company_options {
     set where_clause "  and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-        (       select
-                       c.*
-                from
-                        im_companies c,
-                        acs_rels r
-                where
-                        c.company_id = r.object_id_one
-                        and r.object_id_two = :user_id
-                        $where_clause
-
-        UNION
-                select
-                        c.*
-                from
-                        im_companies c
-                where
-                        c.company_id = :default
-        )
+	(       select	c.*
+		from	im_companies c,
+			acs_rels r
+		where	c.company_id = r.object_id_one
+			and r.object_id_two = :user_id
+			$where_clause
+	UNION
+		select	c.*
+		from	im_companies c
+		where	c.company_id = :default
+	)
 "
 
     if {[im_permission $user_id "view_companies_all"]} {
-        set perm_sql "im_companies"
+	set perm_sql "im_companies"
     }
 
-
-set sql "
-select
-        c.company_name,
-        c.company_id
-from
-        $perm_sql c
-where
-        1=1
-        $where_clause
-"
+    set sql "
+	select
+		c.company_name,
+		c.company_id
+	from
+		$perm_sql c
+	where
+		1=1
+		$where_clause
+    "
 
     if { ![empty_string_p $status] } {
-        ns_set put $bind_vars status $status
-        append sql " and c.company_status_id=(select company_status_id from im_company_status where company_status=:status)"
+
+	set status_id [db_string status "select company_status_id from im_company_status where company_status=:status" -default 0]
+	ns_set put $bind_vars status $status
+	append sql " and c.company_status_id in (
+		select  :status_id
+	    UNION
+		select  child_id
+		from    im_category_hierarchy
+		where   parent_id = :status_id
+	)"
     }
 
     if { ![empty_string_p $exclude_status] } {
-        set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
-        append sql " and c.company_status_id in (
-                select  company_status_id
-                from    im_company_status
-                where   company_status not in ($exclude_string)
-        )"
+	set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
+	append sql " and c.company_status_id in (
+		select  company_status_id
+		from    im_company_status
+		where   company_status not in ($exclude_string)
+	)"
     }
 
 
     if { ![empty_string_p $type] } {
-        ns_set put $bind_vars type $type
-        append sql "
-        and c.company_type_id in (
-                select  ct.company_type_id
-                from    im_company_types ct
-                where ct.company_type = :type
-        UNION
-                select  ch.child_id
-                from    im_company_types ct,
-                        im_category_hierarchy ch
-                where
-                        ch.parent_id = ct.company_type_id
-                        and ct.company_type = :type
-        )"
+	ns_set put $bind_vars type $type
+	append sql "
+	and c.company_type_id in (
+		select  ct.company_type_id
+		from    im_company_types ct
+		where ct.company_type = :type
+	UNION
+		select  ch.child_id
+		from    im_company_types ct,
+			im_category_hierarchy ch
+		where
+			ch.parent_id = ct.company_type_id
+			and ct.company_type = :type
+	)"
     }
 
     append sql " order by lower(c.company_name)"
@@ -394,11 +394,11 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
     set query "
 	select DISTINCT
 		u.user_id,
-	        im_name_from_user_id(u.user_id) as user_name
+		im_name_from_user_id(u.user_id) as user_name
 	from
 		cc_users u,
 		group_distinct_member_map m,
-	        acs_rels ur
+		acs_rels ur
 	where
 		u.member_state = 'approved'
 		and u.user_id = m.member_id
@@ -414,15 +414,20 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
     UNION
 	select	:default_id as user_id,
 		im_name_from_user_id(:default_id) as user_name
-        "
+	"
     }
 
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
 
 
-ad_proc -public im_company_select { select_name { default "" } { status "" } { type "" } { exclude_status "" } } {
-
+ad_proc -public im_company_select { 
+    select_name 
+    { default "" } 
+    { status "" } 
+    { type "" } 
+    { exclude_status "" } 
+} {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the companies in the system. If status is
     specified, we limit the select box to companies that match that
@@ -445,10 +450,10 @@ ad_proc -public im_company_select { select_name { default "" } { status "" } { t
     set where_clause "	and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-        (	select
+	(	select
 		       c.*
-        	from
-        	        im_companies c,
+		from
+			im_companies c,
 			acs_rels r
 		where
 			c.company_id = r.object_id_one
@@ -489,8 +494,8 @@ where
     if { ![empty_string_p $exclude_status] } {
 	set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
 	append sql " and c.company_status_id in (select company_status_id 
-                                                  from im_company_status 
-                                                 where company_status not in ($exclude_string)) "
+						 from im_company_status 
+						 where company_status not in ($exclude_string)) "
 	ns_log Notice "im_company_select: exclude_string=$exclude_string"
     }
 

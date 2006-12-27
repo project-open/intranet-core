@@ -14,6 +14,7 @@
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
         <provides url="intranet-core" version="3.2.4.0.0"/>
+        <requires url="intranet-dynfield" version="3.2.6"/>
         <requires url="acs-subsite" version="5.0"/>
 
         <callbacks>

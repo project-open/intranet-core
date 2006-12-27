@@ -735,7 +735,7 @@ ad_proc im_category_select {
     Uses the im_category_hierarchy table to determine
     the hierarchical structure of the category type.
 } {
-    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] 60]
+    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] 1]
 }
 
 ad_proc im_category_select_helper {
@@ -780,6 +780,7 @@ ad_proc im_category_select_helper {
                 im_categories
         where
                 category_type = :category_type
+		and enabled_p = 't'
 		$super_category_sql
         order by lower(category)
     "
@@ -807,6 +808,8 @@ ad_proc im_category_select_helper {
     # performance reasons
     set children [list]
     db_foreach hierarchy_select $sql {
+	if {![info exists cat($parent_id)]} { continue}
+	if {![info exists cat($child_id)]} { continue}
         lappend children [list $parent_id $child_id]
     }
 
@@ -1060,8 +1063,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -translate_p 1 -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type \
-$field_name $default_value]
+	append category_html [im_category_select -translate_p 1 -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
 
 
     } else {
