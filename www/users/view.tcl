@@ -79,7 +79,7 @@ set result [db_0or1row users_info_query "
 select 
 	u.first_names, 
 	u.last_name, 
-        u.first_names||' '||u.last_name as name,
+        im_name_from_user_id(u.user_id) as name,
 	u.email,
         u.url,
 	u.creation_date as registration_date, 

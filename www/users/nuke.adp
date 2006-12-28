@@ -8,7 +8,7 @@
 <h2>@page_title@</h2>
 
 #intranet-core.lt_Confirm_the_nuking_of#
-<a href="one?user_id=@user_id@">@first_names@ @last_name@</a>
+<a href="one?user_id=@user_id@">@user_name@</a>
 <p>
 #intranet-core.lt_First_unless_first_na#
 <p>
