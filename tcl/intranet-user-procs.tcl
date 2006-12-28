@@ -144,9 +144,10 @@ ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
 } {
     set options [db_list_of_lists provider_options "
-        select im_name_from_user_id(user_id), user_id
-        from im_employees_active
-	order by first_names, last_name
+	select	im_name_from_user_id(user_id) as name, 
+		user_id
+        from	im_employees_active
+	order by name
     "]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
@@ -191,13 +192,11 @@ ad_proc im_user_select { select_name { default "" } } {
     ns_set put $bind_vars employee_group_id [im_employee_group_id]
     set sql "
 	select	emp.user_id, 
-		emp.last_name || ', 
-		' || emp.first_names as name
+		im_name_from_user_id(emp.user_id) as name
 	from
 		im_employees_active emp
 	order by 
-		lower(emp.last_name),
-		lower(emp.first_names)
+		name
     "
     return [im_selection_to_select_box -translate_p 0 $bind_vars project_lead_list $sql $select_name $default]
 }

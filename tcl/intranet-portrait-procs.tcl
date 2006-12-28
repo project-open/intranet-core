@@ -215,8 +215,6 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     set current_user_id [ad_get_user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
-    set first_names ""
-    set last_name ""
 
     set portrait_alt "Portrait"
     set user_fs_url "/intranet/download/user/$user_id"

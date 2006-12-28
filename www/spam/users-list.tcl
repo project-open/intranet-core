@@ -40,7 +40,7 @@ if { [string compare $all_or_any "any"] == 0 } {
 }
 
 set sql_query "
-select distinct u.user_id, u.first_names || ' ' || u.last_name as user_name, u.email
+select distinct u.user_id, im_name_from_user_id(u.user_id) as user_name, u.email
 from users_active u, user_group_map ugm
 where u.user_id=ugm.user_id $group_list_clause"
 

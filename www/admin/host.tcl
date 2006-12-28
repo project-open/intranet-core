@@ -20,7 +20,9 @@ set page_body "
 <li>IP-Address: \"$ip\"
 <li>Hostname: "
 
-set hostname [ns_hostbyaddr $ip]
+set hostname $ip
+
+catch {set hostname [ns_hostbyaddr $ip]} err_msg
 
 append page_body "\"$hostname\".<br>
 (If this is just the number again, that means the reverse DNS lookup failed.)
@@ -29,13 +31,15 @@ append page_body "\"$hostname\".<br>
 
 # Check for user registrations from the IP
 set users_from_ip_sql "
-	select user_id, first_names, last_name, email 
-	from cc_users
-	where creation_ip = :ip
+	select	user_id, 
+		email,
+		im_name_from_user_id(user_id) as user_name
+	from	cc_users
+	where	creation_ip = :ip
 "
 set items ""
 db_foreach users_from_ip $users_from_ip_sql {
-    append items "<li><a href=\"/intranet/users/view?[export_url_vars user_id]\">$first_names $last_name</a> ($email)\n"
+    append items "<li><a href=\"/intranet/users/view?[export_url_vars user_id]\">$user_name</a> ($email)\n"
 }
 if ![empty_string_p $items] {
     append page_body "

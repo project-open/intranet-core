@@ -195,8 +195,7 @@ if { ![empty_string_p $limit_to_users_in_group_id] } {
     set query "
 select distinct
 	u.user_id,
-	u.first_names,
-	u.last_name,
+	im_name_from_user_id(user_id) as user_name,
 	u.email
 from 
 	registered_users u,
@@ -220,8 +219,7 @@ where
     set query "
 select 
 	u.user_id,
-	p.first_names,
-	p.last_name,
+	im_name_from_user_id(user_id) as user_name,
 	pa.email,
 from 
 	users u,
@@ -273,7 +271,7 @@ db_foreach user_search_query $query {
     append page_contents "
 
 	<tr$bgcolor([expr $ctr % 2])>
-	  <td>$first_names $last_name</td>
+	  <td>$user_name</td>
 	  <td>$email</td>
 	  <td align=center><input type=radio name=user_id_from_search value=$user_id></td>
 	</tr>\n"

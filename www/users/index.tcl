@@ -367,15 +367,15 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 # contain order_by_clauses.
 if {"" == $extra_order_by} {
     switch $order_by {
-	"Name" { set extra_order_by "order by upper(u.last_name||u.first_names)" }
-	"Email" { set extra_order_by "order by upper(u.email)" }
-	"AIM" { set extra_order_by "order by upper(aim_screen_name)" }
-	"Cell Phone" { set extra_order_by "order by upper(cell_phone)" }
-	"Home Phone" { set extra_order_by "order by upper(home_phone)" }
-	"Work Phone" { set extra_order_by "order by upper(work_phone)" }
-	"Last Visit" { set extra_order_by "order by last_visit DESC" }
-	"Creation" { set extra_order_by "order by u.creation_date DESC" }
-	"Supervisor" { set extra_order_by "order by e.supervisor_id" }
+	"Name" { set extra_order_by "order by name" }
+	"Email" { set extra_order_by "order by upper(u.email), name" }
+	"AIM" { set extra_order_by "order by upper(aim_screen_name), name" }
+	"Cell Phone" { set extra_order_by "order by upper(cell_phone), name" }
+	"Home Phone" { set extra_order_by "order by upper(home_phone), name" }
+	"Work Phone" { set extra_order_by "order by upper(work_phone), name" }
+	"Last Visit" { set extra_order_by "order by last_visit DESC, name" }
+	"Creation" { set extra_order_by "order by u.creation_date DESC, name" }
+	"Supervisor" { set extra_order_by "order by e.supervisor_id, name" }
     }
 }
 

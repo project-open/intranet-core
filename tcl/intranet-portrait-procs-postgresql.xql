@@ -18,8 +18,7 @@
     <querytext>
 
         select
-                u.first_names,
-                u.last_name,
+		im_name_from_user_id(u.user_id) as user_name,
                 live_revision as revision_id,
                 item_id
         from
@@ -32,31 +31,6 @@
                 and u.user_id = :user_id
                 and a.rel_type = 'user_portrait_rel'
 
-    </querytext>
-  </fullquery>
-
-
-  
-  <fullquery name="im_portrait_component.get_user_info">
-    <querytext>
-select
-      u.first_names,
-      u.last_name,
-      gp.portrait_id,
-      gp.portrait_upload_date,
-      gp.portrait_comment,
-      gp.portrait_original_width,
-      gp.portrait_original_height,
-      gp.portrait_client_file_name
-from
-        users u
-      LEFT JOIN
-        general_portraits gp ON u.user_id = gp.on_what_id
-where
-        u.user_id = :user_id
-        and 'USERS' = gp.on_which_table
-        and 't' = gp.portrait_primary_p
-      
     </querytext>
   </fullquery>
 

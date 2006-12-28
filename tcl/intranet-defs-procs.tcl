@@ -476,7 +476,7 @@ ad_proc -public im_name_from_user_id_helper {user_id} {
     set user_name "&lt;unknown&gt;"
     if ![catch { 
 	set user_name [db_string get_user_name {
-	select	first_names || ' ' || last_name as name
+	select	im_name_from_user_id(p.person_id) as name
 	from	persons
 	where	person_id = :user_id
     }] } errmsg] {
@@ -573,12 +573,12 @@ ad_proc im_select {
     pairs 
     { default "" } 
 } {
-    Formats a "select" tag
+    Formats a "select" tag.
+    Check if "pairs" is in a sequential format or a list of tuples 
+    (format of ad_form).
 } {
-    if { [llength $pairs] == 0 } {
-	# Get out early as there's nothing to do
-	return ""
-    }
+    # Get out early as there's nothing to do
+    if { [llength $pairs] == 0 } { return "" }
 
     set multiple ""
     if {$multiple_p} { 
@@ -593,7 +593,11 @@ ad_proc im_select {
     }
     set url "[ns_conn url]?"
     set menu_items_text [list]
-    set menu_items_select [list]
+    set items [list]
+
+    # "flatten" the list if list was given in "list of tuples" format
+    set first_elem [lindex $pairs 0]
+    if {[llength $first_elem] > 1} { set pairs [im_select_flatten_list $pairs] }
 
     foreach { value text } $pairs {
 	if { $translate_p } {
@@ -603,17 +607,36 @@ ad_proc im_select {
         }
 
 	if { [string compare $value $default] == 0 } {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>\n"
+	    lappend items "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
 	} else {
-	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">$text_tr</option>\n"
+	    lappend items "<option value=\"[ad_urlencode $value]\">$text_tr</option>"
 	}
     }
     return "
     <select name=\"[ad_quotehtml $field_name]\" $size $multiple>
-    [join $menu_items_select ""]
+    [join $items "\n"]
     </select>
 "
 }
+
+
+
+ad_proc im_select_flatten_list { list } {
+    Returns a flattened list from a list of tupels
+} {
+    set result [list]
+    foreach l $list {
+	lappend result [lindex $l 1]
+	lappend result [lindex $l 0]
+    }
+
+    return $result
+}
+
+
+
+
+
 
 ad_proc im_format_number { num {tag "<font size=\"+1\" color=\"blue\">"} } {
     Pads the specified number with the specified tag

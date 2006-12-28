@@ -15,10 +15,6 @@
 
 ad_page_contract {
     @param user_id
-    @param first_names
-    @param last_names
-    @param email
-    @param url
 
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
     @author frank.bergmann@project-open.com

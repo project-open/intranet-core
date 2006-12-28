@@ -619,7 +619,7 @@ ad_proc -public im_project_members_select { select_name project_id { default "" 
     set sql "
 select
 	u.user_id,
-	u.first_names||' '||u.last_name as user_name
+	im_name_from_user_id(u.user_id) as user_name
 from
 	user_group_map m,
 	users u
@@ -627,7 +627,7 @@ where
 	m.group_id=:project_id
 	and m.user_id=u.user_id
 order by 
-	lower(first_names)"
+	user_name"
 
     return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
 }

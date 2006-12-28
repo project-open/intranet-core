@@ -80,7 +80,7 @@ list::create \
         
 db_multirow -extend {user_url} users get_users "
 	select 	u.*,
-		u.first_names || ' ' || u.last_name as user_name,
+		im_name_from_user_id(u.user_id) as user_name,
 		admin_p.admin_p,
 		employee_p.employee_p,
 		coalesce(admin_p.admin, '') || 

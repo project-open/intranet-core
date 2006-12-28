@@ -958,7 +958,7 @@ BEGIN
     LOOP
 	RAISE NOTICE ''Translator->Freelance Start: %'', row.contact_id;
 
-	v_organisation_name = ''Freelance '' || row.first_names || '' '' || row.last_name;
+	v_organisation_name = ''Freelance '' || im_name_from_user_id(row.person_id);
 	v_organisation_path = translate(lower(v_organisation_name), '' '', ''_'');
 
 	IF v_organisation_name is null THEN
