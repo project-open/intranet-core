@@ -22,7 +22,11 @@ ad_page_contract {
 
     @param order_by project display order 
     @param include_subprojects_p whether to include sub projects
-    @param mine_p show my projects or all projects
+    @param mine_p:
+	"t": Show only mine
+	"f": Show all projects
+	"dept": Show projects of my department(s)
+
     @param status_id criteria for project status
     @param project_type_id criteria for project_type_id
     @param letter criteria for im_first_letter_default_to_a(project_name)
@@ -34,7 +38,7 @@ ad_page_contract {
 } {
     { order_by "Project nr" }
     { include_subprojects_p "f" }
-    { mine_p "f" }
+    { mine_p "dept" }
     { project_status_id 0 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
@@ -85,7 +89,6 @@ set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
-set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "[_ intranet-core.Projects]"
 set context_bar [im_context_bar $page_title]
@@ -181,7 +184,11 @@ set form_id "project_filter"
 set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
-set mine_p_options {{"All" "f"} {"Mine" "t"}}
+set mine_p_options [list \
+	[list [lang::message::lookup "" intranet-core.All "All"] "f"] \
+	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
+	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
+]
 
 ad_form \
     -name $form_id \
@@ -421,20 +428,58 @@ set status_where "
 # main join (projects and membership relation) in order to
 # reach a reasonable response time.
 
-set perm_sql "
-	(select
-	        p.*
-	from
-	        im_projects p,
+
+# No "permissions" - just select all projects
+set perm_sql "im_projects"
+
+
+if {[string equal $mine_p "dept"]} {
+
+    # Select all project with atleast one member that
+    # belongs to the department of the current user.
+    set perm_sql "
+	(select	p.*
+	from	im_projects p,
 		acs_rels r
-	where
-		r.object_id_one = p.project_id
+	where	r.object_id_one = p.project_id
+		and r.object_id_two in (
+			
+			select	employee_id
+			from	im_employees
+			where	department_id in (
+				select	cc.cost_center_id
+				from	im_cost_centers cc,
+					(	select	cost_center_code
+						from	im_cost_centers
+						where	cost_center_id in (
+							select	department_id
+							from	im_employees
+							where	employee_id = :user_id
+						    UNION
+							select	cost_center_id
+							from	im_cost_centers
+							where	manager_id = :user_id
+						)
+					) t
+				where	position(t.cost_center_code in cc.cost_center_code) > 0
+			)
+
+		)
+		$where_clause
+	)
+    "
+}
+
+
+if {![im_permission $user_id "view_projects_all"] | [string equal $mine_p "t"]} {
+    set perm_sql "
+	(select	p.*
+	from	im_projects p,
+		acs_rels r
+	where	r.object_id_one = p.project_id
 		and r.object_id_two = :user_id
 		$where_clause
 	)"
-
-if {[im_permission $user_id "view_projects_all"] && [string equal $mine_p "f"]} {
-	set perm_sql "im_projects"
 }
 
 
@@ -515,8 +560,8 @@ set filter_html "
 if {[im_permission $current_user_id "view_projects_all"]} { 
     append filter_html "
   <tr>
-    <td class=form-label>[_ intranet-core.View]:</td>
-    <td class=form-widget>[im_select mine_p $view_types ""]</td>
+    <td class=form-label>[lang::message::lookup "" intranet-core.View_Projects "View Projects"]:</td>
+    <td class=form-widget>[im_select -translate_p 0 mine_p $mine_p_options ""]</td>
   </tr>
 "
 }
