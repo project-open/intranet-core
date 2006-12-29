@@ -33,6 +33,7 @@ cvs checkout events
 cvs checkout intranet-amberjack
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
+cvs checkout intranet-calendar
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-crm-tracking
