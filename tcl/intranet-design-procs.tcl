@@ -899,7 +899,6 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 } {
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
-    ns_log Error "im_header: user_id=$user_id, user_name=$user_name"
 
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
