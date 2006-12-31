@@ -218,7 +218,8 @@ if {[db_table_exists im_dynfield_attributes]} {
     im_dynfield::append_attributes_to_form \
         -object_type $object_type \
         -form_id $form_id \
-        -object_id $user_id_from_search
+        -object_id $user_id_from_search \
+	-form_display_mode "display"
 
 }
 

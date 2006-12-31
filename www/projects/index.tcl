@@ -38,7 +38,7 @@ ad_page_contract {
 } {
     { order_by "Project nr" }
     { include_subprojects_p "f" }
-    { mine_p "dept" }
+    { mine_p "f" }
     { project_status_id 0 } 
     { project_type_id:integer "0" } 
     { user_id_from_search "0"}
