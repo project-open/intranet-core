@@ -474,14 +474,7 @@ ad_proc -public im_name_from_user_id {user_id} {
 
 ad_proc -public im_name_from_user_id_helper {user_id} {
     set user_name "&lt;unknown&gt;"
-    if ![catch { 
-	set user_name [db_string get_user_name {
-	select	im_name_from_user_id(p.person_id) as name
-	from	persons
-	where	person_id = :user_id
-    }] } errmsg] {
-	# no errors
-    }
+    catch { set user_name [db_string uname "select im_name_from_user_id(:user_id)"] } err
     return $user_name
 }
 
