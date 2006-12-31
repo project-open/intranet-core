@@ -161,7 +161,8 @@ if {[db_table_exists im_dynfield_attributes]} {
     im_dynfield::append_attributes_to_form \
 	-object_type $object_type \
         -form_id $form_id \
-        -object_id $company_id
+        -object_id $company_id \
+	-form_display_mode "display"
 
 }
 
