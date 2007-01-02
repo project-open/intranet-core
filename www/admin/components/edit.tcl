@@ -55,6 +55,7 @@ if [catch {db_1row category_properties "
 set left_selected ""
 set right_selected ""
 set bottom_selected ""
+set top_selected ""
 set none_selected ""
 set files_selected ""
 set header_left_selected ""
@@ -64,6 +65,7 @@ switch $location {
     "left" { set left_selected " selected" }
     "right" { set right_selected " selected" }
     "bottom" { set bottom_selected " selected" }
+    "top" { set top_selected " selected" }
     "none" { set none_selected " selected" }
     "files" { set none_selected " selected" }
     "header-left" { set header_left_selected " selected" }
@@ -93,6 +95,7 @@ set page_body "
     <TD><select name=location size=1>
         <option $left_selected>left</option>
         <option $right_selected>right</option>
+        <option $top_selected>top</option>
         <option $bottom_selected>bottom</option>
         <option $files_selected>files</option>
         <option $header_left_selected>header-left</option>

@@ -52,6 +52,7 @@ set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set return_url "/intranet/"
+set header_stuff ""
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]

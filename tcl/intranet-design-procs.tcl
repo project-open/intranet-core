@@ -1137,9 +1137,15 @@ ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
     set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
+    set calendar_css ""
+    if {[llength [info procs im_package_calendar_id]]} {
+	set calendar_css "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\">"
+    }
+
     return "
 <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
 <link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+$calendar_css
 <script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>
 "
 
