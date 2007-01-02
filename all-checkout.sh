@@ -24,6 +24,7 @@ cvs checkout acs-workflow
 
 cvs checkout bug-tracker
 cvs checkout bulk-mail
+cvs checkout calendar
 cvs checkout chat
 cvs checkout cms
 cvs checkout diagram
