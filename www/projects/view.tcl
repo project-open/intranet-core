@@ -29,7 +29,7 @@ ad_page_contract {
     { show_all_comments 0}
     { forum_order_by "" }
     { view_name "standard"}
-    { subproject_status_id "" }
+    subproject_status_id:optional
 }
 
 # ---------------------------------------------------------------------
@@ -54,7 +54,9 @@ set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id
 set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
 
 if {$subproject_filtering_enabled_p} {
-    if {"" == $subproject_status_id} { set subproject_status_id $subproject_filtering_default_status_id }
+    if {![info exists subproject_status_id]} { 
+	set subproject_status_id $subproject_filtering_default_status_id 
+    }
 }
 
 # ---------------------------------------------------------------------
@@ -363,12 +365,14 @@ set space "&nbsp; &nbsp; &nbsp; "
 set subproject_status_sql ""
 if {"" != $subproject_status_id && 0 != $subproject_status_id} {
     set subproject_status_sql "
-        and children.project_status_id in (
+        and (children.project_status_id in (
 		select	child_id
 		from	im_category_hierarchy
 		where	parent_id = :subproject_status_id
 	    UNION
 		select	:subproject_status_id as child_id
+	) OR
+		children.project_id = :project_id
 	)
     "
 }
