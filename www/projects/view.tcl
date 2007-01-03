@@ -51,13 +51,13 @@ if {0 == $project_id} {
 }
 
 set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
-set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
-
 if {$subproject_filtering_enabled_p} {
+    set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
     if {![info exists subproject_status_id]} { 
 	set subproject_status_id $subproject_filtering_default_status_id 
     }
 }
+
 
 # ---------------------------------------------------------------------
 # Get Everything about the project
@@ -143,13 +143,6 @@ if { [empty_string_p $parent_id] } {
     set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?project_id=$parent_id" "[_ intranet-core.One_project]"] "[_ intranet-core.One_subproject]"]
     set include_subproject_p 0
 }
-
-# Fraber: 051125: There is no "view_projects" privilege...
-# Don't show subproject nor a link to the "projects" page to freelancers
-#if {![im_permission $user_id view_projects]} {
-#    set context_bar [im_context_bar "[_ intranet-core.One_project]"]
-#    set include_subproject_p 0
-#}
 
 
 # VAW Special: Dont show dates to non-employees
@@ -363,7 +356,7 @@ set space "&nbsp; &nbsp; &nbsp; "
 
 
 set subproject_status_sql ""
-if {"" != $subproject_status_id && 0 != $subproject_status_id} {
+if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {
     set subproject_status_sql "
         and (children.project_status_id in (
 		select	child_id
