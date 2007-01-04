@@ -754,7 +754,8 @@ ad_proc -public im_project_select {
 
 
 ad_proc -public im_project_personal_active_projects_component {
-    { -view_name "project_personal_list" }
+    {-view_name "project_personal_list" }
+    {-order_by_clause ""}
 } {
     Returns a HTML table with the list of projects of the
     current user. Don't do any fancy with sorting and
@@ -763,6 +764,10 @@ ad_proc -public im_project_personal_active_projects_component {
 } {
     set user_id [ad_get_user_id]
     set page_focus "im_header_form.keywords"
+
+    if {"" == $order_by_clause} {
+	set order_by_clause  [parameter::get_from_package_key -package_key "intranet-core" -parameter "HomeProjectListSortClause" -default "project_nr DESC"]
+    }
 
     # ---------------------------------------------------------------
     # Columns to show:
@@ -827,7 +832,7 @@ order by
 	WHERE
 		p.company_id = c.company_id
 		$project_history_restriction
-	order by project_nr DESC
+	order by $order_by_clause
     "
 
     
