@@ -109,6 +109,8 @@ ad_proc -public im_permission_flush {} {
     util_memoize_flush_regexp "acs.*"
     util_memoize_flush_regexp "file.*"
 
+    util_memoize_flush_regexp ".*"
+
 #    util_memoize_flush_regexp "ad_permission.*"
 #    util_memoize_flush_regexp "im_permission.*"
 #    util_memoize_flush_regexp "db_string.*"
