@@ -52,7 +52,7 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     }
 
     # Determine the sender address
-    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
+    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
     if [catch {
         set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]
     } errmsg] {
@@ -61,7 +61,6 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
         <pre>$errmsg</pre>"
 	return
     }
-
 
     # Send out the mail
     if [catch {
