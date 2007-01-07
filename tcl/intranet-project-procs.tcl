@@ -269,7 +269,10 @@ namespace eval project {
 # -----------------------------------------------------------
 
 
-ad_proc -public im_next_project_nr { } {
+ad_proc -public im_next_project_nr { 
+    {-nr_digits 0}
+    {-date_format ""}
+} {
     Returns the next free project number
 
     Returns "" if there was an error calculating the number.
@@ -282,8 +285,12 @@ ad_proc -public im_next_project_nr { } {
     of the current year (comparing the first 4 digits to the current year),
     adding "+1", and contatenating again with the current year.
 } {
-    set nr_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDigits" -default "4"]
-    set date_format [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDateFormat" -default "YYYY_"]
+    if {0 == $nr_digits} {
+	set nr_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDigits" -default "4"]
+    }
+    if {"" == $date_format} {
+	set date_format [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDateFormat" -default "YYYY_"]
+    }
     if {"none" == $date_format} { set date_format "" }
 
     set todate [db_string today "select to_char(now(), :date_format)"]
