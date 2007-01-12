@@ -270,8 +270,8 @@ namespace eval project {
 
 
 ad_proc -public im_next_project_nr { 
-    {-nr_digits 0}
-    {-date_format ""}
+    {-nr_digits}
+    {-date_format}
 } {
     Returns the next free project number
 
@@ -285,10 +285,10 @@ ad_proc -public im_next_project_nr {
     of the current year (comparing the first 4 digits to the current year),
     adding "+1", and contatenating again with the current year.
 } {
-    if {0 == $nr_digits} {
+    if {![info exists nr_digits]} {
 	set nr_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDigits" -default "4"]
     }
-    if {"" == $date_format} {
+    if {![info exists date_format]} {
 	set date_format [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDateFormat" -default "YYYY_"]
     }
     if {"none" == $date_format} { set date_format "" }
@@ -763,6 +763,7 @@ ad_proc -public im_project_select {
 ad_proc -public im_project_personal_active_projects_component {
     {-view_name "project_personal_list" }
     {-order_by_clause ""}
+    {-project_type_id 0}
 } {
     Returns a HTML table with the list of projects of the
     current user. Don't do any fancy with sorting and
@@ -806,6 +807,20 @@ order by
     # ---------------------------------------------------------------
     # Generate SQL Query
 
+    # Project Type restriction
+    set project_type_restriction ""
+    if {0 != $project_type_id} {
+	set project_type_restriction "
+	and p.project_type_id in (
+		select	h.child_id
+		from	im_category_hierarchy h
+		where	h.parent_id = :project_type_id
+	    UNION
+		select	:project_type_id
+	)
+	"
+    }
+
     # Limit the list to open projects only
     set project_history_restriction "
 	and p.project_status_id = [im_project_status_open]
@@ -822,6 +837,7 @@ order by
 		and r.object_id_two = :user_id
 		and p.parent_id is null
 		and p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
+		$project_type_restriction
 	)"
 
     set personal_project_query "
@@ -839,6 +855,7 @@ order by
 	WHERE
 		p.company_id = c.company_id
 		$project_history_restriction
+		$project_type_restriction
 	order by $order_by_clause
     "
 
