@@ -19,21 +19,29 @@ if {!$user_is_admin_p} {
 
 set server_name [ns_info server]
 set filename [im_backup_path]/[file tail $filename]
-
+set extension [file extension $filename]
 set err ""
 
 ns_log Debug "restoring pgdmp file: $filename"
-if {[catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err]} {
-	
+
+
+
+if {$extension==".pgdmp"} {
+    catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err
+} elseif {$extension==".sql"} {
+    catch { exec psql  --dbname $server_name --file $filename } err
+} else {
+    set err "pg dump format '$extension' not supported"
+}
+
+if {$err==""} {
+    ad_returnredirect
+} else {
     ad_return_top_of_page "[im_header]\n[im_navbar]"
     
     ns_write "<h2>Error during import:</h2><pre>$err</pre>"
     ns_write "<a href=\"$return_url\">back to list</a>"
     ns_write [im_footer]
-}
-
-if {$err==""} {
-    ad_returnredirect
 }
 
 

@@ -55,15 +55,16 @@ set bgcolor(1) " class=roweven"
 # Get the list of all backup sets under backup_path
 set backup_path [im_backup_path]
 
-multirow create backup_files filename date size
+multirow create backup_files filename extension date size
 
 foreach file [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp}"]  {
     set trim [string range $file [string length $backup_path] end]
 
-    regexp {/pg_dump\.(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)} $trim match file_year file_month file_day file_hour file_second
+    regexp {/pg_dump\.(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([a-z]+)} $trim match file_year file_month file_day file_hour file_second file_extension
 
     multirow append backup_files \
 	$file \
+	$file_extension \
 	"$file_day.$file_month.$file_year $file_hour:$file_second" \
 	[file size $file] 
 }
@@ -75,6 +76,9 @@ template::list::create \
     -elements {
 	filename {
 	    label "file name"
+	}
+	extension {
+	    label "type"
 	}
 	date {
 	    label "date"
