@@ -18,7 +18,10 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    { return_url "/intranet/admin/menus/index" }
+    { return_url "/intranet/admin/backup/index" }
+
+    item_remove:optional
+    filename:multiple,optional
 }
 
 # ------------------------------------------------------
@@ -51,28 +54,48 @@ set bgcolor(1) " class=roweven"
 
 # Get the list of all backup sets under backup_path
 set backup_path [im_backup_path]
-set file_list [exec $find_cmd $backup_path -type d -maxdepth 1 -mindepth 1]
 
-set backup_sets_html "<ul>\n"
+multirow create backup_files filename date size
 
-foreach file $file_list {
+foreach file [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp}"]  {
+    set trim [string range $file [string length $backup_path] end]
 
-    append backup_sets_html "<li>Restore from: <A href=restore?path=[ns_urlencode $file]>$file</a></li>\n"
+    regexp {/pg_dump\.(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)} $trim match file_year file_month file_day file_hour file_second
+
+    multirow append backup_files \
+	$file \
+	"$file_day.$file_month.$file_year $file_hour:$file_second" \
+	[file size $file] 
 }
 
-append backup_sets_html "
-</ul>
-"
+
+template::list::create \
+    -name backup_files \
+    -key filename \
+    -elements {
+	filename {
+	    label "file name"
+	}
+	date {
+	    label "date"
+	}
+	size {
+	    label "size"
+	    html { align right }
+	}
+	remove {
+	    display_template {<a href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">restore</a>}
+	}
+    } \
+    -bulk_actions {
+	"Delete" "delete-pgdump" "Remove checked backups"
+    } \
+    -bulk_action_method post \
+    -bulk_action_export_vars { return_url } \
+    -actions [list "New backup" [export_vars -base pg_dump] "create new postgres dump"] \
 
 
 
-set sql "
-select
-        v.*
-from
-        im_views v
-where
-        view_id >= 100
-        and view_id < 200
-"
+
+
 

@@ -46,7 +46,7 @@
 	associated to certain object sub-types. Access can be restricted to
 	certain user groups.
       <li>
-	<A href=backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
+	<A href=backup>#intranet-core.PostgreSQL_Backup#</A><br>
 	#intranet-core.PostgreSQL_Backup_blurb# 
 
     </ul>

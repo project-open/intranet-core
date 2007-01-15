@@ -8,20 +8,12 @@
   <td valign=top>
 
 
-	<table cellpadding=1 cellspacing=1 border=0 width=100%>
-	<tr class=rowtitle>
-	  <td class=rowtitle align=center>Restore Data
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-	    @backup_sets_html;noquote@
-	  </td>
-	</tr>
-	</table>
-
-
 	<%= [im_component_bay left] %>
+
+	<h1>Postgres Backup/Restore</h1>
+
+	<listtemplate name="backup_files"></listtemplate>	
+
 
   </td>
 
@@ -40,8 +32,6 @@
 	    <ul>
 	      <li>
 		<A href="backup">Backup your current application data to CSV files</a> 
-	      <li>
-		<A href="pg_dump">Full PostgreSQL Database Backup</a> 
 	    </ul>
 	  </td>
 	</tr>

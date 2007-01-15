@@ -14,7 +14,7 @@ set context_bar [im_context_bar $page_title]
 set context ""
 set today [db_string today "select to_char(sysdate, 'YYYYMMDD.HH24MISS') from dual"]
 set path [im_backup_path]
-set filename "pg_dump.$today.sql"
+set filename "pg_dump.$today.pgdmp"
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_admin_p} {
@@ -86,21 +86,21 @@ if { [catch {
 	windows {
 	    # Windows CygWin default
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --clean --no-owner --format=c --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec ${pgbin}pg_dump projop -h localhost -U projop -c -O -F p -f $dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --clean --no-owner --format=c --file=$dest_file
 	}
 
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec /usr/bin/pg_dump -c -O -F p -f $dest_file
+	    exec /usr/bin/pg_dump --clean --no-owner --format=c --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec pg_dump -c -O -F p -f $dest_file
+	    exec pg_dump --clean --no-owner --format=c --file=$dest_file
 	}
     }
 
@@ -112,7 +112,9 @@ if { [catch {
 
 ns_write "
 <p>
-Finished
+Finished.
+
+<a href=$return_url>return to list</a>
 </p>
 "
 
