@@ -589,8 +589,10 @@ ad_proc im_select {
     set items [list]
 
     # "flatten" the list if list was given in "list of tuples" format
-    set first_elem [lindex $pairs 0]
-    if {[llength $first_elem] > 1} { set pairs [im_select_flatten_list $pairs] }
+
+# fraber 070115: "Unflattened": Elements may have spaces, so they appear as lists
+#    set first_elem [lindex $pairs 0]
+#    if {[llength $first_elem] > 1} { set pairs [im_select_flatten_list $pairs] }
 
     foreach { value text } $pairs {
 	if { $translate_p } {
