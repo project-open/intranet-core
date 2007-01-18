@@ -26,7 +26,7 @@
 	<table border=0 cellpadding=0 cellspacing=0>
 	<tr> 
 	  <td class=rowtitle align=center>
-	    <span style="font-size:70%;font:italic">Note:Some category-types are mandatory and shouldn't be manipulated.<br>Please consult the "PO Configuration Guide" for more details. </span>
+	    <span style="font-size:70%;font:italic">Note: Some category-types are mandatory and shouldn't be manipulated.<br>Please consult the "PO Configuration Guide" for more details. </span>
 	  </td>
 	</tr>
 	</table>
