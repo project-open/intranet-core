@@ -33,6 +33,9 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     set write 0
     set admin 0
 
+    if {"" != $user_id} { return }
+    if {"" != $current_user_id} { return }
+
     # Admins and creators can do everything
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
     set creation_user_id [util_memoize "db_string creator {select creation_user from acs_objects where object_id = $user_id}"]
@@ -562,7 +565,7 @@ ad_proc -public im_user_nuke {user_id} {
 	    db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
 	    select report_id from im_trans_quality_reports where reviewer_id = :user_id
         )"
-	    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id";
+	    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id"
 	}
 	
 	# Filestorage
