@@ -304,6 +304,13 @@ ad_form -extend -name register -on_request {
 					 -secret_question $secret_question \
 					 -secret_answer $secret_answer]
 
+	    # Update creation user to allow the creator to admin the user
+	    db_dml update_creation_user_id "
+		update acs_objects
+		set creation_user = :current_user_id
+		where object_id = :user_id
+	    "
+
 	} else {
 
 	    # Existing user: Update variables
