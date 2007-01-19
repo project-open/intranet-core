@@ -33,8 +33,10 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     set write 0
     set admin 0
 
+    # Admins and creators can do everything
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-    if {$user_is_admin_p} {
+    set creation_user_id [util_memoize "db_string creator {select creation_user from acs_objects where object_id = $user_id}"]
+    if {$user_is_admin_p || $current_user_id == $creation_user_id} {
 	set view 1
 	set read 1
 	set write 1
