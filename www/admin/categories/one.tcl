@@ -113,6 +113,14 @@ order by category_id"
     set aux_string2 ""
 }
 
+if {"f" == $enabled_p} {
+    set enabled_p_checked ""
+    set enabled_p_unchecked "checked"
+} else {
+    set enabled_p_checked "checked"
+    set enabled_p_unchecked ""
+}
+
 # ---------------------------------------------------------------
 # Category Select Component
 # ---------------------------------------------------------------

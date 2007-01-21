@@ -28,6 +28,15 @@
     <td>#intranet-core.Category_name#</td>
     <td><input size=40 name=category value="@category@"></td>
   </tr>
+  <tr class=rowodd>
+    <td>Enabled</td>
+    <td>
+	<input type=radio name=enabled_p value="t" @enabled_p_checked@>
+	Enabled 
+	<input type=radio name=enabled_p value="f" @enabled_p_unchecked@>
+	Not Enabled 
+    </td>
+  </tr>
   <tr class=roweven>
     <td>
       #intranet-core.Category_translation#<br>
@@ -75,7 +84,6 @@
 <% } %>
 <tr class=roweven>
   <td colspan=2>
-	<input type=hidden name=enabled_p value="t">
 	<input type=submit name=submit value="#intranet-core.Create_Category#" $input_form_html>
   </td>
 </tr>
