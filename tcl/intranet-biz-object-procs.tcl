@@ -123,7 +123,7 @@ ad_proc -public im_biz_object_member_ids { object_id } {
     set sql "
 select	object_id_two
 from 
-	acs_rels r,
+	acs_rels r
 where
 	r.object_id_one=:object_id
 "
@@ -131,7 +131,7 @@ where
     return $result
 }
 
-ad_proc -public im_biz_object_member_ids { user_id object_id } {
+ad_proc -public im_biz_object_user_rels_ids { user_id object_id } {
     Returns the list of acs_rel_ids that the user has 
     with the specified object.
 } {
