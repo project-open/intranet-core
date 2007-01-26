@@ -38,7 +38,11 @@
 
   <fullquery name="im_biz_object_add_role.add_user">
     <querytext>
-      select im_biz_object_member__new (
+      DECLARE 
+      	v_rel_id	integer;
+      BEGIN
+
+        v_rel_id := im_biz_object_member__new (
           null,
           'im_biz_object_member',
           :object_id,
@@ -46,7 +50,11 @@
           :role_id,
           :user_id,
           :user_ip
-      );
+        );
+
+        UPDATE im_biz_object_members SET percentage = :percentage WHERE rel_id=v_rel_id;
+        RETURN 0;
+      END;
     </querytext>
   </fullquery>
 </queryset>
