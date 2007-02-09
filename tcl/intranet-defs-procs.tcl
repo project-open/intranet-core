@@ -1140,16 +1140,18 @@ ad_proc im_selection_to_select_box {
     set size_html ""
     if {"" != $size} { set size_html "size=$size" }
 
-    set result "<select name=\"$select_name\" $size_html>"
-    append result "<option value=\"\">
-	[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]
-	</option>
-    "
-    
-    append result "
-[db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
-</select>
-"
+    set result "<select name=\"$select_name\" $size_html>\n"
+    if {$include_empty_p} {
+	append result "<option value=\"\">[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]</option>\n"
+    }
+    append result [db_html_select_value_options_multiple \
+		       -translate_p $translate_p \
+		       -bind $bind_vars \
+		       -select_option $default \
+		       $statement_name \
+		       $sql \
+    ]
+    append result "\n</select>\n"
     return $result
 }
 

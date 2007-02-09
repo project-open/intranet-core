@@ -109,9 +109,12 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 	    append url "&$var=[ad_urlencode $value]"
 	}
 
-        append result "<li><a href=\"$url\">[_ intranet-invoices.$name_key]</a></li>\n"
+        append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-invoices.$name_key $name]</a></li>\n"
+	incr ctr
     }
     append result "</ul>\n"
+
+    if {0 == $ctr} { set result "" }
 
     return $result
 }

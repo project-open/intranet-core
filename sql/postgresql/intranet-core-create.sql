@@ -337,6 +337,61 @@ end;' language 'plpgsql';
 
 
 
+ 
+-------------------------------------------------------------
+-- Generic function to convert a "reference" into something
+-- printable or searchable...
+-------------------------------------------------------------
+
+create or replace function im_name_from_id(integer)
+returns varchar as '
+DECLARE
+	v_integer	alias for $1;
+        v_result	varchar(4000);
+BEGIN
+	-- Try with category - probably the fastest
+	select category
+	into v_result
+	from im_categories
+	where category_id = v_integer;
+
+	IF v_result is not null THEN return v_result; END IF;
+
+	-- Try with ACS_OBJECT
+	select acs_object__name(v_integer)
+	into v_result;
+
+        return v_result;
+END;' language 'plpgsql';
+
+
+
+create or replace function im_name_from_id(varchar)
+returns varchar as '
+DECLARE
+        v_result	alias for $1;
+BEGIN
+        return v_result;
+END;' language 'plpgsql';
+
+
+create or replace function im_name_from_id(numeric)
+returns varchar as '
+DECLARE
+        v_result	alias for $1;
+BEGIN
+        return v_result::varchar;
+END;' language 'plpgsql';
+
+
+
+create or replace function im_name_from_id(timestamptz)
+returns varchar as '
+DECLARE
+        v_timestamp	alias for $1;
+BEGIN
+        return to_char(v_timestamp, ''YYYY-MM-DD'');
+END;' language 'plpgsql';
 
 
 

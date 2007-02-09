@@ -389,7 +389,7 @@ ad_proc -public im_project_options {
     {-include_empty 1}
     {-include_empty_name ""}
     {-exclude_subprojects_p 1}
-    {-project_status 0}
+    {-project_status ""}
     {-project_type 0}
     {-exclude_status 0}
     {-member_user_id 0}
@@ -519,12 +519,12 @@ ad_proc -public im_project_options {
 	append sql " and (p.parent_id is null $subsubproject_sql)"
     }
     
-    if {$project_status} {
+    if {"" != $project_status} {
 	ns_set put $bind_vars status $project_status
 	append sql " and p.project_status_id = (
 	     select project_status_id 
 	     from im_project_status 
-	     where lower(project_status)=lower(:status))"
+	     where lower(project_status)=lower(:project_status))"
     }
 
     if {$exclude_status} {
@@ -1862,6 +1862,9 @@ ad_proc im_project_nuke {project_id} {
 	db_dml delete_projects "
 		delete from im_projects 
 		where project_id = :project_id"
+	db_dml delete_project_acs_obj "
+		delete from acs_objects
+		where object_id = :project_id"
 
 	# End "with_transaction"
     } {

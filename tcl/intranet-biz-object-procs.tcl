@@ -217,7 +217,7 @@ ad_proc -public im_biz_object_add_role {
     #
     set object_type [db_string object_type "select object_type from acs_objects where object_id=:object_id"]
     if {[string equal "im_project" $object_type]} {
-	set super_project_id [db_string super_project "select parent_id from im_projects where project_id = :object_id"]
+	set super_project_id [db_string super_project "select parent_id from im_projects where project_id = :object_id" -default ""]
 	if {"" != $super_project_id} {
 	    set super_role_id [im_biz_object_role_full_member]
 	    im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
