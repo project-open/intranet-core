@@ -444,6 +444,7 @@ select
 	$extra_select
 from 
 	cc_users u
+	LEFT JOIN im_employees e ON (u.user_id = e.employee_id)
 	LEFT JOIN users_contact c ON (u.user_id = c.user_id)
 	$extra_from
 where	1=1
