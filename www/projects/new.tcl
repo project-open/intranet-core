@@ -107,16 +107,10 @@ set form_id "project-ae"
 
 template::form::create $form_id
 template::form::section $form_id ""
-template::element::create $form_id project_id \
-    -widget "hidden"
-template::element::create $form_id supervisor_id \
-    -widget "hidden" -optional
-template::element::create $form_id requires_report_p \
-    -widget "hidden" -optional \
-    -datatype text
-template::element::create $form_id workflow_key \
-    -widget "hidden" -optional \
-    -datatype text
+template::element::create $form_id project_id -widget "hidden"
+template::element::create $form_id supervisor_id -widget "hidden" -optional
+template::element::create $form_id requires_report_p -widget "hidden" -optional -datatype text
+template::element::create $form_id workflow_key -widget "hidden" -optional -datatype text
 template::element::create $form_id return_url \
     -widget "hidden" \
     -optional \
@@ -142,7 +136,7 @@ if {$enable_nested_projects_p} {
     set super_project_id 0
     if {"" != $parent_id} { set super_project_id $parent_id }
     if {[info exists project_id]} { set super_project_id $project_id }
-    set project_parent_options [im_project_options -project_id $super_project_id]
+    set project_parent_options [im_project_options -project_status "open" -project_id $super_project_id]
 
     template::element::create $form_id parent_id -optional \
     	-label "[_ intranet-core.Parent_Project]" \
@@ -277,26 +271,20 @@ template::element::create $form_id description -optional -datatype text\
 # ------------------------------------------------------
 
 
-set dynamic_fields_p 0
-set my_project_id 0
-if {[db_table_exists im_dynfield_attributes]} {
-    
-    set project_type_id ""
-    if {[info exists project_id]} {
-	set project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
-    }
-
-    set dynamic_fields_p 1
-    set object_type "im_project"
-    set my_company_id 0
-    if {[info exists project_id]} { set my_project_id $project_id }
-        
-    im_dynfield::append_attributes_to_form \
-	-object_type_id $project_type_id \
-	-object_type $object_type \
-        -form_id $form_id \
-        -object_id $my_project_id
+set object_type "im_project"
+set project_type_id 0
+if {[info exists project_id]} {
+    set project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
 }
+set my_project_id 0
+if {[info exists project_id]} { set my_project_id $project_id }
+
+im_dynfield::append_attributes_to_form \
+    -object_subtype_id $project_type_id \
+    -object_type $object_type \
+    -form_id $form_id \
+    -object_id $my_project_id
+
 
 
 # Check if we are editing an already existing project
@@ -546,19 +534,15 @@ if {[form is_submission $form_id]} {
 }
  
 if {[form is_valid $form_id]} {
+
     set project_path $project_nr
+
     # -----------------------------------------------------------------
     # Create a new Project if it didn't exist yet
     # -----------------------------------------------------------------
     
     # Double-Click protection: the project Id was generated at the new.tcl page
-    
     set id_count [db_string id_count "select count(*) from im_projects where project_id=:project_id"]
-    
-    
-    # Create the "administration group" for this project.
-    # The project is going to get the same ID then.
-    #
     if {0 == $id_count} {
 	
 	set project_id [project::new \
@@ -591,6 +575,15 @@ if {[form is_valid $form_id]} {
 	}
 
     }
+
+    # Set the old project type. Used to detect changes in the project
+    # type and therefore the need to display new DynField fields in a
+    # second page.
+    if {0 == $id_count} {
+	set previous_project_type_id 0
+    } else {
+	set previous_project_type_id [db_string prev_ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+    }
 	
 	
     # -----------------------------------------------------------------
@@ -598,7 +591,7 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     set start_date [template::util::date get_property sql_date $start]
     set end_date [template::util::date get_property sql_timestamp $end]
-	
+
     set project_update_sql "
 	update im_projects set
 		project_name =	:project_name,
@@ -649,18 +642,17 @@ if {[form is_valid $form_id]} {
     # Store dynamic fields
     # -----------------------------------------------------------------
     
-    if {[db_table_exists im_dynfield_attributes]} {
-	ns_log Notice "companies/new: before attribute_store: object_type=$object_type, object_id=$project_id, form_id=$form_id"
-	im_dynfield::attribute_store \
-	    -object_type $object_type \
-	    -object_id $project_id \
-	    -form_id $form_id
-	ns_log Notice "companies/new-2: after attribute_store"
+    im_dynfield::attribute_store \
+	-object_type $object_type \
+	-object_id $project_id \
+	-form_id $form_id
+    ns_log Notice "companies/new-2: after attribute_store"
+    
 	
-    }
-	
+    # -----------------------------------------------------------------
+    # add the creating current_user to the group
+   
     if { [exists_and_not_null project_lead_id] } {
-	# add the creating current user to the group
 	relation_add \
 	    -member_state "approved" \
 	    "admin_rel" \
@@ -669,16 +661,34 @@ if {[form is_valid $form_id]} {
     }
 
 
-    if {"" == $return_url} {
-	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
-    }
-
+    # -----------------------------------------------------------------
     # Call the "project_create" or "project_update" user_exit
+
     if {0 == $id_count} {
 	im_user_exit_call project_create $project_id
     } else {
 	im_user_exit_call project_update $project_id
     }
 
+    # -----------------------------------------------------------------
+    # Where do we want to go now?
+    #
+    # "Wizard" type of operation: We need to display a second page
+    # with all the potentially new DynField fields if the type of the
+    # project has changed. 
+
+    if {[info exists previous_project_type_id]} {
+	if {$project_type_id != $previous_project_type_id} {
+
+	    set return_url [export_vars -base "/intranet/projects/new?" {project_id return_url}]
+
+	}
+    }
+
+    if {"" == $return_url} {
+	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+    }
     ad_returnredirect $return_url
 }
+
+

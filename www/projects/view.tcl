@@ -117,7 +117,7 @@ im_project_permissions $user_id $project_id view read write admin
 
 # Compatibility with old components...
 set current_user_id $user_id
-set user_admin_p $admin
+set user_admin_p $write
 
 if {![db_string ex "select count(*) from im_projects where project_id=:project_id"]} {
     ad_return_complaint 1 "<li>Project doesn't exist"

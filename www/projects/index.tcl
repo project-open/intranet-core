@@ -194,6 +194,7 @@ ad_form \
     -name $form_id \
     -action $action_url \
     -mode $form_mode \
+    -method GET \
     -export {start_idx order_by how_many view_name include_subprojects_p letter filter_advanced_p}\
     -form {
     	{mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
@@ -207,7 +208,6 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 
     template::element::set_value $form_id project_status_id $project_status_id
     template::element::set_value $form_id project_type_id $project_type_id
-
 }
 
 if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
@@ -215,17 +215,19 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     im_dynfield::append_attributes_to_form \
         -object_type $object_type \
         -form_id $form_id \
-        -object_id 0
+        -object_id 0 \
+	-advanced_filter_p 1
 
     # Set the form values from the HTTP form variable frame
     im_dynfield::set_form_values_from_http -form_id $form_id
+
+    im_dynfield::set_local_form_vars_from_http -form_id $form_id
 
     array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
 	-form_id $form_id \
 	-object_type $object_type
     ]
 }
-
 
 
 # ---------------------------------------------------------------
