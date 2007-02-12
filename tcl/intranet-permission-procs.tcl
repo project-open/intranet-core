@@ -167,6 +167,7 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
     a name only for ???
 } {
     if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
+    if {$user_id == ""} { return "" }
 
     # How to display? -1=name only, 0=none, 1=Link
     set show_user_style [im_show_user_style $user_id $current_user_id $group_id]

@@ -121,12 +121,12 @@ ad_proc -public im_biz_object_member_ids { object_id } {
     Returns the list of members of the specified object_id
 } {
     set sql "
-select	object_id_two
-from 
-	acs_rels r
-where
-	r.object_id_one=:object_id
-"
+	select	object_id_two
+	from 
+		acs_rels r
+	where
+		r.object_id_one=:object_id
+    "
     set result [db_list im_biz_object_member_ids $sql]
     return $result
 }
@@ -431,7 +431,6 @@ append body_html $name
     if { [empty_string_p $body_html] } {
 	set body_html "<tr><td colspan=$colspan><i>[_ intranet-core.none]</i></td></tr>\n"
     }
-
 
     # ------------------ Format the table footer with buttons ------------
     set footer_html ""

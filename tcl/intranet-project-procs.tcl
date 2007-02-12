@@ -160,6 +160,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     if {[im_permission $user_id edit_projects_all]} { 
 	set read 1
 	set write 1
+	set admin 1
     }
 
     # companies and freelancers are not allowed to see non-open projects.
