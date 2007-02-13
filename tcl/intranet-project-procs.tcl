@@ -656,8 +656,9 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
 }
 
 ad_proc -public im_project_select { 
-    {-include_all 0} 
-    {-exclude_subprojects_p 1}
+    { -include_all 0 } 
+    { -exclude_subprojects_p 1 }
+    { -exclude_status_id 0 }
     select_name 
     { default "" } 
     { status "" } 
@@ -727,6 +728,15 @@ ad_proc -public im_project_select {
 	     select project_status_id 
 	     from im_project_status 
 	     where lower(project_status)=lower(:status))"
+    }
+
+    if {0 != $exclude_status_id} {
+	ns_set put $bind_vars exclude_status_id $exclude_status_id
+	append sql " and p.project_status_id not in (
+		select 	child_id
+		from	im_category_hierarchy
+		where	(parent_id = :exclude_status_id OR child_id = :exclude_status_id)
+	)"
     }
 
     if { ![empty_string_p $exclude_status] } {
@@ -1827,7 +1837,16 @@ ad_proc im_project_nuke {project_id} {
 			where object_id = :project_id
 		)
 	"
+	db_dml filestorage_files "
+		delete from im_fs_files 
+		where folder_id in (
+			select folder_id 
+			from im_fs_folders 
+			where object_id = :project_id
+		)
+	"
 	db_dml filestorage "delete from im_fs_folders where object_id = :project_id"
+
 
 
 	ns_log Notice "projects/nuke-2: rels"
