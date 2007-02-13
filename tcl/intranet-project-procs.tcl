@@ -393,6 +393,7 @@ ad_proc -public im_project_options {
     {-project_status ""}
     {-project_type 0}
     {-exclude_status 0}
+    {-exclude_status_id 0}
     {-member_user_id 0}
     {-company_id 0}
     {-project_id 0}
@@ -484,10 +485,6 @@ ad_proc -public im_project_options {
 			children.tree_sortkey 
 				between parent.tree_sortkey 
 				and tree_right(parent.tree_sortkey)
-			and children.project_status_id not in (
-		                [im_project_status_deleted],
-		                [im_project_status_canceled]
-		        )
 		        and children.project_type_id not in (
 		                84, [im_project_type_task]
 		        )
@@ -534,6 +531,15 @@ ad_proc -public im_project_options {
 	    select project_status_id 
             from im_project_status 
             where project_status not in ($exclude_string)) "
+    }
+
+    if {0 != $exclude_status_id} {
+	ns_set put $bind_vars exclude_status_id $exclude_status_id
+	append sql " and p.project_status_id not in (
+		select 	child_id
+		from	im_category_hierarchy
+		where	(parent_id = :exclude_status_id OR child_id = :exclude_status_id)
+	)"
     }
 
     if {$project_type} {
@@ -941,14 +947,6 @@ order by
 
 ad_proc im_project_clone {
     {-company_id 0}
-    {-clone_members_p 1}
-    {-clone_costs_p 1}
-    {-clone_trans_tasks_p 1}
-    {-clone_timesheet_tasks_p 0}
-    {-clone_target_languages_p 1}
-    {-clone_timesheet2_tasks_p 1}
-    {-clone_forum_topics_p 1}
-    {-clone_files_p 1}
     parent_project_id 
     project_name 
     project_nr 
@@ -959,6 +957,17 @@ ad_proc im_project_clone {
     to include their clone routines.
 } {
     ns_log Notice "im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix"
+
+ad_return_complaint 1 "Clone Project temporarily disabled"
+
+    set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
+    set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 1]
+    set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 1]
+    set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1]
+    set clone_target_languages_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTargetLanguagesP" -default 1]
+    set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1]
+    set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFilesP" -default 1]
+    set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1]
 
     set errors "<li>Starting to clone project \#$parent_project_id => $project_nr / $project_name"
     set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
@@ -991,7 +1000,6 @@ ad_proc im_project_clone {
     }
     ns_log Notice "im_project_clone: finished deleting old costs"
 
-
     # --------------------------------------------
     # Clone the project
 
@@ -1001,33 +1009,24 @@ ad_proc im_project_clone {
     append errors [im_project_clone_url_map $parent_project_id $new_project_id]
 
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
-	append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
+#	append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
     }
     if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
-	append errors [im_project_clone_timesheet_tasks $parent_project_id $new_project_id]
+#	append errors [im_project_clone_timesheet2_tasks $parent_project_id $new_project_id]
     }
     if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
-	append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
+#	append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
     }
     if {$clone_forum_topics_p && [db_table_exists "im_forum_topics"]} {
-        append errors [im_project_clone_forum_topics $parent_project_id $new_project_id]
+#        append errors [im_project_clone_forum_topics $parent_project_id $new_project_id]
     }
-    if {$clone_timesheet2_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
-	# append errors [im_project_clone_timesheet2_tasks $parent_project_id $new_project_id]
-    }
-
-
-# Skipped meanwhile
-# Cloning cost elements doesn't really make sense for
-# most applications
-
     if {$clone_costs_p && [db_table_exists "im_costs"]} {
-        # append errors [im_project_clone_costs $parent_project_id $new_project_id]
-        # append errors [im_project_clone_payments $parent_project_id $new_project_id]
+#        append errors [im_project_clone_costs $parent_project_id $new_project_id]
+#        append errors [im_project_clone_payments $parent_project_id $new_project_id]
     }
-
-#    append errors [im_project_clone_timesheet $parent_project_id $new_project_id]
-#    append errors [im_project_clone_subprojects $parent_project_id $new_project_id]
+    if {$clone_subprojects_p} {
+#	append errors [im_project_clone_subprojects $parent_project_id $new_project_id]
+    }
 
     append errors "<li>Finished to clone project \#$parent_project_id"
     return $errors
