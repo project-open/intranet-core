@@ -1672,7 +1672,6 @@ ad_proc im_project_nuke {project_id} {
     im_project_permissions $current_user_id $project_id view read write admin
     if {!$admin} { return }
 
-
     # ---------------------------------------------------------------
     # Delete
     # ---------------------------------------------------------------
@@ -1720,6 +1719,9 @@ ad_proc im_project_nuke {project_id} {
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
+
+	    db_dml hours_costs_link "update im_hours set cost_id = null where cost_id = :cost_id"
+
 	    ns_log Notice "projects/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
