@@ -41,7 +41,7 @@
 	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
 	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
-	<a href=/intranet-dynvals/admin/>Admin DynField</a><br>
+	<a href=/intranet-dynfield/>Admin DynField</a><br>
 	Add new fields to projects, customers and users. New fields can be
 	associated to certain object sub-types. Access can be restricted to
 	certain user groups.

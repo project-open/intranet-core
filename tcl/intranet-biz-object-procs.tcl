@@ -186,10 +186,9 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
     return $result
 }
 
-# TODO: percentage goes nowhere
 
 ad_proc -public im_biz_object_add_role { 
-    { -percentage 0 }
+    {-percentage ""}
     user_id 
     object_id 
     role_id 
@@ -208,7 +207,15 @@ ad_proc -public im_biz_object_add_role {
     db_exec_plsql del_users {}
 
     # Add the user
-    db_exec_plsql add_user {}
+    set rel_id [db_exec_plsql add_user {}]
+    
+    if {"" != $percentage} {
+	db_dml update_percentage "
+		update	im_biz_object_members
+		set	percentage = :percentage
+		where	rel_id = :rel_id
+        "
+    }
 
     # Remove all permission related entries in the system cache
     im_permission_flush
