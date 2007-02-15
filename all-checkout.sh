@@ -97,6 +97,7 @@ cvs checkout intranet-wiki
 cvs checkout intranet-workflow
 cvs checkout intranet-xmlrpc
 
+cvs checkout lars-blogger
 cvs checkout notifications
 
 cvs checkout ref-countries
