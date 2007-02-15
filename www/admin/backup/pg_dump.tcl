@@ -4,6 +4,7 @@ ad_page_contract {
     Performs a PostgreSQL pg_dump command to backup
     all data to a .sql file
 } {
+    { pg_dump_format "c" }
     { return_url "index" }
 }
 
@@ -86,21 +87,21 @@ if { [catch {
 	windows {
 	    # Windows CygWin default
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=c --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$pg_dump_format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=c --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$pg_dump_format --file=$dest_file
 	}
 
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec /usr/bin/pg_dump --no-owner --format=c --file=$dest_file
+	    exec /usr/bin/pg_dump --no-owner --format=$pg_dump_format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec pg_dump --no-owner --format=c --file=$dest_file
+	    exec pg_dump --no-owner --format=$pg_dump_format --file=$dest_file
 	}
     }
 
