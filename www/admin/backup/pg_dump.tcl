@@ -15,13 +15,23 @@ set context_bar [im_context_bar $page_title]
 set context ""
 set today [db_string today "select to_char(sysdate, 'YYYYMMDD.HH24MISS') from dual"]
 set path [im_backup_path]
-set filename "pg_dump.$today.pgdmp"
 
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_admin_p} {
     ad_return_complaint 1 "<li>You have insufficient privileges to see this page"
     return
 }
+
+# ------------------------------------------------------------
+# determine file ending depending on format
+
+switch $pg_dump_format {
+    c { set filename_ending "pgdmp" }
+    t { set filename_ending "tar" }
+    p { set filename_ending "sql" }
+    default { set filename_ending "default" }
+}
+set filename "pg_dump.$today.$filename_ending"
 
 
 # ------------------------------------------------------------
