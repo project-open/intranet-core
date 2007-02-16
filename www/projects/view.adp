@@ -132,6 +132,10 @@ switch $view_name {
 
 	<%= [im_component_insert "Project Finance Component"] %>
 
+<% } elseif {[string equal "gantt" $view_name]} { %>
+
+	<%= [im_component_insert "Project Gantt Resource Component"] %>
+
 <% } elseif {[string equal "status" $view_name]} { %>
 
 	<%= [im_component_insert "Project Translation Error Component"] %>
