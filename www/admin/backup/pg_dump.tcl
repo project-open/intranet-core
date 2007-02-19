@@ -31,7 +31,11 @@ switch $format {
     p { set filename_ending "sql" }
     default { set filename_ending "default" }
 }
-set filename "pg_dump.$today.$filename_ending"
+
+set servername [ns_info server]
+set hostname [ns_info hostname]
+
+set filename "pg_dump.$hostname.$servername.$today.$filename_ending"
 
 
 # ------------------------------------------------------------
