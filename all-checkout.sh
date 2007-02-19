@@ -108,8 +108,10 @@ cvs checkout ref-us-counties
 cvs checkout ref-us-states
 cvs checkout ref-us-zipcodes
 
+cvs checkout rss-support
 cvs checkout search
 cvs checkout simple-survey
+cvs checkout trackback
 cvs checkout wiki
 cvs checkout workflow
 cvs checkout xml-rpc
