@@ -4,7 +4,7 @@ ad_page_contract {
     Performs a PostgreSQL pg_dump command to backup
     all data to a .sql file
 } {
-    { pg_dump_format "c" }
+    { format "c" }
     { return_url "index" }
 }
 
@@ -25,7 +25,7 @@ if {!$user_admin_p} {
 # ------------------------------------------------------------
 # determine file ending depending on format
 
-switch $pg_dump_format {
+switch $format {
     c { set filename_ending "pgdmp" }
     t { set filename_ending "tar" }
     p { set filename_ending "sql" }
@@ -97,21 +97,21 @@ if { [catch {
 	windows {
 	    # Windows CygWin default
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$pg_dump_format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$pg_dump_format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --format=$format --file=$dest_file
 	}
 
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec /usr/bin/pg_dump --no-owner --format=$pg_dump_format --file=$dest_file
+	    exec /usr/bin/pg_dump --no-owner --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec pg_dump --no-owner --format=$pg_dump_format --file=$dest_file
+	    exec pg_dump --no-owner --format=$format --file=$dest_file
 	}
     }
 
