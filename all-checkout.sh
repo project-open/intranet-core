@@ -39,6 +39,7 @@ cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
 cvs checkout intranet-core
 cvs checkout intranet-cost
+cvs checkout intranet-cost-center
 cvs checkout intranet-crm-tracking
 # cvs checkout intranet-cust-baselkb
 cvs checkout intranet-cvs-integration
