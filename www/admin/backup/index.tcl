@@ -60,13 +60,14 @@ multirow create backup_files filename extension date size
 foreach file [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp}"]  {
     set trim [string range $file [string length $backup_path] end]
 
-    regexp {/pg_dump\.(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([a-z]+)} $trim match file_year file_month file_day file_hour file_second file_extension
+    if {[regexp {(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([a-z]+)$} $trim match file_year file_month file_day file_hour file_second file_extension]} {
 
-    multirow append backup_files \
-	$file \
-	$file_extension \
-	"$file_day.$file_month.$file_year $file_hour:$file_second" \
-	[file size $file] 
+	multirow append backup_files \
+	    $file \
+	    $file_extension \
+	    "$file_day.$file_month.$file_year $file_hour:$file_second" \
+	    [file size $file] 
+    }
 }
 
 
