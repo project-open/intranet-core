@@ -6,9 +6,10 @@ Use in <HEAD> with DEFER keyword wrapped in conditional comments:
 <script defer type="text/javascript" src="pngfix.js"></script>
 <![endif]-->
 */
+
 var arVersion = navigator.appVersion.split("MSIE")
 var version = parseFloat(arVersion[1])
-
+var elements; 
 if ((version >= 5.5) && (document.body.filters)) 
 {
    for(var i=0; i<document.images.length; i++)
@@ -32,4 +33,14 @@ if ((version >= 5.5) && (document.body.filters))
          i = i-1
       }
    }
+   
+   //  extended to recognize input - png's 
+   elements = document.getElementsByTagName("input");
+   for (i = 0; i < elements.length; i++) { 
+	var input = elements[i]; 
+	if (input.getAttribute("type") != "image") continue; 
+	if (input.getAttribute("src").toLowerCase().search(/\.png$/) < 0) continue; 
+	input.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + input.src + "', sizingMethod='image')"; 
+	input.src = "/intranet/images/cleardot.gif"; 
+   } 
 }
