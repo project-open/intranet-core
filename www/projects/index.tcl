@@ -185,9 +185,12 @@ set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
 set mine_p_options [list \
-	[list [lang::message::lookup "" intranet-core.All "All"] "f"] \
-	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
-	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
+	"f" \
+	[lang::message::lookup "" intranet-core.All "All"] \
+	"dept" \
+	[lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] \
+	"t" \
+	[lang::message::lookup "" intranet-core.Mine "Mine"] \
 ]
 
 ad_form \
