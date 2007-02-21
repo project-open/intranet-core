@@ -6,6 +6,7 @@ ad_page_contract {
 } {
     { format "c" }
     { return_url "index" }
+    { disable_dollar_quoting "--disable-dollar-quoting" }
 }
 
 
@@ -93,6 +94,18 @@ set dest_file "$path/$filename"
 global tcl_platform
 set platform [lindex $tcl_platform(platform) 0]
 
+# get the PSQL PostgreSQL version
+set psql_version "0.0.0"
+set err_msg ""
+catch {
+    set psql_string [exec psql --version]
+    regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc
+} err_msg
+
+
+# Disable "dollar quoting" on 7.4.x
+if {"7" == $psql_major} { set disable_dollar_quoting "" }
+
 
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path"
@@ -101,21 +114,21 @@ if { [catch {
 	windows {
 	    # Windows CygWin default
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --disable-dollar-quoting --format=$format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --disable-dollar-quoting --format=$format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
 	}
 
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec /usr/bin/pg_dump --no-owner --disable-dollar-quoting --format=$format --file=$dest_file
+	    exec /usr/bin/pg_dump --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec pg_dump --no-owner --format=$format --file=$dest_file
+	    exec pg_dump --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
 	}
     }
 
