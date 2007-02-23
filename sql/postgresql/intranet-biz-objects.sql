@@ -197,10 +197,12 @@ create table im_biz_object_members (
 			references acs_rels (rel_id)
 			constraint im_biz_object_members_rel_pk
 			primary key,
+			-- Intranet Project Role
 	object_role_id	integer not null
 			constraint im_biz_object_members_role_fk
-			references im_categories
-			-- Intranet Project Role
+			references im_categories,
+			-- Percentage of assignation of resource
+	percentage	numeric(8,2) default 100
 );
 
 select acs_rel_type__create_type (
