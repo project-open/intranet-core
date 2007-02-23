@@ -14,9 +14,16 @@
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
         <provides url="intranet-core" version="3.2.7.0.0"/>
+
+
+<!--
+    Commented out: V3.1.2 -> V3.2 upgrade needs intranet-core to go first,
+    so we don't want other packages to be loaded first.
+
         <requires url="intranet-dynfield" version="3.2.6"/>
         <requires url="acs-subsite" version="5.1"/>
         <requires url="notifications" version="5.1"/>
+-->
 
         <callbacks>
         </callbacks>
