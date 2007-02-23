@@ -332,8 +332,32 @@ BEGIN
 	RETURN;
 end;' language 'plpgsql';
 
+
+create or replace function im_day_enumerator_weekdays (
+	date, date
+) returns setof date as '
+declare
+	p_start_date		alias for $1;
+	p_end_date		alias for $2;
+	v_date			date;
+	v_weekday		integer;
+BEGIN
+	v_date := p_start_date;
+	WHILE (v_date < p_end_date) LOOP
+
+		v_weekday := to_char(v_date, ''D'');
+		IF v_weekday != 1 AND v_weekday != 7 THEN
+			RETURN NEXT v_date;
+		END IF;
+		v_date := v_date + 1;
+	END LOOP;
+	RETURN;
+end;' language 'plpgsql';
+
+
 -- Test query
 -- select * from im_day_enumerator(now()::date, now()::date + 7);
+-- select * from im_day_enumerator_weekdays(now()::date, now()::date + 14);
 
 
 
