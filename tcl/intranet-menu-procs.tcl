@@ -71,8 +71,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
         set enabled_sql ""
     }
 
-
-    set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label"]
+    set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
 
     set menu_select_sql "
         select
