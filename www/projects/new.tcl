@@ -279,11 +279,12 @@ if {[info exists project_id]} {
 set my_project_id 0
 if {[info exists project_id]} { set my_project_id $project_id }
 
-im_dynfield::append_attributes_to_form \
+set field_cnt [im_dynfield::append_attributes_to_form \
     -object_subtype_id $project_type_id \
     -object_type $object_type \
     -form_id $form_id \
-    -object_id $my_project_id
+    -object_id $my_project_id \
+]
 
 
 
@@ -680,8 +681,12 @@ if {[form is_valid $form_id]} {
     if {[info exists previous_project_type_id]} {
 	if {$project_type_id != $previous_project_type_id} {
 
-	    set return_url [export_vars -base "/intranet/projects/new?" {project_id return_url}]
+	    # Check that there is atleast one dynfield. Otherwise
+	    # it's not necessary to show the same page again
+	    if {$field_cnt > 0} {
 
+		set return_url [export_vars -base "/intranet/projects/new?" {project_id return_url}]
+	    }
 	}
     }
 
