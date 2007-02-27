@@ -72,11 +72,10 @@ select
 	c.company_id,
 	c.company_name
 from
-	im_offices o,
-	im_companies c
+	im_offices o
+	LEFT OUTER JOIN im_companies c ON (o.company_id = c.company_id)
 where
 	o.office_id = :office_id
-	and o.company_id = c.company_id
 "]
 
 if { $result != 1 } {

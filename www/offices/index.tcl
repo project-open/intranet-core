@@ -204,27 +204,26 @@ set perm_sql_uneval [db_qd_replace_sql $perm_statement {}]
 set perm_sql [expr "\"$perm_sql_uneval\""]
 
 set sql "
-select
-	o.*,
-	im_name_from_user_id(o.contact_person_id) as contact_person_name,
-	im_email_from_user_id(o.contact_person_id) as contact_person_email,
-        im_category_from_id(o.office_type_id) as office_type,
-        im_category_from_id(o.office_status_id) as office_status,
-	c.company_id,
-	c.company_name
-from 
-	im_offices o,
-	im_companies c,
-	($perm_sql) perm
-where
-	perm.office_id = o.office_id
-	and o.company_id = c.company_id
-        and (
-		perm.permission_member > 0
-        or
-		perm.permission_all > 0
-        )
-	$where_clause
+	select
+		o.*,
+		im_name_from_user_id(o.contact_person_id) as contact_person_name,
+		im_email_from_user_id(o.contact_person_id) as contact_person_email,
+	        im_category_from_id(o.office_type_id) as office_type,
+	        im_category_from_id(o.office_status_id) as office_status,
+		c.company_id,
+		c.company_name
+	from 
+		im_offices o
+		LEFT OUTER JOIN im_companies c ON (o.company_id = c.company_id),
+		($perm_sql) perm
+	where
+		perm.office_id = o.office_id
+	        and (
+			perm.permission_member > 0
+	        or
+			perm.permission_all > 0
+	        )
+		$where_clause
 "
 
 # ---------------------------------------------------------------
