@@ -104,7 +104,11 @@ catch {
 
 
 # Disable "dollar quoting" on 7.4.x
-if {"7" == $psql_major} { set disable_dollar_quoting "" }
+if {"7" == $psql_major} { 
+    # Disabling quoting - we can't just set it to "" because
+    # otherwise pg_dump complains. So we use a double "--now-owner"...
+    set disable_dollar_quoting "--no-owner" 
+}
 
 
 if { [catch {
