@@ -264,8 +264,15 @@ where
 # --------------------------------------------------------------
 
 
-ad_proc -public im_group_member_component { object_id current_user_id { add_admin_links 0 } { return_url "" } { limit_to_users_in_group_id "" } { dont_allow_users_in_group_id "" } {also_add_to_group_id "" } } {
-
+ad_proc -public im_group_member_component { 
+    object_id 
+    current_user_id 
+    { add_admin_links 0 } 
+    { return_url "" } 
+    { limit_to_users_in_group_id "" } 
+    { dont_allow_users_in_group_id "" } 
+    {also_add_to_group_id "" } 
+} {
     Returns an html formatted list of all the users in the specified
     group. 
 
