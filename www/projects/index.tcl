@@ -642,7 +642,7 @@ set menu_select_sql "
 set ctr 0
 db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
-    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
+    append admin_html "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
 }
 
 

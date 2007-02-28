@@ -1818,6 +1818,17 @@ ad_proc im_project_nuke {project_id} {
 	    "
 	}
 
+	# GanttProject
+	if {[db_table_exists im_timesheet_task_dependencies]} {
+	
+	    ns_log Notice "projects/nuke-2: im_timesheet_task_dependencies"
+	    db_dml del_dependencies "
+		delete from im_timesheet_task_dependencies
+		where (task_id_one = :project_id OR task_id_two = :project_id)
+	    "
+	}
+
+
 	
 	# Filestorage
 	ns_log Notice "projects/nuke-2: im_fs_folder_status"
