@@ -48,16 +48,21 @@ from
 where
         r.object_id_one = :company_id
         and r.object_id_two = u.user_id
-        and not exists (
-		select	member_id
-		from	group_member_map m,
-			membership_rels mr
-		where	m.member_id = u.user_id
-			and m.rel_id = mr.rel_id
-			and mr.member_state = 'approved'
-			and m.group_id = [im_employee_group_id]
-	)
 "
+
+if {$company_id != [im_company_internal]} {
+    append sql "
+	        and not exists (
+			select	member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.member_id = u.user_id
+				and m.rel_id = mr.rel_id
+				and mr.member_state = 'approved'
+				and m.group_id = [im_employee_group_id]
+		)       
+    "
+}
 
 
 set contact_info ""

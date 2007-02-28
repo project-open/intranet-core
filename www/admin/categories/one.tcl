@@ -54,8 +54,6 @@ select	c.*
 from	im_categories c
 where	c.category_id = :category_id"
 
-    ns_log Notice "one: category_description=$category_description"
-    
     set delete_action_html "
       <form action=category-nuke.tcl method=GET>[export_form_vars category_id] 
       <input type=submit name=Submit value=Delete></form>"
@@ -149,7 +147,8 @@ order by c.category_type asc"
 
 }
 
-set descr [ns_quotehtml $category_description]
+# set descr [ns_quotehtml $category_description]
+set descr $category_description
 
 # ---------------------------------------------------------------
 # Category Translation

@@ -36,7 +36,7 @@ ad_page_contract {
     aux_int2:integer
     aux_string1
     aux_string2
-    category_description
+    category_description:allhtml
     enabled_p:notnull
     category_type
     { parents:multiple "" }

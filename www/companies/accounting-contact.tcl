@@ -34,26 +34,31 @@ where c.company_id = :company_id
 }]
     
 set sql "
-select distinct
-        u.user_id,
-        im_name_from_user_id(u.user_id) as name,
-        im_email_from_user_id(u.user_id) as email
-from
-        users u,
-        acs_rels r
-where
-        r.object_id_one = :company_id
-        and r.object_id_two = u.user_id
-        and not exists (
-		select	member_id
-		from	group_member_map m,
-			membership_rels mr
-		where	m.member_id = u.user_id
-			and m.rel_id = mr.rel_id
-			and mr.member_state = 'approved'
-			and m.group_id = [im_employee_group_id]
-	)       
+	select distinct
+	        u.user_id,
+	        im_name_from_user_id(u.user_id) as name,
+	        im_email_from_user_id(u.user_id) as email
+	from
+	        users u,
+	        acs_rels r
+	where
+	        r.object_id_one = :company_id
+	        and r.object_id_two = u.user_id
 "
+
+if {$company_id != [im_company_internal]} {
+    append sql "
+	        and not exists (
+			select	member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.member_id = u.user_id
+				and m.rel_id = mr.rel_id
+				and mr.member_state = 'approved'
+				and m.group_id = [im_employee_group_id]
+		)       
+    "
+}
 
 set contact_info ""
 db_foreach address_book_info $sql  {
