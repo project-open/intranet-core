@@ -312,25 +312,29 @@ ad_proc -public im_group_member_component {
     are welcome...
 
 } {
+    # Check if there is a percentage column from intranet-ganttproject
+    set show_percentage_p [util_memoize "db_column_exists im_biz_object_members percentage"]
+    set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
+    if {$object_type != "im_project"} { set show_percentage_p 0 }
 
     # ------------------ limit_to_users_in_group_id ---------------------
     if { [empty_string_p $limit_to_users_in_group_id] } {
 	set limit_to_group_id_sql ""
     } else {
 	set limit_to_group_id_sql "
-and exists (select 1 
-	from 
-		group_member_map map2,
-	        membership_rels mr,
-		groups ug
-	where 
-		map2.group_id = ug.group_id
-		and map2.rel_id = mr.rel_id
-		and mr.member_state = 'approved'
-		and map2.member_id = u.user_id 
-		and map2.group_id = :limit_to_users_in_group_id
-	)
-"
+	and exists (select 1 
+		from 
+			group_member_map map2,
+		        membership_rels mr,
+			groups ug
+		where 
+			map2.group_id = ug.group_id
+			and map2.rel_id = mr.rel_id
+			and mr.member_state = 'approved'
+			and map2.member_id = u.user_id 
+			and map2.group_id = :limit_to_users_in_group_id
+		)
+	"
     } 
 
     # ------------------ dont_allow_users_in_group_id ---------------------
@@ -338,21 +342,26 @@ and exists (select 1
 	set dont_allow_sql ""
     } else {
 	set dont_allow_sql "
-and not exists (
-	select 1 
-	from 
-		group_member_map map2, 
-		membership_rels mr,
-		groups ug
-	where 
-		map2.group_id = ug.group_id
-		and map2.rel_id = mr.rel_id
-		and mr.member_state = 'approved'
-		and map2.member_id = u.user_id 
-		and map2.group_id = :dont_allow_users_in_group_id
-	)
-"
+	and not exists (
+		select 1 
+		from 
+			group_member_map map2, 
+			membership_rels mr,
+			groups ug
+		where 
+			map2.group_id = ug.group_id
+			and map2.rel_id = mr.rel_id
+			and mr.member_state = 'approved'
+			and map2.member_id = u.user_id 
+			and map2.group_id = :dont_allow_users_in_group_id
+		)
+	"
     } 
+
+    set bo_rels_percentage_sql ""
+    if {$show_percentage_p} {
+	set bo_rels_percentage_sql ",round(bo_rels.percentage) as percentage"
+    }
 
     # ------------------ Main SQL ----------------------------------------
     # fraber: Abolished the "distinct" because the role assignment page 
@@ -360,40 +369,45 @@ and not exists (
     # We neeed this if we want to show the role of the user.
     #
     set sql_query "
-select
-	u.user_id, 
-	u.user_id as party_id,
-	im_email_from_user_id(u.user_id) as email,
-	im_name_from_user_id(u.user_id) as name,
-	im_category_from_id(c.category_id) as member_role,
-	c.category_gif as role_gif,
-	c.category_description as role_description
-from
-	cc_users u,
-	acs_rels rels,
-	im_biz_object_members bo_rels,
-	im_categories c
-where
-	rels.object_id_one = $object_id
-	and rels.object_id_two = u.user_id
-	and rels.rel_id = bo_rels.rel_id
-	and bo_rels.object_role_id = c.category_id
-	and u.member_state = 'approved'
-	$limit_to_group_id_sql 
-	$dont_allow_sql
-order by lower(im_name_from_user_id(u.user_id))"
-
+	select
+		u.user_id, 
+		u.user_id as party_id,
+		im_email_from_user_id(u.user_id) as email,
+		im_name_from_user_id(u.user_id) as name,
+		im_category_from_id(c.category_id) as member_role,
+		c.category_gif as role_gif,
+		c.category_description as role_description
+		$bo_rels_percentage_sql
+	from
+		cc_users u,
+		acs_rels rels,
+		im_biz_object_members bo_rels,
+		im_categories c
+	where
+		rels.object_id_one = $object_id
+		and rels.object_id_two = u.user_id
+		and rels.rel_id = bo_rels.rel_id
+		and bo_rels.object_role_id = c.category_id
+		and u.member_state = 'approved'
+		$limit_to_group_id_sql 
+		$dont_allow_sql
+	order by lower(im_name_from_user_id(u.user_id))
+    "
 
     # ------------------ Format the table header ------------------------
     set colspan 1
     set header_html "
       <tr> 
-	<td class=rowtitle align=middle>[_ intranet-core.Name]</td>"
-if {$add_admin_links} {
-    incr colspan
-    append header_html "
-	<td class=rowtitle align=middle>[im_gif delete]</td>"
-}
+	<td class=rowtitle align=middle>[_ intranet-core.Name]</td>
+    "
+    if {$show_percentage_p} {
+        incr colspan
+        append header_html "<td class=rowtitle align=middle>[_ intranet-core.Perc]</td>"
+    }
+    if {$add_admin_links} {
+        incr colspan
+        append header_html "<td class=rowtitle align=middle>[im_gif delete]</td>"
+    }
     append header_html "
       </tr>"
 
@@ -433,11 +447,19 @@ append body_html $name
 	}
 
 	append body_html "$profile_gif</td>"
+	if {$show_percentage_p} {
+	    append body_html "
+		  <td align=middle>
+		    <input type=input size=4 maxlength=4 name=\"percentage.$user_id\" value=\"$percentage\">
+		  </td>
+	    "
+	}
 	if {$add_admin_links} {
 	    append body_html "
-  <td align=middle>
-    <input type=checkbox name=delete_user value=$user_id>
-  </td>"
+		  <td align=middle>
+		    <input type=checkbox name=delete_user value=$user_id>
+		  </td>
+	    "
 	}
 	append body_html "</tr>"
     }
@@ -453,31 +475,41 @@ append body_html $name
 	set spam_members_html ""
 	if {[db_table_exists spam_messages]} {
 	    set spam_members_html "<li><A HREF=\"[spam_base]spam-add?[export_url_vars object_id sql_query]\">[_ intranet-core.Spam_Members]</A>&nbsp;"
+	    set spam_members_html "<option value=spam_members>[_ intranet-core.Spam_Members]</option>\n"
 	}
 
 	append footer_html "
-    <tr>
-      <td align=left>
-	<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]\">[_ intranet-core.Add_member]</A>&nbsp;
-        $spam_members_html
-      </td>"
+	    <tr>
+	      <td align=right colspan=$colspan>
+		<select name=action>
+		<option value=add_member>[_ intranet-core.Add_a_new_member]</option>
+	"
+	if {$show_percentage_p} {
+	    append footer_html "
+		<option value=update_members>[_ intranet-core.Update_members]</option>
+	    "
+	}
 	append footer_html "
-      <td><input type=submit value='[_ intranet-core.Del]' name=submit_del></td>
-      </td>
-    </tr>"
-}
+		<option value=del_members>[_ intranet-core.Delete_members]</option>
+		$spam_members_html
+		</select>
+		<input type=submit value='[_ intranet-core.Apply]' name=submit_apply></td>
+	      </td>
+	    </tr>
+        "
+    }
 
     # ------------------ Join table header, body and footer ----------------
     set html "
-<form method=POST action=/intranet/member-update>
-[export_form_vars object_id return_url]
-    <table bgcolor=white cellpadding=1 cellspacing=1 border=0>
-      $header_html
-      $body_html
-      $footer_html
-    </table>
-</form>
-"
+	<form method=POST action=/intranet/member-update>
+	[export_form_vars object_id return_url]
+	    <table bgcolor=white cellpadding=1 cellspacing=1 border=0>
+	      $header_html
+	      $body_html
+	      $footer_html
+	    </table>
+	</form>
+    "
     return $html
 }
 
@@ -485,20 +517,7 @@ append body_html $name
 ad_proc -public im_project_add_member { object_id user_id role} {
     Make a specified user a member of a (project) group
 } {
-    
-
-   	im_exec_dml "user_group_member_add(:object_id, :user_id, :role)"
-    
-    # Second, add an empty "estimations" field that is necessary
-    # for every project group member.
-#    set sql "
-#	insert into user_group_member_field_map values
-#	(:object_id, :user_id, 'estimation_days', '')"	
-#    db_transaction {
-#	db_dml insert_user_member_field_map $sql
-#    }
-
-    db_release_unused_handles
+    im_exec_dml "user_group_member_add(:object_id, :user_id, :role)"
 }
 
 

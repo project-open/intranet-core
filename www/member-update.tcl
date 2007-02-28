@@ -23,11 +23,17 @@ ad_page_contract {
 } {
     object_id:integer
     days:array,optional
+    percentage:array,optional
+    action
     { return_url "" }
     { submit "" }
     { submit_del "" }
     { delete_user:multiple,integer "" }
 }
+
+# -----------------------------------------------------------------
+# Security
+# -----------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
 
@@ -45,43 +51,62 @@ if {!$write} {
     return
 }
 
-# Ugly but HTML... The value of the buttons changes with the L10n.
-if {"" != $submit_del} { set submit "Del" }
-
 ns_log Notice "member-update: object_id=$object_id"
 ns_log Notice "member-update: submit=$submit"
 ns_log Notice "member-update: delete_user(multiple)=$delete_user"
 
-# "Del" button pressed: delete the marked users
-#
-if {[string equal $submit "Del"]} {
 
-    foreach user $delete_user {
-		ns_log Notice "member-update: delete user: $user"	
-		im_exec_dml delete_user "user_group_member_del ($object_id, $user)"
+# -----------------------------------------------------------------
+# Action
+# -----------------------------------------------------------------
+
+switch $action {
+    "add_member" {
+	ad_returnredirect [export_vars -base "/intranet/member-add" {return_url object_id}]
     }
 
-    # Remove all permission related entries in the system cache
-    im_permission_flush
-}
+    "update_members" {
+	set debug ""
+	foreach user_id [array names percentage] {
+	    set perc $percentage($user_id)
 
+	    db_dml update_perc "
+		update im_biz_object_members
+		set percentage = :perc
+		where rel_id in (
+			select	rel_id
+			from	acs_rels
+			where	object_id_two = :user_id
+				and object_id_one = :object_id
+		)
+	    "
+	}
+	ad_returnredirect $return_url
+    }
 
-# "Save" button pressed: Save the new estimation values
-#
-if {[string equal $submit "Save"]} {
-    set user_list [array names days]
-    foreach user $user_list {
-	regsub {\,} $days($user) {.} days($user)
-	ns_log Notice "member-update: days(user)=$days($user)"
-	set sql "
-		update USER_GROUP_MEMBER_FIELD_MAP
-		set field_value='$days($user)'
-		where object_id=:object_id
-		and user_id='$user'
-		and field_name='estimation_days'"
-        db_dml update_days $sql
+    "del_members" {
+
+	foreach user $delete_user {
+	    im_exec_dml delete_user "user_group_member_del ($object_id, $user)"
+	}
+
+	# Remove all permission related entries in the system cache
+	im_permission_flush
+
     }
 }
 
 ad_returnredirect $return_url
+
+    }
+
+    default {
+	ad_return_complaint 1 "Invalid Action: '$action'"
+	return
+    }
+}
+
+ad_return_complaint 1 "$action [array get percentage]"
+
+
 
