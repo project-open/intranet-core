@@ -4,7 +4,7 @@ ad_page_contract {
     Performs a PostgreSQL pg_dump command to backup
     all data to a .sql file
 } {
-    { format "c" }
+    { format "p" }
     { return_url "index" }
     { disable_dollar_quoting "--disable-dollar-quoting" }
 }
