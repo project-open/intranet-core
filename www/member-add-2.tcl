@@ -46,6 +46,9 @@ if {!$write} {
     return
 }
 
+# No role specified? => Return
+if {"" == $role_id} { ad_returnredirect $return_url }
+
 im_biz_object_add_role $user_id_from_search $object_id $role_id
 
 # --------------------------------------------------------
