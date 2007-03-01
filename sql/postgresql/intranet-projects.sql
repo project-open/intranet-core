@@ -211,6 +211,13 @@ execute procedure im_projects_update_tr ();
 
 create index im_project_parent_id_idx on im_projects(parent_id);
 
+
+- Speed up child-sortkey queries
+create index im_project_treesort_idx on im_projects(tree_sortkey);
+
+
+
+
 -- Optional Indices for larger systems:
 -- create index im_project_status_id_idx on im_projects(project_status_id);
 -- create index im_project_type_id_idx on im_projects(project_type_id);

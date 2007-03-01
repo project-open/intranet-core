@@ -315,7 +315,7 @@ ad_proc -public im_group_member_component {
     # Check if there is a percentage column from intranet-ganttproject
     set show_percentage_p [util_memoize "db_column_exists im_biz_object_members percentage"]
     set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
-    if {$object_type != "im_project"} { set show_percentage_p 0 }
+    if {$object_type != "im_project" & $object_type != "im_timesheet_task"} { set show_percentage_p 0 }
 
     # ------------------ limit_to_users_in_group_id ---------------------
     if { [empty_string_p $limit_to_users_in_group_id] } {
