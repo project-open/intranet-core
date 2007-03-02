@@ -778,6 +778,7 @@ ad_proc -public im_project_select {
 
 
 ad_proc -public im_project_personal_active_projects_component {
+    {-show_empty_project_list_p 1}
     {-view_name "project_personal_list" }
     {-order_by_clause ""}
     {-project_type_id 0}
@@ -786,6 +787,10 @@ ad_proc -public im_project_personal_active_projects_component {
     current user. Don't do any fancy with sorting and
     pagination, because a single user won't be a member of
     many active projects.
+
+    @param show_empty_project_list_p Should we show an empty project list?
+           Setting this parameter to 0 the component will just disappear
+           if there are no projects.
 } {
     set user_id [ad_get_user_id]
     set page_focus "im_header_form.keywords"
@@ -925,10 +930,15 @@ order by
 
     # Show a reasonable message when there are no result rows:
     if { [empty_string_p $table_body_html] } {
+
+	# Let the component disappear if there are no projects...
+	if {!$show_empty_project_list_p} { return "" }
+
 	set table_body_html "
-        <tr><td colspan=$colspan><ul><li><b> 
-        There are currently no projects matching the selected criteria
-        </b></ul></td></tr>"
+	    <tr><td colspan=$colspan><ul><li><b> 
+	    There are currently no projects matching the selected criteria
+	    </b></ul></td></tr>
+	"
     }
     return "
 	<table width=100% cellpadding=2 cellspacing=2 border=0>
