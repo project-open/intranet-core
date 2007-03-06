@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1111">1111</msg>
@@ -28,6 +28,7 @@
   <msg key="Add_a_new_client">Add a new client</msg>
   <msg key="Add_a_new_Company">Add a new Company</msg>
   <msg key="Add_a_new_company">Add a new company</msg>
+  <msg key="Add_a_new_member">Add a new member</msg>
   <msg key="Add_a_new_Office">Add a new Office</msg>
   <msg key="Add_a_new_office">Add a new office</msg>
   <msg key="Add_a_new_project">Add a new project</msg>
@@ -70,6 +71,7 @@
   <msg key="Administrative">Administrative</msg>
   <msg key="administrator">administrator</msg>
   <msg key="Advanced_Filtering">Advanced Filtering</msg>
+  <msg key="Advertizing">Advertizing</msg>
   <msg key="Advertizing_Project">Advertizing Project</msg>
   <msg key="af">af</msg>
   <msg key="AIM">AIM</msg>
@@ -86,6 +88,7 @@
   <msg key="Allowances">Allowances</msg>
   <msg key="Andorra">Andorra</msg>
   <msg key="Anonymize">Anonymize</msg>
+  <msg key="Apply">Apply</msg>
   <msg key="Appr_Size">Appr Size</msg>
   <msg key="Approver">Approver</msg>
   <msg key="ar">ar</msg>
@@ -135,6 +138,8 @@
   <msg key="Budget">Budget</msg>
   <msg key="Budget_Hours">Budget Hours</msg>
   <msg key="Bug-Tracker">Bug-Tracker</msg>
+  <msg key="Bug_Tracker_Task">Bug Tracker Task</msg>
+  <msg key="Bugs">Bugs</msg>
   <msg key="Bulgaria">Bulgaria</msg>
   <msg key="Business">Business</msg>
   <msg key="C">C</msg>
@@ -193,6 +198,7 @@
   <msg key="company_employee">company employee</msg>
   <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
+  <msg key="Company_Project_Nr">Customer Project#</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
   <msg key="Company_Status_1">Company Status:</msg>
@@ -201,6 +207,7 @@
   <msg key="Company_Types">Company Types</msg>
   <msg key="Companys_Contacts">Company's Contacts</msg>
   <msg key="Confirm">Confirm</msg>
+  <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
   <msg key="Consulting_Project">Consulting Project</msg>
   <msg key="Contact">Contact</msg>
@@ -263,6 +270,7 @@
   <msg key="Delete_checked_users">Delete checked users</msg>
   <msg key="Delete_Cost_Center">Delete Cost Center</msg>
   <msg key="Delete_Dynfield">Delete DynField</msg>
+  <msg key="Delete_members">Delete members</msg>
   <msg key="Delete_Menu">Delete Menu</msg>
   <msg key="Delete_portrait">Delete portrait</msg>
   <msg key="Delete_the_Task">Delete the Task</msg>
@@ -378,6 +386,7 @@
   <msg key="Functionality">Functionality</msg>
   <msg key="Future">Future</msg>
   <msg key="g">g</msg>
+  <msg key="Gantt">Gantt</msg>
   <msg key="Gen">Gen</msg>
   <msg key="Generic_PM">Generic PM</msg>
   <msg key="Georgia">Georgia</msg>
@@ -414,6 +423,7 @@
   <msg key="Home_Line_1">Home Line 1</msg>
   <msg key="Home_Line_2">Home Line 2</msg>
   <msg key="Home_Page">Home Page</msg>
+  <msg key="Home_Page_Help">Home Page Help</msg>
   <msg key="Home_Phone">Home Phone</msg>
   <msg key="Home_phone">Home phone</msg>
   <msg key="Home_Postal_Code">Home Postal Code</msg>
@@ -565,6 +575,7 @@
   <msg key="lt_Atril_Dj_Vu_X_Workgro">Atril Déjà Vu X Workgroup</msg>
   <msg key="lt_Backup_and_Restore_Data">Backup and Restore Data</msg>
   <msg key="lt_Bosnia_and_Herzegovin">Bosnia and Herzegovina</msg>
+  <msg key="lt_Bug_Tracker_Container">Bug Tracker Container</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
@@ -572,6 +583,8 @@
   <msg key="lt_Change_the_position_o">Enable, disable, change the position and change the access permissions of plugin-components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
+  <msg key="lt_Choose_this_option_fo">Choose this option for detailed security information. With this option the security update service transmits information about your configuration that might help us to assess your ]project-open[ system configuration including package versions and operating system version information. It also includes your email address so that we can alert your in special situations.</msg>
+  <msg key="lt_Choose_this_option_if">Choose this option if you prefer not to reveal any information to ]project-open[ that might identify you or your organization.</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
   <msg key="lt_Clientesintranet-file">Clients</msg>
   <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&quot;profile&quot;)
@@ -655,6 +668,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Freiberuflerintranet-">Freiberufler</msg>
   <msg key="lt_Full_Memberintranet-f">Full Member</msg>
   <msg key="lt_Futureintranet-timesh">Future</msg>
+  <msg key="lt_GanttProject_is_a_fre">GanttProject is a free Gantt chart editor (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">General type of project. This allows us to create a suitable folder structure.</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware Manufacturer Customer</msg>
@@ -837,6 +851,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
   <msg key="lt_Update_Basic_Informat">Update Basic Information</msg>
   <msg key="lt_Update_this_users_pas">Update this user's password</msg>
+  <msg key="lt_Upload_GanttProject_S">Upload GanttProject File</msg>
   <msg key="lt_Use_the_Browse_button">Use the 'Browse...' button to locate your file, then click 'Open'.</msg>
   <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% is undefined for empty lists.</msg>
@@ -1053,6 +1068,7 @@ other way for the user to find out.</msg>
   <msg key="Payments">Payments</msg>
   <msg key="PayPal">PayPal</msg>
   <msg key="Per">%%</msg>
+  <msg key="Perc">%%</msg>
   <msg key="Perc_Compl">% Compl.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
   <msg key="Personal">Human Resources</msg>
@@ -1316,7 +1332,8 @@ other way for the user to find out.</msg>
   <msg key="T-Word">T-Word</msg>
   <msg key="Taiwan">Taiwan</msg>
   <msg key="Task">Task</msg>
-  <msg key="Tasks">Trans Tasks</msg>
+  <msg key="Task_Members">Task Members</msg>
+  <msg key="Tasks">Tasks</msg>
   <msg key="Tasks__Incidents">Tasks / Incidents</msg>
   <msg key="Tec">Tec</msg>
   <msg key="Tec-Auto">Tec-Auto</msg>
@@ -1328,6 +1345,8 @@ other way for the user to find out.</msg>
   <msg key="Telefonie">Telephony Request</msg>
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telephony request</msg>
+  <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateesadp">template.es.adp</msg>
   <msg key="Test_evaluated">Test evaluated</msg>
   <msg key="Test_received">Test received</msg>
   <msg key="Test_sent">Test sent</msg>
@@ -1367,6 +1386,7 @@ other way for the user to find out.</msg>
   <msg key="TransEd">Trans+Ed</msg>
   <msg key="TransEdProof">Trans+Ed+Proof</msg>
   <msg key="TransIntSpot">Trans+Int.Spotcheck</msg>
+  <msg key="Translation">Translation</msg>
   <msg key="Translation_PM">Translation PM</msg>
   <msg key="Translation_Project">Translation Project</msg>
   <msg key="Transport_Provider">Transport Provider</msg>
@@ -1393,12 +1413,14 @@ other way for the user to find out.</msg>
   <msg key="United_States">United States</msg>
   <msg key="Unknown">Unknown</msg>
   <msg key="Update">Update</msg>
+  <msg key="Update_members">Update members</msg>
   <msg key="Update_Password">Update Password</msg>
   <msg key="Upload_Company_CSV">Upload Company CSV</msg>
   <msg key="Upload_Contact_CSV">Upload Contact CSV</msg>
   <msg key="Upload_file">Upload_file</msg>
   <msg key="Upload_files">Upload files</msg>
   <msg key="Upload_portrait">Upload portrait</msg>
+  <msg key="Upload_Preview_Image">Upload Preview Image</msg>
   <msg key="Uruguay">Uruguay</msg>
   <msg key="USD">USD</msg>
   <msg key="User">User</msg>

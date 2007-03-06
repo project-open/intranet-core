@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1111">1111</msg>
@@ -63,6 +63,7 @@
   <msg key="Administrative">Admin</msg>
   <msg key="administrator">Administrator</msg>
   <msg key="Advanced_Filtering">Zusätzliche Filter</msg>
+  <msg key="Advertizing">Advertizing</msg>
   <msg key="Advertizing_Project">Werbeprojekt</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Benutzername</msg>
@@ -169,6 +170,7 @@
   <msg key="Company_Type">Firmentyp</msg>
   <msg key="Company_Type_1">Firmentyp</msg>
   <msg key="Confirm">Bestätigen</msg>
+  <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
   <msg key="Consulting_Project">Beratungsprojekt</msg>
   <msg key="Contact">Kontakt</msg>
@@ -764,7 +766,7 @@
   <msg key="Other">Other</msg>
   <msg key="Otherr">Other</msg>
   <msg key="Ouch">Autsch!</msg>
-  <msg key="Outstanding">Herausragend</msg>
+  <msg key="Outstanding">Offene Forderung</msg>
   <msg key="p">P</msg>
   <msg key="Page">Seite</msg>
   <msg key="Pager">Page</msg>
@@ -978,6 +980,8 @@
   <msg key="Telefonie">Telefonie</msg>
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telefon</msg>
+  <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateesadp">template.es.adp</msg>
   <msg key="Test_evaluated">Test bewerted</msg>
   <msg key="Test_received">Test empfangen</msg>
   <msg key="Test_sent">Test gesendet</msg>
@@ -997,6 +1001,7 @@
   <msg key="TransEd">Übersetzen+Edit</msg>
   <msg key="TransEdProof">Übers+Edit+Proof</msg>
   <msg key="TransIntSpot">Übers+Int.Check</msg>
+  <msg key="Translation">Translation</msg>
   <msg key="Translation_Project">Übersetzungsprojekt</msg>
   <msg key="Transport_Provider">Transport Provider</msg>
   <msg key="Travel">Reise</msg>

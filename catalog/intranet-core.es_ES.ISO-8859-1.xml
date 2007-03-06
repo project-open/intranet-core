@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.6.0.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -66,6 +66,7 @@
   <msg key="Administrative">Administrativo</msg>
   <msg key="administrator">administrador</msg>
   <msg key="Advanced_Filtering">Filtros avanzados</msg>
+  <msg key="Advertizing">Advertizing</msg>
   <msg key="Advertizing_Project">Proyecto de publicidad</msg>
   <msg key="af">af</msg>
   <msg key="AIM">AIM</msg>
@@ -180,6 +181,7 @@
   <msg key="Company_Type_1">Tipo de empresa:</msg>
   <msg key="Company_Types">Tipo de empresa</msg>
   <msg key="Confirm">Confirmar</msg>
+  <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting_Project">Proyecto de consultoría</msg>
   <msg key="Contact">Persona de contacto</msg>
   <msg key="Contact_Email">E-mail contacto</msg>
@@ -1079,6 +1081,8 @@
   <msg key="Tec-Telecos">Tec-Telecom.</msg>
   <msg key="Technology">Tecnología</msg>
   <msg key="Tel">Tel</msg>
+  <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateesadp">template.es.adp</msg>
   <msg key="Test_evaluated">Test evaluado</msg>
   <msg key="Test_received">Test recibido</msg>
   <msg key="Test_sent">Test enviado</msg>
@@ -1115,6 +1119,7 @@
   <msg key="TransEd">Trad+ed</msg>
   <msg key="TransEdProof">Trad+ed+corr</msg>
   <msg key="TransIntSpot">Trad+CC int.</msg>
+  <msg key="Translation">Translation</msg>
   <msg key="Translation_PM">Jefes de Proyectos de Traducción</msg>
   <msg key="Translation_Project">Proyecto de traducción</msg>
   <msg key="Transport_Provider">Proveedor de transporte</msg>
