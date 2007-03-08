@@ -227,20 +227,39 @@ select acs_rel_type__create_type (
 -- Project Membership Packages
 -- ------------------------------------------------------------
 
+-- New version of the PlPg/SQL routine with percentage parameter
+--
 create or replace function im_biz_object_member__new (
-integer, varchar, integer, integer, integer, integer, varchar)
+integer, varchar, integer, integer, integer, numeric, integer, varchar)
 returns integer as '
 DECLARE
 	p_rel_id		alias for $1;	-- null
 	p_rel_type		alias for $2;	-- im_biz_object_member
-	p_object_id		alias for $3;
-	p_user_id		alias for $4;
-	p_object_role_id	alias for $5;
-	p_creation_user		alias for $6;	-- null
-	p_creation_ip		alias for $7;	-- null
+	p_object_id		alias for $3;	-- object_id_one
+	p_user_id		alias for $4;	-- object_id_two
+	p_object_role_id	alias for $5;	-- type of relationship
+	p_percentage		alias for $6;	-- percentage of assignation
+	p_creation_user		alias for $7;	-- null
+	p_creation_ip		alias for $8;	-- null
 
-	v_rel_id	integer;
+	v_rel_id		integer;
+	v_count			integer;
 BEGIN
+	select	count(*) into v_count
+	from	acs_rels
+	where	object_id_one = p_object_id
+		and object_id_two = p_user_id;
+
+	IF v_count > 0 THEN 
+		-- Return the lowest rel_id (might be several?)
+		select	min(rel_id) into v_rel_id
+		from	acs_rels
+		where	object_id_one = p_object_id
+			and object_id_two = p_user_id;
+
+		return v_rel_id;
+	END IF;
+
 	v_rel_id := acs_rel__new (
 		p_rel_id,
 		p_rel_type,	
@@ -252,13 +271,44 @@ BEGIN
 	);
 
 	insert into im_biz_object_members (
-	       rel_id, object_role_id
+	       rel_id, object_role_id, percentage
 	) values (
-	       v_rel_id, p_object_role_id
+	       v_rel_id, p_object_role_id, p_percentage
 	);
 
 	return v_rel_id;
 end;' language 'plpgsql';
+
+
+-- Downward compatibility - offers the same API as before
+-- with percentage = null
+create or replace function im_biz_object_member__new (
+integer, varchar, integer, integer, integer, integer, varchar)
+returns integer as '
+DECLARE
+	p_rel_id		alias for $1;	-- null
+	p_rel_type		alias for $2;	-- im_biz_object_member
+	p_object_id		alias for $3;	-- object_id_one
+	p_user_id		alias for $4;	-- object_id_two
+	p_object_role_id	alias for $5;	-- type of relationship
+	p_creation_user		alias for $6;	-- null
+	p_creation_ip		alias for $7;	-- null
+BEGIN
+	return im_biz_object_member__new (
+		p_rel_id, 
+		p_rel_type, 
+		p_object_id, 
+		p_user_id, 
+		p_object_role_id, 
+		null, 
+		p_creation_user, 
+		p_creation_ip
+	);
+end;' language 'plpgsql';
+
+
+
+
 
 
 create or replace function im_biz_object_member__delete (integer, integer)
