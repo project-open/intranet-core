@@ -54,6 +54,12 @@
 \i intranet-projects.sql
 
 
+---------------------------------------------------------
+-- Extensions to acs-lang
+
+\i intranet-notifications.sql
+
+
 
 -- Populate all the status/type/url with the different types of 
 -- data we are collecting
