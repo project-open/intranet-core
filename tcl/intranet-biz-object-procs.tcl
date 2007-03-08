@@ -189,11 +189,16 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 
 ad_proc -public im_biz_object_add_role { 
     {-percentage ""}
+    {-propagate_superproject_p 1}
     user_id 
     object_id 
     role_id 
 } {
     Adds a user in a role to a Business Object.
+    @param propagate_superproject Should we check the superprojects 
+           and add the user there as well? This is the default,
+	   because otherwise members of subprojects wouldn't even
+	   be able to get to their subproject.
 } {
     set user_ip [ad_conn peeraddr]
 
@@ -202,9 +207,11 @@ ad_proc -public im_biz_object_add_role {
     set admins [im_biz_object_admin_ids $object_id]
     if {[lsearch $admins $user_id] >= 0} { return }
 
-
     # Remove all previous member_rels between user and object
-    db_exec_plsql del_users {}
+    # 070308 fraber: Can't do this anymore with the new percentage
+    # assignment values. Replaced by a check in the add_user 
+    # PlPg/SQL code
+    # db_exec_plsql del_users {}
 
     # Add the user
     set rel_id [db_exec_plsql add_user {}]
@@ -219,6 +226,8 @@ ad_proc -public im_biz_object_add_role {
 
     # Remove all permission related entries in the system cache
     im_permission_flush
+
+    if {!$propagate_superproject_p} { return }
 
     # Recursively add members to super-projects
     #
@@ -478,12 +487,22 @@ append body_html $name
 	    set spam_members_html "<option value=spam_members>[_ intranet-core.Spam_Members]</option>\n"
 	}
 
+
+	append footer_html "
+	    <tr>
+	      <td align=left>
+		<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]\">[_ intranet-core.Add_member]</A>
+	      </td>
+	"
+
 	append footer_html "
 	    <tr>
 	      <td align=right colspan=$colspan>
 		<select name=action>
-		<option value=add_member>[_ intranet-core.Add_a_new_member]</option>
 	"
+#		<option value=add_member>[_ intranet-core.Add_a_new_member]</option>
+
+
 	if {$show_percentage_p} {
 	    append footer_html "
 		<option value=update_members>[_ intranet-core.Update_members]</option>
@@ -496,7 +515,7 @@ append body_html $name
 		<input type=submit value='[_ intranet-core.Apply]' name=submit_apply></td>
 	      </td>
 	    </tr>
-        "
+	"
     }
 
     # ------------------ Join table header, body and footer ----------------
