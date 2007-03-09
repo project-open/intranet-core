@@ -1230,20 +1230,23 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 
     # ToDo: Add stuff for consulting projects
 
-    # Costs Stuff
-    if {[db_table_exists im_costs]} {
-	set project_update_sql "
-	update im_projects set
-		cost_quotes_cache =		:cost_quotes_cache,
-		cost_invoices_cache =		:cost_invoices_cache,
-		cost_timesheet_planned_cache =	:cost_timesheet_planned_cache,
-		cost_purchase_orders_cache =	:cost_purchase_orders_cache,
-		cost_bills_cache =		:cost_bills_cache,
-		cost_timesheet_logged_cache =	:cost_timesheet_logged_cache
-	where
-		project_id = :new_project_id
-	"
-	db_dml project_update $project_update_sql
+    # DON't clone caches. It's better to leave them emtpy.
+    # They're inconsisten anyway, because we may or may have
+    # not cloned subprojects and their cost elements
+#    if {[db_table_exists im_costs]} {
+#	set project_update_sql "
+#	update im_projects set
+#		cost_quotes_cache =		:cost_quotes_cache,
+#		cost_invoices_cache =		:cost_invoices_cache,
+#		cost_timesheet_planned_cache =	:cost_timesheet_planned_cache,
+#		cost_purchase_orders_cache =	:cost_purchase_orders_cache,
+#		cost_bills_cache =		:cost_bills_cache,
+#		cost_timesheet_logged_cache =	:cost_timesheet_logged_cache
+#	where
+#		project_id = :new_project_id
+#	"
+#	db_dml project_update $project_update_sql
+
     }
 
     append errors "<li>Finished to clone base2 information"
