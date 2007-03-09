@@ -14,21 +14,21 @@
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
         <provides url="intranet-core" version="3.2.7.0.0"/>
-
-
-<!--
-    Commented out: V3.1.2 -> V3.2 upgrade needs intranet-core to go first,
-    so we don't want other packages to be loaded first.
-
+        <requires url="acs-subsite" version="5.0"/>
         <requires url="intranet-dynfield" version="3.2.6"/>
-        <requires url="acs-subsite" version="5.1"/>
-        <requires url="notifications" version="5.1"/>
--->
+        <requires url="notifications" version="5.0"/>
 
         <callbacks>
         </callbacks>
         <parameters>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="C:/ProjectOpen/filestorage/backup" description="Path for backup sets"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectCostsP"  default="1" description="Clone project's financial items?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFilesP"  default="1" description="Clone project files"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectForumTopicsP"  default="1" description="Clone forum entries?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectMembersP"  default="1" description="Clone project memebers?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectSubprojectsP"  default="1" description="Clone subprojects?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTimesheetTasksP"  default="1" description="Clone timesheet tasks?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTransTasksP"  default="1" description="Clone project tasks?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableCloneProjectLinkP"  default="0" description="CloneProject allows your to create a duplicate of a project. This is useful in some circumstances, for example in the case of many repeating projects."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableExecutionProjectLinkP"  default="0" description="An 'ExecutionProject' is a copy of a project, but with the 'internal' company as a customer. Such an execution project does not contain any reference to the original customer, for example allowing to pass the management of this project to a freelance project manager."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNestedProjectsP"  default="0" description="Do the user need to have projects and subprojects, or does this add too much of complexity?"/>
@@ -37,6 +37,7 @@
 "/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://projop.dnsalias.com/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="HomeProjectListSortClause"  default="project_nr" description="How to sort the projects on the Home page project list? Options include 'project_nr', 'project_nr DESC', 'project_name', 'project_name DESC', start_date, end_date and any other field if im_project, possibly followed by a 'DESC' to indicate reversed sort order. Please note that this field is becoming part of an SQL statement, so you can mess up the Home page if you give the wrong parameter here..."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="MaintenanceMessage"  description="The system will display the maintenance message (if it is not empty) in a red bar on top of the screen for all users. For example: 'Maintenance Mode - Please do not enter any new data into the system. Any changes will be lost.'"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeCompanyPathP"  default="1" description="Limit the company_path to lower case alphanum characters?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeProjectNrP"  default="1" description="Limit the project_nr to lower case alphanum characters?"/>
@@ -51,10 +52,6 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
-
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="HomeProjectListSortClause"  default="project_nr" description="How to sort the projects on the Home page project list? Options include 'project_nr', 'project_nr DESC', 'project_name', 'project_name DESC', start_date, end_date and any other field if im_project, possibly followed by a 'DESC' to indicate reversed sort order. Please note that this field is becoming part of an SQL statement, so you can mess up the Home page if you give the wrong parameter here..."/>
-
-
         </parameters>
 
     </version>
