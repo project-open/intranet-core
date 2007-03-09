@@ -253,18 +253,14 @@ ad_proc -public im_biz_object_roles_select { select_name object_id { default "" 
     ns_set put $bind_vars acs_object_type $acs_object_type
 
     set sql "
-select distinct
-	r.object_role_id,
-	im_category_from_id(r.object_role_id)
-from
-	im_biz_object_role_map r
-where
-	r.acs_object_type = :acs_object_type
-"
-    
-#    set role_options_extra_sql "and r.object_type_id = im_biz_object.type(:object_id)"
-
-
+	select distinct
+		r.object_role_id,
+		im_category_from_id(r.object_role_id)
+	from
+		im_biz_object_role_map r
+	where
+		r.acs_object_type = :acs_object_type
+    "
     return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
 }
 
