@@ -54,6 +54,22 @@ if {!$parent_read} {
     return
 }
 
+# ----------------------------------------------------
+# Write out HTTP headers to prepare for error output
+
+set content_type "text/html"
+set http_encoding "utf-8"
+
+append content_type "; charset=$http_encoding"
+
+set all_the_headers "HTTP/1.0 200 OK
+MIME-Version: 1.0
+Content-Type: $content_type\r\n"
+
+util_WriteWithExtraOutputHeaders $all_the_headers
+ns_startcontent -type $content_type
+
+
 set page_body [im_project_clone \
 	-company_id $company_id \
 	$parent_project_id \
@@ -61,6 +77,7 @@ set page_body [im_project_clone \
 	$project_nr \
 	$clone_postfix \
 ]
+
 
 set clone_project_id [db_string project_id "select project_id from im_projects where project_nr = :project_nr" -default 0]
 
@@ -72,7 +89,15 @@ if {"" == $return_url } {
     set return_url "/intranet/projects/"
 }
 
-ad_returnredirect $return_url
 
+ns_write "
+	</table>
+
+	<li><a href=\"$return_url\">Return to project page</a>
+	[im_footer]
+"
+
+
+
+# ad_returnredirect $return_url
 # doc_return 200 text/html [im_return_template]
-
