@@ -35,7 +35,7 @@ exit 0;
 $date = `/bin/date +"%Y-%m-%d"`;
 $time = `/bin/date +"%H-%M"`;
 $debug = 0;
-$base_dir = "/web/ptdemo";			# no trailing "/"!
+$base_dir = "/web/podev32";			# no trailing "/"!
 $packages_dir = "$base_dir/packages";		# no trailing "/"!
 
 # Remove trailing \n from date & time
