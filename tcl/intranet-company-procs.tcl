@@ -422,6 +422,7 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 
 
 ad_proc -public im_company_select { 
+    {-include_empty_name "--_Please_select_--" }
     select_name 
     { default "" } 
     { status "" } 
@@ -450,40 +451,30 @@ ad_proc -public im_company_select {
     set where_clause "	and c.company_status_id != [im_company_status_inactive]"
 
     set perm_sql "
-	(	select
-		       c.*
-		from
-			im_companies c,
+	(	select	c.*
+		from	im_companies c,
 			acs_rels r
-		where
-			c.company_id = r.object_id_one
+		where	c.company_id = r.object_id_one
 			and r.object_id_two = :user_id
 			$where_clause
-
 	UNION
-		select
-			c.*
-		from
-			im_companies c
-		where
-			c.company_id = :default
+		select	c.*
+		from	im_companies c
+		where	c.company_id = :default
 	)
-"
-
-    if {[im_permission $user_id "view_companies_all"]} {
-	set perm_sql "im_companies"
-    }
+    "
+    if {[im_permission $user_id "view_companies_all"]} { set perm_sql "im_companies" }
 
 
 set sql "
-select
-	c.company_id,
-	c.company_name
-from
-	$perm_sql c
-where
-	1=1
-	$where_clause
+	select
+		c.company_id,
+		c.company_name
+	from
+		$perm_sql c
+	where
+		1=1
+		$where_clause
 "
 
     if { ![empty_string_p $status] } {
@@ -518,7 +509,7 @@ where
 
     append sql " order by lower(c.company_name)"
 
-    return [im_selection_to_select_box -translate_p 0 $bind_vars "company_status_select" $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 -include_empty_name $include_empty_name $bind_vars "company_status_select" $sql $select_name $default]
 }
 
 
