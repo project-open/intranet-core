@@ -39,6 +39,7 @@ cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
 cvs checkout intranet-core
 cvs checkout intranet-cost
+cvs checkout intranet-cost-audit
 cvs checkout intranet-cost-center
 cvs checkout intranet-crm-tracking
 # cvs checkout intranet-cust-baselkb
@@ -69,8 +70,11 @@ cvs checkout intranet-payments
 # cvs checkout intranet-planning
 # cvs checkout intranet-procedures
 cvs checkout intranet-reporting
-cvs checkout intranet-reporting-tutorial
+cvs checkout intranet-reporting-cubes
 # cvs checkout intranet-reporting-dashboard
+cvs checkout intranet-reporting-finance
+cvs checkout intranet-reporting-translation
+cvs checkout intranet-reporting-tutorial
 # cvs checkout intranet-riskmanagement
 # cvs checkout intranet-search
 # cvs checkout intranet-search-ora
