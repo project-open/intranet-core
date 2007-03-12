@@ -568,7 +568,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
     <td class=form-label>[lang::message::lookup "" intranet-core.View_Projects "View Projects"]:</td>
     <td class=form-widget>[im_select -translate_p 0 mine_p $mine_p_options ""]</td>
   </tr>
-"
+    "
 }
 
 if {[im_permission $current_user_id "view_projects_all"]} {
@@ -576,7 +576,8 @@ if {[im_permission $current_user_id "view_projects_all"]} {
   <tr>
     <td class=form-label>[_ intranet-core.Project_Status]:</td>
     <td class=form-widget>[im_category_select -include_empty_p 1 "Intranet Project Status" project_status_id $project_status_id]</td>
-  </tr>\n"
+  </tr>
+    "
 }
 
 append filter_html "
@@ -587,9 +588,16 @@ append filter_html "
 	  <input type=submit value=Go name=submit>
     </td>
   </tr>
-</table>
-</form>
 "
+
+append filter_html "
+  <tr>
+<td class=form-label valign=top>[lang::message::lookup "" intranet-core.Customer "Customer"]:</td>
+<td class=form-widget valign=top>[im_company_select -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
+  </tr>
+"
+
+append filter_html "</table>\n</form>\n"
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
