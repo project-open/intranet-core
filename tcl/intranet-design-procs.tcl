@@ -364,12 +364,22 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 }
 
 
-ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
+ad_proc -public im_project_navbar { 
+    {-navbar_menu_label "projects"}
+    default_letter 
+    base_url 
+    next_page_url 
+    prev_page_url 
+    export_var_list 
+    {select_label ""} 
+} {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/projects/.
     The lower part of the navbar also includes an Alpha bar.
 
-    Default_letter==none marks a special behavious, hiding the alpha-bar.
+    @param default_letter none marks a special behavious, hiding the alpha-bar.
+    @navbar_menu_label Determines the "parent menu" for the menu tabs for 
+                       search shortcuts, defaults to "projects".
 } {
     # -------- Defaults -----------------------------
     set user_id [ad_get_user_id]
@@ -399,7 +409,7 @@ ad_proc -public im_project_navbar { default_letter base_url next_page_url prev_p
     }
 
     # Get the Subnavbar
-    set parent_menu_sql "select menu_id from im_menus where label='projects'"
+    set parent_menu_sql "select menu_id from im_menus where label=:navbar_menu_label"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
     set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
