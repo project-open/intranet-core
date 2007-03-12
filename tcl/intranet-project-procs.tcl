@@ -966,9 +966,6 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
-
-    ad_return_complaint 1 "Temporarily disabled"
-
     ns_write "<h2>im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix</h2>\n"
 
     set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
@@ -985,6 +982,7 @@ ad_proc im_project_clone {
 
     set clone_costs_p 0
     set clone_trans_tasks_p 0
+    set clone_subprojects_p 0
 
 
     # --------------------------------------------
