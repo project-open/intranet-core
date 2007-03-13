@@ -390,10 +390,8 @@ ad_proc -public im_project_options {
     {-include_empty 1}
     {-include_empty_name ""}
     {-exclude_subprojects_p 1}
-    {-project_status ""}
-    {-project_type 0}
-    {-exclude_status 0}
     {-exclude_status_id 0}
+    {-project_status_id 0}
     {-member_user_id 0}
     {-company_id 0}
     {-project_id 0}
@@ -401,50 +399,13 @@ ad_proc -public im_project_options {
     Get a list of projects
 } {
     set current_project_id $project_id
-    set bind_vars [ns_set create]
-    set user_id [ad_get_user_id]
-    ns_set put $bind_vars user_id $user_id
+    set current_user_id [ad_get_user_id]
     
-    if {[im_permission $user_id view_projects_all]} {
-	 # The user can see all projects
-	 # This is particularly important for sub-projects.
-	 set sql "
-		select
-			p.project_name,
-			p.project_id
-		from
-			im_projects p
-		where
-			1=1
-	"
-     } else {
-	# The user should see only his own projects
-	set sql "
-		select
-			p.project_id,
-			p.project_name
-		from
-			im_projects p,
-	                (       select  count(rel_id) as member_p,
-	                                object_id_one as object_id
-	                        from    acs_rels
-	                        where   object_id_two = :user_id
-	                        group by object_id_one
-	                ) r
-		where
-			p.project_id = r.object_id
-			and r.member_p > 0
-	"
-    }	
-
-    if {$company_id} {
-	ns_set put $bind_vars company_id $company_id
-	append sql " and p.company_id = :company_id"
-    }
 
     # Exclude subprojects does not work with subprojects,
     # if we are showing this box for a sub-sub-project.
     set subsubproject_sql ""
+    set subprojects [list 0]
     if {0 != $current_project_id} {
 
 	# Determine the topmost project in the hierarchy
@@ -467,14 +428,14 @@ ad_proc -public im_project_options {
 
 	# Check permissions for showing subprojects
 	set perm_sql "
-	        (select p.*
-	        from    im_projects p,
-	                acs_rels r
-	        where   r.object_id_one = p.project_id
-	                and r.object_id_two = :user_id
-	        )
+		(select p.*
+		from    im_projects p,
+			acs_rels r
+		where   r.object_id_one = p.project_id
+			and r.object_id_two = :current_user_id
+		)
 	"
-	if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
+	if {[im_permission $current_user_id "view_projects_all"]} { set perm_sql "im_projects" }
 
 
 	set subprojects [db_list subprojects "
@@ -485,9 +446,9 @@ ad_proc -public im_project_options {
 			children.tree_sortkey 
 				between parent.tree_sortkey 
 				and tree_right(parent.tree_sortkey)
-		        and children.project_type_id not in (
-		                84, [im_project_type_task]
-		        )
+			and children.project_type_id not in (
+				84, [im_project_type_task]
+			)
 			and parent.project_id = :super_project_id
 
 			-- exclude the projects own subprojects
@@ -508,67 +469,87 @@ ad_proc -public im_project_options {
 	# and a resulting SQL syntax error in "parent_id in ()"
 	lappend subprojects 0
 
-	set subsubproject_sql "
-	    OR p.parent_id in ([join $subprojects ","])
-	"
     }
 
-    if {$exclude_subprojects_p} {
-	append sql " and (p.parent_id is null $subsubproject_sql)"
-    }
-    
-    if {"" != $project_status} {
-	ns_set put $bind_vars status $project_status
-	append sql " and p.project_status_id = (
-	     select project_status_id 
-	     from im_project_status 
-	     where lower(project_status)=lower(:project_status))"
-    }
+    # ---------------------------------------------------------
+    # Compile "criteria"
 
-    if {$exclude_status} {
-	set exclude_string [im_append_list_to_ns_set $bind_vars project_status $exclude_status]
-	append sql " and p.project_status_id in (
-	    select project_status_id 
-            from im_project_status 
-            where project_status not in ($exclude_string)) "
-    }
+    set criteria [list]
+    if {$exclude_subprojects_p} { lappend criteria "p.parent_id is null" }
+   
+    if {$company_id} { lappend criteria "p.company_id = :company_id" }
 
     if {0 != $exclude_status_id} {
-	ns_set put $bind_vars exclude_status_id $exclude_status_id
-	append sql " and p.project_status_id not in (
-		select 	child_id
-		from	im_category_hierarchy
-		where	(parent_id = :exclude_status_id OR child_id = :exclude_status_id)
+	lappend criteria "p.project_status_id not in (
+					select 	child_id
+					from	im_category_hierarchy
+					where	(parent_id = :exclude_status_id 
+						OR child_id = :exclude_status_id)
+					UNION
+					select	:exclude_status_id
 	)"
     }
 
-    if {$project_type} {
-	ns_set put $bind_vars type $project_type
-	append sql " and p.project_type_id = (
-	    select project_type_id 
-	    from im_project_types 
-	    where project_type=:type)"
+    if {0 != $project_status_id} {
+	lappend criteria "p.project_status_id in (
+					select 	child_id
+					from	im_category_hierarchy
+					where	(parent_id = :project_status_id 
+						OR child_id = :project_status_id)
+					UNION
+					select	:project_status_id
+	)"
     }
 
     if {$member_user_id} {
-
-	# Show the default project always
-	set project_sql ""
-	if {"" != $project_id} {
-	    set project_sql "UNION select :project_id"
-	}
-
-	ns_set put $bind_vars member_user_id $member_user_id
-	append sql "	and p.project_id in (
-				select object_id_one
-				from acs_rels
-				where object_id_two = :member_user_id
-			    $project_sql
-			)
-		    "
+	lappend criteria "p.project_id in (
+					select	object_id_one
+					from	acs_rels
+					where	object_id_two = :member_user_id
+	)"
     }
 
-    append sql " order by lower(p.project_name)"
+    # Unprivileged members can only see the projects they're participating
+    if {![im_permission $current_user_id view_projects_all]} {
+	lappend criteria "p.project_id in (
+					select	object_id_one
+					from	acs_rels
+					where	object_id_two = :current_user_id
+	)"
+    }
+
+
+    # -----------------------------------------------------------------
+    # Compose the SQL
+
+    set where_clause [join $criteria " and\n\t\t\t\t\t"]
+    if { ![empty_string_p $where_clause] } {
+	set where_clause " and $where_clause"
+    }
+
+    set order_by_clause "lower(p.project_name)"
+
+    # The user can see all projects
+    # This is particularly important for sub-projects.
+    set sql "
+		select
+			p.project_name,
+			p.project_id
+		from
+			(	select	p.project_name,
+					p.project_id
+				from	im_projects p
+				where	1=1
+					$where_clause
+			    UNION
+				select	p.project_name,
+					p.project_id
+				from	im_projects p
+				where	p.project_id in ([join $subprojects ", "])
+			) p
+		order by 
+			$order_by_clause
+    "
 
     set options [db_list_of_lists project_options $sql]
     if {$include_empty} { set options [linsert $options 0 [list $include_empty_name ""]] }
@@ -604,10 +585,10 @@ ad_proc -public im_project_template_select { select_name { default "" } } {
     }
 
     set sql "
-        select
+	select
 		project_id,
 		project_name
-        from
+	from
 		im_projects
 	where
 		lower(project_name) like '%template%'
