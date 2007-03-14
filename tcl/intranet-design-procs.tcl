@@ -1120,9 +1120,15 @@ ad_proc -public im_header_emergency { page_title } {
 
 
 
-ad_proc -public im_footer {} {
+ad_proc -public im_footer {
+} {
     Default ProjectOpen footer.
 } {
+    set amberjack_body_stuff ""
+    if {[llength [info procs im_amberjack_before_body]]} {
+	set amberjack_body_stuff [im_amberjack_before_body]
+    }
+
     return "
       <div id=footer_klass>
       <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
@@ -1137,7 +1143,7 @@ ad_proc -public im_footer {} {
       </TBODY>
     </TABLE>
     </div>
-  </BODY>
+  $amberjack_body_stuff</BODY>
 </HTML>
 "
 }
