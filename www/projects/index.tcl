@@ -552,7 +552,7 @@ ns_log Notice "/intranet/project/index: Before formatting filter"
 
 set filter_html "
 <form method=get action='/intranet/projects/index'>
-[export_form_vars start_idx order_by how_many view_name company_id include_subprojects_p letter]
+[export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
 
 <table border=0 cellpadding=0 cellspacing=1>
   <tr> 
