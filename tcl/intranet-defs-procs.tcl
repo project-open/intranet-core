@@ -559,6 +559,7 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
 }
 
 ad_proc im_select { 
+    {-ad_form_option_list_style_p 0}
     {-multiple_p 0} 
     {-size 6}
     {-translate_p 1} 
@@ -569,6 +570,9 @@ ad_proc im_select {
     Formats a "select" tag.
     Check if "pairs" is in a sequential format or a list of tuples 
     (format of ad_form).
+    @param ad_form_option_list_p Set to 1 if the options are passed on
+           in the format for template:: and ad_form, as oposed to the
+           legacy ]po[ style.
 } {
     # Get out early as there's nothing to do
     if { [llength $pairs] == 0 } { return "" }
@@ -589,10 +593,9 @@ ad_proc im_select {
     set items [list]
 
     # "flatten" the list if list was given in "list of tuples" format
-
-# fraber 070115: "Unflattened": Elements may have spaces, so they appear as lists
-#    set first_elem [lindex $pairs 0]
-#    if {[llength $first_elem] > 1} { set pairs [im_select_flatten_list $pairs] }
+    if {$ad_form_option_list_style_p} {
+	set pairs [im_select_flatten_list $pairs]
+    }
 
     foreach { value text } $pairs {
 	if { $translate_p } {
@@ -627,8 +630,6 @@ ad_proc im_select_flatten_list { list } {
 
     return $result
 }
-
-
 
 
 
