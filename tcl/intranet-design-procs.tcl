@@ -973,6 +973,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
     append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
 
+    if {[llength [info procs im_amberjack_header_stuff]]} {
+        append extra_stuff_for_document_head [im_amberjack_header_stuff]
+    }
+
     set extra_stuff_for_body "onLoad=\"javascript:initPortlet();\" "
 
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"

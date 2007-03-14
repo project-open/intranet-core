@@ -186,7 +186,6 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
     return $result
 }
 
-
 ad_proc -public im_biz_object_add_role { 
     {-percentage ""}
     {-propagate_superproject_p 1}
