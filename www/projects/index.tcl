@@ -185,12 +185,9 @@ set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
 set mine_p_options [list \
-	"f" \
-	[lang::message::lookup "" intranet-core.All "All"] \
-	"dept" \
-	[lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] \
-	"t" \
-	[lang::message::lookup "" intranet-core.Mine "Mine"] \
+	[list [lang::message::lookup "" intranet-core.All "All"] "f" ] \
+	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
+	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
 ]
 
 ad_form \
@@ -566,7 +563,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
     append filter_html "
   <tr>
     <td class=form-label>[lang::message::lookup "" intranet-core.View_Projects "View Projects"]:</td>
-    <td class=form-widget>[im_select -translate_p 0 mine_p $mine_p_options ""]</td>
+    <td class=form-widget>[im_select -translate_p 0 -ad_form_option_list_style_p 1 mine_p $mine_p_options ""]</td>
   </tr>
     "
 }
