@@ -982,6 +982,7 @@ ad_proc im_category_select_plain {
 			im_categories
 		where
 			category_type = :category_type
+			and (enabled_p = 't' OR enabled_p is NULL)
 		) c
 	order by lower(category)
     "
