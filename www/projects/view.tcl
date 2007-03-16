@@ -64,6 +64,22 @@ if {$subproject_filtering_enabled_p} {
 # ---------------------------------------------------------------------
 
 
+set extra_selects [list "0 as zero"]
+set column_sql "
+	select  w.deref_plpgsql_function,
+		aa.attribute_name
+	from    im_dynfield_widgets w,
+		im_dynfield_attributes a,
+		acs_attributes aa
+	where   a.widget_name = w.widget_name and
+		a.acs_attribute_id = aa.attribute_id and
+		aa.object_type = 'im_project'
+"
+db_foreach column_list_sql $column_sql {
+    lappend extra_selects "${deref_plpgsql_function}($attribute_name) as ${attribute_name}_deref"
+}
+set extra_select [join $extra_selects ",\n\t"]
+
 set query "
 select
 	p.*,
@@ -80,7 +96,8 @@ select
 	im_email_from_user_id(c.primary_contact_id) as company_contact_email,
 	im_name_from_user_id(p.project_lead_id) as project_lead,
 	im_name_from_user_id(p.supervisor_id) as supervisor,
-	im_name_from_user_id(c.manager_id) as manager
+	im_name_from_user_id(c.manager_id) as manager,
+	$extra_select
 from
 	im_projects p, 
 	im_companies c
@@ -263,6 +280,43 @@ if { ![empty_string_p $description] } { append project_base_data_html "
 }
 
 
+# ---------------------------------------------------------------------
+# Add DynField Columns to the display
+
+set column_sql "
+	select
+		aa.pretty_name,
+		aa.attribute_name
+	from
+		im_dynfield_widgets w,
+		acs_attributes aa,
+		im_dynfield_attributes a
+		LEFT OUTER JOIN (
+			select *
+			from im_dynfield_layout
+			where page_url = ''
+		) la ON (a.attribute_id = la.attribute_id)
+	where
+		a.widget_name = w.widget_name and
+		a.acs_attribute_id = aa.attribute_id and
+		aa.object_type = 'im_project'
+	order by
+		coalesce(la.pos_y,0), coalesce(la.pos_x,0)
+"
+db_foreach column_list_sql $column_sql {
+    set var ${attribute_name}_deref
+    set value [expr $$var]
+    if {"" != [string trim $value]} {
+		append project_base_data_html "
+		  <tr>
+		    <td>[lang::message::lookup "" intranet-cust-baselkb.$attribute_name $pretty_name]</td>
+		    <td>$value</td>
+		  </tr>
+		"
+    }
+}
+
+
 if {$write && [im_permission $current_user_id edit_project_basedata]} {
 	append project_base_data_html "
 			  <tr> 
@@ -275,6 +329,8 @@ if {$write && [im_permission $current_user_id edit_project_basedata]} {
 			    </td>
 			  </tr>"
 }
+
+
 append project_base_data_html "    </table>
 			<br>
 "
@@ -358,7 +414,7 @@ set space "&nbsp; &nbsp; &nbsp; "
 set subproject_status_sql ""
 if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {
     set subproject_status_sql "
-        and (children.project_status_id in (
+	and (children.project_status_id in (
 		select	child_id
 		from	im_category_hierarchy
 		where	parent_id = :subproject_status_id
