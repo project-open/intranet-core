@@ -582,7 +582,6 @@ append filter_html "
     <td class=form-label>[_ intranet-core.Project_Type]:</td>
     <td class=form-widget>
       [im_category_select -include_empty_p 1 "Intranet Project Type" project_type_id $project_type_id]
-	  <input type=submit value=Go name=submit>
     </td>
   </tr>
 "
@@ -591,6 +590,15 @@ append filter_html "
   <tr>
 <td class=form-label valign=top>[lang::message::lookup "" intranet-core.Customer "Customer"]:</td>
 <td class=form-widget valign=top>[im_company_select -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
+  </tr>
+"
+
+append filter_html "
+  <tr>
+    <td class=form-label></td>
+    <td class=form-widget>
+	  <input type=submit value=Go name=submit>
+    </td>
   </tr>
 "
 
