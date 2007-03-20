@@ -47,7 +47,8 @@ if {!$demo_group_exists_p} {
 		u.*,
 		pa.*,
 		p.person_id as sort_order,
-		'Default Group' as demo_group
+		'Default Group' as demo_group,
+		'secret' as demo_password
         from
 		persons p,
 		parties pa,
