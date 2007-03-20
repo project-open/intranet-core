@@ -38,7 +38,7 @@ set query "
 		u.user_id
 "
 
-set demo_group_exists_p [db_string dg "select count(*) from user_tab_columns where table_name = 'PERSONS' and column_name = 'DEMO_GROUP']
+set demo_group_exists_p [db_string dg "select count(*) from user_tab_columns where table_name = 'PERSONS' and column_name = 'DEMO_GROUP'"]
 
 if {!$demo_group_exists_p} {
     set query "
