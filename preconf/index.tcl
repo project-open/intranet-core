@@ -46,7 +46,8 @@ if {!$demo_group_exists_p} {
 		p.*,
 		u.*,
 		pa.*,
-		p.person_id as sort_order
+		p.person_id as sort_order,
+		'Default Group' as demo_group
         from
 		persons p,
 		parties pa,
