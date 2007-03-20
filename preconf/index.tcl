@@ -8,6 +8,7 @@ ad_page_contract {
     {return_url "/intranet/"}
 }
 
+set start_date ""
 
 # ------------------------------------------------------
 # Multirow
