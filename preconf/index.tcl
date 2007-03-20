@@ -48,7 +48,7 @@ if {!$demo_group_exists_p} {
 		pa.*,
 		p.person_id as sort_order,
 		'Default Group' as demo_group,
-		'secret' as demo_password
+		'-' as demo_password
         from
 		persons p,
 		parties pa,
@@ -56,10 +56,10 @@ if {!$demo_group_exists_p} {
         where
 		p.person_id = pa.party_id
 		and p.person_id = u.user_id
-		and p.demo_password is not null
         order by
 		sort_order,
 		u.user_id
+	LIMIT 20
     "
 }
 
