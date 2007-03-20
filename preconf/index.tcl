@@ -8,8 +8,6 @@ ad_page_contract {
     {return_url "/intranet/"}
 }
 
-set start_date ""
-
 # ------------------------------------------------------
 # Multirow
 # Users defined in the database
@@ -39,6 +37,31 @@ set query "
                 p.demo_group,
 		u.user_id
 "
+
+set demo_group_exists_p [db_string dg "select count(*) from user_tab_columns where table_name = 'PERSONS' and column_name = 'DEMO_GROUP']
+
+if {!$demo_group_exists_p} {
+    set query "
+        select
+		p.*,
+		u.*,
+		pa.*,
+		p.person_id as sort_order
+        from
+		persons p,
+		parties pa,
+		users u
+        where
+		p.person_id = pa.party_id
+		and p.person_id = u.user_id
+		and p.demo_password is not null
+        order by
+		sort_order,
+		u.user_id
+    "
+}
+
+
 
 set old_demo_group ""
 db_multirow -extend {view_url} users users_query $query {
