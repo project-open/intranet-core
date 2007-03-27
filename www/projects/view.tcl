@@ -373,27 +373,7 @@ if {"" != $admin_html_content} {
 # Project Hierarchy
 # ---------------------------------------------------------------------
 
-# Determine the Top superproject of the current
-# project.
-set super_project_id $project_id
-set loop 1
-set ctr 0
-while {$loop} {
-    set loop 0
-    set parent_id [db_string parent_id "select parent_id from im_projects where project_id=:super_project_id"]
-
-    if {"" != $parent_id} {
-	set super_project_id $parent_id
-	set loop 1
-    }
-
-    # Check for recursive loop
-    if {$ctr > 20} {
-	set loop 0
-    }
-    incr ctr
-}
-
+set super_project_id [im_project_super_project_id $project_id]
 
 # Check permissions for showing subprojects
 set perm_sql "
