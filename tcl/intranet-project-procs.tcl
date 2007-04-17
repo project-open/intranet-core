@@ -1765,6 +1765,50 @@ ad_proc im_project_nuke {project_id} {
 	db_dml timesheet "delete from im_hours where project_id = :project_id"
 	
 
+	# Workflow
+	if {[db_table_exists wf_workflows]} {
+	    ns_log Notice "projects/nuke-2: wf_workflows"
+	    db_dml wf_tokens "
+		delete from wf_tokens
+		where case_id in (
+			select case_id
+			from wf_cases
+			where object_id = :project_id
+		)
+	    "
+	    db_dml wf_cases "
+		delete from wf_cases
+		where object_id = :project_id
+	    "
+	}
+	
+	# Translation & Workflow
+	if {[db_table_exists wf_workflows] && [db_table_exists im_trans_tasks]} {
+	    ns_log Notice "projects/nuke-2: im_trans_tasks & wf_workflows"
+	    db_dml wf_tokens "
+		delete from wf_tokens
+		where case_id in (
+			select case_id
+			from wf_cases
+			where object_id in (
+				select task_id
+				from im_trans_tasks
+				where project_id = :project_id
+			)
+		)
+	    "
+	    db_dml wf_cases "
+		delete from wf_cases
+		where object_id in (
+			select task_id
+			from im_trans_tasks
+			where project_id = :project_id
+		)
+	    "
+
+	}
+
+
 	# Translation Quality
 	ns_log Notice "projects/nuke-2: im_trans_quality_entries"
 	if {[db_table_exists im_trans_quality_reports]} {
@@ -1820,6 +1864,27 @@ ad_proc im_project_nuke {project_id} {
 		where project_id = :project_id"
 	}
 
+	
+	# Trans RFCs
+	if {[db_table_exists im_trans_rfqs]} {
+	    ns_log Notice "projects/nuke-2: im_trans_rfqs"
+	    db_dml trans_rfq_answers "
+	        delete from im_trans_rfq_answers
+		where answer_project_id = :project_id
+	    "
+	    db_dml trans_rfq_answers "
+	        delete from im_trans_rfq_answers
+		where answer_rfq_id in (
+			select rfq_id
+			from im_trans_rfqs
+			where rfq_project_id = :project_id
+		)
+	    "
+	    db_dml trans_rfqs "
+		delete from im_trans_rfqs
+		where rfq_project_id = :project_id
+	    "
+	}
 	
 	# Consulting
 	if {[db_table_exists im_timesheet_tasks]} {
