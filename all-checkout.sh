@@ -56,6 +56,7 @@ cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
+cvs checkout intranet-freelance-translation
 cvs checkout intranet-ganttproject
 cvs checkout intranet-hr
 cvs checkout intranet-html2pdf
