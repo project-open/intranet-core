@@ -439,6 +439,48 @@ select acs_privilege__add_child('admin', 'add_budget_hours');
 select acs_privilege__create_privilege('view_budget_hours','View Budget Hours','View Budget Hours');
 select acs_privilege__add_child('admin', 'view_budget_hours');
 
+
+-- Shortcut proc to setup loads of privileges.
+--
+create or replace function im_priv_create (varchar, varchar)
+returns integer as '
+DECLARE
+	p_priv_name	alias for $1;
+	p_profile_name	alias for $2;
+
+	v_profile_id		integer;
+	v_object_id		integer;
+	v_count			integer;
+BEGIN
+     -- Get the group_id from group_name
+     select group_id 
+     into v_profile_id
+     from groups
+     where group_name = p_profile_name;
+
+     -- Get the Main Site id, used as the global identified for permissions
+     select package_id
+     into v_object_id
+     from apm_packages 
+     where package_key=''acs-subsite'';
+
+
+     select count(*) into v_count
+     from acs_permissions
+     where object_id = v_object_id
+	and grantee_id = v_profile_id
+	and privilege = p_priv_name;
+
+     IF 0 = v_count THEN
+	PERFORM acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
+     END IF;
+
+     return 0;
+
+end;' language 'plpgsql';
+
+
+
 -- Set preliminary privileges to setup the
 -- permission matrix
 
@@ -471,35 +513,6 @@ select im_priv_create('add_budget_hours','Senior Managers');
 -- Privileges Setup
 --
 -- Setup an initial privilege matrix
-
--- Shortcut proc to setup loads of privileges.
---
-create or replace function im_priv_create (varchar, varchar)
-returns integer as '
-DECLARE
-	p_priv_name	alias for $1;
-	p_profile_name	alias for $2;
-
-	v_profile_id		integer;
-	v_object_id		integer;
-BEGIN
-     -- Get the group_id from group_name
-     select group_id 
-     into v_profile_id
-     from groups
-     where group_name = p_profile_name;
-
-     -- Get the Main Site id, used as the global identified for permissions
-     select package_id
-     into v_object_id
-     from apm_packages 
-     where package_key=''acs-subsite'';
-
-     PERFORM acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
-     return 0;
-
-end;' language 'plpgsql';
-
 
 -- Shortcut proc define subgroup behaviour
 --
