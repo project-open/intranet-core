@@ -1047,8 +1047,31 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
         }
     }
 
+    set html "<html>
+<head>
+$extra_stuff_for_document_head
+<title>$page_title</title>
+</head>
+"
+
+    array set attrs [list]
+
+    if { [info exists prefer_text_only_p] && $prefer_text_only_p == "f" && [ad_graphics_site_available_p] } {
+        set attrs(bgcolor) [ad_parameter -package_id [ad_acs_kernel_id]  bgcolor "" "white"]
+        set attrs(background) [ad_parameter -package_id [ad_acs_kernel_id]  background "" "/graphics/bg.gif"]
+        set attrs(text) [ad_parameter -package_id [ad_acs_kernel_id]  textcolor "" "black"]
+    } else {
+        set attrs(bgcolor) [ad_parameter -package_id [ad_acs_kernel_id]  bgcolor "" "white"]
+        set attrs(text) [ad_parameter -package_id [ad_acs_kernel_id]  textcolor "" "black"]
+    }
+
+    foreach attr [array names attrs] {
+        lappend attr_list "$attr=\"$attrs($attr)\""
+    }
+    append html "<body [join $attr_list] $extra_stuff_for_body>\n"
+
     return "
-[ad_header -focus $page_focus -extra_stuff_for_body $extra_stuff_for_body $page_title $extra_stuff_for_document_head]
+$html
 <div id=header_class>
 <table border=0 cellspacing=0 cellpadding=0 width='100%'>
   <tr>
