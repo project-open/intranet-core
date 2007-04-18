@@ -58,50 +58,6 @@ set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
 # ----------------------------------------------------------------
-# Hours
-# ----------------------------------------------------------------
-
-set hours_html ""
-set on_which_table "im_projects"
-
-if { [catch {
-    set num_hours [hours_sum_for_user $current_user_id $on_which_table "" 7]
-} err_msg] } {
-    set num_hours 0
-}
-
-if { $num_hours == 0 } {
-    set log_hours_link "<a href=hours/index?[export_url_vars on_which_table]>[_ intranet-core.log_them_now]</a>"
-    append hours_html "<b>[_ intranet-core.lt_You_havent_logged_you] <BR>
-     [_ intranet-core.lt_Please_log_hours_link]</b>\n"
-} else {
-    if { $num_hours == 1 } {
-	append hours_html "[_ intranet-core.lt_You_logged_num_hours_]"
-    } else {
-	 append hours_html "[_ intranet-core.lt_You_logged_num_hours__1]"
-    }
-}
-
-if {[im_permission $current_user_id view_hours_all]} {
-    set user_id $current_user_id
-    append hours_html "
-    <ul>
-    <li><a href=hours/projects?[export_url_vars on_which_table user_id]>[_ intranet-core.lt_View_your_hours_on_al]</a>
-    <li><a href=hours/total?[export_url_vars on_which_table]>[_ intranet-core.lt_View_time_spent_on_al]</a>
-    <li><a href=hours/projects?[export_url_vars on_which_table]>[_ intranet-core.lt_View_the_hours_logged]</a>\n"
-}
-append hours_html "<li><a href=hours/index?[export_url_vars on_which_table]>[_ intranet-core.Log_hours]</a>\n"
-
-# Show the "Work Absences" link only to in-house staff.
-# Clients and Freelancers do not necessarily need it.
-if {[im_permission $current_user_id employee] || [im_permission $current_user_id wheel] || [im_permission $current_user_id accounting]} {
-    append hours_html "<li> <a href=/intranet/absences/>[_ intranet-core.Work_absences]</a>\n"
-}
-append hours_html "</ul>"
-
-
-
-# ----------------------------------------------------------------
 # Administration
 # ----------------------------------------------------------------
 

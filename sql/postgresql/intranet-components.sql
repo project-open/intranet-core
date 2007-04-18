@@ -388,3 +388,24 @@ SELECT  im_component_plugin__new (
 	'im_project_personal_active_projects_component'   -- component_tcl
     );
 
+
+
+
+
+-- Notifications Component for each user
+SELECT  im_component_plugin__new (
+        null,                           -- plugin_id
+        'acs_object',                   -- object_type
+        now(),                          -- creation_date
+        null,                           -- creation_user
+        null,                           -- creation_ip
+        null,                           -- context_id
+        'User Notifications',       -- plugin_name
+        'intranet',                     -- package_name
+        'right',                         -- location
+        '/intranet/users/view',              -- page_url
+        null,                           -- view_name
+        85,                             -- sort_order
+	'im_notification_user_component -user_id $user_id'   -- component_tcl
+);
+

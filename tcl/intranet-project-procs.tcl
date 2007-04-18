@@ -947,8 +947,6 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
-    ns_write "<h2>im_project_clone parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr clone_postfix=$clone_postfix</h2>\n"
-
     set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
     set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 1]
     set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 1]
@@ -1121,7 +1119,6 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 
     # -------------------------------
     # Create the new project
-	
     set project_id [project::new \
 		-project_name		$new_project_name \
 		-project_nr		$new_project_nr \
@@ -1132,7 +1129,10 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		-project_status_id	$project_status_id \
     ]
     if {0 == $project_id} {
-	ad_return_complaint 1 "Error creating clone project with name '$new_project_name' and nr '$new_project_nr'"
+	ad_return_complaint 1 "<b>Error creating clone project</b>:<br>
+		Project Name: '$new_project_name'<br>
+		Project Nr: '$new_project_nr'<br>
+	"
 	return 0
     }
 
@@ -1156,10 +1156,13 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		project_id = :project_id
     "
 
-
-# Not cloning the template_p anymore. This is actually 
-# meta-information that shouldn't get copied.
+# Not cloning template_p. This is meta-information that shouldn't get copied.
 #		template_p = :template_p
+
+
+    # Clone DynFields - just all of them
+    # !!! ToDo: Integration create_dynfield_clone_sql to copy DynFields into cloned project
+
 
     return $project_id
 }
@@ -1225,8 +1228,8 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 #		project_id = :new_project_id
 #	"
 #	db_dml project_update $project_update_sql
-
-    }
+#
+#    }
 
     append errors "<li>Finished to clone base2 information"
     return $errors

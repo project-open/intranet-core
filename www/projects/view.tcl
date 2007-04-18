@@ -365,6 +365,7 @@ if {$execution_project_enabled_p && [im_permission $current_user_id add_projects
 
 set admin_html ""
 if {"" != $admin_html_content} {
+    append admin_html_content "\n<p>\n"
     set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
 

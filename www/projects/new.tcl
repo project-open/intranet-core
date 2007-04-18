@@ -647,18 +647,14 @@ if {[form is_valid $form_id]} {
 	-object_type $object_type \
 	-object_id $project_id \
 	-form_id $form_id
-    ns_log Notice "companies/new-2: after attribute_store"
+    ns_log Notice "projects/new: after attribute_store"
     
 	
     # -----------------------------------------------------------------
     # add the creating current_user to the group
    
     if { [exists_and_not_null project_lead_id] } {
-	relation_add \
-	    -member_state "approved" \
-	    "admin_rel" \
-	    $project_id \
-	    $project_lead_id 
+	im_biz_object_add_role $project_lead_id $project_id [im_biz_object_role_project_manager]
     }
 
 

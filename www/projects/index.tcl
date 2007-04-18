@@ -40,9 +40,9 @@ ad_page_contract {
     { include_subprojects_p "f" }
     { mine_p "f" }
     { project_status_id 0 } 
-    { project_type_id:integer "0" } 
-    { user_id_from_search "0"}
-    { company_id:integer "0" } 
+    { project_type_id:integer 0 } 
+    { user_id_from_search 0}
+    { company_id:integer 0 } 
     { letter:trim "" }
     { start_idx:integer 0 }
     { how_many "" }
@@ -190,6 +190,18 @@ set mine_p_options [list \
 	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
 ]
 
+set project_member_options [util_memoize "db_list_of_lists project_members {
+        select  distinct
+                im_name_from_user_id(object_id_two) as user_name,
+                object_id_two as user_id
+        from    acs_rels r,
+                im_projects p
+        where   r.object_id_one = p.project_id
+        order by user_name
+}" 86400]
+set project_member_options [linsert $project_member_options 0 [list [_ intranet-core.All] ""]]
+
+
 ad_form \
     -name $form_id \
     -action $action_url \
@@ -260,7 +272,7 @@ if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
 
 
 
-if { 0 != $user_id_from_search} {
+if {0 != $user_id_from_search && "" != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }
 if { ![empty_string_p $company_id] && $company_id != 0 } {
@@ -592,6 +604,15 @@ append filter_html "
 <td class=form-widget valign=top>[im_company_select -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
   </tr>
 "
+
+append filter_html "
+  <tr>
+    <td class=form-label valign=top>[lang::message::lookup "" intranet-cust-baselkb.With_Member "With Member"]:</td>
+    <td class=form-widget valign=top>[im_select -ad_form_option_list_style_p 1 -translate_p 0 user_id_from_search $project_member_options $user_id_from_search]</td>
+  </tr>
+"
+
+
 
 append filter_html "
   <tr>

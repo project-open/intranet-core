@@ -185,25 +185,37 @@ ad_proc -public im_project_manager_options {
     return $options
 }
 
-ad_proc im_user_select { select_name { default "" } } {
+ad_proc im_user_select { 
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-group_id 0 }
+    select_name 
+    { default "" } 
+} {
     Returns an html select box named $select_name and defaulted to 
     $default with a list of all the available project_leads in 
     the system
 } {
+    if {0 == $group_id} { set group_id [im_employee_group_id] }
+
     # We need a "distinct" because there can be more than one
     # mapping between a user and a group, one for each role.
     #
     set bind_vars [ns_set create]
-    ns_set put $bind_vars employee_group_id [im_employee_group_id]
+    ns_set put $bind_vars group_id $group_id
     set sql "
-	select	emp.user_id, 
-		im_name_from_user_id(emp.user_id) as name
+	select	u.user_id, 
+		im_name_from_user_id(u.user_id) as name
 	from
-		im_employees_active emp
+		users_active u,
+		group_distinct_member_map m
+	where
+		u.user_id = m.member_id
+		and m.group_id = :group_id
 	order by 
 		name
     "
-    return [im_selection_to_select_box -translate_p 0 $bind_vars project_lead_list $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars project_lead_list $sql $select_name $default]
 }
 
 

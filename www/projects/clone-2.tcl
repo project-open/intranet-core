@@ -37,6 +37,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 set required_field "<font color=red size=+1><B>*</B></font>"
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
+set page_title "Clone Project"
 
 set current_url [ns_conn url]
 
@@ -68,7 +69,9 @@ Content-Type: $content_type\r\n"
 
 util_WriteWithExtraOutputHeaders $all_the_headers
 ns_startcontent -type $content_type
-
+ns_write [im_header $page_title]
+ns_write [im_navbar]
+ns_write "<p>\n"
 
 set page_body [im_project_clone \
 	-company_id $company_id \
