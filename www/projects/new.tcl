@@ -136,7 +136,7 @@ if {$enable_nested_projects_p} {
     set super_project_id 0
     if {"" != $parent_id} { set super_project_id $parent_id }
     if {[info exists project_id]} { set super_project_id $project_id }
-    set project_parent_options [im_project_options -project_status_id [im_project_status_open] -project_id $super_project_id]
+    set project_parent_options [im_project_options -exclude_status_id [im_project_status_closed] -project_id $super_project_id]
 
     template::element::create $form_id parent_id -optional \
     	-label "[_ intranet-core.Parent_Project]" \
