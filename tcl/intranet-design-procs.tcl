@@ -411,7 +411,11 @@ ad_proc -public im_project_navbar {
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label=:navbar_menu_label"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
-    set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
+    
+    ns_set put $bind_vars letter $default_letter
+    ns_set delkey $bind_vars project_status_id
+
+    set navbar [im_sub_navbar $parent_menu_id $bind_vars $alpha_bar "tabnotsel" $select_label]
 
     return $navbar
 }
