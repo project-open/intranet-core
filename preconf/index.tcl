@@ -70,3 +70,9 @@ db_multirow -extend {view_url} users users_query $query {
     set view_url ""
 }
 
+
+# ------------------------------------------------------
+# Get current user email
+
+set email [db_string email "select email from parties where party_id=[ad_get_user_id]" -default ""]
+
