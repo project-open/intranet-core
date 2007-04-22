@@ -16,6 +16,10 @@ if { ![info exists header_stuff] } {
     set header_stuff {}
 }
 
+if { ![info exists focus] } {
+    set focus {}
+}
+
 if { [template::util::is_nil subnavbar_link] } {
     set subnavbar_link ""
 }
@@ -110,3 +114,66 @@ set whos_online_url "[subsite::get_element -element url]shared/whos-online"
 #----------------------------------------------------------------------
 
 util_get_user_messages -multirow "user_messages"
+
+
+
+# HAM : lets check ajaxhelper globals ***********************
+
+global ajax_helper_js_sources
+global ajax_helper_yui_js_sources
+global ajax_helper_dojo_js_sources
+set js_sources ""
+
+if { [info exists ajax_helper_js_sources] || [info exists ajax_helper_yui_js_sources] || [info exists ajax_helper_dojo_js_sources] } {
+
+    # if we're using ajax, let's use doc_type strict so we can get
+    # consistent results accross standards compliant browsers
+    set doc_type { <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> }
+
+    if { [info exists ajax_helper_js_sources] } {
+	append js_sources [ah::load_js_sources -source_list $ajax_helper_js_sources]
+    }
+
+    if { [info exists ajax_helper_yui_js_sources] } {
+	append js_sources [ah::yui::load_js_sources -source_list $ajax_helper_yui_js_sources]
+    }
+
+    if { [info exists ajax_helper_dojo_js_sources] } {
+	append js_sources [ah::dojo::load_js_sources -source_list $ajax_helper_dojo_js_sources]
+    }
+}
+
+# ***********************************************************
+
+set extra_stuff_for_document_head "$js_sources"
+if { ![exists_and_not_null extra_stuff_for_document_head] } {
+    set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
+}
+
+append extra_stuff_for_document_head [im_stylesheet]
+append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
+append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
+append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
+
+if {[llength [info procs im_amberjack_header_stuff]]} {
+    append extra_stuff_for_document_head [im_amberjack_header_stuff]
+}
+
+set extra_stuff_for_body "onLoad=\"javascript:initPortlet();\" "
+if { [empty_string_p $extra_stuff_for_document_head] } {
+    set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
+}
+
+append extra_stuff_for_document_head [im_stylesheet]
+append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
+append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
+append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
+
+if {[llength [info procs im_amberjack_header_stuff]]} {
+    append extra_stuff_for_document_head [im_amberjack_header_stuff]
+}
+
+append extra_stuff_for_document_head $header_stuff
+set extra_stuff_for_body [list [list onLoad "javascript:initPortlet();"]]

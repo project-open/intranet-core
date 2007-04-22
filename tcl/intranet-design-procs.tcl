@@ -904,7 +904,12 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 }
 
 
-ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
+ad_proc -public im_header { 
+    { -no_head_p "0"}
+    { page_title "" } 
+    { extra_stuff_for_document_head "" } 
+    
+} {
     The default header for ProjectOpen
 } {
     set user_id [ad_get_user_id]
@@ -921,9 +926,6 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     if {$search_installed_p && [empty_string_p $page_focus] } {
 	# Default: Focus on Search form at the top of the page
 	set page_focus "surx.query_string"
-    }
-    if { [empty_string_p $extra_stuff_for_document_head] } {
-	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
     # --------------------------------------------------------
@@ -965,6 +967,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
     if {[im_site_wide_admin_p $user_id]} {
 	set user_profile "[_ intranet-core.SiteAdmin]"
+    }
+
+    if { [empty_string_p $extra_stuff_for_document_head] } {
+	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
@@ -1046,13 +1052,16 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	    set plugin_right_html [im_table_with_title $plugin_name $plugin_right_html]
         }
     }
-
-    set html "<html>
+    if {!$no_head_p} {
+	set html "<html>
 <head>
 $extra_stuff_for_document_head
 <title>$page_title</title>
 </head>
 "
+    } else {
+	set html ""
+    }
 
     array set attrs [list]
 
