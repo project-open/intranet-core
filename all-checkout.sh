@@ -72,7 +72,7 @@ cvs checkout intranet-payments
 # cvs checkout intranet-procedures
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
-# cvs checkout intranet-reporting-dashboard
+cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-reporting-finance
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
