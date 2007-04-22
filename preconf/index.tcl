@@ -74,5 +74,7 @@ db_multirow -extend {view_url} users users_query $query {
 # ------------------------------------------------------
 # Get current user email
 
-set email [db_string email "select email from parties where party_id=[ad_get_user_id]" -default ""]
+set current_user_id [ad_get_user_id]
+set email [db_string email "select email from parties where party_id=:current_user_id" -default ""]
+if {0 == $current_user_id} { set email "" }
 
