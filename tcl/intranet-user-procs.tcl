@@ -440,12 +440,17 @@ ad_proc -public im_user_nuke {user_id} {
 	    db_dml delete_user_sec_login_tokens "delete from sec_login_tokens where user_id = :user_id"
 	}
     
-	# general stuff
+	# general comments
 	ns_log Notice "users/nuke2: general_comments"
 	if {[db_table_exists general_comments]} {
-	    db_dml delete_user_general_comments "delete from general_comments where user_id = :user_id"
-	    db_dml delete_user_comments "delete from comments where user_id = :user_id"
+	    db_dml delete_user_general_comments "delete from general_comments where object_id = :user_id"
 	}
+
+	ns_log Notice "users/nuke2: comments"
+	if {[db_table_exists comments]} {
+	    db_dml delete_user_comments "delete from comments where object_id = :user_id"
+	}
+
 	ns_log Notice "users/nuke2: links"
 	if {[db_table_exists links]} {
 	    db_dml delete_user_links "delete from links where user_id = :user_id"
