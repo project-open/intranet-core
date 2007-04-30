@@ -1,123 +1,132 @@
 #!/bin/bash
 
-cvs checkout acs-admin
-cvs checkout acs-api-browser
-cvs checkout acs-authentication
-cvs checkout acs-automated-testing
-cvs checkout acs-bootstrap-installer
-cvs checkout acs-content-repository
-cvs checkout acs-core-docs
-cvs checkout acs-datetime
-cvs checkout acs-developer-support
-cvs checkout acs-events
-cvs checkout acs-kernel
-cvs checkout acs-lang
-cvs checkout acs-mail
-cvs checkout acs-mail-lite
-cvs checkout acs-messaging
-cvs checkout acs-reference
-cvs checkout acs-service-contract
-cvs checkout acs-subsite
-cvs checkout acs-tcl
-cvs checkout acs-templating
-cvs checkout acs-workflow
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-admin
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-api-browser
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-authentication
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-automated-testing
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-bootstrap-installer
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-content-repository
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-core-docs
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-datetime
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-developer-support
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-events
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-kernel
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-lang
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-mail
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-mail-lite
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-messaging
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-reference
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-service-contract
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-subsite
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-tcl
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-templating
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-translations
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev acs-workflow
 
-cvs checkout bug-tracker
-cvs checkout bulk-mail
-cvs checkout calendar
-cvs checkout categories
-cvs checkout chat
-cvs checkout cms
-cvs checkout diagram
-cvs checkout ecommerce
-cvs checkout events
-cvs checkout general-comments
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ajaxhelper
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ams
 
-cvs checkout intranet-amberjack
-cvs checkout intranet-big-brother
-cvs checkout intranet-bug-tracker
-cvs checkout intranet-calendar
-cvs checkout intranet-core
-cvs checkout intranet-cost
-cvs checkout intranet-cost-audit
-cvs checkout intranet-cost-center
-cvs checkout intranet-crm-tracking
-# cvs checkout intranet-cust-baselkb
-cvs checkout intranet-cvs-integration
-cvs checkout intranet-dw-light
-cvs checkout intranet-dynfield
-cvs checkout intranet-exchange-rate
-cvs checkout intranet-expenses
-# cvs checkout intranet-expfind2-ora
-# cvs checkout intranet-expfind2-pg
-# cvs checkout intranet-expfind-ora
-# cvs checkout intranet-expfind-pg
-cvs checkout intranet-filestorage
-cvs checkout intranet-forum
-cvs checkout intranet-freelance
-cvs checkout intranet-freelance-invoices
-cvs checkout intranet-ganttproject
-cvs checkout intranet-hr
-cvs checkout intranet-html2pdf
-cvs checkout intranet-invoices
-cvs checkout intranet-invoices-templates
-cvs checkout intranet-mail-import
-cvs checkout intranet-material
-# cvs checkout intranet-notes
-cvs checkout intranet-ophelia
-cvs checkout intranet-otp
-cvs checkout intranet-payments
-# cvs checkout intranet-planning
-# cvs checkout intranet-procedures
-cvs checkout intranet-reporting
-cvs checkout intranet-reporting-cubes
-# cvs checkout intranet-reporting-dashboard
-cvs checkout intranet-reporting-finance
-cvs checkout intranet-reporting-translation
-cvs checkout intranet-reporting-tutorial
-# cvs checkout intranet-riskmanagement
-# cvs checkout intranet-search
-# cvs checkout intranet-search-ora
-# cvs checkout intranet-search-oracle
-cvs checkout intranet-search-pg
-cvs checkout intranet-search-pg-files
-# cvs checkout intranet-secure-login
-cvs checkout intranet-security-update-client
-# cvs checkout intranet-security-update-server
-cvs checkout intranet-simple-survey
-# cvs checkout intranet-spam
-# cvs checkout intranet-sql-selectors
-cvs checkout intranet-sysconfig
-# cvs checkout intranet-timesheet
-cvs checkout intranet-timesheet2
-cvs checkout intranet-timesheet2-invoices
-# cvs checkout intranet-timesheet2-task-popup
-cvs checkout intranet-timesheet2-tasks
-cvs checkout intranet-trans-invoices
-# cvs checkout intranet-trans-invoices-vaw
-cvs checkout intranet-translation
-cvs checkout intranet-trans-quality
-# cvs checkout intranet-travel
-cvs checkout intranet-update-client
-# cvs checkout intranet-update-server
-cvs checkout intranet-wiki
-cvs checkout intranet-workflow
-cvs checkout intranet-xmlrpc
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev bug-tracker
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev bulk-mail
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev calendar
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev categories
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev chat
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev cms
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev contacts
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev diagram
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ecommerce
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev events
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev general-comments
 
-cvs checkout lars-blogger
-cvs checkout notifications
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-amberjack
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-big-brother
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-bug-tracker
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-calendar
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-core
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-cost
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-cost-audit
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-cost-center
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-crm-tracking
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-dw-light
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-dynfield
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-exchange-rate
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-expenses
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-expfind2-ora
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-expfind2-pg
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-expfind-ora
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-expfind-pg
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-filestorage
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-forum
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-freelance
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-freelance-invoices
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-ganttproject
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-hr
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-html2pdf
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-invoices
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-invoices-templates
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-mail-import
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-material
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-notes
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-ophelia
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-otp
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-payments
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-planning
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-procedures
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting-cubes
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting-dashboard
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting-finance
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting-translation
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-reporting-tutorial
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-riskmanagement
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-search
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-search-ora
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-search-oracle
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-search-pg
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-search-pg-files
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-secure-login
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-security-update-client
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-security-update-server
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-simple-survey
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-spam
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-sql-selectors
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-sysconfig
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-timesheet
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-timesheet2
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-timesheet2-invoices
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-timesheet2-task-popup
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-timesheet2-tasks
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-trans-invoices
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-trans-invoices-vaw
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-translation
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-trans-quality
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-travel
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-update-client
+# cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-update-server
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-wiki
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-workflow
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev intranet-xmlrpc
 
-cvs checkout ref-countries
-cvs checkout ref-language
-cvs checkout ref-timezones
-cvs checkout ref-us-counties
-cvs checkout ref-us-states
-cvs checkout ref-us-zipcodes
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev mail-tracking
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev lars-blogger
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev notifications
 
-cvs checkout rss-support
-cvs checkout search
-cvs checkout simple-survey
-cvs checkout trackback
-cvs checkout wiki
-cvs checkout workflow
-cvs checkout xml-rpc
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev organizations
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev postal-address
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-countries
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-itu
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-language
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-timezones
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-us-counties
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-us-states
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev ref-us-zipcodes
+
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev rss-support
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev search
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev simple-survey
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev telecom-number
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev trackback
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev wiki
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev workflow
+cvs -d :pserver:cognovis@berlin.dnsalias.com:/home/cvsroot checkout -r b3-3-dev xml-rpc
+
