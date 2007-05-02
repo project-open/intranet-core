@@ -46,7 +46,7 @@ demo data from this server and start using this server in production
 if you are a small organization.<p>
 
 For a complete rollout overview please see our 
-<a href=\"http://www.project-open.com/whitepapers/Project-Open-Rollout-Plan.ppt\"
+<a href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\"
 >Rollout Plan</a>. Please
 <A href=\"http://www.project-open.com/contact/\">contract us</a>
 for a quote on professional services. We have helped more then 100
