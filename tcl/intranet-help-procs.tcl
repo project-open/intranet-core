@@ -24,28 +24,47 @@ ad_proc -public im_help_home_page_blurb_component { } {
     This has been made into a component in order to allow
     users to remove it from the home page.
 } {
+    set projop "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>"
+    set po "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>po</span><span class=brandsec>&\#91;</span></nobr>"
+
     return "
 <table cellpadding=2 cellspacing=2 border=0 width=100%>
 <tr><td>
 
-<h1>Welcome to <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr></h1>
+<h1>Welcome to $projop</h1>
 
-<h2>Getting Help</h2>
+We have set up a sample system for you in order to show you how
+a typical company could look like. Please follow the links to
+explore the (freely invented) sample contents.
 
-Help is available for you in various ways:
+
+<h2>Starting to use $po</h2>
+
+<p>
+You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
+demo data from this server and start using this server in production
+if you are a small organization.<p>
+
+For a complete rollout overview please see our 
+<a href=\"http://www.project-open.com/whitepapers/Project-Open-Rollout-Plan.ppt\"
+>Rollout Plan</a>. Please
+<A href=\"http://www.project-open.com/contact/\">contract us</a>
+for a quote on professional services. We have helped more then 100
+organizations to get the most out of $po.
+
+
+<h2>Online Resources</h2>
 
 <ul>
 <li>
   <A href=\"http://www.project-open.org/product/modules/\"><B>
     &\#93;project-open&\#91; Feature Overview</b></a>:<br>
   Our web page gives you an overview over the different
-<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
-  modules and briefly explains their functionality.
+  $po modules and briefly explains their functionality.
 </li>
 <li>
   <A href=\"http://www.project-open.org/doc/\"><b>
-<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
-  User Guides</b></a>:<br>
+  $po User Guides</b></a>:<br>
   Please visit the download zone of our
   <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
   Here you will find all relevant guides and manuals in \".pdf\" format.
@@ -68,34 +87,9 @@ Help is available for you in various ways:
   <A href=\"http://www.project-open.com/product/services/support/\"><b>
     Professional Support</b></a>:<br>
     Please consider to contract professional support. 
-    <nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
-    offers three different support levels for companies of all sizes.
+    $po offers three different support levels for companies of all sizes.
 </li>
 </ul>
-
-<h2>Exploring the System</h2>
-
-<p>
-We have set up a sample system for you in order to show you how
-a typical company could look like. Please follow the links to
-explore the (freely invented) sample contents.
-</p>
-
-
-<h2>Using <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr> in Your Company</h2>
-
-<p>
-This sample configuration is a suitable starting point if you want to use 
-<nobr><span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span></nobr>
-in your company. The 'Admin' -> 'Cleanup Demo Data' option allows you to
-delete the sample data in this system and allows you to start using the system 
-in your company. However, you usually want to configure a number of
-configuration options such as permissions, prices lists, templates etc. 
-You can read more about these options in the 'PO-Configuration-Manual'
-(see above) or you can 
-<A href=\"http://www.project-open.com/contact/\">contract us</a>, 
-which may save you a certain amount of time 
-and will help us to finance further improvements to the system...
 
 </p>
 </td></tr>
