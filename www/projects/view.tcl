@@ -58,6 +58,10 @@ if {$subproject_filtering_enabled_p} {
     }
 }
 
+set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
+set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
+set gantt_project_enabled_p [util_memoize "db_string gp {select count(*) from apm_packages where package_key = 'intranet-ganttproject'}"]
+
 
 # ---------------------------------------------------------------------
 # Get Everything about the project
@@ -341,6 +345,21 @@ append project_base_data_html "    </table>
 # ---------------------------------------------------------------------
 
 set admin_html_content ""
+
+if {$gantt_project_enabled_p} {
+    set help [lang::message::lookup "" intranet-ganttproject.ProjectComponentHelp \
+    "GanttProject is a free Gantt chart viewer (http://sourceforge.net/project/ganttproject/)"]
+    append admin_html_content "
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A>
+        [im_gif help $help]
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan File"]</A>
+        [im_gif help $help]
+    "
+}
+
+
 if {$admin} {
     append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>\n"
 }
@@ -348,9 +367,6 @@ if {$admin} {
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
 
 set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 'Clone' is an exact copy of your project. You can use this function to standardize repeating projects."]
-
-set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
-set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
 
 if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
     append admin_html_content "
