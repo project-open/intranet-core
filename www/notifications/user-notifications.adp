@@ -1,3 +1,6 @@
+
+<if @notifications:rowcount@ ne 0>
+
 <table cellspacing="1" cellpadding="3">
   <tr class="rowtitle">
     <th colspan="2">Notifications</th>
@@ -32,3 +35,4 @@
     </tr>
   </multiple>
 </table>
+</if>
