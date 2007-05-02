@@ -38,7 +38,12 @@ set query "
 		u.user_id
 "
 
-set demo_group_exists_p [db_string dg "select count(*) from user_tab_columns where table_name = 'PERSONS' and column_name = 'DEMO_GROUP'"]
+set demo_group_exists_p [db_string dg "
+	select count(*) 
+	from user_tab_columns 
+	where	table_name = 'PERSONS' 
+		and column_name = 'DEMO_GROUP'
+"]
 
 if {!$demo_group_exists_p} {
     set query "
@@ -64,7 +69,6 @@ if {!$demo_group_exists_p} {
 }
 
 
-
 set old_demo_group ""
 db_multirow -extend {view_url} users users_query $query {
     set view_url ""
@@ -75,6 +79,5 @@ db_multirow -extend {view_url} users users_query $query {
 # Get current user email
 
 set current_user_id [ad_get_user_id]
+if {0 == $current_user_id} { set current_user_id 624 }
 set email [db_string email "select email from parties where party_id=:current_user_id" -default ""]
-if {0 == $current_user_id} { set email "" }
-
