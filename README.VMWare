@@ -1,8 +1,8 @@
 
   ]project-open[ Virtual Machine
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.1.2, 2006-03-25
-  Copyright (c) 2006 ]project-open[
+  Version V3.2.10, 2007-05-04
+  Copyright (c) 2007 ]project-open[
 
   This is the ]project-open[ Virtual Machine. This document describes
   some characteristics of how this VM has been configured.
@@ -12,8 +12,8 @@
   0. About the Virtual Machine
 
 
-  Version V3.1.2, 2006-03-25
-  Copyright (c) 2006 ]project-open[
+  Version V3.2.10, 2007-05-04
+  Copyright (c) 2007 ]project-open[
   Frank Bergmann <frank.bergmann@project-open.com>
   http://www.project-open.org/download/win/3.1.2.0.html
 
@@ -39,7 +39,6 @@
   The production server is used to run your company, while the staging
   server is used to test configuration and code updates. Please see the
   PO-Operations-Maintenance guide for details.
-
 
 
 

@@ -1,0 +1,99 @@
+
+  ]project-open[ Software Update README
+  Frank Bergmann <frank.bergmann@project-open.com>
+  Version V3.2.10, 2007-05-04
+  Copyright (c) 2007 ]project-open[
+
+  This is a ]project-open[ minor update. This document describes
+  how to use and update the software.
+
+  ______________________________________________________________________
+
+  0. About ]project-open[ Update README
+
+
+  Version V3.2.10, 2007-05-04
+  Copyright (c) 2007 ]project-open[
+  Frank Bergmann <frank.bergmann@project-open.com>
+  http://www.project-open.org/download/
+
+  Permission is granted to copy, distribute and/or modify this document
+  under the terms of the GNU Free Documentation License, Version 1.1 or
+  any later version published by the Free Software Foundation.
+  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
+
+  Please see LICENSE.ProjectOpen in the /web/projop/ directory for details
+  about the licensing of the contained software.
+
+
+  ______________________________________________________________________
+
+  1. Overview
+
+  This ]project-open[ update asumes that you are already running 
+  successfully ]project-open[ on one of your servers. This update
+  only contains the base ]po[ code and a database dump with the
+  default demo system.
+
+
+
+  ______________________________________________________________________
+
+  2. Contents
+
+  This ]project-open[ update contains the following files:
+
+  - README.ProjectOpen-Update - this file
+  - packages.v3-2-x-y-z.tgz
+  - pg_dump.v3-2-x-y-z.sql.gz
+
+
+  The "packages.tgz" contains the main ]po[ product code.
+  The "pg_dump.sql.gz" contains a PostgreSQL database dump that
+  matches the package.tgz file.
+
+  This package does not contains the AOLServer application server
+  nor the rest of the ]po[ runtime environment. Please go to
+  http://www.sourceforge.net/projects/project-open/ to download
+  and install the project-open-3.2.VMware.zip or one of the other
+  installers.
+
+
+  ______________________________________________________________________
+
+  3. Installation/Update
+
+
+  To install the update please proceed like this:
+
+  - Move the /web/projop/packages folder to a save place:
+
+    # cd /web/projop/
+    # mv packages /tmp/
+
+  - Untar the new code:
+
+    # cd /web/projop/
+    # tar xzf packages.v3-2-x-y-z.tgz
+    # chown -R projop:users packages
+
+  - Demo Systems only: Load the database dump:
+
+    # cd /web/projop/
+    # mv pg_dump.v3-2-x-y-z.sql.gz /web/projop/filestorage/backup/
+    # cd /web/projop/filestorage/backup/
+    # gzip -d pg_dump.v3-2-x-y-z.sql.gz
+
+    Now proceed to the ]po[ application Admin -> Backup and restore
+    the backup dump. Don't do this step on a production server,
+    all previous data will be lost.
+
+  - Production Systems: Update your packages
+
+    Proceedo the ]po[ application URL http://<server>/acs-admin/apm/
+    choose "Install Packages" and select all packages with comment
+    "Update".
+
+
+Cheers,
+Frank
