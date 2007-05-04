@@ -689,4 +689,51 @@ ad_proc im_company_nuke {company_id} {
     set return_to_admin_link "<a href=\"/intranet/companies/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 }
 
+ad_proc -public im_company_find_or_create_main_office {
+    -company_name
+} {
+    set office_name "$company_name Main Office"
+    set office_path "${company_name}_main_office"
 
+    set office_id [db_string office_id "select office_id from im_offices where office_path=:office_path" -default 0]
+    if {!$office_id} {
+	set office_id [office::new \
+		-office_name	$office_name \
+		-office_path	$office_path \
+		-office_status_id [im_office_status_active] \
+		-office_type_id [im_office_type_main] \
+	]
+    }
+    return $office_id
+}
+
+
+ad_proc -public im_company_find_or_create {
+    -company_name
+    { -company_type_id 0 }
+    { -company_status_id 0 }
+} {
+    if {$company_name==""} { return 0 }
+
+    if {0 == $company_type_id} { set company_type_id [im_company_type_other] }
+    if {0 == $company_status_id} { set company_status_id [im_company_status_active]
+
+    set company_path [string tolower [string trim $company_name]]
+    set company_path [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $company_path]
+
+    set company_id [db_string find_company "select company_id from im_companies where company_path=:company_path" -default 0]
+	
+    if {!$company_id} {
+	set office_id [im_company_find_or_create_main_office -company_name $company_name]
+
+	set company_id [company::new \
+           -company_name	$company_name \
+           -company_path	$company_path \
+           -main_office_id	$office_id \
+           -company_type_id     $company_type_id \
+           -company_status_id   $company_status_id \
+        ]
+    }
+
+    return $company_id
+}
