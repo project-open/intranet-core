@@ -108,6 +108,8 @@ cvs checkout intranet-xmlrpc
 cvs checkout lars-blogger
 cvs checkout notifications
 
+cvs checkout oryx-ts-extensions
+
 cvs checkout ref-countries
 cvs checkout ref-language
 cvs checkout ref-timezones
