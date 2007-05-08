@@ -98,6 +98,9 @@ switch [string tolower $user_group_name] {
     	set user_group_id -1 
 	set menu_select_label "users_unassigned"
     }
+    "customers" {
+	set menu_select_label "users_companies"
+    }
     default {
     	# Search for the right group name.
     	# It's an ugly TCL loop instead of a single SQL statement,
