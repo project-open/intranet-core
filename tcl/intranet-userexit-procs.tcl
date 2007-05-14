@@ -41,6 +41,11 @@ ad_proc -public im_user_exit_call {
 	set exit_exists_p [util_memoize "file executable $user_exit"]
     }
 
+    if {!$exit_exists_p} { 
+	ns_log Notice "im_user_exit_call: exit=$user_exit, oid=$object_id: user_exit doesnt exist"
+	return 0 
+    }
+
     set log_str "${user_exit}($object_id):\n"
 
     set result 0
