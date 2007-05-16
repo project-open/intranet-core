@@ -56,7 +56,7 @@
        text-decoration: none;
      }
 
-     .navbar_right, .navbar_left, TR.subnavbar_title TD A, subnavbar {
+     .navbar_right, .navbar_left, TR.subnavbar_title TD A, .subnavbar {
        background: url(/intranet/images/navbar_pebbles/tab-notsel.gif);
      }    
 

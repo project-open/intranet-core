@@ -591,7 +591,7 @@ if {[form is_valid $form_id]} {
     # Update the Project
     # -----------------------------------------------------------------
     set start_date [template::util::date get_property sql_date $start]
-    set end_date [template::util::date get_property sql_timestamp $end]
+    set end_date [template::util::date get_property sql_date $end]
 
     set project_update_sql "
 	update im_projects set

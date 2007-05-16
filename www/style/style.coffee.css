@@ -34,7 +34,7 @@ H3 {
 .tabsel {
 	FONT-WEIGHT: bold; COLOR: #13416E; BACKGROUND-COLOR: #ffffff
 }
-.tabnotsel {
+.tabnotsel, .sub_navbar_title {
 	FONT-WEIGHT: bold; COLOR: #FFF; BACKGROUND-COLOR: #577796
 }
 .brandfirst {

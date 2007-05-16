@@ -191,7 +191,7 @@ ad_form -extend -name register -form {
 ad_form -extend -name register -form {
     {theme:text(select),optional {label "[_ intranet-core.theme]"} {
 	options { 
-	    {default default} 
+	    {blue default} 
 	    {pebbles pebbles} 
 	    {lightgreen lightgreen} 
 	    {coffee coffee}

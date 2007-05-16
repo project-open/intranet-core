@@ -110,6 +110,10 @@ switch [string tolower $user_group_name] {
 		}
 	}
 	set menu_select_label "users_[string tolower $user_group_name]"
+
+	if { $menu_select_label=="users_customers" } {
+	    set menu_select_label "users_companies"
+	}
     }
 }
 

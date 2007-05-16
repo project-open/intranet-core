@@ -5,7 +5,7 @@
     h2 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: medium;}
     h3 {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: small;}
     .tabsel {background-color: #336699; color: #ffffff;; font-weight: bold}
-    .tabnotsel {background-color: #BBCFE1; color: #000000;; font-weight: bold}
+    .tabnotsel, .sub_navbar_title {background-color: #BBCFE1; color: #000000;; font-weight: bold}
 
 
 .maintenancebar {

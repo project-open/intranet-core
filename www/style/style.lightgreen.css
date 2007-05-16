@@ -29,7 +29,7 @@
 
 
     .tabsel {background-color: #3D5440; color: #ffffff;}
-    .tabnotsel {background-color: #C9DCCC; color: #000000;}
+    .tabnotsel, .sub_navbar_title {background-color: #C9DCCC; color: #000000;}
     .titlerow  {font-family: verdana, arial, helvetica, sans-serif; font-Size: 10pt; background-color: #BBCFE1; background: #BBCFE1;}
 
     .rowtitle  {font-size: 10pt; color: #ffffff; background-color: #648E6A; }
