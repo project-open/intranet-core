@@ -8,12 +8,12 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.3.0.0.1" url="http://projop.dnsalias.com/download/apm/intranet-core-3.3.0.0.1.apm">
+    <version name="3.3.0.0.2" url="http://projop.dnsalias.com/download/apm/intranet-core-3.3.0.0.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2004-08-24</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="3.3.0.0.1"/>
+        <provides url="intranet-core" version="3.3.0.0.2"/>
         <requires url="acs-subsite" version="5.3.1"/>
         <requires url="intranet-dynfield" version="3.2.6"/>
         <requires url="notifications" version="5.0"/>

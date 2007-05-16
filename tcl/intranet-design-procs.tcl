@@ -21,6 +21,34 @@ ad_library {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
+ad_proc -private im_current_theme_helper { user_id } {
+    set theme [db_string im_current_theme "
+        SELECT theme FROM users WHERE user_id=:user_id
+    " -default ""]
+
+    if { $theme=="" } {
+	return "pebbles"
+    }
+    return $theme
+}
+
+ad_proc -public im_current_theme {} {
+} {
+    set user_id [ad_maybe_redirect_for_registration]
+ 
+    return [util_memoize "im_current_theme_helper $user_id" 60]
+}
+
+ad_proc -public im_current_navbar {} {
+} {
+    # [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath ""
+    return "navbar_[im_current_theme]"
+}
+
+ad_proc -public im_current_css {} {
+} {
+     return "/intranet/style/style.[im_current_theme].css"
+}
 
 
 
@@ -55,7 +83,7 @@ ad_proc -public im_gif {
     if {$debug} { ns_log Notice "im_gif: name=$name" }
 
     set url "/intranet/images"
-    set navbar_postfix [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
+    set navbar_postfix [im_current_navbar]
     set navbar_gif_url "/intranet/images/[im_navbar_gif_url]"
     set base_path "[acs_root_dir]/packages/intranet-core/www/images/"
     set navbar_path "[acs_root_dir]/packages/intranet-core/www/images/[im_navbar_gif_url]"
@@ -193,14 +221,14 @@ ad_proc -public im_gif_static {
 
 	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"left-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-sel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif  border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif  border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"admin"		{ return "<img src=$navbar_gif_url/tux.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"customer"	{ return "<img src=$navbar_gif_url/coins.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -219,7 +247,7 @@ ad_proc -public im_gif_static {
 	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
 
 
-	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png border=$border align=\"middle\" title=\"$alt\" alt=\"$alt\">" }
 	"arrow_comp_left" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"arrow_comp_right" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"arrow_comp_up"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -665,7 +693,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
-          <TD align=right>
+          <TD align=right class=subnavbar>
 	    <div id=subnavbar_class>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
@@ -680,7 +708,7 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         <TR>
           <td colspan=2 class=$title_class>
             <table cellpadding=1 width='100%'>
-              <tr>
+              <tr class=sub_navbar_title>
                 <td class=$title_class align=center valign=middle>
 		    $title
                 </td>
@@ -870,7 +898,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     return "
       <table border=0 cellspacing=0 cellpadding=0 width='100%'>
         <TR>
-          <TD align=left>
+          <TD align=left class=navbar_left>
 	    <div id=navbar_class>
             <table border=0 cellspacing=0 cellpadding=0>
               <tr height=19>
@@ -879,7 +907,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
             </table>
 	    </div>
           </TD>
-	  <td align=right>
+	  <td align=right class=navbar_right>
 	    <div id=navbar_right_class>
 	     $add_components
 	    </div>
@@ -1188,7 +1216,8 @@ ad_proc -public im_footer {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
+    #set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
+    set system_css [im_current_css]
     set calendar_css ""
     if {[llength [info procs im_package_calendar_id]]} {
 	set calendar_css "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\">"
@@ -1217,18 +1246,18 @@ ad_proc -public im_logo {} {
     return "\n<a href=\"$system_logo_link\"><img src=$system_logo border=0></a>\n"
 }
 
-
-
 ad_proc -public im_navbar_gif_url {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    return [util_memoize "im_navbar_gif_url_helper" 60]
+    set user_id [ad_maybe_redirect_for_registration]
+
+    return [util_memoize "im_navbar_gif_url_helper $user_id" 60]
 }
 
-ad_proc -public im_navbar_gif_url_helper {} {
+ad_proc -public im_navbar_gif_url_helper { user_id } {
     Path to access the Navigation Bar corner GIFs
 } {
-    set navbar_gif_url "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
+    set navbar_gif_url "/intranet/images/[im_current_navbar]"
     set org_navbar_gif_url $navbar_gif_url
 
     # Old parameter? Shell out a warning and use the last part

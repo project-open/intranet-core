@@ -246,3 +246,47 @@ span.list-label {
   color: #6f6f6f;
 }
 
+.tab_left_sel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/left-sel.gif);
+}
+.tab_left_notsel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/left-notsel.gif);
+}
+
+.tab_right_sel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/right-sel.gif);
+}
+.tab_right_notsel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/right-notsel.gif);
+}
+
+.tab_middle_sel_notsel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/middle-sel-notsel.gif);
+}
+.tab_middle_notsel_sel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/middle-notsel-sel.gif);
+}
+.tab_middle_sel_sel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/middle-sel-sel.gif);
+}
+.tab_middle_notsel_notsel {
+  width: 19px; 
+  height: 19px;
+  background:  url(/intranet/images/navbar_default/middle-notsel-notsel.gif);
+}
+
+

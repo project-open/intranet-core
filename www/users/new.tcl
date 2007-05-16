@@ -109,7 +109,8 @@ select
 	pa.email,
 	pa.url,
 	u.screen_name,
-	u.username
+	u.username,
+        u.theme
 from
 	parties pa
 	left outer join persons pe on (pa.party_id = pe.person_id)
@@ -187,6 +188,16 @@ ad_form -extend -name register -form {
     {url:text(text),optional {label "[_ intranet-core.lt_Personal_Home_Page_UR]"} {html {size 50 value "http://"}}} 
 }
 
+ad_form -extend -name register -form {
+    {theme:text(select),optional {label "[_ intranet-core.theme]"} {
+	options { 
+	    {default default} 
+	    {pebbles pebbles} 
+	    {lightgreen lightgreen} 
+	    {coffee coffee}
+	}
+    }} 
+}
 
 
 # ad_form -name register -export {next_url user_id return_url} -form [auth::get_registration_form_elements]
@@ -405,6 +416,10 @@ ad_form -extend -name register -on_request {
 		set first_names = first_names
 		where person_id = :user_id
         "
+
+ 
+        im_user_change_theme $user_id $theme
+
 
 	ns_log Notice "/users/new: finished big IF clause"
 

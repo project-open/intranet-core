@@ -625,3 +625,25 @@ ad_proc -public im_user_nuke {user_id} {
     }
 }
 
+ad_proc -public im_user_change_theme {
+    user_id
+    theme
+} {
+    Change the theme for a user and also flush the memoize cache
+} {
+ 
+    set old_theme [db_string old_theme "
+        SELECT theme FROM users WHERE user_id=:user_id
+        "]   
+
+    if {$old_theme != $theme} {
+	db_dml update_user_theme "
+            UPDATE users
+            SET theme=:theme
+            WHERE user_id = :user_id
+         "
+	
+	util_memoize_flush_regexp ".*"
+    }
+}
+

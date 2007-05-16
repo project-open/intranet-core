@@ -23,7 +23,7 @@
 alter table persons add portrait_checkdate date;
 alter table persons add portrait_file varchar(400);
 
-
+alter table users add theme varchar(32);
 
 -------------------------------------------------------------
 -- Users_Contact information
