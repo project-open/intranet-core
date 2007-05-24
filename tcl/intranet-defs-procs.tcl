@@ -604,11 +604,17 @@ ad_proc im_select {
             set text_tr $text
         }
 
-	if { [string compare $value $default] == 0 } {
-	    lappend items "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
+	set item "<option value=\"[ad_urlencode $value]\">$text_tr</option>"
+	if {$multiple_p} {
+	    if {[lsearch $default $value] >= 0} {
+		set item "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
+	    }
 	} else {
-	    lappend items "<option value=\"[ad_urlencode $value]\">$text_tr</option>"
+	    if {[string compare $value $default] == 0} {
+		set item "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
+	    }
 	}
+	lappend items $item
     }
     return "
     <select name=\"[ad_quotehtml $field_name]\" $size $multiple>
