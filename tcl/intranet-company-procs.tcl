@@ -716,7 +716,7 @@ ad_proc -public im_company_find_or_create {
     if {$company_name==""} { return 0 }
 
     if {0 == $company_type_id} { set company_type_id [im_company_type_other] }
-    if {0 == $company_status_id} { set company_status_id [im_company_status_active]
+    if {0 == $company_status_id} { set company_status_id [im_company_status_active] }
 
     set company_path [string tolower [string trim $company_name]]
     set company_path [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $company_path]

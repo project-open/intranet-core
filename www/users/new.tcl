@@ -289,7 +289,7 @@ ad_form -extend -name register -on_request {
 		set password_confirm $password
 	    }
 
-	    ns_log Notice "/users/new: Before auth::create_user password='$password'"
+	    ns_log Notice "/users/new: Before auth::create_user"
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \
@@ -378,7 +378,6 @@ ad_form -extend -name register -on_request {
         # Add a users_contact record to the user since the 3.0 PostgreSQL
         # port, because we have dropped the outer join with it...
         catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
-        catch { db_dml add_user_preferences "insert into user_preferences (user_id) values (:user_id)" } errmsg
 
 
         # Add the user to the "Registered Users" group, because

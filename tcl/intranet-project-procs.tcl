@@ -763,6 +763,7 @@ ad_proc -public im_project_personal_active_projects_component {
     {-view_name "project_personal_list" }
     {-order_by_clause ""}
     {-project_type_id 0}
+    {-project_status_id 0}
 } {
     Returns a HTML table with the list of projects of the
     current user. Don't do any fancy with sorting and
@@ -810,6 +811,24 @@ order by
     # ---------------------------------------------------------------
     # Generate SQL Query
 
+    if {0 == $project_status_id} { set project_status_id [im_project_status_open] }
+
+    # Project Status restriction
+    set project_status_restriction ""
+    if {0 != $project_status_id} {
+	set project_status_restriction "
+	and p.project_status_id in (
+		select	h.child_id
+		from	im_category_hierarchy h
+		where	h.parent_id in ($project_status_id)
+	    UNION
+		select	category_id
+		from	im_categories
+		where 	category_id in ($project_status_id)
+	)
+	"
+    }
+
     # Project Type restriction
     set project_type_restriction ""
     if {0 != $project_type_id} {
@@ -824,11 +843,6 @@ order by
 	"
     }
 
-    # Limit the list to open projects only
-    set project_history_restriction "
-	and p.project_status_id = [im_project_status_open]
-    "
-
     set perm_sql "
 	(select
 	        p.*
@@ -840,6 +854,7 @@ order by
 		and r.object_id_two = :user_id
 		and p.parent_id is null
 		and p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
+		$project_status_restriction
 		$project_type_restriction
 	)"
 
@@ -857,7 +872,7 @@ order by
 		im_companies c
 	WHERE
 		p.company_id = c.company_id
-		$project_history_restriction
+		$project_status_restriction
 		$project_type_restriction
 	order by $order_by_clause
     "
@@ -955,26 +970,19 @@ ad_proc im_project_clone {
     set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1]
     set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFilesP" -default 1]
     set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1]
-
-    set errors "<li>Starting to clone project \#$parent_project_id => $project_nr / $project_name"
-
-
+    set clone_subprojects_p 0
     set clone_costs_p 0
     set clone_trans_tasks_p 0
-    set clone_subprojects_p 0
+
+    set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>"
 
 
     # --------------------------------------------
-    # Clone the project
+    # Clone the project & dynfields
     #
-    set new_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
-
-    # --------------------------------------------
-    # Delete Trans Tasks for the NEW project
-    # (when using the same project over and over again for debugging purposes)
-    if {[db_table_exists im_trans_tasks]} {
-	db_dml delete_trans_tasks "delete from im_trans_tasks where project_id = :new_project_id"
-    }
+    append errors "<li>Starting to clone base data"
+    set cloned_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
+    append errors "<li>Finished to clone base data"
 
     # --------------------------------------------
     # Delete Costs
@@ -983,14 +991,14 @@ ad_proc im_project_clone {
 
     set ttt {
 	ns_log Notice "im_project_clone: reset_invoice_items"
-	db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :new_project_id"
+	db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :cloned_project_id"
 	
 	ns_log Notice "im_project_clone: cost_infos"
 	set cost_infos [db_list_of_lists costs "
 	select cost_id, object_type 
 	from im_costs, acs_objects 
 	where cost_id = object_id 
-	      and project_id = :new_project_id
+	      and project_id = :cloned_project_id
         "]
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
@@ -1004,65 +1012,71 @@ ad_proc im_project_clone {
     # --------------------------------------------
     # Clone the project
 
-    append errors [im_project_clone_files $parent_project_id $new_project_id]
-    append errors [im_project_clone_base2 $parent_project_id $new_project_id]
-    append errors [im_project_clone_members $parent_project_id $new_project_id]
-    append errors [im_project_clone_url_map $parent_project_id $new_project_id]
+    append errors [im_project_clone_base2 $parent_project_id $cloned_project_id]
+    append errors [im_project_clone_members $parent_project_id $cloned_project_id]
+    append errors [im_project_clone_url_map $parent_project_id $cloned_project_id]
 
+    if {$clone_files_p} {
+	append errors [im_project_clone_files $parent_project_id $cloned_project_id]
+    }
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
-	append errors [im_project_clone_trans_tasks $parent_project_id $new_project_id]
+	append errors [im_project_clone_trans_tasks $parent_project_id $cloned_project_id]
     }
     if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
-	append errors [im_project_clone_timesheet2_tasks $parent_project_id $new_project_id]
+	append errors [im_project_clone_timesheet2_tasks $parent_project_id $cloned_project_id]
     }
     if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
-	append errors [im_project_clone_target_languages $parent_project_id $new_project_id]
+	append errors [im_project_clone_target_languages $parent_project_id $cloned_project_id]
     }
     if {$clone_forum_topics_p && [db_table_exists "im_forum_topics"]} {
-        append errors [im_project_clone_forum_topics $parent_project_id $new_project_id]
+        append errors [im_project_clone_forum_topics $parent_project_id $cloned_project_id]
     }
     if {$clone_costs_p && [db_table_exists "im_costs"]} {
-        append errors [im_project_clone_costs $parent_project_id $new_project_id]
-#        append errors [im_project_clone_payments $parent_project_id $new_project_id]
+        append errors [im_project_clone_costs $parent_project_id $cloned_project_id]
+#        append errors [im_project_clone_payments $parent_project_id $cloned_project_id]
     }
 
     ns_write "$errors\n"
 
     if {$clone_subprojects_p} {
 
-	ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id new_project_id=$new_project_id"
+	ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id cloned_project_id=$cloned_project_id"
 	set subprojects_sql "
-		select	project_id as next_project_id
+		select	project_id as sub_project_id
 		from	im_projects
 		where 	parent_id = :parent_project_id
 	"
-	db_foreach subprojects $subprojects_sql {
+	# Use list detout
+	set subproject_list [list]
+	db_foreach subprojects $subprojects_sql { lappend subproject_list $sub_project_id }
+
+	foreach sub_project_id $subproject_list {
 
 	    db_1row project_info "
-		select	project_nr || :new_project_id as next_project_nr,
-			project_name || :new_project_id as next_project_name
+		select	project_nr || :cloned_project_id as sub_project_nr,
+			project_name || :cloned_project_id as sub_project_name
 		from	im_projects
-		where	project_id = :next_project_id
+		where	project_id = :sub_project_id
 	    "
 
 	    # go for the next project
 	    set cloned_subproject_id [im_project_clone \
 		        -company_id $company_id \
-		        $parent_project_id \
-		        $next_project_name \
-		        $next_project_nr \
+		        $sub_project_id \
+		        $sub_project_name \
+		        $sub_project_nr \
 		        $clone_postfix \
 	    ]
 
 	    db_dml set_parent "
 		update im_projects
 		set parent_id = :parent_project_id
-		where project_id = :new_project_id
+		where project_id = :cloned_subproject_id
 	    "
 	}
 
     }
-    return $new_project_id
+    return $cloned_project_id
 }
 
 
@@ -1116,10 +1130,9 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 	set new_project_name "$new_project_name - $clone_postfix"
     }
 
-
     # -------------------------------
     # Create the new project
-    set project_id [project::new \
+    set cloned_project_id [project::new \
 		-project_name		$new_project_name \
 		-project_nr		$new_project_nr \
 		-project_path		$new_project_nr \
@@ -1128,7 +1141,7 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		-project_type_id	$project_type_id \
 		-project_status_id	$project_status_id \
     ]
-    if {0 == $project_id} {
+    if {0 == $cloned_project_id} {
 	ad_return_complaint 1 "<b>Error creating clone project</b>:<br>
 		Project Name: '$new_project_name'<br>
 		Project Nr: '$new_project_nr'<br>
@@ -1153,18 +1166,17 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		percent_completed = :percent_completed,
 		on_track_status_id = :on_track_status_id
 	where
-		project_id = :project_id
+		project_id = :cloned_project_id
     "
 
-# Not cloning template_p. This is meta-information that shouldn't get copied.
-#		template_p = :template_p
-
+    # Not cloning template_p. This is meta-information that shouldn't get copied.
+    #		template_p = :template_p
 
     # Clone DynFields - just all of them
-    # !!! ToDo: Integration create_dynfield_clone_sql to copy DynFields into cloned project
+    set dynfield_sql [im_dynfield::create_clone_update_sql -object_type "im_project" -object_id $cloned_project_id]
+    db_dml update_dynfields $dynfield_sql
 
-
-    return $project_id
+    return $cloned_project_id
 }
 
 
@@ -1174,7 +1186,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
     copy project structure
 } {
     ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id"
-    set errors "<li>Starting to clone base2 information: parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    set errors "<li>Starting to clone base2 data: parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
     set query "
 	select	p.*
@@ -1231,7 +1243,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 #
 #    }
 
-    append errors "<li>Finished to clone base2 information"
+    append errors "<li>Finished to clone base2 data"
     return $errors
 }
 
