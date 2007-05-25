@@ -76,3 +76,58 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
         ns_log Notice "im_send_alert: Sent mail to $email\n"
     }
 }
+
+
+
+
+ad_proc -public im_security_alert {
+    { -location "No location specified"}
+    { -message "No message specified"}
+    { -value "No value specified" }
+    { -severity "Normal" }
+} {
+    Message sent out to the SysAdmin in case of an attempted security breach.
+} {
+    # Information about the current system
+    # That' interesting, if the security manager manages several systems
+    set system_name [ad_system_name]
+    set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+
+    # Send where?
+    set target_email [ad_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "frank.bergmann@project-open.com"]
+
+    # Extract variables from form and HTTP header
+    set header_vars [ns_conn headers]
+    set url [ns_conn url]
+
+    # Get intersting info
+    set user_id [ad_get_user_id]
+    set user_name [db_string uname "select im_name_from_user_id(:user_id)" -default "unknown"]
+    set client_ip [ns_set get $header_vars "Client-ip"]
+    set referer_url [ns_set get $header_vars "Referer"]
+    set peer_ip [ns_conn peeraddr]
+
+
+    set subject [lang::message::lookup "" intranet-core.Security_breach_subject "%severity% Security Breach in %system_name%"]
+
+    set body "$subject
+
+In: $location
+At: $system_name
+Managed by: $system_owner_email
+Message: $message
+Value: $value
+client_ip: $client_ip
+referer_url: $referer_url
+peer_ip: $peer_ip
+"    
+    
+    append body "\nHTTP Header Vars:\n"
+    foreach var [ad_ns_set_keys $header_vars] {
+	set value [ns_set get $header_vars $var]
+	append body "$var: $value\n"
+    }
+ 
+    ns_sendmail $target_email $system_owner_email $subject $body
+}
+
