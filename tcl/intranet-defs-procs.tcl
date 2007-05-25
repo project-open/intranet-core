@@ -1695,6 +1695,49 @@ ad_proc -public im_valid_auto_login_p {
 
 
 # ---------------------------------------------------------------
+# Category Hierarchy Helper
+# ---------------------------------------------------------------
+
+ad_proc -public im_sub_categories {
+    category_list
+} {
+    Takes a single category or a list of categories and
+    returns a list of the transitive closure (all sub-
+    categories) plus the original input categories.
+} {
+    # Add a dummy value so that an empty input list doesn't
+    # give a syntax error...
+    lappend category_list 0
+    
+    # Check security. category_list should only contain integers.
+    if {[regexp {[^0-9\ ]} $category_list match]} { 
+	im_security_alert \
+	    -location "im_category_subcategories" \
+	    -message "Received non-integer value for category_list" \
+	    -value $category_list
+	return [list]
+    }
+
+    set closure_sql "
+	select	category_id
+	from	im_categories
+	where	category_id in ([join $category_list ","])
+      UNION
+	select	child_id
+	from	im_category_hierarchy
+	where	parent_id in ([join $category_list ","])
+    "
+
+    set result [db_list category_trans_closure $closure_sql]
+
+    # Avoid SQL syntax error when the result is used in a where x in (...) clause
+    if {"" == $result} { set result [list 0] }
+
+    return $result
+}
+
+
+# ---------------------------------------------------------------
 # Ad-hoc execution of SQL-Queries
 # Format for "Developer Service" "pre" display
 # ---------------------------------------------------------------

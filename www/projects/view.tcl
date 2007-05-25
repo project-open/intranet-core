@@ -411,13 +411,9 @@ set space "&nbsp; &nbsp; &nbsp; "
 set subproject_status_sql ""
 if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {
     set subproject_status_sql "
-	and (children.project_status_id in (
-		select	child_id
-		from	im_category_hierarchy
-		where	parent_id = :subproject_status_id
-	    UNION
-		select	:subproject_status_id as child_id
-	) OR
+	and (
+		children.project_status_id in ([join [im_sub_categories $subproject_status_id] ","])
+	    OR
 		children.project_id = :project_id
 	)
     "

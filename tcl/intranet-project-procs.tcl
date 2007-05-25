@@ -66,21 +66,21 @@ ad_proc -public im_project_has_type { project_id project_type } {
 
     ns_log Notice "im_project_has_type: project_id=$project_id, project_type=$project_type"
     set sql "
-select  count(*)
-from
-        im_projects p,
-	im_categories c,
-        im_category_hierarchy h
-where
-        p.project_id = :project_id
-	and c.category = :project_type
-	and (
-		p.project_type_id = c.category_id
-	or
-	        p.project_type_id = h.child_id
-		and h.parent_id = c.category_id
-	)
-"
+	select  count(*)
+	from
+	        im_projects p,
+		im_categories c,
+	        im_category_hierarchy h
+	where
+	        p.project_id = :project_id
+		and c.category = :project_type
+		and (
+			p.project_type_id = c.category_id
+		or
+		        p.project_type_id = h.child_id
+			and h.parent_id = c.category_id
+		)
+    "
     return [db_string translation_project_query $sql]
 }
 
@@ -480,25 +480,11 @@ ad_proc -public im_project_options {
     if {$company_id} { lappend criteria "p.company_id = :company_id" }
 
     if {0 != $exclude_status_id} {
-	lappend criteria "p.project_status_id not in (
-					select 	child_id
-					from	im_category_hierarchy
-					where	(parent_id = :exclude_status_id 
-						OR child_id = :exclude_status_id)
-					UNION
-					select	:exclude_status_id
-	)"
+	lappend criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
     }
 
     if {0 != $project_status_id} {
-	lappend criteria "p.project_status_id in (
-					select 	child_id
-					from	im_category_hierarchy
-					where	(parent_id = :project_status_id 
-						OR child_id = :project_status_id)
-					UNION
-					select	:project_status_id
-	)"
+	lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
     }
 
     if {$member_user_id} {
@@ -719,11 +705,7 @@ ad_proc -public im_project_select {
 
     if {0 != $exclude_status_id} {
 	ns_set put $bind_vars exclude_status_id $exclude_status_id
-	append sql " and p.project_status_id not in (
-		select 	child_id
-		from	im_category_hierarchy
-		where	(parent_id = :exclude_status_id OR child_id = :exclude_status_id)
-	)"
+	append sql " and p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
     }
 
     if { ![empty_string_p $exclude_status] } {
@@ -816,31 +798,13 @@ order by
     # Project Status restriction
     set project_status_restriction ""
     if {0 != $project_status_id} {
-	set project_status_restriction "
-	and p.project_status_id in (
-		select	h.child_id
-		from	im_category_hierarchy h
-		where	h.parent_id in ($project_status_id)
-	    UNION
-		select	category_id
-		from	im_categories
-		where 	category_id in ($project_status_id)
-	)
-	"
+	set project_status_restriction "and p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
     }
 
     # Project Type restriction
     set project_type_restriction ""
     if {0 != $project_type_id} {
-	set project_type_restriction "
-	and p.project_type_id in (
-		select	h.child_id
-		from	im_category_hierarchy h
-		where	h.parent_id = :project_type_id
-	    UNION
-		select	:project_type_id
-	)
-	"
+	set project_type_restriction "and p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
     }
 
     set perm_sql "

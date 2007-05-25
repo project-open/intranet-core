@@ -248,30 +248,11 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 
 set criteria [list]
 if { ![empty_string_p $project_status_id] && $project_status_id > 0 } {
-    lappend criteria "p.project_status_id in (
-	select :project_status_id from dual
-	UNION
-	select child_id
-	from im_category_hierarchy
-	where parent_id = :project_status_id
-    )"
+    lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
 }
-
 if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
-    # Select the specified project type and its subtypes
-    lappend criteria "p.project_type_id in (
-	select :project_type_id from dual
-	UNION
-	select child_id 
-	from im_category_hierarchy
-	where parent_id = :project_type_id
-    )
-"
+    lappend criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
 }
-
-
-
-
 if {0 != $user_id_from_search && "" != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }

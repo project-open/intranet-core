@@ -198,35 +198,14 @@ db_foreach column_list_sql $column_sql {
 
 # Now let's generate the sql query
 if { $status_id > 0 } {
-    lappend criteria "c.company_status_id in (
-        select  category_id
-        from    im_categories
-        where   category_id= :status_id
-      UNION
-        select distinct
-                child_id
-        from    im_category_hierarchy
-        where   parent_id = :status_id
-      )"
+    lappend criteria "c.company_status_id in ([join [im_sub_categories $status_id] ","])"
 }
-
 if { 0 != $user_id_from_search} {
     lappend criteria "c.company_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)\n"
 }
-
 if { $type_id > 0 } {
-    lappend criteria "c.company_type_id in (
-	select	category_id
-	from	im_categories
-	where	category_id= :type_id
-      UNION
-	select distinct
-		child_id
-	from	im_category_hierarchy
-	where	parent_id = :type_id
-      )"
+    lappend criteria "c.company_type_id in ([join [im_sub_categories $type_id] ","])"
 }
-
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(c.company_name)=:letter"
 }

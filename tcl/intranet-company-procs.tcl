@@ -304,16 +304,9 @@ ad_proc -public im_company_options {
     "
 
     if { ![empty_string_p $status] } {
-
 	set status_id [db_string status "select company_status_id from im_company_status where company_status=:status" -default 0]
 	ns_set put $bind_vars status $status
-	append sql " and c.company_status_id in (
-		select  :status_id
-	    UNION
-		select  child_id
-		from    im_category_hierarchy
-		where   parent_id = :status_id
-	)"
+	append sql " and c.company_status_id in ([join [im_sub_categories $status_id] ","])"
     }
 
     if { ![empty_string_p $exclude_status] } {
