@@ -153,6 +153,7 @@ set column_vars [list]
 set extra_selects [list]
 set extra_froms [list]
 set extra_wheres [list]
+set view_order_by_clause ""
 
 set column_sql "
 select
@@ -172,6 +173,10 @@ db_foreach column_list_sql $column_sql {
 	if {"" != $extra_select} { lappend extra_selects $extra_select }
 	if {"" != $extra_from} { lappend extra_froms $extra_from }
 	if {"" != $extra_where} { lappend extra_wheres $extra_where }
+	if {"" != $order_by_clause &&
+	    $order_by==$column_name} {
+	    set view_order_by_clause $order_by_clause
+	}
     }
 }
 
@@ -293,6 +298,11 @@ switch [string tolower $order_by] {
 	set order_by_clause "order by per_order desc" 
 	lappend extra_selects "(case when p.percent_completed is null then 0 else p.percent_completed end) as per_order"
 
+    }
+    default {
+	if {$view_order_by_clause != ""} {
+	    set order_by_clause "order by $view_order_by_clause"
+	}
     }
 }
 
