@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.2.10.1.0" url="http://projop.dnsalias.com/download/apm/intranet-core-3.2.10.1.0.apm">
+    <version name="3.2.110.0.0" url="http://projop.dnsalias.com/download/apm/intranet-core-3.2.7.0.0.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2004-08-24</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -45,6 +45,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectNrDateFormat"  default="YYYY_" description="Date format for project number prefix. Example is '' (empty string) for a pure number, 'YYYY_' for a 4 digit year plus an underscore, 'YY' as a 2 digit year prefix or the string 'none' for no date prefix."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrDigits"  default="4" description="How many digits should the incrementing project_nr have? Default is four."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="20" description="How many characters can the project number have?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowProjectNrAndProjectNameP"  default="0" description="Should we show the project_nr together with the project_name in various pages and page titles? This is useful for companies heavily working with project_nrs such as some translation companies, but useless for GanttProject based schedules, where project_nrs are frequently generated automatically."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringDefaultStatus"  description="What is the default type for subproject filtering? Choose &quot;&quot; to show everything, or &quot;76&quot; for Open."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringEnabledP"  default="0" description="Should we show a filter widget in the SubProject component on the upper right-hand side of the ProjectViewPage to select the status for subprojects? This is useful if a company uses many subprojects per main projects, such as the case of &quot;maintenance&quot; projects."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>
