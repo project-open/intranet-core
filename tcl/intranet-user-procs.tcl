@@ -563,6 +563,7 @@ ad_proc -public im_user_nuke {user_id} {
 	if {[db_table_exists im_freelance_skills]} {
 	    db_dml trans_tasks "delete from im_freelance_skills where user_id = :user_id"
 	    db_dml freelance "delete from im_freelancers where user_id = :user_id"
+	    db_dml freelance_conf "update im_freelance_skills set confirmation_user_id = null where confirmation_user_id = :user_id"
 	}
 
 	
