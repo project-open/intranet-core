@@ -95,6 +95,7 @@ cvs checkout intranet-timesheet2-invoices
 # cvs checkout intranet-timesheet2-task-popup
 cvs checkout intranet-timesheet2-tasks
 cvs checkout intranet-trans-invoices
+cvs checkout intranet-trans-project-wizard
 # cvs checkout intranet-trans-invoices-vaw
 cvs checkout intranet-translation
 cvs checkout intranet-trans-quality
