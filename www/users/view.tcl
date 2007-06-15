@@ -87,7 +87,9 @@ select
 	to_char(u.last_visit, :date_format) as last_visit,
 	u.screen_name,
 	u.username,
-	u.member_state
+	u.member_state,
+	u.creation_user as creation_user_id,
+	im_name_from_user_id(u.creation_user) as creation_user_name
 from
 	cc_users u
 where
@@ -489,15 +491,17 @@ set forum_html ""
 
 if {$admin || [im_permission $user_id "view_hr"]} {
 
-    set filestorage_installed_p [llength [info procs im_package_filestorage_id]]
+    set filestorage_installed_p [db_table_exists "im_fs_files"]
     if {$filestorage_installed_p} {
 	    set filestorage_html [im_table_with_title \
 		"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
 		[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
 	    ]
     }
-    set forum_installed_p [llength [info procs im_package_forum_id]]
-    if {$forum_installed_p} {
+}
+
+set forum_installed_p [db_table_exists "im_forum_topics"]
+if {$forum_installed_p} {
 	    set forum_html [im_table_with_title \
 		[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url] \
 		[im_forum_component \
@@ -513,10 +517,9 @@ if {$admin || [im_permission $user_id "view_hr"]} {
 			-restrict_to_new_topics 0 \
 		] \
 	    ]
-    }
-
-
 }
+
+
 
 # ---------------------------------------------------------------
 # Administration
@@ -534,7 +537,7 @@ if { ![empty_string_p $last_visit] } {
 
 if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
     set registration_ip_link "<a href=/intranet/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
-    append admin_links "<li>[_ intranet-core.lt_Registered_from_regis]"
+    append admin_links "<li>[_ intranet-core.lt_Registered_from_regis] by <a href=/intranet/users/view?user_id=$creation_user_id>$creation_user_name</a>"
 }
 
 set user_id $user_id_from_search

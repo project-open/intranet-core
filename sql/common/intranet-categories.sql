@@ -54,6 +54,7 @@
 -- 400-409	Intranet Prior Experience
 -- 450-459	Intranet Employee Pipeline Status
 -- 500-599	Intranet Translation Subject Area
+-- 600-699	Intranet Translation File Type
 -- 800-899	Intranet Invoice Payment Method
 -- 900-999	Intranet Cost Templates
 -- 1000-1099	Intranet Payment Type (for im_payments)
