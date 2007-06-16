@@ -107,8 +107,8 @@
 -- 11100-11199	CRM IP Type (100)
 -- 11200-11299	CRM IP Status (100)
 -- 11300-11399	Intranet Trans Invoices VAW (100)
--- 11400-11499	reserved (100)
--- 11500-11599	reserved (100)
+-- 11400-11499	Intranet Notes Status
+-- 11500-11599	Intranet Notes Status
 -- 11600-11699	reserved (100)
 -- 11700-11799	reserved (100)
 -- 11800-11899	reserved (100)
