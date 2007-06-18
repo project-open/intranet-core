@@ -2,7 +2,23 @@
 alter table im_offices add lxc_office_id integer;
 
 alter table persons add lxc_user_id integer;
+alter table persons add lxc_contact_id integer;
 
+alter table persons add lxc_trans_id integer;
+alter table im_companies add lxc_trans_id integer;
+
+
+
+-- Disambiguate duplicate Translator Emails
+update "tblTranWeb" 
+	set "WebAdd" = "WebAdd" || ' - ' || "WebNum" 
+where 
+	lower(trim("WebAdd")) in (
+		select lower(trim("WebAdd"))
+		from "tblTranWeb" 
+		group by "WebAdd" 
+		having count(*) > 1
+	);
 
 
 

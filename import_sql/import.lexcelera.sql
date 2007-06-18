@@ -1,6 +1,8 @@
 
 ---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
 -- Companies and Offices
+---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 
 -- Check for duplicate Company Names
@@ -147,7 +149,6 @@ select inline_0 ();
 drop function inline_0 ();
 
 
-
 -- Not Used: CompMaster
 --  IsSubclient			boolean
 --  DeactivateReasonID		smallint	
@@ -172,340 +173,6 @@ drop function inline_0 ();
 --  MatUserID			smallint	
 --  MatDte			timestamp without time zone
 --  JobDir			varchar		-- company_path = replace(row."JobDir", ''/'', ''''),
-
-
-
-
-
----------------------------------------------------------------------------------
--- tblCon* - Contacts
----------------------------------------------------------------------------------
-
-
-create or replace function inline_0 ()
-returns integer as '
-DECLARE
-        row			RECORD;
-	v_contact_name		varchar;
-	v_contact_email		varchar;
-	v_user_id		integer;
-	v_member_p		integer;
-	v_ucont_exists_p	integer;
-BEGIN
-    for row in
-	select	*
-	from	"tblContMaster"
-	where	"FirstNm" is not null and "LastNm" is not null
-	LIMIT 1000000
-    loop
-	v_contact_name = row."FirstNm"|| '' '' ||row."LastNm";
-	v_contact_email := lower(row."FirstNm"||''.''||row."LastNm"||''@nowhere.com'');
-
-	select	person_id into v_user_id from persons p
-	where	lower(trim(p.first_names)) = lower(trim(row."FirstNm")) and
-		lower(trim(p.last_name)) = lower(trim(row."LastNm"));
-
-	-- Create User or get the existing user based on email
-	IF v_user_id is NULL THEN
-	    -- Create the new user without a reasonable password
-	    select acs__add_user(
-		null, ''user'', now(), null, ''0.0.0.0'', null,
-		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."ContID",
-		v_contact_email, null, row."FirstNm", row."LastNm",
-		''password'', ''salt'',
-		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."ContID",
-		''f'', ''approved''
-	    ) into v_user_id;
-
-	    select count(*) into v_ucont_exists_p from users_contact
-	    where user_id = v_user_id;
-	    IF 0 = v_ucont_exists_p THEN 
-		insert into users_contact(user_id) values (v_user_id);
-	    END IF;
-
-	    select count(*) into v_member_p from group_distinct_member_map 
-	    where member_id = v_user_id and group_id=461;
-            IF 0 = v_member_p THEN
-                PERFORM membership_rel__new(461, v_user_id);
-            END IF;
-
-	    RAISE NOTICE ''Created the customer contact: %'', v_user_id;
-	END IF;	
-
-	-- Update the person contact_id to find it later.
-	update persons set
-		lxc_contact_id = row."ContID"
-	where person_id = v_user_id;
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
-
-
----------------------------------------------------------------------------------
--- tblContCompPhon - Attach items to Contacts
----------------------------------------------------------------------------------
-
-
-create or replace function inline_0 ()
-returns integer as '
-DECLARE
-        row			RECORD;
-	v_person_id		integer;
-	v_note_id		integer;
-	v_note_type_id		integer;
-	v_note_text		text;
-BEGIN
-    for row in
-        select	*
-	from	"tblContCompPhon" p,
-		"tblContComp" cc,
-		"tblContMaster" m
-	where
-		p."ContCompID" = cc."ContCompID"
-		and cc."ContID" = m."ContID"
-		and "CoordTypeID" != 0
-		and m."FirstNm" is not NULL
-		and m."LastNm" is not NULL
-    loop
-	select	person_id into v_person_id
-	from	persons
-	where	lxc_contact_id = row."ContID";
-
-	select	category_id into v_note_type_id
-	from	im_categories 
-	where	aux_int1 = row."CoordTypeID"
-		and category_type = ''Intranet Notes Type'';
-
-	v_note_text :=	row."Phone" || '' '' || coalesce(row."PhonNotes", '''');
-
-	RAISE NOTICE ''Note: cont=%, pid=%, type=%, tid=%'', 
-	row."ContID", v_person_id, row."CoordTypeID", v_note_type_id;
-
-	IF v_person_id is not NULL THEN
-
-		select	note_id into v_note_id
-		from	im_notes
-		where	object_id = v_person_id and note = v_note_text;
-	
-		IF v_note_id is NULL THEN
-		    v_note_id := im_note__new(
-			null, ''im_note'', now(),
-			624, ''0.0.0.0'', null, 
-			v_note_text,
-			v_person_id,
-			v_note_type_id, 11400
-		    );
-		END IF;
-
-    END IF;
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
-
-
----------------------------------------------------------------------------------
--- tblContCompWeb - Attach items to company as im_note
----------------------------------------------------------------------------------
-
-
-
-create or replace function inline_0 ()
-returns integer as '
-DECLARE
-        row			RECORD;
-	v_person_id		integer;
-	v_note_id		integer;
-	v_note_type_id		integer;
-	v_note_text		text;
-BEGIN
-    for row in
-        select	*
-	from	"tblContCompWeb" w,
-		"tblContComp" cc,
-		"tblContMaster" m
-	where
-		w."ContCompID" = cc."ContCompID"
-		and cc."ContID" = m."ContID"
-		and "CoordTypeID" != 0
-		and m."FirstNm" is not NULL
-		and m."LastNm" is not NULL
-    loop
-	select	person_id into v_person_id
-	from	persons
-	where	lxc_contact_id = row."ContID";
-
-	select	category_id into v_note_type_id
-	from	im_categories 
-	where	aux_int1 = row."CoordTypeID"
-		and category_type = ''Intranet Notes Type'';
-
-	RAISE NOTICE ''Note: comp=%, cid=%, type=%, tid=%'', 
-	row."CompID", v_person_id, row."CoordTypeID", v_note_type_id;
-
-	v_note_text :=	replace(coalesce(row."WebAdd", ''''), '' '', ''_'') || '' '' || 
-			coalesce(row."WebNotes", '''');
-
-	IF v_person_id is not null THEN
-		select	note_id into v_note_id
-		from	im_notes
-		where	object_id = v_person_id
-			and note = v_note_text;
-	
-		IF v_note_id is NULL THEN
-		    v_note_id := im_note__new(
-			null, ''im_note'', now(),
-			624, ''0.0.0.0'', null, 
-			v_note_text,
-			v_person_id,
-			v_note_type_id, 11400
-		    );
-		END IF;
-    END IF;
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
-
-
-
----------------------------------------------------------------------------------
--- tblCompWeb - Attach items to company as im_note
----------------------------------------------------------------------------------
-
-
-
-create or replace function inline_0 ()
-returns integer as '
-DECLARE
-        row			RECORD;
-	v_contact_id		integer;
-	v_topic_id		integer;
-	v_note_text		text;
-	v_person_id		integer;
-BEGIN
-    for row in
-        select	*
-	from	
-		"tblContComp" cc,
-		"tblContCompNote" n
-	where
-		cc."ContCompID" = n."ContCompID"
-    loop
-	select	person_id into v_person_id
-	from	persons where lxc_contact_id = row."ContID";
-	IF v_person_id is NULL THEN v_person_id = 624; END IF;
-
-	v_note_text :=	coalesce(row."Note", ''Note ''||row."NoteID"::varchar);
-
-	RAISE NOTICE ''Note: ContID=%, uid=%, note=% '', row."ContID", v_person_id, v_note_text;
-
-	select	topic_id into v_topic_id
-	from	im_forum_topics
-	where	object_id = v_person_id
-		and message = v_note_text;
-
-	IF v_topic_id is NULL THEN
-	    insert into im_forum_topics (
-		topic_id, object_id,
-		topic_type_id, topic_status_id,
-		posting_date,
-		owner_id,
-		scope,
-		subject,
-		message,
-		due_date
-	    ) values (
-		nextval(''im_forum_topics_seq''), v_person_id,
-		1108, 1200,
-		row."MatDte"::date,
-		v_person_id,
-		''group'',
-		substring(v_note_text for 60),
-		v_note_text,
-		row."FollowUpDte"
-	    );
-	END IF;
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
-
-
-
-
-
----------------------------------------------------------------------------------
--- tblCompWeb - Attach items to company as im_note
----------------------------------------------------------------------------------
-
--- Relationship between company and contact
-create or replace function inline_0 ()
-returns integer as '
-DECLARE
-        row			RECORD;
-	v_user_id		integer;
-	v_company_id		integer;
-	v_rel_exists_p		integer;
-BEGIN
-    for row in
-	select	*
-	from	"tblContComp" cc,
-		"tblContMaster" m
-	where	
-		cc."ContID" != 0
-		and cc."ContID" = m."ContID"
-		and m."FirstNm" is not null
-		and m."LastNm" is not null
-    loop
-	select	person_id into v_user_id
-	from	persons where lxc_contact_id = row."ContID";
-
-        select  company_id into v_company_id
-        from    im_companies
-        where	lxc_company_id = row."CompID";
-
-	select	count(*) into v_rel_exists_p
-	from	acs_rels
-	where	object_id_one = v_company_id
-		and object_id_two = v_user_id;
-
-	IF 0 = v_rel_exists_p AND v_user_id is not NULL THEN
-	    RAISE NOTICE ''Create new rel: comp=%, user=%/% '', v_company_id, row."ContID", v_user_id;
-	    perform im_biz_object_member__new (
-		null,
-		''im_biz_object_member'',
-		v_company_id,
-		v_user_id,
-		1300,
-		0, ''0.0.0.0''
-	    );
-	END IF;
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
 
 
 
@@ -584,7 +251,7 @@ BEGIN
         select	*
 	from	"tblCompPhon"
 	where	"CoordTypeID" != 0
-	LIMIT 100000
+	LIMIT 0
     loop
 	select	company_id into v_company_id
 	from	im_companies 
@@ -629,8 +296,6 @@ drop function inline_0 ();
 -- tblCompNotes - Notes for companies
 ---------------------------------------------------------------------------------
 
-
-
 create or replace function inline_0 ()
 returns integer as '
 DECLARE
@@ -644,6 +309,7 @@ BEGIN
     for row in
         select	*
 	from	"tblCompNote"
+	LIMIT 0
     loop
 	select	company_id into v_company_id
 	from	im_companies where lxc_company_id = row."CompID";
@@ -695,8 +361,438 @@ drop function inline_0 ();
 
 
 
+
+
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- tblCon* - Contacts
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_contact_name		varchar;
+	v_contact_email		varchar;
+	v_user_id		integer;
+	v_member_p		integer;
+	v_ucont_exists_p	integer;
+BEGIN
+    for row in
+	select	*
+	from	"tblContMaster"
+	where	"FirstNm" is not null and "LastNm" is not null
+	LIMIT 0
+    loop
+	v_contact_name = row."FirstNm"|| '' '' ||row."LastNm";
+	v_contact_email := lower(row."FirstNm"||''.''||row."LastNm"||''@nowhere.com'');
+
+	select	person_id into v_user_id from persons p
+	where	lower(trim(p.first_names)) = lower(trim(row."FirstNm")) and
+		lower(trim(p.last_name)) = lower(trim(row."LastNm"));
+
+	-- Create User or get the existing user based on email
+	IF v_user_id is NULL THEN
+	    -- Create the new user without a reasonable password
+	    select acs__add_user(
+		null, ''user'', now(), null, ''0.0.0.0'', null,
+		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."ContID",
+		v_contact_email, null, row."FirstNm", row."LastNm",
+		''password'', ''salt'',
+		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."ContID",
+		''f'', ''approved''
+	    ) into v_user_id;
+
+	    select count(*) into v_ucont_exists_p from users_contact
+	    where user_id = v_user_id;
+	    IF 0 = v_ucont_exists_p THEN 
+		insert into users_contact(user_id) values (v_user_id);
+	    END IF;
+
+	    select count(*) into v_member_p from group_distinct_member_map 
+	    where member_id = v_user_id and group_id=461;
+            IF 0 = v_member_p THEN
+                PERFORM membership_rel__new(461, v_user_id);
+            END IF;
+
+	    RAISE NOTICE ''Created the customer contact: %'', v_user_id;
+	END IF;	
+
+	-- Update the person contact_id to find it later.
+	update persons set
+		lxc_contact_id = row."ContID"
+	where person_id = v_user_id;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblContComp - Relationship between company and contact
+---------------------------------------------------------------------------------
+
+
+-- Relationship between company and contact
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_user_id		integer;
+	v_company_id		integer;
+	v_rel_exists_p		integer;
+BEGIN
+    for row in
+	select	*
+	from	"tblContComp" cc,
+		"tblContMaster" m
+	where	
+		cc."ContID" != 0
+		and cc."ContID" = m."ContID"
+		and m."FirstNm" is not null
+		and m."LastNm" is not null
+	LIMIT 0
+    loop
+	select	person_id into v_user_id
+	from	persons where lxc_contact_id = row."ContID";
+
+        select  company_id into v_company_id
+        from    im_companies
+        where	lxc_company_id = row."CompID";
+
+	select	count(*) into v_rel_exists_p
+	from	acs_rels
+	where	object_id_one = v_company_id
+		and object_id_two = v_user_id;
+
+	IF 0 = v_rel_exists_p AND v_user_id is not NULL THEN
+	    RAISE NOTICE ''Create new rel: comp=%, user=%/% '', v_company_id, row."ContID", v_user_id;
+	    perform im_biz_object_member__new (
+		null,
+		''im_biz_object_member'',
+		v_company_id,
+		v_user_id,
+		1300,
+		0, ''0.0.0.0''
+	    );
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblContCompPhon - Attach items to Contacts
+---------------------------------------------------------------------------------
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_person_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblContCompPhon" p,
+		"tblContComp" cc,
+		"tblContMaster" m
+	where
+		p."ContCompID" = cc."ContCompID"
+		and cc."ContID" = m."ContID"
+		and "CoordTypeID" != 0
+		and m."FirstNm" is not NULL
+		and m."LastNm" is not NULL
+	LIMIT 0
+    loop
+	select	person_id into v_person_id
+	from	persons
+	where	lxc_contact_id = row."ContID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	v_note_text :=	row."Phone" || '' '' || coalesce(row."PhonNotes", '''');
+
+	RAISE NOTICE ''Note: cont=%, pid=%, type=%, tid=%'', 
+	row."ContID", v_person_id, row."CoordTypeID", v_note_type_id;
+
+	IF v_person_id is not NULL THEN
+
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_person_id and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_person_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+
+    END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblContCompWeb - Attach items to company as im_note
+---------------------------------------------------------------------------------
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_person_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblContCompWeb" w,
+		"tblContComp" cc,
+		"tblContMaster" m
+	where
+		w."ContCompID" = cc."ContCompID"
+		and cc."ContID" = m."ContID"
+		and "CoordTypeID" != 0
+		and m."FirstNm" is not NULL
+		and m."LastNm" is not NULL
+	LIMIT 0
+    loop
+	select	person_id into v_person_id
+	from	persons
+	where	lxc_contact_id = row."ContID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	RAISE NOTICE ''Note: comp=%, cid=%, type=%, tid=%'', 
+	row."CompID", v_person_id, row."CoordTypeID", v_note_type_id;
+
+	v_note_text :=	replace(coalesce(row."WebAdd", ''''), '' '', ''_'') || '' '' || 
+			coalesce(row."WebNotes", '''');
+
+	IF v_person_id is not null THEN
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_person_id
+			and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_person_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+    END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+---------------------------------------------------------------------------------
+-- tblContCompNote
+---------------------------------------------------------------------------------
+
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_contact_id		integer;
+	v_topic_id		integer;
+	v_note_text		text;
+	v_person_id		integer;
+BEGIN
+    for row in
+        select	*
+	from	
+		"tblContComp" cc,
+		"tblContCompNote" n
+	where
+		cc."ContCompID" = n."ContCompID"
+	LIMIT 0
+    loop
+	select	person_id into v_person_id
+	from	persons where lxc_contact_id = row."ContID";
+	IF v_person_id is NULL THEN v_person_id = 624; END IF;
+
+	v_note_text :=	coalesce(row."Note", ''Note ''||row."NoteID"::varchar);
+
+	RAISE NOTICE ''Note: ContID=%, uid=%, note=% '', row."ContID", v_person_id, v_note_text;
+
+	select	topic_id into v_topic_id
+	from	im_forum_topics
+	where	object_id = v_person_id
+		and message = v_note_text;
+
+	IF v_topic_id is NULL THEN
+	    insert into im_forum_topics (
+		topic_id, object_id,
+		topic_type_id, topic_status_id,
+		posting_date,
+		owner_id,
+		scope,
+		subject,
+		message,
+		due_date
+	    ) values (
+		nextval(''im_forum_topics_seq''), v_person_id,
+		1108, 1200,
+		row."MatDte"::date,
+		v_person_id,
+		''group'',
+		substring(v_note_text for 60),
+		v_note_text,
+		row."FollowUpDte"
+	    );
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblContCompPhon - Attach items to Contacts
+---------------------------------------------------------------------------------
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_person_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblContCompPhon" p,
+		"tblContComp" cc,
+		"tblContMaster" m
+	where
+		p."ContCompID" = cc."ContCompID"
+		and cc."ContID" = m."ContID"
+		and "CoordTypeID" != 0
+		and m."FirstNm" is not NULL
+		and m."LastNm" is not NULL
+	LIMIT 0
+    loop
+	select	person_id into v_person_id
+	from	persons
+	where	lxc_contact_id = row."ContID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	v_note_text :=	row."Phone" || '' '' || coalesce(row."PhonNotes", '''');
+
+	RAISE NOTICE ''Note: cont=%, pid=%, type=%, tid=%'', 
+	row."ContID", v_person_id, row."CoordTypeID", v_note_type_id;
+
+	IF v_person_id is not NULL THEN
+
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_person_id and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_person_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+
+    END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 -- tblUsers - in-house users
+---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 
 -- Employees
@@ -713,7 +809,7 @@ BEGIN
 	select	*
 	from	"tblUsers"
 	where	"LastNm" is not NULL and "FirstNm" is not NULL
-	LIMIT 1000
+	LIMIT 0
     loop
 	select	party_id into v_user_id from parties pa
 	where	lower(trim(pa.email)) = lower(trim(row."UserEmail"));
@@ -775,6 +871,22 @@ drop function inline_0 ();
 
 
 
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- tblTranMaster - Translators
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
+
+
 -- Translators
 create or replace function inline_0 ()
 returns integer as '
@@ -820,32 +932,38 @@ BEGIN
 
 	-- Create User or get the existing user based on email
 	IF v_user_id is NULL THEN
-	 -- Create the new user without a reasonable password
-	 select acs__add_user(
-		null, ''user'', now(), null, ''0.0.0.0'', null,
-		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."TranID",
-		v_user_email, null, row."FirstNm", row."LastNm",
-		''password'', ''salt'',
-		row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."TranID",
-		''f'', ''approved''
-	 ) into v_user_id;
+		select acs__add_user(
+			null, ''user'', now(), null, ''0.0.0.0'', null,
+			row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."TranID",
+			v_user_email, null, row."FirstNm", row."LastNm",
+			''password'', ''salt'',
+			row."FirstNm" || '' '' || row."LastNm" || ''.'' || row."TranID",
+			''f'', ''approved''
+		) into v_user_id;
+	
+		select count(*) into v_ucont_exists_p from users_contact
+		where user_id = v_user_id;
 
-	 select count(*) into v_ucont_exists_p from users_contact
-	 where user_id = v_user_id;
-	 IF 0 = v_ucont_exists_p THEN 
-		insert into users_contact(user_id) values (v_user_id);
-	 END IF;
-	 RAISE NOTICE ''Created the user => %'', v_user_id;
+		IF 0 = v_ucont_exists_p THEN 
+			insert into users_contact(user_id) values (v_user_id);
+		END IF;
+		RAISE NOTICE ''Created the user => %'', v_user_id;
 	END IF;	
-
+	
+	update persons set
+		lxc_trans_id = row."TranID"
+	where person_id = v_user_id;
+	
 	-- Make user a member of "Freelancers"
-	select count(*) into v_member_p from group_distinct_member_map where member_id=v_user_id and group_id=465;
+	select count(*) into v_member_p 
+	from group_distinct_member_map 
+	where member_id=v_user_id and group_id=465;
+
 	IF 0 = v_member_p THEN
-	    PERFORM membership_rel__new(465, v_user_id);
+	   PERFORM membership_rel__new(465, v_user_id);
 	END IF;
-
+	
 	IF ''t'' = row."IsMain" THEN
-
 	    select  iso into v_country_code
 	    from    country_codes cc,
 		    "lktblCountry" lc
@@ -865,8 +983,8 @@ BEGIN
 	END IF;
 
 	IF ''t'' = row."IsMain"
-	THEN v_office_postfix := '' Main Office '';
-	ELSE v_office_postfix := '' Office #'' || row."AddNum" || '' '';
+		THEN v_office_postfix := '' Main Office '';
+		ELSE v_office_postfix := '' Office #'' || row."AddNum" || '' '';
 	END IF;
 
 	v_company_name := ''Freelance '' || row."FirstNm" || '' '' || row."LastNm";
@@ -928,7 +1046,8 @@ BEGIN
 		company_status_id = v_company_status_id,
 		accounting_contact_id = v_user_id,
 		primary_contact_id = v_user_id,
-		main_office_id = v_office_id
+		main_office_id = v_office_id,
+		lxc_trans_id = row."TranID"
 	where	company_id = v_company_id;
 
 	update im_offices set
@@ -962,7 +1081,7 @@ BEGIN
 		);
 	END IF;
 
-	RAISE NOTICE ''Users: uid:%, name=% %'', v_user_id, row."FirstNm", row."LastNm";
+	RAISE NOTICE ''Trans: uid:%, name=% %'', v_user_id, row."FirstNm", row."LastNm";
 
     end loop;
     return 0;
@@ -972,21 +1091,242 @@ drop function inline_0 ();
 
 
 -- Translator
--- "tblTranAdd";
 -- "tblTranEvaluation";
 -- "tblTranFileType";
 -- "tblTranHardware";
 -- "tblTranLang";
 -- "tblTranMaster";
--- "tblTranMaster_TranNm";
--- "tblTranNote";
--- "tblTranPhon";
--- "tblTranPhon_CountryID";
 -- "tblTranRate";
 -- "tblTranReview";
 -- "tblTranReviewEvaluation";
 -- "tblTranService";
 -- "tblTranSpec";
--- "tblTranWeb";
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblTranWeb - Attach items to company as im_note
+---------------------------------------------------------------------------------
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_company_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+	v_user_id		integer;
+	v_email			text;
+	v_email_exists_p	integer;
+BEGIN
+    for row in
+        select	*
+	from	"tblTranWeb"
+	order by "TranID"
+	LIMIT 10000000
+    loop
+	select	company_id into v_company_id
+	from	im_companies 
+	where	lxc_trans_id = row."TranID";
+
+	select person_id into v_user_id 
+	from persons 
+	where lxc_trans_id = row."TranID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	v_note_text :=	replace(coalesce(row."WebAdd", ''''), '' '', ''_'') || '' '' || 
+			coalesce(row."WebNotes", '''');
+
+	RAISE NOTICE ''Trans: comp=%, cid=%, type=%, tid=%, text=%'', 
+	row."TranID", v_company_id, row."CoordTypeID", v_note_type_id, v_note_text;
+
+	IF v_company_id is not null THEN
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_company_id
+			and note = v_note_text;
+
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_company_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+	END IF;
+
+	IF v_user_id is not null THEN
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_user_id
+			and note = v_note_text;
+
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_user_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+	END IF;
+
+	-- Update the translators email
+	select email from parties into v_email where party_id = v_user_id;
+	select count(*) into v_email_exists_p from parties where lower(trim(email)) = lower(trim(row."WebAdd"));
+	IF 
+		0 = v_email_exists_p
+		AND row."CoordTypeID" = 31 
+		AND substring(v_email from ''nowhere.com'') is not null 
+	THEN
+		update parties set
+			email = trim(lower(row."WebAdd"))
+		where party_id = v_user_id;
+		RAISE NOTICE ''Trans: Updated email: uid=%, email=%'', v_user_id, v_email;
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblTranPhone - Phone Numbers
+---------------------------------------------------------------------------------
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_company_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblTranPhon"
+	where	"CoordTypeID" != 0
+	LIMIT 10
+    loop
+	select	company_id into v_company_id
+	from	im_companies 
+	where lxc_company_id = row."TranID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	RAISE NOTICE ''Note: comp=%, cid=%, type=%, tid=%'', 
+	row."TranID", v_company_id, row."CoordTypeID", v_note_type_id;
+
+	v_note_text :=	row."Phone" || '' '' || coalesce(row."PhonNotes", '''');
+
+	IF v_company_id is not null THEN
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_company_id and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_company_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblTranNotes - Notes for companies
+---------------------------------------------------------------------------------
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_company_id		integer;
+	v_topic_id		integer;
+	v_note_text		text;
+	v_subject		text;
+	v_person_id		integer;
+BEGIN
+    for row in
+        select	*
+	from	"tblTranNote"
+	LIMIT 0
+    loop
+	select	company_id into v_company_id
+	from	im_companies where lxc_company_id = row."TranID";
+
+	select	person_id into v_person_id
+	from	persons where lxc_user_id = row."MatUserID";
+	IF v_person_id is NULL THEN v_person_id = 624; END IF;
+
+	v_note_text :=	coalesce(row."Note", ''Note ''||row."NoteID"::varchar);
+
+	select	topic_id into v_topic_id
+	from	im_forum_topics
+	where	object_id = v_company_id
+		and message = v_note_text;
+
+	RAISE NOTICE ''Note: comp=%, cid=%'', 
+	row."TranID", v_company_id;
+
+	IF v_topic_id is NULL THEN
+	    insert into im_forum_topics (
+		topic_id, object_id,
+		topic_type_id, topic_status_id,
+		posting_date,
+		owner_id,
+		scope,
+		subject,
+		message,
+		due_date
+	    ) values (
+		nextval(''im_forum_topics_seq''), v_company_id,
+		1108, 1200,
+		row."MatDte"::date,
+		v_person_id,
+		''group'',
+		substring(v_note_text for 60),
+		v_note_text,
+		row."FollowUpDte"
+	    );
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
 
 
