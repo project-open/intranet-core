@@ -245,6 +245,217 @@ drop function inline_0 ();
 
 
 
+
+---------------------------------------------------------------------------------
+-- tblContCompPhon - Attach items to Contacts
+---------------------------------------------------------------------------------
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_person_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblContCompPhon" p,
+		"tblContComp" cc,
+		"tblContMaster" m
+	where
+		p."ContCompID" = cc."ContCompID"
+		and cc."ContID" = m."ContID"
+		and "CoordTypeID" != 0
+		and m."FirstNm" is not NULL
+		and m."LastNm" is not NULL
+    loop
+	select	person_id into v_person_id
+	from	persons
+	where	lxc_contact_id = row."ContID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	v_note_text :=	row."Phone" || '' '' || coalesce(row."PhonNotes", '''');
+
+	RAISE NOTICE ''Note: cont=%, pid=%, type=%, tid=%'', 
+	row."ContID", v_person_id, row."CoordTypeID", v_note_type_id;
+
+	IF v_person_id is not NULL THEN
+
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_person_id and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_person_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+
+    END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblContCompWeb - Attach items to company as im_note
+---------------------------------------------------------------------------------
+
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_person_id		integer;
+	v_note_id		integer;
+	v_note_type_id		integer;
+	v_note_text		text;
+BEGIN
+    for row in
+        select	*
+	from	"tblContCompWeb" w,
+		"tblContComp" cc,
+		"tblContMaster" m
+	where
+		w."ContCompID" = cc."ContCompID"
+		and cc."ContID" = m."ContID"
+		and "CoordTypeID" != 0
+		and m."FirstNm" is not NULL
+		and m."LastNm" is not NULL
+    loop
+	select	person_id into v_person_id
+	from	persons
+	where	lxc_contact_id = row."ContID";
+
+	select	category_id into v_note_type_id
+	from	im_categories 
+	where	aux_int1 = row."CoordTypeID"
+		and category_type = ''Intranet Notes Type'';
+
+	RAISE NOTICE ''Note: comp=%, cid=%, type=%, tid=%'', 
+	row."CompID", v_person_id, row."CoordTypeID", v_note_type_id;
+
+	v_note_text :=	replace(coalesce(row."WebAdd", ''''), '' '', ''_'') || '' '' || 
+			coalesce(row."WebNotes", '''');
+
+	IF v_person_id is not null THEN
+		select	note_id into v_note_id
+		from	im_notes
+		where	object_id = v_person_id
+			and note = v_note_text;
+	
+		IF v_note_id is NULL THEN
+		    v_note_id := im_note__new(
+			null, ''im_note'', now(),
+			624, ''0.0.0.0'', null, 
+			v_note_text,
+			v_person_id,
+			v_note_type_id, 11400
+		    );
+		END IF;
+    END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblCompWeb - Attach items to company as im_note
+---------------------------------------------------------------------------------
+
+
+
+create or replace function inline_0 ()
+returns integer as '
+DECLARE
+        row			RECORD;
+	v_contact_id		integer;
+	v_topic_id		integer;
+	v_note_text		text;
+	v_person_id		integer;
+BEGIN
+    for row in
+        select	*
+	from	
+		"tblContComp" cc,
+		"tblContCompNote" n
+	where
+		cc."ContCompID" = n."ContCompID"
+    loop
+	select	person_id into v_person_id
+	from	persons where lxc_contact_id = row."ContID";
+	IF v_person_id is NULL THEN v_person_id = 624; END IF;
+
+	v_note_text :=	coalesce(row."Note", ''Note ''||row."NoteID"::varchar);
+
+	RAISE NOTICE ''Note: ContID=%, uid=%, note=% '', row."ContID", v_person_id, v_note_text;
+
+	select	topic_id into v_topic_id
+	from	im_forum_topics
+	where	object_id = v_person_id
+		and message = v_note_text;
+
+	IF v_topic_id is NULL THEN
+	    insert into im_forum_topics (
+		topic_id, object_id,
+		topic_type_id, topic_status_id,
+		posting_date,
+		owner_id,
+		scope,
+		subject,
+		message,
+		due_date
+	    ) values (
+		nextval(''im_forum_topics_seq''), v_person_id,
+		1108, 1200,
+		row."MatDte"::date,
+		v_person_id,
+		''group'',
+		substring(v_note_text for 60),
+		v_note_text,
+		row."FollowUpDte"
+	    );
+	END IF;
+
+    end loop;
+    return 0;
+END;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- tblCompWeb - Attach items to company as im_note
+---------------------------------------------------------------------------------
+
 -- Relationship between company and contact
 create or replace function inline_0 ()
 returns integer as '
