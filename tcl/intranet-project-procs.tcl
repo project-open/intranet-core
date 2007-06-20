@@ -769,12 +769,18 @@ ad_proc -public im_project_personal_active_projects_component {
     set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
     set column_headers [list]
     set column_vars [list]
-    
+    set extra_selects [list]
+    set extra_froms [list]
+    set extra_wheres [list]
+
     set column_sql "
 select
 	column_name,
 	column_render_tcl,
-	visible_for
+	visible_for,
+        extra_where,
+        extra_select,
+        extra_from
 from
 	im_view_columns
 where
@@ -788,10 +794,30 @@ order by
 	    lappend column_headers "$column_name"
 	    lappend column_vars "$column_render_tcl"
 	}
+	if {"" != $extra_select} { lappend extra_selects $extra_select }
+	if {"" != $extra_from} { lappend extra_froms $extra_from }
+	if {"" != $extra_where} { lappend extra_wheres $extra_where }
+	
     }
 
     # ---------------------------------------------------------------
     # Generate SQL Query
+
+    set extra_select [join $extra_selects ",\n\t"]
+    if { ![empty_string_p $extra_select] } {
+	set extra_select ",\n\t$extra_select"
+    }
+
+    set extra_from [join $extra_froms ",\n\t"]
+    if { ![empty_string_p $extra_from] } {
+	set extra_from ",\n\t$extra_from"
+    }
+
+    set extra_where [join $extra_wheres "and\n\t"]
+    if { ![empty_string_p $extra_where] } {
+	set extra_where "and\n\t$extra_where"
+    }
+
 
     if {0 == $project_status_id} { set project_status_id [im_project_status_open] }
 
@@ -831,13 +857,16 @@ order by
 	        im_category_from_id(p.project_type_id) as project_type,
 	        im_category_from_id(p.project_status_id) as project_status,
 	        to_char(end_date, 'HH24:MI') as end_date_time
+                $extra_select
 	FROM
 		$perm_sql p,
 		im_companies c
+                $extra_from
 	WHERE
 		p.company_id = c.company_id
 		$project_status_restriction
 		$project_type_restriction
+                $extra_where
 	order by $order_by_clause
     "
 
