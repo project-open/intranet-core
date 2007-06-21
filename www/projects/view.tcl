@@ -224,14 +224,14 @@ append project_base_data_html "
 if { $user_can_see_start_end_date_p && ![empty_string_p $start_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Start_Date]</td>
-			    <td>$start_date_formatted</td>
+			    <td>[lc_time_fmt $start_date_formatted "%x" locale]</td>
 			  </tr>"
 }
 
 if { $user_can_see_start_end_date_p && ![empty_string_p $end_date] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Delivery_Date]</td>
-			    <td>$end_date_formatted $end_date_time</td>
+			    <td>[lc_time_fmt $end_date_formatted "%x" locale] $end_date_time</td>
 			  </tr>"
 }
 
