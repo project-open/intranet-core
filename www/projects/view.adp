@@ -93,7 +93,7 @@ switch $view_name {
 		      <a href="@subprojects.subproject_url@">@subprojects.subproject_name@</a>
 		  </td>
 		  <td class="list-narrow">
-		      @subprojects.subproject_status@
+		      <%=[im_category_from_id @subprojects.subproject_status_id@]%>
 		  </td>
 		  </tr>
 		  </multiple>
