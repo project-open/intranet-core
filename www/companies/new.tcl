@@ -101,23 +101,23 @@ ad_form \
     -form {
 	company_id:key
 	{main_office_id:text(hidden)}
-	{company_name:text(text) {label "Company Name"} {html {size 60}}}
-	{company_path:text(text) {label "Company Short Name"} {html {size 40}}}
-	{referral_source:text(text),optional {label "Referral Source"} {html {size 60}}}
-	{company_status_id:text(im_category_tree) {label "Company Status"} {custom {category_type "Intranet Company Status" } } }
-	{company_type_id:text(im_category_tree) {label "Company Type"} {custom {category_type "Intranet Company Type"} } }
-	{manager_id:text(select),optional {label "Key Account"} {options $employee_options} }
+	{company_name:text(text) {label "[_ intranet-core.Company_Name]"} {html {size 60}}}
+	{company_path:text(text) {label "[_ intranet-core.Company_Short_Name]"} {html {size 40}}}
+	{referral_source:text(text),optional {label "[_ intranet-core.Referral_Source]"} {html {size 60}}}
+	{company_status_id:text(im_category_tree) {label "[_ intranet-core.Company_Status]"} {custom {category_type "Intranet Company Status" } } }
+	{company_type_id:text(im_category_tree) {label "[_ intranet-core.Company_Type]"} {custom {category_type "Intranet Company Type"} } }
+	{manager_id:text(select),optional {label "[_ intranet-core.Key_Account]"} {options $employee_options} }
 	
-	{phone:text(text),optional {label "Phone"} {html {size 20}}}
-	{fax:text(text),optional {label "Fax"} {html {size 20}}}
-	{address_line1:text(text),optional {label "Address 1"} {html {size 40}}}
-	{address_line2:text(text),optional {label "Address 2"} {html {size 40}}}
-	{address_city:text(text),optional {label "City"} {html {size 30}}}
+	{phone:text(text),optional {label "[_ intranet-core.Phone]"} {html {size 20}}}
+	{fax:text(text),optional {label "[_ intranet-core.Fax]"} {html {size 20}}}
+	{address_line1:text(text),optional {label "[_ intranet-core.Address_1]"} {html {size 40}}}
+	{address_line2:text(text),optional {label "[_ intranet-core.Address_2]"} {html {size 40}}}
+	{address_city:text(text),optional {label "[_ intranet-core.City]"} {html {size 30}}}
     }
 
 if {$some_american_readers_p} {
     ad_form -extend -name company -form {
-	{address_state:text(text),optional {label "State"} {html {size 30}}}
+	{address_state:text(text),optional {label "[_ intranet-core.State]"} {html {size 30}}}
     }
 } else {
     ad_form -extend -name company -form {
@@ -126,12 +126,12 @@ if {$some_american_readers_p} {
 }
 
 ad_form -extend -name company -form {
-	{address_postal_code:text(text),optional {label "ZIP"} {html {size 6}}}
-	{address_country_code:text(select),optional {label "Country"} {options $country_options} }
-	{site_concept:text(text),optional {label "Web Site"} {html {size 60}}}
-	{vat_number:text(text),optional {label "VAT Number"} {html {size 60}}}
-	{annual_revenue_id:text(im_category_tree),optional {label "Annual Revenue"} {custom {category_type "Intranet Annual Revenue"} } }
-	{note:text(textarea),optional {label "Note"} {}}
+	{address_postal_code:text(text),optional {label "[_ intranet-core.ZIP]"} {html {size 6}}}
+	{address_country_code:text(select),optional {label "[_ intranet-core.Country]"} {options $country_options} }
+	{site_concept:text(text),optional {label "[_ intranet-core.Web_Site]"} {html {size 60}}}
+	{vat_number:text(text),optional {label "[_ intranet-core.VAT_Number]"} {html {size 60}}}
+	{annual_revenue_id:text(im_category_tree),optional {label "[_ intranet-core.Annual_Revenue]"} {custom {category_type "Intranet Annual Revenue"} } }
+	{note:text(textarea),optional {label "[_ intranet-core.Note]"} {}}
     }
 
 ad_form -extend -name company -select_query {
