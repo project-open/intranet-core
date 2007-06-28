@@ -37,12 +37,17 @@ cvs checkout intranet-amberjack
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
+cvs checkout intranet-calendar-holidays
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-cost-audit
 cvs checkout intranet-cost-center
 cvs checkout intranet-crm-tracking
-# cvs checkout intranet-cust-baselkb
+
+cvs checkout intranet-cust-baselkb
+cvs checkout intranet-cust-lexcelera
+cvs checkout intranet-cust-projop
+
 cvs checkout intranet-cvs-integration
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
