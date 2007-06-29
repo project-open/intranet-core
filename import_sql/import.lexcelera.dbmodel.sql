@@ -1,12 +1,18 @@
 
 alter table im_offices add lxc_office_id integer;
+update im_offices set lxc_office_id = null;
 
 alter table persons add lxc_user_id integer;
+update persons set lxc_user_id = null;
+
 alter table persons add lxc_contact_id integer;
+update persons set lxc_contact_id = null;
 
 alter table persons add lxc_trans_id integer;
-alter table im_companies add lxc_trans_id integer;
+update persons set lxc_trans_id = null;
 
+alter table im_companies add lxc_trans_id integer;
+update im_companies set lxc_trans_id = null;
 
 
 -- Disambiguate duplicate Translator Emails
