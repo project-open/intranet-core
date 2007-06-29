@@ -20,6 +20,7 @@
 		children.project_id as subproject_id,
 		children.project_nr as subproject_nr,
 		children.project_name as subproject_name,
+		children.project_status_id as subproject_status_id,
 		im_category_from_id(children.project_status_id) as subproject_status,
 		im_category_from_id(children.project_type_id) as subproject_type,
 		tree_level(children.tree_sortkey) -

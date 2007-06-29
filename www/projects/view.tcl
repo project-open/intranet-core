@@ -423,13 +423,13 @@ db_multirow -extend {
     subproject_indent 
     subproject_url 
     subproject_bold_p 
-    subproject_status_id } subprojects project_hierarchy {} {
+} subprojects project_hierarchy {} {
     
     set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
     set subproject_indent ""
     for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
     set subproject_bold_p [expr $project_id == $subproject_id]
-    set subproject_status_id $project_status_id
+
 }
 
 
