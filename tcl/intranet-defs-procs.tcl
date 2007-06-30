@@ -732,13 +732,20 @@ ad_proc im_currency_select {select_name {default ""}} {
 }
 
 
-ad_proc -public im_category_from_id { category_id } {
+ad_proc -public im_category_from_id { 
+    {-translate_p 1}
+    category_id 
+} {
     Get a category_name from 
 } {
     if {"" == $category_id} { return "" }
-    set sql "select im_category_from_id($category_id) from dual"
-    set category_name [lang::util::suggest_key [db_string category_from_id $sql -default {}]]
-    return [_ intranet-core.$category_name]
+    set category_name [db_string cat "select im_category_from_id(:category_id)" -default ""]
+    set category_key [lang::util::suggest_key $category_name]
+    if {$translate_p} {
+	set category_name [lang::message::lookup "" intranet-core.$category_key $category_name]
+    }
+
+    return $category_name
 }
 
 
