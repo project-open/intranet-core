@@ -65,7 +65,10 @@
 -- 2100-2199	Intranet Freelance TM Tools
 -- 2200-2299	Intranet Experience Level
 -- 2300-2399	Intranet LOC Tools
--- 2400-2499	??
+-- 2400-2419	Intranet Skill Weight
+
+-- 2420-2499	??
+
 -- 2500-2599	Translation Hierarchy
 
 -- 3000-3099    Intranet Cost Center Type
