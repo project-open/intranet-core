@@ -61,6 +61,7 @@ cvs checkout intranet-filestorage
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
+cvs checkout intranet-freelance-rfqs
 cvs checkout intranet-freelance-translation
 cvs checkout intranet-ganttproject
 cvs checkout intranet-hr
@@ -104,7 +105,6 @@ cvs checkout intranet-trans-project-wizard
 # cvs checkout intranet-trans-invoices-vaw
 cvs checkout intranet-translation
 cvs checkout intranet-trans-quality
-cvs checkout intranet-trans-rfq
 # cvs checkout intranet-travel
 cvs checkout intranet-update-client
 # cvs checkout intranet-update-server
