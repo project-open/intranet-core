@@ -1749,6 +1749,11 @@ ad_proc im_project_nuke {project_id} {
 
 	    db_dml hours_costs_link "update im_hours set cost_id = null where cost_id = :cost_id"
 
+	    # ToDo: Remove this.
+	    # Instead, the referencing im_expense_invoice (data type doesn't exist yet)
+	    # should be deleted with the appropriate destructor method
+	    db_dml expense_cost_link "update im_expenses set invoice_id = null where invoice_id = :cost_id"
+
 	    ns_log Notice "projects/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
@@ -1917,6 +1922,25 @@ ad_proc im_project_nuke {project_id} {
 	    db_dml del_dependencies "
 		delete from im_timesheet_task_dependencies
 		where (task_id_one = :project_id OR task_id_two = :project_id)
+	    "
+	}
+
+
+	# RFQs
+	if {[db_table_exists im_freelance_rfqs]} {
+	
+	    ns_log Notice "projects/nuke-2: im_freelance_rfqs"
+	    db_dml del_rfq_answers "
+		delete from im_freelance_rfq_answers
+		where answer_rfq_id in (
+			select	rfq_id
+			from	im_freelance_rfqs
+			where	rfq_project_id = :project_id
+		)
+	    "
+	    db_dml del_rfqs "
+		delete from im_freelance_rfqs
+		where rfq_project_id = :project_id
 	    "
 	}
 
