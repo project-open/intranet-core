@@ -108,7 +108,7 @@ ad_proc -public im_security_alert {
     set peer_ip [ns_conn peeraddr]
 
 
-    set subject [lang::message::lookup "" intranet-core.Security_breach_subject "%severity% Security Breach in %system_name%"]
+    set subject [lang::message::lookup "" intranet-core.Security_breach_subject "%severity% Security Breach Attempt in %system_name%"]
 
     set body "$subject
 
