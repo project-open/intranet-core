@@ -42,7 +42,8 @@ create table im_categories (
                                 -- project_type, but a class of project_types.
 	parent_only_p		char(1) default 'f'
 				constraint im_parent_only_p_ck
-				check(parent_only_p in ('t','f'))
+				check(parent_only_p in ('t','f')),
+	sort_order		integer default 0
 );
 
 -- fraber 040320: Don't allow for duplicated entries!
