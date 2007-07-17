@@ -759,6 +759,7 @@ ad_proc im_category_select {
     {-include_empty_name "All"}
     {-plain_p 0}
     {-super_category_id 0}
+    {-cache_interval 60}
     category_type
     select_name
     { default "" }
@@ -767,7 +768,7 @@ ad_proc im_category_select {
     Uses the im_category_hierarchy table to determine
     the hierarchical structure of the category type.
 } {
-    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] 1]
+    return [util_memoize [list im_category_select_helper -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] $cache_interval]
 }
 
 ad_proc im_category_select_helper {
@@ -1157,7 +1158,11 @@ ad_proc im_selection_to_select_box {
 
     set result "<select name=\"$select_name\" $size_html>\n"
     if {$include_empty_p} {
-	append result "<option value=\"\">[lang::message::lookup "" intranet-core.$include_empty_name $include_empty_name]</option>\n"
+
+	if {"" != $include_empty_name} {
+	    set include_empty_name [lang::message::lookup "" intranet-core.[lang::util::suggest_key $include_empty_name] $include_empty_name]
+	}
+	append result "<option value=\"\">$include_empty_name</option>\n"
     }
     append result [db_html_select_value_options_multiple \
 		       -translate_p $translate_p \
