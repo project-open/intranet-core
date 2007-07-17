@@ -106,13 +106,13 @@
 -- systems had the im_categories_seq set to 10000.
 -- However, none of the value should have exceeded 10999
 
--- 11000-11099	Intranet SQL Selectors (100)
+-- 11000-11099	Intranet SQL Selectors
 -- 11100-11199	CRM IP Type (100)
 -- 11200-11299	CRM IP Status (100)
--- 11300-11399	Intranet Trans Invoices VAW (100)
+-- 11300-11399	Intranet Trans Invoices VAW
 -- 11400-11499	Intranet Notes Status
 -- 11500-11599	Intranet Notes Status
--- 11600-11699	reserved (100)
+-- 11600-11699	Intranet Invoice Canned Notes
 -- 11700-11799	reserved (100)
 -- 11800-11899	reserved (100)
 -- 11900-11999	reserved (100)
