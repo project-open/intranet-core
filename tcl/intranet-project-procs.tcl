@@ -1772,6 +1772,18 @@ ad_proc im_project_nuke {project_id} {
 	ns_log Notice "projects/nuke-2: im_forum_topics"
 	db_dml forum "delete from im_forum_topics where object_id = :project_id"
 
+	# Calendar
+	ns_log Notice "projects/nuke-2: cal_items"
+	db_dml cal_items "
+		delete from cal_items 
+		where cal_item_id in (
+			select event_id
+			from acs_events
+			where related_object_id = :project_id
+		)
+	"
+	ns_log Notice "projects/nuke-2: acs_events"
+	db_dml acs_events "delete from acs_events where related_object_id = :project_id"
 
 	# Timesheet
 	ns_log Notice "projects/nuke-2: im_hours"
