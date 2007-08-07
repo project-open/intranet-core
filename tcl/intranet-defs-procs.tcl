@@ -759,7 +759,7 @@ ad_proc im_category_select {
     {-include_empty_name "All"}
     {-plain_p 0}
     {-super_category_id 0}
-    {-cache_interval 60}
+    {-cache_interval 3600}
     category_type
     select_name
     { default "" }
@@ -1070,8 +1070,13 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	set translate_p [lindex $params [expr $translate_p_pos + 1]]
     }
 
-    if {"language" == $element(name)} {
-#       ad_return_complaint 1 "<pre>params = $params\nplain_p = $plain_p</pre>"
+    # Get the "include_empty_p" parameter to determine if we should
+    # include an empty first line in the widget
+    #
+    set include_empty_p 1
+    set include_empty_p_pos [lsearch $params include_empty_p]
+    if { $include_empty_p_pos >= 0 } {
+	set include_empty_p [lindex $params [expr $include_empty_p_pos + 1]]
     }
 
     array set attributes $tag_attributes
@@ -1097,7 +1102,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -translate_p 1 -include_empty_p 1 -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
+	append category_html [im_category_select -translate_p 1 -include_empty_p $include_empty_p -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
 
 
     } else {

@@ -238,7 +238,7 @@ if { $user_can_see_start_end_date_p && ![empty_string_p $end_date] } { append pr
 append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.On_Track_Status]</td>
-			    <td>[in_project_on_track_bb $on_track_status_id]</td>
+			    <td>[im_project_on_track_bb $on_track_status_id]</td>
 			  </tr>"
 
 

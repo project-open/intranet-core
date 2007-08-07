@@ -400,7 +400,8 @@ ad_proc -public im_project_options {
 } {
     set current_project_id $project_id
     set current_user_id [ad_get_user_id]
-    
+
+    set max_project_name_len 50
 
     # Exclude subprojects does not work with subprojects,
     # if we are showing this box for a sub-sub-project.
@@ -519,7 +520,7 @@ ad_proc -public im_project_options {
     # This is particularly important for sub-projects.
     set sql "
 		select
-			p.project_name,
+			substring(p.project_name for :max_project_name_len),
 			p.project_id
 		from
 			(	select	p.project_name,
@@ -880,7 +881,7 @@ order by
     set table_header_html "<tr>\n"
     foreach col $column_headers {
 	regsub -all " " $col "_" col_txt
-	set col_txt [_ intranet-core.$col_txt]
+	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
 	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     }
     append table_header_html "</tr>\n"
@@ -1772,18 +1773,6 @@ ad_proc im_project_nuke {project_id} {
 	ns_log Notice "projects/nuke-2: im_forum_topics"
 	db_dml forum "delete from im_forum_topics where object_id = :project_id"
 
-	# Calendar
-	ns_log Notice "projects/nuke-2: cal_items"
-	db_dml cal_items "
-		delete from cal_items 
-		where cal_item_id in (
-			select event_id
-			from acs_events
-			where related_object_id = :project_id
-		)
-	"
-	ns_log Notice "projects/nuke-2: acs_events"
-	db_dml acs_events "delete from acs_events where related_object_id = :project_id"
 
 	# Timesheet
 	ns_log Notice "projects/nuke-2: im_hours"

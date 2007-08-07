@@ -195,7 +195,7 @@ delete from im_view_columns where column_id >= 2000 and column_id < 2099;
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2000,20,NULL,'Ok',
-'<center>[in_project_on_track_bb $on_track_status_id]</center>',
+'<center>[im_project_on_track_bb $on_track_status_id]</center>',
 '','',0,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,

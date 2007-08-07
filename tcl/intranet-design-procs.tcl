@@ -1481,7 +1481,7 @@ ad_proc -public im_context_bar_html {
 }
 
 
-ad_proc -public in_project_on_track_bb {
+ad_proc -public im_project_on_track_bb {
     {-size 16}
     on_track_status_id
     { alt_text "" }
@@ -1496,6 +1496,18 @@ ad_proc -public in_project_on_track_bb {
 
     set border 0
     return [im_gif "bb_$color" $alt_text $border $size $size]
+}
+
+# Compatibility
+# ToDo: remove
+ad_proc -public in_project_on_track_bb {
+    {-size 16}
+    on_track_status_id
+    { alt_text "" }
+} {
+    Compatibility
+} {
+    return [im_project_on_track_bb -size $size $on_track_status_id $alt_text]
 }
 
 

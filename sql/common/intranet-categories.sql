@@ -87,7 +87,8 @@
 -- 4300-4399	Intranet Trans Task Type
 -- 4300-4499    Intranet Bug-Tracker
 -- 4400-4499    Intranet Trans RFQ
--- 4500-4599    (reserved)
+-- 4500-4549    (reserved)
+-- 4550-4599    Intranet Project Type (extension)
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
@@ -113,9 +114,8 @@
 -- 11400-11499	Intranet Notes Status
 -- 11500-11599	Intranet Notes Status
 -- 11600-11699	Intranet Invoice Canned Notes
--- 11700-11799	reserved (100)
--- 11800-11899	reserved (100)
--- 11900-11999	reserved (100)
+-- 11700-11799	Intranet Conf Item Status
+-- 11800-11999	Intranet Conf Item Type (200)
 -- 12000-12999	reserved (1000)
 -- 13000-13999	reserved (1000)
 -- 14000-14999	reserved (1000)
