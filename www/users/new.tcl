@@ -522,6 +522,7 @@ ad_form -extend -name register -on_request {
 		if {$profile_id == [im_profile_po_admins]} { 
 		    ns_log Notice "users/new: P/O Admins => Site Wide Admins"
 		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+		    im_security_alert -location "users/new" -message "New P/O Admin" -value $email
 		}
 
 		# Remove all permission related entries in the system cache
