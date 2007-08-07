@@ -20,8 +20,10 @@ cvs checkout acs-service-contract
 cvs checkout acs-subsite
 cvs checkout acs-tcl
 cvs checkout acs-templating
+cvs checkout acs-translations
 cvs checkout acs-workflow
 
+cvs checkout batch-importer
 cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout calendar
@@ -38,6 +40,7 @@ cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
 cvs checkout intranet-calendar-holidays
+cvs checkout intranet-confdb
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-cost-audit
@@ -76,6 +79,7 @@ cvs checkout intranet-otp
 cvs checkout intranet-payments
 # cvs checkout intranet-planning
 # cvs checkout intranet-procedures
+cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
 cvs checkout intranet-reporting-dashboard
