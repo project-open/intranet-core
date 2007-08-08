@@ -54,6 +54,9 @@
     <H2>OpenACS Administration</H2>
 
     <ul>
+      <li>
+	<A href="/acs-admin/apm/packages-install?update_only_p=1"><%= [lang::message::lookup "" intranet-core.Update_Packages "Update Packages (after an update of the code)"] %></A><br>
+	Update the package database.
 
       <li>
 	<A href="/acs-admin/apm/"><%= [lang::message::lookup "" intranet-core.OpenACS_Package_Manager "OpenACS Package Manager"] %></A><br>
