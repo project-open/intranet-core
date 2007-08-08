@@ -118,21 +118,21 @@ if { [catch {
 	windows {
 	    # Windows CygWin default
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
+	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
 	}
 
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	    exec /usr/bin/pg_dump --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
+	    exec /usr/bin/pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
                       </tt>\n"
 	    ns_write "</ul>\n"
 
-	    exec pg_dump --no-owner $disable_dollar_quoting --format=$format --file=$dest_file
+	    exec pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
 	}
     }
 

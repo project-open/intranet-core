@@ -84,6 +84,28 @@ if {[db_table_exists spam_history]} {
 }
 
 # calendar
+ns_log Notice "users/nuke2: calendar"
+if {[db_table_exists calendars]} {
+
+    db_dml delete_cal_party_prefs "delete from cal_party_prefs"
+    db_dml delete_cal_items "delete from cal_items"
+    db_dml delete_cal_item_types "delete from cal_item_types"
+    db_dml delete_acs_events "delete from acs_events"
+    db_dml delete_acs_activities "delete from acs_activities"
+    db_dml delete_acs_recurrences "delete from recurrences"
+    db_dml delete_timespans "delete from timespans"
+    db_dml delete_time_intervals "delete from time_intervals"
+    db_dml delete_calendars "delete from calendars where calendar_name <> 'Global Calendar'"
+
+    db_dml delete_cal_objects "delete from acs_objects where object_type in (
+	'cal_item',
+	'acs_event',
+	'acs_activity',
+	'calendars'
+    )"
+}
+
+# calendar_categories
 ns_log Notice "users/nuke2: calendar_categories"
 if {[db_table_exists calendar_categories]} {
     db_dml delete_user_calendar_categories "delete from calendar_categories"

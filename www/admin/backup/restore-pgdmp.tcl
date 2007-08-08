@@ -39,7 +39,7 @@ if {$err==""} {
 } else {
     ad_return_top_of_page "[im_header]\n[im_navbar]"
     
-    ns_write "<h2>Error during import:</h2><pre>$err</pre>"
+    ns_write "<h2>Messages During Import</h2><pre>$err</pre>"
     ns_write "<a href=\"$return_url\">back to list</a>"
     ns_write [im_footer]
 }

@@ -57,7 +57,7 @@ set backup_path [im_backup_path]
 
 multirow create backup_files filename extension date size
 
-foreach file [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp}"]  {
+foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp}"]]  {
     set trim [string range $file [string length $backup_path] end]
 
     if {[regexp {(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([a-z]+)$} $trim match file_year file_month file_day file_hour file_second file_extension]} {
