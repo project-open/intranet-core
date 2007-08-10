@@ -43,6 +43,7 @@ ad_page_contract {
     {send_me_a_copy ""}
     return_url
     {process_mail_queue_now_p 1}
+    {from_email ""}
 }
 
 ns_log Notice "subject='$subject'"
@@ -93,7 +94,9 @@ if {"" != $send_me_a_copy} {
 
 db_transaction {
 
-    set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
+    if {"" == $from_email} {
+	set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
+    }
 
     # create the multipart message ('multipart/mixed')
     set multipart_id [acs_mail_multipart_new -multipart_kind "mixed"]
