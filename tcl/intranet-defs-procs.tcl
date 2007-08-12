@@ -1776,3 +1776,36 @@ ad_proc -public im_ad_hoc_query {
     }
     return $result
 }
+
+
+
+
+# ---------------------------------------------------------------
+# Display a generic table contents
+# ---------------------------------------------------------------
+
+ad_proc im_generic_table_component {
+    -table_name
+    -select_column
+    -select_value
+    { -order_by "" }
+    { -exclude_columns "" }
+} {
+    Takes a table name as a parameter and displays its content.
+    This function is not able to dereference values. Please use
+    a user created SQL view if that is necessary.
+    Uses the localization function to allow the user to create
+    pretty names for table columns
+} {
+    set params [list \
+	[list table_name $table_name] \
+	[list select_column $select_column] \
+	[list select_value $select_value] \
+	[list order_by $order_by] \
+	[list exclude_columns $exclude_columns] \
+	[list return_url [im_url_with_query]] \
+    ]
+    set result [ad_parse_template -params $params "/packages/intranet-core/www/components/generic-table-component"]
+    set component_title [lang::message::lookup "" intranet-core.Generic_Table_Header_$table_name $table_name]
+    return [im_table_with_title $component_title $result]
+}
