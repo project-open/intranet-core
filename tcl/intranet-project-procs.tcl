@@ -533,6 +533,11 @@ ad_proc -public im_project_options {
 					p.project_id
 				from	im_projects p
 				where	p.project_id in ([join $subprojects ", "])
+			    UNION
+				select	p.project_name,
+					p.project_id
+				from	im_projects p
+				where	p.project_id = :current_project_id;
 			) p
 		order by 
 			$order_by_clause
