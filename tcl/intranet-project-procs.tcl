@@ -537,7 +537,7 @@ ad_proc -public im_project_options {
 				select	p.project_name,
 					p.project_id
 				from	im_projects p
-				where	p.project_id = :current_project_id;
+				where	p.project_id = :current_project_id
 			) p
 		order by 
 			$order_by_clause
