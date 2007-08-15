@@ -526,6 +526,8 @@ ad_proc -public im_user_nuke {user_id} {
 	db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 	
 	# Costs
+	db_dml invoice_references "update im_invoices set company_contact_id = null where company_contact_id = :user_id"
+
 	set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and (creation_user = :user_id or cause_object_id = :user_id)"]
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
