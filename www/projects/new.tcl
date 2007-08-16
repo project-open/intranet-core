@@ -615,7 +615,6 @@ if {[form is_valid $form_id]} {
 		project_id = :project_id
     "
     db_dml project_update $project_update_sql
-	
 
     if {$add_budget_hours_p} {
 	set project_update_sql "
@@ -637,6 +636,9 @@ if {[form is_valid $form_id]} {
         "
 	db_dml project_update $project_update_sql
     }
+
+    # Write Audit Trail
+    im_project_audit $project_id
 
 
     # -----------------------------------------------------------------

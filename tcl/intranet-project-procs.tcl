@@ -261,6 +261,10 @@ namespace eval project {
         }
 
         set project_id [db_exec_plsql create_new_project $sql]
+
+	# Write Audit Trail
+	im_project_audit -action create $project_id
+
         return $project_id
     }
 }

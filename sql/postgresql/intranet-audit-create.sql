@@ -14,6 +14,7 @@
 -- dynamic extensions of data types
 
 create table im_projects_audit (
+        modifying_action		varchar(20),
         last_modified			timestamptz,
         last_modifying_user		integer,
 	last_modifying_ip		varchar(20),

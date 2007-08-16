@@ -24,6 +24,7 @@ ad_library {
 # -------------------------------------------------------------------
 
 ad_proc -public im_project_audit  {
+    { -action update }
     project_id
 } {
     Creates an audit entry of the specified project
@@ -36,7 +37,7 @@ ad_proc -public im_project_audit  {
 
     db_dml audit "
 	insert into im_projects_audit (
-		last_modified,		last_modifying_user,		last_modifying_ip,
+		modifying_action,	last_modified,		last_modifying_user,		last_modifying_ip,
 		project_id,		project_name,			project_nr,
 		project_path,		parent_id,			company_id,
 		project_type_id,	project_status_id,		description,
@@ -47,7 +48,7 @@ ad_proc -public im_project_audit  {
 		company_contact_id,	company_project_nr,		final_company
 	) 
 	select
-		now(),			:modifying_user,		:modifying_ip,
+		:action,		now(),			:modifying_user,		:modifying_ip,
 		project_id,		project_name,			project_nr,
 		project_path,		parent_id,			company_id,
 		project_type_id,	project_status_id,		description,
