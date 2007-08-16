@@ -43,7 +43,6 @@ cvs checkout intranet-calendar-holidays
 cvs checkout intranet-confdb
 cvs checkout intranet-core
 cvs checkout intranet-cost
-cvs checkout intranet-cost-audit
 cvs checkout intranet-cost-center
 cvs checkout intranet-crm-tracking
 

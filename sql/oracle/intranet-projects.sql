@@ -319,32 +319,6 @@ create table im_url_types (
 );
 
 
--- Table to store all changes in the project status field,
--- to be able to track the evolution of the project history 
--- in a timeline.
-
-create table im_projects_status_audit (
-	project_id		integer,
-	project_status_id	integer,
-	audit_date		date
-);
-create index im_proj_status_aud_id_idx on im_projects_status_audit(project_id);
--- create index im_proj_status_aud_status_idx on im_projects_status_audit(project_status_id);
-
-create or replace trigger im_projects_status_audit_tr
-before update or delete on im_projects
-for each row
-begin
-	insert into im_projects_status_audit (
-		project_id, project_status_id, audit_date
-	) values (
-		:old.project_id, :old.project_status_id, sysdate
-	);
-end im_projects_status_audit_tr;
-/
-show errors
-
-
 -- An old ACS 3.4 Intranet table that is not currently in use.
 -- However, it is currently included to facilitate the porting
 -- process to OpenACS 5.0
