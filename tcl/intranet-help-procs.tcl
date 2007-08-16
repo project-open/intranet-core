@@ -32,11 +32,18 @@ ad_proc -public im_help_home_page_blurb_component { } {
 <tr><td>
 
 <h1>Welcome to $projop</h1>
-
 We have set up a sample system for you in order to show you how
-a typical company could look like. Please follow the links to
-explore the (freely invented) sample contents.
+a typical company could look like. 
 
+Currently we are preparing some tutorial flash demos. Here's a first 
+sample, expect more to come soon. 
+
+
+<ul><li><a href=\"/intranet-amberjack/createProject.html\">How to create a project with po</a></li></ul>
+
+
+<!--
+Please follow the links to explore the (freely invented) sample contents.
 
 <h2>Starting to use $po</h2>
 
@@ -90,8 +97,7 @@ organizations to get the most out of $po.
     $po offers three different support levels for companies of all sizes.
 </li>
 </ul>
-
-</p>
+</p>-->
 </td></tr>
 </table>    
 <br>
