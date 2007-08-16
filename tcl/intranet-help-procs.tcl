@@ -39,7 +39,7 @@ Currently we are preparing some tutorial flash demos. Here's a first
 sample, expect more to come soon. 
 
 
-<ul><li><a href=\"/intranet-amberjack/createProject.html\">How to create a project with po</a></li></ul>
+<ul><li><a href=\"/intranet-amberjack/createProject.html\">How to create a project</a></li></ul>
 
 
 <!--
