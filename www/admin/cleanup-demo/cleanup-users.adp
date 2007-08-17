@@ -13,9 +13,18 @@ This is useful if you want to start using a preconfigured
 system for production purposes.
 </p>
 <p>
-The system administrators have been excluded from this list,
-so you can safely press the checkbox in the header just below
-this text line in order to select all users.
+<b>Deleting Admins</b>: Users with the system administration role 
+have been intentionally excluded from the list below
+in order to avoid users to lock themselves out of the system.
+In order to delete a SysAdmin user please to go to the tab "Users",
+select "User Types" = "P/O Admins" and edit the users to remove their
+admin rights.
+</p>
+<p>
+<b>Deleting User "System Administrator"</b>: This is the only user that 
+you can never delete because it owns a number of system objects. 
+However, you can rename it's name and email address, so that you 
+can use this account for yourself.
 </p>
 </td></tr>
 </table>
