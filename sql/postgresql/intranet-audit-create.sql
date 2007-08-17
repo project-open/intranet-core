@@ -42,7 +42,17 @@ create table im_projects_audit (
 	start_date			timestamptz,
 	company_contact_id		integer,
 	company_project_nr		varchar(50),
-	final_company			varchar(50)
+	final_company			varchar(50),
+	cost_invoices_cache		float,	
+	cost_quotes_cache		float,		
+	cost_delivery_notes_cache	float,
+	cost_bills_cache		float,	
+	cost_purchase_orders_cache	float,	
+	cost_timesheet_planned_cache	float,	
+	cost_timesheet_logged_cache	float,
+	cost_expense_planned_cache	float,	
+	cost_expense_logged_cache	float,
+	reported_hours_cache		float
 );
 
 create index im_projects_audit_project_id_idx on im_projects_audit(project_id);
