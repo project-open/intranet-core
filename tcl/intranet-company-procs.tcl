@@ -561,6 +561,9 @@ ad_proc im_company_nuke {company_id} {
 	ns_log Notice "companies/nuke-2: acs_permissions"
 	db_dml perms "delete from acs_permissions where object_id = :company_id"
 	
+
+	# ----------- Costs & Payments --------------------------------
+
 	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
 	# entry in im_costs. These might have been created during manual deletion of objects
 	# Very dirty...
@@ -570,9 +573,34 @@ ad_proc im_company_nuke {company_id} {
 		where	object_type = 'im_cost' 
 			and object_id not in (select cost_id from im_costs)"
 	
-
 	# Payments
-	db_dml delete_payments "delete from im_payments where company_id = :company_id"
+	db_dml delete_payments1 "
+		delete	from im_payments 
+		where	(company_id = :company_id OR provider_id = :company_id)
+			
+	"
+	db_dml delete_payments "
+		delete	from im_payments 
+		where	cost_id in (
+			select	c.cost_id
+			from	im_costs c
+			where	(c.customer_id = :company_id or c.provider_id = :company_id)
+		)
+	"
+
+	# Costs
+	set cost_infos [db_list_of_lists costs "
+		select	c.cost_id, object_type 
+		from	im_costs c, acs_objects o 
+		where	c.cost_id = o.object_id and 
+			(c.customer_id = :company_id or c.provider_id = :company_id)
+	"]
+	foreach cost_info $cost_infos {
+	    set cost_id [lindex $cost_info 0]
+	    set object_type [lindex $cost_info 1]
+	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
+	}
+
 
 	
 	# Costs
@@ -648,7 +676,22 @@ ad_proc im_company_nuke {company_id} {
 	db_dml party_approved_member_map "
 		delete from party_approved_member_map 
 		where member_id = :company_id"
-	
+
+	# ----------- Translation --------------------------------
+	db_dml delete_trans_prices "
+		delete from im_trans_prices
+		where company_id = :company_id
+	"
+
+
+	# ----------- Timesheet --------------------------------
+	db_dml delete_timesheet_prices "
+		delete from im_timesheet_prices
+		where company_id = :company_id
+	"
+
+
+	# ----------- Delete the company --------------------------------
 	db_dml delete_companies "
 		delete from im_companies 
 		where company_id = :company_id"
