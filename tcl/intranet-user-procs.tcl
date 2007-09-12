@@ -594,6 +594,12 @@ ad_proc -public im_user_nuke {user_id} {
 	db_dml filestorage "update im_fs_folders set object_id = null where object_id = :user_id"
 
 
+
+	# Bug-Tracker
+	db_dml bt_prefs "delete from bt_user_prefs where user_id = :user_id"
+	db_dml bt_comps "update bt_components set maintainer = null where maintainer = :user_id"
+
+
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
