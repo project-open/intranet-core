@@ -295,6 +295,7 @@ if {[db_table_exists im_trans_quality_reports]} {
 }
 
 # Filestorage
+db_dml files "delete from im_fs_files"
 db_dml forum "delete from im_fs_folder_status"
 db_dml filestorage "delete from im_fs_actions"
 db_dml im_fs_folder_perms "delete from im_fs_folder_perms"
