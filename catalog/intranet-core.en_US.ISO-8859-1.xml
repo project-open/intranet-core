@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.3.0.0.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1111">1111</msg>
   <msg key="_"></msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record</msg>
+  <msg key="A">A</msg>
   <msg key="a">a</msg>
   <msg key="A_-_Test_approved">A - Test approved</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
@@ -87,8 +88,8 @@
   <msg key="Allocations">Allocations</msg>
   <msg key="Allowances">Allowances</msg>
   <msg key="Andorra">Andorra</msg>
-  <msg key="Anonymize">Anonymize</msg>
   <msg key="Annual_Revenue">Anual Revenue</msg>
+  <msg key="Anonymize">Anonymize</msg>
   <msg key="Apply">Apply</msg>
   <msg key="Appr_Size">Appr Size</msg>
   <msg key="Approver">Approver</msg>
@@ -103,6 +104,7 @@
   <msg key="Authoring">Authoring</msg>
   <msg key="Autoedicin">Autoedición</msg>
   <msg key="Average_Quality">Average Quality</msg>
+  <msg key="B">B</msg>
   <msg key="b">b</msg>
   <msg key="B_-_No_the_best">B - No the best</msg>
   <msg key="Backup_and_Restore_blurb">Backup your current application data or load the application data from a previous backup.</msg>
@@ -448,6 +450,7 @@
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
   <msg key="Import_User_CSV">Import User CSV</msg>
+  <msg key="Important">Important</msg>
   <msg key="in">in</msg>
   <msg key="Inactive">Inactive</msg>
   <msg key="Inactive_Customers">Inactive Customers</msg>
@@ -472,6 +475,7 @@
   <msg key="Intranet_RFC_System">Intranet RFC System</msg>
   <msg key="Intranet_RFC_Type">Intranet RFC Type</msg>
   <msg key="Intranet_users">Intranet users</msg>
+  <msg key="Invited">Invited</msg>
   <msg key="Invoicable">Invoiceable</msg>
   <msg key="Invoice">Invoice</msg>
   <msg key="invoice-englishadp">invoice-englishadp</msg>
@@ -538,6 +542,7 @@
   <msg key="Log_Out">Log Out</msg>
   <msg key="log_them_now">log them now</msg>
   <msg key="login">login</msg>
+  <msg key="Lori_Project">Lori Project</msg>
   <msg key="Low">Low</msg>
   <msg key="lt">lt</msg>
   <msg key="lt_A_project_number_is_c">A project number is composed by 4 digits for the year plus 4 digits for current identification</msg>
@@ -741,6 +746,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
   <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator</msg>
   <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows</msg>
+  <msg key="lt_Negative_Importance_a">Negative Importance</msg>
   <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
   <msg key="lt_New_Customer_Invoice_">New Customer Invoice</msg>
   <msg key="lt_New_Provider_Bill_fro">New Provider Bill from</msg>
@@ -986,6 +992,7 @@ other way for the user to find out.</msg>
   <msg key="No">No</msg>
   <msg key="no">no</msg>
   <msg key="No_Email_Has_Been_Sent">No Email has been sent</msg>
+  <msg key="No_Importance">No Importance</msg>
   <msg key="No_members_found">No members found</msg>
   <msg key="No_offices_found">No offices found</msg>
   <msg key="Non-IT">Non-IT</msg>
@@ -1031,6 +1038,7 @@ other way for the user to find out.</msg>
   <msg key="Online_Time">Online Time</msg>
   <msg key="Open">Open</msg>
   <msg key="OpenACS_platform">OpenACS platform</msg>
+  <msg key="Optional">Optional</msg>
   <msg key="or_by">or by</msg>
   <msg key="or_Last_Name">or Last Name</msg>
   <msg key="Order_1">Order 1</msg>
@@ -1184,6 +1192,7 @@ other way for the user to find out.</msg>
   <msg key="Request_Error">Request Error</msg>
   <msg key="Request_For_Change">Request For Change</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
+  <msg key="Resources">Resources</msg>
   <msg key="Ressource_Group_1">Ressource Group 1</msg>
   <msg key="Return_to">Return to</msg>
   <msg key="Return_To_Previous_Page">Return to previous page</msg>
@@ -1295,7 +1304,9 @@ other way for the user to find out.</msg>
   <msg key="Software_Maintenance">Software Maintenance</msg>
   <msg key="Software_Testing">Software Testing</msg>
   <msg key="Software_Updates">Software Updates</msg>
+  <msg key="Some_Importance">Some Importance</msg>
   <msg key="Sort_Order">Sort Order</msg>
+  <msg key="Source_Language">Source Lang</msg>
   <msg key="South Africa">South Africa</msg>
   <msg key="South_Africa">South Africa</msg>
   <msg key="Spain">Spain</msg>
@@ -1314,6 +1325,7 @@ other way for the user to find out.</msg>
   <msg key="Status">Status</msg>
   <msg key="Strategic_Consulting">Strategic Consulting</msg>
   <msg key="Sub_Projects">Project Hierarchy</msg>
+  <msg key="Subjects">Subjects</msg>
   <msg key="Submit">Submit</msg>
   <msg key="Summary">Summary</msg>
   <msg key="Supervisor">Supervisor</msg>
@@ -1332,6 +1344,7 @@ other way for the user to find out.</msg>
   <msg key="T-Line">T-Line</msg>
   <msg key="T-Word">T-Word</msg>
   <msg key="Taiwan">Taiwan</msg>
+  <msg key="Target_Language">Target Lang</msg>
   <msg key="Task">Task</msg>
   <msg key="Task_Members">Task Members</msg>
   <msg key="Tasks">Tasks</msg>
@@ -1447,6 +1460,7 @@ other way for the user to find out.</msg>
   <msg key="VAS_5051">VAS 5051</msg>
   <msg key="VAT_Number">VAT Number</msg>
   <msg key="Venezuela">Venezuela</msg>
+  <msg key="Very_Important">Very Important</msg>
   <msg key="vi">vi</msg>
   <msg key="View">View</msg>
   <msg key="View_1">View:</msg>

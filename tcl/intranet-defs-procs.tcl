@@ -1760,21 +1760,52 @@ ad_proc -public im_sub_categories {
 # ---------------------------------------------------------------
 
 ad_proc -public im_ad_hoc_query {
+    {-format html}
+    {-border 0}
     sql
 } {
     Ad-hoc execution of SQL-Queries
     Format for browser "pre" display
 } {
     set lol [db_list_of_lists ad_hoc_query $sql]
-
     set result ""
+    set bgcolor(0) " class=roweven "
+    set bgcolor(1) " class=rowodd "
+
+    set row_count 1
     foreach row $lol {
 	foreach col $row {
-	    append result "$col\t"
+
+	    switch $format {
+		plain {	append result "$col\t" }
+		html {	
+		    if {"" == $col} { set col "&nbsp;" }
+		    append result "<td>$col</td>" 
+		}
+	    }
+
+
 	}
-	append result "\n"
+
+	# Change to next line
+	switch $format {
+	    plain { append result "\n" }
+	    html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
+	}
+	incr row_count
     }
-    return $result
+    
+    switch $format {
+	plain { return $result  }
+	html { return "
+		<table border=$border>
+		<tr $bgcolor(0)>
+		$result
+		</tr>
+		</table>
+	       "  
+	}
+    }
 }
 
 
