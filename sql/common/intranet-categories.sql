@@ -117,8 +117,8 @@
 -- 11700-11799	Intranet Conf Item Status
 -- 11800-11999	Intranet Conf Item Type (200)
 -- 12000-12999	Intranet ConfDB reserved (1000)
--- 13000-13999	reserved (1000)
--- 14000-14999	reserved (1000)
+-- 13000-13999	Intranet Semantic Network (1000)
+-- 14000-14999	Leinhaeuser Development... (1000)
 -- 15000-15999	reserved (1000)
 -- 16000-16999	reserved (1000)
 -- 17000-17999	reserved (1000)
