@@ -1760,8 +1760,9 @@ ad_proc -public im_sub_categories {
 # ---------------------------------------------------------------
 
 ad_proc -public im_ad_hoc_query {
-    {-format html}
+    {-format plain}
     {-border 0}
+    {-col_titles {} }
     sql
 } {
     Ad-hoc execution of SQL-Queries
@@ -1772,10 +1773,25 @@ ad_proc -public im_ad_hoc_query {
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
 
+    set header ""
+    if {"" != $col_titles} {
+	foreach title $col_titles {
+	    switch $format {
+		plain {	append header "$title\t" }
+		html {	
+		    append header "<th>$title</th>" 
+		}
+	    }
+	}
+	switch $format {
+	    plain { set header $header }
+	    html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
+	}
+    }
+
     set row_count 1
     foreach row $lol {
 	foreach col $row {
-
 	    switch $format {
 		plain {	append result "$col\t" }
 		html {	
@@ -1783,8 +1799,6 @@ ad_proc -public im_ad_hoc_query {
 		    append result "<td>$col</td>" 
 		}
 	    }
-
-
 	}
 
 	# Change to next line
@@ -1796,9 +1810,10 @@ ad_proc -public im_ad_hoc_query {
     }
     
     switch $format {
-	plain { return $result  }
+	plain { return "$header\n$result"  }
 	html { return "
 		<table border=$border>
+		$header
 		<tr $bgcolor(0)>
 		$result
 		</tr>
