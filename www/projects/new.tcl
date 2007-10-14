@@ -57,6 +57,15 @@ if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
 }
 
 
+# Do we need the customer_id for creating a project?
+# This is necessary if the project_nr depends on the customer_id.
+set customer_required_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NewProjectRequiresCustomerP" -default 0]
+if {![info exists project_id] && $company_id == "" && $customer_required_p} {
+    ad_returnredirect [export_vars -base "new-custselect" {project_id parent_id project_nr workflow_key return_url}]
+    ad_script_abort
+}
+
+
 # -----------------------------------------------------------
 # Permissions
 # -----------------------------------------------------------
@@ -340,7 +349,7 @@ if {[form is_request $form_id]} {
 	# A completely new project or a subproject
 	#
 	if {![info exist project_nr]} {
-	    set project_nr [im_next_project_nr]
+	    set project_nr [im_next_project_nr -customer_id $company_id]
 	}
 	set start_date $todays_date
 	set end_date $todays_date

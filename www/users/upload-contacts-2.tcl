@@ -25,6 +25,7 @@ ad_page_contract {
     return_url
     upload_file
     profile_id
+    { transformation_key "reinisch_freelance_contacts" }
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -43,6 +44,75 @@ if {"" == $profile_id || 0 == $profile_id} {
     You have not specified a value for Profile"
     return
 }
+
+
+
+# Describes how Excel attributes are loaded into DynFields
+# Format:
+#       1. Excel Column Name
+#       2. Table Column
+#       3. Transformation Function
+
+set dynfield_trans_list {}
+
+# Define some hardcoded transformations until we've finished the
+# maintenance screens for database-configured transformations...
+switch $transformation_key {
+    reinisch_freelance_contacts {
+        set dynfield_trans_list {
+            {"user1"			"valoration"		"im_transform_trim"}
+	    {"Idioma materno"		"idioma_materno"	"im_transform_trim"}
+
+	    {"Idiomas1_Origen"		"idiomas1_origen"	"im_transform_trim"}
+	    {"Idiomas1_Destino"		"idiomas1_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 1"	"idiomas1_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas2_Origen"		"idiomas2_origen"	"im_transform_trim"}
+	    {"Idiomas2_Destino"		"idiomas2_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 2"	"idiomas2_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas3_Origen"		"idiomas3_origen"	"im_transform_trim"}
+	    {"Idiomas3_Destino"		"idiomas3_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 3"	"idiomas3_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas4_Origen"		"idiomas4_origen"	"im_transform_trim"}
+	    {"Idiomas4_Destino"		"idiomas4_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 4"	"idiomas4_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas5_Origen"		"idiomas5_origen"	"im_transform_trim"}
+	    {"Idiomas5_Destino"		"idiomas5_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 5"	"idiomas5_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas6_Origen"		"idiomas6_origen"	"im_transform_trim"}
+	    {"Idiomas6_Destino"		"idiomas6_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 6"	"idiomas6_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas7_Origen"		"idiomas7_origen"	"im_transform_trim"}
+	    {"Idiomas7_Destino"		"idiomas7_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 7"	"idiomas7_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas8_Origen"		"idiomas8_origen"	"im_transform_trim"}
+	    {"Idiomas8_Destino"		"idiomas8_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 8"	"idiomas8_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas9_Origen"		"idiomas9_origen"	"im_transform_trim"}
+	    {"Idiomas9_Destino"		"idiomas9_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 9"	"idiomas9_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas10_Origen"		"idiomas10_origen"	"im_transform_trim"}
+	    {"Idiomas10_Destino"	"idiomas10_destino"	"im_transform_trim"}
+	    {"Tarifas/palabra 10"	"idiomas10_tarifa"	"im_transform_komma2dot"}
+
+	    {"Idiomas11_Origen"		"idiomas11_origen"	"im_transform_trim"}
+	    {"Idiomas11_Destino"	"idiomas11_destino"	"im_transform_trim"}
+
+	    {"Idiomas12_Origen"		"idiomas12_origen"	"im_transform_trim"}
+	    {"Idiomas12_Destino"	"idiomas12_destino"	"im_transform_trim"}
+        }
+    }
+}
+
+
 
 # Get the file from the user.
 # number_of_bytes is the upper-limit
@@ -64,11 +134,9 @@ if {[regexp {\.\.} $company_filename]} {
 }
 
 if {![file readable $tmp_filename]} {
-    set err_msg "Unable to read the file '$tmp_filename'. 
+    ad_return_complaint 1 "Unable to read the file '$tmp_filename'. 
 Please check the file permissions or contact your system administrator.\n"
-    append page_body "\n$err_msg\n"
-    doc_return  200 text/html [im_return_template]
-    return
+    ad_script_abort
 }
 
 set csv_files_content [fileutil::cat $tmp_filename]
@@ -93,6 +161,20 @@ if {$csv_header_len <= 1} {
 }
 
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
+
+
+
+
+# ------------------------------------------------------------
+# Render Result Header
+
+ad_return_top_of_page "
+        [im_header]
+        [im_navbar]
+"
+
+
+# ------------------------------------------------------------
 
 set linecount 0
 foreach csv_line_fields $values_list_of_lists {
@@ -208,10 +290,12 @@ foreach csv_line_fields $values_list_of_lists {
 
 	set var_name [string trim [lindex $csv_header_fields $j]]
 	set var_name [string tolower $var_name]
-	set var_name [string map -nocase {" " "_" "'" "" "/" "_" "-" "_"} $var_name]
+	set var_name [string map -nocase {" " "_" "\"" "" "'" "" "/" "_" "-" "_"} $var_name]
+	set var_name [im_mangle_unicode_accents $var_name]
 	lappend var_name_list $var_name
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
+	set var_value [string map -nocase {"\"" "" "\{" "(" "\}" ")" "\[" "(" "\]" ")"} $var_value]
 	if {[string equal "NULL" $var_value]} { set var_value ""}
 	append pretty_field_string "$var_name\t\t$var_value\n"
 
@@ -223,21 +307,21 @@ foreach csv_line_fields $values_list_of_lists {
     }
 
     if {"" == $first_name} {
-	append page_body "<li>We have found an empty 'First Name' in line $linecount.<br>
-        We can not add users with an empty first name, Please correct the CSV file.
+	ns_write "<li>Error: We have found an empty 'First Name' in line $linecount.<br>
+        Error: We can not add users with an empty first name, Please correct the CSV file.
         <br><pre>$pretty_field_string</pre>"
 	continue
     }
 
     if {"" == $last_name} {
-	append page_body "<li>We have found an empty 'Last Name' in line $linecount.<br>
+	ns_write "<li>Error: We have found an empty 'Last Name' in line $linecount.<br>
         We can not add users with an empty last name. Please correct the CSV file.<br>
         <pre>$pretty_field_string</pre>"
 	continue
     }
 
     if {"" == $e_mail_address} {
-	append page_body "<li>We have found an empty 'e_mail_address' in line $linecount.<br>
+	ns_write "<li>Error: We have found an empty 'e_mail_address' in line $linecount.<br>
         We can not add users with an empty email. Please correct the CSV file.<br>
         <pre>$pretty_field_string</pre>"
 	continue
@@ -279,7 +363,7 @@ foreach csv_line_fields $values_list_of_lists {
     if {"" != $job_title} {append userinfo "job_title = $job_title, " }
     append userinfo "user_id = $user_id"
 
-    append page_body "<li>$userinfo\n"
+    ns_write "<li>$userinfo\n"
 
 
     if {0 == $user_id} {
@@ -293,7 +377,7 @@ foreach csv_line_fields $values_list_of_lists {
 			and lower(last_name) = lower(:last_name)
 	"]
 	if {$found_n > 1} {
-	    append page_body "<li>'$first_name $last_name': 
+	    ns_write "<li>'$first_name $last_name': 
 	    Skipping, because we have found $found_n users with this name.\n"
 	    continue
 	}
@@ -306,7 +390,7 @@ foreach csv_line_fields $values_list_of_lists {
 		where lower(screen_name) = lower(:screen_name) 
 	"]
 	if {$found_screen_n > 0} {
-	    append page_body "<li>'$screen_name': 
+	    ns_write "<li>'$screen_name': 
 	    Skipping, because we have found another user with this screen name.\n"
 	    continue
 	}
@@ -325,7 +409,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 	# Create a new user
 	set user_id [db_nextval acs_object_id_seq]
-	append page_body "<li>'$first_name $last_name': Creating a new user with ID \#$user_id\n"
+	ns_write "<li>'$first_name $last_name': Creating a new user with ID \#$user_id\n"
 
 	array set creation_info [auth::create_user \
                                          -user_id $user_id \
@@ -352,13 +436,13 @@ foreach csv_line_fields $values_list_of_lists {
                 if { [llength $creation_info(element_messages)] == 0 } {
                     array set reg_elms [auth::get_registration_elements]
                     set first_elm [lindex [concat $reg_elms(required) $reg_elms(optional)] 0]
-		    append page_body "<li>'$first_name $last_name': Error creating new user: <br>
+		    ns_write "<li>'$first_name $last_name': Error creating new user: <br>
                     $creation_info(creation_message)\n"
                 }
 
                 # Element messages
                 foreach { elm_name elm_error } $creation_info(element_messages) {
-		    append page_body "<li>'$first_name $last_name': Error creating new user: <br>
+		    ns_write "<li>'$first_name $last_name': Error creating new user: <br>
                     $elm_name $elm_error\n"
                 }
                 continue
@@ -390,7 +474,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 
 
-    append page_body "<li>'$first_name $last_name': Updating user ... \n"
+    ns_write "<li>'$first_name $last_name': Updating user ... \n"
     
     # Add a users_contact record to the user since the 3.0 PostgreSQL
     # port, because we have dropped the outer join with it...
@@ -421,7 +505,7 @@ foreach csv_line_fields $values_list_of_lists {
 		where lower(screen_name) = lower(:screen_name) and user_id != :user_id
 	"]
 	if {$found_screen_n > 0} {
-	    append page_body "
+	    ns_write "
 	    Skipping, because we have found another user with this screen name '$screen_name'.\n"
 	    continue
 	}
@@ -525,34 +609,36 @@ foreach csv_line_fields $values_list_of_lists {
 	note = $note"
 
 
-    db_dml update_users_contact "
-    update users_contact set 
-	home_phone = :home_phone,
-	work_phone = :business_phone,
-	cell_phone = :mobile_phone,
-	pager = :pager,
-	fax = :business_fax,
-	ha_line1 = :home_street,
-	ha_line2 = trim(:home_street_2 || ' ' || :home_street_3),
-	ha_city = :home_city,
-	ha_state = :home_state,
-	ha_postal_code = :home_postal_code,
-	ha_country_code = :home_country_code,
-	wa_line1 = :business_street,
-	wa_line2 = trim(:business_street_2 || ' ' || :business_street_3),
-	wa_city = :business_city,
-	wa_state = :business_state,
-	wa_postal_code = :business_postal_code,
-	wa_country_code = :business_country_code,
-	note = :note
-    where
-	user_id = :user_id	
-"
+    if {[catch {
 
-#	aim_screen_name      
-#	msn_screen_name      
-#	icq_number           
-#	current_information  
+	db_dml update_users_contact "
+	    update users_contact set 
+		home_phone = :home_phone,
+		work_phone = :business_phone,
+		cell_phone = :mobile_phone,
+		pager = :pager,
+		fax = :business_fax,
+		ha_line1 = :home_street,
+		ha_line2 = trim(:home_street_2 || ' ' || :home_street_3),
+		ha_city = :home_city,
+		ha_state = :home_state,
+		ha_postal_code = :home_postal_code,
+		ha_country_code = :home_country_code,
+		wa_line1 = :business_street,
+		wa_line2 = trim(:business_street_2 || ' ' || :business_street_3),
+		wa_city = :business_city,
+		wa_state = :business_state,
+		wa_postal_code = :business_postal_code,
+		wa_country_code = :business_country_code,
+		note = :note
+	    where
+		user_id = :user_id	
+	"
+
+    } errmsg]} {
+	ns_write "<li>Error updating user \#$user_id:<br><pre>$errmsg</pre>"
+    }
+
 
     # -------------------------------------------------------
     # Deal with the users's company
@@ -566,10 +652,10 @@ foreach csv_line_fields $values_list_of_lists {
 	    set relationship_count [db_string relationship_count "select count(*) from acs_rels where object_id_one = :company_id and object_id_two = :user_id"]
 	    if {0 == $relationship_count} {
 
-		append page_body "<li>'$first_name $last_name': Adding as member to '$company'\n"
+		ns_write "<li>'$first_name $last_name': Adding as member to '$company'\n"
 		im_biz_object_add_role $user_id $company_id [im_biz_object_role_full_member]
 	    } else {
-		append page_body "<li>'$first_name $last_name': Is already a member of '$company'\n"
+		ns_write "<li>'$first_name $last_name': Is already a member of '$company'\n"
 	    }
 
 	} else {
@@ -581,7 +667,7 @@ foreach csv_line_fields $values_list_of_lists {
 	    if {$profile_id == [im_profile_freelancers]} { set company_type_id [im_company_type_freelance]}
 	    set company_status_id [im_company_status_potential]
 
-	    append page_body "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_url_vars user_id company_type_id company_status_id company_name]\">click here to create it</a>.\n"
+	    ns_write "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_url_vars user_id company_type_id company_status_id company_name]\">click here to create it</a>.\n"
 
 	}
     }
@@ -594,11 +680,91 @@ foreach csv_line_fields $values_list_of_lists {
         ns_log Notice "upload-contacts-2: => relation_add $profile_id $user_id"
         set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
         db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
-        append page_body "<li>'$first_name $last_name': Added to group '$profile_id'.\n"
+        ns_write "<li>'$first_name $last_name': Added to group '$profile_id'.\n"
     } else {
-        append page_body "<li>'$first_name $last_name': Not adding the user to any group.\n"
+        ns_write "<li>'$first_name $last_name': Not adding the user to any group.\n"
     }
+
+
+    # Example:  "Comercial" "sales_rep_id" im_transform_email2user_id
+    foreach trans $dynfield_trans_list {
+
+	set excel_field [string tolower [lindex $trans 0]]
+        set excel_field [string map -nocase {" " "_" "\"" "" "'" "" "/" "_" "-" "_" "\[" "(" "\{" "(" "\}" ")" "\]" ")"} $excel_field]
+        set excel_field [im_mangle_unicode_accents $excel_field]
+	set table_column [lindex $trans 1]
+	set trans_function [lindex $trans 2]
+
+	set excel_value ""
+	if {[catch { 
+#	    set excel_value [expr \$$excel_field]
+
+	    set cmd "set excel_value \"\$$excel_field\""
+	    eval $cmd
+
+	} err_value]} {
+	    if {"" != $err_value} { 
+		ns_write "
+		<li>Error evaluating '$excel_value' of Excel field '$excel_field' into column '$table_column':<br>
+		<pre>command=$cmd\n$err_value</pre>
+	        "
+	    }
+	}
+	set excel_value [string trim $excel_value]
+
+	if {"" != $excel_value} {
+
+	    set res_list {}
+	    set res_errors {"Error during transformation"}
+	    
+	    if {[catch {
+#		set trans_result [eval $trans_function $excel_value]
+
+		set cmd "set trans_result \[$trans_function \"$excel_value\"\]"
+		eval $cmd
+
+		set res_list [lindex $trans_result 0]
+		set res_errors [lindex $trans_result 1]
+	    } err_trans]} {
+		if {"" != $err_value} { 
+	            ns_write "
+		    <li>Error transforming value '$excel_value' of Excel field '$excel_field' into column '$table_column':<br>
+		    <pre>Command: $cmd\n$err_trans</pre>
+	            "
+		}
+	    }
+
+	    if {[llength $res_errors] > 0} {
+
+		ns_write "
+	<li>Error transforming value '$excel_value' of Excel field '$excel_field' into column '$table_column':<br>
+	<pre>Error Summary: [join $res_errors "<br>\n"]</pre>"
+
+	    } else {
+
+		if {[catch {
+		    # We found exactly one return value and no errors...
+		    db_dml update_contact_dynfield "
+	                update persons set 
+				$table_column = :res_list
+	                where person_id = :user_id
+	            "
+		} errmsg]} {
+		    ns_write "<li>Error updating dynfield $table_column at user \#$user_id:<br><pre>$errmsg</pre>"
+		}
+
+
+	    }
+        }
+    }
+
+
 
 
 }
 
+
+# ------------------------------------------------------------
+# Render Report Footer
+
+ns_write [im_footer]

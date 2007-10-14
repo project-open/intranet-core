@@ -68,7 +68,8 @@ if {$template_project_id} {
 #
 db_1row projects_info_query { 
 select 
-	p.project_name as template_project_name
+	p.project_name as template_project_name,
+        p.company_id as template_company_id
 from
 	im_projects p
 where 
@@ -78,7 +79,7 @@ where
 
 # Create a new project_nr if it wasn't specified
 if {"" == $project_nr || ""} {
-    set project_nr [im_next_project_nr]
+    set project_nr [im_next_project_nr -customer_id $template_company_id]
 }
 
 # Use the parents project name if none was specified

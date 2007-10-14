@@ -11,7 +11,7 @@
 <%= [export_form_vars return_url] %>
     <table border=0>
      <tr> 
-	<td align=right>Filename</td>
+	<td>Filename</td>
 	<td> 
 	  <input type=file name=upload_file size=30>
 	<%= [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."] %>
@@ -24,6 +24,14 @@
 	</td>
       </tr>
       <tr> 
+	<td>Dynamic<br>Field<br>Transformation</td>
+	<td> 
+		<select name=transformation_key>
+		<option value=none selected>None</option>
+		<option value=reinisch_customers>reinisch Customers (Sales Rep & B-Org Customer Code)</option>
+	</td>
+      </tr>
+      <tr> 
 	<td></td>
 	<td> 
 	  <input type=submit value="Submit and Upload">
@@ -31,9 +39,6 @@
       </tr>
     </table>
 </form>
-
-
-
 
 <table border=0 cellspacing=0 cellpadding=1 width="70%">
 <tr><td>

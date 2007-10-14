@@ -562,7 +562,7 @@ if {$admin} {
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
 set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
 
-if {$admin} {
+if {$admin || $user_id == $current_user_id} {
     append admin_links "
           <li><a href=$change_pwd_url>[_ intranet-core.lt_Update_this_users_pas]</a>\n"
 }
