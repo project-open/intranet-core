@@ -275,6 +275,7 @@ namespace eval project {
 
 
 ad_proc -public im_next_project_nr { 
+    {-customer_id 0 }
     {-nr_digits}
     {-date_format}
 } {
@@ -290,19 +291,26 @@ ad_proc -public im_next_project_nr {
     of the current year (comparing the first 4 digits to the current year),
     adding "+1", and contatenating again with the current year.
 } {
+    # Set default values from parameters
     if {![info exists nr_digits]} {
 	set nr_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDigits" -default "4"]
     }
     if {![info exists date_format]} {
 	set date_format [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrDateFormat" -default "YYYY_"]
     }
-    if {"none" == $date_format} { set date_format "" }
 
-    set todate [db_string today "select to_char(now(), :date_format)"]
+    # Check for a custom project_nr generator
+    set project_nr_generator [parameter::get -package_id [im_package_core_id] -parameter "CustomProjectNrGenerator" -default ""]
+    if {"" != $project_nr_generator} {
+	return [eval $project_nr_generator -customer_id $customer_id -nr_digits $nr_digits -date_format $date_format]
+    }
     
     # ----------------------------------------------------
     # Calculate the next invoice Nr by finding out the last
     # one +1
+
+    set todate [db_string today "select to_char(now(), :date_format)"]
+    if {"none" == $date_format} { set date_format "" }
 
     # Adjust the position of the start of date and nr in the invoice_nr
     set date_format_len [string length $date_format]
