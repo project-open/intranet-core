@@ -28,6 +28,9 @@ ad_proc -public im_core_audit_sweeper  {
 } {
     Make a copy of all "active" projects
 } {
+    set audit_exists_p [util_memoize "db_table_exists im_projects_audit"]
+    if {!$audit_exists_p} { return }
+
     # Make sure that only one thread is sweeping at a time
     if {[nsv_incr intranet_core audit_sweep_semaphore] > 1} {
         nsv_incr intranet_core audit_sweep_semaphore -1
