@@ -48,7 +48,7 @@
    </div>
 
    <div class="fullwidth-list">
-      <%= [im_box_header test] %>
+      <%= [im_box_header "Companies"] %>
          <table>
             <%= $table_header_html %>
             <%= $table_body_html %>
