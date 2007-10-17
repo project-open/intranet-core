@@ -4,7 +4,7 @@
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td valign=top>
 
@@ -124,7 +124,7 @@ randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved
 -->
 
   </td>
-  <td valign=top>
+  <td valign=top width="350px">
     <%= [im_component_bay right] %>
   </td>
 </tr>

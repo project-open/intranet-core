@@ -14,7 +14,7 @@
     <version>7.2</version>
   </rdbms>
 
-  <fullquery name="im_portrait_component.get_cr_item">
+  <fullquery name="im_portrait_html.get_cr_item">
     <querytext>
 
         select

@@ -560,11 +560,6 @@ set filter_html "
 [export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
 
 <table border=0 cellpadding=0 cellspacing=1>
-  <tr> 
-    <td colspan='2' class=rowtitle align=center>
-      [_ intranet-core.Filter_Projects]
-    </td>
-  </tr>
 "
 
 if {[im_permission $current_user_id "view_projects_all"]} { 
@@ -625,7 +620,7 @@ append filter_html "</table>\n</form>\n"
 # Do we have to show administration links?
 
 ns_log Notice "/intranet/project/index: Before admin links"
-set admin_html ""
+set admin_html "<ul>"
 
 if {[im_permission $current_user_id "add_projects"]} {
     append admin_html "<li><a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>\n"
@@ -652,10 +647,8 @@ if {[im_permission $current_user_id "add_projects"]} {
 }
 
 if {[im_permission $current_user_id "view_finance"]} {
-    append admin_html "<li><a href=/intranet/projects/index?view_name=project_costs
-    >[_ intranet-core.Profit_and_Loss]</a>\n"
+    append admin_html "<li><a href=\"/intranet/projects/index?view_name=project_costs\">[_ intranet-core.Profit_and_Loss]</a>\n"
 }
-
 
 
 set parent_menu_sql "select menu_id from im_menus where label= 'projects_admin'"
@@ -677,6 +670,8 @@ db_foreach menu_select $menu_select_sql {
 
 
 append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
+
+append admin_html "</ul>"
 
 set project_filter_html $filter_html
 
@@ -770,7 +765,7 @@ if { $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
     set next_start_idx [expr $end_idx + 0]
-    set next_page_url "index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]"
+    set next_page_url "index?start_idx=$next_start_idx&amp;[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
 }
@@ -780,7 +775,7 @@ if { $start_idx > 0 } {
     # at least 1 previous row. add a previous page link
     set previous_start_idx [expr $start_idx - $how_many]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
-    set previous_page_url "index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]"
+    set previous_page_url "index?start_idx=$previous_start_idx&amp;[export_ns_set_vars url [list start_idx]]"
 } else {
     set previous_page_url ""
 }
@@ -795,7 +790,7 @@ ns_log Notice "/intranet/project/index: before table continuation"
 #
 if {$total_in_limited > 0 && $end_idx < $total_in_limited} {
     set next_start_idx [expr $end_idx + 0]
-    set next_page "<a href=index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]>Next Page</a>"
+    set next_page "<a href=index?start_idx=$next_start_idx&amp;[export_ns_set_vars url [list start_idx]]>Next Page</a>"
 } else {
     set next_page ""
 }
@@ -807,7 +802,7 @@ if {$total_in_limited > 0 && $end_idx < $total_in_limited} {
 if { $start_idx > 0 } {
     set previous_start_idx [expr $start_idx - $how_many]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
-    set previous_page "<a href=index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]>Previous Page</a>"
+    set previous_page "<a href=index?start_idx=$previous_start_idx&amp;[export_ns_set_vars url [list start_idx]]>Previous Page</a>"
 } else {
     set previous_page ""
 }
@@ -824,10 +819,7 @@ set table_continuation_html "
 # Navbar
 # ---------------------------------------------------------------
 
-set project_navbar_html "
-<br>
-[im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter project_status_id] $menu_select_label]
-"
+set project_navbar_html [im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter project_status_id] $menu_select_label]
 
 
 

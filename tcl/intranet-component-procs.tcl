@@ -77,24 +77,10 @@ ad_proc -public im_component_box {
     set return_url [im_url_with_query]
     set base_url "/intranet/components/component-action"
 
-    set plugin_url [export_vars -base $base_url {plugin_id return_url}]
-
-    set right_icons "
-        <nobr>
-	<div id=\"showPortletButn_$plugin_id\">
-	<a href=\"$plugin_url&action=left\">[im_gif arrow_comp_left]</a>
-	<a href=\"$plugin_url&action=up\">[im_gif arrow_comp_up]</a>
-	<a href=\"$plugin_url&action=down\">[im_gif arrow_comp_down]</a>
-	<a href=\"$plugin_url&action=right\">[im_gif arrow_comp_right]</a>
-	<a href=\"$plugin_url&action=close\">[im_gif comp_delete]</a>
-	</div>
-        </nobr>
-    "
+    set plugin_url [export_vars -quotehtml -base $base_url {plugin_id return_url}]
 
     if {0 == $plugin_id} { set right_icons ""}
 
-
-    # Only for debugging purposes!
     db_1row component_info "
 	select
 		c.plugin_id,
@@ -116,41 +102,25 @@ ad_proc -public im_component_box {
     "
 
     if {"f" == $minimized_p} {
-	set min_gif "<a href=\"$plugin_url&action=minimize\">[im_gif arrow_comp_minimize]</a>"
+	set min_gif "<a href=\"$plugin_url&amp;action=minimize\"><span class=\"icon_minimize\">minimize</span></a>"
     } else {
-	set min_gif "<a href=\"$plugin_url&action=normal\">[im_gif arrow_comp_maximize]</a>"
+	set min_gif "<a class=\"icon_maximize\" href=\"$plugin_url&amp;action=normal\"><span class=\"icon_maximize\">maximize</span></a>"
     }
 
-    set header "
-	<tr>
-	   <td class=tableheader width=25>$min_gif</td>
-	   <td class=tableheader align=left>$title</td>
-	   <td class=tableheader width=100 align=right><nobr>$right_icons</td>
-	</tr>
-    "
-
-    set body "
-	<tr>
-	  <td class=tablebody colspan=3><font size=-1>$body</font></td>
-	</tr>
-    "
     if {"t" == $minimized_p} { set body "" }
 
-    return "
-	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%' class='tablePortletElement'>
-        <thead>
-        <tr><td class=tableheader>
-          <table cellpadding=0 cellspacing=0 width='100%' onMouseOut=\"javascript:ShowLayer('showPortletButn_$plugin_id','hidden')\" onMouseOver=\"javascript:ShowLayer('showPortletButn_$plugin_id','visible')\">
-	  $header
-	  </table>
-        </td></tr>
-        </thead>
-        <tbody>
-	$body
-        </tbody>
-	</table><br>
-    "
+    set icons "
+       $min_gif
+       <div class=\"icon_seperator\"></div>
+       <a class=\"icon_left\" href=\"$plugin_url&amp;action=left\"><span class=\"icon_left\">left</span></a>
+       <a class=\"icon_up\" href=\"$plugin_url&amp;action=up\"><span class=\"icon_up\">up</span></a>
+       <a class=\"icon_down\" href=\"$plugin_url&amp;action=down\"><span class=\"icon_down\">down</span></a>
+       <a class=\"icon_right\" href=\"$plugin_url&amp;action=right\"><span class=\"icon_right\">right</span></a>
+       <div class=\"icon_seperator\"></div>
+       <a class=\"icon_close\" href=\"$plugin_url&amp;action=close\"><span class=\"icon_close\">close</span></a>"
 
+
+    return "[im_box_header $title $icons]$body[im_box_footer]"
 }
 
 

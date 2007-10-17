@@ -444,3 +444,13 @@ ns_set put $bind_vars project_id $project_id
 set parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]
 
 ns_log Notice "/project/view: end of view.tcl"
+
+set menu_label "project_summary"
+switch $view_name {
+    "files" { set menu_label "project_files" }
+    "finance" { set menu_label "project_finance" }
+    default { set menu_label "project_summary" }
+}
+set sub_navbar [im_sub_navbar $parent_menu_id $bind_vars "" "pagedesriptionbar" $menu_label] 
+
+
