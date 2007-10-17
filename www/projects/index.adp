@@ -27,7 +27,7 @@
    </div>
 
    <div class="fullwidth-list">
-      <%= [im_box_header "Projects"] %>
+      <%= [im_box_header $page_title] %>
          <table>
             <%= $table_header_html %>
             <%= $table_body_html %>
