@@ -3,6 +3,10 @@
   margin: 0px;
 }
 
+.nobr {
+   white-space: nowrap
+}
+
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
    font-size: 8pt;
