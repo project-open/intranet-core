@@ -976,7 +976,7 @@ ad_proc -public im_header {
       <div id=\"header_buttons\">
          <div id=\"header_logout_tab\">
             <div id=\"header_logout\">
-	       logout
+	       <a href='/register/logout'>[_ intranet-core.Log_Out]</a>
             </div>
          </div>
          <div id=\"header_settings_tab\">

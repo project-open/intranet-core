@@ -74,7 +74,8 @@ a {
    padding-right: 1em;
 }
 
-#header_settings A {
+#header_settings A,
+#header_logout A  {
   color: #ffffff;
   text-decoration:none;
 }
@@ -94,6 +95,7 @@ a {
    padding-right: 1em;
 
 }
+
 
 #header_logo {
   position: relative;
