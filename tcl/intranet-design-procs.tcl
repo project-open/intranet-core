@@ -689,7 +689,10 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
     return [db_list_of_lists subnavbar_menus $menu_select_sql]
 }
 
-ad_proc -public im_navbar { { main_navbar_label "" } } {
+ad_proc -public im_navbar { 
+    { -loginpage:boolean 0 }
+    { main_navbar_label "" } 
+} {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
@@ -774,7 +777,9 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 
         set name_key "intranet-core.[lang::util::suggest_key $name]"
         set name [lang::message::lookup "" $name_key $name]
-        append navbar [im_navbar_tab $url $name $selected]
+	if {$ctr == 0 || !$loginpage_p} {
+	    append navbar [im_navbar_tab $url $name $selected]
+	}
 	incr ctr
     }
 
@@ -786,6 +791,22 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
     set maintenance_message [string trim $maintenance_message]
 
     set user_id [ad_get_user_id]
+
+    set main_users_and_search "
+          <div id=\"main_users_and_search\">
+            <div id=\"main_users_online\">
+              [im_header_users_online_str]
+            </div>
+            <div id=\"main_search\">
+              [im_header_search_form]
+            </div>
+          </div>
+    "
+
+    if {$loginpage_p} {
+	set user_id 0
+	set main_users_and_search ""
+    }
 
     return "
 
@@ -818,14 +839,7 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
           </p>
           </div>
      
-          <div id=\"main_users_and_search\">
-            <div id=\"main_users_online\">
-              [im_header_users_online_str]
-            </div>
-            <div id=\"main_search\">
-              [im_header_search_form]
-            </div>
-          </div>
+          $main_users_and_search
           <div id=\"main_header_deco\"></div>
        </div>  
 
@@ -834,7 +848,11 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 }
 
 
-ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
+ad_proc -public im_header { 
+    { -loginpage:boolean 0 }
+    { page_title "" } 
+    { extra_stuff_for_document_head "" } 
+} {
     The default header for ProjectOpen
 } {
     set user_id [ad_get_user_id]
@@ -895,12 +913,6 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> |
     "
 
-    # Disable who's online for "anonymous visitor"
-    if {0 == $user_id} {
-	set users_online_str ""
-	set logout_pwchange_str ""
-    }
-
     # --------------------------------------------------------
     # Header Plugins
     #
@@ -950,6 +962,34 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     set logo [im_logo]
 #    set logo "<span class=\"bracket\">\]</span>PROJECT-OPEN<span class=\"bracket\">\[</span>"
 
+    # Disable who's online for "anonymous visitor"
+    if {0 == $user_id} {
+	set users_online_str ""
+	set logout_pwchange_str ""
+    }
+
+    if {$loginpage_p} {
+       set header_buttons ""      
+    } else {
+       set header_buttons "
+      <div id=\"header_buttons\">
+         <div id=\"header_logout_tab\">
+            <div id=\"header_logout\">
+	       logout
+            </div>
+         </div>
+         <div id=\"header_settings_tab\">
+            <div id=\"header_settings\">
+               <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
+               $logout_pwchange_str
+               <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
+	       <a href=\"$add_comp_url\">$add_stuff_text</a>
+            </div>
+         </div>
+      </div>
+       "
+    }
+
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
 <div id=\"monitor_frame\">
@@ -966,21 +1006,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
          $plugin_right_html
       </div>
 
-      <div id=\"header_buttons\">
-         <div id=\"header_logout_tab\">
-            <div id=\"header_logout\">
-	       logout
-            </div>
-         </div>
-         <div id=\"header_settings_tab\">
-            <div id=\"header_settings\">
-               <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
-               $logout_pwchange_str
-               <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
-	       <a href=\"$add_comp_url\">$add_stuff_text</a>
-            </div>
-         </div>
-      </div>
+      $header_buttons      
    </div>
 "
 }

@@ -77,6 +77,8 @@ jQuery().ready(function(){
     );
     cornersObj.applyCornersToAll();
 
+    if (document.getElementById("header_logout_tab")) {
+
     settings = {
       tl: false,
       tr: false,
@@ -91,6 +93,7 @@ jQuery().ready(function(){
        document.getElementById("header_settings_tab")
     );
     cornersObj.applyCornersToAll();
+    }
 
    settings = {
       tl: { radius: 10 },
