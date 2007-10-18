@@ -1,5 +1,39 @@
 jQuery.noConflict();
+
 jQuery().ready(function(){
+    /* sliding filters */
+
+    if (getCookie("filterState")=="hidden") {
+       jQuery(".filter").css("right","-260px");
+       jQuery(".fullwidth-list").css("marginRight","0px");
+    }
+
+    jQuery(".filter").wrap('<div class="filter-wrap"></div>');
+  
+    jQuery(".filter").click(function(){  
+	if (getCookie("filterState")=="hidden") {
+	   jQuery(".fullwidth-list").animate({ 
+	      marginRight: "260px"
+	      }, 1000 );
+           jQuery(".filter").animate({ 
+	      right: "0px",
+	      }, 1000 );
+
+	   setCookie("filterState","",20);
+        } else {
+
+           jQuery(".filter").animate({ 
+	      right: "-260px",
+     	   }, 1000 );
+           jQuery(".fullwidth-list").animate({ 
+	      marginRight: "0px"
+	   }, 1000 );
+	   setCookie("filterState","hidden",20);
+	}
+    });
+
+
+    /* rounded corners **********************************/
 
     settings = {
       tl: { radius: 10 },
@@ -86,35 +120,9 @@ jQuery().ready(function(){
     );
     cornersObj.applyCornersToAll();
 
-    roundFilter();
- 
+  roundFilter();
+
     // -------------------------------------------------------
-
-    /* sliding filters are disabled */
-
-    jQuery(".filter-block").toggle(function(){
-	jQuery(".filter").css("overflow","hidden");
-
-        jQuery(".filter").animate({ 
-	   width: "10px"
-	}, 1000 );
-        jQuery(".fullwidth-list").animate({ 
-	   marginRight: "20px"
-	}, 1000 );
-    },function(){
-	jQuery(".filter").css("overflow","none");
-
-        jQuery(".fullwidth-list").animate({ 
-	   marginRight: "260px"
-	}, 1000 );
-        jQuery(".filter").animate({ 
-	   width: "250px"
-	}, 1000 );
-	roundFilter();
-    });
-
-    
-
 
 });
 
@@ -136,7 +144,29 @@ function roundFilter(){
 
 };
 
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=")
+  if (c_start!=-1)
+    { 
+    c_start=c_start + c_name.length+1 
+    c_end=document.cookie.indexOf(";",c_start)
+    if (c_end==-1) c_end=document.cookie.length
+    return unescape(document.cookie.substring(c_start,c_end))
+    } 
+  }
+return ""
+}
 
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()
+exdate.setDate(exdate.getDate()+expiredays)
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+}
 
 
 

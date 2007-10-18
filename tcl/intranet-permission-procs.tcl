@@ -142,6 +142,18 @@ ad_proc im_permission_helper {user_id privilege} {
 }
 
 
+ad_proc -public im_object_permission {
+    -object_id
+    -user_id 
+    {-privilege "read"}
+    {-max_age ""}
+} {
+    Returns 1 (true) or 0 (false), depending whether the user has the permission on the specified object.
+} {
+    set read_p [util_memoize "db_string operm {select im_object_permission_p($object_id, $user_id, '$privilege')}"]
+    return [string equal $read_p "t"]
+}
+
 
 ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
     Check wheter a user should be able to see a specific field of another user:
