@@ -90,30 +90,30 @@ jQuery().ready(function(){
  
     // -------------------------------------------------------
 
-    /* sliding filters are disabled 
+    /* sliding filters are disabled */
 
     jQuery(".filter-block").toggle(function(){
 	jQuery(".filter").css("overflow","hidden");
 
         jQuery(".filter").animate({ 
 	   width: "10px"
-	}, 2000 );
+	}, 1000 );
         jQuery(".fullwidth-list").animate({ 
 	   marginRight: "20px"
-	}, 2000 );
+	}, 1000 );
     },function(){
 	jQuery(".filter").css("overflow","none");
 
         jQuery(".fullwidth-list").animate({ 
 	   marginRight: "260px"
-	}, 2000 );
+	}, 1000 );
         jQuery(".filter").animate({ 
 	   width: "250px"
-	}, 2000 );
+	}, 1000 );
 	roundFilter();
     });
 
-    */
+    
 
 
 });
