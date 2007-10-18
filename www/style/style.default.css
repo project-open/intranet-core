@@ -350,6 +350,7 @@ a {
   padding-left: 30px;
   padding-right: 30px;
   min-height: 500px;
+  overflow: hidden;
 }
 
 .component {
@@ -395,6 +396,7 @@ a {
   width: 15px;
   height: 15px;
   background: url('/intranet/images/component-maximize.gif') no-repeat;
+  background-color: #999583;
   text-indent: -5000px;
 }
 .component_icons .icon_minimize {
@@ -502,6 +504,7 @@ a {
    right: 0px;
    top: 0px;
    width: 250px;
+
    background-color: #CDE9A7;
    margin: 15px 5px 10px;
 }

@@ -8,7 +8,6 @@ jQuery().ready(function(){
        jQuery(".fullwidth-list").css("marginRight","0px");
     }
 
-    jQuery(".filter").wrap('<div class="filter-wrap"></div>');
   
     jQuery(".filter").click(function(){  
 	if (getCookie("filterState")=="hidden") {
@@ -16,14 +15,14 @@ jQuery().ready(function(){
 	      marginRight: "260px"
 	      }, 1000 );
            jQuery(".filter").animate({ 
-	      right: "0px",
+	      right: "0px"
 	      }, 1000 );
 
-	   setCookie("filterState","",20);
+	   setCookie("filterState","",20); 
         } else {
 
            jQuery(".filter").animate({ 
-	      right: "-260px",
+	      right: "-260px"
      	   }, 1000 );
            jQuery(".fullwidth-list").animate({ 
 	      marginRight: "0px"

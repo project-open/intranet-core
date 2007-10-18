@@ -857,6 +857,7 @@ ad_proc -public im_header {
 } {
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
+    set return_url [ns_conn url]
 
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
