@@ -509,6 +509,12 @@ a {
    margin: 15px 5px 10px;
 }
 
+.filter-button {
+   width: 15px;
+   height: 15px;
+   cursor: pointer;
+}
+
 .filter ul {
    padding-left: 1em;
 }

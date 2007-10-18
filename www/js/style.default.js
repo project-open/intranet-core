@@ -3,13 +3,22 @@ jQuery.noConflict();
 jQuery().ready(function(){
     /* sliding filters */
 
+    jQuery(".filter > .filter-block:first").prepend('<div class="filter-button"></div>');
+
     if (getCookie("filterState")=="hidden") {
        jQuery(".filter").css("right","-260px");
        jQuery(".fullwidth-list").css("marginRight","0px");
+       jQuery(".filter-button").css(
+          "background","url('/intranet/images/component-left.gif') no-repeat"
+       );
+    } else {
+       jQuery(".filter-button").css(
+          "background","url('/intranet/images/component-right.gif') no-repeat"
+       );
     }
 
   
-    jQuery(".filter").click(function(){  
+    jQuery(".filter-button").click(function(){  
 	if (getCookie("filterState")=="hidden") {
 	   jQuery(".fullwidth-list").animate({ 
 	      marginRight: "260px"
@@ -17,6 +26,10 @@ jQuery().ready(function(){
            jQuery(".filter").animate({ 
 	      right: "0px"
 	      }, 1000 );
+
+           jQuery(".filter-button").css(
+             "background","url('/intranet/images/component-right.gif') no-repeat"
+           );
 
 	   setCookie("filterState","",20); 
         } else {
@@ -27,6 +40,11 @@ jQuery().ready(function(){
            jQuery(".fullwidth-list").animate({ 
 	      marginRight: "0px"
 	   }, 1000 );
+
+           jQuery(".filter-button").css(
+             "background","url('/intranet/images/component-left.gif') no-repeat"
+           );
+
 	   setCookie("filterState","hidden",20);
 	}
     });
