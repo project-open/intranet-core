@@ -956,6 +956,8 @@ ad_proc -public im_header {
     set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
     set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
 
+    set page_url [im_component_page_url]
+
     set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
     set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
@@ -976,7 +978,7 @@ ad_proc -public im_header {
       <div id=\"header_buttons\">
          <div id=\"header_logout_tab\">
             <div id=\"header_logout\">
-	       <a href='/register/logout'>[_ intranet-core.Log_Out]</a>
+	       <a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>
             </div>
          </div>
          <div id=\"header_settings_tab\">
