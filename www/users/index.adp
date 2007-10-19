@@ -31,7 +31,9 @@
          <div class="filter-title">
             #intranet-core.Admin_Users#
          </div>
+         <ul>
          @admin_html;noquote@
+         </ul>
       </div>
 </if>
 

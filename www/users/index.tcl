@@ -177,12 +177,12 @@ set end_idx [expr $start_idx + $how_many - 1]
 # ----------------------------------------------------------
 # Do we have to show administration links?
 
-set admin_html "<ul>"
+set admin_html ""
 if {[im_permission $user_id "add_users"]} {
     append admin_html "
-	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
-        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
-	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
+	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
+        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a></li>
+	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a></li>
     "
 }
 
@@ -204,8 +204,6 @@ db_foreach menu_select $menu_select_sql {
     append admin_html "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
 }
 
-
-append admin_html "</ul>"
 
 # ---------------------------------------------------------------
 # 3. Define Table Columns
