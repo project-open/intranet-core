@@ -28,7 +28,7 @@ jQuery().ready(function(){
 	      }, 1000 );
 
            jQuery(".filter-button").css(
-             "background","url('/intranet/images/component-right.gif') no-repeat"
+             "background","url('/intranet/images/filter-right.gif') no-repeat"
            );
 
 	   setCookie("filterState","",20); 
@@ -42,7 +42,7 @@ jQuery().ready(function(){
 	   }, 1000 );
 
            jQuery(".filter-button").css(
-             "background","url('/intranet/images/component-left.gif') no-repeat"
+             "background","url('/intranet/images/filter-left.gif') no-repeat"
            );
 
 	   setCookie("filterState","hidden",20);
