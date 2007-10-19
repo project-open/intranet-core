@@ -9,11 +9,11 @@ jQuery().ready(function(){
        jQuery(".filter").css("right","-260px");
        jQuery(".fullwidth-list").css("marginRight","0px");
        jQuery(".filter-button").css(
-          "background","url('/intranet/images/component-left.gif') no-repeat"
+          "background","url('/intranet/images/filter-left.gif') no-repeat"
        );
     } else {
        jQuery(".filter-button").css(
-          "background","url('/intranet/images/component-right.gif') no-repeat"
+          "background","url('/intranet/images/filter-right.gif') no-repeat"
        );
     }
 
