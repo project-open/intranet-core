@@ -298,7 +298,5 @@ if {$ctr > 0} {
 "
 }
 
-
-
-append page_contents "\n</ul>\n"
+append page_contents "</table>\n"
 

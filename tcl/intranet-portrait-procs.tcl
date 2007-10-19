@@ -297,9 +297,10 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     }
      
     # ------------ Frame and admin  --------
-    set portrait_admin "
+    set portrait_admin "<ul>
 <li><a href=\"/intranet/users/portrait/upload?$export_vars\">[_ intranet-core.Upload_portrait]</a></li>
-<li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>\n"
+<li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>
+</ul>\n"
 
     if {!$admin && !$write} { set portrait_admin "" }
 

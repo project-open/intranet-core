@@ -512,9 +512,13 @@ a {
 }
 
 .filter-button {
+   position: absolute;
+   top: -5px;
+   left: 5px;
    width: 15px;
    height: 15px;
    cursor: pointer;
+   z-index: 101;
 }
 
 .filter ul {
@@ -776,7 +780,6 @@ html>body #subnavbar { bottom: 0px }
 }
 
 .list-filter {
-  font-size: 70%;
   font-family: tahoma,verdana,arial,helvetica;
 }
 tr.list-filter-selected {
@@ -786,12 +789,10 @@ span.list-filter-selected {
   color: #ffffff;
 }
 .list-filter-header {
-  font-size: 70%;
   font-family: tahoma,verdana,arial,helvetica;
   font-weight: bold;
 }
 .list-filter-section {
-  font-size: 70%;
   font-family: tahoma,verdana,arial,helvetica;
   font-weight: bold;
   background-color: #bbbbff;

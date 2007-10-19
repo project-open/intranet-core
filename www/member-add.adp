@@ -2,6 +2,8 @@
 <property name="title">#intranet-core.Add_new_member#</property>
 <property name="main_navbar_label">user</property>
 
+<%= [im_box_header [_ intranet-core.Add_new_member]] %>
+
 <table cellpadding=0 cellspacing=0 border=0>
 <tr>
   <td valign=top>
@@ -23,4 +25,5 @@
 </table>
 
 
+<%= [im_box_footer] %>
 

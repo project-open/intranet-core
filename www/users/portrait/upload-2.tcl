@@ -122,6 +122,8 @@ if { [catch {
 
 
 set page_content "
+<div id=\"slave\">
+<div id=\"slave_content\">
 <H2>Upload Successful</H2>
 
 You have successfully uploaded $n_bytes bytes of '$client_filename'.<br>
@@ -129,7 +131,8 @@ You can now return to the project page.
 <P>
 
 <A href=\"$return_url\">Return to Previous Page</a>
-
+</div>
+</div>
 "
 
 db_release_unused_handles
