@@ -106,6 +106,7 @@ a {
   font-weight: bold;
   color: #ffffff;
   z-index: 101;
+  width: 50%;
 }
 
 #header_plugin_left {
