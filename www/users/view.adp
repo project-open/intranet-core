@@ -24,6 +24,8 @@
 
 	</table>
 
+    <%= $user_basic_skin_html %>
+
     <%= $user_l10n_html %>
 
     <%= [im_box_footer] %>

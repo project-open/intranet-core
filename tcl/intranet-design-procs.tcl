@@ -1009,7 +1009,11 @@ ad_proc -public im_header {
          $plugin_right_html
       </div>
 
-      $header_buttons      
+      $header_buttons   
+
+      <div id=\"header_skin_select\">
+         [_ intranet-core.Skin]: [im_skin_select_html $user_id [im_url_with_query]]
+      </div>   
    </div>
 "
 }
@@ -1139,7 +1143,16 @@ ad_proc -public im_footer {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
+    set user_id [ad_get_user_id]
+    set skin_name [im_skin_name [db_string person_skin "select skin from persons where person_id=:user_id" -default 0]]
+
+    if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
+	set skin_js $skin_name
+    } else {
+	set skin_js "default"
+    }
+
+    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_name.css"]
     set calendar_css ""
     if {[llength [info procs im_package_calendar_id]]} {
 	set calendar_css "<link rel=StyleSheet type=\"text/css\" href=\"/calendar/resources/calendar.css\">"
@@ -1153,7 +1166,7 @@ $calendar_css
 
 <script src=\"/intranet/js/rounded_corners.inc.js\" language=\"javascript\" type=\"text/javascript\"></script>
 <script src=\"/intranet/js/jquery-1.2.1.min.js\" language=\"javascript\" type=\"text/javascript\"></script>
-<script src=\"/intranet/js/style.default.js\" language=\"javascript\" type=\"text/javascript\"></script>
+<script src=\"/intranet/js/style.$skin_js.js\" language=\"javascript\" type=\"text/javascript\"></script>
 "
 
 # <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
@@ -1166,9 +1179,20 @@ $calendar_css
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
-    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/project_open.38.10frame.gif"]
+    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" ""]
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
     
+    if {$system_logo eq ""} {
+	set user_id [ad_get_user_id]
+	set skin_name [im_skin_name [db_string person_skin "select skin from persons where person_id=:user_id" -default 0]]
+	
+	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
+	    set system_logo "/intranet/images/logo.$skin_name.gif"
+	} else {
+	    set system_logo "/intranet/images/logo.default.gif"
+	}
+    }
+
     return "\n<a href=\"$system_logo_link\"><img src=\"$system_logo\" alt=\"intranet logo\"></a>\n"
 }
 
@@ -1541,3 +1565,61 @@ ad_proc -public im_box_footer {} {
         </div>"
 }
 
+ad_proc -public im_skin_list {} {
+} {
+
+    #     id name         displayname
+    return {
+	{ 0  "default"    "default" }
+	{ 1  "opus5"      "opus5" }
+    }
+}
+
+ad_proc -public im_skin_name { skin_id } {
+} {
+    foreach skin [im_skin_list] {
+	unlist $skin id name title
+
+	if {$id == $skin_id} {
+	    return $name
+	}
+    }
+
+    return "default"
+}
+
+ad_proc -public im_skin_select_html { user_id return_url } {
+} {
+    if {!$user_id} {
+	return ""
+    }
+
+    if {[ad_parameter -package_id [im_package_core_id] SystemCSS] ne ""} {
+	return ""
+    }
+
+    set current_skin [db_string person "select skin from persons where person_id=:user_id" -default 0]
+
+    set skin_select_html "
+       <form method=\"GET\" action=\"/intranet/users/select-skin\">
+       [export_form_vars return_url user_id]
+       <select name=\"skin\">
+    "
+    foreach skin [im_skin_list] {
+	unlist $skin id name fullname
+
+	set selected ""
+	if {$id == $current_skin} {
+	    set selected "selected=selected"
+	}
+    
+	append skin_select_html "<option value=$id $selected>$fullname</option>"
+    }
+    append skin_select_html "
+       </select>
+       <input type=submit value=\"[_ intranet-core.Change]\">
+       </form>
+    "
+    
+    return $skin_select_html
+}

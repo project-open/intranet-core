@@ -202,6 +202,31 @@ if {$write} {
 
 }
 
+# ---------------------------------------------------------------
+# Skin Management
+# ---------------------------------------------------------------
+
+set skin_select_html [im_skin_select_html $user_id $return_url]
+
+if {$skin_select_html ne ""} {
+    set user_basic_skin_html "
+<table cellpadding=1 cellspacing=1 border=0>
+  <tr> 
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Skin]</td>
+  </tr>
+  <tr>
+    <td>[_ intranet-core.Skin]</td>
+    <td>
+          $skin_select_html 
+    </td>
+  </tr>
+  <tr><td colspan=2></td></tr>
+</table>
+"
+  } else {
+     set user_basic_skin_html ""
+  }
+
 # ------------------------------------------------------
 # Show extension fields
 # ------------------------------------------------------
