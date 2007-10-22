@@ -6,8 +6,8 @@ jQuery().ready(function(){
     jQuery(".filter > .filter-block:first").prepend('<div class="filter-button"></div>');
 
     if (getCookie("filterState")=="hidden") {
-       jQuery(".filter").css("right","-260px");
-       jQuery(".fullwidth-list").css("marginRight","0px");
+       jQuery(".filter").css("right","-240px");
+       jQuery(".fullwidth-list").css("marginRight","20px");
        jQuery(".filter-button").css(
           "background","url('/intranet/images/navbar_default/arrow_comp_left.png') no-repeat"
        );
@@ -31,14 +31,14 @@ jQuery().ready(function(){
              "background","url('/intranet/images/navbar_default/arrow_comp_right.png') no-repeat"
            );
 
-	   setCookie("filterState","",20); 
+	   setCookie("filterState","",0); 
         } else {
 
            jQuery(".filter").animate({ 
-	      right: "-260px"
+	      right: "-240px"
      	   }, 1000 );
            jQuery(".fullwidth-list").animate({ 
-	      marginRight: "0px"
+	      marginRight: "20px"
 	   }, 1000 );
 
            jQuery(".filter-button").css(

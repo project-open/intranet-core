@@ -148,7 +148,7 @@ a {
 
 #main_header {
    position: relative;
-   height: 80px;
+   height: 30px;
 }
 
 #main_header_deco {
@@ -156,6 +156,7 @@ a {
    top: 70px;
    width:100%;
    border-top: 1px solid #000000;
+   display: none;
 }
 
 #main_portrait_and_username {
@@ -163,6 +164,7 @@ a {
    top: 10px;
    left: 30px;
    z-index: 1;
+   display: none;
 }
 
 #main_portrait {
@@ -183,7 +185,7 @@ a {
 
 #main_users_and_search {
    position: absolute;
-   top: 30px;
+   top: 5px;
    right: 30px;
 }
 
@@ -377,8 +379,8 @@ a {
 
 #slave_content {
   position: relative;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
   min-height: 500px;
   overflow: hidden;
 }
