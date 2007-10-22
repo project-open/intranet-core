@@ -9,11 +9,11 @@ jQuery().ready(function(){
        jQuery(".filter").css("right","-260px");
        jQuery(".fullwidth-list").css("marginRight","0px");
        jQuery(".filter-button").css(
-          "background","url('/intranet/images/filter-left.gif') no-repeat"
+          "background","url('/intranet/images/navbar_default/arrow_comp_left.png') no-repeat"
        );
     } else {
        jQuery(".filter-button").css(
-          "background","url('/intranet/images/filter-right.gif') no-repeat"
+          "background","url('/intranet/images/navbar_default/arrow_comp_right.png') no-repeat"
        );
     }
 
@@ -28,7 +28,7 @@ jQuery().ready(function(){
 	      }, 1000 );
 
            jQuery(".filter-button").css(
-             "background","url('/intranet/images/filter-right.gif') no-repeat"
+             "background","url('/intranet/images/navbar_default/arrow_comp_right.png') no-repeat"
            );
 
 	   setCookie("filterState","",20); 
@@ -42,11 +42,24 @@ jQuery().ready(function(){
 	   }, 1000 );
 
            jQuery(".filter-button").css(
-             "background","url('/intranet/images/filter-left.gif') no-repeat"
+             "background","url('/intranet/images/navbar_default/arrow_comp_left.png') no-repeat"
            );
 
 	   setCookie("filterState","hidden",20);
 	}
+    });
+
+    
+    jQuery("#header_skin_select > form > select").change(function(){
+       jQuery("#header_skin_select > form").submit();
+    });
+
+    jQuery(".component_icons").css("opacity","0.1");
+
+    jQuery(".component_icons").hover(function(){
+       jQuery(this).fadeTo("normal",1);
+    },function(){
+       jQuery(this).fadeTo("normal",0.1);
     });
 
 
@@ -64,7 +77,7 @@ jQuery().ready(function(){
     var cornersObj = new curvyCorners(settings, 
        document.getElementById("header_class")
     );
-    cornersObj.applyCornersToAll();
+
 
     settings = {
       tl: { radius: 5 },
@@ -77,20 +90,6 @@ jQuery().ready(function(){
 
     var cornersObj = new curvyCorners(settings, 
        "navbar_selected"
-    );
-    cornersObj.applyCornersToAll();
-
-    settings = {
-      tl: false,
-      tr: false,
-      bl: { radius: 10 },
-      br: { radius: 10 },  
-      antiAlias: true,
-      autoPad: false
-    }
-
-    var cornersObj = new curvyCorners(settings, 
-       document.getElementById("slave")
     );
     cornersObj.applyCornersToAll();
 
@@ -112,41 +111,7 @@ jQuery().ready(function(){
     cornersObj.applyCornersToAll();
     }
 
-   settings = {
-      tl: { radius: 10 },
-      tr: { radius: 10 },
-      bl: false,
-      br: false,
-      antiAlias: true,
-      autoPad: false
-    };
 
-    var cornersObj = new curvyCorners(settings, 
-       "component_header_rounded"
-    );
-    cornersObj.applyCornersToAll();
-
-   settings = {
-      tl: false,
-      tr: false, 
-      bl: { radius: 10 },
-      br: { radius: 10 },
-      antiAlias: true,
-      autoPad: false
-    };
-
-    var cornersObj = new curvyCorners(settings, 
-       "component_footer"
-    );
-    cornersObj.applyCornersToAll();
-
-  roundFilter();
-
-    // -------------------------------------------------------
-
-});
-
-function roundFilter(){
   settings = {
       tl: { radius: 10 },
       tr: { radius: 10 }, 
@@ -159,10 +124,9 @@ function roundFilter(){
     var cornersObj = new curvyCorners(settings, 
        "filter"
     );
-    cornersObj.applyCornersToAll();
+/*    cornersObj.applyCornersToAll(); */
 
-
-};
+});
 
 function getCookie(c_name)
 {
