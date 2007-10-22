@@ -489,8 +489,7 @@ a {
 
 .component_body {
   z-index: 100;
-  border-left: solid 1px #000000;
-  border-right: solid 1px #000000;
+  border: solid 1px #000000;
   padding-bottom: 10px;
   overflow: auto;
 }
@@ -506,6 +505,7 @@ a {
   border: solid 1px #000000;
   height: 10px;
   color: #ffffff;
+  display: none;
 }
 .component_footer_hack {
   position: relative;
@@ -514,6 +514,7 @@ a {
   height: 3px;
   top: -3px;
   width: 100%;
+  display: none;
 }
 
 .rowtitle,
