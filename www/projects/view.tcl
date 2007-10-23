@@ -29,6 +29,7 @@ ad_page_contract {
     { show_all_comments 0}
     { forum_order_by "" }
     { view_name "standard"}
+    { plugin_id:integer 0 }
     subproject_status_id:optional
 }
 

@@ -381,6 +381,7 @@ a {
   position: relative;
   padding-left: 5px;
   padding-right: 5px;
+  padding-top: 5px;
   min-height: 500px;
   overflow: hidden;
 }
@@ -430,7 +431,6 @@ a {
   width: 15px;
   height: 15px;
   background: url('/intranet/images/navbar_default/arrow_comp_maximize.png') no-repeat;
-  background-color: #999583;
   text-indent: -5000px;
 }
 .component_icons .icon_minimize {
@@ -489,7 +489,9 @@ a {
 
 .component_body {
   z-index: 100;
-  border: solid 1px #000000;
+  border-left: solid 1px #000000;
+  border-right: solid 1px #000000;
+  border-bottom: solid 1px #000000;
   padding-bottom: 10px;
   overflow: auto;
 }
@@ -515,6 +517,33 @@ a {
   top: -3px;
   width: 100%;
   display: none;
+}
+
+.component-parking {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: #336699;
+  color: #ffffff;
+  z-index: 200;
+  width: 300px;
+}
+
+.component-parking ul {
+  padding-left: 2em;
+  display: none;
+}
+
+.component-parking a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.component-parking-handle {
+  cursor: pointer;
+  font-size: 50%;
+  overflow: hidden;
 }
 
 .rowtitle,

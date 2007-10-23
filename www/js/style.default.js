@@ -62,6 +62,9 @@ jQuery().ready(function(){
        jQuery(this).fadeTo("normal",0.1);
     });
 
+    jQuery(".component-parking div").click(function(){
+       jQuery(".component-parking ul").slideToggle();
+    });
 
     /* rounded corners **********************************/
 

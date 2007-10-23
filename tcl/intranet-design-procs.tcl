@@ -564,7 +564,13 @@ ad_proc -public im_navbar_tab {
     return "<li class=\"unselected\"><div class=\"navbar_unselected\"><a href=\"$url\">$name</a></div></li>\n"
 }
 
-ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} {select_label ""} } {
+ad_proc -public im_sub_navbar { 
+    parent_menu_id 
+    {bind_vars ""} 
+    {title ""} 
+    {title_class "pagedesriptionbar"} 
+    {select_label ""} 
+} {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
     @param parent_menu_id id of the parent menu in im_menus
@@ -581,8 +587,6 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set navbar ""
     set found_selected 0
     set selected 0
-    set ctr 0
-
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
@@ -634,7 +638,6 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
         set name [lang::message::lookup "" $name_key $name]
 
         append navbar [im_navbar_tab $url $name $selected]
-        incr ctr
     }
 
     return "
@@ -1144,7 +1147,7 @@ ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
     set user_id [ad_get_user_id]
-    set skin_name [im_skin_name [db_string person_skin "select skin from persons where person_id=:user_id" -default 0]]
+    set skin_name [im_skin_name [db_string person_skin "select skin from users where user_id=:user_id" -default 0]]
 
     if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
 	set skin_js $skin_name
@@ -1184,7 +1187,7 @@ ad_proc -public im_logo {} {
     
     if {$system_logo eq ""} {
 	set user_id [ad_get_user_id]
-	set skin_name [im_skin_name [db_string person_skin "select skin from persons where person_id=:user_id" -default 0]]
+	set skin_name [im_skin_name [db_string person_skin "select skin from users where user_id=:user_id" -default 0]]
 	
 	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
 	    set system_logo "/intranet/images/logo.$skin_name.gif"
@@ -1598,7 +1601,7 @@ ad_proc -public im_skin_select_html { user_id return_url } {
 	return ""
     }
 
-    set current_skin [db_string person "select skin from persons where person_id=:user_id" -default 0]
+    set current_skin [db_string person "select skin from users where user_id=:user_id" -default 0]
 
     set skin_select_html "
        <form method=\"GET\" action=\"/intranet/users/select-skin\">
@@ -1623,3 +1626,6 @@ ad_proc -public im_skin_select_html { user_id return_url } {
     
     return $skin_select_html
 }
+
+
+

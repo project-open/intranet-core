@@ -224,8 +224,9 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     return $html
 }
 
-
-ad_proc -public im_component_insert { plugin_name } {
+ad_proc -public im_component_insert { 
+    plugin_name 
+} {
     Insert a particular component.
     Returns "" if the component doesn't exist.
 } {
@@ -272,3 +273,91 @@ ad_proc -public im_component_insert { plugin_name } {
     }
     return $html
 }
+
+
+ad_proc -public im_component_page { 
+    plugin_id
+    return_url
+} {
+    Insert a particular component.
+    Returns "" if the component doesn't exist.
+} {
+
+    # ToDo: Remove with version 4.0 or later
+    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
+    # We need to be able to read the old DB model, otherwise the
+    # users won't be able to upgrade...
+    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+	select	count(*)
+	from	user_tab_columns
+	where	lower(table_name) = 'im_component_plugins'
+		and lower(column_name) = 'enabled_p'
+    \""]
+    if {$enabled_present_p} { 
+	set enabled_sql "and c.enabled_p = 't'"
+    } else {
+	set enabled_sql ""
+    }
+
+    db_1row get_plugin "
+	select
+		c.*
+	from
+		im_component_plugins c
+	where
+		plugin_id=:plugin_id
+		$enabled_sql
+    "
+
+    set html ""
+    if { [catch {
+	set icon_url [export_vars -quotehtml -base "/intranet/components/activate-component" {plugin_id return_url}]
+	set icon "<a class=\"icon_maximize\" href=\"$icon_url\"><span class=\"icon_maximize\">maximize</span></a>"
+	
+	# "uplevel" evaluates the 2nd argument!!
+	set html "[im_box_header $plugin_name $icon][uplevel 1 $component_tcl][im_box_footer]"
+    } err_msg] } {
+	ad_return_complaint 1 "<li>
+	[_ intranet-core.lt_Error_evaluating_comp]:<br>
+	<pre>\n$err_msg\n</pre><br>
+	[_ intranet-core.lt_Please_contact_your_s]:<br>"
+    }
+
+    return $html
+}
+
+ad_proc -public im_component_parking { } {
+} {
+
+    set output ""
+
+    set current_url [im_url_with_query]
+    set return_url [im_url_with_query]
+
+    db_foreach navbar_components "
+        SELECT 
+               p.plugin_id AS plugin_id,
+               p.plugin_name AS plugin_name
+            FROM 
+               im_component_plugins p,im_component_plugin_user_map u
+            WHERE
+               p.plugin_id=u.plugin_id 
+               AND page_url='/intranet/projects/view'  
+               AND u.location='none' 
+            ORDER by plugin_name" {
+
+		set url [export_vars -quotehtml -base $current_url {plugin_id {view_name "component"}}]
+
+		append output "<li><a href=\"$url\">$plugin_name</a></li>"
+	    }
+    
+    if {$output != ""} {
+	set output "
+           <div class=\"component-parking\">
+              <ul>$output</ul>
+              <div class=\"component-parking-handle\">handle</div>
+           </div>"
+    }
+    return $output
+}
+

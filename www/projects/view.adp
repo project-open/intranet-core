@@ -3,8 +3,6 @@
 <property name="main_navbar_label">projects</property>
 <property name="sub_navbar">@sub_navbar;noquote@</property>
 
-<img src="/intranet/images/cleardot.gif" width=2 height=2>
-
 <!-- 
   There are two "views" on this page: "Summary" and "Files".
   More views may be added by extension modules, but they are
@@ -24,6 +22,8 @@
 	  </td>
 	  <td width=2>&nbsp;</td>
 	  <td valign=top>
+
+	  <%= [im_component_parking] %>
 
 	  <%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
   	     
@@ -121,6 +121,11 @@
 
 	<%= [im_component_insert "Project Translation Error Component"] %>
 	<%= [im_component_insert "Project Translation Task Status"] %>
+
+<% } elseif {[string equal "component" $view_name]} { %>
+
+   <%= [im_component_parking] %>
+   <%= [im_component_page $plugin_id "/intranet/projects/view?project_id=$project_id"] %>
 
 <% } %>
 
