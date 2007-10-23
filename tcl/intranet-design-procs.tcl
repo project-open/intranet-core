@@ -540,8 +540,6 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     return $navbar
 }
 
-
-
 ad_proc -public im_admin_navbar { {select_label ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
@@ -550,7 +548,22 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     set parent_menu_sql "select menu_id from im_menus where name='Admin'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
 
-    return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label]
+    set html "<div class=\"admin-menu\"><p>Admin Menu</p><ul>"
+    db_foreach im_admin_navbar "
+       SELECT name,url 
+       FROM im_menus 
+       WHERE
+           parent_menu_id=:parent_menu_id
+           AND enabled_p='t'
+       ORDER BY sort_order
+    " {
+	append html "<li><a href=\"$url\">$name</a></li>"
+    }
+    append html "</ul></div>"
+    return $html
+    
+    # previous navbar
+    # return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label] 
 }
 
 ad_proc -public im_navbar_tab {
