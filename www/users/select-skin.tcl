@@ -40,7 +40,7 @@ if {!$current_user_admin_p} {
 # Update the user skin
 #--------------------------------------------------------------------
 
-db_dml skinupdate "UPDATE persons SET skin=:skin WHERE person_id=:user_id"
+db_dml skinupdate "UPDATE users SET skin=:skin WHERE person_id=:user_id"
 
 db_release_unused_handles
 ad_returnredirect $return_url

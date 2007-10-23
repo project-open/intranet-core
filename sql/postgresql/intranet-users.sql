@@ -27,7 +27,7 @@ alter table persons add portrait_file varchar(400);
 -- Skin Field
 --
 
-alter table persons add skin int not null default 0;
+alter table users add skin int not null default 0;
 
 
 -------------------------------------------------------------
