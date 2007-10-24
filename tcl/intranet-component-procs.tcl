@@ -276,11 +276,11 @@ ad_proc -public im_component_insert {
 
 
 ad_proc -public im_component_page { 
-    plugin_id
-    return_url
+    -plugin_id
+    -return_url
 } {
-    Insert a particular component.
-    Returns "" if the component doesn't exist.
+    Returns a particular component, including im_box_header/footer
+    Returns "" if the component doesn't exist or error
 } {
 
     # ToDo: Remove with version 4.0 or later
@@ -324,40 +324,5 @@ ad_proc -public im_component_page {
     }
 
     return $html
-}
-
-ad_proc -public im_component_parking { } {
-} {
-
-    set output ""
-
-    set current_url [im_url_with_query]
-    set return_url [im_url_with_query]
-
-    db_foreach navbar_components "
-        SELECT 
-               p.plugin_id AS plugin_id,
-               p.plugin_name AS plugin_name
-            FROM 
-               im_component_plugins p,im_component_plugin_user_map u
-            WHERE
-               p.plugin_id=u.plugin_id 
-               AND page_url='/intranet/projects/view'  
-               AND u.location='none' 
-            ORDER by plugin_name" {
-
-		set url [export_vars -quotehtml -base $current_url {plugin_id {view_name "component"}}]
-
-		append output "<li><a href=\"$url\">$plugin_name</a></li>"
-	    }
-    
-    if {$output != ""} {
-	set output "
-           <div class=\"component-parking\">
-              <ul>$output</ul>
-              <div class=\"component-parking-handle\">handle</div>
-           </div>"
-    }
-    return $output
 }
 

@@ -54,6 +54,10 @@ jQuery().ready(function(){
        jQuery("#header_skin_select > form").submit();
     });
 
+    jQuery(".component-parking div").click(function(){
+       jQuery(".component-parking ul").slideToggle();
+    });
+
 
     /* rounded corners **********************************/
 
@@ -145,13 +149,7 @@ jQuery().ready(function(){
     );
     cornersObj.applyCornersToAll();
 
-  roundFilter();
 
-    // -------------------------------------------------------
-
-});
-
-function roundFilter(){
   settings = {
       tl: { radius: 10 },
       tr: { radius: 10 }, 
@@ -166,8 +164,26 @@ function roundFilter(){
     );
     cornersObj.applyCornersToAll();
 
+    settings = {
+      tl: { radius: 10 },
+      tr: { radius: 10 }, 
+      bl: { radius: 10 },
+      br: { radius: 10 },
+      antiAlias: true,
+      autoPad: true
+    };
 
-};
+    var cornersObj = new curvyCorners(settings, 
+       "admin-menu"
+    );
+    cornersObj.applyCornersToAll();
+
+
+    // -------------------------------------------------------
+
+});
+
+
 
 function getCookie(c_name)
 {

@@ -452,6 +452,11 @@ switch $view_name {
     "finance" { set menu_label "project_finance" }
     default { set menu_label "project_summary" }
 }
-set sub_navbar [im_sub_navbar $parent_menu_id $bind_vars "" "pagedesriptionbar" $menu_label] 
+set sub_navbar [im_sub_navbar \
+    -components \
+    -current_plugin_id $plugin_id \
+    -base_url "/intranet/projects/view?project_id=$project_id" \
+    $parent_menu_id \
+    $bind_vars "" "pagedesriptionbar" $menu_label] 
 
 

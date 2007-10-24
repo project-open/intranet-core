@@ -56,10 +56,10 @@ jQuery().ready(function(){
 
     jQuery(".component_icons").css("opacity","0.1");
 
-    jQuery(".component_icons").hover(function(){
-       jQuery(this).fadeTo("normal",1);
+    jQuery(".component_header").hover(function(){
+       jQuery(".component_icons",this).fadeTo("fast",1);
     },function(){
-       jQuery(this).fadeTo("normal",0.1);
+       jQuery(".component_icons",this).fadeTo("normal",0.1);
     });
 
     jQuery(".component-parking div").click(function(){

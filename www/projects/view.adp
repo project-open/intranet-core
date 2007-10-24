@@ -23,8 +23,6 @@
 	  <td width=2>&nbsp;</td>
 	  <td valign=top>
 
-	  <%= [im_component_parking] %>
-
 	  <%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
   	     
 
@@ -124,8 +122,7 @@
 
 <% } elseif {[string equal "component" $view_name]} { %>
 
-   <%= [im_component_parking] %>
-   <%= [im_component_page $plugin_id "/intranet/projects/view?project_id=$project_id"] %>
+   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
 
 <% } %>
 

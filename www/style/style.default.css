@@ -7,6 +7,10 @@
    white-space: nowrap
 }
 
+ul, ol {
+   padding-left: 2em;
+}
+
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
    font-size: 8pt;
@@ -346,7 +350,6 @@ a {
 	color: #ffffff;
 }
 
-
 #main_header {
    margin: 0;
    background: #336699;
@@ -356,6 +359,40 @@ a {
 
 #main_title, #main_context_bar, #whosonline_class {
 	    display: none;
+}
+
+.admin-menu {
+   position: absolute;
+   top: 5px;
+   left: 5px;
+   padding: 5px;
+   background-color: #336699;
+   color: #fff;
+   width: 100px;
+}
+
+.admin-menu ul {
+   list-style: none;
+   padding-left: 0px;
+}
+
+.admin-menu a {
+   text-decoration: none;
+   color: #ffffff;
+}
+.admin-menu a.selected {
+   font-weight: bold;
+}
+
+.admin-menu p {
+   font-size: 10pt;
+   font-weight: bold;
+   color: #ffffff;
+}
+
+#admin-content {
+   margin-left: 125px;
+   overflow: auto;
 }
 
 #slave {
@@ -383,7 +420,7 @@ a {
   padding-right: 5px;
   padding-top: 5px;
   min-height: 500px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .component {
@@ -524,9 +561,11 @@ a {
   right: 0px;
   top: 0px;
   background-color: #336699;
-  color: #ffffff;
   z-index: 200;
   width: 300px;
+  border-bottom: 1px #000 solid;
+  border-left: 1px #000 solid;
+  color: #fff;
 }
 
 .component-parking ul {

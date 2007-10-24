@@ -353,6 +353,40 @@ a {
 	    display: none;
 }
 
+.admin-menu {
+   position: absolute;
+   top: 20px;
+   left: 30px;
+   background-color: #CDE9A7;
+   color: #fff;
+   width: 110px;
+}
+
+.admin-menu ul {
+   list-style: none;
+   padding-left: 5px;
+}
+
+.admin-menu a {
+   text-decoration: none;
+   color: #000;
+}
+.admin-menu a.selected {
+   font-weight: bold;
+}
+
+.admin-menu p {
+   font-size: 10pt;
+   font-weight: bold;
+   color: #000;
+   padding-left: 5px;
+}
+
+#admin-content {
+   margin-left: 125px;
+   overflow: auto;
+}
+
 #slave {
       background: #ffffff;
 }
@@ -375,8 +409,9 @@ a {
   position: relative;
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 5px;
   min-height: 500px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .component {
@@ -507,6 +542,35 @@ a {
   height: 3px;
   top: -3px;
   width: 100%;
+}
+
+.component-parking {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: #CDE9A7;
+  z-index: 200;
+  width: 300px;
+  border-bottom: 1px #2e2e2e solid;
+  border-left: 1px #2e2e2e solid;
+  color: #2e2e2e;
+}
+
+.component-parking ul {
+  padding-left: 2em;
+  display: none;
+}
+
+.component-parking a {
+  color: #2e2e2e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.component-parking-handle {
+  cursor: pointer;
+  font-size: 50%;
+  overflow: hidden;
 }
 
 .rowtitle,

@@ -550,14 +550,20 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
 
     set html "<div class=\"admin-menu\"><p>Admin Menu</p><ul>"
     db_foreach im_admin_navbar "
-       SELECT name,url 
+       SELECT name,url,label
        FROM im_menus 
        WHERE
            parent_menu_id=:parent_menu_id
            AND enabled_p='t'
        ORDER BY sort_order
     " {
-	append html "<li><a href=\"$url\">$name</a></li>"
+	if {$label==$select_label} {
+	    set selected "class=\"selected\""
+	} else {
+	    set selected ""
+	}
+
+	append html "<li><a $selected href=\"$url\">$name</a></li>"
     }
     append html "</ul></div>"
     return $html
@@ -578,6 +584,9 @@ ad_proc -public im_navbar_tab {
 }
 
 ad_proc -public im_sub_navbar { 
+    {-components:boolean 0}
+    {-current_plugin_id 0}
+    {-base_url ""}
     parent_menu_id 
     {bind_vars ""} 
     {title ""} 
@@ -639,7 +648,7 @@ ad_proc -public im_sub_navbar {
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-        if {[string equal $label $select_label]} {
+        if {[string equal $label $select_label] && $current_plugin_id==0} {
 	    
             # Make sure we only highligh one menu item..
             set found_selected 1
@@ -651,6 +660,37 @@ ad_proc -public im_sub_navbar {
         set name [lang::message::lookup "" $name_key $name]
 
         append navbar [im_navbar_tab $url $name $selected]
+    }
+
+    if {$components_p} {
+	if {$base_url eq ""} {
+	    set base_url $stub_url
+	}
+
+	db_foreach navbar_components "
+            SELECT 
+               p.plugin_id AS plugin_id,
+               p.plugin_name AS plugin_name,
+               p.menu_name AS menu_name
+            FROM 
+               im_component_plugins p,im_component_plugin_user_map u
+            WHERE
+               p.plugin_id=u.plugin_id 
+               AND page_url='/intranet/projects/view'  
+               AND u.location='none' 
+            ORDER by p.menu_sort_order,p.sort_order" {
+
+		set url [export_vars \
+		    -quotehtml \
+		    -base $base_url \
+                    {plugin_id {view_name "component"}}]
+
+		if {$menu_name eq ""} {
+		    set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
+		}
+ 
+		append navbar [im_navbar_tab $url $menu_name [expr $plugin_id==$current_plugin_id]]
+	    }
     }
 
     return "
