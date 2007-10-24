@@ -1148,7 +1148,7 @@ ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
     set user_id [ad_get_user_id]
-    set skin_name [im_skin_name [db_string person_skin "select skin from users where user_id=:user_id" -default 0]]
+    set skin_name [im_skin_name [im_user_skin $user_id]]
 
     if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
 	set skin_js $skin_name
@@ -1188,7 +1188,7 @@ ad_proc -public im_logo {} {
     
     if {[string equal $system_logo ""]} {
 	set user_id [ad_get_user_id]
-	set skin_name [im_skin_name [db_string person_skin "select skin from users where user_id=:user_id" -default 0]]
+	set skin_name [im_skin_name [im_user_skin $user_id]]
 	
 	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
 	    set system_logo "/intranet/images/logo.$skin_name.gif"
@@ -1611,6 +1611,22 @@ ad_proc -public im_skin_name { skin_id } {
     return "default"
 }
 
+ad_proc -public im_user_skin { user_id } {
+} {
+    set skin_present_p [util_memoize "db_string skin_present \"
+        select  count(*)
+	from	user_tab_columns
+        where   lower(table_name) = 'users'
+                and lower(column_name) = 'skin'
+    \""]
+
+    if {!$skin_present_p} {
+	return 0
+    }
+
+    return [db_string person_skin "select skin from users where user_id=:user_id" -default 0]
+}
+
 ad_proc -public im_skin_select_html { user_id return_url } {
 } {
     if {!$user_id} {
@@ -1621,7 +1637,7 @@ ad_proc -public im_skin_select_html { user_id return_url } {
 	return ""
     }
 
-    set current_skin [db_string person "select skin from users where user_id=:user_id" -default 0]
+    set current_skin [im_user_skin $user_id]
 
     set skin_select_html "
        <form method=\"GET\" action=\"/intranet/users/select-skin\">
