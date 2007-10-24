@@ -208,7 +208,7 @@ if {$write} {
 
 set skin_select_html [im_skin_select_html $user_id $return_url]
 
-if {$skin_select_html ne ""} {
+if {![string equal $skin_select_html ""]} {
     set user_basic_skin_html "
 <table cellpadding=1 cellspacing=1 border=0>
   <tr> 
