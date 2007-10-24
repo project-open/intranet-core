@@ -340,11 +340,15 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
     if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
     if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=\"$prev_page_url\">&lt;&lt;</A>\n$alpha_bar"
+	set alpha_bar [string map { 
+	    "<ul>" "<ul><li><A HREF=\"$prev_page_url\">&lt;&lt;</A></li>" 
+	} $alpha_bar]
     }
   
     if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=\"$next_page_url\">&gt;&gt;</A>\n"
+	set alpha_bar [string map { 
+	    "</ul>" "<li><A HREF=\"$next_page_url\">&gt;&gt;</A></li></ul>"
+	} $alpha_bar]
     }
 
     # Get the Subnavbar
