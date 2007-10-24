@@ -429,54 +429,27 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
     ns_log Notice "url_stub=$url_stub"
     ns_log Notice "section=$section"
 
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
+    set standard [im_navbar_tab "index?view_name=project_list" [_ intranet-core.Standard] [string equal $section "Standard"]]
+    set status [im_navbar_tab "index?view_name=project_status" [_ intranet-core.Status] false]
+    set costs [im_navbar_tab "index?view_name=project_costs" [_ intranet-core.Costs] false]
 
-    set standard "$tdsp$nosel<a href='index?view_name=project_list'>[_ intranet-core.Standard]</a></td>"
-    set status "$tdsp$nosel<a href='index?view_name=project_status'>[_ intranet-core.Status]</a></td>"
-    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>[_ intranet-core.Costs]</a></td>"
-
-    switch $section {
-"Standard" {set standard "$tdsp$sel [_ intranet-core.Standard]</td>"}
-default {
-    # Nothing - just let all sections deselected
-}
+    if {[im_permission $user_id add_offices]} {
+	set new_office [im_navbar_tab "new" [im_gif new "Add a new office"] false]
+    } else {
+	set new_office ""
     }
 
-    set navbar "
-<table width=\"100%\" cellpadding=0 cellspacing=0 border=0>
-  <tr>
-    <td colspan=6 align=right>
-      <table cellpadding=1 cellspacing=0 border=0>
-        <tr> 
-          $standard"
-if {[im_permission $user_id add_offices]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new office"]</a></td>"
-}
-append navbar "
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=6 class=tabnotsel align=center>"
-if {![string equal "" $prev_page_url]} {
-    append navbar "<A HREF=\"$prev_page_url\">&lt;&lt;</A>\n"
-}
-append navbar $alpha_bar
-if {![string equal "" $next_page_url]} {
-    append navbar "<A HREF=\"$next_page_url\">&gt;&gt;</A>\n"
-}
-append navbar "
-    </td>
-  </tr>
-</table>
+    return  "
+<div id=\"navbar_sub_wrapper\">
+   $alpha_bar
+   <ul id=\"navbar_sub\">
+      $standard
+      $new_office
+   </ul>
+</div>
 "
-    return $navbar
 }
 
 
