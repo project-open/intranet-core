@@ -611,7 +611,7 @@ ad_proc -public im_sub_navbar {
     }
 
     if {$components_p} {
-	if {$base_url eq ""} {
+	if {[string equal $base_url ""]} {
 	    set base_url $stub_url
 	}
 
@@ -633,7 +633,7 @@ ad_proc -public im_sub_navbar {
 		    -base $base_url \
                     {plugin_id {view_name "component"}}]
 
-		if {$menu_name eq ""} {
+		if {[string equal $menu_name ""]} {
 		    set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
 		}
  
@@ -1186,7 +1186,7 @@ ad_proc -public im_logo {} {
     set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" ""]
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
     
-    if {$system_logo eq ""} {
+    if {[string equal $system_logo ""]} {
 	set user_id [ad_get_user_id]
 	set skin_name [im_skin_name [db_string person_skin "select skin from users where user_id=:user_id" -default 0]]
 	
@@ -1336,7 +1336,7 @@ ad_proc im_alpha_bar {
 
     set html "<ul id=\"alphabar\">"
 
-    if {$prev_page_url ne ""} {
+    if {![string equal $prev_page_url ""]} {
 	append html "<li><a href=\"$prev_page_url\">&lt;&lt</a></li>"
     }
 
@@ -1351,7 +1351,7 @@ ad_proc im_alpha_bar {
 	}
     }
 
-    if {$next_page_url ne ""} {
+    if {![string equal $next_page_url ""]} {
 	append html "<li><a href=\"$next_page_url\">&gt;&gt</a></li>"
     }
 
@@ -1617,7 +1617,7 @@ ad_proc -public im_skin_select_html { user_id return_url } {
 	return ""
     }
 
-    if {[ad_parameter -package_id [im_package_core_id] SystemCSS] ne ""} {
+    if {![string equal [ad_parameter -package_id [im_package_core_id] SystemCSS] ""]} {
 	return ""
     }
 
