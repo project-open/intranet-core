@@ -270,11 +270,6 @@ set filter_html "
 <form method=get action='/intranet/offices/index' name=filter_form>
 [export_form_vars start_idx order_by how_many letter view_name]
 <table border=0 cellpadding=0 cellspacing=0>
-<tr> 
-  <td colspan='2' class=rowtitle align=center>
-    [_ intranet-core.Filter_Offices]
-  </td>
-</tr>
 <tr>
   <td valign=top>[_ intranet-core.Office_Status]: </td>
   <td valign=top>[im_select status_id $status_types $status_id]</td>
@@ -297,37 +292,6 @@ set admin_html ""
 if {[im_permission $current_user_id "add_offices"]} {
     append admin_html "<li><a href=/intranet/offices/new>[_ intranet-core.Add_a_new_Office]</a>\n"
 }
-
-set office_filter_html $filter_html
-
-if {"" != $admin_html} {
-    set office_filter_html "
-
-<table border=0 cellpadding=0 cellspacing=0>
-<tr>
-  <td> <!-- TD for the left hand filter HTML -->
-    $filter_html
-  </td> <!-- end of left hand filter TD -->
-  <td>&nbsp;</td>
-  <td valign=top>
-    <table border=0 cellpadding=0 cellspacing=0>
-    <tr>
-      <td class=rowtitle align=center>
-        [_ intranet-core.Admin_Offices]
-      </td>
-    </tr>
-    <tr>
-      <td>
-        $admin_html
-      </td>
-    </tr>
-    </table>
-  </td>
-</tr>
-</table>
-"
-}
-
 
 # ---------------------------------------------------------------
 # 7. Format the List Table Header
@@ -429,9 +393,7 @@ set letter "none"
 set next_page_url ""
 set previous_page_url ""
 
-set office_navbar_html "
-<br>
-[im_office_navbar $letter "/intranet/offices/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
-"
+set office_navbar_html [im_office_navbar $letter "/intranet/offices/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
+
 
 db_release_unused_handles
