@@ -67,7 +67,7 @@ cvs checkout intranet-freelance-rfqs
 cvs checkout intranet-freelance-translation
 cvs checkout intranet-ganttproject
 cvs checkout intranet-hr
-cvs checkout intranet-html2pdf
+cvs checkout intranet-pdf-htmldoc
 cvs checkout intranet-invoices
 cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import

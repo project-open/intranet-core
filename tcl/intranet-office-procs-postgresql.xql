@@ -31,7 +31,7 @@
 	:company_id::integer
       );
 
-
+ 
     </querytext>
   </fullquery>
   
