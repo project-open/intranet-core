@@ -573,6 +573,10 @@ a {
   overflow: hidden;
 }
 
+.table-display td {
+   padding: 1px;
+}
+
 .rowtitle,
 .list-header,
 .table-header,
