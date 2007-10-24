@@ -337,19 +337,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar [string map \
-	    [list "<ul id=\"alphabar\">" "<ul id=\"alphabar\"><li><a href=\"$prev_page_url\">&lt;&lt;</a></li>"] \
-            $alpha_bar]
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar [string map \
-            [list "</ul>" "<li><a href=\"$next_page_url\">&gt;&gt;</a></li></ul>"] \
-            $alpha_bar]
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='user'"
@@ -394,15 +382,7 @@ ad_proc -public im_project_navbar {
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=\"$prev_page_url\">&lt;&lt;</A>\n$alpha_bar"
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=\"$next_page_url\">&gt;&gt;</A>\n"
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label=:navbar_menu_label"
@@ -451,7 +431,6 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 
     set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
 
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
     set a_white "<a class=whitelink"
@@ -526,15 +505,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=\"$prev_page_url\">&lt;&lt;</A>\n$alpha_bar"
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=\"$next_page_url\">&gt;&gt;</A>\n"
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='companies'"
@@ -1362,12 +1333,21 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
     return [join $html_list " | "]
 }
 
-ad_proc im_alpha_bar { target_url default_letter bind_vars} {
+ad_proc im_alpha_bar { 
+    {-prev_page_url ""}
+    {-next_page_url ""}
+    target_url 
+    default_letter 
+    bind_vars} {
     Returns a horizontal alpha bar with links
 } {
     set alpha_list [im_all_letters_lowercase]
     set alpha_list [linsert $alpha_list 0 All]
     set default_letter [string tolower $default_letter]
+
+    if {[string equal "none" $default_letter]} { 
+	return "&nbsp;" 
+    }
 
     ns_set delkey $bind_vars "letter"
     set params [list]
@@ -1382,6 +1362,11 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
     set param_html [join $params "&amp;"]
 
     set html "<ul id=\"alphabar\">"
+
+    if {$prev_page_url ne ""} {
+	append html "<li><a href=\"$prev_page_url\">&lt;&lt</a></li>"
+    }
+
     foreach letter $alpha_list {
 	set letter_key "intranet-core.[lang::util::suggest_key $letter]"
 	set letter_trans [lang::message::lookup "" $letter_key $letter]
@@ -1392,6 +1377,11 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
 	    append html "<li class=\"unselected\"><a href=\"$url\">$letter_trans</a></li>\n"
 	}
     }
+
+    if {$next_page_url ne ""} {
+	append html "<li><a href=\"$next_page_url\">&gt;&gt</a></li>"
+    }
+
     append html "</ul>"
     return $html
 }
