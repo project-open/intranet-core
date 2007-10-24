@@ -17,18 +17,20 @@
     <querytext>
 
       select im_office__new (
-        null,
-        'im_office',
-        :creation_date,
-        :creation_user,
-        :creation_ip,
-        :context_id,
-        :office_name,
-        :office_path,
-        :office_type_id,
-        :office_status_id,
-	:company_id
+        null::integer,
+        'im_office'::varchar,
+        :creation_date::timestamptz,
+        :creation_user::integer,
+        :creation_ip::varchar,
+        :context_id::integer,
+
+        :office_name::varchar,
+        :office_path::varchar,
+        :office_type_id::integer,
+        :office_status_id::integer,
+	:company_id::integer
       );
+
 
     </querytext>
   </fullquery>
