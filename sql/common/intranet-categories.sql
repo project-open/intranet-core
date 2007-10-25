@@ -122,7 +122,7 @@
 -- 15000-15099	Intranet Report Status
 -- 15100-15199	Intranet Report Type
 -- 15000-15999	Intranet Report - Other (800)
--- 16000-16999	reserved (1000)
+-- 16000-16999	Intranet Absences (1000)
 -- 17000-17999	reserved (1000)
 -- 18000-18999	reserved (1000)
 -- 19000-19999	reserved (1000)
