@@ -891,7 +891,7 @@ tr.list-filter-selected {
   background-color: #FFFFFF;
 }
 span.list-filter-selected {
-  color: #ffffff;
+  color: #000;
 }
 .list-filter-header {
   font-family: tahoma,verdana,arial,helvetica;
