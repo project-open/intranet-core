@@ -141,6 +141,7 @@ a {
   position: absolute;
   left: 250px;
   top: 20px;
+  z-index: 200;
 }
 
 #header_logo A IMG {
