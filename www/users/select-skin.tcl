@@ -41,6 +41,7 @@ if {!$current_user_admin_p} {
 #--------------------------------------------------------------------
 
 db_dml skinupdate "UPDATE users SET skin=:skin WHERE user_id=:user_id"
+ns_write [ns_cache flush util_memoize "im_user_skin_helper $user_id" ]
 
 db_release_unused_handles
 ad_returnredirect $return_url

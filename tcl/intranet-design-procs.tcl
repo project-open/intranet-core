@@ -1624,6 +1624,10 @@ ad_proc -public im_user_skin { user_id } {
 	return 0
     }
 
+    return [util_memoize "im_user_skin_helper $user_id"]
+}
+
+ad_proc -public im_user_skin_helper { user_id } {
     return [db_string person_skin "select skin from users where user_id=:user_id" -default 0]
 }
 
