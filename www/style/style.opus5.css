@@ -111,7 +111,8 @@ a {
 
 #header_plugin_left {
   position: absolute;
-  right: 50%;
+  left: 250px;
+  top: 20px;
 }
 
 #header_skin_select {
