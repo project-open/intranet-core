@@ -113,7 +113,6 @@ a {
   position: absolute;
   left: 250px;
   top: 20px;
-  z-index: 200;
 }
 
 #header_skin_select {
@@ -412,7 +411,8 @@ a {
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 5px;
-  min-height: 500px;
+  min-height: 600px;
+  overflow: hidden;
 }
 
 .component {
