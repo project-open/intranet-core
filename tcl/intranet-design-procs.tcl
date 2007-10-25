@@ -626,6 +626,7 @@ ad_proc -public im_sub_navbar {
                p.plugin_id=u.plugin_id 
                AND page_url='/intranet/projects/view'  
                AND u.location='none' 
+               AND u.user_id=:user_id
             ORDER by p.menu_sort_order,p.sort_order" {
 
 		set url [export_vars \
