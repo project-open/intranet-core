@@ -60,6 +60,7 @@ cvs checkout intranet-expenses
 # cvs checkout intranet-expfind-ora
 # cvs checkout intranet-expfind-pg
 cvs checkout intranet-filestorage
+cvs checkout intranet-filestorage-openacs
 cvs checkout intranet-forum
 cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
