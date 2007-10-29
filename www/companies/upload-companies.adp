@@ -23,6 +23,7 @@
 	  <%= [im_company_type_select "company_type_id" 0] %>
 	</td>
       </tr>
+<!--
       <tr> 
 	<td>Dynamic<br>Field<br>Transformation</td>
 	<td> 
@@ -31,6 +32,7 @@
 		<option value=reinisch_customers>reinisch Customers (Sales Rep & B-Org Customer Code)</option>
 	</td>
       </tr>
+-->
       <tr> 
 	<td></td>
 	<td> 

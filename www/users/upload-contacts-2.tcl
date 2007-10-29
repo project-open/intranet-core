@@ -25,7 +25,7 @@ ad_page_contract {
     return_url
     upload_file
     profile_id
-    { transformation_key "reinisch_freelance_contacts" }
+    { transformation_key "" }
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
