@@ -32,6 +32,8 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
 		length(tree_sortkey) as indent_level
 	from
 		im_menus m
+	order by
+		tree_sortkey
     "
 
     set parent_options [list]
