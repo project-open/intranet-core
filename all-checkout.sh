@@ -23,11 +23,14 @@ cvs checkout acs-templating
 cvs checkout acs-translations
 cvs checkout acs-workflow
 
+cvs checkout ajaxhelper
+cvs checkout ams
 cvs checkout batch-importer
 cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout calendar
 cvs checkout categories
+cvs checkout contacts
 cvs checkout chat
 cvs checkout cms
 cvs checkout diagram
@@ -119,7 +122,9 @@ cvs checkout intranet-xmlrpc
 cvs checkout lars-blogger
 cvs checkout mail-tracking
 cvs checkout notifications
+cvs checkout organizations
 cvs checkout oryx-ts-extensions
+cvs checkout postal-address
 
 cvs checkout ref-countries
 cvs checkout ref-language
@@ -131,6 +136,7 @@ cvs checkout ref-us-zipcodes
 cvs checkout rss-support
 cvs checkout search
 cvs checkout simple-survey
+cvs checkout telecom-number
 cvs checkout trackback
 cvs checkout wiki
 cvs checkout workflow
