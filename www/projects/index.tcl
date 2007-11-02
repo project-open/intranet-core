@@ -195,17 +195,6 @@ set mine_p_options [list \
 	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
 ]
 
-set project_member_options [util_memoize "db_list_of_lists project_members {
-        select  distinct
-                im_name_from_user_id(object_id_two) as user_name,
-                object_id_two as user_id
-        from    acs_rels r,
-                im_projects p
-        where   r.object_id_one = p.project_id
-        order by user_name
-}" 86400]
-set project_member_options [linsert $project_member_options 0 [list [_ intranet-core.All] ""]]
-
 
 ad_form \
     -name $form_id \
@@ -604,11 +593,11 @@ append filter_html "
 append filter_html "
   <tr>
     <td class=form-label valign=top>[lang::message::lookup "" intranet-cust-baselkb.With_Member "With Member"]:</td>
-    <td class=form-widget valign=top>[im_select -ad_form_option_list_style_p 1 -translate_p 0 user_id_from_search $project_member_options $user_id_from_search]</td>
+    <td class=form-widget valign=top>
+	[im_user_select -include_empty_p 1 user_id_from_search $user_id_from_search]
+    </td>
   </tr>
 "
-
-
 
 append filter_html "
   <tr>
