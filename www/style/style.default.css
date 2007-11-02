@@ -435,7 +435,7 @@ a {
 .component_header_rounded {
   background-color: #eeeeee;
   color: #000000;
-  border: solid 1px #000;
+  border: solid 1px #EEEEEE;
 }
 
 .component_header {
@@ -528,9 +528,9 @@ a {
 
 .component_body {
   z-index: 100;
-  border-left: solid 1px #000000;
-  border-right: solid 1px #000000;
-  border-bottom: solid 1px #000000;
+  border-left: solid 1px #EEEEEE;
+  border-right: solid 1px #EEEEEE;
+  border-bottom: solid 1px #EEEEEE;
   padding-bottom: 10px;
   overflow: auto;
 }
@@ -632,11 +632,12 @@ a {
 .filter-block select, 
 .filter-block input {
    background-color: #336699;
+   color: #fff;
 }
 
 .filter-block  select,
 .filter-block  input {
-  border: solid black 1px;
+  border: dotted #fff 1px;
 }
 
 .filter-block select {
