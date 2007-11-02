@@ -548,8 +548,6 @@ ad_proc -public im_sub_navbar {
     @title string to go into the line below the menu tabs
     @title_class CSS class of the title line
 } {
-#    ns_log Notice "im_sub_navbar: parent_menu_id=$parent_menu_id, bind_vars=$bind_vars, title=$title, select_label=$select_label"
-
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
 
