@@ -59,7 +59,7 @@ jQuery().ready(function(){
     jQuery(".component_header").hover(function(){
        jQuery(".component_icons",this).stop().fadeTo("fast",1);
     },function(){
-       jQuery(".component_icons",this).fadeTo("normal",0.1);
+       jQuery(".component_icons",this).stop().fadeTo("normal",0.1);
     });
 
     jQuery(".component-parking div").click(function(){
