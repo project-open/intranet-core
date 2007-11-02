@@ -60,10 +60,6 @@ cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
 cvs checkout intranet-exchange-rate
 cvs checkout intranet-expenses
-# cvs checkout intranet-expfind2-ora
-# cvs checkout intranet-expfind2-pg
-# cvs checkout intranet-expfind-ora
-# cvs checkout intranet-expfind-pg
 cvs checkout intranet-filestorage
 cvs checkout intranet-filestorage-openacs
 cvs checkout intranet-forum
@@ -82,8 +78,6 @@ cvs checkout intranet-notes
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp
 cvs checkout intranet-payments
-# cvs checkout intranet-planning
-# cvs checkout intranet-procedures
 cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
@@ -91,32 +85,26 @@ cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-reporting-finance
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
-# cvs checkout intranet-riskmanagement
-# cvs checkout intranet-search
-# cvs checkout intranet-search-ora
-# cvs checkout intranet-search-oracle
+cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
 cvs checkout intranet-search-pg-files
-# cvs checkout intranet-secure-login
 cvs checkout intranet-security-update-client
-# cvs checkout intranet-security-update-server
+cvs checkout intranet-security-update-server
 cvs checkout intranet-simple-survey
-# cvs checkout intranet-spam
-# cvs checkout intranet-sql-selectors
+cvs checkout intranet-spam
+cvs checkout intranet-sql-selectors
 cvs checkout intranet-sysconfig
-# cvs checkout intranet-timesheet
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
-# cvs checkout intranet-timesheet2-task-popup
+cvs checkout intranet-timesheet2-task-popup
 cvs checkout intranet-timesheet2-tasks
 cvs checkout intranet-trans-invoices
 cvs checkout intranet-trans-project-wizard
 # cvs checkout intranet-trans-invoices-vaw
 cvs checkout intranet-translation
 cvs checkout intranet-trans-quality
-# cvs checkout intranet-travel
 cvs checkout intranet-update-client
-# cvs checkout intranet-update-server
+cvs checkout intranet-update-server
 cvs checkout intranet-wiki
 cvs checkout intranet-workflow
 cvs checkout intranet-xmlrpc
