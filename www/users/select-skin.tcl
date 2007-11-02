@@ -31,7 +31,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 set current_user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
-if {!$current_user_admin_p} {
+if {$current_user_id!=$user_id && !$current_user_admin_p} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "<li>[_ intranet-core.lt_You_have_insufficient_7]"
     return
 }
