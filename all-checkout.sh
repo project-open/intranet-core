@@ -53,6 +53,7 @@ cvs checkout intranet-crm-tracking
 cvs checkout intranet-cust-baselkb
 cvs checkout intranet-cust-lexcelera
 cvs checkout intranet-cust-projop
+cvs checkout intranet-cust-reinisch
 
 cvs checkout intranet-cvs-integration
 cvs checkout intranet-dw-light
