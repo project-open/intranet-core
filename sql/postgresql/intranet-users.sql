@@ -23,6 +23,11 @@
 alter table persons add portrait_checkdate date;
 alter table persons add portrait_file varchar(400);
 
+-------------------------------------------------------------
+-- Skin Field
+--
+
+alter table users add skin int not null default 0;
 
 
 -------------------------------------------------------------

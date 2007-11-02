@@ -352,7 +352,7 @@ ns_log Notice $selection
 # ----------------------------------------------------------
 # Do we have to show administration links?
 
-set admin_html ""
+set admin_html "<ul>"
 if {[im_permission $current_user_id "add_companies"]} {
 
     append admin_html "
@@ -384,6 +384,7 @@ db_foreach menu_select $menu_select_sql {
     append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
 }
 
+append admin_html "</ul>"
 
 
 # ---------------------------------------------------------------
@@ -473,8 +474,9 @@ if { $start_idx > 0 } {
 } else {
     set previous_page_url ""
 }
-
-
 set table_continuation_html ""
+
+set sub_navbar [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id] $menu_select_label] 
+
 
 db_release_unused_handles

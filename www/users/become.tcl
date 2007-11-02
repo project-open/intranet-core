@@ -24,26 +24,5 @@ ad_page_contract {
     user_id:integer,notnull
 }
 
-
-# Check the permissions that the current_user has on user_id
- set current_user_id [ad_maybe_redirect_for_registration]
- im_user_permissions $current_user_id $user_id view read write admin
- if {!$admin} {
-     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_are_not_authorize]"
-     return
- }
-
-if {"" == $return_url} { set return_url "/intranet/" }
-
-# just set a session cookie
-set expire_state "s"
-
-# note here that we stuff the cookie with the password from Oracle,
-# NOT what the user just typed (this is because we want log in to be
-# case-sensitive but subsequent comparisons are made on ns_crypt'ed 
-# values, where string toupper doesn't make sense)
-
-db_release_unused_handles
-
 ad_user_login $user_id
 ad_returnredirect $return_url

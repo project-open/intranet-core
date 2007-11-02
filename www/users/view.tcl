@@ -202,6 +202,31 @@ if {$write} {
 
 }
 
+# ---------------------------------------------------------------
+# Skin Management
+# ---------------------------------------------------------------
+
+set skin_select_html [im_skin_select_html $user_id $return_url]
+
+if {![string equal $skin_select_html ""]} {
+    set user_basic_skin_html "
+<table cellpadding=1 cellspacing=1 border=0>
+  <tr> 
+    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Skin]</td>
+  </tr>
+  <tr>
+    <td>[_ intranet-core.Skin]</td>
+    <td>
+          $skin_select_html 
+    </td>
+  </tr>
+  <tr><td colspan=2></td></tr>
+</table>
+"
+  } else {
+     set user_basic_skin_html ""
+  }
+
 # ------------------------------------------------------
 # Show extension fields
 # ------------------------------------------------------
@@ -617,9 +642,6 @@ set letter "none"
 set next_page_url ""
 set previous_page_url ""
 
-set user_navbar_html "
-<br>
-[im_user_navbar $letter "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
-"
+set user_navbar_html [im_user_navbar $letter "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
 
 

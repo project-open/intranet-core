@@ -135,11 +135,11 @@ ad_proc -public im_gif_navbar {
     set png_exists_p [util_memoize "file readable $png_file"]
 
     if {$gif_exists_p} { 
-	return "<img src=$navbar_gif_url/$name.gif border=0 title=\"$alt\" alt=\"$alt\">" 
+	return "<img src=\"$navbar_gif_url/$name.gif\" border=0 title=\"$alt\" alt=\"$alt\">" 
     }
 
     if {$png_exists_p} { 
-	return "<img src=$navbar_gif_url/$name.png border=0 title=\"$alt\" alt=\"$alt\">" 
+	return "<img src=\"$navbar_gif_url/$name.png\" border=0 title=\"$alt\" alt=\"$alt\">" 
     }
     
     return ""
@@ -162,7 +162,7 @@ ad_proc -public im_gif_static {
     set debug 0
     if {$debug} { ns_log Notice "im_gif_static: name=$name, navbar_gif_url=$navbar_gif_url, navbar_path=$navbar_path" }
     switch [string tolower $name] {
-	"delete" 	{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"delete" 	{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"help"		{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -174,59 +174,59 @@ ad_proc -public im_gif_static {
 	"news"		{ return "<img src=$navbar_gif_url/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"note"		{ return "<img src=$navbar_gif_url/pencil.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"reply"		{ return "<img src=$navbar_gif_url/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"tick"		{ return "<img src=$url/tick.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"wrong"		{ return "<img src=$url/delete.gif width=14 heigth=15 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"tick"		{ return "<img src=$url/tick.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"wrong"		{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tool"		{ return "<img src=$url/tool.15.gif widht=20 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-excel"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-word"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-text"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-line"	{ return "<img src=$url/exp-line.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-excel"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-word"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-text"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"profile"	{ return "<img src=$navbar_gif_url/user.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"member"	{ return "<img src=$url/m.gif width=19 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"key-account"	{ return "<img src=$url/k.gif width=18 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"project-manager" { return "<img src=$url/p.gif width=17 heigth=13 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"member"	{ return "<img src=$url/m.gif width=19 height=13 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"key-account"	{ return "<img src=$url/k.gif width=18 height=13 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"project-manager" { return "<img src=$url/p.gif width=17 height=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"anon_portrait" { return "<img width=98 height=98 src=$url/anon_portrait.gif border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"left-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"middle-notsel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"admin"		{ return "<img src=$navbar_gif_url/tux.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"customer"	{ return "<img src=$navbar_gif_url/coins.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"employee"	{ return "<img src=$navbar_gif_url/user_orange.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"senman"	{ return "<img src=$navbar_gif_url/user_suit.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"proman"	{ return "<img src=$navbar_gif_url/user_comment.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"accounting"	{ return "<img src=$navbar_gif_url/money_dollar.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"sales"		{ return "<img src=$navbar_gif_url/telephone.png width=19 heigth=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"admin"		{ return "<img src=$navbar_gif_url/tux.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"customer"	{ return "<img src=$navbar_gif_url/coins.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"employee"	{ return "<img src=$navbar_gif_url/user_orange.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"senman"	{ return "<img src=$navbar_gif_url/user_suit.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"proman"	{ return "<img src=$navbar_gif_url/user_comment.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"accounting"	{ return "<img src=$navbar_gif_url/money_dollar.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"sales"		{ return "<img src=$navbar_gif_url/telephone.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 
-	"bb_clear"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_red"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_blue"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_yellow"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
-	"bb_purple"	{ return "<img src=$url/$name.gif width=$width heigth=$height border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_clear"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_red"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_blue"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_yellow"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
+	"bb_purple"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
 
 
-	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_left" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_right" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_up"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_down" { return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_minimize"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"arrow_comp_maximize"	{ return "<img src=$navbar_gif_url/$name.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"comp_delete"	{ return "<img src=$navbar_gif_url/comp_delete.png width=16 heigth=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_left" { return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_right" { return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_up"	{ return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_down" { return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_minimize"	{ return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"arrow_comp_maximize"	{ return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"comp_delete"	{ return "<img src=$navbar_gif_url/comp_delete.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	default		{ return "" }
     }
@@ -248,17 +248,17 @@ ad_proc -public im_admin_category_gif { category_type } {
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
         set html "
-<A HREF=/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]>[im_gif new "Admin category type"]</A>"
+<A HREF=\"/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]\">[im_gif new "Admin category type"]</A>"
     }
     return $html
 }
 
 
-ad_proc -public im_gif_cleardot { {width 1} {height 1} {alt ""} } {
+ad_proc -public im_gif_cleardot { {width 1} {height 1} {alt "spacer"} } {
     Creates an &lt;IMG ... &gt; tag of a given size
 } {
     set url "/intranet/images"
-    return "<img src=$url/cleardot.gif width=$width height=$height title=\"$alt\" alt=\"$alt\">"
+    return "<img src=\"$url/cleardot.gif\" width=\"$width\" height=\"$height\" title=\"$alt\" alt=\"$alt\">"
 }
 
 
@@ -302,16 +302,8 @@ ad_proc -public im_table_with_title {
 
     set page_url [im_component_page_url]
 
-    return "
-<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-<tr>
-   <td class=tableheader align=left width='99%'>$title</td>
-</tr>
-<tr>
-  <td class=tablebody><font size=-1>$body</font></td>
-</tr>
-</table><br>
-"
+    return "[im_box_header $title]$body[im_box_footer]"
+
 }
 
 
@@ -345,15 +337,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=$prev_page_url>&lt;&lt;</A>\n$alpha_bar"
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=$next_page_url>&gt;&gt;</A>\n"
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='user'"
@@ -398,15 +382,7 @@ ad_proc -public im_project_navbar {
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=$prev_page_url>&lt;&lt;</A>\n$alpha_bar"
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=$next_page_url>&gt;&gt;</A>\n"
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label=:navbar_menu_label"
@@ -453,55 +429,27 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
     ns_log Notice "url_stub=$url_stub"
     ns_log Notice "section=$section"
 
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
+    set standard [im_navbar_tab "index?view_name=project_list" [_ intranet-core.Standard] [string equal $section "Standard"]]
+    set status [im_navbar_tab "index?view_name=project_status" [_ intranet-core.Status] false]
+    set costs [im_navbar_tab "index?view_name=project_costs" [_ intranet-core.Costs] false]
 
-    set standard "$tdsp$nosel<a href='index?view_name=project_list'>[_ intranet-core.Standard]</a></td>"
-    set status "$tdsp$nosel<a href='index?view_name=project_status'>[_ intranet-core.Status]</a></td>"
-    set costs "$tdsp$nosel<a href='index?view_name=project_costs'>[_ intranet-core.Costs]</a></td>"
-
-    switch $section {
-"Standard" {set standard "$tdsp$sel [_ intranet-core.Standard]</td>"}
-default {
-    # Nothing - just let all sections deselected
-}
+    if {[im_permission $user_id add_offices]} {
+	set new_office [im_navbar_tab "new" [im_gif new "Add a new office"] false]
+    } else {
+	set new_office ""
     }
 
-    set navbar "
-<table width=100% cellpadding=0 cellspacing=0 border=0>
-  <tr>
-    <td colspan=6 align=right>
-      <table cellpadding=1 cellspacing=0 border=0>
-        <tr> 
-          $standard"
-if {[im_permission $user_id add_offices]} {
-    append navbar "$tdsp$nosel<a href=new>[im_gif new "Add a new office"]</a></td>"
-}
-append navbar "
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=6 class=tabnotsel align=center>"
-if {![string equal "" $prev_page_url]} {
-    append navbar "<A HREF=$prev_page_url>&lt;&lt;</A>\n"
-}
-append navbar $alpha_bar
-if {![string equal "" $next_page_url]} {
-    append navbar "<A HREF=$next_page_url>&gt;&gt;</A>\n"
-}
-append navbar "
-    </td>
-  </tr>
-</table>
+    return  "
+<div id=\"navbar_sub_wrapper\">
+   $alpha_bar
+   <ul id=\"navbar_sub\">
+      $standard
+      $new_office
+   </ul>
+</div>
 "
-    return $navbar
 }
 
 
@@ -530,15 +478,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 	    ns_set put $bind_vars $var $value
         }
     }
-    set alpha_bar [im_alpha_bar $base_url $default_letter $bind_vars]
-    if {[string equal "none" $default_letter]} { set alpha_bar "&nbsp;" }
-    if {![string equal "" $prev_page_url]} {
-	set alpha_bar "<A HREF=$prev_page_url>&lt;&lt;</A>\n$alpha_bar"
-    }
-  
-    if {![string equal "" $next_page_url]} {
-	set alpha_bar "$alpha_bar\n<A HREF=$next_page_url>&gt;&gt;</A>\n"
-    }
+    set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='companies'"
@@ -548,8 +488,6 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     return $navbar
 }
 
-
-
 ad_proc -public im_admin_navbar { {select_label ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
@@ -558,12 +496,51 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     set parent_menu_sql "select menu_id from im_menus where name='Admin'"
     set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
 
-    return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label]
+    set html "<div class=\"admin-menu\"><p>Admin Menu</p><ul>"
+    db_foreach im_admin_navbar "
+       SELECT name,url,label
+       FROM im_menus 
+       WHERE
+           parent_menu_id=:parent_menu_id
+           AND enabled_p='t'
+       ORDER BY sort_order
+    " {
+	if {$label==$select_label} {
+	    set selected "class=\"selected\""
+	} else {
+	    set selected ""
+	}
+
+	append html "<li><a $selected href=\"$url\">$name</a></li>"
+    }
+    append html "</ul></div>"
+    return $html
+    
+    # previous navbar
+    # return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label] 
 }
 
+ad_proc -public im_navbar_tab {
+    url
+    name
+    selected
+} {} {
+    if {$selected} {
+	return "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$name</a></div></li>\n"
+    }
+    return "<li class=\"unselected\"><div class=\"navbar_unselected\"><a href=\"$url\">$name</a></div></li>\n"
+}
 
-
-ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_class "pagedesriptionbar"} {select_label ""} } {
+ad_proc -public im_sub_navbar { 
+    {-components:boolean 0}
+    {-current_plugin_id 0}
+    {-base_url ""}
+    parent_menu_id 
+    {bind_vars ""} 
+    {title ""} 
+    {title_class "pagedesriptionbar"} 
+    {select_label ""} 
+} {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
     @param parent_menu_id id of the parent menu in im_menus
@@ -576,19 +553,10 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
     set user_id [ad_get_user_id]
     set url_stub [ns_conn url]
 
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-    set tdsp "<td>&nbsp;</td>"
-
     # Start formatting the menu bar
     set navbar ""
     set found_selected 0
     set selected 0
-    set old_sel "notsel"
-    set cur_sel "notsel"
-    set ctr 0
-
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
@@ -619,80 +587,69 @@ ad_proc -public im_sub_navbar { parent_menu_id {bind_vars ""} {title ""} {title_
 	# Construct the URL
 	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
 	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
-		append url "&[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
+		append url "&amp;[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
 	    }
 	}
-
-        # Shift the old value of cur_sel to old_val
-        set old_sel $cur_sel
-        set cur_sel "notsel"
 
         # Find out if we need to highligh the current menu item
         set selected 0
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-        if {[string equal $label $select_label]} {
+        if {[string equal $label $select_label] && $current_plugin_id==0} {
 	    
             # Make sure we only highligh one menu item..
             set found_selected 1
-            # Set for the gif
-            set cur_sel "sel"
             # Set for the other IF-clause later in this loop
             set selected 1
-        }
-
-        if {$ctr == 0} {
-            set gif "left-$cur_sel"
-        } else {
-            set gif "middle-$old_sel-$cur_sel"
         }
 
         set name_key "intranet-core.[lang::util::suggest_key $name]"
         set name [lang::message::lookup "" $name_key $name]
 
-        if {$selected} {
-            set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
-        } else {
-            set html "$nosel<a href=\"$url\"><nobr>$name</nobr></a></td>\n"
-        }
-
-        append navbar "<td>[im_gif $gif]</td>$html"
-        incr ctr
+        append navbar [im_navbar_tab $url $name $selected]
     }
 
-    # Show the ending triangle GIF only if there were entries
-    if {$ctr > 0} {
-	append navbar "<td>[im_gif "right-$cur_sel"]</td>"
+    if {$components_p} {
+	if {[string equal $base_url ""]} {
+	    set base_url $stub_url
+	}
+
+	db_foreach navbar_components "
+            SELECT 
+               p.plugin_id AS plugin_id,
+               p.plugin_name AS plugin_name,
+               p.menu_name AS menu_name
+            FROM 
+               im_component_plugins p,im_component_plugin_user_map u
+            WHERE
+               p.plugin_id=u.plugin_id 
+               AND page_url='/intranet/projects/view'  
+               AND u.location='none' 
+               AND u.user_id=:user_id
+            ORDER by p.menu_sort_order,p.sort_order" {
+
+		set url [export_vars \
+		    -quotehtml \
+		    -base $base_url \
+                    {plugin_id {view_name "component"}}]
+
+		if {[string equal $menu_name ""]} {
+		    set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
+		}
+ 
+		append navbar [im_navbar_tab $url $menu_name [expr $plugin_id==$current_plugin_id]]
+	    }
     }
 
     return "
-      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
-        <TR>
-          <TD align=right>
-	    <div id=subnavbar_class>
-            <table border=0 cellspacing=0 cellpadding=0>
-              <tr height=19>
-                $navbar
-              </tr>
-            </table>
-	    </div>
-          </TD>
-          <TD align=right>
-          </TD>
-        </TR>
-        <TR>
-          <td colspan=2 class=$title_class>
-            <table cellpadding=1 width='100%'>
-              <tr>
-                <td class=$title_class align=center valign=middle>
-		    $title
-                </td>
-              </tr>
-            </table>
-          </td>
-        </TR>
-      </table>\n"
+         <div id=\"navbar_sub_wrapper\">
+            $title
+            <ul id=\"navbar_sub\">
+              $navbar
+            </ul>
+         </div>"
+
 }
 
 ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
@@ -737,11 +694,10 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
     return [db_list_of_lists subnavbar_menus $menu_select_sql]
 }
 
-
-
-
-
-ad_proc -public im_navbar { { main_navbar_label "" } } {
+ad_proc -public im_navbar { 
+    { -loginpage:boolean 0 }
+    { main_navbar_label "" } 
+} {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
@@ -826,93 +782,87 @@ ad_proc -public im_navbar { { main_navbar_label "" } } {
 
         set name_key "intranet-core.[lang::util::suggest_key $name]"
         set name [lang::message::lookup "" $name_key $name]
-
-        if {$selected} {
-            set html "$sel$a_white href=\"$url\"/><nobr>$name</nobr></a></td>\n"
-        } else {
-	    set html "$nosel<a href=\"$url\"><nobr>$name</nobr></a></td>\n"
+	if {$ctr == 0 || !$loginpage_p} {
+	    append navbar [im_navbar_tab $url $name $selected]
 	}
-
-        append navbar "<td>[im_gif $gif]</td>$html"
 	incr ctr
-    }
-    if {"" != $navbar} {
-	append navbar "<td>[im_gif "right-$cur_sel"]</td>"
     }
 
     set page_url [im_component_page_url]
-
-    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
-    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
-
-    set add_comp_url [export_vars -base "/intranet/components/add-stuff" {page_url return_url}]
-    set reset_comp_url [export_vars -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
     # Maintenance Bar -
     # Display a maintenance message in red when performing updates etc...   
     set maintenance_message [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
     set maintenance_message [string trim $maintenance_message]
-    set maintenance_bar ""
-    if {"" != $maintenance_message} {
-	set maintenance_bar "
-	<TR>
-          <td colspan=2 class=maintenancebar>
-		$maintenance_message
-          </td>
-	</TR>
-        "
-    }
 
-    set add_components "
-	<nobr>
-	<a href=\"$reset_comp_url\">$reset_stuff_text</a>
-	<a href=\"$add_comp_url\">[im_gif comp_add $add_stuff_text]</a>
-	<a href=\"$add_comp_url\">$add_stuff_text</a>
-	</nobr>
+    set user_id [ad_get_user_id]
+
+    set main_users_and_search "
+          <div id=\"main_users_and_search\">
+            <div id=\"main_users_online\">
+              [im_header_users_online_str]
+            </div>
+            <div id=\"main_search\">
+              [im_header_search_form]
+            </div>
+          </div>
     "
 
+    if {$loginpage_p} {
+	set user_id 0
+	set main_users_and_search ""
+    }
+
     return "
-      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
-        <TR>
-          <TD align=left>
-	    <div id=navbar_class>
-            <table border=0 cellspacing=0 cellpadding=0>
-              <tr height=19>
-                $navbar
-              </tr>
-            </table>
-	    </div>
-          </TD>
-	  <td align=right>
-	    <div id=navbar_right_class>
-	     $add_components
-	    </div>
-	  </td>
-        </TR>
-        <TR>
-          <td colspan=2 class=pagedesriptionbar>
-            <table cellpadding=1 width='100%'>
-              <tr>
-                <td class=pagedesriptionbar valign=middle>
-                  $page_title
-                </td>
-                <td class=pagedesriptionbar valign=middle align=right>
-                  $context_bar
-                </td>
-              </tr>
-            </table>
-          </td>
-        </TR>
-        $maintenance_bar
-      </table>\n"
+
+    <div id=\"main\">
+
+       <div id=\"navbar_main_wrapper\">
+          <ul id=\"navbar_main\">
+             $navbar
+          </ul>
+       </div>
+
+       <div id=\"main_header\">
+          <div id=\"main_title\">
+             $page_title
+          </div>
+          <div id=\"main_context_bar\">
+             $context_bar
+          </div>
+          <div id=\"main_maintenance_bar\">
+             $maintenance_message
+          </div>
+     
+          <div id=\"main_portrait_and_username\">
+          <div id=\"main_portrait\">
+            [im_portrait_or_anon_html $user_id Portrait]
+          </div>
+
+          <p id=\"main_username\">
+            Welcome, [im_name_from_user_id $user_id]
+          </p>
+          </div>
+     
+          $main_users_and_search
+          <div id=\"main_header_deco\"></div>
+       </div>  
+
+    </div>
+    "
 }
 
 
-ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head "" } } {
+ad_proc -public im_header { 
+    { -loginpage:boolean 0 }
+    { page_title "" } 
+    { extra_stuff_for_document_head "" } 
+} {
     The default header for ProjectOpen
 } {
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
+    set return_url [im_url_with_query]
 
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
@@ -930,27 +880,7 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
-    # --------------------------------------------------------
-    set search_form ""
-    if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
-	set search_form "
-	    <nobr>
-	      <form action=/intranet/search/go-search method=post name=surx>
-                <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
-	<!--
-                <select class=surx name=target>
-                  <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
-                  <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
-                  <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>
-                  <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
-                </select>
-	-->
-		<input type=hidden name=target value=content>
-                <input alt=go type=submit value=Go name='image'>
-              </form>
-	    </nobr>
-        "
-    }
+    set search_form [im_header_search_form]
 
     # Determine a pretty string for the type of user that it is:
     set user_profile "[_ intranet-core.User]"
@@ -971,45 +901,23 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     }
 
     append extra_stuff_for_document_head [im_stylesheet]
-    append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
+    append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\" type=\"text/javascript\"></script>\n"
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-    append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
     append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
 
     if {[llength [info procs im_amberjack_header_stuff]]} {
         append extra_stuff_for_document_head [im_amberjack_header_stuff]
     }
 
-    set extra_stuff_for_body "onLoad=\"javascript:initPortlet();\" "
-
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
 
     # Enable "Users Online" mini-component for OpenACS 5.1 only
-    set users_online_str ""
-
-    set proc "num_users"
-    set namespace "whos_online"
-
-    if {[string equal $proc [namespace eval $namespace "info procs $proc"]]} {
-	set num_users_online [lc_numeric [whos_online::num_users]]
-	if {1 == $num_users_online} { 
-	    set users_online_str "<A href=/intranet/whos-online>[_ intranet-core.lt_num_users_online_user]</A><BR>\n"
-	} else {
-	    set users_online_str "<A href=/intranet/whos-online>[_ intranet-core.lt_num_users_online_user_1]</A><BR>\n"
-	}
-    }
+    set users_online_str [im_header_users_online_str]
     
     set logout_pwchange_str "
-	<a href='/intranet/users/view?user_id=$user_id'>[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
-	<a href='/register/logout'>[_ intranet-core.Log_Out]</a> |
-	<a href=$change_pwd_url>[_ intranet-core.Change_Password]</a> 
+	<a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
+	<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> |
     "
-
-    # Disable who's online for "anonymous visitor"
-    if {0 == $user_id} {
-	set users_online_str ""
-	set logout_pwchange_str ""
-    }
 
     # --------------------------------------------------------
     # Header Plugins
@@ -1050,32 +958,118 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
         }
     }
 
-    return "
-[ad_header -focus $page_focus -extra_stuff_for_body $extra_stuff_for_body $page_title $extra_stuff_for_document_head]
-<div id=header_class>
-<table border=0 cellspacing=0 cellpadding=0 width='100%'>
-  <tr>
-    <td>[im_logo]</td>
-    <td>$plugin_left_html</td>
-    <td align=left valign=middle> 
-      <div id=whosonline_class>
-      <span class=small>
-        <nobr>$users_online_str</nobr>
-        <nobr>$user_profile: $user_name</nobr><br>
-        <nobr>$logout_pwchange_str</nobr>
-      </span>
+    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
+    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+
+    set page_url [im_component_page_url]
+
+    set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
+    set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
+
+    # TODO: logo check
+    set logo [im_logo]
+#    set logo "<span class=\"bracket\">\]</span>PROJECT-OPEN<span class=\"bracket\">\[</span>"
+
+    # Disable who's online for "anonymous visitor"
+    if {0 == $user_id} {
+	set users_online_str ""
+	set logout_pwchange_str ""
+    }
+
+    if {$loginpage_p} {
+       set header_buttons ""      
+    } else {
+       set header_buttons "
+      <div id=\"header_buttons\">
+         <div id=\"header_logout_tab\">
+            <div id=\"header_logout\">
+	       <a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>
+            </div>
+         </div>
+         <div id=\"header_settings_tab\">
+            <div id=\"header_settings\">
+               <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
+               $logout_pwchange_str
+               <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
+	       <a href=\"$add_comp_url\">$add_stuff_text</a>
+            </div>
+         </div>
       </div>
-    </td>
-    <td valign=middle align=right> 
-	$search_form 
-	$plugin_right_html
-    </TD>
-  </tr>
-</table>
-</div>
+       "
+    }
+
+    return "
+[ad_header $page_title $extra_stuff_for_document_head]
+<div id=\"monitor_frame\">
+   <div id=\"header_class\">
+      <div id=\"header_logo\">
+         $logo
+      </div>
+
+      <div id=\"header_plugin_left\">
+         $plugin_left_html
+      </div>
+
+      <div id=\"header_plugin_right\">
+         $plugin_right_html
+      </div>
+
+      $header_buttons   
+
+      <div id=\"header_skin_select\">
+         [_ intranet-core.Skin]: [im_skin_select_html $user_id [im_url_with_query]]
+      </div>   
+   </div>
 "
 }
 
+ad_proc -private im_header_users_online_str { } {
+    A string to display the number of online users
+} {
+    # Enable "Users Online" mini-component for OpenACS 5.1 only
+    set users_online_str ""
+
+    set proc "num_users"
+    set namespace "whos_online"
+
+    if {[string equal $proc [namespace eval $namespace "info procs $proc"]]} {
+	set num_users_online [lc_numeric [whos_online::num_users]]
+	if {1 == $num_users_online} { 
+	    set users_online_str "<A href=\"/intranet/whos-online\">[_ intranet-core.lt_num_users_online_user]</A><BR>\n"
+	} else {
+	    set users_online_str "<A href=\"/intranet/whos-online\">[_ intranet-core.lt_num_users_online_user_1]</A><BR>\n"
+	}
+    }
+
+    return $users_online_str
+
+}
+
+ad_proc -private im_header_search_form { } {
+    Search form for header of page
+} {
+    set user_id [ad_get_user_id]
+    set search_installed_p [llength [info procs im_package_search_id]]
+
+    if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
+	return "
+	      <form action=\"/intranet/search/go-search\" method=\"post\" name=\"surx\">
+                <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
+	<!--
+                <select class=surx name=target>
+                  <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
+                  <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
+                  <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>
+                  <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
+                </select>
+	-->
+		<input type=\"hidden\" name=\"target\" value=\"content\">
+                <input alt=\"go\" type=\"submit\" value=\"Go\" name=\"image\">
+              </form>
+        "
+    }
+    return ""
+}
 
 ad_proc -public im_header_emergency { page_title } {
     A header to display for error pages that do not have access to the DB
@@ -1096,7 +1090,7 @@ ad_proc -public im_header_emergency { page_title } {
 	  </tr>
 	</table>
 
-      <table border=0 cellspacing=0 cellpadding=0 width='100%'>
+      <table border=0 cellspacing=0 cellpadding=0 width=\"100%\">
         <TR> 
           <TD align=left> 
             <table border=0 cellspacing=0 cellpadding=3>
@@ -1112,7 +1106,7 @@ ad_proc -public im_header_emergency { page_title } {
         </TR>
         <TR>
           <td colspan=2 class=pagedesriptionbar>
-            <table cellpadding=1 width='100%'>
+            <table cellpadding=1 width=\"100%\">
               <tr>
                 <td class=pagedesriptionbar valign=middle> 
 	           $page_title
@@ -1137,20 +1131,15 @@ ad_proc -public im_footer {
     }
 
     return "
-      <div id=footer_klass>
-      <TABLE border=0 cellPadding=5 cellSpacing=0 width='100%'>
-        <TBODY> 
-          <TR>
-            <TD>[_ intranet-core.Comments] [_ intranet-core.Contact]: 
-          <A href='mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]'>
+    </div> <!-- monitor_frame -->
+    <div id=\"footer\">
+       [_ intranet-core.Comments] [_ intranet-core.Contact]: 
+       <a href=\"mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
           [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
-          </A> 
-           </TD>
-        </TR>
-      </TBODY>
-    </TABLE>
+       </a> 
     </div>
-  $amberjack_body_stuff</BODY>
+  $amberjack_body_stuff
+  </BODY>
 </HTML>
 "
 }
@@ -1159,17 +1148,30 @@ ad_proc -public im_footer {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.default.css"]
+    set user_id [ad_get_user_id]
+    set skin_name [im_skin_name [im_user_skin $user_id]]
+
+    if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
+	set skin_js $skin_name
+    } else {
+	set skin_js "default"
+    }
+
+    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_name.css"]
     set calendar_css ""
     if {[llength [info procs im_package_calendar_id]]} {
-	set calendar_css "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\">"
+	set calendar_css "<link rel=StyleSheet type=\"text/css\" href=\"/calendar/resources/calendar.css\">"
     }
 
     return "
-<link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/site-master.css\" media=all>
-<link rel=StyleSheet href=\"$system_css\" type=text/css media=screen>
+<link rel=StyleSheet type=\"text/css\" href=\"/resources/acs-subsite/site-master.css\" media=all>
 $calendar_css
-<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>
+<link rel=StyleSheet href=\"$system_css\" type=\"text/css\" media=\"screen\">
+<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\" type=\"text/javascript\"></script>
+
+<script src=\"/intranet/js/rounded_corners.inc.js\" language=\"javascript\" type=\"text/javascript\"></script>
+<script src=\"/intranet/js/jquery-1.2.1.min.js\" language=\"javascript\" type=\"text/javascript\"></script>
+<script src=\"/intranet/js/style.$skin_js.js\" language=\"javascript\" type=\"text/javascript\"></script>
 "
 
 # <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
@@ -1182,10 +1184,21 @@ $calendar_css
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
-    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" "/intranet/images/project_open.38.10frame.gif"]
+    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" ""]
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
     
-    return "\n<a href=\"$system_logo_link\"><img src=$system_logo border=0></a>\n"
+    if {[string equal $system_logo ""]} {
+	set user_id [ad_get_user_id]
+	set skin_name [im_skin_name [im_user_skin $user_id]]
+	
+	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
+	    set system_logo "/intranet/images/logo.$skin_name.gif"
+	} else {
+	    set system_logo "/intranet/images/logo.default.gif"
+	}
+    }
+
+    return "\n<a href=\"$system_logo_link\"><img src=\"$system_logo\" alt=\"intranet logo\"></a>\n"
 }
 
 
@@ -1267,7 +1280,7 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
 
     set query_args [export_ns_set_vars url $vars_to_ignore_list]
     if { ![empty_string_p $query_args] } {
-	append url "$query_args&"
+	append url "$query_args&amp;"
     }
     
     set html_list [list]
@@ -1278,28 +1291,37 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
 	} elseif { [string compare $l $letter] == 0 } {
 	    lappend html_list "<b>$l</b>"
 	} else {
-	    lappend html_list "<a href=${url}letter=$l>$l</a>"
+	    lappend html_list "<a href=\"${url}letter=$l\">$l</a>"
 	}
     }
     if { [empty_string_p $letter] || [string compare $letter "all"] == 0 } {
 	lappend html_list "<b>[_ intranet-core.All]</b>"
     } else {
-	lappend html_list "<a href=${url}letter=all>All</a>"
+	lappend html_list "<a href=\"${url}letter=all\">All</a>"
     }
     if { [string compare $letter "scroll"] == 0 } {
 	lappend html_list "<b>[_ intranet-core.Scroll]</b>"
     } else {
-	lappend html_list "<a href=${url}letter=scroll>[_ intranet-core.Scroll]</a>"
+	lappend html_list "<a href=\"${url}letter=scroll\">[_ intranet-core.Scroll]</a>"
     }
     return [join $html_list " | "]
 }
 
-ad_proc im_alpha_bar { target_url default_letter bind_vars} {
+ad_proc im_alpha_bar { 
+    {-prev_page_url ""}
+    {-next_page_url ""}
+    target_url 
+    default_letter 
+    bind_vars} {
     Returns a horizontal alpha bar with links
 } {
     set alpha_list [im_all_letters_lowercase]
     set alpha_list [linsert $alpha_list 0 All]
     set default_letter [string tolower $default_letter]
+
+    if {[string equal "none" $default_letter]} { 
+	return "&nbsp;" 
+    }
 
     ns_set delkey $bind_vars "letter"
     set params [list]
@@ -1311,20 +1333,30 @@ ad_proc im_alpha_bar { target_url default_letter bind_vars} {
 	    lappend params "$key=[ns_urlencode $value]"
 	}
     }
-    set param_html [join $params "&"]
+    set param_html [join $params "&amp;"]
 
-    set html "&nbsp;"
+    set html "<ul id=\"alphabar\">"
+
+    if {![string equal $prev_page_url ""]} {
+	append html "<li><a href=\"$prev_page_url\">&lt;&lt</a></li>"
+    }
+
     foreach letter $alpha_list {
 	set letter_key "intranet-core.[lang::util::suggest_key $letter]"
 	set letter_trans [lang::message::lookup "" $letter_key $letter]
 	if {[string equal $letter $default_letter]} {
-	    append html "<font color=white>$letter_trans</font> &nbsp; \n"
+	    append html "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$letter_trans</a></div></li>\n"
 	} else {
-	    set url "$target_url?letter=$letter&$param_html"
-	    append html "<A HREF=$url>$letter_trans</A>&nbsp;\n"
+	    set url "$target_url?letter=$letter&amp;$param_html"
+	    append html "<li class=\"unselected\"><a href=\"$url\">$letter_trans</a></li>\n"
 	}
     }
-    append html ""
+
+    if {![string equal $next_page_url ""]} {
+	append html "<li><a href=\"$next_page_url\">&gt;&gt</a></li>"
+    }
+
+    append html "</ul>"
     return $html
 }
 
@@ -1526,4 +1558,115 @@ ad_proc -public im_html_textarea_wrap  { } {
 } {
     return "soft"
 }
+
+ad_proc -public im_box_header { 
+    title 
+    {icons ""}
+} {
+} {
+     return " 
+        <div class=\"component\">
+          <div class=\"component_header_rounded\" >
+
+            <div class=\"component_header\">
+	      <div class=\"component_title\">$title</div>
+              <div class=\"component_icons\">
+                $icons
+              </div>
+              <div class=\"component_clear\"></div>
+            </div>
+	  </div>
+          <div class=\"component_body\">"
+}
+
+ad_proc -public im_box_footer {} {
+} {
+    return "
+          </div>
+          <div class=\"component_footer\">
+            <div class=\"component_footer_hack\"></div>
+          </div>
+        </div>"
+}
+
+ad_proc -public im_skin_list {} {
+} {
+
+    #     id name         displayname
+    return {
+	{ 0  "default"    "default" }
+	{ 1  "opus5"      "opus5" }
+    }
+}
+
+ad_proc -public im_skin_name { skin_id } {
+} {
+    foreach skin [im_skin_list] {
+	unlist $skin id name title
+
+	if {$id == $skin_id} {
+	    return $name
+	}
+    }
+
+    return "default"
+}
+
+ad_proc -public im_user_skin { user_id } {
+} {
+    set skin_present_p [util_memoize "db_string skin_present \"
+        select  count(*)
+	from	user_tab_columns
+        where   lower(table_name) = 'users'
+                and lower(column_name) = 'skin'
+    \""]
+
+    if {!$skin_present_p} {
+	return 0
+    }
+
+    return [util_memoize "im_user_skin_helper $user_id"]
+}
+
+ad_proc -public im_user_skin_helper { user_id } {
+    return [db_string person_skin "select skin from users where user_id=:user_id" -default 0]
+}
+
+ad_proc -public im_skin_select_html { user_id return_url } {
+} {
+    if {!$user_id} {
+	return ""
+    }
+
+    if {![string equal [ad_parameter -package_id [im_package_core_id] SystemCSS] ""]} {
+	return ""
+    }
+
+    set current_skin [im_user_skin $user_id]
+
+    set skin_select_html "
+       <form method=\"GET\" action=\"/intranet/users/select-skin\">
+       [export_form_vars return_url user_id]
+       <select name=\"skin\">
+    "
+    foreach skin [im_skin_list] {
+	unlist $skin id name fullname
+
+	set selected ""
+	if {$id == $current_skin} {
+	    set selected "selected=selected"
+	}
+    
+	append skin_select_html "<option value=$id $selected>$fullname</option>"
+    }
+    append skin_select_html "
+       </select>
+       <input type=submit value=\"[_ intranet-core.Change]\">
+       </form>
+    "
+    
+    return $skin_select_html
+}
+
+
 

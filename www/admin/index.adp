@@ -4,7 +4,7 @@
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td valign=top>
 
@@ -14,7 +14,7 @@
 	<A href="/doc/">OpenACS System & Developer Documentation</a><br>
 	Complete documentation of the OpenACS underlying platform.
       <li>
-	<A href="/intranet-filestorage/"><nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span> Documentation</a><br>
+	<A href="/intranet-filestorage/" class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span> Documentation</a><br>
 	Documentation of the OpenACS underlying platform.
 
     </ul>
@@ -67,8 +67,7 @@
       <li>
 	<A href="/admin/site-map/"><%= [lang::message::lookup "" intranet-core.OpenACS_Sitemap "OpenACS Sitemap"] %></A><br>
 	The Sitemap defines where modules are "mounted" on the server.
-	<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=b\
-randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved.
+	<span class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></span> packages are already mounted and shouldn't be moved.
       <li>
 	<A href=/cms/">Content Management Home</a><br>
 	This module is used as part of the Wiki and CRM packages.
@@ -97,7 +96,7 @@ randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved
 	  <a href=/intranet/admin/ltc-import/>Import data from LTC-Organiser</a><br>
 	  This wizard allows you to import data from the MS-Access 
 	  based LTC-Organiser into 
-	  <nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>.
+	  <span class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></span>.
 	  <br>&nbsp;<br>
 
 	<li>
@@ -124,7 +123,7 @@ randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved
 -->
 
   </td>
-  <td valign=top>
+  <td valign=top width="350px">
     <%= [im_component_bay right] %>
   </td>
 </tr>

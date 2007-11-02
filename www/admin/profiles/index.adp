@@ -14,7 +14,10 @@
 </tr>
 <tr>
   <td>
-    <li><a href="/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile">Add a new profile</a>
+    <ul>
+    <li><a
+    href="/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile">Add a new profile</a>
+    </ul>
   </td>
 </tr>
 </table>

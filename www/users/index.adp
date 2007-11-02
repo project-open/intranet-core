@@ -2,51 +2,53 @@
 <property name="title">@page_title@</property>
 <property name="context">@context_bar@</property>
 <property name="main_navbar_label">user</property>
+<property name="sub_navbar">@sub_navbar;noquote@</property>
 
-<table cellspacing=0 cellpadding=0>
-<tr valign=top>
-  <td>
+<div class="filter-list">
+   <div class="filter">
+      <div class="filter-block">
+        <div class="filter-title">
+	    #intranet-core.Filter_Users#
+        </div>
+
 	<form method=get action='/intranet/users/index' name=filter_form>
 	<%= [export_form_vars start_idx order_by how_many letter] %>
 	<input type=hidden name=view_name value="user_list">
-	<table border=0 cellpadding=0 cellspacing=0>
-	<tr valign=top>
-	  <td colspan='2' class=rowtitle align=center>
-	    #intranet-core.Filter_Users#
-	  </td>
-	</tr>
+	<table>
 	<tr>
-	  <td>#intranet-core.User_Types#  &nbsp;</td>
-	  <td>
+	  <td class="form-label">#intranet-core.User_Types#  &nbsp;</td>
+	  <td class="form-widget">
 	    <%= [im_select user_group_name $user_types ""] %>
 	    <input type=submit value=Go name=submit>
 	  </td>
 	</tr>
 	</table>
 	</form>
-  </td>
 
+      </div>
 <if @admin_html@ ne "">
+      <div class="filter-block">
+         <div class="filter-title">
+            #intranet-core.Admin_Users#
+         </div>
+         <ul>
+         @admin_html;noquote@
+         </ul>
+      </div>
+</if>
 
-  <td>&nbsp;</td>
+      </div>
+   </div> <!-- filter -->
 
-  <td valign=top>
-    <table border=0 cellpadding=0 cellspacing=0>
-    <tr valign=top>
-      <td class=rowtitle align=center>
-        #intranet-core.Admin_Users#
-      </td>
-    </tr>
-    <tr valign=top>
-      <td>
-        @admin_html;noquote@
-      </td>
-    </tr>
-    </table>
-  </td>
+   <div class="fullwidth-list">
+      <%= [im_box_header $page_title $list_icons] %>
+         <table>
+            <%= $table_header_html %>
+            <%= $table_body_html %>
+            <%= $table_continuation_html %>
+         </table>
+     <%= [im_box_footer] %>
+   </div>
+   <div class="filter-list-footer"></div>
 
-<endif>
-
-</tr>
-</table>
-@page_body;noquote@
+</div>

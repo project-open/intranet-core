@@ -4,14 +4,10 @@
 
 <!-- left - right - bottom  design -->
 
-<img src="/intranet/images/cleardot.gif" width=2 height=2>
-<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-  <td valign=top width='50%'>
-
-   <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-     <tr><td colspan=2 class=tableheader>Company Information</td></tr>
-     <tr><td>
+  <td valign="top" width="50%">
+     <%= [im_box_header "Company Information"] %>
         <table>
         @left_column;noquote@
         <if @dynamic_fields_p@>
@@ -19,15 +15,11 @@
         </if>
 	@left_column_action;noquote@
         </table>
-      </td></tr>
-    </table>
-
-    <img src="/intranet/images/cleardot.gif" width=2 height=2>
-
+    <%= [im_box_footer] %>
     <%= [im_component_bay left] %>
   </td>
-  <td width=2>&nbsp;</td>
-  <td valign=top>
+  <td width="2">&nbsp;</td>
+  <td valign="top">
 
     @projects_html;noquote@
     @company_members_html;noquote@
@@ -40,7 +32,7 @@
 </tr>
 </table>
 
-<table cellpadding=0 cellspacing=0 border=0 width='100%'>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr><td>
   <%= [im_component_bay bottom] %>
 </td></tr>

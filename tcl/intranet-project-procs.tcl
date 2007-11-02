@@ -942,13 +942,13 @@ order by
 	if {!$show_empty_project_list_p} { return "" }
 
 	set table_body_html "
-	    <tr><td colspan=$colspan><ul><li><b> 
+	    <tr><td colspan=\"$colspan\"><ul><li><b> 
 	    There are currently no projects matching the selected criteria
 	    </b></ul></td></tr>
 	"
     }
     return "
-	<table width=100% cellpadding=2 cellspacing=2 border=0>
+	<table width=\"100%\" cellpadding=2 cellspacing=2 border=0>
 	  $table_header_html
 	  $table_body_html
 	</table>

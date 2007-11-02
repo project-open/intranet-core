@@ -1,23 +1,7 @@
 <master src="../master">
 <property name="title">@page_title@</property>
 <property name="main_navbar_label">projects</property>
-
-
-<%
-set menu_label "project_summary"
-# ad_return_complaint 1 "'$menu_label'"
-switch $view_name {
-    "files" { set menu_label "project_files" }
-    "finance" { set menu_label "project_finance" }
-    default { set menu_label "project_summary" }
-}
-%>
-
-<br>
-<%= [im_sub_navbar $parent_menu_id $bind_vars "" "pagedesriptionbar" $menu_label] %>
-
-
-<img src="/intranet/images/cleardot.gif" width=2 height=2>
+<property name="sub_navbar">@sub_navbar;noquote@</property>
 
 <!-- 
   There are two "views" on this page: "Summary" and "Files".
@@ -39,12 +23,8 @@ switch $view_name {
 	  <td width=2>&nbsp;</td>
 	  <td valign=top>
 
-	<table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-	<tr>
-	   <td class=tableheader align=left width='99%'><%= [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"] %></td>
-	</tr>
-	<tr>
-	  <td class=tablebody><font size=-1>
+	  <%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
+  	     
 
 <if @subproject_filtering_enabled_p@>
 		<table>
@@ -102,9 +82,8 @@ switch $view_name {
 
 	    @admin_html_content;noquote@
 
-	</font></td>
-	</tr>
-	</table>
+
+            <%= [im_box_footer] %>
 
 	    <!-- Right Component Bay -->
 	    <%= [im_component_bay right] %>
@@ -140,6 +119,10 @@ switch $view_name {
 
 	<%= [im_component_insert "Project Translation Error Component"] %>
 	<%= [im_component_insert "Project Translation Task Status"] %>
+
+<% } elseif {[string equal "component" $view_name]} { %>
+
+   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
 
 <% } %>
 

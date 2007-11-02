@@ -1,8 +1,7 @@
 <master src="../master">
 <property name="title">#intranet-core.Users#</property>
 <property name="main_navbar_label">user</property>
-
-<%= $user_navbar_html %>
+<property name="sub_navbar">@user_navbar_html;noquote@</property>
 
 <!-- left - right - bottom  design -->
 
@@ -12,9 +11,8 @@
 <tr>
   <td valign=top width='50%'>
 
-    <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-     <tr><td colspan=2 class=tableheader>Basic Information</td></tr>
-     <tr><td>
+    <%= [im_box_header "Basic Information"] %>     
+
         <table>
     
     <%= $user_basic_info_html %>
@@ -26,31 +24,14 @@
 
 	</table>
 
+    <%= $user_basic_skin_html %>
+
     <%= $user_l10n_html %>
 
-      </td></tr>
-    </table>
+    <%= [im_box_footer] %>
 
-    <img src="/intranet/images/cleardot.gif" width=2 height=2>
-
-    <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-    <tr><td colspan=2 class=tableheader>Contact Information</td></tr>
-    <tr><td>
-    <%= $contact_html %>
-    </td></tr>
-    </table>
-
-    <img src="/intranet/images/cleardot.gif" width=2 height=2>
-
-    <table cellpadding=2 cellspacing=0 border=1 frame=void width='100%'>
-    <tr><td colspan=2 class=tableheader>Administration</td></tr>
-    <tr><td>
-    <%= $admin_links %>
-    </td></tr>
-    </table>
-
-    <img src="/intranet/images/cleardot.gif" width=2 height=2>
-
+    <%= [im_table_with_title "Contact Information" $contact_html] %>
+    <%= [im_table_with_title "Administration" $admin_links] %>
     <%= [im_component_bay left] %>
 
   </td>

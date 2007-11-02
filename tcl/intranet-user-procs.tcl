@@ -271,14 +271,14 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 
 	# Allow to approve non-approved members
 	set approve_link ""
-	if {"approved" != $member_state} { set approve_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+	if {"approved" != $member_state} { set approve_link "<a href=\"/acs-admin/users/member-state-change?member_state=approved&amp;[export_url_vars user_id return_url]\">[_ intranet-core.activate]</a>"
 	}
 
 	append rows_html "
 <tr $bgcolor([expr $ctr % 2])>
   <td>$creation_date</td>
-  <td><A href=$user_view_page?user_id=$user_id>$name</A></td>
-  <td><A href=mailto:$email>$email_breakable</A></td>
+  <td><A href=\"$user_view_page?user_id=$user_id\">$name</A></td>
+  <td><A href=\"mailto:$email\">$email_breakable</A></td>
   <td>$member_state $approve_link</td>
 </tr>
 "
@@ -297,7 +297,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 $rows_html
 <tr class=rowblank align=right>
   <td colspan=5>
-    <a href=/intranet/users/index?view_name=user_community&user_group_name=all&order_by=Creation>[_ intranet-core.more]</a>
+    <a href=\"/intranet/users/index?view_name=user_community&amp;user_group_name=all&amp;order_by=Creation\">[_ intranet-core.more]</a>
   </td>
 </tr>
 </table>
@@ -321,9 +321,9 @@ ad_proc im_print_employee {person rowspan} "print function for org chart" {
 
 # Removed job title display
 #	if { $rowspan>=2 } {
-#	    return "<a href=/intranet/users/view?[export_url_vars user_id]>$employee_name</a><br><i>$job_title</i>\n"
+#	    return "<a href=\"/intranet/users/view?[export_url_vars user_id]\">$employee_name</a><br><i>$job_title</i>\n"
 #	} else {
-	    return "<a href=/intranet/users/view?[export_url_vars user_id]>$employee_name</a><br>\n"
+	    return "<a href=\"/intranet/users/view?[export_url_vars user_id]\">$employee_name</a><br>\n"
 #	}
     } else {
 	return "<i>[_ intranet-core.Position_Vacant]</i>"

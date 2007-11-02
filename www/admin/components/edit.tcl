@@ -114,10 +114,16 @@ set page_body "
     <TD>Title TCL</TD>
     <TD><textarea name=title_tcl cols=60 rows=5>$title_tcl</textarea></TD>
   </TR>
-  <TR class=roweven>
+  <TR class=rowodd>
     <TD>Component TCL</TD>
     <TD><textarea name=component_tcl cols=60 rows=10>$component_tcl</textarea></TD>
   </TR>
+  <TR class=roweven>
+    <TD>Menu Name</TD>
+    <TD><input type=text name=menu_name value=$menu_name></TD></TR>
+  <TR class=rowodd>
+    <TD>Menu Sort Order</TD>
+    <TD><input type=text name=menu_sort_order value=$menu_sort_order></TD></TR>
 
 </TBODY>
 </TABLE>

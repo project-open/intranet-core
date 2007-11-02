@@ -81,6 +81,8 @@ create table im_component_plugins (
                                 constraint im_comp_plugin_enabled_ck
                                 check (enabled_p in ('t','f')),
 				-- Make sure there are no two identical
+	menu_name		varchar(50) default null, -- for menu bar display
+	menu_sort_order		integer not null default 0,		
 		constraint im_component_plugins_un
 		unique (plugin_name, package_name)
 );

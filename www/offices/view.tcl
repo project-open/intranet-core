@@ -121,9 +121,6 @@ set office_html "
 <input type=\"hidden\" name=\"form:id\" value=\"[_ intranet-core.office_info]\" />
 
 <table cellpadding=1 cellspacing=1 border=0>
-  <tr> 
-    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Office_Information]</td>
-  </tr>
 "
 
 set ctr 1

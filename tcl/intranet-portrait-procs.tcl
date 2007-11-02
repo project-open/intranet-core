@@ -203,26 +203,14 @@ ad_proc -public im_random_employee_component { } {
     return $portrait_html
 }
 
-# ----------------------------------------------------------------------
-# Portrait Component
-# ----------------------------------------------------------------------
-
-ad_proc im_portrait_component { user_id return_url read write admin} {
-    Show the portrait and a short bio (comments) about a user
+ad_proc im_portrait_html { user_id {portrait_alt ""} } {
+    Return html to display portrait of the user
 } {
-    if {!$read} { return ""}
-
-    set current_user_id [ad_get_user_id]
-    set subsite_url [subsite::get_element -element url]
-    set export_vars [export_url_vars user_id return_url]
-
-    set portrait_alt "Portrait"
     set user_fs_url "/intranet/download/user/$user_id"
-    set portrait_p 0
-    set portrait_gif ""
-    set description ""
 
-    # ------------ Check if there is a portrait in the FS --------
+    set portrait_gif ""
+
+   # ------------ Check if there is a portrait in the FS --------
     set portrait_file [im_portrait_user_file $user_id]
     if {"" != $portrait_file} {
 	set portrait_gif "<img  src=\"$user_fs_url/$portrait_file\" alt=\"$portrait_alt\" title=\"$portrait_alt\" >"
@@ -273,17 +261,46 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
     }
 
 
-    # ------------ Set anonymous portrait  --------
+    return $portrait_gif
+}
+
+ad_proc im_portrait_or_anon_html { user_id portrait_alt } {
+    set portrait_gif [im_portrait_html $user_id $portrait_alt]
     if {"" == $portrait_gif} {
 	set portrait_gif [im_gif anon_portrait $portrait_alt]
+    }
+    
+    return $portrait_gif
+}
+
+# ----------------------------------------------------------------------
+# Portrait Component
+# ----------------------------------------------------------------------
+
+ad_proc im_portrait_component { user_id return_url read write admin} {
+    Show the portrait and a short bio (comments) about a user
+} {
+    if {!$read} { return ""}
+
+    set current_user_id [ad_get_user_id]
+    set subsite_url [subsite::get_element -element url]
+    set export_vars [export_url_vars user_id return_url]
+
+    set portrait_p 0
+    set portrait_gif [im_portrait_html $user_id "Portrait"]
+    set description ""
+
+    if {"" == $portrait_gif} {
+	set portrait_gif [im_gif anon_portrait "Portrait"]
 	set description "No portrait for this user."
 	if {$admin} { append description "<br>\n[_ intranet-core.lt_Please_upload_a_portr]"}
     }
-    
+     
     # ------------ Frame and admin  --------
-    set portrait_admin "
+    set portrait_admin "<ul>
 <li><a href=\"/intranet/users/portrait/upload?$export_vars\">[_ intranet-core.Upload_portrait]</a></li>
-<li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>\n"
+<li><a href=\"/intranet/users/portrait/erase?$export_vars\">[_ intranet-core.Delete_portrait]</a></li>
+</ul>\n"
 
     if {!$admin && !$write} { set portrait_admin "" }
 

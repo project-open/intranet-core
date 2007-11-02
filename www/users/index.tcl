@@ -180,9 +180,9 @@ set end_idx [expr $start_idx + $how_many - 1]
 set admin_html ""
 if {[im_permission $user_id "add_users"]} {
     append admin_html "
-	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a>
-        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
-	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a>
+	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
+        <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a></li>
+	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a></li>
     "
 }
 
@@ -203,7 +203,6 @@ db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
     append admin_html "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
 }
-
 
 
 # ---------------------------------------------------------------
@@ -596,18 +595,13 @@ if {"" != $admin_html && [db_table_exists spam_messages]} {
 # 10. Join all parts together
 # ---------------------------------------------------------------
 
-set page_body "
-<br>
-[im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
 
-<table width=100% cellpadding=2 cellspacing=2 border=0>
-  $table_header_html
-  $table_body_html
-  $table_continuation_html
-</table>"
+set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
 
 if {[im_permission $user_id "add_users"]} {
-    append page_body "<p><a href=/intranet/users/new>[_ intranet-core.Add_New_User]</a>\n"
+    set list_icons "<a href=/intranet/users/new>[_ intranet-core.Add_New_User]</a>\n"
+} else {
+    set list_icons "";
 }
 
 db_release_unused_handles
