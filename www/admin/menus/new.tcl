@@ -83,6 +83,9 @@ ad_form -extend -name menu -on_request {
 
     db_exec_plsql menu_insert {}
 
+    # Recalculate the menu hierarchy
+    im_menu_update_hierarchy
+
 } -edit_data {
 
     db_dml menu_update "
@@ -96,7 +99,11 @@ ad_form -extend -name menu -on_request {
 	        visible_tcl	= :visible_tcl
 	where
 		menu_id = :menu_id
-"
+    "
+
+    # Recalculate the menu hierarchy
+    im_menu_update_hierarchy
+
 } -on_submit {
 
 	ns_log Notice "new1: on_submit"
