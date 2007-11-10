@@ -18,6 +18,69 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+
+ad_proc -public im_menu_update_hierarchy { 
+    
+} {
+    Reprocesses the menu hierarchy to calculate the right menu codes
+} {
+    # Reset all tree_sortkey to null to indicate that the menu_items
+    # need to be "processed"
+    db_dml reset_menu_hierarchy "
+        update im_menus
+        set tree_sortkey = null
+    "
+
+    # Prepare the top menu
+    set start_menu_id [db_string start_menu_id "select menu_id from im_menus where label='top'" -default 0]
+    db_dml update_top_menu "update im_menus set tree_sortkey='.' where menu_id = :start_menu_id"
+
+    set maxlevel 9
+    set chars "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
+    set continue 1
+    set level 0
+    while {$continue && $level < $maxlevel} {
+        set continue 0
+        # Get all menu items that have not been processed yet
+        # (tree_sortkey is null) with parents that have been
+        # processed already (tree_sortkey is not null)
+        set sql "
+	        select
+	                m.menu_id,
+	                mm.menu_id as parent_id,
+	                mm.tree_sortkey as parent_sortkey
+	        from
+	                im_menus m,
+	                im_menus mm
+	        where
+	                m.parent_menu_id = mm.menu_id
+	                and m.tree_sortkey is null
+	                and mm.tree_sortkey is not null
+        "
+
+        set ctr 0
+        db_foreach update_menus $sql {
+
+            # the new tree_sortkey is the parents tree_sortkey plus a
+            # current letter starting with "A", "B", ...
+            set tree_sortkey "$parent_sortkey[string range $chars $ctr $ctr]"
+
+            db_dml update_menu "update im_menus set tree_sortkey=:tree_sortkey where menu_id=:menu_id"
+            incr ctr
+            set continue 1
+        }
+
+        incr level
+    }
+}
+
+
+    return ""
+}
+
+
+
+
 ad_proc -public im_menu_parent_options { {include_empty 0} } {
     Returns a list of all menus,
     ordered and indented according to hierarchy.
