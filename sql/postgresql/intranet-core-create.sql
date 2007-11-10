@@ -458,6 +458,8 @@ END;' language 'plpgsql';
 
 -- ------------------------------------------------------------------
 -- Special dereferencing function for green-yellow-red traffic light
+--
+-- ToDo: Move to specific module
 -- ------------------------------------------------------------------
 
 -- Return a suitable GIF for traffic light status display
