@@ -75,12 +75,6 @@ ad_proc -public im_menu_update_hierarchy {
 }
 
 
-    return ""
-}
-
-
-
-
 ad_proc -public im_menu_parent_options { {include_empty 0} } {
     Returns a list of all menus,
     ordered and indented according to hierarchy.
