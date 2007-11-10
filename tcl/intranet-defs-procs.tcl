@@ -1687,30 +1687,66 @@ ad_proc -public im_ad_hoc_query {
     {-format plain}
     {-border 0}
     {-col_titles {} }
+    {-translate_p 1 }
+    {-package_key "intranet-core" }
     sql
 } {
-    Ad-hoc execution of SQL-Queries
-    Format for browser "pre" display
+    Ad-hoc execution of SQL-Queries.
+    @format "plain" or "hmtl" - select the output format. Default is "plain".
+    @border Table border for HTML output
+    @col_titles Optional titles for columns. Normally, columns are taken directly
+                from the SQL query and passed through the localization subsystem.
+    @translate_p Should the columns be translated?
+    @package_key Default package for translated columns
 } {
-    set lol [db_list_of_lists ad_hoc_query $sql]
     set result ""
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
 
-    set header ""
-    if {"" != $col_titles} {
-	foreach title $col_titles {
-	    switch $format {
-		plain {	append header "$title\t" }
-		html {	
-		    append header "<th>$title</th>" 
+    # ---------------------------------------------------------------
+    # Execute the report. As a result we get:
+    #       - bind_rows with list of columns returned and
+    #       - lol with the result set
+    
+    set err [catch {
+	db_with_handle db {
+	    set selection [db_exec select $db query $sql]
+	    set lol [list]
+	    while { [db_getrow $db $selection] } {
+		set bind_rows [ad_ns_set_keys $selection]
+		set this_result [list]
+		for { set i 0 } { $i < [ns_set size $selection] } { incr i } {
+		    lappend this_result [ns_set value $selection $i]
 		}
+		lappend lol $this_result
 	    }
 	}
-	switch $format {
-	    plain { set header $header }
-	    html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
+	db_release_unused_handles
+    } err_msg]
+    
+    if {$err} {
+	ad_return_complaint 1 "<b>Error executing sql statement</b>:
+        <pre>$sql</pre>
+        <pre>$err_msg</pre>\n"
+	ad_script_abort
+    }
+
+
+    if {"" == $col_titles} { set col_titles $bind_rows }
+    set header ""
+    foreach title $col_titles {
+	if {$translate_p} { 
+	    regsub -all " " $title "_" title_key
+	    set title [lang::message::lookup "" ${package_key}.im_ad_hoc_query_col__$title [string tolower $title_key]]
 	}
+	switch $format {
+	    plain { append header "$title\t" }
+	    html { append header "<th>$title</th>" }
+	}
+    }
+    switch $format {
+	plain { set header $header }
+	html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
     }
 
     set row_count 1
