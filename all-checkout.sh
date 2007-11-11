@@ -87,6 +87,7 @@ cvs checkout -r b3-3-patches intranet-reporting
 cvs checkout -r b3-3-patches intranet-reporting-cubes
 cvs checkout -r b3-3-patches intranet-reporting-dashboard
 cvs checkout -r b3-3-patches intranet-reporting-finance
+cvs checkout -r b3-3-patches intranet-reporting-indicators
 cvs checkout -r b3-3-patches intranet-reporting-translation
 cvs checkout -r b3-3-patches intranet-reporting-tutorial
 # cvs checkout -r b3-3-patches intranet-riskmanagement
