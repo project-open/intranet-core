@@ -996,6 +996,11 @@ ad_proc -public im_header {
        "
     }
 
+    set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
+    if {$header_skin_select != ""} {
+	set header_skin_select "[_ intranet-core.Skin]: $header_skin_select"
+    }
+
     return "
 [ad_header $page_title $extra_stuff_for_document_head]
 <div id=\"monitor_frame\">
@@ -1015,7 +1020,7 @@ ad_proc -public im_header {
       $header_buttons   
 
       <div id=\"header_skin_select\">
-         [_ intranet-core.Skin]: [im_skin_select_html $user_id [im_url_with_query]]
+         $header_skin_select
       </div>   
    </div>
 "
@@ -1592,8 +1597,9 @@ ad_proc -public im_skin_list {} {
 
     #     id name         displayname
     return {
-	{ 0  "default"    "default" }
-	{ 1  "opus5"      "opus5" }
+	{ 0  "default"       "default" }
+	{ 1  "opus5"         "opus5" }
+	{ 2  "left"          "left" }
     }
 }
 

@@ -1,0 +1,16 @@
+@import url("style.default.css");
+
+.fullwidth-list {
+   margin-left: 260px;
+   margin-right: 0px;
+}
+
+.filter {
+   position: absolute;
+   left: 0px;
+}
+
+.filter-button {
+   position: absolute;
+   right: 2px;
+}

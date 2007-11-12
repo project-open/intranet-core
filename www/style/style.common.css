@@ -1,0 +1,32 @@
+
+/* global settings */
+
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.nobr {
+   white-space: nowrap
+}
+
+ul, ol {
+   padding-left: 2em;
+}
+
+/* header area */
+
+#header_settings_tab {
+   position: absolute;
+   top: 0px;
+   right: 6em;
+}
+
+#header_logout_tab {
+   position: absolute;
+   right: 0px;
+   top: 0px;
+   width: 6em;
+}
+
+

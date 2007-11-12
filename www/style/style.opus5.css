@@ -1,11 +1,4 @@
-* {
-  padding: 0px;
-  margin: 0px;
-}
-
-.nobr {
-   white-space: nowrap
-}
+@import url(style.common.css);
 
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
@@ -60,7 +53,6 @@ a {
 }
 
 #header_settings_tab {
-   float: right;
    background: #000000;
 }
 
@@ -80,9 +72,7 @@ a {
 }
 
 #header_logout_tab {
-   float: right;
    background: #7aa054;
-   width: 6em;
 }
 
 #header_logout {
@@ -94,7 +84,6 @@ a {
    padding-right: 1em;
 
 }
-
 
 #header_logo {
   position: relative;

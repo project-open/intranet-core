@@ -1,15 +1,4 @@
-* {
-  padding: 0px;
-  margin: 0px;
-}
-
-.nobr {
-   white-space: nowrap
-}
-
-ul, ol {
-   padding-left: 2em;
-}
+@import url(style.common.css);
 
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
@@ -64,7 +53,6 @@ a {
 }
 
 #header_settings_tab {
-   float: right;
    background: #330033;
 }
 
@@ -85,9 +73,7 @@ a {
 }
 
 #header_logout_tab {
-   float: right;
    background: #336699;
-   width: 6em;
 }
 
 #header_logout {
