@@ -141,6 +141,11 @@ declare
 
 	v_plugin_id	im_component_plugins.plugin_id%TYPE;
 begin
+	select plugin_id into v_plugin_id
+	from im_component_plugins
+	where plugin_name = p_plugin_name and package_name = p_package_name;
+	IF v_plugin_id is not null THEN return v_plugin_id; END IF;
+
 	v_plugin_id := acs_object__new (
 		p_plugin_id,	-- object_id
 		p_object_type,	-- object_type
@@ -162,6 +167,54 @@ begin
 
 	return v_plugin_id;
 end;' language 'plpgsql';
+
+
+create or replace function im_component_plugin__new (
+	integer, varchar, timestamptz, integer, varchar, integer, 
+	varchar, varchar, varchar, varchar, varchar, integer, 
+	varchar
+) returns integer as '
+declare
+	p_plugin_id	alias for $1;	-- default null
+	p_object_type	alias for $2;	-- default ''acs_object''
+	p_creation_date	alias for $3;	-- default now()
+	p_creation_user	alias for $4;	-- default null
+	p_creation_ip	alias for $5;	-- default null
+	p_context_id	alias for $6;	-- default null
+
+	p_plugin_name	alias for $7;
+	p_package_name	alias for $8;
+	p_location	alias for $9;
+	p_page_url	alias for $10;
+	p_view_name	alias for $11;	-- default null
+	p_sort_order	alias for $12;
+	p_component_tcl	alias for $13;
+
+	v_plugin_id	im_component_plugins.plugin_id%TYPE;
+begin
+	v_plugin_id := im_component_plugin__new (
+		p_plugin_id,
+		p_object_type,
+		p_creation_date,
+		p_creation_user,
+		p_creation_ip,
+		p_context_id,
+
+		p_plugin_name,
+		p_package_name,
+		p_location,
+		p_page_url,
+		p_view_name,
+		p_sort_order,
+		p_component_tcl,
+		null
+	);
+
+	return v_plugin_id;
+end;' language 'plpgsql';
+
+
+
 
 -- Delete a single component
 create or replace function im_component_plugin__delete (integer) returns integer as '
