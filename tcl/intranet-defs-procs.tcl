@@ -75,6 +75,58 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
 }
 
 
+# ---------------------------------------------------------------
+# 
+# ------------------------------------------------------------------
+
+ad_proc im_csv_duplicate_double_quotes {arg} {
+    This proc duplicates double quotes so that the resulting
+    string becomes suitable to be written to a CSV file
+    according to the Microsoft Excel CSV conventions
+    @see ad_quotehtml
+} {
+    regsub -all {"} $arg {""} result
+    return $result
+}
+
+
+# ---------------------------------------------------------------
+# 
+# ------------------------------------------------------------------
+
+ad_proc im_csv_guess_separator { file } {
+    Returns the separator of the comma separated file
+    by determining the character frequency in the file
+} {
+    foreach char [split $file ""] {
+
+	# The the numeric character code for the character
+        scan $char "%c" code
+
+
+	if {[lsearch {";" "," "|" } $char] != -1} {
+
+            # Increment the respective counter
+            set count 0
+            if {[info exists hash($code)]} { set count $hash($code) }
+            set hash($code) [expr $count+1]
+	    
+        }
+    }
+    
+    set max_code ""
+    set max_count 0
+    foreach key [array names hash] {
+	if {$hash($key) > $max_count} {
+            set max_code $key
+            set max_count $hash($key)
+	}
+    }
+    
+    return [format "%c" $max_code]
+}
+
+
 # ------------------------------------------------------------------
 # CSV Line Parser
 # ------------------------------------------------------------------
@@ -1551,19 +1603,6 @@ ad_proc num_days_in_month {month {year 1999}} {
 	default { error "Month $month invalid. Must be in range 1 - 12." }
     }
 }
-
-# ---------------------------------------------------------------
-
-ad_proc im_csv_duplicate_double_quotes {arg} {
-    This proc duplicates double quotes so that the resulting
-    string becomes suitable to be written to a CSV file
-    according to the Microsoft Excel CSV conventions
-    @see ad_quotehtml
-} {
-    regsub -all {"} $arg {""} result
-    return $result
-}
-
 
 
 # ---------------------------------------------------------------

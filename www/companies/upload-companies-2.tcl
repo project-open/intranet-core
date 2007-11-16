@@ -33,13 +33,13 @@ ad_page_contract {
 #	2. Table Column
 #	3. Transformation Function
 
-set dynfield_trans_list {}
+set dynfield_transform_list {}
 
 # Define some hardcoded transformations until we've finished the
 # maintenance screens for database-configured transformations...
 switch $transformation_key {
     reinisch_customers {
-	set dynfield_trans_list {
+	set dynfield_transform_list {
 	    {"K_Nr"		"borg_customer_code"	"im_transform_trim"}
 	    {"Comercial"	"sales_rep_id"		"im_transform_email2user_id"}
 	}
@@ -84,23 +84,15 @@ set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 
 
+# Guess the separator from character frequency
+set separator [im_csv_guess_separator $csv_files]
 
-set separator ";"
-ns_log Notice "upload-companies-2: trying with separator=$separator"
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
 set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
-if {1 == $csv_header_len} {
-    # Probably got the wrong separator
-    set separator ","
-    ns_log Notice "upload-companies-2: changing to separator=$separator"
-    set csv_header_fields [im_csv_split $csv_header $separator]
-    set csv_header_len [llength $csv_header_fields]
-}
 
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
-
 
 
 
@@ -374,7 +366,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 
     # Example:  "Comercial" "sales_rep_id" im_transform_email2user_id
-    foreach trans $dynfield_trans_list {
+    foreach trans $dynfield_transform_list {
 	set excel_field [string tolower [lindex $trans 0]]
         set excel_field [string map -nocase {" " "_" "\"" "" "'" "" "/" "_" "-" "_" "\[" "(" "\{" "(" "\}" ")" "\]" ")"} $excel_field]
         set excel_field [im_mangle_unicode_accents $excel_field]

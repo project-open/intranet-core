@@ -132,10 +132,6 @@ end;' language 'plpgsql';
 -------------------------------------------------------------
 
 
-insert into im_categories(category_id, category, category_type)
-values (15000, 'Active', 'Intranet Report Status');
-
-
 CREATE OR REPLACE FUNCTION im_category_new (
 	integer, varchar, varchar
 ) RETURNS integer as '

@@ -144,25 +144,14 @@ set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
 
-set separator ";"
+set separator [im_csv_guess_separator $csv_files]
 
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
 set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
 
-
-if {$csv_header_len <= 1} {
-    # Probably got the wrong separator
-    set separator ","
-    ns_log Notice "upload-companies-2: changing to separator=$separator"
-    set csv_header_fields [im_csv_split $csv_header $separator]
-    set csv_header_len [llength $csv_header_fields]
-}
-
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
-
-
 
 
 # ------------------------------------------------------------
