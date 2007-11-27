@@ -911,11 +911,20 @@ ad_proc -public im_header {
 
     # Enable "Users Online" mini-component for OpenACS 5.1 only
     set users_online_str [im_header_users_online_str]
-    
+
+    set ldap_installed_p [db_string otp_installed "
+	select count(*) 
+	from apm_enabled_package_versions 
+	where package_key = 'intranet-ldap'
+    " -default 0]
+  
     set logout_pwchange_str "
 	<a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
-	<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> |
     "
+
+    if {!$ldap_installed_p} {
+	append logout_pwchange_str "<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> | "
+    }
 
     # --------------------------------------------------------
     # Header Plugins

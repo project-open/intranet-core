@@ -144,6 +144,12 @@ where
 }
 ns_log Notice "/users/new: user_id=$user_id, current_user_id=$current_user_id, email=$email"
 
+# Check if there is an LDAP support module installed
+set ldap_installed_p [db_string ldap_installed "
+	select count(*) 
+	from apm_enabled_package_versions 
+	where package_key = 'intranet-ldap'
+" -default 0]
 
 # ---------------------------------------------------------------
 # Continue with code from 
@@ -169,7 +175,7 @@ ad_form -extend -name register -form {
     {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
 }
 
-if {!$editing_existing_user} {
+if {!$editing_existing_user && !$ldap_installed_p} {
     ad_form -extend -name register -form {
 	{password:text(password),optional {label "[_ intranet-core.Password]"} {html {size 20}}} 
 	{password_confirm:text(password),optional {label "[_ intranet-core.lt_Password_Confirmation]"} {html {size 20}}} 
