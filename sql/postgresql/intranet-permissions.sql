@@ -440,6 +440,46 @@ select acs_privilege__create_privilege('view_budget_hours','View Budget Hours','
 select acs_privilege__add_child('admin', 'view_budget_hours');
 
 
+
+
+
+
+
+-- ----------------------------------------
+-- Add "require_manual_login" privilege
+
+create or replace function inline_0 ()
+returns integer as '
+declare
+        v_count                 integer;
+begin
+        select count(*) into v_count from acs_privileges
+        where privilege = ''require_manual_login'';
+        IF 0 != v_count THEN return 0; END IF;
+
+        PERFORM acs_privilege__create_privilege(
+                ''require_manual_login'',
+                ''Require manual login - dont allow auto-login'',
+                ''Require manual login - dont allow auto-login''
+        );
+        PERFORM acs_privilege__add_child(''admin'', ''require_manual_login'');
+
+    return 0;
+end;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+select im_priv_create('require_manual_login','P/O Admins');
+select im_priv_create('require_manual_login','Senior Managers');
+select im_priv_create('require_manual_login','Project Managers');
+select im_priv_create('require_manual_login','Accounting');
+
+
+
+
+
+
+
 -- Shortcut proc to setup loads of privileges.
 --
 create or replace function im_priv_create (varchar, varchar)

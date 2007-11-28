@@ -38,7 +38,8 @@ create table currency_codes (
 	supported_p	char(1) default 'f' 
 			constraint currency_codes_supported_check
 			check (supported_p in ('t','f')),
-	symbol		varchar(10)
+	symbol		varchar(10),
+	rounding_factor	integer default 100
 );
 
 

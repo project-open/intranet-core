@@ -197,7 +197,6 @@ if {"" != $wa_postal_code} { set address_postal_code $wa_postal_code }
 if {"" != $ha_country_code} { set address_country_code $ha_country_code }
 if {"" != $wa_country_code} { set address_country_code $wa_country_code }
 
-
 set update_sql "
 update im_offices set
 	office_name = :office_name,
