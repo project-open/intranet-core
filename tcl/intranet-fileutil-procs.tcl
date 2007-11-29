@@ -513,12 +513,14 @@ proc ::fileutil::cat {args} {
 	if {$size} {
 	    set content [read $fd $size]
 	    
-	    # Workaround: Make sure the file doesn't start with FF22
-	    set bad_prefix_bin [string range $binary_content 0 1]
-	    binary scan $bad_prefix_bin H* bad_prefix_hex
-	    if { "efbb" == $bad_prefix_hex } {
-		set content [string range $binary_content 3 end]
+	    # UTF-8 unicode files start with three extra characters. Shave them off.
+	    # They are not removed by the fconfigure statement...
+	    switch $encoding_hex {
+		fffe - efbb {
+		    set content [string range $binary_content 3 end]
+		}
 	    }
+
 	    append data $content
 
 	} else {
