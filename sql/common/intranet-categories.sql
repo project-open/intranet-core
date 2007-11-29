@@ -66,11 +66,8 @@
 -- 2200-2299	Intranet Experience Level
 -- 2300-2399	Intranet LOC Tools
 -- 2400-2419	Intranet Skill Weight
-
 -- 2420-2499	??
-
 -- 2500-2599	Translation Hierarchy
-
 -- 3000-3099    Intranet Cost Center Type
 -- 3100-3199    Intranet Cost Center Status
 -- 3200-3299    Intranet CRM Tracking
@@ -89,18 +86,14 @@
 -- 4400-4499    Intranet Trans RFQ
 -- 4500-4549    (reserved)
 -- 4550-4599    Intranet Project Type (extension)
-
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
-
 -- 6000-6999	Intranet RecruitingRecruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
-
 -- 9000-9499	Intranet Material
 -- 9500-9699	Intranet Timesheet Tasks
 -- 9700-9799	Intranet Cust-Baselkb
-
 -- 10000-10999	Intranet DynField
 
 -- Ugly: This range has been "polluted" because previous
@@ -124,10 +117,28 @@
 -- 15200-15299	Intranet Indicator Section
 -- 15300-15999	Intranet Report - Other (800)
 -- 16000-16999	Intranet Absences (1000)
--- 17000-17999	reserved (1000)
--- 18000-18999	reserved (1000)
--- 19000-19999	reserved (1000)
--- 20000-99999	reserved (80000)
+-- 17000-17999  Intranet Timesheet2 Workflow (1000)
+-- 18000-18999  Intranet Absences Workflow (1000)
+-- 19000-19999  Intranet Expenses Workflow  (1000)
+
+-- 20000-20999	reserved (1000)
+-- 21000-21999	reserved (1000)
+-- 22000-22999	reserved (1000)
+-- 23000-23999	reserved (1000)
+-- 24000-24999	reserved (1000)
+-- 25000-25999	reserved (1000)
+-- 26000-26999	reserved (1000)
+-- 27000-27999	reserved (1000)
+-- 28000-28999	reserved (1000)
+-- 29000-29999	reserved (1000)
+
+-- 30000-39999	reserved (10000)
+-- 40000-49999	reserved (10000)
+-- 50000-59999	reserved (10000)
+-- 60000-69999	reserved (10000)
+-- 70000-79999	reserved (10000)
+-- 80000-89999	reserved (10000)
+-- 90000-99999	reserved (10000)
 --100000-999999 reserved (900000)
 --1000000-9999999 reserved (9000000)
 
