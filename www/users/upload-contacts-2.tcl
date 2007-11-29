@@ -143,7 +143,6 @@ set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
-
 set separator [im_csv_guess_separator $csv_files]
 
 # Split the header into its fields
