@@ -366,23 +366,10 @@ if {$user_is_admin_p} {
 <li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 "}
 
+# Append user-defined menus
+set bind_vars [ad_tcl_vars_to_ns_set]
+append admin_html [im_menu_ul_list -no_uls 1 "companies_admin" $bind_vars]
 
-set parent_menu_sql "select menu_id from im_menus where label= 'companies_admin'"
-set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
-
-set menu_select_sql "
-        select  m.*
-        from    im_menus m
-        where   parent_menu_id = :parent_menu_id
-                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
-        order by sort_order"
-
-# Start formatting the menu bar
-set ctr 0
-db_foreach menu_select $menu_select_sql {
-    regsub -all " " $name "_" name_key
-    append admin_html "<li><a href=\"$url\">[_ $package_name.$name_key]</a></li>\n"
-}
 
 append admin_html "</ul>"
 

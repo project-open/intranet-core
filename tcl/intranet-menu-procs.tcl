@@ -50,7 +50,11 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
 }
 
 
-ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
+ad_proc -public im_menu_ul_list { 
+    {-no_uls 0}
+    parent_menu_label 
+    bind_vars 
+} {
     Returns all subitems of a menus as LIs, suitable
     to be added to index screens (costs) etc. 
 } {
@@ -89,7 +93,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 
 
     # Start formatting the menu bar
-    set result "<ul>\n"
+    if {!$no_uls} {set result "<ul>\n" }
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 
@@ -113,10 +117,9 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
         append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-invoices.$name_key $name]</a></li>\n"
 	incr ctr
     }
-    append result "</ul>\n"
+    if {!$no_uls} {set result "</ul>\n" }
 
     if {0 == $ctr} { set result "" }
-
     return $result
 }
 

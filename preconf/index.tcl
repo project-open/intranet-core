@@ -8,6 +8,9 @@ ad_page_contract {
     {return_url "/intranet/"}
 }
 
+set email_org $email
+set username_org $username
+
 # ------------------------------------------------------
 # Multirow
 # Users defined in the database

@@ -123,10 +123,29 @@
 -- 15100-15199	Intranet Report Type
 -- 15000-15999	Intranet Report - Other (800)
 -- 16000-16999	Intranet Absences (1000)
--- 17000-17999	reserved (1000)
--- 18000-18999	reserved (1000)
--- 19000-19999	reserved (1000)
--- 20000-99999	reserved (80000)
+-- 17000-17999  Intranet Timesheet2 Workflow (1000)
+-- 18000-18999  Intranet Absences Workflow (1000)
+-- 19000-19999  Intranet Expenses Workflow  (1000)
+
+-- 20000-20999  reserved (1000)
+-- 21000-21999  reserved (1000)
+-- 22000-22999  reserved (1000)
+-- 23000-23999  reserved (1000)
+-- 24000-24999  reserved (1000)
+-- 25000-25999  reserved (1000)
+-- 26000-26999  reserved (1000)
+-- 27000-27999  reserved (1000)
+-- 28000-28999  reserved (1000)
+-- 29000-29999  reserved (1000)
+
+-- 30000-39999  reserved (10000)
+-- 40000-49999  reserved (10000)
+-- 50000-59999  reserved (10000)
+-- 60000-69999  reserved (10000)
+-- 70000-79999  reserved (10000)
+-- 80000-89999  reserved (10000)
+-- 90000-99999  reserved (10000)
+
 --100000-999999 reserved (900000)
 --1000000-9999999 reserved (9000000)
 
