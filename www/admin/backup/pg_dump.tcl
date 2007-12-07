@@ -17,6 +17,7 @@ ad_page_contract {
     { user_id:integer 0}
     { auto_login "" }
     { download_p 0}
+    { gzip_p 0 }
 }
 
 # ------------------------------------------------------------
@@ -154,6 +155,11 @@ if { [catch {
                 </tt></ul>\n"
 	    }
 	    exec pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
+
+	    if {$gzip_p} {
+		exec gzip $dest_file
+		set dest_file "$dest_file.gz"
+	    }
 	}
     }
 
