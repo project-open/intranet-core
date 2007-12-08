@@ -3121,3 +3121,18 @@ ad_proc im_generic_table_component {
     set component_title [lang::message::lookup "" intranet-core.Generic_Table_Header_$table_name $table_name]
     return [im_table_with_title $component_title $result]
 }
+
+
+
+# ---------------------------------------------------------------
+# Cached version of db_table_exists
+# ---------------------------------------------------------------
+
+ad_proc im_table_exists { table_name } {
+    Cached version of db_table_exists
+} {
+    return [util_memoize "db_table_exists $table_name"]
+}
+
+
+
