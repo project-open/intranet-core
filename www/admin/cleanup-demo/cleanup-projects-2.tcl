@@ -51,10 +51,10 @@ ns_write "<ul>\n"
 
 foreach id $project_id {
 
-  ns_write "<li>Nuking project \#$id ...<br>\n"
+  ns_write "<li>Nuking project \#$id ...\n"
   set error [im_project_nuke $id]
   if {"" == $error} {
-      ns_write "... successful\n"
+      ns_write " successful\n"
   } else {
       ns_write "<font color=red>$error</font>\n"
   }
