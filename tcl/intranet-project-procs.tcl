@@ -1710,7 +1710,7 @@ ad_proc im_project_clone_files {parent_project_id new_project_id} {
 
 ad_proc im_project_nuke {project_id} {
     Nuke (complete delete from the database) a project
-} { #beginn of procedure body
+} {
     ns_log Notice "im_project_nuke project_id=$project_id"
     
     set current_user_id [ad_get_user_id]
@@ -1765,6 +1765,10 @@ ad_proc im_project_nuke {project_id} {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 
+	    # Delete Multiple-Values associated to this cost item ("Canned Notes")
+	    db_dml del_multi_values "delete from im_dynfield_attr_multi_value where object_id = :cost_id"
+
+	    # Delete references from im_hours to im_costs.
 	    db_dml hours_costs_link "update im_hours set cost_id = null where cost_id = :cost_id"
 
 	    # ToDo: Remove this.
