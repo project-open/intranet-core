@@ -26,5 +26,11 @@ if {0 == $user_id} {
 }
 
 set auto_login [im_generate_auto_login -user_id $user_id]
+set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
 
-ad_return_complaint 1 "<pre>user_id: $user_id\nauto_login: '$auto_login'</pre>"
+ad_return_complaint 1 "
+<pre>
+user_id: $user_id
+auto_login: '$auto_login'
+url: "${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/"
+</pre>"
