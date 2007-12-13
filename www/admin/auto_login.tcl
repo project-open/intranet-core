@@ -30,7 +30,9 @@ set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
 
 ad_return_complaint 1 "
 <pre>
-user_id: $user_id
-auto_login: '$auto_login'
-url: ${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/
+UserID: $user_id
+Auto Login: '$auto_login'
+Login Url: ${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/
+Backup Url: [export_vars -base "${system_url}intranet/auto-login" {user_id auto_login {url "/intranet/admin/backup/pg_dump?download_p=1&gzip=1"}}]
+
 </pre>"
