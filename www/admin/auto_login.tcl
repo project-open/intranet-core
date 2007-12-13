@@ -32,5 +32,5 @@ ad_return_complaint 1 "
 <pre>
 user_id: $user_id
 auto_login: '$auto_login'
-url: "${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/"
+url: ${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/
 </pre>"
