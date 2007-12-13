@@ -33,6 +33,5 @@ ad_return_complaint 1 "
 UserID: $user_id
 Auto Login: '$auto_login'
 Login Url: ${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/
-Backup Url: [export_vars -base "${system_url}intranet/auto-login" {user_id auto_login {url "/intranet/admin/backup/pg_dump?download_p=1&gzip=1"}}]
-
+Backup Url: [export_vars -base "${system_url}intranet/admin/backup/pg_dump" {user_id auto_login {download_p 1} {gzip_p 1}}]
 </pre>"
