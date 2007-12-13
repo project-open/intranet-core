@@ -24,6 +24,14 @@ ad_library {
 # -------------------------------------------------------------------
 # Add an alert to the database alert queue
 # -------------------------------------------------------------------
+
+ad_proc -public im_send_alert_to_system_owner {subject message} {
+    set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set current_user_id [ad_get_user_id]
+    ns_sendmail $system_owner_email $system_owner_email $subject $message
+}
+
+
 ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     Add a new alert to the queue for a specific user.
     The idea is to aggregate several alerts into a single email,

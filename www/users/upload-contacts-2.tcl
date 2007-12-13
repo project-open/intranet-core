@@ -18,6 +18,11 @@ ad_page_contract {
     Read a .csv-file with header titles exactly matching
     the data model and insert the data into "users" and
     "acs_rels".
+    
+    @param transformation_key Determins a number of additional fields
+           to import
+    @param create_dummy_email Set this for example to "@nowhere.com"
+           in order to create dummy emails for users without email.
 
     @author various@arsdigita.com
     @author frank.bergmann@project-open.com
@@ -26,6 +31,7 @@ ad_page_contract {
     upload_file
     profile_id
     { transformation_key "" }
+    { create_dummy_email "" }
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -306,6 +312,13 @@ foreach csv_line_fields $values_list_of_lists {
         We can not add users with an empty last name. Please correct the CSV file.<br>
         <pre>$pretty_field_string</pre>"
 	continue
+    }
+
+    # Create a dummy email if there was something set in the parameter:
+    if {"" == $e_mail_address && "" != $create_dummy_email} {
+	regsub -all { } $first_name "" first_name_nospace
+	regsub -all { } $last_name "" last_name_nospace
+	set e_mail_address "${first_name_nospace}.${last_name_nospace}${create_dummy_email}"
     }
 
     if {"" == $e_mail_address} {
