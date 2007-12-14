@@ -30,7 +30,7 @@ ad_page_contract {
     return_url
     upload_file
     profile_id
-    { transformation_key "" }
+    { transformation_key "eicom_employee_contacts" }
     { create_dummy_email "" }
 } 
 
@@ -64,6 +64,12 @@ set dynfield_trans_list {}
 # Define some hardcoded transformations until we've finished the
 # maintenance screens for database-configured transformations...
 switch $transformation_key {
+    eicom_employee_contacts {
+        set dynfield_trans_list {
+            {"Skype address"		"skype_nr"		"im_transform_trim"}
+	}
+    }
+
     reinisch_freelance_contacts {
         set dynfield_trans_list {
             {"user1"			"valoration"		"im_transform_trim"}

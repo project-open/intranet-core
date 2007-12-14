@@ -69,6 +69,7 @@ set table_header "
 <tr>
   <td class=rowtitle>Component</td>
   <td class=rowtitle>Package</td>
+  <td class=rowtitle>Enable</td>
   <td class=rowtitle>Pos</td>
   <td class=rowtitle>URL</td>
 "
@@ -98,8 +99,13 @@ set bind_vars [ns_set create]
 
 set component_select_sql "
 select
-${main_sql_select}
-	c.plugin_id, c.plugin_name, c.package_name, c.location, c.page_url
+	${main_sql_select}
+	c.plugin_id, 
+	c.plugin_name, 
+	c.package_name, 
+	c.location, 
+	c.page_url,
+	c.enabled_p
 from 
 	im_component_plugins c
 order by
@@ -119,6 +125,7 @@ db_foreach all_component_of_type $component_select_sql {
     </a>
   </td>
   <td>$package_name</td>
+  <td>$enabled_p</td>
   <td>$location</td>
   <td>$page_url</td>
 "

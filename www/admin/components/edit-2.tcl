@@ -28,6 +28,7 @@ ad_page_contract {
     plugin_id:naturalnum
     {sort_order:integer ""}
     {location ""}
+    {enabled_p ""}
     {page_url:trim ""}
     {title_tcl:allhtml ""}
     {component_tcl:allhtml ""}
@@ -48,6 +49,7 @@ if {"" != $title_tcl} { lappend updates "title_tcl = :title_tcl" }
 if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
 if {"" != $location} { lappend updates "location = :location" }
 if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
+if {"" != $enabled_p} { lappend updates "enabled_p = :enabled_p" }
 
 if {[llength $updates] > 0} {
     if [catch {
