@@ -150,6 +150,10 @@ foreach locale [array names translation] {
     }
 }
 
+# Remove all permission related entries in the system cache
+im_permission_flush
+
+
 # Emit a warning if the msg_key_len is > 24.
 if {$msg_key_len >= 24} {
     ad_return_complaint 1 "<b>Warning:</b>
@@ -160,6 +164,7 @@ if {$msg_key_len >= 24} {
     warning if you know what you are doing."
     return
 }
+
 
 db_release_unused_handles
 set select_category_type $category_type
