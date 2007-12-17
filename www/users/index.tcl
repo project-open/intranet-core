@@ -437,6 +437,7 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
 set sql "
 select
 	u.*,
+	p.*,
 	c.home_phone, c.work_phone, c.cell_phone, c.pager,
 	c.fax, c.aim_screen_name, c.msn_screen_name,
 	c.icq_number, c.m_address,
@@ -448,11 +449,12 @@ select
 	im_name_from_user_id(u.user_id) as name
 	$extra_select
 from 
+	persons p,
 	cc_users u
 	LEFT JOIN im_employees e ON (u.user_id = e.employee_id)
 	LEFT JOIN users_contact c ON (u.user_id = c.user_id)
 	$extra_from
-where	1=1
+where	u.user_id = p.person_id
 	$extra_where
 $extra_order_by
 "
