@@ -132,7 +132,7 @@ template::element::create $form_id project_name \
 
 template::element::create $form_id project_nr \
     -datatype text \
-    -label "[_ intranet-core.Project_]" \
+    -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
     -after_html "[im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
 

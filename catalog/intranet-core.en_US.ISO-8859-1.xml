@@ -177,12 +177,12 @@
   <msg key="City">City</msg>
   <msg key="Cleanup_All_Demo_Users">Cleanup all Demo Users</msg>
   <msg key="Cleanup_Demo_Users">Cleanup Demo Users</msg>
-  <msg key="Client">Client</msg>
-  <msg key="Client_Contacts">Client Contacts</msg>
-  <msg key="Client_Details">Client Details</msg>
-  <msg key="Client_Main_Office">Client Main Office</msg>
-  <msg key="Client_Type">Client Type</msg>
-  <msg key="Clients">Clients</msg>
+  <msg key="Client">Customer</msg>
+  <msg key="Client_Contacts">Customer Contacts</msg>
+  <msg key="Client_Details">Customer Details</msg>
+  <msg key="Client_Main_Office">Customer Main Office</msg>
+  <msg key="Client_Type">Customer Type</msg>
+  <msg key="Clients">Customers</msg>
   <msg key="Clone_Project">Clone this project</msg>
   <msg key="Clone_Project_Help">You can 'clone' a project in order to save time to setup a similar project.</msg>
   <msg key="Close">Close</msg>
@@ -201,7 +201,7 @@
   <msg key="company_employee">company employee</msg>
   <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
-  <msg key="Company_Project_Nr">Customer Project#</msg>
+  <msg key="Company_Project_Nr">Customer Project Nr.</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
   <msg key="Company_Status_1">Company Status:</msg>
@@ -592,7 +592,7 @@
   <msg key="lt_Choose_this_option_fo">Choose this option for detailed security information. With this option the security update service transmits information about your configuration that might help us to assess your ]project-open[ system configuration including package versions and operating system version information. It also includes your email address so that we can alert your in special situations.</msg>
   <msg key="lt_Choose_this_option_if">Choose this option if you prefer not to reveal any information to ]project-open[ that might identify you or your organization.</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
-  <msg key="lt_Clientesintranet-file">Clients</msg>
+  <msg key="lt_Clientesintranet-file">Customers</msg>
   <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&quot;profile&quot;)
 	can do and what they shouldn't do.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirm Nuking %first_names% %last_name%</msg>
@@ -839,7 +839,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_The_specified_project">The specified project_nr, %project_nr%, already exists - please select another, unique project_nr</msg>
   <msg key="lt_The_system_was_unable">The system was unable to send email.  Please notify the user personally.  This problem is probably caused by a misconfiguration of your email system.</msg>
   <msg key="lt_There_are_currently_n">There are currently no entries matching the selected criteria</msg>
-  <msg key="lt_There_is_a_difference">There is a difference between &amp;quot;Paying Client&amp;quot; and &amp;quot;Final Client&amp;quot;. Here we want to know from whom we are going to receive the money...</msg>
+  <msg key="lt_There_is_a_difference">There is a difference between &amp;quot;Paying Customer&amp;quot; and &amp;quot;Final Customer&amp;quot;. Here we want to know from whom we are going to receive the money...</msg>
   <msg key="lt_There_is_already_a_vi">There is already a %view_similar_user_link%
                 with the email '%email%'
                 in the database.</msg>
@@ -1132,9 +1132,9 @@ other way for the user to find out.</msg>
   <msg key="project_managers">Project Managers</msg>
   <msg key="Project_Members">Project Members</msg>
   <msg key="Project_Name">Project Name</msg>
-  <msg key="Project_name">Project name</msg>
-  <msg key="Project_Nr">Project Nr</msg>
-  <msg key="Project_nr">Project nr</msg>
+  <msg key="Project_name">Project Name</msg>
+  <msg key="Project_Nr">Project Nr.</msg>
+  <msg key="Project_nr">Project Nr.</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Status">Project Status</msg>
   <msg key="Project_Task">Project Task</msg>
