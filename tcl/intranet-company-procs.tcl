@@ -398,6 +398,9 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 		and m.group_id in (:customer_group_id, :freelance_group_id)
 		and u.user_id = ur.object_id_two
 		and ur.object_id_one = :company_id
+    UNION
+	select	:default_id as user_id,
+		im_name_from_user_id(:default_id) as user_name
     "
 
     # Include the default user in the list, even if he's not a member
@@ -409,6 +412,14 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 		im_name_from_user_id(:default_id) as user_name
 	"
     }
+
+    set query "
+	select	*
+	from	(
+		$query
+		) t
+	order by user_name
+    "
 
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
