@@ -1,0 +1,162 @@
+#!/usr/bin/perl
+
+# --------------------------------------------------------
+#
+# project_create
+#
+# ]project-open[ ERP/Project Management System
+# (c) 2007 ]project-open[, frank.bergmann@project-open.com
+# All rights reserved.
+# --------------------------------------------------------
+
+
+# --------------------------------------------------------
+# Check for libraries (below) in the local directory
+use FindBin;
+use lib $FindBin::Bin;
+
+
+# --------------------------------------------------------
+# Include constants for all user exits
+#
+# Customize common_constants to set database name and user.
+#
+require common_constants;
+use DBI;
+
+
+# --------------------------------------------------------
+# Usage...
+$usage = "
+Usage:
+	project_create <project_id>
+
+This user exit is called every time after a new project
+has been created successfully in ]po[.
+
+Arguments:
+	<project_id> is the OpenACS project_id.\n
+";
+
+
+# --------------------------------------------------------
+# Check and extract arguments from the command line.
+# project_id is an integer that is used to access user
+# information from the parties, persons and users tables.
+die "project_create: Invalid number of arguments.\n$usage" if (0 != $#ARGV);
+$project_id = $ARGV[0];
+
+
+# --------------------------------------------------------
+# Write a debug line to the log file
+open(L, ">> $logfile") || die "project_create: Couldn't open $logfile";
+print L "$date: project_create $project_id\n";
+
+
+# --------------------------------------------------------
+# Establish the database connection
+# The parameters are defined in common_constants.pm
+$dbh = DBI->connect($db_datasource, $db_username, $db_pwd) ||
+    die "project_create: Unable to connect to database.\n";
+
+
+# --------------------------------------------------------
+# Prepare a SQL statement for execution.
+# Extract all information from the project that is necessary
+# to create a few new folders
+$sth = $dbh->prepare("
+	SELECT	p.project_nr,
+		c.company_path,
+		im_category_from_id(p.project_type_id) as project_type,
+		im_category_from_id(p.source_language_id) as source_language
+	FROM
+		im_projects p,
+		im_companies c
+	WHERE
+		p.project_id = $project_id
+		and p.company_id = c.company_id
+");
+
+# Execute the statement in the database
+$sth->execute();
+
+
+# --------------------------------------------------------
+# Retrieve the returned rows of data. There should be
+# exactly one returned row.
+$numres = $sth->rows;
+die "project_create: Exactly 1 row expected but retreived $numres.\n" if (1 != $numres);
+
+
+# --------------------------------------------------------
+# Extract the user information from the returned row.
+
+my $row = $sth->fetchrow_hashref;
+
+my $project_path		= $row->{project_nr};
+my $customer_path		= $row->{company_path};
+my $project_type		= $row->{project_type};
+my $source_language		= $row->{source_language};
+
+$sth->finish;
+
+# check for problems which may have terminated the fetch early
+warn $DBI::errstr if $DBI::err;
+
+
+
+# --------------------------------------------------------
+#
+#	Here goes your code!
+#
+#
+
+print "project_id=$project_id, project_path=$project_path, customer_path=$customer_path, project_type=$project_type, source_language=$source_language\n";
+
+
+# Where should we create the new folders?
+# Set this to the default path.
+my $dir = "/web/projop/filestorage/projects/$customer_path/$project_path";
+
+system("mkdir -p $dir/0_project_management_$source_language");
+system("mkdir -p $dir/0_client_source_$source_language");
+
+
+# Get the list of all target languages for the project
+$sth = $dbh->prepare ("
+	SELECT	im_category_from_id(language_id) as target_language
+	FROM	im_target_languages 
+	WHERE	project_id = $project_id
+");
+$sth->execute() ||
+    die "project_create: Error executing target_language query.\n";
+
+
+# Create the following directories for each project's target language
+
+my( $target_language );
+$sth->bind_columns( \$target_language );
+
+while( $sth->fetchrow_hashref() ) {
+    print "target_language=$target_language\n";
+    system("mkdir -p $dir/5_cat_files_$target_language");
+    system("mkdir -p $dir/6_monolingual_files_$target_language");
+}
+
+
+# --------------------------------------------------------
+# Close the database connection
+$dbh->disconnect ||
+    warn "Disconnection failed: $DBI::errstr\n";
+
+
+# --------------------------------------------------------
+# Close open filehandles
+close(L);
+
+
+# --------------------------------------------------------
+# Return a successful execution ("0"). Any other value
+# indicates an error. Return code meaning still needs
+# to be determined, so returning "1" is fine.
+exit(0);
