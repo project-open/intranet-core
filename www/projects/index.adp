@@ -4,6 +4,9 @@
 <property name="main_navbar_label">projects</property>
 <property name="sub_navbar">@project_navbar_html;noquote@</property>
 
+<script language="javascript" type="text/javascript" src="/resources/acs-templating/mktree.js"></script>
+<link rel="stylesheet" type="text/css" href="/resources/acs-templating/mktree.css">
+
 <div class="filter-list">
    <div class="filter">
       <div class="filter-block">
@@ -17,6 +20,7 @@
             @filter_html;noquote@
          </else>
       </div>
+
       <hr/>
       <div class="filter-block">
          <div class="filter-title">
@@ -24,6 +28,12 @@
          </div>
          @admin_html;noquote@
       </div>
+
+      <hr/>
+      <div class="filter-block">
+      <%= [im_navbar_tree -label "main"] %>
+      </div>
+
    </div>
 
    <div class="fullwidth-list">

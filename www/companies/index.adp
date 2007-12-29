@@ -39,12 +39,20 @@
 	    </form>
          </else>
       </div>
+
+      <hr/>
       <div class="filter-block">
          <div class="filter-title">
             #intranet-core.Admin_Companies#
          </div>
          @admin_html;noquote@
       </div>
+
+      <hr/>
+      <div class="filter-block">
+      <%= [im_navbar_tree -label "main"] %>
+      </div>
+
    </div>
 
    <div class="fullwidth-list">
