@@ -32,12 +32,6 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
-
-# -----------------------------------------------------------
-# Generic Action
-# -----------------------------------------------------------
-
-
 switch $action {
     reset {
 	# Delete all specific settings for the given user and 
@@ -55,7 +49,6 @@ switch $action {
 	ad_script_abort
     }
 }
-
 
 
 # -----------------------------------------------------------

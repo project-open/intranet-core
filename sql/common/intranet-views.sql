@@ -24,7 +24,10 @@
 -- frank.bergmann@project-open.com, 2003-07-24
 --
 
--- ViewIDs: IDs < 1000 are reserved for Project/Open modules.
+-- ViewIDs: IDs < 1.000.000 are reserved for Project/Open modules.
+--
+--------------------------------------------------------
+-- Base Views
 --
 --  0 -  9	Customers
 --  10- 19	Users
@@ -81,10 +84,15 @@
 -- 196	im_cost_centers
 -- 197	im_investments
 
+
+--------------------------------------------------------
+-- Other Views
+--
 -- 200-209	Timesheet
 -- 210-219	Riskmanagement
 -- 220-249	Costs
 -- 250-259	Translation Quality
+-- 260-269	Workflow
 
 -- 900 - 909	Intranet Materials Reserved
 -- 900		im_material_list

@@ -166,20 +166,17 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	set enabled_sql ""
     }
 
-
     set plugin_sql "
 	select	*
 	from (
-		select
-			c.plugin_id,
+		select	c.plugin_id,
 			c.plugin_name,
 			c.component_tcl,
 			c.title_tcl,
 			coalesce(m.sort_order, c.sort_order) as sort_order,
 			coalesce(m.location, c.location) as location,
 			im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
-		from
-			im_component_plugins c
+		from	im_component_plugins c
 			left outer join
 			    (	select	* 
 				from	im_component_plugin_user_map 
