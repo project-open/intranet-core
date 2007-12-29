@@ -123,3 +123,34 @@ ad_proc -public im_menu_ul_list {
     return $result
 }
 
+
+
+# --------------------------------------------------------
+# Shortcut functions for NavBar purposes
+# --------------------------------------------------------
+
+
+ad_proc -public im_menu_url { label } {
+    Extracts the URL of the menu with label
+} {
+    set url [db_string url "select url from im_menus where label=:label" -default ""]
+    return $url
+}
+
+ad_proc -public im_menu_name { label } {
+    Extracts the Name of the menu with label
+} {
+    set name [db_string url "select name from im_menus where label=:label" -default ""]
+#    set name_key "intranet-core.[lang::util::suggest_key $name]"
+#    set name [lang::message::lookup "" $name_key $name]
+    return $name
+}
+
+ad_proc -public im_menu_li { label } {
+    Returns a <li><a href=URL>Name</a> for the menu.
+    Attention, not closing </li>!
+} {
+    set name [im_menu_name $label]
+    set url [im_menu_url $label]
+    return "<li><a href=\"$url\">$name</a>\n"
+}
