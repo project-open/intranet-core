@@ -18,9 +18,9 @@
 	Documentation of the OpenACS underlying platform.
 
     </ul>
-
+<br>
+<!--
     <H2>Administration</H2>
-
     <ul>
       <li>
 	<A href="profiles/">#intranet-core.Manage_Profiles#</A><br>
@@ -38,9 +38,6 @@
 	<A href="views/"><%= [lang::message::lookup "" intranet-core.Manage_Views "Manage Views"] %></A><br>
 	Enable, disable and edit system \"views\" (the columns in lists and reports).
       <li>
-	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
-	#intranet-core.lt_Flush_cleanup_the_per#
-      <li>
 	<a href=/intranet-dynfield/>Admin DynField</a><br>
 	Add new fields to projects, customers and users. New fields can be
 	associated to certain object sub-types. Access can be restricted to
@@ -48,12 +45,15 @@
       <li>
 	<A href=backup>#intranet-core.PostgreSQL_Backup#</A><br>
 	#intranet-core.PostgreSQL_Backup_blurb# 
-
     </ul>
+-->
 
-    <H2>OpenACS Administration</H2>
+    <H2>Administration</H2>
 
     <ul>
+      <li>
+	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
+	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
 	<A href="/acs-admin/apm/packages-install?update_only_p=1"><%= [lang::message::lookup "" intranet-core.Update_Packages "Update Packages (after an update of the code)"] %></A><br>
 	Update the package database.
@@ -81,6 +81,7 @@
     </ul>
     <%= [im_component_bay left] %>
 
+<br>
 <h2><font color=red>#intranet-core.Dangerous#</font></h2>
     <ul>
 	<li>
