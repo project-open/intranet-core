@@ -378,7 +378,7 @@ a {
 }
 
 #admin-content {
-   margin-left: 125px;
+   margin-left: 260px;
    overflow: auto;
 }
 
@@ -600,6 +600,8 @@ a {
 
    background-color: #336699;
    margin: 5px 5px 10px;
+
+   min-height: 400px;
 }
 
 .filter-button {

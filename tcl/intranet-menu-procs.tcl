@@ -130,14 +130,18 @@ ad_proc -public im_menu_ul_list {
 # --------------------------------------------------------
 
 
-ad_proc -public im_menu_url { label } {
+ad_proc -public im_menu_url { 
+    label 
+} {
     Extracts the URL of the menu with label
 } {
     set url [db_string url "select url from im_menus where label=:label" -default ""]
     return $url
 }
 
-ad_proc -public im_menu_name { label } {
+ad_proc -public im_menu_name { 
+    label 
+} {
     Extracts the Name of the menu with label
 } {
     set name [db_string url "select name from im_menus where label=:label" -default ""]
@@ -146,11 +150,15 @@ ad_proc -public im_menu_name { label } {
     return $name
 }
 
-ad_proc -public im_menu_li { label } {
+ad_proc -public im_menu_li { 
+    {-class "" }
+    label 
+} {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
     set name [im_menu_name $label]
     set url [im_menu_url $label]
-    return "<li><a href=\"$url\">$name</a>\n"
+    if {"" != $class} { set class_html "class='$class'" }
+    return "<li $class_html><a href=\"$url\">$name</a>\n"
 }

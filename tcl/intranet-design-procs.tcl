@@ -493,32 +493,30 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
-    # select the administration menu items
-    set parent_menu_sql "select menu_id from im_menus where name='Admin'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+    set html "
+	<div class='filter-list'>
+	   <div class='filter'>
+	      <div class='filter-block'>
+	         <div class='filter-title'>
+	            [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
+	         </div>
 
-    set html "<div class=\"admin-menu\"><p>Admin Menu</p><ul>"
-    db_foreach im_admin_navbar "
-       SELECT name,url,label
-       FROM im_menus 
-       WHERE
-           parent_menu_id=:parent_menu_id
-           AND enabled_p='t'
-       ORDER BY sort_order
-    " {
-	if {$label==$select_label} {
-	    set selected "class=\"selected\""
-	} else {
-	    set selected ""
-	}
+	<ul class=mktree>
+	[im_menu_li -class liOpen admin]
+        	<ul>
+		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		</ul>
+	[im_menu_li -class liOpen openacs]
+        	<ul>
+		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		</ul>
+	</ul>
 
-	append html "<li><a $selected href=\"$url\">$name</a></li>"
-    }
-    append html "</ul></div>"
+	      </div>
+	   </div>
+	</div>
+    "
     return $html
-    
-    # previous navbar
-    # return [im_sub_navbar $parent_menu_id "" "" "pagedesriptionbar" $select_label] 
 }
 
 ad_proc -public im_navbar_tab {
