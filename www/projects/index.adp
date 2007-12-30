@@ -29,10 +29,7 @@
          @admin_html;noquote@
       </div>
 
-      <hr/>
-      <div class="filter-block">
       <%= [im_navbar_tree -label "main"] %>
-      </div>
 
    </div>
 
