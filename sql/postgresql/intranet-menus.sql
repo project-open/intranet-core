@@ -210,6 +210,51 @@ end;' language 'plpgsql';
 
 
 
+create or replace function im_new_menu (varchar, varchar, varchar, varchar, integer, varchar, varchar) 
+returns integer as '
+declare
+	p_package_name		alias for $1;
+	p_label			alias for $2;
+	p_name			alias for $3;
+	p_url			alias for $4;
+	p_sort_order		alias for $5;
+	p_parent_menu_label	alias for $6;
+	p_visible_tcl		alias for $7;
+
+	v_menu_id		integer;
+	v_parent_menu_id	integer;
+begin
+	-- Check for duplicates
+	select	menu_id into v_menu_id
+	from	im_menus m where m.label = p_label;
+	IF v_menu_id is not null THEN return v_menu_id; END IF;
+
+	-- Get parent menu
+	select	menu_id into v_parent_menu_id
+	from	im_menus m where m.label = p_parent_menu_label;
+
+	v_menu_id := im_menu__new (
+		null,					-- p_menu_id
+		''im_menu'',				-- object_type
+		now(),					-- creation_date
+		null,					-- creation_user
+		null,					-- creation_ip
+		null,					-- context_id
+		p_package_name,
+		p_label,
+		p_name,
+		p_url,
+		p_sort_order,
+		v_parent_menu_id,
+		p_visible_tcl
+	);
+
+	return v_menu_id;
+end;' language 'plpgsql';
+
+
+
+
 -- -----------------------------------------------------
 -- Main Menu
 -- -----------------------------------------------------
@@ -268,12 +313,12 @@ begin
     -- It is not displayed itself and only serves
     -- as a parent_menu_id from ''main'' and ''project''.
     v_top_menu := im_menu__new (
-	null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
 	''intranet-core'',	-- package_name
 	''top'',		-- label
 	''Top Menu'',		-- name
@@ -297,35 +342,35 @@ begin
     -- but serves as the starting point for the main menu
     -- hierarchy.
     v_main_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''main'',               -- label
-        ''Main Menu'',          -- name
-        ''/'',                  -- url
-        10,                     -- sort_order
-        v_top_menu,             -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''main'',	       -- label
+	''Main Menu'',	  -- name
+	''/'',		  -- url
+	10,		     -- sort_order
+	v_top_menu,	     -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     v_home_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''home'',               -- label
-        ''Home'',               -- name
-        ''/intranet/'',         -- url
-        10,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''home'',	       -- label
+	''Home'',	       -- name
+	''/intranet/'',	 -- url
+	10,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_home_menu, v_admins, ''read'');
@@ -340,19 +385,19 @@ begin
 
 
     v_project_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects'',               -- label
-        ''Projects'',              -- name
-        ''/intranet/projects/'',   -- url
-        40,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''projects'',	       -- label
+	''Projects'',	      -- name
+	''/intranet/projects/'',   -- url
+	40,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_project_menu, v_admins, ''read'');
@@ -368,19 +413,19 @@ begin
 
 
     v_company_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''companies'',               -- label
-        ''Companies'',              -- name
-        ''/intranet/companies/'',   -- url
-        50,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''companies'',	       -- label
+	''Companies'',	      -- name
+	''/intranet/companies/'',   -- url
+	50,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_company_menu, v_admins, ''read'');
@@ -395,19 +440,19 @@ begin
 
 
     v_user_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''user'',               -- label
-        ''Users'',              -- name
-        ''/intranet/users/'',   -- url
-        30,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''user'',	       -- label
+	''Users'',	      -- name
+	''/intranet/users/'',   -- url
+	30,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_user_menu, v_admins, ''read'');
@@ -418,19 +463,19 @@ begin
 
 
     v_office_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''offices'',            -- label
-        ''Offices'',            -- name
-        ''/intranet/offices/'', -- url
-        40,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''offices'',	    -- label
+	''Offices'',	    -- name
+	''/intranet/offices/'', -- url
+	40,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_office_menu, v_admins, ''read'');
@@ -443,37 +488,37 @@ begin
     PERFORM acs_permission__grant_permission(v_office_menu, v_reg_users, ''read'');
 
     v_admin_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin'',              -- label
-        ''Admin'',              -- name
-        ''/intranet/admin/'',   -- url
-        999,                    -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin'',	      -- label
+	''Admin'',	      -- name
+	''/intranet/admin/'',   -- url
+	999,		    -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_admin_menu, v_admins, ''read'');
 
     v_help_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''help'',               -- label
-        ''Help'',               -- name
-        ''/intranet/help/'',	-- url
-        990,                    -- sort_order
-        v_main_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''help'',	       -- label
+	''Help'',	       -- name
+	''/intranet/help/'',	-- url
+	990,		    -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_help_menu, v_admins, ''read'');
@@ -491,19 +536,19 @@ begin
     -- -----------------------------------------------------
 
     v_user_employees_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_employees'',    -- label
-        ''Employees'',          -- name
-        ''/intranet/users/index?user_group_name=Employees'',   -- url
-        1,                      -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''users_employees'',    -- label
+	''Employees'',	  -- name
+	''/intranet/users/index?user_group_name=Employees'',   -- url
+	1,		      -- sort_order
+	v_user_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_user_employees_menu, v_admins, ''read'');
@@ -514,19 +559,19 @@ begin
 
 
     v_user_companies_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_customers'',    -- label
-        ''Customers'',          -- name
-        ''/intranet/users/index?user_group_name=Customers'',   -- url
-        2,                      -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''users_customers'',    -- label
+	''Customers'',	  -- name
+	''/intranet/users/index?user_group_name=Customers'',   -- url
+	2,		      -- sort_order
+	v_user_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_user_companies_menu, v_admins, ''read'');
@@ -535,19 +580,19 @@ begin
 
 
     v_user_freelancers_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_freelancers'',  -- label
-        ''Freelancers'',        -- name
-        ''/intranet/users/index?user_group_name=Freelancers'',   -- url
-        3,                      -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''users_freelancers'',  -- label
+	''Freelancers'',	-- name
+	''/intranet/users/index?user_group_name=Freelancers'',   -- url
+	3,		      -- sort_order
+	v_user_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
 
@@ -558,38 +603,38 @@ begin
     PERFORM acs_permission__grant_permission(v_user_freelancers_menu, v_employees, ''read'');
 
     v_user_all_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_unassigned'',   -- label
-        ''Unassigned'',         -- name
-        ''/intranet/users/index?user_group_name=Unregistered\&view_name=user_community\&order_by=Creation'',   -- url
-        4,                      -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''users_unassigned'',   -- label
+	''Unassigned'',	 -- name
+	''/intranet/users/index?user_group_name=Unregistered\&view_name=user_community\&order_by=Creation'',   -- url
+	4,		      -- sort_order
+	v_user_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_senman, ''read'');
 
     v_user_all_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''users_all'',          -- label
-        ''All Users'',          -- name
-        ''/intranet/users/index?user_group_name=All'',   -- url
-        5,                      -- sort_order
-        v_user_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''users_all'',	  -- label
+	''All Users'',	  -- name
+	''/intranet/users/index?user_group_name=All'',   -- url
+	5,		      -- sort_order
+	v_user_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_user_all_menu, v_admins, ''read'');
@@ -601,112 +646,112 @@ begin
     -- -----------------------------------------------------
 
     v_admin_home_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_home'',         -- label
-        ''Admin Home'',         -- name
-        ''/intranet/admin/'',   -- url
-        10,                     -- sort_order
-        v_admin_menu,           -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_home'',	 -- label
+	''Admin Home'',	 -- name
+	''/intranet/admin/'',   -- url
+	10,		     -- sort_order
+	v_admin_menu,	   -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_admin_home_menu, v_admins, ''read'');
 
 
     v_admin_profiles_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_profiles'',     -- label
-        ''Profiles'',           -- name
-        ''/intranet/admin/profiles/'',   -- url
-        15,                     -- sort_order
-        v_admin_menu,           -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_profiles'',     -- label
+	''Profiles'',	   -- name
+	''/intranet/admin/profiles/'',   -- url
+	15,		     -- sort_order
+	v_admin_menu,	   -- parent_menu_id
+	null		    -- p_visible_tcl
     );
     PERFORM acs_permission__grant_permission(v_admin_profiles_menu, v_admins, ''read'');
 
 
     v_admin_menus_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_menus'',        -- label
-        ''Menus'',              -- name
-        ''/intranet/admin/menus/'',   -- url
-        20,                     -- sort_order
-        v_admin_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_menus'',	-- label
+	''Menus'',	      -- name
+	''/intranet/admin/menus/'',   -- url
+	20,		     -- sort_order
+	v_admin_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
     PERFORM acs_permission__grant_permission(v_admin_profiles_menu, v_admins, ''read'');
 
 
     v_admin_matrix_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_usermatrix'',   -- label
-        ''User Matrix'',        -- name
-        ''/intranet/admin/user_matrix/'',   -- url
-        30,                     -- sort_order
-        v_admin_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_usermatrix'',   -- label
+	''User Matrix'',	-- name
+	''/intranet/admin/user_matrix/'',   -- url
+	30,		     -- sort_order
+	v_admin_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_admin_matrix_menu, v_admins, ''read'');
 
 
     v_admin_parameters_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_parameters'',   -- label
-        ''Parameters'',         -- name
-        ''/intranet/admin/parameters/'',   -- url
-        39,                     -- sort_order
-        v_admin_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_parameters'',   -- label
+	''Parameters'',	 -- name
+	''/intranet/admin/parameters/'',   -- url
+	39,		     -- sort_order
+	v_admin_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_admin_parameters_menu, v_admins, ''read'');
 
 
     v_admin_categories_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_categories'',   -- label
-        ''Categories'',         -- name
-        ''/intranet/admin/categories/'',   -- url
-        50,                     -- sort_order
-        v_admin_menu,            -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_categories'',   -- label
+	''Categories'',	 -- name
+	''/intranet/admin/categories/'',   -- url
+	50,		     -- sort_order
+	v_admin_menu,	    -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_admin_categories_menu, v_admins, ''read'');
@@ -725,19 +770,19 @@ create or replace function inline_1 ()
 returns integer as '
 declare
       -- Menu IDs
-      v_menu                  integer;
-      v_project_menu          integer;
-      v_main_menu             integer;
-      v_top_menu              integer;
+      v_menu		  integer;
+      v_project_menu	  integer;
+      v_main_menu	     integer;
+      v_top_menu	      integer;
 
       -- Groups
-      v_employees             integer;
-      v_accounting            integer;
-      v_senman                integer;
-      v_customers             integer;
-      v_freelancers           integer;
-      v_proman                integer;
-      v_admins                integer;
+      v_employees	     integer;
+      v_accounting	    integer;
+      v_senman		integer;
+      v_customers	     integer;
+      v_freelancers	   integer;
+      v_proman		integer;
+      v_admins		integer;
 begin
 
     select group_id into v_admins from groups where group_name = ''P/O Admins'';
@@ -761,35 +806,35 @@ begin
     -- The Project menu: It''s not displayed itself
     -- but serves as the starting point for submenus
     v_project_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project'',            -- label
-        ''Project'',            -- name
-        ''/intranet/projects/view'',  -- url
-        10,                     -- sort_order
-        v_top_menu,             -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''project'',	    -- label
+	''Project'',	    -- name
+	''/intranet/projects/view'',  -- url
+	10,		     -- sort_order
+	v_top_menu,	     -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project_standard'',   -- label
-        ''Summary'',            -- name
-        ''/intranet/projects/view?view_name=standard'',  -- url
-        10,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''project_standard'',   -- label
+	''Summary'',	    -- name
+	''/intranet/projects/view?view_name=standard'',  -- url
+	10,		     -- sort_order
+	v_project_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -801,19 +846,19 @@ begin
     PERFORM acs_permission__grant_permission(v_menu, v_freelancers, ''read'');
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''project_files'',      -- label
-        ''Files'',              -- name
-        ''/intranet/projects/view?view_name=files'',  -- url
-        20,                     -- sort_order
-        v_project_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''project_files'',      -- label
+	''Files'',	      -- name
+	''/intranet/projects/view?view_name=files'',  -- url
+	20,		     -- sort_order
+	v_project_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -842,17 +887,17 @@ create or replace function inline_1 ()
 returns integer as '
 declare
       -- Menu IDs
-      v_menu                  integer;
-      v_companies_menu          integer;
+      v_menu		  integer;
+      v_companies_menu	  integer;
 
       -- Groups
-      v_employees             integer;
-      v_accounting            integer;
-      v_senman                integer;
-      v_customers             integer;
-      v_freelancers           integer;
-      v_proman                integer;
-      v_admins                integer;
+      v_employees	     integer;
+      v_accounting	    integer;
+      v_senman		integer;
+      v_customers	     integer;
+      v_freelancers	   integer;
+      v_proman		integer;
+      v_admins		integer;
       v_reg_users	      integer;
 begin
 
@@ -872,19 +917,19 @@ begin
     where label=''companies'';
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''customers_potential'', -- label
-        ''Potential Customers'', -- name
-        ''/intranet/companies/index?status_id=41&type_id=57'',  -- url
-        10,                     -- sort_order
-        v_companies_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''customers_potential'', -- label
+	''Potential Customers'', -- name
+	''/intranet/companies/index?status_id=41&type_id=57'',  -- url
+	10,		     -- sort_order
+	v_companies_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -902,19 +947,19 @@ begin
 
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''customers_active'',   -- label
-        ''Active Customers'',      -- name
-        ''/intranet/companies/index?status_id=46&type_id=57'',  -- url
-        20,                     -- sort_order
-        v_companies_menu,       -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''customers_active'',   -- label
+	''Active Customers'',      -- name
+	''/intranet/companies/index?status_id=46&type_id=57'',  -- url
+	20,		     -- sort_order
+	v_companies_menu,       -- parent_menu_id
+	null		    -- p_visible_tcl
     );
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
@@ -929,19 +974,19 @@ begin
 
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''customers_inactive'',   -- label
-        ''Inactive Customers'',      -- name
-        ''/intranet/companies/index?status_id=48&type_id=57'',  -- url
-        30,                     -- sort_order
-        v_companies_menu,       -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''customers_inactive'',   -- label
+	''Inactive Customers'',      -- name
+	''/intranet/companies/index?status_id=48&type_id=57'',  -- url
+	30,		     -- sort_order
+	v_companies_menu,       -- parent_menu_id
+	null		    -- p_visible_tcl
     );
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
     PERFORM acs_permission__grant_permission(v_menu, v_senman, ''read'');
@@ -972,8 +1017,8 @@ drop function inline_1();
 create or replace function inline_0 ()
 returns integer as '
 declare
-        -- Menu IDs
-        v_menu                  integer;
+	-- Menu IDs
+	v_menu		  integer;
 	v_admin_menu		integer;
 	v_main_menu		integer;
 BEGIN
@@ -985,19 +1030,19 @@ BEGIN
     -- Main admin menu - just an invisible top-menu
     -- for all admin entries links under Companies
     v_admin_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''companies_admin'',    -- label
-        ''Companies Admin'',    -- name
-        ''/intranet-core/'',    -- url
-        90,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        ''0''                   -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''companies_admin'',    -- label
+	''Companies Admin'',    -- name
+	''/intranet-core/'',    -- url
+	90,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	''0''		   -- p_visible_tcl
     );
 
     return 0;
@@ -1018,8 +1063,8 @@ drop function inline_0 ();
 create or replace function inline_0 ()
 returns integer as '
 declare
-        -- Menu IDs
-        v_menu                  integer;
+	-- Menu IDs
+	v_menu		  integer;
 	v_admin_menu		integer;
 	v_main_menu		integer;
 BEGIN
@@ -1031,19 +1076,19 @@ BEGIN
     -- Main admin menu - just an invisible top-menu
     -- for all admin entries links under Projects
     v_admin_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_admin'',    -- label
-        ''Projects Admin'',    -- name
-        ''/intranet-core/'',    -- url
-        90,                     -- sort_order
-        v_main_menu,            -- parent_menu_id
-        ''0''                   -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''projects_admin'',    -- label
+	''Projects Admin'',    -- name
+	''/intranet-core/'',    -- url
+	90,		     -- sort_order
+	v_main_menu,	    -- parent_menu_id
+	''0''		   -- p_visible_tcl
     );
 
     return 0;
@@ -1108,17 +1153,17 @@ create or replace function inline_1 ()
 returns integer as '
 declare
       -- Menu IDs
-      v_menu                  integer;
-      v_projects_menu          integer;
+      v_menu		  integer;
+      v_projects_menu	  integer;
 
       -- Groups
-      v_employees             integer;
-      v_accounting            integer;
-      v_senman                integer;
-      v_customers             integer;
-      v_freelancers           integer;
-      v_proman                integer;
-      v_admins                integer;
+      v_employees	     integer;
+      v_accounting	    integer;
+      v_senman		integer;
+      v_customers	     integer;
+      v_freelancers	   integer;
+      v_proman		integer;
+      v_admins		integer;
 begin
 
     select group_id into v_admins from groups where group_name = ''P/O Admins'';
@@ -1139,19 +1184,19 @@ begin
     -- but project_list is default in projects/index.tcl, so we can
     -- skip this here.
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_potential'',   -- label
-        ''Potential'',            -- name
-        ''/intranet/projects/index?project_status_id=71'', -- url
-        10,                     -- sort_order
-        v_projects_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''projects_potential'',   -- label
+	''Potential'',	    -- name
+	''/intranet/projects/index?project_status_id=71'', -- url
+	10,		     -- sort_order
+	v_projects_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -1164,19 +1209,19 @@ begin
 
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_open'',    -- label
-        ''Open'',             -- name
-        ''/intranet/projects/index?project_status_id=76'', -- url
-        20,                     -- sort_order
-        v_projects_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''projects_open'',    -- label
+	''Open'',	     -- name
+	''/intranet/projects/index?project_status_id=76'', -- url
+	20,		     -- sort_order
+	v_projects_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -1188,19 +1233,19 @@ begin
 
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',         -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''projects_closed'',    -- label
-        ''Closed'',             -- name
-        ''/intranet/projects/index?project_status_id=81'', -- url
-        30,                     -- sort_order
-        v_projects_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	 -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''projects_closed'',    -- label
+	''Closed'',	     -- name
+	''/intranet/projects/index?project_status_id=81'', -- url
+	30,		     -- sort_order
+	v_projects_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
@@ -1230,10 +1275,10 @@ create or replace function inline_1 ()
 returns integer as '
 declare
       -- Menu IDs
-      v_menu                  integer;
+      v_menu		  integer;
       v_admin_menu	      integer;
       -- Groups
-      v_admins                integer;
+      v_admins		integer;
 begin
     select group_id into v_admins from groups where group_name = ''P/O Admins'';
 
@@ -1243,19 +1288,19 @@ begin
     where label=''admin'';
 
     v_menu := im_menu__new (
-        null,                   -- p_menu_id
-        ''acs_object'',           -- object_type
-        now(),                  -- creation_date
-        null,                   -- creation_user
-        null,                   -- creation_ip
-        null,                   -- context_id
-        ''intranet-core'',      -- package_name
-        ''admin_user_exits'',   -- label
-        ''User Exits'',            -- name
-        ''/intranet/admin/user_exits'', -- url
-        110,                     -- sort_order
-        v_admin_menu,         -- parent_menu_id
-        null                    -- p_visible_tcl
+	null,		   -- p_menu_id
+	''acs_object'',	   -- object_type
+	now(),		  -- creation_date
+	null,		   -- creation_user
+	null,		   -- creation_ip
+	null,		   -- context_id
+	''intranet-core'',      -- package_name
+	''admin_user_exits'',   -- label
+	''User Exits'',	    -- name
+	''/intranet/admin/user_exits'', -- url
+	110,		     -- sort_order
+	v_admin_menu,	 -- parent_menu_id
+	null		    -- p_visible_tcl
     );
 
     PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');

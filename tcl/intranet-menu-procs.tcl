@@ -159,6 +159,7 @@ ad_proc -public im_menu_li {
 } {
     set name [im_menu_name $label]
     set url [im_menu_url $label]
+    set class_html ""
     if {"" != $class} { set class_html "class='$class'" }
     return "<li $class_html><a href=\"$url\">$name</a>\n"
 }

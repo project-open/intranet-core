@@ -29,11 +29,10 @@ ad_proc -public im_navbar_tree {
     Creates an <ul> ...</ul> hierarchical list with all major
     objects in the system.
 } {
-    return ""
-
     set html "
       <hr/>
       <div class=filter-block>
+	<ul class=mktree>
 	<li><a href=/intranet/>Home</a></li>
 	[im_menu_li bug_tracker]
 	[im_menu_li forum]
@@ -87,8 +86,13 @@ ad_proc -public im_navbar_tree {
 	</ul>
 	[im_menu_li dashboard]
 	[im_menu_li admin]
-	<ul>
-	[im_navbar_write_tree -label "admin" -maxlevel 0]
+		<ul>
+		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		</ul>
+	[im_menu_li openacs]
+		<ul>
+		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		</ul>
 	</ul>
       </div>
     "
