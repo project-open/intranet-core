@@ -36,6 +36,7 @@
          </ul>
       </div>
 </if>
+      <%= [im_navbar_tree -label "main"] %>
 
       </div>
    </div> <!-- filter -->
