@@ -23,6 +23,22 @@ ad_library {
 # 
 # --------------------------------------------------------
 
+# Klaus sagt: Die Prozesse kennt jeder, waerend keiner unsere
+# Objekte kennt.
+
+# ToDo: Skills for HR
+# ToDo: Salaries report in HR
+# Accounts Payable as first element in Finance
+# Project Sales Pipeline more explicitely
+# Setup menu as separate menu under "Processes" in Menu tree
+# Quality Management as subprocess of Provider Mgmt?
+# Sales Pipeline as separate process?
+# Query/Incident Management as subprocess of project managent?
+# Risk Mgmt as part of PM?
+# Project Portfolio Mgmt as separate Process?
+# Integrate indicators per process
+
+
 ad_proc -public im_navbar_tree { 
     {-label ""} 
 } {
