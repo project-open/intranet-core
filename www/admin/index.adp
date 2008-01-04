@@ -124,7 +124,7 @@
 -->
 
   </td>
-  <td valign=top width="350px">
+  <td valign=top width="400px">
     <%= [im_component_bay right] %>
   </td>
 </tr>
