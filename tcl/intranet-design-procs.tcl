@@ -1604,12 +1604,11 @@ ad_proc -public im_box_footer {} {
 
 ad_proc -public im_skin_list {} {
 } {
-
-    #     id name         displayname
+    #     id name            displayname
     return {
-	{ 0  "default"       "default" }
-	{ 1  "opus5"         "opus5" }
-	{ 2  "left"          "left" }
+	{ 0  "left"          "Default" }
+	{ 2  "default"       "Right Blue" }
+	{ 1  "opus5"         "Light Green" }
     }
 }
 
