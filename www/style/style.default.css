@@ -259,8 +259,8 @@ a {
    height: 15px;
 }
 
-#navbar_main A:hover,
-#navbar_main A:active,
+#navbar_main LI.selected A:hover,
+#navbar_main LI.selected A:active,
 #navbar_main LI.selected A:link,
 #navbar_main LI.selected A:visited {
    color:#ffffff;
