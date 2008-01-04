@@ -1,5 +1,11 @@
 @import url("style.default.css");
 
+.filter-list {
+   position: absolute;
+   left: 0px;
+   top: 0px;
+}
+
 .fullwidth-list {
    margin-left: 260px;
    margin-right: 0px;

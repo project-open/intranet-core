@@ -19,7 +19,7 @@ jQuery().ready(function(){
 
   
     jQuery(".filter-button").click(function(){  
-	if (poGetCookie("filterState")=="hidden") {
+	if (jQuery(".filter").css("right")!="0px") {
 	   jQuery(".fullwidth-list").animate({ 
 	      marginRight: "260px"
 	      }, 1000 );
