@@ -5,7 +5,7 @@ jQuery().ready(function(){
 
     jQuery(".filter > .filter-block:first").prepend('<div class="filter-button"></div>');
 
-    if (getCookie("filterState")=="hidden") {
+    if (poGetCookie("filterState")=="hidden") {
        jQuery(".filter").css("left","-240px");
        jQuery(".fullwidth-list").css("marginLeft","20px");
        jQuery(".filter-button").css(
@@ -19,7 +19,7 @@ jQuery().ready(function(){
 
   
     jQuery(".filter-button").click(function(){  
-	if (getCookie("filterState")=="hidden") {
+	if (poGetCookie("filterState")=="hidden") {
 	   jQuery(".fullwidth-list").animate({ 
 	      marginLeft: "260px"
 	      }, 1000 );
@@ -31,7 +31,7 @@ jQuery().ready(function(){
              "background","url('/intranet/images/navbar_default/arrow_comp_left.png') no-repeat"
            );
 
-	   setCookie("filterState","",0); 
+	   poSetCookie("filterState","",0); 
         } else {
 
            jQuery(".filter").animate({ 
@@ -45,7 +45,7 @@ jQuery().ready(function(){
              "background","url('/intranet/images/navbar_default/arrow_comp_right.png') no-repeat"
            );
 
-	   setCookie("filterState","hidden",20);
+	   poSetCookie("filterState","hidden",20);
 	}
     });
 
@@ -131,7 +131,7 @@ jQuery().ready(function(){
 
 });
 
-function getCookie(c_name)
+function poGetCookie(c_name)
 {
 if (document.cookie.length>0)
   {
@@ -147,7 +147,7 @@ if (document.cookie.length>0)
 return ""
 }
 
-function setCookie(c_name,value,expiredays)
+function poSetCookie(c_name,value,expiredays)
 {
 var exdate=new Date()
 exdate.setDate(exdate.getDate()+expiredays)
