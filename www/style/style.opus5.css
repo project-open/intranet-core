@@ -121,7 +121,7 @@ a {
 #header_skin_select select {
   display: inline;
   font-size: 75%;	
-  background-color: transparent;
+  background-color: #2e2e2e;
   color: #fff;
   border: 0px;
 }
