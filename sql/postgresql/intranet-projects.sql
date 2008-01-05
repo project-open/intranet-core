@@ -34,6 +34,13 @@ select acs_object_type__create_type (
         'im_project__name'       -- name_method
 );
 
+update acs_object_types set
+        status_type_table = 'im_projects',
+        status_column = 'project_status_id',
+        type_column = 'project_type_id'
+where object_type = 'im_project';
+
+
 create table im_projects (
 	project_id		integer
 				constraint im_projects_pk 

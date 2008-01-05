@@ -39,6 +39,13 @@ select acs_object_type__create_type (
 );
 
 
+update acs_object_types set
+        status_type_table = 'im_companies',
+        status_column = 'company_status_id',
+        type_column = 'company_type_id'
+where object_type = 'im_company';
+
+
 create table im_companies (
 	company_id 		integer
 				constraint im_companies_pk
