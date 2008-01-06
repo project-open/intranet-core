@@ -254,6 +254,26 @@ end;' language 'plpgsql';
 
 
 
+create or replace function im_new_menu_perms (varchar, varchar) 
+returns integer as '
+declare
+	p_label			alias for $1;
+	p_group			alias for $2;
+	v_menu_id		integer;
+	v_group_id		integer;
+begin
+	select	menu_id into v_menu_id
+	from	im_menus where label = p_label;
+
+	select	group_id into v_group_id
+	from	groups where lower(group_name) = lower(p_group);
+
+	PERFORM acs_permission__grant_permission(v_menu_id, v_group_id, ''read'');
+	return v_menu_id;
+end;' language 'plpgsql';
+
+
+
 
 -- -----------------------------------------------------
 -- Main Menu
