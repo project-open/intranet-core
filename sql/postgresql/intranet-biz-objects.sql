@@ -175,18 +175,17 @@ END;' language 'plpgsql';
 
 
 -----------------------------------------------------------------------
--- Set the status and type of Biz Objects in a generic way
+-- Set the status of Biz Objects in a generic way
 
 
 CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, integer) RETURNS integer AS '
 DECLARE
 	p_object_id		alias for $1;
 	p_status_id		alias for $2;
-	v_query			varchar;	v_object_type		varchar;
+	v_object_type		varchar;
 	v_supertype		varchar;	v_table			varchar;
 	v_id_column		varchar;	v_column		varchar;
 	row			RECORD;
-	v_result_id		integer;
 BEGIN
 	-- Get information from SQL metadata system
 	select	ot.object_type, ot.supertype, ot.table_name, ot.id_column, ot.status_column
@@ -204,22 +203,13 @@ BEGIN
 	END LOOP;
 
 	IF v_table is null OR v_id_column is null OR v_column is null THEN
-		RAISE NOTICE ''im_biz_object__set_status_id: Bad metadata: Found a null value for %: v_table=%, v_id_column=%, v_column=%'',
-		v_object_type, v_table, v_id_column, v_column;
+		RAISE NOTICE ''im_biz_object__set_status_id: Bad metadata: Null value for %'',v_object_type;
 		return 0;
 	END IF;
 
-	v_query := '' select '' || v_column || '' as result_id '' || '' from '' || v_table || 
-		'' where '' || v_id_column || '' = '' || p_object_id;
-
-	-- Funny, but this is the only option to EXECUTE in PG 8.0 and below.
-	FOR row IN EXECUTE v_query
-        LOOP
-		v_result_id := row.result_id;
-		EXIT;
-	END LOOP;
-
-	return v_result_id;
+	EXECUTE ''update ''||v_table||'' set ''||v_column||''=''||p_status_id||\
+		'' where ''||v_id_column||''=''||p_object_id;
+	return 0;
 END;' language 'plpgsql';
 
 
