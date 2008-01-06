@@ -345,7 +345,7 @@
   <msg key="Exchange_Rates">Exchange Rates</msg>
   <msg key="Execution_Project_Help">An 'Execution Project' is a copy of a project designed to be completely separated from any references to the initial project in order to keep the customer anonymous.</msg>
   <msg key="Expense_Item">Expense Item</msg>
-  <msg key="Expense_Report">Expense Report</msg>
+  <msg key="Expense_Bundle">Expense Bundle</msg>
   <msg key="Expenses">Expenses</msg>
   <msg key="Export_Companies_CSV">Export Companies CSV</msg>
   <msg key="Export_Projects_CSV">Export Projects CSV</msg>

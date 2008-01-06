@@ -306,7 +306,7 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Expense_Item">Gasto</msg>
-  <msg key="Expense_Report">Informe de Gastos</msg>
+  <msg key="Expense_Bundle">Informe de Gastos</msg>
   <msg key="Expenses">Gastos</msg>
   <msg key="Export_Companies_CSV">Exportar empresas a .csv</msg>
   <msg key="Extra_from">Extra FROM</msg>
