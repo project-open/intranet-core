@@ -494,10 +494,9 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     on the local URL and enabled depending on the user permissions.
 } {
     set html "
-	<div class='filter-list'>
-	   <div class='filter'>
-	      <div class='filter-block'>
-	         <div class='filter-title'>
+	   <div class=\"filter\">
+	      <div class=\"filter-block\">
+	         <div class=\"filter-title\">
 	            [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
 	         </div>
 
@@ -514,7 +513,6 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
 
 	      </div>
 	   </div>
-	</div>
     "
     return $html
 }
