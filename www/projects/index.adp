@@ -4,9 +4,6 @@
 <property name="main_navbar_label">projects</property>
 <property name="sub_navbar">@project_navbar_html;noquote@</property>
 
-<script language="javascript" type="text/javascript" src="/resources/acs-templating/mktree.js"></script>
-<link rel="stylesheet" type="text/css" href="/resources/acs-templating/mktree.css">
-
 <div class="filter-list">
    <div class="filter">
       <div class="filter-block">
