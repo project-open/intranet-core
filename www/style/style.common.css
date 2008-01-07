@@ -20,9 +20,9 @@ ul, ol {
    position: absolute;
    top: 0px;
    right: 7em;
-   /* IE6 hack */
-   _width: 50%;
-   _right: 100px;
+   /* IE6/7 hack */
+   #width: 50%;
+   #right: 100px;
 }
 
 #header_logout_tab {
@@ -30,8 +30,15 @@ ul, ol {
    right: 0px;
    top: 0px;
    width: 7em;
-   /* IE6 hack */
-   _width: 100px;
+   /* IE6/7 hack */
+   #width: 100px;
+}
+
+#slave_content {
+  position: relative;
+  min-height: 600px;
+  _height: 600px;
+  overflow: none;
 }
 
 

@@ -402,12 +402,9 @@ a {
 }
 
 #slave_content {
-  position: relative;
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 5px;
-  min-height: 600px;
-  overflow: hidden;
 }
 
 .component {
