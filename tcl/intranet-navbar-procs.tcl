@@ -45,7 +45,7 @@ ad_proc -public im_navbar_tree {
     Creates an <ul> ...</ul> hierarchical list with all major
     objects in the system.
 } {
-    set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 1]
+    set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
     set html "

@@ -119,6 +119,42 @@ comment on table im_component_plugin_user_map is '
 
 
 
+
+
+create or replace function im_component_plugin__new (
+	integer, varchar, timestamptz, integer, varchar, integer, 
+	varchar, varchar, varchar, varchar, varchar, integer, varchar
+) returns integer as '
+declare
+	p_plugin_id	alias for $1;	-- default null
+	p_object_type	alias for $2;	-- default ''acs_object''
+	p_creation_date	alias for $3;	-- default now()
+	p_creation_user	alias for $4;	-- default null
+	p_creation_ip	alias for $5;	-- default null
+	p_context_id	alias for $6;	-- default null
+	p_plugin_name	alias for $7;
+	p_package_name	alias for $8;
+	p_location	alias for $9;
+	p_page_url	alias for $10;
+	p_view_name	alias for $11;
+	p_sort_order	alias for $12;
+	p_component_tcl	alias for $13;
+	v_plugin_id	integer;
+begin
+	v_plugin_id := im_component_plugin__new (
+		p_plugin_id, p_object_type, p_creation_date,
+		p_creation_user, p_creation_ip, p_context_id,
+		p_plugin_name, p_package_name,
+		p_location, p_page_url,
+		p_view_name, p_sort_order,
+		p_component_tcl, null
+	);
+	return v_plugin_id;
+end;' language 'plpgsql';
+
+
+
+
 create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, 
@@ -142,7 +178,14 @@ declare
 	p_title_tcl	alias for $14;
 
 	v_plugin_id	im_component_plugins.plugin_id%TYPE;
+	v_count		integer;
 begin
+	select count(*) into v_count
+	from im_component_plugins
+	where plugin_name = p_plugin_name;
+
+	IF v_count > 0 THEN return 0; END IF;
+
 	v_plugin_id := acs_object__new (
 		p_plugin_id,	-- object_id
 		p_object_type,	-- object_type
