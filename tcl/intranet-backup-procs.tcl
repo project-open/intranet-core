@@ -20,7 +20,12 @@ ad_library {
 
 
 ad_register_proc GET /intranet/backups/* im_backup
+ad_register_proc GET /intranet/admin/backup/download/* im_backup_download
 
+
+# -------------------------------------------------------
+# 
+# -------------------------------------------------------
 
 ad_proc -public im_backup_version_nr { } {
     Returns a version number
@@ -50,6 +55,41 @@ ad_proc -public im_backup_path { } {
 
     return $path
 }
+
+
+
+
+# -------------------------------------------------------
+# Backup Routines
+# -------------------------------------------------------
+
+ad_proc im_backup_download { } {
+    Serves a specified backup file
+} {
+    set url [ns_conn url]
+    set path_list [split $url {/}]
+    set body [lrange $path_list end end]
+
+    set body_pieces [split $body "."]
+    set ext [lrange $body_pieces end end]
+
+    # Check the URL and see if somebody is fiddeling around with URLs...
+    set body_ok [regexp {^pg_dump(.*).sql(.*)$} $body match]
+    if {[regexp {\.\.} $body match]} { set body_ok 0 }
+    if {!$body_ok} {
+	im_security_alert \
+	    -location "Backup Download" \
+	    -message "Intent to download bad backup file" \
+	    -value $url \
+	ad_script_abort
+    }
+
+    set file "[im_backup_path]/$body"
+
+    set type [ns_guesstype $file]
+    ns_returnfile 200 $type $file
+}
+
 
 
 # -------------------------------------------------------
