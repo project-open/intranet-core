@@ -218,13 +218,18 @@ namespace eval project {
 	# We asume the application page knows how to deal with
 	# the uniqueness constraint, so we won't generate an error
 	# but just return the duplicated item. 
+
+	set parent_sql "parent_id = :parent_id"
+	if {"" == $parent_id} { set parent_sql "parent_id is NULL" }
+
 	set dup_sql "
 		select	count(*)
 		from	im_projects 
-		where
-			upper(trim(project_name)) = upper(trim(:project_name))
-			or upper(trim(project_nr)) = upper(trim(:project_nr))
-			or upper(trim(project_path)) = upper(trim(:project_path))
+		where	$parent_sql and
+			(	upper(trim(project_name)) = upper(trim(:project_name)) OR
+				upper(trim(project_nr)) = upper(trim(:project_nr)) OR
+				upper(trim(project_path)) = upper(trim(:project_path))
+			)
 	"
 	if {[db_string duplicates $dup_sql]} { 
 	    return 0
