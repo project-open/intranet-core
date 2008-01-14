@@ -37,6 +37,7 @@ ad_proc var_contains_quotes { var } {
     return 0
 }
 
+
 # -----------------------------------------------------------
 # Defaults
 # -----------------------------------------------------------
@@ -278,7 +279,6 @@ template::element::create $form_id description -optional -datatype text\
 # ------------------------------------------------------
 # Dynamic Fields
 # ------------------------------------------------------
-
 
 set object_type "im_project"
 set project_type_id 0
@@ -530,7 +530,9 @@ if {[form is_submission $form_id]} {
 	from	im_projects
 	where	upper(trim(project_name)) = upper(trim(:project_name))
 	        and project_id <> :project_id
+		and parent_id = :parent_id
     "]
+
 	
     if { $project_name_exists > 0 } {
 	incr n_error
@@ -542,7 +544,7 @@ if {[form is_submission $form_id]} {
     }
  
 }
- 
+
 if {[form is_valid $form_id]} {
 
     set project_path $project_nr
@@ -594,7 +596,6 @@ if {[form is_valid $form_id]} {
     } else {
 	set previous_project_type_id [db_string prev_ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
     }
-	
 	
     # -----------------------------------------------------------------
     # Update the Project
