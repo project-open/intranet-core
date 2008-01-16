@@ -207,8 +207,13 @@ BEGIN
 		return 0;
 	END IF;
 
+	update	acs_objects
+	set	last_modified = now()
+	where	object_id = p_object_id;
+
 	EXECUTE ''update ''||v_table||'' set ''||v_column||''=''||p_status_id||\
 		'' where ''||v_id_column||''=''||p_object_id;
+
 	return 0;
 END;' language 'plpgsql';
 
