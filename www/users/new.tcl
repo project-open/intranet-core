@@ -27,6 +27,8 @@ ad_page_contract {
     { first_names ""}
     { username ""}
     { last_name ""}
+    { secret_question "" }
+    { secret_answer "" }
 } -properties {
     context:onevalue
     export_vars:onevalue
