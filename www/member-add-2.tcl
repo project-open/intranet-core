@@ -72,15 +72,20 @@ if {[string equal "/" $last_char]} {
     set system_url "[string range $system_url 0 [expr $sysurl_len-2]]"
 }
 
+set admin_user_id [ad_verify_and_get_user_id]
+set administration_name [db_string admin_name "select im_name_from_user_id(:admin_user_id)"]
+
 set object_url "$system_url$object_rel_url$object_id"
 
 db_1row user_name "
 select 
-	im_name_from_user_id(person_id) as user_name_from_search,
-	first_names as first_names_from_search,
-	last_name as last_name_from_search
+	p.*,
+	im_name_from_user_id(p.person_id) as user_name_from_search,
+	im_name_from_user_id(p.person_id) as user_name,
+	p.first_names as first_names_from_search,
+	p.last_name as last_name_from_search
 from
-	persons
+	persons p
 where
 	person_id=:user_id_from_search"
 
