@@ -94,8 +94,6 @@ select
 	to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
 	to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
 	to_char(p.percent_completed, '999990.9%') as percent_completed_formatted,
-	im_category_from_id(p.project_type_id) as project_type, 
-	im_category_from_id(p.project_status_id) as project_status,
 	c.primary_contact_id as company_contact_id,
 	im_name_from_user_id(c.primary_contact_id) as company_contact,
 	im_email_from_user_id(c.primary_contact_id) as company_contact_email,
@@ -117,6 +115,8 @@ if { ![db_0or1row projects_info_query $query] } {
     return
 }
 
+set project_type [im_category_from_id $project_type_id]
+set project_status [im_category_from_id $project_status_id]
 set parent_name [db_string parent_name "select project_name from im_projects where project_id = :parent_id" -default ""]
 
 
