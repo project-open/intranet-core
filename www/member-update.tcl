@@ -98,15 +98,3 @@ switch $action {
 
 ad_returnredirect $return_url
 
-    }
-
-    default {
-	ad_return_complaint 1 "Invalid Action: '$action'"
-	return
-    }
-}
-
-ad_return_complaint 1 "$action [array get percentage]"
-
-
-
