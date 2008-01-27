@@ -314,7 +314,7 @@ db_foreach column_list_sql $column_sql {
     if {"" != [string trim $value]} {
 		append project_base_data_html "
 		  <tr>
-		    <td>[lang::message::lookup "" intranet-cust-baselkb.$attribute_name $pretty_name]</td>
+		    <td>[lang::message::lookup "" intranet-core.$attribute_name $pretty_name]</td>
 		    <td>$value</td>
 		  </tr>
 		"

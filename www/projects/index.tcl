@@ -598,7 +598,7 @@ append filter_html "
 
 append filter_html "
   <tr>
-    <td class=form-label valign=top>[lang::message::lookup "" intranet-cust-baselkb.With_Member "With Member"]:</td>
+    <td class=form-label valign=top>[lang::message::lookup "" intranet-core.With_Member "With Member"]:</td>
     <td class=form-widget valign=top>[im_select -ad_form_option_list_style_p 1 -translate_p 0 user_id_from_search $project_member_options $user_id_from_search]</td>
   </tr>
 "

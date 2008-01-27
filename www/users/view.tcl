@@ -156,7 +156,7 @@ set user_basic_info_html "
 
 set ctr 1
 db_foreach column_list_sql $column_sql {
-    if {[eval $visible_for]} {
+    if {"" == $visible_for || [eval $visible_for]} {
 	append user_basic_info_html "
         <tr $td_class([expr $ctr % 2])>
           <td>"
