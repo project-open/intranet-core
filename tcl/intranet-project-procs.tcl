@@ -406,6 +406,7 @@ ad_proc -public im_format_project_duration { words {lines ""} {hours ""} {days "
 ad_proc -public im_project_options { 
     {-include_empty 1}
     {-include_empty_name ""}
+    {-include_project_ids {} }
     {-exclude_subprojects_p 1}
     {-exclude_status_id 0}
     {-project_status_id 0}
@@ -417,8 +418,10 @@ ad_proc -public im_project_options {
 } {
     set current_project_id $project_id
     set current_user_id [ad_get_user_id]
-
     set max_project_name_len 50
+
+    # Make sure we don't get a syntax error in the query
+    lappend include_project_ids 0
 
     # Exclude subprojects does not work with subprojects,
     # if we are showing this box for a sub-sub-project.
@@ -555,6 +558,11 @@ ad_proc -public im_project_options {
 					p.project_id
 				from	im_projects p
 				where	p.project_id = :current_project_id
+			    UNION
+				select	p.project_name,
+					p.project_id
+				from	im_projects p
+				where	p.project_id in ([join $include_project_ids ","])
 			) p
 		order by 
 			$order_by_clause
