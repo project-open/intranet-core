@@ -37,7 +37,8 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { order_by "Project nr" }
-    { include_subprojects_p "f" }
+    { include_subprojects_p "" }
+    { include_subproject_level "" }
     { mine_p "f" }
     { project_status_id 0 } 
     { project_type_id:integer 0 } 
@@ -102,11 +103,15 @@ if { 0 == $project_status_id } {
     set project_status_id [im_project_status_open]
 }
 
+if {"" == $include_subproject_level} { set include_subproject_level [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
+if {"" == $include_subprojects_p} { set include_subprojects_p [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
+
 # Unprivileged users (clients & freelancers) can only see their 
 # own projects and no subprojects.
 if {![im_permission $current_user_id "view_projects_all"]} {
     set mine_p "t"
     set include_subprojects_p "f"
+    set include_subproject_level ""
     
     # Restrict status to "Open" projects only
     set project_status_id [im_project_status_open]
@@ -116,7 +121,6 @@ if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
 set end_idx [expr $start_idx + $how_many]
-
 
 
 # Set the "menu_select_label" for the project navbar:
@@ -212,7 +216,7 @@ ad_form \
     -action $action_url \
     -mode $form_mode \
     -method GET \
-    -export {start_idx order_by how_many view_name include_subprojects_p letter filter_advanced_p}\
+    -export {start_idx order_by how_many view_name include_subprojects_p include_subproject_level letter filter_advanced_p}\
     -form {
     	{mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
     }
@@ -270,6 +274,9 @@ if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string
 }
 if { $include_subprojects_p == "f" } {
     lappend criteria "p.parent_id is null"
+}
+if { $include_subproject_level != "" } {
+    lappend criteria "tree_level(p.tree_sortkey) <= $include_subproject_level"
 }
 
 
