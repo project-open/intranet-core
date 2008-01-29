@@ -49,9 +49,9 @@ cvs checkout -r b3-3-patches intranet-cost
 cvs checkout -r b3-3-patches intranet-cost-center
 cvs checkout -r b3-3-patches intranet-crm-tracking
 
-cvs checkout -r b3-3-patches intranet-cust-baselkb
-cvs checkout -r b3-3-patches intranet-cust-lexcelera
-cvs checkout -r b3-3-patches intranet-cust-projop
+# cvs checkout -r b3-3-patches intranet-cust-baselkb
+# cvs checkout -r b3-3-patches intranet-cust-lexcelera
+# cvs checkout -r b3-3-patches intranet-cust-projop
 
 cvs checkout -r b3-3-patches intranet-cvs-integration
 cvs checkout -r b3-3-patches intranet-dw-light
