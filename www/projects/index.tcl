@@ -519,6 +519,7 @@ FROM
 		$extra_from
         WHERE
                 p.company_id = c.company_id
+		and p.project_type_id not in ([im_project_type_task])
                 $where_clause
 		$extra_where
         ) projects
