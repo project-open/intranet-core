@@ -38,8 +38,8 @@ cvs checkout -r b3-3-patches ecommerce
 cvs checkout -r b3-3-patches events
 cvs checkout -r b3-3-patches general-comments
 
-cvs checkout -r b3-3-patches intranet-amberjack
-cvs checkout -r b3-3-patches intranet-big-brother
+# cvs checkout -r b3-3-patches intranet-amberjack
+# cvs checkout -r b3-3-patches intranet-big-brother
 cvs checkout -r b3-3-patches intranet-bug-tracker
 cvs checkout -r b3-3-patches intranet-calendar
 cvs checkout -r b3-3-patches intranet-calendar-holidays
