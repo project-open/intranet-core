@@ -1294,37 +1294,75 @@ drop function inline_1();
 create or replace function inline_1 ()
 returns integer as '
 declare
-      -- Menu IDs
-      v_menu		  integer;
-      v_admin_menu	      integer;
-      -- Groups
-      v_admins		integer;
+	v_menu			integer;
+	v_admin_menu		integer;
+	v_admins		integer;
 begin
-    select group_id into v_admins from groups where group_name = ''P/O Admins'';
+	select group_id into v_admins from groups where group_name = ''P/O Admins'';
 
-    select menu_id
-    into v_admin_menu
-    from im_menus
-    where label=''admin'';
+	select menu_id into v_admin_menu
+	from im_menus
+	where label=''admin'';
 
-    v_menu := im_menu__new (
-	null,		   -- p_menu_id
-	''acs_object'',	   -- object_type
-	now(),		  -- creation_date
-	null,		   -- creation_user
-	null,		   -- creation_ip
-	null,		   -- context_id
-	''intranet-core'',      -- package_name
-	''admin_user_exits'',   -- label
-	''User Exits'',	    -- name
-	''/intranet/admin/user_exits'', -- url
-	110,		     -- sort_order
-	v_admin_menu,	 -- parent_menu_id
-	null		    -- p_visible_tcl
-    );
+	v_menu := im_menu__new (
+		null,				-- p_menu_id
+		''acs_object'',			-- object_type
+		now(),				-- creation_date
+		null,				-- creation_user
+		null,				-- creation_ip
+		null,				-- context_id
+		''intranet-core'',		-- package_name
+		''admin_user_exits'',		-- label
+		''User Exits'',			-- name
+		''/intranet/admin/user_exits'', -- url
+		110,				-- sort_order
+		v_admin_menu,			-- parent_menu_id
+		null				-- p_visible_tcl
+	);
 
-    PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
-    return 0;
+	PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+	return 0;
+end;' language 'plpgsql';
+select inline_1 ();
+drop function inline_1();
+
+
+
+-- -----------------------------------------------------
+-- Auth Authorities
+-- -----------------------------------------------------
+
+create or replace function inline_1 ()
+returns integer as '
+declare
+	v_menu			integer;
+	v_admin_menu		integer;
+	v_admins		integer;
+begin
+	select group_id into v_admins from groups where group_name = ''P/O Admins'';
+
+	select menu_id into v_admin_menu
+	from im_menus
+	where label=''admin'';
+
+	v_menu := im_menu__new (
+		null,				-- p_menu_id
+		''acs_object'',			-- object_type
+		now(),				-- creation_date
+		null,				-- creation_user
+		null,				-- creation_ip
+		null,				-- context_id
+		''intranet-core'',		-- package_name
+		''admin_auth_authorities'',	-- label
+		''Auth Authorities'',		-- name
+		''/acs-admin/auth/index'',	-- url
+		120,				-- sort_order
+		v_admin_menu,			-- parent_menu_id
+		null				-- p_visible_tcl
+	);
+
+	PERFORM acs_permission__grant_permission(v_menu, v_admins, ''read'');
+	return 0;
 end;' language 'plpgsql';
 select inline_1 ();
 drop function inline_1();
