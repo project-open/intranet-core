@@ -1645,13 +1645,8 @@ ad_proc -public im_user_skin_helper { user_id } {
 
 ad_proc -public im_skin_select_html { user_id return_url } {
 } {
-    if {!$user_id} {
-	return ""
-    }
-
-    if {![string equal [ad_parameter -package_id [im_package_core_id] SystemCSS] ""]} {
-	return ""
-    }
+    if {!$user_id} { return "" }
+#    if {![string equal [ad_parameter -package_id [im_package_core_id] SystemCSS] ""]} { return "" }
 
     set current_skin [im_user_skin $user_id]
 
@@ -1662,12 +1657,10 @@ ad_proc -public im_skin_select_html { user_id return_url } {
     "
     foreach skin [im_skin_list] {
 	unlist $skin id name fullname
-
 	set selected ""
 	if {$id == $current_skin} {
 	    set selected "selected=selected"
 	}
-    
 	append skin_select_html "<option value=$id $selected>$fullname</option>"
     }
     append skin_select_html "
