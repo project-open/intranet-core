@@ -6,6 +6,11 @@
   margin: 0px;
 }
 
+/* fix select boxes in firefox */
+option {
+  margin-right: 0.5em;
+}
+
 .nobr {
    white-space: nowrap
 }
