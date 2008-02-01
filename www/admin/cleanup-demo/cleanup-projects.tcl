@@ -117,7 +117,6 @@ db_multirow -extend {project_url parent_project_url} projects get_projects "
 		) subp on (p.project_id = subp.project_id)
 	where	1=1
 	order by p.project_id DESC
-        limit 300
 " {
 	set project_url [export_vars -base "/intranet/projects/view" {project_id return_url}]
 	set parent_project_url [export_vars -base "/intranet/projects/view" {parent_id return_url}]

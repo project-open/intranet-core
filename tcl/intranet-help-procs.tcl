@@ -31,36 +31,23 @@ ad_proc -public im_help_home_page_blurb_component { } {
 <table cellpadding=2 cellspacing=2 border=0 width=100%>
 <tr><td>
 
-<h1>Welcome to $projop</h1>
+<h1>[lang::message::lookup "" intranet-core.Welcome_to_po "Welcome to %projop%"]</h1>
+
+[lang::message::lookup "" intranet-core.Sample_system_blurb "
 We have set up a sample system for you in order to show you how
 a typical company could look like. 
+"]
 
-Currently we are preparing some tutorial flash demos. Here's a first 
-sample, expect more to come soon. 
+<h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "Starting to use %po%"]</h2>
 
-
-<ul><li><a href=\"/intranet-amberjack/createProject.html\">How to create a project</a></li></ul>
-
-
-<!--
-Please follow the links to explore the (freely invented) sample contents.
-
-<h2>Starting to use $po</h2>
-
-<p>
+[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
 You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
 demo data from this server and start using this server in production
 if you are a small organization.<p>
+"]
 
-For a complete rollout overview please see our 
-<a href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\"
->Rollout Plan</a>. Please
-<A href=\"http://www.project-open.com/contact/\">contract us</a>
-for a quote on professional services. We have helped more then 100
-organizations to get the most out of $po.
-
-
-<h2>Online Resources</h2>
+<!--
+<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
 
 <ul>
 <li>
