@@ -36,6 +36,7 @@ cvs checkout cms
 cvs checkout diagram
 cvs checkout ecommerce
 cvs checkout events
+cvs checkout faq
 cvs checkout general-comments
 
 cvs checkout intranet-amberjack
