@@ -40,8 +40,7 @@
     <%= $portrait_html %>
     <%= $projects_html %>
     <%= $companies_html %>
-    <%= $forum_html %>
-    <%= $filestorage_html %>
+
     <%= [im_component_bay right] %>
   </td>
 </tr>

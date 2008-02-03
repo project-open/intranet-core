@@ -517,6 +517,27 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
     return $html
 }
 
+
+ad_proc -public im_admin_navbar_component { } {
+    Component version of the im_admin_navbar to test the
+    auto-extend possibilities of mktree 
+} {
+    set title "Admin Navbar"
+    return "
+	<ul class=mktree>
+	[im_menu_li -class liOpen admin]
+        	<ul>
+		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		</ul>
+	[im_menu_li -class liOpen openacs]
+        	<ul>
+		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		</ul>
+	</ul>
+    "
+}
+
+
 ad_proc -public im_navbar_tab {
     url
     name
