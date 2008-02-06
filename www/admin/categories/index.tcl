@@ -86,6 +86,7 @@ set category_list_html "
   <td class=rowtitle align=center>Id</td>
   <td class=rowtitle align=center>En</td>
   <td class=rowtitle align=center>Category</td>
+  <td class=rowtitle align=center>Sort<br>Order</td>
   <td class=rowtitle align=center>Is-A</td>
   <td class=rowtitle align=center>Int1</td>
   <td class=rowtitle align=center>Int2</td>
@@ -140,6 +141,7 @@ db_foreach category_select {} {
 	  <td>$category_id</td>
 	  <td>$enabled_p</td>
 	  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
+	  <td>$sort_order</td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
 	  <td>$aux_int1 $aux_int1_cat</td>
 	  <td>$aux_int2 $aux_int2_cat</td>

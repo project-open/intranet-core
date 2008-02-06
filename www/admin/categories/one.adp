@@ -37,6 +37,10 @@
 	Not Enabled 
     </td>
   </tr>
+  <tr class=rowodd>
+    <td>Sort Order</td>
+    <td><input size=5 name=sort_order value="@sort_order@"></td>
+  </tr>
   <tr class=roweven>
     <td>
       #intranet-core.Category_translation#<br>
