@@ -1628,6 +1628,7 @@ ad_proc -public im_skin_list {} {
 	{ 0  "left"          "Default" }
 	{ 2  "default"       "Right Blue" }
 	{ 1  "opus5"         "Light Green" }
+	{ 3  "transparent"   "Transparent" }
     }
 }
 
