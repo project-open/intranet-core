@@ -62,10 +62,28 @@ if {!$read} {
 # Should we bother about State and ZIP fields?
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
 
-
 # -----------------------------------------------------------
 # Get everything about the company
 # -----------------------------------------------------------
+
+
+set extra_selects [list "0 as zero"]
+set column_sql "
+        select  w.deref_plpgsql_function,
+                aa.attribute_name
+        from    im_dynfield_widgets w,
+                im_dynfield_attributes a,
+                acs_attributes aa
+        where   a.widget_name = w.widget_name and
+                a.acs_attribute_id = aa.attribute_id and
+                aa.object_type = 'im_company'
+"
+db_foreach column_list_sql $column_sql {
+    lappend extra_selects "${deref_plpgsql_function}($attribute_name) as ${attribute_name}_deref"
+}
+set extra_select [join $extra_selects ",\n\t"]
+
+
 
 db_1row company_get_info "
 select 
@@ -86,7 +104,8 @@ select
         o.address_city,
         o.address_state,
         o.address_postal_code,
-        o.address_country_code
+        o.address_country_code,
+	$extra_select
 from 
 	im_companies c,
         im_offices o
@@ -114,7 +133,7 @@ if {$see_details} {
     append left_column "
   <tr class=roweven><td>[_ intranet-core.Client_Type]</td><td>$company_type</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Key_Account]</td><td><a href=[im_url_stub]/users/view?user_id=$manager_id>$manager</a></td></tr>
-"
+    "
 }
 
 set state_column ""
@@ -131,41 +150,17 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.City]</td><td>$address_city</td></tr>
   $state_column
   <tr class=roweven><td>[_ intranet-core.Postal_Code]</td><td>$address_postal_code</td></tr>
-  <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>\n"
+  <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>
+    "
 
     if {![empty_string_p $site_concept]} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { set site_concept "http://$site_concept" }
-	append left_column "
-  <tr class=roweven><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
+	append left_column "<tr class=roweven><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
+
     }
 
     append left_column "<tr class=rowodd><td>[_ intranet-core.VAT_Number]</td><td>$vat_number</td></tr>\n"
-
-
-# ------------------------------------------------------
-# Show extension fields
-# ------------------------------------------------------
-
-set dynamic_fields_p 0
-if {[db_table_exists im_dynfield_attributes]} {
-
-    set dynamic_fields_p 1
-    set object_type "im_company"
-    set form_id "company_view"
-
-    template::form create $form_id \
-	-mode "display" \
-	-display_buttons {}
-
-    im_dynfield::append_attributes_to_form \
-	-object_type $object_type \
-        -form_id $form_id \
-        -object_id $company_id \
-	-form_display_mode "display"
-
-}
-
 
 # ------------------------------------------------------
 # Primary Contact
@@ -180,11 +175,11 @@ if {[db_table_exists im_dynfield_attributes]} {
 	} else {
 	    set primary_contact_text "<i>[_ intranet-core.none]</i>"
 	}
-
+    
     } else {
-
+	
 	append primary_contact_text "<a href=/intranet/users/view?user_id=$primary_contact_id>$primary_contact_name</a>"
-
+    
 	if { $admin } {
 	    append primary_contact_text "
 	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the primary contact"]</a>)\n"
@@ -207,30 +202,73 @@ if {[db_table_exists im_dynfield_attributes]} {
 	} else {
 	    set accounting_contact_text "<i>[_ intranet-core.none]</i>"
 	}
-
+	
     } else {
-
+	
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
 	if { $admin } {
 	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif delete "Delete the accounting contact"]</a>)\n"
 	}
     }
-
+    
     append left_column "<tr class=rowodd><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
-
     append left_column "<tr class=roweven><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
+
+    set ctr 1
 
 # ------------------------------------------------------
 # Continuation ...
 # ------------------------------------------------------
 
-    #if { ![empty_string_p $contract_value] } {
-    #   append left_column "<tr><td>[_ intranet-core.Contract_Value]</td><td>\$[util_commify_number $contract_value] K</td></tr>\n"
-    #}
     if { ![empty_string_p $note] } {
-	append left_column "<tr><td>[_ intranet-core.Notes]</td><td><font size=-1>$note</font>\n</td></tr>\n"
+	append left_column "<tr $bgcolor([expr $ctr%2])><td>[_ intranet-core.Notes]</td><td><font size=-1>$note</font>\n</td></tr>\n"
+	incr ctr
     }
+
+# ------------------------------------------------------
+# Add DynField Columns to the display
+# ------------------------------------------------------
+
+    set column_sql "
+	select
+		aa.pretty_name,
+		aa.attribute_name
+	from
+		im_dynfield_widgets w,
+		acs_attributes aa,
+		im_dynfield_attributes a
+		LEFT OUTER JOIN (
+			select *
+			from im_dynfield_layout
+			where page_url = ''
+		) la ON (a.attribute_id = la.attribute_id)
+	where
+		a.widget_name = w.widget_name and
+		a.acs_attribute_id = aa.attribute_id and
+		aa.object_type = 'im_company'
+	order by
+		coalesce(la.pos_y,0), coalesce(la.pos_x,0)
+    "
+    db_foreach column_list_sql $column_sql {
+	set var ${attribute_name}_deref
+	set value [expr $$var]
+	if {"" != [string trim $value]} {
+	    append left_column "
+		  <tr $bgcolor([expr $ctr%2])>
+		    <td>[lang::message::lookup "" intranet-core.$attribute_name $pretty_name]</td>
+		    <td>$value</td>
+		  </tr>
+	    "
+	    incr ctr
+	}
+    }
+
 }
+
+
+# ------------------------------------------------------
+# 
+# ------------------------------------------------------
 
 set left_column_action ""
 if {$admin} {
