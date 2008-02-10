@@ -26,8 +26,8 @@ ul, ol {
    top: 0px;
    right: 7em;
    /* IE6/7 hack */
-   #width: 50%;
-   #right: 100px;
+   /* width: 50%; */
+   /* right: 100px; */
 }
 
 #header_logout_tab {
@@ -36,7 +36,7 @@ ul, ol {
    top: 0px;
    width: 7em;
    /* IE6/7 hack */
-   #width: 100px;
+   /* width: 100px; */
 }
 
 #slave_content {
