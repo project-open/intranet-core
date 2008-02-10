@@ -26,6 +26,7 @@ ad_page_contract {
     project_id:optional,integer
     { parent_id:integer "" }
     { company_id:integer "" }
+    project_type_id:integer,optional
     project_nr:optional
     { workflow_key "" }
     { return_url "" }

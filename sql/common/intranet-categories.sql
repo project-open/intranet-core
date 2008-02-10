@@ -126,8 +126,8 @@
 -- 17000-17999  Intranet Timesheet2 Workflow (1000)
 -- 18000-18999  Intranet Absences Workflow (1000)
 -- 19000-19999  Intranet Expenses Workflow  (1000)
+-- 20000-20999  Intranet Change Management (1000)
 
--- 20000-20999  reserved (1000)
 -- 21000-21999  reserved (1000)
 -- 22000-22999  reserved (1000)
 -- 23000-23999  reserved (1000)
@@ -138,7 +138,7 @@
 -- 28000-28999  reserved (1000)
 -- 29000-29999  reserved (1000)
 
--- 30000-39999  reserved (10000)
+-- 30000-39999  Intranet Helpdesk (10000)
 -- 40000-49999  reserved (10000)
 -- 50000-59999  reserved (10000)
 -- 60000-69999  reserved (10000)

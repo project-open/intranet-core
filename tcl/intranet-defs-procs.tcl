@@ -1637,6 +1637,49 @@ ad_proc -public im_valid_auto_login_p {
 
 
 
+
+# -----------------------------------------------------------
+# Project ::new, ::del and ::name procedures
+# -----------------------------------------------------------
+
+ad_proc -public im_category_is_a { 
+    child
+    parent
+    { category_type "" }
+} {
+    Returns 1 if the first category "is_a" second category.
+    Can be called with two integers (third argument empty) or
+    with two categories plus the category type as the third argument.
+} {
+    if {$child == $parent} { return 1 }
+
+    if {"" == $category_type} {
+	if {![string is integer $child]} { ad_return_complaint 1 "First argument is not an integer" }
+	if {![string is integer $parent]} { ad_return_complaint 1 "First argument is not an integer" }
+
+	return [db_string is_a "
+		select	count(*)
+		from	im_category_hierarchy
+		where	parent_id = :parent
+			and child_id = :child
+        " -default 0]
+    }
+
+    set child_id [db_string child "select category_id from im_categories where category = :child and category_type = :category_type" -default ""]
+    set parent_id [db_string child "select category_id from im_categories where category = :parent and category_type = :category_type" -default ""]
+
+    if {"" == $child_id} { ad_return_complaint 1 "<b>Internal Error</b>:<br>im_category_is_a: Category '$child' is not part of '$category_type'" }
+    if {"" == $parent_id} { ad_return_complaint 1 "<b>Internal Error</b>:<br>im_category_is_a: Category '$parent' is not part of '$category_type'" }
+
+    return [db_string is_a "
+	select	count(*)
+	from	im_category_hierarchy
+	where	parent_id = :parent_id 
+		and child_id = :child_id
+    " -default 0]
+}
+
+
 # ---------------------------------------------------------------
 # Category Hierarchy Helper
 # ---------------------------------------------------------------
