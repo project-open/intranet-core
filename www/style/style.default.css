@@ -72,9 +72,20 @@ a {
    font-weight: bold;
 }
 
+/*  This must become part of teh skin CSS
 #header_logout_tab {
+   position: absolute;
+   right: 0px;
+   top: 0px;
+   width: 7em;
    background: #336699;
+   /* IE6/7 hack */
+   /* width: 100px; */
 }
+*/
+
+
+
 
 #header_logout {
    position: relative;
