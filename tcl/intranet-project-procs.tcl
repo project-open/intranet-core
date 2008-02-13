@@ -765,6 +765,7 @@ ad_proc -public im_project_select {
     }
 
     append sql " order by lower(p.project_name)"
+
     return [im_selection_to_select_box -include_empty_p $include_all -include_empty_name "All" -translate_p 0 $bind_vars project_select $sql $select_name $default]
 }
 
