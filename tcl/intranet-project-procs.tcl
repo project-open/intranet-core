@@ -670,6 +670,7 @@ ad_proc -public im_project_select {
     { exclude_status "" } 
     { member_user_id ""} 
     {company_id ""} 
+    {main_projects_maxdepth 0}
 } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
@@ -679,14 +680,19 @@ ad_proc -public im_project_select {
     limit to states that do not match any states in exclude_status.
     If member_user_id is specified, we limit the select box to projects
     where member_user_id participate in some role.
- } {
-     set bind_vars [ns_set create]
-     set user_id [ad_get_user_id]
-     ns_set put $bind_vars user_id $user_id
-
-     if {[im_permission $user_id view_projects_all]} {
-	 # The user can see all projects
-	 # This is particularly important for sub-projects.
+    @param main_projects_maxdepth: Determine the maxdepth if exclude_subprojects_p=1
+} {
+    set bind_vars [ns_set create]
+    set user_id [ad_get_user_id]
+    ns_set put $bind_vars user_id $user_id
+ 
+    if {0 == $main_projects_maxdepth} {
+	set main_projects_maxdepth [parameter::get_from_package_key -package_key "intranet-core" -parameter "MainProjectSelectMaxdepth" -default 1]
+    }
+    
+    if {[im_permission $user_id view_projects_all]} {
+	# The user can see all projects
+	# This is particularly important for sub-projects.
 	 set sql "
 		select
 			p.project_id,
@@ -723,7 +729,12 @@ ad_proc -public im_project_select {
      }
 
      if { $exclude_subprojects_p } {
-	 append sql " and p.parent_id is null"
+	 if {1 == $main_projects_maxdepth} {
+	     append sql " and p.parent_id is null"
+	 } else {
+	     append sql " and tree_level(p.tree_sortkey) <= $main_projects_maxdepth"
+	     append sql " and p.project_type_id != [im_project_type_task]"
+	 }
      }
 
      if { ![empty_string_p $status] } {
