@@ -117,7 +117,7 @@ ad_proc -public im_menu_ul_list {
         append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-invoices.$name_key $name]</a></li>\n"
 	incr ctr
     }
-    if {!$no_uls} {set result "</ul>\n" }
+    if {!$no_uls} {append result "</ul>\n" }
 
     if {0 == $ctr} { set result "" }
     return $result
