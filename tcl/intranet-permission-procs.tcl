@@ -202,7 +202,9 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
 ad_proc -public im_user_group_member_p { user_id group_id } {
     Returns 1 if specified user is a member of the specified group. 0 otherwise
 } {
-    return [string equal "t" [util_memoize "db_string user_member_of_group \"select ad_group_member_p($user_id, $group_id) from dual\""]]
+    return [string equal "t" [util_memoize "db_string user_member_of_group \"
+	select ad_group_member_p($user_id, $group_id) from dual
+    \""]]
 }
 
 
@@ -241,13 +243,18 @@ ad_proc -public im_user_is_customer_p { user_id } {
     return [im_user_group_member_p $user_id [im_customer_group_id]]
 }
 
-
-#!!!
 ad_proc -public im_user_is_hr_p { user_id } {
     Returns 1 if a the user is in the HR Managers group.
 } {
     return [im_user_group_member_p $user_id [im_hr_group_id]]
 }
+
+ad_proc -public im_user_is_accounting_p { user_id } {
+    Returns 1 if a the user is in the Accounting group.
+} {
+    return [im_user_group_member_p $user_id [im_accounting_group_id]]
+}
+
 
 
 ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { 
