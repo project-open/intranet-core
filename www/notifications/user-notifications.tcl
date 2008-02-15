@@ -25,6 +25,8 @@ if {![info exists return_url] || "" == $return_url} { set return_url [im_url_wit
 if {0 == $user_id} { set user_id [ad_get_user_id] }
 set current_user_id [ad_get_user_id]
 
+if {$current_user_id != $user_id} { ad_return_template }
+
 # Check the permissions
 im_user_permissions $current_user_id $user_id view read write admin
 

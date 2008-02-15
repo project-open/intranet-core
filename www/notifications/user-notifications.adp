@@ -1,4 +1,4 @@
-
+<if @user_id@ eq @current_user_id@>
 <if @notifications:rowcount@ ne 0>
 
 <table cellspacing="1" cellpadding="3">
@@ -35,4 +35,5 @@
     </tr>
   </multiple>
 </table>
+</if>
 </if>
