@@ -500,53 +500,6 @@ if {[im_permission $current_user_id view_companies_all]} {
 
 
 # ---------------------------------------------------------------
-# Filestorage & Forums
-# These need special permissions because:
-# Freelancer, Customers and Employees shouldn't see the
-# discussions around them.
-# ---------------------------------------------------------------
-
-set filestorage_html ""
-set forum_html ""
-
-# Human Resources Files and Forum Items are only visible IF:
-#	1. The viewing user can "administer" the user OR
-#	2. If the user has the "view_hr" permission
-#
-
-if {$admin || [im_permission $user_id "view_hr"]} {
-
-    set filestorage_installed_p [db_table_exists "im_fs_files"]
-    if {$filestorage_installed_p} {
-	    set filestorage_html [im_table_with_title \
-		"<B>[_ intranet-forum.Human_Resources_Files]<B>" \
-		[im_filestorage_user_component $current_user_id $user_id $name $return_url] \
-	    ]
-    }
-}
-
-set forum_installed_p [db_table_exists "im_forum_topics"]
-if {$forum_installed_p} {
-	    set forum_html [im_table_with_title \
-		[im_forum_create_bar "<B>[_ intranet-forum.Human_Resources_Forum_Items]<B>" $user_id $return_url] \
-		[im_forum_component \
-			-user_id $current_user_id \
-			-forum_object_id $user_id \
-			-current_page_url $current_url \
-			-return_url $return_url \
-			-export_var_list [list user_id_from_search forum_start_idx forum_order_by forum_how_many forum_view_name ] \
-			-forum_type user \
-			-view_name [im_opt_val forum_view_name] \
-			-forum_order_by [im_opt_val forum_order_by] \
-			-restrict_to_mine_p "f" \
-			-restrict_to_new_topics 0 \
-		] \
-	    ]
-}
-
-
-
-# ---------------------------------------------------------------
 # Administration
 # ---------------------------------------------------------------
 
