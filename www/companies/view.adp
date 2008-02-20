@@ -10,9 +10,6 @@
      <%= [im_box_header "Company Information"] %>
         <table>
         @left_column;noquote@
-        <if @dynamic_fields_p@>
-            <formtemplate id="company_view" style="standard-withouttabletab"></formtemplate>
-        </if>
 	@left_column_action;noquote@
         </table>
     <%= [im_box_footer] %>

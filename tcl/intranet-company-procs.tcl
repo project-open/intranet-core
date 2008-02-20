@@ -34,6 +34,7 @@ ad_proc -public im_company_status_quote_out {} { return 45 }
 ad_proc -public im_company_status_active {} { return 46 }
 ad_proc -public im_company_status_declined {} { return 47 }
 ad_proc -public im_company_status_inactive {} { return 48 }
+ad_proc -public im_company_status_deleted {} { return 49 }
 
 
 # Frequently used Company Types
@@ -431,7 +432,6 @@ ad_proc -public im_company_select {
     New feature 040527: The companies to be shown depend on the users
     permissions: The system should show only the users companies, except
     if the user has the "view_companies_all" permission.
-
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
 
@@ -459,16 +459,13 @@ ad_proc -public im_company_select {
     if {[im_permission $user_id "view_companies_all"]} { set perm_sql "im_companies" }
 
 
-set sql "
-	select
-		c.company_id,
+    set sql "
+	select	c.company_id,
 		c.company_name
-	from
-		$perm_sql c
-	where
-		1=1
+	from	$perm_sql c
+	where	company_status_id not in ([im_company_status_deleted], [im_company_status_inactive])
 		$where_clause
-"
+    "
 
     if { ![empty_string_p $status] } {
 	ns_set put $bind_vars status $status
