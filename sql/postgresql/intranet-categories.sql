@@ -175,10 +175,7 @@ BEGIN
 		RAISE NOTICE ''im_category_hierarchy_new: bad category 2: "%" '',p_parent_id; 
 		return 0;
 	END IF;
-
-	IF p_child_id = p_parent_id THEN
-		return 0;
-	END IF;
+	IF p_child_id = p_parent_id THEN return 0; END IF;
 
 	select	count(*) into v_count from im_category_hierarchy
 	where	child_id = p_child_id and parent_id = p_parent_id;

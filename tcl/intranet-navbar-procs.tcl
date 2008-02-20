@@ -92,7 +92,7 @@ ad_proc -public im_navbar_tree {
 
 	<li><a href=/intranet/>Sales &amp; Marketing</a>
 	<ul>
-		<li><a href=/intranet/projects/index>Projects</a>
+		<li><a href=/intranet/projects/index>Project Proposals</a>
 			<ul>
 			<li><a href=/intranet/projects/new>New Project</a></li>
 			<li><a href=/intranet/projects/index?project_status_id=71>All Potential Projects</a></li>
@@ -104,7 +104,7 @@ ad_proc -public im_navbar_tree {
 			<li><a href=/intranet/projects/index?project_status_id=76>All Open Projects</a></li>
 			</ul>
 		</li>
-		<li><a href=/intranet/projects/index>Customers</a>
+		<li><a href=/intranet/projects/index>Customer Prospects</a>
 			<ul>
 			<li><a href=/intranet/companies/new>New Customer</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=41>All Potential Customers</a></li>
@@ -113,6 +113,12 @@ ad_proc -public im_navbar_tree {
 			<li><a href=/intranet/companies/index?type_id=57&status_id=44>Customers Quoting</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=45>Customers Quote Out</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=46>All Active Customers</a></li>
+			</ul>
+		</li>
+		<li><a href=/intranet/projects/index>Quoting</a>
+			<ul>
+			<li><a href=/intranet-invoices/>New Quote</a></li>
+			<li><a href=/intranet-invoices/list?cost_type_id=3702>All Quotes</a></li>
 			</ul>
 		</li>
 		<li><a href=/intranet-reporting/>Reporting</a>

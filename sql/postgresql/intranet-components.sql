@@ -180,10 +180,8 @@ declare
 	v_plugin_id	im_component_plugins.plugin_id%TYPE;
 	v_count		integer;
 begin
-	select count(*) into v_count
-	from im_component_plugins
+	select count(*) into v_count from im_component_plugins
 	where plugin_name = p_plugin_name;
-
 	IF v_count > 0 THEN return 0; END IF;
 
 	v_plugin_id := acs_object__new (

@@ -387,11 +387,19 @@ values ('', 'f', '85', 'Unknown', 'Intranet Project Type');
 insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
 values ('', 'f', '86', 'Other', 'Intranet Project Type');
 
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('', 'f', '100', 'Task', 'Intranet Project Type');
+insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
+values ('', 'f', '101', 'Ticket', 'Intranet Project Type');
+
+
 -- 87 - 97 reserved for Translation
 -- 97 - Strategic Consulting  	Consulting Project 	
 -- 98 - Software Maintenance 		
 -- 99 - Software Development 
 -- 100 - Task (for timesheet tasks)
+-- 101 - Ticket (intranet-helpdesk)
+-- 102 - 109 reserved for other Project subclasses
 
 
 -- Hiring Source

@@ -93,6 +93,7 @@
 -- 220-249	Costs
 -- 250-259	Translation Quality
 -- 260-269	Workflow
+-- 270-279	intranet-helpdesk Tickets
 
 -- 900 - 909	Intranet Materials Reserved
 -- 900		im_material_list
