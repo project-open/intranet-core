@@ -1746,15 +1746,15 @@ ad_proc -public im_ad_hoc_query {
     if {"" != $col_titles} {
 	foreach title $col_titles {
 	    switch $format {
-		plain {	append header "$title\t" }
-		html {	
-		    append header "<th>$title</th>" 
-		}
+		html { append header "<th>$title</th>" }
+		csv { append header "$title;" }
+		default {append header "$title\t" }
 	    }
 	}
 	switch $format {
-	    plain { set header $header }
 	    html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
+	    csv { append header "$header;" }
+	    default { set header $header }
 	}
     }
 
@@ -1762,24 +1762,24 @@ ad_proc -public im_ad_hoc_query {
     foreach row $lol {
 	foreach col $row {
 	    switch $format {
-		plain {	append result "$col\t" }
 		html {	
 		    if {"" == $col} { set col "&nbsp;" }
 		    append result "<td>$col</td>" 
 		}
+		csv { append result "$col;" }
+		plain {	append result "$col\t" }
 	    }
 	}
 
 	# Change to next line
 	switch $format {
-	    plain { append result "\n" }
 	    html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
+	    default { append result "\n" }
 	}
 	incr row_count
     }
     
     switch $format {
-	plain { return "$header\n$result"  }
 	html { return "
 		<table border=$border>
 		$header
@@ -1789,6 +1789,7 @@ ad_proc -public im_ad_hoc_query {
 		</table>
 	       "  
 	}
+	default { return "$header\n$result"  }
     }
 }
 
