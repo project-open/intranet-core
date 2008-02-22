@@ -655,13 +655,11 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     # Store dynamic fields
     # -----------------------------------------------------------------
-    
+
     im_dynfield::attribute_store \
 	-object_type $object_type \
 	-object_id $project_id \
 	-form_id $form_id
-    ns_log Notice "projects/new: after attribute_store"
-    
 	
     # -----------------------------------------------------------------
     # add the creating current_user to the group
