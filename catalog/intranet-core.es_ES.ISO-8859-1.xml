@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -305,8 +305,8 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
-  <msg key="Expense_Item">Gasto</msg>
   <msg key="Expense_Bundle">Informe de Gastos</msg>
+  <msg key="Expense_Item">Gasto</msg>
   <msg key="Expenses">Gastos</msg>
   <msg key="Export_Companies_CSV">Exportar empresas a .csv</msg>
   <msg key="Extra_from">Extra FROM</msg>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.0.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1111">1111</msg>
@@ -78,8 +78,8 @@
   <msg key="Allocations">Allocations</msg>
   <msg key="Allowances">Spesen</msg>
   <msg key="Andorra">Andorra</msg>
-  <msg key="Anonymize">Anonymisieren</msg>
   <msg key="Annual_Revenue">Umsatz pro Jahr</msg>
+  <msg key="Anonymize">Anonymisieren</msg>
   <msg key="Appr_Size">Appr Size</msg>
   <msg key="Approver">Approver (Triage RFC)</msg>
   <msg key="Area_1">Area 1</msg>
