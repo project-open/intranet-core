@@ -34,97 +34,131 @@ select acs_object_type__create_type (
         'im_project__name'       -- name_method
 );
 
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('im_project', 'im_projects', 'project_id');
+
 update acs_object_types set
         status_type_table = 'im_projects',
         status_column = 'project_status_id',
         type_column = 'project_type_id'
 where object_type = 'im_project';
 
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','view','/intranet/projects/view?project_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_project','edit','/intranet/projects/new?project_id=');
+
+
 
 create table im_projects (
-	project_id		integer
-				constraint im_projects_pk 
-				primary key 
-				constraint im_project_prj_fk 
-				references acs_objects,
-	project_name		varchar(1000) not null,
-	project_nr		varchar(100) not null,
-	project_path		varchar(100) not null,
-	parent_id		integer 
-				constraint im_projects_parent_fk 
-				references im_projects,
-	tree_sortkey		varbit,
-	max_child_sortkey	varbit,
+	project_id			integer
+					constraint im_projects_pk 
+					primary key 
+					constraint im_project_prj_fk 
+					references acs_objects,
+	project_name			varchar(1000) not null,
+	project_nr			varchar(100) not null,
+	project_path			varchar(100) not null,
+	parent_id			integer 
+					constraint im_projects_parent_fk 
+					references im_projects,
+	tree_sortkey			varbit,
+	max_child_sortkey		varbit,
 
 	-- Should be customer_id, but got renamed badly...
-	company_id		integer not null
-				constraint im_projects_company_fk 
-				references im_companies,
+	company_id			integer not null
+					constraint im_projects_company_fk 
+					references im_companies,
 	-- Should be customer_project_nr. Refers to the customers
 	-- reference to our project.
-	company_project_nr	varchar(200),
+	company_project_nr		varchar(200),
 	-- Field indicating the final_customer if we are a subcontractor
-	final_company		varchar(200),
+	final_company			varchar(200),
 	-- type of actions pursued during the project 
 	-- implementation, for example "ERP Installation" or
 	-- "ERP Upgrade", ...
-	project_type_id		integer not null 
-				constraint im_projects_prj_type_fk 
-				references im_categories,
+	project_type_id			integer not null 
+					constraint im_projects_prj_type_fk 
+					references im_categories,
 	-- status in the project cycle, from "potential", "quoting", ... to
 	-- "open", "invoicing", "paid", "closed"
-	project_status_id	integer not null 
-				constraint im_projects_prj_status_fk 
-				references im_categories,
-	description		varchar(4000),
-	billing_type_id		integer
-				constraint im_project_billing_fk
-				references im_categories,
-	start_date		timestamptz,
-	end_date		timestamptz,
-				-- make sure the end date is after the start date
-				constraint im_projects_date_const 
-				check( end_date - start_date >= 0 ),	
-	note			varchar(4000),
+	project_status_id		integer not null 
+					constraint im_projects_prj_status_fk 
+					references im_categories,
+	description			text,
+	billing_type_id			integer
+					constraint im_project_billing_fk
+					references im_categories,
+	start_date			timestamptz,
+	end_date			timestamptz,
+	-- make sure the end date is after the start date
+					constraint im_projects_date_const 
+					check( end_date - start_date >= 0 ),	
+	note				text,
 	-- project leader is responsible for the operational execution
-	project_lead_id		integer 
-				constraint im_projects_prj_lead_fk 
-				references users,
+	project_lead_id			integer 
+					constraint im_projects_prj_lead_fk 
+					references users,
 	-- supervisor is the manager responsible for the financial success
-	supervisor_id		integer 
-				constraint im_projects_supervisor_fk 
-				references users,
-	requires_report_p	char(1) default('t')
-				constraint im_project_requires_report_p 
-				check (requires_report_p in ('t','f')),
-				-- Total project budget (top-down planned)
-	project_budget		float,
-	project_budget_currency	char(3)
-				constraint im_costs_paid_currency_fk
-				references currency_codes(iso),
-				-- Max number of hours for project.
-				-- Does not require "view_finance" permission
-	project_budget_hours	float,
-				-- completion perc. estimation
-	percent_completed	float
-				constraint im_project_percent_completed_ck
-				check (
-					percent_completed >= 0 
-					and percent_completed <= 100
-				),
-				-- green, yellow or red?
-	on_track_status_id	integer
-				constraint im_project_on_track_status_id_fk
-				references im_categories,
-				-- Should this project appear in the list of templates?
-	template_p		char(1) default('f')
-				constraint im_project_template_p
-				check (requires_report_p in ('t','f')),
-	company_contact_id	integer
-				constraint im_project_company_contact_id_fk
-				references users,
-	sort_order		integer
+	supervisor_id			integer 
+					constraint im_projects_supervisor_fk 
+					references users,
+	requires_report_p		char(1) default('t')
+					constraint im_project_requires_report_p 
+					check (requires_report_p in ('t','f')),
+	-- Total project budget (top-down planned)
+	project_budget			float,
+	project_budget_currency		char(3)
+					constraint im_costs_paid_currency_fk
+					references currency_codes(iso),
+	-- Max number of hours for project.
+	-- Does not require "view_finance" permission
+	project_budget_hours		float,
+	-- completion perc. estimation
+	percent_completed		float
+					constraint im_project_percent_completed_ck
+					check (
+						percent_completed >= 0 
+						and percent_completed <= 100
+					),
+	-- green, yellow or red?
+	on_track_status_id		integer
+					constraint im_project_on_track_status_id_fk
+					references im_categories,
+	-- Should this project appear in the list of templates?
+	template_p			char(1) default('f')
+					constraint im_project_template_p
+					check (requires_report_p in ('t','f')),
+	company_contact_id		integer
+					constraint im_project_company_contact_id_fk
+					references users,
+	sort_order			integer,
+	cost_quotes_cache		numeric(12,2) default 0,
+	cost_invoices_cache		numeric(12,2) default 0,
+	cost_timesheet_planned_cache	numeric(12,2) default 0,
+	cost_purchase_orders_cache	numeric(12,2) default 0,
+	cost_bills_cache		numeric(12,2) default 0,
+	cost_timesheet_logged_cache	numeric(12,2) default 0,
+	cost_delivery_notes_cache	numeric(12,2) default 0,
+	cost_expense_planned_cache      numeric(12,2) default 0,
+	cost_expense_logged_cache       numeric(12,2) default 0,
+	reported_hours_cache		numeric(12,2) default 0,
+	-- Dirty field indicates that the cache needs to be recalculated
+	cost_cache_dirty		timestamptz
 );
+
+
+-- Speed up tree queries
+create index im_project_parent_id_idx on im_projects(parent_id);
+
+
+-- Speed up child-sortkey queries
+create index im_project_treesort_idx on im_projects(tree_sortkey);
+
+-- Relaxed unique constraint for tasks...
+alter table im_projects add constraint 
+im_projects_path_un UNIQUE (project_nr, company_id, parent_id);
+
 
 
 -- This is the sortkey code
@@ -214,15 +248,6 @@ create trigger im_projects_update_tr after update
 on im_projects
 for each row
 execute procedure im_projects_update_tr ();
-
-
-create index im_project_parent_id_idx on im_projects(parent_id);
-
-
-- Speed up child-sortkey queries
-create index im_project_treesort_idx on im_projects(tree_sortkey);
-
-
 
 
 -- Optional Indices for larger systems:
@@ -330,7 +355,7 @@ create table im_url_types (
 				constraint im_url_types_type_un unique,
 	-- we need a little bit of meta data to know how to ask 
 	-- the user to populate this field
-	to_ask			varchar(1000) not null,
+	to_ask			text not null,
 	-- if we put this information into a table, what is the 
 	-- header for this type of url?
 	to_display		varchar(100) not null,
@@ -345,7 +370,7 @@ create table im_project_url_map (
 	url_type_id		integer not null
 				constraint im_project_url_map_url_type_fk
 				references im_url_types,
-	url			varchar(4000),
+	url			text,
 	-- each project can have exactly one type of each type
 	-- of url
 	primary key (project_id, url_type_id)
@@ -385,7 +410,7 @@ create or replace function im_project_name_from_id (integer)
 returns varchar as '
 DECLARE
 	p_project_id	alias for $1;
-	v_project_name	varchar(1000);
+	v_project_name	varchar;
 BEGIN
 	select project_name
 	into v_project_name
@@ -400,7 +425,7 @@ create or replace function im_project_nr_from_id (integer)
 returns varchar as '
 DECLARE
 	p_project_id	alias for $1;
-	v_name		varchar(100);
+	v_name		varchar;
 BEGIN
 	select project_nr
 	into v_name
@@ -436,3 +461,6 @@ BEGIN
 
 	RETURN;
 end;' language 'plpgsql';
+
+
+

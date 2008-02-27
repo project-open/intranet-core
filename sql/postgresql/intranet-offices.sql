@@ -37,6 +37,21 @@ select acs_object_type__create_type (
 	'im_office__name'	-- name_method
 );
 
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('im_office', 'im_offices', 'office_id');
+
+update acs_object_types set 
+	status_type_table = 'im_offices', 
+	status_column = 'office_status_id', 
+	type_column = 'office_type_id' 
+where object_type = 'im_office';
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','view','/intranet/offices/view?office_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_office','edit','/intranet/offices/new?office_id=');
+
+
 
 create table im_offices (
 	office_id		integer 
@@ -75,11 +90,11 @@ create table im_offices (
 	contact_person_id	integer 
 				constraint im_offices_cont_per_fk
 				references users,
-	landlord		varchar(4000),
+	landlord		text,
 	--- who supplies the security service, the code for
 	--- the door, etc.
-	security		varchar(4000),
-	note			varchar(4000)
+	security		text,
+	note			text
 );
 
 

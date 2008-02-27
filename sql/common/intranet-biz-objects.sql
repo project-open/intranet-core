@@ -95,26 +95,6 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 insert into im_biz_object_urls (object_type, url_type, url) values (
 'person','edit','/intranet/users/new?user_id=');
 
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','view','/intranet/projects/view?project_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_project','edit','/intranet/projects/new?project_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','view','/intranet/companies/view?company_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_company','edit','/intranet/companies/new?company_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','view','/intranet/offices/view?office_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_office','edit','/intranet/offices/new?office_id=');
-
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_timesheet_task','view','/intranet/projects/view?project_id=');
-insert into im_biz_object_urls (object_type, url_type, url) values (
-'im_timesheet_task','edit','/intranet/projects/new?project_id=');
-
 
 
 

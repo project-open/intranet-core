@@ -38,6 +38,8 @@ select acs_object_type__create_type (
         'im_company__name'	-- name_method
 );
 
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('im_company', 'im_companies', 'company_id');
 
 update acs_object_types set
         status_type_table = 'im_companies',
@@ -45,77 +47,94 @@ update acs_object_types set
         type_column = 'company_type_id'
 where object_type = 'im_company';
 
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_company','view','/intranet/companies/view?company_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_company','edit','/intranet/companies/new?company_id=');
+
+
 
 create table im_companies (
-	company_id 		integer
-				constraint im_companies_pk
-				primary key 
-				constraint im_companies_cust_id_fk
-				references acs_objects,
-	company_name		varchar(1000) not null
-				constraint im_companies_name_un unique,
-				-- where are the files in the filesystem?
-	company_path		varchar(100) not null
-				constraint im_companies_path_un unique,
-	main_office_id		integer not null
-				constraint im_companies_office_fk
-				references im_offices,
-	deleted_p		char(1) default('f')
-				constraint im_companies_deleted_p 
-				check(deleted_p in ('t','f')),
-	company_status_id	integer not null
-				constraint im_companies_cust_stat_fk
-				references im_categories,
-	company_type_id	integer not null
-				constraint im_companies_cust_type_fk
-				references im_categories,
-	crm_status_id		integer 
-				constraint im_companies_crm_status_fk
-				references im_categories,
-	primary_contact_id	integer 
-				constraint im_companies_prim_cont_fk
-				references users,
-	accounting_contact_id	integer 
-				constraint im_companies_acc_cont_fk
-				references users,
-	note			varchar(4000),
-	referral_source		varchar(1000),
-	annual_revenue_id	integer 
-				constraint im_companies_ann_rev_fk
-				references im_categories,
-				-- keep track of when status is changed
-	status_modification_date date,
-				-- and what the old status was
-	old_company_status_id	integer 
-				constraint im_companies_old_cust_stat_fk
-				references im_categories,
-				-- is this a company we can bill?
-	billable_p		char(1) default('f')
-				constraint im_companies_billable_p_ck 
-				check(billable_p in ('t','f')),
-				-- What kind of site does the company want?
-	site_concept		varchar(100),
-				-- Who in Client Services is the manager?
-	manager_id		integer 
-				constraint im_companies_manager_fk
-				references users,
-				-- How much do they pay us?
-	contract_value		integer,
-				-- When does the company start?
-	start_date		date,
-	vat_number		varchar(100),
-				-- Default value for VAT
-	default_vat		numeric(12,1) default 0,
-				-- default payment days
-	default_payment_days	integer,
-				-- Default invoice template
-	default_invoice_template_id	integer
-				constraint im_companies_def_invoice_template_fk
-				references im_categories,
-				-- Default payment method
+	company_id 			integer
+					constraint im_companies_pk
+					primary key 
+					constraint im_companies_cust_id_fk
+					references acs_objects,
+	company_name			varchar(1000) not null
+					constraint im_companies_name_un unique,
+					-- where are the files in the filesystem?
+	company_path			varchar(100) not null
+					constraint im_companies_path_un unique,
+	main_office_id			integer not null
+					constraint im_companies_office_fk
+					references im_offices,
+	deleted_p			char(1) default('f')
+					constraint im_companies_deleted_p 
+					check(deleted_p in ('t','f')),
+	company_status_id		integer not null
+					constraint im_companies_cust_stat_fk
+					references im_categories,
+	company_type_id			integer not null
+					constraint im_companies_cust_type_fk
+					references im_categories,
+	crm_status_id			integer 
+					constraint im_companies_crm_status_fk
+					references im_categories,
+	primary_contact_id		integer 
+					constraint im_companies_prim_cont_fk
+					references users,
+	accounting_contact_id		integer 
+					constraint im_companies_acc_cont_fk
+					references users,
+	note				text,
+	referral_source			text,
+	annual_revenue_id		integer 
+					constraint im_companies_ann_rev_fk
+					references im_categories,
+					-- keep track of when status is changed
+	status_modification_date	date,
+					-- and what the old status was
+	old_company_status_id		integer 
+					constraint im_companies_old_cust_stat_fk
+					references im_categories,
+					-- is this a company we can bill?
+	billable_p			char(1) default('f')
+					constraint im_companies_billable_p_ck 
+					check(billable_p in ('t','f')),
+					-- What kind of site does the company want?
+	site_concept			varchar(100),
+					-- Who in Client Services is the manager?
+	manager_id			integer 
+					constraint im_companies_manager_fk
+					references users,
+					-- How much do they pay us?
+	contract_value			integer,
+					-- When does the company start?
+	start_date			date,
+	vat_number			varchar(100),
+					-- Default value for VAT
+	default_vat			numeric(12,1) default 0,
+					-- default payment days
+	default_payment_days		integer,
+					-- Default payment method
 	default_payment_method_id	integer
-				constraint im_companies_def_invoice_payment_fk
-				references im_categories
+					constraint im_companies_def_invoice_payment_fk
+					references im_categories,
+	default_invoice_template_id	integer
+					constraint im_companies_def_invoice_template_fk
+					references im_categories,
+	default_quote_template_id	integer
+					constraint im_companies_def_quote_template_fk
+					references im_categories,
+	default_delnote_template_id	integer
+					constraint im_companies_def_delnote_template_fk
+					references im_categories,
+	default_bill_template_id	integer
+					constraint im_companies_def_bill_template_fk
+					references im_categories,
+	default_po_template_id		integer	
+					constraint im_companies_def_po_template_fk
+					references im_categories
 );
 
 

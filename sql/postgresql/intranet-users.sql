@@ -22,13 +22,16 @@
 --
 alter table persons add portrait_checkdate date;
 alter table persons add portrait_file varchar(400);
+alter table persons add demo_group varchar(50);
+alter table persons add demo_password varchar(50);
+
 
 -------------------------------------------------------------
 -- Skin Field
 --
 
-alter table users add skin int not null default 0;
-
+alter table users add skin integer;
+alter table users alter column skin set default 0;
 
 -------------------------------------------------------------
 -- Users_Contact information
@@ -86,8 +89,8 @@ create table users_contact (
 				references country_codes(iso),
 	priv_wa			integer,
 				-- used by the intranet module
-	note			varchar(4000),
-	current_information	varchar(4000)
+	note			text,
+	current_information	text
 );
 
 ------------------------------------------------------
@@ -184,54 +187,6 @@ BEGIN
 	where person_id = v_user_id;
 	return v_initials;
 END;' language 'plpgsql';
-
-
--- Return a string with all profiles of the user
-create or replace function im_profiles_from_user_id(integer)
-returns varchar as '
-DECLARE
-	v_user_id	alias for $1;
-	v_profiles	varchar;
-	row		RECORD;
-BEGIN
-	v_profiles := '''';
-	FOR row IN
-		select	group_name
-		from	groups g,
-			im_profiles p,
-			group_distinct_member_map m
-		where	m.member_id = v_user_id
-			and g.group_id = m.group_id
-			and g.group_id = p.profile_id
-	LOOP
-	    IF '''' != v_profiles THEN v_profiles := v_profiles || '', ''; END IF;
-	    v_profiles := v_profiles || row.group_name;
-	END LOOP;
-
-	return v_profiles;
-END;' language 'plpgsql';
-select im_profiles_from_user_id(624);
-
-
--- Return the Cost Center code
-create or replace function im_dept_from_user_id(integer)
-returns varchar as '
-DECLARE
-        v_user_id	alias for $1;
-        v_dept		varchar;
-BEGIN
-	select	cost_center_code into v_dept
-	from	im_employees e,
-		im_cost_centers cc
-	where	e.employee_id = v_user_id
-		and e.department_id = cc.cost_center_id;
-
-        return v_dept;
-END;' language 'plpgsql';
-select im_dept_from_user_id(624);
-
-
-
 
 
 -- Shortcut to add a user to a profile (group)

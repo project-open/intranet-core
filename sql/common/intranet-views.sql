@@ -342,7 +342,7 @@ extra_select, extra_where, sort_order, visible_for) values (206,10,NULL,'Home Ph
 
 -------------------------------------------------------------------
 --
-delete from im_view_columns where column_id > 1100 and column_id <= 1199;
+delete from im_view_columns where view_id = 11;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (1101,11,NULL,'Name','$name','','',1,
@@ -357,6 +357,11 @@ insert into im_view_columns (column_id, view_id, group_id, column_name, column_r
 extra_select, extra_where, sort_order, visible_for) values (1105,11,NULL,'Home',
 '"<a href=$url>$url</a>"','','',3,
 'im_view_user_permission $user_id $current_user_id $url view_users');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (1107,11,NULL,'Username',
+'$username','','',4,
+'parameter::get_from_package_key -package_key intranet-core -parameter EnableUsersUsernameP -default 0');
 
 
 ---------------------------------------------------------------

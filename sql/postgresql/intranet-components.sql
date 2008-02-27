@@ -37,6 +37,8 @@ SELECT acs_object_type__create_type (
 	'im_component_plugin.name'	-- name_method
 );
 
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('im_component_plugin', 'im_component_plugins', 'plugin_id');
 
 -- The idea is to use OpenACS permissions in the future to
 -- control who should see what plugin.
@@ -75,14 +77,18 @@ create table im_component_plugins (
 	location		varchar(100) not null,
 				-- constraint im_comp_plugin_location_check
 				-- check(location in ('left','right','bottom','none')),
-	title_tcl		varchar(4000),
-	component_tcl		varchar(4000),
+	title_tcl		text,
+				-- how should we display this component in the Menu Bar
+				-- if it is minimized?
+	menu_name		varchar(50) default null,
+				-- where to place the menu if minimized?
+	menu_sort_order		integer not null default 0,		
+	component_tcl		text,
 	enabled_p		char(1) default('t')
 				constraint im_comp_plugin_enabled_ck
 				check (enabled_p in ('t','f')),
-				-- Make sure there are no two identical
-	menu_name		varchar(50) default null, -- for menu bar display
-	menu_sort_order		integer not null default 0,		
+
+		-- Make sure there are no two identical
 		constraint im_component_plugins_un
 		unique (plugin_name, package_name)
 );
@@ -97,7 +103,7 @@ create table im_component_plugin_user_map (
 	plugin_id		integer
 				constraint im_comp_plugin_user_map_plugin_fk
 				references im_component_plugins,
-	user_id			integer 
+	user_id			integer
 				constraint im_comp_plugin_user_map_user_fk
 				references users,
 	sort_order		integer not null,
@@ -115,6 +121,28 @@ comment on table im_component_plugin_user_map is '
  effectively allowing users to customize their GUI
  layout.
 ';
+
+
+-- View to show a "unified" view to the component_plugins, derived
+-- from the main table and the overriding user_map:
+--
+create or replace view im_component_plugin_user_map_all as (
+        select
+                c.plugin_id,
+                c.sort_order,
+                c.location,
+                null as user_id
+        from
+                im_component_plugins c
+  UNION
+        select
+                m.plugin_id,
+                m.sort_order,
+                m.location,
+                m.user_id
+        from
+                im_component_plugin_user_map m
+);
 
 
 
@@ -139,6 +167,7 @@ declare
 	p_view_name	alias for $11;
 	p_sort_order	alias for $12;
 	p_component_tcl	alias for $13;
+
 	v_plugin_id	integer;
 begin
 	v_plugin_id := im_component_plugin__new (
@@ -211,7 +240,6 @@ create or replace function im_component_plugin__delete (integer) returns integer
 DECLARE
 	p_plugin_id	alias for $1;
 BEGIN
-
 	-- Erase the im_component_plugins item associated with the id
 	delete from 	im_component_plugins
 	where		plugin_id = p_plugin_id;
@@ -286,13 +314,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name	
 	20,				-- sort_order
 	'im_table_with_title "[_ intranet-core.Project_Members]" [im_group_member_component $project_id 	$current_user_id $user_admin_p $return_url "" "" 1 ]'	-- component_tcl
-	);
-
-
-
-
-
-
+);
 
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
@@ -308,10 +330,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name	
 	20,				-- sort_order
 	'im_table_with_title "[_ intranet-core.Task_Members]" [im_group_member_component $task_id $current_user_id $user_admin_p $return_url "" "" 1 ]'			-- component_tcl
-	);
-
-
-
+);
 
 
 
@@ -329,7 +348,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	20,				-- sort_order
 	'im_table_with_title "[_ intranet-core.Office_Members]" [im_group_member_component $office_id $user_id $admin $return_url "" "" 1 ]'			-- component_tcl
-	);
+);
 
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
@@ -345,7 +364,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	30,				-- sort_order
 	'im_table_with_title "[_ intranet-core.Offices]" [im_office_company_component $user_id $company_id]' -- component_tcl
-	);
+);
 
 -- Office component for UserViewPage
 SELECT	im_component_plugin__new (
@@ -362,7 +381,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	80,				-- sort_order
 	'im_table_with_title "[_ intranet-core.Offices]" [im_office_user_component $current_user_id $user_id]' -- component_tcl
-	);
+);
 
 
 SELECT	im_component_plugin__new (
@@ -379,7 +398,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	30,				-- sort_order
 	'im_user_registration_component $user_id' -- component_tcl
-	);
+);
 
 
 SELECT	im_component_plugin__new (
@@ -396,7 +415,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	5,				-- sort_order
 	'im_random_employee_component'	-- component_tcl
-	);
+);
 
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
@@ -412,7 +431,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	10,				-- sort_order
 	'im_help_home_page_blurb_component'	-- component_tcl
-	);
+);
 
 
 SELECT	im_component_plugin__new (
@@ -429,10 +448,7 @@ SELECT	im_component_plugin__new (
 	null,				-- view_name
 	15,				-- sort_order
 	'im_project_personal_active_projects_component'	-- component_tcl
-	);
-
-
-
+);
 
 
 -- Notifications Component for each user
@@ -453,7 +469,6 @@ SELECT	im_component_plugin__new (
 );
 
 
-
 -- Notifications Component for each user
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
@@ -471,4 +486,48 @@ SELECT	im_component_plugin__new (
 	'im_admin_navbar_component'	-- component_tcl
 );
 
+
+
+
+
+
+
+-- Set permissions on all Plugin Components for Employees, Freelancers and Customers.
+create or replace function inline_0 ()
+returns varchar as '
+DECLARE
+	v_count		integer;
+	v_plugin_id	integer;
+        row		RECORD;
+
+	v_emp_id	integer;
+	v_freel_id	integer;
+	v_cust_id	integer;
+BEGIN
+	select group_id into v_emp_id from groups where group_name = ''Employees'';
+	select group_id into v_freel_id from groups where group_name = ''Freelancers'';
+	select group_id into v_cust_id from groups where group_name = ''Customers'';
+
+	-- Check if permissions were already configured
+	-- Stop if there is just a single configured plugin.
+	select	count(*) into v_count
+	from	acs_permissions p,
+		im_component_plugins pl
+	where	p.object_id = pl.plugin_id;
+	IF v_count > 0 THEN return 0; END IF;
+
+	-- Add read permissions to all plugins
+        FOR row IN
+		select	plugin_id
+		from	im_component_plugins pl
+        LOOP
+		PERFORM im_grant_permission(row.plugin_id, v_emp_id, ''read'');
+		PERFORM im_grant_permission(row.plugin_id, v_freel_id, ''read'');
+		PERFORM im_grant_permission(row.plugin_id, v_cust_id, ''read'');
+        END LOOP;
+
+        return 0;
+END;' language 'plpgsql';
+select inline_0();
+drop function inline_0();
 

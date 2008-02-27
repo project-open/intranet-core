@@ -41,8 +41,8 @@ create table im_views (
 	view_status_id		integer
 				constraint im_views_status_fk
 				references im_categories,
-	visible_for		varchar(1000),
-	view_sql		varchar(4000),
+	visible_for		text,
+	view_sql		text,
 				-- order for restore
 	sort_order		integer
 );
@@ -62,19 +62,19 @@ create table im_view_columns (
 				references groups,
 	column_name		varchar(100) not null,
 	-- tcl command being executed using "eval" for rendering the column
-	column_render_tcl	varchar(4000),
+	column_render_tcl	text,
 	-- extra SQL components necessary in order to display this
 	-- column. All entries without "," or "and".
-	extra_select		varchar(4000),
-	extra_from		varchar(4000),
-	extra_where		varchar(4000),
+	extra_select		text,
+	extra_from		text,
+	extra_where		text,
 	-- where to display the column?
 	sort_order		integer not null,
 	-- how to order the SQL when the "Column Name" is selected?
-	order_by_clause		varchar(4000),
+	order_by_clause		text,
 	-- set of permission tokens that allow viewing this column,
 	-- separated with spaces and OR-joined
-	visible_for		varchar(1000)
+	visible_for		text
 );
 
 

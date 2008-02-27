@@ -127,8 +127,8 @@
 -- 18000-18999  Intranet Absences Workflow (1000)
 -- 19000-19999  Intranet Expenses Workflow  (1000)
 -- 20000-20999  Intranet Change Management (1000)
+-- 21000-21999  Intranet Translation Language (1000)
 
--- 21000-21999  reserved (1000)
 -- 22000-22999  reserved (1000)
 -- 23000-23999  reserved (1000)
 -- 24000-24999  reserved (1000)
@@ -157,65 +157,55 @@
 --
 create or replace view im_biz_object_role as 
 select category_id as role_id, category as role
-from im_categories 
-where category_type = 'Intranet Biz Object Role';
+from im_categories where category_type = 'Intranet Biz Object Role';
 
 ------------------------------------------------------
 -- Projects
 --
 create or replace view im_project_status as 
 select category_id as project_status_id, category as project_status
-from im_categories 
-where category_type = 'Intranet Project Status';
+from im_categories where category_type = 'Intranet Project Status';
 
 create or replace view im_project_types as
 select category_id as project_type_id, category as project_type
-from im_categories
-where category_type = 'Intranet Project Type';
+from im_categories where category_type = 'Intranet Project Type';
 
 ------------------------------------------------------
 -- Companies
 --
 create or replace view im_company_status as 
 select category_id as company_status_id, category as company_status
-from im_categories 
-where category_type = 'Intranet Company Status';
+from im_categories where category_type = 'Intranet Company Status';
 
 create or replace view im_company_types as
 select category_id as company_type_id, category as company_type
-from im_categories
-where category_type = 'Intranet Company Type';
+from im_categories where category_type = 'Intranet Company Type';
 
 create or replace view im_annual_revenue as
 select category_id as revenue_id, category as revenue
-from im_categories
-where category_type = 'Intranet Annual Revenue';
+from im_categories where category_type = 'Intranet Annual Revenue';
 
 ------------------------------------------------------
 -- Partners
 --
 create or replace view im_partner_status as 
 select category_id as partner_status_id, category as partner_status
-from im_categories 
-where category_type = 'Intranet Partner Status';
+from im_categories where category_type = 'Intranet Partner Status';
 
 create or replace view im_partner_types as
 select category_id as partner_type_id, category as partner_type
-from im_categories
-where category_type = 'Intranet Partner Type';
+from im_categories where category_type = 'Intranet Partner Type';
 
 ------------------------------------------------------
 -- Offices
 --
 create or replace view im_office_status as 
 select category_id as office_status_id, category as office_status
-from im_categories 
-where category_type = 'Intranet Office Status';
+from im_categories where category_type = 'Intranet Office Status';
 
 create or replace view im_office_types as
 select category_id as office_type_id, category as office_type
-from im_categories
-where category_type = 'Intranet Office Type';
+from im_categories where category_type = 'Intranet Office Type';
 
 
 
@@ -224,30 +214,20 @@ where category_type = 'Intranet Office Type';
 --
 
 -- Intranet Company Status
-insert into im_categories (
-	CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, 
-	CATEGORY, CATEGORY_TYPE
-) values (
-	'', 'f', '41', 
-	'Potential', 'Intranet Company Status'
-);
 
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '42', 'Inquiring', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '43', 'Qualifying', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '44', 'Quoting', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '45', 'Quote out', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '46', 'Active', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '47', 'Declined', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '48', 'Inactive', 'Intranet Company Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '49', 'Deleted', 'Intranet Company Status');
+SELECT im_category_new ('40', 'Active or Potential', 'Intranet Company Status');
+update im_categories set enabled_p = 'f' where category_id = 40;
+
+
+SELECT im_category_new ('41', 'Potential', 'Intranet Company Status');
+SELECT im_category_new ('42', 'Inquiring', 'Intranet Company Status');
+SELECT im_category_new ('43', 'Qualifying', 'Intranet Company Status');
+SELECT im_category_new ('44', 'Quoting', 'Intranet Company Status');
+SELECT im_category_new ('45', 'Quote out', 'Intranet Company Status');
+SELECT im_category_new ('46', 'Active', 'Intranet Company Status');
+SELECT im_category_new ('47', 'Declined', 'Intranet Company Status');
+SELECT im_category_new ('48', 'Inactive', 'Intranet Company Status');
+SELECT im_category_new ('49', 'Deleted', 'Intranet Company Status');
 
 -- Introduce hierarchical company stati
 -- Basicly, we've got not three super-states:
@@ -255,111 +235,78 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 --	active		when the company is a valid customer or provider
 --	close		all possible outcomes when a business relation finishes
 --
-insert into im_category_hierarchy values (41,42);
-insert into im_category_hierarchy values (41,43);
-insert into im_category_hierarchy values (41,44);
-insert into im_category_hierarchy values (41,45);
+SELECT im_category_hierarchy_new (42, 41);
+SELECT im_category_hierarchy_new (43, 41);
+SELECT im_category_hierarchy_new (44, 41);
+SELECT im_category_hierarchy_new (47, 48);
+SELECT im_category_hierarchy_new (49, 48);
 
-insert into im_category_hierarchy values (48,47);
-insert into im_category_hierarchy values (48,49);
-
+SELECT im_category_hierarchy_new (41, 40);
+SELECT im_category_hierarchy_new (46, 40);
 
 
 -- Intranet Company Types
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '51', 'Unknown', 'Intranet Company Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '52', 'Other', 'Intranet Company Type');
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '53', 'Internal', 'Intranet Company Type');
+SELECT im_category_new ('51', 'Unknown', 'Intranet Company Type');
+SELECT im_category_new ('52', 'Other', 'Intranet Company Type');
+SELECT im_category_new ('53', 'Internal', 'Intranet Company Type');
+SELECT im_category_new ('54', 'MLV Translation Agency Customer', 'Intranet Company Type');
+SELECT im_category_new ('55', 'Software Company', 'Intranet Company Type');
+SELECT im_category_new ('56', 'Provider', 'Intranet Company Type');
+SELECT im_category_new ('57', 'Customer', 'Intranet Company Type');
+SELECT im_category_new ('58', 'Freelance Provider', 'Intranet Company Type');
+SELECT im_category_new ('59', 'Office Equipment Provider', 'Intranet Company Type');
+SELECT im_category_new ('60', 'CustOrIntl', 'Intranet Company Type');
 
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '54', 'MLV Translation Agency Customer', 'Intranet Company Type');
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '55', 'Software Company', 'Intranet Company Type');
-
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '56', 'Provider', 'Intranet Company Type');
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '57', 'Customer', 'Intranet Company Type');
-
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '58', 'Freelance Provider', 'Intranet Company Type');
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '59', 'Office Equipment Provider', 'Intranet Company Type');
-
--- This is a "parent_only_p" category that doesn't appear on the drop-down boxes
-INSERT INTO im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, PARENT_ONLY_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 't', '60', 'CustOrIntl', 'Intranet Company Type');
+-- Dont show CustOrIntl in drop-down boxes
+update im_categories set enabled_p='f' where category_id=60;
 
 
 -- Establish CustOrIntl super-category
 -- CustOrIntl is used by the customers select box
-insert into im_category_hierarchy values (60,53);
-insert into im_category_hierarchy values (60,57);
-insert into im_category_hierarchy values (60,54);
-insert into im_category_hierarchy values (60,55);
+SELECT im_category_hierarchy_new (53, 60);
+SELECT im_category_hierarchy_new (57, 60);
+SELECT im_category_hierarchy_new (54, 60);
+SELECT im_category_hierarchy_new (55, 60);
+
 
 -- Customers
-insert into im_category_hierarchy values (57,54);
-insert into im_category_hierarchy values (57,55);
+SELECT im_category_hierarchy_new (54, 57);
+SELECT im_category_hierarchy_new (55, 57);
 
 -- Providers
-insert into im_category_hierarchy values (56,58);
-insert into im_category_hierarchy values (56,59);
+SELECT im_category_hierarchy_new (58, 56);
+SELECT im_category_hierarchy_new (59, 56);
 
 
 -- Partner Status
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '60', 'Targeted', 'Intranet Partner Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '61', 'In Discussion', 'Intranet Partner Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '62', 'Active', 'Intranet Partner Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '63', 'Announced', 'Intranet Partner Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '64', 'Dormant', 'Intranet Partner Status');
--- insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
--- ('', 'f', '65', 'Dead', 'Intranet Partner Status');
-
+--  
+-- SELECT im_category_new ('60', 'Targeted', 'Intranet Partner Status');
+-- SELECT im_category_new ('61', 'In Discussion', 'Intranet Partner Status');
+-- SELECT im_category_new ('62', 'Active', 'Intranet Partner Status');
+-- SELECT im_category_new ('63', 'Announced', 'Intranet Partner Status');
+-- SELECT im_category_new ('64', 'Dormant', 'Intranet Partner Status');
+-- SELECT im_category_new ('65', 'Dead', 'Intranet Partner Status');
 
 -- Project On Track Status
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '66', 'Green', 'Intranet Project On Track Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '67', 'Yellow', 'Intranet Project On Track Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '68', 'Red', 'Intranet Project On Track Status');
+SELECT im_category_new ('66', 'Green', 'Intranet Project On Track Status');
+SELECT im_category_new ('67', 'Yellow', 'Intranet Project On Track Status');
+SELECT im_category_new ('68', 'Red', 'Intranet Project On Track Status');
 
 
 -- Project Status
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '71', 'Potential', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '72', 'Inquiring', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '73', 'Qualifying', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '74', 'Quoting', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '75', 'Quote Out', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '76', 'Open', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '77', 'Declined', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '78', 'Delivered', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '79', 'Invoiced', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '80', 'Partially Paid', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '81', 'Closed', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '82', 'Deleted', 'Intranet Project Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '83', 'Canceled', 'Intranet Project Status');
+SELECT im_category_new ('71', 'Potential', 'Intranet Project Status');
+SELECT im_category_new ('72', 'Inquiring', 'Intranet Project Status');
+SELECT im_category_new ('73', 'Qualifying', 'Intranet Project Status');
+SELECT im_category_new ('74', 'Quoting', 'Intranet Project Status');
+SELECT im_category_new ('75', 'Quote Out', 'Intranet Project Status');
+SELECT im_category_new ('76', 'Open', 'Intranet Project Status');
+SELECT im_category_new ('77', 'Declined', 'Intranet Project Status');
+SELECT im_category_new ('78', 'Delivered', 'Intranet Project Status');
+SELECT im_category_new ('79', 'Invoiced', 'Intranet Project Status');
+SELECT im_category_new ('80', 'Partially Paid', 'Intranet Project Status');
+SELECT im_category_new ('81', 'Closed', 'Intranet Project Status');
+SELECT im_category_new ('82', 'Deleted', 'Intranet Project Status');
+SELECT im_category_new ('83', 'Canceled', 'Intranet Project Status');
 
 -- Introduce hierarchical project states.
 -- Basicly, we've got not three super-states:
@@ -367,139 +314,97 @@ insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGO
 --	open		when the project is executed and
 --	close		all possible outcomes when execution is finished
 --
-insert into im_category_hierarchy values (71,72);
-insert into im_category_hierarchy values (71,73);
-insert into im_category_hierarchy values (71,74);
-insert into im_category_hierarchy values (71,75);
-insert into im_category_hierarchy values (81,77);
-insert into im_category_hierarchy values (81,78);
-insert into im_category_hierarchy values (81,79);
-insert into im_category_hierarchy values (81,80);
-insert into im_category_hierarchy values (81,82);
-insert into im_category_hierarchy values (81,83);
+
+SELECT im_category_hierarchy_new (72, 71);
+SELECT im_category_hierarchy_new (73, 71);
+SELECT im_category_hierarchy_new (74, 71);
+SELECT im_category_hierarchy_new (75, 71);
+
+SELECT im_category_hierarchy_new (77, 81);
+SELECT im_category_hierarchy_new (78, 81);
+SELECT im_category_hierarchy_new (79, 81);
+SELECT im_category_hierarchy_new (80, 81);
+SELECT im_category_hierarchy_new (82, 81);
+SELECT im_category_hierarchy_new (83, 81);
 
 
 -- Project Type
-insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
-values ('84', 'Project Task', 'Intranet Project Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
-values ('', 'f', '85', 'Unknown', 'Intranet Project Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
-values ('', 'f', '86', 'Other', 'Intranet Project Type');
-
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
-values ('', 'f', '100', 'Task', 'Intranet Project Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) 
-values ('', 'f', '101', 'Ticket', 'Intranet Project Type');
-
-
+SELECT im_category_new ('84', 'Project Task', 'Intranet Project Type');
+SELECT im_category_new ('85', 'Unknown', 'Intranet Project Type');
+SELECT im_category_new ('86', 'Other', 'Intranet Project Type');
 -- 87 - 97 reserved for Translation
--- 97 - Strategic Consulting  	Consulting Project 	
--- 98 - Software Maintenance 		
--- 99 - Software Development 
--- 100 - Task (for timesheet tasks)
--- 101 - Ticket (intranet-helpdesk)
+SELECT im_category_new ('97', 'Strategic Consulting', 'Intranet Project Type');
+SELECT im_category_new ('98', 'Software Maintenance', 'Intranet Project Type');
+SELECT im_category_new ('99', 'Software Development', 'Intranet Project Type');
+SELECT im_category_new ('100', 'Task', 'Intranet Project Type');
+SELECT im_category_new ('101', 'Ticket', 'Intranet Project Type');
 -- 102 - 109 reserved for other Project subclasses
+SELECT im_category_new ('2500', 'Translation Project', 'Intranet Project Type');
+SELECT im_category_new ('2501', 'Consulting Project', 'Intranet Project Type');
 
 
 -- Hiring Source
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '121', 'Personal Contact', 'Intranet Hiring Source');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '122', 'Web Site', 'Intranet Hiring Source');
+SELECT im_category_new ('121', 'Personal Contact', 'Intranet Hiring Source');
+SELECT im_category_new ('122', 'Web Site', 'Intranet Hiring Source');
 
 -- Job Title
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '151', 'Linguistic Staff Jr.', 'Intranet Job Title');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '152', 'Linguistic Staff Sr.', 'Intranet Job Title');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '153', 'Project Manager Jr.', 'Intranet Job Title');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '154', 'Project Manager Sr.', 'Intranet Job Title');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '155', 'Freelance', 'Intranet Job Title');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '156', 'Managing Director', 'Intranet Job Title');
-
-
+SELECT im_category_new ('151', 'Linguistic Staff Jr.', 'Intranet Job Title');
+SELECT im_category_new ('152', 'Linguistic Staff Sr.', 'Intranet Job Title');
+SELECT im_category_new ('153', 'Project Manager Jr.', 'Intranet Job Title');
+SELECT im_category_new ('154', 'Project Manager Sr.', 'Intranet Job Title');
+SELECT im_category_new ('155', 'Freelance', 'Intranet Job Title');
+SELECT im_category_new ('156', 'Managing Director', 'Intranet Job Title');
 
 -- 160-169	Intranet Office Status
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '160', 'Active', 'Intranet Office Status');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '161', 'Inactive', 'Intranet Office Status');
-
+SELECT im_category_new ('160', 'Active', 'Intranet Office Status');
+SELECT im_category_new ('161', 'Inactive', 'Intranet Office Status');
 
 -- 170-179	Intranet Office Type
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '170', 'Main Office', 'Intranet Office Type');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '171', 'Sales Office', 'Intranet Office Type');
+SELECT im_category_new ('170', 'Main Office', 'Intranet Office Type');
+SELECT im_category_new ('171', 'Sales Office', 'Intranet Office Type');
 
 
 -- Qualilification Process
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '191', 'University Studies', 'Intranet Qualification Process');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '192', 'Domain Expert', 'Intranet Qualification Process');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '193', 'None', 'Intranet Qualification Process');
+SELECT im_category_new ('191', 'University Studies', 'Intranet Qualification Process');
+SELECT im_category_new ('192', 'Domain Expert', 'Intranet Qualification Process');
+SELECT im_category_new ('193', 'None', 'Intranet Qualification Process');
 
 -- Task Board
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 130, '15 Minutes', 'Intranet Task Board Time Frame');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 131, '1 hour', 'Intranet Task Board Time Frame');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 132, '1 day', 'Intranet Task Board Time Frame');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 133, 'Side Project', 'Intranet Task Board Time Frame');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', 134, 'Full Time', 'Intranet Task Board Time Frame');
+ 
+SELECT im_category_new (130, '15 Minutes', 'Intranet Task Board Time Frame');
+SELECT im_category_new (131, '1 hour', 'Intranet Task Board Time Frame');
+SELECT im_category_new (132, '1 day', 'Intranet Task Board Time Frame');
+SELECT im_category_new (133, 'Side Project', 'Intranet Task Board Time Frame');
+SELECT im_category_new (134, 'Full Time', 'Intranet Task Board Time Frame');
 
 
 
 -- Intranet Anual Revenue
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '223', 'EUR 0-1k', 'Intranet Annual Revenue');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '224', 'EUR 1-10k', 'Intranet Annual Revenue');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '222', 'EUR 10-100k', 'Intranet Annual Revenue');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '225', '> EUR 100k', 'Intranet Annual Revenue');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '226', 'Pre-revenue', 'Intranet Annual Revenue');
+SELECT im_category_new ('223', 'EUR 0-1k', 'Intranet Annual Revenue');
+SELECT im_category_new ('224', 'EUR 1-10k', 'Intranet Annual Revenue');
+SELECT im_category_new ('222', 'EUR 10-100k', 'Intranet Annual Revenue');
+SELECT im_category_new ('225', '> EUR 100k', 'Intranet Annual Revenue');
+SELECT im_category_new ('226', 'Pre-revenue', 'Intranet Annual Revenue');
 
 
 
 -- Unit or Mesurement
-INSERT INTO im_categories VALUES (320,'Hour','','Intranet UoM','category','t','f');
-INSERT INTO im_categories VALUES (321,'Day','','Intranet UoM','category','t','f');
-INSERT INTO im_categories VALUES (322,'Unit','','Intranet UoM','category','t','f');
+SELECT im_category_new (320, 'Hour', 'Intranet UoM');
+SELECT im_category_new (321, 'Day', 'Intranet UoM');
+SELECT im_category_new (322, 'Unit', 'Intranet UoM');
 -- Page, S-Word, T-Word, S-Line, T-Line defined in intranet-translation
 
 
 -- Prior Experience
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '400', 'Small Project Work', 'Intranet Prior Experience');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '401', 'Medium Project Work', 'Intranet Prior Experience');
-insert into im_categories ( CATEGORY_DESCRIPTION, ENABLED_P, CATEGORY_ID, CATEGORY, CATEGORY_TYPE) values 
-('', 'f', '402', 'Large Project Work', 'Intranet Prior Experience');
-
+SELECT im_category_new ('400', 'Small Project Work', 'Intranet Prior Experience');
+SELECT im_category_new ('401', 'Medium Project Work', 'Intranet Prior Experience');
+SELECT im_category_new ('402', 'Large Project Work', 'Intranet Prior Experience');
 
 
 -- DynView (system views) Type
-insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE)
-values ('1400', 'ObjectList', 'Intranet DynView Type');
-
-insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE)
-values ('1405', 'ObjectView', 'Intranet DynView Type');
-
-insert into im_categories (CATEGORY_ID, CATEGORY, CATEGORY_TYPE)
-values ('1410', 'Backup', 'Intranet DynView Type');
+SELECT im_category_new ('1400', 'ObjectList', 'Intranet DynView Type');
+SELECT im_category_new ('1405', 'ObjectView', 'Intranet DynView Type');
+SELECT im_category_new ('1410', 'Backup', 'Intranet DynView Type');
 -- reserved 1400 - 1499 for DynView Types
 
 

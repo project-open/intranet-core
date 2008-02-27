@@ -24,13 +24,14 @@
 -- object states and types, instead of a zillion of 
 -- tables like 'im_project_status' and 'im_project_type'.
 
-create sequence im_categories_seq start 100000;
+create sequence im_categories_seq start 10000000;
+
 create table im_categories (
 	category_id		integer 
 				constraint im_categories_pk
 				primary key,
 	category		varchar(50) not null,
-	category_description	varchar(4000),
+	category_description	text,
 	category_type		varchar(50),
 	category_gif		varchar(100) default 'category',
 	enabled_p		char(1) default 't'
@@ -43,7 +44,11 @@ create table im_categories (
 	parent_only_p		char(1) default 'f'
 				constraint im_parent_only_p_ck
 				check(parent_only_p in ('t','f')),
-	sort_order		integer default 0
+	sort_order		integer default 0,
+	aux_int1		integer,
+	aux_int2		integer,
+	aux_string1		text,
+	aux_string2		text
 );
 
 -- fraber 040320: Don't allow for duplicated entries!
@@ -134,25 +139,35 @@ end;' language 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION im_category_new (
+	integer, varchar, varchar, varchar
+) RETURNS integer as '
+DECLARE
+	p_category_id		alias for $1;
+	p_category		alias for $2;
+	p_category_type		alias for $3;
+	p_description		alias for $4;
+
+	v_count			integer;
+BEGIN
+	select	count(*) into v_count from im_categories
+	where	category = p_category and category_type = p_category_type;
+	IF v_count > 0 THEN return 0; END IF;
+
+	insert into im_categories(category_id, category, category_type, category_description)
+	values (p_category_id, p_category, p_category_type, p_description);
+
+	RETURN 0;
+end;' language 'plpgsql';
+
+CREATE OR REPLACE FUNCTION im_category_new (
 	integer, varchar, varchar
 ) RETURNS integer as '
 DECLARE
 	p_category_id		alias for $1;
 	p_category		alias for $2;
 	p_category_type		alias for $3;
-	v_count			integer;
 BEGIN
-	select	count(*) into v_count
-	from	im_categories
-	where	category = p_category and
-		category_type = p_category_type;
-
-	IF v_count > 0 THEN return 0; END IF;
-
-	insert into im_categories(category_id, category, category_type)
-	values (p_category_id, p_category, p_category_type);
-
-	RETURN 0;
+	RETURN im_category_new(p_category_id, p_category, p_category_type, NULL);
 end;' language 'plpgsql';
 
 

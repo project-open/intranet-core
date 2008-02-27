@@ -41,6 +41,9 @@ select acs_object_type__create_type (
 	'im_biz_object__name'	-- name_method
 );
 
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('im_biz_object', 'im_biz_objects', 'object_id');
+
 CREATE TABLE im_biz_objects (
 	object_id 		integer
 				constraint im_biz_object_id_pk
@@ -92,24 +95,19 @@ BEGIN
 
 	-- Check if the object has a supertype and update table and id_column if necessary
 	WHILE ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
-	--	RAISE NOTICE ''im_biz_object__get_type_id: % has supertype %: '', v_object_type, v_supertype;
 		select	ot.supertype, ot.table_name, ot.id_column
 		into	v_supertype, v_table, v_id_column
 		from	acs_object_types ot
 		where	ot.object_type = v_supertype;
 	END LOOP;
 
-
 	IF v_table is null OR v_id_column is null OR v_column is null THEN
-	--	RAISE NOTICE ''im_biz_object__get_type_id: Found null value for %: v_table=%, v_id_column=%, v_column=%'', 
-	--	v_object_type, v_table, v_id_column, v_column;
 		return 0;
 	END IF;
 
+	-- Funny way, but this is the only option to EXECUTE in PG 8.0 and below.
 	v_query := '' select '' || v_column || '' as result_id '' || '' from '' || v_table || 
 		'' where '' || v_id_column || '' = '' || p_object_id;
-
-	-- Funny way, but this is the only option to get a value from an EXECUTE in PG 8.0 and below.
 	FOR row IN EXECUTE v_query
         LOOP
 		v_result_id := row.result_id;
@@ -145,7 +143,6 @@ BEGIN
 
 	-- Check if the object has a supertype and update table and id_column if necessary
 	WHILE ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
-	--	RAISE NOTICE ''im_biz_object__get_status_id: % has supertype %: '', v_object_type, v_supertype;
 		select	ot.supertype, ot.table_name, ot.id_column
 		into	v_supertype, v_table, v_id_column
 		from	acs_object_types ot
@@ -154,15 +151,12 @@ BEGIN
 
 
 	IF v_table is null OR v_id_column is null OR v_column is null THEN
-	--	RAISE NOTICE ''im_biz_object__get_status_id: Found null value for %: v_table=%, v_id_column=%, v_column=%'', 
-	--	v_object_type, v_table, v_id_column, v_column;
 		return 0;
 	END IF;
 
+	-- Funny way, but this is the only option to get a value from an EXECUTE in PG 8.0 and below.
 	v_query := '' select '' || v_column || '' as result_id '' || '' from '' || v_table || 
 		'' where '' || v_id_column || '' = '' || p_object_id;
-
-	-- Funny way, but this is the only option to get a value from an EXECUTE in PG 8.0 and below.
 	FOR row IN EXECUTE v_query
         LOOP
 		v_result_id := row.result_id;
@@ -235,11 +229,11 @@ END;' language 'plpgsql';
 -- very error prone for DM creation.
 --
 CREATE TABLE im_biz_object_urls (
-	object_type		varchar(1000),
+	object_type		varchar(100),
 	url_type		varchar(100)
 				constraint im_biz_obj_urls_url_type_ck
 				check(url_type in ('view', 'edit')),
-	url			varchar(1000),
+	url			text,
 		constraint im_biz_obj_urls_pk
 		primary key(object_type, url_type)
 );
@@ -352,7 +346,7 @@ end;' language 'plpgsql';
 -- neighbours.
 --
 create table im_biz_object_role_map (
-	acs_object_type	varchar(1000),
+	acs_object_type	varchar(100),
 	object_type_id	integer
 			constraint im_bizo_rmap_object_type_fk
 			references im_categories,
@@ -369,17 +363,17 @@ create table im_biz_object_role_map (
 -- ------------------------------------------------------------
 
 create table im_biz_object_members (
-	rel_id		integer
-			constraint im_biz_object_members_rel_fk
-			references acs_rels (rel_id)
-			constraint im_biz_object_members_rel_pk
-			primary key,
-			-- Intranet Project Role
-	object_role_id	integer not null
-			constraint im_biz_object_members_role_fk
-			references im_categories,
-			-- Percentage of assignation of resource
-	percentage	numeric(8,2) default 100
+	rel_id			integer
+				constraint im_biz_object_members_rel_fk
+				references acs_rels (rel_id)
+				constraint im_biz_object_members_rel_pk
+				primary key,
+				-- Intranet Project Role
+	object_role_id		integer not null
+				constraint im_biz_object_members_role_fk
+				references im_categories,
+				-- Percentage of assignation of resource
+	percentage		numeric(8,2) default 100
 );
 
 select acs_rel_type__create_type (
@@ -422,8 +416,7 @@ DECLARE
 	v_rel_id		integer;
 	v_count			integer;
 BEGIN
-	select	count(*) into v_count
-	from	acs_rels
+	select	count(*) into v_count from acs_rels
 	where	object_id_one = p_object_id
 		and object_id_two = p_user_id;
 
