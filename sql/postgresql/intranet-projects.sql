@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/postgres/intranet-projects.sql
 --
--- Copyright (C) 1999-2004 various parties
+-- Copyright (C) 1999-2008 various parties
 -- The code is based on ArsDigita ACS 3.4
 --
 -- This program is free software. You can redistribute it
@@ -13,34 +13,34 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author	  unknown@arsdigita.com
--- @author	  frank.bergmann@project-open.com
--- @author	  juanjoruizx@yahoo.es
+-- @author	unknown@arsdigita.com
+-- @author	frank.bergmann@project-open.com
+-- @author	juanjoruizx@yahoo.es
 
 -- Projects
 --
 -- Each project can have any number of sub-projects
 
 select acs_object_type__create_type (
-        'im_project',            -- object_type
-        'Project',               -- pretty_name
-        'Projects',              -- pretty_plural
-        'im_biz_object',        -- supertype
-        'im_projects',           -- table_name
-        'project_id',            -- id_column
-        'im_project',            -- package_name
-        'f',                    -- abstract_p
-        null,                   -- type_extension_table
-        'im_project__name'       -- name_method
+	'im_project',		-- object_type
+	'Project',		-- pretty_name
+	'Projects',		-- pretty_plural
+	'im_biz_object',	-- supertype
+	'im_projects',		-- table_name
+	'project_id',		-- id_column
+	'im_project',		-- package_name
+	'f',			-- abstract_p
+	null,			-- type_extension_table
+	'im_project__name'	-- name_method
 );
 
 insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('im_project', 'im_projects', 'project_id');
 
 update acs_object_types set
-        status_type_table = 'im_projects',
-        status_column = 'project_status_id',
-        type_column = 'project_type_id'
+	status_type_table = 'im_projects',
+	status_column = 'project_status_id',
+	type_column = 'project_type_id'
 where object_type = 'im_project';
 
 insert into im_biz_object_urls (object_type, url_type, url) values (
@@ -103,6 +103,10 @@ create table im_projects (
 	supervisor_id			integer 
 					constraint im_projects_supervisor_fk 
 					references users,
+	-- board sponsor
+	corporate_sponsor_id		integer
+					constraint im_projects_sponsor_fk
+					references users,
 	requires_report_p		char(1) default('t')
 					constraint im_project_requires_report_p 
 					check (requires_report_p in ('t','f')),
@@ -140,8 +144,8 @@ create table im_projects (
 	cost_bills_cache		numeric(12,2) default 0,
 	cost_timesheet_logged_cache	numeric(12,2) default 0,
 	cost_delivery_notes_cache	numeric(12,2) default 0,
-	cost_expense_planned_cache      numeric(12,2) default 0,
-	cost_expense_logged_cache       numeric(12,2) default 0,
+	cost_expense_planned_cache	numeric(12,2) default 0,
+	cost_expense_logged_cache	numeric(12,2) default 0,
 	reported_hours_cache		numeric(12,2) default 0,
 	-- Dirty field indicates that the cache needs to be recalculated
 	cost_cache_dirty		timestamptz
@@ -166,15 +170,15 @@ im_projects_path_un UNIQUE (project_nr, company_id, parent_id);
 create or replace function im_project_insert_tr ()
 returns opaque as '
 declare
-    v_max_child_sortkey	     im_projects.max_child_sortkey%TYPE;
-    v_parent_sortkey		im_projects.tree_sortkey%TYPE;
+	v_max_child_sortkey		im_projects.max_child_sortkey%TYPE;
+	v_parent_sortkey		im_projects.tree_sortkey%TYPE;
 begin
 
-    if new.parent_id is null
-    then
+	if new.parent_id is null
+	then
 	new.tree_sortkey := int_to_tree_key(new.project_id+1000);
 
-    else
+	else
 
 	select tree_sortkey, tree_increment_key(max_child_sortkey)
 	into v_parent_sortkey, v_max_child_sortkey
@@ -188,11 +192,11 @@ begin
 
 	new.tree_sortkey := v_parent_sortkey || v_max_child_sortkey;
 
-    end if;
+	end if;
 
-    new.max_child_sortkey := null;
+	new.max_child_sortkey := null;
 
-    return new;
+	return new;
 end;' language 'plpgsql';
 
 create trigger im_project_insert_tr
@@ -204,16 +208,16 @@ execute procedure im_project_insert_tr();
 
 create or replace function im_projects_update_tr () returns opaque as '
 declare
-	v_parent_sk     varbit default null;
-	v_max_child_sortkey     varbit;
-	v_old_parent_length     integer;
+	v_parent_sk	varbit default null;
+	v_max_child_sortkey	varbit;
+	v_old_parent_length	integer;
 begin
 	if new.project_id = old.project_id
-	   and ((new.parent_id = old.parent_id)
+	and ((new.parent_id = old.parent_id)
 		or (new.parent_id is null
-		    and old.parent_id is null)) then
+		and old.parent_id is null)) then
 
-	   return new;
+	return new;
 
 	end if;
 
@@ -222,19 +226,19 @@ begin
 	v_old_parent_length := length(new.tree_sortkey) + 1;
 
 	if new.parent_id is null then
-	    v_parent_sk := int_to_tree_key(new.project_id+1000);
+	v_parent_sk := int_to_tree_key(new.project_id+1000);
 	else
-	    SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
-	    INTO v_parent_sk, v_max_child_sortkey
-	    FROM im_projects
-	    WHERE project_id = new.parent_id
-	    FOR UPDATE;
+		SELECT tree_sortkey, tree_increment_key(max_child_sortkey)
+		INTO v_parent_sk, v_max_child_sortkey
+		FROM im_projects
+		WHERE project_id = new.parent_id
+		FOR UPDATE;
 
-	    UPDATE im_projects
-	    SET max_child_sortkey = v_max_child_sortkey
-	    WHERE project_id = new.parent_id;
+		UPDATE im_projects
+		SET max_child_sortkey = v_max_child_sortkey
+		WHERE project_id = new.parent_id;
 
-	    v_parent_sk := v_parent_sk || v_max_child_sortkey;
+		v_parent_sk := v_parent_sk || v_max_child_sortkey;
 	end if;
 
 	UPDATE im_projects
@@ -263,8 +267,8 @@ alter table im_projects add
 
 -- Dont allow the same project_nr  for the same company+level
 alter table im_projects add
-        constraint im_projects_nr_un
-        unique(project_nr, company_id, parent_id);
+	constraint im_projects_nr_un
+	unique(project_nr, company_id, parent_id);
 
 
 
@@ -278,12 +282,12 @@ create or replace function im_project__new (
 	varchar, varchar, varchar, integer, integer, integer, integer
 ) returns integer as '
 DECLARE
-	p_project_id       alias for $1;
-	p_object_type     alias for $2;
+	p_project_id	alias for $1;
+	p_object_type	alias for $2;
 	p_creation_date   alias for $3;
 	p_creation_user   alias for $4;
-	p_creation_ip     alias for $5;
-	p_context_id      alias for $6;
+	p_creation_ip	alias for $5;
+	p_context_id	alias for $6;
 
 	p_project_name	alias for $7;
 	p_project_nr	alias for $8;
@@ -293,9 +297,9 @@ DECLARE
 	p_project_type_id	alias for $12;
 	p_project_status_id alias for $13;
 
-	v_project_id	  integer;
+	v_project_id	integer;
 BEGIN
-       v_project_id := acs_object__new (
+	v_project_id := acs_object__new (
 		p_project_id,
 		p_object_type,
 		p_creation_date,
@@ -317,7 +321,7 @@ end;' language 'plpgsql';
 
 create or replace function im_project__delete (integer) returns integer as '
 DECLARE
-	v_project_id	     alias for $1;
+	v_project_id		alias for $1;
 BEGIN
 	-- Erase the im_projects item associated with the id
 	delete from 	im_projects

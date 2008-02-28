@@ -202,15 +202,11 @@ DECLARE
 	v_group_id	integer;
 	v_rel_id	integer;
 BEGIN
-	-- Get the group_id from group_name
-	select group_id
-	into v_group_id
-	from groups
-	where group_name = p_group_name;
+	select group_id into v_group_id from groups
+	where lower(group_name) = lower(p_group_name);
+	IF v_group_id is null THEN RETURN 0; END IF;
 
-	v_rel_id := membership_rel.new(
-		object_id_one	=> v_group_id,
-		object_id_two	=> p_grantee_id,
-		member_state	=> ''approved''
-	);
+	v_rel_id := membership_rel__new(v_group_id, p_grantee_id);
+
+	RETURN v_rel_id;
 end;' language 'plpgsql';

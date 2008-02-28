@@ -1,4 +1,4 @@
-<master>
+<master src="master">
 <property name="title">#intranet-core.Home#</property>
 <property name="main_navbar_label">home</property>
 <property name="header_stuff">@header_stuff;noquote@</property>
