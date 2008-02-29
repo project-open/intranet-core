@@ -403,8 +403,8 @@ select im_create_profile ('Project Managers','proman');
 select im_create_profile ('Senior Managers','senman'); 
 select im_create_profile ('Accounting','accounting'); 
 select im_create_profile ('Sales','sales'); 
-select im_create_profile ('HR Managers','hr_managers'); 
-select im_create_profile ('Freelance Managers','freelance_managers'); 
+select im_create_profile ('HR Managers','profile'); 
+select im_create_profile ('Freelance Managers','profile'); 
 
 
 

@@ -329,7 +329,7 @@ SELECT im_category_hierarchy_new (83, 81);
 
 
 -- Project Type
-SELECT im_category_new ('84', 'Project Task', 'Intranet Project Type');
+-- SELECT im_category_new ('84', 'Project Task', 'Intranet Project Type');
 SELECT im_category_new ('85', 'Unknown', 'Intranet Project Type');
 SELECT im_category_new ('86', 'Other', 'Intranet Project Type');
 -- 87 - 97 reserved for Translation

@@ -994,9 +994,7 @@ begin
 
 	return 0;
 end;' language 'plpgsql';
-
 select inline_1 ();
-
 drop function inline_1();
 
 
@@ -1092,14 +1090,9 @@ select inline_0 ();
 drop function inline_0 ();
 
 
-
-
-
-
 -- -------------------------------------------------------
 -- Setup an invisible Admin menu for TimesheetNewPage
 --
-
 create or replace function inline_0 ()
 returns integer as '
 declare
@@ -1134,9 +1127,6 @@ end;' language 'plpgsql';
 
 select inline_0 ();
 drop function inline_0 ();
-
-
-
 
 
 -- -----------------------------------------------------
@@ -1251,13 +1241,8 @@ begin
 
 	return 0;
 end;' language 'plpgsql';
-
 select inline_1 ();
-
 drop function inline_1();
-
-
-
 
 
 
@@ -1375,8 +1360,6 @@ BEGIN
 end;' language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
-
-
 
 
 -- -------------------------------------------------------

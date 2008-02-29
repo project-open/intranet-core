@@ -488,10 +488,7 @@ SELECT	im_component_plugin__new (
 
 
 
-
-
-
-
+------------------------------------------------------------------
 -- Set permissions on all Plugin Components for Employees, Freelancers and Customers.
 create or replace function inline_0 ()
 returns varchar as '
@@ -511,7 +508,7 @@ BEGIN
 	-- Check if permissions were already configured
 	-- Stop if there is just a single configured plugin.
 	select	count(*) into v_count
-	from	acs_permissions p,
+ 	from	acs_permissions p,
 		im_component_plugins pl
 	where	p.object_id = pl.plugin_id;
 	IF v_count > 0 THEN return 0; END IF;
