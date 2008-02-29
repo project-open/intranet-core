@@ -138,8 +138,7 @@ values (13, 'user_community', 'view_users', 1405);
 
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (20, 'project_list', 'view_projects', 1400);
-insert into im_views (view_id, view_name, visible_for, view_type_id)
-values (21, 'project_costs', 'view_projects', 1400);
+-- 21 reserved for project_costs profit & loss view
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (22, 'project_status', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
