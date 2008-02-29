@@ -40,6 +40,7 @@ set package_key "intranet-core"
 # Format Category Data 
 # ---------------------------------------------------------------
 
+set sort_order 0
 set profiling_weight 0
 set hierarchy_component ""
 ns_log Notice "one: category_id=$category_id"
