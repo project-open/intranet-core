@@ -191,22 +191,31 @@ END;' language 'plpgsql';
 
 -- Shortcut to add a user to a profile (group)
 -- Example:
---	im_profile_add_user('Employees', 456)
+--      im_profile_add_user('Employees', 456)
 --
-create or replace function im_profile_add_user (varchar, integer) 
+create or replace function im_profile_add_user (varchar, integer)
 returns integer as '
 DECLARE
-	p_group_name	alias for $1;
-	p_grantee_id	alias for $2;
+        p_group_name    alias for $1;
+        p_grantee_id    alias for $2;
 
-	v_group_id	integer;
-	v_rel_id	integer;
+        v_group_id      integer;
+        v_rel_id        integer;
+        v_count         integer;
 BEGIN
-	select group_id into v_group_id from groups
-	where lower(group_name) = lower(p_group_name);
-	IF v_group_id is null THEN RETURN 0; END IF;
+        -- Get the group_id from group_name
+        select group_id into v_group_id from groups
+        where lower(group_name) = lower(p_group_name);
+        IF v_group_id is null THEN RETURN 0; END IF;
 
-	v_rel_id := membership_rel__new(v_group_id, p_grantee_id);
+        -- skip if the relationship already exists
+        select  count(*) into v_count from acs_rels
+        where   object_id_one = v_group_id
+                and object_id_two = p_grantee_id
+                and rel_type = ''membership_rel'';
+        IF v_count > 0 THEN RETURN 0; END IF;
 
-	RETURN v_rel_id;
+        v_rel_id := membership_rel__new(v_group_id, p_grantee_id);
+
+        RETURN v_rel_id;
 end;' language 'plpgsql';
