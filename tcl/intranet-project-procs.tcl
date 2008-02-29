@@ -1750,7 +1750,7 @@ ad_proc im_project_nuke {project_id} {
     # if this fails, it will probably be because the installation has 
     # added tables that reference the users table
 
-    with_transaction {
+    db_transaction {
     
 	# Permissions
 	ns_log Notice "projects/nuke-2: acs_permissions"
@@ -2058,8 +2058,7 @@ ad_proc im_project_nuke {project_id} {
 		delete from acs_objects
 		where object_id = :project_id"
 
-	# End "with_transaction"
-    } {
+    } on_error {
 
 	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
