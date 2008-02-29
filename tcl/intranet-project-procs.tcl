@@ -1946,7 +1946,7 @@ ad_proc im_project_nuke {project_id} {
 	# Consulting
 	if {[db_table_exists im_timesheet_tasks]} {
 	    
-	    ns_log Notice "projects/nuke-2: im_hours - for timesheet tasks"
+	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
 	    db_dml task_actions "
 		delete from im_hours
 		where project_id = :project_id
@@ -1956,6 +1956,16 @@ ad_proc im_project_nuke {project_id} {
 	    db_dml task_actions "
 		    delete from im_timesheet_tasks
 		    where task_id = :project_id
+	    "
+	}
+
+	# Helpdesk
+	if {[db_table_exists im_tickets]} {
+	    
+	    ns_log Notice "projects/nuke-2: im_tickets"
+	    db_dml tickets "
+		    delete from im_tickets
+		    where ticket_id = :project_id
 	    "
 	}
 
