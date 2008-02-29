@@ -374,7 +374,7 @@ ad_proc -public im_user_nuke {user_id} {
 	return "User is an administrator - you can't nuke an administrator"
     }
 
-    with_transaction {
+    db_transaction {
 	
 	# bboard system
 	ns_log Notice "users/nuke2: bboard_email_alerts"
@@ -626,7 +626,7 @@ ad_proc -public im_user_nuke {user_id} {
 	# Returning empty string - everything went OK
 	return ""	
 
-    } {
+    } on_error {
 	
 	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {

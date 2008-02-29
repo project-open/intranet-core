@@ -552,7 +552,7 @@ ad_proc im_company_nuke {company_id} {
 	im_office_nuke $office_id
     }
 
-    with_transaction {
+    db_transaction {
     
 	# Permissions
 	ns_log Notice "companies/nuke-2: acs_permissions"
@@ -693,8 +693,7 @@ ad_proc im_company_nuke {company_id} {
 		delete from im_companies 
 		where company_id = :company_id"
 
-	# End "with_transaction"
-    } {
+    } on_error {
     
 	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
