@@ -45,15 +45,15 @@ a {
 #header_buttons {
    position: absolute;
    top: 0px;
-   right: 30px;
+   /* right: 30px; */
    background: #ffffff;
    z-index: 100;
-   border: 1px #ffff00;
+   border: 0px #ffffff;
    width: 90%;
 }
 
 #header_settings_tab {
-   background: #330033;
+   background: #ffffff;
 }
 
 #header_settings {
@@ -61,28 +61,28 @@ a {
    top: 5px;
    z-index: 101;
    color: #ffffff;
-   padding-left: 1em;
-   padding-right: 1em;
+   padding-left: 0em;
+   padding-right: 0em;
 }
 
 #header_settings A,
 #header_logout A  {
-  color: #ffffff;
+  color: #666666;
   text-decoration:none;
-   font-weight: bold;
+  font-weight: bold;
 }
 
 #header_logout_tab {
-   background: #336699;
+   background: #ffffff;
 }
 
 #header_logout {
    position: relative;
    top: 5px;
    z-index: 101;
-   color: #ffffff;
+   color: #666666;
    padding-left: 1em;
-   padding-right: 1em;
+   padding-right: 0em;
 }
 
 #header_skin_select {
@@ -175,7 +175,7 @@ a {
 
 #main_users_and_search {
    position: absolute;
-   top: 5px;
+   top: -20px;
    right: 30px;
 }
 
