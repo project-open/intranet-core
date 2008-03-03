@@ -23,7 +23,6 @@ cvs checkout intranet-material
 cvs checkout intranet-payments
 cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
-cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-sysconfig
 cvs checkout intranet-timesheet2
