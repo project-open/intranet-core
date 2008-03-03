@@ -24,6 +24,7 @@ cvs checkout intranet-payments
 cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-tutorial
+cvs checkout intranet-search-pg
 cvs checkout intranet-sysconfig
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices

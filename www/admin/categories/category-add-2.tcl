@@ -129,6 +129,10 @@ where category_id = :category_id" ]
     }
 }
 
-db_release_unused_handles
 
+# Remove all permission related entries in the system cache
+im_permission_flush
+
+
+db_release_unused_handles
 ad_returnredirect "one?[export_url_vars category_id]"

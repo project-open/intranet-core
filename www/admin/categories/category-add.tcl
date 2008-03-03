@@ -137,6 +137,8 @@ foreach locale [array names translation] {
     }
 }
 
+# Remove all permission related entries in the system cache
+im_permission_flush
 
 db_release_unused_handles
 set select_category_type $category_type

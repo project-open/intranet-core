@@ -426,7 +426,7 @@ SELECT	im_component_plugin__new (
 	null,				-- context_id
 	'Home Help Blurb',		-- plugin_name
 	'intranet',			-- package_name
-	'left',				-- location
+	'none',				-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
 	10,				-- sort_order
@@ -469,7 +469,7 @@ SELECT	im_component_plugin__new (
 );
 
 
--- Notifications Component for each user
+-- Admin shortcupts in the Home page
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
 	'acs_object',			-- object_type
@@ -477,9 +477,9 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_user
 	null,				-- creation_ip
 	null,				-- context_id
-	'Admin Menu Component',		-- plugin_name
+	'Home Admin Component',		-- plugin_name
 	'intranet-core',		-- package_name
-	'right',			-- location
+	'none',				-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
 	50,				-- sort_order

@@ -163,6 +163,11 @@ if {$msg_key_len >= 24} {
     return
 }
 
+
+# Remove all permission related entries in the system cache
+im_permission_flush
+
+
 db_release_unused_handles
 set select_category_type $category_type
 ad_returnredirect "index.tcl?[export_url_vars select_category_type]"

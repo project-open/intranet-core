@@ -63,6 +63,7 @@
   <msg key="Admin_Companies">Admin Companies</msg>
   <msg key="Admin_Home">Admin Home</msg>
   <msg key="Admin_Links">Administration Links</msg>
+  <msg key="Admin_Menu">Admin Menu</msg>
   <msg key="Admin_Offices">Admin Offices</msg>
   <msg key="Admin_Project">Admin Project</msg>
   <msg key="Admin_Projects">Admin Projects</msg>
@@ -111,6 +112,7 @@
   <msg key="Bad_Office">Bad Office</msg>
   <msg key="Bad_User">Bad User</msg>
   <msg key="Ban_this_user">Ban this user</msg>
+  <msg key="Bank_Holiday">Bank Holiday</msg>
   <msg key="Bank_Transfer">Bank transfer</msg>
   <msg key="Basic_Information">Basic Information</msg>
   <msg key="Bau_Maint">Building, Maint</msg>
@@ -151,6 +153,7 @@
   <msg key="ca_ES">ca_ES</msg>
   <msg key="CAD">CAD</msg>
   <msg key="Caja_Ahorros_EUR">Caja Ahorros EUR</msg>
+  <msg key="Calendar">Calendar</msg>
   <msg key="Canada">Canada</msg>
   <msg key="Canceled">Canceled</msg>
   <msg key="Cash">Cash</msg>
@@ -216,6 +219,7 @@
   <msg key="Conf_Item_Parent">Parent</msg>
   <msg key="Conf_Item_Status">Status</msg>
   <msg key="Conf_Item_Type">Type</msg>
+  <msg key="Conf_Item_Version">ConfItem Version</msg>
   <msg key="Conf_Items">Conf Items</msg>
   <msg key="Confirm">Confirm</msg>
   <msg key="Consulting__IT">Consulting &amp; IT</msg>
@@ -226,6 +230,7 @@
   <msg key="Contact_Information">Contact Information</msg>
   <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
+  <msg key="Continue">Continue</msg>
   <msg key="Contract_Value">Contract Value</msg>
   <msg key="Corel_Catalyst__30">Corel Catalyst 3.0</msg>
   <msg key="Cost_Centers">Cost Centers</msg>
@@ -504,6 +509,7 @@
   <msg key="Guatemala">Guatemala</msg>
   <msg key="Gx">Gx</msg>
   <msg key="h">h</msg>
+  <msg key="he">he</msg>
   <msg key="Help">Help</msg>
   <msg key="Help_Request">Help Request</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
@@ -537,6 +543,7 @@
   <msg key="hr_managers">HR Managers</msg>
   <msg key="hu">hu</msg>
   <msg key="Hungary">Hungary</msg>
+  <msg key="hy">hy</msg>
   <msg key="i">i</msg>
   <msg key="iB">iB</msg>
   <msg key="Iceland">Iceland</msg>
@@ -587,6 +594,7 @@
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Iraq</msg>
   <msg key="Ireland">Ireland</msg>
+  <msg key="is">is</msg>
   <msg key="Israel">Israel</msg>
   <msg key="IT">IT</msg>
   <msg key="it">it</msg>
@@ -921,6 +929,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
   <msg key="lt_Software_Company_Comp">Software Company</msg>
   <msg key="lt_Software_Company_Cust">Software Company Customer</msg>
+  <msg key="lt_Software_Release_Item">Software Release Item</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
   <msg key="lt_Taskintranet-forumTas">Tasks</msg>
@@ -1059,6 +1068,7 @@ other way for the user to find out.</msg>
   <msg key="more_">more ...</msg>
   <msg key="more_companies">more companies...</msg>
   <msg key="more_projects">more projects...</msg>
+  <msg key="ms_MY">ms_MY</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
   <msg key="My_Account">My Account</msg>
@@ -1280,6 +1290,7 @@ other way for the user to find out.</msg>
   <msg key="Redaccin">Redacción</msg>
   <msg key="Referral_Source">Referral Source</msg>
   <msg key="Referral_source">Referral source</msg>
+  <msg key="Rejected">Rejected</msg>
   <msg key="Repeating_Cost">Repeating Cost</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
   <msg key="Reply">Reply</msg>
@@ -1288,6 +1299,7 @@ other way for the user to find out.</msg>
   <msg key="Reporting">Reporting</msg>
   <msg key="Request_Error">Request Error</msg>
   <msg key="Request_For_Change">Request For Change</msg>
+  <msg key="Requested">Requested</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
   <msg key="Resources">Resources</msg>
   <msg key="Ressource_Group_1">Ressource Group 1</msg>
@@ -1382,6 +1394,8 @@ other way for the user to find out.</msg>
   <msg key="Sel">Sel</msg>
   <msg key="Select">Select</msg>
   <msg key="Select_contact">Select contact</msg>
+  <msg key="Select_Type">Select Type</msg>
+  <msg key="Select_Type_for_Object">Select Type for Object</msg>
   <msg key="Send_Notification">Send Notification</msg>
   <msg key="Senior_Managers">Senior Managers</msg>
   <msg key="senior_managers">Senior Managers</msg>
@@ -1401,6 +1415,7 @@ other way for the user to find out.</msg>
   <msg key="Software_Company">Software Company</msg>
   <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Maintenance">Software Maintenance</msg>
+  <msg key="Software_Release">Software Release</msg>
   <msg key="Software_Testing">Software Testing</msg>
   <msg key="Software_Updates">Software Updates</msg>
   <msg key="Some_Importance">Some Importance</msg>
@@ -1465,6 +1480,7 @@ other way for the user to find out.</msg>
   <msg key="Test_sent">Test sent</msg>
   <msg key="th">th</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
+  <msg key="Ticket">Ticket</msg>
   <msg key="Time_plan">Time plan</msg>
   <msg key="Time_sheet">Time sheet</msg>
   <msg key="Timesheet">Timesheet</msg>
@@ -1507,8 +1523,10 @@ other way for the user to find out.</msg>
   <msg key="Travel">Travel</msg>
   <msg key="Travel_Cost">Travel Cost</msg>
   <msg key="Travel_Costs">Travel Costs</msg>
+  <msg key="ts">ts</msg>
   <msg key="Tunisia">Tunisia</msg>
   <msg key="Turkey">Turkey</msg>
+  <msg key="tw">tw</msg>
   <msg key="Type">Type</msg>
   <msg key="Type_1">Type 1</msg>
   <msg key="u">u</msg>
@@ -1534,6 +1552,7 @@ other way for the user to find out.</msg>
   <msg key="Upload_files">Upload files</msg>
   <msg key="Upload_portrait">Upload portrait</msg>
   <msg key="Upload_Preview_Image">Upload Preview Image</msg>
+  <msg key="ur">ur</msg>
   <msg key="Uruguay">Uruguay</msg>
   <msg key="USD">USD</msg>
   <msg key="User">User</msg>
@@ -1565,6 +1584,7 @@ other way for the user to find out.</msg>
   <msg key="View_1">View:</msg>
   <msg key="View_Id">View Id</msg>
   <msg key="View_Name">View Name</msg>
+  <msg key="View_Projects">View Projects</msg>
   <msg key="View_sql">View sql</msg>
   <msg key="View_Status">View Status</msg>
   <msg key="View_Type">View Type</msg>
@@ -1573,6 +1593,7 @@ other way for the user to find out.</msg>
   <msg key="Web_Site_Design">Web Site Design</msg>
   <msg key="Web_Site_Development">Web Site Development</msg>
   <msg key="Week">Week</msg>
+  <msg key="Welcome_to_po">Welcome to ]project-open[</msg>
   <msg key="Whos_Online">Who's Online?</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
@@ -1582,6 +1603,8 @@ other way for the user to find out.</msg>
   <msg key="Windows_NT">Windows NT</msg>
   <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
+  <msg key="With_Member">With Member</msg>
+  <msg key="With_members_of_my_dept">My department</msg>
   <msg key="Wordfast_2">Wordfast 2</msg>
   <msg key="Wordfast_3">Wordfast 3</msg>
   <msg key="Wordfast_4">Wordfast 4</msg>
@@ -1612,6 +1635,7 @@ other way for the user to find out.</msg>
   <msg key="z">z</msg>
   <msg key="zB">zB</msg>
   <msg key="zG">zG</msg>
+  <msg key="zh">zh</msg>
   <msg key="zh_CN">zh_CN</msg>
   <msg key="zh_cn">zh_cn</msg>
   <msg key="zh_TW">zh_TW</msg>
