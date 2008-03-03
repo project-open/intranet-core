@@ -101,6 +101,7 @@ cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
 cvs checkout intranet-timesheet2-task-popup
 cvs checkout intranet-timesheet2-tasks
+cvs checkout intranet-timesheet2-workflow
 cvs checkout intranet-trans-invoices
 cvs checkout intranet-trans-project-wizard
 # cvs checkout intranet-trans-invoices-vaw
