@@ -329,20 +329,20 @@ SELECT im_category_hierarchy_new (83, 81);
 
 
 -- Project Type
--- SELECT im_category_new ('84', 'Project Task', 'Intranet Project Type');
-SELECT im_category_new ('85', 'Unknown', 'Intranet Project Type');
-SELECT im_category_new ('86', 'Other', 'Intranet Project Type');
+-- SELECT im_category_new (84, 'Project Task', 'Intranet Project Type');
+SELECT im_category_new (85, 'Unknown', 'Intranet Project Type');
+SELECT im_category_new (86, 'Other', 'Intranet Project Type');
 -- 87 - 97 reserved for Translation
-SELECT im_category_new ('97', 'Strategic Consulting', 'Intranet Project Type');
-SELECT im_category_new ('98', 'Software Maintenance', 'Intranet Project Type');
-SELECT im_category_new ('99', 'Software Development', 'Intranet Project Type');
-SELECT im_category_new ('100', 'Task', 'Intranet Project Type');
-SELECT im_category_new ('101', 'Ticket', 'Intranet Project Type');
+SELECT im_category_new (97, 'Strategic Consulting', 'Intranet Project Type');
+SELECT im_category_new (98, 'Software Maintenance', 'Intranet Project Type');
+SELECT im_category_new (99, 'Software Development', 'Intranet Project Type');
+SELECT im_category_new (100, 'Task', 'Intranet Project Type');
+SELECT im_category_new (101, 'Ticket', 'Intranet Project Type');
 update im_categories set enabled_p = 'f' where category_id = 101;
 
 -- 102 - 109 reserved for other Project subclasses
-SELECT im_category_new ('2500', 'Translation Project', 'Intranet Project Type');
-SELECT im_category_new ('2501', 'Consulting Project', 'Intranet Project Type');
+SELECT im_category_new (2500, 'Translation Project', 'Intranet Project Type');
+SELECT im_category_new (2501, 'Consulting Project', 'Intranet Project Type');
 
 
 SELECT im_category_hierarchy_new (97, 2501);
