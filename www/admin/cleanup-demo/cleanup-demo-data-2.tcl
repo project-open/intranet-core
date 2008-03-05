@@ -97,12 +97,13 @@ if {[db_table_exists calendars]} {
     db_dml delete_time_intervals "delete from time_intervals"
     db_dml delete_calendars "delete from calendars where calendar_name <> 'Global Calendar'"
 
-    db_dml delete_cal_objects "delete from acs_objects where object_type in (
-	'cal_item',
-	'acs_event',
-	'acs_activity',
-	'calendars'
-    )"
+    set object_subquery "
+	select object_id from acs_objects
+	where object_type in ('cal_item','acs_event','acs_activity','calendars')
+    "
+
+    db_dml cal_perms "delete from acs_permissions where object_id in ($object_subquery)"
+    db_dml delete_cal_objects "delete from acs_objects where object_id in ($object_subquery)"
 }
 
 # calendar_categories
@@ -227,6 +228,14 @@ db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' an
 # Timesheet
 db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 
+
+# Expenses
+if {[db_table_exists im_expenses]} {
+    db_dml expense_invoices "delete from im_expenses"
+}
+
+
+
 # Costs
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
 foreach cost_info $cost_infos {
@@ -234,6 +243,8 @@ foreach cost_info $cost_infos {
     set object_type [lindex $cost_info 1]
     
     ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
+    db_dml del_expense_inv "update im_expenses set invoice_id = null where invoice_id = :cost_id"
+    db_dml del_expenses "delete from im_expenses where expense_id = :cost_id"
     im_exec_dml del_cost "${object_type}__delete($cost_id)"
 }
 
@@ -272,6 +283,19 @@ if {[db_table_exists im_trans_tasks]} {
     db_dml im_task_actions "delete from im_task_actions"
     db_dml im_trans_tasks "delete from im_trans_tasks"
     db_dml im_trans_prices "delete from im_trans_prices"
+}
+
+
+# Conf Objects
+if {[db_table_exists im_timesheet_conf_objects]} {
+    db_dml expense_invoices "delete from im_timesheet_conf_objects"
+}
+
+# Freelance RFQs
+if {[db_table_exists im_freelance_rfqs]} {
+    db_dml expense_invoices "delete from im_freelance_object_skill_map"
+    db_dml expense_invoices "delete from im_freelance_rfq_answers"
+    db_dml expense_invoices "delete from im_freelance_rfqs"
 }
 
 # Remove user from business objects that we don't want to delete...
@@ -315,4 +339,56 @@ db_dml wf_tasks "delete from wf_tasks"
 db_dml wf_cases "delete from wf_cases"
 db_dml wf_attribute_value_audits "delete from wf_attribute_value_audit"
 db_dml wf_case_deadlines "delete from wf_case_deadlines"
+db_dml wf_journal_entries "delete from journal_entries"
+
+
+# Delete objects
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq_answer'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'rfq_objects'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'acs_activity'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'cal_item'"
+
+# Office 
+db_dml office_context "
+	delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'im_office'
+		and object_id not in (select office_id from im_offices)
+	)
+"
+db_dml office_context "
+	delete from acs_rels where object_id_one in (
+		select object_id from acs_objects where object_type = 'im_office'
+		and object_id not in (select office_id from im_offices)
+	)
+"
+db_dml office_context "
+	update acs_objects set context_id = null where context_id in (
+		select object_id from acs_objects where object_type = 'im_office'
+		and object_id not in (select office_id from im_offices)
+	)
+"
+db_dml rfq_objects "
+	delete from acs_objects where object_type = 'im_office' 
+	and object_id not in (select office_id from im_offices)
+"
+
+
+
+# Projects
+#db_dml rfq_objects "delete from acs_objects where object_type = 'im_project' and object_id not in (select project_id from im_projects)"
+
+# Companies
+# db_dml rfq_objects "delete from acs_objects where object_type = 'im_company' and object_id not in (select company_id from im_companies)"
+
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_trans_task'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'journal_entry'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq_answer'"
+# db_dml rfq_objects "delete from acs_objects where object_type = 'workflow_case_log_entry'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'trans_edit_proof_wf'"
+#db_dml rfq_objects "delete from acs_objects where object_type = 'bt_bug'"
+
+# select count(*) as cnt, object_type from acs_objects group by object_type order by cnt DESC;
+
 
