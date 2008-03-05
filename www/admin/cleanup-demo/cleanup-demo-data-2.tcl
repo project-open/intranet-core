@@ -97,12 +97,13 @@ if {[db_table_exists calendars]} {
     db_dml delete_time_intervals "delete from time_intervals"
     db_dml delete_calendars "delete from calendars where calendar_name <> 'Global Calendar'"
 
-    db_dml delete_cal_objects "delete from acs_objects where object_type in (
-	'cal_item',
-	'acs_event',
-	'acs_activity',
-	'calendars'
-    )"
+    set object_subquery "
+        select object_id from acs_objects
+        where object_type in ('cal_item','acs_event','acs_activity','calendars')
+    "
+
+    db_dml cal_perms "delete from acs_permissions where object_id in ($object_subquery)"
+    db_dml delete_cal_objects "delete from acs_objects where object_id in ($object_subquery)"
 }
 
 # calendar_categories
