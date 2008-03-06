@@ -283,6 +283,7 @@ if {[db_table_exists im_trans_tasks]} {
     db_dml im_task_actions "delete from im_task_actions"
     db_dml im_trans_tasks "delete from im_trans_tasks"
     db_dml im_trans_prices "delete from im_trans_prices"
+    db_dml trados_matrix "delete from im_trans_trados_matrix"
 }
 
 
@@ -305,6 +306,10 @@ db_dml remove_from_projects "delete from im_timesheet_tasks"
 db_dml remove_from_projects "delete from im_projects"
 db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
 db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
+
+if {[db_table_exists im_timesheet_task_dependencies]} {
+    db_dml del_deps "delete from im_timesheet_task_dependencies"
+}
 
 
 # Translation
@@ -376,10 +381,42 @@ db_dml rfq_objects "
 
 
 # Projects
-#db_dml rfq_objects "delete from acs_objects where object_type = 'im_project' and object_id not in (select project_id from im_projects)"
+db_dml project_context "
+	delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'im_project'
+	)
+"
+db_dml project_context "
+	delete from acs_rels where object_id_one in (
+		select object_id from acs_objects where object_type = 'im_project'
+	)
+"
+db_dml project_context "
+	update acs_objects set context_id = null where context_id in (
+		select object_id from acs_objects where object_type = 'im_project'
+	)
+"
+db_dml project_objects "
+	delete from acs_objects where object_type = 'im_project' 
+"
+
+db_dml ts_objects "
+	delete from acs_objects where object_type = 'im_timesheet_task' 
+"
+
 
 # Companies
-# db_dml rfq_objects "delete from acs_objects where object_type = 'im_company' and object_id not in (select company_id from im_companies)"
+db_dml rfq_objects "
+	delete from acs_objects where object_type = 'im_company' 
+	and object_id not in (select company_id from im_companies)
+"
+
+
+db_dml del_biz_rels "delete from im_biz_object_members"
+db_dml del_biz_rel_rels "delete from acs_rels where rel_type = 'im_biz_object_member'"
+db_dml del_biz_rel_os "delete from acs_objects where object_type = 'im_biz_object_member'"
+
+
 
 db_dml rfq_objects "delete from acs_objects where object_type = 'im_trans_task'"
 db_dml rfq_objects "delete from acs_objects where object_type = 'journal_entry'"
