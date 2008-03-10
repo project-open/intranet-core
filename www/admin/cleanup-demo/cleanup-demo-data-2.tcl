@@ -235,6 +235,8 @@ if {[db_table_exists im_expenses]} {
 }
 
 
+set im_invoices__invoice_id_exists_p [db_column_exists im_expenses invoice_id]
+
 
 # Costs
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
@@ -243,7 +245,10 @@ foreach cost_info $cost_infos {
     set object_type [lindex $cost_info 1]
     
     ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
-    db_dml del_expense_inv "update im_expenses set invoice_id = null where invoice_id = :cost_id"
+    if {$im_invoices__invoice_id_exists_p} {
+	db_dml del_expense_inv "update im_expenses set invoice_id = null where invoice_id = :cost_id"
+    }
+
     db_dml del_expenses "delete from im_expenses where expense_id = :cost_id"
     im_exec_dml del_cost "${object_type}__delete($cost_id)"
 }
