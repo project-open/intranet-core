@@ -374,6 +374,8 @@ ad_proc -public im_user_nuke {user_id} {
 	return "User is an administrator - you can't nuke an administrator"
     }
 
+    set result ""
+
     db_transaction {
 	
 	# bboard system
@@ -642,12 +644,14 @@ ad_proc -public im_user_nuke {user_id} {
 	}
 
 	# Return the error string - indicates that there were errors    
-	return "
+	set result "
 	[_ intranet-core.lt_The_nuking_of_user_us]
 	$detailed_explanation<p>
 	[_ intranet-core.lt_For_good_measure_here]
 	<blockquote><pre>\n$errmsg\n</pre></blockquote>
         "
     }
+
+    return $result
 }
 
