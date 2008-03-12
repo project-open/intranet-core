@@ -620,6 +620,7 @@ ad_proc -public im_user_nuke {user_id} {
 	}
 	
 	ns_log Notice "users/nuke2: Main user tables"
+	db_dml update_creation_users "update acs_objects set creation_user = null where creation_user = :user_id"
 	db_dml delete_user "delete from users where user_id = :user_id"
 	db_dml delete_user "delete from persons where person_id = :user_id"
 	db_dml delete_user "delete from parties where party_id = :user_id"
