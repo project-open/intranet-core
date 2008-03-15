@@ -993,7 +993,6 @@ ad_proc -public im_header {
 
     # TODO: logo check
     set logo [im_logo]
-#    set logo "<span class=\"bracket\">\]</span>project-open<span class=\"bracket\">\[</span>"
 
     # Disable who's online for "anonymous visitor"
     if {0 == $user_id} {
