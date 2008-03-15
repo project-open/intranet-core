@@ -18,6 +18,11 @@ ad_page_contract {
 
     @author unknown@openacs.org
     @author frank.bergmann@project-open.com
+
+    @param also_add_to_biz_object Takes an array in "array get" format.
+	   The array object_id -> role_id allows to add the user to
+	   multiple business objects (project, company) in different roles.
+	   The current_user_id must have write permissions to these objects.
 } -query {
     { referer "/acs-admin/users" }
     { user_id "" }
@@ -29,6 +34,7 @@ ad_page_contract {
     { last_name ""}
     { secret_question "" }
     { secret_answer "" }
+    { also_add_to_biz_object "" }
 } -properties {
     context:onevalue
     export_vars:onevalue
@@ -167,7 +173,6 @@ ad_form -name register -export {next_url user_id return_url} -form {
     {email:text(text) {label "[_ intranet-core.Email]"} {html {size 30}}}
 }
 
-# !!!
 ad_form -extend -name register -form {
     {username:text(text),optional {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
 }
@@ -183,6 +188,7 @@ if {!$editing_existing_user && !$ldap_installed_p} {
 	{password_confirm:text(password),optional {label "[_ intranet-core.lt_Password_Confirmation]"} {html {size 20}}} 
 	{secret_question:text(hidden),optional value {}} 
 	{secret_answer:text(hidden),optional value {}}
+	{also_add_to_biz_object:text(hidden),optional}
     }
 }
 
@@ -380,6 +386,18 @@ ad_form -extend -name register -on_request {
 		-user_id $user_id \
 		-screen_name $screen_name \
 		-username $username
+	}
+
+        # Add the user to some companies or projects
+        array set also_add_hash $also_add_to_biz_object
+        foreach oid [array names also_add_hash] {
+	    set object_type [db_string otype "select object_type from acs_objects where object_id=:oid"]
+	    set perm_cmd "${object_type}_permissions \$current_user_id \$oid object_view object_read object_write object_admin"
+	    eval $perm_cmd
+	    if {$object_write} {
+		set role_id $also_add_hash($oid)
+		im_biz_object_add_role $user_id $oid $role_id
+	    }
 	}
 
 	# For all users (new and existing one):
