@@ -144,6 +144,32 @@ ad_proc -public im_sysadmin_user_default { } {
 
 
 
+ad_proc -public im_user_options { 
+    {-include_empty_p 1} 
+    {-group_id 0}
+    {-group_name ""}
+} {
+    Returns the options for a select box.
+} {
+    if {0 == $group_id} {
+	set group_id [util_memoize "db_string group \"select group_id from group where group_name = '$group_name'\" -default 0"]
+    }
+    if {0 == $group_id} {
+	ad_return_complaint 1 [lang::message::lookup "" intranet-core.No_group_defined "You need to specify a valid group"]
+	ad_script_abort
+    }
+
+    set options [db_list_of_lists provider_options "
+	        select	im_name_from_user_id(user_id) as name, user_id
+	        from	users_active u,
+			group_distinct_member_map gm
+		where	u.user_id = gm.member_id
+			and gm.group_id = :group_id
+		order by name
+    "]
+    if {$include_empty_p} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
 
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
