@@ -672,8 +672,6 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
     Get the list of menus in the sub-navbar for the given user.
     This routine is cached and called every approx 60 seconds
 } {
-
-    # ToDo: Remove with version 4.0 or later
     # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
     # We need to be able to read the old DB model, otherwise the
     # users won't be able to upgrade...
@@ -719,6 +717,7 @@ ad_proc -public im_navbar {
 } {
     ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
+
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
@@ -759,6 +758,7 @@ ad_proc -public im_navbar {
 
     # select the toplevel menu items
     set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $main_menu_id" 60]
+
     foreach menu_list $menu_list_list {
 
         set menu_id [lindex $menu_list 0]
