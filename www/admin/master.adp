@@ -1,6 +1,6 @@
-<%= [im_header $title] %>
-<%= [im_navbar "admin"] %>
 <% if {![info exists admin_navbar_label]} { set admin_navbar_label "" } %>
+<master src=../master>
+
 <div id="slave">
    <div id="slave_content">
       <div class='filter-list'>
@@ -13,4 +13,3 @@
       </div>
    </div>
 </div>
-<%= [im_footer] %>
