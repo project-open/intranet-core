@@ -4,7 +4,7 @@ function initPortlet(){
 	if (document.all) type="IE";
 	if (document.layers) type="NN";
 	if (!document.all && document.getElementById) type="MO";
-	ShowLayer('showPortletButn_1', 'hidden');
+/*	ShowLayer('showPortletButn_1', 'hidden');      */
 };
 
 function ShowLayer(id, action){
