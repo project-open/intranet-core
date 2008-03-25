@@ -55,6 +55,8 @@ ns_log Notice "member-update: object_id=$object_id"
 ns_log Notice "member-update: submit=$submit"
 ns_log Notice "member-update: delete_user(multiple)=$delete_user"
 
+# Maximum percentage
+set max_perc 150
 
 # -----------------------------------------------------------------
 # Action
@@ -68,7 +70,37 @@ switch $action {
     "update_members" {
 	set debug ""
 	foreach user_id [array names percentage] {
-	    set perc $percentage($user_id)
+	    set perc [string trim $percentage($user_id)]
+	    if {![string is double $perc]} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Percentage_not_a_number "Percentage is not a number"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Percentage_not_a_number_msg "
+				The percentage you have given ('%perc%') is not a number.<br>
+				Please enter something like '12.5' or '100'.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {$perc < 0.0} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Percentage_negative "Percentage should not be negative"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Percentage_not_a_number_msg "
+				The percentage you have given ('%perc%') is a negative number.<br>
+				Please enter a positive number such as '12.5' or '100'.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {$perc > $max_perc} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Percentage_too_bit "Percentage should not exceed %max_perc%"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Percentage_not_a_number_msg "
+				The percentage you have given ('%perc%') exceeds the maximum percentage ('%max_perc%').<br>
+				Please enter a positive number such as '12.5' or '100'.
+			"]
+		"
+		ad_script_abort
+	    }
 
 	    db_dml update_perc "
 		update im_biz_object_members
