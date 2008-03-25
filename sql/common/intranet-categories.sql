@@ -128,8 +128,8 @@
 -- 19000-19999  Intranet Expenses Workflow  (1000)
 -- 20000-20999  Intranet Change Management (1000)
 -- 21000-21999  Intranet Translation Language (1000)
+-- 22000-22999  Intranet User Type
 
--- 22000-22999  reserved (1000)
 -- 23000-23999  reserved (1000)
 -- 24000-24999  reserved (1000)
 -- 25000-25999  reserved (1000)

@@ -38,6 +38,7 @@ ad_proc -public im_company_status_deleted {} { return 49 }
 
 
 # Frequently used Company Types
+ad_proc -public im_company_type_unknown {} { return 51 }
 ad_proc -public im_company_type_other {} { return 52 }
 ad_proc -public im_company_type_internal {} { return 53 }
 ad_proc -public im_company_type_provider {} { return 56 }

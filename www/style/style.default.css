@@ -619,9 +619,15 @@ a {
    padding-left: 1em;
 }
 
-.filter-block .form-label, 
-.filter-block .form-widget, 
-.filter-block select, 
+/* filter-block -------------------------------------------- */
+
+.filter-block ul,
+.filter-block a,
+.filter-block a:link,
+.filter-block a:visited,
+.filter-block .form-label,
+.filter-block .form-widget,
+.filter-block select,
 .filter-block input {
    background-color: #336699;
    color: #fff;

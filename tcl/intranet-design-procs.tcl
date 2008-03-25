@@ -489,7 +489,9 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     return $navbar
 }
 
-ad_proc -public im_admin_navbar { {select_label ""} } {
+ad_proc -public im_admin_navbar { 
+    {select_label ""} 
+} {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
@@ -499,8 +501,19 @@ ad_proc -public im_admin_navbar { {select_label ""} } {
 	         <div class=\"filter-title\">
 	            [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
 	         </div>
-
 	<ul class=mktree>
+    "
+
+    if {"" != $select_label} {
+        append html "
+        [im_menu_li -class liOpen $select_label]
+                <ul>
+                [im_navbar_write_tree -label $select_label]
+                </ul>
+        "
+    }
+
+    append html "
 	[im_menu_li -class liOpen admin]
         	<ul>
 		[im_navbar_write_tree -label "admin" -maxlevel 0]
@@ -718,6 +731,9 @@ ad_proc -public im_navbar {
     ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
 
+    if {![info exists loginpage_p]} {
+        set loginpage_p 0
+    }
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
