@@ -69,6 +69,9 @@
 	The Sitemap defines where modules are "mounted" on the server.
 	<span class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></span> packages are already mounted and shouldn't be moved.
       <li>
+	<A href="/intranet/admin/auto_login">Auto-Login Backup Configuration</a><br>
+	Returns the address to download a backup remotely.
+      <li>
 	<A href=/cms/">Content Management Home</a><br>
 	This module is used as part of the Wiki and CRM packages.
 

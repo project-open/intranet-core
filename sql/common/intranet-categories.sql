@@ -129,8 +129,8 @@
 -- 20000-20999  Intranet Change Management (1000)
 -- 21000-21999  Intranet Translation Language (1000)
 -- 22000-22999  Intranet User Type
+-- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
 
--- 23000-23999  reserved (1000)
 -- 24000-24999  reserved (1000)
 -- 25000-25999  reserved (1000)
 -- 26000-26999  reserved (1000)
