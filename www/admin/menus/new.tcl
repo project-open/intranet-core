@@ -104,7 +104,10 @@ ad_form -extend -name menu -on_request {
 
 } -after_submit {
 
-	ad_returnredirect $return_url
-	ad_script_abort
+    # Remove all permission related entries in the system cache
+    im_permission_flush
+
+    ad_returnredirect $return_url
+    ad_script_abort
 }
 
