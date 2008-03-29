@@ -92,8 +92,10 @@ set annual_revenue_options [list]
 set country_options [im_country_options]
 set employee_options [im_employee_options]
 
+set form_id "company"
+
 ad_form \
-    -name company \
+    -name $form_id \
     -cancel_url $return_url \
     -action $action_url \
     -mode $form_mode \
@@ -116,16 +118,16 @@ ad_form \
     }
 
 if {$some_american_readers_p} {
-    ad_form -extend -name company -form {
+    ad_form -extend -name $form_id -form {
 	{address_state:text(text),optional {label "[_ intranet-core.State]"} {html {size 30}}}
     }
 } else {
-    ad_form -extend -name company -form {
+    ad_form -extend -name $form_id -form {
 	{address_state:text(hidden),optional}
     }    
 }
 
-ad_form -extend -name company -form {
+ad_form -extend -name $form_id -form {
 	{address_postal_code:text(text),optional {label "[_ intranet-core.ZIP]"} {html {size 6}}}
 	{address_country_code:text(select),optional {label "[_ intranet-core.Country]"} {options $country_options} }
 	{site_concept:text(text),optional {label "[_ intranet-core.Web_Site]"} {html {size 60}}}
@@ -134,7 +136,18 @@ ad_form -extend -name company -form {
 	{note:text(textarea),optional {label "[_ intranet-core.Note]"} {}}
     }
 
-ad_form -extend -name company -select_query {
+set my_company_id 0
+if {[info exists company_id]} { set my_company_id $company_id }
+set my_company_type_id [db_string type "select company_type_id from im_companies where company_id = :my_company_id" -default 0]
+
+im_dynfield::append_attributes_to_form \
+    -object_type "im_company" \
+    -form_id $form_id \
+    -object_id $my_company_id \
+    -object_subtype_id $my_company_type_id
+
+
+ad_form -extend -name $form_id -select_query {
 
 select
 	c.*,
@@ -164,20 +177,4 @@ where
 # Dynamic Fields
 # ------------------------------------------------------
 
-
-set dynamic_fields_p 0
-if {[db_table_exists im_dynfield_attributes]} {
-
-    set dynamic_fields_p 1
-    set form_id "company"
-    set object_type "im_company"
-    set my_company_id 0
-    if {[info exists company_id]} { set my_company_id $company_id }
-
-
-    im_dynfield::append_attributes_to_form \
-	-object_type $object_type \
-        -form_id $form_id \
-        -object_id $my_company_id
-}
 
