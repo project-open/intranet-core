@@ -1254,6 +1254,10 @@ ad_proc -public im_stylesheet {} {
     template::head::add_css -href $system_css -media "screen"
     append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n"
 
+    set css "/resources/acs-subsite/site-master.css"
+#    template::head::add_css -href $css -media "screen"
+#    append html "<link rel=StyleSheet type=text/css href=\"$css\" media=screen>\n"
+
     template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen"
     append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n"
 

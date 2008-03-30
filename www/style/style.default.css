@@ -587,9 +587,14 @@ a {
 .cal-month-title-text {
    font-size: 10pt; 
    color: #ffffff; 
-   background-color: #cccac1; 
+   background-color: #6FA2D4;
    font-weight: bold;
 }
+
+/*   background-color: #cccac1;  */
+/*   background-color: #4A7AAA;  */
+/*   background-color: #608CB8;  */
+
 
 .cal-table-display {
    width: 100%
