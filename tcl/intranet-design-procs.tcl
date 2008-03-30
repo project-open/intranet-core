@@ -846,124 +846,92 @@ ad_proc -public im_navbar {
     }
 
     return "
-
-    <div id=\"main\">
-
-       <div id=\"navbar_main_wrapper\">
-          <ul id=\"navbar_main\">
-             $navbar
-          </ul>
-       </div>
-
-       <div id=\"main_header\">
-          <div id=\"main_title\">
-             $page_title
-          </div>
-          <div id=\"main_context_bar\">
-             $context_bar
-          </div>
-          <div id=\"main_maintenance_bar\">
-             $maintenance_message
-          </div>
-     
-          <div id=\"main_portrait_and_username\">
-          <div id=\"main_portrait\">
-            [im_portrait_or_anon_html $user_id Portrait]
-          </div>
-
-          <p id=\"main_username\">
-            Welcome, [im_name_from_user_id $user_id]
-          </p>
-          </div>
-     
-          $main_users_and_search
-          <div id=\"main_header_deco\"></div>
-       </div>  
-
-    </div>
+	    <div id=\"main\">
+	       <div id=\"navbar_main_wrapper\">
+	          <ul id=\"navbar_main\">
+	             $navbar
+	          </ul>
+	       </div>
+	       <div id=\"main_header\">
+	          <div id=\"main_title\">
+	             $page_title
+	          </div>
+	          <div id=\"main_context_bar\">
+	             $context_bar
+	          </div>
+	          <div id=\"main_maintenance_bar\">
+	             $maintenance_message
+	          </div>
+	          <div id=\"main_portrait_and_username\">
+	          <div id=\"main_portrait\">
+	            [im_portrait_or_anon_html $user_id Portrait]
+	          </div>
+	          <p id=\"main_username\">
+	            Welcome, [im_name_from_user_id $user_id]
+	          </p>
+	          </div>
+	          $main_users_and_search
+	          <div id=\"main_header_deco\"></div>
+	       </div>  
+	    </div>
     "
 }
 
 
-ad_proc -public im_header { 
-    { -loginpage:boolean 0 }
-    { page_title "" } 
-    { extra_stuff_for_document_head "" } 
+ad_proc -public im_design_user_profile_string { 
+    -user_id:required
 } {
-    The default header for ProjectOpen
+    Determine a pretty string for the type of user that it is:
+} {
+    set group_sql "
+	select	g.group_name,
+		CASE 
+			WHEN group_name = 'P/O Admins' THEN 100
+			WHEN group_name = 'Senior Managers' THEN 90
+			WHEN group_name = 'Project Managers' THEN 80
+			WHEN group_name = 'Accounting' THEN 70
+			WHEN group_name = 'Sales' THEN 60
+			WHEN group_name = 'HR Managers' THEN 50
+			WHEN group_name = 'Helpdesk' THEN 40
+			WHEN group_name = 'Freelancers' THEN 30
+			WHEN group_name = 'Customers' THEN 30
+			WHEN group_name = 'Partners' THEN 30
+			WHEN group_name = 'Employees' THEN 10
+			WHEN group_name = 'Registered Users' THEN 10
+			WHEN group_name = 'The Public' THEN 5
+		ELSE 0 END as sort_order
+	from	acs_rels r, 
+		groups g,
+		im_profiles p
+	where
+		g.group_id = p.profile_id and
+		r.object_id_one = g.group_id and 
+		r.rel_type = 'membership_rel' and 
+		r.object_id_two = $user_id
+	order by
+		sort_order DESC;
+    "
+    set group_names [util_memoize [list db_list memberships $group_sql] 120]
+    set group_name [lindex $group_names 0]
+    regsub -all " " $group_name "_" group_key
+    set user_profile [lang::message::lookup "" intranet-core.group_key $group_name]
+    return $user_profile
+}
+
+
+
+ad_proc -public im_header_plugins { 
+} {
+    Determines the contents for left & right header plugins.
+    Returns an array with keys "left" and "right"
 } {
     set user_id [ad_get_user_id]
-    set user_name [im_name_from_user_id $user_id]
-    set return_url [im_url_with_query]
+    set plugin_left_html ""
+    set plugin_right_html ""
 
-    # Is any of the "search" package installed?
-    set search_installed_p [llength [info procs im_package_search_id]]
-
-    if { [empty_string_p $page_title] } {
-	set page_title [ad_partner_upvar page_title]
-    }
-    set context_bar [ad_partner_upvar context_bar]
-    set page_focus [ad_partner_upvar focus]
-    if {$search_installed_p && [empty_string_p $page_focus] } {
-	# Default: Focus on Search form at the top of the page
-	set page_focus "surx.query_string"
-    }
-    if { [empty_string_p $extra_stuff_for_document_head] } {
-	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
-    }
-
-    set search_form [im_header_search_form]
-
-    # Determine a pretty string for the type of user that it is:
-    set user_profile "[_ intranet-core.User]"
-    if {[im_permission $user_id "freelance"]} {
-	set user_profile "[_ intranet-core.Freelance]"
-    }
-    if {[im_permission $user_id "client"]} {
-	set user_profile "[_ intranet-core.Client]"
-    }
-    if {[im_permission $user_id "employee"]} {
-	set user_profile "[_ intranet-core.Employee]"
-    }
-    if {[ad_user_group_member [im_admin_group_id] $user_id]} {
-	set user_profile "[_ intranet-core.Admin]"
-    }
-    if {[im_site_wide_admin_p $user_id]} {
-	set user_profile "[_ intranet-core.SiteAdmin]"
-    }
-
-    append extra_stuff_for_document_head [im_stylesheet]
-    append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\" type=\"text/javascript\"></script>\n"
-    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
-
-    if {[llength [info procs im_amberjack_header_stuff]]} {
-        append extra_stuff_for_document_head [im_amberjack_header_stuff]
-    }
-
-    set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
-
-    # Enable "Users Online" mini-component for OpenACS 5.1 only
-    set users_online_str [im_header_users_online_str]
-
-    set ldap_installed_p [db_string otp_installed "
-	select count(*) 
-	from apm_enabled_package_versions 
-	where package_key = 'intranet-ldap'
-    " -default 0]
-  
-    set logout_pwchange_str "
-	<a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
-    "
-
-    if {!$ldap_installed_p} {
-	append logout_pwchange_str "<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> | "
-    }
-
-    # --------------------------------------------------------
-    # Header Plugins
-    #
+    # Any permissions set at all? We'll disable perms in this case.
     set any_perms_set_p [im_component_any_perms_set_p]
+
     set plugin_sql "
 	select	c.*,
 		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
@@ -971,18 +939,10 @@ ad_proc -public im_header {
 	where	location like 'header%'
 	order by sort_order
     "
-
-    set plugin_left_html ""
-    set plugin_right_html ""
     db_foreach get_plugins $plugin_sql {
 
-	if {$any_perms_set_p > 0} {
-	    if {"f" == $perm} { continue }
-	}
-
-	ns_log Notice "im_component_bay: component_tcl=$component_tcl, location=$location"
+	if {$any_perms_set_p > 0} { if {"f" == $perm} { continue } }
 	if { [catch {
-
 	    # "uplevel" evaluates the 2nd argument!!
 	    switch $location {
 		"header-left" {
@@ -992,23 +952,42 @@ ad_proc -public im_header {
 		    append plugin_right_html [uplevel 1 $component_tcl]
 		}
 	    }
-
 	} err_msg] } {
 	    set plugin_right_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
 	    set plugin_right_html [im_table_with_title $plugin_name $plugin_right_html]
         }
     }
 
-    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
-    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+    return [list left $plugin_left_html right $plugin_right_html]
+}
 
-    set page_url [im_component_page_url]
 
+
+ad_proc -public im_header_logout_component {
+    -page_url:required
+    -return_url:required
+    -user_id:required
+} {
+    Returns the formatted HTML for the "My Account - Change password - Reset Stuff - Add Stuff"
+    header panel.
+} {
+    # LDAP installed?
+    set ldap_sql "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'"
+    set ldap_installed_p [db_string otp_installed $ldap_sql -default 0]
+  
+    set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
     set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
     set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
-    # TODO: logo check
-    set logo [im_logo]
+    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
+    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+
+    set logout_pwchange_str "
+	<a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
+    "
+    if {!$ldap_installed_p} {
+	append logout_pwchange_str "<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> | "
+    }
 
     # Disable who's online for "anonymous visitor"
     if {0 == $user_id} {
@@ -1016,10 +995,7 @@ ad_proc -public im_header {
 	set logout_pwchange_str ""
     }
 
-    if {$loginpage_p} {
-       set header_buttons ""      
-    } else {
-       set header_buttons "
+    set header_buttons "
       <div id=\"header_buttons\">
          <div id=\"header_logout_tab\">
             <div id=\"header_logout\">
@@ -1035,51 +1011,21 @@ ad_proc -public im_header {
             </div>
          </div>
       </div>
-       "
-    }
-
-    set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
-    if {$header_skin_select != ""} {
-	set header_skin_select "[_ intranet-core.Skin]: $header_skin_select"
-    }
-
-    return "
-[ad_header $page_title $extra_stuff_for_document_head]
-<div id=\"monitor_frame\">
-   <div id=\"header_class\">
-      <div id=\"header_logo\">
-         $logo
-      </div>
-
-      <div id=\"header_plugin_left\">
-         $plugin_left_html
-      </div>
-
-      <div id=\"header_plugin_right\">
-         $plugin_right_html
-      </div>
-
-      $header_buttons   
-
-      <div id=\"header_skin_select\">
-         $header_skin_select
-      </div>   
-   </div>
-"
+    "
 }
 
 
-ad_proc -public im_header_oacs54 {
-    { -no_head_p "0"}
-    { -no_master_p "0"}
+ad_proc -public im_header { 
     { -loginpage:boolean 0 }
-    { page_title "" }
-    { extra_stuff_for_document_head "" }
+    { page_title "" } 
+    { extra_stuff_for_document_head "" } 
 } {
-    The default header for ProjectOpen
+    The default header for ]project-open[
+    This procedure is called both "stand alone" from a report
+    (HTTP streaming) and as part of an OpenACS template.
 } {
-    upvar head_stuff head_stuff
-
+    # --------------------------------------------------------------
+    # Defaults & Security
     set user_id [ad_get_user_id]
     set user_name [im_name_from_user_id $user_id]
     set return_url [im_url_with_query]
@@ -1087,190 +1033,78 @@ ad_proc -public im_header_oacs54 {
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
 
-    if { [empty_string_p $page_title] } {
-        set page_title [ad_partner_upvar page_title]
-    }
+    # Get the OpenACS version
+    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
+    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
+    set openacs54_p [string equal "5.4" $oacs_version]
+    ns_log Notice "im_header: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
 
+    if { [empty_string_p $page_title] } {
+	set page_title [ad_partner_upvar page_title]
+    }
     set context_bar [ad_partner_upvar context_bar]
     set page_focus [ad_partner_upvar focus]
+
+    # --------------------------------------------------------------
     if {$search_installed_p && [empty_string_p $page_focus] } {
-        # Default: Focus on Search form at the top of the page
-        set page_focus "surx.query_string"
+	# Default: Focus on Search form at the top of the page
+	set page_focus "surx.query_string"
     }
     if { [empty_string_p $extra_stuff_for_document_head] } {
-        set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
+	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
-    # Developer support
-    if {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p] && $no_master_p} {
-        set developer_support_p 1
-    } else {
-        set developer_support_p 0
-    }
+    set search_form [im_header_search_form]
+    set user_profile [im_design_user_profile_string -user_id $user_id]
 
+    append extra_stuff_for_document_head [im_stylesheet]
 
-    # --------------------------------------------------------
-    set search_form ""
-    if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
-        set search_form "
-            <nobr>
-              <form action=/intranet/search/go-search method=post name=surx>
-                <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
-                <input type=hidden name=target value=content>
-                <input alt=go type=submit value=Go name='image'>
-              </form>
-            </nobr>
-        "
-    }
-
-    # Determine a pretty string for the type of user that it is:
-    set user_profile "[_ intranet-core.User]"
-    if {[im_permission $user_id "freelance"]} { set user_profile "[_ intranet-core.Freelance]" }
-    if {[im_permission $user_id "client"]} { set user_profile "[_ intranet-core.Client]" }
-    if {[im_permission $user_id "employee"]} { set user_profile "[_ intranet-core.Employee]" }
-    if {[ad_user_group_member [im_admin_group_id] $user_id]} { set user_profile "[_ intranet-core.Admin]" }
-    if {[im_site_wide_admin_p $user_id]} { set user_profile "[_ intranet-core.SiteAdmin]" }
-
-    im_stylesheet
-
-    template::head::add_javascript -src "/resources/acs-subsite/core.js"
-    template::head::add_javascript -src "/intranet/js/core.js"
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
     append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
-
-    template::add_body_handler -event "onload" -script "javascript:initPortlet();"
-    if {$developer_support_p} {
-        template::head::add_css -media "all" -href "/resources/acs-developer-support/acs-developer-support.css"
-    }
 
     if {[llength [info procs im_amberjack_header_stuff]]} {
         append extra_stuff_for_document_head [im_amberjack_header_stuff]
     }
 
-    set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
-
-    # Enable "Users Online" mini-component for OpenACS 5.1 only
+    # --------------------------------------------------------------
     set users_online_str [im_header_users_online_str]
 
-    set ldap_installed_p [db_string otp_installed "
-        select count(*)
-        from apm_enabled_package_versions
-        where package_key = 'intranet-ldap'
-    " -default 0]
+    # Get the contents of the header plugins
+    array set header_plugins [im_header_plugins]
+    set plugin_right_html $header_plugins(right)
+    set plugin_left_html $header_plugins(left)
 
-    set logout_pwchange_str "
-        <a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
-    "
-
-    if {!$ldap_installed_p} {
-        append logout_pwchange_str "<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> | "
-    }
-
-    # --------------------------------------------------------
-    # Header Plugins
-    #
-    set any_perms_set_p [im_component_any_perms_set_p]
-    set plugin_sql "
-        select  c.*,
-                im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
-        from    im_component_plugins c
-        where   location like 'header%'
-        order by sort_order
-    "
-
-    set plugin_left_html ""
-    set plugin_right_html ""
-    db_foreach get_plugins $plugin_sql {
-
-        if {$any_perms_set_p > 0} {
-            if {"f" == $perm} { continue }
-        }
-
-        ns_log Notice "im_component_bay: component_tcl=$component_tcl, location=$location"
-        if { [catch {
-
-            # "uplevel" evaluates the 2nd argument!!
-            switch $location {
-                "header-left" {
-                    append plugin_left_html [uplevel 1 $component_tcl]
-                }
-                default {
-                    append plugin_right_html [uplevel 1 $component_tcl]
-                }
-            }
-
-        } err_msg] } {
-            set plugin_right_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
-            set plugin_right_html [im_table_with_title $plugin_name $plugin_right_html]
-        }
-    }
-
-    if {$developer_support_p} { append html [template::adp_include /packages/acs-developer-support/lib/toolbar [list]] }
-
-    set head_stuff $extra_stuff_for_document_head
-    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
-    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
     set page_url [im_component_page_url]
-    set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
-    set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
-
     set logo [im_logo]
 
-    # Disable who's online for "anonymous visitor"
-    if {0 == $user_id} {
-        set users_online_str ""
-        set logout_pwchange_str ""
-    }
-
-    if {$loginpage_p} {
-       set header_buttons ""
-    } else {
-       set header_buttons "
-      <div id=\"header_buttons\">
-         <div id=\"header_logout_tab\">
-            <div id=\"header_logout\">
-               <a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>
-            </div>
-         </div>
-         <div id=\"header_settings_tab\">
-            <div id=\"header_settings\">
-               <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
-               $logout_pwchange_str
-               <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
-               <a href=\"$add_comp_url\">$add_stuff_text</a>
-            </div>
-         </div>
-      </div>
-       "
-    }
+    # The horizonal component
+    set header_buttons [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
+    if {$loginpage_p} { set header_buttons "" }
 
     set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
     if {$header_skin_select != ""} {
-        set header_skin_select "[_ intranet-core.Skin]: $header_skin_select"
+	set header_skin_select "[_ intranet-core.Skin]: $header_skin_select"
     }
 
     return "
-<div id=\"monitor_frame\">
-   <div id=\"header_class\">
-      <div id=\"header_logo\">
-         $logo
-      </div>
-
-      <div id=\"header_plugin_left\">
-         $plugin_left_html
-      </div>
-
-      <div id=\"header_plugin_right\">
-         $plugin_right_html
-      </div>
-
-      $header_buttons
-
-      <div id=\"header_skin_select\">
-         $header_skin_select
-      </div>
-   </div>
-"
+	[ad_header $page_title $extra_stuff_for_document_head]
+	<div id=\"monitor_frame\">
+	   <div id=\"header_class\">
+	      <div id=\"header_logo\">
+	         $logo
+	      </div>
+	      <div id=\"header_plugin_left\">
+	         $plugin_left_html
+	      </div>
+	      <div id=\"header_plugin_right\">
+	         $plugin_right_html
+	      </div>
+	      $header_buttons   
+	      <div id=\"header_skin_select\">
+	         $header_skin_select
+	      </div>   
+	   </div>
+    "
 }
 
 
@@ -1400,37 +1234,45 @@ ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
     set user_id [ad_get_user_id]
-    set skin_name [im_skin_name [im_user_skin $user_id]]
+    set html ""
 
+    # --------------------------------------------------------------------
+    set skin_name [im_skin_name [im_user_skin $user_id]]
     if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
 	set skin_js $skin_name
     } else {
 	set skin_js "default"
     }
+    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_js.css"]
 
-    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_name.css"]
-    set calendar_css ""
     if {[llength [info procs im_package_calendar_id]]} {
-	set calendar_css "<link rel=StyleSheet type=\"text/css\" href=\"/calendar/resources/calendar.css\">"
+	template::head::add_css -href "/calendar/resources/calendar.css" -media "screen"
+	append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
     }
 
-    return "
-	<link rel=StyleSheet type=\"text/css\" href=\"/resources/acs-subsite/site-master.css\" media=all>
-	$calendar_css
-	<link rel=StyleSheet href=\"$system_css\" type=\"text/css\" media=\"screen\">
-	<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\" type=\"text/javascript\"></script>
-	<script src=\"/intranet/js/rounded_corners.inc.js\" language=\"javascript\" type=\"text/javascript\"></script>
-	<script src=\"/intranet/js/jquery-1.2.1.min.js\" language=\"javascript\" type=\"text/javascript\"></script>
-	<script src=\"/intranet/js/style.$skin_js.js\" language=\"javascript\" type=\"text/javascript\"></script>
-	<!-- mktree menu -->
-	<script src=\"/resources/acs-templating/mktree.js\" language=\"javascript\" type=\"text/javascript\"></script>
-	<link rel=StyleSheet href=\"/resources/acs-templating/mktree.css\" type=\"text/css\" media=\"screen\">
-    "
+    # --------------------------------------------------------------------
+    template::head::add_css -href $system_css -media "screen"
+    append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n"
 
-# <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=all>
-# <link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=all>
-# <link rel=StyleSheet type=text/css href=\"/resources/acs-subsite/default-master.css\" media=all>
+    template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen"
+    append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n"
 
+    template::head::add_javascript -src "/intranet/js/showhide.js"
+    append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n"
+
+    template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
+    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
+
+    template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js"
+    append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n"
+
+    template::head::add_javascript -src "/resources/acs-templating/mktree.js"
+    append html "<script type=text/javascript src=\"/resources/acs-templating/mktree.js\"></script>\n"
+
+    template::head::add_javascript -src "/intranet/js/style.$skin_js.js"
+    append html "<script type=text/javascript src=\"/intranet/js/style.$skin_js.js\"></script>\n"
+
+    return $html
 }
 
 
