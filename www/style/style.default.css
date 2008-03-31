@@ -916,9 +916,12 @@ span.list-filter-selected {
   margin-bottom: 8px;
 }
 td.list-filter-pane {
-  background-color: #336699;
+  background-color: #6FA2D4;
   vertical-align: top;
 }
+
+
+/*  background-color: #336699; */
 
 
 td.list-list-pane {

@@ -1250,6 +1250,10 @@ ad_proc -public im_stylesheet {} {
 	append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
     }
 
+
+#    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
+#    ad_return_complaint 1 $bug_tracker_installed_p
+
     # --------------------------------------------------------------------
     template::head::add_css -href $system_css -media "screen"
     append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n"
