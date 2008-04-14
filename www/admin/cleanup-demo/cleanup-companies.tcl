@@ -119,7 +119,7 @@ db_multirow -extend {company_url} companies get_companies "
 	where
 		1=1
 	order by 
-		c.company_id
+		c.company_id DESC
 " {
 	set company_url [export_vars -base "/intranet/companies/view" {company_id return_url}]
 }
