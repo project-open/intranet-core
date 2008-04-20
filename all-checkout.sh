@@ -104,6 +104,7 @@ cvs checkout -r b3-3-patches intranet-simple-survey
 # cvs checkout -r b3-3-patches intranet-sql-selectors
 cvs checkout -r b3-3-patches intranet-sysconfig
 # cvs checkout -r b3-3-patches intranet-timesheet
+cvs checkout intranet-tinytm
 cvs checkout -r b3-3-patches intranet-timesheet2
 cvs checkout -r b3-3-patches intranet-timesheet2-invoices
 # cvs checkout -r b3-3-patches intranet-timesheet2-task-popup
