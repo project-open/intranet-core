@@ -1268,6 +1268,9 @@ ad_proc -public im_stylesheet {} {
     template::head::add_javascript -src "/intranet/js/showhide.js"
     append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n"
 
+    template::head::add_javascript -src "/resources/core.js"
+    append html "<script type=text/javascript src=\"/resources/core.js\"></script>\n"
+
     template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
     append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
 
