@@ -141,8 +141,7 @@ declare
 
 	v_plugin_id	im_component_plugins.plugin_id%TYPE;
 begin
-	select plugin_id into v_plugin_id
-	from im_component_plugins
+	select plugin_id into v_plugin_id from im_component_plugins
 	where plugin_name = p_plugin_name and package_name = p_package_name;
 	IF v_plugin_id is not null THEN return v_plugin_id; END IF;
 

@@ -109,12 +109,7 @@ declare
 
 	v_menu_id	  im_menus.menu_id%TYPE;
 begin
-
-	select	menu_id
-	into	v_menu_id
-	from	im_menus m
-	where	m.label = p_label;
-
+	select	menu_id	into v_menu_id from im_menus m where m.label = p_label;
 	IF v_menu_id is not null THEN return v_menu_id; END IF;
 
 	v_menu_id := acs_object__new (
