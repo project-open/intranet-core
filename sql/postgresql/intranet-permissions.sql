@@ -37,8 +37,8 @@ DECLARE
 	p_party_id	alias for $2;
 	p_privilege	alias for $3;
 BEGIN
-    PERFORM acs_permission__grant_permission(p_object_id, p_party_id, p_privilege);
-    return 0;
+	PERFORM acs_permission__grant_permission(p_object_id, p_party_id, p_privilege);
+	return 0;
 END;' language 'plpgsql';
 
 create or replace function im_revoke_permission (integer, integer, varchar)
@@ -48,8 +48,8 @@ DECLARE
 	p_party_id	alias for $2;
 	p_privilege	alias for $3;
 BEGIN
-    PERFORM acs_permission__revoke_permission(p_object_id, p_party_id, p_privilege);
-    return 0;
+	PERFORM acs_permission__revoke_permission(p_object_id, p_party_id, p_privilege);
+	return 0;
 END;' language 'plpgsql';
 
 
@@ -61,16 +61,16 @@ END;' language 'plpgsql';
 -- for from regular groups.
 
 select acs_object_type__create_type (
-        'im_profile',            -- object_type
-        'Profile',               -- pretty_name
-        'Profile',              -- pretty_plural
-        'group',        -- supertype
-        'im_profiles',           -- table_name
-        'profile_id',            -- id_column
-        'im_profile',            -- package_name
-        'f',                    -- abstract_p
-        null,                   -- type_extension_table
-        'im_profile__name'       -- name_method
+	'im_profile',		-- object_type
+	'Profile',		-- pretty_name
+	'Profile',		-- pretty_plural
+	'group',		-- supertype
+	'im_profiles',		-- table_name
+	'profile_id',		-- id_column
+	'im_profile',		-- package_name
+	'f',			-- abstract_p
+	null,			-- type_extension_table
+	'im_profile__name'	-- name_method
 );
 
 -- add the same relation types for im_profile as for "group".
@@ -103,39 +103,37 @@ insert into group_types (group_type) values ('im_profile');
 create or replace function im_profile__new (varchar, varchar) 
 returns integer as '
 DECLARE
-    pretty_name	alias for $1;
-    profile_gif	alias for $2;
+	pretty_name	alias for $1;
+	profile_gif	alias for $2;
 BEGIN
-    return im_profile__new(
-	null,
-	''im_profile'',
-	now(),
-	0,
-	null,
-	null,
-
-	null,
-	null,
-	pretty_name,
-	''closed'',
-	profile_gif
-    );
+	return im_profile__new(
+		null,
+		''im_profile'',
+		now(),
+		0,
+		null,
+		null,
+	
+		null,
+		null,
+		pretty_name,
+		''closed'',
+		profile_gif
+	);
 END;' language 'plpgsql';
 
 
 create or replace function im_profile__name (integer) 
 returns varchar as '
 DECLARE
-    p_profile_id		alias for $1;
+	p_profile_id		alias for $1;
    
-    v_profile_name		varchar;
+	v_profile_name		varchar;
 BEGIN
-    select	group_name
-    into	v_profile_name
-    from	groups
-    where	group_id = p_profile_id;
+	select	group_name into v_profile_name from groups
+	where	group_id = p_profile_id;
 
-    return v_profile_name;
+	return v_profile_name;
 END;' language 'plpgsql';
 
 
@@ -145,32 +143,32 @@ create or replace function im_profile__new (
 	varchar, varchar, varchar, varchar, varchar
 ) returns integer as '
 DECLARE
-	p_profile_id      alias for $1;
-	p_object_type     alias for $2;
+	p_profile_id	alias for $1;
+	p_object_type	alias for $2;
 	p_creation_date   alias for $3;
 	p_creation_user   alias for $4;
-	p_creation_ip     alias for $5;
-	p_context_id      alias for $6;
+	p_creation_ip	alias for $5;
+	p_context_id	alias for $6;
 
 	p_email		alias for $7;
 	p_url		alias for $8;
 	p_group_name	alias for $9;
-	p_join_policy     alias for $10;
+	p_join_policy	alias for $10;
 	p_profile_gif	alias for $11;
 
 	v_group_id integer;
 BEGIN
 	v_group_id := acs_group__new (
-		     p_profile_id,
-		     p_object_type,
-		     p_creation_date,
-		     p_creation_user,
-		     p_creation_ip,
-		     p_email,
-		     p_url,
-		     p_group_name,
-		     p_join_policy,
-		     p_context_id
+			p_profile_id,
+			p_object_type,
+			p_creation_date,
+			p_creation_user,
+			p_creation_ip,
+			p_email,
+			p_url,
+			p_group_name,
+			p_join_policy,
+			p_context_id
 	);
 
 	insert into im_profiles (
@@ -189,14 +187,14 @@ end;' language 'plpgsql';
 
 create or replace function im_profile__delete (integer) returns integer as '
 DECLARE
-	v_profile_id	     alias for $1;
+	v_profile_id		alias for $1;
 BEGIN
 	delete from im_profiles
 	where profile_id=v_profile_id;
 
 	PERFORM acs_group__delete( v_profile_id );
 
-     return 0;
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -211,12 +209,12 @@ DECLARE
 	v_rel_id		integer;
 BEGIN
 	v_rel_id := membership_rel__new(
-		 p_group_id,	-- object_id_one
-		 p_user_id,	-- object_id_two
-		 0,		-- creation_user
-		 null		-- creation_ip
-	 );
-	 return v_rel_id;
+		p_group_id,	-- object_id_one
+		p_user_id,	-- object_id_two
+		0,		-- creation_user
+		null		-- creation_ip
+	);
+	return v_rel_id;
 END;' language 'plpgsql';
 
 
@@ -230,17 +228,17 @@ DECLARE
 
 	v_rel_id	integer;
 BEGIN
-     for row in 
+	for row in 
 	select rel_id
 	from acs_rels
 	where
 		object_id_one = p_group_id
 		and object_id_two = p_user_id
-     loop
+	loop
 	PERFORM membership_rel__delete(row.rel_id);
-     end loop;
+	end loop;
 
-     return 0;
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -260,14 +258,14 @@ DECLARE
 	v_rel_id	integer;
 	n_groups	integer;
 BEGIN
-     -- Check that the group does not exist before
-     select count(*)
-     into n_groups
-     from groups
-     where group_name = v_pretty_name;
+	-- Check that the group does not exist before
+	select count(*)
+	into n_groups
+	from groups
+	where group_name = v_pretty_name;
 
-     -- only add the group if it did not exist before...
-     if n_groups = 0 then
+	-- only add the group if it did not exist before...
+	if n_groups = 0 then
 
 	v_group_id := im_profile__new(
 		v_pretty_name,
@@ -282,8 +280,8 @@ BEGIN
 		0,			-- creation_user
 		null			-- creation_ip
 	);
-     end if;
-     return 0;
+	end if;
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -295,33 +293,33 @@ DECLARE
 
 	v_group_id	integer;
 BEGIN
-     -- Check that the group does not exist before
-     select group_id
-     into v_group_id
-     from groups
-     where group_name = v_pretty_name;
+	-- Check that the group does not exist before
+	select group_id
+	into v_group_id
+	from groups
+	where group_name = v_pretty_name;
 
-     -- First we need to remove this dependency ...
-     delete from im_profiles where profile_id = v_group_id;
-     delete from acs_permissions where grantee_id=v_group_id;
-     -- the acs_group package takes care of segments referred
-     -- to by rel_constraints__rel_segment. We delete the ones
-     -- references by rel_constraints__required_rel_segment here.
-     for row in 
+	-- First we need to remove this dependency ...
+	delete from im_profiles where profile_id = v_group_id;
+	delete from acs_permissions where grantee_id=v_group_id;
+	-- the acs_group package takes care of segments referred
+	-- to by rel_constraints__rel_segment. We delete the ones
+	-- references by rel_constraints__required_rel_segment here.
+	for row in 
 	select cons.constraint_id
 	from rel_constraints cons, rel_segments segs
 	where
 		segs.segment_id = cons.required_rel_segment
 		and segs.group_id = v_group_id
-     loop
+	loop
 
 	PERFORM rel_segment__delete(row.constraint_id);
 
-     end loop;
+	end loop;
 
-     -- delete the actual group
-     PERFORM im_profile__delete(v_group_id);
-     return 0;
+	-- delete the actual group
+	PERFORM im_profile__delete(v_group_id);
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -442,44 +440,6 @@ select acs_privilege__add_child('admin', 'view_budget_hours');
 
 
 
-
-
-
--- ----------------------------------------
--- Add "require_manual_login" privilege
-
-create or replace function inline_0 ()
-returns integer as '
-declare
-        v_count                 integer;
-begin
-        select count(*) into v_count from acs_privileges
-        where privilege = ''require_manual_login'';
-        IF 0 != v_count THEN return 0; END IF;
-
-        PERFORM acs_privilege__create_privilege(
-                ''require_manual_login'',
-                ''Require manual login - dont allow auto-login'',
-                ''Require manual login - dont allow auto-login''
-        );
-        PERFORM acs_privilege__add_child(''admin'', ''require_manual_login'');
-
-    return 0;
-end;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-select im_priv_create('require_manual_login','P/O Admins');
-select im_priv_create('require_manual_login','Senior Managers');
-select im_priv_create('require_manual_login','Project Managers');
-select im_priv_create('require_manual_login','Accounting');
-
-
-
-
-
-
-
 -- Shortcut proc to setup loads of privileges.
 --
 create or replace function im_priv_create (varchar, varchar)
@@ -492,32 +452,57 @@ DECLARE
 	v_object_id		integer;
 	v_count			integer;
 BEGIN
-     -- Get the group_id from group_name
-     select group_id 
-     into v_profile_id
-     from groups
-     where group_name = p_profile_name;
+	-- Get the group_id from group_name
+	select group_id into v_profile_id from groups
+	where group_name = p_profile_name;
 
-     -- Get the Main Site id, used as the global identified for permissions
-     select package_id
-     into v_object_id
-     from apm_packages 
-     where package_key=''acs-subsite'';
+	-- Get the Main Site id, used as the global identified for permissions
+	select package_id into v_object_id from apm_packages 
+	where package_key = ''acs-subsite'';
 
+	select count(*) into v_count from acs_permissions
+	where	object_id = v_object_id
+		and grantee_id = v_profile_id
+		and privilege = p_priv_name;
 
-     select count(*) into v_count
-     from acs_permissions
-     where object_id = v_object_id
-	and grantee_id = v_profile_id
-	and privilege = p_priv_name;
-
-     IF 0 = v_count THEN
+	IF v_count > 0 THEN return 0; end if;
 	PERFORM acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
-     END IF;
 
-     return 0;
-
+	return 0;
 end;' language 'plpgsql';
+
+
+
+
+
+-- ----------------------------------------
+-- Add "require_manual_login" privilege
+
+create or replace function inline_0 ()
+returns integer as '
+declare
+	v_count		integer;
+begin
+	select count(*) into v_count from acs_privileges
+	where privilege = ''require_manual_login'';
+	IF 0 != v_count THEN return 0; END IF;
+
+	PERFORM acs_privilege__create_privilege(
+		''require_manual_login'',
+		''Require manual login - dont allow auto-login'',
+		''Require manual login - dont allow auto-login''
+	);
+	PERFORM acs_privilege__add_child(''admin'', ''require_manual_login'');
+
+	return 0;
+end;' language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+select im_priv_create('require_manual_login','P/O Admins');
+select im_priv_create('require_manual_login','Senior Managers');
+select im_priv_create('require_manual_login','Project Managers');
+select im_priv_create('require_manual_login','Accounting');
 
 
 
@@ -566,25 +551,25 @@ DECLARE
 	v_parent_id		integer;
 	v_subgroup_id		integer;
 BEGIN
-     -- Get the group_id from group_name
-     select group_id
-     into v_parent_id
-     from groups
-     where group_name = p_parent_name;
+	-- Get the group_id from group_name
+	select group_id
+	into v_parent_id
+	from groups
+	where group_name = p_parent_name;
 
-     -- Get the subgroup
-     select group_id
-     into v_subgroup_id
-     from groups
-     where group_name = p_subgroup_name;
+	-- Get the subgroup
+	select group_id
+	into v_subgroup_id
+	from groups
+	where group_name = p_subgroup_name;
 
 	v_rel_id := composition_rel__new(
 		v_parent_id,
 		v_subgroup_id,
 		0,
 		null
-	 );
-    return 0;
+	);
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -605,24 +590,20 @@ DECLARE
 	v_group_id		integer;
 	v_grantee_id		integer;
 BEGIN
-     -- Get the group_id from group_name
-     select group_id
-     into v_group_id
-     from groups
-     where group_name = p_group_name;
+	-- Get the group_id from group_name
+	select group_id into v_group_id from groups
+	where group_name = p_group_name;
 
-     -- Get the subgroup
-     select group_id
-     into v_grantee_id
-     from groups
-     where group_name = p_grantee_group_name;
+	-- Get the subgroup
+	select group_id into v_grantee_id from groups
+	where group_name = p_grantee_group_name;
 
-     PERFORM acs_permission__grant_permission(
-	v_group_id,
-	v_grantee_id,
-	p_privilege
-     );
-     return 0;
+	PERFORM acs_permission__grant_permission(
+		v_group_id,
+		v_grantee_id,
+		p_privilege
+	);
+	return 0;
 end;' language 'plpgsql';
 
 
@@ -636,20 +617,17 @@ DECLARE
 	p_user_id	alias for $1;
 	p_group_id	alias for $2;
 
-	ad_group_member_count     integer;
+	ad_group_member_count	integer;
 BEGIN
-    select count(*)
-    into ad_group_member_count
-    from acs_rels
-    where
-	object_id_one = p_group_id
-	and object_id_two = p_user_id;
+	select count(*) into ad_group_member_count from acs_rels
+	where	object_id_one = p_group_id
+		and object_id_two = p_user_id;
 
-    if ad_group_member_count = 0 then
-       return ''f'';
-    else
-       return ''t'';
-    end if;
+	if ad_group_member_count = 0 then
+		return ''f'';
+	else
+		return ''t'';
+	end if;
 end;' language 'plpgsql';
 
 
@@ -661,29 +639,26 @@ end;' language 'plpgsql';
 create or replace function ad_group_member_admin_role_p (integer, integer)
 returns integer as '
 DECLARE
-    p_user_id	   alias for $1;
-    p_group_id	   alias for $2;
+	p_user_id	alias for $1;
+	p_group_id	alias for $2;
 
-    ad_group_member_count    integer;
+	ad_group_member_count	integer;
 BEGIN
-    select count(*)
-    into ad_group_member_count
-    from
-	acs_rels r,
-	im_biz_object_members m,
-	im_categories c
-    where
-	r.object_id_one = p_group_id
-	and r.object_id_two = p_user_id
-	and r.rel_id = m.rel_id
-	and m.object_role_id = c.category_id
-	and (c.category = ''Project Manager'' or c.category = ''Key Account'');
+	select	count(*) into ad_group_member_count 
+	from	acs_rels r,
+		im_biz_object_members m,
+		im_categories c
+	where	r.object_id_one = p_group_id
+		and r.object_id_two = p_user_id
+		and r.rel_id = m.rel_id
+		and m.object_role_id = c.category_id
+		and (c.category = ''Project Manager'' or c.category = ''Key Account'');
 
-    if ad_group_member_count = 0 then
-       return ''f'';
-    else
-       return ''t'';
-    end if;
+	if ad_group_member_count = 0 then
+		return ''f'';
+	else
+		return ''t'';
+	end if;
 end;' language 'plpgsql';
 
 
