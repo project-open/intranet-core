@@ -81,6 +81,9 @@ set administration_component [im_table_with_title "[_ intranet-core.Administrati
 
 if {$user_admin_p} {
 
+    # ---------------------------------------------------------------------------
+    # 1 - Make sure base modules are installed
+    # ---------------------------------------------------------------------------
     # The base modules that need to be installed first
     set base_modules [list notifications acs-datetime acs-workflow acs-mail-lite acs-events intranet-timesheet2]
 
@@ -108,5 +111,54 @@ if {$user_admin_p} {
 	"
     }
 
+
+    # ---------------------------------------------------------------------------
+    # 2 - Make sure "intranet-core" has been updated. Then restart.
+    # ---------------------------------------------------------------------------
+
+    set debug ""
+
+    # --------------------------------------------------------------
+    # Get the list of upgrade scripts in the FS
+    set core_dir "[acs_root_dir]/packages/intranet-core"
+    set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
+    foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
+
+	# Skip upgrade scripts from 3.0.x
+#	if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
+
+	# Add the "/packages/..." part to hash-array for fast comparison.
+	if {[regexp {(/packages.*)} $dir match path]} {
+	    set fs_files($path) $path
+#	    append debug "fs: $path\n"
+	}
+    }
+
+    # --------------------------------------------------------------
+    # Get the upgrade scripts that were executed
+    set sql "
+	select distinct
+		l.log_key
+	from	acs_logs l
+	order by log_key
+    "
+    db_foreach db_files $sql {
+
+	# Add the "/packages/..." part to hash-array for fast comparison.
+	if {[regexp {(/packages.*)} $log_key match path]} {
+	    set db_files($path) $path
+#	    append debug "db: $path\n"
+	}
+    }
+
+    # --------------------------------------------------------------
+    # Check if there are scripts that weren't executed:
+    foreach file [array names fs_files] {
+	if {![info exists db_files($file)]} {
+	    append debug "NO: $file\n"	
+	}
+    }
+
+    ad_return_complaint 1 "<pre>$debug</pre>"
 }
 
