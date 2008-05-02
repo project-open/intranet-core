@@ -57,6 +57,7 @@ set header_stuff ""
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
+
 # ----------------------------------------------------------------
 # Administration
 # ----------------------------------------------------------------
@@ -65,4 +66,47 @@ set admin_html ""
 append admin_html "<li> <a href=/intranet/users/view?user_id=$current_user_id>[_ intranet-core.About_You]</A>\n"
 set administration_component [im_table_with_title "[_ intranet-core.Administration]" $admin_html]
 
-db_release_unused_handles
+
+# ----------------------------------------------------------------
+# Redirect Admin to Upgrade page
+#
+# 1. The "base_modules" need to be installed. Otherwise no upgrade
+#    will work. Then restart.
+#
+# 2. Make sure "intranet-core" has been updated. Then restart.
+#
+# 3. Now all othe other modules can be updated.
+#
+# ----------------------------------------------------------------
+
+if {$user_admin_p} {
+
+    # The base modules that need to be installed first
+    set base_modules [list notifications acs-datetime acs-workflow acs-mail-lite acs-events intranet-timesheet2]
+
+    set url "/acs-admin/apm/packages-install-2?"
+    set redirect_p 0
+    set missing_modules [list]
+    foreach module $base_modules {
+	set installed_p [db_string notif "select count(*) from apm_packages where package_key = :module"]
+	if {!$installed_p} { 
+	    set redirect_p 1
+	    append url "enable=$module&"
+	    lappend missing_modules $module
+	}
+    }
+
+    if {$redirect_p} {
+	ad_return_complaint 1 "
+		<b>Important packages missing:</b><br>
+		We found that your system lacks important packages.<br>
+		Please click on the link below to install these packages now.<br>
+		<br>&nbsp;<br>
+		<a href=$url>Install packages [join $missing_modules ", "]</a>
+		<br>&nbsp;<br>
+		<font color=red><b>Please don't forget to restart the server after install.</b></font>
+	"
+    }
+
+}
+
