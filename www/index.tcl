@@ -85,7 +85,7 @@ if {$user_admin_p} {
     # 1 - Make sure base modules are installed
     # ---------------------------------------------------------------------------
     # The base modules that need to be installed first
-    set base_modules [list notifications acs-datetime acs-workflow acs-mail-lite acs-events intranet-timesheet2]
+    set base_modules [list notifications acs-datetime acs-workflow acs-mail-lite acs-events]
 
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
@@ -113,7 +113,44 @@ if {$user_admin_p} {
 
 
     # ---------------------------------------------------------------------------
-    # 2 - Make sure "intranet-core" has been updated. Then restart.
+    # 2 - Update intranet-dynfield & intranet-core
+    # ---------------------------------------------------------------------------
+    # The base modules that need to be installed first
+    set base_modules [list intranet-core]
+
+    set url "/acs-admin/apm/packages-install-2?"
+    set redirect_p 0
+    set missing_modules [list]
+    foreach module $base_modules {
+
+	set spec_file "[acs_root_dir]/packages/$module/$module.info"
+	array set version [apm_read_package_info_file $spec_file]
+	set version $version(name)
+	set needs_update_p [apm_higher_version_installed_p $module $version]
+
+	if {!$needs_update_p} { 
+	    set redirect_p 1
+	    append url "enable=$module&"
+	    lappend missing_modules $module
+	}
+    }
+
+    if {$redirect_p} {
+	ad_return_complaint 1 "
+		<b>Update the 'Core' modules:</b><br>
+		The 'core' modules (intranet-core and intranet-dynfield) need to be
+		updated before other modules can be updated.<br>
+		Please click on the link below to install these packages now.<br>
+		<br>&nbsp;<br>
+		<a href=$url>Install packages [join $missing_modules ", "]</a>
+		<br>&nbsp;<br>
+		<font color=red><b>Please don't forget to restart the server after install.</b></font>
+	"
+    }
+
+
+    # ---------------------------------------------------------------------------
+    # 3 - Make sure "intranet-core" has been updated. Then restart.
     # ---------------------------------------------------------------------------
 
     set debug ""
