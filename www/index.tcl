@@ -128,7 +128,7 @@ if {$user_admin_p} {
 	set version $version_hash(name)
 	set needs_update_p [apm_higher_version_installed_p $module $version]
 
-	if {!$needs_update_p} { 
+	if {1 == $needs_update_p} { 
 	    set redirect_p 1
 	    append url "enable=$module&"
 	    lappend missing_modules $module
