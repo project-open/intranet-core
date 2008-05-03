@@ -241,22 +241,22 @@ CREATE TABLE im_biz_object_urls (
 create or replace function im_biz_object__new (integer,varchar,timestamptz,integer,varchar,integer)
 returns integer as '
 declare
-	object_id	alias for $1;
-	object_type	alias for $2;
-	creation_date	alias for $3;
-	creation_user	alias for $4;
-	creation_ip	alias for $5;
-	context_id	alias for $6;
+	p_object_id	alias for $1;
+	p_object_type	alias for $2;
+	p_creation_date	alias for $3;
+	p_creation_user	alias for $4;
+	p_creation_ip	alias for $5;
+	p_context_id	alias for $6;
 
 	v_object_id	integer;
 begin
 	v_object_id := acs_object__new (
-		object_id,
-		object_type,
-		creation_date,
-		creation_user,
-		creation_ip,
-		context_id
+		p_object_id,
+		p_object_type,
+		p_creation_date,
+		p_creation_user,
+		p_creation_ip,
+		p_context_id
 	);
 	insert into im_biz_objects (object_id) values (v_object_id);
 	return v_object_id;
