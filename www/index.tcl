@@ -124,8 +124,8 @@ if {$user_admin_p} {
     foreach module $base_modules {
 
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
-	array set version [apm_read_package_info_file $spec_file]
-	set version $version(name)
+	array set version_hash [apm_read_package_info_file $spec_file]
+	set version $version_hash(name)
 	set needs_update_p [apm_higher_version_installed_p $module $version]
 
 	if {!$needs_update_p} { 
