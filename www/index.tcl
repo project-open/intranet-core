@@ -85,13 +85,13 @@ if {$user_admin_p} {
     # 1 - Make sure base modules are installed
     # ---------------------------------------------------------------------------
     # The base modules that need to be installed first
-    set base_modules [list notifications acs-datetime acs-workflow acs-mail-lite acs-events]
+    set base_modules [list workflow notifications acs-datetime acs-workflow acs-mail-lite acs-events]
 
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
     set missing_modules [list]
     foreach module $base_modules {
-	set installed_p [db_string notif "select count(*) from apm_packages where package_key = :module"]
+	set installed_p [db_string notif "select count(*) from apm_package_versions where package_key = :module"]
 	if {!$installed_p} { 
 	    set redirect_p 1
 	    append url "enable=$module&"
@@ -105,7 +105,7 @@ if {$user_admin_p} {
 		We found that your system lacks important packages.<br>
 		Please click on the link below to install these packages now.<br>
 		<br>&nbsp;<br>
-		<a href=$url>Install packages [join $missing_modules ", "]</a>
+		<a href=$url>Install packages</a> ([join $missing_modules ", "])
 		<br>&nbsp;<br>
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
@@ -116,12 +116,12 @@ if {$user_admin_p} {
     # 2 - Update intranet-dynfield & intranet-core
     # ---------------------------------------------------------------------------
     # The base modules that need to be installed first
-    set base_modules [list intranet-core]
+    set core_modules [list intranet-core]
 
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
     set missing_modules [list]
-    foreach module $base_modules {
+    foreach module $core_modules {
 
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
 	array set version_hash [apm_read_package_info_file $spec_file]
@@ -142,7 +142,7 @@ if {$user_admin_p} {
 		updated before other modules can be updated.<br>
 		Please click on the link below to install these packages now.<br>
 		<br>&nbsp;<br>
-		<a href=$url>Install packages [join $missing_modules ", "]</a>
+		<a href=$url>Install packages</a> ([join $missing_modules ", "])
 		<br>&nbsp;<br>
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
@@ -150,13 +150,49 @@ if {$user_admin_p} {
 
 
     # ---------------------------------------------------------------------------
-    # 3 - Make sure "intranet-core" has been updated. Then restart.
+    # 3 - Update the rest
     # ---------------------------------------------------------------------------
 
-    set debug ""
+    set other_modules [db_list modules "select distinct package_key from apm_package_versions"]
+
+    set url "/acs-admin/apm/packages-install-2?"
+    set redirect_p 0
+    set missing_modules [list]
+    foreach module $other_modules {
+
+	set spec_file "[acs_root_dir]/packages/$module/$module.info"
+	array set version_hash [apm_read_package_info_file $spec_file]
+	set version $version_hash(name)
+	set needs_update_p [apm_higher_version_installed_p $module $version]
+
+	if {1 == $needs_update_p} { 
+	    set redirect_p 1
+	    append url "enable=$module&"
+	    lappend missing_modules $module
+	}
+    }
+
+    if {$redirect_p} {
+	ad_return_complaint 1 "
+		<b>Update other modules:</b><br>
+		There are modules in the system that need to be updated
+		in order to guarantee the proper working of the system.<br>
+		Please click on the link below to install these packages now.<br>
+		<br>&nbsp;<br>
+		<a href=$url>Update packages</a> ([join $missing_modules ", "])
+		<br>&nbsp;<br>
+		<font color=red><b>Please don't forget to restart the server after install.</b></font>
+	"
+    }
+
+
+    # ---------------------------------------------------------------------------
+    # 4 - Check for non-executed upgrade scripts
+    # ---------------------------------------------------------------------------
 
     # --------------------------------------------------------------
     # Get the list of upgrade scripts in the FS
+    set debug ""
     set core_dir "[acs_root_dir]/packages/intranet-core"
     set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
     foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
@@ -174,8 +210,7 @@ if {$user_admin_p} {
     # --------------------------------------------------------------
     # Get the upgrade scripts that were executed
     set sql "
-	select distinct
-		l.log_key
+	select	distinct l.log_key
 	from	acs_logs l
 	order by log_key
     "
@@ -190,12 +225,16 @@ if {$user_admin_p} {
 
     # --------------------------------------------------------------
     # Check if there are scripts that weren't executed:
+    set requires_upgrade_p 0
     foreach file [array names fs_files] {
 	if {![info exists db_files($file)]} {
 	    append debug "NO: $file\n"	
+	    set requires_upgrade_p 0
 	}
     }
 
-    ad_return_complaint 1 "<pre>$debug</pre>"
+    if {$requires_upgrade_p} {
+	    ad_return_complaint 1 "<pre>$debug</pre>"
+    }
 }
 
