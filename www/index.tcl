@@ -79,6 +79,8 @@ set administration_component [im_table_with_title "[_ intranet-core.Administrati
 #
 # ----------------------------------------------------------------
 
+set upgrade_message ""
+
 if {$user_admin_p} {
 
     # ---------------------------------------------------------------------------
@@ -100,7 +102,7 @@ if {$user_admin_p} {
     }
 
     if {$redirect_p} {
-	ad_return_complaint 1 "
+	set upgrade_message "
 		<b>Important packages missing:</b><br>
 		We found that your system lacks important packages.<br>
 		Please click on the link below to install these packages now.<br>
@@ -109,6 +111,7 @@ if {$user_admin_p} {
 		<br>&nbsp;<br>
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
+	ad_return_template
     }
 
 
@@ -136,7 +139,7 @@ if {$user_admin_p} {
     }
 
     if {$redirect_p} {
-	ad_return_complaint 1 "
+	set upgrade_message "
 		<b>Update the 'Core' modules:</b><br>
 		The 'core' modules (intranet-core and intranet-dynfield) need to be
 		updated before other modules can be updated.<br>
@@ -146,6 +149,7 @@ if {$user_admin_p} {
 		<br>&nbsp;<br>
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
+	ad_return_template
     }
 
 
@@ -173,7 +177,7 @@ if {$user_admin_p} {
     }
 
     if {$redirect_p} {
-	ad_return_complaint 1 "
+	set upgrade_message "
 		<b>Update other modules:</b><br>
 		There are modules in the system that need to be updated
 		in order to guarantee the proper working of the system.<br>
@@ -183,6 +187,7 @@ if {$user_admin_p} {
 		<br>&nbsp;<br>
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
+	ad_return_template
     }
 
 
@@ -193,12 +198,13 @@ if {$user_admin_p} {
     # --------------------------------------------------------------
     # Get the list of upgrade scripts in the FS
     set debug ""
+    set missing_modules [list]
     set core_dir "[acs_root_dir]/packages/intranet-core"
     set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
     foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
 
 	# Skip upgrade scripts from 3.0.x
-#	if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
+	if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
 
 	# Add the "/packages/..." part to hash-array for fast comparison.
 	if {[regexp {(/packages.*)} $dir match path]} {
@@ -225,16 +231,38 @@ if {$user_admin_p} {
 
     # --------------------------------------------------------------
     # Check if there are scripts that weren't executed:
+    set url "/acs-admin/apm/packages-install-2?"
     set requires_upgrade_p 0
+    set form_vars ""
     foreach file [array names fs_files] {
 	if {![info exists db_files($file)]} {
-	    append debug "NO: $file\n"	
-	    set requires_upgrade_p 0
+	    append debug "NO: $file\n"
+	    lappend missing_modules $file
+	    append form_vars "<input type=hidden name=upgrade_script value=\"$file\">\n"
+	    set requires_upgrade_p 1
 	}
     }
 
     if {$requires_upgrade_p} {
-	    ad_return_complaint 1 "<pre>$debug</pre>"
+	set upgrade_message "
+		<b>Run Upgrade Scripts:</b><br>
+		It seems that there are upgrade scripts in your system that
+		have not yet been executed.<br>
+		This situation may occur during or after an upgrade of 
+		V3.1 - V3.3 and is usually not a big issue. 
+		However, we recommend to run these upgrade scripts now.<br>
+		Please click on the link below to run these scripts now.<br>
+		<br>&nbsp;<br>
+		<form action=/intranet/admin/install-upgrade-scripts method=POST>
+		$form_vars
+		<input type=submit value='Run Upgrade Scripts'>
+		</form>
+		<br>
+		<p>
+		<b>Here is the list of scripts to run</b>:<p>
+		[join $missing_modules "<br>\n"]
+	"
+	ad_return_template
     }
 }
 
