@@ -53,7 +53,6 @@ set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -p
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 
-
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
 }
@@ -209,11 +208,21 @@ if {$user_admin_p} {
 	[im_gif new "Add a new project status"]</A>$help_text"
 }
 
-template::element::create $form_id project_status_id \
-    -label "[_ intranet-core.Project_Status]" \
-    -widget "im_category_tree" \
-    -custom {category_type "Intranet Project Status"} \
-    -after_html $help_text
+# Suppress the status field if the project has a WF associated
+set wf_case_exists_p 0
+if {[info exists project_id]} {
+    set wf_case_exists_p [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"]
+}
+
+if {!$wf_case_exists_p || [im_permission $user_id edit_project_status]} {
+    template::element::create $form_id project_status_id \
+	-label "[_ intranet-core.Project_Status]" \
+	-widget "im_category_tree" \
+	-custom {category_type "Intranet Project Status"} \
+	-after_html $help_text
+} else {
+    template::element::create $form_id project_status_id -optional -widget hidden
+}
 
 template::element::create $form_id start \
     -datatype "date" widget "date" \
@@ -580,11 +589,32 @@ if {[form is_valid $form_id]} {
 	    im_biz_object_add_role $supervisor_id $project_id $role_id 
 	}
 
-	# Create a new Workflow for the project if specified
+
+
+	# -----------------------------------------------------------------
+	# Create a new Workflow for the project either if:
+	# - specified explicitely in the parameters or
+	# - if there is a WF associated with the project_type
+
+	# Check if there is a WF associated with the project type
+	if {"" == $workflow_key} {
+	    set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :project_type_id" -default ""]
+	    set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
+	    if {$wf_exists_p} { set workflow_key $wf_key }
+	}
+
 	if {"" != $workflow_key} {
 	    # Create a new workflow case (instance)
 	    set context_key ""
-	    set case_id [wf_case_new $workflow_key $context_key $project_id]
+	    set case_id [wf_case_new \
+			     $workflow_key \
+			     $context_key \
+			     $project_id \
+			    ]
+
+	    # Determine the first task in the case to be executed and start+finisch the task.
+	    im_workflow_skip_first_transition -case_id $case_id
+
 	}
 
     }
@@ -654,13 +684,12 @@ if {[form is_valid $form_id]} {
 
     # -----------------------------------------------------------------
     # Store dynamic fields
-    # -----------------------------------------------------------------
 
     im_dynfield::attribute_store \
 	-object_type $object_type \
 	-object_id $project_id \
 	-form_id $form_id
-	
+
     # -----------------------------------------------------------------
     # add the creating current_user to the group
    

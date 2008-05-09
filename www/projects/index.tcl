@@ -112,10 +112,13 @@ if {![im_permission $current_user_id "view_projects_all"]} {
     set mine_p "t"
     set include_subprojects_p "f"
     set include_subproject_level ""
-    
-    # Restrict status to "Open" projects only
+}
+
+# Restrict status to "Open" projects for unprivileged users
+if {![im_permission $current_user_id "view_projects_history"]} {
     set project_status_id [im_project_status_open]
 }
+
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
