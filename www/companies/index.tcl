@@ -363,8 +363,11 @@ if {$user_is_admin_p} {
     append admin_html "
 <li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
 <!-- <li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
-<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
 "}
+
+append admin_html "
+<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
+"
 
 # Append user-defined menus
 set bind_vars [ad_tcl_vars_to_ns_set]

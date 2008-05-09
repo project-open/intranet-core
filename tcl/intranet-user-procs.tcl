@@ -224,6 +224,16 @@ ad_proc im_user_select {
 } {
     if {0 == $group_id} { set group_id [im_employee_group_id] }
 
+    # Check if somebody tries to fiddle with SQL
+    foreach id $group_id {
+	if {![string is integer $id]} {
+	    ad_return_complaint 1 "Please notify Frank"
+	}
+    }
+
+    # Join the ids together
+    set group_in_sql [join $group_id ","]
+
     # We need a "distinct" because there can be more than one
     # mapping between a user and a group, one for each role.
     #
@@ -237,7 +247,7 @@ ad_proc im_user_select {
 		group_distinct_member_map m
 	where
 		u.user_id = m.member_id
-		and m.group_id = :group_id
+		and m.group_id in ($group_in_sql)
 	order by 
 		name
     "

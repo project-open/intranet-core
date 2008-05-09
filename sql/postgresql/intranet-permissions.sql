@@ -550,6 +550,18 @@ select im_priv_create('add_budget_hours','P/O Admins');
 select im_priv_create('add_budget_hours','Senior Managers');
 
 
+
+-------------------------------------------------------------
+-- Who can edit project_status_id even if there is a WF?
+select acs_privilege__create_privilege('edit_project_status','Edit Project Status','Edit Project Status');
+select acs_privilege__add_child('admin', 'edit_project_status');
+
+select im_priv_create('edit_project_status','Accounting');
+select im_priv_create('edit_project_status','P/O Admins');
+select im_priv_create('edit_project_status','Senior Managers');
+
+
+
 -------------------------------------------------------------
 -- Privileges Setup
 --

@@ -144,6 +144,7 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     ns_log Notice "project_status=$project_status"
 
     set user_is_company_member_p [im_biz_object_member_p $user_id $company_id]
+    set user_is_company_admin_p [im_biz_object_admin_p $user_id $company_id]
 
     if {$user_admin_p} { 
 	set admin 1
@@ -156,8 +157,29 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
 # without exlicit permission...
 #    if {$user_is_company_member_p} { set read 1}
 
-    if {$user_is_group_member_p} { set read 1}
-    if {[im_permission $user_id view_projects_all]} { set read 1}
+
+    # Allow customer' Members to see their customer's projects
+    if {$user_is_company_member_p && $user_is_employee_p} { 
+	set view 1
+	set read 1
+    }
+    
+    # Allow Key Account Managers to see their customer's projects
+    if {$user_is_company_admin_p && $user_is_employee_p} { 
+	set read 1
+	set write 1
+	set admin 1
+    }
+
+    # The user is member of the project
+    if {$user_is_group_member_p} { 
+	set read 1
+    }
+
+    if {[im_permission $user_id view_projects_all]} { 
+	set read 1
+    }
+
     if {[im_permission $user_id edit_projects_all]} { 
 	set read 1
 	set write 1
