@@ -225,6 +225,10 @@ ad_proc -public im_biz_object_add_role {
 
     if {$propagate_superproject_p} {
 
+	# Reset the percentage to "", so that there is no percentage assignment
+	# to the super-project (that would be a duplication).
+	set percentage ""
+
 	# Recursively add members to super-projects
 	#
 	set object_type [db_string object_type "select object_type from acs_objects where object_id=:object_id"]
@@ -236,7 +240,15 @@ ad_proc -public im_biz_object_add_role {
 		where project_id = :object_id
 	    " -default ""]
 
+	    set update_parent_p 0
 	    if {"" != $super_project_id} {
+		set already_assigned_p [db_string already_assigned "
+			select count(*) from acs_rels where object_id_one = :super_project_id and object_id_two = :user_id
+		"]
+		if {!$already_assigned_p} { set update_parent_p 1 }
+	    }
+
+	    if {$update_parent_p} {
 		set super_role_id [im_biz_object_role_full_member]
 		im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
 	    }
