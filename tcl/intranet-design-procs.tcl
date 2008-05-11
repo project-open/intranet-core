@@ -21,7 +21,23 @@ ad_library {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
+# Compatibility with OpenACS 5.4
+namespace eval template::head {
 
+    ad_proc -public add_css {
+	-href:required
+	{ -media "all" }
+    } {
+	
+    }
+
+    ad_proc -public add_javascript {
+	-src:required
+    } {
+	
+    }
+
+}
 
 
 # --------------------------------------------------------
