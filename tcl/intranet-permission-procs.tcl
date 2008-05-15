@@ -144,12 +144,13 @@ ad_proc im_permission_helper {user_id privilege} {
 
 ad_proc -public im_object_permission {
     -object_id
-    -user_id 
+    { -user_id "" }
     {-privilege "read"}
     {-max_age ""}
 } {
     Returns 1 (true) or 0 (false), depending whether the user has the permission on the specified object.
 } {
+    if {"" == $user_id} { set user_id [ad_get_user_id] }
     set read_p [util_memoize "db_string operm {select im_object_permission_p($object_id, $user_id, '$privilege')}"]
     return [string equal $read_p "t"]
 }
