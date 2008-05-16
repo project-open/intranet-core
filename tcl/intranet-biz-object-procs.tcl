@@ -47,14 +47,14 @@ ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
     @param url_tpye is "view" or "edit", according to what you
 	want to do with the object.
 } {
-    set url [db_string object_type_url "
+    set url [util_memoize "db_string object_type_url \"
     	select	url
 	from	im_biz_object_urls u,
 		acs_objects o
-	where	o.object_id = :object_id
+	where	o.object_id = $object_id
 		and o.object_type = u.object_type
-		and u.url_type = :url_type
-    " -default ""]
+		and u.url_type = '$url_type'
+    \" -default {}"]
     return "$url$object_id"
 }
 

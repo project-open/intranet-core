@@ -741,7 +741,7 @@ ad_proc -public im_category_from_id {
 } {
     if {"" == $category_id} { return "" }
     if {0 == $category_id} { return "" }
-    set category_name [db_string cat "select im_category_from_id(:category_id)" -default ""]
+    set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
 	set category_name [lang::message::lookup "" intranet-core.$category_key $category_name]
