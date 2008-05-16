@@ -12,7 +12,7 @@ ad_page_contract {
 
     @author juanjoruizx@yahoo.es
 } {
-	view_id:notnull
+    {view_id ""}
     column_id:integer,optional
     return_url
     edit_p:optional
@@ -36,6 +36,14 @@ set action_url ""
 set focus "column.column_name"
 set page_title "[_ intranet-core.New_column]"
 set context $page_title
+
+if {[info exists column_id]} {
+    set view_id [db_string vid "select view_id from im_view_columns where column_id = :column_id" -default ""]
+}
+if {"" == $view_id} {
+    ad_return_complaint 1 "You need to specify view_id"
+}
+
 
 if {![info exists column_id]} { set form_mode "edit" }
 
