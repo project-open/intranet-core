@@ -10,7 +10,9 @@
   <msg key="A_dfinir">A définir</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">A propos de .... Vous</msg>
+  <msg key="Absenzen">Congé</msg>
   <msg key="Ac_Counting">Comptabilité</msg>
+  <msg key="Accept">Accepté</msg>
   <msg key="Access_denied">Accès refusé</msg>
   <msg key="Account_Deleted">Compte Supprimé</msg>
   <msg key="Account_deleted">Compte supprimé</msg>
@@ -18,14 +20,16 @@
   <msg key="accounting">Comptabilité</msg>
   <msg key="Accounting_contact">Contact comptabilité</msg>
   <msg key="Accueil">Accueil</msg>
-  <msg key="Actif">Active</msg>
+  <msg key="Actif">Actif</msg>
   <msg key="activate">Activer</msg>
   <msg key="Active">Active</msg>
   <msg key="Active_Customers">Clients Actuels</msg>
+  <msg key="Active_or_Potential">Actif ou Potentiel</msg>
   <msg key="Add">Ajouter</msg>
   <msg key="Add_a_new_client">Ajouter un nouveau Client</msg>
   <msg key="Add_a_new_Company">Ajouter une nouvelle Société</msg>
   <msg key="Add_a_new_company">Ajouter une nouvelle Société</msg>
+  <msg key="Add_a_new_member">Ajouter un nouveau membre</msg>
   <msg key="Add_a_new_Office">Ajouter un nouveau Site</msg>
   <msg key="Add_a_new_office">Ajouter un nouveau Site</msg>
   <msg key="Add_a_new_project">Ajouter un nouveau Projet</msg>
@@ -67,7 +71,11 @@
   <msg key="administrator">Administrateur</msg>
   <msg key="Advanced_Filtering">Filtre avancé</msg>
   <msg key="Advertizing_Project">Projet de publicité</msg>
+  <msg key="Affect_">Affecté</msg>
   <msg key="Aide">Aide</msg>
+  <msg key="Aim_Screen_Name">Nom Aim</msg>
+  <msg key="Albania">Albanie</msg>
+  <msg key="Algeria">Algérie</msg>
   <msg key="All">Tous</msg>
   <msg key="All_Costs">Tous les coûts</msg>
   <msg key="All_documents_in_H">Tous documents dans H:</msg>
@@ -76,9 +84,12 @@
   <msg key="Allocations">Allocations</msg>
   <msg key="Allowances">Indemnités</msg>
   <msg key="AMOA">AMOA</msg>
+  <msg key="Amorti">Amorti</msg>
   <msg key="An">An</msg>
   <msg key="Analyse">Analyse</msg>
+  <msg key="Andorra">Andorre</msg>
   <msg key="Annul">Annulé</msg>
+  <msg key="Apply">Appliquer</msg>
   <msg key="Archiv">Archivé</msg>
   <msg key="Argentina">Argentine</msg>
   <msg key="Arrir">Echéance dépassée</msg>
@@ -86,12 +97,15 @@
   <msg key="Assistance_Technique">Assistance Technique</msg>
   <msg key="Audit">Audit</msg>
   <msg key="Audit_Consulting">Audit Consulting</msg>
+  <msg key="Australia">Australie</msg>
+  <msg key="Austria">Austriche</msg>
   <msg key="Autre">Autre</msg>
   <msg key="Avoir_Client">Avoir Client</msg>
   <msg key="Avoir_Fournisseur">Avoir Fournisseur</msg>
   <msg key="Avoir_fournisseur">Avoir fournisseur</msg>
   <msg key="avoirfradp">avoir.fr.adp</msg>
   <msg key="b">b</msg>
+  <msg key="Backup_and_Restore_blurb">Sauvergarder vos données ou charger les données d'une sauvegarde précédente.</msg>
   <msg key="Bad_Office">Erreur de Site</msg>
   <msg key="Bad_User">Erreur de Contact</msg>
   <msg key="Ban_this_user">Exclure ce contact</msg>
@@ -131,6 +145,7 @@
   <msg key="Cheque">Chèque</msg>
   <msg key="Cheque_EUR">Chèque EUR</msg>
   <msg key="Cheque_USD">Chèque USD</msg>
+  <msg key="Chile">Chili</msg>
   <msg key="China">Chine</msg>
   <msg key="Choose_a_Country">Choisir un Pays</msg>
   <msg key="Choose_a_State">Choisir un Etat</msg>
@@ -149,6 +164,7 @@
   <msg key="Clients_actifs">Clients actifs</msg>
   <msg key="Clients_inactifs">Clients inactifs</msg>
   <msg key="Clients_potentiels">Clients potentiels</msg>
+  <msg key="Clone_Project">Clôner ce projet</msg>
   <msg key="Clone_Project_Help">Vous pouvez dupliquer un projet afin de gagner du temps lors de la création d'un projet similaire.</msg>
   <msg key="Close">Terminer</msg>
   <msg key="Closed">Terminé</msg>
@@ -161,12 +177,14 @@
   <msg key="company_employee">Employé de la société</msg>
   <msg key="Company_Invoice">Facture</msg>
   <msg key="Company_Name">Nom de la Société</msg>
+  <msg key="Company_Project_Nr">Projet Client #</msg>
   <msg key="Company_Short_Name">Nom abrégé Société</msg>
   <msg key="Company_Status">Statut Société</msg>
   <msg key="Company_Status_1">Statut Société:</msg>
   <msg key="Company_Type">Type de Société</msg>
   <msg key="Company_Type_1">Type Société:</msg>
   <msg key="Company_Types">Types de Société</msg>
+  <msg key="Companys_Contacts">Contacts société</msg>
   <msg key="Conceptualisation">Conceptualisation</msg>
   <msg key="Confirm">Confirmer</msg>
   <msg key="Cong_sabatique">Vacances</msg>
@@ -176,7 +194,7 @@
   <msg key="Consulting">Consulting</msg>
   <msg key="Consulting2">Consulting</msg>
   <msg key="Consulting_Etude">Consulting Etude</msg>
-  <msg key="Consulting_Project">Consulting Etude</msg>
+  <msg key="Consulting_Project">Consulting Project</msg>
   <msg key="Contact">Contact</msg>
   <msg key="Contact_Email">Email</msg>
   <msg key="Contact_Information">Informations</msg>
@@ -204,6 +222,7 @@
   <msg key="Creation">Création</msg>
   <msg key="Croatia">Croatie</msg>
   <msg key="Customer">Client</msg>
+  <msg key="Customer_Contact">Contact client</msg>
   <msg key="Customer_Documents">Documents Client</msg>
   <msg key="Customer_Invoice">Facture Client</msg>
   <msg key="Customers">Clients</msg>
@@ -217,6 +236,7 @@
   <msg key="delete">supprimer</msg>
   <msg key="Delete_checked_users">Supprimé les utilisateurs cochés</msg>
   <msg key="Delete_Cost_Center">Supprimer Centre de Coût</msg>
+  <msg key="Delete_members">Supprimer membres</msg>
   <msg key="Delete_Menu">Supprimer Menu</msg>
   <msg key="Delete_portrait">Supprimer le portrait</msg>
   <msg key="Delete_the_Task">Supprimer la Tâche</msg>
@@ -224,6 +244,7 @@
   <msg key="Deliver">Livrer</msg>
   <msg key="Delivered">Livré</msg>
   <msg key="Delivery_Date">Date de livraison</msg>
+  <msg key="Delivery_Note">Bon de livraison</msg>
   <msg key="Demande_dAide">Demande d'aide</msg>
   <msg key="Description">Description</msg>
   <msg key="Devis">Devis</msg>
@@ -243,6 +264,7 @@
   <msg key="Dveloppeur_Junior">Développeur Junior</msg>
   <msg key="Dveloppeur_Snior">Développeur Sénior</msg>
   <msg key="e">e</msg>
+  <msg key="Echance_dpasse">Echéance dépassée</msg>
   <msg key="Edit">Modifier</msg>
   <msg key="Edit_Company">Modifier société</msg>
   <msg key="Edit_office">Modifier site</msg>
@@ -262,8 +284,13 @@
   <msg key="ERROR">ERREUR</msg>
   <msg key="Espce">Espèce</msg>
   <msg key="Etudes">Etudes</msg>
+  <msg key="Exchange_Rates">Taux de change</msg>
   <msg key="Execution_Project_Help">Un 'Projet d'exécution' est une copie d'un projet qui ne fait pas référence au projet initial afin de garder le client anonyme. </msg>
+  <msg key="Expense_Item">Note de Frais</msg>
+  <msg key="Expense_Report">Etat des Dépenses</msg>
+  <msg key="Expenses">Frais</msg>
   <msg key="Export_Companies_CSV">Exporter les Sociétés au format CSV</msg>
+  <msg key="Export_Users_Cube">Exporter un Cube des utilisateurs</msg>
   <msg key="Externe">Externe</msg>
   <msg key="ezrgftezpr">péinjgtpo(&quot;igj</msg>
   <msg key="f">f</msg>
@@ -271,6 +298,7 @@
   <msg key="Facture_Client">Facture Client</msg>
   <msg key="Facture_Fournisseur">Facture Fournisseur</msg>
   <msg key="Fax">Fax</msg>
+  <msg key="Ferie">Férié</msg>
   <msg key="Fichiers">Fichiers</msg>
   <msg key="Filed">Classé</msg>
   <msg key="Files">Fichiers</msg>
@@ -291,6 +319,7 @@
   <msg key="Forum">Forum</msg>
   <msg key="Fournisseur">Fournisseur</msg>
   <msg key="Fournisseurs">Fournisseurs</msg>
+  <msg key="Fourniture_de_bureau">Fourniture de bureau</msg>
   <msg key="Frais_de_dplacement">Frais de déplacement</msg>
   <msg key="Frais_de_port">Frais de port</msg>
   <msg key="Frais_priodiques">Frais récurrents</msg>
@@ -301,11 +330,13 @@
   <msg key="Freelance_Provider">Freelance Provider</msg>
   <msg key="Freelancers">Freelancers</msg>
   <msg key="Fri">Férié</msg>
+  <msg key="Frie">Férié</msg>
   <msg key="Full_Member">Membre à part entière</msg>
   <msg key="Full_Member______">Membre à part entière</msg>
   <msg key="Functionality">Fonctionnalité</msg>
   <msg key="Future">Futur</msg>
   <msg key="g">g</msg>
+  <msg key="Gantt">Gantt</msg>
   <msg key="Gestion_de_projet">Gestion de projet</msg>
   <msg key="Group_administration">Administration du groupe</msg>
   <msg key="Group_Id">Identification du groupe</msg>
@@ -326,9 +357,11 @@
   <msg key="Home_Line_1">Domicile 1</msg>
   <msg key="Home_Line_2">Domicile 2</msg>
   <msg key="Home_Page">Page d'Accueil</msg>
+  <msg key="Home_Page_Help">Page d'accueil</msg>
   <msg key="Home_Phone">Téléphone domicile</msg>
   <msg key="Home_phone">Téléphone domicile</msg>
   <msg key="Home_Postal_Code">Code postal domicile</msg>
+  <msg key="Home_State">Etat domicile</msg>
   <msg key="Home_ZIP">Code postal domicile</msg>
   <msg key="HR_Managers">Directeurs RH</msg>
   <msg key="hr_managers">Directeurs RH</msg>
@@ -380,9 +413,11 @@
   <msg key="Learn_About_Your_Company_Blurb">Un membre de la société vous est ici présenté de manière à ce que chacun puisse mieux se connaître, ce qui est encore plus vrai lorsqu'une société dispose de différents sites.</msg>
   <msg key="Licences">Licences</msg>
   <msg key="Livr">Livré</msg>
+  <msg key="livraisonfrdp">livraison.fr.dp</msg>
   <msg key="Localization">Localisation</msg>
   <msg key="Localization_Project">Projet de localisation</msg>
   <msg key="Locate_user_by">Localiser l'utilisateur par</msg>
+  <msg key="Location">Lieu</msg>
   <msg key="Log_hours">Saisir ses heures</msg>
   <msg key="Log_Out">Se déconnecter</msg>
   <msg key="log_them_now">Les saisir maintenant</msg>
@@ -462,6 +497,7 @@
   <msg key="lt_Freelancersintranet-f">Freelancers</msg>
   <msg key="lt_Full_Memberintranet-f">Membre à part entière</msg>
   <msg key="lt_Futureintranet-timesh">Futur</msg>
+  <msg key="lt_GanttProject_is_a_fre">GanttProject est un éditeur de diagramme Gantt (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">Type de projet général. Ceci permet de créer une structure de dossiers adéquate.</msg>
   <msg key="lt_Gestionnaire_du_compt">Gestionnaire du compte</msg>
   <msg key="lt_has_been_marked_delet">a été marqué \&quot;supprimé\&quot;. </msg>
@@ -472,6 +508,7 @@
   <msg key="lt_Import_Company_Contac">Importer les Contacts de la société au format CSV</msg>
   <msg key="lt_Import_Projects_from_">Importer des Projets de H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">Projet en cours : Projet démarrant immédiatement, Potentiel : Peut devenir par la suite un réel projet, Non démarré : Projet signé non encore démarré, Terminé : Déjà fini...</msg>
+  <msg key="lt_Infrastructure_Dploie">Déploiement</msg>
   <msg key="lt_Insufficient_Privileg">Droits d'accès insuffisants</msg>
   <msg key="lt_Internal_error_unknow">Erreur interne : vue '%view_name%' inconnue</msg>
   <msg key="lt_INTERNE_Projet_AbaKus">Projet AbaKus</msg>
@@ -485,6 +522,7 @@
   <msg key="lt_Lists_all_template_pr">Liste des projets modèles ou du projet nommé &amp;quot;Modèle&amp;quot;</msg>
   <msg key="lt_Locate_your_new_accou">Localiser votre nouveau contact comptabilité par</msg>
   <msg key="lt_Locate_your_new_prima">Localiser votre nouveau contact principal par</msg>
+  <msg key="lt_lt_Project_Manager___">Chef de projet</msg>
   <msg key="lt_make_accounting_conta">en faire un contact comptabilité</msg>
   <msg key="lt_Make_the_new_client_c">Faire du nouveau contact client un %new_company_employee_link% de %company_name%. </msg>
   <msg key="lt_Make_the_new_client_c_1">Faire du nouveau contact client un %company_employee_link% de %company_name%. </msg>
@@ -573,6 +611,7 @@
   <msg key="lt_Toutesintranet-timesh">Férié</msg>
   <msg key="lt_Update_Basic_Informat">Mettre à jour les Informations élémentaires</msg>
   <msg key="lt_Update_this_users_pas">Mettre à jour le mot de passe utilisateur</msg>
+  <msg key="lt_Upload_GanttProject_S">Charger un fichier GanttProject</msg>
   <msg key="lt_Use_the_Browse_button">Utiliser le bouton 'Parcourir...' pour localiser votre fichier, puis cliquer sur 'Ouvrir'. </msg>
   <msg key="lt_var_is_undefined_for_">%var% n'est pas défini pour des listes vierges.</msg>
   <msg key="lt_View_administrative_p">Visualiser une page administrative pour un utilisateur nouvellement créé</msg>
@@ -639,6 +678,7 @@
   <msg key="Mandat_administratif">Mandat administratif</msg>
   <msg key="Materials">Matériel</msg>
   <msg key="Matriel">Matériel</msg>
+  <msg key="Members">Membres</msg>
   <msg key="Membre__part_entire">Membre à part entière</msg>
   <msg key="Menu_Admin">Menu Administration</msg>
   <msg key="Menu_Finance">Menu Finance</msg>
@@ -652,6 +692,7 @@
   <msg key="more_companies">autres sociétés...</msg>
   <msg key="more_projects">autres projets...</msg>
   <msg key="MSN_Status">Statut MSN</msg>
+  <msg key="My_Account">Mon compte</msg>
   <msg key="n">n</msg>
   <msg key="Name">Nom</msg>
   <msg key="new_category">Nouvelle Catégorie</msg>
@@ -667,6 +708,7 @@
   <msg key="Next_Month">Mois suivant</msg>
   <msg key="Next_Steps">Etapes suivantes</msg>
   <msg key="Ngoce">Négoce</msg>
+  <msg key="No">Non</msg>
   <msg key="No_Email_Has_Been_Sent">Aucun Email n'a été envoyé</msg>
   <msg key="No_members_found">Aucun membre n'a été trouvé</msg>
   <msg key="No_offices_found">Aucun site n'a été trouvé</msg>
@@ -714,6 +756,7 @@
   <msg key="Ouch">Aïe !</msg>
   <msg key="Outstanding">Impayé</msg>
   <msg key="p">p</msg>
+  <msg key="Pager">Pager</msg>
   <msg key="Paid">Réglé</msg>
   <msg key="Parameters">Paramètres</msg>
   <msg key="Paramtres">Paramètres</msg>
@@ -723,13 +766,14 @@
   <msg key="Password">Mot de passe</msg>
   <msg key="Password_Updated">Mot de passe mis à jour</msg>
   <msg key="Past">Passé</msg>
-  <msg key="Past_Due">Arriéré</msg>
+  <msg key="Past_Due">Echéance dépassée</msg>
   <msg key="Past_Projects">Projets antérieurs</msg>
   <msg key="Path">Chemin</msg>
   <msg key="Payed">Réglé</msg>
   <msg key="Payments">Réglements</msg>
   <msg key="Pays">Pays</msg>
   <msg key="Per">%%</msg>
+  <msg key="Perc">%%</msg>
   <msg key="Perc_Compl">% Réalisé</msg>
   <msg key="Percent_Completed">Réalisé en %</msg>
   <msg key="Perdu">Perdu</msg>
@@ -757,6 +801,7 @@
   <msg key="Project_Budget">Budget</msg>
   <msg key="Project_Budget_Currency">Devise</msg>
   <msg key="Project_Budget_Hours">Heures budgetées</msg>
+  <msg key="Project_Ch">Projet</msg>
   <msg key="Project_Hierarchy">Hiérarchie du projet</msg>
   <msg key="Project_Manager">Chef de projet</msg>
   <msg key="Project_Managers">Chefs de projet</msg>
@@ -800,6 +845,7 @@
   <msg key="Report_this_error">Reporter cette erreur</msg>
   <msg key="Reporting">Reporting</msg>
   <msg key="Request_Error">Erreur de requête</msg>
+  <msg key="Resources">Ressources</msg>
   <msg key="Return_to">Revenir sur</msg>
   <msg key="Return_To_Previous_Page">Revenir sur la page précédente</msg>
   <msg key="Rgl">Réglé</msg>
@@ -826,6 +872,7 @@
   <msg key="senior_managers">Directeurs Sénior</msg>
   <msg key="Sick">Malade</msg>
   <msg key="Sige_social">Siège social</msg>
+  <msg key="Site_internet">Site internet</msg>
   <msg key="SiteAdmin">Compte Utilisateur</msg>
   <msg key="Size">Taille</msg>
   <msg key="Socits">Sociétés</msg>
@@ -839,6 +886,7 @@
   <msg key="State">Etat</msg>
   <msg key="Status">Statut</msg>
   <msg key="Strategic_Consulting">Consulting</msg>
+  <msg key="Sub_Projects">Hiérarchie du Projet</msg>
   <msg key="Submit">Soumettre</msg>
   <msg key="Succursale">Succursale</msg>
   <msg key="Summary">Résumé</msg>
@@ -848,6 +896,7 @@
   <msg key="System_Administrator">Administrateur système</msg>
   <msg key="t">t</msg>
   <msg key="Task">Tâche</msg>
+  <msg key="Task_Members">Membres tâche</msg>
   <msg key="Tasks">Tâches</msg>
   <msg key="Tasks__Incidents">Tâches / Incidents</msg>
   <msg key="Tche">Tâche</msg>
@@ -869,12 +918,14 @@
   <msg key="Travel_Cost">Frais de déplacement</msg>
   <msg key="Travel_Costs">Frais de déplacement</msg>
   <msg key="Type">Type</msg>
+  <msg key="TypeDeProjetParent">TypeDeProjetParent</msg>
   <msg key="u">u</msg>
   <msg key="Ukraine">Ukraine</msg>
   <msg key="Unassigned">Non attribué</msg>
   <msg key="unassigned">Non attribué</msg>
   <msg key="Unconfirmed">Non confirmé</msg>
   <msg key="Undefined">Non défini</msg>
+  <msg key="Undefined2">Non défini</msg>
   <msg key="Unit">Unité</msg>
   <msg key="Unit_of_Measure">Unité de mesure</msg>
   <msg key="Unite">Unité</msg>
@@ -885,6 +936,7 @@
   <msg key="Unité">Unité</msg>
   <msg key="Unknown">A définir</msg>
   <msg key="Update">Mettre à jour</msg>
+  <msg key="Update_members">Mettre à jour membres</msg>
   <msg key="Update_Password">Mettre à jour Mot de passe</msg>
   <msg key="Update_User">Mettre à jour Utilisateur</msg>
   <msg key="Upload_Company_CSV">Uploader les Sociétés au format CSV</msg>
@@ -892,6 +944,7 @@
   <msg key="Upload_file">Uploader_fichier</msg>
   <msg key="Upload_files">Uploader les fichiers</msg>
   <msg key="Upload_portrait">Uploader une photo portrait</msg>
+  <msg key="Upload_Preview_Image">Télécharger une prévisualisation</msg>
   <msg key="Uruguay">Uruguay</msg>
   <msg key="USD">USD</msg>
   <msg key="User">Contact</msg>
@@ -914,11 +967,13 @@
   <msg key="value">%value%</msg>
   <msg key="VAT_Number">Numéro de TVA</msg>
   <msg key="Venezuela">Venezuela</msg>
+  <msg key="Ventes">Ventes</msg>
   <msg key="Vert">Vert</msg>
   <msg key="View">Vue</msg>
   <msg key="View_1">Vue:</msg>
   <msg key="View_Id">Id de vue</msg>
   <msg key="View_Name">Nom de vue</msg>
+  <msg key="View_Projects">Visualiser les projets</msg>
   <msg key="View_sql">Vue sql</msg>
   <msg key="View_Status">Statut de vue</msg>
   <msg key="View_Type">Type de vue</msg>
@@ -938,6 +993,7 @@
   <msg key="Windows_NT">Windows NT</msg>
   <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Virement bancaire</msg>
+  <msg key="With_members_of_my_dept">Avec les membres de mon département</msg>
   <msg key="Work_absences">Absences bureau</msg>
   <msg key="Work_Address">Adresse bureau</msg>
   <msg key="Work_address">Adresse bureau</msg>
@@ -948,6 +1004,7 @@
   <msg key="Work_Phone">Téléphone bureau</msg>
   <msg key="Work_phone">Téléphone bureau</msg>
   <msg key="Work_Postal_Code">Code postal bureau</msg>
+  <msg key="Work_State">Etat bureau</msg>
   <msg key="Work_ZIP">Code postal bureau</msg>
   <msg key="x">x</msg>
   <msg key="y">y</msg>
