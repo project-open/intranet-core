@@ -460,7 +460,7 @@
   <msg key="lt_Create_the_new_folder">Créer la nouvelle structure de dossier</msg>
   <msg key="lt_Customersintranet-fil">Clients</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
-  <msg key="lt_Dear_first_names_from">Cher utilisateur %first_names_from_search%, Le rôle de %role_name% vous a été attribué dans %system_name% pour l'objet %objet_url%. Veuillez cliquer sur le lien pour obtenir plus de détails. Cordialement, %current_user_name% </msg>
+  <msg key="lt_Dear_first_names_from">Cher utilisateur %first_names_from_search%, Le rôle de %role_name% vous a été attribué dans %system_name% pour l'objet %object_url%. Veuillez cliquer sur le lien pour obtenir plus de détails. Cordialement, %current_user_name% </msg>
   <msg key="lt_Delete_the_accounting">Supprimer le contact comptabilité</msg>
   <msg key="lt_Delete_the_primary_co">Supprimer le contact principal</msg>
   <msg key="lt_delete_this_user_inst">supprimer ce contact</msg>
