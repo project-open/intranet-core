@@ -27,4 +27,12 @@ if {0 == $user_id} {
 
 set auto_login [im_generate_auto_login -user_id $user_id]
 
-ad_return_complaint 1 "<pre>user_id: $user_id\nauto_login: '$auto_login'</pre>"
+ad_return_complaint 1 "
+<pre>
+UserID: $user_id
+Auto Login: '$auto_login'
+Login Url: ${system_url}intranet/auto-login?user_id=$user_id&auto_login=$auto_login&url=/intranet/
+Backup Url: ${system_url}intranet/pg_dump?user_id=$user_id&download_p=1&gzip_p=1&auto_login=$auto_login
+</pre>
+"
+
