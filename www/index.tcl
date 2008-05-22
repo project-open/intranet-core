@@ -89,7 +89,7 @@ if {$user_admin_p} {
     # The base modules that need to be installed first
     set base_modules [list workflow notifications acs-datetime acs-workflow acs-mail-lite acs-events]
 
-    set url "/acs-admin/apm/packages-install-2?"
+    set url "/acs-admin/apm/packages-install?update_only_p=1"
     set redirect_p 0
     set missing_modules [list]
     foreach module $base_modules {
@@ -98,7 +98,7 @@ if {$user_admin_p} {
 	set installed_p [db_string notif "select count(*) from apm_package_versions where package_key = :module"]
 	if {!$installed_p} { 
 	    set redirect_p 1
-	    append url "enable=$module&"
+#	    append url "enable=$module&"
 	    lappend missing_modules $module
 	}
     }
