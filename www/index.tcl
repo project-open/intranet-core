@@ -93,6 +93,8 @@ if {$user_admin_p} {
     set redirect_p 0
     set missing_modules [list]
     foreach module $base_modules {
+
+	ns_log Notice "upgrade1: checking module $module"
 	set installed_p [db_string notif "select count(*) from apm_package_versions where package_key = :module"]
 	if {!$installed_p} { 
 	    set redirect_p 1
@@ -126,6 +128,7 @@ if {$user_admin_p} {
     set missing_modules [list]
     foreach module $core_modules {
 
+	ns_log Notice "upgrade2: checking module $module"
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
 	array set version_hash [apm_read_package_info_file $spec_file]
 	set version $version_hash(name)
@@ -164,6 +167,7 @@ if {$user_admin_p} {
     set missing_modules [list]
     foreach module $other_modules {
 
+	ns_log Notice "upgrade3: checking module $module"
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
 	array set version_hash [apm_read_package_info_file $spec_file]
 	set version $version_hash(name)
@@ -192,7 +196,7 @@ if {$user_admin_p} {
 
 
     # ---------------------------------------------------------------------------
-    # 4 - Check for non-executed upgrade scripts
+    # 4 - Check for non-executed "intranet-core" upgrade scripts
     # ---------------------------------------------------------------------------
 
     # --------------------------------------------------------------
@@ -202,6 +206,8 @@ if {$user_admin_p} {
     set core_dir "[acs_root_dir]/packages/intranet-core"
     set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
     foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
+
+	ns_log Notice "upgrade4: checking glob file $dir"
 
 	# Skip upgrade scripts from 3.0.x
 	if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
@@ -222,6 +228,7 @@ if {$user_admin_p} {
     "
     db_foreach db_files $sql {
 
+	ns_log Notice "upgrade4: checking log key $log_key"
 	# Add the "/packages/..." part to hash-array for fast comparison.
 	if {[regexp {(/packages.*)} $log_key match path]} {
 	    set db_files($path) $path
@@ -264,5 +271,98 @@ if {$user_admin_p} {
 	"
 	ad_return_template
     }
+
+
+
+    # ---------------------------------------------------------------------------
+    # 5 - Check for non-executed other upgrade scripts
+    # ---------------------------------------------------------------------------
+
+    # --------------------------------------------------------------
+    # Get the list of upgrade scripts in the FS
+    set debug ""
+    set missing_modules [list]
+    set core_dir "[acs_root_dir]/packages"
+
+    set package_sql "
+	select distinct
+		package_key
+	from	apm_package_versions
+	where	enabled_p = 't'
+    "
+    db_foreach packages $package_sql {
+
+	ns_log Notice "upgrade5: checking package $package_key"
+	set core_upgrade_dir "$core_dir/$package_key/sql/postgresql/upgrade"
+	foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
+
+	    ns_log Notice "upgrade5: checking glob file $dir"
+
+	    # Skip upgrade scripts from 3.0.x
+	    if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
+
+	    # Add the "/packages/..." part to hash-array for fast comparison.
+	    if {[regexp {(/packages.*)} $dir match path]} {
+		set fs_files($path) $path
+		#	    append debug "fs: $path\n"
+	    }
+	}
+    }
+
+
+    # --------------------------------------------------------------
+    # Get the upgrade scripts that were executed
+    set sql "
+	select	distinct l.log_key
+	from	acs_logs l
+	order by log_key
+    "
+    db_foreach db_files $sql {
+
+	ns_log Notice "upgrade4: checking log key $log_key"
+	# Add the "/packages/..." part to hash-array for fast comparison.
+	if {[regexp {(/packages.*)} $log_key match path]} {
+	    set db_files($path) $path
+#	    append debug "db: $path\n"
+	}
+    }
+
+    # --------------------------------------------------------------
+    # Check if there are scripts that weren't executed:
+    set url "/acs-admin/apm/packages-install-2?"
+    set requires_upgrade_p 0
+    set form_vars ""
+    foreach file [array names fs_files] {
+	if {![info exists db_files($file)]} {
+	    append debug "NO: $file\n"
+	    lappend missing_modules $file
+	    append form_vars "<input type=hidden name=upgrade_script value=\"$file\">\n"
+	    set requires_upgrade_p 1
+	}
+    }
+
+    if {$requires_upgrade_p} {
+	set upgrade_message "
+		<b>Run Upgrade Scripts:</b><br>
+		It seems that there are upgrade scripts in your system that
+		have not yet been executed.<br>
+		This situation may occur during or after an upgrade of 
+		V3.1 - V3.3 and is usually not a big issue. 
+		However, we recommend to run these upgrade scripts now.<br>
+		Please click on the link below to run these scripts now.<br>
+		<br>&nbsp;<br>
+		<form action=/intranet/admin/install-upgrade-scripts method=POST>
+		$form_vars
+		<input type=submit value='Run Upgrade Scripts'>
+		</form>
+		<br>
+		<p>
+		<b>Here is the list of scripts to run</b>:<p>
+		[join $missing_modules "<br>\n"]
+	"
+	ad_return_template
+    }
+
+
 }
 
