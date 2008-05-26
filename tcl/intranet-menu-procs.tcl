@@ -162,6 +162,7 @@ ad_proc -public im_menu_ul_list { parent_menu_label bind_vars } {
 	}
 
         regsub -all " " $name "_" name_key
+        regsub -all "&" $name_key "_" name_key
 	foreach var [ad_ns_set_keys $bind_vars] {
 	    set value [ns_set get $bind_vars $var]
 	    append url "&$var=[ad_urlencode $value]"
