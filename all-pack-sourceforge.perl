@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 #
 # *******************************************************************
-# Creates a releasable TAR of ]po[ packages and uploads the
-# TAR to SourceForge
+# Creates a releasable TAR of ]po[ packages.
+# Then prints out the command to upload the file to SourceForge.
 #
-# 2008-05-03 
+# 2008-05-26
 # Frank Bergmann <frank.bergmann@project-open.com>
 # *******************************************************************
 
@@ -42,6 +42,7 @@ if ($version_line =~ /\"(.)\.(.)\.(.)\.(.)\.(.)\"/) {
 
 $readme = "README.project-open.$version.txt";
 $license = "LICENSE.project-open.$version.txt";
+$changelog = "CHANGELOG.project-open.$version.txt";
 $tar = "project-open-$version-update.tgz";
 $packages = "packages.$version";
 
@@ -86,6 +87,10 @@ print "all-upload: generating LICENSE in /tmp/\n" if $debug;
 system("rm -f /tmp/$license");
 system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > /tmp/$license");
 
+print "all-upload: generating CHANGELOG in /tmp/\n" if $debug;
+system("rm -f /tmp/$changelog");
+system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > /tmp/$changelog");
+
 
 
 # *******************************************************************
@@ -93,19 +98,16 @@ system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > /tmp/$license"
 
 print "all-upload: deleting old tar\n" if $debug;
 system("rm -f /tmp/$tar");
-
-print "all-upload: tarring code\n" if $debug;
 system("rm -f /tmp/$packages/all-installer-checkout.sh");
-system("cd /tmp/; tar czf /tmp/$tar $readme $license $packages");
 
 
 # *******************************************************************
 # Upload the tar to upload.sourceforge.net
 
-print "all-upload: uploading code to sourceforge\n" if $debug;
+print "all-upload: tarring code\n" if $debug;
 system("rm -f /tmp/$packages/all-installer-checkout.sh");
 system("rm -f /tmp/$tar");
-system("cd /tmp/; tar czf /tmp/$tar $readme $license $packages");
+system("cd /tmp/; tar czf /tmp/$tar $readme $license $changelog $packages");
 
 
 
