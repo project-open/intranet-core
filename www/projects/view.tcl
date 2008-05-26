@@ -354,23 +354,23 @@ if {$gantt_project_enabled_p} {
     if {$read} {
 	append admin_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A>
-        [im_gif help $help]
+        >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A></li>
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/openproj-project.xml" {project_id}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Download_OpenProj_File "Download OpenProj XML File"]</A></li>
         "
     }
 
     if {$write} {
         append admin_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan File"]</A>
-        [im_gif help $help]
+        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan File"]</A></li>
         "
     }
 }
 
 
 if {$admin} {
-    append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A>\n"
+    append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A></li>\n"
 }
 
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
@@ -379,18 +379,18 @@ set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 
 
 if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
     append admin_html_content "
-    <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]</A>[im_gif -translate_p 0 help $clone_pr_help]\n"
+    <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]</A>[im_gif -translate_p 0 help $clone_pr_help]</li>\n"
 }
 
 if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">[lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
-</A>[im_gif -translate_p 0 help $exec_pr_help]\n"
+</A>[im_gif -translate_p 0 help $exec_pr_help]</li>\n"
 }
 
 set admin_html ""
 if {"" != $admin_html_content} {
-    append admin_html_content "\n<p>\n"
+    set admin_html_content "<ul>$admin_html_content</ul>"
     set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
 
