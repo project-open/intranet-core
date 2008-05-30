@@ -84,6 +84,11 @@ set page_body [im_project_clone \
 
 set clone_project_id [db_string project_id "select project_id from im_projects where project_nr = :project_nr" -default 0]
 
+
+# User Exit
+im_user_exit_call project_create $clone_project_id
+
+
 if {"" == $return_url && 0 != $clone_project_id} { 
     set return_url "/intranet/projects/view?project_id=$clone_project_id" 
 }
