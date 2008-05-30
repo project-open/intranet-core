@@ -363,7 +363,7 @@ if {$gantt_project_enabled_p} {
     if {$write} {
         append admin_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan File"]</A></li>
+        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan or OpenProj XML File"]</A></li>
         "
     }
 }
