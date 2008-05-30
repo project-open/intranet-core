@@ -1020,7 +1020,9 @@ ad_proc -public im_header_logout_component {
          </div>
          <div id=\"header_settings_tab\">
             <div id=\"header_settings\">
+<!--
                <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
+-->
                $logout_pwchange_str
                <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
 	       <a href=\"$add_comp_url\">$add_stuff_text</a>
