@@ -114,7 +114,7 @@ if {$user_admin_p} {
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
 	ad_return_template
-	ad_script_abort
+	return
     }
 
 
@@ -154,7 +154,7 @@ if {$user_admin_p} {
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
 	ad_return_template
-	ad_script_abort
+	return
     }
 
 
@@ -194,7 +194,7 @@ if {$user_admin_p} {
 		<font color=red><b>Please don't forget to restart the server after install.</b></font>
 	"
 	ad_return_template
-	ad_script_abort
+	return
     }
 
 
@@ -364,7 +364,7 @@ if {$user_admin_p} {
 		[join $missing_modules "<br>\n"]
 	"
 	ad_return_template
-	ad_script_abort
+	return
     }
 
 
