@@ -32,7 +32,7 @@ ad_proc -public im_check_for_update_scripts {
 } {
     # ---------------------------------------------------------------------------
     # Permissions - show only to Admin
-    set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    set user_admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
     if {!$user_admin_p} { return "" }
 
     # ---------------------------------------------------------------------------

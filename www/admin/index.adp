@@ -127,6 +127,11 @@ randsec>&\#91;</span></nobr> packages are already mounted and shouldn't be moved
 
   </td>
   <td valign=top>
+
+<if "" ne @upgrade_message@>
+    <%= [im_table_with_title "Upgrade Information" $upgrade_message] %>
+</if>
+
     <%= [im_component_bay right] %>
   </td>
 </tr>
