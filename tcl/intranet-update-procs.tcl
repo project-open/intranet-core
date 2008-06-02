@@ -23,10 +23,12 @@ ad_library {
 # Check for updates
 # -------------------------------------------------------------------
 
-ad_proc -public im_check_for_updates {
+ad_proc -public im_check_for_update_scripts {
 } {
     Displays a warning to a user of the system needs to run
     update scripts.
+    Returns a string suitable to be displayed to the user in
+    a im_table_with_header component
 } {
 
     # ---------------------------------------------------------------------------
