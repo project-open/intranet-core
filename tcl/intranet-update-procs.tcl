@@ -30,6 +30,10 @@ ad_proc -public im_check_for_update_scripts {
     Returns a string suitable to be displayed to the user in
     a im_table_with_header component
 } {
+    # ---------------------------------------------------------------------------
+    # Permissions - show only to Admin
+    set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    if {!$user_admin_p} { return "" }
 
     # ---------------------------------------------------------------------------
     # 1 - Make sure base modules are installed
