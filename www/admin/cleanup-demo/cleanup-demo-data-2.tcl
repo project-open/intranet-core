@@ -43,13 +43,19 @@ set bgcolor(1) " class=roweven"
 # Render page header
 # ---------------------------------------------------------------
 
-ad_return_top_of_page "
-        [im_header]
-        [im_navbar]
-	<h1>$page_title</h1>
-	<ul>
-"
+set content_type "text/html"
+set http_encoding "utf-8"
+append content_type "; charset=$http_encoding"
+set all_the_headers "HTTP/1.0 200 OK
+MIME-Version: 1.0
+Content-Type: $content_type\r\n"
+util_WriteWithExtraOutputHeaders $all_the_headers
+ns_startcontent -type $content_type
 
+
+ns_write [im_header]
+ns_write [im_navbar]
+ns_write "<h1>$page_title</h1>\n<ul>\n"
 
 # ---------------------------------------------------------------
 # Delete all data
@@ -401,3 +407,6 @@ ns_write "
 </ul>
 [im_footer]
 "
+
+ad_script_abort
+
