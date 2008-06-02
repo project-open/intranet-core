@@ -296,7 +296,7 @@ ns_write "<li>Cleanup im_hours - set cost_id = null\n"
 db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 
 # Costs
-ns_write "<li>Cleanup costs\n"
+ns_write "<li>Cleanup costs<br>\n"
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
 foreach cost_info $cost_infos {
     set cost_id [lindex $cost_info 0]
@@ -353,6 +353,9 @@ ns_write "<li>Cleanup im_projects\n"
 db_dml remove_from_projects "update im_projects set parent_id = null"
 ns_write "<li>Cleanup im_timesheet_tasks\n"
 db_dml remove_from_projects "delete from im_timesheet_tasks"
+ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
+db_dml remove_from_projects "delete from im_timesheet_task_dependencies"
+
 ns_write "<li>Cleanup im_projects\n"
 db_dml remove_from_projects "delete from im_projects"
 ns_write "<li>Cleanup im_companies\n"
@@ -373,6 +376,10 @@ if {[db_table_exists im_trans_quality_reports]} {
     db_dml trans_quality "delete from im_trans_quality_reports";
 }
 
+ns_write "<li>Cleanup Indicators\n"
+if {[db_table_exists im_indicator_results]} {
+    db_dml indicator_results "delete from im_indicator_results"
+}
 
 ns_write "<li>Cleanup Filestorage\n"
 ns_write "<ul>\n"
@@ -411,6 +418,39 @@ db_dml wf_attribute_value_audits "delete from wf_attribute_value_audit"
 ns_write "<li>Cleanup wf_case_deadlines\n"
 db_dml wf_case_deadlines "delete from wf_case_deadlines"
 ns_write "</ul>\n"
+
+
+
+# ------------------------------------------------------------
+# Cleanup dangling objects 
+# ------------------------------------------------------------
+
+ns_write "<li>Cleanup dangling objects<br>\n"
+set object_infos [db_list_of_lists objects "
+	select	object_id,
+		object_type 
+	from	acs_objects
+	where	object_type in (
+			'im_project', 
+			'im_timesheet_task',
+			'im_office',
+			'content_item',
+			'relationship',
+			'acs_mail_body',
+			'im_biz_object_member',
+			'user',
+			'im_company',
+			'im_trans_task',
+			'acs_mail_multipart'
+		)
+"]
+foreach object_info $object_infos {
+    set object_id [lindex $object_info 0]
+    set object_type [lindex $object_info 1]
+    
+    ns_write ".\n"
+    catch { db_dml del_object "delete from acs_objecs where object_id = :object_id" }
+}
 
 
 # ------------------------------------------------------------
