@@ -449,7 +449,7 @@ foreach object_info $object_infos {
     set object_type [lindex $object_info 1]
     
     ns_write ".\n"
-    catch { db_dml del_object "delete from acs_objecs where object_id = :object_id" }
+    catch { db_dml del_object "delete from acs_objects where object_id = :object_id" }
 }
 
 
