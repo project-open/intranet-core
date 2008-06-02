@@ -153,7 +153,7 @@ if {[db_table_exists calendars]} {
     set cal_objects [db_list costs $object_subquery]
     foreach oid $cal_objects {
 	ns_write ".\n"
-	db_dml del_cal_o "delete from acs_objects where object_id = :oid"
+	catch { db_dml del_cal_o "delete from acs_objects where object_id = :oid" } err_msg
     }
 }
 ns_write "</ul>\n"
