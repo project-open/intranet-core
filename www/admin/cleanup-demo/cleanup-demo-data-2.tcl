@@ -55,7 +55,7 @@ ns_startcontent -type $content_type
 
 ns_write [im_header]
 ns_write [im_navbar]
-ns_write "<h1>$page_title</h1>\n<ul>\n"
+ns_write "<h1>$page_title</h1>\n"
 
 # ---------------------------------------------------------------
 # No cleanup of users
@@ -68,6 +68,8 @@ After running this script, please go to Admin -&gt; Delete Demodata -&gt;
 Delete Demo Users to delete selected users.
 </font>
 "
+
+ns_write "<ul>\n"
 
 # ---------------------------------------------------------------
 # Delete all data
