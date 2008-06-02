@@ -53,8 +53,6 @@ set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set return_url "/intranet/"
 set header_stuff ""
-
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
 
@@ -66,25 +64,5 @@ set admin_html ""
 append admin_html "<li> <a href=/intranet/users/view?user_id=$current_user_id>[_ intranet-core.About_You]</A>\n"
 set administration_component [im_table_with_title "[_ intranet-core.Administration]" $admin_html]
 
-
-# ----------------------------------------------------------------
-# Redirect Admin to Upgrade page
-#
-# 1. The "base_modules" need to be installed. Otherwise no upgrade
-#    will work. Then restart.
-#
-# 2. Make sure "intranet-core" has been updated. Then restart.
-#
-# 3. Now all othe other modules can be updated.
-#
-# ----------------------------------------------------------------
-
-set upgrade_message ""
-
-if {$user_admin_p} {
-
-    set upgrade_message [im_check_for_update_scripts]
-    ad_return_template
-
-}
-
+# Check for update scripts
+set upgrade_message [im_check_for_update_scripts]
