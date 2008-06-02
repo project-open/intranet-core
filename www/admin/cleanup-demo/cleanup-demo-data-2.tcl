@@ -401,6 +401,12 @@ if {[db_table_exists im_search_objects]} {
     db_dml im_search_objects "delete from im_search_objects"
 }
 
+ns_write "<li>Cleanup search_observer_queue\n"
+if {[db_table_exists search_observer_queue]} {
+    db_dml search_observer_queue "delete from search_observer_queue"
+}
+
+
 ns_write "<li>Cleanup Workflow\n"
 ns_write "<ul>\n"
 ns_write "<li>Cleanup wf_case_assignments\n"
