@@ -148,8 +148,13 @@ if {[db_table_exists calendars]} {
 
     ns_write "<li>Cleanup calendar acs_permissions\n"
     db_dml cal_perms "delete from acs_permissions where object_id in ($object_subquery)"
-    ns_write "<li>Cleanup calendar acs_objects\n"
-    db_dml delete_cal_objects "delete from acs_objects where object_id in ($object_subquery)"
+
+    ns_write "<li>Cleanup calendar acs_objects<br>\n"
+    set cal_objects [db_list costs $object_subquery]
+    foreach oid $cal_objects {
+	ns_write ".\n"
+	db_dml del_cal_o "delete from acs_objects where object_id = :oid"
+    }
 }
 ns_write "</ul>\n"
 
