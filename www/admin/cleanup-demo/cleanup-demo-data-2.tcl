@@ -104,19 +104,19 @@ if {[db_table_exists calendars]} {
 
     ns_write "<li>Cleaneup cal_party_prefs\n"
     db_dml delete_cal_party_prefs "delete from cal_party_prefs"
-    ns_write "<li>Cleaneup cal_items"\n"
+    ns_write "<li>Cleaneup cal_items\n"
     db_dml delete_cal_items "delete from cal_items"
-    ns_write "<li>Cleaneup cal_item_types"\n"
+    ns_write "<li>Cleaneup cal_item_types\n"
     db_dml delete_cal_item_types "delete from cal_item_types"
-    ns_write "<li>Cleaneup acs_events"\n"
+    ns_write "<li>Cleaneup acs_events\n"
     db_dml delete_acs_events "delete from acs_events"
-    ns_write "<li>Cleaneup acs_activities"\n"
+    ns_write "<li>Cleaneup acs_activities\n"
     db_dml delete_acs_activities "delete from acs_activities"
-    ns_write "<li>Cleaneup recurrences"\n"
+    ns_write "<li>Cleaneup recurrences\n"
     db_dml delete_acs_recurrences "delete from recurrences"
-    ns_write "<li>Cleaneup timespans"\n"
+    ns_write "<li>Cleaneup timespans\n"
     db_dml delete_timespans "delete from timespans"
-    ns_write "<li>Cleaneup time_intervals"\n"
+    ns_write "<li>Cleaneup time_intervals\n"
     db_dml delete_time_intervals "delete from time_intervals"
     ns_write "<li>Cleaneup calendars\n"
     db_dml delete_calendars "delete from calendars where calendar_name <> 'Global Calendar'"
@@ -144,7 +144,7 @@ if {[db_table_exists sec_sessions]} {
 #    db_dml delete_user_sec_login_tokens "delete from sec_login_tokens"
 }
 
-ns_write "<li>Cleaneup general comments"\n"
+ns_write "<li>Cleaneup general comments\n"
 if {[db_table_exists general_comments]} {
     db_dml delete_user_general_comments "delete from general_comments"
     db_dml delete_user_comments "delete from comments"
@@ -165,48 +165,48 @@ if {[db_table_exists query_strings]} {
     db_dml delete_user_query_strings "delete from query_strings"
 }
 
-ns_write "<li>Cleaneup user_curriculum_map"\n"
+ns_write "<li>Cleaneup user_curriculum_map\n"
 if {[db_table_exists user_curriculum_map]} {
     db_dml delete_user_user_curriculum_map "delete from user_curriculum_map"
 }
 
-ns_write "<li>Cleaneup user_content_map"\n"
+ns_write "<li>Cleaneup user_content_map\n"
 if {[db_table_exists user_content_map]} {
     db_dml delete_user_user_content_map "delete from user_content_map"
 }
 
-ns_write "<li>Cleaneup user_group_map"\n"
+ns_write "<li>Cleaneup user_group_map\n"
 if {[db_table_exists user_group_map]} {
     db_dml delete_user_user_group_map "delete from user_group_map"
 }
 
-ns_write "<li>Cleaneup users_interests"\n"
+ns_write "<li>Cleaneup users_interests\n"
 if {[db_table_exists users_interests]} {
     db_dml delete_user_users_interests "delete from users_interests"
 }
 
-ns_write "<li>Cleaneup users_charges"\n"
+ns_write "<li>Cleaneup users_charges\n"
 if {[db_table_exists users_charges]} {
     db_dml delete_user_users_charges "delete from users_charges"
 }
 
-ns_write "<li>Cleaneup users_demographics"\n"
+ns_write "<li>Cleaneup users_demographics\n"
 if {[db_table_exists users_demographics]} {
     db_dml set_referred_null_user_users_demographics "update users_demographics set referred_by = null"
     db_dml delete_user_users_demographics "delete from users_demographics"
 }
 
-#ns_write "<li>Cleaneup users_preferences"\n"
+#ns_write "<li>Cleaneup users_preferences\n"
 #if {[db_table_exists users_preferences]} {
 #    db_dml delete_user_users_preferences "delete from users_preferences"
 #}
 #
-#ns_write "<li>Cleaneup users_contact"\n"
+#ns_write "<li>Cleaneup users_contact\n"
 #if {[db_table_exists users_contact]} {
 #    db_dml delete_user_users_contact "delete from users_contact"
 #}
 
-ns_write "<li>Cleaneup im_component_plugin_user_map"\n"
+ns_write "<li>Cleaneup im_component_plugin_user_map\n"
 if {[db_table_exists im_component_plugin_user_map]} {
     db_dml delete_im_component_plugin_user_map "delete from im_component_plugin_user_map"
 }
@@ -214,21 +214,21 @@ if {[db_table_exists im_component_plugin_user_map]} {
 
 # Content Repository etc.
 
-ns_write "<li>Cleaneup acs_mail_body_headers"\n"
+ns_write "<li>Cleaneup acs_mail_body_headers\n"
 db_dml acs_mail_body_headers "delete from acs_mail_body_headers"
-ns_write "<li>Cleaneup acs_mail_bodies"\n"
+ns_write "<li>Cleaneup acs_mail_bodies\n"
 db_dml acs_mail_bodies "delete from acs_mail_bodies"
-ns_write "<li>Cleaneup acs_mail_body_headers"\n"
+ns_write "<li>Cleaneup acs_mail_body_headers\n"
 db_dml acs_mail_body_headers "delete from acs_mail_body_headers"
-ns_write "<li>Cleaneup acs_mail_gc_objects"\n"
+ns_write "<li>Cleaneup acs_mail_gc_objects\n"
 db_dml acs_mail_gc_objects "delete from acs_mail_gc_objects"
-ns_write "<li>Cleaneup acs_mail_links"\n"
+ns_write "<li>Cleaneup acs_mail_links\n"
 db_dml acs_mail_links "delete from acs_mail_links"
-ns_write "<li>Cleaneup acs_mail_multipart_parts"\n"
+ns_write "<li>Cleaneup acs_mail_multipart_parts\n"
 db_dml acs_mail_multipart_parts "delete from acs_mail_multipart_parts"
-ns_write "<li>Cleaneup acs_mail_multiparts"\n"
+ns_write "<li>Cleaneup acs_mail_multiparts\n"
 db_dml acs_mail_multiparts "delete from acs_mail_multiparts"
-ns_write "<li>Cleaneup acs_messages"\n"
+ns_write "<li>Cleaneup acs_messages\n"
 db_dml acs_messages "delete from acs_messages"
 
 
@@ -260,9 +260,9 @@ set default_user 0
 
 
 
-ns_write "<li>Cleaneup im_payments"\n"
+ns_write "<li>Cleaneup im_payments\n"
 db_dml payments "delete from im_payments"
-ns_write "<li>Cleaneup im_payments_audit"\n"
+ns_write "<li>Cleaneup im_payments_audit\n"
 db_dml im_payments_audit "delete from im_payments_audit"
 
 ns_write "<li>Cleaneup dangeling_costs\n"
@@ -297,12 +297,12 @@ db_dml forum "delete from im_forum_topics"
 # db_dml im_forum_folders "delete from im_forum_folders"
 
 
-ns_write "<li>Cleaneup im_hours"\n"
+ns_write "<li>Cleaneup im_hours\n"
 db_dml timesheet "delete from im_hours"
-ns_write "<li>Cleaneup im_user_absences"\n"
+ns_write "<li>Cleaneup im_user_absences\n"
 db_dml timesheet "delete from im_user_absences"
 
-ns_write "<li>Cleaneup im_timesheet_prices"\n"
+ns_write "<li>Cleaneup im_timesheet_prices\n"
 if {[db_table_exists im_timesheet_prices]} {
     db_dml im_timsheet_prices "delete from im_timesheet_prices"
 }
@@ -323,13 +323,13 @@ if {[db_table_exists im_trans_tasks]} {
 }
 
 # Remove user from business objects that we don't want to delete...
-ns_write "<li>Cleaneup im_biz_object_members"\n"
+ns_write "<li>Cleaneup im_biz_object_members\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
 ns_write "<li>Cleaneup im_projects\n"
 db_dml remove_from_projects "update im_projects set parent_id = null"
-ns_write "<li>Cleaneup im_timesheet_tasks"\n"
+ns_write "<li>Cleaneup im_timesheet_tasks\n"
 db_dml remove_from_projects "delete from im_timesheet_tasks"
-ns_write "<li>Cleaneup im_projects"\n"
+ns_write "<li>Cleaneup im_projects\n"
 db_dml remove_from_projects "delete from im_projects"
 ns_write "<li>Cleaneup im_companies\n"
 db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
