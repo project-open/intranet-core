@@ -58,6 +58,18 @@ ns_write [im_navbar]
 ns_write "<h1>$page_title</h1>\n<ul>\n"
 
 # ---------------------------------------------------------------
+# No cleanup of users
+# ---------------------------------------------------------------
+
+ns_write "
+<font color=red>
+<p>This script does not cleanup demo users.
+<p>After running this script, please go to Admin -> Delete Demodata -> Delete Demo Users
+   to delete selectecd users.
+</font>
+"
+
+# ---------------------------------------------------------------
 # Delete all data
 # ---------------------------------------------------------------
 
