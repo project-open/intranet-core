@@ -102,7 +102,7 @@ ns_write "<ul>\n"
 
 if {[db_table_exists calendars]} {
 
-    ns_write "<li>Cleaneup cal_party_prefs"\n"
+    ns_write "<li>Cleaneup cal_party_prefs\n"
     db_dml delete_cal_party_prefs "delete from cal_party_prefs"
     ns_write "<li>Cleaneup cal_items"\n"
     db_dml delete_cal_items "delete from cal_items"
