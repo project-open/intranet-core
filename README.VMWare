@@ -1,36 +1,117 @@
 
   ]project-open[ Virtual Machine
+  Version V3.3.beta1, 2008-06-03
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.2.10, 2007-05-04
-  Copyright (c) 2007 ]project-open[
+  Copyright (c) 2008 ]project-open[
+  http://www.project-open.org/download/
 
-  This is the ]project-open[ Virtual Machine. This document describes
-  some characteristics of how this VM has been configured.
-
-  ______________________________________________________________________
-
-  0. About the Virtual Machine
+  This is the ]project-open[ Virtual Machine. 
 
 
-  Version V3.2.10, 2007-05-04
-  Copyright (c) 2007 ]project-open[
-  Frank Bergmann <frank.bergmann@project-open.com>
-  http://www.project-open.org/download/win/3.1.2.0.html
+  This is the ]project-open[ VMware distribution. This document describes
+  some characteristics of the VM appliance and how to install the software.
 
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.1 or
   any later version published by the Free Software Foundation.
   A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
 
-  Please see LICENSE.ProjectOpen in the /web/projop/ directory for details
-  about the licensing of the contained software.
-
+  Please see LICENSE.project-open for details about the licensing
+  of the contained software.
 
   ______________________________________________________________________
 
   1. Overview
 
-  This Virtual Machine represents a sample production configuration
+
+  This VMware virtual machine appliance represents a fully configured
+  ]project-open[ server. This VMware is suitable for testing ]po[ and
+  for production use in small and medium sized organizations 
+  (< 20 "active" users).
+
+  In order to run ]project-open[ in your organization you will have 
+  to go through a number of steps below. Basic system administration
+  knowledge should be suifficient to perform these steps:
+
+
+  - Download and install VMware Server and start the VMware.
+
+  - Configure the IP-address of the VMware in order to connect to the 
+    VMware's ]project-open[ system from your organizations's intranet.
+
+  - Basic configuration of ]project-open[ using the "System Configuration"
+    wizard.
+
+  - Now you can test ]project-open[ using the predefined demo-accounts
+    of the "Tigerpond" demo company.
+
+
+  ______________________________________________________________________
+
+  2. Download VMware Server and Start the ]po[ Server
+
+
+  We recommend to use VMware "Server 1.0.5" from VMware's web site at
+  http://www.vmware.com/products/server/. As an alternative, you can
+  also use the VMware "Player" product.
+
+  VMware Server is free (available at zero license cost). However, it
+  is not open-source software and you will need to "register" in order
+  to obtain a license key to run VMware Server.
+
+  Once your VMware Server is running, just move the "project-open-v33"
+  included in this installer into VMware's "C:\Virtual Machines" folder
+  (or wherever you have chosen to have your virtual machines) and use
+  File -> Open -> Browse to open this VMware.
+
+  Before starting the VMware please check the VMware's "Devices":
+
+  - "Memory":
+    The minimum is "512 MB", which is OK for testing purposes.
+    For production, please increase this value to "1024 MB" or higher.
+
+  - "Ethernet": 
+    Should be set to "Bridged" mode. Only in this mode your VMware will 
+    be visible to the rest of your intranet.
+
+
+  After starting the VMware you will see some messages and after 1-2
+  minutes you will see a loging screen. The default login is:
+
+	Username:	root
+	Password:	root
+
+
+  ______________________________________________________________________
+
+  3. Configure the VMware's IP-Address
+
+
+  In order to be able to access the ]project-open[ server from your 
+  Intranet you need to find out the IP-address of the VMware.
+
+  In order to find out the IP-address please double-click the 
+  "]po[ @ Localhost" icon in the VMware's desktop. A Firefox browser
+  should open with the ]po[ login page. You should see on the left
+  a section called "Default Logins" with sample users and on the right
+  an Email / Password login component.
+
+  In this page please scroll down. In the lower right corner you 
+  will find:
+
+  - IP-Address: 192.168.0.101 (sample value)
+
+  - Total Memory: 512 MByte (sample value)
+
+  Now please open up a Web browser on your computer or another
+  computer and enter "http://192.168.0.101/" (sample value, as
+  above). You should get the same page as from inside the VMware.
+
+
+
+
+
+represents a sample production configuration
   of ]project-open[. It consists of two "virtual" servers:
 
   - "projop" is the Production Server and
