@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.2.7.0.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.2.5.0.0" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="_"></msg>
@@ -9,8 +9,9 @@
   <msg key="A_-_Test_approved">A - Verificación aprobada</msg>
   <msg key="ABC-Bank_EUR">Banco ABC EUR</msg>
   <msg key="About_You">Acerca de Ud.</msg>
-  <msg key="Absences">Absencias</msg>
+  <msg key="Absences">Ausencias</msg>
   <msg key="Ac_Counting">Contabilidad</msg>
+  <msg key="Accepted">Aceptado</msg>
   <msg key="Access_denied">Acceso denegado</msg>
   <msg key="Account_Deleted">Cuenta borrada</msg>
   <msg key="Account_deleted">Cuenta borrada</msg>
@@ -27,7 +28,7 @@
   <msg key="Add_a_new_Office">Añadir una nueva oficina</msg>
   <msg key="Add_a_new_office">Añadir una nueva oficina</msg>
   <msg key="Add_a_new_project">Añadir un nuevo proyecto</msg>
-  <msg key="Add_a_new_project_from_Template">Añadir un nuevo proyecto desde una plantilla</msg>
+  <msg key="Add_a_new_project_from_Template">Añadir un nuevo proyecto a partir de plantilla</msg>
   <msg key="Add_a_new_User">Nuevo usuario</msg>
   <msg key="Add_a_project">Añadir un proyecto</msg>
   <msg key="Add_a_user">Añadir un usuario</msg>
@@ -36,7 +37,7 @@
   <msg key="Add_member">Añadir un miembro</msg>
   <msg key="Add_new_Column">Añadir nueva columna</msg>
   <msg key="Add_New_Company">Añadir una nueva empresa</msg>
-  <msg key="Add_new_member">Añadir a un nuevo miembro</msg>
+  <msg key="Add_new_member">Añadir un nuevo miembro</msg>
   <msg key="Add_New_Office">Añadir una nueva oficina</msg>
   <msg key="Add_New_Project">Añadir un nuevo proyecto</msg>
   <msg key="Add_New_User">Añadir un nuevo usuario</msg>
@@ -63,16 +64,15 @@
   <msg key="Admin_Users">Administración de Usuarios</msg>
   <msg key="Administer_DynVals">Administrar DynVals</msg>
   <msg key="Administration">Administración</msg>
-  <msg key="Administrative">Administrativo</msg>
   <msg key="administrator">administrador</msg>
   <msg key="Advanced_Filtering">Filtros avanzados</msg>
-  <msg key="Advertizing">Advertizing</msg>
   <msg key="Advertizing_Project">Proyecto de publicidad</msg>
   <msg key="af">af</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">Alias pantalla Aim</msg>
   <msg key="al">al</msg>
   <msg key="Albania">Albania</msg>
+  <msg key="albaranesadp">albaran.es.adp</msg>
   <msg key="Algeria">Argelia</msg>
   <msg key="All">Todo</msg>
   <msg key="All_Costs">Todos los costes</msg>
@@ -82,10 +82,12 @@
   <msg key="Allocations">Ubicaciones</msg>
   <msg key="Allowances">Descuentos</msg>
   <msg key="Andorra">Andorra</msg>
+  <msg key="Annual_Revenue">Facturación anual estimada</msg>
   <msg key="Anonymize">Hacer anónimo</msg>
   <msg key="Appr_Size">Tamaño Appr</msg>
   <msg key="ar">ar</msg>
   <msg key="Argentina">Argentina</msg>
+  <msg key="Assigned">Asignado</msg>
   <msg key="Assignments">Asignaciones</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="AUD">AUD</msg>
@@ -117,6 +119,7 @@
   <msg key="Body_Shopping">&quot;Body Shopping&quot;</msg>
   <msg key="Bolivia">Bolivia</msg>
   <msg key="Bosnia and Herzegovina">Bosnia y Herzegovina</msg>
+  <msg key="BPMS">BPMS</msg>
   <msg key="Branch_Office">Filial</msg>
   <msg key="Brazil">Brasil</msg>
   <msg key="Budget">Cifra de negocio</msg>
@@ -127,7 +130,7 @@
   <msg key="ca">ca</msg>
   <msg key="ca_ES">ca_ES</msg>
   <msg key="CAD">CAD</msg>
-  <msg key="Caja_Ahorros_EUR">Caja de ahorros EUR</msg>
+  <msg key="Caja_Ahorros_EUR">Transferencia</msg>
   <msg key="Canada">Canadá</msg>
   <msg key="Canceled">Cancelado</msg>
   <msg key="Cash">Efectivo</msg>
@@ -143,9 +146,10 @@
   <msg key="Cell_Phone">Teléfono móvil</msg>
   <msg key="Cell_phone">Teléfono móvil</msg>
   <msg key="Change_Password">Cambiar contraseña</msg>
+  <msg key="Charge">Recibo domiciliado</msg>
   <msg key="Check">Cheque</msg>
   <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
+  <msg key="Cheque_EUR">Cheque</msg>
   <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
@@ -162,12 +166,13 @@
   <msg key="Clone_Project_Help">Es posible 'clonar' un proyecto para ahorrar tiempo a la hora de crear uno parecido.</msg>
   <msg key="Close">Cerrar</msg>
   <msg key="Closed">Cerrado</msg>
+  <msg key="CMS">CMS</msg>
   <msg key="Colombia">Colombia</msg>
   <msg key="Column_Id">Id de columna</msg>
   <msg key="Column_Name">Nombre de columna</msg>
   <msg key="Column_sql">Columna sql</msg>
   <msg key="Com">Com</msg>
-  <msg key="Comments">¿Comentarios?</msg>
+  <msg key="Comments">Para soporte</msg>
   <msg key="Companies">Empresas</msg>
   <msg key="Company">Empresa</msg>
   <msg key="Company_Documents">Documentos de empresa</msg>
@@ -180,10 +185,11 @@
   <msg key="Company_Type">Tipo de empresa</msg>
   <msg key="Company_Type_1">Tipo de empresa:</msg>
   <msg key="Company_Types">Tipo de empresa</msg>
+  <msg key="Companys_Contacts">Contactos</msg>
   <msg key="Confirm">Confirmar</msg>
-  <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting_Project">Proyecto de consultoría</msg>
-  <msg key="Contact">Persona de contacto</msg>
+  <msg key="Consulting_project">Proyecto de consultoría</msg>
+  <msg key="Contact">dirigirse a</msg>
   <msg key="Contact_Email">E-mail contacto</msg>
   <msg key="Contact_Information">Información contacto</msg>
   <msg key="Contact_Phone">Teléfono contacto</msg>
@@ -248,7 +254,7 @@
   <msg key="Deliver">Entregar</msg>
   <msg key="Delivered">Entregado</msg>
   <msg key="Delivery_Date">Fecha de entrega</msg>
-  <msg key="Delivery_Note">Alvaran</msg>
+  <msg key="Delivery_Note">Albarán</msg>
   <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
   <msg key="deliverynoteesadp">deliverynote.es.adp</msg>
   <msg key="Denmark">Dinamarca</msg>
@@ -289,6 +295,7 @@
   <msg key="en_IE">en_IE</msg>
   <msg key="en_UK">en_UK</msg>
   <msg key="en_US">en_US</msg>
+  <msg key="ERP">ERP</msg>
   <msg key="ERROR">ERROR</msg>
   <msg key="es">es</msg>
   <msg key="es_AR">es_AR</msg>
@@ -305,6 +312,7 @@
   <msg key="EUR_0-1k">EUR 0-1k</msg>
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
+  <msg key="Exchange_Rates">Ratios de cambio</msg>
   <msg key="Expense_Item">Gasto</msg>
   <msg key="Expense_Report">Informe de Gastos</msg>
   <msg key="Expenses">Gastos</msg>
@@ -330,7 +338,7 @@
   <msg key="for_Proof">para Revisión</msg>
   <msg key="for_QCing">para Control Calidad</msg>
   <msg key="for_Trans">para Traducción</msg>
-  <msg key="Forum">Foros</msg>
+  <msg key="Forum">Foro</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
   <msg key="fr_CH">fr_CH</msg>
@@ -352,6 +360,7 @@
   <msg key="Glossary_Comp">Recop. glosario</msg>
   <msg key="Glossary_Compilation">Recopilación de glosario</msg>
   <msg key="gr">gr</msg>
+  <msg key="Graphic_Design">Diseño gráfico</msg>
   <msg key="Greece">Grecia</msg>
   <msg key="Green">Verde</msg>
   <msg key="Group_administration">Administración de grupos</msg>
@@ -372,11 +381,13 @@
   <msg key="Home_Line_1">Dirección Línea 1</msg>
   <msg key="Home_Line_2">Dirección Línea 2</msg>
   <msg key="Home_Page">Portada</msg>
+  <msg key="Home_Page_Help">Ayuda</msg>
   <msg key="Home_Phone">Teléfono particular</msg>
   <msg key="Home_phone">Teléfono particular</msg>
   <msg key="Home_Postal_Code">CP</msg>
   <msg key="Home_ZIP">CP</msg>
   <msg key="Honduras">Honduras</msg>
+  <msg key="Hosting">Alojamiento de dominios</msg>
   <msg key="Hour">Hora</msg>
   <msg key="HR_Managers">Coordinadores RR.HH.</msg>
   <msg key="hr_managers">Coordinadores RR.HH.</msg>
@@ -397,8 +408,9 @@
   <msg key="India">India</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Consultas</msg>
-  <msg key="Inquiring">Consultar</msg>
+  <msg key="Inquiring">Consultando</msg>
   <msg key="Internal">Interno</msg>
+  <msg key="Internet_Consulting">Consultoría Internet</msg>
   <msg key="Intranet">Intranet</msg>
   <msg key="intranet-core.Menu_Backup_Restore">Restaurar</msg>
   <msg key="intranet-core.Menu_Restore">Restaurar</msg>
@@ -418,7 +430,6 @@
   <msg key="Iraq">Iraq</msg>
   <msg key="Ireland">Irlanda</msg>
   <msg key="Israel">Israel</msg>
-  <msg key="IT">IT</msg>
   <msg key="it">it</msg>
   <msg key="IT_Consultancy">Consultoría TI</msg>
   <msg key="it_IT">it_IT</msg>
@@ -682,6 +693,7 @@
   <msg key="lt_So_you_probably_dont_">Entonces probablemente no quiere destruir todos los datos, ¿!¿correcto?!?</msg>
   <msg key="lt_Software_Company_Comp">Empresa de software</msg>
   <msg key="lt_Software_Company_Cust">Cliente de empresa de software</msg>
+  <msg key="lt_Software_Development_">Desarrollo a medida e integración</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Successfully_finished">Completado con éxito</msg>
   <msg key="lt_Taskintranet-forumTas">Tareas</msg>
@@ -712,6 +724,7 @@
   <msg key="lt_Unable_to_determine_I">No puedo determinar la empresa 'Interna'</msg>
   <msg key="lt_Update_Basic_Informat">Actualizar información básica</msg>
   <msg key="lt_Update_this_users_pas">Actualizar la contraseña de este usuario</msg>
+  <msg key="lt_Upload_GanttProject_S">Subir planificación de Gantt</msg>
   <msg key="lt_Use_the_Browse_button">Utilice el botón 'Examinar...' para encontrar su archivo y haga clic sobre 'Abrir'.</msg>
   <msg key="lt_User_not_found_in_the">Usuario no encontrado en la lista de infractores. ¡¡¿Quizá ya ha sido borrado de la misma?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% no definido para listas vacías.</msg>
@@ -782,9 +795,11 @@
   <msg key="Macedonia">Macedonia</msg>
   <msg key="Machine_Translation">Traducción automática</msg>
   <msg key="Mail_Failed">Ha fallado el correo</msg>
+  <msg key="main_data">Datos principales</msg>
   <msg key="Main_Menu">Menú principal</msg>
   <msg key="Main_Office">Oficina principal</msg>
   <msg key="Main_Project">Proyecto principal</msg>
+  <msg key="Maintenance">Mantenimiento de redes</msg>
   <msg key="Maintenance_Project">Proyecto de mantenimiento</msg>
   <msg key="make_primary_contact">Convertir en persona de contacto principal</msg>
   <msg key="Malaysia">Malasia</msg>
@@ -803,6 +818,7 @@
   <msg key="Mexico">México</msg>
   <msg key="Mine">Míos</msg>
   <msg key="Mkt">Mkt</msg>
+  <msg key="Mobility">Movilidad</msg>
   <msg key="more">más...</msg>
   <msg key="more_">más...</msg>
   <msg key="more_companies">más empresas...</msg>
@@ -836,7 +852,6 @@
   <msg key="No_Email_Has_Been_Sent">El correo no ha sido enviado</msg>
   <msg key="No_members_found">No se han encontrado miembros</msg>
   <msg key="No_offices_found">No se han encontrado oficinas</msg>
-  <msg key="Non-IT">Non-IT</msg>
   <msg key="None">Ninguno</msg>
   <msg key="none">ninguno</msg>
   <msg key="Norway">Noruega</msg>
@@ -875,6 +890,7 @@
   <msg key="Org_Chart">Diagrama organizativo</msg>
   <msg key="Other">Otro</msg>
   <msg key="Ouch">¡Cuidado!</msg>
+  <msg key="Our_employees_related">Relación de empleados</msg>
   <msg key="Outstanding">Sobrepasado</msg>
   <msg key="p">p</msg>
   <msg key="Package">Paquete</msg>
@@ -923,6 +939,8 @@
   <msg key="Postal_Code">CP</msg>
   <msg key="PostgreSQL_Backup">Copia de seguridad PostgreSQL</msg>
   <msg key="PostgreSQL_Backup_blurb">Crear copia de seguridad del base de datos actual o recuperar los datos de la última copia.</msg>
+  <msg key="PostgreSQL_Restore">Restaurar copia de seguridad PostgreSQL</msg>
+  <msg key="PostgreSQL_Restore_blurb">Restaurar datos de una copia de seguridad anterior</msg>
   <msg key="Potential">Potencial</msg>
   <msg key="Potential_Customers">Clientes potenciales</msg>
   <msg key="Potential_Freelancer">Freelancer potencial</msg>
@@ -930,12 +948,11 @@
   <msg key="Prelim_Profit">Beneficio prelim</msg>
   <msg key="Premium_Quality">Calidad máxima</msg>
   <msg key="Primary_contact">Persona de contacto principal</msg>
-  <msg key="Prio_1">Prio 1</msg>
   <msg key="Profile">Perfil</msg>
   <msg key="Profiles">Perfiles</msg>
   <msg key="Profit">Beneficio</msg>
   <msg key="Profit_and_Loss">P&amp;eacute;rdidas y ganancias</msg>
-  <msg key="Project">Proyecto</msg>
+  <msg key="Project">Núm. proyecto</msg>
   <msg key="Project_">Núm. de proyecto</msg>
   <msg key="Project_Base_Data">Datos básicos del proyecto</msg>
   <msg key="Project_Budget">Presupuesto del proyecto</msg>
@@ -962,6 +979,8 @@
   <msg key="Provider_Bill">Factura de proveedor</msg>
   <msg key="Provider_Documents">Documentos de proveedor</msg>
   <msg key="Providers">Proveedores</msg>
+  <msg key="pruebaadp">prueba.adp</msg>
+  <msg key="pruebaesadp">prueba.es.adp</msg>
   <msg key="pt">pt</msg>
   <msg key="pt_BR">pt_BR</msg>
   <msg key="pt_PT">pt_PT</msg>
@@ -971,16 +990,17 @@
   <msg key="Purchase_Order">Orden de compra</msg>
   <msg key="q">q</msg>
   <msg key="QCing">QCing</msg>
-  <msg key="Qualifying">En cualificación</msg>
+  <msg key="Qualifying">Pendiente respuesta cliente</msg>
   <msg key="Quote">Presupuesto</msg>
-  <msg key="Quote_Out">Presupuestar</msg>
+  <msg key="Quote_Out">Presupuestado</msg>
   <msg key="Quote_out">Presupuestado</msg>
   <msg key="quoteenadp">quote.en.adp</msg>
+  <msg key="quoteenorgadp">quote.en.org.adp</msg>
   <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quotes">Ofertas</msg>
   <msg key="quoteSEAT_VWenadp">quote.SEAT_VW.en.adp</msg>
   <msg key="quoteSEAT_VWesadp">quote.SEAT_VW.es.adp</msg>
-  <msg key="Quoting">Pte. presupuestar</msg>
+  <msg key="Quoting">En valoración</msg>
   <msg key="r">r</msg>
   <msg key="Random_Portrait">Retrato Aleatorio</msg>
   <msg key="Recent_Registrations">Registros recientes</msg>
@@ -997,7 +1017,6 @@
   <msg key="Reset_Stuff">Resetear</msg>
   <msg key="Return_to">Devolver a</msg>
   <msg key="Return_To_Previous_Page">Volver a la página anterior</msg>
-  <msg key="RFC">RFC</msg>
   <msg key="Romania">Rumanía</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>
@@ -1039,8 +1058,8 @@
   <msg key="Slovak_Republic">República Eslovaca</msg>
   <msg key="Slovenia">Eslovenia</msg>
   <msg key="Software_Company">Empresa de software</msg>
-  <msg key="Software_Development">Desarrollo de software</msg>
-  <msg key="Software_Maintenance">Mantenimiento de software</msg>
+  <msg key="Software_Development">Desarrollo de software e integración</msg>
+  <msg key="Software_Maintenance">Mantenimiento de redes</msg>
   <msg key="Software_Updates">Actualizaciones de software</msg>
   <msg key="Sort_Order">Ordenación</msg>
   <msg key="South Africa">Sudáfrica</msg>
@@ -1081,8 +1100,6 @@
   <msg key="Tec-Telecos">Tec-Telecom.</msg>
   <msg key="Technology">Tecnología</msg>
   <msg key="Tel">Tel</msg>
-  <msg key="templateenadp">template.en.adp</msg>
-  <msg key="templateesadp">template.es.adp</msg>
   <msg key="Test_evaluated">Test evaluado</msg>
   <msg key="Test_received">Test recibido</msg>
   <msg key="Test_sent">Test enviado</msg>
@@ -1118,8 +1135,8 @@
   <msg key="Trans_Tasks">Trad Tareas</msg>
   <msg key="TransEd">Trad+ed</msg>
   <msg key="TransEdProof">Trad+ed+corr</msg>
+  <msg key="Transfer">Transferencia</msg>
   <msg key="TransIntSpot">Trad+CC int.</msg>
-  <msg key="Translation">Translation</msg>
   <msg key="Translation_PM">Jefes de Proyectos de Traducción</msg>
   <msg key="Translation_Project">Proyecto de traducción</msg>
   <msg key="Transport_Provider">Proveedor de transporte</msg>
@@ -1151,6 +1168,7 @@
   <msg key="Upload_file">Cargar_archivo</msg>
   <msg key="Upload_files">Cargar archivo</msg>
   <msg key="Upload_portrait">Cargar fotografía</msg>
+  <msg key="Upload_Preview_Image">Subir imagen de previsualización</msg>
   <msg key="Uruguay">Uruguay</msg>
   <msg key="USD">USD</msg>
   <msg key="User">Usuario</msg>
@@ -1185,6 +1203,7 @@
   <msg key="w">w</msg>
   <msg key="Web_Site">Sitio web</msg>
   <msg key="Web_Site_Design">Diseño de sitios web</msg>
+  <msg key="Website_Development">Desarrollo web a medida</msg>
   <msg key="Whos_Online">¿Quién está conectado?</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
