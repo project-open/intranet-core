@@ -81,6 +81,10 @@ db_dml delete_sec_tokens "delete from secret_tokens"
 db_string reset_token_seq "SELECT pg_catalog.setval('t_sec_security_token_id_seq', 1, true)"
 
 
+ns_write "<li>Cleanup multi-value attributes.\n"
+db_dml delete_im_dynfield_attr_multi_value "delete from im_dynfield_attr_multi_value"
+
+
 ns_write "<li>Cleanup bulletin board email alersts\n"
 if {[db_table_exists bboard_email_alerts]} {
     db_dml delete_user_bboard_email_alerts "delete from bboard_email_alerts"
@@ -88,7 +92,7 @@ if {[db_table_exists bboard_email_alerts]} {
     db_dml delete_user_bboard_unified "delete from bboard_unified"
 }
     
-ns_write "<li>Cleanup classified adss\n"
+ns_write "<li>Cleanup classified ads\n"
 if {[db_table_exists classified_auction_bids]} {
     db_dml delete_user_classified_auction_bids "delete from classified_auction_bids"
     db_dml delete_user_classified_ads "delete from classified_ads"
