@@ -57,6 +57,7 @@ if {$subproject_filtering_enabled_p} {
 	set subproject_status_id $subproject_filtering_default_status_id 
     }
 }
+if {![info exists subproject_status_id]} { set subproject_status_id "" }
 
 set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
 set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
@@ -423,18 +424,21 @@ if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subp
     "
 }
 
+# gets overwritten by multirow... :-(
+set org_subproject_status_id $subproject_status_id
+
 db_multirow -extend {
     subproject_indent 
     subproject_url 
     subproject_bold_p 
 } subprojects project_hierarchy {} {
-    
     set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
     set subproject_indent ""
     for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
     set subproject_bold_p [expr $project_id == $subproject_id]
-
 }
+
+set subproject_status_id $org_subproject_status_id
 
 
 # ---------------------------------------------------------------------
