@@ -1322,7 +1322,7 @@ ad_proc -public im_logo {} {
 	}
     }
 
-    return "\n<a href=\"$system_logo_link\"><img src=\"$system_logo\" alt=\"intranet logo\"></a>\n"
+    return "\n<a href=\"$system_logo_link\"><img src=\"$system_logo\" alt=\"intranet logo\" border=0></a>\n"
 }
 
 
