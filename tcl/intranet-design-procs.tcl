@@ -520,7 +520,8 @@ ad_proc -public im_admin_navbar {
 	<ul class=mktree>
     "
 
-    if {"" != $select_label} {
+    # Disabled - no need to show the same label again
+    if {0 && "" != $select_label} {
         append html "
         [im_menu_li -class liOpen $select_label]
                 <ul>
