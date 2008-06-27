@@ -7,7 +7,7 @@
 <table>
 <form action='@return_url;noquote@' method=POST>
 <tr>
-    <td><%= [lang::message::lookup "" intranet-core.Select_Type "Select Type"] %></td>
+    <td><%= [lang::message::lookup "" intranet-core.Select_Type "Select<br>Type"] %></td>
     <td><%= [im_category_select $object_type_category $type_id_var] %></td>
 </tr>
 <tr>

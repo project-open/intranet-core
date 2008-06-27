@@ -81,32 +81,36 @@ DECLARE
 	v_supertype		varchar;
 	v_table			varchar;
 	v_id_column		varchar;
-	v_column		varchar;
+	v_type_column		varchar;
 
 	row			RECORD;
 	v_result_id		integer;
 BEGIN
 	-- Get information from SQL metadata system
-	select	ot.object_type, ot.supertype, ot.table_name, ot.id_column, ot.type_column
-	into	v_object_type, v_supertype, v_table, v_id_column, v_column
+	select	ot.object_type, ot.supertype, ot.status_type_table, ot.type_column
+	into	v_object_type, v_supertype, v_table, v_type_column
 	from	acs_objects o, acs_object_types ot
 	where	o.object_id = p_object_id
 		and o.object_type = ot.object_type;
 
-	-- Check if the object has a supertype and update table and id_column if necessary
-	WHILE ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
-		select	ot.supertype, ot.table_name, ot.id_column
-		into	v_supertype, v_table, v_id_column
+	-- Check if the object has a supertype and update table necessary
+	WHILE v_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+		select	ot.supertype, ot.table_name
+		into	v_supertype, v_table
 		from	acs_object_types ot
 		where	ot.object_type = v_supertype;
 	END LOOP;
 
-	IF v_table is null OR v_id_column is null OR v_column is null THEN
+	-- Get the id_column for v_table
+	select	aott.id_column into v_id_column from acs_object_type_tables aott
+	where	aott.object_type = v_object_type and aott.table_name = v_table;
+
+	IF v_table is null OR v_id_column is null OR v_type_column is null THEN
 		return 0;
 	END IF;
 
 	-- Funny way, but this is the only option to EXECUTE in PG 8.0 and below.
-	v_query := '' select '' || v_column || '' as result_id '' || '' from '' || v_table || 
+	v_query := '' select '' || v_type_column || '' as result_id '' || '' from '' || v_table || 
 		'' where '' || v_id_column || '' = '' || p_object_id;
 	FOR row IN EXECUTE v_query
         LOOP
@@ -135,20 +139,23 @@ DECLARE
 	v_result_id		integer;
 BEGIN
 	-- Get information from SQL metadata system
-	select	ot.object_type, ot.supertype, ot.table_name, ot.id_column, ot.status_column
-	into	v_object_type, v_supertype, v_table, v_id_column, v_column
+	select	ot.object_type, ot.supertype, ot.table_name, ot.status_column
+	into	v_object_type, v_supertype, v_table, v_column
 	from	acs_objects o, acs_object_types ot
 	where	o.object_id = p_object_id
 		and o.object_type = ot.object_type;
 
 	-- Check if the object has a supertype and update table and id_column if necessary
-	WHILE ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+	WHILE v_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
 		select	ot.supertype, ot.table_name, ot.id_column
 		into	v_supertype, v_table, v_id_column
 		from	acs_object_types ot
 		where	ot.object_type = v_supertype;
 	END LOOP;
 
+	-- Get the id_column for v_table
+	select	aott.id_column into v_id_column from acs_object_type_tables aott
+	where	aott.object_type = v_object_type and aott.table_name = v_table;
 
 	IF v_table is null OR v_id_column is null OR v_column is null THEN
 		return 0;

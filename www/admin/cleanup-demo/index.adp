@@ -4,7 +4,7 @@
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0 width=70%>
+<table cellpadding=0 cellspacing=0 border=0>
 <tr>
   <td valign=top>
 

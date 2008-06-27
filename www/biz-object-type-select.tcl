@@ -55,7 +55,7 @@ if {[catch {db_1row otype_info "
 
 regsub -all " " $object_type_pretty "_" object_type_pretty_key
 set object_type_l10n [lang::message::lookup "" intranet-core.$object_type_pretty_key $object_type_pretty]
-set page_title [lang::message::lookup "" intranet-core.Select_Type_for_Object "Please select a type of %object_type_l10n%"]
+set page_title [lang::message::lookup "" intranet-core.Please_Select_Type_for_Object "Please select a type of %object_type_l10n%"]
 set context_bar [im_context_bar $page_title]
 
 set object_type_category [im_dynfield::type_category_for_object_type -object_type $object_type]
