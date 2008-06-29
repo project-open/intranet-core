@@ -308,7 +308,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Project Members',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/projects/view',	-- page_url
 	null,				-- view_name	
@@ -324,7 +324,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Task Members',			-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet-timesheet2-tasks/new',	-- page_url
 	null,				-- view_name	
@@ -342,7 +342,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Office Members',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/offices/view',	-- page_url
 	null,				-- view_name
@@ -358,7 +358,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Company Offices',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/companies/view',	-- page_url
 	null,				-- view_name
@@ -375,7 +375,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'User Offices',			-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/users/view',		-- page_url
 	null,				-- view_name
@@ -392,7 +392,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Recent Registrations',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/admin/index',	-- page_url
 	null,				-- view_name
@@ -409,7 +409,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Home Random Portrait',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
@@ -425,7 +425,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Home Help Blurb',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'none',				-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
@@ -442,7 +442,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Home Project Component',	-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'left',				-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
@@ -460,7 +460,7 @@ SELECT	im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'User Notifications',		-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/users/view',		-- page_url
 	null,				-- view_name
