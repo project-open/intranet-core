@@ -655,6 +655,7 @@ set menu_select_sql "
         from    im_menus m
         where   parent_menu_id = :parent_menu_id
                 and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+		and enabled_p = 't'
         order by sort_order"
 
 # Start formatting the menu bar
