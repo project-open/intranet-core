@@ -1,6 +1,7 @@
 ad_page_contract {
 
     @author Frank Bergmann frank.bergmann@project-open.com
+    @author Koen Van Winckel koen.vanwinckel@dotprojects.be
     @creation-date 2006-05-10
     @cvs-id $Id$
 } {
@@ -64,9 +65,11 @@ foreach user_exit_def $user_exits {
 # Show the trace
 # ------------------------------------------------------
 
+# Fix from Koen van Winckel
+
 set query "
         select	*,
-		to_char(log_date, 'YYYY-MM-DD HH24:MM') as log_date_pretty
+		to_char(log_date, 'YYYY-MM-DD HH24:MI') as log_date_pretty
         from	acs_logs
 	order by
 		log_date DESC
