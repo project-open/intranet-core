@@ -22,6 +22,7 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
+    @author koen.vanwinckel@dotprojects.be
 } {
     project_id:optional,integer
     { parent_id:integer "" }
@@ -697,9 +698,23 @@ if {[form is_valid $form_id]} {
 	}
     }
 
+    # Patch #1712047 from Koen van Winckel
     if {"" == $return_url} {
-	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+	
+	# Check if we have a translation project
+        if { [im_project_has_type $project_id "Translation Project"] } {
+	    
+            # and return to the translation details
+            set return_url [export_vars -base "/intranet-translation/projects/edit-trans-data?" {project_id return_url}]
+	    
+        } else {
+	    
+            # not a translation project
+            set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+	    
+	}
     }
+    
     ad_returnredirect $return_url
 }
 
