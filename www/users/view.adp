@@ -11,39 +11,57 @@
 <tr>
   <td valign=top width='50%'>
 
+    <!-- -------------------------------------------------------------- -->
     <%= [im_box_header "Basic Information"] %>     
-
-        <table>
-    
-    <%= $user_basic_info_html %>
-    <%= $user_basic_profile_html %>
-    <if @dynamic_fields_p@>
-      <formtemplate id="person_view" style="standard-withouttabletab"></formtemplate>
-    </if>
-    <%= $user_basic_edit_html %>
-
-	</table>
-
-    <%= $user_basic_skin_html %>
-
-    <%= $user_l10n_html %>
-
+	        <table>
+		    <%= $user_basic_info_html %>
+		    <%= $user_basic_profile_html %>
+		</table>
+		<formtemplate id="person_view" style="standard-withouttabletab"></formtemplate>
     <%= [im_box_footer] %>
 
+
+    <!-- -------------------------------------------------------------- -->
+    <%= $user_l10n_html %>
+
+
+    <!-- -------------------------------------------------------------- -->
     <%= [im_table_with_title "Contact Information" $contact_html] %>
+
+
+    <!-- -------------------------------------------------------------- -->
+    <%= [im_box_header [_ intranet-core.Skin]] %>     
+    <table cellpadding=1 cellspacing=1 border=0>
+    <tr> 
+	<td colspan=2 class=rowtitle align=center>#intranet-core.Skin#</td>
+    </tr>
+    <tr>
+	<td>#intranet-core.Skin#</td>
+	<td><%= [im_skin_select_html $user_id $return_url] %></td>
+    </tr>
+    <tr><td colspan=2></td></tr>
+    </table>
+    <%= [im_box_footer] %>
+
+
+    <!-- -------------------------------------------------------------- -->
     <%= [im_table_with_title "Administration" $admin_links] %>
     <%= [im_component_bay left] %>
 
   </td>
+
   <td width=2>&nbsp;</td>
   <td valign=top>
+
     <%= $portrait_html %>
     <%= $projects_html %>
     <%= $companies_html %>
     <%= [im_component_bay right] %>
+
   </td>
 </tr>
 </table><br>
+
 
 <table cellpadding=0 cellspacing=0 border=0>
 <tr><td>
@@ -52,6 +70,4 @@
 
 </td></tr>
 </table>
-
-
 

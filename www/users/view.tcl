@@ -157,98 +157,69 @@ set user_basic_info_html "
 set ctr 1
 db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
-	append user_basic_info_html "
-        <tr $td_class([expr $ctr % 2])>
-          <td>"
+
+	append user_basic_info_html "<tr $td_class([expr $ctr % 2])><td>"
 	set cmd0 "append user_basic_info_html $column_name"
 	eval "$cmd0"
-	append user_basic_info_html " &nbsp;
-        </td><td>"
+	append user_basic_info_html " &nbsp;</td><td>"
 	set cmd "append user_basic_info_html $column_render_tcl"
 	eval "$cmd"
 	append user_basic_info_html "</td></tr>\n"
         incr ctr
+
     }
 }
 
-append user_basic_info_html "
-"
 
 # ---------------------------------------------------------------
 # Profile Management
 # ---------------------------------------------------------------
 
 set user_basic_profile_html "
-<tr $td_class([expr $ctr % 2])>
-  <td>[_ intranet-core.Profile]</td>
-  <td>
-    [im_user_profile_component $user_id_from_search "disabled"]
-  </td>
-</tr>
+	<tr $td_class([expr $ctr % 2])>
+	  <td>[_ intranet-core.Profile]</td>
+	  <td>
+	    [im_user_profile_component $user_id_from_search "disabled"]
+	  </td>
+	</tr>
 "
 
 set user_basic_edit_html ""
 if {$write} {
     set user_basic_edit_html "
-<tr>
-  <td></td>
-  <td>
-    <form method=POST action=new>
-    $user_basic_info_vars
-    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">
-    </form>
-  </td>
-</tr>\n"
-
+	<tr>
+	  <td colspan=2 align=center>
+	    <form method=POST action=new>
+	    $user_basic_info_vars
+	    <input type=\"submit\" value=\"[_ intranet-core.Edit]\">
+	    </form>
+	  </td>
+	</tr>
+    "
 }
-
-# ---------------------------------------------------------------
-# Skin Management
-# ---------------------------------------------------------------
-
-set skin_select_html [im_skin_select_html $user_id $return_url]
-
-if {![string equal $skin_select_html ""]} {
-    set user_basic_skin_html "
-<table cellpadding=1 cellspacing=1 border=0>
-  <tr> 
-    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Skin]</td>
-  </tr>
-  <tr>
-    <td>[_ intranet-core.Skin]</td>
-    <td>
-          $skin_select_html 
-    </td>
-  </tr>
-  <tr><td colspan=2></td></tr>
-</table>
-"
-  } else {
-     set user_basic_skin_html ""
-  }
 
 # ------------------------------------------------------
 # Show extension fields
 # ------------------------------------------------------
 
-set dynamic_fields_p 0
-if {[db_table_exists im_dynfield_attributes]} {
+set object_type "person"
+set form_id "person_view"
+set action_url "/intranet/users/new"
+set form_mode "display"
+set user_id $user_id_from_search
 
-    set dynamic_fields_p 1
-    set object_type "person"
-    set form_id "person_view"
+ad_form \
+    -name $form_id \
+    -cancel_url $return_url \
+    -action $action_url \
+    -mode $form_mode \
+    -export {user_id return_url}
 
-    template::form create $form_id \
-        -mode "display" \
-        -display_buttons {}
-
-    im_dynfield::append_attributes_to_form \
-        -object_type $object_type \
-        -form_id $form_id \
-        -object_id $user_id_from_search \
-	-form_display_mode "display"
-
-}
+im_dynfield::append_attributes_to_form \
+    -object_type $object_type \
+    -form_id $form_id \
+    -object_id $user_id_from_search \
+    -form_display_mode "display"
 
 
 # ---------------------------------------------------------------

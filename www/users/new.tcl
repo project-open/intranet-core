@@ -243,24 +243,10 @@ if {$edit_profiles_p} {
     }
 }
 
-
-# ---------------------------------------------------------------
-# Dynamic Fields
-# ---------------------------------------------------------------
-
-
-set dynamic_fields_p 0
-if {[db_table_exists im_dynfield_attributes]} {
-
-    set dynamic_fields_p 1
-    set form_id "register"
-    set object_type "person"
-
-    im_dynfield::append_attributes_to_form \
-        -object_type $object_type \
-        -form_id $form_id \
-        -object_id $user_id
-}
+im_dynfield::append_attributes_to_form \
+    -object_type "person" \
+    -form_id "register" \
+    -object_id $user_id
 
 
 # ---------------------------------------------------------------
@@ -612,22 +598,18 @@ ad_form -extend -name register -on_request {
     
 
     # Store dynamic fields
-	if {[db_table_exists im_dynfield_attributes]} {
-
-        set form_id "register"
-        set object_type "person"
-
-        im_dynfield::append_attributes_to_form \
-            -object_type $object_type \
-            -form_id $form_id \
-            -object_id $user_id
-
-        im_dynfield::attribute_store \
-            -object_type $object_type \
-            -object_id $user_id \
-            -form_id $form_id
-    }
-
+    set form_id "register"
+    set object_type "person"
+    
+    im_dynfield::append_attributes_to_form \
+	-object_type $object_type \
+	-form_id $form_id \
+	-object_id $user_id
+    
+    im_dynfield::attribute_store \
+	-object_type $object_type \
+	-object_id $user_id \
+	-form_id $form_id   
 
     # Call the "user_create" or "user_update" user_exit
     if {$editing_existing_user} {
