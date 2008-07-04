@@ -60,3 +60,37 @@ set context_bar [im_context_bar $page_title]
 
 set object_type_category [im_dynfield::type_category_for_object_type -object_type $object_type]
 
+
+set category_select_html ""
+
+set sql "
+	select	c.*
+	from	im_categories c
+	where	c.category_type = :object_type_category
+		and (c.enabled_p is null or c.enabled_p = 't')
+	order by
+		category
+"
+db_foreach cats $sql {
+
+    regsub -all " " $category "_" category_key
+    set category_l10n [lang::message::lookup "" intranet-core.category_key $category]
+    set category_comment_key ${category_key}_comment
+
+    set comment $category_description
+    if {"" == $comment} { set comment " " }
+    set comment [lang::message::lookup "" intranet-core.$category_comment_key $comment]
+
+    append category_select_html "
+	<tr>
+		<td>
+		<nobr>
+		<input type=radio name=$type_id_var value=$category_id>$category_l10n</input>
+		&nbsp;
+		</nobr>
+		</td>
+		<td>$comment</td>
+	</tr>
+    "
+
+}
