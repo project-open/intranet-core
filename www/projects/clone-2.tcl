@@ -28,6 +28,12 @@ ad_page_contract {
     { company_id:integer 0 }
     { clone_postfix "Clone" }
     { return_url "" }
+    { clone_costs_p 0 }
+    { clone_files_p 0 }
+    { clone_subprojects_p 0 }
+    { clone_forum_topics_p 0 }
+    { clone_members_p 0 }
+    { clone_timesheet_tasks_p 0 }
 }
 
 # ---------------------------------------------------------------------
@@ -73,12 +79,19 @@ ns_write [im_header $page_title]
 ns_write [im_navbar]
 ns_write "<p>\n"
 
+
 set page_body [im_project_clone \
-	-company_id $company_id \
-	$parent_project_id \
-	$project_name \
-	$project_nr \
-	$clone_postfix \
+		   -clone_costs_p $clone_costs_p \
+		   -clone_files_p $clone_files_p \
+		   -clone_subprojects_p $clone_subprojects_p \
+		   -clone_forum_topics_p $clone_forum_topics_p \
+		   -clone_members_p $clone_members_p \
+		   -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+		   -company_id $company_id \
+		   $parent_project_id \
+		   $project_name \
+		   $project_nr \
+		   $clone_postfix \
 ]
 
 

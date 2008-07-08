@@ -97,3 +97,23 @@ set parent_project_id $template_project_id
 set page_title [lang::message::lookup "" intranet-core.Template_Project "Template Project"]
 set button_text [lang::message::lookup "" intranet-core.Create "Create"]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
+
+
+# Default values for checkboxes
+
+set clone_costs_p_selected ""
+set clone_files_p_selected ""
+set clone_subprojects_p_selected ""
+set clone_forum_topics_p_selected ""
+set clone_members_p_selected ""
+set clone_timesheet_tasks_p_selected ""
+set clone_trans_tasks_p_selected ""
+
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectCostsP "" ""]} { set clone_costs_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectFilesP "" ""]} { set clone_files_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectSubprojectsP "" ""]} { set clone_subprojects_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectForumTopicsP "" ""]} { set clone_forum_topics_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectMembersP "" ""]} { set clone_members_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectTimesheetTasksP "" ""]} { set clone_timesheet_tasks_p_selected checked }
+if {1 == [ad_parameter -package_id [im_package_core_id] CloneProjectTransTasksP "" ""]} { set clone_trans_tasks_p_selected checked }
+

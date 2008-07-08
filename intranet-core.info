@@ -28,6 +28,8 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectForumTopicsP"  default="1" description="Clone forum entries?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectMembersP"  default="1" description="Clone project memebers?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectSubprojectsP"  default="1" description="Clone subprojects?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFolders"  default="1" description="Clone subprojects?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFiles"  default="1" description="Clone subprojects?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTimesheetTasksP"  default="1" description="Clone timesheet tasks?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTransTasksP"  default="1" description="Clone project tasks?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="CustomProjectNrGenerator"  description="Configure a customer specific generator for &quot;project_nr&quot;, for example in order to generate project_nr including customer codes etc. The default value for this parameter is &quot;&quot;. Any other value is interpreted as a procedure that takes the parameters: -customer_id, -nr_digits and -date_format and returns the new project_nr.

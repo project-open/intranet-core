@@ -625,14 +625,12 @@ ad_proc -public im_project_template_select { select_name { default "" } } {
     }
 
     set sql "
-	select
-		project_id,
+	select	project_id,
 		project_name
-	from
-		im_projects
-	where
-		lower(project_name) like '%template%'
-		$template_p_sql
+	from	im_projects
+	where	parent_id is null and
+		project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		(lower(project_name) like '%template%' $template_p_sql)
 	order by
 		lower(project_name)
     "
@@ -1011,6 +1009,13 @@ order by
 # ---------------------------------------------------------------------
 
 ad_proc im_project_clone {
+    {-clone_costs_p "" }
+    {-clone_files_p "" }
+    {-clone_subprojects_p "" }
+    {-clone_forum_topics_p "" }
+    {-clone_members_p "" }
+    {-clone_timesheet_tasks_p "" }
+    {-clone_trans_tasks_p "" }
     {-company_id 0}
     parent_project_id 
     project_name 
@@ -1021,27 +1026,38 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
-    set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
-    set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 1]
-    set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 1]
-    set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1]
-    set clone_target_languages_p 1
-    set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1]
-    set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFilesP" -default 1]
-    set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1]
-    set clone_subprojects_p 0
-    set clone_costs_p 0
-    set clone_trans_tasks_p 0
+    if {"" == $clone_members_p} { set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1] }
+    if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
+    if {"" == $clone_trans_tasks_p} { set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0] }
+    if {"" == $clone_timesheet_tasks_p} { set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1] }
+    if {"" == $clone_forum_topics_p} { set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1] }
+    if {"" == $clone_files_p} { set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFilesP" -default 1] }
+    if {"" == $clone_subprojects_p} { set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1] }
 
-    set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>"
+    set clone_target_languages_p $clone_trans_tasks_p
 
+set ttt {
+    ad_return_complaint 1 "<pre>
+   -clone_costs_p		$clone_costs_p
+   -clone_files_p		$clone_files_p
+   -clone_subprojects_p		$clone_subprojects_p
+   -clone_forum_topics_p	$clone_forum_topics_p
+   -clone_members_p		$clone_members_p
+   -clone_timesheet_tasks_p	$clone_timesheet_tasks_p
+   -clone_trans_tasks_p		$clone_trans_tasks_p
+   -clone_target_languages_p	$clone_target_languages_p
+</pre>"
+    return
+}
+
+    set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
     # --------------------------------------------
     # Clone the project & dynfields
     #
-    append errors "<li>Starting to clone base data"
+    append errors "<li>Starting to clone base data\n"
     set cloned_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
-    append errors "<li>Finished to clone base data"
+    append errors "<li>Finished to clone base data\n"
 
     # --------------------------------------------
     # Delete Costs
@@ -1099,16 +1115,15 @@ ad_proc im_project_clone {
 
     if {$clone_subprojects_p} {
 
-	ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id cloned_project_id=$cloned_project_id"
+	ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id cloned_project_id=$cloned_project_id\n"
+	# Use a list of subprojects and then "foreach" in order to avoid nested SQLs
 	set subprojects_sql "
 		select	project_id as sub_project_id
 		from	im_projects
-		where 	parent_id = :parent_project_id
+		where 	parent_id = :parent_project_id and
+			project_type_id not in ([im_project_type_task])
 	"
-	# Use list detout
-	set subproject_list [list]
-	db_foreach subprojects $subprojects_sql { lappend subproject_list $sub_project_id }
-
+	set subproject_list [db_list subprojects $subprojects_sql]
 	foreach sub_project_id $subproject_list {
 
 	    db_1row project_info "
@@ -1119,6 +1134,8 @@ ad_proc im_project_clone {
 	    "
 
 	    # go for the next project
+	    ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n"
+	    ns_write "<ul>\n"
 	    set cloned_subproject_id [im_project_clone \
 		        -company_id $company_id \
 		        $sub_project_id \
@@ -1126,13 +1143,16 @@ ad_proc im_project_clone {
 		        $sub_project_nr \
 		        $clone_postfix \
 	    ]
+	    ns_write "</ul>\n"
 
 	    db_dml set_parent "
-		update im_projects
-		set parent_id = :parent_project_id
-		where project_id = :cloned_subproject_id
+		update	im_projects
+		set	parent_id = :cloned_project_id,
+			template_p = 'f'
+		where	project_id = :cloned_subproject_id
 	    "
 	}
+	if {"" == $subproject_list} { ns_write "<li>No subprojects found\n" }
 
     }
     return $cloned_project_id
