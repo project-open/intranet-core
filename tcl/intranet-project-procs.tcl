@@ -1036,20 +1036,6 @@ ad_proc im_project_clone {
 
     set clone_target_languages_p $clone_trans_tasks_p
 
-set ttt {
-    ad_return_complaint 1 "<pre>
-   -clone_costs_p		$clone_costs_p
-   -clone_files_p		$clone_files_p
-   -clone_subprojects_p		$clone_subprojects_p
-   -clone_forum_topics_p	$clone_forum_topics_p
-   -clone_members_p		$clone_members_p
-   -clone_timesheet_tasks_p	$clone_timesheet_tasks_p
-   -clone_trans_tasks_p		$clone_trans_tasks_p
-   -clone_target_languages_p	$clone_target_languages_p
-</pre>"
-    return
-}
-
     set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
     # --------------------------------------------
@@ -1060,31 +1046,6 @@ set ttt {
     append errors "<li>Finished to clone base data\n"
 
     # --------------------------------------------
-    # Delete Costs
-    # (when using the same project over and over again for debugging purposes)
-    
-
-    set ttt {
-	ns_log Notice "im_project_clone: reset_invoice_items"
-	db_dml reset_invoice_items "update im_invoice_items set project_id = null where project_id = :cloned_project_id"
-	
-	ns_log Notice "im_project_clone: cost_infos"
-	set cost_infos [db_list_of_lists costs "
-	select cost_id, object_type 
-	from im_costs, acs_objects 
-	where cost_id = object_id 
-	      and project_id = :cloned_project_id
-        "]
-	foreach cost_info $cost_infos {
-	    set cost_id [lindex $cost_info 0]
-	    set object_type [lindex $cost_info 1]
-	    ns_log Notice "im_projects_clone: deleting cost: ${object_type}__delete($cost_id)"
-	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
-	}
-	ns_log Notice "im_project_clone: finished deleting old costs"
-    }
-
-    # --------------------------------------------
     # Clone the project
 
     append errors [im_project_clone_base2 $parent_project_id $cloned_project_id]
@@ -1093,6 +1054,9 @@ set ttt {
 
     if {$clone_files_p} {
 	append errors [im_project_clone_files $parent_project_id $cloned_project_id]
+    }
+    if {$clone_files_p} {
+	append errors [im_project_clone_folders $parent_project_id $cloned_project_id]
     }
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
 	append errors [im_project_clone_trans_tasks $parent_project_id $cloned_project_id]
@@ -1748,12 +1712,11 @@ ad_proc im_project_clone_files {parent_project_id new_project_id} {
 } {
     ns_log Notice "im_project_clone_files parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
-    set errors "<li>Starting to clone files"
+    set errors "<li>Starting to clone files\n"
 
     # Base pathes don't contain a trailing slash
     set parent_base_path [im_filestorage_project_path $parent_project_id]
     set new_base_path [im_filestorage_project_path $new_project_id]
-
 
     if { [catch {
 	# Copy all files from parent to new project
@@ -1763,15 +1726,89 @@ ad_proc im_project_clone_files {parent_project_id new_project_id} {
 	# "cp -a" preserves the ownership information of
 	# the original file, so permissions should be OK.
 	#
+#	exec /bin/mkdir -p $parent_base_path
 #	exec /bin/mkdir -p $new_base_path
 	exec /bin/cp -a $parent_base_path $new_base_path
 
     } err_msg] } {
-	append errors "<li>Error whily copying files from $parent_base_path to $new_base_path: 
-	<pre>$err_msg</pre>\n"
+	append errors "<li>Error whily copying files from $parent_base_path to $new_base_path:<pre>$err_msg</pre>\n"
     }
 
-    append errors "<li>Finished to clone files \#$parent_project_id"
+    append errors "<li>Finished to clone files \#$parent_project_id\n"
+    return $errors
+}
+
+
+ad_proc im_project_clone_folders {parent_project_id new_project_id} {
+    Copy folders and folder permissions to new project
+} {
+    ns_log Notice "im_project_clone_folders parent_project_id=$parent_project_id new_project_id=$new_project_id"
+
+    set errors "<li>Starting to clone folders\n"
+
+    # Loop through a list structure in order to avoid nested SQLs
+    set folder_list [db_list_of_lists project_folders "
+	select	folder_id, path, folder_type_id, description
+	from	im_fs_folders
+	where	object_id = :parent_project_id
+    "]
+    foreach folder_info $folder_list {
+	set parent_project_folder_id [lindex $folder_info 0]
+	set folder_path [lindex $folder_info 1]
+	set folder_type_id [lindex $folder_info 2]
+	set folder_description [lindex $folder_info 3]
+
+	set new_project_folder_id [db_string cnt "
+		select	f.folder_id
+		from	im_fs_folders f
+		where	f.path = :folder_path and
+			f.object_id = :new_project_id
+	" -default 0]
+	if {0 == $new_project_folder_id} {
+	    set new_project_folder_id [db_nextval "im_fs_folder_seq"]
+	    db_dml insert_folder "
+		insert into im_fs_folders (
+			folder_id, object_id, path, 
+			folder_type_id, description
+		) values (
+			:new_project_folder_id, :new_project_id, :folder_path,
+			:folder_type_id, :folder_description
+		)
+	    "
+	}
+
+	set perm_list [db_list_of_lists perms "
+		select	profile_id, view_p, read_p, write_p, admin_p
+		from	im_fs_folder_perms
+		where	folder_id = :parent_project_folder_id
+	"]
+	foreach perm_info $perm_list {
+	    set perm_profile_id [lindex $perm_info 0]
+	    set perm_view_p [lindex $perm_info 1]
+	    set perm_read_p [lindex $perm_info 2]
+	    set perm_write_p [lindex $perm_info 3]
+	    set perm_admin_p [lindex $perm_info 4]
+	    
+	    set perm_count [db_string perm_cnt "
+			select	count(*)
+			from	im_fs_folder_perms
+			where	folder_id = :new_project_folder_id and profile_id = :perm_profile_id
+	    "]
+	    if {0 == $perm_count} {
+		db_dml insert_folder "
+			insert into im_fs_folder_perms (
+				folder_id, profile_id, 
+				view_p, read_p, write_p, admin_p
+			) values (
+				:new_project_folder_id, :perm_profile_id, 
+				:perm_view_p, :perm_read_p, :perm_write_p, :perm_admin_p
+			)
+		"
+	    }
+	}
+    }
+
+    append errors "<li>Finished to clone folders \#$parent_project_id\n"
     return $errors
 }
 
