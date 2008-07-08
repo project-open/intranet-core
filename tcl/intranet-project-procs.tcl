@@ -1061,9 +1061,6 @@ ad_proc im_project_clone {
     if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
 	append errors [im_project_clone_trans_tasks $parent_project_id $cloned_project_id]
     }
-    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
-	append errors [im_project_clone_timesheet2_tasks $parent_project_id $cloned_project_id]
-    }
     if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
 	append errors [im_project_clone_target_languages $parent_project_id $cloned_project_id]
     }
@@ -1092,7 +1089,9 @@ ad_proc im_project_clone {
 
 	    db_1row project_info "
 		select	project_nr || :cloned_project_id as sub_project_nr,
-			project_name || :cloned_project_id as sub_project_name
+			project_name || :cloned_project_id as sub_project_name,
+			project_nr as sub_project_nr_org,
+			project_name as sub_project_name_org
 		from	im_projects
 		where	project_id = :sub_project_id
 	    "
@@ -1101,24 +1100,117 @@ ad_proc im_project_clone {
 	    ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n"
 	    ns_write "<ul>\n"
 	    set cloned_subproject_id [im_project_clone \
-		        -company_id $company_id \
-		        $sub_project_id \
-		        $sub_project_name \
-		        $sub_project_nr \
-		        $clone_postfix \
+					  -clone_costs_p $clone_costs_p \
+					  -clone_files_p $clone_files_p \
+					  -clone_subprojects_p $clone_subprojects_p \
+					  -clone_forum_topics_p $clone_forum_topics_p \
+					  -clone_members_p $clone_members_p \
+					  -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+					  -clone_trans_tasks_p $clone_trans_tasks_p \
+					  -company_id $company_id \
+					  $sub_project_id \
+					  $sub_project_name \
+					  $sub_project_nr \
+					  $clone_postfix \
 	    ]
 	    ns_write "</ul>\n"
 
+	    # We can _now_ reset the subproject's name to the original one
 	    db_dml set_parent "
 		update	im_projects
-		set	parent_id = :cloned_project_id,
+		set
+			parent_id = :cloned_project_id,
+			project_nr = :sub_project_nr_org,
+			project_name = :sub_project_name_org,
 			template_p = 'f'
-		where	project_id = :cloned_subproject_id
+		where
+			project_id = :cloned_subproject_id
 	    "
 	}
 	if {"" == $subproject_list} { ns_write "<li>No subprojects found\n" }
 
     }
+
+
+    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
+
+	ns_write "<li>im_project_clone: timesheet tasks: parent=$parent_project_id cloned=$cloned_project_id\n"
+	# Use a list of tasks and then "foreach" in order to avoid nested SQLs
+	set task_list [db_list tasks "
+		select	project_id
+		from	im_projects
+		where 	parent_id = :parent_project_id and
+			project_type_id = [im_project_type_task]
+	"]
+
+	foreach task_id $task_list {
+
+	    db_1row project_info "
+		select	project_nr || '_' || :cloned_project_id as sub_task_nr,
+			project_name || '_' || :cloned_project_id as sub_task_name,
+			project_nr as sub_task_nr_org,
+			project_name as sub_task_name_org
+
+		from	im_projects
+		where	project_id = :task_id
+	    "
+
+	    # go for the next project
+	    ns_write "<li>im_project_clone: Clone task $sub_task_name\n"
+	    ns_write "<ul>\n"
+	    set cloned_task_id [im_project_clone \
+				    -clone_costs_p $clone_costs_p \
+				    -clone_files_p $clone_files_p \
+				    -clone_subprojects_p $clone_subprojects_p \
+				    -clone_forum_topics_p $clone_forum_topics_p \
+				    -clone_members_p $clone_members_p \
+				    -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+				    -clone_trans_tasks_p $clone_trans_tasks_p \
+				    -company_id $company_id \
+				    $task_id \
+				    $sub_task_name \
+				    $sub_task_nr \
+				    $clone_postfix \
+	    ]
+	    ns_write "</ul>\n"
+
+	    # We can _now_ reset the subtasks's name to the original one
+	    db_dml set_parent "
+		update	im_projects
+		set
+			parent_id = :cloned_project_id,
+			project_nr = :sub_task_nr_org,
+			project_name = :sub_task_name_org
+		where
+			project_id = :cloned_task_id
+	    "
+
+	    db_1row task_info "
+		select	material_id, uom_id,
+                        planned_units, billable_units,
+                        cost_center_id, invoice_id, priority, sort_order
+		from	im_timesheet_tasks
+		where	task_id = :task_id
+	    "
+
+	    # Insert a task
+	    db_dml insert_task "
+		insert into im_timesheet_tasks (
+			task_id, material_id, uom_id,
+			planned_units, billable_units,
+			cost_center_id, invoice_id, priority, sort_order
+		) values (
+			:cloned_task_id, :material_id, :uom_id,
+			:planned_units, :billable_units,
+			:cost_center_id, :invoice_id, :priority, :sort_order
+		)
+	    "
+
+	}
+	if {"" == $task_list} { ns_write "<li>No tasks found\n" }
+
+    }
+
     return $cloned_project_id
 }
 
@@ -1183,6 +1275,7 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 		-parent_id		$parent_id \
 		-project_type_id	$project_type_id \
 		-project_status_id	$project_status_id \
+		-parent_id		$parent_project_id \
     ]
     if {0 == $cloned_project_id} {
 	ad_return_complaint 1 "<b>Error creating clone project</b>:<br>
@@ -1552,15 +1645,6 @@ ad_proc im_project_clone_target_languages {parent_project_id new_project_id} {
     }
     append errors "<li>Finished to clone target languages"
     return $errors
-}
-
-ad_proc im_project_clone_timesheet2_tasks {parent_project_id new_project_id} {
-    Copy translation tasks and assignments
-} {
-    ns_log Notice "im_project_clone_timesheet2 parent_project_id=$parent_project_id new_project_id=$new_project_id"
-
-    # ------------------------------------------------
-    # create timesheet2 tasks
 }
 
 
