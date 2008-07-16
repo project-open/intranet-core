@@ -1842,6 +1842,8 @@ ad_proc im_project_clone_folders {parent_project_id new_project_id} {
 	set folder_type_id [lindex $folder_info 2]
 	set folder_description [lindex $folder_info 3]
 
+	if {"" == [string trim $folder_path]} { continue }
+
 	set new_project_folder_id [db_string cnt "
 		select	f.folder_id
 		from	im_fs_folders f
