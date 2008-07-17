@@ -25,7 +25,7 @@ ad_page_contract {
     @author mbryzek@arsdigita.com    
     @author frank.bergmann@project-open.com
 } {
-    user_id_from_search:integer
+    user_id_from_search:integer,multiple
     { notify_asignee 0 }
     object_id:integer
     role_id:integer
@@ -49,7 +49,9 @@ if {!$write} {
 # No role specified? => Return
 if {"" == $role_id} { ad_returnredirect $return_url }
 
-im_biz_object_add_role $user_id_from_search $object_id $role_id
+foreach uid $user_id_from_search {
+    im_biz_object_add_role $uid $object_id $role_id
+}
 
 # --------------------------------------------------------
 # Prepare to send out an email alert
@@ -59,10 +61,16 @@ set system_name [ad_system_name]
 set object_name [db_string project_name "select acs_object.name(:object_id) from dual"]
 set page_title "Notify user"
 set context [list $page_title]
-set export_vars [export_form_vars user_id_from_search object_id role_id return_url]
 set current_user_name [db_string cur_user "select im_name_from_user_id(:user_id) from dual"]
 set object_rel_url [db_string object_url "select url from im_biz_object_urls where url_type = 'view' and object_type = :object_type"]
 set role_name [db_string role_name "select im_category_from_id(:role_id) from dual" -default "Member"]
+
+
+set export_vars [export_form_vars object_id role_id return_url]
+foreach uid $user_id_from_search {
+    append export_vars "<input type=hidden name=user_id_from_search value=$uid>\n"
+}
+
 
 # Get the SystemUrl without trailing "/"
 set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
@@ -74,15 +82,9 @@ if {[string equal "/" $last_char]} {
 
 set object_url "$system_url$object_rel_url$object_id"
 
-db_1row user_name "
-select 
-	im_name_from_user_id(person_id) as user_name_from_search,
-	first_names as first_names_from_search,
-	last_name as last_name_from_search
-from
-	persons
-where
-	person_id=:user_id_from_search"
+set user_name "%user_name%"
+set first_names_from_search "%first_names%"
+set last_name_from_search "%last_name%"
 
 
 if {"" != $notify_asignee && ![string equal "0" $notify_asignee]} {

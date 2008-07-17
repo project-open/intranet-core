@@ -33,7 +33,7 @@ ad_page_contract {
 
     @author Frank Bergmann
 } {
-    user_id_from_search:integer
+    user_id_from_search:integer,multiple
     {subject:notnull "Subject"}
     {message:allhtml "Message"}
     {message_mime_type "text/plain"}
@@ -56,6 +56,7 @@ ns_log Notice "process_mail_queue_now_p='$process_mail_queue_now_p'"
 ns_log Notice "message='$message'"
 ns_log Notice "attachment='$attachment'"
 
+
 # ---------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------
@@ -67,12 +68,13 @@ set creation_ip [ad_conn peeraddr]
 
 set time_date [exec date "+%s.%N"]
 
-im_user_permissions $current_user_id $user_id_from_search view read write admin
-if {!$read} {
-    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
-    return
+foreach uid $user_id_from_search {
+    im_user_permissions $current_user_id $uid view read write admin
+    if {!$read} {
+	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
+	return
+    }
 }
-
 
 # ---------------------------------------------------------------
 # Send to whom?
@@ -80,93 +82,120 @@ if {!$read} {
 
 
 # Get user list and email list
-set email_list [db_list email_list "select email from parties where party_id in ($user_id_from_search)"]
+set email_list [db_list email_list "select email from parties where party_id in ([join $user_id_from_search ","])"]
 
 # Include a copy to myself?
 if {"" != $send_me_a_copy} {
     lappend email_list [db_string user_email "select email from parties where party_id = :current_user_id"]
 }
 
+if {"" == $from_email} {
+    set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
+}
+
+
 
 # ---------------------------------------------------------------
 # Create the message and queue it
 # ---------------------------------------------------------------
 
-db_transaction {
 
-    if {"" == $from_email} {
-	set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
+# send to contacts
+foreach email $email_list {
+
+    # Replace message %xxx% variables by user's variables
+    set message_subst $message
+    set found_p 0
+    db_0or1row user_info "
+	select	pe.person_id as user_id,
+		im_name_from_user_id(pe.person_id) as name,
+		first_names,
+		last_name,
+		email,
+		1 as found_p
+	from	persons pe,
+		parties pa
+	where	pe.person_id = pa.party_id and
+		lower(pa.email) = :email
+    "
+
+    if {$found_p} {
+	set auto_login [im_generate_auto_login -user_id $user_id]
+	set substitution_list [list \
+				   name $name \
+				   first_names $first_names \
+				   last_name $last_name \
+				   email $email \
+				   auto_login $auto_login \
+	]
+	set message_subst [lang::message::format $message $substitution_list]
     }
 
-    # create the multipart message ('multipart/mixed')
-    set multipart_id [acs_mail_multipart_new -multipart_kind "mixed"]
-    ns_log Notice "member-notify: multipart_id=$multipart_id"
+    db_transaction {
 
-    # ---------------------------------------------------------------    
-    # create an acs_mail_body (with content_item_id = multipart_id )
-    set body_id [acs_mail_body_new \
-	-header_subject $subject \
-	-content_item_id $multipart_id]
-    ns_log Notice "member-notify: body_id=$body_id"
+	# create the multipart message ('multipart/mixed')
+	set multipart_id [acs_mail_multipart_new -multipart_kind "mixed"]
+	ns_log Notice "member-notify: multipart_id=$multipart_id"
 
+	# ---------------------------------------------------------------    
+	# create an acs_mail_body (with content_item_id = multipart_id )
+	set body_id [acs_mail_body_new \
+			 -header_subject $subject \
+			 -content_item_id $multipart_id]
+	ns_log Notice "member-notify: body_id=$body_id"
+	
 
-    # ---------------------------------------------------------------    
-    # Create the main mail "content_item" and
-    # add the content_item to the multipart email
-    set content_item_id [content::item::new \
-			     -name "$subject $time_date" \
-			     -title $subject \
-			     -mime_type $message_mime_type \
-			     -text $message \
-			     -storage_type text \
-    ]
-    set sequence_num [acs_mail_multipart_add_content \
-			  -multipart_id $multipart_id \
-			  -content_item_id $content_item_id]
-    ns_log Notice "member-notify: content_item_id=$content_item_id"
-    ns_log Notice "member-notify: sequence_num=$sequence_num"
-
-
-    # ---------------------------------------------------------------    
-    # Create the attachment content_item and
-    # add the content_item to the multipart email.
-    # We execute the multipart-add "manually", because
-    # we need to set the "mime_filename" field, so that
-    # the attachment shows up with the right filename
-    if {"" != $attachment_mime_type} {
-
-	set content_item_attach_id [content::item::new \
-			     -name "$subject $time_date - attachment1" \
-			     -title "$subject" \
-			     -mime_type $attachment_mime_type \
-			     -text $attachment \
-			     -storage_type text \
-        ]
-	# Get last multipart sequence no - should be 0
-	set sequence_num [db_string multipart_sequence_nr "
-		select max(sequence_number) 
-		from acs_mail_multipart_parts 
-		where multipart_id = :multipart_id
-        " -default 0]
-	db_dml insert_multipart_part "
-	    insert into acs_mail_multipart_parts (
-		multipart_id, mime_filename, sequence_number, content_item_id
-	    ) values (
-		:multipart_id, :attachment_filename, :sequence_num + 1, :content_item_attach_id
-	    )
-        "
-	ns_log Notice "member-notify: content_item_attach_id=$content_item_attach_id"
+	# ---------------------------------------------------------------    
+	# Create the main mail "content_item" and
+	# add the content_item to the multipart email
+	set content_item_id [content::item::new \
+				 -name "$subject $time_date $body_id" \
+				 -title $subject \
+				 -mime_type $message_mime_type \
+				 -text $message_subst \
+				 -storage_type text \
+	]
+	set sequence_num [acs_mail_multipart_add_content \
+			      -multipart_id $multipart_id \
+			      -content_item_id $content_item_id]
+	ns_log Notice "member-notify: content_item_id=$content_item_id"
 	ns_log Notice "member-notify: sequence_num=$sequence_num"
-    }
-    
-    # send to contacts
-    foreach email $email_list {
 
+	# ---------------------------------------------------------------    
+	# Create the attachment content_item and
+	# add the content_item to the multipart email.
+	# We execute the multipart-add "manually", because
+	# we need to set the "mime_filename" field, so that
+	# the attachment shows up with the right filename
+	if {"" != $attachment_mime_type} {
+	    set content_item_attach_id [content::item::new \
+					    -name "$subject $time_date - attachment1" \
+					    -title "$subject" \
+					    -mime_type $attachment_mime_type \
+					    -text $attachment \
+					    -storage_type text \
+            ]
+	    # Get last multipart sequence no - should be 0
+	    set sequence_num [db_string multipart_sequence_nr "
+			select max(sequence_number) 
+			from acs_mail_multipart_parts 
+			where multipart_id = :multipart_id
+            " -default 0]
+	    db_dml insert_multipart_part "
+		    insert into acs_mail_multipart_parts (
+			multipart_id, mime_filename, sequence_number, content_item_id
+		    ) values (
+			:multipart_id, :attachment_filename, :sequence_num + 1, :content_item_attach_id
+		    )
+            "
+	    ns_log Notice "member-notify: content_item_attach_id=$content_item_attach_id"
+	    ns_log Notice "member-notify: sequence_num=$sequence_num"
+	}
+    
 	set to_email $email
 	if {"" == $to_email} { continue }
 	ns_log notice "export-mail: Mailing contact '$email'"
 	    
-
 	# Create a message for Queuing 
 	set message_id [im_exec_dml create_message "
 	acs_mail_queue_message__new (
@@ -180,20 +209,20 @@ db_transaction {
 	)"]
         ns_log Notice "member-notify: message_id=$message_id"
 	    
-	    
 	db_dml outgoing_queue "
 		insert into acs_mail_queue_outgoing ( 
 		    message_id, envelope_from, envelope_to 
 		) values ( 
 		    :message_id, :from_email, :to_email
 		)
-	    "
+	"
 	ns_log Notice "member-notify-attachment: Outgoing queued for '$email'"
+    
+    } on_error {
+	ad_return_error "[_ parties-extension.unable_to_send_mailshot]" "<pre>$errmsg</pre>"
+	ad_script_abort
     }
 
-} on_error {
-    ad_return_error "[_ parties-extension.unable_to_send_mailshot]" "<pre>$errmsg</pre>"
-    ad_script_abort
 }
 
 

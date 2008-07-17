@@ -93,7 +93,8 @@ set locate_form "
 
 # Get the list of all employees as a shortcut
 #
-set employee_select [im_employee_select_multiple "user_id_from_search" "" 7 ""]
+set employee_select [im_employee_select_multiple user_id_from_search "" 12 multiple]
+
 
 set select_form "
 <form method=POST action=/intranet/member-add-2>
