@@ -598,7 +598,7 @@ ad_proc im_select {
     }
 
     foreach { value text } $pairs {
-	if { $translate_p } {
+	if { $translate_p && "" != [string trim $text]} {
 	    set l10n_key [lang::util::suggest_key $text]
             set text_tr [lang::message::lookup "" intranet-core.$l10n_key $text]
         } else {
