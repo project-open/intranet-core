@@ -821,7 +821,6 @@ ad_proc -public im_project_personal_active_projects_component {
            if there are no projects.
 } {
     set user_id [ad_get_user_id]
-    set page_focus "im_header_form.keywords"
 
     if {"" == $order_by_clause} {
 	set order_by_clause  [parameter::get_from_package_key -package_key "intranet-core" -parameter "HomeProjectListSortClause" -default "project_nr DESC"]
