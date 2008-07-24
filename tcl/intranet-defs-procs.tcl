@@ -386,7 +386,7 @@ ad_proc -public im_parameter {
     Not tested or used yet!!!<br>
     Wrapper for ad_parameter with the extra functionality to create
     the parameter if it didn't exist before.<br>
-    With Project/Open we don't need package ids because all P/O
+    With ]project-open[ we don't need package ids because all ]po[
     packages are singletons.
     im_parameter "SystemCSS" "intranet-core" "/intranet/style/style.default.css"
 } {

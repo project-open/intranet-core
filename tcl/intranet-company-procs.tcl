@@ -229,7 +229,7 @@ where	company_name = :company_name
 
 ad_proc -public im_company_internal { } {
     Returns the object_id of the "Internal" company, identifying
-    the organization (ower or Project/Open) itself.<br>
+    the organization itself.<br>
 
     This routine is used during invoicing/payments where documents
     can be both incoming payments (provider=Internal, company=...)

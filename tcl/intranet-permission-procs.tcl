@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-    Project/Open specific permissions routines.
+    ]project-open[specific permissions routines.
     The P/O permission model is based on the OpenACS model,
     extending it by several concepts:
     <ul>

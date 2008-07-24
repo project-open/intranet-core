@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-backup-procs.tcl
 #
-# Copyright (C) 1998-2004 Project/Open
+# Copyright (C) 1998-2004 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -275,7 +275,10 @@ order by
 	incr ctr
     }
 
-    set version "Project/Open [im_backup_version_nr] $view_name"
+    set version "
+	<span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span>
+	[im_backup_version_nr] $view_name
+    "
 
     return "$version\n$header\n$results\n"
 }

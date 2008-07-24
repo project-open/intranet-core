@@ -2,7 +2,7 @@
 <HTML><!-- InstanceBegin template="/Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
 <HEAD>
   <!-- InstanceBeginEditable name="doctitle" -->
-<TITLE>Project/Open Permissions</TITLE>
+<TITLE>]project-open[ Permissions</TITLE>
 <!-- InstanceEndEditable -->
   <META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
   <LINK href="style/style.css" rel=stylesheet type=text/css>
@@ -17,13 +17,12 @@
 <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
   <TBODY>
     <TR>
-      <TD align=left><A href="http://www.project-open.com/"><IMG border=0 height=52 
-      src="images/projop-logo.gif" width=230></A>
+      <TD align=left><A href="http://www.project-open.com/"><IMG border=0 src="images/projop-logo.gif"></A>
       </TD>
 	  <TD align=right>
 <!-- InstanceBeginEditable name="ContextBar" -->
 
-<A href="index.html">Project/Open Core</A>  : Permissions<!-- InstanceEndEditable -->
+<A href="index.html">]project-open[ Core</A>  : Permissions<!-- InstanceEndEditable -->
 	  </TD>
 	</TR>
     <TR>
@@ -34,7 +33,7 @@
           	  <TD height="20" vAlign=center class=pagedesriptionbar>
 <!-- InstanceBeginEditable name="Title" -->
 
-Project/Open Core<!-- InstanceEndEditable -->
+]project-open[ Core<!-- InstanceEndEditable -->
               </TD>
 			</TR>
 		  </TBODY>
@@ -47,7 +46,7 @@ Project/Open Core<!-- InstanceEndEditable -->
 <h1>Permissions</h1>
 <h3>Requirements</h3>
 <ol>
-  <li>Project/Open permission requirements include :
+  <li>]project-open[ permission requirements include :
 	<ul>
 	  <li>&quot;User Profiles&quot; which correspond to department membership 
                 in a company</li>
@@ -59,10 +58,10 @@ Project/Open Core<!-- InstanceEndEditable -->
 	</ul>
   </li>
   <li>The complexity of evaluating and storing permission permissions needs to be considerably below O(n * m) with n=number of objects and m=number of users in order to be suitable for organizations with up to 100.000 users and up to 100.000.000 business objects to be managed. (I wouldn't be practical for example to apply the OpenACS permissions system directly to a filestorage with 10.000.000 files and 10.000 users, because its denormalization triggers would build an O(n * m) denormalized index).</li>
-  <li>The access permissions for business objects in Project/Open sometimes follow specific rules. For example users may administrate themselfes (Employee self service) no matter if they are &quot;just&quot; freelancers or employees.</li>
+  <li>The access permissions for business objects in ]project-open[ sometimes follow specific rules. For example users may administrate themselfes (Employee self service) no matter if they are &quot;just&quot; freelancers or employees.</li>
 </ol>
 <h3>Design</h3>
-<p>The permissions API in Project/Open are implemented using a set of business object specific TCL procedures such as:</p>
+<p>The permissions API in ]project-open[ are implemented using a set of business object specific TCL procedures such as:</p>
 <ul>
   <li>im_project_permissions current_user_id project_id view read write admin</li>
   <li>im_user_permissions current_user_id user_id view read write admin</li>
@@ -79,7 +78,7 @@ This does not mean that the user can see associated information, as in the proje
 </ul>
 <p>The API calls again are calling the underlying permission mechanisms as defined above and in the <a href="permission_requirements.html">Permission Requirement Document</a>.</p>
 <h5>User &quot;Profiles&quot;</h5>
-<p>User &quot;profiles&quot; correspond to department membership in the company and are valid globally throughout Project/Open. </p>
+<p>User &quot;profiles&quot; correspond to department membership in the company and are valid globally throughout ]project-open[. </p>
 <p>Profiles are implemented using a number of OACS privileges on the &quot;Main Site&quot; object, that are available to groups of users. These &quot;im_profile&quot; user groups are represented as a subtype of OACS &quot;group&quot; type with the idea to extend their characteristics in the future.</p>
 <TABLE width="400" cellPadding=3 cellSpacing=1 class=list>
     

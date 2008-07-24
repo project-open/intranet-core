@@ -3,7 +3,7 @@
 
 <package key="intranet-core" url="http://openacs.org/repository/apm/packages/intranet-core" type="apm_application">
     <package-name>]project-open[ Core</package-name>
-    <pretty-plural>Project/Open Core</pretty-plural>
+    <pretty-plural>]project-open[ Core</pretty-plural>
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
@@ -12,8 +12,9 @@
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2004-08-24</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
+        <maturity>0</maturity>
 
-        <provides url="intranet-core" version="3.4.0.0.0"/>
+        <provides url="intranet-core" version="3.4.0.2.0"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
 
@@ -26,10 +27,10 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectCostsP"  default="1" description="Clone project's financial items?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFilesP"  default="1" description="Clone project files"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectForumTopicsP"  default="1" description="Clone forum entries?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFiles"  default="1" description="Clone project's files inside the filestorage?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFolders"  default="1" description="Clone filestorage folders when cloning a project?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectMembersP"  default="1" description="Clone project memebers?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectSubprojectsP"  default="1" description="Clone subprojects?"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFolders"  default="1" description="Clone subprojects?"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFiles"  default="1" description="Clone subprojects?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTimesheetTasksP"  default="1" description="Clone timesheet tasks?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTransTasksP"  default="1" description="Clone project tasks?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="CustomProjectNrGenerator"  description="Configure a customer specific generator for &quot;project_nr&quot;, for example in order to generate project_nr including customer codes etc. The default value for this parameter is &quot;&quot;. Any other value is interpreted as a procedure that takes the parameters: -customer_id, -nr_digits and -date_format and returns the new project_nr.
@@ -55,6 +56,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrDigits"  default="4" description="How many digits should the incrementing project_nr have? Default is four."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldSize"  default="20" description="How many characters can the project number have?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SecurityBreachEmail"  default="support@project-open.com" description="'Security breaches' are special condition that should never occur, unless somebody seriously fiddles with system security. You can redirect this address to yourself or leave our email in there"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowLeftFunctionalMenupP"  default="1" description="Show the functional collapsible menu in the NavBar? This is useful for new users, but might be slow for habitual users."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowProjectNrAndProjectNameP"  default="0" description="Should we show the project_nr together with the project_name in various pages and page titles? This is useful for companies heavily working with project_nrs such as some translation companies, but useless for GanttProject based schedules, where project_nrs are frequently generated automatically."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringDefaultStatus"  description="What is the default type for subproject filtering? Choose &quot;&quot; to show everything, or &quot;76&quot; for Open."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringEnabledP"  default="0" description="Should we show a filter widget in the SubProject component on the upper right-hand side of the ProjectViewPage to select the status for subprojects? This is useful if a company uses many subprojects per main projects, such as the case of &quot;maintenance&quot; projects."/>

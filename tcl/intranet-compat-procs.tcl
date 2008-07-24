@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-    Compatibility library for a fast port of Project/Open
+    Compatibility library for a fast port of ]project-open[
     (ACS 3.4 Intranet) to OpenACS
 
     @author unknown@arsdigita.com

@@ -533,11 +533,11 @@ ad_proc -public im_admin_navbar {
     append html "
 	[im_menu_li -class liOpen admin]
         	<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		[im_navbar_write_tree -label "admin" -maxlevel 1]
 		</ul>
 	[im_menu_li -class liOpen openacs]
         	<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		[im_navbar_write_tree -label "openacs" -maxlevel 1]
 		</ul>
 	</ul>
 

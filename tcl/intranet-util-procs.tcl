@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-    Project/Open utility routines.
+    ]project-open[ utility routines.
 
     @author various@arsdigita.com
     @author christof.damian@project-open.com

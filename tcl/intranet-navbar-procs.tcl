@@ -13,9 +13,9 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-    Functions related to navigation bar
+	Functions related to navigation bar
 
-    @author Frank Bergmann (frank.bergmann@project-open.com)
+	@author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
 
@@ -426,18 +426,32 @@ ad_proc -public im_navbar_write_tree {
 } {
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
     set menu_sql "
-        select  m.*
-        from    im_menus m
-        where   m.parent_menu_id = :main_menu_id
-        order by sort_order
+	select	m.menu_id,
+		m.label,
+		m.name,
+		m.url,
+		(select count(*) from im_menus where parent_menu_id = m.menu_id) as sub_count
+	from	im_menus m
+	where	m.parent_menu_id = :main_menu_id
+	order by sort_order
     "
+
+    # Execute SQL first and then iterate through the list, in oder to
+    # avoid nested SQLs when diving down through multiple recursions
     set html ""
-    db_foreach menus $menu_sql {
-        append html "<li><a href=$url>$name</a>\n"
-	if {$maxlevel > 0} {
+    set menus [db_list_of_lists menus $menu_sql]
+    foreach menu_item $menus {
+	set menu_id [lindex $menu_item 0]
+	set label [lindex $menu_item 1]
+	set name [lindex $menu_item 2]
+	set url [lindex $menu_item 3]
+	set sub_count [lindex $menu_item 4]
+
+	append html "<li><a href=$url>$name</a>\n"
+	if {$maxlevel > 0 && $sub_count > 0} {
 	    append html "<ul>\n"
 	    append html [im_navbar_write_tree -label $label -maxlevel [expr $maxlevel-1]]
-            append html "</ul>\n"
+	    append html "</ul>\n"
 	}
     }
     return $html
@@ -457,17 +471,17 @@ ad_proc -public im_navbar_sub_tree {
     set navbar ""
     foreach menu_list $menu_list_list {
 
-        set menu_id [lindex $menu_list 0]
-        set package_name [lindex $menu_list 1]
-        set label [lindex $menu_list 2]
-        set name [lindex $menu_list 3]
-        set url [lindex $menu_list 4]
-        set visible_tcl [lindex $menu_list 5]
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
 
-        set name_key "intranet-core.[lang::util::suggest_key $name]"
-        set name [lang::message::lookup "" $name_key $name]
+	set name_key "intranet-core.[lang::util::suggest_key $name]"
+	set name [lang::message::lookup "" $name_key $name]
 
-        append navbar "<li><a href=\"$url\">$name</a><ul></ul>"
+	append navbar "<li><a href=\"$url\">$name</a><ul></ul>"
 
     }
 

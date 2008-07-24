@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-view-procs.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General

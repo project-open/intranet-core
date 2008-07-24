@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-office-procs.tcl
 #
-# Copyright (C) 2004 Project/Open
+# Copyright (C) 2004 ]project-open[
 # The code is based on work from ArsDigita ACS 3.4 and OpenACS 5.0
 #
 # This program is free software. You can redistribute it
