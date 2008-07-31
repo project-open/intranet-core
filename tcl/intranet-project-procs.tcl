@@ -681,9 +681,10 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
 }
 
 ad_proc -public im_project_select { 
-    { -include_all 0 } 
     { -exclude_subprojects_p 1 }
     { -exclude_status_id 0 }
+    { -include_empty_p 0 } 
+    { -include_empty_name "All" }
     select_name 
     { default "" } 
     { status "" } 
@@ -798,10 +799,8 @@ ad_proc -public im_project_select {
 
     append sql " order by lower(p.project_name)"
 
-    return [im_selection_to_select_box -include_empty_p $include_all -include_empty_name "All" -translate_p 0 $bind_vars project_select $sql $select_name $default]
+    return [im_selection_to_select_box -include_empty_p $include_empty_p -include_empty_name $include_empty_name -translate_p 0 $bind_vars project_select $sql $select_name $default]
 }
-
-
 
 
 ad_proc -public im_project_personal_active_projects_component {
