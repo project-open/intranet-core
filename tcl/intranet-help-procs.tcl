@@ -51,7 +51,7 @@ if you are a small organization.<p>
 For a complete rollout overview please see our 
 <a href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\"
 >Rollout Plan</a>. Please
-<A href=\"http://www.project-open.com/en/contact/\">contract us</a>
+<A href=\"http://www.project-open.com/en/company/project-open-contact.html\">contract us</a>
 for a quote on professional services. We have helped more then 100
 organizations to get the most out of $po.
 
