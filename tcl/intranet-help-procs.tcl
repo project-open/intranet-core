@@ -32,14 +32,10 @@ ad_proc -public im_help_home_page_blurb_component { } {
 <tr><td>
 
 <h1>Welcome to $projop</h1>
-We have set up a sample system for you in order to show you how
-a typical company could look like. 
 
-Currently we are preparing some tutorial flash demos. Here's a first 
-sample, expect more to come soon. 
-
-
-Please follow the links to explore the (freely invented) sample contents.
+This server contains the 'Tigerpond' demo company, together with
+some typical projects and user profiles. Please follow the links 
+to explore these freely invented demo contents.
 
 <h2>Starting to use $po</h2>
 
@@ -47,14 +43,6 @@ Please follow the links to explore the (freely invented) sample contents.
 You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
 demo data from this server and start using this server in production
 if you are a small organization.<p>
-
-For a complete rollout overview please see our 
-<a href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\"
->Rollout Plan</a>. Please
-<A href=\"http://www.project-open.com/en/company/project-open-contact.html\">contract us</a>
-for a quote on professional services. We have helped more then 100
-organizations to get the most out of $projop.
-
 
 <h2>Online Resources</h2>
 
@@ -78,6 +66,17 @@ organizations to get the most out of $projop.
   $projop Feature Overview</b></a>:<br>
   Our web page gives you an overview over the different
   $projop modules and briefly explains their functionality.
+  <br>&nbsp;<br>
+</li>
+
+
+<li>
+  <A href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\"><B>
+  $projop Rollout Plan</b></a>:<br>
+  This document provides you with an overview on how to rollout
+  $projop in a typical service company. Please 
+  <a href=\"http://www.project-open.com/en/services/project_open_support.html\">contact us</a>
+  for help with your rollout.
   <br>&nbsp;<br>
 </li>
 
