@@ -91,7 +91,7 @@ if you are a small organization.<p>
 </li>
 </ul>
 
-Note: You can disable this text by clicking on the [img comp_delete] button in the
+Note: You can disable this text by clicking on the [im_gif comp_delete] button in the
 header of this grey box.
 
 </p>
