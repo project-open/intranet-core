@@ -71,13 +71,13 @@ if you are a small organization.<p>
 
 
 <li>
-  <B>$projop Rollout Plan
-  <A href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\">(ppt)</a>
-  <A href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.pdf\">(pdf)</a>
-  </b>:<br>
+  <B>
+  <A href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.ppt\">$projop Rollout Plan (ppt)</a>
+  <A href=\"http://project-open.sourceforge.net/whitepapers/Project-Open-Rollout-Plan.pdf\">(pdf)</a></b>:<br>
   This document provides you with an overview on how to rollout
-  $projop in a typical service company. Please 
-  <a href=\"http://www.project-open.com/en/services/project_open_support.html\">contact us</a>
+  $projop in a typical service company with 30-300 employees
+  (smaller companies don't need such an elaborated procedures).
+  Please <a href=\"http://www.project-open.com/en/services/project_open_support.html\">contact us</a>
   for help with your rollout.
   <br>&nbsp;<br>
 </li>
