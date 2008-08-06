@@ -63,12 +63,14 @@ organizations to get the most out of $projop.
   <a href=\"http://sourceforge.net/projects/project-open/\"><b>SourceForge Open-Source Community</b></a>:<br>
   This is the place where you can interact with the developers of
   $projop, ask for help etc.
+  <br>&nbsp;<br>
 </li>
 
 <li>
   <A href=\"http://www.project-open.org/doc/\"><b>
   $projop Documentation and User Guides</b></a>:<br>
    Please see the list of all available documentation.
+  <br>&nbsp;<br>
 </li>
 
 <li>
@@ -76,6 +78,7 @@ organizations to get the most out of $projop.
   $projop Feature Overview</b></a>:<br>
   Our web page gives you an overview over the different
   $projop modules and briefly explains their functionality.
+  <br>&nbsp;<br>
 </li>
 
 <li>
@@ -83,8 +86,10 @@ organizations to get the most out of $projop.
     Professional Support</b></a>:<br>
     Please consider to contract professional support. 
     $projop offers three different support levels for companies of all sizes.
+  <br>&nbsp;<br>
 </li>
 </ul>
+
 </p>
 </td></tr>
 </table>    
