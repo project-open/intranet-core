@@ -53,44 +53,36 @@ For a complete rollout overview please see our
 >Rollout Plan</a>. Please
 <A href=\"http://www.project-open.com/en/company/project-open-contact.html\">contract us</a>
 for a quote on professional services. We have helped more then 100
-organizations to get the most out of $po.
+organizations to get the most out of $projop.
 
 
 <h2>Online Resources</h2>
 
 <ul>
 <li>
+  <a href=\"http://sourceforge.net/projects/project-open/\"><b>SourceForge Open-Source Community</b></a>:<br>
+  This is the place where you can interact with the developers of
+  $projop, ask for help etc.
+</li>
+
+<li>
+  <A href=\"http://www.project-open.org/doc/\"><b>
+  $projop Documentation and User Guides</b></a>:<br>
+   Please see the list of all available documentation.
+</li>
+
+<li>
   <A href=\"http://www.project-open.org/product/modules/\"><B>
-    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
+  $projop Feature Overview</b></a>:<br>
   Our web page gives you an overview over the different
-  $po modules and briefly explains their functionality.
-</li>
-<li>
-  <A href=\"http://www.project-open.org/doc/\"><b>
-  $po User Guides</b></a>:<br>
-  Please visit the download zone of our
-  <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
-  Here you will find all relevant guides and manuals in \".pdf\" format.
+  $projop modules and briefly explains their functionality.
 </li>
 
 <li>
-  <A href=\"http://www.project-open.org/doc/\"><b>
-    Complete List of Documentation</b></a>:<br>
-    Please see the list of all available documentation.
-</li>
-
-<li>
-  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>
-    Discussion Forums</b></a>:<br>
-    You can use the open discussion forums to start communicating
-    with the open-source community.
-</li>
-
-<li>
-  <A href=\"http://www.project-open.com/product/services/support/\"><b>
+  <A href=\"http://www.project-open.com/en/services/project_open_support.html\"><b>
     Professional Support</b></a>:<br>
     Please consider to contract professional support. 
-    $po offers three different support levels for companies of all sizes.
+    $projop offers three different support levels for companies of all sizes.
 </li>
 </ul>
 </p>
