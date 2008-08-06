@@ -39,10 +39,6 @@ Currently we are preparing some tutorial flash demos. Here's a first
 sample, expect more to come soon. 
 
 
-<ul><li><a href=\"/intranet-amberjack/createProject.html\">How to create a project</a></li></ul>
-
-
-<!--
 Please follow the links to explore the (freely invented) sample contents.
 
 <h2>Starting to use $po</h2>
@@ -97,7 +93,7 @@ organizations to get the most out of $po.
     $po offers three different support levels for companies of all sizes.
 </li>
 </ul>
-</p>-->
+</p>
 </td></tr>
 </table>    
 <br>
