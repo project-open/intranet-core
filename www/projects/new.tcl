@@ -52,7 +52,8 @@ set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -p
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 
-
+# Are we editing an existing project?
+# Then set the project's view page as the return_url
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
 }
