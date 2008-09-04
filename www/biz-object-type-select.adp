@@ -6,6 +6,10 @@
 
 <table cellspacing=2 cellpadding=2>
 <form action='@return_url;noquote@' method=POST>
+<%= [export_form_vars ticket_nr ticket_name] %>
+
+<!-- ToDo: replace with variables from HTTP form -->
+
 @category_select_html;noquote@
 <tr>
     <td>&nbsp;</tr>

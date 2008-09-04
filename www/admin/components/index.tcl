@@ -19,6 +19,8 @@ ad_page_contract {
   @author alwin.egger@gmx.net
   @author frank.bergmann@project-open.com
 } {
+    { package_key ""}
+    { component_location ""}
     { return_url ""}
 }
 
@@ -42,6 +44,24 @@ set component_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
 
+# ------------------------------------------------------
+# Options for Package Select
+# ------------------------------------------------------
+
+set package_options [db_list_of_lists package_options "
+	select	package_key, package_key
+	from	apm_packages
+	order by package_key
+"]
+set package_options [linsert $package_options 0 [list "All" ""]]
+
+
+set location_options [db_list_of_lists location_options "
+	select	distinct location, location
+	from	im_component_plugins
+	order by location
+"]
+set location_options [linsert $location_options 0 [list "All" ""]]
 
 
 # ------------------------------------------------------
@@ -92,16 +112,23 @@ append table_header "\n</tr>\n"
 # Main SQL
 # ------------------------------------------------------
 
+set component_where ""
+if {"" != $package_key} { append component_where "\tand package_name = :package_key\n" }
+if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
+
 # Generate the sql query
 set criteria [list]
 set bind_vars [ns_set create]
 
 set component_select_sql "
 select
-${main_sql_select}
+	${main_sql_select}
 	c.plugin_id, c.plugin_name, c.package_name, c.location, c.page_url
 from 
 	im_component_plugins c
+where	
+	1=1
+	$component_where
 order by
 	package_name,
 	plugin_name

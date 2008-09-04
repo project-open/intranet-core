@@ -583,6 +583,7 @@ ad_proc -public im_sub_navbar {
     {-components:boolean 0}
     {-current_plugin_id 0}
     {-base_url ""}
+    {-plugin_url "/intranet/projects/view"}
     parent_menu_id 
     {bind_vars ""} 
     {title ""} 
@@ -606,7 +607,11 @@ ad_proc -public im_sub_navbar {
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
-    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 60]
+#    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 1]
+    set menu_list_list [im_sub_navbar_menu_helper $user_id $parent_menu_id]
+
+    ns_log Notice "im_sub_navbar: menu_list_list=$menu_list_list"
+
     foreach menu_list $menu_list_list {
 
 	set menu_id [lindex $menu_list 0]
@@ -615,6 +620,9 @@ ad_proc -public im_sub_navbar {
 	set name [lindex $menu_list 3]
 	set url [lindex $menu_list 4]
 	set visible_tcl [lindex $menu_list 5]
+
+	# append a "?" if not yet part of the URL
+	if {![regexp {\?} $url match]} { append url "?" }
 
 	if {"" != $visible_tcl} {
 	    # Interpret empty visible_tcl menus as always visible
@@ -661,19 +669,24 @@ ad_proc -public im_sub_navbar {
 	    set base_url $stub_url
 	}
 
-	db_foreach navbar_components "
+	set components_sql "
             SELECT 
-               p.plugin_id AS plugin_id,
-               p.plugin_name AS plugin_name,
-               p.menu_name AS menu_name
+			p.plugin_id AS plugin_id,
+			p.plugin_name AS plugin_name,
+			p.menu_name AS menu_name
             FROM 
-               im_component_plugins p,im_component_plugin_user_map u
+			im_component_plugins p,
+			im_component_plugin_user_map u
             WHERE
-               p.plugin_id=u.plugin_id 
-               AND page_url='/intranet/projects/view'  
-               AND u.location='none' 
-               AND u.user_id=:user_id
-            ORDER by p.menu_sort_order,p.sort_order" {
+			p.plugin_id=u.plugin_id 
+			AND page_url = :plugin_url
+			AND u.location='none' 
+			AND u.user_id=:user_id
+            ORDER by 
+			p.menu_sort_order, p.sort_order
+	"
+
+	db_foreach navbar_components $components_sql {
 
 		set url [export_vars \
 		    -quotehtml \
@@ -698,7 +711,10 @@ ad_proc -public im_sub_navbar {
 
 }
 
-ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
+ad_proc -private im_sub_navbar_menu_helper { 
+    user_id 
+    parent_menu_id 
+} {
     Get the list of menus in the sub-navbar for the given user.
     This routine is cached and called every approx 60 seconds
 } {
@@ -734,8 +750,9 @@ ad_proc -private im_sub_navbar_menu_helper { user_id parent_menu_id } {
 	order by
 		 sort_order
     "
-
-    return [db_list_of_lists subnavbar_menus $menu_select_sql]
+    set result [db_list_of_lists subnavbar_menus $menu_select_sql]
+    ns_log Notice "im_sub_navbar_menu_helper: result=$result"
+    return $result
 }
 
 ad_proc -public im_navbar { 
