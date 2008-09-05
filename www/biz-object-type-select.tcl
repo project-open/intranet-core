@@ -38,6 +38,7 @@ ad_page_contract {
     { pass_through_variables "" }
     { ticket_name "" }
     { ticket_nr "" }
+    { ticket_sla_id "" }
 }
 
 # ToDo: Remove ticket_name & ticket_nr as pass-through vars 

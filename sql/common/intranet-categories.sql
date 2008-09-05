@@ -66,10 +66,9 @@
 -- 2200-2299	Intranet Experience Level
 -- 2300-2399	Intranet LOC Tools
 -- 2400-2419	Intranet Skill Weight
-
 -- 2420-2499	??
-
--- 2500-2599	Translation Hierarchy
+-- 2500-2599	Intranet Project Type (extension)
+-- 2600-2999	Translation Hierarchy
 
 -- 3000-3099    Intranet Cost Center Type
 -- 3100-3199    Intranet Cost Center Status
@@ -343,6 +342,7 @@ update im_categories set enabled_p = 'f' where category_id = 101;
 -- 102 - 109 reserved for other Project subclasses
 SELECT im_category_new (2500, 'Translation Project', 'Intranet Project Type');
 SELECT im_category_new (2501, 'Consulting Project', 'Intranet Project Type');
+-- 2502 reserved for "SLA"
 
 
 SELECT im_category_hierarchy_new (97, 2501);

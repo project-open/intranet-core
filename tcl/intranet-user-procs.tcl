@@ -126,17 +126,17 @@ ad_proc -public im_sysadmin_user_default { } {
 } {
 
     set user_id [util_memoize "db_string default_admin \"
-        select
-                min(user_id) as user_id
-        from
-                acs_rels ar,
-                membership_rels mr,
+	select
+		min(user_id) as user_id
+	from
+		acs_rels ar,
+		membership_rels mr,
 		users u
-        where
-                ar.rel_id = mr.rel_id
-                and u.user_id = ar.object_id_two
-                and ar.object_id_one = [im_admin_group_id]
-                and mr.member_state = 'approved'
+	where
+		ar.rel_id = mr.rel_id
+		and u.user_id = ar.object_id_two
+		and ar.object_id_one = [im_admin_group_id]
+		and mr.member_state = 'approved'
     \" -default 0" 60]
 
     return $user_id
@@ -146,28 +146,39 @@ ad_proc -public im_sysadmin_user_default { } {
 
 ad_proc -public im_user_options { 
     {-include_empty_p 1} 
+    {-include_empty_name ""}
     {-group_id 0}
     {-group_name ""}
+    {-biz_object_id ""}
 } {
     Returns the options for a select box.
 } {
-    if {0 == $group_id} {
-	set group_id [util_memoize "db_string group \"select group_id from group where group_name = '$group_name'\" -default 0"]
+    if {"" != $group_name} {
+	set group_id [util_memoize "db_string group \"select group_id from groups where group_name = '$group_name'\" -default 0"]
     }
-    if {0 == $group_id} {
-	ad_return_complaint 1 [lang::message::lookup "" intranet-core.No_group_defined "You need to specify a valid group"]
-	ad_script_abort
+
+    set group_select_sql ""
+    set biz_object_select_sql ""
+    if {0 != $group_id && "" != $group_id} { 
+	set group_select_sql "and user_id in (select member_id from group_distinct_member_map where group_id = :group_id)" 
+    }
+    if {0 != $biz_object_id && "" != $biz_object_id} { 
+	set biz_object_select_sql "and user_id in (select object_id_two from acs_rels where object_id_one = :biz_object_id)" 
     }
 
     set options [db_list_of_lists provider_options "
-	        select	im_name_from_user_id(user_id) as name, user_id
-	        from	users_active u,
-			group_distinct_member_map gm
-		where	u.user_id = gm.member_id
-			and gm.group_id = :group_id
+		select
+			im_name_from_user_id(u.user_id) as name, 
+			u.user_id
+		from
+			cc_users u
+		where
+			1=1
+			$group_select_sql
+			$biz_object_select_sql
 		order by name
     "]
-    if {$include_empty_p} { set options [linsert $options 0 { "" "" }] }
+    if {$include_empty_p} { set options [linsert $options 0 [list $include_empty_name "" ]] }
     return $options
 }
 
@@ -177,7 +188,7 @@ ad_proc -public im_employee_options { {include_empty 1} } {
     set options [db_list_of_lists provider_options "
 	select	im_name_from_user_id(user_id) as name, 
 		user_id
-        from	im_employees_active
+	from	im_employees_active
 	order by name
     "]
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
@@ -192,11 +203,11 @@ ad_proc -public im_project_manager_options {
 } {
     set options [db_list_of_lists provider_options "
 	select * from (
-	        select	im_name_from_user_id(user_id) as name, user_id
-	        from	im_employees_active
+		select	im_name_from_user_id(user_id) as name, user_id
+		from	im_employees_active
 	    UNION
-	        select	im_name_from_user_id(user_id) as name, user_id
-	        from	users_active u,
+		select	im_name_from_user_id(user_id) as name, user_id
+		from	users_active u,
 			group_distinct_member_map gm
 		where	u.user_id = gm.member_id
 			and gm.group_id = [im_pm_group_id]
@@ -413,7 +424,7 @@ ad_proc -public im_user_create_new_user {
 		update acs_objects
 		set creation_user = :current_user_id
 		where object_id = :user_id
-        "
+	"
 
 	# Call the "user_create" or "user_update" user_exit
 	im_user_exit_call user_create $user_id
@@ -546,17 +557,17 @@ ad_proc -public im_user_update_existing_user {
 
 	
     set membership_del_sql "
-        select
-                r.rel_id
-        from
-                acs_rels r,
-                acs_objects o
-        where
-                object_id_two = :user_id
-                and object_id_one = :profile_id
-                and r.object_id_one = o.object_id
-                and o.object_type = 'im_profile'
-                and rel_type = 'membership_rel'
+	select
+		r.rel_id
+	from
+		acs_rels r,
+		acs_objects o
+	where
+		object_id_two = :user_id
+		and object_id_one = :profile_id
+		and r.object_id_one = o.object_id
+		and o.object_type = 'im_profile'
+		and rel_type = 'membership_rel'
     "
 
 
@@ -597,7 +608,7 @@ ad_proc -public im_user_update_existing_user {
 	    
 	    if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		ad_return_complaint 1 "<li>
-                    [_ intranet-core.lt_You_are_not_allowed_t]"
+		    [_ intranet-core.lt_You_are_not_allowed_t]"
 		return
 	    }
 	    
@@ -628,7 +639,7 @@ ad_proc -public im_user_update_existing_user {
 	    # the HTTP variables in oder to fool us...
 	    if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		ad_return_complaint 1 "<li>
-                    [_ intranet-core.lt_You_are_not_allowed_t_1]"
+		    [_ intranet-core.lt_You_are_not_allowed_t_1]"
 		return
 	    }
 	    
@@ -822,7 +833,7 @@ ad_proc -public im_user_nuke {user_id} {
 	if {[db_table_exists spam_history]} {
 	    db_dml delete_user_spam_history "delete from spam_history where creation_user = :user_id"
 	    db_dml delete_user_spam_history_sent "update spam_history set last_user_id_sent = NULL
-                    where last_user_id_sent = :user_id"
+		    where last_user_id_sent = :user_id"
 	}
 	
 	# calendar
@@ -982,7 +993,7 @@ ad_proc -public im_user_nuke {user_id} {
 	if {[db_table_exists im_trans_quality_reports]} {
 	    db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
 	    select report_id from im_trans_quality_reports where reviewer_id = :user_id
-        )"
+	)"
 	    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id"
 	}
 	
@@ -1046,7 +1057,7 @@ ad_proc -public im_user_nuke {user_id} {
 	$detailed_explanation<p>
 	[_ intranet-core.lt_For_good_measure_here]
 	<blockquote><pre>\n$errmsg\n</pre></blockquote>
-        "
+	"
     }
 
     return $result
