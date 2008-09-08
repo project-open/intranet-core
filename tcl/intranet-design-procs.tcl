@@ -581,7 +581,7 @@ ad_proc -public im_navbar_tab {
 
 ad_proc -public im_sub_navbar { 
     {-components:boolean 0}
-    {-current_plugin_id 0}
+    {-current_plugin_id ""}
     {-base_url ""}
     {-plugin_url "/intranet/projects/view"}
     parent_menu_id 
@@ -604,6 +604,8 @@ ad_proc -public im_sub_navbar {
     set navbar ""
     set found_selected 0
     set selected 0
+
+    if {"" == $current_plugin_id} { set current_plugin_id 0 }
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
@@ -650,7 +652,7 @@ ad_proc -public im_sub_navbar {
         set url_length [expr [string length $url] - 1]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
-        if {[string equal $label $select_label] && $current_plugin_id==0} {
+        if {[string equal $label $select_label] && $current_plugin_id == 0} {
 	    
             # Make sure we only highligh one menu item..
             set found_selected 1

@@ -27,6 +27,7 @@ ad_page_contract {
     { parent_id:integer "" }
     { company_id:integer "" }
     project_type_id:integer,optional
+    project_name:optional
     project_nr:optional
     { workflow_key "" }
     { return_url "" }
@@ -37,7 +38,6 @@ ad_proc var_contains_quotes { var } {
     if {[regexp {'} $var]} { return 1 }
     return 0
 }
-
 
 # -----------------------------------------------------------
 # Defaults
@@ -291,18 +291,19 @@ template::element::create $form_id description -optional -datatype text\
 # ------------------------------------------------------
 
 set object_type "im_project"
-set project_type_id 0
+set dynfield_project_type_id [im_opt_val project_type_id]
 if {[info exists project_id]} {
-    set project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+    set dynfield_project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
 }
-set my_project_id 0
-if {[info exists project_id]} { set my_project_id $project_id }
+
+set dynfield_project_id 0
+if {[info exists project_id]} { set dynfield_project_id $project_id }
 
 set field_cnt [im_dynfield::append_attributes_to_form \
-    -object_subtype_id $project_type_id \
+    -object_subtype_id $dynfield_project_type_id \
     -object_type $object_type \
     -form_id $form_id \
-    -object_id $my_project_id \
+    -object_id $dynfield_project_id \
 ]
 
 
@@ -377,7 +378,7 @@ if {[form is_request $form_id]} {
 	set "creation_ip_address" [ns_conn peeraddr]
 	set "creation_user" $user_id
 	set project_id [im_new_object_id]
-	set project_name ""
+	set project_name [im_opt_val project_name]
 	set button_text "[_ intranet-core.Create_Project]"
 	
 	if { ![exists_and_not_null parent_id] } {
@@ -388,7 +389,7 @@ if {[form is_request $form_id]} {
 	    if { ![exists_and_not_null company_id] } {
 		set company_id ""
 	    }
-	    set project_type_id 85
+	    if {![exists_and_not_null project_type_id]} { set project_type_id 85 }
 	    set project_status_id 76
 	    set page_title "[_ intranet-core.Add_New_Project]"
 	    set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
