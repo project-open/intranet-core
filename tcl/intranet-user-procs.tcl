@@ -119,6 +119,24 @@ ad_proc -public user_permissions { current_user_id user_id view_var read_var wri
 }
 
 
+
+ad_proc -public im_user_base_info_component { 
+    -user_id:required
+    { -return_url ""}
+} {
+    Returns a formatted piece of HTML showing the user's name and email
+} {
+    if {"" == $return_url} { set return_url [im_url_with_query] }
+    set params [list \
+		    [list user_id $user_id] \
+		    [list return_url [im_url_with_query]] \
+    ]
+
+    set result [ad_parse_template -params $params "/packages/intranet-core/www/users/base-info-component"]
+    return [string trim $result]
+}
+
+
 ad_proc -public im_sysadmin_user_default { } {
     Determines the default system Administrator account
     Just takes the lowest user_id from the members of
