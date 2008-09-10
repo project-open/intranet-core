@@ -1020,7 +1020,7 @@ ad_proc im_project_clone {
     project_nr 
     clone_postfix
 } {
-    Clone project main routine.
+    Recursively clone projects.
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
@@ -1464,33 +1464,63 @@ ad_proc im_project_clone_url_map {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_costs {parent_project_id new_project_id} {
-    Copy cost items and invoices
+ad_proc im_project_clone_costs {
+    parent_project_id 
+    new_project_id
+} {
+    Copy cost items and invoices.
+    There are three ugly options to perform a clone of a cost item:
+
+    1. Use the cost class constructors (im_expense__new(...)).
+       Disadvantage: These constructors don't copy all fields, so we'd
+       need additional UPDATE... statements to capture the forgotten fields
+
+    2. Use a common im_cost via im_cost__new() and then insert the class
+       specific extension table manually. Kinda ugly...
+
+    3. Cleanest probably but difficult to maintain either: 
+       Introduce new PL/SQL routines im_xxxx__clone().
+
+    => Let's kepp the shit together in a single procedure, instead of
+       distributing it to a number of little piles...
 } {
     ns_log Notice "im_project_clone_costs parent_project_id=$parent_project_id new_project_id=$new_project_id"
     set current_user_id [ad_get_user_id]
 
-    # ToDo: There are costs _associated_ with a project, 
-    # but without project_id! (?)
-    #
+    # Extract all cost items related to the current (sub-) project.
+    # Don't descend to sub-projects, because this procedure is called for
+    # each sub-project cloned.
+
+    # ToDo: Deal with the case that one cost_item is related to two sub-
+    # projects, so that the items is not duplicated!
 
     set costs_sql "
-	select	c.*,
-		i.*,
+	select distinct
+		c.*, i.*, e.*, rc.*, ti.*,
+		c.project_id as org_cost_project_id,
 		o.object_type
 	from
+		im_projects p,
 		acs_objects o,
+		acs_rels r,
 		im_costs c
-		left outer join
-			im_invoices i on c.cost_id = i.invoice_id
+		left outer join im_invoices i on c.cost_id = i.invoice_id
+		left outer join im_expenses e on c.cost_id = e.expense_id
+		left outer join im_repeating_costs rc on c.cost_id = rc.rep_cost_id
+		left outer join im_timesheet_invoices ti on c.cost_id = ti.invoice_id
 	where
+		p.project_id = :parent_project_id and
+		r.object_id_one = p.project_id and
+		r.object_id_two = c.cost_id and
 		c.cost_id = o.object_id
-		and project_id = :parent_project_id
     "
+
     db_foreach add_costs $costs_sql {
 
+	# "rescue" some values that we'll need later for updates
 	set old_cost_id $cost_id
 
+	# Copy the im_cost base object
 	set cost_insert_query "select im_cost__new (
 		null,			-- cost_id
 		:object_type,		-- object_type
@@ -1527,17 +1557,53 @@ ad_proc im_project_clone_costs {parent_project_id new_project_id} {
 		:note			-- note
 	)"
 
+	# Execute the creation call
 	set cost_id [db_exec_plsql cost_insert "$cost_insert_query"]
 	set new_cost_id $cost_id
 
-	# ------------------------------------------------
-	# create invoices
+	# ------------------------------------------------------
+	# creation invoice project relation
+	if {"" == $org_cost_project_id} {
+	    ad_return_complaint 1 "Unable to clone cost item.<br>
+		The cost item '$old_cost_id' has project_id=NULL, indicating 
+		that it is associated with more then one project.<br>
+		This is currently not supported
+	    "
+	    ad_script_abort
+	}
 
-	if {"im_invoice" == $object_type} {
+	set rel_count [db_string rel_count "select count(*) from acs_rels where object_id_one = :new_project_id and object_id_two = :new_cost_id"]
+	if {0 == $rel_count && "" != $new_project_id && "" != $new_cost_id} {
+	    set relation_query "select acs_rel__new(
+		 null,
+		 'relationship',
+		 :new_project_id,
+		 :new_cost_id,
+		 null,
+		 null,
+		 null
+	    )"
+	    db_exec_plsql insert_acs_rels "$relation_query"
+	}
 
-	    set invoice_nr [im_next_invoice_nr -invoice_type_id $cost_type_id]
+	# -----------------------------------------------------------
+	# Now let's check the object type and perform the object type specific actions.
+	switch $object_type {
 
-	    set invoice_sql "
+	    im_cost - im_expense_bundle {
+		# -----------------------------------------------------------
+		# Basic costs, consisting only of an im_cost item
+		# Do nothing, because the im_cost item has already been cloned.
+	    }
+
+	    im_invoice - im_trans_invoice - im_timesheet_invoice {
+		# -----------------------------------------------------------
+		# Covers Customer Invoice, Quote, Delivery Note, Bill and Purchase Order.
+		# These costs are stored in im_costs, in_invoices and im_invoice_items
+
+		set invoice_nr [im_next_invoice_nr -invoice_type_id $cost_type_id]
+
+		set invoice_sql "
 		insert into im_invoices (
 			invoice_id,
 			company_contact_id,
@@ -1549,58 +1615,60 @@ ad_proc im_project_clone_costs {parent_project_id new_project_id} {
 			:invoice_nr,
 			:payment_method_id
 		)
-	    "
-	    db_dml invoice_insert $invoice_sql
-	
-	    # -------------------------------------
-	    # creation invoice project relation
-	    
-	    set relation_query "select acs_rel__new(
-		 null,
-		 'relationship',
-		 :new_project_id,
-		 :invoice_id,
-		 null,
-		 null,
-		 null
-	    )"
-	    db_exec_plsql insert_acs_rels "$relation_query"
+	        "
+		db_dml invoice_insert $invoice_sql
 
-	    set new_invoice_id $invoice_id
-
-
-	    # ------------------------------------------------
-	    # create invoice items
-
-	    set invoice_sql "
-		select * 
-		from im_invoice_items 
-		where invoice_id = :old_cost_id
-	    "
-
-	    db_foreach add_invoice_items $invoice_sql {
-		set new_item_id [db_nextval "im_invoice_items_seq"]
-		set insert_invoice_items_sql "
+		# create invoice items
+		set invoice_sql "select * from im_invoice_items where invoice_id = :old_cost_id"
+		db_foreach add_invoice_items $invoice_sql {
+		    set new_item_id [db_nextval "im_invoice_items_seq"]
+		    set insert_invoice_items_sql "
 			INSERT INTO im_invoice_items (
-				item_id, item_name, 
-				project_id, invoice_id, 
-				item_units, item_uom_id, 
-				price_per_unit, currency, 
-				sort_order, item_type_id, 
-				item_status_id, description
+				item_id, item_name, project_id, invoice_id, 
+				item_units, item_uom_id, price_per_unit, currency, 
+				sort_order, item_type_id, item_status_id, description
 			) VALUES (
-				:item_id, :item_name, 
-				:new_project_id, :new_invoice_id, 
-				:item_units, :item_uom_id, 
-				:price_per_unit, :currency, 
-				:sort_order, :item_type_id, 
-				:item_status_id, :description
-			)"
-				
-		db_dml insert_invoice_items $insert_invoice_items_sql
+				:new_item_id, :item_name, :new_project_id, :new_cost_id, 
+				:item_units, :item_uom_id, :price_per_unit, :currency, 
+				:sort_order, :item_type_id, :item_status_id, :description
+			)
+                    "
+		    db_dml insert_invoice_items $insert_invoice_items_sql
+		
+		}
+
+	    }
+
+	    im_expense {
+		# -----------------------------------------------------------
+		# Expenses consist of im_cost and im_expenses entries
+		ad_return_complaint 1 "Cloning expenses is not supported yet"
 		
 	    }
-	}			
+	    
+	    im_repeating_cost {
+		# Should not appear related to a project - at the moment
+		ad_return_complaint 1 "Cloning repeating_costs is not supported yet"
+		ad_script_abort
+	    }
+	}
+
+
+	if {"im_timesheet_invoice" == $object_type} {
+	    # Add a single entry to the normal im_invoice
+	    db_dml ts_invoice_insert "
+		insert into im_timesheet_invoices (
+			invoice_id,
+			invoice_period_start,
+			invoice_period_end
+		) values (
+			:new_cost_id,
+			:invoice_period_start,
+			:invoice_period_end
+		);
+	    "
+	}
+
 	
     }
 }
