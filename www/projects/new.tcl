@@ -67,7 +67,6 @@ if {![info exists project_id] && $company_id == "" && $customer_required_p} {
     ad_script_abort
 }
 
-
 # -----------------------------------------------------------
 # Permissions
 # -----------------------------------------------------------
@@ -108,7 +107,6 @@ if {$project_exists_p} {
     }
 
 }
-
 
 # -----------------------------------------------------------
 # Create the Form
@@ -276,11 +274,10 @@ template::element::create $form_id description -optional -datatype text\
     -label "[_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable])"\
     -html {rows 5 cols 50}
 
-	
+
 # ------------------------------------------------------
 # Dynamic Fields
 # ------------------------------------------------------
-
 
 set object_type "im_project"
 set project_type_id 0
@@ -297,7 +294,7 @@ set field_cnt [im_dynfield::append_attributes_to_form \
     -object_id $my_project_id \
 ]
 
-
+#OK
 
 # Check if we are editing an already existing project
 #
@@ -445,6 +442,9 @@ if {[form is_request $form_id]} {
 }
 
 template::form::set_properties $form_id edit_buttons "[list [list "$button_text" ok]]"
+
+
+#OK
  
 if {[form is_submission $form_id]} {
     form get_values $form_id
@@ -544,6 +544,8 @@ if {[form is_submission $form_id]} {
     }
  
 }
+
+#OK
  
 if {[form is_valid $form_id]} {
 
@@ -552,7 +554,8 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     # Create a new Project if it didn't exist yet
     # -----------------------------------------------------------------
-    
+
+
     # Double-Click protection: the project Id was generated at the new.tcl page
     set id_count [db_string id_count "select count(*) from im_projects where project_id=:project_id"]
     if {0 == $id_count} {
@@ -566,6 +569,22 @@ if {[form is_valid $form_id]} {
 			    -project_type_id	$project_type_id \
 			    -project_status_id	$project_status_id]
 	
+	if {0 == $project_id || "" == $project_id} {
+	    ad_return_complaint 1 "<b>Error creating project</b>:<br>
+		We have got an error creating a new project with the parameters.<br>
+<pre>
+project_name		$project_name
+project_nr		$project_nr
+project_path		$project_path
+company_id		$company_id
+parent_id		$parent_id
+project_type_id		$project_type_id
+project_status_id	$project_status_id
+</pre>
+	    "
+	    ad_script_abort
+	}
+
 	# add users to the project as PMs
 	# - current_user (creator/owner)
 	# - project_leader
@@ -587,6 +606,8 @@ if {[form is_valid $form_id]} {
 	}
 
     }
+
+    # Not-OK
 
     # Set the old project type. Used to detect changes in the project
     # type and therefore the need to display new DynField fields in a
@@ -650,7 +671,6 @@ if {[form is_valid $form_id]} {
 
     # Write Audit Trail
     im_project_audit $project_id
-
 
     # -----------------------------------------------------------------
     # Store dynamic fields
