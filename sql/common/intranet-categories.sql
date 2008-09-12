@@ -130,9 +130,9 @@
 -- 22000-22999  Intranet User Type
 -- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
 -- 24000-24999  Intranet TinyTM (1000)
+-- 25000-25999  reserved for UNED Spain (1000)
+-- 26000-26999  reserved for ILO/ISSA
 
--- 25000-25999  reserved (1000)
--- 26000-26999  reserved (1000)
 -- 27000-27999  reserved (1000)
 -- 28000-28999  reserved (1000)
 -- 29000-29999  reserved (1000)
