@@ -144,6 +144,10 @@ values (22, 'project_status', 'view_projects', 1400);
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (23, 'project_personal_list', 'view_projects', 1400);
 -- 24 reserved for project_csv
+insert into im_views (view_id, view_name, visible_for, view_type_id)
+values (25, 'project_hierarchy', 'view_projects', 1400);
+
+
 
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (80, 'office_list', 'view_offices', 1400);
@@ -302,6 +306,56 @@ extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Em
 -- insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 -- extra_select, extra_where, sort_order, visible_for) values (7,1,NULL,'Contact Phone',
 -- '$company_phone','','',6,'im_permission $user_id view_company_contact');
+
+
+
+
+--------------------------------------------------------------------------
+-- Project Hierarchy
+
+--
+delete from im_view_columns where view_id = 25;
+--
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+values (25,2510,10,'Empty','$arrow_right_html');
+
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+values (25,2520,20,'Nr','"$subproject_indent<a href=$subproject_url>$subproject_nr</a>"');
+
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+values (25,2530,30,'Name','"$subproject_indent<a href=$subproject_url>$subproject_name</a>"');
+
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+values (25,2540,40,'Status','$subproject_status');
+
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+values (25,2590,90,'Empty','$arrow_left_html');
+
+
+
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2503,25,NULL,'Project Name',
+'"<A HREF=/intranet/projects/view?project_id=$project_id>$project_name</A>"','','',3,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2509,25,NULL,'Type',
+'$project_type','','',5,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2513,25,NULL,'Project Manager',
+'"<A HREF=/intranet/users/view?user_id=$project_lead_id>$lead_name</A>"',
+'','',7,'');
+
+insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
+extra_select, extra_where, sort_order, visible_for) values (2535,25,NULL,'Delivery Date',
+'$end_date_formatted','','',35,'');
+
+
+
+
+
+
 
 
 --------------------------------------------------------------

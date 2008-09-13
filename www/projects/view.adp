@@ -40,45 +40,7 @@
 		</form>
 		</table>
 </if>
-		<table class="list">
-		  <tr class="list-header">
-		    <th class="list-narrow"> &nbsp; </th>
-		    <th class="list-narrow">#intranet-core.Project#</th>
-		    <th class="list-narrow">#intranet-core.Name#</th>
-		    <th class="list-narrow">#intranet-core.Status#</th>
-		  </tr>
-		  <multiple name=subprojects>
-
-		  <if @subprojects.subproject_bold_p@>
-		    <tr class="list-bold">
-		  </if>
-		  <else>
-			  <if @subprojects.rownum@ odd>
-			    <tr class="list-odd">
-			  </if> <else>
-			    <tr class="list-even">
-			  </else>
-		  </else>
-
-		  <td class="list-narrow">
-		    <if @subprojects.subproject_bold_p@>
-		      <%= [im_gif arrow_right] %>
-		    </if>
-		  </td>
-		  <td class="list-narrow">
-		      <a href="@subprojects.subproject_url@">@subprojects.subproject_nr@</a>
-		  </td>
-		  <td class="list-narrow">
-		      @subprojects.subproject_indent;noquote@
-		      <a href="@subprojects.subproject_url@">@subprojects.subproject_name@</a>
-		  </td>
-		  <td class="list-narrow">
-			<%= [im_category_from_id @subprojects.subproject_status_id@] %>
-		  </td>
-		  </tr>
-		  </multiple>
-
-		</table>
+		<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
 
 	    @admin_html_content;noquote@
 

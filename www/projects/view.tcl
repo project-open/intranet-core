@@ -394,54 +394,6 @@ if {"" != $admin_html_content} {
     set admin_html [im_table_with_title "[_ intranet-core.Admin_Project]" $admin_html_content]
 }
 
-
-# ---------------------------------------------------------------------
-# Project Hierarchy
-# ---------------------------------------------------------------------
-
-set super_project_id [im_project_super_project_id $project_id]
-
-# Check permissions for showing subprojects
-set perm_sql "
-	(select	p.*
-	from	im_projects p,
-		acs_rels r
-	where	r.object_id_one = p.project_id
-		and r.object_id_two = :user_id
-	)
-"
-if {[im_permission $user_id "view_projects_all"]} { set perm_sql "im_projects" }
-
-
-set project_url "/intranet/projects/view"
-set space "&nbsp; &nbsp; &nbsp; "
-
-
-set subproject_status_sql ""
-if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {
-    set subproject_status_sql "
-	and (
-		children.project_status_id in ([join [im_sub_categories $subproject_status_id] ","])
-	    OR
-		children.project_id = :project_id
-	)
-    "
-}
-
-db_multirow -extend {
-    subproject_indent 
-    subproject_url 
-    subproject_bold_p 
-} subprojects project_hierarchy {} {
-    
-    set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
-    set subproject_indent ""
-    for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
-    set subproject_bold_p [expr $project_id == $subproject_id]
-
-}
-
-
 # ---------------------------------------------------------------------
 # Projects Submenu
 # ---------------------------------------------------------------------
