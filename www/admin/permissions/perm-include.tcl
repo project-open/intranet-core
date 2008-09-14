@@ -24,7 +24,12 @@ lappend elements grantee_name {
     link_url_col name_url
     display_template {
         <if @permissions.any_perm_p_@ true>
+	  <nobr>
           @permissions.grantee_name@
+	  <if "person" eq @permissions.object_type@>
+	  <a href=perm-delete?party_id=@permissions.grantee_id@>[im_gif del]</a>
+	  </if>
+	  </nobr>
         </if>
         <else>
           <font color="gray">@permissions.grantee_name@</font>
@@ -98,7 +103,7 @@ set perm_form_export_vars [export_vars -form {object_id privs return_url}]
 set perm_modify_url "${perm_url}perm-modify"
 
 set application_group_id [application_group::group_id_from_package_id -package_id [ad_conn subsite_id]]
-
+# ad_return_complaint 1 $application_group_id
 
 # PERMISSION: yes = 2, no = 0
 # DIRECT:     yes = 1, no = -1
