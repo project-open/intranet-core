@@ -354,4 +354,11 @@ a.action {
   list-style: circle url(/resources/acs-subsite/right.gif);
 }
 
+/* Hide button*/
+#sideBarTab{
+	visibility: hidden;
+}
+ 
+
+
 
