@@ -1741,6 +1741,7 @@ ad_proc -public im_skin_list {} {
 	{ 2  "default"       "Right Blue" }
 	{ 1  "opus5"         "Light Green" }
 	{ 3  "transparent"   "Transparent" }
+	{ 3  "saltnpepper"   "Saltnpepper" }
     }
 }
 
