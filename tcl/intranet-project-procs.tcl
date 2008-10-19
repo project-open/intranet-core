@@ -36,6 +36,7 @@ ad_proc -public im_project_type_other {} { return 86 }
 ad_proc -public im_project_type_task {} { return 100 }
 ad_proc -public im_project_type_ticket {} { return 101 }
 ad_proc -public im_project_type_sla {} { return 2502 }
+ad_proc -public im_project_type_milestone {} { return 2504 }
 
 ad_proc -public im_project_status_potential {} { return 71 }
 ad_proc -public im_project_status_quoting {} { return 74 }
@@ -2421,10 +2422,15 @@ ad_proc im_project_nuke {project_id} {
 		where object_id_one = :project_id 
 			or object_id_two = :project_id
 	"]
+
+	set im_conf_item_project_rels_exists_p [db_table_exists im_conf_item_project_rels]
+
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
+	    if {$im_conf_item_project_rels_exists_p} { db_dml del_rels "delete from im_conf_item_project_rels where rel_id = :rel_id" }
+
 	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
 	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
 	}
