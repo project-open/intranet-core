@@ -328,8 +328,8 @@ values (25,2530,30,'Name','"$subproject_indent<a href=$subproject_url>$subprojec
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
 values (25,2540,40,'Status','$subproject_status');
 
-insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
-values (25,2590,90,'Empty','$arrow_left_html');
+-- insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
+-- values (25,2590,90,'Empty','$arrow_left_html');
 
 
 

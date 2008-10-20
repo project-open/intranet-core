@@ -35,7 +35,9 @@ ad_page_contract {
     {return_url ""}
     {menu_name ""}
     {menu_sort_order 0}
+    {submit "Update"}
 }
+
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -44,24 +46,38 @@ if {!$user_is_admin_p} {
     return
 }
 
-set updates [list]
-if {"" != $page_url} { lappend updates "page_url = :page_url" }
-if {"" != $title_tcl} { lappend updates "title_tcl = :title_tcl" }
-if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
-if {"" != $location} { lappend updates "location = :location" }
-if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
-if {"" != $menu_name} { lappend updates "menu_name = :menu_name" }
-if {"" != $menu_sort_order} { lappend updates "menu_sort_order = :menu_sort_order" }
 
-if {[llength $updates] > 0} {
-    if [catch {
-    db_dml update_category_properties "
-	UPDATE	im_component_plugins
-	SET	[join $updates ",\n\t"]
-	WHERE	plugin_id = :plugin_id"
-    } errmsg ] {
-	ad_return_complaint "Argument Error" "<pre>$errmsg</pre>"
-	return
+switch $submit {
+    "Update" {
+	set updates [list]
+	if {"" != $page_url} { lappend updates "page_url = :page_url" }
+	if {"" != $title_tcl} { lappend updates "title_tcl = :title_tcl" }
+	if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
+	if {"" != $location} { lappend updates "location = :location" }
+	if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
+	if {"" != $menu_name} { lappend updates "menu_name = :menu_name" }
+	if {"" != $menu_sort_order} { lappend updates "menu_sort_order = :menu_sort_order" }
+	
+	if {[llength $updates] > 0} {
+	    if [catch {
+		db_dml update_category_properties "
+		UPDATE	im_component_plugins
+		SET	[join $updates ",\n\t"]
+		WHERE	plugin_id = :plugin_id"
+	    } errmsg ] {
+		ad_return_complaint "Argument Error" "<pre>$errmsg</pre>"
+		return
+	    }
+	}
+    }
+    "Delete" {
+	db_string delete_component "
+		select im_component_plugin__delete(:plugin_id::integer)
+	"
+    }
+    default {
+	ad_return_complaint 1 "<b>Unknown Operations '$submit'</b><br>"
+	ad_script_abort
     }
 }
 
@@ -73,3 +89,4 @@ if {"" != $return_url} {
 } else {
     ad_returnredirect "index"
 }
+

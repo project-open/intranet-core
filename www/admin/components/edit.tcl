@@ -23,6 +23,7 @@ ad_page_contract {
     @author mai-bee@gmx.net
 } {
     plugin_id:naturalnum
+    { return_url "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -71,10 +72,6 @@ switch $location {
     "header-left" { set header_left_selected " selected" }
     "header-right" { set header_right_selected " selected" }
 }
-
-# TODO add correct URL
-set return_url ""
-
 
 set page_body "
 <form action=\"edit-2.tcl\" method=GET>
@@ -128,6 +125,7 @@ set page_body "
 </TBODY>
 </TABLE>
 <input type=submit name=submit value=Update>
+<input type=submit name=submit value=Delete>
 </form>
 "
 

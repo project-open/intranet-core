@@ -12,7 +12,7 @@
 <td width="50%">
 
 	<table>
-	<form action=index method=POST>
+	<form action=index method=GET>
 	<tr><td colspan=2 class=rowtitle><%= [lang::message::lookup "" intranet-core.Filter_Components "Filter Components"] %></td><td></tr>
 	<tr class=roweven>
 	<td><%= [lang::message::lookup "" intranet-core.Package "Package"] %></td>

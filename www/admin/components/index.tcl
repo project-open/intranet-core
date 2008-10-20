@@ -40,6 +40,7 @@ set bgcolor(1) " class=roweven"
 
 if {"" == $return_url} { set return_url [ad_conn url] }
 
+set current_url [im_url_with_query]
 set component_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
@@ -141,9 +142,7 @@ db_foreach all_component_of_type $component_select_sql {
     append table "
 <tr $bgcolor([expr $ctr % 2])>
   <td>
-    <a href=\"edit.tcl?[export_url_vars plugin_id]\">
-      $plugin_name
-    </a>
+    <a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a>
   </td>
   <td>$package_name</td>
   <td>$location</td>

@@ -1281,6 +1281,7 @@ ad_proc -public im_stylesheet {} {
     } else {
 	set skin_js "default"
     }
+    # ad_return_complaint 1 $skin_js
     set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_js.css"]
 
     if {[llength [info procs im_package_calendar_id]]} {
@@ -1741,9 +1742,10 @@ ad_proc -public im_skin_list {} {
 	{ 2  "default"       "Right Blue" }
 	{ 1  "opus5"         "Light Green" }
 	{ 3  "transparent"   "Transparent" }
-	{ 4  "saltnpepper"   "Saltnpepper" }
     }
 }
+
+#	{ 4  "saltnpepper"   "Saltnpepper" }
 
 ad_proc -public im_skin_name { skin_id } {
 } {

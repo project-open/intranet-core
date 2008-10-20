@@ -78,6 +78,7 @@ cvs checkout intranet-invoices
 cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import
 cvs checkout intranet-material
+cvs checkout intranet-milestone
 cvs checkout intranet-notes
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp

@@ -20,7 +20,6 @@ COPY import_offices (office_name, office_path, office_status, office_type, phone
 Geneva Headquarter	geneva_headquarter	active	Main Office	(+41-22) 799 66 17	(+41-22) 799 85 09	General Secretariat	Case postale 1	Geneva 22	Switzerland	1211	CH	\N	\N
 \.
 
-
 DROP TABLE import_companies;
 CREATE TABLE import_companies (
 	company_name		text,
@@ -168,9 +167,10 @@ COPY import_company_members (company_nr, email) FROM stdin;
 
 
 ---------------------------------------------------------------------------------
--- Helpers
+-- Auxilary Functions and Helpers
 ---------------------------------------------------------------------------------
 
+-- Lookup a category in po and return the category_id
 create or replace function import_cat (varchar, varchar)
 returns integer as '
 DECLARE
@@ -190,7 +190,8 @@ END;' language 'plpgsql';
 -- select import_cat('open','intranet project status');
 
 
-create or replace function import_user (varchar)
+-- Lookup the "primary key" (email or username) of a user into a user_id
+create or replace function lookup_user (varchar)
 returns integer as '
 DECLARE
 	p_email		alias for $1;
@@ -207,7 +208,7 @@ BEGIN
 	END IF;
 
 	IF v_user_id is null AND p_email is not null THEN
-	   	RAISE NOTICE ''import_user(%): Did not find user'', p_email;
+	   	RAISE NOTICE ''lookup_user(%): Did not find user'', p_email;
 	END IF;
 
 	RETURN v_user_id;
@@ -218,12 +219,14 @@ END;' language 'plpgsql';
 -- Users
 ---------------------------------------------------------------------------------
 
+-- Actually create new users by going through the import_users table
+-- line by line and inserting the user into the DB.
 create or replace function import_users ()
 returns integer as '
 DECLARE
         row		RECORD;
 	v_user_id	integer;
-	v_duplicate_p	integer;
+	v_exists_p	integer;
 	v_authority_id	integer;
 	v_group_id	integer;
 BEGIN
@@ -231,10 +234,13 @@ BEGIN
         select	* 
 	from import_users
     LOOP
-	select count(*) into v_duplicate_p from parties p
+	-- Check if the user already exists / has been imported already
+	-- during the last run of this script
+	select count(*) into v_exists_p from parties p
 	where trim(lower(p.email)) = trim(lower(row.email));
 
-	IF v_duplicate_p = 0 THEN
+	-- Create a new user if the user wasnt there
+	IF v_exists_p = 0 THEN
 	   	RAISE NOTICE ''Insert User: %'', row.email;
 		v_user_id := acs__add_user(
 			null, ''user'', now(), 0, ''0.0.0.0'', 
@@ -247,7 +253,12 @@ BEGIN
 		INSERT INTO im_employees (employee_id) VALUES (v_user_id);
 	END IF;
 
-	v_user_id := import_user(row.email);
+	-- This is the main part of the import process, this part is 
+	-- executed for every line in the import_users table every time
+	-- this script is executed.
+	-- Update the users information, no matter whether its a new or
+	-- an already existing user.
+	v_user_id := lookup_user(row.email);
 
 	RAISE NOTICE ''Update User: %'', row.email;
 	update users set
@@ -285,7 +296,7 @@ BEGIN
 	from import_users_contact
     LOOP
 
-        v_user_id := import_user(row.email);
+        v_user_id := lookup_user(row.email);
 	RAISE NOTICE ''Update Contacts: % - %'', row.email, v_user_id;
 
 	update users_contact set
@@ -322,7 +333,7 @@ BEGIN
         select	* 
 	from import_employees
     LOOP
-        v_user_id := import_user(row.email);
+        v_user_id := lookup_user(row.email);
 	RAISE NOTICE ''Update Employees: % - %'', row.email, row.department_code;
 
 	IF v_user_id is not null THEN
@@ -335,7 +346,7 @@ BEGIN
 		END IF;
 
 		update im_employees set
-			supervisor_id = import_user(row.supervisor),
+			supervisor_id = lookup_user(row.supervisor),
 			department_id = (
 				select cost_center_id 
 				from im_cost_centers 
@@ -369,7 +380,7 @@ DECLARE
 	v_office_id	integer;
 	v_status_id	integer;
 	v_type_id	integer;
-	v_duplicate_p	integer;
+	v_exists_p	integer;
 BEGIN
     FOR row IN
         select	* 
@@ -379,9 +390,9 @@ BEGIN
 	v_type_id := import_cat(row.office_type, ''Intranet Office Type'');
 
 	-- Check for duplicate entry based on office_path PK
-	select count(*) into v_duplicate_p from im_offices o
+	select count(*) into v_exists_p from im_offices o
 	where trim(lower(o.office_path)) = trim(lower(row.office_path));
-	IF v_duplicate_p = 0 THEN
+	IF v_exists_p = 0 THEN
 	   	RAISE NOTICE ''Insert Office: %'', row.office_path;
 		v_office_id := im_office__new (
 			NULL, ''im_office'', now()::date, 0, ''0.0.0.0'', null,
@@ -402,7 +413,7 @@ BEGIN
         		address_state = row.address_state,
         		address_postal_code = row.address_postal_code,
         		address_country_code = lower(row.address_country_code),
-        		contact_person_id = import_user(row.contact_person),
+        		contact_person_id = lookup_user(row.contact_person),
         		note = row.note
 	where office_path = row.office_path;
 
@@ -424,13 +435,13 @@ DECLARE
 	v_status_id	integer;
 	v_type_id	integer;
 	v_office_id	integer;
-	v_duplicate_p	integer;
+	v_exists_p	integer;
 BEGIN
     FOR row IN
         select	* 
 	from import_companies
     LOOP
-	select count(*) into v_duplicate_p from im_companies o
+	select count(*) into v_exists_p from im_companies o
 	where trim(lower(o.company_path)) = trim(lower(row.company_path));
 
 	v_status_id := import_cat(row.company_status, ''Intranet Company Status'');
@@ -442,7 +453,7 @@ BEGIN
 	   	RAISE NOTICE ''import_companies(%): Did not find office "%"'', row.company_path, row.office_path;
 	END IF;
 
-	IF v_duplicate_p = 0 THEN
+	IF v_exists_p = 0 THEN
 	   	RAISE NOTICE ''Insert Company: %'', row.company_path;
 		v_company_id := im_company__new (
 			NULL, ''im_company'', now()::date, 0, ''0.0.0.0'', null,
@@ -457,8 +468,8 @@ BEGIN
 			main_office_id = v_office_id,
 			company_status_id = v_status_id,
 			company_type_id = v_type_id,
-			primary_contact_id = import_user(row.primary_contact),
-			accounting_contact_id = import_user(row.accounting_contact),
+			primary_contact_id = lookup_user(row.primary_contact),
+			accounting_contact_id = lookup_user(row.accounting_contact),
 			referral_source = row.referral_source,
 			default_vat = row.default_vat::numeric,
         		note = row.note
@@ -484,7 +495,7 @@ DECLARE
 	v_type_id	integer;
 	v_customer_id	integer;
 	v_parent_id	integer;
-	v_duplicate_p	integer;
+	v_exists_p	integer;
 BEGIN
     FOR row IN
         select	* 
@@ -503,9 +514,9 @@ BEGIN
 	where project_nr = row.parent_nr;
 
 	-- Duplicate?
-	select count(*) into v_duplicate_p from im_projects p
+	select count(*) into v_exists_p from im_projects p
 	where trim(lower(p.project_path)) = trim(lower(row.project_path));
-	IF v_duplicate_p = 0 THEN
+	IF v_exists_p = 0 THEN
 	   	RAISE NOTICE ''Insert Project: %'', row.project_path;
 		v_project_id := im_project__new (
 			NULL, ''im_project'', now(), 0, ''0.0.0.0'', null,
@@ -523,16 +534,16 @@ BEGIN
 		company_id		= v_customer_id,
 		project_type_id		= v_type_id,
 		project_status_id	= v_status_id,
-		project_lead_id		= import_user(row.project_lead),
-		supervisor_id		= import_user(row.supervisor),
-		corporate_sponsor_id	= import_user(row.corporate_sponsor),
+		project_lead_id		= lookup_user(row.project_lead),
+		supervisor_id		= lookup_user(row.supervisor),
+		corporate_sponsor_id	= lookup_user(row.corporate_sponsor),
 		on_track_status_id	= import_cat(row.on_track_status, ''Intranet Project On Track Status''),
 		project_budget		= row.project_budget::numeric,
 		project_budget_currency	= row.project_budget_currency,
 		project_budget_hours	= row.project_budget_hours::numeric,
 		start_date		= row.start_date::date,
 		end_date		= row.end_date::date,
-		company_contact_id	= import_user(row.customer_contact),
+		company_contact_id	= lookup_user(row.customer_contact),
 		company_project_nr	= row.customer_project_nr,
 		note			= row.note,
 		description		= row.description
@@ -563,7 +574,7 @@ BEGIN
 	   	RAISE NOTICE ''import_project_members: Did not find project "%"'', row.project_nr;
 	END IF;
 
-	v_user_id := import_user(row.email);
+	v_user_id := lookup_user(row.email);
 
 	IF v_user_id is not null AND v_project_id is not null THEN
 		v_rel_id := im_biz_object_member__new (
@@ -597,7 +608,7 @@ DECLARE
 	v_type_id	integer;
 	v_customer_id	integer;
 	v_parent_id	integer;
-	v_duplicate_p	integer;
+	v_exists_p	integer;
 	v_default_material_id	integer;
 	v_cost_center_id integer;
 BEGIN

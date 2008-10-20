@@ -343,6 +343,10 @@ update im_categories set enabled_p = 'f' where category_id = 101;
 SELECT im_category_new (2500, 'Translation Project', 'Intranet Project Type');
 SELECT im_category_new (2501, 'Consulting Project', 'Intranet Project Type');
 -- 2502 reserved for "SLA"
+-- 2503 reserved
+SELECT im_category_new (2504, 'Milestone', 'Intranet Project Type');
+update im_categories set enabled_p = 'f'
+where category = 'Milestone' and category_type = 'Intranet Project Type';
 
 
 SELECT im_category_hierarchy_new (97, 2501);
