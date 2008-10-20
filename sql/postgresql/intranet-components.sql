@@ -240,6 +240,10 @@ create or replace function im_component_plugin__delete (integer) returns integer
 DECLARE
 	p_plugin_id	alias for $1;
 BEGIN
+	-- Delete references to object per user
+	delete from	im_component_plugin_user_map
+	where		plugin_id = p_plugin_id;
+
 	-- Erase the im_component_plugins item associated with the id
 	delete from 	im_component_plugins
 	where		plugin_id = p_plugin_id;
