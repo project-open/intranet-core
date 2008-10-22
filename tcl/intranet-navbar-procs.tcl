@@ -61,7 +61,7 @@ ad_proc -public im_navbar_tree {
 
 	<li><a href=/intranet/projects/>Project Management</a>
 	<ul>
-		<li><a href=/intranet/projects/new>New Project</a>
+		<li><a href=/intranet/projects/new>Create New Project</a>
 		[im_navbar_write_tree -label "projects" -maxlevel 0]
 		<li><a href=/intranet-dw-light/projects.csv>Export Projects to CSV/Excel</a></li>
 		<li><a href=/intranet/projects/index?view_name=project_costs>Projects Profit &amp; Loss</a>
@@ -88,6 +88,12 @@ ad_proc -public im_navbar_tree {
 		</ul>
 		<li><a href=/intranet-reporting/user-contacts>Users &amp; Contacts Report</a>
 
+		<li><a href=/intranet-reporting/>Reporting</a>
+                <ul>
+                [im_menu_li "reporting-timesheet-productivity"]
+		<!-- Additional reports in future HR area? --> 
+                [im_navbar_write_tree -label "reporting-hr" -maxlevel 1]
+                </ul>
 	</ul>
 
 	<li><a href=/intranet/>Sales &amp; Marketing</a>
@@ -149,6 +155,10 @@ ad_proc -public im_navbar_tree {
 		</li>
 	</ul>
 
+	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_release_mgmt]}]} {set ttt} else {set ttt ""}]
+
 	<li><a href=/intranet/>Collaboration</a>
 	<ul>
 		<li><a href=/intranet-search/search?type=all&q=search>Search Engine</a>
@@ -181,17 +191,12 @@ ad_proc -public im_navbar_tree {
 		<li><a href=/intranet-invoices/list?cost_status_id=3802&cost_type_id=3704>Accounts Payable</a></li>
 		<li><a href=/intranet-payments/index>Payments</a></li>
 		<li><a href=/intranet-dw-light/invoices.csv>Export Finance to CSV/Excel</a></li>
+
 		<li><a href=/intranet-reporting/>Reporting</a>
-		<ul>
-			<li><a href=/intranet/projects/index?view_name=project_costs>Profit &amp; Loss per Project</a></li>
-			<li><a href=/intranet-reporting-finance/finance-documents-projects></a>Income Statement</li>
-			<li><a href=/intranet-reporting/timesheet-productivity>Timesheet Productivity</a></li>
-			<li><a href=/intranet-reporting-finance/finance-projects-documents></a>Projects and their Financial Documents</li>
-			<li><a href=/intranet-reporting-finance/finance-documents-projects></a>Financial Documents and their Projects</li>
-			<li><a href=/intranet-reporting-finance/finance-expenses></a>Expenses / Travel Costs</li>
-			<li><a href=/intranet-reporting-finance/finance-payment-balance></a>Payment Balance</li>
-			<li><a href=/intranet-reporting-cubes/price-cube></a>Price Data-Warehouse Cube</li>
-		</ul>
+                <ul>
+                [im_navbar_write_tree -label "reporting-finance" -maxlevel 1]
+                [im_navbar_write_tree -label "reporting-timesheet" -maxlevel 1]
+                </ul>
 
 		<li><a href=/intranet/admin/>Admin</a>
 		<ul>
@@ -200,10 +205,7 @@ ad_proc -public im_navbar_tree {
 			<li><a href=/intranet-material/>Materials (Service Types)</a>
 		</ul>
 	</ul>
-<!--
-	<li><a href=/intranet-confdb/>Configuration Management</a>
-	<li><a href=/intranet-release-mgmt/>Release Management</a>
--->
+
 	<li><a href=/intranet/admin/categories/>Master Data Management</a>
 	<ul>
 		<li><a href=/intranet/companies/upload-companies>Import Companies from CSV</a>

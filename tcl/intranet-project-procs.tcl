@@ -2136,6 +2136,12 @@ ad_proc im_project_nuke {project_id} {
 
     db_transaction {
     
+	# Helpdesk Tickets
+        if {[db_table_exists im_tickets]} {
+	    db_dml del_tickets "delete from im_tickets where ticket_id = :project_id"
+	}
+
+
 	# Permissions
 	ns_log Notice "projects/nuke-2: acs_permissions"
 	db_dml perms "delete from acs_permissions where object_id = :project_id"
