@@ -35,7 +35,7 @@ if {!$user_is_admin_p} {
 
 if {"" == $return_url} { set return_url [ad_conn url] }
 
-set page_title "[_ intranet-core.Nuke_Demo_Companies]"
+set page_title [lang::message::lookup "" intranet-core.Nuke_Demo_Companies "Nuke Demo Companies"]
 set context_bar [im_context_bar $page_title]
 set context ""
 
@@ -44,21 +44,21 @@ set context ""
 # ------------------------------------------------------
 
 set action "all"
-set action_list [list "[_ intranet-core.Nuke_All_Demo_Companies]" "[export_vars -base "cleanup-companies-2" {return_url action}]" "[_ intranet-core.Nuke_All_Demo_Companies]"]
+set action_list [list "[lang::message::lookup "" intranet-core.Nuke_All_Demo_Companies "Nuke All Demo Companies"]" "[export_vars -base "cleanup-companies-2" {return_url action}]" "[lang::message::lookup "" intranet-core.Nuke_All_Demo_Companies "Nuke All Demo Companies"]"]
 set action_list {}
 
 set elements_list {
   company_id {
-    label "[_ intranet-core.Id]"
+    label "[lang::message::lookup {} intranet-core.Id]"
   }
   company_nr {
-    label "[_ intranet-core.Company_Nr]"
+      label "[lang::message::lookup {} intranet-core.Company_Nr {Company Nr}]"
     display_template {
 	    <a href="@companies.company_url@">@companies.company_nr@</a>
     }
   }
   company_name {
-    label "[_ intranet-core.Name]"
+    label "[lang::message::lookup {} intranet-core.Name]"
     display_template {
 	    <a href="@companies.company_url@">@companies.company_name@</a>
     }
@@ -70,10 +70,10 @@ set elements_list {
   	label "Num Offices"
   }
   company_type {
-  	label "[_ intranet-core.Company_Type]"
+  	label "[lang::message::lookup {} intranet-core.Company_Type]"
   }
   company_status {
-  	label "[_ intranet-core.Company_Status]"
+  	label "[lang::message::lookup {} intranet-core.Company_Status]"
   }
 }
 
@@ -119,7 +119,7 @@ db_multirow -extend {company_url} companies get_companies "
 	where
 		1=1
 	order by 
-		c.company_id
+		c.company_id DESC
 " {
 	set company_url [export_vars -base "/intranet/companies/view" {company_id return_url}]
 }
