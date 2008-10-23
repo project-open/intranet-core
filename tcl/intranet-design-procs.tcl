@@ -579,9 +579,9 @@ ad_proc -public im_navbar_tab {
     selected
 } {} {
     if {$selected} {
-	return "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$name</a></div></li>\n"
+	return "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
     }
-    return "<li class=\"unselected\"><div class=\"navbar_unselected\"><a href=\"$url\">$name</a></div></li>\n"
+    return "<li class=\"unselected\"><div class=\"navbar_unselected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
 }
 
 ad_proc -public im_sub_navbar { 
@@ -1747,10 +1747,11 @@ ad_proc -public im_skin_list {} {
 	{ 2  "default"       "Right Blue" }
 	{ 1  "opus5"         "Light Green" }
 	{ 3  "transparent"   "Transparent" }
+	{ 4  "saltnpepper"   "SaltnPepper" }
     }
 }
 
-#	{ 4  "saltnpepper"   "Saltnpepper" }
+
 
 ad_proc -public im_skin_name { skin_id } {
 } {
