@@ -67,6 +67,7 @@ ad_form \
 	{sort_order:text(text) {label "Sort Order"} {html {size 10}}}
 	{parent_menu_id:text(select) {label "Parent Menu"} {options $parent_options} }
 	{visible_tcl:text(text),optional {label "Visible TCL"} {html {size 100}}}
+	{enabled_p:text(radio),optional {label "Enabled?"} {options {{True t} {False f}}} }
     }
 
 
@@ -81,7 +82,21 @@ ad_form -extend -name menu -on_request {
 
 } -new_data {
 
-    db_exec_plsql menu_insert {}
+    set menu_id [db_string menu_insert {}]
+
+    db_dml menu_update "
+	update im_menus set
+	        package_name    = :package_name,
+	        label           = :label,
+	        name            = :name,
+	        url             = :url,
+	        sort_order      = :sort_order,
+	        parent_menu_id  = :parent_menu_id,
+	        visible_tcl	= :visible_tcl,
+		enabled_p	= :enabled_p
+	where
+		menu_id = :menu_id
+    "
 
 } -edit_data {
 
@@ -93,10 +108,12 @@ ad_form -extend -name menu -on_request {
 	        url             = :url,
 	        sort_order      = :sort_order,
 	        parent_menu_id  = :parent_menu_id,
-	        visible_tcl	= :visible_tcl
+	        visible_tcl	= :visible_tcl,
+		enabled_p	= :enabled_p
 	where
 		menu_id = :menu_id
-"
+    "
+
 } -on_submit {
 
 	ns_log Notice "new1: on_submit"

@@ -13,9 +13,8 @@
 # See the GNU General Public License for more details.
 
 ad_library {
-	Functions related to navigation bar
-
-	@author Frank Bergmann (frank.bergmann@project-open.com)
+    Define the left-hand process oriented navigation bar
+    @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
 
@@ -23,8 +22,8 @@ ad_library {
 # 
 # --------------------------------------------------------
 
-# Klaus sagt: Die Prozesse kennt jeder, waerend keiner unsere
-# Objekte kennt.
+# from Klaus: "The ]po[ objects are clear from the top menu,
+# but the underlying processes are unclear.
 
 # ToDo: Skills for HR
 # ToDo: Salaries report in HR
@@ -59,17 +58,7 @@ ad_proc -public im_navbar_tree {
 		<li><a href=/register/logout>Logout</a>
 	</ul>
 
-	<li><a href=/intranet/projects/>Project Management</a>
-	<ul>
-		<li><a href=/intranet/projects/new>Create New Project</a>
-		[im_navbar_write_tree -label "projects" -maxlevel 0]
-		<li><a href=/intranet-dw-light/projects.csv>Export Projects to CSV/Excel</a></li>
-		<li><a href=/intranet/projects/index?view_name=project_costs>Projects Profit &amp; Loss</a>
-		<li><a href=/intranet/projects/index?filter_advanced_p=1>Projects Advanced Filtering</a>
-		<li><a href=/gantt-resources-cube?config=resource_planning_report>Project Resource Planning</a>
-		<li><a href=/intranet/projects/index?project_type_id=2500>Translation Projects</a>
-		<li><a href=/intranet/projects/index?project_type_id=2501>Consulting Projects</a>
-	</ul>
+	[if {![catch {set ttt [im_navbar_tree_project_management]}]} {set ttt} else {set ttt ""}]
 
 	<li><a href=/intranet/>Human Resources</a>
 	<ul>
@@ -136,6 +125,100 @@ ad_proc -public im_navbar_tree {
 		</li>
 	</ul>
 
+	[if {![catch {set ttt [im_navbar_tree_provider_management]}]} {set ttt} else {set ttt ""}]
+
+	[im_navbar_tree_helpdesk_problem_mgmt]
+
+	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_release_mgmt]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_collaboration]}]} {set ttt} else {set ttt ""}]
+        [if {![catch {set ttt [im_navbar_tree_finance]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_master_data_management]}]} {set ttt} else {set ttt ""}]
+
+	[im_menu_li admin]
+		<ul>
+		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		</ul>
+	<li><a href=/acs-admin/>Developer Support</a>
+		<ul>
+		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		</ul>
+	</ul>
+      </div>
+    "
+}
+
+
+# --------------------------------------------------------
+#
+# --------------------------------------------------------
+
+
+ad_proc -public im_navbar_tree_project_management { } { Project Management } {
+    set html "
+	<li><a href=/intranet/projects/>Project Management</a>
+	<ul>
+		<li><a href=/intranet/projects/new>Create a New Project</a>
+    "
+
+    # Add sub-menu with project types
+    append html "
+        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
+        <ul>
+    "
+    set project_type_sql "
+	select * from im_project_types 
+	where project_type_id not in (select child_id from im_category_hierarchy)
+	order by project_type
+    "
+    db_foreach project_types $project_type_sql {
+        set url [export_vars -base "/intranet/projects/index" {project_type_id}]
+        regsub -all " " $project_type "_" project_type_subst
+        set name [lang::message::lookup "" intranet-core.Project_type_$project_type_subst "${project_type}s"]
+        append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
+        </ul>
+        </li>
+    "
+
+    # Add sub-menu with project status
+    append html "
+        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
+        <ul>
+    "
+    set project_status_sql "
+	select * from im_project_status 
+	where project_status_id not in (select child_id from im_category_hierarchy)
+	order by project_status
+    "
+    db_foreach project_status $project_status_sql {
+        set url [export_vars -base "/intranet/projects/index" {project_status_id}]
+        regsub -all " " $project_status "_" project_status_subst
+        set name [lang::message::lookup "" intranet-core.Project_status_$project_status_subst "$project_status"]
+        append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
+        </ul>
+        </li>
+    "
+
+    append html "
+		<li><a href=/intranet-dw-light/projects.csv>Export Projects to CSV</a></li>
+		<li><a href=/intranet/projects/index?filter_advanced_p=1>Project Advanced Filtering</a>
+		<li><a href=/gantt-resources-cube?config=resource_planning_report>Project Resource Planning</a>
+		<li><a href=/intranet/projects/index?view_name=project_costs>Projects Profit &amp; Loss</a>
+    "
+
+    append html "
+	</ul>
+    "
+    return $html
+}
+
+ad_proc -public im_navbar_tree_provider_management { } { Provider Management } {
+    return "
 	<li><a href=/intranet/>Provider Management</a>
 	<ul>
 		<li><a href=/intranet-dw-light/companies.csv>Export Providers to CSV/Excel</a></li>
@@ -154,11 +237,13 @@ ad_proc -public im_navbar_tree {
 			</ul>
 		</li>
 	</ul>
+    "
+}
 
-	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_release_mgmt]}]} {set ttt} else {set ttt ""}]
 
+
+ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
+    return "
 	<li><a href=/intranet/>Collaboration</a>
 	<ul>
 		<li><a href=/intranet-search/search?type=all&q=search>Search Engine</a>
@@ -176,36 +261,12 @@ ad_proc -public im_navbar_tree {
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1102>Incidents</a>
 		</ul>
 	</ul>
+    "
+}
 
-	<li><a href=/intranet/>Finance</a>
-	<ul>
-		<li><a href=/intranet-invoices/list?cost_type_id=3708>New Cust. Invoices &amp; Quotes</a>
-		<ul>
-			[im_navbar_write_tree -label "invoices_customers" -maxlevel 0]
-		</ul>
-		<li><a href=/intranet-invoices/list?cost_type_id=3710>New Prov. Bills &amp; POs</a>
-		<ul>
-			[im_navbar_write_tree -label "invoices_providers" -maxlevel 0]
-		</ul>
-		<li><a href=/intranet-invoices/list?cost_status_id=3802&cost_type_id=3700>Accounts Receivable</a></li>
-		<li><a href=/intranet-invoices/list?cost_status_id=3802&cost_type_id=3704>Accounts Payable</a></li>
-		<li><a href=/intranet-payments/index>Payments</a></li>
-		<li><a href=/intranet-dw-light/invoices.csv>Export Finance to CSV/Excel</a></li>
 
-		<li><a href=/intranet-reporting/>Reporting</a>
-                <ul>
-                [im_navbar_write_tree -label "reporting-finance" -maxlevel 1]
-                [im_navbar_write_tree -label "reporting-timesheet" -maxlevel 1]
-                </ul>
-
-		<li><a href=/intranet/admin/>Admin</a>
-		<ul>
-			<li><a href=/intranet-cost/cost-centers/index>Cost Centers &amp Departments</a>
-			<li><a href=/intranet-exchange-rate/index>Exchange Rates</a>
-			<li><a href=/intranet-material/>Materials (Service Types)</a>
-		</ul>
-	</ul>
-
+ad_proc -public im_navbar_tree_master_data_management { } { Master Data Management } {
+    return "
 	<li><a href=/intranet/admin/categories/>Master Data Management</a>
 	<ul>
 		<li><a href=/intranet/companies/upload-companies>Import Companies from CSV</a>
@@ -293,132 +354,12 @@ ad_proc -public im_navbar_tree {
 			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+Task+Status>Translation Task Status</a>
 		</ul>
 	</ul>
-
-	[im_menu_li admin]
-		<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 0]
-		</ul>
-	<li><a href=/acs-admin/>Developer Support</a>
-		<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 0]
-		</ul>
-	</ul>
-      </div>
-    "
-}
-
-
-# --------------------------------------------------------
-# 
-# --------------------------------------------------------
-
-ad_proc -public im_navbar_tree_by_object { 
-    {-label ""} 
-} {
-    Creates an <ul> ...</ul> hierarchical list with all major
-    objects in the system.
-} {
-    set html "
-      <hr/>
-      <div class=filter-block>
-	<ul class=mktree>
-	<li><a href=/intranet/>Home</a></li>
-	[im_menu_li bug_tracker]
-	[im_menu_li forum]
-	[im_menu_li user]
-	<ul>
-		<li><a href=/intranet/users/new>New User</a>
-		[im_navbar_write_tree -label "user" -maxlevel 0]
-	</ul>
-	[im_menu_li projects]
-	<ul>
-		<li><a href=/intranet/projects/new>New Project</a>
-		<li><a href=/intranet/projects/index?view_name=project_costs>Projects Profit &amp; Loss</a>
-		<li><a href=/intranet/projects/index?filter_advanced_p=1>Projects Advanced Filtering</a>
-		<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>Project Resource Planning</a>
-		<li><a href=/intranet/projects/index?project_type_id=2500>Translation Projects</a>
-		<li><a href=/intranet/projects/index?project_type_id=2501>Consulting Projects</a>
-		<li>Projects by Status
-		<ul>
-		[im_navbar_write_tree -label "projects" -maxlevel 0]
-		</ul>
-	</ul>
-	[im_menu_li workflow]
-	[im_menu_li companies]
-	<ul>
-		<li><a href=/intranet/companies/new>New Company</a>
-		<li><a href=/intranet/companies/index?type_id=57>Customers</a>
-		<li><a href=/intranet/companies/index?type_id=56>Providers</a>
-		<li><a href=/intranet/companies/index?type_id=53>Internal</a>
-		<li>Companies by Status
-		<ul>
-		[im_navbar_write_tree -label "companies" -maxlevel 0]
-		</ul>
-	</ul>
-	[im_menu_li timesheet2_timesheet]
-	<ul>
-		[im_menu_li timesheet2_absences]
-	</ul>
-	[im_menu_li timesheet2_absences]
-	<ul>
-		<li><a href=/intranet-timesheet2/absences/new>New Absence</a>
-	</ul>
-	[im_menu_li wiki]
-	[im_menu_li finance]
-	<ul>
-	[im_navbar_write_tree -label "finance" -maxlevel 0]
-	</ul>
-	[im_menu_li freelance_rfqs]
-	[im_menu_li reporting]
-	<ul>
-		[im_navbar_write_tree -label "reporting" -maxlevel 1]
-	</ul>
-	[im_menu_li dashboard]
-	[im_menu_li admin]
-		<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 0]
-		</ul>
-	[im_menu_li openacs]
-		<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 0]
-		</ul>
-	</ul>
-      </div>
     "
 }
 
 # --------------------------------------------------------
 # 
 # --------------------------------------------------------
-
-ad_proc -public im_navbar_tree_automatic { 
-    {-label ""} 
-} {
-    Creates an <ul> ...</ul> hierarchical list with all major
-    objects in the system.
-} {
-    set main_menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
-    set menu_sql "
-	select	m.*
-	from	im_menus m
-	where	m.parent_menu_id = :main_menu_id
-	order by sort_order
-    "
-    set html ""
-    db_foreach menus $menu_sql {
-	append html "<li><a href=$url>$name</a>\n"
-	append html "<ul>\n"
-	append html [im_navbar_write_tree -label $label]
-	append html "</ul>\n"
-    }
-
-    return "
-	<ul class=\"mktree\">
-	$html
-	</ul>
-    "
-}
-
 
 ad_proc -public im_navbar_write_tree {
     {-label "main" }

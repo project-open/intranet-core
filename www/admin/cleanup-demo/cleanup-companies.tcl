@@ -44,8 +44,8 @@ set context ""
 # ------------------------------------------------------
 
 set action "all"
-set action_list [list "[lang::message::lookup "" intranet-core.Nuke_All_Demo_Companies "Nuke All Demo Companies"]" "[export_vars -base "cleanup-companies-2" {return_url action}]" "[lang::message::lookup "" intranet-core.Nuke_All_Demo_Companies "Nuke All Demo Companies"]"]
 set action_list {}
+
 
 set elements_list {
   company_id {
@@ -83,7 +83,7 @@ list::create \
         -key company_id \
         -actions $action_list \
         -elements $elements_list \
-	-bulk_actions [list [_ intranet-core.Nuke_Checked_Companies] cleanup-companies-2 [_ intranet-core.Nuke_Checked_Companies]] \
+    -bulk_actions [list [lang::message::lookup {} intranet-core.Nuke_Checked_Companies {Nuke Checked Companies}] cleanup-companies-2 [lang::message::lookup {} intranet-core.Nuke_Checked_Companies {Nuke Checked Companies}]] \
 	-bulk_action_export_vars { return_url } \
         -bulk_action_method post \
         -filters {

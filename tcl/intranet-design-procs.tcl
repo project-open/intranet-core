@@ -540,7 +540,12 @@ ad_proc -public im_admin_navbar {
 		[im_navbar_write_tree -label "openacs" -maxlevel 1]
 		</ul>
 	</ul>
+    "
 
+    append html "<br>\n"
+    append html [im_navbar_tree]
+
+    append html "
 	      </div>
 	   </div>
     "
@@ -730,7 +735,7 @@ ad_proc -private im_sub_navbar_menu_helper {
                 and lower(column_name) = 'enabled_p'
     \""]
     if {$enabled_present_p} {
-        set enabled_sql "and enabled_p = 't'"
+        set enabled_sql "and (enabled_p is null OR enabled_p = 't')"
     } else {
         set enabled_sql ""
     }

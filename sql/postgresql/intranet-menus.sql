@@ -1509,7 +1509,7 @@ BEGIN
 		''intranet-workflow'',		-- package_name
 		''admin_workflow'',		-- label
 		''Workflow'',			-- name
-		''/workflow/admin/'',		-- url
+		''/acs-workflow/admin/'',	-- url
 		1090,				-- sort_order
 		v_main_menu,			-- parent_menu_id
 		''0''				-- p_visible_tcl
@@ -1519,6 +1519,23 @@ BEGIN
 end;' language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
+
+
+-- Fix the location of the admin_workflow label
+-- for those ]po[ installations where the acs-workflow
+-- is already mounted at /acs-workflow/ (instead of
+-- (/workflow/ for older installations)
+--
+update im_menus set
+        url = '/'
+              || (
+                select name
+                from site_nodes
+                where object_id in (select package_id from apm_packages where package_key = 'acs-workflow'))
+              || '/admin/'
+where
+        label = 'admin_workflow';
+
 
 
 
@@ -1911,8 +1928,8 @@ BEGIN
 		null,				-- context_id
 		''intranet-core'',		-- package_name
 		''openacs_auth'',		-- label
-		''Authentication'',		-- name
-		''/acs-admin/auth/'',			-- url
+		''LDAP Authentication'',	-- name
+		''/acs-admin/auth/'',		-- url
 		80,				-- sort_order
 		v_main_menu,			-- parent_menu_id
 		''''				-- p_visible_tcl

@@ -33,7 +33,7 @@ if {!$user_is_admin_p} {
 }
 
 
-set page_title [_ intranet-core.Nuking_Companies]
+set page_title [lang::message::lookup {} intranet-core.Nuke_Demo_Companies "Nuke Demo Companies"]
 
 # ------------------------------------------------------------
 # Return the page header.

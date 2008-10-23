@@ -6,8 +6,7 @@
 <fullquery name="menu_insert">
 	<querytext>
 
-    BEGIN
-	PERFORM im_menu__new (
+	select im_menu__new (
 		null,			-- p_menu_id
 		'im_menu',		-- object_type
 		now(),			-- creation_date
@@ -19,11 +18,9 @@
 		:name,			-- name
 		:url,			-- url
 		:sort_order,		-- sort_order
-		:parent_menu_id,		-- parent_menu_id
+		:parent_menu_id,	-- parent_menu_id
 		null			-- p_visible_tcl
 	);
-	return 0;
-    END;
 
 	</querytext>
 </fullquery>

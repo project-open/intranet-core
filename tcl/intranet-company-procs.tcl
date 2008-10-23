@@ -720,6 +720,7 @@ ad_proc im_company_nuke {company_id} {
 	return
     }
     set return_to_admin_link "<a href=\"/intranet/companies/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
+    return
 }
 
 ad_proc -public im_company_find_or_create_main_office {
