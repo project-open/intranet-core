@@ -126,9 +126,6 @@ ad_proc -public im_navbar_tree {
 	</ul>
 
 	[if {![catch {set ttt [im_navbar_tree_provider_management]}]} {set ttt} else {set ttt ""}]
-
-	[im_navbar_tree_helpdesk_problem_mgmt]
-
 	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_release_mgmt]}]} {set ttt} else {set ttt ""}]
