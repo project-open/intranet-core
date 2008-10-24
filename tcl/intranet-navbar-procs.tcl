@@ -243,12 +243,9 @@ ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
     return "
 	<li><a href=/intranet/>Collaboration</a>
 	<ul>
-		<li><a href=/intranet-search/search?type=all&q=search>Search Engine</a>
-		<li><a href=/calendar/>Calendar</a>
-		[im_menu_li bug_tracker]
-		[im_menu_li wiki]
-		<li><a href=/intranet-filestorage/>File Storage</a>
-		<li><a href=/simple-survey/>Surveys</a>
+		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a>
+		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a>
+		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
 		[im_menu_li forum]
 		<ul>
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1100>News</a>
@@ -257,6 +254,9 @@ ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1104>Tasks</a>
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1102>Incidents</a>
 		</ul>
+		[im_menu_li -pretty_name Wiki wiki]
+		<li><a href=/intranet-filestorage/>[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a>
+		<li><a href=/simple-survey/>Surveys</a>
 	</ul>
     "
 }

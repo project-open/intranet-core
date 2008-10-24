@@ -154,12 +154,17 @@ ad_proc -public im_menu_name {
 
 ad_proc -public im_menu_li { 
     {-class "" }
-    label 
+    {-pretty_name "" }
+    label
 } {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
+    set count [db_string exists "select count(*) from im_menus where label = :label"]
+    if {0 == $count} { return "" }
+
     set name [im_menu_name $label]
+    if {"" != $pretty_name} { set name $pretty_name }
     set url [im_menu_url $label]
     set class_html ""
     if {"" != $class} { set class_html "class='$class'" }

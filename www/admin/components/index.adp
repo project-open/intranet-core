@@ -14,6 +14,7 @@
 	<table>
 	<form action=index method=GET>
 	<tr><td colspan=2 class=rowtitle><%= [lang::message::lookup "" intranet-core.Filter_Components "Filter Components"] %></td><td></tr>
+
 	<tr class=roweven>
 	<td><%= [lang::message::lookup "" intranet-core.Package "Package"] %></td>
 	<td><%= [im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key] %></td>
@@ -22,6 +23,11 @@
 	<tr class=rowodd>
 	<td><%= [lang::message::lookup "" intranet-core.Location "Location"] %></td>
 	<td><%= [im_select -ad_form_option_list_style_p 1 component_location $location_options $component_location] %></td>
+	</tr>
+
+	<tr class=roweven>
+	<td><%= [lang::message::lookup "" intranet-core.Component_Page "Page"] %></td>
+	<td><%= [im_select -ad_form_option_list_style_p 1 component_page $page_options $component_page] %></td>
 	</tr>
 
 	<tr><td></td><td><input type=submit></td></tr>

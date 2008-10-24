@@ -845,6 +845,11 @@ ad_proc -public im_user_nuke {user_id} {
 		db_dml delete_user_contest_entries "delete from $entrants_table where user_id = :user_id"
 	    }
 	}
+
+	# Component Plugins
+	ns_log Notice "users/nuke2: im_component_plugin_user_map"
+	db_dml del_comp_map "delete from im_component_plugin_user_map where user_id = :user_id"
+
 	
 	# spam history
 	ns_log Notice "users/nuke2: spam_history"

@@ -126,8 +126,7 @@ ad_proc -public im_component_box {
 
 
 ad_proc -public im_component_bay { location {view_name ""} } {
-    Checks the database for Plug-ins for this page and component
-    bay.
+    Checks the database for Plug-ins for this page and component bay.
 } {
     set user_id [ad_get_user_id]
 
@@ -161,7 +160,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 		and lower(column_name) = 'enabled_p'
     \""]
     if {$enabled_present_p} { 
-	set enabled_sql "and c.enabled_p = 't'"
+	set enabled_sql "and (c.enabled_p is null OR c.enabled_p = 't')"
     } else {
 	set enabled_sql ""
     }

@@ -21,6 +21,7 @@ ad_page_contract {
 } {
     { package_key ""}
     { component_location ""}
+    { component_page ""}
     { return_url ""}
 }
 
@@ -63,6 +64,14 @@ set location_options [db_list_of_lists location_options "
 	order by location
 "]
 set location_options [linsert $location_options 0 [list "All" ""]]
+
+
+set page_options [db_list_of_lists page_options "
+	select	distinct page_url, page_url
+	from	im_component_plugins
+	order by page_url
+"]
+set page_options [linsert $page_options 0 [list "All" ""]]
 
 
 # ------------------------------------------------------
@@ -116,6 +125,10 @@ append table_header "\n</tr>\n"
 set component_where ""
 if {"" != $package_key} { append component_where "\tand package_name = :package_key\n" }
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
+if {"" != $component_page} { 
+    set component_page [ns_urldecode $component_page]
+    append component_where "\tand page_url = :component_page\n" 
+}
 
 # Generate the sql query
 set criteria [list]

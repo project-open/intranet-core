@@ -125,7 +125,7 @@ db_multirow -extend {user_url} users get_users "
 		) freelance_p
 		on u.user_id = freelance_p.user_id
 	where	admin_p.admin_p is null
-	order by u.user_id
+	order by u.user_id DESC
 	limit 2000
 
 " {
