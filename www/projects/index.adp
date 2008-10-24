@@ -6,7 +6,6 @@
 
 <div class="filter-list">
    <div class="filter" id="sidebar">
-   <a href="#" id="sideBarTab"><img src="/intranet/images/navbar_saltnpepper/slide-button-active.gif" alt="sideBar" title="sideBar" border="0" /></a>
      <div id="sideBarContentsInner">
 	<div class="filter-block">
         	 <div class="filter-title">
