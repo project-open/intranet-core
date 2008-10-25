@@ -913,7 +913,7 @@ ad_proc -public im_navbar {
 	          </div>
 	          $main_users_and_search
 	          <div id=\"main_header_deco\"></div>
-	       </div>  
+	       </div>
 	    </div>
     "
 }
