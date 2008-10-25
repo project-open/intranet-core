@@ -156,6 +156,12 @@ a:hover {
 }
 
 
+#sideBarTabImage, #sideBarTab {
+ visibility: hidden;
+}
+
+
+
 
 /**********************************************************************
 /* Button
