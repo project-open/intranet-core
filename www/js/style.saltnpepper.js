@@ -139,15 +139,20 @@ jQuery().ready(function(){
 
 jQuery.noConflict();
 jQuery().ready(function(){
-
-    jQuery("#header_skin_select > form > select").change(function(){
-       jQuery("#header_skin_select > form").submit();
-    });
-
-    jQuery(".component-parking div").click(function(){
-       jQuery(".component-parking ul").slideToggle();
-    });
-
+	
+	jQuery("#header_skin_select > form > select").change(function(){
+	jQuery("#header_skin_select > form").submit();
+	});
+	
+	jQuery(".component-parking div").click(function(){	
+	jQuery(".component-parking ul").slideToggle();
+	});
+	
+	/*In order to make this work we need to re-order DIVs*/
+	var node_insert_after=document.getElementById("slave");
+	var node_to_move=document.getElementById("fullwidth-list");
+	document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
+	alert("here")
 });
 
 

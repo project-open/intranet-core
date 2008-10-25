@@ -3,7 +3,6 @@
 <% if {![info exists main_navbar_label]} { set main_navbar_label "" } %>
 <% if {![info exists sub_navbar]} { set sub_navbar "" } %>
 
-
 <%= [im_header $title $header_stuff] %>
 <%= [im_navbar $main_navbar_label] %>
 <%= $sub_navbar %>
