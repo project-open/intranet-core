@@ -363,6 +363,7 @@ a.action {
 /* Hide button*/
 #sideBarTab{
 	visibility: hidden;
+	position: absolute;
 }
  
 
