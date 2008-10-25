@@ -60,8 +60,10 @@ function sideBarOpacity(from, to){
 $(function(){
   	// Document is ready
 	/* $('#sideBarTab').click( function() { extendContract(); return false; }); */
-	/* $('#sideBarTab').click( function() { extendContract(); return false; }); */
+	$('#sideBarTab').click( function() { extendContract(); return false; }); 
 });
+
+
 
 
 /*   END: NEW SIDEBAR */
@@ -152,9 +154,8 @@ jQuery().ready(function(){
 	var node_insert_after=document.getElementById("slave");
 	var node_to_move=document.getElementById("fullwidth-list");
 	document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
-	alert("here")
-});
 
+});
 
 
 
@@ -181,6 +182,8 @@ exdate.setDate(exdate.getDate()+expiredays)
 document.cookie=c_name+ "=" +escape(value)+
 ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
 }
+
+
 
 
  
