@@ -1,5 +1,8 @@
 @import url(style.common.css);
+
+/* when Time: merge style_sp.css with this file*/
 @import url(style_sp.css);
+
 
 /* TEST WITH INCLUDE STYLE.CSS  */
 
@@ -18,10 +21,12 @@
    margin-right: 0px;
 }
 
+/*
 .filter {
    position: absolute;
    left: 0px;
 }
+*/
 
 .filter-button {
    position: absolute;
@@ -224,17 +229,15 @@ background-position: 0px -10px;
 }
 
 #main_header {
-	 font-weight: bold;
-   
-   height: auto;
-   margin: 0;
-   background: #fff;
-   width: 100%;
-   color:#000000; 
-
+	font-weight: bold;
+	margin-bottom: 20px;
+	height: 25px;
+	background: #fff;
+	width: 100%;
+	color:#000000;
+    border-bottom: 1px solid #24618E;
+	z-index: 3000; 
 }
-
-
 
 #main_portrait_and_username {
 	position: absolute;
@@ -410,21 +413,19 @@ a   span  {float:none;}
 
 }
 
-
 #navbar_sub_wrapper {
-  position: relative;
-  width: 100%;
-  height: 25px;
-  background-color: #fff;
-  border-bottom: 1px solid #24618E;
-    border-top: 1px solid #24618E;
+	position: relative;
+	overflow:hidden;
+	width: 100%;
+	height: 25px;
+	background-color: #fff;
+	border-bottom: 1px solid #24618E;
 	z-index:3000;
 	clear:both;
 	margin-top:-20px;
-	
 }
 
-    #navbar_sub {
+#navbar_sub {
   font-size:93%;
   position: absolute;
   right: 0;
@@ -527,12 +528,12 @@ a   span  {float:none;}
 
 #alphabar {
 	position: absolute;
-	left: 220px;
+	left: 300px;
 	margin: 0;
-	bottom: -1px;
+	bottom: -2px;
 	list-style: none;
 	line-height: normal;
-	width: 127px;
+	width: 500px;
 }
 
 #navbar_sub LI, #alphabar LI {
@@ -654,39 +655,37 @@ a   span  {float:none;}
 	padding-right: 30px;
 	padding-top: 0px;
 	border: 1px #999;
-	margin-top:-10px;
-	
-
+	margin-top: 0px;
 }
+
+
+/* **********************************************   COMPONENTS ***************************** */ 
 
 .component {
-	position: relative;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-bottom: 10px;
-	z-index:100;
-	padding-top: 5px;
+  position: relative;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .component_header_rounded {
-  background-color: #fff;
-  color: #666;
-  font-size: 16pt;
+  background-color: #eeeeee;
+  color: #000000;
+  border: solid 1px #EEEEEE;
 }
 
 .component_header {
+   top: 5px;
    position: relative;
-   height: 0px;
-   z-index:100;
-   display:none;
+   height: 25px;
 }
 
-
 .component_title {
-	display: none;
   position: relative;
   top: -1pt;
   left: 2pt;
   float: left;
+  font-size: 14pt;
 }
 .component_icons {
   float: right;
@@ -706,52 +705,50 @@ a   span  {float:none;}
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-maximize.gif') no-repeat;
-  background-color: #999583;
+  background: url('/intranet/images/navbar_default/arrow_comp_maximize.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_minimize {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-minimize.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/arrow_comp_minimize.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_left {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-left.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/arrow_comp_left.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_right {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-right.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/arrow_comp_right.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_up {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-up.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/arrow_comp_up.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_down {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-down.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/arrow_comp_down.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_close {
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/component-close.gif') no-repeat;
+  background: url('/intranet/images/navbar_default/comp_delete.png') no-repeat;
   text-indent: -5000px;
-  background-color: #7aa054;
 }
 .component_icons .icon_seperator {
   width: 1px;
@@ -767,13 +764,12 @@ a   span  {float:none;}
 
 .component_body {
   z-index: 100;
-	border-left: none;
-  border-right: none;
+  border-left: solid 1px #EEEEEE;
+  border-right: solid 1px #EEEEEE;
+  border-bottom: solid 1px #EEEEEE;
   padding-bottom: 10px;
   overflow: auto;
 }
-
-
 .component_body ul {
   margin: 0;
   padding-right: 1em;
@@ -781,12 +777,12 @@ a   span  {float:none;}
   padding-left: 2em;
 }
 
-
 .component_footer {
   position: relative;
-  border: none;
+  border: solid 1px #000000;
   height: 10px;
-  color: #2e2e2e;
+  color: #ffffff;
+  display: none;
 }
 .component_footer_hack {
   position: relative;
@@ -795,18 +791,19 @@ a   span  {float:none;}
   height: 3px;
   top: -3px;
   width: 100%;
+  display: none;
 }
 
 .component-parking {
   position: absolute;
   right: 0px;
   top: 0px;
-  background-color: #fff;
+  background-color: #336699;
   z-index: 200;
   width: 300px;
-  border-bottom: 1px #2e2e2e solid;
-  border-left: 1px #2e2e2e solid;
-  color: #2e2e2e;
+  border-bottom: 1px #000 solid;
+  border-left: 1px #000 solid;
+  color: #fff;
 }
 
 .component-parking ul {
@@ -815,7 +812,7 @@ a   span  {float:none;}
 }
 
 .component-parking a {
-  color: #2e2e2e;
+  color: #ffffff;
   text-decoration: none;
   font-weight: bold;
 }
@@ -825,6 +822,7 @@ a   span  {float:none;}
   font-size: 50%;
   overflow: hidden;
 }
+
 
 .table-display td {
    padding: 1px;
@@ -847,19 +845,17 @@ a   span  {float:none;}
 /* filter & lists */
 
 .filter {
-	/* START: New Sidebar*/			
-   overflow:hidden !important;
-	/* width:0px;  is to '0' in sample */
-	 /* STOP: New Sidebar*/			
-   position: absolute;
-	left: 30px;
-	top: -200px;
-	width: 243px;
-	border: 1px solid #999;
-	background-color: #fff;
-	height:370px;
-	
+	 overflow:hidden !important;
+	 position: absolute;
+	 left: 30px;
+	 top: -200px;
+	 width: 243px;
+	 border: 1px solid #999;
+	 background-color: #fff;
+	 margin:15px 5px 10px;
+	 right: 0px;
 }
+
 
   /* new: requires adaption in .adp files*/ 
 	#sideBarTab{
@@ -871,16 +867,15 @@ a   span  {float:none;}
 	top: -185px;
 	}
 
-
- 	 	/*   SIDEBAR */
+/*   SIDEBAR */
     #sideBarContents{
         overflow:hidden !important;
-				width:0px;
+	width:0px;
     }
-		#sideBarContentsInner{
+	#sideBarContentsInner{
         width:200px;
     } 
- 	 	/*   SIDEBAR */
+/*   SIDEBAR */
 		
 		
 		
@@ -934,9 +929,6 @@ a   span  {float:none;}
    padding-right: 1em;
    padding-top: 5px;
    padding-bottom: 5px;
-
-   
-
 }
 
 .fullwidth-list {
@@ -946,10 +938,11 @@ a   span  {float:none;}
 
 .fullwidth-list table {
    text-align:left;
-	 border-collapse:collapse;
+   border-collapse:collapse;
    margin:0px;
 }
 
+/*
 
 .fullwidth-list table tr td.rowtitle {
    font-size:13px;
@@ -980,6 +973,54 @@ a   span  {float:none;}
    background:#d0dafd url("http://88.198.60.17/images/express-css-table-design/table-images/gradhover.png") repeat-x;
    color:#339;
 }
+
+*/
+
+.table_list_page  {
+   text-align:left;
+   border-collapse:collapse;
+   margin:0px;
+}
+
+
+.table_list_page tr td.rowtitle {
+   font-size:13px;
+   font-weight:400;
+   background:#b9c9fe
+   url("http://88.198.60.17/images/express-css-table-design/table-images/gradhead.png")
+   repeat-x;
+   border-top:2px solid #d3ddff;
+   border-bottom:1px solid #fff;
+   color:#039;
+   padding:8px;
+}
+
+
+.table_list_page tr td {
+   border-bottom:1px solid #fff;
+   color:#669;
+   border-top:1px solid #fff;
+   background:#e8edff
+   url("http://88.198.60.17/images/express-css-table-design/table-images/gradback.png")
+   repeat-x;
+   padding:4px;
+}
+
+.table_list_page tfoot tr td {
+   background:#e8edff;
+   font-size:12px;
+   color:#99c;
+}
+
+.table_list_page tbody tr:hover td {
+   background:#d0dafd
+   url("http://88.198.60.17/images/express-css-table-design/table-images/gradhover.png")
+   repeat-x;
+   color:#339;
+}
+
+
+
 
 
 .filter-list {
@@ -1253,4 +1294,8 @@ p.list-row {
 
 span.list-label {
   color: #6f6f6f;
+}
+
+#sideBarTabImage, #sideBarTab {
+ visibility: visible;
 }
