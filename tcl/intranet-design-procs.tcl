@@ -512,7 +512,8 @@ ad_proc -public im_admin_navbar {
     on the local URL and enabled depending on the user permissions.
 } {
     set html "
-	   <div class=\"filter\">
+	   <div class=\"filter\" id=\"sidebar\">
+ 		<div id=\"sideBarContentsInner\">
 	      <div class=\"filter-block\">
 	         <div class=\"filter-title\">
 	            [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
@@ -548,6 +549,7 @@ ad_proc -public im_admin_navbar {
     append html "
 	      </div>
 	   </div>
+	</div>
     "
     return $html
 }
@@ -1309,14 +1311,17 @@ ad_proc -public im_stylesheet {} {
     template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen"
     append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n"
 
+    template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js"
+    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n"
+
     template::head::add_javascript -src "/intranet/js/showhide.js"
     append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n"
 
     template::head::add_javascript -src "/resources/core.js"
     append html "<script type=text/javascript src=\"/resources/core.js\"></script>\n"
 
-    template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
-    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
+#    template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
+#    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
 
     template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js"
     append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n"

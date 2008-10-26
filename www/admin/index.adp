@@ -4,6 +4,7 @@
 
 <!-- left - right - bottom  design -->
 
+<div class="fullwidth-list" id="fullwidth-list">
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td valign=top>
@@ -82,6 +83,7 @@
       </a>
 -->
     </ul>
+
     <%= [im_component_bay left] %>
 
 <br>
@@ -127,15 +129,19 @@
 -->
 
   </td>
+
   <td valign=top width="400px">
     <%= [im_component_bay right] %>
   </td>
+>
 </tr>
 </table><br>
 
+</div>
+
 <table cellpadding=0 cellspacing=0 border=0>
 <tr><td>
-  <%= [im_component_bay bottom] %>
+<%= [im_component_bay bottom] %>
 </td></tr>
 </table>
 
