@@ -9,7 +9,7 @@
       <div class='filter-list'>
 	 <a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
          <%= [im_admin_navbar $admin_navbar_label] %>
-         <div id="admin-content" class="fullwidth-list">
+         <div class="fullwidth-list" id="fullwidth-list">
             <!-- intranet/www/admin/master.adp before slave -->
             <slave>
             <!-- intranet/www/admin/master.adp after slave -->
