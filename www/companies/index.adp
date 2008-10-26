@@ -6,7 +6,9 @@
 
 
 <div class="filter-list">
-   <div class="filter">
+<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="../images/navbar_saltnpepper/slide-button-active.gif"/></a>
+   <div class="filter" id="sidebar">
+    <div id="sideBarContentsInner">
       <div class="filter-block">
          <div class="filter-title">
 	    #intranet-core.Filter_Companies#
@@ -49,12 +51,12 @@
       </div>
 
       <%= [im_navbar_tree -label "main"] %>
-
+    </div>  
    </div>
 
-   <div class="fullwidth-list">
+   <div class="fullwidth-list" id="fullwidth-list">
       <%= [im_box_header [_ intranet-core.Companies]] %>
-         <table>
+         <table class="table_list_page">
             <%= $table_header_html %>
             <%= $table_body_html %>
             <%= $table_continuation_html %>
