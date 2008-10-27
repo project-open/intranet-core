@@ -1235,8 +1235,7 @@ html>body #subnavbar { bottom: 0px }
 }
 
 .bug-tracker-navbar {
-  margin-top: 1em;
-  background-color: #2e2e2e;
+  margin-top: -1.5em;
 }
 
 .list-filter {
