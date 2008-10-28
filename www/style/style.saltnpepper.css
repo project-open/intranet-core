@@ -394,25 +394,6 @@ a   span  {float:none;}
 
 /* ---------    START: NAV_BAR_SUB ------------------------- */
 
-#navbar_sub_wrapper_old {
-  position: relative;
-  width: 100%;
-  height: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #24618E;
-	top: 60px;
-}
-
-#navbar_sub_old {
-  position: absolute;
-  right: 0;
-  margin: 0;
-  bottom: -6px;
-  list-style: none;
-  line-height: normal;
-
-}
-
 #navbar_sub_wrapper {
 	position: relative;
 	overflow:hidden;
@@ -430,20 +411,10 @@ a   span  {float:none;}
   position: absolute;
   right: 0;
   margin: 0;
-  bottom: -6px;
+  bottom: -2px;
   list-style: none;
   line-height: normal;
-/*
-      float:left;
-      width:100%;
-      background:#F4F4F4;
-      font-size:93%;
-      line-height:normal;
-	    border-bottom:1px solid #24618E;
-			height:15px;
-			left:0px;
-*/
-      }
+}
 
     #navbar_sub_wrapper ul {
 	  margin:0;
@@ -530,7 +501,7 @@ a   span  {float:none;}
 	position: absolute;
 	left: 300px;
 	margin: 0;
-	bottom: -2px;
+	bottom: -1px;
 	list-style: none;
 	line-height: normal;
 	width: 500px;
@@ -913,9 +884,9 @@ a   span  {float:none;}
 .filter hr {
    border: 0;
    height: 1px;
-   color: #7AA054;
-   background-color: #7AA054;
-	 width:
+   color: #999999;
+   background-color: #999999;
+   width: 244px;
 }
 
 .filter-title {
