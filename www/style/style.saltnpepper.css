@@ -942,39 +942,14 @@ a   span  {float:none;}
    margin:0px;
 }
 
-/*
-
-.fullwidth-list table tr td.rowtitle {
-   font-size:13px;
-   font-weight:400;
-   background:#b9c9fe url("http://88.198.60.17/images/express-css-table-design/table-images/gradhead.png") repeat-x;
-   border-top:2px solid #d3ddff;
-   border-bottom:1px solid #fff;
-   color:#039;
-   padding:8px;
+div#fullwidth-main {
+	float: left;
 }
 
-
-.fullwidth-list table tr td {
-   border-bottom:1px solid #fff;
-   color:#669;
-   border-top:1px solid #fff;
-   background:#e8edff url("http://88.198.60.17/images/express-css-table-design/table-images/gradback.png") repeat-x;
-   padding:4px;
+div#fullwidth-components {
+        float: left;
+	width: 200px;
 }
-
-.fullwidth-list table tfoot tr td {
-   background:#e8edff;
-   font-size:12px;
-   color:#99c;
-}
-
-.fullwidth-list table tbody tr:hover td {
-   background:#d0dafd url("http://88.198.60.17/images/express-css-table-design/table-images/gradhover.png") repeat-x;
-   color:#339;
-}
-
-*/
 
 .table_list_page, .list  {
    text-align:left;

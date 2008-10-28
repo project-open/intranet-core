@@ -1942,6 +1942,25 @@ drop function inline_0 ();
 
 
 
+select im_menu__new (
+	null,				-- p_menu_id
+	'acs_object',			-- object_type
+	now(),				-- creation_date
+	null,				-- creation_user
+	null,				-- creation_ip
+	null,				-- context_id
+	'intranet-core',		-- package_name
+	'openacs_restart_server',	-- label
+	'Restart Server',		-- name
+	'/acs-admin/server-restart',	-- url
+	190,				-- sort_order
+	(select menu_id from im_menus where label = 'openacs'),
+	null				-- p_visible_tcl
+);
+
+
+
+
 
 -- -----------------------------------------------------
 -- Auth Authorities
