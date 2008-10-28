@@ -72,10 +72,21 @@ jQuery().ready(function(){
 	jQuery(".component-parking ul").slideToggle();
 	});
 	
-	/*In order to make this work we need to re-order DIVs*/
+
+	/* In order to make this skin work we need to re-order DIVs */
 	var node_insert_after=document.getElementById("slave");
 	var node_to_move=document.getElementById("fullwidth-list");
-	document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
+	if (node_insert_after != null && node_to_move != null) {
+	   document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
+	}
+
+	/* BUG TRACKER */
+	var node_insert_after=document.getElementById("slave_content");
+	var node_to_move=document.getElementById("bug-tracker-navbar");
+	if (node_insert_after != null && node_to_move != null) {
+	   document.getElementById("slave").insertBefore(node_to_move, node_insert_after.nextSibling);
+	}
+
 
     jQuery(".component_icons").css("opacity","0.1");
     jQuery(".component_header").hover(function(){
@@ -116,10 +127,5 @@ exdate.setDate(exdate.getDate()+expiredays)
 document.cookie=c_name+ "=" +escape(value)+
 ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
 }
-
-
-
-
- 
 
 
