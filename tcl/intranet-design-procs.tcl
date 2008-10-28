@@ -1749,14 +1749,12 @@ ad_proc -public im_skin_list {} {
     #     id name            displayname
     return {
 	{ 0  "left"          "Default" }
-	{ 2  "default"       "Right Blue" }
 	{ 1  "opus5"         "Light Green" }
+	{ 2  "default"       "Right Blue" }
 	{ 3  "transparent"   "Transparent" }
 	{ 4  "saltnpepper"   "SaltnPepper" }
     }
 }
-
-
 
 ad_proc -public im_skin_name { skin_id } {
 } {
