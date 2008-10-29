@@ -85,7 +85,7 @@ background-repeat: repeat;
 background-attachment: scroll;
 background-x-position: 0%;
 background-y-position: 0%;
-height: 70px;
+height: 60px;
 padding-left: 30px;
 padding-right: 30px;
 
@@ -138,7 +138,7 @@ background-position: 0px -10px;
 
 #header_logout {
 	position: static;
-	z-index: 101;
+	/* z-index: 101; */
 	color: #666;
 	padding-left: 0em;
 	padding-right: 1em;
@@ -236,7 +236,7 @@ background-position: 0px -10px;
 	width: 100%;
 	color:#000000;
     border-bottom: 1px solid #24618E;
-	z-index: 3000; 
+/*	z-index: 3000; */
 }
 
 #main_portrait_and_username {
@@ -310,7 +310,7 @@ background-position: 0px -10px;
   left: 0px;
   top: 0px;
   background-color: #2E2E2E;
-  z-index:1222;
+ /*  z-index:1222; */
 }
 
     #navbar_main {
@@ -401,7 +401,7 @@ a   span  {float:none;}
 	height: 25px;
 	background-color: #fff;
 	border-bottom: 1px solid #24618E;
-	z-index:3000;
+/*	z-index:3000; */
 	clear:both;
 	margin-top:-20px;
 }
@@ -551,7 +551,7 @@ a   span  {float:none;}
 			float: left;
 			margin-top:3px;
 			position:relative;
-			z-index:2200;
+/*			z-index:2200; */
 			
 			
 			
@@ -603,7 +603,7 @@ a   span  {float:none;}
 
 #slave {
       background: #ffffff;
-      z-index:1000;
+    /*  z-index:1000; */
       position:relative;
       padding: 0px; 
       position: relative; 
@@ -614,6 +614,7 @@ a   span  {float:none;}
 #footer {
   text-align: center;
   margin-top: 1em;
+	position: relative;
 }
 
 #footer, #footer A {
@@ -734,12 +735,13 @@ a   span  {float:none;}
 }
 
 .component_body {
-  z-index: 100;
+  /* z-index: 100; */
   border-left: solid 1px #EEEEEE;
   border-right: solid 1px #EEEEEE;
   border-bottom: solid 1px #EEEEEE;
   padding-bottom: 10px;
   overflow: auto;
+
 }
 .component_body ul {
   margin: 0;
@@ -755,7 +757,7 @@ a   span  {float:none;}
   color: #ffffff;
   display: none;
 }
-.component_footer_hack {
+.component_footer_hack, .footer_hack {
   position: relative;
   z-index: 101;
   border-top: solid 3px #fff;
