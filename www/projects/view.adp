@@ -8,6 +8,7 @@
   More views may be added by extension modules, but they are
   dealt with in the own pages.
 -->
+
 <% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
 	<table cellpadding=0 cellspacing=0 border=0 width="100%">
