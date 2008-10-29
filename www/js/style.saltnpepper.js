@@ -6,9 +6,9 @@ var width = 243;
 var slideDuration = 750;
 var opacityDuration = 1500;
 
-
 function extendContract(){
 	if(isExtended == 0){
+		if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
 		sideBarSlide(0, height, 0, width);
 		sideBarOpacity(0, 1);
 		isExtended = 1;
@@ -18,7 +18,8 @@ function extendContract(){
 		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
 	}
 	else{
-		sideBarSlide(height, 0, width, 0);
+		document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
+		sideBarSlide(height, 135, width, 0);
 		sideBarOpacity(1, 0);
 		isExtended = 0;
 		jQuery(".fullwidth-list").animate({marginLeft: "24px"}, slideDuration );
@@ -45,7 +46,9 @@ function sideBarOpacity(from, to){
 $(function(){
   	// Document is ready
 	// $('#sideBarTab').click( function() { extendContract(); return false; }); 
-	$('#sideBarTab').click( function() { extendContract(); return false; });
+	$('#sideBarTab').click( function() { 
+		extendContract(); 
+		return false; });
 });
 /*   END: NEW SIDEBAR */
 
@@ -98,8 +101,6 @@ jQuery().ready(function(){
     jQuery(".component-parking div").click(function(){
        jQuery(".component-parking ul").slideToggle();
     });
-
-
 });
 
 
