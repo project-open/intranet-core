@@ -90,6 +90,9 @@ jQuery().ready(function(){
 	   document.getElementById("slave").insertBefore(node_to_move, node_insert_after.nextSibling);
 	}
 
+	if (document.getElementById("fullwidth-list") == null){
+	document.getElementById('slave_content').style.position='relative';	
+	}
 
     jQuery(".component_icons").css("opacity","0.1");
     jQuery(".component_header").hover(function(){
