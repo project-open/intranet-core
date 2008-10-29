@@ -933,13 +933,11 @@ div#fullwidth-components {
    color:#039;
    font-size:13px;
    font-weight:400;
-   background:#b9c9fe
    padding:8px;
-   url('/intranet/images/navbar_saltnpepper/gradhead.png')
+   background:#b9c9fe url('/intranet/images/navbar_saltnpepper/gradhead.gif')
    repeat-x;
    border-top:2px solid #d3ddff;
    border-bottom:1px solid #fff;
-
 }
 
 
@@ -947,8 +945,7 @@ div#fullwidth-components {
    border-bottom:1px solid #fff;
    /* color:#669; */
    border-top:1px solid #fff;
-   /* background:#e8edff */
-   url('/intranet/images/navbar_saltnpepper//gradback.png')
+   background:#e8edff url('/intranet/images/navbar_saltnpepper/gradback.gif')
    repeat-x;
    padding:4px;
 }
@@ -960,8 +957,7 @@ div#fullwidth-components {
 }
 
 .table_list_page tbody tr:hover td, .list tbody tr:hover td {
-   background:#d0dafd
-   url('/intranet/images/navbar_saltnpepper/gradhover.png')
+   background:#d0dafd url('/intranet/images/navbar_saltnpepper/gradhover.gif')
    repeat-x;
    color:#339;
 }
@@ -980,12 +976,9 @@ div#fullwidth-components {
         background-image:url('intranet/images/navbar_saltnpepper/background.gif');
         background-position:top left;
         background-repeat:repeat-y;	
-		
-		
 	/* STOP NEW IDEBAR */
-
-	
 }
+
 .filter-list-footer {
   _height: 200px; 
   height: 20px;
