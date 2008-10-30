@@ -993,7 +993,7 @@ order by
 	"
     }
     return "
-	<table width=\"100%\" cellpadding=2 cellspacing=2 border=0>
+	<table class=\"table_component_hover\" width=\"100%\">
 	  $table_header_html
 	  $table_body_html
 	</table>
