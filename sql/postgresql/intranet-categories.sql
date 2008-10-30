@@ -150,7 +150,8 @@ DECLARE
 	v_count			integer;
 BEGIN
 	select	count(*) into v_count from im_categories
-	where	category = p_category and category_type = p_category_type;
+	where	(category = p_category and category_type = p_category_type) OR
+		category_id = p_category_id;
 	IF v_count > 0 THEN return 0; END IF;
 
 	insert into im_categories(category_id, category, category_type, category_description)

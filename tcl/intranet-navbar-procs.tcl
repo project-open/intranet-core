@@ -65,6 +65,9 @@ ad_proc -public im_navbar_tree {
 		[im_menu_li timesheet2_timesheet]
 		<li><a href=/intranet-timesheet2/absences/>Absences &amp; Vacations</a>
 		<ul>
+
+			<li><a href=/intranet-timesheet2/absences/new>New Absence</a></li>
+
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5000>Vacation Requests</a></li>
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5001>Personal Absences</a></li>
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5002>Sick Leave Requests</a></li>
