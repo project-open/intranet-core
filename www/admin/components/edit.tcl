@@ -86,7 +86,7 @@ set page_body "
     <TD>$package_name</TD></TR>
   <TR class=roweven>
     <TD>Name</TD>
-    <TD>$plugin_name</TD></TR>
+    <TD><input type=text name=plugin_name value=\"$plugin_name\" size=60></TD></TR>
   <TR class=rowodd>
     <TD>Location</TD>
     <TD><select name=location size=1>
@@ -105,7 +105,7 @@ set page_body "
     <TD><input type=text name=sort_order value=$sort_order></TD></TR>
   <TR class=rowodd>
     <TD>URL</TD>
-    <TD><input type=text name=page_url value=\"$page_url\"></TD>
+    <TD><input type=text name=page_url value=\"$page_url\" size=60></TD>
   </TR>
   <TR class=roweven>
     <TD>Title TCL</TD>

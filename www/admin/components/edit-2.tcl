@@ -26,6 +26,7 @@ ad_page_contract {
   @author mai-bee@gmx.net
 } {
     plugin_id:naturalnum
+    {plugin_name:trim ""}
     {sort_order:integer ""}
     {location ""}
     {page_url:trim ""}
@@ -50,6 +51,7 @@ if {!$user_is_admin_p} {
 switch $submit {
     "Update" {
 	set updates [list]
+	if {"" != $plugin_name} { lappend updates "plugin_name = :plugin_name" }
 	if {"" != $page_url} { lappend updates "page_url = :page_url" }
 	if {"" != $title_tcl} { lappend updates "title_tcl = :title_tcl" }
 	if {"" != $component_tcl} { lappend updates "component_tcl = :component_tcl" }
@@ -69,8 +71,16 @@ switch $submit {
 		return
 	    }
 	}
+
+	# Delete entries from user_map that might change the location
+	db_dml del_user_map "delete from im_component_plugin_user_map where plugin_id = :plugin_id"
+
     }
     "Delete" {
+
+	# Delete entries from user_map that might change the location
+	db_dml del_user_map "delete from im_component_plugin_user_map where plugin_id = :plugin_id"
+
 	db_string delete_component "
 		select im_component_plugin__delete(:plugin_id::integer)
 	"
