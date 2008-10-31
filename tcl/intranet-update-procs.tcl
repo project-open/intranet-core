@@ -81,11 +81,13 @@ ad_proc -public im_check_for_update_scripts {
 
 	ns_log Notice "upgrade2: checking module $module"
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
-	array set version_hash [apm_read_package_info_file $spec_file]
-	set version $version_hash(name)
 
 	set needs_update_p 0
-	catch {[set needs_update_p [apm_higher_version_installed_p $module $version]]}
+	catch {
+	    array set version_hash [apm_read_package_info_file $spec_file]
+	    set version $version_hash(name)
+	    set needs_update_p [apm_higher_version_installed_p $module $version]
+	}
 
 	if {1 == $needs_update_p} { 
 	    set redirect_p 1
@@ -121,11 +123,13 @@ ad_proc -public im_check_for_update_scripts {
 
 	ns_log Notice "upgrade3: checking module $module"
 	set spec_file "[acs_root_dir]/packages/$module/$module.info"
-	array set version_hash [apm_read_package_info_file $spec_file]
-	set version $version_hash(name)
 
 	set needs_update_p 0
-	catch {[set needs_update_p [apm_higher_version_installed_p $module $version]]}
+	catch {
+	    array set version_hash [apm_read_package_info_file $spec_file]
+	    set version $version_hash(name)
+	    catch {[set needs_update_p [apm_higher_version_installed_p $module $version]]}
+	}
 
 	if {1 == $needs_update_p} { 
 	    set redirect_p 1
