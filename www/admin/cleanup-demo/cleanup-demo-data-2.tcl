@@ -110,6 +110,7 @@ if {[db_table_exists calendars]} {
 ns_log Notice "users/nuke2: calendar_categories"
 if {[db_table_exists calendar_categories]} {
     db_dml delete_user_calendar_categories "delete from calendar_categories"
+    db_dml delete_cal_itmes "delete from cal_items"
 }
 
 # sessions
@@ -304,6 +305,20 @@ if {[db_table_exists im_freelance_rfqs]} {
     db_dml expense_invoices "delete from im_freelance_rfqs"
 }
 
+# Conf Items
+if {[db_table_exists im_conf_items]} {
+    db_dml remove_from_conf_items "delete from im_conf_items"
+    db_dml remove_conf_item_objects "delete from acs_objects where object_type = 'im_conf_item'"
+}
+
+
+# Helpdesk
+if {[db_table_exists im_tickets]} {
+    db_dml remove_from_tickets "delete from im_tickets"
+    db_dml remove_release_items "delete from im_release_items"
+}
+
+
 # Remove user from business objects that we don't want to delete...
 db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects "update im_projects set parent_id = null"
@@ -388,26 +403,30 @@ db_dml rfq_objects "
 # Projects
 db_dml project_context "
 	delete from acs_object_context_index where ancestor_id in (
-		select object_id from acs_objects where object_type = 'im_project'
+		select object_id from acs_objects where object_type in (
+ 			'im_project', 'im_timesheet_task', 'im_ticket', 'im_company'
+		)
 	)
 "
 db_dml project_context "
 	delete from acs_rels where object_id_one in (
-		select object_id from acs_objects where object_type = 'im_project'
+		select object_id from acs_objects where object_type in (
+			'im_project', 'im_timesheet_task', 'im_ticket', 'im_company'
+		)
 	)
 "
 db_dml project_context "
 	update acs_objects set context_id = null where context_id in (
-		select object_id from acs_objects where object_type = 'im_project'
+		select object_id from acs_objects where object_type in (
+			'im_project', 'im_timesheet_task', 'im_ticket', 'im_company'
+		)
 	)
 "
 db_dml project_objects "
 	delete from acs_objects where object_type = 'im_project' 
 "
 
-db_dml ts_objects "
-	delete from acs_objects where object_type = 'im_timesheet_task' 
-"
+db_dml ts_objects "delete from acs_objects where object_type = 'im_timesheet_task'"
 
 
 # Companies

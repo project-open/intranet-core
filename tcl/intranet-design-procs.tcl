@@ -1755,8 +1755,11 @@ ad_proc -public im_skin_list {} {
 	{ 0  "left"          "Default" }
 	{ 1  "opus5"         "Light Green" }
 	{ 2  "default"       "Right Blue" }
-	{ 3  "transparent"   "Transparent" }
 	{ 4  "saltnpepper"   "SaltnPepper" }
+    }
+
+    set ttt {
+	{ 3  "transparent"   "Transparent" }
     }
 }
 

@@ -299,6 +299,9 @@ if {[info exists project_id]} {
 set dynfield_project_id 0
 if {[info exists project_id]} { set dynfield_project_id $project_id }
 
+#ad_return_complaint 1 $dynfield_project_id
+
+
 set field_cnt [im_dynfield::append_attributes_to_form \
     -object_subtype_id $dynfield_project_type_id \
     -object_type $object_type \
