@@ -6,7 +6,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     group_id:integer,notnull
-    return_url
+    { return_url "/intranet/admin/" }
 }
 
 # ---------------------------------------------------------------

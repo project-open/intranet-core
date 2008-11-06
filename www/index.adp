@@ -7,9 +7,12 @@
 
 
 
+<if @show_left_functional_menu_p@>
 
 <div class="filter-list">
-<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="./images/navbar_saltnpepper/slide-button-active.gif"/></a>
+
+  <a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="./images/navbar_saltnpepper/slide-button-active.gif"/></a>
+
   <div class="filter" id="sidebar">
     <div id="sideBarContentsInner">
       <div class="filter-block">
@@ -21,6 +24,9 @@
   </div>
 
   <div class="fullwidth-list" id="fullwidth-list">
+</if>
+
+
 	<table cellpadding=0 cellspacing=0 border=0 width="100%">
 	<tr>
 	  <td colspan=3>
@@ -42,15 +48,13 @@
 	  </td>
 	</tr>
 	</table>
-  </div>
 
+
+<if @show_left_functional_menu_p@>
+  </div>
 </div>
 
-
-
-
-
-
+</if>
 
 
 
