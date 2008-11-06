@@ -23,6 +23,9 @@ cvs checkout acs-templating
 cvs checkout acs-translations
 cvs checkout acs-workflow
 
+cvs checkout auth-ldap
+cvs checkout auth-ldap-adldapsearch
+
 cvs checkout ajaxhelper
 cvs checkout ams
 cvs checkout batch-importer
@@ -53,6 +56,7 @@ cvs checkout intranet-crm-tracking
 
 cvs checkout intranet-cust-baselkb
 cvs checkout intranet-cust-cambridge
+cvs checkout intranet-cust-issa
 cvs checkout intranet-cust-lexcelera
 cvs checkout intranet-cust-projop
 cvs checkout intranet-cust-reinisch
@@ -79,6 +83,7 @@ cvs checkout intranet-invoices-templates
 cvs checkout intranet-mail-import
 cvs checkout intranet-material
 cvs checkout intranet-milestone
+cvs checkout intranet-nagios
 cvs checkout intranet-notes
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp
@@ -88,6 +93,7 @@ cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
 cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-reporting-finance
+cvs checkout intranet-reporting-indicators
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-riskmanagement
