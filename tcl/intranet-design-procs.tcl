@@ -687,10 +687,11 @@ ad_proc -public im_sub_navbar {
 			im_component_plugins p,
 			im_component_plugin_user_map u
             WHERE
-			p.plugin_id=u.plugin_id 
+			(enabled_p is null OR enabled_p = 't')
+			AND p.plugin_id = u.plugin_id 
 			AND page_url = :plugin_url
-			AND u.location='none' 
-			AND u.user_id=:user_id
+			AND u.location = 'none' 
+			AND u.user_id = :user_id
             ORDER by 
 			p.menu_sort_order, p.sort_order
 	"
