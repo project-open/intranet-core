@@ -5,7 +5,7 @@
 <property name="sub_navbar">@sub_navbar;noquote@</property>
 
 <div class="filter-list">
-<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="../images/navbar_saltnpepper/slide-button-active.gif"/></a>
+<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
 <div id="sideBarContentsInner"> 
    <div class="filter" id="sidebar">
       <div class="filter-block">
