@@ -938,11 +938,12 @@ div#fullwidth-components {
 .table_list_page tr td.rowtitle, .table_list_page tbody tr th.list, .list
    tr.list-header, .list th.list, .cal-table-display tbody tr
    td.cal-month-title-text, .table_component_hover th.list-header td.list, .table_component_hover
-   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, #slave_content td.rowtitle {
+   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, td.rowtitle,
+   td.rowtitle a {
    color:#039;
    font-size:13px;
-   font-weight:400;
-   padding:8px;
+   font-weight:bold;
+   padding:3px;
    background:#b9c9fe url('/intranet/images/navbar_saltnpepper/gradhead.gif')
    repeat-x;
    border-top:2px solid #d3ddff;
