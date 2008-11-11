@@ -938,8 +938,7 @@ div#fullwidth-components {
 .table_list_page tr td.rowtitle, .table_list_page tbody tr th.list, .list
    tr.list-header, .list th.list, .cal-table-display tbody tr
    td.cal-month-title-text, .table_component_hover th.list-header td.list, .table_component_hover
-   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, td.rowtitle,
-   td.rowtitle a {
+   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, td.rowtitle {
    color:#039;
    font-size:13px;
    font-weight:bold;
