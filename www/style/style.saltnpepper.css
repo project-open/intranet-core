@@ -51,6 +51,12 @@ a {
   color: #2e2e2e;
 }
 
+a:hover {
+	background:transparent none repeat scroll 0%;
+	color:transparent;
+}
+
+
 
 developer-support-adp-box-off {
 	 display: none;
@@ -801,8 +807,7 @@ a   span  {float:none;}
    padding: 1px;
 }
 
-.list td.rowtitle, .list-header, .table-header, .cal-month-title-text,
-   #monitor_frame td.rowtitle {
+.list td.rowtitle, .list-header, .table-header, .cal-month-title-text {
    font-size: 10pt; 
    color: #2e2e2e;
    /* background-color: #cccac1; */ 
@@ -933,7 +938,7 @@ div#fullwidth-components {
 .table_list_page tr td.rowtitle, .table_list_page tbody tr th.list, .list
    tr.list-header, .list th.list, .cal-table-display tbody tr
    td.cal-month-title-text, .table_component_hover th.list-header td.list, .table_component_hover
-   tbody tr th.list,.table_component_hover tbody tr td.rowtitle {
+   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, #slave_content td.rowtitle {
    color:#039;
    font-size:13px;
    font-weight:400;
@@ -945,7 +950,7 @@ div#fullwidth-components {
 }
 
 
-.table_list_page tr td, .table_component_hover tr td, .list tr td {
+.table_list_page tr td, .table_component_hover tr td, .list tr td, #slave_content tr td {
    border-bottom:1px solid #fff;
    /* color:#669; */
    border-top:1px solid #fff;
@@ -954,7 +959,7 @@ div#fullwidth-components {
    padding:4px;
 }
 
-.table_list_page tfoot tr td, .table_component_hover tfoot tr td, .list tfoot tr td {
+.table_list_page tfoot tr td, .table_component_hover tfoot tr td, .list tfoot tr td, #slave_content tfoot tr td {
    background:#e8edff;
    font-size:12px;
    color:#99c;
