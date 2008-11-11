@@ -801,10 +801,12 @@ a   span  {float:none;}
    padding: 1px;
 }
 
-.list td.rowtitle, .list-header, .table-header, .cal-month-title-text {
+.list td.rowtitle, .list-header, .table-header, .cal-month-title-text,
+   #monitor_frame td.rowtitle {
    font-size: 10pt; 
-   color: #2e2e2e; 
-   background-color: #cccac1; 
+   color: #2e2e2e;
+   /* background-color: #cccac1; */ 
+   background-color: #A6BAFE; 
    font-weight: bold;
 }
 
