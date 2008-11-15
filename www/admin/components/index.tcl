@@ -39,7 +39,7 @@ set context ""
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
-if {"" == $return_url} { set return_url [ad_conn url] }
+if {"" == $return_url} { set return_url [im_url_with_query] }
 
 set current_url [im_url_with_query]
 set component_url "/intranet/admin/menus/new"
@@ -155,7 +155,7 @@ db_foreach all_component_of_type $component_select_sql {
     append table "
 <tr $bgcolor([expr $ctr % 2])>
   <td>
-    <a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a>
+    <nobr><a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a></nobr>
   </td>
   <td>$package_name</td>
   <td>$location</td>

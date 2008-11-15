@@ -1349,7 +1349,7 @@ BEGIN
 		null,				-- context_id
 		''intranet-core'',		-- package_name
 		''admin_components'',		-- label
-		''Components'',			-- name
+		''Portlet Components'',		-- name
 		''/intranet/admin/components/'', -- url
 		90,				-- sort_order
 		v_main_menu,			-- parent_menu_id

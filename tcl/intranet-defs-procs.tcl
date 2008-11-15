@@ -718,21 +718,6 @@ ad_proc im_country_options {} {
 }
 
 
-ad_proc im_currency_select {select_name {default ""}} {
-    Return a HTML widget that selects a currency code from
-    the list of global countries.
-} {
-    set bind_vars [ns_set create]
-    set statement_name "currency_code_select"
-    set sql "select iso, iso
-	     from currency_codes
-	     where supported_p='t'
-	     order by lower(currency_name)"
-
-    return [im_selection_to_select_box -translate_p 0 $bind_vars $statement_name $sql $select_name $default]
-}
-
-
 ad_proc -public im_category_from_id { 
     {-translate_p 1}
     category_id 

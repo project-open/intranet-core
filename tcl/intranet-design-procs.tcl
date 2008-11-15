@@ -1726,16 +1726,21 @@ ad_proc -public im_box_header {
 } {
      return " 
         <div class=\"component\">
-          <div class=\"component_header_rounded\" >
 
+	<table width=\"100%\">
+	<tr>
+	<td>
+          <div class=\"component_header_rounded\" >
             <div class=\"component_header\">
 	      <div class=\"component_title\">$title</div>
-              <div class=\"component_icons\">
-                $icons
-              </div>
+              <div class=\"component_icons\">$icons</div>
               <div class=\"component_clear\"></div>
             </div>
 	  </div>
+	</td>
+	</tr>
+	<tr>
+	<td colspan=2>
           <div class=\"component_body\">"
 }
 
@@ -1746,7 +1751,12 @@ ad_proc -public im_box_footer {} {
           <div class=\"component_footer\">
             <div class=\"component_footer_hack\"></div>
           </div>
-        </div>"
+
+	</td>
+	</tr>
+	</table>
+        </div>
+    "
 }
 
 ad_proc -public im_skin_list {} {
