@@ -1734,7 +1734,6 @@ ad_proc -public im_box_header {
             <div class=\"component_header\">
 	      <div class=\"component_title\">$title</div>
               <div class=\"component_icons\">$icons</div>
-              <div class=\"component_clear\"></div>
             </div>
 	  </div>
 	</td>
