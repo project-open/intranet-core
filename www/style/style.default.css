@@ -405,6 +405,11 @@ a {
   color: #000000;
 }
 
+.footer_hack {
+	height:auto;
+}
+
+
 #slave {
 
 }

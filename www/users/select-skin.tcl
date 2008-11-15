@@ -40,6 +40,7 @@ if {$current_user_id!=$user_id && !$current_user_admin_p} {
 # Update the user skin
 #--------------------------------------------------------------------
 
+
 db_dml skinupdate "UPDATE users SET skin=:skin WHERE user_id=:user_id"
 ns_write [ns_cache flush util_memoize "im_user_skin_helper $user_id" ]
 
