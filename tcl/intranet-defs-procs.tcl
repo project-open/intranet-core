@@ -706,7 +706,10 @@ ad_proc im_country_select {select_name {default ""}} {
 }
 
 
-ad_proc im_country_options {} {
+ad_proc im_country_options {
+    {-include_empty_p 1}
+    {-include_empty_name ""}
+} {
     Return a list of lists with country_code - country_name
     suitable for ad_form
 } {
@@ -714,7 +717,9 @@ ad_proc im_country_options {} {
 	     from country_codes
 	     order by lower(country_name)"
 
-    return [db_list_of_lists country_options $sql]
+    set options [db_list_of_lists country_options $sql]
+    if {$include_empty_p} { set options [linsert $options 0 [list $include_empty_name ""]] }
+    return $options
 }
 
 
