@@ -725,6 +725,7 @@ ad_proc im_country_options {
 
 ad_proc -public im_category_from_id { 
     {-translate_p 1}
+    {-locale ""}
     category_id 
 } {
     Get a category_name from 
@@ -734,7 +735,7 @@ ad_proc -public im_category_from_id {
     set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
-	set category_name [lang::message::lookup "" intranet-core.$category_key $category_name]
+	set category_name [lang::message::lookup $locale intranet-core.$category_key $category_name]
     }
 
     return $category_name
