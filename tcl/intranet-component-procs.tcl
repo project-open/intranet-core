@@ -131,7 +131,7 @@ ad_proc -public im_component_box {
 
     set body "
 	<tr>
-	  <td class=tablebody colspan=3><font size=-1>$body</font></td>
+	  <td class=tablebody colspan=3>$body</td>
 	</tr>
     "
     if {"t" == $minimized_p} { set body "" }
