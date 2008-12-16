@@ -304,6 +304,8 @@ db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' an
 ns_write "<li>Cleanup im_hours - set cost_id = null\n"
 db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 
+# test
+
 # Costs
 ns_write "<li>Cleanup costs<br>\n"
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
