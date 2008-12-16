@@ -293,7 +293,12 @@ set default_user 0
 
 
 ns_write "<li>Cleanup im_payments\n"
+# Drop trigger if necessary
+catch {
+    db_dml drop_trigger "drop trigger im_payments_audit_tr on im_payments"
+}
 db_dml payments "delete from im_payments"
+
 ns_write "<li>Cleanup im_payments_audit\n"
 db_dml im_payments_audit "delete from im_payments_audit"
 
@@ -304,7 +309,11 @@ db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' an
 ns_write "<li>Cleanup im_hours - set cost_id = null\n"
 db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 
-# test
+# Invoices pointer to costs
+ns_write "<li>Cleanup im_expenses.invoice_id\n"
+if {[db_column_exists im_expenses invoice_id]} {
+    db_dml expense_invoices "update im_expenses set invoice_id = null"
+}
 
 # Costs
 ns_write "<li>Cleanup costs<br>\n"
@@ -356,6 +365,14 @@ if {[db_table_exists im_trans_tasks]} {
     db_dml im_trans_tasks "delete from im_trans_tasks"
     db_dml im_trans_prices "delete from im_trans_prices"
 }
+
+ns_write "<li>Cleanup im_freelance_rfqs\n"
+if {[db_table_exists im_freelance_rfqs]} {
+    db_dml im_timsheet_prices "delete from im_freelance_rfq_answers"
+    db_dml im_timsheet_prices "delete from im_freelance_rfqs"
+}
+
+
 
 # Remove user from business objects that we don't want to delete...
 ns_write "<li>Cleanup im_biz_object_members\n"
