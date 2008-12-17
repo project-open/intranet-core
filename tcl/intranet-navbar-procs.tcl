@@ -49,7 +49,7 @@ ad_proc -public im_navbar_tree {
 
     set html "
       <hr/>
-      <div class=filter-block>
+      	<div class=filter-block>
 	<ul class=mktree>
 	[im_menu_li home]
 	<ul>
