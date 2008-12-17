@@ -40,7 +40,10 @@ set notification_interval_id [notification::get_interval_id -name "instant"]
 multirow create notifications url label title subscribed_p
 set manage_url "[apm_package_url_from_key [notification::package_key]]manage"
 
-foreach type [db_list wf_notifs "select short_name from notification_types where short_name like 'wf%'"] {
+
+# Old: "select short_name from notification_types where short_name like 'wf%'"
+
+foreach type [db_list wf_notifs "select short_name from notification_types"] {
     set pretty_name [db_string pretty_name "select pretty_name from notification_types where short_name = :type"]
     set type_id [notification::type::get_type_id -short_name $type]
     
