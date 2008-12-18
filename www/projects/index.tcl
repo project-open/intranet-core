@@ -458,12 +458,11 @@ if {[string equal $mine_p "dept"]} {
     # Select all project with atleast one member that
     # belongs to the department of the current user.
     set perm_sql "
-	(select	p.*
+	(select	distinct p.*
 	from	im_projects p,
 		acs_rels r
 	where	r.object_id_one = p.project_id
 		and r.object_id_two in (
-			
 			select	employee_id
 			from	im_employees
 			where	department_id in (

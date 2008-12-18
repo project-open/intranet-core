@@ -30,7 +30,7 @@ ad_page_contract {
     { forum_order_by "" }
     { view_name "standard"}
     { plugin_id:integer 0 }
-    { subproject_status_id "" }
+    { subproject_status_id 0 }
 }
 
 # ---------------------------------------------------------------------
@@ -54,7 +54,7 @@ if {0 == $project_id} {
 set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
 if {$subproject_filtering_enabled_p} {
     set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
-    if {"" == $subproject_status_id} {
+    if {0 == $subproject_status_id} {
 	set subproject_status_id $subproject_filtering_default_status_id 
     }
 }
