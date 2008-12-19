@@ -432,14 +432,20 @@ ad_proc -public im_project_options {
     {-include_empty_name ""}
     {-include_project_ids {} }
     {-exclude_subprojects_p 1}
-    {-exclude_status_id 0}
+    {-exclude_status_id "[im_project_status_deleted]"}
+    {-exclude_type_id "[im_project_type_task]"}
     {-project_status_id 0}
+    {-project_type_id 0}
     {-member_user_id 0}
     {-company_id 0}
     {-project_id 0}
 } { 
     Get a list of projects
 } {
+    # Default: Exclude tasks and deleted projects
+    if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
+    if {"" == $exclude_type_id} { set exclude_type_id [im_project_type_task] }
+
     set current_project_id $project_id
     set current_user_id [ad_get_user_id]
     set max_project_name_len 50
@@ -524,17 +530,27 @@ ad_proc -public im_project_options {
     set criteria [list]
     if {$exclude_subprojects_p} { lappend criteria "p.parent_id is null" }
    
-    if {$company_id} { lappend criteria "p.company_id = :company_id" }
+    if {0 != $company_id && "" != $company_id} { 
+	lappend criteria "p.company_id = :company_id" 
+    }
 
-    if {0 != $exclude_status_id} {
+    if {0 != $exclude_status_id && "" != $exclude_status_id} {
 	lappend criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
     }
 
-    if {0 != $project_status_id} {
+    if {0 != $exclude_type_id && "" != $exclude_type_id} {
+	lappend criteria "p.project_type_id not in ([join [im_sub_categories $exclude_type_id] ","])"
+    }
+
+    if {0 != $project_status_id && "" != $project_status_id} {
 	lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
     }
 
-    if {$member_user_id} {
+    if {0 != $project_type_id && "" != $project_type_id} {
+	lappend criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
+    }
+
+    if {0 != $member_user_id && "" != $member_user_id} {
 	lappend criteria "p.project_id in (
 					select	object_id_one
 					from	acs_rels
@@ -704,11 +720,16 @@ ad_proc -public im_project_status_select { select_name { default "" } } {
     return [im_category_select "Intranet Project Status" $select_name $default]
 }
 
+
+
 ad_proc -public im_project_select { 
     { -exclude_subprojects_p 1 }
-    { -exclude_status_id 0 }
+    { -exclude_status_id "" }
+    { -exclude_type_id "" }
+    { -project_status_id "" }
+    { -project_type_id "" }
     { -include_empty_p 0 } 
-    { -include_empty_name "All" }
+    { -include_empty_name "" }
     select_name 
     { default "" } 
     { status "" } 
@@ -728,102 +749,61 @@ ad_proc -public im_project_select {
     where member_user_id participate in some role.
     @param main_projects_maxdepth: Determine the maxdepth if exclude_subprojects_p=1
 } {
-    set bind_vars [ns_set create]
-    set user_id [ad_get_user_id]
-    ns_set put $bind_vars user_id $user_id
- 
-    if {0 == $main_projects_maxdepth} {
-	set main_projects_maxdepth [parameter::get_from_package_key -package_key "intranet-core" -parameter "MainProjectSelectMaxdepth" -default 1]
+    if { ![empty_string_p $status] } {
+	if {"" != $project_status_id} { ad_return_complaint 1 "im_project_select: duplicate 'status' parameter" }
+	set project_status_id [db_string stat "
+		select	category_id 
+		from	im_categories
+		where	category_type = 'Intranet Project Status' and
+			lower(category) = lower(status);
+	" -default ""]
     }
     
-    if {[im_permission $user_id view_projects_all]} {
-	# The user can see all projects
-	# This is particularly important for sub-projects.
-	 set sql "
-		select
-			p.project_id,
-			p.project_name
-		from
-			im_projects p
-		where
-			1=1
-	"
-     } else {
-	 # The user should see only his own projects
-	 set sql "
-		select
-			p.project_id,
-			p.project_name
-		from
-			im_projects p,
-	                (       select  count(rel_id) as member_p,
-	                                object_id_one as object_id
-	                        from    acs_rels
-	                        where   object_id_two = :user_id
-	                        group by object_id_one
-	                ) r
-		where
-			p.project_id = r.object_id
-			and r.member_p > 0
-	"
-     }	
-
-
-     if { ![empty_string_p $company_id] } {
-	 ns_set put $bind_vars company_id $company_id
-	 append sql " and p.company_id = :company_id"
-     }
-
-     if { $exclude_subprojects_p } {
-	 if {1 == $main_projects_maxdepth} {
-	     append sql " and p.parent_id is null"
-	 } else {
-	     append sql " and tree_level(p.tree_sortkey) <= $main_projects_maxdepth"
-	     append sql " and p.project_type_id != [im_project_type_task]"
-	 }
-     }
-
-     if { ![empty_string_p $status] } {
-	 ns_set put $bind_vars status $status
-	 append sql " and p.project_status_id = (
-	     select project_status_id 
-	     from im_project_status 
-	     where lower(project_status)=lower(:status))"
-    }
-
-    if {0 != $exclude_status_id} {
-	ns_set put $bind_vars exclude_status_id $exclude_status_id
-	append sql " and p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
-    }
-
     if { ![empty_string_p $exclude_status] } {
-	set exclude_string [im_append_list_to_ns_set $bind_vars project_status $exclude_status]
-	append sql " and p.project_status_id in (
-	    select project_status_id 
-            from im_project_status 
-            where project_status not in ($exclude_string)) "
+	if {"" != $exclude_status_id} { ad_return_complaint 1 "im_project_select: duplicate 'exclude_status' parameter" }
+	set exclude_status_id [db_string stat "
+		select	category_id 
+		from	im_categories
+		where	category_type = 'Intranet Project Status' and
+			lower(category) = lower(status);
+	" -default ""]
     }
-
+	
+    set project_type_id ""
     if { ![empty_string_p $type] } {
-	ns_set put $bind_vars type $type
-	append sql " and p.project_type_id = (
-	    select project_type_id 
-	    from im_project_types 
-	    where project_type=:type)"
+	set project_type_id [db_string typ "
+		select	category_id 
+		from	im_categories
+		where	category_type = 'Intranet Project Type' and
+			lower(category) = lower(status);
+	" -default ""]
     }
 
-    if { ![empty_string_p $member_user_id] } {
-	ns_set put $bind_vars member_user_id $member_user_id
-	append sql "	and p.project_id in (
-				select object_id_one
-				from acs_rels
-				where object_id_two = :member_user_id)
-		    "
+    set project_options [im_project_options \
+			     -include_empty $include_empty_p \
+			     -include_empty_name $include_empty_name \
+			     -exclude_subprojects_p $exclude_subprojects_p \
+			     -exclude_status_id $exclude_status_id \
+			     -exclude_type_id $exclude_type_id \
+			     -project_status_id $project_status_id \
+			     -project_type_id $project_type_id \
+			     -member_user_id $member_user_id \
+			     -company_id $company_id \
+    ]
+
+    set options_html ""
+    foreach option $project_options {
+        set value [lindex $option 0]
+        set id [lindex $option 1]
+        append options_html "\t\t<option value=\"$id\">$value</option>\n"
+
     }
 
-    append sql " order by lower(p.project_name)"
-
-    return [im_selection_to_select_box -include_empty_p $include_empty_p -include_empty_name $include_empty_name -translate_p 0 $bind_vars project_select $sql $select_name $default]
+    return "
+	<select name=\"select_name\">
+	$options_html
+	</select>
+    "
 }
 
 
