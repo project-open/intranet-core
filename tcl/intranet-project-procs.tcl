@@ -447,6 +447,8 @@ ad_proc -public im_project_options {
     # Make sure we don't get a syntax error in the query
     lappend include_project_ids 0
 
+    set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "name"]
+
     # Exclude subprojects does not work with subprojects,
     # if we are showing this box for a sub-sub-project.
     set subsubproject_sql ""
@@ -558,15 +560,23 @@ ad_proc -public im_project_options {
 	set where_clause " and $where_clause"
     }
 
-    set order_by_clause "lower(p.project_name)"
-
-    # The user can see all projects
-    # This is particularly important for sub-projects.
+    switch $list_sort_order {
+	name { set sort_order "lower(p.project_name)" }
+	order { set sort_order "p.sort_order" }
+	legacy { set sort_order "p.tree_sortkey" }
+	default { set sort_order "lower(p.project_nr)" }
+    }
+    
     set sql "
 		select
-			substring(p.project_name for :max_project_name_len),
-			p.project_id
+			p.project_id,
+			p.parent_id,
+			tree_level(p.tree_sortkey) as tree_level,
+			substring(p.project_name for :max_project_name_len) as project_name_shortened,
+			$sort_order as sort_order
 		from
+			im_projects p,
+			im_projects main_p,
 			(	select	p.project_name,
 					p.project_id
 				from	im_projects p
@@ -587,12 +597,25 @@ ad_proc -public im_project_options {
 					p.project_id
 				from	im_projects p
 				where	p.project_id in ([join $include_project_ids ","])
-			) p
-		order by 
-			$order_by_clause
+			) cond
+		where
+			p.project_id = cond.project_id and
+			tree_ancestor_key(p.tree_sortkey, 1) = main_p.tree_sortkey and
+			main_p.project_status_id not in ([im_project_status_deleted]) and
+			p.project_status_id not in ([im_project_status_deleted])
     "
 
-    set options [db_list_of_lists project_options $sql]
+    db_multirow multirow hours_timesheet $sql
+    multirow_sort_tree multirow project_id parent_id sort_order
+    set options [list]
+    template::multirow foreach multirow {
+
+	set indent ""
+	for {set i 0} {$i < $tree_level} { incr i} { append indent "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }
+	lappend options [list "$indent$project_name_shortened" $project_id]
+
+    }
+
     if {$include_empty} { set options [linsert $options 0 [list $include_empty_name ""]] }
     return $options
 }
@@ -1014,6 +1037,9 @@ ad_proc -public im_project_hierarchy_component {
     im_project_permissions $current_user_id $project_id view read write admin
     if {!$read} { return "" }
 
+    # How to sort the list of subprojects
+    set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "order"]
+
     set project_url "/intranet/projects/view"
     set space "&nbsp; &nbsp; &nbsp; "
     set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default 0]
@@ -1078,16 +1104,25 @@ ad_proc -public im_project_hierarchy_component {
         "
     }
 
+    switch $list_sort_order {
+	name { set sort_order_sql "lower(children.project_name)" }
+	order { set sort_order_sql "children.sort_order" }
+	legacy { set sort_order_sql "children.tree_sortkey"	}
+	default { set sort_order_sql "lower(children.project_nr)" }
+    }
+
     set sql "
 	select
 		children.project_id as subproject_id,
 		children.project_nr as subproject_nr,
 		children.project_name as subproject_name,
 		children.project_status_id as subproject_status_id,
+		children.parent_id as subproject_parent_id,
 		im_category_from_id(children.project_status_id) as subproject_status,
 		im_category_from_id(children.project_type_id) as subproject_type,
 		tree_level(children.tree_sortkey) -
-		tree_level(parent.tree_sortkey) as subproject_level
+		tree_level(parent.tree_sortkey) as subproject_level,
+                $sort_order_sql as sort_order
 		$extra_select
 	from
 		im_projects parent,
@@ -1099,7 +1134,7 @@ ad_proc -public im_project_hierarchy_component {
 		and parent.project_id = :super_project_id
 	order by children.tree_sortkey
     "
-    
+
     # ---------------------------------------------------------------
     # Format the List Table Header
 
@@ -1122,7 +1157,13 @@ ad_proc -public im_project_hierarchy_component {
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
     set ctr 0
-    db_foreach project_hierarchy $sql {
+
+    # Create a "multirow" from the SQL - read the results into memory
+    # Sort the tree according to the specified sort order
+    # Loop through the multirow instead of SQL
+    db_multirow multirow subproject_query $sql
+    multirow_sort_tree multirow subproject_id subproject_parent_id sort_order
+    template::multirow foreach multirow {
 
 	set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
 	set subproject_indent ""
@@ -1135,12 +1176,12 @@ ad_proc -public im_project_hierarchy_component {
 
 	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
 	foreach column_var $column_vars {
-	    append row_html "\t<td valign=top>"
+	    append row_html "\t<td valign=top><nobr>"
 	    if {$subproject_bold_p} { append row_html "<b>" }
 	    set cmd "append row_html $column_var"
 	    eval "$cmd"
 	    if {$subproject_bold_p} { append row_html "</b>" }
-	    append row_html "</td>\n"
+	    append row_html "</nobr></td>\n"
 	}
 	append row_html "</tr>\n"
 	append table_body_html $row_html
