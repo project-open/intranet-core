@@ -755,7 +755,7 @@ ad_proc -public im_project_select {
 		select	category_id 
 		from	im_categories
 		where	category_type = 'Intranet Project Status' and
-			lower(category) = lower(status);
+			lower(category) = lower(:status);
 	" -default ""]
     }
     
@@ -765,7 +765,7 @@ ad_proc -public im_project_select {
 		select	category_id 
 		from	im_categories
 		where	category_type = 'Intranet Project Status' and
-			lower(category) = lower(status);
+			lower(category) = lower(:exclude_status);
 	" -default ""]
     }
 	
@@ -775,7 +775,7 @@ ad_proc -public im_project_select {
 		select	category_id 
 		from	im_categories
 		where	category_type = 'Intranet Project Type' and
-			lower(category) = lower(status);
+			lower(category) = lower(:type);
 	" -default ""]
     }
 
