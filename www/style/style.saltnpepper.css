@@ -148,24 +148,24 @@ background-position: 0px -10px;
 }
 
 #header_settings {
-	 float: left;
-   font-size: 8pt;
-   top: 5px;
-   z-index: 101;
-   color: #666;
-   padding-left: 1em;
-   padding-right: 1em;
-	 position:static;
+	float: right;
+   	font-size: 8pt;
+	top: 5px;
+	color: #666;
+	width: 340px;
 }
 
 #header_buttons {
-	 position:absolute;
-   position: left;
-   top: 0px;
-   right: 130px;
-   background: #fff;
-   border: 1px #fff;
-   width: 90%;
+	/*
+	position:absolute;
+	position: left;
+   	right: 130px;
+	border: 1px #fff;
+	width: 90%;
+	*/
+	background: #fff;
+   	float: right; 
+	top: 0px;
 }
 
 #header_logout A {
@@ -181,35 +181,33 @@ background-position: 0px -10px;
 }
 
 #header_logout {
-	position: static;
-	/* z-index: 101; */
+	/* position: static; 
 	color: #666;
 	padding-left: 0em;
 	padding-right: 1em;
 	font-weight:bold;
-	float: left;
+	float: left; */
 }
 
 #header_logout_tab {
-	/*position: absolute; */
-   right: 0px;
 	top: 0px;
 	float: right;
+   	background: #fff;   /* IE6/7 hack */
+	/*position: absolute; */
 	/* width: 7em;*/
-   background: #fff;   /* IE6/7 hack */
-   /* width: 100px; */
 }
 
 #header_skin_select {
-	padding-left: 1.5em;
 	color: #666;
 	font-size: 8pt;
-	position: static;
-	float: right;
-	right:auto;
-	top:auto;
-	width: 120px;
-	display: table;
+	/* padding-top: 30px;
+	padding-right: 120px; */
+	position: absolute;
+	top: 25px;
+	right: 108px;
+	display: block;
+	/* width: 120px; */
+	/* display: table; */
 }
 
 
@@ -658,9 +656,8 @@ a   span  {float:none;}
 	position:absolute;
 	padding-left: 30px;
 	padding-right: 30px;
-	padding-top: 0px;
+	margin-top: -10px;
 	border: 1px #999;
-	margin-top: 0px;
 }
 
 
