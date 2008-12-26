@@ -81,6 +81,8 @@ jQuery().ready(function(){
 	var node_to_move=document.getElementById("fullwidth-list");
 	if (node_insert_after != null && node_to_move != null) {
 	   document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
+           document.getElementById('fullwidth-list').style.visibility='visible';
+           document.getElementById('footer').style.visibility='visible';
 	}
 
 	/* BUG TRACKER */
