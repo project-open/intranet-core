@@ -7,6 +7,38 @@
 /* TEST WITH INCLUDE STYLE.CSS  */
 
 
+.month_heading {
+	background-color: #0A3F67;
+}
+
+.day_header {
+	background-color: #266493;
+}
+
+.day_number {
+        font-weight: bold; 
+        color: #0A3F67;
+	font-size: 160%;
+}
+
+.before_after_month, .not_todays_date, .todays_date {
+        text-align: left;
+        border: 1px solid #666;
+}
+
+.link_log_hours {
+	padding-top: 8px;
+	padding-left: 12px;
+}
+
+.log_hours{
+	
+	color: #000000;
+}
+
+.calendar_table {
+
+}
 
 /*  START: TEST WITH INCLUDE STYLE.LEFT.CSS */
 
@@ -44,7 +76,7 @@ body, p, td {
 }
 
 body {
-    background-color: #fff;  
+   background-color: #fff;  
 }
 
 a {
@@ -81,6 +113,12 @@ developer-support-adp-box-off {
   padding-right: 8px;
   padding-bottom: 10px;
   background: #FFF;
+  /*
+  background-image: url('/intranet/images/ajax-loader.gif');
+  background-position: center center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  */
 }
 
 #header_class {
@@ -498,19 +536,14 @@ a   span  {float:none;}
 /* ---------------    END: NAVBAR_SUB  ----------------------------------     */
 
 
-
-
-
-
-
 #alphabar {
 	position: absolute;
-	left: 300px;
+	left: 290px;
 	margin: 0;
 	bottom: -1px;
 	list-style: none;
 	line-height: normal;
-	width: 500px;
+	width: 800px;
 }
 
 #navbar_sub LI, #alphabar LI {
@@ -518,7 +551,7 @@ a   span  {float:none;}
    float: left;
 }
 #alphabar LI A {
-	 color: #666;
+   color: #666;
    position: relative;
    display:block;
    text-decoration:none;
@@ -550,24 +583,17 @@ a   span  {float:none;}
 	color: #2e2e2e;
 }
 
-
-
 #main_title, #main_context_bar, #whosonline_class {
-	    
-			float: left;
-			margin-top:3px;
-			position:relative;
-/*			z-index:2200; */
-			
-			
-			
+  float: left;
+  margin-top:3px;
+  position:relative;
 }
 
 #main_title {
-			height:18px;
-		
+  height:18px;
+  font-size: 13pt;
+  color: #666666;		
 }
-
 
 #main_context_bar, #contextbar {
     display: none; 
@@ -620,7 +646,8 @@ a   span  {float:none;}
 #footer {
   text-align: center;
   margin-top: 1em;
-	position: relative;
+  position: relative;
+  visibility: hidden;
 }
 
 #footer, #footer A {
@@ -664,6 +691,7 @@ a   span  {float:none;}
   left: 2pt;
   float: left;
   font-size: 14pt;
+  visibility: hidden;
 }
 .component_icons {
   float: right;
@@ -909,8 +937,9 @@ a   span  {float:none;}
 }
 
 .fullwidth-list {
-	margin-right: 20px;
-	min-height: 400px;
+  margin-right: 20px;
+  min-height: 400px;
+  visibility: hidden;
 }
 
 .fullwidth-list table {
