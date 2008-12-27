@@ -268,18 +268,9 @@ background-position: 0px -10px;
 
 #main {
    position: relative;
+
 }
 
-#main_header {
-	font-weight: bold;
-	margin-bottom: 20px;
-	height: 25px;
-	background: #fff;
-	width: 100%;
-	color:#000000;
-    border-bottom: 1px solid #24618E;
-/*	z-index: 3000; */
-}
 
 #main_portrait_and_username {
 	position: absolute;
@@ -331,8 +322,7 @@ background-position: 0px -10px;
    padding-right: 1em;
 }
 
-#main_users_online A,
-#main_search INPUT {
+#main_users_online A,#main_search INPUT {
    color: #666;
    font-size: 8pt;
    text-decoration:none;
@@ -347,26 +337,35 @@ background-position: 0px -10px;
 
 /* ---------    START: NAV_BAR_MAIN ------------------------- */
 
+#main_header {
+	font-weight: bold;
+	margin-bottom: 20px;
+	height: 25px;
+	background: #fff;
+	width: 100%;
+	color:#000000;
+	border-bottom: 1px solid #24618E;
+	display: block;
+	position: relaive;
+/*	z-index: 3000; */
+}
+
+
 #navbar_main_wrapper {
   position: relative;
   left: 0px;
   top: 0px;
   background-color: #2E2E2E;
- /*  z-index:1222; */
 }
 
-    #navbar_main {
-	
+#navbar_main {
 	width:100%;
 	background:#fff;
-	/* font-size:93%; */
-      line-height:normal;
+	line-height:normal;
 	border-bottom:1px solid #24618E;
 	height:22px;
 	left:0px;
-	
-				  
-      }
+}
 
     #navbar_main_wrapper ul {
 	margin:0;
@@ -444,8 +443,8 @@ a   span  {float:none;}
 	background-color: #fff;
 	border-bottom: 1px solid #24618E;
 /*	z-index:3000; */
-	clear:both;
-	margin-top:-20px;
+/*	clear:both; /*
+/*	margin-top:-20px; */
 }
 
 #navbar_sub {
