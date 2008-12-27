@@ -84,7 +84,13 @@ jQuery().ready(function(){
            document.getElementById('fullwidth-list').style.visibility='visible';
            document.getElementById('footer').style.visibility='visible';
 	}
-
+	
+        node_insert_after=document.getElementById("main_header");
+        node_to_move=document.getElementById("navbar_sub_wrapper");
+        if (node_insert_after != null && node_to_move != null) {
+           document.getElementById("main").insertBefore(node_to_move, node_insert_after.nextSibling);
+        }
+	
 	/* BUG TRACKER */
 	var node_insert_after=document.getElementById("slave_content");
 	var node_to_move=document.getElementById("bug-tracker-navbar");
