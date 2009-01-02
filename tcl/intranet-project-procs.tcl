@@ -432,6 +432,7 @@ ad_proc -public im_project_options {
     {-include_empty_name ""}
     {-include_project_ids {} }
     {-exclude_subprojects_p 1}
+    {-exclude_tasks_p 1}
     {-exclude_status_id ""}
     {-exclude_type_id ""}
     {-project_status_id 0}
@@ -444,7 +445,7 @@ ad_proc -public im_project_options {
 } {
     # Default: Exclude tasks and deleted projects
     if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
-    if {"" == $exclude_type_id} { set exclude_type_id [im_project_type_task] }
+    if {!$exclude_tasks_p} { set exclude_subprojects_p 0 }
 
     set current_project_id $project_id
     set current_user_id [ad_get_user_id]
@@ -540,6 +541,10 @@ ad_proc -public im_project_options {
 
     if {0 != $exclude_type_id && "" != $exclude_type_id} {
 	lappend criteria "p.project_type_id not in ([join [im_sub_categories $exclude_type_id] ","])"
+    }
+
+    if {$exclude_tasks_p} {
+	lappend criteria "p.project_type_id not in ([join [im_sub_categories [im_project_type_task]] ","])"
     }
 
     if {0 != $project_status_id && "" != $project_status_id} {
