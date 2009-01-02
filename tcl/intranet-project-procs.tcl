@@ -432,8 +432,8 @@ ad_proc -public im_project_options {
     {-include_empty_name ""}
     {-include_project_ids {} }
     {-exclude_subprojects_p 1}
-    {-exclude_status_id "[im_project_status_deleted]"}
-    {-exclude_type_id "[im_project_type_task]"}
+    {-exclude_status_id ""}
+    {-exclude_type_id ""}
     {-project_status_id 0}
     {-project_type_id 0}
     {-member_user_id 0}
