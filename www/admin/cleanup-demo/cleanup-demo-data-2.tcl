@@ -254,7 +254,16 @@ foreach cost_info $cost_infos {
     im_exec_dml del_cost "${object_type}__delete($cost_id)"
 }
 
-db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
+# Delete (ugly!) costs that have been deleted in im_costs
+# but still exists in acs_object.
+# Fix 090107 from iuri.sampaio@gmail.com: call acs_object__delete
+# instead of using "delete from acs_objects".
+db_list dangeling_costs "
+	select	acs_object__delete(object_id)
+	from	acs_objects
+	where	object_type = 'im_cost' and 
+		object_id not in (select cost_id from im_costs)
+"
 
 
 # Forum
@@ -319,7 +328,7 @@ if {[db_table_exists im_tickets]} {
 }
 
 
-# Remove user from business objects that we don't want to delete...
+# Projects & subclasses
 db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects "update im_projects set parent_id = null"
 db_dml remove_from_projects "delete from im_timesheet_tasks"
@@ -367,7 +376,16 @@ db_dml wf_case_deadlines "delete from wf_case_deadlines"
 db_dml wf_journal_entries "delete from journal_entries"
 
 
-# Delete objects
+# Delete dangling objects
+# Changed to acs_object__delete thanks to iuri.sampaio@gmail.com
+db_list rfq_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_freelance_rfq'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq_answer'"
+db_dml rfq_objects "delete from acs_objects where object_type = 'rfq_objects'"
+db_list rfq_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'acs_activity'"
+db_dml remove_from_cal_itemsw "delete from cal_items where on_which_calendar in (select object_id from acs_objects where object_type = 'cal_item')"
+db_list rfq_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'cal_item'"
+
+
 db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq'"
 db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq_answer'"
 db_dml rfq_objects "delete from acs_objects where object_type = 'rfq_objects'"
@@ -408,33 +426,55 @@ db_dml project_context "
 		)
 	)
 "
-db_dml project_context "
+db_dml project_acs_rels "
 	delete from acs_rels where object_id_one in (
 		select object_id from acs_objects where object_type in (
 			'im_project', 'im_timesheet_task', 'im_ticket', 'im_company'
 		)
 	)
 "
-db_dml project_context "
+db_dml project_context_null "
 	update acs_objects set context_id = null where context_id in (
 		select object_id from acs_objects where object_type in (
 			'im_project', 'im_timesheet_task', 'im_ticket', 'im_company'
 		)
 	)
 "
-db_dml project_objects "
-	delete from acs_objects where object_type = 'im_project' 
-"
-
-db_dml ts_objects "delete from acs_objects where object_type = 'im_timesheet_task'"
+db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
+db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
 
 
 # Companies
-db_dml rfq_objects "
-	delete from acs_objects where object_type = 'im_company' 
-	and object_id not in (select company_id from im_companies)
+
+
+
+db_dml remove_from_acs_object_context_index "
+    delete from acs_object_context_index
+    where object_id in (select object_id from acs_objects where object_type = 'im_company')
+    or ancestor_id in (select object_id from acs_objects where object_type = 'im_company')
+}
+
+db_dml remove_company_rfq_objects_from_acs_rels "
+    delete from acs_rels
+    where object_id_one in (select object_id from acs_objects where object_type = 'im_company')
+    or object_id_two in (select object_id from acs_objects where object_type = 'im_company')
 "
 
+db_list remove_from_acs_objects "
+	select	acs_object__delete(object_id) from acs_objects
+	where	context_id in (
+		select	object_id 
+		from	acs_objects where object_type = 'im_company' and
+			object_id not in (select company_id from im_companies)
+	)
+"
+
+db_list rfq_objects "
+	select	acs_object__delete(object_id)
+	from	acs_objects
+	where	object_type = 'im_company' and 
+		object_id not in (select company_id from im_companies)
+"
 
 db_dml del_biz_rels "delete from im_biz_object_members"
 db_dml del_biz_rel_rels "delete from acs_rels where rel_type = 'im_biz_object_member'"
