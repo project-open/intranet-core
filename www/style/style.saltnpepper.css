@@ -700,7 +700,7 @@ a   span  {float:none;}
   left: 2pt;
   float: left;
   font-size: 14pt;
-  visibility: hidden;
+  /* visibility: hidden; */ 
 }
 .component_icons {
   float: right;
