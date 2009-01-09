@@ -9,7 +9,9 @@
   dealt with in the own pages.
 -->
 
-<% if {"" == $view_name || [string equal $view_name "standard"]} { %>
+	<div class="fullwidth-list-no-side-bar" id="fullwidth-list">
+
+	<% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
 	<table cellpadding=0 cellspacing=0 border=0 width="100%">
 	<tr>
@@ -27,7 +29,7 @@
 	  <%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
   	     
 
-<if @subproject_filtering_enabled_p@>
+	<if @subproject_filtering_enabled_p@>
 		<table>
 		<form action="@current_url;noquote@" method=GET>
 		<%= [export_form_vars project_id] %>
@@ -40,7 +42,7 @@
 		</tr>
 		</form>
 		</table>
-</if>
+	</if>
 		<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
 
 	    @admin_html_content;noquote@
@@ -62,30 +64,30 @@
 	</td></tr>
 	</table>
 
-<% } elseif {[string equal "files" $view_name]} { %>
+	<% } elseif {[string equal "files" $view_name]} { %>
 
-	<%= [im_component_insert "Project Filestorage Component"] %>
+		<%= [im_component_insert "Project Filestorage Component"] %>
 
-<% } elseif {[string equal "sales" $view_name]} { %>
+	<% } elseif {[string equal "sales" $view_name]} { %>
 
-	<%= [im_component_insert "Project Sales Filestorage Component"] %>
+		<%= [im_component_insert "Project Sales Filestorage Component"] %>
 
-<% } elseif {[string equal "finance" $view_name]} { %>
+	<% } elseif {[string equal "finance" $view_name]} { %>
 
-	<%= [im_component_insert "Project Finance Component"] %>
+		<%= [im_component_insert "Project Finance Component"] %>
 
-<% } elseif {[string equal "gantt" $view_name]} { %>
+	<% } elseif {[string equal "gantt" $view_name]} { %>
 
-	<%= [im_component_insert "Project Gantt Resource Component"] %>
+		<%= [im_component_insert "Project Gantt Resource Component"] %>
 
-<% } elseif {[string equal "status" $view_name]} { %>
+	<% } elseif {[string equal "status" $view_name]} { %>
 
-	<%= [im_component_insert "Project Translation Error Component"] %>
-	<%= [im_component_insert "Project Translation Task Status"] %>
+		<%= [im_component_insert "Project Translation Error Component"] %>
+		<%= [im_component_insert "Project Translation Task Status"] %>
 
-<% } elseif {[string equal "component" $view_name]} { %>
+	<% } elseif {[string equal "component" $view_name]} { %>
 
-   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
+	   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
+	<% } %>
 
-<% } %>
-
+</div> <!-- fullwidth list -->
