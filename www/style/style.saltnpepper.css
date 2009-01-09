@@ -1,5 +1,6 @@
 @import url(style.common.css);
 
+
 /* when Time: merge style_sp.css with this file*/
 @import url(style_sp.css);
 
@@ -50,6 +51,14 @@
 
 .fullwidth-list {
    margin-left: 290px;
+   margin-right: 20px;
+   min-height: 400px;
+   visibility: hidden;
+}
+
+
+.fullwidth-list-no-side-bar{
+   margin-left: 10px;
    margin-right: 0px;
 }
 
@@ -930,12 +939,6 @@ a   span  {float:none;}
    padding-right: 1em;
    padding-top: 5px;
    padding-bottom: 5px;
-}
-
-.fullwidth-list {
-  margin-right: 20px;
-  min-height: 400px;
-  visibility: hidden;
 }
 
 .fullwidth-list table {
