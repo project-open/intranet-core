@@ -56,9 +56,17 @@ ad_form \
 	{first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
 	{last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}}
     } -select_query {
-	select	u.*
-	from	cc_users u
-	where	u.user_id = :user_id
+
+	select	u.*,
+		p.*,
+		pa.*
+	from	users u,
+		persons p,
+		parties pa
+	where	u.user_id = :user_id and
+		p.person_id = u.user_id and
+		pa.party_id = u.user_id
+
     }
 
 
@@ -68,12 +76,20 @@ ad_form \
 
 db_1row user_info "
 	select	u.*,
+		p.*,
+		pa.*,
 		uc.*,
 		(select country_name from country_codes where iso = uc.ha_country_code) as ha_country_name,
 		(select country_name from country_codes where iso = uc.wa_country_code) as wa_country_name
-	from	cc_users u
+	from	
+		persons p,
+		parties pa,
+		users u
 		LEFT OUTER JOIN users_contact uc ON (u.user_id = uc.user_id)
-	where	u.user_id = :user_id
+	where	
+		u.user_id = :user_id and
+		p.person_id = u.user_id and
+		pa.party_id = u.user_id
 "
 
 set view_id [db_string get_view_id "select view_id from im_views where view_name='user_contact'"]
