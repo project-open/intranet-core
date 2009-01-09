@@ -1126,10 +1126,10 @@ ad_proc -public im_header {
     # The horizonal component
     set header_buttons [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
     if {$loginpage_p} { set header_buttons "" }
-
+   #  ad_return_complaint 1 [im_skin_select_html $user_id [im_url_with_query]]
     set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
     if {$header_skin_select != ""} {
-	set header_skin_select "[_ intranet-core.Skin]: $header_skin_select"
+	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
 
     return "
