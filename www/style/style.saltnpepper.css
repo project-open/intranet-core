@@ -209,22 +209,19 @@ background-position: 0px -10px;
 #header_skin_select {
 	color: #666;
 	font-size: 8pt;
-	/* padding-top: 30px;
-	padding-right: 120px; */
 	position: absolute;
 	top: 25px;
-	right: 108px;
+	right: 118px;
 	display: block;
-	/* width: 120px; */
-	/* display: table; */
 }
 
 
 #header_skin_select form {
 	display: inline;
-	margin:-4px 0 0 0;
+	/* margin:-4px 0 0 0; */
 	position: absolute;
-	height: 20px;
+	/*height: 20px;*/
+	font-size: 8px;
 }
 
 #header_skin_select input {
@@ -232,14 +229,21 @@ background-position: 0px -10px;
     margin:0 0 0 0;
 }
 
+
 #header_skin_select select {
-	display: inline-block;
-	font-size: 9px;
-	background-color: fff;
-	color: #000;
-	border: 1px solid #666;
-	height: 16px;
+	background-color:#CFDBFF;
+	border:1px solid #666666;
+	color:#666666;
+	font-family: Arial;
+	font-size:6pt;
+	height: 14px;
+	width: 90px;
 }
+
+#skin_select {
+
+}
+
 
 
 #header_logo {
