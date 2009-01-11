@@ -1290,14 +1290,16 @@ ad_proc -public im_stylesheet {} {
     } else {
 	set skin_js "default"
     }
-    # ad_return_complaint 1 $skin_js
-    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_js.css"]
+
+# 090110 fraber: SystemCSS has losts its importance - disabled
+#    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_js.css"]
+
+    set system_css "/intranet/style/style.$skin_js.css"
 
     if {[llength [info procs im_package_calendar_id]]} {
 	template::head::add_css -href "/calendar/resources/calendar.css" -media "screen"
 	append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
     }
-
 
 #    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
 #    ad_return_complaint 1 $bug_tracker_installed_p
