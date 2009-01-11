@@ -33,6 +33,27 @@ alter table persons add demo_password varchar(50);
 alter table users add skin integer;
 alter table users alter column skin set default 0;
 
+
+-------------------------------------------------------------
+-- Tell OpenACS that users and persons are tables for
+-- object type user
+--
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('person', 'persons', 'person_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user', 'users', 'user_id');
+
+
+-- Fix issue with acs_attributes for object type "persons" in 
+-- default OpenACS installation:
+update acs_attributes set
+	table_name = 'persons'
+where object_type = 'person';
+
+
+
 -------------------------------------------------------------
 -- Users_Contact information
 --
