@@ -21,6 +21,23 @@ ad_library {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
+# --------------------------------------------------------
+# Categories & Constants
+# --------------------------------------------------------
+
+# 40000-40999  Intranet Skin (1000)
+
+ad_proc -public im_skin_default {} { return 27000 }
+ad_proc -public im_skin_left_blue {} { return 27005 }
+ad_proc -public im_skin_right_blue {} { return 27010 }
+ad_proc -public im_skin_light_green {} { return 27015 }
+ad_proc -public im_skin_saltnpepper {} { return 27020 }
+
+
+# --------------------------------------------------------
+# 
+# --------------------------------------------------------
+
 # Compatibility with OpenACS 5.4
 namespace eval template::head {
 
@@ -1126,7 +1143,7 @@ ad_proc -public im_header {
     # The horizonal component
     set header_buttons [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
     if {$loginpage_p} { set header_buttons "" }
-   #  ad_return_complaint 1 [im_skin_select_html $user_id [im_url_with_query]]
+
     set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
     if {$header_skin_select != ""} {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
@@ -1284,17 +1301,20 @@ ad_proc -public im_stylesheet {} {
     set html ""
 
     # --------------------------------------------------------------------
-    set skin_name [im_skin_name [im_user_skin $user_id]]
-    if {[file exists "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"]} {
-	set skin_js $skin_name
+    set skin_name [im_user_skin $user_id]
+    set skin_path "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"
+    set skin_exists_p [util_memoize [list file exists $skin_path]]
+
+    if {$skin_exists_p} {
+	set skin $skin_name
     } else {
-	set skin_js "default"
+	set skin "default"
     }
 
 # 090110 fraber: SystemCSS has losts its importance - disabled
-#    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin_js.css"]
+#    set system_css [ad_parameter -package_id [im_package_core_id] SystemCSS "" "/intranet/style/style.$skin.css"]
 
-    set system_css "/intranet/style/style.$skin_js.css"
+    set system_css "/intranet/style/style.$skin.css"
 
     if {[llength [info procs im_package_calendar_id]]} {
 	template::head::add_css -href "/calendar/resources/calendar.css" -media "screen"
@@ -1336,8 +1356,8 @@ ad_proc -public im_stylesheet {} {
     template::head::add_javascript -src "/resources/acs-templating/mktree.js"
     append html "<script type=text/javascript src=\"/resources/acs-templating/mktree.js\"></script>\n"
 
-    template::head::add_javascript -src "/intranet/js/style.$skin_js.js"
-    append html "<script type=text/javascript src=\"/intranet/js/style.$skin_js.js\"></script>\n"
+    template::head::add_javascript -src "/intranet/js/style.$skin.js"
+    append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n"
 
     return $html
 }
@@ -1351,7 +1371,7 @@ ad_proc -public im_logo {} {
     
     if {[string equal $system_logo ""]} {
 	set user_id [ad_get_user_id]
-	set skin_name [im_skin_name [im_user_skin $user_id]]
+	set skin_name [im_user_skin $user_id]
 	
 	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
 	    set system_logo "/intranet/images/logo.$skin_name.gif"
@@ -1760,76 +1780,38 @@ ad_proc -public im_box_footer {} {
     "
 }
 
-ad_proc -public im_skin_list {} {
-} {
-    #     id name            displayname
-    return {
-	{ 0  "left"          "Default" }
-	{ 1  "opus5"         "Light Green" }
-	{ 2  "default"       "Right Blue" }
-	{ 4  "saltnpepper"   "SaltnPepper" }
-    }
-
-    set ttt {
-	{ 3  "transparent"   "Transparent" }
-    }
-}
-
-ad_proc -public im_skin_name { skin_id } {
-} {
-    foreach skin [im_skin_list] {
-	unlist $skin id name title
-
-	if {$id == $skin_id} {
-	    return $name
-	}
-    }
-
-    return "default"
-}
-
 ad_proc -public im_user_skin { user_id } {
+    Returns the name of the current skin
 } {
-    set skin_present_p [util_memoize "db_string skin_present \"
-        select  count(*)
-	from	user_tab_columns
-        where   lower(table_name) = 'users'
-                and lower(column_name) = 'skin'
-    \""]
-
-    if {!$skin_present_p} {
-	return 0
-    }
-
-    return [util_memoize "im_user_skin_helper $user_id"]
+    return [util_memoize [list im_user_skin_helper $user_id]]
 }
 
 ad_proc -public im_user_skin_helper { user_id } {
-    return [db_string person_skin "select skin from users where user_id=:user_id" -default 0]
+    Returns the name of the current skin - uncached
+} {
+    set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default "default"]
+    if {"" == $skin_name} { set skin_name "default" }
+    return $skin_name
 }
 
 ad_proc -public im_skin_select_html { user_id return_url } {
 } {
     if {!$user_id} { return "" }
-#    if {![string equal [ad_parameter -package_id [im_package_core_id] SystemCSS] ""]} { return "" }
 
-    set current_skin [im_user_skin $user_id]
+    set current_skin_id [db_string sid "select skin_id from users where user_id = :user_id"]
 
     set skin_select_html "
-       <form method=\"GET\" action=\"/intranet/users/select-skin\">
-       [export_form_vars return_url user_id]
-       <select name=\"skin\">
-    "
-    foreach skin [im_skin_list] {
-	unlist $skin id name fullname
-	set selected ""
-	if {$id == $current_skin} {
-	    set selected "selected=selected"
-	}
-	append skin_select_html "<option value=$id $selected>$fullname</option>"
-    }
-    append skin_select_html "
-       </select>
+	<form method=\"GET\" action=\"/intranet/users/select-skin\">
+	[export_form_vars return_url user_id]
+	[im_category_select \
+		-translate_p 0 \
+		-include_empty_p 0 \
+		-plain_p 0 \
+		-cache_interval 1 \
+		"Intranet Skin" \
+		skin_id \
+		$current_skin_id \
+	]
        <input type=submit value=\"[_ intranet-core.Change]\">
        </form>
     "

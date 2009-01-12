@@ -86,13 +86,15 @@
 -- 4300-4399	Intranet Trans Task Type
 -- 4300-4499    Intranet Bug-Tracker
 -- 4400-4499    Intranet Trans RFQ
--- 4500-4549    (reserved)
+-- 4500-4549    reserved (not sure if there are modules around...)
 -- 4550-4599    Intranet Project Type (extension)
+-- 4597			Software Release Item
+-- 4599			Software Release
 
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
 
--- 6000-6999	Intranet RecruitingRecruiting
+-- 6000-6999	Intranet Recruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
 
@@ -127,17 +129,21 @@
 -- 19000-19999  Intranet Expenses Workflow  (1000)
 -- 20000-20999  Intranet Change Management (1000)
 -- 21000-21999  Intranet Translation Language (1000)
--- 22000-22999  Intranet User Type
+-- 22000-22999  Intranet User Type (1000)
 -- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
--- 24000-24999  Intranet TinyTM (1000)
--- 25000-25999  reserved for UNED Spain (1000)
--- 26000-26999  reserved for ILO/ISSA
 
--- 27000-27999  reserved (1000)
--- 28000-28999  reserved (1000)
--- 29000-29999  reserved (1000)
+-- 24000-24999  Intranet TinyTM (1000)
+
+-- 25000-25999  reserved for UNED Spain (1000)
+-- 26000-26999  reserved for ILO/ISSA (1000)
+-- 27000-27999  Intranet Release Management (1000)
+-- 28000-28999  reserved for customer (1000)
+-- 29000-29999  reserved for customer (1000)
 
 -- 30000-39999  Intranet Helpdesk (10000)
+-- 40000-40999  Intranet Skin (1000)
+-- 41000-40999  reserved (9000)
+
 -- 40000-49999  reserved (10000)
 -- 50000-59999  reserved (10000)
 -- 60000-69999  reserved (10000)

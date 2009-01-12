@@ -20,7 +20,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     user_id
-    skin
+    skin_id
     return_url 
 }
 
@@ -31,7 +31,7 @@ ad_page_contract {
 set current_user_id [ad_maybe_redirect_for_registration]
 set current_user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
-if {$current_user_id!=$user_id && !$current_user_admin_p} {
+if {$current_user_id != $user_id && !$current_user_admin_p} {
     ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "<li>[_ intranet-core.lt_You_have_insufficient_7]"
     return
 }
@@ -40,8 +40,8 @@ if {$current_user_id!=$user_id && !$current_user_admin_p} {
 # Update the user skin
 #--------------------------------------------------------------------
 
+if {0 != $skin_id } { db_dml skinupdate "UPDATE users SET skin_id = :skin_id WHERE user_id = :user_id" }
 
-db_dml skinupdate "UPDATE users SET skin=:skin WHERE user_id=:user_id"
 ns_write [ns_cache flush util_memoize "im_user_skin_helper $user_id" ]
 
 db_release_unused_handles
