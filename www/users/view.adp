@@ -5,6 +5,8 @@
 
 <!-- left - right - bottom  design -->
 
+<div class="fullwidth-list-no-side-bar" id="fullwidth-list">
+
 <img src="/intranet/images/cleardot.gif" width=2 height=2>
 
 
@@ -78,4 +80,4 @@
 
 </td></tr>
 </table>
-
+</div>
