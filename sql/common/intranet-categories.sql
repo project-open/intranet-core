@@ -235,7 +235,7 @@ SELECT im_category_new ('48', 'Inactive', 'Intranet Company Status');
 SELECT im_category_new ('49', 'Deleted', 'Intranet Company Status');
 
 -- Introduce hierarchical company stati
--- Basicly, we've got not three super-states:
+-- Basically, we've got not three super-states:
 --	potential	everything before the company becomes "active"
 --	active		when the company is a valid customer or provider
 --	close		all possible outcomes when a business relation finishes
@@ -314,7 +314,7 @@ SELECT im_category_new ('82', 'Deleted', 'Intranet Project Status');
 SELECT im_category_new ('83', 'Canceled', 'Intranet Project Status');
 
 -- Introduce hierarchical project states.
--- Basicly, we've got not three super-states:
+-- Basically, we've got not three super-states:
 --	potential	everything before the project gets "open"
 --	open		when the project is executed and
 --	close		all possible outcomes when execution is finished

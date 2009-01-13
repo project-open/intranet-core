@@ -1,7 +1,7 @@
 -- /packages/intranet-core/sql/stage-32.sql
 --
 -- Convert a database from a Linux system (ptdemo)
--- to a Windows system. Basicly, we have to modify
+-- to a Windows system. Basically, we have to modify
 -- the filestorage parameters
 --
 -- @author      frank.bergmann@project-open.com

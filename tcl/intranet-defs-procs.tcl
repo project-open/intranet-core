@@ -260,7 +260,7 @@ ad_proc -public im_bash_command { } {
 
 ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     Execute a DML procedure (function in PostgreSQL) without
-    regard of the database type. Basicly, the procedures wraps
+    regard of the database type. Basically, the procedures wraps
     a "BEGIN ... END;" around Oracle procedures and an
     "select ... ;" for PostgreSQL.
 
@@ -313,7 +313,7 @@ ad_proc -private im_package_core_id_helper {} {
 
 ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     Execute a DML procedure (function in PostgreSQL) without
-    regard of the database type. Basicly, the procedures wraps
+    regard of the database type. Basically, the procedures wraps
     a "BEGIN ... END;" around Oracle procedures and an
     "select ... ;" for PostgreSQL.
 
