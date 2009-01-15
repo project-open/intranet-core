@@ -133,8 +133,13 @@ begin
 		v_object_id, p_office_name, p_office_path, 
 		p_office_type_id, p_office_status_id, p_company_id
 	);
+
+	-- make a party - required by contacts
+	insert into parties (party_id) values (v_object_id);
+
 	return v_object_id;
 end;' language 'plpgsql';
+
 
 -- Delete a single office (if we know its ID...)
 create or replace function im_office__delete (integer) returns integer as '
@@ -144,6 +149,9 @@ BEGIN
 	-- Erase the im_offices item associated with the id
 	delete from im_offices
 	where office_id = v_office_id;
+
+	-- Delete entry from parties
+	delete from parties where party_id = v_office_id;
 
 	-- Erase all the priviledges
 	delete from 	acs_permissions

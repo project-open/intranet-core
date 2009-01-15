@@ -114,6 +114,8 @@ create table im_companies (
 	vat_number			varchar(100),
 					-- Default value for VAT
 	default_vat			numeric(12,1) default 0,
+					-- Default value for VAT
+	default_tax			numeric(12,1) default 0,
 					-- default payment days
 	default_payment_days		integer,
 					-- Default payment method
@@ -175,6 +177,9 @@ BEGIN
 		p_company_type_id, p_company_status_id, p_main_office_id
 	);
 
+	-- Make a party - required for contacts
+	insert into parties (party_id) values (v_company_id);
+
 	-- Set the link back from the office to the company
 	update	im_offices
 	set	company_id = v_company_id
@@ -197,6 +202,9 @@ BEGIN
 	delete from im_companies
 	where company_id = v_company_id;
 
+	-- Delete entry from parties
+	delete from parties where party_id = v_office_id;
+
 	-- Erase all the priviledges
 	delete from 	acs_permissions
 	where		object_id = v_company_id;
@@ -205,6 +213,7 @@ BEGIN
 
 	return 0;
 end;' language 'plpgsql';
+
 
 create or replace function im_company__name (integer) returns varchar as '
 DECLARE
