@@ -1508,6 +1508,14 @@ ad_proc -public im_stylesheet {} {
 	set skin "default"
     }
 
+    # --------------------------------------------------------------------
+    # Check for OpenACS version
+    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
+    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
+    set openacs54_p [string equal "5.4" $oacs_version]
+    ns_log Notice "im_stylesheet: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
+
+
     set system_css "/intranet/style/style.$skin.css"
 
     if {[llength [info procs im_package_calendar_id]]} {
@@ -1552,6 +1560,16 @@ ad_proc -public im_stylesheet {} {
 
     template::head::add_javascript -src "/intranet/js/style.$skin.js"
     append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n"
+   
+    if {$openacs54_p} {
+
+	template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen"
+	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=screen>\n"
+
+	template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen"
+	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n"
+    }
+
 
     return $html
 }
