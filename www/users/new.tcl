@@ -202,6 +202,12 @@ ad_form -extend -name register -form {
 }
 
 
+
+# ad_form -name register -export {next_url user_id return_url} -form [auth::get_registration_form_elements]
+
+
+ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
+
 # ---------------------------------------------------------------
 # Build a Multiple select box with the users profiles
 # ---------------------------------------------------------------
@@ -249,34 +255,316 @@ im_dynfield::append_attributes_to_form \
 
 ad_form -extend -name register -on_request {
     # Populate elements from local variables
-    
+
 } -on_submit {
-    
+
+
     if {[info exists password] && [info exists password_confirm] && ![string equal $password $password_confirm]} {
 	ad_return_complaint 1 [lang::message::lookup "" intranet-core.Passwords_Dont_Match "The password confirmation doesn't match the password"]
 	return
     }
 
-    if {!$editing_existing_user} {
 
-	set auth_info_hash [im_user_create_new_user \
-				-username $username \
-				-email $email \
-				-first_names $first_names \
-				-last_name $last_name \
-				-url $url \
-				-user_id $user_id \
-				-screen_name $screen_name \
-				-password $password \
-				-password_confirm $password_confirm \
-				-secret_question $secret_question \
-				-secret_answer $secret_answer \
-			       ]
+#	20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
+#    db_transaction {
 	
-	array set creation_info $auth_info_hash
+	# Do we create a new user or do we edit an existing one?
+	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
+
+	if {!$editing_existing_user} {
+
+	    # New user: create from scratch
+	    set email [string trim $email]
+	    set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
+	    
+	    if {$similar_user > 0} {
+			set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
+			ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
+        	        [_ intranet-core.lt_There_is_already_a_vi]<br>"
+			return
+	    }
+
+	    if {![info exists password] || [empty_string_p $password]} {
+		set password [ad_generate_random_string]
+		set password_confirm $password
+	    }
+
+	    ns_log Notice "/users/new: Before auth::create_user"
+	    array set creation_info [auth::create_user \
+					 -user_id $user_id \
+					 -verify_password_confirm \
+					 -username $username \
+					 -email $email \
+					 -first_names $first_names \
+					 -last_name $last_name \
+					 -screen_name $screen_name \
+					 -password $password \
+					 -password_confirm $password_confirm \
+					 -url $url \
+					 -secret_question $secret_question \
+					 -secret_answer $secret_answer]
+
+	    # Update creation user to allow the creator to admin the user
+	    db_dml update_creation_user_id "
+		update acs_objects
+		set creation_user = :current_user_id
+		where object_id = :user_id
+	    "
+
+	} else {
+
+	    # Existing user: Update variables
+	    set auth [auth::get_register_authority]
+	    set user_data [list]
+
+	    # Make sure the "person" exists.
+	    # This may be not the case when creating a user from a party.
+	    set person_exists_p [db_string person_exists "select count(*) from persons where person_id = :user_id"]
+	    if {!$person_exists_p} {
+		db_dml insert_person "
+		    insert into persons (
+			person_id, first_names, last_name
+		    ) values (
+			:user_id, :first_names, :last_name
+		    )
+		"	
+		# Convert the party into a person
+		db_dml person2party "
+		    update acs_objects
+		    set object_type = 'person'
+		    where object_id = :user_id
+		"	
+	    }
+
+	    set user_exists_p [db_string user_exists "select count(*) from users where user_id = :user_id"]
+	    if {!$user_exists_p} {
+		if {"" == $username} { set username $email} 
+		db_dml insert_user "
+		    insert into users (
+			user_id, username
+		    ) values (
+			:user_id, :username
+		    )
+		"
+		# Convert the person into a user
+		db_dml party2user "
+		    update acs_objects
+		    set object_type = 'user'
+		    where object_id = :user_id
+		"
+	    }
+
+
+	    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
+	    person::update \
+		-person_id $user_id \
+		-first_names $first_names \
+		-last_name $last_name
+	    
+	    ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email"
+	    party::update \
+		-party_id $user_id \
+		-url $url \
+		-email $email
+	    
+	    ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name"
+	    acs_user::update \
+		-user_id $user_id \
+		-screen_name $screen_name \
+		-username $username
+	}
+
+        # Add the user to some companies or projects
+        array set also_add_hash $also_add_to_biz_object
+        foreach oid [array names also_add_hash] {
+	    set object_type [db_string otype "select object_type from acs_objects where object_id=:oid"]
+	    set perm_cmd "${object_type}_permissions \$current_user_id \$oid object_view object_read object_write object_admin"
+	    eval $perm_cmd
+	    if {$object_write} {
+		set role_id $also_add_hash($oid)
+		im_biz_object_add_role $user_id $oid $role_id
+	    }
+	}
+
+	# For all users (new and existing one):
+        # Add a users_contact record to the user since the 3.0 PostgreSQL
+        # port, because we have dropped the outer join with it...
+        catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
+
+
+        # Add the user to the "Registered Users" group, because
+        # (s)he would get strange problems otherwise
+        set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+        set reg_users_rel_exists_p [db_string member_of_reg_users "
+		select	count(*) 
+		from	group_member_map m, membership_rels mr
+		where	m.member_id = :user_id
+			and m.group_id = :registered_users
+			and m.rel_id = mr.rel_id 
+			and m.container_id = m.group_id 
+			and m.rel_type::text = 'membership_rel'::text
+	"]
+	if {!$reg_users_rel_exists_p} {
+	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
+	}
+
+
+	# TSearch2: We need to update "persons" in order to trigger the TSearch2
+	# triggers
+	db_dml update_persons "
+		update persons
+		set first_names = first_names
+		where person_id = :user_id
+        "
+
+	ns_log Notice "/users/new: finished big IF clause"
+
+	
+        set membership_del_sql "
+        select
+                r.rel_id
+        from
+                acs_rels r,
+                acs_objects o
+        where
+                object_id_two = :user_id
+                and object_id_one = :profile_id
+                and r.object_id_one = o.object_id
+                and o.object_type = 'im_profile'
+                and rel_type = 'membership_rel'
+        "
+
+	# Profile changes its value, possibly because of strange
+	# ad_form sideeffects
+
+	foreach profile_tuple [im_profiles_all] {
+
+	    # don't enter into setting and unsetting profiles
+	    # if the user has no right to change profiles.
+	    # Probably this is a freelancer or company
+	    # who is editing himself.
+	    if {!$edit_profiles_p} { break }
+
+	    ns_log Notice "profile_tuple=$profile_tuple"
+	    set profile_id [lindex $profile_tuple 0]
+	    set profile_name [lindex $profile_tuple 1]
+	    
+	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:profile_id"]
+
+	    set should_be_member 0
+	    if {[lsearch -exact $profile_org $profile_id] >= 0} {
+		set should_be_member 1
+	    }
+	    
+	    ns_log Notice "/users/new: profile_name=$profile_name, profile_id=$profile_id, should_be_member=$should_be_member, is_member=$is_member"
+
+	    if {$is_member && !$should_be_member} {
+		ns_log Notice "/users/new: => remove_member from $profile_name\n"
+
+		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		    ad_return_complaint 1 "<li>
+                    [_ intranet-core.lt_You_are_not_allowed_t]"
+                   return
+		}
+
+		# db_dml delete_profile $delete_rel_sql
+		db_foreach membership_del $membership_del_sql {
+		    ns_log Notice "/users/new: Going to delete rel_id=$rel_id"
+		    membership_rel::delete -rel_id $rel_id
+		}
+
+		# Special logic: Revoking P/O Admin privileges also removes
+		# Site-Wide-Admin privs
+		if {$profile_id == [im_profile_po_admins]} { 
+		    ns_log Notice "users/new: Remove P/O Admins => Remove Site Wide Admins"
+		    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+		}
+
+		# Remove all permission related entries in the system cache
+		im_permission_flush
+	    }
+
+	    
+	    if {!$is_member && $should_be_member} {
+		ns_log Notice "/users/new: => add_member to profile $profile_name\n"
+
+		# Check if the profile_id belongs to the managable profiles of
+		# the current user. Normally, only the managable profiles are
+		# shown, which means that a user must have played around with
+		# the HTTP variables in oder to fool us...
+		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		    ad_return_complaint 1 "<li>
+                    [_ intranet-core.lt_You_are_not_allowed_t_1]"
+		    return
+		}
+
+		# Make the user a member of the group (=profile)
+		ns_log Notice "/users/new: => relation_add $profile_id $user_id"
+		set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
+		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		
+
+		# Special logic for employees and P/O Admins:
+		# PM, Sales, Accounting, SeniorMan => Employee
+		# P/O Admin => Site Wide Admin
+		if {$profile_id == [im_profile_project_managers]} { 
+		    ns_log Notice "users/new: Project Managers => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_accounting]} { 
+		    ns_log Notice "users/new: Accounting => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_sales]} { 
+		    ns_log Notice "users/new: Sales => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_senior_managers]} { 
+		    ns_log Notice "users/new: Senior Managers => Employees"
+		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
+		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		}
+
+		if {$profile_id == [im_profile_po_admins]} { 
+		    ns_log Notice "users/new: P/O Admins => Site Wide Admins"
+		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+		    im_security_alert -severity "Info" -location "users/new" -message "New P/O Admin" -value $email
+		}
+
+		# Remove all permission related entries in the system cache
+		im_permission_flush
+	       
+	    }
+	}
+
+
+	# Add a im_employees record to the user since the 3.0 PostgreSQL
+	# port, because we have dropped the outer join with it...
+	if {[db_table_exists im_employees]} {
+	    
+	    # Simply add the record to all users, even it they are not employees...
+	    set im_employees_exist [db_string im_employees_exist "select count(*) from im_employees where employee_id = :user_id"]
+	    if {!$im_employees_exist} {
+		db_dml add_im_employees "insert into im_employees (employee_id) values (:user_id)"
+	    }
+	}
+
+# 20041124 fraber: disabled db_transaction for PostgreSQL
+	# Close db_transaction
+#    }
+    
+
+    # Handle registration problems
+    if {!$editing_existing_user} {
+	
 	switch $creation_info(creation_status) {
 	    ok {
-		set user_id $creation_info(user_id)
 		# Continue below
 	    }
 	    default {
@@ -287,7 +575,7 @@ ad_form -extend -name register -on_request {
 		    set first_elm [lindex [concat $reg_elms(required) $reg_elms(optional)] 0]
 		    form set_error register $first_elm $creation_info(creation_message)
 		}
-		
+                
 		# Element messages
 		foreach { elm_name elm_error } $creation_info(element_messages) {
 		    form set_error register $elm_name $elm_error
@@ -295,8 +583,19 @@ ad_form -extend -name register -on_request {
 		break
 	    }
 	}
-	
+
+	switch $creation_info(account_status) {
+	    ok {
+		# Continue below
+	    }
+	    default {
+		# Display the message on a separate page
+		ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-closed" { { message $creation_info(account_message) } }]
+		ad_script_abort
+	    }
+	}
     }
+    
 
     # Store dynamic fields
     set form_id "register"
@@ -371,3 +670,12 @@ ad_form -extend -name register -on_request {
 	ad_returnredirect "/intranet/users/"
     }
 }
+
+
+
+
+
+
+
+
+
