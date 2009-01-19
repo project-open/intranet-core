@@ -736,13 +736,16 @@ ad_proc -public im_project_select {
     { -include_empty_p 0 } 
     { -include_empty_name "" }
     select_name 
+    { project_id "" } 
     { default "" } 
     { status "" } 
-    {type ""} 
+    { type ""} 
     { exclude_status "" } 
     { member_user_id ""} 
-    {company_id ""} 
-    {main_projects_maxdepth 0}
+    { company_id ""} 
+    { main_projects_maxdepth 0}
+
+
 } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
@@ -754,6 +757,7 @@ ad_proc -public im_project_select {
     where member_user_id participate in some role.
     @param main_projects_maxdepth: Determine the maxdepth if exclude_subprojects_p=1
 } {
+
     if { ![empty_string_p $status] } {
 	if {"" != $project_status_id} { ad_return_complaint 1 "im_project_select: duplicate 'status' parameter" }
 	set project_status_id [db_string stat "
@@ -800,12 +804,16 @@ ad_proc -public im_project_select {
     foreach option $project_options {
         set value [lindex $option 0]
         set id [lindex $option 1]
-        append options_html "\t\t<option value=\"$id\">$value</option>\n"
 
+	if { [string equal $id $project_id] } {
+	    append options_html "\t\t<option selected=\"selected\" value=\"$id\">$value</option>\n"
+	} else {
+	    append options_html "\t\t<option value=\"$id\">$value</option>\n"	
+	}
     }
 
     return "
-	<select name=\"select_name\">
+	<select name=\"$select_name\">
 	$options_html
 	</select>
     "
