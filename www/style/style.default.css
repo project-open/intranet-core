@@ -527,7 +527,7 @@ a {
   border-right: solid 1px #EEEEEE;
   border-bottom: solid 1px #EEEEEE;
   padding-bottom: 10px;
-  overflow: auto;
+  /* overflow: auto; */ 
 }
 .component_body ul {
   margin: 0;
