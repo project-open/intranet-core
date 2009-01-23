@@ -172,6 +172,21 @@ BEGIN
 end;' language 'plpgsql';
 
 
+-- Compatibility for Malte
+-- ToDo: Remove
+CREATE OR REPLACE FUNCTION im_category__new (
+        integer, varchar, varchar, varchar
+) RETURNS integer as '
+DECLARE
+        p_category_id           alias for $1;
+        p_category              alias for $2;
+        p_category_type         alias for $3;
+        p_description           alias for $4;
+BEGIN
+        RETURN im_category_new(p_category_id, p_category, p_category_type, p_description);
+end;' language 'plpgsql';
+
+
 CREATE OR REPLACE FUNCTION im_category_hierarchy_new (
 	integer, integer
 ) RETURNS integer as '

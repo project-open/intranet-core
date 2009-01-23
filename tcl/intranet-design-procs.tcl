@@ -2001,7 +2001,11 @@ ad_proc -public im_user_skin { user_id } {
 ad_proc -public im_user_skin_helper { user_id } {
     Returns the name of the current skin - uncached
 } {
-    set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default "default"]
+    set skin_name ""
+    set skin_id_exists_p [util_memoize [list db_column_exists "users" "skin_id"]]
+    if {$skin_id_exists_p} {
+	set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default "default"]
+    }
     if {"" == $skin_name} { set skin_name "default" }
     return $skin_name
 }
@@ -2010,13 +2014,18 @@ ad_proc -public im_skin_select_html { user_id return_url } {
 } {
     if {!$user_id} { return "" }
 
-    set current_skin_id [db_string sid "select skin_id from users where user_id = :user_id"]
+    set skin_id_exists_p [util_memoize [list db_column_exists "users" "skin_id"]]
+    if {!$skin_id_exists_p} {
+	im_permission_flush
+	return "Error: Column users.skin_id doesn't exist.<br>Please run intranet-core V3.4.0.4.0 upgrade script."
+    }
 
+    set current_skin_id [db_string sid "select skin_id from users where user_id = :user_id"]
     set skin_select_html "
 	<form method=\"GET\" action=\"/intranet/users/select-skin\">
 	[export_form_vars return_url user_id]
 	[im_category_select \
-		-translate_p 0 \
+		-translate_p 1 \
 		-include_empty_p 0 \
 		-plain_p 0 \
 		-cache_interval 1 \

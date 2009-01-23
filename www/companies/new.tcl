@@ -103,6 +103,9 @@ ad_form \
     -form {
 	company_id:key
 	{main_office_id:text(hidden)}
+	{start_date:text(hidden),optional}
+	{contract_value:text(hidden),optional}
+	{billable_p:text(hidden),optional}
 	{company_name:text(text) {label "[_ intranet-core.Company_Name]"} {html {size 60}}}
 	{company_path:text(text) {label "[_ intranet-core.Company_Short_Name]"} {html {size 40}}}
 	{referral_source:text(text),optional {label "[_ intranet-core.Referral_Source]"} {html {size 60}}}
@@ -116,6 +119,7 @@ ad_form \
 	{address_line2:text(text),optional {label "[_ intranet-core.Address_2]"} {html {size 40}}}
 	{address_city:text(text),optional {label "[_ intranet-core.City]"} {html {size 30}}}
     }
+
 
 if {$some_american_readers_p} {
     ad_form -extend -name $form_id -form {

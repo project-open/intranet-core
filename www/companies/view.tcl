@@ -70,7 +70,8 @@ set some_american_readers_p [parameter::get_from_package_key -package_key acs-su
 set extra_selects [list "0 as zero"]
 set column_sql "
         select  w.deref_plpgsql_function,
-                aa.attribute_name
+		aa.attribute_name,
+		aa.table_name
         from    im_dynfield_widgets w,
                 im_dynfield_attributes a,
                 acs_attributes aa
@@ -79,7 +80,7 @@ set column_sql "
                 aa.object_type = 'im_company'
 "
 db_foreach column_list_sql $column_sql {
-    lappend extra_selects "${deref_plpgsql_function}($attribute_name) as ${attribute_name}_deref"
+    lappend extra_selects "${deref_plpgsql_function}(${table_name}.$attribute_name) as ${attribute_name}_deref"
 }
 set extra_select [join $extra_selects ",\n\t"]
 
