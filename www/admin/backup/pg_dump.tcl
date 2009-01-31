@@ -63,8 +63,10 @@ if {![file isdirectory $path]} {
 	exec /bin/mkdir "$path"
     } err_msg] } {
 	ns_write "<li>
-		<font color=red>Error creating subfolder $path:</font><br>
-		<pre>$err_msg\n</pre>
+		<font color=red>
+			Error creating subfolder $path:<br>
+			<pre>$err_msg\n</pre>
+		</font>
 		Using '/tmp' as a default
 	"
 	set path "/tmp"
