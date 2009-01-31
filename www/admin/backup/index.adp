@@ -7,40 +7,39 @@
 <tr>
   <td valign=top>
 
-
 	<%= [im_component_bay left] %>
 
 	<h1>Postgres Backup/Restore</h1>
-
+	<ul>
+	    <li>Current backup path: @backup_path@
+	</ul>
+	<p>&nbsp;</p>
 	<listtemplate name="backup_files"></listtemplate>	
-
 
   </td>
 
 </tr>
-<tr>
-
-  <td valign=top>
 
 <!--
+<tr>
+  <td valign=top>
 	<table cellpadding=1 cellspacing=1 border=0 width=100%>
 	<tr class=rowtitle>
-	  <td class=rowtitle align=center>Backup Data
+	  <td class=rowtitle align=center>Backup Admin
 	  </td>
 	</tr>
 	<tr>
 	  <td valign=top>
 	    <ul>
-	      <li>
-		<A href="backup">Backup your current application data to CSV files</a> 
+		<li>Current backup path: @backup_path@
 	    </ul>
 	  </td>
 	</tr>
 	</table>
--->
-
   </td>
 </tr>
+-->
+
 </table>
 
 
