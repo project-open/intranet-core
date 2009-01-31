@@ -62,8 +62,12 @@ if {![file isdirectory $path]} {
 	ns_log Notice "/bin/mkdir $path"
 	exec /bin/mkdir "$path"
     } err_msg] } {
-	ad_return_complaint 1 "Error creating subfolder $path:<br><pre>$err_msg\n</pre>"
-	return
+	ns_write "<li>
+		<font color=red>Error creating subfolder $path:</font><br>
+		<pre>$err_msg\n</pre>
+		Using '/tmp' as a default
+	"
+	set path "/tmp"
     }
 } else {
     ns_write "<li>Already there: $path\n"
