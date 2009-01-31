@@ -617,7 +617,7 @@ begin
 		''intranet-core'',	-- package_name
 		''users_unassigned'',   -- label
 		''Unassigned'',		-- name
-		''/intranet/users/index?user_group_name=Unregistered\&view_name=user_community\&order_by=Creation'',   -- url
+		''/intranet/users/index?user_group_name=Unregistered&view_name=user_community&order_by=Creation'',   -- url
 		4,			-- sort_order
 		v_user_menu,		-- parent_menu_id
 		null			-- p_visible_tcl
