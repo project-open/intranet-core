@@ -92,21 +92,21 @@ BEGIN
 
 	FOR v_i IN 0..v_max-1 LOOP
 		-- for convenience, select out the next start block to insert into a variable
-		select to_date(''1996-01-07'',''YYYY-MM-DD'') + v_i*7 
+		select ''1996-01-07''::date + v_i*7 
 		into v_next_start_week 
 		from dual;
 	
 		insert into im_start_weeks (
 			start_block
 		) values (
-			to_date(v_next_start_week,''YYYY-MM-DD'')
+			v_next_start_week::date
 		);
 	
 		-- set the start_of_larger_unit_p flag if this is the first
 		-- start block of the month
 		update im_start_weeks
 		set start_of_larger_unit_p=''t''
-		where start_block=to_date(v_next_start_week,''YYYY-MM-DD'')
+		where start_block = v_next_start_week::date
 		and not exists (
 			select 1 
 				from im_start_weeks
