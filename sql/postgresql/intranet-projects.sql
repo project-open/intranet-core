@@ -93,7 +93,7 @@ create table im_projects (
 	end_date			timestamptz,
 	-- make sure the end date is after the start date
 					constraint im_projects_date_const 
-					check( end_date - start_date >= 0 ),	
+					check((end_date::date - start_date::date) >= 0),	
 	note				text,
 	-- project leader is responsible for the operational execution
 	project_lead_id			integer 
