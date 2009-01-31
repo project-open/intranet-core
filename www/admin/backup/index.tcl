@@ -54,6 +54,8 @@ set bgcolor(1) " class=roweven"
 
 # Get the list of all backup sets under backup_path
 set backup_path [im_backup_path]
+set backup_path_exists_p [file isdirectory $path]
+
 
 multirow create backup_files filename file_body extension date size
 

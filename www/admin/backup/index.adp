@@ -12,6 +12,14 @@
 	<h1>Postgres Backup/Restore</h1>
 	<ul>
 	    <li>Current backup path: @backup_path@
+	    <if !@backup_path_exists_p@>
+	    <li>
+		<font color=red>
+			Backup path doesn't exist - please correct the
+			<a href="/intranet/admin/parameters">BackupBasePathUnix parameter</a>.
+		</font>
+	    </if>
+
 	</ul>
 	<p>&nbsp;</p>
 	<listtemplate name="backup_files"></listtemplate>	
