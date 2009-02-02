@@ -124,8 +124,12 @@ if {[db_table_exists sec_sessions]} {
 ns_log Notice "users/nuke2: general_comments"
 if {[db_table_exists general_comments]} {
     db_dml delete_user_general_comments "delete from general_comments"
+}
+
+if {[db_table_exists comments]} {
     db_dml delete_user_comments "delete from comments"
 }
+
 ns_log Notice "users/nuke2: links"
 if {[db_table_exists links]} {
     db_dml delete_user_links "delete from links"
@@ -440,6 +444,7 @@ db_dml project_context_null "
 		)
 	)
 "
+
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
 
@@ -479,7 +484,6 @@ db_list rfq_objects "
 db_dml del_biz_rels "delete from im_biz_object_members"
 db_dml del_biz_rel_rels "delete from acs_rels where rel_type = 'im_biz_object_member'"
 db_dml del_biz_rel_os "delete from acs_objects where object_type = 'im_biz_object_member'"
-
 
 
 db_dml rfq_objects "delete from acs_objects where object_type = 'im_trans_task'"
