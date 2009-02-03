@@ -85,7 +85,6 @@ db_foreach column_list_sql $column_sql {
 set extra_select [join $extra_selects ",\n\t"]
 
 
-
 db_1row company_get_info "
 select 
 	c.*,
