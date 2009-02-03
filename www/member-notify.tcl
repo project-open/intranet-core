@@ -103,6 +103,8 @@ if {"" == $from_email} {
 # send to contacts
 foreach email $email_list {
 
+    ns_log Notice "member-notify: Sending out to email: '$email'"
+
     # Replace message %xxx% variables by user's variables
     set message_subst $message
     set found_p 0
@@ -148,8 +150,9 @@ foreach email $email_list {
 	# ---------------------------------------------------------------    
 	# Create the main mail "content_item" and
 	# add the content_item to the multipart email
+	set content_item_name "$subject $time_date $body_id"
 	set content_item_id [content::item::new \
-				 -name "$subject $time_date $body_id" \
+				 -name $content_item_name \
 				 -title $subject \
 				 -mime_type $message_mime_type \
 				 -text $message_subst \
@@ -158,6 +161,7 @@ foreach email $email_list {
 	set sequence_num [acs_mail_multipart_add_content \
 			      -multipart_id $multipart_id \
 			      -content_item_id $content_item_id]
+
 	ns_log Notice "member-notify: content_item_id=$content_item_id"
 	ns_log Notice "member-notify: sequence_num=$sequence_num"
 
@@ -169,7 +173,7 @@ foreach email $email_list {
 	# the attachment shows up with the right filename
 	if {"" != $attachment_mime_type} {
 	    set content_item_attach_id [content::item::new \
-					    -name "$subject $time_date - attachment1" \
+					    -name "$subject $time_date $body_id - attachment1" \
 					    -title "$subject" \
 					    -mime_type $attachment_mime_type \
 					    -text $attachment \
