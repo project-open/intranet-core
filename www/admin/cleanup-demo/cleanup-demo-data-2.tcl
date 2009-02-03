@@ -457,7 +457,7 @@ db_dml remove_from_acs_object_context_index "
     delete from acs_object_context_index
     where object_id in (select object_id from acs_objects where object_type = 'im_company')
     or ancestor_id in (select object_id from acs_objects where object_type = 'im_company')
-}
+"
 
 db_dml remove_company_rfq_objects_from_acs_rels "
     delete from acs_rels
