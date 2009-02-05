@@ -1145,15 +1145,8 @@ ad_proc -public im_header {
     # Temporary (?) fix to get xinha working
 
     if {[info exists ::acs_blank_master(xinha)]} {
-	set ::xinha_dir /resources/acs-templating/xinha-nightly/
-	set ::xinha_lang [lang::conn::language]
-	#
-	# Xinha localization covers 33 languages, removing
-	# the following restriction should be fine.
-	#
-	#if {$::xinha_lang ne "en" && $::xinha_lang ne "de"} {
-	#  set ::xinha_lang en
-	#}
+	set xinha_dir /resources/acs-templating/xinha-nightly/
+	set xinha_lang [lang::conn::language]
 	
 	# We could add site wide Xinha configurations (.js code) into xinha_params
 	set xinha_params ""
@@ -1164,9 +1157,16 @@ ad_proc -public im_header {
 	
 	# HTML ids of the textareas used for Xinha
 	set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
-	
-	set xi "HTMLArea"
 
+	append extra_stuff_for_document_head "
+<script type=\"text/javascript\">
+	_editor_url = \"$xinha_dir\";
+	_editor_lang = \"$xinha_lang\";
+</script>
+<script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
+        "
+
+	set xi "HTMLArea"
 	append body_script_html "
 <script type='text/javascript'>
 <!--
@@ -1422,21 +1422,6 @@ ad_proc -public im_stylesheet {} {
 	template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen"
 	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n"
     }
-
-    # Add Xinha stuff
-    set xinha_dir /resources/acs-templating/xinha-nightly/
-    set xinha_lang [lang::conn::language]
-
-    append html "
-<script type=\"text/javascript\">
-	_editor_url = \"$xinha_dir\";
-	_editor_lang = \"$xinha_lang\";
-</script>
-<script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
-    "
-
-set ttt { "<script type=text/javascript src=\"${xinha_dir}XinhaCore.js\"></script>" }
-
 
     return $html
 }
