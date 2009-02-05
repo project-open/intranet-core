@@ -1059,6 +1059,7 @@ ad_proc -public im_header {
     { -no_head_p "0"}
     { -no_master_p "0"}
     { -loginpage:boolean 0 }
+    { -body_script_html "" }
     { page_title "" } 
     { extra_stuff_for_document_head "" } 
 } {
@@ -1140,8 +1141,62 @@ ad_proc -public im_header {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
 
+    # --------------------------------------------------------------------
+    # Temporary (?) fix to get xinha working
+
+    if {[info exists ::acs_blank_master(xinha)]} {
+	set ::xinha_dir /resources/acs-templating/xinha-nightly/
+	set ::xinha_lang [lang::conn::language]
+	#
+	# Xinha localization covers 33 languages, removing
+	# the following restriction should be fine.
+	#
+	#if {$::xinha_lang ne "en" && $::xinha_lang ne "de"} {
+	#  set ::xinha_lang en
+	#}
+	
+	# We could add site wide Xinha configurations (.js code) into xinha_params
+	set xinha_params ""
+	
+	# Per call configuration
+	set xinha_plugins $::acs_blank_master(xinha.plugins)
+	set xinha_options $::acs_blank_master(xinha.options)
+	
+	# HTML ids of the textareas used for Xinha
+	set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
+	
+	set xi "HTMLArea"
+
+	append body_script_html "
+<script type='text/javascript'>
+<!--
+	         xinha_editors = null;
+	         xinha_init = null;
+	         xinha_config = null;
+	         xinha_plugins = null;
+	         xinha_init = xinha_init ? xinha_init : function() {
+	            xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
+	
+	            // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  
+	            if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
+	
+	            xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
+	            xinha_config = xinha_config ? xinha_config() : new $xi.Config();
+	            $xinha_params
+	            $xinha_options
+	            xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
+	            $xi.startEditors(xinha_editors);
+	         }
+	         window.onload = xinha_init;
+// -->
+</script>
+<textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
+	"
+    }
+
     return "
 	[ad_header $page_title $extra_stuff_for_document_head]
+	$body_script_html
 	<div id=\"monitor_frame\">
 	   <div id=\"header_class\">
 	      <div id=\"header_logo\">
@@ -1320,6 +1375,12 @@ ad_proc -public im_stylesheet {} {
 #    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
 #    ad_return_complaint 1 $bug_tracker_installed_p
 
+
+    # --------------------------------------------------------------------
+    # Add standard meta tags
+    template::head::add_meta -name generator -lang en -content "OpenACS version [ad_acs_version]"
+    append html ""
+
     # --------------------------------------------------------------------
     template::head::add_css -href $system_css -media "screen"
     append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n"
@@ -1340,8 +1401,8 @@ ad_proc -public im_stylesheet {} {
     template::head::add_javascript -src "/resources/diagram/diagram/diagram.js"
     append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n"
 
-    template::head::add_javascript -src "/resources/core.js"
-    append html "<script type=text/javascript src=\"/resources/core.js\"></script>\n"
+    template::head::add_javascript -src "/resources/acs-subsite/core.js"
+    append html "<script type=text/javascript src=\"/intranet/js/core.js\"></script>\n"
 
 #    template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
 #    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
@@ -1356,13 +1417,25 @@ ad_proc -public im_stylesheet {} {
     append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n"
    
     if {$openacs54_p} {
-
 	template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen"
 	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=screen>\n"
-
 	template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen"
 	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n"
     }
+
+    # Add Xinha stuff
+    set xinha_dir /resources/acs-templating/xinha-nightly/
+    set xinha_lang [lang::conn::language]
+
+    append html "
+<script type=\"text/javascript\">
+	_editor_url = \"$xinha_dir\";
+	_editor_lang = \"$xinha_lang\";
+</script>
+<script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
+    "
+
+set ttt { "<script type=text/javascript src=\"${xinha_dir}XinhaCore.js\"></script>" }
 
 
     return $html
