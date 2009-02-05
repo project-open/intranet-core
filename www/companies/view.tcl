@@ -80,7 +80,12 @@ set column_sql "
                 aa.object_type = 'im_company'
 "
 db_foreach column_list_sql $column_sql {
-    lappend extra_selects "${deref_plpgsql_function}($attribute_name) as ${attribute_name}_deref"
+    switch $table_name {
+	"im_companies" { set attribute_table "c." }
+	"im_offices" { set attribute_table "o." }
+	default { set attribute_table "" }
+    }
+    lappend extra_selects "${deref_plpgsql_function}(${attribute_table}${attribute_name}) as ${attribute_name}_deref"
 }
 set extra_select [join $extra_selects ",\n\t"]
 
