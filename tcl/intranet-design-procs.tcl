@@ -974,11 +974,10 @@ ad_proc -public im_header { { page_title "" } { extra_stuff_for_document_head ""
     append extra_stuff_for_document_head "<script src=\"/resources/acs-subsite/core.js\" language=\"javascript\"></script>\n"
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
     append extra_stuff_for_document_head "<script src=\"/intranet/js/showhide.js\" language=\"javascript\"></script>\n"
-    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
 
+    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
     # append extra_stuff_for_document_head "<script src=\"http://simile.mit.edu/timeline/api/timeline-api.js\" language=\"javascript\"></script>\n"
     # append extra_stuff_for_document_head "<script src=\"/intranet-timeline/timeline.js\" language=\"javascript\"></script>\n"
-
 
     if {[llength [info procs im_amberjack_header_stuff]]} {
         append extra_stuff_for_document_head [im_amberjack_header_stuff]
