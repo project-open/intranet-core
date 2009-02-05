@@ -208,18 +208,27 @@ set action_url "/intranet/users/new"
 set form_mode "display"
 set user_id $user_id_from_search
 
+set ttt {
 ad_form \
     -name $form_id \
     -cancel_url $return_url \
     -action $action_url \
     -mode $form_mode \
     -export {user_id return_url}
+}
+
+template::form create $form_id \
+    -mode "display" \
+    -display_buttons { }
 
 im_dynfield::append_attributes_to_form \
     -object_type $object_type \
     -form_id $form_id \
     -object_id $user_id_from_search \
     -form_display_mode "display"
+
+
+ 
 
 
 # ---------------------------------------------------------------
