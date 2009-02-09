@@ -116,6 +116,7 @@ cvs checkout intranet-trans-project-wizard
 # cvs checkout intranet-trans-invoices-vaw
 cvs checkout intranet-translation
 cvs checkout intranet-trans-quality
+cvs checkout intranet-ubl
 cvs checkout intranet-update-client
 cvs checkout intranet-update-server
 cvs checkout intranet-wiki
