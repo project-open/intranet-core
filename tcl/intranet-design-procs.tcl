@@ -1368,7 +1368,7 @@ ad_proc -public im_stylesheet {} {
     set system_css "/intranet/style/style.$skin.css"
 
     if {[llength [info procs im_package_calendar_id]]} {
-	template::head::add_css -href "/calendar/resources/calendar.css" -media "screen"
+	if {$openacs54_p} { template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" }
 	append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
     }
 
@@ -1378,48 +1378,48 @@ ad_proc -public im_stylesheet {} {
 
     # --------------------------------------------------------------------
     # Add standard meta tags
-    template::head::add_meta -name generator -lang en -content "OpenACS version [ad_acs_version]"
+    if {$openacs54_p} { template::head::add_meta -name generator -lang en -content "OpenACS version [ad_acs_version]" }
     append html ""
 
     # --------------------------------------------------------------------
-    template::head::add_css -href $system_css -media "screen"
+    if {$openacs54_p} { template::head::add_css -href $system_css -media "screen" }
     append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n"
 
     set css "/resources/acs-subsite/site-master.css"
-#    template::head::add_css -href $css -media "screen"
+#    if {$openacs54_p} { template::head::add_css -href $css -media "screen" }
 #    append html "<link rel=StyleSheet type=text/css href=\"$css\" media=screen>\n"
 
-    template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen"
+    if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" }
     append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n"
 
-    template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" }
     append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n"
 
-    template::head::add_javascript -src "/intranet/js/showhide.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/showhide.js" }
     append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n"
 
-    template::head::add_javascript -src "/resources/diagram/diagram/diagram.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" }
     append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n"
 
-    template::head::add_javascript -src "/resources/acs-subsite/core.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" }
     append html "<script type=text/javascript src=\"/intranet/js/core.js\"></script>\n"
 
-#    template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js"
+#    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js" }
 #    append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n"
 
-    template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" }
     append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n"
 
-    template::head::add_javascript -src "/resources/acs-templating/mktree.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-templating/mktree.js" }
     append html "<script type=text/javascript src=\"/resources/acs-templating/mktree.js\"></script>\n"
 
-    template::head::add_javascript -src "/intranet/js/style.$skin.js"
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/style.$skin.js" }
     append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n"
    
     if {$openacs54_p} {
-	template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen"
+	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen" }
 	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=screen>\n"
-	template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen"
+	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" }
 	append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n"
     }
 
