@@ -271,6 +271,8 @@ if {[db_table_exists im_dynfield_attributes]} {
     set form_id "company"
     set object_type "im_company"
 
+    template::form::create $form_id
+
     ns_log Notice "companies/new-2: before append_attributes_to_form"
     im_dynfield::append_attributes_to_form \
         -object_type $object_type \
