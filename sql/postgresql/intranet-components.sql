@@ -214,12 +214,12 @@ begin
 	IF v_count > 0 THEN return 0; END IF;
 
 	v_plugin_id := acs_object__new (
-		p_plugin_id,	-- object_id
-		p_object_type,	-- object_type
+		p_plugin_id,		-- object_id
+		p_object_type,		-- object_type
 		p_creation_date,	-- creation_date
 		p_creation_user,	-- creation_user
-		p_creation_ip,	-- creation_ip
-		p_context_id	-- context_id
+		p_creation_ip,		-- creation_ip
+		p_context_id		-- context_id
 	);
 
 	insert into im_component_plugins (

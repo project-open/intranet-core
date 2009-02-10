@@ -242,8 +242,8 @@ END;' language 'plpgsql';
 -- very error prone for DM creation.
 --
 CREATE TABLE im_biz_object_urls (
-	object_type		varchar(100),
-	url_type		varchar(100)
+	object_type		varchar(1000),
+	url_type		varchar(1000)
 				constraint im_biz_obj_urls_url_type_ck
 				check(url_type in ('view', 'edit')),
 	url			text,
@@ -359,7 +359,7 @@ end;' language 'plpgsql';
 -- neighbours.
 --
 create table im_biz_object_role_map (
-	acs_object_type	varchar(100),
+	acs_object_type	varchar(1000),
 	object_type_id	integer
 			constraint im_bizo_rmap_object_type_fk
 			references im_categories,
