@@ -1223,13 +1223,27 @@ ad_proc -public im_valid_auto_login_p {
     @author Timo Hentschel (thentschel@sussdorff-roy.com)
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
+    # Quick check on tokens
     set expected_auto_login [im_generate_auto_login -user_id $user_id]
     if {![string equal $auto_login $expected_auto_login]} { return 0 }
 
-    # Ok, the tokens are identical, we can log the dude in if
-    # the "expiry_date" is OK.
-    if {"" == $expiry_date} { return 1 }
 
+    # Check if the "require_manual_login" privilege exists to protect high-profile users
+    set priv_exists_p [util_memoize [list db_string priv_exists "
+	select	count(*)
+	from	acs_privileges
+	where	privilege = 'require_manual_login'
+    "]]
+    set user_requires_manual_login_p [im_permission $user_id "require_manual_login"]
+
+    if {$priv_exists_p && !$user_requires_manual_login_p} {
+	return 0
+    }
+
+
+    # Ok, the tokens are identical and the guy is allowed to login via auto_login.
+    # So we can log the dude in if the "expiry_date" is OK.
+    if {"" == $expiry_date} { return 1 }
     if {![regexp {[0-9]{4}-[0-9]{2}-[0-9]{2}-} $expiry_date]} { 
 	ad_return_complaint 1 "<b>im_valid_auto_login_p</b>:
         You have specified a bad date syntax"
@@ -1238,9 +1252,7 @@ ad_proc -public im_valid_auto_login_p {
 
     set current_date [db_string current_date "select to_char(sysdate, 'YYYY-MM-DD') from dual"]
 
-    if {[string compare $current_date $expiry_date]} {
-	return 0
-    }
+    if {[string compare $current_date $expiry_date]} { return 0 }
     return 1
 }
 

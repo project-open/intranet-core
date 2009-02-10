@@ -66,7 +66,7 @@ foreach user_exit_def $user_exits {
 
 set query "
         select	*,
-		to_char(log_date, 'YYYY-MM-DD HH24:MM') as log_date_pretty
+		to_char(log_date, 'YYYY-MM-DD HH24:MI') as log_date_pretty
         from	acs_logs
 	order by
 		log_date DESC

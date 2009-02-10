@@ -39,6 +39,11 @@
 	  </td>
 	  <td width=2>&nbsp;</td>
 	  <td valign="top" width="50%">
+
+	    <if "" ne @upgrade_message@>
+	        <%= [im_table_with_title "Upgrade Information" $upgrade_message] %>
+	    </if>
+
 	    <%= [im_component_bay right] %>
 	  </td>
 	</tr>

@@ -357,25 +357,21 @@ if {"" != $manager_id } {
 # Store dynamic fields
 # -----------------------------------------------------------------
 
-if {[db_table_exists im_dynfield_attributes]} {
+set form_id "company"
+set object_type "im_company"
 
-    set form_id "company"
-    set object_type "im_company"
+ns_log Notice "companies/new-2: before append_attributes_to_form"
+im_dynfield::append_attributes_to_form \
+    -object_type im_company \
+    -form_id company \
+    -object_id $company_id
 
-    ns_log Notice "companies/new-2: before append_attributes_to_form"
-    im_dynfield::append_attributes_to_form \
-        -object_type im_company \
-        -form_id company \
-        -object_id $company_id
+ns_log Notice "companies/new-2: before attribute_store"
+im_dynfield::attribute_store \
+    -object_type $object_type \
+    -object_id $company_id \
+    -form_id $form_id
 
-    ns_log Notice "companies/new-2: before attribute_store"
-    im_dynfield::attribute_store \
-	-object_type $object_type \
-	-object_id $company_id \
-	-form_id $form_id
-    ns_log Notice "companies/new-2: after attribute_store"
-
-}
 
 
 # ------------------------------------------------------

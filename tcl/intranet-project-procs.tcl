@@ -1396,6 +1396,9 @@ ad_proc im_project_clone {
 
     }
 
+    # User Exit
+    im_user_exit_call project_create $cloned_project_id
+
     return $cloned_project_id
 }
 

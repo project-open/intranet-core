@@ -23,9 +23,14 @@ lappend elements grantee_name {
     label "Name" 
     link_url_col name_url
     display_template {
-        <if @permissions.any_perm_p_@ true>
-          @permissions.grantee_name@
-        </if>
+	<if @permissions.any_perm_p_@ true>
+		<nobr>
+		@permissions.grantee_name@
+		<if "person" eq @permissions.object_type@>
+			<a href=perm-delete?party_id=@permissions.grantee_id@>[im_gif del]</a>
+		</if>
+		</nobr>
+	</if>
         <else>
           <font color="gray">@permissions.grantee_name@</font>
         </else>

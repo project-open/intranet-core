@@ -85,23 +85,13 @@ set csv_files [split $csv_files_content "\n"]
 
 
 
-set separator ";"
+set separator [im_csv_guess_separator $csv_files]
 ns_log Notice "upload-companies-2: trying with separator=$separator"
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
 set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
-if {1 == $csv_header_len} {
-    # Probably got the wrong separator
-    set separator ","
-    ns_log Notice "upload-companies-2: changing to separator=$separator"
-    set csv_header_fields [im_csv_split $csv_header $separator]
-    set csv_header_len [llength $csv_header_fields]
-}
-
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
-
-
 
 
 # ------------------------------------------------------------
@@ -228,6 +218,28 @@ foreach csv_line_fields $values_list_of_lists {
 	ns_log Notice "upload-companies-2: cmd=$cmd"
 	set result [eval $cmd]
     }
+
+    if {"" == $first_name} {
+        ns_write "<li>Error: We have found an empty 'First Name' in line $linecount.<br>
+        Error: We can not add users with an empty first name, Please correct the CSV file.
+        <br><pre>$pretty_field_string</pre>"
+        continue
+    }
+
+    if {"" == $last_name} {
+        ns_write "<li>Error: We have found an empty 'Last Name' in line $linecount.<br>
+        We can not add users with an empty last name. Please correct the CSV file.<br>
+        <pre>$pretty_field_string</pre>"
+        continue
+    }
+
+    # Create a dummy email if there was something set in the parameter:
+    if {"" == $e_mail_address && "" != $create_dummy_email} {
+        regsub -all { } $first_name "" first_name_nospace
+        regsub -all { } $last_name "" last_name_nospace
+        set e_mail_address "${first_name_nospace}.${last_name_nospace}${create_dummy_email}"
+    }
+
 
     # Set company name and path.
     # The path has anything strange replaced by "_".

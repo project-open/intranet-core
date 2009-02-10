@@ -28,8 +28,15 @@ if {!$user_is_admin_p} {
     return
 }
 
+set core_package_version_sql "
+      select  version_name
+      from    apm_package_versions
+      where   package_key = 'intranet-core' and
+              enabled_p = 't'
+"
+set core_version [db_string core_version $core_package_version_sql -default ""]
 
-set page_title "[_ intranet-core.Administration]"
+set page_title "[_ intranet-core.Administration] &\#93;project-open&\#91; $core_version"
 set context_bar [im_context_bar $page_title]
 
 set bgcolor(0) " class=rowodd"

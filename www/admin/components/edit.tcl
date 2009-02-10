@@ -73,6 +73,18 @@ switch $location {
     "header-right" { set header_right_selected " selected" }
 }
 
+# TODO add correct URL
+set return_url ""
+
+if {$enabled_p} {
+    set enabled_checked "checked"
+    set disabled_checked ""
+} else {
+    set enabled_checked ""
+    set disabled_checked "checked"
+}
+
+
 set page_body "
 <form action=\"edit-2.tcl\" method=GET>
 [export_form_vars plugin_id return_url]
@@ -87,6 +99,12 @@ set page_body "
   <TR class=roweven>
     <TD>Name</TD>
     <TD><input type=text name=plugin_name value=\"$plugin_name\" size=60></TD></TR>
+  <TR class=roweven>
+    <TD>Enabled?</TD>
+    <TD>
+        <input type=radio name=enabled_p value=t $enabled_checked>Enabled
+        <input type=radio name=enabled_p value=f $disabled_checked>Not Enabled
+    </TD></TR>
   <TR class=rowodd>
     <TD>Location</TD>
     <TD><select name=location size=1>
