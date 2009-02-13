@@ -43,7 +43,11 @@ ad_proc -public im_category_from_category {
     @param category Name of the category. This is not translated!
 } {
     if {$category eq ""} {return ""}
-    return [util_memoize [list db_string cat "select category_id from im_categories where category = '$category'" -default {}]]
+    return [util_memoize [list db_string cat "
+	select	category_id
+	from	im_categories
+	where	category = '$category'
+    " -default {}]]
 }
 
 
@@ -116,7 +120,7 @@ ad_proc im_category_select_helper {
                 im_categories
         where
                 category_type = :category_type
-		and enabled_p = 't'
+		and (enabled_p = 't' OR enabled_p is NULL)
 		$super_category_sql
         order by lower(category)
     "
@@ -324,10 +328,13 @@ ad_proc im_category_select_multiple {
 } {
     set bind_vars [ns_set create]
     ns_set put $bind_vars category_type $category_type
-    set sql "select category_id,category
-	     from im_categories
-	     where category_type = :category_type
-	     order by lower(category)"
+    set sql "
+	select	category_id,
+		category
+	from	im_categories
+	where	category_type = :category_type
+		and (enabled_p = 't' OR enabled_p is NULL)
+	order by lower(category)"
     return [im_selection_to_list_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default $size multiple]
 }    
 
@@ -489,10 +496,14 @@ ad_proc -public im_sub_categories {
 	select	category_id
 	from	im_categories
 	where	category_id in ([join $category_list ","])
+		and (enabled_p = 't' OR enabled_p is NULL)
       UNION
-	select	child_id
-	from	im_category_hierarchy
-	where	parent_id in ([join $category_list ","])
+	select	h.child_id
+	from	im_categories c,
+		im_category_hierarchy h
+	where	h.parent_id in ([join $category_list ","])
+		and h.child_id = c.category_id
+		and (c.enabled_p = 't' OR c.enabled_p is NULL)
     "
 
     set result [db_list category_trans_closure $closure_sql]

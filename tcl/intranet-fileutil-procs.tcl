@@ -470,7 +470,74 @@ proc ::fileutil::stripN {path n} {
 # Results:
 #	data		data read from the file.
 
+
 proc ::fileutil::cat {args} {
+
+    foreach filename $args {
+
+        # Get the binary contents. We need this in order to deal with Unicode mess.
+        # Don't bother catching errors, just let them propagate up
+        set fd_binary [open $filename]
+        fconfigure $fd_binary -encoding binary
+        set binary_content [read $fd_binary]
+        close $fd_binary
+
+        # Get the encoding string
+        set encoding_bin [string range $binary_content 0 1]
+        binary scan $encoding_bin H* encoding_hex
+
+        switch $encoding_hex {
+            fffe {
+                # Assume a UTF-16 file
+                set encoding "unicode"
+            }
+            efbb {
+                # UTF-8 file
+                set encoding "utf-8"
+            }
+            default {
+                # Assume a binary file
+                set encoding "binary"
+            }
+        }
+
+        # Don't bother catching errors, just let them propagate up
+        set fd [open $filename r]
+
+        # Set the right encoding
+        fconfigure $fd -encoding $encoding
+
+        # Use the [file size] command to get the size, which preallocates memory,
+        # rather than trying to grow it as the read progresses.
+        set size [file size $filename]
+
+        if {$size} {
+            set content [read $fd $size]
+            # UTF-8 unicode files start with three extra characters. Shave them off.
+            # They are not removed by the fconfigure statement...
+            switch $encoding_hex {
+                fffe - efbb {
+                    set content [string range $binary_content 3 end]
+                }
+            }
+            append data $content
+        } else {
+            # if the file has zero bytes it is either empty, or something
+            # where [file size] reports 0 but the file actually has data (like
+            # the files in the /proc filesystem on Linux)
+            append data [read $fd]
+        }
+        close $fd
+    }
+    return $data
+}
+
+
+
+
+
+
+proc ::fileutil::cat_original {args} {
     foreach filename $args {
 	# Don't bother catching errors, just let them propagate up
 	set fd [open $filename r]

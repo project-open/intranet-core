@@ -1176,6 +1176,42 @@ ad_proc im_csv_duplicate_double_quotes {arg} {
 }
 
 
+# ---------------------------------------------------------------
+#
+# ------------------------------------------------------------------
+
+ad_proc im_csv_guess_separator { file } {
+    Returns the separator of the comma separated file
+    by determining the character frequency in the file
+} {
+    foreach char [split $file ""] {
+	
+	# The the numeric character code for the character
+        scan $char "%c" code
+
+	if {[lsearch {";" "," "|" } $char] != -1} {
+	    
+	    # Increment the respective counter
+	    set count 0
+	    if {[info exists hash($code)]} { set count $hash($code) }
+	    set hash($code) [expr $count+1]
+	    
+	}
+    }
+    
+    set max_code ""
+    set max_count 0
+    foreach key [array names hash] {
+	if {$hash($key) $max_count} {
+            set max_code $key
+            set max_count $hash($key)
+	}
+    }
+    
+    return [format "%c" $max_code]
+}
+
+
 
 # ---------------------------------------------------------------
 # Auto-Login
@@ -1265,67 +1301,108 @@ ad_proc -public im_ad_hoc_query {
     {-format plain}
     {-border 0}
     {-col_titles {} }
+    {-translate_p 1 }
+    {-package_key "intranet-core" }
     sql
 } {
-    Ad-hoc execution of SQL-Queries
-    Format for browser "pre" display
+    Ad-hoc execution of SQL-Queries.
+    @format "plain", "hmtl" or "cvs" - select the output format. Default is "plain".
+    @border Table border for HTML output
+    @col_titles Optional titles for columns. Normally, columns are taken directly
+    from the SQL query and passed through the localization subsystem.
+    @translate_p Should the columns be translated?
+    @package_key Default package for translated columns
 } {
-    set lol [db_list_of_lists ad_hoc_query $sql]
     set result ""
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
-
-    set header ""
-    if {"" != $col_titles} {
-	foreach title $col_titles {
-	    switch $format {
-		html { append header "<th>$title</th>" }
-		csv { append header "$title;" }
-		default {append header "$title\t" }
-	    }
-	}
-	switch $format {
-	    html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
-	    csv { append header "$header;" }
-	    default { set header $header }
-	}
+    
+    # ---------------------------------------------------------------
+    # Execute the report. As a result we get:
+    #       - bind_rows with list of columns returned and
+    #       - lol with the result set
+    
+    set err [catch {
+        db_with_handle db {
+            set selection [db_exec select $db query $sql]
+            set lol [list]
+            while { [db_getrow $db $selection] } {
+                set bind_rows [ad_ns_set_keys $selection]
+                set this_result [list]
+                for { set i 0 } { $i < [ns_set size $selection] } { incr i } {
+                    lappend this_result [ns_set value $selection $i]
+                }
+                lappend lol $this_result
+            }
+        }
+        db_release_unused_handles
+    } err_msg]
+    
+    if {$err} {
+        ad_return_complaint 1 "<b>Error executing sql statement</b>:
+        <pre>$sql</pre>
+        <pre>$err_msg</pre>\n"
+        ad_script_abort
     }
-
+    
+    
+    if {"" == $col_titles} { set col_titles $bind_rows }
+    set header ""
+    foreach title $col_titles {
+        if {$translate_p} {
+            regsub -all " " $title "_" title_key
+            set title [lang::message::lookup "" ${package_key}.im_ad_hoc_query_col__$title [string tolower $title_key]\
+			  ]
+        }
+        switch $format {
+            plain { append header "$title\t" }
+            html { append header "<th>$title</th>" }
+            csv { append header "\"$title\";" }
+        }
+    }
+    switch $format {
+        plain { set header $header }
+        html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
+        csv { set header $header }
+    }
+    
     set row_count 1
     foreach row $lol {
-	foreach col $row {
-	    switch $format {
-		html {	
-		    if {"" == $col} { set col "&nbsp;" }
-		    append result "<td>$col</td>" 
-		}
-		csv { append result "$col;" }
-		plain {	append result "$col\t" }
-	    }
-	}
-
-	# Change to next line
-	switch $format {
-	    html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
-	    default { append result "\n" }
-	}
-	incr row_count
+        foreach col $row {
+            switch $format {
+                plain { append result "$col\t" }
+                html {
+                    if {"" == $col} { set col "&nbsp;" }
+                    append result "<td>$col</td>"
+                }
+                csv { append result "\"$col\";" }
+            }
+        }
+	
+        # Change to next line
+        switch $format {
+            plain { append result "\n" }
+            html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
+            csv { append result "\n" }
+        }
+        incr row_count
     }
     
     switch $format {
-	html { return "
-		<table border=$border>
-		$header
-		<tr $bgcolor(0)>
-		$result
-		</tr>
-		</table>
-	       "  
-	}
-	default { return "$header\n$result"  }
+        plain { return "$header\n$result"  }
+        html { 
+	    return "
+                <table border=$border>
+                $header
+                <tr $bgcolor(0)>
+                $result
+                </tr>
+                </table>
+            "
+        }
+        csv { return "$header\n$result"  }
     }
 }
-
 
 
 
@@ -1357,4 +1434,16 @@ ad_proc im_generic_table_component {
     set result [ad_parse_template -params $params "/packages/intranet-core/www/components/generic-table-component"]
     set component_title [lang::message::lookup "" intranet-core.Generic_Table_Header_$table_name $table_name]
     return [im_table_with_title $component_title $result]
+}
+
+
+
+# ---------------------------------------------------------------
+# Cached version of db_table_exists
+# ---------------------------------------------------------------
+
+ad_proc im_table_exists { table_name } {
+    Cached version of db_table_exists
+} {
+    return [util_memoize [list db_table_exists $table_name]]
 }

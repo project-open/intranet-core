@@ -301,11 +301,10 @@ DECLARE
 	v_rel_id	integer;
 BEGIN
 	for row in 
-	select rel_id
-	from acs_rels
-	where
-		object_id_one = p_group_id
-		and object_id_two = p_user_id
+		select	rel_id
+		from	acs_rels
+		where	object_id_one = p_group_id
+			and object_id_two = p_user_id
 	loop
 	PERFORM membership_rel__delete(row.rel_id);
 	end loop;
@@ -553,12 +552,28 @@ select im_priv_create('add_budget_hours','Senior Managers');
 
 -------------------------------------------------------------
 -- Who can edit project_status_id even if there is a WF?
+--
 select acs_privilege__create_privilege('edit_project_status','Edit Project Status','Edit Project Status');
 select acs_privilege__add_child('admin', 'edit_project_status');
 
 select im_priv_create('edit_project_status','Accounting');
 select im_priv_create('edit_project_status','P/O Admins');
 select im_priv_create('edit_project_status','Senior Managers');
+
+
+
+-------------------------------------------------------------
+-- Who needs to login manually always?
+--
+SELECT acs_privilege__create_privilege('require_manual_login','Require manual login - dont allow auto-login', 'Require manual login - dont allow auto-login');
+SELECT acs_privilege__add_child('admin', 'require_manual_login');
+
+select im_priv_create('require_manual_login','P/O Admins');
+select im_priv_create('require_manual_login','Senior Managers');
+select im_priv_create('require_manual_login','Project Managers');
+select im_priv_create('require_manual_login','Accounting');
+
+
 
 
 

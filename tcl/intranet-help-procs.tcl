@@ -19,6 +19,25 @@ ad_library {
 }
 
 
+
+ad_proc -public im_home_news_component { } {
+    An IFrame to show ]po[ news
+} {
+    set title [lang::message::lookup "" intranet-core.ProjectOpen_News "&\\#93;po&\\#91; News"]
+    set no_iframes_l10n [lang::message::lookup "" intranet-core.Your_browser_cant_display_iframes "Your browser can't display IFrames."]
+
+    set url "http://projop.dnsalias.com/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
+    set iframe "
+      <iframe src=\"$url\" width=\"100%\" height=\"300\" name=\"$title\" frameborder=0>
+        <p>$no_iframes_l10n</p>
+      </iframe>
+    "
+    return $iframe
+    # return [im_table_with_title $title $iframe]
+}
+
+
+
 ad_proc -public im_help_home_page_blurb_component { } {
     Creates a HTML table with a blurb for the "home" page.
     This has been made into a component in order to allow

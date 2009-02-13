@@ -131,3 +131,10 @@ peer_ip: $peer_ip
     ns_sendmail $target_email $system_owner_email $subject $body
 }
 
+
+ad_proc -public im_send_alert_to_system_owner {subject message} {
+    set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set current_user_id [ad_get_user_id]
+    ns_sendmail $system_owner_email $system_owner_email $subject $message
+}
+

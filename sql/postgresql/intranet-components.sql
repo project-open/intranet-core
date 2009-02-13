@@ -127,21 +127,21 @@ comment on table im_component_plugin_user_map is '
 -- from the main table and the overriding user_map:
 --
 create or replace view im_component_plugin_user_map_all as (
-        select
-                c.plugin_id,
-                c.sort_order,
-                c.location,
-                null as user_id
-        from
-                im_component_plugins c
+	select
+		c.plugin_id,
+		c.sort_order,
+		c.location,
+		null as user_id
+	from
+		im_component_plugins c
   UNION
-        select
-                m.plugin_id,
-                m.sort_order,
-                m.location,
-                m.user_id
-        from
-                im_component_plugin_user_map m
+	select
+		m.plugin_id,
+		m.sort_order,
+		m.location,
+		m.user_id
+	from
+		im_component_plugin_user_map m
 );
 
 
@@ -490,6 +490,22 @@ SELECT	im_component_plugin__new (
 	'im_admin_navbar_component'	-- component_tcl
 );
 
+-- ProjectOpen News Component
+SELECT  im_component_plugin__new (
+	null,				-- plugin_id
+	'acs_object',			-- object_type
+	now(),				-- creation_date
+	null,				-- creation_user
+	null,				-- creation_ip
+	null,				-- context_id
+	'Home &#93;po&#91; News',	-- plugin_name
+	'intranet',			-- package_name
+	'right',			-- location
+	'/intranet/index',		-- page_url
+	null,				-- view_name
+	115,				-- sort_order
+	'im_home_news_component'	-- component_tcl
+);
 
 
 ------------------------------------------------------------------
@@ -499,7 +515,7 @@ returns varchar as '
 DECLARE
 	v_count		integer;
 	v_plugin_id	integer;
-        row		RECORD;
+	row		RECORD;
 
 	v_emp_id	integer;
 	v_freel_id	integer;
@@ -518,16 +534,16 @@ BEGIN
 	IF v_count > 0 THEN return 0; END IF;
 
 	-- Add read permissions to all plugins
-        FOR row IN
+	FOR row IN
 		select	plugin_id
 		from	im_component_plugins pl
-        LOOP
+	LOOP
 		PERFORM im_grant_permission(row.plugin_id, v_emp_id, ''read'');
 		PERFORM im_grant_permission(row.plugin_id, v_freel_id, ''read'');
 		PERFORM im_grant_permission(row.plugin_id, v_cust_id, ''read'');
-        END LOOP;
+	END LOOP;
 
-        return 0;
+	return 0;
 END;' language 'plpgsql';
 select inline_0();
 drop function inline_0();

@@ -412,6 +412,8 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 	"
     }
 
+    set query "select * from ($query) t order by user_name"
+
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_contact_select $query $select_name $default]
 }
 
