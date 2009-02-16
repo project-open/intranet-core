@@ -395,7 +395,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 	set excel_value ""
 	if {[catch { 
-	    set excel_value [expr \$$excel_field]
+	    set excel_value [string trim [expr \$$excel_field]]
 	} err_value]} {
 	    if {"" != $err_value} { 
 		ns_write "
@@ -404,7 +404,6 @@ foreach csv_line_fields $values_list_of_lists {
 	        "
 	    }
 	}
-	set excel_value [string trim $excel_value]
 
 	if {"" != $excel_value} {
 

@@ -133,14 +133,18 @@ if {$user_group_id > 0} {
 
     # The user requests to see all groups.
     # The most critical groups are company contacts...
-    set company_group_id [db_string user_group_id "select group_id from groups where group_name like :user_group_name" -default 0]
-
-    set sql "select im_object_permission_p(:company_group_id, :user_id, 'read') from dual"
-    set read [db_string user_can_read_user_group_p $sql]
-    if {![string equal "t" $read]} {
-	ad_return_complaint 1 "[_ intranet-core.lt_You_dont_have_permiss]"
-	return
+    set read_p 1
+    db_foreach groups "select group_id from groups, im_profiles where group_id = profile_id" {
+        if {"t" != [db_string read "select im_object_permission_p(:group_id, :user_id, 'read')"]} { 
+	    set read_p 0 
+	}
     }
+
+    if {!$read_p} {
+        ad_return_complaint 1 "[_ intranet-core.lt_You_dont_have_permiss]"
+        return
+    }
+
 }
 
 # If no view_name was explicitely specified

@@ -22,6 +22,7 @@ ad_page_contract {
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
+    @author koen.vanwinckel@dotprojects.be
 } {
     project_id:optional,integer
     { parent_id:integer "" }
@@ -133,7 +134,7 @@ template::element::create $form_id project_name \
 
 template::element::create $form_id project_nr \
     -datatype text \
-    -label "[_ intranet-core.Project_]" \
+    -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
     -after_html "[im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
 
@@ -580,6 +581,22 @@ if {[form is_valid $form_id]} {
 			    -project_type_id	$project_type_id \
 			    -project_status_id	$project_status_id]
 	
+        if {0 == $project_id || "" == $project_id} {
+            ad_return_complaint 1 "<b>Error creating project</b>:<br>
+                We have got an error creating a new project with the parameters.<br>
+		<pre>
+		project_name            $project_name
+		project_nr              $project_nr
+		project_path            $project_path
+		company_id              $company_id
+		parent_id               $parent_id
+		project_type_id         $project_type_id
+		project_status_id       $project_status_id
+		</pre>
+            "
+            ad_script_abort
+        }
+
 	# add users to the project as PMs
 	# - current_user (creator/owner)
 	# - project_leader
@@ -730,9 +747,23 @@ if {[form is_valid $form_id]} {
 	}
     }
 
+    # Patch #1712047 from Koen van Winckel
     if {"" == $return_url} {
-	set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+
+        # Check if we have a translation project
+        if { [im_project_has_type $project_id "Translation Project"] } {
+
+            # and return to the translation details
+            set return_url [export_vars -base "/intranet-translation/projects/edit-trans-data?" {project_id return_url}]
+
+        } else {
+
+            # not a translation project
+            set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+
+        }
     }
+
     ad_returnredirect $return_url
 }
 

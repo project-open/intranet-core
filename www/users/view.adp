@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Users#</property>
+<property name="title">@page_title@</property>
 <property name="main_navbar_label">user</property>
 <property name="sub_navbar">@user_navbar_html;noquote@</property>
 

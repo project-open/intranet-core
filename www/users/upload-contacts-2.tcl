@@ -21,11 +21,18 @@ ad_page_contract {
 
     @author various@arsdigita.com
     @author frank.bergmann@project-open.com
+
+    @param transformation_key Determins a number of additional fields 
+	   to import
+    @param create_dummy_email Set this for example to "@nowhere.com" 
+	   in order to create dummy emails for users without email.
+
 } {
     return_url
     upload_file
     profile_id
     { transformation_key "" }
+    { create_dummy_email "" }
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -144,22 +151,12 @@ set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
 
 
-set separator ";"
+set separator [im_csv_guess_separator $csv_files]
 
 # Split the header into its fields
 set csv_header [string trim [lindex $csv_files 0]]
 set csv_header_fields [im_csv_split $csv_header $separator]
 set csv_header_len [llength $csv_header_fields]
-
-
-if {$csv_header_len <= 1} {
-    # Probably got the wrong separator
-    set separator ","
-    ns_log Notice "upload-companies-2: changing to separator=$separator"
-    set csv_header_fields [im_csv_split $csv_header $separator]
-    set csv_header_len [llength $csv_header_fields]
-}
-
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
 
 
@@ -318,6 +315,13 @@ foreach csv_line_fields $values_list_of_lists {
         We can not add users with an empty last name. Please correct the CSV file.<br>
         <pre>$pretty_field_string</pre>"
 	continue
+    }
+
+    # Create a dummy email if there was something set in the parameter:
+    if {"" == $e_mail_address && "" != $create_dummy_email} {
+        regsub -all { } $first_name "" first_name_nospace
+        regsub -all { } $last_name "" last_name_nospace
+        set e_mail_address "${first_name_nospace}.${last_name_nospace}${create_dummy_email}"
     }
 
     if {"" == $e_mail_address} {

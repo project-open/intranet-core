@@ -151,6 +151,11 @@ if {!$read} {
     return
 }
 
+
+set view_finance_p [im_permission $current_user_id view_finance]
+set view_budget_p [im_permission $current_user_id view_budget]
+set view_budget_hours_p [im_permission $current_user_id view_budget_hours]
+
 # ---------------------------------------------------------------------
 # Set the context bar as a function on whether this is a subproject or not:
 # ---------------------------------------------------------------------
@@ -252,15 +257,18 @@ if { ![empty_string_p $percent_completed] } { append project_base_data_html "
 			  </tr>"
 }
 
-if { ![empty_string_p $project_budget_hours] } { append project_base_data_html "
-			  <tr>
-			    <td>[_ intranet-core.Project_Budget_Hours]</td>
-			    <td>$project_budget_hours</td>
-			  </tr>"
+if {$view_budget_hours_p && ![empty_string_p $project_budget_hours] } { 
+    append project_base_data_html "
+                          <tr>
+                            <td>[_ intranet-core.Project_Budget_Hours]</td>
+                            <td>$project_budget_hours</td>
+                          </tr>
+    "
 }
 
-if {[im_permission $current_user_id view_budget]} {
-    if { ![empty_string_p $project_budget] } { append project_base_data_html "
+
+if {$view_budget_p && ![empty_string_p $project_budget]} { 
+    append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
 			    <td>$project_budget $project_budget_currency</td>
