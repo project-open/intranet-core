@@ -747,9 +747,9 @@ Message:</msg>
   <msg key="lt_File_editing_Converti">File editing: Converting the total wordcount into editing hours using 1000 words per hour</msg>
   <msg key="lt_File_translation_Trad">File translation: Trados wordcount multiplied with provider Trados matrix</msg>
   <msg key="lt_Finally_revisit_this_">Finally, revisit this page and an option will appear to add the new client contact.</msg>
-  <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% has been added to %system_name%.
-Edit the message below and hit &quot;Send Email&quot; to 
-notify this user.</msg>
+  <msg key="lt_first_names_from_sear">
+Please edit the message below and hit &quot;Send Email&quot; to 
+notify the selected users.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% has been added to %system_name%.
 Edit the message below and hit &quot;Send Email&quot; to 
 notify this user.</msg>

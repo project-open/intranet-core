@@ -1,6 +1,6 @@
 # /packages/intranet-core/tcl/intranet-backup-procs.tcl
 #
-# Copyright (C) 1998-2004 ]project-open[
+# Copyright (C) 1998 - 2009 ]project-open[ and others.
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General

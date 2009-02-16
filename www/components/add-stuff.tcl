@@ -1,6 +1,6 @@
 # /packages/intranet-core/www/admin/components/add-stuff.tcl
 #
-# Copyright (C) 2006 Project/Open
+# Copyright (C) 2006 - 2009 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General

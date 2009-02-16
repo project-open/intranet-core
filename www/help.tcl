@@ -49,14 +49,17 @@ set context_help "<i>No context help available</i>"
 set general_help "
 <ul>
   <li><A href=http://www.project-open.org/doc/">
-      Project/Open Documentation</a>
+	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
+	Documentation
+  </a>
 </ul>
 "
 
 set developer_help "
 <ul>
   <li><A href=http://www.project-open.org/doc/">
-      Project/Open Documentation</a>
+	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
+      Documentation</a>
 </ul>
 "
 

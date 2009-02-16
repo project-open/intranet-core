@@ -39,7 +39,7 @@ set current_user_id [ad_maybe_redirect_for_registration]
 
 # Determine our permissions for the current object_id.
 # We can build the permissions command this ways because
-# all Project/Open object types define procedures
+# all ]project-open[ object types define procedures
 # im_ObjectType_permissions $user_id $object_id view read write admin.
 #
 set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]

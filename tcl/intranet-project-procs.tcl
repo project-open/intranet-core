@@ -1107,8 +1107,8 @@ ad_proc -public im_project_hierarchy_component {
     set sql "
 	select
 		children.project_id as subproject_id,
-		children.project_nr as subproject_nr,
-		children.project_name as subproject_name,
+		trim(children.project_nr) as subproject_nr,
+		trim(children.project_name) as subproject_name,
 		children.project_status_id as subproject_status_id,
 		children.parent_id as subproject_parent_id,
 		im_category_from_id(children.project_status_id) as subproject_status,
