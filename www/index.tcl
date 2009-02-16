@@ -58,6 +58,11 @@ set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
 
+
+# ----------------------------------------------------------------
+# Check update status
+# ----------------------------------------------------------------
+
 set upgrade_message [im_check_for_update_scripts]
 
 

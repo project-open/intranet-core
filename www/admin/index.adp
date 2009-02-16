@@ -54,6 +54,9 @@
 	<A href=flush_cache>#intranet-core.lt_Flush_Permission_Cach#</A><br>
 	#intranet-core.lt_Flush_cleanup_the_per#
       <li>
+       <A href="/acs-lang/admin/"><%= [lang::message::lookup "" intranet-core.Localization_Interface "Localization Interface"] %></A><br>
+        Update the package database.
+      <li>
 	<A href="/acs-admin/apm/packages-install?update_only_p=1"><%= [lang::message::lookup "" intranet-core.Update_Packages "Update Packages (after an update of the code)"] %></A><br>
 	Update the package database.
 
@@ -129,6 +132,11 @@
   </td>
 
   <td valign=top width="400px">
+
+      <if "" ne @upgrade_message@>
+	    <%= [im_table_with_title "Upgrade Information" $upgrade_message] %>
+      </if>
+
     <%= [im_component_bay right] %>
   </td>
 </tr>

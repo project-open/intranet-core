@@ -208,9 +208,11 @@ if {0 == $company_exists_p} {
 # Update the Office
 # -----------------------------------------------------------------
 
+# fraber 071120: Dont update office name, it can be changed
+#       office_name = :office_name,
+
 set update_sql "
 update im_offices set
-	office_name = :office_name,
 	phone = :phone,
 	fax = :fax,
 	address_line1 = :address_line1,

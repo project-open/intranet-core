@@ -1243,16 +1243,16 @@ ad_proc im_project_clone {
     if {$clone_files_p} {
 	append errors [im_project_clone_folders $parent_project_id $cloned_project_id]
     }
-    if {$clone_trans_tasks_p && [db_table_exists "im_trans_tasks"]} {
+    if {$clone_trans_tasks_p && [im_table_exists "im_trans_tasks"]} {
 	append errors [im_project_clone_trans_tasks $parent_project_id $cloned_project_id]
     }
-    if {$clone_target_languages_p && [db_table_exists "im_target_languages"]} {
+    if {$clone_target_languages_p && [im_table_exists "im_target_languages"]} {
 	append errors [im_project_clone_target_languages $parent_project_id $cloned_project_id]
     }
-    if {$clone_forum_topics_p && [db_table_exists "im_forum_topics"]} {
+    if {$clone_forum_topics_p && [im_table_exists "im_forum_topics"]} {
         append errors [im_project_clone_forum_topics $parent_project_id $cloned_project_id]
     }
-    if {$clone_costs_p && [db_table_exists "im_costs"]} {
+    if {$clone_costs_p && [im_table_exists "im_costs"]} {
         append errors [im_project_clone_costs $parent_project_id $cloned_project_id]
 #        append errors [im_project_clone_payments $parent_project_id $cloned_project_id]
     }
@@ -1317,7 +1317,7 @@ ad_proc im_project_clone {
     }
 
 
-    if {$clone_timesheet_tasks_p && [db_table_exists "im_timesheet_tasks"]} {
+    if {$clone_timesheet_tasks_p && [im_table_exists "im_timesheet_tasks"]} {
 
 	ns_write "<li>im_project_clone: timesheet tasks: parent=$parent_project_id cloned=$cloned_project_id\n"
 	# Use a list of tasks and then "foreach" in order to avoid nested SQLs
@@ -1529,7 +1529,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
     # Cover all fields that are not been used in project generation
 
     # Translation Only
-    if {[db_table_exists im_trans_tasks]} {
+    if {[im_table_exists im_trans_tasks]} {
 	set project_update_sql "
 	update im_projects set
 		company_project_nr =	:company_project_nr,
@@ -1551,7 +1551,7 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
     # DON't clone caches. It's better to leave them emtpy.
     # They're inconsisten anyway, because we may or may have
     # not cloned subprojects and their cost elements
-#    if {[db_table_exists im_costs]} {
+#    if {[im_table_exists im_costs]} {
 #	set project_update_sql "
 #	update im_projects set
 #		cost_quotes_cache =		:cost_quotes_cache,
@@ -2174,7 +2174,7 @@ ad_proc im_project_nuke {project_id} {
     db_transaction {
     
 	# Helpdesk Tickets
-        if {[db_table_exists im_tickets]} {
+        if {[im_table_exists im_tickets]} {
 	    db_dml del_tickets "delete from im_tickets where ticket_id = :project_id"
 	}
 
@@ -2218,6 +2218,10 @@ ad_proc im_project_nuke {project_id} {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 
+            # Delete Multiple-Values associated to this cost item ("Canned Notes")
+            db_dml del_multi_values "delete from im_dynfield_attr_multi_value where object_id = :cost_id"
+
+            # Delete references from im_hours to im_costs.
 	    db_dml hours_costs_link "update im_hours set cost_id = null where cost_id = :cost_id"
 
 	    # ToDo: Remove this.
@@ -2229,7 +2233,16 @@ ad_proc im_project_nuke {project_id} {
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	
-	
+
+        # im_notes
+        if {[im_table_exists im_notes]} {
+            ns_log Notice "projects/nuke-2: im_notes"
+            db_dml notes "
+                delete from im_notes
+                where object_id = :project_id
+            "
+        }
+
 	# Forum
 	ns_log Notice "projects/nuke-2: im_forum_topic_user_map"
 	db_dml forum "
@@ -2250,7 +2263,7 @@ ad_proc im_project_nuke {project_id} {
 	
 
 	# Workflow
-	if {[db_table_exists wf_workflows]} {
+	if {[im_table_exists wf_workflows]} {
 	    ns_log Notice "projects/nuke-2: wf_workflows"
 	    db_dml wf_tokens "
 		delete from wf_tokens
@@ -2267,7 +2280,7 @@ ad_proc im_project_nuke {project_id} {
 	}
 	
 	# Translation & Workflow
-	if {[db_table_exists wf_workflows] && [db_table_exists im_trans_tasks]} {
+	if {[im_table_exists wf_workflows] && [im_table_exists im_trans_tasks]} {
 	    ns_log Notice "projects/nuke-2: im_trans_tasks & wf_workflows"
 	    db_dml wf_tokens "
 		delete from wf_tokens
@@ -2295,7 +2308,7 @@ ad_proc im_project_nuke {project_id} {
 
 	# Translation Quality
 	ns_log Notice "projects/nuke-2: im_trans_quality_entries"
-	if {[db_table_exists im_trans_quality_reports]} {
+	if {[im_table_exists im_trans_quality_reports]} {
 	    db_dml trans_quality "
 		delete from im_trans_quality_entries 
 		where report_id in (
@@ -2320,7 +2333,7 @@ ad_proc im_project_nuke {project_id} {
 
 	
 	# Translation
-	if {[db_table_exists im_trans_tasks]} {
+	if {[im_table_exists im_trans_tasks]} {
 	    ns_log Notice "projects/nuke-2: im_task_actions"
 	    db_dml task_actions "
 		delete from im_task_actions 
@@ -2350,7 +2363,7 @@ ad_proc im_project_nuke {project_id} {
 
 	
 	# Trans RFCs
-	if {[db_table_exists im_trans_rfqs]} {
+	if {[im_table_exists im_trans_rfqs]} {
 	    ns_log Notice "projects/nuke-2: im_trans_rfqs"
 	    db_dml trans_rfq_answers "
 	        delete from im_trans_rfq_answers
@@ -2371,7 +2384,7 @@ ad_proc im_project_nuke {project_id} {
 	}
 	
 	# Consulting
-	if {[db_table_exists im_timesheet_tasks]} {
+	if {[im_table_exists im_timesheet_tasks]} {
 	    
 	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
 	    db_dml task_actions "
@@ -2387,7 +2400,7 @@ ad_proc im_project_nuke {project_id} {
 	}
 
 	# Helpdesk
-	if {[db_table_exists im_tickets]} {
+	if {[im_table_exists im_tickets]} {
 	    
 	    ns_log Notice "projects/nuke-2: im_tickets"
 	    db_dml tickets "
@@ -2397,7 +2410,7 @@ ad_proc im_project_nuke {project_id} {
 	}
 
 	# GanttProject
-	if {[db_table_exists im_timesheet_task_dependencies]} {
+	if {[im_table_exists im_timesheet_task_dependencies]} {
 	
 	    ns_log Notice "projects/nuke-2: im_timesheet_task_dependencies"
 	    db_dml del_dependencies "
@@ -2408,7 +2421,7 @@ ad_proc im_project_nuke {project_id} {
 
 
 	# RFQs
-	if {[db_table_exists im_freelance_rfqs]} {
+	if {[im_table_exists im_freelance_rfqs]} {
 	
 	    ns_log Notice "projects/nuke-2: im_freelance_rfqs"
 	    db_dml del_rfq_answers "
@@ -2466,7 +2479,7 @@ ad_proc im_project_nuke {project_id} {
 			or object_id_two = :project_id
 	"]
 
-	set im_conf_item_project_rels_exists_p [db_table_exists im_conf_item_project_rels]
+	set im_conf_item_project_rels_exists_p [im_table_exists im_conf_item_project_rels]
 
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"

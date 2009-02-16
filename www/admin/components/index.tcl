@@ -137,7 +137,12 @@ set bind_vars [ns_set create]
 set component_select_sql "
 select
 	${main_sql_select}
-	c.plugin_id, c.plugin_name, c.package_name, c.location, c.page_url
+	c.plugin_id, 
+	c.plugin_name, 
+	c.package_name, 
+	c.location, 
+	c.page_url,
+	c.enabled_p
 from 
 	im_component_plugins c
 where	
@@ -157,6 +162,7 @@ db_foreach all_component_of_type $component_select_sql {
   <td>
     <nobr><a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a></nobr>
   </td>
+  <td>$enabled_p</td>
   <td>$package_name</td>
   <td>$location</td>
   <td>$page_url</td>

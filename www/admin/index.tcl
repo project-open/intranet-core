@@ -41,3 +41,7 @@ set context_bar [im_context_bar $page_title]
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
+
+# Check for upgrades to run
+set upgrade_message [im_check_for_update_scripts]
+

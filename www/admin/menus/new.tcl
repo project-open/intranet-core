@@ -124,6 +124,9 @@ ad_form -extend -name menu -on_request {
     # Remove all permission related entries in the system cache
     im_permission_flush
 
+    # Recalculate the menu hierarchy
+    im_menu_update_hierarchy
+
     ad_returnredirect $return_url
     ad_script_abort
 }

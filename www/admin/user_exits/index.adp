@@ -4,7 +4,6 @@
 <property name="admin_navbar_label">admin_user_exits</property>
 
 
-
 <form name=user_exits action=invoke method=POST>
 <input type=hidden name=user_exit value="">
 

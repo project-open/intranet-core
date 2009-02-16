@@ -32,6 +32,7 @@ ad_page_contract {
     {page_url:trim ""}
     {title_tcl:allhtml ""}
     {component_tcl:allhtml ""}
+    {enabled_p ""}
     {action "none"}
     {return_url ""}
     {menu_name ""}
@@ -59,6 +60,7 @@ switch $submit {
 	if {"" != $sort_order} { lappend updates "sort_order = :sort_order" }
 	if {"" != $menu_name} { lappend updates "menu_name = :menu_name" }
 	if {"" != $menu_sort_order} { lappend updates "menu_sort_order = :menu_sort_order" }
+	if {"" != $enabled_p} { lappend updates "enabled_p = :enabled_p" }
 	
 	if {[llength $updates] > 0} {
 	    if [catch {
