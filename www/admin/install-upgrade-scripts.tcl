@@ -21,7 +21,7 @@ ns_write [im_navbar]
 ns_write "<h1>Running Upgrade Scripts</h1>\n"
 ns_write "<ul>\n"
 
-foreach script $upgrade_script {
+foreach script [lsort $upgrade_script] {
 
     # Add the "/packages/..." part to hash-array for fast comparison.
     if {[regexp {(/packages.*)} $script match script_body]} {

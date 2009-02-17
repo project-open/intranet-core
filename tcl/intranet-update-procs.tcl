@@ -225,7 +225,9 @@ ad_proc -public im_check_for_update_scripts {
                 <br>
                 <p>
                 <b>Here is the list of scripts to run</b>:<p>
-                [join $missing_modules "<br>\n"]
+		<nobr>
+                [join $missing_modules "</nobr><br>\n<nobr>"]
+		</nobr>
         "
         return $upgrade_message
     }
@@ -295,6 +297,9 @@ ad_proc -public im_check_for_update_scripts {
         }
     }
 
+    # Sort the list so the upgrade scripts are executed in rising order.
+    set missing_modules [lsort $missing_modules]
+
     if {$requires_upgrade_p} {
         set upgrade_message "
                 <b>Run Upgrade Scripts:</b><br>
@@ -312,7 +317,9 @@ ad_proc -public im_check_for_update_scripts {
                 <br>
                 <p>
                 <b>Here is the list of scripts to run</b>:<p>
-                [join $missing_modules "<br>\n"]
+		<nobr>
+                [join $missing_modules "</nobr><br>\n<nobr>"]
+		</nobr>
         "
         return $upgrade_message
     }
