@@ -205,6 +205,9 @@ ad_proc -public im_check_for_update_scripts {
         }
     }
 
+    # Sort the list so the upgrade scripts are executed in rising order.
+    set missing_modules [lsort $missing_modules]
+
     if {$requires_upgrade_p} {
         set upgrade_message "
                 <b>Run Upgrade Scripts:</b><br>
