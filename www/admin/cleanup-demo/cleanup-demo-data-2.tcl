@@ -465,7 +465,7 @@ if {[db_table_exists im_timesheet_conf_objects]} {
 
 ns_write "<li>Cleanup Freelance RFQs\n"
 if {[db_table_exists im_freelance_rfqs]} {
-    db_dml expense_invoices "delete from im_freelance_object_skill_map"
+    db_dml expense_invoices "delete from im_object_freelance_skill_map"
     db_dml expense_invoices "delete from im_freelance_rfq_answers"
     db_dml expense_invoices "delete from im_freelance_rfqs"
 }
