@@ -17,8 +17,7 @@
 
 
 -- Implements the data structures for component bays
--- that allow to plug-in components into Project/Open
--- pages at runtime.
+-- that allow to plug-in components into pages at runtime.
 
 ---------------------------------------------------------
 -- Component Plugins

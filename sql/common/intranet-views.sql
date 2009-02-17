@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/common/intranet-views.sql
 --
--- Copyright (C) 2004 Project/Open
+-- Copyright (C) 2004 - 2009 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General
@@ -24,7 +24,7 @@
 -- frank.bergmann@project-open.com, 2003-07-24
 --
 
--- ViewIDs: IDs < 1.000.000 are reserved for Project/Open modules.
+-- ViewIDs: IDs < 1.000.000 are reserved for ]po[ modules.
 --
 --------------------------------------------------------
 -- Base Views

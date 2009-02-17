@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Modify the version information in all Project/Open Packages
+# Modify the version information in all Packages
 # in order to provide the APM with correct install/reinstall
 # options
 #

@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/oracle/intranet-biz-objects.sql
 --
--- Copyright (C) 1999-2004 Project/Open
+-- Copyright (C) 1999 - 2009 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General
@@ -14,14 +14,14 @@
 --
 -- @author	  frank.bergmann@project-open.com
 
--- Project/Open Business objects can be associated to 
+-- Business objects can be associated to 
 -- users using a "role", which depends on the Busines
 -- Object (OpenACS object type ) and the "Object Type" 
 -- (this is a field common to all of these objects).
 
 
 -- ------------------------------------------------------------
--- Project/Open Business Object
+-- Business Object
 -- ------------------------------------------------------------
 
 -- BizObjects have in a common "type()" method that allows

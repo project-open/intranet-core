@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/oracle/intranet-views.sql
 --
--- Copyright (C) 2004 Project/Open
+-- Copyright (C) 2004 - 2009 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General

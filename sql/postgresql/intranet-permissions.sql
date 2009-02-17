@@ -17,7 +17,7 @@
 
 
 -------------------------------------------------------------
--- Project/Open Profiles
+-- Profiles
 --
 -- "Profiles" is a group type that is used to keep 
 -- user permission information in a distinguishable
@@ -411,7 +411,7 @@ select im_create_profile ('Freelance Managers','profile');
 -- Privileges
 --
 -- Privileges are permission tokens relative to the "subsite"
--- (package) object "Project/Open Core".
+-- package object.
 -- 
 
 -- "View" privilege in addition to "read":

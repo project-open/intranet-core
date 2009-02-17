@@ -3,8 +3,10 @@
 # --------------------------------------------------------------
 # all-security-check
 #
-# Project/Open Automatic Security Check
-# (c) 2004 Frank Bergmann <frank.bergmann@project-open.com>
+# Automatic Security Check
+# (c) 2004 - 2009 ]project-open[ 
+#
+# @author: Frank Bergmann <frank.bergmann@project-open.com>
 # --------------------------------------------------------------
 
 use strict;

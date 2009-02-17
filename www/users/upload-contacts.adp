@@ -46,7 +46,7 @@ please export your Outlook database:
 <li>Choose the fomat "Comma Separated Values (Windows)"
 <li>Choose the contacts folder to export. <br>
     Tip: You can create a special folder for the contacts
-    that you want to integrate with Project/Open.
+    that you want to integrate with ]project-open[.
 <li>Save the CSV file in any temporary directory
 <li>Use the "Browse" button above to locate the CSV file
     and press "Submit".
@@ -59,23 +59,23 @@ We have included a sample document
 
 <h3>Duplicated Names</h3>
 
-There are several differences between Outlook and Project/Open
+There are several differences between Outlook and ]project-open[
 that may lead to confusion or even loss of data in the worst
 case:
 
 <ul>
 <li>
   Outlooks allows you to have multiple users with the same
-  name, while Project/Open asumes that there is only one person
+  name, while ]project-open[ asumes that there is only one person
   with a specific first and second name.<br>
-  =&gt; Project/Open will overwrite the information of duplicate
+  =&gt; ]project-open[ will overwrite the information of duplicate
   users.
 
 <li>
   Outlook allows you to specify several email addresses for
-  each user, while Project/Open requires exactly one email
+  each user, while ]project-open[ requires exactly one email
   address.<br>
-  =&gt; Project/Open will add the second and third email to the
+  =&gt; ]project-open[ will add the second and third email to the
   "notes" field of the user.
 
 </ul>

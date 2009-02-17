@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/common/intranet-biz-objects.sql
 --
--- Copyright (C) 1999-2004 Project/Open
+-- Copyright (C) 1999 - 2009 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General
@@ -19,7 +19,7 @@
 -- Roles for all Biz Objects
 -- ------------------------------------------------------------
 
--- Project/Open Core only knows about Member and PM
+-- Core only knows about Member and PM
 -- Project/Translation adds Translator, Proof Reader, ...
 -- Project/Advertizing adds Producer, Designer, Texter, ...
 -- Project/IT adds Business Analyst, Architect, Developer, ...

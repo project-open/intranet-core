@@ -11,7 +11,7 @@
 ---------------------------------------------------------
 -- Menus
 --
--- Dynamic Menus are necessary to allow Project/Open modules
+-- Dynamic Menus are necessary to allow modules
 -- to extend the core at some point in the future without
 -- that core would need know about these extensions in
 -- advance.

@@ -309,7 +309,7 @@ ad_proc -public im_import_categories { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_categories"]} {
@@ -433,7 +433,7 @@ ad_proc -public im_import_companies { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_companies"]} {
@@ -577,7 +577,7 @@ ad_proc -public im_import_company_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_company_members"]} {
@@ -696,7 +696,7 @@ ad_proc -public im_import_offices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_offices"]} {
@@ -840,7 +840,7 @@ ad_proc -public im_import_office_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_office_members"]} {
@@ -953,7 +953,7 @@ ad_proc -public im_import_projects { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_projects"]} {
@@ -1117,7 +1117,7 @@ ad_proc -public im_import_project_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_project_members"]} {
@@ -1236,7 +1236,7 @@ ad_proc -public im_import_users { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_users"]} {
@@ -1440,7 +1440,7 @@ ad_proc -public im_import_profiles { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_profiles"]} {
@@ -1588,7 +1588,7 @@ ad_proc -public im_import_freelancers { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_freelancers"]} {
@@ -1713,7 +1713,7 @@ ad_proc -public im_import_employees { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_employees"]} {
@@ -1875,7 +1875,7 @@ ad_proc -public im_import_freelance_skills { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_freelance_skills"]} {
@@ -2025,7 +2025,7 @@ ad_proc -public im_import_hours { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_hours"]} {
@@ -2172,7 +2172,7 @@ ad_proc -public im_import_user_absences { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_user_absences"]} {
@@ -2324,7 +2324,7 @@ ad_proc -public im_import_trans_project_details { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_trans_project_details"]} {
@@ -2446,7 +2446,7 @@ ad_proc -public im_import_trans_tasks { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_trans_tasks"]} {
@@ -2669,7 +2669,7 @@ ad_proc -public im_import_costs { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_costs"]} {
@@ -2881,7 +2881,7 @@ ad_proc -public im_import_cost_centers { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_cost_centers"]} {
@@ -3051,7 +3051,7 @@ ad_proc -public im_import_invoices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_invoices"]} {
@@ -3218,7 +3218,7 @@ ad_proc -public im_import_invoice_items { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_invoice_items"]} {
@@ -3378,7 +3378,7 @@ ad_proc -public im_import_project_invoice_map { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_project_invoice_map"]} {
@@ -3498,7 +3498,7 @@ ad_proc -public im_import_payments { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_payments"]} {
@@ -3683,7 +3683,7 @@ ad_proc -public im_import_investments { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_investments"]} {
@@ -3814,7 +3814,7 @@ ad_proc -public im_import_target_languages { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_target_languages"]} {
@@ -3931,7 +3931,7 @@ ad_proc -public im_import_trans_prices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "Project/Open"]} {
+    if {![string equal $csv_system "po"]} {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
     if {![string equal $csv_table "im_trans_prices"]} {
