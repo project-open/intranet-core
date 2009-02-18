@@ -45,6 +45,7 @@ set date_format "YYYY-MM-DD"
 # So first find out which user we are talking
 # about...
 
+if {"" == $user_id} { set user_id 0 }
 set vars_set [expr ($user_id > 0) + ($object_id > 0) + ($user_id_from_search > 0)]
 if {$vars_set > 1} {
     ad_return_complaint 1 "<li>You have set the user_id in more then one of the following parameters: <br>user_id=$user_id, <br>object_id=$object_id and <br>user_id_from_search=$user_id_from_search."

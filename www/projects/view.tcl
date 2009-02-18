@@ -88,8 +88,7 @@ set extra_select [join $extra_selects ",\n\t"]
 set query "
 select
 	p.*,
-	c.company_name,
-	c.company_path,
+	c.*,
 	to_char(p.end_date, 'HH24:MI') as end_date_time,
 	to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
 	to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
@@ -243,6 +242,7 @@ if { $user_can_see_start_end_date_p && ![empty_string_p $end_date] } { append pr
 			  </tr>"
 }
 
+
 append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.On_Track_Status]</td>
@@ -266,17 +266,14 @@ if {$view_budget_hours_p && ![empty_string_p $project_budget_hours] } {
     "
 }
 
-
 if {$view_budget_p && ![empty_string_p $project_budget]} { 
     append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Project_Budget]</td>
 			    <td>$project_budget $project_budget_currency</td>
-			  </tr>"
-    }
+			  </tr>
+    "
 }
-
-
 
 if { ![empty_string_p $company_project_nr] } { 
     append project_base_data_html "
