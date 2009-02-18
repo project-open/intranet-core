@@ -98,7 +98,6 @@ jQuery().ready(function(){
 	var node_insert_after=document.getElementById("slave_content");
 	var node_to_move=document.getElementById("bug-tracker-navbar");
 	if (node_insert_after != null && node_to_move != null) {
-	   alert('');
 	   document.getElementById("slave").insertBefore(node_to_move, node_insert_after.nextSibling);
 	}
 
