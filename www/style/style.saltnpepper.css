@@ -94,7 +94,8 @@ a {
 
 a:hover {
 	background:transparent none repeat scroll 0%;
-	color:transparent;
+/*	fraber 090217		*/
+/*	color:transparent;	*/
 }
 
 
