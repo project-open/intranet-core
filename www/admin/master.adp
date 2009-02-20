@@ -6,12 +6,8 @@
 <property name="title">@title;noquote@</property>
 <property name="admin_navbar_label">@admin_navbar_label;noquote@</property>
 <property name="context">@context;noquote@</property>
-      <div class='filter-list'>
-	 <a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
-         <%= [im_admin_navbar $admin_navbar_label] %>
-         <div class="fullwidth-list" id="fullwidth-list">
-            <!-- intranet/www/admin/master.adp before slave -->
-            <slave>
-            <!-- intranet/www/admin/master.adp after slave -->
-	 </div>
-      </div>
+
+
+<!-- intranet/www/admin/master.adp before slave -->
+<slave>
+<!-- intranet/www/admin/master.adp after slave -->
