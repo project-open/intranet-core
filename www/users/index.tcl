@@ -305,7 +305,6 @@ db_foreach select_user_types "
 # Filter with Dynamic Fields
 # ---------------------------------------------------------------
 
-set dynamic_fields_p 1
 set form_id "user_filter"
 set object_type "person"
 set action_url "/intranet/users/index"
@@ -319,7 +318,7 @@ ad_form \
         {user_group_name:text(select),optional {label "\#intranet-core.User_Types\#"} {options $user_types} {value $user_group_name}}
     }
 
-if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+if {$filter_advanced_p} {
 
     im_dynfield::append_attributes_to_form \
         -object_type $object_type \
@@ -332,7 +331,7 @@ if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
     array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
         -form_id $form_id \
         -object_type $object_type
-			       ]
+    ]
 }
 
 
@@ -604,6 +603,45 @@ if {"" != $admin_html && [db_table_exists spam_messages]} {
 
 
 set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
+
+
+set left_navbar_html "
+      <div class='filter-block'>
+        <div class='filter-title'>
+	    #intranet-core.Filter_Users#
+        </div>
+
+	<form method=get action='/intranet/users/index' name=filter_form>
+	[export_form_vars start_idx order_by how_many letter]
+	<input type=hidden name=view_name value='user_list'>
+	<table>
+	<tr>
+	  <td class='form-label'>#intranet-core.User_Types#  &nbsp;</td>
+	  <td class='form-widget'>
+	    [im_select user_group_name $user_types ""]
+	    <input type=submit value=Go name=submit>
+	  </td>
+	</tr>
+	</table>
+	</form>
+      </div>
+"
+
+if {"" != $admin_html} {
+    append left_navbar_html "
+      <div class='filter-block'>
+         <div class='filter-title'>
+            #intranet-core.Admin_Users#
+         </div>
+         <ul>
+         $admin_html
+         </ul>
+      </div>
+    "
+}
+
+
+
 
 if {[im_permission $user_id "add_users"]} {
     set list_icons "<a href=/intranet/users/new>[_ intranet-core.Add_New_User]</a>\n"

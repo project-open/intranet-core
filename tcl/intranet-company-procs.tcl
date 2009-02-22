@@ -400,6 +400,7 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 		and m.group_id in (:customer_group_id, :freelance_group_id)
 		and u.user_id = ur.object_id_two
 		and ur.object_id_one = :company_id
+		and ur.object_id_one != 0
     "
 
     # Include the default user in the list, even if he's not a member
@@ -420,6 +421,7 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 
 ad_proc -public im_company_select { 
     {-include_empty_name "--_Please_select_--" }
+    {-tag_attributes {} }
     select_name 
     { default "" } 
     { status "" } 
@@ -435,6 +437,8 @@ ad_proc -public im_company_select {
     New feature 040527: The companies to be shown depend on the users
     permissions: The system should show only the users companies, except
     if the user has the "view_companies_all" permission.
+    @param tag_attributes key-value-key-value... list of attributes
+           to be included in the tag.
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
 
@@ -502,7 +506,7 @@ ad_proc -public im_company_select {
 
     append sql " order by lower(c.company_name)"
 
-    return [im_selection_to_select_box -translate_p 0 -include_empty_name $include_empty_name $bind_vars "company_status_select" $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 -include_empty_name $include_empty_name -tag_attributes $tag_attributes $bind_vars "company_status_select" $sql $select_name $default]
 }
 
 

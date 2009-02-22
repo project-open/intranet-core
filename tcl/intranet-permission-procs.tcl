@@ -195,6 +195,37 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
     return ""
 }
 
+ad_proc -public im_render_user_id2 { 
+    user_id 
+} {
+    Returns a rendered HTML component showing a user according to the
+    viewing users permissions. There are three options:<br>
+    The component can return a link to the UserViewPage if the current
+    user has the permission to view it, it may return an empty string,
+    if the current user has no permissions at all, and it may contain
+    a name only for ???
+} {
+    set current_user_id [ad_get_user_id]
+    if {$user_id == ""} { return "" }
+
+    # How to display? -1=name only, 0=none, 1=Link
+    set group_id 0
+    set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
+
+    if {$show_user_style == 0} { return "" }
+
+    set user_name [util_memoize [list db_string uname "select im_name_from_user_id(:user_id)"]]
+
+    if {$show_user_style == -1} {
+	return $user_name
+    }
+    if {$show_user_style == 1} {
+	return "<A HREF=/intranet/users/view?user_id=$user_id>$user_name</A>"
+    }
+    return ""
+}
+
+
 # ------------------------------------------------------------------
 # 
 # ------------------------------------------------------------------

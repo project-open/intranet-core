@@ -17,7 +17,7 @@ ad_page_contract {
     @param company_id The company
     @author frank.bergmann@project-open.com
 } {
-    company_id:notnull,integer
+    company_id:integer
     user_id:notnull,integer
     { auto_login "" }
 }
@@ -36,6 +36,11 @@ if {!$valid_login} {
     doc_return 200 "text/plain" "0,Error: Invalid Authentication for user $user_id"
     ad_script_abort
 } 
+
+if {"" == $company_id} {
+    doc_return 200 "text/plain" "0,Undefined company - no address available"
+    ad_script_abort
+}
 
 set offices_sql "
 	select	o.*

@@ -758,6 +758,7 @@ ad_proc im_selection_to_select_box {
     {-translate_p 1} 
     {-include_empty_p 1}
     {-include_empty_name "--_Please_select_--"}
+    {-tag_attributes {} }
     {-size "" }
     bind_vars
     statement_name
@@ -768,12 +769,23 @@ ad_proc im_selection_to_select_box {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a select bar named select_name, 
     defaulted to $default 
+    @param tag_attributes Key-value list of tag attributes. 
+           Value is to be enclosed by double quotes by the system.
 } {
-    # Size set? Then add to <select>
-    set size_html ""
-    if {"" != $size} { set size_html "size=$size" }
+    array set tag_hash $tag_attributes
+    set tag_hash(name) $select_name
+    if {"" != $size} { set tag_hash(size) $size }  
+    set tag_attribute_html ""
+    foreach key [array names tag_hash] {
+	set val $tag_hash($key)
 
-    set result "<select name=\"$select_name\" $size_html>\n"
+	# Check for unquoted double quotes.
+	if {[regexp {ttt} $val match]} { ad_return_complaint 1 "im_selection_to_select_box: found unquoted double quotes in tag_attributes" }
+
+	append tag_attribute_html "$key=\"$val\" "
+    }
+
+    set result "<select $tag_attribute_html>\n"
     if {$include_empty_p} {
 
 	if {"" != $include_empty_name} {

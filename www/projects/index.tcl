@@ -191,7 +191,6 @@ db_foreach column_list_sql $column_sql {
 # Filter with Dynamic Fields
 # ---------------------------------------------------------------
 
-set dynamic_fields_p 1
 set form_id "project_filter"
 set object_type "im_project"
 set action_url "/intranet/projects/index"
@@ -209,38 +208,25 @@ ad_form \
     -method GET \
     -export {start_idx order_by how_many view_name include_subprojects_p include_subproject_level letter filter_advanced_p}\
     -form {
-    	{mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
-    }
-    
-if {[im_permission $current_user_id "view_projects_all"]} {  
-    ad_form -extend -name $form_id -form {
-	{project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {custom {category_type "Intranet Project Status" translate_p 1}} }
-	{project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {custom {category_type "Intranet Project Type" translate_p 1} } }
+        {mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
+        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {custom {category_type "Intranet Project Status" translate_p 1}} }
+        {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {custom {category_type "Intranet Project Type" translate_p 1} } }
     }
 
-    template::element::set_value $form_id project_status_id $project_status_id
-    template::element::set_value $form_id project_type_id $project_type_id
-}
-
-if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
-
-    im_dynfield::append_attributes_to_form \
+im_dynfield::append_attributes_to_form \
         -object_type $object_type \
         -form_id $form_id \
         -object_id 0 \
-	-advanced_filter_p 1
+        -advanced_filter_p 1
 
-    # Set the form values from the HTTP form variable frame
-    im_dynfield::set_form_values_from_http -form_id $form_id
+# Set the form values from the HTTP form variable frame
+im_dynfield::set_form_values_from_http -form_id $form_id
+im_dynfield::set_local_form_vars_from_http -form_id $form_id
 
-    im_dynfield::set_local_form_vars_from_http -form_id $form_id
-
-    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
-	-form_id $form_id \
-	-object_type $object_type
-    ]
-}
-
+array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+        -form_id $form_id \
+        -object_type $object_type
+]
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
@@ -346,9 +332,8 @@ foreach varname [info locals] {
 
 # Deal with DynField Vars and add constraint to SQL
 #
-if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+if {$filter_advanced_p} {
 
-    # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
     set ns_set_vars $extra_sql_array(bind_vars)
     set tmp_vars [util_list_to_ns_set $ns_set_vars]
@@ -553,6 +538,13 @@ if {[string equal $letter "ALL"]} {
 
 ns_log Notice "/intranet/project/index: Before formatting filter"
 
+
+set mine_p_options [list \
+	[list [lang::message::lookup "" intranet-core.All "All"] "f" ] \
+	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
+	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
+]
+
 set filter_html "
 <form method=get action='/intranet/projects/index'>
 [export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
@@ -594,16 +586,17 @@ append filter_html "
   </tr>
 "
 
+set user_select_groups [list [im_employee_group_id] [im_freelance_group_id] [im_customer_group_id]]
+# ToDo: Permissions?
+
 append filter_html "
   <tr>
     <td class=form-label valign=top>[lang::message::lookup "" intranet-core.With_Member "With Member"]:</td>
     <td class=form-widget valign=top>
-       [im_user_select -include_empty_p 1 user_id_from_search $user_id_from_search]
+       [im_user_select -include_empty_p 1 -group_id $user_select_groups user_id_from_search $user_id_from_search]
     </td>
   </tr>
 "
-
-
 
 append filter_html "
   <tr>
@@ -804,13 +797,37 @@ set table_continuation_html "
 
 
 # ---------------------------------------------------------------
-# Navbar
+# Navbars
 # ---------------------------------------------------------------
 
+# Project Navbar goes to the top
+#
 set project_navbar_html [im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter project_status_id] $menu_select_label]
 
 
+# Compile and execute the formtemplate if advanced filtering is enabled.
+if {$filter_advanced_p} {
+    eval [template::adp_compile -string {<formtemplate id="project_filter"></formtemplate>}]
+    set filter_html $__adp_output
+}
 
-ns_log Notice "/intranet/project/index: before release handes"
-db_release_unused_handles
 
+# Left Navbar is the filter/select part of the left bar
+set left_navbar_html "
+	<div class='filter-block'>
+        	<div class='filter-title'>
+	           #intranet-core.Filter_Projects#
+        	</div>
+            	$filter_html
+      	</div>
+      <hr/>
+"
+
+append left_navbar_html "
+      	<div class='filter-block'>
+        <div class='filter-title'>
+            #intranet-core.Admin_Projects#
+        </div>
+	$admin_html
+      	</div>
+"
