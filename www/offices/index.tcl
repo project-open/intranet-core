@@ -395,5 +395,24 @@ set previous_page_url ""
 
 set office_navbar_html [im_office_navbar $letter "/intranet/offices/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
 
+set left_navbar_html "
+      <div class='filter-block'>
+         <div class='filter-title'>
+            #intranet-core.Filter_Offices#
+         </div>
+         $filter_html
+      </div>
+"
 
-db_release_unused_handles
+if {"" != $admin_html} {
+    append left_navbar_html "
+      <div class='filter-block'>
+         <div class='filter-title'>
+            #intranet-core.Admin_Offices#
+         </div>
+         <ul>
+            $admin_html
+         </ul>
+      </div>
+    "
+}

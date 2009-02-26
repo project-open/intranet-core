@@ -9,24 +9,22 @@
   dealt with in the own pages.
 -->
 
-	<div class="fullwidth-list-no-side-bar" id="fullwidth-list">
+<% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
-	<% if {"" == $view_name || [string equal $view_name "standard"]} { %>
+<table cellpadding=0 cellspacing=0 border=0 width="100%">
+<tr>
+  <td valign=top width='50%'>
 
-	<table cellpadding=0 cellspacing=0 border=0 width="100%">
-	<tr>
-	  <td valign=top width='50%'>
+    <!--Project Base Data -->
+    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
 
-	    <!--Project Base Data -->
-	    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
+    <!-- Left Component Bay -->
+    <%= [im_component_bay left] %>
+  </td>
+  <td width=2>&nbsp;</td>
+  <td valign=top>
 
-	    <!-- Left Component Bay -->
-	    <%= [im_component_bay left] %>
-	  </td>
-	  <td width=2>&nbsp;</td>
-	  <td valign=top>
-
-	  <%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
+	<%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
   	     
 
 	<if @subproject_filtering_enabled_p@>
@@ -43,51 +41,50 @@
 		</form>
 		</table>
 	</if>
-		<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
+	<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
 
-	    @admin_html_content;noquote@
+	@admin_html_content;noquote@
 
 
-            <%= [im_box_footer] %>
+        <%= [im_box_footer] %>
 
-	    <!-- Right Component Bay -->
-	    <%= [im_component_bay right] %>
+	<!-- Right Component Bay -->
+	<%= [im_component_bay right] %>
 
-	  </td>
-	</tr>
-	</table><br>
+  </td>
+</tr>
+</table><br>
 
-	<table cellpadding=0 cellspacing=0 border=0 width='100%'>
-	<tr><td>
-	  <!-- Bottom Component Bay -->
-	  <%= [im_component_bay bottom] %>
-	</td></tr>
-	</table>
+<table cellpadding=0 cellspacing=0 border=0 width='100%'>
+<tr><td>
+  <!-- Bottom Component Bay -->
+  <%= [im_component_bay bottom] %>
+</td></tr>
+</table>
 
-	<% } elseif {[string equal "files" $view_name]} { %>
+<% } elseif {[string equal "files" $view_name]} { %>
 
-		<%= [im_component_insert "Project Filestorage Component"] %>
+	<%= [im_component_insert "Project Filestorage Component"] %>
 
-	<% } elseif {[string equal "sales" $view_name]} { %>
+<% } elseif {[string equal "sales" $view_name]} { %>
 
-		<%= [im_component_insert "Project Sales Filestorage Component"] %>
+	<%= [im_component_insert "Project Sales Filestorage Component"] %>
 
-	<% } elseif {[string equal "finance" $view_name]} { %>
+<% } elseif {[string equal "finance" $view_name]} { %>
 
-		<%= [im_component_insert "Project Finance Component"] %>
+	<%= [im_component_insert "Project Finance Component"] %>
 
-	<% } elseif {[string equal "gantt" $view_name]} { %>
+<% } elseif {[string equal "gantt" $view_name]} { %>
 
-		<%= [im_component_insert "Project Gantt Resource Component"] %>
+	<%= [im_component_insert "Project Gantt Resource Component"] %>
 
-	<% } elseif {[string equal "status" $view_name]} { %>
+<% } elseif {[string equal "status" $view_name]} { %>
 
-		<%= [im_component_insert "Project Translation Error Component"] %>
-		<%= [im_component_insert "Project Translation Task Status"] %>
+	<%= [im_component_insert "Project Translation Error Component"] %>
+	<%= [im_component_insert "Project Translation Task Status"] %>
 
-	<% } elseif {[string equal "component" $view_name]} { %>
+<% } elseif {[string equal "component" $view_name]} { %>
 
-	   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
-	<% } %>
+   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/projects/view?project_id=$project_id"] %>
+<% } %>
 
-</div> <!-- fullwidth list -->

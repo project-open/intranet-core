@@ -109,7 +109,6 @@ if {$project_exists_p} {
 
 }
 
-
 # -----------------------------------------------------------
 # Create the Form
 # -----------------------------------------------------------
@@ -215,6 +214,7 @@ if {[info exists project_id]} {
     set wf_case_exists_p [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"]
 }
 
+
 if {!$wf_case_exists_p || [im_permission $user_id edit_project_status]} {
     template::element::create $form_id project_status_id \
 	-label "[_ intranet-core.Project_Status]" \
@@ -319,6 +319,8 @@ if {[form is_request $form_id]} {
     if { [exists_and_not_null project_id] } {
 	# We are editing an already existing project
 	#
+	set edit_existing_project_p 1
+
 	db_1row projects_info_query { 
 	select 
 		p.parent_id, 
@@ -366,6 +368,7 @@ if {[form is_request $form_id]} {
 	if {![info exist project_nr]} {
 	    set project_nr [im_next_project_nr -customer_id $company_id]
 	}
+	set edit_existing_project_p 0
 	set start_date $todays_date
 	set end_date $todays_date
 	set end_time "12:00"
@@ -767,4 +770,24 @@ if {[form is_valid $form_id]} {
     ad_returnredirect $return_url
 }
 
+
+# -----------------------------------------------------------
+# NavBars
+# -----------------------------------------------------------
+
+set sub_navbar ""
+
+if {$edit_existing_project_p && "" != $project_id} {
+
+    # Setup the subnavbar
+    set bind_vars [ns_set create]
+    ns_set put $bind_vars project_id [im_opt_val project_id]
+    set parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]
+    set menu_label "project_summary"
+    set sub_navbar [im_sub_navbar \
+			-base_url [export_vars -base "/intranet/projects/view" {project_id}] \
+			$parent_menu_id \
+			$bind_vars "" "pagedesriptionbar" $menu_label \
+		       ]
+}
 

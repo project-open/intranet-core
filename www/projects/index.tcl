@@ -45,6 +45,8 @@ ad_page_contract {
     { user_id_from_search 0}
     { company_id:integer 0 } 
     { letter:trim "" }
+    { start_date "" }
+    { end_date "" }
     { start_idx:integer 0 }
     { how_many "" }
     { view_name "project_list" }
@@ -137,6 +139,9 @@ switch $project_status_id {
     81 { set menu_select_label "projects_closed" }
     default { set menu_select_label "" }
 }
+
+if {"" == $start_date} { set start_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultStartDate -default "2000-01-01"] }
+if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultEndDate -default "2100-01-01"] }
 
 
 # ---------------------------------------------------------------
@@ -245,7 +250,12 @@ if {0 != $user_id_from_search && "" != $user_id_from_search} {
 if { ![empty_string_p $company_id] && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
 }
-
+if {"" != $start_date} {
+    lappend criteria "p.end_date >= :start_date::timestamptz"
+}
+if {"" != $end_date} {
+    lappend criteria "p.start_date < :end_date::timestamptz"
+}
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
 }
@@ -595,6 +605,21 @@ append filter_html "
     <td class=form-widget valign=top>
        [im_user_select -include_empty_p 1 -group_id $user_select_groups user_id_from_search $user_id_from_search]
     </td>
+  </tr>
+"
+
+append filter_html "
+  <tr>
+<td class=form-label>[_ intranet-core.Start_Date]</td>
+            <td class=form-widget>
+              <input type=textfield name=start_date value=$start_date>
+            </td>
+  </tr>
+  <tr>
+<td class=form-label>[lang::message::lookup "" intranet-core.End_Date "End Date"]</td>
+            <td class=form-widget>
+              <input type=textfield name=end_date value=$end_date>
+            </td>
   </tr>
 "
 

@@ -5,9 +5,6 @@
 <div id="slave">
 <div id="slave_content">
 
-
-
-
 <!-- intranet/www/master.adp before slave -->
 <div class="filter-list">
 	<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
@@ -31,9 +28,6 @@
 	</div>
 </div>
 <!-- intranet/www/master.adp after slave -->
-
-
-
 
 </div>
 </div>

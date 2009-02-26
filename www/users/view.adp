@@ -1,14 +1,7 @@
-<master src="../master">
+<master>
 <property name="title">@page_title@</property>
 <property name="main_navbar_label">user</property>
 <property name="sub_navbar">@user_navbar_html;noquote@</property>
-
-<!-- left - right - bottom  design -->
-
-<div class="fullwidth-list-no-side-bar" id="fullwidth-list">
-
-<img src="/intranet/images/cleardot.gif" width=2 height=2>
-
 
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>
@@ -80,4 +73,3 @@
 
 </td></tr>
 </table>
-</div>

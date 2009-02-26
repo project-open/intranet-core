@@ -403,6 +403,7 @@ where
 	and r.object_id_one = p.project_id
 	and p.parent_id is null
 	and p.project_status_id not in ([im_project_status_deleted])
+	and p.project_type_id not in ([im_project_type_task], [im_project_type_ticket])
 order by p.project_nr desc
 "
 
