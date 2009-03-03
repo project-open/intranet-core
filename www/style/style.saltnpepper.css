@@ -668,7 +668,7 @@ a   span  {float:none;}
 #slave_content {
 	position:absolute;
 	padding-left: 30px;
-	padding-right: 30px;
+	padding-right: 0px;
 	margin-top: -10px;
 	border: 1px #999;
 }
