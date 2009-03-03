@@ -64,7 +64,9 @@
 
 <% } elseif {[string equal "files" $view_name]} { %>
 
+	<div id="position_filestorage_view_files">
 	<%= [im_component_insert "Project Filestorage Component"] %>
+	</div>
 
 <% } elseif {[string equal "sales" $view_name]} { %>
 
