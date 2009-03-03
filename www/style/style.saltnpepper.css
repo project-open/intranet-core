@@ -668,7 +668,7 @@ a   span  {float:none;}
 #slave_content {
 	position:absolute;
 	padding-left: 30px;
-	padding-right: 0px;
+	padding-right: 30px;
 	margin-top: -10px;
 	border: 1px #999;
 }
@@ -856,6 +856,13 @@ a   span  {float:none;}
 .cal-table-display {
    width: 100%
 }
+
+
+#position_filestorage_view_files {
+	margin-left: 45px;
+	margin-top: 20px;
+}
+
 
 /* filter & lists */
 
