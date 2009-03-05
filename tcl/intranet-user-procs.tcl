@@ -776,6 +776,32 @@ ad_proc im_prune_org_chart {tree} "deletes all leaves where currently_employed_p
 }
 
 
+# ------------------------------------------------------------------------
+# Find out the user's subtypes (mapped from groups)
+# ------------------------------------------------------------------------
+
+ad_proc -public im_user_subtypes {
+    user_id
+} { 
+    Returns a list of categories representing the user's subtypes.
+    The list is derived from mapping users' groups to categories
+} {
+    # Find out all the groups of the user and map these
+    # groups to im_category "Intranet User Type"
+    set user_subtypes [db_list user_subtypes "
+	select
+		c.category_id
+	from
+		im_categories c,
+		group_distinct_member_map gdmm
+	where
+		member_id = :user_id and
+		c.aux_int1 = gdmm.group_id
+    "]
+
+    return $user_subtypes
+}
+
 
 # ------------------------------------------------------------------------
 # Nuke a User

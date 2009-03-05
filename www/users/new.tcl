@@ -243,7 +243,13 @@ if {$edit_profiles_p} {
     }
 }
 
+
+# Find out all the groups of the user and map these
+# groups to im_category "Intranet User Type"
+set user_subtypes [im_user_subtypes $user_id]
+
 im_dynfield::append_attributes_to_form \
+    -object_subtype_id $user_subtypes \
     -object_type "person" \
     -form_id "register" \
     -object_id $user_id
@@ -601,7 +607,11 @@ ad_form -extend -name register -on_request {
     set form_id "register"
     set object_type "person"
     
+    # Get (multiple!) object subtypes per user
+    set user_subtypes [im_user_subtypes $user_id]
+
     im_dynfield::append_attributes_to_form \
+	-object_subtype_id $user_subtypes \
 	-object_type $object_type \
 	-form_id $form_id \
 	-object_id $user_id
