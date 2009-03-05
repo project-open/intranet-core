@@ -203,57 +203,85 @@ ad_proc -public im_biz_object_add_role {
     set admins [im_biz_object_admin_ids $object_id]
     if {[lsearch $admins $user_id] >= 0} { return }
 
-    # Remove all previous member_rels between user and object
-    # 070308 fraber: Can't do this anymore with the new percentage
-    # assignment values. Replaced by a check in the add_user 
-    # PlPg/SQL code
-    # db_exec_plsql del_users {}
+    # Determine the object's type
+    if {![string is integer $object_id]} { im_security_alert -location "im_biz_object_add_role" -message "Found non-integer object_id" -value $object_id }
+    set object_type [util_memoize [list db_string object_type "select object_type from acs_objects where object_id = $object_id"]]
 
-    # Add the user
-    set rel_id [db_exec_plsql add_user {}]
-    
-    if {"" != $percentage} {
-	db_dml update_percentage "
-		update	im_biz_object_members
-		set	percentage = :percentage
-		where	rel_id = :rel_id
-        "
+    # Add the user in a im_biz_object_membership relationship
+    set rel_id [db_string rel_id "select rel_id from acs_rels where object_id_one = :object_id and object_id_two = :user_id" -default 0]
+    if {0 == $rel_id} {
+	set rel_id [db_exec_plsql add_im_biz_object_members {}]
     }
+    if {"" == $rel_id || 0 == $rel_id} { ad_return_complaint 1 "im_biz_object_add_role: rel_id=$rel_id" }
 
+
+    # Take specific action to create relationships depending on the object types
+    switch $object_type {
+	im_company {
+
+	    # Differentiate between employee_rel and key_account_rel
+	    set company_internal_p [db_string internal_p "select count(*) from im_companies where company_id = :object_id and company_path = 'internal'"]
+	    set user_employee_p [im_user_is_employee_p $user_id]
+
+	    # User emplolyee_rel either if it's our guy and our company OR if it's another guy and an external company
+	    # We can't currently deal with the case of a freelancer as a key account to a customer...
+	    if {(1 == $company_internal_p && 1 == $user_employee_p) || (0 == $company_internal_p && 0 == $user_employee_p) } {
+
+		# We are adding an employee to the internal company,
+		# create an "employee_rel" relationship
+		db_dml insert_employee "insert into im_company_employee_rels (employee_rel_id) values (:rel_id)"
+		db_dml update_employee "update acs_rels set rel_type = 'im_company_employee_rel' where rel_id = :rel_id"
+
+	    } else {
+		
+		# We are adding a non-employee to a customer of provider company.
+		db_dml insert_key_account "insert into im_key_account_rels (key_account_rel_id) values (:rel_id)"
+		db_dml update_key_account "update acs_rels set rel_type = 'im_key_account_rel' where rel_id = :rel_id"
+
+	    }
+
+	}
+
+	im_project - im_timesheet_task - im_ticket {
+
+	    # Specific actions on projects, tasks and tickets
+	    if {$propagate_superproject_p} {
+	
+		# Reset the percentage to "", so that there is no percentage assignment
+		# to the super-project (that would be a duplication).
+		set percentage ""
+	
+		set super_project_id [db_string super_project "
+			select parent_id 
+			from im_projects 
+			where project_id = :object_id
+		" -default ""]
+	
+		set update_parent_p 0
+		if {"" != $super_project_id} {
+		    set already_assigned_p [db_string already_assigned "
+				select count(*) from acs_rels where object_id_one = :super_project_id and object_id_two = :user_id
+		    "]
+		    if {!$already_assigned_p} { set update_parent_p 1 }
+		}
+	
+		if {$update_parent_p} {
+		    set super_role_id [im_biz_object_role_full_member]
+		    im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
+		}
+	    }
+	
+	}
+
+	default {
+	    # Nothing.
+	    # In the future we may want to add more specific rels here.
+	}
+    }
+   
     # Remove all permission related entries in the system cache
     im_permission_flush
 
-    if {$propagate_superproject_p} {
-
-	# Reset the percentage to "", so that there is no percentage assignment
-	# to the super-project (that would be a duplication).
-	set percentage ""
-
-	# Recursively add members to super-projects
-	#
-	set object_type [db_string object_type "select object_type from acs_objects where object_id=:object_id"]
-	if {[string equal "im_project" $object_type] || [string equal "im_timesheet_task" $object_type]} {
-
-	    set super_project_id [db_string super_project "
-		select parent_id 
-		from im_projects 
-		where project_id = :object_id
-	    " -default ""]
-
-	    set update_parent_p 0
-	    if {"" != $super_project_id} {
-		set already_assigned_p [db_string already_assigned "
-			select count(*) from acs_rels where object_id_one = :super_project_id and object_id_two = :user_id
-		"]
-		if {!$already_assigned_p} { set update_parent_p 1 }
-	    }
-
-	    if {$update_parent_p} {
-		set super_role_id [im_biz_object_role_full_member]
-		im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
-	    }
-	}
-    }
 
     return
 }

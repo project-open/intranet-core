@@ -284,3 +284,110 @@ BEGIN
 
         RETURN v_rel_id;
 end;' language 'plpgsql';
+
+
+
+
+
+-------------------------------------------------------------------
+-- Create relationships between BizObject and Persons
+-------------------------------------------------------------------
+
+
+-------------------------------------------------------------------
+-- "Employee of a Company" relationship
+-- It doesn't matter if it's the "internal" company, a customer
+-- company or a provider company.
+-- Instances of this relationship are created whenever ...??? ToDo
+-- Usually included DynFields:
+--	- Position
+--
+-- ]po[ HR information is actually attached to a specific subtype
+-- of this rel "internal employee"
+-- In ]po[ we will create a "im_company_employee_rel" IF:
+--	- The user is an "Employee" and its the "internal" company.
+--	- The user is a "Customer" and the company is a "customer".
+--	- The user is a "Freelancer" and the company is a "provider".
+
+SELECT acs_rel_type__create_role('employee', '#acs-translations.role_employee#', '#acs-translations.role_employee_plural#');
+SELECT acs_rel_type__create_role('employer', '#acs-translations.role_employer#', '#acs-translations.role_employer_plural#');
+
+SELECT acs_object_type__create_type(
+	'im_company_employee_rel',
+	'#intranet-contacts.company_employee_rel#',
+	'#intranet-contacts.company_employee_rels#',
+	'im_biz_object_member',
+	'im_company_employee_rels',
+	'company_employee_rel_id',
+	'intranet-contacts.comp_emp', 
+	'f',
+	null,
+	NULL
+);
+
+create table im_company_employee_rels (
+	employee_rel_id		integer
+				REFERENCES acs_rels
+				ON DELETE CASCADE
+	CONSTRAINT im_company_employee_rel_id_pk PRIMARY KEY
+);
+
+
+insert into acs_rel_types (
+	rel_type, object_type_one, role_one,
+	min_n_rels_one, max_n_rels_one,
+	object_type_two, role_two,min_n_rels_two, max_n_rels_two
+) values (
+	'im_company_employee_rel', 'im_company', 'employer', 
+	'1', NULL,
+	'person', 'employee', '1', NULL
+);
+
+
+------------------------------------------------------------------
+-- "Key Account Manager" relationship
+--
+-- A "key account" is a member of group "Employees" who is entitled
+-- to manage a customer or provider company.
+--
+-- Typical extension field for this relationship:
+--	- Contract Value (to be signed by this key account)
+--
+-- Instances of this rel are created by ]po[ if and only if we
+-- create a im_biz_object_membership rel with type "Key Account".
+
+SELECT acs_rel_type__create_role('key_account', '#acs-translations.role_key_account#', '#acs-translations.role_key_account_plural#');
+SELECT acs_rel_type__create_role('company', '#acs-translations.role_company#', '#acs-translations.role_company_plural#');
+
+SELECT acs_object_type__create_type (
+	'im_key_account_rel',
+	'#intranet-contacts.key_account_rel#',
+	'#intranet-contacts.key_account_rels#',
+	'im_biz_object_member',
+	'im_key_account_rels',
+	'key_account_rel_id',
+	'intranet-contacts.key_account', 
+	'f',
+	null,
+	NULL
+);
+
+create table im_key_account_rels (
+	key_account_rel_id	integer
+				REFERENCES acs_rels
+				ON DELETE CASCADE
+	CONSTRAINT im_key_account_rel_id_pk PRIMARY KEY
+);
+
+
+insert into acs_rel_types (
+	rel_type, object_type_one, role_one,
+	min_n_rels_one, max_n_rels_one,
+	object_type_two, role_two,min_n_rels_two, max_n_rels_two
+) values (
+	'im_key_account_rel', 'im_company', 'company',
+	'1', NULL,
+	'person', 'key_account', '1', NULL
+);
+
+
