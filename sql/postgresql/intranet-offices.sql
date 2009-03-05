@@ -136,6 +136,7 @@ begin
 
 	-- make a party - required by contacts
 	insert into parties (party_id) values (v_object_id);
+	insert into im_biz_objects (object_id) values (v_object_id);
 
 	return v_object_id;
 end;' language 'plpgsql';

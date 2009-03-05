@@ -73,10 +73,10 @@
 -- 3000-3099    Intranet Cost Center Type
 -- 3100-3199    Intranet Cost Center Status
 -- 3200-3299    Intranet CRM Tracking
--- 3300-3399    reserved for cost centers
+-- 3300-3399    Intranet Cost Centers (other)
 -- 3400-3499    Intranet Investment Type
 -- 3500-3599    Intranet Investment Status
--- 3600-3699    Intranet Investment Amortization Interval (reserved)
+-- 3600-3699    Intranet Investment Amortization Interval (100)
 -- 3700-3799    Intranet Cost Item Type
 -- 3800-3899    Intranet Cost Item Status
 -- 3900-3999    Intranet Cost Item Planning Type
@@ -117,7 +117,7 @@
 -- 11600-11699	Intranet Invoice Canned Notes
 -- 11700-11799	Intranet Conf Item Status
 -- 11800-11999	Intranet Conf Item Type (200)
--- 12000-12999	Intranet ConfDB reserved (1000)
+-- 12000-12999	Intranet ConfDB (1000)
 -- 13000-13999	Intranet Semantic Network (1000)
 -- 14000-14999	Leinhaeuser Development... (1000)
 -- 15000-15099	Intranet Report Status
@@ -137,12 +137,13 @@
 -- 25000-25999  reserved for UNED Spain (1000)
 -- 26000-26999  reserved for ILO/ISSA (1000)
 -- 27000-27999  Intranet Release Management (1000)
--- 28000-28999  reserved for customer (1000)
--- 29000-29999  reserved for customer (1000)
+-- 28000-28999  reserved for customer A (1000)
+-- 29000-29999  reserved for customer B (1000)
 
 -- 30000-39999  Intranet Helpdesk (10000)
 -- 40000-40999  Intranet Skin (1000)
--- 41000-40999  reserved (9000)
+-- 41000-41099  Intranet Salutation (100)
+-- 41100-40999  reserved (8900)
 
 -- 40000-49999  reserved (10000)
 -- 50000-59999  reserved (10000)

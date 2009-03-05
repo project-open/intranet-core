@@ -43,14 +43,58 @@ insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('person', 'persons', 'person_id');
 
 insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('person','users_contact','user_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('person','parties','party_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('person','im_employees','employee_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('user', 'users', 'user_id');
 
+    
+insert into im_employees (employee_id) 
+select person_id 
+from persons
+where person_id not in (select employee_id from im_employees);
 
--- Fix issue with acs_attributes for object type "persons" in 
--- default OpenACS installation:
-update acs_attributes set
-	table_name = 'persons'
+
+
+-- Fix bad entries from OpenACS
+update acs_attributes 
+	set table_name = 'persons' 
+where object_type = 'person' and table_name is null;
+
+-- Update status and type for persons/users
+update acs_object_types
+	set type_category_type = 'Intranet User Type',
+	set type_category_status = 'Intranet User Status',
 where object_type = 'person';
+
+
+
+create or replace function inline_0 ()
+returns integer as '
+declare
+	row		RECORD;
+	v_category_id	integer;
+begin
+	FOR row IN
+		select	g.*
+		from	groups g,
+			im_profiles p
+		where	p.profile_id = g.group_id
+        LOOP
+		PERFORM im_category_new(nextval(''im_categories_seq'')::integer, row.group_name, ''Intranet User Type'');
+		update im_categories set aux_int1 = row.group_id where category = row.group_name and category_type = ''Intranet User Type'';
+        END LOOP;
+
+        RETURN 0;
+end;' language 'plpgsql';
+select inline_0();
+drop function inline_0();
 
 
 

@@ -179,6 +179,7 @@ BEGIN
 
 	-- Make a party - required for contacts
 	insert into parties (party_id) values (v_company_id);
+	insert into im_biz_objects (object_id) values (v_company_id);
 
 	-- Set the link back from the office to the company
 	update	im_offices
