@@ -1117,50 +1117,48 @@ ad_proc -public im_header {
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
     append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
 
+    # OpenACS 5.4 Header stuff
+    if {$openacs54_p} {
 
-    # Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
-    template::head::prepare_multirows
-    set event_handlers [template::get_body_event_handlers]
-    # Retrieve headers and footers
+	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
+	template::head::prepare_multirows
+	set event_handlers [template::get_body_event_handlers]
+	# Retrieve headers and footers
 #    set header [template::get_header_html]
 #    set footer [template::get_footer_html]
 
-    template::multirow foreach meta {
-	set row "<meta"
-	if {"" != $http_equiv} {  append row " http_equiv='$http_equiv'" }
-	if {"" != $name} {  append row " name='$name'" }
-	if {"" != $scheme} {  append row " scheme='$scheme'" }
-	if {"" != $lang} {  append row " lang='$lang'" }
-	append row " content='$content'>\n"
-	append extra_stuff_for_document_head $row
+	template::multirow foreach meta {
+	    set row "<meta"
+	    if {"" != $http_equiv} {  append row " http_equiv='$http_equiv'" }
+	    if {"" != $name} {  append row " name='$name'" }
+	    if {"" != $scheme} {  append row " scheme='$scheme'" }
+	    if {"" != $lang} {  append row " lang='$lang'" }
+	    append row " content='$content'>\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
+	template::multirow foreach link {
+	    set row "<link rel='$rel' href='$href'"
+	    if {"" != $lang} {  append row " lang='$lang'" }
+	    if {"" != $title} {  append row " title='$title'" }
+	    if {"" != $type} {  append row "  type='$type'" }
+	    if {"" != $media} {  append row " media='$media'" }
+	    append row ">\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
+	template::multirow foreach headscript {
+	    set row "<script type='$type'"
+	    if {"" != $src} {  append row " src='$src'" }
+	    if {"" != $charset} {  append row " charset='$charset'" }
+	    if {"" != $defer} {  append row " defer='$defer'" }
+	    append row ">"
+	    if {"" != $content} {  append row " $content" }
+	    append row "</script>\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
     }
-
-    template::multirow foreach link {
-	set row "<link rel='$rel' href='$href'"
-	if {"" != $lang} {  append row " lang='$lang'" }
-	if {"" != $title} {  append row " title='$title'" }
-	if {"" != $type} {  append row "  type='$type'" }
-	if {"" != $media} {  append row " media='$media'" }
-	append row ">\n"
-	append extra_stuff_for_document_head $row
-    }
-
-    template::multirow foreach headscript {
-	set row "<script type='$type'"
-	if {"" != $src} {  append row " src='$src'" }
-	if {"" != $charset} {  append row " charset='$charset'" }
-	if {"" != $defer} {  append row " defer='$defer'" }
-	append row ">"
-	if {"" != $content} {  append row " $content" }
-	append row "</script>\n"
-	append extra_stuff_for_document_head $row
-    }
-
-
-# <multiple name="headscript">   <script type="@headscript.type;noquote@"<if @headscript.src@ not nil> src="@headscript.src;noquote@"</if><if @headscript.charset@ not nil> charset="@headscript.charset;noquote@"</if><if @headscript.defer@ not nil> defer="@headscript.defer;noquote@"</if>><if @headscript.content@ not nil>@headscript.content;noquote@</if></script>
-
-
-
 
     if {[llength [info procs im_amberjack_header_stuff]]} {
         append extra_stuff_for_document_head [im_amberjack_header_stuff]
