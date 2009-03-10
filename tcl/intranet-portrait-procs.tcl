@@ -265,9 +265,15 @@ ad_proc im_portrait_html { user_id {portrait_alt ""} } {
 }
 
 ad_proc im_portrait_or_anon_html { user_id portrait_alt } {
-    set portrait_gif [im_portrait_html $user_id $portrait_alt]
-    if {"" == $portrait_gif} {
-	set portrait_gif [im_gif anon_portrait $portrait_alt]
+
+    # The portrait is used in the default navbar, 
+    # but may fail if the "find" cmd doesn't exist
+    set portrait_gif ""
+    catch {
+	set portrait_gif [im_portrait_html $user_id $portrait_alt]
+	if {"" == $portrait_gif} {
+	    set portrait_gif [im_gif anon_portrait $portrait_alt]
+	}
     }
     
     return $portrait_gif
