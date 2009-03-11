@@ -12,8 +12,8 @@ set context_bar [ad_context_bar]
 # Get user pref setting
 #
 
-set locale [ad_locale user locale]
-set language [ad_locale user language]
+set locale [lang::user::locale -site_wide]
+set language [lang::user::language -site_wide]
 set package_id [ad_conn package_id]
 set admin_p [ad_permission_p $package_id admin]
 
