@@ -1441,7 +1441,7 @@ ad_proc -public im_stylesheet {} {
 
     if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" } else { append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" } else { append html "<script type=text/javascript src=\"/intranet/js/core.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" } else { append html "<script type=text/javascript src=\"/resources/acs-subsite/core.js\"></script>\n" }
 
 #   if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n" }
 
