@@ -74,7 +74,6 @@ update acs_object_types
 where object_type = 'person';
 
 
-
 create or replace function inline_0 ()
 returns integer as '
 declare
@@ -390,4 +389,44 @@ insert into acs_rel_types (
 	'person', 'key_account', '1', NULL
 );
 
+
+
+
+-------------------------------------------------------------------
+-- Categories 
+-------------------------------------------------------------------
+
+
+-- 22000-22999 Intranet User Type
+SELECT im_category_new(22000, 'Registered Users', 'Intranet User Type');
+SELECT im_category_new(22010, 'The Public', 'Intranet User Type');
+SELECT im_category_new(22020, 'P/O Admins', 'Intranet User Type');
+SELECT im_category_new(22030, 'Customers', 'Intranet User Type');
+SELECT im_category_new(22040, 'Employees', 'Intranet User Type');
+SELECT im_category_new(22050, 'Freelancers', 'Intranet User Type');
+SELECT im_category_new(22060, 'Project Managers', 'Intranet User Type');
+SELECT im_category_new(22070, 'Senior Managers', 'Intranet User Type');
+SELECT im_category_new(22080, 'Accounting', 'Intranet User Type');
+SELECT im_category_new(22090, 'Sales', 'Intranet User Type');
+SELECT im_category_new(22100, 'HR Managers', 'Intranet User Type');
+SELECT im_category_new(22110, 'Freelance Managers', 'Intranet User Type');
+
+
+
+create or replace view im_user_type as
+select
+	category_id as user_type_id,
+	category as user_type
+from 	im_categories
+where	category_type = 'Intranet User Type'
+	and (enabled_p is null OR enabled_p = 't');
+
+
+create or replace view im_user_status as
+select
+	category_id as user_status_id,
+	category as user_status
+from 	im_categories
+where	category_type = 'Intranet User Status'
+	and (enabled_p is null OR enabled_p = 't');
 
