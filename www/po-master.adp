@@ -23,6 +23,15 @@
 		</div>
 	</div>
 	<div class="fullwidth-list" id="fullwidth-list">
+
+
+<h1><font color=red>Old Master Template</font></h1>
+<p><font color=red>
+Please contact your SysAdmin and tell him to change the parameter <br>
+'intranet-subsite.DefaultMaster' to '/packages/intranet-core/www/master'.<br>
+</font></p>
+
+
 <slave>
 	</div>
 </div>
