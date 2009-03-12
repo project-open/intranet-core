@@ -1459,3 +1459,83 @@ ad_proc im_table_exists { table_name } {
 } {
     return [util_memoize [list db_table_exists $table_name]]
 }
+
+
+# ---------------------------------------------------------------
+# Log performance
+# ---------------------------------------------------------------
+
+ad_proc im_performance_log { 
+    { -location "undefined" }
+} {
+    Write a log entry into the database
+} {
+    # Check if enabled
+    set perf_p [parameter::get_from_package_key -package_key "intranet-core" -parameter EnablePerformanceLogging -default 0]
+    if {!$perf_p} { return }
+
+
+    # Extract variables from form and HTTP header
+    set header_vars [ns_conn headers]
+
+    # Get intersting info
+    set user_id [ad_get_user_id]
+
+    # IP Addresses
+    set client_ip [ns_set get $header_vars "Client-ip"]
+    set peer_ip [ns_conn peeraddr]
+    set forwarded_ip [string trim [ns_set get $header_vars "X-Forwarded-For"]]
+
+    # Other
+    set referer_url [ns_set get $header_vars "Referer"]
+    set cookie [ns_set get $header_vars "Cookie"]
+    set clock_clicks [clock clicks]
+    set url [ns_conn url]
+    set url_params [export_ns_set_vars url]
+
+    set ad_session_id ""
+    set ad_user_login ""
+    foreach part [split $cookie ";"] {
+	set c [split $part "="]
+	set cookie_var [string trim [lindex $c 0]]
+	set cookie_val [string trim [lindex $c 1]]
+	set $cookie_var $cookie_val
+    }
+
+
+    ns_log Notice "im_performance_log: user_id	= $user_id"
+    ns_log Notice "im_performance_log: url	= $url"
+    ns_log Notice "im_performance_log: params	= $url_params"
+    ns_log Notice "im_performance_log: client_ip= $client_ip"
+    ns_log Notice "im_performance_log: forw_ip	= $forwarded_ip"
+    ns_log Notice "im_performance_log: peer_ip	= $peer_ip"
+    ns_log Notice "im_performance_log: cookie	= $cookie"
+    ns_log Notice "im_performance_log: clicks	= $clock_clicks"
+    ns_log Notice "im_performance_log: ad_session_id	= $ad_session_id"
+    ns_log Notice "im_performance_log: ad_user_login	= $ad_user_login"
+    ns_log Notice "im_performance_log: 	= $"
+
+    db_dml im_header "
+		insert into im_performance_log (
+			log_id,
+			user_id,
+			client_ip,
+			session_id,
+			url,
+			url_params,
+			location,
+			clock_time,
+			clock_clicks
+		) values (
+			nextval('im_performance_log_seq'),
+			:user_id,
+			:peer_ip,
+			:ad_session_id,
+			:url,
+			:url_params,
+			:location,
+			now(),
+			:clock_clicks
+		)
+    "
+}
