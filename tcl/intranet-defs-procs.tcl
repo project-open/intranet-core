@@ -1470,11 +1470,14 @@ ad_proc im_performance_log {
 } {
     Write a log entry into the database
 } {
+    # ---------------------------------------------------
     # Check if enabled
     set perf_p [parameter::get_from_package_key -package_key "intranet-core" -parameter EnablePerformanceLogging -default 0]
     if {!$perf_p} { return }
+    if {![im_table_exists "im_performance_log"]} { return }
 
 
+    # ---------------------------------------------------
     # Extract variables from form and HTTP header
     set header_vars [ns_conn headers]
 
