@@ -73,9 +73,6 @@ switch $location {
     "header-right" { set header_right_selected " selected" }
 }
 
-# TODO add correct URL
-set return_url ""
-
 if {$enabled_p} {
     set enabled_checked "checked"
     set disabled_checked ""

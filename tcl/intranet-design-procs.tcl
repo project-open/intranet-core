@@ -1070,6 +1070,8 @@ ad_proc -public im_header {
     from a report pages (HTTP streaming without template!) and as 
     part of an OpenACS template.
 } {
+    im_performance_log -location im_header
+
     upvar head_stuff head_stuff
 
     # --------------------------------------------------------------
@@ -1237,6 +1239,8 @@ ad_proc -public im_header {
 	"
     }
 
+    im_performance_log -location im_header_end
+
     return "
 	[ad_header $page_title $extra_stuff_for_document_head]
 	$body_script_html
@@ -1362,6 +1366,8 @@ ad_proc -public im_footer {
 } {
     Default ProjectOpen footer.
 } {
+    im_performance_log -location im_footer
+
     set amberjack_body_stuff ""
     if {[llength [info procs im_amberjack_before_body]]} {
 	set amberjack_body_stuff [im_amberjack_before_body]

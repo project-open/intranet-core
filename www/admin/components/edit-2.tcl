@@ -97,7 +97,7 @@ switch $submit {
 db_release_unused_handles
 
 if {"" != $return_url} {
-    ad_returnredirect "$return_url"
+    ad_returnredirect $return_url
 } else {
     ad_returnredirect "index"
 }
