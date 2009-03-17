@@ -24,6 +24,7 @@ ad_proc -public im_category_from_id {
 } {
     Get a category_name from 
 } {
+    if {![string is integer category_id]} { return $category_id }
     if {"" == $category_id} { return "" }
     if {0 == $category_id} { return "" }
     set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]

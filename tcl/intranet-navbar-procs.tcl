@@ -45,6 +45,7 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
+    ns_log Notice "im_navbar_tree: show_left_functional_menu_p=$show_left_functional_menu_p"
     if {!$show_left_functional_menu_p} { return "" }
 
     set html "

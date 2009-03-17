@@ -192,25 +192,34 @@ end;' language 'plpgsql';
 
 create or replace function im_company__delete (integer) returns integer as '
 DECLARE
-	v_company_id	     alias for $1;
+	p_company_id	     alias for $1;
+
+	v_office_id	     integer;
 BEGIN
 	-- make sure to remove links from all offices to this company.
 	update im_offices
 	set company_id = null
-	where company_id = v_company_id;
+	where company_id = p_company_id;
 
 	-- Erase the im_companies item associated with the id
 	delete from im_companies
-	where company_id = v_company_id;
+	where company_id = p_company_id;
 
 	-- Delete entry from parties
-	delete from parties where party_id = v_office_id;
+	delete from parties where party_id = p_company_id;
 
 	-- Erase all the priviledges
 	delete from 	acs_permissions
-	where		object_id = v_company_id;
+	where		object_id = p_company_id;
 
-	PERFORM acs_object__delete(v_company_id);
+	-- Delete context references to this company
+	update acs_objects set
+		context_id = null
+	where
+		context_id = p_company_id;
+
+	-- Delete the acs_object
+	PERFORM acs_object__delete(p_company_id);
 
 	return 0;
 end;' language 'plpgsql';
@@ -218,13 +227,13 @@ end;' language 'plpgsql';
 
 create or replace function im_company__name (integer) returns varchar as '
 DECLARE
-	v_company_id	alias for $1;
+	p_company_id	alias for $1;
 	v_name		varchar;
 BEGIN
 	select	company_name
 	into	v_name
 	from	im_companies
-	where	company_id = v_company_id;
+	where	company_id = p_company_id;
 
 	return v_name;
 end;' language 'plpgsql';

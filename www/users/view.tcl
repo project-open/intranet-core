@@ -222,10 +222,8 @@ im_dynfield::append_attributes_to_form \
     -object_type $object_type \
     -form_id $form_id \
     -object_id $user_id_from_search \
-    -form_display_mode "display"
-
-
- 
+    -form_display_mode "display" \
+    -page_url "/intranet/users/view"
 
 
 # ---------------------------------------------------------------
