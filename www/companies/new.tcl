@@ -27,8 +27,10 @@ ad_page_contract {
     @author juanjoruizx@yahoo.es
 } {
     company_id:integer,optional
+    {company_name "" }
     { form_mode "edit" }
     { return_url "" }
+    { also_add_users "" }
 }
 
 # ------------------------------------------------------
@@ -99,7 +101,7 @@ ad_form \
     -cancel_url $return_url \
     -action $action_url \
     -mode $form_mode \
-    -export {next_url user_id return_url} \
+    -export {next_url user_id return_url also_add_users} \
     -form {
 	company_id:key
 	{main_office_id:text(hidden)}
@@ -352,6 +354,14 @@ if {"" != $manager_id } {
     im_biz_object_add_role $manager_id $company_id $role_id
 }
 
+
+# Add additional users to the company
+array set also_add_hash $also_add_users
+foreach uid [array names also_add_hash] {
+    set role_id $also_add_hash($uid)
+    ns_log Notice "/intranet/companies/new: add user $uid to company $company_id with role $role_id"
+    im_biz_object_add_role $uid $company_id $role_id
+}
 
 # -----------------------------------------------------------------
 # Store dynamic fields

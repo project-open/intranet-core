@@ -64,6 +64,7 @@ ad_page_contract {
     { start:array,date "" }
     { old_company_status_id "" }
     { status_modification_date.expr "" }
+    { also_add_users "" }
 }
 
 # -----------------------------------------------------------------
@@ -261,6 +262,15 @@ set role_id [im_company_role_key_account]
 im_biz_object_add_role $user_id $company_id $role_id
 if {"" != $manager_id } {
     im_biz_object_add_role $manager_id $company_id $role_id
+}
+
+
+# Add additional users to the company
+array set also_add_hash $also_add_users
+foreach uid [array names also_add_hash] {
+    set role_id $also_add_hash($uid)
+    ns_log Notice "/intranet/companies/new-2: add user $uid to company $company_id with role $role_id"
+    im_biz_object_add_role $uid $company_id $role_id
 }
 
 
