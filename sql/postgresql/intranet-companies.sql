@@ -265,5 +265,3 @@ BEGIN
 	return v_html;
 end;' language 'plpgsql';
 
-select im_company_list_for_user_html(624);
-
