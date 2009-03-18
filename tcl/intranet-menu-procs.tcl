@@ -117,50 +117,26 @@ ad_proc -public im_menu_ul_list {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
-
-
-    # ToDo: Remove with version 4.0 or later
-    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
-    # We need to be able to read the old DB model, otherwise the
-    # users won't be able to upgrade...
-    set enabled_present_p [util_memoize "db_string enabled_enabled \"
-	select  count(*)
-	from	user_tab_columns
-	where   lower(table_name) = 'im_component_plugins'
-		and lower(column_name) = 'enabled_p'
-    \""]
-    if {$enabled_present_p} {
-	set enabled_sql "and enabled_p = 't'"
-    } else {
-	set enabled_sql ""
-    }
-
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
 
     set menu_select_sql "
-	select
-		m.*
-	from
-		im_menus m
-	where
-		parent_menu_id = :parent_menu_id
-		$enabled_sql
-		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
-	order by
-		sort_order"
-
+	select	m.*
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id and
+		(enabled_p is null or enabled_p = 't') and
+		im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by sort_order
+    "
 
     # Start formatting the menu bar
     if {!$no_uls} {set result "<ul>\n" }
     set ctr 0
     db_foreach menu_select $menu_select_sql {
-
 	if {"" != $visible_tcl} {
+	    ad_return_complaint 1 $visible_tcl
 	    set visible 0
 	    set errmsg ""
-	    if [catch {
-		set visible [expr $visible_tcl]
-	    } errmsg] {
+	    if [catch {	set visible [expr $visible_tcl] } errmsg] {
 		ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>"
 	    }
 	    if {!$visible} { continue }
@@ -216,13 +192,32 @@ ad_proc -public im_menu_li {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
-    set count [db_string exists "select count(*) from im_menus where label = :label"]
-    if {0 == $count} { return "" }
+    set current_user_id [ad_get_user_id]
+    set menu_id 0
+    db_0or1row menu_info "
+	select	m.*
+	from	im_menus m
+	where	m.label = :label and
+		(m.enabled_p is null or m.enabled_p = 't') and
+		im_object_permission_p(m.menu_id, :current_user_id, 'read') = 't'
+    "
+    if {0 == $menu_id} { return "" }
 
-    set name [im_menu_name $label]
-    if {"" != $pretty_name} { set name $pretty_name }
-    set url [im_menu_url $label]
+    if {"" != $visible_tcl} {
+	set visible 0
+	set errmsg ""
+
+	if [catch { 
+	    set visible [expr $visible_tcl] 
+	} errmsg] { 
+	    ns_log Error "im_menu_li: Error with visible_tcl: $visible_tcl: '$errmsg'" 
+#	    ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>" 
+	}
+	if {!$visible} { return "" }
+    }
+
     set class_html ""
     if {"" != $class} { set class_html "class='$class'" }
     return "<li $class_html><a href=\"$url\">$name</a>\n"
 }
+
