@@ -133,7 +133,7 @@ ad_proc -public im_menu_ul_list {
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 	if {"" != $visible_tcl} {
-	    ad_return_complaint 1 $visible_tcl
+	    # ad_return_complaint 1 $visible_tcl
 	    set visible 0
 	    set errmsg ""
 	    if [catch {	set visible [expr $visible_tcl] } errmsg] {
