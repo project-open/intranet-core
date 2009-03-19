@@ -254,7 +254,7 @@ a {
    height: 15px;
    float: left;
    display: inline;
-   _width: 100px; 
+   /* _width: 100px; */
 }
 
 #navbar_main LI.selected A {
@@ -325,7 +325,7 @@ a {
 }
 
 #alphabar .navbar_selected {
-   _width: 20px;
+   /* _width: 20px; */
 }
 
 #navbar_sub LI.selected, 
@@ -691,7 +691,7 @@ a {
   position: relative;
 }
 .filter-list-footer {
-  _height: 200px; 
+  /* _height: 200px; */ 
   height: 20px;
   clear: both;
 }
