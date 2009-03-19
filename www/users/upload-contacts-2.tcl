@@ -35,6 +35,109 @@ ad_page_contract {
     { create_dummy_email "" }
 } 
 
+
+ad_proc im_upload_cvs_translate_varname { var_name} {
+    Translate German var names to English
+} {
+    switch $var_name {
+	anrede { return "title" }
+	vorname { return "first_name" }
+	nachname { return "last_name" }
+	emailadresse { return "e_mail_address" }
+	firma { return "company" }
+	abteilung { return "department" }
+	position { return "job_title" }
+
+	StraÃgeschÃtlich { return "" }
+	StraÃgeschÃtlich2 { return "" }
+	StraÃgeschÃtlich3 { return "" }
+	OrtgeschÃtlich { return "" }
+	RegiongeschÃtlich { return "" }
+	PostleitzahlgeschÃtlich { return "" }
+	LandgeschÃtlich { return "" }
+	StraÃprivat { return "" }
+	StraÃprivat2 { return "" }
+	StraÃprivat3 { return "" }
+	Ortprivat { return "" }
+	Regionprivat { return "" }
+	Postleitzahlprivat { return "" }
+	Landprivat { return "" }
+	WeitereStraÃ { return "" }
+	WeitereStraÃ2 { return "" }
+	WeitereStraÃ3 { return "" }
+	WeitererOrt { return "" }
+	WeitereRegion { return "" }
+	WeiterePostleitzahl { return "" }
+	WeiteresLand { return "" }
+	TelefonAssistent { return "" }
+	FaxgeschÃtlich { return "" }
+	TelefongeschÃtlich { return "" }
+	TelefongeschÃtlich2 { return "" }
+	RÃkmeldung { return "" }
+	Autotelefon { return "" }
+	TelefonFirma { return "" }
+	Faxprivat { return "" }
+	Telefonprivat { return "" }
+	Telefonprivat2 { return "" }
+	ISDN { return "" }
+	Mobiltelefon { return "" }
+	WeiteresFax { return "" }
+	WeiteresTelefon { return "" }
+	Pager { return "" }
+	Haupttelefon { return "" }
+	Mobiltelefon2 { return "" }
+	TelefonfÃHÃbehinderte { return "" }
+	Telex { return "" }
+	Abrechnungsinformation { return "" }
+	Benutzer1 { return "" }
+	Benutzer2 { return "" }
+	Benutzer3 { return "" }
+	Benutzer4 { return "" }
+	Beruf { return "" }
+	BÃo { return "" }
+	EMailTyp { return "" }
+	EMailAngezeigterName { return "" }
+	EMail2Adresse { return "" }
+	EMail2Typ { return "" }
+	EMail2AngezeigterName { return "" }
+	EMail3Adresse { return "" }
+	EMail3Typ { return "" }
+	EMail3AngezeigterName { return "" }
+	Empfohlenvon { return "" }
+	Geburtstag { return "" }
+	Geschlecht { return "" }
+	Hobby { return "" }
+	Initialen { return "" }
+	InternetFreiGebucht { return "" }
+	Jahrestag { return "" }
+	Kategorien { return "" }
+	Kinder { return "" }
+	Konto { return "" }
+	NameAssistent { return "" }
+	NamedesderVorgesetzten { return "" }
+	Notizen { return "" }
+	OrganisationsNr { return "" }
+	Ort { return "" }
+	Partner { return "" }
+	PostfachgeschÃtlich { return "" }
+	Postfachprivat { return "" }
+	PrioritÃ { return "" }
+	Privat { return "" }
+	RegierungsNr { return "" }
+	Reisekilometer { return "" }
+	Sprache { return "" }
+	StichwÃter { return "" }
+	Vertraulichkeit { return "" }
+	Verzeichnisserver { return "" }
+	Webseite { return "" }
+	WeiteresPostfach { return "" }
+    }
+    return $var_name
+}
+
+
+
+
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Contacts CSV"
 set page_body ""
@@ -289,6 +392,10 @@ foreach csv_line_fields $values_list_of_lists {
 	set var_name [string tolower $var_name]
 	set var_name [string map -nocase {" " "_" "\"" "" "'" "" "/" "_" "-" "_"} $var_name]
 	set var_name [im_mangle_unicode_accents $var_name]
+
+	# Deal with German Outlook exports
+	set var_name [im_upload_cvs_translate_varname $var_name]
+
 	lappend var_name_list $var_name
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
@@ -316,6 +423,9 @@ foreach csv_line_fields $values_list_of_lists {
         <pre>$pretty_field_string</pre>"
 	continue
     }
+
+    # Deal with Outlook Email format "First Last (user@company.com)"
+    if {[regexp {[a-z0-9A-Z\ \-\_]+\((.+)\)} $e_mail_address match email]} { set e_mail_address $email }
 
     # Create a dummy email if there was something set in the parameter:
     if {"" == $e_mail_address && "" != $create_dummy_email} {
