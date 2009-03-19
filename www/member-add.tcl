@@ -48,6 +48,12 @@ if {!$write} {
     return
 }
 
+set notify_checked ""
+if {[parameter::get_from_package_key -package_key "intranet-core" -parameter "NotifyNewMembersDefault" -default "1"]} {
+    set notify_checked "checked"
+}
+
+
 
 set locate_form "
 <form method=POST action=/intranet/user-search>
@@ -83,7 +89,7 @@ set locate_form "
     <td></td>
     <td>
       <input type=submit value=\"[_ intranet-core.Search]\">
-      <input type=checkbox name=notify_asignee value=1 checked>[_ intranet-core.Notify]<br>
+      <input type=checkbox name=notify_asignee value=1 $notify_checked>[_ intranet-core.Notify]<br>
     </td>
   </tr>
 
@@ -118,7 +124,7 @@ $employee_select
   <tr> 
     <td>
       <input type=submit value=\"[_ intranet-core.Add]\">
-      <input type=checkbox name=notify_asignee value=1 checked>[_ intranet-core.Notify]
+      <input type=checkbox name=notify_asignee value=1 $notify_checked>[_ intranet-core.Notify]
     </td>
   </tr>
 </table>
