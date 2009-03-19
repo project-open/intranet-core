@@ -9,9 +9,9 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.5.1" url="http://projop.dnsalias.com/download/apm/intranet-core-3.4.0.5.1.apm">
+    <version name="3.4.0.5.2" url="http://projop.dnsalias.com/download/apm/intranet-core-3.4.0.5.2.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
-        <release-date>2004-08-24</release-date>
+        <release-date>2009-03-17</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
         <maturity>0</maturity>
 
@@ -66,7 +66,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnablePerformanceLogging" default="0" description="Performance logging creates entries in the table im_performance_log for detailed system profiling. However, performance logging itself slows down the system a bit."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NotifyNewMembersDefault" default="1" description="Should the 'Notify?' checkbox be enabled by default in the AddMembersComponent? Default is 1 for compatibility reasons"/>
         </parameters>
-
     </version>
 </package>
