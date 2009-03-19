@@ -1104,3 +1104,103 @@ ad_proc -public im_user_nuke {user_id} {
     return $result
 }
 
+
+
+ad_proc im_upload_cvs_translate_varname { var_name} {
+    Translate German var names to English
+} {
+    switch $var_name {
+	anrede { return "title" }
+	vorname { return "first_name" }
+	nachname { return "last_name" }
+	emailadresse { return "e_mail_address" }
+	firma { return "company" }
+	abteilung { return "department" }
+	position { return "job_title" }
+
+	StraÃgeschÃtlich { return "" }
+	StraÃgeschÃtlich2 { return "" }
+	StraÃgeschÃtlich3 { return "" }
+	OrtgeschÃtlich { return "" }
+	RegiongeschÃtlich { return "" }
+	PostleitzahlgeschÃtlich { return "" }
+	LandgeschÃtlich { return "" }
+	StraÃprivat { return "" }
+	StraÃprivat2 { return "" }
+	StraÃprivat3 { return "" }
+	Ortprivat { return "" }
+	Regionprivat { return "" }
+	Postleitzahlprivat { return "" }
+	Landprivat { return "" }
+	WeitereStraÃ { return "" }
+	WeitereStraÃ2 { return "" }
+	WeitereStraÃ3 { return "" }
+	WeitererOrt { return "" }
+	WeitereRegion { return "" }
+	WeiterePostleitzahl { return "" }
+	WeiteresLand { return "" }
+	TelefonAssistent { return "" }
+	FaxgeschÃtlich { return "" }
+	TelefongeschÃtlich { return "" }
+	TelefongeschÃtlich2 { return "" }
+	RÃkmeldung { return "" }
+	Autotelefon { return "" }
+	TelefonFirma { return "" }
+	Faxprivat { return "" }
+	Telefonprivat { return "" }
+	Telefonprivat2 { return "" }
+	ISDN { return "" }
+	Mobiltelefon { return "" }
+	WeiteresFax { return "" }
+	WeiteresTelefon { return "" }
+	Pager { return "" }
+	Haupttelefon { return "" }
+	Mobiltelefon2 { return "" }
+	TelefonfÃHÃbehinderte { return "" }
+	Telex { return "" }
+	Abrechnungsinformation { return "" }
+	Benutzer1 { return "" }
+	Benutzer2 { return "" }
+	Benutzer3 { return "" }
+	Benutzer4 { return "" }
+	Beruf { return "" }
+	BÃo { return "" }
+	EMailTyp { return "" }
+	EMailAngezeigterName { return "" }
+	EMail2Adresse { return "" }
+	EMail2Typ { return "" }
+	EMail2AngezeigterName { return "" }
+	EMail3Adresse { return "" }
+	EMail3Typ { return "" }
+	EMail3AngezeigterName { return "" }
+	Empfohlenvon { return "" }
+	Geburtstag { return "" }
+	Geschlecht { return "" }
+	Hobby { return "" }
+	Initialen { return "" }
+	InternetFreiGebucht { return "" }
+	Jahrestag { return "" }
+	Kategorien { return "" }
+	Kinder { return "" }
+	Konto { return "" }
+	NameAssistent { return "" }
+	NamedesderVorgesetzten { return "" }
+	Notizen { return "" }
+	OrganisationsNr { return "" }
+	Ort { return "" }
+	Partner { return "" }
+	PostfachgeschÃtlich { return "" }
+	Postfachprivat { return "" }
+	PrioritÃ { return "" }
+	Privat { return "" }
+	RegierungsNr { return "" }
+	Reisekilometer { return "" }
+	Sprache { return "" }
+	StichwÃter { return "" }
+	Vertraulichkeit { return "" }
+	Verzeichnisserver { return "" }
+	Webseite { return "" }
+	WeiteresPostfach { return "" }
+    }
+    return $var_name
+}
