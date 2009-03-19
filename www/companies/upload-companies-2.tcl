@@ -213,6 +213,14 @@ foreach csv_line_fields $values_list_of_lists {
 	set var_value [string trim [lindex $csv_line_fields $j]]
         set var_value [string map -nocase {"\"" "'" "\[" "(" "\{" "(" "\}" ")" "\]" ")"} $var_value]
 	if {[string equal "NULL" $var_value]} { set var_value ""}
+
+	# replace unicode characters by non-accented characters
+	# Watch out! Does not work with Latin-1 characters
+        set var_name [im_mangle_unicode_accents $var_name]
+
+        # Deal with German Outlook exports
+        set var_name [im_upload_cvs_translate_varname $var_name]
+
 	
 	set cmd "set $var_name \"$var_value\""
 	ns_log Notice "upload-companies-2: cmd=$cmd"
@@ -220,16 +228,16 @@ foreach csv_line_fields $values_list_of_lists {
     }
 
     if {"" == $first_name} {
-        ns_write "<li>Error: We have found an empty 'First Name' in line $linecount.<br>
+        ns_write "<li>Error: We have found an empty 'First Name' in line $cnt.<br>
         Error: We can not add users with an empty first name, Please correct the CSV file.
-        <br><pre>$pretty_field_string</pre>"
+        <br><pre>$var_name</pre>"
         continue
     }
 
     if {"" == $last_name} {
-        ns_write "<li>Error: We have found an empty 'Last Name' in line $linecount.<br>
+        ns_write "<li>Error: We have found an empty 'Last Name' in line $cnt.<br>
         We can not add users with an empty last name. Please correct the CSV file.<br>
-        <pre>$pretty_field_string</pre>"
+        <pre>$var_name</pre>"
         continue
     }
 
