@@ -314,6 +314,7 @@ set field_cnt [im_dynfield::append_attributes_to_form \
 
 # Check if we are editing an already existing project
 #
+set edit_existing_project_p 0
 set button_text "[_ intranet-core.Save_Changes]"
 if {[form is_request $form_id]} {
     if { [exists_and_not_null project_id] } {
