@@ -1214,7 +1214,7 @@ ad_proc im_csv_guess_separator { file } {
     set max_code ""
     set max_count 0
     foreach key [array names hash] {
-	if {$hash($key) $max_count} {
+	if {$hash($key) > $max_count} {
             set max_code $key
             set max_count $hash($key)
 	}
