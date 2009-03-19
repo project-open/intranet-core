@@ -42,8 +42,8 @@ ul, ol {
 #slave_content {
   position: relative;
   min-height: 600px;
-  _height: 600px;
-  overflow: none;
+/*  _height: 600px; 
+  overflow: none; */
 }
 
 
