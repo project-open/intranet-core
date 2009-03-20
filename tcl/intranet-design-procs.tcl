@@ -1471,6 +1471,15 @@ ad_proc -public im_stylesheet {} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n" }
     }
 
+    # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
+    if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {
+        append html "<link rel=StyleSheet type=text/css href=\"/intranet-cust-reinisch/style/reinisch.css\" />\n"
+
+        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/yahoo-dom-event/yahoo-dom-event.js'></script>\n"
+        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
+        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
+    }
+
     return $html
 }
 
@@ -1931,7 +1940,7 @@ ad_proc -public im_skin_select_html {
 		-translate_p 1 \
 		-include_empty_p 0 \
 		-plain_p 0 \
-		-cache_interval 1 \
+		-cache_interval 3600 \
 		"Intranet Skin" \
 		skin_id \
 		$current_skin_id \
