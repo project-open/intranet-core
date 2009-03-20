@@ -9,3 +9,6 @@ if { ![info exists show_left_navbar_p] } { set show_left_navbar_p 1 }
 # ns_log Notice "master: show_left_navbar_p=$show_left_navbar_p"
 # ns_log Notice "master: header_stuff=$header_stuff"
 
+
+set show_navbar_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
+

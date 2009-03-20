@@ -701,7 +701,7 @@ ad_proc -public im_user_update_existing_user {
 
     # Add a im_employees record to the user since the 3.0 PostgreSQL
     # port, because we have dropped the outer join with it...
-    if {[db_table_exists im_employees]} {
+    if {[im_table_exists im_employees]} {
 	
 	# Simply add the record to all users, even it they are not employees...
 	set im_employees_exist [db_string im_employees_exist "select count(*) from im_employees where employee_id = :user_id"]
@@ -823,7 +823,7 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# bboard system
 	ns_log Notice "users/nuke2: bboard_email_alerts"
-	if {[db_table_exists bboard_email_alerts]} {
+	if {[im_table_exists bboard_email_alerts]} {
 	    db_dml delete_user_bboard_email_alerts "delete from bboard_email_alerts where user_id = :user_id"
 	    db_dml delete_user_bboard_thread_email_alerts "delete from bboard_thread_email_alerts where user_id = :user_id"
 	    db_dml delete_user_bboard_unified "delete from bboard_unified where user_id = :user_id"
@@ -835,7 +835,7 @@ ad_proc -public im_user_nuke {user_id} {
     
 	# let's do the classifieds now
 	ns_log Notice "users/nuke2: classified_auction_bids"
-	if {[db_table_exists classified_auction_bids]} {
+	if {[im_table_exists classified_auction_bids]} {
 	    db_dml delete_user_classified_auction_bids "delete from classified_auction_bids where user_id = :user_id"
 	    db_dml delete_user_classified_ads "delete from classified_ads where user_id = :user_id"
 	    db_dml delete_user_classified_email_alerts "delete from classified_email_alerts where user_id = :user_id"
@@ -851,13 +851,13 @@ ad_proc -public im_user_nuke {user_id} {
 
 	# now the calendar
 	ns_log Notice "users/nuke2: calendar"
-	if {[db_table_exists calendar]} {
+	if {[im_table_exists calendar]} {
 	    db_dml delete_user_calendar "delete from calendar where creation_user = :user_id"
 	}
 
 	# contest tables are going to be tough
 	ns_log Notice "users/nuke2: entrants_table_name"
-	if {[db_table_exists entrants_table_name]} {
+	if {[im_table_exists entrants_table_name]} {
 	    set all_contest_entrants_tables [db_list unused "select entrants_table_name from contest_domains"]
 	    foreach entrants_table $all_contest_entrants_tables {
 		db_dml delete_user_contest_entries "delete from $entrants_table where user_id = :user_id"
@@ -871,7 +871,7 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# spam history
 	ns_log Notice "users/nuke2: spam_history"
-	if {[db_table_exists spam_history]} {
+	if {[im_table_exists spam_history]} {
 	    db_dml delete_user_spam_history "delete from spam_history where creation_user = :user_id"
 	    db_dml delete_user_spam_history_sent "update spam_history set last_user_id_sent = NULL
 		    where last_user_id_sent = :user_id"
@@ -879,79 +879,79 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# calendar
 	ns_log Notice "users/nuke2: calendar_categories"
-	if {[db_table_exists calendar_categories]} {
+	if {[im_table_exists calendar_categories]} {
 	    db_dml delete_user_calendar_categories "delete from calendar_categories where user_id = :user_id"
 	}
 	
 	# sessions
 	ns_log Notice "users/nuke2: sec_sessions"
-	if {[db_table_exists sec_sessions]} {
+	if {[im_table_exists sec_sessions]} {
 	    db_dml delete_user_sec_sessions "delete from sec_sessions where user_id = :user_id"
 	    db_dml delete_user_sec_login_tokens "delete from sec_login_tokens where user_id = :user_id"
 	}
     
 	# general comments
 	ns_log Notice "users/nuke2: general_comments"
-	if {[db_table_exists general_comments]} {
+	if {[im_table_exists general_comments]} {
 	    db_dml delete_user_general_comments "delete from general_comments where object_id = :user_id"
 	}
 
 	ns_log Notice "users/nuke2: comments"
-	if {[db_table_exists comments]} {
+	if {[im_table_exists comments]} {
 	    db_dml delete_user_comments "delete from comments where object_id = :user_id"
 	}
 
 	ns_log Notice "users/nuke2: links"
-	if {[db_table_exists links]} {
+	if {[im_table_exists links]} {
 	    db_dml delete_user_links "delete from links where user_id = :user_id"
 	}
 	ns_log Notice "users/nuke2: chat_msgs"
-	if {[db_table_exists chat_msgs]} {
+	if {[im_table_exists chat_msgs]} {
 	    db_dml delete_user_chat_msgs "delete from chat_msgs where creation_user = :user_id"
 	}
 	ns_log Notice "users/nuke2: query_strings"
-	if {[db_table_exists query_strings]} {
+	if {[im_table_exists query_strings]} {
 	    db_dml delete_user_query_strings "delete from query_strings where user_id = :user_id"
 	}
 	ns_log Notice "users/nuke2: user_curriculum_map"
-	if {[db_table_exists user_curriculum_map]} {
+	if {[im_table_exists user_curriculum_map]} {
 	    db_dml delete_user_user_curriculum_map "delete from user_curriculum_map where user_id = :user_id"
 	}
 	ns_log Notice "users/nuke2: user_content_map"
-	if {[db_table_exists user_content_map]} {
+	if {[im_table_exists user_content_map]} {
 	    db_dml delete_user_user_content_map "delete from user_content_map where user_id = :user_id"
 	}
 	ns_log Notice "users/nuke2: user_group_map"
-	if {[db_table_exists user_group_map]} {
+	if {[im_table_exists user_group_map]} {
 	    db_dml delete_user_user_group_map "delete from user_group_map where user_id = :user_id"
 	}
 	
 	ns_log Notice "users/nuke2: users_interests"
-	if {[db_table_exists users_interests]} {
+	if {[im_table_exists users_interests]} {
 	    db_dml delete_user_users_interests "delete from users_interests where user_id = :user_id"
 	}
 	
 	ns_log Notice "users/nuke2: users_charges"
-	if {[db_table_exists users_charges]} {
+	if {[im_table_exists users_charges]} {
 	    db_dml delete_user_users_charges "delete from users_charges where user_id = :user_id"
 	}
 	
 	ns_log Notice "users/nuke2: users_demographics"
-	if {[db_table_exists users_demographics]} {
+	if {[im_table_exists users_demographics]} {
 	    db_dml set_referred_null_user_users_demographics "update users_demographics set referred_by = null where referred_by = :user_id"
 	    db_dml delete_user_users_demographics "delete from users_demographics where user_id = :user_id"
 	}
 	
 	ns_log Notice "users/nuke2: users_preferences"
-	if {[db_table_exists users_preferences]} {
+	if {[im_table_exists users_preferences]} {
 	    db_dml delete_user_users_preferences "delete from users_preferences where user_id = :user_id"
 	}
 	
-	if {[db_table_exists user_preferences]} {
+	if {[im_table_exists user_preferences]} {
 	    db_dml delete_user_user_preferences "delete from user_preferences where user_id = :user_id"
 	}
 	
-	if {[db_table_exists users_contact]} {
+	if {[im_table_exists users_contact]} {
 	    db_dml delete_user_users_contact "delete from users_contact where user_id = :user_id"
 	}
     
@@ -1012,7 +1012,7 @@ ad_proc -public im_user_nuke {user_id} {
 
 
 	# Freelance
-	if {[db_table_exists im_freelance_skills]} {
+	if {[im_table_exists im_freelance_skills]} {
 	    db_dml trans_tasks "delete from im_freelance_skills where user_id = :user_id"
 	    db_dml freelance "delete from im_freelancers where user_id = :user_id"
 	    db_dml freelance_conf "update im_freelance_skills set confirmation_user_id = null where confirmation_user_id = :user_id"
@@ -1020,7 +1020,7 @@ ad_proc -public im_user_nuke {user_id} {
 
 	
 	# Translation
-	if {[db_table_exists im_trans_tasks]} {
+	if {[im_table_exists im_trans_tasks]} {
 
 	    db_dml remove_from_projects "update im_projects set company_contact_id = null where company_contact_id = :user_id"
 
@@ -1031,7 +1031,7 @@ ad_proc -public im_user_nuke {user_id} {
 	    db_dml task_actions "delete from im_task_actions where user_id = :user_id"
 	}
 	
-	if {[db_table_exists im_trans_quality_reports]} {
+	if {[im_table_exists im_trans_quality_reports]} {
 	    db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
 	    select report_id from im_trans_quality_reports where reviewer_id = :user_id
 	)"
@@ -1062,7 +1062,7 @@ ad_proc -public im_user_nuke {user_id} {
 	db_dml party_approved_member_map "delete from party_approved_member_map where party_id = :user_id"
 	db_dml party_approved_member_map "delete from party_approved_member_map where member_id = :user_id"
 	
-	if {[db_table_exists im_employees]} {
+	if {[im_table_exists im_employees]} {
 	    db_dml update_dependent_employees "update im_employees set supervisor_id = null where supervisor_id = :user_id"
 	    db_dml delete_employees "delete from im_employees where employee_id = :user_id"
 	}

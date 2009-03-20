@@ -27,7 +27,7 @@ set default_project_id [db_string project_id "select min(project_id) from im_pro
 set default_company_id [db_string company_id "select min(company_id) from im_companies" -default 0]
 
 set default_trans_task_id 0
-if {[db_table_exists "im_trans_tasks"]} {
+if {[im_table_exists "im_trans_tasks"]} {
     set default_trans_task_id [db_string company_id "select min(task_id) from im_trans_tasks" -default 0]
 }
 

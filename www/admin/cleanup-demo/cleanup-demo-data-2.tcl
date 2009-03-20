@@ -84,14 +84,14 @@ ns_write "<li>Cleanup multi-value attributes.\n"
 db_dml delete_im_dynfield_attr_multi_value "delete from im_dynfield_attr_multi_value"
 
 ns_write "<li>Cleanup bulletin board email alersts\n"
-if {[db_table_exists bboard_email_alerts]} {
+if {[im_table_exists bboard_email_alerts]} {
     db_dml delete_user_bboard_email_alerts "delete from bboard_email_alerts"
     db_dml delete_user_bboard_thread_email_alerts "delete from bboard_thread_email_alerts"
     db_dml delete_user_bboard_unified "delete from bboard_unified"
 }
     
 ns_write "<li>Cleanup classified ads\n"
-if {[db_table_exists classified_auction_bids]} {
+if {[im_table_exists classified_auction_bids]} {
     db_dml delete_user_classified_auction_bids "delete from classified_auction_bids"
     db_dml delete_user_classified_ads "delete from classified_ads"
     db_dml delete_user_classified_email_alerts "delete from classified_email_alerts"
@@ -100,13 +100,13 @@ if {[db_table_exists classified_auction_bids]} {
 }
 
 ns_write "<li>Cleanup user calendars\n"
-if {[db_table_exists calendar]} {
+if {[im_table_exists calendar]} {
     db_dml delete_user_calendar "delete from calendar"
 }
 
 ns_write "<li>Cleanup entrants_table_name\n"
 ns_log Notice "users/nuke2: entrants_table_name"
-if {[db_table_exists entrants_table_name]} {
+if {[im_table_exists entrants_table_name]} {
     set all_contest_entrants_tables [db_list unused "select entrants_table_name from contest_domains"]
     foreach entrants_table $all_contest_entrants_tables {
 	db_dml delete_user_contest_entries "delete from $entrants_table"
@@ -114,7 +114,7 @@ if {[db_table_exists entrants_table_name]} {
 }
 
 ns_write "<li>Cleanup spam history\n"
-if {[db_table_exists spam_history]} {
+if {[im_table_exists spam_history]} {
     db_dml delete_user_spam_history_sent "update spam_history set last_user_id_sent = NULL"
     db_dml delete_user_spam_history "delete from spam_history"
 }
@@ -122,7 +122,7 @@ if {[db_table_exists spam_history]} {
 ns_write "<li>Cleanup calendar items\n"
 ns_write "<ul>\n"
 
-if {[db_table_exists calendars]} {
+if {[im_table_exists calendars]} {
 
     ns_write "<li>Cleanup cal_party_prefs\n"
     db_dml delete_cal_party_prefs "delete from cal_party_prefs"
@@ -163,85 +163,85 @@ ns_write "</ul>\n"
 
 
 ns_write "<li>Cleanup calendar_categories\n"
-if {[db_table_exists calendar_categories]} {
+if {[im_table_exists calendar_categories]} {
     db_dml delete_user_calendar_categories "delete from calendar_categories"
     db_dml delete_cal_itmes "delete from cal_items"
 }
 
 ns_write "<li>Cleanup sessions\n"
-if {[db_table_exists sec_sessions]} {
+if {[im_table_exists sec_sessions]} {
 #    db_dml delete_user_sec_sessions "delete from sec_sessions"
 #    db_dml delete_user_sec_login_tokens "delete from sec_login_tokens"
 }
 
 ns_write "<li>Cleanup general comments\n"
-if {[db_table_exists general_comments]} {
+if {[im_table_exists general_comments]} {
     db_dml delete_user_general_comments "delete from general_comments"
 }
 
 ns_write "<li>Cleanup comments\n"
-if {[db_table_exists comments]} {
+if {[im_table_exists comments]} {
     db_dml delete_user_comments "delete from comments"
 }
 
 ns_write "<li>Cleanup links\n"
-if {[db_table_exists links]} {
+if {[im_table_exists links]} {
     db_dml delete_user_links "delete from links"
 }
 
 ns_write "<li>Cleanup chat_msgs\n"
-if {[db_table_exists chat_msgs]} {
+if {[im_table_exists chat_msgs]} {
     db_dml delete_user_chat_msgs "delete from chat_msgs"
 }
 
 ns_write "<li>Cleanup query_strings\n"
-if {[db_table_exists query_strings]} {
+if {[im_table_exists query_strings]} {
     db_dml delete_user_query_strings "delete from query_strings"
 }
 
 ns_write "<li>Cleanup user_curriculum_map\n"
-if {[db_table_exists user_curriculum_map]} {
+if {[im_table_exists user_curriculum_map]} {
     db_dml delete_user_user_curriculum_map "delete from user_curriculum_map"
 }
 
 ns_write "<li>Cleanup user_content_map\n"
-if {[db_table_exists user_content_map]} {
+if {[im_table_exists user_content_map]} {
     db_dml delete_user_user_content_map "delete from user_content_map"
 }
 
 ns_write "<li>Cleanup user_group_map\n"
-if {[db_table_exists user_group_map]} {
+if {[im_table_exists user_group_map]} {
     db_dml delete_user_user_group_map "delete from user_group_map"
 }
 
 ns_write "<li>Cleanup users_interests\n"
-if {[db_table_exists users_interests]} {
+if {[im_table_exists users_interests]} {
     db_dml delete_user_users_interests "delete from users_interests"
 }
 
 ns_write "<li>Cleanup users_charges\n"
-if {[db_table_exists users_charges]} {
+if {[im_table_exists users_charges]} {
     db_dml delete_user_users_charges "delete from users_charges"
 }
 
 ns_write "<li>Cleanup users_demographics\n"
-if {[db_table_exists users_demographics]} {
+if {[im_table_exists users_demographics]} {
     db_dml set_referred_null_user_users_demographics "update users_demographics set referred_by = null"
     db_dml delete_user_users_demographics "delete from users_demographics"
 }
 
 ns_write "<li>Cleanup users_preferences\n"
-if {[db_table_exists users_preferences]} {
+if {[im_table_exists users_preferences]} {
     db_dml delete_user_users_preferences "delete from users_preferences"
 }
 
 ns_write "<li>Cleanup users_contact\n"
-if {[db_table_exists users_contact]} {
+if {[im_table_exists users_contact]} {
     db_dml delete_user_users_contact "delete from users_contact"
 }
 
 ns_write "<li>Cleanup im_component_plugin_user_map\n"
-if {[db_table_exists im_component_plugin_user_map]} {
+if {[im_table_exists im_component_plugin_user_map]} {
     db_dml delete_im_component_plugin_user_map "delete from im_component_plugin_user_map"
 }
 
@@ -314,7 +314,7 @@ db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 
 ns_write "<li>Cleanup costs<br>\n"
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
-set im_invoices__invoice_id_exists_p [db_column_exists im_expenses invoice_id]
+set im_invoices__invoice_id_exists_p [im_column_exists im_expenses invoice_id]
 foreach cost_info $cost_infos {
     set cost_id [lindex $cost_info 0]
     set object_type [lindex $cost_info 1]
@@ -363,19 +363,19 @@ ns_write "<li>Cleanup im_user_absences\n"
 db_dml timesheet "delete from im_user_absences"
 
 ns_write "<li>Cleanup im_timesheet_prices\n"
-if {[db_table_exists im_timesheet_prices]} {
+if {[im_table_exists im_timesheet_prices]} {
     db_dml im_timsheet_prices "delete from im_timesheet_prices"
 }
 
 
 ns_write "<li>Cleanup im_trans_quality_reports\n"
-if {[db_table_exists im_trans_quality_reports]} {
+if {[im_table_exists im_trans_quality_reports]} {
     db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
     db_dml im_trans_quality_reports "delete from im_trans_quality_reports"
 }
 
 ns_write "<li>Cleanup Translation\n"
-if {[db_table_exists im_trans_tasks]} {
+if {[im_table_exists im_trans_tasks]} {
     db_dml im_target_languages "delete from im_target_languages"
     db_dml im_task_actions "delete from im_task_actions"
     db_dml im_trans_tasks "delete from im_trans_tasks"
@@ -401,13 +401,13 @@ ns_write "</ul>\n"
 
 
 ns_write "<li>Cleanup im_search_objects\n"
-if {[db_table_exists im_search_objects]} {
+if {[im_table_exists im_search_objects]} {
     db_dml im_search_objects "delete from im_search_objects"
 }
 
 
 ns_write "<li>Cleanup search_observer_queue\n"
-if {[db_table_exists search_observer_queue]} {
+if {[im_table_exists search_observer_queue]} {
     db_dml search_observer_queue "delete from search_observer_queue"
 }
 
@@ -452,33 +452,33 @@ db_dml remove_from_companies "delete from im_offices where office_id not in (sel
 
 
 ns_write "<li>Cleanup Indicators\n"
-if {[db_table_exists im_indicator_results]} {
+if {[im_table_exists im_indicator_results]} {
     db_dml indicator_results "delete from im_indicator_results"
 }
 
 
 
 ns_write "<li>Cleanup Conf Objects\n"
-if {[db_table_exists im_timesheet_conf_objects]} {
+if {[im_table_exists im_timesheet_conf_objects]} {
     db_dml expense_invoices "delete from im_timesheet_conf_objects"
 }
 
 ns_write "<li>Cleanup Freelance RFQs\n"
-if {[db_table_exists im_freelance_rfqs]} {
+if {[im_table_exists im_freelance_rfqs]} {
     db_dml expense_invoices "delete from im_object_freelance_skill_map"
     db_dml expense_invoices "delete from im_freelance_rfq_answers"
     db_dml expense_invoices "delete from im_freelance_rfqs"
 }
 
 ns_write "<li>Cleanup Conf Items\n"
-if {[db_table_exists im_conf_items]} {
+if {[im_table_exists im_conf_items]} {
     db_dml remove_from_conf_items "delete from im_conf_items"
     db_dml remove_conf_item_objects "delete from acs_objects where object_type = 'im_conf_item'"
 }
 
 
 ns_write "<li>Cleanup Helpdesk\n"
-if {[db_table_exists im_tickets]} {
+if {[im_table_exists im_tickets]} {
     db_dml remove_from_tickets "delete from im_tickets"
     db_dml remove_release_items "delete from im_release_items"
 }
@@ -492,19 +492,19 @@ db_dml remove_from_projects "delete from im_projects"
 db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
 db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
-if {[db_table_exists im_timesheet_task_dependencies]} {
+if {[im_table_exists im_timesheet_task_dependencies]} {
     db_dml del_deps "delete from im_timesheet_task_dependencies"
 }
 
 
 ns_write "<li>Cleanup Translation\n"
-if {[db_table_exists im_trans_tasks]} {
+if {[im_table_exists im_trans_tasks]} {
     db_dml trans_tasks "delete from im_trans_tasks"
     db_dml task_actions "delete from im_task_actions"
 }
 
 ns_write "<li>Cleanup Translation Quality\n"
-if {[db_table_exists im_trans_quality_reports]} {
+if {[im_table_exists im_trans_quality_reports]} {
     db_dml trans_quality "delete from im_trans_quality_entries"
     db_dml trans_quality "delete from im_trans_quality_reports";
 }
@@ -518,7 +518,7 @@ db_dml forum "delete from im_fs_folders"
 
 
 ns_write "<li>Cleanup TSearch2 Search Engine\n"
-if {[db_table_exists im_search_objects]} {
+if {[im_table_exists im_search_objects]} {
     db_dml im_search_objects "delete from im_search_objects"
 }
 

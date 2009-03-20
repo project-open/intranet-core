@@ -144,7 +144,7 @@ if {$view_companies_all_p} {
 
 }
 
-if {[db_table_exists im_dynfield_attributes]} {
+if {[im_table_exists im_dynfield_attributes]} {
 
     im_dynfield::append_attributes_to_form \
         -object_type $object_type \
@@ -253,7 +253,7 @@ foreach varname [info locals] {
 
 # Deal with DynField Vars and add constraint to SQL
 #
-if {[db_table_exists im_dynfield_attributes]} {
+if {[im_table_exists im_dynfield_attributes]} {
 
     # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)

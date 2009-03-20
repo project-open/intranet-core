@@ -363,7 +363,7 @@ ad_proc -public im_group_member_component {
 
 } {
     # Check if there is a percentage column from intranet-ganttproject
-    set show_percentage_p [util_memoize "db_column_exists im_biz_object_members percentage"]
+    set show_percentage_p [im_column_exists im_biz_object_members percentage]
     set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
     if {$object_type != "im_project" & $object_type != "im_timesheet_task"} { set show_percentage_p 0 }
 
@@ -523,7 +523,7 @@ append body_html $name
     if {$add_admin_links} {
 
 	set spam_members_html ""
-	if {[db_table_exists spam_messages]} {
+	if {[im_table_exists spam_messages]} {
 	    set spam_members_html "<li><A HREF=\"[spam_base]spam-add?[export_url_vars object_id sql_query]\">[_ intranet-core.Spam_Members]</A>&nbsp;"
 	    set spam_members_html "<option value=spam_members>[_ intranet-core.Spam_Members]</option>\n"
 	}

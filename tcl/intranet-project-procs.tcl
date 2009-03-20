@@ -665,7 +665,7 @@ ad_proc -public im_project_template_select { select_name { default "" } } {
 
     # Include the "template_p" field of im_projects IF its defined
     set template_p_sql ""
-    if {[db_column_exists im_projects template_p]} {
+    if {[im_column_exists im_projects template_p]} {
 	set template_p_sql "or template_p='t'"
     }
 

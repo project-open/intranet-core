@@ -45,7 +45,7 @@ set context ""
 # ------------------------------------------------------
 
 # Check whether the table "CONTACT" exists.
-# db_table_exists doesn't work here, because CONTACT
+# im_table_exists doesn't work here, because CONTACT
 # is in capital letters from LTC import with DBTools
 #
 set ltc_data_p [db_string ltc_data "

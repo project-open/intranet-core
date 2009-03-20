@@ -1460,6 +1460,12 @@ ad_proc im_table_exists { table_name } {
     return [util_memoize [list db_table_exists $table_name]]
 }
 
+ad_proc im_column_exists { table_name column_name} {
+    Cached version of db_column_exists
+} {
+    return [util_memoize [list db_column_exists $table_name $column_name]]
+}
+
 
 # ---------------------------------------------------------------
 # Log performance

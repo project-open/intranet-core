@@ -647,7 +647,7 @@ if {[im_permission $current_user_id "add_projects"]} {
         append admin_html "<li><a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>\n"
     }
 
-    set wf_oid_col_exists_p [util_memoize "db_column_exists wf_workflows object_type"]
+    set wf_oid_col_exists_p [im_column_exists wf_workflows object_type]
     if {$wf_oid_col_exists_p} {
 	set wf_sql "
 		select	t.pretty_name as wf_name,

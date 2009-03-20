@@ -289,7 +289,9 @@ ad_proc -public im_user_is_accounting_p { user_id } {
 
 
 
-ad_proc -public im_is_user_site_wide_or_intranet_admin { { user_id "" } } { 
+ad_proc -public im_is_user_site_wide_or_intranet_admin { 
+    { user_id "" } 
+} { 
     Returns 1 if a user is a site-wide administrator or a 
     member of the intranet administrative group 
 } {

@@ -278,7 +278,7 @@ foreach uid [array names also_add_hash] {
 # Store dynamic fields
 # -----------------------------------------------------------------
 
-if {[db_table_exists im_dynfield_attributes]} {
+if {[im_table_exists im_dynfield_attributes]} {
 
     set form_id "company"
     set object_type "im_company"

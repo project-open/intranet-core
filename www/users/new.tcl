@@ -553,7 +553,7 @@ ad_form -extend -name register -on_request {
 
 	# Add a im_employees record to the user since the 3.0 PostgreSQL
 	# port, because we have dropped the outer join with it...
-	if {[db_table_exists im_employees]} {
+	if {[im_table_exists im_employees]} {
 	    
 	    # Simply add the record to all users, even it they are not employees...
 	    set im_employees_exist [db_string im_employees_exist "select count(*) from im_employees where employee_id = :user_id"]

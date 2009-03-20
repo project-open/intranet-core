@@ -414,7 +414,7 @@ foreach varname [info locals] {
 
 # Deal with DynField Vars and add constraint to SQL
 #
-if {$filter_advanced_p && [db_table_exists im_dynfield_attributes]} {
+if {$filter_advanced_p && [im_table_exists im_dynfield_attributes]} {
 
     # Add the DynField variables to $form_vars
     set dynfield_extra_where $extra_sql_array(where)
@@ -588,7 +588,7 @@ set table_continuation_html ""
 # Check whether we have to add spamming to Admin Links
 # ---------------------------------------------------------------
 
-if {"" != $admin_html && [db_table_exists spam_messages]} {
+if {"" != $admin_html && [im_table_exists spam_messages]} {
 
     set selector_short_name "[string tolower $user_group_name]_all"
     append admin_html "

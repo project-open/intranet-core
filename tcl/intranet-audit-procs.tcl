@@ -28,7 +28,7 @@ ad_proc -public im_core_audit_sweeper  {
 } {
     Make a copy of all "active" projects
 } {
-    set audit_exists_p [util_memoize "db_table_exists im_projects_audit"]
+    set audit_exists_p [util_memoize "im_table_exists im_projects_audit"]
     if {!$audit_exists_p} { return }
 
     # Make sure that only one thread is sweeping at a time
@@ -96,7 +96,7 @@ ad_proc -public im_project_audit  {
     if {0 == $project_id} { return "project_id = 0" }
 
     # Make sure the table exists (compatibility)
-    set audit_exists_p [util_memoize "db_table_exists im_projects_audit"]
+    set audit_exists_p [im_table_exists im_projects_audit]
     if {!$audit_exists_p} { return "Audit table doesn't exist" }
 
     # No audit for tasks

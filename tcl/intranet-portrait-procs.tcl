@@ -203,7 +203,21 @@ ad_proc -public im_random_employee_component { } {
     return $portrait_html
 }
 
-ad_proc im_portrait_html { user_id {portrait_alt ""} } {
+
+
+ad_proc im_portrait_html { 
+    user_id 
+    {portrait_alt ""} 
+} {
+    Return html to display portrait of the user
+} {
+    return [util_memoize [list im_portrait_html_helper $user_id $portrait_alt] 3600]
+}
+
+ad_proc im_portrait_html_helper { 
+    user_id 
+    {portrait_alt ""} 
+} {
     Return html to display portrait of the user
 } {
     set user_fs_url "/intranet/download/user/$user_id"

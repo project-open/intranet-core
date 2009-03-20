@@ -38,7 +38,20 @@ ad_library {
 # Integrate indicators per process
 
 
+
 ad_proc -public im_navbar_tree { 
+    {-user_id 0}
+    {-label ""} 
+} {
+    Creates an <ul> ...</ul> hierarchical list with all major
+    objects in the system.
+} {
+    if {0 == $user_id} { set user_id [ad_get_user_id] }
+    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+}
+
+ad_proc -public im_navbar_tree_helper { 
+    -user_id:required
     {-label ""} 
 } {
     Creates an <ul> ...</ul> hierarchical list with all major
@@ -137,15 +150,7 @@ ad_proc -public im_navbar_tree {
         [if {![catch {set ttt [im_navbar_tree_finance]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management]}]} {set ttt} else {set ttt ""}]
 
-	[im_menu_li admin]
-		<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 0]
-		</ul>
-	<li><a href=/acs-admin/>Developer Support</a>
-		<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 0]
-		</ul>
-	</ul>
+	[im_navbar_tree_admin]
       </div>
     "
 }
@@ -156,7 +161,32 @@ ad_proc -public im_navbar_tree {
 # --------------------------------------------------------
 
 
-ad_proc -public im_navbar_tree_project_management { } { Project Management } {
+
+ad_proc -public im_navbar_tree_admin { 
+} { 
+    Admin Navbar 
+} {
+    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+    if {!$admin_p} { return "" }
+    set html "
+	[im_menu_li admin]
+		<ul>
+		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		</ul>
+	<li><a href=/acs-admin/>Developer Support</a>
+		<ul>
+		[im_navbar_write_tree -label "openacs" -maxlevel 0]
+		</ul>
+	</ul>
+    "
+    return $html
+}
+
+
+ad_proc -public im_navbar_tree_project_management { 
+} { 
+    Project Management Navbar 
+} {
     set html "
 	<li><a href=/intranet/projects/>Project Management</a>
 	<ul>
@@ -267,6 +297,9 @@ ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
 
 
 ad_proc -public im_navbar_tree_master_data_management { } { Master Data Management } {
+    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+    if {!$admin_p} { return "" }
+
     return "
 	<li><a href=/intranet/admin/categories/>Master Data Management</a>
 	<ul>
@@ -363,11 +396,24 @@ ad_proc -public im_navbar_tree_master_data_management { } { Master Data Manageme
 # --------------------------------------------------------
 
 ad_proc -public im_navbar_write_tree {
+    {-user_id 0 }
     {-label "main" }
     {-maxlevel 1}
 } {
     Starts writing out the menu tree from a particular location
 } {
+    if {0 == $user_id} { set user_id [ad_get_user_id] }
+    return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel] 3600]
+}
+
+ad_proc -public im_navbar_write_tree_helper {
+    -user_id:required
+    {-label "main" }
+    {-maxlevel 1}
+} {
+    Starts writing out the menu tree from a particular location
+} {
+    set main_label $label
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
     set menu_sql "
 	select	m.menu_id,
@@ -376,7 +422,8 @@ ad_proc -public im_navbar_write_tree {
 		m.url,
 		(select count(*) from im_menus where parent_menu_id = m.menu_id) as sub_count
 	from	im_menus m
-	where	m.parent_menu_id = :main_menu_id
+	where	m.parent_menu_id = :main_menu_id and
+		im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by sort_order
     "
 
@@ -385,6 +432,8 @@ ad_proc -public im_navbar_write_tree {
     set html ""
     set menus [db_list_of_lists menus $menu_sql]
     foreach menu_item $menus {
+	ns_log Notice "im_navbar_write_tree: main=$main_label: sub=$label"
+
 	set menu_id [lindex $menu_item 0]
 	set label [lindex $menu_item 1]
 	set name [lindex $menu_item 2]
