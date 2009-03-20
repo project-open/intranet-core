@@ -235,8 +235,17 @@ ad_proc -public im_company_internal { } {
     can be both incoming payments (provider=Internal, company=...)
     or outgoing payments (provider=..., company=Internal).
 } {
-    set company_id [db_string get_interal_company "select company_id from im_companies where company_path='internal'" -default 0]
+    set company_id [util_memoize [list im_company_internal_helper]]
+    return $company_id
+}
+
+ad_proc -public im_company_internal_helper { } {
+    Returns the object_id of the "Internal" company, identifying
+    the organization itself.<br>
+} {
+    set company_id [db_string get_internal_company "select company_id from im_companies where company_path='internal'" -default 0]
     if {!$company_id} {
+	util_memoize_flush_regexp "im_company_internal"
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_Unable_to_determine_I]<br>
         [_ intranet-core.lt_Maybe_somebody_has_ch]"
     }
@@ -251,9 +260,17 @@ ad_proc -public im_company_freelance { } {
     This routine is used during invoicing/payments for
     default information such as Trados Matrix and price list.
 } {
-    set company_id [db_string get_interal_company "select company_id from im_companies where company_path='default_freelance'" -default 0]
+    set company_id [util_memoize [list im_company_freelance_helper]]
+}
+
+ad_proc -public im_company_freelance_helper { } {
+    Returns the object_id of the "Freelance" company, identifying
+    default setting for foreelance companies.
+} {
+    set company_id [db_string get_default_freelance_company "select company_id from im_companies where company_path='default_freelance'" -default 0]
 
     if {!$company_id} {
+	util_memoize_flush_regexp "im_company_freelance_helper"
 	ns_log Error "im_company_freelance: Did not find a company with path 'default_freelance'. Using 'internal' instead."
 	return [im_company_internal]
     }
