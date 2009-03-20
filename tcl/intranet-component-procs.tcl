@@ -296,12 +296,9 @@ ad_proc -public im_component_page {
     }
 
     db_1row get_plugin "
-	select
-		c.*
-	from
-		im_component_plugins c
-	where
-		plugin_id=:plugin_id
+	select	c.*
+	from	im_component_plugins c
+	where	plugin_id = :plugin_id
 		$enabled_sql
     "
 

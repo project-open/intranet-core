@@ -83,7 +83,7 @@ ad_proc -public im_project_has_type { project_id project_type } {
 			and h.parent_id = c.category_id
 		)
     "
-    return [db_string translation_project_query $sql]
+    return [db_string project_has_type $sql]
 }
 
 

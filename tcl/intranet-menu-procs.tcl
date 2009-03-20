@@ -125,11 +125,13 @@ ad_proc -public im_menu_ul_list_helper {
     user_id
     no_uls
     parent_menu_label 
-    bind_vars 
+    bind_vars
 } {
     Returns all subitems of a menus as LIs, suitable
     to be added to index screens (costs) etc. 
 } {
+    array set bind_vars_hash $bind_vars
+
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
 
     set menu_select_sql "
@@ -156,8 +158,9 @@ ad_proc -public im_menu_ul_list_helper {
 	}
 
 	regsub -all " " $name "_" name_key
-	foreach var [ad_ns_set_keys $bind_vars] {
-	    set value [ns_set get $bind_vars $var]
+
+	foreach var [array get names bind_vars_hash] {
+	    set value $bind_vars_hash($var)
 	    append url "&$var=[ad_urlencode $value]"
 	}
 

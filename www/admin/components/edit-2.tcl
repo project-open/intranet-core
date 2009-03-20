@@ -94,6 +94,11 @@ switch $submit {
 }
 
 
+# Remove all cached values
+# ToDo: Replace to remove only info on portlet components
+im_permission_flush
+
+
 db_release_unused_handles
 
 if {"" != $return_url} {

@@ -370,8 +370,7 @@ append admin_html "
 "
 
 # Append user-defined menus
-set bind_vars [ad_tcl_vars_to_ns_set]
-append admin_html [im_menu_ul_list -no_uls 1 "companies_admin" $bind_vars]
+append admin_html [im_menu_ul_list -no_uls 1 "companies_admin" {}]
 
 
 append admin_html "</ul>"

@@ -52,7 +52,7 @@ ad_proc -public im_gif {
 
     <ul>
     <li>First check if the name given corresponds to a group of
-        special, hard coded GIFs
+	special, hard coded GIFs
     <li>Then try first in the "navbar" folder
     <li>Finally try in the main "image" folder
     </ul>
@@ -72,7 +72,7 @@ ad_proc -public im_gif {
 
     if { $translate_p && ![empty_string_p $alt] } {
 	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
-        set alt [lang::message::lookup "" $alt_key $alt]
+	set alt [lang::message::lookup "" $alt_key $alt]
     }
 
     # 1. Check for a static GIF - it's been given without extension.
@@ -257,7 +257,7 @@ ad_proc -public im_admin_category_gif { category_type } {
     set user_id [ad_maybe_redirect_for_registration]
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
-        set html "
+	set html "
 <A HREF=\"/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]\">[im_gif new "Admin category type"]</A>"
     }
     return $html
@@ -346,7 +346,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-        }
+	}
     }
     set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
@@ -374,7 +374,7 @@ ad_proc -public im_project_navbar {
 
     @param default_letter none marks a special behavious, hiding the alpha-bar.
     @navbar_menu_label Determines the "parent menu" for the menu tabs for 
-                       search shortcuts, defaults to "projects".
+		       search shortcuts, defaults to "projects".
 } {
     # -------- Defaults -----------------------------
     set user_id [ad_get_user_id]
@@ -391,7 +391,7 @@ ad_proc -public im_project_navbar {
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-        }
+	}
     }
     set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
@@ -422,7 +422,7 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-        }
+	}
     }
 
     # --------------- Determine the calling page ------------------
@@ -487,7 +487,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 	upvar 1 $var value
 	if { [info exists value] } {
 	    ns_set put $bind_vars $var $value
-        }
+	}
     }
     set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
@@ -509,29 +509,29 @@ ad_proc -public im_admin_navbar {
 	   <div class=\"filter\" id=\"sidebar\">
  		<div id=\"sideBarContentsInner\">
 	      <div class=\"filter-block\">
-	         <div class=\"filter-title\">
-	            [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
-	         </div>
+		 <div class=\"filter-title\">
+		    [lang::message::lookup "" intranet-core.Admin_Menu "Admin Menu"]
+		 </div>
 	<ul class=mktree>
     "
 
     # Disabled - no need to show the same label again
     if {0 && "" != $select_label} {
-        append html "
-        [im_menu_li -class liOpen $select_label]
-                <ul>
-                [im_navbar_write_tree -label $select_label]
-                </ul>
-        "
+	append html "
+	[im_menu_li -class liOpen $select_label]
+		<ul>
+		[im_navbar_write_tree -label $select_label]
+		</ul>
+	"
     }
 
     append html "
 	[im_menu_li -class liOpen admin]
-        	<ul>
+		<ul>
 		[im_navbar_write_tree -label "admin" -maxlevel 1]
 		</ul>
 	[im_menu_li -class liOpen openacs]
-        	<ul>
+		<ul>
 		[im_navbar_write_tree -label "openacs" -maxlevel 1]
 		</ul>
 	</ul>
@@ -557,11 +557,11 @@ ad_proc -public im_admin_navbar_component { } {
     return "
 	<ul class=mktree>
 	[im_menu_li -class liOpen admin]
-        	<ul>
+		<ul>
 		[im_navbar_write_tree -label "admin" -maxlevel 0]
 		</ul>
 	[im_menu_li -class liOpen openacs]
-        	<ul>
+		<ul>
 		[im_navbar_write_tree -label "openacs" -maxlevel 0]
 		</ul>
 	</ul>
@@ -610,10 +610,7 @@ ad_proc -public im_sub_navbar {
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
-#    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $parent_menu_id" 1]
-    set menu_list_list [im_sub_navbar_menu_helper $user_id $parent_menu_id]
-
-    ns_log Notice "im_sub_navbar: menu_list_list=$menu_list_list"
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper $user_id $parent_menu_id]]
 
     foreach menu_list $menu_list_list {
 
@@ -648,23 +645,23 @@ ad_proc -public im_sub_navbar {
 	    }
 	}
 
-        # Find out if we need to highligh the current menu item
-        set selected 0
-        set url_length [expr [string length $url] - 1]
-        set url_stub_chopped [string range $url_stub 0 $url_length]
+	# Find out if we need to highligh the current menu item
+	set selected 0
+	set url_length [expr [string length $url] - 1]
+	set url_stub_chopped [string range $url_stub 0 $url_length]
 
-        if {[string equal $label $select_label] && $current_plugin_id == 0} {
+	if {[string equal $label $select_label] && $current_plugin_id == 0} {
 	    
-            # Make sure we only highligh one menu item..
-            set found_selected 1
-            # Set for the other IF-clause later in this loop
-            set selected 1
-        }
+	    # Make sure we only highligh one menu item..
+	    set found_selected 1
+	    # Set for the other IF-clause later in this loop
+	    set selected 1
+	}
 
-        set name_key "intranet-core.[lang::util::suggest_key $name]"
-        set name [lang::message::lookup "" $name_key $name]
+	set name_key "intranet-core.[lang::util::suggest_key $name]"
+	set name [lang::message::lookup "" $name_key $name]
 
-        append navbar [im_navbar_tab $url $name $selected]
+	append navbar [im_navbar_tab $url $name $selected]
     }
 
     if {$components_p} {
@@ -673,45 +670,39 @@ ad_proc -public im_sub_navbar {
 	}
 
 	set components_sql "
-            SELECT 
+	    SELECT 
 			p.plugin_id AS plugin_id,
 			p.plugin_name AS plugin_name,
 			p.menu_name AS menu_name
-            FROM 
+	    FROM 
 			im_component_plugins p,
 			im_component_plugin_user_map u
-            WHERE
+	    WHERE
 			(enabled_p is null OR enabled_p = 't')
 			AND p.plugin_id = u.plugin_id 
 			AND page_url = :plugin_url
 			AND u.location = 'none' 
 			AND u.user_id = :user_id
-            ORDER by 
+	    ORDER by 
 			p.menu_sort_order, p.sort_order
 	"
 
 	db_foreach navbar_components $components_sql {
-
-		set url [export_vars \
-		    -quotehtml \
-		    -base $base_url \
-                    {plugin_id {view_name "component"}}]
-
-		if {[string equal $menu_name ""]} {
-		    set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
-		}
- 
-		append navbar [im_navbar_tab $url $menu_name [expr $plugin_id==$current_plugin_id]]
+	    set url [export_vars -quotehtml -base $base_url {plugin_id {view_name "component"}}]
+	    if {[string equal $menu_name ""]} {
+		set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
 	    }
+	    append navbar [im_navbar_tab $url $menu_name [expr $plugin_id==$current_plugin_id]]
+	}
     }
 
     return "
-         <div id=\"navbar_sub_wrapper\">
-            $title
-            <ul id=\"navbar_sub\">
-              $navbar
-            </ul>
-         </div>"
+	 <div id=\"navbar_sub_wrapper\">
+	    $title
+	    <ul id=\"navbar_sub\">
+	      $navbar
+	    </ul>
+	 </div>"
 
 }
 
@@ -726,15 +717,15 @@ ad_proc -private im_sub_navbar_menu_helper {
     # We need to be able to read the old DB model, otherwise the
     # users won't be able to upgrade...
     set enabled_present_p [util_memoize "db_string enabled_enabled \"
-        select  count(*)
+	select  count(*)
 	from	user_tab_columns
-        where   lower(table_name) = 'im_component_plugins'
-                and lower(column_name) = 'enabled_p'
+	where   lower(table_name) = 'im_component_plugins'
+		and lower(column_name) = 'enabled_p'
     \""]
     if {$enabled_present_p} {
-        set enabled_sql "and (enabled_p is null OR enabled_p = 't')"
+	set enabled_sql "and (enabled_p is null OR enabled_p = 't')"
     } else {
-        set enabled_sql ""
+	set enabled_sql ""
     }
 
     set menu_select_sql "
@@ -755,7 +746,6 @@ ad_proc -private im_sub_navbar_menu_helper {
 		 sort_order
     "
     set result [db_list_of_lists subnavbar_menus $menu_select_sql]
-    ns_log Notice "im_sub_navbar_menu_helper: result=$result"
     return $result
 }
 
@@ -770,7 +760,7 @@ ad_proc -public im_navbar {
     set user_id [ad_get_user_id]
 
     if {![info exists loginpage_p]} {
-        set loginpage_p 0
+	set loginpage_p 0
     }
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
@@ -815,12 +805,12 @@ ad_proc -public im_navbar {
 
     foreach menu_list $menu_list_list {
 
-        set menu_id [lindex $menu_list 0]
-        set package_name [lindex $menu_list 1]
-        set label [lindex $menu_list 2]
-        set name [lindex $menu_list 3]
-        set url [lindex $menu_list 4]
-        set visible_tcl [lindex $menu_list 5]
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
 
 	# Shift the old value of cur_sel to old_val
 	set old_sel $cur_sel
@@ -835,14 +825,14 @@ ad_proc -public im_navbar {
 	set select_this_one 0
 	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
 
-        if {!$found_selected && $select_this_one} {
+	if {!$found_selected && $select_this_one} {
 	    # Make sure we only highligh one menu item..
-            set found_selected 1
+	    set found_selected 1
 	    # Set for the gif
 	    set cur_sel "sel"
 	    # Set for the other IF-clause later in this loop
 	    set selected 1
-        }
+	}
 
 	if {$ctr == 0} { 
 	    set gif "left-$cur_sel" 
@@ -850,8 +840,8 @@ ad_proc -public im_navbar {
 	    set gif "middle-$old_sel-$cur_sel" 
 	}
 
-        set name_key "intranet-core.[lang::util::suggest_key $name]"
-        set name [lang::message::lookup "" $name_key $name]
+	set name_key "intranet-core.[lang::util::suggest_key $name]"
+	set name [lang::message::lookup "" $name_key $name]
 	if {$ctr == 0 || !$loginpage_p} {
 	    append navbar [im_navbar_tab $url $name $selected]
 	}
@@ -868,14 +858,14 @@ ad_proc -public im_navbar {
     set user_id [ad_get_user_id]
 
     set main_users_and_search "
-          <div id=\"main_users_and_search\">
-            <div id=\"main_users_online\">
-              [im_header_users_online_str]
-            </div>
-            <div id=\"main_search\">
-              [im_header_search_form]
-            </div>
-          </div>
+	  <div id=\"main_users_and_search\">
+	    <div id=\"main_users_online\">
+	      [im_header_users_online_str]
+	    </div>
+	    <div id=\"main_search\">
+	      [im_header_search_form]
+	    </div>
+	  </div>
     "
 
     if {$loginpage_p} {
@@ -886,30 +876,30 @@ ad_proc -public im_navbar {
     return "
 	    <div id=\"main\">
 	       <div id=\"navbar_main_wrapper\">
-	          <ul id=\"navbar_main\">
-	             $navbar
-	          </ul>
+		  <ul id=\"navbar_main\">
+		     $navbar
+		  </ul>
 	       </div>
 	       <div id=\"main_header\">
-	          <div id=\"main_title\">
-	             $page_title
-	          </div>
-	          <div id=\"main_context_bar\">
-	             $context_bar
-	          </div>
-	          <div id=\"main_maintenance_bar\">
-	             $maintenance_message
-	          </div>
-	          <div id=\"main_portrait_and_username\">
-	          <div id=\"main_portrait\">
-	            [im_portrait_or_anon_html $user_id Portrait]
-	          </div>
-	          <p id=\"main_username\">
-	            Welcome, [im_name_from_user_id $user_id]
-	          </p>
-	          </div>
-	          $main_users_and_search
-	          <div id=\"main_header_deco\"></div>
+		  <div id=\"main_title\">
+		     $page_title
+		  </div>
+		  <div id=\"main_context_bar\">
+		     $context_bar
+		  </div>
+		  <div id=\"main_maintenance_bar\">
+		     $maintenance_message
+		  </div>
+		  <div id=\"main_portrait_and_username\">
+		  <div id=\"main_portrait\">
+		    [im_portrait_or_anon_html $user_id Portrait]
+		  </div>
+		  <p id=\"main_username\">
+		    Welcome, [im_name_from_user_id $user_id]
+		  </p>
+		  </div>
+		  $main_users_and_search
+		  <div id=\"main_header_deco\"></div>
 	       </div>
 	    </div>
     "
@@ -1002,7 +992,7 @@ ad_proc -public im_header_plugins_helper {
 	} err_msg] } {
 	    set plugin_right_html "<table>\n<tr><td><pre>$err_msg</pre></td></tr></table>\n"
 	    set plugin_right_html [im_table_with_title $plugin_name $plugin_right_html]
-        }
+	}
     }
 
     return [list left $plugin_left_html right $plugin_right_html]
@@ -1044,21 +1034,21 @@ ad_proc -public im_header_logout_component {
 
     set header_buttons "
       <div id=\"header_buttons\">
-         <div id=\"header_logout_tab\">
-            <div id=\"header_logout\">
+	 <div id=\"header_logout_tab\">
+	    <div id=\"header_logout\">
 	       <a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>
-            </div>
-         </div>
-         <div id=\"header_settings_tab\">
-            <div id=\"header_settings\">
+	    </div>
+	 </div>
+	 <div id=\"header_settings_tab\">
+	    <div id=\"header_settings\">
 <!--
-               <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
+	       <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
 -->
-               $logout_pwchange_str
-               <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
+	       $logout_pwchange_str
+	       <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
 	       <a href=\"$add_comp_url\">$add_stuff_text</a>
-            </div>
-         </div>
+	    </div>
+	 </div>
       </div>
     "
 }
@@ -1115,9 +1105,9 @@ ad_proc -public im_header {
 
     # Developer support
     if {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p] && $no_master_p} {
-        set developer_support_p 1
+	set developer_support_p 1
     } else {
-        set developer_support_p 0
+	set developer_support_p 0
     }
 
     set search_form [im_header_search_form]
@@ -1172,7 +1162,7 @@ ad_proc -public im_header {
     }
 
     if {[llength [info procs im_amberjack_header_stuff]]} {
-        append extra_stuff_for_document_head [im_amberjack_header_stuff]
+	append extra_stuff_for_document_head [im_amberjack_header_stuff]
     }
 
     # --------------------------------------------------------------
@@ -1218,30 +1208,30 @@ ad_proc -public im_header {
 	_editor_lang = \"$xinha_lang\";
 </script>
 <script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
-        "
+	"
 
 	set xi "HTMLArea"
 	append body_script_html "
 <script type='text/javascript'>
 <!--
-	         xinha_editors = null;
-	         xinha_init = null;
-	         xinha_config = null;
-	         xinha_plugins = null;
-	         xinha_init = xinha_init ? xinha_init : function() {
-	            xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
+		 xinha_editors = null;
+		 xinha_init = null;
+		 xinha_config = null;
+		 xinha_plugins = null;
+		 xinha_init = xinha_init ? xinha_init : function() {
+		    xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
 	
-	            // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  
-	            if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
+		    // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  
+		    if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
 	
-	            xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
-	            xinha_config = xinha_config ? xinha_config() : new $xi.Config();
-	            $xinha_params
-	            $xinha_options
-	            xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
-	            $xi.startEditors(xinha_editors);
-	         }
-	         window.onload = xinha_init;
+		    xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
+		    xinha_config = xinha_config ? xinha_config() : new $xi.Config();
+		    $xinha_params
+		    $xinha_options
+		    xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
+		    $xi.startEditors(xinha_editors);
+		 }
+		 window.onload = xinha_init;
 // -->
 </script>
 <textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
@@ -1256,17 +1246,17 @@ ad_proc -public im_header {
 	<div id=\"monitor_frame\">
 	   <div id=\"header_class\">
 	      <div id=\"header_logo\">
-	         $logo
+		 $logo
 	      </div>
 	      <div id=\"header_plugin_left\">
-	         $plugin_left_html
+		 $plugin_left_html
 	      </div>
 	      <div id=\"header_plugin_right\">
-	         $plugin_right_html
+		 $plugin_right_html
 	      </div>
 	      $header_buttons   
 	      <div id=\"header_skin_select\">
-	         $header_skin_select
+		 $header_skin_select
 	      </div>   
 	   </div>
     "
@@ -1304,19 +1294,19 @@ ad_proc -private im_header_search_form { } {
     if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
 	return "
 	      <form action=\"/intranet/search/go-search\" method=\"post\" name=\"surx\">
-                <input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
+		<input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
 	<!--
-                <select class=surx name=target>
-                  <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
-                  <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
-                  <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>
-                  <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
-                </select>
+		<select class=surx name=target>
+		  <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
+		  <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
+		  <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>
+		  <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
+		</select>
 	-->
 		<input type=\"hidden\" name=\"target\" value=\"content\">
-                <input alt=\"go\" type=\"submit\" value=\"Go\" name=\"image\">
-              </form>
-        "
+		<input alt=\"go\" type=\"submit\" value=\"Go\" name=\"image\">
+	      </form>
+	"
     }
     return ""
 }
@@ -1329,7 +1319,7 @@ ad_proc -public im_header_emergency { page_title } {
 	<html>
 	<head>
 	  <title>$page_title</title>
-          [im_stylesheet]
+	  [im_stylesheet]
 	</head>
 	<body bgcolor=white text=black>
 	<table>
@@ -1341,30 +1331,30 @@ ad_proc -public im_header_emergency { page_title } {
 	</table>
 
       <table border=0 cellspacing=0 cellpadding=0 width=\"100%\">
-        <TR> 
-          <TD align=left> 
-            <table border=0 cellspacing=0 cellpadding=3>
-              <tr> 
-                <td class=tabnotsel><a href=/intranet/>[_ intranet-core.Home]</a></td><td>&nbsp;</td>
-	        <td>&nbsp;</td>
+	<TR> 
+	  <TD align=left> 
+	    <table border=0 cellspacing=0 cellpadding=3>
+	      <tr> 
+		<td class=tabnotsel><a href=/intranet/>[_ intranet-core.Home]</a></td><td>&nbsp;</td>
+		<td>&nbsp;</td>
 	      </tr>
 
-            </table>
-          </TD>
-          <TD align=right> 
-          </TD>
-        </TR>
-        <TR>
-          <td colspan=2 class=pagedesriptionbar>
-            <table cellpadding=1 width=\"100%\">
-              <tr>
-                <td class=pagedesriptionbar valign=middle> 
-	           $page_title
-                </td>
-              </tr>
-            </table>
-          </td>
-        </TR>
+	    </table>
+	  </TD>
+	  <TD align=right> 
+	  </TD>
+	</TR>
+	<TR>
+	  <td colspan=2 class=pagedesriptionbar>
+	    <table cellpadding=1 width=\"100%\">
+	      <tr>
+		<td class=pagedesriptionbar valign=middle> 
+		   $page_title
+		</td>
+	      </tr>
+	    </table>
+	  </td>
+	</TR>
       </table>\n"
     return $html
 }
@@ -1388,7 +1378,7 @@ ad_proc -public im_footer {
     <div id=\"footer\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: 
        <a href=\"mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
-          [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
+	  [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
        </a> 
     </div>
   $amberjack_body_stuff
@@ -1473,11 +1463,11 @@ ad_proc -public im_stylesheet {} {
 
     # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
     if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {
-        append html "<link rel=StyleSheet type=text/css href=\"/intranet-cust-reinisch/style/reinisch.css\" />\n"
+	append html "<link rel=StyleSheet type=text/css href=\"/intranet-cust-reinisch/style/reinisch.css\" />\n"
 
-        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/yahoo-dom-event/yahoo-dom-event.js'></script>\n"
-        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
-        append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
+	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/yahoo-dom-event/yahoo-dom-event.js'></script>\n"
+	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
+	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
     }
 
     return $html
@@ -1704,11 +1694,11 @@ ad_proc im_report_error { message } {
     set error_user_email ""
     
     catch {
-        db_1row get_user_info "
+	db_1row get_user_info "
 select
 	pe.first_names as error_first_names,
-        pe.last_name as error_last_name,
-        pa.email as error_user_email
+	pe.last_name as error_last_name,
+	pa.email as error_user_email
 from
 	persons pe,
 	parties pa
@@ -1758,31 +1748,31 @@ ad_proc -public im_context_bar {
     @param node_id If provided work up from this node, otherwise the current node
     @param from_node If provided do not generate links to the given node and above.
     @param separator The text placed between each link (passed to ad_context_bar_html 
-           if provided)
+	   if provided)
     @return an html fragment generated by ad_context_bar_html
 
     @see ad_context_bar_html
 } {
     if { ![exists_and_not_null node_id] } {
-        set node_id [ad_conn node_id]
+	set node_id [ad_conn node_id]
     }
 
     set context [list [list "/intranet/" "&\#93;project-open&\#91;"]]
 
     if {[llength $args] == 0} {
-        # fix last element to just be literal string
-        set context [lreplace $context end end [lindex [lindex $context end] 1]]
+	# fix last element to just be literal string
+	set context [lreplace $context end end [lindex [lindex $context end] 1]]
     } else {
-        if ![string match "\{*" $args] {
-            # args is not a list, transform it into one.
-            set args [list $args]
-        }
+	if ![string match "\{*" $args] {
+	    # args is not a list, transform it into one.
+	    set args [list $args]
+	}
     }
 
     if { [info exists separator] } {
-        return [im_context_bar_html -separator $separator [concat $context $args]]
+	return [im_context_bar_html -separator $separator [concat $context $args]]
     } else {
-        return [im_context_bar_html [concat $context $args]]
+	return [im_context_bar_html [concat $context $args]]
     }
 }
 
@@ -1809,7 +1799,7 @@ ad_proc -public im_context_bar_html {
 } {
     set out {}
     foreach element [lrange $context 0 [expr [llength $context] - 2]] {
-        append out "<a class=contextbar href=\"[lindex $element 0]\">[lindex $element 1]</a>$separator"
+	append out "<a class=contextbar href=\"[lindex $element 0]\">[lindex $element 1]</a>$separator"
     }
     append out "<span class=contextbar>[lindex $context end]</span>"
     return $out
@@ -1868,36 +1858,36 @@ ad_proc -public im_box_header {
 } {
 } {
      return " 
-        <div class=\"component\">
+	<div class=\"component\">
 
 	<table width=\"100%\">
 	<tr>
 	<td>
-          <div class=\"component_header_rounded\" >
-            <div class=\"component_header\">
+	  <div class=\"component_header_rounded\" >
+	    <div class=\"component_header\">
 	      <div class=\"component_title\">$title</div>
-              <div class=\"component_icons\">$icons</div>
-            </div>
+	      <div class=\"component_icons\">$icons</div>
+	    </div>
 	  </div>
 	</td>
 	</tr>
 	<tr>
 	<td colspan=2>
-          <div class=\"component_body\">"
+	  <div class=\"component_body\">"
 }
 
 ad_proc -public im_box_footer {} {
 } {
     return "
-          </div>
-          <div class=\"component_footer\">
-            <div class=\"component_footer_hack\"></div>
-          </div>
+	  </div>
+	  <div class=\"component_footer\">
+	    <div class=\"component_footer_hack\"></div>
+	  </div>
 
 	</td>
 	</tr>
 	</table>
-        </div>
+	</div>
     "
 }
 

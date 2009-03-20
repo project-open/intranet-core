@@ -670,8 +670,7 @@ if {[im_permission $current_user_id "view_finance"]} {
 
 
 # Append user-defined menus
-set bind_vars [ad_tcl_vars_to_ns_set]
-append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" $bind_vars]
+append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
 
 # Close the admin_html section
 append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
