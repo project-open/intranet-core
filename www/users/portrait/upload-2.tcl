@@ -135,5 +135,12 @@ You can now return to the project page.
 </div>
 "
 
+# -----------------------------------------------
+# Flush all cached portraits...
+
+util_memoize_flush_regexp "im_portrait_html_helper.*"
+
+
+
 db_release_unused_handles
 doc_return  200 text/html [im_return_template]
