@@ -43,6 +43,7 @@ if {$current_user_id != $user_id && !$current_user_admin_p} {
 if {0 != $skin_id } { db_dml skinupdate "UPDATE users SET skin_id = :skin_id WHERE user_id = :user_id" }
 
 ns_write [ns_cache flush util_memoize "im_user_skin_helper $user_id" ]
+ns_write [ns_cache flush util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id"]]
 
 db_release_unused_handles
 ad_returnredirect $return_url
