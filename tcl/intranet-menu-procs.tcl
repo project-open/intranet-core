@@ -117,7 +117,7 @@ ad_proc -public im_menu_ul_list {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
-    set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars]]
+    set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 1]
     return $result
 }
 
@@ -131,7 +131,6 @@ ad_proc -public im_menu_ul_list_helper {
     to be added to index screens (costs) etc. 
 } {
     array set bind_vars_hash $bind_vars
-
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
 
     set menu_select_sql "
@@ -159,7 +158,7 @@ ad_proc -public im_menu_ul_list_helper {
 
 	regsub -all " " $name "_" name_key
 
-	foreach var [array get names bind_vars_hash] {
+	foreach var [array names bind_vars_hash] {
 	    set value $bind_vars_hash($var)
 	    append url "&$var=[ad_urlencode $value]"
 	}

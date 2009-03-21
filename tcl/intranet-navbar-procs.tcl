@@ -58,7 +58,6 @@ ad_proc -public im_navbar_tree_helper {
     objects in the system.
 } {
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
-    ns_log Notice "im_navbar_tree: show_left_functional_menu_p=$show_left_functional_menu_p"
     if {!$show_left_functional_menu_p} { return "" }
 
     set html "
@@ -432,7 +431,6 @@ ad_proc -public im_navbar_write_tree_helper {
     set html ""
     set menus [db_list_of_lists menus $menu_sql]
     foreach menu_item $menus {
-	ns_log Notice "im_navbar_write_tree: main=$main_label: sub=$label"
 
 	set menu_id [lindex $menu_item 0]
 	set label [lindex $menu_item 1]

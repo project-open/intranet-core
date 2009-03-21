@@ -46,7 +46,7 @@ ad_proc -public im_check_for_update_scripts {
     set missing_modules [list]
     foreach module $base_modules {
 
-        ns_log Notice "upgrade1: checking module $module"
+#        ns_log Notice "upgrade1: checking module $module"
         set installed_p [db_string notif "select count(*) from apm_package_versions where package_key = :module"]
         if {!$installed_p} {
             set redirect_p 1
@@ -79,7 +79,7 @@ ad_proc -public im_check_for_update_scripts {
     set missing_modules [list]
     foreach module $core_modules {
 
-        ns_log Notice "upgrade2: checking module $module"
+#        ns_log Notice "upgrade2: checking module $module"
         set spec_file "[acs_root_dir]/packages/$module/$module.info"
 
         set needs_update_p 0
@@ -122,7 +122,7 @@ ad_proc -public im_check_for_update_scripts {
     set missing_modules [list]
     foreach module $other_modules {
 
-        ns_log Notice "upgrade3: checking module $module"
+#        ns_log Notice "upgrade3: checking module $module"
         set spec_file "[acs_root_dir]/packages/$module/$module.info"
 
         set needs_update_p 0
@@ -165,7 +165,7 @@ ad_proc -public im_check_for_update_scripts {
     set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
     foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
 
-        ns_log Notice "upgrade4: checking glob file $dir"
+#        ns_log Notice "upgrade4: checking glob file $dir"
 
         # Skip upgrade scripts from 3.0.x
         if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
@@ -185,7 +185,7 @@ ad_proc -public im_check_for_update_scripts {
     "
     db_foreach db_files $sql {
 
-        ns_log Notice "upgrade4: checking log key $log_key"
+#        ns_log Notice "upgrade4: checking log key $log_key"
         # Add the "/packages/..." part to hash-array for fast comparison.
         if {[regexp {(/packages.*)} $log_key match path]} {
             set db_files($path) $path
@@ -251,11 +251,11 @@ ad_proc -public im_check_for_update_scripts {
     "
     db_foreach packages $package_sql {
 
-        ns_log Notice "upgrade5: checking package $package_key"
+#        ns_log Notice "upgrade5: checking package $package_key"
         set core_upgrade_dir "$core_dir/$package_key/sql/postgresql/upgrade"
         foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
 
-            ns_log Notice "upgrade5: checking glob file $dir"
+#            ns_log Notice "upgrade5: checking glob file $dir"
 
             # Skip upgrade scripts from 3.0.x
             if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
@@ -277,7 +277,7 @@ ad_proc -public im_check_for_update_scripts {
     "
     db_foreach db_files $sql {
 
-        ns_log Notice "upgrade4: checking log key $log_key"
+#        ns_log Notice "upgrade4: checking log key $log_key"
         # Add the "/packages/..." part to hash-array for fast comparison.
         if {[regexp {(/packages.*)} $log_key match path]} {
             set db_files($path) $path

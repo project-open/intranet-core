@@ -53,6 +53,8 @@ set project_nr_field_size [ad_parameter -package_id [im_package_core_id] Project
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
+set sub_navbar ""
+
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
@@ -294,14 +296,16 @@ template::element::create $form_id description -optional -datatype text\
 set object_type "im_project"
 set dynfield_project_type_id [im_opt_val project_type_id]
 if {[info exists project_id]} {
-    set dynfield_project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+    set existing_project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+    if {0 != $existing_project_type_id && "" != $existing_project_type_id} {
+	set dynfield_project_type_id $existing_project_type_id
+    }
 }
 
 set dynfield_project_id 0
 if {[info exists project_id]} { set dynfield_project_id $project_id }
 
-#ad_return_complaint 1 $dynfield_project_id
-
+ns_log Notice "/intranet/projects/new: im_dynfield::append_attributes_to_form -object_subtype_id $dynfield_project_type_id -object_type $object_type -form_id $form_id -object_id $dynfield_project_id"
 
 set field_cnt [im_dynfield::append_attributes_to_form \
     -object_subtype_id $dynfield_project_type_id \
@@ -710,6 +714,7 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     # Store dynamic fields
 
+    ns_log Notice "/intranet/projects/new: im_dynfield::attribute_store -object_type $object_type -object_id $project_id -form_id $form_id"
     im_dynfield::attribute_store \
 	-object_type $object_type \
 	-object_id $project_id \

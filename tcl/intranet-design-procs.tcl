@@ -27,11 +27,11 @@ ad_library {
 
 # 40000-40999  Intranet Skin (1000)
 
-ad_proc -public im_skin_default {} { return 27000 }
-ad_proc -public im_skin_left_blue {} { return 27005 }
-ad_proc -public im_skin_right_blue {} { return 27010 }
-ad_proc -public im_skin_light_green {} { return 27015 }
-ad_proc -public im_skin_saltnpepper {} { return 27020 }
+ad_proc -public im_skin_default {} { return 40000 }
+ad_proc -public im_skin_left_blue {} { return 40005 }
+ad_proc -public im_skin_right_blue {} { return 40010 }
+ad_proc -public im_skin_light_green {} { return 40015 }
+ad_proc -public im_skin_saltnpepper {} { return 40020 }
 
 
 # --------------------------------------------------------
@@ -1922,8 +1922,9 @@ ad_proc -public im_skin_select_html {
 	return "Error: Column users.skin_id doesn't exist.<br>Please run intranet-core V3.4.0.4.0 upgrade script."
     }
 
-    set current_skin_id [util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id"] 60]
-    set skin_select_html "
+   set current_skin_id [util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id"] 60]
+
+   set skin_select_html "
 	<form method=\"GET\" action=\"/intranet/users/select-skin\">
 	[export_form_vars return_url user_id]
 	[im_category_select \
