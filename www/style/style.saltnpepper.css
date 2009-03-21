@@ -385,7 +385,9 @@ background-position: 0px -10px;
 	margin:0;
 	padding:10px 10px 0px 0px;
 	list-style:none;
-
+	overflow: visible;
+	z-index: 1000;
+	position: relative;
       }
     #navbar_main li {
 	display:inline;
