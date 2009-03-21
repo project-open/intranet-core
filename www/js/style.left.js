@@ -1,6 +1,12 @@
 jQuery.noConflict();
 
 jQuery().ready(function(){
+
+    /* auto-change skin-select */ 	
+    jQuery("#header_skin_select > form > select").change(function(){
+       jQuery("#header_skin_select > form").submit();
+    });
+
     /* sliding filters */
 
     jQuery(".filter > .filter-block:first").prepend('<div class="filter-button"></div>');
