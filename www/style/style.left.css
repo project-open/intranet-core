@@ -20,3 +20,7 @@
    position: absolute;
    right: 2px;
 }
+
+#main_header {
+	height: 35px;
+}
