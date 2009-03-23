@@ -352,7 +352,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='user'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+    set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default 0]]
     set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
     return $navbar
@@ -396,8 +396,8 @@ ad_proc -public im_project_navbar {
     set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
     # Get the Subnavbar
-    set parent_menu_sql "select menu_id from im_menus where label=:navbar_menu_label"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+    set parent_menu_sql "select menu_id from im_menus where label = '$navbar_menu_label'"
+    set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default 0]]
     
     ns_set put $bind_vars letter $default_letter
     ns_set delkey $bind_vars project_status_id
@@ -493,7 +493,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='companies'"
-    set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+    set parent_menu_id [util_memoize [db_string parent_admin_menu $parent_menu_sql -default 0]]
     set navbar [im_sub_navbar $parent_menu_id "" $alpha_bar "tabnotsel" $select_label]
 
     return $navbar
@@ -680,14 +680,20 @@ ad_proc -public im_sub_navbar {
 	    WHERE
 			(enabled_p is null OR enabled_p = 't')
 			AND p.plugin_id = u.plugin_id 
-			AND page_url = :plugin_url
+			AND page_url = '$plugin_url'
 			AND u.location = 'none' 
-			AND u.user_id = :user_id
+			AND u.user_id = $user_id
 	    ORDER by 
 			p.menu_sort_order, p.sort_order
 	"
 
-	db_foreach navbar_components $components_sql {
+	set navbar_components_list [util_memoize [list db_list_of_lists navbar_components $components_sql]]
+
+	foreach comp_tuple $navbar_components_list {
+	    set plugin_id [lindex $comp_tuple 0]
+	    set plugin_name [lindex $comp_tuple 1]
+	    set menu_name [lindex $comp_tuple 2]
+
 	    set url [export_vars -quotehtml -base $base_url {plugin_id {view_name "component"}}]
 	    if {[string equal $menu_name ""]} {
 		set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 

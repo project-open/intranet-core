@@ -44,7 +44,7 @@ set manage_url "[apm_package_url_from_key [notification::package_key]]manage"
 # Old: "select short_name from notification_types where short_name like 'wf%'"
 
 foreach type [db_list wf_notifs "select short_name from notification_types"] {
-    set pretty_name [db_string pretty_name "select pretty_name from notification_types where short_name = :type"]
+    set pretty_name [util_memoize [list db_string pretty_name "select pretty_name from notification_types where short_name = '$type'"]]
     set type_id [notification::type::get_type_id -short_name $type]
     
     set notification_subscribe_url [export_vars -base "/notifications/request-new?" {

@@ -155,11 +155,11 @@ if {"" == $view_name} {
     # Check if there is a specific view for this user group:
     set specific_view_name "[string tolower $user_group_name]_list"
     ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
-    set expcific_view_exists [db_string specific_view_exists "
+    set expcific_view_exists [util_memoize [list db_string specific_view_exists "
 	select count(*) 
 	from im_views 
-	where view_name=:specific_view_name
-    "]
+	where view_name = '$specific_view_name'
+    "]]
     if {$expcific_view_exists} {
 	set view_name $specific_view_name
     }
@@ -191,7 +191,7 @@ if {[im_permission $user_id "add_users"]} {
 }
 
 set parent_menu_sql "select menu_id from im_menus where label= 'users_admin'"
-set parent_menu_id [db_string parent_admin_menu $parent_menu_sql -default 0]
+set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default 0]]
 
 set menu_select_sql "
         select  m.*
@@ -224,11 +224,11 @@ set column_vars [list]
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "
+set view_id [util_memoize [db_string get_view_id "
 	select view_id 
 	from im_views 
-	where view_name=:view_name
-" -default 0]
+	where view_name = '$view_name'
+" -default 0]]
 if {!$view_id} { 
     ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
     [_ intranet-core.lt_You_are_trying_to_acc]<br>

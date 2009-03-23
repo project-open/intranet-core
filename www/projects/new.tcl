@@ -737,6 +737,14 @@ if {[form is_valid $form_id]} {
 	im_user_exit_call project_update $project_id
     }
 
+
+    # -----------------------------------------------------------------
+    # Flush caches related to the project's information
+
+    util_memoize_flush_regexp "im_project_has_type_helper.*"
+    util_memoize_flush_regexp "db_list_of_lists company_info.*"
+
+
     # -----------------------------------------------------------------
     # Where do we want to go now?
     #

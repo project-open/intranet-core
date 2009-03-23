@@ -62,6 +62,13 @@ ad_proc -public im_project_has_type { project_id project_type } {
     Returns 1 if the project is of a specific type of subtype.
     Example: A "Trans + Edit + Proof" project is a "Translation Project".
 } {
+    return [util_memoize [list im_project_has_type_helper $project_id $project_type] 120]
+}
+
+ad_proc -public im_project_has_type_helper { project_id project_type } {
+    Returns 1 if the project is of a specific type of subtype.
+    Example: A "Trans + Edit + Proof" project is a "Translation Project".
+} {
     # Is the projects type_id a sub-category of "Translation Project"?
     # We take two cases: Either the project is of category "project_type"
     # OR it is one of the subcategories of "project_type".
@@ -107,7 +114,6 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set user_is_group_member_p [im_biz_object_member_p $user_id $project_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $project_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
-    set user_in_project_group_p [string compare "t" [db_string user_belongs_to_project "select ad_group_member_p( :user_id, :project_id ) from dual" ] ]
 
     # Treat the project mangers_fields
     # A user man for some reason not be the group PM
@@ -126,15 +132,17 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set admin $user_admin_p
 
     # Get the projects's company and the project status
+    # Use caching because this procedure is queried very frequently!
     set query "
 	select	company_id, 
 		lower(im_category_from_id(project_status_id)) as project_status 
 	from	im_projects
-	where	project_id=:project_id
+	where	project_id = $project_id
     "
-    if {![db_0or1row project_company $query] } {
-	return
-    }
+    set company_infos [util_memoize [list db_list_of_lists company_info $query]]
+    set company_info [lindex $company_infos 0]
+    set company_id [lindex $company_info 0]
+    set project_status [lindex $company_info 1]
 
     ns_log Notice "user_is_admin_p=$user_is_admin_p"
     ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
@@ -1035,7 +1043,7 @@ ad_proc -public im_project_hierarchy_component {
 
     set project_url "/intranet/projects/view"
     set space "&nbsp; &nbsp; &nbsp; "
-    set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default 0]
+    set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$view_name'" -default 0]]
 
     set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
     if {$subproject_filtering_enabled_p} {

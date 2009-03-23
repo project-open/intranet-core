@@ -429,16 +429,26 @@ ad_proc -public im_group_member_component {
 		c.category_description as role_description
 		$bo_rels_percentage_sql
 	from
-		cc_users u,
+		users u,
 		acs_rels rels,
 		im_biz_object_members bo_rels,
-		im_categories c
+		im_categories c,
+		group_member_map m,
+		membership_rels mr
 	where
 		rels.object_id_one = $object_id
 		and rels.object_id_two = u.user_id
 		and rels.rel_id = bo_rels.rel_id
 		and bo_rels.object_role_id = c.category_id
-		and u.member_state = 'approved'
+		and mr.member_state = 'approved'
+
+		and u.user_id = m.member_id
+		and mr.member_state = 'approved'
+		and m.group_id = acs__magic_object_id('registered_users'::character varying)
+		and m.rel_id = mr.rel_id
+		and m.container_id = m.group_id
+		and m.rel_type = 'membership_rel'
+
 		$limit_to_group_id_sql 
 		$dont_allow_sql
 	order by lower(im_name_from_user_id(u.user_id))

@@ -25,10 +25,9 @@ ad_library {
 
 ad_proc -public im_component_any_perms_set_p { } {
     Checks if any permissions at all are set 
-    for the components (this is usually not the case...
+    for the components (this is usually not the case...)
 } {
-
-    set any_perms_set_p [util_memoize "db_string any_perms_set {
+    set any_perms_set_p [util_memoize [list db_string any_perms_set {
         select  count(*)
         from    acs_permissions ap,
                 im_profiles p,
@@ -36,7 +35,7 @@ ad_proc -public im_component_any_perms_set_p { } {
         where
                 ap.object_id = cp.plugin_id
                 and ap.grantee_id = p.profile_id
-    }" 60]
+    }]]
     return $any_perms_set_p
 }
 
@@ -138,16 +137,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
     #set plugin-list [util_memoize "im_component_page_plugins $url_stub"]
 
     # Check if there is atleast one permission set for im_plugin_components
-    set any_perms_set_p [db_string any_perms_set "
-	select	count(*) 
-	from	acs_permissions ap, 
-		im_profiles p, 
-		im_component_plugins cp 
-	where 
-		ap.object_id = cp.plugin_id 
-		and ap.grantee_id = p.profile_id
-    "]
-
+    set any_perms_set_p [im_component_any_perms_set_p]
 
     # ToDo: Remove with version 4.0 or later
     # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:

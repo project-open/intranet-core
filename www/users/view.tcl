@@ -310,8 +310,8 @@ where
 "]
 
 # Get CCs outside of main select to avoid outer joins...
-set ha_country_name [db_string ha_country_name "select country_name from country_codes where iso=:ha_country_code" -default ""]
-set wa_country_name [db_string wa_country_name "select country_name from country_codes where iso=:wa_country_code" -default ""]
+set ha_country_name [util_memoize [list db_string ha_country_name "select country_name from country_codes where iso = '$ha_country_code'" -default ""]]
+set wa_country_name [util_memoize [list db_string wa_country_name "select country_name from country_codes where iso = '$wa_country_code'" -default ""]]
 
 
 if {$result == 1} {
@@ -319,7 +319,7 @@ if {$result == 1} {
     # Define the column headers and column contents that 
     # we want to show:
     #
-    set view_id [db_string get_view_id "select view_id from im_views where view_name=:contact_view_name"]
+    set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$contact_view_name'"]]
 
     set column_sql "
 select
@@ -522,11 +522,11 @@ if {$admin || $user_id == $current_user_id} {
 }
 
 # Check if there is a OTP (one time password) module installed
-set otp_installed_p [db_string otp_installed "
+set otp_installed_p [util_memoize [list db_string otp_installed "
         select count(*)
         from apm_enabled_package_versions
         where package_key = 'intranet-otp'
-" -default 0]
+" -default 0]]
 
 if {$otp_installed_p} {
     set list_otp_pwd_base_url "/intranet-otp/list-otps"

@@ -117,7 +117,7 @@ ad_proc -public im_menu_ul_list {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
-    set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 1]
+    set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 3600]
     return $result
 }
 

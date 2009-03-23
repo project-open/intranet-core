@@ -116,7 +116,10 @@ if { ![db_0or1row projects_info_query $query] } {
 
 set project_type [im_category_from_id $project_type_id]
 set project_status [im_category_from_id $project_status_id]
-set parent_name [db_string parent_name "select project_name from im_projects where project_id = :parent_id" -default ""]
+
+# Get the parent project's name
+if {"" == $parent_id} { set parent_id 0 }
+set parent_name [util_memoize [list db_string parent_name "select project_name from im_projects where project_id = $parent_id" -default ""]]
 
 
 # ---------------------------------------------------------------------

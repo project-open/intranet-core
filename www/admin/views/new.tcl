@@ -111,6 +111,10 @@ ad_form -extend -name view -on_request {
 
 } -after_submit {
 
+        # Flush permissions
+        im_permission_flush
+
+	# Redirect
 	ad_returnredirect $return_url
 	ad_script_abort
 }
