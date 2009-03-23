@@ -472,23 +472,6 @@ SELECT	im_component_plugin__new (
 );
 
 
--- Admin shortcupts in the Home page
-SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home Admin Component',		-- plugin_name
-	'intranet-core',		-- package_name
-	'none',				-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	50,				-- sort_order
-	'im_admin_navbar_component'	-- component_tcl
-);
-
 -- ProjectOpen News Component
 SELECT  im_component_plugin__new (
 	null,				-- plugin_id
