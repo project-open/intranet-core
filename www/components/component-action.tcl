@@ -32,6 +32,10 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
+# Flush the cache for the navigation bar for all users...
+util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
+
+
 switch $action {
     reset {
 	# Delete all specific settings for the given user and 
@@ -45,6 +49,7 @@ switch $action {
 				where	page_url = :page_url
 			)
 	"
+
 	ad_returnredirect "$return_url"
 	ad_script_abort
     }

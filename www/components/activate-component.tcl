@@ -40,6 +40,10 @@ db_dml activate_plugin "
 	set	location = 'right'
 	where	plugin_id = :plugin_id
 		and user_id = :user_id
-    "
+"
+
+
+# Flush the cache for the navigation bar for all users...
+util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
 
 ad_returnredirect "$return_url"

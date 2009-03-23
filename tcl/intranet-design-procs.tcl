@@ -722,17 +722,14 @@ ad_proc -private im_sub_navbar_menu_helper {
     }
 
     set menu_select_sql "
-	select
-		menu_id,
+	select	menu_id,
 		package_name,
 		label,
 		name,
 		url,
 		visible_tcl
-	from
-		im_menus m
-	where
-		parent_menu_id = :parent_menu_id
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id
 		$enabled_sql
 		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 	order by
