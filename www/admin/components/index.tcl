@@ -97,6 +97,7 @@ set group_names [list]
 set table_header "
 <tr>
   <td class=rowtitle>Component</td>
+  <td class=rowtitle>En</td>
   <td class=rowtitle>Package</td>
   <td class=rowtitle>Pos</td>
   <td class=rowtitle>URL</td>
@@ -191,4 +192,43 @@ db_foreach all_component_of_type $component_select_sql {
 append table "
 </table>
 </form>
+"
+
+
+# ------------------------------------------------------
+# Filters & Navbar
+# ------------------------------------------------------
+
+
+set left_navbar_html "
+	<table>
+	<form action=index method=GET>
+	<tr>
+	<td>[lang::message::lookup "" intranet-core.Package "Package"]</td>
+	<td>[im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key]</td>
+	</tr>
+
+	<tr>
+	<td>[lang::message::lookup "" intranet-core.Location "Location"]</td>
+	<td>[im_select -ad_form_option_list_style_p 1 component_location $location_options $component_location]</td>
+	</tr>
+
+	<tr>
+	<td>[lang::message::lookup "" intranet-core.Component_Page "Page"]</td>
+	<td>[im_select -ad_form_option_list_style_p 1 component_page $page_options $component_page]</td>
+	</tr>
+
+	<tr><td></td><td><input type=submit></td></tr>
+	</form>
+	</table>
+"
+
+set left_navbar_html "
+        <div class='filter-block'>
+                <div class='filter-title'>
+	           [lang::message::lookup "" intranet-core.Filter_Components "Filter Components"]
+                </div>
+                $left_navbar_html
+        </div>
+      <hr/>
 "
