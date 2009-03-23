@@ -172,10 +172,6 @@ ad_proc -public im_navbar_tree_admin {
 		<ul>
 		[im_navbar_write_tree -label "admin" -maxlevel 0]
 		</ul>
-	<li><a href=/acs-admin/>Developer Support</a>
-		<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 0]
-		</ul>
 	</ul>
     "
     return $html

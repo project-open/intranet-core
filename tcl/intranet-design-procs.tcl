@@ -526,21 +526,6 @@ ad_proc -public im_admin_navbar {
     }
 
     append html "
-	[im_menu_li -class liOpen admin]
-		<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 1]
-		</ul>
-	[im_menu_li -class liOpen openacs]
-		<ul>
-		[im_navbar_write_tree -label "openacs" -maxlevel 1]
-		</ul>
-	</ul>
-    "
-
-    append html "<br>\n"
-    append html [im_navbar_tree]
-
-    append html "
 	      </div>
 	   </div>
 	</div>
@@ -585,6 +570,7 @@ ad_proc -public im_sub_navbar {
     {-current_plugin_id ""}
     {-base_url ""}
     {-plugin_url "/intranet/projects/view"}
+    {-menu_gif_type "none"}
     parent_menu_id 
     {bind_vars ""} 
     {title ""} 
@@ -593,6 +579,7 @@ ad_proc -public im_sub_navbar {
 } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
+    @param menu_gif_type One of "small", "medium", "large" or "" for none.
     @param parent_menu_id id of the parent menu in im_menus
     @param bind_vars a list of variables to pass-through
     @title string to go into the line below the menu tabs

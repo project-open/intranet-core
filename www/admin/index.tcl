@@ -45,3 +45,33 @@ set bgcolor(1) " class=roweven"
 # Check for upgrades to run
 set upgrade_message [im_check_for_update_scripts]
 
+
+# ---------------------------------------------------------
+# Adminstration Area with GIFs
+# ---------------------------------------------------------
+
+set parent_menu_id [util_memoize [list db_string parent_menu "select menu_id from im_menus where label = 'admin'" -default 0]]
+set menu_sql "
+	select	m.*
+	from	im_menus m
+	where	m.parent_menu_id = :parent_menu_id
+	order by
+		m.sort_order
+"
+
+set menu_html ""
+db_foreach admin_menu $menu_sql {
+    set menu_gif ""
+    if {"" == $menu_gif} { set menu_gif $menu_gif_large }
+    if {"" == $menu_gif} { set menu_gif $menu_gif_medium }
+    if {"" == $menu_gif} { set menu_gif $menu_gif_small }
+    if {"" == $menu_gif} { set menu_gif "plus" }
+
+    append menu_html "<div class='admin_menu_item'>[im_gif $menu_gif] <a href=\"$url\">$name</a></div>\n"
+}
+
+set menu_html "
+<div class='admin_menu_block'>
+$menu_html
+</div>
+"

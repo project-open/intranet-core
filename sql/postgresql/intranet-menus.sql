@@ -94,6 +94,12 @@ CREATE TABLE im_menus (
 	enabled_p		char(1) default('t')
 				constraint im_menus_enabled_ck
 				check (enabled_p in ('t','f')),
+				-- small gif for menu - typically 16x16 GIF
+	menu_gif_small		text,
+				-- medium gif for menu - typically 32x32 GIF
+	menu_gif_medium		text,
+				-- large gif for menu - typically 64x64 GIF
+	menu_gif_large		text,
 				-- Make sure there are no two identical
 				-- menus on the same _level_.
 	constraint im_menus_label_un
@@ -1468,7 +1474,7 @@ BEGIN
 		null,				-- context_id
 		''intranet-core'',		-- package_name
 		''admin_packages'',		-- label
-		''Packages'',			-- name
+		''Package Manager'',		-- name
 		''/acs-admin/apm/'',		-- url
 		190,				-- sort_order
 		v_main_menu,			-- parent_menu_id
@@ -1565,50 +1571,11 @@ BEGIN
 		null,				-- context_id
 		''intranet-core'',		-- package_name
 		''admin_flush'',		-- label
-		''Flush Cache'',		-- name
+		''Cache Flush'',		-- name
 		''/intranet/admin/flush_cache'',	-- url
 		11,				-- sort_order
 		v_main_menu,			-- parent_menu_id
 		''0''				-- p_visible_tcl
-	);
-
-	return 0;
-end;' language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
-
--- -------------------------------------------------------
--- Developer
--- -------------------------------------------------------
-
-create or replace function inline_0 ()
-returns integer as '
-declare
-	-- Menu IDs
-	v_menu			integer;
-	v_admin_menu		integer;
-	v_main_menu		integer;
-BEGIN
-	select menu_id into v_main_menu
-	from im_menus where label = ''main'';
-
-	-- Main admin menu - just an invisible top-menu
-	-- for all admin entries links under Projects
-	v_admin_menu := im_menu__new (
-		null,				-- p_menu_id
-		''acs_object'',			-- object_type
-		now(),				-- creation_date
-		null,				-- creation_user
-		null,				-- creation_ip
-		null,				-- context_id
-		''intranet-core'',		-- package_name
-		''openacs'',			-- label
-		''OpenACS'',			-- name
-		''/acs-admin/'',		-- url
-		1000,				-- sort_order
-		v_main_menu,			-- parent_menu_id
-		''''				-- p_visible_tcl
 	);
 
 	return 0;
@@ -1627,7 +1594,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1639,7 +1606,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_api_doc'',		-- label
+		''admin_api_doc'',		-- label
 		''API Doc'',			-- name
 		''/api-doc/'',			-- url
 		10,				-- sort_order
@@ -1665,7 +1632,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1677,7 +1644,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_developer'',		-- label
+		''admin_developer'',		-- label
 		''Developer Home'',		-- name
 		''/acs-admin/developer'',	-- url
 		20,				-- sort_order
@@ -1700,7 +1667,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1712,7 +1679,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_l10n'',		-- label
+		''admin_l10n'',		-- label
 		''Localization Home'',		-- name
 		''/acs-lang/admin'',		-- url
 		20,				-- sort_order
@@ -1735,7 +1702,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1747,7 +1714,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_package_manager'',	-- label
+		''admin_package_manager'',	-- label
 		''Package Manager'',		-- name
 		''/acs-admin/apm/'',		-- url
 		30,				-- sort_order
@@ -1771,7 +1738,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1783,7 +1750,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_sitemap'',		-- label
+		''admin_sitemap'',		-- label
 		''Sitemap'',			-- name
 		''/admin/site-map/'',			-- url
 		40,				-- sort_order
@@ -1807,7 +1774,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1819,7 +1786,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_ds'',			-- label
+		''admin_ds'',			-- label
 		''SQL Profiling'',		-- name
 		''/ds/'',			-- url
 		50,				-- sort_order
@@ -1843,7 +1810,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1855,7 +1822,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_shell'',		-- label
+		''admin_shell'',		-- label
 		''Interactive Shell'',		-- name
 		''/ds/shell'',			-- url
 		55,				-- sort_order
@@ -1880,7 +1847,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1892,7 +1859,7 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_cache'',		-- label
+		''admin_cache'',		-- label
 		''Cache Status'',		-- name
 		''/acs-admin/cache/'',		-- url
 		60,				-- sort_order
@@ -1915,7 +1882,7 @@ declare
 	v_main_menu		integer;
 BEGIN
 	select menu_id into v_main_menu
-	from im_menus where label = ''openacs'';
+	from im_menus where label = ''admin'';
 
 	-- Main admin menu - just an invisible top-menu
 	-- for all admin entries links under Projects
@@ -1927,8 +1894,8 @@ BEGIN
 		null,				-- creation_ip
 		null,				-- context_id
 		''intranet-core'',		-- package_name
-		''openacs_auth'',		-- label
-		''LDAP Authentication'',	-- name
+		''admin_auth'',			-- label
+		''LDAP'',			-- name
 		''/acs-admin/auth/'',		-- url
 		80,				-- sort_order
 		v_main_menu,			-- parent_menu_id
@@ -1950,11 +1917,11 @@ select im_menu__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'intranet-core',		-- package_name
-	'openacs_restart_server',	-- label
+	'admin_restart_server',		-- label
 	'Restart Server',		-- name
 	'/acs-admin/server-restart',	-- url
 	190,				-- sort_order
-	(select menu_id from im_menus where label = 'openacs'),
+	(select menu_id from im_menus where label = 'admin'),
 	null				-- p_visible_tcl
 );
 
@@ -2000,4 +1967,49 @@ begin
 end;' language 'plpgsql';
 select inline_1 ();
 drop function inline_1();
+
+
+
+
+
+-- Set sort_orders
+--
+
+update im_menus set sort_order =  100 where label = 'admin_home';
+update im_menus set sort_order =  200 where label = 'openacs_api_doc';
+update im_menus set sort_order =  300 where label = 'admin_auth_authorities';
+update im_menus set sort_order =  400 where label = 'admin_backup';
+update im_menus set sort_order =  450 where label = 'admin_flush';
+update im_menus set sort_order =  500 where label = 'openacs_cache';
+update im_menus set sort_order =  600 where label = 'admin_categories';
+update im_menus set sort_order =  700 where label = 'admin_cost_centers';
+update im_menus set sort_order =  800 where label = 'admin_cost_center_permissions';
+update im_menus set sort_order =  900 where label = 'openacs_developer';
+update im_menus set sort_order = 1000 where label = 'dynfield_admin';
+update im_menus set sort_order = 1100 where label = 'admin_dynview';
+update im_menus set sort_order = 1200 where label = 'admin_exchange_rates';
+update im_menus set sort_order = 1400 where label = 'openacs_shell';
+update im_menus set sort_order = 1500 where label = 'openacs_auth';
+update im_menus set sort_order = 1600 where label = 'openacs_l10n';
+update im_menus set sort_order = 1700 where label = 'material';
+update im_menus set sort_order = 1800 where label = 'admin_menus';
+update im_menus set sort_order = 1900 where label = 'admin_packages';
+update im_menus set sort_order = 2000 where label = 'admin_parameters';
+update im_menus set sort_order = 2100 where label = 'admin_components';
+update im_menus set sort_order = 2300 where label = 'openacs_restart_server';
+update im_menus set sort_order = 2400 where label = 'openacs_ds';
+update im_menus set sort_order = 2500 where label = 'admin_survsimp';
+update im_menus set sort_order = 2600 where label = 'openacs_sitemap';
+update im_menus set sort_order = 2700 where label = 'software_updates';
+update im_menus set sort_order = 2800 where label = 'admin_sysconfig';
+update im_menus set sort_order = 2900 where label = 'admin_user_exits';
+update im_menus set sort_order = 3000 where label = 'admin_usermatrix';
+update im_menus set sort_order = 3050 where label = 'admin_profiles';
+update im_menus set sort_order = 3100 where label = 'admin_workflow';
+
+
+update im_menus set name = 'User Profiles' where label = 'admin_profiles';
+update im_menus set name = 'Parameters' where label = 'admin_parameters';
+update im_menus set name = 'Package Manager' where label = 'admin_packages';
+update im_menus set name = 'Cache Flush' where label = 'admin_flush';
 
