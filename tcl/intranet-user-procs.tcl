@@ -52,20 +52,20 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     # it.
     # m.group_id are all the groups to whom user_id belongs
     set profile_perm_sql "
-select
-	m.group_id,
-	im_object_permission_p(m.group_id, :current_user_id, 'view') as view_p,
-	im_object_permission_p(m.group_id, :current_user_id, 'read') as read_p,
-	im_object_permission_p(m.group_id, :current_user_id, 'write') as write_p,
-	im_object_permission_p(m.group_id, :current_user_id, 'admin') as admin_p
-from
-	acs_objects o,
-	group_distinct_member_map m
-where
-	m.member_id=:user_id
-     	and m.group_id = o.object_id
-	and o.object_type = 'im_profile'
-"
+		select
+			m.group_id,
+			im_object_permission_p(m.group_id, :current_user_id, 'view') as view_p,
+			im_object_permission_p(m.group_id, :current_user_id, 'read') as read_p,
+			im_object_permission_p(m.group_id, :current_user_id, 'write') as write_p,
+			im_object_permission_p(m.group_id, :current_user_id, 'admin') as admin_p
+		from
+			acs_objects o,
+			group_distinct_member_map m
+		where
+			m.member_id = :user_id
+		     	and m.group_id = o.object_id
+			and o.object_type = 'im_profile'
+    "
     set first_loop 1
     db_foreach profile_perm_check $profile_perm_sql {
 	ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p"
@@ -87,7 +87,7 @@ where
     }
 
     # Myself - I can read and write its data
-	    if { $user_id == $current_user_id } { 
+    if { $user_id == $current_user_id } { 
 		set read 1
 		set write 1
 		set admin 0
@@ -582,15 +582,15 @@ ad_proc -public im_user_update_existing_user {
 
 
     # Get the list of profiles managable for current_user_id
-    set managable_profiles [im_profiles_managable_for_user $current_user_id]
+    set managable_profiles [im_profile::profile_options_managable_for_user $current_user_id]
 
     # Extract only the profile_ids from the managable profiles
     set managable_profile_ids [list]
     foreach g $managable_profiles {
-	lappend managable_profile_ids [lindex $g 0]
+	lappend managable_profile_ids [lindex $g 1]
     }
 
-    foreach profile_tuple [im_profiles_all] {
+    foreach profile_tuple [im_profile::profile_options_all] {
 
 	# don't enter into setting and unsetting profiles
 	# if the user has no right to change profiles.
@@ -599,9 +599,9 @@ ad_proc -public im_user_update_existing_user {
 	if {!$edit_profiles_p} { break }
 	
 	ns_log Notice "profile_tuple=$profile_tuple"
-	set profile_id [lindex $profile_tuple 0]
-	set profile_name [lindex $profile_tuple 1]
-	
+	set profile_name [lindex $profile_tuple 0]
+	set profile_id [lindex $profile_tuple 1]
+
 	set is_member [db_string is_member "
 		select count(*) 
 		from group_distinct_member_map 

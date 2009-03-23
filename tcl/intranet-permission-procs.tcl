@@ -45,6 +45,20 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+# -------------------------------------------------
+# Constant functions - group abreviations
+# -------------------------------------------------
+
+ad_proc -public im_admin_group_id { }		{ return [im_profile_po_admins] }
+ad_proc -public im_employee_group_id { } 	{ return [im_profile_employees] }
+ad_proc -public im_wheel_group_id { } 		{ return [im_profile_senior_managers] }
+ad_proc -public im_pm_group_id { }		{ return [im_profile_project_managers] }
+ad_proc -public im_accounting_group_id { }	{ return [im_profile_accounting] }
+ad_proc -public im_customer_group_id { }	{ return [im_profile_customers] }
+ad_proc -public im_hr_group_id { }		{ return [im_profile_hr_managers] }
+ad_proc -public im_freelance_group_id { }	{ return [im_profile_freelancers] }
+ad_proc -public im_partner_group_id { }		{ return [im_profile_partners] }
+ad_proc -public im_registered_users_group_id {} { return [im_profile_registered_users] }
 
 # ------------------------------------------------------------------
 # Core Permissions
@@ -78,7 +92,6 @@ ad_proc -public im_core_privs {} {
 }
 
 
-#!!! remove!
 ad_proc -public im_view_user_permission {view_user_id current_user_id var_value perm_token} {
     Check wheter a user should be able to see a specific field of another user:
     Return 1 IF:
@@ -109,7 +122,11 @@ ad_proc -public im_permission_flush {} {
     util_memoize_flush_regexp "acs.*"
     util_memoize_flush_regexp "file.*"
 
+    # ToDo: Remove this and replace by more controlled flushs
     util_memoize_flush_regexp ".*"
+
+    # Clear the specific cache for profile - user rels
+    im_profile::flush_cache
 
 #    util_memoize_flush_regexp "ad_permission.*"
 #    util_memoize_flush_regexp "im_permission.*"
@@ -118,15 +135,16 @@ ad_proc -public im_permission_flush {} {
 }
 
 
-# Intranet permissions scheme - permissions are associated to groups.
+# Intranet permissions scheme:
+# Permission refer to "privileges" or type of actions that 
+# a user can perform
 #
 ad_proc -public im_permission {user_id privilege} {
     Returns true or false, depending whether the user can execute
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-    return [util_memoize "im_permission_helper $user_id $privilege" 60]
-#    return [im_permission_helper $user_id $privilege]
+    return [util_memoize "im_permission_helper $user_id $privilege" 3600]
 }
 
 
@@ -230,64 +248,60 @@ ad_proc -public im_render_user_id2 {
 # 
 # ------------------------------------------------------------------
 
-#!!!
+# ToDo: Remove and replace by im_profile::member_p calls
 ad_proc -public im_user_group_member_p { user_id group_id } {
     Returns 1 if specified user is a member of the specified group. 0 otherwise
 } {
-    return [string equal "t" [util_memoize "db_string user_member_of_group \"
-	select ad_group_member_p($user_id, $group_id) from dual
-    \""]]
+    return [im_profile::member_p -profile_id $user_id -user_id $user_id]
 }
 
 
-###!!!
-ad_proc -public im_user_group_admin_p { user_id group_id } {
-    Returns 1 if specified user is an administrator of the specified group. 
-    0 otherwise
-} {
-    return [string equal "t" [util_memoize "db_string user_member_of_group \"select ad_group_member_admin_role_p($user_id, $group_id) from dual\""]]
-}
-
-#!!!
+# ToDo: replace by im_profile::member_p 
 ad_proc -public im_user_is_employee_p { user_id } {
     Returns 1 if a the user is in the employee group. 0 Otherwise
 } {
-    return [im_user_group_member_p $user_id [im_employee_group_id]]
+    return [im_profile::member_p -profile_id [im_employee_group_id] -user_id $user_id]
 }
 
-
-#!!!
+# ToDo: replace by im_profile::member_p
 ad_proc -public im_user_is_freelance_p { user_id } {
     Returns 1 if a the user is in the freelance group. 0 Otherwise
 } {
-    set freelance_group_id [im_freelance_group_id]
-    ns_log Notice "freelance_group_id=$freelance_group_id"
-    ns_log Notice "user_id=$user_id"
-    return [im_user_group_member_p $user_id [im_freelance_group_id]]
+    return [im_profile::member_p -profile_id [im_freelance_group_id] -user_id $user_id]
 }
 
-
-#!!!
+# ToDo: replace by im_profile::member_p
 ad_proc -public im_user_is_customer_p { user_id } {
     Returns 1 if a the user is in a customer group. 0 Otherwise
 } {
-    set customer_group_id [im_customer_group_id]
-    return [im_user_group_member_p $user_id [im_customer_group_id]]
+    return [im_profile::member_p -profile_id [im_customer_group_id] -user_id $user_id]
 }
 
+# ToDo: replace by im_profile::member_p
 ad_proc -public im_user_is_hr_p { user_id } {
     Returns 1 if a the user is in the HR Managers group.
 } {
-    return [im_user_group_member_p $user_id [im_hr_group_id]]
+    return [im_profile::member_p -profile_id [im_hr_group_id] -user_id $user_id]
 }
 
+# ToDo: replace by im_profile::member_p
 ad_proc -public im_user_is_accounting_p { user_id } {
     Returns 1 if a the user is in the Accounting group.
 } {
-    return [im_user_group_member_p $user_id [im_accounting_group_id]]
+    return [im_profile::member_p -profile_id [im_accounting_group_id] -user_id $user_id]
+}
+
+# ToDo: replace by im_profile::member_p
+ad_proc -public im_user_is_admin_p { user_id } {
+    Returns 1 if a the user is in a customer group. 0 Otherwise
+} {
+    return [im_is_user_site_wide_or_intranet_admin $user_id]
 }
 
 
+# -----------------------------------------------------
+# Deprecated procs
+# -----------------------------------------------------
 
 ad_proc -public im_is_user_site_wide_or_intranet_admin { 
     { user_id "" } 
@@ -295,72 +309,12 @@ ad_proc -public im_is_user_site_wide_or_intranet_admin {
     Returns 1 if a user is a site-wide administrator or a 
     member of the intranet administrative group 
 } {
-    if { [empty_string_p $user_id] } {
-	set user_id [ad_verify_and_get_user_id]
-    }
-    if { $user_id == 0 } {
-	return 0
-    }
-    if { [im_site_wide_admin_p $user_id] } {
-	return 1
-    }
-    if { [im_user_intranet_admin_p $user_id] } {
-	return 1
-    }
+    if { [empty_string_p $user_id] } { set user_id [ad_verify_and_get_user_id] }
+    if { $user_id == 0 } { return 0 }
+
+    if { [util_memoize [list acs_user::site_wide_admin_p -user_id $user_id] 60] } { return 1 }
+    if { [im_profile::member_p -profile_id [im_admin_group_id] -user_id $user_id] } { return 1 }
     return 0
 }
 
-#!!!
-ad_proc -public im_user_intranet_admin_p { user_id } {
-    returns 1 if the user is an intranet admin 
-} {
-    return [ad_user_group_member [im_admin_group_id] $user_id]
-}
 
-#!!!
-ad_proc -public im_site_wide_admin_p { user_id } {
-    returns 1 if the user is an intranet admin 
-} {
-    return [util_memoize "acs_user::site_wide_admin_p -user_id $user_id" 60]
-}
-
-
-ad_proc -public im_admin_group_id { } {Returns the group_id of administrators} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='P/O Admins'\" -default 0"]
-}
-
-ad_proc -public im_employee_group_id { } {Returns the group_id for employees} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Employees'\" -default 0"]
-}
-
-ad_proc -public im_wheel_group_id { } {Returns the group_id for wheel (=senior managers)} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Senior Managers'\" -default 0"]
-}
-
-ad_proc -public im_pm_group_id { } {Returns the group_id for project managers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Project Managers'\" -default 0"]
-}
-
-ad_proc -public im_accounting_group_id { } {Returns the group_id for employees} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Accounting'\" -default 0"]
-}
-
-ad_proc -public im_customer_group_id { } {Returns the group_id for customers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Customers'\" -default 0"]
-}
-
-ad_proc -public im_partner_group_id { } {Returns the group_id for partners} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Partners'\" -default 0"]
-}
-
-ad_proc -public im_office_group_id { } {Returns the group_id for offices} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Offices'\" -default 0"]
-}
-
-ad_proc -public im_freelance_group_id { } {Returns the group_id for freelancers} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='Freelancers'\" -default 0"]
-}
-
-ad_proc -public im_hr_group_id { } {Returns the group_id for Human Resources} {
-    return [util_memoize "db_string project_group_id \"select group_id from groups where group_name='HR Managers'\" -default 0"]
-}

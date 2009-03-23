@@ -21,54 +21,6 @@ ad_library {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 }
 
-# ------------------------------------------------------------------
-# ad_user_group_member 
-
-ad_proc -public ad_user_group_member { group_id user_id} {
-    Frequently used procedure to determine if a user is a 
-    member of a group
-} {
-    set member_p [util_memoize "ad_user_group_member_helper $group_id $user_id" 60]
-    return $member_p
-}
-
-
-ad_proc -public ad_user_group_member_helper {group_id user_id} {
-    Helper-functionn for:
-    Frequently used procedure to determine if a user is a 
-    member of a group.
-} {
-
-    set member_count [db_string member_count "
-	select 
-		count(*) 
-	from 
-		acs_rels ar,
-		membership_rels mr
-	where 
-		ar.rel_id = mr.rel_id
-		and ar.object_id_two = $user_id 
-		and ar.object_id_one = $group_id
-		and mr.member_state = 'approved'
-    "]
-
-    if {$member_count > 0} { return 1 }
-    return 0
-}
-
-
-
-
-
-ad_proc -public ad_user_group_name_member { group_name user_id} {
-
-} {
-    set member_count [util_memoize "db_string member_count \"select count(*) from acs_rels r, groups g where r.object_id_two = $user_id and r.object_id_one = g.group_id and g.group_name='$group_name'\""]
-
-    if {$member_count > 0} { return 1 }
-    return 0
-}
-
 ad_proc -public ad_partner_upvar { var {levels 2} } {
     incr levels
     set return_value ""

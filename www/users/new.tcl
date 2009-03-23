@@ -74,13 +74,13 @@ if {![auth::UseEmailForLoginP]} { set show_username_p 1 }
 
 
 # Get the list of profiles managable for current_user_id
-set managable_profiles [im_profiles_managable_for_user $current_user_id]
+set managable_profiles [im_profile::profile_options_managable_for_user $current_user_id]
 ns_log Notice "/users/new: managable_profiles=$managable_profiles"
 
 # Extract only the profile_ids from the managable profiles
 set managable_profile_ids [list]
 foreach g $managable_profiles {
-    lappend managable_profile_ids [lindex $g 0]
+    lappend managable_profile_ids [lindex $g 1]
 }
 ns_log Notice "/users/new: managable_profile_ids=$managable_profile_ids"
 
@@ -128,11 +128,11 @@ where
     db_0or1row get_user_details $user_details_sql
 
     # The user already exists - let's get his list of profiles
-    set users_profiles [im_profiles_of_user $user_id]
+    set users_profiles [im_profile::profile_options_of_user $user_id]
     ns_log Notice "/users/new: users_profiles=$users_profiles"
     set profile_values [list]
     foreach p $users_profiles { 
-	lappend profile_values [lindex $p 0] 
+	lappend profile_values [lindex $p 1] 
     }
     ns_log Notice "/users/new: profile_values=$profile_values"
 
@@ -212,31 +212,17 @@ ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
 # Build a Multiple select box with the users profiles
 # ---------------------------------------------------------------
 
-
-# Change the order of the inner list elements for
-# the OpenACS 5.0 form elements:
-set managable_profiles_reverse [list]
-foreach option $managable_profiles {
-    set profile_id [lindex $option 0]
-    set group_name [lindex $option 1]
-    lappend managable_profiles_reverse [list $group_name $profile_id]
-}
-ns_log Notice "/users/new: managable_profiles_reverse=$managable_profiles_reverse"
-ns_log Notice "/users/new: profile_values=$profile_values"
-
-
-
 # Fraber 051123: Don't show the profile to the user
 # himself, unless it's an administrator.
 set edit_profiles_p 0
-if {[llength $managable_profiles_reverse] > 0} { set edit_profiles_p 1 }
+if {[llength $managable_profiles] > 0} { set edit_profiles_p 1 }
 if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set edit_profiles_p 0}
 
 if {$edit_profiles_p} {
     ad_form -extend -name register -form {
 	{profile:text(multiselect),multiple
 	    {label "[_ intranet-core.Group_Membership]"}
-	    {options $managable_profiles_reverse }
+	    {options $managable_profiles }
 	    {values $profile_values }
 	    {html {size 12}}
 	}
@@ -401,7 +387,8 @@ ad_form -extend -name register -on_request {
 
         # Add the user to the "Registered Users" group, because
         # (s)he would get strange problems otherwise
-        set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+        # Use a non-cached version here to avoid issues!
+        set registered_users [im_registered_users_group_id]
         set reg_users_rel_exists_p [db_string member_of_reg_users "
 		select	count(*) 
 		from	group_member_map m, membership_rels mr
@@ -444,7 +431,7 @@ ad_form -extend -name register -on_request {
 	# Profile changes its value, possibly because of strange
 	# ad_form sideeffects
 
-	foreach profile_tuple [im_profiles_all] {
+	foreach profile_tuple [im_profile::profile_options_all] {
 
 	    # don't enter into setting and unsetting profiles
 	    # if the user has no right to change profiles.
@@ -453,8 +440,8 @@ ad_form -extend -name register -on_request {
 	    if {!$edit_profiles_p} { break }
 
 	    ns_log Notice "profile_tuple=$profile_tuple"
-	    set profile_id [lindex $profile_tuple 0]
-	    set profile_name [lindex $profile_tuple 1]
+	    set profile_name [lindex $profile_tuple 0]
+	    set profile_id [lindex $profile_tuple 1]
 	    
 	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:profile_id"]
 
@@ -466,33 +453,23 @@ ad_form -extend -name register -on_request {
 	    ns_log Notice "/users/new: profile_name=$profile_name, profile_id=$profile_id, should_be_member=$should_be_member, is_member=$is_member"
 
 	    if {$is_member && !$should_be_member} {
-		ns_log Notice "/users/new: => remove_member from $profile_name\n"
 
+		ns_log Notice "/users/new: => remove_member from $profile_name\n"
 		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		    ad_return_complaint 1 "<li>
                     [_ intranet-core.lt_You_are_not_allowed_t]"
                    return
 		}
 
-		# db_dml delete_profile $delete_rel_sql
-		db_foreach membership_del $membership_del_sql {
-		    ns_log Notice "/users/new: Going to delete rel_id=$rel_id"
-		    membership_rel::delete -rel_id $rel_id
-		}
+		# Remove the user from the profile
+		# (deals with special cases such as SysAdmin)
+		im_profile::remove_member -profile_id $profile_id -user_id $user_id
 
-		# Special logic: Revoking P/O Admin privileges also removes
-		# Site-Wide-Admin privs
-		if {$profile_id == [im_profile_po_admins]} { 
-		    ns_log Notice "users/new: Remove P/O Admins => Remove Site Wide Admins"
-		    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
-		}
-
-		# Remove all permission related entries in the system cache
-		im_permission_flush
 	    }
 
 	    
 	    if {!$is_member && $should_be_member} {
+
 		ns_log Notice "/users/new: => add_member to profile $profile_name\n"
 
 		# Check if the profile_id belongs to the managable profiles of
@@ -507,8 +484,7 @@ ad_form -extend -name register -on_request {
 
 		# Make the user a member of the group (=profile)
 		ns_log Notice "/users/new: => relation_add $profile_id $user_id"
-		set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
-		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		im_profile::add_member -profile_id $profile_id -user_id $user_id
 		
 
 		# Special logic for employees and P/O Admins:
@@ -516,37 +492,24 @@ ad_form -extend -name register -on_request {
 		# P/O Admin => Site Wide Admin
 		if {$profile_id == [im_profile_project_managers]} { 
 		    ns_log Notice "users/new: Project Managers => Employees"
-		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
-		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		    im_profile::add_member -profile_id [im_profile_employees] -user_id $user_id
 		}
 
 		if {$profile_id == [im_profile_accounting]} { 
 		    ns_log Notice "users/new: Accounting => Employees"
-		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
-		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		    im_profile::add_member -profile_id [im_profile_employees] -user_id $user_id
 		}
 
 		if {$profile_id == [im_profile_sales]} { 
 		    ns_log Notice "users/new: Sales => Employees"
-		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
-		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		    im_profile::add_member -profile_id [im_profile_employees] -user_id $user_id
 		}
 
 		if {$profile_id == [im_profile_senior_managers]} { 
 		    ns_log Notice "users/new: Senior Managers => Employees"
-		    set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
-		    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
+		    im_profile::add_member -profile_id [im_profile_employees] -user_id $user_id
 		}
-
-		if {$profile_id == [im_profile_po_admins]} { 
-		    ns_log Notice "users/new: P/O Admins => Site Wide Admins"
-		    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
-		    im_security_alert -severity "Info" -location "users/new" -message "New P/O Admin" -value $email
-		}
-
-		# Remove all permission related entries in the system cache
-		im_permission_flush
-	       
+       
 	    }
 	}
 
@@ -681,12 +644,4 @@ ad_form -extend -name register -on_request {
 	ad_returnredirect "/intranet/users/"
     }
 }
-
-
-
-
-
-
-
-
 

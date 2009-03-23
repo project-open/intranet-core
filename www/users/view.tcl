@@ -180,7 +180,7 @@ set user_basic_profile_html "
 	<tr $td_class([expr $ctr % 2])>
 	  <td>[_ intranet-core.Profile]</td>
 	  <td>
-	    [im_user_profile_component $user_id_from_search "disabled"]
+	    [im_profile::profile_component $user_id_from_search "disabled"]
 	  </td>
 	</tr>
 "

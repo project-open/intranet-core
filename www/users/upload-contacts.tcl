@@ -35,13 +35,13 @@ set main_site_id $main_site(package_id)
 set reg_req_email_verify [parameter::get -package_id $main_site_id -parameter RegistrationRequiresEmailVerificationP -default 0]
 
 
-set managable_profiles [im_profiles_managable_for_user $user_id]
+set managable_profiles [im_profile::profile_options_managable_for_user $user_id]
 set profile_select "<select name=profile_id>\n"
 append profile_select "<option value=\"\">[_ intranet-core.Please_Select]</option>\n"
 foreach profile $managable_profiles {
-    set profile_id [lindex $profile 0]
-    set profile_name [lindex $profile 1]
-#    ns_log notice "upload-contacts: profile_id=$profile_id, profile_name=$profile_name"
+    set profile_name [lindex $profile 0]
+    set profile_id [lindex $profile 1]
+
     append profile_select "\t<option value=\"$profile_id\">$profile_name</option>\n"
 }
 append profile_select "</select>\n"

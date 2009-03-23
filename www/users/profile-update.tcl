@@ -47,9 +47,9 @@ if {[string equal "" $return_url]} {
 if {$current_user_admin_p} {
 
     # get the list of all profiles in the system
-    set all_profiles [im_profiles_all]
+    set all_profiles [im_profile::profile_options_all]
     set ap [list]
-    foreach p $all_profiles { lappend ap [lindex $p 0] } 
+    foreach p $all_profiles { lappend ap [lindex $p 1] } 
 
     # Get the list of all profiles that the current_user can set
     set target_profiles [im_profiles_for_new_user $current_user_id]
@@ -57,9 +57,9 @@ if {$current_user_admin_p} {
     foreach p $target_profiles { lappend tp [lindex $p 0] } 
 
     # Get the list of current profiles
-    set current_profiles [im_profiles_of_user $user_id]
+    set current_profiles [im_profile::profile_options_of_user $user_id]
     set cp [list]
-    foreach p $current_profiles { lappend cp [lindex $p 0] } 
+    foreach p $current_profiles { lappend cp [lindex $p 1] } 
 
     set delete_rels_sql "
 BEGIN

@@ -12,6 +12,10 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Profiles represent OpenACS groups used by ]project-open[
+# However, for performance reasons we have introduced special
+# caching and auxillary functions specific to ]po[.
+
 # @author frank.bergmann@project-open.com
 
 
@@ -20,128 +24,323 @@
 # ------------------------------------------------------------------
 
 ad_proc -public im_profile_employees {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Employees'"] 
+     return [im_profile::profile_id_from_name -profile "Employees"]
 }
 
 ad_proc -public im_profile_project_managers {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Project Managers'"] 
+     return [im_profile::profile_id_from_name -profile "Project Managers"]
 }
 
 ad_proc -public im_profile_senior_managers {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Senior Managers'"] 
+     return [im_profile::profile_id_from_name -profile "Senior Managers"] 
 }
 
 ad_proc -public im_profile_po_admins {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'P/O Admins'"] 
+     return [im_profile::profile_id_from_name -profile "P/O Admins"] 
 }
 
 ad_proc -public im_profile_customers {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Customers'"] 
+     return [im_profile::profile_id_from_name -profile "Customers"] 
 }
 
 ad_proc -public im_profile_freelancers {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Freelancers'"] 
+     return [im_profile::profile_id_from_name -profile "Freelancers"] 
 }
 
 ad_proc -public im_profile_accounting {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Accounting'"] 
+     return [im_profile::profile_id_from_name -profile "Accounting"] 
 }
 
 ad_proc -public im_profile_sales {} { 
-    return [im_memoize_one profile_employees \
-    "select group_id from groups where group_name = 'Sales'"] 
+     return [im_profile::profile_id_from_name -profile "Sales"] 
+}
+
+ad_proc -public im_profile_hr_managers {} { 
+     return [im_profile::profile_id_from_name -profile "HR Managers"] 
+}
+
+ad_proc -public im_profile_partners {} { 
+     return [im_profile::profile_id_from_name -profile "Partners"] 
+}
+
+ad_proc -public im_profile_registered_users {} { 
+    return [util_memoize [list db_string registered_users "
+		select	object_id 
+		from	acs_magic_objects
+		where	name='registered_users'
+    "]]
 }
 
 
 
 # ------------------------------------------------------------------
-# User Profile Box
+# Operations on Profile
 # ------------------------------------------------------------------
 
-ad_proc -public im_user_profile_component { {-size 12} user_id { disabled "" }} {
-    Returns a piece of HTML representing a multi-
-    select box with the profiles of the user.
 
-    @param user_id User to show
-    @param disabled Set to "disabled" to show the widget in a 
-    disabled state.
-} {
-    # get the current profile of this user
-    set current_profiles [im_profiles_of_user $user_id]
+namespace eval im_profile {
 
-    set cp [list]
-    foreach p $current_profiles { lappend cp [lindex $p 0] } 
-    ns_log Notice "im_user_profile_component: current_profiles=$current_profiles"
-    ns_log Notice "im_user_profile_component: cp=$cp"
+    # ------------------------------------------------------------------
+    # add_member & remove_member action
+    # ------------------------------------------------------------------
 
-    # A list of lists containing profile_id/profile_name tuples
-    set all_profiles [im_profiles_all]
-    ns_log Notice "im_user_profile_component: all_profiles=$all_profiles"
-    
-    set profile_html "<select name=profile size=$size multiple $disabled>"
-
-    foreach profile $all_profiles {
-        set group_id [lindex $profile 0]
-        set group_name [lindex $profile 1]
-        set selected [lsearch -exact $cp $group_id]
-        if {$selected > -1} {
-	    append profile_html "<option value=$group_id selected>$group_name</option>\n"
-        } else {
-	    append profile_html "<option value=$group_id>$group_name</option>\n"
+    ad_proc -public add_member { 
+	{ -profile "" }
+        { -profile_id "" }
+	-user_id:required
+    } {
+	Add a new member to a profile.
+	Resets the cache for access to this group
+    } {
+	# Add the user as an approved member of the profile
+        if {"" != $profile} {
+            set profile_id [profile_id_from_name -profile $profile]
         }
+	if {"" == $profile_id} { return 0 }
+
+	# Add the member to the group.
+	# ToDo: Is the update_elation update really necessary?
+	set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
+	db_dml update_relation "update membership_rels set member_state = 'approved' where rel_id = :rel_id"
+
+	# Special logic: Add a P/O Admin also as a site wide admin
+	if {$profile_id == [im_profile_po_admins]} {
+	    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+	    im_security_alert -severity "Info" -location "im_profile::add_member" -message "New P/O Admin" -value [im_name_from_user_id $user_id]
+	}
+
+	# Set the new value to the cache
+	set key [list member_p $profile_id $user_id]
+	ns_cache set im_profile $key 1
     }
-    append profile_html "</select>\n"
+
+    ad_proc -public remove_member { 
+	{ -profile "" }
+        { -profile_id "" }
+	-user_id:required
+    } { 
+	Removes a member from a profile.
+	Resets the cache for access to this group
+    } {
+	# Get the name of the profile
+	if {"" != $profile} {
+            set profile_id [profile_id_from_name -profile $profile]
+        }
+	if {"" == $profile_id} { return 0 }
+
+	# Remove the user from the group
+	group::remove_member -group_id $profile_id -user_id $user_id
+
+	# Special logic: Revoking P/O Admin privileges also removes Site-Wide-Admin privs
+	if {$profile_id == [im_profile_po_admins]} {
+	    ns_log Notice "im_profile::remove_member: Remove P/O Admins => Remove Site Wide Admins"
+	    permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
+
+	    # Flush cached SiteWide permissions
+	    util_memoize_flush_regexp "acs_user::site_wide_admin_p.*"
+	}
+
+	# Cache the result
+	set key [list member_p $profile_id $user_id]
+	ns_cache set im_profile $key 0
+    }
+
+    # ------------------------------------------------------------------
+    # Cached version of checking for membership
+    # ------------------------------------------------------------------
+
+    ad_proc -public member_p { 
+	{ -profile "" }
+	{ -profile_id "" }
+	-user_id:required
+    } {
+	Checks if a user is member of a profile.
+    } {
+	# Get the profile_id
+	if {"" != $profile} {
+	    set profile_id [profile_id_from_name -profile $profile]
+	}
+	if {"" == $profile_id} { return 0 }
+
+	# Check if we find information in the cache
+	set key [list member_p $profile_id $user_id]
+	if {[ns_cache get im_profile $key value]} { return $value}
+
+	# Value not found in the cache, so calculate the value
+	set member_p [member_p_not_cached -profile $profile -user_id $user_id]
+	
+	# Store the value in the cache
+        ns_cache set im_profile $key $member_p
+
+	return $member_p
+    }
+
+    ad_proc -public member_p_not_cached { 
+	{ -profile "" }
+	{ -profile_id "" }
+	-user_id:required
+    } { 
+	Checks if a user is member of a profile.
+    } {
+	# Get the profile name
+	if {"" != $profile} {
+	    set profile_id [profile_id_from_name -profile $profile]
+	}
+	if {"" == $profile_id} { return 0 }
+
+	# We are looking for direct memberships (cascade = 0) for performance reasons
+	# (profiles in ]po[ are not designed to be sub-groups of another group).
+	set cascade_p 0
+	set member_flag [db_string member_p "select acs_group__member_p(:user_id, :profile_id, :cascade_p)"]
+
+	# Translate from database t/f to TCL 1/0 values
+	switch $member_flag {
+	    t { set member_p 1 }
+	    default { set member_p 0 }
+	}
+
+	return $member_p
+    }
+
+
+    # ------------------------------------------------------------------
+    # Get the name for a profile
+    # ------------------------------------------------------------------
+
+    ad_proc -public profile_id_from_name { 
+	-profile:required
+    } { 
+	Return the profile_id for a given profile
+	or "" if the profile doesn't exist
+    } {
+	# Check if we have calculated this result already
+	set key [list profile_id $profile]
+	if {[ns_cache get im_profile $key value]} { return $value}
+
+	# Calculate the profile_id
+	set profile_id [profile_id_from_name_not_cached -profile $profile]
+	if {"" == $profile_id} { return "" }
+
+	# Store the value in the cache
+        ns_cache set im_profile $key $profile_id
+
+	return $profile_id
+    }
+
+    ad_proc -public profile_id_from_name_not_cached { 
+	-profile:required
+    } { 
+	Return the profile_id for a given profile name.
+	The problem is that group names are used as constants,
+	while groups are defined dynamically. 
+	@return Returns the profile_id or "" if the profile doesn't
+	        exist.
+    } {
+	set profile_id [db_string profile_id_not_cached "
+		select	g.group_id 
+		from	groups g,
+			im_profiles p
+		where	g.group_id = p.profile_id and
+			group_name = :profile
+	" -default ""]
+	return $profile_id
+    }
+
+    ad_proc -public flush_cache { } { 
+	Remove all cache entries for debugging purposes.
+	This should not be necessary during normal operations.
+    } {
+	foreach name [ns_cache names im_profile] {
+	    ns_cache flush im_profile $name
+	}
+    }
+
+
+    # ------------------------------------------------------------------
+    # User Profile Box
+    # ------------------------------------------------------------------
+
+    ad_proc -public profile_component { 
+	{-size 12} 
+	user_id 
+	{ disabled "" }
+    } {
+	Returns a piece of HTML representing a multi-
+	select box with the profiles of the user.
+	
+	@param user_id User to show
+	@param disabled Set to "disabled" to show the widget in a 
+	disabled state.
+    } {
+	# get the current profile of this user
+	set current_profiles [profile_options_of_user $user_id]
+	
+	set cp [list]
+	foreach p $current_profiles { lappend cp [lindex $p 1] } 
+	ns_log Notice "im_user_profile_component: current_profiles=$current_profiles"
+	ns_log Notice "im_user_profile_component: cp=$cp"
+	
+	# A list of lists containing profile_id/profile_name tuples
+	set all_profiles [profile_options_all]
+	ns_log Notice "im_user_profile_component: all_profiles=$all_profiles"
+	
+	set profile_html "<select name=profile size=$size multiple $disabled>"
+	
+	foreach profile_tuple $all_profiles {
+
+	    set group_name [lindex $profile_tuple 0]
+	    set group_id [lindex $profile_tuple 1]
+
+	    set selected [lsearch -exact $cp $group_id]
+	    if {$selected > -1} {
+		append profile_html "<option value=$group_id selected>$group_name</option>\n"
+	    } else {
+		append profile_html "<option value=$group_id>$group_name</option>\n"
+	    }
+	}
+	append profile_html "</select>\n"
+	
+	return $profile_html
+    }
     
-    return $profile_html
-}
 
+    # ------------------------------------------------------------------
+    # Options for option box
+    # ------------------------------------------------------------------
 
-# ------------------------------------------------------------------
-# Get various sets of profiles
-# ------------------------------------------------------------------
-
-ad_proc -public im_profiles_all {} {
-    Returns the list of all available profiles in the system.
-    The returned list consists of (group_id - group_name) tuples.
-} {
-    # Get the list of all profiles
-    set profile_sql {
-select
-	g.group_id,
-	g.group_name
-from
-	acs_objects o,
-	groups g
-where
-	g.group_id = o.object_id
-	and o.object_type = 'im_profile'
-order by lower(g.group_name)
-}
-    # Make a list
-    set options [list]
-    db_foreach profiles $profile_sql {
-	lappend options [list $group_id "$group_name"]
+    ad_proc -public profile_options_all {} {
+	Returns the list of all available profiles in the system.
+	The returned list consists of (group_id - group_name) tuples.
+    } {
+	# Get the list of all profiles
+	set profile_sql {
+		select
+			g.group_name,
+			g.group_id
+		from
+			acs_objects o,
+			groups g
+		where
+			g.group_id = o.object_id
+			and o.object_type = 'im_profile'
+		order by lower(g.group_name)
+	}
+	set options [db_list_of_lists profile_options_all $profile_sql]
+	return $options
     }
-    return $options
-}
 
 
-ad_proc -public im_profiles_of_user { user_id } {
-    Returns a list of the profiles of the current user.
-    The returned list consists of (group_id - group_name) tuples.
-} {
-    # Get the list of profiles for the current user
-    set profile_sql {
+    ad_proc -public profile_options_of_user { 
+	user_id 
+    } {
+	Returns a list of the profiles of the current user.
+	The returned list consists of (group_id - group_name) tuples.
+    } {
+	# Get the list of profiles for the current user
+	set profile_sql {
 	select DISTINCT
-	        g.group_id,
-		g.group_name
+		g.group_name,
+	        g.group_id
 	from
 	        acs_objects o,
 	        groups g,
@@ -154,68 +353,62 @@ ad_proc -public im_profiles_of_user { user_id } {
 	        and o.object_type = 'im_profile'
 	        and m.rel_id = mr.rel_id
 	        and mr.member_state = 'approved'
+        }
+
+	set options [db_list_of_lists profile_options_of_user $profile_sql]
+	return $options
     }
 
-    # Make a list
-    set options [list]
-    db_foreach profiles $profile_sql {
-	lappend options [list $group_id "$group_name"]
-    }
+    ad_proc -public profile_options_managable_for_user { 
+	user_id 
+    } {
+	Returns the list of (group_name - group_id) tupels for
+	all profiles that a user can manage<br>
+	This function allows for a kind of "sub-administrators"
+	where for example Employees are able to manage Freelancers.<BR>
+	This list may be empty in the case of unprivileged users
+	such as companies or freelancers.
+    } {
+	set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+	
+	# Get the list of all profiles administratable
+	# by the current user.
+	set profile_sql "
+		select DISTINCT
+			g.group_name,
+			g.group_id
+		from
+			acs_objects o,
+			groups g,
+			all_object_party_privilege_map perm
+		where
+			perm.object_id = g.group_id
+			and perm.party_id = :user_id
+			and perm.privilege = 'admin'
+			and g.group_id = o.object_id
+			and o.object_type = 'im_profile'
+        "
 
-    return $options
-}
-
-
-ad_proc -public im_profiles_managable_for_user { user_id } {
-    Returns the list of (group_name - group_id) tupels for
-    all profiles that a user can manage<br>
-    This function allows for a kind of "sub-administrators"
-    where for example Employees are able to manage Freelancers.<BR>
-    This list may be empty in the case of unprivileged users
-    such as companies or freelancers.
-} {
-    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-
-    # Get the list of all profiles administratable
-    # by the current user.
-    set profile_sql "
-select DISTINCT
-	g.group_name,
-	g.group_id
-from
-	acs_objects o,
-	groups g,
-	all_object_party_privilege_map perm
-where
-	perm.object_id = g.group_id
-	and perm.party_id = :user_id
-	and perm.privilege = 'admin'
-	and g.group_id = o.object_id
-	and o.object_type = 'im_profile'
-"
-
-    # We need a special treatment for Admin in order to
-    # bootstrap the system...
-    if {$user_is_admin_p} {
-	set profile_sql {
-select
-        g.group_name,
-	g.group_id
-from
-        acs_objects o,
-        groups g
-where
-        g.group_id = o.object_id
-        and o.object_type = 'im_profile'
-order by lower(g.group_name)
+	# We need a special treatment for Admin in order to
+	# bootstrap the system...
+	if {$user_is_admin_p} {
+	    set profile_sql {
+		select
+		        g.group_name,
+			g.group_id
+		from
+		        acs_objects o,
+		        groups g
+		where
+		        g.group_id = o.object_id
+		        and o.object_type = 'im_profile'
+		order by lower(g.group_name)
+	    }
 	}
+
+	set options [db_list_of_lists profile_options_for_user $profile_sql]
+        return $options
     }
 
-    # Make a list
-    set options [list]
-    db_foreach profiles $profile_sql {
-	lappend options [list $group_id "$group_name"]
-    }
-    return $options
 }
 
