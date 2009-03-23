@@ -224,15 +224,18 @@ set column_vars [list]
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [util_memoize [db_string get_view_id "
+
+
+set view_id [util_memoize [list db_string get_view_id "
 	select view_id 
 	from im_views 
 	where view_name = '$view_name'
 " -default 0]]
+
 if {!$view_id} { 
-    ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
-    [_ intranet-core.lt_You_are_trying_to_acc]<br>
-    [_ intranet-core.lt_Please_notify_your_sy]"
+   ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
+   [_ intranet-core.lt_You_are_trying_to_acc]<br>
+   [_ intranet-core.lt_Please_notify_your_sy]"
 }
 
 set column_sql "
