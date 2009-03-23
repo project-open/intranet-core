@@ -16,6 +16,7 @@ function extendContract(){
 		jQuery(".fullwidth-list").animate({marginLeft: "288px"}, slideDuration );
 		// make expand tab arrow image face left (inwards)
 		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
+		document.getElementById('slave_content').style.visibility='visible';
 	}
 	else{
 		document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
@@ -25,6 +26,7 @@ function extendContract(){
 		jQuery(".fullwidth-list").animate({marginLeft: "24px"}, slideDuration );
 		// make expand tab arrow image face right (outwards)
 		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
+		document.getElementById('slave_content').style.visibility='hidden';
 	}
 }
 
