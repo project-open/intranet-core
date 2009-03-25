@@ -112,6 +112,9 @@ namespace eval im_profile {
 	# Set the new value to the cache
 	set key [list member_p $profile_id $user_id]
 	ns_cache set im_profile $key 1
+
+	# Delete the saved user_options cache
+	user_options_flush_cache
     }
 
     ad_proc -public remove_member { 
@@ -143,6 +146,9 @@ namespace eval im_profile {
 	# Cache the result
 	set key [list member_p $profile_id $user_id]
 	ns_cache set im_profile $key 0
+
+	# Delete the saved user_options cache
+	user_options_flush_cache
     }
 
     # ------------------------------------------------------------------
@@ -200,6 +206,66 @@ namespace eval im_profile {
 	}
 
 	return $member_p
+    }
+
+
+    # ------------------------------------------------------------------
+    # Cached list of group members
+    # ------------------------------------------------------------------
+
+    ad_proc -public user_options { 
+	{-profile_ids 0}
+    } {
+	Returns a list of (user_id user_name) tuples for all users
+	that are a member of the specified profiles.
+    } {
+	# Check if we have calculated this result already
+	set key [list user_options $profile_ids]
+	if {[ns_cache get im_profile $key value]} { return $value}
+
+	# Calculate the options
+	set user_options [user_options_not_cached -profile_ids $profile_ids]
+
+	# Store the value in the cache
+        ns_cache set im_profile $key $user_options
+
+	return $user_options
+
+    }
+
+    ad_proc -public user_options_not_cached { 
+	{ -profile_ids 0 }
+    } { 
+	Returns a list of (user_id user_name) tuples for all users
+	that are a member of the specified profiles.
+    } {
+	if {"" == $profile_ids} { return "" }
+	return [db_list_of_lists user_options "
+		select  
+			im_name_from_user_id(u.user_id) as name,
+			u.user_id
+		from
+			users_active u,
+			group_distinct_member_map m
+		where
+			u.user_id = m.member_id
+			and m.group_id in ([join $profile_ids ","])
+		order by
+			name
+	"]
+    }
+
+    ad_proc -public user_options_flush_cache { 
+    } {
+	Flushes the cache for user_options.
+	It is necessary to flush all user_options cache entries
+	after adding or removing a user from any group.
+    } {
+	foreach name [ns_cache names im_profile] {
+	    if { [regexp {user_options.*} $name] } {
+		 ns_cache flush im_profile $name
+	    }
+	}
     }
 
 

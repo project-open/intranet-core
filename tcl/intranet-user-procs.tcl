@@ -260,27 +260,9 @@ ad_proc im_user_select {
 	}
     }
 
-    # Join the ids together
-    set group_in_sql [join $group_id ","]
-
-    # We need a "distinct" because there can be more than one
-    # mapping between a user and a group, one for each role.
-    #
-    set bind_vars [ns_set create]
-    ns_set put $bind_vars group_id $group_id
-    set sql "
-	select	u.user_id, 
-		im_name_from_user_id(u.user_id) as name
-	from
-		users_active u,
-		group_distinct_member_map m
-	where
-		u.user_id = m.member_id
-		and m.group_id in ($group_in_sql)
-	order by 
-		name
-    "
-    return [im_selection_to_select_box -translate_p 0 -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars project_lead_list $sql $select_name $default]
+    set user_options [im_profile::user_options -profile_ids $group_id]
+    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
+    return [im_options_to_select_box $select_name $user_options $default]
 }
 
 
