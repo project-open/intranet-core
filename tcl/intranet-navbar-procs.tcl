@@ -47,7 +47,7 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+    return [util_no_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
 }
 
 ad_proc -public im_navbar_tree_helper { 
@@ -60,7 +60,7 @@ ad_proc -public im_navbar_tree_helper {
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
-    sset html "
+    set html "
       <hr/>
       	<div class=filter-block>
 	<ul class=mktree>
@@ -72,34 +72,7 @@ ad_proc -public im_navbar_tree_helper {
 	</ul>
 
 	[if {![catch {set ttt [im_navbar_tree_project_management]}]} {set ttt} else {set ttt ""}]
-
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
-	<ul>
-		[im_menu_li timesheet2_timesheet]
-		<li><a href=/intranet-timesheet2/absences/>[lang::message::lookup "" intranet-core.Absences_and_Vacations "Absences &amp; Vacations"]</a>
-		<ul>
-
-			<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absences "New Absence"]</a></li>
-
-			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5000>Vacation Requests</a></li>
-			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5001>Personal Absences</a></li>
-			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5002>Sick Leave Requests</a></li>
-			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5003>Travel Requests</a></li>
-			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5004>Bank Holidays</a></li>
-		</ul>
-		<li><a href=/intranet-expenses/>[lang::message::lookup "" intranet-core.Travel_Costs_and_Expenses "Travel Costs & Expenses"]</a>
-		<ul>
-			<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Cost_Expense "New Travel Cost/Expense"]</a>
-		</ul>
-		<li><a href=/intranet-reporting/user-contacts>[lang::message::lookup "" intranet-core.Report_Users_Contacts "Users &amp; Contacts Report"]</a>
-
-		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
-                <ul>
-                [im_menu_li "reporting-timesheet-productivity"]
-		<!-- Additional reports in future HR area? --> 
-                [im_navbar_write_tree -label "reporting-hr" -maxlevel 1]
-                </ul>
-	</ul>
+	[if {![catch {set ttt [im_navbar_tree_human_resources]}]} {set ttt} else {set ttt ""}]
 
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Sales_and_Marketing "Sales &amp; Marketing"]</a>
 	<ul>
@@ -183,9 +156,9 @@ ad_proc -public im_navbar_tree_project_management {
     Project Management Navbar 
 } {
     set html "
-	<li><a href=/intranet/projects/>Project Management</a>
+	<li><a href=/intranet/projects/>[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
-		<li><a href=/intranet/projects/new>Create a New Project</a>
+		<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a>
     "
 
     # Add sub-menu with project types
@@ -231,10 +204,10 @@ ad_proc -public im_navbar_tree_project_management {
     "
 
     append html "
-		<li><a href=/intranet-dw-light/projects.csv>Export Projects to CSV</a></li>
-		<li><a href=/intranet/projects/index?filter_advanced_p=1>Project Advanced Filtering</a>
-		<li><a href=/gantt-resources-cube?config=resource_planning_report>Project Resource Planning</a>
-		<li><a href=/intranet/projects/index?view_name=project_costs>Projects Profit &amp; Loss</a>
+		<li><a href=/intranet-dw-light/projects.csv>[lang::message::lookup "" intranet-core.Export_Projects_to_CSV "Export Projects to CSV"]</a></li>
+		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
+<li><a href=/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
     "
 
     append html "
@@ -243,23 +216,116 @@ ad_proc -public im_navbar_tree_project_management {
     return $html
 }
 
+
+
+
+
+ad_proc -public im_navbar_tree_human_resources { 
+} { 
+    Human Resources Management
+} {
+    set html "
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
+	<ul>
+		<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_User "New User"]</a>
+    "
+
+    # Add sub-menu with project types
+    append html "
+	        <li><a href=/intranet/users/index>[lang::message::lookup "" intranet-core.User_Profiles "User Profiles"]</a>
+        	<ul>
+    "
+    set profile_sql "
+	select * from groups, im_profiles
+	where group_id = profile_id and group_name not in ('The Public')
+	order by group_name
+    "
+    db_foreach profiles $profile_sql {
+        set url [export_vars -base "/intranet/users/index" {{user_group_name $group_name}}]
+        regsub -all " " $group_name "_" group_name_subst
+        set name [lang::message::lookup "" intranet-core.User_Profile_$group_name_subst $group_name]
+        append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
+		</ul>
+		</li>
+    "
+   
+    append html "
+		<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absence "New Absence"]</a></li>
+		<li><a href=/intranet-timesheet2/absences/index>[lang::message::lookup "" intranet-core.Absence_Types "Absence Types"]</a>
+		<ul>
+    "
+    set absence_sql "
+	select * from im_absence_types
+	order by lower(absence_type)
+    "
+    db_foreach absences $absence_sql {
+        set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
+        regsub -all " " $absence_type "_" absence_type_subst
+        set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+        append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
+		</ul>
+		</li>
+    "
+
+    append html "
+		<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Expense "New Travel Expense"]</a>
+		<li><a href=/intranet-expenses/index>[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
+		<ul>
+    "
+    set absence_sql "
+	select * from im_absence_types
+	order by lower(absence_type)
+    "
+    db_foreach absences $absence_sql {
+        set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
+        regsub -all " " $absence_type "_" absence_type_subst
+        set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+        append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
+		</ul>
+		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.HR_Reporting "HR Reporting"]</a>
+                <ul>
+			<li><a href=/intranet-reporting/user-contacts>[lang::message::lookup "" intranet-core.Report_Users_Contacts "Users &amp; Contacts Report"]</a>
+        	        [im_menu_li "reporting-timesheet-productivity"]
+			<!-- Additional reports in future HR area? --> 
+        	        [im_navbar_write_tree -label "reporting-hr" -maxlevel 1]
+                </ul>
+		</li>
+    "
+
+    append html "
+		<li><a href=/intranet-dw-light/users.csv>[lang::message::lookup "" intranet-core.Export_Users_to_CSV "Export Users to CSV"]</a></li>
+		[im_menu_li timesheet2_timesheet]
+	</ul>
+    "
+
+    return $html
+}
+
+
+
 ad_proc -public im_navbar_tree_provider_management { } { Provider Management } {
     return "
-	<li><a href=/intranet/>Provider Management</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
-		<li><a href=/intranet-dw-light/companies.csv>Export Providers to CSV/Excel</a></li>
-		<li><a href=/intranet/projects/index>Providers</a>
+		<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Providers_to_CSV "Export Providers to CSV/Excel"]</a></li>
+		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Providers Providers]</a>
 			<ul>
-			<li><a href=/intranet/companies/new>New Provider Company</a></li>
-			<li><a href=/intranet/users/new>New Provider Contact</a></li>
-			<li><a href=/intranet-freelance/index>Search for Providers by Skills</a></li>
+			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Provider "New Provider Company"]</a></li>
+			<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_Provider_Contact "New Provider Contact"]</a></li>
+			<li><a href=/intranet-freelance/index>[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
 			[im_menu_li freelance_rfqs]
 			</ul>
 		</li>
-		<li><a href=/intranet-reporting/>Reporting</a>
+		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Provider_Reporting "Provider Reporting"]</a>
 			<ul>
 			[im_menu_li reporting-cubes-finance]
-			<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>Project Resource Planning</a>
+			<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
 			</ul>
 		</li>
 	</ul>
@@ -270,12 +336,13 @@ ad_proc -public im_navbar_tree_provider_management { } { Provider Management } {
 
 ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
     return "
-	<li><a href=/intranet/>Collaboration</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration"]</a>
 	<ul>
 		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a>
 		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a>
 		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
 		[im_menu_li forum]
+		<li><a href=/intranet-forum/index>[lang::message::lookup "" intranet-core.Forum_Types "Forum Types"]</a>
 		<ul>
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1100>News</a>
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1108>Notes</a>
@@ -283,6 +350,7 @@ ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1104>Tasks</a>
 			<li><a href=/intranet-forum/index?forum_topic_type_id=1102>Incidents</a>
 		</ul>
+		</li>
 		[im_menu_li -pretty_name Wiki wiki]
 		<li><a href=/intranet-filestorage/>[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a>
 		<li><a href=/simple-survey/>Surveys</a>
