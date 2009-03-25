@@ -1,6 +1,16 @@
-jQuery.noConflict();
+// check this http://www.nabble.com/%22$(document).ready(function()-%7B%22-giving-error-%22$-is-not-a-function%22----what-am-I-doing-wrong--td17139297s27240.html
+// jQuery.noConflict();
+
 
 jQuery().ready(function(){
+
+/*
+        var node_insert_after=document.getElementById("fullwidth-list");
+        var node_to_move=document.getElementById("footer");
+        if (node_insert_after != null && node_to_move != null) {
+           document.getElementById("filter_list").insertBefore(node_to_move, node_insert_after.nextSibling);
+        }
+*/
 
     /* auto-change skin-select */ 	
     jQuery("#header_skin_select > form > select").change(function(){
@@ -8,7 +18,6 @@ jQuery().ready(function(){
     });
 
     /* sliding filters */
-
     jQuery(".filter > .filter-block:first").prepend('<div class="filter-button"></div>');
 
     if (poGetCookie("filterState")=="hidden") {
@@ -23,7 +32,7 @@ jQuery().ready(function(){
        );
     }
 
-  
+
     jQuery(".filter-button").click(function(){  
 	if (jQuery(".filter").css("left")!="0px") {
 	   jQuery(".fullwidth-list").animate({ 
@@ -53,6 +62,8 @@ jQuery().ready(function(){
 
 	   poSetCookie("filterState","hidden",20);
 	}
+
+
     });
 
     
@@ -135,7 +146,9 @@ jQuery().ready(function(){
     );
 /*    cornersObj.applyCornersToAll(); */
 
+
 });
+
 
 function poGetCookie(c_name)
 {

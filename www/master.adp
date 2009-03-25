@@ -5,7 +5,7 @@
 <if @show_left_navbar_p@>
 	<div id="slave">
 	<div id="slave_content">
-	<div class="filter-list">
+	<div class="filter-list" id="filter-list">
 		<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
 		<div class="filter" id="sidebar">
 			<div id="sideBarContentsInner">

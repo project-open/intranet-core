@@ -21,6 +21,25 @@
    right: 2px;
 }
 
+
+.footer_hack {
+	border-top:3px solid #FFFFFF;
+	display:none;
+	height:3px;
+	position:relative;
+	top:-3px;
+	width:100%;
+	z-index:101;
+}
+
+#footer {
+	margin-top:1em;
+	position:relative;
+	text-align:center;
+}
+
+
 #main_header {
 	height: 35px;
 }
+
