@@ -97,6 +97,6 @@ db_foreach packages $sql {
 }
 
 set parameter_html "
-<table border=0>
+<table border=0 width=800>
 $package_html
 </table>\n"

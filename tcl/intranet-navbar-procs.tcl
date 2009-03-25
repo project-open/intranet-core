@@ -47,7 +47,7 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    return [util_no_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
 }
 
 ad_proc -public im_navbar_tree_helper { 
