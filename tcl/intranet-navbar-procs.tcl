@@ -60,7 +60,7 @@ ad_proc -public im_navbar_tree_helper {
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
-    set html "
+    sset html "
       <hr/>
       	<div class=filter-block>
 	<ul class=mktree>
@@ -68,18 +68,18 @@ ad_proc -public im_navbar_tree_helper {
 	<ul>
 		[im_menu_li home]
 		[im_menu_li dashboard]
-		<li><a href=/register/logout>Logout</a>
+		<li><a href=/register/logout>[lang::message::lookup "" intranet-core.logout Logout]</a>
 	</ul>
 
 	[if {![catch {set ttt [im_navbar_tree_project_management]}]} {set ttt} else {set ttt ""}]
 
-	<li><a href=/intranet/>Human Resources</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
 		[im_menu_li timesheet2_timesheet]
-		<li><a href=/intranet-timesheet2/absences/>Absences &amp; Vacations</a>
+		<li><a href=/intranet-timesheet2/absences/>[lang::message::lookup "" intranet-core.Absences_and_Vacations "Absences &amp; Vacations"]</a>
 		<ul>
 
-			<li><a href=/intranet-timesheet2/absences/new>New Absence</a></li>
+			<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absences "New Absence"]</a></li>
 
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5000>Vacation Requests</a></li>
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5001>Personal Absences</a></li>
@@ -87,13 +87,13 @@ ad_proc -public im_navbar_tree_helper {
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5003>Travel Requests</a></li>
 			<li><a href=/intranet-timesheet2/absences/index?absence_type_id=5004>Bank Holidays</a></li>
 		</ul>
-		<li><a href=/intranet-expenses/>Travel Costs & Expenses</a>
+		<li><a href=/intranet-expenses/>[lang::message::lookup "" intranet-core.Travel_Costs_and_Expenses "Travel Costs & Expenses"]</a>
 		<ul>
-			<li><a href=/intranet-expenses/new>New Travel Cost/Expense</a>
+			<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Cost_Expense "New Travel Cost/Expense"]</a>
 		</ul>
-		<li><a href=/intranet-reporting/user-contacts>Users &amp; Contacts Report</a>
+		<li><a href=/intranet-reporting/user-contacts>[lang::message::lookup "" intranet-core.Report_Users_Contacts "Users &amp; Contacts Report"]</a>
 
-		<li><a href=/intranet-reporting/>Reporting</a>
+		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
                 <ul>
                 [im_menu_li "reporting-timesheet-productivity"]
 		<!-- Additional reports in future HR area? --> 
@@ -101,11 +101,11 @@ ad_proc -public im_navbar_tree_helper {
                 </ul>
 	</ul>
 
-	<li><a href=/intranet/>Sales &amp; Marketing</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Sales_and_Marketing "Sales &amp; Marketing"]</a>
 	<ul>
-		<li><a href=/intranet/projects/index>Project Proposals</a>
+		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
 			<ul>
-			<li><a href=/intranet/projects/new>New Project</a></li>
+			<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a></li>
 			<li><a href=/intranet/projects/index?project_status_id=71>All Potential Projects</a></li>
 			<li><a href=/intranet/projects/index?project_status_id=72>Projects Inquiring</a></li>
 			<li><a href=/intranet/projects/index?project_status_id=73>Projects Qualifiying</a></li>
@@ -115,9 +115,9 @@ ad_proc -public im_navbar_tree_helper {
 			<li><a href=/intranet/projects/index?project_status_id=76>All Open Projects</a></li>
 			</ul>
 		</li>
-		<li><a href=/intranet/projects/index>Customer Prospects</a>
+		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Customer_Prospects "Customer Prospects"]</a>
 			<ul>
-			<li><a href=/intranet/companies/new>New Customer</a></li>
+			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=41>All Potential Customers</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=42>Customers Inquiring</a></li>
 			<li><a href=/intranet/companies/index?type_id=57&status_id=43>Customers Qualifiying</a></li>
@@ -128,13 +128,13 @@ ad_proc -public im_navbar_tree_helper {
 		</li>
 		<li><a href=/intranet/projects/index>Quoting</a>
 			<ul>
-			<li><a href=/intranet-invoices/>New Quote</a></li>
-			<li><a href=/intranet-invoices/list?cost_type_id=3702>All Quotes</a></li>
+			<li><a href=/intranet-invoices/>[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
+			<li><a href=/intranet-invoices/list?cost_type_id=3702>[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
 			</ul>
 		</li>
-		<li><a href=/intranet-reporting/>Reporting</a>
+		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
 			<ul>
-			<li><a href=/intranet-dw-light/companies.csv>Export Customers to CSV/Excel</a></li>
+			<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Customers_to_CSV "Export Customers to CSV/Excel"]</a></li>
 			[im_menu_li dashboard]
 			[im_menu_li reporting-cubes-finance]
 			</ul>
