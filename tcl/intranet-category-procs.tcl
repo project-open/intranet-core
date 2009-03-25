@@ -22,7 +22,7 @@ ad_proc -public im_category_from_id {
     {-locale ""}
     category_id 
 } {
-    Get a category_name from 
+    Convert a category_id integer into a category name.
 } {
     if {![string is integer $category_id]} { return $category_id }
     if {"" == $category_id} { return "" }
