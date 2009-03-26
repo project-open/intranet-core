@@ -173,7 +173,7 @@ namespace eval im_profile {
 	if {[ns_cache get im_profile $key value]} { return $value}
 
 	# Value not found in the cache, so calculate the value
-	set member_p [member_p_not_cached -profile $profile -user_id $user_id]
+	set member_p [member_p_not_cached -profile_id $profile_id -user_id $user_id]
 	
 	# Store the value in the cache
         ns_cache set im_profile $key $member_p
@@ -181,19 +181,12 @@ namespace eval im_profile {
 	return $member_p
     }
 
-    ad_proc -public member_p_not_cached { 
-	{ -profile "" }
-	{ -profile_id "" }
+    ad_proc -private member_p_not_cached { 
+	-profile_id:required
 	-user_id:required
     } { 
 	Checks if a user is member of a profile.
     } {
-	# Get the profile name
-	if {"" != $profile} {
-	    set profile_id [profile_id_from_name -profile $profile]
-	}
-	if {"" == $profile_id} { return 0 }
-
 	# We are looking for direct memberships (cascade = 0) for performance reasons
 	# (profiles in ]po[ are not designed to be sub-groups of another group).
 	set cascade_p 0
