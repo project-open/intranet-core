@@ -388,6 +388,10 @@ im_dynfield::attribute_store \
 # Finish
 # ------------------------------------------------------
 
+# Flush the company cache
+im_company::flush_cache
+
+# Not sure if still necessary...
 db_release_unused_handles
 
 
