@@ -592,7 +592,7 @@ append filter_html "
 append filter_html "
   <tr>
 <td class=form-label valign=top>[lang::message::lookup "" intranet-core.Customer "Customer"]:</td>
-<td class=form-widget valign=top>[im_company_select -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
+<td class=form-widget valign=top>[im_company_select -include_empty_p 1 -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
   </tr>
 "
 
