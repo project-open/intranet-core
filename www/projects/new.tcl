@@ -372,7 +372,7 @@ if {[form is_request $form_id]} {
 	#
 	if {![info exist project_nr]} {
 	    set project_nr [im_next_project_nr -customer_id $company_id]
-	}
+       	}
 	set edit_existing_project_p 0
 	set start_date $todays_date
 	set end_date $todays_date

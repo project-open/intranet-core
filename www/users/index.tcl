@@ -116,10 +116,11 @@ switch [string tolower $user_group_name] {
 	}
     }
 }
-
+ 
 
 if {$user_group_id > 0} {
 
+#   ad_return_complaint 1 $user_group_id
     # We have a group specified to show:
     # Check whether the user can "read" this group:
     set sql "select im_object_permission_p(:user_group_id, :user_id, 'read') from dual"
@@ -139,7 +140,6 @@ if {$user_group_id > 0} {
 	    set read_p 0 
 	}
     }
-
     if {!$read_p} {
         ad_return_complaint 1 "[_ intranet-core.lt_You_dont_have_permiss]"
         return

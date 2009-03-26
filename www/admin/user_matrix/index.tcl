@@ -78,7 +78,7 @@ where
 "
 
 set table "
-<table>
+<table cellpadding='4' cellspacing='4' border='1'>
 $table_header
 "
 
