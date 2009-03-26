@@ -689,11 +689,6 @@ ns_log Notice "/intranet/project/index: Before format header"
 set colspan [expr [llength $column_headers] + 1]
 
 set table_header_html ""
-#<tr>
-#  <td align=center valign=top colspan=$colspan><font size=-1>
-#    [im_groups_alpha_bar [im_project_group_id] $letter "start_idx"]</font>
-#  </td>
-#</tr>"
 
 # Format the header names with links that modify the
 # sort order of the SQL query.

@@ -20,10 +20,11 @@ if {0 != $interval_hours} {
 
 # Create a global cache for im_profile entries.
 # The cache is bound by global timeout of 1 hour currently.
-ns_cache create im_profile \
-    -timeout [ad_parameter -package_id [im_package_core_id] ProfileCacheTimeout "" 3600]
+ns_cache create im_profile -timeout [ad_parameter -package_id [im_package_core_id] CacheTimeoutProfiles "" 3600]
 
-# No size limit currently!
-#    -size [ad_parameter -package_id [im_package_core_id] ProfileCacheMaxSize "" 200000]
+
+# Create a global cache for im_company entries.
+# The cache is bound by global timeout of 1 hour currently.
+ns_cache create im_company -timeout [ad_parameter -package_id [im_package_core_id] CacheTimeoutCompanies "" 3600]
 
 

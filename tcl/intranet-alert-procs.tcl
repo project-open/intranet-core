@@ -78,6 +78,23 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
 }
 
 
+ad_proc -public im_security_alert_check_integer {
+    { -location "No location specified"}
+    { -value "No value specified" }
+} {
+    Check of a parameter has the form of an integer list,
+    which includes the empty list and a single integer.
+} {
+    foreach v $value {
+	if {![string is integer $v]} {
+	    im_security_alert \
+		-location $location \
+		-message "Found non-integer in integer argument" \
+		-value $value \
+		-severity "Normal" \
+	}
+    }
+}
 
 
 ad_proc -public im_security_alert {

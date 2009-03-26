@@ -128,6 +128,9 @@ ad_proc -public im_permission_flush {} {
     # Clear the specific cache for profile - user rels
     im_profile::flush_cache
 
+    # Clear company cache
+    im_company::flush_cache
+
 #    util_memoize_flush_regexp "ad_permission.*"
 #    util_memoize_flush_regexp "im_permission.*"
 #    util_memoize_flush_regexp "db_string.*"

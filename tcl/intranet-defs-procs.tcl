@@ -806,14 +806,21 @@ ad_proc im_selection_to_select_box {
 
 
 
-ad_proc im_options_to_select_box { select_name options { default "" } } {
+ad_proc im_options_to_select_box { select_name options { default "" } { tag_attributes "" } } {
     Takes an "options" list (list of list, the inner containing a 
     (category, category_id) as for formbuilder) and returns a formatted
     select box.
 } {
-#   ad_return_complaint 1 "select_name=$select_name, options=$options, default=$default"
+    # Deal with JavaScript tags 
+    array set tag_hash $tag_attributes
+    set tag_hash(name) $select_name
+    set tag_attribute_html ""
+    foreach key [array names tag_hash] {
+        set val $tag_hash($key)
+        append tag_attribute_html "$key=\"$val\" "
+    }
 
-    set result "\n<select name=\"$select_name\">\n"
+    set result "<select $tag_attribute_html>\n"
     foreach option $options {
 	set value [lindex $option 0]
 	set index [lindex $option 1]

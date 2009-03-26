@@ -56,16 +56,135 @@ ad_proc -public im_company_type_partner {} {
 }
 
 
-
 # Suitable roles for a company object
 ad_proc -public im_company_role_key_account { } { return 1302 }
 ad_proc -public im_company_role_member { } { return 1300 }
 
 
+# Annual revenues constants for companies
 ad_proc -public im_company_annual_rev_0_1 {} { return 223 }
 ad_proc -public im_company_annual_rev_1_10 {} { return 224 }
 ad_proc -public im_company_annual_rev_10_100 {} { return 222 }
 ad_proc -public im_company_annual_rev_100_ {} { return 225 }
+
+
+# -----------------------------------------------------------
+# Caching procs for companies
+# -----------------------------------------------------------
+
+
+namespace eval im_company {
+
+    ad_proc -public flush_cache { } { 
+	Remove all cache entries for debugging purposes.
+	This should not be necessary during normal operations.
+    } {
+	foreach name [ns_cache names im_company] {
+	    ns_cache flush im_company $name
+	}
+    }
+
+
+    # -----------------------------------------------------------
+    # Returns an option list of companies:
+    # (company_name - company_id) tuples
+    #
+    ad_proc -public company_options { 
+	{-user_id ""}
+	{-status_id "" }
+	{-type_id "" }
+	{-exclude_status_id "" }
+	{-always_include_company_id "" }
+    } {
+	Returns a list of company_name - company_id tuples for the
+	given parameters.
+	This procedure relies that changes to companies will be 
+	reported to this module.
+    } {
+	if {"" == $user_id} { set user_id [ad_get_user_id] }
+	
+	# Check if we have calculated this result already
+	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id]
+	if {[ns_cache get im_company $key value]} { return $value }
+
+	# Calculate the options
+	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id]
+
+	# Store the value in the cache
+        ns_cache set im_company $key $company_options
+
+	return $company_options
+    }
+
+    ad_proc -public company_options_not_cached { 
+	-user_id:required
+	{-status_id "" }
+	{-type_id "" }
+	{-exclude_status_id "" }
+	{-always_include_company_id "" }
+    } {
+	Returns a list of company_name - company_id tuples for the
+	given parameters.
+	This procedure relies that changes to companies will be 
+	reported to this module.
+    } {
+	# Build the SQL conditions
+	set criteria [list]
+	lappend criteria "c.company_status_id not in ([join [im_sub_categories [im_company_status_inactive]] ","])"
+	
+	if {"" != $status_id} {
+	    im_security_alert_check_integer -value $status_id -location "company_options_not_cached"
+	    lappend criteria "c.company_status_id in ([join [im_sub_categories $status_id] ","])"
+	}
+	
+	if {"" != $exclude_status_id} {
+	    im_security_alert_check_integer -value $exclude_status_id -location "company_options_not_cached"
+	    lappend criteria "c.company_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
+	}
+	
+	if {"" != $type_id} {
+	    im_security_alert_check_integer -value $type_id -location "company_options_not_cached"
+	    lappend criteria "c.company_type_id in ([join [im_sub_categories $type_id] ","])"
+	}
+    
+        set where_clause [join $criteria " and\n\t\t"]
+        if { ![empty_string_p $where_clause] } { set where_clause " and $where_clause" }
+
+        # Permission SQL: Normal users can see only "their" companies
+	set perm_sql "
+		(       select	c.*
+			from	im_companies c,
+				acs_rels r
+			where	c.company_id = r.object_id_one
+				and r.object_id_two = :user_id
+				$where_clause
+		UNION
+			select	c.*
+			from	im_companies c
+			where	c.company_id in ([join $always_include_company_id ","])
+		)
+	"
+
+        # Certain users can see all companies. This simplified the permissions...
+	if {[im_permission $user_id "view_companies_all"]} {
+	    set perm_sql "im_companies"
+	}
+
+        # Pull out all suitable companies
+	set company_sql "
+		select	c.company_name,
+			c.company_id
+		from	$perm_sql c
+		where	1=1
+			$where_clause
+		order by lower(trim(c.company_name))
+	"
+
+	set options [db_list_of_lists company_options $company_sql]
+	return $options
+    }
+}
+
 
 
 # -----------------------------------------------------------
@@ -278,92 +397,6 @@ ad_proc -public im_company_freelance_helper { } {
 }
 
 
-ad_proc -public im_company_options {
-    {-include_empty 1}
-    {-status "" }
-    {-type "" }
-    {-exclude_status "" }
-    {default 0}
-} {
-    Cost company options
-} {
-    set user_id [ad_get_user_id]
-    set bind_vars [ns_set create]
-    ns_set put $bind_vars user_id $user_id
-
-    set where_clause "  and c.company_status_id != [im_company_status_inactive]"
-
-    set perm_sql "
-	(       select	c.*
-		from	im_companies c,
-			acs_rels r
-		where	c.company_id = r.object_id_one
-			and r.object_id_two = :user_id
-			$where_clause
-	UNION
-		select	c.*
-		from	im_companies c
-		where	c.company_id = :default
-	)
-"
-
-    if {[im_permission $user_id "view_companies_all"]} {
-	set perm_sql "im_companies"
-    }
-
-    set sql "
-	select
-		c.company_name,
-		c.company_id
-	from
-		$perm_sql c
-	where
-		1=1
-		$where_clause
-    "
-
-    if { ![empty_string_p $status] } {
-	set status_id [db_string status "select company_status_id from im_company_status where company_status=:status" -default 0]
-	ns_set put $bind_vars status $status
-	append sql " and c.company_status_id in ([join [im_sub_categories $status_id] ","])"
-    }
-
-    if { ![empty_string_p $exclude_status] } {
-	set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
-	append sql " and c.company_status_id in (
-		select  company_status_id
-		from    im_company_status
-		where   company_status not in ($exclude_string)
-	)"
-    }
-
-
-    if { ![empty_string_p $type] } {
-	ns_set put $bind_vars type $type
-	append sql "
-	and c.company_type_id in (
-		select  ct.company_type_id
-		from    im_company_types ct
-		where ct.company_type = :type
-	UNION
-		select  ch.child_id
-		from    im_company_types ct,
-			im_category_hierarchy ch
-		where
-			ch.parent_id = ct.company_type_id
-			and ct.company_type = :type
-	)"
-    }
-
-    append sql " order by lower(c.company_name)"
-
-
-    set options [db_list_of_lists company_options $sql]
-    if {$include_empty} { set options [linsert $options 0 { "" "" }] }
-    return $options
-}
-
-
 ad_proc -public im_provider_options { {include_empty 1} } { 
     Cost provider options
 } {
@@ -436,8 +469,46 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 }
 
 
+
+# -----------------------------------------------------------
+# Company "select" and "options"
+# -----------------------------------------------------------
+
+
+ad_proc -public im_company_options {
+    {-include_empty_p 1}
+    {-include_empty_name "-- Please_select --" }
+    {-status_id "" }
+    {-status "" }
+    {-type_id "" }
+    {-type "" }
+    {-exclude_status_id "" }
+    {-exclude_status "" }
+    {default 0}
+} {
+    Cost company options
+} {
+    set user_id [ad_get_user_id]
+    if {"" != $status} { set status_id [im_id_from_category $status "Intranet Company Status"] }
+    if {"" != $exclude_status} { set exclude_status_id [im_id_from_category $exclude_status "Intranet Company Status"] }
+    if {"" != $type} { set type_id [im_id_from_category $type "Intranet Company Type"] }
+
+    # Get the options
+    set company_options [im_company::company_options \
+		     -user_id $user_id \
+		     -status_id $status_id \
+		     -type_id $type_id \
+		     -exclude_status_id $exclude_status_id \
+		     -always_include_company_id $default \
+    ]
+    if {"" != $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
+    return $company_options
+}
+
+
 ad_proc -public im_company_select { 
-    {-include_empty_name "--_Please_select_--" }
+    {-include_empty_p 1}
+    {-include_empty_name "-- Please_select --" }
     {-tag_attributes {} }
     select_name 
     { default "" } 
@@ -451,79 +522,19 @@ ad_proc -public im_company_select {
     status. If exclude status is provided, we limit to states that do not
     match exclude_status (list of statuses to exclude).<br>
 
-    New feature 040527: The companies to be shown depend on the users
-    permissions: The system should show only the users companies, except
-    if the user has the "view_companies_all" permission.
-    @param tag_attributes key-value-key-value... list of attributes
-           to be included in the tag.
+    @param tag_attributes key-value-key-value... list of attributes to be included in the tag.
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
 
-    set user_id [ad_get_user_id]
-    set bind_vars [ns_set create]
-    ns_set put $bind_vars user_id $user_id
-    ns_set put $bind_vars default $default
-    ns_set put $bind_vars subsite_id [ad_conn subsite_id]
-
-    set where_clause "	and c.company_status_id != [im_company_status_inactive]"
-
-    set perm_sql "
-	(	select	c.*
-		from	im_companies c,
-			acs_rels r
-		where	c.company_id = r.object_id_one
-			and r.object_id_two = :user_id
-			$where_clause
-	UNION
-		select	c.*
-		from	im_companies c
-		where	c.company_id = :default
-	)
-    "
-    if {[im_permission $user_id "view_companies_all"]} { set perm_sql "im_companies" }
-
-
-    set sql "
-	select	c.company_id,
-		c.company_name
-	from	$perm_sql c
-	where	company_status_id not in ([im_company_status_deleted], [im_company_status_inactive])
-		$where_clause
-    "
-
-    if { ![empty_string_p $status] } {
-	ns_set put $bind_vars status $status
-	append sql " and c.company_status_id=(select company_status_id from im_company_status where company_status=:status)"
-    }
-
-    if { ![empty_string_p $exclude_status] } {
-	set exclude_string [im_append_list_to_ns_set $bind_vars company_status_type $exclude_status]
-	append sql " and c.company_status_id in (select company_status_id 
-						 from im_company_status 
-						 where company_status not in ($exclude_string)) "
-	ns_log Notice "im_company_select: exclude_string=$exclude_string"
-    }
-
-    if { ![empty_string_p $type] } {
-	ns_set put $bind_vars type $type
-	append sql " 
-	and c.company_type_id in (
-		select 	ct.company_type_id 
-		from	im_company_types ct
-		where ct.company_type = :type
-	UNION
-		select 	ch.child_id
-		from	im_company_types ct,
-			im_category_hierarchy ch
-		where
-			ch.parent_id = ct.company_type_id
-			and ct.company_type = :type
-	)"
-    }
-
-    append sql " order by lower(c.company_name)"
-
-    return [im_selection_to_select_box -translate_p 0 -include_empty_name $include_empty_name -tag_attributes $tag_attributes $bind_vars "company_status_select" $sql $select_name $default]
+    set company_options [im_company_options \
+			     -include_empty_p $include_empty_p \
+			     -include_empty_name $include_empty_name \
+			     -status $status \
+			     -type $type \
+			     -exclude_status $exclude_status \
+			     default \
+    ]
+    return [im_options_to_select_box $select_name $company_options $default $tag_attributes]
 }
 
 

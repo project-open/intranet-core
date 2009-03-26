@@ -36,6 +36,38 @@ ad_proc -public im_category_from_id {
     return $category_name
 }
 
+ad_proc -public im_id_from_category { 
+    category
+    category_type
+} {
+    Convert a category_name into a category_id.
+    Returns "" if the category isn't found.
+} {
+    return [util_memoize [list im_id_from_category_helper $category $category_type]]
+}
+
+ad_proc -public im_id_from_category_helper { 
+    category
+    category_type
+} {
+    Convert a category_name into a category_id.
+    Returns "" if the category isn't found.
+} {
+    set results [list]
+    foreach cat $category {
+	set id [db_string id_from_cat "
+		select	category_id
+		from	im_categories
+		where	category = :cat and
+			category_type = :category_type
+        " -default ""]
+	if {"" != $id} { lappend results $id }
+    }
+    return $results
+}
+
+
+
 ad_proc -public im_category_from_category {
     {-category ""}
 } {
