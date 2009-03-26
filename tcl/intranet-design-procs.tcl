@@ -1595,16 +1595,17 @@ ad_proc im_alpha_bar {
     {-next_page_url ""}
     target_url 
     default_letter 
-    bind_vars} {
+    bind_vars
+} {
     Returns a horizontal alpha bar with links
+    @param default_letter none: no alpha bar at all no_alpha: only back/forth
 } {
     set alpha_list [im_all_letters_lowercase]
     set alpha_list [linsert $alpha_list 0 All]
     set default_letter [string tolower $default_letter]
 
-    if {[string equal "none" $default_letter]} { 
-	return "&nbsp;" 
-    }
+    # "none" is a special value for no alpha-bar at all
+    if {[string equal "none" $default_letter]} { return "&nbsp;" }
 
     ns_set delkey $bind_vars "letter"
     set params [list]
@@ -1624,14 +1625,17 @@ ad_proc im_alpha_bar {
 	append html "<li><a href=\"$prev_page_url\">&lt;&lt</a></li>"
     }
 
-    foreach letter $alpha_list {
-	set letter_key "intranet-core.[lang::util::suggest_key $letter]"
-	set letter_trans [lang::message::lookup "" $letter_key $letter]
-	if {[string equal $letter $default_letter]} {
-	    append html "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$letter_trans</a></div></li>\n"
-	} else {
-	    set url "$target_url?letter=$letter&amp;$param_html"
-	    append html "<li class=\"unselected\"><a href=\"$url\">$letter_trans</a></li>\n"
+    # "no_alpha" is a special value for an alpha-bar without letter and only back/forth
+    if {![string equal "no_alpha" $default_letter]} {
+	foreach letter $alpha_list {
+	    set letter_key "intranet-core.[lang::util::suggest_key $letter]"
+	    set letter_trans [lang::message::lookup "" $letter_key $letter]
+	    if {[string equal $letter $default_letter]} {
+		append html "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$letter_trans</a></div></li>\n"
+	    } else {
+		set url "$target_url?letter=$letter&amp;$param_html"
+		append html "<li class=\"unselected\"><a href=\"$url\">$letter_trans</a></li>\n"
+	    }
 	}
     }
 
