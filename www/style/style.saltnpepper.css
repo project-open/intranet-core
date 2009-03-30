@@ -50,12 +50,12 @@
 }
 
 .fullwidth-list {
-   margin-left: 290px;
-   margin-right: 20px;
-   min-height: 400px;
-   visibility: hidden;
+	margin-left: 290px;
+	margin-right: 20px;
+	margin-top: 4px;
+	min-height: 400px;
+	visibility: hidden;
 }
-
 
 .fullwidth-list-no-side-bar{
    margin-left: 10px;
