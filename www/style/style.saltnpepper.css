@@ -954,7 +954,7 @@ a   span  {float:none;}
 .fullwidth-list table {
    text-align:left;
    border-collapse:collapse;
-   margin:0px;
+   margin:10px;
 }
 
 div#fullwidth-main {
@@ -966,17 +966,23 @@ div#fullwidth-components {
 	width: 200px;
 }
 
-.table_list_page,.table_component, .list  {
+.table_list_page,
+.table_component, 
+.list  {
    text-align:left;
    border-collapse:collapse;
    margin:0px;
 }
 
 
-.table_list_page tr td.rowtitle, .table_list_page tbody tr th.list, .list
-   tr.list-header, .list th.list, .cal-table-display tbody tr
-   td.cal-month-title-text, .table_component_hover th.list-header td.list, .table_component_hover
-   tbody tr th.list,.table_component_hover tbody tr td.rowtitle, td.rowtitle {
+.table_list_page tr td.rowtitle, 
+.table_list_page tbody tr th.list, 
+.list tr.list-header, 
+.list th.list, 
+.cal-table-display tbody tr td.cal-month-title-text, 
+.table_component_hover th.list-header td.list, 
+.table_component_hover tbody tr th.list,
+.table_component_hover tbody tr td.rowtitle, td.rowtitle {
    color:#039;
    font-size:13px;
    font-weight:bold;
@@ -987,8 +993,9 @@ div#fullwidth-components {
    border-bottom:1px solid #fff;
 }
 
-
-.table_list_page tr td, .table_component_hover tr td, .list tr td {
+.table_list_page tr td, 
+.table_component_hover tr td, 
+.list tr td {
    border-bottom:1px solid #fff;
    /* color:#669; */
    border-top:1px solid #fff;
@@ -996,6 +1003,39 @@ div#fullwidth-components {
    repeat-x;
    padding:4px;
 }
+
+.table_list_page tbody tr.no_hover,
+.table_list_page tbody tr.no_hover td, 
+.table_list_page tbody tr.no_hover td.rowtitle, 
+.table_list_page tbody tr.no_hover td.rowodd,
+.table_list_page tbody tr.no_hover td.rowplain,
+.table_list_page tbody tr.rowplain,
+.table_list_page tbody tr.rowplain td, 
+.table_list_page tbody tr:hover.rowplain,
+.table_list_page tbody tr:hover.rowplain td 
+{
+   background:#B9C9FE url('/intranet/images/navbar_saltnpepper/gradhead.gif') repeat-x scroll 0%;
+}
+
+
+.table_list_page tbody tr.rowwhite,
+.table_list_page tbody tr.rowwhite td,
+.table_list_page tbody tr.rowwhite td.rowtitle,
+.table_list_page tbody tr.rowwhite td.rowodd,
+.table_list_page tbody tr.rowwhite td.rowplain,
+.table_list_page tbody tr:hover.rowwhite,
+.table_list_page tbody tr:hover.rowwhite td
+{
+   background:#E7ECFF;
+}
+
+
+.table_interim_title {
+	font-weight: bold;
+	color: #333399;
+}
+
+
 
 .table_list_page tfoot tr td, .table_component_hover tfoot tr td, .list tfoot tr td {
    background:#e8edff;
