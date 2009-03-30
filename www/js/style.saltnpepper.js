@@ -1,10 +1,10 @@
 /*   START: NEW SIDEBAR */
 
-var isExtended = 1;
 var height = 600;
 var width = 243;
 var slideDuration = 750;
 var opacityDuration = 1500;
+isExtended = 1;
 
 function extendContract(){
 	// alert('extendContract');
@@ -18,9 +18,12 @@ function extendContract(){
 		// make expand tab arrow image face left (inwards)
 		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
 		document.getElementById('slave_content').style.visibility='visible';
+		// [temp] set back to height=auto when animation is done, should be triggered based on event  
+		var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
 		poSetCookie('isExtendedCookie',1,90);
 	}
 	else{
+		// alert (document.getElementById('sidebar').offsetHeight);
 		document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
 		sideBarSlide(height, 135, width, 0);
 		sideBarOpacity(1, 0);
@@ -34,9 +37,8 @@ function extendContract(){
 }
 
 function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
-	 // alert('in: sideBarSlide');
-	// $("sideBarContents").css ({'height': fromHeight, 'width': fromWidth});
-	// $("#sideBarContents").animate( { 'height': toHeight, 'width': toWidth }, { 'queue': false, 'duration': slideDuration }, "linear" );
+	//  $("sideBarContents").css ({'height': fromHeight, 'width': fromWidth});
+	//  $("#sideBarContents").animate( { 'height': toHeight, 'width': toWidth }, { 'queue': false, 'duration': slideDuration }, "linear" );
 	$("sidbar").css ({'height': fromHeight, 'width': fromWidth});
 	$("#sidebar").animate( { 'height': toHeight, 'width': toWidth }, { 'queue': false, 'duration': slideDuration }, "linear" );
 
@@ -45,7 +47,6 @@ function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
 function sideBarOpacity(from, to){
 	// $("#sideBarContents").animate( { 'opacity': to }, opacityDuration, "linear" );
 	$("#filter").animate( { 'opacity': to }, opacityDuration, "linear" );
-
 }
 
 $(function(){
@@ -120,6 +121,7 @@ jQuery().ready(function(){
         if  ( isExtendedCookie == 0 ) {
                 extendContract();
         }
+
 });
 
 
