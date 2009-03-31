@@ -30,6 +30,7 @@ if {"" == $sub_navbar} {
 
     set label ""
     switch $url0 {
+
 	acs-admin { 
 	    switch $url1 {
 		cache		{ set label "openacs_cache" }
@@ -63,6 +64,9 @@ if {"" == $sub_navbar} {
 		admin		{ set label "admin_survsimp" }
 		default		{ set label "" }
 	    }
+	}
+	xowiki { 
+	    set show_left_navbar_p 0
 	}
     }
 

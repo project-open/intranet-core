@@ -1065,7 +1065,9 @@ ad_proc -public im_header {
 
     # --------------------------------------------------------------
     # Defaults & Security
+    set untrusted_user_id [ad_conn untrusted_user_id]
     set user_id [ad_get_user_id]
+    if {0 != $user_id} { set untrusted_user_id $user_id }
     set user_name [im_name_from_user_id $user_id]
     set return_url [im_url_with_query]
 
@@ -1101,7 +1103,7 @@ ad_proc -public im_header {
     }
 
     set search_form [im_header_search_form]
-    set user_profile [im_design_user_profile_string -user_id $user_id]
+    set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
 
     append extra_stuff_for_document_head [im_stylesheet]
 
@@ -1170,7 +1172,7 @@ ad_proc -public im_header {
     set header_buttons [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
     if {$loginpage_p} { set header_buttons "" }
 
-    set header_skin_select [im_skin_select_html $user_id [im_url_with_query]]
+    set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
     if {$header_skin_select != ""} {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
@@ -1900,9 +1902,10 @@ ad_proc -public im_user_skin_helper { user_id } {
     set skin_name ""
     set skin_id_exists_p [im_column_exists users skin_id]
     if {$skin_id_exists_p} {
-	set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default "default"]
+	set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default ""]
     }
-    if {"" == $skin_name} { set skin_name "default" }
+#    if {"" == $skin_name} { set skin_name "default" }
+    if {"" == $skin_name} { set skin_name "saltnpepper" }
     return $skin_name
 }
 
