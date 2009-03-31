@@ -969,9 +969,10 @@ div#fullwidth-components {
 .table_list_page,
 .table_component, 
 .list  {
-   text-align:left;
-   border-collapse:collapse;
-   margin:0px;
+	text-align:left;
+	border-collapse:collapse;
+	margin:0px;
+	padding:3px;
 }
 
 
@@ -993,8 +994,11 @@ div#fullwidth-components {
    border-bottom:1px solid #fff;
 }
 
-.table_list_page tr td, 
-.table_component_hover tr td, 
+ 
+.table_list_page tr.roweven,
+.table_list_page tr.rowodd,
+.table_component_hover tr.roweven,
+.table_component_hover tr.rowodd,
 .list tr td {
    border-bottom:1px solid #fff;
    /* color:#669; */
@@ -1003,6 +1007,20 @@ div#fullwidth-components {
    repeat-x;
    padding:4px;
 }
+
+
+
+.table_list_page thead tr td {
+        background: #D0DAFD url(/intranet/images/navbar_saltnpepper/gradhead.gif) repeat-x scroll 0%;
+        color: #003399;
+        font-weight: bold;
+        font-size: 13px;
+        border-bottom: 1px solid #FFFFFF;
+        border-top: 2px solid #D3DDFF;
+	height: 33px;
+}
+
+
 
 .table_list_page tbody tr.no_hover,
 .table_list_page tbody tr.no_hover td, 
@@ -1014,7 +1032,7 @@ div#fullwidth-components {
 .table_list_page tbody tr:hover.rowplain,
 .table_list_page tbody tr:hover.rowplain td 
 {
-   background:#B9C9FE url('/intranet/images/navbar_saltnpepper/gradhead.gif') repeat-x scroll 0%;
+   background:#B9C9FE;
 }
 
 
@@ -1030,11 +1048,12 @@ div#fullwidth-components {
 }
 
 
+
+
 .table_interim_title {
 	font-weight: bold;
-	color: #333399;
+	color:#336699;
 }
-
 
 
 .table_list_page tfoot tr td, .table_component_hover tfoot tr td, .list tfoot tr td {
