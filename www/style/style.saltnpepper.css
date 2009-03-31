@@ -976,6 +976,11 @@ div#fullwidth-components {
 }
 
 
+.table_list_page tr td {
+	padding: 2px;
+}
+
+
 .table_list_page tr td.rowtitle, 
 .table_list_page tbody tr th.list, 
 .list tr.list-header, 
@@ -1028,9 +1033,10 @@ div#fullwidth-components {
 .table_list_page tbody tr.no_hover td.rowodd,
 .table_list_page tbody tr.no_hover td.rowplain,
 .table_list_page tbody tr.rowplain,
-.table_list_page tbody tr.rowplain td, 
+.table_list_page tbody tr.rowplain td,
 .table_list_page tbody tr:hover.rowplain,
 .table_list_page tbody tr:hover.rowplain td 
+
 {
    background:#B9C9FE;
 }
@@ -1062,7 +1068,10 @@ div#fullwidth-components {
    color:#99c;
 }
 
-.table_list_page tbody tr:hover td, .table_component_hover tbody tr:hover td, .list tbody tr:hover td {
+.table_list_page tbody tr:hover.roweven td,
+.table_list_page tbody tr:hover.rowodd td,
+.table_component_hover tbody tr:hover td, 
+.list tbody tr:hover td {
    background:#d0dafd url('/intranet/images/navbar_saltnpepper/gradhover.gif')
    repeat-x;
    color:#339;
