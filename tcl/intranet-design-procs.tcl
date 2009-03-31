@@ -1413,6 +1413,9 @@ ad_proc -public im_stylesheet {} {
 	}
     }
 
+    if {$openacs54_p} { template::head::add_css -src "/intranet/style/print.css" } else { append html "<link rel=StyleSheet type=text/css href=\"/intranet/style/print.css\" media=print>\n" }
+
+
 #    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
 #    ad_return_complaint 1 $bug_tracker_installed_p
 
