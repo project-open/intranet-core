@@ -1,0 +1,35 @@
+/* print styles */
+
+BODY {
+	color: black; background: white;
+}
+
+A:link, A:visited {
+	background: white; 
+	color: black; 
+	text-decoration: underline;	
+	font-weight: bold;
+}
+
+H1, H2, H3 {
+	background: white; 
+	color: black; 
+	padding-bottom: 1px;
+	border-bottom: 1px solid gray;
+	font-size: 12px;
+}
+
+table tr td,
+p {
+	font-size: 10px;
+}
+
+
+
+
+#header_class {display: none;}
+#slave {display: none;}
+#navbar_main_wrapper {display: none;}
+#navbar_sub_wrapper {display: none;}
+#main_header {display: none;}
+#footer  {display: none;}
