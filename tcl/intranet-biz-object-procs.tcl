@@ -235,7 +235,10 @@ ad_proc -public im_biz_object_add_role {
 	    } else {
 		
 		# We are adding a non-employee to a customer of provider company.
-		db_dml insert_key_account "insert into im_key_account_rels (key_account_rel_id) values (:rel_id)"
+		set user_key_account_p [db_string key_account_p "select count(*) from im_key_account_rels where key_account_rel_id = :rel_id"]
+		if {!$user_key_account_p} {
+		    db_dml insert_key_account "insert into im_key_account_rels (key_account_rel_id) values (:rel_id)"
+		}
 		db_dml update_key_account "update acs_rels set rel_type = 'im_key_account_rel' where rel_id = :rel_id"
 
 	    }
