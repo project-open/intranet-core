@@ -1435,21 +1435,19 @@ ad_proc -public im_stylesheet {} {
 
     if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/showhide.js" -order "5" } else { append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/showhide.js" } else { append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" -order "4" } else { append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" } else { append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n" }
-
-    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" } else { append html "<script type=text/javascript src=\"/resources/acs-subsite/core.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" -order "6" } else { append html "<script type=text/javascript src=\"/resources/acs-subsite/core.js\"></script>\n" }
 
 #   if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" } else { append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" -order "3" } else { append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-templating/mktree.js" } else { append html "<script type=text/javascript src=\"/resources/acs-templating/mktree.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-templating/mktree.js" -order "2" } else { append html "<script type=text/javascript src=\"/resources/acs-templating/mktree.js\"></script>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/style.$skin.js" } else { append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/style.$skin.js" -order "7" } else { append html "<script type=text/javascript src=\"/intranet/js/style.$skin.js\"></script>\n" }
    
     if {$openacs54_p} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/lists.css\" media=screen>\n" }
@@ -1464,6 +1462,8 @@ ad_proc -public im_stylesheet {} {
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
     }
+
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
 
     return $html
 }
