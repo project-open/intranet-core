@@ -128,6 +128,13 @@ namespace eval im_company {
 	This procedure relies that changes to companies will be 
 	reported to this module.
     } {
+	# Security checks
+	im_security_alert_check_integer -location "company_options_not_cached" -value $user_id
+	im_security_alert_check_integer -location "company_options_not_cached" -value $status_id
+	im_security_alert_check_integer -location "company_options_not_cached" -value $type_id
+	im_security_alert_check_integer -location "company_options_not_cached" -value $exclude_status_id
+	im_security_alert_check_integer -location "company_options_not_cached" -value $always_include_company_id
+
 	# Build the SQL conditions
 	set criteria [list]
 	lappend criteria "c.company_status_id not in ([join [im_sub_categories [im_company_status_inactive]] ","])"
@@ -532,7 +539,7 @@ ad_proc -public im_company_select {
 			     -status $status \
 			     -type $type \
 			     -exclude_status $exclude_status \
-			     default \
+			     $default \
     ]
     return [im_options_to_select_box $select_name $company_options $default $tag_attributes]
 }
