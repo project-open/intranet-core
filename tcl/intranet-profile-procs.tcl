@@ -189,8 +189,16 @@ namespace eval im_profile {
     } {
 	# We are looking for direct memberships (cascade = 0) for performance reasons
 	# (profiles in ]po[ are not designed to be sub-groups of another group).
-	set cascade_p 0
-	set member_flag [db_string member_p "select acs_group__member_p(:user_id, :profile_id, :cascade_p)"]
+	set member_sql "
+		select count(*) > 0
+			from	acs_rels r, 
+				membership_rels mr 
+			where 	r.rel_id = mr.rel_id and 
+				r.object_id_two = :user_id and 
+				r.object_id_one = :profile_id and 
+				mr.member_state = 'approved'
+	"
+	set member_flag [db_string member_p $member_sql]
 
 	# Translate from database t/f to TCL 1/0 values
 	switch $member_flag {
