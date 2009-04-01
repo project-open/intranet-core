@@ -632,6 +632,9 @@ ad_proc -public im_project_options {
 			tree_ancestor_key(p.tree_sortkey, 1) = main_p.tree_sortkey and
 			main_p.project_status_id not in ([im_project_status_deleted]) and
 			p.project_status_id not in ([im_project_status_deleted])
+		order by 
+			lower(main_p.project_name) DESC,
+			p.tree_sortkey
     "
 
     db_multirow multirow hours_timesheet $sql
