@@ -1426,6 +1426,38 @@ ad_proc -public im_ad_hoc_query {
 
 
 # ---------------------------------------------------------------
+# System Identification
+# ---------------------------------------------------------------
+
+ad_proc im_system_id { 
+    -clear:boolean
+} {
+    Retreives and/or creates a unique identification.
+    We use the "salt" field of the user 0 (=Guest) to 
+    store a unique 40 character token.
+} {
+    if {$clear_p} {
+ 	db_dml create_sid "
+                update users set salt = null
+                where user_id = 0;
+        "
+    }
+
+    set sid [db_string sid "select salt from users where user_id = 0" -default ""]
+    if {"" == $sid} {
+	set sid [sec_random_token]
+	db_dml create_sid "
+		update users set salt = :sid
+		where user_id = 0;
+        "
+    }
+    return $sid
+}
+
+
+
+
+# ---------------------------------------------------------------
 # Display a generic table contents
 # ---------------------------------------------------------------
 
