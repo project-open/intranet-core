@@ -1435,6 +1435,8 @@ ad_proc -public im_stylesheet {} {
 
     if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
 
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
+
     if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/showhide.js" -order "5" } else { append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" -order "4" } else { append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n" }
@@ -1463,7 +1465,7 @@ ad_proc -public im_stylesheet {} {
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
     }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
+
 
     return $html
 }
