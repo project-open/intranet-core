@@ -1,4 +1,4 @@
-jQuery.noConflict();
+/* jQuery.noConflict(); */
 
 jQuery().ready(function(){
     /* sliding filters */

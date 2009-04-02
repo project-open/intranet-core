@@ -1433,8 +1433,8 @@ ad_proc im_system_id {
     -clear:boolean
 } {
     Retreives and/or creates a unique identification.
-    We use the "salt" field of the user 0 (=Guest) to 
-    store a unique 40 character token.
+    We need the SID to check if a system has been registered
+    for ASUS and other update services.
 } {
     if {$clear_p} {
  	db_dml create_sid "
@@ -1443,17 +1443,44 @@ ad_proc im_system_id {
         "
     }
 
-    set sid [db_string sid "select salt from users where user_id = 0" -default ""]
-    if {"" == $sid} {
-	set sid [sec_random_token]
+    # Extract the SystemID from the "hash" field of the 
+    # "guest" user. This field is never set in OpenACS
+    # installations, and will never be used because
+    # "guest" can't login.
+    set sid_hash [db_string sid "select salt from users where user_id = 0" -default ""]
+
+    # Create a new sid_hash if this is the first time 
+    # this function is called
+    if {"" == $sid_hash} {
+	set sid_hash [sec_random_token]
 	db_dml create_sid "
-		update users set salt = :sid
+		update users set salt = :sid_hash
 		where user_id = 0;
         "
     }
+
+    # extract the last 4 groups of 4 digits
+    regexp {.*(....)(....)(....)(....)$} $sid_hash match s0 s1 s2 s3
+
+    # Calculate a sha1-hash of the sid_hash to check for 
+    # badly entered characters
+    set control_digits [string range [ns_sha1 "$s0$s1$s2$s3"] 36 39]
+    
+    # The full SID consists of 4 groups plus the control digits
+    set sid "$s0-$s1-$s2-$s3-$control_digits"
+
     return $sid
 }
 
+
+
+ad_proc im_system_id_is_valid { sid } {
+    Checks a manually entered SID for typos
+} {
+    if {![regexp {^(....)\-(....)\-(....)\-(....)\-(....)$} $sid match s0 s1 s2 s3 control]} { return 0 }
+    set control_digits [string range [ns_sha1 "$s0$s1$s2$s3"] 36 39]
+    if {$control == $control_digits} { return 1 } else { return 0 }
+}
 
 
 
