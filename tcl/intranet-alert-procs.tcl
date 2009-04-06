@@ -124,12 +124,19 @@ ad_proc -public im_security_alert {
     set referer_url [ns_set get $header_vars "Referer"]
     set peer_ip [ns_conn peeraddr]
 
+    # SystemID with default
+    set system_id "000-000-000-000"
+    set control_digits [string range [ns_sha1 "0000000000000000"] 36 39]
+    set system_id "$system_id$control_digits"
+    set system_id [catch {im_system_id}]
 
+    # Subject and body
     set subject [lang::message::lookup "" intranet-core.Security_breach_subject "%severity% Security Breach Attempt in %system_name%"]
 
     set body "$subject
 
 In: $location
+SystemID: $system_id
 At: $system_name
 Managed by: $system_owner_email
 Message: $message
