@@ -838,11 +838,9 @@ a   span  {float:none;}
   overflow: hidden;
 }
 
-
 .fullwidth-list .component table td {
-	padding: 2px 2px 2px 2px;
+	padding: 0px 2px 0px 2px;
 }
-
 
 .table-display td {
    padding: 1px;
