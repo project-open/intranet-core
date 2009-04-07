@@ -57,6 +57,7 @@ $(function(){
 		return false; });
 });
 
+
 /*   END: NEW SIDEBAR */
 
 
@@ -121,7 +122,6 @@ jQuery().ready(function(){
         if  ( isExtendedCookie == 0 ) {
                 extendContract();
         }
-
 });
 
 
