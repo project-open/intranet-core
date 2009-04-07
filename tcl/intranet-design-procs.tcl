@@ -1110,6 +1110,7 @@ ad_proc -public im_header {
     append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
     append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
 
+
     # OpenACS 5.4 Header stuff
     if {$openacs54_p} {
 
@@ -1433,6 +1434,7 @@ ad_proc -public im_stylesheet {} {
     set css "/resources/acs-subsite/site-master.css"
 #    if {$openacs54_p} { template::head::add_css -href $css -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"$css\" media=screen>\n" }
 
+
     if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
@@ -1456,6 +1458,8 @@ ad_proc -public im_stylesheet {} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n" }
     }
 
+    append html "<!--\[if lt IE 8\]>\n<<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
+
     # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
     if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {
 	append html "<link rel=StyleSheet type=text/css href=\"/intranet-cust-reinisch/style/reinisch.css\" />\n"
@@ -1464,9 +1468,6 @@ ad_proc -public im_stylesheet {} {
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
     }
-
-
-
     return $html
 }
 
