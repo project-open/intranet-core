@@ -840,6 +840,7 @@ a   span  {float:none;}
 
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
+	vertical-align: top;
 }
 
 .table-display td {
