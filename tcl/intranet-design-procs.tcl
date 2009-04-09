@@ -1458,7 +1458,7 @@ ad_proc -public im_stylesheet {} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n" }
     }
 
-    append html "<!--\[if lt IE 8\]>\n<<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
+    append html "<!--\[if lt IE 8\]>\n<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
 
     # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
     if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {
