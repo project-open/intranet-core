@@ -691,14 +691,16 @@ a   span  {float:none;}
    top: 5px;
    position: relative;
    height: 25px;
+	padding-left: 3px;
 }
 
 .component_title {
   position: relative;
-  top: -1pt;
   left: 2pt;
   float: left;
-  font-size: 14pt;
+  font-size: 12pt;
+  font-weight: bold;
+
   /* visibility: hidden; */ 
 }
 .component_icons {
@@ -777,13 +779,14 @@ a   span  {float:none;}
 }
 
 .component_body {
-  /* z-index: 100; */
-  border-left: solid 1px #EEEEEE;
-  border-right: solid 1px #EEEEEE;
-  border-bottom: solid 1px #EEEEEE;
-  padding-bottom: 10px;
-  overflow: auto;
-
+	border-left: solid 1px #EEEEEE;
+	border-right: solid 1px #EEEEEE;
+	border-bottom: solid 1px #EEEEEE;
+	padding-top: 10px;
+	padding-right: 3px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	overflow: auto;
 }
 .component_body ul {
   margin: 0;
@@ -960,6 +963,15 @@ a   span  {float:none;}
    border-collapse:collapse;
    margin:10px;
 }
+
+.fullwidth-list .component table {
+	text-align:left;
+	border-collapse:collapse;
+	margin: 2px;
+}
+
+
+
 
 div#fullwidth-main {
 	float: left;
