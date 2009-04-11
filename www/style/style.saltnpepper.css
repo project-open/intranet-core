@@ -999,16 +999,23 @@ div#fullwidth-components {
 .table_component_hover th.list-header td.list, 
 .table_component_hover tbody tr th.list,
 .table_component_hover tbody tr td.rowtitle, td.rowtitle {
-   color:#039;
-   font-size:13px;
+   color:#000;
+   font-size:9pt;
    font-weight:bold;
    padding:3px;
-   background:#b9c9fe url('/intranet/images/navbar_saltnpepper/gradhead.gif')
-   repeat-x;
-   border-top:2px solid #d3ddff;
+   background:#B6C7FE none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
+   padding:5px 4px 5px 2px;
+/* background:#b9c9fe url('/intranet/images/navbar_saltnpepper/gradhead.gif') repeat-x; */
+/* border-top:2px solid #d3ddff;*/
+/*
+	background:#B6C7FE none repeat scroll 0% 50%;
+	border-bottom:13px none #000000;
+	font-size:9pt;
+	height:auto;
+	padding:5px 4px 5px 2px;
+*/
 }
-
  
 .table_list_page tr.roweven,
 .table_list_page tr.rowodd,
@@ -1028,6 +1035,7 @@ div#fullwidth-components {
 
 .table_list_page thead tr td,
 .table_list_page thead tr.rowtitle th {
+/*
         background: #D0DAFD url(/intranet/images/navbar_saltnpepper/gradhead.gif) repeat-x scroll 0%;
         color: #003399;
         font-weight: bold;
@@ -1035,6 +1043,13 @@ div#fullwidth-components {
         border-bottom: 1px solid #FFFFFF;
         border-top: 2px solid #D3DDFF;
 	height: 33px;
+*/
+	background:#B6C7FE none repeat scroll 0% 50%;
+	border-bottom:13px none #000000;
+	font-size:9pt;
+	height:auto;
+	padding:5px 4px 5px 2px;
+	color: #235C96;
 }
 
 
@@ -1160,9 +1175,11 @@ div#fullwidth-components {
     .rowodd {font-size: 8pt; background-color: #EEEEEE;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
 
-    .form-label {font-size: 8pt; background-color: #DDDDDD;}
-    .form-widget {font-size: 8pt; background-color: #EEEEEE;}
+    .form-label {font-size: 8pt; background-color: #FFF; padding-right:10px;}
+    .form-widget {font-size: 8pt; background-color: #FFF;}
     .form-required-mark {color: #FF0000;}
+
+    .form-element {height:25px; }
 
     .rowgreen {font-size:8pt; background-color: #00FF00 }
     .rowyellow {font-size:8pt; background-color: #FFFF00}
