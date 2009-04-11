@@ -108,7 +108,7 @@ set column_sql "
 set contact_html "
 <form method=POST action=/intranet/users/contact-edit>
 [export_form_vars user_id return_url]
-<table cellpadding=0 cellspacing=2 border=0>
+<table cellpadding=0 cellspacing=2 border=0 class=\"component_form\">
   <tr> 
     <td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td>
   </tr>
@@ -118,11 +118,11 @@ set ctr 1
 db_foreach column_list_sql $column_sql {
         if {"" == $visible_for || [eval $visible_for]} {
 	    append contact_html "
-            <tr $td_class([expr $ctr % 2])>
-            <td>"
+            <tr>
+            <td class=\"form_label\">"
             set cmd0 "append contact_html $column_name"
             eval "$cmd0"
-            append contact_html " &nbsp;</td><td>"
+            append contact_html " &nbsp;</td><td class=\"form_widget\">"
 	    set cmd "append contact_html $column_render_tcl"
 	    eval $cmd
 	    append contact_html "</td></tr>\n"
