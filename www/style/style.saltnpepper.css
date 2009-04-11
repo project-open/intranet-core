@@ -835,9 +835,23 @@ a   span  {float:none;}
   overflow: hidden;
 }
 
+
+.fullwidth-list .component table tr.rowodd,
+.fullwidth-list .component table tr.roweven {
+	height: 17px;
+	border-top: 1px solid #F0EDED;
+	border-bottom: 1px solid #F0EDED;
+
+}
+
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
 	vertical-align: top;
+	background: #fff;
+}
+
+.fullwidth-list .component table td.rowtitle {
+	/* visibility: hidden; */
 }
 
 .table-display td {
@@ -1179,7 +1193,11 @@ div#fullwidth-components {
     .form-widget {font-size: 8pt; background-color: #FFF;}
     .form-required-mark {color: #FF0000;}
 
-    .form-element {height:25px; }
+	.form-element {
+	height:17px; 
+        border-top: 1px solid #F0EDED;
+        border-bottom: 1px solid #F0EDED;
+	}
 
     .rowgreen {font-size:8pt; background-color: #00FF00 }
     .rowyellow {font-size:8pt; background-color: #FFFF00}
