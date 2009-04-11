@@ -1,8 +1,8 @@
 @import url(style.common.css);
 
 
-/* when Time: merge style_sp.css with this file*/
-@import url(style_sp.css);
+/* ToDo: merge style_sp.css with this file*/
+/* @import url(style_sp.css); */
 
 
 /* TEST WITH INCLUDE STYLE.CSS  */
@@ -137,8 +137,6 @@ background-color: #FFF;
 background-image: none;
 background-repeat: repeat;
 background-attachment: scroll;
-background-x-position: 0%;
-background-y-position: 0%;
 height: 60px;
 padding-left: 30px;
 padding-right: 30px;
@@ -568,10 +566,6 @@ a   span  {float:none;}
    margin:0;
    padding:0.25em 0.5em;
    top: -4px;
-}
-
-#alphabar .navbar_selected {
-   _width: 20px;
 }
 
 #navbar_sub LI.selected, 
@@ -1018,20 +1012,22 @@ div#fullwidth-components {
  
 .table_list_page tr.roweven,
 .table_list_page tr.rowodd,
+.table_list_page tr.row_undefined,
 .table_component_hover tr.roweven,
 .table_component_hover tr.rowodd,
 .list tr td {
    border-bottom:1px solid #fff;
    /* color:#669; */
    border-top:1px solid #fff;
-   background:#e8edff url('/intranet/images/navbar_saltnpepper/gradback.gif')
+   background:#e8edff url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')
    repeat-x;
    padding:4px;
 }
 
 
 
-.table_list_page thead tr td {
+.table_list_page thead tr td,
+.table_list_page thead tr.rowtitle th {
         background: #D0DAFD url(/intranet/images/navbar_saltnpepper/gradhead.gif) repeat-x scroll 0%;
         color: #003399;
         font-weight: bold;
@@ -1040,6 +1036,7 @@ div#fullwidth-components {
         border-top: 2px solid #D3DDFF;
 	height: 33px;
 }
+
 
 
 
@@ -1071,7 +1068,6 @@ div#fullwidth-components {
 
 
 
-
 .table_interim_title {
 	font-weight: bold;
 	color:#336699;
@@ -1086,9 +1082,10 @@ div#fullwidth-components {
 
 .table_list_page tbody tr:hover.roweven td,
 .table_list_page tbody tr:hover.rowodd td,
+.table_list_page tbody tr:hover.row_undefined td,
 .table_component_hover tbody tr:hover td, 
 .list tbody tr:hover td {
-   background:#d0dafd url('/intranet/images/navbar_saltnpepper/gradhover.gif')
+   background:#d0dafd url('/intranet/images/navbar_saltnpepper/gradhover_light_grey.gif')
    repeat-x;
    color:#339;
 }
@@ -1109,7 +1106,6 @@ div#fullwidth-components {
 }
 
 .filter-list-footer {
-  _height: 200px; 
   height: 20px;
   clear: both;
 }
