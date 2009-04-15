@@ -41,8 +41,11 @@ set user_is_customer_p [db_string is_customer "select count(*) from group_distin
 
 set user_is_freelance_p [db_string is_freelance "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_freelance_group_id]"]
 
-set user_is_partner_p [db_string is_partner "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_partner_group_id]"]
-
+if { "" == [im_partner_group_id] } {
+   set user_is_partner_p 0
+} else { 
+    set user_is_partner_p [db_string is_partner "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_partner_group_id]"]
+}
 
 if {$user_is_customer_p && $user_is_freelance_p} {
     ad_return_complaint 1 [lang::message::lookup "" intranet-core.Both_Customer_nor_Freelance "The user is both a customer and a freelancer. We can't decide what company type to create."]
