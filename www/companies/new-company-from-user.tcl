@@ -37,14 +37,24 @@ if {![im_permission $current_user_id add_companies]} {
 # Get everything about the user
 # -----------------------------------------------------------------
 
-set user_is_customer_p [db_string is_customer "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_customer_group_id]"]
+# V3.3->3.4
 
-set user_is_freelance_p [db_string is_freelance "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_freelance_group_id]"]
+if { "" == [im_customer_group_id] } {
+    set user_is_customer_p 0
+} else {
+    set user_is_customer_p [db_string is_customer "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_customer_group_id]"]
+}
+
+if { "" == [im_freelance_group_id] } {
+    set user_is_freelance_p 0
+} else {
+    set user_is_freelance_p [db_string is_freelance "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_freelance_group_id]"]
+}
 
 if { "" == [im_partner_group_id] } {
    set user_is_partner_p 0
 } else { 
-    set user_is_partner_p [db_string is_partner "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_partner_group_id]"]
+   set user_is_partner_p [db_string is_partner "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=[im_partner_group_id]"]
 }
 
 if {$user_is_customer_p && $user_is_freelance_p} {
