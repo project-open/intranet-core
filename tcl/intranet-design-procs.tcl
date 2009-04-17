@@ -1008,6 +1008,9 @@ ad_proc -public im_header_logout_component {
 
     set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
     set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+    set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
+    set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
+    set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
 
     set logout_pwchange_str "
 	<a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
@@ -1020,23 +1023,23 @@ ad_proc -public im_header_logout_component {
     if {0 == $user_id} {
 	set users_online_str ""
 	set logout_pwchange_str ""
+	set reset_stuff_link ""
+	set add_stuff_link ""
+	set log_out_link ""
     }
 
     set header_buttons "
       <div id=\"header_buttons\">
 	 <div id=\"header_logout_tab\">
 	    <div id=\"header_logout\">
-	       <a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>
+                $log_out_link
 	    </div>
 	 </div>
 	 <div id=\"header_settings_tab\">
 	    <div id=\"header_settings\">
-<!--
-	       <a class=\"logotext\" href=\"http://www.project-open.com/\"><span class=\"logobracket\">\]</span>project-open<span class=\"logobracket\">\[</span></a> |
--->
 	       $logout_pwchange_str
-	       <a href=\"$reset_comp_url\">$reset_stuff_text</a> |
-	       <a href=\"$add_comp_url\">$add_stuff_text</a>
+	       $reset_stuff_link
+	       $add_stuff_link
 	    </div>
 	 </div>
       </div>
@@ -1110,15 +1113,10 @@ ad_proc -public im_header {
     
     # Determine if developer support is installed and enabled
     #
-    set developer_support_p [expr {
-				   [llength [info procs ::ds_show_p]] == 1 && [ds_show_p]
-			       }]
+    set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
     
     if {$developer_support_p} {
-	template::head::add_css \
-	    -href "/resources/acs-developer-support/acs-developer-support.css" \
-	    -media "all"
-	
+	template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
 	template::add_header -src "/packages/acs-developer-support/lib/toolbar"
 	template::add_footer -src "/packages/acs-developer-support/lib/footer"
     }
@@ -1482,7 +1480,7 @@ ad_proc -public im_stylesheet {} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n" }
     }
 
-    append html "<!--\[if lt IE 8\]>\n<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
+#    append html "<!--\[if lt IE 8\]>\n<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
 
     # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
     if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {

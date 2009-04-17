@@ -206,7 +206,7 @@ ad_proc -public im_navbar_tree_project_management {
     append html "
 		<li><a href=/intranet-dw-light/projects.csv>[lang::message::lookup "" intranet-core.Export_Projects_to_CSV "Export Projects to CSV"]</a></li>
 		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
-<li><a href=/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
 		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
     "
 

@@ -135,6 +135,8 @@ namespace eval im_company {
 	im_security_alert_check_integer -location "company_options_not_cached" -value $exclude_status_id
 	im_security_alert_check_integer -location "company_options_not_cached" -value $always_include_company_id
 
+	if {"" == $always_include_company_id} { set always_include_company_id 0 }
+
 	# Build the SQL conditions
 	set criteria [list]
 	lappend criteria "c.company_status_id not in ([join [im_sub_categories [im_company_status_inactive]] ","])"
