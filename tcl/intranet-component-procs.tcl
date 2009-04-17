@@ -309,3 +309,44 @@ ad_proc -public im_component_page {
     return $html
 }
 
+# ----------------------------------------------------------------------
+# Generic wrapper for mapping TCL/ADP includelets as a widget
+# ---------------------------------------------------------------------
+
+ad_proc -public im_component_includelet {
+    {-includelet "/packages/intranet-core/lib/hello-world"}
+    {-vars {} }
+    {-params {} }
+} {
+    Parses an includelet and displays the includelet as a
+    ]po[ portlet.
+    @param includelet Full path to includelet. Working example:
+	   "/packages/intranet-core/lib/hello-world"
+    @param vars {key1 key2 ...} a list of variable names to pass 
+	   to the includelet. The values for the vars are evaluated 
+	   in the context of the calling page.
+    @param params {key1 value1 key2 value2 ...} a list of key-value
+	   pairs. The values specified here are determined when
+	   creating the definition of the portlet at the SQL level
+	   (im_component_portlet__new), so they are called fixed.
+} {
+    array set param_hash $params
+    set inc_params [list]
+
+    # Add parameters to includelet params
+    foreach key [array names param_hash] {
+	set value $param_hash($key)
+	lappend inc_params [list $key $value]
+    }
+
+    # Evaluate the list of pass-through variables in the
+    # context of the calling page:
+    foreach key $vars {
+	unset value
+	upvar 1 $key value
+	lappend inc_params [list $key $value]
+    }
+
+    set result [ad_parse_template -params $inc_params $includelet]
+    return $result
+}

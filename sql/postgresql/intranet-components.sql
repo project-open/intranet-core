@@ -481,7 +481,7 @@ SELECT  im_component_plugin__new (
 	null,				-- creation_ip
 	null,				-- context_id
 	'Home &#93;po&#91; News',	-- plugin_name
-	'intranet',			-- package_name
+	'intranet-core',		-- package_name
 	'right',			-- location
 	'/intranet/index',		-- page_url
 	null,				-- view_name
