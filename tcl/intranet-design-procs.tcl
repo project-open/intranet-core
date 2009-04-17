@@ -1095,12 +1095,34 @@ ad_proc -public im_header {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
-    # Developer support
-    if {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p] && $no_master_p} {
-	set developer_support_p 1
-    } else {
-	set developer_support_p 0
+    # The document language is always set from [ad_conn lang] which by default 
+    # returns the language setting for the current user.  This is probably
+    # not a bad guess, but the rest of OpenACS must override this setting when
+    # appropriate and set the lang attribxute of tags which differ from the language
+    # of the page.  Otherwise we are lying to the browser.
+    set doc(lang) [ad_conn language]
+    
+    # Determine if we should be displaying the translation UI
+    #
+    if {[lang::util::translator_mode_p]} {
+	template::add_footer -src "/packages/acs-lang/lib/messages-to-translate"
     }
+    
+    # Determine if developer support is installed and enabled
+    #
+    set developer_support_p [expr {
+				   [llength [info procs ::ds_show_p]] == 1 && [ds_show_p]
+			       }]
+    
+    if {$developer_support_p} {
+	template::head::add_css \
+	    -href "/resources/acs-developer-support/acs-developer-support.css" \
+	    -media "all"
+	
+	template::add_header -src "/packages/acs-developer-support/lib/toolbar"
+	template::add_footer -src "/packages/acs-developer-support/lib/footer"
+    }
+    
 
     set search_form [im_header_search_form]
     set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
@@ -1236,6 +1258,7 @@ ad_proc -public im_header {
     return "
 	[ad_header $page_title $extra_stuff_for_document_head]
 	$body_script_html
+        [template::get_header_html]
 	<div id=\"monitor_frame\">
 	   <div id=\"header_class\">
 	      <div id=\"header_logo\">
@@ -1375,6 +1398,7 @@ ad_proc -public im_footer {
        </a> 
     </div>
   $amberjack_body_stuff
+  [template::get_footer_html]
   </BODY>
 </HTML>
 "
