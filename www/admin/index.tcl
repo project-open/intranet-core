@@ -59,6 +59,9 @@ set menu_sql "
 		m.sort_order
 "
 
+set menu_gif_large ""
+set menu_gif_medium ""
+set menu_gif_small ""
 set menu_html ""
 db_foreach admin_menu $menu_sql {
     set menu_gif ""
