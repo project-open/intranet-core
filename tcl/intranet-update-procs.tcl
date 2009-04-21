@@ -35,6 +35,35 @@ ad_proc -public im_check_for_update_scripts {
     set user_admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
     if {!$user_admin_p} { return "" }
 
+
+    # ---------------------------------------------------------------------------
+    # 0 - Check if the package "acs-workflow" is mounted at /workflow/
+    # If this is the case then silently remount the package at /acs-workflow/
+    # in oder to allow the "Workflow" package to mount at /workflow/.
+    #
+    set workflow_remount_p [db_string workflow_remount "
+	select	count(*)
+	from	site_nodes sn,
+		apm_packages ap
+	where
+		sn.object_id = ap.package_id and
+		sn.name = 'workflow' and
+		ap.package_key = 'acs-workflow'
+    "]
+
+    if {$workflow_remount_p} {
+	db_dml update_workflow_mount_point "
+		update site_nodes set
+			name = 'acs-workflow'
+		where
+			object_id = (
+				select	package_id
+				from	apm_packages
+				where	package_key = 'acs-workflow'
+			)
+	"
+    }
+
     # ---------------------------------------------------------------------------
     # 1 - Make sure base modules are installed
 

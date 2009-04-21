@@ -264,6 +264,8 @@ namespace eval project {
 			)
 	"
 	if {[db_string duplicates $dup_sql]} { 
+	    ad_return_complaint 1 "<b>Duplicate project</b>:<br>
+	    	Your project name or project path already exists"
 	    return 0
 	}
 

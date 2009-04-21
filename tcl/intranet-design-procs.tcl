@@ -1107,21 +1107,10 @@ ad_proc -public im_header {
     
     # Determine if we should be displaying the translation UI
     #
-    if {[lang::util::translator_mode_p]} {
+    if {$openacs54_p && [lang::util::translator_mode_p]} {
 	template::add_footer -src "/packages/acs-lang/lib/messages-to-translate"
     }
     
-    # Determine if developer support is installed and enabled
-    #
-    set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
-    
-    if {$developer_support_p} {
-	template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
-	template::add_header -src "/packages/acs-developer-support/lib/toolbar"
-	template::add_footer -src "/packages/acs-developer-support/lib/footer"
-    }
-    
-
     set search_form [im_header_search_form]
     set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
 
@@ -1133,6 +1122,15 @@ ad_proc -public im_header {
 
     # OpenACS 5.4 Header stuff
     if {$openacs54_p} {
+
+	# Determine if developer support is installed and enabled
+	#
+	set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
+	if {$developer_support_p} {
+	    template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
+	    template::add_header -src "/packages/acs-developer-support/lib/toolbar"
+	    template::add_footer -src "/packages/acs-developer-support/lib/footer"
+	}
 
 	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
 	template::head::prepare_multirows
@@ -1253,10 +1251,15 @@ ad_proc -public im_header {
 
     im_performance_log -location im_header_end
 
+    set header_html ""
+    if {$openacs54_p} {
+	set header_html [template::get_header_html]
+    }
+
     return "
 	[ad_header $page_title $extra_stuff_for_document_head]
 	$body_script_html
-        [template::get_header_html]
+	$header_html
 	<div id=\"monitor_frame\">
 	   <div id=\"header_class\">
 	      <div id=\"header_logo\">
@@ -1386,6 +1389,15 @@ ad_proc -public im_footer {
 	set amberjack_body_stuff [im_amberjack_before_body]
     }
 
+    # Get the OpenACS version
+    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
+    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
+    set openacs54_p [string equal "5.4" $oacs_version]
+    set footer_html ""
+    if {$openacs54_p} {
+        set footer_html [template::get_footer_html]
+    }
+
     return "
     </div> <!-- monitor_frame -->
     <div class=\"footer_hack\">&nbsp;</div>	
@@ -1396,7 +1408,7 @@ ad_proc -public im_footer {
        </a> 
     </div>
   $amberjack_body_stuff
-  [template::get_footer_html]
+  $footer_html
   </BODY>
 </HTML>
 "
