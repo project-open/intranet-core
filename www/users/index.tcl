@@ -81,6 +81,19 @@ set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
 
 
+# ---------------------------------------------------------------
+# 
+# ---------------------------------------------------------------
+
+set extra_wheres [list]
+set extra_froms [list]
+set extra_selects [list]
+
+set extra_order_by ""
+set column_headers [list]
+set column_vars [list]
+
+
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
 # Use a normalized group_name in lowercase and with
@@ -97,6 +110,12 @@ switch [string tolower $user_group_name] {
     "unregistered" { 
     	set user_group_id -1 
 	set menu_select_label "users_unassigned"
+    }
+    "freelancers" {
+	set user_group_id [im_profile_freelancers]
+	set menu_select_label "users_freelancers"
+	lappend extra_froms "im_freelancers fl"
+	lappend extra_wheres "fl.user_id = p.person_id"
     }
     default {
     	# Search for the right group name.
@@ -213,14 +232,6 @@ db_foreach menu_select $menu_select_sql {
 # 3. Define Table Columns
 # ---------------------------------------------------------------
 
-set extra_wheres [list]
-set extra_froms [list]
-set extra_selects [list]
-
-set extra_order_by ""
-set column_headers [list]
-set column_vars [list]
-
 # Define the column headers and column contents that 
 # we want to show:
 #
@@ -253,9 +264,9 @@ db_foreach column_list_sql $column_sql {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
 
-	if [exists_and_not_null extra_from] { lappend extra_froms $extra_from }
-	if [exists_and_not_null extra_select] { lappend extra_selects $extra_select }
-	if [exists_and_not_null extra_where] { lappend extra_wheres $extra_where }
+        if [exists_and_not_null extra_from] { lappend extra_froms $extra_from }
+        if [exists_and_not_null extra_select] { lappend extra_selects $extra_select }
+        if [exists_and_not_null extra_where] { lappend extra_wheres $extra_where }
 
 	if [exists_and_not_null order_by_clause] { 
 	    if {[string equal $order_by $column_name]} {
