@@ -538,57 +538,75 @@ ad_proc -public im_project_options {
     # ---------------------------------------------------------
     # Compile "criteria"
 
-    set criteria [list]
-    if {$exclude_subprojects_p} { lappend criteria "p.parent_id is null" }
+    set p_criteria [list]
+    set main_p_criteria [list]
+    if {$exclude_subprojects_p} { 
+	lappend p_criteria "p.parent_id is null" 
+    }
    
     if {0 != $company_id && "" != $company_id} { 
-	lappend criteria "p.company_id = :company_id" 
+	lappend p_criteria "p.company_id = :company_id" 
+	# Main project should have same customer, but don't enforce it!
     }
 
     if {0 != $exclude_status_id && "" != $exclude_status_id} {
-	lappend criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
+	lappend p_criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
+	lappend main_p_criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
     }
 
     if {0 != $exclude_type_id && "" != $exclude_type_id} {
-	lappend criteria "p.project_type_id not in ([join [im_sub_categories $exclude_type_id] ","])"
+	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories $exclude_type_id] ","])"
+	# No restriction of type on parent project!
     }
 
     if {$exclude_tasks_p} {
-	lappend criteria "p.project_type_id not in ([join [im_sub_categories [im_project_type_task]] ","])"
+	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories [im_project_type_task]] ","])"
+	# Main project is never of type task...
     }
 
     if {0 != $project_status_id && "" != $project_status_id} {
-	lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
+	lappend p_criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
+	# No restriction on parent's status id
     }
 
     if {0 != $project_type_id && "" != $project_type_id} {
-	lappend criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
+	lappend p_criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
+	# No restriction on parent's project type!
     }
 
     if {0 != $member_user_id && "" != $member_user_id} {
-	lappend criteria "p.project_id in (
+	lappend p_criteria "p.project_id in (
 					select	object_id_one
 					from	acs_rels
 					where	object_id_two = :member_user_id
 	)"
+	# No restriction on parent project membership, because parent
+	# projects always have the same members as sub-projects.
     }
 
     # Unprivileged members can only see the projects they're participating
     if {![im_permission $current_user_id view_projects_all]} {
-	lappend criteria "p.project_id in (
+	lappend p_criteria "p.project_id in (
 					select	object_id_one
 					from	acs_rels
 					where	object_id_two = :current_user_id
 	)"
+	# No restriction on parent project membership, because parent
+	# projects always have the same members as sub-projects.
     }
 
 
     # -----------------------------------------------------------------
     # Compose the SQL
 
-    set where_clause [join $criteria " and\n\t\t\t\t\t"]
-    if { ![empty_string_p $where_clause] } {
-	set where_clause " and $where_clause"
+    set p_where_clause [join $p_criteria " and\n\t\t\t\t\t"]
+    if { ![empty_string_p $p_where_clause] } {
+	set p_where_clause " and $p_where_clause"
+    }
+
+    set main_p_where_clause [join $p_criteria " and\n\t\t\t\t\t"]
+    if { ![empty_string_p $main_p_where_clause] } {
+	set main_p_where_clause " and $main_p_where_clause"
     }
 
     switch $list_sort_order {
@@ -612,7 +630,7 @@ ad_proc -public im_project_options {
 					p.project_id
 				from	im_projects p
 				where	1=1
-					$where_clause
+					$p_where_clause
 			    UNION
 				select	p.project_name,
 					p.project_id
@@ -628,14 +646,21 @@ ad_proc -public im_project_options {
 					p.project_id
 				from	im_projects p
 				where	p.project_id in ([join $include_project_ids ","])
-			) cond
+			) p_cond,
+			(	select	p.project_id
+				from	im_projects p
+				where	1=1
+					$p_where_clause
+			) main_p_cond
 		where
-			p.project_id = cond.project_id and
+			p.project_id = p_cond.project_id and
+			main_p.project_id = main_p_cond.project_id and
+			main_p.parent_id is null and
 			tree_ancestor_key(p.tree_sortkey, 1) = main_p.tree_sortkey and
 			main_p.project_status_id not in ([im_project_status_deleted]) and
 			p.project_status_id not in ([im_project_status_deleted])
 		order by 
-			lower(main_p.project_name) DESC,
+			lower(main_p.project_name),
 			p.tree_sortkey
     "
 
