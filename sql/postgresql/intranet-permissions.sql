@@ -328,6 +328,7 @@ DECLARE
 	v_group_id	integer;
 	v_rel_id	integer;
 	n_groups	integer;
+	v_category_id   integer;
 BEGIN
 	-- Check that the group does not exist before
 	select count(*)
@@ -351,10 +352,22 @@ BEGIN
 		0,			-- creation_user
 		null			-- creation_ip
 	);
+	
+	select acs_object_id_seq.nextval into v_category_id;
+
+	-- Add the group to the Intranet User Type categories
+	perform im_category_new (
+		v_category_id,  -- category_id
+		v_pretty_name, 		    -- category
+		''Intranet User Type'',     -- category_type
+		null	   		    -- description
+	);
+
+	update im_categories set aux_int1 = v_group_id where category_id = v_category_id;
+
 	end if;
 	return 0;
 end;' language 'plpgsql';
-
 
 create or replace function im_drop_profile (varchar) 
 returns integer as '
@@ -390,9 +403,12 @@ BEGIN
 
 	-- delete the actual group
 	PERFORM im_profile__delete(v_group_id);
+
+	-- now delete the category
+	delete from im_categories where category = v_pretty_name and category_type = ''Intranet User Type'';
+        
 	return 0;
 end;' language 'plpgsql';
-
 
 select im_create_profile ('P/O Admins','admin');
 select im_create_profile ('Customers','customer'); 
