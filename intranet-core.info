@@ -30,7 +30,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectForumTopicsP"  default="1" description="Clone forum entries?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFiles"  default="1" description="Clone project's files inside the filestorage?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFsFolders"  default="1" description="Clone filestorage folders when cloning a project?"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectMembersP"  default="1" description="Clone project memebers?"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectMembersP"  default="1" description="Clone project members?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectSubprojectsP"  default="1" description="Clone subprojects?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTimesheetTasksP"  default="1" description="Clone timesheet tasks?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectTransTasksP"  default="1" description="Clone project tasks?"/>
