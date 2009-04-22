@@ -162,7 +162,7 @@
   <msg key="Companies">Firmen</msg>
   <msg key="Company">Firma</msg>
   <msg key="Company_Documents">Firmendokumente</msg>
-  <msg key="company_employee">Angestellter</msg>
+  <msg key="company_employee">Mitarbeiter</msg>
   <msg key="Company_Invoice">Kundenrechnung</msg>
   <msg key="Company_Name">Firmenname</msg>
   <msg key="Company_Short_Name">Firmenkurzname</msg>
@@ -267,9 +267,9 @@
   <msg key="Email">E-Mail</msg>
   <msg key="Email_address">E-Mail</msg>
   <msg key="Email_sent">E-Mail gesendet</msg>
-  <msg key="Employee">Angestellter</msg>
+  <msg key="Employee">Mitarbeiter</msg>
   <msg key="Employee_Salary">Gehalt</msg>
-  <msg key="Employees">Angestellte</msg>
+  <msg key="Employees">Mitarbeiter</msg>
   <msg key="en">en</msg>
   <msg key="en_AU">en_AU</msg>
   <msg key="en_CA">en_CA</msg>
@@ -510,7 +510,7 @@
   <msg key="lt_Dots__in_Project_Path">Punkte ('.') sind im Projektpfad nicht erlaubt</msg>
   <msg key="lt_Edit_comments_about_y">Bearbeiten Komentar</msg>
   <msg key="lt_Edit_menus_and_change">Bearbeiten von Menüeinträgen und -berechtigungen</msg>
-  <msg key="lt_Employeesintranet-fil">Angestellte</msg>
+  <msg key="lt_Employeesintranet-fil">Mitarbeiter</msg>
   <msg key="lt_End_date_must_be_afte">Das Enddatum muß später als das Anfangdatum sein.</msg>
   <msg key="lt_Error_evaluating_comp">Fehler in der Komponente '%plugin_name%' im Module '%package_name%' </msg>
   <msg key="lt_Error_getting_the_ema">Fehler in der E-Mail des Benutzers %target_id% </msg>
@@ -598,7 +598,7 @@
   <msg key="lt_Newsintranet-forumNew">Nachrichten</msg>
   <msg key="lt_Next_Monthintranet-ti">Nächster Monat</msg>
   <msg key="lt_No_comments_about_fir">Keine Kommentare über %first_names% %last_name%. </msg>
-  <msg key="lt_No_Company_Employees_">Keine Firmenangestellten in unserer Datenbank</msg>
+  <msg key="lt_No_Company_Employees_">Keine Firmenmitarbeiter in unserer Datenbank</msg>
   <msg key="lt_No_contact_informatio">Keine Kontaktinformation</msg>
   <msg key="lt_None_of_the_specified">Keine der angegebenen Gruppen existiert.</msg>
   <msg key="lt_Noteintranet-forumNot">Notiz</msg>
