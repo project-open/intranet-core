@@ -65,7 +65,7 @@ if {"" == $sub_navbar} {
 		default		{ set label "" }
 	    }
 	}
-	xowiki { 
+	documentation { 
 	    set show_left_navbar_p 0
 	}
     }
