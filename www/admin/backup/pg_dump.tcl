@@ -146,30 +146,25 @@ if { [catch {
 
     switch $platform {
 	windows {
-	    # Windows CygWin default
-	    if {!$download_p} {
-		ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	        exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file</tt>\n"
-		ns_write "</ul>\n"
-	    }
-	    exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
+	    # Windows CygWin
+	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
-
 	default {
 	    # Probably Linux or some kind of Unix derivate
-	    if {!$download_p} {
-		ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-	        exec /usr/bin/pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file</tt>\n"
-		ns_write "</ul>\n"
-	    }
-	    exec pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
-	    if {$gzip_p} {
-                exec gzip $dest_file
-                set dest_file "$dest_file.gz"
-            }
-
+	    set cmd [list exec pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
     }
+
+    if {!$download_p} {
+	ns_write "<li>PosgreSQL dump command:<br>\n<tt>$cmd\n</tt>\n"
+	ns_write "</ul>\n"
+    }
+
+    if {$gzip_p} {
+	exec gzip $dest_file
+	set dest_file "$dest_file.gz"
+    }
+
 
 } err_msg] } {
     ns_write "<p>Error writing report to file $path/$filename:<p>
@@ -183,7 +178,7 @@ if {$download_p} {
 }
 
 
-ns_write "
+nns_write "
 <p>
 Finished.
 
