@@ -155,6 +155,9 @@ if { [catch {
 	}
     }
 
+    # Execute the command
+    eval $cmd
+
     if {!$download_p} {
 	ns_write "<li>PosgreSQL dump command:<br>\n<tt>$cmd\n</tt>\n"
 	ns_write "</ul>\n"
