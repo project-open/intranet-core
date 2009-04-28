@@ -31,8 +31,8 @@ set profile_sql "
 "
 db_foreach profiles $profile_sql {
     append select_html "
-	<li><input type=radio name=profile_id value=$profile_id>
-	$profile_name
+	<li><input type=radio name=profile_id value=$group_id>
+	$group_name
     "
 }
 
