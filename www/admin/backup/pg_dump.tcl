@@ -178,7 +178,7 @@ if {$download_p} {
 }
 
 
-nns_write "
+ns_write "
 <p>
 Finished.
 
