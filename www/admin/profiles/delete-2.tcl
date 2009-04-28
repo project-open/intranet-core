@@ -25,12 +25,14 @@ set debug_html ""
 
 catch {
 
-    set rel_ids [db_string rel_ids "
+    set rel_ids [db_list rel_ids "
 	select	rel_id 
 	from	acs_rels 
 	where	rel_type = 'membership_rel' and 
 		object_id_one = :profile_id
     "]
+
+    append debug_html "<li>Going to delete [llength rel_ids] memberships\n"
     foreach rel_id $rel_ids {
 	append debug_html "<li>Deleting rel_id \#$rel_id\n"
 	db_dml del_rel "select acs_rel__delete(:rel_id)"
