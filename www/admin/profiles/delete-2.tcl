@@ -38,6 +38,11 @@ catch {
 	db_dml del_rel "select acs_rel__delete(:rel_id)"
     }
 
+    if {[db_table_exists im_ticket_queue_ext]} {
+	append debug_html "<li>Deleting from im_profiles\n"
+	db_dml del_profile "delete from im_profiles where profile_id = :profile_id"
+    }
+
     append debug_html "<li>Deleting from im_profiles\n"
     db_dml del_profile "delete from im_profiles where profile_id = :profile_id"
 
