@@ -24,14 +24,19 @@ set err ""
 
 ns_log Debug "restoring pgdmp file: $filename"
 
-
-
-if {$extension==".pgdmp"} {
-    catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err
-} elseif {$extension==".sql"} {
-    catch { exec psql  --dbname $server_name --file $filename } err
-} else {
-    set err "pg dump format '$extension' not supported"
+switch $extension {
+    ".pgdmp" {
+	catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err
+    }
+    ".sql" {
+	catch { exec psql  --dbname $server_name --file $filename } err
+    }
+    ".bz2" {
+	set err "File in '.bz2' format: Please uncompress manually and retry"
+    }
+    default {
+	set err "pg_dump format '$extension' not supported"
+    }
 }
 
 if {$err==""} {
