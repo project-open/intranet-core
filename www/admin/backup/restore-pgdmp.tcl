@@ -34,6 +34,9 @@ switch $extension {
     ".bz2" {
 	set err "File in '.bz2' format: Please uncompress manually and retry"
     }
+    ".gz" {
+	set err "File in '.gz' format: Please uncompress manually and retry"
+    }
     default {
 	set err "pg_dump format '$extension' not supported"
     }
