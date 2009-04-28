@@ -40,7 +40,7 @@ catch {
 
     if {[db_table_exists im_ticket_queue_ext]} {
 	append debug_html "<li>Deleting from im_profiles\n"
-	db_dml del_profile "delete from im_profiles where profile_id = :profile_id"
+	db_dml del_profile "delete from im_ticket_queue_ext where group_id = :profile_id"
     }
 
     append debug_html "<li>Deleting from im_profiles\n"
