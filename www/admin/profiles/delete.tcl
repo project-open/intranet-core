@@ -25,9 +25,8 @@ set select_html ""
 set profile_sql "
 	select	g.group_name,
 		g.group_id
-	from	groups g,
-		im_profiles p
-	where	g.group_id = p.profile_id
+	from	groups g
+	order by group_id
 "
 db_foreach profiles $profile_sql {
     append select_html "
