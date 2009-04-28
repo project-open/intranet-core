@@ -12,7 +12,7 @@
 	<h1>Postgres Backup/Restore</h1>
 	<ul>
 	    <li>Current backup path: @backup_path@
-	    <if !@backup_path_exists_p@>
+	    <if @not_backup_path_exists_p@>
 	    <li>
 		<font color=red>
 			Backup path doesn't exist - please correct the
