@@ -21,6 +21,8 @@ if {!$user_is_admin_p} {
 set title "Delete a Profile"
 set context [list [list "[ad_conn package_url]admin/groups/" "Groups"] $title]
 
+set debug_html ""
+
 catch {
 
     set rel_ids [db_string rel_ids "
@@ -30,10 +32,14 @@ catch {
 		object_id_one = :profile_id
     "]
     foreach rel_id $rel_ids {
+	append debug_html "<li>Deleting rel_id \#$rel_id\n"
 	db_dml del_rel "select acs_rel__delete(:rel_id)"
     }
 
+    append debug_html "<li>Deleting from im_profiles\n"
     db_dml del_profile "delete from im_profiles where profile_id = :profile_id"
+
+    append debug_html "<li>Deleting from groups\n"
     db_dml del_group "delete from groups where group_id = :profile_id"
 
 } err_msg
