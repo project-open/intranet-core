@@ -35,7 +35,7 @@ catch {
     append debug_html "<li>Going to delete [llength rel_ids] memberships\n"
     foreach rel_id $rel_ids {
 	append debug_html "<li>Deleting rel_id \#$rel_id\n"
-	db_dml del_rel "select acs_rel__delete(:rel_id)"
+	db_string del_rel "select acs_rel__delete(:rel_id)"
     }
 
     if {[db_table_exists im_ticket_queue_ext]} {
