@@ -1195,6 +1195,7 @@ ad_proc -public im_header {
     if {$header_skin_select != ""} {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
+    if {$loginpage_p} { set header_skin_select "" }
 
     # --------------------------------------------------------------------
     # Temporary (?) fix to get xinha working
