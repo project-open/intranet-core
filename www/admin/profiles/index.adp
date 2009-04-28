@@ -15,8 +15,8 @@
 <tr>
   <td>
     <ul>
-    <li><a
-    href="/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile">Add a new profile</a>
+    <li><a href="/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile">Add a new profile</a>
+    <li><a href="/intranet/admin/profiles/delete">Delete a profile</a>
     </ul>
   </td>
 </tr>
