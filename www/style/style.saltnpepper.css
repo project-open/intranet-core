@@ -1422,11 +1422,11 @@ div.xowiki-content {
 
 
 #left-col {
-	margin-top:15;
+	margin-top:15px;
 }
 
 #right-col {
-	margin-top:15;
+	margin-top:15px;
 }
 
 
@@ -1434,8 +1434,21 @@ div.xowiki-content h1 {
 	margin-top: 2em;
 }
 
+div.xowiki-content h2 {
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+}
+
 div.rightbox {
 	margin-top: 2em;
+}
+
+div.xowiki-content ul {
+	margin-bottom:0.8em;
+}
+
+div.xowiki-content hr {
+	margin-top:1.5em;
 }
 
 
