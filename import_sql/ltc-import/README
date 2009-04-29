@@ -1,0 +1,24 @@
+# ----------------------------------------------------
+# Import scripts for LTC-Organizer
+# ----------------------------------------------------
+
+The scripts in this folder have been used to import data from
+an LTC-Organizer 2.0 application into ]project-open[.
+
+As a first step we have imported the Access database into 
+PostgreSQL using a commercial database converter.
+
+In a second step we ran the scripts in this folder to insert
+]po[ objects for each of the Access objects.
+
+Please note that these scripts will probably not work out of
+the box for you. You will have to adapt these scripts to the
+data structure of your own application.
+
+Please note that this method of importing data is considerably
+less efficient than the "flat-table-import" in a neighbouring
+folder.
+
+Bests,
+Frank
+

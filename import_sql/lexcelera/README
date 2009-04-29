@@ -1,0 +1,25 @@
+# ----------------------------------------------------
+# Import scripts from Lexcelera
+# ----------------------------------------------------
+
+The scripts in this folder have been used to import data from
+a legacy Access application at Lexcelera into ]project-open[.
+
+As a first step we have imported the Access database into 
+PostgreSQL using a commercial database converter.
+
+In a second step we ran the scripts in this folder to insert
+]po[ objects for each of the Access objects.
+
+Please do NOT expect that these scripts will work for you
+out of the box. Instead, the scripts are provided here as
+a code sample. You will have to adapt these scripts to the
+data structure of your own application.
+
+Please note that this method of importing data is considerably
+less efficient than the "flat-table-import" in a neighbouring
+folder.
+
+Bests,
+Frank
+

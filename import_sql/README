@@ -1,0 +1,48 @@
+# ----------------------------------------------------
+# Legacy Data Import
+# ----------------------------------------------------
+
+This folder contains several examples on how to import legacy
+data into ]project-open[.
+
+These scripts have been created during specific customer rollout
+projects. Please do NOT expect that these scripts will work for 
+you out of the box. Instead, you will have to adapt these structure 
+to your data structures and fix any errors ocurring during the 
+conversion.
+
+You will need reasonable knowledge of SQL and the PostgreSQL
+database to perform this task.
+
+- Flat-Table-Import
+  Preferred import method, developed during the import of data 
+  at ISSA. Please note that project were not imported finally,
+  so there may still be errors in that section.
+
+- LTC-Import:
+  Import of data from LTC-Organizer into ]project-open[
+
+- Lexcelera:
+  Import of data from a proprietary Access application into
+  ]project-open[
+
+
+If you encounter issues during the import:
+
+- Please be patient. 
+  It usually takes one day of work to import one object type 
+  (5 days for importing users, companies, projects, price list 
+  and skills), even for persons with proven ]po[ database 
+  skills.
+
+- Please learn about the ]po[ data model:
+  Please search Google for "PO-Data-Model".
+
+- Please learn PL/SQL:
+  It will pay off if you dedicate half a day to learn the
+  basics of PL/SQL.
+
+
+Bests,
+Frank
+

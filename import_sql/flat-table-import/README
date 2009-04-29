@@ -1,0 +1,34 @@
+# ----------------------------------------------------
+# Flat Table Import
+# ----------------------------------------------------
+
+The scripts in this folder have been used to import data from
+a customer organization into ]project-open[ during a project
+rollout.
+
+- In a first step, we have exported all customer data into CSV
+  format (MS-Excel).
+
+- In a second step, we paste the contents of the CSV files
+  right into the "COPY" sections of the import.sql file.
+  This way, the script automatically populates the import_*
+  tables with this data.
+
+- In a third step the SQL script converts the data from the
+  import_* tables into ]po[ objects.
+
+
+
+Please do NOT expect that these scripts will work for you
+out of the box. Instead, the scripts are provided here as
+a code sample. You will have to adapt these structure of 
+the import_* tables to your data structures and fix any
+errors ocurring during the conversion.
+
+Still, this is currently the most efficient method to import
+legacy data into ]project-open[, apart from the CSV import
+provided under "Companies" and "Users" tabs.
+
+Bests,
+Frank
+
