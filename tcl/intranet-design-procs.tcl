@@ -1445,17 +1445,17 @@ ad_proc -public im_stylesheet {} {
 
     if {[llength [info procs im_package_calendar_id]]} {
 	if {$openacs54_p} { 
-	    template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" 
-	} else {
-	    append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
-	}
-    }
+	    template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" -order "3" 
+# # 	} else {
+# # 	    append html "<link rel=StyleSheet type=text/css href=\"/calendar/resources/calendar.css\" media=screen>\n"
+# # 	}
+# #     }
 
-    if {$openacs54_p} { template::head::add_css -href "/intranet/style/print.css" -media "print" } else { append html "<link rel=StyleSheet type=text/css href=\"/intranet/style/print.css\" media=print>\n" }
+#     if {$openacs54_p} { template::head::add_css -href "/intranet/style/print.css" -media "print" -order "4" } else { append html "<link rel=StyleSheet type=text/css href=\"/intranet/style/print.css\" media=print>\n" }
 
 
-#    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
-#    ad_return_complaint 1 $bug_tracker_installed_p
+# #    set bug_tracker_installed_p [expr {[llength [info procs ::ds_show_p]] == 1 && [ds_show_p]}]
+# #    ad_return_complaint 1 $bug_tracker_installed_p
 
 
     # --------------------------------------------------------------------
@@ -1464,13 +1464,13 @@ ad_proc -public im_stylesheet {} {
     append html ""
 
     # --------------------------------------------------------------------
-    if {$openacs54_p} { template::head::add_css -href $system_css -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n" }
+    if {$openacs54_p} { template::head::add_css -href $system_css -media "screen" -order "6" } else { append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n" }
 
     set css "/resources/acs-subsite/site-master.css"
 #    if {$openacs54_p} { template::head::add_css -href $css -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"$css\" media=screen>\n" }
 
 
-    if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
+    if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" -order "5" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
 
