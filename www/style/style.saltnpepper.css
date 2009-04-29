@@ -1451,7 +1451,10 @@ div.xowiki-content hr {
 	margin-top:1.5em;
 }
 
-
+#search-info p.subtitle {
+	position:relative;
+	font-weight: bold;
+}
 
 
 
