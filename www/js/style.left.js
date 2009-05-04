@@ -4,13 +4,13 @@
 
 jQuery().ready(function(){
 
-/*
+
         var node_insert_after=document.getElementById("fullwidth-list");
         var node_to_move=document.getElementById("footer");
         if (node_insert_after != null && node_to_move != null) {
-           document.getElementById("filter_list").insertBefore(node_to_move, node_insert_after.nextSibling);
+           document.getElementById("filter-list").insertBefore(node_to_move, node_insert_after.nextSibling);
         }
-*/
+
 
     /* auto-change skin-select */ 	
     jQuery("#header_skin_select > form > select").change(function(){
