@@ -34,23 +34,29 @@ where parameter_id in (
 
 
 -----------------------------------------------------
+
 create or replace function acs_privilege__create_privilege (varchar,varchar,varchar)
 returns integer as '
 declare
-	create_privilege__privilege		alias for $1;
-	create_privilege__pretty_name		alias for $2;	-- default null
-	create_privilege__pretty_plural		alias for $3;	-- default null
+	create_privilege__privilege             alias for $1;  
+	create_privilege__pretty_name           alias for $2;  -- default null  
+	create_privilege__pretty_plural         alias for $3;  -- default null
 	v_count					integer;
-BEGIN
-	SELECT count(*) into v_count from acs_privileges
-	WHERE privilege = create_privilege__privilege;
-	if v_count > 0 then return 0; end if;
-	
-	INSERT into acs_privileges (privilege, pretty_name, pretty_plural)
-	VALUES (create_privilege__privilege, create_privilege__pretty_name, create_privilege__pretty_plural);
+begin
+	select count(*) into v_count from acs_privileges
+	where privilege = create_privilege__privilege;
+	IF v_count > 0 THEN return 0; END IF;
 
-	return 0;
-END;' language 'plpgsql';
+	insert into acs_privileges (
+		privilege, pretty_name, pretty_plural
+	) values (
+		create_privilege__privilege, 
+		create_privilege__pretty_name, 
+		create_privilege__pretty_plural
+	);
+
+    return 0; 
+end;' language 'plpgsql';
 
 
 create or replace function acs_privilege__add_child (varchar,varchar)

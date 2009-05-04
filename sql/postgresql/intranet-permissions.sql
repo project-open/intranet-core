@@ -104,7 +104,7 @@ BEGIN
 	select count(*) into v_count from acs_permissions
 	where object_id = v_object_id and grantee_id = v_profile_id and privilege = p_priv_name;
 
-	IF 0 = v_count THEN
+	IF NULL != v_profile_id AND 0 = v_count THEN
 		PERFORM acs_permission__grant_permission(v_object_id, v_profile_id, p_priv_name);
 	END IF;
 
