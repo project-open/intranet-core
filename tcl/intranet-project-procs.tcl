@@ -346,7 +346,7 @@ ad_proc -public im_next_project_nr {
     }
     
     # Should we create hierarchial project numbers for sub-projects?
-    set project_nr_hierarchical_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrHierarchicalDigits" -default 2]
+    set project_nr_hierarchical_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrHierarchicalDigits" -default 0]
     
     # ----------------------------------------------------
     # Calculate the next invoice Nr by finding out the last

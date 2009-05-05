@@ -40,6 +40,8 @@ ad_proc var_contains_quotes { var } {
     return 0
 }
 
+#    if {[regexp {"} $var]} { return 1 }
+
 # -----------------------------------------------------------
 # Defaults
 # -----------------------------------------------------------
@@ -371,7 +373,7 @@ if {[form is_request $form_id]} {
 	# A completely new project or a subproject
 	#
 	if {![info exist project_nr]} {
-	    set project_nr [im_next_project_nr -customer_id $company_id]
+	    set project_nr [im_next_project_nr -customer_id $company_id -parent_id $parent_id]
        	}
 	set edit_existing_project_p 0
 	set start_date $todays_date
