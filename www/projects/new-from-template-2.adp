@@ -26,58 +26,8 @@
       </td>
     </tr>
 
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectCostsP "Clone Project Costs?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_costs_p value=1 @clone_costs_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectCosts_Help "Clone financial items belonging to the template?"]] %> &nbsp; 
-      </td>
-    </tr>
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectFiles "Clone Project Files?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_files_p value=1 @clone_files_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectFiles_Help "Clone the filestorage files associated with this project?"]] %> &nbsp; 
-      </td>
-    </tr>
+    @clone_html;noquote@
 
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneForumTopics "Clone Project Forum Topics?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_forum_topics_p value=1 @clone_forum_topics_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneForumTopics_Help "Clone forum topics associated with this project?"]] %> &nbsp; 
-      </td>
-    </tr>
-
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectMembers "Clone Project Members?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_members_p value=1 @clone_members_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectMembers_Help "Clone Project Members?"]] %> &nbsp; 
-      </td>
-    </tr>
-
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectSubprojects "Clone Project Subprojects?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_subprojects_p value=1 @clone_subprojects_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectSubprojects_Help "Clone Subprojects?"]] %> &nbsp; 
-      </td>
-    </tr>
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectTimesheetTasks "Clone Project Gantt Tasks?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_timesheet_tasks_p value=1 @clone_timesheet_tasks_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectTimesheetTasks_Help "Clone timesheet (Gantt) tasks associated with this project?"]] %> &nbsp; 
-      </td>
-    </tr>
-    <tr> 
-      <td><%= [lang::message::lookup "" intranet-core.CloneProjectTransTasks "Clone Project Translation Tasks?"] %> &nbsp;</td>
-      <td> 
-	<input type=checkbox name=clone_trans_tasks_p value=1 @clone_trans_tasks_p_selected@>
-	<%= [im_gif help [lang::message::lookup "" intranet-core.CloneProjectTransTasks_Help "Clone translation  tasks associated with this project?"]] %> &nbsp; 
-      </td>
-    </tr>
     <tr> 
       <td valign=top> 
 	<div align=right>&nbsp; </div>

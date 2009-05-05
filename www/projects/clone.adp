@@ -26,6 +26,8 @@
       </td>
     </tr>
 
+    @clone_html;noquote@
+
     <tr> 
       <td valign=top> 
 	<div align=right>&nbsp; </div>

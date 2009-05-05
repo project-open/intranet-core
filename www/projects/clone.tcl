@@ -54,6 +54,49 @@ if {!$parent_read} {
 }
 
 
+
+# ---------------------------------------------------------------------
+# Get Clone information
+# ---------------------------------------------------------------------
+
+
+set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
+set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0]
+set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0]
+set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1]
+set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1]
+set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFilesP" -default 1]
+set clone_folders_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFoldersP" -default 1]
+set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1]
+
+set clone_struct {
+    {"Clone Project Members" clone_members_p}
+    {"Clone Costs" clone_costs_p}
+    {"Clone Timesheet Tasks" clone_timesheet_tasks_p}
+    {"Clone Forum Topics" clone_forum_topics_p}
+    {"Clone Filestorage" clone_files_p}
+    {"Clone Sub-projects" clone_subprojects_p}
+}
+
+set clone_html ""
+foreach struct $clone_struct {
+    set name [lindex $struct 0]
+    set var [lindex $struct 1]
+    set value [expr \$$var]
+
+    set checked ""
+    if {$value} { set checked "checked" }
+    append clone_html "
+	<tr>
+	<td>$name</td>
+	<td><input type=checkbox name=$var $checked></td>
+	</tr>   
+    "
+}
+
+# ad_return_complaint 1 [ns_quotehtml $clone_html]
+
+
 # ---------------------------------------------------------------------
 # Get Clone information
 # ---------------------------------------------------------------------
