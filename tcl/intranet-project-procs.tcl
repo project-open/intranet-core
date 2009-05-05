@@ -315,6 +315,7 @@ namespace eval project {
 
 ad_proc -public im_next_project_nr { 
     {-customer_id 0 }
+    {-parent_id "" }
     {-nr_digits}
     {-date_format}
 } {
@@ -344,6 +345,9 @@ ad_proc -public im_next_project_nr {
 	return [eval $project_nr_generator -customer_id $customer_id -nr_digits $nr_digits -date_format $date_format]
     }
     
+    # Should we create hierarchial project numbers for sub-projects?
+    set project_nr_hierarchical_digits [parameter::get -package_id [im_package_core_id] -parameter "ProjectNrHierarchicalDigits" -default 2]
+    
     # ----------------------------------------------------
     # Calculate the next invoice Nr by finding out the last
     # one +1
@@ -367,6 +371,39 @@ ad_proc -public im_next_project_nr {
 	append zeros "0"
     }
 
+
+    # ----------------------------------------------------
+    # Check if we create a sub-project or even sub-sub-project etc.
+    # Then we just replace the variables above.
+    if {"" != $parent_id && $project_nr_hierarchical_digits > 0} {
+	set parent_project_nr ""
+	db_0or1row parent_project_info "
+		select	project_nr as parent_project_nr
+		from	im_projects
+		where	project_id = :parent_id
+	"
+
+	set nr_digits $project_nr_hierarchical_digits
+	set date_format "${parent_project_nr}_"
+	set todate $date_format
+	set date_format_len [string length $date_format]
+	set nr_start_idx [expr 1+$date_format_len]
+	set date_start_idx 1
+	set zeros ""
+	set num_check_sql ""
+	for {set i 0} {$i < $nr_digits} {incr i} {
+	    set digit_idx [expr 1 + $i]
+	    append num_check_sql "
+		and ascii(substr(p.nr,$digit_idx,1)) > 47 
+		and ascii(substr(p.nr,$digit_idx,1)) < 58
+	    "
+	    append zeros "0"
+	}
+    }
+
+    # ----------------------------------------------------
+    # Pull out the largest number that fits the PPPPPPPP_xxxx format
+
     set sql "
 	select
 		trim(max(p.nr)) as last_project_nr
@@ -378,6 +415,7 @@ ad_proc -public im_next_project_nr {
 	where	1=1
 		$num_check_sql
     "
+
     set last_project_nr [db_string max_project_nr $sql -default $zeros]
     set last_project_nr [string trimleft $last_project_nr "0"]
     if {[empty_string_p $last_project_nr]} { set last_project_nr 0 }
