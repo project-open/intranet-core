@@ -503,9 +503,13 @@ case $member_state {
 	default { set user_state $member_state }
 }
 
-set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
-set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
-
+if { [im_user_is_admin_p $current_user_id ]} {
+    set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+    set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
+} else {
+    set activate_link "<a href=/intranet/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+    set delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
+}
 
 if {$admin} {
     append admin_links "<li>[_ intranet-core.lt_Member_state_user_sta]"
