@@ -309,7 +309,7 @@ namespace eval im_profile {
 			im_profiles p
 		where	g.group_id = p.profile_id and
 			group_name = :profile
-	" -default ""]
+	" -default 0]
 	return $profile_id
     }
 
