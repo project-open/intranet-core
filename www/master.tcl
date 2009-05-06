@@ -12,6 +12,11 @@ if { ![info exists show_left_navbar_p] } { set show_left_navbar_p 1 }
 
 set show_navbar_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
 
+if {!$show_navbar_p && "" == [string trim $left_navbar]} {
+    set show_left_navbar_p 0
+}
+
+
 # ----------------------------------------------------
 # Admin Navbar
 #

@@ -61,7 +61,6 @@ ad_proc -public im_navbar_tree_helper {
     if {!$show_left_functional_menu_p} { return "" }
 
     set html "
-      <hr/>
       	<div class=filter-block>
 	<ul class=mktree>
 	[im_menu_li home]

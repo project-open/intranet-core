@@ -13,13 +13,15 @@
 				<!-- Left Navigation Bar -->
 				<%= $left_navbar %>
 				<!-- End Left Navigation Bar -->
-	
+
+<if @show_navbar_p@ and @show_left_navbar_p@>	
+				<hr/>
 				<div class="filter-block">
 					<div class="filter-title">#intranet-core.Home#</div>
 				</div>
-				<hr/>
 				<%= [im_navbar_tree -label "main"] %>
-	
+</if>
+
 			</div>
 		</div>
 		<div class="fullwidth-list" id="fullwidth-list">

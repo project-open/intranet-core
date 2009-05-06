@@ -3,7 +3,6 @@
 <property name="main_navbar_label">home</property>
 <property name="header_stuff">@header_stuff;noquote@</property>
 
-
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td colspan=3>

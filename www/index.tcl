@@ -74,5 +74,8 @@ set admin_html ""
 append admin_html "<li> <a href=/intranet/users/view?user_id=$current_user_id>[_ intranet-core.About_You]</A>\n"
 set administration_component [im_table_with_title "[_ intranet-core.Administration]" $admin_html]
 
+# Should we show the left navbar?
+# If not, then we're going to skip the menu entirely
+# because we've got nothing else to show at the moment.
 set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
 

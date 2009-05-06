@@ -30,6 +30,22 @@ set context ""
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+
+
+# ---------------------------------------------------------------
+# Flush cache
+# ---------------------------------------------------------------
+
+# We flush the cache here, because we want to flush the cache
+# _after_ updating parameters. However, we use the OpenACS
+# parameter update page, which we can't modify.
+# So instead, we flush the cache on this page, where we get
+# redirected after the update...
+
+im_permission_flush
+
+
+
 # ---------------------------------------------------------------
 # Render Module List
 # ---------------------------------------------------------------
