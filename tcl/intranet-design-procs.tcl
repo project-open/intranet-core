@@ -1030,11 +1030,11 @@ ad_proc -public im_header_logout_component {
 
     set header_buttons "
       <div id=\"header_buttons\">
-	 <div id=\"header_logout_tab\">
+	<div id=\"header_logout_tab\">
 	    <div id=\"header_logout\">
                 $log_out_link
 	    </div>
-	 </div>
+	</div>
 	 <div id=\"header_settings_tab\">
 	    <div id=\"header_settings\">
 	       $logout_pwchange_str
