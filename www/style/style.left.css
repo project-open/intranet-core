@@ -36,6 +36,7 @@
 	margin-top:1em;
 	position:relative;
 	text-align:center;
+	width: 100%;
 }
 
 
@@ -45,4 +46,8 @@
 
 #header_settings_tab {
 	width: auto;
+}
+
+#header_settings_tab_wrapper {
+	width: auto;	
 }
