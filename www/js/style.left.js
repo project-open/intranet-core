@@ -144,9 +144,9 @@ jQuery().ready(function(){
     var cornersObj = new curvyCorners(settings, 
        "filter"
     );
-/*    cornersObj.applyCornersToAll(); */
 
-
+	//  rounded corners script set width to 100%, let's roll that back:
+	document.getElementById('header_settings_tab').style.width='auto';
 });
 
 
