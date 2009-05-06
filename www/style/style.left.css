@@ -1,9 +1,10 @@
 @import url("style.default.css");
 
 .filter-list {
-   position: absolute;
-   left: 0px;
-   top: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
 }
 
 .fullwidth-list {
