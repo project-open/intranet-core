@@ -7,8 +7,9 @@ jQuery().ready(function(){
 
         var node_insert_after=document.getElementById("fullwidth-list");
         var node_to_move=document.getElementById("footer");
-        if (node_insert_after != null && node_to_move != null) {
-           document.getElementById("filter-list").insertBefore(node_to_move, node_insert_after.nextSibling);
+	var node_div_block=document.getElementById("filter-list");
+        if (node_insert_after != null && node_to_move != null) && node_div_block != null {
+           node_div_block.insertBefore(node_to_move, node_insert_after.nextSibling);
         }
 
 
