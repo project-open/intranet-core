@@ -35,6 +35,9 @@ set action_url ""
 set focus "view.view_name"
 set page_title "[_ intranet-core.New_view]"
 set context $page_title
+set current_url $return_url
+set return_url [im_url_with_query]
+
 
 if {![info exists view_id]} { set form_mode "edit" }
 

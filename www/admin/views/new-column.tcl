@@ -32,7 +32,7 @@ if {!$user_is_admin_p} {
     return
 }
 
-set action_url ""
+set action_url "/intranet/admin/views/new-column"
 set focus "column.column_name"
 set page_title "[_ intranet-core.New_column]"
 set context $page_title
@@ -137,6 +137,8 @@ ad_form -extend -name column -on_request {
     # Flush cache
     im_permission_flush
 
+    set return_url [export_vars -base "/intranet/admin/views/new" {view_id}]
+    ad_return_complaint 1 $return_url
     ad_returnredirect $return_url
     ad_script_abort
 }

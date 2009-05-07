@@ -33,7 +33,7 @@ if {!$user_is_admin_p} {
     return
 }
 
-if {"" == $return_url} { set return_url [ad_conn url] }
+if {"" == $return_url} { set return_url [im_url_with_query] }
 
 set page_title "[_ intranet-core.Manage_Views]"
 set context_bar [im_context_bar $page_title]
