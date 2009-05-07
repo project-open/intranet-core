@@ -6,7 +6,7 @@
 
 <table cellspacing=2 cellpadding=2>
 <form action='@return_url;noquote@' method=POST>
-<%= [export_form_vars ticket_nr ticket_name ticket_sla_id] %>
+<%= [export_form_vars ticket_nr ticket_name ticket_sla_id user_id_from_search] %>
 
 <!-- ToDo: replace with variables from HTTP form -->
 
