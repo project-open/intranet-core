@@ -79,7 +79,8 @@ set clone_struct {
     {"Clone Costs" clone_costs_p}
     {"Clone Timesheet Tasks" clone_timesheet_tasks_p}
     {"Clone Forum Topics" clone_forum_topics_p}
-    {"Clone Filestorage" clone_files_p}
+    {"Clone Filestorage Files" clone_files_p}
+    {"Clone Filestorage Folders" clone_folders_p}
     {"Clone Sub-projects" clone_subprojects_p}
 }
 
