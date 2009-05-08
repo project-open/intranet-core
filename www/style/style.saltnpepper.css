@@ -988,6 +988,15 @@ a   span  {float:none;}
    margin:10px;
 }
 
+.fullwidth-list table tr {
+ 	padding: 3px;
+}
+
+.fullwidth-list table td {
+ 	padding: 3px;
+}
+
+
 .fullwidth-list .component table {
 	text-align:left;
 	border-collapse:collapse;
