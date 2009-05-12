@@ -653,7 +653,7 @@ ad_proc -public im_project_options {
 	legacy { set sort_order "p.tree_sortkey" }
 	default { set sort_order "lower(p.project_nr)" }
     }
-    
+
     set sql "
 		select
 			p.project_id,
@@ -703,7 +703,8 @@ ad_proc -public im_project_options {
     "
 
     db_multirow multirow hours_timesheet $sql
-    multirow_sort_tree multirow project_id parent_id sort_order
+#   multirow_sort_tree multirow project_id parent_id sort_order
+    multirow_sort_tree -nosort multirow project_id parent_id sort_order
     set options [list]
     template::multirow foreach multirow {
 
@@ -2235,7 +2236,7 @@ ad_proc im_project_clone_folders {parent_project_id new_project_id} {
 
 ad_proc im_project_nuke {project_id} {
     Nuke (complete delete from the database) a project
-} { #beginn of procedure body
+} {
     ns_log Notice "im_project_nuke project_id=$project_id"
     
     set current_user_id [ad_get_user_id]
@@ -2497,7 +2498,26 @@ ad_proc im_project_nuke {project_id} {
 	    "
 	}
 
+	if {[im_table_exists im_gantt_projects]} {
+	
+	    ns_log Notice "projects/nuke-2: im_gantt_projects"
+	    db_dml del_gantt_projects "
+		delete from im_gantt_projects
+		where project_id = :project_id
+	    "
+	}
 
+
+	# Skills
+	if {[im_table_exists im_object_freelance_skill_map]} {
+	
+	    ns_log Notice "projects/nuke-2: im_object_freelance_skill_map"
+	    db_dml del_skills "
+		delete from im_object_freelance_skill_map
+		where object_id = :project_id
+	    "
+	}
+	
 	# RFQs
 	if {[im_table_exists im_freelance_rfqs]} {
 	
@@ -2548,6 +2568,24 @@ ad_proc im_project_nuke {project_id} {
 	db_dml filestorage "delete from im_fs_folders where object_id = :project_id"
 
 
+	# Calendar
+        if {[im_table_exists cal_items]} {
+	    db_dml del_cal_items "
+		delete from cal_items 
+		where	cal_item_id in (
+				select event_id 
+				from acs_events 
+				where	related_object_type = 'im_project' and 
+					related_object_id not in (select project_id from im_projects)
+			)
+	    "
+	    db_dml del_acs_events "
+		delete	from acs_events 
+		where	related_object_type = 'im_project' and 
+			related_object_id not in (select project_id from im_projects)
+	    "
+	}
+
 
 	ns_log Notice "projects/nuke-2: rels"
 	set rels [db_list rels "
@@ -2559,6 +2597,7 @@ ad_proc im_project_nuke {project_id} {
 
 	set im_conf_item_project_rels_exists_p [im_table_exists im_conf_item_project_rels]
 
+	# Relationships
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
