@@ -48,7 +48,7 @@ set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "Home"
-set context_bar [im_context_bar $page_title]
+# set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set return_url "/intranet/"

@@ -8,32 +8,35 @@ isExtended = 1;
 
 function extendContract(){
 	// alert('extendContract');
-	if(isExtended == 0){
-		if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
-		sideBarSlide(0, height, 0, width);
-		sideBarOpacity(0, 1);
-		isExtended = 1;
-		// move main part
-		jQuery(".fullwidth-list").animate({marginLeft: "288px"}, slideDuration );
-		// make expand tab arrow image face left (inwards)
-		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
-		document.getElementById('slave_content').style.visibility='visible';
-		// [temp] set back to height=auto when animation is done, should be triggered based on event  
-		var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
-		poSetCookie('isExtendedCookie',1,90);
-	}
-	else{
-		// alert (document.getElementById('sidebar').offsetHeight);
-		document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
-		sideBarSlide(height, 135, width, 0);
-		sideBarOpacity(1, 0);
-		isExtended = 0;
-		jQuery(".fullwidth-list").animate({marginLeft: "30px"}, slideDuration );
-		// make expand tab arrow image face right (outwards)
-		$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
-		document.getElementById('slave_content').style.visibility='hidden';
-		poSetCookie('isExtendedCookie',0,90);
-	}
+        var node_to_move=document.getElementById("sidebar");
+//	if (document.getElementById("sidebar") != null) {
+		if(isExtended == 0){
+			if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
+			sideBarSlide(0, height, 0, width);
+			sideBarOpacity(0, 1);
+			isExtended = 1;
+			// move main part
+			jQuery(".fullwidth-list").animate({marginLeft: "288px"}, slideDuration );
+			// make expand tab arrow image face left (inwards)
+			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
+			document.getElementById('slave_content').style.visibility='visible';
+			// [temp] set back to height=auto when animation is done, should be triggered based on event  
+			var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
+			poSetCookie('isExtendedCookie',1,90);
+		}
+		else{
+			// alert (document.getElementById('sidebar').offsetHeight);
+			document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
+			sideBarSlide(height, 135, width, 0);
+			sideBarOpacity(1, 0);
+			isExtended = 0;
+			jQuery(".fullwidth-list").animate({marginLeft: "30px"}, slideDuration );
+			// make expand tab arrow image face right (outwards)
+			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
+			document.getElementById('slave_content').style.visibility='hidden';
+			poSetCookie('isExtendedCookie',0,90);
+		}
+//	}
 }
 
 function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
@@ -101,7 +104,9 @@ jQuery().ready(function(){
 	}
 
 	if (document.getElementById("fullwidth-list") == null){
-	document.getElementById('slave_content').style.position='relative';	
+		if (document.getElementById("slave_content") != null) {
+			document.getElementById('slave_content').style.position='relative';	
+		}
 	}
 
     jQuery(".component_icons").css("opacity","0.1");

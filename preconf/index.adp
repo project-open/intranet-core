@@ -10,7 +10,7 @@
 <script type=text/javascript src="/resources/core.js"></script>
 <script type=text/javascript src="/intranet/js/rounded_corners.inc.js"></script>
 <script type=text/javascript src="/resources/acs-templating/mktree.js"></script>
-<script type=text/javascript src="/intranet/js/style.left.js"></script>
+<script type=text/javascript src="/intranet/js/style.saltnpepper.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!--[if lt IE 7.]>
 <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>

@@ -800,6 +800,11 @@ ad_proc -public im_user_nuke {user_id} {
     }
 
     set result ""
+    set default_user [db_string default_user "
+	select	min(person_id)
+	from	persons
+	where	person_id > 0
+    "]
 
     db_transaction {
 	
@@ -943,7 +948,6 @@ ad_proc -public im_user_nuke {user_id} {
 	
 
 	# Reassign objects to a default user...
-	set default_user 0
 	db_dml reassign_objects "update acs_objects set modifying_user = :default_user where modifying_user = :user_id"
 	db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_project' and creation_user = :user_id"
 	db_dml reassign_cr_revisions "update acs_objects set creation_user = :default_user where object_type = 'content_revision' and creation_user = :user_id"
@@ -970,6 +974,9 @@ ad_proc -public im_user_nuke {user_id} {
 	}
 
 	db_dml reset_cost_center_managers "update im_cost_centers set manager_id = null where manager_id = :user_id"
+
+	# Payments
+	db_dml reset_payments "update im_payments set last_modifying_user = :default_user where last_modifying_user = :user_id"
 	
 	# Forum
 	db_dml forum "delete from im_forum_topic_user_map where user_id = :user_id"
