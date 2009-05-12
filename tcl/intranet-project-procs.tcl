@@ -930,21 +930,21 @@ ad_proc -public im_project_personal_active_projects_component {
     set extra_wheres [list]
 
     set column_sql "
-select
-	column_name,
-	column_render_tcl,
-	visible_for,
-        extra_where,
-        extra_select,
-        extra_from
-from
-	im_view_columns
-where
-	view_id=:view_id
-	and group_id is null
-order by
-	sort_order"
-
+	select
+		column_name,
+		column_render_tcl,
+		visible_for,
+	        extra_where,
+	        extra_select,
+	        extra_from
+	from
+		im_view_columns
+	where
+		view_id=:view_id
+		and group_id is null
+	order by
+		sort_order
+    "
     db_foreach column_list_sql $column_sql {
 	if {"" == $visible_for || [eval $visible_for]} {
 	    lappend column_headers "$column_name"
@@ -953,7 +953,6 @@ order by
 	if {"" != $extra_select} { lappend extra_selects $extra_select }
 	if {"" != $extra_from} { lappend extra_froms $extra_from }
 	if {"" != $extra_where} { lappend extra_wheres $extra_where }
-	
     }
 
     # ---------------------------------------------------------------
@@ -996,10 +995,11 @@ order by
 	        im_projects p,
 		acs_rels r
 	where
-		r.object_id_one = p.project_id
-		and r.object_id_two = :user_id
-		and p.parent_id is null
-		and p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
+		r.object_id_one = p.project_id and
+		r.object_id_two = :user_id and
+		p.parent_id is null and
+		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
 		$project_status_restriction
 		$project_type_restriction
 	)"
