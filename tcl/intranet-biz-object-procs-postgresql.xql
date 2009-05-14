@@ -36,29 +36,4 @@
     </querytext>
   </fullquery>
 
-  <fullquery name="im_biz_object_add_role.add_im_biz_object_members">
-    <querytext>
-	DECLARE
-		v_rel_id	integer;
-	BEGIN
-		v_rel_id := im_biz_object_member__new (
-			null,
-			'im_biz_object_member',
-			:object_id,
-			:user_id,
-			:role_id,
-			:user_id,
-			:user_ip
-		);
-
-		UPDATE im_biz_object_members SET 
-			percentage = :percentage 
-		WHERE rel_id = v_rel_id;
-
-		RETURN v_rel_id;
-	END;
-    </querytext>
-  </fullquery>
-
-
 </queryset>

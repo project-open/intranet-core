@@ -115,6 +115,11 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $project_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
 
+    # empty project_id would give errors below
+    if {"" == $project_id} { set project_id 0 }
+    im_security_alert_check_integer -location "im_project_permissions" -value $project_id
+
+
     # Treat the project mangers_fields
     # A user man for some reason not be the group PM
     if {!$user_is_group_admin_p} {

@@ -210,7 +210,24 @@ ad_proc -public im_biz_object_add_role {
     # Add the user in a im_biz_object_membership relationship
     set rel_id [db_string rel_id "select rel_id from acs_rels where object_id_one = :object_id and object_id_two = :user_id" -default 0]
     if {0 == $rel_id} {
-	set rel_id [db_exec_plsql add_im_biz_object_members {}]
+	ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
+	set rel_id [db_string create_rel "
+		select im_biz_object_member__new (
+                        null,
+                        'im_biz_object_member',
+                        :object_id,
+                        :user_id,
+                        :role_id,
+                        :user_id,
+                        :user_ip
+                )
+	"]
+
+	db_dml update_perc "
+		UPDATE im_biz_object_members SET 
+			percentage = :percentage 
+		WHERE rel_id = :rel_id
+	"
     }
     if {"" == $rel_id || 0 == $rel_id} { ad_return_complaint 1 "im_biz_object_add_role: rel_id=$rel_id" }
 
