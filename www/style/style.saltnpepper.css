@@ -1465,5 +1465,9 @@ div.xowiki-content hr {
 	font-weight: bold;
 }
 
+div.xowiki-content p, div.xowiki-content td {
+        font-size: 10pt;
+}
+
 
 
