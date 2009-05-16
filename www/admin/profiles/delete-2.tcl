@@ -28,8 +28,7 @@ catch {
     set rel_ids [db_list rel_ids "
 	select	rel_id 
 	from	acs_rels 
-	where	rel_type = 'membership_rel' and 
-		object_id_one = :profile_id
+	where	object_id_one = :profile_id or object_id_two = :profile_id
     "]
 
     append debug_html "<li>Going to delete [llength rel_ids] memberships\n"
@@ -47,7 +46,7 @@ catch {
     db_dml del_profile "delete from im_profiles where profile_id = :profile_id"
 
     append debug_html "<li>Deleting from groups\n"
-    db_dml del_group "delete from groups where group_id = :profile_id"
+    db_dml del_group "delete from groups where group_id = :profile_id"  
 
 } err_msg
 
