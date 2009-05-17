@@ -556,7 +556,7 @@ set mine_p_options [list \
 ]
 
 set filter_html "
-<form method=get action='/intranet/projects/index'>
+<form method=get name=projects_filter action='/intranet/projects/index'>
 [export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
 
 <table border=0 cellpadding=0 cellspacing=1>
