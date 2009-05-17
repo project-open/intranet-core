@@ -1,0 +1,217 @@
+# ----------------------------------------------------------
+# /packages/intranet-core/benchmark/benchmark_timesheet.test
+#
+# Timesheet Benchmark
+#
+# Copyright (C) 2009 ]project-open[
+# Author: frank.bergmann@project-open.com
+# License: GPL V2.0 or higher.
+#
+# Standard ]po[ benchmark to measure the performance of ]project-open[ 
+# in in different soft- and hardware configurations.
+# The benchmark performs the following steps:
+#	- User logs in
+#	- ]po[ will display the HomePage with different plugin components.
+#	  ]po[ will complain if it finds a different list of components,
+#	  as this may give very different results:
+#		- Home Active Projects Component
+#		- Home Workflow Inbox
+#		- Home Forum Component
+#	- User follows the link to a random "Home Active Project"
+#	- ]po[ shows the ProjectViewPage with the following components:
+#		- ...
+#	- User follows the "hours" link to log hours on the project
+#	- ]po[ shows the TimesheetNewPage for that project (and its
+#	  subprojects and tasks).
+#	- User enters a random number between 0.5 and 2 in one of the
+#	  fields of the "timesheet" form and submits the form
+#	- ]po[ will redirect to the ProjectViewPage
+#	- User checks the following menu pages:
+#		- "Projects" (ProjectListPage)
+#		- "Timesheet" (Calendar view)
+#		- "Absences"
+#	- User logs out.
+
+
+# ----------------------------------------------------------
+# Parameters
+#
+set server		"http://172.26.2.5:30086"		;# Without trailing "/"
+#set server		"http://po34demo.project-open.net"	;# Without trailing "/"
+#set logon_user		"Bobby Bizconsult"			;# Name must be on first page
+set logon_user		"Petra Projectmanager"			;# Name must be on first page
+set num_iterations	10					;# Default "10": The first iteration is slow
+set wait_between	0					;# Default "5": Wait seconds betwen pages
+set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
+
+
+# ----------------------------------------------------------
+# Attention!
+#
+# The test depends on the specific configuration of the server:
+#
+#	- User: The test requires a link on the first page with
+#	  the name $logon_user for autmatic login.
+#
+#	- Language: Please make sure the langue of $logon_user
+#	  is set to en_US (American English)
+#
+# The performance of the test will depend on a number of
+# parameters. Please specify these parameters when posting
+# benchmark results:
+#
+#	- Portlet Component Configuration: Each portlet will
+#	  consume some time. Please use the configuration described
+#	  in http://www.project-open.org/documentation/benchmark_timesheet.
+#
+#	- ShowLeftFunctionalMenupP: Please disable the left
+#	  navigation bar for this test.
+
+
+
+
+# ----------------------------------------------------------
+# Initialize the TclWebTest
+::tclwebtest::init 
+
+for {set i 0} {$i < $num_iterations} {incr i} {
+
+    # -----------------------------------------------------------
+    # Get the first page
+    exec sleep $wait_between
+    ::tclwebtest::do_request $server
+
+    # -----------------------------------------------------------
+    # Logon
+    exec sleep $wait_between
+    ::tclwebtest::link follow "Login as $logon_user"
+
+    # -----------------------------------------------------------
+    # Go to the "Projects" tab
+    exec sleep $wait_between
+    ::tclwebtest::link follow "Projects"
+
+    # -----------------------------------------------------------
+    # Filter projects for "mine"
+    exec sleep $wait_between
+    ::tclwebtest::form find ~n {projects_filter}
+    ::tclwebtest::field select -index 2 ;# ~n {mine_p} ;# selected <Mine>
+    ::tclwebtest::form submit 
+
+    # -----------------------------------------------------------
+    # Get the list of all links to projects
+    set urls [list]
+    foreach link_info_list [::tclwebtest::link all] {
+	catch { unset link_info }
+	array set link_info $link_info_list
+	set url $link_info(url)
+	set content $link_info(content)
+	if {![regexp {/intranet/projects/view} $url match]} { continue }
+	#puts $link_info_list
+	lappend urls $link_info(url)
+    }
+
+    # Choose a random link and go to that project
+    set num_urls [llength $urls]
+    set rand_url_num [expr int($num_urls * rand())]
+    set rand_url [lindex $urls $rand_url_num]
+    #puts "benchmark_timesheet: rand_url=$rand_url"
+    #::tclwebtest::link follow ~u $rand_url
+    ::tclwebtest::do_request "${server}${rand_url}"
+    
+    # -----------------------------------------------------------
+    # Go the the "log hours" section of the project
+    exec sleep $wait_between
+    ::tclwebtest::link follow "hours"
+
+    # -----------------------------------------------------------
+    exec sleep $wait_between
+    ::tclwebtest::form find ~n "timesheet"
+
+    # Get the current ("timesheet") form with all of its fields
+    set form_hash_list [lindex $::tclwebtest::forms $::tclwebtest::current_form]
+    array set form_hash $form_hash_list
+    set form_fields $form_hash(fields)
+    
+    # Go through the list of fields and create a list of all
+    # fields of type "text" (excluding "hidden" etc.) and with
+    # a name starting with "hours" (i.e. "hours1.12456").
+    set input_fields [list]
+    foreach field_hash_list $form_fields {
+	catch {unset field_hash}
+	array set field_hash $field_hash_list
+	set type $field_hash(type)
+	set name $field_hash(name)
+	if {"text" == $type && [regexp {^hour} $name match]} {
+	    lappend input_fields $field_hash_list
+	}
+    }
+    
+    # Select a random field 
+    set num_fields [llength $input_fields]
+    set rand_field_num [expr int($num_fields * rand())]
+    set rand_field [lindex $input_fields $rand_field_num]
+    catch { unset rand_field_hash }
+    array set rand_field_hash $rand_field
+    set rand_field_name $rand_field_hash(name)
+    
+    # Select a random amount of hours into the field
+    # Range between 0.1 and 2 hours...
+    set rand_hours [expr 0.1 + int(20.0 * rand()) / 10.0]
+    puts "benchmark_timesheet.test: rand_field_name=$rand_field_name, rand_hours=$rand_hours"
+    ::tclwebtest::field fill $rand_hours ~n $rand_field_name
+    ::tclwebtest::form submit 
+
+    
+    # -----------------------------------------------------------
+    # Visit a few more pages
+    exec sleep $wait_between
+    ::tclwebtest::link follow {Projects}
+
+    # -----------------------------------------------------------
+    exec sleep $wait_between
+    ::tclwebtest::link follow {Timesheet}
+
+    # -----------------------------------------------------------
+    # Log out
+    exec sleep $wait_between
+    ::tclwebtest::link follow {Log Out}
+    
+}
+
+
+# -----------------------------------------------------------
+# Write out statistics
+set time_sum 0
+set time_count 0
+foreach page $::tclwebtest::stats {
+    set url [lindex $page 0]
+    set ms [lindex $page 1]
+
+    # Update global average
+    set time_sum [expr 0.0 + $time_sum + $ms]
+    incr time_count
+
+    # Average per page
+    if {![info exists sum_hash($url)]} { set sum_hash($url) 0 }
+    if {![info exists count_hash($url)]} { set count_hash($url) 0 }
+    set sum_hash($url) [expr $sum_hash($url) + $ms]
+    set count_hash($url) [expr $count_hash($url) + 1]
+}
+
+
+# Open the statistics file for "append" writing
+set fd [open $stats_file "a"]
+puts "benchmark_timesheet: Performance Summary (in ms)"
+foreach url [lsort [array names sum_hash]] {
+    puts "$url	[expr round(10.0 * $sum_hash($url) / $count_hash($url)) / 10.0]"
+    puts $fd "$url	[expr round(10.0 * $sum_hash($url) / $count_hash($url)) / 10.0]"
+}
+if {0 != $time_count} {
+    puts "Average time/page: [expr round(10.0 * $time_sum / $time_count) / 10.0]"
+    puts $fd "average	[expr round(10.0 * $time_sum / $time_count) / 10.0]"
+} else {
+    puts "Average time/page: No data available"
+}
+puts "Number of iteration: $num_iterations"
+close $fd
