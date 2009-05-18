@@ -36,11 +36,12 @@
 # ----------------------------------------------------------
 # Parameters
 #
-set server		"http://172.26.2.5:30086"		;# Without trailing "/"
+set server		"http://172.26.2.5:30051"		;# Without trailing "/"
+#set server		"http://172.26.2.5:30086"		;# Without trailing "/"
 #set server		"http://po34demo.project-open.net"	;# Without trailing "/"
-#set logon_user		"Bobby Bizconsult"			;# Name must be on first page
-set logon_user		"Petra Projectmanager"			;# Name must be on first page
-set num_iterations	10					;# Default "10": The first iteration is slow
+set logon_user		"Bobby Bizconsult"			;# Name must be on first page
+#set logon_user		"Petra Projectmanager"			;# Name must be on first page
+set num_iterations	1					;# Default "10": The first iteration is slow
 set wait_between	0					;# Default "5": Wait seconds betwen pages
 set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
 
