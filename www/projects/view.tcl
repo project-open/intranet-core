@@ -366,7 +366,7 @@ if {$gantt_project_enabled_p} {
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A></li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/openproj-project.xml" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Download_OpenProj_File "Download OpenProj XML File"]</A></li>
+        >[lang::message::lookup "" intranet-ganttproject.Download_OpenProj_File "Download OpenProj XML File (beta)"]</A></li>
         "
     }
 
