@@ -51,7 +51,7 @@ BEGIN
 end;' language 'plpgsql';
 
 
-CREATE OR REPLACE FUNCTION im_cleanup_demo_invoices_projects2 () 
+CREATE OR REPLACE FUNCTION im_cleanup_demo_invoices_projects () 
 RETURNS integer AS '
 DECLARE
 	v_return		INTEGER;
