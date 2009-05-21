@@ -4,7 +4,7 @@
 # in order to provide the APM with correct install/reinstall
 # options
 #
-# 2005-05-03 
+# 2009-05-21 
 # Frank Bergmann <frank.bergmann@project-open.com>
 
 if (@ARGV != 1) {
@@ -35,7 +35,7 @@ exit 0;
 $date = `/bin/date +"%Y-%m-%d"`;
 $time = `/bin/date +"%H-%M"`;
 $debug = 0;
-$base_dir = "/web/podev32";			# no trailing "/"!
+$base_dir = "/web/po34demo";			# no trailing "/"!
 $packages_dir = "$base_dir/packages";		# no trailing "/"!
 
 # Remove trailing \n from date & time
