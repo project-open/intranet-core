@@ -157,77 +157,73 @@
 
 
 <div class='item-footer'>
-<form action="/survsimp/ttt" method="GET">
-<input value="1" name="SITE_ID" type="hidden"/>
-<input value="Five common PHP design patterns" name="ArticleTitle" type="hidden"/>
-<input value="Open source" name="Zone" type="hidden"/>
-<input value="http://www.ibm.com/developerworks/thankyou/feedback-thankyou.html" name="RedirectURL" type="hidden"/>
-<input value="136377" name="ArticleID" type="hidden"/>
-<input value="07182006" name="publish-date" type="hidden"/>
-<input type="hidden" name="author1-email" value="jherr@pobox.com" />
-<input type="hidden" name="author1-email-cc" value="dwxed@us.ibm.com" />
-<script language="javascript" type="text/javascript">document.write('
-<input type="hidden" name="url" value="'+location.href+'" />');
+<form enctype="multipart/form-data" method="post" action="/simple-survey/process-response">
+<input value="@survey_id@" name="survey_id" type="hidden"/>
+<input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden"/>
+<input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden"/>
+<input value="@title@" name="response_to_question.@title_question_id@" type="hidden"/>
+<input value="http://www.project-open.net/documentation/contact_thanks" name="return_url" type="hidden"/>
+<script language="javascript" type="text/javascript">
+document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" />');
 </script>
 
-
-<table width="100%" border=0 cellspacing="2" cellpadding="2">
-<tr>
+<table width="100%" border=0 cellspacing="6" cellpadding="6">
+<tr valign="top">
 	<td colspan="2">
-	Please take a moment to complete this form to help us better serve you.
+	Please take a moment to complete this form to help us improve our service.
 	</td>
 </tr>
+<tr valign="top"><td colspan=2></td></tr>
 <tr valign="top">
-	<td width="140">
-		<p>Did the information help you to achieve your goal?</p>
-	</td>
+	<td width="100"><p>Did this page help you to achieve your goal?</p></td>
 	<td width="303">
-	
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td width="80"><input value="Yes" id="goal-yes" name="goal" type="radio"/>&nbsp;Yes</td>
-		<td width="80"><input value="No" id="goal-no" name="goal" type="radio"/>&nbsp;No</td>
-		<td width="160"><input value="Don't know" id="goal-undecided" name="goal" type="radio"/>&nbsp;Don't know</td>
+		<td width="60"><input value="9" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;Yes</td>
+		<td width="60"><input value="10" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;No</td>
+		<td width="160"><input value="11" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;Don't know</td>
 		</tr>
 		</table>
-
 	</td>
 </tr>
-<tr>
+<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top">
+	<td><p>Please provide us with comments to improve this page:</p></td>
 	<td>
-		<p>Please provide us with comments to help improve this page:</p>
-	</td>
-	<td>
-
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td><textarea class="iform" cols="35" rows="2" wrap="virtual" id="Comments" name="Comments"></textarea></td>
+		<td><textarea cols="35" rows="2" wrap="virtual" name="response_to_question.@comment_question_id@"></textarea></td>
 		</tr>
 		</table>
 	</td>
 </tr>
-<tr>
-	<td>
-		<p>How useful is the information?</p>
-	</td>
+<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top">
+	<td><p>How useful is the information?</p></td>
 	<td>
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td align="left" width="58"><input value="1" id="Rating1" name="Rating" type="radio"/>&nbsp;1</td>
-		<td align="left" width="58"><input value="2" id="Rating2" name="Rating" type="radio"/>&nbsp;2</td>
-		<td align="left" width="58"><input value="3" id="Rating3" name="Rating" type="radio"/>&nbsp;3</td>
-		<td align="left" width="58"><input value="4" id="Rating4" name="Rating" type="radio"/>&nbsp;4</td>
-		<td align="left" width="61"><input value="5" id="Rating5" name="Rating" type="radio"/>&nbsp;5</td>
+		<td align="left" width="60"><input value="1" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;1</td>
+		<td align="left" width="60"><input value="2" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;2</td>
+		<td align="left" width="60"><input value="3" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;3</td>
+		<td align="left" width="60"><input value="4" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;4</td>
+		<td align="left" width="60"><input value="5" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;5</td>
 		</tr>
 		<tr>
 		<td align="left" width="60"><span class="greytext">Not</span><br /><span class="greytext">useful</span></td>
 		<td align="left" width="60">&nbsp;</td>
 		<td align="left" width="60">&nbsp;</td>
 		<td align="left" width="60">&nbsp;</td>
-		<td align="left" width="63"><span class="greytext">Extremely<br />useful</span></td>
+		<td align="left" width="60"><span class="greytext">Extremely<br />useful</span></td>
 		</tr>
 		</table>
 	</td>
+</tr>
+<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top">
+	<td>&nbsp;</td>
+	<td><input type=submit name=Submit value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></td>
+
 </tr>
 </table>
 </form>

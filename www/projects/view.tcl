@@ -229,7 +229,7 @@ append project_base_data_html "
 # VAW Special: Freelancers shouldnt see star and end date
 # ToDo: Replace this hard coded condition with DynField
 # permissions per field.
-if { $user_can_see_start_end_date_p && ![empty_string_p $start_date] } { append project_base_data_html "
+if { $user_can_see_start_end_date_p && ![empty_string_p $start_date_formatted] } { append project_base_data_html "
 			  <tr>
 			    <td>[_ intranet-core.Start_Date]</td>
 			    <td>$start_date_formatted</td>

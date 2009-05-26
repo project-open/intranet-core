@@ -30,11 +30,11 @@ ad_library {
 # Accounts Payable as first element in Finance
 # Project Sales Pipeline more explicitely
 # Setup menu as separate menu under "Processes" in Menu tree
-# Quality Management as subprocess of Provider Mgmt?
+# Quality Management as subprocess of Provider Management?
 # Sales Pipeline as separate process?
 # Query/Incident Management as subprocess of project managent?
-# Risk Mgmt as part of PM?
-# Project Portfolio Mgmt as separate Process?
+# Risk Management as part of PM?
+# Project Portfolio Management as separate Process?
 # Integrate indicators per process
 
 
