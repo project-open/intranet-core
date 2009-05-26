@@ -487,6 +487,9 @@ ad_proc -public im_navbar_tree_provider_management {
     if {[im_permission $current_user_id add_users]} {
 	append html "
 			<li><a href=/intranet-freelance/index>[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
+	"
+    }
+    append html "
 			[im_menu_li freelance_rfqs]
 			</ul>
 		</li>
