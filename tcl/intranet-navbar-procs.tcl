@@ -47,7 +47,8 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+    return [im_navbar_tree_helper -user_id $user_id -label $label]
+#    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
 }
 
 ad_proc -public im_navbar_tree_helper { 
@@ -57,6 +58,7 @@ ad_proc -public im_navbar_tree_helper {
     Creates an <ul> ...</ul> hierarchical list with all major
     objects in the system.
 } {
+    set current_user_id [ad_get_user_id]
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
@@ -67,52 +69,23 @@ ad_proc -public im_navbar_tree_helper {
 	<ul>
 		[im_menu_li home]
 		[im_menu_li dashboard]
+    "
+    if {$current_user_id == 0} {
+	append html "
+		<li><a href=/register/>[lang::message::lookup "" intranet-core.Login_Navbar Login]</a>
+        "
+    }
+    if {$current_user_id > 0} {
+	append html "
 		<li><a href=/register/logout>[lang::message::lookup "" intranet-core.logout Logout]</a>
-	</ul>
+        "
+    }
 
+    append html "
+	</ul>
 	[if {![catch {set ttt [im_navbar_tree_project_management]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_human_resources]}]} {set ttt} else {set ttt ""}]
-
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Sales_and_Marketing "Sales &amp; Marketing"]</a>
-	<ul>
-		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
-			<ul>
-			<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=71>All Potential Projects</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=72>Projects Inquiring</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=73>Projects Qualifiying</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=79>Projects Quoting</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=75>Projects Quote Out</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=76>Projects Open</a></li>
-			<li><a href=/intranet/projects/index?project_status_id=76>All Open Projects</a></li>
-			</ul>
-		</li>
-		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Customer_Prospects "Customer Prospects"]</a>
-			<ul>
-			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=41>All Potential Customers</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=42>Customers Inquiring</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=43>Customers Qualifiying</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=44>Customers Quoting</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=45>Customers Quote Out</a></li>
-			<li><a href=/intranet/companies/index?type_id=57&status_id=46>All Active Customers</a></li>
-			</ul>
-		</li>
-		<li><a href=/intranet/projects/index>Quoting</a>
-			<ul>
-			<li><a href=/intranet-invoices/>[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
-			<li><a href=/intranet-invoices/list?cost_type_id=3702>[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
-			</ul>
-		</li>
-		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
-			<ul>
-			<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Customers_to_CSV "Export Customers to CSV/Excel"]</a></li>
-			[im_menu_li dashboard]
-			[im_menu_li reporting-cubes-finance]
-			</ul>
-		</li>
-	</ul>
-
+	[if {![catch {set ttt [im_navbar_tree_sales_marketing]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_provider_management]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
@@ -120,7 +93,6 @@ ad_proc -public im_navbar_tree_helper {
 	[if {![catch {set ttt [im_navbar_tree_collaboration]}]} {set ttt} else {set ttt ""}]
         [if {![catch {set ttt [im_navbar_tree_finance]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management]}]} {set ttt} else {set ttt ""}]
-
 	[im_navbar_tree_admin]
       </div>
     "
@@ -154,61 +126,91 @@ ad_proc -public im_navbar_tree_project_management {
 } { 
     Project Management Navbar 
 } {
+    set current_user_id [ad_get_user_id]
+#    if {0 == $current_user_id} { return "" }
+
     set html "
 	<li><a href=/intranet/projects/>[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
+    "
+    if {[im_permission $current_user_id add_projects]} {
+	append html "
 		<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a>
-    "
-
-    # Add sub-menu with project types
-    append html "
-        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
-        <ul>
-    "
-    set project_type_sql "
-	select * from im_project_types 
-	where project_type_id not in (select child_id from im_category_hierarchy)
-	order by project_type
-    "
-    db_foreach project_types $project_type_sql {
-        set url [export_vars -base "/intranet/projects/index" {project_type_id}]
-        regsub -all " " $project_type "_" project_type_subst
-        set name [lang::message::lookup "" intranet-core.Project_type_$project_type_subst "${project_type}s"]
-        append html "<li><a href=\"$url\">$name</a></li>\n"
+        "
     }
-    append html "
-        </ul>
-        </li>
-    "
+    
+    # Add sub-menu with project types
+    if {$current_user_id > 0} {
+	append html "
+	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
+	        <ul>
+        "
+	set project_type_sql "
+		select * from im_project_types 
+		where project_type_id not in (select child_id from im_category_hierarchy)
+		order by project_type
+        "
+	db_foreach project_types $project_type_sql {
+	    set url [export_vars -base "/intranet/projects/index" {project_type_id}]
+	    regsub -all " " $project_type "_" project_type_subst
+	    set name [lang::message::lookup "" intranet-core.Project_type_$project_type_subst "${project_type}s"]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
+	        </ul>
+	        </li>
+        "
+    }
 
     # Add sub-menu with project status
-    append html "
-        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
-        <ul>
-    "
-    set project_status_sql "
-	select * from im_project_status 
-	where project_status_id not in (select child_id from im_category_hierarchy)
-	order by project_status
-    "
-    db_foreach project_status $project_status_sql {
-        set url [export_vars -base "/intranet/projects/index" {project_status_id}]
-        regsub -all " " $project_status "_" project_status_subst
-        set name [lang::message::lookup "" intranet-core.Project_status_$project_status_subst "$project_status"]
-        append html "<li><a href=\"$url\">$name</a></li>\n"
+    if {$current_user_id > 0} {
+	append html "
+	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
+	        <ul>
+        "
+	set project_status_sql "
+		select * from im_project_status 
+		where project_status_id not in (select child_id from im_category_hierarchy)
+		order by project_status
+        "
+	db_foreach project_status $project_status_sql {
+	    set url [export_vars -base "/intranet/projects/index" {project_status_id}]
+	    regsub -all " " $project_status "_" project_status_subst
+	    set name [lang::message::lookup "" intranet-core.Project_status_$project_status_subst "$project_status"]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
+	        </ul>
+	        </li>
+        "
     }
-    append html "
-        </ul>
-        </li>
-    "
 
-    append html "
+    set view_invoices_p [im_permission $current_user_id view_invoices]
+    set view_projects_all_p [im_permission $current_user_id view_projects_all]
+
+    if {$view_invoices_p && $view_projects_all_p} {
+	append html "
 		<li><a href=/intranet-dw-light/projects.csv>[lang::message::lookup "" intranet-core.Export_Projects_to_CSV "Export Projects to CSV"]</a></li>
-		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
-<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
-		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
-    "
+        "
+    }
 
+    if {$current_user_id > 0} {
+        append html "
+		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
+        "
+    }
+
+    if {[im_permission $current_user_id "view_projects_all"]} {
+        append html "
+<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+        "
+    }
+
+    if {[im_permission $current_user_id view_finance] && [im_permission $current_user_id view_projects]} {
+        append html "
+		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
+        "
+    }
     append html "
 	</ul>
     "
@@ -218,78 +220,217 @@ ad_proc -public im_navbar_tree_project_management {
 
 
 
+ad_proc -public im_navbar_tree_sales_marketing { 
+} { 
+    Sales & Marketing Navbar
+} {
+    set current_user_id [ad_get_user_id]
+#    if {0 == $current_user_id} { return "" }
+
+    set view_invoices_p [im_permission $current_user_id view_invoices]
+    set view_projects_all_p [im_permission $current_user_id view_projects_all]
+
+    set html "
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Sales_and_Marketing "Sales &amp; Marketing"]</a>
+	<ul>
+    "
+
+    # Add sub-menu with project status
+    if {$current_user_id > 0} {
+	append html "
+		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
+	        <ul>
+        "
+	set potential_projects_sql "
+		select * from im_project_status 
+		where project_status_id in ([join [im_sub_categories [im_project_status_potential]] ","])
+		order by project_status
+        "
+	db_foreach project_status $potential_projects_sql {
+	    set url [export_vars -base "/intranet/projects/index" {project_status_id}]
+	    regsub -all " " $project_status "_" project_status_subst
+	    set name [lang::message::lookup "" intranet-core.Project_status_$project_status_subst "$project_status"]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
+	        </ul>
+	        </li>
+        "
+    }
+
+    append html "
+		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Customer_Prospects "Customer Prospects"]</a>
+			<ul>
+    "
+
+    if {[im_permission $current_user_id add_companies]} {
+	append html "
+			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
+        "
+    }
+
+
+    if {$current_user_id > 0} {
+	set potential_companies_sql "
+		select * from im_company_status 
+		where company_status_id in ([join [im_sub_categories [im_company_status_potential]] ","])
+		order by company_status
+        "
+	db_foreach company_status $potential_companies_sql {
+	    set url [export_vars -base "/intranet/companies/index" {{type_id 57} {status_id $company_status_id}}]
+	    regsub -all " " $company_status "_" company_status_subst
+	    set name [lang::message::lookup "" intranet-core.Customers_status_$company_status_subst "$company_status"]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+    }
+    append html "
+			</ul>
+		</li>
+		<li><a href=/intranet/projects/index>Quoting</a>
+			<ul>
+    "
+
+
+    if {[im_permission $current_user_id add_invoices]} {
+	append html "
+			<li><a href=/intranet-invoices/new?cost_type_id=3702>[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
+        "
+    }
+    if {[im_permission $current_user_id view_invoices]} {
+	append html "
+			<li><a href=/intranet-invoices/list?cost_type_id=3702>[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
+        "
+    }
+    append html "
+			</ul>
+		</li>
+    "
+    append html "
+		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
+			<ul>
+    "
+
+    if {$view_invoices_p && $view_projects_all_p} {
+	append html "
+			<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Customers_to_CSV "Export Customers to CSV/Excel"]</a></li>
+        "
+    }
+
+    append html "
+			[im_menu_li dashboard]
+			[im_menu_li reporting-cubes-finance]
+			</ul>
+		</li>
+	</ul>
+    "
+    return $html
+}
+
+
+
 
 ad_proc -public im_navbar_tree_human_resources { 
 } { 
     Human Resources Management
 } {
+    set current_user_id [ad_get_user_id]
+    if {0 == $current_user_id} { return "" }
+
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
-		<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_User "New User"]</a>
     "
+    if {[im_permission $current_user_id add_users]} {
+	append html "
+		<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_User "New User"]</a>
+        "
+    }
 
-    # Add sub-menu with project types
-    append html "
+    # Add sub-menu with user profiles
+    if {$current_user_id > 0} {
+	append html "
 	        <li><a href=/intranet/users/index>[lang::message::lookup "" intranet-core.User_Profiles "User Profiles"]</a>
         	<ul>
-    "
-    set profile_sql "
-	select * from groups, im_profiles
-	where group_id = profile_id and group_name not in ('The Public')
-	order by group_name
-    "
-    db_foreach profiles $profile_sql {
-        set url [export_vars -base "/intranet/users/index" {{user_group_name $group_name}}]
-        regsub -all " " $group_name "_" group_name_subst
-        set name [lang::message::lookup "" intranet-core.User_Profile_$group_name_subst $group_name]
-        append html "<li><a href=\"$url\">$name</a></li>\n"
-    }
-    append html "
+        "
+	set profile_sql "
+		select * from groups, im_profiles
+		where group_id = profile_id and group_name not in ('The Public')
+		order by group_name
+	"
+	db_foreach profiles $profile_sql {
+	    set url [export_vars -base "/intranet/users/index" {{user_group_name $group_name}}]
+	    regsub -all " " $group_name "_" group_name_subst
+	    set name [lang::message::lookup "" intranet-core.User_Profile_$group_name_subst $group_name]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
 		</ul>
 		</li>
-    "
-   
-    append html "
+        "
+    }
+
+    if {[im_permission $current_user_id add_absences]} {
+	append html "
 		<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absence "New Absence"]</a></li>
+       "
+    }
+
+    if {[im_permission $current_user_id "view_absences"]} {
+	append html "
 		<li><a href=/intranet-timesheet2/absences/index>[lang::message::lookup "" intranet-core.Absence_Types "Absence Types"]</a>
+        "
+
+	append html "
 		<ul>
-    "
-    set absence_sql "
+        "
+	set absence_sql "
 	select * from im_absence_types
 	order by lower(absence_type)
-    "
-    db_foreach absences $absence_sql {
-        set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
-        regsub -all " " $absence_type "_" absence_type_subst
-        set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
-        append html "<li><a href=\"$url\">$name</a></li>\n"
-    }
-    append html "
+        "
+	db_foreach absences $absence_sql {
+	    set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
+	    regsub -all " " $absence_type "_" absence_type_subst
+	    set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
 		</ul>
 		</li>
-    "
+        "
+    }
 
-    append html "
+    if {[im_permission $current_user_id "add_expenses"]} {
+	append html "
 		<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Expense "New Travel Expense"]</a>
+        "
+    }
+
+    if {[im_permission $current_user_id "add_expenses"]} {
+	append html "
 		<li><a href=/intranet-expenses/index>[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
 		<ul>
-    "
-    set absence_sql "
+        "
+	set absence_sql "
 	select * from im_absence_types
 	order by lower(absence_type)
-    "
-    db_foreach absences $absence_sql {
-        set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
-        regsub -all " " $absence_type "_" absence_type_subst
-        set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
-        append html "<li><a href=\"$url\">$name</a></li>\n"
-    }
-    append html "
+        "
+	db_foreach absences $absence_sql {
+	    set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
+	    regsub -all " " $absence_type "_" absence_type_subst
+	    set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+	    append html "<li><a href=\"$url\">$name</a></li>\n"
+	}
+	append html "
 		</ul>
+        "
+    }
+
+    append html "
 		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.HR_Reporting "HR Reporting"]</a>
                 <ul>
-			<li><a href=/intranet-reporting/user-contacts>[lang::message::lookup "" intranet-core.Report_Users_Contacts "Users &amp; Contacts Report"]</a>
+    "
+    append html "
+        	        [im_menu_li "reporting-user-contacts"]
         	        [im_menu_li "reporting-timesheet-productivity"]
 			<!-- Additional reports in future HR area? --> 
         	        [im_navbar_write_tree -label "reporting-hr" -maxlevel 1]
@@ -297,8 +438,12 @@ ad_proc -public im_navbar_tree_human_resources {
 		</li>
     "
 
-    append html "
+    if {[im_permission $current_user_id view_users]} {
+	append html "
 		<li><a href=/intranet-dw-light/users.csv>[lang::message::lookup "" intranet-core.Export_Users_to_CSV "Export Users to CSV"]</a></li>
+        "
+    }
+    append html "
 		[im_menu_li timesheet2_timesheet]
 	</ul>
     "
@@ -308,15 +453,39 @@ ad_proc -public im_navbar_tree_human_resources {
 
 
 
-ad_proc -public im_navbar_tree_provider_management { } { Provider Management } {
-    return "
+ad_proc -public im_navbar_tree_provider_management { 
+} { 
+    Provider Management 
+} {
+    set current_user_id [ad_get_user_id]
+#    if {0 == $current_user_id} { return "" }
+
+    set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
+    "
+    if {[im_is_user_site_wide_or_intranet_admin $current_user_id]} {
+	append html "
 		<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Providers_to_CSV "Export Providers to CSV/Excel"]</a></li>
+        "
+    }
+    append html "
 		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Providers Providers]</a>
 			<ul>
+    "
+    if {[im_permission $current_user_id add_companies]} {
+	append html "
 			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Provider "New Provider Company"]</a></li>
+        "
+    }
+    if {[im_permission $current_user_id add_companies]} {
+	append html "
 			<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_Provider_Contact "New Provider Contact"]</a></li>
+        "
+    }
+
+    if {[im_permission $current_user_id add_users]} {
+	append html "
 			<li><a href=/intranet-freelance/index>[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
 			[im_menu_li freelance_rfqs]
 			</ul>
@@ -324,11 +493,18 @@ ad_proc -public im_navbar_tree_provider_management { } { Provider Management } {
 		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Provider_Reporting "Provider Reporting"]</a>
 			<ul>
 			[im_menu_li reporting-cubes-finance]
+    "
+    if {[im_permission $current_user_id view_projects_all]} {
+	append html "
 			<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+        "
+    }
+    append html "
 			</ul>
 		</li>
 	</ul>
     "
+    return $html
 }
 
 
