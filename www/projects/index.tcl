@@ -589,6 +589,10 @@ append filter_html "
   </tr>
 "
 
+if { [empty_string_p $company_id] } {
+    set company_id 0
+}
+
 append filter_html "
   <tr>
 <td class=form-label valign=top>[lang::message::lookup "" intranet-core.Customer "Customer"]:</td>
