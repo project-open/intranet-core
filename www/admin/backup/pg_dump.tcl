@@ -124,13 +124,25 @@ set dest_file "$path/$filename"
 global tcl_platform
 set platform [lindex $tcl_platform(platform) 0]
 
+
 # get the PSQL PostgreSQL version
 set psql_version "0.0.0"
 set err_msg ""
-catch {
-    set psql_string [exec psql --version]
+if {[catch {
+    set psql_string [exec bash -c "psql --version"]
     regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc
-} err_msg
+} err_msg]} {
+    ns_write "
+	<li><font color=red>
+	Error while determining the PostgreSQL version at '$pgbin':<br>
+	<pre>$err_msg</pre>
+	Your 'psql' binary doesn't seem to be accessible.<br>
+	Here is the list of paths we are checking:<br>
+	<pre>[exec bash -c "echo \$PATH"]</pre>
+	</font></li>
+    "
+    ad_script_abort
+}
 
 
 # Disable "dollar quoting" on 7.4.x
