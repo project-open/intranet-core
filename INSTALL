@@ -114,7 +114,7 @@
   
   AOLServer is the application server of ]project-open[. It is similar
   to Apache, but includes a built-in compiler for the TCL language.
-  AOLServer is _the_ server of AOL and is know to deliver up to 
+  AOLServer is _the_ server of AOL and is known to deliver up to 
   2.5 million pages/second (no typo!).
   
   # cd /usr/local/
@@ -133,8 +133,8 @@
   The default location for ]project-open[ is /web/. This is handy if
   you have several servers and if the main purpose of your computer
   is to run web servers. You can use a different directory, but you'll
-  have to change pathes in the config.tcl and later in the application
-  configuration. So we RECOMMEND that you stick with /web/, atleast for 
+  have to change paths in the config.tcl and later in the application
+  configuration. So we RECOMMEND that you stick with /web/, at least for 
   the purpose of the first installation.
   
   # cd /
@@ -147,7 +147,7 @@
   4.2. Create a new User and Group
   
   You can run ]project-open[ using any user/group that you want.
-  So we recommend you to create a separate user/group for it for
+  So we recommend that you create a separate user/group for it for
   security reasons. We usually choose the same name for the user
   and the group:
   
@@ -168,7 +168,7 @@
   4.3. Verify the Config File
   
   The config.tcl configuration file in /web/projop/etc/ tells AOLServer 
-  where to start action. Please verify the first 10 or so lines to for 
+  where to start action. Please verify the first 10 or so lines for the 
   IP address and port and adapt the values to your configuration.
   Here are the sample values that are delivered with the installer:
   
@@ -255,7 +255,7 @@
   => 192
   
 
-  4.6. Customized your Login Screen
+  4.6. Customize your Login Screen
 
   There are two demo configurations for the login screens, one for
   ]project-consulting[ and one for ]project-translation[.
@@ -265,7 +265,7 @@
   # cp /web/projop/packages/intranet-core/preconf/pt.index.tcl /web/projop/www/index.tcl
   # cp /web/projop/packages/intranet-core/preconf/pt.index.adp /web/projop/www/index.adp
 
-  You can check the availability of the screen when starting AOLServer
+  You can check for the availability of the screen when starting AOLServer
   in the next step.
 
 
@@ -324,7 +324,7 @@
   
   4.9. Automate Server Restart
   
-  AOLServer in our productive installations usually run weeks without a 
+  AOLServer usually runs for weeks in our productive installations without a 
   restart. However, you want to make sure the server "comes back" if
   it's been stopped (for example after the installation of a new package).
   
@@ -352,7 +352,7 @@
   have found/resolved this behaviour.
 
   You can test the restart behaviour by killing AOLServer the "hard way".
-  Your server should "come back" withing 1-2 minutes automatically.
+  Your server should "come back" within 1-2 minutes automatically.
   
   #killall -9 nsd
   
@@ -438,8 +438,8 @@
   
   On Sourceforge check for the latest announcement of a stable release.
 
-  For example the lates while writing this document is "v3-1-2-0-0". The
-  upgrade to this release (this is also necesary for if you install this
+  For example the latest at the time this document was created was "v3-1-2-0-0". The
+  upgrade to this release (necesary if you install this
   installer - there are updates with respect to Invoices):
 
   # su - projop
@@ -476,7 +476,7 @@
 	We have provided you with the sample company configurations
 	so that it is easy (and even fun) to browse around and explore
 	the projects of the "Tigerpond" company.
-	Checkout the "Iteligent Software Localization" project in 
+	Checkout the "Intelligent Software Localization" project in 
 	]project-translation[ and the "Distribution System for door-locks"
 	project in ]project-consulting[. These projects have been setup
 	up based on real-world experience. 

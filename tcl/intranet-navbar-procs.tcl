@@ -39,6 +39,12 @@ ad_library {
 
 
 
+ad_proc -public im_navbar_doc_wiki { } {
+    Link to ]po[ Wiki. Without trailing "/".
+} {
+    return "http://www.project-open.org/documentation"
+}
+
 ad_proc -public im_navbar_tree { 
     {-user_id 0}
     {-label ""} 
@@ -59,14 +65,17 @@ ad_proc -public im_navbar_tree_helper {
     objects in the system.
 } {
     set current_user_id [ad_get_user_id]
+    set wiki [im_navbar_doc_wiki]
+
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
     set html "
       	<div class=filter-block>
 	<ul class=mktree>
-	[im_menu_li home]
+	<li><a href=\"/\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
+		<li><a href=$wiki/list_modules>[lang::message::lookup "" intranet-core.General_Home "\]po\[ Help"]</a>
 		[im_menu_li home]
 		[im_menu_li dashboard]
     "
@@ -88,8 +97,6 @@ ad_proc -public im_navbar_tree_helper {
 	[if {![catch {set ttt [im_navbar_tree_sales_marketing]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_provider_management]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_confdb]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_release_mgmt]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_collaboration]}]} {set ttt} else {set ttt ""}]
         [if {![catch {set ttt [im_navbar_tree_finance]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management]}]} {set ttt} else {set ttt ""}]
@@ -109,7 +116,9 @@ ad_proc -public im_navbar_tree_admin {
 } { 
     Admin Navbar 
 } {
-    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+    set current_user_id [ad_get_user_id]
+    set wiki [im_navbar_doc_wiki]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
     if {!$admin_p} { return "" }
     set html "
 	[im_menu_li admin]
@@ -127,11 +136,13 @@ ad_proc -public im_navbar_tree_project_management {
     Project Management Navbar 
 } {
     set current_user_id [ad_get_user_id]
+    set wiki [im_navbar_doc_wiki]
 #    if {0 == $current_user_id} { return "" }
 
     set html "
 	<li><a href=/intranet/projects/>[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
+	<li><a href=$wiki/module_project_management>[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
     "
     if {[im_permission $current_user_id add_projects]} {
 	append html "
@@ -224,6 +235,7 @@ ad_proc -public im_navbar_tree_sales_marketing {
 } { 
     Sales & Marketing Navbar
 } {
+    set wiki [im_navbar_doc_wiki]
     set current_user_id [ad_get_user_id]
 #    if {0 == $current_user_id} { return "" }
 
@@ -231,8 +243,9 @@ ad_proc -public im_navbar_tree_sales_marketing {
     set view_projects_all_p [im_permission $current_user_id view_projects_all]
 
     set html "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Sales_and_Marketing "Sales &amp; Marketing"]</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.CRM_Sales "CRM"]</a>
 	<ul>
+	<li><a href=$wiki/module_crm>[lang::message::lookup "" intranet-core.CRM_Help "CRM Help"]</a>
     "
 
     # Add sub-menu with project status
@@ -333,12 +346,13 @@ ad_proc -public im_navbar_tree_human_resources {
 } { 
     Human Resources Management
 } {
+    set wiki [im_navbar_doc_wiki]
     set current_user_id [ad_get_user_id]
-    if {0 == $current_user_id} { return "" }
 
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
+	<li><a href=$wiki/module_human_resources>[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
     "
     if {[im_permission $current_user_id add_users]} {
 	append html "
@@ -457,12 +471,14 @@ ad_proc -public im_navbar_tree_provider_management {
 } { 
     Provider Management 
 } {
+    set wiki [im_navbar_doc_wiki]
     set current_user_id [ad_get_user_id]
 #    if {0 == $current_user_id} { return "" }
 
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
+	<li><a href=$wiki/module_provider_management>[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
     "
     if {[im_is_user_site_wide_or_intranet_admin $current_user_id]} {
 	append html "
@@ -512,10 +528,16 @@ ad_proc -public im_navbar_tree_provider_management {
 
 
 
-ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
+ad_proc -public im_navbar_tree_collaboration { } { 
+    Collaboration NavBar 
+} {
+    set wiki [im_navbar_doc_wiki]
+    set current_user_id [ad_get_user_id]
+
     return "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration"]</a>
+	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration & KM"]</a>
 	<ul>
+	<li><a href=$wiki/module_collaboration_knowledge>[lang::message::lookup "" intranet-core.CollabKM_Help "C&KM Help"]</a>
 		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a>
 		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a>
 		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
@@ -537,8 +559,14 @@ ad_proc -public im_navbar_tree_collaboration { } { Collaboration NavBar } {
 }
 
 
-ad_proc -public im_navbar_tree_master_data_management { } { Master Data Management } {
-    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+ad_proc -public im_navbar_tree_master_data_management { 
+} { 
+    Master Data Management 
+} {
+    set wiki [im_navbar_doc_wiki]
+    set current_user_id [ad_get_user_id]
+
+    set admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
     if {!$admin_p} { return "" }
 
     return "
