@@ -85,6 +85,7 @@ cvs checkout intranet-material
 cvs checkout intranet-milestone
 cvs checkout intranet-nagios
 cvs checkout intranet-notes
+cvs checkout intranet-notes-tutorial
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp
 cvs checkout intranet-payments
