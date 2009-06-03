@@ -633,7 +633,7 @@ set left_navbar_html "
 	  <td class='form-label'>#intranet-core.User_Types#  &nbsp;</td>
 	  <td class='form-widget'>
 	    [im_select user_group_name $user_types ""]
-	    <input type=submit value=Go name=submit>
+	    <input type=submit value='[lang::message::lookup "" intranet-core.Action_Go Go]' name=submit>
 	  </td>
 	</tr>
 	</table>

@@ -400,7 +400,9 @@ set project_list_html "
 #</tr>"
 
 if { [empty_string_p $results] } {
-    append project_list_html "<tr><td colspan=$colspan<ul><li><b> There are currently no projects matching the selected criteria</b></ul></td></tr>\n"
+    append project_list_html "<tr><td colspan=$colspan><ul><li><b> 
+[lang::message::lookup "" intranet-core.lt_There_are_currently_n "There are currently no entries matching the selected criteria"]
+</b></ul></td></tr>\n"
 } else {
     set url "index?"
     set query_string [export_ns_set_vars url [list order_by]]

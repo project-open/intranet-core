@@ -192,10 +192,15 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	if {"" == $location} { set location $default_location }
 
 	set component_html [uplevel 1 $component_tcl]
+
+	regsub -all " " $plugin_name "_" plugin_name_subs
+	set plugin_name [lang::message::lookup "" intranet-core.$plugin_name_subs $plugin_name]
+
 	set title_html $plugin_name
 	if {"" != $title_tcl} {
 	    set title_html [uplevel 1 $title_tcl]
 	}
+
 
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!

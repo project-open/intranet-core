@@ -122,48 +122,57 @@ BEGIN
 END;' language 'plpgsql';
 
 
-
+-- Get the object status for generic objects
+-- This function relies on the information in the OpenACS SQL metadata
+-- system, so that errors in the OO configuration will give errors here.
+-- Basically, the acs_object_types table contains the name and the column
+-- of the table that stores the "status_id" for the given object type.
+-- We will pull out this information and then dynamically create a SQL
+-- statement to extract this information.
+---
 CREATE OR REPLACE FUNCTION im_biz_object__get_status_id (integer)
 RETURNS integer AS '
 DECLARE
 	p_object_id		alias for $1;
 
-	v_query			varchar;
 	v_object_type		varchar;
 	v_supertype		varchar;
-	v_table			varchar;
-	v_id_column		varchar;
-	v_column		varchar;
 
+	v_status_table		varchar;
+	v_status_column		varchar;
+	v_status_table_id_col	varchar;
+
+	v_query			varchar;
 	row			RECORD;
 	v_result_id		integer;
 BEGIN
 	-- Get information from SQL metadata system
-	select	ot.object_type, ot.supertype, ot.table_name, ot.status_column
-	into	v_object_type, v_supertype, v_table, v_column
+	select	ot.object_type, ot.supertype, ot.status_type_table, ot.status_column
+	into	v_object_type, v_supertype, v_status_table, v_status_column
 	from	acs_objects o, acs_object_types ot
-	where	o.object_id = p_object_id
-		and o.object_type = ot.object_type;
+	where	o.object_id = p_object_id and o.object_type = ot.object_type;
 
+	-- In the case that the information about should not be set up correctly:
 	-- Check if the object has a supertype and update table and id_column if necessary
-	WHILE v_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
-		select	ot.supertype, ot.table_name, ot.id_column
-		into	v_supertype, v_table, v_id_column
+	WHILE v_status_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+		select	ot.supertype, ot.status_type_table, ot.id_column
+		into	v_supertype, v_status_table, v_status_table_id_col
 		from	acs_object_types ot
 		where	ot.object_type = v_supertype;
 	END LOOP;
 
-	-- Get the id_column for v_table
-	select	aott.id_column into v_id_column from acs_object_type_tables aott
-	where	aott.object_type = v_object_type and aott.table_name = v_table;
+	-- Get the id_column for the v_status_table (not the objects main table...)
+	select	aott.id_column into v_status_table_id_col from acs_object_type_tables aott
+	where	aott.object_type = v_object_type and aott.table_name = v_status_table;
 
-	IF v_table is null OR v_id_column is null OR v_column is null THEN
+	-- Avoid reporting an error. However, this may make it more difficult diagnosing errors.
+	IF v_status_table is null OR v_status_table_id_col is null OR v_status_column is null THEN
 		return 0;
 	END IF;
 
 	-- Funny way, but this is the only option to get a value from an EXECUTE in PG 8.0 and below.
-	v_query := '' select '' || v_column || '' as result_id '' || '' from '' || v_table || 
-		'' where '' || v_id_column || '' = '' || p_object_id;
+	v_query := '' select '' || v_status_column || '' as result_id '' || '' from '' || v_status_table || 
+		'' where '' || v_status_table_id_col || '' = '' || p_object_id;
 	FOR row IN EXECUTE v_query
         LOOP
 		v_result_id := row.result_id;

@@ -46,6 +46,7 @@ ad_proc -public im_navbar_doc_wiki { } {
 }
 
 ad_proc -public im_navbar_tree { 
+    {-no_cache:boolean}
     {-user_id 0}
     {-label ""} 
 } {
@@ -53,8 +54,11 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    return [im_navbar_tree_helper -user_id $user_id -label $label]
-#    return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+    if {$no_cache_p} {
+	return [im_navbar_tree_helper -user_id $user_id -label $label]
+    } else {
+	return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+    }
 }
 
 ad_proc -public im_navbar_tree_helper { 
@@ -123,7 +127,7 @@ ad_proc -public im_navbar_tree_admin {
     set html "
 	[im_menu_li admin]
 		<ul>
-		[im_navbar_write_tree -label "admin" -maxlevel 0]
+		[im_navbar_write_tree -no_cache -label "admin" -maxlevel 0]
 		</ul>
 	</ul>
     "
@@ -665,6 +669,7 @@ ad_proc -public im_navbar_tree_master_data_management {
 # --------------------------------------------------------
 
 ad_proc -public im_navbar_write_tree {
+    {-no_cache:boolean}
     {-user_id 0 }
     {-label "main" }
     {-maxlevel 1}
@@ -672,7 +677,11 @@ ad_proc -public im_navbar_write_tree {
     Starts writing out the menu tree from a particular location
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel] 3600]
+    if {$no_cache_p} {
+	return [im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel]
+    } else {
+	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel] 3600]
+    }
 }
 
 ad_proc -public im_navbar_write_tree_helper {
@@ -696,7 +705,7 @@ ad_proc -public im_navbar_write_tree_helper {
 	order by sort_order
     "
 
-    # Execute SQL first and then iterate through the list, in oder to
+    # Execute SQL first and then iterate through the list in oder to
     # avoid nested SQLs when diving down through multiple recursions
     set html ""
     set menus [db_list_of_lists menus $menu_sql]
@@ -707,6 +716,10 @@ ad_proc -public im_navbar_write_tree_helper {
 	set name [lindex $menu_item 2]
 	set url [lindex $menu_item 3]
 	set sub_count [lindex $menu_item 4]
+
+	# Localize Name
+	regsub -all " " $name "_" name_key
+	set name [lang::message::lookup "" intranet-core.$name_key $name]
 
 	append html "<li><a href=$url>$name</a>\n"
 	if {$maxlevel > 0 && $sub_count > 0} {
@@ -739,9 +752,8 @@ ad_proc -public im_navbar_sub_tree {
 	set url [lindex $menu_list 4]
 	set visible_tcl [lindex $menu_list 5]
 
-	set name_key "intranet-core.[lang::util::suggest_key $name]"
-	set name [lang::message::lookup "" $name_key $name]
-
+	regsub -all " " $name "_" name_key
+	set name [lang::message::lookup "" intranet-core.$name_key $name]
 	append navbar "<li><a href=\"$url\">$name</a><ul></ul>"
 
     }

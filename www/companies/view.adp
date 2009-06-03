@@ -7,7 +7,7 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
   <td valign="top" width="50%">
-     <%= [im_box_header "Company Information"] %>
+     <%= [im_box_header [_ intranet-core.Company_Information]] %>
         <table>
         @left_column;noquote@
 	@left_column_action;noquote@

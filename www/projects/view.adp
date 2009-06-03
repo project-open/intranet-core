@@ -16,7 +16,7 @@
   <td valign=top width='50%'>
 
     <!--Project Base Data -->
-    <%= [im_table_with_title "Main Data" $project_base_data_html] %>
+    <%= [im_table_with_title [lang::message::lookup "" intranet-core.Project_Base_Data "Project Base Data"] $project_base_data_html] %>
 
     <!-- Left Component Bay -->
     <%= [im_component_bay left] %>

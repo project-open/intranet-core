@@ -149,19 +149,19 @@ order by
 
 set user_id $user_id_from_search
 set user_basic_info_vars [export_form_vars user_id return_url]
-set user_basic_info_html "
-  <tr> 
-    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Basic_Information]</td>
-  </tr>
-"
+set user_basic_info_html ""
 
 set ctr 1
 db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
 
 	append user_basic_info_html "<tr $td_class([expr $ctr % 2])><td>"
-	set cmd0 "append user_basic_info_html $column_name"
+	set cmd0 "set col_name $column_name"
 	eval "$cmd0"
+	regsub -all " " $col_name "_" col_name_subs
+	set col_name [lang::message::lookup "" intranet-core.$col_name_subs $col_name]
+	append user_basic_info_html $col_name
+
 	append user_basic_info_html " &nbsp;</td><td>"
 	set cmd "append user_basic_info_html $column_render_tcl"
 	eval "$cmd"
@@ -336,12 +336,10 @@ order by
 
     set user_id $user_id_from_search
     set contact_html "
-<form method=POST action=contact-edit>
-[export_form_vars user_id return_url]
-<table cellpadding=0 cellspacing=2 border=0>
-  <tr> 
-    <td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td>
-  </tr>"
+	<form method=POST action=contact-edit>
+	[export_form_vars user_id return_url]
+	<table cellpadding=0 cellspacing=2 border=0>
+    "
 
     set ctr 1
     db_foreach column_list_sql $column_sql {
@@ -481,7 +479,6 @@ if {[im_permission $current_user_id view_companies_all]} {
 
 append admin_links "
 <table cellpadding=0 cellspacing=2 border=0>
-   <tr><td class=rowtitle align=center>[_ intranet-core.User_Administration]</td></tr>
    <tr><td>
           <ul>\n"
 
@@ -498,8 +495,8 @@ set user_id $user_id_from_search
 
 # Return a pretty member state (no normal user understands "banned"...)
 case $member_state {
-	"banned" { set user_state "deleted" }
-	"approved" { set user_state "active" }
+	"banned" { set user_state [lang::message::lookup "" intranet-core.Member_state_deleted "deleted"] }
+	"approved" { set user_state [lang::message::lookup "" intranet-core.Member_state_active "active"] }
 	default { set user_state $member_state }
 }
 

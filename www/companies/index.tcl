@@ -510,7 +510,7 @@ if {!$filter_advanced_p} {
 		          <td>#intranet-core.Company_Type_1#  &nbsp;</td>
 		          <td>
 		             [im_category_select -include_empty_p 1 "Intranet Company Type" type_id $type_id]
-		             <input type=submit value=Go name=submit>
+		             <input type=submit value='[_ intranet-core.Action_Go]' name=submit>
 		          </td>
 		      </tr>
 		      </table>

@@ -8,7 +8,7 @@
   <td valign=top width='50%'>
 
 
-    <%= [im_box_header "Basic Information"] %>     
+    <%= [im_box_header [lang::message::lookup "" intranet-core.Basic_Information "Basic Information"]] %>
 
 	        <table>
 		    <%= $user_basic_info_html %>
@@ -32,7 +32,7 @@
 
     <%= $user_l10n_html %>
 
-    <%= [im_table_with_title "Contact Information" $contact_html] %>
+    <%= [im_table_with_title [lang::message::lookup "" intranet-core.Contact_Information "Contact Information"] $contact_html] %>
 
     <%= [im_box_header [_ intranet-core.Skin]] %>     
     <table cellpadding=1 cellspacing=1 border=0>
@@ -48,7 +48,7 @@
     <%= [im_box_footer] %>
 
 
-    <%= [im_table_with_title "Administration" $admin_links] %>
+    <%= [im_table_with_title [lang::message::lookup "" intranet-core.Administration "Administration"] $admin_links] %>
     <%= [im_component_bay left] %>
 
   </td>

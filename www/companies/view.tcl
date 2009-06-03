@@ -125,11 +125,6 @@ set page_title $company_name
 set left_column ""
 
 append left_column "
-  <tr> 
-    <td colspan=2 class=rowtitle align=center>
-      [_ intranet-core.Client_Details]
-    </td>
-  </tr>
   <tr class=rowodd><td>[_ intranet-core.Name]</td><td>$company_name</td></tr>
   <tr class=roweven><td>[_ intranet-core.Path]</td><td>$company_path</td></tr>
   <tr class=rowodd><td>[_ intranet-core.Status]</td><td>$company_status</td></tr>"

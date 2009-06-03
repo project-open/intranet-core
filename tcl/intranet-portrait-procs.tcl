@@ -312,7 +312,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
 
     if {"" == $portrait_gif} {
 	set portrait_gif [im_gif anon_portrait "Portrait"]
-	set description "No portrait for this user."
+	set description [lang::message::lookup "" intranet-core.No_portrait_for_this_user "No portrait for this user."]
 	if {$admin} { append description "<br>\n[_ intranet-core.lt_Please_upload_a_portr]"}
     }
      

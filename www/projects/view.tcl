@@ -186,11 +186,6 @@ set user_can_see_start_end_date_p [expr [im_user_is_employee_p $current_user_id]
 set project_base_data_html "
 			<table border=0>
 			  <tr> 
-			    <td colspan=2 class=rowtitle align=center>
-			      [_ intranet-core.Project_Base_Data]
-			    </td>
-			  </tr>
-			  <tr> 
 			    <td>[_ intranet-core.Project_name]</td>
 			    <td>$project_name</td>
 			  </tr>"

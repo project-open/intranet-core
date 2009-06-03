@@ -109,6 +109,7 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
 
 
 ad_proc -public im_menu_ul_list { 
+    {-no_cache:boolean}
     {-no_uls 0}
     parent_menu_label 
     bind_vars 
@@ -117,7 +118,11 @@ ad_proc -public im_menu_ul_list {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
-    set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 3600]
+    if {$no_cache_p} {
+	set result [im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars]
+    } else {
+	set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 3600]
+    }
     return $result
 }
 
@@ -163,7 +168,7 @@ ad_proc -public im_menu_ul_list_helper {
 	    append url "&$var=[ad_urlencode $value]"
 	}
 
-	append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-invoices.$name_key $name]</a></li>\n"
+	append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-core.$name_key $name]</a></li>\n"
 	incr ctr
     }
     if {!$no_uls} {append result "</ul>\n" }
@@ -226,13 +231,13 @@ ad_proc -public im_menu_li {
 	    set visible [expr $visible_tcl] 
 	} errmsg] { 
 	    ns_log Error "im_menu_li: Error with visible_tcl: $visible_tcl: '$errmsg'" 
-#	    ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>" 
 	}
 	if {!$visible} { return "" }
     }
 
     set class_html ""
     if {"" != $class} { set class_html "class='$class'" }
-    return "<li $class_html><a href=\"$url\">$name</a>\n"
+    regsub -all " " $name "_" name_key
+    return "<li $class_html><a href=\"$url\">[lang::message::lookup "" intranet-core.$name_key $name]</a>\n"
 }
 

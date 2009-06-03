@@ -631,7 +631,7 @@ append filter_html "
   <tr>
     <td class=form-label></td>
     <td class=form-widget>
-	  <input type=submit value=Go name=submit>
+	  <input type=submit value='[lang::message::lookup "" intranet-core.Action_Go "Go"]' name=submit>
     </td>
   </tr>
 "
@@ -761,7 +761,7 @@ db_foreach projects_info_query $selection -bind $form_vars {
 if { [empty_string_p $table_body_html] } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
-        There are currently no projects matching the selected criteria
+	[lang::message::lookup "" intranet-core.lt_There_are_currently_n "There are currently no entries matching the selected criteria"]
         </b></ul></td></tr>"
 }
 
