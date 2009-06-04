@@ -93,6 +93,7 @@ insert into country_codes values ('si','Slovenia');
 insert into country_codes values ('sk','Slovak Republic');
 insert into country_codes values ('sv','El Salvador');
 insert into country_codes values ('sy','Syria');
+insert into country_codes values ('th','Thailand');
 insert into country_codes values ('tn','Tunisia');
 insert into country_codes values ('tr','Turkey');
 insert into country_codes values ('tw','Taiwan');
