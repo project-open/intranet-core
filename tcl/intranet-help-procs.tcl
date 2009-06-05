@@ -49,65 +49,64 @@ ad_proc -public im_help_home_page_blurb_component { } {
     set po "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>po</span><span class=brandsec>&\#91;</span></nobr>"
 
     return "
-<table cellpadding=2 cellspacing=2 border=0 width=100%>
-<tr><td>
-
-<h1>[lang::message::lookup "" intranet-core.Welcome_to_po "Welcome to %projop%"]</h1>
-
-[lang::message::lookup "" intranet-core.Sample_system_blurb "
-We have set up a sample system for you in order to show you how
-a typical company could look like. 
-"]
-
-<h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "Starting to use %po%"]</h2>
-
-[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
-You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
-demo data from this server and start using this server in production
-if you are a small organization.<p>
-"]
-
-<!--
-<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
-
-<ul>
-<li>
-  <A href=\"http://www.project-open.org/product/modules/\"><B>
-    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
-  Our web page gives you an overview over the different
-  $po modules and briefly explains their functionality.
-</li>
-<li>
-  <A href=\"http://www.project-open.org/doc/\"><b>
-  $po User Guides</b></a>:<br>
-  Please visit the download zone of our
-  <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
-  Here you will find all relevant guides and manuals in \".pdf\" format.
-</li>
-
-<li>
-  <A href=\"http://www.project-open.org/doc/\"><b>
-    Complete List of Documentation</b></a>:<br>
-    Please see the list of all available documentation.
-</li>
-
-<li>
-  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>
-    Discussion Forums</b></a>:<br>
-    You can use the open discussion forums to start communicating
-    with the open-source community.
-</li>
-
-<li>
-  <A href=\"http://www.project-open.com/product/services/support/\"><b>
-    Professional Support</b></a>:<br>
-    Please consider to contract professional support. 
-    $po offers three different support levels for companies of all sizes.
-</li>
-</ul>
-</p>-->
-</td></tr>
-</table>    
-<br>
-"
+	<table cellpadding=2 cellspacing=2 border=0 width=100%>
+	<tr><td>
+	
+	<h1>[lang::message::lookup "" intranet-core.Welcome_to_po "Welcome to %projop%"]</h1>
+	
+	[lang::message::lookup "" intranet-core.Sample_system_blurb "
+	We have set up a sample system for you in order to show you how
+	a typical company could look like. 
+	"]
+	
+	<h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "Starting to use %po%"]</h2>
+	
+	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+	You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
+	demo data from this server and start using this server in production
+	if you are a small organization.<p>
+	"]
+	
+	<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
+	
+	<ul>
+	<li>
+	  <A href=\"http://www.project-open.org/product/modules/\"><B>
+	    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
+	  Our web page gives you an overview over the different
+	  $po modules and briefly explains their functionality.
+	</li>
+	<li>
+	  <A href=\"http://www.project-open.org/doc/\"><b>
+	  $po User Guides</b></a>:<br>
+	  Please visit the download zone of our
+	  <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
+	  Here you will find all relevant guides and manuals in \".pdf\" format.
+	</li>
+	
+	<li>
+	  <A href=\"http://www.project-open.org/doc/\"><b>
+	    Complete List of Documentation</b></a>:<br>
+	    Please see the list of all available documentation.
+	</li>
+	
+	<li>
+	  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>
+	    Discussion Forums</b></a>:<br>
+	    You can use the open discussion forums to start communicating
+	    with the open-source community.
+	</li>
+	
+	<li>
+	  <A href=\"http://www.project-open.com/product/services/support/\"><b>
+	    Professional Support</b></a>:<br>
+	    Please consider to contract professional support. 
+	    $po offers three different support levels for companies of all sizes.
+	</li>
+	</ul>
+	</p>
+	</td></tr>
+	</table>    
+	<br>
+    "
 }
