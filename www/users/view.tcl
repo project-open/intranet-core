@@ -131,21 +131,21 @@ set context_bar [im_context_bar [list /intranet/users/ "[_ intranet-core.Users]"
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name"]
 
 set column_sql "
-select
-	column_name,
-	column_render_tcl,
-	visible_for
-from
-	im_view_columns
-where
-	view_id=:view_id
-	and group_id is null
-order by
-	sort_order"
-
+	select
+		column_name,
+		column_render_tcl,
+		visible_for
+	from
+		im_view_columns
+	where
+		view_id = :view_id
+		and group_id is null
+	order by
+		sort_order
+"
 
 set user_id $user_id_from_search
 set user_basic_info_vars [export_form_vars user_id return_url]

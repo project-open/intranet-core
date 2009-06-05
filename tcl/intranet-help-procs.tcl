@@ -27,6 +27,8 @@ ad_proc -public im_home_news_component { } {
     set no_iframes_l10n [lang::message::lookup "" intranet-core.Your_browser_cant_display_iframes "Your browser can't display IFrames."]
 
     set url "http://projop.dnsalias.com/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
+    set url [parameter::get_from_package_key -package_key "intranet-core" -parameter HomeNewsComponentUrl -default $url]
+
     set iframe "
       <iframe src=\"$url\" width=\"100%\" height=\"300\" name=\"$title\" frameborder=0>
         <p>$no_iframes_l10n</p>
