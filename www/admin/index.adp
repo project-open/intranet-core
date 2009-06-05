@@ -41,7 +41,7 @@
     <%= [im_component_bay left] %>
 
 
-<!--
+
 
 <br>
 <h2><font color=red>#intranet-core.Dangerous#</font></h2>
@@ -82,7 +82,7 @@
 	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
     </ul>
 
--->
+
 
   </td>
 
