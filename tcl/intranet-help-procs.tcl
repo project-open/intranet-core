@@ -49,59 +49,61 @@ ad_proc -public im_help_home_page_blurb_component { } {
     set po "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>po</span><span class=brandsec>&\#91;</span></nobr>"
 
     return "
-	<table cellpadding=2 cellspacing=2 border=0 width=100%>
-	<tr><td>
+      <table cellpadding=2 cellspacing=2 border=0 width=100%>
+      <tr><td>
 	
-	<h1>[lang::message::lookup "" intranet-core.Welcome_to_po "Welcome to %projop%"]</h1>
-	
-	[lang::message::lookup "" intranet-core.Sample_system_blurb "
-	We have set up a sample system for you in order to show you how
-	a typical company could look like. 
-	"]
-	
-	<h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "Starting to use %po%"]</h2>
-	
-	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
-	You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove the
-	demo data from this server and start using this server in production
-	if you are a small organization.<p>
-	"]
-	
-	<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
-	
-	<ul>
-	<li>
-	  <A href=\"http://www.project-open.org/product/modules/\"><B>
-	    &\#93;project-open&\#91; Feature Overview</b></a>:<br>
-	  Our web page gives you an overview over the different
-	  $po modules and briefly explains their functionality.
+      <h2>[lang::message::lookup "" intranet-core.Welcome_to_po "
+		Welcome to %projop%
+      "]</h2>[lang::message::lookup "" intranet-core.Sample_system_blurb "
+		We have set up this 'Tigerpond' sample company on this server 
+		in order to show you what your future $po could look like.
+      "]<p>&nbsp;</p>
+
+      <h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "
+		Starting to use %po%
+      "]</h2>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+		You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove all
+		demo data from this server and to start using this server in production.
+      "]<p>&nbsp;</p>
+
+      <h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
+      <ul>
+      <li>
+        <A href=\"http://www.project-open.com/\"><b>[lang::message::lookup "" intranet-core.PO_com_web_site "
+		%po% '.com' Web site
+	"]</b></a>:<br>
+	[lang::message::lookup "" intranet-core.PO_com_web_site_blurb "
+		Provides you with an overview of %po%.
+	"]<br>&nbsp;<br>
 	</li>
 	<li>
-	  <A href=\"http://www.project-open.org/doc/\"><b>
-	  $po User Guides</b></a>:<br>
-	  Please visit the download zone of our
-	  <a href=\"http://sourceforge.net/projects/project-open/\">developer community</a>.
-	  Here you will find all relevant guides and manuals in \".pdf\" format.
+	  <A href=\"http://www.project-open.org/documentation/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
+		%po% Documentation Wiki
+	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki_Blurb "
+		Contains reference information on %po% processes, packages, objects etc.
+	  "]<br>&nbsp;<br>
 	</li>
-	
 	<li>
-	  <A href=\"http://www.project-open.org/doc/\"><b>
-	    Complete List of Documentation</b></a>:<br>
-	    Please see the list of all available documentation.
+	  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>[lang::message::lookup "" intranet-core.SourceForge_Forum "
+		SourceForge Forum
+	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.SourceForge_Forum_Blurb "
+		You can use the forums to communicate with other %po% users.
+	  "]<br>&nbsp;<br>
 	</li>
-	
 	<li>
-	  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>
-	    Discussion Forums</b></a>:<br>
-	    You can use the open discussion forums to start communicating
-	    with the open-source community.
+	  <A href=\"http://www.project-open.com/en/services/\"><b>[lang::message::lookup "" intranet-core.PO_Professional_Services "
+		Professional Services
+	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Professional_Services "
+		Involving us in your %po% rollout will save you a lot of time
+		with installation and configuration."]
+	  <br>&nbsp;<br>
 	</li>
-	
 	<li>
-	  <A href=\"http://www.project-open.com/product/services/support/\"><b>
-	    Professional Support</b></a>:<br>
-	    Please consider to contract professional support. 
-	    $po offers three different support levels for companies of all sizes.
+	  <A href=\"http://www.project-open.com/en/services/project-open-support.html\"><b>[lang::message::lookup "" intranet-core.PO_Support_Contracts "
+		Support Contracts
+	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Support_Contracts_Blurb "
+		We can also provide you with a support contract to keep your system safe and running.
+	  "]
 	</li>
 	</ul>
 	</p>
