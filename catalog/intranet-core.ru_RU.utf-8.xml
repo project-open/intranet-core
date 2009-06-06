@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="ru_RU" charset="utf-8">
+
+  <msg key="Absences">Absences</msg>
+  <msg key="Add_a_new_project">Добавить новый проект</msg>
+  <msg key="Bugs">Ошибки</msg>
+  <msg key="Companies">Компании</msg>
+  <msg key="Forum">Форум</msg>
+  <msg key="Home">Главная</msg>
+  <msg key="Projects">Проекты</msg>
+  <msg key="Timesheet">Календарь</msg>
+  <msg key="Users">Пользователи</msg>
+  <msg key="Workflow">Процессы</msg>
+</message_catalog>
