@@ -110,6 +110,7 @@ ad_proc -public im_menu_parent_options { {include_empty 0} } {
 
 ad_proc -public im_menu_ul_list { 
     {-no_cache:boolean}
+    {-package_key "intranet-core" }
     {-no_uls 0}
     parent_menu_label 
     bind_vars 
@@ -121,15 +122,16 @@ ad_proc -public im_menu_ul_list {
     set locale [lang::user::locale -user_id $user_id]
 
     if {$no_cache_p} {
-	set result [im_menu_ul_list_helper -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
+	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
     } else {
-	set result [util_memoize [list im_menu_ul_list_helper -locale $locale $user_id $no_uls $parent_menu_label $bind_vars] 3600]
+	set result [util_memoize [list im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars] 3600]
     }
     return $result
 }
 
 ad_proc -public im_menu_ul_list_helper {
     {-locale "" }
+    {-package_key "intranet-core" }
     user_id
     no_uls
     parent_menu_label 
@@ -172,7 +174,7 @@ ad_proc -public im_menu_ul_list_helper {
 	    append url "&$var=[ad_urlencode $value]"
 	}
 
-	append result "<li><a href=\"$url\">[lang::message::lookup "" intranet-core.$name_key $name]</a></li>\n"
+	append result "<li><a href=\"$url\">[lang::message::lookup "" $package_key.$name_key $name]</a></li>\n"
 	incr ctr
     }
     if {!$no_uls} {append result "</ul>\n" }

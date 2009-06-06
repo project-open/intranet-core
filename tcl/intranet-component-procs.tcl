@@ -193,7 +193,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 
 	set component_html [uplevel 1 $component_tcl]
 
-	regsub -all " " $plugin_name "_" plugin_name_subs
+	regsub -all {[^0-9a-zA-Z]} $plugin_name "_" plugin_name_subs
 	set plugin_name_key "intranet-core.${plugin_name_subs}"
 	set plugin_name [lang::message::lookup "" $plugin_name_key $plugin_name]
 #	ns_log Notice "name_key=$plugin_name_key, name_subs=$plugin_name_subs, plugin_name=$plugin_name"

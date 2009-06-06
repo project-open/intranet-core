@@ -756,6 +756,7 @@ TYPE=text SIZE=5 MAXLENGTH=4>"
 
 ad_proc im_selection_to_select_box { 
     {-translate_p 1} 
+    {-package_key "intranet-core" }
     {-include_empty_p 1}
     {-include_empty_name "--_Please_select_--"}
     {-tag_attributes {} }
@@ -795,6 +796,7 @@ ad_proc im_selection_to_select_box {
     }
     append result [db_html_select_value_options_multiple \
 		       -translate_p $translate_p \
+		       -package_key $package_key \
 		       -bind $bind_vars \
 		       -select_option $default \
 		       $statement_name \
@@ -842,6 +844,7 @@ ad_proc -public db_html_select_value_options_multiple {
     { -value_index 0 }
     { -option_index 1 }
     { -translate_p 1 }
+    { -package_key "intranet-core" }
     stmt_name
     sql
 } {
@@ -862,7 +865,7 @@ ad_proc -public db_html_select_value_options_multiple {
 	set option_string [lindex $option $option_index]
 
 	if { $translate_p && "" != [lindex $option $option_index] } {
-	    set translated_value [lang::message::lookup "" intranet-core.[lang::util::suggest_key $option_string] $option_string ]
+	    set translated_value [lang::message::lookup "" $package_key.[lang::util::suggest_key $option_string] $option_string ]
 	} else {
 	    set translated_value $option_string
 	}

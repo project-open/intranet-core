@@ -323,7 +323,7 @@ ad_proc im_category_select_branch {
 
     foreach cat_id $category_list_sorted {
 	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-	    append html [im_category_select_branch -translate_p $translate_p $cat_id $default $level $cat_array $direct_parent_array]
+	    append html [im_category_select_branch -translate_p $translate_p -package_key $package_key $cat_id $default $level $cat_array $direct_parent_array]
 	}
     }
 
@@ -359,7 +359,7 @@ ad_proc im_category_select_plain {
 	order by lower(category)
     "
 
-    return [im_selection_to_select_box -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
 }
 
 
