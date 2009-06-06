@@ -563,6 +563,7 @@ ad_proc im_select {
     {-multiple_p 0} 
     {-size 6}
     {-translate_p 1} 
+    {-package_key "intranet-core" }
     field_name 
     pairs 
     { default "" } 
@@ -600,7 +601,7 @@ ad_proc im_select {
     foreach { value text } $pairs {
 	if { $translate_p && "" != [string trim $text]} {
 	    set l10n_key [lang::util::suggest_key $text]
-            set text_tr [lang::message::lookup "" intranet-core.$l10n_key $text]
+            set text_tr [lang::message::lookup "" $package_key.$l10n_key $text]
         } else {
             set text_tr $text
         }
