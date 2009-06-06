@@ -54,21 +54,26 @@ ad_proc -public im_navbar_tree {
     objects in the system.
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
+    set locale [lang::user::locale -user_id $user_id]
+
+    set no_cache_p 1
+
     if {$no_cache_p} {
-	return [im_navbar_tree_helper -user_id $user_id -label $label]
+	return [im_navbar_tree_helper -user_id $user_id -locale $locale -label $label]
     } else {
-	return [util_memoize [list im_navbar_tree_helper -user_id $user_id -label $label] 3600]
+	return [util_memoize [list im_navbar_tree_helper -user_id $user_id -locale $locale -label $label] 3600]
     }
 }
 
 ad_proc -public im_navbar_tree_helper { 
     -user_id:required
+    {-locale "" }
     {-label ""} 
 } {
     Creates an <ul> ...</ul> hierarchical list with all major
     objects in the system.
 } {
-    set current_user_id [ad_get_user_id]
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
     set wiki [im_navbar_doc_wiki]
 
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
@@ -83,12 +88,12 @@ ad_proc -public im_navbar_tree_helper {
 		[im_menu_li home]
 		[im_menu_li dashboard]
     "
-    if {$current_user_id == 0} {
+    if {$user_id == 0} {
 	append html "
 		<li><a href=/register/>[lang::message::lookup "" intranet-core.Login_Navbar Login]</a>
         "
     }
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	append html "
 		<li><a href=/register/logout>[lang::message::lookup "" intranet-core.logout Logout]</a>
         "
@@ -96,15 +101,15 @@ ad_proc -public im_navbar_tree_helper {
 
     append html "
 	</ul>
-	[if {![catch {set ttt [im_navbar_tree_project_management]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_human_resources]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_sales_marketing]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_provider_management]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_helpdesk]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_collaboration]}]} {set ttt} else {set ttt ""}]
-        [if {![catch {set ttt [im_navbar_tree_finance]}]} {set ttt} else {set ttt ""}]
-	[if {![catch {set ttt [im_navbar_tree_master_data_management]}]} {set ttt} else {set ttt ""}]
-	[im_navbar_tree_admin]
+	[if {![catch {set ttt [im_navbar_tree_project_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_human_resources -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_sales_marketing -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_provider_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_helpdesk -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_collaboration -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+        [if {![catch {set ttt [im_navbar_tree_finance -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[if {![catch {set ttt [im_navbar_tree_master_data_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+	[im_navbar_tree_admin -user_id $user_id -locale $locale]
       </div>
     "
 }
@@ -117,6 +122,8 @@ ad_proc -public im_navbar_tree_helper {
 
 
 ad_proc -public im_navbar_tree_admin { 
+    -user_id:required
+    -locale:required
 } { 
     Admin Navbar 
 } {
@@ -136,26 +143,27 @@ ad_proc -public im_navbar_tree_admin {
 
 
 ad_proc -public im_navbar_tree_project_management { 
+    -user_id:required
+    -locale:required
 } { 
     Project Management Navbar 
 } {
-    set current_user_id [ad_get_user_id]
     set wiki [im_navbar_doc_wiki]
-#    if {0 == $current_user_id} { return "" }
+#    if {0 == $user_id} { return "" }
 
     set html "
 	<li><a href=/intranet/projects/>[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
 	<li><a href=$wiki/module_project_management>[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
     "
-    if {[im_permission $current_user_id add_projects]} {
+    if {[im_permission $user_id add_projects]} {
 	append html "
 		<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a>
         "
     }
     
     # Add sub-menu with project types
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	append html "
 	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
 	        <ul>
@@ -178,7 +186,7 @@ ad_proc -public im_navbar_tree_project_management {
     }
 
     # Add sub-menu with project status
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	append html "
 	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
 	        <ul>
@@ -200,8 +208,8 @@ ad_proc -public im_navbar_tree_project_management {
         "
     }
 
-    set view_invoices_p [im_permission $current_user_id view_invoices]
-    set view_projects_all_p [im_permission $current_user_id view_projects_all]
+    set view_invoices_p [im_permission $user_id view_invoices]
+    set view_projects_all_p [im_permission $user_id view_projects_all]
 
     if {$view_invoices_p && $view_projects_all_p} {
 	append html "
@@ -209,19 +217,19 @@ ad_proc -public im_navbar_tree_project_management {
         "
     }
 
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
         append html "
 		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
         "
     }
 
-    if {[im_permission $current_user_id "view_projects_all"]} {
+    if {[im_permission $user_id "view_projects_all"]} {
         append html "
 <li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
         "
     }
 
-    if {[im_permission $current_user_id view_finance] && [im_permission $current_user_id view_projects]} {
+    if {[im_permission $user_id view_finance] && [im_permission $user_id view_projects]} {
         append html "
 		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
         "
@@ -236,15 +244,15 @@ ad_proc -public im_navbar_tree_project_management {
 
 
 ad_proc -public im_navbar_tree_sales_marketing { 
+    -user_id:required
+    -locale:required
 } { 
     Sales & Marketing Navbar
 } {
     set wiki [im_navbar_doc_wiki]
-    set current_user_id [ad_get_user_id]
-#    if {0 == $current_user_id} { return "" }
 
-    set view_invoices_p [im_permission $current_user_id view_invoices]
-    set view_projects_all_p [im_permission $current_user_id view_projects_all]
+    set view_invoices_p [im_permission $user_id view_invoices]
+    set view_projects_all_p [im_permission $user_id view_projects_all]
 
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.CRM_Sales "CRM"]</a>
@@ -253,7 +261,7 @@ ad_proc -public im_navbar_tree_sales_marketing {
     "
 
     # Add sub-menu with project status
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	append html "
 		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
 	        <ul>
@@ -280,14 +288,14 @@ ad_proc -public im_navbar_tree_sales_marketing {
 			<ul>
     "
 
-    if {[im_permission $current_user_id add_companies]} {
+    if {[im_permission $user_id add_companies]} {
 	append html "
 			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
         "
     }
 
 
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	set potential_companies_sql "
 		select * from im_company_status 
 		where company_status_id in ([join [im_sub_categories [im_company_status_potential]] ","])
@@ -308,12 +316,12 @@ ad_proc -public im_navbar_tree_sales_marketing {
     "
 
 
-    if {[im_permission $current_user_id add_invoices]} {
+    if {[im_permission $user_id add_invoices]} {
 	append html "
 			<li><a href=/intranet-invoices/new?cost_type_id=3702>[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
         "
     }
-    if {[im_permission $current_user_id view_invoices]} {
+    if {[im_permission $user_id view_invoices]} {
 	append html "
 			<li><a href=/intranet-invoices/list?cost_type_id=3702>[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
         "
@@ -347,25 +355,26 @@ ad_proc -public im_navbar_tree_sales_marketing {
 
 
 ad_proc -public im_navbar_tree_human_resources { 
+    -user_id:required
+    -locale:required
 } { 
     Human Resources Management
 } {
     set wiki [im_navbar_doc_wiki]
-    set current_user_id [ad_get_user_id]
 
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
 	<li><a href=$wiki/module_human_resources>[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
     "
-    if {[im_permission $current_user_id add_users]} {
+    if {[im_permission $user_id add_users]} {
 	append html "
 		<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_User "New User"]</a>
         "
     }
 
     # Add sub-menu with user profiles
-    if {$current_user_id > 0} {
+    if {$user_id > 0} {
 	append html "
 	        <li><a href=/intranet/users/index>[lang::message::lookup "" intranet-core.User_Profiles "User Profiles"]</a>
         	<ul>
@@ -387,13 +396,13 @@ ad_proc -public im_navbar_tree_human_resources {
         "
     }
 
-    if {[im_permission $current_user_id add_absences]} {
+    if {[im_permission $user_id add_absences]} {
 	append html "
 		<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absence "New Absence"]</a></li>
        "
     }
 
-    if {[im_permission $current_user_id "view_absences"]} {
+    if {[im_permission $user_id "view_absences"]} {
 	append html "
 		<li><a href=/intranet-timesheet2/absences/index>[lang::message::lookup "" intranet-core.Absence_Types "Absence Types"]</a>
         "
@@ -417,13 +426,13 @@ ad_proc -public im_navbar_tree_human_resources {
         "
     }
 
-    if {[im_permission $current_user_id "add_expenses"]} {
+    if {[im_permission $user_id "add_expenses"]} {
 	append html "
 		<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Expense "New Travel Expense"]</a>
         "
     }
 
-    if {[im_permission $current_user_id "add_expenses"]} {
+    if {[im_permission $user_id "add_expenses"]} {
 	append html "
 		<li><a href=/intranet-expenses/index>[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
 		<ul>
@@ -456,7 +465,7 @@ ad_proc -public im_navbar_tree_human_resources {
 		</li>
     "
 
-    if {[im_permission $current_user_id view_users]} {
+    if {[im_permission $user_id view_users]} {
 	append html "
 		<li><a href=/intranet-dw-light/users.csv>[lang::message::lookup "" intranet-core.Export_Users_to_CSV "Export Users to CSV"]</a></li>
         "
@@ -472,19 +481,19 @@ ad_proc -public im_navbar_tree_human_resources {
 
 
 ad_proc -public im_navbar_tree_provider_management { 
+    -user_id:required
+    -locale:required
 } { 
     Provider Management 
 } {
     set wiki [im_navbar_doc_wiki]
-    set current_user_id [ad_get_user_id]
-#    if {0 == $current_user_id} { return "" }
 
     set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
 	<li><a href=$wiki/module_provider_management>[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
     "
-    if {[im_is_user_site_wide_or_intranet_admin $current_user_id]} {
+    if {[im_is_user_site_wide_or_intranet_admin $user_id]} {
 	append html "
 		<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Providers_to_CSV "Export Providers to CSV/Excel"]</a></li>
         "
@@ -493,18 +502,18 @@ ad_proc -public im_navbar_tree_provider_management {
 		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Providers Providers]</a>
 			<ul>
     "
-    if {[im_permission $current_user_id add_companies]} {
+    if {[im_permission $user_id add_companies]} {
 	append html "
 			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Provider "New Provider Company"]</a></li>
         "
     }
-    if {[im_permission $current_user_id add_companies]} {
+    if {[im_permission $user_id add_companies]} {
 	append html "
 			<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_Provider_Contact "New Provider Contact"]</a></li>
         "
     }
 
-    if {[im_permission $current_user_id add_users]} {
+    if {[im_permission $user_id add_users]} {
 	append html "
 			<li><a href=/intranet-freelance/index>[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
 	"
@@ -517,7 +526,7 @@ ad_proc -public im_navbar_tree_provider_management {
 			<ul>
 			[im_menu_li reporting-cubes-finance]
     "
-    if {[im_permission $current_user_id view_projects_all]} {
+    if {[im_permission $user_id view_projects_all]} {
 	append html "
 			<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
         "
@@ -532,11 +541,13 @@ ad_proc -public im_navbar_tree_provider_management {
 
 
 
-ad_proc -public im_navbar_tree_collaboration { } { 
+ad_proc -public im_navbar_tree_collaboration { 
+    -user_id:required
+    -locale:required
+} { 
     Collaboration NavBar 
 } {
     set wiki [im_navbar_doc_wiki]
-    set current_user_id [ad_get_user_id]
 
     return "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration & KM"]</a>
@@ -564,13 +575,13 @@ ad_proc -public im_navbar_tree_collaboration { } {
 
 
 ad_proc -public im_navbar_tree_master_data_management { 
+    -user_id:required
+    -locale:required
 } { 
     Master Data Management 
 } {
     set wiki [im_navbar_doc_wiki]
-    set current_user_id [ad_get_user_id]
-
-    set admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {!$admin_p} { return "" }
 
     return "
@@ -677,20 +688,25 @@ ad_proc -public im_navbar_write_tree {
     Starts writing out the menu tree from a particular location
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
+    set locale [lang::user::locale -user_id $user_id]
+
     if {$no_cache_p} {
-	return [im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel]
+	return [im_navbar_write_tree_helper -user_id $user_id -locale $locale -label $label -maxlevel $maxlevel]
     } else {
-	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -label $label -maxlevel $maxlevel] 3600]
+	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -locale $locale -label $label -maxlevel $maxlevel] 3600]
     }
 }
 
 ad_proc -public im_navbar_write_tree_helper {
     -user_id:required
+    {-locale "" }
     {-label "main" }
     {-maxlevel 1}
 } {
     Starts writing out the menu tree from a particular location
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set main_label $label
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
     set menu_sql "
@@ -739,8 +755,10 @@ ad_proc -public im_navbar_sub_tree {
     the admin section
 } {
     set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
+
     set menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
-    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $menu_id" 60]
+    set menu_list_list [util_memoize "im_sub_navbar_menu_helper -locale $locale $user_id $menu_id" 60]
 
     set navbar ""
     foreach menu_list $menu_list_list {

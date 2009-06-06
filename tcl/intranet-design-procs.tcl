@@ -586,6 +586,7 @@ ad_proc -public im_sub_navbar {
     @title_class CSS class of the title line
 } {
     set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
     set url_stub [ns_conn url]
 
     # Start formatting the menu bar
@@ -597,7 +598,7 @@ ad_proc -public im_sub_navbar {
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper $user_id $parent_menu_id]]
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $parent_menu_id]]
 
     foreach menu_list $menu_list_list {
 
@@ -700,12 +701,15 @@ ad_proc -public im_sub_navbar {
 }
 
 ad_proc -private im_sub_navbar_menu_helper { 
+    {-locale "" }
     user_id 
     parent_menu_id 
 } {
     Get the list of menus in the sub-navbar for the given user.
     This routine is cached and called every approx 60 seconds
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
     # We need to be able to read the old DB model, otherwise the
     # users won't be able to upgrade...
@@ -748,10 +752,9 @@ ad_proc -public im_navbar {
 } {
     ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
+    if {![info exists loginpage_p]} { set loginpage_p 0 }
 
-    if {![info exists loginpage_p]} {
-	set loginpage_p 0
-    }
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
@@ -791,7 +794,7 @@ ad_proc -public im_navbar {
     set cur_sel "notsel"
 
     # select the toplevel menu items
-    set menu_list_list [util_memoize "im_sub_navbar_menu_helper $user_id $main_menu_id" 60]
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
 
     foreach menu_list $menu_list_list {
 
@@ -944,15 +947,22 @@ ad_proc -public im_header_plugins {
     Determines the contents for left & right header plugins.
     Returns an array with keys "left" and "right"
 } {
-    return [util_memoize [list im_header_plugins_helper]]
+    set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
+
+    return [util_memoize [list im_header_plugins_helper -locale $locale -user_id $user_id]]
 }
 
 ad_proc -public im_header_plugins_helper { 
+    {-user_id "" }
+    {-locale "" }
 } {
     Determines the contents for left & right header plugins.
     Returns an array with keys "left" and "right"
 } {
-    set user_id [ad_get_user_id]
+    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set plugin_left_html ""
     set plugin_right_html ""
 
@@ -1532,12 +1542,21 @@ ad_proc -public im_logo {} {
 ad_proc -public im_navbar_gif_url {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    return [util_memoize "im_navbar_gif_url_helper" 60]
+    set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
+
+    return [util_memoize [list im_navbar_gif_url_helper -locale $locale -user_id $user_id] 60]
 }
 
-ad_proc -public im_navbar_gif_url_helper {} {
+ad_proc -public im_navbar_gif_url_helper {
+    {-user_id "" }
+    {-locale "" }
+} {
     Path to access the Navigation Bar corner GIFs
 } {
+    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set navbar_gif_url "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
     set org_navbar_gif_url $navbar_gif_url
 
@@ -1931,12 +1950,18 @@ ad_proc -public im_box_footer {} {
 ad_proc -public im_user_skin { user_id } {
     Returns the name of the current skin
 } {
-    return [util_memoize [list im_user_skin_helper $user_id]]
+    set locale [lang::user::locale -user_id $user_id]
+    return [util_memoize [list im_user_skin_helper -locale $locale $user_id]]
 }
 
-ad_proc -public im_user_skin_helper { user_id } {
+ad_proc -public im_user_skin_helper { 
+    {-locale "" }
+    user_id 
+} {
     Returns the name of the current skin - uncached
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set skin_name ""
     set skin_id_exists_p [im_column_exists users skin_id]
     if {$skin_id_exists_p} {

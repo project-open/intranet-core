@@ -118,15 +118,18 @@ ad_proc -public im_menu_ul_list {
     to be added to index screens (costs) etc. 
 } {
     set user_id [ad_get_user_id]
+    set locale [lang::user::locale -user_id $user_id]
+
     if {$no_cache_p} {
-	set result [im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars]
+	set result [im_menu_ul_list_helper -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
     } else {
-	set result [util_memoize [list im_menu_ul_list_helper $user_id $no_uls $parent_menu_label $bind_vars] 3600]
+	set result [util_memoize [list im_menu_ul_list_helper -locale $locale $user_id $no_uls $parent_menu_label $bind_vars] 3600]
     }
     return $result
 }
 
 ad_proc -public im_menu_ul_list_helper {
+    {-locale "" }
     user_id
     no_uls
     parent_menu_label 
@@ -135,6 +138,8 @@ ad_proc -public im_menu_ul_list_helper {
     Returns all subitems of a menus as LIs, suitable
     to be added to index screens (costs) etc. 
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     array set bind_vars_hash $bind_vars
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
 
