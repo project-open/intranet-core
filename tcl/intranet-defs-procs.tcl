@@ -1318,6 +1318,7 @@ ad_proc -public im_valid_auto_login_p {
 
 ad_proc -public im_ad_hoc_query {
     {-format plain}
+    {-report_name ""}
     {-border 0}
     {-col_titles {} }
     {-translate_p 1 }
@@ -1336,6 +1337,8 @@ ad_proc -public im_ad_hoc_query {
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
     
+    regsub -all {[^0-9a-zA-Z]} $report_name "_" report_name_key
+
     # ---------------------------------------------------------------
     # Execute the report. As a result we get:
     #       - bind_rows with list of columns returned and
@@ -1370,8 +1373,10 @@ ad_proc -public im_ad_hoc_query {
     foreach title $col_titles {
         if {$translate_p} {
             regsub -all " " $title "_" title_key
-            set title [lang::message::lookup "" ${package_key}.im_ad_hoc_query_col__$title [string tolower $title_key]\
-			  ]
+	    set key "$package_key.Ad_hoc"
+	    if {"" != $report_name} { set key "${key}_${report_name_key}" }
+	    set key "${key}_$title_key"
+            set title [lang::message::lookup "" $key $title]
         }
         switch $format {
             plain { append header "$title\t" }

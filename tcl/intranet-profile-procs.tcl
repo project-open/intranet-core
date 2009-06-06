@@ -422,7 +422,13 @@ namespace eval im_profile {
 	        and mr.member_state = 'approved'
         }
 
-	set options [db_list_of_lists profile_options_of_user $profile_sql]
+	set options [list]
+	db_foreach profile_options_of_user $profile_sql {
+	    regsub -all {[ /]} $group_name "_" group_key
+	    set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+	    lappend options [list $group_name $group_id]
+	}
+
 	return $options
     }
 
@@ -473,8 +479,13 @@ namespace eval im_profile {
 	    }
 	}
 
-	set options [db_list_of_lists profile_options_for_user $profile_sql]
-        return $options
+	set options [list]
+	db_foreach profile_options_of_user $profile_sql {
+	    regsub -all {[ /]} $group_name "_" group_key
+	    set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+	    lappend options [list $group_name $group_id]
+	}
+	return $options
     }
 
 }

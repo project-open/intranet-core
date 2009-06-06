@@ -19,6 +19,7 @@ ad_library {
 
 ad_proc -public im_category_from_id { 
     {-translate_p 1}
+    {-package_key "intranet-core" }
     {-locale ""}
     category_id 
 } {
@@ -30,7 +31,7 @@ ad_proc -public im_category_from_id {
     set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
-	set category_name [lang::message::lookup $locale intranet-core.$category_key $category_name]
+	set category_name [lang::message::lookup $locale "$package_key.$category_key" $category_name]
     }
 
     return $category_name
@@ -89,7 +90,9 @@ ad_proc -public im_category_from_category {
 # the hierarchical structure of the category type.
 #
 ad_proc im_category_select {
+    {-no_cache:boolean}
     {-translate_p 1}
+    {-package_key "intranet-core" }
     {-multiple_p 0}
     {-include_empty_p 0}
     {-include_empty_name "All"}
@@ -106,11 +109,16 @@ ad_proc im_category_select {
 
     @param multiple_p You can select multiple categories
 } {
-    return [util_memoize [list im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] $cache_interval ]
+    if {$no_cache_p} {
+	return [im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default]
+    } else {
+	return [util_memoize [list im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] $cache_interval ]
+    }
 }
 
 ad_proc im_category_select_helper {
     {-translate_p 1}
+    {-package_key "intranet-core" }
     {-multiple_p 0}
     {-include_empty_p 0}
     {-include_empty_name "All"}
@@ -126,8 +134,10 @@ ad_proc im_category_select_helper {
     @param super_category_id determines where to start in the category hierarchy
 } {
     if {$plain_p} {
-	return [im_category_select_plain -translate_p $translate_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
+	return [im_category_select_plain -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
     }
+
+    ns_log Notice "package_key=$package_key"
 
     set super_category_sql ""
     if {0 != $super_category_id} {
@@ -251,7 +261,7 @@ ad_proc im_category_select_helper {
 	if {"f" == $enabled_p} { continue }
         set p_level $level($p)
         if {0 == $p_level} {
-            append html [im_category_select_branch -translate_p $translate_p $p $default $base_level [array get cat] [array get direct_parent]]
+            append html [im_category_select_branch -translate_p $translate_p -package_key $package_key $p $default $base_level [array get cat] [array get direct_parent]]
         }
     }
 
@@ -271,6 +281,7 @@ $html
 
 ad_proc im_category_select_branch { 
     {-translate_p 0}
+    {-package_key "intranet-core" }
     parent 
     default 
     level 
@@ -286,7 +297,7 @@ ad_proc im_category_select_branch {
 
     set category [lindex $cat($parent) 1]
     if {$translate_p} {
-	set category_key "intranet-core.[lang::util::suggest_key $category]"
+	set category_key "$package_key.[lang::util::suggest_key $category]"
 	set category [lang::message::lookup "" $category_key $category]
     }
 
@@ -322,6 +333,7 @@ ad_proc im_category_select_branch {
 
 ad_proc im_category_select_plain { 
     {-translate_p 1} 
+    {-package_key "intranet-core" }
     {-include_empty_p 1} 
     {-include_empty_name "--_Please_select_--"} 
     category_type 
@@ -419,6 +431,15 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 	set translate_p [lindex $params [expr $translate_p_pos + 1]]
     }
 
+    # Get the "package_key" parameter to determine in which package
+    # to translate the category items
+    #
+    set package_key "intranet-core"
+    set package_key_pos [lsearch $params "package_key"]
+    if { $package_key_pos >= 0 } {
+	set package_key [lindex $params [expr $package_key_pos + 1]]
+    }
+
     # Get the "include_empty_p" parameter to determine if we should
     # include an empty first line in the widget
     #
@@ -451,7 +472,7 @@ ad_proc -public template::widget::im_category_tree { element_reference tag_attri
 
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -translate_p 1 -include_empty_p $include_empty_p -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
+	append category_html [im_category_select -translate_p 1 -package_key $package_key -include_empty_p $include_empty_p -include_empty_name "" -plain_p $plain_p $category_type $field_name $default_value]
 
 
     } else {

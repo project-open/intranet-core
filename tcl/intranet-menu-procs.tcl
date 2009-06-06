@@ -166,8 +166,7 @@ ad_proc -public im_menu_ul_list_helper {
 	    if {!$visible} { continue }
 	}
 
-	regsub -all " " $name "_" name_key
-
+	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
 	foreach var [array names bind_vars_hash] {
 	    set value $bind_vars_hash($var)
 	    append url "&$var=[ad_urlencode $value]"
@@ -210,6 +209,9 @@ ad_proc -public im_menu_name {
 }
 
 ad_proc -public im_menu_li { 
+    {-user_id "" }
+    {-locale "" }
+    {-package_key "intranet-core" }
     {-class "" }
     {-pretty_name "" }
     label
@@ -217,14 +219,16 @@ ad_proc -public im_menu_li {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
-    set current_user_id [ad_get_user_id]
+    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set menu_id 0
     db_0or1row menu_info "
 	select	m.*
 	from	im_menus m
 	where	m.label = :label and
 		(m.enabled_p is null or m.enabled_p = 't') and
-		im_object_permission_p(m.menu_id, :current_user_id, 'read') = 't'
+		im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
     "
     if {0 == $menu_id} { return "" }
 
@@ -242,7 +246,7 @@ ad_proc -public im_menu_li {
 
     set class_html ""
     if {"" != $class} { set class_html "class='$class'" }
-    regsub -all " " $name "_" name_key
-    return "<li $class_html><a href=\"$url\">[lang::message::lookup "" intranet-core.$name_key $name]</a>\n"
+    regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+    return "<li $class_html><a href=\"$url\">[lang::message::lookup "" "$package_key.$name_key" $name]</a>\n"
 }
 

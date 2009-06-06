@@ -106,7 +106,9 @@ ad_proc -public im_navbar_tree_helper {
 	[if {![catch {set ttt [im_navbar_tree_sales_marketing -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_provider_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_helpdesk -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+
 	[if {![catch {set ttt [im_navbar_tree_collaboration -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
+
         [if {![catch {set ttt [im_navbar_tree_finance -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[im_navbar_tree_admin -user_id $user_id -locale $locale]
@@ -134,7 +136,7 @@ ad_proc -public im_navbar_tree_admin {
     set html "
 	[im_menu_li admin]
 		<ul>
-		[im_navbar_write_tree -no_cache -label "admin" -maxlevel 0]
+		[im_navbar_write_tree -no_cache -user_id $user_id -locale $locale -label "admin" -maxlevel 0]
 		</ul>
 	</ul>
     "
@@ -386,8 +388,8 @@ ad_proc -public im_navbar_tree_human_resources {
 	"
 	db_foreach profiles $profile_sql {
 	    set url [export_vars -base "/intranet/users/index" {{user_group_name $group_name}}]
-	    regsub -all " " $group_name "_" group_name_subst
-	    set name [lang::message::lookup "" intranet-core.User_Profile_$group_name_subst $group_name]
+	    regsub -all {[^0-9a-zA-Z]} $group_name "_" group_name_subst
+	    set name [lang::message::lookup "" intranet-core.Profile_$group_name_subst $group_name]
 	    append html "<li><a href=\"$url\">$name</a></li>\n"
 	}
 	append html "
@@ -415,9 +417,9 @@ ad_proc -public im_navbar_tree_human_resources {
 	order by lower(absence_type)
         "
 	db_foreach absences $absence_sql {
-	    set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
+	    set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type_id}]
 	    regsub -all " " $absence_type "_" absence_type_subst
-	    set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+	    set name [lang::message::lookup "" intranet-core.$absence_type_subst $absence_type]
 	    append html "<li><a href=\"$url\">$name</a></li>\n"
 	}
 	append html "
@@ -437,14 +439,14 @@ ad_proc -public im_navbar_tree_human_resources {
 		<li><a href=/intranet-expenses/index>[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
 		<ul>
         "
-	set absence_sql "
-	select * from im_absence_types
-	order by lower(absence_type)
+	set expense_sql "
+		select * from im_expense_type
+		order by lower(expense_type)
         "
-	db_foreach absences $absence_sql {
-	    set url [export_vars -base "/intranet-timesheet2/absences/index" {absence_type}]
-	    regsub -all " " $absence_type "_" absence_type_subst
-	    set name [lang::message::lookup "" intranet-core.Absence_Type_$absence_type_subst $absence_type]
+	db_foreach expenses $expense_sql {
+	    set url [export_vars -base "/intranet-expenses/index" {expense_type_id}]
+	    regsub -all " " $expense_type "_" expense_type_subst
+	    set name [lang::message::lookup "" intranet-expenses.$expense_type_subst $expense_type]
 	    append html "<li><a href=\"$url\">$name</a></li>\n"
 	}
 	append html "
@@ -460,7 +462,7 @@ ad_proc -public im_navbar_tree_human_resources {
         	        [im_menu_li "reporting-user-contacts"]
         	        [im_menu_li "reporting-timesheet-productivity"]
 			<!-- Additional reports in future HR area? --> 
-        	        [im_navbar_write_tree -label "reporting-hr" -maxlevel 1]
+        	        [im_navbar_write_tree -user_id $user_id -locale $locale -package_key "intranet-reporting" -label "reporting-hr" -maxlevel 1]
                 </ul>
 		</li>
     "
@@ -549,28 +551,38 @@ ad_proc -public im_navbar_tree_collaboration {
 } {
     set wiki [im_navbar_doc_wiki]
 
-    return "
+    set html "
 	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration & KM"]</a>
 	<ul>
-	<li><a href=$wiki/module_collaboration_knowledge>[lang::message::lookup "" intranet-core.CollabKM_Help "C&KM Help"]</a>
-		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a>
-		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a>
+	<li><a href=$wiki/module_collaboration_knowledge>[lang::message::lookup "" intranet-core.CollabKM_Help "C&KM Help"]</a></li>
+		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a></li>
+		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a></li>
 		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
 		[im_menu_li forum]
 		<li><a href=/intranet-forum/index>[lang::message::lookup "" intranet-core.Forum_Types "Forum Types"]</a>
 		<ul>
-			<li><a href=/intranet-forum/index?forum_topic_type_id=1100>News</a>
-			<li><a href=/intranet-forum/index?forum_topic_type_id=1108>Notes</a>
-			<li><a href=/intranet-forum/index?forum_topic_type_id=1106>Discussions</a>
-			<li><a href=/intranet-forum/index?forum_topic_type_id=1104>Tasks</a>
-			<li><a href=/intranet-forum/index?forum_topic_type_id=1102>Incidents</a>
+    "
+	
+    set topic_type_sql "
+	select * from im_forum_topic_types
+	order by lower(topic_type)
+    "
+    db_foreach topic_types $topic_type_sql {
+	set url [export_vars -base "/intranet-forum/index" {{forum_topic_type_id $topic_type_id}}]
+	regsub -all " " $topic_type "_" topic_type_subst
+	set name [lang::message::lookup "" intranet-forum.$topic_type_subst $topic_type]
+	append html "<li><a href=\"$url\">$name</a></li>\n"
+    }
+    append html "
 		</ul>
 		</li>
 		[im_menu_li -pretty_name Wiki wiki]
-		<li><a href=/intranet-filestorage/>[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a>
-		<li><a href=/simple-survey/>Surveys</a>
+		<li><a href=/intranet-filestorage/>[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a></li>
+		<li><a href=/simple-survey/>Surveys</a></li>
 	</ul>
     "
+
+    return $html
 }
 
 
@@ -682,24 +694,27 @@ ad_proc -public im_navbar_tree_master_data_management {
 ad_proc -public im_navbar_write_tree {
     {-no_cache:boolean}
     {-user_id 0 }
+    {-locale "" }
+    {-package_key "intranet-core" }
     {-label "main" }
     {-maxlevel 1}
 } {
     Starts writing out the menu tree from a particular location
 } {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
-    set locale [lang::user::locale -user_id $user_id]
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     if {$no_cache_p} {
-	return [im_navbar_write_tree_helper -user_id $user_id -locale $locale -label $label -maxlevel $maxlevel]
+	return [im_navbar_write_tree_helper -user_id $user_id -locale $locale -package_key $package_key -label $label -maxlevel $maxlevel]
     } else {
-	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -locale $locale -label $label -maxlevel $maxlevel] 3600]
+	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -locale $locale -package_key $package_key -label $label -maxlevel $maxlevel] 3600]
     }
 }
 
 ad_proc -public im_navbar_write_tree_helper {
     -user_id:required
     {-locale "" }
+    {-package_key "intranet-core" }
     {-label "main" }
     {-maxlevel 1}
 } {
@@ -735,7 +750,7 @@ ad_proc -public im_navbar_write_tree_helper {
 
 	# Localize Name
 	regsub -all " " $name "_" name_key
-	set name [lang::message::lookup "" intranet-core.$name_key $name]
+	set name [lang::message::lookup "" "$package_key.$name_key" $name]
 
 	append html "<li><a href=$url>$name</a>\n"
 	if {$maxlevel > 0 && $sub_count > 0} {
