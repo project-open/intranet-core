@@ -162,7 +162,7 @@ BEGIN
 	END LOOP;
 
 	-- Get the id_column for the v_status_table (not the objects main table...)
-	select	aott.id_column into v_status_table_id_col from acs_object_type_tables aott
+	select	distinct aott.id_column into v_status_table_id_col from acs_object_type_tables aott
 	where	aott.object_type = v_object_type and aott.table_name = v_status_table;
 
 	-- Avoid reporting an error. However, this may make it more difficult diagnosing errors.
