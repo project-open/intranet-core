@@ -690,9 +690,9 @@ ad_proc -public im_sub_navbar {
 	}
     }
 
-    return "
-	 <div id=\"navbar_sub_wrapper\">
-	    $title
+#     return "
+ 	 <div id=\"navbar_sub_wrapper\">
+	    <span id='titleSubmenu'>$title</span>
 	    <ul id=\"navbar_sub\">
 	      $navbar
 	    </ul>
