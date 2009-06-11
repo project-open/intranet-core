@@ -1469,5 +1469,8 @@ div.xowiki-content p, div.xowiki-content td {
         font-size: 10pt;
 }
 
+#titleSubmenu {
+        display: none;
+}
 
 
