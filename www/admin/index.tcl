@@ -43,7 +43,17 @@ set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
 # Check for upgrades to run
-set upgrade_message [im_check_for_update_scripts]
+
+set core_package_version_sql "
+      select  version_name
+      from    apm_package_versions
+      where   package_key = 'intranet-core' and
+              enabled_p = 't'
+"
+set core_version [db_string core_version $core_package_version_sql -default ""]
+
+set upgrade_message "<b>You are running core version: $core_version </b><br><br>"
+append upgrade_message [im_check_for_update_scripts]
 
 
 # ---------------------------------------------------------
