@@ -780,7 +780,7 @@ a   span  {float:none;}
 	padding-right: 3px;
 	padding-bottom: 10px;
 	padding-left: 5px;
-	overflow: auto;
+	overflow: visible;
 }
 .component_body ul {
   margin: 0;
