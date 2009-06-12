@@ -852,7 +852,7 @@ a   span  {float:none;}
 
 
 .fullwidth-list .component table.month_header td {
-	background:#B6C7FE none repeat scroll 0 50%;
+	background:#266591 none repeat scroll 0 50%;
 	border-bottom:1px solid #FFFFFF;
 	color:#000000;
 	font-size:9pt;
@@ -860,6 +860,9 @@ a   span  {float:none;}
 	padding:5px 4px 5px 2px;
 }
 
+.fullwidth-list .component table.month_header td a {
+	color:#FFF;
+}
 
 .fullwidth-list .component table.month_header {
         width: 100%;
