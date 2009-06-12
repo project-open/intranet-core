@@ -681,25 +681,30 @@ a   span  {float:none;}
   border: solid 1px #EEEEEE;
 }
 
+
 .component_header {
-   top: 5px;
-   position: relative;
-   height: 25px;
+	top: 5px;
+	/* position: relative; */ 
+	height: 25px;
 	padding-left: 3px;
 }
 
-.component_title {
-  position: relative;
-  left: 2pt;
-  float: left;
-  font-size: 12pt;
-  font-weight: bold;
 
-  /* visibility: hidden; */ 
+.component_title {
+	/* position: relative; */ 
+	left: 2pt;
+	float: left;
+	font-size: 12pt;
+	font-weight: bold;
+	padding-top: 3px;
 }
+
 .component_icons {
-  float: right;
+	float: right;
+	padding-top: 3px;
 }
+
+
 .component_icons a,
 .component_icons div.icon_seperator {
   float: left;
