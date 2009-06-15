@@ -203,8 +203,18 @@ where	office_name = :office_name
 	    # nope - sets office_id 
 	}
 	if {0 != $office_id} { 
-	    ns_log Notice "office::new: found existing office with same name: $office_id"
-	    return $office_id 
+	    # Avoid using an existing office.
+	    # This has lead to strange results at CTP.
+	    # Instead, emit a warning now.
+	    ad_return_complaint 1 "<b>Duplicate Office Name or Path</b>:<br>
+		You are trying to create a company with a name or short name similar to an existing company.<br>
+		Please choose a different company name or path.
+	    "
+	    ad_script_abort
+
+	    # Disabled after issue at CTP
+	    # ns_log Notice "office::new: found existing office with same name: $office_id"
+	    # return $office_id 
 	}
 
 	# -----------------------------------------------------------
