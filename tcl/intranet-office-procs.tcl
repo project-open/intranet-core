@@ -187,38 +187,6 @@ namespace eval office {
 	@param others The default optional parameters for OpenACS
 	       objects    
     } {
-
-	# -----------------------------------------------------------
-	# Check for duplicated unique fields (name & path)
-	# We asume the application page knows how to deal with
-	# the uniqueness constraint, so we won't generate an error
-	# but just return the duplicated item. 
-	set office_id 0
-	set dup_sql "
-select	office_id 
-from	im_offices 
-where	office_name = :office_name 
-	or office_path = :office_path"
-	db_foreach dup_offices $dup_sql {  
-	    # nope - sets office_id 
-	}
-	if {0 != $office_id} { 
-	    # Avoid using an existing office.
-	    # This has lead to strange results at CTP.
-	    # Instead, emit a warning now.
-	    ad_return_complaint 1 "<b>Duplicate Office Name or Path</b>:<br>
-		You are trying to create a company with a name or short name similar to an existing company.<br>
-		Please choose a different company name or path.
-	    "
-	    ad_script_abort
-
-	    # Disabled after issue at CTP
-	    # ns_log Notice "office::new: found existing office with same name: $office_id"
-	    # return $office_id 
-	}
-
-	# -----------------------------------------------------------
-
 	if { [empty_string_p $creation_date] } {
 	    set creation_date [db_string get_sysdate "select sysdate from dual"]
         }
