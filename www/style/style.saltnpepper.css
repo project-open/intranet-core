@@ -653,8 +653,9 @@ a   span  {float:none;}
   visibility: hidden;
 }
 
-#footer, #footer A {
-  color: #24618E;
+#footer, #footer a {
+	color: #24618E;
+	z-index: -20;
 }
 
 #slave_content {
