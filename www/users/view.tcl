@@ -551,6 +551,8 @@ if {$admin} {
     "
 }
 
+set date_created [db_string get_date_created "select to_char(creation_date, 'Month DD, YYYY') from acs_objects where object_id = $user_id_from_search"]
+append admin_links "<li>[_ intranet-core.Created]: $date_created </li>"
 
 append admin_links "</ul></td></tr>\n"
 append admin_links "</table>\n"
