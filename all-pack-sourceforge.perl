@@ -11,7 +11,6 @@
 
 # *******************************************************************
 $debug = 1;
-$gen_version = 0;
 
 $date = `/bin/date +"%Y-%m-%d"`;
 chomp($date);
@@ -44,7 +43,6 @@ $readme = "README.project-open.$version.txt";
 $license = "LICENSE.project-open.$version.txt";
 $changelog = "CHANGELOG.project-open.$version.txt";
 $tar = "project-open-$version-update.tgz";
-$packages = "packages.$version";
 
 
 # *******************************************************************
@@ -56,63 +54,42 @@ if (@ARGV == 1) {
     }
 }
 
-
-# *******************************************************************
-# Cleanup /tmp/, create new folder and checkout version
-
-# Delete the last version if exists
-if ($gen_version) {
-    print "all-upload: deleting /tmp/$packages\n" if $debug;
-    system("rm -rf /tmp/$packages/");
-    
-    # Create a new directory and copy installer checkout
-    print "all-upload: create directory /tmp/$packages\n" if $debug;
-    system("mkdir -p /tmp/$packages");
-
-    print "all-upload: checking out packages\n" if $debug;
-    system("cp -f ~/packages/intranet-core/all-installer-checkout.sh /tmp/$packages/");
-    system("cd /tmp/$packages/; bash all-installer-checkout.sh");
-
-}
-
 # *******************************************************************
 # Generate README and LICENSE
 my $sed = "sed -e 's/X.Y.Z.V.W/$version/; s/YYYY-MM-DD/$date/; s/YYYY/$year/'";
 
-print "all-upload: generating README in /tmp/\n" if $debug;
-system("rm -f /tmp/$readme");
-system("cat ~/packages/intranet-core/README.ProjectOpen.Update | $sed > /tmp/$readme");
+print "all-upload: generating README in ~/\n" if $debug;
+system("rm -f ~/$readme");
+system("cat ~/packages/intranet-core/README.ProjectOpen.Update | $sed > ~/$readme");
 
-print "all-upload: generating LICENSE in /tmp/\n" if $debug;
-system("rm -f /tmp/$license");
-system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > /tmp/$license");
+print "all-upload: generating LICENSE in ~/\n" if $debug;
+system("rm -f ~/$license");
+system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > ~/$license");
 
-print "all-upload: generating CHANGELOG in /tmp/\n" if $debug;
-system("rm -f /tmp/$changelog");
-system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > /tmp/$changelog");
+print "all-upload: generating CHANGELOG in ~/\n" if $debug;
+system("rm -f ~/$changelog");
+system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > ~/$changelog");
 
 
 
 # *******************************************************************
-# Tar the stuff in /tmp/packages
+# Determine the packages to include
 
-print "all-upload: deleting old tar\n" if $debug;
-system("rm -f /tmp/$tar");
-system("rm -f /tmp/$packages/all-installer-checkout.sh");
+$packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentication packages/acs-automated-testing packages/acs-bootstrap-installer packages/acs-content-repository packages/acs-core-docs packages/acs-datetime packages/acs-developer-support packages/acs-events packages/acs-kernel packages/acs-lang packages/acs-mail packages/acs-mail-lite packages/acs-messaging packages/acs-reference packages/acs-service-contract packages/acs-subsite packages/acs-tcl packages/acs-templating packages/acs-workflow packages/ajaxhelper packages/auth-ldap-adldapsearch packages/bug-tracker packages/bulk-mail packages/calendar packages/categories packages/chat packages/cms packages/contacts packages/diagram packages/ecommerce packages/events packages/general-comments packages/intranet-big-brother packages/intranet-bug-tracker packages/intranet-calendar packages/intranet-confdb packages/intranet-core packages/intranet-cost packages/intranet-dw-light packages/intranet-dynfield packages/intranet-exchange-rate packages/intranet-expenses packages/intranet-filestorage packages/intranet-forum packages/intranet-ganttproject packages/intranet-helpdesk packages/intranet-hr packages/intranet-invoices packages/intranet-invoices-templates packages/intranet-mail-import packages/intranet-material packages/intranet-milestone packages/intranet-nagios packages/intranet-notes packages/intranet-payments packages/intranet-release-mgmt packages/intranet-reporting packages/intranet-reporting-indicators packages/intranet-reporting-tutorial packages/intranet-search-pg packages/intranet-security-update-client packages/intranet-simple-survey packages/intranet-sysconfig packages/intranet-timesheet2 packages/intranet-timesheet2-invoices packages/intranet-timesheet2-tasks packages/intranet-tinytm packages/intranet-trans-invoices packages/intranet-translation packages/intranet-trans-project-wizard packages/intranet-update-client packages/intranet-wiki packages/intranet-workflow packages/lars-blogger packages/notifications packages/organizations packages/oryx-ts-extensions packages/postal-address packages/ref-countries packages/ref-language packages/ref-timezones packages/ref-us-counties packages/ref-us-states packages/ref-us-zipcodes packages/rss-support packages/search packages/simple-survey packages/wiki packages/workflow packages/xml-rpc";
+
 
 
 # *******************************************************************
 # Upload the tar to upload.sourceforge.net
 
 print "all-upload: tarring code\n" if $debug;
-system("rm -f /tmp/$packages/all-installer-checkout.sh");
-system("rm -f /tmp/$tar");
-system("cd /tmp/; tar czf /tmp/$tar $readme $license $changelog $packages");
+system("rm -f ~/$tar");
+system("cd ~/; tar czf ~/$tar $readme $license $changelog $packages");
 
 
 
 # *******************************************************************
 # End
 print "all-upload: SourceForge upload:\n";
-print "rsync -avP -e ssh /tmp/$tar fraber\@frs.sourceforge.net:uploads/\n";
+print "rsync -avP -e ssh ~/$tar fraber\@frs.sourceforge.net:uploads/\n";
 
