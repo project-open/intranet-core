@@ -155,9 +155,11 @@ if {[im_table_exists calendars]} {
 
     ns_write "<li>Cleanup calendar acs_objects<br>\n"
     set cal_objects [db_list costs $object_subquery]
+    set cnt 0
     foreach oid $cal_objects {
-        ns_write ".\n"
+ 	if {0 == [expr $cnt % 17]} { ns_write ".\n" }
         catch { db_dml del_cal_o "delete from acs_objects where object_id = :oid" } err_msg
+	incr cnt
     }
 
 }
@@ -185,62 +187,6 @@ if {[im_table_exists general_comments]} {
 ns_write "<li>Cleanup comments\n"
 if {[im_table_exists comments]} {
     db_dml delete_user_comments "delete from comments"
-}
-
-ns_write "<li>Cleanup Bug Tracker\n"
-if {[im_table_exists bt_bugs]} {
-
-    # Delete the application tables
-    db_dml bt_del "delete from bt_bugs"
-    db_dml bt_del "delete from bt_bug_revisions"
-    db_dml bt_del "delete from bt_patch_actions"
-
-    # Go for context index
-    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
-		select object_id from acs_objects where object_type = 'bt_bug'
-    )"
-    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
-		select object_id from acs_objects where object_type = 'bt_bug_revision'
-    )"
-
-    # Keyword Map
-    db_dml bt_del "delete from cr_item_keyword_map where item_id in (
-	select item_id from cr_items where live_revision in (
-		select object_id from acs_objects where object_type = 'bt_bug_revision'	
-	)
-    )"
-    
-    # Delete the Content Repository Items
-    db_dml bt_del "update cr_items set live_revision = null where live_revision in (
-	select object_id from acs_objects where object_type = 'bt_bug_revision'
-    )"
-    db_dml bt_del "update cr_items set latest_revision = null where latest_revision in (
-	select object_id from acs_objects where object_type = 'bt_bug_revision'
-    )"
-    db_dml bt_del "delete from cr_items where content_type = 'bt_bug_revision'"
-
-    db_dml bt_del "delete from cr_child_rels where rel_id in (
-	select object_id from acs_objects where context_id in (select object_id from acs_objects where object_type = 'bt_bug')
-    )"
-
-
-    # Delete other objects depending on bugs.
-    db_dml bt_del "update acs_objects set context_id = null
-    where context_id in (
-	select object_id from acs_objects where object_type = 'bt_bug'
-    )"
-
-    db_dml bt_del "delete from workflow_case_log where entry_id in (
-	select item_id from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')
-    )"
-    db_dml bt_del "update cr_items set live_revision = null, latest_revision = null 
-    where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
-    db_dml bt_del "delete from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
-    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug'"
-
-    # Delete acs_objects
-    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug_revision'"
-
 }
 
 ns_write "<li>Cleanup links\n"
@@ -374,11 +320,12 @@ db_dml timesheet_cost_refs "update im_hours set cost_id = null"
 ns_write "<li>Cleanup costs<br>\n"
 set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id"]
 set im_invoices__invoice_id_exists_p [im_column_exists im_expenses invoice_id]
+set cnt 0
 foreach cost_info $cost_infos {
     set cost_id [lindex $cost_info 0]
     set object_type [lindex $cost_info 1]
     
-    ns_write ".\n"
+    if {0 == [expr $cnt % 13]} { ns_write ".\n" }
     ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
     if {$im_invoices__invoice_id_exists_p} {
 	db_dml del_expense_inv "update im_expenses set invoice_id = null where invoice_id = :cost_id"
@@ -386,6 +333,7 @@ foreach cost_info $cost_infos {
 
     db_dml del_expenses "delete from im_expenses where expense_id = :cost_id"
     im_exec_dml del_cost "${object_type}__delete($cost_id)"
+    incr cnt
 }
 
 ns_write "<li>Cleanup dangeling_costs\n"
@@ -464,6 +412,67 @@ ns_write "<li>Cleanup im_fs_folders\n"
 db_dml forum "delete from im_fs_folders"
 ns_write "</ul>\n"
 
+
+ns_write "<li>Cleanup Bug Tracker\n"
+if {[im_table_exists bt_bugs]} {
+
+    # Delete the application tables
+    db_dml bt_del "delete from bt_bugs"
+    db_dml bt_del "delete from bt_bug_revisions"
+    db_dml bt_del "delete from bt_patch_actions"
+
+    # Go for context index
+    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'bt_bug'
+    )"
+    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+
+    # Keyword Map
+    db_dml bt_del "delete from cr_item_keyword_map where item_id in (
+	select item_id from cr_items where live_revision in (
+		select object_id from acs_objects where object_type = 'bt_bug_revision'	
+	)
+    )"
+
+    # Permissions
+    db_dml bt_del "delete from acs_permissions where object_id in (
+	select object_id from acs_objects where object_type = 'bt_bug'
+    )"
+    
+    # Delete the Content Repository Items
+    db_dml bt_del "update cr_items set live_revision = null where live_revision in (
+	select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+    db_dml bt_del "update cr_items set latest_revision = null where latest_revision in (
+	select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+    db_dml bt_del "delete from cr_items where content_type = 'bt_bug_revision'"
+
+    db_dml bt_del "delete from cr_child_rels where rel_id in (
+	select object_id from acs_objects where context_id in (select object_id from acs_objects where object_type = 'bt_bug')
+    )"
+
+
+    # Delete other objects depending on bugs.
+    db_dml bt_del "update acs_objects set context_id = null
+    where context_id in (
+	select object_id from acs_objects where object_type = 'bt_bug'
+    )"
+
+    db_dml bt_del "delete from workflow_case_log where entry_id in (
+	select item_id from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')
+    )"
+    db_dml bt_del "update cr_items set live_revision = null, latest_revision = null 
+    where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
+    db_dml bt_del "delete from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
+    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug'"
+
+    # Delete acs_objects
+    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug_revision'"
+
+}
 
 
 ns_write "<li>Cleanup im_search_objects\n"
@@ -768,12 +777,14 @@ set object_infos [db_list_of_lists objects "
                         'acs_mail_multipart'
                 )
 "]
+set cnt 0
 foreach object_info $object_infos {
     set object_id [lindex $object_info 0]
     set object_type [lindex $object_info 1]
 
-    ns_write ".\n"
+    if {0 == [expr $cnt % 17]} { ns_write ".\n" }
     catch { db_dml del_object "delete from acs_objects where object_id = :object_id" }
+    incr cnt
 }
 
 
