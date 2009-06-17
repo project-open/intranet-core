@@ -47,6 +47,15 @@ set page_title [_ intranet-core.Nuking_Users]
 ad_return_top_of_page "[im_header]\n[im_navbar]"
 
 ns_write "<h1>$page_title</h1>\n"
+ns_write "<p>
+	In this page, nuking some specific users may fail 
+	(particularly 'System Administrator' and 'Ben Bigboss'),<br>
+	because these users are the owners of certain system 
+	objects that are required and are difficult to delete.<br>
+	To work around this situation, please 'recycle' the users 
+	by renaming them to some of your managers or <br>
+	'mark these users as deleted'.<br>&nbsp;<br>
+</p>\n"
 ns_write "<ul>\n"
 
 
