@@ -38,6 +38,8 @@ set context_bar [im_context_bar $page_title]
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+set default_user [db_string defuser "select min(person_id) from persons where person_id > 0"]
+
 # ---------------------------------------------------------------
 # Render page header
 # ---------------------------------------------------------------
@@ -162,6 +164,7 @@ if {[im_table_exists calendars]} {
 ns_write "</ul>\n"
 
 
+
 ns_write "<li>Cleanup calendar_categories\n"
 if {[im_table_exists calendar_categories]} {
     db_dml delete_user_calendar_categories "delete from calendar_categories"
@@ -182,6 +185,62 @@ if {[im_table_exists general_comments]} {
 ns_write "<li>Cleanup comments\n"
 if {[im_table_exists comments]} {
     db_dml delete_user_comments "delete from comments"
+}
+
+ns_write "<li>Cleanup Bug Tracker\n"
+if {[im_table_exists bt_bugs]} {
+
+    # Delete the application tables
+    db_dml bt_del "delete from bt_bugs"
+    db_dml bt_del "delete from bt_bug_revisions"
+    db_dml bt_del "delete from bt_patch_actions"
+
+    # Go for context index
+    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'bt_bug'
+    )"
+    db_dml bt_del "delete from acs_object_context_index where ancestor_id in (
+		select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+
+    # Keyword Map
+    db_dml bt_del "delete from cr_item_keyword_map where item_id in (
+	select item_id from cr_items where live_revision in (
+		select object_id from acs_objects where object_type = 'bt_bug_revision'	
+	)
+    )"
+    
+    # Delete the Content Repository Items
+    db_dml bt_del "update cr_items set live_revision = null where live_revision in (
+	select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+    db_dml bt_del "update cr_items set latest_revision = null where latest_revision in (
+	select object_id from acs_objects where object_type = 'bt_bug_revision'
+    )"
+    db_dml bt_del "delete from cr_items where content_type = 'bt_bug_revision'"
+
+    db_dml bt_del "delete from cr_child_rels where rel_id in (
+	select object_id from acs_objects where context_id in (select object_id from acs_objects where object_type = 'bt_bug')
+    )"
+
+
+    # Delete other objects depending on bugs.
+    db_dml bt_del "update acs_objects set context_id = null
+    where context_id in (
+	select object_id from acs_objects where object_type = 'bt_bug'
+    )"
+
+    db_dml bt_del "delete from workflow_case_log where entry_id in (
+	select item_id from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')
+    )"
+    db_dml bt_del "update cr_items set live_revision = null, latest_revision = null 
+    where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
+    db_dml bt_del "delete from cr_items where parent_id in (select object_id from acs_objects where object_type = 'bt_bug')"
+    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug'"
+
+    # Delete acs_objects
+    db_dml bt_del "delete from acs_objects where object_type = 'bt_bug_revision'"
+
 }
 
 ns_write "<li>Cleanup links\n"
@@ -525,7 +584,7 @@ if {[im_table_exists im_trans_tasks]} {
 ns_write "<li>Cleanup Translation Quality\n"
 if {[im_table_exists im_trans_quality_reports]} {
     db_dml trans_quality "delete from im_trans_quality_entries"
-    db_dml trans_quality "delete from im_trans_quality_reports";
+    db_dml trans_quality "delete from im_trans_quality_reports"
 }
 
 ns_write "<li>Cleanup Filestorage\n"
@@ -667,8 +726,6 @@ db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rf
 db_dml rfq_objects "delete from acs_objects where object_type = 'im_freelance_rfq_answer'"
 # db_dml rfq_objects "delete from acs_objects where object_type = 'workflow_case_log_entry'"
 db_dml rfq_objects "delete from acs_objects where object_type = 'trans_edit_proof_wf'"
-#db_dml rfq_objects "delete from acs_objects where object_type = 'bt_bug'"
-
 # select count(*) as cnt, object_type from acs_objects group by object_type order by cnt DESC;
 
 
