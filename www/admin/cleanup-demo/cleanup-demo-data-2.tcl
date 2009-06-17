@@ -357,6 +357,13 @@ db_dml forum "delete from im_forum_topics"
 # db_dml im_forum_folders "delete from im_forum_folders"
 
 
+if {[im_table_exists im_notes]} {
+    ns_write "<li>Cleanup Notes\n"
+    db_dml im_notes "delete from im_notes"
+    db_dml forum "delete from acs_objects where object_type = 'im_notes'"
+}
+
+
 ns_write "<li>Cleanup im_hours\n"
 db_dml timesheet "delete from im_hours"
 ns_write "<li>Cleanup im_user_absences\n"
@@ -435,23 +442,19 @@ ns_write "</ul>\n"
 # Remove user from business objects that we don't want to delete...
 ns_write "<li>Cleanup im_biz_object_members\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
+
 ns_write "<li>Cleanup im_projects\n"
 db_dml remove_from_projects "update im_projects set parent_id = null"
+
 ns_write "<li>Cleanup im_timesheet_tasks\n"
 db_dml remove_from_projects "delete from im_timesheet_tasks"
+
 ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
 db_dml remove_from_projects "delete from im_timesheet_task_dependencies"
 
-ns_write "<li>Cleanup im_projects\n"
-db_dml remove_from_projects "delete from im_projects"
-ns_write "<li>Cleanup im_companies\n"
-db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
-ns_write "<li>Cleanup im_offices\n"
-db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
 
-
-ns_write "<li>Cleanup Indicators\n"
+ns_write "<li>Cleanup Indicator Results\n"
 if {[im_table_exists im_indicator_results]} {
     db_dml indicator_results "delete from im_indicator_results"
 }
@@ -473,6 +476,11 @@ if {[im_table_exists im_freelance_rfqs]} {
 ns_write "<li>Cleanup Conf Items\n"
 if {[im_table_exists im_conf_items]} {
     db_dml remove_from_conf_items "delete from im_conf_items"
+
+    set rels [db_list cr "select rel_id from acs_rels, acs_objects where object_id_two = object_id and object_type = 'im_conf_item'"]
+    foreach rel_id $rels {
+	db_string del_rel "select acs_rel__delete(:rel_id)"
+    }
     db_dml remove_conf_item_objects "delete from acs_objects where object_type = 'im_conf_item'"
 }
 
@@ -482,6 +490,17 @@ if {[im_table_exists im_tickets]} {
     db_dml remove_from_tickets "delete from im_tickets"
     db_dml remove_release_items "delete from im_release_items"
 }
+
+
+ns_write "<li>Cleanup im_projects\n"
+db_dml remove_from_projects "delete from im_projects"
+
+ns_write "<li>Cleanup im_companies\n"
+db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
+
+ns_write "<li>Cleanup im_offices\n"
+db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
+
 
 
 ns_write "<li>Cleanup Projects & subclasses\n"
@@ -552,6 +571,12 @@ db_dml office_context "
 		and object_id not in (select office_id from im_offices)
 	)
 "
+db_dml office_biz_objects "
+	delete from im_biz_objects where object_id in (select object_id from acs_objects where object_type = 'im_office')
+"
+db_dml office_biz_objects "
+	delete from parties where party_id in (select object_id from acs_objects where object_type = 'im_office')
+"
 db_dml rfq_objects "
 	delete from acs_objects where object_type = 'im_office' 
 	and object_id not in (select office_id from im_offices)
@@ -560,6 +585,8 @@ db_dml rfq_objects "
 
 
 ns_write "<li>Cleanup Projects\n"
+ns_write "<ul>\n"
+ns_write "<li>Cleanup acs_object_context_index\n"
 db_dml project_context "
 	delete from acs_object_context_index where ancestor_id in (
 		select object_id from acs_objects where object_type in (
@@ -567,6 +594,7 @@ db_dml project_context "
 		)
 	)
 "
+ns_write "<li>Cleanup acs_rels\n"
 db_dml project_acs_rels "
 	delete from acs_rels where object_id_one in (
 		select object_id from acs_objects where object_type in (
@@ -574,6 +602,7 @@ db_dml project_acs_rels "
 		)
 	)
 "
+ns_write "<li>Cleanup acs_objects.context_id\n"
 db_dml project_context_null "
 	update acs_objects set context_id = null where context_id in (
 		select object_id from acs_objects where object_type in (
@@ -581,25 +610,32 @@ db_dml project_context_null "
 		)
 	)
 "
-
+ns_write "<li>Cleanup acs_objects\n"
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
+ns_write "<li>\n"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
+ns_write "</ul>\n"
 
 
 ns_write "<li>Cleanup Companies\n"
-
+ns_write "<ul>\n"
+ns_write "<li>Cleanup acs_object_context_index\n"
 db_dml remove_from_acs_object_context_index "
     delete from acs_object_context_index
     where object_id in (select object_id from acs_objects where object_type = 'im_company')
     or ancestor_id in (select object_id from acs_objects where object_type = 'im_company')
 "
-
+ns_write "<li>Cleanup parties\n"
+db_dml company_parties "
+    delete from parties where party_id in (select object_id from acs_objects where object_type = 'im_company')
+"
+ns_write "<li>Cleanup acs_rels\n"
 db_dml remove_company_rfq_objects_from_acs_rels "
     delete from acs_rels
     where object_id_one in (select object_id from acs_objects where object_type = 'im_company')
     or object_id_two in (select object_id from acs_objects where object_type = 'im_company')
 "
-
+ns_write "<li>Cleanup acs_objects\n"
 db_list remove_from_acs_objects "
 	select	acs_object__delete(object_id) from acs_objects
 	where	context_id in (
@@ -608,13 +644,17 @@ db_list remove_from_acs_objects "
 			object_id not in (select company_id from im_companies)
 	)
 "
-
-db_list rfq_objects "
+ns_write "<li>Cleanup acs_objects(2)\n"
+db_list company_acs_objects "
 	select	acs_object__delete(object_id)
 	from	acs_objects
 	where	object_type = 'im_company' and 
 		object_id not in (select company_id from im_companies)
 "
+ns_write "</ul>\n"
+
+
+
 
 db_dml del_biz_rels "delete from im_biz_object_members"
 db_dml del_biz_rel_rels "delete from acs_rels where rel_type = 'im_biz_object_member'"
@@ -683,6 +723,9 @@ foreach object_info $object_infos {
 # ------------------------------------------------------------
 # Render Footer
 # ------------------------------------------------------------
+
+ns_write "</ul><p>Finished Successfully</p>\n"
+
 
 ns_write "
 </ul>
