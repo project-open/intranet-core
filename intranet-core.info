@@ -9,7 +9,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.6.0" url="http://projop.dnsalias.com/download/apm/intranet-core-3.4.0.6.0.apm">
+    <version name="3.4.0.6.1" url="http://projop.dnsalias.com/download/apm/intranet-core-3.4.0.6.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
