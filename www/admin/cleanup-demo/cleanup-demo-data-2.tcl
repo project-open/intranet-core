@@ -63,10 +63,16 @@ ns_write "<h1>$page_title</h1>\n"
 # ---------------------------------------------------------------
 
 ns_write "
-<font color=red><p>
-This script does not cleanup demo users.<br>
-After running this script, please go to Admin -&gt; Delete Demodata -&gt;
-Delete Demo Users to delete selected users.
+<font color=red>
+<ul>
+<li>This script does not cleanup demo users.<br>
+    After running this script, please go to Admin -&gt; Delete Demodata -&gt;
+    Delete Demo Users to delete selected users.
+<li>Due to the structure of the ]po[ there may be cases where you have to run<br>
+    this script twice in order to cleanup all data in the system.<br>
+    This behaviour is due to the strong referential integrity constraints<br>
+    in the system, together with 'triggers'.
+</ul>
 </font>
 "
 
@@ -157,7 +163,7 @@ if {[im_table_exists calendars]} {
     set cal_objects [db_list costs $object_subquery]
     set cnt 0
     foreach oid $cal_objects {
- 	if {0 == [expr $cnt % 17]} { ns_write ".\n" }
+ 	if {0 == [expr $cnt % 37]} { ns_write ".\n" }
         catch { db_dml del_cal_o "delete from acs_objects where object_id = :oid" } err_msg
 	incr cnt
     }
@@ -302,7 +308,8 @@ set default_user 0
 
 
 
-
+ns_write "<li>Cleanup im_hours\n"
+db_dml timesheet "delete from im_hours"
 
 ns_write "<li>Cleanup im_payments\n"
 db_dml payments "delete from im_payments"
