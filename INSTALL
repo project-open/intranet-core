@@ -1,8 +1,8 @@
 
   ]project-open[ Installer
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.1.4, 2006-07-04
-  Copyright (c) 2006 ]project-open[
+  Version V3.4.0, 2009-06-04
+  Copyright (c) 2009 ]project-open[
 
   This is the ]project-open[ Linux installer. This document describes
   how to install ]project-open[, and open-source based project management
@@ -13,10 +13,10 @@
   0. About the Installer
 
 
-  Version V3.1.4, 2006-04-04
-  Copyright (c) 2006 ]project-open[
+  Version V3.4.0, 2009-06-04
+  Copyright (c) 2009 ]project-open[
   Frank Bergmann <frank.bergmann@project-open.com>
-  http://www.project-open.org/download/win/3.1.4.0.html
+  http://www.project-open.org/download/win/3.4.0.0.html
   
   Permission is granted to copy, distribute and/or modify this document 
   under the terms of the GNU Free Documentation License, Version 1.1 or 
@@ -78,7 +78,7 @@
   
   - INSTALL			# This file
   - aolserver3.3oacs.tgz	# The AOLServer binary
-  - project-open.3-1-2-0-0.tgz	# ]project-open[ source tree
+  - project-open.3-4-0-0-0.tgz	# ]project-open[ source tree
   
   
   The finished directory tree will look like this:
@@ -140,7 +140,7 @@
   # cd /
   # mkdir /web
   # cd /web
-  # tar xzf project-open.3-1-2-0-0.tgz
+  # tar xzf project-open.3-4-0-0-0.tgz
   
   
   
@@ -427,7 +427,7 @@
   4.12. Check for the Latest Version and Updates
   
 
-  Please check http://www.project-open.org/download/win/3.1.4.0.html for
+  Please check http://www.project-open.org/download/win/3.4.0.0.html for
   release notes and http://www.sourceforge.net/projects/project-open/ for news
   and announcements. You can subscribe yourself to the project to get updated
   about new packages, security updates etc.
@@ -438,13 +438,13 @@
   
   On Sourceforge check for the latest announcement of a stable release.
 
-  For example the latest at the time this document was created was "v3-1-2-0-0". The
+  For example the latest at the time this document was created was "v3-4-0-0-0". The
   upgrade to this release (necesary if you install this
   installer - there are updates with respect to Invoices):
 
   # su - projop
   # cd /web/projop/packages
-  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-1-2-0-0 -Pd
+  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-4-0-0-0 -Pd
 
   After this please go to your your server URL http://localhost/acs-admin/apm/,
   choose "Install Packages" and select all packages that "Upgrade" (please don't
@@ -461,7 +461,7 @@
   5. Where to go from Here
 
 
-      - Please check http://www.project-open.org/download/win/3.1.4.0.html
+      - Please check http://www.project-open.org/download/win/3.4.0.0.html
         This is the location where we are posting release notes and comments 
         from others users on this particular version of the installer.
 

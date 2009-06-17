@@ -1,8 +1,8 @@
 
   ]project-open[ Virtual Machine
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.2.10, 2007-05-04
-  Copyright (c) 2007 ]project-open[
+  Version V3.4.0, 2009-06-04
+  Copyright (c) 2009 ]project-open[
 
   This is the ]project-open[ Virtual Machine. This document describes
   some characteristics of how this VM has been configured.
@@ -12,10 +12,10 @@
   0. About the Virtual Machine
 
 
-  Version V3.2.10, 2007-05-04
-  Copyright (c) 2007 ]project-open[
+  Version V3.4.0, 2009-06-04
+  Copyright (c) 2009 ]project-open[
   Frank Bergmann <frank.bergmann@project-open.com>
-  http://www.project-open.org/download/win/3.1.2.0.html
+  http://www.project-open.org/documentation/install_main
 
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.1 or
