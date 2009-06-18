@@ -45,6 +45,8 @@ set component_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
 
+set org_package_key $package_key
+
 # ------------------------------------------------------
 # Options for Package Select
 # ------------------------------------------------------
@@ -135,22 +137,22 @@ set criteria [list]
 set bind_vars [ns_set create]
 
 set component_select_sql "
-select
-	${main_sql_select}
-	c.plugin_id, 
-	c.plugin_name, 
-	c.package_name, 
-	c.location, 
-	c.page_url,
-	c.enabled_p
-from 
-	im_component_plugins c
-where	
-	1=1
-	$component_where
-order by
-	package_name,
-	plugin_name
+	select
+		${main_sql_select}
+		c.plugin_id, 
+		c.plugin_name, 
+		c.package_name, 
+		c.location, 
+		c.page_url,
+		c.enabled_p
+	from 
+		im_component_plugins c
+	where	
+		1=1
+		$component_where
+	order by
+		package_name,
+		plugin_name
 "
 
 set ctr 1
@@ -205,7 +207,7 @@ set left_navbar_html "
 	<form action=index method=GET>
 	<tr>
 	<td>[lang::message::lookup "" intranet-core.Package "Package"]</td>
-	<td>[im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key]</td>
+	<td>[im_select -ad_form_option_list_style_p 1 package_key $package_options $org_package_key]</td>
 	</tr>
 
 	<tr>
