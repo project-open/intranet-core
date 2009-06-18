@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="pl_PL" charset="utf-8">
+
+  <msg key="Absences">Nieobecności</msg>
+  <msg key="Add_Stuff">Dodaj element</msg>
+  <msg key="Admin">Administracja</msg>
+  <msg key="Bugs">Błędy</msg>
+  <msg key="Change_Password">Zmień hasło</msg>
+  <msg key="Comments">Komentarze?</msg>
+  <msg key="Companies">Firmy</msg>
+  <msg key="Contact">Kontakt</msg>
+  <msg key="Create_new_Incident">Utwórz nowy incydent</msg>
+  <msg key="Create_new_News_Item">Dodaj nowy element do nowości</msg>
+  <msg key="Create_new_Note">Utwórz nowa notatkę</msg>
+  <msg key="Create_new_Task">Utwórz nowe zadanie</msg>
+  <msg key="Finance">Finanse</msg>
+  <msg key="Forum">Forum</msg>
+  <msg key="Help">Pomoc</msg>
+  <msg key="Home">Strona główna</msg>
+  <msg key="Home_Page_Help">Pomoc dla strony głównej</msg>
+  <msg key="Log_Out">Wyloguj</msg>
+  <msg key="lt_Add_Stuffintranet-cor">Dodaj element</msg>
+  <msg key="lt_Create_a_new_Discussi">Rozpocznij nową dyskusję</msg>
+  <msg key="lt_Customersintranet-fil">Klienci</msg>
+  <msg key="lt_Employeesintranet-fil">Pracownicy</msg>
+  <msg key="lt_Freelancersintranet-f">Freelancerzy</msg>
+  <msg key="lt_num_users_online_user">%num_users_online% użytkownik online</msg>
+  <msg key="lt_num_users_online_user_1">%num_users_online% użytkowników online</msg>
+  <msg key="lt_Select_topics_here_fo">Wybierz tutaj tematy działania</msg>
+  <msg key="lt_Senior_Managersintran">Senior menedżerowie</msg>
+  <msg key="My_Account">Moje konto</msg>
+  <msg key="Project_Manager">Menedżer projektu</msg>
+  <msg key="Project_Name">Nazwa projektu</msg>
+  <msg key="Project_nr">Nr. projektu</msg>
+  <msg key="Projects">Projekty</msg>
+  <msg key="Reporting">Raporty</msg>
+  <msg key="Reset_Stuff">Odśwież wszystko</msg>
+  <msg key="SiteAdmin">Admimnistrator strony</msg>
+  <msg key="Timesheet">Czas pracy</msg>
+  <msg key="Type">Rodzaj</msg>
+  <msg key="Users">Użytkownicy</msg>
+  <msg key="Wiki">Baza wiedzy</msg>
+  <msg key="Workflow">Proces</msg>
+</message_catalog>

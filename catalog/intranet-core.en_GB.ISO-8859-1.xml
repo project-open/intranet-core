@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="en_GB" charset="ISO-8859-1">
+
+  <msg key="A_-_Test_approved">A - Good</msg>
+  <msg key="Aim_Screen_Name">Jabber/Aim Screen Name</msg>
+  <msg key="Annual_Revenue">Annual Revenue</msg>
+  <msg key="B_-_No_the_best">B - Not the best</msg>
+  <msg key="Canceled">Cancelled</msg>
+  <msg key="Choose_a_State">Choose a County</msg>
+  <msg key="Client_Type">Company Type</msg>
+  <msg key="Clone_Project">Clone this Project</msg>
+  <msg key="Company_Project_Nr">Customer Project No.</msg>
+  <msg key="Create_new_Incident">Create new Allocation</msg>
+  <msg key="Freelancers">Network</msg>
+  <msg key="Gen">General</msg>
+  <msg key="Home_Postal_Code">Home Post Code</msg>
+  <msg key="Home_ZIP">Home Post Code</msg>
+  <msg key="Incident">Allocation</msg>
+  <msg key="lt_A_project_number_is_c">YYMMDD_{progressive numbering}</msg>
+  <msg key="lt_Add_a_new_subject_are">Select a new subject area.</msg>
+  <msg key="lt_An_optional_field_spe">Client PO, WO, Client Reference No., etc.</msg>
+  <msg key="lt_C_-_Test_completely_f">C - Failed</msg>
+  <msg key="lt_Do_you_want_to_create">Select only if you are creating a sub-project for an existing parent project.</msg>
+  <msg key="lt_General_type_of_proje">Select the closest project type to your job. Be aware of how many stages your job will have and select a type accordingly.</msg>
+  <msg key="lt_How_many_hours_can_be">For consulting projects enter in the estimated duration of the assignment in hours.</msg>
+  <msg key="lt_In_Process_Work_is_st">Refer to the new_project_defs wiki page for a detailed explanation on Project Status types.</msg>
+  <msg key="lt_Incidentintranet-foru">Allocation</msg>
+  <msg key="lt_Is_the_project_going_">Refer to the new_project_defs Wiki page for detailed explanation on this field's use. </msg>
+  <msg key="lt_Please_enter_any_suit">Enter in the format YYMMDD {Project Name} . Each name must be unique.</msg>
+  <msg key="lt_Project_Translation_D">Translation Project Details</msg>
+  <msg key="lt_There_is_a_difference">Clients are named here by their invoicing name. Use the search function to identify companies you only know by their trading name.</msg>
+  <msg key="lt_Translation_target_la">Translation target language. Hold Ctrl and click to select multiple target languages.</msg>
+  <msg key="lt_What_is_the_financial">Ignore this field.</msg>
+  <msg key="lt_Who_is_the_final_cons">Refer to the new_project_defs wiki page.</msg>
+  <msg key="On_Track_Status">Alert Status</msg>
+  <msg key="Project_">Project No.</msg>
+  <msg key="Project_Base_Data">Basic Project Details</msg>
+  <msg key="Project_Nr">Project code</msg>
+  <msg key="Project_nr">Project No.</msg>
+  <msg key="Start_Date">Start Date</msg>
+  <msg key="State">County</msg>
+  <msg key="Tasks__Incidents">Tasks / Allocations</msg>
+  <msg key="Work_Postal_Code">Work Post Code</msg>
+  <msg key="Work_ZIP">Work Post Code</msg>
+  <msg key="ZIP">Post code</msg>
+</message_catalog>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="zh_CN" charset="utf-8">
+
+  <msg key="Absences">缺席管理</msg>
+  <msg key="Access_denied">访问被拒绝</msg>
+  <msg key="Account_Deleted">账户已删除</msg>
+  <msg key="Account_deleted">账户已删除</msg>
+  <msg key="Account_Managers">财务经理</msg>
+  <msg key="Active_Customers">活动客户</msg>
+  <msg key="Active_or_Potential">活动或潜在</msg>
+  <msg key="Add">添加</msg>
+  <msg key="Add_a_new_client">添加新客户</msg>
+  <msg key="Add_a_new_Company">添加新公司</msg>
+  <msg key="Add_a_new_company">添加新公司</msg>
+  <msg key="Add_a_new_member">添加新成员</msg>
+  <msg key="Add_a_new_project">添加新项目</msg>
+  <msg key="All">所有帖子</msg>
+  <msg key="Backup_and_Restore_blurb">备份您当前应用程序数据或从先前备份中加载应用程序数据。</msg>
+  <msg key="Bugs">纠错</msg>
+  <msg key="Change_Password">修改密码</msg>
+  <msg key="Closed">结束项目</msg>
+  <msg key="Comments">提交意见？</msg>
+  <msg key="Companies">公司管理</msg>
+  <msg key="Confirm">确认密码</msg>
+  <msg key="Contact">联系</msg>
+  <msg key="Customers">顾客管理</msg>
+  <msg key="Filter_Projects">筛选项目</msg>
+  <msg key="Finance">财务管理</msg>
+  <msg key="Finance_Home">财务首页</msg>
+  <msg key="Forum">论坛</msg>
+  <msg key="Home">首页</msg>
+  <msg key="Home_Page_Help">首页帮助</msg>
+  <msg key="Log_Out">退出</msg>
+  <msg key="lt_num_users_online_user">%num_users_online% 个用户在线</msg>
+  <msg key="lt_num_users_online_user_1">%num_users_online% 个在线用户</msg>
+  <msg key="Mine">我的帖子</msg>
+  <msg key="My_Account">我的帐户</msg>
+  <msg key="New_Password">新密码</msg>
+  <msg key="Open">开始项目</msg>
+  <msg key="Potential">潜在项目</msg>
+  <msg key="Project_Status">项目状态</msg>
+  <msg key="Projects">项目管理</msg>
+  <msg key="Reporting">报告管理</msg>
+  <msg key="Search">站内搜索</msg>
+  <msg key="SiteAdmin">网站管理员</msg>
+  <msg key="Timesheet">时间表</msg>
+  <msg key="Update">修改</msg>
+  <msg key="Update_Password">修改密码</msg>
+  <msg key="Users">用户</msg>
+  <msg key="View_Projects">查看项目</msg>
+  <msg key="Wiki">维基</msg>
+  <msg key="Workflow">工作流</msg>
+</message_catalog>

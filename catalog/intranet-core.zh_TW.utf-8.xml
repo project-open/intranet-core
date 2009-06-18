@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="zh_TW" charset="utf-8">
+
+  <msg key="Admin">系統管理</msg>
+  <msg key="Change_Password">變更密碼</msg>
+  <msg key="Companies">公司</msg>
+  <msg key="Home">首頁</msg>
+  <msg key="Log_Out">登出</msg>
+  <msg key="My_Account">我的帳號</msg>
+  <msg key="Projects">專案</msg>
+  <msg key="Users">使用者</msg>
+  <msg key="Workflow">工作流程</msg>
+</message_catalog>

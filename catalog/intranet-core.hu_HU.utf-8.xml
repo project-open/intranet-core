@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="hu_HU" charset="utf-8">
+
+  <msg key="Absences">Távollét</msg>
+  <msg key="Finance">Pénzügyek</msg>
+  <msg key="Reporting">Riportok</msg>
+</message_catalog>
