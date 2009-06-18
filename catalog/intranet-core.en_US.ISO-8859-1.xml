@@ -728,6 +728,9 @@
   <msg key="lt_Bosnia_and_Herzegovin">Bosnia and Herzegovina</msg>
   <msg key="lt_Bug_Tracker_Container">Bug Tracker Container</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completely false</msg>
+  <msg key="lt_Calculates_Invoices_-">Net Margin (Past Two Months)</msg>
+  <msg key="lt_Calculates_Quotes_-_P">Preliminary Gross Margin (Past Two Months)</msg>
+  <msg key="lt_Calculates_the_number">Average Timesheet Hours per Employee </msg>
   <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
@@ -743,6 +746,8 @@
   <msg key="lt_Confirm_Nuking_first_">Confirm Nuking %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Confirm the nuking of</msg>
   <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
+  <msg key="lt_Counts_how_many_custo">New Customers per Month</msg>
+  <msg key="lt_Counts_the_number_of_">Active Customers Last Month</msg>
   <msg key="lt_Create_a_new_Discussi">Create a new Discussion</msg>
   <msg key="lt_Create_folder_structu">Create folder structure and create a subproject for each language that you have chosen.</msg>
   <msg key="lt_Create_the_new_folder">Create the new folder structure</msg>
@@ -853,6 +858,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Intranet RFC RR Format</msg>
   <msg key="lt_Intranet_RFC_Workplac">Intranet RFC Workplace</msg>
   <msg key="lt_Invalid_time_format_e">Invalid time format '%end_time(time)%': Please enter the time in format '12:30'</msg>
+  <msg key="lt_Invoices_written_with">Revenues </msg>
   <msg key="lt_Is_the_project_going_">Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?</msg>
   <msg key="lt_Is_this_a_billable_co">Is this a billable company?</msg>
   <msg key="lt_It_seems_the_table_we">It seems the table we missed is %table_name%.</msg>
@@ -866,6 +872,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Locate_your_new_accou">Locate your new accounting contact by</msg>
   <msg key="lt_Locate_your_new_prima">Locate your new primary contact by</msg>
   <msg key="lt_lt_Project_Manager___">Project Manager</msg>
+  <msg key="lt_Main_projects_no_subp">New Projects per Month </msg>
   <msg key="lt_make_accounting_conta">make accounting contact</msg>
   <msg key="lt_Make_the_new_client_c">Make the new client contact a %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Make the new client contact a %company_employee_link% %company_name%.</msg>
@@ -937,6 +944,7 @@ site with fake crud.</msg>
   <msg key="lt_Preinstalled_Hard_Dis">Preinstalled Hard Disk</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
+  <msg key="lt_Provider_bills_with_e">External Costs</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in 'Project Name' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in 'Project Nr' are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Pat">Quotes in 'Project Path' are not allowed</msg>
