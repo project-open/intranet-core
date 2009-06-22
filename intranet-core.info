@@ -69,7 +69,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnablePerformanceLogging" default="0" description="Performance logging creates entries in the table im_performance_log for detailed system profiling. However, performance logging itself slows down the system a bit."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="NotifyNewMembersDefault" default="1" description="Should the 'Notify?' checkbox be enabled by default in the AddMembersComponent? Default is 1 for compatibility reasons"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="UtilCurrentLocationRedirect"  default="" description="Controls the behaviour of ]po[ when running behind a reverse HTTP proxy or with HTTPS. The default value is empty to enables the default redirection logic which will work in most cases. Please use this parameter if you encounter problems when using ]po[ together with Pound or a HTTPS connection. The parameter determines the base Url that ]po[ for 'redirection' operations (for example after the login process). Example: 'https://www.project-open.net'."/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="HomeNewsComponentUrl"  default="http://www.project-open.org/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3" description="Location for the ]po[ Home News Component."/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="HomeNewsComponentUrl"  default="http://www.project-open.org/intranet-rss-reader/index?format=iframe300" description="Location for the ]po[ Home News Component."/>
         </parameters>
     </version>
 </package>
