@@ -1271,6 +1271,7 @@ ad_proc -public im_generate_auto_login {
 
 ad_proc -public im_valid_auto_login_p {
     {-expiry_date ""}
+    {-check_user_requires_manual_login "1" }
     -user_id:required
     -auto_login:required
 } {
@@ -1286,19 +1287,20 @@ ad_proc -public im_valid_auto_login_p {
     set expected_auto_login [im_generate_auto_login -user_id $user_id]
     if {![string equal $auto_login $expected_auto_login]} { return 0 }
 
+    if {$check_user_requires_manual_login} {
 
-    # Check if the "require_manual_login" privilege exists to protect high-profile users
-    set priv_exists_p [util_memoize [list db_string priv_exists "
-	select	count(*)
-	from	acs_privileges
-	where	privilege = 'require_manual_login'
-    "]]
-    set user_requires_manual_login_p [im_permission $user_id "require_manual_login"]
+	# Check if the "require_manual_login" privilege exists to protect high-profile users
+	set priv_exists_p [util_memoize [list db_string priv_exists "
+		select	count(*)
+		from	acs_privileges
+		where	privilege = 'require_manual_login'
+        "]]
+	set user_requires_manual_login_p [im_permission $user_id "require_manual_login"]
 
-    if {$priv_exists_p && !$user_requires_manual_login_p} {
-	return 0
+	if {$priv_exists_p && !$user_requires_manual_login_p} {
+	    return 0
+	}
     }
-
 
     # Ok, the tokens are identical and the guy is allowed to login via auto_login.
     # So we can log the dude in if the "expiry_date" is OK.
@@ -1308,10 +1310,10 @@ ad_proc -public im_valid_auto_login_p {
         You have specified a bad date syntax"
 	return 0
     }
-
     set current_date [db_string current_date "select to_char(sysdate, 'YYYY-MM-DD') from dual"]
-
     if {[string compare $current_date $expiry_date]} { return 0 }
+
+    # Default: Forbidden to login
     return 1
 }
 
