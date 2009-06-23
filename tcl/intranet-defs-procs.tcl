@@ -1271,7 +1271,7 @@ ad_proc -public im_generate_auto_login {
 
 ad_proc -public im_valid_auto_login_p {
     {-expiry_date ""}
-    {-check_user_requires_manual_login "1" }
+    {-check_user_requires_manual_login_p "1" }
     -user_id:required
     -auto_login:required
 } {
@@ -1287,7 +1287,7 @@ ad_proc -public im_valid_auto_login_p {
     set expected_auto_login [im_generate_auto_login -user_id $user_id]
     if {![string equal $auto_login $expected_auto_login]} { return 0 }
 
-    if {$check_user_requires_manual_login} {
+    if {$check_user_requires_manual_login_p} {
 
 	# Check if the "require_manual_login" privilege exists to protect high-profile users
 	set priv_exists_p [util_memoize [list db_string priv_exists "
