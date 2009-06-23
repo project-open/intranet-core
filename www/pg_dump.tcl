@@ -25,7 +25,7 @@ ad_page_contract {
 # ------------------------------------------------------------
 
 # Check if the auto-login token was correct
-set valid_auto_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
+set valid_auto_login [im_valid_auto_login_p -check_user_requires_manual_login_p 0 -user_id $user_id -auto_login $auto_login]
 
 # If not correct just make sure the guy is logged in and an admin (implicit from /intranet/admin/).
 if {!$valid_auto_login} {

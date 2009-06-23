@@ -24,7 +24,7 @@ ad_page_contract {
 }
 
 # Check the auto_login token
-set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
+set valid_login [im_valid_auto_login_p -check_user_requires_manual_login_p 0 -user_id $user_id -auto_login $auto_login]
 if {!$valid_login} { 
 
     # Let the SysAdmin know what's going on here...

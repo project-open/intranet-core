@@ -16,7 +16,7 @@ ad_page_contract {
 }
 
 # Check for valid user/auth_token combination
-set valid_p [im_valid_auto_login_p -user_id $user_id -auto_login $auth_token]
+set valid_p [im_valid_auto_login_p -check_user_requires_manual_login_p 0 -user_id $user_id -auto_login $auth_token]
 if {!$valid_p} { 
     doc_return 200 "text/xml" "<xml><error>Login error: Wrong user/password combination.</error></xml>"
     ad_script_abort
