@@ -12,12 +12,8 @@
     <H2>Documentation</H2>
     <ul>
       <li>
-	<A href="/doc/">OpenACS System & Developer Documentation</a><br>
-	Complete documentation of the OpenACS underlying platform.
-      <li>
-	<A href="/intranet-filestorage/" class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span> Documentation</a><br>
-	Documentation of the OpenACS underlying platform.
-
+	<A href="http://www.project-open.org/documentation/" target="_blank">User, Developer and OpenACS System Documentation</a><br>
+      </li>
     </ul>
 
 <br>
