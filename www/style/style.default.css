@@ -288,6 +288,7 @@ a {
   background-color: #336699;
   z-index: 101;
   border-bottom: 1px solid #000000;
+  display: none;
 }
 
 #navbar_sub {

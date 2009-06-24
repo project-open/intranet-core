@@ -109,6 +109,7 @@ jQuery().ready(function(){
 		}
 	}
 
+
     jQuery(".component_icons").css("opacity","0.1");
     jQuery(".component_header").hover(function(){
        jQuery(".component_icons",this).stop().fadeTo("fast",1);
