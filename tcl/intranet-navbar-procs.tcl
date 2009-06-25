@@ -84,8 +84,7 @@ ad_proc -public im_navbar_tree_helper {
 	<ul class=mktree>
 	<li><a href=\"/\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
-		<li><a href=$wiki/list_modules>[lang::message::lookup "" intranet-core.General_Home "\]po\[ Help"]</a>
-		[im_menu_li home]
+		<li><a href=$wiki/list_modules>[lang::message::lookup "" intranet-core.Home_General_Help "\]po\[ Modules Help"]</a>
 		[im_menu_li dashboard]
     "
     if {$user_id == 0} {
