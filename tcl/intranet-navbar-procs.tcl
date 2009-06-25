@@ -106,9 +106,7 @@ ad_proc -public im_navbar_tree_helper {
 	[if {![catch {set ttt [im_navbar_tree_sales_marketing -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_provider_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_helpdesk -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
-
 	[if {![catch {set ttt [im_navbar_tree_collaboration -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
-
         [if {![catch {set ttt [im_navbar_tree_finance -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[im_navbar_tree_admin -user_id $user_id -locale $locale]
