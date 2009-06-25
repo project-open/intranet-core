@@ -18,20 +18,10 @@ ad_page_contract {
     return_url:onevalue
 }
 
-# -- check when necessary row_id  
-#    select email_verified_p as email_verified_p_old,
-#           member_state as member_state_old,
-#           first_names || ' ' || last_name as name,
-#           email,
-#           rel_id,
-#           row_id
-#    from cc_users
-#    where user_id = :user_id
-
 if {![db_0or1row get_states {
     select email_verified_p as email_verified_p_old,
            member_state as member_state_old,
-           first_names || ' ' || last_name as name,
+           im_name_from_user_id(user_id) as name,
            email,
            rel_id
     from cc_users

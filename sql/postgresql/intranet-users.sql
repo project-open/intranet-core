@@ -215,7 +215,7 @@ create or replace function im_name_from_user_id(integer)
 returns varchar as '
 DECLARE
 	v_user_id	alias for $1;
-	v_full_name	varchar(8000);
+	v_full_name	text;
 BEGIN
 	select first_names || '' '' || last_name into v_full_name 
 	from persons
@@ -244,7 +244,7 @@ create or replace function im_initials_from_user_id(integer)
 returns varchar as '
 DECLARE
 	v_user_id	alias for $1;
-	v_initials varchar(2);
+	v_initials	varchar(2);
 BEGIN
 	select substr(first_names,1,1) || substr(last_name,1,1) into v_initials
 	from persons

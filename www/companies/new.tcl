@@ -278,7 +278,7 @@ if {0 == $company_exists_p} {
         set role_id [im_biz_object_role_office_admin]
         im_biz_object_add_role $user_id $main_office_id $role_id
 
-	ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
+	ns_log Notice "/companies/new: main_office_id=$main_office_id"
 	
 
 	# Now create the company with the new main_office:
@@ -370,13 +370,13 @@ foreach uid [array names also_add_hash] {
 set form_id "company"
 set object_type "im_company"
 
-ns_log Notice "companies/new-2: before append_attributes_to_form"
+ns_log Notice "companies/new: before append_attributes_to_form"
 im_dynfield::append_attributes_to_form \
     -object_type im_company \
     -form_id company \
     -object_id $company_id
 
-ns_log Notice "companies/new-2: before attribute_store"
+ns_log Notice "companies/new: before attribute_store"
 im_dynfield::attribute_store \
     -object_type $object_type \
     -object_id $company_id \
