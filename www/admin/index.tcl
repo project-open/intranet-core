@@ -80,7 +80,15 @@ db_foreach admin_menu $menu_sql {
     if {"" == $menu_gif} { set menu_gif $menu_gif_small }
     if {"" == $menu_gif} { set menu_gif "plus" }
 
-    append menu_html "<div class='admin_menu_item'>[im_gif $menu_gif] <a href=\"$url\">$name</a></div>\n"
+    set help_url [im_navbar_help_link -url $url]
+    set help_text [lang::message::lookup "" intranet-core.Navbar_Help_Text "Click here to get help for this page"]
+
+    append menu_html "
+	<div class='admin_menu_item'>
+		[im_gif $menu_gif] <a href=\"$url\">$name</a>
+		<a href=$help_url>[im_gif help $help_text]</a>
+	</div>
+    "
 }
 
 set menu_html "

@@ -11,9 +11,8 @@
 
     <H2>Documentation</H2>
     <ul>
-      <li>
-	<A href="http://www.project-open.org/documentation/" target="_blank">User, Developer and OpenACS System Documentation</a><br>
-      </li>
+      <li><A href="http://www.project-open.org/documentation/" target="_blank">General Documentation</a><br></li>
+      <li><A href="http://www.project-open.org/documentation/page_intranet_admin_index" target="_blank">Context help for this page <%= [im_gif help] %></a><br></li>
     </ul>
 
 <br>

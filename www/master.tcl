@@ -78,7 +78,7 @@ if {"" == $sub_navbar} {
     if {"" != $label} {
 	set admin_navbar_label ""
 	set parent_menu_id [util_memoize [list db_string admin_parent_menu "select menu_id from im_menus where label = 'admin'" -default 0]]
-	set sub_navbar [im_sub_navbar $parent_menu_id "" $title "pagedesriptionbar" $label]
+	set sub_navbar [im_sub_navbar -show_help_icon $parent_menu_id "" $title "pagedesriptionbar" $label]
     }
 }
 

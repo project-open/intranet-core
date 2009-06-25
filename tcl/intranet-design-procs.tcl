@@ -554,6 +554,33 @@ ad_proc -public im_admin_navbar_component { } {
 }
 
 
+ad_proc -public im_navbar_help_link { 
+    {-url "" }
+} {
+    Determines where to link to www.project-open.org for help.
+    The Wiki convention for page is "page_" followed by the URL
+    of the page with all non-alphanum characters replaced by "_":
+    http://www.project-open.org/documentation/page_intranet_invoices_view
+} {
+    # Get the URL from the connection
+    if {"" == $url} { set url [ad_conn url] }
+
+    # Does the URL has a trailing "/". That's the case for
+    # the "index" pages sometimes.
+    if {[regexp {/$} $url match]} { set url "${url}index" }
+
+    # Replace "/" by "_" to create
+    regsub -all "/" $url "_" url
+    regsub -all {\-} $url "_" url
+
+    # Add the constant part in front of the url:
+    set url "http://www.project-open.org/documentation/page$url"
+
+    # Return the finished URL
+    return $url
+}
+
+
 ad_proc -public im_navbar_tab {
     url
     name
@@ -567,6 +594,7 @@ ad_proc -public im_navbar_tab {
 
 ad_proc -public im_sub_navbar { 
     {-components:boolean 0}
+    {-show_help_icon:boolean 0}
     {-current_plugin_id ""}
     {-base_url ""}
     {-plugin_url "/intranet/projects/view"}
@@ -690,7 +718,12 @@ ad_proc -public im_sub_navbar {
 	}
     }
 
-     return "
+    if {$show_help_icon_p} {
+	set help_text [lang::message::lookup "" intranet-core.Navbar_Help_Text "Click here to get help for this page"]
+	append navbar [im_navbar_tab [im_navbar_help_link] [im_gif help $help_text] 0]
+    }
+
+    return "
  	 <div id=\"navbar_sub_wrapper\">
 	    <span id='titleSubmenu'>$title</span>
 	    <ul id=\"navbar_sub\">
