@@ -1,5 +1,5 @@
 
-  ]project-open[ Virtual Machine
+  ]project-open[ V3.4.0.X Virtual Machine
   Frank Bergmann <frank.bergmann@project-open.com>
   Version V3.4.0, 2009-06-04
   Copyright (c) 2009 ]project-open[
@@ -7,38 +7,317 @@
   This is the ]project-open[ Virtual Machine. This document describes
   some characteristics of how this VM has been configured.
 
-  ______________________________________________________________________
-
-  0. About the Virtual Machine
-
-
-  Version V3.4.0, 2009-06-04
-  Copyright (c) 2009 ]project-open[
-  Frank Bergmann <frank.bergmann@project-open.com>
-  http://www.project-open.org/documentation/install_main
-
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.1 or
   any later version published by the Free Software Foundation.
   A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
 
-  Please see LICENSE.ProjectOpen in the /web/projop/ directory for details
-  about the licensing of the contained software.
+  Please see LICENSE.* files for details about the licensing of the contained 
+  software.
 
 
   ______________________________________________________________________
 
-  1. Overview
-
-  This Virtual Machine represents a sample production configuration
-  of ]project-open[. It consists of two "virtual" servers:
-
-  - "projop" is the Production Server and
-  - "stage" is the Staging Server
-
-  The production server is used to run your company, while the staging
-  server is used to test configuration and code updates. Please see the
-  PO-Operations-Maintenance guide for details.
+  1. Overview & Quick Start
 
 
+  This VMware virtual machine appliance represents a fully configured
+  ]project-open[ server. This VMware is suitable for testing ]po[ and
+  for production use in small organizations (< 20 active users).
+
+  In order to run ]project-open[ in your organization, you'll need
+  to follow the steps below. Basic system administration knowledge 
+  should be sufficient to perform these steps. Please see the following 
+  chapters for full explanations of each step.
+
+
+  - Download and install VMware Server 2.0 and start the VMware.
+
+  - Copy or move the folder "project-open-v34" into:
+	Win32:	c:/Virtual Machines
+	Linux:	/var/lib/vmware/Virtual Machines
+
+  - In your VMware control center choose "Virtual Machine -> Add machine
+    to Inventory"
+
+  - Configure the virtual machine. You may increase the memory size
+    and change the network adaptor to "Bridge" mode.
+
+  - After starting the virtual machine please login to Linux as "root":
+	Username: root
+	Password: root
+
+  - After logging in please click on the "]po[ @ Localhost" icon in the 
+    VMware's desktop. Please don't worry if you should see
+    "Service not avaliable". This just means that the ]po[ server is still
+    starting up. This process may take up to 60 seconds.
+
+  - Once you see the login screen of ]po[, please choose:
+	Email: sysadmin@tigerpond.com
+	Password: system
+
+  - As the next step please follow the System Configuration Wizard to
+    configure ]po[ for your particular business size and industry.
+    Don't spend too much time, you can repeat this step later as many
+    times as you want.
+
+  - As the next step you probably want to make your VMware accessible
+    to other computers in your local area network. Please see:
+    http://www.project-open.org/documentation/install_vm
+
+  - As a last you need to delete the "Tigerpond" demo data in the system
+    before you can use ]po[ in production for your company.
+    Please go to Admin -> Cleanup Demo Data -> "Nuke all demo data" and
+    then "Nuke Demo Users". Please "recycle" the remaining ]po[ Admin 
+    users, by changing their email address to yours (they are owners of
+    system objects, so they can't be deleted).
+
+  - Please see the "Rollout Plan" for a methodology to roll-out ]po[:
+    http://www.project-open.org/documentation/tutorial_rollout_plan
+
+
+
+  ______________________________________________________________________
+
+  2. Licensing
+
+  The files contained in this Virtual Machine have been developed by
+  various authors and are covered by various licenses.
+
+  CentOS/RedHat 	http://www.gnu.org/copyleft/
+  ]project-open[	http://www.project-open.org/license/
+  AOLserver 		http://www.aolserver.com/license/
+  OpenACS 		http://openacs.org/about/licensing/
+  VMware Tools		http://www.vmware.com/support/
+  Acrobat Reader	http://www.adobe.com/products/acrobat/acrreula.html
+
+  You need to agree with the license terms of ALL of these authors
+  prior to using the software.
+
+
+  ______________________________________________________________________
+
+  3. Prerequisites
+
+  In order to run ]project-open[ from this installer you need at least:
+
+  - A computer running Windows or Linux
+  - At least 1 GHz AMD or Intel processor
+  - At least 1 GB RAM
+  - At least 5 GB of free disk space
+
+  For a production system of up to 10 active users we recommend:
+
+  - 2 GHz AMD or Intel processor
+  - 2 GB RAM
+  - 10 GB of free disk space
+  - aDSL Internet connection
+
+  For larger installations please contact the ]po[ team.
+ 
+
+______________________________________________________________________
+
+  4. Virtual Machine Installer Contents
+
+  The "project-open-v34.x.zip" file contains the zipped files of
+  a virtual machine. All files are located in a single subdirectory:
+
+  \README.ProjectOpen.VMware
+  \project-open-v34\
+	nvram
+	project-open-v33.vmdk
+	project-open-v33.vmsd
+	project-open-v33.vmx
+	project-open-v33-s001.vmdk
+	project-open-v33-s002.vmdk
+	project-open-v33-s003.vmdk
+	project-open-v33-s004.vmdk
+	project-open-v33-s005.vmdk
+	project-open-v33-s006.vmdk
+	project-open-v33-s007.vmdk
+	project-open-v33-s008.vmdk
+	project-open-v33-s009.vmdk
+	project-open-v33-s010.vmdk
+	project-open-v33-s011.vmdk
+	project-open-v33-s012.vmdk
+	project-open-v33-s013.vmdk
+	project-open-v33-s014.vmdk
+	project-open-v33-s015.vmdk
+	project-open-v33-s016.vmdk
+	project-open-v33-s017.vmdk
+
+
+  ______________________________________________________________________
+
+  5. Download VMware Server and Start the ]po[ Server
+
+
+  We recommend you use VMware Server 2.x from VMware's web site at
+  http://www.vmware.com/products/server/. As an alternative, you can 
+  also use the VMware Player product.
+
+  VMware Server is available at no licensing cost. However, it is not 
+  open-source software, and you will need to register in order to obtain 
+  a license key to run VMware Server.
+
+  Once your VMware Server is running, just move the "project-open-v34"
+  included in this installer into VMware's "C:\Virtual Machines" folder
+  (or wherever you have chosen to keep your virtual machines) and use
+  File -> Open -> Browse to open this VMware.
+
+  Before starting the VMware, please check the VMware's Devices:
+
+  - Memory:
+    The minimum is 512 MB, which is OK for testing purposes.
+    For production, please increase this value to 1024 MB or higher.
+
+  - Ethernet:
+    Should be set to Bridged mode. Only in this mode will your VMware
+    be visible to the rest of your intranet.
+
+
+  After starting the VMware you will see some messages, and after 1 to 2
+  minutes you will see a login screen. The default login is:
+
+	Username:	root
+	Password:	root
+
+
+
+  ______________________________________________________________________
+
+  6. Configure the VMware's IP Address
+
+
+  In order to be able to access the ]project-open[ server from your
+  Intranet, you'll need to find out the IP address of the VMware.
+
+  To find out the IP address, double-click the "]po[ @ Localhost" icon
+  in the VMware's desktop. A browser window should open with the ]po[ 
+  login page. 
+  You should see on the left a section called "Default Logins" with 
+  sample users, and on the right an Email / Password login component.
+
+  In this page please scroll down. To the lower right you will find:
+
+  - Browser URL:	http://192.168.0.101/
+
+  - IP Address:		192.168.0.101 (sample value)
+
+  - Total Memory:	512 MByte (sample value)
+
+  Now open a Web browser on your computer or another computer and enter 
+  http://192.168.0.101/ (sample value, as above). 
+  You should now get the same page as from inside the VMware.
+
+
+  Troubleshooting:
+
+  If you don't see the IP Address as above, there are two possible causes:
+
+  - Fixed IP Addresses:
+    Is it possible that you don't have a DHCP server in your network
+    and work with fixed IP addresses? If so, please go to the VMware menu
+    System -> Administration -> Network and choose a fixed IP address
+    for your VMware.
+
+  - VMware network not in "Bridged" mode:
+    Please make sure you have set your VMware's Ethernet port
+    to "Bridged" mode. Only in bridged mode will you be able to
+    see the ]project-open[ server from your intranet.
+
+
+  ______________________________________________________________________
+
+  7. Basic configuration of ]project-open[
+
+
+  In order to configure the VMware, please login as:
+
+	Email:		sysadmin@tigerpond.com
+	Password:	system
+
+
+  You will now see the System Configuration Wizard that guides
+  you through the configuration of the ]project-open[ System.
+
+  The main purpose of this wizard is to simplify the system by
+  disabling unnecessary functionality.
+
+  For a maximum configuration please choose the "Other / Everything,"
+  "Complete / Full Installation" and "Three Hierarchical Levels"
+  options at the bottom of each wizard page.
+
+  Going back to the "Home" page after 1 to 2 minutes, you will see
+  a fully configured ]po[ server with demo data.
+
+
+
+  ______________________________________________________________________
+
+  8. Where to go from here?
+
+  - Information & Documentation:
+    Please go to www.project-open.org/documentation/ and glance
+    through the available material to get an overview.
+
+  - Troubleshooting:
+    Please go to the "Open Discussions" forum at
+    http://sourceforge.net/projects/project-open/.
+    Before posting, please have a look at the existing discussions,
+    because your problem might already be solved by other users.
+    You will need to create a SourceForge login in order to post
+    questions.
+
+  - ]project-open[ Training & Support:
+    ]po[ is an enterprise-level application, and some of its
+    features can only be revealed by face-to-face training.
+    Please consider contracting training and/or support from us.
+    We (the ]po[ team) mainly live from these types of services,
+    so purchasing services will help us to continue working on ]po[.
+    Please contact us at info@project-open.com
+
+  - ]po[ Rollout Methodology:
+    This PDF document is available for the VMware's desktop and
+    on the "Home" page of the ]po[ server.
+    The document provides you with a basic idea of the technical
+    and organizational tasks that are necessary to implement ]po[
+    in an organization. Please don't hesitate to contact us at
+    info@project-open.com for additional support and consulting.
+
+  - ]po[ Configuration Guide:
+    This PDF document is available for the VMware's desktop and
+    on the Home page of the ]po[ server.
+    The document includes detailed chapters on how to configure
+    the ]po[ system to your organization's needs.
+
+
+  ______________________________________________________________________
+
+  9. Stay Tuned
+
+
+  There are several options to stay in regular contact with 
+  ]project-open[:
+
+
+  - Newsletter:
+    http://projop.dnsalias.com/
+    Please register yourself on our Web site. This way we are going
+    to send you the ]po[ newsletter once or twice per year.
+
+  - Important Security News:
+    http://sourceforge.net/export/rss2_projnews.php?group_id=86419
+    ]project-open[ News (once or twice per year: security and major
+    releases)
+
+  - ]project-open[ RSS Feed:
+    http://www.project-open.org/rss/project-open-community.rss
+    ]project-open[ News (once or twice per week)
+
+  - ]project-open[ Blog:
+    http://project-open.blogspot.com/feeds/posts/default
+    Our blog with high-level reflections on open-source and project
+    management (once or twice per month).
 
