@@ -829,6 +829,7 @@ foreach object_info $object_infos {
 # ------------------------------------------------------------
 
 ns_write "</ul><p>Finished Successfully</p>\n"
+ns_write "</ul><p>Please proceed now to <a href="cleanup-users">delete demo users</a>.</p>\n"
 
 
 ns_write "
