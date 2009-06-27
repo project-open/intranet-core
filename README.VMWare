@@ -1,17 +1,16 @@
 
-  ]project-open[ V3.4.0.X Virtual Machine
+  ]project-open[ V3.4 Virtual Machine
   Frank Bergmann <frank.bergmann@project-open.com>
-  Version V3.4.0, 2009-06-04
+  Version V3.4, 2009-06-04
   Copyright (c) 2009 ]project-open[
 
   This is the ]project-open[ Virtual Machine. This document describes
-  some characteristics of how this VM has been configured.
+  the installation and configuration of the VMware appliance.
 
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.1 or
   any later version published by the Free Software Foundation.
   A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
-
   Please see LICENSE.* files for details about the licensing of the contained 
   software.
 
@@ -20,61 +19,37 @@
 
   1. Overview & Quick Start
 
-
-  This VMware virtual machine appliance represents a fully configured
+  This VMware virtual machine appliance includes a fully configured
   ]project-open[ server. This VMware is suitable for testing ]po[ and
-  for production use in small organizations (< 20 active users).
+  for production use in small organizations (< 10 active users).
+  You will need basic system administration knowledge to follow the
+  steps below. 
 
-  In order to run ]project-open[ in your organization, you'll need
-  to follow the steps below. Basic system administration knowledge 
-  should be sufficient to perform these steps. Please see the following 
-  chapters for full explanations of each step.
+  - Please check http://www.project-open.org/documentation/install_vm
+    for updates.
 
+  - Go to http://www.vmware.com/ and install VMware Server 2.x 
+    or VMware Player 2.x. Both applications require free registration.
 
-  - Download and install VMware Server 2.0 and start the VMware.
+  - From within the VMware console, please open the file
+    project-open-v34.vmx included in the "project-open-v34" folder.
 
-  - Copy or move the folder "project-open-v34" into:
-	Win32:	c:/Virtual Machines
-	Linux:	/var/lib/vmware/Virtual Machines
-
-  - In your VMware control center choose "Virtual Machine -> Add machine
-    to Inventory"
-
-  - Configure the virtual machine. You may increase the memory size
-    and change the network adaptor to "Bridge" mode.
-
-  - After starting the virtual machine please login to Linux as "root":
+  - After starting the virtual machine please login to Linux:
 	Username: root
 	Password: root
 
-  - After logging in please click on the "]po[ @ Localhost" icon in the 
-    VMware's desktop. Please don't worry if you should see
-    "Service not avaliable". This just means that the ]po[ server is still
-    starting up. This process may take up to 60 seconds.
+  - On the Linux desktop please click on the "]po[ @ Localhost" icon.
+    A browser should open with the first page of ]project-open[.
+    Please retry after a few seconds if you see "Service not avaliable".
 
-  - Once you see the login screen of ]po[, please choose:
+  - Please login to ]po[ using the following one of the demo account:
 	Email: sysadmin@tigerpond.com
 	Password: system
 
-  - As the next step please follow the System Configuration Wizard to
-    configure ]po[ for your particular business size and industry.
-    Don't spend too much time, you can repeat this step later as many
-    times as you want.
-
-  - As the next step you probably want to make your VMware accessible
-    to other computers in your local area network. Please see:
-    http://www.project-open.org/documentation/install_vm
-
-  - As a last you need to delete the "Tigerpond" demo data in the system
-    before you can use ]po[ in production for your company.
-    Please go to Admin -> Cleanup Demo Data -> "Nuke all demo data" and
-    then "Nuke Demo Users". Please "recycle" the remaining ]po[ Admin 
-    users, by changing their email address to yours (they are owners of
-    system objects, so they can't be deleted).
-
-  - Please see the "Rollout Plan" for a methodology to roll-out ]po[:
-    http://www.project-open.org/documentation/tutorial_rollout_plan
-
+  - Please follow the System Configuration Wizard to perform a basic
+    configuration for your specifiy business and industry.
+    Don't worry too much about your answers, you can repeat this step 
+    at any time.
 
 
   ______________________________________________________________________
@@ -123,29 +98,31 @@ ______________________________________________________________________
   The "project-open-v34.x.zip" file contains the zipped files of
   a virtual machine. All files are located in a single subdirectory:
 
-  \README.ProjectOpen.VMware
+  \README.ProjectOpen.VMware.x.y.z.v.w.txt
   \project-open-v34\
 	nvram
-	project-open-v33.vmdk
-	project-open-v33.vmsd
-	project-open-v33.vmx
-	project-open-v33-s001.vmdk
-	project-open-v33-s002.vmdk
-	project-open-v33-s003.vmdk
-	project-open-v33-s004.vmdk
-	project-open-v33-s005.vmdk
-	project-open-v33-s006.vmdk
-	project-open-v33-s007.vmdk
-	project-open-v33-s008.vmdk
-	project-open-v33-s009.vmdk
-	project-open-v33-s010.vmdk
-	project-open-v33-s011.vmdk
-	project-open-v33-s012.vmdk
-	project-open-v33-s013.vmdk
-	project-open-v33-s014.vmdk
-	project-open-v33-s015.vmdk
-	project-open-v33-s016.vmdk
-	project-open-v33-s017.vmdk
+	project-open-v34.nvram
+	project-open-v34.vmdk
+	project-open-v34.vmsd
+	project-open-v34.vmx
+	project-open-v34.vmxf
+	project-open-v34-s001.vmdk
+	project-open-v34-s002.vmdk
+	project-open-v34-s003.vmdk
+	project-open-v34-s004.vmdk
+	project-open-v34-s005.vmdk
+	project-open-v34-s006.vmdk
+	project-open-v34-s007.vmdk
+	project-open-v34-s008.vmdk
+	project-open-v34-s009.vmdk
+	project-open-v34-s010.vmdk
+	project-open-v34-s011.vmdk
+	project-open-v34-s012.vmdk
+	project-open-v34-s013.vmdk
+	project-open-v34-s014.vmdk
+	project-open-v34-s015.vmdk
+	project-open-v34-s016.vmdk
+	project-open-v34-s017.vmdk
 
 
   ______________________________________________________________________
@@ -155,27 +132,27 @@ ______________________________________________________________________
 
   We recommend you use VMware Server 2.x from VMware's web site at
   http://www.vmware.com/products/server/. As an alternative, you can 
-  also use the VMware Player product.
+  also use the VMware Player 2.x product.
 
   VMware Server is available at no licensing cost. However, it is not 
   open-source software, and you will need to register in order to obtain 
   a license key to run VMware Server.
 
-  Once your VMware Server is running, just move the "project-open-v34"
-  included in this installer into VMware's "C:\Virtual Machines" folder
-  (or wherever you have chosen to keep your virtual machines) and use
-  File -> Open -> Browse to open this VMware.
+  Once your VMware Server is running, please move the "project-open-v34"
+  folder into VMware's "Virtual Machines" folder typically found at:
+  "My Documents/My Virtual Machines" or "/var/lib/vmware/Virtual Machines"
+  Then use VMware's "Open" or "Add machine to Inventory" command to load
+  the VMware appliance.
 
-  Before starting the VMware, please check the VMware's Devices:
+  Before starting, please check the VMware's devices:
 
   - Memory:
-    The minimum is 512 MB, which is OK for testing purposes.
+    The minimum is 512 MB, which is OK for testing.
     For production, please increase this value to 1024 MB or higher.
 
   - Ethernet:
-    Should be set to Bridged mode. Only in this mode will your VMware
-    be visible to the rest of your intranet.
-
+    Please set "Bridged" mode. This way, the VMware will automatically 
+    receive a dynamic IP address from your local DHCP server.
 
   After starting the VMware you will see some messages, and after 1 to 2
   minutes you will see a login screen. The default login is:
@@ -184,27 +161,21 @@ ______________________________________________________________________
 	Password:	root
 
 
-
   ______________________________________________________________________
 
   6. Configure the VMware's IP Address
 
 
   In order to be able to access the ]project-open[ server from your
-  Intranet, you'll need to find out the IP address of the VMware.
+  LAN or the Intranet, you'll need to configure the IP address of the 
+  VMware.
 
   To find out the IP address, double-click the "]po[ @ Localhost" icon
-  in the VMware's desktop. A browser window should open with the ]po[ 
-  login page. 
-  You should see on the left a section called "Default Logins" with 
-  sample users, and on the right an Email / Password login component.
-
-  In this page please scroll down. To the lower right you will find:
+  in the VMware's desktop. The login page includes a status section in 
+  the lower right corner:
 
   - Browser URL:	http://192.168.0.101/
-
   - IP Address:		192.168.0.101 (sample value)
-
   - Total Memory:	512 MByte (sample value)
 
   Now open a Web browser on your computer or another computer and enter 
@@ -226,6 +197,46 @@ ______________________________________________________________________
     Please make sure you have set your VMware's Ethernet port
     to "Bridged" mode. Only in bridged mode will you be able to
     see the ]project-open[ server from your intranet.
+
+
+
+
+
+
+  - On the Linux desktop please click on the "]po[ @ Localhost" icon.
+    A browser should open with the first page of ]project-open[.
+    Please retry after a few seconds if you see "Service not avaliable".
+
+  - Please login to ]po[ using the following one of the demo account:
+	Email: sysadmin@tigerpond.com
+	Password: system
+
+  - Please follow the System Configuration Wizard to perform a basic
+    configuration for your specifiy business and industry.
+    Don't worry too much about your answers, you can repeat this step 
+    at any time.
+
+
+
+
+
+  - As the next step you probably want to configure your VMware for
+    access from your host computer and your local area network. 
+    For details please see:
+    www.project-open.org/documentation/install_vm_configure_internet_access
+
+  - You will probably want to delete the included demo data, before using
+    ]po[ in your organization.
+    To delete the demo data please go to Admin -> Cleanup Demo Data -> 
+    "Nuke all demo data" and "Nuke Demo Users".
+    Note: You won't be able to delete "sysadmin@tigerpond.com", so please 
+    "recycle" this user by changing the email of this user to your own 
+    email.
+
+
+
+
+
 
 
   ______________________________________________________________________
@@ -264,7 +275,7 @@ ______________________________________________________________________
 
   - Troubleshooting:
     Please go to the "Open Discussions" forum at
-    http://sourceforge.net/projects/project-open/.
+    www.sourceforge.net/projects/project-open/.
     Before posting, please have a look at the existing discussions,
     because your problem might already be solved by other users.
     You will need to create a SourceForge login in order to post

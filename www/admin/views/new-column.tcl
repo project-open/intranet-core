@@ -138,7 +138,7 @@ ad_form -extend -name column -on_request {
     im_permission_flush
 
     set return_url [export_vars -base "/intranet/admin/views/new" {view_id}]
-    ad_return_complaint 1 $return_url
+    # ad_return_complaint 1 $return_url
     ad_returnredirect $return_url
     ad_script_abort
 }
