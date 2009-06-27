@@ -68,8 +68,8 @@ ns_write "
 <li>This script does not cleanup demo users.<br>
     After running this script, please go to Admin -&gt; Delete Demodata -&gt;
     Delete Demo Users to delete selected users.
-<li>Due to the structure of the ]po[ there may be cases where you have to run<br>
-    this script twice in order to cleanup all data in the system.<br>
+<li>Due to the structure of the data model there may be cases where you<br>
+    have to run this script twice in order to cleanup all data in the system.<br>
     This behaviour is due to the strong referential integrity constraints<br>
     in the system, together with 'triggers'.
 </ul>
