@@ -548,6 +548,35 @@ if {[im_table_exists im_freelance_rfqs]} {
     db_dml expense_invoices "delete from im_freelance_rfqs"
 }
 
+
+ns_write "<li>Cleanup Simple Surveys\n"
+if {[im_table_exists survsimp_responses]} {
+
+    db_dml expense_invoices "
+	delete from 
+	survsimp_responses 
+	where related_object_id in (
+		select	object_id
+		from	acs_objects
+		where	object_type in ('im_project', 'im_company')
+	)
+    "
+
+    db_dml expense_invoices "
+	delete from 
+	survsimp_responses 
+	where related_context_id in (
+		select	object_id
+		from	acs_objects
+		where	object_type in ('im_project', 'im_company')
+	)
+    "
+}
+
+
+
+
+
 ns_write "<li>Cleanup Conf Items\n"
 if {[im_table_exists im_conf_items]} {
     db_dml remove_from_conf_items "delete from im_conf_items"
