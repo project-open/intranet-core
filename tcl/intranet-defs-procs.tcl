@@ -1496,6 +1496,26 @@ ad_proc im_system_id_is_valid { sid } {
 
 
 # ---------------------------------------------------------------
+# Which version of ]po[ are we running here?
+# ---------------------------------------------------------------
+
+ad_proc im_core_version { } {
+    Returns the version number of the "intranet-core" package.
+    Example return value: "3.4.0.5.4"
+} {
+    set core_package_version_sql "
+		select	version_name
+		from	apm_package_versions
+		where	package_key = 'intranet-core' and
+			enabled_p = 't'
+    "
+    set core_version [db_string core_version $core_package_version_sql -default ""]
+    return $core_version
+}
+
+
+
+# ---------------------------------------------------------------
 # Display a generic table contents
 # ---------------------------------------------------------------
 
