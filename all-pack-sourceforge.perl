@@ -43,7 +43,7 @@ $readme = "README.project-open.$version.txt";
 $license = "LICENSE.project-open.$version.txt";
 $changelog = "CHANGELOG.project-open.$version.txt";
 $dump = "pg_dump.$version.sql";
-$tar = "project-open-$version-update.tgz";
+$tar = "project-open-Update-$version.tgz";
 
 
 # *******************************************************************
@@ -51,7 +51,7 @@ $tar = "project-open-$version-update.tgz";
 
 if (@ARGV == 1) {
     if ($version =~ /\d+\.\d+/) {
-	$tar = "project-open-$ARGV[0]-update.tgz";
+	$tar = "project-open-Update-$ARGV[0].tgz";
     }
 }
 
