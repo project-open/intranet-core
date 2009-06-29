@@ -1,6 +1,6 @@
 # /packages/intranet-core/www/admin/categories/index.tcl
 #
-# Copyright (C) 2004 ]project-open[
+# Copyright (C) 2004-2009 ]project-open[
 #
 # This program is free software. You can redistribute it
 # and/or modify it under the terms of the GNU General
@@ -28,30 +28,15 @@ if {!$user_is_admin_p} {
     return
 }
 
-set core_package_version_sql "
-      select  version_name
-      from    apm_package_versions
-      where   package_key = 'intranet-core' and
-              enabled_p = 't'
-"
-set core_version [db_string core_version $core_package_version_sql -default ""]
-
+set core_version [im_core_version]
 set page_title "[_ intranet-core.Administration] &\#93;project-open&\#91; $core_version"
 set context_bar [im_context_bar $page_title]
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+
 # Check for upgrades to run
-
-set core_package_version_sql "
-      select  version_name
-      from    apm_package_versions
-      where   package_key = 'intranet-core' and
-              enabled_p = 't'
-"
-set core_version [db_string core_version $core_package_version_sql -default ""]
-
 set upgrade_message "<b>You are running core version: $core_version </b><br><br>"
 append upgrade_message [im_check_for_update_scripts]
 

@@ -1514,6 +1514,52 @@ ad_proc im_core_version { } {
 }
 
 
+ad_proc im_linux_distro { } {
+    Tries to guess the name of the linux distro if running on Linux.
+    Distro is one of {unknown, suse, united, debian, ubuntu, centos, rhel}
+} {
+    # Determine the Linux distribution and version that is being run.
+    # ToDo: No check for Ubuntu yet
+    
+    set distro "unknown"
+    if {[file exists /etc/SuSE-release]} { set distro suse }
+    if {[file exists /etc/UnitedLinux-release]} { set distro united }
+    if {[file exists /etc/debian_version]} { set distro debian }
+
+    # Distinguish between different Red Hat versions
+    set is_rh_p [file exists /etc/redhat-release]
+    if {$is_rh_p} {
+	set rhel_string ""
+	catch { set rhel_string [string tolower [::fileutil::cat /etc/redhat-release]] }
+	if {[regexp {^centos} $rhel_string match]} { set distro centos}
+	if {[regexp {^red hat linux} $rhel_string match]} { set distro rh }
+	if {[regexp {^red hat enterprise} $rhel_string match]} { set distro rhel }
+	if {[regexp {^cern} $rhel_string match]} { set distro rhel }
+	if {[regexp {^scientific} $rhel_string match]} { set distro rhel }
+    }
+
+    # Check for Debian or Ubuntu
+    if {"unknown" == $distro} {
+	set issue ""
+	catch { append issue [::fileutil::cat /etc/issue] }
+	catch { append issue [::fileutil::cat /etc/issue.net] }
+	set issue [string tolower $issue]
+
+	if {[regexp {ubuntu} $issue]} { set distro ubuntu }
+	if {[regexp {debian} $issue]} { set distro debian }
+    }
+
+    return $distro
+}
+
+ad_proc im_linux_vmware_p { } {
+    Returns 1 if the current system is the default CentOS Linux VMware.
+} {
+    set vmware_p 0
+    catch { set vmware_p [exec  /sbin/lsmod | grep vmnet | wc -l] }
+    return $vmware_p
+}
+
 
 # ---------------------------------------------------------------
 # Display a generic table contents
