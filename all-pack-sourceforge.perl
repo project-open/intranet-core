@@ -42,7 +42,7 @@ if ($version_line =~ /\"(.)\.(.)\.(.)\.(.)\.(.)\"/) {
 $readme = "README.project-open.$version.txt";
 $license = "LICENSE.project-open.$version.txt";
 $changelog = "CHANGELOG.project-open.$version.txt";
-$dump = "pg_dump.$version.sql.bz2";
+$dump = "pg_dump.$version.sql";
 $tar = "project-open-$version-update.tgz";
 
 
