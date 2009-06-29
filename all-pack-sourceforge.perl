@@ -42,6 +42,7 @@ if ($version_line =~ /\"(.)\.(.)\.(.)\.(.)\.(.)\"/) {
 $readme = "README.project-open.$version.txt";
 $license = "LICENSE.project-open.$version.txt";
 $changelog = "CHANGELOG.project-open.$version.txt";
+$dump = "pg_dump.$version.sql.bz2";
 $tar = "project-open-$version-update.tgz";
 
 
@@ -84,7 +85,7 @@ $packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentica
 
 print "all-upload: tarring code\n" if $debug;
 system("rm -f ~/$tar");
-system("cd ~/; tar czf ~/$tar $readme $license $changelog $packages");
+system("cd ~/; tar czf ~/$tar $readme $license $changelog $dump $packages");
 
 
 
