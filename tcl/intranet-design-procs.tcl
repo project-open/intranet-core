@@ -1353,19 +1353,12 @@ ad_proc -private im_header_search_form { } {
     set search_installed_p [llength [info procs im_package_search_id]]
 
     if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
+	set alt_go [lang::message::lookup "" intranet-core.Search_Go_Alt "Search through all full-text indexed objects."]
 	return "
 	      <form action=\"/intranet/search/go-search\" method=\"post\" name=\"surx\">
 		<input class=surx name=query_string size=15 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
-	<!--
-		<select class=surx name=target>
-		  <option class=surx selected value=content>[_ intranet-core.Intranet_content]</option>
-		  <option class=surx value=users>[_ intranet-core.Intranet_users]</option>
-		  <option class=surx value=htsearch>[_ intranet-core.All_documents_in_H]</option>
-		  <option class=surx value=google>[_ intranet-core.The_web_with_Google]</option>
-		</select>
-	-->
 		<input type=\"hidden\" name=\"target\" value=\"content\">
-		<input alt=\"go\" type=\"submit\" value=\"Go\" name=\"image\">
+		<input alt=\"$alt_go\" type=\"submit\" value=\"[_ intranet-core.Action_Go]\" name=\"image\">
 	      </form>
 	"
     }
