@@ -1007,12 +1007,26 @@ ad_proc -public im_user_nuke {user_id} {
 	    db_dml freelance_conf "update im_freelance_skills set confirmation_user_id = null where confirmation_user_id = :user_id"
 	}
 
+
+	# Helpdesk + ConfDB
+	if {[im_table_exists im_tickets]} {
+	    db_dml assignees "update im_tickets set ticket_assignee_id = :default_user where ticket_assignee_id = :user_id"
+	    db_dml assignees "update im_tickets set ticket_customer_contact_id = :default_user where ticket_customer_contact_id = :user_id"
+	}
+	if {[im_table_exists im_conf_items]} {
+	    db_dml assignees "update im_conf_items set conf_item_owner_id = :default_user where conf_item_owner_id = :user_id"
+	}
+
+	# Simple Survey
+	if {[im_table_exists survsimp_responses]} {
+	    db_dml assignees "update survsimp_responses set related_context_id = :default_user where related_context_id = :user_id"
+	    db_dml assignees "update survsimp_responses set related_object_id = :default_user where related_object_id = :user_id"
+	}
+
 	
 	# Translation
 	if {[im_table_exists im_trans_tasks]} {
-
 	    db_dml remove_from_projects "update im_projects set company_contact_id = null where company_contact_id = :user_id"
-
 	    db_dml trans_tasks "update im_trans_tasks set trans_id = null where trans_id = :user_id"
 	    db_dml trans_tasks "update im_trans_tasks set edit_id = null where edit_id = :user_id"
 	    db_dml trans_tasks "update im_trans_tasks set proof_id = null where proof_id = :user_id"
@@ -1020,10 +1034,15 @@ ad_proc -public im_user_nuke {user_id} {
 	    db_dml task_actions "delete from im_task_actions where user_id = :user_id"
 	}
 	
+	# Translation RFQs
+	if {[im_table_exists im_trans_rfqs]} {
+	    db_dml rfq_answers "update im_trans_rfq_answers set answer_user_id = :default where answer_user_id = :user_id"
+	}
+
 	if {[im_table_exists im_trans_quality_reports]} {
 	    db_dml trans_quality "delete from im_trans_quality_entries where report_id in (
-	    select report_id from im_trans_quality_reports where reviewer_id = :user_id
-	)"
+		select report_id from im_trans_quality_reports where reviewer_id = :user_id
+	    )"
 	    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id"
 	}
 	
