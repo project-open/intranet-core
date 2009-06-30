@@ -1045,13 +1045,17 @@ ad_proc -public im_user_nuke {user_id} {
 	    )"
 	    db_dml trans_quality "delete from im_trans_quality_reports where reviewer_id = :user_id"
 	}
+
+	# Workflow
+	db_dml wf "update wf_tasks set holding_user = :default_user where holding_user = :user_id"
+	db_dml wf "update wf_case_assignments set party_id = :default_user where party_id = :user_id"
+	db_dml wf "update wf_context_assignments set party_id = :default_user where party_id = :user_id"
+
 	
 	# Filestorage
 	db_dml filestorage "delete from im_fs_folder_status where user_id = :user_id"
 	db_dml filestorage "delete from im_fs_actions where user_id = :user_id"
 	db_dml filestorage "update im_fs_folders set object_id = null where object_id = :user_id"
-
-
 
 	# Bug-Tracker
 	db_dml bt_prefs "delete from bt_user_prefs where user_id = :user_id"
