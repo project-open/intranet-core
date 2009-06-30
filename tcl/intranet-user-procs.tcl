@@ -1036,7 +1036,7 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# Translation RFQs
 	if {[im_table_exists im_trans_rfqs]} {
-	    db_dml rfq_answers "update im_trans_rfq_answers set answer_user_id = :default where answer_user_id = :user_id"
+	    db_dml rfq_answers "update im_trans_rfq_answers set answer_user_id = :default_user where answer_user_id = :user_id"
 	}
 
 	if {[im_table_exists im_trans_quality_reports]} {
