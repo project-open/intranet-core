@@ -562,7 +562,9 @@ append body_html $name
 	append footer_html "
 	    <tr>
 	      <td align=left>
+		<ul>
 		<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]\">[_ intranet-core.Add_member]</A>
+		</ul>
 	      </td>
 	"
 
