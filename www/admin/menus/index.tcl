@@ -99,18 +99,19 @@ set group_ids [list]
 set group_names [list]
 set table_header "
 <tr>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
-  <td width=20></td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
   <td class=rowtitle>En</td>
   <td class=rowtitle>Sort</td>
-  <td class=rowtitle>Package</td>\n"
+  <td class=rowtitle>Package</td>
+"
 
 set main_sql_select ""
 set num_profiles 0

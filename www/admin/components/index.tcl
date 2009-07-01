@@ -19,7 +19,7 @@ ad_page_contract {
   @author alwin.egger@gmx.net
   @author frank.bergmann@project-open.com
 } {
-    { package_key ""}
+    { package_key "none"}
     { component_location ""}
     { component_page ""}
 }
@@ -45,14 +45,13 @@ set component_url "/intranet/admin/menus/new"
 set toggle_url "/intranet/admin/toggle"
 set group_url "/admin/groups/one"
 
-set org_package_key $package_key
-
 # ------------------------------------------------------
 # Options for Package Select
 # ------------------------------------------------------
 
 set package_options [db_list_of_lists package_options "
-	select	package_key, package_key
+	select	package_key as pack_key, 
+		package_key as pack_key2
 	from	apm_packages
 	order by package_key
 "]
@@ -125,7 +124,7 @@ append table_header "\n</tr>\n"
 # ------------------------------------------------------
 
 set component_where ""
-if {"" != $package_key} { append component_where "\tand package_name = :package_key\n" }
+if {"none" != $package_key && "" != $package_key} { append component_where "\tand package_name = :package_key\n" }
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
 if {"" != $component_page} { 
     set component_page [ns_urldecode $component_page]
@@ -201,13 +200,14 @@ append table "
 # Filters & Navbar
 # ------------------------------------------------------
 
+set package_select [im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key]
 
 set left_navbar_html "
 	<table>
 	<form action=index method=GET>
 	<tr>
 	<td>[lang::message::lookup "" intranet-core.Package "Package"]</td>
-	<td>[im_select -ad_form_option_list_style_p 1 package_key $package_options $org_package_key]</td>
+	<td>$package_select</td>
 	</tr>
 
 	<tr>

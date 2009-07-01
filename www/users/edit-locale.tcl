@@ -111,6 +111,9 @@ if { [form is_request locale] } {
 }
 
 if { [form is_valid locale] } {
+
+#    ad_return_complaint 1 asdf
+
     set site_wide_locale [element get_value locale site_wide_locale]
     lang::user::set_locale $site_wide_locale
     if { $package_level_locales_p } {
