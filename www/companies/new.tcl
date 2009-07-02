@@ -28,6 +28,7 @@ ad_page_contract {
 } {
     company_id:integer,optional
     {company_name "" }
+    {company_type_id "" }
     { form_mode "edit" }
     { return_url "" }
     { also_add_users "" }
@@ -49,6 +50,8 @@ set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list
 
 # Should we bother about State and ZIP fields?
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
+
+set current_url [im_url_with_query]
 
 # ------------------------------------------------------------------
 # Permissions
@@ -76,10 +79,26 @@ if {$company_exists_p} {
 
 } else {
 
+    # Does the current user has the right to create a new company?
     if {![im_permission $user_id add_companies]} {
 	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
             <li>[_ intranet-core.lt_You_dont_have_suffici]"
 	return
+    }
+
+    # Do we need to get the company type first in order to show
+    # the right DynFields?
+    if {("" == $company_type_id || 0 == $company_type_id)} {
+	set all_same_p [im_dynfield::subtype_have_same_attributes_p -object_type "im_company"]
+	if {!$all_same_p} {
+	    ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
+		{ return_url $current_url } 
+		{ object_type "im_company" }
+		{ type_id_var "company_type_id" }
+		{ pass_through_variables "" }
+	    }]
+
+	}
     }
     
 }
@@ -150,7 +169,16 @@ set form_id "company"
 set object_type "im_company"
 set my_company_id 0
 if {[info exists company_id]} { set my_company_id $company_id }
-set my_company_type_id [db_string type "select company_type_id from im_companies where company_id = :my_company_id" -default 0]
+
+if {$company_exists_p} {
+    set my_company_type_id [db_string type "select company_type_id from im_companies where company_id = :my_company_id" -default 0]
+} else {
+    set my_company_type_id $company_type_id
+}
+
+if {0 != $company_type_id && "" != $company_type_id} { 
+    template::element::set_value $form_id company_type_id $company_type_id
+}
 
 
 im_dynfield::append_attributes_to_form \
