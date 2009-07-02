@@ -36,15 +36,7 @@ ad_page_contract {
     project_id:optional
     user_id_from_search:optional
     { pass_through_variables "" }
-    { ticket_name "" }
-    { ticket_nr "" }
-    { ticket_sla_id "" }
 }
-
-# ToDo: Remove ticket_name & ticket_nr as pass-through vars 
-# and replace with taking values from HTTP form variables
-
-# ad_return_complaint 1 "$pass_through_variables ticket_name='$ticket_name', ticket_nr='$ticket_nr'"
 
 # No permissions necessary, that's handled by the object's new page
 # Here we just select an object_type_id for the given object.
