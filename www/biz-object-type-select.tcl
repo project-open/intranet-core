@@ -36,6 +36,7 @@ ad_page_contract {
     project_id:optional
     user_id_from_search:optional
     { pass_through_variables "" }
+    { exclude_category_ids {} }
 }
 
 # No permissions necessary, that's handled by the object's new page
@@ -55,6 +56,12 @@ if {[catch {db_1row otype_info "
    ad_script_abort
 }
 
+# Check for the list of categories to exclude.
+set exclude_ids [list 0]
+foreach id $exclude_category_ids {
+    if {"" != $id && [string is integer $id]} { lappend exclude_ids $id}
+}
+
 regsub -all " " $object_type_pretty "_" object_type_pretty_key
 set object_type_l10n [lang::message::lookup "" intranet-core.$object_type_pretty_key $object_type_pretty]
 set page_title [lang::message::lookup "" intranet-core.Please_Select_Type_for_Object "Please select a type of %object_type_l10n%"]
@@ -70,6 +77,7 @@ set sql "
 	from	im_categories c
 	where	c.category_type = :object_type_category
 		and (c.enabled_p is null or c.enabled_p = 't')
+		and c.category_id not in ([join $exclude_ids ","])
 	order by
 		category
 "

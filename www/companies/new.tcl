@@ -91,11 +91,13 @@ if {$company_exists_p} {
     if {("" == $company_type_id || 0 == $company_type_id)} {
 	set all_same_p [im_dynfield::subtype_have_same_attributes_p -object_type "im_company"]
 	if {!$all_same_p} {
+	    set exclude_category_ids [list [im_id_from_category "CustOrIntl" "Intranet Company Type"]]
 	    ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
 		{ return_url $current_url } 
 		{ object_type "im_company" }
 		{ type_id_var "company_type_id" }
 		{ pass_through_variables "" }
+		{ exclude_category_ids $exclude_category_ids }
 	    }]
 
 	}

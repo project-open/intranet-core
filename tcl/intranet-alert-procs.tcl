@@ -24,6 +24,7 @@ ad_library {
 # -------------------------------------------------------------------
 # Add an alert to the database alert queue
 # -------------------------------------------------------------------
+
 ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     Add a new alert to the queue for a specific user.
     The idea is to aggregate several alerts into a single email,
