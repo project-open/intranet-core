@@ -1,13 +1,6 @@
 @import url(style.common.css);
 
 
-/* ToDo: merge style_sp.css with this file*/
-/* @import url(style_sp.css); */
-
-
-/* TEST WITH INCLUDE STYLE.CSS  */
-
-
 .month_heading {
 	background-color: #0A3F67;
 }
@@ -62,13 +55,6 @@
    margin-right: 0px;
 }
 
-/*
-.filter {
-   position: absolute;
-   left: 0px;
-}
-*/
-
 .filter-button {
    position: absolute;
    right: 2px;
@@ -94,8 +80,6 @@ a {
 
 a:hover {
 	background:transparent none repeat scroll 0%;
-/*	fraber 090217		*/
-/*	color:transparent;	*/
 }
 
 
@@ -123,12 +107,6 @@ developer-support-adp-box-off {
   padding-right: 8px;
   padding-bottom: 10px;
   background: #FFF;
-  /*
-  background-image: url('/intranet/images/ajax-loader.gif');
-  background-position: center center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  */
 }
 
 #header_class {
@@ -359,7 +337,6 @@ background-position: 0px -10px;
 	border-bottom: 1px solid #24618E;
 	display: block;
 	position: relative;
-/*	z-index: 3000; */
 }
 
 
@@ -638,7 +615,6 @@ a   span  {float:none;}
 
 #slave {
       background: #ffffff;
-    /*  z-index:1000; */
       position:relative;
       padding: 0px; 
       position: relative; 
@@ -927,18 +903,6 @@ a   span  {float:none;}
 	top: -185px;
 	}
 
-/*   SIDEBAR */
-    #sideBarContents{
-        overflow:hidden !important;
-	width:0px;
-    }
-	#sideBarContentsInner{
-        width:200px;
-    } 
-/*   SIDEBAR */
-		
-		
-		
 .filter-button {
    position: absolute;
    top: -5px;
@@ -947,10 +911,6 @@ a   span  {float:none;}
    height: 15px;
    cursor: pointer;
    z-index: 101;
-}
-
-.filter ul {
-   padding-left: 1em;
 }
 
 .filter-block .form-label, 
@@ -985,8 +945,8 @@ a   span  {float:none;}
    padding-bottom: 5px;
 }
 .filter-block {
-   padding-left: 1em;
-   padding-right: 1em;
+   padding-left: 0.5em;
+   padding-right: 0.5em;
    padding-top: 5px;
    padding-bottom: 5px;
 }
@@ -1054,15 +1014,6 @@ div#fullwidth-components {
    background:#B6C7FE none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
    padding:5px 4px 5px 2px;
-/* background:#b9c9fe url('/intranet/images/navbar_saltnpepper/gradhead.gif') repeat-x; */
-/* border-top:2px solid #d3ddff;*/
-/*
-	background:#B6C7FE none repeat scroll 0% 50%;
-	border-bottom:13px none #000000;
-	font-size:9pt;
-	height:auto;
-	padding:5px 4px 5px 2px;
-*/
 }
  
 .table_list_page tr.roweven,
@@ -1072,7 +1023,6 @@ div#fullwidth-components {
 .table_component_hover tr.rowodd,
 .list tr td {
    border-bottom:1px solid #fff;
-   /* color:#669; */
    border-top:1px solid #fff;
    background:#e8edff url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')
    repeat-x;
@@ -1083,15 +1033,6 @@ div#fullwidth-components {
 
 .table_list_page thead tr td,
 .table_list_page thead tr.rowtitle th {
-/*
-        background: #D0DAFD url(/intranet/images/navbar_saltnpepper/gradhead.gif) repeat-x scroll 0%;
-        color: #003399;
-        font-weight: bold;
-        font-size: 13px;
-        border-bottom: 1px solid #FFFFFF;
-        border-top: 2px solid #D3DDFF;
-	height: 33px;
-*/
 	background:#B6C7FE none repeat scroll 0% 50%;
 	border-bottom:13px none #000000;
 	font-size:9pt;
@@ -1154,13 +1095,11 @@ div#fullwidth-components {
 }
 
 .filter-list {
-  /* position: relative; */
 	/* START NEW IDEBAR */
         position: relative;
         width: 200px;
         height: 200px;
         top: 200px;
-        /*right:-7px; */
         left:-37px;
         background-image:url('intranet/images/navbar_saltnpepper/background.gif');
         background-position:top left;
