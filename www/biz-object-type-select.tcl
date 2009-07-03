@@ -79,7 +79,7 @@ set sql "
 		and (c.enabled_p is null or c.enabled_p = 't')
 		and c.category_id not in ([join $exclude_ids ","])
 	order by
-		category
+		sort_order, category
 "
 db_foreach cats $sql {
 

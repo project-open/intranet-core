@@ -778,6 +778,7 @@ ad_proc -private im_sub_navbar_menu_helper {
 
 ad_proc -public im_navbar { 
     { -loginpage:boolean 0 }
+    { -show_context_help_p 0 }
     { main_navbar_label "" } 
 } {
     Setup a top navbar with tabs for each area, highlighted depending
@@ -882,10 +883,25 @@ ad_proc -public im_navbar {
     set maintenance_message [string trim $maintenance_message]
 
     set user_id [ad_get_user_id]
+    set user_name [im_name_from_user_id $user_id]
+
+    set context_help_html ""
+    if {$show_context_help_p} {
+	set context_help_html "
+	    <div id=\"main_users_online\">
+	      <a href=\"[im_navbar_help_link]\">&nbsp; [lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a>
+	    </div>
+	"
+    }
 
     set main_users_and_search "
 	  <div id=\"main_users_and_search\">
 	    <div id=\"main_users_online\">
+	      <a href=\"\">&nbsp; [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</a>
+	    </div>
+	    $context_help_html
+	    <div id=\"main_users_online\">
+	      &nbsp;
 	      [im_header_users_online_str]
 	    </div>
 	    <div id=\"main_search\">

@@ -1,5 +1,5 @@
 <%= [im_header $title $header_stuff] %>
-<%= [im_navbar $main_navbar_label] %>
+<%= [im_navbar -show_context_help_p $show_context_help_p $main_navbar_label] %>
 <%= $sub_navbar %>
 
 <if @show_left_navbar_p@>

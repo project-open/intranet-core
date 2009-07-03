@@ -5,6 +5,7 @@
 <property name="main_navbar_label">admin</property>
 <property name="sub_navbar">@sub_navbar_html;noquote@</property>
 <property name="left_navbar">@left_navbar;noquote@</property>
+<property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
 <!-- intranet/www/admin/master.adp before slave -->
 <slave>
