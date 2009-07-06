@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="en_GB" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="en_GB" charset="ISO-8859-1">
 
   <msg key="A_-_Test_approved">A - Good</msg>
   <msg key="Aim_Screen_Name">Jabber/Aim Screen Name</msg>

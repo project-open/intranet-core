@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1111">1111</msg>
-  <msg key="_"> </msg>
+  <msg key="_"></msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">spezifizierter Firmenkurzname existiert bereits. Entweder neuen Namen wählen oder bestehenden Eintrag ändern.</msg>
   <msg key="A">A</msg>

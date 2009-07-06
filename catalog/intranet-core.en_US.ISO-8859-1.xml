@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1111">1111</msg>
@@ -21,6 +21,7 @@
   <msg key="accounting">Accounting</msg>
   <msg key="Accounting_contact">Accounting Contact</msg>
   <msg key="Action_Go">Go</msg>
+  <msg key="Actions">Actions</msg>
   <msg key="activate">Activate</msg>
   <msg key="Active">Active</msg>
   <msg key="Active_Customers">Active Customers</msg>
@@ -53,6 +54,7 @@
   <msg key="Add_subproject">Add Sub-Project</msg>
   <msg key="Add_to_Page">Add To Page</msg>
   <msg key="Add_user">Add User</msg>
+  <msg key="Additional_Line">Additional Line</msg>
   <msg key="Address">Address</msg>
   <msg key="Address1">Address1</msg>
   <msg key="Address2">Address2</msg>
@@ -98,6 +100,7 @@
   <msg key="Approver">Approve</msg>
   <msg key="ar">ar</msg>
   <msg key="Argentina">Argentina</msg>
+  <msg key="Assigned">Assigned</msg>
   <msg key="Assignments">Assignments</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="AUD">AUD</msg>
@@ -141,6 +144,7 @@
   <msg key="Budget_Hours">Budget Hours</msg>
   <msg key="Bug-Tracker">Bug-Tracker</msg>
   <msg key="Bug_Request">Bug Request</msg>
+  <msg key="Bug_Tracker">Bug Tracker</msg>
   <msg key="Bug_Tracker_Task">Bug Tracker Task</msg>
   <msg key="Bugs">Bugs</msg>
   <msg key="Bulgaria">Bulgaria</msg>
@@ -204,12 +208,16 @@
   <msg key="Company">Company</msg>
   <msg key="Company_Documents">Company Documents</msg>
   <msg key="company_employee">company employee</msg>
+  <msg key="Company_Information">Company Information</msg>
   <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
   <msg key="Company_Project_Nr">Customer Project#</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
   <msg key="Company_Status_1">Company Status:</msg>
+  <msg key="Company_Survey_Component">Company Survey Component</msg>
+  <msg key="Company_Trados_Matrix">Company Trados Matrix</msg>
+  <msg key="Company_Translation_Prices">Company Translation Prices</msg>
   <msg key="Company_Type">Company Type</msg>
   <msg key="Company_Type_1">Company Type:</msg>
   <msg key="Company_Types">Company Types</msg>
@@ -233,9 +241,11 @@
   <msg key="Contact_Information">Contact Information</msg>
   <msg key="Contact_Phone">Contact Phone</msg>
   <msg key="context">context</msg>
+  <msg key="Context_Help">Context Help</msg>
   <msg key="Continue">Continue</msg>
   <msg key="Contract_Value">Contract Value</msg>
   <msg key="Corel_Catalyst__30">Corel Catalyst 3.0</msg>
+  <msg key="Cost_Center">Cost Center</msg>
   <msg key="Cost_Center_Perms">Cost Center Perms</msg>
   <msg key="Cost_Centers">Cost Centers</msg>
   <msg key="Costa Rica">Costa Rica</msg>
@@ -264,6 +274,7 @@
   <msg key="Customer">Customer</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
+  <msg key="Customer_Info">Customer Info</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="Customer_Prospects">Customer Prospects</msg>
   <msg key="Customers">Customer</msg>
@@ -292,6 +303,11 @@
   <msg key="Debit_advice">Debit advice</msg>
   <msg key="Declined">Declined</msg>
   <msg key="default">Right Blue</msg>
+  <msg key="default_bill_template_id">Default Bill Template</msg>
+  <msg key="default_delnote_template_id">Default Delivery Note Template</msg>
+  <msg key="default_invoice_template_id">Default Invoice Template</msg>
+  <msg key="default_payment_method_id">Default Payment Method</msg>
+  <msg key="default_po_template_id">Default PO Template</msg>
   <msg key="Del">Del</msg>
   <msg key="Delete">Delete</msg>
   <msg key="delete">delete</msg>
@@ -317,6 +333,7 @@
   <msg key="Discussion">Discussion</msg>
   <msg key="Discussions">Discussions</msg>
   <msg key="display">display</msg>
+  <msg key="Documentation">Documentation</msg>
   <msg key="Dominican Republic">Dominican Republic</msg>
   <msg key="Dominican_Republic">Dominican Republic</msg>
   <msg key="Done">Done</msg>
@@ -538,6 +555,7 @@
   <msg key="Green">Green</msg>
   <msg key="Group_administration">Group administration</msg>
   <msg key="Group_Id">Group Id</msg>
+  <msg key="group_key">Group</msg>
   <msg key="Group_Membership">Group Membership</msg>
   <msg key="Guatemala">Guatemala</msg>
   <msg key="Gx">Gx</msg>
@@ -556,6 +574,7 @@
   <msg key="Home_address">Home address</msg>
   <msg key="Home_City">Home City</msg>
   <msg key="Home_Country">Home Country</msg>
+  <msg key="Home_General_Help">Home General Help</msg>
   <msg key="Home_Line_1">Home Line</msg>
   <msg key="Home_Line_2">Home Line</msg>
   <msg key="Home_Page">Home Page</msg>
@@ -595,6 +614,7 @@
   <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inctive_Customers">Inactive Customers</msg>
   <msg key="India">India</msg>
+  <msg key="Indicators">Indicators</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Inquiries</msg>
   <msg key="Inquiring">Inquiring</msg>
@@ -635,6 +655,7 @@
   <msg key="IT_System_1">IT System</msg>
   <msg key="IT_System_2">IT System</msg>
   <msg key="Italy">Italy</msg>
+  <msg key="ITSM_Help">ITSM Help</msg>
   <msg key="ITSM_Vertical">ITSM Vertical</msg>
   <msg key="iw">iw</msg>
   <msg key="j">j</msg>
@@ -680,6 +701,7 @@
   <msg key="Localization_Home">Localization Home
 </msg>
   <msg key="Localization_Project">Localization Project</msg>
+  <msg key="Localizers">Localizers</msg>
   <msg key="Locate_user_by">Locate user by</msg>
   <msg key="Location">Location</msg>
   <msg key="Log_hours">Log hours</msg>
@@ -739,6 +761,7 @@
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
   <msg key="lt_Choose_this_option_fo">Choose this option for detailed security information. With this option the security update service transmits information about your configuration that might help us to assess your ]project-open[ system configuration including package versions and operating system version information. It also includes your email address so that we can alert your in special situations.</msg>
   <msg key="lt_Choose_this_option_if">Choose this option if you prefer not to reveal any information to ]project-open[ that might identify you or your organization.</msg>
+  <msg key="lt_Click_here_to_get_hel">Click here to get help for this page</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
   <msg key="lt_Clientesintranet-file">Clients</msg>
   <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&quot;profile&quot;)
@@ -1128,6 +1151,7 @@ other way for the user to find out.</msg>
   <msg key="n">n</msg>
   <msg key="Nagios_Main_Page">Nagios Main Page</msg>
   <msg key="Name">Name</msg>
+  <msg key="Navbar_Help_Text">Click here to get help for this page.</msg>
   <msg key="Netherlands">Netherlands</msg>
   <msg key="New Zealand">New Zealand</msg>
   <msg key="New_">New</msg>
@@ -1143,6 +1167,7 @@ other way for the user to find out.</msg>
   <msg key="New_Provider">New Provider Company</msg>
   <msg key="New_Provider_Contact">New Provider Contact</msg>
   <msg key="New_Quote">New Quote</msg>
+  <msg key="New_Telephony_Line">New Telephony Line</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_Travel_Expense">New Travel Expense</msg>
   <msg key="New_User">New User</msg>
@@ -1185,6 +1210,7 @@ other way for the user to find out.</msg>
   <msg key="o">o</msg>
   <msg key="Object_All">All</msg>
   <msg key="Object_Mine">Mine</msg>
+  <msg key="Object_Types">Object Types</msg>
   <msg key="Office">Office</msg>
   <msg key="office_info">office_info</msg>
   <msg key="Office_Information">Office Information</msg>
@@ -1220,6 +1246,7 @@ other way for the user to find out.</msg>
   <msg key="Other">Other</msg>
   <msg key="Otherr">Other</msg>
   <msg key="Ouch">Ouch!</msg>
+  <msg key="Our_employees_related">Our Employees (managing the company)</msg>
   <msg key="Outstanding">Outstanding</msg>
   <msg key="p">p</msg>
   <msg key="Package">Package</msg>
@@ -1247,12 +1274,15 @@ other way for the user to find out.</msg>
   <msg key="Patagon_EUR">Patagon EUR</msg>
   <msg key="Path">Path</msg>
   <msg key="Payed">Payed</msg>
+  <msg key="Payment_Method">Payment Method</msg>
+  <msg key="Payment_Methods">Payment Methods</msg>
   <msg key="Payments">Payments</msg>
   <msg key="PayPal">PayPal</msg>
   <msg key="Per">%%</msg>
   <msg key="Perc">%%</msg>
   <msg key="Perc_Compl">% Compl.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
+  <msg key="Permissions">Permissions</msg>
   <msg key="Personal">Human Resources</msg>
   <msg key="Peru">Peru</msg>
   <msg key="Philippines">Philippines</msg>
@@ -1285,6 +1315,7 @@ other way for the user to find out.</msg>
   <msg key="Prio">Prio</msg>
   <msg key="Prio_1">Prio</msg>
   <msg key="Prio_HJ_1">Prio HJ</msg>
+  <msg key="Problem_Ticket">Problem Ticket</msg>
   <msg key="Profile">Profile</msg>
   <msg key="Profile_Accounting">Accounting</msg>
   <msg key="Profile_Consulting_Vertical">Consulting Vertical</msg>
@@ -1295,6 +1326,7 @@ other way for the user to find out.</msg>
   <msg key="Profile_Helpdesk">Helpdesk</msg>
   <msg key="Profile_HR_Managers">HR Managers</msg>
   <msg key="Profile_ITSM_Vertical">ITSM Vertical</msg>
+  <msg key="Profile_Localizers">Localizers</msg>
   <msg key="Profile_P_O_Admins">]po[ Admins</msg>
   <msg key="Profile_Project_Managers">Project Managers</msg>
   <msg key="Profile_Sales">Sales</msg>
@@ -1392,6 +1424,7 @@ other way for the user to find out.</msg>
   <msg key="Referral_Source">Referral Source</msg>
   <msg key="Referral_source">Referral source</msg>
   <msg key="Rejected">Rejected</msg>
+  <msg key="Related_Tickets">Related Tickets</msg>
   <msg key="Repeating_Cost">Repeating Cost</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
   <msg key="Reply">Reply</msg>
@@ -1406,6 +1439,7 @@ other way for the user to find out.</msg>
   <msg key="Resources">Resources</msg>
   <msg key="Ressource_Group_1">Ressource Group</msg>
   <msg key="Restart_Server">Restart Server</msg>
+  <msg key="Restriction_Settings">Restriction Settings</msg>
   <msg key="Return_to">Return to</msg>
   <msg key="Return_To_Previous_Page">Return to previous page</msg>
   <msg key="RFC">RFC</msg>
@@ -1443,6 +1477,7 @@ other way for the user to find out.</msg>
   <msg key="Search_for_a_user">Search for a user</msg>
   <msg key="Search_for_Providers_by_Skill">Search for Providers by Skill</msg>
   <msg key="Search_for_User">Search for User</msg>
+  <msg key="Search_Go_Alt">Go</msg>
   <msg key="See_the_list_of">See the list of</msg>
   <msg key="Sel">Sel</msg>
   <msg key="Select">Select</msg>
@@ -1538,6 +1573,7 @@ other way for the user to find out.</msg>
   <msg key="th">th</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
   <msg key="Ticket">Ticket</msg>
+  <msg key="Ticket_Members">Ticket Members</msg>
   <msg key="Time_plan">Time plan</msg>
   <msg key="Time_sheet">Time sheet</msg>
   <msg key="Timesheet">Timesheet</msg>
@@ -1662,7 +1698,10 @@ other way for the user to find out.</msg>
   <msg key="Web_Site_Development">Web Site Development</msg>
   <msg key="Week">Week</msg>
   <msg key="Welcome_to_po">Welcome to ]project-open[</msg>
+  <msg key="Welcome_User_Name">Welcome %user_name%</msg>
   <msg key="Whos_Online">Who's Online?</msg>
+  <msg key="Widget_Examples">Widget Examples</msg>
+  <msg key="Widgets">Widgets</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
   <msg key="Windows_98">Windows 98</msg>

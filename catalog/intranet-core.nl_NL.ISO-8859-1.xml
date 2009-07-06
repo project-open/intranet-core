@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="nl_NL" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="nl_NL" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Selecteer --</msg>
   <msg key="1111">1111</msg>
   <msg key="A">A</msg>
   <msg key="a">a</msg>
+  <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">Over Jezelf</msg>
+  <msg key="Absence_Types">Vakantie type</msg>
   <msg key="Absences">Afwezigheden</msg>
+  <msg key="Absenzen">Vakantie</msg>
   <msg key="Access_denied">Toegang geweigerd</msg>
   <msg key="Account_Deleted">Account Verwijderd</msg>
   <msg key="Account_deleted">Account verwijderd</msg>
@@ -119,7 +122,7 @@
   <msg key="g">g</msg>
   <msg key="Group_Membership">Profielen</msg>
   <msg key="h">h</msg>
-  <msg key="Home">Voorpagina</msg>
+  <msg key="Home">Voorpagine</msg>
   <msg key="Home_Page_Help">Startpagina Help</msg>
   <msg key="Home_Phone">Thuis telefoon</msg>
   <msg key="HR_Managers">HR Managers</msg>
@@ -168,6 +171,7 @@
   <msg key="Materials">Materiaal</msg>
   <msg key="Members">Leden </msg>
   <msg key="Menus">Menus</msg>
+  <msg key="Milestones">Milestones</msg>
   <msg key="Mine">Mijn</msg>
   <msg key="more">meer...</msg>
   <msg key="My_Account">Mijn Account</msg>
@@ -216,6 +220,7 @@
   <msg key="Reporting">Reportage</msg>
   <msg key="Requested">Aangevraagd</msg>
   <msg key="Reset_Stuff">Reset</msg>
+  <msg key="RFQs">RFQs</msg>
   <msg key="s">s</msg>
   <msg key="Sales">Verkoop</msg>
   <msg key="Search">Zoeken</msg>

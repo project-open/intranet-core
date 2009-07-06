@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="1111">1111</msg>
@@ -11,7 +11,8 @@
   <msg key="A_-_Test_approved">A - Verificación aprobada</msg>
   <msg key="ABC-Bank_EUR">Banco ABC EUR</msg>
   <msg key="About_You">Acerca de Ud.</msg>
-  <msg key="Absences">Absencias</msg>
+  <msg key="Absences">Ausencias</msg>
+  <msg key="Absenzen">Vacaciones</msg>
   <msg key="Access_denied">Acceso denegado</msg>
   <msg key="Account_Deleted">Cuenta borrada</msg>
   <msg key="Account_deleted">Cuenta borrada</msg>

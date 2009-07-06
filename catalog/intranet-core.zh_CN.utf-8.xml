@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="zh_CN" charset="utf-8">
+<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="zh_CN" charset="utf-8">
 
   <msg key="Absences">缺席管理</msg>
   <msg key="Access_denied">访问被拒绝</msg>
