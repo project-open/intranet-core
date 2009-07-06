@@ -135,7 +135,13 @@ ad_proc -public im_navbar_tree_admin {
     set html "
 	[im_menu_li admin]
 		<ul>
-		[im_navbar_write_tree -no_cache -user_id $user_id -locale $locale -label "admin" -maxlevel 0]
+		[im_navbar_write_tree \
+			-no_cache \
+			-user_id $user_id \
+			-locale $locale \
+			-label "admin" \
+			-maxlevel 1 \
+		]
 		</ul>
 	</ul>
     "
@@ -704,9 +710,21 @@ ad_proc -public im_navbar_write_tree {
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     if {$no_cache_p} {
-	return [im_navbar_write_tree_helper -user_id $user_id -locale $locale -package_key $package_key -label $label -maxlevel $maxlevel]
+	return [im_navbar_write_tree_helper \
+		    -user_id $user_id \
+		    -locale $locale \
+		    -package_key $package_key \
+		    -label $label \
+		    -maxlevel $maxlevel \
+	]
     } else {
-	return [util_memoize [list im_navbar_write_tree_helper -user_id $user_id -locale $locale -package_key $package_key -label $label -maxlevel $maxlevel] 3600]
+	return [util_memoize [list im_navbar_write_tree_helper \
+				  -user_id $user_id \
+				  -locale $locale \
+				  -package_key $package_key \
+				  -label $label \
+				  -maxlevel $maxlevel\
+	] 3600]
     }
 }
 
