@@ -1,6 +1,8 @@
 @import url(style.common.css);
 
 
+/* CALENDAR */
+
 .month_heading {
 	background-color: #0A3F67;
 }
@@ -30,9 +32,25 @@
 	color: #000000;
 }
 
-.calendar_table {
 
+.fullwidth-list .component table td.before_after_month {
+    background: #EEEEEE;
+    color: #666666;
 }
+
+.fullwidth-list .component table td.not_todays_date {
+    background: #FFFFFF;
+}
+
+.fullwidth-list .component table td.todays_date {
+    background: #AABBCC;
+}
+
+.before_after_month .day_number {
+    color: #999999;
+}
+
+
 
 /*  START: TEST WITH INCLUDE STYLE.LEFT.CSS */
 
