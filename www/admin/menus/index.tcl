@@ -241,3 +241,9 @@ append table "
 </table>
 </form>
 "
+
+
+
+# Remove all permission related entries in the system cache
+im_permission_flush
+

@@ -1159,14 +1159,22 @@ ad_proc -public im_project_hierarchy_component {
 
     # Check permissions for showing subprojects
     set perm_sql "
-        (select p.*
-        from	im_projects p,
+	(select p.*
+	from	im_projects p,
 		acs_rels r
-        where	r.object_id_one = p.project_id
-                and r.object_id_two = :current_user_id
+        where	r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket])
         )
     "
-    if {[im_permission $current_user_id "view_projects_all"]} { set perm_sql "im_projects" }
+    if {[im_permission $current_user_id "view_projects_all"]} { 
+	set perm_sql "
+		(select	p.*
+		from	im_projects p
+		where	p.project_type_id not in ([im_project_type_task], [im_project_type_ticket])
+		)
+	" 
+    }
 
     set subproject_status_sql ""
     if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {

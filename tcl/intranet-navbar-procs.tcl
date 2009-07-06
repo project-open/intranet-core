@@ -83,7 +83,7 @@ ad_proc -public im_navbar_tree_helper {
     set html "
       	<div class=filter-block>
 	<ul class=mktree>
-	<li><a href=\"/\">[lang::message::lookup "" intranet-core.Home Home]</a>
+	<li><a href=\"/intranet/index\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
 		<li><a href=$wiki/list_modules>$general_help_l10n</a>
 		[im_menu_li dashboard]
@@ -140,7 +140,7 @@ ad_proc -public im_navbar_tree_admin {
 			-user_id $user_id \
 			-locale $locale \
 			-label "admin" \
-			-maxlevel 1 \
+			-maxlevel 2 \
 		]
 		</ul>
 	</ul>
