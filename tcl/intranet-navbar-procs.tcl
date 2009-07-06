@@ -79,13 +79,15 @@ ad_proc -public im_navbar_tree_helper {
     set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
     if {!$show_left_functional_menu_p} { return "" }
 
+    set general_help_l10n [lang::message::lookup "" intranet-core.Home_General_Help "\]po\[ Modules Help"]
     set html "
       	<div class=filter-block>
 	<ul class=mktree>
 	<li><a href=\"/\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
-		<li><a href=$wiki/list_modules>[lang::message::lookup "" intranet-core.Home_General_Help "\]po\[ Modules Help"]</a>
+		<li><a href=$wiki/list_modules>$general_help_l10n</a>
 		[im_menu_li dashboard]
+		[im_menu_li indicators]
     "
     if {$user_id == 0} {
 	append html "
