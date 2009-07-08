@@ -106,7 +106,7 @@ namespace eval im_profile {
 	# Special logic: Add a P/O Admin also as a site wide admin
 	if {$profile_id == [im_profile_po_admins]} {
 	    permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
-	    im_security_alert -severity "Info" -location "im_profile::add_member" -message "New P/O Admin" -value [im_name_from_user_id $user_id]
+	    im_security_alert -severity "Info" -location "im_profile::add_member" -message "New P/O Admin" -value "[im_name_from_user_id $user_id] ([im_email_from_user_id $user_id])"
 	}
 
 	# Set the new value to the cache
