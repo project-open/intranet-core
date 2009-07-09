@@ -15,7 +15,7 @@
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
         <maturity>0</maturity>
 
-        <provides url="intranet-core" version="3.4.0.6.0"/>
+        <provides url="intranet-core" version="3.4.0.7.0"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
 
