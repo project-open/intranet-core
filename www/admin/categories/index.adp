@@ -12,7 +12,7 @@
 	<table border=0 cellpadding=0 cellspacing=0>
 	<tr> 
 	  <td class=rowtitle align=center>
-	    Filter Categories
+	    Filter Category Types
 	  </td>
 	</tr>
 	<tr>
@@ -45,12 +45,16 @@
 	<tr>
 	  <td>
 	    <ul>
+<if @show_add_new_category_p@>
 	      <li>
 		<a href="@new_href;noquote@">Add a new Category</a>  
+</if>
+<else>
 	      <li>
 		<a href="one?new_category=1">
-		  Add a new Category for a new Category Type
+		  Add a new Category Type
 		</a>  
+</else>
  	    </ul>
 	  </td>
 	</tr>

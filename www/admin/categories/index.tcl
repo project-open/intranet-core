@@ -36,6 +36,13 @@ set new_href "one"
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+
+set show_add_new_category_p 1
+if {"" == $select_category_type} { set show_add_new_category_p 0 }
+if {"All" == $select_category_type} { set show_add_new_category_p 0 }
+
+
+
 # ---------------------------------------------------------------
 # Format Category Type Drop Down Box
 # ---------------------------------------------------------------
