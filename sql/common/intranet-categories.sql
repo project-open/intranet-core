@@ -128,7 +128,7 @@
 -- 30000-39999  Intranet Helpdesk (10000)
 -- 40000-40999  Intranet Skin (1000)
 -- 41000-41099  Intranet Salutation (100)
--- 41100-40999  Intranet VAT Type (100)
+-- 41100-41999  Intranet VAT Type (100)
 -- 41200-49999  reserved (8800)
 -- 50000-59999  reserved (10000)
 -- 60000-69999  reserved (10000)
