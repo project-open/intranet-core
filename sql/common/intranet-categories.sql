@@ -66,10 +66,9 @@
 -- 2200-2299	Intranet Experience Level
 -- 2300-2399	Intranet LOC Tools
 -- 2400-2419	Intranet Skill Weight
--- 2420-2499	??
+-- 2420-2499	reserved
 -- 2500-2599	Intranet Project Type (extension)
 -- 2600-2999	Translation Hierarchy
-
 -- 3000-3099    Intranet Cost Center Type
 -- 3100-3199    Intranet Cost Center Status
 -- 3200-3299    Intranet CRM Tracking
@@ -88,26 +87,15 @@
 -- 4400-4499    Intranet Trans RFQ
 -- 4500-4549    reserved (not sure if there are modules around...)
 -- 4550-4599    Intranet Project Type (extension)
--- 4597			Software Release Item
--- 4599			Software Release
-
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
-
 -- 6000-6999	Intranet Recruiting
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
-
 -- 9000-9499	Intranet Material
 -- 9500-9699	Intranet Timesheet Tasks
 -- 9700-9799	Intranet Cust-Baselkb
-
 -- 10000-10999	Intranet DynField
-
--- Ugly: This range has been "polluted" because previous
--- systems had the im_categories_seq set to 10000.
--- However, none of the value should have exceeded 10999
-
 -- 11000-11099	Intranet SQL Selectors
 -- 11100-11199	CRM IP Type (100)
 -- 11200-11299	CRM IP Status (100)
@@ -131,29 +119,25 @@
 -- 21000-21999  Intranet Translation Language (1000)
 -- 22000-22999  Intranet User Type (1000)
 -- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
-
 -- 24000-24999  Intranet TinyTM (1000)
-
 -- 25000-25999  reserved for UNED Spain (1000)
 -- 26000-26999  reserved for ILO/ISSA (1000)
 -- 27000-27999  Intranet Release Management (1000)
 -- 28000-28999  reserved for customer A (1000)
 -- 29000-29999  reserved for customer B (1000)
-
 -- 30000-39999  Intranet Helpdesk (10000)
 -- 40000-40999  Intranet Skin (1000)
 -- 41000-41099  Intranet Salutation (100)
--- 41100-40999  reserved (8900)
-
--- 40000-49999  reserved (10000)
+-- 41100-40999  Intranet VAT Type (100)
+-- 41200-49999  reserved (8800)
 -- 50000-59999  reserved (10000)
 -- 60000-69999  reserved (10000)
 -- 70000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
 -- 90000-99999  reserved (10000)
-
 --100000-999999 reserved (900000)
 --1000000-9999999 reserved (9000000)
+
 
 -- Here starts the free values for im_categories_seq
 -- since 2006-05-26
