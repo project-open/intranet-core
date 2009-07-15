@@ -1,5 +1,25 @@
 # /packages/intranet-core/www/xowiki-template.tcl
 
+
+# Should show the page without template?
+set no_template_p 0
+set form_vars [ns_conn form]
+if {"" != $form_vars} { 
+    set no_template_p [ns_set get $form_vars no_template_p]
+    if {1 == $no_template_p} { 
+	doc_return 200 "text/html" "
+		<html>
+		<body>
+		<h1>$title</h1>
+		$content 
+		</body>
+		</html>
+	"
+    }
+}
+
+
+
 set system_id [im_system_id]
 
 set survey_id [util_memoize [list db_string q1 "
