@@ -30,12 +30,11 @@ set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set page_title "Categories"
 set context_bar [im_context_bar $page_title]
 set context ""
-
+set page_focus "category_select_form.select_category_type"
 set new_href "one"
 
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
-
 
 set show_add_new_category_p 1
 if {"" == $select_category_type} { set show_add_new_category_p 0 }
@@ -43,49 +42,45 @@ if {"All" == $select_category_type} { set show_add_new_category_p 0 }
 
 
 
-# ---------------------------------------------------------------
-# Format Category Type Drop Down Box
-# ---------------------------------------------------------------
+# ------------------------------------------------------------------
+# Filter
+# ------------------------------------------------------------------
+
+set form_id "filter"
+set action_url "/intranet/admin/categories/index"
+set form_mode "edit"
 
 set select_category_types_sql "
-select
-	c.category_type as category_type,
-	count(c.category_id) as n_categories
-from
-	im_categories c
-group by c.category_type
-order by c.category_type asc" 
-
-
-# ---------------------------------------------------------------
-# Format category type drop-down
-# ---------------------------------------------------------------
-
-set category_select_html "
-    <select name=select_category_type>\n"
-
-# Render the "All" categories option
-if {[string equal "All" $select_category_type]} {
-    append category_select_html "<option selected>All</option>\n"
-} else {
-    append category_select_html "<option>All</option>\n"
+	select distinct
+		c.category_type as cat_type
+	from	im_categories c
+	group by c.category_type
+	order by c.category_type asc
+" 
+set cat_options [list [list All All]]
+db_foreach cats $select_category_types_sql {
+    lappend cat_options [list $cat_type $cat_type]
 }
 
-db_foreach select_kategory_types $select_category_types_sql {
-    if {[string equal $category_type $select_category_type]} {
-	append category_select_html "<option selected>$category_type</option>\n"
-    } else {
-	append category_select_html "<option>$category_type</option>\n"
+ad_form \
+    -name $form_id \
+    -action $action_url \
+    -mode $form_mode \
+    -method GET \
+    -export { }\
+    -form {
+        {select_category_type:text(select),optional {label "[lang::message::lookup {} intranet-core.Cat_Type {Cat Type}]"} {options $cat_options}}
     }
-}
 
-append category_select_html "
-    </select>
-"
+template::element::set_value $form_id select_category_type $select_category_type
+
+
 
 # ---------------------------------------------------------------
 # Render Category List
 # ---------------------------------------------------------------
+
+if {$show_add_new_category_p} {
 
 set category_list_html "
 <table border=0>
@@ -156,7 +151,7 @@ db_foreach category_select {} {
 	  <td>$aux_string2</td>
     "
     if {[string equal "All" $select_category_type]} {
-	append category_list_html "<td>$category_type</td>"
+	append category_list_html "<td>$select_category_type</td>"
     }
     append category_list_html "<td>$category_description</td></tr>\n"
     set old_id $category_id
@@ -168,7 +163,7 @@ append category_list_html "</table>"
 if {![string equal "All" $select_category_type]} {
     set category_type $select_category_type
 
-    set new_href "one.tcl?[export_url_vars category_type]"
+    set new_href "one.tcl?[export_url_vars select_category_type]"
 
     append category_list_html "
 <ul>
@@ -178,4 +173,82 @@ if {![string equal "All" $select_category_type]} {
 </ul>"
 
 }
+
+}
+
+
+if {!$show_add_new_category_p} {
+
+    list::create \
+	-name categories \
+	-multirow category_types \
+	-row_pretty_plural "Category Types" \
+	-elements {
+	    cnt {
+		label "Count"
+	    }
+	    category_type {
+		label "Category Type"
+		link_url_eval $category_type_url
+	    }
+	    help_link {
+		label "Help Link"
+		link_url_eval $help_link_url
+	    }
+	}
+
+    db_multirow -extend { category_type_url help_link help_link_url } category_types select_category_types {
+		select
+			count(*) as cnt,
+			category_type
+		from	im_categories
+		group by
+			category_type
+		order by
+			category_type
+    } {
+	set category_type_url [export_vars -base "/intranet/admin/categories/index" {{select_category_type $category_type}}]
+	set help_link [lang::message::lookup "" intranet-core.Context_Help "Context Help"]
+	regsub -all { } $category_type {_} category_type_regsub
+	set help_link_url "http://www.project-open.org/documentation/category_[string tolower $category_type_regsub]"
+    }
+    
+	    
+    set category_list_html "empty"
+}
+
+
+# ------------------------------------------------------------------
+# NavBar
+# ------------------------------------------------------------------
+
+# Compile and execute the formtemplate if advanced filtering is enabled.
+eval [template::adp_compile -string {<formtemplate id="filter"></formtemplate>}]
+set filter_html $__adp_output
+
+if {$show_add_new_category_p} {
+    set admin_html "<li><a href='$new_href'>Add a new Category</a>  "
+} else {
+    set admin_html "<li><a href='one?new_category=1'>Add a new Category Type</a>"
+}
+
+# Left Navbar is the filter/select part of the left bar
+set left_navbar_html "
+        <div class='filter-block'>
+                <div class='filter-title'>
+                   [lang::message::lookup "" intranet-core.Filter_Categories "Filter Categories"]
+                </div>
+		$filter_html
+        </div>
+      <hr/>
+      <div class='filter-block'>
+	<div class='filter-title'>
+		[lang::message::lookup "" intranet-exchange-rate.Admin_Links "Admin Links"]
+	</div>
+	<ul>
+		$admin_html
+	</ul>
+      </div>
+"
+
 
