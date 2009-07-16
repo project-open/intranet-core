@@ -453,7 +453,7 @@ a   span  {float:none;}
 }
 
 #navbar_sub {
-  font-size:93%;
+  font-size:80%;
   position: absolute;
   right: 0;
   margin: 0;
@@ -477,14 +477,14 @@ a   span  {float:none;}
 			color: #666;
       float:left;
 			height:auto;
-		  padding:0pt 0pt 0pt 5px;
+		  padding:0pt 0pt 0pt 3px;
       }
 
     #navbar_sub li.selected a {
 			background-color: #fff;
       background-position:0% -42px;
 			height:auto;
-			padding:0pt 0pt 0pt 5px;
+			padding:0pt 0pt 0pt 3px;
 			
 			
 			/*float:none;position:static;z-index:0;display:inline;;*/
@@ -502,7 +502,7 @@ a   span  {float:none;}
       float:left;
       background:url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
       margin:0;
-      padding:0 0 0 5px;
+      padding:0 0 0 3px;
       text-decoration:none;
       }
 
@@ -664,11 +664,12 @@ a   span  {float:none;}
 /* **********************************************   COMPONENTS ***************************** */ 
 
 .component {
-  position: relative;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+	position: relative;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	min-height: 0;
 }
 .component_header_rounded {
   background-color: #eeeeee;
@@ -781,6 +782,7 @@ a   span  {float:none;}
 	padding-bottom: 10px;
 	padding-left: 5px;
 	overflow: visible;
+        min-height: 0;
 }
 .component_body ul {
   margin: 0;
@@ -1439,4 +1441,10 @@ div.xowiki-content p, div.xowiki-content td {
         display: none;
 }
 
+.yui-skin-sam {
+	display: inline;
+	z-index: 1000;
+	position:relative;
+        min-height: 0;
+}
 
