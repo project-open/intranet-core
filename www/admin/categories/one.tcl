@@ -47,13 +47,14 @@ ns_log Notice "one: category_id=$category_id"
 
 if {0 != $category_id} {
     
-    set page_title "One Category"
-    set context_bar [im_context_bar $page_title]
-
     db_1row category_properties "
-select	c.*
-from	im_categories c
-where	c.category_id = :category_id"
+	select	c.*
+	from	im_categories c
+	where	c.category_id = :category_id
+    "
+
+    set page_title "$category_type - $category"
+    set context_bar [im_context_bar $page_title]
 
     set delete_action_html "
       <form action=category-nuke.tcl method=GET>[export_form_vars category_id] 

@@ -27,7 +27,8 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
-set page_title "Categories"
+set page_title [lang::message::lookup "" intranet-core.Category_Types "Category Types"]
+if {"All" != $select_category_type} { set page_title [lang::message::lookup "" intranet-core.One_Category_Type "Category Type '%select_category_type%'"] }
 set context_bar [im_context_bar $page_title]
 set context ""
 set page_focus "category_select_form.select_category_type"
