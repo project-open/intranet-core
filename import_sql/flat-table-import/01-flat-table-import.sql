@@ -17,7 +17,7 @@ CREATE TABLE import_offices (
 );
 
 COPY import_offices (office_name, office_path, office_status, office_type, phone, fax, address_line1, address_line2, address_city, address_state, address_postal_code, address_country_code, contact_person, note) from stdin;
-Geneva Headquarter	geneva_headquarter	active	Main Office	(+41-22) 799 66 17	(+41-22) 799 85 09	General Secretariat	Case postale 1	Geneva 22	Switzerland	1211	CH	\N	\N
+Tigerpond Main Office	internal	Active	Main Office	+1 272 798 05 92	+1 272 798 05 93	Ronda Sant Antoni 51, 1o 2a	\N	Barcelona	\N	08011	es	\N	\N
 \.
 
 DROP TABLE import_companies;
@@ -35,7 +35,7 @@ CREATE TABLE import_companies (
 );
 
 COPY import_companies (company_name, company_path, office_path, company_status, company_type, primary_contact, accounting_contact, note, referral_source, default_vat) from stdin;
-International Social Security Association	internal	geneva_headquarter	active	internal	issa@ilo.org	thirion@ilo.org	\N	\N	\N
+International Social Security Association	internal	geneva_headquarter	active	internal	sysadmin@tigerpond.com	sysadmin@tigerpond.com	\N	\N	\N
 \.
 
 
@@ -98,7 +98,6 @@ DROP TABLE import_projects;
 CREATE TABLE import_projects (
 	project_name		text,
 	project_nr		text,
-	project_erp_nr		text,
 	project_path		text,
 	parent_nr		text,
 	customer_nr		text,
@@ -111,7 +110,7 @@ CREATE TABLE import_projects (
 	project_budget		text,
 	project_budget_currency	text,
 	project_budget_hours	text,
-	cost_center_id	text,
+	cost_center_id		text,
 	start_date		text,
 	end_date		text,
 	customer_contact	text,
@@ -123,7 +122,8 @@ CREATE TABLE import_projects (
 -- Make the Nr unique in order to allow to find super-projects.
 CREATE UNIQUE INDEX import_projects_project_nr_un ON import_projects(project_nr);
 
-COPY import_projects (project_name, project_nr, project_erp_nr, project_path, parent_nr, customer_nr, project_type, project_status, project_lead, supervisor, corporate_sponsor, on_track_status, project_budget, project_budget_currency, project_budget_hours, cost_center_id, start_date, end_date, customer_contact, customer_project_nr, note, description) FROM stdin;
+COPY import_projects (project_name, project_nr, project_path, parent_nr, customer_nr, project_type, project_status, project_lead, supervisor, corporate_sponsor, on_track_status, project_budget, project_budget_currency, project_budget_hours, cost_center_id, start_date, end_date, customer_contact, customer_project_nr, note, description) FROM stdin;
+Developing USB Bus Driver	2005_0088	2005_0088	\N	internal	Software Development	Open	frank.bergmann@project-open.com	\N	\N	Green	\N	EUR	\N	\N	2007-09-25 00:00:00+02	2008-04-23 00:00:00+02	\N	\N	\N	This is a USB Driver development project. The driver will be developed on ARM based Linux.
 \.
 
 
@@ -191,12 +191,17 @@ END;' language 'plpgsql';
 
 
 -- Lookup the "primary key" (email or username) of a user into a user_id
-create or replace function lookup_user (varchar)
+create or replace function lookup_user (varchar, varchar)
 returns integer as '
 DECLARE
 	p_email		alias for $1;
+	p_purpose	alias for $2;
+
 	v_user_id	integer;
 BEGIN
+	IF p_email is null THEN return null; END IF;
+	IF p_email = '''' THEN return null; END IF;
+
 	SELECT	p.party_id INTO v_user_id
 	FROM	parties p
 	WHERE	lower(p.email) = lower(p_email);
@@ -208,11 +213,12 @@ BEGIN
 	END IF;
 
 	IF v_user_id is null AND p_email is not null THEN
-	   	RAISE NOTICE ''lookup_user(%): Did not find user'', p_email;
+	   	RAISE NOTICE ''lookup_user(%) for %: Did not find user'', p_email, p_purpose;
 	END IF;
 
 	RETURN v_user_id;
 END;' language 'plpgsql';
+
 
 
 ---------------------------------------------------------------------------------
@@ -258,7 +264,7 @@ BEGIN
 	-- this script is executed.
 	-- Update the users information, no matter whether its a new or
 	-- an already existing user.
-	v_user_id := lookup_user(row.email);
+	v_user_id := lookup_user(row.email, ''import_users'');
 
 	RAISE NOTICE ''Update User: %'', row.email;
 	update users set
@@ -296,7 +302,7 @@ BEGIN
 	from import_users_contact
     LOOP
 
-        v_user_id := lookup_user(row.email);
+        v_user_id := lookup_user(row.email, ''import_users_contact'');
 	RAISE NOTICE ''Update Contacts: % - %'', row.email, v_user_id;
 
 	update users_contact set
@@ -333,7 +339,7 @@ BEGIN
         select	* 
 	from import_employees
     LOOP
-        v_user_id := lookup_user(row.email);
+        v_user_id := lookup_user(row.email, ''import_employees'');
 	RAISE NOTICE ''Update Employees: % - %'', row.email, row.department_code;
 
 	IF v_user_id is not null THEN
@@ -346,7 +352,7 @@ BEGIN
 		END IF;
 
 		update im_employees set
-			supervisor_id = lookup_user(row.supervisor),
+			supervisor_id = lookup_user(row.supervisor, ''import_employees.supervisor''),
 			department_id = (
 				select cost_center_id 
 				from im_cost_centers 
@@ -413,7 +419,7 @@ BEGIN
         		address_state = row.address_state,
         		address_postal_code = row.address_postal_code,
         		address_country_code = lower(row.address_country_code),
-        		contact_person_id = lookup_user(row.contact_person),
+        		contact_person_id = lookup_user(row.contact_person, ''import_offices.contact_person''),
         		note = row.note
 	where office_path = row.office_path;
 
@@ -468,8 +474,8 @@ BEGIN
 			main_office_id = v_office_id,
 			company_status_id = v_status_id,
 			company_type_id = v_type_id,
-			primary_contact_id = lookup_user(row.primary_contact),
-			accounting_contact_id = lookup_user(row.accounting_contact),
+			primary_contact_id = lookup_user(row.primary_contact, ''import_companies.primary_contact''),
+			accounting_contact_id = lookup_user(row.accounting_contact, ''import_companies.accounting_contact''),
 			referral_source = row.referral_source,
 			default_vat = row.default_vat::numeric,
         		note = row.note
@@ -501,6 +507,10 @@ BEGIN
         select	* 
 	from import_projects
     LOOP
+
+	-- ToDo: ProjectID_from_project_nr (with parents)
+	-- ToDo: Company from CompanyNr
+
 	v_status_id := import_cat(row.project_status, ''Intranet Project Status'');
 	v_type_id := import_cat(row.project_type, ''Intranet Project Type'');
 
@@ -534,16 +544,16 @@ BEGIN
 		company_id		= v_customer_id,
 		project_type_id		= v_type_id,
 		project_status_id	= v_status_id,
-		project_lead_id		= lookup_user(row.project_lead),
-		supervisor_id		= lookup_user(row.supervisor),
-		corporate_sponsor_id	= lookup_user(row.corporate_sponsor),
+		project_lead_id		= lookup_user(row.project_lead, ''import_projects.project_lead''),
+		supervisor_id		= lookup_user(row.supervisor, ''import_projects.supervisor_id''),
+		corporate_sponsor	= lookup_user(row.corporate_sponsor, ''import_projects.corporate_sponsor''),
 		on_track_status_id	= import_cat(row.on_track_status, ''Intranet Project On Track Status''),
 		project_budget		= row.project_budget::numeric,
 		project_budget_currency	= row.project_budget_currency,
 		project_budget_hours	= row.project_budget_hours::numeric,
 		start_date		= row.start_date::date,
 		end_date		= row.end_date::date,
-		company_contact_id	= lookup_user(row.customer_contact),
+		company_contact_id	= lookup_user(row.customer_contact, ''import_projects.company_contact''),
 		company_project_nr	= row.customer_project_nr,
 		note			= row.note,
 		description		= row.description
@@ -574,7 +584,7 @@ BEGIN
 	   	RAISE NOTICE ''import_project_members: Did not find project "%"'', row.project_nr;
 	END IF;
 
-	v_user_id := lookup_user(row.email);
+	v_user_id := lookup_user(row.email, ''import_tasks.owner'');
 
 	IF v_user_id is not null AND v_project_id is not null THEN
 		v_rel_id := im_biz_object_member__new (
