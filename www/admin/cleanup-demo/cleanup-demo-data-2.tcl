@@ -62,6 +62,7 @@ ns_write "<h1>$page_title</h1>\n"
 # No cleanup of users
 # ---------------------------------------------------------------
 
+set ttt {
 ns_write "
 <font color=red>
 <ul>
@@ -75,9 +76,10 @@ ns_write "
 </ul>
 </font>
 "
+}
+
 
 ns_write "<ul>\n"
-
 
 # ---------------------------------------------------------------
 # Delete all data
@@ -716,7 +718,6 @@ db_dml project_context_null "
 "
 ns_write "<li>Cleanup acs_objects\n"
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
-ns_write "<li>\n"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
 ns_write "</ul>\n"
 
@@ -822,6 +823,47 @@ foreach object_info $object_infos {
     catch { db_dml del_object "delete from acs_objects where object_id = :object_id" }
     incr cnt
 }
+
+
+
+
+
+# ------------------------------------------------------------
+# Cleanup Demo Users except for SysAdmin & Current User
+# ------------------------------------------------------------
+
+ns_write "<li>Cleanup demo users<br>\n"
+ns_write "<ul>\n"
+ns_write "<li>Please note that we can't delete the current user and neither the user 'System Administrator'\n"
+
+set user_ids [db_list users "
+	select	person_id
+	from	persons
+	where	person_id not in (
+			0,
+			[ad_get_user_id],
+			(select min(person_id) from persons where person_id > 0)
+		)
+"]
+
+
+foreach id $user_ids {
+
+  ns_write "<li>Nuking user \#$id ...\n"
+  set error [im_user_nuke $id]
+  if {"" == $error} {
+      ns_write " successful\n"
+  } else {
+      ns_write "<br><font color=red>$error</font>\n"
+  }
+
+}
+
+ns_write "</ul>\n"
+
+ns_write "<li>Please manually rename the user 'System Administrator' to your name and email.\n"
+ns_write "<li>To delete the remaining adminstrators, please remove them from the profile '\]po\[ Admins' and delete them via Admin - Delete Demo Data - Delete Demo Users.\n"
+
 
 
 # ------------------------------------------------------------
