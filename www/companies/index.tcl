@@ -105,6 +105,12 @@ if {!$view_companies_all_p} {
 # depending on type_id and status_id:
 #
 set menu_select_label ""
+
+# In case a Freelancer logs in show providers, not customers
+if { [im_user_is_freelance_p $current_user_id] } {
+    set type_id [im_company_type_provider]
+}
+
 if {$type_id == [im_company_type_customer]} {
     switch $status_id {
 	41 { set menu_select_label "customers_potential" }
@@ -113,6 +119,10 @@ if {$type_id == [im_company_type_customer]} {
 	default { set menu_select_label "" }
     }
 }
+
+
+
+
 
 # ---------------------------------------------------------------
 # Filter with Dynamic Fields
