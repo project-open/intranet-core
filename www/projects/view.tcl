@@ -356,7 +356,7 @@ if {$gantt_project_enabled_p} {
     set help [lang::message::lookup "" intranet-ganttproject.ProjectComponentHelp \
     "GanttProject is a free Gantt chart viewer (http://sourceforge.net/project/ganttproject/)"]
     
-    if {$read} {
+    if {$read && [im_permission $current_user_id "view_gantt_proj_detail"]} {
 	append admin_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A></li>
@@ -365,7 +365,7 @@ if {$gantt_project_enabled_p} {
         "
     }
 
-    if {$write} {
+    if {$write && [im_permission $current_user_id "view_gantt_proj_detail"]} {
         append admin_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
         >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_File "Upload GanttProject .gan or OpenProj XML File"]</A></li>
