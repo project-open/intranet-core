@@ -103,7 +103,7 @@
 -- 11400-11499	Intranet Notes Status
 -- 11500-11599	Intranet Notes Status
 -- 11600-11699	Intranet Invoice Canned Notes
--- 11700-11799	Intranet Conf Item Status
+-- 11700-11799	Intranet Conf Item Status (100)
 -- 11800-11999	Intranet Conf Item Type (200)
 -- 12000-12999	Intranet ConfDB (1000)
 -- 13000-13999	Intranet Semantic Network (1000)
