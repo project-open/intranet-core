@@ -1496,6 +1496,66 @@ ad_proc im_system_id_is_valid { sid } {
 
 
 # ---------------------------------------------------------------
+# Which Database are we running on?
+# ---------------------------------------------------------------
+
+ad_proc im_database_version { } {
+    Returns the version ID of the PostgreSQL database.
+    Returns an empty string in case of an error.
+    Example: "8.2.11"
+} {
+    set postgres_version ""
+    catch {
+	set postgres_version [exec psql --version]
+	if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $postgres_version match v]} { set postgres_version $v}
+    } err_msg
+    return $postgres_version
+}
+
+
+# ---------------------------------------------------------------
+# Get a hardware ID (MAC address of eth0
+# ---------------------------------------------------------------
+
+ad_proc im_hardware_id { } {
+    Returns a unique ID for the hardware. We use a MAC address.
+    Returns an empty string if the MAC wasn't found.
+    Example: "00:23:54:DF:77:D3"
+} {
+    set mac_address ""
+    catch {
+	set mac_line [exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
+    } err_msg
+
+    # Extract the MAC address from the mac_line
+    set mac_line [string tolower $mac_line]
+    regsub -all {:} $mac_line {-} mac_line
+    regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+
+    # return an empty string in case of an error.
+    if {"" == $mac_address} { return "" }
+
+
+    # The MAC address may be considered critical information.
+    # So let's calculate a hash value of the MAC to protect its value:
+    set mac_hash [ns_sha1 $mac_address]
+
+    # extract the last 4 groups of 4 digits
+    regexp {.*(....)(....)(....)(....)$} $mac_hash match s0 s1 s2 s3
+
+    # Calculate a sha1-hash of the sid_hash to check for
+    # badly entered characters
+    set control_digits [string range [ns_sha1 "$s0$s1$s2$s3"] 36 39]
+
+    # The full HID consists of 4 groups plus the control digits
+    set hid "$s0-$s1-$s2-$s3-$control_digits"
+
+    return $hid
+}
+
+
+
+# ---------------------------------------------------------------
 # Which version of ]po[ are we running here?
 # ---------------------------------------------------------------
 

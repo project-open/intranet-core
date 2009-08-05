@@ -498,6 +498,7 @@ ad_proc -public im_project_options {
 } {
     # Default: Exclude tasks and deleted projects
     if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
+    if {"" == $exclude_type_id} { set exclude_type_id [list [im_project_type_task] [im_project_type_ticket]] }
     if {!$exclude_tasks_p} { set exclude_subprojects_p 0 }
 
     set current_project_id $project_id

@@ -117,13 +117,8 @@ global tcl_platform
 set platform [lindex $tcl_platform(platform) 0]
 
 # get the PSQL PostgreSQL version
-set psql_version "0.0.0"
-set err_msg ""
-catch {
-    set psql_string [exec psql --version]
-    regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc
-} err_msg
-
+set psql_string [im_database_version]
+regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc
 
 # Disable "dollar quoting" on 7.4.x
 if {"7" == $psql_major} { 

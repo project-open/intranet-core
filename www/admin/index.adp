@@ -82,11 +82,6 @@
   </td>
 
   <td valign=top width="400px">
-
-      <if "" ne @upgrade_message@>
-	    <%= [im_table_with_title "Upgrade Information" $upgrade_message] %>
-      </if>
-
     <%= [im_component_bay right] %>
   </td>
 </tr>
