@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1111">1111</msg>
@@ -240,6 +240,7 @@
   <msg key="Contact_Email">Contact Email</msg>
   <msg key="Contact_Information">Contact Information</msg>
   <msg key="Contact_Phone">Contact Phone</msg>
+  <msg key="Content_Item">Content Item</msg>
   <msg key="context">context</msg>
   <msg key="Context_Help">Context Help</msg>
   <msg key="Continue">Continue</msg>
@@ -264,6 +265,7 @@
   <msg key="Create_Project">Create Project</msg>
   <msg key="Created">Created</msg>
   <msg key="Creation">Creation</msg>
+  <msg key="Creation_User">Angelegt von</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="CRM_Help">CRM Help</msg>
@@ -417,6 +419,7 @@
   <msg key="File_Storage">File Storage</msg>
   <msg key="Filed">Filed</msg>
   <msg key="Files">Files</msg>
+  <msg key="Filestorage_File">Filestorage File</msg>
   <msg key="Filter_Companies">Filter Companies</msg>
   <msg key="Filter_Offices">Filter Offices</msg>
   <msg key="Filter_Projects">Filter Projects</msg>
@@ -437,6 +440,7 @@
   <msg key="for_Trans">for Trans</msg>
   <msg key="Format_1">Format</msg>
   <msg key="Forum">Forum</msg>
+  <msg key="Forum_Topic">Forum Topic</msg>
   <msg key="Forum_Types">Forum Types</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
