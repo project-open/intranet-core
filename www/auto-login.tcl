@@ -43,7 +43,8 @@ set user_requires_manual_login_p [im_permission $user_id "require_manual_login"]
 if {$priv_exists_p && !$user_requires_manual_login_p} {
 
     # Log the dude in if the token was OK.
-    set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
+    set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p $user_requires_manual_login_p]
+
     if {$valid_login} {
         ad_user_login -forever=0 $user_id
         ad_returnredirect $url
