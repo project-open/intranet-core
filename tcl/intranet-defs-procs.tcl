@@ -27,6 +27,11 @@ ad_library {
 ad_proc -public im_uom_hour {} { return 320 }
 ad_proc -public im_uom_day {} { return 321 }
 ad_proc -public im_uom_unit {} { return 322 }
+ad_proc -public im_uom_page {} { return 323 }
+ad_proc -public im_uom_s_word {} { return 324 }
+ad_proc -public im_uom_t_word {} { return 325 }
+ad_proc -public im_uom_s_line {} { return 326 }
+ad_proc -public im_uom_t_line {} { return 327 }
 
 
 # ------------------------------------------------------------------
