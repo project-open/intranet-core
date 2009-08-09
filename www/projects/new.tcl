@@ -710,7 +710,7 @@ if {[form is_valid $form_id]} {
     }
 
     # Write Audit Trail
-    im_project_audit $project_id
+    im_project_audit -project_id $project_id
 
 
     # -----------------------------------------------------------------

@@ -31,12 +31,21 @@ ad_library {
 ad_proc -public im_audit  {
     -object_id:required
     {-object_type "" }
+    { -action update }
+    -pre_update_audit:boolean
+    {-user_id 0}
+    {-peeraddr "" }
 } {
     Generic audit for all types of objects.
+    @param object_id The object that may have changed
+    @param object_type We can save one SQL statement if the calling side already knows the type of the object
+    @param pre_update_audit Indicates an audit _before_ the actual update in order to capture
+           changes to the object outside of the ]po[ GUI
 } {
+    set err_msg ""
+	set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -user_id $user_id -peeraddr $peeraddr]
     catch {
-	set err_msg [im_audit_impl -object_id $object_id -object_type $object_type]
-    }
+    } 
 
     return $err_msg
 }
@@ -44,13 +53,13 @@ ad_proc -public im_audit  {
 
 ad_proc -public im_project_audit  {
     { -action update }
-    project_id
+    -project_id:required
 } {
     Specific audit for projects. This audit keeps track of the cost cache with each
     project, allowing for EVA Earned Value Analysis.
 } {
     catch {
-	set err_msg [im_project_audit_impl -action update $project_id]
+	set err_msg [im_project_audit_impl -action update -project_id $project_id]
     }
 
     return $err_msg
