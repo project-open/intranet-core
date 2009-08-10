@@ -33,7 +33,10 @@ if {!$valid_login} {
 	-value "user_id=$user_id, auto_login=$auto_login" \
 	-severity "Hard"
 
-    doc_return 200 "text/plain" "0,Error: Invalid Authentication for user $user_id"
+    set error_msg [lang::message::lookup "" intranet-core.Error "Error"]
+    set invalid_auth_msg [lang::message::lookup "" intranet-core.Invalid_Authentication_for_user "Invalid Authentication for user %user_id%"]
+
+    doc_return 200 "text/plain" "0,$error_msg: $invalid_auth_msg"
     ad_script_abort
 } 
 
