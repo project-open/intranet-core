@@ -288,10 +288,16 @@ ad_proc -public im_return_template {} {
     }
 }
 
-ad_proc -public im_tablex {{content "no content?"} {pad "0"} {col ""} {spa "0"} {bor "0"} {wid "100%"}} {
+ad_proc -public im_tablex {
+    {content "no content?"} 
+    {pad "0"} 
+    {col ""} 
+    {spa "0"} 
+    {bor "0"} 
+    {wid "100%"}
+} {
     Make a quick table
 } {
-
     return "
     <table cellpadding=$pad cellspacing=$spa border=$bor bgcolor=$col width=$wid>
     <tr>
