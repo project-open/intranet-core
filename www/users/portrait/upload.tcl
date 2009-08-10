@@ -29,12 +29,14 @@ if {!$write} {
 }
 
 
-if ![db_0or1row name "select 
-  first_names, last_name
-from persons 
-where person_id=:user_id"] {
-    ad_return_error "Account Unavailable" "We can't find you (user #$user_id) in the users table.  Probably your account was deleted for some reason."
-    return
+if ![db_0or1row name "
+	select	first_names, last_name
+	from	persons 
+	where	person_id=:user_id
+"] {
+    ad_return_error "Account Unavailable" "
+    We can't find you (user #$user_id) in the users table.  Probably your account was deleted for some reason."
+    ad_script_abort
 }
 
 if {$admin} {
