@@ -43,12 +43,12 @@ set bgcolor(1) " class=roweven"
 # Context sensitive help
 # ---------------------------------------------------------------
 
-set context_help "<i>No context help available</i>"
+set context_help "<i>[lang::message::lookup "" intranet-core.No_context_help_available "No context help available"]</i>"
 
 
 set general_help "
 <ul>
-  <li><A href=http://www.project-open.org/doc/">
+  <li><A href=http://www.project-open.org/doc/>
 	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 	Documentation
   </a>
@@ -57,7 +57,7 @@ set general_help "
 
 set developer_help "
 <ul>
-  <li><A href=http://www.project-open.org/doc/">
+  <li><A href=http://www.project-open.org/doc/>
 	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
       Documentation</a>
 </ul>
