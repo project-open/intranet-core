@@ -138,14 +138,14 @@ ad_proc -public im_company_office_select { select_name default company_id {offic
     }
 
     set query "
-select DISTINCT
-        o.office_id,
-	o.office_name
-from
-	im_offices o
-where
-	o.company_id = :company_id
-"
+		select DISTINCT
+		        o.office_id,
+			o.office_name
+		from
+			im_offices o
+		where
+			o.company_id = :company_id
+    "
     return [im_selection_to_select_box -translate_p 0 $bind_vars company_office_select $query $select_name $default]
 }
 
@@ -197,7 +197,12 @@ namespace eval office {
             set creation_ip [ns_conn peeraddr]
         }
 
+	# Create the office
 	set office_id [db_exec_plsql create_new_office {}]
+
+	# Record the creation
+	im_audit -object_id $office_id -action create
+
 	return $office_id
     }
 
@@ -233,36 +238,38 @@ ad_proc -public im_office_company_component { user_id company_id } {
     set office_view_page "/intranet/offices/view"
 
     set sql "
-select
-	o.*,
-	im_category_from_id(o.office_type_id) as office_type
-from
-	im_offices o,
-	im_categories c
-where
-	o.company_id = :company_id
-	and o.office_status_id = c.category_id
-	and lower(c.category) not in ('inactive')
-"
+	select
+		o.*,
+		im_category_from_id(o.office_type_id) as office_type
+	from
+		im_offices o,
+		im_categories c
+	where
+		o.company_id = :company_id
+		and o.office_status_id = c.category_id
+		and lower(c.category) not in ('inactive')
+    "
 
     set component_html "
-<table cellspacing=1 cellpadding=1>
-<tr class=rowtitle>
-  <td class=rowtitle>[_ intranet-core.Office]</td>
-  <td class=rowtitle>[_ intranet-core.Tel]</td>
-</tr>\n"
+	<table cellspacing=1 cellpadding=1>
+	<tr class=rowtitle>
+	  <td class=rowtitle>[_ intranet-core.Office]</td>
+	  <td class=rowtitle>[_ intranet-core.Tel]</td>
+	</tr>
+    "
 
     set ctr 1
     db_foreach office_list $sql {
 	append component_html "
-<tr$bgcolor([expr $ctr % 2])>
-  <td>
-    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
-  </td>
-  <td>
-    $phone
-  </td>
-</tr>\n"
+		<tr$bgcolor([expr $ctr % 2])>
+		  <td>
+		    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
+		  </td>
+		  <td>
+		    $phone
+		  </td>
+		</tr>
+        "
 	incr ctr
     }
     if {$ctr == 1} {
@@ -270,13 +277,13 @@ where
     }
 
     append component_html "
-<tr>
-  <td colspan=99 align=right>
-    <A href=/intranet/offices/>[_ intranet-core.more_]</a>
-  </td>
-</tr>
-</table>
-"
+	<tr>
+	  <td colspan=99 align=right>
+	    <A href=/intranet/offices/>[_ intranet-core.more_]</a>
+	  </td>
+	</tr>
+	</table>
+    "
 
     return $component_html
 }
@@ -328,23 +335,25 @@ ad_proc -public im_office_user_component {
     "
 
     set component_html "
-<table cellspacing=1 cellpadding=1>
-<tr class=rowtitle>
-  <td class=rowtitle>[_ intranet-core.Office]</td>
-  <td class=rowtitle>[_ intranet-core.Type]</td>
-</tr>\n"
+	<table cellspacing=1 cellpadding=1>
+	<tr class=rowtitle>
+	  <td class=rowtitle>[_ intranet-core.Office]</td>
+	  <td class=rowtitle>[_ intranet-core.Type]</td>
+	</tr>
+    "
 
     set ctr 1
     db_foreach office_list $sql {
 	append component_html "
-<tr$bgcolor([expr $ctr % 2])>
-  <td>
-    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
-  </td>
-  <td>
-    $office_type
-  </td>
-</tr>\n"
+		<tr$bgcolor([expr $ctr % 2])>
+		  <td>
+		    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
+		  </td>
+		  <td>
+		    $office_type
+		  </td>
+		</tr>
+        "
 	incr ctr
     }
     if {$ctr == 1} {
@@ -369,6 +378,8 @@ ad_proc im_office_nuke {office_id} {
     Nuke (complete delete from the database) a office
 } {
     ns_log Notice "im_office_nuke office_id=$office_id"
+
+    im_audit -object_id $office_id -action nuke
     
     set current_user_id [ad_get_user_id]
     im_office_permissions $current_user_id $office_id view read write admin

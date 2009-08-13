@@ -154,6 +154,8 @@ where
 "
     db_dml update_offices $update_sql
 
+    im_audit -object_id $office_id -action update
+
 
 db_release_unused_handles
 

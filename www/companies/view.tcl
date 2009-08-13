@@ -62,6 +62,11 @@ if {!$read} {
 # Should we bother about State and ZIP fields?
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
 
+
+# Check if the invoices was changed outside of ]po[...
+im_audit -object_id $company_id -action pre_update
+
+
 # -----------------------------------------------------------
 # Get everything about the company
 # -----------------------------------------------------------

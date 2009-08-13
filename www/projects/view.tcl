@@ -64,6 +64,10 @@ set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] E
 set gantt_project_enabled_p [util_memoize "db_string gp {select count(*) from apm_packages where package_key = 'intranet-ganttproject'}"]
 
 
+# Check if the invoices was changed outside of ]po[...
+im_project_audit -project_id $project_id -action pre_update
+
+
 # ---------------------------------------------------------------------
 # Get Everything about the project
 # ---------------------------------------------------------------------

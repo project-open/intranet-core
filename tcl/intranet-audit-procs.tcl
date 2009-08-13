@@ -31,20 +31,23 @@ ad_library {
 ad_proc -public im_audit  {
     -object_id:required
     {-object_type "" }
-    { -action update }
-    -pre_update_audit:boolean
-    {-user_id 0}
-    {-peeraddr "" }
+    {-action update }
+    {-comment "" }
 } {
     Generic audit for all types of objects.
     @param object_id The object that may have changed
     @param object_type We can save one SQL statement if the calling side already knows the type of the object
-    @param pre_update_audit Indicates an audit _before_ the actual update in order to capture
-           changes to the object outside of the ]po[ GUI
+    @param action One of {create|update|nuke|pre_update}:
+		Create represent object creation.
+		Update is the default.
+		Delete refers to a "soft" delete, marking the object as deleted
+		Nuke represents complete object deletion - should only be used for demo data.
+		Pre_update represents checks before the update of important objects (im_costs,
+		im_project). This way the system can detect changes from outside the system.
 } {
     set err_msg ""
-	set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -user_id $user_id -peeraddr $peeraddr]
     catch {
+	set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -action $action -comment $comment]
     } 
 
     return $err_msg
@@ -52,14 +55,15 @@ ad_proc -public im_audit  {
 
 
 ad_proc -public im_project_audit  {
-    { -action update }
     -project_id:required
+    { -action "update" }
+    {-comment "" }
 } {
     Specific audit for projects. This audit keeps track of the cost cache with each
     project, allowing for EVA Earned Value Analysis.
 } {
     catch {
-	set err_msg [im_project_audit_impl -action update -project_id $project_id]
+	set err_msg [im_project_audit_impl -project_id $project_id -action $action -comment $comment]
     }
 
     return $err_msg

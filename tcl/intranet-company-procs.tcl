@@ -307,7 +307,7 @@ namespace eval company {
 	{ -context_id "" }
 	{ -company_id "" }
     } {
-	Creates a new company including the companies  "Main Office".
+	Creates a new company including the companies "Main Office".
 	@author frank.bergmann@project-open.com
 
 	@return <code>company_id</code> of the newly created company
@@ -329,10 +329,11 @@ namespace eval company {
 	# the uniqueness constraint, so we won't generate an error
 	# but just return the duplicated item. 
 	set dup_sql "
-select	company_id 
-from	im_companies 
-where	company_name = :company_name 
-	or company_path = :company_path"
+		select	company_id 
+		from	im_companies 
+		where	company_name = :company_name 
+			or company_path = :company_path
+	"
 	set cid 0
 	db_foreach dup_companies $dup_sql { set cid $company_id }
 	if {0 != $cid} { return $cid }
@@ -350,6 +351,10 @@ where	company_name = :company_name
         }
 
 	set company_id [db_exec_plsql create_new_company {}]
+
+	# Record the action
+        im_audit -object_id $company_id -action create
+
 	return $company_id
     }
 }
@@ -557,6 +562,9 @@ ad_proc im_company_nuke {company_id} {
     Nuke (complete delete from the database) a company
 } {
     ns_log Notice "im_company_nuke company_id=$company_id"
+
+    # Log the action
+    im_audit -object_id $company_id -action nuke
     
     set current_user_id [ad_get_user_id]
     set user_id $current_user_id
@@ -639,9 +647,10 @@ ad_proc im_company_nuke {company_id} {
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
+
+	    im_audit -object_id $cost_id -action nuke -comment "Nuking cost as part of nuking company \#$company_id"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
-
 
 	
 	# Costs
@@ -655,6 +664,8 @@ ad_proc im_company_nuke {company_id} {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
+
+	    im_audit -object_id $cost_id -action nuke -comment "Nuking cost as part of nuking company \#$company_id."
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	

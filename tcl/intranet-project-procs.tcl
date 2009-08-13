@@ -2257,6 +2257,9 @@ ad_proc im_project_nuke {project_id} {
     im_project_permissions $current_user_id $project_id view read write admin
     if {!$admin} { return }
 
+    # Write Audit Trail
+    im_project_audit -project_id $project_id -action nuke
+
     # ---------------------------------------------------------------
     # Delete
     # ---------------------------------------------------------------
