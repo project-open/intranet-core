@@ -62,6 +62,7 @@ ad_proc -public im_project_audit  {
     Specific audit for projects. This audit keeps track of the cost cache with each
     project, allowing for EVA Earned Value Analysis.
 } {
+    set err_msg "Error in Audit module, please consult your System Administrator"
     catch {
 	set err_msg [im_project_audit_impl -project_id $project_id -action $action -comment $comment]
     }
