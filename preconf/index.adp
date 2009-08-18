@@ -107,8 +107,8 @@
     <div class="footer_hack">&nbsp;</div>	
     <div id="footer">
        Comments? Contact: 
-       <a href="mailto:support@genedata.com">
-          support@genedata.com
+       <a href="mailto:support@project/open.com">
+          support@project-open.com
        </a> 
     </div>
   
