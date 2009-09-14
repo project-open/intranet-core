@@ -56,6 +56,8 @@ ad_proc -public im_menu_update_hierarchy {
 			m.parent_menu_id = mm.menu_id
 			and m.tree_sortkey is null
 			and mm.tree_sortkey is not null
+		order by
+			parent_sortkey
 	"
 
 	set ctr 0
