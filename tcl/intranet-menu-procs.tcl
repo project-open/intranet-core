@@ -59,7 +59,14 @@ ad_proc -public im_menu_update_hierarchy {
 	"
 
 	set ctr 0
+	set old_parent_sortkey ""
 	db_foreach update_menus $sql {
+
+	    if {$old_parent_sortkey != $parent_sortkey} {
+                set old_parent_sortkey $parent_sortkey
+                set ctr 0
+            }
+
 	    # the new tree_sortkey is the parents tree_sortkey plus a
 	    # current letter starting with "A", "B", ...
 	    set tree_sortkey "$parent_sortkey[string range $chars $ctr $ctr]"
