@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="it_IT" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="it_IT" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Seleziona --</msg>
   <msg key="1111">1111</msg>
@@ -11,6 +11,7 @@
   <msg key="A_-_Test_approved">A - Prova superata</msg>
   <msg key="ABC-Bank_EUR">Banca ABC EUR</msg>
   <msg key="About_You">Profilo personale</msg>
+  <msg key="Absence">Assenza</msg>
   <msg key="Absence_Types">Tipo di assenza</msg>
   <msg key="Absences">Assenze</msg>
   <msg key="Absenzen">Vacanze</msg>
@@ -240,7 +241,7 @@
   <msg key="Conf_Item_Status">Stato</msg>
   <msg key="Conf_Item_Type">Tipo</msg>
   <msg key="Conf_Item_Version">Versione elem. conf.</msg>
-  <msg key="Conf_Items">Elementi di conf.</msg>
+  <msg key="Conf_Items">Elementi config.</msg>
   <msg key="Confirm">Conferma</msg>
   <msg key="Consulting__IT">Consulenza &amp;amp; IT</msg>
   <msg key="Consulting__Rollout">Consulenza &amp;amp; Rollout</msg>
@@ -250,6 +251,7 @@
   <msg key="Contact_Email">E-mail contatto</msg>
   <msg key="Contact_Information">Dati di contatto</msg>
   <msg key="Contact_Phone">Telefono di contatto</msg>
+  <msg key="Content_Item">Elemento contenuto</msg>
   <msg key="context">contesto</msg>
   <msg key="Context_Help">Aiuto contestuale</msg>
   <msg key="Continue">Continua</msg>
@@ -274,6 +276,7 @@
   <msg key="Create_Project">Crea progetto</msg>
   <msg key="Created">Creato</msg>
   <msg key="Creation">Creazione</msg>
+  <msg key="Creation_User">Aggiunto da</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
@@ -417,7 +420,7 @@
   <msg key="Export_Projects_CSV">Esporta progetti in CSV</msg>
   <msg key="Export_Projects_to_CSV">Esporta progetti come CSV</msg>
   <msg key="Export_Providers_to_CSV">Esporta fornitori come CSV</msg>
-  <msg key="Export_Users_Cube">Esporta &quot;cubo&quot; utenti</msg>
+  <msg key="Export_Users_Cube">Esporta «cubo» utenti</msg>
   <msg key="Export_Users_to_CSV">Esporta utenti come CSV</msg>
   <msg key="Extra_from">Extra da</msg>
   <msg key="Extra_where">Extra dove</msg>
@@ -431,6 +434,7 @@
   <msg key="File_Storage">File Storage</msg>
   <msg key="Filed">Archiviato</msg>
   <msg key="Files">File</msg>
+  <msg key="Filestorage_File">File filestorage</msg>
   <msg key="Filter_Companies">Filtra Aziende</msg>
   <msg key="Filter_Offices">Filtra uffici</msg>
   <msg key="Filter_Projects">Filtra Progetti</msg>
@@ -452,6 +456,7 @@
   <msg key="for_Trans">Da tradurre</msg>
   <msg key="Format_1">Formato</msg>
   <msg key="Forum">Forum</msg>
+  <msg key="Forum_Topic">Argomento forum</msg>
   <msg key="Forum_Types">Tipi di messaggio</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
@@ -580,6 +585,7 @@
   <msg key="Help">Aiuto</msg>
   <msg key="Help_Request">Richieste di aiuto</msg>
   <msg key="Helpdesk">Helpdesk</msg>
+  <msg key="HelpPage">Pagina d'aiuto</msg>
   <msg key="Here_is_the_error">Ecco l'errore:</msg>
   <msg key="High">Alta</msg>
   <msg key="High_Quality">Alta qualità</msg>
@@ -1159,9 +1165,11 @@
   <msg key="nl_NL">nl_NL</msg>
   <msg key="No">No</msg>
   <msg key="no">no</msg>
+  <msg key="No_context_help_available">Nessun aiuto contestuale disponibile.</msg>
   <msg key="No_Email_Has_Been_Sent">Non è stata inviata nessuna mail</msg>
   <msg key="No_Importance">Importanza nulla</msg>
   <msg key="No_members_found">Non è stato trovato nessun membro</msg>
+  <msg key="No_name_for_project_id">Nome progetto %project_id% assente</msg>
   <msg key="No_offices_found">Non è stato trovato nessun ufficio</msg>
   <msg key="No_portrait_for_this_user">Nessuna foto per quest'utente.</msg>
   <msg key="Non-IT">Non-IT</msg>
@@ -1211,6 +1219,7 @@
   <msg key="One_User">Un utente</msg>
   <msg key="Online_Time">Tempo online</msg>
   <msg key="Open">Aperto</msg>
+  <msg key="OpenACS">OpenACS</msg>
   <msg key="OpenACS_Developer_Tools">Strumenti sviluppo OpenACS</msg>
   <msg key="OpenACS_Package_Manager">Pacchetto gestione OpenACS</msg>
   <msg key="OpenACS_platform">Piattaforma OpenACS</msg>
@@ -1270,6 +1279,7 @@
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">Specialità PL</msg>
   <msg key="Please_Select">Seleziona</msg>
+  <msg key="Please_Select_Type_for_Object">Scegliere un tipo di %object_type_l10n%</msg>
   <msg key="PM_Help">Aiuto PM</msg>
   <msg key="PO_Admins">Amministratori di sistema</msg>
   <msg key="po_admins">Amministratori PO</msg>

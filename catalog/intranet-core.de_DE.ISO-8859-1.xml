@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1111">1111</msg>
@@ -11,14 +11,16 @@
   <msg key="A_-_Test_approved">A - Test bestanden</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">Persönliche Daten</msg>
+  <msg key="Absence_Types">Abwesenheitstypen</msg>
   <msg key="Absences">Abwesenheiten</msg>
   <msg key="Access_denied">Zugang verweigert</msg>
   <msg key="Account_Deleted">Konto gelöscht</msg>
   <msg key="Account_deleted">Konto gelöscht</msg>
   <msg key="Account_Managers">Account-Manager</msg>
   <msg key="Accounting">Rechnungswesen</msg>
-  <msg key="accounting"></msg>
+  <msg key="accounting">Rechnungswesen</msg>
   <msg key="Accounting_contact">Rechnungskontakt</msg>
+  <msg key="Action_Go">Go</msg>
   <msg key="activate">aktivieren</msg>
   <msg key="Active">Aktiv</msg>
   <msg key="Active_Customers">Aktive Kunden</msg>
@@ -106,6 +108,7 @@
   <msg key="B">B</msg>
   <msg key="b">B</msg>
   <msg key="B_-_No_the_best">B - Nicht besonders gut</msg>
+  <msg key="Backup">Backup</msg>
   <msg key="Backup_and_Restore_blurb">Sichern der Anwendungsdaten oder Wiederherstellung gesicherter Anwendungsdaten</msg>
   <msg key="Bad_Office">Fehlerhafter Firmensitz</msg>
   <msg key="Bad_User">Fehlerhafter Benutzer</msg>
@@ -143,6 +146,8 @@
   <msg key="c">C</msg>
   <msg key="ca">ca</msg>
   <msg key="ca_ES">ca_ES</msg>
+  <msg key="Cache_Flush">Cache leeren</msg>
+  <msg key="Cache_Status">Zustand des Caches</msg>
   <msg key="CAD">CAD</msg>
   <msg key="Caja_Ahorros_EUR">Sparkasse EUR</msg>
   <msg key="Calendar">Kalender</msg>
@@ -182,6 +187,8 @@
   <msg key="Clone_Project_Help">Um ein Projekt einzurichten können Sie ein existierendes Projekt klonen.</msg>
   <msg key="Close">Schließen</msg>
   <msg key="Closed">Geschlossen</msg>
+  <msg key="CollabKM_Help">Zusammenarbeit Hilfe</msg>
+  <msg key="Collaboration">Zusammenarbeit</msg>
   <msg key="Colombia">Kolumbien</msg>
   <msg key="Column_Id">SpaltenId</msg>
   <msg key="Column_Name">Spaltenname</msg>
@@ -194,12 +201,16 @@
   <msg key="Company">Firma</msg>
   <msg key="Company_Documents">Firmendokumente</msg>
   <msg key="company_employee">Mitarbeiter</msg>
+  <msg key="Company_Information">Unternehmensstammdaten</msg>
   <msg key="Company_Invoice">Kundenrechnung</msg>
   <msg key="Company_Name">Firmenname</msg>
   <msg key="Company_Project_Nr">Kundenprojekt-Nummer</msg>
   <msg key="Company_Short_Name">Firmenkurzname</msg>
   <msg key="Company_Status">Firmenstatus</msg>
   <msg key="Company_Status_1">Firmenstatus</msg>
+  <msg key="Company_Survey_Component">Umfragemodul</msg>
+  <msg key="Company_Trados_Matrix">CAT Matrix</msg>
+  <msg key="Company_Translation_Prices">Übersetzungspreisliste</msg>
   <msg key="Company_Type">Firmentyp</msg>
   <msg key="Company_Type_1">Firmentyp</msg>
   <msg key="Company_Types">Firmentyp</msg>
@@ -208,6 +219,7 @@
   <msg key="Conf_Item_Nr">Nr</msg>
   <msg key="Conf_Item_Status">Status</msg>
   <msg key="Conf_Item_Type">Typ</msg>
+  <msg key="Conf_Items">Konf Elemente</msg>
   <msg key="Confirm">Bestätigen</msg>
   <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
@@ -217,6 +229,7 @@
   <msg key="Contact_Information">Kontaktinformationen</msg>
   <msg key="Contact_Phone">Telefonnummer</msg>
   <msg key="context">Kontext</msg>
+  <msg key="Context_Help">Kontexthilfe</msg>
   <msg key="Continue">Fortfahren</msg>
   <msg key="Contract_Value">Vertragswert</msg>
   <msg key="Corel_Catalyst__30">Corel Catalyst 3.0</msg>
@@ -237,6 +250,7 @@
   <msg key="Create_Project">Neues Projekt</msg>
   <msg key="Created">Erstellt</msg>
   <msg key="Creation">Registriert</msg>
+  <msg key="Creation_User">Angelegt von</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="CRM_Sales">CRM</msg>
@@ -259,7 +273,7 @@
   <msg key="da_DK">da_DK</msg>
   <msg key="Dangerous">Vorsicht!!</msg>
   <msg key="Data_Access_1">Datenzugriff</msg>
-  <msg key="Date">datum</msg>
+  <msg key="Date">Datum</msg>
   <msg key="Day">Tag</msg>
   <msg key="de">de</msg>
   <msg key="de_CH">de_CH</msg>
@@ -267,6 +281,10 @@
   <msg key="Debit_advice">Lastschrift</msg>
   <msg key="Declined">Abgelehnt</msg>
   <msg key="default">Right Blue</msg>
+  <msg key="default_bill_template_id">Vorlage Zuliefererrechnung</msg>
+  <msg key="default_delnote_template_id">Vorlage Lieferschein</msg>
+  <msg key="default_invoice_template_id">Rechnungsvorlage</msg>
+  <msg key="default_po_template_id">Vorlage Auftragsbestätigung</msg>
   <msg key="Del">Löschen</msg>
   <msg key="Delete">Löschen</msg>
   <msg key="delete">löschen</msg>
@@ -326,6 +344,7 @@
   <msg key="en_IE">en_IE</msg>
   <msg key="en_UK">en_UK</msg>
   <msg key="en_US">en_US</msg>
+  <msg key="End_Date">Lieferdatum</msg>
   <msg key="ERROR">Fehler</msg>
   <msg key="es">es</msg>
   <msg key="es_AR">es_AR</msg>
@@ -344,6 +363,7 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Execution_Project_Help">Ein &quot;Ausführungsprojekt&quot; ist eine Kopie eines Projekts ohne Verweise auf das ursprüngliche Projekt um die Anonymität des Kunden zu bewahren.</msg>
+  <msg key="Expected_Quality">Erwartete Qualität</msg>
   <msg key="Expense_Item">kostenaufwendiger Artikel</msg>
   <msg key="Expense_Report">Ausgaben-Report</msg>
   <msg key="Export_Companies_CSV">Firmen-CSV exportieren</msg>
@@ -490,7 +510,7 @@
   <msg key="Home_Line_2">Privat Zeile</msg>
   <msg key="Home_Page">Webseite</msg>
   <msg key="Home_Page_Help">Home Page Hilfe</msg>
-  <msg key="Home_Phone">Privat Telefon</msg>
+  <msg key="Home_Phone">Privatnummer</msg>
   <msg key="Home_phone">Privat Telefon</msg>
   <msg key="Home_Postal_Code">Privat PLZ</msg>
   <msg key="Home_ZIP">Privat PLZ</msg>
@@ -595,6 +615,7 @@
   <msg key="Lit">Litauen</msg>
   <msg key="Lithuania">Litauen</msg>
   <msg key="Loc">Loc</msg>
+  <msg key="LOC_Tools">Lokalisierungstools</msg>
   <msg key="Localization">Lokalisierung</msg>
   <msg key="Localization_Project">Lokalisierungsprojekt</msg>
   <msg key="Locate_user_by">Nach Benutzer suchen</msg>
@@ -630,6 +651,7 @@
   <msg key="lt_Alchemy_Catalyst_40_T">Alchemy Catalyst 4.0 T</msg>
   <msg key="lt_Alchemy_Catalyst_50__">Alchemy Catalyst 5.0</msg>
   <msg key="lt_Alleintranet-timeshee">Alle</msg>
+  <msg key="lt_Allintranet-coreObjec">Alle Objekte</msg>
   <msg key="lt_Allintranet-timesheet">Alle</msg>
   <msg key="lt_Also_please_make_sure">Bitte stellen sie sicher, daß der Kunde nicht mehrfach mit ähnlichen Namen definiert wurde.</msg>
   <msg key="lt_An_office_with_the_sa">Ein Firmensitz mit dem selben Namen oder Pfad existiert bereits. Bitte wählen sie einen anderen Namen oder Pfad.</msg>
@@ -643,6 +665,7 @@
   <msg key="lt_Bosnia_and_Herzegovin">Bosnien und Herzogovina</msg>
   <msg key="lt_Bug_Tracker_Container">Bugtracker Container</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test nicht bestanden</msg>
+  <msg key="lt_Calculates_Invoices_-">Nettomarge (der zwei Vormonate)</msg>
   <msg key="lt_Cant_find_the_project">Projekt '%project_id%' nicht gefunden</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Sie können diese Firma nicht löschen, da Zahlungen vorliegen.</msg>
   <msg key="lt_Change_the_accounting">Ändern des Rechnungskontakts</msg>
@@ -657,12 +680,14 @@
   <msg key="lt_Confirm_Nuking_first_">Soll %first_names% %last_name% wirklich komplett gelöscht werden?</msg>
   <msg key="lt_Confirm_the_nuking_of">Bestätigung für das komplette löschen von</msg>
   <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
+  <msg key="lt_Counts_how_many_custo">Neue Kunden pro Monat</msg>
+  <msg key="lt_Counts_the_number_of_">Aktive Kunden im letzten Monat</msg>
   <msg key="lt_Create_a_new_Discussi">Neue Diskussion</msg>
   <msg key="lt_Create_folder_structu">Neue Unterprojekte für jede Sprache erzeugen, zusammen mit einer geeigneten Verzeichnisstruktur</msg>
   <msg key="lt_Create_the_new_folder">Neue Verzeichnisstrukture</msg>
   <msg key="lt_Customersintranet-fil">Kunden</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}] </msg>
-  <msg key="lt_Dear_first_names_from">Sehr geehrte(r) Frau/Herr %first_names_from_search%,
+  <msg key="lt_Dear_first_names_from">Sehr geehrte(r) Frau/Herr %last_name_from_search%,
 
 Sie wurden als %role_name%
 zu %object_name%
@@ -734,6 +759,7 @@ Passwort: %password%
   <msg key="lt_IBM_Translation_Workb">IBM Übersetzung Werkbank</msg>
   <msg key="lt_Import_Company_Contac">Kontaktliste (CSV) importieren</msg>
   <msg key="lt_Import_Projects_from_">Projekt von H:\\ importieren</msg>
+  <msg key="lt_In_Process_Work_is_st">Offen: Projekt startet sofort, Potentiell: Könnte ein Projekt werden, Abgeschlossen: Bereits geliefert und abgeschlossen...</msg>
   <msg key="lt_Incidentintranet-foru">Zwischenfall</msg>
   <msg key="lt_Insufficient_Privileg">Unzureichene Zugriffsrechte</msg>
   <msg key="lt_Internal_error_unknow">Interner Fehler: Unbekannter View: '%view_name%' </msg>
@@ -765,6 +791,7 @@ Passwort: %password%
   <msg key="lt_Locate_your_new_accou">Rechnungskontakt angeben</msg>
   <msg key="lt_Locate_your_new_prima">Primärkontakt angeben</msg>
   <msg key="lt_lt_Project_Manager___">Projektleiter</msg>
+  <msg key="lt_Main_projects_no_subp">Neue Projekte pro Monat </msg>
   <msg key="lt_make_accounting_conta">Neuer Rechnungskontakt</msg>
   <msg key="lt_Make_the_new_client_c">Neuen Kundenkontakt %new_company_employee_link% als Mitglied von %company_name% aufnehmen. </msg>
   <msg key="lt_Make_the_new_client_c_1">Neuen Kundenkontakt %company_employee_link% als Mitglied von %company_name% aufnehmen. </msg>
@@ -777,6 +804,7 @@ Passwort: %password%
   <msg key="lt_Meineintranet-timeshe">Meine</msg>
   <msg key="lt_Member_state_user_sta">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
   <msg key="lt_Member_state_user_sta_1">Mitgliedsstatus: %user_state% (%activate_link%, %delete_link%) </msg>
+  <msg key="lt_Mineintranet-coreObje">Meine</msg>
   <msg key="lt_Mineintranet-timeshee">Meine</msg>
   <msg key="lt_Missing_group_id_and_">Fehlende Gruppen-ID und Pfad</msg>
   <msg key="lt_Mitarbeiterintranet-f">Mitarbeiter</msg>
@@ -813,7 +841,7 @@ Passwort: %password%
   <msg key="lt_Office_Equipment_Prov">Bürobedarf Zulieferer</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Firmensitz</msg>
   <msg key="lt_Office_office_id_does">Firmensitz #office_id existiert nicht.</msg>
-  <msg key="lt_Password_Confirmation">Password Bestätigung</msg>
+  <msg key="lt_Password_Confirmation">Passwort-Bestätigung</msg>
   <msg key="lt_Pastintranet-timeshee">Vergangen</msg>
   <msg key="lt_Personal_Home_Page_UR">URL der persönlichen Homepage</msg>
   <msg key="lt_Please_back_up_and_tr">Bitte kehren sie auf die letzte Seite zurück und versuchen sie es noch einmal</msg>
@@ -834,6 +862,7 @@ Passwort: %password%
   <msg key="lt_Preinstalled_Hard_Dis">Vorinstallierte Festplatte</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
   <msg key="lt_Project_Translation_D">Übersetzungsdetails</msg>
+  <msg key="lt_Provider_bills_with_e">Externe Kosten</msg>
   <msg key="lt_Quotes_in_Project_Nam">Anführungszeichen sind im Projektnamen nicht erlaubt</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Anführungszeichen sind in der Projektnummer nicht erlaubt</msg>
   <msg key="lt_Quotes_in_Project_Pat">Anführungszeichen sind im Projektverzeichnis nicht erlaubt</msg>
@@ -857,14 +886,17 @@ Passwort: %password%
   <msg key="lt_Select_topics_here_fo">Wählen sie einen Beitrag für eine Aktion</msg>
   <msg key="lt_Send_user_new_passwor">Senden sie dem Benutzer ein neues Password per E-Mail</msg>
   <msg key="lt_Senior_Managersintran">Geschäftsführung</msg>
+  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
   <msg key="lt_Shows_the_status_of_a">Projektstatus anzeigen</msg>
   <msg key="lt_Slashes__in_Project_P">Schrägstriche ('/') sind im Projektpfad nicht erlaubt</msg>
   <msg key="lt_So_you_probably_dont_">Sie wollen wahrscheinlich nicht alle Daten zerstören, oder ?!?</msg>
   <msg key="lt_Software_Company_Comp">Softwarefirma</msg>
   <msg key="lt_Software_Company_Cust">Software Firma (Kunde)</msg>
+  <msg key="lt_Software_Release_Item">Software Release Item</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Successfully_finished">Erfolgreich beendet</msg>
   <msg key="lt_Taskintranet-forumTas">Aufgaben</msg>
+  <msg key="lt_The_customers_referen">Kundenreferenznr. für dieses Projekt</msg>
   <msg key="lt_The_database_choked_o">Die Datenbank hatte Probleme mit unserem Update:</msg>
   <msg key="lt_the_email_email_is_al">Diese Email %email% ist bereits in der Datenbank</msg>
   <msg key="lt_The_English_translati">Die englische 'Übersetzung' sollte mit dem Kategorienamen übereinstimmen.</msg>
@@ -875,7 +907,7 @@ Passwort: %password%
   <msg key="lt_The_specified_project">Die angegebene Projektnummer %project_nr%, ist bereits vorhanden - bitte wählen Sie eine andere, eindeutige Projektnummer</msg>
   <msg key="lt_The_system_was_unable">Das System war nicht in der Lage die E-Mail zu senden. Bitte benachrichtigen Sie den Benutzer persönlich. Dieses Problem wurde wahrscheinlich durch eine falsche Konfiguration Ihres E-Mail-Systems verursacht.</msg>
   <msg key="lt_There_are_currently_n">Zu den ausgewählten Kriterien gibt es zur Zeit keine Einträge </msg>
-  <msg key="lt_There_is_a_difference">Es gibt einen Unterschied zwischen &amp;amp;quot;Paying Client&amp;amp;quot; und &amp;amp;quot;Final Client&amp;amp;quot;. Hier wollen wir wissen von wem wir das Geld erhalten werden...</msg>
+  <msg key="lt_There_is_a_difference">Es gibt einen Unterschied zwischen ?Zahlender Kunde? und ?Endkunde?. Hier wollen wir wissen von wem wir das Geld erhalten werden...</msg>
   <msg key="lt_There_is_already_a_vi">Es gibt bereits ein %view_similar_user_link% mit der E-Mail '%email%' in der Datenbank.</msg>
   <msg key="lt_This_command_destroys">Dieses Kommando &quot;zerstört&quot; das gesamte System und ersetzt alle Namen und Text (Projeknamen, Projektbeschreibungen, Kunden, Benutzer, ...) mit &quot;anonymisierten&quot; Zeichenketten. Diese Funktion dient dazu, auf Basis von echten Daten Demonstrationssystem zu erzeugen.</msg>
   <msg key="lt_This_file_has_generat">Diese Datei hat einen Fehler erzeugt.</msg>
@@ -976,6 +1008,7 @@ Passwort: %password%
   <msg key="Menu_Restore">Menü wiederherstellen</msg>
   <msg key="Menus">Menüs</msg>
   <msg key="Mexico">Mexico</msg>
+  <msg key="milestone_p">Meilenstein?</msg>
   <msg key="Milestones">Meilensteine</msg>
   <msg key="Mine">Meine</msg>
   <msg key="mk">mk</msg>
@@ -1018,6 +1051,7 @@ Passwort: %password%
   <msg key="No_Email_Has_Been_Sent">Es wurde keine Email ausgesandt</msg>
   <msg key="No_Importance">keine Wichtigkeit</msg>
   <msg key="No_members_found">Keine Mitglieder gefunden</msg>
+  <msg key="No_name_for_project_id">Name nicht definiert für Projekt %project_id%</msg>
   <msg key="No_offices_found">Keine Firmensitze gefunden</msg>
   <msg key="No_portrait_for_this_user">Kein Porträt für diesen Benutzer.</msg>
   <msg key="Non-IT">Non-IT</msg>
@@ -1028,6 +1062,7 @@ Passwort: %password%
   <msg key="Notes">Notizen</msg>
   <msg key="Notify">Benachrichtigen</msg>
   <msg key="Notify_added_user">Neuen Benutzer benachrichtigen</msg>
+  <msg key="Nr">Nr.</msg>
   <msg key="Nuke_All_Demo_Users">Alle Demobenutzer entfernen</msg>
   <msg key="Nuke_Checked_Projects">geprüfte Projekte Entfernen</msg>
   <msg key="Nuke_Checked_Users">geprüfte Benutzer entfernen</msg>
@@ -1064,6 +1099,7 @@ Passwort: %password%
   <msg key="Open">Offen</msg>
   <msg key="OpenACS_Package_Manager">OpenACS Packet-Verwaltung</msg>
   <msg key="OpenACS_platform">OpenACS Platform</msg>
+  <msg key="Operating_System">Betriebssystem</msg>
   <msg key="Optional">Optional</msg>
   <msg key="or_by">oder </msg>
   <msg key="or_Last_Name">oder Nachname</msg>
@@ -1074,6 +1110,7 @@ Passwort: %password%
   <msg key="Other">Other</msg>
   <msg key="Otherr">Other</msg>
   <msg key="Ouch">Autsch!</msg>
+  <msg key="Our_employees_related">Unsere Account Manager</msg>
   <msg key="Outstanding">Offene Forderung</msg>
   <msg key="p">P</msg>
   <msg key="Package">Paket</msg>
@@ -1092,7 +1129,7 @@ Passwort: %password%
   <msg key="Passolo_30">Pasolo 3.0</msg>
   <msg key="Passolo_35">Pasolo 3.5</msg>
   <msg key="Passolo_40">Pasolo 4.0</msg>
-  <msg key="Password">Password</msg>
+  <msg key="Password">Passwort</msg>
   <msg key="Password_Updated">Password Änderung</msg>
   <msg key="Past">Vergangen</msg>
   <msg key="Past_Due">Übefällig</msg>
@@ -1133,6 +1170,7 @@ Passwort: %password%
   <msg key="Prelim_Profit">Prelim Profit</msg>
   <msg key="Premium_Quality">Höchste Qualität</msg>
   <msg key="Primary_contact">Primärkontakt</msg>
+  <msg key="Prio">Prio.</msg>
   <msg key="Prio_1">Prio</msg>
   <msg key="Prio_HJ_1">Prio HJ</msg>
   <msg key="Profile">Profil</msg>
@@ -1145,6 +1183,7 @@ Passwort: %password%
   <msg key="Profile_Helpdesk">Helpdesk</msg>
   <msg key="Profile_HR_Managers">Personalabteilung</msg>
   <msg key="Profile_ITSM_Vertical">ITSM Vertical</msg>
+  <msg key="Profile_Localizers">Lokalisierer</msg>
   <msg key="Profile_P_O_Admins">]po[ Admins</msg>
   <msg key="Profile_Project_Managers">Projektmanager</msg>
   <msg key="Profile_Sales">Verkauf</msg>
@@ -1156,7 +1195,7 @@ Passwort: %password%
   <msg key="Program_Enhan_BKB">Program Erweiterung (PE)</msg>
   <msg key="Program_Enhan_K">Kleinauftrag Konzern</msg>
   <msg key="Program_Enhancement">Programmerweiterung</msg>
-  <msg key="Project">Projekt</msg>
+  <msg key="Project">Projektnr.</msg>
   <msg key="Project_">Projekt #</msg>
   <msg key="Project_Base_Data">Basisdaten</msg>
   <msg key="Project_Budget">Projekt Budget</msg>
@@ -1172,12 +1211,14 @@ Passwort: %password%
   <msg key="Project_Members">Projektteam</msg>
   <msg key="Project_Name">Projektname</msg>
   <msg key="Project_name">Projektname</msg>
-  <msg key="Project_Nr">P-Nummer</msg>
+  <msg key="Project_Nr">Projektnr.</msg>
   <msg key="Project_nr">Projektnr.</msg>
   <msg key="Project_project_name">Projekt: %project_name% </msg>
   <msg key="Project_Status">Projektstatus</msg>
+  <msg key="Project_Survey_Component">Projektumfragen</msg>
   <msg key="Project_Task">Projekt Aufgabe</msg>
   <msg key="Project_Type">Projekttyp</msg>
+  <msg key="ProjectOpen_News">]project-open[ News</msg>
   <msg key="Projects">Projekte</msg>
   <msg key="Projects_Admin">Projekt Admin</msg>
   <msg key="Projekt_Konzern">Projekt Konzern</msg>
@@ -1232,7 +1273,7 @@ Passwort: %password%
   <msg key="Return_To_Previous_Page">Zurück zur letzten Seite</msg>
   <msg key="RFC">RFC</msg>
   <msg key="RFC_Priority">RFC Prioritaet</msg>
-  <msg key="RFQs">RFQs</msg>
+  <msg key="RFQs">Ausschreibungen</msg>
   <msg key="ro">ro</msg>
   <msg key="Romania">Rumänien</msg>
   <msg key="RR_Column_1">RR Spalte</msg>
@@ -1263,6 +1304,7 @@ Passwort: %password%
   <msg key="Search">Suchen</msg>
   <msg key="Search_for_a_user">Benutzersuche</msg>
   <msg key="Search_for_User">Benutzersuche</msg>
+  <msg key="Search_Go_Alt">Suchen</msg>
   <msg key="See_the_list_of">Liste sehen</msg>
   <msg key="Sel">Sel</msg>
   <msg key="Select">Auswählen</msg>
@@ -1287,11 +1329,13 @@ Passwort: %password%
   <msg key="Software_Company">Software Firma</msg>
   <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Maintenance">Softwarewartung</msg>
+  <msg key="Software_Release">Software-Release</msg>
   <msg key="Software_Testing">Software Test</msg>
   <msg key="Software_Updates">Softwareupdates</msg>
   <msg key="Some_Importance">einige Wichtigkeit</msg>
   <msg key="Sort_Order">Sortierreihenfolge</msg>
-  <msg key="Source_Language">Quellensprache</msg>
+  <msg key="Source_Language">Ausgangssprache</msg>
+  <msg key="source_language_id">Ausgangssprache</msg>
   <msg key="South Africa">Südafrika</msg>
   <msg key="South_Africa">Südafrika</msg>
   <msg key="Spain">Spanien</msg>
@@ -1310,7 +1354,7 @@ Passwort: %password%
   <msg key="Status">Status</msg>
   <msg key="Strategic_Consulting">Strategische Beratung</msg>
   <msg key="Sub_Projects">Projekt Hierarchie</msg>
-  <msg key="Subjects">Subjekte</msg>
+  <msg key="Subjects">Fachgebiete</msg>
   <msg key="Submit">Absenden</msg>
   <msg key="Summary">Übersicht</msg>
   <msg key="Supervisor">Betreuer</msg>
@@ -1320,6 +1364,7 @@ Passwort: %password%
   <msg key="sw">sw</msg>
   <msg key="Sweden">Schweden</msg>
   <msg key="Switzerland">Schweiz</msg>
+  <msg key="Sworn_Language">Beeidigte Sprache(n)</msg>
   <msg key="Syria">Syrien</msg>
   <msg key="SysConfig">Sys Config</msg>
   <msg key="System_Administrator">Systemadministrator</msg>
@@ -1354,6 +1399,7 @@ Passwort: %password%
   <msg key="Timesheet">Zeiterfassung</msg>
   <msg key="Timesheet_Cost">Zeiterfassung</msg>
   <msg key="tl">tl</msg>
+  <msg key="TM_Tools">CAT Tools</msg>
   <msg key="Today">Heute</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
   <msg key="tr">tr</msg>
@@ -1433,10 +1479,12 @@ Passwort: %password%
   <msg key="User_Matrix">Benutzermatrix</msg>
   <msg key="User_name">Benutzer Name</msg>
   <msg key="User_search">Benutzer Suche</msg>
+  <msg key="User_Skills">Benutzerskills</msg>
   <msg key="User_state">Benutzer Status</msg>
   <msg key="User_Status">Benutzer Status</msg>
+  <msg key="User_Survey_Component">Benutzer-bezogene Umfrage</msg>
   <msg key="User_Type">Benutzer Typ</msg>
-  <msg key="User_Types">Benutzer Typen</msg>
+  <msg key="User_Types">Benutzer-typen</msg>
   <msg key="Username">Systemname</msg>
   <msg key="Users">Benutzer</msg>
   <msg key="Users_Contact_Note">Kontact Notizen</msg>
@@ -1463,6 +1511,7 @@ Passwort: %password%
   <msg key="Web_Site_Development">Web Site Development</msg>
   <msg key="Week">Woche</msg>
   <msg key="Welcome_to_po">Willkommen bei ]project-open[</msg>
+  <msg key="Welcome_User_Name">Herzlich Willkommen, %user_name%!</msg>
   <msg key="Whos_Online">Wer ist Online?</msg>
   <msg key="Wiki">Wiki</msg>
   <msg key="Windows_95">Windows 95</msg>
@@ -1484,7 +1533,7 @@ Passwort: %password%
   <msg key="Work_Country">Arbeit Land</msg>
   <msg key="Work_Line_1">Arbeit Zeile</msg>
   <msg key="Work_Line_2">Arbeit Zeile</msg>
-  <msg key="Work_Phone">Arbeit Telefon</msg>
+  <msg key="Work_Phone">Geschäftsnummer</msg>
   <msg key="Work_phone">Arbeit Telefon</msg>
   <msg key="Work_Postal_Code">Arbeit Postleitzahl</msg>
   <msg key="Work_ZIP">Arbeit Postleitzahl</msg>

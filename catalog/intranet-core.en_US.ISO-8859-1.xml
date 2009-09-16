@@ -11,6 +11,7 @@
   <msg key="A_-_Test_approved">A - Test Approved</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">About You</msg>
+  <msg key="Absence">Absence</msg>
   <msg key="Absence_Types">Absence Types</msg>
   <msg key="Absences">Absences</msg>
   <msg key="Access_denied">Access Denied</msg>
@@ -568,6 +569,7 @@
   <msg key="Help">Help</msg>
   <msg key="Help_Request">Help Request</msg>
   <msg key="Helpdesk">Helpdesk</msg>
+  <msg key="HelpPage">Help Page</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
   <msg key="High">High</msg>
   <msg key="High_Quality">High Quality</msg>
@@ -1187,9 +1189,11 @@ other way for the user to find out.</msg>
   <msg key="nl_NL">nl_NL</msg>
   <msg key="No">No</msg>
   <msg key="no">no</msg>
+  <msg key="No_context_help_available">No context help available.</msg>
   <msg key="No_Email_Has_Been_Sent">No Email has been sent</msg>
   <msg key="No_Importance">No Importance</msg>
   <msg key="No_members_found">No members found</msg>
+  <msg key="No_name_for_project_id">No name for project %project_id%</msg>
   <msg key="No_offices_found">No offices found</msg>
   <msg key="No_portrait_for_this_user">No portrait for this user.</msg>
   <msg key="Non-IT">Non-IT</msg>
@@ -1238,6 +1242,7 @@ other way for the user to find out.</msg>
   <msg key="One_User">One User</msg>
   <msg key="Online_Time">Online Time</msg>
   <msg key="Open">Open</msg>
+  <msg key="OpenACS">OpenACS</msg>
   <msg key="OpenACS_platform">OpenACS platform</msg>
   <msg key="Operating_System">Operating System</msg>
   <msg key="Optional">Optional</msg>
@@ -1294,6 +1299,7 @@ other way for the user to find out.</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
   <msg key="Please_Select">Please select</msg>
+  <msg key="Please_Select_Type_for_Object">Please select a type of %object_type_l10n%</msg>
   <msg key="PM_Help">PM Help</msg>
   <msg key="PO_Admins">P/O Admins</msg>
   <msg key="po_admins">P/O Admins</msg>
@@ -1363,6 +1369,7 @@ other way for the user to find out.</msg>
   <msg key="Project_nr">Project nr</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Proposals">Project Proposals</msg>
+  <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
   <msg key="Project_Resource_Planning">Resource Planning</msg>
   <msg key="Project_Skills">Project skills</msg>
   <msg key="Project_Status">Project Status</msg>
@@ -1488,6 +1495,7 @@ other way for the user to find out.</msg>
   <msg key="Select_contact">Select contact</msg>
   <msg key="Select_Type">Select Type</msg>
   <msg key="Select_Type_for_Object">Select Type for Object</msg>
+  <msg key="Send_me_a_copy">Send me a copy</msg>
   <msg key="Send_Notification">Send Notification</msg>
   <msg key="Senior_Managers">Senior Managers</msg>
   <msg key="senior_managers">Senior Managers</msg>

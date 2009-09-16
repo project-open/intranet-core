@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="nl_NL" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="nl_NL" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Selecteer --</msg>
   <msg key="1111">1111</msg>
@@ -12,13 +12,15 @@
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">Persoonlijke informatie</msg>
   <msg key="Absence_Types">Type afwezigheid</msg>
-  <msg key="Absences">Absenties</msg>
+  <msg key="Absences">Afwezigheidsbeheer</msg>
   <msg key="Absenzen">Vakantie</msg>
   <msg key="Access_denied">Toegang geweigerd</msg>
   <msg key="Account_Deleted">Account Verwijderd</msg>
   <msg key="Account_deleted">Account verwijderd</msg>
   <msg key="Account_Managers">Account manager</msg>
   <msg key="Accounting">Accounting</msg>
+  <msg key="accounting">Financieel</msg>
+  <msg key="Accounting_contact">Financieel contactpersoon</msg>
   <msg key="Action_Go">Verder</msg>
   <msg key="Actions">Acties</msg>
   <msg key="activate">Activeren</msg>
@@ -67,7 +69,7 @@
   <msg key="Admin_Menu">Admin menu</msg>
   <msg key="Admin_Offices">Administratie kantoren</msg>
   <msg key="Admin_Project">Admin Projecten</msg>
-  <msg key="Admin_Projects">Projecten Administratie</msg>
+  <msg key="Admin_Projects">Project administratie</msg>
   <msg key="Admin_Users">Gebruikers administratie</msg>
   <msg key="Administer_DynVals">Administreer DynWaarden</msg>
   <msg key="Administration">Beheer</msg>
@@ -120,7 +122,7 @@
   <msg key="Ban_this_user">Sluit deze gebruiker uit</msg>
   <msg key="Bank_Holiday">Feestdag</msg>
   <msg key="Bank_Transfer">Bank overboeking</msg>
-  <msg key="Basic_Information">Algemene Informatie</msg>
+  <msg key="Basic_Information">Algemene informatie</msg>
   <msg key="Bau_Maint">Gebouw onderhoud</msg>
   <msg key="BC_Quick_Job">BC Quick Job</msg>
   <msg key="be">be</msg>
@@ -191,7 +193,7 @@
   <msg key="City">Stad</msg>
   <msg key="Cleanup_All_Demo_Users">Opschonen van alle Demo gebruikers</msg>
   <msg key="Cleanup_Demo_Users">Opschonen van alle Demo gebruikers</msg>
-  <msg key="Client">Klanten</msg>
+  <msg key="Client">Klant</msg>
   <msg key="Client_Contacts">Klant contact</msg>
   <msg key="Client_Details">Details klant</msg>
   <msg key="Client_Main_Office">Klant hoofdkantoor</msg>
@@ -247,6 +249,7 @@
   <msg key="Contact_Email">Contact Email </msg>
   <msg key="Contact_Information">Contact Informatie</msg>
   <msg key="Contact_Phone">Telefoonnr contact</msg>
+  <msg key="Content_Item">Inhoud item</msg>
   <msg key="context">context</msg>
   <msg key="Context_Help">Context help</msg>
   <msg key="Continue">Doorgaan</msg>
@@ -271,6 +274,7 @@
   <msg key="Create_Project">Project aanmaken</msg>
   <msg key="Created">Gemaakt</msg>
   <msg key="Creation">Creatie</msg>
+  <msg key="Creation_User">Maak gebruiker</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="creditSEAT_VWenadp">credit_VW.en.adp</msg>
@@ -325,13 +329,13 @@
   <msg key="Delete_Dynfield">Verwijder DynField</msg>
   <msg key="Delete_members">Verwijder leden</msg>
   <msg key="Delete_Menu">Verwijder menu</msg>
-  <msg key="Delete_portrait">Portret verwijderen</msg>
+  <msg key="Delete_portrait">Foto verwijderen</msg>
   <msg key="Delete_the_Task">Verwijder de taak</msg>
   <msg key="Deleted">Verwijderd </msg>
   <msg key="Delinquent_Update">Bijwerken zwarte lijst</msg>
   <msg key="Deliver">Aflever</msg>
   <msg key="Delivered">Afgeleverd</msg>
-  <msg key="Delivery_Date">Aflever Datum</msg>
+  <msg key="Delivery_Date">Opleverdatum</msg>
   <msg key="Delivery_Note">Aflever bon</msg>
   <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
   <msg key="deliverynoteesadp">deliverynote.en.adp</msg>
@@ -428,6 +432,7 @@
   <msg key="File_Storage">Bestandsopslag</msg>
   <msg key="Filed">Opgeslagen</msg>
   <msg key="Files">Bestanden</msg>
+  <msg key="Filestorage_File">Bestand in bestandopslag</msg>
   <msg key="Filter_Companies">Filter Bedrijven</msg>
   <msg key="Filter_Offices">Filter kantoren</msg>
   <msg key="Filter_Projects">Filter Projecten</msg>
@@ -449,6 +454,7 @@
   <msg key="for_Trans">for Trans</msg>
   <msg key="Format_1">Format</msg>
   <msg key="Forum">Forum</msg>
+  <msg key="Forum_Topic">Forum onderwerp</msg>
   <msg key="Forum_Types">Forum types</msg>
   <msg key="fr">fr</msg>
   <msg key="fr_BE">fr_BE</msg>
@@ -601,7 +607,7 @@
   <msg key="Home_Phone">Thuis telefoon</msg>
   <msg key="Home_phone">Thuis telefoonnummer</msg>
   <msg key="Home_Postal_Code">Thuis postcode</msg>
-  <msg key="Home_Workflow_Inbox">Thuis stroomschema Inbox</msg>
+  <msg key="Home_Workflow_Inbox">Thuispagina werkproces Inbox</msg>
   <msg key="Home_ZIP">Thuis postcode</msg>
   <msg key="Honduras">Honduras</msg>
   <msg key="Host_Job_Order">Host job order</msg>
@@ -720,9 +726,10 @@
   <msg key="Lithuania">Litouwen</msg>
   <msg key="Loc">Loc</msg>
   <msg key="LOC_Tools">Loc gereedschappen</msg>
-  <msg key="Localization">Lokalisatie</msg>
+  <msg key="Localization">Locatie instellingen</msg>
   <msg key="Localization_Home">Locale instellingen</msg>
   <msg key="Localization_Project">Definiëren landelijke instellingen </msg>
+  <msg key="Localizers">Localizers</msg>
   <msg key="Locate_user_by">Zoek gebruiker op</msg>
   <msg key="Location">Locatie</msg>
   <msg key="Log_hours">log uren </msg>
@@ -748,6 +755,7 @@
   <msg key="lt_Add_a_new_project_typ">Toevoegen van een nieuw type project</msg>
   <msg key="lt_Add_a_new_subject_are">Nieuw onderwerpveld toevoegen</msg>
   <msg key="lt_Add_a_new_value_range">Nieuwe toevoegen</msg>
+  <msg key="lt_Add_accounting_contac">Toevoegen financieel contactpersoon</msg>
   <msg key="lt_Add_new_member_to_obj">Nieuw lid toevoegen aan %object_name%</msg>
   <msg key="lt_Add_Stuffintranet-cor">Toevoegen</msg>
   <msg key="lt_Alchemy_Catalyst_31_A">Alchemy Catalyst 3.1 A</msg>
@@ -776,6 +784,7 @@
   <msg key="lt_Calculates_the_number">Gemiddelde hoeveelheid geschreven uren per medewerker</msg>
   <msg key="lt_Cant_find_the_project">Kan het project met ID '%project_id%' niet vinden</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Het is niet mogelijk om een betalend bedrijf definitief te verwijderen</msg>
+  <msg key="lt_Change_the_accounting">Wijzigen financieel contactpersoon</msg>
   <msg key="lt_Change_the_position_o">Aan-, uitzetten, veranderen van de positie en wijzigen van de toegangsrechten van plugin componenten</msg>
   <msg key="lt_Change_the_primary_co">Wijzig het primaire contact</msg>
   <msg key="lt_Change_the_system_par">Verander de systeem parametrisatie zoals mappen, URL's, etc.</msg>
@@ -797,6 +806,7 @@
   <msg key="lt_Customersintranet-fil">Klanten</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Beste %first_names_from_search%, U bent toegevoegd als %role_name% aan %object_name% in %system_name% op %object_url%. Klik op bovenstaande link voor verdere details. Met vriendelijke groet, %current_user_name%</msg>
+  <msg key="lt_Delete_the_accounting">Verwijderen financieel contactpersoon</msg>
   <msg key="lt_Delete_the_primary_co">Verwijder het primaire contact</msg>
   <msg key="lt_delete_this_user_inst">verwijder in plaats daarvan deze gebruiker</msg>
   <msg key="lt_Deleting_first_names_">Verwijderen %first_names% %last_name%</msg>
@@ -883,9 +893,11 @@
   <msg key="lt_Kundenintranet-filest">Klant</msg>
   <msg key="lt_Last_3_monthsintranet">Afgelopen 3 maanden</msg>
   <msg key="lt_Linguistic_Validation">Taalkundige validatie</msg>
+  <msg key="lt_Locate_your_new_accou">Zoek uw nieuwe financieel contactpersoon op</msg>
   <msg key="lt_Locate_your_new_prima">Vind uw nieuwe primaire contact op</msg>
   <msg key="lt_lt_Project_Manager___">Project manager</msg>
   <msg key="lt_Main_projects_no_subp">Nieuwe projecten per maand</msg>
+  <msg key="lt_make_accounting_conta">maak financieel contactpersoon</msg>
   <msg key="lt_Make_the_new_client_c">Maak het nieuwe klant contact een %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Maak het nieuwe klantcontact een %company_employee_link% %company_name%. </msg>
   <msg key="lt_Manage_Component_Layo">Plugin componenten</msg>
@@ -973,11 +985,12 @@
   <msg key="lt_Search_for_a_substrin">Zoek naar een substring in iemands email, bijvoorbeeld \&quot;lion\&quot;om naar alle gebruikers uit Lionbridge te zoeken.</msg>
   <msg key="lt_Search_for_a_substrin_1">Zoek naar een substring in iemands achternaam, bijvoorbeeld \&quot;berg\&quot;om naar alle gebruikers met \&quot;berg\&quot; in hun achternaam te zoeken.</msg>
   <msg key="lt_Search_for_an_account">Zoek een account om samen te voegen met deze:</msg>
+  <msg key="lt_Select_accounting_con">Selecteer financieel contactpersoon voor %company_name%</msg>
   <msg key="lt_Select_primary_contac">Selecteer primair contact voor %company_name%</msg>
   <msg key="lt_Select_topics_here_fo">Select hier onderwerpen voor actie</msg>
   <msg key="lt_Send_user_new_passwor">Zend een gebruiker een nieuw wachtwoord per email</msg>
   <msg key="lt_Senior_Managersintran">Senior managers</msg>
-  <msg key="lt_Service_Level_Agreeme">Dienstenniveauovereenkomst</msg>
+  <msg key="lt_Service_Level_Agreeme">Diensten Niveau Overeenkomst</msg>
   <msg key="lt_Shows_the_status_of_a">Dit toont de status van een project </msg>
   <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project pad' zijn niet toegestaan</msg>
   <msg key="lt_So_you_probably_dont_">U wilt waarschijnlijk niet alle data vernietigen, toch?!?</msg>
@@ -1115,7 +1128,7 @@
   <msg key="Mexico">Mexico</msg>
   <msg key="milestone_p">Mijlpaal?</msg>
   <msg key="Milestones">Mijlpalen</msg>
-  <msg key="Mine">Mijn</msg>
+  <msg key="Mine">Eigen</msg>
   <msg key="mk">mk</msg>
   <msg key="Mkt">Mkt</msg>
   <msg key="mo">mo</msg>
@@ -1254,7 +1267,7 @@
   <msg key="Password_Updated">Wachtwoord bijgewerkt</msg>
   <msg key="Past">Verleden</msg>
   <msg key="Past_Due">Verloopt op</msg>
-  <msg key="Past_Projects">Project Verleden</msg>
+  <msg key="Past_Projects">Project historie</msg>
   <msg key="Patagon_EUR">Patagon EUR</msg>
   <msg key="Path">Pad</msg>
   <msg key="Payed">Betaald</msg>
@@ -1284,7 +1297,7 @@
   <msg key="Portlet_Components">Foto componenten</msg>
   <msg key="Portrait">Foto</msg>
   <msg key="Portugal">Portugal</msg>
-  <msg key="POs">POs</msg>
+  <msg key="POs">Inkoop opdrachten</msg>
   <msg key="Position_Vacant">Positie vacant</msg>
   <msg key="Postal_Code">Postcode</msg>
   <msg key="PostgreSQL_Backup">PostgreSQL Backup</msg>
@@ -1301,6 +1314,7 @@
   <msg key="Prio_HJ_1">Prio HJ</msg>
   <msg key="Problem_Ticket">Probleem ticket</msg>
   <msg key="Profile">Profiel</msg>
+  <msg key="Profile_Accounting">Financieel</msg>
   <msg key="Profile_Consulting_Vertical">Verticale consultancy</msg>
   <msg key="Profile_Customers">Klanten</msg>
   <msg key="Profile_Employees">Medewerkers</msg>
@@ -1309,6 +1323,7 @@
   <msg key="Profile_Helpdesk">Helpdesk</msg>
   <msg key="Profile_HR_Managers">HR Managers</msg>
   <msg key="Profile_ITSM_Vertical">ITSM verticaal</msg>
+  <msg key="Profile_Localizers">Profiel lokale instellingen</msg>
   <msg key="Profile_P_O_Admins">]po[ beheerders</msg>
   <msg key="Profile_Project_Managers">Projectmanagers</msg>
   <msg key="Profile_Sales">Verkoop</msg>
@@ -1489,7 +1504,7 @@
   <msg key="rfc_wm_equip">Uitrusting</msg>
   <msg key="rfc_zustaendig">Vaardigheid bij verzoek tot wijziging</msg>
   <msg key="RFCs">Wijzigingsverzoeken</msg>
-  <msg key="RFQs">RFQs</msg>
+  <msg key="RFQs">Verzoeken tot wijziging</msg>
   <msg key="ro">ro</msg>
   <msg key="Romania">Roemenië</msg>
   <msg key="RR_Column_1">RR kolom</msg>
@@ -1543,7 +1558,7 @@
   <msg key="sk">sk</msg>
   <msg key="Skin">Uiterlijk</msg>
   <msg key="sl">sl</msg>
-  <msg key="SLAs">Dienstenniveauovereenkomsten</msg>
+  <msg key="SLAs">DNO's</msg>
   <msg key="Slovak Republic">Slowakije</msg>
   <msg key="Slovak_Republic">Slowakije</msg>
   <msg key="Slovenia">Slovenië</msg>
@@ -1668,7 +1683,7 @@
   <msg key="Travel">Reizen</msg>
   <msg key="Travel_Cost">Reiskosten</msg>
   <msg key="Travel_Costs">Reiskosten</msg>
-  <msg key="Treelevel">Treelevel</msg>
+  <msg key="Treelevel">Structuur niveau</msg>
   <msg key="ts">ts</msg>
   <msg key="Tunisia">Tunesië</msg>
   <msg key="Turkey">Turkije</msg>
@@ -1698,7 +1713,7 @@
   <msg key="Upload_Contact_CSV">Exporteren contact CSV</msg>
   <msg key="Upload_file">Exporteren bestand</msg>
   <msg key="Upload_files">Exporteren bestanden</msg>
-  <msg key="Upload_portrait">Portret instellen</msg>
+  <msg key="Upload_portrait">Foto uploaden</msg>
   <msg key="Upload_Preview_Image">Exporteren voorbeeld figuur</msg>
   <msg key="ur">ur</msg>
   <msg key="Uruguay">Uruguay</msg>
@@ -1779,6 +1794,7 @@
   <msg key="Work_ZIP">Postcode werk</msg>
   <msg key="Workflow">Workflow</msg>
   <msg key="Workplace_1">Werkplek</msg>
+  <msg key="Workplace_Move">Verhuizing van werkplek</msg>
   <msg key="X">X</msg>
   <msg key="x">x</msg>
   <msg key="XML-RPC">XML-RPC</msg>

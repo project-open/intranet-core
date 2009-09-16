@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.1" locale="no_NO" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="no_NO" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Vanligst velg --</msg>
   <msg key="1111">1111</msg>
-  <msg key="_"> </msg>
+  <msg key="_"></msg>
   <msg key="A">A</msg>
   <msg key="a">a</msg>
   <msg key="A_-_Test_approved">A - Test godkjent</msg>
