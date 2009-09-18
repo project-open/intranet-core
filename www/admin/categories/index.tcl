@@ -164,7 +164,7 @@ append category_list_html "</table>"
 if {![string equal "All" $select_category_type]} {
     set category_type $select_category_type
 
-    set new_href "one.tcl?[export_url_vars select_category_type]"
+    set new_href [export_vars -base "one" {{category_type $select_category_type}}]
 
     append category_list_html "
 <ul>

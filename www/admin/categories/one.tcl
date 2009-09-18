@@ -125,29 +125,23 @@ if {"f" == $enabled_p} {
 # Category Select Component
 # ---------------------------------------------------------------
 
-if {"" != $category_type && ![string equal "All" $category_type]} {
-
-    set category_type_select [export_form_vars category_type]
-
-} else {
-
-    set select_category_types_sql "
-select
-	c.category_type as category_for_select
-from
-	im_categories c
-group by c.category_type
-order by c.category_type asc" 
-    
-    set category_type_select "<tr><td>Category type</td><td><select name=category_type>"
-    db_foreach select_category_types $select_category_types_sql {
-	set selected ""
-	if {[string equal $category_for_select $category_type]} { set selected "selected" }
-	append category_type_select "<option>$category_for_select</option>\n"
-    }
-    append category_type_select "</select></td></tr>"
-
+set select_category_types_sql "
+	select
+		c.category_type as category_for_select
+	from
+		im_categories c
+	group by c.category_type
+	order by c.category_type asc
+" 
+  
+set category_type_select "<tr><td>Category type</td><td><select name=category_type>"
+db_foreach select_category_types $select_category_types_sql {
+    set selected ""
+    if {$category_for_select == $category_type} { set selected "selected" }
+    append category_type_select "<option $selected>$category_for_select</option>\n"
 }
+append category_type_select "</select></td></tr>"
+
 
 # set descr [ns_quotehtml $category_description]
 set descr $category_description

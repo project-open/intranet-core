@@ -8,17 +8,7 @@
     <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
   </tr>
 
-<if 0 eq @new_category@>
   @category_type_select;noquote@
-</if>
-<else>
-  <td>
-    New Category Type
-  </td>
-  <td>
-    <input type=text name=category_type size=50 value="">
-  </td>
-</else>
 
   <tr class=roweven>
     <td>#intranet-core.Category_Nr#</td>
@@ -88,7 +78,7 @@
 <% } %>
 <tr class=roweven>
   <td colspan=2>
-	<input type=submit name=submit value="#intranet-core.Create_Category#" $input_form_html>
+	<input type=submit name=submit value="#intranet-core.Submit#" $input_form_html>
   </td>
 </tr>
 
