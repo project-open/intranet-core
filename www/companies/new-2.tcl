@@ -90,6 +90,8 @@ if { [string length ${note}] > 4000 } {
 }
 
 
+
+
 # -----------------------------------------------------------------
 # To-Lower the company path and check for alphanum characters
 #
@@ -159,6 +161,7 @@ if {$company_exists_p} {
 }
 
 
+
 # -----------------------------------------------------------------
 # Create a new Company if it didn't exist yet
 # -----------------------------------------------------------------
@@ -170,7 +173,10 @@ if {![exists_and_not_null office_path]} {
     set office_path "$company_path"
 }
 
+
 # Double-Click protection: the company Id was generated at the new.tcl page
+
+
 if {0 == $company_exists_p} {
 
     db_transaction {
@@ -181,6 +187,7 @@ if {0 == $company_exists_p} {
 		-office_type_id [im_office_type_main] \
 		-office_status_id [im_office_status_active] \
 		-office_path	$office_path]
+
 
 	# add users to the office as 
         set role_id [im_biz_object_role_office_admin]
@@ -204,6 +211,7 @@ if {0 == $company_exists_p} {
 
     }
 }
+
 
 # -----------------------------------------------------------------
 # Update the Office

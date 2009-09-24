@@ -152,6 +152,7 @@
      background: url(/resources/xowiki/bw-shadow.png) no-repeat bottom right;
      margin-left: 2px; margin-top: 2px; padding: 0px 6px 6px 0px;			    
 ">
+
 <div style="margin-top: -2px; margin-left: -2px; border: 1px solid #a9a9a9; padding: 5px 5px; background: #f8f8f8;">
 <include src="/packages/xowiki/www/portlets/include" 
 	 &__including_page=page 
@@ -179,7 +180,7 @@
 <input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden"/>
 <input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden"/>
 <input value="@title@" name="response_to_question.@title_question_id@" type="hidden"/>
-<input value="http://www.project-open.net/documentation/contact_thanks" name="return_url" type="hidden"/>
+<input value="http://www.project-open.org/documentation/contact_thanks" name="return_url" type="hidden"/>
 <script language="javascript" type="text/javascript">
 document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" />');
 </script>

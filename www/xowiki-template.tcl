@@ -1,6 +1,8 @@
 # /packages/intranet-core/www/xowiki-template.tcl
 
 
+
+
 # Should show the page without template?
 set no_template_p 0
 set form_vars [ns_conn form]
