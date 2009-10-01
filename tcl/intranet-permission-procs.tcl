@@ -55,6 +55,7 @@ ad_proc -public im_wheel_group_id { } 		{ return [im_profile_senior_managers] }
 ad_proc -public im_pm_group_id { }		{ return [im_profile_project_managers] }
 ad_proc -public im_accounting_group_id { }	{ return [im_profile_accounting] }
 ad_proc -public im_customer_group_id { }	{ return [im_profile_customers] }
+ad_proc -public im_inco_customer_group_id { }	{ return [im_profile_inco_customers] }
 ad_proc -public im_hr_group_id { }		{ return [im_profile_hr_managers] }
 ad_proc -public im_freelance_group_id { }	{ return [im_profile_freelancers] }
 ad_proc -public im_partner_group_id { }		{ return [im_profile_partners] }
@@ -278,6 +279,13 @@ ad_proc -public im_user_is_customer_p { user_id } {
     Returns 1 if a the user is in a customer group. 0 Otherwise
 } {
     return [im_profile::member_p -profile_id [im_customer_group_id] -user_id $user_id]
+}
+
+# ToDo: replace by im_profile::member_p
+ad_proc -public im_user_is_inco_customer_p { user_id } {
+    Returns 1 if a the user is in a inco customer group. 0 Otherwise
+} {
+    return [im_profile::member_p -profile_id [im_inco_customer_group_id] -user_id $user_id]
 }
 
 # ToDo: replace by im_profile::member_p
