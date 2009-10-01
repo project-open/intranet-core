@@ -196,6 +196,8 @@ ad_proc -public im_biz_object_add_role {
 	   because otherwise members of subprojects wouldn't even
 	   be able to get to their subproject.
 } {
+    if {"" == $user_id || 0 == $user_id} { return }
+
     set user_ip [ad_conn peeraddr]
 
     # Check if user is already a member and only continue
