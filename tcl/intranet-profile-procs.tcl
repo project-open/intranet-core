@@ -43,6 +43,9 @@ ad_proc -public im_profile_customers {} {
      return [im_profile::profile_id_from_name -profile "Customers"] 
 }
 
+ad_proc -public im_profile_inco_customers {} { 
+     return [im_profile::profile_id_from_name -profile "InCo Customer"] 
+}
 ad_proc -public im_profile_freelancers {} { 
      return [im_profile::profile_id_from_name -profile "Freelancers"] 
 }
