@@ -27,8 +27,13 @@ ad_page_contract {
     @param project_id  Optional parameter to display a suitable
     	   	       project menu to give users the illusion
 		       to stay within their project.
+    @param translate_p Should the categories be passed through
+           the localization system? Default is 1
+    @param package_key Required for localization. Specifies from
+           which package to take the translation.
 
     @author christof.damian@project-open.com
+    @author frank.bergmann@project-open.com
 } {
     object_type
     type_id_var
@@ -37,7 +42,74 @@ ad_page_contract {
     user_id_from_search:optional
     { pass_through_variables "" }
     { exclude_category_ids {} }
+    { translate_p 1 }
+    { package_key "intranet-core" }
+    { default_category_id 0}
 }
+
+ad_proc im_biz_object_category_select_branch { 
+    {-translate_p 0}
+    {-package_key "intranet-core" }
+    {-type_id_var "category_id" }
+    parent 
+    default 
+    level 
+    cat_array 
+    direct_parent_array 
+} {
+    Recursively descend the category tree.
+    Returns a list of html "input type=radio" displaying an options hierarchy.
+} {
+    if {$level > 10} { return "" }
+
+    array set cat $cat_array
+    array set direct_parent $direct_parent_array
+
+    set category [lindex $cat($parent) 1]
+    set category_description [lindex $cat($parent) 2]
+    if {$translate_p} {
+	set category_key "$package_key.[lang::util::suggest_key $category]"
+	set category [lang::message::lookup "" $category_key $category]
+    }
+
+    set parent_only_p [lindex $cat($parent) 3]
+
+    set spaces ""
+    for {set i 0} { $i < $level} { incr i} {
+	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
+    }
+
+    set selected ""
+    if {$parent == $default} { set selected "selected" }
+    set html ""
+    if {"f" == $parent_only_p} {
+        set html "
+	<tr>
+	<td><nobr> 
+	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category</input> &nbsp;
+	</nobr></td>
+	<td>$category_description</td>
+	</tr>
+	"
+	incr level
+    }
+
+    # Sort by category_id, but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+    set category_list_sorted [lsort $category_list]
+
+    foreach cat_id $category_list_sorted {
+	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
+	    append html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $cat_id $default $level $cat_array $direct_parent_array]
+	}
+    }
+    return $html
+}
+
+
+# --------------------------------------------------------------
+#
+# --------------------------------------------------------------
 
 # No permissions necessary, that's handled by the object's new page
 # Here we just select an object_type_id for the given object.
@@ -70,37 +142,109 @@ set context_bar [im_context_bar $page_title]
 set object_type_category [im_dynfield::type_category_for_object_type -object_type $object_type]
 
 
+# -----------------------------------------------------------
+# Pass throught the values of pass_through_variables
+# We have to take the values of these vars directly
+# from the HTTP session.
+# -----------------------------------------------------------
+
+
+set form_vars [ns_conn form]
+set pass_through_html ""
+foreach var $pass_through_variables {
+   set value [ns_set get $form_vars $var]
+   append pass_through_html "
+	<input type=hidden name=\"$var\" value=\"[ad_quotehtml $value]\">
+   "
+}
+
+
+
+# Read the categories into the a hash cache
+# Initialize parent and level to "0"
+set category_select_sql "
+        select
+                category_id,
+                category,
+                category_description,
+                parent_only_p,
+                enabled_p
+        from
+                im_categories
+        where
+                category_type = :object_type_category
+		and (enabled_p = 't' OR enabled_p is NULL)
+        order by lower(category)
+"
+db_foreach category_select $category_select_sql {
+    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+    set level($category_id) 0
+}
+
+# Get the hierarchy into a hash cache
+set hierarchy_sql "
+        select
+                h.parent_id,
+                h.child_id
+        from
+                im_categories c,
+                im_category_hierarchy h
+        where
+                c.category_id = h.parent_id
+                and c.category_type = :object_type_category
+        order by lower(category)
+"
+
+# setup maps child->parent and parent->child for
+# performance reasons
+set children [list]
+db_foreach hierarchy_select $hierarchy_sql {
+    if {![info exists cat($parent_id)]} { continue}
+    if {![info exists cat($child_id)]} { continue}
+    lappend children [list $parent_id $child_id]
+}
+
+set count 0
+set modified 1
+while {$modified} {
+    set modified 0
+    foreach rel $children {
+	set p [lindex $rel 0]
+	set c [lindex $rel 1]
+	set parent_level $level($p)
+	set child_level $level($c)
+	if {[expr $parent_level+1] > $child_level} {
+	    set level($c) [expr $parent_level+1]
+	    set direct_parent($c) $p
+	    set modified 1
+	}
+    }
+    incr count
+    if {$count > 1000} {
+	ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+            The category type '$object_type_category' is badly configured and contains
+            and infinite loop. Please notify your system administrator."
+	return "Infinite Loop Error"
+    }
+    #	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
+}
+
+set base_level 0
 set category_select_html ""
 
-set sql "
-	select	c.*
-	from	im_categories c
-	where	c.category_type = :object_type_category
-		and (c.enabled_p is null or c.enabled_p = 't')
-		and c.category_id not in ([join $exclude_ids ","])
-	order by
-		sort_order, category
-"
-db_foreach cats $sql {
+# Sort the category list's top level. We currently sort by category_id,
+# but we could do alphabetically or by sort_order later...
+set category_list [array names cat]
+set category_list_sorted [lsort $category_list]
 
-    regsub -all " " $category "_" category_key
-    set category_l10n [lang::message::lookup "" intranet-core.category_key $category]
-    set category_comment_key ${category_key}_comment
-
-    set comment $category_description
-    if {"" == $comment} { set comment " " }
-    set comment [lang::message::lookup "" intranet-core.$category_comment_key $comment]
-
-    append category_select_html "
-	<tr>
-		<td>
-		<nobr>
-		<input type=radio name=$type_id_var value=$category_id>$category_l10n</input>
-		&nbsp;
-		</nobr>
-		</td>
-		<td>$comment</td>
-	</tr>
-    "
-
+# Now recursively descend and draw the tree, starting
+# with the top level
+foreach p $category_list_sorted {
+    set p [lindex $cat($p) 0]
+    set enabled_p [lindex $cat($p) 4]
+    if {"f" == $enabled_p} { continue }
+    set p_level $level($p)
+    if {0 == $p_level} {
+	append category_select_html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $p $default_category_id $base_level [array get cat] [array get direct_parent]]
+    }
 }

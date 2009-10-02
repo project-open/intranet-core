@@ -7,6 +7,7 @@
 <table cellspacing=2 cellpadding=2>
 <form action='@return_url;noquote@' method=POST>
 <%= [export_form_vars user_id_from_search] %>
+@pass_through_html;noquote@
 
 <!-- ToDo: replace with variables from HTTP form -->
 
@@ -19,7 +20,6 @@
 </tr>
 </form>
 </table>
-
 
 <%= [im_box_footer] %>
 

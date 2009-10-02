@@ -86,23 +86,22 @@ if {$company_exists_p} {
 	return
     }
 
-    # Do we need to get the company type first in order to show
-    # the right DynFields?
+    # Do we need to get the company type first in order to show the right DynFields?
     if {("" == $company_type_id || 0 == $company_type_id)} {
 	set all_same_p [im_dynfield::subtype_have_same_attributes_p -object_type "im_company"]
 	if {!$all_same_p} {
 	    set exclude_category_ids [list [im_id_from_category "CustOrIntl" "Intranet Company Type"]]
 	    ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
+		company_name
+		also_add_users
 		{ return_url $current_url } 
 		{ object_type "im_company" }
 		{ type_id_var "company_type_id" }
-		{ pass_through_variables "" }
+		{ pass_through_variables "company_name also_add_users" }
 		{ exclude_category_ids $exclude_category_ids }
 	    }]
-
 	}
-    }
-    
+    }   
 }
 
 # ------------------------------------------------------------------
@@ -167,7 +166,6 @@ ad_form -extend -name $form_id -form {
 # Dynamic Fields
 # ------------------------------------------------------
 
-set form_id "company"
 set object_type "im_company"
 set my_company_id 0
 if {[info exists company_id]} { set my_company_id $company_id }
@@ -178,11 +176,7 @@ if {$company_exists_p} {
     set my_company_type_id $company_type_id
 }
 
-if {0 != $company_type_id && "" != $company_type_id} { 
-    template::element::set_value $form_id company_type_id $company_type_id
-}
-
-
+# Add dynfields to the form
 im_dynfield::append_attributes_to_form \
     -object_type "im_company" \
     -form_id $form_id \
@@ -190,6 +184,19 @@ im_dynfield::append_attributes_to_form \
     -object_subtype_id $my_company_type_id
 
 
+# Set the company type which might be available already.
+if {0 != $company_type_id && "" != $company_type_id} { 
+    template::element::set_value $form_id company_type_id $company_type_id
+}
+
+if {"" != $company_name} { 
+    template::element::set_value $form_id company_name $company_name
+
+    regsub {[^a-zA-Z0-9_]} [string tolower $company_name] "_" company_path
+    template::element::set_value $form_id company_path $company_path
+}
+
+# Execute the form - pull out variables and perform actions
 ad_form -extend -name $form_id -select_query {
 
 select
