@@ -87,6 +87,7 @@ set date_format "YYYY-MM-DD"
 
 set extra_wheres [list]
 set extra_froms [list]
+set extra_left_joins [list]
 set extra_selects [list]
 
 set extra_order_by ""
@@ -114,8 +115,7 @@ switch [string tolower $user_group_name] {
     "freelancers" {
 	set user_group_id [im_profile_freelancers]
 	set menu_select_label "users_freelancers"
-	lappend extra_froms "im_freelancers fl"
-	lappend extra_wheres "fl.user_id = p.person_id"
+	lappend extra_left_joins "LEFT JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
     }
     default {
     	# Search for the right group name.
@@ -401,6 +401,7 @@ if {"" == $extra_order_by} {
 
 # Join the "extra_" SQL pieces 
 set extra_from [join $extra_froms ",\n\t"]
+set extra_left_join [join $extra_left_joins "\n\t"]
 set extra_select [join $extra_selects ",\n\t"]
 set extra_where [join $extra_wheres "\n\tand "]
 
@@ -468,6 +469,7 @@ from
 	cc_users u
 	LEFT JOIN im_employees e ON (u.user_id = e.employee_id)
 	LEFT JOIN users_contact c ON (u.user_id = c.user_id)
+	$extra_left_join
 	$extra_from
 where
 	p.person_id = u.user_id
