@@ -973,8 +973,8 @@ a   span  {float:none;}
 
 .fullwidth-list table {
    text-align:left;
-   /* border-collapse:collapse; */ 
-   margin:10px;
+   /* border-collapse:collapse;  
+   margin:10px; */
 }
 
 .fullwidth-list table tr {
