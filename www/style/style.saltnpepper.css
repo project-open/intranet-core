@@ -63,7 +63,7 @@
 .fullwidth-list {
 	margin-left: 290px;
 	margin-right: 20px;
-	margin-top: 4px;
+	margin-top: 15px;
 	min-height: 400px;
 	visibility: hidden;
 }
@@ -656,7 +656,7 @@ a   span  {float:none;}
 	position:absolute;
 	padding-left: 30px;
 	padding-right: 30px;
-	margin-top: -10px;
+	margin-top: 0px;
 	border: 1px #999;
 }
 
@@ -1028,7 +1028,8 @@ div#fullwidth-components {
    font-size:9pt;
    font-weight:bold;
    padding:3px;
-   background:#B6C7FE none repeat scroll 0% 50%;
+   /* background:#B6C7FE none repeat scroll 0% 50%;*/
+   background:#D0D0D0 none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
    padding:5px 4px 5px 2px;
 }
@@ -1435,7 +1436,7 @@ div.xowiki-content p, div.xowiki-content td {
 }
 
 #titleSubmenu {
-        display: none;
+         display: none; 
 }
 
 .yui-skin-sam {
