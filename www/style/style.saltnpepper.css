@@ -1051,12 +1051,13 @@ div#fullwidth-components {
 
 .table_list_page thead tr td,
 .table_list_page thead tr.rowtitle th {
-	background:#B6C7FE none repeat scroll 0% 50%;
+	background:#D0D0D0 none repeat scroll 0% 50%;
 	border-bottom:13px none #000000;
 	font-size:9pt;
 	height:auto;
 	padding:5px 4px 5px 2px;
-	color: #235C96;
+	color: #000;
+	font-weight: bold;
 }
 
 
@@ -1073,7 +1074,7 @@ div#fullwidth-components {
 .table_list_page tbody tr:hover.rowplain td 
 
 {
-   background:#B9C9FE;
+   background:#D0D0D0;
 }
 
 
@@ -1085,14 +1086,14 @@ div#fullwidth-components {
 .table_list_page tbody tr:hover.rowwhite,
 .table_list_page tbody tr:hover.rowwhite td
 {
-   background:#E7ECFF;
+   background:#fff;
 }
 
 
 
 .table_interim_title {
 	font-weight: bold;
-	color:#336699;
+	color:#000;
 }
 
 
