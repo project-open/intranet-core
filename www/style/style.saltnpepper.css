@@ -1447,3 +1447,15 @@ div.xowiki-content p, div.xowiki-content td {
         min-height: 0;
 }
 
+.component table.forumBar td  {
+        background: #EEEEEE
+}
+
+.component table.forumBar td a  {
+	text-decoration: none;
+        font-size:12pt;
+        font-weight:bold;
+	color:#000000;
+        left:2pt;
+        padding-top:3px;
+}
