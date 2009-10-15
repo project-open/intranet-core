@@ -2134,7 +2134,7 @@ ad_proc -public im_browser_warning { } {
     set version_minor [lindex $version_pieces 1]
     
     set po "&\#93;project-open&\#91;"
-    set msg [lang::message::lookup "" intranet-core.Browser_Warning_Msg "Your rowser '%browser%' '%version_major%.x' may not render all pages correctly of this version of $project_open. We recommend you to upgrade your browser to a more recent version."]
+    set msg [lang::message::lookup "" intranet-core.Browser_Warning_Msg "Your browser '%browser% %version_major%.x' may not render all pages correctly with this version of $po. <br>We recommend you to upgrade your browser to a more recent version."]
     
     switch $browser {
 	firefox {
@@ -2153,7 +2153,7 @@ ad_proc -public im_browser_warning { } {
 	    # Text browser, that's a tough fucker...
 	}
 	msie {
-	    # 7.0 is OK, but 6.x may give some issues
+	    # 7.0 and 8.0 are OK, but 6.x may give some issues
 	    switch $version_major {
 		3 { return $msg }
 		4 { return $msg }

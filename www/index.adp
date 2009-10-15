@@ -8,10 +8,12 @@
   <td colspan=3>
 
 <if "" ne @browser_warning@>
+   <%= [im_box_header $browser_warning] %>
    <font color=red>
-   <%= [lang::message::lookup "" intranet-core.Browser_Warning "Browser Warning"] %><br>
-   @browser_warning@
+   <h3>@browser_warning@</h3>
+   @browser_warning_msg;noquote@
    </font>
+   <%= [im_box_footer] %>
 </if>
 
     <%= [im_component_bay top] %>

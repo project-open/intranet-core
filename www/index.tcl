@@ -87,4 +87,5 @@ set show_left_functional_menu_p [parameter::get_from_package_key -package_key "i
 # ----------------------------------------------------------------
 
 
-set browser_warning [im_browser_warning]
+set browser_warning [lang::message::lookup "" intranet-core.Browser_Warning "Browser Warning"]
+set browser_warning_msg [im_browser_warning]
