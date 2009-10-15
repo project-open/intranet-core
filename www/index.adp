@@ -6,6 +6,14 @@
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td colspan=3>
+
+<if "" ne @browser_warning@>
+   <font color=red>
+   <%= [lang::message::lookup "" intranet-core.Browser_Warning "Browser Warning"] %><br>
+   @browser_warning@
+   </font>
+</if>
+
     <%= [im_component_bay top] %>
   </td>
 </tr>

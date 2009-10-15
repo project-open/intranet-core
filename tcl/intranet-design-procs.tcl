@@ -2062,3 +2062,111 @@ ad_proc -public im_skin_select_html {
 
 
 
+ad_proc -public im_browser_version { } {
+    Extracts the browser identifcation from the User-Agent HTTP header
+} {
+    # Extract variables from form and HTTP header
+    set header_vars [ns_conn headers]
+
+    set body ""
+    #foreach var [ad_ns_set_keys $header_vars] {
+    #    set value [ns_set get $header_vars $var]
+    #    append body "<tr><td>$var</td><td>$value</td></tr>\n"
+    #}
+
+    # Get intersting info
+    set user_agent [ns_set get $header_vars "User-Agent"]
+    append body "<tr><td>User-Agent</td><td>$user_agent</td></tr>\n"
+    
+    set mozilla_version ""
+    if {[regexp {Mozilla/(.\..)} $user_agent match mozilla_version]} {
+	append body "<tr><td>Mozilla</td><td>$mozilla_version</td></tr>\n"
+    }
+    
+    set firefox_version ""
+    set chrome_version ""
+    set msie_version ""
+    set opera_version ""
+    set lynx_version ""
+
+    set browser "Other"
+    set version "0.0.0"
+    
+    if {[regexp {Firefox/([0-9_\-\.]+)} $user_agent match firefox_version]} {
+	set browser "firefox"
+	set version $firefox_version
+    }
+    
+    if {[regexp {Chrome/([0-9_\-\.]+)} $user_agent match chrome_version]} {
+	set browser "chrome"
+	set version $chrome_version
+    }
+    
+    if {[regexp {Opera/([0-9_\-\.]+)} $user_agent match opera_version]} {
+	set browser "opera"
+	set version $opera_version
+    }
+    
+    if {[regexp {Lynx/([0-9_\-\.]+)} $user_agent match lynx_version]} {
+	set browser "lynx"
+	set version $lynx_version
+    }
+    
+    if {[regexp {MSIE\W([0-9_\-\.]+)} $user_agent match msie_version]} {
+	set browser "msie"
+	set version $msie_version
+    }
+
+    return [list $browser $version]
+}
+
+
+
+ad_proc -public im_browser_warning { } {
+    Return "", or a warning string if the user is running an unsupported browser
+} {
+    set browser_version [im_browser_version]
+    set browser [lindex $browser_version 0]
+    set version [lindex $browser_version 1]
+    
+    set version_pieces [split $version "."]
+    set version_major [lindex $version_pieces 0]
+    set version_minor [lindex $version_pieces 1]
+    
+    set po "&\#93;project-open&\#91;"
+    set msg [lang::message::lookup "" intranet-core.Browser_Warning_Msg "Your rowser '%browser%' '%version_major%.x' may not render all pages correctly of this version of $project_open. We recommend you to upgrade your browser to a more recent version."]
+    
+    switch $browser {
+	firefox {
+	    # Firefox 1.x may give trouble
+	    switch $version_major {
+		1 { return $msg }
+	    }
+	}
+	chrome {
+	    # Should be updated, so don't show anything
+	}
+	opera {
+	    # Should update regularly, so don't show any warning
+	}
+	lynx {
+	    # Text browser, that's a tough fucker...
+	}
+	msie {
+	    # 7.0 is OK, but 6.x may give some issues
+	    switch $version_major {
+		3 { return $msg }
+		4 { return $msg }
+		5 { return $msg }
+		6 { return $msg }
+	    }
+	}
+	default {
+	    # unknown browser - no warning
+	}
+    }
+
+    # Nothing, return an empty string by default (no problem with the current browser).
+    return ""
+}
+

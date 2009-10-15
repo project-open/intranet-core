@@ -79,3 +79,12 @@ set administration_component [im_table_with_title "[_ intranet-core.Administrati
 # because we've got nothing else to show at the moment.
 set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
 
+
+
+
+# ----------------------------------------------------------------
+# IE6 Warning
+# ----------------------------------------------------------------
+
+
+set browser_warning [im_browser_warning]
