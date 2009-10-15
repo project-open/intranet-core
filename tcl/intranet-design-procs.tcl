@@ -939,9 +939,6 @@ ad_proc -public im_navbar {
 		     $maintenance_message
 		  </div>
 		  <div id=\"main_portrait_and_username\">
-		  <div id=\"main_portrait\">
-		    [im_portrait_or_anon_html $user_id Portrait]
-		  </div>
 		  <p id=\"main_username\">
 		    Welcome, [im_name_from_user_id $user_id]
 		  </p>
@@ -951,6 +948,15 @@ ad_proc -public im_navbar {
 	       </div>
 	    </div>
     "
+
+    # Disabled the portrait 
+    set ttt {
+		  <div id=\"main_portrait\">
+		    [im_portrait_or_anon_html $user_id Portrait]
+		  </div>
+    }
+
+
 }
 
 
