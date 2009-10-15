@@ -1119,100 +1119,106 @@ ad_proc -public im_user_nuke {user_id} {
 
 
 ad_proc im_upload_cvs_translate_varname { var_name} {
-    Translate German var names to English
+    Translate German var names to English.
+    In the future we'll also support translations from other
+    Office versions...
 } {
+    set name [string tolower [im_l10n_normalize_string $var_name]]
+
     switch $var_name {
 	anrede { return "title" }
 	vorname { return "first_name" }
+	weitere_vornamen { return "middle_name" }
 	nachname { return "last_name" }
+	suffix { return "suffix" }
 	emailadresse { return "e_mail_address" }
 	firma { return "company" }
 	abteilung { return "department" }
 	position { return "job_title" }
-
-	StraÃgeschÃtlich { return "" }
-	StraÃgeschÃtlich2 { return "" }
-	StraÃgeschÃtlich3 { return "" }
-	OrtgeschÃtlich { return "" }
-	RegiongeschÃtlich { return "" }
-	PostleitzahlgeschÃtlich { return "" }
-	LandgeschÃtlich { return "" }
-	StraÃprivat { return "" }
-	StraÃprivat2 { return "" }
-	StraÃprivat3 { return "" }
-	Ortprivat { return "" }
-	Regionprivat { return "" }
-	Postleitzahlprivat { return "" }
-	Landprivat { return "" }
-	WeitereStraÃ { return "" }
-	WeitereStraÃ2 { return "" }
-	WeitereStraÃ3 { return "" }
-	WeitererOrt { return "" }
-	WeitereRegion { return "" }
-	WeiterePostleitzahl { return "" }
-	WeiteresLand { return "" }
-	TelefonAssistent { return "" }
-	FaxgeschÃtlich { return "" }
-	TelefongeschÃtlich { return "" }
-	TelefongeschÃtlich2 { return "" }
-	RÃkmeldung { return "" }
-	Autotelefon { return "" }
-	TelefonFirma { return "" }
-	Faxprivat { return "" }
-	Telefonprivat { return "" }
-	Telefonprivat2 { return "" }
-	ISDN { return "" }
-	Mobiltelefon { return "" }
-	WeiteresFax { return "" }
-	WeiteresTelefon { return "" }
-	Pager { return "" }
-	Haupttelefon { return "" }
-	Mobiltelefon2 { return "" }
-	TelefonfÃHÃbehinderte { return "" }
-	Telex { return "" }
-	Abrechnungsinformation { return "" }
-	Benutzer1 { return "" }
-	Benutzer2 { return "" }
-	Benutzer3 { return "" }
-	Benutzer4 { return "" }
-	Beruf { return "" }
-	BÃo { return "" }
-	EMailTyp { return "" }
-	EMailAngezeigterName { return "" }
-	EMail2Adresse { return "" }
-	EMail2Typ { return "" }
-	EMail2AngezeigterName { return "" }
-	EMail3Adresse { return "" }
-	EMail3Typ { return "" }
-	EMail3AngezeigterName { return "" }
-	Empfohlenvon { return "" }
-	Geburtstag { return "" }
-	Geschlecht { return "" }
-	Hobby { return "" }
-	Initialen { return "" }
-	InternetFreiGebucht { return "" }
-	Jahrestag { return "" }
-	Kategorien { return "" }
-	Kinder { return "" }
-	Konto { return "" }
-	NameAssistent { return "" }
-	NamedesderVorgesetzten { return "" }
-	Notizen { return "" }
-	OrganisationsNr { return "" }
-	Ort { return "" }
-	Partner { return "" }
-	PostfachgeschÃtlich { return "" }
-	Postfachprivat { return "" }
-	PrioritÃ { return "" }
-	Privat { return "" }
-	RegierungsNr { return "" }
-	Reisekilometer { return "" }
-	Sprache { return "" }
-	StichwÃter { return "" }
-	Vertraulichkeit { return "" }
-	Verzeichnisserver { return "" }
-	Webseite { return "" }
-	WeiteresPostfach { return "" }
+	strase_geschaftlich { return "business_street" }
+	strase_geschaftlich_2 { return "business_street_2" }
+	strase_geschaftlich_3 { return "business_street_3" }
+	ort_geschaftlich { return "business_city" }
+	region_geschaftlich { return "business_state" }
+	postleitzahl_geschaftlich { return "business_postal_code" }
+	land_geschaftlich { return "business_country" }
+	strase_privat { return "home_street" }
+	strase_privat_2 { return "home_street_2" }
+	strase_privat_3 { return "home_street_3" }
+	ort_privat { return "home_city" }
+	region_privat { return "home_state" }
+	postleitzahl_privat { return "home_postal_code" }
+	land_privat { return "home_country" }
+	weitere_strase { return "other_street" }
+	weitere_strase_2 { return "other_street_2" }
+	weitere_strase_3 { return "other_street_3" }
+	weiterer_ort { return "other_city" }
+	weitere_region { return "other_state" }
+	weitere_postleitzahl { return "other_postal_code" }
+	weiteres_land { return "other_country" }
+	telefon_assistent { return "assistants_phone" }
+	fax_geschaftlich { return "business_fax" }
+	telefon_geschaftlich { return "business_phone" }
+	telefon_geschaftlich_2 { return "business_phone_2" }
+	ruckmeldung { return "callback" }
+	autotelefon { return "car_phone" }
+	telefon_firma { return "company_main_phone" }
+	fax_privat { return "home_fax" }
+	telefon_privat { return "home_phone" }
+	telefon_privat_2 { return "home_phone_2" }
+	isdn { return "isdn" }
+	mobiltelefon { return "mobile_phone" }
+	weiteres_fax { return "other_fax" }
+	weiteres_telefon { return "other_phone" }
+	pager { return "pager" }
+	haupttelefon { return "primary_phone" }
+	mobiltelefon_2 { return "radio_phone" }
+	telefon_fur_horbehinderte { return "tty_tdd_phone" }
+	telex { return "telex" }
+	abrechnungsinformation { return "account" }
+	benutzer_1 { return "user_1" }
+	benutzer_2 { return "user_2" }
+	benutzer_3 { return "user_3" }
+	benutzer_4 { return "user_4" }
+	beruf { return "job_title" }
+	buro { return "office_location" }
+	e_mail_adresse { return "e_mail_address" }
+	e_mail_typ { return "e_mail_type" }
+	e_mail_angezeigter_name { return "e_mail_display_name" }
+	e_mail_2_adresse { return "e_mail_2_address" }
+	e_mail_2_typ { return "e_mail_2_type" }
+	e_mail_2_angezeigter_name { return "e_mail_2_display_name" }
+	e_mail_3_adresse { return "e_mail_3_address" }
+	e_mail_3_typ { return "e_mail_3_type" }
+	e_mail_3_angezeigter_name { return "e_mail_3_display_name" }
+	empfohlen_von { return "referred_by" }
+	geburtstag { return "birthday" }
+	geschlecht { return "gender" }
+	hobby { return "hobby" }
+	initialen { return "initials" }
+	internet_frei_gebucht { return "internet_free_busy" }
+	jahrestag { return "anniversary" }
+	kategorien { return "categories" }
+	kinder { return "children" }
+	konto { return "account" }
+	name_assistent { return "assistant_s_name" }
+	name_des_der_vorgesetzten { return "manager_s_name" }
+	notizen { return "notes" }
+	organisations_nr { return "organizational_id_number" }
+	ort { return "location" }
+	partner { return "spouse" }
+	postfach_geschaftlich { return "po_box" }
+	postfach_privat { return "ttt" }
+	prioritat { return "priority" }
+	privat { return "private" }
+	regierungs_nr { return "government_id_number" }
+	reisekilometer { return "mileage" }
+	sprache { return "language" }
+	stichworter { return "ttt" }
+	vertraulichkeit { return "sensitivity" }
+	verzeichnisserver { return "directory_server" }
+	webseite { return "web_page" }
+	weiteres_postfach  { return "po_box" }
     }
     return $var_name
 }

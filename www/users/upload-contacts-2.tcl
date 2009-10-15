@@ -13,6 +13,11 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# ---------------------------------------------------------------
+# Page Contract
+# ---------------------------------------------------------------
+
+
 ad_page_contract {
     /intranet/companies/upload-contacts-2.tcl
     Read a .csv-file with header titles exactly matching
@@ -36,6 +41,10 @@ ad_page_contract {
 } 
 
 
+# ---------------------------------------------------------------
+# Security & Defaults
+# ---------------------------------------------------------------
+
 set current_user_id [ad_maybe_redirect_for_registration]
 set page_title "Upload Contacts CSV"
 set page_body ""
@@ -54,6 +63,10 @@ if {"" == $profile_id || 0 == $profile_id} {
 }
 
 
+
+# ---------------------------------------------------------------
+# 
+# ---------------------------------------------------------------
 
 # Describes how Excel attributes are loaded into DynFields
 # Format:
@@ -121,8 +134,10 @@ switch $transformation_key {
 }
 
 
+# ---------------------------------------------------------------
+# Get the uploaded file
+# ---------------------------------------------------------------
 
-# Get the file from the user.
 # number_of_bytes is the upper-limit
 set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
 set tmp_filename [ns_queryget upload_file.tmpfile]
@@ -147,10 +162,14 @@ Please check the file permissions or contact your system administrator.\n"
     ad_script_abort
 }
 
+
+# ---------------------------------------------------------------
+# Extract CSV contents
+# ---------------------------------------------------------------
+
 set csv_files_content [fileutil::cat $tmp_filename]
 set csv_files [split $csv_files_content "\n"]
 set csv_files_len [llength $csv_files]
-
 
 set separator [im_csv_guess_separator $csv_files]
 
@@ -161,10 +180,13 @@ set csv_header_len [llength $csv_header_fields]
 set values_list_of_lists [im_csv_get_values $csv_files_content $separator]
 
 
+# ---------------------------------------------------------------
+# Render Page Header
+# ---------------------------------------------------------------
 
-
-# ------------------------------------------------------------
-# Render Result Header
+# This page is a "streaming page" without .adp template,
+# because this page can become very, very long and take
+# quite some time.
 
 ad_return_top_of_page "
         [im_header]
@@ -172,7 +194,10 @@ ad_return_top_of_page "
 "
 
 
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
+# Start parsing the CSV
+# ---------------------------------------------------------------
+
 
 set linecount 0
 foreach csv_line_fields $values_list_of_lists {
@@ -280,10 +305,13 @@ foreach csv_line_fields $values_list_of_lists {
 
     # -------------------------------------------------------
     # Extract variables from the CSV file
-    #
+    # Loop through all columns of the CSV file and set 
+    # local variables according to the column header (1st row).
 
     set var_name_list [list]
     set pretty_field_string ""
+    set pretty_field_header ""
+    set pretty_field_body ""
     for {set j 0} {$j < $csv_header_len} {incr j} {
 
 	set var_name [string trim [lindex $csv_header_fields $j]]
@@ -299,13 +327,24 @@ foreach csv_line_fields $values_list_of_lists {
 	set var_value [string trim [lindex $csv_line_fields $j]]
 	set var_value [string map -nocase {"\"" "" "\{" "(" "\}" ")" "\[" "(" "\]" ")"} $var_value]
 	if {[string equal "NULL" $var_value]} { set var_value ""}
-	append pretty_field_string "$var_name\t\t$var_value\n"
+	append pretty_field_header "<td>$var_name</td>\n"
+	append pretty_field_body "<td>$var_value</td>\n"
 
-	ns_log notice "upload-contacts: [lindex $csv_header_fields $j] => $var_name => $var_value"	
+#	append pretty_field_string "$var_name\t\t$var_value\n"
+#	ns_log notice "upload-contacts: [lindex $csv_header_fields $j] => $var_name => $var_value"	
 
 	set cmd "set $var_name \"$var_value\""
 	ns_log Notice "upload-contacts-2: cmd=$cmd"
 	set result [eval $cmd]
+    }
+
+    if {"" != $pretty_field_header} {
+	set pretty_field_string "
+	    <table border=1 cellspacing=0 cellpadding=0>
+	    <tr>$pretty_field_header</tr>
+	    <tr>$pretty_field_body</tr>
+	    </table>
+        "
     }
 
     if {"" == $first_name} {
@@ -413,6 +452,8 @@ foreach csv_line_fields $values_list_of_lists {
 	}
     }
 
+    ns_write $pretty_field_string
+
 
     # -------------------------------------------------------
     # Create a new user if necessary
@@ -484,9 +525,9 @@ foreach csv_line_fields $values_list_of_lists {
     # Execute this no matter whether it's a new or an existing user
     #
 
-
-
-    ns_write "<li>'$first_name $last_name': Updating user ... \n"
+    ns_write "<li>
+	'$first_name $last_name': Updating user ...<br>
+    "
     
     # Add a users_contact record to the user since the 3.0 PostgreSQL
     # port, because we have dropped the outer join with it...

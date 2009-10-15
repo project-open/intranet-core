@@ -1646,7 +1646,7 @@ BEGIN
 		''intranet-core'',		-- package_name
 		''admin_l10n'',		-- label
 		''Localization Home'',		-- name
-		''/acs-lang/admin'',		-- url
+		''/acs-lang/admin/'',		-- url
 		20,				-- sort_order
 		v_main_menu,			-- parent_menu_id
 		''''				-- p_visible_tcl
