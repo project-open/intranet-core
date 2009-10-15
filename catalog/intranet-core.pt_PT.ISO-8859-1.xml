@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="pt_PT" charset="ISO-8859-1">
+
+  <msg key="Absences">Ausências</msg>
+  <msg key="Add_Stuff">Adicionar</msg>
+  <msg key="Admin">Administrador</msg>
+  <msg key="Bugs">Erros</msg>
+  <msg key="Change_Password">Alterar Palavra-Passe</msg>
+  <msg key="Collaboration">Colaboração</msg>
+  <msg key="Comments">Comentários?</msg>
+  <msg key="Companies">Empresas</msg>
+  <msg key="Conf_Items">Itens de Conf</msg>
+  <msg key="Confirm">Confirmar</msg>
+  <msg key="Contact">Contacto</msg>
+  <msg key="Context_Help">Ajuda do contexto</msg>
+  <msg key="Create_new_Incident">Criar novo incidente</msg>
+  <msg key="CRM_Sales">CRM</msg>
+  <msg key="Customers">Cliente</msg>
+  <msg key="Dashboard">Painel de indicadores</msg>
+  <msg key="Expenses">Despesas</msg>
+  <msg key="Filter_Users">Filtrar Utilizadores</msg>
+  <msg key="Forum">Fórum</msg>
+  <msg key="Helpdesk">Helpdesk</msg>
+  <msg key="Home">Início</msg>
+  <msg key="Human_Resources">Recursos Humanos</msg>
+  <msg key="Indicators">Indicadores</msg>
+  <msg key="Log_Out">Sair</msg>
+  <msg key="logout">Sair</msg>
+  <msg key="Materials">Materiais</msg>
+  <msg key="My_Account">A Minha Conta</msg>
+  <msg key="Name">Nome</msg>
+  <msg key="New_Password">Nova palavra-passe</msg>
+  <msg key="New_Project">Novo Projecto</msg>
+  <msg key="New_User">Novo Utilizador</msg>
+  <msg key="Nr">Num</msg>
+  <msg key="Project_Management">Gestão de Projectos</msg>
+  <msg key="Project_Manager">Gestor de Projecto</msg>
+  <msg key="Project_Name">Nome do Projecto</msg>
+  <msg key="Project_nr">Projecto Nº</msg>
+  <msg key="Projects">Projectos</msg>
+  <msg key="Reset_Stuff">Apagar</msg>
+  <msg key="Restart_Server">Reiniciar Servidor</msg>
+  <msg key="Search">Procurar</msg>
+  <msg key="Search_Go_Alt">Procurar</msg>
+  <msg key="Sitemap">Mapa do Site</msg>
+  <msg key="Software_Updates">Actualizações de Software</msg>
+  <msg key="Status">Estado</msg>
+  <msg key="Type">Tipo</msg>
+  <msg key="Update">Actualizar</msg>
+  <msg key="Users">Utilizadores</msg>
+  <msg key="Welcome_User_Name">Bem-vindo %user_name%</msg>
+</message_catalog>
