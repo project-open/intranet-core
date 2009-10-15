@@ -1459,3 +1459,15 @@ div.xowiki-content p, div.xowiki-content td {
         left:2pt;
         padding-top:3px;
 }
+
+.table_list_page table.forumBar td a  {
+        text-decoration: underline;
+        font-size:9pt;
+        font-weight:normal;
+        color:#235C96;
+}
+
+.table_list_page table.forumBar td  {
+        background: #fff
+}
+
