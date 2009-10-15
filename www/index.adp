@@ -7,7 +7,7 @@
 <tr>
   <td colspan=3>
 
-<if "" ne @browser_warning@>
+<if "" ne @browser_warning_msg@>
    <%= [im_box_header $browser_warning] %>
    <font color=red>
    <h3>@browser_warning@</h3>
