@@ -23,12 +23,22 @@
   <msg key="Accounting">Contabilità</msg>
   <msg key="accounting">Contabilità</msg>
   <msg key="Accounting_contact">Contatto di contabilità</msg>
+  <msg key="acs-admin">acs-admin</msg>
+  <msg key="acs-api-browser">acs-api-browser</msg>
+  <msg key="acs-authentication">acs-authentication</msg>
   <msg key="Action_Go">Vai</msg>
   <msg key="Actions">Azioni</msg>
   <msg key="activate">Attiva</msg>
   <msg key="Active">Attivo</msg>
   <msg key="Active_Customers">Clienti attivi</msg>
   <msg key="Active_or_Potential">Attivo o potenziale</msg>
+  <msg key="Ad_hoc_message">Messaggio</msg>
+  <msg key="Ad_hoc_owner_email">Email del responsabile</msg>
+  <msg key="Ad_hoc_owner_name">Nome del responsabile</msg>
+  <msg key="Ad_hoc_posting_date">Data di invio</msg>
+  <msg key="Ad_hoc_subject">Oggetto</msg>
+  <msg key="Ad_hoc_topic_status">Stato dell'argomento</msg>
+  <msg key="Ad_hoc_topic_type">Tipo di argomento</msg>
   <msg key="Add">Aggiungi</msg>
   <msg key="Add_a_new_client">Nuovo cliente</msg>
   <msg key="Add_a_new_Company">Nuova azienda</msg>
@@ -213,6 +223,7 @@
   <msg key="Column_render_tcl">TCL da renderizzare nella colonna</msg>
   <msg key="Column_sql">SQL colonna</msg>
   <msg key="Com">Commerciale</msg>
+  <msg key="Comment">Commento</msg>
   <msg key="Comments">Commenti?</msg>
   <msg key="Companies">Aziende</msg>
   <msg key="Companies_Admin">Gestione aziende</msg>
@@ -226,7 +237,7 @@
   <msg key="Company_Short_Name">Nome breve dell'azienda</msg>
   <msg key="Company_Status">Stato dell'azienda</msg>
   <msg key="Company_Status_1">Stato azienda:</msg>
-  <msg key="Company_Survey_Component">Componente sondaggio azienda</msg>
+  <msg key="Company_Survey_Component">Sezione sondaggi aziendali</msg>
   <msg key="Company_Trados_Matrix">Matrice Trados azienda</msg>
   <msg key="Company_Translation_Prices">Tariffe traduzione azienda</msg>
   <msg key="Company_Type">Tipo di azienda</msg>
@@ -332,6 +343,7 @@
   <msg key="Delete_members">Elimina membri</msg>
   <msg key="Delete_Menu">Elimina menu</msg>
   <msg key="Delete_portrait">Elimina foto</msg>
+  <msg key="Delete_Simple_Survey">Elimina Simple Survey</msg>
   <msg key="Delete_the_Task">Elimina l'attività</msg>
   <msg key="Deleted">Eliminato</msg>
   <msg key="Delinquent_Update">Aggiornamento criminale</msg>
@@ -436,6 +448,7 @@
   <msg key="Files">File</msg>
   <msg key="Filestorage_File">File filestorage</msg>
   <msg key="Filter_Companies">Filtra Aziende</msg>
+  <msg key="Filter_Components">Filtra sezioni</msg>
   <msg key="Filter_Offices">Filtra uffici</msg>
   <msg key="Filter_Projects">Filtra Progetti</msg>
   <msg key="Filter_Tickets">Filtra ticket</msg>
@@ -668,6 +681,7 @@
   <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
   <msg key="invoiceesadp">invoice.es.adp</msg>
   <msg key="Invoices">Fatture</msg>
+  <msg key="Invoke">Invoca</msg>
   <msg key="Iran">Iran</msg>
   <msg key="Iraq">Iraq</msg>
   <msg key="Ireland">Irlanda</msg>
@@ -689,6 +703,7 @@
   <msg key="jp">jp</msg>
   <msg key="JPY">JPY</msg>
   <msg key="k">k</msg>
+  <msg key="Key">Chiave</msg>
   <msg key="Key_Account">Key Account</msg>
   <msg key="Key_Account_Manager">Key Account Manager</msg>
   <msg key="ko">ko</msg>
@@ -710,9 +725,10 @@
   <msg key="Law_Company">Studio legale</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Conosci l'azienda</msg>
-  <msg key="Learn_About_Your_Company_Blurb">Questo componente mostra a rotazione un diverso impiegato dell'azienda. In questo modo, i membri dei vari uffici iniziano a conoscersi e i dipendenti conosceranno i free-lance che lavorano per l'azienda. I permessi di accesso vengono mantenuti, ed è possibile rimuovere o modificare _questo_ testo in 'modalità traduzione'</msg>
+  <msg key="Learn_About_Your_Company_Blurb">Questa sezione mostra a rotazione un diverso impiegato dell'azienda. In questo modo, i membri dei vari uffici iniziano a conoscersi e i dipendenti conosceranno i free-lance che lavorano per l'azienda. I permessi di accesso vengono mantenuti, ed è possibile rimuovere o modificare _questo_ testo in 'modalità traduzione'</msg>
   <msg key="Lebanon">Libano</msg>
   <msg key="left">Left Blue</msg>
+  <msg key="Level">Livello</msg>
   <msg key="Licenses">Licenze</msg>
   <msg key="Liechtenstein">Liechtenstein</msg>
   <msg key="lightgreen">Light Green</msg>
@@ -739,6 +755,7 @@
   <msg key="lt_A_project_number_is_c">Un numero di progetto di default è composto da 4 cifre per l'anno e altre 4 cifre.</msg>
   <msg key="lt_Aadir_Cosasintranet-c">Aggiungi</msg>
   <msg key="lt_Aadirintranet-coreAdd">Aggiungi</msg>
+  <msg key="lt_acs-automated-testing">lt_acs-automated-testing</msg>
   <msg key="lt_Add_a_manual_task_to_">Aggiungi attività al progetto manualmente.</msg>
   <msg key="lt_Add_a_new_annual_reve">Nuova misura di fatturato annuale</msg>
   <msg key="lt_Add_a_new_company_sta">Nuovo stato per l'azienda</msg>
@@ -774,13 +791,15 @@
   <msg key="lt_Bosnia_and_Herzegovin">Bosnia-Erzegovina</msg>
   <msg key="lt_Bug_Tracker_Container">Bug Tracker Container</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completamente sbagliato</msg>
+  <msg key="lt_Calculates_how_many_p">Ore produttive</msg>
   <msg key="lt_Calculates_Invoices_-">Utile netto (ultimi due mesi)</msg>
   <msg key="lt_Calculates_Quotes_-_P">Utile lordo preliminare (ultimi due mesi)</msg>
+  <msg key="lt_Calculates_the_averag">Durata media del progetto</msg>
   <msg key="lt_Calculates_the_number">Ore medie di presenza per impiegato</msg>
   <msg key="lt_Cant_find_the_project">Impossibile trovare il progetto con ID</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Impossibile eliminare l'azienda</msg>
   <msg key="lt_Change_the_accounting">Modifica il contatto contabilità</msg>
-  <msg key="lt_Change_the_position_o">Abilita, disabilita, modifica la posizione e cambia i permessi di accesso dei componenti plug-in</msg>
+  <msg key="lt_Change_the_position_o">Abilita, disabilita, modifica la posizione e cambia i permessi di accesso dei plug-in di ogni sezione</msg>
   <msg key="lt_Change_the_primary_co">Modifica il contatto principale</msg>
   <msg key="lt_Change_the_system_par">Cambia i parametri di sistema, come cartelle, URL, ecc...</msg>
   <msg key="lt_Choose_this_option_fo">Scegliere questa opzione per impostare le informazioni di sicurezza dettagliate. Con questa opzione il servizio di aggiornamento di sicurezza trasmette informazioni sulla configurazione corrente, che possono aiutarci ad accedere alla configurazione del sistema di ]project-open[, quali le informazioni sulle versioni dei pacchetti e del sistema operativo. Rende noto anche l'indirizzo e-mail, per consentirci di inviare comunicazioni in caso di necessità.</msg>
@@ -792,7 +811,12 @@
   <msg key="lt_Confirm_Nuking_first_">Conferma l'eliminazione di %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Conferma l'eliminazione di</msg>
   <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
+  <msg key="lt_Counts_all_members_of">N. persone</msg>
   <msg key="lt_Counts_how_many_custo">Nuovi clienti per mese</msg>
+  <msg key="lt_Counts_how_many_diffe">PM attivi</msg>
+  <msg key="lt_Counts_how_many_finan">Documenti finanziari per progetto</msg>
+  <msg key="lt_Counts_how_many_proje">Progetti per PM</msg>
+  <msg key="lt_Counts_the_days_po_is">Tempo operazioni live ]po[</msg>
   <msg key="lt_Counts_the_number_of_">Clienti attivi nell'ultimo mese</msg>
   <msg key="lt_Create_a_new_Discussi">Crea nuova discussione</msg>
   <msg key="lt_Create_folder_structu">Crea la struttura di cartelle e crea un sottoprogetto per ciascuna lingua d'arrivo scelta.</msg>
@@ -815,7 +839,7 @@
   <msg key="lt_Empleadosintranet-fil">Dipendenti</msg>
   <msg key="lt_Employeesintranet-fil">Dipendenti</msg>
   <msg key="lt_End_date_must_be_afte">La data di consegna dev'essere dopo la data d'inizio</msg>
-  <msg key="lt_Error_evaluating_comp">Errore nella convalida del componente '%plugin_name%' del modulo '%package_name%'</msg>
+  <msg key="lt_Error_evaluating_comp">Errore nella convalida della sezione '%plugin_name%' del modulo '%package_name%'</msg>
   <msg key="lt_Error_getting_the_ema">Errore nel reperire l'indirizzo e-mail dell'utente %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Errore: parametro mancante</msg>
   <msg key="lt_Expected_Annual_Reven">Fatturato annuale (atteso)</msg>
@@ -890,7 +914,7 @@
   <msg key="lt_make_accounting_conta">rendi contatto di contabilità</msg>
   <msg key="lt_Make_the_new_client_c">Rendi il nuovo contatto del cliente un %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Rendi il nuovo contatto del cliente un %company_employee_link% %company_name%.</msg>
-  <msg key="lt_Manage_Component_Layo">Componenti del plug-in</msg>
+  <msg key="lt_Manage_Component_Layo">Plug-in delle sezioni</msg>
   <msg key="lt_Manage_Global_System_">Gestione parametri generali del sistema </msg>
   <msg key="lt_Manage_Individual_Use">Gestione utenti individuali</msg>
   <msg key="lt_Manage_OpenACS_Develo">Gestione sviluppo OpenACS</msg>
@@ -956,7 +980,7 @@
   <msg key="lt_Project_Change_Reques">Richiesta cambiamento progetto</msg>
   <msg key="lt_Project_Translation_D">Dettagli del progetto di traduzione</msg>
   <msg key="lt_Provider_bills_with_e">Costi esterni</msg>
-  <msg key="lt_Quotes_in_Project_Nam">Le virgolette non sono consentite in 'Nome progetto'</msg>
+  <msg key="lt_Quotes_in_Project_Nam">Virgolette non consentite in 'Nome progetto'</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Le virgolette non sono consentite in 'Numero progetto'</msg>
   <msg key="lt_Quotes_in_Project_Pat">Virgolette non consentite in 'Percorso per il progetto'</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
@@ -969,6 +993,7 @@
   <msg key="lt_Replyintranet-forumRe">Risposta</msg>
   <msg key="lt_return_to_user_admini">Ritornare a amministrazione utente</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url non specificato. Errore non previsto. Contattare %mail_to_administrator_link% per notificare l'errore.</msg>
+  <msg key="lt_Returns_the_average_t">Media del tempo per dipendente</msg>
   <msg key="lt_role_name_of_object_n">%role_name% di %object_name%</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
   <msg key="lt_Search_for_a_substrin">Cerca una stringa nell'e-mail di una persona, ad esempio \&quot;lion\&quot; per trovare tutti gli utenti di Lionbridge.</msg>
@@ -980,6 +1005,7 @@
   <msg key="lt_Send_user_new_passwor">Invia la nuova password all'utente tramite e-mail</msg>
   <msg key="lt_Senior_Managersintran">Senior Manager</msg>
   <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Shows_the_average_num">Media delle ore registrate per progetto</msg>
   <msg key="lt_Shows_the_status_of_a">Mostra lo stato di un progetto</msg>
   <msg key="lt_Slashes__in_Project_P">Le barre ('/') non sono consentite in 'Percorso per il progetto'</msg>
   <msg key="lt_So_you_probably_dont_">probabilmente non volete eliminare tutti i dati, non è così?</msg>
@@ -996,7 +1022,7 @@
   <msg key="lt_The_note_you_entered_">La nota da voi inserita è troppo lunga. Limitatene l'estensione a 4000 caratteri</msg>
   <msg key="lt_The_nuking_of_user_us">L'eliminazione dell'utente %user_id% non ha funzionato. Ciò è probabilmente dovuto al fatto che la vostra istallazione relativa all'ArsDigita Community System è stata aggiornata e ci sono nuove tabelle che fanno riferimento alla tabella utenti. Contattate il vostro programmatore.</msg>
   <msg key="lt_The_parameter_paramet">Il parametro '%parameter%' non è definito nella sezione intranet del file si parametri del vostro server. Definite questo parametro, riavviate il vostro server e riprovate.</msg>
-  <msg key="lt_The_project_name_that">Il nome progetto che avete scelto è troppo breve.</msg>
+  <msg key="lt_The_project_name_that">Il nome progetto scelto è troppo breve.</msg>
   <msg key="lt_The_project_or_one_of">È stato chiuso questo progetto o uno dei progetti principali.</msg>
   <msg key="lt_The_screen_name_you_h">Il nome da voi scelto per la schermata è già in uso.</msg>
   <msg key="lt_The_specified_name_pr">Il nome specificato %project_name%, è già esistente - selezionate un altro nome</msg>
@@ -1113,6 +1139,7 @@
   <msg key="Menu_Backup_Restore">Backup &amp; ripristino menu</msg>
   <msg key="Menu_Restore">Ripristino menu</msg>
   <msg key="Menus">Menu</msg>
+  <msg key="Message">Messaggio</msg>
   <msg key="Mexico">Messico</msg>
   <msg key="milestone_p">Milestone?</msg>
   <msg key="Milestones">Milestone</msg>
@@ -1287,7 +1314,7 @@
   <msg key="poesadp">po.es.adp</msg>
   <msg key="poessadp">  	 po.es.adp</msg>
   <msg key="Poland">Polonia</msg>
-  <msg key="Portlet_Components">Componenti portlet</msg>
+  <msg key="Portlet_Components">Sezioni portlet</msg>
   <msg key="Portrait">Foto</msg>
   <msg key="Portugal">Portogallo</msg>
   <msg key="POs">POs</msg>
@@ -1324,7 +1351,7 @@
   <msg key="Profile_Translation_Vertical">Verticale traduzione</msg>
   <msg key="Profiles">Profili</msg>
   <msg key="Profit">Profitto</msg>
-  <msg key="Profit_and_Loss">Guadagni e Perdite</msg>
+  <msg key="Profit_and_Loss">Profitti e perdite</msg>
   <msg key="Program_Enhan_K">Miglioramento programma K</msg>
   <msg key="Program_Enhancement">Miglioramento programma</msg>
   <msg key="Project">Progetto</msg>
@@ -1343,15 +1370,16 @@
   <msg key="Project_Managers">Project Manager</msg>
   <msg key="project_managers">Responsabili di progetto</msg>
   <msg key="Project_Members">Membri del progetto</msg>
-  <msg key="Project_Name">Nome Progetto</msg>
+  <msg key="Project_Name">Nome progetto</msg>
   <msg key="Project_name">Nome del progetto</msg>
   <msg key="Project_Nr">Num. progetto</msg>
   <msg key="Project_nr">N. progetto</msg>
   <msg key="Project_project_name">Progetto: %project_name%</msg>
   <msg key="Project_Proposals">Progetti potenziali</msg>
+  <msg key="Project_Quality_Component">Qualità della traduzione</msg>
   <msg key="Project_Resource_Planning">Pianificazione risorse</msg>
   <msg key="Project_Skills">Competenze di progetto</msg>
-  <msg key="Project_Status">Stato Progetto</msg>
+  <msg key="Project_Status">Stato progetto</msg>
   <msg key="Project_status_Closed">Chiuso</msg>
   <msg key="Project_status_Inquiring">Richiesta informazioni</msg>
   <msg key="Project_status_Open">Aperto</msg>
@@ -1413,6 +1441,7 @@
   <msg key="Redaccin">Redazione</msg>
   <msg key="Referral_Source">Riferito da</msg>
   <msg key="Referral_source">Riferito da</msg>
+  <msg key="Registered_Users">Utenti registrati</msg>
   <msg key="Rejected">Rifiutato</msg>
   <msg key="Related_Tickets">Ticket collegati</msg>
   <msg key="Repeating_Cost">Costo ricorrente</msg>
@@ -1704,7 +1733,7 @@
   <msg key="Windows_NT">Windows NT</msg>
   <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Bonifico</msg>
-  <msg key="With_Member">con membro</msg>
+  <msg key="With_Member">Includi membro</msg>
   <msg key="With_members_of_my_dept">Con membri del proprio reparto</msg>
   <msg key="Wordfast_2">Wordfast</msg>
   <msg key="Wordfast_3">Wordfast 3</msg>

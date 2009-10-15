@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.6.0" locale="ru_RU" charset="utf-8">
+<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="ru_RU" charset="utf-8">
 
   <msg key="--_Please_select_--">-- Выберите --</msg>
   <msg key="1111">1111</msg>
@@ -373,7 +373,7 @@
   <msg key="EUR_1-10k">1-10 тыс. евро</msg>
   <msg key="EUR_10-100k">10-100 тыс. евро</msg>
   <msg key="Exchange_Rates">Курсы обмена</msg>
-  <msg key="Execution_Project_Help">"Рабочий проект" - копия проекта, не содержащая ссылок на исходный проект дл сохранения анонимности клиента.</msg>
+  <msg key="Execution_Project_Help">&quot;Рабочий проект&quot; - копия проекта, не содержащая ссылок на исходный проект дл сохранения анонимности клиента.</msg>
   <msg key="Expected_Quality">Ожидаемое качество</msg>
   <msg key="Expense_Bundle">Группа расходов</msg>
   <msg key="Expense_Item">Статья расхода</msg>
@@ -653,7 +653,7 @@
   <msg key="Korea__values_South">Южная Корея</msg>
   <msg key="Kuwait">Кувейт</msg>
   <msg key="l">l</msg>
-  <msg key="La_Caixa_EUR">Банк "La Caixa", евро</msg>
+  <msg key="La_Caixa_EUR">Банк &quot;La Caixa&quot;, евро</msg>
   <msg key="Last_3_months">Последние 4 месяца</msg>
   <msg key="Last_name">Фамилия</msg>
   <msg key="Last_Visit">Последнее посещение</msg>
@@ -730,7 +730,7 @@
   <msg key="lt_Calculates_Invoices_-">Чистая прибыль (за последние два месяца)</msg>
   <msg key="lt_Calculates_Quotes_-_P">Предварительная валовая прибыль (за последние два месяца)</msg>
   <msg key="lt_Calculates_the_number">Среднее число часов, отработанных каждым сотрудником </msg>
-  <msg key="lt_Cant_find_the_project">Не удается найти проект с идентификатором "%project_id%"</msg>
+  <msg key="lt_Cant_find_the_project">Не удается найти проект с идентификатором &quot;%project_id%&quot;</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Не удается уничтожить компанию-плательщика</msg>
   <msg key="lt_Change_the_accounting">Изменить контактное лицо в бухгалтерии</msg>
   <msg key="lt_Change_the_position_o">Включение, отключение, изменение расположения и прав доступа к подключаемым компонентам.</msg>
@@ -738,7 +738,7 @@
   <msg key="lt_Change_the_system_par">Изменение системных параметров, таких как каталоги, URL-адреса и т. д.</msg>
   <msg key="lt_Choose_this_option_fo">Чтобы получить подробные сведения о системе безопасности, выберите этот параметр. Этот параметр позволит службе обновления для системы безопасности передать сведения о конфигурации пользователя, которые помогут нам оценить конфигурацию системы ]project-open[, а также сведения о версиях пакетов и версии операционной системы. Также нам будет передан адрес эл. почты пользователя, который можно использовать для оповещения в особых случаях.</msg>
   <msg key="lt_Choose_this_option_if">Выберите этот параметр, если не желаете передавать в ]project-open[ сведения, с помощью которых можно идентифицировать пользователя или организацию пользователя.</msg>
-  <msg key="lt_Click_right_and_choos">Чтобы загрузить этот файл, щелкните его правой кнопкой мыши и выберите команду "Сохранить объект как"</msg>
+  <msg key="lt_Click_right_and_choos">Чтобы загрузить этот файл, щелкните его правой кнопкой мыши и выберите команду &quot;Сохранить объект как&quot;</msg>
   <msg key="lt_Clientesintranet-file">Клиенты</msg>
   <msg key="lt_Configure_site-wide_d">Настройте по умолчанию разрешенные и запрещенные действия для группы пользователей (&quot;профиля&quot;) на уровня узла.</msg>
   <msg key="lt_Confirm_Nuking_first_">Подтвердите уничтожение %first_names% %last_name%</msg>
@@ -753,7 +753,7 @@
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Уважаемый(ая) %first_names_from_search%,
 
-Вы добавлены в роли "%role_name%" в %object_name% в системе %system_name% по адресу %object_url%
+Вы добавлены в роли &quot;%role_name%&quot; в %object_name% в системе %system_name% по адресу %object_url%
 
 Чтобы получить дополнительные сведения, щелкните ссылку выше.
 
@@ -764,15 +764,15 @@
   <msg key="lt_Deleting_first_names_">Удаление %first_names% %last_name%</msg>
   <msg key="lt_Directivosintranet-fi">Руководители</msg>
   <msg key="lt_Discussionintranet-fo">Обсуждение</msg>
-  <msg key="lt_Do_you_want_to_create">Создать дочерний проект (проект, являющийся частью другого проекта)? Если вы не уверены, оставьте это поле без изменения (вариант "-- Выберите --").</msg>
-  <msg key="lt_Dots__in_Project_Path">Нельзя использовать точки (".") в пути к проекту</msg>
+  <msg key="lt_Do_you_want_to_create">Создать дочерний проект (проект, являющийся частью другого проекта)? Если вы не уверены, оставьте это поле без изменения (вариант &quot;-- Выберите --&quot;).</msg>
+  <msg key="lt_Dots__in_Project_Path">Нельзя использовать точки (&quot;.&quot;) в пути к проекту</msg>
   <msg key="lt_Edit_comments_about_y">Изменить комментарии о вас</msg>
   <msg key="lt_Edit_menus_and_change">Изменить меню и разрешения на доступ к ним.</msg>
   <msg key="lt_Edit_views_and_change">Изменить вид и добавить столбцы.</msg>
   <msg key="lt_Empleadosintranet-fil">Сотрудники</msg>
   <msg key="lt_Employeesintranet-fil">Сотрудники</msg>
   <msg key="lt_End_date_must_be_afte">Дата окончания должна следовать за датой начала</msg>
-  <msg key="lt_Error_evaluating_comp">Ошибка при оценке компонента "%plugin_name%" модуля "%package_name%"</msg>
+  <msg key="lt_Error_evaluating_comp">Ошибка при оценке компонента &quot;%plugin_name%&quot; модуля &quot;%package_name%&quot;</msg>
   <msg key="lt_Error_getting_the_ema">Ошибка при получении адреса эл. почты пользователя %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Ошибка: пропущен параметр</msg>
   <msg key="lt_Expected_Annual_Reven">Годовой доход (ожидаемый)</msg>
@@ -814,13 +814,13 @@
   <msg key="lt_How_did_we_get_in_con">Как мы связались с этой компанией?</msg>
   <msg key="lt_How_many_hours_can_be">Сколько часов можно зарегистрировать для этого проекта (внутренние и внешние ресурсы)?</msg>
   <msg key="lt_IBM_Translation_Workb">IBM Translation Workbench</msg>
-  <msg key="lt_If_this_IS_a_TestDemo">Если этот сервер ЯВЛЯЕТСЯ тестовым, демонстрационным сервером или сервером разработки, проверьте установочный файл "/parameters/*.ini" и присвойте параметру TestDemoDevServer значение "true".</msg>
+  <msg key="lt_If_this_IS_a_TestDemo">Если этот сервер ЯВЛЯЕТСЯ тестовым, демонстрационным сервером или сервером разработки, проверьте установочный файл &quot;/parameters/*.ini&quot; и присвойте параметру TestDemoDevServer значение &quot;true&quot;.</msg>
   <msg key="lt_Import_Company_Contac">Импорт контакта компании из формата CVS</msg>
   <msg key="lt_Import_Projects_from_">Импорт проектов с диска H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">В процессе: работа сейчас начнется; потенциальный проект: может стать проектом позже; не начат: ожидается начало работы; завершен: уже завершен...</msg>
   <msg key="lt_Incidentintranet-foru">Обращение</msg>
   <msg key="lt_Insufficient_Privileg">Недостаточно разрешений</msg>
-  <msg key="lt_Internal_error_unknow">Внутренняя ошибка: неизвестное представление "%view_name%"</msg>
+  <msg key="lt_Internal_error_unknow">Внутренняя ошибка: неизвестное представление &quot;%view_name%&quot;</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Доступ к данным RFC в интрасети</msg>
   <msg key="lt_Intranet_RFC_Expense_">Тип расхода RFC интрасети</msg>
   <msg key="lt_Intranet_RFC_HJ_Appli">Приложение RFC HJ интрасети</msg>
@@ -835,7 +835,7 @@
   <msg key="lt_Intranet_RFC_RR_Colum">Столбец RR RFC интрасети</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Формат RR RFC интрасети</msg>
   <msg key="lt_Intranet_RFC_Workplac">Рабочая область RFC интрасети</msg>
-  <msg key="lt_Invalid_time_format_e">Недопустимый формат времени "%end_time(time)%": введите время в формате "12:30"</msg>
+  <msg key="lt_Invalid_time_format_e">Недопустимый формат времени &quot;%end_time(time)%&quot;: введите время в формате &quot;12:30&quot;</msg>
   <msg key="lt_Invoices_written_with">Выручка </msg>
   <msg key="lt_Is_the_project_going_">Проект будет выполнен в срок и в соответствии с бюджетом (зеленый), требуется обратить внимание на проект (желтый) или проект обречен на провал (красный)?</msg>
   <msg key="lt_Is_this_a_billable_co">Требуется ли платить этой компании?</msg>
@@ -859,7 +859,7 @@
   <msg key="lt_Manage_Individual_Use">Управление отдельными пользователями</msg>
   <msg key="lt_Manage_OpenACS_Develo">Управление разработкой OpenACS</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Управление платформой OpenACS</msg>
-  <msg key="lt_Maybe_somebody_has_ch">Возможно, кто-то изменил путь "внутренней" компании, определяющей вашу организацию.</msg>
+  <msg key="lt_Maybe_somebody_has_ch">Возможно, кто-то изменил путь &quot;внутренней&quot; компании, определяющей вашу организацию.</msg>
   <msg key="lt_Meineintranet-timeshe">My</msg>
   <msg key="lt_Member_state_user_sta">Состояние участника: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Состояние участника: %user_state% (%activate_link%, %delete_link%)</msg>
@@ -918,9 +918,9 @@
   <msg key="lt_Project_Change_Reques">Запрос на изменение проекта</msg>
   <msg key="lt_Project_Translation_D">Сведения о переводе проекта</msg>
   <msg key="lt_Provider_bills_with_e">Внешние расходы</msg>
-  <msg key="lt_Quotes_in_Project_Nam">Нельзя использовать кавычки в поле "Название проекта"</msg>
-  <msg key="lt_Quotes_in_Project_Nr_">Нельзя использовать кавычки в поле "Номер проекта"</msg>
-  <msg key="lt_Quotes_in_Project_Pat">Нельзя использовать кавычки в поле "Путь к проекту"</msg>
+  <msg key="lt_Quotes_in_Project_Nam">Нельзя использовать кавычки в поле &quot;Название проекта&quot;</msg>
+  <msg key="lt_Quotes_in_Project_Nr_">Нельзя использовать кавычки в поле &quot;Номер проекта&quot;</msg>
+  <msg key="lt_Quotes_in_Project_Pat">Нельзя использовать кавычки в поле &quot;Путь к проекту&quot;</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
@@ -943,7 +943,7 @@
   <msg key="lt_Senior_Managersintran">Старшие руководители</msg>
   <msg key="lt_Service_Level_Agreeme">Соглашение об уровне обслуживания</msg>
   <msg key="lt_Shows_the_status_of_a">Отображает состояние проекта</msg>
-  <msg key="lt_Slashes__in_Project_P">Нельзя использовать косую черту ("/") в поле "Путь к проекту"</msg>
+  <msg key="lt_Slashes__in_Project_P">Нельзя использовать косую черту (&quot;/&quot;) в поле &quot;Путь к проекту&quot;</msg>
   <msg key="lt_So_you_probably_dont_">Не удалять все данные?!?</msg>
   <msg key="lt_Software_Company_Comp">Компания-разработчик ПО</msg>
   <msg key="lt_Software_Company_Cust">Клиент - компания-разработчик ПО</msg>
@@ -954,10 +954,10 @@
   <msg key="lt_The_customers_referen">Ссылка клиента на этот проект.</msg>
   <msg key="lt_The_database_choked_o">После обновления база данных переполнена:</msg>
   <msg key="lt_the_email_email_is_al">Адрес эл. почты %email% уже существует в базе данных</msg>
-  <msg key="lt_The_English_translati">"Перевод" на английский язык должен совпадать с названием категории.</msg>
+  <msg key="lt_The_English_translati">&quot;Перевод&quot; на английский язык должен совпадать с названием категории.</msg>
   <msg key="lt_The_note_you_entered_">Введено слишком длинное примечание. Сократите примечание до 4000 знаков</msg>
   <msg key="lt_The_nuking_of_user_us">Не удалось уничтожить пользователя %user_id%.  Возможно, настройки системы ArsDigita Community System были изменены пользователем, а также созданы новые таблицы, ссылающиеся на таблицу пользователей.  Обратитесь к программисту!</msg>
-  <msg key="lt_The_parameter_paramet">Параметр "%parameter%" не определен в разделе интрасети в файле параметров сервера. Определите этот параметр, перезагрузите сервер и повторите попытку.</msg>
+  <msg key="lt_The_parameter_paramet">Параметр &quot;%parameter%&quot; не определен в разделе интрасети в файле параметров сервера. Определите этот параметр, перезагрузите сервер и повторите попытку.</msg>
   <msg key="lt_The_project_name_that">Выбрано слишком короткое название проекта.</msg>
   <msg key="lt_The_project_or_one_of">Проект или один из его родительских проектов закрыт.</msg>
   <msg key="lt_The_screen_name_you_h">Выбранное отображаемое имя уже занято.</msg>
@@ -977,7 +977,7 @@
   <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Исходный язык перевода</msg>
   <msg key="lt_Translation_target_la">Конечный язык перевода</msg>
-  <msg key="lt_Unable_to_determine_I">Не удается определить "внутреннюю" компанию</msg>
+  <msg key="lt_Unable_to_determine_I">Не удается определить &quot;внутреннюю&quot; компанию</msg>
   <msg key="lt_Update_Basic_Informat">Обновить основные сведения</msg>
   <msg key="lt_Update_this_users_pas">Обновить пароль этого пользователя</msg>
   <msg key="lt_Upload_GanttProject_S">Отправить файл GanttProject</msg>
@@ -1002,8 +1002,8 @@
   <msg key="lt_Wire_Transfer_La_Caix">Банковский перевод La Caixa</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Да, я уверен, что хочу уничтожить этого пользователя</msg>
   <msg key="lt_You_are_not_a_member_">Вы не являетесь участником этого проекта.</msg>
-  <msg key="lt_You_are_not_allowed_t">У вас нет прав на удаление участников из группы "%profile_name%"</msg>
-  <msg key="lt_You_are_not_allowed_t_1">У вас нет прав на добавление участников в профиль "%profile_name%"</msg>
+  <msg key="lt_You_are_not_allowed_t">У вас нет прав на удаление участников из группы &quot;%profile_name%&quot;</msg>
+  <msg key="lt_You_are_not_allowed_t_1">У вас нет прав на добавление участников в профиль &quot;%profile_name%&quot;</msg>
   <msg key="lt_You_are_not_authorize">У вас нет прав на просмотр этой страницы</msg>
   <msg key="lt_You_are_trying_to_acc">Вы пытаетесь получить доступ к представлению, не определенному в базе данных.</msg>
   <msg key="lt_You_can_only_specify_">Можно указать либо адрес эл. почты, либо фамилию, но не то и другое вместе.</msg>
