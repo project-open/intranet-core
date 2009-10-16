@@ -2170,3 +2170,13 @@ ad_proc -public im_browser_warning { } {
     return ""
 }
 
+ad_proc -public im_browser_warning_component { } {
+    Returns a warning message for old browsers
+    that may not display all contents correctly
+} {
+    return "
+	<font color=red>
+	[im_browser_warning]
+	</font>
+    "
+}

@@ -6,16 +6,6 @@
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td colspan=3>
-
-<if "" ne @browser_warning_msg@>
-   <%= [im_box_header $browser_warning] %>
-   <font color=red>
-   <h3>@browser_warning@</h3>
-   @browser_warning_msg;noquote@
-   </font>
-   <%= [im_box_footer] %>
-</if>
-
     <%= [im_component_bay top] %>
   </td>
 </tr>
