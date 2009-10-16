@@ -2174,6 +2174,9 @@ ad_proc -public im_browser_warning_component { } {
     Returns a warning message for old browsers
     that may not display all contents correctly
 } {
+    set browser_warning [im_browser_warning]
+    if {"" == $browser_warning} { return "" }
+
     return "
 	<font color=red>
 	[im_browser_warning]
