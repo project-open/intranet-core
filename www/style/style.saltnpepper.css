@@ -1392,10 +1392,13 @@ span.list-label {
 
 /* XOWIKI */
 
-div.xowiki-content { 
-	margin-top: 30px;
+div.xowiki-content, div.xowiki-content p {
+        font-family:Arial,Helvetica,sans-serif;
+        color:#5E5E5E;
+        font-size:13px;
+        line-height:140%;
+        margin-top: 6px;
 }
-
 
 #left-col {
 	margin-top:15px;
@@ -1407,13 +1410,44 @@ div.xowiki-content {
 
 
 div.xowiki-content h1 {
-	margin-top: 2em;
+        font-family:Arial,Helvetica,sans-serif;
+        color:#424547;
+        font-size:16px;
+        font-weight:bold;
+        line-height:26px;
+        padding-left:0;
+        text-decoration:none;
+        border-bottom: solid silver 1px; color: #222222;
+	padding-top:30px;
 }
 
 div.xowiki-content h2 {
-	margin-top: 1.5em;
-	margin-bottom: 0.5em;
+        font-family:Arial,Helvetica,sans-serif;
+        color:#424547;
+        font-size:14px;
+        font-weight:bold;
+        line-height:26px;
+        padding-left:0;
+        text-decoration:none;
+        border-bottom: solid silver 1px; color: #222222;
+	padding-top:20px;
 }
+div.xowiki-content h3 {
+        font-family:Arial,Helvetica,sans-serif;
+        color:#424547;
+        font-size:12px;
+        font-weight:bold;
+        line-height:26px;
+        padding-left:0;
+        text-decoration:none;
+        border-bottom: solid silver 1px; color: #222222;
+	padding-top:20px;
+}
+div.xowiki-content h4 {
+    /* font-size: 12px; */
+    margin: 0;
+}
+
 
 div.rightbox {
 	margin-top: 2em;
@@ -1430,10 +1464,6 @@ div.xowiki-content hr {
 #search-info p.subtitle {
 	position:relative;
 	font-weight: bold;
-}
-
-div.xowiki-content p, div.xowiki-content td {
-        font-size: 10pt;
 }
 
 #titleSubmenu {
