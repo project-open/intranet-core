@@ -1392,13 +1392,15 @@ span.list-label {
 
 /* XOWIKI */
 
-div.xowiki-content, div.xowiki-content p {
+div.xowiki-content, div.xowiki-content p, .graphicTable td {
         font-family:Arial,Helvetica,sans-serif;
         color:#5E5E5E;
         font-size:13px;
         line-height:140%;
         margin-top: 6px;
 }
+
+
 
 #left-col {
 	margin-top:15px;
@@ -1501,3 +1503,7 @@ div.xowiki-content hr {
         background: #fff
 }
 
+
+.graphicTable td {
+	padding: 5px 5px 5px 5px;
+}
