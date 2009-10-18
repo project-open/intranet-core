@@ -65,7 +65,7 @@
 	<div id="monitor_frame">
 	   <div id="header_class">
 	      <div id="header_logo">
-		<a href="http://www.project-open.com/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border=0></a>
+		<a href="http://www.project-open.org/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border=0></a>
 	      </div>
 	      <div id="header_plugin_left">	 
 	      </div>
