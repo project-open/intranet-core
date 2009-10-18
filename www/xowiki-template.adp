@@ -12,9 +12,9 @@
 <!--	<link rel='stylesheet' href='/resources/acs-templating/forms.css'  type='text/css' media='screen'>	-->
 <!--	<link rel='stylesheet' href='/resources/acs-templating/lists.css'  type='text/css' media='screen'>	-->
 <!--	<link rel='stylesheet' href='/calendar/resources/calendar.css'  type='text/css' media='screen'>		-->
+	<link rel='stylesheet' href='/intranet/style/style.saltnpepper.css'  type='text/css' media='screen'>
 
 	<link rel='stylesheet' href='/resources/acs-templating/mktree.css'  type='text/css' media='screen'>
-	<link rel='stylesheet' href='/intranet/style/style.saltnpepper.css'  type='text/css' media='screen'>
 	<link rel="stylesheet" href="/resources/xowiki/xowiki.css" type="text/css" media="all" >
 	<link rel='stylesheet' href='/resources/xowiki/cattree.css' media='all' />
 	<link rel='stylesheet' href='/resources/acs-templating/lists.css' type="text/css" media='all' >
@@ -134,19 +134,16 @@
   <if @admin_link@ not nil><a href="@admin_link@" accesskey='a' title='#xowiki.admin_title#'>#xowiki.admin#</a> &middot; </if>
   <if @notification_subscribe_link@ not nil><a href='/notifications/manage' title='#xowiki.notifications_title#'>#xowiki.notifications#</a> 
       <a href="@notification_subscribe_link@">@notification_image;noquote@</a> &middot; </if>  
-   <a href='#' onclick='document.getElementById("do_search").style.display="inline";document.getElementById("do_search_q").focus(); return false;'  title='#xowiki.search_title#'>#xowiki.search#</a> &middot;
   <if @index_link@ not nil><a href="@index_link@" accesskey='i' title='#xowiki.index_title#'>#xowiki.index#</a></if>
-
-  <div id='do_search' style='display: none'> 
-    <FORM action='/search/search'><div><label for='do_search_q'>#xowiki.search#</label><<INPUT id='do_search_q' name='q' type='text'><INPUT type="hidden" name="search_package_id" value="@package_id@" ></div>
-    </FORM> 
-  </div>
-
   &middot; 
   <if @login_link@ not nil><a href="@login_link@" accesskey='l' title='#xowiki.login_title#'>#xowiki.login#</a></if>
   <if @logout_link@ not nil><a href="@logout_link@" accesskey='l' title='#xowiki.logout_title#'>#xowiki.logout#</a></if>
 
 </div>
+  <div id='do_search'> 
+    <FORM action='/search/search'><div><label for='do_search_q'>#xowiki.search#:&nbsp;</label><INPUT id='do_search_q' name='q' type='text'><INPUT type="hidden" name="search_package_id" value="@package_id@" ></div>
+    </FORM> 
+  </div>
 
 <div style="float:left; width: 25%; font-size: 85%;
      background: url(/resources/xowiki/bw-shadow.png) no-repeat bottom right;
