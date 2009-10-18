@@ -1527,6 +1527,14 @@ ad_proc im_hardware_id { } {
     Returns an empty string if the MAC wasn't found.
     Example: "00:23:54:DF:77:D3"
 } {
+    if { [string match $tcl_platform(platform) "windows"] } {
+	set hid ""
+	catch {
+	    set hid [exec "w32oacs_get_mac"]
+	} err_msg
+	return $hid
+    }
+
     set mac_address ""
     catch {
 	set mac_line [exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
