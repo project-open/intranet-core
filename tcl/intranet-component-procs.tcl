@@ -57,7 +57,7 @@ ad_proc -public im_component_page_url { } {
     # This asumes that there is no "." in the main url!
     regexp {([^\.]*)} $full_url page_url
 
-    ns_log Notice "im_component_page_url: page_url=$page_url"
+#    ns_log Notice "im_component_page_url: page_url=$page_url"
     return $page_url
 }
 

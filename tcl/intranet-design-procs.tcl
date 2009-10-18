@@ -339,7 +339,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     # -------- Defaults -----------------------------
     set user_id [ad_get_user_id]
     set url_stub [ns_urldecode [im_url_with_query]]
-    ns_log Notice "im_user_navbar: url_stub=$url_stub"
+#    ns_log Notice "im_user_navbar: url_stub=$url_stub"
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
@@ -442,9 +442,6 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 	    set section "Standard"
 	}
     }
-
-    ns_log Notice "url_stub=$url_stub"
-    ns_log Notice "section=$section"
 
     set alpha_bar [im_alpha_bar -prev_page_url $prev_page_url -next_page_url $next_page_url $base_url $default_letter $bind_vars]
 
@@ -790,7 +787,7 @@ ad_proc -public im_navbar {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
-    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
+#    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
     set user_id [ad_get_user_id]
     set locale [lang::user::locale -user_id $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
@@ -1152,7 +1149,7 @@ ad_proc -public im_header {
     set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
     set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
     set openacs54_p [string equal "5.4" $oacs_version]
-    ns_log Notice "im_header: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
+#    ns_log Notice "im_header: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
 
     if { [empty_string_p $page_title] } {
 	set page_title [ad_partner_upvar page_title]
@@ -1502,7 +1499,7 @@ ad_proc -public im_stylesheet {} {
     set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
     set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
     set openacs54_p [string equal "5.4" $oacs_version]
-    ns_log Notice "im_stylesheet: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
+#    ns_log Notice "im_stylesheet: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
 
 
     set system_css "/intranet/style/style.$skin.css"
@@ -1619,7 +1616,7 @@ ad_proc -public im_navbar_gif_url_helper {
     set navbar_pieces_len [llength $navbar_pieces]
     if {$navbar_pieces_len > 1} {
 	set navbar_gif_url [lindex $navbar_pieces [expr $navbar_pieces_len-1] ]
-	ns_log Notice "im_navbar_gif_url: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_url' -> '$navbar_gif_url'"
+#	ns_log Notice "im_navbar_gif_url: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_url' -> '$navbar_gif_url'"
     }
 
     return $navbar_gif_url

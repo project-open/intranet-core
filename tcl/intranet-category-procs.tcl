@@ -137,8 +137,6 @@ ad_proc im_category_select_helper {
 	return [im_category_select_plain -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
     }
 
-    ns_log Notice "package_key=$package_key"
-
     set super_category_sql ""
     if {0 != $super_category_id} {
 	set super_category_sql "
