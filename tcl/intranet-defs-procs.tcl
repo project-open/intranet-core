@@ -1527,6 +1527,7 @@ ad_proc im_hardware_id { } {
     Returns an empty string if the MAC wasn't found.
     Example: "00:23:54:DF:77:D3"
 } {
+    global tcl_platform
     if { [string match $tcl_platform(platform) "windows"] } {
 	set hid ""
 	catch {
