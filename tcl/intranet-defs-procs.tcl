@@ -1527,27 +1527,32 @@ ad_proc im_hardware_id { } {
     Returns an empty string if the MAC wasn't found.
     Example: "00:23:54:DF:77:D3"
 } {
+    set mac_address ""
     global tcl_platform
     if { [string match $tcl_platform(platform) "windows"] } {
-	set hid ""
+	
+	# Windows - Use Maurizio's code
 	catch {
-	    set hid [exec "w32oacs_get_mac"]
+	    set mac_address [string trim [exec "w32oacs_get_mac"]]
 	} err_msg
-	return $hid
+
+    } else {
+
+	# Linux and Solaris - extract the MAC address from ifconfig
+	set mac_address ""
+	catch {
+	    set mac_line [exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
+	} err_msg
+
+	# Extract the MAC address from the mac_line
+	set mac_line [string tolower $mac_line]
+	regsub -all {:} $mac_line {-} mac_line
+	regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+	
     }
 
-    set mac_address ""
-    catch {
-	set mac_line [exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
-    } err_msg
-
-    # Extract the MAC address from the mac_line
-    set mac_line [string tolower $mac_line]
-    regsub -all {:} $mac_line {-} mac_line
-    regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
-
-    # return an empty string in case of an error.
-    if {"" == $mac_address} { return "" }
+    # return the SystemID in case of an error.
+    if {"" == $mac_address} { return [im_system_id] }
 
 
     # The MAC address may be considered critical information.
