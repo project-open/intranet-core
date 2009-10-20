@@ -1511,3 +1511,9 @@ div.xowiki-content hr {
 .item-footer {
 	display: block;
 }
+
+.column {
+	z-index:3000;
+	padding: 10px 0px 10px 30px;
+	background-color: #fff;
+}
