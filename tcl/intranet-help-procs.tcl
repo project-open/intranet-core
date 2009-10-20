@@ -26,7 +26,7 @@ ad_proc -public im_home_news_component { } {
     set title [lang::message::lookup "" intranet-core.ProjectOpen_News "&\\#93;po&\\#91; News"]
     set no_iframes_l10n [lang::message::lookup "" intranet-core.Your_browser_cant_display_iframes "Your browser can't display IFrames."]
 
-    set url "http://projop.dnsalias.com/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
+    set url "http://www.project-open.org/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
     set url [parameter::get_from_package_key -package_key "intranet-core" -parameter HomeNewsComponentUrl -default $url]
 
     set iframe "

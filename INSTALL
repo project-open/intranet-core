@@ -444,7 +444,7 @@
 
   # su - projop
   # cd /web/projop/packages
-  # cvs -d :pserver:anonymous@berlin.dnsalias.com:/home/cvsroot update -r v3-4-0-0-0 -Pd
+  # cvs -d :pserver:anonymous@cvs.project-open.net:/home/cvsroot update -r v3-4-0-0-0 -Pd
 
   After this please go to your your server URL http://localhost/acs-admin/apm/,
   choose "Install Packages" and select all packages that "Upgrade" (please don't

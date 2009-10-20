@@ -1818,7 +1818,7 @@ where
     set report_url [ad_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { [empty_string_p $report_url] } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
-	set report_url "http://projop.dnsalias.com/intranet-forum/forum/new-system-incident"
+	set report_url "http://www.project-open.org/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""

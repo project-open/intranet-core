@@ -9,7 +9,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.7.5" url="http://projop.dnsalias.com/download/apm/intranet-core-3.4.0.7.5.apm">
+    <version name="3.4.0.7.5" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.7.5.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -42,7 +42,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableNewFromTemplateLinkP"  default="0" description="Enable a link in the ProjectListPage to create new project based on a template. This is very useful for types of project that frequently repeat."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableUsersUsernameP"  default="0" description="Should the user's edit page show the &quot;Username&quot; field? The field is necessary if users want to login via username (instead of email). Default is 0 (email-based authentication), in order to reduce complexity.
 "/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://projop.dnsalias.com/intranet-forum/new-system-incident" description="Error Report URL"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.project-open.org/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="HomeProjectListSortClause"  default="project_nr" description="How to sort the projects on the Home page project list? Options include 'project_nr', 'project_nr DESC', 'project_name', 'project_name DESC', start_date, end_date and any other field if im_project, possibly followed by a 'DESC' to indicate reversed sort order. Please note that this field is becoming part of an SQL statement, so you can mess up the Home page if you give the wrong parameter here..."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="MainProjectSelectMaxdepth"  default="1" description="What is the default level of project is &quot;exclude_subprojects_p&quot; is turned on? Default is 1, which equals that only &quot;main projects&quot; (first level) should be shown in many project-select boxes. Maxdepth=2 will show the 2nd level of projects everywhere. This is useful if the first level of projects are only containers for the actual projects on the 2nd level. Very ugly, but you guys know how customers are, don't you?"/>
