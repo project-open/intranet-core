@@ -525,6 +525,7 @@ ad_proc -public im_category_is_a {
 # ---------------------------------------------------------------
 
 ad_proc -public im_sub_categories {
+    {-include_disabled_p 0}
     category_list
 } {
     Takes a single category or a list of categories and
@@ -544,18 +545,23 @@ ad_proc -public im_sub_categories {
 	return [list]
     }
 
+    # Should we include disabled categories? This is necessary for
+    # example if we want to disable all sub-categories of a top category
+    set enabled_check "and (c.enabled_p = 't' OR c.enabled_p is NULL)"
+    if {$include_disabled_p} { set enabled_check "" }
+
     set closure_sql "
 	select	category_id
-	from	im_categories
-	where	category_id in ([join $category_list ","])
-		and (enabled_p = 't' OR enabled_p is NULL)
+	from	im_categories c
+	where	c.category_id in ([join $category_list ","])
+		$enabled_check
       UNION
 	select	h.child_id
 	from	im_categories c,
 		im_category_hierarchy h
 	where	h.parent_id in ([join $category_list ","])
 		and h.child_id = c.category_id
-		and (c.enabled_p = 't' OR c.enabled_p is NULL)
+		$enabled_check
     "
 
     set result [db_list category_trans_closure $closure_sql]
