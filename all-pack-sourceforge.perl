@@ -190,5 +190,10 @@ system("cd ~/; tar czf ~/$tar $readme $license $changelog $dump $packages");
 # *******************************************************************
 # End
 print "all-upload: SourceForge upload:\n";
-print "rsync -avP -e ssh ~/$tar fraber\@frs.sourceforge.net:uploads/\n";
+
+# Old FRS
+# print "rsync -avP -e ssh ~/$tar fraber\@frs.sourceforge.net:uploads/\n";
+
+# New FRS 2009-10-20:
+print "rsync -avP -e ssh ~/$tar fraber,project-open\@frs.sourceforge.net:/home/frs/project/p/pr/project-open/project-open/V3.4/"
 
