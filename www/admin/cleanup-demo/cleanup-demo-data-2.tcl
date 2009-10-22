@@ -581,6 +581,7 @@ if {[im_table_exists survsimp_responses]} {
 
 ns_write "<li>Cleanup Conf Items\n"
 if {[im_table_exists im_conf_items]} {
+    db_dml remove_helpdesk_conf_item_dependency "update im_tickets set ticket_conf_item_id = null"
     db_dml remove_from_conf_items "delete from im_conf_items"
 
     set rels [db_list cr "select rel_id from acs_rels, acs_objects where object_id_two = object_id and object_type = 'im_conf_item'"]
@@ -834,7 +835,7 @@ foreach object_info $object_infos {
 
 ns_write "<li>Cleanup demo users<br>\n"
 ns_write "<ul>\n"
-ns_write "<li>Please note that we can't delete the current user and neither the user 'System Administrator'\n"
+ns_write "<li><font color=red>Please note that we can't delete the current user and neither the user 'System Administrator'</font>\n"
 
 set user_ids [db_list users "
 	select	person_id
@@ -871,8 +872,6 @@ ns_write "<li>To delete the remaining adminstrators, please remove them from the
 # ------------------------------------------------------------
 
 ns_write "</ul><p>Finished Successfully</p>\n"
-ns_write "</ul><p>Please proceed now to <a href='cleanup-users'>delete demo users</a>.</p>\n"
-
 
 ns_write "
 </ul>
