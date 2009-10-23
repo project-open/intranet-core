@@ -94,6 +94,7 @@ set extra_order_by ""
 set column_headers [list]
 set column_vars [list]
 
+set freelancers_exist_p [db_table_exists im_freelancers]
 
 # Get the ID of the group of users to show
 # Default 0 corresponds to the list of all users.
