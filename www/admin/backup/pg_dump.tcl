@@ -126,19 +126,12 @@ set platform [lindex $tcl_platform(platform) 0]
 
 
 # get the PSQL PostgreSQL version
-set psql_version "0.0.0"
-set err_msg ""
-if {[catch {
-    set psql_string [exec bash -c "psql --version"]
-    regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc
-} err_msg]} {
+set psql_version [im_database_version]
+if {![regexp {([0-9])\.([0-9])\.([0-9])} $psql_string match psql_major psql_minor psql_pathc]} {
     ns_write "
 	<li><font color=red>
-	Error while determining the PostgreSQL version at '$pgbin':<br>
-	<pre>$err_msg</pre>
-	Your 'psql' binary doesn't seem to be accessible.<br>
-	Here is the list of paths we are checking:<br>
-	<pre>[exec bash -c "echo \$PATH"]</pre>
+	Error while determining the PostgreSQL version:<br>
+	Your database binary doesn't seem to be accessible.
 	</font></li>
     "
     ad_script_abort
@@ -159,6 +152,11 @@ if { [catch {
     switch $platform {
 	windows {
 	    # Windows CygWin
+            if {!$download_p} {
+                ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
+                exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
+                </tt></ul>\n"
+            }
 	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
 	default {
