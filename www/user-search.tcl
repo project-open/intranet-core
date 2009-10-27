@@ -239,7 +239,7 @@ where
 set ctr 0
 
 set page_contents "
-<h2>$display_title</h2>
+<!--<h2>$display_title</h2>-->
 for $search_html $group_html
 <br>
 
@@ -253,18 +253,19 @@ foreach var $passthrough {
 
 
 append page_contents "
-<table cellpadding=0 cellspacing=2 border=0>
-	<tr>
-	  <td class=rowtitle align=middle colspan=5>[_ intranet-core.Freelance]</td>
-	</tr>
-	  
-	<tr class=rowtitle>
-	  <td class=rowtitle>[_ intranet-core.Name]</td>
-	  <td class=rowtitle>[_ intranet-core.Email]</td>
-	  <td class=rowtitle>[_ intranet-core.Select]</td>
-	</tr>
-"
 
+<br><!--<h3>[_ intranet-core.Freelance]</h3>-->
+<br>
+<table class='table_list'>
+	<thead>
+ 	<tr>
+	  <td>[_ intranet-core.Name]</td>
+	  <td>[_ intranet-core.Email]</td>
+	  <td>[_ intranet-core.Select]</td>
+	</tr>
+        </thead>
+        <tbody>
+"
 
 db_foreach user_search_query $query {
 
@@ -282,10 +283,13 @@ db_foreach user_search_query $query {
 if {$ctr > 0} {
     # We need a "submit" button:
     append page_contents "
+	</tbody>
+        <tfoot>
         <tr>
           <td colspan=2></td>
 	  <td><input type=submit value=\"[_ intranet-core.Select]\"></td>
 	</tr>
+	</tfoot>
 "
 } else {
 
@@ -295,6 +299,7 @@ if {$ctr > 0} {
         <tr$bgcolor([expr $ctr % 2])>
           <td colspan=3>[_ intranet-core.No_members_found]</td>
 	</tr>
+	</tbody>
 "
 }
 
