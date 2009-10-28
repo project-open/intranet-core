@@ -28,7 +28,7 @@
   	     
 
 	<if @subproject_filtering_enabled_p@>
-		<table>
+		<table class="table_component_clean">
 		<form action="@current_url;noquote@" method=GET>
 		<%= [export_form_vars project_id] %>
 		<tr>
