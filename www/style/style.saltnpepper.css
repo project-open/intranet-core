@@ -3,12 +3,18 @@
 
 /* CALENDAR */
 
+.fullwidth-list .component table.calendar_table  tbody tr.month_heading td {
+        background-color: #AABBCC;
+	color: black;
+}
+
+
 .month_heading {
 	background-color: #0A3F67;
 }
 
 .day_header {
-	background-color: #266493;
+	background-color: #fff;
 }
 
 .day_number {
@@ -854,7 +860,6 @@ a   span  {float:none;}
 
 .fullwidth-list .component table.month_header td {
 	background:#266591 none repeat scroll 0 50%;
-	border-bottom:1px solid #FFFFFF;
 	color:#000000;
 	font-size:9pt;
 	font-weight:bold;
@@ -1226,10 +1231,11 @@ table.list td {
     .form-widget {font-size: 8pt; background-color: #FFF;}
     .form-required-mark {color: #FF0000;}
 
-	.form-element {
+    .form-element, .component_body tbody tr.roweven, .component_body tbody tr.rowodd {
 	height:17px; 
         border-top: 1px solid #F0EDED;
         border-bottom: 1px solid #F0EDED;
+	background-color: #fff;
 	}
 
     .rowgreen {font-size:8pt; background-color: #00FF00 }
