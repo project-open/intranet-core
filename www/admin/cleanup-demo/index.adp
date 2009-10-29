@@ -9,26 +9,35 @@
   <td valign=top>
 
     <H2><font color=red>@page_title;noquote@</font></H2>
-    <p>
-    <h5>Intentionally destroy your system!</h5>
+    <br>
+    <h3><%= [lang::message::lookup "" intranet-core.DelDemo_Prepare_for_prod "Prepare your system for production use"] %></h3>
+    <br>
+    <%= [lang::message::lookup "" intranet-core.DelDemo_Please_follow_the_steps "
+    Please follow the step below to remove all application data
+    from your system including projects, companies, users,
+    financial information, forum discussion etc."] %>
+    <br>&nbsp;
     </p>
-    Please follow the step below to entirely cleanup your system.
-    The order of the steps is important, because there are many
-    dependencies between objects. Objects (for example: a user) 
-    can only be deleted if all 'referencing' objects have been
-    deleted (for example: projects, forum items, timesheet hours,...
-    created by this user).
+    <p>
+    <%= [lang::message::lookup "" intranet-core.DelDemo_However_this_procedure "
+    However, this procedure will not affect configuration
+    data including menus, portlet components, categories
+    etc."] %>
+    <br>&nbsp;
+    </p>
 
     <ol>
 
       <li>
         <A href=../backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_Please_backup "
 	Please backup your current database contents before continuing
-	with any of the following commands.
+	with any of the following commands."] %>
         <br>&nbsp;<br>
 
       <li>
-        <A href="cleanup-demo-data">Nuke all demo data in the system.</A><br>
+        <A href="cleanup-demo-data"><%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_all_demo_data "Nuke all demo data in the system"] %></A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_This_command_nukes "
           This commands nukes (permanently deletes) all data in the system
 	  such as projects, companies, forum discussions, invoices, timesheet, etc.
 	  It leaves the database completely empty, except for the basic 
@@ -36,38 +45,39 @@
           accounts (delete them selectively below). <br>
           This command is useful in order to start production
           operations from a demo system, but should never
-          be used otherwise.<br>&nbsp;<br>
-
-      <li>
-	<A href="cleanup-users">Nuke Demo Users</A><br>
-	  Remove any remaining demo users. <br>
-          You can't delete System Administrator
-          users (so that you can't "lock yourself out" of the system...). 
-          In order to delete Admins please remove them from the "P/O Admins" groups
-          one-by-one in their users's page.
+          be used otherwise."] %>
+	  <br>&nbsp;<br>
      </ol>
 
-     <h5>Delete Individual Objects</h5>
+     <br>
+     <h3><%= [lang::message::lookup "" intranet-core.DelDemo_Delete_Individual_objects "Delete Individual Objects"] %></h3>
+     <br>
 
      <ul>
 
       <li>
-	<A href="cleanup-users">Nuke Demo Users</A><br>
-          This commands allows you to selectively "nuke" (permanently delete) 
+	<A href="cleanup-users"><%= [lang::message::lookup "" intranet-core.DelDemoNuke_Demo_Users2 "Nuke Demo Users"] %></A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Users2_Msg "
+          This commands allows you to selectively 'nuke' (permanently delete) 
 	  users from the system, including all of their associated data such
-	  as portraits, tasks, forum discussions, timesheet, ...<br>&nbsp;<br>
+	  as portraits, tasks, forum discussions, timesheet, ..."] %>
+	  <br>&nbsp;<br>
 
       <li>
-	<A href="cleanup-projects">Nuke Demo Projects</A><br>
-          This commands allows you to selectively "nuke" (permanently delete) 
+	<A href="cleanup-projects"><%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Projects "Nuke Demo Projects"] %></A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Projects_Msg "
+          This commands allows you to selectively 'nuke' (permanently delete) 
 	  projects from the system, including all of their associated data such
-	  as tasks, forum discussions, invoices, timesheet, ...<br>&nbsp;<br>
+	  as tasks, forum discussions, invoices, timesheet, ..."] %>
+	  <br>&nbsp;<br>
 
       <li>
-	<A href="cleanup-companies">Nuke Demo Companies</A><br>
-          This commands allows you to selectively "nuke" (permanently delete) 
+	<A href="cleanup-companies"><%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Companies "Nuke Demo Companies"] %></A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Companies_Msg "
+          This commands allows you to selectively 'nuke' (permanently delete) 
 	  companies from the system, including all of their associated data such
-	  as offices, projects, forum discussions...).<br>&nbsp;<br>
+	  as offices, projects, forum discussions...)."] %>
+	  <br>&nbsp;<br>
     </ul>
 
   </td>
