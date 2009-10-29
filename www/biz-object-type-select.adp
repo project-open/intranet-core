@@ -13,7 +13,7 @@
 
 @category_select_html;noquote@
 <tr>
-    <td>&nbsp;</tr>
+    <td>&nbsp;</td>
     <td>
 	<input type=submit value='<%= [lang::message::lookup "" intranet-core.Continue "Continue"] %>'>
     </td>
