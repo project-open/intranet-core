@@ -50,6 +50,8 @@ set user_id [ad_maybe_redirect_for_registration]
 set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
+set current_url [im_url_with_query]
+set org_project_type_id [im_opt_val project_type_id]
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
@@ -109,6 +111,27 @@ if {$project_exists_p} {
 	ad_return_complaint "Insufficient Privileges" "
             <li>You don't have sufficient privileges to see this page."
 	return
+    }
+
+    # Do we need to get the project type first in order to show the right DynFields?
+    if {("" == $org_project_type_id || 0 == $org_project_type_id)} {
+      set all_same_p [im_dynfield::subtype_have_same_attributes_p -object_type "im_project"]
+      if {!$all_same_p} {
+          set exclude_category_ids [list \
+              [im_project_type_ticket] \
+              [im_project_type_software_release_item] \
+          ]
+          ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
+              project_name
+              also_add_users
+              company_id
+              { return_url $current_url }
+              { object_type "im_project" }
+              { type_id_var "project_type_id" }
+              { pass_through_variables "project_name also_add_users company_id" }
+              { exclude_category_ids $exclude_category_ids }
+          }]
+      }
     }
 
 }
