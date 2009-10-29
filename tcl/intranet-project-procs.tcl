@@ -550,7 +550,9 @@ ad_proc -public im_project_options {
 			and r.object_id_two = :current_user_id
 		)
 	"
-	if {[im_permission $current_user_id "view_projects_all"]} { set perm_sql "im_projects" }
+	if {[im_permission $current_user_id "view_projects_all"]} {
+	    set perm_sql "im_projects" 
+	}
 
 
 	set subprojects [db_list subprojects "
@@ -623,6 +625,11 @@ ad_proc -public im_project_options {
     if {0 != $project_type_id && "" != $project_type_id} {
 	lappend p_criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
 	# No restriction on parent's project type!
+    }
+
+    # Disable the restriction to "my projects" if the user can see all projects.
+    if {[im_permission $current_user_id "view_projects_all"]} { 
+	set member_user_id 0
     }
 
     if {0 != $member_user_id && "" != $member_user_id} {
@@ -1099,9 +1106,9 @@ ad_proc -public im_project_personal_active_projects_component {
 	"
     }
     return "
-	<table class=\"table_component_hover\" width=\"100%\">
-	  $table_header_html
-	  $table_body_html
+	<table class=\"table_component\" width=\"100%\">
+	<thead>$table_header_html</thead>
+	<tbody>$table_body_html</tbody>
 	</table>
     "
 }
