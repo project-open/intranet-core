@@ -70,6 +70,8 @@ ad_proc im_biz_object_category_select_branch {
     if {$translate_p} {
 	set category_key "$package_key.[lang::util::suggest_key $category]"
 	set category [lang::message::lookup "" $category_key $category]
+	set category_description_key "$package_key.[lang::util::suggest_key $category].Message"
+	set category_description [lang::message::lookup "" $category_description_key $category_description]
     }
 
     set parent_only_p [lindex $cat($parent) 3]
@@ -174,6 +176,7 @@ set category_select_sql "
         where
                 category_type = :object_type_category
 		and (enabled_p = 't' OR enabled_p is NULL)
+		and category_id not in ([join $exclude_ids ","])
         order by lower(category)
 "
 db_foreach category_select $category_select_sql {
