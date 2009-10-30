@@ -114,9 +114,11 @@ switch [string tolower $user_group_name] {
 	set menu_select_label "users_unassigned"
     }
     "freelancers" {
-	set user_group_id [im_profile_freelancers]
-	set menu_select_label "users_freelancers"
-	lappend extra_left_joins "LEFT JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
+	if {$freelancers_exist_p} {
+	    set user_group_id [im_profile_freelancers]
+	    set menu_select_label "users_freelancers"
+	    lappend extra_left_joins "LEFT JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
+	}
     }
     default {
     	# Search for the right group name.
