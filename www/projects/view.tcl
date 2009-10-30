@@ -379,7 +379,7 @@ if {$gantt_project_enabled_p} {
 
 
 if {$admin} {
-    append admin_html_content "<li><A href=\"/intranet/projects/new?parent_id=$project_id\">[_ intranet-core.Create_a_Subproject]</A></li>\n"
+    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id} project_type_id}]\">[_ intranet-core.Create_a_Subproject]</A></li>\n"
 }
 
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
