@@ -191,9 +191,7 @@ if {$enable_nested_projects_p} {
 
 # create customer query
 #
-
-set customer_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
-set customer_list_options [concat $customer_options [im_company_options -include_empty_p 0 -status "Active or Potential" -type "CustOrIntl"]]
+set customer_list_options [im_company_options -include_empty_p 0 -status "Active or Potential" -type "CustOrIntl"]
 set help_text "[im_gif help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]"
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/companies/new'>[im_gif new "Add a new client"]</A> $help_text"
