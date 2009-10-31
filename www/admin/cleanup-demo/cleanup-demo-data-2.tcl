@@ -595,6 +595,10 @@ if {[im_table_exists im_conf_items]} {
 ns_write "<li>Cleanup Helpdesk\n"
 if {[im_table_exists im_tickets]} {
     db_dml remove_from_tickets "delete from im_tickets"
+}
+
+ns_write "<li>Cleanup Release Items\n"
+if {[im_table_exists im_release_items]} {
     db_dml remove_release_items "delete from im_release_items"
 }
 
