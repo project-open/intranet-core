@@ -151,13 +151,9 @@ if { [catch {
 
     switch $platform {
 	windows {
-	    # Windows CygWin
-            if {!$download_p} {
-                ns_write "<li>Preparing to execute PosgreSQL dump command:<br>\n<tt>
-                exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file
-                </tt></ul>\n"
-            }
-	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U projop --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+	    # Windows
+	    set pg_user "postgres"
+	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U $pg_user --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
