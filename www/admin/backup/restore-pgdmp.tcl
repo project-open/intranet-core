@@ -22,14 +22,24 @@ set filename [im_backup_path]/[file tail $filename]
 set extension [file extension $filename]
 set err ""
 
+# Determine platfor (Windows/Linux/...)
+global tcl_platform
+set platform [lindex $tcl_platform(platform) 0]
+
 ns_log Debug "restoring pgdmp file: $filename"
 
 switch $extension {
     ".pgdmp" {
-	catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err
+	switch $platform {
+	    windows { catch { exec pg_restore -U postgres --dbname $server_name --no-owner --clean $filename } err }
+	    default { catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err }
+	}
     }
     ".sql" {
-	catch { exec psql  --dbname $server_name --file $filename } err
+	switch $platform {
+	    windows { catch { exec psql -U postgres --dbname $server_name --file $filename } err }
+	    default { catch { exec psql --dbname $server_name --file $filename } err }
+	}
     }
     ".bz2" {
 	set err "File in '.bz2' format: Please uncompress manually and retry"
