@@ -1010,8 +1010,6 @@ div#fullwidth-components {
 
 .table_list_page,
 .table_component, 
-
-
 .table_list_page tr td {
 	padding: 2px;
 }
@@ -1043,7 +1041,7 @@ div#fullwidth-components {
 .list tr td {
    border-bottom:1px solid #fff;
    border-top:1px solid #fff;
-   background:#e8edff url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')
+   background:#F4F4F4 url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')
    repeat-x;
    padding:4px;
 }
@@ -1110,7 +1108,7 @@ div#fullwidth-components {
 .table_component tbody tr:hover td, 
 
 .list tbody tr:hover td {
-   background:#d0dafd url('/intranet/images/navbar_saltnpepper/gradhover_light_grey.gif')
+   background:#ECECEC url('/intranet/images/navbar_saltnpepper/gradhover_light_grey.gif')
    repeat-x;
    color:#339;
 }
