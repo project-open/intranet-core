@@ -242,7 +242,7 @@ ad_proc -public im_bash_command { } {
     switch $platform {
 	unix
 	{
-	    # windows means running under CygWin
+	    # BASH in Unix can always be found in /bin/...
 	    return "/bin/bash"
 	}
 	windows {
