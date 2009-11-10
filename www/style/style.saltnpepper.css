@@ -1561,3 +1561,7 @@ div.xowiki-content hr {
 	padding: 10px 0px 10px 30px;
 	background-color: #fff;
 }
+
+#register-login a:link {
+	font-weight: bold;
+}
