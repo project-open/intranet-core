@@ -69,9 +69,10 @@ ad_proc im_biz_object_category_select_branch {
     set category_description [lindex $cat($parent) 2]
     if {$translate_p} {
 	set category_key "$package_key.[lang::util::suggest_key $category]"
+	set org_category $category
 	set category [lang::message::lookup "" $category_key $category]
-	set category_description_key "$package_key.[lang::util::suggest_key $category].Message"
-	set category_description [lang::message::lookup "" $category_description_key $category_description]
+	set category_description_key "$package_key.[lang::util::suggest_key $org_category]-Message"
+	set category_description "[lang::message::lookup "" $category_description_key " $category_description"]"
     }
 
     set parent_only_p [lindex $cat($parent) 3]
