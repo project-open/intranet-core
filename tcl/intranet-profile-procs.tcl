@@ -274,22 +274,24 @@ namespace eval im_profile {
 
 
     # ------------------------------------------------------------------
-    # Get the name for a profile
+    # Get the ID of a profile
     # ------------------------------------------------------------------
 
     ad_proc -public profile_id_from_name { 
 	-profile:required
     } { 
-	Return the profile_id for a given profile
+	Return the profile_id for a given profile name (as in the DB in English)
 	or "" if the profile doesn't exist
     } {
 	# Check if we have calculated this result already
-	set key [list profile_id $profile]
+	set key [list pid_from_name $profile]
 	if {[ns_cache get im_profile $key value]} { return $value}
 
 	# Calculate the profile_id
 	set profile_id [profile_id_from_name_not_cached -profile $profile]
 	if {"" == $profile_id} { return "" }
+
+	if {![string is integer $profile_id]} { errrrr }
 
 	# Store the value in the cache
         ns_cache set im_profile $key $profile_id
@@ -315,6 +317,63 @@ namespace eval im_profile {
 	" -default 0]
 	return $profile_id
     }
+
+
+    # ------------------------------------------------------------------
+    # Get the ID of a profile
+    # ------------------------------------------------------------------
+
+    ad_proc -public profile_name_from_id { 
+	{-translate_p 1}
+	{-locale ""}
+	-profile_id:required
+    } { 
+	Return a translated profile name for an ID.
+    } {
+	# Get the user's locale
+	set user_id [ad_get_user_id]
+	if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+	if {!$translate_p} { set locale "en_US" }
+
+	# Check if we have calculated this result already
+	set key [list profile_name_from_id $profile_id $locale]
+	if {[ns_cache get im_profile $key value]} { return $value}
+
+	# Calculate the profile
+	set profile [profile_name_from_id_not_cached -locale $locale -profile_id $profile_id]
+	if {"" == $profile} { return "" }
+
+	# Store the value in the cache
+        ns_cache set im_profile $key $profile_id
+
+	return $profile
+    }
+
+    ad_proc -public profile_name_from_id_not_cached { 
+	-locale:required
+	-profile_id:required
+    } { 
+	Return the profile_id for a given profile name.
+	The problem is that group names are used as constants,
+	while groups are defined dynamically. 
+	@return Returns the profile_id or "" if the profile doesn't
+	        exist.
+    } {
+	set group_name [db_string profile_id_not_cached "
+		select	g.group_name 
+		from	groups g
+		where	g.group_id = :profile_id
+	" -default ""]
+
+	regsub -all {[ /]} $group_name "_" group_key
+	set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+
+	return $group_name
+    }
+
+    # ------------------------------------------------------------------
+    # Cache Maintenance
+    # ------------------------------------------------------------------
 
     ad_proc -public flush_cache { } { 
 	Remove all cache entries for debugging purposes.
@@ -378,7 +437,9 @@ namespace eval im_profile {
     # Options for option box
     # ------------------------------------------------------------------
 
-    ad_proc -public profile_options_all {} {
+    ad_proc -public profile_options_all {
+	{ -translate_p 1 }
+    } {
 	Returns the list of all available profiles in the system.
 	The returned list consists of (group_id - group_name) tuples.
     } {
@@ -395,7 +456,16 @@ namespace eval im_profile {
 			and o.object_type = 'im_profile'
 		order by lower(g.group_name)
 	}
-	set options [db_list_of_lists profile_options_all $profile_sql]
+	set options [list]
+
+	db_foreach profile_options_of_user $profile_sql {
+	    if {$translate_p} {
+		regsub -all {[ /]} $group_name "_" group_key
+		set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+	    }
+	    lappend options [list $group_name $group_id]
+	}
+
 	return $options
     }
 
