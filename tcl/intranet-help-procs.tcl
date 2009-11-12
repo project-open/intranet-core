@@ -62,7 +62,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
       <h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "
 		Starting to use %po%
       "]</h2>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
-		You can use 'Admin' -&gt; 'Cleanup Demo Data' to remove all
+		You can use <a href='/intranet/admin/cleanup-demo/'>'Admin' -&gt; 'Cleanup Demo Data'</a> to remove all
 		demo data from this server and to start using this server in production.
       "]<p>&nbsp;</p>
 
