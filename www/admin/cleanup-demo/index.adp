@@ -10,8 +10,8 @@
 
     <H2><font color=red>@page_title;noquote@</font></H2>
     <br>
-    <h3><%= [lang::message::lookup "" intranet-core.DelDemo_Prepare_for_prod "Prepare your system for production use"] %></h3>
-    <br>
+    <table style='background-color:#FFFFCC' border="0"><tr><td valign="top">
+    <h3><strong><%= [lang::message::lookup "" intranet-core.DelDemo_Prepare_for_prod "Prepare your system for production use"] %></strong></h3>
     <%= [lang::message::lookup "" intranet-core.DelDemo_Please_follow_the_steps "
     Please follow the step below to remove all application data
     from your system including projects, companies, users,
@@ -34,7 +34,6 @@
 	Please backup your current database contents before continuing
 	with any of the following commands."] %>
         <br>&nbsp;<br>
-
       <li>
         <A href="cleanup-demo-data"><%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_all_demo_data "Nuke all demo data in the system"] %></A><br>
 	<%= [lang::message::lookup "" intranet-core.DelDemo_This_command_nukes "
@@ -48,13 +47,13 @@
           be used otherwise."] %>
 	  <br>&nbsp;<br>
      </ol>
-
+     </td></tr></table>
      <br>
      <h3><%= [lang::message::lookup "" intranet-core.DelDemo_Delete_Individual_objects "Delete Individual Objects"] %></h3>
-     <br>
-
+     
+     <p> <b>In case you have just installed ]po[ and intend to start production, please follow the steps as decribed above.</b> The links below allow you to nuke single data when your system is in production.<br>
+	 In some cases you might not be able to delete an object permanently due to existing constrains on a database level. If this happens, please contact your System Administrator.</p><br>
      <ul>
-
       <li>
 	<A href="cleanup-users"><%= [lang::message::lookup "" intranet-core.DelDemoNuke_Demo_Users2 "Nuke Demo Users"] %></A><br>
 	<%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Users2_Msg "
