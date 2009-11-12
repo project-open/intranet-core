@@ -58,13 +58,13 @@ ad_proc -public im_help_home_page_blurb_component { } {
 		We have set up this 'Tigerpond' sample company on this server 
 		in order to show you what your future $po could look like.
       "]<p>&nbsp;</p>
-
       <h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "
 		Starting to use %po%
-      "]</h2>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+      "]</h2><table style='background-color:\#FFFFCC' border='0'><tr><td valign='top'>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+
 		You can use <a href='/intranet/admin/cleanup-demo/'>'Admin' -&gt; 'Cleanup Demo Data'</a> to remove all
 		demo data from this server and to start using this server in production.
-      "]<p>&nbsp;</p>
+      "]</td></tr></table><p>&nbsp;</p>
 
       <h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
       <ul>
