@@ -344,7 +344,7 @@ namespace eval im_profile {
 	if {"" == $profile} { return "" }
 
 	# Store the value in the cache
-        ns_cache set im_profile $key $profile_id
+        ns_cache set im_profile $key $profile
 
 	return $profile
     }
