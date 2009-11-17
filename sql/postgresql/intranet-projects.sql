@@ -147,6 +147,7 @@ create table im_projects (
 	cost_expense_planned_cache	numeric(12,2) default 0,
 	cost_expense_logged_cache	numeric(12,2) default 0,
 	reported_hours_cache		numeric(12,2) default 0,
+	reported_days_cache		numeric(12,2) default 0,
 	-- Dirty field indicates that the cache needs to be recalculated
 	cost_cache_dirty		timestamptz
 );

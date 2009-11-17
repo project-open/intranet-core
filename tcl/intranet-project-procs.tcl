@@ -1898,7 +1898,7 @@ ad_proc im_project_clone_costs {
 		# Covers Customer Invoice, Quote, Delivery Note, Bill and Purchase Order.
 		# These costs are stored in im_costs, in_invoices and im_invoice_items
 
-		set invoice_nr [im_next_invoice_nr -invoice_type_id $cost_type_id]
+		set invoice_nr [im_next_invoice_nr -cost_type_id $cost_type_id]
 
 		set invoice_sql "
 		insert into im_invoices (

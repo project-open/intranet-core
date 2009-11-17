@@ -20,9 +20,9 @@
   </td>
   <td valign=top width="50%">
 	<%= [im_box_header [lang::message::lookup "" intranet-core.Template_Help "Help"]] %>
-	In this screen you can manage Invoicing templates.<br>
-	These templates are available in the invoice page as option to render your invoice
-	in HTML or OpenOffice '.odt' format.<br>
+	In this screen you can manage templates for financial documents including invoices, quotes, purchase orders etc.<br>
+	These templates are available in the screen where you can create new financial documents.<br>
+	You have the option to use either HTML ('.adp') or OpenOffice '.odt' format.<br>
 	For details on templates please see the
 	<a href="http://www.project-open.org/documentation/category_intranet_cost_template">online documentation</a>.
 	<%= [im_box_footer] %>
