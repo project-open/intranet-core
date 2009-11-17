@@ -34,8 +34,19 @@ set filesize [file size $tmp_filename]
 if { $max_n_bytes && ($filesize > $max_n_bytes) } {
     set util_commify_number_max_n_bytes [util_commify_number $max_n_bytes]
     ad_return_complaint 1 "[_ intranet-translation.lt_Your_file_is_larger_t_1]"
-    return 0
+    ad_script_abort
 }
+
+if {![regexp {^([a-zA-Z0-9_\-]+)\.([a-zA-Z_]+)\.([a-zA-Z]+)$} $upload_file match]} {
+    ad_return_complaint 1 [lang::message::lookup "" intranet-core.Invalid_Template_format "
+	<b>Invalid Template Format</b>:<br>
+	Templates should have the format 'filebody.locale.ext'.
+    "]
+    ad_script_abort
+}
+
+
+
 
 # -------------------------------------------------------------------
 # Copy the uploaded file into the template filestorage
@@ -49,7 +60,7 @@ if { [catch {
 	<pre>$err_msg</pre>during command:
 	<pre>ns_cp $tmp_filename $template_path/$upload_file</pre>
     "
-    return
+    ad_script_abort
 }
 
 # -------------------------------------------------------------------
@@ -58,6 +69,14 @@ if { [catch {
 
 set cat_exists_p [db_string ex "select count(*) from im_categories where category = :upload_file and category_type = 'Intranet Cost Template'"]
 if {!$cat_exists_p} {
+
+    set cat_id [db_nextval "im_categories_seq"]
+    set cat_id_exists_p [db_string cat_ex "select count(*) from im_categories where category_id = :cat_id"]
+    while {$cat_id_exists_p} {
+	set cat_id [db_nextval "im_categories_seq"]
+	set cat_id_exists_p [db_string cat_ex "select count(*) from im_categories where category_id = :cat_id"]
+    }
+
     db_dml new_cat "
 	insert into im_categories (
 		category_id,
