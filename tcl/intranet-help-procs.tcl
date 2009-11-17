@@ -40,63 +40,72 @@ ad_proc -public im_home_news_component { } {
 
 
 
+
 ad_proc -public im_help_home_page_blurb_component { } {
     Creates a HTML table with a blurb for the "home" page.
     This has been made into a component in order to allow
     users to remove it from the home page.
 } {
-    set projop "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></nobr>"
-    set po "<nobr><span class=brandsec>&\#93;</span><span class=brandfirst>po</span><span class=brandsec>&\#91;</span></nobr>"
+    set projop "<nobr>&\#93;project-open&\#91;</nobr>"
+    set po "<nobr>&\#93;po&\#91;</nobr>"
 
     return "
-      <table cellpadding=2 cellspacing=2 border=0 width=100%>
-      <tr><td>
+	<table cellpadding=0 cellspacing=0 border=0 width=100%>
+	<tr><td>
 	
-      <h2>[lang::message::lookup "" intranet-core.Welcome_to_po "
-		Welcome to %projop%
-      "]</h2>[lang::message::lookup "" intranet-core.Sample_system_blurb "
+	<h2>[lang::message::lookup "" intranet-core.Welcome_to_po "Welcome to %projop%"]</h2>
+	[lang::message::lookup "" intranet-core.Sample_system_blurb "
 		We have set up this 'Tigerpond' sample company on this server 
 		in order to show you what your future $po could look like.
-      "]<p>&nbsp;</p>
-      <h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "
-		Starting to use %po%
-      "]</h2><table style='background-color:\#FFFFCC' border='0'><tr><td valign='top'>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+	"]<p>&nbsp;</p>
 
-		You can use <a href='/intranet/admin/cleanup-demo/'>'Admin' -&gt; 'Cleanup Demo Data'</a> to remove all
-		demo data from this server and to start using this server in production.
-      "]</td></tr></table><p>&nbsp;</p>
+	<h2>[lang::message::lookup "" intranet-core.Configuring_po "Configuring %po%"]</h2>
+	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+		Please see the <a href='http://www.project-open.org/documentation/list_configuration'
+		>Configuration Overview</a> on how to configure %po%.
+		We recommend to keep the 'Tigerpond' demo data in the system
+		while testing the configuration.
+	"]<p>&nbsp;</p>
 
-      <h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
-      <ul>
-      <li>
-        <A href=\"http://www.project-open.com/\"><b>[lang::message::lookup "" intranet-core.PO_com_web_site "
+	<h2>[lang::message::lookup "" intranet-core.Importing_Master_Data "Importing Master Data"]</h2>
+	[lang::message::lookup "" intranet-core.Importing_Master_Data_message "
+		Please <a href='/intranet/admin/cleanup-demo/'>remove</a> the 'Tigerpond' 
+		demo data from the system.
+		After that, you can start to enter your company data in the order
+		users (employees, customers and freelancers), companies (customers
+		and providers) and projects.
+	"]<p>&nbsp;</p>
+
+	<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
+	<ul>
+	<li>
+	<A href=\"http://www.project-open.com/\"><b>[lang::message::lookup "" intranet-core.PO_com_web_site "
 		%po% '.com' Web site
 	"]</b></a>:<br>
 	[lang::message::lookup "" intranet-core.PO_com_web_site_blurb "
 		Provides you with an overview of %po%.
-	"]<br>&nbsp;<br>
+	"]
 	</li>
 	<li>
 	  <A href=\"http://www.project-open.org/documentation/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
 		%po% Documentation Wiki
 	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki_Blurb "
 		Contains reference information on %po% processes, packages, objects etc.
-	  "]<br>&nbsp;<br>
+	  "]
 	</li>
 	<li>
 	  <A href=\"http://sourceforge.net/forum/forum.php?forum_id=295937\"><b>[lang::message::lookup "" intranet-core.SourceForge_Forum "
 		SourceForge Forum
 	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.SourceForge_Forum_Blurb "
 		You can use the forums to communicate with other %po% users.
-	  "]<br>&nbsp;<br>
+	  "]
 	</li>
 	<li>
 	  <A href=\"http://www.project-open.com/en/services/\"><b>[lang::message::lookup "" intranet-core.PO_Professional_Services "
 		Professional Services
 	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Professional_Services "
 		Involving us in your %po% rollout will save you a lot of time
-		with installation and configuration."]
-	  <br>&nbsp;<br>
+		with installation and configuration."]<br>
 	</li>
 	<li>
 	  <A href=\"http://www.project-open.com/en/services/project-open-support.html\"><b>[lang::message::lookup "" intranet-core.PO_Support_Contracts "
