@@ -149,7 +149,11 @@ create table im_projects (
 	reported_hours_cache		numeric(12,2) default 0,
 	reported_days_cache		numeric(12,2) default 0,
 	-- Dirty field indicates that the cache needs to be recalculated
-	cost_cache_dirty		timestamptz
+	cost_cache_dirty		timestamptz,
+
+	-- Presales Pipeline
+	presales_probability		numeric(5,2),
+	presales_value			numeric(12,2)
 );
 
 
@@ -163,6 +167,11 @@ create index im_project_treesort_idx on im_projects(tree_sortkey);
 -- Relaxed unique constraint for tasks...
 alter table im_projects add constraint 
 im_projects_path_un UNIQUE (project_nr, company_id, parent_id);
+
+
+-- Create Dynfields for Presales Pipeline
+SELECT im_dynfield_attribute_new ('im_project', 'presales_probability', 'Presales Probability', 'integer', 'integer', 'f');
+SELECT im_dynfield_attribute_new ('im_project', 'presales_value', 'Presales Value', 'integer', 'integer', 'f');
 
 
 
