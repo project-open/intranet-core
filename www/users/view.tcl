@@ -322,17 +322,15 @@ if {$result == 1} {
     set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$contact_view_name'"]]
 
     set column_sql "
-select
-	column_name,
-	column_render_tcl,
-	visible_for
-from
-	im_view_columns
-where
-	view_id=:view_id
-	and group_id is null
-order by
-	sort_order"
+	select	column_name,
+		column_render_tcl,
+		visible_for
+	from	im_view_columns
+	where	view_id=:view_id
+		and group_id is null
+	order by
+		sort_order
+    "
 
     set user_id $user_id_from_search
     set contact_html "
@@ -344,12 +342,14 @@ order by
     set ctr 1
     db_foreach column_list_sql $column_sql {
         if {"" == $visible_for || [eval $visible_for]} {
+
+	    # L10n
+	    regsub -all " " $column_name "_" column_name_subs
+	    set column_name [lang::message::lookup "" intranet-core.$column_name_subs $column_name]
+
 	    append contact_html "
             <tr $td_class([expr $ctr % 2])>
-            <td>"
-            set cmd0 "append contact_html $column_name"
-            eval "$cmd0"
-            append contact_html " &nbsp;</td><td>"
+            <td>$column_name &nbsp;</td><td>"
 	    set cmd "append contact_html $column_render_tcl"
 	    eval $cmd
 	    append contact_html "</td></tr>\n"
