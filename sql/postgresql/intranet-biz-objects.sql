@@ -260,6 +260,47 @@ CREATE TABLE im_biz_object_urls (
 		primary key(object_type, url_type)
 );
 
+
+
+-----------------------------------------------------------
+-- Store information about the open/closed status of 
+-- hierarchical business objects including projects etc.
+--
+
+-- Store the o=open/c=closed status for business objects
+-- at certain page URLs.
+--
+CREATE TABLE im_biz_object_tree_status (
+		object_id	integer
+				constraint im_biz_object_tree_status_object_nn 
+				not null
+				constraint im_biz_object_tree_status_object_fk
+				references acs_objects on delete cascade,
+		user_id		integer
+				constraint im_biz_object_tree_status_user_nn 
+				not null
+				constraint im_biz_object_tree_status_user_fk
+				references persons on delete cascade,
+		page_url	text
+				constraint im_biz_object_tree_status_page_nn 
+				not null,
+
+		open_p		char(1)
+				constraint im_biz_object_tree_status_open_ck
+				CHECK (open_p = 'o'::bpchar OR open_p = 'c'::bpchar),
+		last_modified	timestamptz,
+
+	primary key  (object_id, user_id, page_url)
+);
+
+
+
+
+
+
+-----------------------------------------------------------
+--- Business Object PL/SQL API
+--
 create or replace function im_biz_object__new (integer,varchar,timestamptz,integer,varchar,integer)
 returns integer as '
 declare
