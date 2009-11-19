@@ -37,7 +37,10 @@ set focus "column.column_name"
 set page_title "[_ intranet-core.New_column]"
 set context $page_title
 
-if {[info exists column_id]} {
+if {"" == $return_url} { set return_url [export_vars -base "/intranet/admin/views/new" {view_id}] }
+
+
+if {"" == $view_id && [info exists column_id]} {
     set view_id [db_string vid "select view_id from im_view_columns where column_id = :column_id" -default ""]
 }
 if {"" == $view_id} {
@@ -137,7 +140,6 @@ ad_form -extend -name column -on_request {
     # Flush cache
     im_permission_flush
 
-    set return_url [export_vars -base "/intranet/admin/views/new" {view_id}]
     # ad_return_complaint 1 $return_url
     ad_returnredirect $return_url
     ad_script_abort
