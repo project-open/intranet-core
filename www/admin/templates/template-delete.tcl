@@ -39,5 +39,8 @@ if {[catch {
     "
 }
 
+# Remove all permission related entries in the system cache
+im_permission_flush
+
 ad_returnredirect $return_url
 

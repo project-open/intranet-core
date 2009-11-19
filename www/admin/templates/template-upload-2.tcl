@@ -95,3 +95,7 @@ if {!$cat_exists_p} {
 # (Re-) enable the category
 db_dml enable "update im_categories set enabled_p = 't' where category = :upload_file and category_type = 'Intranet Cost Template'"
 
+
+# Remove all permission related entries in the system cache
+im_permission_flush
+
