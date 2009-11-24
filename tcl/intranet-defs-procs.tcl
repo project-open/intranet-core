@@ -1340,7 +1340,7 @@ ad_proc -public im_ad_hoc_query {
     sql
 } {
     Ad-hoc execution of SQL-Queries.
-    @format "plain", "hmtl" or "cvs" - select the output format. Default is "plain".
+    @format "plain", "hmtl", "cvs" or "xml" - select the output format. Default is "plain".
     @border Table border for HTML output
     @col_titles Optional titles for columns. Normally, columns are taken directly
     from the SQL query and passed through the localization subsystem.
@@ -1396,12 +1396,14 @@ ad_proc -public im_ad_hoc_query {
             plain { append header "$title\t" }
             html { append header "<th>$title</th>" }
             csv { append header "\"$title\";" }
+            xml { append header "<column>$title</column>\n" }
         }
     }
     switch $format {
         plain { set header $header }
         html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
         csv { set header $header }
+        xml { set header "<header>\n$header</header>" }
     }
     
     set row_count 1
@@ -1414,6 +1416,7 @@ ad_proc -public im_ad_hoc_query {
                     append result "<td>$col</td>"
                 }
                 csv { append result "\"$col\";" }
+                xml { append result "<string>$col</string>" }
             }
         }
 	
@@ -1422,6 +1425,7 @@ ad_proc -public im_ad_hoc_query {
             plain { append result "\n" }
             html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
             csv { append result "\n" }
+            xml { append result "\n</row>\n<row>\n" }
         }
         incr row_count
     }
@@ -1439,6 +1443,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
+        xml { return "$header\n<body>\n<row>\n$result</row>\n</body>"  }
     }
 }
 
