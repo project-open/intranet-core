@@ -1443,7 +1443,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "$header\n<body>\n<row>\n$result</row>\n</body>"  }
+        xml { return "<result>$header\n<body>\n<row>\n$result</row>\n</body></result>"  }
     }
 }
 
