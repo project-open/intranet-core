@@ -1565,3 +1565,8 @@ div.xowiki-content hr {
 #register-login a:link {
 	font-weight: bold;
 }
+
+.fullwidth-list .component table .table_indicators tr td {
+	height:20pt;
+	padding: 8px;
+}
