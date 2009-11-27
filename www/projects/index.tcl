@@ -88,6 +88,8 @@ ad_page_contract {
 
 # User id already verified by filters
 
+set show_context_help_p 0
+
 set user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
