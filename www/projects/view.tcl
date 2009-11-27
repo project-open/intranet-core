@@ -39,7 +39,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------------
 
-set show_context_help_p 1
+set show_context_help_p 0
 
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
@@ -423,7 +423,10 @@ set menu_label "project_summary"
 switch $view_name {
     "files" { set menu_label "project_files" }
     "finance" { set menu_label "project_finance" }
-    default { set menu_label "project_summary" }
+    default { 
+	set menu_label "project_summary" 
+	set show_context_help_p 1
+    }
 }
 
 set sub_navbar [im_sub_navbar \
