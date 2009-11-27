@@ -33,9 +33,13 @@ ad_page_contract {
     { subproject_status_id 0 }
 }
 
+
+
 # ---------------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------------
+
+set show_context_help 1
 
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]
@@ -421,11 +425,11 @@ switch $view_name {
     "finance" { set menu_label "project_finance" }
     default { set menu_label "project_summary" }
 }
+
 set sub_navbar [im_sub_navbar \
     -components \
     -current_plugin_id $plugin_id \
     -base_url "/intranet/projects/view?project_id=$project_id" \
     $parent_menu_id \
     $bind_vars "" "pagedesriptionbar" $menu_label] 
-
 
