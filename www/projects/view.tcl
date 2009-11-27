@@ -39,7 +39,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------------
 
-set show_context_help 1
+set show_context_help_p 1
 
 set user_id [ad_maybe_redirect_for_registration]
 set return_url [im_url_with_query]

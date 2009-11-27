@@ -2,7 +2,7 @@
 <property name="title">@page_title@</property>
 <property name="main_navbar_label">projects</property>
 <property name="sub_navbar">@sub_navbar;noquote@</property>
-<property name="show_context_help">@show_context_help;noquote@</property>
+<property name="show_context_help">@show_context_help_p;noquote@</property>
 
 <!-- 
   There are two "views" on this page: "Summary" and "Files".
