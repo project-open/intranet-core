@@ -130,7 +130,7 @@
 -- 41000-41099  Intranet Salutation (100)
 -- 41100-41999  Intranet GTD Dashboard  
 -- 42000-42999  Intranet VAT Type (1000)
--- 43000-43999  reserved (1000)
+-- 43000-43999  Intranet REST (1000)
 -- 44000-49999  reserved (1000)
 -- 50000-59999  reserved (10000)
 -- 60000-69999  reserved (10000)
