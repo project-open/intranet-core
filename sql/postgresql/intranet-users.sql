@@ -317,7 +317,7 @@ SELECT acs_object_type__create_type(
 	'#intranet-contacts.company_employee_rels#',
 	'im_biz_object_member',
 	'im_company_employee_rels',
-	'company_employee_rel_id',
+	'employee_rel_id',
 	'intranet-contacts.comp_emp', 
 	'f',
 	null,
