@@ -238,6 +238,7 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
     set write 0
     set admin 0
 
+    if {0 == $company_id} { return }
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [im_profile::member_p -profile_id [im_wheel_group_id] -user_id $user_id]
     set user_is_group_member_p [im_biz_object_member_p $user_id $company_id]
@@ -249,17 +250,17 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
     # Get basic company information
     if {[catch {
 	db_1row company_info "
-select 
-	c.*,
-	c.manager_id as key_account_id
-from
-	im_companies c
-where
-	company_id = :company_id
-"
+		select 
+			c.*,
+			c.manager_id as key_account_id
+		from
+			im_companies c
+		where
+			company_id = :company_id
+	"
     } catch_err]} {
 	ad_return_complaint 1 "Bad Company:<br>
-        We can not find information about the specified company."
+        We can not find information about the company '$company_id'."
 	return
     }
 
