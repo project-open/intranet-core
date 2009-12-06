@@ -61,7 +61,7 @@ ad_proc -public im_gif {
     subsequent calls are faster. You'll need to restart the server
     if you change the pathes...
 } {
-    set debug 0
+    set debug 1
     if {$debug} { ns_log Notice "im_gif: name=$name" }
 
     set url "/intranet/images"
@@ -221,6 +221,8 @@ ad_proc -public im_gif_static {
 	"proman"	{ return "<img src=$navbar_gif_url/user_comment.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"accounting"	{ return "<img src=$navbar_gif_url/money_dollar.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"sales"		{ return "<img src=$navbar_gif_url/telephone.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"house"		{ return "<img src=$navbar_gif_url/house.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"key"		{ return "<img src=$navbar_gif_url/key.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 
 	"bb_clear"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_red"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
