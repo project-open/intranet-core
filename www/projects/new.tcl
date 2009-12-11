@@ -55,6 +55,7 @@ set org_project_type_id [im_opt_val project_type_id]
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
+set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0]
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 set sub_navbar ""
@@ -163,6 +164,14 @@ template::element::create $form_id project_nr \
     -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
     -after_html "[im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
+
+if {$enable_project_path_p} {
+    template::element::create $form_id project_path \
+	-datatype text \
+	-label "[lang::message::lookup "" intranet-core.Project_Path "Project Path"]" \
+	-html {size 40} \
+	-after_html "[im_gif help "An optional full path to the project filestorage"]"
+}
 
 if {$enable_nested_projects_p} {
 	
@@ -366,6 +375,7 @@ if {[form is_request $form_id]} {
 		p.project_lead_id, 
 		p.supervisor_id, 
 		p.project_nr,
+	        p.project_path,
 		p.project_budget, 
 		p.project_budget_currency, 
 		p.project_budget_hours,
@@ -401,6 +411,7 @@ if {[form is_request $form_id]} {
 	if {![info exist project_nr]} {
 	    set project_nr [im_next_project_nr -customer_id $company_id -parent_id $parent_id]
        	}
+	set project_path ""
 	set edit_existing_project_p 0
 	set start_date $todays_date
 	set end_date $todays_date
@@ -474,6 +485,7 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id workflow_key $workflow_key
     template::element::set_value $form_id project_name $project_name
     template::element::set_value $form_id project_nr $project_nr
+    if {$enable_project_path_p} { template::element::set_value $form_id project_path $project_path }
     template::element::set_value $form_id parent_id $parent_id
     template::element::set_value $form_id company_id $company_id
     template::element::set_value $form_id project_lead_id $project_lead_id
@@ -598,7 +610,7 @@ if {[form is_submission $form_id]} {
 
 if {[form is_valid $form_id]} {
 
-    set project_path $project_nr
+    if {!$enable_project_path_p} { set project_path $project_nr }
 
     # -----------------------------------------------------------------
     # Create a new Project if it didn't exist yet

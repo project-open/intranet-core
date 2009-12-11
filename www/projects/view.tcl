@@ -66,6 +66,7 @@ if {$subproject_filtering_enabled_p} {
 set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
 set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
 set gantt_project_enabled_p [util_memoize "db_string gp {select count(*) from apm_packages where package_key = 'intranet-ganttproject'}"]
+set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0] 
 
 
 # Check if the invoices was changed outside of ]po[...
@@ -210,14 +211,26 @@ if { ![empty_string_p $parent_id] } {
 
 append project_base_data_html "
 			  <tr> 
-			    <td>[_ intranet-core.Project]</td>
+			    <td>[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]</td>
+			    <td>$project_nr</td>
+			  </tr>
+"
+
+if {$enable_project_path_p} {
+    append project_base_data_html "
+			  <tr> 
+			    <td>[lang::message::lookup "" intranet-core.Project_Path "Project Path"]</td>
 			    <td>$project_path</td>
 			  </tr>
-[im_company_link_tr $user_id $company_id $company_name "[_ intranet-core.Client]"]
+    "
+}
+
+append project_base_data_html "
+			  [im_company_link_tr $user_id $company_id $company_name "[_ intranet-core.Client]"]
 			  <tr> 
 			    <td>[_ intranet-core.Project_Manager]</td>
 			    <td>
-[im_render_user_id $project_lead_id $project_lead $user_id $project_id]
+			    [im_render_user_id $project_lead_id $project_lead $user_id $project_id]
 			    </td>
 			  </tr>
 			  <tr> 
