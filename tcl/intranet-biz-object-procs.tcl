@@ -248,7 +248,10 @@ ad_proc -public im_biz_object_add_role {
 
 		# We are adding an employee to the internal company,
 		# create an "employee_rel" relationship
-		db_dml insert_employee "insert into im_company_employee_rels (employee_rel_id) values (:rel_id)"
+		set emp_count [db_string emp_cnt "select count(*) from im_company_employee_rels where employee_rel_id = :rel_id"]
+		if {0 == $emp_count} {
+		    db_dml insert_employee "insert into im_company_employee_rels (employee_rel_id) values (:rel_id)"
+		}
 		db_dml update_employee "update acs_rels set rel_type = 'im_company_employee_rel' where rel_id = :rel_id"
 
 	    } else {
