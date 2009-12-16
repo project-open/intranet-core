@@ -477,6 +477,7 @@ ad_proc im_url {} {
 
 # Find out the user name
 ad_proc -public im_name_from_user_id {user_id} {
+    if {"" == $user_id} { set user_id -1 }
     return [util_memoize "im_name_from_user_id_helper $user_id"]
 }
 
