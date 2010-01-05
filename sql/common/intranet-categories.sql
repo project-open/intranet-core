@@ -132,7 +132,7 @@
 -- 42000-42999  Intranet VAT Type (1000)
 -- 43000-43999  Intranet REST (1000)
 -- 44000-49999  reserved (1000)
--- 50000-59999  reserved (10000)
+-- 50000-59999  Navision Integration (10000)
 -- 60000-69999  reserved (10000)
 -- 70000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
