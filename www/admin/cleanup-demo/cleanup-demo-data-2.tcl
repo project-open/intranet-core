@@ -602,6 +602,13 @@ if {[im_table_exists im_release_items]} {
     db_dml remove_release_items "delete from im_release_items"
 }
 
+ns_write "<li>Cleanup Gantt Projects\n"
+if {[im_table_exists im_gantt_projects]} {
+    db_dml remove_gantt_projects "delete from im_gantt_projects"
+}
+if {[im_table_exists im_gantt_persons]} {
+    db_dml remove_gantt_persons "delete from im_gantt_persons"
+}
 
 ns_write "<li>Cleanup im_projects\n"
 db_dml remove_from_projects "delete from im_projects"
