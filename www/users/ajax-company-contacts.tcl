@@ -64,8 +64,8 @@ set users_sql "
 "
 set result ""
 db_foreach users $users_sql {
-    if {"" != $result} { append result ",\n" }
-    append result "$user_id,$user_name"
+    if {"" != $result} { append result "|\n" }
+    append result "$user_id|$user_name"
 }
 
 doc_return 200 "text/plain" $result
