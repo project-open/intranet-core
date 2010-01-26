@@ -53,9 +53,9 @@ set offices_sql "
 "
 set result ""
 db_foreach offices $offices_sql {
-    if {"" != $result} { append result ",\n" }
+    if {"" != $result} { append result "|\n" }
     regsub -all {,} $office_name {} office_name
-    append result "$office_id,$office_name"
+    append result "$office_id|$office_name"
 }
 
 doc_return 200 "text/plain" $result
