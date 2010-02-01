@@ -59,6 +59,7 @@ set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 set sub_navbar ""
+set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncrementP -package_id [im_package_core_id] -default 0]
 
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
@@ -565,21 +566,26 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id end "[_ intranet-core.lt_End_date_must_be_afte]"
 	incr n_error
     }
-	
-	
+
+    # Check for project number duplicates
     set project_nr_exists [db_string project_nr_exists "
 	select 	count(*)
 	from	im_projects
 	where	project_nr = :project_nr
 	        and project_id <> :project_id
     "]
-	
-    if { $project_nr_exists > 0 } {
-	incr n_error
-	template::element::set_error $form_id project_nr "[_ intranet-core.lt_The_specified_project]"
-    }
-	
-	
+     if {$project_nr_exists} {
+	 # We have found a duplicate project_nr, now check how to deal with this case:
+	 if {$auto_increment_project_nr_p} {
+	     # Just increment to the next free number. 
+	     set project_nr [im_next_project_nr -customer_id $company_id -parent_id $parent_id]
+	 } else {
+	     # Report an error
+	     incr n_error
+	     template::element::set_error $form_id project_nr "[_ intranet-core.lt_The_specified_project]"
+	 }
+     }
+
     # Make sure the project name has a minimum length
     if { [string length $project_name] < 5} {
 	incr n_error
