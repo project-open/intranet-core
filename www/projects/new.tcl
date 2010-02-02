@@ -54,12 +54,14 @@ set current_url [im_url_with_query]
 set org_project_type_id [im_opt_val project_type_id]
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
+set project_nr_field_editable_p [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldEditableP "" 1]
 set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
 set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0]
 set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 set sub_navbar ""
 set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncrementP -package_id [im_package_core_id] -default 0]
+
 
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
@@ -160,11 +162,16 @@ template::element::create $form_id project_name \
     -html {size 40} \
     -after_html "[im_gif help "Please enter any suitable name for the project. The name must be unique."]"
 
+
+set project_nr_mode "display"
+if {$project_nr_field_editable_p} { set project_nr_mode "edit" }
 template::element::create $form_id project_nr \
     -datatype text \
+    -mode $project_nr_mode \
     -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
     -after_html "[im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
+
 
 if {$enable_project_path_p} {
     template::element::create $form_id project_path \
