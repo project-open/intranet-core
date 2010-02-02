@@ -41,10 +41,9 @@ if [ catch {
 
 	db_dml delete_map "delete from im_dynfield_type_attribute_map where object_type_id = :category_id"
 	db_dml delete_category "delete from im_categories where category_id = :category_id"
-
     }
 } errmsg ] {
-    ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"
+    ad_return_complaint "Argument Error" "<b>[lang::message::lookup "" intranet-core.Err_Delete_Category "This category can't be deleted, please consider 'disabling'"]</b><br><br><ul>$errmsg</ul>"
     return
 } 
 
