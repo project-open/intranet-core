@@ -33,7 +33,7 @@
 		<form action="@current_url;noquote@" method=GET>
 		<%= [export_form_vars project_id] %>
 		<tr>
-		<td class=form-label>#intranet-core.Status#</td>
+		<td class=form-label><%= [lang::message::lookup "" intranet-core.Filter_Status "Filter Status"] %></td>
 		<td class=form-widget>
 		<%= [im_category_select -include_empty_p 1 "Intranet Project Status" subproject_status_id $subproject_status_id] %>
 		<input type=submit value="Go">
