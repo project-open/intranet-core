@@ -192,7 +192,7 @@ if {$enable_nested_projects_p} {
     if {[info exists project_id]} { set super_project_id $project_id }
 
     if { [exists_and_not_null project_id] } {
-        set project_parent_options [im_project_options -exclude_subprojects_p 0 -project_id $super_project_id]
+        set project_parent_options [im_project_options -exclude_subprojects_p 0 -exclude_status_id [im_project_status_closed] -project_id $super_project_id]
     } else {
         set project_parent_options [im_project_options -exclude_subprojects_p 0 -exclude_status_id [im_project_status_closed] -project_id $super_project_id]
     }
