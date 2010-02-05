@@ -10,12 +10,12 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.8.2" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.2.apm">
+    <version name="3.4.0.8.3" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.3.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="3.4.0.8.1"/>
+        <provides url="intranet-core" version="3.4.0.8.3"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
 
@@ -57,6 +57,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectListPageDefaultSubprojectLevel"  default="1" description="Allows to determine the level of subprojects to show if ProjectListPageDefaultSubprojectsP is set to &quot;t&quot;. &quot;1&quot; means only main projects, &quot;2&quot; gives one level of subprojects etc."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectListPageDefaultSubprojectsP"  default="f" description="Show we show subprojects on the ProjectListPage? The default is &quot;f&quot;, because only main projects should be seen normally. You can control the level of subprojects shown using the ProjectListPageDefaultSubprojectLevel parameter if this parameter is set to &quot;t&quot;."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrAutoIncrementP"  default="0" description="Should we automatically increment a project's Project Nr if we find that the specified number already exists? This option is useful in large companies with many PMs creating projects in parallel. Default is 0 to disable this feature."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNumberFieldEditableP"  default="1" description="Are user able to edit the project_nr field? The default is '1', which is useful for smaller companies. Larger companies may want to say 'no' here, in order to force users to stick to the project_nr scheme, and/or in order to import project numbers into an ERP system."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectNrDateFormat"  default="YYYY_" description="Date format for project number prefix. Example is 'none' (the string 'none') for a number without date component, 'YYYY_' for a 4 digit year plus an underscore, 'YY' as a 2 digit year prefix or the string 'none' for no date prefix."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrDigits"  default="4" description="How many digits should the incrementing project_nr have? Default is four."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrHierarchicalDigits"  default="0" description="Should we enable hierarchical project numbers? Set to '0' to disable. A value of 2 for example means that a subproject will the the number of the parent plus an underscore and two extra digits. Example: If the parent has the number '2009_1234' then the first child will get '2009_1234_01'. Default is '2' for two digits. Set to '0' to disable hierarchial project numbers."/>
