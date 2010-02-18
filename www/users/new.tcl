@@ -283,6 +283,7 @@ ad_form -extend -name register -on_request {
 	    }
 
 	    ns_log Notice "/users/new: Before auth::create_user"
+	    if {"" == $username} { set username $email}
 	    array set creation_info [auth::create_user \
 					 -user_id $user_id \
 					 -verify_password_confirm \
