@@ -10,12 +10,12 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.8.3" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.3.apm">
+    <version name="3.4.0.8.4" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.4.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="3.4.0.8.3"/>
+        <provides url="intranet-core" version="3.4.0.8.4"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
 
@@ -74,6 +74,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TarCmd"  default="/bin/tar" description="Command to execute the Unix &quot;tar&quot; command"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="UtilCurrentLocationRedirect"  description="Controls the behaviour of ]po[ when running behind a reverse HTTP proxy or with HTTPS. The default value is empty to enables the default redirection logic which will work in most cases. Please use this parameter if you encounter problems when using ]po[ together with Pound or a HTTPS connection. The parameter determines the base Url that ]po[ for 'redirection' operations (for example after the login process). Example: 'https://www.project-open.net'."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableProjectPathP" default="0" description="Should we show the project_path of every project? Showing the path will allow the user to actively determine where to place the project in the filestorage. Otherwise, the project's files will be stored in a /filestorage/company_path/project_nr/. Default is '0' to use the default project location"/>
         </parameters>
 
     </version>
