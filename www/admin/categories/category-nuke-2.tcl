@@ -39,6 +39,7 @@ if [ catch {
     
     db_transaction {
 
+	db_dml delete_map "delete from im_category_hierarchy where parent_id = :category_id or child_id = :category_id"
 	db_dml delete_map "delete from im_dynfield_type_attribute_map where object_type_id = :category_id"
 	db_dml delete_category "delete from im_categories where category_id = :category_id"
     }
