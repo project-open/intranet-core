@@ -122,6 +122,8 @@ set ctr 1
 set old_id 0
 db_foreach category_select {} {
 
+    incr ctr
+
     if {"t" == $enabled_p } { set enabled_p "" }
 
     if {$old_id == $category_id} {
@@ -131,7 +133,8 @@ db_foreach category_select {} {
 	  <td></td>
 	  <td></td>
 	  <td></td>
-	  <td>$parent</td>
+	  <td></td>
+	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</a></td>
 	  <td></td>
 	  <td></td>
 	  <td></td>
@@ -161,7 +164,6 @@ db_foreach category_select {} {
     }
     append category_list_html "<td>$category_description</td></tr>\n"
     set old_id $category_id
-    incr ctr
 }
 
 append category_list_html "</table>"
