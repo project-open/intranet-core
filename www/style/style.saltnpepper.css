@@ -1512,9 +1512,11 @@ div.xowiki-content hr {
 	font-weight: bold;
 }
 
+/* we need to show the Alpha-Bar!
 #titleSubmenu {
          display: none; 
 }
+*/
 
 .yui-skin-sam {
 	display: inline;
