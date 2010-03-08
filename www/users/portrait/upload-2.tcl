@@ -38,6 +38,7 @@ if {!$write} {
 # number_of_bytes is the upper-limit
 set max_n_bytes [parameter::get_from_package_key -package_key "acs-subsite" -parameter "MaxPortraitBytes" -default 0]
 set tmp_filename [ns_queryget upload_file.tmpfile]
+im_security_alert_check_tmpnam -location "upload-2.tcl" -value $tmp_filename
 ns_log Notice "upload-2: tmp_filename=$tmp_filename"
 
 set file_size [file size $tmp_filename]
