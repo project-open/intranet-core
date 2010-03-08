@@ -90,9 +90,12 @@ select
 	u.username,
 	u.member_state,
 	u.creation_user as creation_user_id,
-	im_name_from_user_id(u.creation_user) as creation_user_name
+	im_name_from_user_id(u.creation_user) as creation_user_name,
+	auth.short_name as authority_short_name,
+	auth.pretty_name as authority_pretty_name
 from
 	cc_users u
+	LEFT OUTER JOIN auth_authorities auth ON (u.authority_id = auth.authority_id)
 where
 	u.user_id = :user_id_from_search
 "]

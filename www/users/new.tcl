@@ -64,10 +64,10 @@ set next_url user-add-2
 set self_register_p 1
 
 # Should we show the "Username" field of the user?
-set show_username_p [parameter::get_from_package_key \
-	-package_key intranet-core \
-	-parameter EnableUsersUsernameP \
-	-default 0]
+set show_username_p [parameter::get_from_package_key -package_key intranet-core -parameter EnableUsersUsernameP -default 0]
+
+# Should we show the "Authority" field of the user?
+set show_authority_p [parameter::get_from_package_key -package_key intranet-core -parameter EnableUsersAuthorityP -default 0]
 
 # We need the field if we go for non-email login...
 if {![auth::UseEmailForLoginP]} { set show_username_p 1 }
@@ -111,20 +111,21 @@ if {$editing_existing_user} {
     }
 
     set user_details_sql "
-select
-	pe.first_names,
-	pe.last_name,
-	pa.email,
-	pa.url,
-	u.screen_name,
-	u.username
-from
-	parties pa
-	left outer join persons pe on (pa.party_id = pe.person_id)
-	left outer join users u on (pa.party_id = u.user_id)
-where
-	pa.party_id = :user_id
-"
+	select
+		pe.first_names,
+		pe.last_name,
+		pa.email,
+		pa.url,
+		u.screen_name,
+		u.username,
+		u.authority_id
+	from
+		parties pa
+		left outer join persons pe on (pa.party_id = pe.person_id)
+		left outer join users u on (pa.party_id = u.user_id)
+	where
+		pa.party_id = :user_id
+    "
     db_0or1row get_user_details $user_details_sql
 
     # The user already exists - let's get his list of profiles
@@ -180,6 +181,17 @@ ad_form -extend -name register -form {
 ad_form -extend -name register -form {
     {first_names:text(text) {label "[_ intranet-core.First_names]"} {html {size 30}}}
     {last_name:text(text) {label "[_ intranet-core.Last_name]"} {html {size 30}}} 
+}
+
+if {$show_authority_p} {
+    set auth_options [db_list_of_lists auth_options "
+	select	short_name, authority_id
+	from	auth_authorities
+	order by short_name
+    "]
+    ad_form -extend -name register -form {
+	{authority_id:text(select),optional {label "[lang::message::lookup {} intranet-core.Authority Authority]"} {options $auth_options }}
+    }
 }
 
 if {!$editing_existing_user && !$ldap_installed_p} {
@@ -402,6 +414,13 @@ ad_form -extend -name register -on_request {
 	if {!$reg_users_rel_exists_p} {
 	    relation_add -member_state "approved" "membership_rel" $registered_users $user_id
 	}
+
+	# Update users to set the user's authority
+	db_dml update_users "
+		update users
+		set authority_id = :authority_id
+		where user_id = :user_id
+	"
 
 
 	# TSearch2: We need to update "persons" in order to trigger the TSearch2
