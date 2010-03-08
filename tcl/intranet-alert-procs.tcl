@@ -98,6 +98,33 @@ ad_proc -public im_security_alert_check_integer {
 }
 
 
+ad_proc -public im_security_alert_check_tmpnam {
+    { -location "No location specified"}
+    { -value "No value specified" }
+} {
+    Check a temporary file created from ns_tmpnam if it
+    has been tempered with.
+    We assume that temporary files are all created in the
+    same folder, so we'll just check if the file contains
+    the same folder prefix then a sample ns_tmpnam created
+    here.
+} {
+    # Get a correct sample value
+    set ref [ns_tmpnam]
+
+    set value_path [lrange [split $value "/"] 0 end-1]
+    set ref_path [lrange [split $ref "/"] 0 end-1]
+
+    if {$value_path != $ref_path} {
+	im_security_alert \
+	    -location $location \
+	    -message "Found a ns_tmpnam in a wrong folder" \
+	    -value $value \
+	    -severity "Normal" \
+    }
+}
+
+
 ad_proc -public im_security_alert {
     { -location "No location specified"}
     { -message "No message specified"}
