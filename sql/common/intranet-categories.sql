@@ -133,6 +133,15 @@
 -- 43000-43999  Intranet REST (1000)
 -- 44000-49999  reserved (1000)
 -- 50000-59999  Navision Integration (10000)
+-- 50000-50099	free
+-- 50100-50199	Navision Reuse Band
+-- 50200-50499	Intranet Translation Task Type (Activity Group + Activities)
+-- 50500-50599  Navision General Posting Group
+-- 50600-50699  Navision VAT Posting Group
+-- 50700-50799  Navision Customer Posting Group
+-- 50800-50899  Navision Vendor Posting Group
+-- 50900-50999  Navision Payment Method Code
+-- 51000-59999  Navision reserved
 -- 60000-69999  reserved (10000)
 -- 70000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
