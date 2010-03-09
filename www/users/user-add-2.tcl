@@ -39,12 +39,12 @@ if {![im_permission $current_user_id add_users]} {
 
 set admin_user_id [ad_verify_and_get_user_id]
 
-# Get user info
-acs_user::get -user_id $user_id -array user
-# easier to work with scalar vars than array
-foreach var_name [array names user] {
-    set $var_name $user($var_name)
-}
+db_1row user_info "
+	select	*
+	from	cc_users
+	where	user_id = :user_id
+"
+
 
 if { [empty_string_p $password] } {
     set password [ad_generate_random_string]
