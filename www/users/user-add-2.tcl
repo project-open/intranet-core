@@ -45,6 +45,13 @@ db_1row user_info "
 	where	user_id = :user_id
 "
 
+# Check that we really just created this user...
+if {$creation_user != $admin_user_id} {
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
+    return
+}
+
+
 
 if { [empty_string_p $password] } {
     set password [ad_generate_random_string]
