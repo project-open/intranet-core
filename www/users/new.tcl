@@ -100,6 +100,9 @@ if {"" != $user_id} {
 ns_log Notice "/users/new: editing_existing_user=$editing_existing_user, user_id=$user_id, email=$email"
 
 
+# Set default authority to "local"
+set authority_id [db_string auth "select min(authority_id) from auth_authorities"]
+
 if {$editing_existing_user} {
 
     # Permissions for existing user: We need to be able to admin him:
