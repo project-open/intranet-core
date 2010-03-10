@@ -66,6 +66,10 @@ ad_proc -public im_profile_partners {} {
      return [im_profile::profile_id_from_name -profile "Partners"] 
 }
 
+ad_proc -public im_profile_helpdesk {} { 
+     return [im_profile::profile_id_from_name -profile "Helpdesk"] 
+}
+
 ad_proc -public im_profile_registered_users {} { 
     return [util_memoize [list db_string registered_users "
 		select	object_id 

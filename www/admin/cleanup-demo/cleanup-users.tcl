@@ -126,8 +126,6 @@ db_multirow -extend {user_url} users get_users "
 		on u.user_id = freelance_p.user_id
 	where	admin_p.admin_p is null
 	order by u.user_id DESC
-	limit 2000
-
 " {
 	set user_url [export_vars -base "/intranet/users/view" {user_id return_url}]
 }
