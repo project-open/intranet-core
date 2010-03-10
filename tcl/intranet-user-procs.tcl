@@ -949,8 +949,7 @@ ad_proc -public im_user_nuke {user_id} {
 
 	# Reassign objects to a default user...
 	db_dml reassign_objects "update acs_objects set modifying_user = :default_user where modifying_user = :user_id"
-	db_dml reassign_projects "update acs_objects set creation_user = :default_user where object_type = 'im_project' and creation_user = :user_id"
-	db_dml reassign_cr_revisions "update acs_objects set creation_user = :default_user where object_type = 'content_revision' and creation_user = :user_id"
+	db_dml reassign_projects "update acs_objects set creation_user = :default_user where creation_user = :user_id"
 	
 	# Lang_message_audit
 	db_dml lang_message_audit "update lang_messages_audit set overwrite_user = null where overwrite_user = :user_id"
@@ -963,16 +962,9 @@ ad_proc -public im_user_nuke {user_id} {
 	
 	# Costs
 	db_dml invoice_references "update im_invoices set company_contact_id = null where company_contact_id = :user_id"
+	db_dml cuase_objects "update im_costs set cause_object_id = :default_user where cause_object_id = :user_id"
 
-	set cost_infos [db_list_of_lists costs "select cost_id, object_type from im_costs, acs_objects where cost_id = object_id and (creation_user = :user_id or cause_object_id = :user_id)"]
-	foreach cost_info $cost_infos {
-	    set cost_id [lindex $cost_info 0]
-	    set object_type [lindex $cost_info 1]
-	    
-	    ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
-	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
-	}
-
+	# Cost Centers
 	db_dml reset_cost_center_managers "update im_cost_centers set manager_id = null where manager_id = :user_id"
 
 	# Payments
