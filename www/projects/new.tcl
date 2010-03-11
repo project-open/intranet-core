@@ -419,7 +419,7 @@ if {[form is_request $form_id]} {
 	if {![info exist project_nr]} {
 	    set project_nr [im_next_project_nr -customer_id $company_id -parent_id $parent_id]
        	}
-	set project_path ""
+	set project_path $project_nr
 	set edit_existing_project_p 0
 	set start_date $todays_date
 	set end_date $todays_date
