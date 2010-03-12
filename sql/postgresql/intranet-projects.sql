@@ -113,7 +113,7 @@ create table im_projects (
 	-- Total project budget (top-down planned)
 	project_budget			float,
 	project_budget_currency		char(3)
-					constraint im_costs_paid_currency_fk
+					constraint im_projects_budget_currency_fk
 					references currency_codes(iso),
 	-- Max number of hours for project.
 	-- Does not require "view_finance" permission
@@ -153,7 +153,13 @@ create table im_projects (
 
 	-- Presales Pipeline
 	presales_probability		numeric(5,2),
-	presales_value			numeric(12,2)
+	presales_value			numeric(12,2),
+
+	-- Groups of projects = "program"
+	-- To be added to the ProjectNewPage via DynField
+	program_id			integer
+					constraint im_projects_program_id
+					references im_projects
 );
 
 
@@ -168,10 +174,6 @@ create index im_project_treesort_idx on im_projects(tree_sortkey);
 alter table im_projects add constraint 
 im_projects_path_un UNIQUE (project_nr, company_id, parent_id);
 
-
--- Create Dynfields for Presales Pipeline
-SELECT im_dynfield_attribute_new ('im_project', 'presales_probability', 'Presales Probability', 'integer', 'integer', 'f');
-SELECT im_dynfield_attribute_new ('im_project', 'presales_value', 'Presales Value', 'integer', 'integer', 'f');
 
 
 

@@ -37,6 +37,7 @@ ad_proc -public im_project_type_task {} { return 100 }
 ad_proc -public im_project_type_ticket {} { return 101 }
 ad_proc -public im_project_type_sla {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
+ad_proc -public im_project_type_program {} { return 2510 }
 
 ad_proc -public im_project_type_software_release {} { return 4599 }
 ad_proc -public im_project_type_software_release_item {} { return 4597 }

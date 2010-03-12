@@ -349,6 +349,7 @@ SELECT im_category_new (2501, 'Consulting Project', 'Intranet Project Type');
 SELECT im_category_new (2504, 'Milestone', 'Intranet Project Type');
 update im_categories set enabled_p = 'f'
 where category = 'Milestone' and category_type = 'Intranet Project Type';
+SELECT im_category_new (2510, 'Program', 'Intranet Project Type');
 
 
 SELECT im_category_hierarchy_new (97, 2501);
