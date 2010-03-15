@@ -257,6 +257,7 @@ ad_proc im_user_select {
     foreach id $group_id {
 	if {![string is integer $id]} {
 	    ad_return_complaint 1 "Please notify Frank"
+	    ad_script_abort
 	}
     }
 
