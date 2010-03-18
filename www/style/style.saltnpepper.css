@@ -350,8 +350,8 @@ background-position: 0px -10px;
 }
 
 #main_maintenance_bar {
-	background-color:#DC143C;
-	color:#FFFFFF;
+	/* background-color:#DC143C; */
+	color:#DC143C;
 	height:auto;
 	left:200px;
 	padding:3px;
