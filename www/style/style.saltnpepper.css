@@ -858,6 +858,11 @@ a   span  {float:none;}
 	vertical-align: top;
 }
 
+.fullwidth-list .component table.list td.list-button-bar {
+        height:30px;
+        vertical-align: middle;
+}
+
 .table-display td {
    padding: 1px;
 }
