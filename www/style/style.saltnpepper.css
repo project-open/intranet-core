@@ -387,7 +387,7 @@ background-position: 0px -10px;
 
     #navbar_main_wrapper ul {
 	margin:0;
-	padding:10px 10px 0px 0px;
+	padding:10px 8px 0px 0px;
 	list-style:none;
 	overflow: visible;
 	z-index: 1000;
