@@ -98,8 +98,7 @@ set subproject_types [list "t" "Yes" "f" "No"]
 set page_title "[_ intranet-core.Projects]"
 set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
-
-set letter [string toupper $letter]
+set upper_letter [string toupper $letter]
 
 # Determine the default status if not set
 if { 0 == $project_status_id } {
@@ -258,8 +257,8 @@ if {"" != $start_date} {
 if {"" != $end_date} {
     lappend criteria "p.start_date < :end_date::timestamptz"
 }
-if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
-    lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
+if { ![empty_string_p $upper_letter] && [string compare $upper_letter "ALL"] != 0 && [string compare $upper_letter "SCROLL"] != 0 } {
+    lappend criteria "im_first_letter_default_to_a(p.project_name)=:upper_letter"
 }
 if { $include_subprojects_p == "f" } {
     lappend criteria "p.parent_id is null"
@@ -524,7 +523,7 @@ $order_by_clause
 
 ns_log Notice "/intranet/project/index: Before limiting clause"
 
-if {[string equal $letter "ALL"]} {
+if {[string equal $upper_letter "ALL"]} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
@@ -557,6 +556,7 @@ set mine_p_options [list \
 	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
 ]
 
+set letter $upper_letter
 set filter_html "
 <form method=get name=projects_filter action='/intranet/projects/index'>
 [export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
@@ -827,6 +827,7 @@ set table_continuation_html "
 
 # Project Navbar goes to the top
 #
+set letter $upper_letter
 set project_navbar_html [im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter project_status_id] $menu_select_label]
 
 
