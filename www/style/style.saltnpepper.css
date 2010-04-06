@@ -1578,3 +1578,14 @@ div.xowiki-content hr {
 
 
 
+#main_maintenance_bar {
+	color:#DC143C;
+	height:auto;
+	left:300px;
+	padding:3px;
+	position:absolute;
+	top:-90px;
+	width:auto;
+	font-weight: bold;
+	font-size:2.0em;
+}
