@@ -390,7 +390,7 @@ background-position: 0px -10px;
 	padding:10px 8px 0px 0px;
 	list-style:none;
 	overflow: visible;
-	z-index: 1000;
+	z-index: 500;
 	position: relative;
       }
     #navbar_main li {
