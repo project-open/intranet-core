@@ -1525,9 +1525,12 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
     # Prepare Project SQL Query
     
     set query "
-	select	p.*
-	from	im_projects p
-	where 	p.project_id = :parent_project_id
+	select	p.*,
+		o.object_type
+	from	im_projects p,
+		acs_objects o
+	where 	p.project_id = o.object_id and
+		p.project_id = :parent_project_id
     "
     if { ![db_0or1row projects_info_query $query] } {
 	set project_id $parent_project_id
@@ -1603,6 +1606,15 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 
     # Not cloning template_p. This is meta-information that shouldn't get copied.
     #		template_p = :template_p
+
+    # Fix the object_type of the new project.
+    # Project sub-types include im_timesheet_task, im_ticket etc.
+    db_dml update_object "
+	update acs_objects set
+		object_type = :object_type
+	where
+		object_id = :cloned_project_id
+    "
 
     # Clone DynFields - just all of them
     set dynfield_sql [im_dynfield::create_clone_update_sql -object_type "im_project" -object_id $cloned_project_id]
