@@ -22,7 +22,7 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    object_id:integer
+    object_id:integer,multiple
     return_url
     { page_url "default" }
     { user_id "" }
@@ -35,6 +35,7 @@ ad_page_contract {
 # --------------------------------------------------------------
 
 set current_user_id [ad_get_user_id]
+if {"" == $user_id} { set user_id $current_user_id }
 if {$user_id != $current_user_id} { ad_returnredirect $return_url }
 
 
@@ -44,8 +45,9 @@ if {$user_id != $current_user_id} { ad_returnredirect $return_url }
 
 # Assume that there are few entries in the list of closed tree objects.
 
-if {[catch {
-    db_dml insert_tree_status "
+foreach oid $object_id {
+    if {[catch {
+	db_dml insert_tree_status "
 	insert into im_biz_object_tree_status (
 		object_id,
 		user_id,
@@ -53,24 +55,24 @@ if {[catch {
 		open_p,
 		last_modified
 	) values (
-		:object_id,
+		:oid,
 		:user_id,
 		:page_url,
 		:open_p,
 		now()
 	)
-    "
-} err_msg]} {
-    # There was probably already an entry, so update the entry.
-    db_dml update_tree_status "
-	update im_biz_object_tree_status set
-		open_p = :open_p,
+        "
+    } err_msg]} {
+	# There was probably already an entry, so update the entry.
+	db_dml update_tree_status "
+	update	im_biz_object_tree_status
+	set	open_p = :open_p,
 		last_modified = now()
-	where
-		object_id = :object_id and
+	where	object_id = :oid and
 		user_id = :user_id and
 		page_url = :page_url
-    "
+        "
+    }
 }
 
 ad_returnredirect $return_url
