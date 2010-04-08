@@ -851,10 +851,9 @@ a   span  {float:none;}
 
 .fullwidth-list .component table tr.rowodd,
 .fullwidth-list .component table tr.roweven {
-	height: 17px;
-	border-top: 1px solid #F0EDED;
-	border-bottom: 1px solid #F0EDED;
-
+	height: 20px;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #FFFFFF;
 }
 
 .fullwidth-list .component table td {
