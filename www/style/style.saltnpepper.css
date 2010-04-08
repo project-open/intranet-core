@@ -990,6 +990,7 @@ a   span  {float:none;}
 
 .fullwidth-list table tr {
  	padding: 3px;
+	height:20px;
 }
 
 .fullwidth-list table td {
