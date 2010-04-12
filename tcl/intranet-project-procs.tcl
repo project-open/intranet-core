@@ -2713,7 +2713,7 @@ ad_proc im_project_super_project_id {
     set ctr 0
     while {$loop} {
 	set loop 0
-	set parent_id [db_string parent_id "select parent_id from im_projects where project_id=:super_project_id"]
+	set parent_id [db_string parent_id "select parent_id from im_projects where project_id=:super_project_id" -default ""]
 	
 	if {"" != $parent_id} {
 	    set super_project_id $parent_id
