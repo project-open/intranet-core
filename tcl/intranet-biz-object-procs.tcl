@@ -617,3 +617,72 @@ ad_proc -public im_project_add_member { object_id user_id role} {
 
 
 
+ad_proc -public im_object_assoc_component { 
+    -object_id:required 
+} {
+    Returns a formatted HTML component that allows associating the
+    current object with another one via a "role".
+} {
+    set td_class(0) "class=roweven"
+    set td_class(1) "class=rowodd"
+
+    set assoc_sql "
+	select	o.*,
+		r.*,
+		rtype.pretty_name as rel_pretty_name,
+		otype.pretty_name as object_type_pretty_name,
+		acs_object__name(o.object_id) as object_name
+	from
+		acs_objects o,
+		(select	r.object_id_two as object_id,
+			r.rel_id,
+			r.rel_type
+		from	acs_rels r
+		where	object_id_one = :object_id
+		UNION
+		select	r.object_id_one as object_id,
+			r.rel_id,
+			r.rel_type
+		from	acs_rels r
+		where	object_id_two = :object_id
+		) r,
+		acs_object_types rtype,
+		acs_object_types otype
+	where
+		r.object_id = o.object_id and
+		r.rel_type = rtype.object_type and
+		o.object_type = otype.object_type
+    "
+
+    set ctr 0
+    set body_html ""
+    db_foreach assoc $assoc_sql {
+	append body_html "
+		<tr $td_class([expr $ctr % 2])>
+		<td>$rel_pretty_name</td>
+		<td>$object_type_pretty_name</td>
+		<td>[db_string name "select acs_object__name(:object_id)"]</td>
+		</tr>
+	"
+    }
+
+    set header_html "
+	<tr class=rowtitle>
+	<td>Rel</td>
+	<td>OType</td>
+	<td>Object</td>
+	</tr>
+    "
+
+    set footer_html "
+    "
+
+    return "
+	<table>
+	$header_html
+	$body_html
+	$footer_html
+	</table>
+    "
+
+}
