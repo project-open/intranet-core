@@ -650,7 +650,8 @@ if {[form is_valid $form_id]} {
 	
         if {0 == $project_id || "" == $project_id} {
             ad_return_complaint 1 "<b>Error creating project</b>:<br>
-                We have got an error creating a new project with the parameters.<br>
+                We have got an error creating a new project.<br>
+		There is probably something wrong with the projects's parameters below:<br>
 		<pre>
 		project_name            $project_name
 		project_nr              $project_nr
