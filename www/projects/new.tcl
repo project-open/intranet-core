@@ -659,11 +659,9 @@ if {[form is_valid $form_id]} {
 		parent_id               $parent_id
 		project_type_id         $project_type_id
 		project_status_id       $project_status_id
-		</pre><br>
-		For reference, here is the error message:
-		<pre>
-		$err_msg
-		</pre>
+		</pre><br>&nbsp;<br>
+		For reference, here is the error message:<br>
+		<pre>$err_msg</pre>
             "
             ad_script_abort
         }
