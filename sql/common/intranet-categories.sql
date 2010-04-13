@@ -85,7 +85,7 @@
 -- 4300-4399	Intranet Trans Task Type
 -- 4300-4499    Intranet Bug-Tracker
 -- 4400-4499    Intranet Trans RFQ
--- 4500-4549    reserved (not sure if there are modules around...)
+-- 4500-4549    reserved (used to be used for Release Mgmt)
 -- 4550-4599    Intranet Project Type (extension)
 -- 5000-5999	Timesheet Management
 -- 5000-5099	Intranet Absence Type
