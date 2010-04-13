@@ -39,7 +39,7 @@ set backup_path_exists_p [file exists $backup_path]
 set not_backup_path_exists_p [expr !$backup_path_exists_p]
 
 
-db_multirow -extend { object_attributes_url } templates templates_sql {
+db_multirow -extend { object_attributes_url url } templates templates_sql {
 	select	*
 	from	im_categories
 	where	category_type = 'Intranet Cost Template'
@@ -47,6 +47,7 @@ db_multirow -extend { object_attributes_url } templates templates_sql {
 		lower(category)
 } {
     set object_attributes_url ""
+    set url "/intranet/admin/templates/template-download.tcl?path_to_file=$category"
 }
 
 template::list::create \
@@ -55,6 +56,7 @@ template::list::create \
     -elements {
 	category {
 	    label "Template Name"
+	    link_url_col url
 	}
 	enabled_p {
 	    label "Enabled?"
