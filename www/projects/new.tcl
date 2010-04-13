@@ -635,14 +635,18 @@ if {[form is_valid $form_id]} {
     set id_count [db_string id_count "select count(*) from im_projects where project_id=:project_id"]
     if {0 == $id_count} {
 	
-	set project_id [project::new \
+	set project_id ""
+	catch {
+	    set project_id [project::new \
 			    -project_name	$project_name \
 			    -project_nr		$project_nr \
 			    -project_path	$project_path \
 			    -company_id		$company_id \
 			    -parent_id		$parent_id \
 			    -project_type_id	$project_type_id \
-			    -project_status_id	$project_status_id]
+			    -project_status_id	$project_status_id \
+	    ]
+	} err_msg
 	
         if {0 == $project_id || "" == $project_id} {
             ad_return_complaint 1 "<b>Error creating project</b>:<br>
@@ -655,6 +659,9 @@ if {[form is_valid $form_id]} {
 		parent_id               $parent_id
 		project_type_id         $project_type_id
 		project_status_id       $project_status_id
+
+		error_message
+		$err_msg
 		</pre>
             "
             ad_script_abort
