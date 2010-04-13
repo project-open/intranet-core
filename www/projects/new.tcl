@@ -659,8 +659,9 @@ if {[form is_valid $form_id]} {
 		parent_id               $parent_id
 		project_type_id         $project_type_id
 		project_status_id       $project_status_id
-
-		error_message
+		</pre><br>
+		For reference, here is the error message:
+		<pre>
 		$err_msg
 		</pre>
             "
