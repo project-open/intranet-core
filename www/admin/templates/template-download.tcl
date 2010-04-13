@@ -1,10 +1,16 @@
-ad_page_contract {
+# /packages/intranet-core/www/admin/templates/template-download.tcl
+#
+# Copyright (C) 2010 ]project-open[
 
+
+ad_page_contract {
+    Purpose: allows downloading a template file
+    @param path_to_file - location of template file to download
+    @author klaus.hofeditz@project-open.com
 } {
-    { category_id 0 }
-    { return_url "" }
-    path_to_file
+    { template_name }
 }
+
 
 # ------------------------------------------------------
 # Defaults & Security
@@ -17,12 +23,14 @@ if {!$user_is_admin_p} {
     return
 }
 
+set path_to_file [parameter::get -package_id [db_string get_view_id "select package_id from apm_packages where package_key = 'intranet-invoices'" -default 0] -parameter "InvoiceTemplatePathUnix" -default ""]
+append path_to_file "/" 
+append path_to_file $template_name
 
- if {[catch {
+if {[catch {
      ns_returnfile 200 "application" $path_to_file
- } err_msg]} {
+} err_msg]} {
     ad_return_complaint 1 "
-	<b>Error receiving template, please ask your System Adminitrator check category 'Intranet Cost Template'</b>:<br>
+       <b>Error receiving template, please ask your System Adminitrator check category 'Intranet Cost Template'</b>:<br>
     "
 }
-
