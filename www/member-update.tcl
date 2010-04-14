@@ -81,7 +81,7 @@ switch $action {
 		"
 		ad_script_abort
 	    }
-	    if {$perc < 0.0} { 
+	    if {"" != $perc && $perc < 0.0} { 
 		ad_return_complaint 1 "
 		     <b>[lang::message::lookup "" intranet-core.Percentage_negative "Percentage should not be negative"]</b>:<br>
 			[lang::message::lookup "" intranet-core.Percentage_not_a_number_msg "
