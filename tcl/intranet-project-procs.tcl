@@ -1439,13 +1439,13 @@ ad_proc im_project_clone {
 	foreach task_id $task_list {
 
 	    db_1row project_info "
-		select	project_nr || '_' || :cloned_project_id as sub_task_nr,
-			project_name || '_' || :cloned_project_id as sub_task_name,
-			project_nr as sub_task_nr_org,
-			project_name as sub_task_name_org
-
-		from	im_projects
+		select	p.project_nr || '_' || :cloned_project_id as sub_task_nr,
+			p.project_name || '_' || :cloned_project_id as sub_task_name,
+			p.project_nr as sub_task_nr_org,
+			p.project_name as sub_task_name_org
+		from	im_projects p
 		where	project_id = :task_id
+
 	    "
 
 	    # go for the next project
@@ -1498,7 +1498,10 @@ ad_proc im_project_clone {
 			:cost_center_id, :invoice_id, :priority, :sort_order
 		)
 	    "
-
+            # update acs_object
+            db_dml insert_task "
+		update acs_objects set object_type = 'im_timesheet_task' where object_id = :cloned_task_id 
+            "
 	}
 	if {"" == $task_list} { ns_write "<li>No tasks found\n" }
 
