@@ -230,6 +230,20 @@ ad_proc -public im_menu_li {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
+    return [util_memoize [list im_menu_li_helper -user_id $user_id -locale $locale -package_key $package_key -class $class -pretty_name $pretty_name label]]
+}
+
+ad_proc -public im_menu_li_helper { 
+    {-user_id "" }
+    {-locale "" }
+    {-package_key "intranet-core" }
+    {-class "" }
+    {-pretty_name "" }
+    label
+} {
+    Returns a <li><a href=URL>Name</a> for the menu.
+    Attention, not closing </li>!
+} {
     if {"" == $user_id} { set user_id [ad_get_user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
