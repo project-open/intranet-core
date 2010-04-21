@@ -1499,7 +1499,7 @@ ad_proc im_project_clone {
 		)
 	    "
             # update acs_object
-            db_dml insert_task "
+            db_dml update_acs_objects "
 		update acs_objects set object_type = 'im_timesheet_task' where object_id = :cloned_task_id 
             "
 	}
