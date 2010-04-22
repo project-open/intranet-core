@@ -56,8 +56,6 @@ ad_proc -public im_navbar_tree {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
     set locale [lang::user::locale -user_id $user_id]
 
-    set no_cache_p 1
-
     if {$no_cache_p} {
 	return [im_navbar_tree_helper -user_id $user_id -locale $locale -label $label]
     } else {

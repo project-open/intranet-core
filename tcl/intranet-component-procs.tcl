@@ -196,13 +196,11 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	regsub -all {[^0-9a-zA-Z]} $plugin_name "_" plugin_name_subs
 	set plugin_name_key "intranet-core.${plugin_name_subs}"
 	set plugin_name [lang::message::lookup "" $plugin_name_key $plugin_name]
-#	ns_log Notice "name_key=$plugin_name_key, name_subs=$plugin_name_subs, plugin_name=$plugin_name"
 
 	set title_html $plugin_name
 	if {"" != $title_tcl} {
 	    set title_html [uplevel 1 $title_tcl]
 	}
-
 
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
