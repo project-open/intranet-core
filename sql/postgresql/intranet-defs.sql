@@ -412,3 +412,47 @@ where object_type = 'im_note';
 
 
 
+
+-- ------------------------------------------------------------------
+-- Add a new message key to the localization system with default
+-- translation.
+-- ------------------------------------------------------------------
+
+
+create or replace function im_lang_add_message(text, text, text, text)
+returns integer as $body$
+DECLARE
+	p_locale	alias for $1;
+	p_package_key	alias for $2;
+	p_message_key	alias for $3;
+	p_message	alias for $4;
+
+	v_count		integer;
+BEGIN
+	-- Make sure there is an entry in lang_message_keys
+	--
+	select	count(*) into v_count from lang_message_keys
+	where	package_key = p_package_key and message_key = p_message_key;
+	IF 0 = v_count THEN
+		insert into lang_message_keys (
+			message_key, package_key
+		) values (
+			p_message_key, p_package_key
+		);
+	END IF;
+
+	-- Create the translation entry
+	--
+	select	count(*) into v_count from lang_messages
+	where	locale = p_locale and package_key = p_package_key and message_key = p_message_key;
+	IF 0 = v_count THEN
+		insert into lang_messages (
+			message_key, package_key, locale, message, sync_time, upgrade_status
+		) values (
+			p_message_key, p_package_key, p_locale, p_message, now(), 'added'
+		);
+	END IF;
+
+	return 1;
+END;$body$ language 'plpgsql';
+
