@@ -247,8 +247,6 @@ ad_proc -public im_menu_li_helper {
     if {"" == $user_id} { set user_id [ad_get_user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
-    ns_log Notice "Error: im_menu_li_helper -user_id $user_id -locale $locale -package_key $package_key -class $class -pretty_name $pretty_name label"
-
     set menu_id 0
     db_0or1row menu_info "
 	select	m.*
