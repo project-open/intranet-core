@@ -56,6 +56,7 @@ ad_proc -public im_navbar_tree {
     if {0 == $user_id} { set user_id [ad_get_user_id] }
     set locale [lang::user::locale -user_id $user_id]
 
+    set no_cache_p 1
     if {$no_cache_p} {
 	return [im_navbar_tree_helper -user_id $user_id -locale $locale -label $label]
     } else {
@@ -126,12 +127,12 @@ ad_proc -public im_navbar_tree_admin {
 } { 
     Admin Navbar 
 } {
-    set current_user_id [ad_get_user_id]
     set wiki [im_navbar_doc_wiki]
-    set admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+
     if {!$admin_p} { return "" }
     set html "
-	[im_menu_li admin]
+	[im_menu_li_helper admin]
 		<ul>
 		[im_navbar_write_tree \
 			-no_cache \
