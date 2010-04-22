@@ -27,6 +27,16 @@ while (my $line=<FILE>) {
 	if ($compound_key =~ /^([a-zA-Z\-]*)\.(.*)/) {
 	    my $package_key = $1;
 	    my $message_key = $2;
+
+	    if ($package_key =~ /\ /) {
+		print "ERROR: package_key '$package_key' contains spaces.\n";
+		next;
+	    }
+	    if ($message_key =~ /\ /) {
+		print "ERROR: message_key '$message_key' contains spaces.\n";
+		next;
+	    }
+
 	    print "SELECT im_lang_add_message('en_US','$package_key','$message_key','$message_key');\n"
 	}
     }
