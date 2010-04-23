@@ -110,7 +110,7 @@ create or replace function im_menu__new (integer, varchar, timestamptz, integer,
 varchar, varchar, varchar, varchar, integer, integer, varchar) returns integer as '
 declare
 	p_menu_id		alias for $1;	-- default null
-	p_object_type		alias for $2;	-- default ''acs_object''
+	p_object_type		alias for $2;	-- default acs_object
 	p_creation_date		alias for $3;	-- default now()
 	p_creation_user		alias for $4;	-- default null
 	p_creation_ip		alias for $5;	-- default null
@@ -339,7 +339,7 @@ begin
 	-- as a parent_menu_id from main and project.
 	v_top_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -367,7 +367,7 @@ begin
 	-- hierarchy.
 	v_main_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -383,7 +383,7 @@ begin
 
 	v_home_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -407,7 +407,7 @@ begin
 
 	v_project_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -431,7 +431,7 @@ begin
 
 	v_company_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -455,7 +455,7 @@ begin
 
 	v_user_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -478,7 +478,7 @@ begin
 
 	v_office_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -502,7 +502,7 @@ begin
 
 	v_admin_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -520,7 +520,7 @@ begin
 
 	v_help_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -549,7 +549,7 @@ begin
 
 	v_user_employees_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -572,7 +572,7 @@ begin
 
 	v_user_companies_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -593,7 +593,7 @@ begin
 
 	v_user_freelancers_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -616,7 +616,7 @@ begin
 
 	v_user_all_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -635,7 +635,7 @@ begin
 
 	v_user_all_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -659,7 +659,7 @@ begin
 
 	v_admin_home_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -678,7 +678,7 @@ begin
 
 	v_admin_profiles_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -696,7 +696,7 @@ begin
 
 	v_admin_menus_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -714,7 +714,7 @@ begin
 
 	v_admin_matrix_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -731,7 +731,7 @@ begin
 
 	v_admin_parameters_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -748,7 +748,7 @@ begin
 
 	v_admin_categories_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -814,7 +814,7 @@ begin
 	-- but serves as the starting point for submenus
 		v_project_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -830,7 +830,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -854,7 +854,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -919,7 +919,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -949,7 +949,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -976,7 +976,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1030,7 +1030,7 @@ BEGIN
 	-- for all admin entries links under Companies
 	v_admin_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1076,7 +1076,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1115,7 +1115,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1176,7 +1176,7 @@ begin
 	-- skip this here.
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1201,7 +1201,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1225,7 +1225,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,			-- p_menu_id
-		''acs_object'',		-- object_type
+		''im_menu'',		-- object_type
 		now(),			-- creation_date
 		null,			-- creation_user
 		null,			-- creation_ip
@@ -1272,7 +1272,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1313,7 +1313,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1352,7 +1352,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1392,7 +1392,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1432,7 +1432,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1475,7 +1475,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1515,7 +1515,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1572,7 +1572,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1608,7 +1608,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1646,7 +1646,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1681,7 +1681,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1716,7 +1716,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1752,7 +1752,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1788,7 +1788,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1824,7 +1824,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1861,7 +1861,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1896,7 +1896,7 @@ BEGIN
 	-- for all admin entries links under Projects
 	v_admin_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
@@ -1919,7 +1919,7 @@ drop function inline_0 ();
 
 select im_menu__new (
 	null,				-- p_menu_id
-	'acs_object',			-- object_type
+	'im_menu',			-- object_type
 	now(),				-- creation_date
 	null,				-- creation_user
 	null,				-- creation_ip
@@ -1956,7 +1956,7 @@ begin
 
 	v_menu := im_menu__new (
 		null,				-- p_menu_id
-		''acs_object'',			-- object_type
+		''im_menu'',			-- object_type
 		now(),				-- creation_date
 		null,				-- creation_user
 		null,				-- creation_ip
