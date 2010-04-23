@@ -30,6 +30,7 @@ set context ""
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+set subsite_name [subsite::get_element -element name]
 
 
 # ---------------------------------------------------------------
@@ -74,45 +75,47 @@ set old_package_key ""
 set ctr 1
 set package_html ""
 db_foreach packages $sql {
-	
+    
     if {![string equal $package_key $old_package_key]} {
-
+	
 	append package_html "
-<tr class=rowplain colspan=99><td>&nbsp;</td></tr>
-<tr class=roweven>
-  <td colspan=2>
-    <b><A HREF=/shared/parameters?[export_url_vars package_id return_url]>$package_key</A></b></td>
-  <td><b>$instance_name</b></td>
-</tr>\n"
-
+	<tr class=rowplain colspan=99><td>&nbsp;</td></tr>
+	<tr class=roweven>
+	  <td colspan=2>
+	    <b><A HREF=/shared/parameters?[export_url_vars package_id return_url]>$package_key</A></b></td>
+	  <td><b>$instance_name</b></td>
+	</tr>
+	"
+	
 	set old_package_key $package_key
 	set ctr 0
     }
-
+    
     if {"" == $parameter_name} { set parameter_name "<i>No parameters</i>" }
-
+    
     append package_html "
-<tr $bgcolor([expr $ctr % 2])>
-  <td>&nbsp;&nbsp;&nbsp;</td>
-  <td><b>$parameter_name</b></td>
-  <td><b>$attr_value</b></td>
-</tr>\n"
-
+	<tr $bgcolor([expr $ctr % 2])>
+	  <td>&nbsp;&nbsp;&nbsp;</td>
+	  <td><b>$parameter_name</b></td>
+	  <td><b>$attr_value</b></td>
+	</tr>
+    "
+    
     if {![string equal description ""]} {
 	append package_html "
-<tr $bgcolor([expr $ctr % 2])>
-  <td>&nbsp;&nbsp;&nbsp;</td>
-  <td colspan=3>$description</td>
-</tr>\n"
-
-
+	<tr $bgcolor([expr $ctr % 2])>
+	  <td>&nbsp;&nbsp;&nbsp;</td>
+	  <td colspan=3>$description</td>
+	</tr>
+        "
     }
-
 
     incr ctr
 }
 
 set parameter_html "
-<table border=0 width=800>
-$package_html
-</table>\n"
+	<table border=0 width=800>
+	$package_html
+	</table>
+"
+
