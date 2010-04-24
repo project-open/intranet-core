@@ -429,6 +429,12 @@ DECLARE
 
 	v_count		integer;
 BEGIN
+	-- Do not insert strings for packages that do not exist
+	--
+	select	count(*) into v_count from apm_packages
+	where	package_key = p_package_key;
+	IF 0 = v_count THEN return 0; END IF;
+
 	-- Make sure there is an entry in lang_message_keys
 	--
 	select	count(*) into v_count from lang_message_keys
