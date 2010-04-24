@@ -59,15 +59,15 @@ if (@ARGV == 1) {
 # Generate README and LICENSE
 my $sed = "sed -e 's/X.Y.Z.V.W/$version/; s/YYYY-MM-DD/$date/; s/YYYY/$year/'";
 
-print "all-upload: generating README in ~/\n" if $debug;
+print "all-pack-sourceforge: generating README in ~/\n" if $debug;
 system("rm -f ~/$readme");
 system("cat ~/packages/intranet-core/README.ProjectOpen.Update | $sed > ~/$readme");
 
-print "all-upload: generating LICENSE in ~/\n" if $debug;
+print "all-pack-sourceforge: generating LICENSE in ~/\n" if $debug;
 system("rm -f ~/$license");
 system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > ~/$license");
 
-print "all-upload: generating CHANGELOG in ~/\n" if $debug;
+print "all-pack-sourceforge: generating CHANGELOG in ~/\n" if $debug;
 system("rm -f ~/$changelog");
 system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > ~/$changelog");
 
@@ -85,115 +85,27 @@ system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > ~/$changelog
 #	
 #	
 
-$packages = "packages/acs-admin
-packages/acs-api-browser
-packages/acs-authentication
-packages/acs-automated-testing
-packages/acs-bootstrap-installer
-packages/acs-content-repository
-packages/acs-core-docs
-packages/acs-datetime
-packages/acs-developer-support
-packages/acs-events
-packages/acs-kernel
-packages/acs-lang
-packages/acs-mail
-packages/acs-mail-lite
-packages/acs-messaging
-packages/acs-reference
-packages/acs-service-contract
-packages/acs-subsite
-packages/acs-tcl
-packages/acs-templating
-packages/acs-workflow
-packages/ajaxhelper
-packages/auth-ldap-adldapsearch
-packages/bug-tracker
-packages/bulk-mail
-packages/calendar
-packages/categories
-packages/cms
-packages/diagram
-packages/events
-packages/general-comments
-packages/intranet-big-brother
-packages/intranet-bug-tracker
-packages/intranet-calendar
-packages/intranet-confdb
-packages/intranet-core
-packages/intranet-cost
-packages/intranet-dw-light
-packages/intranet-dynfield
-packages/intranet-exchange-rate
-packages/intranet-expenses
-packages/intranet-expenses-workflow
-packages/intranet-filestorage
-packages/intranet-forum
-packages/intranet-ganttproject
-packages/intranet-helpdesk
-packages/intranet-hr
-packages/intranet-invoices
-packages/intranet-invoices-templates
-packages/intranet-material
-packages/intranet-milestone
-packages/intranet-nagios
-packages/intranet-notes
-packages/intranet-payments
-packages/intranet-release-mgmt
-packages/intranet-reporting
-packages/intranet-reporting-indicators
-packages/intranet-reporting-tutorial
-packages/intranet-search-pg
-packages/intranet-search-pg-files
-packages/intranet-security-update-client
-packages/intranet-simple-survey
-packages/intranet-sysconfig
-packages/intranet-timesheet2
-packages/intranet-timesheet2-invoices
-packages/intranet-timesheet2-tasks
-packages/intranet-tinytm
-packages/intranet-trans-invoices
-packages/intranet-translation
-packages/intranet-trans-project-wizard
-packages/intranet-update-client
-packages/intranet-wiki
-packages/intranet-workflow
-packages/lars-blogger
-packages/notifications
-packages/organizations
-packages/oryx-ts-extensions
-packages/postal-address
-packages/ref-countries
-packages/ref-language
-packages/ref-timezones
-packages/ref-us-counties
-packages/ref-us-states
-packages/ref-us-zipcodes
-packages/rss-support
-packages/search
-packages/simple-survey
-packages/wiki
-packages/workflow
-packages/xml-rpc";
+$packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentication packages/acs-automated-testing packages/acs-bootstrap-installer packages/acs-content-repository packages/acs-core-docs packages/acs-datetime packages/acs-developer-support packages/acs-events packages/acs-kernel packages/acs-lang packages/acs-mail packages/acs-mail-lite packages/acs-messaging packages/acs-reference packages/acs-service-contract packages/acs-subsite packages/acs-tcl packages/acs-templating packages/acs-workflow packages/ajaxhelper packages/auth-ldap-adldapsearch packages/bug-tracker packages/bulk-mail packages/calendar packages/categories packages/cms packages/diagram packages/events packages/general-comments packages/intranet-big-brother packages/intranet-bug-tracker packages/intranet-calendar packages/intranet-confdb packages/intranet-core packages/intranet-cost packages/intranet-dw-light packages/intranet-dynfield packages/intranet-exchange-rate packages/intranet-expenses packages/intranet-expenses-workflow packages/intranet-filestorage packages/intranet-forum packages/intranet-ganttproject packages/intranet-helpdesk packages/intranet-hr packages/intranet-invoices packages/intranet-invoices-templates packages/intranet-material packages/intranet-milestone packages/intranet-nagios packages/intranet-notes packages/intranet-payments packages/intranet-release-mgmt packages/intranet-reporting packages/intranet-reporting-indicators packages/intranet-reporting-tutorial packages/intranet-search-pg packages/intranet-search-pg-files packages/intranet-security-update-client packages/intranet-simple-survey packages/intranet-sysconfig packages/intranet-timesheet2 packages/intranet-timesheet2-invoices packages/intranet-timesheet2-tasks packages/intranet-tinytm packages/intranet-trans-invoices packages/intranet-translation packages/intranet-trans-project-wizard packages/intranet-update-client packages/intranet-wiki packages/intranet-workflow packages/lars-blogger packages/notifications packages/organizations packages/oryx-ts-extensions packages/postal-address packages/ref-countries packages/ref-language packages/ref-timezones packages/ref-us-counties packages/ref-us-states packages/ref-us-zipcodes packages/rss-support packages/search packages/simple-survey packages/wiki packages/workflow packages/xml-rpc";
 
 
 
 # *******************************************************************
 # Upload the tar to upload.sourceforge.net
 
-print "all-upload: tarring code\n" if $debug;
+print "all-pack-sourceforge: tarring code\n" if $debug;
 system("rm -f ~/$tar");
-system("cd ~/; tar czf ~/$tar $readme $license $changelog $dump $packages");
+print "all-pack-sourceforge: cd ~/; tar czf ~/$tar $readme $license $changelog $packages\n";
+system("cd ~/; tar czf ~/$tar $readme $license $changelog $packages");
 
 
 
 # *******************************************************************
 # End
-print "all-upload: SourceForge upload:\n";
+print "all-pack-sourceforge: SourceForge upload:\n";
 
 # Old FRS
 # print "rsync -avP -e ssh ~/$tar fraber\@frs.sourceforge.net:uploads/\n";
 
 # New FRS 2009-10-20:
-print "rsync -avP -e ssh ~/$tar fraber,project-open\@frs.sourceforge.net:/home/frs/project/p/pr/project-open/project-open/V3.4/"
+print "all-pack-sourceforge: rsync -avP -e ssh ~/$tar fraber,project-open\@frs.sourceforge.net:/home/frs/project/p/pr/project-open/project-open/V3.4/\n"
 

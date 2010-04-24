@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="3.4.0.8.6" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.6.apm">
+    <version name="3.4.0.8.9" url="http://www.project-open.org/download/apm/intranet-core-3.4.0.8.9.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
