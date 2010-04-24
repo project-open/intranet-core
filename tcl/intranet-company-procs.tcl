@@ -101,6 +101,7 @@ namespace eval im_company {
 	This procedure relies that changes to companies will be 
 	reported to this module.
     } {
+
 	if {"" == $user_id} { set user_id [ad_get_user_id] }
 	
 	# Check if we have calculated this result already
