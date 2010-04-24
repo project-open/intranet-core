@@ -57,7 +57,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 	[lang::message::lookup "" intranet-core.Sample_system_blurb "
 		We have set up this 'Tigerpond' sample company on this server 
 		in order to show you what your future $po could look like.
-	"]<p>&nbsp;</p>
+      "]<p>&nbsp;</p>
 
 	<h2>[lang::message::lookup "" intranet-core.Configuring_po "Configuring %po%"]</h2>
 	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
@@ -76,10 +76,17 @@ ad_proc -public im_help_home_page_blurb_component { } {
 		and providers) and projects.
 	"]<p>&nbsp;</p>
 
-	<h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
-	<ul>
-	<li>
-	<A href=\"http://www.project-open.com/\"><b>[lang::message::lookup "" intranet-core.PO_com_web_site "
+         <h2>[lang::message::lookup "" intranet-core.Starting_to_use_the_system_blurb "
+		Starting to use %po%
+         "]</h2>[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
+		You can use <a href='/intranet/admin/cleanup-demo/'>'Admin' -&gt; 'Cleanup Demo Data'</a> to remove all
+		demo data from this server and to start using this server in production.
+         "]<p>&nbsp;</p>
+
+      <h2>[lang::message::lookup "" intranet-core.Online_resources_header "Online Resources"]</h2>
+      <ul>
+      <li>
+        <A href=\"http://www.project-open.com/\"><b>[lang::message::lookup "" intranet-core.PO_com_web_site "
 		%po% '.com' Web site
 	"]</b></a>:<br>
 	[lang::message::lookup "" intranet-core.PO_com_web_site_blurb "
