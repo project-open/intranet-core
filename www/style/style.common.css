@@ -358,6 +358,30 @@ ul.compact li, .action-list ul li {
 }
 
 
+/* 
+Surveys
+*/
+
+.tabledata ol li {
+	font-weight:bold;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.tabledata ol li blockquote {
+        font-weight:normal;
+}
+
+
+.tabledata ol li blockquote, .tabledata ol li br {
+        padding-top:15px;
+}
+
+.tabledata ol li br {
+        margin-bottom:10px;
+}
+
+
 /**********************************************************************
 /* DEPRECATED CLASSES
 /**********************************************************************/
