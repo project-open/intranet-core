@@ -1,23 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>@title;noquote@</title>
-	
-	<meta name='keywords' content=''>
-	<meta name='description' content=''>
+        <meta name="keywords" content="Open Source, Project Management, Project Portfolio Management, ERP, Financial Management, Professional Service Automation, Knowledge Management, Workflow, Project Collaboration, Business Process Automatization, Information Management, Invoicing">
+        <meta name="description" content="]project-open[ is an Open Source Project Management/ERP tool">
 	<meta name='language' content='en'>
 	<meta name='generator' lang='en' content='OpenACS version 5.4.0'>
 
-<!--	<link rel='stylesheet' href='/resources/acs-templating/forms.css'  type='text/css' media='screen'>	-->
-<!--	<link rel='stylesheet' href='/resources/acs-templating/lists.css'  type='text/css' media='screen'>	-->
-<!--	<link rel='stylesheet' href='/calendar/resources/calendar.css'  type='text/css' media='screen'>		-->
-	<link rel='stylesheet' href='/intranet/style/style.saltnpepper.css'  type='text/css' media='screen'>
-
-	<link rel='stylesheet' href='/resources/acs-templating/mktree.css'  type='text/css' media='screen'>
-	<link rel="stylesheet" href="/resources/xowiki/xowiki.css" type="text/css" media="all" >
-	<link rel='stylesheet' href='/resources/xowiki/cattree.css' media='all' />
-	<link rel='stylesheet' href='/resources/acs-templating/lists.css' type="text/css" media='all' >
+	<link href='/intranet/style/style.saltnpepper.css' rel='stylesheet'  type='text/css' media='screen'>
+	<link href='/resources/acs-templating/mktree.css' rel='stylesheet'  type='text/css' media='screen'>
+	<link href="/resources/xowiki/xowiki.css" rel='stylesheet' type="text/css" media="all" >
+	<link href='/resources/xowiki/cattree.css' rel='stylesheet' media='all' >
+	<link href='/resources/acs-templating/lists.css' rel='stylesheet' type="text/css" media='all' >
 	
 	<!--[if lt IE 7.]>
 	<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
@@ -88,9 +84,6 @@
 	   </div>
 	    <div id="main">
 	       <div id="navbar_main_wrapper">
-		  <ul id="navbar_main">
-		     
-		  </ul>
 	       </div>
 
 	       <div id="main_header">
@@ -105,7 +98,7 @@
 		  </div>
 		  <div id="main_portrait_and_username">
 		  <div id="main_portrait">
-		    <img width=98 height=98 src=/intranet/images/anon_portrait.gif border=0 title="Portrait" alt="Portrait">
+		    <img width=98 height=98 src="/intranet/images/anon_portrait.gif" border=0 title="Portrait" alt="Portrait">
 		  </div>
 		  <p id="main_username">
 		    Welcome, Unregistered Visitor
@@ -126,6 +119,7 @@
 <!-- ---------------------------------------------------- -->
 <div class='xowiki-content'>
 <div id='wikicmds'>
+  ...
   <if @view_link@ not nil><a href="@view_link@" accesskey='v' title='#xowiki.view_title#'>#xowiki.view#</a> &middot; </if>
   <if @edit_link@ not nil><a href="@edit_link@" accesskey='e' title='#xowiki.edit_title#'>#xowiki.edit#</a> &middot; </if>
   <if @rev_link@ not nil><a href="@rev_link@" accesskey='r' title='#xowiki.revisions_title#'>#xotcl-core.revisions#</a> &middot; </if>
@@ -173,13 +167,13 @@
 
 <div class='item-footer'>
 <form enctype="multipart/form-data" method="post" action="/simple-survey/process-response">
-<input value="@survey_id@" name="survey_id" type="hidden"/>
-<input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden"/>
-<input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden"/>
-<input value="@title@" name="response_to_question.@title_question_id@" type="hidden"/>
-<input value="http://www.project-open.org/documentation/contact_thanks" name="return_url" type="hidden"/>
+<input value="@survey_id@" name="survey_id" type="hidden">
+<input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden">
+<input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden">
+<input value="@title@" name="response_to_question.@title_question_id@" type="hidden">
+<input value="http://www.project-open.org/documentation/contact_thanks" name="return_url" type="hidden">
 <script language="javascript" type="text/javascript">
-document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" />');
+document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" >');
 </script>
 
 <table width="100%" border=0 cellspacing="6" cellpadding="6">
@@ -194,9 +188,9 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 	<td width="303">
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td width="60"><input value="9" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;Yes</td>
-		<td width="60"><input value="10" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;No</td>
-		<td width="160"><input value="11" name="response_to_question.@goal_question_id@" type="radio"/>&nbsp;Don't know</td>
+		<td width="60"><input value="9" name="response_to_question.@goal_question_id@" type="radio">&nbsp;Yes</td>
+		<td width="60"><input value="10" name="response_to_question.@goal_question_id@" type="radio">&nbsp;No</td>
+		<td width="160"><input value="11" name="response_to_question.@goal_question_id@" type="radio">&nbsp;Don't know</td>
 		</tr>
 		</table>
 	</td>
@@ -218,18 +212,18 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 	<td>
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td align="left" width="60"><input value="1" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;1</td>
-		<td align="left" width="60"><input value="2" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;2</td>
-		<td align="left" width="60"><input value="3" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;3</td>
-		<td align="left" width="60"><input value="4" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;4</td>
-		<td align="left" width="60"><input value="5" name="response_to_question.@rating_question_id@" type="radio"/>&nbsp;5</td>
+		<td align="left" width="60"><input value="1" name="response_to_question.@rating_question_id@" type="radio">&nbsp;1</td>
+		<td align="left" width="60"><input value="2" name="response_to_question.@rating_question_id@" type="radio">&nbsp;2</td>
+		<td align="left" width="60"><input value="3" name="response_to_question.@rating_question_id@" type="radio">&nbsp;3</td>
+		<td align="left" width="60"><input value="4" name="response_to_question.@rating_question_id@" type="radio">&nbsp;4</td>
+		<td align="left" width="60"><input value="5" name="response_to_question.@rating_question_id@" type="radio">&nbsp;5</td>
 		</tr>
 		<tr>
-		<td align="left" width="60"><span class="greytext">Not</span><br /><span class="greytext">useful</span></td>
+		<td align="left" width="60"><span class="greytext">Not</span><br ><span class="greytext">useful</span></td>
 		<td align="left" width="60">&nbsp;</td>
 		<td align="left" width="60">&nbsp;</td>
 		<td align="left" width="60">&nbsp;</td>
-		<td align="left" width="60"><span class="greytext">Extremely<br />useful</span></td>
+		<td align="left" width="60"><span class="greytext">Extremely<br >useful</span></td>
 		</tr>
 		</table>
 	</td>
