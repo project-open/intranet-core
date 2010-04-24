@@ -97,6 +97,7 @@ cvs checkout intranet-reporting-finance
 cvs checkout intranet-reporting-indicators
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
+cvs checkout intranet-resource-management
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
 cvs checkout intranet-search-pg-files
