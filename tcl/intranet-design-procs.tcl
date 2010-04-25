@@ -34,6 +34,7 @@ ad_proc -public im_skin_light_green {} { return 40015 }
 ad_proc -public im_skin_saltnpepper {} { return 40020 }
 
 
+
 # --------------------------------------------------------
 # im_gif - Try to return the best matching GIF...
 # --------------------------------------------------------
@@ -1147,12 +1148,6 @@ ad_proc -public im_header {
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
 
-    # Get the OpenACS version
-    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
-    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
-    set openacs54_p [string equal "5.4" $oacs_version]
-#    ns_log Notice "im_header: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
-
     if { [empty_string_p $page_title] } {
 	set page_title [ad_partner_upvar page_title]
     }
@@ -1177,7 +1172,7 @@ ad_proc -public im_header {
     
     # Determine if we should be displaying the translation UI
     #
-    if {$openacs54_p && [lang::util::translator_mode_p]} {
+    if {[im_openacs54_p] && [lang::util::translator_mode_p]} {
 	template::add_footer -src "/packages/acs-lang/lib/messages-to-translate"
     }
     
@@ -1191,7 +1186,7 @@ ad_proc -public im_header {
 
 
     # OpenACS 5.4 Header stuff
-    if {$openacs54_p} {
+    if {[im_openacs54_p]} {
 
 	# Determine if developer support is installed and enabled
 	#
@@ -1323,7 +1318,7 @@ ad_proc -public im_header {
     im_performance_log -location im_header_end
 
     set header_html ""
-    if {$openacs54_p} {
+    if {[im_openacs54_p]} {
 	set header_html [template::get_header_html]
     }
 
@@ -1453,12 +1448,8 @@ ad_proc -public im_footer {
 	set amberjack_body_stuff [im_amberjack_before_body]
     }
 
-    # Get the OpenACS version
-    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
-    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
-    set openacs54_p [string equal "5.4" $oacs_version]
     set footer_html ""
-    if {$openacs54_p} {
+    if {[im_openacs54_p]} {
         set footer_html [template::get_footer_html]
     }
 
@@ -1484,6 +1475,7 @@ ad_proc -public im_stylesheet {} {
 } {
     set user_id [ad_get_user_id]
     set html ""
+    set openacs54_p [im_openacs54_p]
 
     # --------------------------------------------------------------------
     set skin_name [im_user_skin $user_id]
@@ -1495,14 +1487,6 @@ ad_proc -public im_stylesheet {} {
     } else {
 	set skin "default"
     }
-
-    # --------------------------------------------------------------------
-    # Check for OpenACS version
-    set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
-    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql ]]
-    set openacs54_p [string equal "5.4" $oacs_version]
-#    ns_log Notice "im_stylesheet: openacs54_p=$openacs54_p, oacs_version=$oacs_version"
-
 
     set system_css "/intranet/style/style.$skin.css"
 
