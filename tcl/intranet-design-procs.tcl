@@ -1570,10 +1570,8 @@ ad_proc -public im_logo {} {
 	    set system_logo "/intranet/images/logo.default.gif"
 	}
     }
-
-    return "\n<a href=\"$system_logo_link\"><img src=\"$system_logo\" alt=\"intranet logo\" border=0></a>\n"
+    return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
 }
-
 
 
 ad_proc -public im_navbar_gif_url {} {
