@@ -1577,5 +1577,5 @@ div.xowiki-content hr {
 }
 
 #intranetlogo {
-	height: 63px;
+	max-height: 63px;
 }
