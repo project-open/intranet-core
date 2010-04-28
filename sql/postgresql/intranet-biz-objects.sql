@@ -600,6 +600,9 @@ update acs_object_types set object_type_gif = 'page_add'		where object_type = 'i
 update acs_object_types set object_type_gif = 'page'			where object_type = 'im_invoice';
 update acs_object_types set object_type_gif = 'page_link'		where object_type = 'im_invoice_item';
 update acs_object_types set object_type_gif = 'link'			where object_type = 'im_key_account_rel';
+update acs_object_types set object_type_gif = 'link'			where object_type = 'im_mail_from';
+update acs_object_types set object_type_gif = 'link'			where object_type = 'im_mail_to';
+update acs_object_types set object_type_gif = 'link'			where object_type = 'im_mail_related_to';
 update acs_object_types set object_type_gif = 'box'			where object_type = 'im_material';
 update acs_object_types set object_type_gif = 'palette'			where object_type = 'im_menu';
 update acs_object_types set object_type_gif = 'note'			where object_type = 'im_note';
