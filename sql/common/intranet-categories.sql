@@ -120,11 +120,11 @@
 -- 22000-22999  Intranet User Type (1000)
 -- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
 -- 24000-24999  Intranet TinyTM (1000)
--- 25000-25999  reserved for UNED Spain (1000)
--- 26000-26999  reserved for ILO/ISSA (1000)
+-- 25000-25999  Customer UNED Spain reserved (1000)
+-- 26000-26999  Customer ILO/ISSA reserved (1000)
 -- 27000-27999  Intranet Release Management (1000)
--- 28000-28999  reserved for customer A (1000)
--- 29000-29999  reserved for customer B (1000)
+-- 28000-28999  Customer A reserved (1000)
+-- 29000-29999  Customer B reserved (1000)
 -- 30000-39999  Intranet Helpdesk (10000)
 -- 40000-40999  Intranet Skin (1000)
 -- 41000-41099  Intranet Salutation (100)
@@ -135,14 +135,15 @@
 -- 50000-59999  Navision Integration (10000)
 -- 50000-50099	free
 -- 50100-50199	Navision Reuse Band
--- 50200-50499	Intranet Translation Task Type (Activity Group + Activities)
+-- 50200-50499	Navision Intranet Translation Task Type (Activity Group + Activities)
 -- 50500-50599  Navision General Posting Group
 -- 50600-50699  Navision VAT Posting Group
 -- 50700-50799  Navision Customer Posting Group
 -- 50800-50899  Navision Vendor Posting Group
 -- 50900-50999  Navision Payment Method Code
 -- 51000-59999  Navision reserved
--- 60000-69999  reserved (10000)
+-- 60000-60999  Translation Task Type CSV Importer (1000)
+-- 61000-69999  reserved (9000)
 -- 70000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
 -- 90000-99999  reserved (10000)
