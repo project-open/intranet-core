@@ -1419,11 +1419,14 @@ ad_proc -public im_ad_hoc_query {
         plain { set header $header }
         html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
         csv { set header $header }
-        xml { set header "<header>\n$header</header>" }
+        xml { set header "" }
     }
     
-    set row_count 1
+    set row_count 0
     foreach row $lol {
+
+	set col_count 0
+	set row_content ""
         foreach col $row {
             switch $format {
                 plain { append result "$col\t" }
@@ -1432,8 +1435,12 @@ ad_proc -public im_ad_hoc_query {
                     append result "<td>$col</td>"
                 }
                 csv { append result "\"$col\";" }
-                xml { append result "<string>$col</string>" }
+                xml { 
+		    set col_name [lindex $col_titles $col_count]
+		    append row_content "<$col_name>$col</$col_name>\n" 
+		}
             }
+	    incr col_count
         }
 	
         # Change to next line
@@ -1441,7 +1448,7 @@ ad_proc -public im_ad_hoc_query {
             plain { append result "\n" }
             html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
             csv { append result "\n" }
-            xml { append result "\n</row>\n<row>\n" }
+            xml { append result "<row>\n$row_content</row>\n" }
         }
         incr row_count
     }
@@ -1459,7 +1466,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "<result>$header\n<body>\n<row>\n$result</row>\n</body></result>"  }
+        xml { return "<result>\n$result</result>\n"  }
     }
 }
 
