@@ -16,6 +16,7 @@
         <provides url="intranet-core" version="3.4.0.8.6"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
+        <requires url="intranet-dynfield" version="3.4.0.5.0"/>
 
         <callbacks>
         </callbacks>

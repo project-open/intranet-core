@@ -308,7 +308,7 @@ ul.compact li, .action-list ul li {
 }
 
 .table_fixed_height tbody tr td {
-	text-overflow:ellipsis;
+	/* text-overflow:ellipsis; */
 	overflow:hidden;
 	white-space:nowrap;
 	border-bottom: 1px dashed #666;

@@ -791,6 +791,7 @@ ad_proc -public im_navbar {
     on the local URL and enabled depending on the user permissions.
 } {
 #    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
+
     set user_id [ad_get_user_id]
     set locale [lang::user::locale -user_id $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
@@ -892,6 +893,8 @@ ad_proc -public im_navbar {
     set user_name [im_name_from_user_id $user_id]
 
     set context_help_html ""
+
+
     if {$show_context_help_p} {
 	set context_help_html "
 	    <div id=\"main_users_online\">

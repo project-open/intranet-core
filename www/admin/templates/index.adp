@@ -12,7 +12,7 @@
 <tr>
   <td valign=top width="300px">
 	<%= [im_box_header $page_title] %>
-	<listtemplate name="templates"></listtemplate>	
+	<listtemplate name="templates"></listtemplate>
 	<%= [im_box_footer] %>
 
 	<p>&nbsp;</p>
