@@ -1437,7 +1437,7 @@ ad_proc -public im_ad_hoc_query {
                 csv { append result "\"$col\";" }
                 xml { 
 		    set col_name [lindex $col_titles $col_count]
-		    append row_content "<$col_name>$col</$col_name>\n" 
+		    append row_content "<$col_name>[ns_quotehtml $col]</$col_name>\n" 
 		}
             }
 	    incr col_count
@@ -1466,7 +1466,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "<result>\n$result</result>\n"  }
+        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result</result>\n"  }
     }
 }
 
