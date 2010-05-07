@@ -1466,11 +1466,97 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result</result>\n"  }
+        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE catalog SYSTEM \"compositions.dtd\">
+<result>
+$result
+</result>
+"  
+	}
     }
 }
 
 
+# "http://www.w3.org/TR/html4/strict.dtd">
+# http://www.w3.org/TR/html4/loose.dtd
+
+
+# ---------------------------------------------------------------
+# Extended Login Procedure
+# ---------------------------------------------------------------
+
+
+ad_proc im_require_login {
+    { -no_redirect_p 0 }
+} {
+    Replaced auth::require_login or ad_maybe_redirect_for_registration.
+    In addition, allows for auto_login or basic authentication.
+} {
+    # --------------------------------------------------------
+    # Check for HTTP "basic" authorization
+    # Example: Authorization=Basic cHJvam9wOi5mcmFiZXI=
+    #
+    set header_vars [ns_conn headers]
+    set basic_auth [ns_set get $header_vars "Authorization"]
+    set basic_auth_userpass ""
+    set basic_auth_username ""
+    set basic_auth_password ""
+    if {[regexp {^([a-zA-Z_]+)\ (.*)$} $basic_auth match method userpass_base64]} {
+	set basic_auth_userpass [base64::decode $userpass_base64]
+	regexp {^([^\:]+)\:(.*)$} $basic_auth_userpass match basic_auth_username basic_auth_password
+    }
+    if {"" != $basic_auth_username} {
+	set basic_auth_user_id [db_string userid "select user_id from users where lower(username) = lower(:basic_auth_username)" -default ""]
+	if {"" == $basic_auth_user_id} {
+	    set basic_auth_user_id [db_string userid "select party_id from parties where lower(email) = lower(:basic_auth_username)" -default ""]
+	}
+	
+	# Successful 
+	if {"" != $basic_auth_user_id} { 
+	    ns_log Notice "im_require_login: Successful Basic authentication with user_id=$basic_auth_user_id"
+	    return $basic_auth_user_id 
+	} else {
+	    ns_log Notice "im_require_login: Failed Basic authentication with user_id=$basic_auth_user_id"
+	}
+    }
+
+    # --------------------------------------------------------
+    # Check for Auto-Login token
+    # Example: user_id?123&auto_login=36483CA32D586
+    #
+    set form_vars [ns_conn form]
+    if {"" == $form_vars} { set form_vars [ns_set create] }
+
+    set user_id [ns_set get $form_vars "user_id"]
+    set auto_login [ns_set get $form_vars "auto_login"]
+    set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
+    if {$valid_login} {
+	ns_log Notice "im_require_login: Successful Auto-Login authentication with user_id=$user_id"
+	return $user_id
+    }
+
+    # --------------------------------------------------------
+    # Check for OpenACS authenticated session
+    #
+    set user_id [ad_get_user_id]
+    if {0 != $user_id} { 
+	ns_log Notice "im_require_login: Successful OpenACS authentication with user_id=$user_id"
+	return $user_id 
+    }
+
+    # --------------------------------------------------------
+    # no_redirect indicates that there should redirect to authentication.
+    # So we would stop here
+    if {$no_redirect_p} { 
+	ns_log Notice "im_require_login: Failed authentication and no_redirect_p=1, so returning user_id=0 here"
+	return "" 
+    }
+
+    # --------------------------------------------------------
+    # Invoke standard OpenACS redirection to /register/
+    ns_log Notice "im_require_login: Failed authentication, redirecting to /register/"
+    return [auth::require_login]
+}
 
 # ---------------------------------------------------------------
 # System Identification
