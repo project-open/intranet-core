@@ -1466,12 +1466,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE catalog SYSTEM \"compositions.dtd\">
-<result>
-$result
-</result>
-"  
+        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n"  
 	}
     }
 }
