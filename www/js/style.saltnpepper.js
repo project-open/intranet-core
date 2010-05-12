@@ -127,6 +127,7 @@ jQuery().ready(function(){
         if  ( isExtendedCookie == 0 ) {
                 extendContract();
         }
+    document.getElementById('slave_content').style.visibility='visible';
 });
 
 
