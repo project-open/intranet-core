@@ -2,7 +2,7 @@
 
 var height = 600;
 var width = 243;
-var slideDuration = 750;
+var slideDuration = 1;
 var opacityDuration = 1500;
 isExtended = 1;
 
@@ -24,8 +24,7 @@ function extendContract(){
 			var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
 			poSetCookie('isExtendedCookie',1,90);
 		}
-		else{
-			// alert (document.getElementById('sidebar').offsetHeight);
+		else {
 			document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
 			sideBarSlide(height, 135, width, 0);
 			sideBarOpacity(1, 0);
