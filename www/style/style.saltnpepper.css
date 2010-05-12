@@ -669,6 +669,7 @@ a   span  {float:none;}
 	padding-right: 30px;
 	margin-top: 0px;
 	border: 1px #999;
+	visibility: hidden;
 }
 
 
