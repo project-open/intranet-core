@@ -7,9 +7,10 @@
   <tr>
     <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
   </tr>
-
-  @category_type_select;noquote@
-
+  <tr>
+    <td>#intranet-core.Category_Type#</td>
+    <td>@category_type_select;noquote@</td>
+  </tr>
   <tr class=roweven>
     <td>#intranet-core.Category_Nr#</td>
     <td><input size=10 name=category_id value="@category_id@"></td>
