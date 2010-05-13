@@ -68,12 +68,13 @@ if {0 != $category_id} {
     }
 
     set parent_sql "
-select	c.category_id as parent_id,
-	c.category as parent_category
-from	im_categories c
-where	c.category_type = :category_type
-order by category_id"
-    
+	select	c.category_id as parent_id,
+		c.category as parent_category
+	from	im_categories c
+	where	c.category_type = :category_type
+	order by category_id
+    "
+
     db_foreach parents $parent_sql {
 	set selected ""
 	if {[info exists child($parent_id)]} { set selected "selected" } 
@@ -134,13 +135,19 @@ set select_category_types_sql "
 	order by c.category_type asc
 " 
   
-set category_type_select "<tr><td>Category type</td><td><select name=category_type>"
+set category_type_select "<select name=category_type>\n"
 db_foreach select_category_types $select_category_types_sql {
     set selected ""
     if {$category_for_select == $category_type} { set selected "selected" }
     append category_type_select "<option $selected>$category_for_select</option>\n"
 }
-append category_type_select "</select></td></tr>"
+append category_type_select "</select>\n"
+
+if {$new_category} {
+    set category_type_select "
+	<input name=category_type value=\"$category_type\">
+    "
+}
 
 
 # set descr [ns_quotehtml $category_description]
