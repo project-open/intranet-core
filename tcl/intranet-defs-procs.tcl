@@ -1374,6 +1374,7 @@ ad_proc -public im_ad_hoc_query {
     #       - bind_rows with list of columns returned and
     #       - lol with the result set
     
+    set bind_rows ""
     set err [catch {
         db_with_handle db {
             set selection [db_exec select $db query $sql]
