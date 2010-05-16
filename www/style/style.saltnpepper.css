@@ -1522,13 +1522,6 @@ div.xowiki-content hr {
          /* display: none; */ 
 }
 
-.yui-skin-sam {
-	display: inline;
-	z-index: 1000;
-	position:relative;
-        min-height: 0;
-}
-
 .component table.forumBar td  {
         background: #EEEEEE
 }
