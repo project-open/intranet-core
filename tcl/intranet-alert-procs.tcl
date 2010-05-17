@@ -175,7 +175,10 @@ peer_ip: $peer_ip
 	append body "$var: $value\n"
     }
  
-    ns_sendmail $target_email $system_owner_email $subject $body
+    # Ignore errors sending out mails...
+    catch { 
+	ns_sendmail $target_email $system_owner_email $subject $body 
+    }
 }
 
 
