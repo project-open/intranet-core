@@ -1883,3 +1883,25 @@ ad_proc im_performance_log {
 		)
     "
 }
+
+
+
+
+ad_proc -public im_object_super_types { 
+    -object_type:required
+} {
+    Returns the list of the current object type and all
+    of its supertypes.
+    Example for im_timesheet_task: {acs_object im_business_object im_project im_timesheet_task}
+} {
+    set object_type_hierarchy {acs_object}
+    set otype $object_type
+
+    # while the object type not yet in the list of super-types:
+    while {$otype != "" && ([lsearch $object_type_hierarchy $otype] < 0)} {
+	lappend object_type_hierarchy $otype
+	set otype [db_string super_type "select supertype from acs_object_types where object_type = :otype" -default ""]
+    }
+    return $object_type_hierarchy
+}
+
