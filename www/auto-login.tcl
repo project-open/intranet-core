@@ -26,10 +26,42 @@ ad_page_contract {
 
     @@author frank.bergmann@@project-open.com
 } {
-    user_id:integer
+    { user_id:integer 0 }
     { url "/intranet/" }
     { auto_login "" }
+    { email "" }
+    { password "" }
 }
+
+# Check if the user has provided email and password in the URL
+# This type of authentication is used when logging in from a
+# REST client for example.
+# Not very secure (password in the browser history), but definitely
+# convenient.
+if {"" != $password && "" != $email} {
+    array set result_array [auth::authenticate \
+		    -return_url $url \
+		    -email $email \
+		    -password $password \
+		    -persistent  \
+		   ]
+
+    set account_status "undefined"
+    set user_id 0
+    if {[info exists result_array(account_status)]} { set account_status $result_array(account_status) }
+    if {[info exists result_array(user_id)]} { set user_id $result_array(user_id) }
+
+    if {"ok" == $account_status && 0 != $user_id} { 
+        ad_user_login -forever=0 $user_id
+        ad_returnredirect $url
+    } else {
+        ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
+        Your security token is not valid. Please contact the system owner.<br>"
+	ad_script_abort
+    }
+}
+
+
 
 # Check if the "require_manual_login" privilege exists to protect high-profile users
 set priv_exists_p [db_string priv_exists "
@@ -51,6 +83,7 @@ if {$priv_exists_p && !$user_requires_manual_login_p} {
     } else {
         ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
         Your security token is not valid. Please contact the system owner.<br>"
+	ad_script_abort
     }
 
 } else {
