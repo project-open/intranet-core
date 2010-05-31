@@ -143,8 +143,7 @@
 -- 50900-50999  Navision Payment Method Code
 -- 51000-59999  Navision reserved
 -- 60000-60999  Intranet Translation Task Type CSV Importer (1000)
--- 60000-60099	Customer DHL reserved
--- 60100-69999  reserved for customers (8900) 
+-- 60000-69999  Customer DHL reserved
 -- 70000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
 -- 90000-99999  reserved (10000)
