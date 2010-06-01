@@ -1200,6 +1200,8 @@ ad_proc -public im_header {
 	    template::add_footer -src "/packages/acs-developer-support/lib/footer"
 	}
 
+	template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
+
 	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
 	template::head::prepare_multirows
 	set event_handlers [template::get_body_event_handlers]
