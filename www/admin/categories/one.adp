@@ -2,7 +2,7 @@
   <property name="title">@page_title@</property>
 <property name="admin_navbar_label">admin_categories</property>
 
-<form @form_action_html;noquote@ method=GET>
+<form @form_action_html;noquote@ method=POST>
 <table border=0 cellpadding=0 cellspacing=1>
   <tr>
     <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
