@@ -85,13 +85,15 @@ ad_proc im_biz_object_category_select_branch {
     set selected ""
     if {$parent == $default} { set selected "selected" }
     set html ""
+    set class "plain"
+    if {0 == $level} { set class "rowtitle" }
     if {"f" == $parent_only_p} {
         set html "
-	<tr>
-	<td><nobr> 
-	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category</input> &nbsp;
+	<tr class=$class>
+	<td class=$class><nobr> 
+	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category </input>&nbsp;
 	</nobr></td>
-	<td>$category_description</td>
+	<td class=$class>$category_description</td>
 	</tr>
 	"
 	incr level
