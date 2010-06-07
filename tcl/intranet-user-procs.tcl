@@ -285,7 +285,23 @@ order by lower(im_name_from_user_id(u.user_id))
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }    
 
-
+ad_proc im_pm_select_multiple { select_name { defaults "" } { size "6"} {multiple ""}} {
+    set bind_vars [ns_set create]
+    set pm_group_id [im_pm_group_id]
+    set sql "
+select
+        u.user_id,
+        im_name_from_user_id(u.user_id) as employee_name
+from
+        registered_users u,
+        group_distinct_member_map gm
+where
+        u.user_id = gm.member_id
+        and gm.group_id = $pm_group_id
+order by lower(im_name_from_user_id(u.user_id))
+"
+    return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
+}
 
 # ------------------------------------------------------
 # User Community Component
