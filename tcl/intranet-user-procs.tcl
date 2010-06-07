@@ -285,6 +285,7 @@ order by lower(im_name_from_user_id(u.user_id))
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }    
 
+
 ad_proc im_pm_select_multiple { select_name { defaults "" } { size "6"} {multiple ""}} {
     set bind_vars [ns_set create]
     set pm_group_id [im_pm_group_id]
@@ -300,6 +301,30 @@ where
         and gm.group_id = $pm_group_id
 order by lower(im_name_from_user_id(u.user_id))
 "
+    return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
+}
+
+ad_proc im_active_pm_select_multiple { 
+	select_name 
+	{ defaults "" } 
+	{ size "6"} {multiple ""} 
+} { 
+	returns html widget with employees having the PM role (im_projects::im_project_lead_id) in currently open projects
+} {
+    set bind_vars [ns_set create]
+    set sql "
+        select distinct
+                pe.person_id,
+                im_name_from_user_id(pe.person_id) as employee_name
+        from
+                persons pe,
+                im_projects p,
+                registered_users u
+        where
+                p.project_lead_id = pe.person_id and
+                u.user_id = pe.person_id and
+                p.project_status_id not in ([im_project_status_deleted]);
+	"
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }
 
