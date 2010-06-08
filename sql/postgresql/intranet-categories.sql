@@ -131,6 +131,47 @@ end;' language 'plpgsql';
 
 
 
+create or replace function im_category_path_to_category (integer)
+returns varchar as $body$
+BEGIN
+	RETURN im_category_path_to_category($1,0);
+END;
+$body$ language 'plpgsql';
+
+
+create or replace function im_category_path_to_category (integer, integer)
+returns varchar as $body$
+declare
+	p_cat_id		alias for $1;
+	p_loop			alias for $2;
+	v_cat			varchar;
+	v_path			varchar;
+	v_parent_path		varchar;
+	row			RECORD;
+BEGIN
+	-- Avoid infinite loops...
+	IF p_loop > 10 THEN return 0; END IF;
+
+	v_cat := p_cat_id;
+	WHILE length(v_cat) < 8 LOOP v_cat := '0'||v_cat; END LOOP;
+
+	v_path := v_cat;
+	FOR row IN
+		select	parent_id
+		from	im_category_hierarchy
+		where	child_id = p_cat_id
+	LOOP
+		v_path = im_category_path_to_category(row.parent_id, p_loop+1) || v_cat;
+	END LOOP;
+
+	RETURN v_path;
+end;$body$ language 'plpgsql';
+
+-- Test query
+-- select im_category_path_to_category (83);
+
+
+
 
 
 -------------------------------------------------------------
