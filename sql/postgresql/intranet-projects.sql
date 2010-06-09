@@ -319,6 +319,9 @@ BEGIN
 		p_creation_ip,
 		p_context_id
 	);
+
+	insert into im_biz_objects (object_id) values (v_project_id);
+
 	insert into im_projects (
 		project_id, project_name, project_nr, 
 		project_path, parent_id, company_id, project_type_id, 
