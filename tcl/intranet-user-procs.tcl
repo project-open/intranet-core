@@ -1005,6 +1005,7 @@ ad_proc -public im_user_nuke {user_id} {
 	# Costs
 	db_dml invoice_references "update im_invoices set company_contact_id = null where company_contact_id = :user_id"
 	db_dml cuase_objects "update im_costs set cause_object_id = :default_user where cause_object_id = :user_id"
+	db_dml cost_providers "update im_costs set provider_id = :default_user where provider_id = :user_id"
 
 	# Cost Centers
 	db_dml reset_cost_center_managers "update im_cost_centers set manager_id = null where manager_id = :user_id"
@@ -1100,6 +1101,9 @@ ad_proc -public im_user_nuke {user_id} {
 	}
         if {[im_table_exists bt_components]} {
 	    db_dml bt_comps "update bt_components set maintainer = null where maintainer = :user_id"
+	}
+        if {[im_table_exists bt_patch_actions]} {
+	    db_dml bt_patch_actions "update bt_patch_actions set actor = :default_user where actor = :user_id"
 	}
 
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
