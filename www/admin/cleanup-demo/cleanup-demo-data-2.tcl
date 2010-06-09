@@ -611,6 +611,7 @@ if {[im_table_exists im_gantt_persons]} {
 }
 
 ns_write "<li>Cleanup im_projects\n"
+db_dml remove_from_biz_objects "delete from im_biz_objects where object_id in (select project_id from im_projects)"
 db_dml remove_from_projects "delete from im_projects"
 
 ns_write "<li>Cleanup im_companies\n"
