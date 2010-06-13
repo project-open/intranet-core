@@ -2673,6 +2673,9 @@ ad_proc im_project_nuke {project_id} {
 	db_dml delete_projects "
 		delete from im_projects 
 		where project_id = :project_id"
+	db_dml delete_project_biz_objs "
+		delete from im_biz_objects
+		where object_id = :project_id"
 	db_dml delete_project_acs_obj "
 		delete from acs_objects
 		where object_id = :project_id"
