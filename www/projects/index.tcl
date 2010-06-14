@@ -610,7 +610,6 @@ foreach g $managable_profiles {
     lappend user_select_groups [lindex $g 1]
 }
 
-# ad_return_complaint 1 $user_select_groups
 append filter_html "
   <tr>
     <td class=form-label valign=top>[lang::message::lookup "" intranet-core.With_Member "With Member"]:</td>
