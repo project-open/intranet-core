@@ -229,7 +229,7 @@ namespace eval im_profile {
     } {
 	# Check if we have calculated this result already
 	set key [list user_options $profile_ids]
-#	if {[ns_cache get im_profile $key value]} { return $value}
+	if {[ns_cache get im_profile $key value]} { return $value}
 
 	# Calculate the options
 	set user_options [user_options_not_cached -profile_ids $profile_ids]
@@ -237,8 +237,6 @@ namespace eval im_profile {
 
 	# Store the value in the cache
         ns_cache set im_profile $key $user_options
-
-#	ad_return_complaint 1 "$profile_ids - $user_options"
 
 	return $user_options
 
