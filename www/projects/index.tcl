@@ -602,9 +602,15 @@ append filter_html "
   </tr>
 "
 
-set user_select_groups [list [im_employee_group_id] [im_freelance_group_id] [im_customer_group_id]]
-# ToDo: Permissions?
+# Get the list of profiles readable for current_user_id
+set managable_profiles [im_profile::profile_options_managable_for_user -privilege "read" $current_user_id]
+# Extract only the profile_ids from the managable profiles
+set user_select_groups {}
+foreach g $managable_profiles {
+    lappend user_select_groups [lindex $g 1]
+}
 
+# ad_return_complaint 1 $user_select_groups
 append filter_html "
   <tr>
     <td class=form-label valign=top>[lang::message::lookup "" intranet-core.With_Member "With Member"]:</td>
