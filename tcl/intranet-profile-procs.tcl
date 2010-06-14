@@ -229,10 +229,12 @@ namespace eval im_profile {
     } {
 	# Check if we have calculated this result already
 	set key [list user_options $profile_ids]
+	ns_log Notice "im_profile::user_options: key=$key"
 	if {[ns_cache get im_profile $key value]} { return $value}
 
 	# Calculate the options
 	set user_options [user_options_not_cached -profile_ids $profile_ids]
+	ns_log Notice "im_profile::user_options: profile_ids=$profile_ids, options=$user_options"
 
 	# Store the value in the cache
         ns_cache set im_profile $key $user_options
@@ -510,10 +512,11 @@ namespace eval im_profile {
     }
 
     ad_proc -public profile_options_managable_for_user { 
+	{ -privilege "admin" }
 	user_id 
     } {
 	Returns the list of (group_name - group_id) tupels for
-	all profiles that a user can manage<br>
+	all profiles that a user can manage.<br>
 	This function allows for a kind of "sub-administrators"
 	where for example Employees are able to manage Freelancers.<BR>
 	This list may be empty in the case of unprivileged users
@@ -534,7 +537,7 @@ namespace eval im_profile {
 		where
 			perm.object_id = g.group_id
 			and perm.party_id = :user_id
-			and perm.privilege = 'admin'
+			and perm.privilege = :privilege
 			and g.group_id = o.object_id
 			and o.object_type = 'im_profile'
         "
@@ -543,14 +546,11 @@ namespace eval im_profile {
 	# bootstrap the system...
 	if {$user_is_admin_p} {
 	    set profile_sql {
-		select
-		        g.group_name,
+		select	g.group_name,
 			g.group_id
-		from
-		        acs_objects o,
+		from	acs_objects o,
 		        groups g
-		where
-		        g.group_id = o.object_id
+		where	g.group_id = o.object_id
 		        and o.object_type = 'im_profile'
 		order by lower(g.group_name)
 	    }
