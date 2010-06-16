@@ -1069,7 +1069,7 @@ ad_proc -public im_header_logout_component {
     -return_url:required
     -user_id:required
 } {
-    Returns the formatted HTML for the "My Account - Change password - Reset Stuff - Add Stuff"
+    Returns the formatted HTML for the "My Account - Change password - Reset Portlets - Add Portlet"
     header panel.
 } {
     # LDAP installed?
@@ -1080,8 +1080,8 @@ ad_proc -public im_header_logout_component {
     set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
     set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
 
-    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
-    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Stuff "Reset"]
+    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
+    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
     set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
     set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
     set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
