@@ -36,11 +36,12 @@
 # ----------------------------------------------------------
 # Parameters
 #
-set server		"http://172.26.2.5:30051"		;# Without trailing "/"
-#set server		"http://172.26.2.5:30086"		;# Without trailing "/"
+# set server		"http://172.26.2.5:30051"		;# Without trailing "/"
+set server		"http://localhost:30086"		;# Without trailing "/"
 #set server		"http://po34demo.project-open.net"	;# Without trailing "/"
 set logon_user		"Bobby Bizconsult"			;# Name must be on first page
 #set logon_user		"Petra Projectmanager"			;# Name must be on first page
+#set logon_user		"Ben Bigboss"				;# Name must be on first page
 set num_iterations	10					;# Default "10": The first iteration is slow
 set wait_between	0					;# Default "5": Wait seconds betwen pages
 set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
@@ -119,11 +120,31 @@ for {set i 0} {$i < $num_iterations} {incr i} {
     #puts "benchmark_timesheet: rand_url=$rand_url"
     #::tclwebtest::link follow ~u $rand_url
     ::tclwebtest::do_request "${server}${rand_url}"
+
+    # -----------------------------------------------------------
+    # Find out the start- and end date of the project
+    set project_view_page [::tclwebtest::response body]
+    regexp {<td>Start Date</td>\s+<td>([0-9\-]+)</td>} $project_view_page match start_date
+    regexp {<td>Delivery Date</td>\s+<td>([0-9\-]+) [0-9\:]+</td>} $project_view_page match end_date
+    set start_clicks [clock scan $start_date]
+    set end_clicks [clock scan $end_date]
+    set rand_clicks [expr round($start_clicks + ($end_clicks - $start_clicks) * rand())]
+    set rand_date [clock format $rand_clicks -format {%Y-%m-%d}]
+    puts "benchmark_timesheet: start_date=$start_date"
+    puts "benchmark_timesheet: end_date=$end_date"
+    puts "benchmark_timesheet: rand_date=$rand_date"
+
     
     # -----------------------------------------------------------
     # Go the the "log hours" section of the project
     exec sleep $wait_between
-    ::tclwebtest::link follow "hours"
+    array set log_hours_link_hash [::tclwebtest::link find "hours"]
+    set link $log_hours_link_hash(url)
+
+    append link "&gregorian_date=$rand_date"
+    puts "benchmark_timesheet: link=$link"
+    ::tclwebtest::do_request $link
+
 
     # -----------------------------------------------------------
     exec sleep $wait_between
