@@ -39,10 +39,16 @@
 # set server		"http://172.26.2.5:30051"		;# Without trailing "/"
 set server		"http://localhost:30086"		;# Without trailing "/"
 #set server		"http://po34demo.project-open.net"	;# Without trailing "/"
-set logon_user		"Bobby Bizconsult"			;# Name must be on first page
+
+#set logon_user		"Bobby Bizconsult"			;# Name must be on first page
+#set logon_user		"Garry Groupmanager"			;# Name must be on first page
+#set logon_user		"Toni Tester"				;# Name must be on first page
 #set logon_user		"Petra Projectmanager"			;# Name must be on first page
 #set logon_user		"Ben Bigboss"				;# Name must be on first page
-set num_iterations	10					;# Default "10": The first iteration is slow
+#set logon_user		"Harry Helpdesk"			;# Name must be on first page
+set logon_user		"David Developer"			;# Name must be on first page
+
+set num_iterations	300					;# Default "10": The first iteration is slow
 set wait_between	0					;# Default "5": Wait seconds betwen pages
 set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
 
@@ -178,8 +184,8 @@ for {set i 0} {$i < $num_iterations} {incr i} {
     set rand_field_name $rand_field_hash(name)
     
     # Select a random amount of hours into the field
-    # Range between 0.1 and 2 hours...
-    set rand_hours [expr 0.1 + int(20.0 * rand()) / 10.0]
+    # Range between 0.1 and 10 hours...
+    set rand_hours [expr 0.1 + int(100.0 * rand()) / 10.0]
     puts "benchmark_timesheet.test: rand_field_name=$rand_field_name, rand_hours=$rand_hours"
     ::tclwebtest::field fill $rand_hours ~n $rand_field_name
     ::tclwebtest::form submit 
