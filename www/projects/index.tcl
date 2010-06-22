@@ -141,6 +141,9 @@ switch $project_status_id {
     default { set menu_select_label "" }
 }
 
+if {"project_costs" == $view_name} { set menu_select_label "projects_profit_loss" }
+
+
 if {"" == $start_date} { set start_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultStartDate -default "2000-01-01"] }
 if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultEndDate -default "2100-01-01"] }
 
@@ -674,11 +677,6 @@ if {[im_permission $current_user_id "add_projects"]} {
 	}
     }
 }
-
-if {[im_permission $current_user_id "view_finance"]} {
-    append admin_html "<li><a href=\"/intranet/projects/index?view_name=project_costs\">[_ intranet-core.Profit_and_Loss]</a>\n"
-}
-
 
 # Append user-defined menus
 append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
