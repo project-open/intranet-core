@@ -643,9 +643,6 @@ ad_proc -public im_sub_navbar {
 	set url [lindex $menu_list 4]
 	set visible_tcl [lindex $menu_list 5]
 
-	# append a "?" if not yet part of the URL
-	if {![regexp {\?} $url match]} { append url "?" }
-
 	if {"" != $visible_tcl} {
 	    # Interpret empty visible_tcl menus as always visible
 	    
@@ -659,7 +656,22 @@ ad_proc -public im_sub_navbar {
 	    	    
 	    if {!$visible} { continue }
 	}	
-	
+
+	# Check if the URL contains var=value pairs
+	# and overwrite bind_vars with these to avoid double variables
+	if {[regexp {^([^\?]+)\?(.*)$} $url match url_base kv_pairs]} {
+	    foreach kv_pair [split $kv_pairs "&"] {
+		if {[regexp {^([^=]+)\=(.*)$} $kv_pair match key value]} {
+		    ns_set delkey $bind_vars $key
+		    ns_set put $bind_vars $key $value
+		}
+	    }
+	    set url $url_base
+	}
+
+	# append a "?" if not yet part of the URL
+	if {![regexp {\?} $url match]} { append url "?" }
+
 	# Construct the URL
 	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
 	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
