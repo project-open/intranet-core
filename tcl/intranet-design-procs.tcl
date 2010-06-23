@@ -662,8 +662,8 @@ ad_proc -public im_sub_navbar {
 	if {[regexp {^([^\?]+)\?(.*)$} $url match url_base kv_pairs]} {
 	    foreach kv_pair [split $kv_pairs "&"] {
 		if {[regexp {^([^=]+)\=(.*)$} $kv_pair match key value]} {
-		    ns_set delkey $bind_vars $key
-		    ns_set put $bind_vars $key $value
+		    catch { ns_set delkey $bind_vars $key }
+		    catch { ns_set put $bind_vars $key $value }
 		}
 	    }
 	    set url $url_base
