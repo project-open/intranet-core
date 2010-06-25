@@ -56,7 +56,7 @@ set bgcolor(1) " class=roweven"
 set backup_path [im_backup_path]
 set backup_path_exists_p [file exists $backup_path]
 set not_backup_path_exists_p [expr !$backup_path_exists_p]
-
+set file_body ""
 
 multirow create backup_files filename file_body extension date size
 
