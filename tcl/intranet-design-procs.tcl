@@ -657,13 +657,16 @@ ad_proc -public im_sub_navbar {
 	    if {!$visible} { continue }
 	}	
 
+	set bind_vars_copy ""
+	catch { set bind_vars_copy [ns_set copy $bind_vars] }
+
 	# Check if the URL contains var=value pairs
 	# and overwrite bind_vars with these to avoid double variables
 	if {[regexp {^([^\?]+)\?(.*)$} $url match url_base kv_pairs]} {
 	    foreach kv_pair [split $kv_pairs "&"] {
 		if {[regexp {^([^=]+)\=(.*)$} $kv_pair match key value]} {
-		    catch { ns_set delkey $bind_vars $key }
-		    catch { ns_set put $bind_vars $key $value }
+		    catch { ns_set delkey $bind_vars_copy $key }
+		    catch { ns_set put $bind_vars_copy $key $value }
 		}
 	    }
 	    set url $url_base
@@ -673,9 +676,9 @@ ad_proc -public im_sub_navbar {
 	if {![regexp {\?} $url match]} { append url "?" }
 
 	# Construct the URL
-	if {"" != $bind_vars && [ns_set size $bind_vars] > 0} {
-	    for {set i 0} {$i<[ns_set size $bind_vars]} {incr i} {
-		append url "&amp;[ns_set key $bind_vars $i]=[ns_urlencode [ns_set value $bind_vars $i]]"
+	if {"" != $bind_vars_copy && [ns_set size $bind_vars_copy] > 0} {
+	    for {set i 0} {$i < [ns_set size $bind_vars_copy]} {incr i} {
+		append url "&amp;[ns_set key $bind_vars_copy $i]=[ns_urlencode [ns_set value $bind_vars_copy $i]]"
 	    }
 	}
 
