@@ -483,3 +483,18 @@ end;' language 'plpgsql';
 
 
 
+-- Indent a project 4 spaces for everyl level...
+CREATE or REPLACE FUNCTION im_project_level_spaces(integer)
+RETURNS varchar as $body$
+DECLARE
+	p_level		alias for $1;
+	v_result	varchar;
+	i		integer;
+BEGIN
+	v_result := '';
+	FOR i IN 1..p_level LOOP
+		v_result := v_result || '    ';
+	END LOOP;
+	RETURN v_result;
+END; $body$ LANGUAGE 'plpgsql';
+
