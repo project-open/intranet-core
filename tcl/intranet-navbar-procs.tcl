@@ -748,7 +748,8 @@ ad_proc -public im_navbar_write_tree_helper {
 		(select count(*) from im_menus where parent_menu_id = m.menu_id) as sub_count
 	from	im_menus m
 	where	m.parent_menu_id = :main_menu_id and
-		im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+		im_object_permission_p(m.menu_id, :user_id, 'read') = 't' and
+		(enabled_p is null OR enabled_p = 't')
 	order by sort_order
     "
 
