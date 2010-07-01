@@ -229,7 +229,7 @@ namespace eval im_profile {
     } {
 	# Check if we have calculated this result already
 	set key [list user_options $profile_ids]
-	if {[ns_cache get im_profile $key value]} { return $value}
+	# if {[ns_cache get im_profile $key value]} { return $value}
 
 	# Calculate the options
 	set user_options [user_options_not_cached -profile_ids $profile_ids]
@@ -249,25 +249,42 @@ namespace eval im_profile {
 	that are a member of the specified profiles.
     } {
 	if {"" == $profile_ids} { return "" }
-	return [db_list_of_lists user_options "
-		select distinct
-			im_name_from_user_id(u.user_id) as name,
-			u.user_id
-		from	users_active u
-		where	u.user_id not in (
-				-- the list of users with groups not covered by profile_ids
-				select	gei.element_id
-				from	group_element_index gei,
-					membership_rels mr,
-					im_profiles p
-				where	gei.ancestor_rel_type = 'membership_rel' and
-					gei.rel_id = mr.rel_id and
-					mr.member_state = 'approved' and
-					gei.group_id = p.profile_id and
-					p.profile_id not in ([join $profile_ids ","])
-			)
-		order by
-			name
+
+#	return [db_list_of_lists user_options "
+#		select distinct
+#			im_name_from_user_id(u.user_id) as name,
+#			u.user_id
+#		from	users_active u
+#		where	u.user_id not in (
+#				-- the list of users with groups not covered by profile_ids
+#				select	gei.element_id
+#				from	group_element_index gei,
+#					membership_rels mr,
+#					im_profiles p
+#				where	gei.ancestor_rel_type = 'membership_rel' and
+#					gei.rel_id = mr.rel_id and
+#					mr.member_state = 'approved' and
+#					gei.group_id = p.profile_id and
+#					p.profile_id not in ([join $profile_ids ","])
+#			)
+#		order by
+#			name
+#	"]
+
+###
+# temporary roll-back to fix issues with user-drop-down-list 
+###
+
+       return [db_list_of_lists user_options "
+               select distinct
+                       im_name_from_user_id(u.user_id) as name,
+                       u.user_id
+               from
+                       users_active u,
+                       group_distinct_member_map m
+               where
+                       u.user_id = m.member_id
+	               and m.group_id in ([join $profile_ids ","])
 	"]
     }
 
