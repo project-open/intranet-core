@@ -93,16 +93,16 @@ namespace eval im_profile {
 
     ad_proc -public add_member { 
 	{ -profile "" }
-        { -profile_id "" }
+	{ -profile_id "" }
 	-user_id:required
     } {
 	Add a new member to a profile.
 	Resets the cache for access to this group
     } {
 	# Add the user as an approved member of the profile
-        if {"" != $profile} {
-            set profile_id [profile_id_from_name -profile $profile]
-        }
+	if {"" != $profile} {
+	    set profile_id [profile_id_from_name -profile $profile]
+	}
 	if {"" == $profile_id} { return 0 }
 
 	# Add the member to the group.
@@ -126,7 +126,7 @@ namespace eval im_profile {
 
     ad_proc -public remove_member { 
 	{ -profile "" }
-        { -profile_id "" }
+	{ -profile_id "" }
 	-user_id:required
     } { 
 	Removes a member from a profile.
@@ -134,8 +134,8 @@ namespace eval im_profile {
     } {
 	# Get the name of the profile
 	if {"" != $profile} {
-            set profile_id [profile_id_from_name -profile $profile]
-        }
+	    set profile_id [profile_id_from_name -profile $profile]
+	}
 	if {"" == $profile_id} { return 0 }
 
 	# Remove the user from the group
@@ -183,7 +183,7 @@ namespace eval im_profile {
 	set member_p [member_p_not_cached -profile_id $profile_id -user_id $user_id]
 	
 	# Store the value in the cache
-        ns_cache set im_profile $key $member_p
+	ns_cache set im_profile $key $member_p
 
 	return $member_p
     }
@@ -236,7 +236,7 @@ namespace eval im_profile {
 	ns_log Notice "im_profile::user_options: profile_ids=$profile_ids, options=$user_options"
 
 	# Store the value in the cache
-        ns_cache set im_profile $key $user_options
+	ns_cache set im_profile $key $user_options
 
 	return $user_options
 
@@ -249,42 +249,17 @@ namespace eval im_profile {
 	that are a member of the specified profiles.
     } {
 	if {"" == $profile_ids} { return "" }
-
-#	return [db_list_of_lists user_options "
-#		select distinct
-#			im_name_from_user_id(u.user_id) as name,
-#			u.user_id
-#		from	users_active u
-#		where	u.user_id not in (
-#				-- the list of users with groups not covered by profile_ids
-#				select	gei.element_id
-#				from	group_element_index gei,
-#					membership_rels mr,
-#					im_profiles p
-#				where	gei.ancestor_rel_type = 'membership_rel' and
-#					gei.rel_id = mr.rel_id and
-#					mr.member_state = 'approved' and
-#					gei.group_id = p.profile_id and
-#					p.profile_id not in ([join $profile_ids ","])
-#			)
-#		order by
-#			name
-#	"]
-
-###
-# temporary roll-back to fix issues with user-drop-down-list 
-###
-
-       return [db_list_of_lists user_options "
-               select distinct
-                       im_name_from_user_id(u.user_id) as name,
-                       u.user_id
-               from
-                       users_active u,
-                       group_distinct_member_map m
-               where
-                       u.user_id = m.member_id
-	               and m.group_id in ([join $profile_ids ","])
+	
+	return [db_list_of_lists user_options "
+		select distinct
+		       im_name_from_user_id(u.user_id) as name,
+		       u.user_id
+		from
+		       users_active u,
+		       group_distinct_member_map m
+		where
+		       u.user_id = m.member_id
+		       and m.group_id in ([join $profile_ids ","])
 	"]
     }
 
@@ -323,7 +298,7 @@ namespace eval im_profile {
 	if {![string is integer $profile_id]} { errrrr }
 
 	# Store the value in the cache
-        ns_cache set im_profile $key $profile_id
+	ns_cache set im_profile $key $profile_id
 
 	return $profile_id
     }
@@ -335,7 +310,7 @@ namespace eval im_profile {
 	The problem is that group names are used as constants,
 	while groups are defined dynamically. 
 	@return Returns the profile_id or "" if the profile doesn't
-	        exist.
+		exist.
     } {
 	set profile_id [db_string profile_id_not_cached "
 		select	g.group_id 
@@ -373,7 +348,7 @@ namespace eval im_profile {
 	if {"" == $profile} { return "" }
 
 	# Store the value in the cache
-        ns_cache set im_profile $key $profile
+	ns_cache set im_profile $key $profile
 
 	return $profile
     }
@@ -386,7 +361,7 @@ namespace eval im_profile {
 	The problem is that group names are used as constants,
 	while groups are defined dynamically. 
 	@return Returns the profile_id or "" if the profile doesn't
-	        exist.
+		exist.
     } {
 	set group_name [db_string profile_id_not_cached "
 		select	g.group_name 
@@ -509,20 +484,20 @@ namespace eval im_profile {
 	set profile_sql {
 	select DISTINCT
 		g.group_name,
-	        g.group_id
+		g.group_id
 	from
-	        acs_objects o,
-	        groups g,
-	        group_member_map m,
-	        membership_rels mr
+		acs_objects o,
+		groups g,
+		group_member_map m,
+		membership_rels mr
 	where
-	        m.member_id = :user_id
-	        and m.group_id = g.group_id
-	        and g.group_id = o.object_id
-	        and o.object_type = 'im_profile'
-	        and m.rel_id = mr.rel_id
-	        and mr.member_state = 'approved'
-        }
+		m.member_id = :user_id
+		and m.group_id = g.group_id
+		and g.group_id = o.object_id
+		and o.object_type = 'im_profile'
+		and m.rel_id = mr.rel_id
+		and mr.member_state = 'approved'
+	}
 
 	set options [list]
 	db_foreach profile_options_of_user $profile_sql {
@@ -563,7 +538,7 @@ namespace eval im_profile {
 			and perm.privilege = :privilege
 			and g.group_id = o.object_id
 			and o.object_type = 'im_profile'
-        "
+	"
 
 	# We need a special treatment for Admin in order to
 	# bootstrap the system...
@@ -572,9 +547,9 @@ namespace eval im_profile {
 		select	g.group_name,
 			g.group_id
 		from	acs_objects o,
-		        groups g
+			groups g
 		where	g.group_id = o.object_id
-		        and o.object_type = 'im_profile'
+			and o.object_type = 'im_profile'
 		order by lower(g.group_name)
 	    }
 	}
