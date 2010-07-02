@@ -710,6 +710,10 @@ ad_proc -public im_project_options {
 				from	im_projects p
 				where	1=1
 					$p_where_clause
+			    UNION
+				select	p.project_id
+				from	im_projects p
+				where	p.project_id = :super_project_id
 			) main_p_cond
 		where
 			p.project_id = p_cond.project_id and
@@ -1138,7 +1142,7 @@ ad_proc -public im_project_hierarchy_component {
     set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
     if {$subproject_filtering_enabled_p} {
 	set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
-	if {"none" == $subproject_status_id} {
+	if {0 == $subproject_status_id || "none" == $subproject_status_id} {
 	    set subproject_status_id $subproject_filtering_default_status_id
 	}
     }
