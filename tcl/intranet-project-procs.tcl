@@ -510,6 +510,7 @@ ad_proc -public im_project_options {
     if {!$exclude_tasks_p} { set exclude_subprojects_p 0 }
 
     set current_project_id $project_id
+    set super_project_id $project_id
     set current_user_id [ad_get_user_id]
     set max_project_name_len 50
 
