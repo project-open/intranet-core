@@ -35,6 +35,7 @@ function extendContract(){
 			document.getElementById('slave_content').style.visibility='hidden';
 			poSetCookie('isExtendedCookie',0,90);
 		}
+		// document.getElementById('fullwidth-list').style.visibility='visible';
 //	}
 }
 
