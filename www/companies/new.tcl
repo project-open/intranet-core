@@ -339,22 +339,22 @@ if {0 == $company_exists_p} {
 # -----------------------------------------------------------------
 
 set update_sql "
-update im_offices set
-	office_name = :office_name,
-	phone = :phone,
-	fax = :fax,
-	address_line1 = :address_line1,
-	address_line2 = :address_line2,
-	address_city = :address_city,
-	address_state = :address_state,
-	address_postal_code = :address_postal_code,
-	address_country_code = :address_country_code
-where
-	office_id = :main_office_id
+	update im_offices set
+		office_name	= :office_name,
+		phone		= :phone,
+		fax		= :fax,
+		address_line1	= :address_line1,
+		address_line2	= :address_line2,
+		address_city	= :address_city,
+		address_state	= :address_state,
+		address_postal_code = :address_postal_code,
+		address_country_code = :address_country_code
+	where
+		office_id = :main_office_id
 "
-    db_dml update_offices $update_sql
+db_dml update_offices $update_sql
 
-    im_audit -object_id $main_office_id -action update
+im_audit -object_id $main_office_id -action update
 
 
 # -----------------------------------------------------------------
@@ -362,26 +362,26 @@ where
 # -----------------------------------------------------------------
 
 set update_sql "
-update im_companies set
-	company_name		= :company_name,
-	company_path		= :company_path,
-	vat_number		= :vat_number,
-	company_status_id	= :company_status_id,
-	old_company_status_id	= :old_company_status_id,
-	company_type_id	= :company_type_id,
-	referral_source		= :referral_source,
-	start_date		= :start_date,
-	annual_revenue_id	= :annual_revenue_id,
-	contract_value		= :contract_value,
-	site_concept		= :site_concept,
-	manager_id		= :manager_id,
-	billable_p		= :billable_p,
-	note			= :note
-where
-	company_id = :company_id
+	update im_companies set
+		company_name		= :company_name,
+		company_path		= :company_path,
+		vat_number		= :vat_number,
+		company_status_id	= :company_status_id,
+		old_company_status_id	= :old_company_status_id,
+		company_type_id		= :company_type_id,
+		referral_source		= :referral_source,
+		start_date		= :start_date,
+		annual_revenue_id	= :annual_revenue_id,
+		contract_value		= :contract_value,
+		site_concept		= :site_concept,
+		manager_id		= :manager_id,
+		billable_p		= :billable_p,
+		note			= :note
+	where
+		company_id = :company_id
 "
-    db_dml update_company $update_sql
-    im_audit -object_id $company_id -action update
+db_dml update_company $update_sql
+im_audit -object_id $company_id -action update
 
 
 # -----------------------------------------------------------------
