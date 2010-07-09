@@ -1323,6 +1323,7 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
+
     if {"" == $clone_members_p} { set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1] }
     if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
     if {"" == $clone_trans_tasks_p} { set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0] }
@@ -1347,8 +1348,11 @@ ad_proc im_project_clone {
     # Clone the project
 
     append errors [im_project_clone_base2 $parent_project_id $cloned_project_id]
-    append errors [im_project_clone_members $parent_project_id $cloned_project_id]
     append errors [im_project_clone_url_map $parent_project_id $cloned_project_id]
+
+    if {$clone_members_p} {
+	append errors [im_project_clone_members $parent_project_id $cloned_project_id]
+    }
 
     if {$clone_files_p} {
 	append errors [im_project_clone_files $parent_project_id $cloned_project_id]
@@ -1367,7 +1371,6 @@ ad_proc im_project_clone {
     }
     if {$clone_costs_p && [im_table_exists "im_costs"]} {
         append errors [im_project_clone_costs $parent_project_id $cloned_project_id]
-#        append errors [im_project_clone_payments $parent_project_id $cloned_project_id]
     }
 
     ns_write "$errors\n"
