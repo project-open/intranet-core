@@ -34,6 +34,7 @@ ad_page_contract {
     { clone_forum_topics_p 0 }
     { clone_members_p 0 }
     { clone_timesheet_tasks_p 0 }
+    { clone_target_languages_p 0 }
 }
 
 # ---------------------------------------------------------------------
@@ -79,7 +80,6 @@ ns_write [im_header $page_title]
 ns_write [im_navbar]
 ns_write "<p>\n"
 
-
 set page_body [im_project_clone \
 		   -clone_costs_p $clone_costs_p \
 		   -clone_files_p $clone_files_p \
@@ -87,6 +87,7 @@ set page_body [im_project_clone \
 		   -clone_forum_topics_p $clone_forum_topics_p \
 		   -clone_members_p $clone_members_p \
 		   -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+		   -clone_target_languages_p $clone_target_languages_p \
 		   -company_id $company_id \
 		   $parent_project_id \
 		   $project_name \
@@ -95,7 +96,7 @@ set page_body [im_project_clone \
 ]
 
 
-set clone_project_id [db_string project_id "select project_id from im_projects where project_nr = :project_nr" -default 0]
+set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
 
 if {"" == $return_url && 0 != $clone_project_id} { 
     set return_url "/intranet/projects/view?project_id=$clone_project_id" 

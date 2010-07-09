@@ -64,6 +64,7 @@ set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter 
 set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0]
 set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0]
 set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1]
+set clone_target_languages_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTargetLanguagesP" -default 0]
 set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1]
 set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFilesP" -default 1]
 set clone_folders_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFoldersP" -default 1]
@@ -77,6 +78,7 @@ set clone_struct {
     {"Clone Filestorage Files" clone_files_p}
     {"Clone Filestorage Folders" clone_folders_p}
     {"Clone Sub-projects" clone_subprojects_p}
+    {"Clone Target Languages" clone_target_languages_p}
 }
 
 set clone_html ""

@@ -1312,6 +1312,7 @@ ad_proc im_project_clone {
     {-clone_forum_topics_p "" }
     {-clone_members_p "" }
     {-clone_timesheet_tasks_p "" }
+    {-clone_target_languages_p "" }
     {-clone_trans_tasks_p "" }
     {-company_id 0}
     parent_project_id 
@@ -1328,12 +1329,11 @@ ad_proc im_project_clone {
     if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
     if {"" == $clone_trans_tasks_p} { set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0] }
     if {"" == $clone_timesheet_tasks_p} { set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1] }
+    if {"" == $clone_target_languages_p} { set clone_target_languages_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTargetLanguagesP" -default 1] }
     if {"" == $clone_forum_topics_p} { set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1] }
     if {"" == $clone_files_p} { set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFilesP" -default 1] }
     if {"" == $clone_folders_p} { set clone_folders_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFoldersP" -default 1] }
     if {"" == $clone_subprojects_p} { set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1] }
-
-    set clone_target_languages_p $clone_trans_tasks_p
 
     set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
@@ -1408,6 +1408,7 @@ ad_proc im_project_clone {
 					  -clone_members_p $clone_members_p \
 					  -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 					  -clone_trans_tasks_p $clone_trans_tasks_p \
+					  -clone_target_languages_p $clone_target_languages_p \
 					  -company_id $company_id \
 					  $sub_project_id \
 					  $sub_project_name \
@@ -1467,6 +1468,7 @@ ad_proc im_project_clone {
 				    -clone_members_p $clone_members_p \
 				    -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 				    -clone_trans_tasks_p $clone_trans_tasks_p \
+				    -clone_target_languages_p $clone_target_languages_p \
 				    -company_id $company_id \
 				    $task_id \
 				    $sub_task_name \
