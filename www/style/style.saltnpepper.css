@@ -773,6 +773,13 @@ a   span  {float:none;}
   background: url('/intranet/images/navbar_default/comp_delete.png') no-repeat;
   text-indent: -5000px;
 }
+.component_icons .icon_wrench {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: url('/intranet/images/navbar_default/wrench_bw.png') no-repeat;
+  text-indent: -5000px;
+}
 .component_icons .icon_seperator {
   width: 1px;
   height: 15px;
