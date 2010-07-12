@@ -183,7 +183,6 @@ SELECT
         im_name_from_user_id(project_lead_id) as lead_name,
         im_category_from_id(p.project_type_id) as project_type,
         im_category_from_id(p.project_status_id) as project_status,
-        im_proj_url_from_type(p.project_id, 'website') as url,
         to_char(end_date, 'HH24:MI') as end_date_time
 FROM
 	im_projects p,
