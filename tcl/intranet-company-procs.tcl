@@ -598,11 +598,15 @@ ad_proc im_company_nuke {company_id} {
 	select	office_id
 	from	im_offices o,
 		acs_rels r
-	where
-		r.object_id_one = o.office_id
+	where	r.object_id_one = o.office_id
 		and r.object_id_one = :company_id
+    UNION
+	select	office_id
+	from	im_offices o
+	where	company_id = :company_id
     "
     db_foreach delete_offices $companies_offices_sql {
+	db_dml unlink_offices "update im_companies set main_office_id = (select min(office_id) from im_offices) where main_office_id = :office_id"
 	im_office_nuke $office_id
     }
 
