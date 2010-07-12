@@ -22,6 +22,7 @@ ad_page_contract {
     { package_key "none"}
     { component_location ""}
     { component_page ""}
+    { plugin_id ""}
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -126,6 +127,7 @@ append table_header "\n</tr>\n"
 set component_where ""
 if {"none" != $package_key && "" != $package_key} { append component_where "\tand package_name = :package_key\n" }
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
+if {"" != $plugin_id} { append component_where "\tand plugin_id = :plugin_id\n" }
 if {"" != $component_page} { 
     set component_page [ns_urldecode $component_page]
     append component_where "\tand page_url = :component_page\n" 
