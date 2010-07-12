@@ -75,8 +75,8 @@ ad_proc -public im_component_box {
     set page_url [im_component_page_url]
     set return_url [im_url_with_query]
     set base_url "/intranet/components/component-action"
-
     set plugin_url [export_vars -quotehtml -base $base_url {plugin_id return_url}]
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
     if {0 == $plugin_id} { set right_icons ""}
 
@@ -116,8 +116,16 @@ ad_proc -public im_component_box {
        <a class=\"icon_down\" href=\"$plugin_url&amp;action=down\"><span class=\"icon_down\">down</span></a>
        <a class=\"icon_right\" href=\"$plugin_url&amp;action=right\"><span class=\"icon_right\">right</span></a>
        <div class=\"icon_seperator\"></div>
-       <a class=\"icon_close\" href=\"$plugin_url&amp;action=close\"><span class=\"icon_close\">close</span></a>"
+       <a class=\"icon_close\" href=\"$plugin_url&amp;action=close\"><span class=\"icon_close\">close</span></a>
+    "
 
+    # Show a wrench for the Admin
+    if {$user_is_admin_p} {
+	set admin_url [export_vars -base "/intranet/admin/components/index" {plugin_id}]
+	append icons "
+	       <a class=\"icon_wrench\" href=\"$admin_url\" target=\"_blank\"><span class=\"icon_wrench\">admin</span></a>
+        "
+    }
 
     return "[im_box_header $title $icons]$body[im_box_footer]"
 }
