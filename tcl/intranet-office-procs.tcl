@@ -382,6 +382,7 @@ ad_proc im_office_nuke {office_id} {
     im_audit -object_id $office_id -action nuke
     
     set current_user_id [ad_get_user_id]
+    set user_id $current_user_id
     im_office_permissions $current_user_id $office_id view read write admin
     if {!$admin} { return }
 
