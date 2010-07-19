@@ -88,21 +88,20 @@
 --------------------------------------------------------
 -- Other Views
 --
--- 200-209	Timesheet
--- 210-219	Riskmanagement
--- 220-249	Costs
--- 250-259	Translation Quality
--- 260-269	Workflow
--- 270-279	intranet-helpdesk Tickets
-
--- 900 - 909	Intranet Materials Reserved
--- 900		im_material_list
-
--- 910 - 919	Intranet Materials Reserved
--- 910		im_translation_task_list
-
--- 1000-1099
-
+-- 200-209		Timesheet
+-- 210-219		Riskmanagement
+-- 220-249		Costs
+-- 250-259		Translation Quality
+-- 260-269		Workflow
+-- 270-279		intranet-helpdesk Tickets
+-- 900-909		Intranet Materials Reserved
+-- 900-909		im_material_list
+-- 910 - 919		Intranet Materials Reserved
+-- 910-919		im_translation_task_list
+-- 920-929		Intranet Portfolio Management
+-- 930-999		reserved
+-- 1000-9999		reserved
+-- 10000-10000000	reserved
 
 
 ---------------------------------------------------------
