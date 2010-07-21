@@ -133,7 +133,7 @@
 -- 43000-43999  Intranet REST (1000)
 -- 44000-49999  reserved (1000)
 -- 50000-59999  Navision Integration (10000)
--- 50000-50099	free
+-- 50000-50099	Navision free
 -- 50100-50199	Navision Reuse Band
 -- 50200-50499	Navision Intranet Translation Task Type (Activity Group + Activities)
 -- 50500-50599  Navision General Posting Group
@@ -143,8 +143,9 @@
 -- 50900-50999  Navision Payment Method Code
 -- 51000-59999  Navision reserved
 -- 60000-60999  Intranet Translation Task Type CSV Importer (1000)
--- 60000-69999  Customer DHL reserved
--- 70000-79999  reserved (10000)
+-- 60000-69999  Customer DHL Malaysia reserved
+-- 70000-70999  Intranet Project Priority (1000)
+-- 71000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
 -- 90000-99999  reserved (10000)
 --100000-999999 reserved (900000)
