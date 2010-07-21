@@ -89,6 +89,7 @@ cvs checkout intranet-notes-tutorial
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp
 cvs checkout intranet-payments
+cvs checkout intranet-portfolio-management
 cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
