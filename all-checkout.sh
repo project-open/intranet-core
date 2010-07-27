@@ -44,6 +44,7 @@ cvs checkout general-comments
 
 cvs checkout intranet-amberjack
 cvs checkout intranet-audit
+cvs checkout intranet-baseline
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
