@@ -615,7 +615,7 @@ ad_proc -public im_project_options {
     }
 
     if {$exclude_tasks_p} {
-	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories [im_project_type_task]] ","])"
+	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 [im_project_type_task]] ","])"
 	# Main project is never of type task...
     }
 
