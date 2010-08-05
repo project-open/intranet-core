@@ -48,6 +48,57 @@ ad_proc -public im_openacs54_p { } {
     return [expr 1 > [string compare "5.4" $oacs_version]]
 }
 
+# ------------------------------------------------------------------
+# Date conversion
+# ------------------------------------------------------------------
+
+ad_proc -public im_date_ansi_to_julian { 
+    { -throw_complaint_p 1 }
+    ansi 
+} {
+    Returns julian date for a YYYY-MM-DD string.
+    By default, the procedure will use ad_return_complaint to report errors.
+    Set the parameter throw_complaint_p to 0 to tell the procedure to return
+    -1 instead.
+} {
+    if {"" == $ansi} { return -1 }
+
+    # Check that Start & End-Date have correct format
+    set ansi_ok_p [regexp {^([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])$} $ansi match year month day]
+
+    if {!$ansi_ok_p} {
+	if {!$throw_complaint_p} { return -1 }
+	ad_return_complaint 1 "
+		<b>Found an invalid data string.</b>:<br>
+		Current value: '$ansi'<br>
+		Expected format: 'YYYY-MM-DD'
+	"
+	ad_script_abort
+    }
+
+    # Perform the main conversion.
+    if {[catch { set julian [dt_ansi_to_julian $year $month $day] } err_msg]} {
+	if {!$throw_complaint_p} { return -1 }
+	ad_return_complaint 1 "
+		<b>Invalid conversion of ANSI date to Julian format</b>:<br>
+		Current value: '$ansi'<br>
+		Expected format: 'YYYY-MM-DD'.<br>
+		Here is the detailed error message for reference:<br>
+		<pre>$err_msg</pre>
+	"
+	ad_script_abort
+    }
+}
+
+ad_proc -public im_date_julian_to_ansi { 
+    { -throw_complaint_p 1 }
+    julian 
+} {
+    Returns YYYY-MM-DD for a julian date.
+} {
+    return [dt_julian_to_ansi $julian]
+}
+
 
 # ------------------------------------------------------------------
 # CSV File Parser
