@@ -41,6 +41,7 @@ ad_proc -public im_skin_saltnpepper {} { return 40020 }
 
 ad_proc -public im_gif { 
     {-translate_p 1} 
+    {-locale ""}
     {-type "gif"}
     name 
     {alt ""} 
@@ -73,7 +74,7 @@ ad_proc -public im_gif {
 
     if { $translate_p && ![empty_string_p $alt] } {
 	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
-	set alt [lang::message::lookup "" $alt_key $alt]
+	set alt [lang::message::lookup $locale $alt_key $alt]
     }
 
     # 1. Check for a static GIF - it's been given without extension.

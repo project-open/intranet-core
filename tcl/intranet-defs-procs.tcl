@@ -573,19 +573,24 @@ ad_proc -public im_email_from_user_id_helper {user_id} {
 }
 
 
-ad_proc im_employee_select_optionlist { {user_id ""} } {
+ad_proc im_employee_select_optionlist { 
+    { -locale "" }
+    { -translate_p 0 }
+    {user_id ""} 
+} {
     set employee_group_id [im_employee_group_id]
-    return [db_html_select_value_options_multiple -translate_p 0 -select_option $user_id im_employee_select_options "
-select
-	u.user_id, 
-	im_name_from_user_id(u.user_id) as name
-from
-	registered_users u,
-	group_distinct_member_map gm
-where
-	u.user_id = gm.member_id
-	and gm.group_id = $employee_group_id
-order by lower(im_name_from_user_id(u.user_id))"]
+    return [db_html_select_value_options_multiple -translate_p $translate_p -locale $locale -select_option $user_id im_employee_select_options "
+	select
+		u.user_id, 
+		im_name_from_user_id(u.user_id) as name
+	from
+		registered_users u,
+		group_distinct_member_map gm
+	where
+		u.user_id = gm.member_id
+		and gm.group_id = $employee_group_id
+	order by lower(im_name_from_user_id(u.user_id))
+    "]
 }
 
 
@@ -639,9 +644,10 @@ ad_proc im_select {
     {-size 6}
     {-translate_p 1} 
     {-package_key "intranet-core" }
-    field_name 
-    pairs 
-    { default "" } 
+    {-locale "" }
+    field_name
+    pairs
+    { default "" }
 } {
     Formats a "select" tag.
     Check if "pairs" is in a sequential format or a list of tuples 
@@ -652,6 +658,8 @@ ad_proc im_select {
 } {
     # Get out early as there's nothing to do
     if { [llength $pairs] == 0 } { return "" }
+
+    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
 
     set multiple ""
     if {$multiple_p} { 
@@ -676,7 +684,7 @@ ad_proc im_select {
     foreach { value text } $pairs {
 	if { $translate_p && "" != [string trim $text]} {
 	    set l10n_key [lang::util::suggest_key $text]
-            set text_tr [lang::message::lookup "" $package_key.$l10n_key $text]
+            set text_tr [lang::message::lookup $locale $package_key.$l10n_key $text]
         } else {
             set text_tr $text
         }
@@ -768,7 +776,11 @@ ad_proc im_append_list_to_ns_set { { -integer_p f } set_id base_var_name list_of
 }
 
 
-ad_proc im_country_select {select_name {default ""}} {
+ad_proc im_country_select {
+    { -locale "" }
+    select_name 
+    {default ""}
+} {
     Return a HTML widget that selects a country code from
     the list of global countries.
 } {
@@ -778,7 +790,7 @@ ad_proc im_country_select {select_name {default ""}} {
 	     from country_codes
 	     order by lower(country_name)"
 
-    return [im_selection_to_select_box -translate_p 1 $bind_vars $statement_name $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p 1 -locale $locale $bind_vars $statement_name $sql $select_name $default]
 }
 
 
@@ -833,6 +845,7 @@ TYPE=text SIZE=5 MAXLENGTH=4>"
 ad_proc im_selection_to_select_box { 
     {-translate_p 1} 
     {-package_key "intranet-core" }
+    {-locale "" }
     {-include_empty_p 1}
     {-include_empty_name "--_Please_select_--"}
     {-tag_attributes {} }
@@ -866,13 +879,14 @@ ad_proc im_selection_to_select_box {
     if {$include_empty_p} {
 
 	if {"" != $include_empty_name} {
-	    set include_empty_name [lang::message::lookup "" intranet-core.[lang::util::suggest_key $include_empty_name] $include_empty_name]
+	    set include_empty_name [lang::message::lookup $locale intranet-core.[lang::util::suggest_key $include_empty_name] $include_empty_name]
 	}
 	append result "<option value=\"\">$include_empty_name</option>\n"
     }
     append result [db_html_select_value_options_multiple \
 		       -translate_p $translate_p \
 		       -package_key $package_key \
+		       -locale $locale \
 		       -bind $bind_vars \
 		       -select_option $default \
 		       $statement_name \
@@ -921,6 +935,7 @@ ad_proc -public db_html_select_value_options_multiple {
     { -option_index 1 }
     { -translate_p 1 }
     { -package_key "intranet-core" }
+    { -locale "" }
     stmt_name
     sql
 } {
@@ -941,7 +956,7 @@ ad_proc -public db_html_select_value_options_multiple {
 	set option_string [lindex $option $option_index]
 
 	if { $translate_p && "" != [lindex $option $option_index] } {
-	    set translated_value [lang::message::lookup "" $package_key.[lang::util::suggest_key $option_string] $option_string ]
+	    set translated_value [lang::message::lookup $locale $package_key.[lang::util::suggest_key $option_string] $option_string ]
 	} else {
 	    set translated_value $option_string
 	}
@@ -956,14 +971,24 @@ ad_proc -public db_html_select_value_options_multiple {
     return $select_options
 }
 
-ad_proc im_selection_to_list_box { {-translate_p "1"} bind_vars statement_name sql select_name { default "" } {size "6"} {multiple ""} } {
+ad_proc im_selection_to_list_box { 
+    {-translate_p "1"} 
+    {-locale ""}
+    bind_vars 
+    statement_name 
+    sql 
+    select_name 
+    { default "" } 
+    {size "6"} 
+    {multiple ""} 
+} {
     Expects selection to have a column named id and another named name. 
     Runs through the selection and return a list bar named select_name, 
     defaulted to $default 
 } {
     return "
 <select name=\"$select_name\" size=\"$size\" $multiple>
-[db_html_select_value_options_multiple -translate_p $translate_p -bind $bind_vars -select_option $default $statement_name $sql]
+[db_html_select_value_options_multiple -translate_p $translate_p -locale $locale -bind $bind_vars -select_option $default $statement_name $sql]
 </select>
 "
 }
@@ -1404,6 +1429,7 @@ ad_proc -public im_ad_hoc_query {
     {-col_titles {} }
     {-translate_p 1 }
     {-package_key "intranet-core" }
+    {-locale ""}
     sql
 } {
     Ad-hoc execution of SQL-Queries.
@@ -1458,7 +1484,7 @@ ad_proc -public im_ad_hoc_query {
 	    set key "$package_key.Ad_hoc"
 	    if {"" != $report_name} { set key "${key}_${report_name_key}" }
 	    set key "${key}_$title_key"
-            set title [lang::message::lookup "" $key $title]
+            set title [lang::message::lookup $locale $key $title]
         }
         switch $format {
             plain { append header "$title\t" }
@@ -1814,6 +1840,7 @@ ad_proc im_generic_table_component {
     -select_value
     { -order_by "" }
     { -exclude_columns "" }
+    { -locale "" }
 } {
     Takes a table name as a parameter and displays its content.
     This function is not able to dereference values. Please use
@@ -1830,7 +1857,7 @@ ad_proc im_generic_table_component {
 	[list return_url [im_url_with_query]] \
     ]
     set result [ad_parse_template -params $params "/packages/intranet-core/www/components/generic-table-component"]
-    set component_title [lang::message::lookup "" intranet-core.Generic_Table_Header_$table_name $table_name]
+    set component_title [lang::message::lookup $locale intranet-core.Generic_Table_Header_$table_name $table_name]
     return [im_table_with_title $component_title $result]
 }
 

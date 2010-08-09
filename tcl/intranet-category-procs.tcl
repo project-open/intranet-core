@@ -31,6 +31,7 @@ ad_proc -public im_category_from_id {
     set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
+	if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
 	set category_name [lang::message::lookup $locale "$package_key.$category_key" $category_name]
     }
 
@@ -99,6 +100,7 @@ ad_proc im_category_select {
     {-plain_p 0}
     {-super_category_id 0}
     {-cache_interval 3600}
+    {-locale "" }
     category_type
     select_name
     { default "" }
@@ -109,16 +111,19 @@ ad_proc im_category_select {
 
     @param multiple_p You can select multiple categories
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
+
     if {$no_cache_p} {
-	return [im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default]
+	return [im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default]
     } else {
-	return [util_memoize [list im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] $cache_interval ]
+	return [util_memoize [list im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default] $cache_interval ]
     }
 }
 
 ad_proc im_category_select_helper {
     {-translate_p 1}
     {-package_key "intranet-core" }
+    {-locale "" }
     {-multiple_p 0}
     {-include_empty_p 0}
     {-include_empty_name "All"}
@@ -134,7 +139,7 @@ ad_proc im_category_select_helper {
     @param super_category_id determines where to start in the category hierarchy
 } {
     if {$plain_p} {
-	return [im_category_select_plain -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
+	return [im_category_select_plain -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name $category_type $select_name $default]
     }
 
     set super_category_sql ""
@@ -259,7 +264,7 @@ ad_proc im_category_select_helper {
 	if {"f" == $enabled_p} { continue }
         set p_level $level($p)
         if {0 == $p_level} {
-            append html [im_category_select_branch -translate_p $translate_p -package_key $package_key $p $default $base_level [array get cat] [array get direct_parent]]
+            append html [im_category_select_branch -translate_p $translate_p -package_key $package_key -locale $locale $p $default $base_level [array get cat] [array get direct_parent]]
         }
     }
 
@@ -280,6 +285,7 @@ $html
 ad_proc im_category_select_branch { 
     {-translate_p 0}
     {-package_key "intranet-core" }
+    {-locale "" }
     parent 
     default 
     level 
@@ -296,7 +302,7 @@ ad_proc im_category_select_branch {
     set category [lindex $cat($parent) 1]
     if {$translate_p} {
 	set category_key "$package_key.[lang::util::suggest_key $category]"
-	set category [lang::message::lookup "" $category_key $category]
+	set category [lang::message::lookup $locale $category_key $category]
     }
 
     set parent_only_p [lindex $cat($parent) 3]
@@ -321,7 +327,7 @@ ad_proc im_category_select_branch {
 
     foreach cat_id $category_list_sorted {
 	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-	    append html [im_category_select_branch -translate_p $translate_p -package_key $package_key $cat_id $default $level $cat_array $direct_parent_array]
+	    append html [im_category_select_branch -translate_p $translate_p -package_key $package_key -locale $locale $cat_id $default $level $cat_array $direct_parent_array]
 	}
     }
 
@@ -332,6 +338,7 @@ ad_proc im_category_select_branch {
 ad_proc im_category_select_plain { 
     {-translate_p 1} 
     {-package_key "intranet-core" }
+    {-locale "" }
     {-include_empty_p 1} 
     {-include_empty_name "--_Please_select_--"} 
     category_type 
@@ -357,12 +364,13 @@ ad_proc im_category_select_plain {
 	order by lower(category)
     "
 
-    return [im_selection_to_select_box -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
+    return [im_selection_to_select_box -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars category_select $sql $select_name $default]
 }
 
 
 ad_proc im_category_select_multiple { 
     {-translate_p 1}
+    {-locale ""}
     category_type 
     select_name 
     { default "" } 
@@ -378,11 +386,14 @@ ad_proc im_category_select_multiple {
 	where	category_type = :category_type
 		and (enabled_p = 't' OR enabled_p is NULL)
 	order by lower(category)"
-    return [im_selection_to_list_box -translate_p $translate_p $bind_vars category_select $sql $select_name $default $size multiple]
-}    
+    return [im_selection_to_list_box -translate_p $translate_p -locale $locale $bind_vars category_select $sql $select_name $default $size multiple]
+}
 
 
-ad_proc -public template::widget::im_category_tree { element_reference tag_attributes } {
+ad_proc -public template::widget::im_category_tree { 
+    element_reference 
+    tag_attributes 
+} {
     Category Tree Widget
 
     @param category_type The name of the category type (see categories

@@ -443,6 +443,7 @@ namespace eval im_profile {
 
     ad_proc -public profile_options_all {
 	{ -translate_p 1 }
+	{ -locale ""}
     } {
 	Returns the list of all available profiles in the system.
 	The returned list consists of (group_id - group_name) tuples.
@@ -465,7 +466,7 @@ namespace eval im_profile {
 	db_foreach profile_options_of_user $profile_sql {
 	    if {$translate_p} {
 		regsub -all {[ /]} $group_name "_" group_key
-		set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+		set group_name [lang::message::lookup $locale intranet-core.Profile_$group_key $group_name]
 	    }
 	    lappend options [list $group_name $group_id]
 	}

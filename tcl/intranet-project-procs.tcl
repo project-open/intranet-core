@@ -759,7 +759,10 @@ ad_proc -public im_project_template_options { {include_empty 1} } {
 
 
 
-ad_proc -public im_project_template_select { select_name { default "" } } {
+ad_proc -public im_project_template_select { 
+    select_name 
+    { default "" } 
+} {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all projects that qualify as templates.
 } {
