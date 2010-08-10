@@ -33,6 +33,10 @@ ad_page_contract {
     { password "" }
 }
 
+# ------------------------------------------------------------------------
+# Email + Password for REST
+# ------------------------------------------------------------------------
+#
 # Check if the user has provided email and password in the URL
 # This type of authentication is used when logging in from a
 # REST client for example.
@@ -62,6 +66,10 @@ if {"" != $password && "" != $email} {
 }
 
 
+
+# ------------------------------------------------------------------------
+# Auto_login 
+# ------------------------------------------------------------------------
 
 # Check if the "require_manual_login" privilege exists to protect high-profile users
 set priv_exists_p [db_string priv_exists "
