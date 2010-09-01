@@ -373,31 +373,37 @@ append project_base_data_html "    </table>
 
 set admin_html_content ""
 
+if {$admin} {
+    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id} project_type_id}]\">[_ intranet-core.Create_a_Subproject]</A><br></li>\n"
+}
+
 if {$gantt_project_enabled_p} {
     set help [lang::message::lookup "" intranet-ganttproject.ProjectComponentHelp \
     "GanttProject is a free Gantt chart viewer (http://sourceforge.net/project/ganttproject/)"]
     
     if {$read && [im_permission $current_user_id "view_gantt_proj_detail"]} {
 	append admin_html_content "
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Download_Gantt_File "Download GanttProject .gan File"]</A></li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/openproj-project.xml" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Download_OpenProj_File "Download OpenProj XML File (beta)"]</A></li>
+        >[lang::message::lookup "" intranet-ganttproject.Export_to_OpenProj "Export to Microsoft Project"]</A></li>
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Export_to_GanttProject "Export to GanttProject"]</A></li>
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/openproj-project.xml" {project_id}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Export_to_OpenProj "Export to OpenProj"]</A></li>
         "
     }
 
     if {$write && [im_permission $current_user_id "view_gantt_proj_detail"]} {
         append admin_html_content "
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project-upload" {project_id return_url}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_MicrosoftProject "Import from Microsoft Project"]</A></li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Upload_Gantt_OpenProj_File "Upload GanttProject .gan or OpenProj XML File"]</A></li>
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_GanttProject "Import from GanttProject"]</A></li>
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_OpenProj "Import from OpenProj"]</A></li>
         "
     }
 }
 
-
-if {$admin} {
-    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id} project_type_id}]\">[_ intranet-core.Create_a_Subproject]</A></li>\n"
-}
 
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
 
@@ -448,4 +454,15 @@ set sub_navbar [im_sub_navbar \
     -base_url "/intranet/projects/view?project_id=$project_id" \
     $parent_menu_id \
     $bind_vars "" "pagedesriptionbar" $menu_label] 
+
+
+append left_navbar_html "
+      	<div class='filter-block'>
+        <div class='filter-title'>
+		[lang::message::lookup "" intranet-core.Admin_Project "Admin Project"]
+        </div>
+	$admin_html_content
+	<br>
+      	</div>
+"
 

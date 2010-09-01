@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="title">@page_title@</property>
 <property name="main_navbar_label">projects</property>
+<property name="left_navbar">@left_navbar_html;noquote@</property>
 <property name="sub_navbar">@sub_navbar;noquote@</property>
 <property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
@@ -43,9 +44,6 @@
 		</table>
 	</if>
 	<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
-
-	@admin_html_content;noquote@
-
 
         <%= [im_box_footer] %>
 
