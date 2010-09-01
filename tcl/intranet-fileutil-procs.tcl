@@ -829,6 +829,8 @@ proc ::fileutil::fileType {filename} {
         lappend type audio mpeg
     } elseif { $binary && [binary scan $test S tmp] && [expr {$tmp & 0xFFE0}] == 65504 } {
         lappend type audio mpeg
+    } elseif { $binary && [string match "\xD0\xCF*" $test] } {
+        lappend type ms-office
     }
 
     # Additional checks of file contents at the end of the file,
