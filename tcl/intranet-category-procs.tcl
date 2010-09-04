@@ -531,6 +531,28 @@ ad_proc -public im_category_is_a {
 }
 
 
+
+ad_proc -public im_category_get_key_value_list {
+    { category_type "" }
+} {
+        set sql "
+
+        select
+                category_id,
+                category
+        from
+                im_categories
+        where
+                category_type = '$category_type'
+        "
+    set category_list [list]
+    db_foreach category_select $sql {
+        lappend category_list [list $category_id $category]
+    }
+        return $category_list
+}
+
+
 # ---------------------------------------------------------------
 # Category Hierarchy Helper
 # ---------------------------------------------------------------
