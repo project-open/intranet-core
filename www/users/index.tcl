@@ -623,7 +623,7 @@ if {"" != $admin_html && [im_table_exists spam_messages]} {
 # ---------------------------------------------------------------
 
 
-set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name user_group_name letter filter_advanced_p] $menu_select_label]
+set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list ] $menu_select_label]
 
 
 set left_navbar_html "
