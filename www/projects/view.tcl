@@ -457,7 +457,7 @@ set sub_navbar [im_sub_navbar \
 
 
 
-
+set left_navbar_html ""
 if {"" != $admin_html_content} {
     append left_navbar_html "
       	<div class='filter-block'>
