@@ -241,7 +241,6 @@ db_foreach menu_select $menu_select_sql {
 # we want to show:
 #
 
-
 set view_id [util_memoize [list db_string get_view_id "
 	select view_id 
 	from im_views 
