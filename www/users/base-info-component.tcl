@@ -36,7 +36,9 @@ set current_user_id [ad_maybe_redirect_for_registration]
 
 # Check the permissions
 user_permissions $current_user_id $user_id view read write admin
-if {!$read} { return "" }
+
+# Moved into the .adp template
+# if {!$read} { return "" }
 
 
 # ------------------------------------------------------------------
@@ -80,6 +82,7 @@ db_1row user_info "
 		p.*,
 		pa.*,
 		uc.*,
+		im_name_from_user_id(u.user_id) as user_name_pretty,
 		(select country_name from country_codes where iso = uc.ha_country_code) as ha_country_name,
 		(select country_name from country_codes where iso = uc.wa_country_code) as wa_country_name
 	from	
