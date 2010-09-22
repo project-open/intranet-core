@@ -15,6 +15,10 @@ foreach cache [lsort -dictionary [ns_cache_names]] {
 	} else {
 	    set name $suffix
 	}
+
+	# Discard caches like "ns:ddslink", which are not found
+	if {[regexp {\:} $cache match]} { continue }
+
 	set pair [ns_cache_size $match]
 	set size [format "%.2f MB" [expr [lindex $pair 1] / 1048576.0]]
 	set max [format "%.2f MB" [expr [lindex $pair 0] / 1048576.0]]
