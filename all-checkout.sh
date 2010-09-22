@@ -75,6 +75,7 @@ cvs checkout intranet-freelance
 cvs checkout intranet-freelance-invoices
 cvs checkout intranet-freelance-rfqs
 cvs checkout intranet-freelance-translation
+cvs checkout intranet-funambol
 cvs checkout intranet-ganttproject
 cvs checkout intranet-helpdesk
 cvs checkout intranet-hr
