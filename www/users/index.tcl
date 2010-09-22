@@ -72,6 +72,7 @@ ad_page_contract {
 # ---------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
+set current_user_id $user_id
 set page_title "[_ intranet-core.Users]"
 set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
@@ -254,17 +255,25 @@ if {!$view_id} {
 }
 
 set column_sql "
-select	c.*
-from	im_view_columns c
-where	view_id=:view_id
-	and group_id is null
-order by
-	sort_order"
+	select	c.*
+	from	im_view_columns c
+	where	view_id = :view_id
+		and group_id is null
+	order by sort_order
+"
 
 db_foreach column_list_sql $column_sql {
     ns_log Notice "/intranet/users/index: visible_for=$visible_for"
 
-    if {"" == $visible_for || [eval $visible_for]} {
+    set visible_p 0
+    if {"" == $visible_for} { set visible_p 1 }
+    if {"" != $visible_for} {
+	catch {
+	    set visible_p [eval $visible_for]
+	} err_msg
+    }
+
+    if {$visible_p} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
 
