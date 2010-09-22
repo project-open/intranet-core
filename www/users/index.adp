@@ -10,3 +10,9 @@
             <%= $table_body_html %>
             <%= $table_continuation_html %>
 </table>
+
+<if @debug_html@ ne "">
+<ul>
+	@debug_html;noquote@
+</ul>
+</if>

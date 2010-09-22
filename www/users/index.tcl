@@ -80,7 +80,7 @@ set return_url [im_url_with_query]
 set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
-
+set debug_html ""
 
 # ---------------------------------------------------------------
 # 
@@ -268,9 +268,11 @@ db_foreach column_list_sql $column_sql {
     set visible_p 0
     if {"" == $visible_for} { set visible_p 1 }
     if {"" != $visible_for} {
-	catch {
+	if {[catch {
 	    set visible_p [eval $visible_for]
-	} err_msg
+	} err_msg]} {
+	    append debug_html "<li>Error evaluating column visible_for field:<br><pre>$err_msg</pre></li>\n"
+	}
     }
 
     if {$visible_p} {
