@@ -36,9 +36,7 @@ if {![im_permission $current_user_id add_users]} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
     return
 }
-
 set admin_user_id [ad_verify_and_get_user_id]
-
 db_1row user_info "
 	select	*
 	from	cc_users
