@@ -137,9 +137,12 @@ set parent_name [util_memoize [list db_string parent_name "select project_name f
 
 # Redirect if this is a timesheet task (subtype of project)
 if {$project_type_id == [im_project_type_task]} {
-    ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{task_id $project_id}}]
-
+    ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {return_url {task_id $project_id}}]
 }
+if {$project_type_id == [im_project_type_ticket]} {
+    ad_returnredirect [export_vars -base "/intranet-helpdesk/new" {return_url {form_mode "display"} {ticket_id $project_id}}]
+}
+
 
 # ---------------------------------------------------------------------
 # Check permissions
