@@ -625,7 +625,7 @@ ad_proc -public im_project_options {
     }
 
     if {0 != $project_type_id && "" != $project_type_id} {
-	lappend p_criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
+	lappend p_criteria "p.project_type_id in ([join [im_sub_categories -include_disabled_p 1 $project_type_id] ","])"
 	# No restriction on parent's project type!
     }
 
@@ -884,7 +884,6 @@ ad_proc -public im_project_select {
 	" -default ""]
     }
 	
-    set project_type_id ""
     if { ![empty_string_p $type] } {
 	set project_type_id [db_string typ "
 		select	category_id 

@@ -334,7 +334,7 @@ ad_proc -public im_biz_object_roles_select { select_name object_id { default "" 
     $default with a list of all available roles for this object.
 } {
     set bind_vars [ns_set create]
-    set acs_object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
+    set acs_object_type [db_string acs_object_type "select object_type from acs_objects where object_id = :object_id" -default "invalid"]
     ns_set put $bind_vars acs_object_type $acs_object_type
 
     set sql "
