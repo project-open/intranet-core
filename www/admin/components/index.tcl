@@ -214,12 +214,12 @@ set left_navbar_html "
 
 	<tr>
 	<td>[lang::message::lookup "" intranet-core.Location "Location"]</td>
-	<td>[im_select -ad_form_option_list_style_p 1 component_location $location_options $component_location]</td>
+	<td>[im_select -translate_p 0 -ad_form_option_list_style_p 1 component_location $location_options $component_location]</td>
 	</tr>
 
 	<tr>
 	<td>[lang::message::lookup "" intranet-core.Component_Page "Page"]</td>
-	<td>[im_select -ad_form_option_list_style_p 1 component_page $page_options $component_page]</td>
+	<td>[im_select -translate_p 0 -ad_form_option_list_style_p 1 component_page $page_options $component_page]</td>
 	</tr>
 
 	<tr><td></td><td><input type=submit></td></tr>
