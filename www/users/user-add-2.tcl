@@ -59,5 +59,7 @@ set administration_name [db_string admin_name "select im_name_from_user_id(:admi
 set context [list [list "./" "[_ intranet-core.Users]"] "[_ intranet-core.Notify_added_user]"]
 set system_name [ad_system_name]
 set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
+set object_url ""
+
 
 ad_return_template
