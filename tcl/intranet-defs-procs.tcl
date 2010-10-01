@@ -683,8 +683,14 @@ ad_proc im_select {
 
     foreach { value text } $pairs {
 	if { $translate_p && "" != [string trim $text]} {
+
+	    # This would eliminate all translation errors cause by "%" in the message.
+	    # However, I'll allow for these errors in order to track the sources
+	    # regsub -all {%} $text {_} text
+
 	    set l10n_key [lang::util::suggest_key $text]
-            set text_tr [lang::message::lookup $locale $package_key.$l10n_key $text]
+	    set text_tr [lang::message::lookup $locale $package_key.$l10n_key $text]
+
         } else {
             set text_tr $text
         }
