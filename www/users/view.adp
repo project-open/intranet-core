@@ -57,8 +57,8 @@
   <td valign=top>
 
     <%= $portrait_html %>
-    <%= $projects_html %>
-    <%= $companies_html %>
+    <!-- %= $projects_html % -->
+    <!-- %= $companies_html % -->
     <%= [im_component_bay right] %>
 
   </td>

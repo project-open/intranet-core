@@ -701,3 +701,31 @@ ad_proc -public im_object_assoc_component {
     "
 
 }
+
+
+
+
+# ---------------------------------------------------------------
+# Component showing related objects
+# ---------------------------------------------------------------
+
+ad_proc -public im_biz_object_related_objects_component {
+    { -include_membership_rels_p 0 }
+    -object_id:required
+} {
+    Returns a HTML component with the list of related objects.
+    @param include_membership_rels_p: Normally, membership rels
+           are handled by the "membership component". That's not
+           the case with users.
+} {
+    set params [list \
+                    [list base_url "/intranet/"] \
+                    [list object_id $object_id] \
+		    [list include_membership_rels_p $include_membership_rels_p] \
+                    [list return_url [im_url_with_query]] \
+		    ]
+
+    set result [ad_parse_template -params $params "/packages/intranet-core/www/related-objects-component"]
+    return [string trim $result]
+}
+
