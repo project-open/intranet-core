@@ -530,6 +530,31 @@ SELECT  im_component_plugin__new (
 
 
 
+-- List objects associated to user
+SELECT  im_component_plugin__new (
+	null,				-- plugin_id
+	'im_component_plugin',		-- object_type
+	now(),				-- creation_date
+	null,				-- creation_user
+	'0.0.0.0',			-- creation_ip
+	null,				-- context_id
+	'User Related Objects',		-- plugin_name
+	'intranet-core',		-- package_name
+	'right',			-- location
+	'/intranet/users/view',		-- page_url
+	null,				-- view_name
+	20,				-- sort_order
+	'im_biz_object_related_objects_component -include_membership_rels_p 1 -object_id $user_id'	-- component_tcl
+);
+
+
+
+update im_component_plugins
+set enabled_p = 'f'
+where page_url = '/intranet/users/view' and plugin_name = 'User Offices';
+
+
+
 ------------------------------------------------------------------
 -- Set permissions on all Plugin Components for Employees, Freelancers and Customers.
 create or replace function inline_0 ()
