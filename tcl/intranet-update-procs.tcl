@@ -149,9 +149,13 @@ ad_proc -public im_check_for_update_scripts {
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
     set missing_modules [list]
+    set ctr 0
     foreach module $other_modules {
 
-#        ns_log Notice "upgrade3: checking module $module"
+	# Limit the number of packages to a value that doesn't give 
+	# trouble with the URL size
+	if {$ctr > 15} { continue }
+
         set spec_file "[acs_root_dir]/packages/$module/$module.info"
 
         set needs_update_p 0
@@ -166,6 +170,7 @@ ad_proc -public im_check_for_update_scripts {
             append url "enable=$module&"
             lappend missing_modules $module
         }
+	incr ctr
     }
 
     if {$redirect_p} {
