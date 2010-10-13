@@ -35,4 +35,5 @@ foreach script [lsort $upgrade_script] {
 }
 
 ns_write "</ul>\n"
+ns_write "<p>Successfully finished running upgrade scripts.</p>\n"
 ns_write [im_footer]
