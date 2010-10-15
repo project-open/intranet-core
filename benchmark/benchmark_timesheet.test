@@ -48,7 +48,7 @@ set server		"http://localhost:30086"		;# Without trailing "/"
 #set logon_user		"Harry Helpdesk"			;# Name must be on first page
 set logon_user		"David Developer"			;# Name must be on first page
 
-set num_iterations	300					;# Default "10": The first iteration is slow
+set num_iterations	5					;# Default "10": The first iteration is slow
 set wait_between	0					;# Default "5": Wait seconds betwen pages
 set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
 
