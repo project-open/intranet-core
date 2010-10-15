@@ -48,7 +48,8 @@ cvs checkout intranet-baseline
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
-cvs checkout intranet-calendar-holidays
+# Obsolete!
+# cvs checkout intranet-calendar-holidays
 cvs checkout intranet-confdb
 cvs checkout intranet-core
 cvs checkout intranet-cost
