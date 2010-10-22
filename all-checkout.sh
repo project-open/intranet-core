@@ -25,23 +25,17 @@ cvs checkout acs-workflow
 
 cvs checkout auth-ldap
 cvs checkout auth-ldap-adldapsearch
+cvs checkout attachments
 
 cvs checkout ajaxhelper
-cvs checkout ams
 cvs checkout batch-importer
 cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout calendar
 cvs checkout categories
-cvs checkout contacts
 cvs checkout chat
 cvs checkout cms
 cvs checkout diagram
-cvs checkout ecommerce
-cvs checkout events
-cvs checkout faq
-cvs checkout file-storage
-cvs checkout general-comments
 
 cvs checkout intranet-amberjack
 cvs checkout intranet-audit
@@ -49,9 +43,8 @@ cvs checkout intranet-baseline
 cvs checkout intranet-big-brother
 cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
-# Obsolete!
-# cvs checkout intranet-calendar-holidays
 cvs checkout intranet-confdb
+cvs checkout intranet-contacts
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-cost-center
@@ -103,6 +96,7 @@ cvs checkout intranet-reporting-indicators
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-resource-management
+cvs checkout intranet-rest
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-search-pg
 cvs checkout intranet-search-pg-files
@@ -131,9 +125,10 @@ cvs checkout intranet-wiki
 cvs checkout intranet-workflow
 cvs checkout intranet-xmlrpc
 
-cvs checkout lars-blogger
 cvs checkout mail-tracking
 cvs checkout notifications
+cvs checkout oacs-dav
+cvs checkout openacs-default-theme
 cvs checkout organizations
 cvs checkout oryx-ts-extensions
 cvs checkout postal-address
@@ -153,3 +148,6 @@ cvs checkout trackback
 cvs checkout wiki
 cvs checkout workflow
 cvs checkout xml-rpc
+
+cvs checkout xotcl-core
+cvs checkout xowiki
