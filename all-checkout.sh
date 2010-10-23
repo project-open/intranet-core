@@ -36,6 +36,7 @@ cvs checkout categories
 cvs checkout chat
 cvs checkout cms
 cvs checkout diagram
+cvs checkout file-storage
 
 cvs checkout intranet-amberjack
 cvs checkout intranet-audit
