@@ -2398,7 +2398,13 @@ ad_proc im_project_nuke {project_id} {
 	# Timesheet
 	ns_log Notice "projects/nuke-2: im_hours"
 	db_dml timesheet "delete from im_hours where project_id = :project_id"
-	
+
+
+	# Simple Survey
+	ns_log Notice "projects/nuke-2: simple_surveys"
+	db_dml simple_surveys "delete from survsimp_responses where related_object_id = :project_id"
+	db_dml simple_surveys "delete from survsimp_responses where related_context_id = :project_id"
+
 
 	# Workflow
 	if {[im_table_exists wf_workflows]} {
