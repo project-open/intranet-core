@@ -39,10 +39,9 @@ set assoc_msg [lang::message::lookup {} intranet-core.Associated_with_new_Object
 set actions [list]
 switch $object_type {
     im_ticket {
-	lappend actions $assoc_msg [export_vars -base "/intranet-helpdesk/related-objects-associate" {return_url {object $object_id}}] ""
+	lappend actions $assoc_msg [export_vars -base "/intranet-helpdesk/related-objects-associate" {return_url {object_id $object_id}}] ""
     }
 }
-
 
 list::create \
     -name rels \
