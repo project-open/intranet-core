@@ -103,6 +103,7 @@ cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-resource-management
 cvs checkout intranet-riskmanagement
+cvs checkout intranet-scrum
 cvs checkout intranet-search-pg
 cvs checkout intranet-search-pg-files
 cvs checkout intranet-security-update-client
