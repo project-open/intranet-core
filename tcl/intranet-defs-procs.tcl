@@ -1989,3 +1989,26 @@ ad_proc -public im_object_super_types {
     return $object_type_hierarchy
 }
 
+
+
+
+# ---------------------------------------------------------------
+# Group Type Administration - Define new types of groups to which
+# a user can belong.
+# ---------------------------------------------------------------
+
+ad_proc im_group_type_component {
+    { -user_id "" }
+    { -group_type "" }
+} {
+    Displays the list of groups belonging to group_type and
+    allows the Admin of the user to change group memberships.
+} {
+    set params [list \
+	[list user_id $user_id] \
+	[list group_type $group_type] \
+    ]
+    set result [ad_parse_template -params $params "/packages/intranet-core/www/group-types/group-type-component"]
+    return $result
+}
+

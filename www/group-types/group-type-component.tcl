@@ -20,7 +20,7 @@ if {![exists_and_not_null user_id]} {
 	user_id:integer
 	{ group_id:integer,multiple {}}
 	group_type
-	return_url
+	{ return_url "" }
     }
 
     set portlet_p 0
@@ -54,15 +54,15 @@ lappend elements group_chk {
     }
 }
 lappend elements group_name { 
-    label "[_ acs-subsite.Name]" 
+    label "[lang::message::lookup {} intranet-core.Name_Column Name]" 
     display_template {
         @groups.group_name@
     }
 }
 
 
-set admin_group_url [export_vars -base "/admin/group-types" {}]
-set admin_group_msg [lang::message::lookup "" intranet-cvs-integration.Admin_Groups "Admin Groups"]
+set admin_group_url [export_vars -base "/admin/group-types/one" {group_type}]
+set admin_group_msg [lang::message::lookup "" intranet-cvs-integration.Admin_Group_Type "Admin Group Type"]
 set actions [list $admin_group_msg $admin_group_url $admin_group_msg]
 
 set update_group_url "/intranet-cvs-integration/group-type-save"
@@ -110,4 +110,6 @@ db_multirow -extend { group_chk } groups groups $group_sql {
 				$checked
     >"
 }
+
+ad_return_template
 
