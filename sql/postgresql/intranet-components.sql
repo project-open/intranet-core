@@ -548,6 +548,24 @@ SELECT  im_component_plugin__new (
 );
 
 
+-- List objects associated to user
+SELECT  im_component_plugin__new (
+	null,				-- plugin_id
+	'im_component_plugin',		-- object_type
+	now(),				-- creation_date
+	null,				-- creation_user
+	'0.0.0.0',			-- creation_ip
+	null,				-- context_id
+	'Project Related Objects',	-- plugin_name
+	'intranet-core',		-- package_name
+	'right',			-- location
+	'/intranet/projects/view',	-- page_url
+	null,				-- view_name
+	20,				-- sort_order
+	'im_biz_object_related_objects_component -object_id $project_id'	-- component_tcl
+);
+
+
 
 update im_component_plugins
 set enabled_p = 'f'
