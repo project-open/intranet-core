@@ -112,8 +112,17 @@ if {$project_exists_p} {
 
 } else {
 
-    # Check if the user has the "add_projects" privilege...
-    if {![im_permission $user_id add_projects]} { 
+    set perm_p 0
+    # Check if the user has admin rights on the parent_id
+    # to allow freelancers to add sub-projects
+    if {"" != $parent_id} {
+	im_project_permissions $user_id $parent_id view read write admin
+	if {$admin} { set perm_p 1 }
+    }
+
+    # Users with "add_projects" privilege can always create new projects...
+    if {[im_permission $user_id add_projects]} { set perm_p 1 } 
+    if {!$perm_p} { 
 	ad_return_complaint "Insufficient Privileges" "
             <li>You don't have sufficient privileges to see this page."
 	return
@@ -519,14 +528,30 @@ template::form::set_properties $form_id edit_buttons "[list [list "$button_text"
  
 if {[form is_submission $form_id]} {
     form get_values $form_id
-    if {![im_permission $user_id add_projects]} {
-	
-	# Double check for the case that this guy is a freelance
-	# project manager of the project or similar...
-	im_project_permissions $user_id $project_id view read write admin
-	if {!$write} {
-	    ad_return_complaint "Insufficient Privileges" "<li>You don't have sufficient privileges to see this page."
-	}
+
+    # Permission check. Cases include a user with full add_projects rights,
+    # but also a freelancer updating an existing project or a freelancer
+    # creating a sub-project of a project he or she can admin.
+    set perm_p 0
+
+    # Check for the case that this guy is a freelance
+    # project manager of the project or similar...
+    im_project_permissions $user_id $project_id view read write admin
+    if {$write} { set perm_p 1 }
+
+    # Check if the user has admin rights on the parent_id
+    # to allow freelancers to add sub-projects
+    if {"" != $parent_id} {
+	im_project_permissions $user_id $parent_id view read write admin
+	if {$write} { set perm_p 1 }
+    }
+
+    # Users with "add_projects" privilege can always create new projects...
+    if {[im_permission $user_id add_projects]} { set perm_p 1 } 
+
+    if {!$perm_p} { 
+	ad_return_complaint "Insufficient Privileges" "<li>You don't have sufficient privileges to see this page."
+	ad_script_abort
     }
     
     set n_error 0
