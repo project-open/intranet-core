@@ -100,7 +100,8 @@
 -- 910-919		im_translation_task_list
 -- 920-929		Intranet Portfolio Management
 -- 930-939		intranet-reporting
--- 940-999		reserved
+-- 940-949		intranet-confdb
+-- 950-999		reserved
 -- 1000-9999		reserved
 -- 10000-10000000	reserved
 
