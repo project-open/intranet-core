@@ -146,7 +146,8 @@
 -- 60000-69999  Customer DHL Malaysia reserved
 -- 70000-70999  Intranet Project Priority (1000)
 -- 71000-71999  Intranet Baseline (1000)
--- 72000-79999  reserved (10000)
+-- 72000-72999  Intranet SLA Management (1000)
+-- 73000-79999  reserved (10000)
 -- 80000-89999  reserved (10000)
 -- 90000-99999  reserved (10000)
 --100000-999999 reserved (900000)
