@@ -104,6 +104,7 @@ cvs checkout intranet-search-pg-files
 cvs checkout intranet-security-update-client
 cvs checkout intranet-security-update-server
 cvs checkout intranet-simple-survey
+cvs checkout intranet-sla-management
 cvs checkout intranet-sharepoint
 cvs checkout intranet-spam
 cvs checkout intranet-sql-selectors
