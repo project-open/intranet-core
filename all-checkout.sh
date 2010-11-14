@@ -61,6 +61,7 @@ cvs checkout intranet-crm-tracking
 cvs checkout intranet-cvs-integration
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
+cvs checkout intranet-earned-value-management
 cvs checkout intranet-exchange-rate
 cvs checkout intranet-expenses
 cvs checkout intranet-expenses-workflow
