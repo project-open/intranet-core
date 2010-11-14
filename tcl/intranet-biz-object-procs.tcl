@@ -355,13 +355,14 @@ ad_proc -public im_biz_object_roles_select { select_name object_id { default "" 
 
 
 ad_proc -public im_group_member_component { 
+    {-debug 0}
     object_id 
     current_user_id 
     { add_admin_links 0 } 
     { return_url "" } 
     { limit_to_users_in_group_id "" } 
     { dont_allow_users_in_group_id "" } 
-    {also_add_to_group_id "" } 
+    { also_add_to_group_id "" } 
 } {
     Returns an html formatted list of all the users in the specified
     group. 
@@ -529,7 +530,7 @@ ad_proc -public im_group_member_component {
 	# determine how to show the user: 
 	# -1: Show name only, 0: don't show, 1:Show link
 	set show_user [im_show_user_style $user_id $current_user_id $object_id]
-	ns_log Notice "im_group_member_component: user_id=$user_id, show_user=$show_user"
+	if {$debug} { ns_log Notice "im_group_member_component: user_id=$user_id, show_user=$show_user" }
 
 	if {$show_user == 0} { continue }
 

@@ -43,6 +43,7 @@ ad_proc -public im_gif {
     {-translate_p 1} 
     {-locale ""}
     {-type "gif"}
+    {-debug 0 }
     name 
     {alt ""} 
     {border 0} 
@@ -63,7 +64,6 @@ ad_proc -public im_gif {
     subsequent calls are faster. You'll need to restart the server
     if you change the pathes...
 } {
-    set debug 1
     if {$debug} { ns_log Notice "im_gif: name=$name" }
 
     set url "/intranet/images"

@@ -448,7 +448,6 @@ ad_proc -public im_opt_val { var_name } {
     set form_vars [ns_conn form]
     if {"" == $form_vars} { set form_vars [ns_set create] }
     set value [ns_set get $form_vars $var_name]
-    ns_log Notice "im_opt_val: found variable='$var_name' with value='$value' in HTTL header"
     return $value
 } 
 

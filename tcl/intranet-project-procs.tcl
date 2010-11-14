@@ -103,7 +103,15 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
 
 
 
-ad_proc -public im_project_permissions {user_id project_id view_var read_var write_var admin_var} {
+ad_proc -public im_project_permissions {
+    {-debug 0}
+    user_id 
+    project_id
+    view_var
+    read_var
+    write_var
+    admin_var
+} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $project_id
 } {
@@ -157,13 +165,15 @@ ad_proc -public im_project_permissions {user_id project_id view_var read_var wri
     set company_id [lindex $company_info 0]
     set project_status [lindex $company_info 1]
 
-    ns_log Notice "user_is_admin_p=$user_is_admin_p"
-    ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
-    ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
-    ns_log Notice "user_is_employee_p=$user_is_employee_p"
-    ns_log Notice "user_admin_p=$user_admin_p"
-    ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
-    ns_log Notice "project_status=$project_status"
+    if {$debug} {
+	ns_log Notice "user_is_admin_p=$user_is_admin_p"
+	ns_log Notice "user_is_group_member_p=$user_is_group_member_p"
+	ns_log Notice "user_is_group_admin_p=$user_is_group_admin_p"
+	ns_log Notice "user_is_employee_p=$user_is_employee_p"
+	ns_log Notice "user_admin_p=$user_admin_p"
+	ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
+	ns_log Notice "project_status=$project_status"
+    }
 
     set user_is_company_member_p [im_biz_object_member_p $user_id $company_id]
     set user_is_company_admin_p [im_biz_object_admin_p $user_id $company_id]
@@ -1526,11 +1536,18 @@ ad_proc im_project_clone {
 }
 
 
-ad_proc im_project_clone_base {parent_project_id project_name project_nr new_company_id clone_postfix} {
+ad_proc im_project_clone_base {
+    {-debug 0}
+    parent_project_id
+    project_name
+    project_nr
+    new_company_id
+    clone_postfix
+} {
     Create the minimum information for a clone project
     with a new name and project_nr for unique constraint reasons.
 } {
-    ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix"
+    if {$debug} { ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix" }
 
     set new_project_name $project_name
     set new_project_nr $project_nr
@@ -1641,10 +1658,14 @@ ad_proc im_project_clone_base {parent_project_id project_name project_nr new_com
 
 
 
-ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
+ad_proc im_project_clone_base2 {
+    {-debug 0}
+    parent_project_id
+    new_project_id
+} {
     copy project structure
 } {
-    ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    if {$debug} { ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id" }
     set errors "<li>Starting to clone base2 data: parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
     set query "
@@ -1709,10 +1730,14 @@ ad_proc im_project_clone_base2 {parent_project_id new_project_id} {
 
 
 
-ad_proc im_project_clone_members {parent_project_id new_project_id} {
+ad_proc im_project_clone_members {
+    {-debug 0}
+    parent_project_id 
+    new_project_id
+} {
     Copy projects members and administrators
 } {
-    ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id"
+    if {$debug} { ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id" }
     set errors "<li>Starting to clone member information"
     set current_user_id [ad_get_user_id]
 

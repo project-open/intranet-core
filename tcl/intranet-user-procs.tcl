@@ -19,7 +19,15 @@
 
 
 
-ad_proc -public im_user_permissions { current_user_id user_id view_var read_var write_var admin_var } {
+ad_proc -public im_user_permissions { 
+    {-debug 0}
+    current_user_id 
+    user_id 
+    view_var 
+    read_var 
+    write_var 
+    admin_var 
+} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $current_user_id on $user_id
 } {
@@ -68,7 +76,7 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     "
     set first_loop 1
     db_foreach profile_perm_check $profile_perm_sql {
-	ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p"
+	if {$debug} { ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p" }
 	if {$first_loop} {
 	    # set the variables to 1 if current_user_id is member of atleast
 	    # one group. Otherwise, an unpriviliged user could read the data
@@ -100,7 +108,7 @@ ad_proc -public im_user_permissions { current_user_id user_id view_var read_var 
     }
     if {$read} { set view 1 }
 
-    ns_log Notice "im_user_permissions: cur=$current_user_id, user=$user_id, view=$view, read=$read, write=$write, admin=$admin"
+    if {$debug} { ns_log Notice "im_user_permissions: cur=$current_user_id, user=$user_id, view=$view, read=$read, write=$write, admin=$admin" }
 
 }
 
@@ -481,6 +489,7 @@ ad_proc -public im_user_update_existing_user {
     {-also_add_to_biz_object ""}
     {-profiles ""}
     {-edit_profiles_p 0}
+    {-debug 0}
 } {
     Update an existing user and make sure he's member of all relevant tables
 } {
@@ -527,19 +536,19 @@ ad_proc -public im_user_update_existing_user {
 	"
     }
 
-    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
+    if {$debug} { ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name" }
     person::update \
 	-person_id $user_id \
 	-first_names $first_names \
 	-last_name $last_name
     
-    ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email"
+    if {$debug} { ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email" }
     party::update \
 	-party_id $user_id \
 	-url $url \
 	-email $email
     
-    ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name"
+    if {$debug} { ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name" }
     acs_user::update \
 	-user_id $user_id \
 	-screen_name $screen_name \
@@ -622,7 +631,7 @@ ad_proc -public im_user_update_existing_user {
 	# who is editing himself.
 	if {!$edit_profiles_p} { break }
 	
-	ns_log Notice "profile_tuple=$profile_tuple"
+	if {$debug} { ns_log Notice "profile_tuple=$profile_tuple" }
 	set profile_name [lindex $profile_tuple 0]
 	set profile_id [lindex $profile_tuple 1]
 
@@ -638,7 +647,7 @@ ad_proc -public im_user_update_existing_user {
 	}
 	
 	if {$is_member && !$should_be_member} {
-	    ns_log Notice "/users/new: => remove_member from $profile_name\n"
+	    if {$debug} { ns_log Notice "/users/new: => remove_member from $profile_name\n" }
 	    
 	    if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
 		ad_return_complaint 1 "<li>
@@ -648,14 +657,14 @@ ad_proc -public im_user_update_existing_user {
 	    
 	    # db_dml delete_profile $delete_rel_sql
 	    db_foreach membership_del $membership_del_sql {
-		ns_log Notice "/users/new: Going to delete rel_id=$rel_id"
+		if {$debug} { ns_log Notice "/users/new: Going to delete rel_id=$rel_id" }
 		membership_rel::delete -rel_id $rel_id
 	    }
 	    
 	    # Special logic: Revoking P/O Admin privileges also removes
 	    # Site-Wide-Admin privs
 	    if {$profile_id == [im_profile_po_admins]} { 
-		ns_log Notice "users/new: Remove P/O Admins => Remove Site Wide Admins"
+		if {$debug} { ns_log Notice "users/new: Remove P/O Admins => Remove Site Wide Admins" }
 		permission::revoke -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 	    }
 	    
@@ -665,7 +674,7 @@ ad_proc -public im_user_update_existing_user {
 	
 	
 	if {!$is_member && $should_be_member} {
-	    ns_log Notice "/users/new: => add_member to profile $profile_name\n"
+	    if {$debug} { ns_log Notice "/users/new: => add_member to profile $profile_name\n" }
 	    
 	    # Check if the profile_id belongs to the managable profiles of
 	    # the current user. Normally, only the managable profiles are
@@ -678,7 +687,7 @@ ad_proc -public im_user_update_existing_user {
 	    }
 	    
 	    # Make the user a member of the group (=profile)
-	    ns_log Notice "/users/new: => relation_add $profile_id $user_id"
+	    if {$debug} { ns_log Notice "/users/new: => relation_add $profile_id $user_id" }
 	    set rel_id [relation_add -member_state "approved" "membership_rel" $profile_id $user_id]
 	    db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
 	    
@@ -687,31 +696,31 @@ ad_proc -public im_user_update_existing_user {
 	    # PM, Sales, Accounting, SeniorMan => Employee
 	    # P/O Admin => Site Wide Admin
 	    if {$profile_id == [im_profile_project_managers]} { 
-		ns_log Notice "users/new: Project Managers => Employees"
+		if {$debug} { ns_log Notice "users/new: Project Managers => Employees" }
 		set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
 		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
 	    }
 	    
 	    if {$profile_id == [im_profile_accounting]} { 
-		ns_log Notice "users/new: Accounting => Employees"
+		if {$debug} { ns_log Notice "users/new: Accounting => Employees" }
 		set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
 		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
 	    }
 	    
 	    if {$profile_id == [im_profile_sales]} { 
-		ns_log Notice "users/new: Sales => Employees"
+		if {$debug} { ns_log Notice "users/new: Sales => Employees" }
 		set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
 		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
 	    }
 	    
 	    if {$profile_id == [im_profile_senior_managers]} { 
-		ns_log Notice "users/new: Senior Managers => Employees"
+		if {$debug} { ns_log Notice "users/new: Senior Managers => Employees" }
 		set rel_id [relation_add -member_state "approved" "membership_rel" [im_profile_employees] $user_id]
 		db_dml update_relation "update membership_rels set member_state='approved' where rel_id=:rel_id"
 	    }
 	    
 	    if {$profile_id == [im_profile_po_admins]} { 
-		ns_log Notice "users/new: P/O Admins => Site Wide Admins"
+		if {$debug} { ns_log Notice "users/new: P/O Admins => Site Wide Admins" }
 		permission::grant -object_id [acs_magic_object "security_context_root"] -party_id $user_id -privilege "admin"
 		im_security_alert -severity "Info" -location "users/new" -message "New P/O Admin" -value $email
 	    }
@@ -832,7 +841,9 @@ ad_proc -public im_user_subtypes {
 # ------------------------------------------------------------------------
 
 
-ad_proc -public im_user_nuke {user_id} { 
+ad_proc -public im_user_nuke {
+    user_id
+} { 
     Delete a user from the database -
     Extremely dangerous!
 } {
