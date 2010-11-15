@@ -41,6 +41,9 @@ switch $object_type {
     im_ticket {
 	lappend actions $assoc_msg [export_vars -base "/intranet-helpdesk/related-objects-associate" {return_url {object $object_id}}] ""
     }
+    im_sla_parameter {
+	lappend actions $assoc_msg [export_vars -base "/intranet-sla-management/related-objects-associate" {return_url object_id}] ""
+    }
 }
 
 
