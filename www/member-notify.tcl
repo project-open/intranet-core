@@ -33,7 +33,7 @@ ad_page_contract {
 
     @author Frank Bergmann
 } {
-    user_id_from_search:integer,multiple
+    user_id_from_search:integer,multiple,optional
     {subject:notnull "Subject"}
     {message:allhtml "Message"}
     {message_mime_type "text/plain"}
@@ -45,6 +45,8 @@ ad_page_contract {
     {process_mail_queue_now_p 1}
     {from_email ""}
 }
+
+if {![info exists user_id_from_search]} { set user_id_from_search "-999" }
 
 ns_log Notice "subject='$subject'"
 ns_log Notice "message_mime_type='$message_mime_type'"
