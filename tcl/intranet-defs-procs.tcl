@@ -100,6 +100,37 @@ ad_proc -public im_date_julian_to_ansi {
     return [dt_julian_to_ansi $julian]
 }
 
+ad_proc -public im_date_julian_to_epoch { 
+    { -throw_complaint_p 1 }
+    julian 
+} {
+    Returns seconds after 1/1/1970 00:00 GMT
+} {
+    set tz_offset_seconds [util_memoize "db_string tz_offset {select extract(timezone from now())}"]
+    return [expr 86400.0 * ($julian - 2440588.0) - $tz_offset_seconds]
+}
+
+ad_proc -public im_date_epoch_to_ansi { 
+    { -throw_complaint_p 1 }
+    epoch
+} {
+    Returns ansi date for epoch
+} {
+    set ansi [db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'YYYY-MM-DD')"]
+    return $ansi
+}
+
+ad_proc -public im_date_epoch_to_time { 
+    { -throw_complaint_p 1 }
+    epoch
+} {
+    Returns ansi date for epoch
+} {
+    set ansi [db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'HH24:MI:SS')"]
+    return $ansi
+}
+
+
 
 # ------------------------------------------------------------------
 # CSV File Parser
