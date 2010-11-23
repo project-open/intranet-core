@@ -318,6 +318,15 @@ BEGIN
 END;' language 'plpgsql';
 
 
+create or replace function im_name_from_id(double precision)
+returns varchar as '
+DECLARE
+	v_result	alias for $1;
+BEGIN
+	return v_result::varchar;
+END;' language 'plpgsql';
+
+
 
 create or replace function im_name_from_id(timestamptz)
 returns varchar as '
