@@ -409,31 +409,15 @@ if {$gantt_project_enabled_p} {
 	append export_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Export_to_GanttProject "Export to GanttProject"]</A></li>
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/openproj-project.xml" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Export_to_OpenProj "Export to OpenProj (beta)"]</A></li>
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project.xml" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Export_to_OpenProj "Export to Microsoft Project (alpha)"]</A></li>
         "
     }
 
     if {$write && [im_permission $current_user_id "view_gantt_proj_detail"]} {
         append export_html_content "
-	</ul><br><ul>
+	</ul><ul>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type gantt_project}}]\"
         >[lang::message::lookup "" intranet-ganttproject.Import_from_GanttProject "Import from GanttProject"]</A></li>
-
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type openproj}}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Import_from_OpenProj "Import from OpenProj (beta)"]</A></li>
-
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type microsoft_project}}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Import_from_MicrosoftProject "Import from Microsoft Project (alpha)"]</A></li>
         "
-
-        append export_html_content "
-	</ul><br><ul>
-        <li><A href=\"[export_vars -base "/intranet-ganttproject/taskjuggler" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Schedule_using_TaskJuggler "Schedule using TaskJuggler (alpha)"]</A></li>
-	"
     }
 }
 
