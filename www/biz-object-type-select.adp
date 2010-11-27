@@ -4,8 +4,8 @@
 
 <%= [im_box_header $page_title] %>
 
-<table cellspacing=2 cellpadding=2>
-<form action='@return_url;noquote@' method=POST>
+<form action='@return_url;noquote@' method='post'>
+<table cellspacing='2' cellpadding='2'>
 <%= [export_form_vars user_id_from_search] %>
 @pass_through_html;noquote@
 
