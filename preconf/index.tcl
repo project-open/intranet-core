@@ -21,6 +21,7 @@ set query "
 		p.*,
 		u.*,
 		pa.*,
+		p.person_id as sort_order,
 		im_name_from_user_id(p.person_id) as user_name
         from
 		persons p,
@@ -31,7 +32,7 @@ set query "
 		and p.person_id = u.user_id
 		and demo_password is not null
         order by
-		demo_sort_order,
+		sort_order,
 		u.user_id
 	LIMIT 20
 "
@@ -44,9 +45,9 @@ db_multirow -extend {view_url} users users_query $query {
 # ------------------------------------------------------
 # Get current user email
 
+set current_user_id [ad_conn untrusted_user_id]
 set username $username_org
 set email $email_org
-set current_user_id [ad_conn untrusted_user_id]
 
 if {"" == $email} {
     set email [db_string email "
