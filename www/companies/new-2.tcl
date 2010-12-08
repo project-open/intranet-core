@@ -235,7 +235,7 @@ where
 "
     db_dml update_offices $update_sql
 
-    im_audit -object_id $main_office_id -action update
+    im_audit -object_type "im_office" -object_id $main_office_id -action after_update
 
 
 # -----------------------------------------------------------------
@@ -263,7 +263,7 @@ where
 "
     db_dml update_company $update_sql
 
-    im_audit -object_id $company_id -action update
+    im_audit -object_type "im_office" -object_id $company_id -action after_update
 
 
 # -----------------------------------------------------------------

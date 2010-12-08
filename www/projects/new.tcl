@@ -820,8 +820,10 @@ if {[form is_valid $form_id]} {
 
     if {0 == $id_count} {
 	im_user_exit_call project_create $project_id
+        im_audit -object_type im_project -action after_create -object_id $project_id -status_id $project_status_id -type_id $project_type_id
     } else {
 	im_user_exit_call project_update $project_id
+	im_audit -object_type im_project -action after_update -object_id $project_id -status_id $project_status_id -type_id $project_type_id
     }
 
 

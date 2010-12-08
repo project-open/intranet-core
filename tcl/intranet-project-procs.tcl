@@ -1,4 +1,4 @@
-# /tcl/intranet-project-components.tcl
+# /intranet-core/tcl/intranet-project-procs.tcl
 #
 # Copyright (C) 2004 ]project-open[
 # The code is based on ArsDigita ACS 3.4
@@ -1531,6 +1531,7 @@ ad_proc im_project_clone {
 
     # User Exit
     im_user_exit_call project_create $cloned_project_id
+    im_audit -object_type im_project -action after_create -object_id $cloned_project_id
 
     return $cloned_project_id
 }
@@ -2772,3 +2773,4 @@ ad_proc im_project_super_project_id {
  
     return $super_project_id
 }
+

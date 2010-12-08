@@ -470,6 +470,7 @@ ad_proc -public im_user_create_new_user {
 
 	# Call the "user_create" or "user_update" user_exit
 	im_user_exit_call user_create $user_id
+	im_audit -object_type person -action after_create -object_id $user_id
     }
 
     return [array get creation_info]
@@ -746,6 +747,8 @@ ad_proc -public im_user_update_existing_user {
 
     # Call the "user_create" or "user_update" user_exit
     im_user_exit_call user_update $user_id
+    callback person_after_update -object_id $user_id
+
 }
 
 

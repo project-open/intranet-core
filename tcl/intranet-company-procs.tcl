@@ -355,7 +355,7 @@ namespace eval company {
 	set company_id [db_exec_plsql create_new_company {}]
 
 	# Record the action
-        im_audit -object_id $company_id -action create
+        im_audit -object_type "im_company" -object_id $company_id -action after_create
 
 	return $company_id
     }
@@ -566,8 +566,8 @@ ad_proc im_company_nuke {company_id} {
     ns_log Notice "im_company_nuke company_id=$company_id"
 
     # Log the action
-    im_audit -object_id $company_id -action nuke
-    
+    im_audit -object_type "im_company" -object_id $company_id -action before_delete
+
     set current_user_id [ad_get_user_id]
     set user_id $current_user_id
     set company_exists_p [db_string exists "select count(*) from im_companies where company_id = :company_id"]
@@ -654,7 +654,7 @@ ad_proc im_company_nuke {company_id} {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 
-	    im_audit -object_id $cost_id -action nuke -comment "Nuking cost as part of nuking company \#$company_id"
+	    im_audit -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 
@@ -671,7 +671,7 @@ ad_proc im_company_nuke {company_id} {
 	    set object_type [lindex $cost_info 1]
 	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 
-	    im_audit -object_id $cost_id -action nuke -comment "Nuking cost as part of nuking company \#$company_id."
+	    im_audit -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id."
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	

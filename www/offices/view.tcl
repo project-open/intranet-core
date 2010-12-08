@@ -59,7 +59,7 @@ if {!$read} {
 }
 
 # Check if the invoices was changed outside of ]po[...
-im_audit -object_id $office_id -action pre_update
+im_audit -object_type "im_office" -object_id $office_id -action before_view
 
 
 # ---------------------------------------------------------------

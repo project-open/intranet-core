@@ -611,8 +611,10 @@ ad_form -extend -name register -on_request {
     # Call the "user_create" or "user_update" user_exit
     if {$editing_existing_user} {
 	im_user_exit_call user_update $user_id
+	im_audit -object_type person -action after_update -object_id $user_id
     } else {
 	im_user_exit_call user_create $user_id
+	im_audit -object_type person -action after_create -object_id $user_id
     }
 
 

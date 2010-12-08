@@ -201,7 +201,7 @@ namespace eval office {
 	set office_id [db_exec_plsql create_new_office {}]
 
 	# Record the creation
-	im_audit -object_id $office_id -action create
+	im_audit -object_type "im_office" -object_id $office_id -action after_create
 
 	return $office_id
     }
@@ -379,7 +379,7 @@ ad_proc im_office_nuke {office_id} {
 } {
     ns_log Notice "im_office_nuke office_id=$office_id"
 
-    im_audit -object_id $office_id -action nuke
+    im_audit -object_type "im_office" -object_id $office_id -action before_delete
     
     set current_user_id [ad_get_user_id]
     set user_id $current_user_id

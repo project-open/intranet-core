@@ -31,13 +31,15 @@ ad_library {
 ad_proc -public im_audit  {
     -object_id:required
     {-object_type "" }
-    {-action update }
+    {-status_id "" }
+    {-type_id "" }
+    {-action "after_update" }
     {-comment "" }
 } {
     Generic audit for all types of objects.
     @param object_id The object that may have changed
     @param object_type We can save one SQL statement if the calling side already knows the type of the object
-    @param action One of {create|update|nuke|pre_update}:
+    @param action One of {before|after} + '_' + {create|update|delete} or {view}:
 		Create represent object creation.
 		Update is the default.
 		Delete refers to a "soft" delete, marking the object as deleted
@@ -45,10 +47,41 @@ ad_proc -public im_audit  {
 		Pre_update represents checks before the update of important objects (im_costs,
 		im_project). This way the system can detect changes from outside the system.
 } {
+    if {""       == $action} { set action "after_update" }
+    if {"update" == $action} { set action "after_update" }
+    if {"create" == $action} { set action "after_create" }
+    if {"delete" == $action} { set action "after_delete" }
+    if {"nuke"   == $action} { set action "after_delete" }
+    if {"before_view" == $action} { set action "before_update" }
+    if {"after_view" == $action} { set action "after_update" }
+
+    if {"" == $object_type || "" == $status_id || "" == $type_id} {
+	ns_log Warning "im_audit: object_type, type_id or status_id not defined for object_id=$object_id"
+	set ref_status_id ""
+	set ref_type_id ""
+	db_0or1row audit_object_info "
+		select	o.object_type,
+			im_biz_object__get_status_id(o.object_id) as ref_status_id,
+			im_biz_object__get_type_id(o.object_id) as ref_type_id
+		from	acs_objects o
+		where	o.object_id = :object_id
+	"
+
+	if {"" == $status_id && "" != $ref_status_id} { set status_id $ref_status_id }
+	if {"" == $type_id && "" != $ref_type_id} { set type_id $ref_type_id }
+    }
+
+    # Submit a callback so that customers can extend events
+    callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
+
+    # Call the audit implementation from intranet-audit commercial package if exists
     set err_msg ""
-    catch {
-	set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -action $action -comment $comment]
-    } 
+    set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
+    if {$intranet_audit_exists_p} {
+	catch {
+	    set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -action $action -comment $comment]
+	} 
+    }
 
     return $err_msg
 }
