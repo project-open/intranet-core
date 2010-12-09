@@ -81,6 +81,7 @@ set user_view_page "/intranet/users/view"
 set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
 set debug_html ""
+set email ""
 
 # ---------------------------------------------------------------
 # 
