@@ -457,7 +457,7 @@ ad_proc -public im_parameter {
     package_key
     {default ""}
 } {
-    Not tested or used yet!!!<br>
+    Not tested or used yet<br>
     Wrapper for ad_parameter with the extra functionality to create
     the parameter if it didn't exist before.<br>
     With ]project-open[ we don't need package ids because all ]po[
