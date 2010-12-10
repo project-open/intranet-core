@@ -40,12 +40,16 @@ set current_user_id [ad_maybe_redirect_for_registration]
 if {![info exists include_membership_rels_p] || "" == $include_membership_rels_p} { set include_membership_rels_p 0 }
 if {![info exists limit] || "" == $limit} { set limit 30 }
 
+set object_name [db_string oname "select acs_object__name(:object_id)"]
+set page_title [lang::message::lookup "" intranet-core.Related_Objects_for_object "Related Objects for '%object_name%'"]
+set context_bar [im_context_bar "[_ intranet-core.Add_member]"]
+
 # ---------------------------------------------------------------
 # Referenced Objects - Problem objects referenced by THIS object
 # ---------------------------------------------------------------
 
 set bulk_action_list {}
-lappend bulk_actions_list "[lang::message::lookup "" intranet-helpdesk.Delete "Delete"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-helpdesk.Remove_checked_items "Remove Checked Items"]"
+lappend bulk_actions_list "[lang::message::lookup "" intranet-helpdesk.Delete_Rel "Delete Relationship"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-helpdesk.Delete_the_relationship_help "Delete the _relationship_ between with the object (not the object itself)."]"
 
 
 # Determine the association link. Each object type has its own custom
@@ -113,7 +117,6 @@ set object_rel_sql "
 		r.rel_id,
 		r.rel_type as rel_type,
 		rt.pretty_name as rel_type_pretty,
-
 		CASE	WHEN r.object_id_one = :object_id THEN 'incoming'
 			WHEN r.object_id_two = :object_id THEN 'outgoing'
 			ELSE ''
