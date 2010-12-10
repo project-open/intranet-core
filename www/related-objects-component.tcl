@@ -14,7 +14,23 @@
 #    { object_id:integer "" }
 #    { include_membership_rels_p 0 }
 #    return_url 
+set show_master_p 0
 
+if {![info exists object_id]} {
+
+    # Allow to run as stand-alone page
+    ad_page_contract {
+	Shows the list of objects related to the current object
+       	@author frank.bergmann@project-open.com
+    } {
+	object_id:integer
+	{ include_membership_rels_p 0 }
+	{ return_url "" }
+	{ limit 100000 }
+    }
+
+    set show_master_p 1
+}
 
 # ---------------------------------------------------------------
 # Defaults & Security
@@ -22,6 +38,7 @@
 
 set current_user_id [ad_maybe_redirect_for_registration]
 if {![info exists include_membership_rels_p] || "" == $include_membership_rels_p} { set include_membership_rels_p 0 }
+if {![info exists limit] || "" == $limit} { set limit 30 }
 
 # ---------------------------------------------------------------
 # Referenced Objects - Problem objects referenced by THIS object
@@ -93,7 +110,6 @@ set object_rel_sql "
 		o.object_type as object_type,
 		ot.pretty_name as object_type_pretty,
 		otu.url as object_url_base,
-
 		r.rel_id,
 		r.rel_type as rel_type,
 		rt.pretty_name as rel_type_pretty,
@@ -101,7 +117,13 @@ set object_rel_sql "
 		CASE	WHEN r.object_id_one = :object_id THEN 'incoming'
 			WHEN r.object_id_two = :object_id THEN 'outgoing'
 			ELSE ''
-		END as direction
+		END as direction,
+		CASE	WHEN o.object_type = 'im_company' THEN 10
+			WHEN o.object_type = 'im_office' THEN 20
+			WHEN o.object_type = 'im_project' THEN 900
+			WHEN o.object_type = 'im_timesheet_task' THEN 910
+			ELSE 500
+		END as sort_order
 	from
 		acs_rels r,
 		acs_object_types rt,
@@ -120,12 +142,15 @@ set object_rel_sql "
 			r.object_id_two = :object_id
 		)
 	order by
+		sort_order,
 		r.rel_type,
 		o.object_type,
 		direction,
 		object_name
+	LIMIT :limit
 "
 
+set count 0
 db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_multirow object_rels $object_rel_sql {
     set object_url "$object_url_base$oid"
     set object_chk "<input type=\"checkbox\" 
@@ -141,5 +166,16 @@ db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_mul
 	outgoing { set direction_pretty [im_gif arrow_left] }
 	default  { set direction_pretty "" }
     }
+
+    incr count
 }
 
+set show_more_url ""
+if {$count == $limit} {
+    set show_more_url "
+	<a href='[export_vars -base "/intranet/related-objects-component" {object_id return_url}]'>
+	[lang::message::lookup "" intranet-core.Not_all_results_have_been_shown "Not all results have been shown."]<br>
+	[lang::message::lookup "" intranet-core.Show_more "Show more..."]
+	</a>
+    "
+}
