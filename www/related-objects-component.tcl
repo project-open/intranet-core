@@ -173,7 +173,7 @@ db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_mul
 set show_more_url ""
 if {$count == $limit} {
     set show_more_url "
-	<a href='[export_vars -base "/intranet/related-objects-component" {object_id return_url}]'>
+	<a href='[export_vars -base "/intranet/related-objects-component" {object_id include_membership_rels_p return_url}]'>
 	[lang::message::lookup "" intranet-core.Not_all_results_have_been_shown "Not all results have been shown."]<br>
 	[lang::message::lookup "" intranet-core.Show_more "Show more..."]
 	</a>
