@@ -530,8 +530,9 @@ ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
 db_dml remove_from_projects "delete from im_timesheet_task_dependencies"
 
 ns_write "<li>Cleanup acs_mail_lite_log"
-db_dml acs_mail_lite_log "delete from acs_mail_lite_mail_log"
-
+if {[im_table_exists acs_mail_lite_mail_log"]} {
+    db_dml acs_mail_lite_log "delete from acs_mail_lite_mail_log"
+}
 ns_write "<li>Cleanup Relationships (except for membership, composition & user_portrait)\n"
 set rels [db_list cr "
 	select rel_id from 
