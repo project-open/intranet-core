@@ -602,6 +602,16 @@ if {[im_table_exists im_release_items]} {
     db_dml remove_release_items "delete from im_release_items"
 }
 
+ns_write "<li>Cleanup SLA Parameters\n"
+if {[im_table_exists im_sla_parameters]} {
+    db_dml remove_release_items "delete from im_sla_parameters"
+}
+
+ns_write "<li>Cleanup SLA Service Hours\n"
+if {[im_table_exists im_sla_service_hours]} {
+    db_dml remove_release_items "delete from im_sla_service_hours"
+}
+
 ns_write "<li>Cleanup Gantt Projects\n"
 if {[im_table_exists im_gantt_projects]} {
     db_dml remove_gantt_projects "delete from im_gantt_projects"
