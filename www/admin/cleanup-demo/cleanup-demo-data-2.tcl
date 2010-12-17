@@ -529,6 +529,21 @@ db_dml remove_from_projects "delete from im_timesheet_tasks"
 ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
 db_dml remove_from_projects "delete from im_timesheet_task_dependencies"
 
+ns_write "<li>Cleanup acs_mail_lite_log"
+db_dml acs_mail_lite_log "delete from acs_mail_lite_mail_log"
+
+ns_write "<li>Cleanup Relationships (except for membership, composition & user_portrait)\n"
+set rels [db_list cr "
+	select rel_id from 
+	acs_rels
+	where rel_type not in ('user_portrait_rel', 'membership_rel', 'composition_rel')
+"]
+set cnt 0
+foreach rel_id $rels {
+    if {0 == [expr $cnt % 37]} { ns_write ".\n" }
+    db_string del_rel "select acs_rel__delete(:rel_id)"
+    incr cnt
+}
 
 
 ns_write "<li>Cleanup Indicator Results\n"
@@ -577,14 +592,20 @@ if {[im_table_exists survsimp_responses]} {
 
 
 
-
-
 ns_write "<li>Cleanup Conf Items\n"
 if {[im_table_exists im_conf_items]} {
     db_dml remove_helpdesk_conf_item_dependency "update im_tickets set ticket_conf_item_id = null"
     db_dml remove_from_conf_items "delete from im_conf_items"
 
-    set rels [db_list cr "select rel_id from acs_rels, acs_objects where object_id_two = object_id and object_type = 'im_conf_item'"]
+    set rels [db_list cr "
+	select rel_id from 
+	acs_rels, acs_objects 
+	where object_id_two = object_id and object_type = 'im_conf_item'
+    UNION
+	select rel_id from 
+	acs_rels, acs_objects 
+	where object_id_one = object_id and object_type = 'im_conf_item'
+    "]
     foreach rel_id $rels {
 	db_string del_rel "select acs_rel__delete(:rel_id)"
     }
