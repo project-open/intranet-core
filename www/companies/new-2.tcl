@@ -173,20 +173,16 @@ if {![exists_and_not_null office_path]} {
     set office_path "$company_path"
 }
 
-
 # Double-Click protection: the company Id was generated at the new.tcl page
-
-
 if {0 == $company_exists_p} {
-
     db_transaction {
 	# First create a new main_office:
 	set main_office_id [office::new \
-		-office_name	$office_name \
-		-company_id     $company_id \
-		-office_type_id [im_office_type_main] \
-		-office_status_id [im_office_status_active] \
-		-office_path	$office_path]
+		-office_name		$office_name \
+		-company_id     	$company_id \
+		-office_type_id 	[im_office_type_main] \
+		-office_status_id	[im_office_status_active] \
+		-office_path		$office_path]
 
 
 	# add users to the office as 
@@ -194,21 +190,20 @@ if {0 == $company_exists_p} {
         im_biz_object_add_role $user_id $main_office_id $role_id
 
 	ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
-	
 
 	# Now create the company with the new main_office:
 	set company_id [company::new \
-		-company_id $company_id \
-		-company_name	$company_name \
-		-company_path	$company_path \
-		-main_office_id	$main_office_id \
-		-company_type_id $company_type_id \
-		-company_status_id $company_status_id]
+		-company_id		$company_id \
+		-company_name		$company_name \
+		-company_path		$company_path \
+		-main_office_id		$main_office_id \
+		-company_type_id	$company_type_id \
+		-company_status_id	$company_status_id \
+	]
 	
 	# add users to the company as key account
 	set role_id [im_biz_object_role_key_account]
 	im_biz_object_add_role $user_id $company_id $role_id
-
     }
 }
 
@@ -220,36 +215,33 @@ if {0 == $company_exists_p} {
 # fraber 071120: Dont update office name, it can be changed
 #       office_name = :office_name,
 
-set update_sql "
+db_dml update_offices "
 update im_offices set
-	phone = :phone,
-	fax = :fax,
-	address_line1 = :address_line1,
-	address_line2 = :address_line2,
-	address_city = :address_city,
-	address_state = :address_state,
-	address_postal_code = :address_postal_code,
-	address_country_code = :address_country_code
+	phone =			:phone,
+	fax =			:fax,
+	address_line1 = 	:address_line1,
+	address_line2 = 	:address_line2,
+	address_city =		:address_city,
+	address_state = 	:address_state,
+	address_postal_code =	:address_postal_code,
+	address_country_code =	:address_country_code
 where
 	office_id = :main_office_id
 "
-    db_dml update_offices $update_sql
-
-    im_audit -object_type "im_office" -object_id $main_office_id -action after_update
 
 
 # -----------------------------------------------------------------
 # Update the Company
 # -----------------------------------------------------------------
 
-set update_sql "
+db_dml update_company "
 update im_companies set
 	company_name		= :company_name,
 	company_path		= :company_path,
 	vat_number		= :vat_number,
 	company_status_id	= :company_status_id,
 	old_company_status_id	= :old_company_status_id,
-	company_type_id	= :company_type_id,
+	company_type_id		= :company_type_id,
 	referral_source		= :referral_source,
 	start_date		= :start_date,
 	annual_revenue_id	= :annual_revenue_id,
@@ -261,10 +253,16 @@ update im_companies set
 where
 	company_id = :company_id
 "
-    db_dml update_company $update_sql
 
-    im_audit -object_type "im_office" -object_id $company_id -action after_update
 
+# Audit the action
+if {0 == $company_exists_p} {
+    im_audit -object_type "im_office" -object_id $main_office_id -type_id [im_office_type_main] -status_id [im_office_status_active] -action after_create
+    im_audit -object_type "im_company" -object_id $company_id -type_id $company_type_id -status_id $company_status_id -action after_create
+} else {
+    im_audit -object_type "im_office" -object_id $main_office_id -type_id [im_office_type_main] -status_id [im_office_status_active] -action after_update
+    im_audit -object_type "im_company" -object_id $company_id -type_id $company_type_id -status_id $company_status_id -action after_update
+}
 
 # -----------------------------------------------------------------
 # Make sure the creator and the manager become Key Accounts
