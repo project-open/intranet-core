@@ -78,6 +78,15 @@ foreach uid $user_id_from_search {
     }
 }
 
+
+# Determine the sender address
+set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
+catch {set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]}
+
+# Trim the subject. Otherwise we'll get MIME-garbage
+set subject [string trim $subject]
+
+
 # ---------------------------------------------------------------
 # Send to whom?
 # ---------------------------------------------------------------
@@ -135,100 +144,18 @@ foreach email $email_list {
 	set message_subst [lang::message::format $message $substitution_list]
     }
 
-    db_transaction {
-
-	# create the multipart message ('multipart/mixed')
-	set multipart_id [acs_mail_multipart_new -multipart_kind "mixed"]
-	ns_log Notice "member-notify: multipart_id=$multipart_id"
-
-	# ---------------------------------------------------------------    
-	# create an acs_mail_body (with content_item_id = multipart_id )
-	set body_id [acs_mail_body_new \
-			 -header_subject $subject \
-			 -content_item_id $multipart_id]
-	ns_log Notice "member-notify: body_id=$body_id"
-	
-
-	# ---------------------------------------------------------------    
-	# Create the main mail "content_item" and
-	# add the content_item to the multipart email
-	set content_item_name "$subject $time_date $body_id"
-	set content_item_id [content::item::new \
-				 -name $content_item_name \
-				 -title $subject \
-				 -mime_type $message_mime_type \
-				 -text $message_subst \
-				 -storage_type text \
-	]
-	set sequence_num [acs_mail_multipart_add_content \
-			      -multipart_id $multipart_id \
-			      -content_item_id $content_item_id]
-
-	ns_log Notice "member-notify: content_item_id=$content_item_id"
-	ns_log Notice "member-notify: sequence_num=$sequence_num"
-
-	# ---------------------------------------------------------------    
-	# Create the attachment content_item and
-	# add the content_item to the multipart email.
-	# We execute the multipart-add "manually", because
-	# we need to set the "mime_filename" field, so that
-	# the attachment shows up with the right filename
-	if {"" != $attachment_mime_type} {
-	    set content_item_attach_id [content::item::new \
-					    -name "$subject $time_date $body_id - attachment1" \
-					    -title "$subject" \
-					    -mime_type $attachment_mime_type \
-					    -text $attachment \
-					    -storage_type text \
-            ]
-	    # Get last multipart sequence no - should be 0
-	    set sequence_num [db_string multipart_sequence_nr "
-			select max(sequence_number) 
-			from acs_mail_multipart_parts 
-			where multipart_id = :multipart_id
-            " -default 0]
-	    db_dml insert_multipart_part "
-		    insert into acs_mail_multipart_parts (
-			multipart_id, mime_filename, sequence_number, content_item_id
-		    ) values (
-			:multipart_id, :attachment_filename, :sequence_num + 1, :content_item_attach_id
-		    )
-            "
-	    ns_log Notice "member-notify: content_item_attach_id=$content_item_attach_id"
-	    ns_log Notice "member-notify: sequence_num=$sequence_num"
-	}
-    
-	set to_email $email
-	if {"" == $to_email} { continue }
-	ns_log notice "export-mail: Mailing contact '$email'"
-	    
-	# Create a message for Queuing 
-	set message_id [im_exec_dml create_message "
-	acs_mail_queue_message__new (
-		null,			-- p_mail_link_id
-		:body_id,		-- p_body_id
-		null,			-- p_context_id
-		now()::date,		-- p_creation_date
-		:current_user_id,	-- p_creation_user
-		null,			-- p_creation_ip
-		'acs_mail_link'	-- p_object_type
-	)"]
-        ns_log Notice "member-notify: message_id=$message_id"
-	    
-	db_dml outgoing_queue "
-		insert into acs_mail_queue_outgoing ( 
-		    message_id, envelope_from, envelope_to 
-		) values ( 
-		    :message_id, :from_email, :to_email
-		)
-	"
-	ns_log Notice "member-notify-attachment: Outgoing queued for '$email'"
-    
-    } on_error {
-	ad_return_error "[_ parties-extension.unable_to_send_mailshot]" "<pre>$errmsg</pre>"
+    if {[catch {
+	acs_mail_lite::send \
+	    -send_immediately \
+	    -to_addr $email \
+	    -from_addr $sender_email \
+	    -subject $subject \
+	    -body $message_subst
+    } errmsg]} {
+        ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
+	ad_return_error $subject "<p>Error sending out mail:</p><div><code>[ad_quotehtml $errmsg]</code></div>"
 	ad_script_abort
     }
-
 }
 
 
