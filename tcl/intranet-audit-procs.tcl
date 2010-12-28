@@ -47,6 +47,7 @@ ad_proc -public im_audit  {
 		Pre_update represents checks before the update of important objects (im_costs,
 		im_project). This way the system can detect changes from outside the system.
 } {
+    # Deal with old action names during the transition period
     if {""       == $action} { set action "after_update" }
     if {"update" == $action} { set action "after_update" }
     if {"create" == $action} { set action "after_create" }
