@@ -1393,13 +1393,10 @@ ad_proc -public im_generate_auto_login {
     set user_salt ""
 
     set user_data_sql "
-        select
-                u.password as user_password,
+        select	u.password as user_password,
                 u.salt as user_salt
-        from
-                users u
-        where
-                u.user_id = :user_id"
+        from	users u
+        where	u.user_id = :user_id"
     db_0or1row get_user_data $user_data_sql
 
     # generate the expected auto_login variable
@@ -1421,7 +1418,7 @@ ad_proc -public im_valid_auto_login_p {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     # Quick check on tokens
-    set expected_auto_login [im_generate_auto_login -user_id $user_id]
+    set expected_auto_login [im_generate_auto_login -user_id $user_id -expiry_date $expiry_date]
     if {![string equal $auto_login $expected_auto_login]} { return 0 }
 
     if {$check_user_requires_manual_login_p} {
@@ -1442,16 +1439,34 @@ ad_proc -public im_valid_auto_login_p {
     # Ok, the tokens are identical and the guy is allowed to login via auto_login.
     # So we can log the dude in if the "expiry_date" is OK.
     if {"" == $expiry_date} { return 1 }
-    if {![regexp {[0-9]{4}-[0-9]{2}-[0-9]{2}-} $expiry_date]} { 
+
+
+    # Expiry_date has been set, so the results now depends only on the date comparison.
+    if {![regexp {[0-9]{4}-[0-9]{2}-[0-9]{2}} $expiry_date]} { 
 	ad_return_complaint 1 "<b>im_valid_auto_login_p</b>:
         You have specified a bad date syntax"
 	return 0
     }
     set current_date [db_string current_date "select to_char(sysdate, 'YYYY-MM-DD') from dual"]
-    if {[string compare $current_date $expiry_date]} { return 0 }
 
-    # Default: Forbidden to login
-    return 1
+    switch [expr 1 + [string compare $current_date $expiry_date]] {
+	0 {
+	    # current_date < expiry_date: OK
+	    return 1
+	}
+	1 {
+	    # current_date == expiry_date: OK
+	    return 1
+	}
+	2 {
+	    # current_date > expiry_date: NOT OK
+	    return 0
+	}
+	default {
+	    # Should never occur!
+	    return 0
+	}
+    }
 }
 
 # ---------------------------------------------------------------
