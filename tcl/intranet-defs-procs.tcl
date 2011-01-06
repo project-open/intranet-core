@@ -1393,14 +1393,14 @@ ad_proc -public im_generate_auto_login {
     set user_salt ""
 
     set user_data_sql "
-        select	u.password as user_password,
-                u.salt as user_salt
+        select	u.password as user_password
         from	users u
         where	u.user_id = :user_id"
     db_0or1row get_user_data $user_data_sql
 
     # generate the expected auto_login variable
-    return [ns_sha1 "$user_id$user_password$user_salt$expiry_date"]
+    set auto_login_string "$user_id$user_password$expiry_date"
+    return [ns_sha1 $auto_login_string]
 }
 
 ad_proc -public im_valid_auto_login_p {
