@@ -50,7 +50,7 @@ db_foreach otype_callbacks "select object_type from acs_object_types" {
     } -
     
     ad_proc -public -callback ${object_type}_after_create {
-	    {-object_id:required}
+	{-object_id:required}
 	{-status_id ""}
 	{-type_id ""}
     } {

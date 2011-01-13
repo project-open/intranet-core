@@ -73,6 +73,7 @@ ad_proc -public im_audit  {
     }
 
     # Submit a callback so that customers can extend events
+    ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id"
     callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
 
     # Call the audit implementation from intranet-audit commercial package if exists
