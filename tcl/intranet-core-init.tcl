@@ -24,7 +24,42 @@ ns_cache create im_company -timeout [ad_parameter -package_id [im_package_core_i
 # Generically create callbacks for all "core" object types
 # ---------------------------------------------------------------
 
-db_foreach otype_callbacks "select object_type from acs_object_types" {
+
+set object_types {
+    im_company
+    im_component_plugin
+    im_conf_item
+    im_cost_center
+    im_expense
+    im_expense_bundle
+    im_forum_topic
+    im_freelance_rfq
+    im_freelance_rfq_answer
+    im_fs_file
+    im_indicator
+    im_investment
+    im_invoice
+    im_material
+    im_menu
+    im_note
+    im_office
+    im_planning_item
+    im_profile
+    im_project
+    im_repeating_cost
+    im_report
+    im_sla_parameter
+    im_ticket
+    im_ticket_queue
+    im_timesheet_conf_object
+    im_timesheet_invoice
+    im_timesheet_task
+    im_trans_invoice
+    im_trans_task
+    im_user_absence
+}
+
+foreach object_type $object_types {
     
     ad_proc -public -callback ${object_type}_before_create {
 	{-object_id:required}
@@ -172,6 +207,30 @@ db_foreach otype_callbacks "select object_type from acs_object_types" {
 	{-object_id:required}
 	{-status_id ""}
 	{-type_id ""}
+    } {
+	This callback tracks acess to the object's main page.
+	
+	@param object_id ID of the $object_type 
+	@param status_id Optional status_id category. 
+		   This value is optional. You need to retrieve the status
+		   from the DB if the value is empty (which should rarely be the case)
+		   This field allows for quick filtering if the callback 
+		   implementation is to be executed only on certain object types.
+	@param type_id Optional type_id of category.
+		   This value is optional. You need to retrieve the status
+		   from the DB if the value is empty (which should rarely be the case)
+		   This field allows for quick filtering if the callback 
+		   implementation is to be executed only on certain object states.
+    } -
+
+    ad_proc -public -callback ${object_type}_form_fill {
+        -form_id:required
+        -object_id:required
+        { -object_type "" }
+        { -type_id ""}
+        { -page_url "default" }
+        { -advanced_filter_p 0 }
+        { -include_also_hard_coded_p 0 }
     } {
 	This callback tracks acess to the object's main page.
 	
