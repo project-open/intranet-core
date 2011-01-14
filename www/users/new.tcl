@@ -254,7 +254,7 @@ im_dynfield::append_attributes_to_form \
     -object_type "person" \
     -form_id "register" \
     -object_id $user_id \
-    -page_url "/intranet/users/new"
+    -page_url "/intranet/users/new" 
 
 
 # ---------------------------------------------------------------

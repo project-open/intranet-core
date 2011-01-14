@@ -46,7 +46,7 @@ user_permissions $current_user_id $user_id view read write admin
 # ------------------------------------------------------------------
 
 set info_actions [list {"Edit" edit}]
-set info_action_url "/intranet/users/view"
+set info_action_url [export_vars -base "/intranet/users/new" user_id]
 ad_form \
     -name userinfo \
     -action $info_action_url \
@@ -71,6 +71,20 @@ ad_form \
 		pa.party_id = u.user_id
 
     }
+
+
+# Find out all the groups of the user and map these
+# groups to im_category "Intranet User Type"
+set user_subtypes [im_user_subtypes $user_id]
+
+# Append dynfields to the form
+im_dynfield::append_attributes_to_form \
+    -form_display_mode display \
+    -object_subtype_id $user_subtypes \
+    -object_type "person" \
+    -form_id "userinfo" \
+    -object_id $user_id \
+    -page_url "/intranet/users/new"
 
 
 # ------------------------------------------------------------------
