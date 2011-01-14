@@ -57,8 +57,10 @@ set object_types {
     im_trans_invoice
     im_trans_task
     im_user_absence
+    person
 }
 
+# Create callbacks for all objects
 foreach object_type $object_types {
     
     ad_proc -public -callback ${object_type}_before_create {
