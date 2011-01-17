@@ -1248,7 +1248,7 @@ ad_proc -public im_project_hierarchy_component {
 		$subproject_status_sql
 		and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
 		and parent.project_id = :super_project_id
-	order by children.tree_sortkey
+	order by children.tree_sortkey DESC
     "
 
     # ---------------------------------------------------------------
