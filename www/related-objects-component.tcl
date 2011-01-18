@@ -28,7 +28,7 @@ if {![info exists include_membership_rels_p] || "" == $include_membership_rels_p
 # ---------------------------------------------------------------
 
 set bulk_action_list {}
-lappend bulk_actions_list "[lang::message::lookup "" intranet-helpdesk.Delete "Delete"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-helpdesk.Remove_checked_items "Remove Checked Items"]"
+lappend bulk_actions_list "[lang::message::lookup "" intranet-helpdesk.Delete_Association "Delete Association"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-helpdesk.Remove_checked_items "Remove Checked Items"]"
 
 
 # Determine the association link. Each object type has its own custom
