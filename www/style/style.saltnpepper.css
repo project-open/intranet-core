@@ -790,6 +790,11 @@ a   span  {float:none;}
   background: url('/intranet/images/navbar_default/wrench_bw.png') no-repeat;
   text-indent: -5000px;
 }
+.icon_wrench_po img {
+	width: auto;
+	height: 10px;
+	margin-left: 1px;
+}
 .component_icons .icon_seperator {
   width: 1px;
   height: 15px;
