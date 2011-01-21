@@ -107,6 +107,16 @@ a {
   color: #2e2e2e;
 }
 
+
+img {
+	border-style: none;
+}
+
+a img {
+	text-decoration: none;
+	border: 0 none;
+}
+
 a:hover {
 	background:transparent none repeat scroll 0%;
 }
@@ -1479,7 +1489,7 @@ div.xowiki-content h1 {
         padding-left:0;
         text-decoration:none;
         border-bottom: solid silver 1px; color: #222222;
-	padding-top:30px;
+	padding-top:10px;
 }
 
 div.xowiki-content h2 {
@@ -1582,3 +1592,4 @@ div.xowiki-content hr {
 #intranetlogo {
 	max-height: 63px;
 }
+
