@@ -16,7 +16,7 @@
 ad_page_contract {
     Convert some parameters values from Windows to Linux
 } {
-    { install_dir "C:/ProjectOpen" }
+    { install_dir "c:/project-open" }
     { return_url "/intranet/admin/" }
 }
 
@@ -53,19 +53,45 @@ ns_write "<ul>\n"
 #
 ns_write "<li>Converting pathes from /web/&lt;server&gt;/ to \"$install_dir/ \n"
 db_dml update_pathes "
-update apm_parameter_values
-set attr_value = '$install_dir/' || substring(attr_value from '^/web/\[a-zA-Z\]+/(.*)')
-where attr_value ~* '^/web/\[a-zA-Z\]+/'
+	update apm_parameter_values
+	set attr_value = '$install_dir/' || substring(attr_value from '^/web/\[a-zA-Z\]+/(.*)')
+	where attr_value ~* '^/web/\[a-zA-Z\]+/'
 "
 
 
 # Convert the find command
-ns_write "<li>Converting /usr/bin/find to /bin/find\n"
-db_dml update_pathes "
-update apm_parameter_values
-set attr_value = '/usr/bin/find'
-where attr_value = '/bin/find'
-"
+ns_write "<li>Set the find command from /usr/bin/find to /bin/find\n"
+parameter::set_from_package_key -package_key "intranet-core" -parameter "FindCmd" -value "/bin/find"
+
+
+# Set pathes for binaries
+set dot_path "./bin/dot.bat"
+ns_write "<li>Set pathes for acs-workflow graphwiz_dot_path the windows dot.bat wrapper"
+parameter::set_from_package_key -package_key "acs-workflow" -parameter "graphviz_dot_path" -value $dot_path
+
+set tmp_path "./servers/projop/tmp"
+ns_write "<li>Set pathes for acs-workflow tmp_path to a suitable Windows value: '$tmp_path'"
+parameter::set_from_package_key -package_key "acs-workflow" -parameter "tmp_path" -value $tmp_path
+
+set pathes {
+    { intranet-core		BackupBasePathUnix		./servers/projop/filestorage/backup		}
+    { intranet-filestorage	HomeBasePathUnix		./servers/projop/filestorage/home		}
+    { intranet-filestorage	ProjectSalesBasePathUnix	./servers/projop/filestorage/project_sales	}
+    { intranet-filestorage	UserBasePathUnix  		./servers/projop/filestorage/users		}
+    { intranet-filestorage	BugBasePathUnix			./servers/projop/filestorage/bugs		}
+    { intranet-filestorage	CompanyBasePathUnix		./servers/projop/filestorage/projects		}
+    { intranet-filestorage	ProjectBasePathUnix		./servers/projop/filestorage/projects		}
+    { intranet-filestorage	TicketBasePathUnix		./servers/projop/filestorage/tickets		}
+    { intranet-invoices		InvoiceTemplatePathUnix		./servers/projop/filestorage/templates		}
+}
+
+foreach tuple $pathes {
+    set package [lindex $tuple 0]
+    set param [lindex $tuple 1]
+    set base_path [lindex $tuple 2]
+    ns_write "<li>Set path for intranet-filestorage $param to: '$base_path'"
+    parameter::set_from_package_key -package_key $package -parameter $param -value $base_path
+}
 
 
 ns_write "</ul>\n"
