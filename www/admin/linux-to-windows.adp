@@ -13,7 +13,7 @@ manually to run a preconfigured
 <span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span>
 installation from Linux with Windows. In particular this command does:
 <ul>
-<li>Convert all pathes from /web/&lt;server&gt;/... to C:/ProjectOpen/... 
+<li>Convert all pathes from /web/&lt;server&gt;/... to C:/project-open/... 
 <li>Converts the /usr/bin/find command to /bin/find
 </ul>
 </p>
@@ -24,7 +24,8 @@ installation from Linux with Windows. In particular this command does:
   <td align=left>Server Name</td>
   <td align=left>
     <form action=linux-to-windows-2 method=POST>
-    <input type=text name=install_dir value="@install_dir@"><br>
+    <input type=text name=install_dir value="@install_dir@"> (something like: "c:/project-open" with forward slashes)
+    <br>
     <input type=submit>
     </form>
   </td>

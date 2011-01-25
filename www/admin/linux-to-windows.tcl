@@ -16,7 +16,7 @@
 ad_page_contract {
     Convert some parameters values from Windows to Linux
 } {
-    { install_dir "C:/ProjectOpen" }
+    { install_dir "" }
     { return_url "/intranet/admin/" }
 }
 
@@ -33,3 +33,12 @@ if {!$user_is_admin_p} {
 }
 
 set page_title "Linux - to - Windows"
+
+if {"" == $install_dir} {
+    # something like "C:/project-open"
+    set install_dir [acs_root_dir]
+
+    # Remove "/servers ..."
+    if {[regexp {^(.*)\/servers.*} $install_dir match base_dir]} { set install_dir $base_dir }
+
+}
