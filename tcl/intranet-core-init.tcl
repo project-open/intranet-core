@@ -59,6 +59,7 @@ set object_types {
     im_trans_task
     im_user_absence
     person
+    user
 }
 
 # Create callbacks for all objects
