@@ -29,6 +29,7 @@ set object_types {
     im_company
     im_component_plugin
     im_conf_item
+    im_cost
     im_cost_center
     im_expense
     im_expense_bundle
