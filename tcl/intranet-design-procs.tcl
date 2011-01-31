@@ -232,7 +232,6 @@ ad_proc -public im_gif_static {
 	"bb_yellow"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
 	"bb_purple"	{ return "<img src=\"$url/$name.gif\" width=$width height=\"$height\" border=$border title=\"$alt\" alt=\"$alt\">" }
 
-
 	"comp_add"	{ return "<img src=$navbar_gif_url/comp_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"arrow_comp_left" { return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"arrow_comp_right" { return "<img src=$navbar_gif_url/$name.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
