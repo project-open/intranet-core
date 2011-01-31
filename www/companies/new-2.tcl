@@ -175,36 +175,38 @@ if {![exists_and_not_null office_path]} {
 
 # Double-Click protection: the company Id was generated at the new.tcl page
 if {0 == $company_exists_p} {
-    db_transaction {
-	# First create a new main_office:
-	set main_office_id [office::new \
+
+    # Disabled db_transaction here. This causes
+    # a strange erroron V4.0, at least on Windows...
+
+    # First create a new main_office:
+    set main_office_id [office::new \
 		-office_name		$office_name \
 		-company_id     	$company_id \
 		-office_type_id 	[im_office_type_main] \
 		-office_status_id	[im_office_status_active] \
 		-office_path		$office_path]
 
-
-	# add users to the office as 
-        set role_id [im_biz_object_role_office_admin]
-        im_biz_object_add_role $user_id $main_office_id $role_id
-
-	ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
-
-	# Now create the company with the new main_office:
-	set company_id [company::new \
+    # add users to the office as 
+    set role_id [im_biz_object_role_office_admin]
+    im_biz_object_add_role $user_id $main_office_id $role_id
+    
+    ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
+    
+    # Now create the company with the new main_office:
+    set company_id [company::new \
 		-company_id		$company_id \
 		-company_name		$company_name \
 		-company_path		$company_path \
 		-main_office_id		$main_office_id \
 		-company_type_id	$company_type_id \
 		-company_status_id	$company_status_id \
-	]
+    ]
 	
-	# add users to the company as key account
-	set role_id [im_biz_object_role_key_account]
-	im_biz_object_add_role $user_id $company_id $role_id
-    }
+    # add users to the company as key account
+    set role_id [im_biz_object_role_key_account]
+    im_biz_object_add_role $user_id $company_id $role_id
+
 }
 
 
