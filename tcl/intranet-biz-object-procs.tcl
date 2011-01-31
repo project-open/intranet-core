@@ -199,6 +199,7 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 }
 
 ad_proc -public im_biz_object_add_role { 
+    {-debug_p 0}
     {-percentage ""}
     {-propagate_superproject_p 1}
     user_id 
@@ -211,6 +212,7 @@ ad_proc -public im_biz_object_add_role {
 	   because otherwise members of subprojects wouldn't even
 	   be able to get to their subproject.
 } {
+    if {$debug_p} { ns_log Notice "im_biz_object_add_role: percentage=$percentage, propagate=$propagate_superproject_p, user_id=$user_id, object_id=$object_id, role_id=$role_id" }
     if {"" == $user_id || 0 == $user_id} { return }
 
     set user_ip [ad_conn peeraddr]
