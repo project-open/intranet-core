@@ -46,6 +46,9 @@ switch $action {
     add_administratable {
 	im_exec_dml grant_administratable "im_grant_permission($object_id,$horiz_group_id,'admin')"
     }
+    add_take_survey {
+	im_exec_dml grant_take_survey "im_grant_permission($object_id,$horiz_group_id,'survsimp_take_survey')"
+    }
     remove_viewable {
 	im_exec_dml revoke_viewable "im_revoke_permission($object_id,$horiz_group_id,'view')"
     }
@@ -57,6 +60,9 @@ switch $action {
     }
     remove_administratable {
 	im_exec_dml revoke_administratable "im_revoke_permission($object_id,$horiz_group_id,'admin')"
+    }
+    remove_take_survey {
+	im_exec_dml revoke_take_survey "im_revoke_permission($object_id,$horiz_group_id,'survsimp_take_survey')"
     }
     default {
 	ad_return_complaint 1 "Unknown action: '$action'"
