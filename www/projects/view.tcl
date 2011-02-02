@@ -333,7 +333,8 @@ set column_sql "
 	where
 		a.widget_name = w.widget_name and
 		a.acs_attribute_id = aa.attribute_id and
-		aa.object_type = 'im_project'
+		aa.object_type = 'im_project' and
+		't' = acs_permission__permission_p(a.attribute_id, :current_user_id, 'read')
 	order by
 		coalesce(la.pos_y,0), coalesce(la.pos_x,0)
 "
