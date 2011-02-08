@@ -163,7 +163,7 @@ ad_proc im_category_select_helper {
                 category_description,
                 parent_only_p,
                 enabled_p,
-		sort_order
+		coalesce(sort_order, category_id) as sort_order
         from
                 im_categories
         where
