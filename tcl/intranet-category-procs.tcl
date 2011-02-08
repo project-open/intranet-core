@@ -113,6 +113,7 @@ ad_proc im_category_select {
 } {
     if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
 
+set no_cache_p 1
     if {$no_cache_p} {
 	return [im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default]
     } else {
@@ -161,7 +162,8 @@ ad_proc im_category_select_helper {
                 category,
                 category_description,
                 parent_only_p,
-                enabled_p
+                enabled_p,
+		sort_order
         from
                 im_categories
         where
@@ -171,7 +173,7 @@ ad_proc im_category_select_helper {
         order by lower(category)
     "
     db_foreach category_select $sql {
-        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
         set level($category_id) 0
     }
 
@@ -239,7 +241,6 @@ ad_proc im_category_select_helper {
             and infinite loop. Please notify your system administrator."
             return "Infinite Loop Error"
         }
-#	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
     }
 
     set base_level 0
@@ -253,8 +254,13 @@ ad_proc im_category_select_helper {
 
     # Sort the category list's top level. We currently sort by category_id,
     # but we could do alphabetically or by sort_order later...
-    set category_list [array names cat]
-    set category_list_sorted [lsort $category_list]
+    # Every entry consist of category_id -> {$category_id $category $category_description $parent_only_p $enabled_p $sort_order}
+    set category_ids [array names cat]
+    set category_values [list]
+    foreach cid $category_ids { lappend category_values $cat($cid) }
+    set category_values_sorted [qsort $category_values [lambda {s} { lindex $s 5 }]]
+    set category_list_sorted [list]
+    foreach v $category_values_sorted { lappend category_list_sorted [lindex $v 0] }
 
     # Now recursively descend and draw the tree, starting
     # with the top level
