@@ -670,6 +670,7 @@ a   span  {float:none;}
 	margin-top: 0px;
 	border: 1px #999;
 	visibility: hidden;
+	width: auto;
 }
 
 

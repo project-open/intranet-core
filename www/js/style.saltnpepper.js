@@ -20,6 +20,7 @@ function extendContract(){
 			// make expand tab arrow image face left (inwards)
 			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
 			document.getElementById('slave_content').style.visibility='visible';
+                        document.getElementById('slave_content').style.width='243';
 			// [temp] set back to height=auto when animation is done, should be triggered based on event  
 			var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
 			poSetCookie('isExtendedCookie',1,90);
@@ -33,6 +34,7 @@ function extendContract(){
 			// make expand tab arrow image face right (outwards)
 			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 			document.getElementById('slave_content').style.visibility='hidden';
+                        document.getElementById('slave_content').style.width='0';
 			poSetCookie('isExtendedCookie',0,90);
 		}
 		// document.getElementById('fullwidth-list').style.visibility='visible';
