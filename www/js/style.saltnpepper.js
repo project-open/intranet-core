@@ -7,9 +7,7 @@ var opacityDuration = 1500;
 isExtended = 1;
 
 function extendContract(){
-	// alert('extendContract');
         var node_to_move=document.getElementById("sidebar");
-//	if (document.getElementById("sidebar") != null) {
 		if(isExtended == 0){
 			if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
 			sideBarSlide(0, height, 0, width);
@@ -20,7 +18,9 @@ function extendContract(){
 			// make expand tab arrow image face left (inwards)
 			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
 			document.getElementById('slave_content').style.visibility='visible';
+			document.getElementById('filter-list').style.visibility='visible';
                         document.getElementById('slave_content').style.width='243';
+                        document.getElementById('filter-list').style.width='243';
 			// [temp] set back to height=auto when animation is done, should be triggered based on event  
 			var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
 			poSetCookie('isExtendedCookie',1,90);
@@ -35,28 +35,24 @@ function extendContract(){
 			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 			document.getElementById('slave_content').style.visibility='hidden';
                         document.getElementById('slave_content').style.width='0';
+			document.getElementById('filter-list').style.visibility='hidden';
+                        document.getElementById('filter-list').style.width='0';
 			poSetCookie('isExtendedCookie',0,90);
 		}
-		// document.getElementById('fullwidth-list').style.visibility='visible';
-//	}
 }
 
 function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
-	//  $("sideBarContents").css ({'height': fromHeight, 'width': fromWidth});
-	//  $("#sideBarContents").animate( { 'height': toHeight, 'width': toWidth }, { 'queue': false, 'duration': slideDuration }, "linear" );
 	$("sidbar").css ({'height': fromHeight, 'width': fromWidth});
 	$("#sidebar").animate( { 'height': toHeight, 'width': toWidth }, { 'queue': false, 'duration': slideDuration }, "linear" );
 
 }
 
 function sideBarOpacity(from, to){
-	// $("#sideBarContents").animate( { 'opacity': to }, opacityDuration, "linear" );
 	$("#filter").animate( { 'opacity': to }, opacityDuration, "linear" );
 }
 
 $(function(){
   	// Document is ready
-	// $('#sideBarTab').click( function() { extendContract(); return false; }); 
 	$('#sideBarTab').click( function() { 
 		extendContract(); 
 		return false; });
