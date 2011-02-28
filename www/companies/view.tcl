@@ -359,7 +359,6 @@ if { $admin > 0 } {
 
 set company_members [im_group_member_component $company_id $user_id $admin $return_url [im_employee_group_id]]
 
-# ad_return_complaint 1 $user_is_employee_p
 if {!$user_is_employee_p} { set company_members "" }
 
 set enable_project_estimates 0

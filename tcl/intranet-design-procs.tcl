@@ -319,13 +319,9 @@ ad_proc -public im_table_with_title {
     Returns a two row table with background colors
 } {
     if {"" == $body} { return "" }
-
     set page_url [im_component_page_url]
-
     return "[im_box_header $title]$body[im_box_footer]"
-
 }
-
 
 
 # --------------------------------------------------------
@@ -621,6 +617,7 @@ ad_proc -public im_sub_navbar {
     @title_class CSS class of the title line
 } {
     set user_id [ad_get_user_id]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
     set url_stub [ns_conn url]
 
@@ -745,14 +742,20 @@ ad_proc -public im_sub_navbar {
 	append navbar [im_navbar_tab [im_navbar_help_link] [im_gif help $help_text] 0]
     }
 
+    if {$admin_p} {
+	set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $parent_menu_id}}]
+	append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+    }
+
     return "
  	 <div id=\"navbar_sub_wrapper\">
 	    <span id='titleSubmenu'>$title</span>
 	    <ul id=\"navbar_sub\">
 	      $navbar
 	    </ul>
-	 </div>"
-
+	 </div>
+   "
 }
 
 ad_proc -private im_sub_navbar_menu_helper { 
@@ -809,6 +812,7 @@ ad_proc -public im_navbar {
 #    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
 
     set user_id [ad_get_user_id]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
 
@@ -896,6 +900,13 @@ ad_proc -public im_navbar {
 	    append navbar [im_navbar_tab $url $name $selected]
 	}
 	incr ctr
+    }
+
+
+    if {$admin_p} {
+	set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
+	append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
     }
 
     set page_url [im_component_page_url]

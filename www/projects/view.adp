@@ -16,40 +16,11 @@
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td valign=top width='50%'>
-
-    <!--Project Base Data -->
-    <%= [im_table_with_title [lang::message::lookup "" intranet-core.Project_Base_Data "Project Base Data"] $project_base_data_html] %>
-
-    <!-- Left Component Bay -->
     <%= [im_component_bay left] %>
   </td>
   <td width=2>&nbsp;</td>
   <td valign=top>
-
-	<%= [im_box_header [lang::message::lookup "" intranet-core.Sub_Projects "Sub-Projects"]] %>
-  	     
-
-	<if @subproject_filtering_enabled_p@>
-		<table class="table_component_clean">
-		<form action="@current_url;noquote@" method=GET>
-		<%= [export_form_vars project_id] %>
-		<tr>
-		<td class=form-label><%= [lang::message::lookup "" intranet-core.Filter_Status "Filter Status"] %></td>
-		<td class=form-widget>
-		<%= [im_category_select -include_empty_p 1 "Intranet Project Status" subproject_status_id $subproject_status_id] %>
-		<input type=submit value="Go">
-		</td>
-		</tr>
-		</form>
-		</table>
-	</if>
-	<%= [im_project_hierarchy_component -project_id $project_id -subproject_status_id $subproject_status_id] %>
-
-        <%= [im_box_footer] %>
-
-	<!-- Right Component Bay -->
 	<%= [im_component_bay right] %>
-
   </td>
 </tr>
 </table><br>

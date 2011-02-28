@@ -88,47 +88,45 @@ template::element::set_value $form_id select_category_type $select_category_type
 
 if {$show_add_new_category_p} {
 
-set category_list_html "
-<table border=0>
-<tr>
-  <td class=rowtitle align=center>Id</td>
-  <td class=rowtitle align=center>En</td>
-  <td class=rowtitle align=center>Category</td>
-  <td class=rowtitle align=center>Sort<br>Order</td>
-  <td class=rowtitle align=center>Is-A</td>
-  <td class=rowtitle align=center>Int1</td>
-  <td class=rowtitle align=center>Int2</td>
-  <td class=rowtitle align=center>String1</td>
-  <td class=rowtitle align=center>String2</td>
-"
+    set category_list_html "
+	<table border=0>
+	<tr>
+	  <td class=rowtitle align=center>Id</td>
+	  <td class=rowtitle align=center>En</td>
+	  <td class=rowtitle align=center>Category</td>
+	  <td class=rowtitle align=center>Sort<br>Order</td>
+	  <td class=rowtitle align=center>Is-A</td>
+	  <td class=rowtitle align=center>Int1</td>
+	  <td class=rowtitle align=center>Int2</td>
+	  <td class=rowtitle align=center>String1</td>
+	  <td class=rowtitle align=center>String2</td>
+    "
 
-if {[string equal "All" $select_category_type]} {
-    append category_list_html "<td class=rowtitle align=center>Category Type</td>"
-}
-append category_list_html "
-  <td class=rowtitle align=center>Description</td>
-</tr>"
+    if {[string equal "All" $select_category_type]} {
+	append category_list_html "<td class=rowtitle align=center>Category Type</td>"
+    }
+    append category_list_html "<td class=rowtitle align=center>Description</td></tr>"
 
-# Now let's generate the sql query
-set criteria [list]
-set bind_vars [ns_set create]
+    # Now let's generate the sql query
+    set criteria [list]
+    set bind_vars [ns_set create]
+    
+    set category_type_criterion "1=1"
+    if {![string equal "All" $select_category_type]} {
+	set category_type_criterion "c.category_type = :select_category_type"
+    }
+    
+    set ctr 1
+    set old_id 0
+    db_foreach category_select {} {
 
-set category_type_criterion "1=1"
-if {![string equal "All" $select_category_type]} {
-    set category_type_criterion "c.category_type = :select_category_type"
-}
+	incr ctr
 
-set ctr 1
-set old_id 0
-db_foreach category_select {} {
+	if {"t" == $enabled_p } { set enabled_p "" }
 
-    incr ctr
-
-    if {"t" == $enabled_p } { set enabled_p "" }
-
-    if {$old_id == $category_id} {
-	# We got another is-a for the same category
-	append category_list_html "
+	if {$old_id == $category_id} {
+	    # We got another is-a for the same category
+	    append category_list_html "
 	<tr $bgcolor([expr $ctr % 2])>
 	  <td></td>
 	  <td></td>
@@ -139,15 +137,15 @@ db_foreach category_select {} {
 	  <td></td>
 	  <td></td>
 	  <td></td>
-	"
-	if {[string equal "All" $select_category_type]} {
-	    append category_list_html "<td></td>"
+	    "
+	    if {[string equal "All" $select_category_type]} {
+		append category_list_html "<td></td>"
+	    }
+	    append category_list_html "<td></td></tr>\n"
+	    continue
 	}
-	append category_list_html "<td></td></tr>\n"
-	continue
-    }
-
-    append category_list_html "
+	
+	append category_list_html "
 	<tr $bgcolor([expr $ctr % 2])>
 	  <td>$category_id</td>
 	  <td>$enabled_p</td>
@@ -158,30 +156,41 @@ db_foreach category_select {} {
 	  <td>$aux_int2 $aux_int2_cat</td>
 	  <td>$aux_string1</td>
 	  <td>$aux_string2</td>
-    "
-    if {[string equal "All" $select_category_type]} {
-	append category_list_html "<td>$select_category_type</td>"
+        "
+	if {[string equal "All" $select_category_type]} {
+	    append category_list_html "<td>$select_category_type</td>"
+	}
+	append category_list_html "<td>$category_description</td></tr>\n"
+	set old_id $category_id
     }
-    append category_list_html "<td>$category_description</td></tr>\n"
-    set old_id $category_id
-}
+    
+    append category_list_html "</table>"
+    
+    if {![string equal "All" $select_category_type]} {
+	set category_type $select_category_type
+	
+	set new_href [export_vars -base "one" {{category_type $select_category_type}}]
+	
+	append category_list_html "
+	<ul>
+	  <a href=\"$new_href\">
+	  Add a category
+	  </a>
+	</ul>
+	"
 
-append category_list_html "</table>"
-
-if {![string equal "All" $select_category_type]} {
-    set category_type $select_category_type
-
-    set new_href [export_vars -base "one" {{category_type $select_category_type}}]
-
-    append category_list_html "
-<ul>
-  <a href=\"$new_href\">
-  Add a category
-  </a>
-</ul>"
-
-}
-
+	set object_type [im_category_object_type -category_type "$select_category_type"]
+	if {$object_type ne ""} {
+	    set tam_href [export_vars -base "/intranet-dynfield/attribute-type-map" {object_type}]
+	    append category_list_html "
+	        <ul>
+		   <a href=\"$tam_href\">
+		  <b>Attribute-Type-Map</b>
+		  </a>
+		</ul>
+	    "
+	}
+    }
 }
 
 
@@ -231,7 +240,7 @@ if {!$show_add_new_category_p} {
 # ------------------------------------------------------------------
 
 # Compile and execute the formtemplate if advanced filtering is enabled.
-eval [template::adp_compile -string {<formtemplate id="filter"></formtemplate>}]
+eval [template::adp_compile -string {<formtemplate style=tiny-plain id="filter"></formtemplate>}]
 set filter_html $__adp_output
 
 if {$show_add_new_category_p} {

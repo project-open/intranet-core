@@ -24,23 +24,26 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
     @author koen.vanwinckel@dotprojects.be
 } {
-    project_id:optional,integer
+    { project_id:integer "" }
     { parent_id:integer "" }
     { company_id:integer "" }
-    project_type_id:integer,optional
-    project_name:optional
+    { project_type_id:integer "" }
+    { project_status_id:integer "" }
+    { project_name "" }
     project_nr:optional
     { workflow_key "" }
     { return_url "" }
 }
 
-ad_proc var_contains_quotes { var } {
-    if {[regexp {"} $var]} { return 1 }
-    if {[regexp {'} $var]} { return 1 }
-    return 0
-}
 
-#    if {[regexp {"} $var]} { return 1 }
+# Redirect to custom new page if necessary
+callback im_project_new_redirect -object_id $project_id \
+    -status_id $project_status_id -type_id $project_type_id \
+    -project_id $project_id -parent_id $parent_id \
+    -company_id $company_id -project_type_id $project_type_id \
+    -project_name $project_name -project_nr [im_opt_val project_nr] \
+    -workflow_key $workflow_key -return_url $return_url
+
 
 # -----------------------------------------------------------
 # Defaults

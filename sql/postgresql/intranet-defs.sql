@@ -471,3 +471,28 @@ BEGIN
 	return 1;
 END;$body$ language 'plpgsql';
 
+
+
+-- ------------------------------------------------------------------                                                                            
+-- Special dereferencing function for links                                                                                                      
+-- ------------------------------------------------------------------                                                                            
+
+create or replace function im_link_from_id (integer) returns varchar as '
+DECLARE
+        p_object_id     alias for $1;
+        v_name          varchar;
+        v_url           varchar;
+BEGIN
+        select  im_name_from_id (p_object_id)
+        into    v_name;
+
+        select url into v_url
+        from im_biz_object_urls ibou, acs_objects ao
+        where ibou.object_type = ao.object_type
+        and ao.object_id = p_object_id;
+
+        return ''<a href='' || v_url || p_object_id || ''>'' || v_name || ''</a>'';
+end;' language 'plpgsql';
+
+
+

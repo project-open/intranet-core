@@ -1280,3 +1280,59 @@ ad_proc im_upload_cvs_translate_varname { var_name} {
     }
     return $var_name
 }
+
+
+
+
+# More component to intranet/users/view
+ad_proc -public im_user_contact_info_component { 
+    user_id
+    return_url
+} {
+    returns contact information of the user
+} {
+    set params [list [list base_url "intranet-core"] [list user_id $user_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/user-contact-info"]
+    return [string trim $result]
+}
+ 
+ad_proc -public im_user_basic_info_component {
+    user_id
+    return_url
+} { 
+    returns basic information of the user
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-28
+} {
+    set params [list [list base_url "/intranet-core/"] [list user_id $user_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/user-basic-info"]
+    return [string trim $result]
+}
+
+ad_proc -public im_user_admin_info_component { 
+    user_id
+    return_url
+} {
+    returns admin information of the user 
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-29
+} {
+    set params [list [list base_url "intranet-core"] [list user_id $user_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/user-admin-info"]
+    return [string trim $result]
+}
+
+
+ad_proc -public im_user_localization_component {
+    user_id
+    return_url
+} {
+    returns localization info of the user
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-29
+} {
+    set params [list [list base_url "intranet-core"] [list user_id $user_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/user-localization"]
+    return [string trim $result]
+}
+

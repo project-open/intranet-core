@@ -21,8 +21,10 @@ ad_page_contract {
     @param top_menu_id Show only menus below "top_menu_id"
 } {
     { return_url "" }
+    { menu_id 0 }
     { top_menu_id 0 }
     { top_menu_label "" }
+    { top_menu_depth 0}
 }
 
 # ------------------------------------------------------
@@ -155,12 +157,21 @@ if {"" != $top_menu_label} {
     set top_menu_id [db_string top_menu_id "select menu_id from im_menus where label = :top_menu_label" -default 0]
 }
 
+# Show the hierarchy below a certain menu
 if {$top_menu_id} {
     set top_menu_sortkey [db_string top_menu_sortkey "select tree_sortkey from im_menus where menu_id=:top_menu_id" -default ""]
+    set top_menu_sql "and m.tree_sortkey like '$top_menu_sortkey%'\n"
 
-    set top_menu_sql "and 
-	m.tree_sortkey like '$top_menu_sortkey%'"
+    if {$top_menu_depth} {
+	append top_menu_sql "and length(m.tree_sortkey) - length('$top_menu_sortkey%') between 0 and :top_menu_depth - 1\n"
+    }
 }
+
+# Just show a single menu entry
+if {$menu_id} {
+    set top_menu_sql "and m.menu_id = :menu_id"
+}
+
 
 set main_sql "
 select
@@ -184,7 +195,12 @@ set ctr 0
 set old_package_name ""
 db_foreach menus $main_sql {
 
-    if {"t" == $enabled_p} { set enabled_p "" }
+    if {"t" == $enabled_p} {
+        set toggle_link [export_vars -base "toggle" {menu_id {return_url [ad_return_url]} {action "disable"}}]
+    } else {
+        set toggle_link [export_vars -base "toggle" {menu_id {return_url [ad_return_url]} {action "enable"}}]
+    }
+
     incr ctr
     append table "\n<tr$bgcolor([expr $ctr % 2])>\n"
     if {0 != $indent_level} {
@@ -197,7 +213,7 @@ db_foreach menus $main_sql {
     $label<br>
     <tt>$visible_tcl</tt>
   </td>
-  <td>$enabled_p</td>
+  <td><a href='$toggle_link'>$enabled_p</a></td>
   <td>$sort_order</td>
   <td>$package_name</td>
 "

@@ -35,6 +35,17 @@ ad_proc -public im_uom_t_line {} { return 327 }
 
 
 # --------------------------------------------------------
+# 
+# --------------------------------------------------------
+
+ad_proc var_contains_quotes { var } {
+    if {[regexp {"} $var]} { return 1 }
+    if {[regexp {'} $var]} { return 1 }
+    return 0
+}
+
+
+# --------------------------------------------------------
 # OpenACS Version
 # --------------------------------------------------------
 
@@ -1468,6 +1479,32 @@ ad_proc -public im_valid_auto_login_p {
 	}
     }
 }
+
+
+
+
+
+# ---------------------------------------------------------------
+# Execute the code IF the object has the specified object type
+# ---------------------------------------------------------------
+
+ad_proc -public im_execute_if_object_type {
+    -object_id:required
+    -object_type_id:required
+    -code:required
+} {
+    Execute the following code IF the specified
+    object has the specified object subtype.
+} {
+    set tid [db_string object_type_id "select im_biz_object__get_status_id(:object_id)"]
+    if {[im_category_is_a $tid $object_type_id]} {
+        return [eval $code]
+    } else {
+        ds_comment "im_execute_if_object_type -object_id $object_id -object_type_id $object_type_id: Object's type=$tid is not a sub-category of $object_type_id. Skipping code."
+        return ""
+    }
+}
+
 
 # ---------------------------------------------------------------
 # Ad-hoc execution of SQL-Queries

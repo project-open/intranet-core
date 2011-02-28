@@ -14,6 +14,7 @@ ad_library {
     
     @author unknown@arsdigita.com
     @author frank.bergmann@project-open.com
+    @author malte.sussdorff@project-open.com
 }
 
 
@@ -39,16 +40,18 @@ ad_proc -public im_category_from_id {
 }
 
 ad_proc -public im_id_from_category { 
+    { -list_p 1}
     category
     category_type
 } {
     Convert a category_name into a category_id.
     Returns "" if the category isn't found.
 } {
-    return [util_memoize [list im_id_from_category_helper $category $category_type]]
+    return [util_memoize [list im_id_from_category_helper -list_p $list_p $category $category_type]]
 }
 
 ad_proc -public im_id_from_category_helper { 
+    { -list_p 0}
     category
     category_type
 } {
@@ -645,5 +648,92 @@ ad_proc -public im_sub_categories {
     if {"" == $result} { set result [list 0] }
 
     return $result
+}
+
+
+ad_proc -public im_category_object_type {
+    {-category_type}
+} {
+    Returns the object_type for a category_type when it is used as a type category type like "Intranet Project Type". Empty String otherwise
+    @param category_type The category type like "Intranet Project Type"
+} {
+    return [util_memoize [list db_string object_type "
+	select	object_type
+	from	acs_object_types
+	where	type_category_type = '$category_type' 
+	limit 1
+    " -default ""]]
+}
+
+
+
+
+ad_proc im_biz_object_category_select_branch { 
+    {-translate_p 0}
+    {-package_key "intranet-core" }
+    {-type_id_var "category_id" }
+    parent 
+    default 
+    level 
+    cat_array 
+    direct_parent_array 
+} {
+    Recursively descend the category tree.
+    Returns a list of html "input type=radio" displaying an options hierarchy.
+} {
+    if {$level > 10} { return "" }
+
+    array set cat $cat_array
+    array set direct_parent $direct_parent_array
+
+    set category [lindex $cat($parent) 1]
+    set category_description [lindex $cat($parent) 2]
+    if {$translate_p} {
+	set category_key "$package_key.[lang::util::suggest_key $category]"
+	set org_category $category
+	set category [lang::message::lookup "" $category_key $category]
+	set category_description_key "$package_key.[lang::util::suggest_key $org_category]-Message"
+	set category_description "[lang::message::lookup "" $category_description_key " $category_description"]"
+    }
+
+    set parent_only_p [lindex $cat($parent) 3]
+
+    set spaces ""
+    for {set i 0} { $i < $level} { incr i} {
+	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
+    }
+
+    set selected ""
+    if {$parent == $default} { set selected "selected" }
+    set html ""
+    set class "plain"
+    if {0 == $level} { set class "rowtitle" }
+    if {"f" == $parent_only_p} {
+        set html "
+	<tr class=$class>
+	<td class=$class><nobr> 
+	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category </input>&nbsp;
+	</nobr></td>
+	<td class=$class>$category_description</td>
+	</tr>
+	"
+	incr level
+    }
+
+    # Sort by category_id, but we could do alphabetically or by sort_order later...
+    set category_list [array names cat]
+
+    set sub_list [list]
+    foreach cat_id $category_list {
+        if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
+            lappend sub_list [list $cat_id [lindex $cat($cat_id) 5]]
+        }
+    }
+
+    foreach sublist [lsort -index 1 $sub_list] {
+        set cat_id [lindex $sublist 0]
+        append html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $cat_id $default $level $cat_array $direct_parent_array]
+    }
+    return $html
 }
 

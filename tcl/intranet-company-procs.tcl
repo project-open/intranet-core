@@ -831,3 +831,60 @@ ad_proc -public im_company_find_or_create {
 
     return $company_id
 }
+
+
+ad_proc -public im_company_info_component {
+    company_id
+    return_url
+} {
+    returns company information
+} {
+    set params [list [list base_url "intranet-core"] [list company_id $company_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/company-info"]
+    return [string trim $result]
+}
+
+
+ad_proc -public im_company_projects_component {
+    company_id
+    return_url
+} {
+    returns a list of projects associated with the company
+
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-30
+} {
+    set params [list [list base_url "intranet-core"] [list company_id $company_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/company-projects"]
+    return [string trim $result]
+}
+
+
+ad_proc -public im_company_employees_component {
+    company_id
+    return_url
+} {
+    returns a list of employees associated with the company
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-30
+} {
+    set params [list [list base_url "intranet-core"] [list company_id $company_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/company-employees"]
+    return [string trim $result]
+}
+
+
+ad_proc -public im_company_contacts_component {
+    company_id
+    return_url
+} {
+    returns a list of contacts (clients) associated with the company
+    @author iuri sampaio (iuri.sampaio@gmail.com)
+    @date 2010-10-30
+} {
+    set params [list [list base_url "intranet-core"] [list company_id $company_id] [list return_url $return_url]]
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/company-contacts"]
+    return [string trim $result]
+}
+
+

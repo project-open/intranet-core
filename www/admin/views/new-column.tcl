@@ -72,6 +72,7 @@ ad_form \
 	{extra_where:text(textarea),optional {label #intranet-core.Extra_where#} {html {cols 50 rows 5}}}
 	{order_by_clause:text(textarea),optional {label #intranet-core.Order_by_clause#} {html {cols 50 rows 5}}}
 	{visible_for:text(textarea),optional {label "Visible For"} {html {cols 50 rows 5}}}
+	{ajax_configuration:text(textarea),optional {label "Ajax Configuration"} {html {cols 50 rows 5}}}
     }
 
 
@@ -106,12 +107,12 @@ ad_form -extend -name column -on_request {
 	(column_id, view_id, column_name, 
 	column_render_tcl, extra_select, extra_from, 
 	extra_where, sort_order, order_by_clause,
-	visible_for
+	visible_for, ajax_configuration
     ) values (
 	:column_id, :view_id, :column_name, 
 	:column_render_tcl, :extra_select, :extra_from, 
 	:extra_where, :sort_order, :order_by_clause,
-	:visible_for
+	:visible_for, :ajax_configuration
     )"
 
 } -edit_data {
@@ -125,7 +126,8 @@ ad_form -extend -name column -on_request {
 	        extra_where		= :extra_where,
 	        sort_order		= :sort_order,
 	        order_by_clause		= :order_by_clause,
-		visible_for		= :visible_for
+		visible_for		= :visible_for,
+		ajax_configuration	= :ajax_configuration
 	where
 		column_id = :column_id
 		and view_id = :view_id

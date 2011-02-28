@@ -498,6 +498,92 @@ ad_proc -public im_format_project_duration { words {lines ""} {hours ""} {days "
 }
 
 
+
+
+
+
+
+ad_proc -public im_project_subproject_ids {
+    {-type "project"}
+        -exclude_self:boolean
+        -project_id
+        -sql:boolean
+    {-exclude_status_ids ""}
+    {-project_type_ids ""}
+    {-exclude_type_ids ""}
+} {
+    Get a list of subproject ids. This can be used both as a filter proc (e.g. to filter our certain types of projects from a list of projects) or to get a list of subprojects or even tasks.
+    
+    @param type can be project or task.
+    @param sql Return a sql list
+} {
+    set exclude_clauses [list]
+    
+    if {$project_type_ids ne ""} {
+	lappend exclude_clauses "and children.project_type_id in ([template::util::tcl_to_sql_list $project_type_ids])"
+	
+	# It doesn't make sense to exclude when we include ....
+	set exclude_type_ids ""
+	
+    }
+    
+    if {"" == $exclude_status_ids} { set exclude_status_ids [im_project_status_deleted] }
+    
+    lappend exclude_type_ids [im_project_type_task]
+    lappend exclude_clauses "and children.project_status_id not in ([template::util::tcl_to_sql_list $exclude_status_ids])"
+    lappend exclude_clauses "and children.project_type_id not in ([template::util::tcl_to_sql_list $exclude_type_ids])"
+    
+    # Make sure we don't by accident end up with a circular loop
+    if {$exclude_self_p} {
+	lappend exclude_clauses "and children.project_id != :project_id"
+	set union_clause ""
+    } else {
+	set union_clause "UNION select :project_id as project_id from dual"
+    }
+    
+    set project_ids [db_list projects "
+                select  children.project_id
+                from    im_projects parent,
+                        im_projects children
+                where
+                        children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
+                and parent.project_id = :project_id
+                [join $exclude_clauses " \n"]
+                $union_clause
+    "]
+
+    if {$type eq "task"} {
+	# Make sure that we get the tasks, even if we exclude the project itself
+	if {$exclude_self_p} {
+	    lappend project_ids $project_id
+	}
+	
+	if {$project_ids ne ""} {
+	    set project_ids [db_list tasks "
+		select	project_id
+		from	im_projects
+		where	project_type_id = [im_project_type_task] and parent_id in ([template::util::tcl_to_sql_list $project_ids])
+	    "]
+	}
+    }
+
+    if {$sql_p} {
+	# Make sure it works even if we don't have anything to return
+	if {$project_ids ne ""} {
+	    return [template::util::tcl_to_sql_list $project_ids]
+	} else {
+	    return 0
+	}
+    } else {
+	return $project_ids
+    }
+}
+
+
+
+
+
+
 ad_proc -public im_project_options { 
     {-include_empty 1}
     {-include_empty_name ""}
@@ -797,33 +883,6 @@ ad_proc -public im_project_template_select {
     "
 
     return [im_selection_to_select_box -translate_p 0 $bind_vars "project_member_select" $sql $select_name $default]
-}
-
-
-ad_proc -public im_project_members_select { select_name project_id { default "" } } {
-    Returns an html select box named $select_name and defaulted to
-    $default with a list of all members of $project_id. If status is
-    specified, we limit the select box to invoices that match that
-    status. If exclude status is provided, we limit to states that do not
-    match exclude_status (list of statuses to exclude).
-} {
-    set bind_vars [ns_set create]
-    ns_set put $bind_vars project_id $project_id
-
-    set sql "
-select
-	u.user_id,
-	im_name_from_user_id(u.user_id) as user_name
-from
-	user_group_map m,
-	users u
-where
-	m.group_id=:project_id
-	and m.user_id=u.user_id
-order by 
-	user_name"
-
-    return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
 }
 
 
@@ -1131,186 +1190,26 @@ ad_proc -public im_project_personal_active_projects_component {
     "
 }
 
+
+
+
 ad_proc -public im_project_hierarchy_component {
     -project_id
+    {-return_url "" }
     {-subproject_status_id "none"}
     {-view_name "project_hierarchy" }
 } {
-    Returns a HTML table with a hierarchical view to the 
+    Returns a HTML table with a hierarchical view to the
     specified project. Allows the user to open/close the
     sub-projects.
 } {
-    set current_user_id [ad_get_user_id]
-    set super_project_id [im_project_super_project_id $project_id]
-    im_project_permissions $current_user_id $project_id view read write admin
-    if {!$read} { return "" }
+    if {"" == $return_url} { set return_url [im_url_with_query] }
+    set params [list  [list base_url "/intranet-core/"]  [list project_id $project_id] [list subproject_status_id "none"] [list view_name "project_hierarchy"] [list return_url $return_url]]
 
-    # How to sort the list of subprojects
-    set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "order"]
-
-    set project_url "/intranet/projects/view"
-    set space "&nbsp; &nbsp; &nbsp; "
-    set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$view_name'" -default 0]]
-
-    set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
-    if {$subproject_filtering_enabled_p} {
-	set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
-	if {0 == $subproject_status_id || "none" == $subproject_status_id} {
-	    set subproject_status_id $subproject_filtering_default_status_id
-	}
-    }
-
-    # ---------------------------------------------------------------
-    # Columns to show:
-
-    set column_headers [list]
-    set column_vars [list]
-    set extra_selects [list]
-    set extra_froms [list]
-    set extra_wheres [list]
-
-    set column_sql "
-	select	*
-	from	im_view_columns
-	where	view_id = :view_id
-	order by sort_order
-    "
-    db_foreach column_list_sql $column_sql {
-	if {"" == $visible_for || [eval $visible_for]} {
-	    lappend column_headers "$column_name"
-	    lappend column_vars "$column_render_tcl"
-	}
-	if {"" != $extra_select} { lappend extra_selects $extra_select }
-	if {"" != $extra_from} { lappend extra_froms $extra_from }
-	if {"" != $extra_where} { lappend extra_wheres $extra_where }
-    }
-    set extra_select [join $extra_selects ",\n\t\t"]
-    if {[llength $extra_selects]} { set extra_select ",\n\t\t$extra_select" }
-
-    # ---------------------------------------------------------------
-    # Generate SQL Query
-
-    # Check permissions for showing subprojects
-    set perm_sql "
-	(select p.*
-	from	im_projects p,
-		acs_rels r
-        where	r.object_id_one = p.project_id and
-		r.object_id_two = :current_user_id and
-		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket])
-        )
-    "
-    if {[im_permission $current_user_id "view_projects_all"]} { 
-	set perm_sql "
-		(select	p.*
-		from	im_projects p
-		where	p.project_type_id not in ([im_project_type_task], [im_project_type_ticket])
-		)
-	" 
-    }
-
-    set subproject_status_sql ""
-    if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subproject_status_id} {
-	set subproject_status_sql "
-	and (
-		children.project_status_id in ([join [im_sub_categories $subproject_status_id] ","])
-	    OR
-		children.project_id = :project_id
-	)
-        "
-    }
-
-    switch $list_sort_order {
-	name { set sort_order_sql "lower(children.project_name)" }
-	order { set sort_order_sql "children.sort_order" }
-	legacy { set sort_order_sql "children.tree_sortkey"	}
-	default { set sort_order_sql "lower(children.project_nr)" }
-    }
-
-    set sql "
-	select
-		children.project_id as subproject_id,
-		trim(children.project_nr) as subproject_nr,
-		trim(children.project_name) as subproject_name,
-		children.project_status_id as subproject_status_id,
-		children.parent_id as subproject_parent_id,
-		im_category_from_id(children.project_status_id) as subproject_status,
-		im_category_from_id(children.project_type_id) as subproject_type,
-		tree_level(children.tree_sortkey) -
-		tree_level(parent.tree_sortkey) as subproject_level,
-                $sort_order_sql as sort_order
-		$extra_select
-	from
-		im_projects parent,
-		$perm_sql children
-	where
-		children.project_type_id not in ([im_project_type_task])
-		$subproject_status_sql
-		and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
-		and parent.project_id = :super_project_id
-	order by children.tree_sortkey DESC
-    "
-
-    # ---------------------------------------------------------------
-    # Format the List Table Header
-
-    # Set up colspan to be the number of headers + 1 for the # column
-    set colspan [expr [llength $column_headers] + 1]
-
-    set table_header_html "<tr>\n"
-    foreach col $column_headers {
-	regsub -all " " $col "_" col_txt
-	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
-	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
-    }
-    append table_header_html "</tr>\n"
-
-
-    # ---------------------------------------------------------------
-    # Format the Result Data
-
-    set table_body_html ""
-    set bgcolor(0) " class=roweven "
-    set bgcolor(1) " class=rowodd "
-    set ctr 0
-
-    # Create a "multirow" from the SQL - read the results into memory
-    # Sort the tree according to the specified sort order
-    # Loop through the multirow instead of SQL
-    db_multirow multirow subproject_query $sql
-    multirow_sort_tree multirow subproject_id subproject_parent_id sort_order
-    template::multirow foreach multirow {
-
-	set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
-	set subproject_indent ""
-	for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
-	set subproject_bold_p [expr $project_id == $subproject_id]
-	set arrow_left_html ""
-	set arrow_right_html ""
-	if {$subproject_bold_p} { set arrow_left_html [im_gif arrow_left]}
-	if {$subproject_bold_p} { set arrow_right_html [im_gif arrow_right]}
-
-	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
-	foreach column_var $column_vars {
-	    append row_html "\t<td valign=top><nobr>"
-	    if {$subproject_bold_p} { append row_html "<b>" }
-	    set cmd "append row_html $column_var"
-	    eval "$cmd"
-	    if {$subproject_bold_p} { append row_html "</b>" }
-	    append row_html "</nobr></td>\n"
-	}
-	append row_html "</tr>\n"
-	append table_body_html $row_html
-	incr ctr
-    }
-
-    return "
-	<table cellpadding=2 cellspacing=2 border=0>
-	  $table_header_html
-	  $table_body_html
-	</table>
-    "
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/project-hierarchy"]
+    return [string trim $result]
 }
+
 
 # ---------------------------------------------------------------------
 # Cloning Procs
@@ -1327,6 +1226,7 @@ ad_proc im_project_clone {
     {-clone_target_languages_p "" }
     {-clone_trans_tasks_p "" }
     {-company_id 0}
+    {-debug_p 1}
     parent_project_id 
     project_name 
     project_nr 
@@ -1385,11 +1285,11 @@ ad_proc im_project_clone {
         append errors [im_project_clone_costs $parent_project_id $cloned_project_id]
     }
 
-    ns_write "$errors\n"
+    if {$debug_p} { ns_write "$errors\n" }
 
     if {$clone_subprojects_p} {
 
-	ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id cloned_project_id=$cloned_project_id\n"
+	if {$debug_p} { ns_write "<li>im_project_clone: subprojects parent_project_id=$parent_project_id cloned_project_id=$cloned_project_id\n" }
 	# Use a list of subprojects and then "foreach" in order to avoid nested SQLs
 	set subprojects_sql "
 		select	project_id as sub_project_id
@@ -1410,8 +1310,8 @@ ad_proc im_project_clone {
 	    "
 
 	    # go for the next project
-	    ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n"
-	    ns_write "<ul>\n"
+	    if {$debug_p} { ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n" }
+	    if {$debug_p} { ns_write "<ul>\n" }
 	    set cloned_subproject_id [im_project_clone \
 					  -clone_costs_p $clone_costs_p \
 					  -clone_files_p $clone_files_p \
@@ -1427,7 +1327,7 @@ ad_proc im_project_clone {
 					  $sub_project_nr \
 					  $clone_postfix \
 	    ]
-	    ns_write "</ul>\n"
+	    if {$debug_p} { ns_write "</ul>\n" }
 
 	    # We can _now_ reset the subproject's name to the original one
 	    db_dml set_parent "
@@ -1441,14 +1341,15 @@ ad_proc im_project_clone {
 			project_id = :cloned_subproject_id
 	    "
 	}
-	if {"" == $subproject_list} { ns_write "<li>No subprojects found\n" }
-
+	if {"" == $subproject_list} { 
+	    if {$debug_p} { ns_write "<li>No subprojects found\n" }
+	}
     }
 
 
     if {$clone_timesheet_tasks_p && [im_table_exists "im_timesheet_tasks"]} {
 
-	ns_write "<li>im_project_clone: timesheet tasks: parent=$parent_project_id cloned=$cloned_project_id\n"
+	if {$debug_p} { ns_write "<li>im_project_clone: timesheet tasks: parent=$parent_project_id cloned=$cloned_project_id\n" }
 	# Use a list of tasks and then "foreach" in order to avoid nested SQLs
 	set task_list [db_list tasks "
 		select	project_id
@@ -1470,8 +1371,8 @@ ad_proc im_project_clone {
 	    "
 
 	    # go for the next project
-	    ns_write "<li>im_project_clone: Clone task $sub_task_name\n"
-	    ns_write "<ul>\n"
+	    if {$debug_p} { ns_write "<li>im_project_clone: Clone task $sub_task_name\n" }
+	    if {$debug_p} { ns_write "<ul>\n" }
 	    set cloned_task_id [im_project_clone \
 				    -clone_costs_p $clone_costs_p \
 				    -clone_files_p $clone_files_p \
@@ -1487,7 +1388,7 @@ ad_proc im_project_clone {
 				    $sub_task_nr \
 				    $clone_postfix \
 	    ]
-	    ns_write "</ul>\n"
+	    if {$debug_p} { ns_write "</ul>\n" }
 
 	    # We can _now_ reset the subtasks's name to the original one
 	    db_dml set_parent "
@@ -1500,16 +1401,16 @@ ad_proc im_project_clone {
 			project_id = :cloned_task_id
 	    "
 
-	    db_1row task_info "
-		select	material_id, uom_id,
-                        planned_units, billable_units,
-                        cost_center_id, invoice_id, priority, sort_order
-		from	im_timesheet_tasks
-		where	task_id = :task_id
-	    "
-
-	    # Insert a task
-	    db_dml insert_task "
+	    if {[db_0or1row task_info "
+			select	material_id, uom_id,
+	                        planned_units, billable_units,
+	                        cost_center_id, invoice_id, priority, sort_order
+			from	im_timesheet_tasks
+			where	task_id = :task_id
+	        "]
+	    } {
+		# Insert a task
+		db_dml insert_task "
 		insert into im_timesheet_tasks (
 			task_id, material_id, uom_id,
 			planned_units, billable_units,
@@ -1519,13 +1420,17 @@ ad_proc im_project_clone {
 			:planned_units, :billable_units,
 			:cost_center_id, :invoice_id, :priority, :sort_order
 		)
-	    "
+	        "
+	    }
+
             # update acs_object
             db_dml update_acs_objects "
 		update acs_objects set object_type = 'im_timesheet_task' where object_id = :cloned_task_id 
             "
 	}
-	if {"" == $task_list} { ns_write "<li>No tasks found\n" }
+	if {"" == $task_list} { 
+	    if {$debug_p} { ns_write "<li>No tasks found\n" }
+	}
 
     }
 
@@ -1648,6 +1553,11 @@ ad_proc im_project_clone_base {
 	where
 		object_id = :cloned_project_id
     "
+
+    # Make sure it has the correct project_name and so on
+    set project_name $new_project_name
+    set project_nr $new_project_nr
+    set project_path $new_project_nr
 
     # Clone DynFields - just all of them
     set dynfield_sql [im_dynfield::create_clone_update_sql -object_type "im_project" -object_id $cloned_project_id]
@@ -2774,3 +2684,20 @@ ad_proc im_project_super_project_id {
     return $super_project_id
 }
 
+
+
+
+
+ad_proc -public im_project_base_data_component {
+    {-project_id}
+    {-return_url}
+} {
+    returns basic project info with dynfields and hard coded
+    Original version from ]po[
+} { 
+  
+    set params [list  [list base_url "/intranet-core/"]  [list project_id $project_id] [list return_url $return_url]]
+    
+    set result [ad_parse_template -params $params "/packages/intranet-core/lib/project-base-data"]
+    return [string trim $result]
+}

@@ -47,71 +47,6 @@ ad_page_contract {
     { default_category_id 0}
 }
 
-ad_proc im_biz_object_category_select_branch { 
-    {-translate_p 0}
-    {-package_key "intranet-core" }
-    {-type_id_var "category_id" }
-    parent 
-    default 
-    level 
-    cat_array 
-    direct_parent_array 
-} {
-    Recursively descend the category tree.
-    Returns a list of html "input type=radio" displaying an options hierarchy.
-} {
-    if {$level > 10} { return "" }
-
-    array set cat $cat_array
-    array set direct_parent $direct_parent_array
-
-    set category [lindex $cat($parent) 1]
-    set category_description [lindex $cat($parent) 2]
-    if {$translate_p} {
-	set category_key "$package_key.[lang::util::suggest_key $category]"
-	set org_category $category
-	set category [lang::message::lookup "" $category_key $category]
-	set category_description_key "$package_key.[lang::util::suggest_key $org_category]-Message"
-	set category_description "[lang::message::lookup "" $category_description_key " $category_description"]"
-    }
-
-    set parent_only_p [lindex $cat($parent) 3]
-
-    set spaces ""
-    for {set i 0} { $i < $level} { incr i} {
-	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
-    }
-
-    set selected ""
-    if {$parent == $default} { set selected "selected" }
-    set html ""
-    set class "plain"
-    if {0 == $level} { set class "rowtitle" }
-    if {"f" == $parent_only_p} {
-        set html "
-	<tr class=$class>
-	<td class=$class><nobr> 
-	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category </input>&nbsp;
-	</nobr></td>
-	<td class=$class>$category_description</td>
-	</tr>
-	"
-	incr level
-    }
-
-    # Sort by category_id, but we could do alphabetically or by sort_order later...
-    set category_list [array names cat]
-    set category_list_sorted [lsort $category_list]
-
-    foreach cat_id $category_list_sorted {
-	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-	    append html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $cat_id $default $level $cat_array $direct_parent_array]
-	}
-    }
-    return $html
-}
-
-
 # --------------------------------------------------------------
 #
 # --------------------------------------------------------------
@@ -173,7 +108,8 @@ set category_select_sql "
                 category,
                 category_description,
                 parent_only_p,
-                enabled_p
+                enabled_p,
+		sort_order
         from
                 im_categories
         where
@@ -183,7 +119,7 @@ set category_select_sql "
         order by lower(category)
 "
 db_foreach category_select $category_select_sql {
-    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
     set level($category_id) 0
 }
 
@@ -235,22 +171,31 @@ while {$modified} {
     #	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
 }
 
-set base_level 0
-set category_select_html ""
+
 
 # Sort the category list's top level. We currently sort by category_id,
 # but we could do alphabetically or by sort_order later...
-set category_list [array names cat]
-set category_list_sorted [lsort $category_list]
+set category_list_sorted [array names cat]
+
+
+set base_level 0
+set category_select_html ""
+
 
 # Now recursively descend and draw the tree, starting
 # with the top level
+set top_list [list]
 foreach p $category_list_sorted {
-    set p [lindex $cat($p) 0]
     set enabled_p [lindex $cat($p) 4]
     if {"f" == $enabled_p} { continue }
     set p_level $level($p)
     if {0 == $p_level} {
-	append category_select_html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $p $default_category_id $base_level [array get cat] [array get direct_parent]]
+        lappend top_list [list $p [lindex $cat($p) 5]]
     }
 }
+
+foreach toplist [lsort -index 1 $top_list] {
+    set p [lindex $toplist 0]
+    append category_select_html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $p $default_category_id $base_level [array get cat] [array get direct_parent]]
+}
+

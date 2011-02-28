@@ -254,3 +254,68 @@ foreach object_type $object_types {
 
 
 }
+
+
+
+ad_proc -public -callback im_project_new_redirect {
+    {-object_id:required}
+    {-status_id ""}
+    {-type_id ""}
+    {-project_id:required}
+    {-parent_id:required}
+    {-company_id:required}
+    {-project_type_id:required}
+    {-project_name:required}
+    {-project_nr:required}
+    {-workflow_key:required}
+    {-return_url:required}
+} {
+	This is mainly a callback to redirect from the original new.tcl page to somewhere else
+	
+	@param project_id ID of the project 
+	@param project_status_id Status ID of the project. This allows for quick filtering if the callback implementation is to be executed (e.g. if you only want to execute it for new potential projects)
+	@param project_type_id Type ID of the project. This allows for quick filtering if the callback implementation is to be executed (e.g. if you only want to execute it for a certain type of project)
+} -
+
+
+ad_proc -public -callback im_timesheet_task_new_redirect {
+    {-object_id:required}
+    {-status_id ""}
+    {-type_id ""}
+    {-task_id ""}
+    {-project_id:required}
+    {-edit_p ""}
+    {-message ""}
+    {-form_mode ""}
+    {-task_status_id ""}
+    {-return_url:required}
+} {
+	This is mainly a callback to redirect from the original new.tcl page to somewhere else
+	
+        @param task_id ID of the task
+	@param project_id ID of the project 
+        @task_status_id This checks what is the current status of a task 
+} -
+
+
+
+
+
+
+
+ad_proc -public -callback im_dynfield_attribute_after_update {
+    {-object_type:required}
+    {-attribute_name:required}
+} {
+    Callback to be executed after an attribute has been changed
+} -
+
+
+
+
+ad_proc -public -callback im_dynfield_widget_after_update {
+    {-widget_name:required}
+} {
+    Callback to be executed after a widget has been changed
+} -
+

@@ -57,7 +57,7 @@ ad_proc -public im_menu_update_hierarchy {
 			and m.tree_sortkey is null
 			and mm.tree_sortkey is not null
 		order by
-			parent_sortkey
+			parent_sortkey, m.sort_order
 	"
 
 	set ctr 0
@@ -121,15 +121,27 @@ ad_proc -public im_menu_ul_list {
     {-no_cache:boolean}
     {-package_key "intranet-core" }
     {-no_uls 0}
+    {-check_parent_enabled:boolean}
     parent_menu_label 
     bind_vars 
 } {
     Returns all subitems of a menus as LIs, suitable
     to be added to index screens (costs) etc. 
+    @param check_parent_enabled Make sure the parent is enabled. If not return ""
 } {
+    if {$check_parent_enabled_p} {
+	set enabled_p [db_0or1row parent_enabled "
+		select	menu_id
+		from	im_menus
+		where	label = :parent_menu_label and (enabled_p is null or enabled_p = 't')
+	"]
+	if {!$enabled_p} { return "" }
+    }
+
     set user_id [ad_get_user_id]
     set locale [lang::user::locale -user_id $user_id]
 
+set no_cache_p 1
     if {$no_cache_p} {
 	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
     } else {
@@ -150,6 +162,7 @@ ad_proc -public im_menu_ul_list_helper {
     to be added to index screens (costs) etc. 
 } {
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
 
     array set bind_vars_hash $bind_vars
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
@@ -168,7 +181,6 @@ ad_proc -public im_menu_ul_list_helper {
     set ctr 0
     db_foreach menu_select $menu_select_sql {
 	if {"" != $visible_tcl} {
-	    # ad_return_complaint 1 $visible_tcl
 	    set visible 0
 	    set errmsg ""
 	    if [catch {	set visible [expr $visible_tcl] } errmsg] {
@@ -183,7 +195,11 @@ ad_proc -public im_menu_ul_list_helper {
 	    append url "&$var=[ad_urlencode $value]"
 	}
 
-	append result "<li><a href=\"$url\">[lang::message::lookup "" $package_key.$name_key $name]</a></li>\n"
+	set admin_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
+	set admin_html "<a href='$admin_url'>[im_gif wrench]</a>"
+	if {!$admin_p} { set admin_html "" }
+    
+	append result "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html</li>\n"
 	incr ctr
     }
     if {!$no_uls} {append result "</ul>\n" }

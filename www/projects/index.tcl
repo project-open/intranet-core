@@ -91,6 +91,7 @@ ad_page_contract {
 set show_context_help_p 0
 
 set user_id [ad_maybe_redirect_for_registration]
+set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
@@ -99,6 +100,7 @@ set page_title "[_ intranet-core.Projects]"
 set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 set upper_letter [string toupper $letter]
+set return_url [im_url_with_query]
 
 # Determine the default status if not set
 if { 0 == $project_status_id } {
@@ -166,6 +168,7 @@ if {!$view_id } {
 
 set column_headers [list]
 set column_vars [list]
+set column_headers_admin [list]
 set extra_selects [list]
 set extra_froms [list]
 set extra_wheres [list]
@@ -183,9 +186,17 @@ order by
 	sort_order"
 
 db_foreach column_list_sql $column_sql {
+
+    set admin_html ""
+    if {$admin_p} { 
+	set url [export_vars -base "/intranet/admin/views/new-column" {column_id return_url}]
+	set admin_html "<a href='$url'>[im_gif wrench ""]</a>" 
+    }
+
     if {"" == $visible_for || [eval $visible_for]} {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
+	lappend column_headers_admin $admin_html
 	if {"" != $extra_select} { lappend extra_selects $extra_select }
 	if {"" != $extra_from} { lappend extra_froms $extra_from }
 	if {"" != $extra_where} { lappend extra_wheres $extra_where }
@@ -204,11 +215,6 @@ set form_id "project_filter"
 set object_type "im_project"
 set action_url "/intranet/projects/index"
 set form_mode "edit"
-set mine_p_options [list \
-	[list [lang::message::lookup "" intranet-core.All "All"] "f" ] \
-	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
-	[list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
-]
 
 ad_form \
     -name $form_id \
@@ -216,26 +222,60 @@ ad_form \
     -mode $form_mode \
     -method GET \
     -export {start_idx order_by how_many view_name include_subprojects_p include_subproject_level letter filter_advanced_p}\
-    -form {
-        {mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
-        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {custom {category_type "Intranet Project Status" translate_p 1}} }
-        {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {custom {category_type "Intranet Project Type" translate_p 1} } }
-    }
+    -form {}
 
-im_dynfield::append_attributes_to_form \
+if {[im_permission $current_user_id "view_projects_all"]} { 
+    set mine_p_options [list \
+			    [list [lang::message::lookup "" intranet-core.All "All"] "f" ] \
+			    [list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
+			    [list [lang::message::lookup "" intranet-core.Mine "Mine"] "t"] \
+			   ]
+    ad_form -extend -name $form_id -form {
+        {mine_p:text(select),optional {label "Mine/All"} {options $mine_p_options }}
+        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1}} }
+    } 
+}
+
+if { [empty_string_p $company_id] } {
+    set company_id 0
+}
+
+set company_options [im_company_options -include_empty_p 1 -include_empty_name "All" -status "CustOrIntl"]
+
+# Get the list of profiles readable for current_user_id
+set managable_profiles [im_profile::profile_options_managable_for_user -privilege "read" $current_user_id]
+# Extract only the profile_ids from the managable profiles
+set user_select_groups {}
+foreach g $managable_profiles {
+    lappend user_select_groups [lindex $g 1]
+}
+set user_options [im_profile::user_options -profile_ids $user_select_groups]
+set user_options [linsert $user_options 0 [list "All" ""]]
+
+ad_form -extend -name $form_id -form {
+    {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1} } }
+    {company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
+    {user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+    {start_date:text(text) {label "[_ intranet-timesheet2.Start_Date]"} {value "$start_date"} {html {size 10}} {after_html {<input type="button" style="height:20px; width:20px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendar('start_date', 'y-m-d');" >}}}
+    {end_date:text(text) {label "[_ intranet-timesheet2.End_Date]"} {value "$end_date"} {html {size 10}} {after_html {<input type="button" style="height:20px; width:20px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendar('end_date', 'y-m-d');" >}}}
+}
+
+if {$filter_advanced_p} {
+    im_dynfield::append_attributes_to_form \
         -object_type $object_type \
         -form_id $form_id \
         -object_id 0 \
         -advanced_filter_p 1
-
-# Set the form values from the HTTP form variable frame
-im_dynfield::set_form_values_from_http -form_id $form_id
-im_dynfield::set_local_form_vars_from_http -form_id $form_id
-
-array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
-        -form_id $form_id \
-        -object_type $object_type
-]
+    
+    # Set the form values from the HTTP form variable frame
+    im_dynfield::set_form_values_from_http -form_id $form_id
+    im_dynfield::set_local_form_vars_from_http -form_id $form_id
+    
+    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+				   -form_id $form_id \
+				   -object_type $object_type
+			      ]
+}
 
 # ---------------------------------------------------------------
 # 5. Generate SQL Query
@@ -560,93 +600,6 @@ set mine_p_options [list \
 ]
 
 set letter $upper_letter
-set filter_html "
-<form method=get name=projects_filter action='/intranet/projects/index'>
-[export_form_vars start_idx order_by how_many view_name include_subprojects_p letter]
-
-<table border=0 cellpadding=0 cellspacing=1>
-"
-
-if {[im_permission $current_user_id "view_projects_all"]} { 
-    append filter_html "
-  <tr>
-    <td class=form-label>[lang::message::lookup "" intranet-core.View_Projects "View Projects"]:</td>
-    <td class=form-widget>[im_select -translate_p 0 -ad_form_option_list_style_p 1 mine_p $mine_p_options ""]</td>
-  </tr>
-    "
-}
-
-if {[im_permission $current_user_id "view_projects_all"]} {
-    append filter_html "
-  <tr>
-    <td class=form-label>[_ intranet-core.Project_Status]:</td>
-    <td class=form-widget>[im_category_select -include_empty_p 1 "Intranet Project Status" project_status_id $project_status_id]</td>
-  </tr>
-    "
-}
-
-append filter_html "
-  <tr>
-    <td class=form-label>[_ intranet-core.Project_Type]:</td>
-    <td class=form-widget>
-      [im_category_select -include_empty_p 1 "Intranet Project Type" project_type_id $project_type_id]
-    </td>
-  </tr>
-"
-
-if { [empty_string_p $company_id] } {
-    set company_id 0
-}
-
-append filter_html "
-  <tr>
-<td class=form-label valign=top>[lang::message::lookup "" intranet-core.Customer "Customer"]:</td>
-<td class=form-widget valign=top>[im_company_select -include_empty_p 1 -include_empty_name "All" company_id $company_id "" "CustOrIntl"]</td>
-  </tr>
-"
-
-# Get the list of profiles readable for current_user_id
-set managable_profiles [im_profile::profile_options_managable_for_user -privilege "read" $current_user_id]
-# Extract only the profile_ids from the managable profiles
-set user_select_groups {}
-foreach g $managable_profiles {
-    lappend user_select_groups [lindex $g 1]
-}
-
-append filter_html "
-  <tr>
-    <td class=form-label valign=top>[lang::message::lookup "" intranet-core.With_Member "With Member"]:</td>
-    <td class=form-widget valign=top>
-       [im_user_select -include_empty_p 1 -group_id $user_select_groups user_id_from_search $user_id_from_search]
-    </td>
-  </tr>
-"
-
-append filter_html "
-  <tr>
-<td class=form-label>[_ intranet-core.Start_Date]</td>
-            <td class=form-widget>
-              <input type=textfield name=start_date value=$start_date>
-            </td>
-  </tr>
-  <tr>
-<td class=form-label>[lang::message::lookup "" intranet-core.End_Date "End Date"]</td>
-            <td class=form-widget>
-              <input type=textfield name=end_date value=$end_date>
-            </td>
-  </tr>
-"
-
-append filter_html "
-  <tr>
-    <td class=form-label></td>
-    <td class=form-widget>
-	  <input type=submit value='[lang::message::lookup "" intranet-core.Action_Go "Go"]' name=submit>
-    </td>
-  </tr>
-"
-
-append filter_html "</table>\n</form>\n"
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
@@ -656,6 +609,7 @@ set admin_html "<ul>"
 
 if {[im_permission $current_user_id "add_projects"]} {
     append admin_html "<li><a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>\n"
+
     set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
     if {$new_from_template_p} {
         append admin_html "<li><a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>\n"
@@ -682,11 +636,8 @@ if {[im_permission $current_user_id "add_projects"]} {
 append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
 
 # Close the admin_html section
-append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
+#append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
 append admin_html "</ul>"
-
-set project_filter_html $filter_html
-
 
 
 # ---------------------------------------------------------------
@@ -709,15 +660,19 @@ if { ![empty_string_p $query_string] } {
 }
 
 append table_header_html "<tr>\n"
+set ctr 0
 foreach col $column_headers {
+
+    set admin_html [lindex $column_headers_admin $ctr]
     regsub -all " " $col "_" col_txt
     set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
-    if { [string compare $order_by $col] == 0 } {
-	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
+    if {[string compare $order_by $col] == 0} {
+	append table_header_html "<td class=rowtitle>$col_txt$admin_html</td>\n"
     } else {
 	#set col [lang::util::suggest_key $col]
-	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a></td>\n"
+	append table_header_html "<td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a>$admin_html</td>\n"
     }
+    incr ctr
 }
 append table_header_html "</tr>\n"
 
@@ -848,10 +803,8 @@ set project_navbar_html [im_project_navbar $letter "/intranet/projects/index" $n
 
 
 # Compile and execute the formtemplate if advanced filtering is enabled.
-if {$filter_advanced_p} {
-    eval [template::adp_compile -string {<formtemplate id="project_filter"></formtemplate>}]
-    set filter_html $__adp_output
-}
+eval [template::adp_compile -string {<formtemplate id="project_filter" style="tiny-plain"></formtemplate>}]
+set filter_html $__adp_output
 
 
 # Left Navbar is the filter/select part of the left bar

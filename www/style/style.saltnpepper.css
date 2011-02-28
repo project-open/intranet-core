@@ -787,7 +787,7 @@ a   span  {float:none;}
   display: block;
   width: 15px;
   height: 15px;
-  background: url('/intranet/images/navbar_default/wrench_bw.png') no-repeat;
+  background: url('/intranet/images/navbar_default/wrench.png') no-repeat;
   text-indent: -5000px;
 }
 .icon_wrench_po img {

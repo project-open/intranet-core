@@ -73,6 +73,7 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set current_user_id $user_id
+set admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set page_title "[_ intranet-core.Users]"
 set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
@@ -94,6 +95,7 @@ set extra_selects [list]
 
 set extra_order_by ""
 set column_headers [list]
+set column_headers_admin [list]
 set column_vars [list]
 
 set freelancers_exist_p [db_table_exists im_freelancers]
@@ -277,7 +279,7 @@ db_foreach column_list_sql $column_sql {
     }
 
     if {$visible_p} {
-	lappend column_headers "$column_name"
+	lappend column_headers $column_name
 	lappend column_vars "$column_render_tcl"
 
         if [exists_and_not_null extra_from] { lappend extra_froms $extra_from }
@@ -290,6 +292,13 @@ db_foreach column_list_sql $column_sql {
 		set extra_order_by $order_by_clause
 	    }
 	}
+
+	set admin_html ""
+	if {$admin_p} { 
+	    set url [export_vars -base "/intranet/admin/views/new-column" {column_id return_url}]
+	    set admin_html "<a href='$url'>[im_gif wrench ""]</a>" 
+	}
+	lappend column_headers_admin $admin_html
     }
 }
 ns_log Notice "/users/index.tcl: column_vars=$column_vars"
@@ -537,15 +546,17 @@ if { ![empty_string_p $query_string] } {
 }
 
 append table_header_html "<tr>\n"
+set ctr 0
 foreach col $column_headers {
+
+    set admin_html [lindex $column_headers_admin $ctr]
     regsub -all " " $col "_" col_text
-    #set cmd "set col_text $col"
-    #eval "$cmd"
-    if { [string compare $order_by $col] == 0 } {
-	append table_header_html "  <td class=rowtitle>[_ intranet-core.$col_text]</td>\n"
+    if {[string compare $order_by $col] == 0} {
+	append table_header_html "<td class=rowtitle>[_ intranet-core.$col_text]$admin_html</td>\n"
     } else {
-	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">[_ intranet-core.$col_text]</a></td>\n"
+	append table_header_html "<td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">[_ intranet-core.$col_text]</a>$admin_html</td>\n"
     }
+    incr ctr
 }
 append table_header_html "</tr>\n"
 
