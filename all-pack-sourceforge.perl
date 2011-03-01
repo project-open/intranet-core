@@ -77,13 +77,50 @@ system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > ~/$changelog
 # Determine the packages to include
 #
 # Not Included:
+#	acs-lang-server
+#	auth-ldap
 #	batch-importer
 #	chat
 #	ecommerce
-#	
+#	batch-importer
+#	intranet-amberjack
+#	intranet-asus-server
+#	intranet-audit
+#	intranet-baseline
+#	intranet-calendar-holidays	(obsolete
+#	intranet-csv-import		(not ready yet)
+#	intranet-contacts
+#	intranet-cost-center
+#	intranet-crm-tracking
+#	intranet-earned-value-management
+#	intranet-freelance
+#	intranet-freelance-invoices
+#	intranet-freelance-rfqs
+#	intranet-freelance-translation
+#	intranet-notes-tutorial
+#	intranet-ophelia
+#	intranet-otp
+#	intranet-pdf-htmldoc
+#	intranet-reporting-cubes
+#	intranet-reporting-dashboard
+#	intranet-reporting-finance
+#	intranet-reporting-translation
+#	intranet-riskmanagement		(not ready yet)
+#	intranet-sharepoint
+#	intranet-scrum
+#	intranet-security-update-server
+#	intranet-spam
+#	intranet-sql-selectors
+#	intranet-timesheet2-task-popup
+#	intranet-trans-quality
+#	intranet-ubl
+#	intranet-update-server
+#	telecom-number
+#	trackback
+#
 
 
-$packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentication packages/acs-automated-testing packages/acs-bootstrap-installer packages/acs-content-repository packages/acs-core-docs packages/acs-datetime packages/acs-developer-support packages/acs-events packages/acs-kernel packages/acs-lang packages/acs-mail packages/acs-mail-lite packages/acs-messaging packages/acs-reference packages/acs-service-contract packages/acs-subsite packages/acs-tcl packages/acs-templating packages/acs-workflow packages/ajaxhelper packages/auth-ldap-adldapsearch packages/bug-tracker packages/bulk-mail packages/calendar packages/categories packages/cms packages/diagram packages/events packages/general-comments packages/intranet-big-brother packages/intranet-bug-tracker packages/intranet-calendar packages/intranet-confdb packages/intranet-core packages/intranet-cost packages/intranet-cvs-integration packages/intranet-dw-light packages/intranet-dynfield packages/intranet-exchange-rate packages/intranet-expenses packages/intranet-expenses-workflow packages/intranet-filestorage packages/intranet-forum packages/intranet-funambol packages/intranet-ganttproject packages/intranet-helpdesk packages/intranet-hr packages/intranet-invoices packages/intranet-invoices-templates packages/intranet-mail-import packages/intranet-material packages/intranet-milestone packages/intranet-nagios packages/intranet-notes packages/intranet-payments packages/intranet-release-mgmt packages/intranet-reporting packages/intranet-reporting-indicators packages/intranet-resource-management packages/intranet-rest packages/intranet-reporting-tutorial packages/intranet-search-pg packages/intranet-search-pg-files packages/intranet-security-update-client packages/intranet-simple-survey packages/intranet-sysconfig packages/intranet-timesheet2 packages/intranet-timesheet2-invoices packages/intranet-timesheet2-tasks packages/intranet-timesheet2-workflow packages/intranet-tinytm packages/intranet-trans-invoices packages/intranet-translation packages/intranet-trans-project-wizard packages/intranet-update-client packages/intranet-wiki packages/intranet-workflow packages/intranet-xmlrpc packages/lars-blogger packages/notifications packages/organizations packages/oryx-ts-extensions packages/postal-address packages/ref-countries packages/ref-language packages/ref-timezones packages/ref-us-counties packages/ref-us-states packages/ref-us-zipcodes packages/rss-support packages/search packages/simple-survey packages/wiki packages/workflow packages/xml-rpc";
+$packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentication packages/acs-automated-testing packages/acs-bootstrap-installer packages/acs-content-repository packages/acs-core-docs packages/acs-datetime packages/acs-developer-support packages/acs-events packages/acs-kernel packages/acs-lang packages/acs-mail packages/acs-mail-lite packages/acs-messaging packages/acs-reference packages/acs-service-contract packages/acs-subsite packages/acs-tcl packages/acs-translations packages/acs-templating packages/acs-workflow packages/attachments packages/ajaxhelper packages/auth-ldap-adldapsearch packages/bug-tracker packages/bulk-mail packages/calendar packages/categories packages/cms packages/diagram packages/events packages/file-storage packages/general-comments packages/intranet-big-brother packages/intranet-bug-tracker packages/intranet-calendar packages/intranet-confdb packages/intranet-core packages/intranet-cost packages/intranet-cvs-integration packages/intranet-dw-light packages/intranet-dynfield packages/intranet-exchange-rate packages/intranet-expenses packages/intranet-expenses-workflow packages/intranet-filestorage packages/intranet-forum packages/intranet-funambol packages/intranet-ganttproject packages/intranet-helpdesk packages/intranet-hr packages/intranet-invoices packages/intranet-invoices-templates packages/intranet-mail-import packages/intranet-material packages/intranet-milestone packages/intranet-nagios packages/intranet-notes packages/intranet-payments packages/intranet-portfolio-management packages/intranet-release-mgmt packages/intranet-reporting packages/intranet-reporting-indicators packages/intranet-resource-management packages/intranet-rest packages/intranet-reporting-tutorial packages/intranet-search-pg packages/intranet-sla-management packages/intranet-search-pg-files packages/intranet-security-update-client packages/intranet-simple-survey packages/intranet-sysconfig packages/intranet-timesheet2 packages/intranet-timesheet2-invoices packages/intranet-timesheet2-tasks packages/intranet-timesheet2-workflow packages/intranet-tinytm packages/intranet-trans-invoices packages/intranet-translation packages/intranet-trans-project-wizard packages/intranet-update-client packages/intranet-wiki packages/intranet-workflow packages/intranet-xmlrpc packages/lars-blogger packages/mail-tracking packages/notifications packages/oacs-dav packages/openacs-default-theme packages/organizations packages/oryx-ts-extensions packages/postal-address packages/ref-countries packages/ref-language packages/ref-timezones packages/ref-us-counties packages/ref-us-states packages/ref-us-zipcodes packages/rss-support packages/search packages/simple-survey packages/wiki packages/workflow packages/xml-rpc packages/xotcl-core packages/xowiki";
 
 
 # *******************************************************************
