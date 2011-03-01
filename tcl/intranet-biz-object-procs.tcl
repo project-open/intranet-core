@@ -123,6 +123,7 @@ where
 	and r.rel_id = m.rel_id
 	and m.object_role_id in (1301,1302,1303)
 "
+
     # 1301=PM, 1302=Key Account, 1303=Office Man.
 
     set result [db_list im_biz_object_admin_ids $sql]
@@ -213,8 +214,8 @@ ad_proc -public im_biz_object_add_role {
 	   be able to get to their subproject.
 } {
     if {$debug_p} { ns_log Notice "im_biz_object_add_role: percentage=$percentage, propagate=$propagate_superproject_p, user_id=$user_id, object_id=$object_id, role_id=$role_id" }
-    if {"" == $user_id || 0 == $user_id} { return }
 
+    if {"" == $user_id || 0 == $user_id} { return }
     set user_ip [ad_conn peeraddr]
 
     # Check if user is already a member and only continue
@@ -227,6 +228,7 @@ ad_proc -public im_biz_object_add_role {
     set object_type [util_memoize [list db_string object_type "select object_type from acs_objects where object_id = $object_id"]]
 
     # Add the user in a im_biz_object_membership relationship
+
     set rel_id [db_string rel_id "select rel_id from acs_rels where object_id_one = :object_id and object_id_two = :user_id" -default 0]
     if {0 == $rel_id} {
 	ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
