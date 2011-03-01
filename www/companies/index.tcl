@@ -154,21 +154,19 @@ if {$view_companies_all_p} {
 
 }
 
-if {[im_table_exists im_dynfield_attributes]} {
 
-    im_dynfield::append_attributes_to_form \
-        -object_type $object_type \
-        -form_id $form_id \
-        -object_id 0
+im_dynfield::append_attributes_to_form \
+    -object_type $object_type \
+    -form_id $form_id \
+    -object_id 0
 
-    # Set the form values from the HTTP form variable frame
-    im_dynfield::set_form_values_from_http -form_id $form_id
+# Set the form values from the HTTP form variable frame
+im_dynfield::set_form_values_from_http -form_id $form_id
 
-    array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
-	-form_id $form_id \
-	-object_type "im_company"
-    ]
-}
+array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
+			       -form_id $form_id \
+			       -object_type "im_company"
+			  ]
 
 
 # ---------------------------------------------------------------
@@ -263,25 +261,23 @@ foreach varname [info locals] {
 
 # Deal with DynField Vars and add constraint to SQL
 #
-if {[im_table_exists im_dynfield_attributes]} {
+# Add the DynField variables to $form_vars
+set dynfield_extra_where $extra_sql_array(where)
+set ns_set_vars $extra_sql_array(bind_vars)
+set tmp_vars [util_list_to_ns_set $ns_set_vars]
+set tmp_var_size [ns_set size $tmp_vars]
+for {set i 0} {$i < $tmp_var_size} { incr i } {
+    set key [ns_set key $tmp_vars $i]
+    set value [ns_set get $tmp_vars $key]
+    ns_log Notice "companies/index: $key=$value"
+    ns_set put $form_vars $key $value
+}
 
-    # Add the DynField variables to $form_vars
-    set dynfield_extra_where $extra_sql_array(where)
-    set ns_set_vars $extra_sql_array(bind_vars)
-    set tmp_vars [util_list_to_ns_set $ns_set_vars]
-    set tmp_var_size [ns_set size $tmp_vars]
-    for {set i 0} {$i < $tmp_var_size} { incr i } {
-	set key [ns_set key $tmp_vars $i]
-	set value [ns_set get $tmp_vars $key]
-	ns_set put $form_vars $key $value
-    }
-
-    # Add the additional condition to the "where_clause"
-    if {"" != $dynfield_extra_where} {
-	append where_clause "
+# Add the additional condition to the "where_clause"
+if {"" != $dynfield_extra_where} {
+    append where_clause "
 	    and company_id in $dynfield_extra_where
         "
-    }
 }
 
 
@@ -342,7 +338,6 @@ if {[string compare $letter "ALL"]} {
     # We can't get around counting in advance if we want to be able to 
     # sort inside the table on the page for only those users in the 
     # query results
-
     set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from
