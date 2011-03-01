@@ -164,9 +164,9 @@ cvs checkout ref-us-zipcodes
 cvs checkout rss-support
 cvs checkout search
 cvs checkout simple-survey
-cvs checkout telecom-number
-cvs checkout trackback
-cvs checkout tsearch2-driver				# (obsolete OpenACS package)
+# cvs checkout telecom-number				# (obsolete? OpenACS package)
+# cvs checkout trackback				# (obsolete? OpenACS package)
+# cvs checkout tsearch2-driver				# (obsolete OpenACS package)
 cvs checkout wiki
 cvs checkout workflow
 cvs checkout xml-rpc
