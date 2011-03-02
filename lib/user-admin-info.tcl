@@ -10,6 +10,7 @@ if {0 == $user_id} {
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
+set current_url [im_url_with_query]
 
 # Check the permissions 
 im_user_permissions $current_user_id $user_id_from_search view read write admin
