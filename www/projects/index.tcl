@@ -663,14 +663,14 @@ append table_header_html "<tr>\n"
 set ctr 0
 foreach col $column_headers {
 
-    set admin_html [lindex $column_headers_admin $ctr]
+    set wrench_html [lindex $column_headers_admin $ctr]
     regsub -all " " $col "_" col_txt
     set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
     if {[string compare $order_by $col] == 0} {
-	append table_header_html "<td class=rowtitle>$col_txt$admin_html</td>\n"
+	append table_header_html "<td class=rowtitle>$col_txt$wrench_html</td>\n"
     } else {
 	#set col [lang::util::suggest_key $col]
-	append table_header_html "<td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a>$admin_html</td>\n"
+	append table_header_html "<td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a>$wrench_html</td>\n"
     }
     incr ctr
 }
