@@ -41,7 +41,7 @@ ad_page_contract {
 if {[exists_and_not_null project_id]} {
     set task_p [db_string task_id "select task_id from im_timesheet_tasks where task_id = :project_id" -default 0]
     if {$task_p} {
-	ad_returnredirect "/intranet-timesheet2-tasks/view?task_id=$project_id"
+	ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{form_mode display} {task_id $project_id}}]
     } 
 }
 
