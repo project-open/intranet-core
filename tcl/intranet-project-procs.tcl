@@ -35,6 +35,7 @@ ad_proc -public im_project_type_unknown {} { return 85 }
 ad_proc -public im_project_type_other {} { return 86 }
 ad_proc -public im_project_type_task {} { return 100 }
 ad_proc -public im_project_type_ticket {} { return 101 }
+ad_proc -public im_project_type_consulting {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
 ad_proc -public im_project_type_program {} { return 2510 }
