@@ -1,155 +1,156 @@
 #!/bin/bash
 
-cvs checkout acs-admin
-cvs checkout acs-api-browser
-cvs checkout acs-authentication
-cvs checkout acs-automated-testing
-cvs checkout acs-bootstrap-installer
-cvs checkout acs-content-repository
-cvs checkout acs-core-docs
-cvs checkout acs-datetime
-cvs checkout acs-developer-support
-cvs checkout acs-events
-cvs checkout acs-kernel
-cvs checkout acs-lang
-cvs checkout acs-mail
-cvs checkout acs-mail-lite
-cvs checkout acs-messaging
-cvs checkout acs-reference
-cvs checkout acs-service-contract
-cvs checkout acs-subsite
-cvs checkout acs-tcl
-cvs checkout acs-templating
-cvs checkout acs-translations
-cvs checkout acs-workflow
+cvs checkout -r b3-5-0-patches acs-admin
+cvs checkout -r b3-5-0-patches acs-api-browser
+cvs checkout -r b3-5-0-patches acs-authentication
+cvs checkout -r b3-5-0-patches acs-automated-testing
+cvs checkout -r b3-5-0-patches acs-bootstrap-installer
+cvs checkout -r b3-5-0-patches acs-content-repository
+cvs checkout -r b3-5-0-patches acs-core-docs
+cvs checkout -r b3-5-0-patches acs-datetime
+cvs checkout -r b3-5-0-patches acs-developer-support
+cvs checkout -r b3-5-0-patches acs-events
+cvs checkout -r b3-5-0-patches acs-kernel
+cvs checkout -r b3-5-0-patches acs-lang
+cvs checkout -r b3-5-0-patches acs-mail
+cvs checkout -r b3-5-0-patches acs-mail-lite
+cvs checkout -r b3-5-0-patches acs-messaging
+cvs checkout -r b3-5-0-patches acs-reference
+cvs checkout -r b3-5-0-patches acs-service-contract
+cvs checkout -r b3-5-0-patches acs-subsite
+cvs checkout -r b3-5-0-patches acs-tcl
+cvs checkout -r b3-5-0-patches acs-templating
+cvs checkout -r b3-5-0-patches acs-translations
+cvs checkout -r b3-5-0-patches acs-workflow
 
-cvs checkout auth-ldap
-cvs checkout auth-ldap-adldapsearch
+cvs checkout -r b3-5-0-patches auth-ldap
+cvs checkout -r b3-5-0-patches auth-ldap-adldapsearch
 
-cvs checkout ajaxhelper
-cvs checkout ams
-cvs checkout batch-importer
-cvs checkout bug-tracker
-cvs checkout bulk-mail
-cvs checkout calendar
-cvs checkout categories
-cvs checkout contacts
-cvs checkout chat
-cvs checkout cms
-cvs checkout diagram
-cvs checkout ecommerce
-cvs checkout events
-cvs checkout faq
-cvs checkout general-comments
+cvs checkout -r b3-5-0-patches ajaxhelper
+cvs checkout -r b3-5-0-patches ams
+cvs checkout -r b3-5-0-patches batch-importer
+cvs checkout -r b3-5-0-patches bug-tracker
+cvs checkout -r b3-5-0-patches bulk-mail
+cvs checkout -r b3-5-0-patches calendar
+cvs checkout -r b3-5-0-patches categories
+cvs checkout -r b3-5-0-patches contacts
+cvs checkout -r b3-5-0-patches chat
+cvs checkout -r b3-5-0-patches cms
+cvs checkout -r b3-5-0-patches diagram
+cvs checkout -r b3-5-0-patches ecommerce
+cvs checkout -r b3-5-0-patches events
+cvs checkout -r b3-5-0-patches faq
+cvs checkout -r b3-5-0-patches general-comments
 
-cvs checkout intranet-amberjack
-cvs checkout intranet-audit
-cvs checkout intranet-baseline
-cvs checkout intranet-big-brother
-cvs checkout intranet-bug-tracker
-cvs checkout intranet-calendar
+cvs checkout -r b3-5-0-patches intranet-amberjack
+cvs checkout -r b3-5-0-patches intranet-audit
+cvs checkout -r b3-5-0-patches intranet-baseline
+cvs checkout -r b3-5-0-patches intranet-big-brother
+cvs checkout -r b3-5-0-patches intranet-bug-tracker
+cvs checkout -r b3-5-0-patches intranet-calendar
 # Obsolete!
-# cvs checkout intranet-calendar-holidays
-cvs checkout intranet-confdb
-cvs checkout intranet-core
-cvs checkout intranet-cost
-cvs checkout intranet-cost-center
-cvs checkout intranet-crm-tracking
+# cvs checkout -r b3-5-0-patches intranet-calendar-holidays
+cvs checkout -r b3-5-0-patches intranet-confdb
+cvs checkout -r b3-5-0-patches intranet-core
+cvs checkout -r b3-5-0-patches intranet-cost
+cvs checkout -r b3-5-0-patches intranet-cost-center
+cvs checkout -r b3-5-0-patches intranet-crm-tracking
 
-# cvs checkout intranet-cust-baselkb
-# cvs checkout intranet-cust-cambridge
-# cvs checkout intranet-cust-issa
-# cvs checkout intranet-cust-lexcelera
-# cvs checkout intranet-cust-projop
-# cvs checkout intranet-cust-reinisch
+# cvs checkout -r b3-5-0-patches intranet-cust-baselkb
+# cvs checkout -r b3-5-0-patches intranet-cust-cambridge
+# cvs checkout -r b3-5-0-patches intranet-cust-issa
+# cvs checkout -r b3-5-0-patches intranet-cust-lexcelera
+# cvs checkout -r b3-5-0-patches intranet-cust-projop
+# cvs checkout -r b3-5-0-patches intranet-cust-reinisch
 
-cvs checkout intranet-cvs-integration
-cvs checkout intranet-dw-light
-cvs checkout intranet-dynfield
-cvs checkout intranet-exchange-rate
-cvs checkout intranet-expenses
-cvs checkout intranet-expenses-workflow
-cvs checkout intranet-filestorage
-cvs checkout intranet-filestorage-openacs
-cvs checkout intranet-forum
-cvs checkout intranet-freelance
-cvs checkout intranet-freelance-invoices
-cvs checkout intranet-freelance-rfqs
-cvs checkout intranet-freelance-translation
-cvs checkout intranet-funambol
-cvs checkout intranet-ganttproject
-cvs checkout intranet-helpdesk
-cvs checkout intranet-hr
-cvs checkout intranet-pdf-htmldoc
-cvs checkout intranet-invoices
-cvs checkout intranet-invoices-templates
-cvs checkout intranet-mail-import
-cvs checkout intranet-material
-cvs checkout intranet-milestone
-cvs checkout intranet-nagios
-cvs checkout intranet-notes
-cvs checkout intranet-notes-tutorial
-cvs checkout intranet-ophelia
-cvs checkout intranet-otp
-cvs checkout intranet-payments
-cvs checkout intranet-portfolio-management
-cvs checkout intranet-release-mgmt
-cvs checkout intranet-reporting
-cvs checkout intranet-reporting-cubes
-cvs checkout intranet-reporting-dashboard
-cvs checkout intranet-reporting-finance
-cvs checkout intranet-reporting-indicators
-cvs checkout intranet-reporting-translation
-cvs checkout intranet-reporting-tutorial
-cvs checkout intranet-resource-management
-cvs checkout intranet-riskmanagement
-cvs checkout intranet-scrum
-cvs checkout intranet-search-pg
-cvs checkout intranet-search-pg-files
-cvs checkout intranet-security-update-client
-cvs checkout intranet-security-update-server
-cvs checkout intranet-simple-survey
-cvs checkout intranet-sharepoint
-cvs checkout intranet-spam
-cvs checkout intranet-sql-selectors
-cvs checkout intranet-sysconfig
-cvs checkout intranet-timesheet2
-cvs checkout intranet-timesheet2-invoices
-cvs checkout intranet-timesheet2-task-popup
-cvs checkout intranet-timesheet2-tasks
-cvs checkout intranet-timesheet2-workflow
-cvs checkout intranet-tinytm
-cvs checkout intranet-trans-invoices
-cvs checkout intranet-trans-project-wizard
-# cvs checkout intranet-trans-invoices-vaw
-cvs checkout intranet-translation
-cvs checkout intranet-trans-quality
-cvs checkout intranet-ubl
-cvs checkout intranet-update-client
-cvs checkout intranet-update-server
-cvs checkout intranet-wiki
-cvs checkout intranet-workflow
-cvs checkout intranet-xmlrpc
+cvs checkout -r b3-5-0-patches intranet-cvs-integration
+cvs checkout -r b3-5-0-patches intranet-dw-light
+cvs checkout -r b3-5-0-patches intranet-dynfield
+cvs checkout -r b3-5-0-patches intranet-exchange-rate
+cvs checkout -r b3-5-0-patches intranet-expenses
+cvs checkout -r b3-5-0-patches intranet-expenses-workflow
+cvs checkout -r b3-5-0-patches intranet-filestorage
+cvs checkout -r b3-5-0-patches intranet-filestorage-openacs
+cvs checkout -r b3-5-0-patches intranet-forum
+cvs checkout -r b3-5-0-patches intranet-freelance
+cvs checkout -r b3-5-0-patches intranet-freelance-invoices
+cvs checkout -r b3-5-0-patches intranet-freelance-rfqs
+cvs checkout -r b3-5-0-patches intranet-freelance-translation
+cvs checkout -r b3-5-0-patches intranet-funambol
+cvs checkout -r b3-5-0-patches intranet-ganttproject
+cvs checkout -r b3-5-0-patches intranet-helpdesk
+cvs checkout -r b3-5-0-patches intranet-hr
+cvs checkout -r b3-5-0-patches intranet-pdf-htmldoc
+cvs checkout -r b3-5-0-patches intranet-invoices
+cvs checkout -r b3-5-0-patches intranet-invoices-templates
+cvs checkout -r b3-5-0-patches intranet-mail-import
+cvs checkout -r b3-5-0-patches intranet-material
+cvs checkout -r b3-5-0-patches intranet-milestone
+cvs checkout -r b3-5-0-patches intranet-nagios
+cvs checkout -r b3-5-0-patches intranet-notes
+cvs checkout -r b3-5-0-patches intranet-notes-tutorial
+cvs checkout -r b3-5-0-patches intranet-ophelia
+cvs checkout -r b3-5-0-patches intranet-otp
+cvs checkout -r b3-5-0-patches intranet-payments
+cvs checkout -r b3-5-0-patches intranet-portfolio-management
+cvs checkout -r b3-5-0-patches intranet-release-mgmt
+cvs checkout -r b3-5-0-patches intranet-reporting
+cvs checkout -r b3-5-0-patches intranet-reporting-cubes
+cvs checkout -r b3-5-0-patches intranet-reporting-dashboard
+cvs checkout -r b3-5-0-patches intranet-reporting-finance
+cvs checkout -r b3-5-0-patches intranet-reporting-indicators
+cvs checkout -r b3-5-0-patches intranet-reporting-translation
+cvs checkout -r b3-5-0-patches intranet-reporting-tutorial
+cvs checkout -r b3-5-0-patches intranet-resource-management
+cvs checkout -r b3-5-0-patches intranet-riskmanagement
+cvs checkout -r b3-5-0-patches intranet-scrum
+cvs checkout -r b3-5-0-patches intranet-search-pg
+cvs checkout -r b3-5-0-patches intranet-search-pg-files
+cvs checkout -r b3-5-0-patches intranet-security-update-client
+cvs checkout -r b3-5-0-patches intranet-security-update-server
+cvs checkout -r b3-5-0-patches intranet-simple-survey
+cvs checkout -r b3-5-0-patches intranet-sharepoint
+cvs checkout -r b3-5-0-patches intranet-spam
+cvs checkout -r b3-5-0-patches intranet-sql-selectors
+cvs checkout -r b3-5-0-patches intranet-sysconfig
+cvs checkout -r b3-5-0-patches intranet-timesheet2
+cvs checkout -r b3-5-0-patches intranet-timesheet2-invoices
+cvs checkout -r b3-5-0-patches intranet-timesheet2-task-popup
+cvs checkout -r b3-5-0-patches intranet-timesheet2-tasks
+cvs checkout -r b3-5-0-patches intranet-timesheet2-workflow
+cvs checkout -r b3-5-0-patches intranet-tinytm
+cvs checkout -r b3-5-0-patches intranet-trans-invoices
+cvs checkout -r b3-5-0-patches intranet-trans-project-wizard
+# cvs checkout -r b3-5-0-patches intranet-trans-invoices-vaw
+cvs checkout -r b3-5-0-patches intranet-translation
+cvs checkout -r b3-5-0-patches intranet-trans-quality
+cvs checkout -r b3-5-0-patches intranet-ubl
+cvs checkout -r b3-5-0-patches intranet-update-client
+cvs checkout -r b3-5-0-patches intranet-update-server
+cvs checkout -r b3-5-0-patches intranet-wiki
+cvs checkout -r b3-5-0-patches intranet-workflow
+cvs checkout -r b3-5-0-patches intranet-xmlrpc
 
-cvs checkout lars-blogger
-cvs checkout mail-tracking
-cvs checkout notifications
-cvs checkout organizations
-cvs checkout oryx-ts-extensions
-cvs checkout postal-address
+cvs checkout -r b3-5-0-patches lars-blogger
+cvs checkout -r b3-5-0-patches mail-tracking
+cvs checkout -r b3-5-0-patches notifications
+cvs checkout -r b3-5-0-patches organizations
+cvs checkout -r b3-5-0-patches oryx-ts-extensions
+cvs checkout -r b3-5-0-patches postal-address
 
-cvs checkout ref-countries
-cvs checkout ref-language
-cvs checkout ref-timezones
-cvs checkout ref-us-counties
-cvs checkout ref-us-states
-cvs checkout ref-us-zipcodes
+cvs checkout -r b3-5-0-patches ref-countries
+cvs checkout -r b3-5-0-patches ref-language
+cvs checkout -r b3-5-0-patches ref-timezones
+cvs checkout -r b3-5-0-patches ref-us-counties
+cvs checkout -r b3-5-0-patches ref-us-states
+cvs checkout -r b3-5-0-patches ref-us-zipcodes
 
-cvs checkout rss-support
-cvs checkout search
-cvs checkout simple-survey
-cvs checkout telecom-number
-cvs checkout trackback
-cvs checkout wiki
-cvs checkout workflow
-cvs checkout xml-rpc
+cvs checkout -r b3-5-0-patches rss-support
+cvs checkout -r b3-5-0-patches search
+cvs checkout -r b3-5-0-patches simple-survey
+cvs checkout -r b3-5-0-patches telecom-number
+cvs checkout -r b3-5-0-patches trackback
+cvs checkout -r b3-5-0-patches wiki
+cvs checkout -r b3-5-0-patches workflow
+cvs checkout -r b3-5-0-patches xml-rpc
+
