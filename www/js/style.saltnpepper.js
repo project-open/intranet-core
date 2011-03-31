@@ -124,7 +124,9 @@ jQuery().ready(function(){
                 extendContract();
         }
         if(isExtended == 1){
-		document.getElementById('slave_content').style.visibility='visible';
+		if (document.getElementById("slave_content") != null) {
+			document.getElementById('slave_content').style.visibility='visible';
+		}
 	}
 });
 
