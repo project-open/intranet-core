@@ -209,9 +209,9 @@ set end_idx [expr $start_idx + $how_many - 1]
 # ----------------------------------------------------------
 # Do we have to show administration links?
 
-set admin_html ""
+set admin_html_links ""
 if {[im_permission $user_id "add_users"]} {
-    append admin_html "
+    append admin_html_links "
 	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
         <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a></li>
 	<li><a href=/intranet/users/upload-contacts?[export_url_vars return_url]>[_ intranet-core.Import_User_CSV]</a></li>
@@ -233,7 +233,7 @@ set menu_select_sql "
 set ctr 0
 db_foreach menu_select $menu_select_sql {
     regsub -all " " $name "_" name_key
-    append admin_html "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
+    append admin_html_links "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
 }
 
 
@@ -631,10 +631,10 @@ set table_continuation_html ""
 # Check whether we have to add spamming to Admin Links
 # ---------------------------------------------------------------
 
-if {"" != $admin_html && [im_table_exists spam_messages]} {
+if {"" != $admin_html_links && [im_table_exists spam_messages]} {
 
     set selector_short_name "[string tolower $user_group_name]_all"
-    append admin_html "
+    append admin_html_links "
     <li><a href=\"[spam_base]spam-add?[export_url_vars selector_short_name]\"
       >[_ intranet-core.Spam_Users]
     </a>\n"
@@ -644,53 +644,41 @@ if {"" != $admin_html && [im_table_exists spam_messages]} {
 # 10. Join all parts together
 # ---------------------------------------------------------------
 
-
 set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list user_group_name] $menu_select_label]
-
 
 set left_navbar_html "
       <div class='filter-block'>
         <div class='filter-title'>
-	    #intranet-core.Filter_Users#
+            \#intranet-core.Filter_Users\#
         </div>
 
-	<form method=get action='/intranet/users/index' name=filter_form>
-	[export_form_vars start_idx order_by how_many letter]
-	<input type=hidden name=view_name value='user_list'>
-	<table>
-	<tr>
-	  <td class='form-label'>#intranet-core.User_Types#  &nbsp;</td>
-	  <td class='form-widget'>
-	    [im_select user_group_name $user_types ""]
-	    <input type=submit value='[lang::message::lookup "" intranet-core.Action_Go Go]' name=submit>
-	  </td>
-	</tr>
-	</table>
-	</form>
+        <form method=get action='/intranet/users/index' name=filter_form>
+        [export_form_vars start_idx order_by how_many letter]
+        <input type=hidden name=view_name value='user_list'>
+        <table>
+        <tr>
+          <td class='form-label'>\#intranet-core.User_Types\#  &nbsp;</td>
+          <td class='form-widget'>
+            [im_select user_group_name $user_types ""]
+            <input type=submit value='[lang::message::lookup "" intranet-core.Action_Go Go]' name=submit>
+          </td>
+        </tr>
+        </table>
+        </form>
       </div>
 "
 
-if {"" != $admin_html} {
-    append left_navbar_html "
-      <div class='filter-block'>
-         <div class='filter-title'>
-            #intranet-core.Admin_Users#
-         </div>
-         <ul>
-         $admin_html
-         </ul>
-      </div>
-    "
-}
-
-
-
-
-if {[im_permission $user_id "add_users"]} {
-    set list_icons "<a href=/intranet/users/new>[_ intranet-core.Add_New_User]</a>\n"
-} else {
-    set list_icons "";
+if { ""!=$admin_html_links } {
+        append left_navbar_html "
+              <div class='filter-block'>
+                 <div class='filter-title'>
+                    \#intranet-core.Admin_Users\#
+                 </div>
+                 <ul>
+                        $admin_html_links
+                 </ul>
+              </div>
+        "
 }
 
 db_release_unused_handles
-
