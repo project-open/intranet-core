@@ -2702,3 +2702,213 @@ ad_proc -public im_project_base_data_component {
     set result [ad_parse_template -params $params "/packages/intranet-core/lib/project-base-data"]
     return [string trim $result]
 }
+
+
+
+# ---------------------------------------------------------------
+# Personal list of tasks
+# ---------------------------------------------------------------
+
+ad_proc -public im_personal_todo_component {
+    {-view_name "personal_todo_list" }
+} {
+    Returns a HTML table with the list of projects, tasks,
+    forum items etc. assigned to the current user. 
+} {
+    set current_user_id [ad_get_user_id]
+
+    # ---------------------------------------------------------------
+    # Columns to show:
+
+    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set column_headers [list]
+    set column_vars [list]
+    set extra_selects [list]
+    set extra_froms [list]
+    set extra_wheres [list]
+
+    set column_sql "
+	select	*
+	from	im_view_columns
+	where	view_id = :view_id
+		and group_id is null
+	order by
+		sort_order
+    "
+    db_foreach column_list_sql $column_sql {
+	if {"" == $visible_for || [eval $visible_for]} {
+	    lappend column_headers "$column_name"
+	    lappend column_vars "$column_render_tcl"
+	}
+	if {"" != $extra_select} { lappend extra_selects $extra_select }
+	if {"" != $extra_from} { lappend extra_froms $extra_from }
+	if {"" != $extra_where} { lappend extra_wheres $extra_where }
+    }
+
+    if {"" == $order_by_clause} {
+	set order_by_clause  [parameter::get_from_package_key -package_key "intranet-core" -parameter "HomePersonalToDoListSortClause" -default "task_name DESC"]
+    }
+
+    # ---------------------------------------------------------------
+    # Generate SQL Query
+
+    set extra_select [join $extra_selects ",\n\t"]
+    set extra_where [join $extra_wheres "and\n\t"]
+    if { ![empty_string_p $extra_where] } {
+	set extra_where "and\n\t$extra_where"
+    }
+
+    set tasks_sql "
+	-- projects managed by the current user
+	select	p.project_id as task_id,
+		p.project_name as task_name,
+		p.company_id as customer_id,
+		p.project_status_id as status_id,
+		p.project_type_id as type_id,
+		p.start_date,
+		p.end_date,
+		im_category_from_id(p.project_priority_id) as priority,
+		p.percent_completed
+	from
+	        im_projects p,
+		acs_rels r,
+		im_biz_object_members bom
+	where
+		r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		r.rel_id = bom.rel_id and
+		bom.object_role_id = 1301 and
+		p.parent_id is null and
+		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
+	UNION
+	-- tasks assigned to this user
+	select	p.project_id as task_id,
+		p.project_name as task_name,
+		p.company_id as customer_id,
+		p.project_status_id as status_id,
+		p.project_type_id as type_id,
+		p.start_date,
+		p.end_date,
+		t.priority::text,
+		p.percent_completed
+	from
+		im_projects p,
+		im_timesheet_tasks t,
+		acs_rels r
+	where
+		r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		p.project_id = t.task_id and
+		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
+	UNION
+	-- tickets assigned to this user
+	select	p.project_id as task_id,
+		p.project_name as task_name,
+		p.company_id as customer_id,
+		p.project_status_id as status_id,
+		p.project_type_id as type_id,
+		p.start_date,
+		p.end_date,
+		im_category_from_id(t.ticket_prio_id) as priority,
+		percent_completed
+	from
+		im_projects p,
+		im_tickets t,
+		acs_rels r
+	where
+		r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		p.project_id = t.ticket_id and
+		t.ticket_status_id not in ([join [im_sub_categories [im_ticket_status_closed]] ","])
+    "
+
+    set personal_tasks_query "
+	SELECT	t.*,
+	        c.company_name,
+	        im_category_from_id(t.type_id) as task_type,
+	        im_category_from_id(t.status_id) as task_status,
+		to_char(t.start_date, 'YYYY-MM-DD') as start_date_pretty,
+		to_char(t.end_date, 'YYYY-MM-DD') as end_date_pretty,
+		bou.url as task_url
+                $extra_select
+	FROM
+		($tasks_sql) t,
+		im_companies c,
+		acs_objects o
+		LEFT OUTER JOIN (select * from im_biz_object_urls where url_type = 'view') bou ON (o.object_type = bou.object_type)
+                $extra_from
+	WHERE
+		t.customer_id = c.company_id and
+		t.task_id = o.object_id
+                $extra_where
+	order by $order_by_clause
+    "
+
+    
+    # ---------------------------------------------------------------
+    # Format the List Table Header
+
+    # Set up colspan to be the number of headers + 1 for the # column
+    set colspan [expr [llength $column_headers] + 1]
+
+    set table_header_html "<tr>\n"
+    foreach col $column_headers {
+	regsub -all " " $col "_" col_txt
+	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
+    }
+    append table_header_html "</tr>\n"
+
+
+    # ---------------------------------------------------------------
+    # Format the Result Data
+
+    set url "index?"
+    set table_body_html ""
+    set bgcolor(0) " class=roweven "
+    set bgcolor(1) " class=rowodd "
+    set ctr 0
+    db_foreach personal_tasks_query $personal_tasks_query {
+
+	set url [im_maybe_prepend_http $url]
+	if { [empty_string_p $url] } {
+	    set url_string "&nbsp;"
+	} else {
+	    set url_string "<a href=\"$url\">$url</a>"
+	}
+	
+	# Append together a line of data based on the "column_vars" parameter list
+	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+	foreach column_var $column_vars {
+	    append row_html "\t<td valign=top>"
+	    set cmd "append row_html $column_var"
+	    eval "$cmd"
+	    append row_html "</td>\n"
+	}
+	append row_html "</tr>\n"
+	append table_body_html $row_html
+	
+	incr ctr
+    }
+
+    # Show a reasonable message when there are no result rows:
+    if { [empty_string_p $table_body_html] } {
+
+	# Let the component disappear if there are no projects...
+	if {!$show_empty_project_list_p} { return "" }
+
+	set table_body_html "
+	    <tr><td colspan=\"$colspan\"><ul><li><b> 
+	    [lang::message::lookup "" intranet-core.lt_There_are_currently_n "There are currently no entries matching the selected criteria"]
+	    </b></ul></td></tr>
+	"
+    }
+    return "
+	<table class=\"table_component\" width=\"100%\">
+	<thead>$table_header_html</thead>
+	<tbody>$table_body_html</tbody>
+	</table>
+    "
+}
+

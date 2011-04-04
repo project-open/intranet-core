@@ -149,7 +149,7 @@
 -- 72000-72999  Intranet SLA Management (1000)
 -- 73000-73999  Intranet Planning (1000)
 -- 74000-74999  Intranet Idea Management (1000)
--- 75000-75999  Intranet <to be defined> (1000)
+-- 75000-75999  Intranet Risk Management (1000)
 -- 76000-76999  Intranet <to be defined> (1000)
 -- 77000-77999  Intranet <to be defined> (1000)
 -- 78000-78999  Intranet <to be defined> (1000)

@@ -153,6 +153,8 @@ values (23, 'project_personal_list', 'view_projects', 1400);
 -- 24 reserved for project_csv
 insert into im_views (view_id, view_name, visible_for, view_type_id)
 values (25, 'project_hierarchy', 'view_projects', 1400);
+insert into im_views (view_id, view_name, visible_for, view_type_id)
+values (26, 'personal_todo_list', 'view_projects', 1400);
 
 
 

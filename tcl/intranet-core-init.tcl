@@ -49,6 +49,7 @@ set object_types {
     im_project
     im_repeating_cost
     im_report
+    im_risk
     im_sla_parameter
     im_ticket
     im_ticket_queue
