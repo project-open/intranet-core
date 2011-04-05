@@ -16,7 +16,7 @@
 ad_page_contract {
     Sends an email with an attachment to a user
 
-    @param user_id_from_search A user id
+    @param user_id_from_search A list of user_id or note_ids
     @subject A subject line
     @message A message that can be either plain text or html
     @message_mime_type "text/plain" or "text/html"
@@ -70,8 +70,22 @@ set creation_ip [ad_conn peeraddr]
 
 set time_date [exec date "+%s.%N"]
 
-foreach uid $user_id_from_search {
-    im_user_permissions $current_user_id $uid view read write admin
+foreach oid $user_id_from_search {
+
+    set object_type [util_memoize "acs_object_type $oid"]
+    switch $object_type {
+	user {
+	    im_user_permissions $current_user_id $oid view read write admin
+	}
+	im_note {
+	    set note_user_id [db_string note_user_id "select object_id from im_notes where note_id = :oid" -default ""]
+	    im_user_permissions $current_user_id $note_user_id view read write admin
+	}
+	default {
+	    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
+	}
+    }
+
     if {!$read} {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
 	return
@@ -93,7 +107,16 @@ set subject [string trim $subject]
 
 
 # Get user list and email list
-set email_list [db_list email_list "select email from parties where party_id in ([join $user_id_from_search ","])"]
+set email_list [db_list email_list "
+	select	lower(trim(email))
+	from	parties
+	where	party_id in ([join $user_id_from_search ","])
+    UNION
+	select	lower(trim(note))
+	from	im_notes
+	where	note_id in ([join $user_id_from_search ","])
+"]
+
 
 # Include a copy to myself?
 if {"" != $send_me_a_copy} {

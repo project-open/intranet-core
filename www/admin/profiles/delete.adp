@@ -11,8 +11,9 @@ configuration.
 Please choose this option only if you know what you do
 and then only to to cleanup demo data during the initial 
 configuration of the system.<br>
-Deleting groups such as "Employees" or "P/O Admins" will
-make your system inaccessible.
+System groups such as "Employees" or "P/O Admins" have been
+excluded from this list. Deleting these groups could cause
+serious issues to your system.
 </font>
 </p>
 
