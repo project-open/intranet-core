@@ -25,7 +25,14 @@ set select_html ""
 set profile_sql "
 	select	g.group_name,
 		g.group_id
-	from	groups g
+	from	groups g,
+		im_profiles p
+	where	g.group_id = p.profile_id and
+		g.group_name not in (
+			'Employees', 'Freelancers', 'Customers', 'P/O Admins',
+			'Sales', 'Helpdesk', 'Accounting',
+			'Project Managers', 'Senior Managers'
+		)
 	order by group_id
 "
 db_foreach profiles $profile_sql {
