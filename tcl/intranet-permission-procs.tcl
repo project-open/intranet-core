@@ -67,7 +67,7 @@ ad_proc -public im_registered_users_group_id {} { return [im_profile_registered_
 
 # Define the set of Core privileges
 #
-ad_proc -public im_core_privs {} {
+ad_proc -public im_core_privs {filter_str} {
     Returns the list of all available privileges for P/O Core.
     These privs only cover the core functionality, additional
     modules define their own privs with respect to their own
@@ -76,7 +76,13 @@ ad_proc -public im_core_privs {} {
     /sql/intranet-permissions.sql file so that all privileges
     used here are defined.
 } {
-    set privilege_sql "select privilege from acs_privileges order by upper(privilege)"
+
+    if { ""==$filter_str } {
+	set privilege_sql "select privilege from acs_privileges order by upper(privilege)"
+    } else {	
+	set privilege_sql "select privilege from acs_privileges where pretty_name ilike '%$filter_str%' order by upper(privilege)"
+    }
+
     set privileges [list]
     db_foreach privileges_loop $privilege_sql {
 

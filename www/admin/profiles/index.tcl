@@ -17,6 +17,8 @@ ad_page_contract {
     
     @author Lars Pind (lars@collaboraid.biz)
     @author Frank Bergmann (frank.bergmann@project-open.com)
+} {
+    { filter_str "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -32,8 +34,50 @@ set subsite_id [ad_conn subsite_id]
 set context_bar [im_context_bar $page_title]
 set url_stub [im_url_with_query]
 
+set left_navbar_html "
+<table width='100%'>
+<tr>
+  <td width='50%'>
+        <div class='filter-block'>
+                <div class='filter-title'>
+                     [lang::message::lookup "" intranet-core.Filter "Filter"]
+                </div>
+        <form action=index method=GET>
+        <table>
+        <tr>
+        <td>Text:</td>
+        <td><input size='10' name='filter_str' id='filter_str' value='$filter_str'></td>
+        </tr>
+        <tr><td></td><td><input type=submit></td></tr>
+        </form>
+        </table>
+        </div>
+      <hr/>
+
+        <table>
+        <tr>
+          <td><div class='filter-title'>Administration Options</td> </div>
+        </tr>
+        <tr>
+        <td>
+          <ul>
+        <li><a href='/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile'>Add a new profile</a>
+        <li><a href='/intranet/admin/profiles/delete'>Delete a profile</a>
+        </ul>
+  </td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+"
+
+
+
 # The list of Core privileges
-set privs [im_core_privs]
+set privs [im_core_privs $filter_str]
 # set privs { add_users }
 
 # Flush the permission cache to make changes active.
