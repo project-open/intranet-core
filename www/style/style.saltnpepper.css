@@ -881,9 +881,8 @@ a   span  {float:none;}
 
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
-	vertical-align: top;
+	vertical-align: middle;
 }
-
 
 .fullwidth-list .component table.month_header td {
 	background:#266591 none repeat scroll 0 50%;
@@ -1597,4 +1596,3 @@ div.xowiki-content hr {
 #intranetlogo {
 	max-height: 63px;
 }
-
