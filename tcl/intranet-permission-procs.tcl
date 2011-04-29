@@ -262,7 +262,7 @@ ad_proc -public im_render_user_id2 {
 ad_proc -public im_user_group_member_p { user_id group_id } {
     Returns 1 if specified user is a member of the specified group. 0 otherwise
 } {
-    return [im_profile::member_p -profile_id $user_id -user_id $user_id]
+    return [im_profile::member_p -profile_id $group_id -user_id $user_id]
 }
 
 
