@@ -165,7 +165,7 @@
 </div>
 
 
-<div class='item-footer'>
+<!--<div class='item-footer'>-->
 <form enctype="multipart/form-data" method="post" action="/simple-survey/process-response">
 <input value="@survey_id@" name="survey_id" type="hidden">
 <input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden">
@@ -236,7 +236,7 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 </tr>
 </table>
 </form>
-</div>
+<!--</div>-->
 
 
 @footer;noquote@
