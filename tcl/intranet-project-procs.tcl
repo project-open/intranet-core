@@ -326,7 +326,7 @@ namespace eval project {
         set project_id [db_exec_plsql create_new_project $sql]
 
 	# Write Audit Trail
-	im_project_audit -action create -project_id $project_id
+	# im_project_audit -action create -project_id $project_id
 
         return $project_id
     }
@@ -702,12 +702,12 @@ ad_proc -public im_project_options {
     }
 
     if {0 != $exclude_status_id && "" != $exclude_status_id} {
-	lappend p_criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
+	lappend p_criteria "p.project_status_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_status_id] ","])"
 	lappend main_p_criteria "p.project_status_id not in ([join [im_sub_categories $exclude_status_id] ","])"
     }
 
     if {0 != $exclude_type_id && "" != $exclude_type_id} {
-	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories $exclude_type_id] ","])"
+	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_type_id] ","])"
 	# No restriction of type on parent project!
     }
 
@@ -751,7 +751,6 @@ ad_proc -public im_project_options {
 	# No restriction on parent project membership, because parent
 	# projects always have the same members as sub-projects.
     }
-
 
     # -----------------------------------------------------------------
     # Compose the SQL
