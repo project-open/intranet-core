@@ -1588,17 +1588,18 @@ ad_proc -public im_stylesheet {} {
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
+    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
     set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" ""]
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
-    
+
     if {[string equal $system_logo ""]} {
 	set user_id [ad_get_user_id]
 	set skin_name [im_user_skin $user_id]
 	
 	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
-	    set system_logo "/intranet/images/logo.$skin_name.gif"
+	    set system_logo "$system_url/intranet/images/logo.$skin_name.gif"
 	} else {
-	    set system_logo "/intranet/images/logo.default.gif"
+	    set system_logo "$system_url/intranet/images/logo.default.gif"
 	}
     }
     return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
