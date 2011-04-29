@@ -615,13 +615,9 @@ ad_proc -public im_sub_categories {
     lappend category_list 0
     
     # Check security. category_list should only contain integers.
-    if {[regexp {[^0-9\ ]} $category_list match]} { 
-	im_security_alert \
-	    -location "im_category_subcategories" \
-	    -message "Received non-integer value for category_list" \
-	    -value $category_list
-	return [list]
-    }
+    im_security_alert_check_integer \
+	-location "im_sub_categories" \
+	-value $category_list
 
     # Should we include disabled categories? This is necessary for
     # example if we want to disable all sub-categories of a top category
