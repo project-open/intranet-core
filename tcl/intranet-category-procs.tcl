@@ -536,9 +536,17 @@ ad_proc -public template::widget::im_checkbox {
 
 
 
-
-
 ad_proc -public im_category_is_a { 
+    child
+    parent
+    { category_type "" }
+} {
+    Cached version of im_category_is_a
+} {
+    return [util_memoize [list im_category_is_a_helper $child $parent $category_type]]
+}
+
+ad_proc -public im_category_is_a_helper { 
     child
     parent
     { category_type "" }
