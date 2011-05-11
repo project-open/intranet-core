@@ -1724,6 +1724,7 @@ ad_proc im_hardware_id { } {
     Example: "00:23:54:DF:77:D3"
 } {
     set mac_address ""
+    set mac_line ""
     global tcl_platform
     if { [string match $tcl_platform(platform) "windows"] } {
 	
