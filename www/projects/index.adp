@@ -8,20 +8,27 @@
 
 <SCRIPT Language=JavaScript src=/resources/diagram/diagram/diagram.js></SCRIPT>
 
-<table cellspacing=0 cellpadding=0 border=0 width="100%">
-<tr valign=top>
-<td>
+<if 0 eq @plugin_id@>
 
-	<table class="table_list_page">
-            <%= $table_header_html %>
-            <%= $table_body_html %>
-            <%= $table_continuation_html %>
+	<table cellspacing=0 cellpadding=0 border=0 width="100%">
+	<tr valign=top>
+	<td>
+		<table class="table_list_page">
+	            <%= $table_header_html %>
+	            <%= $table_body_html %>
+	            <%= $table_continuation_html %>
+		</table>
+	</td>
+	<td width="<%= $dashboard_column_width %>">
+	<%= $dashboard_column_html %>
+	</td>
+	</tr>
 	</table>
 
-</td>
-<td width="<%= $dashboard_column_width %>">
-<%= $dashboard_column_html %>
-</td>
-</tr>
-</form>
-</table>
+</if>
+<else>
+
+	<%= [im_component_page -plugin_id $plugin_id -return_url $return_url] %>
+
+</else>
+

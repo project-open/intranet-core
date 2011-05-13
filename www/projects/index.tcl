@@ -51,6 +51,7 @@ ad_page_contract {
     { how_many "" }
     { view_name "project_list" }
     { filter_advanced_p:integer 0 }
+    { plugin_id:integer 0 }
 }
 
 # ---------------------------------------------------------------
@@ -157,14 +158,23 @@ if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_ke
 # Define the column headers and column contents that 
 # we want to show:
 #
-set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
-if {!$view_id } {
-    ad_return_complaint 1 "<b>Unknown View Name</b>:<br>
+
+switch $view_name {
+    "component" { set view_id 0 }
+    default {
+
+	set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name" -default 0]
+	if {!$view_id } {
+	    ad_return_complaint 1 "<b>Unknown View Name</b>:<br>
     The view '$view_name' is not defined. <br>
     Maybe you need to upgrade the database. <br>
     Please notify your system administrator."
     return
+	}
+	
+    }
 }
+
 
 set column_headers [list]
 set column_vars [list]
@@ -692,6 +702,9 @@ db_foreach projects_info_query $selection -bind $form_vars {
 
 #    if {"" == $project_id} { continue }
 
+    # Gif for collapsable tree?
+    set gif_html ""
+
     set url [im_maybe_prepend_http $url]
     if { [empty_string_p $url] } {
 	set url_string "&nbsp;"
@@ -799,8 +812,16 @@ if {"" == $dashboard_column_html} {
 # Project Navbar goes to the top
 #
 set letter $upper_letter
-set project_navbar_html [im_project_navbar $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter project_status_id] $menu_select_label]
-
+set project_navbar_html [\
+			     im_project_navbar \
+			     -current_plugin_id $plugin_id \
+			     $letter \
+			     "/intranet/projects/index" \
+			     $next_page_url \
+			     $previous_page_url \
+			     [list start_idx order_by how_many view_name letter project_status_id] \
+			     $menu_select_label \
+			    ]
 
 # Compile and execute the formtemplate if advanced filtering is enabled.
 eval [template::adp_compile -string {<formtemplate id="project_filter" style="tiny-plain"></formtemplate>}]
