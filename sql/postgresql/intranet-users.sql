@@ -54,6 +54,26 @@ values ('person','im_employees','employee_id');
 insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('user', 'users', 'user_id');
 
+
+-------------------------------------------------------------
+-- Fix extension tables for user
+
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user', 'persons', 'person_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user','users_contact','user_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user','parties','party_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user','im_employees','employee_id');
+
+insert into acs_object_type_tables (object_type,table_name,id_column)
+values ('user', 'users', 'user_id');
+
     
 insert into im_employees (employee_id) 
 select person_id 
