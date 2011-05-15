@@ -1235,9 +1235,6 @@ ad_proc -public im_header {
 	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
 	template::head::prepare_multirows
 	set event_handlers [template::get_body_event_handlers]
-	# Retrieve headers and footers
-#    set header [template::get_header_html]
-#    set footer [template::get_footer_html]
 
 	template::multirow foreach meta {
 	    set row "<meta"
