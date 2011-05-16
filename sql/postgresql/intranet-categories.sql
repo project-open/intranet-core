@@ -146,29 +146,39 @@ declare
 	p_loop			alias for $2;
 	v_cat			varchar;
 	v_path			varchar;
-	v_parent_path		varchar;
+	v_longest_path		varchar;
 	row			RECORD;
 BEGIN
 	-- Avoid infinite loops...
-	IF p_loop > 10 THEN return 0; END IF;
+	IF p_loop > 5 THEN return ''; END IF;
 
+	-- Add leading zeros until code has 8 digits.
+	-- This way all category codes have the same length.
 	v_cat := p_cat_id;
 	WHILE length(v_cat) < 8 LOOP v_cat := '0'||v_cat; END LOOP;
 
-	v_path := v_cat;
+	-- Look out for the parent with the longest path
+	v_longest_path := '';
 	FOR row IN
-		select	parent_id
-		from	im_category_hierarchy
-		where	child_id = p_cat_id
+		-- Get all (enabled) parents
+		select	ch.parent_id
+		from	im_category_hierarchy ch,
+			im_categories c
+		where	ch.child_id = p_cat_id and
+			ch.parent_id = c.category_id and
+			ch.parent_id != p_cat_id and
+			(c.enabled_p is null or c.enabled_p = 't')
 	LOOP
-		v_path = im_category_path_to_category(row.parent_id, p_loop+1) || v_cat;
+		v_path = im_category_path_to_category(row.parent_id, p_loop+1);
+		IF v_longest_path = '' THEN v_longest_path := v_path; END IF;
+		IF length(v_path) > length(v_longest_path) THEN v_longest_path := v_path; END IF;
 	END LOOP;
 
-	RETURN v_path;
+	RETURN v_longest_path || v_cat;
 end;$body$ language 'plpgsql';
 
 -- Test query
--- select im_category_path_to_category (83);
+select im_category_path_to_category (83);
 
 
 

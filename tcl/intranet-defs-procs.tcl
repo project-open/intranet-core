@@ -1522,7 +1522,7 @@ ad_proc -public im_ad_hoc_query {
     sql
 } {
     Ad-hoc execution of SQL-Queries.
-    @format "plain", "hmtl", "cvs" or "xml" - select the output format. Default is "plain".
+    @format "plain", "hmtl", "cvs", "json" or "xml" - select the output format. Default is "plain".
     @border Table border for HTML output
     @col_titles Optional titles for columns. Normally, columns are taken directly
     from the SQL query and passed through the localization subsystem.
@@ -1563,8 +1563,7 @@ ad_proc -public im_ad_hoc_query {
         <pre>$err_msg</pre>\n"
         ad_script_abort
     }
-    
-    
+
     if {"" == $col_titles} { set col_titles $bind_rows }
     set header ""
     foreach title $col_titles {
@@ -1580,6 +1579,7 @@ ad_proc -public im_ad_hoc_query {
             html { append header "<th>$title</th>" }
             csv { append header "\"$title\";" }
             xml { append header "<column>$title</column>\n" }
+            json { append header "\"$title\"\n" }
         }
     }
     switch $format {
@@ -1587,6 +1587,7 @@ ad_proc -public im_ad_hoc_query {
         html { set header "<tr class=rowtitle>\n$header\n</tr>\n" }
         csv { set header $header }
         xml { set header "" }
+        json { set header "" }
     }
     
     set row_count 0
@@ -1606,6 +1607,13 @@ ad_proc -public im_ad_hoc_query {
 		    set col_name [lindex $col_titles $col_count]
 		    append row_content "<$col_name>[ns_quotehtml $col]</$col_name>\n" 
 		}
+                json {
+		    if {0 == $col_count} { set komma "" } else { set komma "," }
+		    set col_name [lindex $col_titles $col_count]
+		    regexp -all {\n} $col {\n} col
+		    regexp -all {\r} $col {} col
+		    append row_content "$komma\"$col_name\": \"[ns_quotehtml $col]\"" 
+		}
             }
 	    incr col_count
         }
@@ -1616,10 +1624,14 @@ ad_proc -public im_ad_hoc_query {
             html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
             csv { append result "\n" }
             xml { append result "<row>\n$row_content</row>\n" }
+            json { 
+		if {0 == $row_count} { set komma "" } else { set komma "," }
+		append result "$komma\n{$row_content}" 
+	    }
         }
         incr row_count
     }
-    
+
     switch $format {
         plain { return "$header\n$result"  }
         html { 
@@ -1633,20 +1645,14 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { return "$header\n$result"  }
-        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n"  
-	}
+        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n" }
+        json { return $result }
     }
 }
-
-
-# "http://www.w3.org/TR/html4/strict.dtd">
-# http://www.w3.org/TR/html4/loose.dtd
-
 
 # ---------------------------------------------------------------
 # Extended Login Procedure
 # ---------------------------------------------------------------
-
 
 ad_proc im_require_login {
     { -no_redirect_p 0 }
