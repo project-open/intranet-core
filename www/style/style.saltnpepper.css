@@ -1253,8 +1253,8 @@ table.list td {
     .rowodd {font-size: 8pt; background-color: #EEEEEE;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
 
-    .form-label {font-size: 8pt; background-color: #FFF; padding-right:10px;}
-    .form-widget {font-size: 8pt; background-color: #FFF;}
+    .form-label {font-size: 8pt; background-color: #FFF; padding-right:10px;padding-top: 5px;vertical-align: middle;}
+    .form-widget {font-size: 8pt; background-color: #FFF;padding-top: 5px;vertical-align: middle;}
     .form-required-mark {color: #FF0000;}
 
     .form-element, .component_body tbody tr.roweven, .component_body tbody tr.rowodd {
