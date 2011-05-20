@@ -1181,10 +1181,8 @@ table.list td {
 }
 
 .table_list tfoot tr {
-        background-color:fff;
+        background-color:#fff;
 }
-
-
 
 .filter-list {
 	/* START NEW IDEBAR */
