@@ -874,7 +874,7 @@ a   span  {float:none;}
 
 .fullwidth-list .component table tr.rowodd,
 .fullwidth-list .component table tr.roweven {
-	height: 20px;
+	height: 22px;
 	border-top: 1px solid #FFFFFF;
 	border-bottom: 1px solid #FFFFFF;
 }
@@ -1596,3 +1596,15 @@ div.xowiki-content hr {
 #intranetlogo {
 	max-height: 63px;
 }
+
+#hours_confirmed_green a, #hours_confirmed_green a:visited  {
+        color: #20A003;
+}
+
+#hours_confirmed_red {
+        color: red;
+}
+#hours_confirmed_yellow a, #hours_confirmed_yellow a:visited {
+        color: #F77809;
+}
+
