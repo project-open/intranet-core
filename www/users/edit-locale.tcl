@@ -17,10 +17,9 @@ set language [lang::user::language -site_wide]
 set package_id [ad_conn package_id]
 set admin_p [ad_permission_p $package_id admin]
 
-
 if { $return_url == "" } {
     # Use referer header
-    set return_url [ns_set iget [ns_conn headers] referer]
+    set return_url "/intranet/" 
 }
 
 set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
@@ -112,13 +111,12 @@ if { [form is_request locale] } {
 
 if { [form is_valid locale] } {
 
-#    ad_return_complaint 1 asdf
-
     set site_wide_locale [element get_value locale site_wide_locale]
+ 
     lang::user::set_locale $site_wide_locale
     if { $package_level_locales_p } {
         set package_level_locale [element get_value locale package_level_locale]
-        lang::user::set_locale -package_id $package_id $package_level_locale
+       lang::user::set_locale -package_id $package_id $package_level_locale
     }
     
     if { $use_timezone_p } {
