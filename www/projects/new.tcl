@@ -70,7 +70,7 @@ set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncremen
 
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
-    set return_url "[im_url_stub]/projects/view?[export_url_vars project_id]"
+    set return_url [export_vars -base "/intranet/projects/view" {project_id}]
 }
 
 
@@ -651,6 +651,7 @@ if {[form is_submission $form_id]} {
  
 }
 
+
 if {[form is_valid $form_id]} {
 
     if {!$enable_project_path_p} { set project_path $project_nr }
@@ -851,7 +852,7 @@ if {[form is_valid $form_id]} {
 	    # it's not necessary to show the same page again
 	    if {$field_cnt > 0} {
 
-		set return_url [export_vars -base "/intranet/projects/new?" {project_id return_url}]
+		set return_url [export_vars -base "/intranet/projects/new" {project_id return_url}]
 	    }
 	}
     }
@@ -863,12 +864,12 @@ if {[form is_valid $form_id]} {
         if { [im_project_has_type $project_id "Translation Project"] } {
 
             # and return to the translation details
-            set return_url [export_vars -base "/intranet-translation/projects/edit-trans-data?" {project_id return_url}]
+            set return_url [export_vars -base "/intranet-translation/projects/edit-trans-data" {project_id return_url}]
 
         } else {
 
             # not a translation project
-            set return_url [export_vars -base "/intranet/projects/view?" {project_id}]
+            set return_url [export_vars -base "/intranet/projects/view" {project_id}]
 
         }
     }
