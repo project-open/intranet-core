@@ -104,7 +104,7 @@
 -- 930-939		intranet-reporting
 -- 940-949		intranet-confdb
 -- 950-959		intranet-idea-management
--- 960-969		reserved
+-- 960-969		intranet-customer-portal
 -- 970-979		reserved
 -- 980-989		reserved
 -- 990-999		reserved
