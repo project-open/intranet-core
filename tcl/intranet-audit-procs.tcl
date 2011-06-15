@@ -30,6 +30,7 @@ ad_library {
 
 ad_proc -public im_audit  {
     -object_id:required
+    {-user_id "" }
     {-object_type "" }
     {-status_id "" }
     {-type_id "" }
@@ -78,6 +79,7 @@ ad_proc -public im_audit  {
     ns_log Notice "im_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment"
 
     # Submit a callback so that customers can extend events
+    set err_msg ""
     if {[catch {
 	ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id"
 	callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
@@ -88,10 +90,15 @@ ad_proc -public im_audit  {
     # Call the audit implementation from intranet-audit commercial package if exists
     set err_msg ""
     set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
+
+    ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p"
+
     if {$intranet_audit_exists_p} {
-	catch {
-	    set err_msg [im_audit_impl -object_id $object_id -object_type $object_type -action $action -comment $comment]
-	} 
+	if {[catch {
+	    set err_msg [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
+	} err_msg]} {
+	    ns_log Notice "im_audit: Error executing im_audit_impl: $err_msg"
+	}
     }
 
     return $err_msg
