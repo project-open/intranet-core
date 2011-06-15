@@ -75,9 +75,11 @@ ad_proc -public im_audit  {
 	if {"" == $type_id && "" != $ref_type_id} { set type_id $ref_type_id }
     }
 
+    ns_log Notice "im_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment"
+
     # Submit a callback so that customers can extend events
-    ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id"
     if {[catch {
+	ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id"
 	callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
     } err_msg]} {
 	ns_log Error "im_audit: Error with callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id:\n$err_msg"
