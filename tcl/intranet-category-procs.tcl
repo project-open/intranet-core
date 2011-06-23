@@ -655,6 +655,38 @@ ad_proc -public im_sub_categories {
 }
 
 
+ad_proc -public im_category_parents {
+    {-include_disabled_p 0}
+    category
+} {
+    Returns a list of all parents of a specific category
+} {
+    return [util_memoize [list im_category_parents_helper -include_disabled_p $include_disabled_p $category]]
+}
+
+
+ad_proc -public im_category_parents_helper {
+    {-include_disabled_p 0}
+    category
+} {
+    Returns a list of all parents of a specific category
+} {
+    set disabled_sql "and (enabled_p = 't' OR enabled_p is null)"
+    if {$include_disabled_p} { set disabled_sql "" }
+    set parent_category_sql "
+	select	category_id
+	from	im_categories
+	where	category_id in (
+			select	parent_id
+			from	im_category_hierarchy
+			where	child_id = :category
+		)
+		$disabled_sql
+    "
+    return [db_list parent_categories $parent_category_sql]
+}
+
+
 ad_proc -public im_category_object_type {
     {-category_type}
 } {
