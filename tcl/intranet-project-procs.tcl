@@ -2614,7 +2614,13 @@ ad_proc im_project_nuke {project_id} {
 	db_dml party_approved_member_map "
 		delete from party_approved_member_map 
 		where member_id = :project_id"
+
 	
+	ns_log Notice "projects/nuke-2: acs_object_context_index"
+	db_dml acs_object_context_index "
+		delete from acs_object_context_index
+		where object_id = :project_id OR ancestor_id = :project_id"
+
 	
 	ns_log Notice "users/nuke2: Main tables"
 	db_dml parent_projects "
