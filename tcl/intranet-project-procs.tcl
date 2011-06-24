@@ -2303,6 +2303,9 @@ ad_proc im_project_nuke {project_id} {
 	    # should be deleted with the appropriate destructor method
 	    db_dml expense_cost_link "update im_expenses set bundle_id = null where bundle_id = :cost_id"
 
+	    ns_log Notice "projects/nuke-2: deleting cost: Resetting im_invoice_items.created_from_item_id"
+	    db_dml created_from_item_id "update im_cost_items set created_from_item_id = null where invoice_id = :cost_id"
+
 	    ns_log Notice "projects/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
