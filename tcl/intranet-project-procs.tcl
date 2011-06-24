@@ -2591,6 +2591,7 @@ ad_proc im_project_nuke {project_id} {
 	"]
 
 	set im_conf_item_project_rels_exists_p [im_table_exists im_conf_item_project_rels]
+	set im_ticket_ticket_rels_exists_p [im_table_exists im_ticket_ticket_rels]
 
 	# Relationships
 	foreach rel_id $rels {
@@ -2598,6 +2599,8 @@ ad_proc im_project_nuke {project_id} {
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
 	    if {$im_conf_item_project_rels_exists_p} { db_dml del_rels "delete from im_conf_item_project_rels where rel_id = :rel_id" }
+	    if {$im_ticket_ticket_rels_exists_p} { db_dml del_rels "delete from im_ticket_ticket_rels where rel_id = :rel_id" }
+#	    if {$exists_p} { db_dml del_rels "delete from  where rel_id = :rel_id" }
 
 	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
 	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
