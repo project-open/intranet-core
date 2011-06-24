@@ -77,6 +77,13 @@
 	  companies from the system, including all of their associated data such
 	  as offices, projects, forum discussions...)."] %>
 	  <br>&nbsp;<br>
+
+      <li>
+	<A href="cleanup-offices"><%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Offices "Nuke Demo Offices"] %></A><br>
+	<%= [lang::message::lookup "" intranet-core.DelDemo_Nuke_Demo_Offices_Msg "
+          This commands allows you to selectively 'nuke' (permanently delete) 
+	  offices from the system, including all of their associated data such)."] %>
+	  <br>&nbsp;<br>
     </ul>
 
   </td>
