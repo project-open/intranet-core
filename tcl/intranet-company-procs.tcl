@@ -690,6 +690,16 @@ ad_proc im_company_nuke {company_id} {
 	db_dml forum "delete from im_forum_topics where object_id = :company_id"
 
 	# Filestorage
+	ns_log Notice "companies/nuke-2: im_fs_files"
+	db_dml del_files "
+		delete from im_fs_files
+		where folder_id in (
+			select	folder_id
+			from	im_fs_folders
+			where	object_id = :company_id
+		)
+	"
+
 	ns_log Notice "companies/nuke-2: im_fs_folder_status"
 	db_dml filestorage "
 		delete from im_fs_folder_status 
@@ -708,6 +718,9 @@ ad_proc im_company_nuke {company_id} {
 			where object_id = :company_id
 		)
 	"
+
+
+
 	db_dml filestorage "delete from im_fs_folders where object_id = :company_id"
 
 
