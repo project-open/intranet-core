@@ -2615,6 +2615,15 @@ ad_proc im_project_nuke {project_id} {
 		delete from party_approved_member_map 
 		where member_id = :project_id"
 
+
+	ns_log Notice "projects/nuke-2: acs_objecs.context_id"
+	db_dml acs_objects_context_index "
+		update acs_objects set context_id = null
+		where context_id = :project_id";
+	db_dml acs_objects_context_index2 "
+		update acs_objects set context_id = null
+		where object_id = :project_id";
+
 	
 	ns_log Notice "projects/nuke-2: acs_object_context_index"
 	db_dml acs_object_context_index "
