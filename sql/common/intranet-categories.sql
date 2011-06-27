@@ -49,8 +49,8 @@
 -- 220-229	Intranet Annual Revenue
 -- 250-299	Intranet Translation Language
 -- 320-329	Intranet UoM
--- 340-359	Intranet Translation Task Status
--- 360-379	Intranet Project Status
+-- 340-379	Intranet Translation Task Status
+-- 380-399	Intranet Project Status (extended)
 -- 400-409	Intranet Prior Experience
 -- 450-459	Intranet Employee Pipeline Status
 -- 500-599	Intranet Translation Subject Area
