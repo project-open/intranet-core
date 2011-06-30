@@ -2226,14 +2226,24 @@ ad_proc im_project_clone_folders {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_nuke {project_id} {
-    Nuke (complete delete from the database) a project
+ad_proc im_project_nuke {
+    {-user_id 0}
+    project_id
+} {
+    Nuke (complete delete from the database) a project.
+    Returns an empty string if everything was OK or an error
+    string otherwise.
 } {
     ns_log Notice "im_project_nuke project_id=$project_id"
     
-    set current_user_id [ad_get_user_id]
+    # Use a predefined user_id to avoid a call to ad_get_user_id.
+    # ad_get_user_id's connection isn't defined during a DELETE REST request.
+    set current_user_id $user_id
+    if {0 == $current_user_id} { set current_user_id [ad_get_user_id] }
+
+    # Check for permissions
     im_project_permissions $current_user_id $project_id view read write admin
-    if {!$admin} { return }
+    if {!$admin} { return "User #$user_id isn't a system administrator" }
 
     # Write Audit Trail
     im_project_audit -project_id $project_id -action nuke
@@ -2669,19 +2679,9 @@ ad_proc im_project_nuke {project_id} {
 	    }
 	    
 	}
-	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
-		[_ intranet-core.Failed_to_nuke] Project: $project_id:<br>
-		$detailed_explanation
-		<p>
-		<blockquote>
-		<pre>
-		$errmsg
-		</pre>
-		</blockquote>
-	"
-	return
+	return "$detailed_explanation<br><pre>$errmsg</pre>"
     }
-    set return_to_admin_link "<a href=\"/intranet/projects/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
+    return ""
 }
 
 
