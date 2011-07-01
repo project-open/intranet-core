@@ -32,6 +32,6 @@ if {[catch {
      ns_returnfile 200 "application" $path_to_file
 } err_msg]} {
     ad_return_complaint 1 "
-       <b>Error receiving template, please ask your System Adminitrator check category 'Intranet Cost Template'</b>:<br>
+       <b>Error receiving template, please ask your System Administrator check category 'Intranet Cost Template'</b>:<br>
     "
 }
