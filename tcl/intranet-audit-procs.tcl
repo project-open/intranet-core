@@ -55,7 +55,7 @@ ad_proc -public im_audit  {
     if {"delete" == $action} { set action "after_delete" }
     if {"nuke"   == $action} { set action "after_delete" }
 
-    # ToDo: Remove these checks
+    # ToDo: Remove these checks once 4.0 final is out
     if {"pre_update" == $action} { set action "before_update" }
     if {"before_view" == $action} { set action "before_update" }
     if {"after_view" == $action} { set action "after_update" }
