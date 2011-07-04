@@ -247,7 +247,12 @@ if {$edit_profiles_p} {
 
 # Find out all the groups of the user and map these
 # groups to im_category "Intranet User Type"
+
 set user_subtypes [im_user_subtypes $user_id]
+
+if { ""==$user_subtypes} {
+    set user_subtypes $profile_org    
+}
 
 im_dynfield::append_attributes_to_form \
     -object_subtype_id $user_subtypes \
