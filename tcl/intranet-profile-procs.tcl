@@ -218,6 +218,31 @@ namespace eval im_profile {
 
 
     # ------------------------------------------------------------------
+    # The list of group in which a user is an aproved member
+    # ------------------------------------------------------------------
+
+    ad_proc -public profiles_for_user { 
+	-user_id:required
+    } {
+	Returns the list of groups in which a user is a member
+    } {
+	# Make sure nobody is playing around...
+	im_security_alert_check_integer -location profiles_for_user -value $user_id
+
+	set profiles_sql "
+		select	r.object_id_one
+		from	acs_rels r, 
+			membership_rels mr 
+		where 	r.rel_id = mr.rel_id and 
+			r.object_id_two = $user_id and 
+			mr.member_state = 'approved'
+		order by r.object_id_one
+	"
+	return [util_memoize [list db_list profiles_for_user $profiles_sql]]
+    }
+
+
+    # ------------------------------------------------------------------
     # Cached list of group members
     # ------------------------------------------------------------------
 
