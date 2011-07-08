@@ -379,10 +379,11 @@ background-position: 0px -10px;
 
 
 #navbar_main_wrapper {
-  position: relative;
-  left: 0px;
-  top: 0px;
-  background-color: #2E2E2E;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	background-color: #2E2E2E;
+        -moz-box-sizing: content-box;
 }
 
 #navbar_main {
@@ -401,7 +402,9 @@ background-position: 0px -10px;
 	overflow: visible;
 	z-index: 500;
 	position: relative;
+	-moz-box-sizing: content-box;
       }
+
     #navbar_main li {
 	display:inline;
 	margin:0;
