@@ -298,6 +298,7 @@ background-position: 0px -10px;
 #main {
 	position: relative;
 	-moz-box-sizing: content-box;
+	moz-box-sizing: content-box;
 }
 
 #main_portrait_and_username {
@@ -384,6 +385,7 @@ background-position: 0px -10px;
 	top: 0px;
 	background-color: #2E2E2E;
         -moz-box-sizing: content-box;
+	box-sizing: content-box;
 }
 
 #navbar_main {
@@ -403,6 +405,7 @@ background-position: 0px -10px;
 	z-index: 500;
 	position: relative;
 	-moz-box-sizing: content-box;
+	box-sizing: content-box;
       }
 
     #navbar_main li {
