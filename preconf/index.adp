@@ -1,5 +1,4 @@
-
-<% set page_title "V[string range [im_core_version] 0 5] Demo Server" %>
+<% set page_title "V[string range [im_core_version] 0 5]" %>
 <%= [im_header -loginpage $page_title] %>
 <%= [im_navbar -loginpage "home"] %>
 
@@ -38,112 +37,65 @@
 
 <table cellSpacing=2 cellPadding=2 width="100%" border=0>
 <tr valign=top>
-<td vAlign=top width="50%">
 
-
-        <table cellSpacing=1 cellPadding=1 border=0 width="100%">
+      <if @demo_server@ eq 2>
+        <td width='500px'>
+	<h1>Translation Accounts</h1>
+	Please use one of the following accounts to log on: 
+	<br><br><br>
+        <table cellSpacing=3 cellPadding=3 border=0 class='table_list_page'>
         <tr>
-          <td colspan=4 class=tableheader align=center><b>]po[ Demo Accounts</b></td>
+          <td><b>Role</b></td>
+          <td><b>Email</b></td>
+          <td><b>Password</b> </td>
+        </tr>	
+
+        <tr>
+          <td>Project Manager</td>
+          <td>pproman@tigerpond.com</td>
+          <td>project</td>
         </tr>
-	<tr>
-	  <td class="tableheader" align=center>Username</td>
-	  <td class="tableheader" align=center>Email</td>
-	  <td class="tableheader" align=center>Password</td>
-	</tr>
-	<multiple name=users>
-          <if @users.rownum@ odd>
-            <tr class="list-plain">
-          </if> <else>
-            <tr class="list-plain">
-          </else>
-
-	  <td class="list-narrow">
- 		@users.user_name@
-          </td>
-	  <td class="list-narrow">
- 		@users.email@
-          </td>
-	  <td class="list-narrow">
- 		@users.demo_password@
-          </td>
-        </multiple>
-	</table>
-
-	<br>
-
-</td>
-<td width="50%">
 
 
-			<table cellSpacing=1 cellPadding=1 border=0>
-			<tr>
-				<td class=tableheader><b>Intranet Login</b></td></tr>
-			</tr>
-			<tr>
-				<td class=tablebody>
-<include src="/packages/acs-subsite/lib/login" return_url="@return_url;noquote@" no_frame_p="1" authority_id="@authority_id@" username="@username;noquote@" email="@email;noquote@" &="__adp_properties">
-				</td>
-			</tr>
-			<tr>
-				<td>
-				&nbsp;<br>
-				<font color=red>
-				Please select one of the demo accounts from the left hand side.
-				&nbsp;<br>
-				</font>
-				</td>
-			</tr>
-			</table>
+        <tr>
+          <td>Vendor</td>
+          <td>apicard@wanadoo.fr</td>
+          <td>vendor</td>
+        </tr>
 
-			<br>&nbsp;<br>
+        <tr>
+          <td>Sales</td>
+          <td>ssalesmanager@tigerpond.com</td>
+          <td>sales</td>
+        </tr>
 
-			<table cellSpacing=1 cellPadding=1 border=0>
-			<tr><td colspan=2 class=tableheader><b>Browser URL</b></td></tr>
-			<tr>
-				<td class=tablebody>Browser URL</td>
-				<td class=tablebody><%= $url %></td>
-			</tr>
-			<tr>
-				<td colspan=2 class=tablebody><small>
-				Please enter this URL into the browser on your desktop computer<br>
-				(running this VM) to access this application.
-				</small></td>
-			</tr>
-			</table>
-
-			<br>&nbsp;<br>
-
-
-			<table cellSpacing=1 cellPadding=1 border=0>
-			<tr><td colspan=2 class=tableheader><b>System Parameters</b></td></tr>
-			<tr>
-				<td class=tablebody>IP-Address</td>
-				<td class=tablebody><%= $ip_address %></td>
-			</tr>
-			<tr>
-				<td colspan=2 class=tablebody><small>
-				This is the IP address that this Virtual Machine has obtained automatically via DHCP.
-				</small></td>
-			</tr>
-			<tr>
-				<td class=tablebody>Total Memory</td>
-				<td class=tablebody><%= $total_memory %> MByte</td>
-			</tr>
-			<tr>
-				<td colspan=2 class=tablebody><small>
-				The total memory of the server.<br>
-				We recommend atleast 1024 MByte for a production server.
-				</small></td>
-			</tr>
-			</table>
-
+        <tr>
+          <td>Customer</td>
+          <td>scarter@abc.com</td>
+          <td>customer</td>
+        </tr>
+        </table>
+     </td>
 	
-<td>
+     </if>
+	<td>
+	<table cellSpacing=1 cellPadding=1 border=0>
+		<tr>
+		<td class=tableheader><b>Intranet Login</b></td></tr>
+		</tr>
+		<tr>
+		<td class=tablebody>
+			<include src="/packages/acs-subsite/lib/login" return_url="@return_url;noquote@" no_frame_p="1" authority_id="@authority_id@" username="@username;noquote@" email="@email;noquote@" &="__adp_properties">
+		</td>
+		</tr>
+	</table>
+	</td>
 </tr>
 </table>
 
 <table cellSpacing=0 cellPadding=5 width="100%" border=0>
   <tr><td>
+	<br><br><br>
     Comments? Contact: 
     <A href="mailto:support@project-open.com">support@project-open.com</A>
   </td></tr>
