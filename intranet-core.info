@@ -74,7 +74,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TarCmd"  default="/bin/tar" description="Command to execute the Unix &quot;tar&quot; command"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer: 0=Production server (default), 1=PMO Demo Server, 2=Translation Demo Server"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="UtilCurrentLocationRedirect"  description="Controls the behaviour of ]po[ when running behind a reverse HTTP proxy or with HTTPS. The default value is empty to enables the default redirection logic which will work in most cases. Please use this parameter if you encounter problems when using ]po[ together with Pound or a HTTPS connection. The parameter determines the base Url that ]po[ for 'redirection' operations (for example after the login process). Example: 'https://www.project-open.net'."/>
         </parameters>
 
