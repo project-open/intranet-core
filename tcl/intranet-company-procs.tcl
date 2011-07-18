@@ -776,7 +776,7 @@ ad_proc im_company_nuke {
 		where company_id = :company_id"
 
     } on_error {
-    
+
 	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
 	    
@@ -785,22 +785,9 @@ ad_proc im_company_nuke {
 	    db_foreach user_constraints_by_name $sql {
 		set detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
 	    }
-	    
 	}
-	ad_return_error "[_ intranet-core.Failed_to_nuke]" "
-		[_ intranet-core.lt_The_nuking_of_user_us]
-		$detailed_explanation
-		<p>
-		[_ intranet-core.lt_For_good_measure_here]
-		<blockquote>
-		<pre>
-		$errmsg
-		</pre>
-		</blockquote>
-	"
-	return
+	return "$detailed_explanation<br><pre>$errmsg</pre>"
     }
-    set return_to_admin_link "<a href=\"/intranet/companies/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
     return
 }
 
