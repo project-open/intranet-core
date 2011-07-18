@@ -844,18 +844,45 @@ ad_proc -public im_user_subtypes {
 # Nuke a User
 # ------------------------------------------------------------------------
 
+ad_proc -public user_nuke {
+    {-current_user_id 0}
+    user_id
+} { 
+    Alias for im_user_nuke.
+} {
+    return [im_user_nuke -current_user_id $current_user_id $user_id]
+}
 
 ad_proc -public im_user_nuke {
+    {-current_user_id 0}
     user_id
 } { 
     Delete a user from the database -
     Extremely dangerous!
 } {
+    ns_log Notice "im_user_nuke: user_id=$user_id"
+    
+    # Use a predefined user_id to avoid a call to ad_get_user_id.
+    # ad_get_user_id's connection isn't defined during a DELETE REST request.
+    if {0 == $current_user_id} { 
+	ns_log Notice "im_user_nuke: No current_user_id specified - using ad_get_user_id"
+	set current_user_id [ad_get_user_id] 
+    }
+
+    # Check for permissions
+    im_user_permissions $current_user_id $user_id view read write admin
+    if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
+
+    # You can't delete an adminstrator
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_is_admin_p} {
 	return "User is an administrator - you can't nuke an administrator"
     }
 
+    # Write Audit Trail
+    im_audit -object_type person -action before_nuke -object_id $user_id
+
+    # Get default user for replacement
     set result ""
     set default_user [db_string default_user "
 	select	min(person_id)

@@ -2227,7 +2227,7 @@ ad_proc im_project_clone_folders {parent_project_id new_project_id} {
 
 
 ad_proc im_project_nuke {
-    {-user_id 0}
+    {-current_user_id 0}
     project_id
 } {
     Nuke (complete delete from the database) a project.
@@ -2238,15 +2238,14 @@ ad_proc im_project_nuke {
     
     # Use a predefined user_id to avoid a call to ad_get_user_id.
     # ad_get_user_id's connection isn't defined during a DELETE REST request.
-    set current_user_id $user_id
     if {0 == $current_user_id} { 
-	ns_log Notice "im_project_nuke: No user_id specified - using ad_get_user_id"
+	ns_log Notice "im_project_nuke: No current_user_id specified - using ad_get_user_id"
 	set current_user_id [ad_get_user_id] 
     }
 
     # Check for permissions
     im_project_permissions $current_user_id $project_id view read write admin
-    if {!$admin} { return "User #$user_id isn't a system administrator" }
+    if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
 
     # Write Audit Trail
     im_project_audit -project_id $project_id -action nuke
