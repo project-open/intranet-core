@@ -2234,12 +2234,15 @@ ad_proc im_project_nuke {
     Returns an empty string if everything was OK or an error
     string otherwise.
 } {
-    ns_log Notice "im_project_nuke project_id=$project_id"
+    ns_log Notice "im_project_nuke: project_id=$project_id"
     
     # Use a predefined user_id to avoid a call to ad_get_user_id.
     # ad_get_user_id's connection isn't defined during a DELETE REST request.
     set current_user_id $user_id
-    if {0 == $current_user_id} { set current_user_id [ad_get_user_id] }
+    if {0 == $current_user_id} { 
+	ns_log Notice "im_project_nuke: No user_id specified - using ad_get_user_id"
+	set current_user_id [ad_get_user_id] 
+    }
 
     # Check for permissions
     im_project_permissions $current_user_id $project_id view read write admin
