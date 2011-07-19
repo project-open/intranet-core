@@ -1538,7 +1538,7 @@ ad_proc -public im_stylesheet {} {
 
         append html "<script language='javascript' src='/intranet-sencha/js/ext-all.js'></script>\n"
         append html "<script language='javascript' src='/intranet-customer-portal/resources/js/financial-documents-list.js'></script>\n"
-        append html "<script language='javascript' src='/intranet-customer-portal/resources/js/financial-documents-list.js'></script>\n"
+        append html "<script language='javascript' src='/intranet-customer-portal/resources/js/rfq-list.js'></script>\n"
     }
 
     if {$openacs54_p} { template::head::add_css -href $system_css -media "screen" -order "6" } else { append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n" }
