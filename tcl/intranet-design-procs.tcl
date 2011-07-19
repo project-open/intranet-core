@@ -1531,6 +1531,16 @@ ad_proc -public im_stylesheet {} {
     append html ""
 
     # --------------------------------------------------------------------
+
+    if {[llength [info procs im_list_financial_documents_component]]} {
+        append html "<link rel=StyleSheet type=text/css href=\"/intranet-sencha/css/ext-all.css\" />\n"
+        append html "<link rel=StyleSheet type=text/css href=\"/intranet-customer-portal/intranet-customer-portal.css\" />\n"
+
+        append html "<script language='javascript' src='/intranet-sencha/js/ext-all.js'></script>\n"
+        append html "<script language='javascript' src='/intranet-customer-portal/resources/js/financial-documents-list.js'></script>\n"
+        append html "<script language='javascript' src='/intranet-customer-portal/resources/js/financial-documents-list.js'></script>\n"
+    }
+
     if {$openacs54_p} { template::head::add_css -href $system_css -media "screen" -order "6" } else { append html "<link rel=StyleSheet type=text/css href=\"$system_css\" media=screen>\n" }
 
     set css "/resources/acs-subsite/site-master.css"
@@ -1570,6 +1580,7 @@ ad_proc -public im_stylesheet {} {
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
 	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
     }
+
     return $html
 }
 
