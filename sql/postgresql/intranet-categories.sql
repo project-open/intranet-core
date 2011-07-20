@@ -173,6 +173,30 @@ BEGIN
 	RETURN;
 end;$body$ language 'plpgsql';
 
+
+-- Select out the lowest parent of the category.
+-- This makes sense as a fast approximation, but 
+-- isn't correct. 
+-- ToDo: Pull out the real top-level parent
+--
+create or replace function im_category_min_parent (
+	integer
+) returns integer as $body$
+declare
+	p_cat			alias for $1;
+	v_cat			integer;
+BEGIN
+	select	min(c.category_id) into v_cat
+	from	im_categories c,
+		im_category_hierarchy h
+	where	c.category_id = h.parent_id and
+		h.child_id = p_cat and
+		(c.enabled_p = 't' OR c.enabled_p is NULL);
+
+	RETURN v_cat;
+end;$body$ language 'plpgsql';
+
+
 -- Test query
 select * from im_category_parents(81);
 
