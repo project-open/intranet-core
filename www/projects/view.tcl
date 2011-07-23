@@ -396,6 +396,12 @@ if {$execution_project_enabled_p && [im_permission $current_user_id add_projects
 </A>[im_gif -translate_p 0 help $exec_pr_help]</li>\n"
 }
 
+if { [apm_package_enabled_p "intranet-customer-portal"] && ( [im_profile::member_p -profile_id [im_pm_group_id] -user_id $user_id] || [im_profile::member_p -profile_id [im_admin_group_id] -user_id $user_id]) } {
+    append admin_html_content "
+    <li><A href=\"/intranet-customer-portal/create-dir-structure?project_id=$project_id\">[lang::message::lookup "" intranet-customer-portal.CreateFolderStructure "Create folder structure"]</A></li>\n"
+}
+
+
 # ---------------------------------------------------------------------
 # Import/Export Box
 # ---------------------------------------------------------------------
