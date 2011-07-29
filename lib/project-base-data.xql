@@ -26,7 +26,8 @@
     <querytext>
 	select
 		ip.*,
-		ic.*,
+		ic.company_name,
+		ic.company_path,
 		to_char(ip.end_date, 'HH24:MI') as end_date_time,
 		to_char(ip.start_date, 'YYYY-MM-DD') as start_date_formatted,
 		to_char(ip.end_date, 'YYYY-MM-DD') as end_date_formatted,
@@ -42,8 +43,8 @@
 		im_projects ip, 
 		im_companies ic
 	where 
-		ip.project_id=:project_id
-		and ip.company_id = ic.company_id
+		ip.project_id = :project_id and
+		ip.company_id = ic.company_id
       
     </querytext>
   </fullquery>
