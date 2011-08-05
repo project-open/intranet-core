@@ -1822,6 +1822,14 @@ ad_proc im_project_clone_costs {
 	set cost_id [db_exec_plsql cost_insert "$cost_insert_query"]
 	set new_cost_id $cost_id
 
+	# Update variables not passed through im_cost__new.
+	# Currently this is only cost_center_id.
+	db_dml update_cost "
+		update im_costs set
+			cost_center_id = :cost_center_id
+		where cost_id = :cost_id
+	"
+
 	# ------------------------------------------------------
 	# creation invoice project relation
 	if {"" == $org_cost_project_id} {
