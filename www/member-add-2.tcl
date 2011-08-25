@@ -54,6 +54,10 @@ foreach uid $user_id_from_search {
 }
 
 
+# Audit the object
+im_audit -object_id $object_id
+
+
 # --------------------------------------------------------
 # Prepare to send out an email alert
 # --------------------------------------------------------

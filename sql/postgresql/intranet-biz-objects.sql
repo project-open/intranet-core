@@ -49,7 +49,15 @@ CREATE TABLE im_biz_objects (
 				constraint im_biz_object_id_pk
 				primary key
 				constraint im_biz_object_id_fk
-				references acs_objects
+				references acs_objects,
+	-- Information about object locking.
+	-- Stores the information of the last person
+	-- clicking on the "Edit" button of an object.
+	lock_user		integer
+				constraint im_biz_object_lock_user_fk
+				references persons,
+	lock_date		timestamptz
+	lock_ip			text
 );
 
 

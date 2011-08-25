@@ -326,7 +326,6 @@ ad_proc -public im_biz_object_add_role {
     # Remove all permission related entries in the system cache
     im_permission_flush
 
-
     return
 }
 
