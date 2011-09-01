@@ -102,6 +102,46 @@ set subject [string trim $subject]
 
 
 # ---------------------------------------------------------------
+# Deal with Attachments
+# ---------------------------------------------------------------
+
+# Save an text attachment to a temporary file
+if {"" != $attachment} {
+    set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
+    set tmp_path [ad_parameter -package_id $package_id "tmp_path"]
+    set tmp_file [ns_mktemp "$tmp_path/attachment_XXXXXX"]
+
+    if {[catch {
+	set fl [open $tmp_file "w"]
+	puts $fl $attachment
+	close $fl
+    } err]} {
+	ad_return_complaint 1 "<b>Unable to write to $tmp_file</b>:<br><pre>\n$err</pre>"
+	ad_script_abort
+    }
+
+    set attachment_filename $tmp_file
+}
+
+
+# Import the file into the content repository.
+# This is necessary for sending it out via Email
+set attachment_ci_id ""
+if {"" != $attachment_filename && "" != $user_id_from_search} {
+    set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
+    set parent_id [lindex $user_id_from_search 0]
+    set attachment_ci_id [cr_import_content \
+			 -title $attachment_filename \
+			 $parent_id \
+			 $tmp_file \
+			 [file size $tmp_file] \
+			 $attachment_mime_type \
+			 $attachment_filename \
+    ]
+}
+
+
+# ---------------------------------------------------------------
 # Send to whom?
 # ---------------------------------------------------------------
 
@@ -173,7 +213,8 @@ foreach email $email_list {
 	    -to_addr $email \
 	    -from_addr $sender_email \
 	    -subject $subject \
-	    -body $message_subst
+	    -body $message_subst \
+	    -file_ids $attachment_ci_id
     } errmsg]} {
         ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
 	ad_return_error $subject "<p>Error sending out mail:</p><div><code>[ad_quotehtml $errmsg]</code></div>"
