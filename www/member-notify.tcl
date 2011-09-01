@@ -120,7 +120,9 @@ if {"" != $attachment} {
 	ad_script_abort
     }
 
-    set attachment_filename $tmp_file
+    if {"" == $attachment_filename} {
+	set attachment_filename $tmp_file
+    }
 }
 
 
@@ -128,16 +130,32 @@ if {"" != $attachment} {
 # This is necessary for sending it out via Email
 set attachment_ci_id ""
 if {"" != $attachment_filename && "" != $user_id_from_search} {
-    set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
+
+    # Remove strange characters from filename
+    regsub -all {[^a-zA-Z0-9_\.]} $attachment_filename "_" attachment_filename
+
+    # Check if the file is already there
     set parent_id [lindex $user_id_from_search 0]
-    set attachment_ci_id [cr_import_content \
-			 -title $attachment_filename \
-			 $parent_id \
-			 $tmp_file \
-			 [file size $tmp_file] \
-			 $attachment_mime_type \
-			 $attachment_filename \
-    ]
+    set attachment_ci_id [db_string attachment_exists "
+	select	item_id
+	from	cr_items
+	where	parent_id = :parent_id and
+		name = :attachment_filename
+    " -default ""]
+
+    if {"" == $attachment_ci_id} {
+	set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
+	set attachment_ci_id [cr_import_content \
+				  -title $attachment_filename \
+				  $parent_id \
+				  $tmp_file \
+				  [file size $tmp_file] \
+				  $attachment_mime_type \
+				  $attachment_filename \
+        ]
+    }
+
+    file delete $tmp_file
 }
 
 
