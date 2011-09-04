@@ -116,6 +116,7 @@ ad_proc -public im_project_permissions {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $project_id
 } {
+    ns_log Notice "im_project_permissions: user_id=$user_id project_id=$project_id"
     upvar $view_var view
     upvar $read_var read
     upvar $write_var write
@@ -126,6 +127,7 @@ ad_proc -public im_project_permissions {
     set write 0
     set admin 0
 
+    ns_log Notice "im_project_permissions: before user_is_admin_p"
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [im_profile::member_p -profile_id [im_wheel_group_id] -user_id $user_id]
     set user_is_group_member_p [im_biz_object_member_p $user_id $project_id]
@@ -134,11 +136,13 @@ ad_proc -public im_project_permissions {
 
     # empty project_id would give errors below
     if {"" == $project_id} { set project_id 0 }
+    ns_log Notice "im_project_permissions: before im_security_alert_check_integer"
     im_security_alert_check_integer -location "im_project_permissions" -value $project_id
 
 
     # Treat the project mangers_fields
     # A user man for some reason not be the group PM
+    ns_log Notice "im_project_permissions: before project_manager"
     if {!$user_is_group_admin_p} {
 	set project_manager_id [db_string project_manager "select project_lead_id from im_projects where project_id = :project_id" -default 0]
 	if {$user_id == $project_manager_id} {
@@ -147,6 +151,7 @@ ad_proc -public im_project_permissions {
     }
     
     # Admin permissions to global + intranet admins + group administrators
+    ns_log Notice "im_project_permissions: user_admin_p"
     set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
     set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
 
@@ -155,6 +160,7 @@ ad_proc -public im_project_permissions {
 
     # Get the projects's company and the project status
     # Use caching because this procedure is queried very frequently!
+    ns_log Notice "im_project_permissions: company info"
     set query "
 	select	company_id, 
 		lower(im_category_from_id(project_status_id)) as project_status 
@@ -192,12 +198,14 @@ ad_proc -public im_project_permissions {
 
 
     # Allow customer' Members to see their customer's projects
+    ns_log Notice "im_project_permissions: customer members"
     if {$user_is_company_member_p && $user_is_employee_p} { 
 	set view 1
 	set read 1
     }
     
     # Allow Key Account Managers to see their customer's projects
+    ns_log Notice "im_project_permissions: company_admin"
     if {$user_is_company_admin_p && $user_is_employee_p} { 
 	set read 1
 	set write 1
@@ -209,10 +217,12 @@ ad_proc -public im_project_permissions {
 	set read 1
     }
 
+    ns_log Notice "im_project_permissions: view_projects_all"
     if {[im_permission $user_id view_projects_all]} { 
 	set read 1
     }
 
+    ns_log Notice "im_project_permissions: edit_projects_all"
     if {[im_permission $user_id edit_projects_all]} { 
 	set read 1
 	set write 1
@@ -221,6 +231,7 @@ ad_proc -public im_project_permissions {
 
     # companies and freelancers are not allowed to see non-open projects.
     # 76 = open
+    ns_log Notice "im_project_permissions: view_projects_history"
     if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
 	if {!$user_is_company_member_p} {
@@ -2246,16 +2257,19 @@ ad_proc im_project_nuke {
     
     # Use a predefined user_id to avoid a call to ad_get_user_id.
     # ad_get_user_id's connection isn't defined during a DELETE REST request.
+    ns_log Notice "im_project_nuke: before ad_get_user_id"
     if {0 == $current_user_id} { 
 	ns_log Notice "im_project_nuke: No current_user_id specified - using ad_get_user_id"
 	set current_user_id [ad_get_user_id] 
     }
 
     # Check for permissions
+    ns_log Notice "im_project_nuke: before im_project_permissions"
     im_project_permissions $current_user_id $project_id view read write admin
     if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
 
     # Write Audit Trail
+    ns_log Notice "im_project_nuke: before im_project_audit"
     im_project_audit -project_id $project_id -action nuke
 
     # ---------------------------------------------------------------
@@ -2265,6 +2279,7 @@ ad_proc im_project_nuke {
     # if this fails, it will probably be because the installation has 
     # added tables that reference the users table
 
+    ns_log Notice "im_project_nuke: before db_transaction"
     db_transaction {
     
 	# Helpdesk Tickets
