@@ -154,6 +154,7 @@ ad_proc -public im_permission {user_id privilege} {
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
+#    return [im_permission_helper $user_id $privilege]
     return [util_memoize "im_permission_helper $user_id $privilege" 3600]
 }
 
@@ -164,7 +165,7 @@ ad_proc im_permission_helper {user_id privilege} {
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-    set subsite_id [ad_conn subsite_id]
+    set subsite_id [util_memoize [list ad_conn subsite_id] 1000000]
     set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
     return $result
 }
