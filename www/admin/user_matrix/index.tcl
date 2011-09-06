@@ -88,7 +88,7 @@ db_foreach group_matrix $main_sql {
     append table "
 <tr>
   <td>
-    <A href=$group_url?group_id=$group_id>$group_name</A>
+    <nobr><A href=$group_url?group_id=$group_id>$group_name</A></nobr>
   </td>
 "
 
