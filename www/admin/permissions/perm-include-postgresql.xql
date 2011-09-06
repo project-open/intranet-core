@@ -18,7 +18,7 @@
 <fullquery name="permissions">      
       <querytext>
     select ptab.grantee_id,
-           acs_object__name(ptab.grantee_id) as grantee_name,
+           coalesce(acs_object__name(ptab.grantee_id)::text, ptab.grantee_id::text) as grantee_name,
            o.object_type,
            [join $select_clauses ", "],
            sum([join $privs "_p + "]_p) as any_perm_p_
