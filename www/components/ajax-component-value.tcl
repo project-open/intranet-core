@@ -8,6 +8,7 @@ ad_page_contract {
     {plugin_id:integer ""}
     {plugin_name ""}
     {package_name ""}
+    {parameter_list ""}
 }
 
 # -------------------------------------------------------------
@@ -25,17 +26,24 @@ if {"" == $plugin_id} {
     " -default ""]
 }
 
-if {"" != $plugin_id} {
+if {"" == $plugin_id} {
     set result "<pre>
 <b>[lang::message::lookup "" intranet-core.Portlet_not_Specified "Portlet Not Specified"]</b>:
-[lang::message::lookup "" intranet-core.Portlet_not_Specified_msg "You need to specify either 'plugin_id' or 'plugin_name' and 'package_name'.]
+[lang::message::lookup "" intranet-core.Portlet_not_Specified_msg "You need to specify either 'plugin_id' or 'plugin_name' and 'package_name'."]
 "
     doc_return 200 "text/html" $result
     ad_script_abort
 }
 
+# Get everything about the portlet
+db_1row plugin_info "
+	select	*
+	from	im_component_plugins
+	where	plugin_id = :plugin_id
+"
 
-set perm_p [im_object_permissions -object_id $plugin_id]
+
+set perm_p [im_object_permission -object_id $plugin_id]
 if {!$perm_p} {
     set result "<pre>[lang::message::lookup "" intranet-core.You_dont_have_permissions_to_access_this_portlet "
     You don't have sufficient permissions to access this portlet"]"
@@ -44,8 +52,25 @@ if {!$perm_p} {
 }
 
 # -------------------------------------------------------------
-# Return the value
+# Determine the list of variables in the component_tcl and
+# make sure they are specified in the HTTP session
 # -------------------------------------------------------------
 
-set result [im_user_base_info_component -user_id $customer_id]
-doc_return 200 "text/html" $result
+set var_list [list]
+foreach elem $component_tcl {
+    if {[regexp {^$(.*)} $elem match varname]} {
+	lappend var_list $varname
+	set $varname [im_opt_val $varname]
+    }
+}
+
+if {[catch {
+    set result [eval $component_tcl]
+} err_msg]} {
+    doc_return 200 "text/html" "Error:<br><pre>$err_msg</pre>"
+} else {
+    doc_return 200 "text/html" $result
+}
+
+
+
