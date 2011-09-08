@@ -7,7 +7,7 @@ ad_page_contract {
 } {
     {plugin_id:integer ""}
     {plugin_name ""}
-    {package_name ""}
+    {package_key ""}
     {parameter_list ""}
 }
 
@@ -22,14 +22,14 @@ if {"" == $plugin_id} {
 	select	plugin_id
 	from	im_component_plugins
 	where	plugin_name = :plugin_name and
-		package_name = :package_name
+		package_name = :package_key
     " -default ""]
 }
 
 if {"" == $plugin_id} {
     set result "<pre>
 <b>[lang::message::lookup "" intranet-core.Portlet_not_Specified "Portlet Not Specified"]</b>:
-[lang::message::lookup "" intranet-core.Portlet_not_Specified_msg "You need to specify either 'plugin_id' or 'plugin_name' and 'package_name'."]
+[lang::message::lookup "" intranet-core.Portlet_not_Specified_msg "You need to specify either 'plugin_id' or 'plugin_name' and 'package_key'."]
 "
     doc_return 200 "text/html" $result
     ad_script_abort
@@ -56,11 +56,16 @@ if {!$perm_p} {
 # make sure they are specified in the HTTP session
 # -------------------------------------------------------------
 
-set var_list [list]
+set form_vars [ns_conn form]
+array set form_hash [ns_set array $form_vars]
+
 foreach elem $component_tcl {
-    if {[regexp {^$(.*)} $elem match varname]} {
-	lappend var_list $varname
-	set $varname [im_opt_val $varname]
+    if {[regexp {^\$(.*)} $elem match varname]} {
+	if {![info exists form_hash($varname)]} { 
+	    doc_return 200 "text/html" "<pre>Error: You have to specify variable '$varname' in the URL."
+	    ad_script_abort
+	}
+	set $varname $form_hash($varname)
     }
 }
 
