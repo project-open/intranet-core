@@ -25,6 +25,8 @@ ad_page_contract {
     { plugin_id ""}
 }
 
+# ad_return_complaint 1 $package_key
+
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
@@ -125,6 +127,7 @@ append table_header "\n</tr>\n"
 # ------------------------------------------------------
 
 set component_where ""
+
 if {"none" != $package_key && "" != $package_key} { append component_where "\tand package_name = :package_key\n" }
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
 if {"" != $plugin_id} { append component_where "\tand plugin_id = :plugin_id\n" }
@@ -155,6 +158,8 @@ set component_select_sql "
 		package_name,
 		plugin_name
 "
+
+#ad_return_complaint 1 $component_select_sql
 
 set ctr 1
 set table ""
@@ -197,11 +202,11 @@ append table "
 </form>
 "
 
-
 # ------------------------------------------------------
 # Filters & Navbar
 # ------------------------------------------------------
 
+if { "" == $package_key } { set package_key "All" }
 set package_select [im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key]
 
 set left_navbar_html "
