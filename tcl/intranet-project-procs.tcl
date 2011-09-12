@@ -2522,7 +2522,6 @@ ad_proc im_project_nuke {
 
 	# Helpdesk
 	if {[im_table_exists im_tickets]} {
-	    
 	    ns_log Notice "projects/nuke-2: im_tickets"
 	    db_dml tickets "
 		    delete from im_tickets
@@ -2532,7 +2531,6 @@ ad_proc im_project_nuke {
 
 	# GanttProject
 	if {[im_table_exists im_timesheet_task_dependencies]} {
-	
 	    ns_log Notice "projects/nuke-2: im_timesheet_task_dependencies"
 	    db_dml del_dependencies "
 		delete from im_timesheet_task_dependencies
@@ -2541,7 +2539,6 @@ ad_proc im_project_nuke {
 	}
 
 	if {[im_table_exists im_gantt_projects]} {
-	
 	    ns_log Notice "projects/nuke-2: im_gantt_projects"
 	    db_dml del_gantt_projects "
 		delete from im_gantt_projects
@@ -2652,8 +2649,7 @@ ad_proc im_project_nuke {
 	
         # Survey responses
         if {[im_table_exists survsimp_responses]} {
-
-            ns_log Notice "projects/nuke-2: "survsimp_responses"
+            ns_log Notice "projects/nuke-2: survsimp_responses"
             db_dml del_dependencies "
                 delete from survsimp_responses
                 where related_object_id = :project_id or related_context_id = :project_id
