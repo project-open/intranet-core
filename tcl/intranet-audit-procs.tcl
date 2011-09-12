@@ -108,6 +108,7 @@ ad_proc -public im_audit  {
 
 ad_proc -public im_project_audit  {
     -project_id:required
+    {-user_id "" }
     {-action "after_update" }
     {-object_type "im_project" }
     {-status_id "" }
@@ -122,6 +123,6 @@ ad_proc -public im_project_audit  {
     catch {
 	set err_msg [im_project_audit_impl -project_id $project_id -action $action -comment $comment]
     }
-    return [im_audit -object_id $project_id -object_type $object_type -status_id $status_id -type_id $type_id -action $action -comment $comment]
+    return [im_audit -user_id $user_id -object_id $project_id -object_type $object_type -status_id $status_id -type_id $type_id -action $action -comment $comment]
 }
 
