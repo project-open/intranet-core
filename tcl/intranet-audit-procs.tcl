@@ -121,7 +121,7 @@ ad_proc -public im_project_audit  {
 } {
     set err_msg "Error in Audit module, please consult your System Administrator"
     catch {
-	set err_msg [im_project_audit_impl -project_id $project_id -action $action -comment $comment]
+	set err_msg [im_project_audit_impl -user_id $user_id -project_id $project_id -action $action -comment $comment]
     }
     return [im_audit -user_id $user_id -object_id $project_id -object_type $object_type -status_id $status_id -type_id $type_id -action $action -comment $comment]
 }
