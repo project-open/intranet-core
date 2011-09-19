@@ -32,6 +32,7 @@ ad_page_contract {
     { project_name "" }
     project_nr:optional
     { workflow_key "" }
+    { workflow_case_id "" }
     { return_url "" }
 }
 
@@ -67,21 +68,21 @@ set normalize_project_nr_p [parameter::get_from_package_key -package_key "intran
 set sub_navbar ""
 set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncrementP -package_id [im_package_core_id] -default 0]
 
-
-
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url [export_vars -base "/intranet/projects/view" {project_id}]
 }
 
-
 # Do we need the customer_id for creating a project?
 # This is necessary if the project_nr depends on the customer_id.
 set customer_required_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NewProjectRequiresCustomerP" -default 0]
-if {![info exists project_id] && $company_id == "" && $customer_required_p} {
+
+# ad_return_complaint 1 $project_id
+# ad_return_complaint 1 "[info exists project_id], $company_id, $customer_required_p"
+
+if { (![info exists project_id] || "" == $project_id) && $company_id == "" && $customer_required_p} {
     ad_returnredirect [export_vars -base "new-custselect" {project_id parent_id project_nr workflow_key return_url}]
     ad_script_abort
 }
-
 
 # -----------------------------------------------------------
 # Permissions
@@ -158,12 +159,15 @@ if {$project_exists_p} {
 # Create the Form
 # -----------------------------------------------------------
 
+
+
 set form_id "project-ae"
 
 template::form::create $form_id
 template::form::section $form_id ""
 template::element::create $form_id project_id -widget "hidden"
 template::element::create $form_id supervisor_id -widget "hidden" -optional
+template::element::create $form_id workflow_case_id -widget "hidden" -optional
 template::element::create $form_id requires_report_p -widget "hidden" -optional -datatype text
 template::element::create $form_id workflow_key -widget "hidden" -optional -datatype text
 template::element::create $form_id return_url \
@@ -269,22 +273,54 @@ if {$user_admin_p} {
 	[im_gif new "Add a new project status"]</A>$help_text"
 }
 
+
+# ### ToDo: optimize [START]
+
 # Suppress the status field if the project has a WF associated
 set wf_case_exists_p 0
-if {[info exists project_id]} {
-    set wf_case_exists_p [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"]
-}
+set wf_instace_exists_p 0
 
-
-if {!$wf_case_exists_p || [im_permission $user_id edit_project_status]} {
-    template::element::create $form_id project_status_id \
-	-label "[_ intranet-core.Project_Status]" \
-	-widget "im_category_tree" \
-	-custom {category_type "Intranet Project Status"} \
-	-after_html $help_text
+if {[info exists project_type_id] && ![info exists project_id] } {
+	# project not yet created 
+	set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :project_type_id" -default ""]
 } else {
-    template::element::create $form_id project_status_id -optional -widget hidden
+	# project exists
+	if {[info exists project_id] } {
+	        set wf_key [db_string wf_exists "select project_type_id from im_projects where project_id = :project_id" -default 0]
+	} else {
+		ad_return_complaint 1 "Configuration Error - please contact your System Administrator"
+	}
 }
+
+set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
+if {[info exists project_id] } {
+    if { [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"] > 0 } { set wf_instace_exists_p 1}
+}
+
+if {[info exists project_id] } {
+    	if { !$wf_instace_exists_p || [im_permission $user_id edit_project_status]  } {
+	    template::element::create $form_id project_status_id \
+        	-label "[_ intranet-core.Project_Status]" \
+	        -widget "im_category_tree" \
+        	-custom {category_type "Intranet Project Status"} \
+	        -after_html $help_text
+	} else {
+	    template::element::create $form_id project_status_id -optional -widget hidden
+	}
+} else {
+    if { $wf_exists_p } {
+	    template::element::create $form_id project_status_id -optional -widget hidden
+    } else {
+            template::element::create $form_id project_status_id \
+                -label "[_ intranet-core.Project_Status]" \
+                -widget "im_category_tree" \
+                -custom {category_type "Intranet Project Status"} \
+                -after_html $help_text
+    }
+}
+
+# ### ToDo: optimize [END]
+
 
 template::element::create $form_id start \
     -datatype "date" widget "date" \
@@ -453,7 +489,7 @@ if {[form is_request $form_id]} {
 	set project_id [im_new_object_id]
 	set project_name [im_opt_val project_name]
 	set button_text "[_ intranet-core.Create_Project]"
-	
+
 	if { ![exists_and_not_null parent_id] } {
 	    
 	    # A brand new project (not a subproject)
@@ -709,34 +745,6 @@ if {[form is_valid $form_id]} {
 	    im_biz_object_add_role $supervisor_id $project_id $role_id 
 	}
 
-
-
-	# -----------------------------------------------------------------
-	# Create a new Workflow for the project either if:
-	# - specified explicitely in the parameters or
-	# - if there is a WF associated with the project_type
-
-	# Check if there is a WF associated with the project type
-	if {"" == $workflow_key} {
-	    set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :project_type_id" -default ""]
-	    set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
-	    if {$wf_exists_p} { set workflow_key $wf_key }
-	}
-
-	if {"" != $workflow_key} {
-	    # Create a new workflow case (instance)
-	    set context_key ""
-	    set case_id [wf_case_new \
-			     $workflow_key \
-			     $context_key \
-			     $project_id \
-			    ]
-
-	    # Determine the first task in the case to be executed and start+finisch the task.
-	    im_workflow_skip_first_transition -case_id $case_id
-
-	}
-
     }
 
     # Set the old project type. Used to detect changes in the project
@@ -753,6 +761,7 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     set start_date [template::util::date get_property sql_date $start]
     set end_date [template::util::date get_property sql_timestamp $end]
+
 
     set project_update_sql "
 	update im_projects set
@@ -796,6 +805,42 @@ if {[form is_valid $form_id]} {
 		project_id = :project_id
         "
 	db_dml project_update $project_update_sql
+    }
+
+
+
+    # -----------------------------------------------------------------
+    # Create a new Workflow for the project either if:
+    # - specified explicitely in the parameters or
+    # - if there is a WF associated with the project_type
+
+    # Check if there is a WF associated with the project type
+    if {"" == $workflow_key} {
+	set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :project_type_id" -default ""]
+	set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
+	if {$wf_exists_p} { set workflow_key $wf_key }
+    }
+
+    # Project Approval WF had been executed and finsihed at least one 
+    set wf_finished_p 0
+
+    if {[info exists project_id] } {
+	# Check if WF case already exist for project
+      	set workflow_case_id [db_string wf_exists "select case_id from wf_cases where workflow_key = :wf_key and object_id = :project_id limit 1" -default 0]
+    } else {
+	set wf_finished_p [db_string wf_exists "select count(*) from wf_cases where workflow_key = :wf_key and object_id = :project_id and state = 'finished' limit 1"]
+    }
+
+    if { 0 == $workflow_case_id && $wf_exists_p && !$wf_finished_p } {
+	    # Create a new workflow case (instance)
+	    set context_key ""
+	    set case_id [wf_case_new \
+                     $workflow_key \
+                     $context_key \
+                     $project_id \
+		     ]
+	    # Determine the first task in the case to be executed and start+finisch the task.
+	    im_workflow_skip_first_transition -case_id $case_id
     }
 
     # Write Audit Trail
