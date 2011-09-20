@@ -221,6 +221,7 @@ foreach csv_line_fields $values_list_of_lists {
     set suffix ""
     set company ""
     set department ""
+    set supervisor ""
     set job_title ""
     set business_street ""
     set business_street_2 ""
@@ -302,6 +303,7 @@ foreach csv_line_fields $values_list_of_lists {
     set user_3 ""
     set user_4 ""
     set web_page ""
+    set availability ""
 
 
     # -------------------------------------------------------
@@ -636,7 +638,6 @@ foreach csv_line_fields $values_list_of_lists {
     if {"" != $user_4} {append note "user_4 = $user_4\n" }
     if {"" != $web_page} {append note "web_page = $web_page\n" }
 
-
     # Get the country code
     set home_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:home_country)" -default ""]
     set business_country_code [db_string country_code "select iso from country_codes where lower(country_name) = lower(:business_country)" -default ""]
@@ -693,6 +694,40 @@ foreach csv_line_fields $values_list_of_lists {
 	ns_write "<li>Error updating user \#$user_id:<br><pre>$errmsg</pre>"
     }
 
+    # -------------------------------------------------------
+    # Employee information 
+    #
+
+    if { "" != $availability } {
+	    if {[catch {
+        	db_dml employee_information "
+	            update im_employees set
+        	        availability = :availability
+	            where
+        	        employee_id = :user_id
+	        "
+	    } errmsg]} {
+        	ns_write "<li>Error updating user - employee information \\#$user_id:<br><pre>$errmsg</pre>"
+	    }
+    }
+
+    # Set supervisor
+
+    if { "" != $supervisor } {
+	set supervisor_user_id [im_gp_find_person_for_name -name $supervisor -email $supervisor]
+	if { "" != $supervisor_user_id } {
+	    if {[catch {
+		db_dml employee_information "
+	            update im_employees set
+        	        supervisor_id = $supervisor_user_id
+	            where
+        	        employee_id = :user_id
+        	"
+		} errmsg]} {
+        		ns_write "<li>Error updating user - employee information \\\#$user_id:<br><pre>$errmsg</pre>"
+		}	
+	}
+    }
 
     # -------------------------------------------------------
     # Deal with the users's company
