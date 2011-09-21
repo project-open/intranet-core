@@ -22,13 +22,14 @@ ad_proc -public im_category_from_id {
     {-translate_p 1}
     {-package_key "intranet-core" }
     {-locale ""}
+    {-empty_default ""}
     category_id 
 } {
     Convert a category_id integer into a category name.
 } {
     if {![string is integer $category_id]} { return $category_id }
-    if {"" == $category_id} { return "" }
-    if {0 == $category_id} { return "" }
+    if {"" == $category_id} { return $empty_default }
+    if {0 == $category_id} { return $empty_default }
     set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
