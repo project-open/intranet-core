@@ -74,13 +74,11 @@ delete from im_project_url_map;
 
 delete from im_url_types;
 delete from im_projects;
---delete from im_projects_status_audit; (does not exist)
 --delete from im_project_status; (this is a view, cannot delete)
 delete from im_biz_object_role_map;
 delete from im_biz_object_urls;
 --delete from im_project_types; (this is a view, cannot delete)
 
---drop table im_projects_status_audit;
 drop table im_project_url_map;
 drop table im_url_types;
 

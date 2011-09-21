@@ -95,13 +95,14 @@ ad_proc -public im_audit  {
 
     if {$intranet_audit_exists_p} {
 	if {[catch {
-	    set err_msg [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
+	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
 	} err_msg]} {
 	    ns_log Error "im_audit: Error executing im_audit_impl: $err_msg"
+	    set audit_id 0
 	}
     }
 
-    return $err_msg
+    return $audit_id
 }
 
 
@@ -121,8 +122,7 @@ ad_proc -public im_project_audit  {
 } {
     set err_msg "Error in Audit module, please consult your System Administrator"
     catch {
-	set err_msg [im_project_audit_impl -user_id $user_id -project_id $project_id -action $action -comment $comment]
+	return [im_project_audit_impl -user_id $user_id -project_id $project_id -action $action -comment $comment]
     }
-    return [im_audit -user_id $user_id -object_id $project_id -object_type $object_type -status_id $status_id -type_id $type_id -action $action -comment $comment]
 }
 

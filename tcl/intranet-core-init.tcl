@@ -27,6 +27,7 @@ ns_cache create im_company -timeout [ad_parameter -package_id [im_package_core_i
 
 set object_types {
     im_biz_object_member
+    im_baseline
     im_company
     im_company_employee_rel
     im_component_plugin

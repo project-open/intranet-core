@@ -33,7 +33,6 @@
 \i intranet-permissions.sql
 \i intranet-components.sql
 \i intranet-menus.sql
-\i intranet-audit-create.sql
 \i intranet-defs.sql
 
 -- These patches are only for OpenACS 5.1.
