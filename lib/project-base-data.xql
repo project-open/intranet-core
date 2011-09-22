@@ -25,27 +25,30 @@
   <fullquery name="project_info_query">
     <querytext>
 	select
-		ip.*,
 		ic.company_name,
 		ic.company_path,
-		to_char(ip.end_date, 'HH24:MI') as end_date_time,
-		to_char(ip.start_date, 'YYYY-MM-DD') as start_date_formatted,
-		to_char(ip.end_date, 'YYYY-MM-DD') as end_date_formatted,
-		to_char(ip.percent_completed, '999990.9%') as percent_completed_formatted,
 		ic.primary_contact_id as company_contact_id,
+		im_name_from_user_id(ic.manager_id) as manager,
 		im_name_from_user_id(ic.primary_contact_id) as company_contact,
 		im_email_from_user_id(ic.primary_contact_id) as company_contact_email,
-		im_name_from_user_id(ip.project_lead_id) as project_lead,
-		im_name_from_user_id(ip.supervisor_id) as supervisor,
-		im_name_from_user_id(ic.manager_id) as manager,
-		$extra_select
+		ip.*
 	from
-		im_projects ip, 
-		im_companies ic
-	where 
-		ip.project_id = :project_id and
-		ip.company_id = ic.company_id
-      
+		im_companies ic,
+		(select
+			p.*,
+			to_char(p.end_date, 'HH24:MI') as end_date_time,
+			to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
+			to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
+			to_char(p.percent_completed, '999990.9%') as percent_completed_formatted,
+			im_name_from_user_id(p.project_lead_id) as project_lead,
+			im_name_from_user_id(p.supervisor_id) as supervisor,
+			$extra_select
+		from
+			im_projects p
+		where 
+			p.project_id = :project_id
+		) ip
+	where	ip.company_id = ic.company_id
     </querytext>
   </fullquery>
 
