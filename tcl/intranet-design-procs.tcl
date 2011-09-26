@@ -2057,7 +2057,7 @@ ad_proc -public im_skin_select_html {
 	return "Error: Column users.skin_id doesn't exist.<br>Please run intranet-core V3.4.0.4.0 upgrade script."
     }
 
-   set current_skin_id [util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id"] 60]
+   set current_skin_id [util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id" -default ""] 60]
 
    set skin_select_html "
 	<form method=\"GET\" action=\"/intranet/users/select-skin\">
