@@ -53,9 +53,142 @@ ns_write "<ul>\n"
 #
 ns_write "<li>Converting pathes from \"C:/ProjectOpen/ to /web/$server_name/\n"
 db_dml update_pathes "
-update apm_parameter_values
-set attr_value = '/web/$server_name' || substring(attr_value from 'C:/ProjectOpen(.*)')
-where attr_value ~* '^C:/ProjectOpen/'
+	update apm_parameter_values
+	set attr_value = '/web/$server_name' || substring(lower(attr_value) from 'c:/projectopen(.*)')
+	where attr_value ~* '^c:/projectopen/'
+"
+
+db_dml update_pathes "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name' || substring(lower(attr_value) from 'c:/project-open(.*)')
+	where lower(attr_value) ~* '^c:/project-open/'
+"
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/templates'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'InvoiceTemplatePathUnix'
+	)
+"
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/var/tmp'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'tmp_path'
+	)
+"
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/usr/bin/dot'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'graphviz_dot_path'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/projects'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'CompanyBasePathUnix'
+	)
+"
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/home'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'HomeBasePathUnix'
+	)
+"
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/projects'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'ProjectBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/tickets'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'TicketBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/project_sales'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'ProjectSalesBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/users'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'UserBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/costs'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'CostBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/backup'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'BackupBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/bugs'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'BugBasePathUnix'
+	)
 "
 
 
@@ -63,9 +196,9 @@ where attr_value ~* '^C:/ProjectOpen/'
 # Convert the find command
 ns_write "<li>Converting /bin/find to /usr/bin/find\n"
 db_dml update_pathes "
-update apm_parameter_values
-set attr_value = '/usr/bin/find'
-where attr_value = '/bin/find'
+	update apm_parameter_values
+	set attr_value = '/usr/bin/find'
+	where attr_value = '/bin/find'
 "
 
 
