@@ -55,6 +55,7 @@ set object_types {
     im_report
     im_risk
     im_sla_parameter
+    im_sql_selector
     im_ticket
     im_ticket_queue
     im_ticket_ticket_rel
