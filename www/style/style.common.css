@@ -413,4 +413,22 @@ a.action {
 }
 
 
+.img-cap {
+	position: relative;
+	display: block;
+}
+.img-cap cite {
+	/* 
+	background: #111; 
+	border-top: 1px solid #999;
+	padding: 10px;
+	*/
+	filter:alpha(opacity=88);
+	opacity:.88;
+	color: #000;
+	position: absolute;
+	bottom: -1;
+	left: 3;
+}
+
 
