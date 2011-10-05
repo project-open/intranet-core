@@ -93,15 +93,14 @@ ad_proc -public im_audit  {
 
     ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p"
 
-    set audit_id 0
-
     if {$intranet_audit_exists_p} {
 	if {[catch {
 	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
 	} err_msg]} {
 	    ns_log Error "im_audit: Error executing im_audit_impl: $err_msg"
+	    set audit_id 0
 	}
-    } 
+    }
 
     return $audit_id
 }
@@ -122,8 +121,25 @@ ad_proc -public im_project_audit  {
     project, allowing for EVA Earned Value Analysis.
 } {
     set err_msg "Error in Audit module, please consult your System Administrator"
-    catch {
-	return [im_project_audit_impl -user_id $user_id -project_id $project_id -action $action -comment $comment]
+    set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
+    if {$intranet_audit_exists_p} {
+	catch {
+	    im_project_audit_impl \
+		-user_id $user_id \
+		-project_id $project_id \
+		-action $action \
+		-comment $comment
+	}
     }
+
+    return [im_audit \
+		-object_id $project_id \
+		-user_id $user_id \
+		-object_type $object_type \
+		-status_id $status_id \
+		-type_id $type_id \
+		-action $action \
+		-comment $comment \
+   ]
 }
 
