@@ -64,7 +64,7 @@ proc_doc im_state_widget { {default ""} {select_name "usps_abbrev"}} "Returns a 
     return $widget_value
 }
 
-proc_doc im_country_widget { {default ""} {select_name "country_code"} {size_subtag "size=4"}} "Returns a country selection box" {
+proc_doc im_country_widget { {default ""} {select_name "country_code"} {size_subtag ""}} "Returns a country selection box" {
 
     set widget_value "<select name=\"$select_name\" $size_subtag>\n"
     if { $default == "" } {
