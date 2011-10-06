@@ -140,6 +140,7 @@ ad_proc -public im_navbar_tree_admin {
 			-locale $locale \
 			-label "admin" \
 			-maxlevel 2 \
+		        -ignore_disabled_p 1 \
 		]
 		</ul>
 	</ul>
@@ -702,6 +703,7 @@ ad_proc -public im_navbar_write_tree {
     {-package_key "intranet-core" }
     {-label "main" }
     {-maxlevel 1}
+    {-ignore_disabled_p 0}
 } {
     Starts writing out the menu tree from a particular location
 } {
@@ -715,6 +717,7 @@ ad_proc -public im_navbar_write_tree {
 		    -package_key $package_key \
 		    -label $label \
 		    -maxlevel $maxlevel \
+		    -ignore_disabled_p $ignore_disabled_p \
 	]
     } else {
 	return [util_memoize [list im_navbar_write_tree_helper \
@@ -723,6 +726,7 @@ ad_proc -public im_navbar_write_tree {
 				  -package_key $package_key \
 				  -label $label \
 				  -maxlevel $maxlevel\
+				  -ignore_disabled_p $ignore_disabled_p \
 	] 3600]
     }
 }
@@ -733,10 +737,14 @@ ad_proc -public im_navbar_write_tree_helper {
     {-package_key "intranet-core" }
     {-label "main" }
     {-maxlevel 1}
+    {-ignore_disabled_p 0}
 } {
     Starts writing out the menu tree from a particular location
 } {
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
+    set ignore_disabled_sql ""
+    if {$ignore_disabled_p} { set ignore_disabled_sql "OR enabled_p = 'f'" }
 
     set main_label $label
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
@@ -749,7 +757,7 @@ ad_proc -public im_navbar_write_tree_helper {
 	from	im_menus m
 	where	m.parent_menu_id = :main_menu_id and
 		im_object_permission_p(m.menu_id, :user_id, 'read') = 't' and
-		(enabled_p is null OR enabled_p = 't')
+		(enabled_p is null OR enabled_p = 't' $ignore_disabled_sql)
 	order by sort_order
     "
 
