@@ -93,7 +93,7 @@ multirow append processes process_itsm_problem_management "Problem Management" m
 multirow append processes process_itsm_release_management "Release Management" module_itsm "Release management (RM) is the process of managing software releases. The main goals of ITSM release management are the reduction of cost implementing and maintaining software and the reduction of service interruptions due to release changes."
 multirow append processes process_itsm_service_level_management "Service Level Management" module_itsm "The purpose of Service Level Management is to manage customer-client relationship for services delivered, enable improvement in service quality and reduction in service disruption."
 
-multirow append processes process_pd_idea_generation "PD Idea Generation" module_product_development "The idea generation process should certain groups of people to introduce "ideas" into the system. These ideas will then be screened, evaluated and implemented as part of product development."
+multirow append processes process_pd_idea_generation "PD Idea Generation" module_product_development "The idea generation process should certain groups of people to introduce 'ideas' into the system. These ideas will then be screened, evaluated and implemented as part of product development."
 
 multirow append processes process_pm_project_planning "PM Project Planning" module_project_management "Project planning includes the preparation of a project plan and other documents."
 multirow append processes process_pm_project_portfolio_management "PM Project Portfolio Mgmt" module_project_management ""
