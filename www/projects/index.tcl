@@ -646,9 +646,6 @@ if {[im_permission $current_user_id "add_projects"]} {
 
 # Append user-defined menus
 append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
-
-# Close the admin_html section
-append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
 append admin_html "</ul>"
 
 
