@@ -275,7 +275,9 @@ if {$filter_advanced_p} {
         -object_type $object_type \
         -form_id $form_id \
         -object_id 0 \
-        -advanced_filter_p 1
+        -advanced_filter_p 1 \
+	-page_url "/intranet/projects/index"
+
     
     # Set the form values from the HTTP form variable frame
     im_dynfield::set_form_values_from_http -form_id $form_id
@@ -646,7 +648,7 @@ if {[im_permission $current_user_id "add_projects"]} {
 append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
 
 # Close the admin_html section
-#append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
+append admin_html "<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>"
 append admin_html "</ul>"
 
 
