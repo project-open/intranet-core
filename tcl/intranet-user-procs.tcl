@@ -1084,12 +1084,18 @@ ad_proc -public im_user_nuke {
 	    db_dml freelance_conf "update im_freelance_skills set confirmation_user_id = null where confirmation_user_id = :user_id"
 	}
 
+	# Gantt Projects
+	if {[im_table_exists im_gantt_persons]} {
+	    db_dml im_gantt_persons "delete from im_gantt_persons where person_id = :user_id"
+	}
 
 	# Helpdesk + ConfDB
 	if {[im_table_exists im_tickets]} {
 	    db_dml assignees "update im_tickets set ticket_assignee_id = :default_user where ticket_assignee_id = :user_id"
 	    db_dml assignees "update im_tickets set ticket_customer_contact_id = :default_user where ticket_customer_contact_id = :user_id"
 	}
+
+	# Configuration Items
 	if {[im_table_exists im_conf_items]} {
 	    db_dml assignees "update im_conf_items set conf_item_owner_id = :default_user where conf_item_owner_id = :user_id"
 	}
