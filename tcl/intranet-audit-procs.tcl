@@ -93,12 +93,12 @@ ad_proc -public im_audit  {
 
     ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p"
 
+    set audit_id 0
     if {$intranet_audit_exists_p} {
 	if {[catch {
 	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
 	} err_msg]} {
 	    ns_log Error "im_audit: Error executing im_audit_impl: $err_msg"
-	    set audit_id 0
 	}
     }
 
