@@ -66,7 +66,7 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
     if {[regexp {(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([0-9a-z\.]+)$} $trim match file_year file_month file_day file_hour file_second file_extension]} {
 
 	# Get rid of the leading "/" of $match
-	regexp {^\/(.*)} $trim match file_body
+	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
 
 	multirow append backup_files \
 	    $file \
