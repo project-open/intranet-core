@@ -108,7 +108,16 @@ ad_proc -public multirow_sort_tree {
     }
     
     if {!$nosort_p} {
-	template::multirow sort $multirow_name -integer tree_order
+	if {[catch {
+	    template::multirow sort $multirow_name -integer tree_order
+	} err_msg]} {
+	    ns_log Error "multirow_sort_tree: Error sorting: $err_msg"
+	    im_security_alert \
+                -location "multirow_sort_tree" \
+                -message $err_msg" \
+                -value $multirow_name \
+                -severity "Normal"
+	}
     }
 }
 
