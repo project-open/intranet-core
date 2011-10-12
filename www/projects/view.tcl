@@ -39,8 +39,8 @@ ad_page_contract {
 
 # Redirect if this is a task
 if {[exists_and_not_null project_id]} {
-    set task_p [db_string task_id "select task_id from im_timesheet_tasks where task_id = :project_id" -default 0]
-    if {$task_p} {
+    set otype [db_string otype "select object_type from acs_objects where object_id = :project_id" -default ""]
+    if {"im_timesheet_task" == $otype} {
 	ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{form_mode display} {task_id $project_id}}]
     } 
 }
