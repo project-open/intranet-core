@@ -1548,8 +1548,12 @@ div.xowiki-content hr {
          /* display: none; */ 
 }
 
+.forumBar {
+	margin-top:-1;
+}
+
 .component table.forumBar td  {
-        background: #EEEEEE
+        background: #E1E2E1;
 }
 
 .component table.forumBar td a  {
