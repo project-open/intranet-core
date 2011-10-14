@@ -355,13 +355,14 @@ namespace eval im_profile {
     ad_proc -public profile_name_from_id { 
 	{-translate_p 1}
 	{-locale ""}
+	{-current_user_id 0}
 	-profile_id:required
     } { 
 	Return a translated profile name for an ID.
     } {
 	# Get the user's locale
-	set user_id [ad_get_user_id]
-	if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+	if {0 == $current_user_id} { set current_user_id [ad_get_user_id] }
+	if {"" == $locale} { set locale [lang::user::locale -user_id $current_user_id] }
 	if {!$translate_p} { set locale "en_US" }
 
 	# Check if we have calculated this result already
