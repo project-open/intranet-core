@@ -72,6 +72,7 @@ if {"" != $password && "" != $email} {
 # ------------------------------------------------------------------------
 
 # Log the dude in if the token was OK.
+set user_requires_manual_login_p 0
 set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p $user_requires_manual_login_p]
 
 if {$valid_login} {
