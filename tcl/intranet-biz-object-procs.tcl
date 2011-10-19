@@ -458,41 +458,35 @@ ad_proc -public im_group_member_component {
     }
 
     # ------------------ Main SQL ----------------------------------------
-    # fraber: Abolished the "distinct" because the role assignment page 
-    # now takes care that a user is assigned only once to a group.
-    # We neeed this if we want to show the role of the user.
-    #
     set sql_query "
 	select
-		u.user_id, 
-		u.user_id as party_id,
-		im_email_from_user_id(u.user_id) as email,
-		im_name_from_user_id(u.user_id) as name,
+		rels.object_id_two as user_id, 
+		rels.object_id_two as party_id, 
+		im_email_from_user_id(rels.object_id_two) as email,
+		acs_object__name(rels.object_id_two) as name,
 		im_category_from_id(c.category_id) as member_role,
 		c.category_gif as role_gif,
 		c.category_description as role_description
 		$bo_rels_percentage_sql
 	from
-		users u,
 		acs_rels rels
 		LEFT OUTER JOIN im_biz_object_members bo_rels ON (rels.rel_id = bo_rels.rel_id)
-		LEFT OUTER JOIN im_categories c ON (c.category_id = bo_rels.object_role_id),
-		group_member_map m,
-		membership_rels mr
+		LEFT OUTER JOIN im_categories c ON (c.category_id = bo_rels.object_role_id)
 	where
-		rels.object_id_one = $object_id
-		and rels.object_id_two = u.user_id
-		and mr.member_state = 'approved'
-		and u.user_id = m.member_id
-		and mr.member_state = 'approved'
-		and m.group_id = acs__magic_object_id('registered_users'::character varying)
-		and m.rel_id = mr.rel_id
-		and m.container_id = m.group_id
-		and m.rel_type = 'membership_rel'
-
+		rels.object_id_one = :object_id and
+		rels.object_id_two not in (
+			-- Exclude banned or deleted users
+			select	m.member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.rel_id = mr.rel_id and
+				m.group_id = acs__magic_object_id('registered_users') and
+				m.container_id = m.group_id and
+				mr.member_state != 'approved'
+		)
 		$limit_to_group_id_sql 
 		$dont_allow_sql
-	order by lower(im_name_from_user_id(u.user_id))
+	order by lower(acs_object__name(rels.object_id_two))
     "
 
     # ------------------ Format the table header ------------------------
