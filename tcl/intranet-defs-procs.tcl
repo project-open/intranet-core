@@ -193,7 +193,11 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
 # CSV Line Parser
 # ------------------------------------------------------------------
 
-ad_proc im_csv_split { line {separator ","}} {
+ad_proc im_csv_split { 
+    {-debug 0}
+    line 
+    {separator ","}
+} {
     Splits a line from a CSV (Comma Separated Values) file
     into an array of values. Deals with:
     <ul>
@@ -213,14 +217,13 @@ ad_proc im_csv_split { line {separator ","}} {
     </ul>
 
 } {
-    set debug 0
-
     set result_list [list]
     set pos 0
     set len [string length $line]
     set quote ""
     set state "field_start"
     set field ""
+    set cnt 0
 
     while {$pos <= $len} {
 	set char [string index $line $pos]
@@ -233,7 +236,7 @@ ad_proc im_csv_split { line {separator ","}} {
 		# We're before a field. Next char may be a quote
 		# or not. Skip white spaces.
 
-		if {[string is space $char]} {
+		if {[string is space $char] && $char != $separator} {
 
 		    if {$debug} {ns_log notice "im_csv_split: field_start: found a space: '$char'"}
 		    incr pos
@@ -302,8 +305,12 @@ ad_proc im_csv_split { line {separator ","}} {
 
 		# We got here after finding the end of a "field".
 		# Now we expect a separator or we have to throw an
-		# error otherwise. Skip whitespaces.
-		
+		# error otherwise. Skip whitespaces, unless the whitespace is the separator...
+		if {$char == $separator} { 
+		    # don't inc pos!
+		    set state "field_start"
+		}
+
 		if {[string is space $char]} {
 		    if {$debug} {ns_log notice "im_csv_split: separator: found a space: '$char'"}
 		    incr pos
@@ -319,6 +326,11 @@ ad_proc im_csv_split { line {separator ","}} {
 		}
 	    }
 	    # Switch, while and proc ending
+	}
+
+	if {$debug} {
+	    incr cnt
+	    if {$cnt > 10000} { ad_return_complaint 1 "overflow" }
 	}
     }
 
