@@ -474,6 +474,7 @@ ad_proc -public im_group_member_component {
 		LEFT OUTER JOIN im_categories c ON (c.category_id = bo_rels.object_role_id)
 	where
 		rels.object_id_one = :object_id and
+		rels.object_id_two in (select party_id from parties) and
 		rels.object_id_two not in (
 			-- Exclude banned or deleted users
 			select	m.member_id
