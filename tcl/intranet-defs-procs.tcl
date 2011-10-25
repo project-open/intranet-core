@@ -1356,17 +1356,13 @@ ad_proc im_csv_guess_separator { file } {
     by determining the character frequency in the file
 } {
     foreach char [split $file ""] {
-	
 	# The the numeric character code for the character
         scan $char "%c" code
-
-	if {[lsearch {";" "," "|" } $char] != -1} {
-	    
+	if {[lsearch {";" "," "|" "\t"} $char] != -1} {
 	    # Increment the respective counter
 	    set count 0
 	    if {[info exists hash($code)]} { set count $hash($code) }
 	    set hash($code) [expr $count+1]
-	    
 	}
     }
     
@@ -1379,7 +1375,14 @@ ad_proc im_csv_guess_separator { file } {
 	}
     }
     
-    return [format "%c" $max_code]
+    if {[catch {
+	set result [format "%c" $max_code]
+    } err_msg]} {
+	ad_return_complaint 1 "<b>im_csv_guess_separator: Didn't find separator</b>:<br>
+	Input:<br><pre>$file</pre>"
+	ad_script_abort
+    }
+    return $result
 }
 
 
