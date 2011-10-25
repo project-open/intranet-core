@@ -47,6 +47,7 @@ ad_proc -public im_audit  {
 		Nuke represents complete object deletion - should only be used for demo data.
 		Before_update represents checks before the update of important objects im_costs,
 		im_project. This way the system can detect changes from outside the system.
+    @return $audit_id
 } {
     # Deal with old action names during the transition period
     if {""       == $action} { set action "after_update" }
@@ -120,26 +121,17 @@ ad_proc -public im_project_audit  {
     Specific audit for projects. This audit keeps track of the cost cache with each
     project, allowing for EVA Earned Value Analysis.
 } {
-    set err_msg "Error in Audit module, please consult your System Administrator"
     set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
-    if {$intranet_audit_exists_p} {
-	catch {
-	    im_project_audit_impl \
-		-user_id $user_id \
-		-project_id $project_id \
-		-action $action \
-		-comment $comment
-	}
-    }
+    if {!$intranet_audit_exists_p} { return "" }
 
-    return [im_audit \
-		-object_id $project_id \
+    return [im_project_audit_impl \
 		-user_id $user_id \
 		-object_type $object_type \
+		-project_id $project_id \
 		-status_id $status_id \
 		-type_id $type_id \
 		-action $action \
-		-comment $comment \
-   ]
+		-comment $comment
+    ]
 }
 
