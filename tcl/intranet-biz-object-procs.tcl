@@ -412,44 +412,25 @@ ad_proc -public im_group_member_component {
     if {$object_type != "im_project" & $object_type != "im_timesheet_task"} { set show_percentage_p 0 }
 
     # ------------------ limit_to_users_in_group_id ---------------------
-    if { [empty_string_p $limit_to_users_in_group_id] } {
-	set limit_to_group_id_sql ""
-    } else {
+    set limit_to_group_id_sql ""
+    if {![empty_string_p $limit_to_users_in_group_id]} {
 	set limit_to_group_id_sql "
-	and exists (select 1 
-		from 
-			group_member_map map2,
-		        membership_rels mr,
-			groups ug
-		where 
-			map2.group_id = ug.group_id
-			and map2.rel_id = mr.rel_id
-			and mr.member_state = 'approved'
-			and map2.member_id = u.user_id 
-			and map2.group_id = :limit_to_users_in_group_id
-		)
-	"
+	and rels.object_id_two in (
+		select	gdmm.member_id
+		from	group_distinct_member_map gdmm
+		where	gdmm.group_id = :limit_to_users_in_group_id
+	)"
     } 
 
     # ------------------ dont_allow_users_in_group_id ---------------------
-    if { [empty_string_p $dont_allow_users_in_group_id] } {
-	set dont_allow_sql ""
-    } else {
+    set dont_allow_sql ""
+    if {![empty_string_p $dont_allow_users_in_group_id]} {
 	set dont_allow_sql "
-	and not exists (
-		select 1 
-		from 
-			group_member_map map2, 
-			membership_rels mr,
-			groups ug
-		where 
-			map2.group_id = ug.group_id
-			and map2.rel_id = mr.rel_id
-			and mr.member_state = 'approved'
-			and map2.member_id = u.user_id 
-			and map2.group_id = :dont_allow_users_in_group_id
-		)
-	"
+	and rels.object_id_two not in (
+		select	gdmm.member_id
+		from	group_distinct_member_map gdmm
+		where	gdmm.group_id = :dont_allow_users_in_group_id
+	)"
     } 
 
     set bo_rels_percentage_sql ""
