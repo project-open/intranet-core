@@ -19,13 +19,11 @@ ad_page_contract {
   @author alwin.egger@gmx.net
   @author frank.bergmann@project-open.com
 } {
-    { package_key "none"}
+    { package_key_form "none"}
     { component_location ""}
     { component_page ""}
     { plugin_id ""}
 }
-
-# ad_return_complaint 1 $package_key
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -128,7 +126,11 @@ append table_header "\n</tr>\n"
 
 set component_where ""
 
-if {"none" != $package_key && "" != $package_key} { append component_where "\tand package_name = :package_key\n" }
+
+
+
+if {"none" != $package_key_form && "" != $package_key_form} { append component_where "\t and package_name = :package_key_form \n" }
+
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
 if {"" != $plugin_id} { append component_where "\tand plugin_id = :plugin_id\n" }
 if {"" != $component_page} { 
@@ -206,8 +208,8 @@ append table "
 # Filters & Navbar
 # ------------------------------------------------------
 
-if { "" == $package_key } { set package_key "All" }
-set package_select [im_select -ad_form_option_list_style_p 1 package_key $package_options $package_key]
+if { "" == $package_key_form } { set package_key_form "All" }
+set package_select [im_select -ad_form_option_list_style_p 1 package_key_form $package_options $package_key_form]
 
 set left_navbar_html "
 	<table>
