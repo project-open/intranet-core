@@ -28,6 +28,13 @@
         border: 1px solid #666;
 }
 
+.not_todays_date_weekend, .todays_date_weekend {
+        text-align: left;
+        border: 1px solid #666;
+	background: #EEEEEE;
+}
+
+
 .link_log_hours {
 	padding-top: 8px;
 	padding-left: 12px;
@@ -263,7 +270,7 @@ background-position: 0px -10px;
 
 
 #header_logo {
-  position: absolute;
+ position: absolute;
   left: 0px;
   top: 0px;
   font-size: 16pt;
