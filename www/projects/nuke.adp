@@ -7,23 +7,23 @@
 
 <h2>@page_title@</h2>
 
+<p>
 #intranet-core.lt_Confirm_the_nuking_of#
-<a href="one?project_id=@project_id@">@project_name@</a>
-<p>
-
-
-First, unless @object_name@ is a test @object_type@, you 
-should probably delete this user instead. Deleting marks 
-the @object_type@ deleted but leaves intact its
-relationship with other objects such as forums, filestorage etc.
-
-<p>
+<a href="one?project_id=@project_id@">@project_name@</a>.
 Nuking is a violent irreversible action. 
-You are instructing the system to remove the user and any content 
-that he or she has contributed to the site. This is generally only 
-appropriate in the case of test users and, perhaps, dishonest people 
-who've flooded a site with fake crud.
+
+</p><br>
+
+<listtemplate name="@list_id@"></listtemplate>
+
+<br>
 <p>
+First, unless @object_name@ is a test @object_type@, you 
+should probably set the status of this project as 'deleted'
+instead. This way, the project won't appear in the rest of
+the system anymore, but associated information will kept
+intact.
+</p><br>
 
 <center>
 <form method=get action=nuke-2>

@@ -82,6 +82,10 @@ im_project_audit -project_id $project_id -action before_update
 # Check permissions
 # ---------------------------------------------------------------------
 
+# Global admin?
+# Only global admins are allowed to "nuke" projects
+set site_wide_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+
 # get the current users permissions for this project
 im_project_permissions $user_id $project_id view read write admin
 
@@ -129,6 +133,11 @@ set admin_html_content ""
 if {$admin} {
     append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id}}]\">[_ intranet-core.Create_a_Subproject]</A><br></li>\n"
 }
+
+if {$site_wide_admin_p} {
+    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/nuke" {project_id}]\">[_ intranet-core.Nuke_this_project]</A><br></li>\n"
+}
+
 
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
 

@@ -17,8 +17,13 @@ ad_page_contract {
 
     @author frank.bergmann@project-open.com
 } {
-    project_id:integer,notnull
+    { project_id:integer,multiple,notnull ""}
+    { return_url ""}
 }
+
+ad_return_complaint 1 $project_id
+ad_script_abort
+
 
 # ---------------------------------------------------------------
 # Defaults & Security
