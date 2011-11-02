@@ -578,7 +578,7 @@ a   span  {float:none;}
 	bottom: -1px;
 	list-style: none;
 	line-height: normal;
-	width: 800px;
+	top: -20px;
 }
 
 #navbar_sub LI, #alphabar LI {
