@@ -698,7 +698,7 @@ a   span  {float:none;}
 /* **********************************************   COMPONENTS ***************************** */ 
 
 .component {
-	position: relative;
+	/* position: relative; */ 
 	padding-left: 5px;
 	padding-right: 5px;
 	padding-top: 5px;
