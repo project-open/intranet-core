@@ -70,7 +70,8 @@
       where
       		a.widget_name = w.widget_name and
       		a.acs_attribute_id = aa.attribute_id and
-      		aa.object_type = 'im_project'
+      		aa.object_type = 'im_project' and
+		(a.also_hard_coded_p is NULL or a.also_hard_coded_p = 'f')
       order by
     		coalesce(la.pos_y,0), coalesce(la.pos_x,0)
 
