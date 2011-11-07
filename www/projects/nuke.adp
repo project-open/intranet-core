@@ -18,11 +18,15 @@
 
 <br>
 <p>
+<%= [lang::message::lookup "" intranet-core.You_shoud_change_status_to_deleted "
 First, unless @object_name@ is a test @object_type@, you 
 should probably set the status of this project as 'deleted'
-instead. This way, the project won't appear in the rest of
+instead."] %><br>
+
+<%= [lang::message::lookup "" intranet-core.This_way_the_project_wont_appear "
+This way, the project won't appear in the rest of
 the system anymore, but associated information will kept
-intact.
+intact."] %>
 </p><br>
 
 <center>
