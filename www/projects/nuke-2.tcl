@@ -21,10 +21,6 @@ ad_page_contract {
     { return_url ""}
 }
 
-ad_return_complaint 1 $project_id
-ad_script_abort
-
-
 # ---------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------
