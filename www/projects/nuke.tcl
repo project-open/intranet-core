@@ -24,12 +24,11 @@ ad_page_contract {
 }
 
 
-db_1row user_full_name "
-    select *
-    from
-	im_projects
-    where 
-	project_id = :project_id
+db_1row project_info "
+    select	*,
+		project_name as project_name_org
+    from	im_projects
+    where	project_id = :project_id
 "
 
 set page_title [_ intranet-core.Nuke_this_project]
@@ -38,6 +37,7 @@ set object_name $project_name
 set object_type "project"
 
 set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_url_vars project_id return_url]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
+set project_url_org [export_vars -base "/intranet/projects/view" {project_id}]
 
 
 #----------------------------------------------

@@ -9,8 +9,8 @@
 
 <p>
 #intranet-core.lt_Confirm_the_nuking_of#
-<a href="one?project_id=@project_id@">@project_name@</a>.
-Nuking is a violent irreversible action. 
+<a href="@project_url_org@">@project_name_org@</a>.
+<%= [lang::message::lookup "" intranet-core.Nuking_is_a_violent_irreversible_action "Nuking is a violent irreversible action."] %>
 
 </p><br>
 
