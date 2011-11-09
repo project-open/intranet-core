@@ -1136,7 +1136,7 @@ Passwort: %password%
   <msg key="Nuke_Checked_Users">geprüfte Benutzer entfernen</msg>
   <msg key="Nuke_Demo_Projects">Demoprojekte entfernen</msg>
   <msg key="Nuke_Demo_Users">Demobenutzer entfernen</msg>
-  <msg key="Nuke_this_project">dieses Projekt entfernen</msg>
+  <msg key="Nuke_this_project">Dieses Projekt entfernen</msg>
   <msg key="Nuke_this_user">diesen Benutzer entfernen</msg>
   <msg key="Nuke_user">Benutzer löschen</msg>
   <msg key="Nuking_Projects">entfernende Projekte</msg>
