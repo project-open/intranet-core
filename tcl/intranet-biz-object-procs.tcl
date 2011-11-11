@@ -229,8 +229,20 @@ ad_proc -public im_biz_object_add_role {
 
     # Add the user in a im_biz_object_membership relationship
 
-    set rel_id [db_string rel_id "select rel_id from acs_rels where object_id_one = :object_id and object_id_two = :user_id" -default 0]
-    if {0 == $rel_id} {
+    set org_percentage ""
+    set org_role_id ""
+    db_0or1row relationship_info "
+	select	r.rel_id,
+		bom.percentage as org_percentage,
+		bom.object_role_id as org_role_id
+	from	acs_rels r,
+		im_biz_object_members bom
+	where	r.rel_id = bom.rel_id and
+		object_id_one = :object_id and 
+		object_id_two = :user_id
+    "
+
+    if {![info exists rel_id] || 0 == $rel_id || "" == $rel_id} {
 	ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
 	set rel_id [db_string create_rel "
 		select im_biz_object_member__new (
@@ -243,15 +255,19 @@ ad_proc -public im_biz_object_add_role {
                         :user_ip
                 )
 	"]
+    }
 
+    if {"" == $rel_id || 0 == $rel_id} { ad_return_complaint 1 "im_biz_object_add_role: rel_id=$rel_id" }
+
+    # Update the bom's percentage and role only if necessary
+    if {$org_percentage != $percentage || $org_role_id != $role_id} {
 	db_dml update_perc "
 		UPDATE im_biz_object_members SET 
-			percentage = :percentage 
+			percentage = :percentage,
+			object_role_id = :role_id
 		WHERE rel_id = :rel_id
 	"
     }
-    if {"" == $rel_id || 0 == $rel_id} { ad_return_complaint 1 "im_biz_object_add_role: rel_id=$rel_id" }
-
 
     # Take specific action to create relationships depending on the object types
     switch $object_type {
