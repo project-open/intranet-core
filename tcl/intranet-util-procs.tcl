@@ -67,7 +67,7 @@ ad_proc -public multirow_sort_tree {
 	incr row
     }
 
-    # find the root elements
+    # Find the root elements
     set roots [list]
     foreach parent_id [array names children] {
 	if {![info exists id_to_row($parent_id)]} {
@@ -83,7 +83,7 @@ ad_proc -public multirow_sort_tree {
 
     # recurse through list
     set row 1
-    while {$roots!=""} {
+    while {"" != $roots} {
 	# pop
 	set tmp [lindex $roots end]
 	set roots [lrange [lindex [list $roots [unset roots]] 0] 0 end-1]
