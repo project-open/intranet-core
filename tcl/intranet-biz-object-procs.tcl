@@ -699,6 +699,56 @@ ad_proc -public im_object_assoc_component {
 }
 
 
+ad_proc -public im_biz_object_member_list_format { 
+    {-format_user "initials"}
+    {-format_role_p 0}
+    {-format_perc_p 1}
+    bom_list 
+} {
+    Formats a list of business object memberships for display.
+    Returns a piece of HTML suitable for the Timesheet Task List for example.
+    @param bom_list A list of {user_id role_id perc} entries
+} {
+    set member_list ""
+    foreach entry $bom_list {
+	set party_id [lindex $entry 0]
+	set role_id [lindex $entry 1]
+	set perc [lindex $entry 2]
+	set party_name [im_name_from_user_id $party_id]
+	switch $format_user {
+	    initials {
+		set party_pretty [im_initials_from_user_id $party_id]
+	    }
+	    email {
+		set party_pretty [im_email_from_user_id $party_id]
+	    }
+	    default {
+		set party_pretty [im_name_from_user_id $party_id]
+	    }
+	}
+	# Skip the entry if we didn't manage to format the name
+	if {"" == $party_pretty} { set party_id "" }
+
+	# Add a link to the user's page
+	set party_url [export_vars -base "/intranet/users/view" {{user_id $party_id}}]
+	set party_pretty "<a href=\"$party_url\" title=\"$party_name\">$party_pretty</a>"
+
+	if {$format_role_p && "" != $role_id} {
+	    set role_name [im_category_from_id $role_id]
+	    # ToDo: Add role to name using GIF
+	}
+
+	if {$format_perc_p && "" != $perc} {
+	    set perc [expr round($perc)]
+	    append party_pretty ":${perc}%"
+	}
+	if {"" != $party_id} {
+	    lappend member_list "$party_pretty"
+	}
+    }
+    return [join $member_list ", "]
+}
+
 
 
 # ---------------------------------------------------------------

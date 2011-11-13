@@ -12,7 +12,7 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author	  frank.bergmann@project-open.com
+-- @author frank.bergmann@project-open.com
 
 -- Business objects can be associated to 
 -- users using a "role", which depends on the Busines
@@ -120,7 +120,7 @@ BEGIN
 	v_query := '' select '' || v_type_column || '' as result_id '' || '' from '' || v_table || 
 		'' where '' || v_id_column || '' = '' || p_object_id;
 	FOR row IN EXECUTE v_query
-        LOOP
+	LOOP
 		v_result_id := row.result_id;
 		EXIT;
 	END LOOP;
@@ -181,7 +181,7 @@ BEGIN
 	v_query := '' select '' || v_status_column || '' as result_id '' || '' from '' || v_status_table || 
 		'' where '' || v_status_table_id_col || '' = '' || p_object_id;
 	FOR row IN EXECUTE v_query
-        LOOP
+	LOOP
 		v_result_id := row.result_id;
 		EXIT;
 	END LOOP;
@@ -337,7 +337,7 @@ end;' language 'plpgsql';
 create or replace function im_biz_object__delete (integer)
 returns integer as '
 declare
-        object_id       alias for $1;
+	object_id	alias for $1;
 	v_object_id	integer;
 begin
 	-- Erase the im_biz_objects item associated with the id
@@ -352,7 +352,7 @@ end;' language 'plpgsql';
 create or replace function im_biz_object__name (integer)
 returns varchar as '
 declare
-        object_id       alias for $1;
+	object_id	alias for $1;
 begin
 	return "undefined for im_biz_object";
 end;' language 'plpgsql';
@@ -365,37 +365,37 @@ end;' language 'plpgsql';
 create or replace function im_biz_object__type (integer)
 returns integer as '
 declare
-        p_object_id             alias for $1;
-        v_object_type           varchar;
-        v_biz_object_type_id    integer;
+	p_object_id		alias for $1;
+	v_object_type		varchar;
+	v_biz_object_type_id	integer;
 begin
 
-        -- get the object type
-        select  object_type
-        into    v_object_type
-        from    acs_objects
-        where   object_id = p_object_id;
+	-- get the object type
+	select	object_type
+	into	v_object_type
+	from	acs_objects
+	where	object_id = p_object_id;
 
-        -- Initialize the return value
-        v_biz_object_type_id = null;
+	-- Initialize the return value
+	v_biz_object_type_id = null;
 
-        IF ''im_project'' = v_object_type THEN
+	IF ''im_project'' = v_object_type THEN
 
-                select  project_type_id
-                into    v_biz_object_type_id
-                from    im_projects
-                where   project_id = p_object_id;
+		select	project_type_id
+		into	v_biz_object_type_id
+		from	im_projects
+		where	project_id = p_object_id;
 
-        ELSIF ''im_company'' = v_object_type THEN
+	ELSIF ''im_company'' = v_object_type THEN
 
-                select  company_type_id
-                into    v_biz_object_type_id
-                from    im_companies
-                where   company_id = p_object_id;
+		select	company_type_id
+		into	v_biz_object_type_id
+		from	im_companies
+		where	company_id = p_object_id;
 
-        END IF;
+	END IF;
 
-        return v_biz_object_type_id;
+	return v_biz_object_type_id;
 
 end;' language 'plpgsql';
 
@@ -447,21 +447,21 @@ create table im_biz_object_members (
 );
 
 select acs_rel_type__create_type (
-   'im_biz_object_member',	-- relationship (object) name
-   'Biz Object Relation',	-- pretty name
-   'Biz Object Relations',	-- pretty plural
-   'relationship',		-- supertype
-   'im_biz_object_members',	-- table_name
-   'rel_id',			-- id_column
-   'im_biz_object_member',	-- package_name
-   'acs_object',		-- object_type_one
-   'member',			-- role_one
-    0,				-- min_n_rels_one
-    null,			-- max_n_rels_one
-   'person',			-- object_type_two
-   'member',			-- role_two
-   0,				-- min_n_rels_two
-   null				-- max_n_rels_two
+	'im_biz_object_member',		-- relationship (object) name
+	'Biz Object Relation',		-- pretty name
+	'Biz Object Relations',		-- pretty plural
+	'relationship',			-- supertype
+	'im_biz_object_members',	-- table_name
+	'rel_id',			-- id_column
+	'im_biz_object_member',		-- package_name
+	'acs_object',			-- object_type_one
+	'member',			-- role_one
+	0,				-- min_n_rels_one
+	null,				-- max_n_rels_one
+	'person',			-- object_type_two
+	'member',			-- role_two
+	0,				-- min_n_rels_two
+	null				-- max_n_rels_two
 );
 
 -- ------------------------------------------------------------
@@ -511,9 +511,9 @@ BEGIN
 	);
 
 	insert into im_biz_object_members (
-	       rel_id, object_role_id, percentage
+		rel_id, object_role_id, percentage
 	) values (
-	       v_rel_id, p_object_role_id, p_percentage
+		v_rel_id, p_object_role_id, p_percentage
 	);
 
 	return v_rel_id;
@@ -554,8 +554,8 @@ end;' language 'plpgsql';
 create or replace function im_biz_object_member__delete (integer, integer)
 returns integer as '
 DECLARE
-        p_object_id       alias for $1;
-	p_user_id	  alias for $2;
+	p_object_id	alias for $1;
+	p_user_id	alias for $2;
 
 	v_rel_id	integer;
 BEGIN
@@ -572,6 +572,35 @@ BEGIN
 	return 0;
 end;' language 'plpgsql';
 
+
+
+
+-- Return a TCL list of the member_ids of the members of a 
+-- business object.
+create or replace function im_biz_object_member__list (integer)
+returns varchar as $body$
+DECLARE
+	p_object_id	alias for $1;
+	v_members	varchar;
+	row		record;
+BEGIN
+	v_members := '';
+	FOR row IN 
+		select	r.object_id_two as party_id,
+			coalesce(bom.object_role_id::varchar, '""') as role_id,
+			coalesce(bom.percentage::varchar, '""') as percentage
+		from	acs_rels r,
+			im_biz_object_members bom
+		where	r.rel_id = bom.rel_id and
+			r.object_id_one = p_object_id
+		order by party_id
+	LOOP
+		IF '' != v_members THEN v_members := v_members || ' '; END IF;
+		v_members := v_members || '{' || row.party_id || ' ' || row.role_id || ' ' || row.percentage || '}';
+	END LOOP;
+
+	return v_members;
+end;$body$ language 'plpgsql';
 
 
 

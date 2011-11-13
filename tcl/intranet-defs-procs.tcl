@@ -626,6 +626,17 @@ ad_proc -public im_email_from_user_id_helper {user_id} {
     return $user_email
 }
 
+# Find out the user initials
+ad_proc -public im_initials_from_user_id {user_id} {
+    set user_name [im_name_from_user_id $user_id]
+    set result ""
+    foreach name $user_name {
+	append result [string toupper [string range $name 0 0]]
+    }
+    return $result
+}
+
+
 
 ad_proc im_employee_select_optionlist { 
     { -locale "" }
