@@ -1606,7 +1606,7 @@ ad_proc -public im_logo {} {
     if { "0" != [ad_get_user_id] } {
 	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
     } else {
-	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"logo.gif\" alt=\"logo\" border='0'></a>\n"
+	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"/logo.gif\" alt=\"logo\" border='0'></a>\n"
     }
 }
 
