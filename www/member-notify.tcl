@@ -13,6 +13,7 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+
 ad_page_contract {
     Sends an email with an attachment to a user
 
@@ -106,6 +107,7 @@ set subject [string trim $subject]
 # ---------------------------------------------------------------
 
 # Save an text attachment to a temporary file
+
 if {"" != $attachment} {
     set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
     set tmp_path [ad_parameter -package_id $package_id "tmp_path"]
@@ -125,7 +127,6 @@ if {"" != $attachment} {
     }
 }
 
-
 # Import the file into the content repository.
 # This is necessary for sending it out via Email
 set attachment_ci_id ""
@@ -143,17 +144,18 @@ if {"" != $attachment_filename && "" != $user_id_from_search} {
 		name = :attachment_filename
     " -default ""]
 
-    if {"" == $attachment_ci_id} {
-	set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
-	set attachment_ci_id [cr_import_content \
+    if { "" != $attachment_ci_id } {
+	if {[catch { db_dml delete_cr_item "select content_item__del($attachment_ci_id)" } errmsg ]} {}
+    }
+
+    set attachment_ci_id [cr_import_content \
 				  -title $attachment_filename \
 				  $parent_id \
 				  $tmp_file \
 				  [file size $tmp_file] \
 				  $attachment_mime_type \
 				  $attachment_filename \
-        ]
-    }
+    ]
 
     file delete $tmp_file
 }
