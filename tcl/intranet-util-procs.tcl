@@ -33,15 +33,15 @@ ad_proc -public multirow_sort_tree {
     number. 
 
     arguments:
-    multirow_name : the name of the multirow
-    id_name       : name of the id column
-    parent_name   : name of the parent_id column
-    order_by      : name of the field to sort children of the same parent 
-                    by
-    integer       : order_by is sorted by integer sort (boolean)
-    nosort        : disable the final sorting of the multirow (boolean)
-                    the information to do the sort is in tree_order and 
-                    tree_level
+    @param	multirow_name	the name of the multirow
+    @param	id_name      	name of the id column
+    @param	parent_name  	name of the parent_id column
+    @param	order_by     	name of the field to sort children of the same parent 
+    		                by<ul>
+    				<li>integer	order_by is sorted by integer sort (boolean)
+    				<li>nosort	disable the final sorting of the multirow (boolean)
+						the information to do the sort is in tree_order and tree_level
+    				</ul>
 } {
     if {$integer_p} {
 	set sortopt "-integer"
@@ -49,6 +49,7 @@ ad_proc -public multirow_sort_tree {
 	set sortopt ""
     }
 
+    # Store multirow information into hash arrays
     array set id_to_row {}
     array set children {}
     array set order {}
@@ -59,9 +60,7 @@ ad_proc -public multirow_sort_tree {
 
 	eval set parent_id $$parent_name
 	eval set tmp $$order_by
-	if { $tmp=="" } {
-	    set tmp 0
-	}
+	if { $tmp=="" } { set tmp 0 }
 	set order($id) $tmp
 	lappend children($parent_id) $id
 
