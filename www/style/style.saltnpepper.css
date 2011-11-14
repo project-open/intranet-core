@@ -1475,6 +1475,10 @@ span.list-label {
 
 /* XOWIKI */
 
+#Contents {
+	margin-left: -13px;
+}
+
 div.xowiki-content, div.xowiki-content p, .graphicTable td, div.xowiki-content ul li
  {
         font-family:Arial,Helvetica,sans-serif;
@@ -1534,7 +1538,7 @@ div.xowiki-content h4 {
 }
 
 div.xowiki-content ul.mktree, div.xowiki-content ul.mktree ul, div.xowiki-content ul.mktree li {
-	padding-left: 0px;
+	padding-left: 5px;
         font-size:11px;
 }
 
