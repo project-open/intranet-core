@@ -1479,7 +1479,11 @@ span.list-label {
 	margin-left: -13px;
 }
 
-div.xowiki-content, div.xowiki-content p, .graphicTable td, div.xowiki-content ul li
+div.xowiki-content, 
+div.xowiki-content p, 
+.graphicTable td, 
+div.xowiki-content ul li,
+div.xowiki-content td
  {
         font-family:Arial,Helvetica,sans-serif;
         color:#333333;
