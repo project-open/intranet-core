@@ -1537,11 +1537,12 @@ div.xowiki-content h4 {
     margin: 0;
 }
 
-div.xowiki-content ul.mktree, div.xowiki-content ul.mktree ul, div.xowiki-content ul.mktree li {
-	padding-left: 5px;
+div.xowiki-content ul.mktree, 
+div.xowiki-content ul.mktree ul, 
+div.xowiki-content ul.mktree li {
+	padding-left: 3px;
         font-size:11px;
 }
-
 
 div.xowiki-content ul.mktree li.liClosed .bullet,
 div.xowiki-content ul.mktree li.liOpen .bullet
