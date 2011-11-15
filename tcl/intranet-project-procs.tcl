@@ -2271,7 +2271,7 @@ ad_proc im_project_nuke {
 
     # Write Audit Trail
     ns_log Notice "im_project_nuke: before im_project_audit"
-    im_project_audit -user_id $current_user_id -project_id $project_id -action nuke
+    im_project_audit -user_id $current_user_id -project_id $project_id -action before_nuke
 
     # ---------------------------------------------------------------
     # Delete

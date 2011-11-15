@@ -27,21 +27,21 @@ ad_page_contract {
 
 set page_title [_ intranet-core.Done]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
-
 set current_user_id [ad_maybe_redirect_for_registration]
-im_project_permissions $current_user_id $project_id view read write admin
 
-if {!$admin} {
-    ad_return_complaint 1 "You need to have administration rights for this project."
-    return
+foreach pid $project_id {
+    im_project_permissions $current_user_id $pid view read write admin
+    if {!$admin} {
+	ad_return_complaint 1 "You need to have administration rights for this project."
+	ad_script_abort
+    }
+
+    im_project_nuke $pid
 }
-
-
 # ---------------------------------------------------------------
-# Delete
+# 
 # ---------------------------------------------------------------
 
-im_project_nuke $project_id
 
 set return_to_admin_link "<a href=\"/intranet/projects/\">[_ intranet-core.lt_return_to_user_admini]</a>" 
 
