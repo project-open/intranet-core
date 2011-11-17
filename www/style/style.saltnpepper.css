@@ -1701,3 +1701,14 @@ th.list-narrow {
 	padding: 5px;
 }
 
+.cal-table-caption {
+    background: none repeat scroll 0 0 #FFFFFF;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0.5em;
+}
+
+#cal-table-day th, #cal-table-week th {
+    background-color: #FFFFFF;
+	font-size: 0.6em;
+}
