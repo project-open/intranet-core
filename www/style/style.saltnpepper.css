@@ -1695,3 +1695,9 @@ div.xowiki-content hr {
     width:16px;
     height:16px;
 }
+
+
+th.list-narrow {
+	padding: 5px;
+}
+
