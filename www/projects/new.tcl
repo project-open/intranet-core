@@ -324,7 +324,8 @@ if {[info exists project_id] } {
 
 template::element::create $form_id start \
     -datatype "date" widget "date" \
-    -label "[_ intranet-core.Start_Date]"
+    -label "[_ intranet-core.Start_Date]" \
+    -format "DD Month YYYY"
 
 template::element::create $form_id end \
     -datatype "date" widget "date" \
