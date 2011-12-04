@@ -887,13 +887,13 @@ a   span  {float:none;}
 .fullwidth-list .component table tr.rowodd,
 .fullwidth-list .component table tr.roweven {
 	height: 22px;
-	border-top: 1px solid #FFFFFF;
-	border-bottom: 1px solid #FFFFFF;
+	border-top: 1px solid #EEEEEE;
+	border-bottom: 1px solid #EEEEEE;
 }
 
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 .fullwidth-list .component table.month_header td {
