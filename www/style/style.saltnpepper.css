@@ -1203,7 +1203,7 @@ table.list td {
         height: 200px;
         top: 200px;
         left:-37px;
-        background-image:url('intranet/images/navbar_saltnpepper/background.gif');
+        /* background-image:url('intranet/images/navbar_saltnpepper/background.gif'); */
         background-position:top left;
         background-repeat:repeat-y;	
 	/* STOP NEW IDEBAR */
