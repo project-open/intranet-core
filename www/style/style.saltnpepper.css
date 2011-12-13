@@ -1024,9 +1024,14 @@ a   span  {float:none;}
    margin:10px; */
 }
 
-.fullwidth-list table tr {
+.fullwidth-list .component_body table tr {
  	padding: 3px;
 	height:20px;
+}
+
+// patch for ExtJS Components
+.fullwidth-list .component_body .x-grid-header-row {
+	height:auto;
 }
 
 .fullwidth-list table td {
