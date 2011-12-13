@@ -355,7 +355,7 @@ namespace eval company {
 	set company_id [db_exec_plsql create_new_company {}]
 
 	# Record the action
-        im_audit -object_type "im_company" -object_id $company_id -action create
+        im_audit -object_type "im_company" -object_id $company_id -action after_create
 
 	return $company_id
     }

@@ -201,7 +201,7 @@ namespace eval office {
 	set office_id [db_exec_plsql create_new_office {}]
 
 	# Record the creation
-	im_audit -object_type "im_office" -object_id $office_id -action create
+	im_audit -object_type "im_office" -object_id $office_id -action after_create
 
 	return $office_id
     }

@@ -306,12 +306,13 @@ ad_proc -public im_component_page {
     "
 
     set html ""
-    if { [catch {
 	set icon_url [export_vars -quotehtml -base "/intranet/components/activate-component" {plugin_id return_url}]
 	set icon "<a class=\"icon_maximize\" href=\"$icon_url\"><span class=\"icon_maximize\">maximize</span></a>"
 	
 	# "uplevel" evaluates the 2nd argument!!
 	set html "[im_box_header $plugin_name $icon][uplevel 1 $component_tcl][im_box_footer]"
+
+    if { [catch {
     } err_msg] } {
 	ad_return_complaint 1 "<li>
 	[_ intranet-core.lt_Error_evaluating_comp]:<br>
