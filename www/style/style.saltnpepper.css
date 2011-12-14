@@ -393,6 +393,9 @@ background-position: 0px -10px;
 	background-color: #2E2E2E;
         -moz-box-sizing: content-box;
 	box-sizing: content-box;
+	color: #000000;
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 8pt;
 }
 
 #navbar_main {
@@ -1027,11 +1030,6 @@ a   span  {float:none;}
 .fullwidth-list .component_body table tr {
  	padding: 3px;
 	height:20px;
-}
-
-// patch for ExtJS Components
-.fullwidth-list .component_body .x-grid-header-row {
-	height:auto;
 }
 
 .fullwidth-list table td {
@@ -1716,4 +1714,8 @@ th.list-narrow {
 #cal-table-day th, #cal-table-week th {
     background-color: #FFFFFF;
 	font-size: 0.6em;
+}
+
+.fullwidth-list .component_body table.x-grid-table tr {
+    height: 5px;
 }
