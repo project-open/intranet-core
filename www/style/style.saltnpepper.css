@@ -1716,6 +1716,7 @@ th.list-narrow {
 	font-size: 0.6em;
 }
 
+
 .fullwidth-list .component_body table.x-grid-table tr {
-    height: 5px;
+    height: auto;
 }
