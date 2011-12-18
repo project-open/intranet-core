@@ -1659,6 +1659,8 @@ div.xowiki-content hr {
     background: #ff6;
 }
 
+/* Buttons ]po[ 4.0 */
+
 .form-button40 a, .form-button40, .form-button40 button  {
     margin:0 7px 0 0;
     background-color:#d8dada;
@@ -1699,10 +1701,13 @@ div.xowiki-content hr {
     height:16px;
 }
 
+/* ??? */
 
 th.list-narrow {
 	padding: 5px;
 }
+
+/* calendar - weekends */
 
 .cal-table-caption {
     background: none repeat scroll 0 0 #FFFFFF;
@@ -1716,7 +1721,45 @@ th.list-narrow {
 	font-size: 0.6em;
 }
 
-
+/* patch ExtJS grid */
 .fullwidth-list .component_body table.x-grid-table tr {
     height: auto;
+}
+
+
+/* notification bar */ 
+
+.error-notice {
+    background-color: #f2baba;
+    color: #333333;
+    border: 2px #b81616;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-right: 0px;
+    position:absolute;
+    left:0;
+    top:0px;
+    z-index: 9999; 
+    width: 100%; 
+    height: 25px;
+    text-align: center;
+    vertical-align: middle;
+    display:inline-block;
+    line-height:25px;
+}
+ 
+.success-notice {
+    background-color: #baf2bb;
+    color: #049900;
+    border: 2px #15a612;
+    font-weight: normal;
+    font-size: 0.95em;
+    margin-left: 0px;
+    margin-right: 0px;
+    position:absolute;
+    left:0;
+    top:0px;
+    z-index: 9999;
+    width: 100%;  
+    height: 25px;
 }
