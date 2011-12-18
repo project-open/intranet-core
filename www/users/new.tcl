@@ -44,6 +44,9 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
+# ToDo:  
+# set return_url [remove_var_from_url "feedback_message_key"] 
+
 # "Profile" changes its value, possibly because of strange
 # ad_form sideeffects
 if {[exists_and_not_null profile]} {
@@ -62,6 +65,13 @@ set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_use
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
+set user_feedback ""
+
+if { [info exists profile] } {
+    if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] >1 } {
+	set feedback_message_key "intranet-core.VerifyProfile" 
+    }
+}
 
 # Should we show the "Username" field of the user?
 set show_username_p [parameter::get_from_package_key -package_key intranet-core -parameter EnableUsersUsernameP -default 0]
@@ -541,7 +551,6 @@ ad_form -extend -name register -on_request {
 	    }
 	}
 
-
 	# Add a im_employees record to the user since the 3.0 PostgreSQL
 	# port, because we have dropped the outer join with it...
 	if {[im_table_exists im_employees]} {
@@ -669,9 +678,10 @@ ad_form -extend -name register -on_request {
 
     # Fallback:
     if { [exists_and_not_null return_url] } {
-	ad_returnredirect $return_url
+	ad_returnredirect "$return_url&[export_url_vars feedback_message_key]"
     } else {
-	ad_returnredirect "/intranet/users/"
+	ad_returnredirect "/intranet/users/?[export_url_vars feedback_message_key]"
     }
 }
+
 
