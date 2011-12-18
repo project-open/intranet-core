@@ -1548,18 +1548,15 @@ ad_proc -public im_stylesheet {} {
     set css "/resources/acs-subsite/site-master.css"
 #    if {$openacs54_p} { template::head::add_css -href $css -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"$css\" media=screen>\n" }
 
-
     if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" -order "5" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/mktree.css\" media=screen>\n" }
 
-    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.3.pack.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.3.pack.js\"></script>\n" }
+    if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery.min.js" -order "1" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery.min.js\"></script>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/showhide.js" -order "5" } else { append html "<script type=text/javascript src=\"/intranet/js/showhide.js\"></script>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" -order "4" } else { append html "<script type=text/javascript src=\"/resources/diagram/diagram/diagram.js\"></script>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/resources/acs-subsite/core.js" -order "6" } else { append html "<script type=text/javascript src=\"/resources/acs-subsite/core.js\"></script>\n" }
-
-#   if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/jquery-1.2.1.min.js" } else { append html "<script type=text/javascript src=\"/intranet/js/jquery-1.2.1.min.js\"></script>\n" }
 
     if {$openacs54_p} { template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" -order "3" } else { append html "<script type=text/javascript src=\"/intranet/js/rounded_corners.inc.js\"></script>\n" }
 
