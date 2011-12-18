@@ -55,9 +55,31 @@ $(function(){
 		return false; });
 });
 
-
 /*   END: NEW SIDEBAR */
 
+
+/*  START: USER FEEDBACK BAR  */
+
+function removeParameter(url, parameter)
+{
+  var urlparts= url.split('?');
+
+  if (urlparts.length>=2)
+  {
+      var urlBase=urlparts.shift(); //get first part, and remove from array
+      var queryString=urlparts.join("?"); //join it back up
+
+      var prefix = encodeURIComponent(parameter)+'=';
+      var pars = queryString.split(/[&;]/g);
+      for (var i= pars.length; i-->0;)               //reverse iteration as may be destructive
+          if (pars[i].lastIndexOf(prefix, 0)!==-1)   //idiom for string.startsWith
+              pars.splice(i, 1);
+      url = urlBase+'?'+pars.join('&');
+  }
+  return url;
+}
+
+/* END: START USER FEEDBACK BAR  */
 
 
 // check this http://www.nabble.com/%22$(document).ready(function()-%7B%22-giving-error-%22$-is-not-a-function%22----what-am-I-doing-wrong--td17139297s27240.html
@@ -128,6 +150,25 @@ jQuery().ready(function(){
 			document.getElementById('slave_content').style.visibility='visible';
 		}
 	}
+
+	// clean return_url, remove attribute(s)! feedback_message_key
+        try {
+                var elements = document.getElementsByTagName('input');
+                for (var i=0; i<elements.length; i++) {
+                        if ( elements[i].attributes.getNamedItem("type") ) {
+                            if ( elements[i].attributes.getNamedItem("type").value == 'hidden' ) {
+                                if ( elements[i].attributes.getNamedItem("name").value == 'return_url' ) {
+                                        // console.log(elements[i].attributes.getNamedItem("value").value);
+                                        var decodedUri = decodeURIComponent(elements[i].attributes.getNamedItem("value").value);
+                                        elements[i].value = removeParameter(decodedUri,'feedback_message_key');
+                                        // console.log(elements[i].attributes.getNamedItem("value").value);
+                                };
+                            };
+                        };
+                };
+        } catch (err) {
+                // alert('error cleaning return_url:'+err)
+        };
 });
 
 

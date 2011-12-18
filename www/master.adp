@@ -1,4 +1,16 @@
 <%= [im_header $title $header_stuff] %>
+<div id="ajax-status-message" style="display: none;"> </div>
+<if @user_feedback_txt@ ne "">
+        <script type="text/javascript"><!--
+	<if @user_feedback_link@ ne "">
+		  $('#ajax-status-message').html('<a href=\'@user_feedback_link@\'>@user_feedback_txt@</a>').removeClass('success-notice').addClass('error-notice').show().delay(8000).fadeOut();
+	</if>
+	<else>
+		  $('#ajax-status-message').html('@user_feedback_txt@').removeClass('success-notice').addClass('error-notice').show().delay(8000).fadeOut();
+	</else>
+	// --></script>
+</if>
+
 <%= [im_navbar -show_context_help_p $show_context_help_p $main_navbar_label] %>
 <%= $sub_navbar %>
 
@@ -38,14 +50,3 @@
 
 </else>
 <%= [im_footer] %>
-
-
-
-
-
-
-
-
-
-
-
