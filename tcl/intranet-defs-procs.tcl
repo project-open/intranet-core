@@ -131,6 +131,16 @@ ad_proc -public im_date_epoch_to_ansi {
     return $ansi
 }
 
+ad_proc -public im_date_epoch_to_julian { 
+    { -throw_complaint_p 1 }
+    epoch
+} {
+    Returns ansi date for epoch
+} {
+    set julian [db_string epoch_to_julian "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'J')"]
+    return $julian
+}
+
 ad_proc -public im_date_epoch_to_time { 
     { -throw_complaint_p 1 }
     epoch
