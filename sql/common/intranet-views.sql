@@ -84,7 +84,6 @@
 -- 196	im_cost_centers
 -- 197	im_investments
 
-
 -- 930 	im_timesheet_task_list_report
 
 --------------------------------------------------------
@@ -96,6 +95,8 @@
 -- 250-259		Translation Quality
 -- 260-269		Workflow
 -- 270-279		intranet-helpdesk Tickets
+-- 300-309		intranet-portfolio-management
+-- 310-899		reserved
 -- 900-909		Intranet Materials Reserved
 -- 900-909		im_material_list
 -- 910-919		Intranet Materials Reserved
