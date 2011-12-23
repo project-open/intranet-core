@@ -613,7 +613,8 @@ ad_proc -public im_name_from_user_id {user_id} {
 
 ad_proc -public im_name_from_user_id_helper {user_id} {
     set user_name "&lt;unknown&gt;"
-    catch { set user_name [db_string uname "select im_name_from_user_id(:user_id)"] } err
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+    catch { set user_name [db_string uname "select im_name_from_user_id(:user_id, $name_order)"] } err
     return $user_name
 }
 
