@@ -83,6 +83,7 @@ set letter [string toupper $letter]
 set date_format "YYYY-MM-DD"
 set debug_html ""
 set email ""
+set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
 # ---------------------------------------------------------------
 # 
@@ -487,7 +488,7 @@ select
 	c.note, c.current_information,
         to_char(u.last_visit, 'YYYY-MM-DD HH:SS') as last_visit_formatted,
 	to_char(u.creation_date,:date_format) as creation_date,
-	im_name_from_user_id(u.user_id) as name
+	im_name_from_user_id(u.user_id, $name_order) as name
 	$extra_select
 from 
 	persons p,
