@@ -422,6 +422,9 @@ ad_proc -public im_group_member_component {
     are welcome...
 
 } {
+    # Settings ans Defaults
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+
     # Check if there is a percentage column from intranet-ganttproject
     set show_percentage_p [im_column_exists im_biz_object_members percentage]
     set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
@@ -460,7 +463,7 @@ ad_proc -public im_group_member_component {
 		rels.object_id_two as user_id, 
 		rels.object_id_two as party_id, 
 		im_email_from_user_id(rels.object_id_two) as email,
-		acs_object__name(rels.object_id_two) as name,
+		im_name_from_user_id(rels.object_id_two, $name_order) as name,
 		im_category_from_id(c.category_id) as member_role,
 		c.category_gif as role_gif,
 		c.category_description as role_description
@@ -484,7 +487,8 @@ ad_proc -public im_group_member_component {
 		)
 		$limit_to_group_id_sql 
 		$dont_allow_sql
-	order by lower(acs_object__name(rels.object_id_two))
+	order by 
+		name	
     "
 
     # ------------------ Format the table header ------------------------
