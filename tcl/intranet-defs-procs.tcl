@@ -121,6 +121,17 @@ ad_proc -public im_date_julian_to_epoch {
     return [expr 86400.0 * ($julian - 2440588.0) - $tz_offset_seconds]
 }
 
+ad_proc -public im_date_ansi_to_epoch { 
+    { -throw_complaint_p 1 }
+    ansi
+} {
+    Returns seconds after 1/1/1970 00:00 GMT
+} {
+    regexp {(....)-(..)-(..)} $ansi match year month day
+    set julian [dt_ansi_to_julian $year $month $day]
+    return [im_date_julian_to_epoch -throw_complaint_p $throw_complaint_p $julian]
+}
+
 ad_proc -public im_date_epoch_to_ansi { 
     { -throw_complaint_p 1 }
     epoch
