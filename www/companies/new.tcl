@@ -381,7 +381,7 @@ set update_sql "
 		company_id = :company_id
 "
 db_dml update_company $update_sql
-im_audit -object_type "im_office" -object_id $company_id -action after_update
+im_audit -object_type "im_company" -object_id $company_id -action after_update
 
 
 # -----------------------------------------------------------------
