@@ -4,10 +4,12 @@ var height = 600;
 var width = 243;
 var slideDuration = 1;
 var opacityDuration = 1500;
+var rv = 0;
 isExtended = 1;
 
 function extendContract(){
-        var node_to_move=document.getElementById("sidebar");
+	if (document.getElementById("sideBarTab") != null) {
+	        var node_to_move=document.getElementById("sidebar");
 		if(isExtended == 0){
 			if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
 			sideBarSlide(0, height, 0, width);
@@ -23,6 +25,7 @@ function extendContract(){
 			poSetCookie('isExtendedCookie',1,90);
 		}
 		else {
+
 			document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
 			sideBarSlide(height, 135, width, 0);
 			sideBarOpacity(1, 0);
@@ -35,6 +38,7 @@ function extendContract(){
 			poSetCookie('isExtendedCookie',0,90);
 		}
 		// document.getElementById('fullwidth-list').style.visibility='visible';
+	}
 }
 
 function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
@@ -126,6 +130,16 @@ jQuery().ready(function(){
 		}
 	}
 
+	// Avoid larger screens in IE 
+	if (navigator.appName == 'Microsoft Internet Explorer') {
+	    var ua = navigator.userAgent;
+	    var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+	    if (re.exec(ua) != null)
+	    rv = parseFloat( RegExp.$1 );
+	}
+	if ( rv!=0 && document.getElementById("fullwidth-list") != null ) {
+		document.getElementById('fullwidth-list').style.width='100%';
+	}
 
     jQuery(".component_icons").css("opacity","0.1");
     jQuery(".component_header").hover(function(){
