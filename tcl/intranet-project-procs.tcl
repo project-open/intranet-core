@@ -234,7 +234,7 @@ ad_proc -public im_project_permissions {
     ns_log Notice "im_project_permissions: view_projects_history"
     if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
 	# Except their own projects...
-	if {!$user_is_company_member_p} {
+	if {!$user_is_company_member_p && !$user_is_group_member_p} {
 	    set read 0
 	}
     }
