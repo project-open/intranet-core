@@ -162,18 +162,21 @@ begin
 end;'
 LANGUAGE 'plpgsql';
 
+
 CREATE OR REPLACE FUNCTION last_day(date)
-RETURNS date AS
-'
+RETURNS date AS '
 DECLARE 
 	p_date_in alias for $1;		-- date_id
 
 	v_date_out	date;
 begin
-	select to_date(date_trunc(''month'',add_months(p_date_in,1)),''YYYY-MM-DD'') - 1 into v_date_out;
+	select to_date(date_trunc(''month'',add_months(p_date_in,1))::text, ''YYYY-MM-DD''::text) - 1 into v_date_out;
 	return v_date_out;
-end;'
-LANGUAGE 'plpgsql';
+end;' LANGUAGE 'plpgsql';
+
+-- select last_day(to_date('2012-01-20', 'yyyy-mm-dd'));
+
+
 
 CREATE OR REPLACE FUNCTION trunc(date,varchar)
 returns date as '
