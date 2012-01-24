@@ -19,6 +19,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { return_url "" }
+    { limit 1000 }
 }
 
 # ------------------------------------------------------
@@ -117,6 +118,7 @@ db_multirow -extend {project_url parent_project_url} projects get_projects "
 		) subp on (p.project_id = subp.project_id)
 	where	1=1
 	order by p.project_id DESC
+	LIMIT :limit
 " {
     set project_url [export_vars -base "/intranet/projects/view" {project_id return_url}]
     set parent_project_url [export_vars -base "/intranet/projects/view" {{project_id $parent_id} return_url}]
