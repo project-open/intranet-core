@@ -681,13 +681,18 @@ if {[form is_submission $form_id]} {
 	incr n_error
 	template::element::set_error $form_id project_name "[_ intranet-core.lt_The_specified_name_pr]"
     }
+
+    # Make sure company_project_nr has a max length 50
+    if { [string length $company_project_nr] > 50} {
+        incr n_error
+        template::element::set_error $form_id company_project_nr "[_ intranet-core.Max50Chars]"
+    }
 		
     if {$n_error >0} {
 	return
     }
  
 }
-
 
 if {[form is_valid $form_id]} {
 
