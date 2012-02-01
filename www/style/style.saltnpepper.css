@@ -1781,3 +1781,9 @@ td.list-table, td.list-table-narrow, .list-table td {
     padding: 8px 16px;
 }
 
+.backward_smaller_than a, .forward_greater_than a {
+    font-size: 2em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666666;
+}
