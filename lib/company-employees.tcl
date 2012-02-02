@@ -21,4 +21,5 @@ if {!$user_is_employee_p} { set company_members "" }
 set our_employees_str [lang::message::lookup "" intranet-core.Our_employees_related "Our Employees (managing the company)"]
 
 # ad_return_complaint 1 $company_members
-set company_members_html [im_table_with_title $our_employees_str $company_members]
+# set company_members_html [im_table_with_title $our_employees_str $company_members]
+set company_members_html $company_members
