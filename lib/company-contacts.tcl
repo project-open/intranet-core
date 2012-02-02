@@ -20,8 +20,5 @@ set company_clients [im_group_member_component $company_id $user_id $admin $retu
 set companys_employees_str [lang::message::lookup "" intranet-core.Companys_Contacts "Company's Contacts"]
 
 # ad_return_complaint 1 $company_members_html
-set company_clients_html [im_table_with_title $companys_employees_str $company_clients]
-
-
-
-
+# set company_clients_html [im_table_with_title $companys_employees_str $company_clients]
+set company_clients_html $company_clients
