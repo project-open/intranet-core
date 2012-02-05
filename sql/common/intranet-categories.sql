@@ -151,7 +151,7 @@
 -- 74000-74999  Intranet Idea Management (1000)
 -- 75000-75999  Intranet Risk Management (1000)
 -- 76000-76999  Intranet Sencha Ticket Tracker (1000)
--- 77000-77999  Intranet <to be defined> (1000)
+-- 77000-77999  Intranet Cost Calculation Transaction Type (1000)
 -- 78000-78999  Intranet <to be defined> (1000)
 -- 79000-79999  Intranet <to be defined> (1000)
 -- 80000-89999  reserved (10000)
