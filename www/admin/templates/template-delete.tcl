@@ -1,7 +1,7 @@
 ad_page_contract {
 
 } {
-    category_id
+    category_id:integer,multiple
     return_url
 }
 
@@ -16,27 +16,28 @@ if {!$user_is_admin_p} {
     return
 }
 
-
-if {[catch {
-    db_dml del_template "delete from im_categories where category_id = :category_id"
-} err_msg]} {
-    ad_return_complaint 1 "
-	<b>Error deleting template</b>:<br>
-	You get this error probably because one of your financial documents
-	still uses this template.<br>
-	You can:
-	<ul>
-	<li>Use 'Disable Template' instead of 'Delete Template' or
-	<li>Edit your existing financial documents (invoices, quotes,...)
-	    and change the template in all affected invoices.
-	</ul>
-	<br>&nbsp;
-	<br>&nbsp;
-	<br>&nbsp;
-	<br>&nbsp;
-	Here is the database error message for references:<br>&nbsp;<br>
-	<pre>$err_msg</pre>
-    "
+foreach cid $category_id {
+    if {[catch {
+	db_dml del_template "delete from im_categories where category_id = :cid"
+    } err_msg]} {
+	ad_return_complaint 1 "
+		<b>Error deleting template</b>:<br>
+		You get this error probably because one of your financial documents
+		still uses this template.<br>
+		You can:
+		<ul>
+		<li>Use 'Disable Template' instead of 'Delete Template' or
+		<li>Edit your existing financial documents (invoices, quotes,...)
+		    and change the template in all affected invoices.
+		</ul>
+		<br>&nbsp;
+		<br>&nbsp;
+		<br>&nbsp;
+		<br>&nbsp;
+		Here is the database error message for references:<br>&nbsp;<br>
+		<pre>$err_msg</pre>
+        "
+    }
 }
 
 # Remove all permission related entries in the system cache

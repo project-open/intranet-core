@@ -63,6 +63,7 @@ template::list::create \
 	}
     } \
     -bulk_actions { 
+	"Enable Template" "template-enable" "Enable Template" 
 	"Disable Template" "template-disable" "Disable Template" 
 	"Delete Template" "template-delete" "Delete Template" 
     } \

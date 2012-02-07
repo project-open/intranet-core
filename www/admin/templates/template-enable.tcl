@@ -17,7 +17,7 @@ if {!$user_is_admin_p} {
 }
 
 foreach cid $category_id {
-    db_dml disable_template "update im_categories set enabled_p = 'f' where category_id = :cid"
+    db_dml enable_template "update im_categories set enabled_p = 't' where category_id = :cid"
 }
 
 # Remove all permission related entries in the system cache

@@ -29,9 +29,12 @@ append path_to_file "/"  $template_name
 
 
 if {[catch {
-     ns_returnfile 200 "application" $path_to_file
+    # set outputheaders [ns_conn outputheaders]
+    # ns_set cput $outputheaders "Content-Disposition" "attachment; filename=${template_name}"
+    ns_returnfile 200 "application" $path_to_file
 } err_msg]} {
     ad_return_complaint 1 "
        <b>Error receiving template, please ask your System Administrator check category 'Intranet Cost Template'</b>:<br>
+       <pre>$err_msg</pre>
     "
 }
