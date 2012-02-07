@@ -10,11 +10,8 @@
 
 <table width="100%">
 <tr valign=top>
-<td width="40%">
+<td>
 	<h1>@page_title@</h1>
-</td>
-<td width="60%">
-
 	<%= [lang::message::lookup "" intranet-core.Categories_List_Help "
 		<p>
 		This page allows you to configure 'categories'
@@ -26,8 +23,10 @@
 		</p><p>
 		Instead, please use 'Category translation' to change the
 		way how categories appear in the GUI.
+		 </p><p>
+		In some rare cases changes in category types might require <a href='/acs-admin/cache/'>flushing</a> the cache manually or restarting the web server.  
         "] %>
-
+<br><br>
 	<ul>
 	<li><a href='http://www.project-open.org/documentation/page_intranet_admin_categories_index'>Help about this page</a>
 	<li><a href='http://www.project-open.org/documentation/list_categories'>Help about the meaning of categories</a>
@@ -36,7 +35,7 @@
 </if>
 	</ul>
 
-
+<br><br>
 </td>
 </tr>
 </table>
