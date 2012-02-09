@@ -266,23 +266,17 @@ for each row
 execute procedure im_projects_update_tr ();
 
 
+-- Create unique indices instead of constraints
+-- because we need the coalesce(parent_id,0).
+create unique index im_projects_name_un on im_projects (project_name, company_id, coalesce(parent_id,0));
+create unique index im_projects_nr_un on im_projects (project_nr, company_id, coalesce(parent_id,0));
+create unique index im_projects_path_un on im_projects (project_path, company_id, coalesce(parent_id,0));
+
+
 -- Optional Indices for larger systems:
 -- create index im_project_status_id_idx on im_projects(project_status_id);
 -- create index im_project_type_id_idx on im_projects(project_type_id);
 -- create index im_project_project_nr_idx on im_projects(project_nr);
-
--- Dont allow the same name for the same company+level
-alter table im_projects add
-	constraint im_projects_name_un 
-	unique(project_name, company_id, parent_id);
-
-
--- Dont allow the same project_nr  for the same company+level
-alter table im_projects add
-	constraint im_projects_nr_un
-	unique(project_nr, company_id, parent_id);
-
-
 
 
 -- ------------------------------------------------------------
