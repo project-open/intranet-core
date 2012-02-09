@@ -653,7 +653,8 @@ if {[im_permission $current_user_id "add_projects"]} {
 }
 
 # Append user-defined menus
-append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" {}]
+set bind_vars [list return_url $return_url]
+append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" $bind_vars]
 append admin_html "</ul>"
 
 
