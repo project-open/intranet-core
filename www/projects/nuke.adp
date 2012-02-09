@@ -29,9 +29,3 @@ the system anymore, but associated information will kept
 intact."] %>
 </p><br>
 
-<center>
-<form method=get action=nuke-2>
-<input type=hidden name=project_id value="@project_id@">
-<input type=submit value="Yes I am sure that I want to delete this @object_type@">
-</form>
-</center>
