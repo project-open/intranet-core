@@ -38,7 +38,9 @@ switch $extension {
     ".sql" {
 	switch $platform {
 	    windows { catch { exec psql -U postgres --dbname $server_name --file $filename } err }
-	    default { catch { exec psql --dbname $server_name --file $filename } err }
+	    default { catch { 
+		exec psql --dbname $server_name --file $filename 
+	    } err }
 	}
     }
     ".bz2" {

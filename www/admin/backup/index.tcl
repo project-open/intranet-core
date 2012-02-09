@@ -78,8 +78,9 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 }
 
 set actions [list \
-	"New backup" [export_vars -base pg_dump] "create new postgres dump" \
-	"Upload dump" [export_vars -base upload-pgdump] "upload an existing dump" \
+	"New backup" [export_vars -base pg_dump] "Create new postgres dump" \
+	"Upload dump" [export_vars -base upload-pgdump] "Upload an existing dump" \
+	"Reinstall TSearch2 Search Engine" [export_vars -base reinstall-tsearch2] "reinstall the TSearch2 Search engine" \
 ]
 
 set bulk_actions [list \
