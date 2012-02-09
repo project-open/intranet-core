@@ -77,6 +77,16 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
     }
 }
 
+set actions [list \
+	"New backup" [export_vars -base pg_dump] "create new postgres dump" \
+	"Upload dump" [export_vars -base upload-pgdump] "upload an existing dump" \
+]
+
+set bulk_actions [list \
+	"Delete" "delete-pgdump" "Remove checked dumps" \
+	"Bzip" "bzip-pgdump" "Compress the dump bzip2" \
+]
+
 
 template::list::create \
     -name backup_files \
@@ -100,15 +110,8 @@ template::list::create \
 	    display_template {<a href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">restore</a>}
 	}
     } \
-    -bulk_actions {
-	"Delete" "delete-pgdump" "Remove checked backups"
-    } \
+    -bulk_actions $bulk_actions \
     -bulk_action_method post \
     -bulk_action_export_vars { return_url } \
-    -actions [list "New backup" [export_vars -base pg_dump] "create new postgres dump"] \
-
-
-
-
-
+    -actions $actions
 
