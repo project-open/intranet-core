@@ -85,6 +85,7 @@ set actions [list \
 set bulk_actions [list \
 	"Delete" "delete-pgdump" "Remove checked dumps" \
 	"Bzip" "bzip-pgdump" "Compress the dump bzip2" \
+	"Un-Bzip" "unbzip-pgdump" "Uncompress the dump" \
 ]
 
 
