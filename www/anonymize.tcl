@@ -132,79 +132,64 @@ ad_proc pick_char { char_set } {
 # ---------------------- im_projects -------------------------------
 
 set im_projects_sql "
-select
-	project_id,
-	project_name,
-	project_path,
-	project_nr,
-	description,
-	note,
-	company_project_nr,
-	final_company
-from
-	im_projects"
+	select	p.*
+	from	im_projects p
+"
 
 db_foreach im_projects_select $im_projects_sql {
 
-    set im_projects_update_sql "
+    db_dml im_projects_update "
 	update im_projects set
-	project_name = '[anonymize_name $project_name]',
-	project_nr = '[anonymize_name $project_nr]',
-	project_path = '[anonymize_name $project_path]',
-        description='[anonymize_name $description]',
-        note='[anonymize_name $note]',
-        company_project_nr='[anonymize_name $company_project_nr]',
-        final_company='[anonymize_name $final_company]'
-	where project_id=:project_id"
-
-    db_dml im_projects_update $im_projects_update_sql
+		project_name = '[anonymize_name $project_name]',
+		project_nr = '[anonymize_name $project_nr]',
+		project_path = '[anonymize_name $project_path]',
+		description = '[anonymize_name $description]',
+		note = '[anonymize_name $note]',
+		company_project_nr = '[anonymize_name $company_project_nr]',
+		final_company = '[anonymize_name $final_company]'
+	where 
+		project_id = :project_id
+    "
 }
 
 
 # ---------------------- im_trans_tasks -------------------------------
 
 set im_trans_tasks_sql "
-select
-	task_id,
-	task_name,
-	description
-from
-	im_trans_tasks"
+	select	task_id,
+		task_name,
+		description
+	from	im_trans_tasks
+"
 
 db_foreach im_trans_tasks_select $im_trans_tasks_sql {
 
-    set im_trans_tasks_update_sql "
+    db_dml im_trans_tasks_update "
 	update im_trans_tasks set
-        task_name='[anonymize_name $task_name]',
-        description='[anonymize_name $description]'
-	where task_id=:task_id"
-
-    db_dml im_trans_tasks_update $im_trans_tasks_update_sql
+		task_name='[anonymize_name $task_name]',
+		description='[anonymize_name $description]'
+	where task_id=:task_id
+    "
 }
 
 # ---------------------- im_invoice_items -------------------------------
 
-
 set im_invoice_items_sql "
-select
-	item_id,
-	item_name,
-	price_per_unit,
-	description
-from
-	im_invoice_items"
+    	select	item_id,
+		item_name,
+		price_per_unit,
+		description
+	from	im_invoice_items
+"
 
 db_foreach im_invoice_items_select $im_invoice_items_sql {
-
     set new_price "0.[expr round(100*rand())]"
-    set im_invoice_items_update_sql "
+    db_dml im_invoice_items_update "
 	update im_invoice_items set
-        item_name='[anonymize_name $task_name]',
-        description='[anonymize_name $description]',
-        price_per_unit=:new_price
-	where item_id=:item_id"
-
-    db_dml im_invoice_items_update $im_invoice_items_update_sql
+		item_name = '[anonymize_name $item_name]',
+		price_per_unit = :new_price
+	where item_id = :item_id
+    "
 }
 
 
@@ -212,50 +197,39 @@ db_foreach im_invoice_items_select $im_invoice_items_sql {
 
 
 set im_trans_prices_sql "
-select
-	price_id
-from
-	im_trans_prices"
-
-db_foreach im_prices_select $im_prices_sql {
-
+    	select	price_id
+	from	im_trans_prices
+"
+db_foreach im_prices_select $im_trans_prices_sql {
     set new_price [expr round(100*rand()) / 100]
-    set im_trans_prices_update_sql "
+    db_dml im_trans_prices_update "
 	update im_trans_prices set
-        price=:new_price
-	where price_id=:price_id"
-
-    db_dml im_trans_prices_update $im_trans_prices_update_sql
+		price = :new_price
+	where price_id = :price_id
+    "
 }
 
 # ---------------------- im_companies -------------------------------
 
 
 set im_companies_sql "
-select
-	company_id,
-	company_name,
-	company_path,
-	referral_source,
-	site_concept,
-	vat_number,
-	note
-from
-	im_companies"
+	select	c.*
+	from	im_companies c
+"
 
 db_foreach im_companies_select $im_companies_sql {
 
-    set im_companies_update_sql "
+    db_dml im_companies_update "
 	update im_companies set
-        company_name='[anonymize_name $company_name]',
-        company_path='[anonymize_name $company_path]',
-        referral_source='[anonymize_name $referral_source]',
-        site_concept='[anonymize_name $site_concept]',
-        vat_number='[anonymize_name $vat_number]',
-        note='[anonymize_name $note]'
-	where company_id=:company_id"
-
-    db_dml im_companies_update $im_companies_update_sql
+		company_name='[anonymize_name $company_name]',
+		company_path='[anonymize_name $company_path]',
+		referral_source='[anonymize_name $referral_source]',
+		site_concept='[anonymize_name $site_concept]',
+		vat_number='[anonymize_name $vat_number]',
+		note='[anonymize_name $note]'
+	where 
+		company_id = :company_id
+    "
 }
 
 
@@ -263,105 +237,66 @@ db_foreach im_companies_select $im_companies_sql {
 
 
 set im_offices_sql "
-select
-	office_id,
-	office_name,
-	office_path,
-	phone,
-	fax,
-	address_line1,
-	address_line2,
-	address_city,
-	address_state,
-	address_postal_code,
-	landlord,
-	security,
-	note
-from
-	im_offices"
-
+	select	o.*
+	from	im_offices o
+"
 db_foreach im_offices_select $im_offices_sql {
 
     if {[string length $office_path] < 5} {
 	append office_path "[random_char][random_char][random_char][random_char]"
     }
 
-    set im_offices_update_sql "
+    db_dml im_offices_update "
 	update im_offices set
-	office_name='[anonymize_name $office_name]',
-	office_path='[anonymize_name $office_path]',
-	phone='[anonymize_name $phone]',
-	fax='[anonymize_name $fax]',
-	address_line1='[anonymize_name $address_line1]',
-	address_line2='[anonymize_name $address_line2]',
-	address_city='[anonymize_name $address_city]',
-	address_state='[anonymize_name $address_state]',
-	address_postal_code='[anonymize_name $address_postal_code]',
-	landlord='[anonymize_name $landlord]',
-	security='[anonymize_name $security]',
-	note='[anonymize_name $note]'
-    	where office_id=:office_id"
-
-    db_dml im_offices_update $im_offices_update_sql
+		office_name = '[anonymize_name $office_name]',
+		office_path = '[anonymize_name $office_path]',
+		phone = '[anonymize_name $phone]',
+		fax = '[anonymize_name $fax]',
+		address_line1 = '[anonymize_name $address_line1]',
+		address_line2 = '[anonymize_name $address_line2]',
+		address_city = '[anonymize_name $address_city]',
+		address_state = '[anonymize_name $address_state]',
+		address_postal_code = '[anonymize_name $address_postal_code]',
+		landlord = '[anonymize_name $landlord]',
+		security = '[anonymize_name $security]',
+		note = '[anonymize_name $note]'
+    	where
+		office_id = :office_id
+    "
 }
-
 
 # ---------------------- users_contact -------------------------------
 
-
 set users_contact_sql "
-select
-	user_id,
-	home_phone,
-	work_phone,
-	cell_phone,
-	pager,
-	fax,
-	aim_screen_name,
-	icq_number,
-	m_address,
-	ha_line1,
-	ha_line2,
-	ha_city,
-	ha_state,
-	ha_postal_code,
-	wa_line1,
-	wa_line2,
-	wa_city,
-	wa_state,
-	wa_postal_code,
-	note,
-	current_information	
-from
-	users_contact"
+	select	u.*
+	from	users_contact u"
 
 db_foreach users_contact_select $users_contact_sql {
 
-    set users_contact_update_sql "
+    db_dml users_contact_update "
 	update users_contact set
-	home_phone='[anonymize_name $home_phone]',
-	work_phone='[anonymize_name $work_phone]',
-	cell_phone='[anonymize_name $cell_phone ]',
-	pager='[anonymize_name $pager]',
-	fax='[anonymize_name $fax ]',
-	aim_screen_name='[anonymize_name $aim_screen_name ]',
-	icq_number='[anonymize_name $icq_number ]',
-	m_address='[anonymize_name $m_address ]',
-	ha_line1='[anonymize_name $ha_line1 ]',
-	ha_line2='[anonymize_name $ha_line2 ]',
-	ha_city='[anonymize_name $ha_city ]',
-	ha_state='[anonymize_name $ha_state ]',
-	ha_postal_code='[anonymize_name $ha_postal_code ]',
-	wa_line1='[anonymize_name $wa_line1 ]',
-	wa_line2='[anonymize_name $wa_line2 ]',
-	wa_city='[anonymize_name $wa_city ]',
-	wa_state='[anonymize_name $wa_state ]',
-	wa_postal_code='[anonymize_name $wa_postal_code ]',
-	note='[anonymize_name $note ]',
-	current_information='[anonymize_name $current_information ]'
-    	where user_id=:user_id"
-
-    db_dml users_contact_update $users_contact_update_sql
+		home_phone = '[anonymize_name $home_phone]',
+		work_phone = '[anonymize_name $work_phone]',
+		cell_phone = '[anonymize_name $cell_phone ]',
+		pager = '[anonymize_name $pager]',
+		fax = '[anonymize_name $fax ]',
+		aim_screen_name = '[anonymize_name $aim_screen_name ]',
+		icq_number = '[anonymize_name $icq_number ]',
+		ha_line1 = '[anonymize_name $ha_line1 ]',
+		ha_line2 = '[anonymize_name $ha_line2 ]',
+		ha_city = '[anonymize_name $ha_city ]',
+		ha_state = '[anonymize_name $ha_state ]',
+		ha_postal_code = '[anonymize_name $ha_postal_code ]',
+		wa_line1 = '[anonymize_name $wa_line1 ]',
+		wa_line2 = '[anonymize_name $wa_line2 ]',
+		wa_city = '[anonymize_name $wa_city ]',
+		wa_state = '[anonymize_name $wa_state ]',
+		wa_postal_code = '[anonymize_name $wa_postal_code ]',
+		note = '[anonymize_name $note ]',
+		current_information = '[anonymize_name $current_information ]'
+    	where
+		user_id = :user_id
+    "
 }
 
 
@@ -369,27 +304,28 @@ db_foreach users_contact_select $users_contact_sql {
 
 
 set user_sql "
-select
-	u.user_id,
-	pa.email,
-	pe.first_names,
-	pe.last_name,
-	pa.url
-from
-	users u,
-	persons pe,
-	parties pa
-where
-	u.user_id = pe.person_id
-	and u.user_id = pa.party_id
-	and u.user_id > 2
-	and email != 'frank.bergmann@project-open.com'
-	and not (email like '%@project-open.com')
+	select
+		u.user_id,
+		u.username,
+		pa.email,
+		pe.first_names,
+		pe.last_name,
+		pa.url
+	from
+		users u,
+		persons pe,
+		parties pa
+	where
+		u.user_id = pe.person_id
+		and u.user_id = pa.party_id
+		and u.user_id > 2
+		and not(email like 'sysadmin%')
 "
 
 db_foreach user_select $user_sql {
     set first_names_mod [anonymize_name $first_names]
     set last_name_mod [anonymize_name $last_name]
+    set username_mod [anonymize_name $username]
     set email_mod [anonymize_email $email]
     set url_mod [anonymize_url $url]
     ns_log Notice "user_id=$user_id, first_names=$first_names, last_name=$last_name, email=$email, url=$url"
@@ -403,47 +339,24 @@ db_foreach user_select $user_sql {
     if {[regexp {project.manager@} $email]} { continue }
     if {[regexp {accounting@} $email]} { continue }
 
-    set user_update_sql "
-	update users
-	set
-		first_names=:first_names_mod,
-		email=:email_mod,
-		last_name=:last_name_mod,
-		url=:url_mod
-	where user_id=:user_id"
+    db_dml user_update "
+	update users set
+		username = :username_mod
+	where user_id=:user_id
+   "
 
-#    db_dml user_update $user_update_sql
-
-    set person_update_sql "
-	update persons
-	set
+    db_dml person_update "
+	update persons set
 		first_names=:first_names_mod,
 		last_name=:last_name_mod
-	where person_id=:user_id"
-    db_dml user_update $person_update_sql
-
-    set party_update_sql "
-	update parties
-	set
+	where person_id = :user_id
+    "
+    db_dml party_update "
+	update parties set
 		email=:email_mod,
 		url=:url_mod
-	where party_id=:user_id"
-    db_dml user_update $party_update_sql
+	where party_id=:user_id
+   "
 }
 
-
-#    set user_password_update_sql "
-#	update users
-#	set password='xxx'
-#    "
-#
-#    db_dml user_password_update $user_password_update_sql
-
-
-
-
-if {"" != $return_url} {
-    ad_return_redirect $return_url
-} else {
-    ad_return_error "<H1>[_ intranet-core.Anonymize]</H1>" "[_ intranet-core.lt_Successfully_finished]"
-}
+ad_returnredirect $return_url
