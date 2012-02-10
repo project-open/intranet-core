@@ -100,7 +100,7 @@ cvs checkout intranet-ophelia
 cvs checkout intranet-otp
 # cvs checkout intranet-otrs-integration		# (work in progress)
 cvs checkout intranet-payments
-# cvs checkout intranet-planning			# (work in progress)
+cvs checkout intranet-planning
 # cvs checkout intranet-procedures			# (obsolete)
 cvs checkout intranet-pdf-htmldoc
 cvs checkout intranet-portfolio-management
@@ -110,6 +110,7 @@ cvs checkout intranet-reporting-cubes
 cvs checkout intranet-reporting-dashboard
 cvs checkout intranet-reporting-finance
 cvs checkout intranet-reporting-indicators
+cvs checkout intranet-reporting-openoffice
 cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-resource-management
@@ -121,6 +122,7 @@ cvs checkout intranet-search-pg
 cvs checkout intranet-search-pg-files
 cvs checkout intranet-security-update-client
 cvs checkout intranet-security-update-server
+# cvs checkout intranet-sencha				# (GPL V3.0 license)
 cvs checkout intranet-simple-survey
 cvs checkout intranet-sla-management
 cvs checkout intranet-sharepoint
