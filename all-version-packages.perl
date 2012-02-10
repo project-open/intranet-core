@@ -30,12 +30,11 @@ VersionNumber = Maj.Min.Serv.Bug.Intl\n\n"
 }
 
 print "ver=$version\n";
-exit 0;
 
 $date = `/bin/date +"%Y-%m-%d"`;
 $time = `/bin/date +"%H-%M"`;
 $debug = 0;
-$base_dir = "/web/po34demo";			# no trailing "/"!
+$base_dir = "/web/po40demo";			# no trailing "/"!
 $packages_dir = "$base_dir/packages";		# no trailing "/"!
 
 # Remove trailing \n from date & time
