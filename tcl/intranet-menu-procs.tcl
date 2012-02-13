@@ -191,8 +191,12 @@ ad_proc -public im_menu_ul_list_helper {
 
 	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
 	foreach var [array names bind_vars_hash] {
+
+	    # Make sure the URL has got a "?"
+	    if {![regexp {\?} $url match]} { append url "?" }
+
 	    set value $bind_vars_hash($var)
-	    append url "&$var=[ad_urlencode $value]"
+	    append url "$var=[ad_urlencode $value]&"
 	}
 
 	set admin_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
