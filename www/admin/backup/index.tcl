@@ -109,7 +109,7 @@ template::list::create \
 	    html { align right }
 	}
 	remove {
-	    display_template {<a href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">restore</a>}
+	    display_template {<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">restore</a>}
 	}
     } \
     -bulk_actions $bulk_actions \

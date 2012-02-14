@@ -1,8 +1,12 @@
 ad_page_contract {
-
+    Takes a database dump and loads the dump into the database.
+    @param drop_cascade_p will perform a "drop cascade" on several
+    tables that might resist the normal restore process if they
+    were created with a different ]po[ version
 } {
     filename
     return_url
+    { drop_cascade_p 1 }
 }
 
 # ------------------------------------------------------
@@ -27,6 +31,21 @@ global tcl_platform
 set platform [lindex $tcl_platform(platform) 0]
 
 ns_log Debug "restoring pgdmp file: $filename"
+
+
+# Delete important system tables in order to avoid restore issues
+if {$drop_cascade_p} {
+    catch { db_dml drop_im_projects "drop table im_project CASCADE" }
+    catch { db_dml drop_im_categories "drop table im_categories CASCADE" }
+    catch { db_dml drop_parties "drop table parties CASCADE" }
+    catch { db_dml drop_acs_objects "drop table acs_objects CASCADE" }
+
+    # Drop any remaining table
+    set tables [db_list tables "select tablename from pg_tables where tablename not like 'pg_%' and tablename not like 'sql_%'"]
+    foreach table $tables {
+	catch { db_dml drop_$table "drop table $table CASCADE" }
+    }
+}
 
 switch $extension {
     ".pgdmp" {
