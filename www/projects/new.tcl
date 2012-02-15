@@ -55,6 +55,18 @@ set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 set current_url [im_url_with_query]
+
+# Select out information if the parent has been specified.
+# This way we save ourselves the redirect to the biz-object-typeselect
+if {"" != $parent_id} {
+    db_0or1row parent_info "
+        select  company_id,
+                project_type_id
+        from    im_projects
+        where   project_id = :parent_id
+    "
+}
+
 set org_project_type_id [im_opt_val project_type_id]
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
