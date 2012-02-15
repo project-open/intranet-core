@@ -31,6 +31,7 @@ ad_page_contract {
     { auto_login "" }
     { email "" }
     { password "" }
+    { cmd "" }
 }
 
 # ------------------------------------------------------------------------
@@ -72,13 +73,29 @@ if {"" != $password && "" != $email} {
 # ------------------------------------------------------------------------
 
 # Log the dude in if the token was OK.
+# Allow the SysAdmin to login here.
 set user_requires_manual_login_p 0
 set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p $user_requires_manual_login_p]
 
 if {$valid_login} {
+    ns_log Notice "auto-login: Found a valid login"
+
+    if {"" != $cmd} {
+	set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+	if {$admin_p} {
+	    doc_return 200 "text/plain" [eval $cmd]
+	    ad_script_abort
+	} else {
+	    # Interesting, a normal users tries to execute a commend...
+	    im_security_alert -/intranet/admin-login.tcl -message "Non-admin user tries to execute a command" -value $cmd
+	    ad_script_abort
+	}
+    }
+
     ad_user_login -forever=0 $user_id
     ad_returnredirect $url
 } else {
+    ns_log Notice "auto-login: Invalid login"
     ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
         Your security token is not valid. Please contact the system owner.<br>"
     ad_script_abort
