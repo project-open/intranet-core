@@ -1,5 +1,5 @@
 
-<% set page_title "V[string range [im_core_version] 0 5] Demo Server" %>
+<% set page_title " &\#93;po&\#91; V[string range [im_core_version] 0 5] $servername Demo Server" %>
 <%= [im_header -loginpage "\]project-open\[ $page_title"] %>
 <%= [im_navbar -loginpage "home"] %>
 
