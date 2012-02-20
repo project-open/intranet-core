@@ -1787,3 +1787,19 @@ td.list-table, td.list-table-narrow, .list-table td {
     text-decoration: none;
     color: #666666;
 }
+
+.risk_outer {
+        position: static;
+}
+
+.risk_matrix {
+	position: static;
+}
+
+.risk_table {
+        position: absolute;
+}
+
+
+
+
