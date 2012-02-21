@@ -1218,9 +1218,32 @@ table.list td {
 }
 
 
+.margin-form .form-item-wrapper {
+	padding: 0 0 10px;
+}
+
+.margin-form .form-item-wrapper .form-label {
+	text-align: left;
+	position: relative; 
+	float: none;
+	padding-top: 0px;
+	margin-left: 0em;
+	font-weight: bold;
+}
+
+.margin-form .form-button, .margin-form .form-help-text {
+	position: relative; 
+	margin-left: 0em;
+	padding-bottom: 8px;
+
+}
+.margin-form .form-item-wrapper .form-widget {
+        margin-left: 0em;
+        padding-top: 0px;
+}
+
 
 /*  old styles */
-
 
     hr {height: 1px;}
     .pagedesriptionbar {font-family: verdana, arial, helvetica, sans-serif; font-weight: bold; font-Size: 10pt; color: #ffffff; background: #336699; background-color: #336699;}
