@@ -52,8 +52,7 @@ if {"" != $company_id} {
     ad_script_abort
 }
 
-set customer_select [im_company_select company_id 0 "" "CustOrIntl"]
-set provider_select [im_company_select company_id 0 "" "Provider"]
-
+set customer_select [im_company_select company_id 0 "Active" "CustOrIntl"]
+# set provider_select [im_company_select company_id 0 "" "Provider"]
 
 db_release_unused_handles
