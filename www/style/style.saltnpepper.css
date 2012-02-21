@@ -1218,11 +1218,11 @@ table.list td {
 }
 
 
-.margin-form .form-item-wrapper {
+.filter-block .margin-form .form-item-wrapper {
 	padding: 0 0 10px;
 }
 
-.margin-form .form-item-wrapper .form-label {
+.filter-block .margin-form .form-item-wrapper .form-label {
 	text-align: left;
 	position: relative; 
 	float: none;
@@ -1231,13 +1231,13 @@ table.list td {
 	font-weight: bold;
 }
 
-.margin-form .form-button, .margin-form .form-help-text {
+.filter-block .margin-form .form-button, .filter-block .margin-form .form-help-text {
 	position: relative; 
 	margin-left: 0em;
 	padding-bottom: 8px;
 
 }
-.margin-form .form-item-wrapper .form-widget {
+.filter-block .margin-form .form-item-wrapper .form-widget {
         margin-left: 0em;
         padding-top: 0px;
 }
