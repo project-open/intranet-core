@@ -179,13 +179,18 @@ if {0 == $company_exists_p} {
     # Disabled db_transaction here. This causes
     # a strange erroron V4.0, at least on Windows...
 
-    # First create a new main_office:
-    set main_office_id [office::new \
+    # ad_return_complaint 1 "office_name: $office_name, company_id: $company_id, im_office_type_main: [im_office_type_main], im_office_status_active: [im_office_status_active], office_path: $office_path"
+    if [catch {
+	# First create a new main_office:
+	set main_office_id [office::new \
 		-office_name		$office_name \
 		-company_id     	$company_id \
 		-office_type_id 	[im_office_type_main] \
 		-office_status_id	[im_office_status_active] \
 		-office_path		$office_path]
+    } errmsg] {
+                ad_return_complaint 1 "We haven't been able to create a main office for this company , pls. check if company or office already exists in the system. <br />Details:</br>$errmsg"
+    }
 
     # add users to the office as 
     set role_id [im_biz_object_role_office_admin]
