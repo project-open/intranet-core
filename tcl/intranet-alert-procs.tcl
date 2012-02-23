@@ -174,11 +174,22 @@ peer_ip: $peer_ip
 	set value [ns_set get $header_vars $var]
 	append body "$var: $value\n"
     }
- 
+
     # Ignore errors sending out mails...
     catch { 
 	ns_sendmail $target_email $system_owner_email $subject $body 
     }
+
+
+    # Write a log entry for the security alert
+    set ip_addr $peer_ip
+    if {[info exists header_vars(X-Forwarded-For)]} {
+	set ip_addr $header_vars(X-Forwarded-For)
+    }
+    catch {
+	db_string log_alert "SELECT acs_log__warn(:$ip_addr, 'Security breach: location: $location, value: $value, message: $message')"
+    }
+
 }
 
 
