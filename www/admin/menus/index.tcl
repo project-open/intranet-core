@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/admin/menus/index.tcl
+ # /packages/intranet-core/www/admin/menus/index.tcl
 #
 # Copyright (C) 2004 ]project-open[
 # The code is based on ArsDigita ACS 3.4
@@ -25,6 +25,8 @@ ad_page_contract {
     { top_menu_id 0 }
     { top_menu_label "" }
     { top_menu_depth 0}
+    { filter_str "" }
+    { label_str "" }
 }
 
 # ------------------------------------------------------
@@ -172,17 +174,19 @@ if {$menu_id} {
     set top_menu_sql "and m.menu_id = :menu_id"
 }
 
-
 set main_sql "
-select
-${main_sql_select}	m.*,
-	length(tree_sortkey) as indent_level,
-	(9-length(tree_sortkey)) as colspan_level
-from
-	im_menus m
-where
-	1=1 $top_menu_sql
-order by tree_sortkey
+	select
+		${main_sql_select}	
+		m.*,
+		length(tree_sortkey) as indent_level,
+		(9-length(tree_sortkey)) as colspan_level
+	from
+		im_menus m
+	where
+		1=1 
+		$top_menu_sql
+	order by 
+		tree_sortkey
 "
 
 set table "
@@ -194,6 +198,19 @@ $table_header\n"
 set ctr 0
 set old_package_name ""
 db_foreach menus $main_sql {
+
+  # Cases show line  	
+  set show_line_p 0 
+  if { ("" == $filter_str || [string first $filter_str [string tolower $label]] != -1) && ""==$label_str } {
+	set show_line_p 1
+  }
+
+  if { "" == $filter_str && $label == $label_str } {
+        set show_line_p 1
+  }
+
+  # To improve - using like with bind var syntax in sql failed 
+  if { $show_line_p } {
 
     if {"t" == $enabled_p} {
         set toggle_link [export_vars -base "toggle" {menu_id {return_url [ad_return_url]} {action "disable"}}]
@@ -208,15 +225,15 @@ db_foreach menus $main_sql {
     }
 
     append table "
-  <td colspan=$colspan_level>
-    <A href=$menu_url?menu_id=$menu_id&return_url=$return_url>$name</A><br>
-    $label<br>
-    <tt>$visible_tcl</tt>
-  </td>
-  <td><a href='$toggle_link'>$enabled_p</a></td>
-  <td>$sort_order</td>
-  <td>$package_name</td>
-"
+  	<td colspan=$colspan_level>
+	    <A href=$menu_url?menu_id=$menu_id&return_url=$return_url>$name</A><br>
+	    <a href='/intranet/admin/menus/index?label_str=$label&return_url=$return_url'><img style='vertical-align:middle;' src='/intranet/images/navbar_default/magnifier_zoom_in.png' alt='' /></a>$label<br>
+	    <tt>$visible_tcl</tt>
+	  </td>
+	  <td><a href='$toggle_link'>$enabled_p</a></td>
+	  <td>$sort_order</td>
+	  <td>$package_name</td>
+    "
 
     foreach horiz_group_id $group_ids {
         set read_p [expr "\$p${horiz_group_id}_read_p"]
@@ -244,6 +261,7 @@ db_foreach menus $main_sql {
 </tr>
 "
 }
+}
 
 append table "
 <tr>
@@ -259,6 +277,50 @@ append table "
 "
 
 
+
+set left_navbar_html "
+<table width='100%'>
+<tr>
+  <td width='50%'>
+        <div class='filter-block'>
+                <div class='filter-title'>
+                     [lang::message::lookup "" intranet-core.Filter "Filter"]
+                </div>
+        <form action=index method=GET>
+        <table>
+        <tr>
+        <td>Label contains:</td>
+        <td><input size='10' name='filter_str' id='filter_str' value='$filter_str'></td>
+        </tr>
+        <tr><td></td><td><input type=submit></td></tr>
+        </form>
+        </table>
+          <ul>
+                <li><A href='/intranet/admin/menus/index'> [lang::message::lookup "" intranet-core.ShowAll "Show all"]</a></li>
+         </ul>
+
+        </div>
+      <hr/>
+        <table>
+        <tr>
+          <td><div class='filter-title'>[lang::message::lookup "" intranet-core.AdminOptions "Admin Options"]</td> </div>
+        </tr>
+        <tr>
+        <td>
+          <ul>
+		<li><A href=new?[export_url_vars return_url]>New Menu</a></li>
+         </ul>
+  </td>
+</tr>
+</table>
+<br>
+      <hr/>
+
+</td>
+</tr>
+</table>
+
+"
 
 # Remove all permission related entries in the system cache
 im_permission_flush
