@@ -323,8 +323,10 @@ if {[im_table_exists im_dynfield_attributes]} {
 # Finish
 # ------------------------------------------------------
 
-db_release_unused_handles
+# flush company drop down in case of status changes 
 
+im_permission_flush
+db_release_unused_handles
 
 # Return to the new company page after creating
 if {"" == $return_url} {
