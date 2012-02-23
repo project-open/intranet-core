@@ -1811,16 +1811,8 @@ td.list-table, td.list-table-narrow, .list-table td {
     color: #666666;
 }
 
-.risk_outer {
-        position: static;
-}
-
 .risk_matrix {
-	position: static;
-}
-
-.risk_table {
-        position: absolute;
+	padding-right: 5px;	
 }
 
 
