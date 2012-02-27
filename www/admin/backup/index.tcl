@@ -67,6 +67,7 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 
 	# Get rid of the leading "/" of $match
 	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
+	if { ""==$file_body } { set file_body $file }
 
 	multirow append backup_files \
 	    $file \
