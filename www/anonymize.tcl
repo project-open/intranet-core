@@ -136,13 +136,16 @@ set im_projects_sql "
 	from	im_projects p
 "
 
-db_foreach im_projects_select $im_projects_sql {
+#
+# Fraber 120227: We need the _nr and _path for SOR
+#		project_nr = '[anonymize_name $project_nr]',
+#		project_path = '[anonymize_name $project_path]',
 
+
+db_foreach im_projects_select $im_projects_sql {
     db_dml im_projects_update "
 	update im_projects set
 		project_name = '[anonymize_name $project_name]',
-		project_nr = '[anonymize_name $project_nr]',
-		project_path = '[anonymize_name $project_path]',
 		description = '[anonymize_name $description]',
 		note = '[anonymize_name $note]',
 		company_project_nr = '[anonymize_name $company_project_nr]',
