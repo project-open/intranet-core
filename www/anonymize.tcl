@@ -218,10 +218,10 @@ db_foreach im_prices_select $im_trans_prices_sql {
 set im_companies_sql "
 	select	c.*
 	from	im_companies c
+	where	company_path != 'internal'
 "
 
 db_foreach im_companies_select $im_companies_sql {
-
     db_dml im_companies_update "
 	update im_companies set
 		company_name='[anonymize_name $company_name]',
@@ -235,6 +235,25 @@ db_foreach im_companies_select $im_companies_sql {
     "
 }
 
+# Special treatment for the "Internal" company
+set im_companies_sql "
+	select	c.*
+	from	im_companies c
+	where	company_path = 'internal'
+"
+
+db_foreach im_companies_select $im_companies_sql {
+    db_dml im_companies_update "
+	update im_companies set
+		company_name='[anonymize_name $company_name]',
+		referral_source='[anonymize_name $referral_source]',
+		site_concept='[anonymize_name $site_concept]',
+		vat_number='[anonymize_name $vat_number]',
+		note='[anonymize_name $note]'
+	where 
+		company_id = :company_id
+    "
+}
 
 # ---------------------- im_offices -------------------------------
 
