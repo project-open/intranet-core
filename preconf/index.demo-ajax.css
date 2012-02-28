@@ -1,0 +1,69 @@
+/* ::::: http://po40demo.project-open.net/resources/acs-templating/forms.css ::::: */
+
+.margin-form .form-item-wrapper { clear: both; padding: 5px; }
+.margin-form .form-item-wrapper .form-label { float: left; text-align: right; display: block; width: 16em; }
+.margin-form .form-item-wrapper .form-widget, .margin-form .form-button, .margin-form .form-help-text { display: block; margin-left: 17em; }
+.margin-form .form-button { margin-top: 1em; }
+/* ::::: http://po40demo.project-open.net/resources/acs-templating/lists.css ::::: */
+
+/* ::::: http://po40demo.project-open.net/resources/acs-subsite/default-master.css ::::: */
+
+/* ::::: http://po40demo.project-open.net/calendar/resources/calendar.css ::::: */
+
+/* ::::: http://po40demo.project-open.net/resources/acs-templating/mktree.css ::::: */
+
+@media screen {
+}
+/* ::::: http://po40demo.project-open.net/intranet/style/style.saltnpepper.css ::::: */
+
+/* ::::: http://po40demo.project-open.net/intranet/style/style.common.css ::::: */
+
+* { padding: 0px; margin: 0px; }
+ul, ol { padding-left: 2em; }
+body { margin: 0px; padding: 0pt; font: small/1.5em Tahoma,"Lucida Grande",sans-serif; }
+h2 { font-size: 1.1em; font-weight: bold; color: rgb(85, 85, 85); margin-bottom: 12px; }
+h3 { font-size: 1.05em; font-weight: bold; color: rgb(68, 68, 68); margin-bottom: 12px; }
+h3 { font-size: 1em; font-weight: bold; color: rgb(68, 68, 68); margin-bottom: 12px; }
+a:link { color: rgb(35, 92, 150); text-decoration: underline; }
+a:visited { color: rgb(35, 92, 150); }
+a:hover { color: rgb(35, 92, 150); background: none repeat scroll 0% 0% rgb(204, 204, 204); }
+#main_maintenance_bar { color: rgb(220, 20, 60); height: auto; left: 300px; padding: 3px; position: absolute; top: -90px; width: auto; font-weight: bold; font-size: 2em; }
+.fullwidth-list-no-side-bar { margin-left: 10px; margin-right: 0px; }
+body, p, td { font-family: verdana,arial,helvetica,sans-serif; font-size: 8pt; color: rgb(0, 0, 0); }
+body { background-color: rgb(255, 255, 255); }
+a { color: rgb(46, 46, 46); }
+img { border-style: none; }
+a img { text-decoration: none; border: 0pt none; }
+a:hover { background: none repeat scroll 0% 50% transparent; }
+#monitor_frame { padding: 10px 8px; background: none repeat scroll 0% 0% rgb(255, 255, 255); }
+#header_class { background-color: rgb(255, 255, 255); background-image: none; background-repeat: repeat; background-attachment: scroll; height: 60px; padding: 0px; position: relative; border-top-width: 0px; background-position: 0px -10px; }
+#header_skin_select { color: rgb(102, 102, 102); font-size: 8pt; position: absolute; top: 25px; right: 118px; display: block; }
+#header_logo { position: absolute; left: 0px; top: 0px; font-size: 16pt; font-family: tahoma,sans-serif; font-weight: bold; color: rgb(255, 255, 255); z-index: 101; width: 50%; }
+#header_plugin_left { position: absolute; left: 250px; top: 20px; z-index: 200; float: left; }
+#header_plugin_right { position: absolute; left: 250px; top: 20px; z-index: 200; float: left; }
+#header_logo A IMG { border: 0pt none; }
+#main { position: relative; -moz-box-sizing: content-box; }
+#main_portrait_and_username { position: absolute; top: 10px; left: 30px; z-index: 1; visibility: hidden; height: 46px; }
+#main_username { font-size: 16pt; text-align: center; }
+#main_header_deco {  }
+#main_header { font-weight: bold; margin-bottom: 20px; height: 25px; background: none repeat scroll 0% 0% rgb(255, 255, 255); width: 100%; color: rgb(0, 0, 0); border-bottom: 1px solid rgb(36, 97, 142); display: block; position: relative; }
+#navbar_main_wrapper { position: relative; left: 0px; top: 0px; background-color: rgb(46, 46, 46); -moz-box-sizing: content-box; color: rgb(0, 0, 0); font-family: verdana,arial,helvetica,sans-serif; font-size: 8pt; }
+#navbar_main { width: 100%; background: none repeat scroll 0% 0% rgb(255, 255, 255); line-height: normal; border-bottom: 1px solid rgb(36, 97, 142); height: 22px; left: 0px; }
+#navbar_main_wrapper ul { margin: 0pt; padding: 10px 8px 0px 0px; list-style: none outside none; overflow: visible; z-index: 500; position: relative; -moz-box-sizing: content-box; }
+#main_title, #main_context_bar, #whosonline_class { float: left; margin-top: 3px; position: relative; }
+#main_title { height: 18px; font-size: 13pt; color: rgb(102, 102, 102); }
+#main_context_bar, #contextbar { display: none; }
+#slave { background: none repeat scroll 0% 0% rgb(255, 255, 255); padding: 0px; position: relative; border-bottom-width: 0px; }
+#footer { text-align: center; margin-top: 1em; position: relative; visibility: hidden; }
+#footer, #footer a { color: rgb(36, 97, 142); z-index: -20; }
+.component_footer_hack, .footer_hack { position: relative; z-index: 101; border-top: 3px solid rgb(255, 255, 255); height: 3px; top: -3px; width: 100%; display: none; }
+h2 { font-family: verdana,arial,helvetica,sans-serif; font-weight: bold; font-size: medium; margin-top: 15px; }
+h3 { font-family: verdana,arial,helvetica,sans-serif; font-weight: bold; font-size: small; }
+.form-label { font-size: 8pt; background-color: rgb(255, 255, 255); padding-right: 10px; padding-top: 5px; vertical-align: middle; }
+.form-widget { font-size: 8pt; background-color: rgb(255, 255, 255); padding-top: 5px; vertical-align: middle; }
+.tablebody { font-size: 8pt; background-color: rgb(255, 255, 255); }
+.contextbar { color: rgb(102, 102, 102); font-family: verdana,arial,helvetica,sans-serif; font-size: 8pt; font-weight: normal; }
+A.contextbar:link, A.contextbar:visited, A.contextbar:active, A.contextbar:hover { color: rgb(102, 102, 102); font-family: verdana,arial,helvetica,sans-serif; font-size: 8pt; font-weight: normal; }
+#register-login a:link { font-weight: bold; }
+#intranetlogo { max-height: 63px; }
+:first-child + html button[type] { padding: 4px 10px 3px 7px; }
