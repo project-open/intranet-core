@@ -88,6 +88,7 @@ function removeParameter(url, parameter)
 
 // check this http://www.nabble.com/%22$(document).ready(function()-%7B%22-giving-error-%22$-is-not-a-function%22----what-am-I-doing-wrong--td17139297s27240.html
 // jQuery.noConflict();
+
 jQuery().ready(function(){
 	
 	jQuery("#header_skin_select > form > select").change(function(){
@@ -183,6 +184,13 @@ jQuery().ready(function(){
         } catch (err) {
                 // alert('error cleaning return_url:'+err)
         };
+
+	var input_list = document.getElementsByTagName( "input" );
+	for(var i = 0; i < input_list.length; i++) {
+        	if (input_list[i].getAttribute('type') == 'submit') {
+	        	jQuery(input_list[i]).addClass('form-button40');
+ 		};
+	};
 });
 
 
