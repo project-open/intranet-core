@@ -832,7 +832,7 @@ set project_navbar_html [\
 			    ]
 
 # Compile and execute the formtemplate if advanced filtering is enabled.
-eval [template::adp_compile -string {<formtemplate id="project_filter" style="tiny-plain"></formtemplate>}]
+eval [template::adp_compile -string {<formtemplate id="project_filter" style="tiny-plain-po"></formtemplate>}]
 set filter_html $__adp_output
 
 
