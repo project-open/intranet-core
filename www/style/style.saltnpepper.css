@@ -1709,29 +1709,40 @@ input:hover.form-button40,
 input:link.form-button40, 
 a.form-button40, 
 a:link.form-button40,
-a:hover.form-button40,
-.form-button40 button   {
-    margin:0 7px 0 0;
+a:hover.form-button40 {
     background-color:#D4D0C8;
     border:2px solid #b7b8b8;
     border-top:1px solid #eee;
     border-left:1px solid #eee;
-    font-size:85%;
-    line-height:12px;
+    font-size:90%;
     text-decoration:none;
     font-weight:normal;
     color:#000000;
     cursor:pointer;
-    padding: 2px 8px;
-    font-family: verdana, arial, helvetica, sans-serif; 
+    padding: 2px 8px 2px 8px;
+    font-family: Arial; 
+    line-height:normal !important;
+    vertical-align: middle;
 }
 
-.form-button40 button{
+input.form-button40,
+input:hover.form-button40,
+input:link.form-button40 {
+    margin: 4px 0px 0px 0px;
+}
+
+a.form-button40,
+a:link.form-button40,
+a:hover.form-button40 {
+    margin: 0px 5px 0px 5px;
+    line-height:12px;
+}
+
+.form-button40 button {
       width:auto;
       overflow:visible;
-      /* padding:4px 10px 3px 7px; */
+      padding: 6px 0px 0px 0px;
 }
-
 
 .form-button40 button[type]{
     /* padding:5px 10px 5px 7px; */
@@ -1748,6 +1759,11 @@ a:hover.form-button40,
     border:none;
     width:16px;
     height:16px;
+}
+
+select {
+	margin: 5px 0px 0px 0px;
+	vertical-align: middle;
 }
 
 /* ??? */
