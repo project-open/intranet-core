@@ -274,10 +274,10 @@ namespace eval im_profile {
 	that are a member of the specified profiles.
     } {
 	if {"" == $profile_ids} { return "" }
-	
+	set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 	return [db_list_of_lists user_options "
 		select distinct
-		       im_name_from_user_id(u.user_id) as name,
+		       im_name_from_user_id(u.user_id, $name_order) as name,
 		       u.user_id
 		from
 		       users_active u,
