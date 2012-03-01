@@ -192,10 +192,10 @@ ad_proc -public im_user_options {
     if {0 != $biz_object_id && "" != $biz_object_id} { 
 	set biz_object_select_sql "and user_id in (select object_id_two from acs_rels where object_id_one = :biz_object_id)" 
     }
-
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set options [db_list_of_lists provider_options "
 		select
-			im_name_from_user_id(u.user_id) as name, 
+			im_name_from_user_id(u.user_id, $name_order) as name, 
 			u.user_id
 		from
 			cc_users u
@@ -212,8 +212,9 @@ ad_proc -public im_user_options {
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
 } {
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set options [db_list_of_lists provider_options "
-	select	im_name_from_user_id(user_id) as name, 
+	select	im_name_from_user_id(user_id, $name_order) as name, 
 		user_id
 	from	im_employees_active
 	order by name
@@ -228,18 +229,19 @@ ad_proc -public im_project_manager_options {
 } {
     Cost provider options
 } {
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set options [db_list_of_lists provider_options "
 	select * from (
-		select	im_name_from_user_id(user_id) as name, user_id
+		select	im_name_from_user_id(user_id, $name_order) as name, user_id
 		from	im_employees_active
 	    UNION
-		select	im_name_from_user_id(user_id) as name, user_id
+		select	im_name_from_user_id(user_id, $name_order) as name, user_id
 		from	users_active u,
 			group_distinct_member_map gm
 		where	u.user_id = gm.member_id
 			and gm.group_id = [im_pm_group_id]
 	    UNION
-		select	im_name_from_user_id(user_id) as name, user_id
+		select	im_name_from_user_id(user_id, $name_order) as name, user_id
 		from	users_active u
 		where	u.user_id = :current_pm_id
 	) t
@@ -300,16 +302,17 @@ ad_proc im_pm_select_multiple { select_name { defaults "" } { size "6"} {multipl
     set bind_vars [ns_set create]
     set pm_group_id [im_pm_group_id]
     set sql "
+set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 select
         u.user_id,
-        im_name_from_user_id(u.user_id) as employee_name
+        im_name_from_user_id(u.user_id, $name_order) as employee_name
 from
         registered_users u,
         group_distinct_member_map gm
 where
         u.user_id = gm.member_id
         and gm.group_id = $pm_group_id
-order by lower(im_name_from_user_id(u.user_id))
+order by lower(im_name_from_user_id(u.user_id, $name_order))
 "
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }
@@ -322,10 +325,11 @@ ad_proc im_active_pm_select_multiple {
 	returns html widget with employees having the PM role (im_projects::im_project_lead_id) in currently open projects
 } {
     set bind_vars [ns_set create]
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set sql "
         select distinct
                 pe.person_id,
-                im_name_from_user_id(pe.person_id) as employee_name
+                im_name_from_user_id(pe.person_id, $name_order) as employee_name
         from
                 persons pe,
                 im_projects p,
