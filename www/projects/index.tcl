@@ -599,6 +599,14 @@ if {[string equal $upper_letter "ALL"]} {
         select count(*)
         from ($sql) s
     "]
+
+    # Special case: FIRST the users selected the 2nd page of the results
+    # and THEN added a filter. Let's reset the results for this case:
+    while {$start_idx > 0 && $total_in_limited < $start_idx} {
+	set start_idx [expr $start_idx - $how_many]
+	set end_idx [expr $end_idx - $how_many]
+    }
+
     set selection [im_select_row_range $sql $start_idx $end_idx]
 }	
 
