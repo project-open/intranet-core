@@ -1520,7 +1520,8 @@ ad_proc -public im_stylesheet {} {
 	set skin "default"
     }
 
-    set system_css "/intranet/style/style.$skin.css"
+   # set system_css "/intranet/style/style.$skin.css"
+   set system_css "/intranet/style/style.$skin.css"
 
     if {[llength [info procs im_package_calendar_id]]} {
 	if {$openacs54_p} { 
@@ -1600,11 +1601,11 @@ ad_proc -public im_logo {} {
 	    set system_logo "$system_url/intranet/images/logo.default.gif"
 	}
     }
-    if { "0" != [ad_get_user_id] } {
+    # if { "0" != [ad_get_user_id] } {
 	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
-    } else {
-	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"/logo.gif\" alt=\"logo\" border='0'></a>\n"
-    }
+    # } else {
+    #	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"logo.gif\" alt=\"logo\" border='0'></a>\n"
+    # }
 }
 
 
