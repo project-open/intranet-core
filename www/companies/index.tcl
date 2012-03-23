@@ -479,7 +479,7 @@ set table_continuation_html ""
 set sub_navbar [im_company_navbar "" "/intranet/companies/" $next_page_url $previous_page_url [list order_by how_many view_name view_type status_id type_id] $menu_select_label] 
 
 
-eval [template::adp_compile -string {<formtemplate style="tiny-plain" id="company_filter"></formtemplate>}]
+eval [template::adp_compile -string {<formtemplate style="tiny-plain-po" id="company_filter"></formtemplate>}]
 set filter_html $__adp_output
 
 set left_navbar_html "

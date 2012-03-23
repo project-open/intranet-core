@@ -240,7 +240,7 @@ if {!$show_add_new_category_p} {
 # ------------------------------------------------------------------
 
 # Compile and execute the formtemplate if advanced filtering is enabled.
-eval [template::adp_compile -string {<formtemplate style=tiny-plain id="filter"></formtemplate>}]
+eval [template::adp_compile -string {<formtemplate style=tiny-plain-po id="filter"></formtemplate>}]
 set filter_html $__adp_output
 
 if {$show_add_new_category_p} {
