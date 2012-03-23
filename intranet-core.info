@@ -8,15 +8,15 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="4.0.3.0.0" url="http://www.project-open.org/download/apm/intranet-core-4.0.3.0.0.apm">
+    <version name="4.0.3.0.1" url="http://www.project-open.org/download/apm/intranet-core-4.0.3.0.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="3.4.0.8.6"/>
+        <provides url="intranet-core" version="4.0.3.0.0"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
-        <requires url="intranet-dynfield" version="3.4.0.5.0"/>
+        <requires url="intranet-dynfield" version="4.0.3.0.0"/>
 
         <callbacks>
         </callbacks>
@@ -68,6 +68,8 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SecurityBreachEmail"  default="support@project-open.com" description="'Security breaches' are special condition that should never occur, unless somebody seriously fiddles with system security. You can redirect this address to yourself or leave our email in there"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowLeftFunctionalMenupP"  default="1" description="Show the functional collapsible menu in the NavBar? This is useful for new users, but might be slow for habitual users."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowProjectNrAndProjectNameP"  default="0" description="Should we show the project_nr together with the project_name in various pages and page titles? This is useful for companies heavily working with project_nrs such as some translation companies, but useless for GanttProject based schedules, where project_nrs are frequently generated automatically."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNameMinimumLength"  default="5" description="Minimum lenght for the project_name field. Default value is '5'."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectNrMinimumLength"  default="5" description="Minimum lenght for the project_nr field. Default value is '5'."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringDefaultStatus"  description="What is the default type for subproject filtering? Choose &quot;&quot; to show everything, or &quot;76&quot; for Open."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringEnabledP"  default="0" description="Should we show a filter widget in the SubProject component on the upper right-hand side of the ProjectViewPage to select the status for subprojects? This is useful if a company uses many subprojects per main projects, such as the case of &quot;maintenance&quot; projects."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>

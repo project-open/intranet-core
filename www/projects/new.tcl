@@ -79,6 +79,8 @@ set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurr
 set normalize_project_nr_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NormalizeProjectNrP" -default 1]
 set sub_navbar ""
 set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncrementP -package_id [im_package_core_id] -default 0]
+set project_name_field_min_len [parameter::get -parameter ProjectNameMinimumLength -package_id [im_package_core_id] -default 5]
+set project_nr_field_min_len [parameter::get -parameter ProjectNrMinimumLength -package_id [im_package_core_id] -default 5]
 
 if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
     set return_url [export_vars -base "/intranet/projects/view" {project_id}]
@@ -655,6 +657,13 @@ if {[form is_submission $form_id]} {
 	incr n_error
     }
 
+    # Make sure the project name has a minimum length
+    if { [string length $project_nr] < $project_nr_field_min_len} {
+	incr n_error
+	template::element::set_error $form_id project_nr "[_ intranet-core.lt_The_project_nr_that] <br>
+	   [_ intranet-core.lt_Please_use_a_project_nr_]"
+    }
+	
     # Check for project number duplicates
     set project_nr_exists [db_string project_nr_exists "
 	select 	count(*)
@@ -675,7 +684,7 @@ if {[form is_submission $form_id]} {
      }
 
     # Make sure the project name has a minimum length
-    if { [string length $project_name] < 5} {
+    if { [string length $project_name] < $project_name_field_min_len} {
 	incr n_error
 	template::element::set_error $form_id project_name "[_ intranet-core.lt_The_project_name_that] <br>
 	   [_ intranet-core.lt_Please_use_a_project_]"
