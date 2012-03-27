@@ -825,6 +825,20 @@ if {"" == $dashboard_column_html} {
 # Navbars
 # ---------------------------------------------------------------
 
+# Get the URL variables for pass-though
+set query_pieces [split [ns_conn query] "&"]
+set pass_through_vars [list]
+foreach query_piece $query_pieces {
+    if {[regexp {^([^=]+)=(.+)$} $query_piece match var val]} {
+	# exclude "form:...", "__varname" and "letter" variables
+	if {[regexp {^form} $var match]} {continue}
+	if {[regexp {^__} $var match]} {continue}
+	if {[regexp {^letter$} $var match]} {continue}
+	set var [ns_urldecode $var]
+	lappend pass_through_vars $var
+    }
+}
+
 # Project Navbar goes to the top
 #
 set letter $upper_letter
@@ -835,7 +849,7 @@ set project_navbar_html [\
 			     "/intranet/projects/index" \
 			     $next_page_url \
 			     $previous_page_url \
-			     [list start_idx order_by how_many view_name letter project_status_id] \
+			     $pass_through_vars \
 			     $menu_select_label \
 			    ]
 
