@@ -498,6 +498,14 @@ select acs_privilege__add_child('admin', 'view_projects_history');
 select acs_privilege__create_privilege('edit_project_basedata','Edit Project Base Data','Edit Project Base Data');
 select acs_privilege__add_child('admin', 'edit_project_basedata');
 
+select acs_privilege__create_privilege('view_projects_dept','View Department Projects','View Department Projects');
+select acs_privilege__add_child('admin', 'view_projects_dept');
+select acs_privilege__create_privilege('edit_projects_dept','Edit Department Projects','Edit Department Projects');
+select acs_privilege__add_child('admin', 'edit_projects_dept');
+
+
+
+
 -- Users
 select acs_privilege__create_privilege('add_users','Add Users','Add Users');
 select acs_privilege__add_child('admin', 'add_users');
