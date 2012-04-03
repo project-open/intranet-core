@@ -899,7 +899,8 @@ ad_proc -public im_navbar {
 
 	set name_key "intranet-core.[lang::util::suggest_key $name]"
 	set name [lang::message::lookup "" $name_key $name]
-	if {$ctr == 0 || !$loginpage_p} {
+
+	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
 	    append navbar [im_navbar_tab $url $name $selected]
 	}
 	incr ctr
@@ -936,12 +937,21 @@ ad_proc -public im_navbar {
     set main_users_and_search "
 	  <div id=\"main_users_and_search\">
 	    <div id=\"main_users_online\">
-	      <a href=\"\">&nbsp; [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</a>
+    " 
+    if { "register" != [string range [ns_conn url] 1 8] } {
+	append main_users_and_search [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]
+    }	
+
+    append main_users_and_search "
 	    </div>
 	    $context_help_html
 	    <div id=\"main_users_online\">
-	      &nbsp;
-	      [im_header_users_online_str]
+    "
+    if { "register" != [string range [ns_conn url] 1 8] } {
+	    append main_users_and_search  "&nbsp;[im_header_users_online_str]"
+    }
+
+    append main_users_and_search "
 	    </div>
 	    <div id=\"main_search\">
 	      [im_header_search_form]
