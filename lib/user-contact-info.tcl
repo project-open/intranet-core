@@ -55,7 +55,6 @@ if {$result == 1} {
     # Define the column headers and column contents that 
     # we want to show:
     #
-    ds_comment "$contact_view_name"
     set view_id [db_string select_view_id "select view_id from im_views where view_name = '$contact_view_name'" ]
 
 

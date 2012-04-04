@@ -172,16 +172,18 @@ ad_proc -public im_project_permissions {
     # Get the projects's company and the project status
     # Use caching because this procedure is queried very frequently!
     if {$debug} { ns_log Notice "im_project_permissions: company info" }
-    set query "
-	select	company_id, 
-		lower(im_category_from_id(project_status_id)) as project_status 
-	from	im_projects
-	where	project_id = $project_id
+    set company_id 0
+    set project_is_open_p 0
+    db_0or1row project_info "
+	select	p.company_id,
+		(select	count(*)
+		from	im_category_hierarchy ch 
+		where	p.project_type_id = [im_project_status_open] OR
+			(ch.child_id = p.project_status_id and ch.parent_id = [im_project_status_open])
+		) as project_is_open_p
+	from	im_projects p
+	where	p.project_id = $project_id
     "
-    set company_infos [util_memoize [list db_list_of_lists company_info $query]]
-    set company_info [lindex $company_infos 0]
-    set company_id [lindex $company_info 0]
-    set project_status [lindex $company_info 1]
 
     if {$debug} {
 	ns_log Notice "user_is_admin_p=$user_is_admin_p"
@@ -202,11 +204,6 @@ ad_proc -public im_project_permissions {
 	set read 1
 	set view 1
     }
-
-# 20050729 fraber: Don't let customer's contacts see their project
-# without exlicit permission...
-#    if {$user_is_company_member_p} { set read 1}
-
 
     # Allow customer' Members to see their customer's projects
     if {$debug} { ns_log Notice "im_project_permissions: customer members" }
@@ -243,10 +240,13 @@ ad_proc -public im_project_permissions {
     # companies and freelancers are not allowed to see non-open projects.
     # 76 = open
     if {$debug} { ns_log Notice "im_project_permissions: view_projects_history" }
-    if {![im_permission $user_id view_projects_history] && ![string equal $project_status "open"]} {
+    if {![im_permission $user_id view_projects_history] && ![im_project_has_type $project_id "Open"]} {
 	# Except their own projects...
 	if {!$user_is_company_member_p && !$user_is_project_member_p} {
+	    ds_comment "im_project_permissions: User #$user_id does not have privilege 'view_projects_history', so he can not see a non-open project."
 	    set read 0
+	    set write 0
+	    set admin 0
 	}
     }
 
@@ -643,6 +643,7 @@ ad_proc -public im_project_options {
     # if we are showing this box for a sub-sub-project.
     set subsubproject_sql ""
     set subprojects [list 0]
+
     if {0 != $current_project_id} {
 
 	# Determine the topmost project in the hierarchy
@@ -663,6 +664,18 @@ ad_proc -public im_project_options {
 	    incr ctr
 	}
 
+	set dept_perm_sql ""
+	if {[im_permission $current_user_id "view_projects_dept"]} {
+	    set dept_perm_sql "
+		UNION
+		-- projects of the user department
+		select  p.*
+		from    im_projects p
+		where   p.project_cost_center_id in (select * from im_user_cost_centers(:user_id))
+	    "
+	}
+
+
 	# Check permissions for showing subprojects
 	set perm_sql "
 		(select p.*
@@ -670,12 +683,14 @@ ad_proc -public im_project_options {
 			acs_rels r
 		where   r.object_id_one = p.project_id
 			and r.object_id_two = :current_user_id
+		$dept_perm_sql
 		)
 	"
 	if {[im_permission $current_user_id "view_projects_all"]} {
 	    set perm_sql "im_projects" 
 	}
 
+ad_return_complaint 1 $perm_sql
 
 	set subprojects [db_list subprojects "
 		select	children.project_id
@@ -848,15 +863,12 @@ ad_proc -public im_project_options {
     "
 
     db_multirow multirow hours_timesheet $sql
-#   multirow_sort_tree multirow project_id parent_id sort_order
     multirow_sort_tree -nosort multirow project_id parent_id sort_order
     set options [list]
     template::multirow foreach multirow {
-
 	set indent ""
 	for {set i 0} {$i < $tree_level} { incr i} { append indent "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }
 	lappend options [list "$indent$project_name_shortened" $project_id]
-
     }
 
     if {$include_empty} { set options [linsert $options 0 [list $include_empty_name ""]] }
