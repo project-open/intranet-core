@@ -690,8 +690,6 @@ ad_proc -public im_project_options {
 	    set perm_sql "im_projects" 
 	}
 
-ad_return_complaint 1 $perm_sql
-
 	set subprojects [db_list subprojects "
 		select	children.project_id
 		from	im_projects parent,
