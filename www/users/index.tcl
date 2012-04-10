@@ -631,19 +631,6 @@ set table_continuation_html ""
 
 
 # ---------------------------------------------------------------
-# Check whether we have to add spamming to Admin Links
-# ---------------------------------------------------------------
-
-if {"" != $admin_html_links && [im_table_exists spam_messages]} {
-
-    set selector_short_name "[string tolower $user_group_name]_all"
-    append admin_html_links "
-    <li><a href=\"[spam_base]spam-add?[export_url_vars selector_short_name]\"
-      >[_ intranet-core.Spam_Users]
-    </a>\n"
-}
-
-# ---------------------------------------------------------------
 # 10. Join all parts together
 # ---------------------------------------------------------------
 

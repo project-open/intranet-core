@@ -568,14 +568,6 @@ append body_html $name
     # ------------------ Format the table footer with buttons ------------
     set footer_html ""
     if {$add_admin_links} {
-
-	set spam_members_html ""
-	if {[im_table_exists spam_messages]} {
-	    set spam_members_html "<li><A HREF=\"[spam_base]spam-add?[export_url_vars object_id sql_query]\">[_ intranet-core.Spam_Members]</A>&nbsp;"
-	    set spam_members_html "<option value=spam_members>[_ intranet-core.Spam_Members]</option>\n"
-	}
-
-
 	append footer_html "
 	    <tr>
 	      <td align=left>
@@ -600,7 +592,6 @@ append body_html $name
 	}
 	append footer_html "
 		<option value=del_members>[_ intranet-core.Delete_members]</option>
-		$spam_members_html
 		</select>
 		<input type=submit value='[_ intranet-core.Apply]' name=submit_apply></td>
 	      </td>
