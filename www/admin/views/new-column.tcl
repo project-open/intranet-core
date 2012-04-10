@@ -34,11 +34,9 @@ if {!$user_is_admin_p} {
 
 set action_url "/intranet/admin/views/new-column"
 set focus "column.column_name"
-set page_title "[_ intranet-core.New_column]"
-set context $page_title
+
 
 if {"" == $return_url} { set return_url [export_vars -base "/intranet/admin/views/new" {view_id}] }
-
 
 if {"" == $view_id && [info exists column_id]} {
     set view_id [db_string vid "select view_id from im_view_columns where column_id = :column_id" -default ""]
@@ -47,8 +45,15 @@ if {"" == $view_id} {
     ad_return_complaint 1 "You need to specify view_id"
 }
 
-
 if {![info exists column_id]} { set form_mode "edit" }
+
+
+set view_url [export_vars -base "/intranet/admin/views/new" {view_id return_url}]
+set view_name [db_list view_name "select view_name from im_views where view_id = :view_id"]
+set view_link "<a href=$view_url>$view_name</a>"
+set page_header [lang::message::lookup "" intranet-core.New_column "New Column"]
+set page_title [lang::message::lookup "" intranet-core.New_column_for_view "New Column for View %view_link%"]
+set context $page_title
 
 
 # ------------------------------------------------------------------
