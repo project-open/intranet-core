@@ -14,10 +14,10 @@ ad_page_contract {
 } {
     {view_id ""}
     column_id:integer,optional
-    return_url
     edit_p:optional
     message:optional
     { form_mode "display" }
+    { return_url "" }
 }
 
 
@@ -48,13 +48,15 @@ if {"" == $view_id} {
 if {![info exists column_id]} { set form_mode "edit" }
 
 
-set view_url [export_vars -base "/intranet/admin/views/new" {view_id return_url}]
+set view_url [export_vars -base "/intranet/admin/views/new" {view_id}]
 set view_name [db_list view_name "select view_name from im_views where view_id = :view_id"]
 set view_link "<a href=$view_url>$view_name</a>"
 set page_header [lang::message::lookup "" intranet-core.New_column "New Column"]
 set page_title [lang::message::lookup "" intranet-core.New_column_for_view "New Column for View %view_link%"]
 set context $page_title
 
+
+# ad_return_complaint 1 "xxx: $return_url"
 
 # ------------------------------------------------------------------
 # Build the form
@@ -66,7 +68,8 @@ ad_form \
     -cancel_url $return_url \
     -action $action_url \
     -mode $form_mode \
-    -export {user_id view_id return_url} \
+    -method GET \
+    -export {view_id return_url} \
     -form {
 	column_id:key(im_view_columns_seq)
 	{column_name:text(text) {label #intranet-core.Column_Name#} }
@@ -147,7 +150,6 @@ ad_form -extend -name column -on_request {
     # Flush cache
     im_permission_flush
 
-    # ad_return_complaint 1 $return_url
     ad_returnredirect $return_url
     ad_script_abort
 }

@@ -13,12 +13,14 @@ ad_page_contract {
     @author juanjoruizx@yahoo.es
 } {
     view_id:integer,optional
-    return_url
     edit_p:optional
     message:optional
     { form_mode "display" }
+    { return_url "" }
 }
 
+
+# ad_return_complaint 1 $return_url
 
 # ------------------------------------------------------------------
 # Default & Security
@@ -36,7 +38,7 @@ set focus "view.view_name"
 set page_title "[_ intranet-core.New_view]"
 set context $page_title
 set current_url $return_url
-set return_url [im_url_with_query]
+if {"" == $return_url} { set return_url [im_url_with_query] }
 
 
 if {![info exists view_id]} { set form_mode "edit" }
@@ -52,7 +54,7 @@ ad_form \
     -cancel_url $return_url \
     -action $action_url \
     -mode $form_mode \
-    -export {user_id return_url} \
+    -export {return_url} \
     -form {
 	view_id:key(im_views_seq)
 	{view_name:text(text) {label #intranet-core.View_Name#} }
@@ -128,7 +130,7 @@ ad_form -extend -name view -on_request {
 # ------------------------------------------------------
 
 if { [exists_and_not_null view_id] } {
-	set action_list [list "[_ intranet-core.Add_new_Column]" "[export_vars -base "new-column" {view_id return_url}]" "[_ intranet-core.Add_new_Column]"]
+	set action_list [list [_ intranet-core.Add_new_Column] [export_vars -base "new-column" {view_id return_url}] [_ intranet-core.Add_new_Column]]
 
 	set elements_list {
 	  column_id {
@@ -160,7 +162,7 @@ if { [exists_and_not_null view_id] } {
 		-key column_id \
 		-actions $action_list \
 		-elements $elements_list \
-		-filters { return_url }
+		-filters { }
 
 	db_multirow -extend {column_url del_column_url} columns get_columns { 
 		select vc.*
