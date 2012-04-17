@@ -141,8 +141,12 @@ ad_proc -public im_project_permissions {
     if {[im_table_exists "im_cost_centers"]} {
 	# Department managers are like project members or PMs
 	set user_cc_ids [im_user_cost_centers $user_id]
+	if {$debug} { ns_log Notice "im_project_permissions: user_cc_ids: $user_cc_ids" }
 	if {[im_permission $user_id view_projects_dept]} {
-	    set project_cost_center_id [util_memoize [list db_string project_cc "select project_cost_center_id from im_projects where project_id = $project_id" -default 0]]
+	    set project_cost_center_id [util_memoize [list db_string project_cc "select project_cost_center_id from im_projects where project_id = $project_id" -default 0] 30]
+
+#	ad_return_complaint 1 "user_cc_ids=$user_cc_ids, project_cc_id=$project_cost_center_id, project_id=$project_id"
+
 	    if {[lsearch $user_cc_ids $project_cost_center_id] > -1} { set user_is_project_member_p 1}
 	    if {[im_permission $user_id edit_projects_dept]} {
 		if {[lsearch $user_cc_ids $project_cost_center_id] > -1} { set user_is_project_manager_p 1}
@@ -180,19 +184,21 @@ ad_proc -public im_project_permissions {
 		from	im_category_hierarchy ch 
 		where	p.project_type_id = [im_project_status_open] OR
 			(ch.child_id = p.project_status_id and ch.parent_id = [im_project_status_open])
-		) as project_is_open_p
+		) as project_is_open_p,
+		p.project_status_id,
+		im_category_from_id(p.project_status_id) as project_status
 	from	im_projects p
 	where	p.project_id = $project_id
     "
 
     if {$debug} {
-	ns_log Notice "user_is_admin_p=$user_is_admin_p"
-	ns_log Notice "user_is_project_member_p=$user_is_project_member_p"
-	ns_log Notice "user_is_project_manager_p=$user_is_project_manager_p"
-	ns_log Notice "user_is_employee_p=$user_is_employee_p"
-	ns_log Notice "user_admin_p=$user_admin_p"
-	ns_log Notice "view_projects_history=[im_permission $user_id view_projects_history]"
-	ns_log Notice "project_status=$project_status"
+	ns_log Notice "im_project_permissions: user_is_admin_p=$user_is_admin_p"
+	ns_log Notice "im_project_permissions: user_is_project_member_p=$user_is_project_member_p"
+	ns_log Notice "im_project_permissions: user_is_project_manager_p=$user_is_project_manager_p"
+	ns_log Notice "im_project_permissions: user_is_employee_p=$user_is_employee_p"
+	ns_log Notice "im_project_permissions: user_admin_p=$user_admin_p"
+	ns_log Notice "im_project_permissions: view_projects_history=[im_permission $user_id view_projects_history]"
+	ns_log Notice "im_project_permissions: project_status=$project_status"
     }
 
     set user_is_company_member_p [im_biz_object_member_p $user_id $company_id]
