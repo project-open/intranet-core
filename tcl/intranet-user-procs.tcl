@@ -212,8 +212,6 @@ ad_proc -public im_user_options {
 
 ad_proc -public im_subordinates_options {
     { -user_id 0 }
-    { -include_empty_p 1 }
-    { -include_empty_name "" }
 } {
         Returns a list of (user_id user_name) tuples that are subordinates of a particular user.
 } {
@@ -231,7 +229,6 @@ ad_proc -public im_subordinates_options {
                        u.user_id = m.member_id
        and e.supervisor_id = :user_id
         "]
-    if {$include_empty_p} { set options [linsert $options 0 [list $include_empty_name "" ]] }
     return $options
 }
 
@@ -300,6 +297,22 @@ ad_proc im_user_select {
     }
 
     set user_options [im_profile::user_options -profile_ids $group_id]
+    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
+    return [im_options_to_select_box $select_name $user_options $default]
+}
+
+ad_proc im_subordinates_select {
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-user_id 0 }
+    select_name
+    { default "" }
+} {
+    Returns an html select box named $select_name and defaulted to
+    $default with a list of all the available project_leads in
+    the system
+} {
+    set user_options [im_subordinates_options -user_id $user_id ]
     if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
     return [im_options_to_select_box $select_name $user_options $default]
 }
