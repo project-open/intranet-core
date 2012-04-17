@@ -209,6 +209,33 @@ ad_proc -public im_user_options {
     return $options
 }
 
+
+ad_proc -public im_subordinates_options {
+    { -user_id 0 }
+    { -include_empty_p 1 }
+    { -include_empty_name "" }
+} {
+        Returns a list of (user_id user_name) tuples that are subordinates of a particular user.
+} {
+    if {"" == $user_id} { return "" }
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+    set options [db_list_of_lists user_options "
+                select distinct
+                       im_name_from_user_id(u.user_id, $name_order) as name,
+                       u.user_id
+                from
+                       users_active u,
+                       group_distinct_member_map m,
+       im_employees e
+                where
+                       u.user_id = m.member_id
+       and e.supervisor_id = :user_id
+        "]
+    if {$include_empty_p} { set options [linsert $options 0 [list $include_empty_name "" ]] }
+    return $options
+}
+
+
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
 } {
