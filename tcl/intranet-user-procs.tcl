@@ -219,15 +219,16 @@ ad_proc -public im_subordinates_options {
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set options [db_list_of_lists user_options "
                 select distinct
-                       im_name_from_user_id(u.user_id, $name_order) as name,
-                       u.user_id
+                       	im_name_from_user_id(u.user_id, $name_order) as name,
+                       	u.user_id
                 from
-                       users_active u,
-                       group_distinct_member_map m,
-       im_employees e
+                       	users_active u,
+                       	group_distinct_member_map m,
+		       	im_employees e
                 where
-                       u.user_id = m.member_id
-       and e.supervisor_id = :user_id
+                       	u.user_id = m.member_id
+			and e.employee_id = u.user_id
+       		       	and e.supervisor_id = :user_id
         "]
     return $options
 }
@@ -1415,3 +1416,26 @@ ad_proc -public im_user_localization_component {
     return [string trim $result]
 }
 
+
+ad_proc im_supervisor_select {
+    {-include_empty_p 0}
+    { default "" }
+} {
+        returns html widget with supervisor
+} {
+    set sql [db_list_of_lists sql "
+        select distinct
+                im_name_from_user_id(pe.person_id) as employee_name,
+                pe.person_id
+        from
+                persons pe,
+                im_employees u
+        where
+                u.supervisor_id = pe.person_id;
+        "]
+
+    set include_empty_name ""
+    if {$include_empty_p} { set sql [linsert $sql 0 [list $include_empty_name ""]] }
+
+    return [im_options_to_select_box "user_supervisor_id" $sql $default]
+}
