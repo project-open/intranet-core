@@ -445,7 +445,7 @@ ad_form -extend -name register -on_request {
 	# triggers
 	db_dml update_persons "
 		update persons
-		set first_names = first_names
+		set first_names = :first_names
 		where person_id = :user_id
         "
 
