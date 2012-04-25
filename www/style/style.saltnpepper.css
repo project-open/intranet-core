@@ -4,10 +4,9 @@
 /* CALENDAR */
 
 .fullwidth-list .component table.calendar_table  tbody tr.month_heading td {
-        background-color: #AABBCC;
+        background-color: #266591;
 	color: black;
 }
-
 
 .month_heading {
 	background-color: #0A3F67;
@@ -15,6 +14,12 @@
 
 .day_header {
 	background-color: #fff;
+	height:20px;
+}
+
+.fullwidth-list .component_body table tr.day_header td {
+	vertical-align: middle;
+	font-size: 12px;
 }
 
 .day_number {
@@ -68,7 +73,13 @@
     color: #999999;
 }
 
+.calendar_hourly_absences .component .component_header_rounded {
+	 visibility: hidden;
+}
 
+.fullwidth-list .component .double_calendar td {
+	vertical-align: top;
+}
 
 /*  START: TEST WITH INCLUDE STYLE.LEFT.CSS */
 
@@ -916,11 +927,6 @@ a   span  {float:none;}
         width: 100%;
 }
 
-
-.fullwidth-list .component table td.rowtitle {
-	/* visibility: hidden; */
-}
-
 .table-display td {
    padding: 1px;
 }
@@ -1030,8 +1036,11 @@ a   span  {float:none;}
 
 .fullwidth-list .component_body table tr {
  	padding: 3px;
+/* -- removed, breaks calendar widget
 	height:20px;
+*/
 }
+
 
 .fullwidth-list table td {
  	padding: 3px;
