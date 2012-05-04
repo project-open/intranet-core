@@ -17,6 +17,7 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { plugin_id:integer "" }
+    { category_id:integer "" }
     return_url
 }
 
@@ -27,12 +28,24 @@ if {!$current_user_is_admin_p} {
     return
 }
 
+# Portlet Components
 if {"" != $plugin_id} {
     set old_enabled_p [db_string old_en "select enabled_p from im_component_plugins where plugin_id = :plugin_id" -default "f"]
     set new_enabled_p "t"
     if {"t" == $old_enabled_p} { set new_enabled_p "f" }
     db_dml update_en "update im_component_plugins set enabled_p = :new_enabled_p where plugin_id = :plugin_id"
 }
+
+
+# Categories
+if {"" != $category_id} {
+    set old_enabled_p [db_string old_en "select enabled_p from im_categories where category_id = :category_id" -default "f"]
+    set new_enabled_p "t"
+    if {"t" == $old_enabled_p} { set new_enabled_p "f" }
+    db_dml update_en "update im_categories set enabled_p = :new_enabled_p where category_id = :category_id"
+}
+
+
 
 # Flush the global permissions cache so that the
 # new changes become active.
