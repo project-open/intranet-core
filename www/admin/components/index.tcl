@@ -167,12 +167,18 @@ set ctr 1
 set table ""
 db_foreach all_component_of_type $component_select_sql {
 
+    if {"t" == $enabled_p} { 
+	set enabled_html "<b><font>$enabled_p</font></b>"
+    } else {
+	set enabled_html "<b><font color=red>$enabled_p</font></b>"
+    }
+
     append table "
 <tr $bgcolor([expr $ctr % 2])>
   <td>
     <nobr><a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a></nobr>
   </td>
-  <td>$enabled_p</td>
+  <td><a href=[export_vars -base "/intranet/admin/toggle-enabled" {plugin_id return_url}]>$enabled_html</a></td>
   <td>$package_name</td>
   <td>$location</td>
   <td>$page_url</td>
