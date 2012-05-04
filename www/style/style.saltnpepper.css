@@ -1062,7 +1062,10 @@ div#fullwidth-components {
 	width: 200px;
 }
 
-.table_list_page,.table_component, .table_list_page tr td {
+.table_list_page,
+.table_component, 
+.table_list_page, .fullwidth-list .component .table_list_page tr td 
+{
 	padding: 2px 5px;
 }
 
