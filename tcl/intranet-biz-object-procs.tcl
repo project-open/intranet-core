@@ -138,7 +138,8 @@ ad_proc -public im_biz_object_member_ids { object_id } {
 	from 
 		acs_rels r
 	where
-		r.object_id_one=:object_id
+		r.object_id_one=:object_id and
+		r.rel_type = 'im_biz_object_member'
     "
     set result [db_list im_biz_object_member_ids $sql]
     return $result
@@ -217,6 +218,7 @@ ad_proc -public im_biz_object_add_role {
 
     if {"" == $user_id || 0 == $user_id} { return }
     set user_ip [ad_conn peeraddr]
+    set creation_user_id [ad_get_user_id]
 
     # Check if user is already a member and only continue
     # if the new role is "higher":
@@ -251,7 +253,7 @@ ad_proc -public im_biz_object_add_role {
                         :object_id,
                         :user_id,
                         :role_id,
-                        :user_id,
+                        :creation_user_id,
                         :user_ip
                 )
 	"]
