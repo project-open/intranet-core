@@ -35,6 +35,8 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 
+callback im_before_member_add -user_id $user_id_from_search -object_id $object_id 
+
 # expect commands such as: "im_project_permissions" ...
 #
 set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
