@@ -1,7 +1,7 @@
 ad_page_contract {
     user-skin-info.tcl
     @author iuri sampaio(iuri.sampaio@gmail.com)
-    @date 1020-10-29
+    @date 2010-10-29
 } 
 
 if {$user_id} {set user_id_from_search $user_id}
@@ -24,7 +24,7 @@ if {!$read} {
 # Localization Information
 # ---------------------------------------------------------------
 
-set site_wide_locale [lang::user::locale]
+set site_wide_locale [lang::user::locale -user_id $user_id]
 set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
 
 if {"" == $site_wide_locale} { set site_wide_locale "en_US" }
