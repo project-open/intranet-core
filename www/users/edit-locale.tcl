@@ -3,10 +3,12 @@ ad_page_contract {
 } {
     {return_url ""}
     {return_p "f"}
+    {user_id ""}
 }
 
 set instance_name [ad_conn instance_name]
 set context_bar [ad_context_bar]
+if { "" == $user_id  } { set user_id [ad_maybe_redirect_for_registration] }
 
 #
 # Get user pref setting
@@ -48,6 +50,7 @@ form create locale
 
 element create locale package_id_info -datatype text -widget hidden -optional
 element create locale return_url_info -datatype text -widget hidden -optional
+element create locale user_id -datatype text -widget hidden -optional -value $user_id
 
 if { [form is_valid locale] } {
     set return_url [element get_value locale return_url_info]
@@ -55,7 +58,7 @@ if { [form is_valid locale] } {
 }
 
 # are we selecting package level locale as well?
-set package_level_locales_p [expr [lang::system::use_package_level_locales_p] && ![empty_string_p $package_id] && [ad_conn user_id] != 0]
+set package_level_locales_p [expr [lang::system::use_package_level_locales_p] && ![empty_string_p $package_id] && $user_id != 0]
 
 if { $package_level_locales_p } {
     element create locale site_wide_explain -datatype text -widget inform -label "&nbsp;" \
@@ -112,10 +115,15 @@ if { [form is_request locale] } {
 if { [form is_valid locale] } {
 
     set site_wide_locale [element get_value locale site_wide_locale]
- 
-    lang::user::set_locale $site_wide_locale
+
+    if { "0" == [db_string get_data "select count(*) from user_preferences where user_id = :user_id" -default 0] } {
+	db_dml target_languages "insert into user_preferences (user_id) values (:user_id);"
+    }
+   
+    lang::user::set_locale -user_id $user_id $site_wide_locale
+    
     if { $package_level_locales_p } {
-        set package_level_locale [element get_value locale package_level_locale]
+       set package_level_locale [element get_value locale package_level_locale]
        lang::user::set_locale -package_id $package_id $package_level_locale
     }
     
