@@ -123,7 +123,7 @@ if { [form is_valid locale] } {
     lang::user::set_locale -user_id $user_id $site_wide_locale
   
     if { $package_level_locales_p } {
-       lang::user::set_locale -package_id $package_id $site_wide_locale
+	lang::user::set_locale -package_id $package_id -user_id $user_id $site_wide_locale
     }
     
     if { $use_timezone_p } {
