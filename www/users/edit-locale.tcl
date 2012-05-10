@@ -121,10 +121,9 @@ if { [form is_valid locale] } {
     }
    
     lang::user::set_locale -user_id $user_id $site_wide_locale
-    
+  
     if { $package_level_locales_p } {
-       set package_level_locale [element get_value locale package_level_locale]
-       lang::user::set_locale -package_id $package_id $package_level_locale
+       lang::user::set_locale -package_id $package_id $site_wide_locale
     }
     
     if { $use_timezone_p } {
