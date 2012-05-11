@@ -708,6 +708,7 @@ set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
+
 db_foreach projects_info_query $selection -bind $form_vars {
 
 #    if {"" == $project_id} { continue }
@@ -727,7 +728,11 @@ db_foreach projects_info_query $selection -bind $form_vars {
     foreach column_var $column_vars {
 	append row_html "\t<td valign=top>"
 	set cmd "append row_html $column_var"
-	eval "$cmd"
+	if [catch {
+	    eval "$cmd"
+	} errmsg] {
+            # TODO: warn user
+	}
 	append row_html "</td>\n"
     }
     append row_html "</tr>\n"
