@@ -2,6 +2,22 @@
   <property name="title">@page_title@</property>
 <property name="admin_navbar_label">admin_categories</property>
 
+<if "t" eq @constant_p@>
+<p><font color=red>
+<b>
+This category is a "constant".<br>
+Modifying the category (deleting, changing the name or the nr.) WILL BREAK your system.<br>
+However, it is OK to:
+<ul>
+<li>Change the "Enabled" status to "Enabled" or "Not Enabled",
+<li>Modify the "Category Translation" or
+<li>Change the sort order
+</ul>
+</font></p>
+<br>
+</if>
+
+
 <form @form_action_html;noquote@ method=POST>
 <table border=0 cellpadding=0 cellspacing=1>
   <tr>
@@ -88,9 +104,3 @@
 </form>
 @delete_action_html;noquote@
 
-<h2>Please Note</h2>
-<p><blockquote>
-Categories are frequently cached for performance reasons.<br>
-You may have to restart the server after adding or modifying a category <br>
-in order for the changes to take effect.
-</blockquote></p>
