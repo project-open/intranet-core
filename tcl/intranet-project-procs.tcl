@@ -2806,7 +2806,9 @@ ad_proc -public im_project_base_data_component {
 # ---------------------------------------------------------------
 
 ad_proc -public im_personal_todo_component {
+    {-show_empty_project_list_p 1}
     {-view_name "personal_todo_list" }
+
 } {
     Returns a HTML table with the list of projects, tasks,
     forum items etc. assigned to the current user. 
