@@ -615,7 +615,7 @@ ad_proc im_company_nuke {
     "
     db_foreach delete_offices $companies_offices_sql {
 	db_dml unlink_offices "update im_companies set main_office_id = (select min(office_id) from im_offices) where main_office_id = :office_id"
-	im_office_nuke -current_user_id $current_user_id $office_id
+	im_office_nuke $office_id
     }
 
     db_transaction {
