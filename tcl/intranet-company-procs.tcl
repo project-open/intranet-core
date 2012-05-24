@@ -517,7 +517,7 @@ ad_proc -public im_company_options {
 		     -exclude_status_id $exclude_status_id \
 		     -always_include_company_id $default \
     ]
-    if {"" != $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
+    if {1 == $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
     return $company_options
 }
 
