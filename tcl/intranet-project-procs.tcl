@@ -103,6 +103,13 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
 }
 
 
+ad_proc -public im_project_main_project { project_id } {
+    Returns the project_id of the project's top level main project.
+} {
+    im_security_alert_check_integer -location "im_project_main_project" -value $project_id
+    return [util_memoize [list db_string project_main_project "select project_id from im_projects where tree_sortkey in (select tree_root_key(tree_sortkey) from im_projects where project_id = $project_id)" -default ""]]
+}
+
 
 ad_proc -public im_project_permissions {
     {-debug 0}
@@ -1511,7 +1518,7 @@ ad_proc im_project_clone_base {
     "
     if { ![db_0or1row projects_info_query $query] } {
 	set project_id $parent_project_id
-	ad_return_complaint 1 "[_ intranet-core.lt_Cant_find_the_project]"
+	ad_return_complaint 1 "im_project_clone_base:<br>[_ intranet-core.lt_Cant_find_the_project]"
 	return
     }
 
@@ -2310,6 +2317,14 @@ ad_proc im_project_nuke {
     ns_log Notice "im_project_nuke: before db_transaction"
     db_transaction {
     
+	# SLA Parameters
+        if {[im_table_exists im_sla_parameters]} {
+	    set slas [db_list slas "select param_id from im_sla_parameters where param_sla_id = :project_id"]
+	    foreach sla_id $slas {
+		db_string del_sla_param "select im_sla_parameter__delete(:sla_id)"
+	    }
+	}
+	
 	# Helpdesk Tickets
         if {[im_table_exists im_tickets]} {
 	    db_dml del_tickets "delete from im_tickets where ticket_id = :project_id"
@@ -2690,8 +2705,9 @@ ad_proc im_project_nuke {
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
 	    if {$im_conf_item_project_rels_exists_p} { db_dml del_rels "delete from im_conf_item_project_rels where rel_id = :rel_id" }
 	    if {$im_ticket_ticket_rels_exists_p} { db_dml del_rels "delete from im_ticket_ticket_rels where rel_id = :rel_id" }
-#	    if {$exists_p} { db_dml del_rels "delete from  where rel_id = :rel_id" }
-
+	    if {[im_table_exists im_release_items]} {
+		db_dml del_rels "delete from im_release_items where rel_id = :rel_id"
+	    }
 	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
 	    db_dml del_rels "delete from acs_objects where object_id = :rel_id"
 	}
