@@ -1269,8 +1269,10 @@ ad_proc im_project_clone {
     {-clone_forum_topics_p "" }
     {-clone_members_p "" }
     {-clone_timesheet_tasks_p "" }
+    {-clone_timesheet_task_dependencies_p "" }
     {-clone_target_languages_p "" }
     {-clone_trans_tasks_p "" }
+    {-clone_level 0 }
     {-company_id 0}
     {-debug_p 1}
     parent_project_id 
@@ -1282,11 +1284,13 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
+    ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id"
 
     if {"" == $clone_members_p} { set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1] }
     if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
     if {"" == $clone_trans_tasks_p} { set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0] }
     if {"" == $clone_timesheet_tasks_p} { set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1] }
+    if {"" == $clone_timesheet_task_dependencies_p} { set clone_timesheet_task_dependencies_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTaskDependenciesP" -default 1] }
     if {"" == $clone_target_languages_p} { set clone_target_languages_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTargetLanguagesP" -default 1] }
     if {"" == $clone_forum_topics_p} { set clone_forum_topics_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectForumTopicsP" -default 1] }
     if {"" == $clone_files_p} { set clone_files_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFilesP" -default 1] }
@@ -1365,8 +1369,10 @@ ad_proc im_project_clone {
 					  -clone_forum_topics_p $clone_forum_topics_p \
 					  -clone_members_p $clone_members_p \
 					  -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+					  -clone_timesheet_task_dependencies_p $clone_timesheet_task_dependencies_p \
 					  -clone_trans_tasks_p $clone_trans_tasks_p \
 					  -clone_target_languages_p $clone_target_languages_p \
+					  -clone_level [expr $clone_level + 1] \
 					  -company_id $company_id \
 					  $sub_project_id \
 					  $sub_project_name \
@@ -1428,6 +1434,7 @@ ad_proc im_project_clone {
 				    -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 				    -clone_trans_tasks_p $clone_trans_tasks_p \
 				    -clone_target_languages_p $clone_target_languages_p \
+				    -clone_level [expr $clone_level +1] \
 				    -company_id $company_id \
 				    $task_id \
 				    $sub_task_name \
@@ -1480,13 +1487,116 @@ ad_proc im_project_clone {
 
     }
 
+    ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id: before cloning dependencies"
+
+
+    # Copy task dependencies if we are cloning the main project here
+    if {0 == $clone_level && $clone_timesheet_task_dependencies_p} {
+        # Get the hierarchical project_nr -> project_id relationship of both the original and the cloned project
+	set tupel [im_project_clone_hierarchy_hash -project_id $parent_project_id]
+	array set parent_project_hierarchy_hash_id_nr [lindex $tupel 0]
+	array set parent_project_hierarchy_hash_nr_id [lindex $tupel 1]
+
+	set tupel [im_project_clone_hierarchy_hash -project_id $cloned_project_id]
+	array set cloned_project_hierarchy_hash_id_nr [lindex $tupel 0]
+	array set cloned_project_hierarchy_hash_nr_id [lindex $tupel 1]
+
+	ns_log Notice "im_project_clone: parent_project_hierarchy_hash_id_nr=[array get parent_project_hierarchy_hash_id_nr]"
+	ns_log Notice "im_project_clone: parent_project_hierarchy_hash_nr_id=[array get parent_project_hierarchy_hash_nr_id]"
+	ns_log Notice "im_project_clone: cloned_project_hierarchy_hash_id_nr=[array get cloned_project_hierarchy_hash_id_nr]"
+	ns_log Notice "im_project_clone: cloned_project_hierarchy_hash_nr_id=[array get cloned_project_hierarchy_hash_nr_id]"
+
+	# Get all dependencies of the original project
+	set dependency_sql "
+		select	p.project_id,
+			p.project_nr,
+			tree_level(p.tree_sortkey) -1 as tree_level,
+			ttd.*
+		from	im_projects main_p,
+			im_projects p,
+			im_timesheet_task_dependencies ttd
+		where	main_p.project_id = :parent_project_id and
+			p.tree_sortkey between main_p.tree_sortkey and tree_right(main_p.tree_sortkey) and
+			p.project_id = ttd.task_id_one
+		order by p.tree_sortkey
+	"
+	db_foreach clone_dependencies $dependency_sql {
+	    # Convert the id's of the original project into their project_nrs
+	    set task_id_one_nr $parent_project_hierarchy_hash_id_nr($task_id_one)
+	    set task_id_two_nr $parent_project_hierarchy_hash_id_nr($task_id_two)
+
+	    # Convert the nrs of the original project into ids of the cloned project
+	    set task_id_one_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)
+	    set task_id_two_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)
+	    db_dml insert_dependency "
+                insert into im_timesheet_task_dependencies (
+			task_id_one, 
+			task_id_two,
+			dependency_type_id,
+			difference,
+			hardness_type_id
+		) values (
+			:task_id_one_cloned_id,
+			:task_id_two_cloned_id,
+			:dependency_type_id,
+			:difference,
+			:hardness_type_id
+		)
+            "
+	}
+    }
+
+    # Remove the template_p flag from the newly created project
+    if {0 == $clone_level} {
+	db_dml remove_template_p "
+		update im_projects
+		set template_p = 'f'
+		where project_id = :cloned_project_id
+	"
+    }
+
     # User Exit
     im_user_exit_call project_create $cloned_project_id
     im_audit -object_type im_project -action after_create -object_id $cloned_project_id
 
+    ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id: Before returning"
     return $cloned_project_id
 }
 
+
+ad_proc im_project_clone_hierarchy_hash {
+    -project_id:required
+} {
+    Returns a key-value list of project_nr -> project_id.
+    The project_nr of sub-projects is prefixed by the project_nr of their parent.
+} {
+    array set id_nr_hash {}
+    array set nr_id_hash {}
+    set sql "
+	select	p.project_id,
+		p.parent_id,
+		p.project_nr,
+		tree_level(p.tree_sortkey) -1 as tree_level
+	from	im_projects main_p,
+		im_projects p
+	where	main_p.project_id = :project_id and
+		p.tree_sortkey between main_p.tree_sortkey and tree_right(main_p.tree_sortkey)
+	order by p.tree_sortkey
+    "
+    db_foreach project_hierarchy $sql {
+	if {0 == $tree_level} { 
+	    # The top project is written without it's parent.
+	    set id_nr_hash($project_id) 0
+	    set nr_id_hash(0) $project_id
+	} else {
+	    set project_nr_list $id_nr_hash($parent_id)
+	    lappend project_nr_list $project_nr
+	    set id_nr_hash($project_id) $project_nr_list
+	    set nr_id_hash($project_nr_list) $project_id
+	}
+    }
+    return [list [array get id_nr_hash] [array get nr_id_hash]]
+}
 
 ad_proc im_project_clone_base {
     {-debug 0}
@@ -2074,35 +2184,6 @@ ad_proc im_project_clone_payments {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_timesheet {parent_project_id new_project_id} {
-    Copy timesheet information(?)
-} {
-    ns_log Notice "im_project_clone_timesheet parent_project_id=$parent_project_id new_project_id=$new_project_id"
-
-    set timesheet_sql "
-	select 
-		user_id as usr,
-		day,
-	  	hours,
-	  	billing_rate,
-	  	billing_currency,
-	  	note 
-	from 
-		im_hours
-	where 
-		project_id = :parent_project_id
-    "
-    db_foreach timesheet $timesheet_sql {
-	db_dml add_timesheet "
-		insert into im_hours 
-		(user_id,project_id,day,hours,billing_rate, billing_currency, note)
-		values
-		(:usr,:new_project_id,:day,:hours,:billing_rate, :billing_currency, :note)
-	    "
-    }
-}
-
-	
 ad_proc im_project_clone_forum_topics {parent_project_id new_project_id} {
     Copy forum topics
 } {
