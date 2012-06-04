@@ -62,5 +62,6 @@ set page_body "
     <td><input type=submit value=\"[_ intranet-core.Update]\"></td>
   </tr>
 </table>"
+</form>
 
 ad_return_template
