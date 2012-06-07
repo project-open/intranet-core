@@ -331,6 +331,7 @@ foreach csv_line_fields $values_list_of_lists {
 		where
 			project_id = :project_id
 	"
+	im_audit -object_id $project_id
 
 	db_1row project_info "
 		select project_id, main_office_id
@@ -357,6 +358,7 @@ foreach csv_line_fields $values_list_of_lists {
 	office_id = :main_office_id
 "
     db_dml update_offices $update_sql
+    im_audit -object_id $main_office_id
 
     # -------------------------------------------------------
     # Deal with the users's project
@@ -467,6 +469,7 @@ foreach csv_line_fields $values_list_of_lists {
         }
     }
 
+    im_audit -object_id $project_id
 
 }
 
