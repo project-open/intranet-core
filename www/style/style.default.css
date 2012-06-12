@@ -1,4 +1,4 @@
-@import url(style.common.css);
+>@import url(style.common.css);
 
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
@@ -950,5 +950,13 @@ p.list-row {
 
 span.list-label {
   color: #6f6f6f;
+}
+
+.ms_project_warning_title {
+	padding-top: 12px;
+	color: #cc0000;
+	font-family: verdana, arial, helvetica, sans-serif; 
+	font-weight: bold; 
+	font-Size: large;
 }
 
