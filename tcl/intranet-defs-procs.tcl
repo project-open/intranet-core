@@ -77,6 +77,8 @@ ad_proc -public im_date_ansi_to_julian {
 
     # Check that Start & End-Date have correct format
     set ansi_ok_p [regexp {^([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])$} $ansi match year month day]
+    if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
+    if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
 
     if {!$ansi_ok_p} {
 	if {!$throw_complaint_p} { return -1 }
@@ -91,14 +93,13 @@ ad_proc -public im_date_ansi_to_julian {
     # Perform the main conversion.
     if {[catch { set julian [dt_ansi_to_julian $year $month $day] } err_msg]} {
 	if {!$throw_complaint_p} { return -1 }
-	ad_return_complaint 1 "
-		<b>Invalid conversion of ANSI date to Julian format</b>:<br>
-		Current value: '$ansi'<br>
-		Expected format: 'YYYY-MM-DD'.<br>
-		Here is the detailed error message for reference:<br>
-		<pre>$err_msg</pre>
+	error "
+		Invalid conversion of ANSI date to Julian format:
+		Current value: '$ansi'
+		Expected format: 'YYYY-MM-DD'.
+		Here is the detailed error message for reference:
+		$err_msg
 	"
-	ad_script_abort
     }
 
     return $julian
@@ -129,9 +130,21 @@ ad_proc -public im_date_ansi_to_epoch {
 } {
     Returns seconds after 1/1/1970 00:00 GMT
 } {
-    regexp {(....)-(..)-(..)} $ansi match year month day
+    regexp {(....)-(..)-(..)} [string range $ansi 0 9] match year month day
+    if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
+    if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
+
     set julian [dt_ansi_to_julian $year $month $day]
-    return [im_date_julian_to_epoch -throw_complaint_p $throw_complaint_p $julian]
+    set epoch [im_date_julian_to_epoch -throw_complaint_p $throw_complaint_p $julian]
+
+    set ansi_time [string range $ansi 11 end]
+    if {[regexp {(..):(..):(..)} $ansi_time match hh mm ss]} {
+	if {0 == [string range $ss 0 0]} { set ss [string range $ss 1 end] }
+	if {0 == [string range $mm 0 0]} { set mm [string range $mm 1 end] }
+	if {0 == [string range $hh 0 0]} { set hh [string range $hh 1 end] }
+	set epoch [expr $epoch + $ss + 60 * ($mm + 60.0 * $hh)]
+    }
+    return $epoch
 }
 
 ad_proc -public im_date_epoch_to_ansi { 
