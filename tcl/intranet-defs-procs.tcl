@@ -66,7 +66,7 @@ ad_proc -public im_openacs54_p { } {
 
 ad_proc -public im_date_ansi_to_julian { 
     { -throw_complaint_p 1 }
-    ansi 
+    ansi
 } {
     Returns julian date for a YYYY-MM-DD string.
     By default, the procedure will use ad_return_complaint to report errors.
@@ -100,6 +100,8 @@ ad_proc -public im_date_ansi_to_julian {
 	"
 	ad_script_abort
     }
+
+    return $julian
 }
 
 ad_proc -public im_date_julian_to_ansi { 
