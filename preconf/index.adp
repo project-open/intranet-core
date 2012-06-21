@@ -38,7 +38,7 @@
 <table cellSpacing=2 cellPadding=2 width="100%" border=0>
 <tr valign=top>
 
-      <if @demo_server@ eq 2>
+      <if @demo_server@>
         <td width='500px'>
 	<h1>Translation Accounts</h1>
 	Please use one of the following accounts to log on: 

@@ -11,6 +11,8 @@ ad_page_contract {
 set email_org $email
 set username_org $username
 
+set demo_server 1
+
 # ------------------------------------------------------
 # Multirow
 # Users defined in the database
