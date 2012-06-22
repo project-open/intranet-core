@@ -308,9 +308,9 @@ background-position: 0px -10px;
 	float:left;
 }
 
-
 #header_logo A IMG {
    border: 0;
+   height: expression( this.scrollHeight > 62 ? "63px" : "auto" ); /* sets max-height for IE */
 }
 
 #main {
