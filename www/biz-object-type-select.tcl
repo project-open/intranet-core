@@ -53,6 +53,7 @@ ad_page_contract {
 
 # No permissions necessary, that's handled by the object's new page
 # Here we just select an object_type_id for the given object.
+set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
 
 if {[catch {db_1row otype_info "
 	select	pretty_name as object_type_pretty
@@ -199,3 +200,7 @@ foreach toplist [lsort -index 1 $top_list] {
     append category_select_html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $p $default_category_id $base_level [array get cat] [array get direct_parent]]
 }
 
+
+set admin_url [export_vars -base "/intranet/admin/categories/index" {{select_category_type $object_type_category}}]
+set admin_html "<a href=$admin_url>[im_gif wrench "Modify the name and description of the shown objects types"]</a>"
+if {$admin_p} { append page_title $admin_html }
