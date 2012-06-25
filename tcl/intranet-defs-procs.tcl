@@ -130,21 +130,25 @@ ad_proc -public im_date_ansi_to_epoch {
 } {
     Returns seconds after 1/1/1970 00:00 GMT
 } {
-    regexp {(....)-(..)-(..)} [string range $ansi 0 9] match year month day
-    if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
-    if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
 
-    set julian [dt_ansi_to_julian $year $month $day]
-    set epoch [im_date_julian_to_epoch -throw_complaint_p $throw_complaint_p $julian]
-
-    set ansi_time [string range $ansi 11 end]
-    if {[regexp {(..):(..):(..)} $ansi_time match hh mm ss]} {
-	if {0 == [string range $ss 0 0]} { set ss [string range $ss 1 end] }
-	if {0 == [string range $mm 0 0]} { set mm [string range $mm 1 end] }
-	if {0 == [string range $hh 0 0]} { set hh [string range $hh 1 end] }
-	set epoch [expr $epoch + $ss + 60 * ($mm + 60.0 * $hh)]
+    if {[regexp {(....)-(..)-(..)} [string range $ansi 0 9] match year month day]} {
+	if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
+	if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
+	
+	set julian [dt_ansi_to_julian $year $month $day]
+	set epoch [im_date_julian_to_epoch -throw_complaint_p $throw_complaint_p $julian]
+	
+	set ansi_time [string range $ansi 11 end]
+	if {[regexp {(..):(..):(..)} $ansi_time match hh mm ss]} {
+	    if {0 == [string range $ss 0 0]} { set ss [string range $ss 1 end] }
+	    if {0 == [string range $mm 0 0]} { set mm [string range $mm 1 end] }
+	    if {0 == [string range $hh 0 0]} { set hh [string range $hh 1 end] }
+	    set epoch [expr $epoch + $ss + 60 * ($mm + 60.0 * $hh)]
+	}
+	return $epoch
+    } else {
+	error "im_date_ansi_to_epoch: Invalid ANSI date: '$ansi'"
     }
-    return $epoch
 }
 
 ad_proc -public im_date_epoch_to_ansi { 
