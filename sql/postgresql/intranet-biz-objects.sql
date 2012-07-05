@@ -443,7 +443,11 @@ create table im_biz_object_members (
 				constraint im_biz_object_members_role_fk
 				references im_categories,
 				-- Percentage of assignation of resource
-	percentage		numeric(8,2) default 100
+	percentage		numeric(8,2) default 100,
+				-- Reference to the original 
+	skill_profile_rel_id	integer
+				constraint im_biz_object_members_skill_profile_rel_fk
+				references im_biz_object_members
 );
 
 select acs_rel_type__create_type (
