@@ -590,7 +590,8 @@ DECLARE
 BEGIN
 	v_members := '';
 	FOR row IN 
-		select	r.object_id_two as party_id,
+		select	r.rel_id,
+			r.object_id_two as party_id,
 			coalesce(bom.object_role_id::varchar, '""') as role_id,
 			coalesce(bom.percentage::varchar, '""') as percentage
 		from	acs_rels r,
@@ -600,7 +601,7 @@ BEGIN
 		order by party_id
 	LOOP
 		IF '' != v_members THEN v_members := v_members || ' '; END IF;
-		v_members := v_members || '{' || row.party_id || ' ' || row.role_id || ' ' || row.percentage || '}';
+		v_members := v_members || '{' || row.party_id || ' ' || row.role_id || ' ' || row.percentage || ' ' || row.rel_id || '}';
 	END LOOP;
 
 	return v_members;
