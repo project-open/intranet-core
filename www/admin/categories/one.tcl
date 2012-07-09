@@ -184,3 +184,4 @@ $locale: <input type=text name=translation.$locale value=\"$message\" size=40><b
 "
 }
 
+set constant_p f
