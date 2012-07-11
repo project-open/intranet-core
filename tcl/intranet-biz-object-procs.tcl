@@ -387,7 +387,7 @@ ad_proc -public im_biz_object_delete_timephased_data {
     minute by minute assignment data. These data become invalid
     after any modification (percentage, resource) of an assignment.
 } {
-    if {![im_table_exist im_gantt_assignment_timephases]} { return }
+    if {![im_table_exists im_gantt_assignment_timephases]} { return }
 
     if {"" != $rel_id} {
 	db_dml delete_gantt_timephased_data "
