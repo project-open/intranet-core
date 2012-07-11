@@ -58,6 +58,12 @@ ns_log Notice "member-update: delete_user(multiple)=$delete_user"
 # Maximum percentage
 set max_perc 150
 
+
+# Delete timephased data for the object.
+# This has an effect only on projects that were imported from MS-Project.
+im_biz_object_delete_timephased_data -task_id $object_id
+
+
 # -----------------------------------------------------------------
 # Action
 # -----------------------------------------------------------------
@@ -112,7 +118,7 @@ switch $action {
 				and object_id_one = :object_id
 		)
 	    "
-	}
+  	}
 	ad_returnredirect $return_url
     }
 

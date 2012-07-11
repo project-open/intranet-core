@@ -308,6 +308,10 @@ ad_proc -public im_biz_object_add_role {
 
         im_project - im_timesheet_task - im_ticket {
             # Specific actions on projects, tasks and tickets
+
+	    # Reset the time phase date for this relationship
+	    im_biz_object_delete_timephased_data -rel_id $rel_id
+
             if {$propagate_superproject_p} {
 
                 # Reset the percentage to "", so that there is no percentage assignment
@@ -348,7 +352,6 @@ ad_proc -public im_biz_object_add_role {
 }
 
 
-
 ad_proc -public im_biz_object_roles_select { select_name object_id { default "" } } {
     A common drop-down box to select the available roles for 
     users to be assigned to the object.<br>
@@ -370,6 +373,54 @@ ad_proc -public im_biz_object_roles_select { select_name object_id { default "" 
     "
     return [im_selection_to_select_box $bind_vars "project_member_select" $sql $select_name $default]
 }
+
+
+
+
+ad_proc -public im_biz_object_delete_timephased_data {
+    { -rel_id "" }
+    { -task_id "" }
+} {
+    This routine is called after any modification of assignments
+    or resources to tasks.
+    Timephased Data are optional structures from MS-Project with
+    minute by minute assignment data. These data become invalid
+    after any modification (percentage, resource) of an assignment.
+} {
+    if {![im_table_exist im_gantt_assignment_timephases]} { return }
+
+    if {"" != $rel_id} {
+	db_dml delete_gantt_timephased_data "
+		delete from im_gantt_assignment_timephases
+		where rel_id = :rel_id
+	"
+	db_dml delete_gantt_assignments "
+		delete from im_gantt_assignments
+		where rel_id = :rel_id
+	"
+    }
+
+    if {"" != $task_id} {
+	db_dml delete_gantt_timephased_data "
+		delete from im_gantt_assignment_timephases
+		where rel_id in (
+			select	rel_id
+			from	acs_rels
+			where	object_id_one = :task_id
+		)
+	"
+	db_dml delete_gantt_assignments "
+		delete from im_gantt_assignments
+		where rel_id in (
+			select	rel_id
+			from	acs_rels
+			where	object_id_one = :task_id
+		)
+	"
+    }
+
+}
+
 
 # --------------------------------------------------------------
 # Show the members of the Admin Group of the current Business Object.
