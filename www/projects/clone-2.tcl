@@ -97,6 +97,29 @@ set page_body [im_project_clone \
 
 
 set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
+set clone_project_type_id [db_string project_id "select project_type_id from im_projects where project_id = :clone_project_id" -default 0]
+
+# -----------------------------------------------------------------
+# Create a new Workflow for the project either if:
+# - if there is a WF associated with the project_type
+
+# Check if there is a WF associated with the project type
+set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :clone_project_type_id" -default ""]
+if { "" != $wf_key } {
+            # Create a new workflow case (instance)
+            set context_key ""
+            set case_id [wf_case_new \
+                     $wf_key \
+                     $context_key \
+                     $clone_project_id \
+	    ]
+            # Determine the first task in the case to be executed and start+finisch the task.
+            im_workflow_skip_first_transition -case_id $case_id
+}
+
+# Write Audit Trail
+im_project_audit -project_id $clone_project_id
+
 
 if {"" == $return_url && 0 != $clone_project_id} { 
     set return_url "/intranet/projects/view?project_id=$clone_project_id" 
@@ -106,15 +129,12 @@ if {"" == $return_url } {
     set return_url "/intranet/projects/"
 }
 
-
 ns_write "
 	</table>
 
 	<li><a href=\"$return_url\">Return to project page</a>
 	[im_footer]
 "
-
-
 
 # ad_returnredirect $return_url
 # doc_return 200 text/html [im_return_template]
