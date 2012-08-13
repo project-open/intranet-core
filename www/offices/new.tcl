@@ -44,10 +44,10 @@ if {$office_id > 0} {
     # We know that main_office_id is NOT NULL...
 
     if {![db_0or1row office_get_info "
-select	o.*
-from	im_offices o
-where	o.office_id=:office_id
-" 
+	select	o.*
+	from	im_offices o
+	where	o.office_id=:office_id
+	" 
     ]} {
 	ad_return_error "[_ intranet-core.lt_Office_office_id_does]" "[_ intranet-core.lt_Please_back_up_and_tr]"
 	return
@@ -82,6 +82,7 @@ where	o.office_id=:office_id
     set creation_ip_address [ns_conn peeraddr]
     set creation_user $user_id
     set office_id [im_new_object_id]
+    set ignore_max_hours_per_day_p "t"
 }
 
 set page_body "
@@ -180,8 +181,24 @@ append page_body "
 <textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
 		      </td>
 		    </tr>
+		    <tr> 
+		      <td> [lang::message::lookup "" intranet-core.ignore_tsmaxhrsday "Ignore restriction amount logged hours per day"]</td>
+		      <td> 
+"
+
+if { "f"==$ignore_max_hours_per_day_p } {
+	append page_body "<input type='checkbox' name='ignore_max_hours_per_day_p' value='t' />" 	
+} else {
+	append page_body "<input type='checkbox' name='ignore_max_hours_per_day_p' value='t' checked />" 	
+}
+
+append page_body "
+		      </td>
+		    </tr>
+		    <tr> 
+		      <td colspan='2'><center><input type=submit value=\"[lang::message::lookup "" intranet-core.Submit "Submit"]\"></center> </td>
+		    </tr>
 </table>
-<p><center><input type=submit value=\"$page_title\"></center>
 </form>
 "
 
