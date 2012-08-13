@@ -182,7 +182,7 @@ append page_body "
 		      </td>
 		    </tr>
 		    <tr> 
-		      <td> [lang::message::lookup "" intranet-core.ignore_tsmaxhrsday "Ignore restriction amount logged hours per day"]</td>
+		      <td> [lang::message::lookup "" intranet-core.IgnoreParameterTimesheetMaxHoursPerDay "Ignore restriction amount logged hours per day"]</td>
 		      <td> 
 "
 
