@@ -82,7 +82,7 @@ if {$office_id > 0} {
     set creation_ip_address [ns_conn peeraddr]
     set creation_user $user_id
     set office_id [im_new_object_id]
-    set ignore_max_hours_per_day_p "t"
+    set ignore_max_hours_per_day_p "f"
 }
 
 set page_body "
