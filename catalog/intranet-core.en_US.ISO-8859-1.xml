@@ -621,6 +621,7 @@
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Id">Id</msg>
+  <msg key="IgnoreParameterTimesheetMaxHoursPerDay">Ignore restriction amount logged hours per day</msg>
   <msg key="Illustration">Illustration</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
