@@ -29,6 +29,7 @@ set page_title [_ intranet-core.Done]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 set current_user_id [ad_maybe_redirect_for_registration]
 
+set results {}
 foreach pid $project_id {
     im_project_permissions $current_user_id $pid view read write admin
     if {!$admin} {
@@ -36,8 +37,12 @@ foreach pid $project_id {
 	ad_script_abort
     }
 
-    im_project_nuke $pid
+    lappend results [im_project_nuke $pid]
 }
+
+set result [join $results "\n<br>\n"]
+set result_len [string length $result]
+
 # ---------------------------------------------------------------
 # 
 # ---------------------------------------------------------------

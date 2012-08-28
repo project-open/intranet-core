@@ -7,8 +7,15 @@
 
 <h2>@page_title@</h2>
 
+<if 0 eq @result_len@>
 We have nuked the project.
 <p>
 Please continue with the tabs above.
-
+</if>
+<else>
+We have found errors nuking projects:
+<pre>
+@result;noquote@
+</pre>
+</else>
 

@@ -2370,6 +2370,7 @@ ad_proc im_project_nuke {
     string otherwise.
 } {
     ns_log Notice "im_project_nuke: project_id=$project_id"
+    set detailed_explanation ""
     
     # Use a predefined user_id to avoid a call to ad_get_user_id.
     # ad_get_user_id's connection isn't defined during a DELETE REST request.
@@ -2643,6 +2644,15 @@ ad_proc im_project_nuke {
 	    "
 	}
 
+	# MS-Project Warnings
+	if {[im_table_exists im_gantt_ms_project_warning]} {
+	    ns_log Notice "projects/nuke-2: im_gantt_ms_project_warning"
+	    db_dml im_gantt_ms_project_warnings "
+		    delete from im_gantt_ms_project_warning
+		    where project_id = :project_id
+	    "
+	}
+
 	# Helpdesk
 	if {[im_table_exists im_tickets]} {
 	    ns_log Notice "projects/nuke-2: im_tickets"
@@ -2818,6 +2828,15 @@ ad_proc im_project_nuke {
 
 	
 	ns_log Notice "users/nuke2: Main tables"
+
+	db_dml parent_projects "
+		-- project_nr and project_path are unique, 
+		-- so the parent_id = null statement below will create
+		-- duplicate main projects
+		update im_projects set 
+			project_nr = project_nr || random(),
+			project_path = project_path || random()
+		where parent_id = :project_id"
 	db_dml parent_projects "
 		update im_projects 
 		set parent_id = null 
@@ -2833,20 +2852,17 @@ ad_proc im_project_nuke {
 		where object_id = :project_id"
 
     } on_error {
-
-	set detailed_explanation ""
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
-	    
 	    set sql "select table_name from user_constraints 
 		     where constraint_name=:constraint_name"
 	    db_foreach user_constraints_by_name $sql {
-		set detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
+		append detailed_explanation "<p>[_ intranet-core.lt_It_seems_the_table_we]"
 	    }
-	    
 	}
-	return "$detailed_explanation<br><pre>$errmsg</pre>"
+	append detailed_explanation "<pre>$errmsg</pre>"
     }
-    return ""
+
+    return $detailed_explanation
 }
 
 
