@@ -24,12 +24,16 @@ ad_page_contract {
 }
 
 
-db_1row project_info "
+db_0or1row project_info "
     select	*,
 		project_name as project_name_org
     from	im_projects
     where	project_id = :project_id
 "
+
+if {![info exists project_name]} { 
+    ad_return_complaint 1 "<br><b>[lang::message::lookup "" intranet-core.Project_already_nuked "The project has already been nuked."]</b><br>&nbsp;<br>" 
+}
 
 set page_title [_ intranet-core.Nuke_this_project]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
