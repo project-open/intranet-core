@@ -153,6 +153,7 @@ if {$project_exists_p} {
           ]
           ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
               project_name
+	      parent_id
               also_add_users
               company_id
               { return_url $current_url }
