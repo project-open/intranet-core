@@ -71,7 +71,7 @@ set org_project_type_id [im_opt_val project_type_id]
 
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set project_nr_field_editable_p [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldEditableP "" 1]
-set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [ad_acs_kernel_id] -default 1] 
+set enable_nested_projects_p [parameter::get -parameter EnableNestedProjectsP -package_id [im_package_core_id] -default 1] 
 set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0]
 set enable_absolute_project_path_p [parameter::get -parameter EnableAbsoluteProjectPathP -package_id [im_package_core_id] -default 0] 
 
