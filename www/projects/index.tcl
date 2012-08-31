@@ -713,6 +713,9 @@ db_foreach projects_info_query $selection -bind $form_vars {
 
 #    if {"" == $project_id} { continue }
 
+    set project_type [im_category_from_id $project_type_id]
+    set project_status [im_category_from_id $project_status_id]
+
     # Gif for collapsable tree?
     set gif_html ""
 
