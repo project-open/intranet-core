@@ -637,11 +637,17 @@ ad_proc -public im_project_options {
 } { 
     Get a list of projects
 } {
-    # Default: Exclude tasks and deleted projects
+    set exclude_type_id [list]
+    # Default: Exclude tickets and deleted projects
     if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
-    if {"" == $exclude_type_id} { set exclude_type_id [list [im_project_type_task] [im_project_type_ticket]] }
-    if {!$exclude_tasks_p} { set exclude_subprojects_p 0 }
-
+    if {"" == $exclude_type_id} { set exclude_type_id [list [im_project_type_ticket]] } 
+    # Exclude tasks? 
+    if {!$exclude_tasks_p} { 
+	# Overwrite parameter when tasks should be shown
+	set exclude_subprojects_p 0 
+    } else {
+	lappend exclude_type_id [im_project_type_task]
+    }
     set current_project_id $project_id
     set super_project_id $project_id
     set current_user_id [ad_get_user_id]
@@ -756,7 +762,7 @@ ad_proc -public im_project_options {
     }
 
     if {0 != $exclude_type_id && "" != $exclude_type_id} {
-	lappend p_criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_type_id] ","])"
+	# lappend p_criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_type_id] ","])"
 	# No restriction of type on parent project!
     }
 
