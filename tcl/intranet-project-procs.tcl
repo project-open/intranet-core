@@ -2798,6 +2798,12 @@ ad_proc im_project_nuke {
 	# Relationships
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    if {[im_table_exists im_gantt_assignment_timephases]} {
+		db_dml del_rels "delete from im_gantt_assignment_timephases where rel_id = :rel_id"
+	    }
+	    if {[im_table_exists im_gantt_assignments]} {
+		db_dml del_rels "delete from im_gantt_assignments where rel_id = :rel_id"
+	    }
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
 	    if {$im_conf_item_project_rels_exists_p} { db_dml del_rels "delete from im_conf_item_project_rels where rel_id = :rel_id" }
