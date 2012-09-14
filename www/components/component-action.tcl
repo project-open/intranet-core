@@ -50,6 +50,14 @@ switch $action {
 			)
 	"
 
+	# Special functionality on ProjectViewPage: Delete MS-Project Warning ignores
+	if {"/intranet/projects/view" == $page_url && [db_table_exists im_gantt_ms_project_warning]} {
+	    db_dml del_ms_project_warnings "
+		delete from im_gantt_ms_project_warning
+		where user_id = [ad_get_user_id]
+	    "
+	}
+
 	ad_returnredirect "$return_url"
 	ad_script_abort
     }
