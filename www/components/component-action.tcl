@@ -111,6 +111,7 @@ if {[llength $same_comps] > 0} {
 
 # Check if there are already values for the user
 
+
 set map_count [db_string map_count "
 	select	count(*) 
 	from	im_component_plugin_user_map 
@@ -122,6 +123,7 @@ set map_count [db_string map_count "
 		)
 "]
 
+
 if {0 == $map_count} {
     db_dml copy_map "
 	insert into im_component_plugin_user_map 
@@ -130,6 +132,29 @@ if {0 == $map_count} {
 		sort_order, location
 	from	im_component_plugins
 	where	page_url = :page_url
+    "
+}
+
+
+# Intentions not clear for above measures 
+# Does not always create record in im_component_plugin_user_map
+# so that actions are ignored. Following code will:  
+
+set map_count [db_string map_count "
+        select  count(*)
+        from    im_component_plugin_user_map
+        where   user_id = :user_id
+                and plugin_id = :plugin_id
+"]
+
+if {0 == $map_count} {
+    db_dml copy_map "
+        insert into im_component_plugin_user_map
+        (plugin_id, user_id, sort_order, location)
+        select  plugin_id, :user_id as user_id,
+                sort_order, location
+        from    im_component_plugins
+        where   plugin_id = :plugin_id
     "
 }
 
