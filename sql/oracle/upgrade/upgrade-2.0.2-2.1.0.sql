@@ -240,7 +240,3 @@ alter table im_costs add
                                 constraint im_costs_paid_currency_fk
                                 references currency_codes(iso);
 
-
-alter table im_trans_prices modify (price number(14,4));
-
-

@@ -61,7 +61,8 @@ where   object_id_one in (
         )
 ;
 
-delete from im_trans_trados_matrix;
+-- fraber 120921: Disabled translation
+-- delete from im_trans_trados_matrix;
 
 delete from acs_objects
 where   object_type = 'im_company' and
