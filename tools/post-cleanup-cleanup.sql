@@ -166,8 +166,12 @@ delete from acs_objects where object_type = 'journal_entry';
 
 ----------------------------------------------------
 
-delete from im_trans_tasks;
-delete from acs_objects where object_type = 'im_trans_task';
+
+-- fraber 120921: Disabled translation
+-- delete from im_trans_trados_matrix;
+
+-- delete from im_trans_tasks;
+-- delete from acs_objects where object_type = 'im_trans_task';
 
 
 
