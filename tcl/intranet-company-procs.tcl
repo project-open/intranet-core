@@ -757,11 +757,12 @@ ad_proc im_company_nuke {
 		where member_id = :company_id"
 
 	# ----------- Translation --------------------------------
-	db_dml delete_trans_prices "
+	if {[im_table_exists im_trans_prices]} {
+	    db_dml delete_trans_prices "
 		delete from im_trans_prices
 		where company_id = :company_id
-	"
-
+	    "
+	}
 
 	# ----------- Timesheet --------------------------------
 	db_dml delete_timesheet_prices "
