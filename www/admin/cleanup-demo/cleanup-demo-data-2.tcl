@@ -391,14 +391,14 @@ if {[im_table_exists im_timesheet_prices]} {
 }
 
 
-ns_write "<li>Cleanup im_trans_quality_reports\n"
 if {[im_table_exists im_trans_quality_reports]} {
+    ns_write "<li>Cleanup im_trans_quality_reports\n"
     db_dml im_trans_quality_entries "delete from im_trans_quality_entries"
     db_dml im_trans_quality_reports "delete from im_trans_quality_reports"
 }
 
-ns_write "<li>Cleanup Translation\n"
 if {[im_table_exists im_trans_tasks]} {
+    ns_write "<li>Cleanup Translation\n"
     db_dml im_target_languages "delete from im_target_languages"
     db_dml im_task_actions "delete from im_task_actions"
     db_dml im_trans_tasks "delete from im_trans_tasks"
