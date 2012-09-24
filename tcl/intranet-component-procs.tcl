@@ -117,6 +117,7 @@ ad_proc -public im_component_box {
        <a class=\"icon_right\" href=\"$plugin_url&amp;action=right\"><span class=\"icon_right\">right</span></a>
        <div class=\"icon_seperator\"></div>
        <a class=\"icon_close\" href=\"$plugin_url&amp;action=close\"><span class=\"icon_close\">close</span></a>
+       <a class=\"icon_help\" href=\"http://www.project-open.org/en/portlet_[string tolower [string map {" " _ } $plugin_name]]\"><span class=\"icon_help\">?</span></a>
     "
 
     # Show a wrench for the Admin
