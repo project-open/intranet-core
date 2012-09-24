@@ -822,6 +822,13 @@ a   span  {float:none;}
 	height: 10px;
 	margin-left: 1px;
 }
+.component_icons .icon_help {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: url('/intranet/images/navbar_default/help.png') no-repeat;
+  text-indent: -5000px;
+}
 .component_icons .icon_seperator {
   width: 1px;
   height: 15px;
