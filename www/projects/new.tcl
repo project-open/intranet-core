@@ -55,6 +55,7 @@ set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 set current_url [im_url_with_query]
+set show_context_help_p 1
 
 # Select out information if the parent has been specified.
 # This way we save ourselves the redirect to the biz-object-typeselect
