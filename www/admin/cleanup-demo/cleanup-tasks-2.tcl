@@ -53,9 +53,9 @@ foreach id $task_id {
 	ns_write "<li>Nuking task \#$id ...<br>\n"
 	db_transaction {
 		ns_log Notice "projects/nuke-2: im_timesheet_tasks"
-		db_dml task_actions "delete from im_hours where project_id = :task_id"
+		db_dml task_actions "delete from im_hours where project_id = :id"
 		ns_log Notice "projects/nuke-2: im_timesheet_tasks"
-		db_dml task_actions "delete from im_timesheet_tasks where task_id = :task_id"
+		db_dml task_actions "delete from im_timesheet_tasks where task_id = :id"
 	} on_error {
 		set error $errmsg
     	}
