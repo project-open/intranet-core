@@ -157,26 +157,25 @@ db_foreach im_projects_select $im_projects_sql {
 
 
 # ---------------------- im_trans_tasks -------------------------------
-
-set im_trans_tasks_sql "
+if {[im_table_exists im_trans_tasks]} {
+    set im_trans_tasks_sql "
 	select	task_id,
 		task_name,
 		description
 	from	im_trans_tasks
-"
+   "
 
-db_foreach im_trans_tasks_select $im_trans_tasks_sql {
-
-    db_dml im_trans_tasks_update "
+    db_foreach im_trans_tasks_select $im_trans_tasks_sql {
+	db_dml im_trans_tasks_update "
 	update im_trans_tasks set
 		task_name='[anonymize_name $task_name]',
 		description='[anonymize_name $description]'
 	where task_id=:task_id
-    "
+        "
+    }
 }
 
 # ---------------------- im_invoice_items -------------------------------
-
 set im_invoice_items_sql "
     	select	item_id,
 		item_name,
@@ -197,24 +196,23 @@ db_foreach im_invoice_items_select $im_invoice_items_sql {
 
 
 # ---------------------- im_trans_prices -------------------------------
-
-
-set im_trans_prices_sql "
+if {[im_table_exists im_trans_prices]} {
+    set im_trans_prices_sql "
     	select	price_id
 	from	im_trans_prices
-"
-db_foreach im_prices_select $im_trans_prices_sql {
-    set new_price [expr round(100*rand()) / 100]
-    db_dml im_trans_prices_update "
+    "
+    db_foreach im_prices_select $im_trans_prices_sql {
+	set new_price [expr round(100*rand()) / 100]
+	db_dml im_trans_prices_update "
 	update im_trans_prices set
 		price = :new_price
 	where price_id = :price_id
-    "
+        "
+    }
 }
 
+
 # ---------------------- im_companies -------------------------------
-
-
 set im_companies_sql "
 	select	c.*
 	from	im_companies c
