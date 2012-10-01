@@ -26,7 +26,7 @@ ad_proc -public im_home_news_component { } {
     set title [lang::message::lookup "" intranet-core.ProjectOpen_News "&\\#93;po&\\#91; News"]
     set no_iframes_l10n [lang::message::lookup "" intranet-core.Your_browser_cant_display_iframes "Your browser can't display IFrames."]
 
-    set url "http://www.project-open.org/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
+    set url "http://www.project-open.net/intranet-rss-reader/index?format=iframe300&max_news_per_feed=3"
     set url [parameter::get_from_package_key -package_key "intranet-core" -parameter HomeNewsComponentUrl -default $url]
 
     set iframe "
@@ -61,7 +61,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 
 	<h2>[lang::message::lookup "" intranet-core.Configuring_po "Configuring %po%"]</h2>
 	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
-		Please see the <a href='http://www.project-open.org/documentation/list_configuration'
+		Please see the <a href='http://www.project-open.org/en/list_configuration'
 		>Configuration Overview</a> on how to configure %po%.
 		We recommend to keep the 'Tigerpond' demo data in the system
 		while testing the configuration.
@@ -94,7 +94,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 	"]
 	</li>
 	<li>
-	  <A href=\"http://www.project-open.org/documentation/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
+	  <A href=\"http://www.project-open.org/en/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
 		%po% Documentation Wiki
 	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki_Blurb "
 		Contains reference information on %po% processes, packages, objects etc.

@@ -67,7 +67,7 @@
 	    Once a day we will reset the server and any data entered will be deleted.
 	<li><strong>Administrator Permissions</strong>:<br>
 	   Please note that you won't get Admin permissions on this demo server. <br>
-	   <a href="http://www.project-open.org/documentation/install_main">
+	   <a href="http://www.project-open.org/en/install_main">
 	   Please download and install ]po[ </A>
 	   in your own server in order to test administration functionality.
 

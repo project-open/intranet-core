@@ -6,7 +6,7 @@ Please use ]po[ V3.5 instead, unless you know what you are doing.
 - project-open-Update-4.0.x.y.z.tgz:  Upgrade your existing server
 
 For more information about installers please see:
-http://www.project-open.org/documentation/list_installers
+http://www.project-open.org/en/list_installers
 
 For more information about the ]po[ development roadmap:
-http://www.project-open.org/documentation/project_open_roadmap
+http://www.project-open.org/en/project_open_roadmap

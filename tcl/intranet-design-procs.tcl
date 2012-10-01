@@ -564,7 +564,7 @@ ad_proc -public im_navbar_help_link {
     Determines where to link to www.project-open.org for help.
     The Wiki convention for page is "page_" followed by the URL
     of the page with all non-alphanum characters replaced by "_":
-    http://www.project-open.org/documentation/page_intranet_invoices_view
+    http://www.project-open.org/en/page_intranet_invoices_view
 } {
     # Get the URL from the connection
     if {"" == $url} { set url [ad_conn url] }
@@ -578,7 +578,7 @@ ad_proc -public im_navbar_help_link {
     regsub -all {\-} $url "_" url
 
     # Add the constant part in front of the url:
-    set url "http://www.project-open.org/documentation/page$url"
+    set url "http://www.project-open.org/en/page$url"
 
     # Return the finished URL
     return $url
@@ -924,12 +924,21 @@ ad_proc -public im_navbar {
     set user_name [im_name_from_user_id $user_id]
 
     set context_help_html ""
-
+    set context_comment_html ""
 
     if {$show_context_help_p} {
 	set context_help_html "
 	    <div id=\"main_users_online\">
-	      <a href=\"[im_navbar_help_link]\">&nbsp; [lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a>
+	      <a href=\"[im_navbar_help_link]\">&nbsp; [im_gif help [lang::message::lookup "" intranet-core.Context_Help "Context Help"]]</a>
+	    </div>
+	"
+    }
+
+    set show_context_comment_p 1
+    if {$show_context_comment_p} {
+	set context_comment_html "
+	    <div id=\"main_users_online\">
+	      <a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\">&nbsp; [im_gif bug [lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]]</a>
 	    </div>
 	"
     }
@@ -945,6 +954,7 @@ ad_proc -public im_navbar {
     append main_users_and_search "
 	    </div>
 	    $context_help_html
+	    $context_comment_html
 	    <div id=\"main_users_online\">
     "
     if { "register" != [string range [ns_conn url] 1 8] } {
@@ -1847,7 +1857,7 @@ where
     set report_url [ad_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { [empty_string_p $report_url] } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
-	set report_url "http://www.project-open.org/intranet-forum/forum/new-system-incident"
+	set report_url "http://www.project-open.net/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""

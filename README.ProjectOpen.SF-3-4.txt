@@ -9,4 +9,4 @@ Please see V3.5 for the latest "stable" version.
 - zimunzip.zip:                       Auxillary files for Windows
 
 For more information about installers please see:
-http://www.project-open.org/documentation/list_installers
+http://www.project-open.org/en/list_installers

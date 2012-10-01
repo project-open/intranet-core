@@ -28,8 +28,8 @@
         "] %>
 <br><br>
 	<ul>
-	<li><a href='http://www.project-open.org/documentation/page_intranet_admin_categories_index'>Help about this page</a>
-	<li><a href='http://www.project-open.org/documentation/list_categories'>Help about the meaning of categories</a>
+	<li><a href='http://www.project-open.org/en/page_intranet_admin_categories_index'>Help about this page</a>
+	<li><a href='http://www.project-open.org/en/list_categories'>Help about the meaning of categories</a>
 <if "All" ne @select_category_type@>
 	<li><a href='@category_help_url;noquote@'>Help about '@select_category_type@'</a>
 </if>

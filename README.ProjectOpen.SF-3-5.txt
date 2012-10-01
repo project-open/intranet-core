@@ -7,4 +7,4 @@ This is ]project-open[ V3.5 "stable".
 - project-open-Update-3.5.x.y.z.tgz:  Upgrade your existing server
 
 For more information about installers please see:
-http://www.project-open.org/documentation/list_installers
+http://www.project-open.org/en/list_installers

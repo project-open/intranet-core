@@ -119,11 +119,11 @@ template::list::create \
     -elements {
 	module_short_name {
 	    label "Module"
-            link_url_eval "http://www.project-open.org/documentation/$module_code"
+            link_url_eval "http://www.project-open.org/en/$module_code"
 	}
 	process_name {
 	    label "Name"
-            link_url_eval "http://www.project-open.org/documentation/$process_code"
+            link_url_eval "http://www.project-open.org/en/$process_code"
 	}
 	module_description {
 	    label "Description"
