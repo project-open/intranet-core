@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="4.0.3.2.0" url="http://www.project-open.org/download/apm/intranet-core-4.0.3.2.0.apm">
+    <version name="4.0.3.2.1" url="http://www.project-open.org/download/apm/intranet-core-4.0.3.2.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -79,6 +79,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TarCmd"  default="/bin/tar" description="Command to execute the Unix &quot;tar&quot; command"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer: 0=Production server (default), 1=PMO Demo Server, 2=Translation Demo Server"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="UtilCurrentLocationRedirect"  description="Controls the behaviour of ]po[ when running behind a reverse HTTP proxy or with HTTPS. The default value is empty to enables the default redirection logic which will work in most cases. Please use this parameter if you encounter problems when using ]po[ together with Pound or a HTTPS connection. The parameter determines the base Url that ]po[ for 'redirection' operations (for example after the login process). Example: 'https://www.project-open.net'."/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PgPathUnix"  default="" description="Unix path the the PostgreSQL binaries (used only for pg_dump at the moment). Default is an empty string in order to use the default PostgreSQL binaries in the path. A sample value could be '/usr/local/pgsql84/bin/' for a PG 8.4 installation on an otherwise 8.2 default system."/>
         </parameters>
 
     </version>
