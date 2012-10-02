@@ -161,7 +161,7 @@ if { [catch {
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
-	    set cmd [list exec pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+	    set cmd [list exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
     }
 
