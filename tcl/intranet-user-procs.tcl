@@ -1130,7 +1130,7 @@ ad_proc -public im_user_nuke {
 	    db_dml freelance_conf "update im_freelance_skills set confirmation_user_id = null where confirmation_user_id = :user_id"
 	}
 
-	# Gantt Projects
+	# Gantt
 	if {[im_table_exists im_gantt_persons]} {
 	    db_dml im_gantt_persons "delete from im_gantt_persons where person_id = :user_id"
 	}
@@ -1203,6 +1203,13 @@ ad_proc -public im_user_nuke {
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    db_dml del_rel_skill_profile_ref "update im_biz_object_members set skill_profile_rel_id = null where skill_profile_rel_id = :rel_id"
+	    if {[im_table_exists im_gantt_assignment_timephases]} {
+		db_dml im_gantt_assignment_timephases "delete from im_gantt_assignment_timephases where rel_id = :rel_id"
+	    }
+	    if {[im_table_exists im_gantt_assignments]} {
+		db_dml im_gantt_assignments "delete from im_gantt_assignments where rel_id = :rel_id"
+	    }
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
 	    db_dml del_rels "delete from acs_rels where rel_id = :rel_id"
