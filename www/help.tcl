@@ -57,7 +57,7 @@ set general_help "
 
 set developer_help "
 <ul>
-  <li><A href=http://www.project-open.org/doc/>
+  <li><A href=http://www.project-open.org/en/faq_developers>
 	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
       Documentation</a>
 </ul>

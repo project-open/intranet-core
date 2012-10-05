@@ -70,7 +70,7 @@ set stats_file		"/tmp/benchmark_timesheet.stats"	;# Where to collect the output?
 #
 #	- Portlet Component Configuration: Each portlet will
 #	  consume some time. Please use the configuration described
-#	  in http://www.project-open.org/documentation/benchmark_timesheet.
+#	  in http://www.project-open.org/en/benchmark_timesheet.
 #
 #	- ShowLeftFunctionalMenupP: Please disable the left
 #	  navigation bar for this test.

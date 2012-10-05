@@ -171,7 +171,7 @@
 <input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden">
 <input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden">
 <input value="@title@" name="response_to_question.@title_question_id@" type="hidden">
-<input value="http://www.project-open.org/documentation/contact_thanks" name="return_url" type="hidden">
+<input value="http://www.project-open.net/en/contact_thanks" name="return_url" type="hidden">
 <script language="javascript" type="text/javascript">
 document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" >');
 </script>

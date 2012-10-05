@@ -27,7 +27,6 @@ chomp($time);
 my $version_line = `grep 'version name' ~/packages/intranet-core/intranet-core.info`;
 my $version; my $x; my $y; my $z; my $v; my $w;
 my $readme; my $tar; my $packages;
-# <version name="3.3.1.2.0" url="http://www.project-open.org/download/apm/intranet-core-3.3.1.2.0.apm">
 if ($version_line =~ /\"(.)\.(.)\.(.)\.(.)\.(.)\"/) { 
     $x = $1;
     $y = $2;
