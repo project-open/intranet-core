@@ -155,7 +155,11 @@ ad_proc -public im_permission {user_id privilege} {
     Uses a cache to reduce DB traffic.
 } {
 #    return [im_permission_helper $user_id $privilege]
-    return [util_memoize "im_permission_helper $user_id $privilege" 3600]
+    set result [util_memoize "im_permission_helper $user_id $privilege" 3600]
+
+    # Fraber 121008: Add custom debugging comment
+    catch { im_ds_comment_privilege -user_id $user_id -privilege $privilege -result $result }
+    return $result
 }
 
 
