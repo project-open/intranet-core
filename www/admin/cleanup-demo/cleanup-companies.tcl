@@ -117,7 +117,8 @@ db_multirow -extend {company_url} companies get_companies "
 
 		) num_offices on (c.company_id = num_offices.company_id)
 	where
-		1=1
+		-- Exclude the internal company from deleting demo-data
+		lower(company_path) != 'internal'
 	order by 
 		c.company_id DESC
 " {
