@@ -289,6 +289,8 @@ namespace eval im_profile {
 		where
 		       u.user_id = m.member_id
 		       and m.group_id in ([join $profile_ids ","])
+		order by 
+			name
 	"]
     }
 
