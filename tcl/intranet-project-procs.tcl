@@ -2798,6 +2798,9 @@ ad_proc im_project_nuke {
 	# Relationships
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
+	    if {[im_column_exists im_biz_object_members skill_profile_rel_id]} {
+		db_dml del_rels "update im_biz_object_members set skill_profile_rel_id = null where skill_profile_rel_id = :rel_id"
+	    }
 	    if {[im_table_exists im_gantt_assignment_timephases]} {
 		db_dml del_rels "delete from im_gantt_assignment_timephases where rel_id = :rel_id"
 	    }
