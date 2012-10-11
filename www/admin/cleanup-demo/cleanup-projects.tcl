@@ -19,7 +19,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { return_url "" }
-    { limit 1000 }
+    { limit 100000 }
 }
 
 # ------------------------------------------------------
