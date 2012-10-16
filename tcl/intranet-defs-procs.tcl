@@ -1219,12 +1219,39 @@ ad_proc im_url_with_query { { url "" } } {
     return $url
 }
 
+if {[ns_info name] eq "NaviServer"} {
+ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {also_memoize_as ""} } {
+
+    if { $force } {
+        ns_cache_flush -- ns:memoize db_list_of_lists $statement_name $sql_query -bind $bind
+    }
+
+    if {[catch {set result [ns_memoize db_list_of_lists $statement_name $sql_query -bind $bind]} err_msg]} {
+        # If there was an error, let's log a nice error message that includes
+        # the statement we executed and any bind variables
+        ns_log error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\""
+	if { [empty_string_p $bind] } {
+	    set bind_string ""
+	} else {
+	    set bind_string [NsSettoTclString $bind]
+	    ns_log error "im_memoize_list: Bind Variables: $bind_string"
+	}
+	error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\"\n\n$bind_string\n\n$err_msg\n\n"
+    }
+
+    if { $also_memoize_as ne "" } {
+        ns_log Notice "im_memoize_list: ignoring also_memoize_as $also_memoize_as"
+    }
+}
+
+} else {
+
 ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {also_memoize_as ""} } {
     Allows you to memoize database queries without having to grab a db
     handle first. If the query you specified is not in the cache, this
     proc grabs a db handle, and memoizes a list, separated by $divider
     inside the cache, of the results. Your calling proc can then process
-    this list as normally. 
+    this list as normally.
 } {
 
     ns_share im_memoized_lists
@@ -1233,35 +1260,36 @@ ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {als
     set divider "\253"
 
     if { [info exists im_memoized_lists($sql_query)] } {
-	set str $im_memoized_lists($sql_query)
+        set str $im_memoized_lists($sql_query)
     } else {
-	# ns_log Notice "Memoizing: $sql_query"
-	if { [catch {set db_data [db_list_of_lists $statement_name $sql_query -bind $bind]} err_msg] } {
-	    # If there was an error, let's log a nice error message that includes 
-	    # the statement we executed and any bind variables
-	    ns_log error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\""
-	    if { [empty_string_p $bind] } {
-		set bind_string ""
-	    } else {
-		set bind_string [NsSettoTclString $bind]
-		ns_log error "im_memoize_list: Bind Variables: $bind_string"
-	    }
-	    error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\"\n\n$bind_string\n\n$err_msg\n\n"
-	}
-	foreach row $db_data {
-	    foreach col $row {
-		if { ![empty_string_p $str] } {
-		    append str $divider
-		}
-		append str $col
-	    }
-	}
-	set im_memoized_lists($sql_query) $str
+        # ns_log Notice "Memoizing: $sql_query"
+        if { [catch {set db_data [db_list_of_lists $statement_name $sql_query -bind $bind]} err_msg] } {
+            # If there was an error, let's log a nice error message that includes
+            # the statement we executed and any bind variables
+            ns_log error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\""
+            if { [empty_string_p $bind] } {
+                set bind_string ""
+            } else {
+                set bind_string [NsSettoTclString $bind]
+                ns_log error "im_memoize_list: Bind Variables: $bind_string"
+            }
+            error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\"\n\n$bind_string\n\n$err_msg\n\n"
+        }
+        foreach row $db_data {
+            foreach col $row {
+                if { ![empty_string_p $str] } {
+                    append str $divider
+                }
+                append str $col
+            }
+        }
+        set im_memoized_lists($sql_query) $str
     }
     if { ![empty_string_p $also_memoize_as] } {
-	set im_memoized_lists($also_memoize_as) $str
+        set im_memoized_lists($also_memoize_as) $str
     }
     return [split $str $divider]
+}
 }
 
 
