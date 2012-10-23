@@ -234,10 +234,13 @@ set left_navbar_html "
 	<td>[lang::message::lookup "" intranet-core.Component_Page "Page"]</td>
 	<td>[im_select -translate_p 0 -ad_form_option_list_style_p 1 component_page $page_options $component_page]</td>
 	</tr>
-
 	<tr><td></td><td><input type=submit></td></tr>
 	</form>
 	</table>
+	<hr>
+	<ul>
+	<li><a href='/intranet/admin/components/edit'>[lang::message::lookup "" intranet-core.Add_a_new_portlet "Add a new portlet"]</li>
+	</ul>
 "
 
 set left_navbar_html "

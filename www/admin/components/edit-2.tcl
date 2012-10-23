@@ -35,6 +35,7 @@ ad_page_contract {
     {enabled_p ""}
     {action "none"}
     {return_url ""}
+    {package_name ""}
     {menu_name ""}
     {menu_sort_order 0}
     {submit "Update"}
@@ -50,7 +51,28 @@ if {!$user_is_admin_p} {
 
 
 switch $submit {
-    "Update" {
+    "Update" - "Create" {
+
+	if {"Create" == $submit} {
+	    db_string new_component "
+	    	SELECT	im_component_plugin__new (
+			:plugin_id,			-- plugin_id
+			'im_component_plugin',		-- object_type
+			now(),				-- creation_date
+			:user_id,			-- creation_user
+			'[ad_conn peeraddr]',		-- creation_ip
+			null,				-- context_id
+			:plugin_name,			-- plugin_name
+			:package_name,			-- package_name
+			:location,			-- location
+			:page_url,			-- page_url
+			null,				-- view_name	
+			:sort_order,			-- sort_order
+			:component_tcl
+		)
+	    "
+	}
+
 	set updates [list]
 	if {"" != $plugin_name} { lappend updates "plugin_name = :plugin_name" }
 	if {"" != $page_url} { lappend updates "page_url = :page_url" }
@@ -79,13 +101,9 @@ switch $submit {
 
     }
     "Delete" {
-
 	# Delete entries from user_map that might change the location
 	db_dml del_user_map "delete from im_component_plugin_user_map where plugin_id = :plugin_id"
-
-	db_string delete_component "
-		select im_component_plugin__delete(:plugin_id::integer)
-	"
+	db_string delete_component "select im_component_plugin__delete(:plugin_id::integer)"
     }
     default {
 	ad_return_complaint 1 "<b>Unknown Operations '$submit'</b><br>"

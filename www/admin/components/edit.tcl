@@ -22,7 +22,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
     @author mai-bee@gmx.net
 } {
-    plugin_id:naturalnum
+    { plugin_id:naturalnum ""}
     { return_url "" }
 }
 
@@ -33,6 +33,13 @@ if {!$user_is_admin_p} {
     return
 }
 
+if {"" == $plugin_id} { 
+    set plugin_id [db_nextval "acs_object_id_seq"] 
+    set new_p 1
+} else {
+    set new_p 0
+}
+
 # ---------------------------------------------------------------
 # Format Component Data 
 # ---------------------------------------------------------------
@@ -40,18 +47,31 @@ if {!$user_is_admin_p} {
 set page_title "Component Edit"
 set context_bar [im_context_bar $page_title]
 
-if [catch {db_1row category_properties "
+set plugin_name "Please enter a title"
+set sort_order "0"
+set page_url "/intranet/index"
+set location "left"
+set title_tcl ""
+set component_tcl "Please enter TCL code here that returns the portlet contents. Example: im_ad_hoc_query -format html \"select * from groups\""
+set enabled_p "t"
+set package_name "intranet-core"
+set menu_name ""
+set menu_sort_order 0
+
+db_0or1row category_properties "
 	select
 		c.*
 	from
 		im_component_plugins c
 	where
 		c.plugin_id = :plugin_id
-" } errmsg] {
-    ad_return_complaint 1 "<li>Internal Error<br>
-        Component \#$plugin_id does not exist (anymore)"
-    return
-}
+"
+
+# if [catch { } errmsg] {
+#     ad_return_complaint 1 "<li>Internal Error<br>
+#         Component \#$plugin_id does not exist (anymore)"
+#     ad_script_abort
+# }
 
 set left_selected ""
 set right_selected ""
@@ -92,7 +112,7 @@ set page_body "
     <TD class=rowtitle align=middle colSpan=2>Component</TD></TR>
   <TR class=rowodd>
     <TD>Package Name</TD>
-    <TD>$package_name</TD></TR>
+    <TD>$package_name<input type=hidden name=package_name value='$package_name'></TD></TR>
   <TR class=roweven>
     <TD>Name</TD>
     <TD><input type=text name=plugin_name value=\"$plugin_name\" size=60></TD></TR>
@@ -139,9 +159,15 @@ set page_body "
 
 </TBODY>
 </TABLE>
-<input type=submit name=submit value=Update>
-<input type=submit name=submit value=Delete>
-</form>
 "
+
+if {$new_p} {
+    append page_body "<input type=submit name=submit value=Create>"
+} else {
+    append page_body "<input type=submit name=submit value=Update><input type=submit name=submit value=Delete>"
+}
+
+append page_body "</form>"
+
 
 ad_return_template
