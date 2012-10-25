@@ -2413,6 +2413,11 @@ ad_proc im_project_nuke {
 	    }
 	}
 	
+	# Service Hours per SLA (SLA is a sub-type of project)
+        if {[im_table_exists im_sla_service_hours]} {
+	    db_dml del_sla_param "delete from im_sla_service_hours where sla_id = :project_id"
+	}
+
 	# Helpdesk Tickets
         if {[im_table_exists im_tickets]} {
 	    db_dml del_tickets "delete from im_tickets where ticket_id = :project_id"
