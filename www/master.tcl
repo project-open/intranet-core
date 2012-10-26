@@ -112,11 +112,5 @@ if { "" != $feedback_message_key } {
     }
 }
 
-
-
-
-
-
-
-
-
+# Fraber 121008: Write out permission debugging
+im_ds_display_config_info
