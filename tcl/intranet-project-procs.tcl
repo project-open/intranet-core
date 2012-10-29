@@ -2916,6 +2916,29 @@ ad_proc im_project_super_project_id {
 
 
 
+ad_proc im_project_set_customer_for_children {
+    -project_id:required
+    -company_id:required
+} {
+    Sets the company_id field of sub-projects if the parent
+    is assigned to a different customer.
+} {
+    set children [db_list children "
+	select
+	    p_child.project_id
+	from
+	    im_projects p_parent,
+	    im_projects p_child
+	where
+	    p_parent.project_id = :project_id and
+	    p_child.tree_sortkey between p_parent.tree_sortkey and tree_right(p_parent.tree_sortkey)
+    "]
+    foreach child_id $children {
+	db_dml update_child_customer "update im_projects set company_id = :company_id where project_id = :child_id"
+	im_audit -object_id $project_id
+    }
+}
+
 
 
 ad_proc -public im_project_base_data_component {
@@ -3001,7 +3024,7 @@ ad_proc -public im_personal_todo_component {
 		im_category_from_id(p.project_priority_id) as priority,
 		p.percent_completed
 	from
-	        im_projects p,
+		im_projects p,
 		acs_rels r,
 		im_biz_object_members bom
 	where
@@ -3056,23 +3079,23 @@ ad_proc -public im_personal_todo_component {
 
     set personal_tasks_query "
 	SELECT	t.*,
-	        c.company_name,
-	        im_category_from_id(t.type_id) as task_type,
-	        im_category_from_id(t.status_id) as task_status,
+		c.company_name,
+		im_category_from_id(t.type_id) as task_type,
+		im_category_from_id(t.status_id) as task_status,
 		to_char(t.start_date, 'YYYY-MM-DD') as start_date_pretty,
 		to_char(t.end_date, 'YYYY-MM-DD') as end_date_pretty,
 		bou.url as task_url
-                $extra_select
+		$extra_select
 	FROM
 		($tasks_sql) t,
 		im_companies c,
 		acs_objects o
 		LEFT OUTER JOIN (select * from im_biz_object_urls where url_type = 'view') bou ON (o.object_type = bou.object_type)
-                $extra_from
+		$extra_from
 	WHERE
 		t.customer_id = c.company_id and
 		t.task_id = o.object_id
-                $extra_where
+		$extra_where
 	order by $order_by_clause
     "
 
