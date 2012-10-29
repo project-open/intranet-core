@@ -164,6 +164,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	set enabled_sql ""
     }
 
+    # Get the list of plugins and cache for 10 seconds
     set plugin_sql "
 	select	*
 	from (
@@ -173,27 +174,37 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 			c.title_tcl,
 			coalesce(m.sort_order, c.sort_order) as sort_order,
 			coalesce(m.location, c.location) as location,
-			im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+			im_object_permission_p(c.plugin_id, $user_id, 'read') as perm
 		from	im_component_plugins c
 			left outer join
 			    (	select	* 
 				from	im_component_plugin_user_map 
-				where	user_id = :user_id
+				where	user_id = $user_id
 			    ) m
 			    on (c.plugin_id = m.plugin_id)
 		where
-			c.page_url = :url_stub
+			c.page_url = '$url_stub'
 			$enabled_sql
-			and (view_name is null or view_name = :view_name)
+			and (view_name is null or view_name = '$view_name')
 	    ) p
 	where	
-		location = :location
+		location = '$location'
 	order by 
 		sort_order
     "
+    set plugin_list [util_memoize [list db_list_of_lists "plugin_list_$user_id" $plugin_sql] 1000]
+
 
     set html ""
-    db_foreach get_plugins $plugin_sql {
+    foreach plugin_tuple $plugin_list {
+
+	set plugin_id [lindex $plugin_tuple 0]
+	set plugin_name [lindex $plugin_tuple 1]
+	set component_tcl [lindex $plugin_tuple 2]
+	set title_tcl [lindex $plugin_tuple 3]
+	set sort_order [lindex $plugin_tuple 4]
+	set location [lindex $plugin_tuple 5]
+	set perm [lindex $plugin_tuple 6]
 
 	if {$any_perms_set_p > 0 && "f" == $perm} { continue }
 	

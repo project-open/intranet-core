@@ -34,6 +34,7 @@ set user_id [ad_maybe_redirect_for_registration]
 
 # Flush the cache for the navigation bar for all users...
 util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
+util_memoize_flush_regexp "db_list_of_lists plugin_list_$user_id"
 
 
 switch $action {
@@ -348,6 +349,5 @@ switch $action {
 	"
     }
 }
-
 
 ad_returnredirect "$return_url"
