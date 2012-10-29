@@ -709,7 +709,19 @@ if {[form is_submission $form_id]} {
         incr n_error
         template::element::set_error $form_id company_project_nr "[_ intranet-core.Max50Chars]"
     }
-		
+
+    set previous_company_id [db_string prev_company_id "select company_id from im_projects where project_id = :project_id" -default ""]
+
+#    ad_return_complaint 1 $previous_company_id
+    # Only check for sub-projects:
+    # The user shouldn't change the customer
+    if {"" != $parent_id } {
+	if {"" != $previous_company_id && $company_id != $previous_company_id} {
+	    incr n_error
+	    template::element::set_error $form_id company_id [lang::message::lookup "" intranet-core.Cant_change_customer_of_subproject "You can't cange the customer of a sub-project"]
+	}
+    }
+
     if {$n_error >0} {
 	return
     }
@@ -777,11 +789,21 @@ if {[form is_valid $form_id]} {
 
     # Set the old project type. Used to detect changes in the project
     # type and therefore the need to display new DynField fields in a
-    # second page.
+    # second page. !!!
     if {0 == $id_count} {
 	set previous_project_type_id 0
+	set previous_project_company_id 0
     } else {
-	set previous_project_type_id [db_string prev_ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
+        set sql "
+	 	select
+			project_type_id         as previous_project_type_id,
+			company_id              as previous_project_company_id
+		from	im_projects
+		where	project_id = :project_id
+        "
+	if {![db_0or1row select_orig_values $sql] } {
+	    ad_return_complaint 1 "Could not find project with id: $project_id, please get in touch with your System Administrator"
+	}
     }
 	
     # -----------------------------------------------------------------
@@ -835,7 +857,11 @@ if {[form is_valid $form_id]} {
 	db_dml project_update $project_update_sql
     }
 
-
+    # Check if the user has changed the project's customer.
+    # Propagate to sub-projects
+    if {0 != $previous_project_company_id && $previous_project_company_id != $company_id} {
+	im_project_set_customer_for_children -project_id $project_id -company_id $company_id
+    }
 
     # -----------------------------------------------------------------
     # Create a new Workflow for the project either if:
@@ -924,7 +950,6 @@ if {[form is_valid $form_id]} {
 	    # Check that there is atleast one dynfield. Otherwise
 	    # it's not necessary to show the same page again
 	    if {$field_cnt > 0} {
-
 		set return_url [export_vars -base "/intranet/projects/new" {project_id return_url}]
 	    }
 	}
