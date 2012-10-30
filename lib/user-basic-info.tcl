@@ -24,6 +24,7 @@ set return_url [im_url_with_query]
 set current_url $return_url
 
 set date_format "YYYY-MM-DD"
+set td_class "class=roweven"
 
 # user_id is a bad variable for the object,
 # because it is overwritten by SQL queries.
