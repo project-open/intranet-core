@@ -2703,7 +2703,6 @@ ad_proc im_project_nuke {
 	
 	# RFQs
 	if {[im_table_exists im_freelance_rfqs]} {
-	
 	    ns_log Notice "projects/nuke-2: im_freelance_rfqs"
 	    db_dml del_rfq_answers "
 		delete from im_freelance_rfq_answers
@@ -2719,6 +2718,11 @@ ad_proc im_project_nuke {
 	    "
 	}
 
+	# Risks
+	if {[im_table_exists im_risks]} {
+	    ns_log Notice "projects/nuke-2: im_risks"
+	    db_dml del_risks "delete from im_risks where risk_project_id = :project_id"
+	}
 
 	
 	# Filestorage
