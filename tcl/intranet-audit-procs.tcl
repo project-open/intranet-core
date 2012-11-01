@@ -36,6 +36,7 @@ ad_proc -public im_audit  {
     {-type_id "" }
     {-action "after_update" }
     {-comment "" }
+    {-debug_p 0}
 } {
     Generic audit for all types of objects.
     @param object_id The object that may have changed
@@ -62,7 +63,7 @@ ad_proc -public im_audit  {
     if {"after_view" == $action} { set action "after_update" }
 
     if {"" == $object_type || "" == $status_id || "" == $type_id} {
-	ns_log Warning "im_audit: object_type, type_id or status_id not defined for object_id=$object_id"
+	if {$debug_p} { ns_log Warning "im_audit: object_type, type_id or status_id not defined for object_id=$object_id" }
 	set ref_status_id ""
 	set ref_type_id ""
 	db_0or1row audit_object_info "
@@ -77,12 +78,12 @@ ad_proc -public im_audit  {
 	if {"" == $type_id && "" != $ref_type_id} { set type_id $ref_type_id }
     }
 
-    ns_log Notice "im_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment"
+    if {$debug_p} { ns_log Notice "im_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
 
     # Submit a callback so that customers can extend events
     set err_msg ""
     if {[catch {
-	ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id"
+	if {$debug_p} { ns_log Notice "im_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id" }
 	callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
     } err_msg]} {
 	ns_log Error "im_audit: Error with callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id:\n$err_msg"
@@ -92,7 +93,7 @@ ad_proc -public im_audit  {
     set err_msg ""
     set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
 
-    ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p"
+    if {$debug_p} { ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p" }
 
     set audit_id 0
     if {$intranet_audit_exists_p} {
