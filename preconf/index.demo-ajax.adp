@@ -1,4 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+
+<%
+   set version "\]po\[ V4.0:"
+   switch [ns_info server] {
+   po40ts   { set page_title "$version Simple Timesheet Management" }
+   po40cons { set page_title "$version PSA - Profesional Services Automation" }
+   default  { set page_title "$version All-Features Demo Server" }
+   }
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -6,7 +15,7 @@
 <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
 <![endif]-->
 <meta name="generator" content="OpenACS version 5.7.0" lang="en">
-<title>]project-open[  ]po[ V4.0.3. All-Features Demo Server</title>
+<title>@page_title@</title>
 <link rel="stylesheet" type="text/css" href="index.css" media="all">
 <style type="text/css">
 div.outer {
@@ -134,12 +143,9 @@ function setBgImage (id,img) {
     </ul>
   </div>
   <div id="main_header">
-    <div id="main_title"> ]po[ V4.0.3. All-Features Demo Server </div>
-    <div id="main_context_bar"> <a class="contextbar" href="http://po40demo.project-open.net/intranet/">]project-open[</a> : <span class="contextbar"> ]po[ V4.0.3. All-Features Demo Server</span> </div>
+    <div id="main_title">@page_title@</div>
+    <div id="main_context_bar"> <a class="contextbar" href="http://po40demo.project-open.net/intranet/">]project-open[</a> : <span class="contextbar">@page_title@</span> </div>
     <div id="main_maintenance_bar"> </div>
-    <div id="main_portrait_and_username">
-      <p id="main_username"> Welcome, Unregistered Visitor </p>
-    </div>
     <div id="main_header_deco"></div>
   </div>
 </div>
@@ -241,13 +247,13 @@ function setBgImage (id,img) {
         <col width="230px">
         </colgroup>
         <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/laura_leadarchitect_bw.jpg')">
-          <td><div class="outer outer5"><a href="/become?user_id=8864&amp;url=/intranet/" id="outer5"><span></span></a></div></td>
-          <td><a href="/become?user_id=8864&amp;url=/intranet/"><b>Login as Laura Leadarchitect</b><br>
+          <td><div class="outer outer5"><a href="/become?user_id=8858&amp;url=/intranet/" id="outer5"><span></span></a></div></td>
+          <td><a href="/become?user_id=8858&amp;url=/intranet/"><b>Login as Laura Leadarchitect</b><br>
             (Employee)</a></nobr>
             </div>
             <br>
             <br>
-            <div class="login"><a href="/become?user_id=8864&amp;url=/intranet/" id="login5"><span></span></a></div></td>
+            <div class="login"><a href="/become?user_id=8858&amp;url=/intranet/" id="login5"><span></span></a></div></td>
         </tr>
       </table></td>
     <td><table cellpadding="0" cellspacing="0" border="0">

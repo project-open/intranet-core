@@ -1,4 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<%
+   set page_title "\]po\[ V4.0 Demo Server Farm"
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -6,7 +9,7 @@
 <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
 <![endif]-->
 <meta name="generator" content="OpenACS version 5.7.0" lang="en">
-<title>]project-open[  ]po[ V4.0.3. All-Features Demo Server</title>
+<title>@page_title@</title>
 <link rel="stylesheet" type="text/css" href="index.css" media="all">
 <style type="text/css">
 div.outer {
@@ -38,8 +41,10 @@ div.login a {
 	overflow:hidden;
 	background: url('/intranet/images/demoserver/login_bw.jpg') top left no-repeat;
 }
-div.outer1 { background: url('/intranet/images/demoserver/cons.jpg' ) 0 -0px no-repeat; }
-div.outer1 a { background: url('/intranet/images/demoserver/cons_bw.jpg' ) top left no-repeat; }
+div.outer0 { background: url('/intranet/images/demoserver/timesheet.jpg' ) 0 -0px no-repeat; }
+div.outer0 a { background: url('/intranet/images/demoserver/timesheet_bw.jpg' ) top left no-repeat; }
+div.outer1 { background: url('/intranet/images/demoserver/cons.gif' ) 0 -0px no-repeat; }
+div.outer1 a { background: url('/intranet/images/demoserver/cons_bw.gif' ) top left no-repeat; }
 div.outer2 { background: url('/intranet/images/demoserver/samuel_salesmanager.jpg' ) 0 -0px no-repeat; }
 div.outer2 a { background: url('/intranet/images/demoserver/samuel_salesmanager_bw.jpg' ) top left no-repeat; }
 div.outer3 { background: url('/intranet/images/demoserver/epm.jpg' ) 0 -0px no-repeat; }
@@ -98,7 +103,7 @@ function setBgImage (id,img) {
       </ul>
     </div>
     <div id="main_header">
-      <div id="main_title"> ]po[ V4.0. Demo Server Farm</div>
+      <div id="main_title">@page_title@</div>
       <div id="main_maintenance_bar"> </div>
       <div id="main_header_deco"></div>
     </div>
@@ -106,13 +111,18 @@ function setBgImage (id,img) {
   <div id="slave">
     <div style="visibility: visible; width:900px; margin:0px auto;" >
       <div style="text-align: left">
-	<h2>Please select the demo server the matches your business sector:</h2>
+	<h2>One ]project-open[ -- many configurations:</h2>
+	<p>
+	  ]project-open[ is the most powerful and complete open-source project management software around.<br>
+	  In order to reduce the complexity we have prepared several "configuration templates" for you:
+	</p>
       </div>
       <br>
 
 <!-- -->
 
       <table border="0" cellpadding="10" cellspacing="10" width="100%">
+
 	<tr>
 	  <td>
 	    <table border="0" cellpadding="0" cellspacing="0">
@@ -121,15 +131,42 @@ function setBgImage (id,img) {
 		<col width="500px">
 		<col width="100px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/cons_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('0')" onmouseout="this.className='off';setBgImage('0','/intranet/images/demoserver/timesheet_bw.jpg')">
+		<td>
+		  <div class="outer outer0"><a id="outer0" href="http://po40ts.project-open.net/index-userselect" ></a></div>
+		</td>
+		<td>
+		  <a href="http://po40ts.project-open.net/index-userselect">
+		    <b>Simple Timesheet Tracking</b><br>
+	            You just want to track the hours logged on projects?<br>
+		    Choose this template to get started quickly.
+		  </a><br>
+		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login1"></a></div>
+		</td>
+		<td><img src="/intranet/images/demoserver/complexity_easy.gif"></td>
+	      </tr>  
+	    </table>
+	  </td>
+	</tr>
+
+
+	<tr>
+	  <td>
+	    <table border="0" cellpadding="0" cellspacing="0">
+	      <colgroup>
+		<col width="80px">
+		<col width="500px">
+		<col width="100px">
+	      </colgroup>
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/cons_bw.gif')">
 		<td>
 		  <div class="outer outer1"><a id="outer1" href="http://po40cons.project-open.net/index-userselect" ></a></div>
 		</td>
 		<td>
 		  <a href="http://po40cons.project-open.net/index-userselect">
-		    <b>SME / Consulting</b><br>
-	            You are a small or medium enterprise providing professional services.<br>
-		    Examples: IT consulting, financial consulting, stragegic consulting, ...
+		    <b>PSA - Professional Services Automation</b><br>
+	            You are a small or medium company providing professional services.<br>
+		    ]po[ allows you to manage your finances and to invoice your services.
 		  </a><br>
 		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login1"></a></div>
 		</td>
@@ -138,6 +175,7 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
+
 	<tr>
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
@@ -149,7 +187,7 @@ function setBgImage (id,img) {
 		<td><div class="outer outer3"><a href="http://po40ppm.project-open.net/index-userselect" id="outer3"></a></div></td>
 		<td>
 		  <a href="http://po40ppm.project-open.net/index-userselect">
-		    <b>Enterprise Project Management</b><br>
+		    <b>EPM - Enterprise Project Management</b><br>
 	            You are a department of a larger enterprise.<br>
 		    Example: IT department, research and development, product development, ...
 		  </a>
