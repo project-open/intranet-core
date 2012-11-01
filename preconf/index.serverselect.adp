@@ -213,11 +213,14 @@ function setBgImage (id,img) {
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/pmo_bw.jpg')">
 	        <td><div class="outer outer5"><a href="http://po40pmo.project-open.net/index-userselect" id="outer5"></a></div></td>
 	        <td>
-		  <a href="http://po40pmo.project-open.net/index-userselect">
-		    <b>PMO - Project Management Office</b><br>
-	            You are running the PMO for your enterprise.<br>
-		  </a>
-	          <br>
+		  <b>
+		  <a href="http://po40pmo.project-open.net/index-userselect">PMO - Project Management Office</a>
+		  by 
+		  <a href="http://www.pentamino.de/" target="_">Pentamino</a>
+		  </b><br>
+	          <a href="http://po40pmo.project-open.net/index-userselect">
+		    Everything you need in order to run your PMO.</a>
+		  <br>
 	          <div class="login"><a href="http://po40pmo.project-open.net/index-userselect" id="login5"></a></div>
 		</td>
 		<td><img src="/intranet/images/demoserver/complexity_advanced.gif"></td>
