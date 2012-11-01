@@ -2865,6 +2865,12 @@ ad_proc im_project_nuke {
 		update im_projects 
 		set parent_id = null 
 		where parent_id = :project_id"
+	if {[im_column_exists im_projects program_id]} {
+	    db_dml program_id "
+		update im_projects 
+		set program_id  = null 
+		where program_id = :project_id"
+	}
 	db_dml delete_projects "
 		delete from im_projects 
 		where project_id = :project_id"
