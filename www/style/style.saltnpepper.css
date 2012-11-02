@@ -46,7 +46,6 @@
 }
 
 .log_hours{
-	
 	color: #000000;
 }
 
@@ -692,17 +691,15 @@ a   span  {float:none;}
       border-bottom-width: 0px;
 }
 
-
 #footer {
   text-align: center;
   margin-top: 1em;
   position: relative;
-  visibility: hidden;
 }
 
 #footer, #footer a {
 	color: #24618E;
-	z-index: -20;
+	z-index: 20;
 }
 
 #slave_content {
