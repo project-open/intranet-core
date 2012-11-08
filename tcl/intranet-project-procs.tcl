@@ -1595,6 +1595,7 @@ ad_proc im_project_clone_hierarchy_hash {
 	    set id_nr_hash($project_id) 0
 	    set nr_id_hash(0) $project_id
 	} else {
+	    if { ![info exists id_nr_hash($parent_id)] } { set id_nr_hash($parent_id) "" }
 	    set project_nr_list $id_nr_hash($parent_id)
 	    lappend project_nr_list $project_nr
 	    set id_nr_hash($project_id) $project_nr_list
