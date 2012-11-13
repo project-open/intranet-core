@@ -19,11 +19,7 @@ set language [lang::user::language -site_wide]
 set package_id [ad_conn package_id]
 set admin_p [ad_permission_p $package_id admin]
 
-if { $return_url == "" } {
-    # Use referer header
-    set return_url "/intranet/" 
-}
-
+if { $return_url == "" } { set return_url "/intranet/users/view?user_id=$user_id" }
 set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
 
 #
@@ -41,13 +37,11 @@ set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]
 # Create a list of lists containing the possible locale choiches
 
 set list_of_locales [db_list_of_lists locale_loop { select label, locale from enabled_locales order by label }]
-
 set list_of_package_locales [linsert $list_of_locales 0 [list (default) ""]]
 
 form create locale
 
 # Export variables
-
 element create locale package_id_info -datatype text -widget hidden -optional
 element create locale return_url_info -datatype text -widget hidden -optional
 element create locale user_id -datatype text -widget hidden -optional -value $user_id
@@ -94,7 +88,7 @@ if { [form is_request locale] } {
         element set_properties locale package_level_locale -value [lang::user::package_level_locale $package_id]
     }
     
-    set site_wide_locale [lang::user::site_wide_locale]
+    set site_wide_locale [lang::user::site_wide_locale -user_id $user_id]
     if { [empty_string_p $site_wide_locale] } {
         set site_wide_locale [lang::system::site_wide_locale]
     }
