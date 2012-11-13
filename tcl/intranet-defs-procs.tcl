@@ -413,9 +413,8 @@ ad_proc -public im_bash_command { } {
 	    set acs_install_dir_list [lrange $acs_root_dir_list 0 end-1]
 	    set acs_install_dir [join $acs_install_dir_list "/"]
 
-	    # 091022 fraber: Changes from Maurizio
-	    #return "$acs_install_dir/cygwin/bin/bash"
-	    return "$acs_install_dir/bin/bash"
+	    set result "$acs_install_dir/bin/bash"
+	    return $result
 	}
 	
 	default {
