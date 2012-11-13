@@ -28,10 +28,6 @@ set site_wide_locale [lang::user::locale -user_id $user_id]
 set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
 
 if {"" == $site_wide_locale} { set site_wide_locale "en_US" }
-
-
-if { $use_timezone_p } {
-    set timezone [lang::user::timezone]
-}
+if { $use_timezone_p } { set timezone [lang::user::timezone] }
 
 
