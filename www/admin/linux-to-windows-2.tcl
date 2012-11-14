@@ -64,26 +64,31 @@ ns_write "<li>Set the find command from /usr/bin/find to /bin/find\n"
 parameter::set_from_package_key -package_key "intranet-core" -parameter "FindCmd" -value "/bin/find"
 
 
+
 # Set pathes for binaries
-set dot_path "./bin/dot.bat"
+set dot_path "$install_dir/bin/dot.bat"
 ns_write "<li>Set pathes for acs-workflow graphwiz_dot_path the windows dot.bat wrapper"
 parameter::set_from_package_key -package_key "acs-workflow" -parameter "graphviz_dot_path" -value $dot_path
 
-set tmp_path "./servers/projop/tmp"
+set tmp_path "$install_dir/tmp"
 ns_write "<li>Set pathes for acs-workflow tmp_path to a suitable Windows value: '$tmp_path'"
 parameter::set_from_package_key -package_key "acs-workflow" -parameter "tmp_path" -value $tmp_path
 
-set pathes {
-    { intranet-core		BackupBasePathUnix		./servers/projop/filestorage/backup		}
-    { intranet-filestorage	HomeBasePathUnix		./servers/projop/filestorage/home		}
-    { intranet-filestorage	ProjectSalesBasePathUnix	./servers/projop/filestorage/project_sales	}
-    { intranet-filestorage	UserBasePathUnix  		./servers/projop/filestorage/users		}
-    { intranet-filestorage	BugBasePathUnix			./servers/projop/filestorage/bugs		}
-    { intranet-filestorage	CompanyBasePathUnix		./servers/projop/filestorage/projects		}
-    { intranet-filestorage	ProjectBasePathUnix		./servers/projop/filestorage/projects		}
-    { intranet-filestorage	TicketBasePathUnix		./servers/projop/filestorage/tickets		}
-    { intranet-invoices		InvoiceTemplatePathUnix		./servers/projop/filestorage/templates		}
-}
+set pathes [list \
+    [list intranet-core		BackupBasePathUnix		$install_dir/servers/projop/filestorage/backup		] \
+    [list intranet-filestorage	TmpPathUnix			$install_dir/tmp					] \
+    [list intranet-filestorage	HomeBasePathUnix		$install_dir/servers/projop/filestorage/home		] \
+    [list intranet-filestorage	ProjectSalesBasePathUnix	$install_dir/servers/projop/filestorage/project_sales	] \
+    [list intranet-filestorage	UserBasePathUnix  		$install_dir/servers/projop/filestorage/users		] \
+    [list intranet-filestorage	BugBasePathUnix			$install_dir/servers/projop/filestorage/bugs		] \
+    [list intranet-filestorage	CompanyBasePathUnix		$install_dir/servers/projop/filestorage/projects	] \
+    [list intranet-filestorage	ProjectBasePathUnix		$install_dir/servers/projop/filestorage/projects	] \
+    [list intranet-filestorage	TicketBasePathUnix		$install_dir/servers/projop/filestorage/tickets		] \
+    [list intranet-filestorage	CostBasePathUnix		$install_dir/servers/projop/filestorage/costs		] \
+    [list intranet-invoices	InvoiceTemplatePathUnix		$install_dir/servers/projop/filestorage/templates	] \
+]
+
+ns_write "<pre>[join $pathes "\n"]</pre>"
 
 foreach tuple $pathes {
     set package [lindex $tuple 0]
