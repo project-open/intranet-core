@@ -1,6 +1,6 @@
 # /packages/intranet-core/projects/new.tcl
 #
-# Copyright (C) 1998-2004 various parties
+# Copyright (C) 1998-2012 various parties
 # The software is based on ArsDigita ACS 3.4
 #
 # This program is free software. You can redistribute it
@@ -357,11 +357,16 @@ template::element::create $form_id on_track_status_id \
     -custom {category_type "Intranet Project On Track Status"} \
     -after_html $help_text
 
-template::element::create $form_id percent_completed \
-    -datatype float \
-    -optional \
-    -label "[_ intranet-core.Percent_Completed]"\
-    -after_html "%"
+if { 1 == [parameter::get -package_id [apm_package_id_from_key intranet-timesheet2-tasks] -parameter "AutomaticProjectAdvanceP" -default 1] } {
+    template::element::create $form_id percent_completed \
+	-widget "hidden"
+} else {
+    template::element::create $form_id percent_completed \
+	-datatype float \
+	-optional \
+	-label "[_ intranet-core.Percent_Completed]"\
+	-after_html "%"
+}
 
 if {$add_budget_hours_p} {
     template::element::create $form_id project_budget_hours -optional \
@@ -647,7 +652,6 @@ if {[form is_submission $form_id]} {
     }
 	
     if {$percent_completed > 100 || $percent_completed < 0} {
-	#ad_return_complaint 1 "Error with '$percent_completed'% completed:<br>
 	template::element::set_error $form_id percent_completed "Number must be in range (0 .. 100)"
 	incr n_error
     }
