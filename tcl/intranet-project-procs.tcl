@@ -1243,8 +1243,6 @@ ad_proc -public im_project_personal_active_projects_component {
 }
 
 
-
-
 ad_proc -public im_project_hierarchy_component {
     -project_id
     {-return_url "" }
@@ -1256,8 +1254,7 @@ ad_proc -public im_project_hierarchy_component {
     sub-projects.
 } {
     if {"" == $return_url} { set return_url [im_url_with_query] }
-    set params [list  [list base_url "/intranet-core/"]  [list project_id $project_id] [list subproject_status_id "none"] [list view_name "project_hierarchy"] [list return_url $return_url]]
-
+    set params [list [list base_url "/intranet-core/"] [list project_id $project_id] [list subproject_status_id $subproject_status_id] [list view_name "project_hierarchy"] [list return_url $return_url]]
     set result [ad_parse_template -params $params "/packages/intranet-core/lib/project-hierarchy"]
     return [string trim $result]
 }
