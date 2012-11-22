@@ -1,6 +1,6 @@
 <if @subproject_filtering_enabled_p@ eq 1>
   <table class="table_component_clean">
-    <form action="@current_url;noquote@" method=GET>
+    <form action="@return_url;noquote@" method=GET>
       <input type=hidden name=project_id value=@project_id@>
       <tr>
         <td class=form-label>
