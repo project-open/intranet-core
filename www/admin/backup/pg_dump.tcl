@@ -157,7 +157,8 @@ if { [catch {
 	windows {
 	    # Windows
 	    set pg_user "postgres"
-	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U $pg_user --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+	    set cmd [list exec ${pgbin}pg_dump projop -h localhost -U $pg_user -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
