@@ -568,6 +568,7 @@ ad_proc -public im_group_member_component {
     set found 0
     set count 0
     set body_html ""
+    set output_hidden_vars ""
     db_foreach users_in_group $sql_query {
 
 	# Make up a GIF with ALT text to explain the role (Member, Key 
@@ -587,14 +588,15 @@ ad_proc -public im_group_member_component {
 
 	if {$show_user == 0} { continue }
 
+	append output_hidden_vars "<input type=hidden name=member_id value=$user_id>"
 	append body_html "
-<tr $td_class([expr $count % 2])>
-  <input type=hidden name=member_id value=$user_id>
-  <td>"
+		<tr $td_class([expr $count % 2])>
+			<td>
+	"
 	if {$show_user > 0} {
-append body_html "<A HREF=/intranet/users/view?user_id=$user_id>$name</A>"
+		append body_html "<A HREF=/intranet/users/view?user_id=$user_id>$name</A>"
 	} else {
-append body_html $name
+		append body_html $name
 	}
 
 	append body_html "$profile_gif</td>"
@@ -656,6 +658,7 @@ append body_html $name
     # ------------------ Join table header, body and footer ----------------
     set html "
 	<form method=POST action=/intranet/member-update>
+	$output_hidden_vars
 	[export_form_vars object_id return_url]
 	    <table bgcolor=white cellpadding=1 cellspacing=1 border=0>
 	      $header_html
