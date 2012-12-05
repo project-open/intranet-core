@@ -14,8 +14,9 @@
 <style type="text/css">
 div.outer {
 	float: left;
-	width: 75px;
+	width: 150px;
 	height: 75px;
+        vertical-align:top;
 }
 div.outer a {
 	display: block;
@@ -51,15 +52,29 @@ div.outer3 { background: url('/intranet/images/demoserver/epm.jpg' ) 0 -0px no-r
 div.outer3 a { background: url('/intranet/images/demoserver/epm_bw.jpg' ) top left no-repeat; }
 div.outer4 { background: url('/intranet/images/demoserver/petra_projectmanager.jpg' ) 0 -0px no-repeat; }
 div.outer4 a { background: url('/intranet/images/demoserver/petra_projectmanager_bw.jpg' ) top left no-repeat; }
+/*
 div.outer5 { background: url('/intranet/images/demoserver/pmo.jpg' ) 0 -0px no-repeat; }
 div.outer5 a { background: url('/intranet/images/demoserver/pmo_bw.jpg' ) top left no-repeat; }
+*/
+div.outer5 { background: url('/intranet/images/project-open-logo-pmo-edition.jpg' ) 0 -0px no-repeat; }
+div.outer5 a { background: url('/intranet/images/demoserver/project-open-logo-pmo-edition_bw.jpg' ) top left no-repeat; }
+
 div.outer6 { background: url('/intranet/images/demoserver/harry_helpdesk.jpg' ) 0 -0px no-repeat; }
 div.outer6 a { background: url('/intranet/images/demoserver/harry_helpdesk_bw.jpg' ) top left no-repeat; }
 div.outer9 { background: url('/intranet/images/demoserver/itil.jpg' ) 0 -0px no-repeat; }
 div.outer9 a { background: url('/intranet/images/demoserver/itil_bw.jpg' ) top left no-repeat; }
+
+/*
 div.outer11 { background: url('/intranet/images/demoserver/all.gif' ) 0 -0px no-repeat; }
 div.outer11 a { background: url('/intranet/images/demoserver/all_bw.gif' ) top left no-repeat; }
+*/ 
+
+div.outer11 { background: url('/intranet/images/demoserver/project-open-logo-plain.jpg' ) 0 -0px no-repeat; }
+div.outer11 a { background: url('/intranet/images/demoserver/project-open-logo-plain_bw.jpg' ) top left no-repeat; }
+
 div.outer8 { background: url('/intranet/images/demoserver/sheila_carter.jpg' ) 0 -0px no-repeat; }
+
+
 div.outer8 a { background: url('/intranet/images/demoserver/sheila_carter_bw.jpg' ) top left no-repeat; }
 div.outer span {
 	display: block;
@@ -69,6 +84,7 @@ div.outer span {
 div.outer a:hover { background-image: none; }
 tr.off { background:#ffffff }
 tr.on { background:#ffffcc }
+td { vertical-align: top }
 </style>
 <script type="text/javascript">
 function removeBgImage (id) {
@@ -127,8 +143,8 @@ function setBgImage (id,img) {
 	  <td>
 	    <table border="0" cellpadding="0" cellspacing="0">
 	      <colgroup>
-		<col width="80px">
-		<col width="500px">
+		<col width="150px">
+		<col width="450px">
 		<col width="100px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('0')" onmouseout="this.className='off';setBgImage('0','/intranet/images/demoserver/timesheet_bw.jpg')">
@@ -136,14 +152,17 @@ function setBgImage (id,img) {
 		  <div class="outer outer0"><a id="outer0" href="http://po40ts.project-open.net/index-userselect" ></a></div>
 		</td>
 		<td>
-		  <a href="http://po40ts.project-open.net/index-userselect">
+		  <a href="http://po40ts.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>Simple Timesheet Tracking</b><br>
 	            You just want to track the hours logged on projects?<br>
 		    Choose this template to get started quickly.
+		    <br><br>
+		    <div style="background: url('/intranet/images/demoserver/easy-darkgreen-1.jpg') 0 -0px no-repeat;position:relative; opacity:0.8;background-size: 180px 16px;">
+		      <span style="font-weight:bold; color:#FFFFFF;height:16px; margin-left:25px">Easy</span>
+		    </div>
 		  </a><br>
-		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login1"></a></div>
+		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login0"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_easy.gif"></td>
 	      </tr>  
 	    </table>
 	  </td>
@@ -154,8 +173,8 @@ function setBgImage (id,img) {
 	  <td>
 	    <table border="0" cellpadding="0" cellspacing="0">
 	      <colgroup>
-		<col width="80px">
-		<col width="500px">
+		<col width="150px">
+		<col width="450px">
 		<col width="100px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/cons_bw.gif')">
@@ -163,14 +182,17 @@ function setBgImage (id,img) {
 		  <div class="outer outer1"><a id="outer1" href="http://po40cons.project-open.net/index-userselect" ></a></div>
 		</td>
 		<td>
-		  <a href="http://po40cons.project-open.net/index-userselect">
+		  <a href="http://po40cons.project-open.net/index-userselect" style="text-decoration: none; color: #000000"">
 		    <b>PSA - Professional Services Automation</b><br>
 	            You are a small or medium company providing professional services.<br>
 		    ]po[ allows you to manage your finances and to invoice your services.
-		  </a><br>
+		  </a>
+		     <br><br>
+		    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
+		      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
+		    </div>
 		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login1"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_advanced.gif"></td>
 	      </tr>  
 	    </table>
 	  </td>
@@ -180,13 +202,13 @@ function setBgImage (id,img) {
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
 	      <colgroup>
-		<col width="80px">
-		<col width="500px">
+		<col width="150px">
+		<col width="450px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('3')" onmouseout="this.className='off';setBgImage('3','/intranet/images/demoserver/epm_bw.jpg')">
 		<td><div class="outer outer3"><a href="http://po40ppm.project-open.net/index-userselect" id="outer3"></a></div></td>
 		<td>
-		  <a href="http://po40ppm.project-open.net/index-userselect">
+		  <a href="http://po40ppm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>EPM - Enterprise Project Management</b><br>
 	            You are a department of a larger enterprise.<br>
 		    Example: IT department, research and development, product development, ...
@@ -195,7 +217,6 @@ function setBgImage (id,img) {
 		  <br>
 		  <div class="login"><a href="http://po40ppm.project-open.net/index-userselect" id="login3"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_advanced.gif"></td>
 	      </tr>
 	    </table>
 	  </td>
@@ -207,23 +228,24 @@ function setBgImage (id,img) {
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
 	      <colgroup>
-	        <col width="80px">
-	        <col width="500px">
+	        <col width="150px">
+	        <col width="450px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/pmo_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/project-open-logo-pmo-edition_bw.jpg')">
 	        <td><div class="outer outer5"><a href="http://po40pmo.project-open.net/index-userselect" id="outer5"></a></div></td>
 	        <td>
 		  <b>
-		  <a href="http://po40pmo.project-open.net/index-userselect">PMO - Project Management Office</a>
-		  by 
-		  <a href="http://www.pentamino.de/" target="_">Pentamino</a>
+		  <a href="http://po40pmo.project-open.net/index-userselect" style="text-decoration: none; color: #000000">PMO - Project Management Office</a>
 		  </b><br>
-	          <a href="http://po40pmo.project-open.net/index-userselect">
-		    Everything you need in order to run your PMO.</a>
+	          <a href="http://po40pmo.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
+		    Everything you need in order to run your PMO.<br>Edition provided in collaboration with </a> <a href="http://www.pentamino.de/" target="_">Pentamino</a>
+		  <br><br>
+		    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative; opacity:0.8;background-size: 180px 16px;">
+		      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
+		    </div>
 		  <br>
 	          <div class="login"><a href="http://po40pmo.project-open.net/index-userselect" id="login5"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_advanced.gif"></td>
 	      </tr>
 	    </table>
 	</td></tr>
@@ -231,20 +253,22 @@ function setBgImage (id,img) {
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
 	      <colgroup>
-	        <col width="80px">
-	        <col width="500px">
+	        <col width="150px">
+	        <col width="450px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('9')" onmouseout="this.className='off';setBgImage('9','/intranet/images/demoserver/itil_bw.jpg')">
 	        <td><div class="outer outer9"><a href="http://po40itsm.project-open.net/index-userselect" id="outer9"></a></div></td>
-	        <td><a href="http://po40itsm.project-open.net/index-userselect">
+	        <td><a href="http://po40itsm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>ITSM and ITIL - IT Services Management</b><br>
 		    You are running a help desk or service desc for <br>
 		    internal or external customers.
 		  </a>
-	          <br>
+	          <br><br>
+                    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
+                      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
+                    </div>
 	          <div class="login"><a href="http://po40itsm.project-open.net/index-userselect" id="login9"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_advanced.gif"></td>
 	      </tr>
 	    </table>
 	  </td>
@@ -253,19 +277,22 @@ function setBgImage (id,img) {
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
 	      <colgroup>
-	        <col width="80px">
-	        <col width="500px">
+	        <col width="150px">
+	        <col width="450px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('11')" onmouseout="this.className='off';setBgImage('11','/intranet/images/demoserver/all_bw.gif')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('11')" onmouseout="this.className='off';setBgImage('11','/intranet/images/demoserver/project-open-logo-plain_bw.jpg')">
 	        <td><div class="outer outer11"><a href="http://po40demo.project-open.net/index-userselect" id="outer11"></a></div></td>
-	        <td><a href="http://po40demo.project-open.net/index-userselect">
+	        <td><a href="http://po40demo.project-open.net/index-userselect"  style="text-decoration: none; color: #000000"">
 		    <b>All ]po[ Functionality </b><br>
-		    This demo server contains all ]po[ functionality.<br>
+		    This demo server contains all ]po[ functionality.
+		    <br><br>
+		    <div style="background: url('/intranet/images/demoserver/high-red-5.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
+		      <span style="font-weight:bold; color:#FFFFFF;height:16px; margin-left:95px">Complex</span>
+		    </div>
 		  </a>
 	          <br>
 	          <div class="login"><a href="http://po40itsm.project-open.net/index-userselect" id="login11"></a></div>
 		</td>
-		<td><img src="/intranet/images/demoserver/complexity_complex.gif"></td>
 	      </tr>
 	    </table>
 	  </td>
