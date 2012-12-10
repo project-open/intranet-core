@@ -1894,6 +1894,10 @@ ad_proc im_database_version { } {
 	if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $postgres_version match v]} { set postgres_version $v}
     } err_msg
 
+    if {"" == $postgres_version}  {
+        if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $err_msg match v]} { set postgres_version $v}
+    }
+
     return $postgres_version
 }
 
