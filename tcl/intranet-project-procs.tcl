@@ -2722,6 +2722,12 @@ ad_proc im_project_nuke {
 	    db_dml del_risks "delete from im_risks where risk_project_id = :project_id"
 	}
 
+	# Baselines
+	if {[im_table_exists im_baselines]} {
+	    ns_log Notice "projects/nuke-2: im_baselines"
+	    db_dml del_risks "delete from im_projects_audit where baseline_id in (select baseline_id from im_baselines where baseline_project_id = :project_id)"
+	    db_dml del_risks "delete from im_baselines where baseline_project_id = :project_id"
+	}
 	
 	# Filestorage
 	ns_log Notice "projects/nuke-2: im_fs_folder_status"
