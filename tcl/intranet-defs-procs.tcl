@@ -1888,15 +1888,12 @@ ad_proc im_database_version { } {
     Returns an empty string in case of an error.
     Example: "8.2.11"
 } {
-    set pgbin [db_get_pgbin]
-    set pgbin_param [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgPathUnix" -default ""]
-    if {"" != $pgbin_param} { set pgbin $pgbin_param }
-
     set postgres_version ""
     catch {
-	set postgres_version [exec $pgbin --version]
+	set postgres_version [exec psql --version]
 	if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $postgres_version match v]} { set postgres_version $v}
     } err_msg
+
     return $postgres_version
 }
 
