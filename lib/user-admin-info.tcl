@@ -54,11 +54,14 @@ case $member_state {
 	default { set user_state $member_state }
 }
 
-set activate_delete_link "("
+set activate_delete_link ""
 if {$admin} {
-    append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+    append activate_delete_link "("
+    if { "approved" != $member_state } {
+	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+    }
     if { "banned" != $member_state } {
-	append activate_delete_link ", <a href=/intranet/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"	
+	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"	
     } 
     append activate_delete_link ")"
 }
