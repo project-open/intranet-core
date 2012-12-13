@@ -37,11 +37,9 @@ if { $result > 1 } {
 }
 
 
-
 # ---------------------------------------------------------------
 # Administration
 # ---------------------------------------------------------------
-
 
 if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
     set registration_ip_link "<a href=/intranet/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
@@ -56,12 +54,13 @@ case $member_state {
 	default { set user_state $member_state }
 }
 
-set activate_link ""
-set delete_link ""
+set activate_delete_link "("
 if {$admin} {
-
-    set activate_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
-    set delete_link "<a href=/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"
+    append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+    if { "banned" != $member_state } {
+	append activate_delete_link ", <a href=/intranet/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"	
+    } 
+    append activate_delete_link ")"
 }
 
 set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
