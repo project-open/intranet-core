@@ -940,6 +940,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Meineintranet-timeshe">My</msg>
   <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
+  <msg key="lt_Member_state">Member state:</msg>
   <msg key="lt_Mineintranet-coreObje">Mine</msg>
   <msg key="lt_Mineintranet-timeshee">Mine</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
