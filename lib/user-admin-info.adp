@@ -11,7 +11,7 @@
 	  </li>
 	</if>
 	<if @admin@ eq 1>
-	  <li>#intranet-core.lt_Member_state_user_sta#</li>
+	  <li>#intranet-core.lt_Member_state#: @user_state;noquote@ @activate_delete_link;noquote@ </li>
 	</if>
 	<else>
 	  <li>#intranet-core.User_state#: @user_state;noquote@</li>
