@@ -51,7 +51,7 @@ div.outer1 {
 	background: url('/intranet/images/demoserver/ben_bigboss.jpg' ) 0 -0px no-repeat;
 }
 div.outer1 a {
-	background: url('/intranet/images/demoserver/ben_bigboss_bw.jpg' ) top left no-repeat;
+	background: url('/intranet/images/demoserver/ben_bigboss.jpg' ) top left no-repeat;
 }
 div.outer2 {
 	background: url('/intranet/images/demoserver/samuel_salesmanager.jpg' ) 0 -0px no-repeat;
@@ -162,19 +162,19 @@ function setBgImage (id,img) {
 <table border="0" cellpadding="10" cellspacing="10" width="100%">
   <tr>
   <td>
-  <table border="1" cellpadding="0" cellspacing="0">
+  <table border="0" cellpadding="0" cellspacing="0">
     <colgroup>
     <col width="80px">
     <col width="230px">
     </colgroup>
-    <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/ben_bigboss_bw.jpg')">
+    <tr class="on">
       <td><div class="outer outer1"><a id="outer1" href="/become?user_id=8864&amp;url=/intranet/" ><span></span></a></div></td>
       <td><a href="/become?user_id=8864&amp;url=/intranet/"><b>Login as Ben Bigboss</b><br>
         (Senior Manager)</a></nobr>
     </div>
     <br>
     <br>
-    <div class="login"><a href="/become?user_id=8864&amp;url=/intranet/" id="login1"><span></span></a></div>
+    <div style="margin-right: 20px;float: right;width: 47px;height: 20px;background: url('/intranet/images/demoserver/login.jpg') top left no-repeat;"><a href="/become?user_id=8864&amp;url=/intranet/"></a></div>
     </td>
     </tr>  
   </table>
