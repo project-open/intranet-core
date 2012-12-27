@@ -82,7 +82,6 @@ if {$office_id > 0} {
     set creation_ip_address [ns_conn peeraddr]
     set creation_user $user_id
     set office_id [im_new_object_id]
-    set ignore_max_hours_per_day_p "f"
 }
 
 set page_body "
@@ -178,21 +177,7 @@ append page_body "
 		    <tr> 
 		      <td>[_ intranet-core.Notes]</td>
 		      <td> 
-<textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
-		      </td>
-		    </tr>
-		    <tr> 
-		      <td> [lang::message::lookup "" intranet-core.IgnoreParameterTimesheetMaxHoursPerDay "Ignore restriction amount logged hours per day"]</td>
-		      <td> 
-"
-
-if { "f"==$ignore_max_hours_per_day_p } {
-	append page_body "<input type='checkbox' name='ignore_max_hours_per_day_p' value='t' />" 	
-} else {
-	append page_body "<input type='checkbox' name='ignore_max_hours_per_day_p' value='t' checked />" 	
-}
-
-append page_body "
+		      	   <textarea name=note rows=6 cols=30 wrap=soft>[philg_quote_double_quotes $note]</textarea>
 		      </td>
 		    </tr>
 		    <tr> 
