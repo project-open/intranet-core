@@ -33,9 +33,10 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
+set show_context_help_p 1
 
 if {"" == $return_url} {
-#    set return_url [im_url_with_query]
+#   set return_url [im_url_with_query]
     set return_url "/intranet/offices/index"
 }
 

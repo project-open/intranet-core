@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="title">#intranet-core.Offices#</property>
 <property name="main_navbar_label">offices</property>
+<property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
 <!-- left - right - bottom  design -->
 
