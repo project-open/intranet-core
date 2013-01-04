@@ -1890,7 +1890,11 @@ ad_proc im_database_version { } {
 } {
     set postgres_version ""
     catch {
-	set postgres_version [exec psql --version]
+	# This is the psql _client_ version.
+	# set postgres_version [exec psql --version]
+
+	# Get the _server_ version of PG
+	set postgres_version [db_string server_version "SHOW server_version"]
 	if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $postgres_version match v]} { set postgres_version $v}
     } err_msg
 
