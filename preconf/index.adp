@@ -37,47 +37,6 @@
 
 <table cellSpacing=2 cellPadding=2 width="100%" border=0>
 <tr valign=top>
-
-      <if @demo_server@>
-        <td width='500px'>
-	<h1>Translation Accounts</h1>
-	Please use one of the following accounts to log on: 
-	<br><br><br>
-        <table cellSpacing=3 cellPadding=3 border=0 class='table_list_page'>
-        <tr>
-          <td><b>Role</b></td>
-          <td><b>Email</b></td>
-          <td><b>Password</b> </td>
-        </tr>	
-
-        <tr>
-          <td>Project Manager</td>
-          <td>pproman@tigerpond.com</td>
-          <td>project</td>
-        </tr>
-
-
-        <tr>
-          <td>Vendor</td>
-          <td>apicard@wanadoo.fr</td>
-          <td>vendor</td>
-        </tr>
-
-        <tr>
-          <td>Sales</td>
-          <td>ssalesmanager@tigerpond.com</td>
-          <td>sales</td>
-        </tr>
-
-        <tr>
-          <td>Customer</td>
-          <td>scarter@abc.com</td>
-          <td>customer</td>
-        </tr>
-        </table>
-     </td>
-	
-     </if>
 	<td>
 	<table cellSpacing=1 cellPadding=1 border=0>
 		<tr>
