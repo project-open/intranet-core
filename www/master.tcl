@@ -113,4 +113,7 @@ if { "" != $feedback_message_key } {
 }
 
 # Fraber 121008: Write out permission debugging
-im_ds_display_config_info
+# This procedure may fail in a V3.3 and earlier installation
+catch {
+    im_ds_display_config_info
+} err_msg
