@@ -67,6 +67,7 @@ set object_types {
     im_user_absence
     membership_rel
     person
+    party
     user
 }
 
