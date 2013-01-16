@@ -521,13 +521,20 @@ ns_write "<li>Cleanup im_biz_object_members\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
 
 ns_write "<li>Cleanup im_projects\n"
-db_dml remove_from_projects "update im_projects set parent_id = null"
+db_dml update_project_name_path "
+	update im_projects set
+		project_name = 'Project Name ' || project_id,
+		project_nr = 'project_nr.' || project_id,
+		project_path = 'project_path.' || project_id
+	where 1=1   
+"
+db_dml remove_from_projects_update_parent "update im_projects set parent_id = null"
 
 ns_write "<li>Cleanup im_timesheet_tasks\n"
-db_dml remove_from_projects "delete from im_timesheet_tasks"
+db_dml remove_from_projects_delete_timesheet_tasks "delete from im_timesheet_tasks"
 
 ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
-db_dml remove_from_projects "delete from im_timesheet_task_dependencies"
+db_dml remove_from_projects_delete_timesheet_task_dependencies "delete from im_timesheet_task_dependencies"
 
 ns_write "<li>Cleanup acs_mail_lite_log"
 if {[im_table_exists acs_mail_lite_mail_log"]} {
@@ -644,7 +651,7 @@ if {[im_table_exists im_gantt_persons]} {
 
 ns_write "<li>Cleanup im_projects\n"
 db_dml remove_from_biz_objects "delete from im_biz_objects where object_id in (select project_id from im_projects)"
-db_dml remove_from_projects "delete from im_projects"
+db_dml remove_from_projects_delete_from_projects "delete from im_projects"
 
 ns_write "<li>Cleanup im_companies\n"
 db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
@@ -656,11 +663,11 @@ db_dml remove_from_companies "delete from im_offices where office_id not in (sel
 
 ns_write "<li>Cleanup Projects & subclasses\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
-db_dml remove_from_projects "update im_projects set parent_id = null"
-db_dml remove_from_projects "delete from im_timesheet_tasks"
-db_dml remove_from_projects "delete from im_projects"
-db_dml remove_from_companies "delete from im_companies where company_path != 'internal'"
-db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
+db_dml remove_from_projects_update_project_parent "update im_projects set parent_id = null"
+db_dml remove_from_projects_delete_from_timesheet_tasks "delete from im_timesheet_tasks"
+db_dml remove_from_projects_delete_from_im_projects "delete from im_projects"
+db_dml remove_from_companies_delete_from_companies "delete from im_companies where company_path != 'internal'"
+db_dml remove_from_companies_delete_from_offices "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
 if {[im_table_exists im_timesheet_task_dependencies]} {
     db_dml del_deps "delete from im_timesheet_task_dependencies"
