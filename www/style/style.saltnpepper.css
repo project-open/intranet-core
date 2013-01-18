@@ -875,7 +875,7 @@ a   span  {float:none;}
   height: 3px;
   top: -3px;
   width: 100%;
-  display: none;
+  display: inline-block;
 }
 
 .component-parking {
