@@ -359,7 +359,8 @@ template::element::create $form_id on_track_status_id \
 
 if { 1 == [parameter::get -package_id [apm_package_id_from_key intranet-timesheet2-tasks] -parameter "AutomaticProjectAdvanceP" -default 1] } {
     template::element::create $form_id percent_completed \
-	-widget "hidden"
+	-widget "hidden" \
+        -datatype float
 } else {
     template::element::create $form_id percent_completed \
 	-datatype float \
