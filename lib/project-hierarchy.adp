@@ -1,3 +1,6 @@
+
+<form action=/intranet/project-hierarchy-action>
+<%= [export_form_vars return_url] %>
 <if @subproject_filtering_enabled_p@ eq 1>
   <table class="table_component_clean">
     <form action="@return_url;noquote@" method=GET>
@@ -21,4 +24,17 @@
     </multiple>
   </tr>
   @table_body_html;noquote@
+<if @bulk_actions_p@>
+  <tr>
+  <td colspan=99>
+  <select name=action>
+  <option name=empty></option>
+  <option value=set_invoiced><%= [lang::message::lookup "" intranet-core.Set_status_to_inviced "Set status to invoiced"] %></option>
+  <option value=set_open><%= [lang::message::lookup "" intranet-core.Set_status_to_open "Set status to open"] %></option>
+  </select>
+  <input type=submit value=#intranet-core.Apply#>
+  </td>
+  </tr>
+</if>
 </table>
+</form>

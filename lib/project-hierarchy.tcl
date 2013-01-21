@@ -12,6 +12,11 @@ if {!$read} { return "" }
 # How to sort the list of subprojects
 set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "order"]
 
+# Show we show bulk actions?
+# This is useful for translation systems
+set bulk_actions_p [parameter::get_from_package_key -package_key "intranet-core" -parameter ProjectHierarchyShowBulkActionsP -default 1]
+
+
 set project_url "/intranet/projects/view"
 set space "&nbsp; &nbsp; &nbsp; "
 set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$view_name'" -default 0]]
@@ -97,8 +102,11 @@ set colspan [expr [llength $column_headers] + 1]
 template::multirow create table_headers col_txt
 
 foreach col $column_headers {
-    regsub -all " " $col "_" col_txt
-    set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+    set col_txt $col
+    if {"" != $col} {
+	regsub -all " " $col "_" col_txt
+	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+    }
     template::multirow append table_headers $col_txt
 }
 
@@ -126,6 +134,9 @@ template::multirow foreach multirow {
     if {$subproject_bold_p} { set arrow_left_html [im_gif arrow_left]}
     if {$subproject_bold_p} { set arrow_right_html [im_gif arrow_right]}
     
+    set select_checkbox "<input type=checkbox name=hierarchy_project_id value=$subproject_id id=\"hierarchy_project_id,$subproject_id\">"
+    if {!$bulk_actions_p} { set select_checkbox "" }
+
     set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
     foreach column_var $column_vars {
 	append row_html "\t<td valign=top><nobr>"

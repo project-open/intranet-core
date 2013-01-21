@@ -326,6 +326,9 @@ extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Em
 --
 delete from im_view_columns where view_id = 25;
 --
+insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl, visible_for) 
+values (25,2500,0,'<input type=checkbox name=_dummy onclick="acs_ListCheckAll(''hierarchy_project_id'',this.checked)">','$select_checkbox', 'expr $bulk_actions_p');
+
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
 values (25,2510,10,'Empty','$arrow_right_html');
 
