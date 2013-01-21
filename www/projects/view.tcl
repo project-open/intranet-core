@@ -137,9 +137,11 @@ if {$admin} {
     append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id}}]\">[_ intranet-core.Create_a_Subproject]</A><br></li>\n"
 }
 
-if {$site_wide_admin_p} {
-    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/nuke" {project_id}]\">[_ intranet-core.Nuke_this_project]</A><br></li>\n"
-}
+# Fraber 130121: NEVER enable nuke.
+# Nuking is only OK for demo-data
+# if {$site_wide_admin_p} {
+#    append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/nuke" {project_id}]\">[_ intranet-core.Nuke_this_project]</A><br></li>\n"
+# }
 
 
 set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
