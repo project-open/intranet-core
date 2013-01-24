@@ -48,7 +48,6 @@ ad_page_contract {
     { address_city "" }
     { address_postal_code "" }
     { address_country_code "" }
-    { ignore_max_hours_per_day_p "" }
 }
 
 # -----------------------------------------------------------------
@@ -58,11 +57,6 @@ ad_page_contract {
 if {"" == $office_name} {
     set office_name "[_ intranet-core.lt_office_name_Main_Offi]"
 }
-
-if {"" == $ignore_max_hours_per_day_p} {
-    set ignore_max_hours_per_day_p "f"
-} 
-
 
 # -----------------------------------------------------------------
 # Check for Errors in Input Variables
@@ -153,8 +147,7 @@ update im_offices set
 	address_city = :address_city,
 	address_postal_code = :address_postal_code,
 	address_country_code = :address_country_code,
-	note = :note,
-	ignore_max_hours_per_day_p = :ignore_max_hours_per_day_p
+	note = :note
 where
 	office_id = :office_id
 "
