@@ -31,7 +31,7 @@ set current_user_id [ad_maybe_redirect_for_registration]
 set object_type [acs_object_type $object_id]
 if {"" == $object_type} { ad_return_complaint 1 "<b>Invalid Object</b>:<br>Object #$object_id does not seem to exist" }
 ${object_type}_permissions $current_user_id $object_id view read write admin
-if {!$write} { ad_return_complaint 1 "Insufficient Permissions on object #$object_id_id" }
+if {!$write} { ad_return_complaint 1 "Insufficient Permissions on object #$object_id" }
 
 foreach id $rel_id {
 
