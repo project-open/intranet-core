@@ -811,6 +811,16 @@ if {[form is_valid $form_id]} {
 	}
     }
 	
+
+    # -----------------------------------------------------------------
+    # Deal with frequent input errors
+    # in order to reduce "ugly error messages"
+    if {[info exists presales_probability] && $presales_probability >= 100.0} { ad_return_complaint 1 "<br><b>Presales Probability > 100, please choose a smaller number</b><br>&nbsp;" }
+    if {[info exists presales_probability] && $presales_probability < 0} { ad_return_complaint 1 "<br><b>Presales Probability is negative, please choose a positive number</b><br>&nbsp;" }
+    if {[llength $project_nr] > 100} { ad_return_complaint 1 "<br><b>Project Nr too long </b><br>&nbsp;" }
+    if {[llength $project_path] > 100} { ad_return_complaint 1 "<br><b>Project Path too long </b><br>&nbsp;" }
+
+
     # -----------------------------------------------------------------
     # Update the Project
     # -----------------------------------------------------------------
