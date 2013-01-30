@@ -389,6 +389,25 @@ ad_proc im_csv_split {
 # System Functions
 # ------------------------------------------------------------------
 
+
+
+ad_proc -public im_root_dir { } {
+    Returns a Linux/CygWin path to the main
+    directory of the current server.
+    Sample output:
+    /web/projop or
+    /cygdrive/c/project-open/servers/projop
+} {
+    set result [string tolower [acs_root_dir]]
+
+    # check for "c:/..."
+    if {[regexp {^([a-z]):/(.*)} $result match drive_letter path]} {
+	return "/cygdrive/$drive_letter/$path"
+    }
+    return $result
+}
+
+
 ad_proc -public im_bash_command { } {
     Returns the path to the BASH command shell, depending on the
     operating system (Windows, Linux or Solaris).
