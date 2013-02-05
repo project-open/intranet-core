@@ -1636,6 +1636,16 @@ div.xowiki-content hr {
 	font-weight: bold;
 }
 
+#wikicmds {
+    top: -15px;
+}
+
+#wikicmds a, #wikicmds a:visited, div.wiki-menu a {
+    color: #666666;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 #titleSubmenu {
          /* display: none; */ 
 }
