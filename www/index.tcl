@@ -47,8 +47,8 @@ set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]
 set subproject_types [list "t" "Yes" "f" "No"]
-set page_title "Home"
-# set context_bar [im_context_bar $page_title]
+set page_title  [lang::message::lookup "" intranet-core.PageTitleHome "Home"]
+
 set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set return_url "/intranet/"
