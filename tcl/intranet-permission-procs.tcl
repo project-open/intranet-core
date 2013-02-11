@@ -80,7 +80,8 @@ ad_proc -public im_core_privs {filter_str} {
     if { ""==$filter_str } {
 	set privilege_sql "select privilege from acs_privileges order by upper(privilege)"
     } else {	
-	set privilege_sql "select privilege from acs_privileges where privilege ilike '%$filter_str%' order by upper(privilege)"
+	set filter_str "%[string map { " " _ } $filter_str]%"
+	set privilege_sql "select privilege from acs_privileges where privilege ilike :filter_str order by upper(privilege)"
     }
 
     set privileges [list]
