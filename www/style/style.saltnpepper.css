@@ -80,6 +80,10 @@
 	vertical-align: top;
 }
 
+.fullwidth-list .component .double_calendar table {
+	width: 440px;
+}
+
 /*  START: TEST WITH INCLUDE STYLE.LEFT.CSS */
 
 .filter-list {
