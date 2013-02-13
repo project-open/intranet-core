@@ -383,11 +383,11 @@ Surveys
 
 /* Warning message -> title */
 .ms_project_warning_title {
-        padding-top: 12px;
-        color: #cc0000;
-        font-family: verdana, arial, helvetica, sans-serif;
-        font-weight: bold;
-        font-Size: large;
+    padding-bottom: 5px;
+    padding-top: 10px;
+    color: #cc0000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
 }
 
 
