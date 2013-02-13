@@ -51,7 +51,7 @@ ad_proc -private find_user_id {
     index_username
 } { 
 
-    set import_err_msg [lang::message::lookup "" intranet-core.ImportFailedNoUserFound "Import failed. No user found for line: $csv_line_fields"]
+    set import_err_msg [lang::message::lookup "" intranet-core.ImportFailedNoUserFound "<strong>Import failed. No data imported.</strong><br>No user found for line: $csv_line_fields"]
 
     # Check if we can find user based on user_id 
     if { $user_id_exists_p } {
