@@ -1,4 +1,5 @@
 <table border=0>
+<tbody>
   <tr> 
     <td>#intranet-core.Project_name#</td>
     <td>@project_name;noquote@</td>
@@ -102,4 +103,5 @@
       </td>
     </tr>
   </if>
+</tbody>
 </table>
