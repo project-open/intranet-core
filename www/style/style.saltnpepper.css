@@ -1317,8 +1317,9 @@ table.list td {
     .form-widget {font-size: 8pt; background-color: #FFF;padding-top: 5px;vertical-align: middle;}
     .form-required-mark {color: #FF0000;}
 
-    .form-element, .component_body tbody tr.roweven, .component_body tbody tr.rowodd {
-	height:17px; 
+    .form-element, 
+    .component_body tbody tr {
+	height:22px; 
         border-top: 1px solid #F0EDED;
         border-bottom: 1px solid #F0EDED;
 	background-color: #fff;
