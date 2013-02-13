@@ -37,22 +37,18 @@ set skill_role_id_exists_p [db_string get_data "select count(*) from information
 set page_body "
 <form enctype=multipart/form-data method=POST action=upload-users-2.tcl>
 [export_form_vars return_url]
-                    <table border=0>
+                    <table border=0 cellpadding=3 cellspacing=3>
                       <tr> 
-                        <td align=right>Filename: </td>
-                        <td> 
+			<td>[lang::message::lookup "" intranet-core.TitleUploadUserDataExplain "Please choose CSV file:"]</td>
+                        <td align=left> 
                           <input type=file name=upload_file size=30>
                           [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
                         </td>
                       </tr>
-			<tr>
-			<td colspan=2>
-				&nbsp;
-			</td>
-			</tr>
+		      <tr><td colspan=2>&nbsp;</td></tr>
                       <tr>
-			<td align=right valign='top'> [lang::message::lookup "" intranet-core.NumberFormatting "Number Formatting"]:</td>
-                        <td  valign='top'>
+			<td valign='top'>[lang::message::lookup "" intranet-core.NumberFormatting "Number Formatting"]:</td>
+                        <td valign='top'>
 			<input type='radio' name='locale_numeric' value='en_US' checked> 
 				[lang::message::lookup "" intranet-core.DecimalSeparatorPoint "Decimal Separator is Point (e.g. 1,500.23)"]<br>
 			<input type='radio' name='locale_numeric' value='de_DE'>
@@ -62,9 +58,10 @@ set page_body "
 "
 if { $skill_role_id_exists_p  } {
 	append page_body "
-                      <tr>
-			<td align=right valign='top'> [lang::message::lookup "" intranet-core.AdvancedSettings "Advanced Settings:"]:</td>
-                        <td  valign='top'>
+		      <tr><td colspan='2'>&nbsp;</td></tr>
+		      <tr>
+		        <td valign='top'> [lang::message::lookup "" intranet-core.AdvancedSettings "Advanced Settings"]:</td>
+                        <td valign='top'>
 			<input type='checkbox' name='update_hourly_rates_skill_profile'>
 				[lang::message::lookup "" intranet-core.UpdateHourlyRatesSkillProfile "Import of Hourly Rates for Skill Profiles - Update users Hourly Rate"] 
 				[im_gif help "Please leave unchecked if in doubt. Additional information about Skill Profiles is available at www.project-open.org"]
@@ -73,6 +70,7 @@ if { $skill_role_id_exists_p  } {
 	"
 }
 append page_body "
+			<tr><td colspan='3'>&nbsp;</td></tr>
                       <tr> 
                         <td></td>
                         <td> 
