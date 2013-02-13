@@ -51,7 +51,9 @@ ad_proc -private find_user_id {
     index_username
 } { 
 
-     # Check if we can find user based on user_id 
+    set import_err_msg [lang::message::lookup "" intranet-core.ImportFailedNoUserFound "Import failed. No user found for line: $csv_line_fields"]
+
+    # Check if we can find user based on user_id 
     if { $user_id_exists_p } {
 	set user_id [lindex $csv_line_fields $index_user_id]
 	if { 0 == [db_string check_email_exists "select count(*) from parties where party_id=:user_id" -default 0] } {
