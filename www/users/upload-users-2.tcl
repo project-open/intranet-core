@@ -130,7 +130,7 @@ if { [info exists update_hourly_rates_skill_profile] } {
 set notes_msg ""
 if { "" != $update_hourly_rates_skill_profile_txt } {
     set notes_msg "
-        [lang::message::lookup "" intranet-core.Notes "Notes"]<br>
+        <strong>[lang::message::lookup "" intranet-core.Notes "Notes"]:</strong><br>
         <ul>
 	<li>$update_hourly_rates_skill_profile_txt</li>
         </ul>
