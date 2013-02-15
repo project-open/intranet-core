@@ -809,18 +809,35 @@ ad_proc -public im_biz_object_member_list_format {
 
 ad_proc -public im_biz_object_related_objects_component {
     { -include_membership_rels_p 0 }
-    -object_id:required
+    { -user_friendly_view_p 0  }
+    { -show_projects_only 0 }
+    { -hide_rel_name_p 0 }
+    { -hide_object_chk_p 0 }
+    { -hide_direction_pretty_p 0 }
+    { -hide_object_type_pretty_p 0 }
+    { -hide_object_name_p 0 }
+    { -hide_creation_date_formatted_p 0 }
+    -object_id:required 
 } {
     Returns a HTML component with the list of related objects.
     @param include_membership_rels_p: Normally, membership rels
            are handled by the "membership component". That's not
            the case with users.
 } {
+
     set params [list \
                     [list base_url "/intranet/"] \
-                    [list object_id $object_id] \
 		    [list include_membership_rels_p $include_membership_rels_p] \
+                    [list user_friendly_view_p $user_friendly_view_p] \
+                    [list show_projects_only $show_projects_only ] \
                     [list return_url [im_url_with_query]] \
+                    [list hide_rel_name_p $hide_rel_name_p] \
+		    [list hide_object_chk_p $hide_object_chk_p ] \
+		    [list hide_direction_pretty_p $hide_direction_pretty_p ] \
+		    [list hide_object_type_pretty_p $hide_object_type_pretty_p  ] \
+		    [list hide_object_name_p $hide_object_name_p ] \
+		    [list hide_creation_date_formatted_p $hide_creation_date_formatted_p ] \
+                    [list object_id $object_id] \
 		    ]
 
     set result [ad_parse_template -params $params "/packages/intranet-core/www/related-objects-component"]
