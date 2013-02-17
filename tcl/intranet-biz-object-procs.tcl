@@ -817,6 +817,7 @@ ad_proc -public im_biz_object_related_objects_component {
     { -hide_object_type_pretty_p 0 }
     { -hide_object_name_p 0 }
     { -hide_creation_date_formatted_p 0 }
+    { -sort_order "" }
     -object_id:required 
 } {
     Returns a HTML component with the list of related objects.
@@ -837,6 +838,7 @@ ad_proc -public im_biz_object_related_objects_component {
 		    [list hide_object_type_pretty_p $hide_object_type_pretty_p  ] \
 		    [list hide_object_name_p $hide_object_name_p ] \
 		    [list hide_creation_date_formatted_p $hide_creation_date_formatted_p ] \
+		    [list sort_order $sort_order ] \
                     [list object_id $object_id] \
 		    ]
 

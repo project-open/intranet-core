@@ -29,6 +29,7 @@ if { ![info exists hide_direction_pretty_p] } { set hide_direction_pretty_p 0 }
 if { ![info exists hide_object_type_pretty_p] } { set hide_object_type_pretty_p 0 }
 if { ![info exists hide_object_name_p] } { set hide_object_name_p 0 }
 if { ![info exists hide_creation_date_formatted_p] } { set hide_creation_date_formatted_p 0 }
+if { ![info exists sort_order] } { set sort_order "r.rel_type, o.object_type, direction, object_name" }
 
 # ---------------------------------------------------------------
 # Referenced Objects - Problem objects referenced by THIS object
@@ -108,7 +109,13 @@ if {0 == $include_membership_rels_p} {
 }
 
 set where_criteria "and 1=1"
-if { [info exists show_projects_only] && $show_projects_only } { set where_criteria "and ot.pretty_name = 'Project'" }
+
+if { [info exists show_projects_only] && $show_projects_only } { 
+    set where_criteria "and ot.pretty_name = 'Project'" 
+    if { !$hide_creation_date_formatted_p  } {
+	set sort_order "o.creation_date ASC"	
+    }
+}
 
 set object_rel_sql "
 	select
@@ -117,7 +124,6 @@ set object_rel_sql "
 		o.object_type as object_type,
 		ot.pretty_name as object_type_pretty,
 		otu.url as object_url_base,
-
 		r.rel_id,
 		r.rel_type as rel_type,
 		rt.pretty_name as rel_type_pretty,
@@ -145,10 +151,7 @@ set object_rel_sql "
 		) 
 		$where_criteria
 	order by
-		r.rel_type,
-		o.object_type,
-		direction,
-		object_name
+		$sort_order
 "
 
 db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_multirow object_rels $object_rel_sql {
