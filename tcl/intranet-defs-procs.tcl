@@ -207,7 +207,7 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
     </ul>
 
 } {
-    set debug 0
+    set debug 1
 
     set csv_files [split $file_content "\n"]
     set csv_files_len [llength $csv_files]
@@ -217,10 +217,17 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
     for {set line_num 1} {$line_num < $csv_files_len} {incr line_num} {
 
 	set line [lindex $csv_files $line_num]
+
+	# Skip compeletely empty lines
 	if {[empty_string_p $line]} {
 	    incr line_num
 	    continue
 	}
+
+	# deal with leading "-" in line, which leads to an error later
+	if {[regexp {^\-(.*)} $line match rest_of_line]} { set line $rest_of_line }
+
+
 	if {$debug} {ns_log notice "im_csv_get_values: line=$line num=$line_num"}
 	set result_list [im_csv_split $line $separator]
 	lappend result_list_of_lists $result_list
