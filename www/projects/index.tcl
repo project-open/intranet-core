@@ -103,6 +103,10 @@ set page_focus "im_header_form.keywords"
 set upper_letter [string toupper $letter]
 set return_url [im_url_with_query]
 
+
+# Create an action select at the bottom if the "view" has been designed for it...
+set show_bulk_actions_p [string equal "project_timeline" $view_name]
+
 # Determine the default status if not set
 if { 0 == $project_status_id } {
     # Default status is open
@@ -686,7 +690,7 @@ foreach col $column_headers {
     set wrench_html [lindex $column_headers_admin $ctr]
     regsub -all " " $col "_" col_txt
     set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
-    if {[string compare $order_by $col] == 0} {
+    if {$ctr == 0 && $show_bulk_actions_p} {
 	append table_header_html "<td class=rowtitle>$col_txt$wrench_html</td>\n"
     } else {
 	#set col [lang::util::suggest_key $col]
@@ -709,12 +713,31 @@ set bgcolor(1) " class=rowodd "
 set ctr 0
 set idx $start_idx
 
+db_1row timeline "
+	select	 max(end_date) as timeline_end_date,
+		 min(start_date) as timeline_start_date
+	from	 ($sql) t
+"
+
 db_foreach projects_info_query $selection -bind $form_vars {
 
 #    if {"" == $project_id} { continue }
 
     set project_type [im_category_from_id $project_type_id]
     set project_status [im_category_from_id $project_status_id]
+
+    # Multi-Select
+    set select_project_checkbox "<input type=checkbox name=select_project_id value=$project_id id=select_project_id,$project_id>"
+
+    set timeline_html [im_project_gantt_main_project \
+			   -timeline_start_date $timeline_start_date \
+			   -timeline_end_date $timeline_end_date \
+			   -timeline_width 400 \
+			   -project_id $project_id \
+			   -start_date $start_date \
+			   -end_date $end_date \
+			   -percent_completed $percent_completed \
+    ]
 
     # Gif for collapsable tree?
     set gif_html ""
@@ -809,6 +832,14 @@ set table_continuation_html "
   </td>
 </tr>"
 
+if {$show_bulk_actions_p} {
+    set table_continuation_html "
+	<tr>
+	<td colspan=99>[im_project_action_select]</td>
+	</tr>
+$table_continuation_html
+    "
+}
 
 
 # ---------------------------------------------------------------

@@ -141,7 +141,6 @@ ad_proc -public im_menu_ul_list {
     set user_id [ad_get_user_id]
     set locale [lang::user::locale -user_id $user_id]
 
-set no_cache_p 1
     if {$no_cache_p} {
 	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
     } else {
