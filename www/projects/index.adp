@@ -13,11 +13,14 @@
 	<table cellspacing=0 cellpadding=0 border=0 width="100%">
 	<tr valign=top>
 	<td>
+		<form action="/intranet/projects/project-action" method=POST>
+		<%= [export_form_vars return_url] %>
 		<table class="table_list_page">
 	            <%= $table_header_html %>
 	            <%= $table_body_html %>
 	            <%= $table_continuation_html %>
 		</table>
+		</form>
 	</td>
 	<td width="<%= $dashboard_column_width %>">
 	<%= $dashboard_column_html %>
