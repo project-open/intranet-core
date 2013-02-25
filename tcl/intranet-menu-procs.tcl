@@ -151,7 +151,7 @@ ad_proc -public im_menu_ul_list {
 
 ad_proc -public im_menu_ul_list_helper {
     {-locale "" }
-    {-package_key "intranet-core" }
+    {-package_key "" }
     user_id
     no_uls
     parent_menu_label 
@@ -248,12 +248,13 @@ ad_proc -public im_menu_li {
     {-package_key "intranet-core" }
     {-class "" }
     {-pretty_name "" }
+    {-bind_vars ""}
     label
 } {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
-    return [util_memoize [list im_menu_li_helper -user_id $user_id -locale $locale -package_key $package_key -class $class -pretty_name $pretty_name $label]]
+    return [util_memoize [list im_menu_li_helper -user_id $user_id -locale $locale -package_key $package_key -class $class -pretty_name $pretty_name -bind_vars $bind_vars $label]]
 }
 
 ad_proc -public im_menu_li_helper { 
@@ -262,11 +263,14 @@ ad_proc -public im_menu_li_helper {
     {-package_key "intranet-core" }
     {-class "" }
     {-pretty_name "" }
+    {-bind_vars ""}
     label
 } {
     Returns a <li><a href=URL>Name</a> for the menu.
     Attention, not closing </li>!
 } {
+    array set bind_vars_hash $bind_vars
+
     if {"" == $user_id} { set user_id [ad_get_user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
@@ -295,6 +299,24 @@ ad_proc -public im_menu_li_helper {
     set class_html ""
     if {"" != $class} { set class_html "class='$class'" }
     regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+
+    # Add the bind_vars to the end of the URL
+    foreach var [array names bind_vars_hash] {
+	# Make sure the URL has got a "?"
+	if {![regexp {\?} $url match]} { append url "?" }
+	
+	# Does the link already include a variable?
+	# The we have to add a "&"
+	if {[regexp {\?(.)+} $url match]} { append url "&" }
+	
+	set value $bind_vars_hash($var)
+	append url "$var=[ad_urlencode $value]"
+    }
+
+
     return "<li $class_html><a href=\"$url\">[lang::message::lookup "" "$package_key.$name_key" $name]</a>\n"
+
+
+
 }
 
