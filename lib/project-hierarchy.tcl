@@ -134,7 +134,7 @@ template::multirow foreach multirow {
     if {$subproject_bold_p} { set arrow_left_html [im_gif arrow_left]}
     if {$subproject_bold_p} { set arrow_right_html [im_gif arrow_right]}
     
-    set select_checkbox "<input type=checkbox name=hierarchy_project_id value=$subproject_id id=\"hierarchy_project_id,$subproject_id\">"
+    set select_checkbox "<input type=checkbox name=select_project_id value=$subproject_id id=\"hierarchy_project_id,$subproject_id\">"
     if {!$bulk_actions_p} { set select_checkbox "" }
 
     set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
@@ -150,3 +150,11 @@ template::multirow foreach multirow {
     append table_body_html $row_html
     incr ctr
 }
+
+set table_continuation_html "
+  <tr>
+  <td colspan=99>
+  [im_project_action_select]
+"
+
+if {!$bulk_actions_p} { set table_continuation_html "" }
