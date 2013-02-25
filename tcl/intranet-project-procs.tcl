@@ -3180,3 +3180,91 @@ ad_proc -public im_personal_todo_component {
     "
 }
 
+
+
+
+
+# ---------------------------------------------------------------
+# Action select for project lists
+# ---------------------------------------------------------------
+
+ad_proc -public im_project_action_select {
+} {
+    Returns a HTML "select" element with possible actions for
+    projects that can be executedb by 
+    /intranet-core/www/projects/project-action.tcl
+} {
+    set current_user_id [ad_get_user_id]
+
+    return "  <select name=action>
+  <option name=empty></option>
+  <option value=set_invoiced>[lang::message::lookup "" intranet-core.Set_status_to_inviced "Set status to invoiced"]</option>
+  <option value=set_open>[lang::message::lookup "" intranet-core.Set_status_to_open "Set status to open"]</option>
+  <option value=shift_project>[lang::message::lookup "" intranet-core.Shift_project_forward_or_backward "Shift project forward or backward"]</option>
+  </select>
+  <input type=submit value=[_ intranet-core.Apply]>
+  </td>
+  </tr>
+    "
+}
+
+
+# ---------------------------------------------------------------
+# Gantt Bar for Projects
+# ---------------------------------------------------------------
+
+ad_proc -public im_project_gantt_main_project {
+    -timeline_start_date:required
+    -timeline_end_date:required
+    -timeline_width:required
+    -project_id:required
+    -start_date:required
+    -end_date:required
+    -percent_completed:required
+} {
+    Returns a Gantt bar for the project
+} {
+    set base "/intranet/images/"
+    set w $timeline_width
+
+    set ts [im_date_ansi_to_epoch $timeline_start_date]
+    set te [im_date_ansi_to_epoch $timeline_end_date]
+
+    set ps [im_date_ansi_to_epoch $start_date]
+    set pe [im_date_ansi_to_epoch $end_date]
+
+    # Check invariants
+    if {$ps < $ts} { return "" }
+    if {$pe > $te} { return "" }
+    if {$pe <= $ps} { return "" }
+    if {$te <= $ts} { return "" }
+    if {$pe - $ps <= 0} { return "" }
+    if {$te - $ts <= 0} { return "" }
+
+    set left_space_width [expr int($w * ($ps - $ts) / ($te - $ts))]
+    set bar_width [expr int($w * ($pe - $ps) / ($te - $ts))]
+    set bar_width_m2 [expr $bar_width - 2]
+    set right_space_width [expr $w - $left_space_width - 1 - $bar_width - 1]
+
+    # Format the result
+    set ls "<img src=$base/gantt_empty_1.gif height=13 width=$left_space_width>"
+    set lb "<img src=$base/gantt_left_nobar_1.gif height=13 width=1>"
+    set mm "<img src=$base/gantt_middle_nobar_1.gif height=13 width=$bar_width_m2>"
+    set rb "<img src=$base/gantt_right_nobar_1.gif height=13 width=1>"
+    set rs "<img src=$base/gantt_empty_1.gif height=13 width=$right_space_width>"
+
+    # Short project - don't show the round corners
+    if {$bar_width <= 7} {
+	return "${ls}${lb}${mm}${rb}${rs}"
+    }
+
+    # Longer project - show round corners
+    set bar_width_m8 [expr $bar_width - 8]
+    set lb "<img src=$base/gantt_left_nobar_4.gif height=13 width=4>"
+    set rb "<img src=$base/gantt_right_nobar_4.gif height=13 width=4>"
+    set mm "<img src=$base/gantt_middle_nobar_1.gif height=13 width=$bar_width_m8>"
+    
+    return "${ls}${lb}${mm}${rb}${rs}"
+}
+
+
