@@ -45,7 +45,7 @@ if { ![info exists hide_direction_pretty_p] } { set hide_direction_pretty_p 0 }
 if { ![info exists hide_object_type_pretty_p] } { set hide_object_type_pretty_p 0 }
 if { ![info exists hide_object_name_p] } { set hide_object_name_p 0 }
 if { ![info exists hide_creation_date_formatted_p] } { set hide_creation_date_formatted_p 0 }
-if { ![info exists sort_order] || "" == $sort_order } { set sort_order "r.rel_type, o.object_type, direction, object_name" }
+if { ![info exists sort_order] || "" == $sort_order } { set sort_order "sort_order, r.rel_type, o.object_type, direction, object_name" }
 
 if {![info exists limit] || "" == $limit} { set limit 20 }
 
