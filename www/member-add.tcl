@@ -33,13 +33,14 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
+set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id" -default ""]
 set page_title "[_ intranet-core.lt_Add_new_member_to_obj]"
 set context_bar [im_context_bar "[_ intranet-core.Add_member]"]
 
 
 # expect commands such as: "im_project_permissions" ...
 #
-set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
+if {"" == $object_type} { ad_return_complaint 1 "<b>Didn't find object with id #$object_id</b>:Maybe the object has been deleted?" }
 set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write admin"
 eval $perm_cmd
 
