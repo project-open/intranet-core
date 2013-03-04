@@ -40,7 +40,7 @@ set context_bar [im_context_bar "[_ intranet-core.Add_member]"]
 
 # expect commands such as: "im_project_permissions" ...
 #
-if {"" == $object_type} { ad_return_complaint 1 "<b>Didn't find object with id #$object_id</b>:Maybe the object has been deleted?" }
+if {"" == $object_type} { ad_return_complaint 1 "<b>Didn't find object with id #$object_id</b>:<br>Maybe the object has been deleted?" }
 set perm_cmd "${object_type}_permissions \$user_id \$object_id view read write admin"
 eval $perm_cmd
 
