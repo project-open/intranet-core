@@ -167,15 +167,20 @@ if {"" != $attachment_filename && "" != $user_id_from_search} {
 
 
 # Get user list and email list
-set email_list [db_list email_list "
+set email_list_sql "
 	select	lower(trim(email))
 	from	parties
 	where	party_id in ([join $user_id_from_search ","])
+"
+if {[im_table_exists im_notes]} {
+    append email_list_sql "
     UNION
 	select	lower(trim(note))
 	from	im_notes
 	where	note_id in ([join $user_id_from_search ","])
-"]
+    "
+}
+set email_list [db_list email_list $email_list_sql]
 
 
 # Include a copy to myself?
