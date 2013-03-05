@@ -68,7 +68,7 @@ ad_page_contract {
 
 
 # ---------------------------------------------------------------
-# 2. Defaults & Security
+# 2. Defaults 
 # ---------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -85,6 +85,43 @@ set debug_html ""
 set email ""
 set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 set show_context_help_p 1
+
+# ---------------------------------------------------------------
+# 2a. Security
+# ---------------------------------------------------------------
+
+switch $user_group_name {
+    "Employees" {
+	set menu_label "users_employees"
+    }
+    "Customers" {
+	set menu_label "users_companies"
+    }
+    "Unregistered" {
+	set menu_label "users_unassigned"
+    }
+    "All" {
+	set menu_label "users_all"
+    }
+    "po_admins" {
+	set menu_label "users_admin"
+    }
+    default {
+	set menu_label "user"	
+    }
+}
+
+set read_p [db_string report_perms "
+        select  im_object_permission_p(m.menu_id, :current_user_id, 'read')
+        from    im_menus m
+        where   m.label = :menu_label
+" -default 'f']
+
+if {![string equal "t" $read_p]} {
+    ad_return_complaint 1 "
+    [lang::message::lookup "" intranet-reporting.You_dont_have_permissions "You don't have the necessary permissions to view this page"]"
+    return
+}
 
 # ---------------------------------------------------------------
 # 
