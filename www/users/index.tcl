@@ -84,6 +84,7 @@ set date_format "YYYY-MM-DD"
 set debug_html ""
 set email ""
 set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+set show_context_help_p 1
 
 # ---------------------------------------------------------------
 # 
