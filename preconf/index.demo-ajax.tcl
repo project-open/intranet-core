@@ -12,6 +12,10 @@ foreach var [ad_ns_set_keys $header_vars] {
 }
 set host [lindex [split $host "."] 0]
 
+# Special logic for specific web sites
+switch $host {
+    po40psa { set host "po40cons" }
+}
 
 # ---------------------------------------------------------
 # Get the server name from the configuration
