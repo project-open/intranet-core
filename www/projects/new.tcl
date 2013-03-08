@@ -666,7 +666,7 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id project_nr "[lang::message::lookup "" intranet-core.lt_The_project_nr_that "The Project Nr is too short."] <br>
 	   [lang::message::lookup "" intranet-core.lt_Please_use_a_project_nr_ "Please use a longer Project Nr or modify the parameter 'ProjectNrMinimumLength'."]"
     }
-    if { [string length $project_nr] >= 10} {
+    if { [string length $project_nr] > 100} {
 	incr n_error
 	template::element::set_error $form_id project_nr "[lang::message::lookup "" intranet-core.lt_The_project_nr_is_too_long "The Project Nr is too long."] <br>
 	   [lang::message::lookup "" intranet-core.lt_Please_use_a_shorter_project_nr_ "Please use a shorter Project Nr."]"
