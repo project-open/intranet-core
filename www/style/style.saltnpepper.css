@@ -1869,18 +1869,22 @@ th.list-narrow {
 
 /* Overwriting lists.css */
 
-th.list-table, th.list-table-narrow, .list-table th {
+.fullwidth-list .component table.list-table thead th.list-table,
+th.list-table, 
+th.list-table-narrow {
     border-bottom: 2px solid #CCCCCC;
-    padding: 8px 16px;
+    padding: 6px;
+}
+
+.fullwidth-list .component table.list-table tbody td.list-table, 
+td.list-table, 
+td.list-table-narrow {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 6px;
 }
 
 tr.last td {
     border-bottom: 2px solid #CCCCCC;
-}
-
-td.list-table, td.list-table-narrow, .list-table td {
-    border-bottom: 1px solid #CCCCCC;
-    padding: 8px 16px;
 }
 
 .backward_smaller_than a, .forward_greater_than a {
