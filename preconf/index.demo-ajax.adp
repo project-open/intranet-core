@@ -3,9 +3,16 @@
 <%
    set version "\]po\[ V4.0:"
    switch [ns_info server] {
-   po40ts   { set page_title "$version Simple Timesheet Management" }
-   po40cons { set page_title "$version PSA - Profesional Services Automation" }
-   default  { set page_title "$version All-Features Demo Server" }
+   l10n      { set page_title "$version L10n - Localization Server" }
+   po40cons  { set page_title "$version PSA - Profesional Services Automation" }
+   po40demo  { set page_title "$version All - Features Demo Server" }
+   po40epm   { set page_title "$version EPM - Enterprise Project Management" }
+   po40itsm  { set page_title "$version ITSM - IT Services Management" }
+   po40psa   { set page_title "$version PSA - Profesional Services Automation" }
+   po40pmo   { set page_title "$version PMO - Project Management Office" }
+   po40trans { set page_title "$version Trans - Translation" }
+   po40ts    { set page_title "$version Simple Timesheet Management" }
+   default   { set page_title "$version Demo" }
    }
 %>
 <html>

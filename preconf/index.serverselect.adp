@@ -178,16 +178,14 @@ function setBgImage (id,img) {
 		<col width="100px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/cons_bw.gif')">
-		<td>
-		  <div class="outer outer1"><a id="outer1" href="http://po40cons.project-open.net/index-userselect" ></a></div>
+		<td><div class="outer outer1"><a id="outer1" href="http://po40cons.project-open.net/index-userselect" ></a></div>
 		</td>
 		<td>
-		  <a href="http://po40cons.project-open.net/index-userselect" style="text-decoration: none; color: #000000"">
+		  <a href="http://po40cons.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>PSA - Professional Services Automation</b><br>
 	            You are a small or medium company providing professional services.<br>
 		    ]po[ allows you to manage your finances and to invoice your services.
-		  </a>
-		     <br><br>
+		  </a><br><br>
 		    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
 		      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
 		    </div>
@@ -197,32 +195,32 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
-<!--
+
 	<tr>
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
 	      <colgroup>
 		<col width="150px">
 		<col width="450px">
+		<col width="100px">
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('3')" onmouseout="this.className='off';setBgImage('3','/intranet/images/demoserver/epm_bw.jpg')">
-		<td><div class="outer outer3"><a href="http://po40ppm.project-open.net/index-userselect" id="outer3"></a></div></td>
+		<td><div class="outer outer3"><a href="http://po40epm.project-open.net/index-userselect" id="outer3"></a></div></td>
 		<td>
-		  <a href="http://po40ppm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
+		  <a href="http://po40epm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>EPM - Enterprise Project Management</b><br>
 	            You are a department of a larger enterprise.<br>
 		    Example: IT department, research and development, product development, ...
-		  </a>
-		  <br>
-		  <br>
-		  <div class="login"><a href="http://po40ppm.project-open.net/index-userselect" id="login3"></a></div>
+		  </a><br><br>
+		    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
+		      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
+		    </div>
+		  <div class="login"><a href="http://po40epm.project-open.net/index-userselect" id="login3"></a></div>
 		</td>
 	      </tr>
 	    </table>
 	  </td>
 	</tr>
-
--->
 
 	<tr>
 	  <td>
@@ -282,7 +280,7 @@ function setBgImage (id,img) {
 	      </colgroup>
 	      <tr class="off" onmouseover="this.className='on';removeBgImage('11')" onmouseout="this.className='off';setBgImage('11','/intranet/images/demoserver/project-open-logo-plain_bw.jpg')">
 	        <td><div class="outer outer11"><a href="http://po40demo.project-open.net/index-userselect" id="outer11"></a></div></td>
-	        <td><a href="http://po40demo.project-open.net/index-userselect"  style="text-decoration: none; color: #000000"">
+	        <td><a href="http://po40demo.project-open.net/index-userselect"  style="text-decoration: none; color: #000000">
 		    <b>All ]po[ Functionality </b><br>
 		    This demo server contains all ]po[ functionality.
 		    <br><br>
