@@ -176,7 +176,12 @@
   <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categories</msg>
   <msg key="Category">Category</msg>
+  <msg key="Category_Description_Less_Then_4000_Chars">Please limit your category description to 4000 characters</msg>
+  <msg key="Category_MailingListInfo_Less_Then_4000_Chars">Please limit your Mailing list information to 4000 characters</msg>
+  <msg key="Category_En_Us_Mandatory">Please always provide a value for locale: 'en_US', even though it is not needed</msg>
   <msg key="Category_description">Category description</msg>
+  <msg key="Category_Id_Missing">Category ID is missing</msg>
+  <msg key="Category_Missing">Missing 'Category', please enter a name</msg>
   <msg key="Category_name">Category name</msg>
   <msg key="category_name">%category_name%</msg>
   <msg key="Category_Nr">Category Nr.</msg>
