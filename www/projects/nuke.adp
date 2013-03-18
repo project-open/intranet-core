@@ -14,10 +14,8 @@
 
 </p><br>
 
-<listtemplate name="@list_id@"></listtemplate>
 
-<br>
-<p>
+<p style="color:red">
 <%= [lang::message::lookup "" intranet-core.You_shoud_change_status_to_deleted "
 First, unless @object_name@ is a test @object_type@, you 
 should probably set the status of this project as 'deleted'
@@ -27,5 +25,10 @@ instead."] %><br>
 This way, the project won't appear in the rest of
 the system anymore, but associated information will kept
 intact."] %>
-</p><br>
+</p>
+<br>
+<br>
+<listtemplate name="@list_id@"></listtemplate>
+<br>
+
 

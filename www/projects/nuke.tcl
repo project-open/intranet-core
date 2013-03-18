@@ -81,8 +81,8 @@ db_multirow -extend {indent project_url project_chk finance_html} subprojects su
     >"
 
     if {0 != $cost_count || 0 != $cost_count2 || 0 != $hour_count} {
-	set project_chk "\[&nbsp;\]"
-	set finance_html [lang::message::lookup "" intranet-core.There_are_financical_documents_associated_with_this_project "There are financial documents associated with this project"]
+	set project_chk "\[ <span style='color:red;font-weight:bold'>[lang::message::lookup "" intranet-core.Cant_Nuke_Project "Project can't be nuked"] </span>\]"
+	set finance_html [lang::message::lookup "" intranet-core.There_are_financical_documents_associated_with_this_project "There are still financial documents associated with this project"]
     } else {
 	set finance_html ""
     }
