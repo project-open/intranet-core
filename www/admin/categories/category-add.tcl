@@ -61,23 +61,28 @@ set exception_text ""
 
 if {![info exists category_id] || [empty_string_p $category_id]} {
     incr exception_count
-    append exception_text "<li>Category ID is somehow missing."
+    append exception_text "<li>  [lang::message::lookup "" intranet-core.Category_Id_Missing "Category ID is somehow missing"]</li>"
 }
-
 
 if {![info exists category] || [empty_string_p $category]} {
     incr exception_count
-    append exception_text "<li>Please enter a category"
+    append exception_text "<li> [lang::message::lookup "" intranet-core.Category_Missing "Missing 'Category', please enter a name"]</li>"
 }
 
 if {[info exists category_description] && [string length $category_description] > 4000} {
     incr exception_count
-    append exception_text "<li>Please limit your category description to 4000 characters"
+    append exception_text "<li> [lang::message::lookup "" intranet-core.Category_Description_Less_Then_4000_Chars "Please limit your category description to 4000 characters"]</li>"
 }
 
 if {[info exists mailing_list_info] && [string length $mailing_list_info] > 4000} {
     incr exception_count
-    append exception_text "<li>Please limit your Mailing list information to 4000 characters"
+    append exception_text "<li> [lang::message::lookup "" intranet-core.Category_MailingListInfo_Less_Then_4000_Chars "Please limit your Mailing list information to 4000 characters"]</li>"
+}
+
+# Value for en_US is mandatory 
+if { ![info exists translation("en_US")] } {
+    incr exception_count
+    append exception_text "<li> [lang::message::lookup "" intranet-core.Category_En_Us_Mandatory "Please always provide a value for locale: 'en_US', even though it is not needed"]</li>"
 }
 
 if { $exception_count > 0 } {
@@ -115,7 +120,6 @@ if [catch {
 # ---------------------------------------------------------------
 # Add translations
 # ---------------------------------------------------------------
-
 
 # Treat en_US first - as always :-)
 # The system requires it for some reason, probably as a default
