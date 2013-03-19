@@ -20,6 +20,8 @@ ad_page_contract {
   @author michael@yoon.org
   @author guillermo.belcic@project-open.com
   @author frank.bergmann@project-open.com
+  @author klaus.hofeditz@project-open.com
+
 } {
     { select_category_type "All" }
 }
@@ -41,12 +43,12 @@ set show_add_new_category_p 1
 if {"" == $select_category_type} { set show_add_new_category_p 0 }
 if {"All" == $select_category_type} { set show_add_new_category_p 0 }
 
-
 # Calculate the URL in the online help for this category
 regsub -all " " [string tolower $select_category_type] "_" category_key
 set category_help_url "http://www.project-open.org/en/category_$category_key"
 
-
+# Include JS for tablesorter
+template::head::add_javascript -src "/intranet/js/jquery.tablesorter.min.js" -order 10000
 
 # ------------------------------------------------------------------
 # Filter
@@ -89,23 +91,24 @@ template::element::set_value $form_id select_category_type $select_category_type
 if {$show_add_new_category_p} {
 
     set category_list_html "
-	<table border=0>
+	<table id='myTable' class='tablesorter' border=0>
+	<thead>
 	<tr>
-	  <td class=rowtitle align=center>Id</td>
-	  <td class=rowtitle align=center>En</td>
-	  <td class=rowtitle align=center>Category</td>
-	  <td class=rowtitle align=center>Sort<br>Order</td>
-	  <td class=rowtitle align=center>Is-A</td>
-	  <td class=rowtitle align=center>Int1</td>
-	  <td class=rowtitle align=center>Int2</td>
-	  <td class=rowtitle align=center>String1</td>
-	  <td class=rowtitle align=center>String2</td>
+	  <th>Id</th>
+	  <th style='min-width:35px'>En</th>
+	  <th>Category</th>
+	  <th style='min-width:60px'>Sort<br>Order</th>
+	  <th>Is-A</th>
+	  <th style='min-width:50px'>Int1</th>
+	  <th style='min-width:50px'>Int2</th>
+	  <th style='min-width:60px'>String1</th>
+	  <th style='min-width:60px'>String2</th>
     "
 
     if {[string equal "All" $select_category_type]} {
-	append category_list_html "<td class=rowtitle align=center>Category Type</td>"
+	append category_list_html "<th>Category Type</th>"
     }
-    append category_list_html "<td class=rowtitle align=center>Description</td></tr>"
+    append category_list_html "<th>Description</th></thead></tr>"
 
     # Now let's generate the sql query
     set criteria [list]
@@ -127,7 +130,8 @@ if {$show_add_new_category_p} {
 	if {$old_id == $category_id} {
 	    # We got another is-a for the same category
 	    append category_list_html "
-	<tr $bgcolor([expr $ctr % 2])>
+	<tbody>
+        <tr $bgcolor([expr $ctr % 2])>
 	  <td></td>
 	  <td></td>
 	  <td></td>
@@ -164,7 +168,7 @@ if {$show_add_new_category_p} {
 	set old_id $category_id
     }
     
-    append category_list_html "</table>"
+    append category_list_html "</tbody></table>"
     
     if {![string equal "All" $select_category_type]} {
 	set category_type $select_category_type
