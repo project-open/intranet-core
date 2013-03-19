@@ -47,3 +47,10 @@
 <else>
 	<listtemplate name="categories"></listtemplate>
 </else>
+
+
+<script type="text/javascript">
+	$(document).ready(function() { 
+		$("#myTable").tablesorter(); 
+	}); 
+</script>
