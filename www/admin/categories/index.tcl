@@ -94,11 +94,11 @@ if {$show_add_new_category_p} {
 	<table id='myTable' class='tablesorter' border=0>
 	<thead>
 	<tr>
-	  <th>Id</th>
+	  <th style='min-width:35px'>Id</th>
 	  <th style='min-width:35px'>En</th>
-	  <th>Category</th>
+	  <th style='min-width:75px'>Category</th>
 	  <th style='min-width:60px'>Sort<br>Order</th>
-	  <th>Is-A</th>
+	  <th style='min-width:50px'>Is-A</th>
 	  <th style='min-width:50px'>Int1</th>
 	  <th style='min-width:50px'>Int2</th>
 	  <th style='min-width:60px'>String1</th>
@@ -106,9 +106,9 @@ if {$show_add_new_category_p} {
     "
 
     if {[string equal "All" $select_category_type]} {
-	append category_list_html "<th>Category Type</th>"
+	append category_list_html "<th style='min-width:100px'>Category Type</th>"
     }
-    append category_list_html "<th>Description</th></thead></tr>"
+    append category_list_html "<th style='min-width:90px'>Description</th></thead></tr>"
 
     # Now let's generate the sql query
     set criteria [list]
