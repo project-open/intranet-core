@@ -722,23 +722,15 @@ if {[form is_submission $form_id]} {
         template::element::set_error $form_id company_project_nr "[_ intranet-core.Max50Chars]"
     }
 
-	db_1row sender_get_info_1 "
-                select
-                        p.company_id as previous_company_id,
-			p.parent_id as previous_parent_id
-                from
-                        im_projects p
-                where
-                        p.project_id = :project_id
-        "			
+    set previous_company_id [db_string get_previous_company_id "select company_id from im_projects where project_id = :project_id" -default ""]
+    set previous_parent_id [db_string get_previous_parent_id "select parent_id from im_projects where project_id = :project_id" -default ""]
 
     # Is this is a sub-project? 
     if {"" != $parent_id } {
-
 	# Check if user tries to change company_id which should be forbidden in general.  
-	# This secanrio is quite common when cloning projects 
 	if {"" != $previous_company_id && $company_id != $previous_company_id} {
 	    # We allow changing the compnay only, if user is also changing the Parent Project.   
+	    # This scenrio is quite common when cloning projects 
 	    if { $parent_id == $previous_parent_id  } {
 		incr n_error
 		set err_mess "You can't cange the customer of a sub-project. In case you have changed 'Parent Project' and 'Customer' in one edit step, please consider making one change at a time."
@@ -747,7 +739,7 @@ if {[form is_submission $form_id]} {
 	}
 	
 	# Whatever changes are made, customers of parent & this project need to be identical! 
-	db_1row sender_get_info_1 "
+	db_1row get_company_data "
                 select
                         p.company_id as company_id_parent,
                         c.company_name as company_name_parent
