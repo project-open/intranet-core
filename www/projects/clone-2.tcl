@@ -23,6 +23,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     parent_project_id:integer
+    new_parent_project_id:integer
     project_nr
     project_name
     { company_id:integer 0 }
@@ -36,6 +37,18 @@ ad_page_contract {
     { clone_timesheet_tasks_p 0 }
     { clone_target_languages_p 0 }
 }
+
+# ---------------------------------------------------------------------
+# Notes
+# ---------------------------------------------------------------------
+# variable naming might lead to confusion. 
+#
+# 'parent_project_id': 
+# ID of project to be cloned. A more precise name for this var would be probably 'original_project_id'   
+#
+# new_parent_project_id: 
+# Id of parent project the new to be clonded project should be assigned to. This new var is necessary since 
+# we introduced a sanity check thats prevents users from  changing the customer of a sub-project.        
 
 # ---------------------------------------------------------------------
 # Defaults & Security
@@ -60,6 +73,21 @@ if {!$parent_read} {
     ad_return_complaint "Insufficient Privileges" "
 	<li>You don't have sufficient privileges to see this page."
     return
+}
+
+# Make sure the user can read the new parent_project
+im_project_permissions $current_user_id $new_parent_project_id parent_view parent_read parent_write parent_admin
+if {!$parent_read} {
+    ad_return_complaint "Insufficient Privileges" "
+	<li>You don't have sufficient privileges to add a new sub-project to the selected parent project"
+    return
+}
+
+# If the to be cloned project should be a sub-project, we would need to set the company id 
+# to the company_id of the parent-project  
+if { "" != $new_parent_project_id } { 
+    # Get company_id from 
+    set company_id [db_string get_data "select company_id from im_projects where project_id=:new_parent_project_id" -default 0]
 }
 
 # ----------------------------------------------------
@@ -89,12 +117,12 @@ set page_body [im_project_clone \
 		   -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 		   -clone_target_languages_p $clone_target_languages_p \
 		   -company_id $company_id \
+		   -new_parent_project_id $new_parent_project_id \
 		   $parent_project_id \
 		   $project_name \
 		   $project_nr \
 		   $clone_postfix \
 ]
-
 
 set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
 set clone_project_type_id [db_string project_id "select project_type_id from im_projects where project_id = :clone_project_id" -default 0]
