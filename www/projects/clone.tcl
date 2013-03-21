@@ -54,11 +54,9 @@ if {!$parent_read} {
 }
 
 
-
 # ---------------------------------------------------------------------
 # Get Clone information
 # ---------------------------------------------------------------------
-
 
 set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1]
 set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0]
@@ -99,7 +97,6 @@ foreach struct $clone_struct {
 
 # ad_return_complaint 1 [ns_quotehtml $clone_html]
 
-
 # ---------------------------------------------------------------------
 # Get Clone information
 # ---------------------------------------------------------------------
@@ -115,7 +112,6 @@ from
 where 
 	p.project_id=:parent_project_id
 }
-
 
 # Create a new project_nr if it wasn't specified
 if {"" == $project_nr || ""} {
