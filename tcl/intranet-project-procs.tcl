@@ -1277,6 +1277,7 @@ ad_proc im_project_clone {
     {-clone_trans_tasks_p "" }
     {-clone_level 0 }
     {-company_id 0}
+    {-new_parent_project_id 0}
     {-debug_p 1}
     parent_project_id 
     project_name 
@@ -1307,7 +1308,12 @@ ad_proc im_project_clone {
     #
     append errors "<li>Starting to clone base data\n"
     set cloned_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
-    append errors "<li>Finished to clone base data\n"
+
+    if { 0 != $new_parent_project_id } {
+	db_dml set_parent_id "update im_projects set parent_id = :new_parent_project_id where project_id = :cloned_project_id"
+    }
+
+    append errors "<li>Finished to clone base data: cloned_project_id: $cloned_project_id \n"
 
     # --------------------------------------------
     # Clone the project
@@ -1351,6 +1357,7 @@ ad_proc im_project_clone {
 			project_type_id not in ([im_project_type_task])
 	"
 	set subproject_list [db_list subprojects $subprojects_sql]
+	set ctr 1
 	foreach sub_project_id $subproject_list {
 
 	    db_1row project_info "
@@ -1361,6 +1368,8 @@ ad_proc im_project_clone {
 		from	im_projects
 		where	project_id = :sub_project_id
 	    "
+	    
+	    ns_write "<li>im_project_clone: sub_project_nr; $sub_project_nr \n"
 
 	    # go for the next project
 	    if {$debug_p} { ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n" }
@@ -1377,6 +1386,7 @@ ad_proc im_project_clone {
 					  -clone_target_languages_p $clone_target_languages_p \
 					  -clone_level [expr $clone_level + 1] \
 					  -company_id $company_id \
+					  -new_parent_project_id $new_parent_project_id \
 					  $sub_project_id \
 					  $sub_project_name \
 					  $sub_project_nr \
@@ -1384,17 +1394,21 @@ ad_proc im_project_clone {
 	    ]
 	    if {$debug_p} { ns_write "</ul>\n" }
 
+	    # Set project_nr of subprojects based on newly created main project
+	    set sub_project_nr_new "${project_nr}[format "_%03d" $ctr]" 
+
 	    # We can _now_ reset the subproject's name to the original one
 	    db_dml set_parent "
 		update	im_projects
 		set
 			parent_id = :cloned_project_id,
-			project_nr = :sub_project_nr_org,
+			project_nr = :sub_project_nr_new,
 			project_name = :sub_project_name_org,
 			template_p = 'f'
 		where
 			project_id = :cloned_subproject_id
 	    "
+	    incr ctr
 	}
 	if {"" == $subproject_list} { 
 	    if {$debug_p} { ns_write "<li>No subprojects found\n" }
