@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/auto_login.tcl
+# /packages/intranet-core/www/auto-login.tcl
 #
 # Copyright (C) 2005 ]project-open[
 #
@@ -18,7 +18,7 @@ ad_page_contract {
     in a sha1 HASH.
 
     Example use:
-    http://www.project-open.net/intranet/auto_login?user_id=1234&url=/intranet-forum/&auto_login=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
+    http://www.project-open.net/intranet/auto-login?user_id=1234&url=/intranet-forum/&auto_login=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
 
     @@param user_id	Login as this user
     @@param url		What page to go to
@@ -65,7 +65,6 @@ if {"" != $password && "" != $email} {
 	ad_script_abort
     }
 }
-
 
 
 # ------------------------------------------------------------------------
