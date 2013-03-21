@@ -710,7 +710,6 @@ if {[form is_submission $form_id]} {
 	        and project_id <> :project_id
 		and parent_id = :parent_id
     "]
-
 	
     if { $project_name_exists > 0 } {
 	incr n_error
@@ -723,15 +722,45 @@ if {[form is_submission $form_id]} {
         template::element::set_error $form_id company_project_nr "[_ intranet-core.Max50Chars]"
     }
 
-    set previous_company_id [db_string prev_company_id "select company_id from im_projects where project_id = :project_id" -default ""]
+	db_1row sender_get_info_1 "
+                select
+                        p.company_id as previous_company_id,
+			p.parent_id as previous_parent_id
+                from
+                        im_projects p
+                where
+                        p.project_id = :project_id
+        "			
 
-#    ad_return_complaint 1 $previous_company_id
-    # Only check for sub-projects:
-    # The user shouldn't change the customer
+    # Is this is a sub-project? 
     if {"" != $parent_id } {
+
+	# Check if user tries to change company_id which should be forbidden in general.  
+	# This secanrio is quite common when cloning projects 
 	if {"" != $previous_company_id && $company_id != $previous_company_id} {
+	    # We allow changing the compnay only, if user is also changing the Parent Project.   
+	    if { $parent_id == $previous_parent_id  } {
+		incr n_error
+		set err_mess "You can't cange the customer of a sub-project. In case you have changed 'Parent Project' and 'Customer' in one edit step, please consider making one change at a time."
+		template::element::set_error $form_id company_id [lang::message::lookup "" intranet-core.Cant_change_customer_of_subproject $err_mess]
+	    }
+	}
+	
+	# Whatever changes are made, customers of parent & this project need to be identical! 
+	db_1row sender_get_info_1 "
+                select
+                        p.company_id as company_id_parent,
+                        c.company_name as company_name_parent
+                from
+                        im_projects p, 
+          		im_companies c
+                where
+			c.company_id = p.company_id and 
+                        p.project_id = :parent_id
+        "			
+	if { $company_id_parent != $company_id } {
 	    incr n_error
-	    template::element::set_error $form_id company_id [lang::message::lookup "" intranet-core.Cant_change_customer_of_subproject "You can't cange the customer of a sub-project"]
+	    template::element::set_error $form_id company_id [lang::message::lookup "" intranet-core.ParentCompanyIsDifferent "Parent Project's client ($company_name_parent) is different from this project client"]
 	}
     }
 
