@@ -287,25 +287,24 @@ ad_form -extend -name register -on_request {
 	return
     }
 
-
 #    20041124 fraber: disabled db_transaction because of problems with PostgreSQL?
 #    db_transaction {
 	
     	# Do we create a new user or do we edit an existing one?
 	ns_log Notice "/users/new: editing_existing_user=$editing_existing_user"
 
-        # Check for duplicate email in case of updates AND newly to be created users 
-	set email [string trim $email]
-	set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
-	if {$similar_user > 0} {
-	    set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
-	    ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
-       	        [_ intranet-core.lt_There_is_already_a_vi]<br>"
-	    return
-	}
-
 	if {!$editing_existing_user} {
 	    # New user: create from scratch
+	    # Check for duplicate email
+	    set email [string trim $email]
+	    set similar_user [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
+	    if {$similar_user > 0} {
+		set view_similar_user_link "<A href=/intranet/users/view?user_id=$similar_user>[_ intranet-core.user]</A>"
+		ad_return_complaint 1 "<li><b>[_ intranet-core.Duplicate_UserB]<br>
+       	        [_ intranet-core.lt_There_is_already_a_vi]<br>"
+		return
+	    }
+
 	    if {![info exists password] || [empty_string_p $password]} {
 		set password [ad_generate_random_string]
 		set password_confirm $password
