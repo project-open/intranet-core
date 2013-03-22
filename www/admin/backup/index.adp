@@ -1,7 +1,8 @@
 <master src="../master">
 <property name="context">@context;noquote@</property>
 <property name="title">#intranet-core.Menu_Backup_Restore#</property>
-  <property name="admin_navbar_label">admin_backup</property>
+<property name="admin_navbar_label">admin_backup</property>
+<property name="left_navbar">@left_navbar_html;noquote@</property>
 
 <table cellpadding=1 cellspacing=1 border=0>
 <tr>

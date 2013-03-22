@@ -79,42 +79,75 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 }
 
 set actions [list \
-	"New backup" [export_vars -base pg_dump] "Create new postgres dump" \
-	"Upload dump" [export_vars -base upload-pgdump] "Upload an existing dump" \
-	"Reinstall TSearch2 Search Engine" [export_vars -base reinstall-tsearch2] "reinstall the TSearch2 Search engine" \
+		 [lang::message::lookup "" intranet-core.New_Backup "New Backup"] \
+		 [export_vars -base pg_dump] \
+		 [lang::message::lookup "" intranet-core.Create_new_backup_dump "Create a new backup dump"] \
+		 [lang::message::lookup "" intranet-core.Upload_backup_dump "Upload Backup"] \
+		 [export_vars -base upload-pgdump] \
+		 [lang::message::lookup "" intranet-core.Upload_an_existing_backup "Upload an existing backup dump from your filesystem into this backup list"] \
 ]
 
 set bulk_actions [list \
-	"Delete" "delete-pgdump" "Remove checked dumps" \
-	"Bzip" "bzip-pgdump" "Compress the dump bzip2" \
-	"Un-Bzip" "unbzip-pgdump" "Uncompress the dump" \
+		      [lang::message::lookup "" intranet-core.Backup_Delete "Delete"] \
+		      "delete-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Delete_checked_backup_dumps "Remove checked backup dumps"] \
+		      [lang::message::lookup "" intranet-core.Backup_Bzip "Bzip"] \
+		      "bzip-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Compress_the_backup_dump "Compress the backup dump using bzip2"] \
+		      [lang::message::lookup "" intranet-core.Backup_Un_Bzip "Un-Bzip"] \
+		      "unbzip-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Uncompress_backup_dump "Uncompress backup dump"] \
 ]
 
 
 template::list::create \
     -name backup_files \
     -key filename \
-    -elements {
-	filename {
-	    label "file name"
-            link_url_eval "/intranet/admin/backup/download/$file_body"
-	}
-	extension {
-	    label "type"
-	}
-	date {
-	    label "date"
-	}
-	size {
-	    label "size"
-	    html { align right }
-	}
-	remove {
-	    display_template {<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">restore</a>}
-	}
-    } \
+    -elements [list \
+		   filename [list \
+		       label [lang::message::lookup "" intranet-core.Backup_File_Name "File Name"] \
+		       link_url_eval "/intranet/admin/backup/download/$file_body" \
+		   ] \
+		   extension [list \
+				  label [lang::message::lookup "" intranet-core.Backup_Type "Type"] \
+		   ] \
+		   date [list \
+			     label [lang::message::lookup "" intranet-core.Backup_Date "Date"] \
+		   ] \
+		   size [list \
+			     label [lang::message::lookup "" intranet-core.Backup_Size "Size"] \
+		       html { align right } \
+		   ] \
+		   remove [list \
+			       display_template {<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>} \
+		   ] \
+    ] \
     -bulk_actions $bulk_actions \
     -bulk_action_method post \
     -bulk_action_export_vars { return_url } \
     -actions $actions
 
+
+
+
+
+
+# ---------------------------------------------------------------
+# Left-Navbar
+# ---------------------------------------------------------------
+
+set admin_html "
+<br><ul>
+<li><a href=\"[export_vars -base reinstall-tsearch2]\">[lang::message::lookup "" intranet-core.Reinstall_TSearch2  "Reinstall TSearch2 Search Engine"]</a>
+</ul><br>
+"
+
+set left_navbar_html "
+            <div class=\"filter-block\">
+                <div class=\"filter-title\">
+                    [lang::message::lookup "" intranet-helpdesk.Admin_Actions "Admin Actions"]
+                </div>
+                $admin_html
+            </div>
+            <hr/>
+"
