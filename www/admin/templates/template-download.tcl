@@ -26,11 +26,8 @@ if {!$user_is_admin_p} {
 set path_to_file [parameter::get -package_id [db_string get_view_id "select package_id from apm_packages where package_key = 'intranet-invoices'" -default 0] -parameter "InvoiceTemplatePathUnix" -default ""]
 append path_to_file "/"  $template_name
 
-
-
 if {[catch {
-    # set outputheaders [ns_conn outputheaders]
-    # ns_set cput $outputheaders "Content-Disposition" "attachment; filename=${template_name}"
+    ns_set update [ns_conn outputheaders] content-disposition "attachment; filename=${template_name}"
     ns_returnfile 200 "application" $path_to_file
 } err_msg]} {
     ad_return_complaint 1 "
