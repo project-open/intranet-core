@@ -47,7 +47,7 @@ db_multirow -extend { object_attributes_url url } templates templates_sql {
 		lower(category)
 } {
     set object_attributes_url ""
-    set url "/intranet/admin/templates/template-download.tcl?template_name=$category"
+    set url "/intranet/admin/templates/template-download?template_name=$category"
 }
 
 template::list::create \
