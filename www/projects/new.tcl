@@ -354,6 +354,7 @@ set help_text "[im_gif help "Is the project going to be in time and budget (gree
 template::element::create $form_id on_track_status_id \
     -label "[_ intranet-core.On_Track_Status]" \
     -widget "im_category_tree" \
+    -optional \
     -custom {category_type "Intranet Project On Track Status"} \
     -after_html $help_text
 
