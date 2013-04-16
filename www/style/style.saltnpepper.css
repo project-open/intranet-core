@@ -468,18 +468,18 @@ background-position: 0px -10px;
 			
 			
     #navbar_main a {
-	float:left;
-	background:url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
-	margin:0;
-	padding:0 0 0 5px;
-	text-decoration:none;
+	float: left;
+	background: url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
+	margin: 0;
+	padding: 0 0 0 5px;
+	text-decoration: none;
       }
 #navbar_main   a   span  {
-      float:left;
-      display:block;
-      background:url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
-      padding:5px 15px 4px 8px;
-      color:#24618E;
+      float: left;
+      display: block;
+      background: url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
+      padding: 4px 15px 4px 8px;
+      color: #24618E;
 	  margin-left:-2px;
       }
 #navbar_main   /* Commented Backslash Hack hides rule from IE5-Mac \*/
