@@ -619,7 +619,11 @@ db_foreach projects_info_query $query -bind $form_vars {
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
-	eval "$cmd"
+        if [catch {
+            eval "$cmd"
+        } errmsg] {
+            ns_log Error "/intranet/users/index - Dynfield: $column_var not found"
+        }
 	append table_body_html "</td>\n"
     }
     append table_body_html "</tr>\n"
