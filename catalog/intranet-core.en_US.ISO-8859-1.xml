@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" locale="en_US" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1111">1111</msg>
@@ -116,6 +116,7 @@
   <msg key="Assignments">Assignments</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="AUD">AUD</msg>
+  <msg key="Audit_Trail_Tickets">Audit Trail Tickets</msg>
   <msg key="Australia">Australia</msg>
   <msg key="Austria">Austria</msg>
   <msg key="Authoring">Authoring</msg>
@@ -151,6 +152,9 @@
   <msg key="Bosnia and Herzegovina">Bosnia and Herzegovina</msg>
   <msg key="Branch_Office">Branch Office</msg>
   <msg key="Brazil">Brazil</msg>
+  <msg key="Browser_Warning">Browser Warning</msg>
+  <msg key="Browser_Warning_Msg">Your browser '%browser% %version_major%.x' may not render all pages correctly with this version of ]project-open[.&lt;br&gt;
+We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="bs">bs</msg>
   <msg key="Budget">Budget</msg>
   <msg key="Budget_Hours">Budget Hours</msg>
@@ -176,11 +180,11 @@
   <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categories</msg>
   <msg key="Category">Category</msg>
-  <msg key="Category_Description_Less_Then_4000_Chars">Please limit your category description to 4000 characters</msg>
-  <msg key="Category_MailingListInfo_Less_Then_4000_Chars">Please limit your Mailing list information to 4000 characters</msg>
-  <msg key="Category_En_Us_Mandatory">Please always provide a value for locale: 'en_US', even though it is not needed</msg>
   <msg key="Category_description">Category description</msg>
+  <msg key="Category_Description_Less_Then_4000_Chars">Please limit your category description to 4000 characters</msg>
+  <msg key="Category_En_Us_Mandatory">Please always provide a value for locale: 'en_US', even though it is not needed</msg>
   <msg key="Category_Id_Missing">Category ID is missing</msg>
+  <msg key="Category_MailingListInfo_Less_Then_4000_Chars">Please limit your Mailing list information to 4000 characters</msg>
   <msg key="Category_Missing">Missing 'Category', please enter a name</msg>
   <msg key="Category_name">Category name</msg>
   <msg key="category_name">%category_name%</msg>
@@ -250,6 +254,7 @@
   <msg key="Conf_Item_Version">ConfItem Version</msg>
   <msg key="Conf_Items">Conf Items</msg>
   <msg key="Confirm">Confirm</msg>
+  <msg key="Consistency_Checks">Consistency Checker</msg>
   <msg key="Consulting__IT">Consulting &amp; IT</msg>
   <msg key="Consulting__Rollout">Consulting &amp; Rollout</msg>
   <msg key="Consulting_Project">Consulting Project</msg>
@@ -607,10 +612,12 @@
   <msg key="Home_Phone">Home Phone</msg>
   <msg key="Home_phone">Home phone</msg>
   <msg key="Home_Postal_Code">Home Postal Code</msg>
+  <msg key="Home_Timesheet_Tasks">Home Timesheet Tasks</msg>
   <msg key="Home_Workflow_Inbox">Home Workflow Inbox</msg>
   <msg key="Home_ZIP">Home ZIP</msg>
   <msg key="Honduras">Honduras</msg>
   <msg key="Hour">Hour</msg>
+  <msg key="How_it_should_be_right">How it should be right</msg>
   <msg key="hr">hr</msg>
   <msg key="HR_Help">HR Help</msg>
   <msg key="HR_Managers">HR Managers</msg>
@@ -793,6 +800,7 @@
   <msg key="lt_Change_the_system_par">Change the system parametrization such as directories, URLs, etc...</msg>
   <msg key="lt_Choose_this_option_fo">Choose this option for detailed security information. With this option the security update service transmits information about your configuration that might help us to assess your ]project-open[ system configuration including package versions and operating system version information. It also includes your email address so that we can alert your in special situations.</msg>
   <msg key="lt_Choose_this_option_if">Choose this option if you prefer not to reveal any information to ]project-open[ that might identify you or your organization.</msg>
+  <msg key="lt_Click_here_to_configu">Click here in order to configure the menu bar</msg>
   <msg key="lt_Click_here_to_get_hel">Click here to get help for this page</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
   <msg key="lt_Clientesintranet-file">Clients</msg>
@@ -943,9 +951,9 @@ her contributions to the site content.</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Manage the OpenACS Platform</msg>
   <msg key="lt_Maybe_somebody_has_ch">Maybe somebody has changed the path of the 'Internal' company who identifies your organization.</msg>
   <msg key="lt_Meineintranet-timeshe">My</msg>
+  <msg key="lt_Member_state">Member state</msg>
   <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
-  <msg key="lt_Member_state">Member state</msg>
   <msg key="lt_Mineintranet-coreObje">Mine</msg>
   <msg key="lt_Mineintranet-timeshee">Mine</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
@@ -1018,6 +1026,7 @@ site with fake crud.</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
+  <msg key="lt_Report_a_bug_on_this_">Report a bug on this page</msg>
   <msg key="lt_return_to_user_admini">Return to user administration</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
@@ -1174,6 +1183,7 @@ other way for the user to find out.</msg>
   <msg key="Menus">Menus</msg>
   <msg key="Message">Message</msg>
   <msg key="Mexico">Mexico</msg>
+  <msg key="Milestone">Milestone</msg>
   <msg key="milestone_p">Milestone?</msg>
   <msg key="Milestones">Milestones</msg>
   <msg key="Mine">Mine</msg>
@@ -1298,6 +1308,7 @@ other way for the user to find out.</msg>
   <msg key="Package_Manager">Package Manager</msg>
   <msg key="Page">Page</msg>
   <msg key="Pager">Pager</msg>
+  <msg key="PageTitleHome">Home</msg>
   <msg key="Paid">Paid</msg>
   <msg key="Paraguay">Paraguay</msg>
   <msg key="Parameters">Parameters</msg>
@@ -1327,6 +1338,7 @@ other way for the user to find out.</msg>
   <msg key="Perc">%%</msg>
   <msg key="Perc_Compl">% Compl.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
+  <msg key="Percentage">Percentage</msg>
   <msg key="Permissions">Permissions</msg>
   <msg key="Personal">Human Resources</msg>
   <msg key="Peru">Peru</msg>
@@ -1334,6 +1346,7 @@ other way for the user to find out.</msg>
   <msg key="Phone">Phone</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
+  <msg key="Planning">Planning</msg>
   <msg key="Please_Select">Please select</msg>
   <msg key="Please_Select_Type_for_Object">Please select a type of %object_type_l10n%</msg>
   <msg key="PM_Help">PM Help</msg>
@@ -1381,6 +1394,7 @@ other way for the user to find out.</msg>
   <msg key="Profiles">Profiles</msg>
   <msg key="Profit">Profit</msg>
   <msg key="Profit_and_Loss">Profit &amp; Loss</msg>
+  <msg key="Program">Program</msg>
   <msg key="Program_Enhan_K">Program Enhan. K</msg>
   <msg key="Program_Enhancement">Program Enhancement</msg>
   <msg key="Project">Project</msg>
@@ -1476,6 +1490,8 @@ other way for the user to find out.</msg>
   <msg key="Repeating_Cost">Repeating Cost</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
   <msg key="Reply">Reply</msg>
+  <msg key="Report_a_bug_on_this_page">Report a bug on this page</msg>
+  <msg key="Report_but_on_page">Report a Bug or Misbehavior</msg>
   <msg key="Report_Request">Report Request</msg>
   <msg key="Report_this_error">Report this error</msg>
   <msg key="Reporting">Reporting</msg>
@@ -1483,6 +1499,7 @@ other way for the user to find out.</msg>
   <msg key="Request_For_Change">Request For Change</msg>
   <msg key="Requested">Requested</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
+  <msg key="Resource_Management">Resource Management</msg>
   <msg key="Resource_Planning_Report">Resource Planning Report</msg>
   <msg key="Resources">Resources</msg>
   <msg key="Ressource_Group_1">Ressource Group</msg>
@@ -1532,6 +1549,7 @@ other way for the user to find out.</msg>
   <msg key="Select_contact">Select contact</msg>
   <msg key="Select_Type">Select Type</msg>
   <msg key="Select_Type_for_Object">Select Type for Object</msg>
+  <msg key="Selectors">Selectors</msg>
   <msg key="Send_me_a_copy">Send me a copy</msg>
   <msg key="Send_Notification">Send Notification</msg>
   <msg key="Senior_Managers">Senior Managers</msg>
@@ -1623,6 +1641,7 @@ other way for the user to find out.</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
   <msg key="Ticket">Ticket</msg>
   <msg key="Ticket_Members">Ticket Members</msg>
+  <msg key="Tickets">Tickets</msg>
   <msg key="Time_plan">Time plan</msg>
   <msg key="Time_sheet">Time sheet</msg>
   <msg key="Timesheet">Timesheet</msg>
@@ -1699,6 +1718,7 @@ other way for the user to find out.</msg>
   <msg key="Upload_portrait">Upload portrait</msg>
   <msg key="Upload_Preview_Image">Upload Preview Image</msg>
   <msg key="ur">ur</msg>
+  <msg key="URL">URL</msg>
   <msg key="Uruguay">Uruguay</msg>
   <msg key="USD">USD</msg>
   <msg key="User">User</msg>
@@ -1749,6 +1769,7 @@ other way for the user to find out.</msg>
   <msg key="Week">Week</msg>
   <msg key="Welcome_to_po">Welcome to ]project-open[</msg>
   <msg key="Welcome_User_Name">Welcome %user_name%</msg>
+  <msg key="What_is_wrong">What is wrong</msg>
   <msg key="Whos_Online">Who's Online?</msg>
   <msg key="Widget_Examples">Widget Examples</msg>
   <msg key="Widgets">Widgets</msg>
