@@ -1316,7 +1316,7 @@ table.list td {
     .form-required-mark {color: #FF0000;}
 
     .form-element, 
-    .component_body tbody tr {
+    .component_body tbody tr.* {
 	height:22px; 
         border-top: 1px solid #F0EDED;
         border-bottom: 1px solid #F0EDED;
