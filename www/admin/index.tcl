@@ -37,6 +37,17 @@ set bgcolor(1) " class=roweven"
 
 
 # ---------------------------------------------------------
+# Adminstration Guide
+# ---------------------------------------------------------
+
+# Shows the Admin Guide
+set admin_guide_html ""
+if {[llength [info commands im_sysconfig_admin_guide]] > 0} {
+    set title [lang::message::lookup "" intranet-core.Interactive_Administration_Guide "Interactive Administration Guide"]
+    set admin_guide_html [im_table_with_title $title [im_sysconfig_admin_guide]]
+}
+
+# ---------------------------------------------------------
 # Adminstration Area with GIFs
 # ---------------------------------------------------------
 

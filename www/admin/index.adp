@@ -83,6 +83,8 @@
 
   <td valign=top width="400px">
     <%= [im_component_bay right] %>
+    @admin_guide_html;noquote@
+
   </td>
 </tr>
 </table><br>
