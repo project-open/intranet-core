@@ -156,6 +156,7 @@ ad_proc -public im_check_for_update_scripts {
 	# trouble with the URL size
 	if {$ctr > 15} { continue }
 
+
         set spec_file "[acs_root_dir]/packages/$module/$module.info"
 
         set needs_update_p 0
@@ -169,8 +170,8 @@ ad_proc -public im_check_for_update_scripts {
             set redirect_p 1
             append url "enable=$module&"
             lappend missing_modules $module
+	    incr ctr
         }
-	incr ctr
     }
 
     if {$redirect_p} {
