@@ -610,7 +610,7 @@ set bgcolor(1) " class=rowodd "
 set ctr 1
 set idx $start_idx
 
-db_foreach projects_info_query $query -bind $form_vars {
+db_foreach users $query -bind $form_vars {
 
     ns_log Notice "users/index: user_id=$user_id"
 
