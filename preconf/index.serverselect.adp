@@ -42,32 +42,32 @@ div.login a {
 	overflow:hidden;
 	background: url('/intranet/images/demoserver/login_bw.jpg') top left no-repeat;
 }
-div.outer0 { background: url('/intranet/images/demoserver/timesheet.jpg' ) 0 -0px no-repeat; }
-div.outer0 a { background: url('/intranet/images/demoserver/timesheet_bw.jpg' ) top left no-repeat; }
-div.outer1 { background: url('/intranet/images/demoserver/cons.gif' ) 0 -0px no-repeat; }
-div.outer1 a { background: url('/intranet/images/demoserver/cons_bw.gif' ) top left no-repeat; }
+
+
+div.outer0 { background: url('/intranet/images/demoserver/home_box_ts.jpg' ) 0 -0px no-repeat; }
+div.outer0 a { background: url('/intranet/images/demoserver/home_box_ts.jpg' ) top left no-repeat; }
+
+div.outer1 { background: url('/intranet/images/demoserver/home_box_psa.jpg' ) 0 -0px no-repeat; }
+div.outer1 a { background: url('/intranet/images/demoserver/home_box_psa.jpg' ) top left no-repeat; }
+
 div.outer2 { background: url('/intranet/images/demoserver/samuel_salesmanager.jpg' ) 0 -0px no-repeat; }
 div.outer2 a { background: url('/intranet/images/demoserver/samuel_salesmanager_bw.jpg' ) top left no-repeat; }
-div.outer3 { background: url('/intranet/images/demoserver/epm.jpg' ) 0 -0px no-repeat; }
-div.outer3 a { background: url('/intranet/images/demoserver/epm_bw.jpg' ) top left no-repeat; }
+
+div.outer3 { background: url('/intranet/images/demoserver/home_box_epm.jpg' ) 0 -0px no-repeat; }
+div.outer3 a { background: url('/intranet/images/demoserver/home_box_epm.jpg' ) top left no-repeat; }
+
 div.outer4 { background: url('/intranet/images/demoserver/petra_projectmanager.jpg' ) 0 -0px no-repeat; }
 div.outer4 a { background: url('/intranet/images/demoserver/petra_projectmanager_bw.jpg' ) top left no-repeat; }
-/*
-div.outer5 { background: url('/intranet/images/demoserver/pmo.jpg' ) 0 -0px no-repeat; }
-div.outer5 a { background: url('/intranet/images/demoserver/pmo_bw.jpg' ) top left no-repeat; }
-*/
-div.outer5 { background: url('/intranet/images/project-open-logo-pmo-edition.jpg' ) 0 -0px no-repeat; }
-div.outer5 a { background: url('/intranet/images/demoserver/project-open-logo-pmo-edition_bw.jpg' ) top left no-repeat; }
+
+div.outer5 { background: url('/intranet/images/demoserver/home_box_pmo.jpg' ) 0 -0px no-repeat; }
+div.outer5 a { background: url('/intranet/images/demoserver/home_box_pmo.jpg' ) top left no-repeat; }
 
 div.outer6 { background: url('/intranet/images/demoserver/harry_helpdesk.jpg' ) 0 -0px no-repeat; }
 div.outer6 a { background: url('/intranet/images/demoserver/harry_helpdesk_bw.jpg' ) top left no-repeat; }
-div.outer9 { background: url('/intranet/images/demoserver/itil.jpg' ) 0 -0px no-repeat; }
-div.outer9 a { background: url('/intranet/images/demoserver/itil_bw.jpg' ) top left no-repeat; }
 
-/*
-div.outer11 { background: url('/intranet/images/demoserver/all.gif' ) 0 -0px no-repeat; }
-div.outer11 a { background: url('/intranet/images/demoserver/all_bw.gif' ) top left no-repeat; }
-*/ 
+div.outer9 { background: url('/intranet/images/demoserver/home_box_itsm.jpg' ) 0 -0px no-repeat; }
+div.outer9 a { background: url('/intranet/images/demoserver/home_box_itsm.jpg' ) top left no-repeat; }
+
 
 div.outer11 { background: url('/intranet/images/demoserver/project-open-logo-plain.jpg' ) 0 -0px no-repeat; }
 div.outer11 a { background: url('/intranet/images/demoserver/project-open-logo-plain_bw.jpg' ) top left no-repeat; }
@@ -147,7 +147,7 @@ function setBgImage (id,img) {
 		<col width="450px">
 		<col width="100px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('0')" onmouseout="this.className='off';setBgImage('0','/intranet/images/demoserver/timesheet_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('0')" onmouseout="this.className='off';setBgImage('0','/intranet/images/demoserver/home_box_ts.jpg')">
 		<td>
 		  <div class="outer outer0"><a id="outer0" href="http://po40ts.project-open.net/index-userselect" ></a></div>
 		</td>
@@ -177,7 +177,7 @@ function setBgImage (id,img) {
 		<col width="450px">
 		<col width="100px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/cons_bw.gif')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('1')" onmouseout="this.className='off';setBgImage('1','/intranet/images/demoserver/home_box_psa.jpg')">
 		<td><div class="outer outer1"><a id="outer1" href="http://po40cons.project-open.net/index-userselect" ></a></div>
 		</td>
 		<td>
@@ -204,7 +204,7 @@ function setBgImage (id,img) {
 		<col width="450px">
 		<col width="100px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('3')" onmouseout="this.className='off';setBgImage('3','/intranet/images/demoserver/epm_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('3')" onmouseout="this.className='off';setBgImage('3','/intranet/images/demoserver/home_box_epm.jpg')">
 		<td><div class="outer outer3"><a href="http://po40epm.project-open.net/index-userselect" id="outer3"></a></div></td>
 		<td>
 		  <a href="http://po40epm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
@@ -229,7 +229,7 @@ function setBgImage (id,img) {
 	        <col width="150px">
 	        <col width="450px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/project-open-logo-pmo-edition_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('5')" onmouseout="this.className='off';setBgImage('5','/intranet/images/demoserver/home_box_pmo.jpg')">
 	        <td><div class="outer outer5"><a href="http://po40pmo.project-open.net/index-userselect" id="outer5"></a></div></td>
 	        <td>
 		  <b>
@@ -254,7 +254,7 @@ function setBgImage (id,img) {
 	        <col width="150px">
 	        <col width="450px">
 	      </colgroup>
-	      <tr class="off" onmouseover="this.className='on';removeBgImage('9')" onmouseout="this.className='off';setBgImage('9','/intranet/images/demoserver/itil_bw.jpg')">
+	      <tr class="off" onmouseover="this.className='on';removeBgImage('9')" onmouseout="this.className='off';setBgImage('9','/intranet/images/demoserver/home_box_itsm.jpg')">
 	        <td><div class="outer outer9"><a href="http://po40itsm.project-open.net/index-userselect" id="outer9"></a></div></td>
 	        <td><a href="http://po40itsm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>ITSM and ITIL - IT Services Management</b><br>
