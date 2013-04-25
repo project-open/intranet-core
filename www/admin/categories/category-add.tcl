@@ -80,7 +80,7 @@ if {[info exists mailing_list_info] && [string length $mailing_list_info] > 4000
 }
 
 # Value for en_US is mandatory 
-if { ![info exists translation("en_US")] } {
+if { "" == [string trim $translation(en_US)] } {
     incr exception_count
     append exception_text "<li> [lang::message::lookup "" intranet-core.Category_En_Us_Mandatory "Please always provide a value for locale: 'en_US', even though it is not needed"]</li>"
 }
