@@ -52,20 +52,26 @@ set elements_list {
   task_id {
     label "[_ intranet-core.Id]"
   }
-  project_nr {
-    label "[_ intranet-core.Nr]"
-    display_template {
-	    <a href="@tasks.project_url@">@tasks.project_nr@</a>
-    }
-  }
   project_name {
     label "[_ intranet-core.Name]"
     display_template {
 	    <a href="@tasks.project_url@">@tasks.project_name@</a>
     }
   }
+  project_nr {
+    label "[_ intranet-core.Nr]"
+    display_template {
+	    <a href="@tasks.project_url@">@tasks.project_nr@</a>
+    }
+  }
   project_status {
   	label "[_ intranet-core.Status]"
+  }
+  hours {
+  	label "[_ intranet-timesheet2.Hours]"
+        display_template {
+	    <a href="@tasks.hours_url@">@tasks.hours@</a>
+        }
   }
 }
 
@@ -82,14 +88,15 @@ list::create \
         	return_url
         }
         
-db_multirow -extend {project_url parent_project_url} tasks get_tasks "
+db_multirow -extend {project_url hours_url parent_project_url} tasks get_tasks "
 	select
 		t.task_id,
 	 	p.*,
 		im_category_from_id(p.project_status_id) as project_status,
 		im_category_from_id(p.project_type_id) as project_type,
 		im_project_name_from_id(p.parent_id) as parent_project_name,
-		im_project_nr_from_id(p.parent_id) as parent_project_nr
+		im_project_nr_from_id(p.parent_id) as parent_project_nr,
+		(select sum(hours) from im_hours where project_id = p.project_id) as hours
 	from
 		im_projects p,
 		im_timesheet_tasks t
@@ -101,5 +108,6 @@ db_multirow -extend {project_url parent_project_url} tasks get_tasks "
 	LIMIT :limit
 " {
     set project_url [export_vars -base "/intranet-timesheet2-tasks/new" {task_id return_url}]
+    set hours_url [export_vars -base "/intranet-timesheet2/hours/one-project" {project_id return_url}]
 }
 
