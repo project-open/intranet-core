@@ -875,7 +875,7 @@ a   span  {float:none;}
 .component_footer_hack, .footer_hack {
   position: relative;
   z-index: 101;
-  border-top: solid 3px #fff;
+  /* border-top: solid 3px #fff; */
   height: 3px;
   top: -3px;
   width: 100%;
