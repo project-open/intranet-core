@@ -241,7 +241,7 @@ function setBgImage (id,img) {
         <col width="230px">
         </colgroup>
         <tr class="off" onmouseover="this.className='on';removeBgImage('4')" onmouseout="this.className='off';setBgImage('4','/intranet/images/demoserver/petra_projectmanager_bw.jpg')">
-          <td><div class="outer outer4"><a href="/become?user_id=8834&amp;url=/intranet/" id="outer4"><span></span></a></div></td>
+          <td><div class="outer outer4"><a href="/become?user_id=8843&amp;url=/intranet/" id="outer4"><span></span></a></div></td>
           <td><a href="/become?user_id=8843&amp;url=/intranet/"><b>Login as Petra Projectmanager</b><br>
             (Project Manager)</a></nobr>
             </div>
