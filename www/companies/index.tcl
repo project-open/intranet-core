@@ -501,16 +501,20 @@ if {!$filter_advanced_p} {
 	            <form method='get' action='/intranet/companies/index' name='filter_form'>
 		       [export_form_vars start_idx order_by how_many letter view_name]
 		       <table border='0' cellpadding='0' cellspacing='0'>
-	               <if @view_companies_all_p@>
-		          <tr>
-		             <td>#intranet-core.View_1#  &nbsp;</td>
-		             <td>[im_select view_type $view_types ""]</td>
-		          </tr>
-		          <tr>
-		             <td>#intranet-core.Company_Status_1#  &nbsp;</td>
-		             <td>[im_category_select -include_empty_p 1 "Intranet Company Status" status_id $status_id]</td>
-		          </tr>
-	               </if>
+    " 
+    if { $view_companies_all_p } {
+	append left_navbar_html "
+                          <tr>
+                             <td>\#intranet-core.View_1\#  &nbsp;</td>
+                             <td>[im_select view_type $view_types ""]</td>
+                          </tr>
+                          <tr>
+                             <td>\#intranet-core.Company_Status_1\#  &nbsp;</td>
+                             <td>[im_category_select -include_empty_p 1 "Intranet Company Status" status_id $status_id]</td>
+                          </tr>
+	"
+    }
+    append left_navbar_html "
 		       <tr>
 		          <td>#intranet-core.Company_Type_1#  &nbsp;</td>
 		          <td>
