@@ -48,4 +48,22 @@
 	</div>
 </else>
 
+<if @show_feedback_p@ eq "1">
+		@feedback_url;noquote@
+                <script type="text/javascript">
+                        $(document).ready(function () {
+                                /* Set up feedback box on right side */
+                                $('#feedback-badge-right').feedbackBadge({
+                                        css3Safe: $.browser.safari ? true : false, //this trick prevents old safari browser versions to scroll properly
+                                        float: 'right'
+                                });
+                                $(window).scroll(function () {
+                                        var topMargin = ($(window).height() - $('#popup').height())/2 + $(window).scrollTop();
+                                        $('#popup').css('margin-top', topMargin);
+                                });
+                        });
+                </script>
+
+</if>
+
 <%= [im_footer] %>
