@@ -160,7 +160,6 @@ switch [string tolower $user_group_name] {
         set user_group_id [im_profile_freelancers]
         set menu_select_label "users_freelancers"
 	lappend extra_wheres "u.user_id in (select object_id_two from acs_rels where rel_type = 'membership_rel' and  object_id_one = $user_group_id)"
-
     }
     default {
     	# Search for the right group name.
@@ -462,6 +461,12 @@ if {"" == $extra_order_by} {
     }
 }
 
+if {$freelancers_exist_p} {
+    lappend extra_select "fl.*"
+    lappend extra_left_join "LEFT OUTER JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
+}
+
+
 # Join the "extra_" SQL pieces 
 set extra_from [join $extra_froms ",\n\t"]
 set extra_left_join [join $extra_left_joins "\n\t"]
@@ -517,7 +522,6 @@ set sql "
 select
 	p.*,
 	u.*,
-	fl.*,
 	c.home_phone, c.work_phone, c.cell_phone, c.pager,
 	c.fax, c.aim_screen_name, c.msn_screen_name,
 	c.icq_number, c.m_address,
@@ -533,7 +537,6 @@ from
 	cc_users u
 	LEFT OUTER JOIN im_employees e ON (u.user_id = e.employee_id)
 	LEFT OUTER JOIN users_contact c ON (u.user_id = c.user_id)
-	LEFT OUTER JOIN im_freelancers fl ON (fl.user_id = u.user_id)
 	$extra_left_join
 	$extra_from
 where
