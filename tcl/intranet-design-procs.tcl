@@ -1259,7 +1259,7 @@ ad_proc -public im_header {
 
 	template::multirow foreach meta {
 	    set row "<meta"
-	    if {"" != $http_equiv} {  append row " http_equiv='$http_equiv'" }
+	    if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
 	    if {"" != $name} {  append row " name='$name'" }
 	    if {"" != $scheme} {  append row " scheme='$scheme'" }
 	    if {"" != $lang} {  append row " lang='$lang'" }
