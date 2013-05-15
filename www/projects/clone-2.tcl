@@ -133,7 +133,8 @@ set clone_project_type_id [db_string project_id "select project_type_id from im_
 
 # Check if there is a WF associated with the project type
 set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :clone_project_type_id" -default ""]
-if { "" != $wf_key } {
+set wf_exists_p [db_string wf_id "select count(*) from wf_workflows where workflow_key = :wf_key"]
+if {$wf_exists_p} {
             # Create a new workflow case (instance)
             set context_key ""
             set case_id [wf_case_new \
