@@ -672,7 +672,7 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id project_nr "[lang::message::lookup "" intranet-core.lt_The_project_nr_is_too_long "The Project Nr is too long."] <br>
 	   [lang::message::lookup "" intranet-core.lt_Please_use_a_shorter_project_nr_ "Please use a shorter Project Nr."]"
     }
-    if {[info exists presales_probability] && ($presales_probability > 100 || $presales_probability < 0)} {
+    if {[info exists presales_probability] && "" != $presales_probability && ($presales_probability > 100 || $presales_probability < 0)} {
 	template::element::set_error $form_id presales_probability "Number must be in range (0 .. 100)"
 	incr n_error
     }
