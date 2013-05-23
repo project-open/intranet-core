@@ -45,5 +45,6 @@ db_dml activate_plugin "
 
 # Flush the cache for the navigation bar for all users...
 util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
+util_memoize_flush_regexp "db_list_of_lists plugin_list_$user_id"
 
 ad_returnredirect "$return_url"
