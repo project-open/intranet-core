@@ -356,6 +356,7 @@ switch [string tolower $order_by] {
     "project manager" { set order_by_clause "order by lower(lead_name)" }
     "url" { set order_by_clause "order by upper(url)" }
     "project name" { set order_by_clause "order by lower(project_name)" }
+    "budget" { set order_by_clause "order by coalesce(project_budget,0) DESC" }
     "per" { 
 	set order_by_clause "order by per_order desc" 
 	lappend extra_selects "(case when p.percent_completed is null then 0 else p.percent_completed end) as per_order"
@@ -552,6 +553,7 @@ SELECT *
 FROM
         ( SELECT
                 p.*,
+		round(p.percent_completed * 10.0) / 10.0 as percent_completed,
                 c.company_name,
                 im_name_from_user_id(project_lead_id) as lead_name,
                 im_category_from_id(p.project_type_id) as project_type,
