@@ -1655,8 +1655,8 @@ div.xowiki-content hr {
          /* display: none; */ 
 }
 
-.forumBar {
-	margin-top:-1;
+.fullwidth-list .component table .forumBar {
+        margin-top:-3;
 }
 
 .component table.forumBar td  {
