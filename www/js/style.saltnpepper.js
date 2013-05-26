@@ -106,15 +106,11 @@ jQuery().ready(function(){
 	if (node_insert_after != null && node_to_move != null) {
 	   document.getElementById("monitor_frame").insertBefore(node_to_move, node_insert_after.nextSibling);
            document.getElementById('fullwidth-list').style.visibility='visible';
-           document.getElementById('footer').style.visibility='visible';
 	}
 	
         node_insert_after=document.getElementById("main_header");
         node_to_move=document.getElementById("navbar_sub_wrapper");
-	// alert (node_insert_after);
-	// alert (node_to_move);
         if (node_insert_after != null && node_to_move != null) {
-           // alert('inserting');
            document.getElementById("main").insertBefore(node_to_move, node_insert_after.nextSibling);
         }
 	
