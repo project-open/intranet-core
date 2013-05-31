@@ -1180,47 +1180,59 @@ div#fullwidth-components {
    color:#339;
 }
 
+
 table.list td {
         background: none !important;
 }
 
+/* -- table_list_simple -- */
 
-.table_list {
+.fullwidth-list .component table.table_list_simple,
+table.table_list_simple {
 	text-align:left;
 	border-collapse:collapse;
-	margin:3px;
-	padding:3px;
-}
-
-.table_list thead tr {
-	background:#D0D0D0 none repeat scroll 0 50%;
-	border-bottom:1px solid #FFFFFF;
-	color:#000000;
+	margin:5px;
+	padding:5px;
 	font-size:9pt;
-	font-weight:bold;
-}
-
-.table_list thead tr td {
-	height: 14pt;
-}
-
-.table_list tbody  {
-        font-size:9pt;
-}
-
-
-.table_list tbody tr.roweven {
-	background-color:#ddd;
-}
-
-
-.table_list tbody tr.rowodd {
-	background-color:#eee;
-}
-
-.table_list tfoot tr {
+        height: 14pt;
         background-color:#fff;
 }
+
+.fullwidth-list .component table.table_list_simple tr,
+table.table_list_simple tr {
+    border-bottom:1px solid #CCCCCC;
+    border-top: none;
+    background-color:#fff;
+}
+
+.fullwidth-list .component table.table_list_simple tr.rowtitle td,
+table.table_list_simple tr.rowtitle td {
+    font-weight:bold;
+    background-color:#E1E2E1;
+    border-bottom: none;
+    border-top: 1px solid #666;
+    border-right:1px solid #666;
+    border-left:1px solid #666;
+    border-bottom: 1px solid #666;
+    color: #333;
+}
+
+.fullwidth-list .component table.table_list_simple tr.rowtitle,
+table.table_list_simple tr.rowtitle {
+    border-bottom: none;
+    border-right:1px solid #000000;
+    border-left:1px solid #000000;
+}
+
+.fullwidth-list .component .table_list_simple td, 
+.table_list_simple td {
+    background-color:#fff;
+    padding: 5px;
+    border-right:1px solid #CCCCCC;
+    border-left:1px solid #CCCCCC;
+}
+
+/* ---- */
 
 .filter-list {
 	/* START NEW IDEBAR */
