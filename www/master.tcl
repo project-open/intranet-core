@@ -117,7 +117,7 @@ set show_feedback_p [parameter::get -package_id [apm_package_id_from_key intrane
 
 if { $show_feedback_p } {
     template::head::add_css -href "/intranet/style/feedbackBadge.css" -media "screen" -order 1
-    # template::head::add_javascript -src "/intranet/js/jquery.feedbackBadge.mifeedback-badge-rightn.js" -order 1
+    template::head::add_javascript -src "/intranet/js/jquery.feedbackBadge.min.js" -order 1
 }
 
 set feedback_url "<a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\" title='Give us feedback' id='feedback-badge-right' target='new'>"
