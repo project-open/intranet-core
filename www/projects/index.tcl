@@ -269,7 +269,15 @@ set user_options [linsert $user_options 0 [list "All" ""]]
 ad_form -extend -name $form_id -form {
     {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1} } }
     {company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
-    {user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+}
+
+if { ![im_profile::member_p -profile_id [im_customer_group_id] -user_id $user_id] } {
+    ad_form -extend -name $form_id -form {
+	{user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+    }
+}
+
+ad_form -extend -name $form_id -form {
     {start_date:text(text) {label "[_ intranet-timesheet2.Start_Date]"} {value "$start_date"} {html {size 10}} {after_html {<input type="button" style="height:20px; width:20px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendar('start_date', 'y-m-d');" >}}}
     {end_date:text(text) {label "[_ intranet-timesheet2.End_Date]"} {value "$end_date"} {html {size 10}} {after_html {<input type="button" style="height:20px; width:20px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendar('end_date', 'y-m-d');" >}}}
 }
