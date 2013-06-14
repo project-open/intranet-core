@@ -1182,11 +1182,11 @@ ad_proc -public im_project_personal_active_projects_component {
     # Set up colspan to be the number of headers + 1 for the # column
     set colspan [expr [llength $column_headers] + 1]
 
-    set table_header_html "<tr>\n"
+    set table_header_html "<tr class=\"tableheader\">\n"
     foreach col $column_headers {
 	regsub -all " " $col "_" col_txt
 	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
-	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
+	append table_header_html "  <th class=rowtitle>$col_txt</th>\n"
     }
     append table_header_html "</tr>\n"
 
@@ -1235,7 +1235,7 @@ ad_proc -public im_project_personal_active_projects_component {
 	"
     }
     return "
-	<table class=\"table_component\" width=\"100%\">
+	<table class=\"table_list_page\" width=\"100%\">
 	<thead>$table_header_html</thead>
 	<tbody>$table_body_html</tbody>
 	</table>
