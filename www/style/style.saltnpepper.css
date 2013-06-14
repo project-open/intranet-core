@@ -912,9 +912,11 @@ a   span  {float:none;}
 }
 
 .fullwidth-list .component table tr {
+/* removed - defined in .table_list_page
 	height: 22px;
-	border-top: 1px solid #EEEEEE;
-	border-bottom: 1px solid #EEEEEE;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #FFFFFF;
+*/
 }
 
 .fullwidth-list .component table td {
@@ -1040,13 +1042,14 @@ a   span  {float:none;}
 }
 
 .fullwidth-list table {
+/* -- removed, defined in .table_list_page
    text-align:left;
-   /* border-collapse:collapse;  
-   margin:10px; */
+*/
 }
 
 .fullwidth-list .component_body table tr {
- 	padding: 3px;
+/* -- removed, defined in .table_list_page
+ 	padding: 4px;
 /* -- removed, breaks calendar widget
 	height:20px;
 */
@@ -1059,9 +1062,11 @@ a   span  {float:none;}
 
 
 .fullwidth-list .component table {
+/* -- removed, defined in .table_list_page
 	text-align:left;
 	border-collapse:collapse;
 	margin: 2px;
+*/
 }
 
 div#fullwidth-main {
