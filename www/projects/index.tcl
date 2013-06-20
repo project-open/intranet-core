@@ -271,7 +271,9 @@ ad_form -extend -name $form_id -form {
     {company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
 }
 
-if { ![im_profile::member_p -profile_id [im_customer_group_id] -user_id $user_id] } {
+# Does user have VIEW permissions on company's employees?  
+set employee_group_id [im_employee_group_id]
+if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_group_id, :user_id, 'read') from dual"]} {
     ad_form -extend -name $form_id -form {
 	{user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
     }
@@ -291,22 +293,19 @@ if {$filter_advanced_p} {
         -advanced_filter_p 1 \
 	-page_url "/intranet/projects/index"
 
-    
     # Set the form values from the HTTP form variable frame
     im_dynfield::set_form_values_from_http -form_id $form_id
     im_dynfield::set_local_form_vars_from_http -form_id $form_id
-    
+
     array set extra_sql_array [im_dynfield::search_sql_criteria_from_form \
 				   -form_id $form_id \
 				   -object_type $object_type
 			      ]
-
     # Show an admin wrench for setting up the filter design
     if {$admin_p} {
 	set filter_admin_url [export_vars -base "/intranet-dynfield/layout-position" {{object_type im_project} {page_url "/intranet/projects/index"}}]
 	set filter_admin_html "<a href='$filter_admin_url'>[im_gif wrench]</a>"
     }
-
 }
 
 # ---------------------------------------------------------------
@@ -419,8 +418,10 @@ foreach varname [info locals] {
 
 # Deal with DynField Vars and add constraint to SQL
 #
-if {$filter_advanced_p} {
 
+
+if {$filter_advanced_p} {
+    
     set dynfield_extra_where $extra_sql_array(where)
     set ns_set_vars $extra_sql_array(bind_vars)
     set tmp_vars [util_list_to_ns_set $ns_set_vars]
