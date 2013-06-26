@@ -45,9 +45,9 @@ set result [db_0or1row users_info_query {}]
 # Get CCs outside of main select to avoid outer joins...
 # iuri 2010-11-05 ha_country_code and wa_country_code are empty in this page!!!
 
-set ha_country_name [util_memoize [list db_string ha_country_name "select country_name from country_codes where iso = '$wa_country_code'" -default ""]]
+set ha_country_name [util_memoize [list db_string ha_country_name "select country_name from country_codes where iso = '$ha_country_code'" -default ""]]
 
-set wa_country_name [util_memoize [list db_string wa_country_name "select country_name from country_codes where iso = '$ha_country_code'" -default ""]]
+set wa_country_name [util_memoize [list db_string wa_country_name "select country_name from country_codes where iso = '$wa_country_code'" -default ""]]
 
 
 if {$result == 1} {
