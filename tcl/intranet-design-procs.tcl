@@ -176,6 +176,7 @@ ad_proc -public im_gif_static {
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"help"		{ return "<img src=$navbar_gif_url/help.png border=$border title=\"$alt\" alt=\"$alt\">" }
+	"error"     { return "<img src=$navbar_gif_url/error.png border=$border title=\"$alt\" alt=\"$alt\">" }	
 	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -928,7 +929,7 @@ ad_proc -public im_navbar {
 
     if {$show_context_help_p} {
 	set context_help_html "
-	    <div id=\"main_users_online\">
+	    <div class=\"main_users_online\">
 	      <a href=\"[im_navbar_help_link]\">&nbsp; [im_gif help [lang::message::lookup "" intranet-core.Context_Help "Context Help"]]</a>
 	    </div>
 	"
@@ -937,25 +938,26 @@ ad_proc -public im_navbar {
     set show_context_comment_p 1
     if {$show_context_comment_p} {
 	set context_comment_html "
-	    <div id=\"main_users_online\">
+	    <div class=\"main_users_online\">
 	      <a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\">&nbsp; [im_gif bell [lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]]</a>
 	    </div>
 	"
     }
 
     set main_users_and_search "
-	  <div id=\"main_users_and_search\">
-	    <div id=\"main_users_online\">
+	  <div class=\"main_users_and_search\">
+	    <div class=\"main_users_online\">
     " 
     if { "register" != [string range [ns_conn url] 1 8] } {
-	append main_users_and_search [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]
+		append main_users_and_search [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]
     }	
 
     append main_users_and_search "
 	    </div>
 	    $context_help_html
 	    $context_comment_html
-	    <div id=\"main_users_online\">
+        <div class=\"main_users_online\" id=\"general_messages_icon\"></div>
+	    <div class=\"main_users_online\">
     "
     if { "register" != [string range [ns_conn url] 1 8] } {
 	    append main_users_and_search  "&nbsp;[im_header_users_online_str]"
