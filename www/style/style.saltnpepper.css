@@ -349,32 +349,27 @@ background-position: 0px -10px;
    
 }
 
-#main_users_and_search {
+.main_users_and_search {
 	float:right;
 	padding-top:5px;
 	width:auto;
 	height:23px;
- 
+    font-weight: normal;
 }
-
-#main_header_deco {
-
-}
+#main_header_deco {}
 
 #main_search {
 	float:left;
 	padding-left: 1em;
 }
 
-
-#main_users_online {
+.main_users_online { 
    color: #666666;
    float:left;
-   border-right: 1px solid #000000;
    padding-right: 1em;
 }
 
-#main_users_online A,#main_search INPUT {
+.main_users_online A,#main_search INPUT {
    color: #666666;
    font-size: 8pt;
    text-decoration:none;
@@ -645,7 +640,7 @@ a   span  {float:none;}
 
 #main_title {
   height:18px;
-  font-size: 13pt;
+  font-size: 10pt;
   color: #666666;		
 }
 
@@ -745,7 +740,7 @@ a   span  {float:none;}
 	/* position: relative; */ 
 	left: 2pt;
 	float: left;
-	font-size: 12pt;
+	font-size: 10pt;
 	font-weight: bold;
 	padding-top: 3px;
 }
@@ -911,14 +906,6 @@ a   span  {float:none;}
   overflow: hidden;
 }
 
-.fullwidth-list .component table tr {
-/* removed - defined in .table_list_page
-	height: 22px;
-	border-top: 1px solid #FFFFFF;
-	border-bottom: 1px solid #FFFFFF;
-*/
-}
-
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
 	vertical-align: middle;
@@ -1017,6 +1004,8 @@ a   span  {float:none;}
 
 .filter-block select {
   width: 134px;
+  font-family: inherit;
+  font-size: 8pt;
 }
 
 
@@ -1029,10 +1018,12 @@ a   span  {float:none;}
 }
 
 .filter-title {
-   font-size: 14pt;
+   font-size: 10pt;
+   font-weight: bold;
    width: 100%;
    padding-top: 5px;
    padding-bottom: 5px;
+
 }
 .filter-block {
    padding-left: 0.5em;
@@ -1041,32 +1032,8 @@ a   span  {float:none;}
    padding-bottom: 5px;
 }
 
-.fullwidth-list table {
-/* -- removed, defined in .table_list_page
-   text-align:left;
-*/
-}
-
-.fullwidth-list .component_body table tr {
-/* -- removed, defined in .table_list_page
- 	padding: 4px;
-/* -- removed, breaks calendar widget
-	height:20px;
-*/
-}
-
-
 .fullwidth-list table td {
  	padding: 3px;
-}
-
-
-.fullwidth-list .component table {
-/* -- removed, defined in .table_list_page
-	text-align:left;
-	border-collapse:collapse;
-	margin: 2px;
-*/
 }
 
 div#fullwidth-main {
@@ -1097,7 +1064,6 @@ div#fullwidth-components {
    font-size:9pt;
    font-weight:bold;
    padding:3px;
-   /* background:#B6C7FE none repeat scroll 0% 50%;*/
    background:#D0D0D0 none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
    padding:5px 4px 5px 2px;
@@ -1142,11 +1108,13 @@ div#fullwidth-components {
 .table_list_page tbody tr.rowplain td,
 .table_list_page tbody tr:hover.rowplain,
 .table_list_page tbody tr:hover.rowplain td 
-
 {
    background:#D0D0D0;
 }
 
+.table_list_page tbody tr td.rowtitle a:link {
+	color: #000000
+}
 
 .table_list_page tbody tr.rowwhite,
 .table_list_page tbody tr.rowwhite td,
@@ -1158,7 +1126,6 @@ div#fullwidth-components {
 {
    background:#fff;
 }
-
 
 
 .table_interim_title {
@@ -1848,8 +1815,8 @@ th.list-narrow {
 
 /* notification bar */ 
 
-.error-notice {
-    background-color: #f2baba;
+.warning-notice {
+    background-color: #FAF607;
     color: #333333;
     border: 2px #b81616;
     font-weight: bold;
@@ -1858,31 +1825,13 @@ th.list-narrow {
     position:absolute;
     left:0;
     top:0px;
-    z-index: 9999; 
-    width: 100%; 
-    height: 25px;
+    z-index: 9999;
+    width: 100%;
     text-align: center;
     vertical-align: middle;
     display:inline-block;
-    line-height:25px;
+    line-height:25px; 
 }
- 
-.success-notice {
-    background-color: #baf2bb;
-    color: #049900;
-    border: 2px #15a612;
-    font-weight: normal;
-    font-size: 0.95em;
-    margin-left: 0px;
-    margin-right: 0px;
-    position:absolute;
-    left:0;
-    top:0px;
-    z-index: 9999;
-    width: 100%;  
-    height: 25px;
-}
-
 
 /* Overwriting lists.css */
 
@@ -1913,6 +1862,12 @@ tr.last td {
 
 .risk_matrix {
 	padding-right: 5px;	
+}
+
+.x-body {
+   font-family: verdana, arial, helvetica, sans-serif;
+   font-size: 8pt;
+   color: #000000;
 }
 
 
