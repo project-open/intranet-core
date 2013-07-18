@@ -44,9 +44,6 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-# ToDo:  
-# set return_url [remove_var_from_url "feedback_message_key"] 
-
 # "Profile" changes its value, possibly because of strange
 # ad_form sideeffects
 if {[exists_and_not_null profile]} {
@@ -69,7 +66,7 @@ set user_feedback ""
 
 if { [info exists profile] } {
     if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] >1 } {
-	set feedback_message_key "intranet-core.VerifyProfile" 
+		util_user_message -message  [lang::message::lookup "" intranet-core.VerifyProfile "WARNING: Permission conflicts might occur when Freelancers are assigned to multiple groups."]
     }
 }
 
