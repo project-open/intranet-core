@@ -8,12 +8,6 @@ if { ![info exists left_navbar] } { set left_navbar {} }
 if { ![info exists show_left_navbar_p] } { set show_left_navbar_p 1 }
 if { ![info exists show_context_help_p] } { set show_context_help_p 0 }
 
-if { ![info exists feedback_message_key] } { set feedback_message_key {} }
-if { ![info exists user_feedback_id] } { set user_feedback_id 0 }
-if { ![info exists user_feedback_txt] } { set user_feedback_txt {} }
-if { ![info exists user_feedback_type] } { set user_feedback_type {} }
-if { ![info exists user_feedback_link] } { set user_feedback_link {} }
-
 # ns_log Notice "master: show_left_navbar_p=$show_left_navbar_p"
 # ns_log Notice "master: header_stuff=$header_stuff"
 
@@ -92,25 +86,11 @@ if {"" == $sub_navbar} {
 	# Moved the context help to the "search bar"
 #	set sub_navbar [im_sub_navbar -show_help_icon $parent_menu_id "" $title "pagedesriptionbar" $label]
 	set sub_navbar [im_sub_navbar $parent_menu_id "" $title "pagedesriptionbar" $label]
-
-    }
-
-}
-
-if { "" != $feedback_message_key } {
-    if { [lang::message::message_exists_p [lang::user::locale] $feedback_message_key] } {
-	set user_feedback_txt [lang::message::lookup "" $feedback_message_key ""]
-    } elseif { [lang::message::message_exists_p "en_US" $feedback_message_key]} {
-	set user_feedback_txt [lang::message::lookup "en_US" $feedback_message_key ""]
-    } else {
-	set user_feedback_txt "Message Key missing: $feedback_message_key"
-	if { [im_user_is_admin_p [ad_maybe_redirect_for_registration]] } {
-		set package_key [string range $feedback_message_key 0 [expr [string first . $feedback_message_key]-1]] 		
-		set message_key [string range $feedback_message_key [expr [string first . $feedback_message_key]+1] [string length $feedback_message_key]]
-		set user_feedback_link "/acs-lang/admin/edit-localized-message?package_key=$package_key&locale=[lang::user::locale]&show=all&message_key=$message_key"
-	} 
     }
 }
+
+# OpenACS Feedback bar
+util_get_user_messages -multirow user_messages
 
 # Feedback badge / used for demo servers
 set show_feedback_p [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "ShowFeedbackButton" -default 0]
@@ -128,3 +108,4 @@ append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Fee
 catch {
     im_ds_display_config_info
 } err_msg
+

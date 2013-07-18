@@ -1,19 +1,17 @@
 <%= [im_header $title $header_stuff] %>
-<div id="ajax-status-message" style="display: none;"> </div>
-<if @user_feedback_txt@ ne "">
-        <script type="text/javascript"><!--
-	<if @user_feedback_link@ ne "">
-		  $('#ajax-status-message').html('<a href=\'@user_feedback_link@\'>@user_feedback_txt@</a>').removeClass('success-notice').addClass('error-notice').show().delay(8000).fadeOut();
-	</if>
-	<else>
-		  $('#ajax-status-message').html('@user_feedback_txt@').removeClass('success-notice').addClass('error-notice').show().delay(8000).fadeOut();
-	</else>
-	// --></script>
+
+<if @user_messages:rowcount@ ne 0>
+
+<span id="ajax-status-message" class="warning-notice">
+  <multiple name="user_messages">
+        @user_messages.message@<br>
+  </multiple>
+</span>
+
 </if>
 
 <%= [im_navbar -show_context_help_p $show_context_help_p $main_navbar_label] %>
 <%= $sub_navbar %>
-
 
 <if @show_left_navbar_p@>
 	<div id="slave">
@@ -67,3 +65,12 @@
 </if>
 
 <%= [im_footer] %>
+
+<if @user_messages:rowcount@ ne 0>
+<script type="text/javascript">
+    $('#general_messages_icon').html('&nbsp;<%=[im_gif "error" ""]%>');
+	$('#general_messages_icon').click( function() { $('#ajax-status-message').fadeIn(); return false; } );
+    $('#ajax-status-message').delay(8000).fadeOut();
+</script>
+</if>
+
