@@ -2,7 +2,6 @@
 <property name="title">@page_title@</property>
 <property name="main_navbar_label">user</property>
 <property name="sub_navbar">@user_navbar_html;noquote@</property>
-<property name="feedback_message_key">@feedback_message_key;noquote@</property>
 
 <table cellpadding=0 cellspacing=0 border=0 width=100%>
 <tr>

@@ -27,7 +27,6 @@ ad_page_contract {
     { view_name "user_view" }
     { contact_view_name "user_contact" }
     { freelance_view_name "user_view_freelance" }
-    { feedback_message_key "" }
 }
 
 # ---------------------------------------------------------------
