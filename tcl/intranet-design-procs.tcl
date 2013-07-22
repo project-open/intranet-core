@@ -956,7 +956,7 @@ ad_proc -public im_navbar {
 	    </div>
 	    $context_help_html
 	    $context_comment_html
-        <div class=\"main_users_online\" id=\"general_messages_icon\"></div>
+        <div class=\"main_users_online\" id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></div>
 	    <div class=\"main_users_online\">
     "
     if { "register" != [string range [ns_conn url] 1 8] } {
