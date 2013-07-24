@@ -308,6 +308,13 @@ ad_proc -public im_user_is_hr_p { user_id } {
 }
 
 # ToDo: replace by im_profile::member_p
+ad_proc -public im_user_is_pm_p { user_id } {
+    Returns 1 if a the user is in the Project Managers group.
+} {
+    return [im_profile::member_p -profile_id [im_pm_group_id] -user_id $user_id]
+}
+
+# ToDo: replace by im_profile::member_p
 ad_proc -public im_user_is_accounting_p { user_id } {
     Returns 1 if a the user is in the Accounting group.
 } {
