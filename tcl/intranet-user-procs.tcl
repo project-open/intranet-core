@@ -1231,6 +1231,9 @@ ad_proc -public im_user_nuke {
 	db_dml delete_user "delete from parties where party_id = :user_id"
 	db_dml delete_user "delete from acs_objects where object_id = :user_id"
 
+	ns_log Notice "users/nuke2: User preferences"
+	db_dml delete_user_preferences "delete from user_preferences where user_id = :user_id"
+
 	# Returning empty string - everything went OK
 	return ""	
 
