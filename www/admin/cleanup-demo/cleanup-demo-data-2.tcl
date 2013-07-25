@@ -622,6 +622,11 @@ if {[im_table_exists im_conf_items]} {
 
 
 ns_write "<li>Cleanup Helpdesk\n"
+
+if {[im_table_exists im_idea_user_map]} {
+    db_dml remove_from_im_idea_user_map "delete from im_idea_user_map"
+}
+
 if {[im_table_exists im_tickets]} {
     db_dml remove_from_tickets "delete from im_tickets"
 }
