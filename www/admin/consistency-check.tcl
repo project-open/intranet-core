@@ -98,14 +98,17 @@ set check_sql "
 	select	*
 	from	(
 		select	u.*,
-			(select	count(*) from acs_rels r 
-			where	r.object_id_two = u.user_id and r.object_id_one = [im_employee_group_id]
+			(select	count(*) from acs_rels r, membership_rels mr
+			where	r.object_id_two = u.user_id and r.object_id_one = [im_employee_group_id] and
+				r.rel_id = mr.rel_id and member_state = 'approved'
 			) as employee_p,
-			(select	count(*) from acs_rels r 
-			where	r.object_id_two = u.user_id and r.object_id_one = [im_customer_group_id]
+			(select	count(*) from acs_rels r, membership_rels mr
+			where	r.object_id_two = u.user_id and r.object_id_one = [im_customer_group_id] and
+				r.rel_id = mr.rel_id and member_state = 'approved'
 			) as customer_p,
-			(select	count(*) from acs_rels r 
-			where	r.object_id_two = u.user_id and r.object_id_one = [im_freelance_group_id]
+			(select	count(*) from acs_rels r, membership_rels mr
+			where	r.object_id_two = u.user_id and r.object_id_one = [im_freelance_group_id] and
+				r.rel_id = mr.rel_id and member_state = 'approved'
 			) as freelancer_p
 		from	cc_users u
 		) t
