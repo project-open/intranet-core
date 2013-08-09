@@ -104,7 +104,7 @@ if {$valid_login} {
 	    ad_script_abort
 	}
     }
-
+    ad_user_login -forever=0 $user_id
     ad_returnredirect $url
 } else {
     ns_log Notice "auto-login: Invalid login"
