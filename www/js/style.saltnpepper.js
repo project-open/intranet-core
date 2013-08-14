@@ -134,8 +134,9 @@ jQuery().ready(function(){
 	    if (re.exec(ua) != null)
 	    rv = parseFloat( RegExp.$1 );
 	}
-	if ( rv!=0 && document.getElementById("fullwidth-list") != null ) {
-		document.getElementById('fullwidth-list').style.width='100%';
+	// Setting width=100% in IE10 leads again to the large screen ...  
+	if ( rv!=0 && document.getElementById("fullwidth-list") != null && rv<10) {
+	    document.getElementById('fullwidth-list').style.width='100%';
 	}
 
     jQuery(".component_icons").css("opacity","0.1");
