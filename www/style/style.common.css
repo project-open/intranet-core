@@ -487,3 +487,10 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	background-color: #336699;
 	color: #ffffff;
 }
+
+/* -- Filter Form - Side Menu */ 
+
+.po_form_element_error {
+    color: red;
+}
+
