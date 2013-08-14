@@ -953,7 +953,7 @@ a   span  {float:none;}
 }
 
 
-/* filter & lists */
+/* Sidebar Filter */
 
 .filter {
 	 overflow:hidden !important;
@@ -967,16 +967,21 @@ a   span  {float:none;}
 	 right: 0px;
 }
 
-
-  /* new: requires adaption in .adp files*/ 
-	#sideBarTab{
+#sideBarTab {
 	visibility:visible;
 	height:137px;
 	width:28px;
 	position:absolute;
 	left: 7px;
 	top: -185px;
-	}
+}
+
+.filter-block {
+   padding-left: 0.5em;
+   padding-right: 0.5em;
+   padding-top: 5px;
+   padding-bottom: 5px;
+}
 
 .filter-button {
    position: absolute;
@@ -989,25 +994,32 @@ a   span  {float:none;}
 }
 
 .filter-block .form-label, 
-.filter-block .form-widget, 
-.filter-block select, 
-.filter-block input {
+.filter-block .form-widget {
    background-color: #fff;
 }
 
 .filter-block  select,
 .filter-block  input {
-	border: solid #999999 1px;
-	padding:2px;
-	margin-top:3px;
+    font-family: inherit;
+    font-size: 8pt;
+    border: solid #999999 1px;
+    padding:2px;
+    margin-top:3px;
+    background-color: #fff;
 }
 
 .filter-block select {
   width: 134px;
-  font-family: inherit;
-  font-size: 8pt;
+
 }
 
+.filter-title {
+   font-size: 10pt;
+   font-weight: bold;
+   width: 100%;
+   padding-top: 5px;
+   padding-bottom: 5px;
+}
 
 .filter hr {
    border: 0;
@@ -1017,20 +1029,7 @@ a   span  {float:none;}
    width: 244px;
 }
 
-.filter-title {
-   font-size: 10pt;
-   font-weight: bold;
-   width: 100%;
-   padding-top: 5px;
-   padding-bottom: 5px;
-
-}
-.filter-block {
-   padding-left: 0.5em;
-   padding-right: 0.5em;
-   padding-top: 5px;
-   padding-bottom: 5px;
-}
+/* MAIN Window */
 
 .fullwidth-list table td {
  	padding: 3px;
@@ -1127,12 +1126,10 @@ div#fullwidth-components {
    background:#fff;
 }
 
-
 .table_interim_title {
 	font-weight: bold;
 	color:#000;
 }
-
 
 .table_list_page tfoot tr td, .table_component tfoot tr td, .list tfoot tr td {
    /* background:#e8edff; */
@@ -1157,7 +1154,9 @@ table.list td {
         background: none !important;
 }
 
+
 /* -- table_list_simple -- */
+
 
 .fullwidth-list .component table.table_list_simple,
 table.table_list_simple {
@@ -1871,5 +1870,9 @@ tr.last td {
 }
 
 
+/* Sidebar - Filter Form */
 
-
+.po_form_element_help {
+    margin-top: 4px; 
+    margin-bottom: 2px;
+}
