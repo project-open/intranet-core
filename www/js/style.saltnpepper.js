@@ -30,7 +30,7 @@ function extendContract(){
 			sideBarSlide(height, 135, width, 0);
 			sideBarOpacity(1, 0);
 			isExtended = 0;
-			jQuery(".fullwidth-list").animate({marginLeft: "30px"}, slideDuration );
+			jQuery(".fullwidth-list").animate({marginLeft: "35px"}, slideDuration );
 			// make expand tab arrow image face right (outwards)
 			$('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 			// alert('hide');
