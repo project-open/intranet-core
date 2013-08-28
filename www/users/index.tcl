@@ -234,9 +234,8 @@ if {"" == $view_name} {
     set view_name "user_list"
 }
 
-
 if { [empty_string_p $how_many] || $how_many < 1 } {
-    set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage intranet 50]
+    set how_many [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NumberResultsPerPage" -default 50]
 }
 set end_idx [expr $start_idx + $how_many - 1]
 
