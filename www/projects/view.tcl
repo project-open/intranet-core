@@ -243,7 +243,6 @@ if {"" != $admin_html_content} {
 		[lang::message::lookup "" intranet-core.Admin_Project "Admin Project"]
         </div>
 	<ul>$admin_html_content</ul>
-	<br>
       	</div>
 	<hr/>
     "
@@ -257,7 +256,6 @@ if {"" != $export_html_content} {
 		[lang::message::lookup "" intranet-core.Import_and_Export "Import & Export"]
         </div>
 	<ul>$export_html_content</ul>
-	<br>
       	</div>
     "
 }
