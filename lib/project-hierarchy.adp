@@ -1,9 +1,6 @@
-
-<form action=/intranet/projects/project-action>
-<%= [export_form_vars return_url] %>
 <if @subproject_filtering_enabled_p@ eq 1>
+  <form action="@return_url;noquote@" method=GET>
   <table class="table_component_clean">
-    <form action="@return_url;noquote@" method=GET>
       <input type=hidden name=project_id value=@project_id@>
       <tr>
         <td class=form-label>
@@ -14,9 +11,12 @@
           <input type=submit value="Go">
         </td>
      </tr>
-    </form>
   </table>
+  </form>
 </if>
+
+<form action=/intranet/projects/project-action>
+<%= [export_form_vars return_url] %>
 <table cellpadding=2 cellspacing=2 border=0>
   <tr>
     <multiple name=table_headers>
