@@ -1,17 +1,8 @@
 <if @subproject_filtering_enabled_p@ eq 1>
   <form action="@return_url;noquote@" method=GET>
-  <table class="table_component_clean">
-      <input type=hidden name=project_id value=@project_id@>
-      <tr>
-        <td class=form-label>
-	  @filter_name;noquote@
-        </td>
-        <td class=form-widget>
-	  @filter_select;noquote@
-          <input type=submit value="Go">
-        </td>
-     </tr>
-  </table>
+  <input type=hidden name=project_id value=@project_id@>
+  <span style="white-space: nowrap; vertical-align: middle">@filter_name;noquote@: @filter_select;noquote@ &nbsp; <input type=submit value="Go"></span>
+  <br><br>
   </form>
 </if>
 
