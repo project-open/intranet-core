@@ -1,9 +1,10 @@
-
 /* global settings */
 
 * {
+  /*
   padding: 0px;
   margin: 0px;
+  */
 }
 
 /* fix select boxes in firefox */
