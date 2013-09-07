@@ -476,20 +476,19 @@ namespace eval im_profile {
     ad_proc -public profile_options_all {
 	{ -translate_p 1 }
 	{ -locale ""}
+	{ -include_empty_p 0}
+	{ -include_empty_name "" }
     } {
 	Returns the list of all available profiles in the system.
 	The returned list consists of (group_id - group_name) tuples.
     } {
 	# Get the list of all profiles
 	set profile_sql {
-		select
-			g.group_name,
+		select	g.group_name,
 			g.group_id
-		from
-			acs_objects o,
+		from	acs_objects o,
 			groups g
-		where
-			g.group_id = o.object_id
+		where	g.group_id = o.object_id
 			and o.object_type = 'im_profile'
 		order by lower(g.group_name)
 	}
@@ -503,6 +502,7 @@ namespace eval im_profile {
 	    lappend options [list $group_name $group_id]
 	}
 
+	if {1 == $include_empty_p} { set options [linsert $options 0 [list $include_empty_name ""]] }
 	return $options
     }
 
