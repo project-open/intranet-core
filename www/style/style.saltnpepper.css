@@ -30,12 +30,10 @@
 
 .before_after_month, .not_todays_date, .todays_date {
         text-align: left;
-        border: 1px solid #666;
 }
 
 .not_todays_date_weekend, .todays_date_weekend {
         text-align: left;
-        border: 1px solid #666;
 	background: #EEEEEE;
 }
 
