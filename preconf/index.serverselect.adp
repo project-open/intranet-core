@@ -258,8 +258,8 @@ function setBgImage (id,img) {
 	        <td><div class="outer outer9"><a href="http://po40itsm.project-open.net/index-userselect" id="outer9"></a></div></td>
 	        <td><a href="http://po40itsm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>ITSM and ITIL - IT Services Management</b><br>
-		    You are running a help desk or service desc for <br>
-		    internal or external customers.
+		    Help Desk/Service Desc for internal or external customers.
+		    <br>Edition provided in collaboration with </a> <a href="http://www.krystone.de/" target="_">KryStone</a>
 		  </a>
 	          <br><br>
                     <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">
