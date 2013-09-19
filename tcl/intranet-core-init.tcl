@@ -34,6 +34,7 @@ set object_types {
     im_conf_item
     im_cost
     im_cost_center
+    im_event
     im_expense
     im_expense_bundle
     im_forum_topic
