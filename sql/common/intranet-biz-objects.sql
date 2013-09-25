@@ -51,7 +51,6 @@ insert into im_categories (
 values (1303, 'Office Manager', 'Intranet Biz Object Role', 
 	'office-manager', 'Office Manager');
 
-
 -- Being used for "Final Customers" of projects, where
 -- the final customer and the invoicing customer are
 -- different
@@ -77,6 +76,18 @@ insert into im_categories (
         category_gif, category_description)
 values (1306, 'Mail Association', 'Intranet Biz Object Role',
         'member', 'Related Mail');
+
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1307, 'Consultant', 'Intranet Biz Object Role', 
+	'consultant', 'Consultant');
+
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1308, 'Trainer', 'Intranet Biz Object Role', 
+	'trainer', 'Trainer');
 
 
 
