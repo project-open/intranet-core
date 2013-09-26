@@ -1,6 +1,5 @@
 
-
-
+@warning;noquote@
 <multiple name="active_projects">
   <if @active_projects.llevel@ gt @active_projects.current_level@>
     <ul>
@@ -10,7 +9,7 @@
   </if>  
     
   <li><a href=../projects/view?project_id=@active_projects.project_id@>@active_projects.project_nr@</a>: 
-	@active_projects.project_name@
+	@active_projects.project_name@ (@active_projects.project_status_name;noquote@)
 </multiple>
 
 <if @close_ul_p@>
