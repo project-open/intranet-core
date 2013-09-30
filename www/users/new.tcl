@@ -185,7 +185,7 @@ ad_form -name register -export {next_url user_id return_url} -form {
 }
 
 ad_form -extend -name register -form {
-    {username:text(text),optional {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
+    {username:text(text),optional {mode display} {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
 }
 
 ad_form -extend -name register -form {
@@ -200,7 +200,7 @@ if {$show_authority_p} {
 	order by short_name
     "]
     ad_form -extend -name register -form {
-	{authority_id:text(select),optional {label "[lang::message::lookup {} intranet-core.Authority Authority]"} {options $auth_options }}
+	{authority_id:text(hidden),optional {label "[lang::message::lookup {} intranet-core.Authority Authority]"} {options $auth_options }}
     }
 }
 
@@ -403,7 +403,12 @@ ad_form -extend -name register -on_request {
 	    eval $perm_cmd
 	    if {$object_write} {
 		set role_id $also_add_hash($oid)
-		im_biz_object_add_role $user_id $oid $role_id
+		# Adding the user to an object may fail
+		# if the creation of the user failed (bad email?)
+		# so just ignore here.
+		catch {
+		    im_biz_object_add_role $user_id $oid $role_id
+		}
 	    }
 	}
 
