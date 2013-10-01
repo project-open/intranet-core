@@ -1013,6 +1013,10 @@ a   span  {float:none;}
    width: 244px;
 }
 
+.filter-table tbody tr td {
+	height: 30px;
+}
+
 /* MAIN Window */
 
 .fullwidth-list table td {
@@ -1853,6 +1857,9 @@ tr.last td {
 	padding-right: 5px;	
 }
 
+
+/* Compatibility with ExtJS */ 
+
 .x-body {
    font-family: verdana, arial, helvetica, sans-serif;
    font-size: 8pt;
@@ -1860,7 +1867,10 @@ tr.last td {
 }
 
 
-/* Sidebar - Filter Form */
+#general_messages_icon {
+    display : inline-block;
+    min-width: 20px;
+}
 
 .po_form_element_help {
     margin-top: 4px; 
