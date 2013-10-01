@@ -396,6 +396,10 @@ ad_form -extend -name register -on_request {
 	}
 
         # Add the user to some companies or projects
+        # Eliminate braces from list, that might have got in there during
+        # parameter passing
+        set also_add_to_biz_object [string map {"{" " " "}" " "} $also_add_to_biz_object]
+#        ad_return_complaint 1 $also_add_to_biz_object
         array set also_add_hash $also_add_to_biz_object
         foreach oid [array names also_add_hash] {
 	    set object_type [db_string otype "select object_type from acs_objects where object_id=:oid"]
