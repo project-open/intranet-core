@@ -628,7 +628,7 @@ ad_proc -public im_group_member_component {
 	    <tr>
 	      <td align=left>
 		<ul>
-		<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id return_url]\">[_ intranet-core.Add_member]</A>
+		<li><A HREF=\"/intranet/member-add?[export_url_vars object_id also_add_to_group_id limit_to_users_in_group_id return_url]\">[_ intranet-core.Add_member]</A>
 		</ul>
 	      </td>
 	"
