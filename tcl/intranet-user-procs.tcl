@@ -129,6 +129,25 @@ ad_proc -public user_permissions { current_user_id user_id view_var read_var wri
 
 
 
+ad_proc -public im_user_biz_card_component {
+    { -limit_to_company_id ""}
+    { -also_add_to_biz_object ""}
+    { -return_url ""}
+} {
+    Returns a formatted piece of HTML showing a form allowing to enter a new user
+} {
+    if {"" == $return_url} { set return_url [im_url_with_query] }
+    set params [list \
+		    [list limit_to_company_id $limit_to_company_id] \
+		    [list also_add_to_biz_object $also_add_to_biz_object] \
+		    [list return_url [im_url_with_query]] \
+    ]
+
+    set result [ad_parse_template -params $params "/packages/intranet-core/www/users/biz-card-add"]
+    return [string trim $result]
+}
+
+
 ad_proc -public im_user_base_info_component { 
     -user_id:required
     { -return_url ""}
@@ -319,10 +338,18 @@ ad_proc im_subordinates_select {
 }
 
 
-ad_proc im_employee_select_multiple { select_name { defaults "" } { size "6"} {multiple ""}} {
+ad_proc im_employee_select_multiple { 
+    {-limit_to_group_id ""}
+    select_name 
+    { defaults "" } 
+    { size "6"} 
+    {multiple ""}
+} {
     set bind_vars [ns_set create]
     set employee_group_id [im_employee_group_id]
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+    set limit_to_group_sql ""
+    if {"" != $limit_to_group_id && 0 != $limit_to_group_id && [string is integer $limit_to_group_id]} { set limit_to_group_sql "and u.user_id in (select member_id from group_distinct_member_map where group_id = $limit_to_group_id)" }
     set sql "
 	select
 		u.user_id,
@@ -333,6 +360,7 @@ ad_proc im_employee_select_multiple { select_name { defaults "" } { size "6"} {m
 	where
 		u.user_id = gm.member_id
 		and gm.group_id = $employee_group_id
+		$limit_to_group_sql
 	order by lower(im_name_from_user_id(u.user_id, $name_order))
     "
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
