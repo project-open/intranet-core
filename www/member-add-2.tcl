@@ -51,13 +51,19 @@ if {!$write} {
 # No role specified? => Return
 if {"" == $role_id} { ad_returnredirect $return_url }
 
+set touched_p 0
 foreach uid $user_id_from_search {
-     im_biz_object_add_role $uid $object_id $role_id
+    im_biz_object_add_role $uid $object_id $role_id
+    set touched_p 1
 }
 
+if {$touched_p} {
+    # record that the object has changed
+    db_dml update_object "update acs_objects set last_modified = now() where object_id = :object_id"
 
-# Audit the object
-im_audit -object_id $object_id
+    # Audit the object
+    im_audit -object_id $object_id -action "after_update" -comment "After adding members" 
+}
 
 
 # --------------------------------------------------------

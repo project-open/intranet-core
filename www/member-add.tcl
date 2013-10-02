@@ -28,7 +28,7 @@ ad_page_contract {
     { role_id "1300" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
-    { select_from_group:naturalnum "" }
+    { limit_to_users_in_group_id:naturalnum "" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
@@ -100,7 +100,7 @@ set locate_form "
 
 # Get the list of all employees as a shortcut
 #
-set employee_select [im_employee_select_multiple user_id_from_search "" 12 multiple]
+set employee_select [im_employee_select_multiple -limit_to_group_id $limit_to_users_in_group_id user_id_from_search "" 12 multiple]
 
 
 set select_form "

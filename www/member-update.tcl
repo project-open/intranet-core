@@ -68,6 +68,7 @@ im_biz_object_delete_timephased_data -task_id $object_id
 # Action
 # -----------------------------------------------------------------
 
+set touched_p 0
 switch $action {
     "add_member" {
 	ad_returnredirect [export_vars -base "/intranet/member-add" {return_url object_id}]
@@ -108,6 +109,7 @@ switch $action {
 		ad_script_abort
 	    }
 
+	    set touched_p 1
 	    db_dml update_perc "
 		update im_biz_object_members
 		set percentage = :perc
@@ -119,13 +121,12 @@ switch $action {
 		)
 	    "
   	}
-	ad_returnredirect $return_url
     }
 
     "del_members" {
-
 	foreach user $delete_user {
 	    im_exec_dml delete_user "user_group_member_del ($object_id, $user)"
+	    set touched_p 1
 	}
 
 	# Remove all permission related entries in the system cache
@@ -134,5 +135,14 @@ switch $action {
     }
 }
 
-ad_returnredirect $return_url
 
+if {$touched_p} {
+    # Record that the object has changed
+    db_dml update_object "update acs_objects set last_modified = now() where object_id = :object_id"
+
+    # Audit the object
+    im_audit -object_id $object_id -action "after_update" -comment "After adding members"
+}
+
+
+ad_returnredirect $return_url
