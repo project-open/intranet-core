@@ -58,7 +58,7 @@ set backup_path_exists_p [file exists $backup_path]
 set not_backup_path_exists_p [expr !$backup_path_exists_p]
 set file_body ""
 
-multirow create backup_files filename file_body extension date size
+multirow create backup_files filename file_body extension date size restore_p
 
 foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp,gz,bz2}"]]  {
     set trim [string range $file [string length $backup_path] end]
@@ -69,12 +69,16 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
 	if { ""==$file_body } { set file_body $file }
 
+	# File needs to end in "*.sql" in order to be restorable
+	set restore_p [regexp {\.sql$} $file_body]
+
 	multirow append backup_files \
 	    $file \
 	    $file_body \
 	    $file_extension \
 	    "$file_day.$file_month.$file_year $file_hour:$file_second" \
-	    [file size $file] 
+	    [file size $file] \
+	    $restore_p
     }
 }
 
@@ -118,8 +122,12 @@ template::list::create \
 			     label [lang::message::lookup "" intranet-core.Backup_Size "Size"] \
 		       html { align right } \
 		   ] \
-		   remove [list \
-			       display_template {<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>} \
+		   restore [list \
+			       display_template {
+				   <if @backup_files.restore_p@>
+				   <a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
+				   </if>
+			       } \
 		   ] \
     ] \
     -bulk_actions $bulk_actions \
