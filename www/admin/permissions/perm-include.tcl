@@ -3,6 +3,13 @@
 # return_url
 # privs:optional, defaults to 'read', 'write', 'admin'
 # user_add_url: URL to the page for adding users
+# mode 
+
+
+if { "datatable" == $mode} {
+	template::head::add_javascript -src "/intranet/js/jquery.dataTables.js" -order 1
+	template::head::add_javascript -src "/intranet/js/FixedColumns.js" -order 1
+}
 
 set user_id [ad_conn user_id]
 
@@ -88,20 +95,24 @@ if { ![empty_string_p $context_id] } {
     }
 }
 
-
 # TODO: Inherit/don't inherit
-
-template::list::create \
-    -name permissions \
-    -multirow permissions \
-    -actions $actions \
-    -elements $elements 
-
+if { "datatable" == $mode} {
+	template::list::create \
+		-name permissions \
+		-multirow permissions \
+		-actions $actions \
+		-elements $elements \
+		-class "jq-datatable"
+} else {
+	template::list::create \
+		-name permissions \
+		-multirow permissions \
+		-actions $actions \
+		-elements $elements 
+}
 
 set perm_form_export_vars [export_vars -form {object_id privs return_url}]
-
 set perm_modify_url "${perm_url}perm-modify"
-
 set application_group_id [application_group::group_id_from_package_id -package_id [ad_conn subsite_id]]
 
 

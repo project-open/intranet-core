@@ -19,6 +19,7 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { filter_str "" }
+	{ mode "default" }
 }
 
 set user_id [ad_maybe_redirect_for_registration]
