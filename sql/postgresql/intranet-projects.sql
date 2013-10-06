@@ -170,9 +170,12 @@ create index im_project_parent_id_idx on im_projects(parent_id);
 -- Speed up child-sortkey queries
 create index im_project_treesort_idx on im_projects(tree_sortkey);
 
--- Relaxed unique constraint for tasks...
-alter table im_projects add constraint 
-im_projects_path_un UNIQUE (project_nr, company_id, parent_id);
+-- Create unique indices instead of constraints
+-- because we need the coalesce(parent_id,0).
+create unique index im_projects_name_un on im_projects (project_name, company_id, coalesce(parent_id,0));
+create unique index im_projects_nr_un on im_projects (project_nr, company_id, coalesce(parent_id,0));
+create unique index im_projects_path_un on im_projects (project_path, company_id, coalesce(parent_id,0));
+
 
 
 
@@ -265,12 +268,6 @@ on im_projects
 for each row
 execute procedure im_projects_update_tr ();
 
-
--- Create unique indices instead of constraints
--- because we need the coalesce(parent_id,0).
-create unique index im_projects_name_un on im_projects (project_name, company_id, coalesce(parent_id,0));
-create unique index im_projects_nr_un on im_projects (project_nr, company_id, coalesce(parent_id,0));
-create unique index im_projects_path_un on im_projects (project_path, company_id, coalesce(parent_id,0));
 
 
 -- Optional Indices for larger systems:
