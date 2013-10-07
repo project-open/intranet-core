@@ -1209,7 +1209,16 @@ ad_proc -public im_header {
     set context_bar [ad_partner_upvar context_bar]
     set page_focus [ad_partner_upvar focus]
 
+    # Get browser inf   
+    set browser_version [im_browser_version]
+    set browser [lindex $browser_version 0]
+    set version [lindex $browser_version 1]
+    set version_pieces [split $version "."]
+    set version_major [lindex $version_pieces 0]
+    set version_minor [lindex $version_pieces 1]
+
     # --------------------------------------------------------------
+
     if {$search_installed_p && [empty_string_p $page_focus] } {
 	# Default: Focus on Search form at the top of the page
 	set page_focus "surx.query_string"
@@ -1218,13 +1227,30 @@ ad_proc -public im_header {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
+    # Avoid Quirks mode with IE<10 due to missing doctype 
+    # DOCTYPE definition might be added to document in multiple places. 
+    # following a fallback 
+
+    ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
+
+    if {[catch {
+	if { "msie" == $browser && $version_major < 10 } {
+	    ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
+	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
+	}
+    } err_msg]} {
+	ns_log NOTICE "intranet-design-procs: Error handling browser version"
+	return
+    }
+
     # The document language is always set from [ad_conn lang] which by default 
     # returns the language setting for the current user.  This is probably
     # not a bad guess, but the rest of OpenACS must override this setting when
     # appropriate and set the lang attribxute of tags which differ from the language
     # of the page.  Otherwise we are lying to the browser.
     set doc(lang) [ad_conn language]
-    
+
+  
     # Determine if we should be displaying the translation UI
     #
     if {[im_openacs54_p] && [lang::util::translator_mode_p]} {
@@ -1595,16 +1621,6 @@ ad_proc -public im_stylesheet {} {
 	if {$openacs54_p} { template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" } else { append html "<link rel=StyleSheet type=text/css href=\"/resources/acs-templating/forms.css\" media=screen>\n" }
     }
 
-#    append html "<!--\[if lt IE 8\]>\n<script type=\"text/javascript\" src=\"/intranet/js/ie-7-or-lower-specific.js\" />\n<!\[endif\]-->\n"
-
-    # temporary include V3.4, can be replaced in V4.0 using template::head::add_javascript
-    if {[llength [info procs im_project_personal_active_projects_component_reinisch]]} {
-	append html "<link rel=StyleSheet type=text/css href=\"/intranet-cust-reinisch/style/reinisch.css\" />\n"
-
-	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/yahoo-dom-event/yahoo-dom-event.js'></script>\n"
-	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/element/element-beta-min.js'></script>\n"
-	append html "<script language='javascript' src='/intranet-cust-reinisch/js/yui/build/tabview/tabview-min.js'></script>\n"
-    }
     return $html
 }
 
