@@ -89,8 +89,26 @@ set im_project_on_track_bb [im_project_on_track_bb $on_track_status_id]
 db_multirow -extend {attrib_var value} project_dynfield_attribs dynfield_attribs_sql {} {
     set var ${attribute_name}_deref
     set value [expr $$var]
+
+    # Empty values will be skipped anyway
     if {"" != [string trim $value]} {
 	set attrib_var [lang::message::lookup "" intranet-core.$attribute_name $pretty_name]
+
+	set translate_p 0
+	switch $acs_datatype {
+	    boolean - string { set translate_p 1 }
+	}
+	switch $widget {
+	    im_category_tree - checkbox - generic_sql - select { set translate_p 1 }
+	    richtext - textarea - text - date { set translate_p 0 }
+	}
+	
+	set value_l10n $value
+	if {$translate_p} {
+	    # ToDo: Is lang::util::suggest_key the right way? Or should we just use blank substitution?
+	    set value_l10n [lang::message::lookup "" intranet-core.[lang::util::suggest_key $value] $value] 
+	}
+	set value $value_l10n
     }
 }
 
