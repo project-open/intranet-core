@@ -54,10 +54,10 @@
 
   <fullquery name="dynfield_attribs_sql">
     <querytext>
-
       select
       		aa.pretty_name,
-      		aa.attribute_name
+      		aa.attribute_name,
+		w.*
       from
       		im_dynfield_widgets w,
       		acs_attributes aa,
