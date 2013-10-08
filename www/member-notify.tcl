@@ -198,6 +198,20 @@ if {"" == $from_email} {
 # Create the message and queue it
 # ---------------------------------------------------------------
 
+set found_sender_p 0
+
+db_0or1row user_info "
+	select	pe.person_id as sender_user_id,
+		im_name_from_user_id(pe.person_id) as sender_name,
+		first_names as sender_first_names,
+		last_name as sender_last_name,
+		email as sender_email
+		1 as found_sender_p
+	from	persons pe,
+		parties pa
+	where	pe.person_id = pa.party_id and
+		pe.person_id = :current_user_id
+"
 
 # send to contacts
 foreach email $email_list {
@@ -206,21 +220,21 @@ foreach email $email_list {
 
     # Replace message %xxx% variables by user's variables
     set message_subst $message
-    set found_p 0
+    set found1_p 0
     db_0or1row user_info "
 	select	pe.person_id as user_id,
 		im_name_from_user_id(pe.person_id) as name,
 		first_names,
 		last_name,
 		email,
-		1 as found_p
+		1 as found1_p
 	from	persons pe,
 		parties pa
 	where	pe.person_id = pa.party_id and
 		lower(pa.email) = :email
     "
 
-    if {$found_p} {
+    if {$found1_p && $found_sender_p} {
 	set auto_login [im_generate_auto_login -user_id $user_id]
 	set substitution_list [list \
 				   name $name \
@@ -228,6 +242,10 @@ foreach email $email_list {
 				   last_name $last_name \
 				   email $email \
 				   auto_login $auto_login \
+				   sender_name $sender_name \
+				   sender_first_names $sender_first_names \
+				   sender_last_name $sender_last_name \
+				   sender_email $sender_email \
 	]
 	set message_subst [lang::message::format $message $substitution_list]
     }
