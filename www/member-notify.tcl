@@ -205,7 +205,7 @@ db_0or1row user_info "
 		im_name_from_user_id(pe.person_id) as sender_name,
 		first_names as sender_first_names,
 		last_name as sender_last_name,
-		email as sender_email
+		email as sender_email,
 		1 as found_sender_p
 	from	persons pe,
 		parties pa
