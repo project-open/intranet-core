@@ -89,14 +89,19 @@ foreach oid $user_id_from_search {
 	    set note_user_id [db_string note_user_id "select object_id from im_notes where note_id = :oid" -default ""]
 	    im_user_permissions $current_user_id $note_user_id view read write admin
 	}
+	"" {
+	    # Nothing, probably some cache issue
+	    set read 1
+	}
 	default {
 	    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
+	    ad_script_abort
 	}
     }
 
     if {!$read} {
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
-	return
+	ad_script_abort
     }
 }
 
