@@ -38,15 +38,16 @@ set group_url "/admin/groups/one"
 set toggle_url "/intranet/admin/toggle"
 
 set group_list_sql {
-select DISTINCT
-        g.group_name,
-        g.group_id
-from
-        acs_objects o,
-        groups g
-where
-        g.group_id = o.object_id
-        and o.object_type = 'im_profile'
+	select DISTINCT
+	        g.group_name,
+	        g.group_id
+	from
+	        acs_objects o,
+	        groups g
+	where
+	        g.group_id = o.object_id
+	        and o.object_type = 'im_profile'
+	order by g.group_name
 }
 
 
@@ -66,15 +67,16 @@ db_foreach group_list $group_list_sql {
 append table_header "</th>\n"
 
 set main_sql "
-select DISTINCT
-        g.group_id,
-${main_sql_select}	g.group_name
-from
-        acs_objects o,
-        groups g
-where
-        g.group_id = o.object_id
-        and o.object_type = 'im_profile'
+	select DISTINCT
+	        g.group_id,
+	${main_sql_select}	g.group_name
+	from
+	        acs_objects o,
+	        groups g
+	where
+	        g.group_id = o.object_id
+	        and o.object_type = 'im_profile'
+	order by g.group_name
 "
 
 set table "
