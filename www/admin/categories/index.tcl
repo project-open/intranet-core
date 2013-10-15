@@ -28,6 +28,8 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+set return_url [im_url_with_query]
+
 
 set page_title [lang::message::lookup "" intranet-core.Category_Types "Category Types"]
 if {"All" != $select_category_type} { set page_title [lang::message::lookup "" intranet-core.One_Category_Type "%select_category_type%"] }
@@ -125,7 +127,8 @@ if {$show_add_new_category_p} {
 
 	incr ctr
 
-	if {"t" == $enabled_p } { set enabled_p "" }
+	if {"" == $enabled_p } { set enabled_p "t" }
+	set toggle_url [export_vars -base "/intranet/admin/categories/toggle" {category_id return_url enabled_p}]
 
 	if {$old_id == $category_id} {
 	    # We got another is-a for the same category
@@ -148,11 +151,13 @@ if {$show_add_new_category_p} {
 	    append category_list_html "<td></td></tr>\n"
 	    continue
 	}
+
+	if {"t" == $enabled_p } { set enabled_p "<strong>T</strong>" }
 	
 	append category_list_html "
 	<tr $bgcolor([expr $ctr % 2])>
 	  <td>$category_id</td>
-	  <td>$enabled_p</td>
+	  <td><a href='$toggle_url'>$enabled_p</a></td>
 	  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
 	  <td>$sort_order</td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
