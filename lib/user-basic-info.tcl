@@ -1,13 +1,12 @@
 ad_page_contract {
     user-basic-info.tcl
 
-
     @author unknown@arsdigita.com
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
     @author frank.bergmann@project-open.com
-
     @author iuri sampaio(iuri.sampaio@gmail.com)
-    @date 1020-10-28
+    @author klaus.hofeditz@project-open.com
+
 } {
     { object_id:integer 0}
     { user_id_from_search 0}
@@ -26,23 +25,17 @@ set current_url $return_url
 set date_format "YYYY-MM-DD"
 set td_class "class=roweven"
 
-# user_id is a bad variable for the object,
-# because it is overwritten by SQL queries.
-# So first find out which user we are talking
-# about...
-
+# user_id is a bad variable for the object, because it is overwritten by SQL queries. So first find out which user 
 if {"" == $user_id} { set user_id 0 }
 set vars_set [expr ($user_id > 0) + ($object_id > 0) + ($user_id_from_search > 0)]
 if {$vars_set > 1} {
     ad_return_complaint 1 "<li>You have set the user_id in more then one of the following parameters: <br>user_id=$user_id, <br>object_id=$object_id and <br>user_id_from_search=$user_id_from_search."
     return
 }
+
+# KH: When is object_id used, does it apply ? 
 if {$object_id} {set user_id_from_search $object_id}
 if {$user_id} {set user_id_from_search $user_id}
-if {0 == $user_id} {
-    # The "Unregistered Vistior" user
-    # Just continue and show his data...
-}
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set subsite_id [ad_conn subsite_id]
@@ -58,9 +51,8 @@ if {!$read} {
     return
 }
 
-
 # ---------------------------------------------------------------
-# Get everything about the user
+# Get user attributes 
 # ---------------------------------------------------------------
 
 set result [db_0or1row users_info_query {}]
@@ -73,60 +65,47 @@ if { $result > 1 } {
 
 if { $result == 0 } {
 
+    # KH: Why is the following needed ? 
     set party_id [db_string select_party_id {} -default 0]
     set person_id [db_string select_person_id {} -default 0]
     set user_id [db_string select_user_id {} -default 0]
     set object_type [db_string select_object_type {} -default "unknown"]
+    # KH / 
 
-    ad_return_complaint "[_ intranet-core.Bad_User]" "
-    <li>[_ intranet-core.lt_We_couldnt_find_user_]
-    <li>You can 
-	<a href='/intranet/users/new?user_id=$user_id_from_search'>try to create this user</a>
-    now.
-    "
+    ad_return_complaint "[_ intranet-core.Bad_User]<li>[_ intranet-core.lt_We_couldnt_find_user_] <li>You can <a href='/intranet/users/new'>create a new user</a> now."
 }
-
 
 # ---------------------------------------------------------------
 # Show Basic User Information (name & email)
 # ---------------------------------------------------------------
 
-# Define the column headers and column contents that 
-# we want to show:
-#
+# Attributes are shown based on DynView
+set view_id [db_string select_view_id {}]; # Returns most likely '11'
 
+# Set col_names & col_values 
 set ctr 1
-
-set view_id [db_string select_view_id {}]
-
-db_multirow -extend {col_name col_value} user_info user_info_sql {} {
+db_multirow -extend {col_name col_value show_p} user_info user_info_sql {} {
     if {"" == $visible_for || [eval $visible_for]} {
-	if {[expr $ctr % 2]} {
-	    set td_class "class=rowodd"
-	} else {
-	    set td_class "class=roweven"
-	}
-
+	if {[expr $ctr % 2]} { set td_class "class=rowodd" } else { set td_class "class=roweven" }
         set cmd0 "set col_name $column_name"
         eval "$cmd0"
         regsub -all " " $col_name "_" col_name_subs
         set col_name [lang::message::lookup "" intranet-core.$col_name_subs $col_name]
-
 	set cmd "set col_value $column_render_tcl"
 	eval "$cmd"
-	
+	set show_p 1
 	incr ctr
+    } else {
+	set show_p 0
     }
 }
 
-
-set user_id $user_id_from_search
-
+# KH: Commented out, not needed ... 
+# set user_id $user_id_from_search
 
 # ---------------------------------------------------------------
-# Profile Management
+# Get profiles 
 # ---------------------------------------------------------------
-
 set profile_component [im_profile::profile_component $user_id_from_search "disabled"]
 
 # ------------------------------------------------------

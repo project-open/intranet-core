@@ -1,13 +1,12 @@
-
-
 <table>
   <multiple name="user_info">
+  <if @user_info.show_p@ eq 1>
     <tr @td_class;noquote@>
       <td>@user_info.col_name;noquote@</td>
       <td>@user_info.col_value;noquote@</td>
     </tr>
+  </if>
   </multiple>
-
   <tr @td_class;noquote@>
     <td>#intranet-core.Profile#</td>
     <td>@profile_component;noquote@</td>
