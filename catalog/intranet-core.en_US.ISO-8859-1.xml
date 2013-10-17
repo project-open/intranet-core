@@ -1176,6 +1176,8 @@ other way for the user to find out.</msg>
   <msg key="Med">Med</msg>
   <msg key="Medium">Medium</msg>
   <msg key="Member_state_active">active</msg>
+  <msg key="MemberState_approved">Active</msg>
+  <msg key="MemberState_banned">Deleted</msg>
   <msg key="Members">Members</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
   <msg key="Menu_Backup_Restore">Backup &amp; Restore Menu</msg>

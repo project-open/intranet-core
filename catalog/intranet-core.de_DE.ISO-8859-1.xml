@@ -1062,6 +1062,8 @@ Passwort: %password%
   <msg key="Med">Med</msg>
   <msg key="Medium">Mittel</msg>
   <msg key="Member_state_active">aktiv</msg>
+  <msg key="MemberState_approved">Aktiv</msg>
+  <msg key="MemberState_banned">Gelöscht</msg>
   <msg key="Members">Mitglieder</msg>
   <msg key="Menu_Administration">Menüs verwalten</msg>
   <msg key="Menu_Backup_Restore">Backup &amp;amp; Restore Menu</msg>

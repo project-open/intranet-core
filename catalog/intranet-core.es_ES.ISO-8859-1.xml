@@ -1133,6 +1133,8 @@
   <msg key="Med">Med</msg>
   <msg key="Medium">Media</msg>
   <msg key="Member_state_active">activo</msg>
+  <msg key="MemberState_approved">Aktivo</msg>
+  <msg key="MemberState_banned">Borrado</msg>
   <msg key="Members">Miembros</msg>
   <msg key="Menu_Administration">Administración de menús</msg>
   <msg key="Menu_Backup_Restore">Menú de copia de seguridad y restauración</msg>
