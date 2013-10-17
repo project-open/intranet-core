@@ -56,13 +56,13 @@ if {[exists_and_not_null profile]} {
 
 set current_user_id [ad_maybe_redirect_for_registration]
 set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-
 set page_title "[_ intranet-core.Add_a_user]"
 set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_user]"]
 set ip_address [ad_conn peeraddr]
 set next_url user-add-2
 set self_register_p 1
 set user_feedback ""
+set edit_profiles_p 0
 
 if { [info exists profile] } {
     if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] >1 } {
@@ -223,10 +223,7 @@ ad_form -extend -name register -form {
     {url:text(text),optional {label "[_ intranet-core.lt_Personal_Home_Page_UR]"} {html {size 50 value "http://"}}} 
 }
 
-
-
 # ad_form -name register -export {next_url user_id return_url} -form [auth::get_registration_form_elements]
-
 
 ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
 
@@ -236,7 +233,7 @@ ns_log Notice "/users/new: reg_elements=[auth::get_registration_form_elements]"
 
 # Fraber 051123: Don't show the profile to the user
 # himself, unless it's an administrator.
-set edit_profiles_p 0
+
 if {[llength $managable_profiles] > 0} { set edit_profiles_p 1 }
 if {!$current_user_is_admin_p && ($user_id == $current_user_id)} { set edit_profiles_p 0}
 
@@ -251,7 +248,27 @@ if {$edit_profiles_p} {
     }
 }
 
+# ---------------------------------------------------------------
+# Member State 
+# ------------------------------------------------------------
+# Add field so that user can be 'deleted' or activated'' right from this screen
+# Until now site-wide admins were necessary to change a users state
 
+set status_options "{{[lang::message::lookup "" intranet-core.Member_state_active "active"]} approved} {{[lang::message::lookup "" intranet-core.Member_state_deleted "deleted"]} banned }"
+set status_option_value [db_string get_status_option_value "select member_state from cc_users where user_id = :user_id" -default 0]
+if {$edit_profiles_p} {
+    ad_form -extend -name register -form {
+        {member_state:text(select)
+            {label "[_ intranet-core.lt_Member_state]"}
+            {options $status_options }
+            {values $status_option_value }
+        }
+    }
+}
+
+# ---------------------------------------------------------------
+# Adding Dynfields
+# ------------------------------------------------------------
 # Find out all the groups of the user and map these
 # groups to im_category "Intranet User Type"
 
@@ -267,7 +284,6 @@ im_dynfield::append_attributes_to_form \
     -form_id "register" \
     -object_id $user_id \
     -page_url "/intranet/users/new" 
-
 
 # ---------------------------------------------------------------
 # Other elements...
@@ -332,7 +348,7 @@ ad_form -extend -name register -on_request {
 
 	} else {
 
-	    # Existing user: Update variables
+	    # Existing user, update record
 	    set auth [auth::get_register_authority]
 	    set user_data [list]
 
@@ -373,7 +389,14 @@ ad_form -extend -name register -on_request {
 		"
 	    }
 
+	    # Write user status 
+	    if {[catch {
+		acs_user::change_state -user_id $user_id -state $member_state
+	    } err_msg]} {
+		ns_log ERROR "intranet-core/www/users/new.tcl - Unable to update member state for user_id: $user_id"
+	    }
 
+	    # Update Person 
 	    ns_log Notice "/users/new: person::update -person_id=$user_id -first_names=$first_names -last_name=$last_name"
 	    person::update \
 		-person_id $user_id \
@@ -382,7 +405,7 @@ ad_form -extend -name register -on_request {
 	    
 	    ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email"
 
-
+	    # Update party 
 	    party::update \
 		-party_id $user_id \
 		-url $url \
@@ -399,7 +422,6 @@ ad_form -extend -name register -on_request {
         # Eliminate braces from list, that might have got in there during
         # parameter passing
         set also_add_to_biz_object [string map {"{" " " "}" " "} $also_add_to_biz_object]
-#        ad_return_complaint 1 $also_add_to_biz_object
         array set also_add_hash $also_add_to_biz_object
         foreach oid [array names also_add_hash] {
 	    set object_type [db_string otype "select object_type from acs_objects where object_id=:oid"]
@@ -420,7 +442,6 @@ ad_form -extend -name register -on_request {
         # Add a users_contact record to the user since the 3.0 PostgreSQL
         # port, because we have dropped the outer join with it...
         catch { db_dml add_users_contact "insert into users_contact (user_id) values (:user_id)" } errmsg
-
 
         # Add the user to the "Registered Users" group, because
         # (s)he would get strange problems otherwise
