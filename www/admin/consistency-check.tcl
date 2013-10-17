@@ -39,15 +39,6 @@ ad_return_top_of_page "
     [im_navbar]
     [im_sub_navbar $parent_menu_id "" $page_title "pagedesriptionbar" $admin_navbar_label]
 "
-
-ns_write "<ul>\n"
-
-
-# ------------------------------------------------------
-# 
-# ------------------------------------------------------
-
-ns_write "</ul><br>\n"
 ns_write "<h3>Check Categories' Transitive Closure</h3>\n"
 ns_write "<ul>\n"
 
@@ -132,13 +123,18 @@ db_foreach check $check_sql {
 if {0 == $cnt} { ns_write "<li>No inconsistencies found</li>\n" }
 
 
-
+ns_write "</ul>"
 
 # ------------------------------------------------------
 # Render the footer of the page
 # ------------------------------------------------------
-   
+ns_write "<br/>"   
+ns_write "<h2>Other checks</h2>"
 ns_write "<ul>\n"
+ns_write "<li><a href='/intranet-reporting/check-project-finance-customer'>Check Project's Financial Items</a></li>"
+ns_write "<li><a href='/intranet-reporting/check-subprojects-customer'>Check Subproject's Customers</a></li>"
+ns_write "</ul><br>\n"
+
 ns_write [im_footer]
 
 
