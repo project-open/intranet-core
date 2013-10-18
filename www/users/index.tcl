@@ -453,6 +453,7 @@ if {"" == $extra_order_by} {
     switch $order_by {
 	"Name" { set extra_order_by "order by name" }
 	"Email" { set extra_order_by "order by upper(u.email), name" }
+	"Department" { set extra_order_by "order by upper(acs_object__name(e.department_id)), name" }
 	"AIM" { set extra_order_by "order by upper(aim_screen_name), name" }
 	"Cell Phone" { set extra_order_by "order by upper(cell_phone), name" }
 	"Home Phone" { set extra_order_by "order by upper(home_phone), name" }
