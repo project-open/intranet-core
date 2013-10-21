@@ -490,10 +490,12 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 }
 
 /* Rotate Tabel Headers */
-.table-header-rotated th.row-header{
+.table-header-rotated th.row-header {
 	width: auto;
 }
-.table-header-rotated th.rotate-45{
+
+.table-header-rotated th.rotate-45,
+.table-header-rotated-listbuilder th {
 	height: 80px;
 	width: 40px;
 	min-width: 40px;
@@ -504,7 +506,8 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	font-size: 10px;
 	line-height: 0.8;
 }
-.table-header-rotated th.rotate-45 > div{
+.table-header-rotated th.rotate-45 > div,
+.table-header-rotated-listbuilder th > div  {
 	position: relative;
 	top: 0px;
 	left: 40px; /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
@@ -519,7 +522,8 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	border-right: 1px solid #dddddd;
 	border-top: 1px solid #dddddd;
 }
-.table-header-rotated th.rotate-45 span {
+.table-header-rotated th.rotate-45 span, 
+.table-header-rotated-listbuilder th span {
 	-ms-transform:skew(45deg,0deg) rotate(315deg);
 	-moz-transform:skew(45deg,0deg) rotate(315deg);
 	-webkit-transform:skew(45deg,0deg) rotate(315deg);
@@ -534,6 +538,11 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	text-align: left;
 	// white-space: nowrap; /*whether to display in one line or not*/
 }
+
+.table-header-rotated-listbuilder thead tr.list-header {
+    background-color: none;
+}
+
 
 /* -- Filter Form - Side Menu */ 
 .po_form_element_error {
