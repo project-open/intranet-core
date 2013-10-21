@@ -101,7 +101,24 @@ set ttt {
 
 set group_ids [list]
 set group_names [list]
-set table_header "
+set table_header_head "
+<thead>
+<tr>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+"
+
+set table_header_td "
 <tr>
   <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
   <td width=20>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -116,24 +133,26 @@ set table_header "
   <td class=rowtitle>Sort</td>
   <td class=rowtitle>Package</td>
 "
-
 set main_sql_select ""
 set num_profiles 0
 db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name
     append main_sql_select "\tim_object_permission_p(m.menu_id, $group_id, 'read') as p${group_id}_read_p,\n"
-    append table_header "
-      <td class=rowtitle><A href=$group_url?group_id=$group_id>
-      [im_gif $profile_gif $group_name]
-    </A></td>\n"
+    append table_header_head "<th class='rotate-45'><div><span>$group_name</div></span></th>\n"
+    append table_header_td "<td class=rowtitle><a href=$group_url?group_id=$group_id>[im_gif $profile_gif $group_name]</a></td>\n"
     incr num_profiles
 }
-append table_header "
+append table_header_td "
   <td class=rowtitle>[im_gif del "Delete Menu"]</td>
 </tr>
 "
-
+append table_header_head "
+  <th></th>
+</tr>
+</thead>
+"
+set table_header "$table_header_head\n$table_header_td"
 
 # ------------------------------------------------------
 # Calculate the depth of the menus
@@ -192,7 +211,7 @@ set main_sql "
 set table "
 <form action=menu-action method=post>
 [export_form_vars return_url]
-<table>
+<table class='table-header-rotated'>
 $table_header\n"
 
 set ctr 0
