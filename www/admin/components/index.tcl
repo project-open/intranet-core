@@ -96,7 +96,18 @@ where
 
 set group_ids [list]
 set group_names [list]
-set table_header "
+
+set table_header_head "
+<thead>
+<tr>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+<th class='rotate-45'></th>
+"
+
+set table_header_td "
 <tr>
   <td class=rowtitle>Component</td>
   <td class=rowtitle>En</td>
@@ -111,13 +122,18 @@ db_foreach group_list $group_list_sql {
     lappend group_ids $group_id
     lappend group_names $group_name
     append main_sql_select "\tim_object_permission_p(c.plugin_id, $group_id, 'read') as p${group_id}_read_p,\n"
-    append table_header "
-      <td class=rowtitle><A href=$group_url?group_id=$group_id>
-      [im_gif $profile_gif $group_name]
-    </A></td>\n"
+    append table_header_td "<td class=rowtitle><a href=$group_url?group_id=$group_id>[im_gif $profile_gif $group_name]</a></td>\n"
+    append table_header_head "<th class='rotate-45'><div><span>$group_name</div></span></th>\n"
+
     incr num_profiles
 }
-append table_header "\n</tr>\n"
+append table_header_td "\n</tr>\n"
+append table_header_head "
+  <th></th>
+</tr>
+</thead>
+"
+set table_header "$table_header_head\n$table_header_td"
 
 
 # ------------------------------------------------------
@@ -125,10 +141,6 @@ append table_header "\n</tr>\n"
 # ------------------------------------------------------
 
 set component_where ""
-
-
-
-
 if {"none" != $package_key_form && "" != $package_key_form} { append component_where "\t and package_name = :package_key_form \n" }
 
 if {"" != $component_location} { append component_where "\tand location = :component_location\n" }
