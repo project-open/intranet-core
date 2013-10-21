@@ -926,7 +926,7 @@ a   span  {float:none;}
 
 
 
-.list td.rowtitle, .list-header, .table-header, .cal-month-title-text {
+.list td.rowtitle, .table-header, .cal-month-title-text {
    font-size: 10pt; 
    color: #2e2e2e;
    /* background-color: #cccac1; */ 
@@ -1041,7 +1041,8 @@ div#fullwidth-components {
 
 .table_list_page tr td.rowtitle, 
 .table_list_page tbody tr th.list, 
-.list tr.list-header, 
+.list tr.list-header,
+.list-table.list-header, 
 .list th.list, 
 .cal-table-display tbody tr td.cal-month-title-text, 
 .table_component th.list-header td.list, 
