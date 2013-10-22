@@ -405,12 +405,23 @@ ad_form -extend -name register -on_request {
 	    
 	    ns_log Notice "/users/new: party::update -party_id=$user_id -url=$url -email=$email"
 
+	    if {[catch {
 	    # Update party 
-	    party::update \
-		-party_id $user_id \
-		-url $url \
-		-email $email
-	    
+		party::update \
+		    -party_id $user_id \
+		    -url $url \
+		    -email $email
+	    } err_msg]} {
+		set id_existing_email [db_string get_user_id "select party_id from parties where email = :email" -default 0]
+		if { 0 != $id_existing_email } {
+		    ad_return_complaint 1 [lang::message::lookup "" intranet-core.EmailsExists "A user with this email already exists in the system. <a href='/intranet/users/view?user_id=$user_id'>User_id: $user_id</a>."]
+		    return
+		} else {
+                    ad_return_complaint 1 [lang::message::lookup "" intranet-core.NotAbleSettingEmail "Not able to update email. Please get in contact with your System Administrator"]
+                    return
+		}
+	    }
+
 	    ns_log Notice "/users/new: acs_user::update -user_id=$user_id -screen_name=$screen_name"
 	    acs_user::update \
 		-user_id $user_id \
