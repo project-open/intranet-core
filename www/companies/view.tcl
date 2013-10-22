@@ -217,7 +217,6 @@ if {$see_details} {
     }
     
     append left_column "<tr class=rowodd><td>[_ intranet-core.Accounting_contact]</td><td>$accounting_contact_text</td></tr>"
-    append left_column "<tr class=roweven><td>[_ intranet-core.Start_Date]</td><td>$start_date</td></tr>\n"
 
     set ctr 1
 
