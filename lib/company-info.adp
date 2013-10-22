@@ -84,12 +84,11 @@
         <a href=/intranet/users/view?user_id=@primary_contact_id@>@primary_contact_name;noquote@</a>
 	<if @admin@>
 	  (<a href="@primary_contact_url@">@im_gif_turn;noquote@</a> | 
-	  <a href=@primary_contact_delete_url@">@im_gif_delete;noquote@</a>)
+	  <a href="@primary_contact_delete_url@">@im_gif_delete;noquote@</a>)
 	</if>
       </else>
     </td>
   </tr>
-
   
   <tr class=rowodd>
     <td>#intranet-core.Accounting_contact#</td>
