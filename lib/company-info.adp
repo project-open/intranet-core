@@ -111,11 +111,6 @@
     </td>
   </tr>
 
-  <tr class="roweven">
-    <td>#intranet-core.Start_Date#</td>
-    <td>@start_date;noquote@</td>
-  </tr>
-
   <if @note_p@>
     <tr @bgcolor@>
       <td>#intranet-core.Notes#</td>
