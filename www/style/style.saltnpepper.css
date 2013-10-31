@@ -690,7 +690,8 @@ a   span  {float:none;}
 
 #footer, #footer a {
 	color: #24618E;
-	z-index: 20;
+	/* negative z-index ensures that buttons in left sidebar remains accessible */
+	z-index: -20;
 }
 
 #slave_content {
