@@ -494,6 +494,10 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	width: auto;
 }
 
+.table-header-rotated-listbuilder thead tr.list-header th.list-table {
+    background-color: inherit;
+} 
+
 .table-header-rotated th.rotate-45,
 .table-header-rotated-listbuilder th {
 	height: 80px;
