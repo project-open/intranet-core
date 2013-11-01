@@ -931,7 +931,7 @@ a   span  {float:none;}
    font-size: 10pt; 
    color: #2e2e2e;
    /* background-color: #cccac1; */ 
-   background-color: #D0D0D0; 
+   background-color: #E1E2E1; 
    font-weight: bold;
 }
 
@@ -1052,7 +1052,7 @@ div#fullwidth-components {
    color:#000;
    font-weight:bold;
    padding:3px;
-   background:#D0D0D0 none repeat scroll 0% 50%;
+   background:#E1E2E1 none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
    padding:5px 4px 5px 2px;
 }
@@ -1077,7 +1077,7 @@ div#fullwidth-components {
 
 .table_list_page thead tr td,
 .table_list_page thead tr.rowtitle th {
-	background:#D0D0D0 none repeat scroll 0% 50%;
+	background:#E1E2E1 none repeat scroll 0% 50%;
 	border-bottom:13px none #000000;
 	height:auto;
 	padding:5px 4px 5px 2px;
@@ -1095,11 +1095,12 @@ div#fullwidth-components {
 .table_list_page tbody tr:hover.rowplain,
 .table_list_page tbody tr:hover.rowplain td 
 {
-   background:#D0D0D0;
+   background:#E1E2E1;
 }
 
 .table_list_page tbody tr td.rowtitle a:link {
-	color: #000000
+	color: #000000;
+	font-size: 9pt;
 }
 
 .table_list_page tbody tr.rowwhite,
@@ -1312,7 +1313,7 @@ table.table_list_simple tr.rowtitle {
     }
 
     .table_list_page .tableheader {
-		background-color: #D0D0D0;
+		background-color: #E1E2E1;
 		font-size: 9pt;
 		line-height: 25px;
 		color: #000000;
@@ -1833,8 +1834,17 @@ th.list-narrow {
 .fullwidth-list .component table.list-table thead th.list-table,
 th.list-table, 
 th.list-table-narrow {
-    border-bottom: 2px solid #CCCCCC;
-    padding: 6px;
+   font-size: 10pt;
+   color: #2e2e2e;
+   background-color: #E1E2E1;
+   font-weight: bold;
+   border-bottom: 2px solid #CCCCCC;
+   padding: 6px;
+}
+
+th.list-table a:link {
+    color: #000000;
+    text-decoration: underline;
 }
 
 .fullwidth-list .component table.list-table tbody td.list-table, 
