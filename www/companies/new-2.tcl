@@ -90,8 +90,6 @@ if { [string length ${note}] > 4000 } {
 }
 
 
-
-
 # -----------------------------------------------------------------
 # To-Lower the company path and check for alphanum characters
 #
@@ -106,6 +104,14 @@ if {$normalize_company_path_p} {
     }
 }
 
+# Make sure that there is at any time exactly one company defined in the system with path "internal" 
+# There might be a small chance that more than one company exists where company_path = 'internal', therefore db_list 
+set internal_company_id_list [db_list get_internal_companies_from_path "select company_id from im_companies where company_path='internal'"]
+if {  -1 != [lsearch $internal_company_id_list $company_id] && "internal" != [string tolower $company_path] } {
+     incr exception_count
+     set err_msg "This company has been defined as the 'Internal Company'. Changing the company path/short to '$company_path' will lead to an unstable system. Please set this attribute back to 'internal'"
+     append errors "<li> [lang::message::lookup "" intranet-core.ErrCompanyPathInternalCompany $err_msg]</li>"
+}
 
 # Make sure company name is unique
 set exists_p [db_string group_exists_p "
