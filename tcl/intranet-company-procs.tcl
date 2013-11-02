@@ -383,6 +383,7 @@ ad_proc -public im_company_internal_helper { } {
 	util_memoize_flush_regexp "im_company_internal"
 	ad_return_complaint 1 "<li>[_ intranet-core.lt_Unable_to_determine_I]<br>
         [_ intranet-core.lt_Maybe_somebody_has_ch]"
+	ad_script_abort
     }
     return $company_id
 }
