@@ -7,6 +7,10 @@ if {![info exists return_url]} {
 	@author Frank Bergmann frank.bergmann@project-open.com
 	@creation-date 2008-03-28
 	@cvs-id $Id$
+
+	@param action_user_list_url A url to redirect for action on users.
+	       This allows to implement a custom search-for-user-or-add
+	       behaviour.
     } {
 	{first_names "" }
 	{last_name "" }
@@ -19,6 +23,8 @@ if {![info exists return_url]} {
 	{button_search "" }
 	{button_new_user_company "" }
 	{also_add_to_biz_object "" }
+	{action_user_list_url ""}
+	{action_user_list_text ""}
     }
     set template_p 1
 } else {
@@ -34,12 +40,25 @@ if {![info exists return_url]} {
     set template_p 0
 }
 
+if {![info exists action_user_list_url] || "" == $action_user_list_url} { 
+    set action_user_list_url "/intranet/companies/new" 
+}
+if {![info exists action_user_list_text] || "" == $action_user_list_text} { 
+    set action_user_list_text [lang::message::lookup "" intranet-core.Create_new_company_for_this_user "New company for user"] 
+}
+
+
+
+
 # --------------------------------------------------
 # One or more companies have been specified as a context
 #
 if {[info exists limit_to_company_id] && "" != $limit_to_company_id && "" == $company_name} {
     set company_name_list [db_list company_list "select company_name from im_companies where company_id in ([join $limit_to_company_id ","])"]
     set company_name [join $company_name_list " "]
+    set company_name [string map {"&" ""} $company_name]
+    set company_name [string map {"  " ""} $company_name]
+    # set event_customer_ids "xxx [regsub -all {&} $event_customer_ids ""]
 }
 
 # --------------------------------------------------
@@ -157,8 +176,13 @@ ad_form \
 	{company_name:text(text),optional {label "[lang::message::lookup {} intranet-core.Company_name {Company Name}]"} {html {size 30}}}
 	{button_search:text(submit) {label "[lang::message::lookup {} intranet-core.Search {Search}]"}}
 	{also_add_to_biz_object:text(hidden),optional}
+	{action_user_list_url:text(hidden),optional}
+	{action_user_list_text:text(hidden),optional}
     }
 
+
+template::element::set_value $form_id action_user_list_url $action_user_list_url
+template::element::set_value $form_id action_user_list_text $action_user_list_text
 
 if {[info exists company_name] && "" != $company_name} { template::element::set_value $form_id company_name $company_name }
 if {[info exists also_add_to_biz_object] && "" != $also_add_to_biz_object} { template::element::set_value $form_id also_add_to_biz_object $also_add_to_biz_object }
@@ -359,9 +383,12 @@ ad_form -extend -name $form_id -new_request {
 	if {"" != $prov_group_id} { append contact_type [lang::message::lookup "" intranet-core.Provider "Provider"] }
 	
 	set also_add_users [list $user_id [im_biz_object_role_full_member]]
-	set action_text [lang::message::lookup "" intranet-core.Create_new_company_for_this_user "New company for user"]
-	set action_url [export_vars -base "/intranet/companies/new" {{company_name $org_company_name} return_url also_add_users}]
-	set action_html "<a href='$action_url' class=button>$action_text</a>"
+
+	# Action if we found a suitable user:
+	# - Default: Redirect to the /intranet/companies/new page in order to create a new company
+	# - Events: Redirect to a page to simply add the user to the specific event
+	set action_url [export_vars -base $action_user_list_url {user_id {company_name $org_company_name} return_url also_add_users}]
+	set action_html "<a href='$action_url' class=button>$action_user_list_text</a>"
 
 	set company_html ""
 	foreach company_id $company_ids {
