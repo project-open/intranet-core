@@ -88,7 +88,10 @@ set company_view_page "/intranet/companies/view"
 set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
-set end_idx [expr $start_idx + $how_many - 1]
+if { [empty_string_p $how_many] || $how_many < 1 } {
+    set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
+}
+set end_idx [expr $start_idx + $how_many]
 
 set criteria [list]
 
@@ -325,12 +328,15 @@ where
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
+
 if {[string compare $letter "ALL"]} {
 
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
-    set selection "select * from ($sql) s $order_by_clause"
+
+    set sql "select * from ($sql) s $order_by_clause"
+    set selection [im_select_row_range $sql $start_idx $end_idx]
 
 } else {
 
@@ -348,10 +354,12 @@ if {[string compare $letter "ALL"]} {
 		$where_clause
 	" -bind $form_vars ]
     
-    set selection "select * from ($sql) s $order_by_clause"
+    set sql "select * from ($sql) s $order_by_clause"
+    set selection [im_select_row_range $sql $start_idx $end_idx]
+
 }	
 
-ns_log Notice $selection
+# ad_return_complaint 1 "<pre>$$selection</pre>"
 
 
 # ----------------------------------------------------------
@@ -436,7 +444,7 @@ db_foreach company_info_query $selection -bind $form_vars {
     append table_body_html "</tr>\n"
 
     incr ctr
-    if { $how_many > 0 && $ctr >= $how_many } {
+    if { $how_many > 0 && $ctr > $how_many } {
 	break
     }
     incr idx
