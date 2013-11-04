@@ -32,9 +32,13 @@
         text-align: left;
 }
 
-.not_todays_date_weekend, .todays_date_weekend {
+.not_todays_date_weekend, .todays_date_weekend,
+.fullwidth-list .component table.calendar_table tbody tr td.todays_date_weekend,
+.fullwidth-list .component table.calendar_table tbody tr td.not_todays_date_weekend
+ {
         text-align: left;
 	background: #EEEEEE;
+	vertical-align: top;
 }
 
 
@@ -51,14 +55,17 @@
 .fullwidth-list .component table td.before_after_month {
     background: #EEEEEE;
     color: #666666;
+    vertical-align: top;
 }
 
 .fullwidth-list .component table td.not_todays_date {
     background: #FFFFFF;
+    vertical-align: top;
 }
 
 .fullwidth-list .component table td.todays_date {
     background: #AABBCC;
+    vertical-align: top;
 }
 
 .fullwidth-list .component table.list td.list-button-bar {
