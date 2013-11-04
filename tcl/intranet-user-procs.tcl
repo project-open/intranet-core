@@ -133,6 +133,8 @@ ad_proc -public im_user_biz_card_component {
     { -limit_to_company_id ""}
     { -also_add_to_biz_object ""}
     { -return_url ""}
+    { -action_user_list_url ""}
+    { -action_user_list_text ""}
 } {
     Returns a formatted piece of HTML showing a form allowing to enter a new user
 } {
@@ -141,6 +143,8 @@ ad_proc -public im_user_biz_card_component {
 		    [list limit_to_company_id $limit_to_company_id] \
 		    [list also_add_to_biz_object $also_add_to_biz_object] \
 		    [list return_url [im_url_with_query]] \
+		    [list action_user_list_url $action_user_list_url] \
+		    [list action_user_list_text $action_user_list_text] \
     ]
 
     set result [ad_parse_template -params $params "/packages/intranet-core/www/users/biz-card-add"]
