@@ -1,13 +1,7 @@
 <%= [im_header $title $header_stuff] %>
 
 <if @user_messages:rowcount@ ne 0>
-
-<span id="ajax-status-message" class="warning-notice">
-  <multiple name="user_messages">
-        @user_messages.message@<br>
-  </multiple>
-</span>
-
+    <span id="ajax-status-message" class="warning-notice"><multiple name="user_messages">@user_messages.message;noquote@</multiple></span>
 </if>
 
 <%= [im_navbar -show_context_help_p $show_context_help_p $main_navbar_label] %>
@@ -65,10 +59,38 @@
 <%= [im_footer] %>
 
 <if @user_messages:rowcount@ ne 0>
-<script type="text/javascript">
-    $('#general_messages_icon').html('&nbsp;<%=[im_gif "error" ""]%>');
-	$('#general_messages_icon').click( function() { $('#ajax-status-message').fadeIn(); return false; } );
-    $('#ajax-status-message').delay(8000).fadeOut();
-</script>
+    <if @feedback_behaviour_key@ eq 0>
+    	<!--Critical Err, feedback bar remains -->
+    	<script type="text/javascript">
+            $('#general_messages_icon_span').click( function() { $('#ajax-status-message').fadeIn(); return false; } );
+            $('#general_messages_icon_span').html('&nbsp;<span style="cursor: pointer;"><%=[im_gif "error" ""]%></span>');
+	</script>
+     </if>
+
+     <if @feedback_behaviour_key@ eq 1>
+        <!-- Serious Err, feedback bar disappears -->
+	<script type="text/javascript">
+		$('#ajax-status-message').delay(5000).fadeOut();
+		window.setTimeout(function () {
+		     	$('#general_messages_icon_span').html('<span style="border-radius: 50%; width: 200px; height: 200px; background: none repeat scroll 0 0 red;">&nbsp;&nbsp;&nbsp;&nbsp;</span>').hide().fadeIn(500);
+		}, 5000);
+
+		window.setTimeout(function () {
+		     $('#general_messages_icon_span').fadeOut(500);
+		}, 5500);
+
+		window.setTimeout(function () {
+			$('#general_messages_icon_span').html('&nbsp;<span style="cursor: pointer;"><%=[im_gif "error" ""]%></span>');
+			$('#general_messages_icon_span').fadeIn();
+			$('#general_messages_icon_span').click( function() { $('#ajax-status-message').fadeIn(); return false; } );
+			/*
+			$('#general_messages_icon_span').click( function() {
+				window.location = "/intranet/report-error";
+				return false;
+			} );
+			*/
+		}, 5800);
+    </script>
+    </if>
 </if>
 

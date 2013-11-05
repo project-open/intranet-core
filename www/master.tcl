@@ -90,6 +90,7 @@ if {"" == $sub_navbar} {
 }
 
 # OpenACS Feedback bar
+set feedback_behaviour_key [im_feedback_set_user_messages]
 util_get_user_messages -multirow user_messages
 
 # Feedback badge / used for demo servers
