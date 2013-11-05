@@ -211,7 +211,17 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 	if {"" == $sort_order} { set sort_order $default_sort_order }
 	if {"" == $location} { set location $default_location }
 
-	set component_html [uplevel 1 $component_tcl]
+	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "GracefulErrorHandlingComponents" -default 1] } {
+	    if {[catch {
+		set component_html [uplevel 1 $component_tcl]
+	    } err_msg]} {
+		global errorInfo
+		im_feedback_add_message "serious" $errorInfo "intranet-component-procs.tcl" [lang::message::lookup "" intranet-core.ErrCreatingComponent "Error in component '$plugin_name'. This component will not be available"]
+		set component_html ""
+	    }
+	} else {
+	    set component_html [uplevel 1 $component_tcl]
+	}
 
 	regsub -all {[^0-9a-zA-Z]} $plugin_name "_" plugin_name_subs
 	set plugin_name_key "intranet-core.${plugin_name_subs}"

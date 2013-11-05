@@ -264,4 +264,56 @@ ad_proc -public validate_textdate {
     }
 }
 
+ad_proc -public im_feedback_add_message {
+    type
+    stacktrace
+    error_content_filename
+    message
+} {
+    Adds message to feedback log
+    type: critical, serious, minor, config, message
+} {
+    # Set feedback_log
+    set feedback_logs [ad_get_client_property -default {} -cache_only t "intranet-core" "feedback_log"]
+    lappend feedback_logs [list $type $stacktrace $error_content_filename $message]
+    ad_set_client_property "intranet-core" "feedback_log" $feedback_logs
+}
+
+ad_proc -public im_feedback_set_user_messages {} {
+    Prioritize errors with ErrorInfo (stacktrace)
+    Provide "Report this error" link in message
+    Return value is used to determine behaviour of feedback bar
+} {
+    set return_val 2
+    # ns_return 200 text/html [ad_get_client_property "intranet-core" "feedback_log"]
+    foreach message_list [ad_get_client_property "intranet-core" "feedback_log"] {
+	util_user_message -html -message [lindex $message_list 3]
+        # Check for runtime errors (stacktrace), remove other messages from list
+	if { "" != [lindex $message_list 1] } {
+            # Set session vars for "Report this error" page
+	    ad_set_client_property intranet-core error_stacktrace [lindex $message_list 1]
+	    ad_set_client_property intranet-core error_content_filename [lindex $message_list 2]
+	    ad_set_client_property intranet-core error_content [lindex $message_list 3]
+	    set report_this_error_msg [lang::message::lookup "" intranet-core.ReportThisError "Yes, I want to report this error to the \]po\[ Core Team. Show me what is going to be reported."]
+	    if { "critical" == [lindex $message_list 0] } {
+		set msg "[lang::message::lookup "" intranet-core.CriticalErrFound "Critical error found"]: [lindex $message_list 3]"
+		append msg "<br><a href='/intranet/report-error'>$report_this_error_msg</a>"
+                util_user_message -replace -html -message $msg
+                set return_val 0
+                break
+	    } elseif { "serious" == [lindex $message_list 0] } {
+		set msg "[lang::message::lookup "" intranet-core.SeriousErrFound "Serious error found"]: [lindex $message_list 3]"
+		append msg "<br><a href='/intranet/report-error'>$report_this_error_msg</a>"
+                util_user_message -replace -html -message $msg
+                set return_val 1
+                break
+	    }
+	}
+    }
+    # clean up feedback log
+    ad_set_client_property "intranet-core" "feedback_log" ""
+    return $return_val;
+}
+
+
 
