@@ -1520,6 +1520,42 @@ span.list-label {
 
 /* XOWIKI */
 
+div.xowiki-content table.dot_org_home thead tr td a:link,
+div.xowiki-content table.dot_org_home thead tr td a:visited {
+    color:#034e71;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:22px;
+    font-weight:bold;
+    text-decoration:none;
+    border-bottom: 0.04em solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.04em;
+    border-color:#b4b7b6;
+}
+div.xowiki-content table.dot_org_home tbody tr td a:link,
+div.xowiki-content table.dot_org_home tbody tr td a:visited {
+    color:#000000;
+    text-decoration:none;
+    border-bottom: 0.04em solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.04em;
+    border-color:#b4b7b6;
+    font-size:13px;
+}
+
+div.xowiki-content table.dot_org_home tbody tr td.box_header {
+    color:#000000;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:18px;
+    font-weight:bold;
+}
+
+div.xowiki-content table.dot_org_home tbody tr td {
+    font-size: 14px
+}
+
+div.xowiki-content  .po_areas {
+    font-weight:bold}
+}
+
 #Contents {
 	margin-left: -13px;
 }
@@ -1555,7 +1591,7 @@ div.xowiki-content h1 {
         padding-left:0;
         text-decoration:none;
         border-bottom: solid silver 1px; color: #222222;
-	padding-top:25px;
+	padding-top:10px;
 }
 
 div.xowiki-content h2 {
