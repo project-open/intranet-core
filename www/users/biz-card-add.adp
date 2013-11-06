@@ -8,9 +8,9 @@
 <br>
 
 <if "" ne @found_user_id@>
-<h2>Exact User Match</h2>
+<h2><%= [lang::message::lookup "" intranet-core.Exact_User_Match "Exact User Match"] %></h2>
 <p>
-We have found an exact match for user @found_user_name@ (@found_user_email@).
+<%= [lang::message::lookup "" intranet-core.We_have_found_an_exact_match "We have found an exact match for user %found_user_name% (%found_user_email%)."] %>
 </p>
 <br>
 </if>
