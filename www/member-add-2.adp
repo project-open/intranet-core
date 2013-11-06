@@ -30,7 +30,7 @@
 <tr>
   <td>
 <center>
-<input type="submit" value="Send Email" />
+<input type="submit" value="#intranet-core.Send_Email#" />
 <input type=checkbox name=send_me_a_copy value=1 checked>
 <%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>
 </center>

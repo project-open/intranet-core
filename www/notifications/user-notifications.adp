@@ -22,10 +22,10 @@
       </td>
       <td class="bt_listing">
         <if @notifications.subscribed_p@ false>
-          <a href="@notifications.url@" title="@notifications.title@">Subscribe</a>
+          <a href="@notifications.url@" title="@notifications.title@">#intranet-core.Subscribe#</a>
         </if>
 	<else>
-          <a href="@notifications.url@" title="@notifications.title@">Unsubscribe</a>
+          <a href="@notifications.url@" title="@notifications.title@">#intranet-core.Unsubscribe#</a>
 	</else>
       </td>
     </tr>
