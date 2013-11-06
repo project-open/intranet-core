@@ -8,7 +8,6 @@
 
 <if @not_shown@>
 <p>
-@not_shown@ user(s) not shown.
+@not_shown@ <%= [lang::message::lookup "" intranet-core.User_s_not_shown "user(s) not shown"] %>.
 </p>
-
 </if>

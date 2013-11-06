@@ -5,7 +5,7 @@
 
 <if @admin_p@>
   <div style="float: right;">
-    <a href="admin" class="button">Administration</a>
+    <a href="admin" class="button">#intranet-core.Administration#</a>
   </div>
 </if>
 
