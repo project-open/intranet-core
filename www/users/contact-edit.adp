@@ -19,6 +19,5 @@
   <td colspan=3>@note_html;noquote@</td>
 </tr>
 </table>
-<input type=submit name=submit value=Submit>
+<input type=submit name=submit value="#intranet-core.Submit#">
 </form>
-

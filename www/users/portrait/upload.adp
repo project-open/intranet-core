@@ -30,7 +30,7 @@
 </table>
 <p>
 <center>
-<input type=submit value="Upload">
+<input type=submit value="#intranet-core.Upload#">
 </center>
 </blockquote>
 </form>

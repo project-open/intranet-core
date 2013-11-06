@@ -15,26 +15,24 @@
       <td>#intranet-core.Project_Name#</td>
       <td> 
 	<input type=text size=40 name=project_name value="@project_name@">
-	<%= [im_gif help "Please enter any suitable name for the project. The name must be unique."] %>
+	<%= [im_gif help [lang::message::lookup "" intranet-core.Please_enter_any_suitable_name "Please enter any suitable name for the project. The name must be unique."]] %>
       </td>
     </tr>
     <tr> 
       <td>#intranet-core.Project_# &nbsp;</td>
       <td> 
 	<input type=text size="@project_nr_field_size@" name=project_nr value="@project_nr@" maxlength="@project_nr_field_size@" >
-	<%= [im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"] %> &nbsp; 
+	<%= [im_gif help [lang::message::lookup "" intranet-core.A_project_number_is_composed_blurb "A project number is composed by 4 digits for the year plus 4 digits for current identification"]] %> &nbsp; 
       </td>
     </tr>
     <tr>
       <td>#intranet-core.Parent_Project# &nbsp;</td>
       <td>
         <%=[im_project_select -include_empty_p 1 -include_empty_name "" -project_status_id [im_project_status_open] -exclude_subprojects_p 0 new_parent_project_id "" "open"]%>
-        <%= [im_gif help "If you plan to make the newly created project a sub-project of an existing project, please select a parent project now"] %> &nbsp;
+        <%= [im_gif help [lang::message::lookup "" intranet-core.If_you_plan_to_make_sub_project "If you plan to make the newly created project a sub-project of an existing project, please select a parent project now"]] %> &nbsp;
       </td>
     </tr>
-
     @clone_html;noquote@
-
     <tr> 
       <td valign=top> 
 	<div align=right>&nbsp; </div>
@@ -42,7 +40,7 @@
       <td> 
 	  <p> 
 	    <input type=submit value="@button_text@" name=submit2>
-	    <%= [im_gif help "Create the new folder structure"] %>
+	    <%= [im_gif help [lang::message::lookup "" intranet-core.Create_the_new_folder_structure "Create the new folder structure"]] %>
 	  </p>
       </td>
     </tr>

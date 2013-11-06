@@ -15,10 +15,9 @@
       <td>@page_title@:</td>
       <td> 
         <%= [im_project_template_select template_project_id $template_project_id] %>
-	<%= [im_gif help "Lists all template projects and project with a name containing 'Template'."] %> &nbsp; 
+	<%= [im_gif help [lang::message::lookup "" intranet-core.List_all_templates_blurb "Lists all template projects and project with a name containing 'Template'."]] %> &nbsp; 
       </td>
     </tr>
-
     <tr> 
       <td valign=top> 
 	<div align=right>&nbsp; </div>
