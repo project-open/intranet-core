@@ -1664,6 +1664,13 @@ div.xowiki-content hr {
     text-decoration: none;
 }
 
+.xowikiform_inv {
+    visibility: hidden;
+}
+
+/* END XOWIKI*/
+
+
 #titleSubmenu {
          /* display: none; */ 
 }
