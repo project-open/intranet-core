@@ -24,6 +24,8 @@
   <msg key="Absence">Abwesenheit</msg>
   <msg key="Absence_Types">Abwesenheitstypen</msg>
   <msg key="Absences">Abwesenheiten</msg>
+  <msg key="Absenzen">Absenzen</msg>
+  <msg key="Ac_Counting">Rechnungswesen</msg>
   <msg key="Access_denied">Zugang verweigert</msg>
   <msg key="Account_Deleted">Konto gelöscht</msg>
   <msg key="Account_deleted">Konto gelöscht</msg>
@@ -167,6 +169,7 @@
   <msg key="Approver">Approver (Triage RFC)</msg>
   <msg key="ar">ar</msg>
   <msg key="Archived">Archiviert</msg>
+  <msg key="Area_1">Area 1</msg>
   <msg key="Argentina">Argentinien</msg>
   <msg key="Armenia">Armenien</msg>
   <msg key="ARS">ARS</msg>
@@ -203,11 +206,16 @@
   <msg key="Bank_Transfer">Überweisung</msg>
   <msg key="Basic_Information">Basisinformationen</msg>
   <msg key="Bau_Maint">Bau u. Unterhalt</msg>
+  <msg key="BC_Quick_Job">BC Kleinauftrag</msg>
   <msg key="be">be</msg>
   <msg key="Become_this_user">Einloggen als dieser Benutzer</msg>
   <msg key="Belarus">Weißrussland</msg>
   <msg key="Belgium">Belgien</msg>
   <msg key="Belize">Belize</msg>
+  <msg key="Benefit_1">Benefit 1</msg>
+  <msg key="Betrieb_BC">Betrieb BC</msg>
+  <msg key="Betrieb_BKB">Betrieb BKB</msg>
+  <msg key="Betrieb_Konzern">Betrieb Konzern</msg>
   <msg key="bg">bg</msg>
   <msg key="Billable">Billable?</msg>
   <msg key="billenadp">bill.en.adp</msg>
@@ -276,6 +284,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Category_Missing">Fehlendes Feld 'Kategorie', bitte einen Namen angeben</msg>
   <msg key="Category_name">Kategoriename</msg>
   <msg key="category_name">%category_name%</msg>
+  <msg key="category_name_1">$category_name </msg>
   <msg key="Category_Nr">Kategorienr.</msg>
   <msg key="Category_translation">Kategorie Übersetzungen</msg>
   <msg key="Category_Type">Kategorie Typ</msg>
@@ -429,6 +438,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Creation_User">Angelegt von</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
+  <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
+  <msg key="creditSEAT_VWesadp">credit.SEAT_VW.es.adp</msg>
   <msg key="CRM_Help">CRM Hilfe</msg>
   <msg key="CRM_Sales">CRM</msg>
   <msg key="Croatia">Kroatien</msg>
@@ -590,6 +601,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Event">Event</msg>
   <msg key="Events">Events</msg>
   <msg key="Exact_User_Match">Benutzer gefunden</msg>
+  <msg key="Exchange_Rates">Wechselkurse</msg>
   <msg key="Exchange_Rates_ASUS">Automatische Aktualisierung von Wechselkursen</msg>
   <msg key="Executing">Ausführen</msg>
   <msg key="Execution_Project_Help">Ein &quot;Ausführungsprojekt&quot; ist eine Kopie eines Projekts ohne Verweise auf das ursprüngliche Projekt um die Anonymität des Kunden zu bewahren.</msg>
@@ -602,6 +614,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Expense_Planned_Cost">Geplante Reisekosten</msg>
   <msg key="Expense_Report">Ausgaben-Report</msg>
   <msg key="Expense_Types">Reisekosten Typen</msg>
+  <msg key="Expenses">Ausgaben</msg>
   <msg key="Export_Companies_CSV">Firmen-CSV exportieren</msg>
   <msg key="Export_Customer_Invoices_CSV">Finanzdokumente por Kunde als CSV exportieren</msg>
   <msg key="Export_Customers_to_CSV">Kunden nach CSV exportieren</msg>
@@ -645,6 +658,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Finance_Home">Finanzen Homepage</msg>
   <msg key="Financial_Consulting">Finanzcontrolling</msg>
   <msg key="Financial_Management">Finanzmanagement</msg>
+  <msg key="Finished">Beendet</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_Names">Vornname</msg>
   <msg key="First_names">Vorname</msg>
@@ -800,6 +814,11 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="High">Hoch</msg>
   <msg key="High_Quality">Hohe Qualität</msg>
   <msg key="Hinzufgen">Hinzufügen</msg>
+  <msg key="HJ_Application_1">HJ Applikation 1</msg>
+  <msg key="HJ_Job_Type_1">HJ Auftragsart 1</msg>
+  <msg key="HJ_Jobname_1_">HJ Jobname 1</msg>
+  <msg key="HJ_Order_1">HJ Auftrag 1</msg>
+  <msg key="HJ_Order_Type_1">HJ Auftragsart 1</msg>
   <msg key="Home">Home</msg>
   <msg key="Home___93_po__91__News">]project-open[ News</msg>
   <msg key="Home_Address">Privatadresse</msg>
@@ -832,6 +851,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Home_ZIP">Privat PLZ</msg>
   <msg key="Honduras">Honduras</msg>
   <msg key="Host">Host</msg>
+  <msg key="Host_Job_Order">Host Job Order</msg>
+  <msg key="Host_Job_Orders">Host Job Orders</msg>
   <msg key="Host_Program">Host Programm</msg>
   <msg key="Host_Screen">Host Seite</msg>
   <msg key="Host_Table">Host Tabelle</msg>
@@ -944,6 +965,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="invoicees_ESadp">invoice.es_ES.adp</msg>
   <msg key="invoiceesadp">invoice.es.adp</msg>
   <msg key="Invoices">Kd-Rechnung</msg>
+  <msg key="invoiceSEAT_VWenadp">invoice.SEAT_VW.en.adp</msg>
+  <msg key="invoiceSEAT_VWesadp">invoice.SEAT_VW.es.adp</msg>
   <msg key="Invoicing">Abrechnung</msg>
   <msg key="Invoke">Invoke</msg>
   <msg key="InWork">In Arbeit</msg>
@@ -1033,6 +1056,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="lt_A_project_number_is_c">Eindeutige Projektnummer</msg>
   <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Hinzufügen</msg>
+  <msg key="lt_Abteilungsleiter_CCIT">Abteilungsleiter CCIT</msg>
   <msg key="lt_acs-automated-testing">automated-testing</msg>
   <msg key="lt_acs-bootstrap-install">acs-bootstrap-install</msg>
   <msg key="lt_acs-content-repositor">acs-content-repository</msg>
@@ -1113,6 +1137,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="lt_Create_a_new_Discussi">Neue Diskussion</msg>
   <msg key="lt_Create_folder_structu">Neue Unterprojekte für jede Sprache erzeugen, zusammen mit einer geeigneten Verzeichnisstruktur</msg>
   <msg key="lt_Create_the_new_folder">Neue Verzeichnisstrukture</msg>
+  <msg key="lt_Customer_and_Provider">Customer and Provider</msg>
   <msg key="lt_Customer_Satisfaction">Kundenzufriedenheit</msg>
   <msg key="lt_Customersintranet-fil">Kunden</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}] </msg>
@@ -1136,6 +1161,8 @@ Mit freundlichen Grüßen,
   <msg key="lt_delete_this_user_inst">löschen diese Benutzer anstatt</msg>
   <msg key="lt_Deleteintranet-timesh">Löschen</msg>
   <msg key="lt_Deleting_first_names_">Löschen %first_names% %last_name% </msg>
+  <msg key="lt_deliverynoteSEAT_VWen">deliverynote.SEAT_VW.en.adp</msg>
+  <msg key="lt_deliverynoteSEAT_VWes">deliverynote.SEAT_VW.es.adp</msg>
   <msg key="lt_Desired_Customer_End_">Bevorzugtes Enddatum</msg>
   <msg key="lt_Directivosintranet-fi">Manager</msg>
   <msg key="lt_Discussionintranet-fo">Diskussion</msg>
@@ -1186,6 +1213,7 @@ Password: %password%
   <msg key="lt_GanttProject_is_a_fre">GanttProject ist ein kostenloses Gantt-Diagramm-Editor (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">Typ des Projektes</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
+  <msg key="lt_Hardware_Manufacturer">Hardware Hersteller</msg>
   <msg key="lt_has_been_marked_delet">wurde als 'gelöscht' markiert.</msg>
   <msg key="lt_Here_you_can_manage_u">Hier können sie Benutzer einzeln bearbeiten.</msg>
   <msg key="lt_Here_you_find_advance">Hier finden sie weitere Konfigurationsoptionen</msg>
@@ -1243,6 +1271,7 @@ Password: %password%
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
+  <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
   <msg key="lt_Maybe_somebody_has_ch">Vielleicht hat jemand den Pfad des ?internen? Unternehmens geändert, der Ihre Organisation identifiziert.</msg>
   <msg key="lt_Meineintranet-timeshe">Meine</msg>
   <msg key="lt_Member_state">Mitgliedsstatus</msg>
@@ -1626,6 +1655,7 @@ Password: %password%
   <msg key="Ok?">Ok?</msg>
   <msg key="Old_Number_Location">Old Number Location</msg>
   <msg key="On_Hold">Angehalten</msg>
+  <msg key="On_Hold1">Angehalten</msg>
   <msg key="On_Track_Status">Ampel Status</msg>
   <msg key="One">Ein</msg>
   <msg key="One_Category_Type">Ein Kategorietyp</msg>
@@ -1788,6 +1818,8 @@ Password: %password%
   <msg key="Profit_amp_Loss">Gewinn &amp; Verlußt</msg>
   <msg key="Profit_and_Loss">GuV</msg>
   <msg key="Program">Programm</msg>
+  <msg key="Program_Enhan_BC">Kleinauftrag BC</msg>
+  <msg key="Program_Enhan_BKB">Program Erweiterung (PE)</msg>
   <msg key="Program_Enhan_K">Kleinauftrag Konzern</msg>
   <msg key="Program_Enhancement">Programmerweiterung</msg>
   <msg key="program_id">Programm</msg>
@@ -1867,7 +1899,11 @@ Password: %password%
   <msg key="ProjectOpen_News">]project-open[ News</msg>
   <msg key="Projects">Projekte</msg>
   <msg key="Projects_Admin">Projekt Admin</msg>
+  <msg key="Projekt_BC">Projekt BC</msg>
+  <msg key="Projekt_BKB">Projekt BKB</msg>
   <msg key="Projekt_Konzern">Projekt Konzern</msg>
+  <msg key="Projekte_BC">Projekte BC</msg>
+  <msg key="Projekte_BKB">Projekte BKB</msg>
   <msg key="Projekte_Konzern">Projekte Konzern</msg>
   <msg key="Proof_Only">Nur korrekturlesen</msg>
   <msg key="Proofing">Korrekturlesen</msg>
@@ -1887,6 +1923,8 @@ Password: %password%
   <msg key="Puerto Rico">Puerto Rico</msg>
   <msg key="Puerto_Rico">Puerto Rico</msg>
   <msg key="Purchase_Order">Auftrag</msg>
+  <msg key="Purchasing_Req_BC">Beschaffung BC</msg>
+  <msg key="Purchasing_Req_BKB">Beschaffung BKB</msg>
   <msg key="Purchasing_Req_K">Beschaffung Konzern</msg>
   <msg key="Purchasing_Request">Beschaffung</msg>
   <msg key="q">Q</msg>
@@ -1900,6 +1938,8 @@ Password: %password%
   <msg key="quoteenadp">quote.en.adp</msg>
   <msg key="quoteesadp">quote.es.adp</msg>
   <msg key="Quotes">KVA</msg>
+  <msg key="quoteSEAT_VWenadp">quote.SEAT_VW.en.adp</msg>
+  <msg key="quoteSEAT_VWesadp">quote.SEAT_VW.es.adp</msg>
   <msg key="Quoting">Angebotserstellung</msg>
   <msg key="r">R</msg>
   <msg key="Random_Portrait">Zufalls Portrait</msg>
@@ -1950,10 +1990,18 @@ Password: %password%
   <msg key="rfc_bcka_schaetz_bem_pt">Schätzung Bemerkung</msg>
   <msg key="rfc_bcka_schaetz_user_pt">Schätzung Aufwand Fachbereich</msg>
   <msg key="rfc_customer_email">Kunden Email</msg>
+  <msg key="rfc_customer_phone">Telefon Kunde</msg>
   <msg key="rfc_fs_pl_ccit">Projektleiter CCIT</msg>
   <msg key="rfc_fs_pl_fach">Projektleiter FB</msg>
   <msg key="rfc_fs_stc">Steuerkreis</msg>
+  <msg key="rfc_hj_acceptedby">Abgenommen durch</msg>
+  <msg key="rfc_hj_approvedby">Bewilligt durch</msg>
   <msg key="rfc_hj_arb_gebiet">Arbeitsbereich</msg>
+  <msg key="rfc_hj_otc_jobname">Jobname</msg>
+  <msg key="rfc_hj_otc_laufzeit">Laufzeit</msg>
+  <msg key="rfc_hj_otc_library">Library</msg>
+  <msg key="rfc_hj_rejectedby">Abgelehnt durch</msg>
+  <msg key="rfc_kurztext">Kurztext</msg>
   <msg key="rfc_pe_dokumente">Dokumentenliste zum RFC</msg>
   <msg key="rfc_pe_erwnutz_whrg">Erwarteter Nutzen Währung</msg>
   <msg key="rfc_pe_release">System Release</msg>
@@ -1963,6 +2011,11 @@ Password: %password%
   <msg key="rfc_pe_schaetz_user_ext_ko">Schätzung Fachbereich extern</msg>
   <msg key="rfc_pe_schaetz_user_pt">Schätzung Aufwand Fachbereich</msg>
   <msg key="rfc_pe_schaetz_user_wert">Schätzung Fachbereich CHF</msg>
+  <msg key="rfc_pr_beschaffung_durch">Lieferant</msg>
+  <msg key="rfc_pr_kundenref">Kundenreferenz</msg>
+  <msg key="rfc_pr_lieferantenre">Lieferantenreferenz</msg>
+  <msg key="rfc_pr_produkt">Produkt</msg>
+  <msg key="rfc_pr_triage">Triage</msg>
   <msg key="RFC_Priority">RFC Prioritaet</msg>
   <msg key="rfc_rr_column_01">Report Spalte 01</msg>
   <msg key="rfc_rr_column_02">Report Spalte 02</msg>
@@ -1983,6 +2036,7 @@ Password: %password%
   <msg key="rfc_termin_bem">Bemerkungen Termin</msg>
   <msg key="rfc_tr_newplace">Neuer Arbeitsplatz</msg>
   <msg key="rfc_tr_oldplace">Alte Nummer</msg>
+  <msg key="rfc_wm_equip">Sonstiges, Telefon</msg>
   <msg key="rfc_zustaendig">RFC Zuständigkeit</msg>
   <msg key="RFCs">RFCs</msg>
   <msg key="RFQ">RFQ</msg>
@@ -2026,6 +2080,8 @@ Password: %password%
   <msg key="Search_for_Providers_by_Skill">Zulieferer nach Skill durchsuchen</msg>
   <msg key="Search_for_User">Benutzersuche</msg>
   <msg key="Search_Go_Alt">Suchen</msg>
+  <msg key="Seat_Actualization">Seat Aktualisierung</msg>
+  <msg key="Seat_New">Seat Neu</msg>
   <msg key="Security_Update_Client_Component">Sicherheits Aktualisierungen</msg>
   <msg key="See_the_list_of">Liste sehen</msg>
   <msg key="Sel">Sel</msg>
@@ -2055,6 +2111,7 @@ Password: %password%
   <msg key="Singapore">Singapur</msg>
   <msg key="SiteAdmin">SiteAdmin</msg>
   <msg key="Sitemap">Sitemap</msg>
+  <msg key="Size">Größe</msg>
   <msg key="sk">sk</msg>
   <msg key="Skin">Skin</msg>
   <msg key="sl">sl</msg>
@@ -2111,6 +2168,8 @@ Password: %password%
   <msg key="Super_Project">Oberprojekt</msg>
   <msg key="Supervisor">Manager</msg>
   <msg key="Support">Support</msg>
+  <msg key="Support_BC">Support BC</msg>
+  <msg key="Support_BKB">Support BKB</msg>
   <msg key="Support_Konzern">Support Konzern</msg>
   <msg key="Survey">Umfragen</msg>
   <msg key="sv">sv</msg>
@@ -2183,6 +2242,7 @@ Password: %password%
   <msg key="top">Oben</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
   <msg key="tr">tr</msg>
+  <msg key="Trad_Corrida_Gamesa">Trad. Corrida (Gamesa)</msg>
   <msg key="Trados">Trados</msg>
   <msg key="Trados_3x">Trados 3.x</msg>
   <msg key="Trados_5x">Trados 5.x</msg>
