@@ -200,7 +200,7 @@ if {$show_authority_p} {
 	order by short_name
     "]
     ad_form -extend -name register -form {
-	{authority_id:text(hidden),optional {label "[lang::message::lookup {} intranet-core.Authority Authority]"} {options $auth_options }}
+	{authority_id:text(select),optional {label "[lang::message::lookup {} intranet-core.Authority Authority]"} {options $auth_options }}
     }
 }
 
