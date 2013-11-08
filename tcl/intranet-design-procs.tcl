@@ -33,8 +33,6 @@ ad_proc -public im_skin_right_blue {} { return 40010 }
 ad_proc -public im_skin_light_green {} { return 40015 }
 ad_proc -public im_skin_saltnpepper {} { return 40020 }
 
-
-
 # --------------------------------------------------------
 # im_gif - Try to return the best matching GIF...
 # --------------------------------------------------------
@@ -1562,6 +1560,7 @@ ad_proc -public im_stylesheet {} {
 
     # --------------------------------------------------------------------
     set skin_name [im_user_skin $user_id]
+    set skin_name_version [im_user_skin_version $user_id]
     set skin_path "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"
     set skin_exists_p [util_memoize [list file exists $skin_path]]
 
@@ -1571,8 +1570,7 @@ ad_proc -public im_stylesheet {} {
 	set skin "default"
     }
 
-   # set system_css "/intranet/style/style.$skin.css"
-   set system_css "/intranet/style/style.$skin.css"
+    set system_css "/intranet/style/style.$skin.css?v=$skin_name_version"
 
     if {[llength [info procs im_package_calendar_id]]} {
 	if {$openacs54_p} { 
@@ -2065,6 +2063,13 @@ ad_proc -public im_user_skin { user_id } {
     return [util_memoize [list im_user_skin_helper -locale $locale $user_id]]
 }
 
+ad_proc -public im_user_skin_version { user_id } {
+    Returns the name of the current skin version 
+} {
+    return [util_memoize [list im_user_skin_version_helper $user_id]]
+}
+
+
 ad_proc -public im_user_skin_helper { 
     {-locale "" }
     user_id 
@@ -2081,6 +2086,23 @@ ad_proc -public im_user_skin_helper {
 #    if {"" == $skin_name} { set skin_name "default" }
     if {"" == $skin_name} { set skin_name "saltnpepper" }
     return $skin_name
+}
+
+ad_proc -public im_user_skin_version_helper {
+    user_id
+} {
+    Returns the version number of the current skin - uncached
+} {
+    set skin_id_exists_p [im_column_exists users skin_id]
+    if {$skin_id_exists_p} {
+	# Get Skin Name for this user 
+	set skin_name [im_user_skin $user_id]
+	if {"" == $skin_name} { set skin_name "saltnpepper" }
+        set skin_name_version [db_string sid "select aux_string1 from im_categories where category_type = 'Intranet Skin' and category = :skin_name" -default 0]
+	if { "" == $skin_name_version } { return 0 } else { return $skin_name_version }
+    } else {
+	return 0 
+    }
 }
 
 ad_proc -public im_skin_select_html { 
