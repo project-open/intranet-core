@@ -113,6 +113,8 @@ if { 0 == $project_status_id } {
     set project_status_id [im_project_status_open]
 }
 
+set show_filter_with_member_p [ad_parameter -package_id [im_package_core_id] ProjectListPageShowFilterWithMemberP "" 1]
+
 if {"" == $include_subproject_level} { set include_subproject_level [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
 if {"" == $include_subprojects_p} { set include_subprojects_p [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
 
@@ -279,8 +281,10 @@ ad_form -extend -name $form_id -form {
 # Does user have VIEW permissions on company's employees?  
 set employee_group_id [im_employee_group_id]
 if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_group_id, :user_id, 'read') from dual"]} {
-    ad_form -extend -name $form_id -form {
-	{user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+    if {$show_filter_with_member_p} {
+	ad_form -extend -name $form_id -form {
+	    {user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+	}
     }
 }
 
