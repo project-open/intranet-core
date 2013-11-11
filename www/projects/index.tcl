@@ -253,7 +253,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 			   ]
     ad_form -extend -name $form_id -form {
         {mine_p:text(select),optional {label "$min_all_l10n"} {options $mine_p_options }}
-        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1}} }
+        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1 include_empty_name $all_l10n}} }
     } 
 }
 
@@ -274,9 +274,17 @@ set user_options [im_profile::user_options -profile_ids $user_select_groups]
 set user_options [linsert $user_options 0 [list $all_l10n ""]]
 
 ad_form -extend -name $form_id -form {
-    {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1} } }
-    {company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
+    {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1 include_empty_name $all_l10n} } }
 }
+
+# The "company_id" field can become very slow if there are
+# many customers in the system.
+if {!$filter_advanced_p} {
+    ad_form -extend -name $form_id -form {
+	{company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
+    }
+}
+
 
 # Does user have VIEW permissions on company's employees?  
 set employee_group_id [im_employee_group_id]
@@ -300,6 +308,7 @@ if {$filter_advanced_p} {
         -form_id $form_id \
         -object_id 0 \
         -advanced_filter_p 1 \
+	-include_also_hard_coded_p 1 \
 	-page_url "/intranet/projects/index"
 
     # Set the form values from the HTTP form variable frame
