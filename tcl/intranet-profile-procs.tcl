@@ -252,17 +252,20 @@ namespace eval im_profile {
 
     ad_proc -public user_options { 
 	{-profile_ids 0}
+	{-no_cache:boolean}
     } {
 	Returns a list of (user_id user_name) tuples for all users
 	that are a member of the specified profiles.
     } {
 	# Check if we have calculated this result already
 	set key [list user_options $profile_ids]
-	# if {[ns_cache get im_profile $key value]} { return $value}
+	if {!$no_cache_p} {
+	    if {[ns_cache get im_profile $key value]} { return $value}
+	}
 
 	# Calculate the options
 	set user_options [user_options_not_cached -profile_ids $profile_ids]
-	ns_log Notice "im_profile::user_options: profile_ids=$profile_ids, options=$user_options"
+	ns_log Notice "im_profile::user_options: profile_ids=$profile_ids"
 
 	# Store the value in the cache
 	ns_cache set im_profile $key $user_options
@@ -280,16 +283,26 @@ namespace eval im_profile {
 	if {"" == $profile_ids} { return "" }
 	set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 	return [db_list_of_lists user_options "
-		select distinct
-		       im_name_from_user_id(u.user_id, $name_order) as name,
-		       u.user_id
-		from
-		       users_active u,
-		       group_distinct_member_map m
-		where
-		       u.user_id = m.member_id
-		       and m.group_id in ([join $profile_ids ","])
-		order by 
+
+		select	distinct
+			im_name_from_user_id(p.person_id, $name_order) as name,
+			p.person_id
+		from	persons p,
+			acs_rels r,
+			membership_rels mr
+		where	r.object_id_two = p.person_id and
+			r.object_id_one = acs__magic_object_id('registered_users') and
+			r.rel_id = mr.rel_id and
+			mr.member_state = 'approved' and
+			p.person_id in (
+				select	gr.object_id_two
+				from	acs_rels gr,
+					membership_rels gmr
+				where	gr.rel_id = gmr.rel_id and
+					gr.object_id_one in ([join $profile_ids ","]) and
+					gmr.member_state = 'approved'
+			)
+		order by
 			name
 	"]
     }
