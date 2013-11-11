@@ -218,7 +218,7 @@ if { $type_id > 0 } {
     lappend criteria "c.company_type_id in ([join [im_sub_categories $type_id] ","])"
 }
 if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
-    lappend criteria "im_first_letter_default_to_a(c.company_name)=:letter"
+    lappend criteria "im_first_letter_default_to_a(c.company_name) = :letter"
 }
 
 set extra_tables [list]
@@ -319,32 +319,19 @@ where
 	$where_clause
 "
 
-
 # ---------------------------------------------------------------
 # 5a. Limit the SQL query to MAX rows and provide << and >>
 # ---------------------------------------------------------------
-
 
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
 
-if {[string compare $letter "ALL"]} {
-
-    # Set these limits to negative values to deactivate them
-    set total_in_limited -1
-    set how_many -1
-
-    set sql "select * from ($sql) s $order_by_clause"
-    set selection [im_select_row_range $sql $start_idx $end_idx]
-
-} else {
-
-    set limited_query [im_select_row_range $sql $start_idx $end_idx]
-    # We can't get around counting in advance if we want to be able to 
-    # sort inside the table on the page for only those users in the 
-    # query results
-    set total_in_limited [db_string projects_total_in_limited "
+set limited_query [im_select_row_range $sql $start_idx $end_idx]
+# We can't get around counting in advance if we want to be able to 
+# sort inside the table on the page for only those users in the 
+# query results
+set total_in_limited [db_string projects_total_in_limited "
 	select count(*) 
         from
 		im_companies c
@@ -354,12 +341,9 @@ if {[string compare $letter "ALL"]} {
 		$where_clause
 	" -bind $form_vars ]
     
-    set sql "select * from ($sql) s $order_by_clause"
-    set selection [im_select_row_range $sql $start_idx $end_idx]
+set sql "select * from ($sql) s $order_by_clause"
+set selection [im_select_row_range $sql $start_idx $end_idx]
 
-}	
-
-# ad_return_complaint 1 "<pre>$$selection</pre>"
 
 
 # ----------------------------------------------------------
@@ -457,6 +441,8 @@ if { [empty_string_p $table_body_html] } {
         [_ intranet-core.lt_There_are_currently_n]
         </b></ul></td></tr>"
 }
+
+ns_log Notice "xxx: ctr=$ctr, how_many=$how_many, end_idx=$end_idx, total_in_limited=$total_in_limited"
 
 if { $ctr == $how_many && $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
