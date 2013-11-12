@@ -525,7 +525,7 @@ ad_proc -public im_company_options {
 
 ad_proc -public im_company_select { 
     {-include_empty_p 1}
-    {-include_empty_name "-- Please_select --" }
+    {-include_empty_name ""}
     {-tag_attributes {} }
     select_name 
     { default "" } 
@@ -542,6 +542,10 @@ ad_proc -public im_company_select {
     @param tag_attributes key-value-key-value... list of attributes to be included in the tag.
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
+
+    if {"" == $include_empty_name} {
+	set include_empty_name [lang::message::lookup "" intranet-core.--_Please_select_-- "-- Please_select --"]
+    }
 
     set company_options [im_company_options \
 			     -include_empty_p $include_empty_p \
