@@ -282,8 +282,8 @@ ad_proc -public im_feedback_add_message {
 ad_proc -public im_feedback_set_user_messages {} {
     Prioritize errors with ErrorInfo (stacktrace)
     Provide "Report this error" link in message
-    Return value is used to determine behaviour of feedback bar
 } {
+    # Return value is used to determine behaviour of feedback bar
     set return_val 2
     # ns_return 200 text/html [ad_get_client_property "intranet-core" "feedback_log"]
     foreach message_list [ad_get_client_property "intranet-core" "feedback_log"] {
@@ -306,6 +306,9 @@ ad_proc -public im_feedback_set_user_messages {} {
 		append msg "<br><a href='/intranet/report-error'>$report_this_error_msg</a>"
                 util_user_message -replace -html -message $msg
                 set return_val 1
+                break
+	    } else {
+		util_user_message -replace -html -message [lindex $message_list 3]
                 break
 	    }
 	}
