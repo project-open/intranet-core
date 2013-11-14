@@ -1861,6 +1861,24 @@ th.list-narrow {
 
 /* notification bar */ 
 
+.critical-notice {
+    background-color: #FF0000;
+    color: #333333;
+    border: 2px #b81616;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-right: 0px;
+    position:absolute;
+    left:0;
+    top:0px;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    display:inline-block;
+    line-height:25px;
+}
+
 .warning-notice {
     background-color: #FAF607;
     color: #333333;
@@ -1878,6 +1896,26 @@ th.list-narrow {
     display:inline-block;
     line-height:25px; 
 }
+
+.feedback-notice {
+    background-color: #2EFE2E;
+    color: #333333;
+    border: 2px #b81616;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-right: 0px;
+    position:absolute;
+    left:0;
+    top:0px;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    display:inline-block;
+    line-height:25px;
+}
+
+
 
 /* Overwriting lists.css */
 
