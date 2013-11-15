@@ -23,6 +23,20 @@ switch $action {
 
     "" { ad_returnredirect $return_url }
 
+    "set_closed" {
+	foreach pid $hierarchy_project_id {
+	    im_project_permissions $user_id $pid view_p read_p write_p admin_p
+	    if {$write_p} {
+		db_dml set_invoiced "
+			update im_projects
+			set project_status_id = [im_project_status_closed]
+			where project_id = :pid
+		"
+		im_audit -object_id $pid
+	    } 
+	}
+    }
+
     "set_invoiced" {
 	foreach pid $hierarchy_project_id {
 	    im_project_permissions $user_id $pid view_p read_p write_p admin_p
