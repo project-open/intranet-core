@@ -3212,6 +3212,7 @@ ad_proc -public im_project_action_select {
 
     return "  <select name=action>
   <option name=empty></option>
+  <option value=set_closed>[lang::message::lookup "" intranet-core.Set_status_to_closed "Set status to closed"]</option>
   <option value=set_invoiced>[lang::message::lookup "" intranet-core.Set_status_to_inviced "Set status to invoiced"]</option>
   <option value=set_open>[lang::message::lookup "" intranet-core.Set_status_to_open "Set status to open"]</option>
   <option value=shift_project>[lang::message::lookup "" intranet-core.Shift_project_forward_or_backward "Shift project forward or backward"]</option>
