@@ -23,7 +23,7 @@
 	    <tr class="list-even">
 	  </else>
 	      <td class="list-narrow">
-	      <a href=edit?plugin_id=@components.plugin_id@>
+	      <a href="/intranet/admin/components/edit?plugin_id=@components.plugin_id@">
 		@components.plugin_name@
 	      </a>
 	    </td>
