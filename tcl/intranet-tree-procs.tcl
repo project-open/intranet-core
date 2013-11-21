@@ -241,3 +241,129 @@ Example: tree_group {{a 1} {b 2} {c 1}} snd = {{a 1} {b 2}} {c 1}" {
     return $list
 }
 
+
+ad_proc -public tree_list_get_all_parents {
+    par_child_list
+    child_id
+    all_parents
+} {
+    Walks up a tree represented as an list of parent/child relationships 
+    and returns a list of all parent nodes. 
+    Example: 
+    <pre>
+              1
+               \
+	           2
+                 \
+                  3 
+                 / \
+                5   4 
+    </pre>
+    set par_child_list "{3 4} {2 3} {1 2} {3 5}"     
+    tree_list_get_all_parents $par_child_list 4 "" -> {3 2 1}  
+} {
+    set found_p 0
+    foreach pair $par_child_list {
+        if { $child_id == [lindex $pair 1] } {
+            set found_p 1
+            set parent_id [lindex $pair 0]
+        }
+    }
+    if { $found_p } {
+        lappend all_parents $parent_id
+        tree_list_get_all_parents $par_child_list $parent_id $all_parents
+    } else {
+        return $all_parents
+    }
+}
+
+ad_proc -public tree_list_get_all_childs {
+    par_child_list
+    parent_id
+    all_childs
+} {
+    Walks up a tree represented as an list of parent/child relationships
+    and returns a list of all parent nodes.
+    Example:
+    <pre>
+              1
+               \
+                2
+                 \
+                  3
+                 / \
+                5   4
+    </pre>
+    set par_child_list "{3 4} {2 3} {1 2} {3 5}"
+    tree_list_get_all_childs $par_child_list 2 "" -> {3 4 5}
+} {
+    set found_p 0
+    foreach pair $par_child_list {
+        if { $parent_id == [lindex $pair 0] } {
+            set found_p 1
+            set child_id [lindex $pair 1]
+		  lappend all_childs $child_id
+		  set all_childs [tree_list_get_all_childs $par_child_list $child_id $all_childs]
+        }
+    }
+    return $all_childs
+}
+
+
+
+ad_proc -public tree_list_get_direct_childs {
+    par_child_list
+    parent_id
+} {
+    Walks up a tree represented as an list of parent/child relationships
+    and returns a list of all parent nodes.
+    Example:
+    <pre>
+              1
+               \
+                2
+                 \
+                  3
+                 / \
+                5   4
+    </pre>
+    set par_child_list "{3 4} {2 3} {1 2} {3 5}"
+    tree_list_get_all_childs $par_child_list 2 "" -> {3 4 5}
+} {
+    set all_direct_childs [list]
+    foreach pair $par_child_list {
+        if { $parent_id == [lindex $pair 0] } {
+            lappend all_direct_childs [lindex $pair 1]
+        }
+    }
+    return $all_direct_childs
+}
+
+
+ad_proc -public tree_list_get_direct_parent {
+    par_child_list
+    child_id
+} {
+    Walks up a tree represented as an list of parent/child relationships
+    and returns a list of all parent nodes.
+    Example:
+    <pre>
+              1
+               \
+                2
+                 \
+                  3
+                 / \
+                5   4
+    </pre>
+    set par_child_list "{3 4} {2 3} {1 2} {3 5}"
+    tree_list_get_all_parents $par_child_list 2 "" -> {3 4 5}
+} {
+    set parent ""
+    foreach pair $par_child_list {
+        if { $child_id == [lindex $pair 1] } {
+            return [lindex $pair 0]
+        }
+    }
+    return $parent
+}
