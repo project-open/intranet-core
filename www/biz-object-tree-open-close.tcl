@@ -14,21 +14,27 @@
 
 ad_page_contract {
     Open/Close the branches of a business object tree.
-    @param object_id	The object to open/close
-    @param page_url	The name of the page. "default" is default.
-    @param user_id	The user for whom to open/close the tree
-    @param return_url	Where to return
-    @param open_p	"o" or "c".
 
+    Multiple object_ids can be passed also as a comma separated value 
+    This is required when a XHR post is made and duplicate keys are not supported  
+    return_url and object_id needs to be empty in this case. 
+
+    @param object_id	The object to open/close
+    @param page_url		The name of the page. "default" is default.
+    @param user_id		The user for whom to open/close the tree
+    @param return_url	Where to return
+    @param open_p		"o" or "c".
+    @param object_ids	object_id's, comma separated object_i's 
+    
     @author frank.bergmann@project-open.com
 } {
-    object_id:integer,multiple
-    return_url
+    { object_id:integer,multiple 0 }
+    { return_url "" }
     { page_url "default" }
     { user_id "" }
-    { open_p "o" }
+    { open_p "" }
+    { object_ids "" }
 }
-
 
 # --------------------------------------------------------------
 # Permissions
@@ -43,8 +49,11 @@ if {$user_id != $current_user_id} { ad_returnredirect $return_url }
 # Set the status
 # -----------------------------------------------------------
 
-# Assume that there are few entries in the list of closed tree objects.
+if { 0 == $object_id } {
+    set object_id [split $object_ids ","]
+}
 
+# Assume that there are few entries in the list of closed tree objects.
 foreach oid $object_id {
     if {[catch {
 	db_dml insert_tree_status "
@@ -74,7 +83,11 @@ foreach oid $object_id {
         "
     }
 }
+if { "" == $return_url } {
+    ns_return 200 text/html "\{\"success\": true, \"total\": 0, \"message\": \"\", \"data\": \[\{\}\]\}"
+} else {
+    ad_returnredirect $return_url
+}
 
-ad_returnredirect $return_url
 
 
