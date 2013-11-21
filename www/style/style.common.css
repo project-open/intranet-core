@@ -553,3 +553,20 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	  color: red;
 }
 
+/* -- fold-in/fold-out button */ 
+.tbl {display:none;}
+
+.fold_out_link { 
+    background: url("/intranet/images/plus_9.gif") no-repeat scroll center center rgba(0, 0, 0, 0);
+    border:none;
+    width:10px;
+}
+.fold_in_link { 
+    background: url("/intranet/images/minus_9.gif") no-repeat scroll center center rgba(0, 0, 0, 0);
+    border:none;
+    width:10px;
+}
+
+.row_hidden { display: none; }
+.row_visible { display: table-row }
+
