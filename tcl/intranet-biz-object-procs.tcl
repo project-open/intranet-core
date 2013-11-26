@@ -219,10 +219,16 @@ ad_proc -public im_biz_object_add_role {
 	   be able to get to their subproject.
 } {
     if {$debug_p} { ns_log Notice "im_biz_object_add_role: percentage=$percentage, propagate=$propagate_superproject_p, user_id=$user_id, object_id=$object_id, role_id=$role_id" }
-
     if {"" == $user_id || 0 == $user_id} { return "" }
-    set user_ip [ad_conn peeraddr]
-    set creation_user_id [ad_get_user_id]
+
+    # Deal with execution from within a "sweeper" process
+    # where ns_conn returns an error
+    set user_ip "0.0.0.0"
+    set creation_user_id 0
+    catch { 
+	set user_ip [ad_conn peeraddr] 
+	set creation_user_id [ad_get_user_id]
+    }
 
     # Determine the object's type
     if {![string is integer $object_id]} { im_security_alert -location "im_biz_object_add_role" -message "Found non-integer object_id" -value $object_id }
@@ -428,6 +434,7 @@ ad_proc -public im_biz_object_delete_timephased_data {
 
 
 ad_proc -public im_group_member_component { 
+    {-show_percentage_p ""}
     {-debug 0}
     object_id 
     current_user_id 
@@ -480,9 +487,10 @@ ad_proc -public im_group_member_component {
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
     # Check if there is a percentage column from intranet-ganttproject
-    set show_percentage_p [im_column_exists im_biz_object_members percentage]
     set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
-    if {$object_type != "im_project" & $object_type != "im_timesheet_task"} { set show_percentage_p 0 }
+    if {"" == $show_percentage_p && ($object_type == "im_project" || $object_type == "im_timesheet_task")} { set show_percentage_p 1 }
+    if {"" == $show_percentage_p} { set show_percentage_p 0 }
+    if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
 
     # ------------------ limit_to_users_in_group_id ---------------------
     set limit_to_group_id_sql ""
