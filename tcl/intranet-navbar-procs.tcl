@@ -418,7 +418,7 @@ ad_proc -public im_navbar_tree_human_resources {
 		<ul>
         "
 	set absence_sql "
-	select * from im_absence_types
+	select * from im_user_absence_types
 	order by lower(absence_type)
         "
 	db_foreach absences $absence_sql {
