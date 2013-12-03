@@ -51,10 +51,14 @@ foreach priv $privs {
     lappend from_direct_clauses "(case when privilege='${priv}' then -1 else 0 end) as ${priv}_p"
     lappend from_dummy_clauses "0 as ${priv}_p"
 
+    set priv_subs [string map {_ { }} $priv]
+    set priv_help_url "http://www.project-open.org/en/list_privileges#$priv"
+    set priv_html "<a href='$priv_help_url' target=' '>[im_gif help]</a> $priv_subs"
+
     lappend elements ${priv}_p \
         [list \
              html { align center } \
-             label [string totitle [string map {_ { }} $priv]] \
+             label [string totitle $priv_html] \
              display_template "
                <if @permissions.${priv}_p@ ge 2>
                  <img src=\"/shared/images/checkboxchecked\" border=\"0\" height=\"13\" width=\"13\" alt=\"X\" title=\"This permission is inherited, to remove, click the 'Do not inherit ...' button above.\">
