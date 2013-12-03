@@ -90,17 +90,23 @@ if {"" == $sub_navbar} {
 }
 
 # OpenACS Feedback bar
-set feedback_behaviour_key [im_feedback_set_user_messages]
-util_get_user_messages -multirow user_messages
+if {[catch {
+    set feedback_behaviour_key [im_feedback_set_user_messages]
+    util_get_user_messages -multirow user_messages
+} err_msg]} {
+    set feedback_behaviour_key 1
+    set err_user_feedback "There was a problem retrieving user messages. This is probably a minor issue and can be disregarded. Please consult the error.log file for additional information. If this message persists, please logout and login again."
+    set err_user_feedback [lang::message::lookup "" intranet-core.ErrorRetrievingUserMessage $err_user_feedback]
+    template::multirow create user_messages message
+    template::multirow append user_messages $err_user_feedback
+}
 
 # Feedback badge / used for demo servers
 set show_feedback_p [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "ShowFeedbackButton" -default 0]
-
 if { $show_feedback_p } {
     template::head::add_css -href "/intranet/style/feedbackBadge.css" -media "screen" -order 1
     template::head::add_javascript -src "/intranet/js/jquery.feedbackBadge.min.js" -order 1
 }
-
 set feedback_url "<a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\" title='Give us feedback' id='feedback-badge-right' target='new'>"
 append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Feedback"]</span></a>"
 
