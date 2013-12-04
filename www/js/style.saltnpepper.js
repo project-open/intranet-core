@@ -5,7 +5,7 @@ var width = 243;
 var slideDuration = 1;
 var opacityDuration = 1500;
 var rv = 0;
-isExtended = 1;
+var isExtended = 1;
 
 function extendContract(){
 	if (document.getElementById("sideBarTab") != null) {
