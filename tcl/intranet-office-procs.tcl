@@ -134,7 +134,7 @@ ad_proc -callback im_office_after_update -impl im_office_group_manager {
     Callback everytime after an office has been modified.
 } {
     ns_log Notice "im_office_after_update -impl im_office_group_manager: Starting callback"
-    im_office::group_sweeper -office_id $object_id
+    im_office::office_group_sweeper -office_id $object_id
     ns_log Notice "im_office_after_update -impl im_office_group_manager: End callback"
 }
 
@@ -226,15 +226,14 @@ namespace eval im_office {
     }
 
 
-    
-    ad_proc -callback im_office::group_sweeper {
+    ad_proc office_group_sweeper {
 	{-office_id ""}
     } {
 	Sweeper to check for all or one office if the related group
-	is up to date!!!
+	is up to date
     } {
 	ns_log Notice "im_office::group_sweeper: office_id=$office_id"
-	im_office::group_sweeper -office_id $object_id
+
 	ns_log Notice "im_office::group_sweeper: finished"
     }
 
