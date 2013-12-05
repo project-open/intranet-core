@@ -772,7 +772,7 @@ if {[form is_valid $form_id]} {
 	
 	set project_id ""
 	catch {
-	    set project_id [project::new \
+	    set project_id [im_project::new \
 			    -project_name	$project_name \
 			    -project_nr		$project_nr \
 			    -project_path	$project_path \

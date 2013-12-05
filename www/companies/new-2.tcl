@@ -188,7 +188,7 @@ if {0 == $company_exists_p} {
     # ad_return_complaint 1 "office_name: $office_name, company_id: $company_id, im_office_type_main: [im_office_type_main], im_office_status_active: [im_office_status_active], office_path: $office_path"
     if [catch {
 	# First create a new main_office:
-	set main_office_id [office::new \
+	set main_office_id [im_office::new \
 		-office_name		$office_name \
 		-company_id     	$company_id \
 		-office_type_id 	[im_office_type_main] \
@@ -205,7 +205,7 @@ if {0 == $company_exists_p} {
     ns_log Notice "/companies/new-2: main_office_id=$main_office_id"
     
     # Now create the company with the new main_office:
-    set company_id [company::new \
+    set company_id [im_company::new \
 		-company_id		$company_id \
 		-company_name		$company_name \
 		-company_path		$company_path \

@@ -153,7 +153,7 @@ if {!$company_id} {
     set office_id [db_string office_id "select office_id from im_offices where office_path=:office_path" -default 0]
     if {!$office_id} {
 	# Create a new main_office:
-	set office_id [office::new \
+	set office_id [im_office::new \
 		-office_name	$office_name \
 		-office_path	$office_path \
 		-office_status_id [im_office_status_active] \
@@ -162,7 +162,7 @@ if {!$company_id} {
     }
 
     # Now create the company with the new main_office:
-    set company_id [company::new \
+    set company_id [im_company::new \
 	-company_name	$company_name \
         -company_path	$company_path \
         -main_office_id	$office_id \

@@ -121,6 +121,25 @@ where
 
 
 
+
+# -----------------------------------------------------------
+# Manage office groups
+# -----------------------------------------------------------
+
+ad_proc -callback im_office_after_update -impl im_office_group_manager {
+    -object_id
+    -status_id
+    -type_id
+} {
+    Callback everytime after an office has been modified.
+} {
+    ns_log Notice "im_office_after_update -impl im_office_group_manager: Starting callback"
+    im_office::group_sweeper -office_id $object_id
+    ns_log Notice "im_office_after_update -impl im_office_group_manager: End callback"
+}
+
+
+
 # -----------------------------------------------------------
 # Select a delivery/invoice/... address for a company
 # -----------------------------------------------------------
@@ -155,7 +174,7 @@ ad_proc -public im_company_office_select { select_name default company_id {offic
 # 
 # -----------------------------------------------------------
 
-namespace eval office {
+namespace eval im_office {
 
     ad_proc -public new {
 	{ -office_name "" }
@@ -205,6 +224,20 @@ namespace eval office {
 
 	return $office_id
     }
+
+
+    
+    ad_proc -callback im_office::group_sweeper {
+	{-office_id ""}
+    } {
+	Sweeper to check for all or one office if the related group
+	is up to date!!!
+    } {
+	ns_log Notice "im_office::group_sweeper: office_id=$office_id"
+	im_office::group_sweeper -office_id $object_id
+	ns_log Notice "im_office::group_sweeper: finished"
+    }
+
 
 }
 

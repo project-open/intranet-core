@@ -450,7 +450,7 @@ ad_form -extend -name $form_id -new_request {
 	
 	db_transaction {
 	    # First create a new main_office:
-	    set main_office_id [office::new \
+	    set main_office_id [im_office::new \
 				    -office_name	$office_name \
 				    -company_id		$company_id \
 				    -office_type_id	[im_office_type_main] \
@@ -462,7 +462,7 @@ ad_form -extend -name $form_id -new_request {
 	    im_biz_object_add_role $user_id $main_office_id $role_id
 	    
 	    # Now create the company with the new main_office:
-	    set company_id [company::new \
+	    set company_id [im_company::new \
 				-company_id		$company_id \
 				-company_name		$company_name \
 				-company_path		$company_path \

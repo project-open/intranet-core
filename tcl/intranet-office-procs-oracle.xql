@@ -14,7 +14,7 @@
     <version>8.1.6</version>
   </rdbms>
   
-  <fullquery name="office::new.create_new_office">
+  <fullquery name="im_office::new.create_new_office">
     <querytext>
       begin
         :1 := im_office.new(

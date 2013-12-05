@@ -14,7 +14,7 @@
     <version>7.2</version>
   </rdbms>
   
-  <fullquery name="project::new.create_new_project">
+  <fullquery name="im_project::new.create_new_project">
     <querytext>
 
 select im_project__new (

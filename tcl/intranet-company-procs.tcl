@@ -75,6 +75,71 @@ ad_proc -public im_company_annual_rev_100_ {} { return 225 }
 
 namespace eval im_company {
 
+    ad_proc new {
+        -company_name
+        -company_path
+        -main_office_id
+	{ -company_type_id "" }
+	{ -company_status_id "" }
+	{ -creation_date "" }
+	{ -creation_user "" }
+	{ -creation_ip "" }
+	{ -context_id "" }
+	{ -company_id "" }
+    } {
+	Creates a new company including the companies "Main Office".
+	@author frank.bergmann@project-open.com
+
+	@return <code>company_id</code> of the newly created company
+
+	@param company_name Pretty name for the company
+	@param company_path Path for company files in the filestorage
+	@param main_office_id Optional: Use this office as the companies
+	       main office.
+	@param company_type_id Default: "Other": Configurable company
+	       type used for reporting only
+	@param company_status_id Default: "Active": Allows to follow-
+	       up through the company acquistion process
+	@param others The default optional parameters for OpenACS
+	       objects
+    } {
+	# -----------------------------------------------------------
+	# Check for duplicated unique fields (name & path)
+	# We asume the application page knows how to deal with
+	# the uniqueness constraint, so we won't generate an error
+	# but just return the duplicated item. 
+	set dup_sql "
+		select	company_id 
+		from	im_companies 
+		where	company_name = :company_name 
+			or company_path = :company_path
+	"
+	set cid 0
+	db_foreach dup_companies $dup_sql { set cid $company_id }
+	if {0 != $cid} { return $cid }
+
+	# -----------------------------------------------------------
+
+        if { [empty_string_p $creation_date] } {
+            set creation_date [db_string get_sysdate "select sysdate from dual"]
+        }
+        if { [empty_string_p $creation_user] } {
+            set creation_user [auth::get_user_id]
+        }
+        if { [empty_string_p $creation_ip] } {
+            set creation_ip [ns_conn peeraddr]
+        }
+
+	set company_id [db_exec_plsql create_new_company {}]
+
+	# Record the action
+        im_audit -object_type "im_company" -object_id $company_id -action after_create
+
+	return $company_id
+    }
+
+
+
     ad_proc -public flush_cache { } { 
 	Remove all cache entries for debugging purposes.
 	This should not be necessary during normal operations.
@@ -293,72 +358,6 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
 	set write 1
     }
     if {$read} { set view 1 }
-}
-
-namespace eval company {
-
-    ad_proc new {
-        -company_name
-        -company_path
-        -main_office_id
-	{ -company_type_id "" }
-	{ -company_status_id "" }
-	{ -creation_date "" }
-	{ -creation_user "" }
-	{ -creation_ip "" }
-	{ -context_id "" }
-	{ -company_id "" }
-    } {
-	Creates a new company including the companies "Main Office".
-	@author frank.bergmann@project-open.com
-
-	@return <code>company_id</code> of the newly created company
-
-	@param company_name Pretty name for the company
-	@param company_path Path for company files in the filestorage
-	@param main_office_id Optional: Use this office as the companies
-	       main office.
-	@param company_type_id Default: "Other": Configurable company
-	       type used for reporting only
-	@param company_status_id Default: "Active": Allows to follow-
-	       up through the company acquistion process
-	@param others The default optional parameters for OpenACS
-	       objects
-    } {
-	# -----------------------------------------------------------
-	# Check for duplicated unique fields (name & path)
-	# We asume the application page knows how to deal with
-	# the uniqueness constraint, so we won't generate an error
-	# but just return the duplicated item. 
-	set dup_sql "
-		select	company_id 
-		from	im_companies 
-		where	company_name = :company_name 
-			or company_path = :company_path
-	"
-	set cid 0
-	db_foreach dup_companies $dup_sql { set cid $company_id }
-	if {0 != $cid} { return $cid }
-
-	# -----------------------------------------------------------
-
-        if { [empty_string_p $creation_date] } {
-            set creation_date [db_string get_sysdate "select sysdate from dual"]
-        }
-        if { [empty_string_p $creation_user] } {
-            set creation_user [auth::get_user_id]
-        }
-        if { [empty_string_p $creation_ip] } {
-            set creation_ip [ns_conn peeraddr]
-        }
-
-	set company_id [db_exec_plsql create_new_company {}]
-
-	# Record the action
-        im_audit -object_type "im_company" -object_id $company_id -action after_create
-
-	return $company_id
-    }
 }
 
 
@@ -805,7 +804,7 @@ ad_proc -public im_company_find_or_create_main_office {
 
     set office_id [db_string office_id "select office_id from im_offices where office_path=:office_path" -default 0]
     if {!$office_id} {
-	set office_id [office::new \
+	set office_id [im_office::new \
 		-office_name	$office_name \
 		-office_path	$office_path \
 		-office_status_id [im_office_status_active] \
@@ -834,7 +833,7 @@ ad_proc -public im_company_find_or_create {
     if {!$company_id} {
 	set office_id [im_company_find_or_create_main_office -company_name $company_name]
 
-	set company_id [company::new \
+	set company_id [im_company::new \
            -company_name	$company_name \
            -company_path	$company_path \
            -main_office_id	$office_id \

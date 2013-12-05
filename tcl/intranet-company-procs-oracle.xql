@@ -14,7 +14,7 @@
     <version>8.1.6</version>
   </rdbms>
   
-  <fullquery name="company::new.create_new_company">
+  <fullquery name="im_company::new.create_new_company">
     <querytext>
 begin
     :1 := im_company.new(

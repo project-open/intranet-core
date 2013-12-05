@@ -271,7 +271,7 @@ ad_proc -public im_project_permissions {
 }
 
 
-namespace eval project {
+namespace eval im_project {
 
     ad_proc -public new {
         -project_name
@@ -1678,7 +1678,7 @@ ad_proc im_project_clone_base {
 
     # -------------------------------
     # Create the new project
-    set cloned_project_id [project::new \
+    set cloned_project_id [im_project::new \
 		-project_name		$new_project_name \
 		-project_nr		$new_project_nr \
 		-project_path		$new_project_nr \

@@ -13,7 +13,7 @@
     <type>postgresql</type>
     <version>7.2</version>
   </rdbms>
-  <fullquery name="office::new.create_new_office">
+  <fullquery name="im_office::new.create_new_office">
     <querytext>
 
       select im_office__new (

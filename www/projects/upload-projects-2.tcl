@@ -306,7 +306,7 @@ foreach csv_line_fields $values_list_of_lists {
 	set project_id [im_new_object_id]
 
 	# First create a new main_office:
-	set main_office_id [office::new \
+	set main_office_id [im_office::new \
 		-office_name	$office_name \
 		-project_id     $project_id \
 		-office_type_id [im_office_type_main] \
@@ -314,7 +314,7 @@ foreach csv_line_fields $values_list_of_lists {
 		-office_path	$office_path]
 
 	# Now create the project with the new main_office:
-	set project_id [project::new \
+	set project_id [im_project::new \
 		-project_id $project_id \
 		-project_name	$project_name \
 		-project_path	$project_path \

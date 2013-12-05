@@ -14,7 +14,7 @@
     <version>7.2</version>
   </rdbms>
   
-  <fullquery name="company::new.create_new_company">
+  <fullquery name="im_company::new.create_new_company">
     <querytext>
 
       select im_company__new (
