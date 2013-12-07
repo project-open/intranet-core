@@ -150,6 +150,30 @@ ad_proc -callback im_office_after_update -impl im_office_group_manager {
 }
 
 
+ad_proc -callback im_office_view -impl im_office_group_manager {
+    -object_id
+    -status_id
+    -type_id
+} {
+    Callback everytime an office is viewed.
+} {
+    ns_log Notice "im_office_view -impl im_office_group_manager: Starting callback"
+
+    # Check if the office belongs to a company of type "internal"
+    im_security_alert_check_integer -location "ad_proc -callback im_office_view -impl im_office_group_manager" -value $object_id
+    set company_type_id [util_memoize [list db_string office_company_type "select c.company_type_id from im_companies c, im_offices o where o.company_id = c.company_id and o.office_id = $object_id" -default ""]]
+
+    if {[im_company_type_internal] != $company_type_id} {
+	ns_log Notice "im_office_view -impl im_office_group_manager: Aborting callback - not an 'internal' office"
+	return
+    }
+
+    ns_log Notice "im_office_view: About to call: 'im_office::office_group_sweeper -office_id $object_id'"
+    im_office::office_group_sweeper -office_id $object_id
+    ns_log Notice "im_office_view -impl im_office_group_manager: End callback"
+}
+
+
 
 # -----------------------------------------------------------
 # Select a delivery/invoice/... address for a company
@@ -308,7 +332,7 @@ namespace eval im_office {
 		# Not a business object member, but part of the group
 		# => Delete from the group
 		ns_log Notice "im_office::office_group_sweeper: uid=$uid: Deleting from office group"
-		group::remove_member -group_id $group_id -uid $uid
+		group::remove_member -group_id $group_id -user_id $uid
 	    }
 	}
 	ns_log Notice "im_office::group_sweeper: finished"
