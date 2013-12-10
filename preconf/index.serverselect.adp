@@ -289,7 +289,7 @@ function setBgImage (id,img) {
 		    </div>
 		  </a>
 	          <br>
-	          <div class="login"><a href="http://po40itsm.project-open.net/index-userselect" id="login11"></a></div>
+	          <div class="login"><a href="http://po40demo.project-open.net/index-userselect" id="login11"></a></div>
 		</td>
 	      </tr>
 	    </table>
