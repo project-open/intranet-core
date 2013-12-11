@@ -774,6 +774,7 @@ ad_proc im_select {
     {-multiple_p 0} 
     {-size 6}
     {-translate_p 1} 
+    {-javascript ""}
     {-package_key "intranet-core" }
     {-locale "" }
     field_name
@@ -839,7 +840,7 @@ ad_proc im_select {
 	lappend items $item
     }
     return "
-    <select name=\"[ad_quotehtml $field_name]\" $size $multiple>
+    <select name=\"[ad_quotehtml $field_name]\" $size $multiple $javascript>
     [join $items "\n"]
     </select>
 "
