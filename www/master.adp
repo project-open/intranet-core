@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%= [im_header $title $header_stuff] %>
 
 <if @user_messages:rowcount@ ne 0>
