@@ -6,13 +6,25 @@ ad_page_contract {
     {user_id ""}
 }
 
+
+# --------------------------------------------------------------------
+# Permissions
+# --------------------------------------------------------------------
+
 set instance_name [ad_conn instance_name]
 set context_bar [ad_context_bar]
 if { "" == $user_id  } { set user_id [ad_maybe_redirect_for_registration] }
 
-#
+set current_user_id [ad_maybe_redirect_for_registration]
+im_user_permissions $current_user_id $user_id view read write admin
+if {$user_id != $current_user_id && !$write} {
+    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_3]"
+    ad_script_abort
+}
+
+# --------------------------------------------------------------------
 # Get user pref setting
-#
+# --------------------------------------------------------------------
 
 set locale [lang::user::locale -site_wide]
 set language [lang::user::language -site_wide]
