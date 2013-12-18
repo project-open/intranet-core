@@ -25,7 +25,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     object_id:naturalnum
-    { role_id "1300" }
+    { role_id "" }
     { return_url "" }
     { also_add_to_object_id:naturalnum "" }
     { limit_to_users_in_group_id:naturalnum "" }
@@ -54,6 +54,29 @@ if {[parameter::get_from_package_key -package_key "intranet-core" -parameter "No
     set notify_checked "checked"
 }
 
+# Default logic for role_id:
+# A parameter allows to specify the default role_id per object type
+if {"" == $role_id} {
+    # 1300 = Full Member
+    set role_id [im_biz_object_role_full_member]
+    set role_map [parameter::get_from_package_key -package_key "intranet-core" -parameter "AddMemberDefaultRoleMap" -default ""]
+    set role_map [string trim $role_map]
+
+    if {"" != $role_map && [string is integer $role_map]} {
+	# role_map is a single integer - use as default role_id
+	set role_id $role_map
+    } else {
+	# role_map is a list of object_type - role_id
+	if {[expr [llength $role_map] % 2] != 0} {
+	    ad_return_complaint 1 "<b>Member-add: Configuration error</b>:<br>
+	    Parameter 'AddMemberDefaultRoleMap' does not contain an even number of items.<br>
+	    Please contact your system administrator and tell him or her to modifiy the parameter.
+            "
+	}
+	array set role_hash $role_map
+	if {[info exists role_hash($object_type)]} { set role_id $role_hash($object_type) }
+    }
+}
 
 
 set locate_form "
