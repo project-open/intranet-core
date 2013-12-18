@@ -95,11 +95,9 @@ ad_proc -public im_biz_object_admin_p_helper { user_id object_id } {
 } {
     set sql "
 	select	count(*)
-	from 
-		acs_rels r,
+	from	acs_rels r,
 		im_biz_object_members m
-	where
-		r.object_id_one=:object_id
+	where	r.object_id_one=:object_id
 		and r.object_id_two=:user_id
 		and r.rel_id = m.rel_id
 		and m.object_role_id in (1301,1302,1303)
@@ -114,15 +112,23 @@ ad_proc -public im_biz_object_admin_ids { object_id } {
     Returns the list of administrators of the specified object_id
 } {
     set sql "
-select	object_id_two
-from 
-	acs_rels r,
-	im_biz_object_members m
-where
-	r.object_id_one=:object_id
-	and r.rel_id = m.rel_id
-	and m.object_role_id in (1301,1302,1303)
-"
+	select	object_id_two
+	from	acs_rels r,
+		im_biz_object_members m
+	where	r.object_id_one=:object_id
+		and r.rel_id = m.rel_id
+		and m.object_role_id in (1301,1302,1303) and
+		r.object_id_two not in (
+			-- Exclude deleted or disabled users
+			select	m.member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.group_id = acs__magic_object_id('registered_users') and
+				m.rel_id = mr.rel_id and
+				m.container_id = m.group_id and
+				mr.member_state != 'approved'
+		)
+    "
 
     # 1301=PM, 1302=Key Account, 1303=Office Man.
 
@@ -134,12 +140,20 @@ ad_proc -public im_biz_object_member_ids { object_id } {
     Returns the list of members of the specified object_id
 } {
     set sql "
-	select	object_id_two
-	from 
-		acs_rels r
-	where
-		r.object_id_one=:object_id and
-		r.rel_type = 'im_biz_object_member'
+	select	r.object_id_two
+	from	acs_rels r
+	where	r.object_id_one=:object_id and
+		r.rel_type = 'im_biz_object_member' and
+		r.object_id_two not in (
+			-- Exclude deleted or disabled users
+			select	m.member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.group_id = acs__magic_object_id('registered_users') and
+				m.rel_id = mr.rel_id and
+				m.container_id = m.group_id and
+				mr.member_state != 'approved'
+		)
     "
     set result [db_list im_biz_object_member_ids $sql]
     return $result
@@ -214,7 +228,7 @@ ad_proc -public im_biz_object_add_role {
     Adds a user in a role to a Business Object.
     Returns the rel_id of the relationship or "" if an error occured.
     @param propagate_superproject Should we check the superprojects 
-           and add the user there as well? This is the default,
+	   and add the user there as well? This is the default,
 	   because otherwise members of subprojects wouldn't even
 	   be able to get to their subproject.
 } {
@@ -239,116 +253,116 @@ ad_proc -public im_biz_object_add_role {
     set org_percentage ""
     set org_role_id ""
     db_0or1row relationship_info "
-        select  r.rel_id,
-                bom.percentage as org_percentage,
-                bom.object_role_id as org_role_id
-        from    acs_rels r,
-                im_biz_object_members bom
-        where   r.rel_id = bom.rel_id and
-                object_id_one = :object_id and
-                object_id_two = :user_id
+	select  r.rel_id,
+		bom.percentage as org_percentage,
+		bom.object_role_id as org_role_id
+	from    acs_rels r,
+		im_biz_object_members bom
+	where   r.rel_id = bom.rel_id and
+		object_id_one = :object_id and
+		object_id_two = :user_id
     "
 
     # Don't overwrite an admin role
     if {[lsearch [list [im_biz_object_role_project_manager] [im_biz_object_role_key_account] [im_biz_object_role_office_admin]] $org_role_id] > -1} {
-        set role_id $org_role_id
+	set role_id $org_role_id
     }
 
     # Check if the relationship already exists as
     if {[lsearch {} $org_role_id] > -1} { return $rel_id }
 
     if {![info exists rel_id] || 0 == $rel_id || "" == $rel_id} {
-        ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
-        set rel_id [db_string create_rel "
-                select im_biz_object_member__new (
-                        null,
-                        'im_biz_object_member',
-                        :object_id,
-                        :user_id,
-                        :role_id,
-                        :creation_user_id,
-                        :user_ip
-                )
-        "]
+	ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
+	set rel_id [db_string create_rel "
+		select im_biz_object_member__new (
+			null,
+			'im_biz_object_member',
+			:object_id,
+			:user_id,
+			:role_id,
+			:creation_user_id,
+			:user_ip
+		)
+	"]
     }
 
     if {"" == $rel_id || 0 == $rel_id} { ad_return_complaint 1 "im_biz_object_add_role: rel_id=$rel_id" }
 
     # Update the bom's percentage and role only if necessary
     if {$org_percentage != $percentage || $org_role_id != $role_id} {
-        db_dml update_perc "
-                UPDATE im_biz_object_members SET
-                        percentage = :percentage,
-                        object_role_id = :role_id
-                WHERE rel_id = :rel_id
-        "
+	db_dml update_perc "
+		UPDATE im_biz_object_members SET
+			percentage = :percentage,
+			object_role_id = :role_id
+		WHERE rel_id = :rel_id
+	"
     }
 
     # Take specific action to create relationships depending on the object types
     switch $object_type {
-        im_company {
-            # Differentiate between employee_rel and key_account_rel
-            set company_internal_p [db_string internal_p "select count(*) from im_companies where company_id = :object_id and company_path = 'internal'"]
-            set user_employee_p [im_user_is_employee_p $user_id]
+	im_company {
+	    # Differentiate between employee_rel and key_account_rel
+	    set company_internal_p [db_string internal_p "select count(*) from im_companies where company_id = :object_id and company_path = 'internal'"]
+	    set user_employee_p [im_user_is_employee_p $user_id]
 
-            # User emplolyee_rel either if it's our guy and our company OR if it's another guy and an external company
-            # We can't currently deal with the case of a freelancer as a key account to a customer...
-            if {(1 == $company_internal_p && 1 == $user_employee_p) || (0 == $company_internal_p && 0 == $user_employee_p) } {
-                # We are adding an employee to the internal company,
-                # create an "employee_rel" relationship
-                set emp_count [db_string emp_cnt "select count(*) from im_company_employee_rels where employee_rel_id = :rel_id"]
-                if {0 == $emp_count} {
-                    db_dml insert_employee "insert into im_company_employee_rels (employee_rel_id) values (:rel_id)"
-                }
-                db_dml update_employee "update acs_rels set rel_type = 'im_company_employee_rel' where rel_id = :rel_id"
-            } else {
-                # We are adding a non-employee to a customer of provider company.
-                set user_key_account_p [db_string key_account_p "select count(*) from im_key_account_rels where key_account_rel_id = :rel_id"]
-                if {!$user_key_account_p} {
-                    db_dml insert_key_account "insert into im_key_account_rels (key_account_rel_id) values (:rel_id)"
-                }
-                db_dml update_key_account "update acs_rels set rel_type = 'im_key_account_rel' where rel_id = :rel_id"
-            }
-        }
+	    # User emplolyee_rel either if it's our guy and our company OR if it's another guy and an external company
+	    # We can't currently deal with the case of a freelancer as a key account to a customer...
+	    if {(1 == $company_internal_p && 1 == $user_employee_p) || (0 == $company_internal_p && 0 == $user_employee_p) } {
+		# We are adding an employee to the internal company,
+		# create an "employee_rel" relationship
+		set emp_count [db_string emp_cnt "select count(*) from im_company_employee_rels where employee_rel_id = :rel_id"]
+		if {0 == $emp_count} {
+		    db_dml insert_employee "insert into im_company_employee_rels (employee_rel_id) values (:rel_id)"
+		}
+		db_dml update_employee "update acs_rels set rel_type = 'im_company_employee_rel' where rel_id = :rel_id"
+	    } else {
+		# We are adding a non-employee to a customer of provider company.
+		set user_key_account_p [db_string key_account_p "select count(*) from im_key_account_rels where key_account_rel_id = :rel_id"]
+		if {!$user_key_account_p} {
+		    db_dml insert_key_account "insert into im_key_account_rels (key_account_rel_id) values (:rel_id)"
+		}
+		db_dml update_key_account "update acs_rels set rel_type = 'im_key_account_rel' where rel_id = :rel_id"
+	    }
+	}
 
 
-        im_project - im_timesheet_task - im_ticket {
-            # Specific actions on projects, tasks and tickets
+	im_project - im_timesheet_task - im_ticket {
+	    # Specific actions on projects, tasks and tickets
 
 	    # Reset the time phase date for this relationship
 	    im_biz_object_delete_timephased_data -rel_id $rel_id
 
-            if {$propagate_superproject_p} {
+	    if {$propagate_superproject_p} {
 
-                # Reset the percentage to "", so that there is no percentage assignment
-                # to the super-project (that would be a duplication).
-                set percentage ""
+		# Reset the percentage to "", so that there is no percentage assignment
+		# to the super-project (that would be a duplication).
+		set percentage ""
 
-                set super_project_id [db_string super_project "
-                        select parent_id
-                        from im_projects
-                        where project_id = :object_id
-                " -default ""]
+		set super_project_id [db_string super_project "
+			select parent_id
+			from im_projects
+			where project_id = :object_id
+		" -default ""]
 
-                set update_parent_p 0
-                if {"" != $super_project_id} {
-                    set already_assigned_p [db_string already_assigned "
-                                select count(*) from acs_rels where object_id_one = :super_project_id and object_id_two = :user_id
-                    "]
-                    if {!$already_assigned_p} { set update_parent_p 1 }
-                }
+		set update_parent_p 0
+		if {"" != $super_project_id} {
+		    set already_assigned_p [db_string already_assigned "
+				select count(*) from acs_rels where object_id_one = :super_project_id and object_id_two = :user_id
+		    "]
+		    if {!$already_assigned_p} { set update_parent_p 1 }
+		}
 
-                if {$update_parent_p} {
-                    set super_role_id [im_biz_object_role_full_member]
-                    im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
-                }
-            }
-        }
+		if {$update_parent_p} {
+		    set super_role_id [im_biz_object_role_full_member]
+		    im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
+		}
+	    }
+	}
 
-        default {
-            # Nothing.
-            # In the future we may want to add more specific rels here.
-        }
+	default {
+	    # Nothing.
+	    # In the future we may want to add more specific rels here.
+	}
     }
 
     # Remove all permission related entries in the system cache
@@ -560,12 +574,12 @@ ad_proc -public im_group_member_component {
 	<td class=rowtitle align=middle>[_ intranet-core.Name]</td>
     "
     if {$show_percentage_p} {
-        incr colspan
-        append header_html "<td class=rowtitle align=middle>[_ intranet-core.Perc]</td>"
+	incr colspan
+	append header_html "<td class=rowtitle align=middle>[_ intranet-core.Perc]</td>"
     }
     if {$add_admin_links} {
-        incr colspan
-        append header_html "<td class=rowtitle align=middle>[im_gif delete]</td>"
+	incr colspan
+	append header_html "<td class=rowtitle align=middle>[im_gif delete]</td>"
     }
     append header_html "
       </tr>"
@@ -830,24 +844,24 @@ ad_proc -public im_biz_object_related_objects_component {
 } {
     Returns a HTML component with the list of related objects.
     @param include_membership_rels_p: Normally, membership rels
-           are handled by the "membership component". That's not
-           the case with users.
+	   are handled by the "membership component". That's not
+	   the case with users.
 } {
 
     set params [list \
-                    [list base_url "/intranet/"] \
+		    [list base_url "/intranet/"] \
 		    [list include_membership_rels_p $include_membership_rels_p] \
-                    [list user_friendly_view_p $user_friendly_view_p] \
-                    [list show_projects_only $show_projects_only ] \
-                    [list return_url [im_url_with_query]] \
-                    [list hide_rel_name_p $hide_rel_name_p] \
+		    [list user_friendly_view_p $user_friendly_view_p] \
+		    [list show_projects_only $show_projects_only ] \
+		    [list return_url [im_url_with_query]] \
+		    [list hide_rel_name_p $hide_rel_name_p] \
 		    [list hide_object_chk_p $hide_object_chk_p ] \
 		    [list hide_direction_pretty_p $hide_direction_pretty_p ] \
 		    [list hide_object_type_pretty_p $hide_object_type_pretty_p  ] \
 		    [list hide_object_name_p $hide_object_name_p ] \
 		    [list hide_creation_date_formatted_p $hide_creation_date_formatted_p ] \
 		    [list sort_order $sort_order ] \
-                    [list object_id $object_id] \
+		    [list object_id $object_id] \
 		    ]
 
     set result [ad_parse_template -params $params "/packages/intranet-core/www/related-objects-component"]
