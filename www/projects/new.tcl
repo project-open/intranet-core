@@ -676,8 +676,9 @@ if {[form is_submission $form_id]} {
     set project_nr_exists [db_string project_nr_exists "
 	select 	count(*)
 	from	im_projects
-	where	project_nr = :project_nr
-	        and project_id <> :project_id
+	where	project_nr = :project_nr and
+		project_id <> :project_id and
+		parent_id = :parent_id
     "]
      if {$project_nr_exists} {
 	 # We have found a duplicate project_nr, now check how to deal with this case:
@@ -702,9 +703,9 @@ if {[form is_submission $form_id]} {
     set project_name_exists [db_string project_name_exists "
 	select 	count(*)
 	from	im_projects
-	where	upper(trim(project_name)) = upper(trim(:project_name))
-	        and project_id <> :project_id
-		and parent_id = :parent_id
+	where	upper(trim(project_name)) = upper(trim(:project_name)) and
+		project_id <> :project_id and
+		parent_id = :parent_id
     "]
 	
     if { $project_name_exists > 0 } {
