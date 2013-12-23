@@ -324,7 +324,7 @@ ad_proc im_category_select_branch {
 
     set spaces ""
     for {set i 0} { $i < $level} { incr i} {
-	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
+	append spaces "&nbsp;"
     }
 
     set selected ""
@@ -754,7 +754,7 @@ ad_proc im_biz_object_category_select_branch {
 
     set spaces ""
     for {set i 0} { $i < $level} { incr i} {
-	append spaces "&nbsp; &nbsp; &nbsp; &nbsp; "
+	append spaces "&nbsp;"
     }
 
     set selected ""
