@@ -117,7 +117,7 @@ ad_proc -public im_biz_object_admin_ids { object_id } {
 		im_biz_object_members m
 	where	r.object_id_one=:object_id
 		and r.rel_id = m.rel_id
-		and m.object_role_id in (1301,1302,1303) and
+		and m.object_role_id in (1301,1302,1303,1308) and
 		r.object_id_two not in (
 			-- Exclude deleted or disabled users
 			select	m.member_id
