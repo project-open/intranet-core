@@ -65,8 +65,8 @@ set user_feedback ""
 set edit_profiles_p 0
 
 if { [info exists profile] } {
-    if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] >1 } {
-		util_user_message -message  [lang::message::lookup "" intranet-core.VerifyProfile "WARNING: Permission conflicts might occur when Freelancers are assigned to multiple groups."]
+    if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] > 1 } {
+	util_user_message -message  [lang::message::lookup "" intranet-core.VerifyProfile "WARNING: Permission conflicts might occur when Freelancers are assigned to multiple groups."]
     }
 }
 
@@ -716,9 +716,9 @@ ad_form -extend -name register -on_request {
 
     # Fallback:
     if { [exists_and_not_null return_url] } {
-	ad_returnredirect "$return_url&[export_url_vars feedback_message_key]"
+	ad_returnredirect $return_url
     } else {
-	ad_returnredirect "/intranet/users/?[export_url_vars feedback_message_key]"
+	ad_returnredirect "/intranet/users/"
     }
 }
 
