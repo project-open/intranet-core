@@ -54,8 +54,8 @@ if {$vars_set > 1} {
 if {$object_id} {set user_id_from_search $object_id}
 if {$user_id} {set user_id_from_search $user_id}
 if {0 == $user_id} {
-    # The "Unregistered Vistior" user
-    # Just continue and show his data...
+    # The "Unregistered Vistior" user does not have valid data
+    ad_return_complaint 1 "User 'Unregistered Visitor' is a system user and can not be viewed or modified."
 }
 
 set current_user_id [ad_maybe_redirect_for_registration]
@@ -114,12 +114,8 @@ if { $result == 0 } {
     set user_id [db_string user "select user_id from users where user_id=:user_id_from_search" -default 0]
     set object_type [db_string object_type "select object_type from acs_objects where object_id=:user_id_from_search" -default "unknown"]
 
-    ad_return_complaint "[_ intranet-core.Bad_User]" "
-    <li>[_ intranet-core.lt_We_couldnt_find_user_]
-    <li>You can 
-	<a href='/intranet/users/new?user_id=$user_id_from_search'>try to create this user</a>
-    now.
-    "
+    ad_return_complaint "[_ intranet-core.Bad_User]" [_ intranet-core.lt_We_couldnt_find_user_]
+    ad_script_abort
 }
 
 
