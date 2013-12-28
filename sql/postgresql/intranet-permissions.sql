@@ -40,6 +40,18 @@ insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('im_profile', 'im_profiles', 'profile_id');
 
 
+-- Add URLs so that we can show URLs for the object
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'group','view','/admin/groups/one?group_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'group','edit','/admin/groups/one?group_id=');
+
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_profile','view','/admin/groups/one?group_id=');
+insert into im_biz_object_urls (object_type, url_type, url) values (
+'im_profile','edit','/admin/groups/one?group_id=');
+
+
 
 -------------------------------------------------------------
 -- DB-neutral API for permissions
