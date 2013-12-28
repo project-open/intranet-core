@@ -100,9 +100,9 @@ ad_proc -public im_biz_object_admin_p_helper { user_id object_id } {
 	where	r.object_id_one=:object_id
 		and r.object_id_two=:user_id
 		and r.rel_id = m.rel_id
-		and m.object_role_id in (1301,1302,1303)
+		and m.object_role_id in (1301,1302,1303,1308)
     "
-    # 1301=PM, 1302=Key Account, 1303=Office Man.
+    # 1301=PM, 1302=Key Account, 1303=Office Man., 1308=Event Trainer
 
     set result [db_string im_biz_object_member_p $sql]
     return $result
