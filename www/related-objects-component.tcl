@@ -95,6 +95,8 @@ list::create \
                           title=\"Check/uncheck all rows\">"
 	    display_template {
 		@rels_multirow.object_chk;noquote@
+
+		@rels_multirow.object_url_base@
 	    }
 	    hide_p $hide_object_chk_p
 	}
@@ -187,6 +189,7 @@ set object_rel_sql "
 set count 0
 db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_multirow object_rels $object_rel_sql {
     set object_url "$object_url_base$oid"
+    if {"" == $object_url_base} { set object_url "" }
     set object_chk "<input type=\"checkbox\" 
 				name=\"rel_id\" 
 				value=\"$rel_id\" 
