@@ -38,16 +38,21 @@ if {![info exists object_id]} {
 # ---------------------------------------------------------------
 
 set current_user_id [ad_maybe_redirect_for_registration]
-if { ![info exists include_membership_rels_p] || "" == $include_membership_rels_p} { set include_membership_rels_p 0 }
-if { ![info exists hide_object_chk_p] } { set hide_object_chk_p 0 }
-if { ![info exists hide_rel_name_p] } { set hide_rel_name_p 0 }
-if { ![info exists hide_direction_pretty_p] } { set hide_direction_pretty_p 0 }
-if { ![info exists hide_object_type_pretty_p] } { set hide_object_type_pretty_p 0 }
-if { ![info exists hide_object_name_p] } { set hide_object_name_p 0 }
-if { ![info exists hide_creation_date_formatted_p] } { set hide_creation_date_formatted_p 0 }
-if { ![info exists sort_order] || "" == $sort_order } { set sort_order "sort_order, r.rel_type, o.object_type, direction, object_name" }
-
+if {![info exists include_membership_rels_p] || "" == $include_membership_rels_p} { set include_membership_rels_p 0 }
+if {![info exists hide_object_chk_p] } { set hide_object_chk_p 0 }
+if {![info exists hide_rel_name_p] } { set hide_rel_name_p 0 }
+if {![info exists hide_direction_pretty_p] } { set hide_direction_pretty_p 0 }
+if {![info exists hide_object_type_pretty_p] } { set hide_object_type_pretty_p 0 }
+if {![info exists hide_object_name_p] } { set hide_object_name_p 0 }
+if {![info exists hide_creation_date_formatted_p] } { set hide_creation_date_formatted_p 0 }
+if {![info exists sort_order] || "" == $sort_order } { set sort_order "sort_order, r.rel_type, o.object_type, direction, object_name" }
 if {![info exists limit] || "" == $limit} { set limit 20 }
+
+# Admin permissions are ncessary for deleting relationships
+im_user_permissions $current_user_id $object_id view_p read_p write_p admin_p
+if {!$admin_p} {
+    set hide_object_chk_p 1
+}
 
 # ---------------------------------------------------------------
 # Referenced Objects - Problem objects referenced by THIS object
