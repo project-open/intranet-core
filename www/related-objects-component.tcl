@@ -95,8 +95,6 @@ list::create \
                           title=\"Check/uncheck all rows\">"
 	    display_template {
 		@rels_multirow.object_chk;noquote@
-
-		@rels_multirow.object_url_base@
 	    }
 	    hide_p $hide_object_chk_p
 	}
