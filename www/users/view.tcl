@@ -224,10 +224,6 @@ if {[im_permission $current_user_id view_companies_all]} {
 # User-Navbar
 # ---------------------------------------------------------------
 
-set letter "none"
 set next_page_url ""
 set previous_page_url ""
-
-set user_navbar_html [im_user_navbar $letter "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many view_name letter]]
-
-
+set user_navbar_html [im_user_navbar $letter "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many]]
