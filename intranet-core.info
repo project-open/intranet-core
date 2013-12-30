@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="4.0.5.0.2" url="http://www.project-open.org/download/apm/intranet-core-4.0.5.0.2.apm">
+    <version name="4.0.5.0.6" url="http://www.project-open.org/download/apm/intranet-core-4.0.5.0.6.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -83,6 +83,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="PgPathUnix"  default="" description="Unix path the the PostgreSQL binaries (used only for pg_dump at the moment). Default is an empty string in order to use the default PostgreSQL binaries in the path. A sample value could be '/usr/local/pgsql84/bin/' for a PG 8.4 installation on an otherwise 8.2 default system."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectListPageShowFilterWithMemberP"  default="1" description="Should we show the filter 'With Member' in the ProjectListPage? This filter shows all existing users, so it can get very slow in systems with many registered users (both in-house, customers, and providers). The default is '1' for smaller system."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="AddMemberDefaultRoleMap"  default="" description="When adding members to a project, company or other event, this option defines the default role in which to add a user. Default is an empty string which will result in 'Full Member' (role_id=1300) as a default for all object types. As an alternative, you may specify a list of (object_type - role_id) tuples for specifying the default role_id for each object type. Example: 'im_project 1300 im_timesheet_task 1301 im_event 1308'. Default for object types missing in this list is 1300."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="UserCanEditHimselfP"  default="1" description="Is a normal user (non-admin) allowed to edit his own data? Default is 1 for most systems that somehow trust the user not lock-out themselves."/>
         </parameters>
 
     </version>
