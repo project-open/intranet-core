@@ -48,6 +48,10 @@ ad_proc -public im_user_permissions {
     # Admins and creators can do everything
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
     set creation_user_id [util_memoize "db_string creator {select creation_user from acs_objects where object_id = $user_id} -default 0"]
+
+    # Should a normal user be able to modify his data?
+    set user_can_edit_himself_p [parameter::get_from_package_key -package_key "intranet-core" -parameter UserCanEditHimselfP -default "1"]
+
     if {$user_is_admin_p || $current_user_id == $creation_user_id} {
 	set view 1
 	set read 1
@@ -97,20 +101,20 @@ ad_proc -public im_user_permissions {
 
     # Myself - I can read and write its data
     if { $user_id == $current_user_id } { 
-		set read 1
-		set write 1
-		set admin 0
+	set read 
+	set write $user_can_edit_himself_p
+	set admin 0
     }
-
 
     if {$admin} {
-		set read 1
-		set write 1
+	set read 1
+	set write 1
     }
-    if {$read} { set view 1 }
+    if {$read} { 
+	set view 1 
+    }
 
     if {$debug} { ns_log Notice "im_user_permissions: cur=$current_user_id, user=$user_id, view=$view, read=$read, write=$write, admin=$admin" }
-
 }
 
 
