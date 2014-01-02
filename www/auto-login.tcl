@@ -60,8 +60,8 @@ if {"" != $password && "" != $email} {
         ad_user_login -forever=0 $user_id
         ad_returnredirect $url
     } else {
-        ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
-        Your security token is not valid. Please contact the system owner.<br>"
+        ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Wrong_Security_Token "Wrong Security Token"]</b>:<br>
+        [lang::message::lookup "" intranet-core.Wrong_Security_Token_msg "Your security token is not valid. Please contact the system owner."]<br>"
 	ad_script_abort
     }
 }
@@ -108,8 +108,8 @@ if {$valid_login} {
     ad_returnredirect $url
 } else {
     ns_log Notice "auto-login: Invalid login"
-    ad_return_complaint 1 "<b>Wrong Security Token</b>:<br>
-        Your security token is not valid. Please contact the system owner.<br>"
+    ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Wrong_Security_Token "Wrong Security Token"]</b>:<br>
+    [lang::message::lookup "" intranet-core.Wrong_Security_Token_msg "Your security token is not valid. Please contact the system owner."]<br>"
     ad_script_abort
 }
 
