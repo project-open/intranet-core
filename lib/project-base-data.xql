@@ -36,6 +36,8 @@
 		im_companies ic,
 		(select
 			p.*,
+			bo.*,
+			o.*,
 			to_char(p.end_date, 'HH24:MI') as end_date_time,
 			to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
 			to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
@@ -44,9 +46,13 @@
 			im_name_from_user_id(p.supervisor_id) as supervisor,
 			$extra_select
 		from
-			im_projects p
+			im_projects p,
+			im_biz_objects bo,
+			acs_objects o
 		where 
-			p.project_id = :project_id
+			p.project_id = :project_id and
+			p.project_id = bo.object_id and
+			p.project_id = o.object_id
 		) ip
 	where	ip.company_id = ic.company_id
     </querytext>
