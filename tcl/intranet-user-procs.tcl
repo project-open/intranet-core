@@ -224,10 +224,8 @@ ad_proc -public im_user_options {
 		select
 			im_name_from_user_id(u.user_id, $name_order) as name, 
 			u.user_id
-		from
-			cc_users u
-		where
-			1=1
+		from	cc_users u
+		where	u.member_state = 'approved'
 			$group_select_sql
 			$biz_object_select_sql
 		order by name
@@ -237,29 +235,187 @@ ad_proc -public im_user_options {
 }
 
 
-ad_proc -public im_subordinates_options {
+# *********************************************************
+# Direct_Reports
+# *********************************************************
+
+ad_proc im_user_direct_reports_select {
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-user_id 0 }
+    select_name
+    { default "" }
+} {
+    Returns an html select box named $select_name and defaulted to
+    $default with a list of all the available project_leads in
+    the system
+} {
+    set user_options [im_user_direct_reports_options -user_id $user_id ]
+    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
+    return [im_options_to_select_box $select_name $user_options $default]
+}
+
+
+ad_proc -public im_user_direct_reports_options {
     { -user_id 0 }
 } {
-        Returns a list of (user_id user_name) tuples that are subordinates of a particular user.
+	Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
+} {
+    set options [util_memoize [list im_user_direct_reports_options_helper -user_id $user_id]]
+    return $options
+}
+
+
+
+ad_proc -public im_user_direct_reports_ids {
+    { -user_id 0 }
+} {
+    Returns a list of user_ids  that are direct_reports of a particular user.
+} {
+    set options [util_memoize [list im_user_direct_reports_options_helper -user_id $user_id]]
+    set direct_reports [list]
+
+    foreach t $options {
+	set user_id [lindex $t 1]
+	lappend direct_reports $user_id
+    }
+
+    return $direct_reports
+}
+
+
+
+ad_proc -public im_user_direct_reports_options_helper {
+    { -user_id 0 }
+} {
+	Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
 } {
     if {"" == $user_id} { return "" }
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set options [db_list_of_lists user_options "
-                select distinct
-                       	im_name_from_user_id(u.user_id, $name_order) as name,
-                       	u.user_id
-                from
-                       	users_active u,
-                       	group_distinct_member_map m,
-		       	im_employees e
-                where
-                       	u.user_id = m.member_id
-			and e.employee_id = u.user_id
-       		       	and e.supervisor_id = :user_id
-        "]
+		select	name, 
+			user_id
+		from
+			(select	im_name_from_user_id(u.user_id, $name_order) as name,
+			       	u.user_id
+			from	users_active u,
+				im_employees e
+			where	e.employee_id = u.user_id
+	       		       	and e.supervisor_id = :user_id
+		UNION
+			select 	im_name_from_user_id(e.employee_id, $name_order) as name,
+			       	e.employee_id as user_id
+			from	im_employees e,
+				-- Select all departments where the current user is manager
+				(select	cc.cost_center_id,
+					cc.manager_id
+				from	im_cost_centers cc,
+					(select cost_center_code as code,
+						length(cost_center_code) len
+					from	im_cost_centers
+					where	manager_id = :user_id
+					) t
+				where	substring(cc.cost_center_code for t.len) = t.code
+				) tt
+			where  e.department_id = tt.cost_center_id
+			       OR e.employee_id = tt.manager_id
+			) t
+		order by
+			name
+	"]
     return $options
 }
 
+
+ad_proc im_user_timesheet_select {
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
+    {-enable_groups_p 0}
+    select_name
+    { default "" }
+} {
+    Returns an html select box named $select_name and defaulted to
+    $default with a list of all the available options
+} {
+    set user_options [im_user_timesheet_options -enable_groups_p $enable_groups_p]
+    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
+    return [im_options_to_select_box $select_name $user_options $default]
+}
+
+
+ad_proc -public im_user_timesheet_options {
+    {-enable_groups_p 0}
+} {
+    Returns the options for a drop-down box with users for the
+    absences and timesheet "log for user" pages.
+} {
+    set current_user_id [ad_maybe_redirect_for_registration]
+    set view_absences_all_p [im_permission $current_user_id "view_absences_all"]
+    set add_absences_all_p [im_permission $current_user_id "add_absences_all"]
+    set view_absences_direct_reports_p [im_permission $current_user_id "view_absences_direct_reports"]
+    set add_hours_direct_reports_p [im_permission $current_user_id "add_hours_for_direct_reports"]
+    set add_absences_direct_reports_p [im_permission $current_user_id "add_absences_direct_reports"]
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+
+    set all_user_options [im_user_options -include_empty_p 0 -group_name "Employees"]
+    set direct_reports_options [im_user_direct_reports_options -user_id $current_user_id]
+    set direct_report_ids [im_user_direct_reports_ids -user_id $current_user_id]
+
+    foreach t $direct_reports_options {
+	set uid [lindex $t 1]
+	set direct_reports_hash($uid) $uid
+    }
+
+    set other_options [list]
+    foreach t $all_user_options {
+	set uname [lindex $t 0]
+	set uid [lindex $t 1]
+	if {![info exists direct_reports_hash($uid)]} {
+	    lappend other_options $t
+	}
+	set direct_reports_hash($uid) $uid
+    }
+
+    # Show always "mine" 
+    set user_selection_options [list]
+    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Mine Mine] "mine"]
+
+
+    # Direct direct_reports 
+    if {$add_hours_direct_reports_p || $view_absences_direct_reports_p || $add_absences_all_p || $view_absences_all_p} { 
+	if {0 != [llength $direct_reports_options] } {
+	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Direct_reports "Direct reports"] "direct_reports"]
+	    foreach t $direct_reports_options {
+		set uname [lindex $t 0]
+		set uid [lindex $t 1]
+		lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
+	    }
+	}
+    }
+
+    # All
+    if {$add_absences_all_p || $view_absences_all_p} {
+	lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.All "All"] "all"] 
+	foreach t $other_options { 
+	    set uname [lindex $t 0]
+	    set uid [lindex $t 1]
+	    lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
+	}
+
+	if {$enable_groups_p} {
+	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Employees "Employees"] "employees"]
+	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Providers "Providers"] "providers"]
+	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Customers "Customers"] "customers"]
+	}
+    }
+
+    return $user_selection_options
+}
+
+
+# *********************************************************
+# 
+# *********************************************************
 
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
@@ -329,22 +485,6 @@ ad_proc im_user_select {
     return [im_options_to_select_box $select_name $user_options $default]
 }
 
-ad_proc im_subordinates_select {
-    {-include_empty_p 0}
-    {-include_empty_name "All"}
-    {-user_id 0 }
-    select_name
-    { default "" }
-} {
-    Returns an html select box named $select_name and defaulted to
-    $default with a list of all the available project_leads in
-    the system
-} {
-    set user_options [im_subordinates_options -user_id $user_id ]
-    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
-    return [im_options_to_select_box $select_name $user_options $default]
-}
-
 
 ad_proc im_employee_select_multiple { 
     {-limit_to_group_id ""}
@@ -381,14 +521,14 @@ ad_proc im_pm_select_multiple { select_name { defaults "" } { size "6"} {multipl
     set sql "
 set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 select
-        u.user_id,
-        im_name_from_user_id(u.user_id, $name_order) as employee_name
+	u.user_id,
+	im_name_from_user_id(u.user_id, $name_order) as employee_name
 from
-        registered_users u,
-        group_distinct_member_map gm
+	registered_users u,
+	group_distinct_member_map gm
 where
-        u.user_id = gm.member_id
-        and gm.group_id = $pm_group_id
+	u.user_id = gm.member_id
+	and gm.group_id = $pm_group_id
 order by lower(im_name_from_user_id(u.user_id, $name_order))
 "
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
@@ -404,17 +544,17 @@ ad_proc im_active_pm_select_multiple {
     set bind_vars [ns_set create]
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set sql "
-        select distinct
-                pe.person_id,
-                im_name_from_user_id(pe.person_id, $name_order) as employee_name
-        from
-                persons pe,
-                im_projects p,
-                registered_users u
-        where
-                p.project_lead_id = pe.person_id and
-                u.user_id = pe.person_id and
-                p.project_status_id not in ([im_project_status_deleted]);
+	select distinct
+		pe.person_id,
+		im_name_from_user_id(pe.person_id, $name_order) as employee_name
+	from
+		persons pe,
+		im_projects p,
+		registered_users u
+	where
+		p.project_lead_id = pe.person_id and
+		u.user_id = pe.person_id and
+		p.project_status_id not in ([im_project_status_deleted]);
 	"
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
 }
@@ -1226,13 +1366,13 @@ ad_proc -public im_user_nuke {
 	db_dml filestorage "update im_fs_folders set object_id = null where object_id = :user_id"
 
 	# Bug-Tracker
-        if {[im_table_exists bt_user_prefs]} {
+	if {[im_table_exists bt_user_prefs]} {
 	    db_dml bt_prefs "delete from bt_user_prefs where user_id = :user_id"
 	}
-        if {[im_table_exists bt_components]} {
+	if {[im_table_exists bt_components]} {
 	    db_dml bt_comps "update bt_components set maintainer = null where maintainer = :user_id"
 	}
-        if {[im_table_exists bt_patch_actions]} {
+	if {[im_table_exists bt_patch_actions]} {
 	    db_dml bt_patch_actions "update bt_patch_actions set actor = :default_user where actor = :user_id"
 	}
 
@@ -1467,18 +1607,18 @@ ad_proc im_supervisor_select {
     {-include_empty_p 0}
     { default "" }
 } {
-        returns html widget with supervisor
+	returns html widget with supervisor
 } {
     set sql [db_list_of_lists sql "
-        select distinct
-                im_name_from_user_id(pe.person_id) as employee_name,
-                pe.person_id
-        from
-                persons pe,
-                im_employees u
-        where
-                u.supervisor_id = pe.person_id;
-        "]
+	select distinct
+		im_name_from_user_id(pe.person_id) as employee_name,
+		pe.person_id
+	from
+		persons pe,
+		im_employees u
+	where
+		u.supervisor_id = pe.person_id;
+	"]
 
     set include_empty_name ""
     if {$include_empty_p} { set sql [linsert $sql 0 [list $include_empty_name ""]] }
