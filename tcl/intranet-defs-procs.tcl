@@ -1563,10 +1563,11 @@ ad_proc -public im_valid_auto_login_p {
         "]]
 	set user_requires_manual_login_p [im_permission $user_id "require_manual_login"]
 
-	if {$priv_exists_p && !$user_requires_manual_login_p} {
+	if {$priv_exists_p && $user_requires_manual_login_p} {
 	    return 0
 	}
     }
+
 
     # Ok, the tokens are identical and the guy is allowed to login via auto_login.
     # So we can log the dude in if the "expiry_date" is OK.
