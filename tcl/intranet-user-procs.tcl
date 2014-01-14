@@ -354,7 +354,7 @@ ad_proc -public im_user_timesheet_options {
     set view_absences_all_p [im_permission $current_user_id "view_absences_all"]
     set add_absences_all_p [im_permission $current_user_id "add_absences_all"]
     set view_absences_direct_reports_p [im_permission $current_user_id "view_absences_direct_reports"]
-    set add_hours_direct_reports_p [im_permission $current_user_id "add_hours_for_direct_reports"]
+    set add_hours_direct_reports_p [im_permission $current_user_id "add_hours_direct_reports"]
     set add_absences_direct_reports_p [im_permission $current_user_id "add_absences_direct_reports"]
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
