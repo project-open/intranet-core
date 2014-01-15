@@ -41,7 +41,8 @@ if { $max_n_bytes && ($filesize > $max_n_bytes) } {
 if {![regexp {^([a-zA-Z0-9_\-]+)\.([a-zA-Z_]+)\.([a-zA-Z]+)$} $upload_file match]} {
     ad_return_complaint 1 [lang::message::lookup "" intranet-core.Invalid_Template_format "
 	<b>Invalid Template Format</b>:<br>
-	Templates should have the format 'filebody.locale.ext'.
+	Templates should have the format 'filebody.locale.ext'.<br>
+        Example: 'invoice.en.odt' - An english OpenOffice ('.odt') template for invoices 
     "]
     ad_script_abort
 }
