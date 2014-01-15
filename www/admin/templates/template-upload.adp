@@ -6,7 +6,9 @@
 <%= [im_box_header [lang::message::lookup "" intranet-ganttproject.Upload_Template "Upload a Template"]] %>
 <p>
   <%= [lang::message::lookup "" intranet-core.Upload_Template_Msg "
-	Please upload a file with the format 'file_body.locale.ext'.<br>
+	Please upload a file with a file name having the following structure: </br><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TemplateName.locale.ext<br>
+	<br/>       
 	Examples:
 	<ul>
 	<li>'template.en.adp': An English HTML ('.adp') template.
@@ -19,7 +21,7 @@
 <%= [export_form_vars project_id return_url] %>
 <table border=0>
   <tr>
-    <td><%= [lang::message::lookup "" intranet-core.File "File"] %></td>
+    <td><%= [lang::message::lookup "" intranet-core.File "File"] %>:</td>
     <td>
       <input type="file" name="upload_file" size="30">
     </td>
@@ -27,6 +29,7 @@
   <tr>
     <td></td>
     <td>
+      <br/>
       <input type="submit" name="submit" value="Submit">
     </td>
   </tr>
