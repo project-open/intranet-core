@@ -292,17 +292,21 @@ ad_proc -public im_user_direct_reports_options_helper {
 } {
     if {"" == $user_id} { return "" }
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
-    set options [db_list_of_lists user_options "
-		select	name, 
-			user_id
-		from
-			(select	im_name_from_user_id(u.user_id, $name_order) as name,
+
+    set direct_report_employee_sql "select username as name, user_id from users where user_id is null"
+    if {[parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter "DirectReportsIncludeCostCenterMembersP" -default "1"]} {
+	set direct_report_employee_sql "
+			select	im_name_from_user_id(u.user_id, $name_order) as name,
 			       	u.user_id
 			from	users_active u,
 				im_employees e
 			where	e.employee_id = u.user_id
 	       		       	and e.supervisor_id = :user_id
-		UNION
+        "
+    }
+    set direct_report_cost_center_members_sql "select username as name, user_id from users where user_id is null"
+    if {[parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter "DirectReportsIncludeCostCenterMembersP" -default "1"]} {
+	set direct_report_cost_center_members_sql "
 			select 	im_name_from_user_id(e.employee_id, $name_order) as name,
 			       	e.employee_id as user_id
 			from	im_employees e,
@@ -320,10 +324,19 @@ ad_proc -public im_user_direct_reports_options_helper {
 				) tt
 			where	e.employee_id = u.user_id and
 				(e.department_id = tt.cost_center_id OR e.employee_id = tt.manager_id)
+        "
+    }
+
+    set options [db_list_of_lists user_options "
+		select	name, 
+			user_id
+		from	(
+			$direct_report_employee_sql
+			UNION
+			$direct_report_cost_center_members_sql
 			) t
-		order by
-			name
-	"]
+		order by name
+    "]
     return $options
 }
 
