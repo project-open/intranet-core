@@ -266,12 +266,12 @@ foreach csv_line_fields $values_list_of_lists {
 		# } errmsg] } {}
 
 	    } else {
-		    append protocol_txt "<li>Error updating Hourly Rate based on User Skill Profile for user <a href='/intranet/users/view?user_id=$user_id'>$user_name_from_id</a>: 
-						No Category Entry found for Skill Profile: $username </li>"
+		append protocol_txt "<li>Error updating Hourly Rate based on User Skill Profile for user <a href='/intranet/users/view?user_id=$user_id'>$user_name_from_id</a>: 
+		                     No Category Entry found for Skill Profile: $username </li>"
 	    }
 	} else {
 	    if { !$user_name_exists_p } {
-		    append protocol_txt "<li>Error updating Hourly Rate for user <a href='/intranet/users/view?user_id=$user_id'>$user_name_from_id</a> based on User Skill Profile: No Skill Profile '$username' found.</li>"
+		append protocol_txt "<li>Error updating Hourly Rate for user <a href='/intranet/users/view?user_id=$user_id'>$user_name_from_id</a> based on User Skill Profile: No Skill Profile found.</li>"
 	    } 
 	}
     }; # hourly_rate_exists_p
