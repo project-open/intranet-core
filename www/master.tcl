@@ -94,6 +94,8 @@ if {[catch {
     set feedback_behaviour_key [im_feedback_set_user_messages]
     util_get_user_messages -multirow user_messages
 } err_msg]} {
+    global errorInfo
+    ns_log Error "Error in master.tcl - im_feedback_set_user_messages failed with the following message: $err_msg \n $errorInfo "
     set feedback_behaviour_key 1
     set err_user_feedback "There was a problem retrieving user messages. This is probably a minor issue and can be disregarded. Please consult the error.log file for additional information. If this message persists, please logout and login again."
     set err_user_feedback [lang::message::lookup "" intranet-core.ErrorRetrievingUserMessage $err_user_feedback]
