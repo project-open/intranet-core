@@ -270,30 +270,31 @@ ad_proc -public im_feedback_add_message {
     error_content_filename
     message
 } {
-    Adds message to feedback log
-    type: critical, serious, minor, config, message
+    Part of the implementation of user feedback, provided through a feedback bar in the GUI.
+    An user interaction can result in more than one user messages. This functions adds
+    a message to feedback log.
+    Supported types are: critical, serious, minor, config, message
 } {
     # Set feedback_log
     set feedback_logs [ad_get_client_property -default {} -cache_only t "intranet-core" "feedback_log"]
     lappend feedback_logs [list $type $stacktrace $error_content_filename $message]
-    ad_set_client_property "intranet-core" "feedback_log" $feedback_logs
+    ad_set_client_property -persistent f "intranet-core" "feedback_log" $feedback_logs
 }
 
 ad_proc -public im_feedback_set_user_messages {} {
-    Prioritize errors with ErrorInfo (stacktrace)
-    Provide "Report this error" link in message
+    - Return value of this function is used to determine behaviour of feedback bar 
+    - Prioritizes runtime errors, ignores all other errors if runtime error is found 
+    - Provides 'Report this error' link in feedback message by setting sessions variables error_stacktrace, error_content_filename and error_content
 } {
-    # Return value is used to determine behaviour of feedback bar
     set return_val 2
-    # ns_return 200 text/html [ad_get_client_property "intranet-core" "feedback_log"]
     foreach message_list [ad_get_client_property "intranet-core" "feedback_log"] {
 	util_user_message -html -message [lindex $message_list 3]
-        # Check for runtime errors (stacktrace), remove other messages from list
+        # Check for runtime errors (stacktrace), if found ignore all other messages 
 	if { "" != [lindex $message_list 1] } {
             # Set session vars for "Report this error" page
-	    ad_set_client_property intranet-core error_stacktrace [lindex $message_list 1]
-	    ad_set_client_property intranet-core error_content_filename [lindex $message_list 2]
-	    ad_set_client_property intranet-core error_content [lindex $message_list 3]
+	    ad_set_client_property -persistent f intranet-core error_stacktrace [lindex $message_list 1]
+	    ad_set_client_property -persistent f intranet-core error_content_filename [lindex $message_list 2]
+	    ad_set_client_property -persistent f intranet-core error_content [lindex $message_list 3]
 	    set report_this_error_msg [lang::message::lookup "" intranet-core.ReportThisError "Yes, I want to report this error to the \]po\[ Core Team. Show me what is going to be reported."]
 	    if { "critical" == [lindex $message_list 0] } {
 		set msg "[lang::message::lookup "" intranet-core.CriticalErrFound "Critical error found"]: [lindex $message_list 3]"
@@ -313,10 +314,6 @@ ad_proc -public im_feedback_set_user_messages {} {
 	    }
 	}
     }
-    # clean up feedback log
-    ad_set_client_property "intranet-core" "feedback_log" ""
+    ad_set_client_property -persistent f intranet-core feedback_log ""
     return $return_val;
 }
-
-
-
