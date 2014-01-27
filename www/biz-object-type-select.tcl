@@ -78,7 +78,7 @@ foreach id $exclude_category_ids {
 regsub -all " " $object_type_pretty "_" object_type_pretty_key
 set object_type_l10n [lang::message::lookup "" intranet-core.$object_type_pretty_key $object_type_pretty]
 set page_title [lang::message::lookup "" intranet-core.Please_Select_Type_for_Object "Please select a type of %object_type_l10n%"]
-if {"" != $user_id_from_search && 0 != $user_id_from_search} {
+if { [info exists user_id_from_search] && "" != $user_id_from_search && 0 != $user_id_from_search} {
     set user_name_from_search [acs_object_name $user_id_from_search]
     append page_title [lang::message::lookup "" intranet-timesheet2.for_user_name_from_search " for %user_name_from_search%"]
 }
