@@ -107,11 +107,10 @@
 -- 950-959		intranet-idea-management
 -- 960-969		intranet-customer-portal
 -- 970-979		intranet-events
--- 980-989		reserved
+-- 980-989		intranet-crm
 -- 990-999		reserved
 -- 1000-9999		reserved
 -- 10000-10000000	reserved
-
 
 
 ---------------------------------------------------------
