@@ -39,7 +39,7 @@ ad_page_contract {
     type_id_var
     return_url
     project_id:optional
-    user_id_from_search:optional
+    { user_id_from_search:integer ""}
     { pass_through_variables "" }
     { exclude_category_ids {} }
     { translate_p 1 }
