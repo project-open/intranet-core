@@ -33,11 +33,11 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 
 } {
-    company_id:integer,notnull
+    company_id:integer
     { company_name "" }
     { company_path "" }
-    company_status_id:integer,notnull
-    company_type_id:integer,notnull
+    company_status_id:integer
+    company_type_id:integer
     { main_office_id:integer "" }
     { return_url "" }
     { group_type "" }
@@ -65,6 +65,12 @@ ad_page_contract {
     { old_company_status_id "" }
     { status_modification_date.expr "" }
     { also_add_users "" }
+    { show_master_p 1 }
+}
+
+
+if { ![info exists company_status_id] } {
+    ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
 }
 
 # -----------------------------------------------------------------
@@ -127,7 +133,7 @@ if { $exists_p } {
 }
 
 if { ![empty_string_p $errors] } {
-    ad_return_complaint $exception_count "<ul>$errors</ul>"
+    ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
     return
 }
 
@@ -152,7 +158,7 @@ if {$company_exists_p} {
     im_company_permissions $user_id $company_id view read write admin
     if {!$write} {
         ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
         return
     }
 
@@ -160,7 +166,7 @@ if {$company_exists_p} {
 
     if {![im_permission $user_id add_companies]} {
         ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
         return
     }
 
@@ -195,7 +201,7 @@ if {0 == $company_exists_p} {
 		-office_status_id	[im_office_status_active] \
 		-office_path		$office_path]
     } errmsg] {
-                ad_return_complaint 1 "We haven't been able to create a main office for this company , pls. check if company or office already exists in the system. <br />Details:</br>$errmsg"
+                ad_return_complaint 1 "We haven't been able to create a main office for this company , pls. check if company or office already exists in the system. <br />Details:</br>$errmsg" $show_master_p
     }
 
     # add users to the office as 
@@ -337,6 +343,9 @@ db_release_unused_handles
 # Return to the new company page after creating
 if {"" == $return_url} {
     set return_url [export_vars -base "/intranet/companies/view?" {company_id}]
+} else {
+    set new_company_id $company_id
+    set return_url [export_vars -base $return_url {new_company_id}] 
 }
 
 ad_returnredirect $return_url
