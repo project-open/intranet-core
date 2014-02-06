@@ -32,6 +32,7 @@ ad_page_contract {
     { form_mode "edit" }
     { return_url "" }
     { also_add_users "" }
+    { show_master_p 1 }   
 }
 
 # ------------------------------------------------------
@@ -73,7 +74,7 @@ if {$company_exists_p} {
     im_company_permissions $user_id $company_id view read write admin
     if {!$write} {
 	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
 	return
     }
 
@@ -82,7 +83,7 @@ if {$company_exists_p} {
     # Does the current user has the right to create a new company?
     if {![im_permission $user_id add_companies]} {
 	ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
 	return
     }
 
@@ -124,6 +125,7 @@ ad_form \
     -export {next_url user_id return_url also_add_users} \
     -form {
 	company_id:key
+	{show_master_p:text(hidden) {value "$show_master_p"}}
 	{main_office_id:text(hidden)}
 	{start_date:text(hidden),optional}
 	{contract_value:text(hidden),optional}
@@ -248,7 +250,7 @@ ad_form -extend -name $form_id -select_query {
     }
     
     if { [exists_and_not_null errors] } {
-	ad_return_complaint $exception_count "<ul>$errors</ul>"
+	ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
 	return
     }
     
@@ -273,7 +275,7 @@ ad_form -extend -name $form_id -select_query {
 	im_company_permissions $user_id $company_id view read write admin
 	if {!$write} {
 	    ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
 	    return
 	}
 	
@@ -281,7 +283,7 @@ ad_form -extend -name $form_id -select_query {
 	
 	if {![im_permission $user_id add_companies]} {
 	    ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
-            <li>[_ intranet-core.lt_You_dont_have_suffici]"
+            <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
 	    return
 	}
 	
