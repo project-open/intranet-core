@@ -15,8 +15,7 @@
 
 # @author various@arsdigita.com
 # @author frank.bergmann@project-open.com
-
-
+# @author klaus.hofeditz@project-open.com
 
 
 ad_proc -public im_user_permissions { 
@@ -197,7 +196,6 @@ ad_proc -public im_sysadmin_user_default { } {
 }
 
 
-
 ad_proc -public im_user_options { 
     {-include_empty_p 1} 
     {-include_empty_name ""}
@@ -266,7 +264,6 @@ ad_proc -public im_user_direct_reports_options {
 }
 
 
-
 ad_proc -public im_user_direct_reports_ids {
     { -user_id 0 }
 } {
@@ -282,7 +279,6 @@ ad_proc -public im_user_direct_reports_ids {
 
     return $direct_reports
 }
-
 
 
 ad_proc -public im_user_direct_reports_options_helper {
@@ -509,19 +505,34 @@ ad_proc -public im_user_timesheet_absences_options {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 # *********************************************************
-# 
+# OPTIONS & SELECTS
 # *********************************************************
+
+ad_proc -public im_customer_contact_options { 
+    { -include_empty_p 1 } 
+    company_id
+
+} {
+    Customer Contact options
+} {
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+    set options [db_list_of_lists provider_options "
+        select  im_name_from_user_id(u.user_id, $name_order) as name,
+                u.user_id
+        from    
+		users u,
+		acs_rels r
+	where
+		r.object_id_one = :company_id and 
+		r.rel_type = 'im_company_employee_rel' and 
+		r.object_id_two = u.user_id
+        order by name
+    "]
+    if {$include_empty_p} { set options [linsert $options 0 { "" "" }] }
+    return $options
+}
+
 
 ad_proc -public im_employee_options { {include_empty 1} } {
     Cost provider options
@@ -536,6 +547,7 @@ ad_proc -public im_employee_options { {include_empty 1} } {
     if {$include_empty} { set options [linsert $options 0 { "" "" }] }
     return $options
 }
+
 
 ad_proc -public im_project_manager_options { 
     {-include_empty 1} 
@@ -565,6 +577,7 @@ ad_proc -public im_project_manager_options {
     return $options
 }
 
+
 ad_proc im_user_select { 
     {-include_empty_p 0}
     {-include_empty_name "All"}
@@ -592,33 +605,42 @@ ad_proc im_user_select {
 }
 
 
-ad_proc im_employee_select_multiple { 
+ad_proc im_employee_select_multiple {
     {-limit_to_group_id ""}
-    select_name 
-    { defaults "" } 
-    { size "6"} 
+    {-limit_to_direct_reports_of_user_id ""}
+    select_name
+    { defaults "" }
+    { size "6"}
     {multiple ""}
 } {
     set bind_vars [ns_set create]
     set employee_group_id [im_employee_group_id]
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+
     set limit_to_group_sql ""
+    set limit_to_direct_reports_of_user_id_sql ""
+
     if {"" != $limit_to_group_id && 0 != $limit_to_group_id && [string is integer $limit_to_group_id]} { set limit_to_group_sql "and u.user_id in (select member_id from group_distinct_member_map where group_id = $limit_to_group_id)" }
+    if {"" != $limit_to_direct_reports_of_user_id && 0 != $limit_to_direct_reports_of_user_id && [string is integer $limit_to_direct_reports_of_user_id] } {
+        set limit_to_direct_reports_of_user_id_sql "and u.user_id in (select employee_id from im_employees where supervisor_id = $limit_to_direct_reports_of_user_id)"
+    }
+
     set sql "
-	select
-		u.user_id,
-		im_name_from_user_id(u.user_id, $name_order) as employee_name
-	from
-		registered_users u,
-		group_distinct_member_map gm
-	where
-		u.user_id = gm.member_id
-		and gm.group_id = $employee_group_id
-		$limit_to_group_sql
-	order by lower(im_name_from_user_id(u.user_id, $name_order))
+        select
+                u.user_id,
+                im_name_from_user_id(u.user_id, $name_order) as employee_name
+        from
+                registered_users u,
+                group_distinct_member_map gm
+        where
+                u.user_id = gm.member_id
+                and gm.group_id = $employee_group_id
+                $limit_to_group_sql
+                $limit_to_direct_reports_of_user_id_sql
+        order by lower(im_name_from_user_id(u.user_id, $name_order))
     "
     return [im_selection_to_list_box -translate_p "0" $bind_vars category_select $sql $select_name $defaults $size $multiple]
-}    
+}
 
 
 ad_proc im_pm_select_multiple { select_name { defaults "" } { size "6"} {multiple ""}} {
