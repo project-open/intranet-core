@@ -2496,7 +2496,8 @@ ad_proc im_project_nuke {
 	    db_dml expense_cost_link "update im_expenses set bundle_id = null where bundle_id = :cost_id"
 
 	    ns_log Notice "projects/nuke-2: deleting cost: Delete any created_from_item_id references to the items we need to delete"
-	    db_dml created_from_item_id "
+	    if {[im_column_exists im_invoice_items created_from_item_id]} {
+		db_dml created_from_item_id "
 		update im_invoice_items 
 		set created_from_item_id = null 
 		where created_from_item_id in (
@@ -2504,7 +2505,8 @@ ad_proc im_project_nuke {
 			from	im_invoice_items
 			where	invoice_id = :cost_id
 		)
-	    "
+	        "
+	    }
 
 	    ns_log Notice "projects/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
