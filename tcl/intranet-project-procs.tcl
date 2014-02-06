@@ -35,6 +35,10 @@ ad_proc -public im_project_type_unknown {} { return 85 }
 ad_proc -public im_project_type_other {} { return 86 }
 ad_proc -public im_project_type_task {} { return 100 }
 ad_proc -public im_project_type_ticket {} { return 101 }
+
+ad_proc -public im_project_type_opportunity {} { return 102 }
+ad_proc -public im_project_type_campaign {} { return 103 }
+
 ad_proc -public im_project_type_consulting {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
@@ -638,9 +642,12 @@ ad_proc -public im_project_options {
     Get a list of projects
 } {
     set exclude_type_id [list]
-    # Default: Exclude tickets and deleted projects
+    # Default: Exclude tickets, opportunities and deleted projects
     if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
-    if {"" == $exclude_type_id} { set exclude_type_id [list [im_project_type_ticket]] } 
+    if {"" == $exclude_type_id} { 
+	set exclude_type_id [list [im_project_type_ticket]] 
+	lappend exclude_type_id [im_project_type_opportunity]
+    } 
     # Exclude tasks? 
     if {!$exclude_tasks_p} { 
 	# Overwrite parameter when tasks should be shown
@@ -648,6 +655,7 @@ ad_proc -public im_project_options {
     } else {
 	lappend exclude_type_id [im_project_type_task]
     }
+
     set current_project_id $project_id
     set super_project_id $project_id
     set current_user_id [ad_get_user_id]
@@ -928,7 +936,7 @@ ad_proc -public im_project_template_select {
 		project_name
 	from	im_projects
 	where	parent_id is null and
-		project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		project_type_id not in ([im_project_type_task], [im_project_type_ticket], [im_project_type_opportunity]) and
 		(lower(project_name) like '%template%' $template_p_sql)
 	order by
 		lower(project_name)
@@ -1062,6 +1070,7 @@ ad_proc -public im_project_personal_active_projects_component {
            Setting this parameter to 0 the component will just disappear
            if there are no projects.
 } {
+
     set user_id [ad_get_user_id]
 
     if {"" == $order_by_clause} {
@@ -1147,7 +1156,7 @@ ad_proc -public im_project_personal_active_projects_component {
 		r.object_id_one = p.project_id and
 		r.object_id_two = :user_id and
 		p.parent_id is null and
-		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket], [im_project_type_opportunity]) and
 		p.project_status_id not in ([im_project_status_deleted], [im_project_status_closed])
 		$project_status_restriction
 		$project_type_restriction
@@ -3061,7 +3070,7 @@ ad_proc -public im_personal_todo_component {
 		r.rel_id = bom.rel_id and
 		bom.object_role_id = 1301 and
 		p.parent_id is null and
-		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket]) and
+		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket], [im_project_type_opportunity]) and
 		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
 	UNION
 	-- tasks assigned to this user
