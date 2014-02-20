@@ -297,9 +297,7 @@ set company_perm_sql "
 				and r.object_id_two = $current_user_id
 		)
 "
-if {[im_permission $user_id "view_companies_all"]} { set perm_sql "im_companies" }
-
-# Pull out all suitable companies
+if {[im_permission $user_id "view_companies_all"]} { set company_perm_sql "im_companies" }
 set company_sql "
 		select	c.company_name,
 			c.company_id
@@ -308,7 +306,7 @@ set company_sql "
 		order by lower(trim(c.company_name))
 "
 
-set company_options [util_memoize [list db_list_of_lists company_options $company_sql]]
+set company_options [util_memoize [list db_list_of_lists company_options $company_sql] 60]
 set company_options [linsert $company_options 0 [list $all_l10n ""]]
 
 
