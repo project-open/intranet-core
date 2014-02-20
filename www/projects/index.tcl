@@ -284,7 +284,33 @@ if { [empty_string_p $company_id] } {
     set company_id 0
 }
 
-set company_options [im_company_options -include_empty_p 1 -include_empty_name $all_l10n -status "CustOrIntl"]
+# Company Options - only select companies that are customers for projects
+# in order to deal with performance isues
+# set company_options [im_company_options -include_empty_p 1 -include_empty_name $all_l10n -status "CustOrIntl"]
+
+# Permission SQL: Normal users can see only "their" companies
+set company_perm_sql "
+		(       select	c.*
+			from	im_companies c,
+				acs_rels r
+			where	c.company_id = r.object_id_one
+				and r.object_id_two = $current_user_id
+		)
+"
+if {[im_permission $user_id "view_companies_all"]} { set perm_sql "im_companies" }
+
+# Pull out all suitable companies
+set company_sql "
+		select	c.company_name,
+			c.company_id
+		from	$company_perm_sql c
+		where	c.company_id in (select distinct company_id from im_projects)
+		order by lower(trim(c.company_name))
+"
+
+set company_options [util_memoize [list db_list_of_lists company_options $company_sql]]
+set company_options [linsert $company_options 0 [list $all_l10n ""]]
+
 
 # Get the list of profiles readable for current_user_id
 set managable_profiles [im_profile::profile_options_managable_for_user -privilege "read" $current_user_id]
