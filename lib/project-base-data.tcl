@@ -92,7 +92,7 @@ db_multirow -extend {attrib_var value} project_dynfield_attribs dynfield_attribs
 
     # Empty values will be skipped anyway
     if {"" != [string trim $value]} {
-	set attrib_var [lang::message::lookup "" intranet-core.$attribute_name $pretty_name]
+	set attrib_var [lang::message::lookup "" intranet-core.$attribute_name $attribute_pretty_name]
 
 	set translate_p 0
 	switch $acs_datatype {
