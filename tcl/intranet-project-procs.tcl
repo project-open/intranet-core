@@ -1553,6 +1553,11 @@ ad_proc im_project_clone {
 	    set task_id_one_nr $parent_project_hierarchy_hash_id_nr($task_id_one)
 	    set task_id_two_nr $parent_project_hierarchy_hash_id_nr($task_id_two)
 
+	    # fraber 140228: There seems to be an error with closing the dependencies.
+	    # ToDo: Investigate error further, rather than avoiding the error...
+	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { return }
+	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { return }
+
 	    # Convert the nrs of the original project into ids of the cloned project
 	    set task_id_one_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)
 	    set task_id_two_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)
