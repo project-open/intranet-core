@@ -1403,11 +1403,15 @@ ad_proc -public im_header {
 	set header_html [template::get_header_html]
     }
 
-    return "
+    set return_html "
 	[ad_header $page_title $extra_stuff_for_document_head]
 	$body_script_html
 	$header_html
 	<div id=\"monitor_frame\">
+    "
+
+    if { !$no_head_p } {
+        append return_html "
 	   <div id=\"header_class\">
 	      <div id=\"header_logo\">
 		 $logo
@@ -1424,6 +1428,8 @@ ad_proc -public im_header {
 	      </div>   
 	   </div>
     "
+    }
+    return $return_html
 }
 
 
