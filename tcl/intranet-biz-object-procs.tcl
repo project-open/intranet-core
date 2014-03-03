@@ -579,7 +579,7 @@ ad_proc -public im_group_member_component {
     }
     if {$add_admin_links} {
 	incr colspan
-	append header_html "<td class=rowtitle align=middle>[im_gif delete]</td>"
+	append header_html "<td class=rowtitle align=middle><input type='checkbox' name='_dummy' onclick=\"acs_ListCheckAll('delete_user',this.checked)\"></td>"
     }
     append header_html "
       </tr>"
@@ -632,7 +632,7 @@ ad_proc -public im_group_member_component {
 	if {$add_admin_links} {
 	    append body_html "
 		  <td align=middle>
-		    <input type=checkbox name=delete_user value=$user_id>
+		    <input type='checkbox' name='delete_user' id='delete_user,$user_id' value='$user_id'>
 		  </td>
 	    "
 	}
