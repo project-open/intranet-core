@@ -167,85 +167,61 @@ developer-support-adp-box-off {
 }
 
 #monitor_frame {
-  padding-top: 10px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-bottom: 10px;
-  background: #FFF;
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    background: #FFF;
 }
 
 #header_class {
-
-background-color: #FFF;
-background-image: none;
-background-repeat: repeat;
-background-attachment: scroll;
-height: 60px;
-padding-left: 30px;
-padding-right: 30px;
-
-/* added */
-padding: 0px; 
-position: relative; 
-border-top-width: 0px; 
-background-position: 0px -10px;
-
-
+    background-color: #FFF;
+    background-image: none;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    height: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding: 0px; 
+    position: relative; 
+    border-top-width: 0px; 
+    background-position: 0px -10px;
 }
 
 #header_settings_tab {
    background: #FFF;
-	 float:left;
+   float:left;
 }
 
 #header_settings {
-	float: right;
-   	font-size: 8pt;
-	top: 5px;
-	color: #666;
-	width: 380px;
+    float: right;
+    font-size: 8pt;
+    top: 5px;
+    color: #666;
+    width: 380px;
 }
 
-#header_buttons {
-	/*
-	position:absolute;
-	position: left;
-   	right: 130px;
-	border: 1px #fff;
-	width: 90%;
-	*/
-	background: #fff;
-   	float: right; 
-	top: 0px;
+.header_line {
+    background: #fff;
+    float: right; 
+    top: 0px;
 }
 
-#header_logout A {
-  color: #666;
-  text-decoration:none;
-	font-weight: bold;
+.header_buttons, .header_buttons a, .header_buttons a:link {
+    color: #666;
+    text-decoration:none;
+}
+
+.header_logout, .header_logout a, .header_logout a:link  {
+    font-weight: bold; 
+    text-decoration:none;
+    color: #990000;
 }
 
 #header_settings A {
-  color: #666;
-  text-decoration:none;
-	font-weight: normal;
-}
-
-#header_logout {
-	/* position: static; 
-	color: #666;
-	padding-left: 0em;
-	padding-right: 1em;
-	font-weight:bold;
-	float: left; */
-}
-
-#header_logout_tab {
-	top: 0px;
-	float: right;
-   	background: #fff;   /* IE6/7 hack */
-	/*position: absolute; */
-	/* width: 7em;*/
+    color: #666;
+    text-decoration:none;
+    font-weight: normal;
 }
 
 #header_skin_select {
@@ -256,7 +232,6 @@ background-position: 0px -10px;
 	right: 118px;
 	display: block;
 }
-
 
 #header_skin_select form {
 	display: inline;
@@ -364,8 +339,9 @@ background-position: 0px -10px;
 #main_header_deco {}
 
 #main_search {
-	float:left;
-	padding-left: 1em;
+    padding-top: 10px;
+    float:right;
+    padding-right: 5 px;
 }
 
 .main_users_online { 
@@ -390,11 +366,11 @@ background-position: 0px -10px;
 #main_header {
 	font-weight: bold;
 	margin-bottom: 20px;
-	height: 25px;
+	/* height: 25px; */
 	background: #fff;
 	width: 100%;
 	color:#000000;
-	border-bottom: 1px solid #24618E;
+	/*border-bottom: 1px solid #24618E; */
 	display: block;
 	position: relative;
 }
@@ -681,6 +657,45 @@ a   span  {float:none;}
    overflow: auto;
 }
 
+/* smartmenu */
+
+#main-menu {
+    position:relative;
+    z-index:9999;
+}
+
+#main-menu ul {
+    width:12em; /* fixed width only please - you can use the "subMenusMinWidth"/"subMenusMaxWidth" script options to override this if you like */
+}
+
+.sm-clean a {
+    color: #333333;
+    font-size: 11px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-top: 4px;
+}
+
+.sm-clean a:link {
+    text-decoration: none;
+}
+
+.sm-clean li.sm-submenu-item, .sm-clean li.sm-submenu-item a, .sm-clean li.sm-submenu-item a:link {
+    color: #333333;
+    font-size: 12px;
+    line-height: 8px;
+    font-weight: normal;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-top: 4px;
+    text-decoration: none;
+}
+
+.sm-clean li.current a {
+    font-weight:bold;
+    color:000000;
+}
+
 #slave {
       background: #ffffff;
       position:relative;
@@ -906,7 +921,7 @@ a   span  {float:none;}
 
 .fullwidth-list .component table td {
 	padding: 0px 2px 0px 2px;
-	vertical-align: middle;
+	/* vertical-align: middle;*/
 }
 
 .fullwidth-list .component table.month_header td {
@@ -1964,9 +1979,7 @@ tr.last td {
    color: #000000;
 }
 
-
 #general_messages_icon {
-    display : inline-block;
     min-width: 20px;
 }
 
@@ -1974,3 +1987,6 @@ tr.last td {
     margin-top: 4px; 
     margin-bottom: 2px;
 }
+
+
+

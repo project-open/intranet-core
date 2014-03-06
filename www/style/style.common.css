@@ -35,9 +35,6 @@ ul, ol {
    position: absolute;
    right: 0px;
    top: 0px;
-   width: 7em;
-   /* IE6/7 hack */
-   /* width: 100px; */
 }
 
 #slave_content {
