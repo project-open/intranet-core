@@ -375,6 +375,17 @@ developer-support-adp-box-off {
 	position: relative;
 }
 
+#main_header_v4 {
+        font-weight: bold;
+        margin-bottom: 20px;
+        height: 25px; 
+        background: #fff;
+        width: 100%;
+        color:#000000;
+        border-bottom: 1px solid #24618E; 
+        display: block;
+        position: relative;
+}
 
 #navbar_main_wrapper {
 	position: relative;
