@@ -1012,7 +1012,7 @@ ad_proc -public im_navbar_version_4 {
                      $navbar
                   </ul>
                </div>
-               <div id=\"main_header\">
+               <div id=\"main_header_v4\">
                   <div id=\"main_title\">
                      $page_title
                   </div>
