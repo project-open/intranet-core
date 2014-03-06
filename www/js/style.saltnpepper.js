@@ -55,6 +55,16 @@ function sideBarOpacity(from, to) {
 // jQuery.noConflict();
 
 jQuery().ready(function(){
+
+    // Build smartmenu
+    $(function() {
+	    $('#main-menu').smartmenus({
+		    mainMenuSubOffsetX: -1,
+			mainMenuSubOffsetY: 4,
+			subMenusSubOffsetX: 6,
+			subMenusSubOffsetY: -6
+	    });
+    });
 	
     jQuery("#header_skin_select > form > select").change(function() {
 	jQuery("#header_skin_select > form").submit();
@@ -142,6 +152,7 @@ jQuery().ready(function(){
     });
 
     setFooter();
+
 
 });
 
