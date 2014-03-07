@@ -101,9 +101,13 @@ if { $exception_count} {
 # Calculate the groups that we can search for the user
 # --------------------------------------------------
 
-set limit_to_groups [list]
+# No specific group set - search for all groups
+if {"" == $limit_to_users_in_group_id} {
+    set limit_to_users_in_group_id [db_list all_group_ids "select group_id from groups"]
+}
 
-set profile_sql "
+
+set allowed_groups_sql "
 select DISTINCT
         g.group_name,
         g.group_id
@@ -119,12 +123,12 @@ where
         and o.object_type = 'im_profile'
 "
 
-
-db_foreach profile_list $profile_sql {
-    lappend limit_to_groups $group_id
+set allowed_groups [list]
+db_foreach allowed_groups $allowed_groups_sql {
+    if {[lsearch $limit_to_users_in_group_id $group_id] > -1} {
+	lappend allowed_groups $group_id
+    }
 }
-set limit_to_users_in_group_id [join $limit_to_groups ","]
-ns_log Notice "limit_to_users_in_group_id=$limit_to_users_in_group_id"
 
 
 # --------------------------------------------------
@@ -141,102 +145,42 @@ if { $email != "" } {
     set search_clause "lower(last_name) like :query_string"
 }
 
-
-### build the search query
-if { ![empty_string_p $limit_to_users_in_group_id] } {    
-
-
-    ## Retrieve the names of specified groups -MJS 7/28
-    set group_list [db_list groups "select group_name from groups where group_id in ($limit_to_users_in_group_id)"]    
-    
-    if {[empty_string_p [lindex $group_list 0]]} {
-	
-	## No group names found - return
-	set errors "<LI>[_ intranet-core.lt_None_of_the_specified]"
-	ad_return_complaint 1 $errors
-	return
-
-    } else {
-
-	## Group name/s found
-	
-	if {[empty_string_p [lindex $group_list 1]] } {
-
-	    ## Only one group found
-
-	    set group_html "in group [lindex $group_list 0]"
-
-	} else {
-
-	    ## Multiple groups found
-
-	    set group_html "in groups [join $group_list ", "]"
-
-	}	
-
-	# Let's build up the groups sql query we need. Only include
-	# the user_groups table if we need to include members 
-	# of subgroups.
-	if { [string compare $subgroups_p "t"] == 0 } {
-	    # Include subgroups - set some text to tell the user we are looking in subgroups
-	    append group_html " and any of its subgroups"
-	    
-	    set group_table ", user_groups ug"
-	    set group_sql "ug.group_id = ugm.group_id and (ugm.group_id in ($limit_to_users_in_group_id) or ug.parent_group_id in ($limit_to_users_in_group_id))"
-	} else {
-	    set group_table ""
-	    set group_sql "ugm.group_id in ($limit_to_users_in_group_id)"
-	}
-
-    }
-
-    
-    # Need the distinct for the join with user_group_map
-    set query "
-select distinct
-	u.user_id,
-	im_name_from_user_id(user_id) as user_name,
-	u.email
-from 
-	registered_users u,
-	group_member_map ugm,
-	membership_rels mr
-	$group_table
-where 
-	u.user_id=ugm.member_id
-	and ugm.rel_id = mr.rel_id
-	and mr.member_state = 'approved'
-	and $group_sql
-	and $search_clause
-"
-
-} else {
-    
-    ## No groups specified
-
-    set group_html "in all groups"
-
-    set query "
-select 
-	u.user_id,
-	im_name_from_user_id(user_id) as user_name,
-	pa.email,
-from 
-	users u,
-	persons p,
-	parties pa
-where
-	u.user_id = p.person_id
-	and u.user_id = pa.party_id
-	$search_clause"
+# No groups found
+if {0 == [llength $allowed_groups]} {   
+    ad_return_complaint 1 "<LI>[_ intranet-core.lt_None_of_the_specified]"
 }
 
+set allowed_group_names [db_list allowed_group_names "select group_name from groups where group_id in ([join $allowed_groups ","])"]
+
+set group_html "in group(s) [join $allowed_group_names ", "]"
+
 
 # ---------------------------------------------------
-# Format the Selection Table
+# Format the results
 # ---------------------------------------------------
 
-set ctr 0
+set query "
+select	u.user_id,
+	im_name_from_user_id(u.user_id) as user_name,
+	u.email,
+	gmm.group_id
+from 
+	registered_users u,
+	group_distinct_member_map gmm
+where 
+	u.user_id = gmm.member_id and
+        gmm.group_id > 0
+	and $search_clause
+"
+db_foreach user_search_query $query {
+    set user_name_hash($user_id) $user_name
+    set user_email_hash($user_id) $email
+
+    set user_groups [list]
+    if {[info exists user_group_hash($user_id)]} { set user_groups $user_group_hash($user_id) }
+    lappend user_groups $group_id
+    set user_group_hash($user_id) $user_groups
+}
 
 set page_contents "
 <!--<h2>$display_title</h2>-->
@@ -267,16 +211,31 @@ append page_contents "
         <tbody>
 "
 
-db_foreach user_search_query $query {
+set ctr 0
+foreach user_id [array names user_group_hash] {
+    set user_name $user_name_hash($user_id)
+    set email $user_email_hash($user_id)
+    set user_groups $user_group_hash($user_id)
 
-    append page_contents "
+    ns_log Notice "user-search.tcl: user_groups=$user_groups, allowed_groups=$allowed_groups"
+    set view_p 1
+    foreach gid $user_groups {
+	if {[lsearch $allowed_groups $gid] < 0} { 
+	    ns_log Notice "user-search.tcl: $gid not in allowed_groups"
+	    set view_p 0
+	}
+    }
 
+    if {$view_p} {
+	append page_contents "
 	<tr$bgcolor([expr $ctr % 2])>
 	  <td>$user_name</td>
 	  <td>$email</td>
 	  <td align=center><input type=radio name=user_id_from_search value=$user_id></td>
-	</tr>\n"
-    incr ctr
+	</tr>
+        "
+	incr ctr
+    }
 }
 
 
