@@ -76,8 +76,8 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 	    $file \
 	    $file_body \
 	    $file_extension \
-	    "$file_day.$file_month.$file_year $file_hour:$file_second" \
-	    [file size $file] \
+	    "$file_year-$file_month-$file_day $file_hour:$file_second" \
+	    "[expr round(10 * [file size $file] / 1024.0 / 1024.0) / 10.0]M"\
 	    $restore_p
     }
 }
@@ -107,37 +107,36 @@ set bulk_actions [list \
 template::list::create \
     -name backup_files \
     -key filename \
-    -elements [list \
-		   filename [list \
-		       label [lang::message::lookup "" intranet-core.Backup_File_Name "File Name"] \
-		       link_url_eval "/intranet/admin/backup/download/$file_body" \
-		   ] \
-		   extension [list \
-				  label [lang::message::lookup "" intranet-core.Backup_Type "Type"] \
-		   ] \
-		   date [list \
-			     label [lang::message::lookup "" intranet-core.Backup_Date "Date"] \
-		   ] \
-		   size [list \
-			     label [lang::message::lookup "" intranet-core.Backup_Size "Size"] \
-		       html { align right } \
-		   ] \
-		   restore [list \
-			       display_template {
-				   <if @backup_files.restore_p@>
-				   <a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
-				   </if>
-			       } \
-		   ] \
-    ] \
+    -elements {
+	filename {
+	    label "[lang::message::lookup {} intranet-core.Backup_File_Name File_Name]"
+	    display_template {
+		<a href="/intranet/admin/backup/download/@backup_files.file_body@">@backup_files.filename@</a>
+	    }
+	    link_url_eval "/intranet/admin/backup/download/@backup_files.file_body@"
+	}
+	extension {
+	    label "[lang::message::lookup {} intranet-core.Backup_Type Type]"
+	}
+	date {
+	    label "[lang::message::lookup {} intranet-core.Backup_Date Date]"
+	}
+	size {
+	    label "[lang::message::lookup {} intranet-core.Backup_Size Size]"
+	    html { align right }
+	}
+	restore {
+	    display_template {
+		<if @backup_files.restore_p@>
+		<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
+		</if>
+	    }
+	}
+    } \
     -bulk_actions $bulk_actions \
     -bulk_action_method post \
     -bulk_action_export_vars { return_url } \
     -actions $actions
-
-
-
-
 
 
 # ---------------------------------------------------------------
