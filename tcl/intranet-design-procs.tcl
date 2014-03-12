@@ -1031,19 +1031,8 @@ ad_proc -public im_navbar_version_4 {
                   <div id=\"main_header_deco\"></div>
                </div>
             </div>
-	    <div style='border-bottom:1px solid #24618E; margin-top:28px'></div>
-
     "
-
-    # Disabled the portrait
-    set ttt {
-                  <div id=\"main_portrait\">
-	[im_portrait_or_anon_html $user_id Portrait]
-                  </div>
-    }
 }
-
-
 
 ad_proc -public im_navbar_version_5 { 
     { -loginpage:boolean 0 }
