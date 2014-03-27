@@ -1555,8 +1555,8 @@ ad_proc im_project_clone {
 
 	    # fraber 140228: There seems to be an error with closing the dependencies.
 	    # ToDo: Investigate error further, rather than avoiding the error...
-	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { return }
-	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { return }
+	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { continue }
+	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { continue }
 
 	    # Convert the nrs of the original project into ids of the cloned project
 	    set task_id_one_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)
@@ -1582,8 +1582,9 @@ ad_proc im_project_clone {
     # Remove the template_p flag from the newly created project
     if {0 == $clone_level} {
 	db_dml remove_template_p "
-		update im_projects
-		set template_p = 'f'
+		update im_projects set
+			template_p = 'f',
+			project_status_id = [im_project_status_open]
 		where project_id = :cloned_project_id
 	"
     }
