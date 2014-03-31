@@ -2898,10 +2898,15 @@ ad_proc im_project_nuke {
 			project_nr = project_nr || random(),
 			project_path = project_path || random()
 		where parent_id = :project_id"
+
+	# Relocate sub-tasks to the parent, so that they won't
+	# appear as main projects
+	set parent_parent_id [db_string parent_id "select parent_id from im_projects where project_id = :project_id"]
 	db_dml parent_projects "
 		update im_projects 
-		set parent_id = null 
+		set parent_id = :parent_parent_id
 		where parent_id = :project_id"
+
 	if {[im_column_exists im_projects program_id]} {
 	    db_dml program_id "
 		update im_projects 
