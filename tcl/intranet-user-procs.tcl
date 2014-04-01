@@ -1737,15 +1737,18 @@ ad_proc im_supervisor_select {
 } {
 	returns html widget with supervisor
 } {
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set sql [db_list_of_lists sql "
 	select distinct
-		im_name_from_user_id(pe.person_id) as employee_name,
+		im_name_from_user_id(pe.person_id,$name_order) as employee_name,
 		pe.person_id
 	from
 		persons pe,
 		im_employees u
 	where
-		u.supervisor_id = pe.person_id;
+		u.supervisor_id = pe.person_id
+	order by 
+		employee_name
 	"]
 
     set include_empty_name ""
