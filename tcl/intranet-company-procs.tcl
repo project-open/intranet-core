@@ -160,21 +160,21 @@ namespace eval im_company {
 	{-type_id "" }
 	{-exclude_status_id "" }
 	{-always_include_company_id "" }
+	{-with_active_projects_p 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
 	This procedure relies that changes to companies will be 
 	reported to this module.
     } {
-
 	if {"" == $user_id} { set user_id [ad_get_user_id] }
 	
 	# Check if we have calculated this result already
-	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id]
+	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_active_projects_p]
 	if {[ns_cache get im_company $key value]} { return $value }
 
 	# Calculate the options
-	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id]
+	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id -with_active_projects_p $with_active_projects_p]
 
 	# Store the value in the cache
         ns_cache set im_company $key $company_options
@@ -188,6 +188,7 @@ namespace eval im_company {
 	{-type_id "" }
 	{-exclude_status_id "" }
 	{-always_include_company_id "" }
+	{-with_active_projects_p 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
@@ -221,7 +222,11 @@ namespace eval im_company {
 	    im_security_alert_check_integer -value $type_id -location "company_options_not_cached"
 	    lappend criteria "c.company_type_id in ([join [im_sub_categories $type_id] ","])"
 	}
-    
+
+        if {$with_active_projects_p} {
+            lappend criteria "c.company_id in (select company_id from im_projects where parent_id is null and project_status_id in (select * from im_sub_categories([im_project_status_open])))"
+        }
+   
         set where_clause [join $criteria " and\n\t\t"]
         if { ![empty_string_p $where_clause] } { set where_clause " and $where_clause" }
 
@@ -500,6 +505,7 @@ ad_proc -public im_company_options {
     {-type "" }
     {-exclude_status_id "" }
     {-exclude_status "" }
+    {-with_active_projects_p 0}
     {default 0}
 } {
     Cost company options
@@ -511,11 +517,12 @@ ad_proc -public im_company_options {
 
     # Get the options
     set company_options [im_company::company_options \
-		     -user_id $user_id \
-		     -status_id $status_id \
-		     -type_id $type_id \
-		     -exclude_status_id $exclude_status_id \
-		     -always_include_company_id $default \
+			     -user_id $user_id \
+			     -status_id $status_id \
+			     -type_id $type_id \
+			     -exclude_status_id $exclude_status_id \
+			     -always_include_company_id $default \
+			     -with_active_projects_p $with_active_projects_p \
     ]
     if {1 == $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
     return $company_options

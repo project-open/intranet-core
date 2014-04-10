@@ -55,6 +55,7 @@ set object_types {
     im_repeating_cost
     im_report
     im_risk
+    im_rule
     im_sla_parameter
     im_sql_selector
     im_ticket
