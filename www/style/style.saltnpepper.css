@@ -668,7 +668,7 @@ a   span  {float:none;}
    overflow: auto;
 }
 
-/* smartmenu */
+/* smartmenu -- generic */
 
 #main-menu {
     position:relative;
@@ -678,6 +678,8 @@ a   span  {float:none;}
 #main-menu ul {
     width:12em; /* fixed width only please - you can use the "subMenusMinWidth"/"subMenusMaxWidth" script options to override this if you like */
 }
+
+/* smartmenu -- theme: CLEAN */
 
 .sm-clean a {
     color: #333333;
@@ -706,6 +708,39 @@ a   span  {float:none;}
     font-weight:bold;
     color:000000;
 }
+
+/* smartmenu -- theme: SIMPLE */
+
+.sm-simple a {
+    color: #333333;
+    font-size: 11px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-top: 4px;
+}
+
+.sm-simple a:link {
+    text-decoration: none;
+}
+
+.sm-simple li.sm-submenu-item, .sm-clean li.sm-submenu-item a, .sm-clean li.sm-submenu-item a:link {
+    color: #333333;
+    font-size: 12px;
+    line-height: 8px;
+    font-weight: normal;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-top: 4px;
+    text-decoration: none;
+}
+
+.sm-simple li.current a {
+    font-weight:bold;
+    color:000000;
+}
+
+/* smartmenu END */
+
 
 #slave {
       background: #ffffff;
