@@ -533,6 +533,7 @@ ad_proc -public im_company_select {
     {-include_empty_p 1}
     {-include_empty_name ""}
     {-tag_attributes {} }
+    {-with_active_projects_p 0}
     select_name 
     { default "" } 
     { status "" } 
@@ -559,6 +560,7 @@ ad_proc -public im_company_select {
 			     -status $status \
 			     -type $type \
 			     -exclude_status $exclude_status \
+			     -with_active_projects_p $with_active_projects_p \
 			     $default \
     ]
     return [im_options_to_select_box $select_name $company_options $default $tag_attributes]
