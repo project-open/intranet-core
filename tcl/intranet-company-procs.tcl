@@ -161,6 +161,7 @@ namespace eval im_company {
 	{-exclude_status_id "" }
 	{-always_include_company_id "" }
 	{-with_active_projects_p 0}
+	{-with_projects_p 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
@@ -170,11 +171,11 @@ namespace eval im_company {
 	if {"" == $user_id} { set user_id [ad_get_user_id] }
 	
 	# Check if we have calculated this result already
-	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_active_projects_p]
+	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_projects_p $with_active_projects_p]
 	if {[ns_cache get im_company $key value]} { return $value }
 
 	# Calculate the options
-	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id -with_active_projects_p $with_active_projects_p]
+	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id -with_active_projects_p $with_active_projects_p -with_projects_p $with_projects_p]
 
 	# Store the value in the cache
         ns_cache set im_company $key $company_options
@@ -189,6 +190,7 @@ namespace eval im_company {
 	{-exclude_status_id "" }
 	{-always_include_company_id "" }
 	{-with_active_projects_p 0}
+	{-with_projects_p 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
@@ -225,6 +227,10 @@ namespace eval im_company {
 
         if {$with_active_projects_p} {
             lappend criteria "c.company_id in (select company_id from im_projects where parent_id is null and project_status_id in (select * from im_sub_categories([im_project_status_open])))"
+        }
+   
+        if {$with_projects_p} {
+            lappend criteria "c.company_id in (select company_id from im_projects where parent_id is null)"
         }
    
         set where_clause [join $criteria " and\n\t\t"]
@@ -506,6 +512,7 @@ ad_proc -public im_company_options {
     {-exclude_status_id "" }
     {-exclude_status "" }
     {-with_active_projects_p 0}
+    {-with_projects_p 0}
     {default 0}
 } {
     Cost company options
@@ -523,6 +530,7 @@ ad_proc -public im_company_options {
 			     -exclude_status_id $exclude_status_id \
 			     -always_include_company_id $default \
 			     -with_active_projects_p $with_active_projects_p \
+			     -with_projects_p $with_projects_p \
     ]
     if {1 == $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
     return $company_options
@@ -534,6 +542,7 @@ ad_proc -public im_company_select {
     {-include_empty_name ""}
     {-tag_attributes {} }
     {-with_active_projects_p 0}
+    {-with_projects_p 0}
     select_name 
     { default "" } 
     { status "" } 
@@ -561,6 +570,7 @@ ad_proc -public im_company_select {
 			     -type $type \
 			     -exclude_status $exclude_status \
 			     -with_active_projects_p $with_active_projects_p \
+			     -with_projects_p $with_projects_p \
 			     $default \
     ]
     return [im_options_to_select_box $select_name $company_options $default $tag_attributes]
