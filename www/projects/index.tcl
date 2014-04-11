@@ -317,8 +317,6 @@ set user_select_groups {}
 foreach g $managable_profiles {
     lappend user_select_groups [lindex $g 1]
 }
-set user_options [im_profile::user_options -profile_ids $user_select_groups]
-set user_options [linsert $user_options 0 [list $all_l10n ""]]
 
 ad_form -extend -name $form_id -form {
     {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1 include_empty_name $all_l10n} } }
@@ -337,6 +335,10 @@ if {!$filter_advanced_p} {
 set employee_group_id [im_employee_group_id]
 if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_group_id, :user_id, 'read') from dual"]} {
     if {$show_filter_with_member_p} {
+
+	set user_options [im_profile::user_options -profile_ids $user_select_groups]
+	set user_options [linsert $user_options 0 [list $all_l10n ""]]
+
 	ad_form -extend -name $form_id -form {
 	    {user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
 	}
