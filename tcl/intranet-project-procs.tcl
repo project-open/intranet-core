@@ -1795,7 +1795,6 @@ ad_proc im_project_clone_base2 {
 		source_language_id =	:source_language_id,
 		subject_area_id =	:subject_area_id,
 		expected_quality_id =	:expected_quality_id,
-		final_company =		:final_company,
 		trans_project_words =	:trans_project_words,
 		trans_project_hours =	:trans_project_hours
 	where

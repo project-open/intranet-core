@@ -2369,7 +2369,6 @@ ad_proc -public im_import_trans_project_details { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	set final_company [ns_urldecode $final_company]
 	set company_project_nr [ns_urldecode $company_project_nr]
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
@@ -2393,8 +2392,7 @@ SET
 	company_contact_id	= :company_contact_id,
 	source_language_id	= :source_language_id,
 	subject_area_id		= :subject_area_id,
-	expected_quality_id	= :expected_quality_id,
-	final_company		= :final_company
+	expected_quality_id	= :expected_quality_id
 WHERE
 	project_id = :project_id
 "

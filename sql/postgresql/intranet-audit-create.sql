@@ -42,7 +42,6 @@ create table im_projects_audit (
 	start_date			timestamptz,
 	company_contact_id		integer,
 	company_project_nr		text,
-	final_company			text,
 	cost_invoices_cache		float,	
 	cost_quotes_cache		float,		
 	cost_delivery_notes_cache	float,

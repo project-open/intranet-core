@@ -148,8 +148,7 @@ db_foreach im_projects_select $im_projects_sql {
 		project_name = '[anonymize_name $project_name]',
 		description = '[anonymize_name $description]',
 		note = '[anonymize_name $note]',
-		company_project_nr = '[anonymize_name $company_project_nr]',
-		final_company = '[anonymize_name $final_company]'
+		company_project_nr = '[anonymize_name $company_project_nr]'
 	where 
 		project_id = :project_id
     "

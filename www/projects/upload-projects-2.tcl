@@ -120,7 +120,6 @@ foreach csv_line_fields $values_list_of_lists {
     set description ""
     set end_date ""
     set expected_quality_id ""
-    set final_company ""
     set gantt_project_id ""
     set invoice_id ""
     set material_id ""

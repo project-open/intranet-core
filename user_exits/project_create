@@ -106,7 +106,6 @@ my $company_contact_id           = $row->{company_contact_id};
 my $source_language_id           = $row->{source_language_id};
 my $subject_area_id              = $row->{subject_area_id};
 my $expected_quality_id          = $row->{expected_quality_id};
-my $final_company                = $row->{final_company};
 my $corporate_sponsor            = $row->{corporate_sponsor};
 my $percent_completed            = $row->{percent_completed};
 my $on_track_status_id           = $row->{on_track_status_id};
