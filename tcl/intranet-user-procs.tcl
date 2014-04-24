@@ -312,7 +312,7 @@ ad_proc -public im_user_direct_reports_options_helper {
 					cc.manager_id
 				from	im_cost_centers cc,
 					(select cost_center_code as code,
-						length(cost_center_code) len
+						length(cost_center_code) as len
 					from	im_cost_centers
 					where	manager_id = :user_id
 					) t
