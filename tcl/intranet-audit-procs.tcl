@@ -118,21 +118,81 @@ ad_proc -public im_project_audit  {
     {-type_id "" }
     {-action "after_update" }
     {-comment "" }
+    {-debug_p 0}
+    {-catch_error_p 1}
 } {
     Specific audit for projects. This audit keeps track of the cost cache with each
     project, allowing for EVA Earned Value Analysis.
 } {
-    set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
-    if {!$intranet_audit_exists_p} { return "" }
+    set object_id $project_id
 
-    return [im_project_audit_impl \
-		-user_id $user_id \
-		-object_type $object_type \
-		-project_id $project_id \
-		-status_id $status_id \
-		-type_id $type_id \
-		-action $action \
-		-comment $comment
-    ]
+    # Deal with old action names during the transition period
+    if {""       == $action} { set action "after_update" }
+    if {"update" == $action} { set action "after_update" }
+    if {"create" == $action} { set action "after_create" }
+    if {"delete" == $action} { set action "after_delete" }
+    if {"nuke"   == $action} { set action "after_delete" }
+
+    # ToDo: Remove these checks once 4.0 final is out
+    if {"pre_update" == $action} { set action "before_update" }
+    if {"before_view" == $action} { set action "view" }
+    if {"after_view" == $action} { set action "view" }
+
+    if {"" == $object_type || "" == $status_id || "" == $type_id} {
+	if {$debug_p} { ns_log Warning "im_project_audit: object_type, type_id or status_id not defined for object_id=$object_id" }
+	set ref_status_id ""
+	set ref_type_id ""
+	db_0or1row audit_object_info "
+		select	o.object_type,
+			im_biz_object__get_status_id(o.object_id) as ref_status_id,
+			im_biz_object__get_type_id(o.object_id) as ref_type_id
+		from	acs_objects o
+		where	o.object_id = :object_id
+	"
+
+	if {"" == $status_id && "" != $ref_status_id} { set status_id $ref_status_id }
+	if {"" == $type_id && "" != $ref_type_id} { set type_id $ref_type_id }
+    }
+
+    if {$debug_p} { ns_log Notice "im_project_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
+
+    # Submit a callback so that customers can extend events
+    set err_msg ""
+
+    if {$debug_p} { ns_log Notice "im_project_audit: About to call callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id" }
+    if {$catch_error_p} {
+	if {[catch {
+	    callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
+	} err_msg]} {
+	    ns_log Error "im_project_audit: Error with callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id:\n$err_msg"
+	}
+    } else {
+	callback ${object_type}_${action} -object_id $object_id -status_id $status_id -type_id $type_id
+    }
+
+    # Call the audit implementation from intranet-audit commercial package if exists
+    set err_msg ""
+    set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
+
+    if {$debug_p} { ns_log Notice "im_project_audit: intranet_audit_exists_p=$intranet_audit_exists_p" }
+
+    set audit_id 0
+    if {$intranet_audit_exists_p} {
+	if {[catch {
+	    set audit_id [im_project_audit_impl \
+			      -user_id $user_id \
+			      -object_type $object_type \
+			      -project_id $project_id \
+			      -status_id $status_id \
+			      -type_id $type_id \
+			      -action $action \
+			      -comment $comment \
+			 ]
+	} err_msg]} {
+	    ns_log Error "im_project_audit: Error executing im_project_audit_impl: $err_msg"
+	}
+    }
+
+    return $audit_id
 }
 
