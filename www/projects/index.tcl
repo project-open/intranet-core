@@ -710,35 +710,11 @@ set letter $upper_letter
 
 ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html "<ul>"
-
-if {[im_permission $current_user_id "add_projects"]} {
-    append admin_html "<li><a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>\n"
-
-    set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
-    if {$new_from_template_p} {
-        append admin_html "<li><a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>\n"
-    }
-
-    set wf_oid_col_exists_p [im_column_exists wf_workflows object_type]
-    if {$wf_oid_col_exists_p} {
-	set wf_sql "
-		select	t.pretty_name as wf_name,
-			w.*
-		from	wf_workflows w,
-			acs_object_types t
-		where	w.workflow_key = t.object_type
-			and w.object_type = 'im_project'
-	"
-	db_foreach wfs $wf_sql {
-	    set new_from_wf_url [export_vars -base "/intranet/projects/new" {workflow_key}]
-	    append admin_html "<li><a href=\"$new_from_wf_url\">[lang::message::lookup "" intranet-core.New_workflow "New %wf_name%"]</a>\n"
-	}
-    }
+set links [im_menu_projects_admin_links]
+foreach link $links {
+    append admin_html "<li>$link</li>\n"
 }
 
-# Append user-defined menus
-set bind_vars [list return_url $return_url]
-append admin_html [im_menu_ul_list -no_uls 1 "projects_admin" $bind_vars]
 append admin_html "</ul>"
 
 

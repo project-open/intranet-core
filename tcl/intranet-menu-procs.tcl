@@ -121,6 +121,7 @@ ad_proc -public im_menu_ul_list {
     {-no_cache:boolean}
     {-package_key "intranet-core" }
     {-no_uls 0}
+    {-no_lis 0}
     {-check_parent_enabled:boolean}
     parent_menu_label 
     bind_vars 
@@ -142,9 +143,9 @@ ad_proc -public im_menu_ul_list {
     set locale [lang::user::locale -user_id $user_id]
 
     if {$no_cache_p} {
-	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars]
+	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $no_lis $parent_menu_label $bind_vars]
     } else {
-	set result [util_memoize [list im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $parent_menu_label $bind_vars] 3600]
+	set result [util_memoize [list im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $no_lis $parent_menu_label $bind_vars] 3600]
     }
     return $result
 }
@@ -154,6 +155,7 @@ ad_proc -public im_menu_ul_list_helper {
     {-package_key "" }
     user_id
     no_uls
+    no_lis
     parent_menu_label 
     bind_vars
 } {
@@ -206,7 +208,12 @@ ad_proc -public im_menu_ul_list_helper {
 	set admin_html "<a href='$admin_url'>[im_gif wrench]</a>"
 	if {!$admin_p} { set admin_html "" }
     
-	append result "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html</li>\n"
+	set link "<a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html"
+	if {$no_lis} {
+	    lappend result $link
+	} else {
+	    append result "<li>$link</li>\n"
+	}
 	incr ctr
     }
     if {!$no_uls} {append result "</ul>\n" }
