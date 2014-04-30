@@ -711,8 +711,14 @@ set letter $upper_letter
 ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html "<ul>"
 set links [im_menu_projects_admin_links]
-foreach link $links {
-    append admin_html "<li>$link</li>\n"
+foreach link_entry $links {
+    set html ""
+    for {set i 0} {$i < [llength $link_entry]} {incr i 2} {
+	set name [lindex $link_entry $i]
+	set url [lindex $link_entry [expr $i+1]]
+	append html "<a href='$url'>$name</a>"
+    }
+    append admin_html "<li>$html</li>\n"
 }
 
 append admin_html "</ul>"

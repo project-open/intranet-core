@@ -3319,11 +3319,11 @@ ad_proc -public im_menu_projects_admin_links {
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_projects"]} {
-	lappend result_list "<a href=\"/intranet/projects/new\">[_ intranet-core.Add_a_new_project]</a>"
+	lappend result_list [list [_ intranet-core.Add_a_new_project] "/intranet/projects/new"]
 
 	set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
 	if {$new_from_template_p} {
-	    lappend result_list "<a href=\"/intranet/projects/new-from-template\">[lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"]</a>"
+	    lappend result_list [list [lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"] "/intranet/projects/new-from-template"]
 	}
 
 	set wf_oid_col_exists_p [im_column_exists wf_workflows object_type]
@@ -3338,14 +3338,14 @@ ad_proc -public im_menu_projects_admin_links {
 	    "
 	    db_foreach wfs $wf_sql {
 		set new_from_wf_url [export_vars -base "/intranet/projects/new" {workflow_key}]
-		lappend result_list "<a href=\"$new_from_wf_url\">[lang::message::lookup "" intranet-core.New_workflow "New %wf_name%"]</a>"
+		lappend result_list [list [lang::message::lookup "" intranet-core.New_workflow "New %wf_name%"] $new_from_wf_url]
 	    }
 	}
     }
 
     # Append user-defined menus
     set bind_vars [list return_url $return_url]
-    set links [im_menu_ul_list -no_uls 1 -no_lis 1 "projects_admin" $bind_vars]
+    set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "projects_admin" $bind_vars]
     foreach link $links {
 	lappend result_list $link
     }

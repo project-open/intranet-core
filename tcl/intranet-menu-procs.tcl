@@ -121,7 +121,7 @@ ad_proc -public im_menu_ul_list {
     {-no_cache:boolean}
     {-package_key "intranet-core" }
     {-no_uls 0}
-    {-no_lis 0}
+    {-list_of_links 0}
     {-check_parent_enabled:boolean}
     parent_menu_label 
     bind_vars 
@@ -143,9 +143,9 @@ ad_proc -public im_menu_ul_list {
     set locale [lang::user::locale -user_id $user_id]
 
     if {$no_cache_p} {
-	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $no_lis $parent_menu_label $bind_vars]
+	set result [im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $list_of_links $parent_menu_label $bind_vars]
     } else {
-	set result [util_memoize [list im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $no_lis $parent_menu_label $bind_vars] 3600]
+	set result [util_memoize [list im_menu_ul_list_helper -package_key $package_key -locale $locale $user_id $no_uls $list_of_links $parent_menu_label $bind_vars] 3600]
     }
     return $result
 }
@@ -155,7 +155,7 @@ ad_proc -public im_menu_ul_list_helper {
     {-package_key "" }
     user_id
     no_uls
-    no_lis
+    list_of_links
     parent_menu_label 
     bind_vars
 } {
@@ -204,21 +204,27 @@ ad_proc -public im_menu_ul_list_helper {
 	    append url "$var=[ad_urlencode $value]"
 	}
 
+	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
 	set admin_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
-	set admin_html "<a href='$admin_url'>[im_gif wrench]</a>"
-	if {!$admin_p} { set admin_html "" }
-    
-	set link "<a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html"
-	if {$no_lis} {
-	    lappend result $link
+	set admin_gif [im_gif wrench]
+
+	if {$list_of_links} {
+	    if {!$admin_p} {
+		lappend result [list $name_l10n $url]
+	    } else {
+		lappend result [list $name_l10n $url $admin_gif $admin_url]
+	    }
 	} else {
+	    set admin_html "<a href='$admin_url'>$admin_gif</a>"
+	    if {!$admin_p} { set admin_html "" }
+	    set link "<a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html"
 	    append result "<li>$link</li>\n"
 	}
 	incr ctr
     }
     if {!$no_uls} {append result "</ul>\n" }
-
     if {0 == $ctr} { set result "" }
+
     return $result
 }
 
