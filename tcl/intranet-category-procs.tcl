@@ -504,10 +504,10 @@ ad_proc -public template::widget::im_category_tree {
     }
 
     if { "edit" == $element(mode)} {
-	append category_html [im_category_select -translate_p 1 -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value]
+	append category_html [im_category_select -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value]
     } else {
 	if {"" != $default_value && "\{\}" != $default_value} {
-	    append category_html [im_category_from_id $default_value]
+	    append category_html [im_category_from_id -translate_p $translate_p -package_key $package_key $default_value]
 	}
     }
     return $category_html
