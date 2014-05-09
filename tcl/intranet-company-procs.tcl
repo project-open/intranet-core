@@ -920,3 +920,35 @@ ad_proc -public im_company_contacts_component {
 }
 
 
+
+ad_proc -public im_menu_companies_admin_links {
+
+} {
+    Return a list of admin links to be added to the "companies" menu
+} {
+    set result_list {}
+    set current_user_id [ad_get_user_id]
+    set return_url [im_url_with_query]
+
+    # Add companies 
+    if {[im_permission $current_user_id "add_companies"]} {
+	lappend result_list [list [_ intranet-core.Add_a_new_company] "/intranet/companies/new"]
+    }
+    # Upload Companies 
+
+    if { [im_is_user_site_wide_or_intranet_admin $current_user_id] } {
+	lappend result_list [list [_ intranet-core.Import_Company_CSV] "/intranet/companies/upload-companies?[export_url_vars return_url]"]
+    }
+
+    # Advanced Filtering 
+    lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/companies/index?filter_advanced_p=1"]
+
+    # Append user-defined menus
+    set bind_vars [list return_url $return_url]
+    set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "companies_admin" $bind_vars]
+    foreach link $links {
+        lappend result_list $link
+    }
+
+    return $result_list
+}

@@ -1756,3 +1756,29 @@ ad_proc im_supervisor_select {
 
     return [im_options_to_select_box "user_supervisor_id" $sql $default]
 }
+
+
+ad_proc -public im_menu_users_admin_links {
+
+} {
+    Return a list of admin links to be added to the "users" menu
+} {
+    set result_list {}
+    set current_user_id [ad_get_user_id]
+    set return_url [im_url_with_query]
+
+    if {[im_permission $current_user_id "add_users"]} {
+	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
+	lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
+	lappend result_list [list [_ intranet-core.Import_User_CSV] "/intranet/users/upload-contacts?[export_url_vars return_url]"]
+    }
+
+    # Append user-defined menus
+    set bind_vars [list return_url $return_url]
+    set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "users_admin" $bind_vars]
+    foreach link $links {
+        lappend result_list $link
+    }
+
+    return $result_list
+}

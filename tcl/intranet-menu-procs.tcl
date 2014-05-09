@@ -325,11 +325,40 @@ ad_proc -public im_menu_li_helper {
 	set value $bind_vars_hash($var)
 	append url "$var=[ad_urlencode $value]"
     }
-
-
     return "<li $class_html><a href=\"$url\">[lang::message::lookup "" "$package_key.$name_key" $name]</a>\n"
-
-
-
 }
 
+
+ad_proc -public im_menu_links {
+    label
+} {
+    Return a list of links and admin links for a parent menu item:
+    	1) menu_item_name menu_item_absolute_url
+	2) wrench_html menu_item_admin_url
+} {
+    set result_list [list]
+    set result_list_admin [list] 
+    set current_user_id [ad_get_user_id]
+    set return_url [im_url_with_query]
+
+    # Create SubMenu "new FinDocs"
+    set parent_menu_sql "select menu_id from im_menus where label='$label'"
+    set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default ""]]
+
+    set menu_select_sql "
+        select  m.*
+        from    im_menus m
+        where   parent_menu_id = :parent_menu_id
+                and enabled_p = 't'
+                and im_object_permission_p(m.menu_id, :current_user_id, 'read') = 't'
+        order by sort_order
+"
+    db_foreach menu_select $menu_select_sql {
+        ns_log Notice "im_sub_navbar: menu_name='$name'"
+        regsub -all " " $name "_" name_key
+        set wrench_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
+	lappend result_list "[list [_ intranet-invoices.$name_key] $url] [list [im_gif wrench] $wrench_url]"
+    }
+
+    return $result_list
+}

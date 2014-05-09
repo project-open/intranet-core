@@ -450,17 +450,29 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 	set new_office ""
     }
 
-    return  "
-<div id=\"navbar_sub_wrapper\">
-   $alpha_bar
-   <ul id=\"navbar_sub\">
-      $standard
-      $new_office
-   </ul>
-</div>
-"
-}
 
+    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
+            return  "
+                <div id=\"navbar_sub_wrapper\">
+                   $alpha_bar
+                   <ul id=\"navbar_sub\">
+                      $standard
+                      $new_office
+                   </ul>
+                </div>
+         "
+    } else {
+	    return  "
+		<div class=\"navbar_sub_wrapper_sm\">
+		   $alpha_bar
+		   <ul id=\"navbar_main\" class=\"sm\">
+		      $standard
+		      $new_office
+		   </ul>
+		</div>
+    	 "
+    }
+}
 
 
 ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
@@ -584,16 +596,16 @@ ad_proc -public im_navbar_tab {
     selected
 } {} {
     if {$selected} {
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
+	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
 	    return "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
 	} else {
-	    return "<li class=\"current\"><div class=\"navbar_selected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
+	    return "<li class=\"selected\"><a href=\"$url\"><span>$name</span></a></li>\n"
 	}
     }
-    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
+    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
 	return "<li class=\"unselected\"><div class=\"navbar_unselected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
     } else {
-	return "<li><div class=\"navbar_unselected\"><a href=\"$url\"><span>$name</span></a></div></li>\n"
+	return "<li class=\"unselected\"><a href=\"$url\"><span>$name</span></a></li>\n"
     }
 }
 
@@ -628,8 +640,6 @@ ad_proc -public im_sub_navbar {
     set navbar ""
     set found_selected 0
     set selected 0
-
-
 
     if {"" == $current_plugin_id} { set current_plugin_id 0 }
 
@@ -754,13 +764,13 @@ ad_proc -public im_sub_navbar {
     }
 
     return "
- 	 <div id=\"navbar_sub_wrapper\">
-	    <span id='titleSubmenu'>$title</span>
-	    <ul id=\"navbar_sub\">
-	      $navbar
-	    </ul>
-	 </div>
-   "
+         <div id=\"navbar_sub_wrapper\">
+            <span id='titleSubmenu'>$title</span>
+            <ul id=\"navbar_sub\">
+              $navbar
+            </ul>
+         </div>
+        "
 }
 
 ad_proc -private im_sub_navbar_menu_helper { 
@@ -814,15 +824,16 @@ ad_proc -public im_navbar {
 } {
     Switch - Redesigning Navbar/Header for version 5 
 } {
+    set legacy_framework_version_4_p [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1]
     if { $loginpage } { 
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
-	    return [im_navbar_version_4 -loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
+	if { $legacy_framework_version_4_p } {
+	    return [im_navbar_legacy_version_4 -loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
 	} else {
 	    return [im_navbar_version_5 -loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
 	}
     } else {
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
-	    return [im_navbar_version_4 -show_context_help_p $show_context_help_p $main_navbar_label] 
+	if { $legacy_framework_version_4_p } {
+	    return [im_navbar_legacy_version_4 -show_context_help_p $show_context_help_p $main_navbar_label] 
 	} else {
 	    return [im_navbar_version_5 -show_context_help_p $show_context_help_p $main_navbar_label] 
 	}
@@ -830,7 +841,7 @@ ad_proc -public im_navbar {
 }
 
 
-ad_proc -public im_navbar_version_4 {
+ad_proc -public im_navbar_legacy_version_4 {
     { -loginpage:boolean 0 }
     { -show_context_help_p 0 }
     { main_navbar_label "" }
@@ -992,7 +1003,7 @@ ad_proc -public im_navbar_version_4 {
 
     append main_users_and_search "
             </div>
-            <div id=\"main_search\" style='margin-top:-8;'>
+            <div id=\"main_search_v4\">
               [im_header_search_form]
             </div>
           </div>
@@ -1007,8 +1018,8 @@ ad_proc -public im_navbar_version_4 {
 
     return "
             <div id=\"main\">
-               <div id=\"navbar_main_wrapper\">
-                  <ul id=\"navbar_main\">
+               <div id=\"navbar_main_wrapper_v4\">
+                  <ul id=\"navbar_main_v4\" class=\"sm\">
                      $navbar
                   </ul>
                </div>
@@ -1130,57 +1141,93 @@ ad_proc -public im_navbar_version_5 {
 	set name_key "intranet-core.[lang::util::suggest_key $name]"
 	set name [lang::message::lookup "" $name_key $name]
 
-	# Get first level sub_menus
-	set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
-	set navbar_build ""
-	if { [llength $level_one_menu_list] > 0 } {
-	    if { $selected } {set selected_class "current"} else {set selected_class ""}
-	    append navbar_build "<li class='$selected_class'><a class='has-submenu' href='$url'>$name</a><ul class='sm sm-clean'>"
-	    foreach level_one_menu_list_item $level_one_menu_list {
-		set level_one_menu_id [lindex $level_one_menu_list_item 0]
-		set level_one_package_name [lindex $level_one_menu_list_item 1]
-		set level_one_label [lindex $level_one_menu_list_item 2]
-		set level_one_name [lindex $level_one_menu_list_item 3]
-		set level_one_url [lindex $level_one_menu_list_item 4]
-		set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
-		append navbar_build "<li class='sm-submenu-item'><a href='$level_one_url'>$level_one_name</a></li>"
-	    }    
-	    append navbar_build "</ul></li>"
-	} else {
-	    append navbar_build "<li><a href='$url'>$name</a></li>"
-	}    
-	
-	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	    # append navbar [im_navbar_tab $url $name $selected]
-	    append navbar $navbar_build
-	}
+	# No menues on register and login page 
+        if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+	    switch $label {
+		"projects" {
+		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label]
+		}
+		"user" {
+		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label]
+
+		}
+		"companies" {
+		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label]
+		}
+
+		"helpdesk" {
+		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label]
+		}
+
+		"finance" {
+		    set submenus ""
+		    # Get a list of Provider links {menu_name menu_link admin_name admin_link}
+		    set sub_menu_providers [im_menu_links "invoices_providers"]
+		    if { "" != $sub_menu_providers } {
+			append submenus "[im_navbar_version_5_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label ""]"
+		    }
+
+		    set sub_menu_customers [im_menu_links "invoices_customers"]
+		    if { "" != $sub_menu_customers } {
+			append submenus "[im_navbar_version_5_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label ""]"
+		    }
+
+		    # Build
+		    if { "" != $submenus } {
+			append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
+		    } else {
+			append navbar "<li class='unselected'><a href='$url'><span>$name</span></a></li>"
+		    }
+		}
+		default {
+		    # Get first level sub_menus
+		    set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
+		    if { [llength $level_one_menu_list] > 0 } {
+			append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
+			foreach level_one_menu_list_item $level_one_menu_list {
+			    set level_one_menu_id [lindex $level_one_menu_list_item 0]
+			    set level_one_package_name [lindex $level_one_menu_list_item 1]
+			    set level_one_label [lindex $level_one_menu_list_item 2]
+			    set level_one_name [lindex $level_one_menu_list_item 3]
+			    set level_one_url [lindex $level_one_menu_list_item 4]
+			    set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
+			    append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
+			}    
+			append navbar "</ul></li>"
+		    } else {
+			append navbar "<li class=\"unselected\"><a href='$url'><span>$name</span></a></li>"
+		    }    
+		}
+	    }
+	}	
 	incr ctr
     }
 
+    # Required to create sub-Links
+    set page_url [im_component_page_url]
+
     # My Settings 
     if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	append navbar "<li><a class='has-submenu'> [lang::message::lookup "" intranet-core.MySettings "My Settings"]</a>
-	<ul class='sm sm-clean'>
-	<li class='sm-submenu-item'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
+	append navbar "<li class='unselected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+	<ul>
+	<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	"
 	# Change PW only when 
 	if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</li></a>"}
 	
 	append navbar "
-	<li class='sm-submenu-item'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
-	<li class='sm-submenu-item'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
+	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
+	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
 	</ul>
         </li>
     	"
-
-	if {$admin_p} {
-	    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
-	    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	    append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
-	}
+	
+	# if {$admin_p} {
+	#    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	#    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
+	#    append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+	# }
     }
-
-    set page_url [im_component_page_url]
 
     # Display a maintenance message in red when performing updates etc...
     set maintenance_message [string trim [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
@@ -1188,8 +1235,8 @@ ad_proc -public im_navbar_version_5 {
     # New Navbar
     return "
 	    <div id=\"main\">
-	       <div id=\"navbar_main_wrapper_\">
-		  <ul id=\"main-menu\" class=\"sm sm-clean\">$navbar</ul>
+	       <div id=\"navbar_main_wrapper\">
+		  <ul id=\"navbar_main\" class=\"sm\">$navbar</ul>
 	       </div>
 	       <div id=\"main_header\">
 		  <!--<div id=\"main_title\">$page_title</div>-->
@@ -1198,6 +1245,37 @@ ad_proc -public im_navbar_version_5 {
 	       </div>
 	    </div>
     "
+}
+
+
+ad_proc -public im_navbar_version_5_submenu {
+    -level_one_menu_list:required
+    -url:required 
+    -name:required
+    -label:required
+} {
+    Builds the sub-menu list and adds an additional sub-menu if "wrenches" are found toadmin the menu item list 
+} {
+    if { [llength $level_one_menu_list] > 0 } { 
+	set navbar_build_admin "" 
+	append navbar_build "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
+	foreach level_one_menu_list_item $level_one_menu_list {
+	    append navbar_build "<li class='unselected'><a href='[lindex $level_one_menu_list_item 1]'><span>[lindex $level_one_menu_list_item 0]</span></a></li>"
+	    if {4 == [llength $level_one_menu_list_item] } {
+		append navbar_build_admin "<li class='unselected'><a href='[lindex $level_one_menu_list_item 3]'><span>[lindex $level_one_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>"
+	    }
+	}
+	#Check if we show Config sub-menu item 
+	if { "" != $navbar_build_admin } {
+	    append navbar_build "<li class='unselected'><a class='has-submenu' href='#'><span style='color:#53F5D7'>[lang::message::lookup "" intranet-core.AdminLinks "Configure these links"]&nbsp;[im_gif wrench]</span></a><ul>"
+	    append navbar_build "<li class='unselected'><a href='/intranet/admin/menus/index?label_str=$label'><span>\[[lang::message::lookup "" intranet-core.ParentItem "Parent Menu Item"]\]&nbsp;[im_gif wrench]</span></a></li>"
+	    append navbar_build $navbar_build_admin
+	    append navbar_build "</ul></li>"
+	}
+	append navbar_build "</ul></li>"
+    } else {
+	append navbar_build "<li class=\"unselected\"><a href='$url'><span>$name</span></a></li>"
+    }
 }
 
 
@@ -1308,15 +1386,15 @@ ad_proc -public im_header_logout_component {
 } {
     Switch - Redesigning Navbar/Header for version 5    
 } {
-    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
-	return [im_header_logout_component_version_4 -page_url $page_url -return_url $return_url -user_id $user_id]
+    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
+	return [im_header_logout_component_legacy_version_4 -page_url $page_url -return_url $return_url -user_id $user_id]
     } else {
-	return [im_header_logout_component_version_5 -page_url $page_url -return_url $return_url -user_id $user_id]
+	return [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
     }
 }
 
 
-ad_proc -public im_header_logout_component_version_4 {
+ad_proc -public im_header_logout_component_legacy_version_4 {
     -page_url:required
     -return_url:required
     -user_id:required
@@ -1371,7 +1449,7 @@ ad_proc -public im_header_logout_component_version_4 {
     "
 }
 
-ad_proc -public im_header_logout_component_version_5 {
+ad_proc -public im_header_logout_component {
     -page_url:required
     -return_url:required
     -user_id:required
@@ -1413,22 +1491,22 @@ ad_proc -public im_header {
     Switch from HEADER Version 4.0 to 5.0 
 } {
     if { $loginpage } { 
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
-	    return [im_header_version_4 -no_head_p $no_head_p -no_master_p -loginpage $no_master_p $page_title $extra_stuff_for_document_head ]
+	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
+	    return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p -loginpage $no_master_p $page_title $extra_stuff_for_document_head ]
 	} else {
-	    return [im_header_version_5 -no_head_p $no_head_p -no_master_p -loginpage $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
+	    return [im_header -no_head_p $no_head_p -no_master_p -loginpage $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
 	}
     } else {
-        if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "HeaderVersion4P" -default 1] } {
-            return [im_header_version_4 -no_head_p $no_head_p -no_master_p $no_master_p $page_title $extra_stuff_for_document_head ]
+        if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
+            return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p $no_master_p $page_title $extra_stuff_for_document_head ]
         } else {
-            return [im_header_version_5 -no_head_p $no_head_p -no_master_p $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
+            return [im_header -no_head_p $no_head_p -no_master_p $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
         }
     }
 }
 
 
-ad_proc -public im_header_version_4 {
+ad_proc -public im_header_legacy_version_4 {
     { -no_head_p "0"}
     { -no_master_p "0"}
     { -loginpage:boolean 0 }
@@ -1680,7 +1758,7 @@ ad_proc -public im_header_version_4 {
 }
 
 
-ad_proc -public im_header_version_5 { 
+ad_proc -public im_header { 
     { -no_head_p "0"}
     { -no_master_p "0"}
     { -loginpage:boolean 0 }
@@ -2069,8 +2147,7 @@ ad_proc -public im_footer {
     <div id=\"footer\" style=\"visibility: visible\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: 
        <a href=\"mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
-	  [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
-       </a> 
+	  [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]</a>.
     </div>
   $footer_html
   </BODY>
@@ -2102,15 +2179,17 @@ ad_proc -public im_stylesheet {} {
     if {[llength [info procs im_package_calendar_id]]} { template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" -order "5" }
     template::head::add_css -href "/intranet/style/print.css" -media "print" -order "10" 
     template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" -order "15" 
+
     template::head::add_css -href "/intranet/style/smartmenus/sm-core-css.css" -media "screen" -order "25"
-    template::head::add_css -href "/intranet/style/smartmenus/sm-clean/sm-clean.css" -media "screen" -order "30"
+
+    template::head::add_css -href "/intranet/style/smartmenus/sm-simple/sm-simple.css" -media "screen" -order "30"
+    # template::head::add_css -href "/intranet/style/smartmenus/sm-tabj/sm-tabj.css" -media "screen" -order "30"
   
     template::head::add_css -href $system_css -media "screen" -order "40" 
     template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen" 
     template::head::add_css -href "/resources/acs-templating/forms.css" -media "screen" 
 
     template::head::add_javascript -src "/intranet/js/jquery.min.js" -order "10" 
-    # template::head::add_javascript -src "/intranet/js/smartmenus/jquery.js" -order "10" 
 
     template::head::add_javascript -src "/resources/acs-templating/mktree.js" -order "20" 
     template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" -order "30" 
