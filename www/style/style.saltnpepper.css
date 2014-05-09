@@ -117,7 +117,6 @@
 
 /*  END: TEST WITH INCLUDE STYLE.LEFT.CSS */
 
-
 		
 body, p, td {
    font-family: verdana, arial, helvetica, sans-serif; 
@@ -148,22 +147,23 @@ a:hover {
 }
 
 
+/* ---------    START: HEADER ------------------------- */
 
 developer-support-adp-box-off {
-	 display: none;
+    display: none;
 }
 
 .logotext {
-  position: relative;
-  font-weight: bold;
-  text-transform: uppercase;
-  top: 1pt;
+    position: relative;
+    font-weight: bold;
+    text-transform: uppercase;
+    top: 1pt;
 }
 
 .logobracket {
-  position: relative;
-  color: #adde6b;
-  top: -1pt;
+    position: relative;
+    color: #adde6b;
+    top: -1pt;
 }
 
 #monitor_frame {
@@ -225,54 +225,45 @@ developer-support-adp-box-off {
 }
 
 #header_skin_select {
-	color: #666;
-	font-size: 8pt;
-	position: absolute;
-	top: 25px;
-	right: 118px;
-	display: block;
+    color: #666;
+    font-size: 8pt;
+    position: absolute;
+    top: 25px;
+    right: 118px;
+    display: block;
 }
 
 #header_skin_select form {
-	display: inline;
-	/* margin:-4px 0 0 0; */
-	position: absolute;
-	/*height: 20px;*/
-	font-size: 8px;
+    display: inline;
+    position: absolute;
+    font-size: 8px;
 }
 
 #header_skin_select input {
-  display: none;
+    display: none;
     margin:0 0 0 0;
 }
 
-
 #header_skin_select select {
-	background-color:#CFDBFF;
-	border:1px solid #666666;
-	color:#666666;
-	font-family: Arial;
-	font-size:8pt;
-	height: 18px;
-	width: 90px;
+    background-color:#CFDBFF;
+    border:1px solid #666666;
+    color:#666666;
+    font-family: Arial;
+    font-size:8pt;
+    height: 18px;
+    width: 90px;
 }
-
-#skin_select {
-
-}
-
-
 
 #header_logo {
- position: absolute;
-  left: 0px;
-  top: 0px;
-  font-size: 16pt;
-  font-family: tahoma,sans-serif;
-  font-weight: bold;
-  color: #ffffff;
-  z-index: 101;
-  width: 50%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    font-size: 16pt;
+    font-family: tahoma,sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 101;
+    width: 50%;
 }
 
 #header_plugin_left {
@@ -280,7 +271,7 @@ developer-support-adp-box-off {
   left: 250px;
   top: 20px;
   z-index: 200;
-	float:left;
+  float:left;
 }
 
 #header_plugin_right {
@@ -288,7 +279,7 @@ developer-support-adp-box-off {
   left: 250px;
   top: 20px;
   z-index: 200;
-	float:left;
+  float:left;
 }
 
 #header_logo A IMG {
@@ -297,23 +288,22 @@ developer-support-adp-box-off {
 }
 
 #main {
-	position: relative;
-	-moz-box-sizing: content-box;
-	moz-box-sizing: content-box;
+    position: relative;
+    z-index:2; 
 }
 
 #main_portrait_and_username {
-	position: absolute;
-	top: 10px;
-	left: 30px;
-	z-index: 1;
-	visibility: hidden;
-	height: 46px;
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    z-index: 1;
+    visibility: hidden;
+    height: 46px;
 }
 
 #main_portrait {
-  float: left;
-	visibility: hidden;
+    float: left;
+    visibility: hidden;
 }
 
 #main_portrait IMG {
@@ -330,18 +320,21 @@ developer-support-adp-box-off {
 }
 
 .main_users_and_search {
-	float:right;
-	padding-top:5px;
-	width:auto;
-	height:23px;
+    float:right;
+    padding-top:5px;
+    width:auto;
+    height:23px;
     font-weight: normal;
 }
-#main_header_deco {}
+
+#main_search_v4 {
+    float:left;
+    padding-right: 5px;
+}
 
 #main_search {
-    padding-top: 10px;
     float:right;
-    padding-right: 5 px;
+    margin-top:5px;
 }
 
 .main_users_online { 
@@ -361,219 +354,384 @@ developer-support-adp-box-off {
    top: -3px;
 }
 
-/* ---------    START: NAV_BAR_MAIN ------------------------- */
-
 #main_header {
-	font-weight: bold;
-	margin-bottom: 20px;
-	/* height: 25px; */
-	background: #fff;
-	width: 100%;
-	color:#000000;
-	/*border-bottom: 1px solid #24618E; */
-	display: block;
-	position: relative;
+    font-weight: bold;
+    margin-bottom: 20px;
+    /* height: 25px; */
+    background: #fff;
+    width: 100%;
+    color:#000000;
+    /*border-bottom: 1px solid #24618E; */
+    display: block;
+    position: relative;
+    z-index:500;
 }
 
 #main_header_v4 {
-        font-weight: bold;
-        margin-bottom: 20px;
-        height: 25px; 
-        background: #fff;
-        width: 100%;
-        color:#000000;
-        border-bottom: 1px solid #24618E; 
-        display: block;
-        position: relative;
+    font-weight: bold;
+    margin-bottom: 20px;
+    height: 25px; 
+    background: #fff;
+    width: 100%;
+    color:#000000;
+    border-bottom: 1px solid #24618E; 
+    display: block;
+    position: relative;
 }
+
+/* ---------    START: NAV_BAR_MAIN_v4 ------------------------- */
+
+#navbar_main_wrapper_v4 {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    background-color: #2E2E2E;
+    color: #000000;
+    font-family: verdana,arial,helvetica,sans-serif;
+    font-size: 8pt;
+}
+
+#navbar_main_wrapper_v4 ul {
+    margin:0;
+    padding:10px 8px 0px 0px;
+    list-style:none;
+    overflow: visible;
+    z-index: 500;
+    position: relative;
+}
+
+#navbar_main_v4 {
+    width:100%;
+    background:#fff;
+    line-height:normal;
+    border-bottom:1px solid #24618E;
+    height:22px;
+    left:0px;
+}
+
+#navbar_main_v4 li {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+
+#navbar_main_v4 li.unselected a {
+    color: #666;
+    float:left;
+    height:auto;
+}
+
+#navbar_main_v4 li.selected a {
+    background-color: #fff;
+    background-position:0% -42px;
+    height:auto;
+    /*float:none;position:static;z-index:0;display:inline;;*/
+}
+
+#navbar_main_v4 li.selected a span {
+    color: #fff;					 
+    background-position:100% -42px;
+    /*float:none;position:static;z-index:0;display:inline;;*/
+}	
+
+#navbar_main_v4 a {
+    float: left;
+    background: url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
+    margin: 0;
+    padding: 0 0 0 5px;
+    text-decoration: none;
+}
+
+#navbar_main_v4 a span {
+    float: left;
+    display: block;
+    background: url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
+    padding: 4px 15px 4px 8px;
+    color: #24618E;
+    margin-left:-2px;
+}
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#navbar_main_v4 a span  {float:none;}
+/* End IE5-Mac hack */
+
+#navbar_main_v4 a:hover {
+    color:#FFF;
+    background-position:0% -42px;
+}
+
+#navbar_main_v4 a:hover span {
+    background-position:100% -42px;
+    color:#FFF;
+}
+
+
+/* ---------    END: NAV_BAR_MAIN_V4 ------------------------- */
+
+
+/* ---------    START: NAV_BAR_MAIN ------------------------- */
 
 #navbar_main_wrapper {
-	position: relative;
-	left: 0px;
-	top: 0px;
-	background-color: #2E2E2E;
-        -moz-box-sizing: content-box;
-	box-sizing: content-box;
-	color: #000000;
-	font-family: verdana,arial,helvetica,sans-serif;
-	font-size: 8pt;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    background-color: #2E2E2E;
+    color: #000000;
+    font-family: verdana,arial,helvetica,sans-serif;
+    font-size: 8pt;
+    z-index:501;
 }
+
+/* Menu box
+===================*/
 
 #navbar_main {
-	width:100%;
-	background:#fff;
-	line-height:normal;
-	border-bottom:1px solid #24618E;
-	height:22px;
-	left:0px;
+    position:relative;
+    z-index:502;
+    width:100%;
+    padding:10px 8px 0px 0px;
+    background:#fff;
+    line-height:normal;
+    border-bottom:1px solid #24618E;
+    /* Removed due to avoid probs w/ box-sizing: border-box
+    height:22px; */
+    left:0px;
 }
 
-    #navbar_main_wrapper ul {
-	margin:0;
-	padding:10px 8px 0px 0px;
-	list-style:none;
-	overflow: visible;
-	z-index: 500;
-	position: relative;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
-      }
+#navbar_main ul {
+    border:1px solid #24618E;
+    padding:4px 0;
+    background:#fff;
+    -moz-box-shadow:0 5px 9px rgba(0,0,0,0.2);
+    -webkit-box-shadow:0 5px 9px rgba(0,0,0,0.2);
+    box-shadow:0 5px 9px rgba(0,0,0,0.2);
+}
 
-    #navbar_main li {
-	display:inline;
-	margin:0;
-	padding:0;
-	
-      }
-			
-    #navbar_main li.unselected a {
-	color: #666;
-	float:left;
-	height:auto;
-	
-      }
+/* Menu items
+===================*/
 
-    #navbar_main li.selected a {
-			background-color: #fff;
-      background-position:0% -42px;
-			height:auto;
-			/*float:none;position:static;z-index:0;display:inline;;*/
-		
-      }
-	
-    #navbar_main li.selected a span {
-			color: #fff;					 
-      background-position:100% -42px;
-			/*float:none;position:static;z-index:0;display:inline;;*/
-      }
-			
-			
-    #navbar_main a {
-	float: left;
-	background: url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
-	margin: 0;
-	padding: 0 0 0 5px;
-	text-decoration: none;
-      }
-#navbar_main   a   span  {
-      float: left;
-      display: block;
-      background: url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
-      padding: 4px 15px 4px 8px;
-      color: #24618E;
-	  margin-left:-2px;
-      }
-#navbar_main   /* Commented Backslash Hack hides rule from IE5-Mac \*/
-a   span  {float:none;}
-    /* End IE5-Mac hack */
+#navbar_main a {
+    padding:0 0 0 5px;
+    background:url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
+    color:#24618E;
+    text-decoration:none;
+}
 
-    #navbar_main a:hover {
-      color:#FFF;
-      background-position:0% -42px;
-      }
-    #navbar_main a:hover span {
-      background-position:100% -42px;
-			color:#FFF;
-      }
+#navbar_main a span {
+    display:inline-block;
+    margin-left:-2px;
+    padding:4px 15px 4px 8px;
+    background:url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
+}
+
+#navbar_main a:hover, #navbar_main a:focus, #navbar_main a:active,
+#navbar_main a.highlighted {
+    background-position:0% -42px;
+    color:#fff;
+}
+
+#navbar_main a:hover span, #navbar_main a:focus span, #navbar_main a:active span,
+#navbar_main a.highlighted span {
+    background-position:100% -42px;
+}
+
+#navbar_main a.has-submenu span {
+    padding-right:20px;
+}
+
+#navbar_main li.selected > a {
+    color:#fff;
+    background-position:0% -42px;
+}
+
+#navbar_main li.selected > a span {
+    background-position:100% -42px;
+}
+
+#navbar_main ul a {
+    background:transparent;
+    color:#24618E;
+    padding:5px 15px;
+}
+
+#navbar_main ul a span {
+    display:inline;
+    background:transparent;
+    margin:0;
+    padding:0;
+}
+
+#navbar_main ul a:hover, #navbar_main ul a:focus, #navbar_main ul a:active,
+#navbar_main ul a.highlighted {
+    background:#24618E;
+    color:#fff;
+}
+
+#navbar_main ul a:hover span, #navbar_main ul a:focus span, #navbar_main ul a:active span,
+#navbar_main ul a.highlighted span {
+    background-position:100% -42px;
+}
+
+#navbar_main ul a.has-submenu {
+    padding-right:24px;
+}
+
+#navbar_main ul a.has-submenu span {
+    padding-right:0;
+}
+
+#navbar_main ul li.selected > a {
+    background:#24618E;
+    color:#fff;
+}
+
+/* Sub menu indicators
+===================*/
+
+#navbar_main a span.sub-arrow {
+    position:absolute;
+    right:9px;
+    top:50%;
+    margin:-1px 0 0 0;
+    padding:0;
+    background:transparent;
+    width:0;
+    height:0;
+    overflow:hidden;
+    border-top:4px solid; 
+    border-left:4px dashed transparent;
+    border-right:4px dashed transparent;
+}
+
+#navbar_main ul a span.sub-arrow {
+    right:12px;
+    margin-top:-4px;
+    border-left:4px solid; /* tweak size of the arrow */
+    border-top:4px dashed transparent;
+    border-right:0;
+    border-bottom:4px dashed transparent;
+}
+
+/* Scrolling arrows containers for tall sub menus
+===================*/
+
+#navbar_main span.scroll-up, #navbar_main span.scroll-down {
+    position:absolute;
+    display:none;
+    visibility:hidden;
+    overflow:hidden;
+    background:#fff;
+    height:16px;
+    /* width and position will be automatically set by the script */
+}
+
+#navbar_main span.scroll-up-arrow, #navbar_main span.scroll-down-arrow {
+    position:absolute;
+    top:-2px;
+    left:50%;
+    margin-left:-6px;
+    /* we will use one-side border to create a triangle so that we don't use a real background image, of course, you can use a real image if you
+       width:0;
+       height:0;
+       overflow:hidden;
+       border-width:6px; /* tweak size of the arrow */
+    border-style:dashed dashed solid dashed;
+    border-color:transparent transparent #24618E transparent;
+}
+
+#navbar_main span.scroll-down-arrow {
+    top:6px;
+    border-style:solid dashed dashed dashed;
+    border-color:#24618E transparent transparent transparent;
+}
 
 /* ---------    END: NAV_BAR_MAIN ------------------------- */
+
 
 
 /* ---------    START: NAV_BAR_SUB ------------------------- */
 
 #navbar_sub_wrapper {
-	position: relative;
-	width: 100%;
-	height: 25px;
-	background-color: #fff;
-	border-bottom: 1px solid #24618E;
+    position: relative;
+    width: 100%;
+    height: 25px;
+    background-color: #fff;
+    border-bottom: 1px solid #24618E;
 }
 
 #navbar_sub {
-  font-size:80%;
-  position: absolute;
-  right: 0;
-  margin: 0;
-  bottom: -2px;
-  list-style: none;
-  line-height: normal;
+    font-size:80%;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    bottom: -2px;
+    list-style: none;
+    line-height: normal;
 }
 
-    #navbar_sub_wrapper ul {
-	  margin:0;
-	  padding:10px 10px 2px 1px;
-	  list-style:none;
-      }
-    #navbar_sub li {
-      display:inline;
-      margin:0;
-      padding:0;
-      }
-			
-    #navbar_sub li.unselected a {
-			color: #666;
-      float:left;
-			height:auto;
-		  padding:0pt 0pt 0pt 3px;
-      }
+#navbar_sub_wrapper ul {
+    margin:0;
+    padding:10px 10px 2px 1px;
+    list-style:none;
+}
 
-    #navbar_sub li.selected a {
-			background-color: #fff;
-      background-position:0% -42px;
-			height:auto;
-			padding:0pt 0pt 0pt 3px;
-			
-			
-			/*float:none;position:static;z-index:0;display:inline;;*/
-      }
+#navbar_sub li {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+
+#navbar_sub li.unselected a {
+    color: #666;
+    float:left;
+    height:auto;
+    padding:0pt 0pt 0pt 3px;
+}
+
+#navbar_sub li.selected a {
+    background-color: #fff;
+    background-position:0% -42px;
+    height:auto;
+    padding:0pt 0pt 0pt 3px;
+    /*float:none;position:static;z-index:0;display:inline;;*/
+}
 	
-    #navbar_sub li.selected a span {
-			color: #fff;					 
-      background-position:100% -42px;
-	  
-			/*float:none;position:static;z-index:0;display:inline;;*/
-      }
+#navbar_sub li.selected a span {
+    color: #fff;					 
+    background-position:100% -42px;
+    /*float:none;position:static;z-index:0;display:inline;;*/
+}
 			
-			
-    #navbar_sub a {
-      float:left;
-      background:url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
-      margin:0;
-      padding:0 0 0 3px;
-      text-decoration:none;
-      }
+#navbar_sub a {
+    float:left;
+    background:url('/intranet/images/navbar_saltnpepper/tableftJ.gif') no-repeat left top;
+    margin:0;
+    padding:0 0 0 3px;
+    text-decoration:none;
+}
 
-    #navbar_sub a span {
-      float:left;
-      display:block;
-      background:url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
-      padding:5px 15px 4px 6px;
-      color:#24618E;
-      }
-		
-    /* Commented Backslash Hack hides rule from IE5-Mac \*/
-    #navbar_sub a span {float:none;}
-    /* End IE5-Mac hack */
+#navbar_sub a span {
+    float:left;
+    display:block;
+    background:url('/intranet/images/navbar_saltnpepper/tabrightJ.gif') no-repeat right top;
+    padding:5px 15px 4px 6px;
+    color:#24618E;
+}
 
-    #navbar_sub a:hover {
-      color:#FFF;
-      background-position:0% -42px;
-      }
-    #navbar_sub a:hover span {
-      background-position:100% -42px;
-			color:#FFF;
-      }
-	  
-	
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#navbar_sub a span {float:none;}
+/* End IE5-Mac hack */
 
-/* ---------    END: NAV_BAR_MAIN ------------------------- */
-
-
-
-
-
+#navbar_sub a:hover {
+    color:#FFF;
+    background-position:0% -42px;
+}
+#navbar_sub a:hover span {
+    background-position:100% -42px;
+    color:#FFF;
+}
+  
 /* ---------------    END: NAVBAR_SUB  ----------------------------------     */
-
 
 #alphabar {
 	position: absolute;
@@ -668,87 +826,24 @@ a   span  {float:none;}
    overflow: auto;
 }
 
-/* smartmenu -- generic */
-
-#main-menu {
-    position:relative;
-    z-index:9999;
-}
-
-#main-menu ul {
-    width:12em; /* fixed width only please - you can use the "subMenusMinWidth"/"subMenusMaxWidth" script options to override this if you like */
-}
-
-/* smartmenu -- theme: CLEAN */
-
-.sm-clean a {
-    color: #333333;
-    font-size: 11px;
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-top: 4px;
-}
-
-.sm-clean a:link {
-    text-decoration: none;
-}
-
-.sm-clean li.sm-submenu-item, .sm-clean li.sm-submenu-item a, .sm-clean li.sm-submenu-item a:link {
-    color: #333333;
-    font-size: 12px;
-    line-height: 8px;
-    font-weight: normal;
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-top: 4px;
-    text-decoration: none;
-}
-
-.sm-clean li.current a {
-    font-weight:bold;
-    color:000000;
-}
-
-/* smartmenu -- theme: SIMPLE */
-
-.sm-simple a {
-    color: #333333;
-    font-size: 11px;
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-top: 4px;
-}
-
-.sm-simple a:link {
-    text-decoration: none;
-}
-
-.sm-simple li.sm-submenu-item, .sm-clean li.sm-submenu-item a, .sm-clean li.sm-submenu-item a:link {
-    color: #333333;
-    font-size: 12px;
-    line-height: 8px;
-    font-weight: normal;
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-top: 4px;
-    text-decoration: none;
-}
-
-.sm-simple li.current a {
-    font-weight:bold;
-    color:000000;
-}
-
-/* smartmenu END */
-
 
 #slave {
-      background: #ffffff;
-      position:relative;
-      padding: 0px; 
-      position: relative; 
-      border-bottom-width: 0px;
+    background: #ffffff;
+    position:relative;
+    padding: 0px;
+    position: relative;
+    border-bottom-width: 0px;
 }
+
+#slave_content {
+    position:absolute;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 0px;
+    border: 1px #999;
+    visibility: hidden;
+}
+
 
 #footer {
   text-align: center;
@@ -757,16 +852,9 @@ a   span  {float:none;}
 }
 
 #footer, #footer a {
-    color: #24618E;
-}
-
-#slave_content {
-	position:absolute;
-	padding-left: 30px;
-	padding-right: 30px;
-	margin-top: 0px;
-	border: 1px #999;
-	visibility: hidden;
+        color: #24618E;
+        /* negative z-index ensures that buttons in left sidebar remains accessible */
+        z-index: -20;
 }
 
 
@@ -1730,45 +1818,40 @@ div.xowiki-content hr {
 /* END XOWIKI*/
 
 
-#titleSubmenu {
-         /* display: none; */ 
-}
-
 .fullwidth-list .component table .forumBar {
-        margin-top:-3;
+    margin-top:-3;
 }
 
 .component table.forumBar td  {
-        background: #E1E2E1;
+    background: #E1E2E1;
 }
 
 .component table.forumBar td a  {
-	text-decoration: none;
-        font-size:12pt;
-        font-weight:bold;
-	color:#000000;
-        left:2pt;
-        padding-top:3px;
+    text-decoration: none;
+    font-size:12pt;
+    font-weight:bold;
+    color:#000000;
+    left:2pt;
+    padding-top:3px;
 }
 
 .table_list_page table.forumBar td a  {
-        text-decoration: underline;
-        font-size:9pt;
-        font-weight:normal;
-        color:#235C96;
+    text-decoration: underline;
+    font-size:9pt;
+    font-weight:normal;
+    color:#235C96;
 }
 
 .table_list_page table.forumBar td  {
-        background: #fff
+    background: #fff
 }
 
-
 .graphicTable td {
-	padding: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
 }
 
 .item-footer {
-	display: block;
+    display: block;
 }
 
 .column {
