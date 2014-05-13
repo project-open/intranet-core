@@ -124,7 +124,6 @@ ad_proc -public im_gif {
 }
 
 
-
 ad_proc -public im_gif_navbar { 
     name 
     alt
@@ -246,7 +245,6 @@ ad_proc -public im_gif_static {
 }
 
 
-
 # --------------------------------------------------------
 # HTML Components
 # --------------------------------------------------------
@@ -285,6 +283,7 @@ ad_proc -public im_return_template {} {
     }
 }
 
+
 ad_proc -public im_tablex {
     {content "no content?"} 
     {pad "0"} 
@@ -304,6 +303,7 @@ ad_proc -public im_tablex {
     </tr>
     </table>"    
 }
+
 
 ad_proc -public im_table_with_title { 
     title 
@@ -773,6 +773,7 @@ ad_proc -public im_sub_navbar {
         "
 }
 
+
 ad_proc -private im_sub_navbar_menu_helper { 
     {-locale "" }
     user_id 
@@ -819,30 +820,216 @@ ad_proc -private im_sub_navbar_menu_helper {
 
 ad_proc -public im_navbar {
     { -loginpage:boolean 0 }
-    { -show_context_help_p 0 }
+    { -show_context_help_p:required 0 }
     { main_navbar_label "" }
 } {
-    Switch - Redesigning Navbar/Header for version 5 
+    Setup a top navbar with tabs for each area, highlighted depending
+    on the local URL and enabled depending on the user permissions.
 } {
-    set legacy_framework_version_4_p [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1]
-    if { $loginpage } { 
-	if { $legacy_framework_version_4_p } {
-	    return [im_navbar_legacy_version_4 -loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
-	} else {
-	    return [im_navbar_version_5 -loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
-	}
+    # Switch - Redesigning Navbar/Header for version 5 
+    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } { 
+	return [im_navbar_legacy_version_4 -loginpage $loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
     } else {
-	if { $legacy_framework_version_4_p } {
-	    return [im_navbar_legacy_version_4 -show_context_help_p $show_context_help_p $main_navbar_label] 
-	} else {
-	    return [im_navbar_version_5 -show_context_help_p $show_context_help_p $main_navbar_label] 
+	set user_id [ad_get_user_id]
+	set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+	set locale [lang::user::locale -user_id $user_id]
+	if {![info exists loginpage_p]} { set loginpage_p 0 }
+	set ldap_installed_p [util_memoize [list db_string otp_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
+	set url_stub [ns_conn url]
+	set page_title [ad_partner_upvar page_title]
+	set section [ad_partner_upvar section]
+	set return_url [im_url_with_query]
+	
+	# There are two ways to publish a context bar:
+	# 1. Via "context_bar". This var contains a fully formatted context bar
+	# 2. Via "context". "Context" contains a list of lists, with the last
+	#    element being a single name
+	#
+	set context_bar [ad_partner_upvar context_bar]
+	
+	if {"" == $context_bar} {
+	    set context [ad_partner_upvar context]
+	    if {"" == $context} {
+		set context [list $page_title]
+	    }
+	    
+	    set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
+	    set context [concat $context_root $context]
+	    set context_bar [im_context_bar_html $context]
 	}
+	
+	set sel "<td class=tabsel>"
+	set nosel "<td class=tabnotsel>"
+	set a_white "<a class=whitelink"
+	
+	set navbar ""
+	set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
+	
+	# make sure only one field gets selected so...
+	# .. check for the first complete match between menu and url.
+	set ctr 0
+	set selected 0
+	set found_selected 0
+	set old_sel "notsel"
+	set cur_sel "notsel"
+	
+	# select the toplevel menu items
+	set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
+	
+	foreach menu_list $menu_list_list {
+	    
+	    set menu_id [lindex $menu_list 0]
+	    set package_name [lindex $menu_list 1]
+	    set label [lindex $menu_list 2]
+	    set name [lindex $menu_list 3]
+	    set url [lindex $menu_list 4]
+	    set visible_tcl [lindex $menu_list 5]
+	    
+	    # Shift the old value of cur_sel to old_val
+	    set old_sel $cur_sel
+	    set cur_sel "notsel"
+	    
+	    # Find out if we need to highligh the current menu item
+	    set selected 0
+	    set url_length [expr [string length $url] - 1]
+	    set url_stub_chopped [string range $url_stub 0 $url_length]
+	    
+	    # Check if we should select this one:
+	    set select_this_one 0
+	    if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
+	    
+	    if {!$found_selected && $select_this_one} {
+		# Make sure we only highligh one menu item..
+		set found_selected 1
+		# Set for the gif
+		set cur_sel "sel"
+		# Set for the other IF-clause later in this loop
+		set selected 1
+	    }
+	    
+	    if {$ctr == 0} { 
+		set gif "left-$cur_sel" 
+	    } else {
+		set gif "middle-$old_sel-$cur_sel" 
+	    }
+	    
+	    set name_key "intranet-core.[lang::util::suggest_key $name]"
+	    set name [lang::message::lookup "" $name_key $name]
+	    
+	    # No menues on register and login page 
+	    if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+		switch $label {
+		    "projects" {
+			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label]
+		    }
+		    "user" {
+			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label]
+			
+		    }
+		    "companies" {
+			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label]
+		    }
+		    
+		    "helpdesk" {
+			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label]
+		    }
+		    "reporting" {
+			# Get first level sub_menus
+			set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]
+		    }
+		    
+		    "finance" {
+			set submenus ""
+			# Get a list of Provider links {menu_name menu_link admin_name admin_link}
+			set sub_menu_providers [im_menu_links "invoices_providers"]
+			if { "" != $sub_menu_providers } {
+			    append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label ""]"
+			}
+			
+			set sub_menu_customers [im_menu_links "invoices_customers"]
+			if { "" != $sub_menu_customers } {
+			    append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label ""]"
+			}
+			
+			# Build
+			if { "" != $submenus } {
+			    append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
+			} else {
+			    append navbar "<li class='unselected'><a href='$url'><span>$name</span></a></li>"
+			}
+		    }
+		    default {
+			# Get first level sub_menus
+			set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
+			if { [llength $level_one_menu_list] > 0 } {
+			    append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
+			    foreach level_one_menu_list_item $level_one_menu_list {
+				set level_one_menu_id [lindex $level_one_menu_list_item 0]
+				set level_one_package_name [lindex $level_one_menu_list_item 1]
+				set level_one_label [lindex $level_one_menu_list_item 2]
+				set level_one_name [lindex $level_one_menu_list_item 3]
+				set level_one_url [lindex $level_one_menu_list_item 4]
+				set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
+				append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
+			    }    
+			    append navbar "</ul></li>"
+			} else {
+			    append navbar "<li class=\"unselected\"><a href='$url'><span>$name</span></a></li>"
+			}    
+		    }
+		}
+	    }	
+	    incr ctr
+	}
+	
+	# Required to create sub-Links
+	set page_url [im_component_page_url]
+	
+	# My Settings 
+	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+	    append navbar "<li class='unselected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+				<ul>
+					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
+    	    "
+	    # Change PW only when 
+	    if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</li></a>"}
+	    
+	    append navbar "
+	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
+	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
+	</ul>
+        </li>
+    	"
+	    
+	    # if {$admin_p} {
+	    #    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	    #    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
+	    #    append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+	    # }
+	}
+	
+	# Display a maintenance message in red when performing updates etc...
+	set maintenance_message [string trim [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
+	
+	# New Navbar
+	return "
+	    <div id=\"main\">
+	       <div id=\"navbar_main_wrapper\">
+		  <ul id=\"navbar_main\" class=\"sm\">$navbar</ul>
+	       </div>
+	       <div id=\"main_header\">
+		  <!--<div id=\"main_title\">$page_title</div>-->
+		  <div id=\"main_context_bar\">$context_bar</div>
+                  <div id=\"main_maintenance_bar\">$maintenance_message</div>
+	       </div>
+	    </div>
+    "
     }
 }
 
 
 ad_proc -public im_navbar_legacy_version_4 {
-    { -loginpage:boolean 0 }
+    { -loginpage 0 }
     { -show_context_help_p 0 }
     { main_navbar_label "" }
 } {
@@ -1045,210 +1232,8 @@ ad_proc -public im_navbar_legacy_version_4 {
     "
 }
 
-ad_proc -public im_navbar_version_5 { 
-    { -loginpage:boolean 0 }
-    { -show_context_help_p 0 }
-    { main_navbar_label "" } 
-} {
-    Setup a top navbar with tabs for each area, highlighted depending
-    on the local URL and enabled depending on the user permissions.
-} {
-#    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
 
-    set user_id [ad_get_user_id]
-    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-    set locale [lang::user::locale -user_id $user_id]
-    if {![info exists loginpage_p]} { set loginpage_p 0 }
-    set ldap_installed_p [util_memoize [list db_string otp_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
-    set url_stub [ns_conn url]
-    set page_title [ad_partner_upvar page_title]
-    set section [ad_partner_upvar section]
-    set return_url [im_url_with_query]
-
-    # There are two ways to publish a context bar:
-    # 1. Via "context_bar". This var contains a fully formatted context bar
-    # 2. Via "context". "Context" contains a list of lists, with the last
-    #    element being a single name
-    #
-    set context_bar [ad_partner_upvar context_bar]
-
-    if {"" == $context_bar} {
-	set context [ad_partner_upvar context]
-	if {"" == $context} {
-	    set context [list $page_title]
-	}
-
-	set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
-	set context [concat $context_root $context]
-	set context_bar [im_context_bar_html $context]
-    }
-
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-
-    set navbar ""
-    set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
-
-    # make sure only one field gets selected so...
-    # .. check for the first complete match between menu and url.
-    set ctr 0
-    set selected 0
-    set found_selected 0
-    set old_sel "notsel"
-    set cur_sel "notsel"
-
-    # select the toplevel menu items
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
-
-    foreach menu_list $menu_list_list {
-
-	set menu_id [lindex $menu_list 0]
-	set package_name [lindex $menu_list 1]
-	set label [lindex $menu_list 2]
-	set name [lindex $menu_list 3]
-	set url [lindex $menu_list 4]
-	set visible_tcl [lindex $menu_list 5]
-
-	# Shift the old value of cur_sel to old_val
-	set old_sel $cur_sel
-	set cur_sel "notsel"
-
-	# Find out if we need to highligh the current menu item
-	set selected 0
-	set url_length [expr [string length $url] - 1]
-	set url_stub_chopped [string range $url_stub 0 $url_length]
-
-	# Check if we should select this one:
-	set select_this_one 0
-	if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
-
-	if {!$found_selected && $select_this_one} {
-	    # Make sure we only highligh one menu item..
-	    set found_selected 1
-	    # Set for the gif
-	    set cur_sel "sel"
-	    # Set for the other IF-clause later in this loop
-	    set selected 1
-	}
-
-	if {$ctr == 0} { 
-	    set gif "left-$cur_sel" 
-	} else {
-	    set gif "middle-$old_sel-$cur_sel" 
-	}
-
-	set name_key "intranet-core.[lang::util::suggest_key $name]"
-	set name [lang::message::lookup "" $name_key $name]
-
-	# No menues on register and login page 
-        if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	    switch $label {
-		"projects" {
-		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label]
-		}
-		"user" {
-		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label]
-
-		}
-		"companies" {
-		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label]
-		}
-
-		"helpdesk" {
-		    append navbar [im_navbar_version_5_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label]
-		}
-
-		"finance" {
-		    set submenus ""
-		    # Get a list of Provider links {menu_name menu_link admin_name admin_link}
-		    set sub_menu_providers [im_menu_links "invoices_providers"]
-		    if { "" != $sub_menu_providers } {
-			append submenus "[im_navbar_version_5_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label ""]"
-		    }
-
-		    set sub_menu_customers [im_menu_links "invoices_customers"]
-		    if { "" != $sub_menu_customers } {
-			append submenus "[im_navbar_version_5_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label ""]"
-		    }
-
-		    # Build
-		    if { "" != $submenus } {
-			append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
-		    } else {
-			append navbar "<li class='unselected'><a href='$url'><span>$name</span></a></li>"
-		    }
-		}
-		default {
-		    # Get first level sub_menus
-		    set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
-		    if { [llength $level_one_menu_list] > 0 } {
-			append navbar "<li class='unselected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
-			foreach level_one_menu_list_item $level_one_menu_list {
-			    set level_one_menu_id [lindex $level_one_menu_list_item 0]
-			    set level_one_package_name [lindex $level_one_menu_list_item 1]
-			    set level_one_label [lindex $level_one_menu_list_item 2]
-			    set level_one_name [lindex $level_one_menu_list_item 3]
-			    set level_one_url [lindex $level_one_menu_list_item 4]
-			    set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
-			    append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
-			}    
-			append navbar "</ul></li>"
-		    } else {
-			append navbar "<li class=\"unselected\"><a href='$url'><span>$name</span></a></li>"
-		    }    
-		}
-	    }
-	}	
-	incr ctr
-    }
-
-    # Required to create sub-Links
-    set page_url [im_component_page_url]
-
-    # My Settings 
-    if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	append navbar "<li class='unselected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
-	<ul>
-	<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
-    	"
-	# Change PW only when 
-	if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</li></a>"}
-	
-	append navbar "
-	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
-	<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
-	</ul>
-        </li>
-    	"
-	
-	# if {$admin_p} {
-	#    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
-	#    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	#    append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
-	# }
-    }
-
-    # Display a maintenance message in red when performing updates etc...
-    set maintenance_message [string trim [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
-
-    # New Navbar
-    return "
-	    <div id=\"main\">
-	       <div id=\"navbar_main_wrapper\">
-		  <ul id=\"navbar_main\" class=\"sm\">$navbar</ul>
-	       </div>
-	       <div id=\"main_header\">
-		  <!--<div id=\"main_title\">$page_title</div>-->
-		  <div id=\"main_context_bar\">$context_bar</div>
-                  <div id=\"main_maintenance_bar\">$maintenance_message</div>
-	       </div>
-	    </div>
-    "
-}
-
-
-ad_proc -public im_navbar_version_5_submenu {
+ad_proc -public im_navbar_submenu {
     -level_one_menu_list:required
     -url:required 
     -name:required
@@ -1320,8 +1305,6 @@ ad_proc -public im_design_user_profile_string {
 }
 
 
-
-
 ad_proc -public im_header_plugins { 
 } {
     Determines the contents for left & right header plugins.
@@ -1389,7 +1372,25 @@ ad_proc -public im_header_logout_component {
     if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
 	return [im_header_logout_component_legacy_version_4 -page_url $page_url -return_url $return_url -user_id $user_id]
     } else {
-	return [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
+	# LDAP installed?
+	set ldap_sql "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'"
+	set ldap_installed_p [util_memoize [list db_string otp_installed $ldap_sql -default 0]]
+	
+	set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
+	set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
+	set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
+	
+	set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
+	set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
+	set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
+	set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
+	set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
+	
+	# Disable who's online for "anonymous visitor"
+	if {0 == $user_id} {
+	    set log_out_link ""
+	}
+	return $log_out_link
     }
 }
 
@@ -1449,36 +1450,6 @@ ad_proc -public im_header_logout_component_legacy_version_4 {
     "
 }
 
-ad_proc -public im_header_logout_component {
-    -page_url:required
-    -return_url:required
-    -user_id:required
-} {
-    Returns the formatted HTML for the "My Account - Change password - Reset Portlets - Add Portlet"
-    header panel.
-} {
-    # LDAP installed?
-    set ldap_sql "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'"
-    set ldap_installed_p [util_memoize [list db_string otp_installed $ldap_sql -default 0]]
-  
-    set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
-    set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
-    set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
-
-    set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
-    set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
-    set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
-    set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
-    set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
-
-    # Disable who's online for "anonymous visitor"
-    if {0 == $user_id} {
-	set log_out_link ""
-    }
-    return $log_out_link 
-}
-
-
 ad_proc -public im_header { 
     { -no_head_p "0"}
     { -no_master_p "0"}
@@ -1488,38 +1459,295 @@ ad_proc -public im_header {
     { page_title "" } 
     { extra_stuff_for_document_head "" } 
 } {
-    Switch from HEADER Version 4.0 to 5.0 
-} {
-    if { $loginpage } { 
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
-	    return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p -loginpage $no_master_p $page_title $extra_stuff_for_document_head ]
-	} else {
-	    return [im_header -no_head_p $no_head_p -no_master_p -loginpage $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
-	}
-    } else {
-        if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
-            return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p $no_master_p $page_title $extra_stuff_for_document_head ]
-        } else {
-            return [im_header -no_head_p $no_head_p -no_master_p $no_master_p -show_context_help_p $show_context_help_p $page_title $extra_stuff_for_document_head]
-        }
-    }
-}
-
-
-ad_proc -public im_header_legacy_version_4 {
-    { -no_head_p "0"}
-    { -no_master_p "0"}
-    { -loginpage:boolean 0 }
-    { -body_script_html "" }
-    { page_title "" }
-    { extra_stuff_for_document_head "" }
-} {
     The default header for ]project-open[.<br>
 
     You can't just replace this function by a "blank_master.ad"
     or similar, because this procedure is called both "stand alone"
     from a report pages (HTTP streaming without template!) and as
     part of an OpenACS template.
+
+} {
+    # Switch from HEADER Version 4.0 to 5.0 
+    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } { 
+	return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p $no_master_p -loginpage_p $loginpage -body_script_html $body_script_html $page_title $extra_stuff_for_document_head ]
+    } else {
+
+	im_performance_log -location im_header
+	
+	upvar head_stuff head_stuff
+	
+	# --------------------------------------------------------------
+	# Defaults & Security
+	set untrusted_user_id [ad_conn untrusted_user_id]
+	set user_id [ad_get_user_id]
+	if {0 != $user_id} { set untrusted_user_id $user_id }
+	set user_name [im_name_from_user_id $user_id]
+	set return_url [im_url_with_query]
+	
+	# Is any of the "search" package installed?
+	set search_installed_p [llength [info procs im_package_search_id]]
+	
+	if { [empty_string_p $page_title] } {
+	    set page_title [ad_partner_upvar page_title]
+	}
+	set context_bar [ad_partner_upvar context_bar]
+	set page_focus [ad_partner_upvar focus]
+	
+	# Get browser inf   
+	set browser_version [im_browser_version]
+	set browser [lindex $browser_version 0]
+	set version [lindex $browser_version 1]
+	set version_pieces [split $version "."]
+	set version_major [lindex $version_pieces 0]
+	set version_minor [lindex $version_pieces 1]
+	
+	# --------------------------------------------------------------
+	
+	if {$search_installed_p && [empty_string_p $page_focus] } {
+	    # Default: Focus on Search form at the top of the page
+	    set page_focus "surx.query_string"
+	}
+	if { [empty_string_p $extra_stuff_for_document_head] } {
+	    set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
+	}
+	
+	# Avoid Quirks mode with IE<10 due to missing doctype 
+	# DOCTYPE definition might be added to document in multiple places. 
+	# following a fallback 
+	
+	ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
+	
+	if {[catch {
+	    if { "msie" == $browser && $version_major < 10 } {
+		ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
+		set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
+	    }
+	} err_msg]} {
+	    ns_log NOTICE "intranet-design-procs: Error handling browser version"
+	    return
+	}
+	
+	# The document language is always set from [ad_conn lang] which by default 
+	# returns the language setting for the current user.  This is probably
+	# not a bad guess, but the rest of OpenACS must override this setting when
+	# appropriate and set the lang attribxute of tags which differ from the language
+	# of the page.  Otherwise we are lying to the browser.
+	set doc(lang) [ad_conn language]
+	
+	# Determine if we should be displaying the translation UI
+	if {[lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
+	
+	set search_form [im_header_search_form]
+	set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
+	
+	append extra_stuff_for_document_head [im_stylesheet]
+	append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+	append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
+	
+	# Developer support is installed and enabled
+	template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
+	set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
+	if {$developer_support_p} {
+	    if {$developer_support_p} {
+		if { !$no_head_p } { template::add_header -src "/packages/acs-developer-support/lib/toolbar" }
+		template::add_footer -src "/packages/acs-developer-support/lib/footer"
+	    }
+	}
+	
+	template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
+	
+	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
+	template::head::prepare_multirows
+	set event_handlers [template::get_body_event_handlers]
+	
+	template::multirow foreach meta {
+	    set row "<meta"
+	    if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
+	    if {"" != $name} {  append row " name='$name'" }
+	    if {"" != $scheme} {  append row " scheme='$scheme'" }
+	    if {"" != $lang} {  append row " lang='$lang'" }
+	    append row " content='$content'>\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
+	template::multirow foreach link {
+	    set row "<link rel='$rel' href='$href'"
+	    if {"" != $lang} {  append row " lang='$lang'" }
+	    if {"" != $title} {  append row " title='$title'" }
+	    if {"" != $type} {  append row "  type='$type'" }
+	    if {"" != $media} {  append row " media='$media'" }
+	    append row ">\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
+	template::multirow foreach headscript {
+	    set row "<script type='$type'"
+	    if {"" != $src} {  append row " src='$src'" }
+	    if {"" != $charset} {  append row " charset='$charset'" }
+	    if {"" != $defer} {  append row " defer='$defer'" }
+	    append row ">"
+	    if {"" != $content} {  append row " $content" }
+	    append row "</script>\n"
+	    append extra_stuff_for_document_head $row
+	}
+	
+	# --------------------------------------------------------------
+	
+	
+	# Get the contents of the header plugins
+	array set header_plugins [im_header_plugins]
+	set plugin_right_html $header_plugins(right)
+	set plugin_left_html $header_plugins(left)
+	
+	set page_url [im_component_page_url]
+	set logo [im_logo]
+	
+	# Feedback Bar Icon 
+	set feedback_bar_icon "<span id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></span>&nbsp;"
+	
+	# Welcome 
+	set welcome_txt "<span class='header_welcome'>[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span> |"
+	set users_online_txt ""
+	if { "register" != [string range [ns_conn url] 1 8] } { set users_online_txt "&nbsp;[im_header_users_online_str] |" }
+	
+	# Report BUG 
+	if {!$loginpage_p} {
+	    set report_bug_btn_link [export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]
+	    set report_bug_lnk "&nbsp;<a href=\"$report_bug_btn_link\">[lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]</a> |"
+	}
+	
+	# Context help 
+	if { $show_context_help_p } {
+	    set context_help_lnk "&nbsp;<a href=\"[im_navbar_help_link]\">[lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a> |"
+	} else {
+	    set context_help_lnk ""
+	}
+	
+	# Logout 
+	set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
+	
+	# Build buttons 
+	if {$loginpage_p} { 
+	    set header_buttons "" 
+	} else {
+	    set header_buttons "${welcome_txt}${users_online_txt}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
+	}
+	
+	set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
+	if {$header_skin_select != ""} {
+	    set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
+	}
+	# fraber 121020: disable skin, because the others do not work
+	set header_skin_select ""
+	if {$loginpage_p} { set header_skin_select "" }
+	
+	# --------------------------------------------------------------------
+	# Temporary (?) fix to get xinha working
+	
+	if {[info exists ::acs_blank_master(xinha)]} {
+	    set xinha_dir /resources/acs-templating/xinha-nightly/
+	    set xinha_lang [lang::conn::language]
+	    
+	    # We could add site wide Xinha configurations (.js code) into xinha_params
+	    set xinha_params ""
+	    
+	    # Per call configuration
+	    set xinha_plugins $::acs_blank_master(xinha.plugins)
+	    set xinha_options $::acs_blank_master(xinha.options)
+	    
+	    # HTML ids of the textareas used for Xinha
+	    set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
+	    
+	    append extra_stuff_for_document_head "
+	    	   <script type=\"text/javascript\">
+	    	   	   _editor_url = \"$xinha_dir\";
+			   _editor_lang = \"$xinha_lang\";
+	    	   </script>
+		   <script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
+		   "
+
+	    set xi "HTMLArea"
+	    append body_script_html "
+	        <script type='text/javascript'>
+		<!--
+		 xinha_editors = null;
+		 xinha_init = null;
+		 xinha_config = null;
+		 xinha_plugins = null;
+		 xinha_init = xinha_init ? xinha_init : function() {
+		    xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
+	
+		    // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  
+		    if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
+	
+		    xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
+		    xinha_config = xinha_config ? xinha_config() : new $xi.Config();
+		    $xinha_params
+		    $xinha_options
+		    xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
+		    $xi.startEditors(xinha_editors);
+		 }
+		 window.onload = xinha_init;
+		 // -->
+		 </script>
+		 <textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
+	   "
+	}
+
+	im_performance_log -location im_header_end
+	
+	set header_html [template::get_header_html]
+	
+	set return_html "
+		[ad_header $page_title $extra_stuff_for_document_head]
+		$body_script_html
+		$header_html
+		<div id=\"monitor_frame\">
+    	"
+
+	if { !$no_head_p } {
+	    append return_html "
+	      <div id=\"header_class\">
+	      <div id=\"header_logo\">
+		 $logo
+	      </div>
+	      <div id=\"header_plugin_left\">
+		 $plugin_left_html
+	      </div>
+	      <div id=\"header_plugin_right\">
+		 $plugin_right_html
+	      </div>
+	      <div class=\"header_line\">
+			<table cellpadding='0' cellspacing='0' border='0'>
+			<tr>
+			<td>$feedback_bar_icon</td>
+			<td><span class='header_buttons'>$header_buttons</span></td>
+			</tr>
+			<tr>
+			<td colspan=2><div id=\"main_search\">[im_header_search_form]</div></td>
+			</tr>
+			</table>
+	      </div>
+	      <div id=\"header_skin_select\">
+		 $header_skin_select
+	      </div>   
+	   </div>
+    	 "
+	}
+	return $return_html
+    }
+}
+
+
+ad_proc -public im_header_legacy_version_4 {
+    { -no_head_p 0}
+    { -no_master_p 0}
+    { -loginpage_p 0 }
+    { -body_script_html "" }
+    { page_title "" }
+    { extra_stuff_for_document_head "" }
+} {
+    Legacy Version of the header
 } {
     im_performance_log -location im_header
 
@@ -1688,17 +1916,17 @@ ad_proc -public im_header_legacy_version_4 {
         set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
 
         append extra_stuff_for_document_head "
-<script type=\"text/javascript\">
-        _editor_url = \"$xinha_dir\";
-        _editor_lang = \"$xinha_lang\";
-</script>
-<script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
+	       <script type=\"text/javascript\">
+	       	       _editor_url = \"$xinha_dir\";
+		       _editor_lang = \"$xinha_lang\";
+	       </script>
+	       <script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
         "
 
         set xi "HTMLArea"
         append body_script_html "
-<script type='text/javascript'>
-<!--
+	       <script type='text/javascript'>
+	       <!--
                  xinha_editors = null;
                  xinha_init = null;
                  xinha_config = null;
@@ -1717,9 +1945,9 @@ ad_proc -public im_header_legacy_version_4 {
                     $xi.startEditors(xinha_editors);
                  }
                  window.onload = xinha_init;
-// -->
-</script>
-<textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
+	    // -->
+	    </script>
+	    <textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
         "
     }
 
@@ -1758,286 +1986,6 @@ ad_proc -public im_header_legacy_version_4 {
 }
 
 
-ad_proc -public im_header { 
-    { -no_head_p "0"}
-    { -no_master_p "0"}
-    { -loginpage:boolean 0 }
-    { -body_script_html "" }
-    { -show_context_help_p 0 }
-    { page_title "" } 
-    { extra_stuff_for_document_head "" } 
-} {
-    The default header for ]project-open[.<br>
-
-    You can't just replace this function by a "blank_master.ad"
-    or similar, because this procedure is called both "stand alone" 
-    from a report pages (HTTP streaming without template!) and as 
-    part of an OpenACS template.
-} {
-    im_performance_log -location im_header
-
-    upvar head_stuff head_stuff
-
-    # --------------------------------------------------------------
-    # Defaults & Security
-    set untrusted_user_id [ad_conn untrusted_user_id]
-    set user_id [ad_get_user_id]
-    if {0 != $user_id} { set untrusted_user_id $user_id }
-    set user_name [im_name_from_user_id $user_id]
-    set return_url [im_url_with_query]
-
-    # Is any of the "search" package installed?
-    set search_installed_p [llength [info procs im_package_search_id]]
-
-    if { [empty_string_p $page_title] } {
-	set page_title [ad_partner_upvar page_title]
-    }
-    set context_bar [ad_partner_upvar context_bar]
-    set page_focus [ad_partner_upvar focus]
-
-    # Get browser inf   
-    set browser_version [im_browser_version]
-    set browser [lindex $browser_version 0]
-    set version [lindex $browser_version 1]
-    set version_pieces [split $version "."]
-    set version_major [lindex $version_pieces 0]
-    set version_minor [lindex $version_pieces 1]
-
-    # --------------------------------------------------------------
-
-    if {$search_installed_p && [empty_string_p $page_focus] } {
-	# Default: Focus on Search form at the top of the page
-	set page_focus "surx.query_string"
-    }
-    if { [empty_string_p $extra_stuff_for_document_head] } {
-	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
-    }
-
-    # Avoid Quirks mode with IE<10 due to missing doctype 
-    # DOCTYPE definition might be added to document in multiple places. 
-    # following a fallback 
-
-    ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
-
-    if {[catch {
-	if { "msie" == $browser && $version_major < 10 } {
-	    ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
-	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
-	}
-    } err_msg]} {
-	ns_log NOTICE "intranet-design-procs: Error handling browser version"
-	return
-    }
-
-    # The document language is always set from [ad_conn lang] which by default 
-    # returns the language setting for the current user.  This is probably
-    # not a bad guess, but the rest of OpenACS must override this setting when
-    # appropriate and set the lang attribxute of tags which differ from the language
-    # of the page.  Otherwise we are lying to the browser.
-    set doc(lang) [ad_conn language]
-  
-    # Determine if we should be displaying the translation UI
-    if {[lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
-    
-    set search_form [im_header_search_form]
-    set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
-
-    append extra_stuff_for_document_head [im_stylesheet]
-    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
-
-    # Developer support is installed and enabled
-    template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
-    set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
-    if {$developer_support_p} {
-        if {$developer_support_p} {
-            if { !$no_head_p } { template::add_header -src "/packages/acs-developer-support/lib/toolbar" }
-            template::add_footer -src "/packages/acs-developer-support/lib/footer"
-        }
-    }
-    
-    template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
-    
-    # Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
-    template::head::prepare_multirows
-    set event_handlers [template::get_body_event_handlers]
-    
-    template::multirow foreach meta {
-	set row "<meta"
-	if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
-	if {"" != $name} {  append row " name='$name'" }
-	if {"" != $scheme} {  append row " scheme='$scheme'" }
-	if {"" != $lang} {  append row " lang='$lang'" }
-	append row " content='$content'>\n"
-	append extra_stuff_for_document_head $row
-    }
-    
-    template::multirow foreach link {
-	set row "<link rel='$rel' href='$href'"
-	if {"" != $lang} {  append row " lang='$lang'" }
-	if {"" != $title} {  append row " title='$title'" }
-	if {"" != $type} {  append row "  type='$type'" }
-	if {"" != $media} {  append row " media='$media'" }
-	append row ">\n"
-	append extra_stuff_for_document_head $row
-    }
-    
-    template::multirow foreach headscript {
-	set row "<script type='$type'"
-	if {"" != $src} {  append row " src='$src'" }
-	if {"" != $charset} {  append row " charset='$charset'" }
-	if {"" != $defer} {  append row " defer='$defer'" }
-	append row ">"
-	if {"" != $content} {  append row " $content" }
-	append row "</script>\n"
-	append extra_stuff_for_document_head $row
-    }
-
-    # --------------------------------------------------------------
-
-
-    # Get the contents of the header plugins
-    array set header_plugins [im_header_plugins]
-    set plugin_right_html $header_plugins(right)
-    set plugin_left_html $header_plugins(left)
-
-    set page_url [im_component_page_url]
-    set logo [im_logo]
-
-    # Feedback Bar Icon 
-    set feedback_bar_icon "<span id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></span>&nbsp;"
-
-    # Welcome 
-    set welcome_txt "<span class='header_welcome'>[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span> |"
-    set users_online_txt ""
-    if { "register" != [string range [ns_conn url] 1 8] } { set users_online_txt "&nbsp;[im_header_users_online_str] |" }
-
-    # Report BUG 
-    if {!$loginpage_p} {
-	set report_bug_btn_link [export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]
-	set report_bug_lnk "&nbsp;<a href=\"$report_bug_btn_link\">[lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]</a> |"
-    }
-
-    # Context help 
-    if { $show_context_help_p } {
-	set context_help_lnk "&nbsp;<a href=\"[im_navbar_help_link]\">[lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a> |"
-    } else {
-	set context_help_lnk ""
-    }
-
-    # Logout 
-    set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
-
-    # Build buttons 
-    if {$loginpage_p} { 
-	set header_buttons "" 
-    } else {
-        set header_buttons "${welcome_txt}${users_online_txt}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
-    }
-
-    set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
-    if {$header_skin_select != ""} {
-	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
-    }
-    # fraber 121020: disable skin, because the others do not work
-    set header_skin_select ""
-    if {$loginpage_p} { set header_skin_select "" }
-
-    # --------------------------------------------------------------------
-    # Temporary (?) fix to get xinha working
-
-    if {[info exists ::acs_blank_master(xinha)]} {
-	set xinha_dir /resources/acs-templating/xinha-nightly/
-	set xinha_lang [lang::conn::language]
-	
-	# We could add site wide Xinha configurations (.js code) into xinha_params
-	set xinha_params ""
-	
-	# Per call configuration
-	set xinha_plugins $::acs_blank_master(xinha.plugins)
-	set xinha_options $::acs_blank_master(xinha.options)
-	
-	# HTML ids of the textareas used for Xinha
-	set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
-
-	append extra_stuff_for_document_head "
-<script type=\"text/javascript\">
-	_editor_url = \"$xinha_dir\";
-	_editor_lang = \"$xinha_lang\";
-</script>
-<script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
-	"
-
-	set xi "HTMLArea"
-	append body_script_html "
-<script type='text/javascript'>
-<!--
-		 xinha_editors = null;
-		 xinha_init = null;
-		 xinha_config = null;
-		 xinha_plugins = null;
-		 xinha_init = xinha_init ? xinha_init : function() {
-		    xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
-	
-		    // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING  
-		    if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
-	
-		    xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
-		    xinha_config = xinha_config ? xinha_config() : new $xi.Config();
-		    $xinha_params
-		    $xinha_options
-		    xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
-		    $xi.startEditors(xinha_editors);
-		 }
-		 window.onload = xinha_init;
-// -->
-</script>
-<textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>"
-    }
-
-    im_performance_log -location im_header_end
-
-    set header_html [template::get_header_html]
-
-    set return_html "
-	[ad_header $page_title $extra_stuff_for_document_head]
-	$body_script_html
-	$header_html
-	<div id=\"monitor_frame\">
-    "
-    if { !$no_head_p } {
-	append return_html "
-	   <div id=\"header_class\">
-	      <div id=\"header_logo\">
-		 $logo
-	      </div>
-	      <div id=\"header_plugin_left\">
-		 $plugin_left_html
-	      </div>
-	      <div id=\"header_plugin_right\">
-		 $plugin_right_html
-	      </div>
-	      <div class=\"header_line\">
-			<table cellpadding='0' cellspacing='0' border='0'>
-			<tr>
-			<td>$feedback_bar_icon</td>
-			<td><span class='header_buttons'>$header_buttons</span></td>
-			</tr>
-			<tr>
-			<td colspan=2><div id=\"main_search\">[im_header_search_form]</div></td>
-			</tr>
-			</table>
-	      </div>
-	      <div id=\"header_skin_select\">
-		 $header_skin_select
-	      </div>   
-	   </div>
-    "
-    }
-    return $return_html
-}
-
-
 ad_proc -private im_header_users_online_str { } {
     A string to display the number of online users
 } {
@@ -2060,6 +2008,7 @@ ad_proc -private im_header_users_online_str { } {
 
 }
 
+
 ad_proc -private im_header_search_form { } {
     Search form for header of page
 } {
@@ -2078,6 +2027,7 @@ ad_proc -private im_header_search_form { } {
     }
     return ""
 }
+
 
 ad_proc -public im_header_emergency { page_title } {
     A header to display for error pages that do not have access to the DB
@@ -2126,7 +2076,6 @@ ad_proc -public im_header_emergency { page_title } {
       </table>\n"
     return $html
 }
-
 
 
 ad_proc -public im_footer {
@@ -2581,11 +2530,9 @@ ad_proc -public in_project_on_track_bb {
 }
 
 
-
 # --------------------------------------------------------
 # HTML depending on browser
 # --------------------------------------------------------
-
 
 ad_proc -public im_html_textarea_wrap  { } {
     Returns a suitable value for the <textarea wrap=$wrap> wrap
@@ -2780,7 +2727,6 @@ ad_proc -public im_browser_version { } {
 }
 
 
-
 ad_proc -public im_browser_warning { } {
     Return "", or a warning string if the user is running an unsupported browser
 } {
@@ -2828,6 +2774,7 @@ ad_proc -public im_browser_warning { } {
     # Nothing, return an empty string by default (no problem with the current browser).
     return ""
 }
+
 
 ad_proc -public im_browser_warning_component { } {
     Returns a warning message for old browsers
