@@ -330,6 +330,15 @@ developer-support-adp-box-off {
 #main_search_v4 {
     float:left;
     padding-right: 5px;
+    color: #666666;
+    font-size: 8pt;
+    text-decoration:none;
+}
+
+#main_search_v4 INPUT {
+   color: #666666;
+   font-size: 8pt;
+   text-decoration:none;
 }
 
 #main_search {
@@ -343,7 +352,8 @@ developer-support-adp-box-off {
    padding-right: 1em;
 }
 
-.main_users_online A,#main_search INPUT {
+.main_users_online A,
+#main_search INPUT {
    color: #666666;
    font-size: 8pt;
    text-decoration:none;
