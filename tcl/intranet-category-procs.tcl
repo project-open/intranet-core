@@ -606,21 +606,28 @@ ad_proc -public im_category_is_a_helper {
 ad_proc -public im_category_get_key_value_list {
     { category_type "" }
 } {
-        set sql "
-
+    # check if any sort order is defined, if not order by category_id 
+    if { [db_string get_sort_order_values_p "select count(*) from im_categories where category_type = :category_type and sort_order IS NOT NULL and sort_order <> 0" -default 0]  } {
+	set order_by "sort_order"
+    } else {
+	set order_by "category_id"
+    }
+    set sql "
         select
                 category_id,
                 category
         from
                 im_categories
         where
-                category_type = '$category_type'
+                category_type = :category_type
+	order by 
+		$order_by
         "
     set category_list [list]
     db_foreach category_select $sql {
         lappend category_list [list $category_id $category]
     }
-        return $category_list
+    return $category_list
 }
 
 
