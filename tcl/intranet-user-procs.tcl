@@ -1735,25 +1735,31 @@ ad_proc im_supervisor_select {
     {-include_empty_p 0}
     { default "" }
 } {
-	returns html widget with supervisor
+    Returns html widget with supervisors
 } {
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
     set sql [db_list_of_lists sql "
-	select distinct
-		im_name_from_user_id(pe.person_id,$name_order) as employee_name,
-		pe.person_id
-	from
-		persons pe,
-		im_employees u
-	where
-		u.supervisor_id = pe.person_id
-	order by 
-		employee_name
-	"]
-
+        select distinct
+                im_name_from_user_id(pe.person_id,$name_order) as employee_name,
+                pe.person_id
+        from
+                persons pe,
+                im_employees u,
+                group_member_map m,
+                membership_rels mr
+        where
+                u.supervisor_id = pe.person_id AND
+                u.supervisor_id = m.member_id AND
+                m.group_id = acs__magic_object_id('registered_users'::character varying) AND
+                m.rel_id = mr.rel_id AND
+                m.container_id = m.group_id AND
+                m.rel_type::text = 'membership_rel'::text AND
+                mr.member_state = 'approved'::text
+        order by
+                employee_name
+        "]
     set include_empty_name ""
     if {$include_empty_p} { set sql [linsert $sql 0 [list $include_empty_name ""]] }
-
     return [im_options_to_select_box "user_supervisor_id" $sql $default]
 }
 
