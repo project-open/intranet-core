@@ -933,9 +933,10 @@ ad_proc -public im_navbar {
 		    "helpdesk" {
 			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label]
 		    }
+
 		    "reporting" {
 			# Get first level sub_menus
-			set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]
+			append navbar "<li class='unselected'><a href='$url'><span>$name</span></a></li>"
 		    }
 		    
 		    "finance" {
