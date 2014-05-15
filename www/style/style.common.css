@@ -538,6 +538,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
 	text-align: left;
 	// white-space: nowrap; /*whether to display in one line or not*/
+	font-size: 12px;
 }
 
 .table-header-rotated-listbuilder thead tr.list-header {
