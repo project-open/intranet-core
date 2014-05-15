@@ -216,7 +216,7 @@ ad_proc -public im_gif_static {
 	"customer"	{ return "<img src=$navbar_gif_url/coins.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"employee"	{ return "<img src=$navbar_gif_url/user_orange.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"freelance"	{ return "<img src=$navbar_gif_url/time.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"helpdesk"	{ return "<img src=$navbar_gif_url/monitor_lightning.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"senman"	{ return "<img src=$navbar_gif_url/user_suit.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"proman"	{ return "<img src=$navbar_gif_url/user_comment.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"accounting"	{ return "<img src=$navbar_gif_url/money_dollar.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
