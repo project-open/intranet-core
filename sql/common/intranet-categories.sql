@@ -155,8 +155,12 @@
 -- 78000-78999  Intranet Cost Calculation Transaction Type (1000)
 -- 79000-79999  Intranet <to be defined> (1000)
 -- 80000-80099  Customer SOR (100)
+-- 80100-80599  Intranet CRM (500)
+-- 80600-80699  Invoice Cycle (Intranet Service Contracts & Intranet Invoices)
+-- 80700-80799  reserved (100)
+-- 80800-80899  reserved (100)
+-- 80900-80999  reserved (100)
 -- 80100-80599  Intranet Skill [...] 
--- 80600-80999  reserved (400)
 -- 81000-81999  Customer SL (1000)
 -- 82000-81999  Events (1000)
 -- 83000-83999  Checklists (1000)
