@@ -41,6 +41,11 @@ ad_proc -public im_project_type_campaign {} { return 103 }
 
 ad_proc -public im_project_type_employee_evaluation {} { return 104 }
 
+ad_proc -public im_project_type_service_contract {} { return 105 }
+ad_proc -public im_project_type_service_contract_periodic_invoicing {} { return 106 }
+ad_proc -public im_project_type_service_contract_time_material {} { return 107 }
+ad_proc -public im_project_type_service_contract_open_stack {} { return 108 }
+
 ad_proc -public im_project_type_consulting {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
