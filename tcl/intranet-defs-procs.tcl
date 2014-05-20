@@ -544,7 +544,10 @@ ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
 # 
 # ------------------------------------------------------------------
 
-ad_proc -public im_opt_val { var_name } {
+ad_proc -public im_opt_val { 
+    {-limit_to "nohtml"}
+    var_name
+} {
     Acts like a "$" to evaluate a variable, but
     returns "" if the variable is not defined,
     instead of an error.<BR>
@@ -557,16 +560,47 @@ ad_proc -public im_opt_val { var_name } {
     context.
 } {
     # Check if the variable exists in the parent's caller environment
-    upvar $var_name var
-    if [exists_and_not_null var] { 
-	return $var
+    upvar $var_name value
+    if [exists_and_not_null value] { 
+	# return $value
+    } else {
+	# get fr´om the list of all HTTP variables.
+	# ns_set get returns "" if not found
+	set form_vars [ns_conn form]
+	if {"" == $form_vars} { set form_vars [ns_set create] }
+	set value [ns_set get $form_vars $var_name]
+    }
+
+    set message ""
+    switch $limit_to {
+	allhtml {
+	    # Do nothing - no checks
+	}
+	nohtml {
+	    # Don't allow any tags
+	    if { [string first < $value] >= 0 } {
+		set message [lang::message::lookup "" intranet-core.No_HTML_allowed_in_varname "No HTML tags allowed in variable '%var_name%'"]
+	    }
+	}
+	html {
+	    set message [ad_html_security_check $value]
+	}
+	integer {
+	    if {![string is integer $value]} { 
+		set message [lang::message::lookup "" intranet-core.Variable_is_not_an_integer "Variable '%var_name%' is not an integer"]
+	    }
+	}
+	default {
+	    # Do nothing - no checks
+	}
+    }
+
+    if {"" != $message} {
+	im_security_alert -location im_opt_val -message $message -value $value -severity "Severe"
+	ad_return_complaint 1 "<b>Security Check</b>:<br>$message"
+	ad_script_abort
     }
     
-    # get from the list of all HTTP variables.
-    # ns_set get returns "" if not found
-    set form_vars [ns_conn form]
-    if {"" == $form_vars} { set form_vars [ns_set create] }
-    set value [ns_set get $form_vars $var_name]
     return $value
 } 
 
