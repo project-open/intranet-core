@@ -51,7 +51,7 @@ if {[llength [info commands im_sysconfig_admin_guide]] > 0} {
 # Adminstration Area with GIFs
 # ---------------------------------------------------------
 
-set parent_menu_id [util_memoize [list db_string parent_menu "select menu_id from im_menus where label = 'admin'" -default 0]]
+set parent_menu_id [im_menu_id_from_label "admin"]
 set menu_sql "
 	select	m.*
 	from	im_menus m

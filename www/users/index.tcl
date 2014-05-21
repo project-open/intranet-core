@@ -214,15 +214,10 @@ if {$user_group_id > 0} {
 # Then check if there is a specific view for 
 # the user_group.
 if {"" == $view_name} {
-
     # Check if there is a specific view for this user group:
     set specific_view_name "[string tolower $user_group_name]_list"
     ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
-    set expcific_view_exists [util_memoize [list db_string specific_view_exists "
-	select count(*) 
-	from im_views 
-	where view_name = '$specific_view_name'
-    "]]
+    set expcific_view_exists [util_memoize [list db_string specific_view_exists "select count(*) from im_views where view_name = '$specific_view_name'"]]
     if {$expcific_view_exists} {
 	set view_name $specific_view_name
     }
@@ -280,12 +275,7 @@ db_foreach menu_select $menu_select_sql {
 # we want to show:
 #
 
-set view_id [util_memoize [list db_string get_view_id "
-	select view_id 
-	from im_views 
-	where view_name = '$view_name'
-" -default 0]]
-
+set view_id [im_view_id_from_name $view_name]
 if {!$view_id} { 
    ad_return_complaint 1 "<li>[_ intranet-core.lt_Internal_error_unknow]<br>
    [_ intranet-core.lt_You_are_trying_to_acc]<br>

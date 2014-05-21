@@ -76,15 +76,10 @@ if {"" == $sub_navbar} {
     }
 
     if {"" != $label} {
-
 	# Show a help link in the search bar
 	set show_context_help_p 1
-
 	set admin_navbar_label ""
-	set parent_menu_id [util_memoize [list db_string admin_parent_menu "select menu_id from im_menus where label = 'admin'" -default 0]]
-
-	# Moved the context help to the "search bar"
-#	set sub_navbar [im_sub_navbar -show_help_icon $parent_menu_id "" $title "pagedesriptionbar" $label]
+	set parent_menu_id [im_menu_id_from_label "admin"]
 	set sub_navbar [im_sub_navbar $parent_menu_id "" $title "pagedesriptionbar" $label]
     }
 }

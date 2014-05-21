@@ -74,7 +74,7 @@ if {$subproject_filtering_enabled_p} {
 
 set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
 set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
-set gantt_project_enabled_p [util_memoize "db_string gp {select count(*) from apm_packages where package_key = 'intranet-ganttproject'}"]
+set gantt_project_enabled_p [util_memoize [list db_string gp "select count(*) from apm_packages where package_key = 'intranet-ganttproject'"]]
 set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0] 
 
 
@@ -212,10 +212,7 @@ if {$gantt_project_enabled_p} {
 # Setup the subnavbar
 set bind_vars [ns_set create]
 ns_set put $bind_vars project_id $project_id
-
-set parent_menu_id [util_memoize [list db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]]
-
-
+set parent_menu_id [im_menu_id_from_label "project"]
 set menu_label "project_summary"
 switch $view_name {
     "files" { set menu_label "project_files" }
