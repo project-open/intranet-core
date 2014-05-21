@@ -31,6 +31,8 @@ ad_proc -public im_user_permissions {
     with the permissions of $current_user_id on $user_id
 } {
     ns_log Notice "im_user_permissions: current_user_id=$current_user_id, user_id=$user_id"
+    im_security_alert_check_integer -location "im_user_permissions: user_id" -value $user_id
+
     upvar $view_var view
     upvar $read_var read
     upvar $write_var write
@@ -46,7 +48,7 @@ ad_proc -public im_user_permissions {
 
     # Admins and creators can do everything
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
-    set creation_user_id [util_memoize "db_string creator {select creation_user from acs_objects where object_id = $user_id} -default 0"]
+    set creation_user_id [util_memoize [list db_string creator "select creation_user from acs_objects where object_id = $user_id" -default 0]]
 
     # Should a normal user be able to modify his data?
     set user_can_edit_himself_p [parameter::get_from_package_key -package_key "intranet-core" -parameter UserCanEditHimselfP -default "1"]
@@ -177,16 +179,12 @@ ad_proc -public im_sysadmin_user_default { } {
     Just takes the lowest user_id from the members of
     the Admin group...
 } {
-
     set user_id [util_memoize "db_string default_admin \"
-	select
-		min(user_id) as user_id
-	from
-		acs_rels ar,
+	select	min(user_id) as user_id
+	from	acs_rels ar,
 		membership_rels mr,
 		users u
-	where
-		ar.rel_id = mr.rel_id
+	where	ar.rel_id = mr.rel_id
 		and u.user_id = ar.object_id_two
 		and ar.object_id_one = [im_admin_group_id]
 		and mr.member_state = 'approved'

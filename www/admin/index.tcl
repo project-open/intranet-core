@@ -56,10 +56,8 @@ set menu_sql "
 	select	m.*
 	from	im_menus m
 	where	m.parent_menu_id = :parent_menu_id
-	order by
-		m.sort_order
+	order by m.sort_order
 "
-
 set menu_gif_large ""
 set menu_gif_medium ""
 set menu_gif_small ""

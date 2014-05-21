@@ -796,9 +796,8 @@ ad_proc -public im_navbar_sub_tree {
 } {
     set user_id [ad_get_user_id]
     set locale [lang::user::locale -user_id $user_id]
-
     set menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
-    set menu_list_list [util_memoize "im_sub_navbar_menu_helper -locale $locale $user_id $menu_id" 60]
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]
 
     set navbar ""
     foreach menu_list $menu_list_list {

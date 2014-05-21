@@ -117,7 +117,7 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
 ad_proc -public im_project_main_project { project_id } {
     Returns the project_id of the project's top level main project.
 } {
-    im_security_alert_check_integer -location "im_project_main_project" -value $project_id
+    im_security_alert_check_integer -location "im_project_main_project: project_id" -value $project_id
     return [util_memoize [list db_string project_main_project "select project_id from im_projects where tree_sortkey in (select tree_root_key(tree_sortkey) from im_projects where project_id = $project_id)" -default ""]]
 }
 
@@ -131,7 +131,7 @@ ad_proc -public im_project_permissions {
     write_var
     admin_var
 } {
-    Fill the "by-reference" variables read, write and admin
+    Fill the by-reference variables read, write and admin
     with the permissions of $user_id on $project_id
 } {
     if {$debug} { ns_log Notice "im_project_permissions: user_id=$user_id project_id=$project_id" }
@@ -147,7 +147,7 @@ ad_proc -public im_project_permissions {
 
     # empty project_id would give errors below
     if {"" == $project_id} { set project_id 0 }
-    im_security_alert_check_integer -location "im_project_permissions" -value $project_id
+    im_security_alert_check_integer -location "im_project_permissions: project_id" -value $project_id
 
     if {$debug} { ns_log Notice "im_project_permissions: before user_is_admin_p" }
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -171,7 +171,6 @@ ad_proc -public im_project_permissions {
 	    }
 	}
     }
-
 
     # Treat the project mangers_fields
     # A user man for some reason not be the group PM

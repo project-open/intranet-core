@@ -231,6 +231,21 @@ ad_proc -public im_menu_ul_list_helper {
 
 
 # --------------------------------------------------------
+#
+# --------------------------------------------------------
+
+ad_proc -public im_menu_id_from_label {
+    label
+} {
+    Returns the menu_id for a menu with the specified label.
+} {
+    if {[im_security_alert_check_alphanum -location "im_menu_id_from_label: label" -value $label  -severity "Severe"]} { set label "" }
+    set menu_id [util_memoize [list db_string menu_id_from_label "select menu_id from im_menus where label = '$label'" -default 0]]
+    return $menu_id
+}
+
+
+# --------------------------------------------------------
 # Shortcut functions for NavBar purposes
 # --------------------------------------------------------
 
@@ -333,8 +348,8 @@ ad_proc -public im_menu_links {
     label
 } {
     Return a list of links and admin links for a parent menu item:
-    	1) menu_item_name menu_item_absolute_url
-	2) wrench_html menu_item_admin_url
+    1) menu_item_name menu_item_absolute_url
+2) wrench_html menu_item_admin_url
 } {
     set result_list [list]
     set result_list_admin [list] 
@@ -342,8 +357,7 @@ ad_proc -public im_menu_links {
     set return_url [im_url_with_query]
 
     # Create SubMenu "new FinDocs"
-    set parent_menu_sql "select menu_id from im_menus where label='$label'"
-    set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default ""]]
+    set parent_menu_id [im_menu_id_from_label $label]
 
     set menu_select_sql "
         select  m.*

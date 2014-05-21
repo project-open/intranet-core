@@ -89,7 +89,6 @@ ad_proc -public im_category_from_category {
     {-category ""}
 } {
     Get the category_id from a category
-    
     @param category Name of the category. This is not translated!
 } {
     if {$category eq ""} {return ""}
@@ -718,6 +717,10 @@ ad_proc -public im_category_object_type {
     Returns the object_type for a category_type when it is used as a type category type like "Intranet Project Type". Empty String otherwise
     @param category_type The category type like "Intranet Project Type"
 } {
+    if {![regexp {^[a-zA-Z_\-\ ]+$} $category_type]} {
+	im_security_alert -location im_category_object_type -message "SQL Injection Attempt" -value $category_type -severity "Severe"
+	set category_type ""
+    }
     return [util_memoize [list db_string object_type "
 	select	object_type
 	from	acs_object_types

@@ -156,7 +156,7 @@ ad_proc -public im_permission {user_id privilege} {
     Uses a cache to reduce DB traffic.
 } {
 #    return [im_permission_helper $user_id $privilege]
-    set result [util_memoize "im_permission_helper $user_id $privilege" 3600]
+    set result [util_memoize [list im_permission_helper $user_id $privilege] 3600]
 
     # Fraber 121008: Add custom debugging comment
     catch { im_ds_comment_privilege -user_id $user_id -privilege $privilege -result $result }
@@ -185,7 +185,7 @@ ad_proc -public im_object_permission {
     Returns 1 (true) or 0 (false), depending whether the user has the permission on the specified object.
 } {
     if {"" == $user_id} { set user_id [ad_get_user_id] }
-    set read_p [util_memoize "db_string operm {select im_object_permission_p($object_id, $user_id, '$privilege')}"]
+    set read_p [util_memoize [list db_string operm "select im_object_permission_p($object_id, $user_id, '$privilege')"]]
     return [string equal $read_p "t"]
 }
 

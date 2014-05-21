@@ -31,7 +31,7 @@ if {!$user_is_admin_p} {
 }
 
 set page_title [lang::message::lookup "" intranet-core.Consistency_Check "Consistency Checks"]
-set parent_menu_id [util_memoize [list db_string admin_parent_menu "select menu_id from im_menus where label = 'admin'" -default 0]]
+set parent_menu_id [im_menu_id_from_label "admin"]
 set admin_navbar_label ""
 
 ad_return_top_of_page "

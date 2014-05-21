@@ -47,6 +47,7 @@ ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
     @param url_tpye is "view" or "edit", according to what you
 	want to do with the object.
 } {
+    im_security_alert_check_alphanum -location "im_biz_object_url: url_type" -value $url_type
     set url [util_memoize "db_string object_type_url \"
     	select	url
 	from	im_biz_object_urls u,
@@ -497,6 +498,8 @@ ad_proc -public im_group_member_component {
     are welcome...
 
 } {
+    im_security_alert_check_integer -location "im_group_member_component: object_id" -value $object_id
+
     # Settings ans Defaults
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
