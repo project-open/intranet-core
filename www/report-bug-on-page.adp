@@ -25,7 +25,7 @@
 </tr>
 <tr class=roweven>
 	<td>#intranet-core.URL#</td>
-	<td><input type=text name=eror_url value="@page_url;noquote@" size=40></td>
+	<td><input type=text name=eror_url value="@page_url@" size=40></td>
 </tr>
 <tr class=rowodd>
 	<td>#intranet-core.What_is_wrong#</td>
