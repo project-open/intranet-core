@@ -964,7 +964,7 @@ ad_proc -public im_navbar {
 	
 	# My Settings 
 	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	    append navbar "<li class='unselected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+	    append navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
 				<ul>
 					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	    "
