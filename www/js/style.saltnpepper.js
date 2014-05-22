@@ -45,7 +45,8 @@ function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
 };
 
 function sideBarOpacity(from, to) {
-	$("#filter").animate( { 'opacity': to }, opacityDuration, "linear" );
+	$("#sideBarContents").animate( { 'opacity': to }, opacityDuration, "linear" );
+	// $("#filter").animate( { 'opacity': to }, opacityDuration, "linear" );
 };
 
 /*   END: SIDEBAR */
