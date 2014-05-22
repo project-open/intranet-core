@@ -188,7 +188,7 @@ if {$show_add_new_category_p} {
 	</ul>
 	"
 
-	set object_type [im_category_object_type -category_type "$select_category_type"]
+	set object_type [im_category_object_type -category_type $select_category_type]
 	if {$object_type ne ""} {
 	    set tam_href [export_vars -base "/intranet-dynfield/attribute-type-map" {object_type}]
 	    append category_list_html "

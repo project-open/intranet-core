@@ -102,6 +102,29 @@ ad_proc -public im_security_alert_check_integer {
     return $breach_p
 }
 
+ad_proc -public im_security_alert_check_alphanum {
+    { -location "No location specified"}
+    { -value "" }
+    { -message "Found non-alphanum value" }
+    { -severity "Normal" }
+} {
+    Check of a parameter has the form of a list of alphanumeric,
+    which includes the empty list and a single alphanumeric.
+} {
+    set breach_p 0
+    foreach v $value {
+	if {![regexp {^[0-9a-zA-Z_\-\ ]*$} $v match]} {
+	    set breach_p 1
+	    im_security_alert \
+		-location $location \
+		-message $message \
+		-value $value \
+		-severity $severity \
+	}
+    }
+    return $breach_p
+}
+
 
 ad_proc -public im_security_alert_check_tmpnam {
     { -location "No location specified"}

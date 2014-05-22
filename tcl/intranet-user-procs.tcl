@@ -179,7 +179,7 @@ ad_proc -public im_sysadmin_user_default { } {
     Just takes the lowest user_id from the members of
     the Admin group...
 } {
-    set user_id [util_memoize "db_string default_admin \"
+    set user_id [util_memoize [list db_string default_admin "
 	select	min(user_id) as user_id
 	from	acs_rels ar,
 		membership_rels mr,
@@ -188,7 +188,7 @@ ad_proc -public im_sysadmin_user_default { } {
 		and u.user_id = ar.object_id_two
 		and ar.object_id_one = [im_admin_group_id]
 		and mr.member_state = 'approved'
-    \" -default 0" 60]
+    " -default 0] 60]
 
     return $user_id
 }
@@ -204,7 +204,7 @@ ad_proc -public im_user_options {
     Returns the options for a select box.
 } {
     if {"" != $group_name} {
-	set group_id [util_memoize "db_string group \"select group_id from groups where group_name = '$group_name'\" -default 0"]
+	set group_id [util_memoize [list db_string group "select group_id from groups where group_name = '$group_name'" -default 0]]
     }
 
     set group_select_sql ""

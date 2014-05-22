@@ -48,14 +48,14 @@ ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
 	want to do with the object.
 } {
     im_security_alert_check_alphanum -location "im_biz_object_url: url_type" -value $url_type
-    set url [util_memoize "db_string object_type_url \"
+    set url [util_memoize [list db_string object_type_url "
     	select	url
 	from	im_biz_object_urls u,
 		acs_objects o
 	where	o.object_id = $object_id
 		and o.object_type = u.object_type
 		and u.url_type = '$url_type'
-    \" -default {}"]
+    " -default ""]]
     return "$url$object_id"
 }
 
@@ -504,7 +504,7 @@ ad_proc -public im_group_member_component {
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
     # Check if there is a percentage column from intranet-ganttproject
-    set object_type [util_memoize "db_string otype \"select object_type from acs_objects where object_id=$object_id\" -default \"\""]
+    set object_type [util_memoize [list db_string otype "select object_type from acs_objects where object_id=$object_id" -default ""]]
     if {"" == $show_percentage_p && ($object_type == "im_project" || $object_type == "im_timesheet_task")} { set show_percentage_p 1 }
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }

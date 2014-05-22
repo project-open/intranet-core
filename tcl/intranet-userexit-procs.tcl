@@ -37,8 +37,8 @@ ad_proc -public im_user_exit_call {
 	set user_exit [im_user_exit_file_path $user_exit]
 	set exit_exists_p [file executable $user_exit]
     } else {
-	set user_exit [util_memoize [im_user_exit_file_path $user_exit]]
-	set exit_exists_p [util_memoize [file executable $user_exit]]
+	set user_exit [util_memoize [list im_user_exit_file_path $user_exit]]
+	set exit_exists_p [util_memoize [list file executable $user_exit]]
     }
 
     if {!$exit_exists_p} { 

@@ -80,7 +80,7 @@ set time_date [exec date "+%s.%N"]
 
 foreach oid $user_id_from_search {
 
-    set object_type [util_memoize "acs_object_type $oid"]
+    set object_type [util_memoize [list acs_object_type $oid]]
     switch $object_type {
 	user {
 	    im_user_permissions $current_user_id $oid view read write admin

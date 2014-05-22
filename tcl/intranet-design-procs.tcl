@@ -92,7 +92,7 @@ ad_proc -public im_gif {
     # 3. Check if the FamFamFam gif exists
     set png_path "[acs_root_dir]/packages/intranet-core/www/images/$navbar_postfix/$name.png"
     set png_url "/intranet/images/$navbar_postfix/$name.png"
-    if {[util_memoize "file exists $png_path"]} {
+    if {[util_memoize [list file exists $png_path]]} {
 	if {$debug} { ns_log Notice "im_gif: famfamfam: $name" }
 	set result "<img src=\"$png_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
@@ -104,7 +104,7 @@ ad_proc -public im_gif {
     # 4. Default - check for GIF in /images
     set gif_path "[acs_root_dir]/packages/intranet-core/www/images/$name.gif"
     set gif_url "/intranet/images/$name.gif"
-    if {[util_memoize "file exists $gif_path"]} {
+    if {[util_memoize [list file exists $gif_path]]} {
 	if {$debug} { ns_log Notice "im_gif: images_main: $name" }
 	set result "<img src=\"$gif_url\" border=$border "
 	if {$width > 0} { append result "width=$width " }
@@ -138,10 +138,10 @@ ad_proc -public im_gif_navbar {
     the navbar path, either as a GIF or a PNG.
 } {
     set gif_file "$navbar_path/${name}.gif"
-    set gif_exists_p [util_memoize "file readable $gif_file"]
+    set gif_exists_p [util_memoize [list file readable $gif_file]]
 
     set png_file "$navbar_path/${name}.png"
-    set png_exists_p [util_memoize "file readable $png_file"]
+    set png_exists_p [util_memoize [list file readable $png_file]]
 
     if {$gif_exists_p} { 
 	return "<img src=\"$navbar_gif_url/$name.gif\" border=0 title=\"$alt\" alt=\"$alt\">" 
@@ -794,12 +794,12 @@ ad_proc -private im_sub_navbar_menu_helper {
     # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
     # We need to be able to read the old DB model, otherwise the
     # users won't be able to upgrade...
-    set enabled_present_p [util_memoize "db_string enabled_enabled \"
+    set enabled_present_p [util_memoize [list db_string enabled_enabled "
 	select  count(*)
 	from	user_tab_columns
 	where   lower(table_name) = 'im_component_plugins'
 		and lower(column_name) = 'enabled_p'
-    \""]
+    "]]
     if {$enabled_present_p} {
 	set enabled_sql "and (enabled_p is null OR enabled_p = 't')"
     } else {
