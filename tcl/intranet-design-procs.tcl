@@ -947,7 +947,7 @@ ad_proc -public im_navbar {
 				set level_one_name [lindex $level_one_menu_list_item 3]
 				set level_one_url [lindex $level_one_menu_list_item 4]
 				set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
-				append navbar "<li class='$selected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
+				append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
 			    }    
 			    append navbar "</ul></li>"
 			} else {
@@ -964,16 +964,16 @@ ad_proc -public im_navbar {
 	
 	# My Settings 
 	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	    append navbar "<li class='$selected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+	    append navbar "<li class='unselected'><a href='#'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
 				<ul>
-					<li class='$selected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
+					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	    "
 	    # Allow changing PW only when LDAP is not installed  
 	    if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</li></a>"}
 	    
 	    append navbar "
-		<li class='$selected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
-		<li class='$selected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
+		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
+		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
 		</ul>
         	</li>
     	    "
