@@ -10,7 +10,7 @@ set current_url [ns_conn url]
 
     set project_url "/intranet/projects/view"
     set space "&nbsp; &nbsp; &nbsp; "
-    set view_id [util_memoize [list db_string get_view_id "select view_id from im_views where view_name = '$view_name'" -default 0]]
+    set view_id [im_view_id_from_name $view_name]
 
     set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
     if {$subproject_filtering_enabled_p} {

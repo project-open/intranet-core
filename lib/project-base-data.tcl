@@ -29,6 +29,7 @@ set project_status [im_category_from_id $project_status_id]
 
 # Get the parent project's name
 if {"" == $parent_id} { set parent_id 0 }
+im_security_alert_check_integer -location "intranet-core/lib/project-base-data: parent_id" -value $parent_id
 set parent_name [util_memoize [list db_string parent_name "select project_name from im_projects where project_id = $parent_id" -default ""]]
 
 
