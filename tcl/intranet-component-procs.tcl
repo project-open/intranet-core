@@ -27,15 +27,14 @@ ad_proc -public im_component_any_perms_set_p { } {
     Checks if any permissions at all are set 
     for the components (this is usually not the case...)
 } {
-    set any_perms_set_p [util_memoize [list db_string any_perms_set {
+    set any_perms_set_p [util_memoize [list db_string any_perms_set "
         select  count(*)
         from    acs_permissions ap,
                 im_profiles p,
                 im_component_plugins cp
-        where
-                ap.object_id = cp.plugin_id
+        where   ap.object_id = cp.plugin_id
                 and ap.grantee_id = p.profile_id
-    }]]
+    "]]
     return $any_perms_set_p
 }
 
@@ -133,36 +132,21 @@ ad_proc -public im_component_box {
 
 
 
-ad_proc -public im_component_bay { location {view_name ""} } {
+ad_proc -public im_component_bay { 
+    location 
+    {view_name ""} 
+} {
     Checks the database for Plug-ins for this page and component bay.
 } {
     set user_id [ad_get_user_id]
+    im_security_alert_check_alphanum -location "im_component_bay: location" -value $location
+    im_security_alert_check_alphanum -location "im_component_bay: view_name" -value $view_name
 
     # Get the URL of the current page
     set url_stub [im_component_page_url]
 
-    # get the list of plugins for this page
-    #no util_memoize yet while we are developing...
-    #set plugin-list [util_memoize "im_component_page_plugins $url_stub"]
-
     # Check if there is atleast one permission set for im_plugin_components
     set any_perms_set_p [im_component_any_perms_set_p]
-
-    # ToDo: Remove with version 4.0 or later
-    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
-    # We need to be able to read the old DB model, otherwise the
-    # users won't be able to upgrade...
-    set enabled_present_p [util_memoize "db_string enabled_enabled \"
-	select	count(*)
-	from	user_tab_columns
-	where	lower(table_name) = 'im_component_plugins'
-		and lower(column_name) = 'enabled_p'
-    \""]
-    if {$enabled_present_p} { 
-	set enabled_sql "and (c.enabled_p is null OR c.enabled_p = 't')"
-    } else {
-	set enabled_sql ""
-    }
 
     # Get the list of plugins and cache for 10 seconds
     set plugin_sql "
@@ -183,12 +167,11 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 			    ) m
 			    on (c.plugin_id = m.plugin_id)
 		where
-			c.page_url = '$url_stub'
-			$enabled_sql
-			and (view_name is null or view_name = '$view_name')
+			c.page_url = '$url_stub' and
+			(c.enabled_p is null OR c.enabled_p = 't') and
+			(view_name is null or view_name = '$view_name')
 	    ) p
-	where	
-		location = '$location'
+	where	location = '$location'
 	order by 
 		sort_order
     "
@@ -216,6 +199,7 @@ ad_proc -public im_component_bay { location {view_name ""} } {
 		set component_html [uplevel 1 $component_tcl]
 	    } err_msg]} {
 		global errorInfo
+		ns_log ERROR $errorInfo
 		im_feedback_add_message "serious" $errorInfo "intranet-component-procs.tcl" [lang::message::lookup "" intranet-core.ErrCreatingComponent "Error in component '$plugin_name'. This component will not be available"]
 		set component_html ""
 	    }
@@ -251,45 +235,20 @@ ad_proc -public im_component_insert {
     Insert a particular component.
     Returns "" if the component doesn't exist.
 } {
-
-    # ToDo: Remove with version 4.0 or later
-    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
-    # We need to be able to read the old DB model, otherwise the
-    # users won't be able to upgrade...
-    set enabled_present_p [util_memoize "db_string enabled_enabled \"
-	select	count(*)
-	from	user_tab_columns
-	where	lower(table_name) = 'im_component_plugins'
-		and lower(column_name) = 'enabled_p'
-    \""]
-    if {$enabled_present_p} { 
-	set enabled_sql "and c.enabled_p = 't'"
-    } else {
-	set enabled_sql ""
-    }
-
-
     set plugin_sql "
-	select
-		c.*
-	from
-		im_component_plugins c
-	where
-		plugin_name=:plugin_name
-		$enabled_sql
+	select	c.*
+	from	im_component_plugins c
+	where	plugin_name = :plugin_name and
+		c.enabled_p = 't'
 	order by sort_order
     "
-
     set html ""
     db_foreach get_plugins $plugin_sql {
 	if { [catch {
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
-	    ad_return_complaint 1 "<li>
-	[_ intranet-core.lt_Error_evaluating_comp]:<br>
-	<pre>\n$err_msg\n</pre><br>
-	[_ intranet-core.lt_Please_contact_your_s]:<br>"
+	    ad_return_complaint 1 "<li>[_ intranet-core.lt_Error_evaluating_comp]:<br><pre>\n$err_msg\n</pre><br>[_ intranet-core.lt_Please_contact_your_s]:<br>"
 	}
     }
     return $html
@@ -303,43 +262,22 @@ ad_proc -public im_component_page {
     Returns a particular component, including im_box_header/footer
     Returns "" if the component doesn't exist or error
 } {
-
-    # ToDo: Remove with version 4.0 or later
-    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
-    # We need to be able to read the old DB model, otherwise the
-    # users won't be able to upgrade...
-    set enabled_present_p [util_memoize "db_string enabled_enabled \"
-	select	count(*)
-	from	user_tab_columns
-	where	lower(table_name) = 'im_component_plugins'
-		and lower(column_name) = 'enabled_p'
-    \""]
-    if {$enabled_present_p} { 
-	set enabled_sql "and c.enabled_p = 't'"
-    } else {
-	set enabled_sql ""
-    }
-
     db_1row get_plugin "
 	select	c.*
 	from	im_component_plugins c
-	where	plugin_id = :plugin_id
-		$enabled_sql
+	where	plugin_id = :plugin_id and
+		c.enabled_p = 't'
     "
-
     set html ""
-	set icon_url [export_vars -quotehtml -base "/intranet/components/activate-component" {plugin_id return_url}]
-	set icon "<a class=\"icon_maximize\" href=\"$icon_url\"><span class=\"icon_maximize\">maximize</span></a>"
+    set icon_url [export_vars -quotehtml -base "/intranet/components/activate-component" {plugin_id return_url}]
+    set icon "<a class=\"icon_maximize\" href=\"$icon_url\"><span class=\"icon_maximize\">maximize</span></a>"
 	
-	# "uplevel" evaluates the 2nd argument!!
-	set html "[im_box_header $plugin_name $icon][uplevel 1 $component_tcl][im_box_footer]"
+    # "uplevel" evaluates the 2nd argument!!
+    set html "[im_box_header $plugin_name $icon][uplevel 1 $component_tcl][im_box_footer]"
 
     if { [catch {
     } err_msg] } {
-	ad_return_complaint 1 "<li>
-	[_ intranet-core.lt_Error_evaluating_comp]:<br>
-	<pre>\n$err_msg\n</pre><br>
-	[_ intranet-core.lt_Please_contact_your_s]:<br>"
+	ad_return_complaint 1 "<li>[_ intranet-core.lt_Error_evaluating_comp]:<br><pre>\n$err_msg\n</pre><br>[_ intranet-core.lt_Please_contact_your_s]:<br>"
     }
 
     return $html
