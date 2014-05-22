@@ -30,7 +30,7 @@ ad_proc -public im_category_from_id {
     if {![string is integer $category_id]} { return $category_id }
     if {"" == $category_id} { return $empty_default }
     if {0 == $category_id} { return $empty_default }
-    set category_name [util_memoize "db_string cat \"select im_category_from_id($category_id)\" -default {}"]
+    set category_name [util_memoize [list db_string cat "select im_category_from_id($category_id)" -default {}]]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
 	if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
@@ -92,11 +92,7 @@ ad_proc -public im_category_from_category {
     @param category Name of the category. This is not translated!
 } {
     if {$category eq ""} {return ""}
-    return [util_memoize [list db_string cat "
-	select	category_id
-	from	im_categories
-	where	category = '$category'
-    " -default {}]]
+    return [util_memoize [list db_string cat "select category_id from im_categories where category = '$category'" -default ""]]
 }
 
 
@@ -721,12 +717,7 @@ ad_proc -public im_category_object_type {
 	im_security_alert -location im_category_object_type -message "SQL Injection Attempt" -value $category_type -severity "Severe"
 	set category_type ""
     }
-    return [util_memoize [list db_string object_type "
-	select	object_type
-	from	acs_object_types
-	where	type_category_type = '$category_type' 
-	limit 1
-    " -default ""]]
+    return [util_memoize [list db_string object_type "select object_type from acs_object_types where type_category_type = '$category_type' limit 1" -default ""]]
 }
 
 
