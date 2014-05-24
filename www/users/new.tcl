@@ -65,7 +65,7 @@ set user_feedback ""
 set edit_profiles_p 0
 
 if { [info exists profile] } {
-    if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] > 1 } {
+    if { [lsearch -exact $profile [im_profile_freelancers]] >= 0 && [llength $profile] >1 } {
 	util_user_message -message  [lang::message::lookup "" intranet-core.VerifyProfile "WARNING: Permission conflicts might occur when Freelancers are assigned to multiple groups."]
     }
 }
