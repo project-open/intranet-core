@@ -6,36 +6,34 @@
   <property name="admin_navbar_label">admin_categories</property>
   <property name="left_navbar">@left_navbar_html;noquote@</property>
 
-
-
 <table width="100%">
 <tr valign=top>
 <td>
 	<h1>@page_title@</h1>
 	<%= [lang::message::lookup "" intranet-core.Categories_List_Help "
 		<p>
-		This page allows you to configure 'categories'
-		(the contents of most drop-down boxes in the system).
-		</p><p>
-		Please <b>do not change categories unless you know what you
-		are doing</b>. Many categories are used as constants
-		and changing them will break the system.
-		</p><p>
-		Instead, please use 'Category translation' to change the
-		way how categories appear in the GUI.
-		 </p><p>
-		In some rare cases changes in category types might require <a href='/acs-admin/cache/'>flushing</a> the cache manually or restarting the web server.  
-        "] %>
-<br><br>
+		This page allows you to configure 'categories' (the contents of most drop-down boxes in the system).
+		</p>
+		
+	  <span style=\"color:red;font-weight:bold\">Please keep the following in mind when working with categories:</span>
+	  <ul>
+	  <li>Never <strong>DELETE</strong> categories unless you know what you are doing. Instead <strong>DISBALE</strong> them if they are not needed.</li>
+	  <li>Some twenty or so core CATEGORY ELEMENTS are required by the system. <strong>DISABLING</strong> them might break parts of the system.</li>
+	  <li>Never change CATEGORY NAMES unless you know what you are doing. Instead make adjustments to the naming in the CATEGORY TRANSLATIONS. This way you change how they appear in the GUI.</li>
+	  <li>In some rare cases changes in category types might require <a href='/acs-admin/cache/'>flushing</a> the cache manually or restarting the web server.</li>
+	  </ul> 
+
 	<ul>
 	<li><a href='http://www.project-open.org/en/page_intranet_admin_categories_index'>Help about this page</a>
 	<li><a href='http://www.project-open.org/en/list_categories'>Help about the meaning of categories</a>
+"]%>
 <if "All" ne @select_category_type@>
 	<li><a href='@category_help_url;noquote@'>Help about '@select_category_type@'</a>
 </if>
 	</ul>
-
 <br><br>
+
+
 </td>
 </tr>
 </table>

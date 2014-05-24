@@ -229,6 +229,7 @@ if {"" == $view_name} {
     set view_name "user_list"
 }
 
+
 if { [empty_string_p $how_many] || $how_many < 1 } {
     set how_many [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NumberResultsPerPage" -default 50]
 }
