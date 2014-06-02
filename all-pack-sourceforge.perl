@@ -149,5 +149,4 @@ print "all-pack-sourceforge: SourceForge upload:\n";
 # print "rsync -avP -e ssh ~/$tar fraber\@frs.sourceforge.net:uploads/\n";
 
 # New FRS 2009-10-20:
-print "all-pack-sourceforge: rsync -avP -e ssh ~/$tar fraber,project-open\@frs.sourceforge.net:/home/frs/project/p/pr/project-open/project-open/V4.0/\n"
-
+print "all-pack-sourceforge: rsync -avP -e ssh ~/$tar fraber,project-open\@frs.sourceforge.net:/home/frs/project/p/pr/project-open/project-open/V$x.$y/\n"
