@@ -136,7 +136,7 @@ $packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentica
 
 print "all-pack-sourceforge: tarring code\n" if $debug;
 system("rm -f ~/$tar");
-print "all-pack-sourceforge: cd ~/; tar czf ~/$tar $readme $license $changelog $packages\n";
+print "all-pack-sourceforge: cd ~/; tar czf ~/$tar $readme $license $changelog $dump $packages\n";
 system("cd ~/; tar czf ~/$tar $readme $license $changelog $packages");
 
 
