@@ -181,7 +181,8 @@ function setBgImage (id,img) {
     </div>
     <br>
     <br>
-    <div style="margin-right: 20px;float: right;width: 47px;height: 20px;background: url('/intranet/images/demoserver/login.jpg') top left no-repeat;"><a href="/become?user_id=8864&amp;url=/intranet/"></a></div>
+<a href="/become?user_id=8864&amp;url=/intranet/">
+    <div style="margin-right: 20px;float: right;width: 47px;height: 20px;background: url('/intranet/images/demoserver/login.jpg') top left no-repeat;"></div></div>
     </td>
     </tr>  
   </table>
