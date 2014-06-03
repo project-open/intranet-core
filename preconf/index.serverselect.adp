@@ -161,7 +161,7 @@ function setBgImage (id,img) {
 		      <span style="font-weight:bold; color:#FFFFFF;height:16px; margin-left:25px">Easy</span>
 		    </div>
 		  </a><br>
-		  <div class="login"><a href="http://po40cons.project-open.net/index-userselect" id="login0"></a></div>
+		  <div class="login"><a href="http://po40ts.project-open.net/index-userselect" id="login0"></a></div>
 		</td>
 	      </tr>  
 	    </table>
