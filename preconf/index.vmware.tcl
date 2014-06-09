@@ -56,3 +56,30 @@ if {"" == $username} {
     set username [db_string username "select username from users where user_id = :current_user_id and user_id > 0" -default ""]
 }
 
+# ------------------------------------------------------
+# Gather some information about the current system
+
+set ip_address "undefined"
+catch {set ip_address [exec /bin/bash -c "/sbin/ifconfig | grep 'inet addr:' | head -1 | cut -d: -f2 | awk '{ print \$1}'"]} ip_address
+
+set total_memory "undefined"
+catch {set total_memory [expr [exec /bin/bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024]} total_memory
+
+set url "<a href=\"http://$ip_address/\" target=_new>http://$ip_address/</a>\n"
+
+set debug ""
+set result ""
+set header_vars [ns_conn headers]
+for { set i 0 } { $i < [ns_set size $header_vars] } { incr i } {
+    set key [ns_set key $header_vars $i]
+    set val [ns_set value $header_vars $i]
+    
+    append debug "<tr><td>$key</td><td>$val</td></tr>\n"
+    
+    if {"Cookie" == $key} { continue }
+    if {"Connection" == $key} { continue }
+    if {"Cache-Control" == $key} { continue }
+    if {"User-Agent" == $key} { continue }
+    if {[regexp {^Accept} $key match]} { continue }
+    append result "<tr><td>$key</td><td>$val</td></tr>\n"
+}
