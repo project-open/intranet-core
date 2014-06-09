@@ -637,14 +637,10 @@ ad_proc -public im_parameter {
     # Get the package_id. That's because a single package (identified
     # by a "package_key" can be mounted several times in the system.
     db_1row get_package_id "
-select 
-	count(*) as param_count, 
-	min(package_id) as package_id
-from 
-	apm_packages 
-where 
-	package_key = :package_key
-"
+	select	count(*) as param_count, 
+		min(package_id) as package_id
+	from	apm_packages 
+	where	package_key = :package_key"
 
     # Check if the user has specified an non-existing package key.
     # param_count > 1 is impossible because all intranet packages
@@ -2266,5 +2262,35 @@ ad_proc -public im_object_super_types {
 	set otype [db_string super_type "select supertype from acs_object_types where object_type = :otype" -default ""]
     }
     return $object_type_hierarchy
+}
+
+
+
+ad_proc -public im_sencha_extjs_installed_p { 
+} {
+    Returns 1 if a Senca ExtJS library is installed or 0 otherwise.
+} {
+    return [db_string im_package_core_id "
+	select	count(*)
+	from	apm_packages
+	where	package_key like 'sencha-v%'
+    " -default 0]
+}
+
+
+ad_proc -public im_sencha_extjs_version {
+} {
+    Returns the version number of the system Sencha library
+} {
+    set sencha_package [db_string im_package_core_id "
+	select	max(package_key)
+	from	apm_packages
+	where	package_key like 'sencha-v%'
+    " -default ""]
+
+    if {[regexp {^sencha-(.*)$} $sencha_package match version]} {
+	return $version
+    }
+    return ""
 }
 

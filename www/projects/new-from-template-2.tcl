@@ -37,14 +37,12 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set project_nr_field_size [ad_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
-
 set current_url [ns_conn url]
 
 if {![im_permission $user_id add_projects]} {
     ad_return_complaint "Insufficient Privileges" "
         <li>You don't have sufficient privileges to see this page."
 }
-
 
 if {"" == $template_project_id} {
     ad_return_complaint 1 "<li>You haven't chosen a valid template."
@@ -60,6 +58,8 @@ if {$template_project_id} {
     }
 }
 
+# Parent_id for the new project
+set new_parent_project_id ""
 
 # ---------------------------------------------------------------------
 # Determine what to clone
