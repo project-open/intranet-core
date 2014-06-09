@@ -51,7 +51,7 @@
 	<tr>
 		<td colspan=2 class=tablebody><small>
 		Please enter this URL into the browser on your desktop computer<br>
-		(running this VM) to access this application.
+		in order to access the application.
 		</small></td>
 	</tr>
 	</table>
