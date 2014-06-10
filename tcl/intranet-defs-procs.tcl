@@ -744,16 +744,15 @@ ad_proc -public im_email_from_user_id_helper {
     return $user_email
 }
 
+
 # Find out the user initials
 ad_proc -public im_initials_from_user_id {user_id} {
-    set user_name [im_name_from_user_id $user_id]
-    set result ""
-    foreach name $user_name {
-	append result [string toupper [string range $name 0 0]]
-    }
-    return $result
+    return [util_memoize [list im_initials_from_user_id_helper $user_id]]
 }
 
+ad_proc -public im_initials_from_user_id_helper {user_id} {
+    return [db_string user_initials "select im_initials_from_user_id(:user_id)" -default $user_id]
+}
 
 
 ad_proc im_employee_select_optionlist { 
