@@ -2698,6 +2698,24 @@ ad_proc im_project_nuke {
 	    "
 	}
 
+	# Rule Engine Logs
+	if {[im_table_exists im_rule_logs]} {
+	    ns_log Notice "projects/nuke-2: im_rule_logs"
+	    db_dml im_rule_logs "
+		    delete from im_rule_logs
+		    where rule_log_object_id = :project_id
+	    "
+	}
+
+	# Budget Planning
+	if {[im_table_exists im_planning_items]} {
+	    ns_log Notice "projects/nuke-2: im_planning_items"
+	    db_dml im_planning_itemss "
+		    delete from im_planning_items
+		    where item_object_id = :project_id
+	    "
+	}
+
 	# Helpdesk
 	if {[im_table_exists im_tickets]} {
 	    ns_log Notice "projects/nuke-2: im_tickets"
