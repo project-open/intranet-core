@@ -2263,33 +2263,3 @@ ad_proc -public im_object_super_types {
     return $object_type_hierarchy
 }
 
-
-
-ad_proc -public im_sencha_extjs_installed_p { 
-} {
-    Returns 1 if a Senca ExtJS library is installed or 0 otherwise.
-} {
-    return [db_string im_package_core_id "
-	select	count(*)
-	from	apm_packages
-	where	package_key like 'sencha-v%'
-    " -default 0]
-}
-
-
-ad_proc -public im_sencha_extjs_version {
-} {
-    Returns the version number of the system Sencha library
-} {
-    set sencha_package [db_string im_package_core_id "
-	select	max(package_key)
-	from	apm_packages
-	where	package_key like 'sencha-v%'
-    " -default ""]
-
-    if {[regexp {^sencha-(.*)$} $sencha_package match version]} {
-	return $version
-    }
-    return ""
-}
-
