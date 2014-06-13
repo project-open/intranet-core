@@ -44,10 +44,10 @@ ad_proc -public im_sencha_extjs_version {
     set sencha_package [db_string im_package_core_id "
 	select	max(package_key)
 	from	apm_packages
-	where	package_key like 'sencha-v%'
+	where	package_key like 'sencha-extjs-v%'
     " -default ""]
 
-    if {[regexp {^sencha-([0-9a-z]+)\-*(.*)$} $sencha_package match version type]} {
+    if {[regexp {^sencha-extjs-([0-9a-z]+)\-*(.*)$} $sencha_package match version type]} {
 	if {"" == $type} { set type "prod" }
 	return [list $version $type]
     }
@@ -74,7 +74,7 @@ ad_proc -public im_sencha_extjs_load_libraries {
     }
 
     # Instruct the page to add libraries
-    template::head::add_css -href "/sencha-$version/resources/css/ext-all.css" -media "screen" -order 1
-    template::head::add_javascript -src "/sencha-$version/$ext" -order 2
+    template::head::add_css -href "/sencha-extjs-$version/resources/css/ext-all.css" -media "screen" -order 1
+    template::head::add_javascript -src "/sencha-extjs-$version/$ext" -order 2
 }
 
