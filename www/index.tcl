@@ -35,6 +35,7 @@ ad_page_contract {
     { type_id:integer "0" } 
     { letter "scroll" }
     { start_idx:integer 0 }
+    { plugin_id:integer 0 }
     { how_many "" }
 }
 
@@ -87,3 +88,40 @@ set administration_component [im_table_with_title "[_ intranet-core.Administrati
 set show_left_functional_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowLeftFunctionalMenupP" -default 0]
 
 
+# ---------------------------------------------------------------------
+# Projects Submenu
+# ---------------------------------------------------------------------
+
+# Setup the subnavbar
+set bind_vars [ns_set create]
+set parent_menu_id [im_menu_id_from_label "home"]
+set menu_label "home"
+
+set sub_navbar [im_sub_navbar \
+		    -components \
+		    -current_plugin_id $plugin_id \
+		    -base_url "/intranet/index" \
+		    -plugin_url "/intranet/index" \
+		    $parent_menu_id \
+		    $bind_vars "" "pagedesriptionbar" $menu_label] 
+
+set show_context_help_p 0
+
+# ---------------------------------------------------------------------
+# Admin Box
+# ---------------------------------------------------------------------
+
+set admin_html_content "Hello World"
+
+set left_navbar_html ""
+if {"" != $admin_html_content} {
+    append left_navbar_html "
+      	<div class='filter-block'>
+        <div class='filter-title'>
+		[lang::message::lookup "" intranet-core.Admin_Home "Admin Home"]
+        </div>
+	<ul>$admin_html_content</ul>
+      	</div>
+	<hr/>
+    "
+}
