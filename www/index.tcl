@@ -36,6 +36,7 @@ ad_page_contract {
     { letter "scroll" }
     { start_idx:integer 0 }
     { plugin_id:integer 0 }
+    { view_name "standard"}
     { how_many "" }
 }
 
@@ -95,7 +96,7 @@ set show_left_functional_menu_p [parameter::get_from_package_key -package_key "i
 # Setup the subnavbar
 set bind_vars [ns_set create]
 set parent_menu_id [im_menu_id_from_label "home"]
-set menu_label "home"
+set menu_label "home_summary"
 
 set sub_navbar [im_sub_navbar \
 		    -components \

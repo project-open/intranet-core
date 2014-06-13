@@ -6,6 +6,8 @@
 <property name="header_stuff">@header_stuff;noquote@</property>
 <property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
+<% if {"" == $view_name || [string equal $view_name "standard"]} { %>
+
 <table cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
   <td colspan=3>
@@ -33,4 +35,10 @@
   </td>
 </tr>
 </table>
+
+<% } elseif {[string equal "component" $view_name]} { %>
+
+   <%= [im_component_page -plugin_id $plugin_id -return_url "/intranet/index"] %>
+
+<% } %>
 
