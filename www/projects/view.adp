@@ -5,12 +5,6 @@
 <property name="sub_navbar">@sub_navbar;noquote@</property>
 <property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
-<!-- 
-  There are two "views" on this page: "Summary" and "Files".
-  More views may be added by extension modules, but they are
-  dealt with in the own pages.
--->
-
 <% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
 <%= [im_component_bay top] %>
