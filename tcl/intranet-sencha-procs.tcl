@@ -33,12 +33,13 @@ ad_proc -public im_sencha_extjs_installed_p {
 ad_proc -public im_sencha_extjs_version {
 } {
     Returns a list with 1. the version number of the Sencha 
-    library and 2. a value {dev|prod} indicating whether it
-    is a development or a production version. An empty string
+    library, 2. a value {dev|prod} indicating whether it
+    is a development or a production version and 3. the 
+    package key where the library is defined. An empty string
     indicates that no Sencha library is installed.<br>
     <ul>
-    <li>sencha-v421 - {v421 prod} (production version of Sencha 4.2.1)
-    <li>sencha-v422-dev - {v422 dev} (development version of Sencha 4.2.2)
+    <li>sencha-extjs-v421 - {v421 prod sencha-extjs-v421} (production version of Sencha 4.2.1)
+    <li>sencha-extjs-v422-dev - {v422 dev sencha-extjs-v422-dev} (development version of Sencha 4.2.2)
     </ul>
 } {
     set sencha_package [db_string im_package_core_id "
@@ -49,7 +50,7 @@ ad_proc -public im_sencha_extjs_version {
 
     if {[regexp {^sencha-extjs-([0-9a-z]+)\-*(.*)$} $sencha_package match version type]} {
 	if {"" == $type} { set type "prod" }
-	return [list $version $type]
+	return [list $version $type $sencha_package]
     }
     return [list]
 }
@@ -63,6 +64,7 @@ ad_proc -public im_sencha_extjs_load_libraries {
     if {"" == $extjs_version} { return "" }
     set version [lindex $extjs_version 0]
     set type [lindex $extjs_version 1]
+    set package_key [lindex $extjs_version 2]
 
     switch $type {
 	prod { set ext "ext-all.js" }
@@ -74,7 +76,7 @@ ad_proc -public im_sencha_extjs_load_libraries {
     }
 
     # Instruct the page to add libraries
-    template::head::add_css -href "/sencha-extjs-$version/resources/css/ext-all.css" -media "screen" -order 1
-    template::head::add_javascript -src "/sencha-extjs-$version/$ext" -order 2
+    template::head::add_css -href "/$package_key/resources/css/ext-all.css" -media "screen" -order 1
+    template::head::add_javascript -src "/$package_key/$ext" -order 2
 }
 
