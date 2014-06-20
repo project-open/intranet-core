@@ -173,7 +173,9 @@ ad_proc -public im_date_epoch_to_ansi {
 } {
     Returns ansi date for epoch
 } {
-    set ansi [db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'YYYY-MM-DD')"]
+    if {"" == $epoch} { return "" }
+    im_security_alert_check_integer -location "im_date_epoch_to_ansi" -value $epoch
+    set ansi [util_memoize [list db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + $epoch * INTERVAL '1 second', 'YYYY-MM-DD')"]]
     return $ansi
 }
 
@@ -183,7 +185,9 @@ ad_proc -public im_date_epoch_to_julian {
 } {
     Returns ansi date for epoch
 } {
-    set julian [db_string epoch_to_julian "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'J')"]
+    if {"" == $epoch} { return "" }
+    im_security_alert_check_integer -location "im_date_epoch_to_ansi" -value $epoch
+    set julian [util_memoize [list db_string epoch_to_julian "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + $epoch * INTERVAL '1 second', 'J')"]]
     return $julian
 }
 
@@ -193,7 +197,9 @@ ad_proc -public im_date_epoch_to_time {
 } {
     Returns ansi date for epoch
 } {
-    set ansi [db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second', 'HH24:MI:SS')"]
+    if {"" == $epoch} { return "" }
+    im_security_alert_check_integer -location "im_date_epoch_to_ansi" -value $epoch
+    set ansi [util_memoize [list db_string epoch_to_ansi "SELECT to_char(TIMESTAMP WITH TIME ZONE 'epoch' + $epoch * INTERVAL '1 second', 'HH24:MI:SS')"]]
     return $ansi
 }
 
