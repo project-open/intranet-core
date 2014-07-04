@@ -112,7 +112,7 @@ set show_context_help_p 0
 # Admin Box
 # ---------------------------------------------------------------------
 
-set admin_html_content "Hello World"
+set admin_html_content ""
 
 set left_navbar_html ""
 if {"" != $admin_html_content} {
