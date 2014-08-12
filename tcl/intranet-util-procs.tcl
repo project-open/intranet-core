@@ -317,3 +317,28 @@ ad_proc -public im_feedback_set_user_messages {} {
     ad_set_client_property -persistent f intranet-core feedback_log ""
     return $return_val;
 }
+
+
+ad_proc -public im_epoch_to_ansii {
+    epoch
+} {
+    Converts a PostgreSQL epoch to an ANSI date
+} {
+    return [util_memoize [list im_epoch_to_ansii_helper $epoch] 120]
+}
+
+
+ad_proc -public im_epoch_to_ansii_helper {  
+    epoch
+} {
+    Helper routine for im_epoch_to_ansii
+} {
+    if {[catch {
+	set ansi_date [db_string convert_epoch_to_timestamp "SELECT TIMESTAMP WITH TIME ZONE 'epoch' + :epoch * INTERVAL '1 second';"]
+    } err_msg]} {
+	global errorInfo
+	ns_log Error $errorInfo
+	ad_return_complaint 1  "[lang::message::lookup "" intranet-core.ErrorEpochConversion "An error occured while transforming a date. Please contact your System Administrator or support@project-open.com"] $errorInfo"
+    }
+    return $ansi_date 
+}
