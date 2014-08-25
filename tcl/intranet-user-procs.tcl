@@ -473,6 +473,29 @@ ad_proc -public im_user_timesheet_absences_options {
     set user_selection_options [list]
     lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Mine Mine] "mine"]
 
+    # Groups / Profiles
+    if {$add_absences_all_p || $view_absences_all_p} {
+
+	# Groups / Profiles 
+	if {$enable_groups_p} {
+	    set profiles [db_list_of_lists profiles "
+	    	select g.group_id, g.group_name 
+		from groups g, im_profiles p 
+		where g.group_id = p.profile_id and group_name not in (
+			'P/O Admins', 'Freelance Managers', 'HR Managers', 'Customers', 'Freelancers'
+			)
+		order by group_name
+	    "]
+	    foreach p $profiles {
+		set profile_id [lindex $p 0]
+		set profile_name [lindex $p 1]
+		regsub -all { } $profile_name "_" profile_name_l10n
+		set profile_name_l10n [lang::message::lookup "" intranet-timesheet2.Profile_$profile_name_l10n $profile_name]
+		lappend user_selection_options [list $profile_name_l10n $profile_id]
+	    }
+	}
+    }
+
     # Direct direct_reports 
     if {$view_absences_direct_reports_p || $add_absences_all_p || $view_absences_all_p} { 
 	if {0 != [llength $direct_reports_options] } {
@@ -487,16 +510,13 @@ ad_proc -public im_user_timesheet_absences_options {
 
     # All
     if {$add_absences_all_p || $view_absences_all_p} {
+
+	# All and below
 	lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.All "All"] "all"] 
 	foreach t $other_options { 
 	    set uname [lindex $t 0]
 	    set uid [lindex $t 1]
 	    lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
-	}
-	if {$enable_groups_p} {
-	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Employees "Employees"] "employees"]
-	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Providers "Providers"] "providers"]
-	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Customers "Customers"] "customers"]
 	}
     }
     return $user_selection_options
