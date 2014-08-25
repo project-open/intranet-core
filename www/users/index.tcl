@@ -29,6 +29,7 @@ ad_page_contract {
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
     { user_group_name:trim "Employees" }
+    { include_deleted_users_p "" }
     { order_by "Name" }
     { start_idx:integer 0 }
     { how_many:integer "" }
@@ -343,29 +344,16 @@ set user_status_types [im_memoize_list select_user_status_types \
           order by lower(company_status)"]
 set user_status_types [linsert $user_status_types 0 0 All]
 
-set user_types [list 0 All]
-# set user_types [list [list All all]]
+set user_types [list [list [_ intranet-core.All] 0]]
 db_foreach select_user_types "
-	select
-		group_id,
+	select	group_id,
 		group_name
-	from
-		groups,
+	from	groups,
 		im_profiles
-	where
-		group_id = profile_id" {
-		
-	lappend user_types [im_mangle_user_group_name $group_name]
-	lappend user_types $group_name
+	where	group_id = profile_id
+" {
+    lappend user_types [list $group_name [im_mangle_user_group_name $group_name]]
 }
-
-# company_types will be a list of pairs of (company_type_id, company_type)
-#set user_types [im_memoize_list select_companies_types \
-#	"select company_type_id, company_type
-#           from im_company_types
-#          order by lower(company_type)"]
-#set company_types [linsert $company_types 0 0 All]
-
 
 
 # ---------------------------------------------------------------
@@ -384,6 +372,15 @@ ad_form \
     -form {
         {user_group_name:text(select),optional {label "\#intranet-core.User_Types\#"} {options $user_types} {value $user_group_name}}
     }
+
+if {$admin_p} {
+    set options_list [list [list [lang::message::lookup "" intranet-core.Include_Deleted "Include Deleted"] "1"]]
+    ad_form -extend -name $form_id -form {
+	{include_deleted_users_p:integer(checkbox),optional {label "[lang::message::lookup {} intranet-helpdesk.Include_Deleted_Users { }]"} {options $options_list} }
+    }
+    template::element::set_value $form_id include_deleted_users_p $include_deleted_users_p
+}
+
 
 if {$filter_advanced_p} {
 
@@ -418,7 +415,7 @@ if { $user_group_id > 0 } {
 }
 
 # Don't show deleted users unless specified (in the future)
-if {1} {
+if {1 != $include_deleted_users_p || !$admin_p} {
     lappend extra_wheres "u.member_state = 'approved'"
 }
 
@@ -675,33 +672,23 @@ set table_continuation_html ""
 
 set sub_navbar [im_user_navbar $letter "/intranet/users/index" $next_page_url $previous_page_url [list user_group_name] $menu_select_label]
 
+
+# Compile and execute the formtemplate if advanced filtering is enabled.
+eval [template::adp_compile -string {<formtemplate style=tiny-plain-po id="$form_id"></formtemplate>}]
+set filter_html $__adp_output
+
+
 set left_navbar_html "
-      <div class='filter-block'>
+    <div class=\"filter-block\">
         <div class='filter-title'>
             \#intranet-core.Filter_Users\#
         </div>
-
-        <form method=get action='/intranet/users/index' name=filter_form>
-        [export_form_vars start_idx order_by how_many letter]
-        <input type=hidden name=view_name value='user_list'>
-        <table>
-        <tr>
-          <td class='form-label'>\#intranet-core.User_Types\#  &nbsp;</td>
-          <td class='form-widget'>
-            [im_select user_group_name $user_types ""]
-          </td>
-        </tr>
-        <tr>
-			<td>&nbsp;</td>
-			<td><input type=submit value='[lang::message::lookup "" intranet-core.Action_Go Go]' name=submit></td>
-		<tr>
-        </table>
-        </form>
-      </div>
+        $filter_html
+        </div>
 "
 
-if { ""!=$admin_html_links } {
-        append left_navbar_html "
+if {"" != $admin_html_links } {
+    append left_navbar_html "
               <div class='filter-block'>
                  <div class='filter-title'>
                     \#intranet-core.Admin_Users\#
@@ -710,7 +697,7 @@ if { ""!=$admin_html_links } {
                         $admin_html_links
                  </ul>
               </div>
-        "
+    "
 }
 
 db_release_unused_handles
