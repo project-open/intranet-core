@@ -42,11 +42,13 @@ ad_proc -public im_project_shift {
 		p.tree_sortkey between main_p.tree_sortkey and tree_right(main_p.tree_sortkey)
 	order by p.tree_sortkey
     "
-    db_foreach sub_projects $sub_projects_sql {
-	set project_start_hash($sub_project_id) [im_date_ansi_to_epoch $start_date]
-	set project_end_hash($sub_project_id) [im_date_ansi_to_epoch $end_date]
-    }
 
+    db_foreach sub_projects $sub_projects_sql {
+        if { "" != $start_date && "" != $end_date } {
+            set project_start_hash($sub_project_id) [im_date_ansi_to_epoch $start_date]
+            set project_end_hash($sub_project_id) [im_date_ansi_to_epoch $end_date]
+        }
+    }
 
     # -----------------------------------------------------------
     # Shift the dates
