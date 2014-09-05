@@ -13,10 +13,10 @@
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="4.0.3.0.0"/>
+        <provides url="intranet-core" version="4.1.0.0.0"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
-        <requires url="intranet-dynfield" version="4.0.3.0.0"/>
+        <requires url="intranet-dynfield" version="4.0.0.0.0"/>
 
         <callbacks>
         </callbacks>
