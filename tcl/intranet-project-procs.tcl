@@ -191,6 +191,7 @@ ad_proc -public im_project_permissions {
     # Use caching because this procedure is queried very frequently!
     if {$debug} { ns_log Notice "im_project_permissions: company info" }
     set company_id 0
+    set company_path ""
     set project_is_open_p 0
     db_0or1row project_info "
 	select	c.company_id,
