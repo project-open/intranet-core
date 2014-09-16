@@ -162,9 +162,6 @@ ad_proc -public im_project_permissions {
 	if {$debug} { ns_log Notice "im_project_permissions: user_cc_ids: $user_cc_ids" }
 	if {[im_permission $user_id view_projects_dept]} {
 	    set project_cost_center_id [util_memoize [list db_string project_cc "select project_cost_center_id from im_projects where project_id = $project_id" -default 0] 30]
-
-#	ad_return_complaint 1 "user_cc_ids=$user_cc_ids, project_cc_id=$project_cost_center_id, project_id=$project_id"
-
 	    if {[lsearch $user_cc_ids $project_cost_center_id] > -1} { set user_is_project_member_p 1}
 	    if {[im_permission $user_id edit_projects_dept]} {
 		if {[lsearch $user_cc_ids $project_cost_center_id] > -1} { set user_is_project_manager_p 1}
@@ -196,7 +193,8 @@ ad_proc -public im_project_permissions {
     set company_id 0
     set project_is_open_p 0
     db_0or1row project_info "
-	select	p.company_id,
+	select	c.company_id,
+		c.company_path,
 		(select	count(*)
 		from	im_category_hierarchy ch 
 		where	p.project_type_id = [im_project_status_open] OR
@@ -204,8 +202,10 @@ ad_proc -public im_project_permissions {
 		) as project_is_open_p,
 		p.project_status_id,
 		im_category_from_id(p.project_status_id) as project_status
-	from	im_projects p
-	where	p.project_id = $project_id
+	from	im_projects p,
+		im_companies c
+	where	p.project_id = $project_id and
+		p.company_id = c.company_id
     "
 
     if {$debug} {
@@ -220,6 +220,11 @@ ad_proc -public im_project_permissions {
 
     set user_is_company_member_p [im_biz_object_member_p $user_id $company_id]
     set user_is_company_admin_p [im_biz_object_admin_p $user_id $company_id]
+    if {"internal" == $company_path} {
+	# Members of internal company should not see all projects...
+	set user_is_company_member_p 0
+	set user_is_company_admin_p 0
+    }
 
     if {$user_admin_p} { 
 	set admin 1
