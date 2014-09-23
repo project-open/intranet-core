@@ -171,7 +171,8 @@ ad_proc im_category_select_helper {
                 category,
                 category_description,
                 parent_only_p,
-                enabled_p
+                enabled_p, 
+		coalesce(sort_order,0) as sort_order
         from
                 im_categories
         where
@@ -181,7 +182,7 @@ ad_proc im_category_select_helper {
         order by lower(category)
     "
     db_foreach category_select $sql {
-        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p]
+        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
         set level($category_id) 0
     }
 
@@ -261,14 +262,42 @@ ad_proc im_category_select_helper {
         }
     }
 
-    # Sort the category list's top level. We currently sort by category_id,
-    # but we could do alphabetically or by sort_order later...
-    set category_list [array names cat]
-    set category_list_sorted [lsort $category_list]
+    # Sort the category list's top level. 
+    set category_list_by_id [array names cat]
+    set category_list_by_id_sorted [lsort $category_list_by_id]
 
+    # New feature: Show list based on category sort_order
+    # Make it "fault tolerant" until further testing  
+    if {[catch {
+	set elements_with_no_sort_order [list]
+
+	foreach p $category_list_by_id_sorted {
+	    if { ![info exists cat_helper([lindex $cat($p) 5])] } {
+		# ad_return_complaint xx "[lindex $cat($p) 5]"
+		set cat_helper([lindex $cat($p) 5]) $p
+	    } else {
+            	# No sort order defined, add to the end of the list
+		lappend elements_with_no_sort_order $p
+            }
+	}
+
+	foreach p [lsort [array names cat_helper]] {
+	    lappend category_list_by_sort_order_sorted $cat_helper($p)
+	}
+
+	lappend category_list_by_sort_order_sorted $elements_with_no_sort_order
+	set category_list_by_sort_order_sorted [join $category_list_by_sort_order_sorted " "]
+
+	set category_list_final $category_list_by_sort_order_sorted
+    } err_msg]} {
+	global errorInfo
+	ns_log Error "Error sorting categories: $errorInfo"
+	set category_list_final $category_list_by_id_sorted
+    }
+  
     # Now recursively descend and draw the tree, starting
     # with the top level
-    foreach p $category_list_sorted {
+    foreach p $category_list_final {
         set p [lindex $cat($p) 0]
         set enabled_p [lindex $cat($p) 4]
 	if {"f" == $enabled_p} { continue }
@@ -283,6 +312,7 @@ ad_proc im_category_select_helper {
     } else {
 	set select_html "<select name=\"$select_name\">"
     }
+
 	return "
 $select_html
 $html
@@ -624,6 +654,105 @@ ad_proc -public im_category_get_key_value_list {
     }
     return $category_list
 }
+
+
+ad_proc -public im_category_get_key_value_indent_list {
+    { category_type "" }
+} {
+    Extends im_category_get_key_value_list by providing ident information
+    Returns list of lists: {category_id category_name indent_level}  
+} {
+
+    # check if any sort order is defined, if not order by category_id
+    if { [db_string get_sort_order_values_p "select count(*) from im_categories where category_type = :category_type and sort_order IS NOT NULL and sort_order <> 0" -default 0]  } {
+        set order_by "sort_order"
+    } else {
+        set order_by "category_id"
+    }
+
+    # Read the categories into the a hash cache
+    # Initialize parent and level to "0"
+    set sql "
+        select
+                category_id,
+                category,
+                category_description,
+                parent_only_p,
+                enabled_p,
+		COALESCE(sort_order,0) as sort_order
+        from
+                im_categories
+        where
+                category_type = :category_type
+		and (enabled_p = 't' OR enabled_p is NULL)
+	order by 
+		$order_by
+
+    "
+    db_foreach category_select $sql {
+        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
+        set level($category_id) 0
+    }
+
+    set sql "
+        select
+                h.parent_id,
+                h.child_id
+        from
+                im_categories c,
+                im_category_hierarchy h
+        where
+                c.category_id = h.parent_id
+                and c.category_type = :category_type
+    "
+
+    # setup maps child->parent and parent->child for
+    # performance reasons
+    set children [list]
+    db_foreach hierarchy_select $sql {
+	if {![info exists cat($parent_id)]} { continue}
+	if {![info exists cat($child_id)]} { continue}
+        lappend children [list $parent_id $child_id]
+    }
+
+    set count 0
+    set modified 1
+    while {$modified} {
+        set modified 0
+        foreach rel $children {
+            set p [lindex $rel 0]
+            set c [lindex $rel 1]
+            set parent_level $level($p)
+            set child_level $level($c)
+            if {[expr $parent_level+1] > $child_level} {
+                set level($c) [expr $parent_level+1]
+                set direct_parent($c) $p
+                set modified 1
+            }
+        }
+        incr count
+        if {$count > 1000} {
+            ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+            The category type '$category_type' is badly configured and contains
+            and infinite loop. Please notify your system administrator."
+            return "Infinite Loop Error"
+        }
+	#ns_log Notice "im_category_get_key_value_indent_list: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
+    }
+
+    set category_list [list]
+    set last_sort_order 0
+    foreach {key value} [array get cat] {
+	if { $last_sort_order <= [lindex $value 5] } {
+	    lappend category_list [list [lindex $value 0] [lindex $value 1] $level([lindex $value 0])]	    
+	} else {
+	    set category_list "{[list [lindex $value 0] [lindex $value 1] $level([lindex $value 0])]} $category_list"
+	}
+	set last_sort_order [lindex $value 5]
+    }
+    return $category_list
+}
+
 
 
 # ---------------------------------------------------------------
