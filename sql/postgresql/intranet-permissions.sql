@@ -499,8 +499,6 @@ select acs_privilege__add_child('admin', 'edit_internal_offices');
 -- Projects
 select acs_privilege__create_privilege('add_projects','Add Projects','Add Projects');
 select acs_privilege__add_child('admin', 'add_projects');
-select acs_privilege__create_privilege('view_project_members','View Project Members','View Project Members');
-select acs_privilege__add_child('admin', 'view_project_members');
 select acs_privilege__create_privilege('view_projects_all','View All Projects','View All Projects');
 select acs_privilege__add_child('admin', 'view_projects_all');
 select acs_privilege__create_privilege('edit_projects_all','Edit All Projects','Edit All Projects');
