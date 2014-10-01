@@ -542,7 +542,7 @@ ad_proc -public im_group_member_component {
 		rels.object_id_two as user_id, 
 		rels.object_id_two as party_id, 
 		im_email_from_user_id(rels.object_id_two) as email,
-		im_name_from_user_id(rels.object_id_two, $name_order) as name,
+		coalesce(im_name_from_user_id(rels.object_id_two, $name_order), acs_object__name(rels.object_id_two)) as name,
 		im_category_from_id(c.category_id) as member_role,
 		c.category_gif as role_gif,
 		c.category_description as role_description
