@@ -104,10 +104,10 @@ if {$see_details} {
 	
 	if { $admin } {
 	    set primary_contact_url [export_vars -base "primary-contact" {company_id limit_to_users_in_group_id}]
-	    set im_gif_turn [im_gif turn "Change the primary contact"]
+	    set im_gif_turn [im_gif -translate_p 1 turn "Change the primary contact"]
 	    
 	    set primary_contact_delete_url [export_vars -base "primary-contact-delete" {company_id return_url}]
-	    set im_gif_delete [im_gif delete "Delete the primary contact"]
+	    set im_gif_delete [im_gif -translate_p 1 delete "Delete the primary contact"]
 
 	}
     }
@@ -133,8 +133,8 @@ if {$see_details} {
 	    set accounting_contact_url [export_vars -base accounting-contact {company_id limit_to_users_in_group_id}]
 	    set accounting_delete_url [export_vars -base accounting-contact-delete {company_id return_url}]
 	    
-	    set im_gif_turn [im_gif turn "Change the accounting contact"]
-	    set im_gif_delete [im_gif delete "Delete the accounting contact"]
+	    set im_gif_turn [im_gif -translate_p 1 turn "Change the accounting contact"]
+	    set im_gif_delete [im_gif -translate_p 1 delete "Delete the accounting contact"]
 	    
 	}
 	

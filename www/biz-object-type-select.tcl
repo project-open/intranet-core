@@ -205,5 +205,5 @@ foreach toplist [lsort -index 1 $top_list] {
 
 
 set admin_url [export_vars -base "/intranet/admin/categories/index" {{select_category_type $object_type_category}}]
-set admin_html "<a href=$admin_url>[im_gif wrench "Modify the name and description of the shown objects types"]</a>"
+set admin_html "<a href=$admin_url>[im_gif -translate_p 1 wrench "Modify the name and description of the shown objects types"]</a>"
 if {$admin_p} { append page_title $admin_html }

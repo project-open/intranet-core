@@ -30,7 +30,7 @@ set page_body "
                         <td align=right>Filename: </td>
                         <td> 
                           <input type=file name=upload_file size=30>
-[im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
+[im_gif -translate_p 1 help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
                         </td>
                       </tr>
                       <tr> 

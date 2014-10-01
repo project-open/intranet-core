@@ -75,7 +75,7 @@ db_foreach admin_menu $menu_sql {
     append menu_html "
 	<div class='admin_menu_item'>
 		[im_gif $menu_gif] <a href=\"$url\">$name</a>
-		<a href=$help_url>[im_gif help $help_text]</a>
+		<a href=$help_url>[im_gif -translate_p 0 help $help_text]</a>
 	</div>
     "
 }

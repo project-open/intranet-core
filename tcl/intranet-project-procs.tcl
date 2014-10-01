@@ -515,7 +515,7 @@ ad_proc -public im_new_project_html { user_id } {
 } {
     if {![im_permission $user_id add_projects]} { return "" }
     return "<a href='/intranet/projects/new'>
-	   [im_gif new "Create a new Project"]
+	   [im_gif -translate_p 1 new "Create a new Project"]
 	   </a>"
 }
 

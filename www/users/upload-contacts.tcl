@@ -55,14 +55,14 @@ set page_body "
                         <td align=right>Filename: </td>
                         <td> 
                           <input type=file name=upload_file size=30>
-                          [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
+                          [im_gif -translate_p 1 help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
                         </td>
                       </tr>
                       <tr> 
                         <td align=right>Profile: </td>
                         <td> 
                           $profile_select
-                          [im_gif help "Determine the profile for new users"]
+                          [im_gif -translate_p 1 help "Determine the profile for new users"]
                         </td>
                       </tr>
                       <tr> 

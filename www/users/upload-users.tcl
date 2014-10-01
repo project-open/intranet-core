@@ -42,7 +42,7 @@ set page_body "
 			<td>[lang::message::lookup "" intranet-core.TitleUploadUserDataExplain "Please choose CSV file:"]</td>
                         <td align=left> 
                           <input type=file name=upload_file size=30>
-                          [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
+                          [im_gif -translate_p 1 help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."]
                         </td>
                       </tr>
 		      <tr><td colspan=2>&nbsp;</td></tr>
@@ -64,7 +64,7 @@ if { $skill_role_id_exists_p  } {
                         <td valign='top'>
 			<input type='checkbox' name='update_hourly_rates_skill_profile'>
 				[lang::message::lookup "" intranet-core.UpdateHourlyRatesSkillProfile "Import of Hourly Rates for Skill Profiles - Update users Hourly Rate"] 
-				[im_gif help "Please leave unchecked if in doubt. Additional information about Skill Profiles is available at www.project-open.org"]
+				[im_gif -translate_p 1 help "Please leave unchecked if in doubt. Additional information about Skill Profiles is available at www.project-open.org"]
                         </td>
                       </tr>
 	"

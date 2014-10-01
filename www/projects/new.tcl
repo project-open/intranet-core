@@ -191,7 +191,7 @@ template::element::create $form_id project_name \
     -datatype text\
     -label "[_ intranet-core.Project_Name]" \
     -html {size 40} \
-    -after_html "[im_gif help "Please enter any suitable name for the project. The name must be unique."]"
+    -after_html "[im_gif -translate_p 1 help "Please enter any suitable name for the project. The name must be unique."]"
 
 
 
@@ -202,7 +202,7 @@ template::element::create $form_id project_nr \
     -mode $project_nr_mode \
     -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
-    -after_html "[im_gif help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
+    -after_html "[im_gif -translate_p 1 help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
 
 
 if {$enable_project_path_p} {
@@ -210,7 +210,7 @@ if {$enable_project_path_p} {
 	-datatype text \
 	-label "[lang::message::lookup "" intranet-core.Project_Path "Project Path"]" \
 	-html {size 40} \
-	-after_html "[im_gif help "An optional full path to the project filestorage"]"
+	-after_html "[im_gif -translate_p 1 help "An optional full path to the project filestorage"]"
 }
 
 
@@ -229,7 +229,7 @@ if {$enable_nested_projects_p} {
     	-label "[_ intranet-core.Parent_Project]" \
         -widget "select" \
 	-options $project_parent_options \
-	-after_html "[im_gif help "Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure."]"
+	-after_html "[im_gif -translate_p 1 help "Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure."]"
 } else {
     template::element::create $form_id parent_id -optional -widget "hidden"
 }
@@ -238,9 +238,9 @@ if {$enable_nested_projects_p} {
 # create customer query
 #
 set customer_list_options [im_company_options -include_empty_p 1 -status "Active or Potential" -type "CustOrIntl"]
-set help_text "[im_gif help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]"
+set help_text "[im_gif -translate_p 1 help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]"
 if {$user_admin_p} {
-    set  help_text "<A HREF='/intranet/companies/new'>[im_gif new "Add a new client"]</A> $help_text"
+    set  help_text "<A HREF='/intranet/companies/new'>[im_gif -translate_p 1 new "Add a new client"]</A> $help_text"
 }
 
 template::element::create $form_id company_id \
@@ -265,10 +265,10 @@ template::element::create $form_id project_lead_id -optional\
     -options $project_lead_list_options
 
 
-set help_text "[im_gif help "General type of project. This allows us to create a suitable folder structure."]"
+set help_text "[im_gif -translate_p 1 help "General type of project. This allows us to create a suitable folder structure."]"
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
-	[im_gif new "Add a new project type"]</A> $help_text"
+	[im_gif -translate_p 1 new "Add a new project type"]</A> $help_text"
 }
 
 template::element::create $form_id project_type_id \
@@ -278,10 +278,10 @@ template::element::create $form_id project_type_id \
     -after_html $help_text
 
 
-set help_text "[im_gif help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]"
+set help_text "[im_gif -translate_p 1 help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]"
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
-	[im_gif new "Add a new project status"]</A>$help_text"
+	[im_gif -translate_p 1 new "Add a new project status"]</A>$help_text"
 }
 
 
@@ -345,7 +345,7 @@ template::element::create $form_id end \
     -format "DD Month YYYY HH24:MI" \
     -after_html {<input type="button" style="height:23px; width:23px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendarWithDateWidget('end', 'y-m-d');" >}
 
-set help_text "[im_gif help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"]"
+set help_text "[im_gif -translate_p 1 help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"]"
 template::element::create $form_id on_track_status_id \
     -label "[_ intranet-core.On_Track_Status]" \
     -widget "im_category_tree" \
@@ -369,7 +369,7 @@ if {$add_budget_hours_p} {
     template::element::create $form_id project_budget_hours -optional \
 	-label "[_ intranet-core.Project_Budget_Hours]"\
 	-html {size 20} \
-     	-after_html "[im_gif help "How many hours can be logged on this project (both internal and external resource)?"]"
+     	-after_html "[im_gif -translate_p 1 help "How many hours can be logged on this project (both internal and external resource)?"]"
 
 } else {
     template::element::create $form_id project_budget_hours -optional -widget hidden
@@ -386,7 +386,7 @@ if {$add_budget_p} {
 	-datatype "text" \
 	-label "[_ intranet-core.Project_Budget_Currency]"\
 	-options "[im_currency_options]" \
-	-after_html "[im_gif help "What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs."]"
+	-after_html "[im_gif -translate_p 1 help "What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs."]"
 
 } else {
     template::element::create $form_id project_budget -optional -widget hidden
@@ -397,7 +397,7 @@ template::element::create $form_id company_project_nr \
     -datatype text \
     -optional \
     -label "[lang::message::lookup "" intranet-core.Company_Project_Nr "Customer's ProjectNr"]" \
-    -after_html "[im_gif help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]  ]"
+    -after_html "[im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]  ]"
 
 template::element::create $form_id description -optional -datatype text\
     -widget textarea \

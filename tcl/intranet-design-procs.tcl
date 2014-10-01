@@ -38,7 +38,7 @@ ad_proc -public im_skin_saltnpepper {} { return 40020 }
 # --------------------------------------------------------
 
 ad_proc -public im_gif { 
-    {-translate_p 1} 
+    {-translate_p 0} 
     {-locale ""}
     {-type "gif"}
     {-debug 0 }
@@ -259,7 +259,7 @@ ad_proc -public im_admin_category_gif { category_type } {
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
 	set html "
-<A HREF=\"/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]\">[im_gif new "Admin category type"]</A>"
+<A HREF=\"/intranet/admin/categories/?select_category_type=[ns_urlencode $category_type]\">[im_gif -translate_p 1 new "Admin category type"]</A>"
     }
     return $html
 }
@@ -445,7 +445,7 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
     set costs [im_navbar_tab "index?view_name=project_costs" [_ intranet-core.Costs] false]
 
     if {[im_permission $user_id add_offices]} {
-	set new_office [im_navbar_tab "new" [im_gif new "Add a new office"] false]
+	set new_office [im_navbar_tab "new" [im_gif -translate_p 1 new "Add a new office"] false]
     } else {
 	set new_office ""
     }
@@ -761,13 +761,13 @@ ad_proc -public im_sub_navbar {
 
     if {$show_help_icon_p} {
 	set help_text [lang::message::lookup "" intranet-core.Navbar_Help_Text "Click here to get help for this page"]
-	append navbar [im_navbar_tab [im_navbar_help_link] [im_gif help $help_text] 0]
+	append navbar [im_navbar_tab [im_navbar_help_link] [im_gif -translate_p 0 help $help_text] 0]
     }
 
     if {$admin_p} {
 	set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
 	set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $parent_menu_id}}]
-	append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+	append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
     }
 
     return "
@@ -981,7 +981,7 @@ ad_proc -public im_navbar {
 	    # if {$admin_p} {
 	    #    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
 	    #    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	    #    append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+	    #    append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
 	    # }
 	}
 	
@@ -1112,7 +1112,7 @@ ad_proc -public im_navbar_legacy_version_4 {
     if {$admin_p} {
         set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
         set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-        append navbar [im_navbar_tab $admin_url [im_gif wrench $admin_text] 0]
+        append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
     }
 
     set page_url [im_component_page_url]
@@ -1131,7 +1131,7 @@ ad_proc -public im_navbar_legacy_version_4 {
     if {$show_context_help_p} {
         set context_help_html "
             <div class=\"main_users_online\">
-              <a href=\"[im_navbar_help_link]\">&nbsp; [im_gif help [lang::message::lookup "" intranet-core.Context_Help "Context Help"]]</a>
+              <a href=\"[im_navbar_help_link]\">&nbsp; [im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Context_Help "Context Help"]]</a>
             </div>
         "
     }
@@ -1140,7 +1140,7 @@ ad_proc -public im_navbar_legacy_version_4 {
     if {$show_context_comment_p} {
         set context_comment_html "
             <div class=\"main_users_online\">
-              <a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\">&nbsp; [im_gif bell [lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]]</a>
+              <a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\">&nbsp; [im_gif -translate_p 0 bell [lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]]</a>
             </div>
         "
     }
@@ -2494,7 +2494,7 @@ ad_proc -public im_project_on_track_bb {
     if {$on_track_status_id == [im_project_on_track_status_red]} { set color "red" }
 
     set border 0
-    return [im_gif "bb_$color" $alt_text $border $size $size]
+    return [im_gif -translate_p 0 "bb_$color" $alt_text $border $size $size]
 }
 
 # Compatibility

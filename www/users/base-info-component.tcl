@@ -17,7 +17,8 @@ if {![info exists user_id]} {
     ad_page_contract {
 	@author frank.bergmann@project-open.com
     } {
-	user_id
+	user_id:integer
+	show_user_conf_items_p:integer
     }
 
 }
@@ -149,3 +150,12 @@ db_foreach column_list_sql $column_sql {
 append contact_html "</table>\n</form>\n"
 
 
+
+# ------------------------------------------------------------------
+# Configuration Items
+# ------------------------------------------------------------------
+
+set conf_item_html ""
+if {$show_user_conf_items_p} {
+    set conf_item_html [im_conf_item_list_component -object_id $user_id]
+}

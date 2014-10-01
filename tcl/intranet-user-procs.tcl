@@ -159,13 +159,16 @@ ad_proc -public im_user_biz_card_component {
 
 ad_proc -public im_user_base_info_component { 
     -user_id:required
+    { -show_user_conf_items_p 0}
     { -return_url ""}
 } {
-    Returns a formatted piece of HTML showing the user's name and email
+    Returns a formatted piece of HTML showing information about the user and
+    it's objects.
 } {
     if {"" == $return_url} { set return_url [im_url_with_query] }
     set params [list \
 		    [list user_id $user_id] \
+		    [list show_user_conf_items_p $show_user_conf_items_p] \
 		    [list return_url [im_url_with_query]] \
     ]
 

@@ -140,11 +140,11 @@ db_foreach group_list $group_list_sql {
     lappend group_names $group_name
     append main_sql_select "\tim_object_permission_p(m.menu_id, $group_id, 'read') as p${group_id}_read_p,\n"
     append table_header_head "<th class='rotate-45'><div><span>$group_name</div></span></th>\n"
-    append table_header_td "<td class=rowtitle><a href=$group_url?group_id=$group_id>[im_gif $profile_gif $group_name]</a></td>\n"
+    append table_header_td "<td class=rowtitle><a href=$group_url?group_id=$group_id>[im_gif -translate_p 1 $profile_gif $group_name]</a></td>\n"
     incr num_profiles
 }
 append table_header_td "
-  <td class=rowtitle>[im_gif del "Delete Menu"]</td>
+  <td class=rowtitle>[im_gif -translate_p 1 del "Delete Menu"]</td>
 </tr>
 "
 append table_header_head "
