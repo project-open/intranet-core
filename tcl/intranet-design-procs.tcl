@@ -1488,20 +1488,19 @@ ad_proc -public im_header {
 	if { [empty_string_p $extra_stuff_for_document_head] } {
 	    set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
 	}
-	
+
+	# ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
+
 	# Avoid Quirks mode with IE<10 due to missing doctype 
 	# DOCTYPE definition might be added to document in multiple places. 
-	# following a fallback 
-	
-	ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
 	
 	if {[catch {
 	    if { "msie" == $browser && $version_major < 10 } {
-		ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
+		# ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
 		set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
 	    }
 	} err_msg]} {
-	    ns_log NOTICE "intranet-design-procs: Error handling browser version"
+	    ns_log Error "intranet-design-procs: Error handling browser version"
 	    return
 	}
 	
