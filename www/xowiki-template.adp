@@ -188,7 +188,7 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 	<td width="303">
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-		<td width="60"><input value="9" name="response_to_question.@goal_question_id@" type="radio">&nbsp;Yes</td>
+		<td width="60" style="font-size:9px"><input value="9" name="response_to_question.@goal_question_id@" type="radio">&nbsp;Yes</td>
 		<td width="60"><input value="10" name="response_to_question.@goal_question_id@" type="radio">&nbsp;No</td>
 		<td width="160"><input value="11" name="response_to_question.@goal_question_id@" type="radio">&nbsp;Don't know</td>
 		</tr>
@@ -197,7 +197,7 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 </tr>
 <tr valign="top"><td colspan=2></td></tr>
 <tr valign="top">
-	<td><p>Please provide us with comments to improve this page:</p></td>
+	<td><p style="font-size:9px;">Please provide us with comments to improve this page:</p></td>
 	<td>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
