@@ -508,7 +508,8 @@ ad_proc -public im_group_member_component {
     if {"" == $show_percentage_p && ($object_type == "im_project" || $object_type == "im_timesheet_task")} { set show_percentage_p 1 }
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
-
+    set group_l10n [lang::message::lookup "" intranet-core.Group "Group"]
+    
     # ------------------ limit_to_users_in_group_id ---------------------
     set limit_to_group_id_sql ""
     if {![empty_string_p $limit_to_users_in_group_id]} {
@@ -542,7 +543,10 @@ ad_proc -public im_group_member_component {
 		rels.object_id_two as user_id, 
 		rels.object_id_two as party_id, 
 		im_email_from_user_id(rels.object_id_two) as email,
-		coalesce(im_name_from_user_id(rels.object_id_two, $name_order), acs_object__name(rels.object_id_two)) as name,
+		coalesce(
+			im_name_from_user_id(rels.object_id_two, $name_order), 
+			:group_l10n || ': ' || acs_object__name(rels.object_id_two)
+		) as name,
 		im_category_from_id(c.category_id) as member_role,
 		c.category_gif as role_gif,
 		c.category_description as role_description
