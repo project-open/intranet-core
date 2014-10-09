@@ -1,4 +1,4 @@
-<%= [im_header $title $header_stuff] %>
+<%= [im_header -show_context_help_p $show_context_help_p $title $header_stuff] %>
 
 <if @user_messages:rowcount@ ne 0>
     <if @feedback_behaviour_key@ eq 0>
