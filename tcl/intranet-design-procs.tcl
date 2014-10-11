@@ -178,11 +178,11 @@ ad_proc -public im_gif_static {
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"save"		{ return "<img src=$url/save.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"incident"	{ return "<img src=$navbar_gif_url/lightning.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"discussion"	{ return "<img src=$navbar_gif_url/group.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"incident"	{ return "<img src=$navbar_gif_url/lightning.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"discussion"	{ return "<img src=$navbar_gif_url/group.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"task"		{ return "<img src=$navbar_gif_url/tick.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"news"		{ return "<img src=$navbar_gif_url/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"note"		{ return "<img src=$navbar_gif_url/pencil.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"note"		{ return "<img src=$navbar_gif_url/note.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"reply"		{ return "<img src=$navbar_gif_url/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tick"		{ return "<img src=$url/tick.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"wrong"		{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
