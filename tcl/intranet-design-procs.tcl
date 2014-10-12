@@ -173,7 +173,7 @@ ad_proc -public im_gif_static {
     switch [string tolower $name] {
 	"delete" 	{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"help"		{ return "<img src=$navbar_gif_url/help.png border=$border title=\"$alt\" alt=\"$alt\">" }
-	"error"     { return "<img src=$navbar_gif_url/error.png border=$border title=\"$alt\" alt=\"$alt\">" }	
+	"error"         { return "<img src=$navbar_gif_url/error.png border=$border title=\"$alt\" alt=\"$alt\">" }	
 	"category"	{ return "<img src=$url/help.gif width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"new"		{ return "<img src=$url/new.gif width=13 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"open"		{ return "<img src=$url/open.gif width=16 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -181,8 +181,13 @@ ad_proc -public im_gif_static {
 	"incident"	{ return "<img src=$navbar_gif_url/lightning.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"discussion"	{ return "<img src=$navbar_gif_url/group.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"task"		{ return "<img src=$navbar_gif_url/tick.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
-	"news"		{ return "<img src=$navbar_gif_url/exclamation.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"news"		{ return "<img src=$navbar_gif_url/newspaper.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"note"		{ return "<img src=$navbar_gif_url/note.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"incident_add"	{ return "<img src=$navbar_gif_url/lightning_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"discussion_add" { return "<img src=$navbar_gif_url/group_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"task_add"	{ return "<img src=$navbar_gif_url/tick_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"news_add"	{ return "<img src=$navbar_gif_url/newspaper_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"note_add"	{ return "<img src=$navbar_gif_url/note_add.png width=16 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"reply"		{ return "<img src=$navbar_gif_url/arrow_rotate_clockwise.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tick"		{ return "<img src=$url/tick.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"wrong"		{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
