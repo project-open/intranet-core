@@ -332,16 +332,16 @@ SELECT acs_rel_type__create_role('employee', '#acs-translations.role_employee#',
 SELECT acs_rel_type__create_role('employer', '#acs-translations.role_employer#', '#acs-translations.role_employer_plural#');
 
 SELECT acs_object_type__create_type(
-	'im_company_employee_rel',
-	'#intranet-contacts.company_employee_rel#',
-	'#intranet-contacts.company_employee_rels#',
-	'im_biz_object_member',
-	'im_company_employee_rels',
-	'employee_rel_id',
-	'intranet-contacts.comp_emp', 
-	'f',
-	null,
-	NULL
+	'im_company_employee_rel',			-- object_type
+	'#intranet-contacts.company_employee_rel#',	-- pretty_name
+	'#intranet-contacts.company_employee_rels#',	-- pretty_plural
+	'im_biz_object_member',				-- supertype
+	'im_company_employee_rels',			-- table_name
+	'employee_rel_id',				-- id_column
+	'intranet-contacts.comp_emp', 			-- package_name
+	'f',						-- abstract_p
+	null,						-- type_extension_table
+	NULL						-- name_method
 );
 
 create table im_company_employee_rels (
