@@ -68,11 +68,6 @@ ad_page_contract {
     { show_master_p 1 }
 }
 
-
-if { ![info exists company_status_id] } {
-    ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
-}
-
 # -----------------------------------------------------------------
 # Check for Errors in Input Variables
 # -----------------------------------------------------------------
@@ -81,6 +76,8 @@ set user_id [ad_maybe_redirect_for_registration]
 set form_setid [ns_getform]
 
 set required_vars [list \
+    [list "company_status_id" "You must specify a company status"] \
+    [list "company_type_id" "You must specify a company type"] \
     [list "company_name" "You must specify the company's name"] \
     [list "company_path" "You must specify a short name"]]
 set errors [im_verify_form_variables $required_vars]
@@ -134,7 +131,7 @@ if { $exists_p } {
 
 if { ![empty_string_p $errors] } {
     ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
-    return
+    ad_script_abort
 }
 
 
