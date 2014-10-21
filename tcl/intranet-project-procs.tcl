@@ -2928,7 +2928,7 @@ ad_proc im_project_nuke {
 
 	# Relocate sub-tasks to the parent, so that they won't
 	# appear as main projects
-	set parent_parent_id [db_string parent_id "select parent_id from im_projects where project_id = :project_id"]
+	set parent_parent_id [db_string parent_id "select parent_id from im_projects where project_id = :project_id" -default ""]
 	db_dml parent_projects "
 		update im_projects 
 		set parent_id = :parent_parent_id
