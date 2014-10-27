@@ -45,9 +45,15 @@ ad_page_contract {
     return_url
     {process_mail_queue_now_p 1}
     {from_email ""}
+    {cancel "" }
 }
 
 if {![info exists user_id_from_search]} { set user_id_from_search "-999" }
+
+if { "" != $cancel } {
+    ad_returnredirect $return_url
+    ad_script_abort
+}
 
 ns_log Notice "subject='$subject'"
 ns_log Notice "message_mime_type='$message_mime_type'"

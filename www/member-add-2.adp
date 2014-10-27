@@ -21,19 +21,20 @@
 
 <tr>
   <td>
-<textarea name=message rows=10 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
-#intranet-core.lt_Dear_first_names_from#
-</textarea>
+	<textarea name=message rows=15 cols=90 wrap="<%=[im_html_textarea_wrap]%>">#intranet-core.lt_Dear_first_names_from#</textarea>
   </td>
 </tr>
 
 <tr>
   <td>
-<center>
-<input type="submit" value="#intranet-core.Send_Email#" />
-<input type=checkbox name=send_me_a_copy value=1 checked>
-<%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>
-</center>
+  	<center>
+	<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td valign='top'><input type="submit" value="#intranet-core.Send_Email#" /><br><input type=checkbox name=send_me_a_copy value=1 checked><%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>&nbsp;&nbsp;</td>
+		<td valign='top'><input type=submit value="<%= [lang::message::lookup "" intranet-core.DoNotSendNotificationMail "Do NOT notify"]"%>" name="cancel"></td>
+	</tr>
+	</table>
+	</center>
   </td>
 </tr>
 </form>
