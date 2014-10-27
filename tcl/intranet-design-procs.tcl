@@ -974,11 +974,11 @@ ad_proc -public im_navbar {
 					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	    "
 	    # Allow changing PW only when LDAP is not installed  
-	    if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</li></a>"}
+	    if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"}
 	    
 	    append navbar "
-		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</li></a>
-		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</li></a>
+		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</a></li>
+		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</a></li>
 		</ul>
         	</li>
     	    "
@@ -1683,6 +1683,7 @@ ad_proc -public im_header {
 	set header_html [template::get_header_html]
 	
 	set return_html "
+		<!DOCTYPE html>
 		[ad_header $page_title $extra_stuff_for_document_head]
 		$body_script_html
 		$header_html
