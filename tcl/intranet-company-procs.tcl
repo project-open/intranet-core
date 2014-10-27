@@ -299,12 +299,18 @@ ad_proc -public im_company_link_tr {user_id company_id company_name title} {
 }
 
 
-ad_proc -public im_company_permissions {user_id company_id view_var read_var write_var admin_var} {
+ad_proc -public im_company_permissions {
+    user_id
+    company_id
+    view_var
+    read_var
+    write_var
+    admin_var
+} {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $user_id on $company_id
 } {
     set debug 0
-
     upvar $view_var view
     upvar $read_var read
     upvar $write_var write
@@ -315,7 +321,7 @@ ad_proc -public im_company_permissions {user_id company_id view_var read_var wri
     set write 0
     set admin 0
 
-    if {0 == $company_id} { return }
+    if {0 == $company_id || 0 == $user_id || "" == $user_id} { return }
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set user_is_wheel_p [im_profile::member_p -profile_id [im_wheel_group_id] -user_id $user_id]
     set user_is_group_member_p [im_biz_object_member_p $user_id $company_id]
@@ -599,7 +605,7 @@ ad_proc im_company_nuke {
     }
 
     # Log the action
-    im_audit -object_type "im_company" -object_id $company_id -action before_delete
+    im_audit -user_id $current_user_id -object_type "im_company" -object_id $company_id -action before_delete
 
     set company_exists_p [db_string exists "select count(*) from im_companies where company_id = :company_id"]
     if {!$company_exists_p} { return }
@@ -638,7 +644,7 @@ ad_proc im_company_nuke {
     "
     db_foreach delete_offices $companies_offices_sql {
 	db_dml unlink_offices "update im_companies set main_office_id = (select min(office_id) from im_offices) where main_office_id = :office_id"
-	im_office_nuke $office_id
+	im_office_nuke -current_user_id $current_user_id $office_id
     }
 
     db_transaction {
@@ -685,7 +691,7 @@ ad_proc im_company_nuke {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 
-	    im_audit -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id"
+	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 
@@ -702,7 +708,7 @@ ad_proc im_company_nuke {
 	    set object_type [lindex $cost_info 1]
 	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 
-	    im_audit -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id."
+	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id."
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	
