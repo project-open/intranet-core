@@ -164,13 +164,22 @@ ad_proc -public im_permission {user_id privilege} {
 }
 
 
+ad_proc im_subsite_id { } {
+    Caching version of ad_conn subsite_id.
+    This deals with the problem that ad_conn is not available when
+    executing sweeper procs or DELETE REST commands.
+} {
+    set subsite_id [util_memoize [list db_string subsite_id "select min(package_id) from apm_packages where package_key = 'acs-subsite'"] 100000]
+    return $subsite_id
+}
+
 ad_proc im_permission_helper {user_id privilege} {
     Cached helper for:
     Returns true or false, depending whether the user can execute
     the specified action.<br>
     Uses a cache to reduce DB traffic.
 } {
-    set subsite_id [util_memoize [list ad_conn subsite_id] 1000000]
+    set subsite_id [im_subsite_id]
     set result [permission::permission_p -no_cache -party_id $user_id -object_id $subsite_id -privilege $privilege]
     return $result
 }

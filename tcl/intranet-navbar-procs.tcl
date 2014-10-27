@@ -84,18 +84,18 @@ ad_proc -public im_navbar_tree_helper {
 	<ul class=mktree>
 	<li><a href=\"/intranet/index\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
-		<li><a href=$wiki/list_modules>$general_help_l10n</a>
+		<li><a href=\"$wiki/list_modules\">$general_help_l10n</a>
 		[im_menu_li dashboard]
 		[im_menu_li indicators]
     "
     if {$user_id == 0} {
 	append html "
-		<li><a href=/register/>[lang::message::lookup "" intranet-core.Login_Navbar Login]</a>
+		<li><a href=\"/register/\">[lang::message::lookup "" intranet-core.Login_Navbar Login]</a>
         "
     }
     if {$user_id > 0} {
 	append html "
-		<li><a href=/register/logout>[lang::message::lookup "" intranet-core.logout Logout]</a>
+		<li><a href=\"/register/logout\">[lang::message::lookup "" intranet-core.logout Logout]</a>
         "
     }
 
@@ -110,7 +110,7 @@ ad_proc -public im_navbar_tree_helper {
         [if {![catch {set ttt [im_navbar_tree_finance -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[if {![catch {set ttt [im_navbar_tree_master_data_management -user_id $user_id -locale $locale]}]} {set ttt} else {set ttt ""}]
 	[im_navbar_tree_admin -user_id $user_id -locale $locale]
-      </div>
+        </ul>
     "
 }
 
@@ -159,20 +159,20 @@ ad_proc -public im_navbar_tree_project_management {
 #    if {0 == $user_id} { return "" }
 
     set html "
-	<li><a href=/intranet/projects/>[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
+	<li><a href=\"/intranet/projects/\">[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
-	<li><a href=$wiki/module_project_management>[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
+	<li><a href=\"$wiki/module_project_management\">[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
     "
     if {[im_permission $user_id add_projects]} {
 	append html "
-		<li><a href=/intranet/projects/new>[lang::message::lookup "" intranet-core.New_Project "New Project"]</a>
+		<li><a href=\"/intranet/projects/new\">[lang::message::lookup "" intranet-core.New_Project "New Project"]</a>
         "
     }
     
     # Add sub-menu with project types
     if {$user_id > 0} {
 	append html "
-	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
+	        <li><a href=\"/intranet/projects/index\">[lang::message::lookup "" intranet-core.Project_Types "Project Types"]</a>
 	        <ul>
         "
 	set project_type_sql "
@@ -195,7 +195,7 @@ ad_proc -public im_navbar_tree_project_management {
     # Add sub-menu with project status
     if {$user_id > 0} {
 	append html "
-	        <li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
+	        <li><a href=\"/intranet/projects/index\">[lang::message::lookup "" intranet-core.Project_Status "Project Status"]</a>
 	        <ul>
         "
 	set project_status_sql "
@@ -220,25 +220,25 @@ ad_proc -public im_navbar_tree_project_management {
 
     if {$view_invoices_p && $view_projects_all_p} {
 	append html "
-		<li><a href=/intranet-dw-light/projects.csv>[lang::message::lookup "" intranet-core.Export_Projects_to_CSV "Export Projects to CSV"]</a></li>
+		<li><a href=\"/intranet-dw-light/projects.csv\">[lang::message::lookup "" intranet-core.Export_Projects_to_CSV "Export Projects to CSV"]</a></li>
         "
     }
 
     if {$user_id > 0} {
         append html "
-		<li><a href=/intranet/projects/index?filter_advanced_p=1>[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
+		<li><a href=\"/intranet/projects/index?filter_advanced_p=1\">[lang::message::lookup "" intranet-core.Project_Advanced_Filtering "Project Advanced Filtering"]</a>
         "
     }
 
     if {[im_permission $user_id "view_projects_all"]} {
         append html "
-<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+<li><a href=\"/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report\">[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
         "
     }
 
     if {[im_permission $user_id view_finance] && [im_permission $user_id view_projects]} {
         append html "
-		<li><a href=/intranet/projects/index?view_name=project_costs>[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
+		<li><a href=\"/intranet/projects/index?view_name=project_costs\">[lang::message::lookup "" intranet-core.Projects_Profit_and_Loss "Projects Profit &amp; Loss"]</a>
         "
     }
     append html "
@@ -262,15 +262,15 @@ ad_proc -public im_navbar_tree_sales_marketing {
     set view_projects_all_p [im_permission $user_id view_projects_all]
 
     set html "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.CRM_Sales "CRM"]</a>
+	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.CRM_Sales "CRM"]</a>
 	<ul>
-	<li><a href=$wiki/module_crm>[lang::message::lookup "" intranet-core.CRM_Help "CRM Help"]</a>
+	<li><a href=\"$wiki/module_crm\">[lang::message::lookup "" intranet-core.CRM_Help "CRM Help"]</a>
     "
 
     # Add sub-menu with project status
     if {$user_id > 0} {
 	append html "
-		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
+		<li><a href=\"/intranet/projects/index\">[lang::message::lookup "" intranet-core.Project_Proposals "Project Proposals"]</a>
 	        <ul>
         "
 	set potential_projects_sql "
@@ -291,13 +291,13 @@ ad_proc -public im_navbar_tree_sales_marketing {
     }
 
     append html "
-		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Customer_Prospects "Customer Prospects"]</a>
+		<li><a href=\"/intranet/projects/index\">[lang::message::lookup "" intranet-core.Customer_Prospects "Customer Prospects"]</a>
 			<ul>
     "
 
     if {[im_permission $user_id add_companies]} {
 	append html "
-			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
+			<li><a href=\"/intranet/companies/new\">[lang::message::lookup "" intranet-core.New_Customer "New Customer"]</a></li>
         "
     }
 
@@ -318,19 +318,19 @@ ad_proc -public im_navbar_tree_sales_marketing {
     append html "
 			</ul>
 		</li>
-		<li><a href=/intranet/projects/index>Quoting</a>
+		<li><a href=\"/intranet/projects/index\">Quoting</a>
 			<ul>
     "
 
 
     if {[im_permission $user_id add_invoices]} {
 	append html "
-			<li><a href=/intranet-invoices/new?cost_type_id=3702>[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
+			<li><a href=\"/intranet-invoices/new?cost_type_id=3702\">[lang::message::lookup "" intranet-core.New_Quote "New Quote"]</a></li>
         "
     }
     if {[im_permission $user_id view_invoices]} {
 	append html "
-			<li><a href=/intranet-invoices/list?cost_type_id=3702>[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
+			<li><a href=\"/intranet-invoices/list?cost_type_id=3702\">[lang::message::lookup "" intranet-core.All_Quotes "All Quotes"]</a></li>
         "
     }
     append html "
@@ -338,13 +338,13 @@ ad_proc -public im_navbar_tree_sales_marketing {
 		</li>
     "
     append html "
-		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
+		<li><a href=\"/intranet-reporting/\">[lang::message::lookup "" intranet-core.Reporting Reporting]</a>
 			<ul>
     "
 
     if {$view_invoices_p && $view_projects_all_p} {
 	append html "
-			<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Customers_to_CSV "Export Customers to CSV/Excel"]</a></li>
+			<li><a href=\"/intranet-dw-light/companies.csv\">[lang::message::lookup "" intranet-core.Export_Customers_to_CSV "Export Customers to CSV/Excel"]</a></li>
         "
     }
 
@@ -370,20 +370,20 @@ ad_proc -public im_navbar_tree_human_resources {
     set wiki [im_navbar_doc_wiki]
 
     set html "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
+	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
-	<li><a href=$wiki/module_human_resources>[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
+	<li><a href=\"$wiki/module_human_resources\">[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
     "
     if {[im_permission $user_id add_users]} {
 	append html "
-		<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_User "New User"]</a>
+		<li><a href=\"/intranet/users/new\">[lang::message::lookup "" intranet-core.New_User "New User"]</a>
         "
     }
 
     # Add sub-menu with user profiles
     if {$user_id > 0} {
 	append html "
-	        <li><a href=/intranet/users/index>[lang::message::lookup "" intranet-core.User_Profiles "User Profiles"]</a>
+	        <li><a href=\"/intranet/users/index\">[lang::message::lookup "" intranet-core.User_Profiles "User Profiles"]</a>
         	<ul>
         "
 	set profile_sql "
@@ -405,13 +405,13 @@ ad_proc -public im_navbar_tree_human_resources {
 
     if {[im_permission $user_id add_absences]} {
 	append html "
-		<li><a href=/intranet-timesheet2/absences/new>[lang::message::lookup "" intranet-core.New_Absence "New Absence"]</a></li>
+		<li><a href=\"/intranet-timesheet2/absences/new\">[lang::message::lookup "" intranet-core.New_Absence "New Absence"]</a></li>
        "
     }
 
     if {[im_permission $user_id "view_absences"]} {
 	append html "
-		<li><a href=/intranet-timesheet2/absences/index>[lang::message::lookup "" intranet-core.Absence_Types "Absence Types"]</a>
+		<li><a href=\"/intranet-timesheet2/absences/index\">[lang::message::lookup "" intranet-core.Absence_Types "Absence Types"]</a>
         "
 
 	append html "
@@ -435,13 +435,13 @@ ad_proc -public im_navbar_tree_human_resources {
 
     if {[im_permission $user_id "add_expenses"]} {
 	append html "
-		<li><a href=/intranet-expenses/new>[lang::message::lookup "" intranet-core.New_Travel_Expense "New Travel Expense"]</a>
+		<li><a href=\"/intranet-expenses/new\">[lang::message::lookup "" intranet-core.New_Travel_Expense "New Travel Expense"]</a>
         "
     }
 
     if {[im_permission $user_id "add_expenses"]} {
 	append html "
-		<li><a href=/intranet-expenses/index>[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
+		<li><a href=\"/intranet-expenses/index\">[lang::message::lookup "" intranet-core.Expense_Types "Expense Types"]</a>
 		<ul>
         "
 	set expense_sql "
@@ -460,7 +460,7 @@ ad_proc -public im_navbar_tree_human_resources {
     }
 
     append html "
-		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.HR_Reporting "HR Reporting"]</a>
+		<li><a href=\"/intranet-reporting/\">[lang::message::lookup "" intranet-core.HR_Reporting "HR Reporting"]</a>
                 <ul>
     "
     append html "
@@ -474,7 +474,7 @@ ad_proc -public im_navbar_tree_human_resources {
 
     if {[im_permission $user_id view_users]} {
 	append html "
-		<li><a href=/intranet-dw-light/users.csv>[lang::message::lookup "" intranet-core.Export_Users_to_CSV "Export Users to CSV"]</a></li>
+		<li><a href=\"/intranet-dw-light/users.csv\">[lang::message::lookup "" intranet-core.Export_Users_to_CSV "Export Users to CSV"]</a></li>
         "
     }
     append html "
@@ -496,46 +496,46 @@ ad_proc -public im_navbar_tree_provider_management {
     set wiki [im_navbar_doc_wiki]
 
     set html "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
+	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
-	<li><a href=$wiki/module_provider_management>[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
+	<li><a href=\"$wiki/module_provider_management\">[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
     "
     if {[im_is_user_site_wide_or_intranet_admin $user_id]} {
 	append html "
-		<li><a href=/intranet-dw-light/companies.csv>[lang::message::lookup "" intranet-core.Export_Providers_to_CSV "Export Providers to CSV/Excel"]</a></li>
+		<li><a href=\"/intranet-dw-light/companies.csv\">[lang::message::lookup "" intranet-core.Export_Providers_to_CSV "Export Providers to CSV/Excel"]</a></li>
         "
     }
     append html "
-		<li><a href=/intranet/projects/index>[lang::message::lookup "" intranet-core.Providers Providers]</a>
+		<li><a href=\"/intranet/projects/index\">[lang::message::lookup "" intranet-core.Providers Providers]</a>
 			<ul>
     "
     if {[im_permission $user_id add_companies]} {
 	append html "
-			<li><a href=/intranet/companies/new>[lang::message::lookup "" intranet-core.New_Provider "New Provider Company"]</a></li>
+			<li><a href=\"/intranet/companies/new\">[lang::message::lookup "" intranet-core.New_Provider "New Provider Company"]</a></li>
         "
     }
     if {[im_permission $user_id add_companies]} {
 	append html "
-			<li><a href=/intranet/users/new>[lang::message::lookup "" intranet-core.New_Provider_Contact "New Provider Contact"]</a></li>
+			<li><a href=\"/intranet/users/new\">[lang::message::lookup "" intranet-core.New_Provider_Contact "New Provider Contact"]</a></li>
         "
     }
 
     if {[im_permission $user_id add_users]} {
 	append html "
-			<li><a href=/intranet-freelance/index>[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
+			<li><a href=\"/intranet-freelance/index\">[lang::message::lookup "" intranet-core.Search_for_Providers_by_Skill "Search for Providers by Skill"]</a></li>
 	"
     }
     append html "
 			[im_menu_li freelance_rfqs]
 			</ul>
 		</li>
-		<li><a href=/intranet-reporting/>[lang::message::lookup "" intranet-core.Provider_Reporting "Provider Reporting"]</a>
+		<li><a href=\"/intranet-reporting/\">[lang::message::lookup "" intranet-core.Provider_Reporting "Provider Reporting"]</a>
 			<ul>
 			[im_menu_li reporting-cubes-finance]
     "
     if {[im_permission $user_id view_projects_all]} {
 	append html "
-			<li><a href=/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report>[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
+			<li><a href=\"/intranet-ganttproject/gantt-resources-cube?config=resource_planning_report\">[lang::message::lookup "" intranet-core.Project_Resource_Planning "Project Resource Planning"]</a>
         "
     }
     append html "
@@ -557,14 +557,14 @@ ad_proc -public im_navbar_tree_collaboration {
     set wiki [im_navbar_doc_wiki]
 
     set html "
-	<li><a href=/intranet/>[lang::message::lookup "" intranet-core.Collaboration "Collaboration & KM"]</a>
+	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Collaboration "Collaboration &amp; KM"]</a>
 	<ul>
-	<li><a href=$wiki/module_collaboration_knowledge>[lang::message::lookup "" intranet-core.CollabKM_Help "C&KM Help"]</a></li>
-		<li><a href=/intranet-search/search?type=all&q=search>[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a></li>
-		<li><a href=/calendar/>[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a></li>
+	<li><a href=\"$wiki/module_collaboration_knowledge\">[lang::message::lookup "" intranet-core.CollabKM_Help "C&amp;KM Help"]</a></li>
+		<li><a href=\"/intranet-search/search?type=all&q=search\">[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a></li>
+		<li><a href=\"/calendar/\">[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a></li>
 		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
 		[im_menu_li forum]
-		<li><a href=/intranet-forum/index>[lang::message::lookup "" intranet-core.Forum_Types "Forum Types"]</a>
+		<li><a href=\"/intranet-forum/index\">[lang::message::lookup "" intranet-core.Forum_Types "Forum Types"]</a>
 		<ul>
     "
 	
@@ -582,8 +582,8 @@ ad_proc -public im_navbar_tree_collaboration {
 		</ul>
 		</li>
 		[im_menu_li -pretty_name Wiki wiki]
-		<li><a href=/intranet-filestorage/>[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a></li>
-		<li><a href=/simple-survey/>Surveys</a></li>
+		<li><a href=\"/intranet-filestorage/\">[lang::message::lookup "" intranet-core.File_Storage "File Storage"]</a></li>
+		<li><a href=\"/simple-survey/\">Surveys</a></li>
 	</ul>
     "
 
@@ -602,91 +602,91 @@ ad_proc -public im_navbar_tree_master_data_management {
     if {!$admin_p} { return "" }
 
     return "
-	<li><a href=/intranet/admin/categories/>Master Data Management</a>
+	<li><a href=\"/intranet/admin/categories/\">Master Data Management</a>
 	<ul>
 		<li><a href=/intranet/companies/upload-companies>Import Companies from CSV</a>
 		<li><a href=/intranet/users/upload-contacts>Import Contacts from CSV</a>
 		<li><a href=/intranet/admin/categories/>General</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+UoM>Unit of Measure</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+UoM\">Unit of Measure</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Projects</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Project+Status>Project Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Project+Type>Project Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Project+Status\">Project Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Project+Type\">Project Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Companies &amp; Offices</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Company+Customer+Prio>Company Customer Prio</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Company+Status>Company Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Company+Type>Company Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Office+Status>Office Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Office+Type>Office Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Company+Customer+Prio\">Company Customer Prio</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Company+Status\">Company Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Company+Type\">Company Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Office+Status\">Office Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Office+Type\">Office Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Absences &amp; Vacations</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Absence+Status>Absence Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Absence+Type>Absence Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Absence+Status\">Absence Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Absence+Type\">Absence Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>HR Recruiting</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Recruiting+Status>Recruiting Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Recruiting+Test+Result>Recruiting Test Result</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Employee+Pipeline+State>Employee Pipeline State</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Experience+Level>Experience Level</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Hiring+Source>Hiring Source</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Job+Title>Job Title</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Prior+Experience>Prior Experience</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Qualification+Process>Qualification Process</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Recruiting+Status\">Recruiting Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Recruiting+Test+Result\">Recruiting Test Result</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Employee+Pipeline+State\">Employee Pipeline State</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Experience+Level\">Experience Level</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Hiring+Source\">Hiring Source</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Job+Title\">Job Title</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Prior+Experience\">Prior Experience</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Qualification+Process\">Qualification Process</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>HR Skills &amp; Qualifications</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Skill+Type>Skill Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Skill+Weight>Skill Weight</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Operating+System>Operating System</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+LOC+Tool>LOC Tool</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+TM+Tool>TM Tool</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Skill+Type\">Skill Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Skill+Weight\">Skill Weight</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Operating+System\">Operating System</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+LOC+Tool\">LOC Tool</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+TM+Tool\">TM Tool</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>RFQ/RFQ System</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Status>Freelance RFQ Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Type>Freelance RFQ Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Answer+Status>Freelance RFQ Answer Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Status\">Freelance RFQ Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Type\">Freelance RFQ Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Freelance+RFQ+Answer+Status\">Freelance RFQ Answer Status</a>
 	
 		</ul>
 		<li><a href=/intranet/admin/categories/>Expenses &amp; Travel Costs</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Expense+Type>Expense Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Expense+Payment+Type>Expense Payment Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Expense+Type\">Expense Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Expense+Payment+Type\">Expense Payment Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Finance</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Canned+Note>Invoice Canned Note</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Payment+Method>Invoice Payment Method</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Status>Invoice Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Type>Invoice Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Cost+Template>Cost Template</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Payment+Type>Payment Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Canned+Note\">Invoice Canned Note</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Payment+Method\">Invoice Payment Method</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Status\">Invoice Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Invoice+Type\">Invoice Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Cost+Template\">Cost Template</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Payment+Type\">Payment Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Materials (Service Types)</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Material+Status>Material Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Material+Type>Material Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Material+Status\">Material Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Material+Type\">Material Type</a>
 		</ul>
 		<li><a href=/intranet/admin/categories/>Forum</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Topic+Status>Forum Topic Status</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Topic+Type>Forum Topic Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Topic+Status\">Forum Topic Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Topic+Type\">Forum Topic Type</a>
 	
 		</ul>
 		<li><a href=/intranet/admin/categories/>Translation Specific</a>
 		<ul>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Quality>Translation Quality</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+File+Type>Translation File Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+Language>Translation Language</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+Quality+Type>Translation Quality Type</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+Subject+Area>Translation Subject Area</a>
-			<li><a href=/intranet/admin/categories/index?select_category_type=Intranet+Translation+Task+Status>Translation Task Status</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Quality\">Translation Quality</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Translation+File+Type\">Translation File Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Translation+Language\">Translation Language</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Translation+Quality+Type\">Translation Quality Type</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Translation+Subject+Area\">Translation Subject Area</a>
+			<li><a href=\"/intranet/admin/categories/index?select_category_type=Intranet+Translation+Task+Status\">Translation Task Status</a>
 		</ul>
 	</ul>
     "
@@ -777,7 +777,7 @@ ad_proc -public im_navbar_write_tree_helper {
 	regsub -all " " $name "_" name_key
 	set name [lang::message::lookup "" "$package_key.$name_key" $name]
 
-	append html "<li><a href=$url>$name</a>\n"
+	append html "<li><a href=\"$url\">$name</a>\n"
 	if {$maxlevel > 0 && $sub_count > 0} {
 	    append html "<ul>\n"
 	    append html [im_navbar_write_tree -label $label -maxlevel [expr $maxlevel-1]]
