@@ -505,18 +505,20 @@ ad_proc -public im_office_user_component {
 # Nuke a office
 # -----------------------------------------------------------
 
-ad_proc im_office_nuke {office_id} {
+ad_proc im_office_nuke {
+    {-current_user_id 0}
+    office_id
+} {
     Nuke (complete delete from the database) a office
 } {
     ns_log Notice "im_office_nuke office_id=$office_id"
+    if {0 == $current_user_id || "" == $current_user_id} { set current_user_id [ad_get_user_id] }
 
-    im_audit -object_type "im_office" -object_id $office_id -action before_delete
-    
-    set current_user_id [ad_get_user_id]
-    set user_id $current_user_id
     im_office_permissions $current_user_id $office_id view read write admin
     if {!$admin} { return }
-    
+
+    im_audit -user_id $current_user_id -object_type "im_office" -object_id $office_id -action before_delete
+
     # Permissions
     ns_log Notice "offices/nuke-2: acs_permissions"
     db_dml perms "delete from acs_permissions where object_id = :office_id"
