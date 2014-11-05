@@ -795,7 +795,7 @@ ad_proc -public im_sub_categories {
 		$enabled_check
     "
 
-    set result [db_list category_trans_closure $closure_sql]
+    set result [util_memoize [list db_list category_trans_closure $closure_sql]]
 
     # Avoid SQL syntax error when the result is used in a where x in (...) clause
     if {"" == $result} { set result [list 0] }
