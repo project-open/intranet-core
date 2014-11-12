@@ -2853,6 +2853,16 @@ ad_proc im_project_nuke {
         if {[im_table_exists im_timesheet_conf_objects]} {
 
             ns_log Notice "projects/nuke-2: im_timesheet_conf_objects"
+	    db_dml del_conf_object_dependencies "
+		update im_hours
+		set conf_object_id = null
+		where conf_object_id in (
+			select conf_id
+			from im_timesheet_conf_objects
+			where conf_project_id = :project_id
+		)
+	    "
+
             db_dml del_dependencies "
                 delete from im_timesheet_conf_objects
                 where conf_project_id = :project_id
