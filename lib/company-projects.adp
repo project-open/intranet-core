@@ -1,5 +1,5 @@
-
 @warning;noquote@
+<ul>
 <multiple name="active_projects">
   <if @active_projects.llevel@ gt @active_projects.current_level@>
     <ul>
@@ -27,6 +27,7 @@
 <if @admin@>
   <p><li><a href=../projects/new?company_id=@company_id@>#intranet-core.Add_a_project#</a>
 </if>
+</ul>
 
 
 
