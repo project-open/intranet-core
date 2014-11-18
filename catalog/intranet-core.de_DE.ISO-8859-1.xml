@@ -39,31 +39,44 @@
   <msg key="acs-api-browser">acs-api-browser</msg>
   <msg key="acs-authentication">acs-Authentifizierung</msg>
   <msg key="acs-core-docs">acs-core-docs</msg>
-  <msg key="acs-datetime">acs-datetime
+  <msg key="acs-datetime">acs-datetime
+
 </msg>
-  <msg key="acs-events">acs-events
+  <msg key="acs-events">acs-events
+
 </msg>
-  <msg key="acs-kernel">acs-kernel
+  <msg key="acs-kernel">acs-kernel
+
 </msg>
-  <msg key="acs-lang">acs-lang
+  <msg key="acs-lang">acs-lang
+
 </msg>
-  <msg key="acs-mail">acs-mail
+  <msg key="acs-mail">acs-mail
+
 </msg>
-  <msg key="acs-mail-lite">acs-mail-lite
+  <msg key="acs-mail-lite">acs-mail-lite
+
 </msg>
-  <msg key="acs-messaging">acs-messaging
+  <msg key="acs-messaging">acs-messaging
+
 </msg>
-  <msg key="acs-reference">acs-reference
+  <msg key="acs-reference">acs-reference
+
 </msg>
-  <msg key="acs-service-contract">acs-service-contract
+  <msg key="acs-service-contract">acs-service-contract
+
 </msg>
-  <msg key="acs-subsite">acs-subsite
+  <msg key="acs-subsite">acs-subsite
+
 </msg>
-  <msg key="acs-tcl">acs-tcl
+  <msg key="acs-tcl">acs-tcl
+
 </msg>
-  <msg key="acs-templating">acs-templating
+  <msg key="acs-templating">acs-templating
+
 </msg>
-  <msg key="acs-workflow">acs-workflow
+  <msg key="acs-workflow">acs-workflow
+
 </msg>
   <msg key="Action_Edit">Bearbeiten</msg>
   <msg key="Action_Go">Anwenden</msg>
@@ -233,7 +246,8 @@
   <msg key="Branch_Office">Niederlassung</msg>
   <msg key="Brazil">Brasilien</msg>
   <msg key="Browser_Warning">Browser Warnung</msg>
-  <msg key="Browser_Warning_Msg">Ihr Browser '%browser% %version_major%.x' ist veraltet und wird einige Seiten dieses Systems nicht korrekt anzeigen können.&lt;br&gt;
+  <msg key="Browser_Warning_Msg">Ihr Browser '%browser% %version_major%.x' ist veraltet und wird einige Seiten dieses Systems nicht korrekt anzeigen können.&lt;br&gt;
+
 Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="bs">bs</msg>
   <msg key="BT_Fix_for_Version">Korrigieren für Version</msg>
@@ -1188,16 +1202,26 @@ Mit freundlichen Grüßen,
   <msg key="lt_Finally_revisit_this_">Schließlich kommen Sie auf diese Seite zurück und Sie werden eine Option finden um einen neuen Kundenkontakt zu erzeugen.</msg>
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% wurde in %system_name% angelegt.</msg>
-  <msg key="lt_first_names_last_name_1">%first_names% %last_name%, 
-
-Sie wurden als Benutzer zu %system_name% unter 
-%system_url% hinzugefügt. 
-
-Anmeldungsdaten:
-E-Mail Adresse: %email%
-Password: %password%
-(Sie können Ihr Password nach dem Einloggen ändern)
-
+  <msg key="lt_first_names_last_name_1">%first_names% %last_name%, 
+
+
+
+Sie wurden als Benutzer zu %system_name% unter 
+
+%system_url% hinzugefügt. 
+
+
+
+Anmeldungsdaten:
+
+E-Mail Adresse: %email%
+
+Password: %password%
+
+(Sie können Ihr Password nach dem Einloggen ändern)
+
+
+
 %administration_name%</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% wurde benachrichtigt.</msg>
   <msg key="lt_First_unless_first_na">Zuerst, außer wenn %first_names% %last_name% ein Testbenutzer ist, sollten sie wahrscheinlich %delete_user_link%.  Das Löschen markiert den Benutzer als gelöscht, aber lässt seine oder ihre Beiträge intakt als Inhalt auf der Seite.</msg>
@@ -1443,7 +1467,8 @@ Password: %password%
   <msg key="lt_You_dont_have_suffici">Sie haben keine Berechtigungen um eine neue Firma hinzuzufügen.</msg>
   <msg key="lt_You_dont_have_suffici_1">Sie sind nicht berechtigt einen neuen Firmensitz hinzuzufügen.</msg>
   <msg key="lt_You_dont_have_suffici_2">Sie haben keine Berechtigungen um diese Seite zu öffnen.</msg>
-  <msg key="lt_You_have_been_removed">You have been removed from the delinquent list
+  <msg key="lt_You_have_been_removed">You have been removed from the delinquent list
+
 </msg>
   <msg key="lt_You_have_insufficient">Sie haben keine Berechtigungen um diesen User zu betrachten.</msg>
   <msg key="lt_You_have_insufficient_1">Sie haben keine Berechtigungen um diesen Vorgang durchzuführen.</msg>
@@ -2209,7 +2234,9 @@ Password: %password%
   <msg key="Telephone">Telefon</msg>
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telefon</msg>
+  <msg key="templatedeodt">template.de.odt</msg>
   <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>
   <msg key="Templates">Vorlagen</msg>
   <msg key="Test_evaluated">Test bewerted</msg>

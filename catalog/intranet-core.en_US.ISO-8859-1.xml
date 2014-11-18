@@ -83,7 +83,7 @@
   <msg key="Add_a_new_Office">Add New Office</msg>
   <msg key="Add_a_new_office">Add New Office</msg>
   <msg key="Add_a_new_portlet">Add a new portlet</msg>
-  <msg key="Add_a_new_project">Add New Project</msg>
+  <msg key="Add_a_new_project">Add New SLA</msg>
   <msg key="Add_a_new_project_from_Template">Add New Project from Template</msg>
   <msg key="Add_a_new_User">Add New User</msg>
   <msg key="Add_a_project">Add Project</msg>
@@ -260,9 +260,12 @@ We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="Cat_Type">Category Type</msg>
   <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categories</msg>
-  <msg key="Categories_List_Help">This page allows you to configure 'categories' (the contents of most drop-down boxes in the system).&lt;br&gt;
-Please &lt;b&gt;do not change categories&lt;/b&gt; unless you know what you are doing. Many categories are used as constants and changing them will break the system.&lt;br&gt;
-Instead, please use 'Category translation' to change the way how categories appear in the GUI.&lt;br&gt;
+  <msg key="Categories_List_Help">This page allows you to configure 'categories' (the contents of most drop-down boxes in the system).&lt;br&gt;
+
+Please &lt;b&gt;do not change categories&lt;/b&gt; unless you know what you are doing. Many categories are used as constants and changing them will break the system.&lt;br&gt;
+
+Instead, please use 'Category translation' to change the way how categories appear in the GUI.&lt;br&gt;
+
 In some rare cases changes in category types might require flushing the cache manually or restarting the web server.&lt;br&gt;</msg>
   <msg key="Category">Category</msg>
   <msg key="Category_description">Category description</msg>
@@ -329,6 +332,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="company_employee">company employee</msg>
   <msg key="Company_Events">Company Events</msg>
   <msg key="company_group_id">Company Group</msg>
+  <msg key="Company_ID">Company ID</msg>
   <msg key="Company_Information">Company Information</msg>
   <msg key="Company_Invoice">Company Invoice</msg>
   <msg key="Company_Name">Company Name</msg>
@@ -436,6 +440,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="cs">cs</msg>
   <msg key="Cuba">Cuba</msg>
   <msg key="Current_Milestones">Current Milestones</msg>
+  <msg key="Custom_Actions">Custom Actions</msg>
   <msg key="Customer">Customer</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
@@ -1214,6 +1219,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Futureintranet-timesh">Future</msg>
   <msg key="lt_GanttProject_is_a_fre">GanttProject is a free Gantt chart editor (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">General type of project. This allows us to create a suitable folder structure.</msg>
+  <msg key="lt_Generic_Problem_Ticke">Generic Problem Ticket</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware Manufacturer Customer</msg>
   <msg key="lt_has_been_marked_delet">has been marked \&quot;deleted\&quot;.</msg>
@@ -1389,6 +1395,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
   <msg key="lt_Taskintranet-forumTas">Tasks</msg>
+  <msg key="lt_Telephony_Request_Typ">Telephony Request Type</msg>
   <msg key="lt_The_customers_referen">The Customer's reference to this project.</msg>
   <msg key="lt_The_database_choked_o">The database choked on our update:</msg>
   <msg key="lt_the_email_email_is_al">The email %email% is already in the database</msg>
@@ -1552,6 +1559,7 @@ other way for the user to find out.</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
   <msg key="My_Account">My Account</msg>
+  <msg key="MySettings">My Settings</msg>
   <msg key="N">N</msg>
   <msg key="n">n</msg>
   <msg key="Nagios_Alert">Nagios Alert</msg>
@@ -1559,6 +1567,7 @@ other way for the user to find out.</msg>
   <msg key="Name">Name</msg>
   <msg key="NAV_Invoice">NAV Invoice</msg>
   <msg key="nav_order_nr">Order Nr</msg>
+  <msg key="Navbar_Admin_Text">Click here to administrate the navigation bar</msg>
   <msg key="Navbar_Help_Text">Click here to get help for this page.</msg>
   <msg key="Nepal">Nepal</msg>
   <msg key="Netherlands">Netherlands</msg>
@@ -1853,6 +1862,7 @@ other way for the user to find out.</msg>
   <msg key="Project_Gantt_Scheduling_Summary">Project Gantt Scheduling Summary</msg>
   <msg key="Project_GanttProject_Component">Project Gantt Component</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
+  <msg key="Project_ID">Project ID</msg>
   <msg key="Project_Management">Project Management</msg>
   <msg key="Project_Manager">Project Manager</msg>
   <msg key="Project_Managers">Project Managers</msg>
@@ -1865,6 +1875,7 @@ other way for the user to find out.</msg>
   <msg key="Project_nr">Project nr</msg>
   <msg key="Project_Open_Package">]po[ Package</msg>
   <msg key="Project_Open_Process">]po[ Process</msg>
+  <msg key="Project_Path">Project Path</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Proposals">Project Proposals</msg>
   <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
@@ -1942,6 +1953,7 @@ other way for the user to find out.</msg>
   <msg key="QCing">QCing</msg>
   <msg key="Qualifying">Qualifying</msg>
   <msg key="Quarter">Quarter</msg>
+  <msg key="Queue">Queue</msg>
   <msg key="Quote">Quote</msg>
   <msg key="Quote_Out">Quote Out</msg>
   <msg key="Quote_out">Quote out</msg>
@@ -1983,6 +1995,7 @@ other way for the user to find out.</msg>
   <msg key="Reserved">Reserved</msg>
   <msg key="Reset_Portlets">Reset Portlets</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
+  <msg key="Resolution_Time">Resolution Time</msg>
   <msg key="Resolved">Resolved</msg>
   <msg key="Resource_Availability_Component">Resource Availability Component</msg>
   <msg key="Resource_Management">Resource Management</msg>
@@ -2078,6 +2091,7 @@ other way for the user to find out.</msg>
   <msg key="Saudi Arabia">Saudi Arabia</msg>
   <msg key="Saudi_Arabia">Saudi Arabia</msg>
   <msg key="Save_Changes">Save Changes</msg>
+  <msg key="Score">Score</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
   <msg key="SDLX_4_Elite">SDLX 4 Elite</msg>
@@ -2220,7 +2234,10 @@ other way for the user to find out.</msg>
   <msg key="Telephone">Telephone</msg>
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telephony request</msg>
+  <msg key="Template_p">Template?</msg>
+  <msg key="templatedeodt">template.de.odt</msg>
   <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>
   <msg key="Templates">Templates</msg>
   <msg key="Test_evaluated">Test evaluated</msg>
@@ -2232,6 +2249,7 @@ other way for the user to find out.</msg>
   <msg key="Ticket_Members">Ticket Members</msg>
   <msg key="Ticket_Owner">Ticket Owner</msg>
   <msg key="Ticket_Status">Ticket Status</msg>
+  <msg key="Ticket_Survey_Component">Ticket Survey Component</msg>
   <msg key="Ticket_Type">Ticket Type</msg>
   <msg key="Tickets">Tickets</msg>
   <msg key="Time_plan">Time plan</msg>

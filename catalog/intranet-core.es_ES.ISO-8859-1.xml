@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
   <msg key="1111">1111</msg>
@@ -1133,9 +1133,9 @@
   <msg key="Med">Med</msg>
   <msg key="Medium">Media</msg>
   <msg key="Member_state_active">activo</msg>
+  <msg key="Members">Miembros</msg>
   <msg key="MemberState_approved">Aktivo</msg>
   <msg key="MemberState_banned">Borrado</msg>
-  <msg key="Members">Miembros</msg>
   <msg key="Menu_Administration">Administración de menús</msg>
   <msg key="Menu_Backup_Restore">Menú de copia de seguridad y restauración</msg>
   <msg key="Menu_Restore">Restablecer menu</msg>
@@ -1642,7 +1642,9 @@
   <msg key="Telefonie">Solicitud de telefonía</msg>
   <msg key="Telephony_Request">Solicitud de telefonía</msg>
   <msg key="Telephony_request">Solicitud telefonía</msg>
+  <msg key="templatedeodt">template.de.odt</msg>
   <msg key="templateenadp">template.en.adp</msg>
+  <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>
   <msg key="Test_evaluated">Test evaluado</msg>
   <msg key="Test_received">Test recibido</msg>

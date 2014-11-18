@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-core" package_version="3.4.0.7.0" locale="en_GB" charset="ISO-8859-1">
+<message_catalog package_key="intranet-core" locale="en_GB" charset="ISO-8859-1">
 
   <msg key="A_-_Test_approved">A - Good</msg>
   <msg key="Aim_Screen_Name">Jabber/Aim Screen Name</msg>
@@ -40,6 +40,8 @@
   <msg key="Start_Date">Start Date</msg>
   <msg key="State">County</msg>
   <msg key="Tasks__Incidents">Tasks / Allocations</msg>
+  <msg key="templatedeodt">template.de.odt</msg>
+  <msg key="templateenodt">template.en.odt</msg>
   <msg key="Work_Postal_Code">Work Post Code</msg>
   <msg key="Work_ZIP">Work Post Code</msg>
   <msg key="ZIP">Post code</msg>
