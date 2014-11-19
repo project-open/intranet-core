@@ -359,7 +359,7 @@ insert into acs_rel_types (
 ) values (
 	'im_company_employee_rel', 'im_company', 'employer', 
 	'1', NULL,
-	'person', 'employee', '1', NULL
+	'party', 'employee', '1', NULL
 );
 
 
@@ -455,7 +455,7 @@ insert into acs_rel_types (
 ) values (
 	'im_key_account_rel', 'im_company', 'company',
 	'1', NULL,
-	'person', 'key_account', '1', NULL
+	'party', 'key_account', '1', NULL
 );
 
 
