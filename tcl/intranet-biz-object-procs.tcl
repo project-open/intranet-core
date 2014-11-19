@@ -882,3 +882,74 @@ ad_proc -public im_biz_object_related_objects_component {
     return [string trim $result]
 }
 
+
+
+
+
+
+# ---------------------------------------------------------------
+# Allow the user to add profiles to tickets
+# ---------------------------------------------------------------
+
+ad_proc im_biz_object_add_profile_component {
+    -object_id:required
+} {
+    Component that returns a formatted HTML form allowing
+    users to add a profile to an object
+} {
+    # ------------------------------------------------
+    # Applicability, Defauls & Security
+    set current_user_id [ad_get_user_id]
+    set object_type [util_memoize [list db_string acs_object_type "select object_type from acs_objects where object_id = $object_id" -default ""]]
+    set perm_cmd "${object_type}_permissions \$current_user_id \$object_id view_p read_p write_p admin_p"
+    eval $perm_cmd
+    if {!$write_p} { return "" }
+
+    set object_name [acs_object_name $object_id]
+    set page_title [lang::message::lookup "" intranet-helpdesk.Add_profile "Add profile"]
+
+    set notify_checked ""
+    if {[parameter::get_from_package_key -package_key "intranet-core" -parameter "NotifyNewMembersDefault" -default "1"]} {
+        set notify_checked "checked"
+    }
+    
+    set bind_vars [ns_set create]
+    set profiles_sql "
+	select	g.group_id,
+		g.group_name
+	from	groups g,
+		im_profiles p
+	where	g.group_id = p.profile_id
+	order by lower(g.group_name)
+    "
+    set default ""
+    set list_box [im_selection_to_list_box -translate_p "0" $bind_vars profile_select $profiles_sql user_id_from_search $default 10 0]
+
+    set passthrough {object_id return_url also_add_to_object_id limit_to_users_in_group_id}
+    foreach var $passthrough {
+	if {![info exists $var]} { set $var [im_opt_val $var] }
+    }
+
+    set role_id [im_biz_object_role_full_member]
+    set result "
+	<form method=GET action=/intranet/member-add-2>
+	[export_form_vars passthrough]
+	[export_form_vars {notify_asignee 0}]
+	[eval "export_form_vars $passthrough"]
+	<table cellpadding=0 cellspacing=2 border=0>
+	<tr><td>
+	$list_box
+	</td></tr>
+	<tr><td>
+	[_ intranet-core.add_as] [im_biz_object_roles_select role_id $object_id $role_id]
+	</td></tr>
+	<tr><td>
+	<input type=submit value=\"[_ intranet-core.Add]\">
+	</td></tr>
+	</table>
+	</form>
+    "
+    
+    return $result
+}
+
