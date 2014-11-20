@@ -272,9 +272,10 @@ if {$see_details} {
 
 
 # ------------------------------------------------------
-# 
+# Left Column Action
 # ------------------------------------------------------
 
+#20141120KH - to be removed, ok? 
 set left_column_action ""
 if {$admin} {
     set left_column_action "
@@ -284,7 +285,6 @@ if {$admin} {
 	<input type=submit value='[_ intranet-core.Edit]'>
 	</form></td></tr>"
 }
-
 
 # ------------------------------------------------------
 # Company Project List
@@ -350,11 +350,9 @@ if { $admin > 0 } {
 } 
 
 
-
 # ------------------------------------------------------
 # Components
 # ------------------------------------------------------
-
 
 set company_members [im_group_member_component $company_id $user_id $admin $return_url [im_employee_group_id]]
 
@@ -364,17 +362,31 @@ set enable_project_estimates 0
 set also_add_to_group [im_customer_group_id]
 set company_clients [im_group_member_component $company_id $user_id $admin $return_url "" [im_employee_group_id] $also_add_to_group]
 
-
-
 set projects_html [im_table_with_title "[_ intranet-core.Projects]" "<ul>$projects_html</ul>"]
 
 set our_employees_str [lang::message::lookup "" intranet-core.Our_employees_related "Our Employees (managing the company)"]
 set companys_employees_str [lang::message::lookup "" intranet-core.Companys_Contacts "Company's Contacts"]
 
-# ad_return_complaint 1 $company_members
 set company_members_html [im_table_with_title $our_employees_str $company_members]
-# ad_return_complaint 1 $company_members_html
 set company_clients_html [im_table_with_title $companys_employees_str $company_clients]
 
+# ------------------------------------------------------
+# Admin Links
+# ------------------------------------------------------
 
+set admin_links_html ""
+set left_navbar_html ""
+
+set bind_vars [list return_url $return_url]
+set links [im_menu_ul_list -no_uls 0 -list_of_links 0 "company_admin" $bind_vars]
+
+if { "" != $links } {
+    set left_navbar_html "
+        <div class='filter-block'>
+                <div class='filter-title'>[lang::message::lookup "" intranet-core.AdminCompanies "Admin Companies"]</div>
+		$links
+        </div>
+        <hr/>
+    "
+}
 

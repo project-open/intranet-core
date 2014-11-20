@@ -1,6 +1,7 @@
 <master src="../master">
 <property name="title">@company_name@</property>
 <property name="main_navbar_label">companies</property>
+<property name="left_navbar">@left_navbar_html;noquote@</property>
 
 <!-- left - right - bottom  design -->
 
