@@ -43,6 +43,8 @@ ad_page_contract {
 # REST client for example.
 # Not very secure (password in the browser history), but definitely
 # convenient.
+ns_log Notice "auto-login: user_id=$user_id, email=$email, len(auto_login)=[string length $auto_login], len(password)=[string length $password], cmd=$cmd, url=$url"
+
 if {"" != $password && "" != $email} {
     array set result_array [auth::authenticate \
 		    -return_url $url \
@@ -71,7 +73,7 @@ if {"" != $password && "" != $email} {
 # Auto_login 
 # ------------------------------------------------------------------------
 
-# Check the auto-login token without looking at require_manual_login.
+ns_log Notice "auto-login: Check the auto-login token without looking at require_manual_login"
 
 set valid_login_without_require [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p 0]
 
