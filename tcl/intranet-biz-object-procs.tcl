@@ -847,12 +847,14 @@ ad_proc -public im_biz_object_related_objects_component {
     { -include_membership_rels_p 0 }
     { -user_friendly_view_p 0  }
     { -show_projects_only 0 }
+    { -show_companies_only 0 }
     { -hide_rel_name_p 0 }
     { -hide_object_chk_p 0 }
     { -hide_direction_pretty_p 0 }
     { -hide_object_type_pretty_p 0 }
     { -hide_object_name_p 0 }
     { -hide_creation_date_formatted_p 0 }
+    { -suppress_invalid_objects_p 0 }
     { -sort_order "" }
     -object_id:required 
 } {
@@ -867,6 +869,7 @@ ad_proc -public im_biz_object_related_objects_component {
 		    [list include_membership_rels_p $include_membership_rels_p] \
 		    [list user_friendly_view_p $user_friendly_view_p] \
 		    [list show_projects_only $show_projects_only ] \
+		    [list show_companies_only $show_companies_only ] \
 		    [list return_url [im_url_with_query]] \
 		    [list hide_rel_name_p $hide_rel_name_p] \
 		    [list hide_object_chk_p $hide_object_chk_p ] \
@@ -874,6 +877,7 @@ ad_proc -public im_biz_object_related_objects_component {
 		    [list hide_object_type_pretty_p $hide_object_type_pretty_p  ] \
 		    [list hide_object_name_p $hide_object_name_p ] \
 		    [list hide_creation_date_formatted_p $hide_creation_date_formatted_p ] \
+                    [list suppress_invalid_objects_p $suppress_invalid_objects_p ] \
 		    [list sort_order $sort_order ] \
 		    [list object_id $object_id] \
 		    ]
