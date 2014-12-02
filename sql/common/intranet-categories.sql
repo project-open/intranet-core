@@ -157,7 +157,8 @@
 -- 80000-80099  Customer SOR (100)
 -- 80100-80599  Intranet CRM (500)
 -- 80600-80699  Invoice Cycle (Intranet Service Contracts & Intranet Invoices)
--- 80700-80799  reserved (100)
+-- 80700-80749 	Intranet Translation Provider Bill Units
+-- 80750-80799  reserved (50)
 -- 80800-80899  reserved (100)
 -- 80900-80999  reserved (100)
 -- 80100-80599  Intranet Skill [...] 
