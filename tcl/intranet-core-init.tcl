@@ -75,7 +75,8 @@ set object_types {
 
 # Create callbacks for all objects
 foreach object_type $object_types {
-    
+
+    # Deprecated: Before create there is no object in the DB!
     ad_proc -public -callback ${object_type}_before_create {
 	{-object_id:required}
 	{-status_id ""}
@@ -195,6 +196,7 @@ foreach object_type $object_types {
 		   implementation is to be executed only on certain object states.
     } -
     
+    # Deprecated: After delete there is no object in the DB anymore!
     ad_proc -public -callback ${object_type}_after_delete {
 	{-object_id:required}
 	{-status_id ""}
