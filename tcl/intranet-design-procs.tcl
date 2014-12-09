@@ -921,7 +921,42 @@ ad_proc -public im_navbar {
 		    }
 		    
 		    "finance" {
+
+			# Requires separate handling since menu data stored in im_menus is used to create 
+			# 	a) admin links in sidebar 
+			# 	b) right sub-menu tabs
+			#	c) top menu tabs
+			# Not in all three locations all active menu items should be shown.
+
 			set submenus ""
+
+			# Customer & Provider Docs
+			set menu_select_sql "
+ 			       select  	m.name as r_name,
+					m.menu_id as r_id,
+					m.url as r_url
+			       from    	im_menus m
+			       where   	label = 'invoices_customers'
+		               		and enabled_p = 't'
+		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+			"
+
+			if { [db_0or1row get_manu_information $menu_select_sql] } {
+			    append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.CustomerDocuments "Customer Documents"]</a></li>"			
+			}
+			set menu_select_sql "
+ 			       select  	m.name as r_name,
+					m.menu_id as r_id,
+					m.url as r_url
+			       from    	im_menus m
+			       where   	label = 'invoices_providers'
+		               		and enabled_p = 't'
+		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+			"
+			if { [db_0or1row get_manu_information $menu_select_sql] } {
+			    append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.ProviderDocuments "Provider Documents"]</a></li>"			
+			}
+
 			# Get a list of Provider links {menu_name menu_link admin_name admin_link}
 			set sub_menu_providers [im_menu_links "invoices_providers"]
 			if { "" != $sub_menu_providers } {
@@ -940,6 +975,7 @@ ad_proc -public im_navbar {
 			    append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
 			}
 		    }
+
 		    default {
 			# Get first level sub_menus
 			set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
