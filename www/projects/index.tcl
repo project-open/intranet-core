@@ -393,10 +393,10 @@ if { ![empty_string_p $company_id] && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
 }
 if {"" != $start_date} {
-    lappend criteria "p.end_date >= :start_date::timestamptz"
+    lappend criteria "p.start_date >= :start_date::timestamptz"
 }
 if {"" != $end_date} {
-    lappend criteria "p.start_date < :end_date::timestamptz"
+    lappend criteria "p.end_date < :end_date::timestamptz"
 }
 if { ![empty_string_p $upper_letter] && [string compare $upper_letter "ALL"] != 0 && [string compare $upper_letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:upper_letter"
