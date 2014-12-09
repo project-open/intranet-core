@@ -46,4 +46,8 @@ foreach pid [array names plugin_id] {
 }
 
 
+# Clear cache 
+im_permission_flush
+
+
 ad_returnredirect "$return_url"
