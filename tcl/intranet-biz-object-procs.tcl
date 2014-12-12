@@ -847,6 +847,7 @@ ad_proc -public im_biz_object_related_objects_component {
     { -include_membership_rels_p 0 }
     { -user_friendly_view_p 0  }
     { -show_projects_only 0 }
+    { -show_only_object_type "" }
     { -show_companies_only 0 }
     { -hide_rel_name_p 0 }
     { -hide_object_chk_p 0 }
@@ -859,6 +860,8 @@ ad_proc -public im_biz_object_related_objects_component {
     -object_id:required 
 } {
     Returns a HTML component with the list of related objects.
+    Named parameters 'show_projects_only' and show_companies_only are deprecated.
+    Please use parameter: show_only_object_type instead
     @param include_membership_rels_p: Normally, membership rels
 	   are handled by the "membership component". That's not
 	   the case with users.
@@ -869,6 +872,7 @@ ad_proc -public im_biz_object_related_objects_component {
 		    [list include_membership_rels_p $include_membership_rels_p] \
 		    [list user_friendly_view_p $user_friendly_view_p] \
 		    [list show_projects_only $show_projects_only ] \
+		    [list show_only_object_type $show_only_object_type ] \
 		    [list show_companies_only $show_companies_only ] \
 		    [list return_url [im_url_with_query]] \
 		    [list hide_rel_name_p $hide_rel_name_p] \
@@ -885,11 +889,6 @@ ad_proc -public im_biz_object_related_objects_component {
     set result [ad_parse_template -params $params "/packages/intranet-core/www/related-objects-component"]
     return [string trim $result]
 }
-
-
-
-
-
 
 # ---------------------------------------------------------------
 # Allow the user to add profiles to tickets
