@@ -143,7 +143,12 @@ set im_projects_sql "
 
 
 db_foreach im_projects_select $im_projects_sql {
-    db_dml im_projects_update "
+	set description [string map [list \' ""] $description] 
+	set description [string map [list \\ ""] $description] 
+	set project_name [string map [list \' ""] $project_name]
+	set project_name [string map [list \\ ""] $project_name]
+
+     db_dml im_projects_update "
 	update im_projects set
 		project_name = '[anonymize_name $project_name]',
 		description = '[anonymize_name $description]',
