@@ -22,6 +22,7 @@ ad_proc -public im_category_from_id {
     {-translate_p 1}
     {-package_key "intranet-core" }
     {-locale ""}
+    {-current_user_id 0}
     {-empty_default ""}
     category_id 
 } {
@@ -33,7 +34,7 @@ ad_proc -public im_category_from_id {
     set category_name [util_memoize [list db_string cat "select im_category_from_id($category_id)" -default {}]]
     set category_key [lang::util::suggest_key $category_name]
     if {$translate_p} {
-	if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
+	if {"" == $locale} { set locale [lang::user::locale -user_id $current_user_id -package_id [im_package_core_id]] }
 	set category_name [lang::message::lookup $locale "$package_key.$category_key" $category_name]
     }
 
