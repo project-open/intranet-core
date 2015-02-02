@@ -174,12 +174,17 @@ ad_proc -callback im_office_view -impl im_office_group_manager {
 }
 
 
-
 # -----------------------------------------------------------
 # Select a delivery/invoice/... address for a company
 # -----------------------------------------------------------
 
-ad_proc -public im_company_office_select { select_name default company_id {office_type_id ""} } {
+ad_proc -public im_company_office_select { 
+    { -include_empty_p 0 }
+    select_name 
+    default 
+    company_id 
+    { office_type_id "" } 
+} {
     Returns an html select box named $select_name and defaulted to
     $default with the list of all avaiable offices for a company.
 } {
@@ -187,7 +192,8 @@ ad_proc -public im_company_office_select { select_name default company_id {offic
     ns_set put $bind_vars company_id $company_id
     ns_set put $bind_vars office_type_id $office_type_id
 
-    if {"" == $default} {
+    # Legacy - if there's no EMPTY entry required, set the DEFAULT to the companies main_office 
+    if { 0 == $include_empty_p && "" == $default } {
 	set default [db_string main_office "select main_office_id from im_companies where company_id = :company_id" -default ""]
     }
 
@@ -200,10 +206,8 @@ ad_proc -public im_company_office_select { select_name default company_id {offic
 		where
 			o.company_id = :company_id
     "
-    return [im_selection_to_select_box -translate_p 0 $bind_vars company_office_select $query $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 -include_empty_p $include_empty_p -include_empty_name [lang::message::lookup "" intranet-core.All "All"] $bind_vars company_office_select $query $select_name $default]
 }
-
-
 
 # -----------------------------------------------------------
 # 
