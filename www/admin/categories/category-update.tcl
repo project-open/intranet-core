@@ -38,6 +38,7 @@ ad_page_contract {
     aux_int2:integer
     aux_string1
     aux_string2
+    visible_tcl
     category_description:allhtml
     category_type
     { parents:multiple "" }
@@ -116,6 +117,7 @@ SET
 	aux_int2 = :aux_int2,
 	aux_string1 = :aux_string1,
 	aux_string2 = :aux_string2,
+	visible_tcl = :visible_tcl,
 	category_description = :category_description
 WHERE 
 	category_id = :category_id" 

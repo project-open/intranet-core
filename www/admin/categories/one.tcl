@@ -112,6 +112,7 @@ if {0 != $category_id} {
     set aux_int2 ""
     set aux_string1 ""
     set aux_string2 ""
+    set visible_tcl ""
 }
 
 if {"f" == $enabled_p} {

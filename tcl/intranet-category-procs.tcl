@@ -165,13 +165,18 @@ ad_proc im_category_select_helper {
 
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
+    set visible_tcl ""
+    if {[im_column_exists im_categories visible_tcl]} {
+	set visible_tcl_sql "visible_tcl,"
+    }
     set sql "
         select
                 category_id,
                 category,
                 category_description,
                 parent_only_p,
-                enabled_p, 
+                enabled_p,
+                $visible_tcl_sql
 		coalesce(sort_order,0) as sort_order
         from
                 im_categories
@@ -182,8 +187,11 @@ ad_proc im_category_select_helper {
         order by lower(category)
     "
     db_foreach category_select $sql {
-        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
-        set level($category_id) 0
+	ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
+	if {"" == $visible_tcl || [eval $visible_tcl]} {
+	    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
+	    set level($category_id) 0
+	}
     }
 
     # Get the hierarchy into a hash cache

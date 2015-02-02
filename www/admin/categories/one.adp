@@ -75,6 +75,12 @@ However, it is OK to:
     <td>String2</td>
     <td><input size=60 name=aux_string2 value="@aux_string2@"></td>
   </tr>
+  <tr class=roweven>
+    <td>Visible TCL</td>
+    <td>
+      <textarea name=visible_tcl rows=3 cols=50 wrap="<%=[im_html_textarea_wrap]%>">@visible_tcl@</textarea>
+    </td>
+  </tr>
 
 
   <tr class=rowodd>
