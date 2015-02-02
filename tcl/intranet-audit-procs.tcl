@@ -51,11 +51,12 @@ ad_proc -public im_audit  {
     @return $audit_id
 } {
     # Deal with old action names during the transition period
-    if {""       == $action} { set action "after_update" }
-    if {"update" == $action} { set action "after_update" }
-    if {"create" == $action} { set action "after_create" }
-    if {"delete" == $action} { set action "after_delete" }
-    if {"nuke"   == $action} { set action "after_delete" }
+    if {""            == $action} { set action "after_update" }
+    if {"update"      == $action} { set action "after_update" }
+    if {"create"      == $action} { set action "after_create" }
+    if {"delete"      == $action} { set action "after_delete" }
+    if {"before_nuke" == $action} { set action "before_delete" }
+    if {"nuke"        == $action} { set action "after_delete" }
 
     # ToDo: Remove these checks once 4.0 final is out
     if {"pre_update" == $action} { set action "before_update" }
@@ -127,11 +128,12 @@ ad_proc -public im_project_audit  {
     set object_id $project_id
 
     # Deal with old action names during the transition period
-    if {""       == $action} { set action "after_update" }
-    if {"update" == $action} { set action "after_update" }
-    if {"create" == $action} { set action "after_create" }
-    if {"delete" == $action} { set action "after_delete" }
-    if {"nuke"   == $action} { set action "after_delete" }
+    if {""            == $action} { set action "after_update" }
+    if {"update"      == $action} { set action "after_update" }
+    if {"create"      == $action} { set action "after_create" }
+    if {"delete"      == $action} { set action "before_delete" }
+    if {"nuke"        == $action} { set action "before_delete" }
+    if {"before_nuke" == $action} { set action "before_delete" }
 
     # ToDo: Remove these checks once 4.0 final is out
     if {"pre_update" == $action} { set action "before_update" }
