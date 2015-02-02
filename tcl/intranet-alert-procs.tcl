@@ -102,6 +102,30 @@ ad_proc -public im_security_alert_check_integer {
     return $breach_p
 }
 
+ad_proc -public im_security_alert_check_float {
+    { -location "No location specified"}
+    { -value "" }
+    { -message "Found non-float value in float argument" }
+    { -severity "Normal" }
+} {
+    Check of a parameter has the form of an float list,
+    which includes the empty list and a single float.
+} {
+    set breach_p 0
+    foreach v $value {
+	if {![string is double $v]} {
+	    set breach_p 1
+	    im_security_alert \
+		-location $location \
+		-message $message \
+		-value $value \
+		-severity $severity \
+	}
+    }
+    return $breach_p
+}
+
+
 ad_proc -public im_security_alert_check_alphanum {
     { -location "No location specified"}
     { -value "" }
