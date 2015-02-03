@@ -106,6 +106,10 @@ ad_proc -public im_user_permissions {
 	set write $user_can_edit_himself_p
     }
 
+    # Everybody has read permissions on the "guest" user with ID=0
+    if {0 == $user_id} {
+	set read 1
+    }
     if {$admin} {
 	set read 1
 	set write 1
