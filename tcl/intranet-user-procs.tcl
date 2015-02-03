@@ -101,10 +101,9 @@ ad_proc -public im_user_permissions {
     }
 
     # Myself - I can read and write its data
-    if { $user_id == $current_user_id } { 
-	set read 
+    if {$user_id == $current_user_id} { 
+	set read 1
 	set write $user_can_edit_himself_p
-	set admin 0
     }
 
     if {$admin} {
