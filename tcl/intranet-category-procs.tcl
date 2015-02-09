@@ -166,9 +166,12 @@ ad_proc im_category_select_helper {
 
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
+
     set visible_tcl ""
+    set visible_tcl_sql ""
+
     if {[im_column_exists im_categories visible_tcl]} {
-	set visible_tcl_sql "visible_tcl,"
+	set visible_tcl_sql ",visible_tcl"
     }
     set sql "
         select
@@ -177,8 +180,8 @@ ad_proc im_category_select_helper {
                 category_description,
                 parent_only_p,
                 enabled_p,
+                coalesce(sort_order,0) as sort_order
                 $visible_tcl_sql
-		coalesce(sort_order,0) as sort_order
         from
                 im_categories
         where
