@@ -180,6 +180,7 @@ ad_proc -callback im_office_view -impl im_office_group_manager {
 
 ad_proc -public im_company_office_select { 
     { -include_empty_p 0 }
+    { -include_empty_name "" }
     select_name 
     default 
     company_id 
@@ -206,7 +207,7 @@ ad_proc -public im_company_office_select {
 		where
 			o.company_id = :company_id
     "
-    return [im_selection_to_select_box -translate_p 0 -include_empty_p $include_empty_p -include_empty_name [lang::message::lookup "" intranet-core.All "All"] $bind_vars company_office_select $query $select_name $default]
+    return [im_selection_to_select_box -translate_p 0 -include_empty_p $include_empty_p -include_empty_name $include_empty_name $bind_vars company_office_select $query $select_name $default]
 }
 
 # -----------------------------------------------------------
