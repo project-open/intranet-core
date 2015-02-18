@@ -29,7 +29,6 @@ ad_proc -public im_sencha_extjs_installed_p {
     " -default 0]
 }
 
-
 ad_proc -public im_sencha_extjs_version {
 } {
     Returns a list with 1. the version number of the Sencha 
@@ -43,9 +42,9 @@ ad_proc -public im_sencha_extjs_version {
     </ul>
 } {
     set sencha_package [db_string im_package_core_id "
-	select	max(package_key)
-	from	apm_packages
-	where	package_key like 'sencha-extjs-v%'
+      select  max(package_key)
+      from    apm_packages
+      where   package_key like 'sencha-extjs-v%'
     " -default ""]
 
     if {[regexp {^sencha-extjs-([0-9a-z]+)\-*(.*)$} $sencha_package match version type]} {
@@ -57,10 +56,12 @@ ad_proc -public im_sencha_extjs_version {
 
 
 ad_proc -public im_sencha_extjs_load_libraries {
+    {-css_theme_folder "ext-all.css"}
 } {
     Instructs the OpenACS pages to load the right Sencha libraries
 } {
     set extjs_version [im_sencha_extjs_version]
+
     if {"" == $extjs_version} { return "" }
     set version [lindex $extjs_version 0]
     set type [lindex $extjs_version 1]
@@ -76,7 +77,7 @@ ad_proc -public im_sencha_extjs_load_libraries {
     }
 
     # Instruct the page to add libraries
-    template::head::add_css -href "/$package_key/resources/css/ext-all.css" -media "screen" -order 1
+    template::head::add_css -href "/$package_key/resources/css/$css_theme_folder" -media "screen" -order 1
     template::head::add_javascript -src "/$package_key/$ext" -order 2
 }
 
