@@ -61,7 +61,9 @@ create table im_projects (
 	project_path			varchar(100) not null,
 	parent_id			integer 
 					constraint im_projects_parent_fk 
-					references im_projects,
+					references im_projects
+					constraint im_projects_parent_ck
+					check (parent_id != project_id)
 	tree_sortkey			varbit,
 	max_child_sortkey		varbit,
 
