@@ -605,7 +605,7 @@ ad_proc im_company_nuke {
     }
 
     # Log the action
-    im_audit -user_id $current_user_id -object_type "im_company" -object_id $company_id -action before_delete
+    im_audit -user_id $current_user_id -object_type "im_company" -object_id $company_id -action before_nuke
 
     set company_exists_p [db_string exists "select count(*) from im_companies where company_id = :company_id"]
     if {!$company_exists_p} { return }
@@ -691,7 +691,7 @@ ad_proc im_company_nuke {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
 
-	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id"
+	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_nuke -comment "Nuking cost as part of nuking company \#$company_id"
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 
@@ -708,7 +708,7 @@ ad_proc im_company_nuke {
 	    set object_type [lindex $cost_info 1]
 	    ns_log Notice "companies/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
 
-	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_delete -comment "Nuking cost as part of nuking company \#$company_id."
+	    im_audit -user_id $current_user_id -object_type $object_type -object_id $cost_id -action before_nuke -comment "Nuking cost as part of nuking company \#$company_id."
 	    im_exec_dml del_cost "${object_type}__delete($cost_id)"
 	}
 	

@@ -174,7 +174,7 @@ foreach object_type $object_types {
 
 
     
-    ad_proc -public -callback ${object_type}_before_delete {
+    ad_proc -public -callback ${object_type}_before_nuke {
 	{-object_id:required}
 	{-status_id ""}
 	{-type_id ""}
@@ -198,7 +198,7 @@ foreach object_type $object_types {
     } -
     
     # Deprecated: After delete there is no object in the DB anymore!
-    ad_proc -public -callback ${object_type}_after_delete {
+    ad_proc -public -callback ${object_type}_after_nuke {
 	{-object_id:required}
 	{-status_id ""}
 	{-type_id ""}

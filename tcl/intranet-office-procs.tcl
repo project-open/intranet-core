@@ -522,7 +522,7 @@ ad_proc im_office_nuke {
     im_office_permissions $current_user_id $office_id view read write admin
     if {!$admin} { return }
 
-    im_audit -user_id $current_user_id -object_type "im_office" -object_id $office_id -action before_delete
+    im_audit -user_id $current_user_id -object_type "im_office" -object_id $office_id -action before_nuke
 
     # Permissions
     ns_log Notice "offices/nuke-2: acs_permissions"
