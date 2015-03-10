@@ -377,7 +377,7 @@ namespace eval im_project {
         set project_id [db_exec_plsql create_new_project $sql]
 
 	# Write Audit Trail
-	# im_project_audit -action after_create -project_id $project_id
+	im_project_audit -action after_create -project_id $project_id
 
         return $project_id
     }
