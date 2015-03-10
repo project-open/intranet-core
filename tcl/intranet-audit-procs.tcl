@@ -51,12 +51,13 @@ ad_proc -public im_audit  {
     @return $audit_id
 } {
     # Deal with old action names during the transition period
-    if {""            == $action} { set action "after_update" }
-    if {"update"      == $action} { set action "after_update" }
-    if {"create"      == $action} { set action "after_create" }
-    if {"delete"      == $action} { set action "after_delete" }
-    if {"before_nuke" == $action} { set action "before_delete" }
-    if {"nuke"        == $action} { set action "after_delete" }
+    if {""              == $action} { set action "after_update" }
+    if {"update"        == $action} { set action "after_update" }
+    if {"create"        == $action} { set action "after_create" }
+    if {"delete"        == $action} { set action "before_nuke" }
+    if {"nuke"          == $action} { set action "before_nuke" }
+    if {"before_delete" == $action} { set action "before_nuke" }
+    if {"after_delete"  == $action} { set action "before_nuke" }
 
     # ToDo: Remove these checks once 4.0 final is out
     if {"pre_update" == $action} { set action "before_update" }
@@ -128,17 +129,18 @@ ad_proc -public im_project_audit  {
     set object_id $project_id
 
     # Deal with old action names during the transition period
-    if {""            == $action} { set action "after_update" }
-    if {"update"      == $action} { set action "after_update" }
-    if {"create"      == $action} { set action "after_create" }
-    if {"delete"      == $action} { set action "before_delete" }
-    if {"nuke"        == $action} { set action "before_delete" }
-    if {"before_nuke" == $action} { set action "before_delete" }
+    if {""              == $action} { set action "after_update" }
+    if {"update"        == $action} { set action "after_update" }
+    if {"create"        == $action} { set action "after_create" }
+    if {"delete"        == $action} { set action "before_nuke" }
+    if {"nuke"          == $action} { set action "before_nuke" }
+    if {"before_delete" == $action} { set action "before_nuke" }
+    if {"after_delete"  == $action} { set action "before_nuke" }
 
     # ToDo: Remove these checks once 4.0 final is out
-    if {"pre_update" == $action} { set action "before_update" }
-    if {"before_view" == $action} { set action "view" }
-    if {"after_view" == $action} { set action "view" }
+    if {"pre_update"    == $action} { set action "before_update" }
+    if {"before_view"   == $action} { set action "view" }
+    if {"after_view"    == $action} { set action "view" }
 
     if {"" == $object_type || "" == $status_id || "" == $type_id} {
 	if {$debug_p} { ns_log Warning "im_project_audit: object_type, type_id or status_id not defined for object_id=$object_id" }
