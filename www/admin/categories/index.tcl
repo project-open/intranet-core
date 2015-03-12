@@ -256,9 +256,13 @@ eval [template::adp_compile -string {<formtemplate style=tiny-plain-po id="filte
 set filter_html $__adp_output
 
 if {$show_add_new_category_p} {
-    set admin_html "<li><a href='$new_href'>Add a new Category</a>  "
+    set admin_html "<li><a href='$new_href'>Add a new category type</a>  "
 } else {
     set admin_html "<li><a href='one?new_category=1'>Add a new Category Type</a>"
+}
+
+if {"All" != $select_category_type && "" != $select_category_type} {
+    append admin_html "<li><a href='[export_vars -base "/intranet/admin/categories/batch-import" {category_type}]'>Batch import categories for this type</a>"
 }
 
 # Left Navbar is the filter/select part of the left bar
