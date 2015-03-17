@@ -653,13 +653,14 @@ ad_proc -public im_project_options {
 } { 
     Get a list of projects
 } {
-    set exclude_type_id [list]
     # Default: Exclude tickets, opportunities and deleted projects
-    if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
     if {"" == $exclude_type_id} { 
 	set exclude_type_id [list [im_project_type_ticket]] 
 	lappend exclude_type_id [im_project_type_opportunity]
     } 
+
+    if {"" == $exclude_status_id} { set exclude_status_id [im_project_status_deleted] }
+
     # Exclude tasks? 
     if {!$exclude_tasks_p} { 
 	# Overwrite parameter when tasks should be shown
@@ -782,8 +783,8 @@ ad_proc -public im_project_options {
     }
 
     if {0 != $exclude_type_id && "" != $exclude_type_id} {
-	# lappend p_criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_type_id] ","])"
-	# No restriction of type on parent project!
+	# Don't exclude sub-categories at the moment...
+	lappend p_criteria "p.project_type_id not in ([join $exclude_type_id ","])"
     }
 
     if {$exclude_tasks_p} {
