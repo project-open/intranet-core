@@ -179,7 +179,6 @@ set form_id "project-ae"
 template::form::create $form_id
 template::form::section $form_id ""
 template::element::create $form_id project_id -widget "hidden"
-template::element::create $form_id supervisor_id -widget "hidden" -optional
 template::element::create $form_id workflow_case_id -widget "hidden" -optional
 template::element::create $form_id requires_report_p -widget "hidden" -optional -datatype text
 template::element::create $form_id workflow_key -widget "hidden" -optional -datatype text
@@ -449,7 +448,6 @@ if {[form is_request $form_id]} {
 		p.description,
 	        p.company_project_nr,
 		p.project_lead_id, 
-		p.supervisor_id, 
 		p.project_nr,
 	        p.project_path,
 		p.project_budget, 
@@ -494,7 +492,6 @@ if {[form is_request $form_id]} {
 	set end_time "12:00"
 	set billable_type_id ""
 	set project_lead_id $user_id
-	set supervisor_id ""
 	set description ""
 	set company_project_nr ""
 	set project_budget ""
@@ -555,7 +552,6 @@ if {[form is_request $form_id]} {
     }
 
     template::element::set_value $form_id project_id $project_id
-    template::element::set_value $form_id supervisor_id $supervisor_id
     template::element::set_value $form_id requires_report_p $requires_report_p
     template::element::set_value $form_id return_url $return_url
     template::element::set_value $form_id workflow_key $workflow_key
@@ -812,7 +808,7 @@ if {[form is_valid $form_id]} {
 	if {"" != $project_lead_id} {
 	    im_biz_object_add_role $project_lead_id $project_id $role_id 
 	}
-	if {"" != $supervisor_id} {
+	if {[info exists supervisor_id] && "" != $supervisor_id} {
 	    im_biz_object_add_role $supervisor_id $project_id $role_id 
 	}
 
@@ -846,31 +842,30 @@ if {[form is_valid $form_id]} {
 
     set project_update_sql "
 	update im_projects set
-		project_name =	:project_name,
-		project_path =	:project_path,
-		project_nr =	:project_nr,
-		project_type_id =:project_type_id,
-		project_status_id =:project_status_id,
-		project_lead_id =:project_lead_id,
-		company_id =	:company_id,
-		supervisor_id =	:supervisor_id,
-		parent_id =	:parent_id,
-		description =	:description,
-		company_project_nr = :company_project_nr,
-		requires_report_p =:requires_report_p,
-		percent_completed = :percent_completed,
-		on_track_status_id =:on_track_status_id,
-		start_date =	$start_date,
-		end_date =	$end_date
+		project_name =		:project_name,
+		project_path =		:project_path,
+		project_nr =		:project_nr,
+		project_type_id =	:project_type_id,
+		project_status_id =	:project_status_id,
+		project_lead_id =	:project_lead_id,
+		company_id =		:company_id,
+		parent_id =		:parent_id,
+		description =		:description,
+		company_project_nr =	 :company_project_nr,
+		requires_report_p =	:requires_report_p,
+		percent_completed =	 :percent_completed,
+		on_track_status_id =	:on_track_status_id,
+		start_date =		$start_date,
+		end_date =		$end_date
 	where
-		project_id = :project_id
+		project_id =	 :project_id
     "
     db_dml project_update $project_update_sql
 
     if {$add_budget_hours_p} {
 	set project_update_sql "
 	    update im_projects set
-		project_budget_hours =:project_budget_hours
+		project_budget_hours =	:project_budget_hours
 	where
 		project_id = :project_id
         "
