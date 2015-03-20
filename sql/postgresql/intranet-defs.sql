@@ -372,6 +372,16 @@ END;' language 'plpgsql';
 
 
 
+create or replace function im_integer_from_id(double precision)
+returns varchar as '
+DECLARE
+	v_result	alias for $1;
+BEGIN
+	return v_result::varchar;
+END;' language 'plpgsql';
+
+
+
 create or replace function im_boolean_from_id(varchar)
 returns varchar as $$
 DECLARE

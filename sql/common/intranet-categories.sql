@@ -372,7 +372,7 @@ update im_categories set enabled_p = 'f' where category_id in (101, 102, 103);
 
 -- 102 - 109 reserved for other Project subclasses
 SELECT im_category_new (2500, 'Translation Project', 'Intranet Project Type');
-SELECT im_category_new (2501, 'Consulting Project', 'Intranet Project Type');
+SELECT im_category_new (2501, 'Gantt Project', 'Intranet Project Type');
 -- 2502 reserved for "SLA"
 -- 2503 reserved
 SELECT im_category_new (2504, 'Milestone', 'Intranet Project Type');

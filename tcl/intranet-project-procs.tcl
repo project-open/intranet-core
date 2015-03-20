@@ -46,7 +46,9 @@ ad_proc -public im_project_type_service_contract_periodic_invoicing {} { return 
 ad_proc -public im_project_type_service_contract_time_material {} { return 107 }
 ad_proc -public im_project_type_service_contract_open_stack {} { return 108 }
 
+# Remove im_project_type_consulting in V4.2 or later
 ad_proc -public im_project_type_consulting {} { return 2501 }
+ad_proc -public im_project_type_gantt {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
 ad_proc -public im_project_type_program {} { return 2510 }
@@ -92,6 +94,9 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
     # Is the projects type_id a sub-category of "Translation Project"?
     # We take two cases: Either the project is of category "project_type"
     # OR it is one of the subcategories of "project_type".
+
+    # Compatibility after changing "Consulting Project" into "Gantt Project"...
+    if {"Consulting Project" == $project_type} { set project_type "Gantt Project" }
 
     ns_log Notice "im_project_has_type: project_id=$project_id, project_type=$project_type"
     set sql "
@@ -1814,7 +1819,7 @@ ad_proc im_project_clone_base2 {
 	db_dml project_update $project_update_sql
     }
 
-    # ToDo: Add stuff for consulting projects
+    # ToDo: Add stuff for gantt projects
 
     # DON't clone caches. It's better to leave them emtpy.
     # They're inconsisten anyway, because we may or may have
@@ -2680,7 +2685,7 @@ ad_proc im_project_nuke {
 	    "
 	}
 	
-	# Consulting
+	# Gantt
 	if {[im_table_exists im_timesheet_tasks]} {
 	    
 	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
