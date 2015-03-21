@@ -9,7 +9,7 @@
 <script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>
 <![endif]-->
 <meta name="generator" content="OpenACS version 5.7.0" lang="en">
-<title>@page_title@</title>
+<title>]po[ V4.0 Demo Server Farm</title>
 <link rel="stylesheet" type="text/css" href="index.css" media="all">
 <style type="text/css">
 div.outer {
@@ -195,7 +195,6 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
-
 	<tr>
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
@@ -221,7 +220,6 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
-
 	<tr>
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
@@ -258,7 +256,7 @@ function setBgImage (id,img) {
 	        <td><div class="outer outer9"><a href="http://po40itsm.project-open.net/index-userselect" id="outer9"></a></div></td>
 	        <td><a href="http://po40itsm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>ITSM and ITIL - IT Services Management</b><br>
-		    Help Desk/Service Desc for internal or external customers.
+		    Help Desk/Service Desk for internal or external customers.
 		    <br>Edition provided in collaboration with </a> <a href="http://www.krystone.de/" target="_">KryStone</a>
 		  </a>
 	          <br><br>
@@ -271,6 +269,9 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
+
+
+
 	<tr>
 	  <td>
 	    <table cellpadding="0" cellspacing="0" border="0">
@@ -295,9 +296,9 @@ function setBgImage (id,img) {
 	    </table>
 	  </td>
 	</tr>
-      </table>
 
-<!-- -->
+
+      </table>
     </div>
   </div>
       
