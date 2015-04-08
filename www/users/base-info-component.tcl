@@ -38,10 +38,6 @@ set current_user_id [ad_maybe_redirect_for_registration]
 # Check the permissions
 user_permissions $current_user_id $user_id view read write admin
 
-# Moved into the .adp template
-# if {!$read} { return "" }
-
-
 # ------------------------------------------------------------------
 # Base Information
 # ------------------------------------------------------------------
