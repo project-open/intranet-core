@@ -684,7 +684,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Future">Future</msg>
   <msg key="g">g</msg>
   <msg key="Gantt">Gantt</msg>
-  <msg key="Gantt_Resourcs">Gantt Resourcs</msg>
+  <msg key="Gantt_Resourcs">Gantt Resources</msg>
+  <msg key="Gantt_Resources">Gantt Resources</msg>
   <msg key="Gantt_Schedule">Gantt Schedule</msg>
   <msg key="GBP">GBP</msg>
   <msg key="Gen">Gen</msg>
