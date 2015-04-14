@@ -2269,3 +2269,15 @@ ad_proc -public im_object_super_types {
     return $object_type_hierarchy
 }
 
+
+
+
+
+ad_proc -public im_package_exists_p { package_key } {
+    Returns true if the package_key exists
+} {
+    set exists_p [util_memoize [list db_string package_exists "select count(*) from apm_packages where package_key = '$package_key'"]]
+    return $exists_p
+}
+
+
