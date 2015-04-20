@@ -67,7 +67,7 @@ db_foreach admin_menu $menu_sql {
     if {"" == $menu_gif} { set menu_gif $menu_gif_large }
     if {"" == $menu_gif} { set menu_gif $menu_gif_medium }
     if {"" == $menu_gif} { set menu_gif $menu_gif_small }
-    if {"" == $menu_gif} { set menu_gif "plus" }
+    if {"" == $menu_gif} { set menu_gif "arrow_right" }
 
     set help_url [im_navbar_help_link -url $url]
     set help_text [lang::message::lookup "" intranet-core.Navbar_Help_Text "Click here to get help for this page"]
