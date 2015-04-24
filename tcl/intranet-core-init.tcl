@@ -56,6 +56,7 @@ set object_types {
     im_report
     im_risk
     im_rule
+    im_sencha_column_config
     im_sencha_preference
     im_sla_parameter
     im_sql_selector
