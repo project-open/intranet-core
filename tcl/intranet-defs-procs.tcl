@@ -632,7 +632,7 @@ ad_proc -public im_parameter {
     package_key
     {default ""}
 } {
-    Not tested or used yet!!!<br>
+    ToDo: Not tested or used yet<br>
     Wrapper for ad_parameter with the extra functionality to create
     the parameter if it didn't exist before.<br>
     With ]project-open[ we don't need package ids because all ]po[
@@ -1606,12 +1606,18 @@ ad_proc -public im_valid_auto_login_p {
     @author Timo Hentschel (thentschel@sussdorff-roy.com)
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
+    # Should the Unregistered Visitor to login without password?
+    set enable_anonymous_login_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "EnableUnregisteredUserLoginP" -default 0]
+
+    if {$user_id == 0 && $enable_anonymous_login_p} {
+	return 1
+    }
+
     # Quick check on tokens
     set expected_auto_login [im_generate_auto_login -user_id $user_id -expiry_date $expiry_date]
     if {![string equal $auto_login $expected_auto_login]} { return 0 }
 
     if {$check_user_requires_manual_login_p} {
-
 	# Check if the "require_manual_login" privilege exists to protect high-profile users
 	set priv_exists_p [util_memoize [list db_string priv_exists "
 		select	count(*)

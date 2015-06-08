@@ -8,12 +8,12 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="4.1.0.0.0" url="http://www.project-open.org/download/apm/intranet-core-4.1.0.0.0.apm">
+    <version name="4.1.0.0.1" url="http://www.project-open.org/download/apm/intranet-core-4.1.0.0.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
 
-        <provides url="intranet-core" version="4.1.0.0.0"/>
+        <provides url="intranet-core" version="4.1.0.0.1"/>
         <requires url="acs-subsite" version="5.0"/>
         <requires url="notifications" version="5.0"/>
         <requires url="intranet-dynfield" version="4.0.0.0.0"/>
@@ -44,6 +44,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableProjectProgramPathP"  default="0" description="Should the system use the project's program path as the base path? Enabling this option allows to group projects into a specific path. Default is '0' to disable this feature."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableUsersAuthorityP"  default="0" description="Should we show a user's Authority and allow to edit the authority? This is useful when working with LDAP and other external authentication systems. The default is 0 in order to reduce complexity."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableUsersUsernameP"  default="0" description="Should the user's edit page show the &quot;Username&quot; field? The field is necessary if users want to login via username (instead of email). Default is 0 (email-based authentication), in order to reduce complexity."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableUnregisteredUserLoginP"  default="0" description="Allow the 'Unregistered User' (user_id=0) user to login without password? This option is recommended for expert users only due to the security implications. This option is useful to provide external applications read-only access to certain data, for example using a custom report."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="ErrorReportURL"  default="http://www.project-open.net/intranet-forum/new-system-incident" description="Error Report URL"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="FindCmd"  default="/usr/bin/find" description="Command to execute the Unix &quot;find&quot; command"/>
 	    <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="GracefulErrorHandlingComponents"  default="1" description="Set to 0 if you wish to output errors of components right on the screen, otherwise only a notification is shown on top of the screen"/>
