@@ -61,7 +61,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 
 	<h2>[lang::message::lookup "" intranet-core.Configuring_po "Configuring %po%"]</h2>
 	[lang::message::lookup "" intranet-core.Welcome_to_po_blurb "
-		Please see the <a href='http://www.project-open.org/en/list_configuration'
+		Please see the <a href='http://www.project-open.com/en/list-configuration'
 		>Configuration Overview</a> on how to configure %po%.
 		We recommend to keep the 'Tigerpond' demo data in the system
 		while testing the configuration.
@@ -94,7 +94,7 @@ ad_proc -public im_help_home_page_blurb_component { } {
 	"]
 	</li>
 	<li>
-	  <A href=\"http://www.project-open.org/en/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
+	  <A href=\"http://www.project-open.com/en/\"><B>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki "
 		%po% Documentation Wiki
 	  "]</b></a>:<br>[lang::message::lookup "" intranet-core.PO_Documentation_Wiki_Blurb "
 		Contains reference information on %po% processes, packages, objects etc.

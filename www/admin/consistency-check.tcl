@@ -68,7 +68,7 @@ db_foreach check $check_sql {
 	For this reason, you have to specify not only the 'direct parent', but also all of the
 	parent's parents.<br>
 	This issue is not very easy to understand. For more information please check the 
-	<a href='http://www.project-open.org/en/object_type_im_category'>categories's page</a>.
+	<a href='http://www.project-open.com/en/object-type-im-category'>categories's page</a>.
 	</li>
     "
     incr cnt

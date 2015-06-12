@@ -8,7 +8,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="4.1.0.0.1" url="http://www.project-open.org/download/apm/intranet-core-4.1.0.0.1.apm">
+    <version name="4.1.0.0.1" url="http://www.project-open.net/download/apm/intranet-core-4.1.0.0.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2009-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -77,7 +77,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SubprojectStatusFilteringEnabledP"  default="0" description="Should we show a filter widget in the SubProject component on the upper right-hand side of the ProjectViewPage to select the status for subprojects? This is useful if a company uses many subprojects per main projects, such as the case of &quot;maintenance&quot; projects."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemCSS"  default="/intranet/style/style.default.css" description="Global CSS"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogo"  default="/intranet/images/project_open.38.10frame.gif" description="This image is the system logo that appears in all ]po[ screens. For example '/logo.gif' shows the file /web/projop/www/logo.gif (C:/project-open/servers/projop/www in Windows). You can copy your own logo into the folder and modify the this parameter accordingly."/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.org/" description="SystemLogoLink"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="SystemLogoLink"  default="http://www.project-open.com/" description="SystemLogoLink"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="SystemNavbarGifPath"  default="/intranet/images/navbar_default" description="Where are the GIFs located for the navbar?"/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="TarCmd"  default="/bin/tar" description="Command to execute the Unix &quot;tar&quot; command"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="TestDemoDevServer"  default="0" description="TestDemoDevServer: 0=Production server (default), 1=PMO Demo Server, 2=Translation Demo Server"/>

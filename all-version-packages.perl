@@ -71,7 +71,7 @@ sub update_info_file {
 
 	# Check if the line is the "<version name= ...>" line and replace
 	if ($line =~ /<version name=/) {
-	    $result .= "    <version name=\"$version\" url=\"http://www.project-open.org/download/apm/$module_name-$version.apm\">\n";
+	    $result .= "    <version name=\"$version\" url=\"http://www.project-open.net/download/apm/$module_name-$version.apm\">\n";
 	} else {
 	    $result .= "$line\n";
 	}

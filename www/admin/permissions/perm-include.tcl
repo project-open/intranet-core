@@ -52,7 +52,7 @@ foreach priv $privs {
     lappend from_dummy_clauses "0 as ${priv}_p"
 
     set priv_subs [string map {_ { }} $priv]
-    set priv_help_url "http://www.project-open.org/en/list_privileges#$priv"
+    set priv_help_url "http://www.project-open.com/en/list-privileges#$priv"
     set priv_html "<a href='$priv_help_url' target=' '>[im_gif help]</a> $priv_subs"
 
     lappend elements ${priv}_p \

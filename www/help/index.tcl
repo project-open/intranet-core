@@ -4,5 +4,5 @@ ad_page_contract {
 
 }
 
-ad_returnredirect "http://www.project-open.org/"
+ad_returnredirect "http://www.project-open.com/en/"
 

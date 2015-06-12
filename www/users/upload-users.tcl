@@ -64,7 +64,7 @@ if { $skill_role_id_exists_p  } {
                         <td valign='top'>
 			<input type='checkbox' name='update_hourly_rates_skill_profile'>
 				[lang::message::lookup "" intranet-core.UpdateHourlyRatesSkillProfile "Import of Hourly Rates for Skill Profiles - Update users Hourly Rate"] 
-				[im_gif -translate_p 1 help "Please leave unchecked if in doubt. Additional information about Skill Profiles is available at www.project-open.org"]
+				[im_gif -translate_p 1 help "Please leave unchecked if in doubt. Additional information about Skill Profiles is available at www.project-open.com"]
                         </td>
                       </tr>
 	"

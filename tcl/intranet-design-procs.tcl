@@ -571,10 +571,10 @@ ad_proc -public im_admin_navbar_component { } {
 ad_proc -public im_navbar_help_link { 
     {-url "" }
 } {
-    Determines where to link to www.project-open.org for help.
+    Determines where to link to www.project-open.com for help.
     The Wiki convention for page is "page_" followed by the URL
-    of the page with all non-alphanum characters replaced by "_":
-    http://www.project-open.org/en/page_intranet_invoices_view
+    of the page with all non-alphanum characters replaced by "-":
+    http://www.project-open.com/en/page-intranet-invoices-view
 } {
     # Get the URL from the connection
     if {"" == $url} { set url [ad_conn url] }
@@ -584,11 +584,11 @@ ad_proc -public im_navbar_help_link {
     if {[regexp {/$} $url match]} { set url "${url}index" }
 
     # Replace "/" by "_" to create
-    regsub -all "/" $url "_" url
-    regsub -all {\-} $url "_" url
+    regsub -all "/" $url "-" url
+    regsub -all {_} $url "-" url
 
     # Add the constant part in front of the url:
-    set url "http://www.project-open.org/en/page$url"
+    set url "http://www.project-open.com/en/page$url"
 
     # Return the finished URL
     return $url

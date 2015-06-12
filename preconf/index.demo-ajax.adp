@@ -139,7 +139,7 @@ function setBgImage (id,img) {
 
 <body bgcolor="white" text="black">
 <div id="header_class">
-  <div id="header_logo"> <a href="http://www.project-open.org/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
+  <div id="header_logo"> <a href="http://www.project-open.com/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
   <div id="header_plugin_left"> </div>
   <div id="header_plugin_right"> </div>
   <div id="header_skin_select"> </div>

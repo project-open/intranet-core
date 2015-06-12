@@ -426,7 +426,7 @@
   4.12. Check for the Latest Version and Updates
   
 
-  Please check http://www.project-open.org/en/install_win32_340 for
+  Please check http://www.project-open.com/en/install-win32-340 for
   release notes and http://www.sourceforge.net/projects/project-open/ for news
   and announcements. You can subscribe yourself to the project to get updated
   about new packages, security updates etc.
@@ -460,7 +460,7 @@
   5. Where to go from Here
 
 
-      - Please check http://www.project-open.org/en/install_win32_340
+      - Please check http://www.project-open.com/en/install-win32-340
         This is the location where we are posting release notes and comments 
         from others users on this particular version of the installer.
 
@@ -485,7 +485,7 @@
 	in the "Home Filestorage" located at /web/projop/filestorage/home/.
 
       - Complete List of Documentation:
-	For complete documentation please go to http://www.project-open.org/
+	For complete documentation please go to http://www.project-open.com/en/
 	The "]po[ overview" diagram on the first page lists all components 
 	that are involved in running ]po[.
 
