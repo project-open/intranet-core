@@ -24,13 +24,13 @@ ad_page_contract {
 # Security: Either go with Auto-Login OR go with normal user
 # ------------------------------------------------------------
 
-# Check if the auto-login token was correct
-set valid_auto_login [im_valid_auto_login_p -check_user_requires_manual_login_p 0 -user_id $user_id -auto_login $auto_login]
-
-# If not correct just make sure the guy is logged in and an admin (implicit from /intranet/admin/).
-if {!$valid_auto_login} {
+if {0 == $user_id} {
     set user_id [ad_maybe_redirect_for_registration]
 }
+
+
+# Check if the auto-login token was correct
+set valid_auto_login [im_valid_auto_login_p -check_user_requires_manual_login_p 0 -user_id $user_id -auto_login $auto_login]
 
 set page_title "PostgreSQL Full Database Dump"
 set context_bar [im_context_bar $page_title]
