@@ -515,10 +515,41 @@ db_dml wf_case_deadlines "delete from wf_case_deadlines"
 ns_write "</ul>\n"
 
 
+# Delete im_biz_object_members fails when there are Gantt Assignments
+ns_write "<li>Cleanup Gantt Assignments (if exists)\n"
+ns_write "<ul>\n"
+
+ns_write "<li>Cleanup im_gantt_assignment_timephases\n"
+if {[im_table_exists im_gantt_assignment_timephases]} {
+    db_dml im_gantt_assignment_timephases "delete from im_gantt_assignment_timephases"
+}
+
+ns_write "<li>Cleanup im_gantt_assignments\n"
+if {[im_table_exists im_gantt_assignments]} {
+    db_dml im_gantt_assignments "delete from im_gantt_assignments"
+}
+
 
 # Remove user from business objects that we don't want to delete...
 ns_write "<li>Cleanup im_biz_object_members\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
+
+# Remove Project Audits
+ns_write "<li>Cleanup im_projects_audit (if exists)\n"
+if {[im_table_exists im_baselines]} {
+    db_dml expense_invoices "delete from im_projects_audit"
+}
+
+ns_write "<li>Cleanup im_baselines (if exists)\n"
+if {[im_table_exists im_baselines]} {
+    db_dml expense_invoices "delete from im_baselines"
+}
+
+# Remove risks 
+ns_write "<li>Cleanup risks (if exists)\n"
+if {[im_table_exists im_risks]} {
+    db_dml im_risks "delete from im_risks"
+}
 
 ns_write "<li>Cleanup im_projects\n"
 db_dml update_project_name_path "
@@ -537,7 +568,7 @@ ns_write "<li>Cleanup im_timesheet_task_dependencies\n"
 db_dml remove_from_projects_delete_timesheet_task_dependencies "delete from im_timesheet_task_dependencies"
 
 ns_write "<li>Cleanup acs_mail_lite_log"
-if {[im_table_exists acs_mail_lite_mail_log"]} {
+if {[im_table_exists acs_mail_lite_mail_log]} {
     db_dml acs_mail_lite_log "delete from acs_mail_lite_mail_log"
 }
 ns_write "<li>Cleanup Relationships (except for membership, composition & user_portrait)\n"
@@ -575,30 +606,19 @@ if {[im_table_exists im_freelance_rfqs]} {
 
 
 ns_write "<li>Cleanup Simple Surveys\n"
-if {[im_table_exists survsimp_responses]} {
 
+# KH 150819 - Why don't we remove ALL responses ?
+if {[im_table_exists survsimp_responses]} {
     db_dml expense_invoices "
 	delete from 
 	survsimp_responses 
 	where related_object_id in (
 		select	object_id
 		from	acs_objects
-		where	object_type in ('im_project', 'im_company')
-	)
-    "
-
-    db_dml expense_invoices "
-	delete from 
-	survsimp_responses 
-	where related_context_id in (
-		select	object_id
-		from	acs_objects
-		where	object_type in ('im_project', 'im_company')
+		where	object_type in ('im_project', 'im_company', 'im_timesheet_task')
 	)
     "
 }
-
-
 
 ns_write "<li>Cleanup Conf Items\n"
 if {[im_table_exists im_conf_items]} {
@@ -647,6 +667,9 @@ if {[im_table_exists im_sla_service_hours]} {
 }
 
 ns_write "<li>Cleanup Gantt Projects\n"
+if {[im_table_exists im_gantt_ms_project_warning]} {
+    db_dml remove_gantt_projects "delete from im_gantt_ms_project_warning"
+}
 if {[im_table_exists im_gantt_projects]} {
     db_dml remove_gantt_projects "delete from im_gantt_projects"
 }
@@ -664,8 +687,6 @@ db_dml remove_from_companies "delete from im_companies where company_path != 'in
 ns_write "<li>Cleanup im_offices\n"
 db_dml remove_from_companies "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
-
-
 ns_write "<li>Cleanup Projects & subclasses\n"
 db_dml im_biz_object_members "delete from im_biz_object_members"
 db_dml remove_from_projects_update_project_parent "update im_projects set parent_id = null"
@@ -674,10 +695,13 @@ db_dml remove_from_projects_delete_from_im_projects "delete from im_projects"
 db_dml remove_from_companies_delete_from_companies "delete from im_companies where company_path != 'internal'"
 db_dml remove_from_companies_delete_from_offices "delete from im_offices where office_id not in (select main_office_id from im_companies)"
 
+if {[im_table_exists im_planning_items]} {
+    db_dml del_planning_items "delete from im_planning_items"
+}
+
 if {[im_table_exists im_timesheet_task_dependencies]} {
     db_dml del_deps "delete from im_timesheet_task_dependencies"
 }
-
 
 ns_write "<li>Cleanup Translation\n"
 if {[im_table_exists im_trans_tasks]} {
@@ -705,6 +729,10 @@ if {[im_table_exists im_search_objects]} {
 }
 
 ns_write "<li>Cleanup Workflow\n"
+
+if {[im_table_exists im_biz_object_groups]} {
+    db_dml im_search_objects "delete from im_biz_object_groups"
+}
 db_dml wf_case_assignments "delete from wf_case_assignments"
 db_dml wf_task_assignments "delete from wf_task_assignments"
 db_dml wf_tokens "delete from wf_tokens"
@@ -774,6 +802,9 @@ db_dml project_context_null "
 	)
 "
 ns_write "<li>Cleanup acs_objects\n"
+
+# Make sure no survsimp_responses xxx
+
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
 ns_write "</ul>\n"
