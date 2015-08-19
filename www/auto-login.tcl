@@ -45,6 +45,15 @@ ad_page_contract {
 # convenient.
 ns_log Notice "auto-login: user_id=$user_id, email=$email, len(auto_login)=[string length $auto_login], len(password)=[string length $password], cmd=$cmd, url=$url"
 
+# Check if the user is already logged in.
+# In this case we can just forward the user to the specified page
+set previous_user_id [ad_get_user_id]
+if {0 != $previous_user_id} { 
+    ad_returnredirect $url 
+    ad_script_abort
+}
+
+
 if {"" != $password && "" != $email} {
     array set result_array [auth::authenticate \
 		    -return_url $url \
