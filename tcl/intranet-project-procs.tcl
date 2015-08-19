@@ -2956,6 +2956,10 @@ ad_proc im_project_nuke {
 		set program_id  = null 
 		where program_id = :project_id"
 	}
+
+	db_dml delete_biz_object_groups "
+		delete from biz_object_groups 
+		where biz_object_id = :project_id"
 	db_dml delete_projects "
 		delete from im_projects 
 		where project_id = :project_id"
