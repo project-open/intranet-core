@@ -191,7 +191,7 @@ ad_proc -public im_security_alert {
     set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
 
     # Send where?
-    set target_email [ad_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "frank.bergmann@project-open.com"]
+    set target_email [ad_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "support@project-open.com"]
 
     # Extract variables from form and HTTP header
     set header_vars [ns_conn headers]
