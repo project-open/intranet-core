@@ -276,6 +276,11 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 			   ]
     ad_form -extend -name $form_id -form {
         {mine_p:text(select),optional {label "$min_all_l10n"} {options $mine_p_options }}
+    } 
+}
+
+if { [im_permission $current_user_id "view_projects_history"] || [im_permission $current_user_id "view_projects_all"] } {
+    ad_form -extend -name $form_id -form {
         {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1 include_empty_name $all_l10n}} }
     } 
 }
@@ -393,10 +398,10 @@ if { ![empty_string_p $company_id] && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
 }
 if {"" != $start_date} {
-    lappend criteria "p.start_date >= :start_date::timestamptz"
+    lappend criteria "p.end_date >= :start_date::timestamptz"
 }
 if {"" != $end_date} {
-    lappend criteria "p.end_date < :end_date::timestamptz"
+    lappend criteria "p.start_date < :end_date::timestamptz"
 }
 if { ![empty_string_p $upper_letter] && [string compare $upper_letter "ALL"] != 0 && [string compare $upper_letter "SCROLL"] != 0 } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:upper_letter"
