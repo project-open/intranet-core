@@ -6,7 +6,7 @@
 delete from im_trans_prices where provider_price_p = 1;
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row			RECORD;
 	v_count			integer;
@@ -42,22 +42,22 @@ BEGIN
 		and r."CurrencyID" = c."CurrencyID"
     loop
 	v_service_name := row.service_name;
---	IF v_service_name = ''Proofreading'' THEN v_service_name := ''Copy writing''; END IF;
---	IF v_service_name = ''Rewriting'' THEN v_service_name := ''Copy writing''; END IF;
-	IF v_service_name = '''' THEN v_service_name := ''''; END IF;
-	IF v_service_name = '''' THEN v_service_name := ''''; END IF;
+--	IF v_service_name = 'Proofreading' THEN v_service_name := 'Copy writing'; END IF;
+--	IF v_service_name = 'Rewriting' THEN v_service_name := 'Copy writing'; END IF;
+	IF v_service_name = '' THEN v_service_name := ''; END IF;
+	IF v_service_name = '' THEN v_service_name := ''; END IF;
 
-	v_note_text := 	   ''Service:'' ||
+	v_note_text := 	   'Service:' ||
 			row.service_name 
-			|| '', UoM:'' ||
+			|| ', UoM:' ||
 			row."RateTypeNm" 
-			|| '', Lang:'' ||
+			|| ', Lang:' ||
 			row."LangNmDisplay" 
-			|| '', Rate:'' ||
+			|| ', Rate:' ||
 			row."TranServiceRate" 
-			|| '', Min:'' ||
+			|| ', Min:' ||
 			row."TranMinimum" 
-			|| '', Curr:'' ||
+			|| ', Curr:' ||
 			row.currency_code;
 
 	select	company_id into v_company_id
@@ -66,20 +66,20 @@ BEGIN
 
 	select	category_id into v_project_type_id
 	from	im_categories
-	where	category_type = ''Intranet Project Type''
+	where	category_type = 'Intranet Project Type'
 		and aux_string1 = v_service_name;
 	
 	select	category_id into v_uom_id
 	from	im_categories
-	where	category_type = ''Intranet UoM''
+	where	category_type = 'Intranet UoM'
 		and aux_string1 = row."RateTypeNm";
 	
 	select	category_id into v_lang_id
 	from	im_categories
-	where	category_type = ''Intranet Translation Language''
+	where	category_type = 'Intranet Translation Language'
 		and aux_string1 = row."LangNmDisplay";
 	
-	RAISE NOTICE ''Rate: comp=%, ptype=%, uom=%, lang=%, cur=%, service=%, rate_type=%, lang=%'',
+	RAISE NOTICE 'Rate: comp=%, ptype=%, uom=%, lang=%, cur=%, service=%, rate_type=%, lang=%',
 	v_company_id, v_project_type_id, v_uom_id, v_lang_id, row.currency_code,
 	row.service_name, row."RateTypeNm", row."LangID";
 
@@ -102,7 +102,7 @@ BEGIN
 				and currency = row.currency_code
 		    ;
 	
-			RAISE NOTICE ''Insert: %, %, %, %, %, %, %'',
+			RAISE NOTICE 'Insert: %, %, %, %, %, %, %',
 			v_uom_id, v_company_id,	v_project_type_id, v_lang_id, 
 			row.currency_code, row."TranServiceRate", v_note_text;
 	
@@ -115,7 +115,7 @@ BEGIN
 				note,
 				provider_rate_p
 			) values (
-				nextval(''im_trans_prices_seq''),
+				nextval('im_trans_prices_seq'),
 				v_uom_id, v_company_id,	v_project_type_id,
 				v_lang_id, null,
 				row.currency_code,
@@ -140,7 +140,7 @@ BEGIN
 		
 		ELSE
 	
-			RAISE NOTICE ''Discarded Rate: comp=%, ptype=%, uom=%, lang=%, cur=%, service=%, rate_type=%, lang=%'',
+			RAISE NOTICE 'Discarded Rate: comp=%, ptype=%, uom=%, lang=%, cur=%, service=%, rate_type=%, lang=%',
 			v_company_id, v_project_type_id, v_uom_id, v_lang_id, row.currency_code,
 			row.service_name, row."RateTypeNm", row."LangID";
 	
@@ -150,6 +150,6 @@ BEGIN
 
     end loop;
     return 0;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();

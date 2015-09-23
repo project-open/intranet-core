@@ -13,30 +13,27 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      unknown@arsdigita.com
--- @author      frank.bergmann@project-open.com
+-- @author unknown@arsdigita.com
+-- @author frank.bergmann@project-open.com
 
 -----------------------------------------------------------
 -- Cleanup Projects
 -- Needs to happen _before_ removing permissions etc.
 --
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
-        row RECORD;
+	row	RECORD;
 BEGIN
-    for row in
-        select cons.constraint_id
-        from rel_constraints cons, rel_segments segs
-        where
-                segs.segment_id = cons.required_rel_segment
-    loop
-
-        rel_segment__delete(row.constraint_id);
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
+	for row in
+		select	cons.constraint_id
+		from	rel_constraints cons, rel_segments segs
+		where	segs.segment_id = cons.required_rel_segment
+	loop
+		rel_segment__delete(row.constraint_id);
+	end loop;
+	return 0;
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -46,21 +43,19 @@ drop function inline_0 ();
 -- Cleanup users
 -- ------------------------------------------------------------
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
-        row RECORD;
+	row RECORD;
 BEGIN
-    for row in
-        select party_id
-        from parties
-        where email like ''%project-open.com''
-    loop
-
-        acs.remove_user(row.party_id);
-
-    end loop;
-    return 0;
-END;' language 'plpgsql';
+	for row in
+		select party_id
+		from parties
+		where email like '%project-open.com'
+	loop
+		acs.remove_user(row.party_id);
+	end loop;
+	return 0;
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -71,7 +66,6 @@ drop function inline_0 ();
 -- ------------------------------------------------------------
 
 delete from im_project_url_map;
-
 delete from im_url_types;
 delete from im_projects;
 --delete from im_project_status; (this is a view, cannot delete)
@@ -141,21 +135,19 @@ select im_drop_profile ('Senior Managers');
 select im_drop_profile ('Accounting'); 
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
-        row RECORD;
+	row RECORD;
 BEGIN
-     for row in 
-        select profile_id
-	from im_profiles
-     loop
-	PERFORM im_profile__delete(row.profile_id);
-     end loop;
-     return 0;
-END;' language 'plpgsql';
-
+	for row in 
+		select profile_id
+		from im_profiles
+	loop
+		PERFORM im_profile__delete(row.profile_id);
+	end loop;
+	return 0;
+END;$body$ language 'plpgsql';
 select inline_0 ();
-
 drop function inline_0 ();
 
 
@@ -199,18 +191,17 @@ select  acs_object_type__drop_type ('im_profile', 'f');
 
 -- before remove priviliges remove granted permissions
 create or replace function inline_revoke_permission (varchar)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_priv_name	alias for $1;
 BEGIN
-     lock table acs_permissions_lock;
+	lock table acs_permissions_lock;
 
-     delete from acs_permissions
-     where privilege = p_priv_name;
+	delete from acs_permissions
+	where privilege = p_priv_name;
 
-     return 0;
-
-end;' language 'plpgsql';
+	return 0;
+end;$body$ language 'plpgsql';
 
 
 
@@ -331,18 +322,18 @@ drop table im_views;
 --
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
-        row RECORD;
+	row RECORD;
 BEGIN
-    for row in
-        select project_id
-        from im_projects
-    loop
-        im_project__delete(row.project_id);
-    end loop;
-    return 0;
-END;' language 'plpgsql';
+	for row in
+		select project_id
+		from im_projects
+	loop
+		im_project__delete(row.project_id);
+	end loop;
+	return 0;
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -370,18 +361,18 @@ select acs_object_type__drop_type ('im_project', 'f');
 --
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
-        row RECORD;
+	row RECORD;
 BEGIN
-    for row in
-        select company_id
-        from im_companies
-    loop
-        im_company__delete(row.company_id);
-    end loop;
-    return 0;
-END;' language 'plpgsql';
+	for row in
+		select company_id
+		from im_companies
+	loop
+		im_company__delete(row.company_id);
+	end loop;
+	return 0;
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -448,4 +439,5 @@ drop view im_office_types;
 drop view im_office_status;
 drop view im_biz_object_role;
 drop table im_categories;
+
 

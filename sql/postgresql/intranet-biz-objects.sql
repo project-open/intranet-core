@@ -79,7 +79,7 @@ add status_type_table character varying(30);
 -- Find out the status and type of business objects in a generic way
 
 CREATE OR REPLACE FUNCTION im_biz_object__get_type_id (integer)
-RETURNS integer AS '
+RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 
@@ -101,7 +101,7 @@ BEGIN
 		and o.object_type = ot.object_type;
 
 	-- Check if the object has a supertype and update table necessary
-	WHILE v_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+	WHILE v_table is null AND 'acs_object' != v_supertype AND 'im_biz_object' != v_supertype LOOP
 		select	ot.supertype, ot.table_name
 		into	v_supertype, v_table
 		from	acs_object_types ot
@@ -117,8 +117,8 @@ BEGIN
 	END IF;
 
 	-- Funny way, but this is the only option to EXECUTE in PG 8.0 and below.
-	v_query := '' select '' || v_type_column || '' as result_id '' || '' from '' || v_table || 
-		'' where '' || v_id_column || '' = '' || p_object_id;
+	v_query := ' select ' || v_type_column || ' as result_id ' || ' from ' || v_table || 
+		' where ' || v_id_column || ' = ' || p_object_id;
 	FOR row IN EXECUTE v_query
 	LOOP
 		v_result_id := row.result_id;
@@ -126,7 +126,7 @@ BEGIN
 	END LOOP;
 
 	return v_result_id;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 -- Get the object status for generic objects
@@ -138,7 +138,7 @@ END;' language 'plpgsql';
 -- statement to extract this information.
 ---
 CREATE OR REPLACE FUNCTION im_biz_object__get_status_id (integer)
-RETURNS integer AS '
+RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 
@@ -161,7 +161,7 @@ BEGIN
 
 	-- In the case that the information about should not be set up correctly:
 	-- Check if the object has a supertype and update table and id_column if necessary
-	WHILE v_status_table is null AND ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+	WHILE v_status_table is null AND 'acs_object' != v_supertype AND 'im_biz_object' != v_supertype LOOP
 		select	ot.supertype, ot.status_type_table, ot.id_column
 		into	v_supertype, v_status_table, v_status_table_id_col
 		from	acs_object_types ot
@@ -178,8 +178,8 @@ BEGIN
 	END IF;
 
 	-- Funny way, but this is the only option to get a value from an EXECUTE in PG 8.0 and below.
-	v_query := '' select '' || v_status_column || '' as result_id '' || '' from '' || v_status_table || 
-		'' where '' || v_status_table_id_col || '' = '' || p_object_id;
+	v_query := ' select ' || v_status_column || ' as result_id ' || ' from ' || v_status_table || 
+		' where ' || v_status_table_id_col || ' = ' || p_object_id;
 	FOR row IN EXECUTE v_query
 	LOOP
 		v_result_id := row.result_id;
@@ -187,7 +187,7 @@ BEGIN
 	END LOOP;
 
 	return v_result_id;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 
@@ -195,7 +195,7 @@ END;' language 'plpgsql';
 -- Set the status of Biz Objects in a generic way
 
 
-CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, integer) RETURNS integer AS '
+CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, integer) RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 	p_status_id		alias for $2;
@@ -212,7 +212,7 @@ BEGIN
 		and o.object_type = ot.object_type;
 
 	-- Check if the object has a supertype and update table and id_column if necessary
-	WHILE ''acs_object'' != v_supertype AND ''im_biz_object'' != v_supertype LOOP
+	WHILE 'acs_object' != v_supertype AND 'im_biz_object' != v_supertype LOOP
 		select	ot.supertype, ot.table_name, ot.id_column
 		into	v_supertype, v_table, v_id_column
 		from	acs_object_types ot
@@ -220,7 +220,7 @@ BEGIN
 	END LOOP;
 
 	IF v_table is null OR v_id_column is null OR v_column is null THEN
-		RAISE NOTICE ''im_biz_object__set_status_id: Bad metadata: Null value for %'',v_object_type;
+		RAISE NOTICE 'im_biz_object__set_status_id: Bad metadata: Null value for %',v_object_type;
 		return 0;
 	END IF;
 
@@ -228,23 +228,23 @@ BEGIN
 	set	last_modified = now()
 	where	object_id = p_object_id;
 
-	EXECUTE ''update ''||v_table||'' set ''||v_column||''=''||p_status_id||
-		'' where ''||v_id_column||''=''||p_object_id;
+	EXECUTE 'update '||v_table||' set '||v_column||'='||p_status_id||
+		' where '||v_id_column||'='||p_object_id;
 
 	return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 
 -- compatibility for WF calls
-CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, varchar, integer) RETURNS integer AS '
+CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, varchar, integer) RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 	p_dummy			alias for $2;
 	p_status_id		alias for $3;
 BEGIN
 	return im_biz_object__set_status_id (p_object_id, p_status_id::integer);
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 
@@ -309,7 +309,7 @@ CREATE TABLE im_biz_object_tree_status (
 --- Business Object PL/SQL API
 --
 create or replace function im_biz_object__new (integer,varchar,timestamptz,integer,varchar,integer)
-returns integer as '
+returns integer as $body$
 declare
 	p_object_id	alias for $1;
 	p_object_type	alias for $2;
@@ -331,11 +331,11 @@ begin
 	insert into im_biz_objects (object_id) values (v_object_id);
 	return v_object_id;
 
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 -- Delete a single object (if we know its ID...)
 create or replace function im_biz_object__delete (integer)
-returns integer as '
+returns integer as $body$
 declare
 	object_id	alias for $1;
 	v_object_id	integer;
@@ -346,16 +346,16 @@ begin
 
 	PERFORM acs_object.del(del.object_id);
 	return 0;
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 create or replace function im_biz_object__name (integer)
-returns varchar as '
+returns varchar as $body$
 declare
 	object_id	alias for $1;
 begin
 	return "undefined for im_biz_object";
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 -- Function to determine the type_id of a "im_biz_object".
@@ -363,7 +363,7 @@ end;' language 'plpgsql';
 -- new "Biz Objects" to be added to the system...
 
 create or replace function im_biz_object__type (integer)
-returns integer as '
+returns integer as $body$
 declare
 	p_object_id		alias for $1;
 	v_object_type		varchar;
@@ -379,14 +379,14 @@ begin
 	-- Initialize the return value
 	v_biz_object_type_id = null;
 
-	IF ''im_project'' = v_object_type THEN
+	IF 'im_project' = v_object_type THEN
 
 		select	project_type_id
 		into	v_biz_object_type_id
 		from	im_projects
 		where	project_id = p_object_id;
 
-	ELSIF ''im_company'' = v_object_type THEN
+	ELSIF 'im_company' = v_object_type THEN
 
 		select	company_type_id
 		into	v_biz_object_type_id
@@ -397,7 +397,7 @@ begin
 
 	return v_biz_object_type_id;
 
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 
@@ -521,8 +521,10 @@ create unique index im_biz_object_groups_un on im_biz_object_groups (coalesce(bi
 
 select define_function_args('im_biz_object_group__new','group_id,group_name,email,url,last_modified;now(),modifying_ip,object_type;im_biz_object_group,context_id,creation_user,creation_date;now(),creation_ip,join_policy,biz_object_id');
 
-create or replace function im_biz_object_group__new(integer,varchar,varchar,varchar,timestamptz,varchar,varchar,integer,integer,timestamptz,varchar,varchar,integer)
-returns integer as $$
+create or replace function im_biz_object_group__new(
+	integer,varchar,varchar,varchar,timestamptz,varchar,
+	varchar,integer,integer,timestamptz,varchar,varchar,integer
+) returns integer as $$
 declare
 	p_group_id		alias for $1;
 	p_group_name		alias for $2;
@@ -581,9 +583,8 @@ end;$$ language 'plpgsql';
 
 -- New version of the PlPg/SQL routine with percentage parameter
 --
-create or replace function im_biz_object_member__new (
-integer, varchar, integer, integer, integer, numeric, integer, varchar)
-returns integer as '
+create or replace function im_biz_object_member__new (integer, varchar, integer, integer, integer, numeric, integer, varchar)
+returns integer as $body$
 DECLARE
 	p_rel_id		alias for $1;	-- null
 	p_rel_type		alias for $2;	-- im_biz_object_member
@@ -628,14 +629,14 @@ BEGIN
 	);
 
 	return v_rel_id;
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 -- Downward compatibility - offers the same API as before
 -- with percentage = null
 create or replace function im_biz_object_member__new (
 integer, varchar, integer, integer, integer, integer, varchar)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_rel_id		alias for $1;	-- null
 	p_rel_type		alias for $2;	-- im_biz_object_member
@@ -655,7 +656,7 @@ BEGIN
 		p_creation_user, 
 		p_creation_ip
 	);
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 
@@ -663,7 +664,7 @@ end;' language 'plpgsql';
 
 
 create or replace function im_biz_object_member__delete (integer, integer)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_object_id	alias for $1;
 	p_user_id	alias for $2;
@@ -681,7 +682,7 @@ BEGIN
 
 	PERFORM acs_rel__delete(v_rel_id);
 	return 0;
-end;' language 'plpgsql';
+end; $body$ language 'plpgsql';
 
 
 

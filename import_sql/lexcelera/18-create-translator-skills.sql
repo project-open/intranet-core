@@ -3,7 +3,7 @@
 ---------------------------------------------------------------------------------
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row			RECORD;
 	v_count			integer;
@@ -24,23 +24,23 @@ BEGIN
 
 	select	category_id into v_subject_area_id
 	from	im_categories
-	where	category_type = ''Intranet Translation Subject Area''
+	where	category_type = 'Intranet Translation Subject Area'
 		and category = row."SpecNm";
 
 	select	category_id into v_experience_id
 	from	im_categories
-	where	category_type = ''Intranet Experience Level''
+	where	category_type = 'Intranet Experience Level'
 		and aux_string1 = row."Rating";
 
 	select	category_id into v_language_id
 	from	im_categories
-	where	category_type = ''Intranet Translation Language''
+	where	category_type = 'Intranet Translation Language'
 		and aux_string1 = row."LangNmDisplay";
 
 	IF row."IsTarget" THEN v_lang_skill_type_id := 2002; END IF;
 	IF NOT row."IsTarget" THEN v_lang_skill_type_id := 2000; END IF;
 
-	RAISE NOTICE ''Skills: pid=%, subj=%, lang=%, lang=%, level=%, fn=%, ln=%'', 
+	RAISE NOTICE 'Skills: pid=%, subj=%, lang=%, lang=%, level=%, fn=%, ln=%', 
 	v_user_id, v_subject_area_id, v_language_id, row."LangNmDisplay", 
 	v_experience_id, row."FirstNm", row."LastNm";
 
@@ -57,7 +57,7 @@ BEGIN
 		and skill_type_id = 2014;
 
 	IF 0 = v_count AND v_user_id is not null AND v_subject_area_id is not null THEN
-	    RAISE NOTICE ''Insert Skills: pid=%, subj=%, level=%'', 
+	    RAISE NOTICE 'Insert Skills: pid=%, subj=%, level=%', 
 	    v_user_id, v_subject_area_id, v_experience_id;
 
 	    insert into im_freelance_skills (
@@ -88,7 +88,7 @@ BEGIN
 		and skill_type_id = v_lang_skill_type_id;
 
 	IF 0 = v_count AND v_user_id is not null AND v_subject_area_id is not null THEN
-	    RAISE NOTICE ''Insert Skills: pid=%, subj=%, level=%'', 
+	    RAISE NOTICE 'Insert Skills: pid=%, subj=%, level=%', 
 	    v_user_id, v_subject_area_id, v_experience_id;
 
 	    insert into im_freelance_skills (
@@ -112,7 +112,7 @@ BEGIN
 
     end loop;
     return 0;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 

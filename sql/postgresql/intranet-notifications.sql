@@ -17,7 +17,8 @@
 
 
 -- Determine the default locale for the user
-create or replace function acs_lang_get_locale_for_user (integer) returns text as '
+create or replace function acs_lang_get_locale_for_user (integer) 
+returns text as $body$
 declare
 	p_user_id	alias for $1;
 
@@ -36,9 +37,9 @@ begin
 		select	package_id
 		into	v_acs_lang_package_id
 		from	apm_packages
-		where	package_key = ''acs-lang'';
+		where	package_key = 'acs-lang';
 
-		v_locale := apm__get_value (v_acs_lang_package_id, ''SiteWideLocale'');
+		v_locale := apm__get_value (v_acs_lang_package_id, 'SiteWideLocale');
 	END IF;
 
 	-- Partial locale - lookup complete one
@@ -46,23 +47,24 @@ begin
 		select	locale into v_locale
 		from	ad_locales
 		where	language = v_locale
-			and enabled_p = ''t''
-			and (default_p = ''t''
+			and enabled_p = 't'
+			and (default_p = 't'
 			   or (select count(*) from ad_locales where language = v_locale) = 1
 			);
 	END IF;
 
 	-- Default: English
 	IF v_locale is null THEN
-		v_locale := ''en_US'';
+		v_locale := 'en_US';
 	END IF;
 
 	return v_locale;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- Determine the message string for (locale, package_key, message_key):
-create or replace function acs_lang_lookup_message (text, text, text) returns text as $body$
+create or replace function acs_lang_lookup_message (text, text, text) 
+returns text as $body$
 declare
 	p_locale		alias for $1;
 	p_package_key		alias for $2;

@@ -183,7 +183,7 @@ create unique index im_projects_path_un on im_projects (project_path, company_id
 -- This is the sortkey code
 --
 create or replace function im_project_insert_tr ()
-returns opaque as '
+returns opaque as $body$
 declare
 	v_max_child_sortkey		im_projects.max_child_sortkey%TYPE;
 	v_parent_sortkey		im_projects.tree_sortkey%TYPE;
@@ -212,7 +212,7 @@ begin
 	new.max_child_sortkey := null;
 
 	return new;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 create trigger im_project_insert_tr
 before insert on im_projects
@@ -221,7 +221,8 @@ execute procedure im_project_insert_tr();
 
 
 
-create or replace function im_projects_update_tr () returns opaque as '
+create or replace function im_projects_update_tr () 
+returns opaque as $body$
 declare
 	v_parent_sk	varbit default null;
 	v_max_child_sortkey	varbit;
@@ -261,7 +262,7 @@ begin
 	WHERE tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
 
 	return new;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 create trigger im_projects_update_tr after update
 on im_projects
@@ -283,7 +284,7 @@ execute procedure im_projects_update_tr ();
 create or replace function im_project__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, varchar, integer, integer, integer, integer
-) returns integer as '
+) returns integer as $body$
 DECLARE
 	p_project_id	alias for $1;
 	p_object_type	alias for $2;
@@ -323,9 +324,10 @@ BEGIN
 		p_project_status_id
 	);
 	return v_project_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
-create or replace function im_project__delete (integer) returns integer as '
+create or replace function im_project__delete (integer) 
+returns integer as $body$
 DECLARE
 	v_project_id		alias for $1;
 BEGIN
@@ -340,9 +342,10 @@ BEGIN
 	PERFORM	acs_object__delete(v_project_id);
 
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
-create or replace function im_project__name (integer) returns varchar as '
+create or replace function im_project__name (integer) 
+returns varchar as $body$
 DECLARE
 	v_project_id	alias for $1;
 	v_name		varchar;
@@ -353,7 +356,7 @@ BEGIN
 	where	project_id = v_project_id;
 
 	return v_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- What types of urls do we ask for when creating a new project
@@ -393,7 +396,7 @@ im_project_url_map(url_type_id, project_id);
 
 
 create or replace function im_proj_url_from_type ( integer, varchar) 
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	v_project_id	alias for $1;
 	v_url_type	alias for $2;
@@ -410,14 +413,14 @@ BEGIN
 	
 	end;
 	return v_url;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
 -- Helper functions to make our queries easier to read
 -- and to avoid outer joins with parent projects etc.
 create or replace function im_project_name_from_id (integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	p_project_id	alias for $1;
 	v_project_name	varchar;
@@ -428,11 +431,11 @@ BEGIN
 	where project_id = p_project_id;
 
 	return v_project_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 create or replace function im_project_nr_from_id (integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	p_project_id	alias for $1;
 	v_name		varchar;
@@ -443,12 +446,12 @@ BEGIN
 	where project_id = p_project_id;
 
 	return v_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
 create or replace function im_project_managers_enumerator (integer) 
-returns setof integer as '
+returns setof integer as $body$
 declare
 	p_project_id		alias for $1;
 
@@ -470,7 +473,7 @@ BEGIN
 	END LOOP;
 
 	RETURN;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 

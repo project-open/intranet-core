@@ -37,7 +37,7 @@ create table country_codes (
 
 
 create or replace function im_country_from_code (varchar)
-returns varchar as '
+returns varchar as $body$
 DECLARE
         p_cc		alias for $1;
         v_country	varchar;
@@ -48,7 +48,7 @@ BEGIN
     where iso = p_cc;
 
     return v_country;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 
 
 

@@ -151,10 +151,10 @@ create or replace view im_component_plugin_user_map_all as (
 create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, varchar
-) returns integer as '
+) returns integer as $body$
 declare
 	p_plugin_id	alias for $1;	-- default null
-	p_object_type	alias for $2;	-- default ''acs_object''
+	p_object_type	alias for $2;	-- default 'im_component_plugin'
 	p_creation_date	alias for $3;	-- default now()
 	p_creation_user	alias for $4;	-- default null
 	p_creation_ip	alias for $5;	-- default null
@@ -178,7 +178,7 @@ begin
 		p_component_tcl, null
 	);
 	return v_plugin_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
@@ -187,20 +187,20 @@ create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, 
 	varchar, varchar
-) returns integer as '
+) returns integer as $body$
 declare
-	p_plugin_id	alias for $1;	-- default null
-	p_object_type	alias for $2;	-- default ''acs_object''
-	p_creation_date	alias for $3;	-- default now()
-	p_creation_user	alias for $4;	-- default null
-	p_creation_ip	alias for $5;	-- default null
-	p_context_id	alias for $6;	-- default null
+	p_plugin_id	alias for $1;		-- default null
+	p_object_type	alias for $2;		-- default 'im_component_plugin'
+	p_creation_date	alias for $3;		-- default now()
+	p_creation_user	alias for $4;		-- default null
+	p_creation_ip	alias for $5;		-- default null
+	p_context_id	alias for $6;		-- default null
 
 	p_plugin_name	alias for $7;
 	p_package_name	alias for $8;
 	p_location	alias for $9;
 	p_page_url	alias for $10;
-	p_view_name	alias for $11;	-- default null
+	p_view_name	alias for $11;		-- default null
 	p_sort_order	alias for $12;
 	p_component_tcl	alias for $13;
 	p_title_tcl	alias for $14;
@@ -213,12 +213,12 @@ begin
 	IF v_count > 0 THEN return 0; END IF;
 
 	v_plugin_id := acs_object__new (
-		p_plugin_id,		-- object_id
-		p_object_type,		-- object_type
-		p_creation_date,	-- creation_date
-		p_creation_user,	-- creation_user
-		p_creation_ip,		-- creation_ip
-		p_context_id		-- context_id
+		p_plugin_id,			-- object_id
+		p_object_type,			-- object_type
+		p_creation_date,		-- creation_date
+		p_creation_user,		-- creation_user
+		p_creation_ip,			-- creation_ip
+		p_context_id			-- context_id
 	);
 
 	insert into im_component_plugins (
@@ -232,10 +232,11 @@ begin
 	);
 
 	return v_plugin_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 -- Delete a single component
-create or replace function im_component_plugin__delete (integer) returns integer as '
+create or replace function im_component_plugin__delete (integer) 
+returns integer as $body$
 DECLARE
 	p_plugin_id	alias for $1;
 BEGIN
@@ -254,12 +255,13 @@ BEGIN
 	PERFORM acs_object__delete(p_plugin_id);
 
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- Delete all menus of a module.
 -- Used in <module-name>-drop.sql
-create or replace function im_component_plugin__del_module (varchar) returns integer as '
+create or replace function im_component_plugin__del_module (varchar) 
+returns integer as $body$
 DECLARE
 	p_module_name	alias for $1;
 	row		RECORD;
@@ -276,22 +278,23 @@ BEGIN
 	end loop;
 
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- Return the module name
-create or replace function im_component_plugin__name (integer) returns varchar as '
+create or replace function im_component_plugin__name (integer) 
+returns varchar as $body$
 DECLARE
 	p_plugin_id	alias for $1;
 	v_name		varchar(200);
 BEGIN
-	select	page_url || ''.'' || location
+	select	page_url || '.' || location
 	into	v_name
 	from	im_component_plugins
 	where	plugin_id = p_plugin_id;
 
 	return v_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
@@ -304,243 +307,243 @@ end;' language 'plpgsql';
 -- should go to the first place.
 --
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Project Members',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/projects/view',	-- page_url
-	null,				-- view_name	
-	20,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Project Members',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/projects/view',		-- page_url
+	null,					-- view_name	
+	20,					-- sort_order
 	'im_table_with_title "[_ intranet-core.Project_Members]" [im_group_member_component $project_id 	$current_user_id $user_admin_p $return_url "" "" 1 ]'	-- component_tcl
 );
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Task Members',			-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Task Members',				-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
 	'/intranet-timesheet2-tasks/new',	-- page_url
-	null,				-- view_name	
-	20,				-- sort_order
+	null,					-- view_name	
+	20,					-- sort_order
 	'im_table_with_title "[_ intranet-core.Task_Members]" [im_group_member_component $task_id $current_user_id $user_admin_p $return_url "" "" 1 ]'			-- component_tcl
 );
 
 
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Office Members',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/offices/view',	-- page_url
-	null,				-- view_name
-	20,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Office Members',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/offices/view',		-- page_url
+	null,					-- view_name
+	20,					-- sort_order
 	'im_table_with_title "[_ intranet-core.Office_Members]" [im_group_member_component $office_id $user_id $admin $return_url "" "" 1 ]'			-- component_tcl
 );
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Company Offices',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/companies/view',	-- page_url
-	null,				-- view_name
-	30,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Company Offices',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/companies/view',		-- page_url
+	null,					-- view_name
+	30,					-- sort_order
 	'im_table_with_title "[_ intranet-core.Offices]" [im_office_company_component $user_id $company_id]' -- component_tcl
 );
 
 -- Office component for UserViewPage
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'User Offices',			-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/users/view',		-- page_url
-	null,				-- view_name
-	80,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'User Offices',				-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/users/view',			-- page_url
+	null,					-- view_name
+	80,					-- sort_order
 	'im_table_with_title "[_ intranet-core.Offices]" [im_office_user_component $current_user_id $user_id]' -- component_tcl
 );
 
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Recent Registrations',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/admin/index',	-- page_url
-	null,				-- view_name
-	30,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Recent Registrations',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/admin/index',		-- page_url
+	null,					-- view_name
+	30,					-- sort_order
 	'im_user_registration_component $user_id' -- component_tcl
 );
 
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home Random Portrait',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	5,				-- sort_order
-	'im_random_employee_component'	-- component_tcl
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Home Random Portrait',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	5,					-- sort_order
+	'im_random_employee_component'		-- component_tcl
 );
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home Help Blurb',		-- plugin_name
-	'intranet-core',		-- package_name
-	'none',				-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	10,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Home Help Blurb',			-- plugin_name
+	'intranet-core',			-- package_name
+	'none',					-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	10,					-- sort_order
 	'im_help_home_page_blurb_component'	-- component_tcl
 );
 
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home Project Portlet',		-- plugin_name
-	'intranet-core',		-- package_name
-	'left',				-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	15,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Home Project Portlet',			-- plugin_name
+	'intranet-core',			-- package_name
+	'left',					-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	15,					-- sort_order
 	'im_project_personal_active_projects_component'	-- component_tcl
 );
 
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home ToDo Portlet',		-- plugin_name
-	'intranet-core',		-- package_name
-	'left',				-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	14,				-- sort_order
-	'im_personal_todo_component'	-- component_tcl
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Home ToDo Portlet',			-- plugin_name
+	'intranet-core',			-- package_name
+	'left',					-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	14,					-- sort_order
+	'im_personal_todo_component'		-- component_tcl
 );
 
 
 -- Notifications Component for each user
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'User Notifications',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/users/view',		-- page_url
-	null,				-- view_name
-	85,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'User Notifications',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/users/view',			-- page_url
+	null,					-- view_name
+	85,					-- sort_order
 	'im_notification_user_component -user_id $user_id'	-- component_tcl
 );
 
 
 -- Localization
 SELECT	im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
 
-	'User Localization',		-- plugin_name
-	'intranet-core',		-- package_name
-	'left',				-- location
-	'/intranet/users/view',		-- page_url
-	null,				-- view_name
-	55,				-- sort_order
+	'User Localization',			-- plugin_name
+	'intranet-core',			-- package_name
+	'left',					-- location
+	'/intranet/users/view',			-- page_url
+	null,					-- view_name
+	55,					-- sort_order
 	'im_user_localization_component $user_id $return_url'	-- component_tcl
 );
 
 
 -- ProjectOpen News Component
 SELECT  im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Home &#93;po&#91; News',	-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	115,				-- sort_order
-	'im_home_news_component'	-- component_tcl
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Home &#93;po&#91; News',		-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	115,					-- sort_order
+	'im_home_news_component'		-- component_tcl
 );
 
 
 
 -- BrowserWarning Component on HomePage
 SELECT  im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Browser Warning',		-- plugin_name
-	'intranet-core',		-- package_name
-	'top',				-- location
-	'/intranet/index',		-- page_url
-	null,				-- view_name
-	10,				-- sort_order
-	'im_browser_warning_component'	-- component_tcl
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Browser Warning',			-- plugin_name
+	'intranet-core',			-- package_name
+	'top',					-- location
+	'/intranet/index',			-- page_url
+	null,					-- view_name
+	10,					-- sort_order
+	'im_browser_warning_component'		-- component_tcl
 );
 
 
@@ -548,18 +551,18 @@ SELECT  im_component_plugin__new (
 
 -- Association Component
 SELECT  im_component_plugin__new (
-	null,				-- plugin_id
-	'acs_object',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'Associated Objects',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet-confdb/new',		-- page_url
-	null,				-- view_name
-	120,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	null,					-- creation_ip
+	null,					-- context_id
+	'Associated Objects',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet-confdb/new',			-- page_url
+	null,					-- view_name
+	120,					-- sort_order
 	'im_object_assoc_component -object_id $conf_item_id'	-- component_tcl
 );
 
@@ -567,18 +570,18 @@ SELECT  im_component_plugin__new (
 
 -- List objects associated to user
 SELECT  im_component_plugin__new (
-	null,				-- plugin_id
-	'im_component_plugin',		-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	'0.0.0.0',			-- creation_ip
-	null,				-- context_id
-	'User Related Objects',		-- plugin_name
-	'intranet-core',		-- package_name
-	'right',			-- location
-	'/intranet/users/view',		-- page_url
-	null,				-- view_name
-	20,				-- sort_order
+	null,					-- plugin_id
+	'im_component_plugin',			-- object_type
+	now(),					-- creation_date
+	null,					-- creation_user
+	'0.0.0.0',				-- creation_ip
+	null,					-- context_id
+	'User Related Objects',			-- plugin_name
+	'intranet-core',			-- package_name
+	'right',				-- location
+	'/intranet/users/view',			-- page_url
+	null,					-- view_name
+	20,					-- sort_order
 	'im_biz_object_related_objects_component -include_membership_rels_p 1 -object_id $user_id'	-- component_tcl
 );
 
@@ -593,7 +596,7 @@ where page_url = '/intranet/users/view' and plugin_name = 'User Offices';
 ------------------------------------------------------------------
 -- Set permissions on all Plugin Components for Employees, Freelancers and Customers.
 create or replace function inline_0 ()
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	v_count		integer;
 	v_plugin_id	integer;
@@ -603,9 +606,9 @@ DECLARE
 	v_freel_id	integer;
 	v_cust_id	integer;
 BEGIN
-	select group_id into v_emp_id from groups where group_name = ''Employees'';
-	select group_id into v_freel_id from groups where group_name = ''Freelancers'';
-	select group_id into v_cust_id from groups where group_name = ''Customers'';
+	select group_id into v_emp_id from groups where group_name = 'Employees';
+	select group_id into v_freel_id from groups where group_name = 'Freelancers';
+	select group_id into v_cust_id from groups where group_name = 'Customers';
 
 	-- Check if permissions were already configured
 	-- Stop if there is just a single configured plugin.
@@ -620,13 +623,13 @@ BEGIN
 		select	plugin_id
 		from	im_component_plugins pl
 	LOOP
-		PERFORM im_grant_permission(row.plugin_id, v_emp_id, ''read'');
-		PERFORM im_grant_permission(row.plugin_id, v_freel_id, ''read'');
-		PERFORM im_grant_permission(row.plugin_id, v_cust_id, ''read'');
+		PERFORM im_grant_permission(row.plugin_id, v_emp_id, 'read');
+		PERFORM im_grant_permission(row.plugin_id, v_freel_id, 'read');
+		PERFORM im_grant_permission(row.plugin_id, v_cust_id, 'read');
 	END LOOP;
 
 	return 0;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 select inline_0();
 drop function inline_0();
 

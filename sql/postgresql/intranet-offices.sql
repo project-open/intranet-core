@@ -13,8 +13,8 @@
 -- FITNESS FOR A PARTICULAR PURPOSE.
 -- See the GNU General Public License for more details.
 --
--- @author      unknown@arsdigita.com
--- @author      frank.bergmann@project-open.com
+-- @author	unknown@arsdigita.com
+-- @author	frank.bergmann@project-open.com
 
 
 --------------------------------------------------------------
@@ -91,8 +91,8 @@ create table im_offices (
 				constraint im_offices_cont_per_fk
 				references users,
 	landlord		text,
-	--- who supplies the security service, the code for
-	--- the door, etc.
+				--- who supplies the security service, the code for
+				--- the door, etc.
 	security		text,
 	note			text
 );
@@ -101,22 +101,22 @@ create table im_offices (
 create or replace function im_office__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, integer, integer, integer
-) returns integer as '
+) returns integer as $body$
 declare
-        p_office_id     alias for $1;
-        p_object_type     alias for $2;
-        p_creation_date   alias for $3;
-        p_creation_user   alias for $4;
-        p_creation_ip     alias for $5;
-        p_context_id      alias for $6;
+	p_office_id		alias for $1;
+	p_object_type		alias for $2;
+	p_creation_date		alias for $3;
+	p_creation_user		alias for $4;
+	p_creation_ip		alias for $5;
+	p_context_id		alias for $6;
 
-	p_office_name	alias for $7;
-	p_office_path	alias for $8;
-	p_office_type_id  alias for $9;
-	p_office_status_id alias for $10;
-	p_company_id	alias for $11;
+	p_office_name		alias for $7;
+	p_office_path		alias for $8;
+	p_office_type_id	alias for $9;
+	p_office_status_id	alias for $10;
+	p_company_id		alias for $11;
 
-        v_object_id     integer;
+	v_object_id	integer;
 begin
 	v_object_id := acs_object__new (
 		p_office_id,
@@ -139,11 +139,12 @@ begin
 	insert into im_biz_objects (object_id) values (v_object_id);
 
 	return v_object_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- Delete a single office (if we know its ID...)
-create or replace function im_office__delete (integer) returns integer as '
+create or replace function im_office__delete (integer) 
+returns integer as $body$
 DECLARE
 	v_office_id		alias for $1;
 BEGIN
@@ -161,9 +162,10 @@ BEGIN
 	PERFORM	acs_object__delete(v_office_id);
 
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
-create or replace function im_office__name (integer) returns varchar as '
+create or replace function im_office__name (integer) 
+returns varchar as $body$
 DECLARE
 	p_office_id	alias for $1;
 	v_name	im_offices.office_name%TYPE;
@@ -174,5 +176,5 @@ BEGIN
 	where	office_id = p_office_id;
 
 	return v_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 

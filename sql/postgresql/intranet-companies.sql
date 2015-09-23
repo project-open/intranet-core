@@ -143,7 +143,7 @@ create table im_companies (
 create or replace function im_company__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, integer, integer, integer
-) returns integer as '
+) returns integer as $body$
 DECLARE
 	p_company_id      alias for $1;
 	p_object_type     alias for $2;
@@ -187,10 +187,11 @@ BEGIN
 	where	office_id = p_main_office_id;
 
 	return v_company_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
-create or replace function im_company__delete (integer) returns integer as '
+create or replace function im_company__delete (integer) 
+returns integer as $body$
 DECLARE
 	p_company_id	     alias for $1;
 
@@ -222,10 +223,11 @@ BEGIN
 	PERFORM acs_object__delete(p_company_id);
 
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
-create or replace function im_company__name (integer) returns varchar as '
+create or replace function im_company__name (integer) 
+returns varchar as $body$
 DECLARE
 	p_company_id	alias for $1;
 	v_name		varchar;
@@ -236,19 +238,20 @@ BEGIN
 	where	company_id = p_company_id;
 
 	return v_name;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 -- Returns a TCL list of company_id suitable to stuff into a
 -- TCL hash array of all companies associated to a specific user.
-create or replace function im_company_list_for_user_html (integer) returns varchar as '
+create or replace function im_company_list_for_user_html (integer) 
+returns varchar as $body$
 DECLARE
 	p_user_id	alias for $1;
 
 	v_html		varchar;
 	row		RECORD;
 BEGIN
-	v_html := '''';
+	v_html := '';
 	FOR row IN
 		select	c.company_id
 		from	im_companies c,
@@ -258,10 +261,10 @@ BEGIN
 		order by
 			lower(c.company_name)
 	LOOP
-		IF '''' != v_html THEN v_html := v_html || '' ''; END IF;
+		IF '' != v_html THEN v_html := v_html || ' '; END IF;
 		v_html := v_html || row.company_id;
 	END LOOP;
 
 	return v_html;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 

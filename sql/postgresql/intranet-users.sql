@@ -95,7 +95,7 @@ where object_type = 'person';
 
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 declare
 	row		RECORD;
 	v_category_id	integer;
@@ -106,12 +106,12 @@ begin
 			im_profiles p
 		where	p.profile_id = g.group_id
         LOOP
-		PERFORM im_category_new(nextval(''im_categories_seq'')::integer, row.group_name, ''Intranet User Type'');
-		update im_categories set aux_int1 = row.group_id where category = row.group_name and category_type = ''Intranet User Type'';
+		PERFORM im_category_new(nextval('im_categories_seq')::integer, row.group_name, 'Intranet User Type');
+		update im_categories set aux_int1 = row.group_id where category = row.group_name and category_type = 'Intranet User Type';
         END LOOP;
 
         RETURN 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 select inline_0();
 drop function inline_0();
 
@@ -232,21 +232,20 @@ from
 -- ToDo: Localize this function for Japanese
 --
 create or replace function im_name_from_user_id(integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	v_user_id	alias for $1;
 	v_full_name	text;
 BEGIN
-	select first_names || '' '' || last_name into v_full_name 
+	select first_names || ' ' || last_name into v_full_name 
 	from persons
 	where person_id = v_user_id;
 
 	return v_full_name;
-
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 
 create or replace function im_email_from_user_id(integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	v_user_id	alias for $1;
 	v_email varchar(100);
@@ -257,11 +256,11 @@ BEGIN
 	where party_id = v_user_id;
 
 	return v_email;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 
 
 create or replace function im_initials_from_user_id(integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	v_user_id	alias for $1;
 	v_initials	varchar(2);
@@ -270,7 +269,7 @@ BEGIN
 	from persons
 	where person_id = v_user_id;
 	return v_initials;
-END;' language 'plpgsql';
+END;$body$ language 'plpgsql';
 
 
 -- Shortcut to add a user to a profile (group)
@@ -278,7 +277,7 @@ END;' language 'plpgsql';
 --      im_profile_add_user('Employees', 456)
 --
 create or replace function im_profile_add_user (varchar, integer)
-returns integer as '
+returns integer as $body$
 DECLARE
         p_group_name    alias for $1;
         p_grantee_id    alias for $2;
@@ -296,13 +295,13 @@ BEGIN
         select  count(*) into v_count from acs_rels
         where   object_id_one = v_group_id
                 and object_id_two = p_grantee_id
-                and rel_type = ''membership_rel'';
+                and rel_type = 'membership_rel';
         IF v_count > 0 THEN RETURN 0; END IF;
 
         v_rel_id := membership_rel__new(v_group_id, p_grantee_id);
 
         RETURN v_rel_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
@@ -366,7 +365,7 @@ insert into acs_rel_types (
 
 create or replace function im_company_employee_rel__new (
 	integer, varchar, integer, integer, integer, integer, varchar, integer
-) returns integer as '
+) returns integer as $body$
 DECLARE
 	p_rel_id		alias for $1;	-- null
 	p_rel_type		alias for $2;	-- im_company_employee_rel
@@ -395,11 +394,11 @@ BEGIN
 	);
 
 	return v_rel_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 create or replace function im_company_employee_rel__delete (integer)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_rel_id	alias for $1;
 BEGIN
@@ -408,7 +407,7 @@ BEGIN
 
 	PERFORM acs_rel__delete(p_rel_id);
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 
@@ -462,7 +461,7 @@ insert into acs_rel_types (
 
 create or replace function im_key_account_rel__new (
 	integer, varchar, integer, integer, integer, integer, varchar, integer
-) returns integer as '
+) returns integer as $body$
 DECLARE
 	p_rel_id		alias for $1;	-- null
 	p_rel_type		alias for $2;	-- im_key_account_rel
@@ -491,11 +490,11 @@ BEGIN
 	);
 
 	return v_rel_id;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 create or replace function im_key_account_rel__delete (integer)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_rel_id	alias for $1;
 BEGIN
@@ -504,7 +503,7 @@ BEGIN
 
 	PERFORM acs_rel__delete(p_rel_id);
 	return 0;
-end;' language 'plpgsql';
+end;$body$ language 'plpgsql';
 
 
 

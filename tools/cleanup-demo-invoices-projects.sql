@@ -6,7 +6,7 @@
 
 
 CREATE OR REPLACE FUNCTION im_cleanup_demo_invoices_projects2 () 
-RETURNS integer AS '
+RETURNS integer AS $BODY$
 DECLARE
 	v_return		INTEGER;
 
@@ -40,7 +40,7 @@ BEGIN
 					p.project_id = r.object_id_one
 				LIMIT 1
 			LOOP
-				RAISE NOTICE ''delete iid=%, pid=%'', row2.invoice_id, row2.project_id;
+				RAISE NOTICE 'delete iid=%, pid=%', row2.invoice_id, row2.project_id;
 				PERFORM acs_rel__delete(row2.rel_id);
 				v_return := v_return + 1;
 			END LOOP;
@@ -48,11 +48,11 @@ BEGIN
 	END LOOP;
 
 	RETURN v_return;
-end;' language 'plpgsql';
+end;$BODY$ language 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION im_cleanup_demo_invoices_projects () 
-RETURNS integer AS '
+RETURNS integer AS $BODY$
 DECLARE
 	v_return		INTEGER;
 BEGIN
@@ -62,7 +62,6 @@ BEGIN
 	END LOOP;
 
 	RETURN 0;
-end;' language 'plpgsql';
-
+end;$BODY$ language 'plpgsql';
 select im_cleanup_demo_invoices_projects();
 

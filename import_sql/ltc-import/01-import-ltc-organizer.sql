@@ -53,7 +53,7 @@ Limits:
 
 -- Returns a ]po[ Country Code ("us", "de", ...) for LTC country names
 create or replace function im_country_code_from_ltc_country (varchar)
-returns varchar as '
+returns varchar as $body$
 DECLARE
         row		RECORD;
 	p_country	alias for $1;
@@ -61,18 +61,18 @@ DECLARE
 	v_country_code	varchar;
 BEGIN
     v_country = lower(p_country);
-    IF v_country = ''germany'' THEN return ''de'';
-    ELSIF v_country = ''belgium'' THEN return ''be'';
-    ELSIF v_country = ''denmark'' THEN return ''dk'';
-    ELSIF v_country = ''deutschland'' THEN return ''de'';
-    ELSIF v_country = ''england'' THEN return ''uk'';
-    ELSIF v_country = ''frankreich'' THEN return ''fr'';
-    ELSIF v_country = ''great britain'' THEN return ''uk'';
-    ELSIF v_country = ''liechtenstein'' THEN return ''li'';
-    ELSIF v_country = ''luxembourg'' THEN return ''lu'';
-    ELSIF v_country = ''niederlande'' THEN return ''nl'';
-    ELSIF v_country = ''schweiz'' THEN return ''ch'';
-    ELSIF v_country = ''usa'' THEN return ''us'';
+    IF v_country = 'germany' THEN return 'de';
+    ELSIF v_country = 'belgium' THEN return 'be';
+    ELSIF v_country = 'denmark' THEN return 'dk';
+    ELSIF v_country = 'deutschland' THEN return 'de';
+    ELSIF v_country = 'england' THEN return 'uk';
+    ELSIF v_country = 'frankreich' THEN return 'fr';
+    ELSIF v_country = 'great britain' THEN return 'uk';
+    ELSIF v_country = 'liechtenstein' THEN return 'li';
+    ELSIF v_country = 'luxembourg' THEN return 'lu';
+    ELSIF v_country = 'niederlande' THEN return 'nl';
+    ELSIF v_country = 'schweiz' THEN return 'ch';
+    ELSIF v_country = 'usa' THEN return 'us';
     ELSE 
 	select iso
 	into v_country_code
@@ -81,7 +81,7 @@ BEGIN
 
 	return v_country_code;
     END IF;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 ---------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ END;' language 'plpgsql';
 -- Returns a ]po[ catagory_id for a LTC language_id
 -- The conversion goes LTC-Name -> ISO Locale -> Category
 create or replace function im_language_id_from_ltc (integer)
-returns varchar as '
+returns varchar as $body$
 DECLARE
 	p_ltc_lang_id	alias for $1;
 
@@ -104,18 +104,18 @@ BEGIN
     from im_ltc_languages
     where ltc_language_id = p_ltc_lang_id;
 
-    -- RAISE NOTICE ''im_language_id_from_ltc: v_iso_locale=%'', v_iso_locale;
+    -- RAISE NOTICE 'im_language_id_from_ltc: v_iso_locale=%', v_iso_locale;
 
     select category_id
     into v_category_id
     from im_categories
     where category = v_iso_locale
-	  and category_type = ''Intranet Translation Language'';
+	  and category_type = 'Intranet Translation Language';
 
-    -- RAISE NOTICE ''im_language_id_from_ltc: category_id=%'', v_category_id;
+    -- RAISE NOTICE 'im_language_id_from_ltc: category_id=%', v_category_id;
 
     RETURN v_category_id;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 
 create table im_ltc_languages (
@@ -343,7 +343,7 @@ where
 alter table im_companies add ltc_company_id integer;
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 	v_office_id	integer;
@@ -355,7 +355,7 @@ BEGIN
         select * 
 	from "CLIENT"
     loop
-	RAISE NOTICE ''Client: %: %'', row.client_id, row.organisation_name;
+	RAISE NOTICE 'Client: %: %', row.client_id, row.organisation_name;
 
 	v_organisation_name = row.organisation_name;
 
@@ -365,22 +365,22 @@ BEGIN
 	where trim(c.company_name) = trim(v_organisation_name);
 
 	IF v_duplicate_p > 0 THEN
-	    v_organisation_name = row.organisation_name || ''.'' || row.client_id;
+	    v_organisation_name = row.organisation_name || '.' || row.client_id;
 	END IF;
 
 	-- First create a new Main Office
 	select im_office__new (
-		null, ''im_office'',
-		now()::date, 0, ''0.0.0.0'', null,
-		v_organisation_name || '' Main Office '' || row.client_id,
-		v_organisation_name || ''_office_path_'' || row.client_id,
+		null, 'im_office',
+		now()::date, 0, '0.0.0.0', null,
+		v_organisation_name || ' Main Office ' || row.client_id,
+		v_organisation_name || '_office_path_' || row.client_id,
 		170, 160, null
 	) into v_office_id;
 
 	-- Then create the Comany (needs the Main Office)
 	select im_company__new (
-		null, ''im_company'', now()::date,
-		0, ''0.0.0.0'', null, 
+		null, 'im_company', now()::date,
+		0, '0.0.0.0', null, 
 		v_organisation_name,
 		v_organisation_name,
 		v_office_id,
@@ -423,7 +423,7 @@ BEGIN
 
     end loop;
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -500,7 +500,7 @@ alter table persons add ltc_contact_id integer;
 
 -- Import Contacts
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 	v_user_id	integer;
@@ -519,7 +519,7 @@ BEGIN
 	from	( select
 			c.*,
 			trim(cc.email) as comm_email,
-			trim(c.firstname) || '' '' || trim(surname) || ''@'' || trim(c.firstname) || '' '' || trim(surname) as default_email
+			trim(c.firstname) || ' ' || trim(surname) || '@' || trim(c.firstname) || ' ' || trim(surname) as default_email
 		from
 			"CONTACT" c
 			left outer join (
@@ -534,38 +534,38 @@ BEGIN
 		1=1 or c.contact_id in (804, 813)
     loop
 
-	RAISE NOTICE ''Start Loop: % %'', row.default_email, row.email;
+	RAISE NOTICE 'Start Loop: % %', row.default_email, row.email;
 
 	select count(*) 
 	into v_user_exists_p
 	from parties p
 	where lower(trim(p.email)) = lower(trim(row.email));
 
-	RAISE NOTICE ''Exists: %: %'', v_user_id, v_user_exists_p;
+	RAISE NOTICE 'Exists: %: %', v_user_id, v_user_exists_p;
 
 	-- Create User or get the existing user based on email
 	IF v_user_exists_p = 0 THEN
 	    -- Create the new user without a reasonable password
 	    select acs__add_user(
                 null,
-                ''user'',
+                'user',
                 now(),
                 null,
-                ''0.0.0.0'',
+                '0.0.0.0',
                 null,
-                row.firstname || '' '' || row.surname || ''.'' || row.contact_id,
+                row.firstname || ' ' || row.surname || '.' || row.contact_id,
                 row.email,
                 null,
                 row.firstname,
                 row.surname,
-                ''password'',
-                ''salt'',
-                row.firstname || '' '' || row.surname || ''.'' || row.contact_id,
-                ''f'',
-                ''approved''
+                'password',
+                'salt',
+                row.firstname || ' ' || row.surname || '.' || row.contact_id,
+                'f',
+                'approved'
 	    ) into v_user_id;
 
-	    RAISE NOTICE ''Created the user => %'', v_user_id;
+	    RAISE NOTICE 'Created the user => %', v_user_id;
 
 	ELSE
 
@@ -574,7 +574,7 @@ BEGIN
 	    from parties p
 	    where lower(trim(p.email)) = lower(trim(row.email));
 
-	    RAISE NOTICE ''Found existing user => %'', v_user_id;
+	    RAISE NOTICE 'Found existing user => %', v_user_id;
 
 	END IF;
 
@@ -589,9 +589,9 @@ BEGIN
 	from users_contact
 	where user_id = v_user_id;
 
-	RAISE NOTICE ''v_users_contact_count => %'', v_users_contact_count;
+	RAISE NOTICE 'v_users_contact_count => %', v_users_contact_count;
 
-	RAISE NOTICE ''Treating contact_id % -> %: %'', row.contact_id, v_user_id, row.default_email;
+	RAISE NOTICE 'Treating contact_id % -> %: %', row.contact_id, v_user_id, row.default_email;
 
 	IF v_users_contact_count = 0 THEN
 	    insert into users_contact (
@@ -608,15 +608,15 @@ BEGIN
 		wa_state = row.state,
 		wa_postal_code = row.postal_code,
 		wa_country_code = im_country_code_from_ltc_country(row.country),
-		note =	''Title: '' || row.title || 
-			''\nOrganisation: '' || row.organisation_name ||
-			''\nSalutation: '' || row.salutation
+		note =	'Title: ' || row.title || 
+			'\nOrganisation: ' || row.organisation_name ||
+			'\nSalutation: ' || row.salutation
 	where user_id = v_user_id;
 
 
 	IF row.contact_type_id = 2 THEN
 
-	    RAISE NOTICE ''Adding % to Freelancers, v_member_p=%'', v_user_id, v_member_p;
+	    RAISE NOTICE 'Adding % to Freelancers, v_member_p=%', v_user_id, v_member_p;
 
 	    IF 0 = v_user_exists_p THEN
 		PERFORM membership_rel__new(465, v_user_id);
@@ -625,7 +625,7 @@ BEGIN
 	ELSIF row.contact_type_id = 3 THEN
 
 	    -- Customer
-	    RAISE NOTICE ''Adding % to Customers, v_member_p=%'', v_user_id, v_member_p;
+	    RAISE NOTICE 'Adding % to Customers, v_member_p=%', v_user_id, v_member_p;
 
 	    IF 0 = v_user_exists_p THEN
 		PERFORM membership_rel__new(461, v_user_id);
@@ -636,11 +636,11 @@ BEGIN
 	-- Fields not treated yet:              
 	-- web_password      | character varying(12)
 
-	RAISE NOTICE ''End Loop'';
+	RAISE NOTICE 'End Loop';
 
     end loop;
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -648,7 +648,7 @@ drop function inline_0 ();
 
 -- Contact Communication - fax, tel and mobile
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 BEGIN
@@ -662,7 +662,7 @@ BEGIN
 	where	cc.contact_id = c.contact_id
     LOOP
 	IF row.person_id is null THEN
-		RAISE NOTICE ''Relationship: Person=% % does not enter'', row.firstname, row.surname;
+		RAISE NOTICE 'Relationship: Person=% % does not enter', row.firstname, row.surname;
 	ELSE
 		IF row.com_type_id = 1 THEN
 			update users_contact
@@ -681,67 +681,9 @@ BEGIN
     END LOOP;
 
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
-
-
-
-
-
-
-
-
-Old Telephone numbers
- user_id |    work_phone
----------+-------------------
-   12882 | +56 32 83 93 70
-   12872 | 3456345
-   12670 | +49 8104 888811
-   13146 | +49 2203 44153
-   15793 | 0711 6566840
-   15967 | +39 0583462055
-   14456 | 09905 707395
-   18249 | 0221/2812999
-   16903 | 05619219403
-   12623 | +49 89 581480 00
-   15817 | 04298697172
-   13127 | +49 2203 44 464
-   15952 | 0039019813300
-   15400 | +49 69 2690 0747
-   16696 | (030) 30 20 18 76
-   15121 | +49.8104.888733
-
-
- user_id |   cell_phone
----------+-----------------
-   12670 | +49 173 3690601
-   13146 | +49 173 2553252
-   15793 | 0172 9468035
-   15967 | +39 3280589605
-   14456 | 0151 15565905
-   18249 | 0176/23273207
-   14411 | 0415523273
-   15817 | 01732013042
-   15952 | 3485929020
-   16696 | 0177-3 19 11 64
-   15121 | +49.1728619938
-
-
- user_id |       fax
----------+------------------
-   12670 | +49 8104 888812
-   13146 | +49 2203 44200
-   15793 | 0711 6566850
-   14456 | 09905 707396
-   18249 | 06221/323278
-   16903 | 05619219404
-   12623 | +49 89 581480 01
-   13127 | +49 2203 44 200
-   15952 | 003902700535034
-   15121 | +49.8104.888734
-
-
 
 
 ---------------------------------------------------------------------------------
@@ -752,7 +694,7 @@ alter table persons add ltc_translator_id integer;
 
 -- TRANSLATOR -> im_freelancers
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 	v_user_id	integer;
@@ -765,7 +707,7 @@ BEGIN
 		left outer join persons p on (t.contact_id = p.ltc_contact_id)
     LOOP
 	v_mother_tongue_category_id = im_language_id_from_ltc(row.mother_tongue_lang_id::integer);
-	RAISE NOTICE ''Translator Start: %: mother_tongue=%/%'', row.contact_id, row.mother_tongue_lang_id, v_mother_tongue_category_id;
+	RAISE NOTICE 'Translator Start: %: mother_tongue=%/%', row.contact_id, row.mother_tongue_lang_id, v_mother_tongue_category_id;
 	IF row.person_id is not null AND v_mother_tongue_category_id is not null THEN
 		insert into im_freelance_skills (
 		    user_id, skill_id, skill_type_id
@@ -787,7 +729,7 @@ BEGIN
     END LOOP;
 
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -795,7 +737,7 @@ drop function inline_0 ();
 
 -- TRANSLATOR_TARGET -> im_freelance_skill target languages
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 	v_user_id	integer;
@@ -810,7 +752,7 @@ BEGIN
 		left outer join persons p on (t.translator_id = p.ltc_translator_id)
     LOOP
 	v_lang_category_id = im_language_id_from_ltc(row.lang_id::integer);
-	RAISE NOTICE ''Translator Target: %: target=%/%'', row.person_id, row.lang_id, v_lang_category_id;
+	RAISE NOTICE 'Translator Target: %: target=%/%', row.person_id, row.lang_id, v_lang_category_id;
 	IF row.person_id is not null AND v_lang_category_id is not null THEN
 		select count(*)
 		into v_entry_exists_p
@@ -835,7 +777,7 @@ BEGIN
 	END IF;
     END LOOP;
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -843,7 +785,7 @@ drop function inline_0 ();
 
 -- TRANSLATOR_SOURCE -> im_freelance_skill source languages
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 	v_user_id	integer;
@@ -858,7 +800,7 @@ BEGIN
 		left outer join persons p on (t.translator_id = p.ltc_translator_id)
     LOOP
 	v_lang_category_id = im_language_id_from_ltc(row.lang_id::integer);
-	RAISE NOTICE ''Translator Target: %: source=%/%'', row.person_id, row.lang_id, v_lang_category_id;
+	RAISE NOTICE 'Translator Target: %: source=%/%', row.person_id, row.lang_id, v_lang_category_id;
 	IF row.person_id is not null AND v_lang_category_id is not null THEN
 		select count(*)
 		into v_entry_exists_p
@@ -883,7 +825,7 @@ BEGIN
 	END IF;
     END LOOP;
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -895,12 +837,12 @@ drop function inline_0 ();
 
 -- Returns a ]po[ UoM ID (Hour, S-Word, ...) for LTC "Workload_unit"
 create or replace function im_uom_from_ltc_workload_unit (integer)
-returns integer as '
+returns integer as $body$
 DECLARE
 	p_unit		alias for $1;
 BEGIN
     -- 1000 Words
-    IF p_unit = 1 THEN return (select category_id from im_categories where category = ''1000 W'');
+    IF p_unit = 1 THEN return (select category_id from im_categories where category = '1000 W');
     -- Page
     ELSIF p_unit = 2 THEN return 323;
     -- Hour
@@ -915,7 +857,7 @@ BEGIN
     ELSE
 	return 322;
     END IF;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 
 select im_category_from_id(im_uom_from_ltc_workload_unit(2));
 
@@ -928,7 +870,7 @@ INSERT INTO im_categories (category_id, category, category_type,category_descrip
 
 -- Create a provider for each translator
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
         rel_row		RECORD;
@@ -956,13 +898,13 @@ BEGIN
 	where
 		t.translator_id >= 0
     LOOP
-	RAISE NOTICE ''Translator->Freelance Start: %'', row.contact_id;
+	RAISE NOTICE 'Translator->Freelance Start: %', row.contact_id;
 
-	v_organisation_name = ''Freelance '' || im_name_from_user_id(row.person_id);
-	v_organisation_path = translate(lower(v_organisation_name), '' '', ''_'');
+	v_organisation_name = 'Freelance ' || im_name_from_user_id(row.person_id);
+	v_organisation_path = translate(lower(v_organisation_name), ' ', '_');
 
 	IF v_organisation_name is null THEN
-		RAISE NOTICE ''Translator: Found null organisation name'';
+		RAISE NOTICE 'Translator: Found null organisation name';
 	ELSE
 
 	select count(*)
@@ -972,21 +914,21 @@ BEGIN
 
 	IF v_duplicate_p = 0 THEN
 
-		RAISE NOTICE ''Translator: New Org: %'', v_organisation_name;
+		RAISE NOTICE 'Translator: New Org: %', v_organisation_name;
 
 		-- First create a new Main Office
 		select im_office__new (
-			null, ''im_office'',
-			now()::date, 0, ''0.0.0.0'', null,
-			v_organisation_name || '' Main Office '',
+			null, 'im_office',
+			now()::date, 0, '0.0.0.0', null,
+			v_organisation_name || ' Main Office ',
 			v_organisation_path,
 			170, 160, null
 		) into v_office_id;
 
 		-- Then create the Comany (needs the Main Office)
 		select im_company__new (
-			null, ''im_company'', now()::date,
-			0, ''0.0.0.0'', null, 
+			null, 'im_company', now()::date,
+			0, '0.0.0.0', null, 
 			v_organisation_name,
 			v_organisation_path,
 			v_office_id,
@@ -994,7 +936,7 @@ BEGIN
 			46
 		) into v_company_id;
 	ELSE
-		RAISE NOTICE ''Translator: Existing Org: %'', v_organisation_name;
+		RAISE NOTICE 'Translator: Existing Org: %', v_organisation_name;
 
 		select office_id
 		into v_office_id
@@ -1026,10 +968,10 @@ BEGIN
 	where office_id = v_office_id;
 
 	IF v_company_id is null THEN
-		RAISE NOTICE ''Translator: v_company_id is NULL'';
+		RAISE NOTICE 'Translator: v_company_id is NULL';
 	ELSE
 
-	RAISE NOTICE ''Translator: Delete previous relationships'';
+	RAISE NOTICE 'Translator: Delete previous relationships';
 	for rel_row in
                 select
                         object_id_one as object_id,
@@ -1042,15 +984,15 @@ BEGIN
                 PERFORM im_biz_object_member__delete(rel_row.object_id, rel_row.user_id);
         end loop;
 
-	RAISE NOTICE ''Translator: Add rel between % and %'', v_company_id, row.person_id;
+	RAISE NOTICE 'Translator: Add rel between % and %', v_company_id, row.person_id;
 	PERFORM im_biz_object_member__new (
           null,
-          ''im_biz_object_member'',
+          'im_biz_object_member',
           v_company_id,
           row.person_id,
           1300,
           null,
-          ''0.0.0.0''
+          '0.0.0.0'
 	);
 
 	END IF;
@@ -1060,7 +1002,7 @@ BEGIN
     END LOOP;
 
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -1069,7 +1011,7 @@ drop function inline_0 ();
 
 -- Insert translation prices into price list
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 BEGIN
@@ -1098,7 +1040,7 @@ BEGIN
 		and unit_value is not null
 
     LOOP
-	RAISE NOTICE ''Price: Person=%, Source=%, Target=%, Unit=%, Value=%'', row.person_id, row.source_lang_id, row.target_lang_id, row.uom_id, row.unit_value;
+	RAISE NOTICE 'Price: Person=%, Source=%, Target=%, Unit=%, Value=%', row.person_id, row.source_lang_id, row.target_lang_id, row.uom_id, row.unit_value;
 
 	insert into im_trans_prices (
 		price_id,
@@ -1114,7 +1056,7 @@ BEGIN
 		price,
 		note
 	) values (
-		nextval(''im_trans_prices_seq''),
+		nextval('im_trans_prices_seq'),
 		row.uom_id,
 		row.company_id,
 		null,
@@ -1123,15 +1065,14 @@ BEGIN
 		null,
 		null,
 		null,
-		''EUR'',
+		'EUR',
 		row.unit_value,
 		row.ltc_work_type
 	);
 	
     END LOOP;
-
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -1146,7 +1087,7 @@ drop function inline_0 ();
 ---------------------------------------------------------------------------------
 
 create or replace function inline_0 ()
-returns integer as '
+returns integer as $body$
 DECLARE
         row		RECORD;
 BEGIN
@@ -1171,7 +1112,7 @@ BEGIN
 		and c.contact_id = p.ltc_contact_id
 
     LOOP
-	RAISE NOTICE ''Relationship: Person=% % %, Company=% %'', row.person_id, row.firstname, row.surname, row.company_id, row.company_name;
+	RAISE NOTICE 'Relationship: Person=% % %, Company=% %', row.person_id, row.firstname, row.surname, row.company_id, row.company_name;
 	
 	perform im_biz_object_member__delete(
 		row.company_id, 
@@ -1180,17 +1121,17 @@ BEGIN
 
 	perform im_biz_object_member__new (
           null,
-          ''im_biz_object_member'',
+          'im_biz_object_member',
           row.company_id,
           row.person_id,
           1300,
-          0, ''0.0.0.0''
+          0, '0.0.0.0'
       );
 
     END LOOP;
 
     return 0;
-END;' language 'plpgsql';
+END; $BODY$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
