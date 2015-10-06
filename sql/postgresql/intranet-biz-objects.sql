@@ -422,10 +422,16 @@ create table im_biz_object_role_map (
 			references im_categories,
 	object_role_id	integer
 			constraint im_bizo_rmap_object_role_fk
-			references im_categories,
-	constraint im_bizo_rmap_un
-	unique (acs_object_type, object_type_id, object_role_id)
+			references im_categories
 );
+
+-- Create a unique index that allows to use coalesce(...)
+create unique index im_biz_object_role_map_un
+on im_biz_object_role_map
+(coalesce(acs_object_type,''), coalesce(object_type_id,0), coalesce(object_role_id,0));
+
+
+
 
 
 -- ------------------------------------------------------------
