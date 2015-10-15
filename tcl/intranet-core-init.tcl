@@ -68,6 +68,7 @@ set object_types {
     im_timesheet_task
     im_trans_invoice
     im_trans_task
+    im_trust_rel
     im_user_absence
     membership_rel
     person
