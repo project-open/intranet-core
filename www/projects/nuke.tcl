@@ -120,7 +120,7 @@ template::list::create \
         project_name {
             label "[lang::message::lookup {} intranet-core.Project_name Name]"
             display_template {
-                @subprojects.indent;noquote@<a href=@subprojects.project_url;noquote@>@subprojects.project_name;noquote@</a>
+                @subprojects.indent;noquote@<a href=@subprojects.project_url;noquote@>@subprojects.project_nr@ - @subprojects.project_name@</a>
             }
         }
         finance_html {
