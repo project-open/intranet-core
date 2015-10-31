@@ -335,7 +335,6 @@ BEGIN
 
 	-- only add the group if it did not exist before...
 	IF n_groups = 0 THEN
-
 		v_group_id := im_profile__new(
 			v_pretty_name,
 			v_profile_gif
@@ -350,7 +349,7 @@ BEGIN
 			null				-- creation_ip
 		);
 		
-		select acs_object_id_seq.nextval into v_category_id;
+		select nextval('t_acs_object_id_seq') into v_category_id from dual;
 	
 		-- Add the group to the Intranet User Type categories
 		perform im_category_new (

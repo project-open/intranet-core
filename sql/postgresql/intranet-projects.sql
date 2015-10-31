@@ -63,7 +63,7 @@ create table im_projects (
 					constraint im_projects_parent_fk 
 					references im_projects
 					constraint im_projects_parent_ck
-					check (parent_id != project_id)
+					check (parent_id != project_id),
 	tree_sortkey			varbit,
 	max_child_sortkey		varbit,
 

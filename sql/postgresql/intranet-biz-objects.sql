@@ -56,7 +56,7 @@ CREATE TABLE im_biz_objects (
 	lock_user		integer
 				constraint im_biz_object_lock_user_fk
 				references persons,
-	lock_date		timestamptz
+	lock_date		timestamptz,
 	lock_ip			text
 );
 
