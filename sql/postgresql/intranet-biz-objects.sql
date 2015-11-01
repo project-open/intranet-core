@@ -1,4 +1,4 @@
--- /packages/intranet-core/sql/oracle/intranet-biz-objects.sql
+-- /packages/intranet-core/sql/postgresql/intranet-biz-objects.sql
 --
 -- Copyright (C) 1999 - 2009 ]project-open[
 --
@@ -73,6 +73,14 @@ add type_column character varying(30);
 
 alter table acs_object_types
 add status_type_table character varying(30);
+
+alter table acs_object_types
+add type_category_type char varying(50);
+
+alter table acs_object_types
+add type_category_status char varying(50);
+
+
 
 
 -- ---------------------------------------------------------------

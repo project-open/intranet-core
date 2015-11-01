@@ -74,9 +74,12 @@ create table im_view_columns (
 	order_by_clause		text,
 	-- set of permission tokens that allow viewing this column,
 	-- separated with spaces and OR-joined
-	visible_for		text
+	visible_for		text,
+	ajax_configuration	text
 );
 
+
+SELECT im_category_new (1415, 'Ajax', 'Intranet DynView Type');
 
 
 ---------------------------------------------------------

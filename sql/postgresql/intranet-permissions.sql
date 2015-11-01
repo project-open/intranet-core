@@ -405,14 +405,19 @@ end;$body$ language 'plpgsql';
 
 select im_create_profile ('P/O Admins','admin');
 select im_create_profile ('Customers','customer'); 
-select im_create_profile ('Employees','employee'); 
+select im_create_profile ('Employees','house'); 
 select im_create_profile ('Freelancers','freelance'); 
 select im_create_profile ('Project Managers','proman'); 
-select im_create_profile ('Senior Managers','senman'); 
+select im_create_profile ('Senior Managers','key'); 
 select im_create_profile ('Accounting','accounting'); 
 select im_create_profile ('Sales','sales'); 
 select im_create_profile ('HR Managers','profile'); 
 select im_create_profile ('Freelance Managers','profile'); 
+select im_create_profile ('Helpdesk','computer_key'); 
+
+delete from im_profiles where profile_id in (select group_id from groups where group_name = 'Registered Users');
+insert into im_profiles (profile_id, profile_gif) values ((select group_id from groups where group_name = 'Registered Users'), 'world');
+
 
 
 
