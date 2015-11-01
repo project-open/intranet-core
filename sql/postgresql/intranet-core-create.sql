@@ -17,6 +17,27 @@
 -- @author	frank.bergmann@project-open.com
 
 
+
+-- Patch the acs_object_types OpenACS table to add field
+create or replace function inline_0 ()
+returns integer as $body$
+declare
+        v_count                 integer;
+begin
+        select count(*) into v_count from user_tab_columns
+        where table_name = 'ACS_OBJECT_TYPES' and column_name = 'TYPE_CATEGORY_TYPE';
+        if v_count > 0 then return 0; end if;
+
+        alter table acs_object_types
+        add type_category_type char varying(50);
+
+        return 0;
+end;$body$ language 'plpgsql';
+select inline_0 ();
+drop function inline_0 ();
+
+
+
 -------------------------------------------------------------
 -- Main Loader
 
