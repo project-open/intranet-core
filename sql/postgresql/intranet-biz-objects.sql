@@ -78,7 +78,18 @@ alter table acs_object_types
 add type_category_type char varying(50);
 
 alter table acs_object_types
-add type_category_status char varying(50);
+add status_category_type char varying(50);
+
+alter table acs_object_types
+add object_type_gif text default 'default_object_type_gif';
+
+
+comment on column acs_object_types.status_column is 'Defines the column in the status_type_table which stores the category_id for the STATUS of an object of this object_type.';
+comment on column acs_object_types.type_column is 'Defines the column in the status_type_table which stores the category_id for the TYPE of an object of this object_type.';
+comment on column acs_object_types.status_type_table is 'Defines the table which stores the STATUS and TYPE of the object_type. Defaults to the table_namee of the object_type';
+comment on column acs_object_types.type_category_type is 'Defines the category_type from im_categories which contains the options for the TYPE of the object';
+comment on column acs_object_types.object_type_gif is 'Image for the object_type';
+
 
 
 
@@ -203,7 +214,8 @@ END; $BODY$ language 'plpgsql';
 -- Set the status of Biz Objects in a generic way
 
 
-CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, integer) RETURNS integer AS $BODY$
+CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, integer) 
+RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 	p_status_id		alias for $2;
@@ -245,7 +257,8 @@ END; $BODY$ language 'plpgsql';
 
 
 -- compatibility for WF calls
-CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, varchar, integer) RETURNS integer AS $BODY$
+CREATE OR REPLACE FUNCTION im_biz_object__set_status_id (integer, varchar, integer) 
+RETURNS integer AS $BODY$
 DECLARE
 	p_object_id		alias for $1;
 	p_dummy			alias for $2;
@@ -538,7 +551,8 @@ select define_function_args('im_biz_object_group__new','group_id,group_name,emai
 create or replace function im_biz_object_group__new(
 	integer,varchar,varchar,varchar,timestamptz,varchar,
 	varchar,integer,integer,timestamptz,varchar,varchar,integer
-) returns integer as $$
+) 
+returns integer as $$
 declare
 	p_group_id		alias for $1;
 	p_group_name		alias for $2;
@@ -766,11 +780,6 @@ end;$body$ language 'plpgsql';
 -- ------------------------------------------------------------
 -- Add a gif for every object type
 -- ------------------------------------------------------------
-
-alter table acs_object_types
-add object_type_gif text default 'default_object_type_gif';
-
-
 
 update acs_object_types set object_type_gif = 'table'			where object_type = 'im_biz_object';
 update acs_object_types set object_type_gif = 'link'			where object_type = 'im_biz_object_member';

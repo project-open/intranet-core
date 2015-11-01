@@ -415,8 +415,9 @@ select im_create_profile ('HR Managers','profile');
 select im_create_profile ('Freelance Managers','profile'); 
 select im_create_profile ('Helpdesk','computer_key'); 
 
-delete from im_profiles where profile_id in (select group_id from groups where group_name = 'Registered Users');
-insert into im_profiles (profile_id, profile_gif) values ((select group_id from groups where group_name = 'Registered Users'), 'world');
+-- Registered Users have fixed ID -1
+delete from im_profiles where profile_id in (-2);
+insert into im_profiles (profile_id, profile_gif) values (-2, 'world');
 
 
 

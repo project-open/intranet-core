@@ -14,7 +14,14 @@ ad_page_contract {
 
 # Write out HTTP headers. The db_source_sql_file script will write
 # into the session directly via ns_write...
-im_report_write_http_headers -output_format html
+set output_format "html"
+set content_type "text/html"
+set http_encoding "utf-8"
+append content_type "; charset=$http_encoding"
+set all_the_headers "HTTP/1.0 200 OK\nMIME-Version: 1.0\nContent-Type: $content_type\r\n"
+util_WriteWithExtraOutputHeaders $all_the_headers
+ns_startcontent -type $content_type
+
 
 ns_write [im_header]
 ns_write [im_navbar]

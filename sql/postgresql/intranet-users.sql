@@ -84,7 +84,7 @@ where object_type = 'person' and table_name is null;
 -- Update status and type for persons/users
 update acs_object_types set
 	type_category_type = 'Intranet User Type',
-	type_category_status = 'Intranet User Status'
+	status_category_type = 'Intranet User Status'
 where object_type = 'person';
 
 

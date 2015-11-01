@@ -19,6 +19,8 @@
 -------------------------------------------------------------
 -- Main Loader
 
+
+
 \i intranet-categories.sql
 \i intranet-country-codes.sql
 \i intranet-currency-codes.sql
