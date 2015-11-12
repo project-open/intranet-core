@@ -221,6 +221,7 @@ ad_proc -public im_biz_object_roles { user_id object_id } {
 ad_proc -public im_biz_object_add_role { 
     {-debug_p 0}
     {-percentage ""}
+    {-current_user_id ""}
     {-propagate_superproject_p 1}
     user_id 
     object_id 
@@ -239,10 +240,13 @@ ad_proc -public im_biz_object_add_role {
     # Deal with execution from within a "sweeper" process
     # where ns_conn returns an error
     set user_ip "0.0.0.0"
-    set creation_user_id 0
-    catch { 
-	set user_ip [ad_conn peeraddr] 
-	set creation_user_id [ad_get_user_id]
+    set creation_user_id $current_user_id
+    if {"" == $creation_user_id ||  0 == $creation_user_id} {
+	set creation_user_id 0
+	catch { 
+	    set user_ip [ad_conn peeraddr] 
+	    set creation_user_id [ad_get_user_id]
+	}
     }
 
     # Determine the object's type
