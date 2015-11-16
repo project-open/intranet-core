@@ -30,8 +30,14 @@
   	<center>
 	<table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td valign='top'><input type="submit" value="#intranet-core.Send_Email#" /><br><input type=checkbox name=send_me_a_copy value=1 checked><%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>&nbsp;&nbsp;</td>
-		<td valign='top'><input type=submit value="<%= [lang::message::lookup "" intranet-core.DoNotSendNotificationMail "Do NOT notify"]"%>" name="cancel"></td>
+		<td valign='top'>
+		    <input type="submit" value="#intranet-core.Send_Email#" /><br>
+		    <input type=checkbox name=send_me_a_copy value=1 checked>
+		    <%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>&nbsp;&nbsp;
+		</td>
+		<td valign='top'>
+		    <input type=submit value="<%= [lang::message::lookup "" intranet-core.DoNotSendNotificationMail "Do NOT notify"] %>" name="cancel">
+		</td>
 	</tr>
 	</table>
 	</center>
