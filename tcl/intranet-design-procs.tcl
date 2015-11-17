@@ -1486,199 +1486,194 @@ ad_proc -public im_header {
     part of an OpenACS template.
 
 } {
-    # Switch from HEADER Version 4.0 to 5.0 
-    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } { 
-	return [im_header_legacy_version_4 -no_head_p $no_head_p -no_master_p $no_master_p -loginpage_p $loginpage -body_script_html $body_script_html $page_title $extra_stuff_for_document_head ]
-    } else {
+    im_performance_log -location im_header
+    
+    upvar head_stuff head_stuff
+    
+    # --------------------------------------------------------------
+    # Defaults & Security
+    set untrusted_user_id [ad_conn untrusted_user_id]
+    set user_id [ad_conn user_id]
+    if {0 != $user_id} { set untrusted_user_id $user_id }
+    set user_name [im_name_from_user_id $user_id]
+    set return_url [im_url_with_query]
+    
+    # Is any of the "search" package installed?
+    set search_installed_p [llength [info procs im_package_search_id]]
+    
+    if { [empty_string_p $page_title] } {
+	set page_title [ad_partner_upvar page_title]
+    }
+    set context_bar [ad_partner_upvar context_bar]
+    set page_focus [ad_partner_upvar focus]
+    
+    # Get browser inf   
+    set browser_version [im_browser_version]
+    set browser [lindex $browser_version 0]
+    set version [lindex $browser_version 1]
+    set version_pieces [split $version "."]
+    set version_major [lindex $version_pieces 0]
+    set version_minor [lindex $version_pieces 1]
+    
+    # --------------------------------------------------------------
+    
+    if {$search_installed_p && [empty_string_p $page_focus] } {
+	# Default: Focus on Search form at the top of the page
+	set page_focus "surx.query_string"
+    }
+    if { [empty_string_p $extra_stuff_for_document_head] } {
+	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
+    }
 
-	im_performance_log -location im_header
-	
-	upvar head_stuff head_stuff
-	
-	# --------------------------------------------------------------
-	# Defaults & Security
-	set untrusted_user_id [ad_conn untrusted_user_id]
-	set user_id [ad_conn user_id]
-	if {0 != $user_id} { set untrusted_user_id $user_id }
-	set user_name [im_name_from_user_id $user_id]
-	set return_url [im_url_with_query]
-	
-	# Is any of the "search" package installed?
-	set search_installed_p [llength [info procs im_package_search_id]]
-	
-	if { [empty_string_p $page_title] } {
-	    set page_title [ad_partner_upvar page_title]
-	}
-	set context_bar [ad_partner_upvar context_bar]
-	set page_focus [ad_partner_upvar focus]
-	
-	# Get browser inf   
-	set browser_version [im_browser_version]
-	set browser [lindex $browser_version 0]
-	set version [lindex $browser_version 1]
-	set version_pieces [split $version "."]
-	set version_major [lindex $version_pieces 0]
-	set version_minor [lindex $version_pieces 1]
-	
-	# --------------------------------------------------------------
-	
-	if {$search_installed_p && [empty_string_p $page_focus] } {
-	    # Default: Focus on Search form at the top of the page
-	    set page_focus "surx.query_string"
-	}
-	if { [empty_string_p $extra_stuff_for_document_head] } {
-	    set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
-	}
+    # ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
 
-	# ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
-
-	# Avoid Quirks mode with IE<10 due to missing doctype 
-	# DOCTYPE definition might be added to document in multiple places. 
-	
-	if {[catch {
-	    if { "msie" == $browser && $version_major < 10 } {
-		# ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
-		set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
-	    }
-	} err_msg]} {
-	    ns_log Error "intranet-design-procs: Error handling browser version"
-	    return
+    # Avoid Quirks mode with IE<10 due to missing doctype 
+    # DOCTYPE definition might be added to document in multiple places. 
+    
+    if {[catch {
+	if { "msie" == $browser && $version_major < 10 } {
+	    # ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
+	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
 	}
-	
-	# The document language is always set from [ad_conn lang] which by default 
-	# returns the language setting for the current user.  This is probably
-	# not a bad guess, but the rest of OpenACS must override this setting when
-	# appropriate and set the lang attribxute of tags which differ from the language
-	# of the page.  Otherwise we are lying to the browser.
-	set doc(lang) [ad_conn language]
-	
-	# Determine if we should be displaying the translation UI
-	if {[lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
-	
-	set search_form [im_header_search_form]
-	set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
-	
-	append extra_stuff_for_document_head [im_stylesheet]
-	append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-	append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
-	
-	# Developer support is installed and enabled
-	template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
-	set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
+    } err_msg]} {
+	ns_log Error "intranet-design-procs: Error handling browser version"
+	return
+    }
+    
+    # The document language is always set from [ad_conn lang] which by default 
+    # returns the language setting for the current user.  This is probably
+    # not a bad guess, but the rest of OpenACS must override this setting when
+    # appropriate and set the lang attribxute of tags which differ from the language
+    # of the page.  Otherwise we are lying to the browser.
+    set doc(lang) [ad_conn language]
+    
+    # Determine if we should be displaying the translation UI
+    if {[lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
+    
+    set search_form [im_header_search_form]
+    set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
+    
+    append extra_stuff_for_document_head [im_stylesheet]
+    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
+    
+    # Developer support is installed and enabled
+    template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
+    set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
+    if {$developer_support_p} {
 	if {$developer_support_p} {
-	    if {$developer_support_p} {
-		if { !$no_head_p } { template::add_header -src "/packages/acs-developer-support/lib/toolbar" }
-		template::add_footer -src "/packages/acs-developer-support/lib/footer"
-	    }
+	    if { !$no_head_p } { template::add_header -src "/packages/acs-developer-support/lib/toolbar" }
+	    template::add_footer -src "/packages/acs-developer-support/lib/footer"
 	}
-	
-	template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
-	
-	# Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
-	template::head::prepare_multirows
-	set event_handlers [template::get_body_event_handlers]
-	
-	template::multirow foreach meta {
-	    set row "<meta"
-	    if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
-	    if {"" != $name} {  append row " name='$name'" }
-	    if {"" != $scheme} {  append row " scheme='$scheme'" }
-	    if {"" != $lang} {  append row " lang='$lang'" }
-	    append row " content='$content'>\n"
-	    append extra_stuff_for_document_head $row
-	}
-	
-	template::multirow foreach link {
-	    set row "<link rel='$rel' href='$href'"
-	    if {"" != $lang} {  append row " lang='$lang'" }
-	    if {"" != $title} {  append row " title='$title'" }
-	    if {"" != $type} {  append row "  type='$type'" }
-	    if {"" != $media} {  append row " media='$media'" }
-	    append row ">\n"
-	    append extra_stuff_for_document_head $row
-	}
-	
-	template::multirow foreach headscript {
-	    set row "<script type='$type'"
-	    if {"" != $src} {  append row " src='$src'" }
-	    if {"" != $charset} {  append row " charset='$charset'" }
-	    if {"" != $defer} {  append row " defer='$defer'" }
-	    append row ">"
-	    if {"" != $content} {  append row " $content" }
-	    append row "</script>\n"
-	    append extra_stuff_for_document_head $row
-	}
-	
-	# --------------------------------------------------------------
-	
-	
-	# Get the contents of the header plugins
-	array set header_plugins [im_header_plugins]
-	set plugin_right_html $header_plugins(right)
-	set plugin_left_html $header_plugins(left)
-	
-	set page_url [im_component_page_url]
-	set logo [im_logo]
-	set report_bug_lnk ""
+    }
+    
+    template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
+    
+    # Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
+    template::head::prepare_multirows
+    set event_handlers [template::get_body_event_handlers]
+    
+    template::multirow foreach meta {
+	set row "<meta"
+	if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
+	if {"" != $name} {  append row " name='$name'" }
+	if {"" != $scheme} {  append row " scheme='$scheme'" }
+	if {"" != $lang} {  append row " lang='$lang'" }
+	append row " content='$content'>\n"
+	append extra_stuff_for_document_head $row
+    }
+    
+    template::multirow foreach link {
+	set row "<link rel='$rel' href='$href'"
+	if {"" != $lang} {  append row " lang='$lang'" }
+	if {"" != $title} {  append row " title='$title'" }
+	if {"" != $type} {  append row "  type='$type'" }
+	if {"" != $media} {  append row " media='$media'" }
+	append row ">\n"
+	append extra_stuff_for_document_head $row
+    }
+    
+    template::multirow foreach headscript {
+	set row "<script type='$type'"
+	if {"" != $src} {  append row " src='$src'" }
+	if {"" != $charset} {  append row " charset='$charset'" }
+	if {"" != $defer} {  append row " defer='$defer'" }
+	append row ">"
+	if {"" != $content} {  append row " $content" }
+	append row "</script>\n"
+	append extra_stuff_for_document_head $row
+    }
+    
+    # --------------------------------------------------------------
+    
+    
+    # Get the contents of the header plugins
+    array set header_plugins [im_header_plugins]
+    set plugin_right_html $header_plugins(right)
+    set plugin_left_html $header_plugins(left)
+    
+    set page_url [im_component_page_url]
+    set logo [im_logo]
+    set report_bug_lnk ""
 
 
-	# Feedback Bar Icon 
-	set feedback_bar_icon "<span id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></span>&nbsp;"
+    # Feedback Bar Icon 
+    set feedback_bar_icon "<span id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></span>&nbsp;"
+    
+    # Welcome 
+    set welcome_txt "<span class='header_welcome'>[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span> |"
+    set users_online_txt ""
+    if { "register" != [string range [ns_conn url] 1 8] } { set users_online_txt "&nbsp;[im_header_users_online_str] |" }
+    
+    # Report BUG 
+    if {!$loginpage_p} {
+	set report_bug_btn_link [export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]
+	set report_bug_lnk "&nbsp;<a href=\"$report_bug_btn_link\">[lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]</a> |"
+    }
+    
+    # Context help 
+    if { $show_context_help_p } {
+	set context_help_lnk "&nbsp;<a href=\"[im_navbar_help_link]\">[lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a> |"
+    } else {
+	set context_help_lnk ""
+    }
+    
+    # Logout 
+    set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
+    
+    # Build buttons 
+    if {$loginpage_p} { 
+	set header_buttons "" 
+    } else {
+	set header_buttons "${welcome_txt}${users_online_txt}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
+    }
+    
+    set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
+    if {$header_skin_select != ""} {
+	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
+    }
+    # fraber 121020: disable skin, because the others do not work
+    set header_skin_select ""
+    if {$loginpage_p} { set header_skin_select "" }
+    
+    # --------------------------------------------------------------------
+    # Temporary (?) fix to get xinha working
+    
+    if {[info exists ::acs_blank_master(xinha)]} {
+	set xinha_dir /resources/acs-templating/xinha-nightly/
+	set xinha_lang [lang::conn::language]
 	
-	# Welcome 
-	set welcome_txt "<span class='header_welcome'>[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span> |"
-	set users_online_txt ""
-	if { "register" != [string range [ns_conn url] 1 8] } { set users_online_txt "&nbsp;[im_header_users_online_str] |" }
+	# We could add site wide Xinha configurations (.js code) into xinha_params
+	set xinha_params ""
 	
-	# Report BUG 
-	if {!$loginpage_p} {
-	    set report_bug_btn_link [export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]
-	    set report_bug_lnk "&nbsp;<a href=\"$report_bug_btn_link\">[lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]</a> |"
-	}
+	# Per call configuration
+	set xinha_plugins $::acs_blank_master(xinha.plugins)
+	set xinha_options $::acs_blank_master(xinha.options)
 	
-	# Context help 
-	if { $show_context_help_p } {
-	    set context_help_lnk "&nbsp;<a href=\"[im_navbar_help_link]\">[lang::message::lookup "" intranet-core.Context_Help "Context Help"]</a> |"
-	} else {
-	    set context_help_lnk ""
-	}
+	# HTML ids of the textareas used for Xinha
+	set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
 	
-	# Logout 
-	set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
-	
-	# Build buttons 
-	if {$loginpage_p} { 
-	    set header_buttons "" 
-	} else {
-	    set header_buttons "${welcome_txt}${users_online_txt}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
-	}
-	
-	set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
-	if {$header_skin_select != ""} {
-	    set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
-	}
-	# fraber 121020: disable skin, because the others do not work
-	set header_skin_select ""
-	if {$loginpage_p} { set header_skin_select "" }
-	
-	# --------------------------------------------------------------------
-	# Temporary (?) fix to get xinha working
-	
-	if {[info exists ::acs_blank_master(xinha)]} {
-	    set xinha_dir /resources/acs-templating/xinha-nightly/
-	    set xinha_lang [lang::conn::language]
-	    
-	    # We could add site wide Xinha configurations (.js code) into xinha_params
-	    set xinha_params ""
-	    
-	    # Per call configuration
-	    set xinha_plugins $::acs_blank_master(xinha.plugins)
-	    set xinha_options $::acs_blank_master(xinha.options)
-	    
-	    # HTML ids of the textareas used for Xinha
-	    set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
-	    
-	    append extra_stuff_for_document_head "
+	append extra_stuff_for_document_head "
 	    	   <script type=\"text/javascript\">
 	    	   	   _editor_url = \"$xinha_dir\";
 			   _editor_lang = \"$xinha_lang\";
@@ -1686,8 +1681,8 @@ ad_proc -public im_header {
 		   <script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
 		   "
 
-	    set xi "HTMLArea"
-	    append body_script_html "
+	set xi "HTMLArea"
+	append body_script_html "
 	        <script type='text/javascript'>
 		<!--
 		 xinha_editors = null;
@@ -1712,22 +1707,25 @@ ad_proc -public im_header {
 		 </script>
 		 <textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
 	   "
-	}
+    }
 
-	im_performance_log -location im_header_end
-	
-	set header_html [template::get_header_html]
-	
-	set return_html "
+    im_performance_log -location im_header_end
+    
+    set header_html [template::get_header_html]
+    
+    set return_html "
 		<!DOCTYPE html>
-		[ad_header $page_title $extra_stuff_for_document_head]
+		<head>
+		$extra_stuff_for_document_head
+		<title>$page_title</title>
+		</head>
 		$body_script_html
 		$header_html
 		<div id=\"monitor_frame\">
     	"
 
-	if { !$no_head_p } {
-	    append return_html "
+    if { !$no_head_p } {
+	append return_html "
 	      <div id=\"header_class\">
 	      <div id=\"header_logo\">
 		 $logo
@@ -1754,257 +1752,11 @@ ad_proc -public im_header {
 	      </div>   
 	   </div>
     	 "
-	}
-	return $return_html
-    }
-}
-
-
-ad_proc -public im_header_legacy_version_4 {
-    { -no_head_p 0}
-    { -no_master_p 0}
-    { -loginpage_p 0 }
-    { -body_script_html "" }
-    { page_title "" }
-    { extra_stuff_for_document_head "" }
-} {
-    Legacy Version of the header
-} {
-    im_performance_log -location im_header
-
-    upvar head_stuff head_stuff
-    # --------------------------------------------------------------
-    # Defaults & Security
-    set untrusted_user_id [ad_conn untrusted_user_id]
-    set user_id [ad_conn user_id]
-    if {0 != $user_id} { set untrusted_user_id $user_id }
-    set user_name [im_name_from_user_id $user_id]
-    set return_url [im_url_with_query]
-    
-    # Is any of the "search" package installed?
-    set search_installed_p [llength [info procs im_package_search_id]]
-    
-    if { [empty_string_p $page_title] } {
-	set page_title [ad_partner_upvar page_title]
-    }
-    set context_bar [ad_partner_upvar context_bar]
-    set page_focus [ad_partner_upvar focus]
-    # Get browser inf
-    set browser_version [im_browser_version]
-    set browser [lindex $browser_version 0]
-    set version [lindex $browser_version 1]
-    set version_pieces [split $version "."]
-    set version_major [lindex $version_pieces 0]
-    set version_minor [lindex $version_pieces 1]
-
-    # --------------------------------------------------------------
-
-    if {$search_installed_p && [empty_string_p $page_focus] } {
-        # Default: Focus on Search form at the top of the page
-        set page_focus "surx.query_string"
-    }
-    if { [empty_string_p $extra_stuff_for_document_head] } {
-        set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
-    }
-
-    # Avoid Quirks mode with IE<10 due to missing doctype
-    # DOCTYPE definition might be added to document in multiple places.
-    # following a fallback
-
-    ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
-
-    if {[catch {
-        if { "msie" == $browser && $version_major < 10 } {
-            ns_log NOTICE "intranet-design-procs:: Setting META TAG"
-            set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
-        }
-    } err_msg]} {
-        ns_log NOTICE "intranet-design-procs: Error handling browser version"
-        return
-    }
-
-    # The document language is always set from [ad_conn lang] which by default
-    # returns the language setting for the current user.  This is probably
-    # not a bad guess, but the rest of OpenACS must override this setting when
-    # appropriate and set the lang attribxute of tags which differ from the language
-    # of the page.  Otherwise we are lying to the browser.
-    set doc(lang) [ad_conn language]
-
-
-    # Determine if we should be displaying the translation UI
-    #
-    if {[im_openacs54_p] && [lang::util::translator_mode_p]} {
-        template::add_footer -src "/packages/acs-lang/lib/messages-to-translate"
-    }
-
-    set search_form [im_header_search_form]
-    set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
-
-    append extra_stuff_for_document_head [im_stylesheet]
-
-    append extra_stuff_for_document_head "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-    append extra_stuff_for_document_head "<!--\[if lt IE 7.\]>\n<script defer type='text/javascript' src='/intranet/js/pngfix.js'></script>\n<!\[endif\]-->\n"
-
-    # OpenACS 5.4 Header stuff
-    if {[im_openacs54_p]} {
-
-        # Determine if developer support is installed and enabled
-        template::head::add_css -href "/resources/acs-developer-support/acs-developer-support.css" -media "all"
-        set developer_support_p [expr { [llength [info procs ::ds_show_p]] == 1 && [ds_show_p] }]
-        if {$developer_support_p} {
-	    if { !$no_head_p } { template::add_header -src "/packages/acs-developer-support/lib/toolbar" }
-            template::add_footer -src "/packages/acs-developer-support/lib/footer"
-        }
-
-        template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
-
-        # Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
-        template::head::prepare_multirows
-        set event_handlers [template::get_body_event_handlers]
-
-        template::multirow foreach meta {
-            set row "<meta"
-            if {"" != $http_equiv} {  append row " http-equiv='$http_equiv'" }
-            if {"" != $name} {  append row " name='$name'" }
-            if {"" != $scheme} {  append row " scheme='$scheme'" }
-            if {"" != $lang} {  append row " lang='$lang'" }
-            append row " content='$content'>\n"
-            append extra_stuff_for_document_head $row
-        }
-        template::multirow foreach link {
-            set row "<link rel='$rel' href='$href'"
-            if {"" != $lang} {  append row " lang='$lang'" }
-            if {"" != $title} {  append row " title='$title'" }
-            if {"" != $type} {  append row "  type='$type'" }
-            if {"" != $media} {  append row " media='$media'" }
-            append row ">\n"
-            append extra_stuff_for_document_head $row
-        }
-
-        template::multirow foreach headscript {
-            set row "<script type='$type'"
-            if {"" != $src} {  append row " src='$src'" }
-            if {"" != $charset} {  append row " charset='$charset'" }
-            if {"" != $defer} {  append row " defer='$defer'" }
-            append row ">"
-            if {"" != $content} {  append row " $content" }
-            append row "</script>\n"
-            append extra_stuff_for_document_head $row
-        }
-
-    }
-
-    if {[llength [info procs im_amberjack_header_stuff]]} {
-        append extra_stuff_for_document_head [im_amberjack_header_stuff]
-    }
-    # --------------------------------------------------------------
-    set users_online_str [im_header_users_online_str]
-
-    # Get the contents of the header plugins
-    array set header_plugins [im_header_plugins]
-    set plugin_right_html $header_plugins(right)
-    set plugin_left_html $header_plugins(left)
-
-    set page_url [im_component_page_url]
-    set logo [im_logo]
-
-    # The horizonal component
-    set header_buttons [im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]
-    if {$loginpage_p} { set header_buttons "" }
-
-    set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
-    if {$header_skin_select != ""} {
-        set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
-    }
-    # fraber 121020: disable skin, becuase the others do not work
-    set header_skin_select ""
-    if {$loginpage_p} { set header_skin_select "" }
-    # --------------------------------------------------------------------
-    # Temporary (?) fix to get xinha working
-
-    if {[info exists ::acs_blank_master(xinha)]} {
-        set xinha_dir /resources/acs-templating/xinha-nightly/
-        set xinha_lang [lang::conn::language]
-
-        # We could add site wide Xinha configurations (.js code) into xinha_params
-        set xinha_params ""
-
-        # Per call configuration
-        set xinha_plugins $::acs_blank_master(xinha.plugins)
-        set xinha_options $::acs_blank_master(xinha.options)
-
-        # HTML ids of the textareas used for Xinha
-        set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
-
-        append extra_stuff_for_document_head "
-	       <script type=\"text/javascript\">
-	       	       _editor_url = \"$xinha_dir\";
-		       _editor_lang = \"$xinha_lang\";
-	       </script>
-	       <script type=text/javascript src=\"${xinha_dir}htmlarea.js\"></script>
-        "
-
-        set xi "HTMLArea"
-        append body_script_html "
-	       <script type='text/javascript'>
-	       <!--
-                 xinha_editors = null;
-                 xinha_init = null;
-                 xinha_config = null;
-                 xinha_plugins = null;
-                 xinha_init = xinha_init ? xinha_init : function() {
-                    xinha_plugins = xinha_plugins ? xinha_plugins : \[$xinha_plugins\];
-
-                    // THIS BIT OF JAVASCRIPT LOADS THE PLUGINS, NO TOUCHING
-                    if(!$xi.loadPlugins(xinha_plugins, xinha_init)) return;
-
-                    xinha_editors = xinha_editors ? xinha_editors :\[ $htmlarea_ids \];
-                    xinha_config = xinha_config ? xinha_config() : new $xi.Config();
-                    $xinha_params
-                    $xinha_options
-                    xinha_editors = $xi.makeEditors(xinha_editors, xinha_config, xinha_plugins);
-                    $xi.startEditors(xinha_editors);
-                 }
-                 window.onload = xinha_init;
-	    // -->
-	    </script>
-	    <textarea id=\"holdtext\" style=\"display: none;\" rows=\"1\" cols=\"1\"></textarea>
-        "
-    }
-
-    im_performance_log -location im_header_end
-    set header_html ""
-    if {[im_openacs54_p]} {
-        set header_html [template::get_header_html]
-    }
-
-    set return_html "
-        [ad_header $page_title $extra_stuff_for_document_head]
-        $body_script_html
-        $header_html
-        <div id=\"monitor_frame\">
-    "
-    if { !$no_head_p } {
-        append return_html "
-           <div id=\"header_class\">
-              <div id=\"header_logo\">
-                 $logo
-              </div>
-              <div id=\"header_plugin_left\">
-                 $plugin_left_html
-              </div>
-              <div id=\"header_plugin_right\">
-                 $plugin_right_html
-              </div>
-              $header_buttons
-              <div id=\"header_skin_select\">
-                 $header_skin_select
-              </div>
-           </div>
-    "
     }
     return $return_html
+
 }
+
 
 
 ad_proc -private im_header_users_online_str { } {
