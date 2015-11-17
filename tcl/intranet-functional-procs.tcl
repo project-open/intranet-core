@@ -75,7 +75,7 @@ ad_proc lambda {args body} {
 # binding values to arguments of a function
 # --------------------------------------------------------------------------------
 
-proc_doc bind {f args} {
+ad_proc -public bind {f args} {
     binds args to the first k arguments of the n-ary function f
     and returns the resulting (n-k)-ary function
 } {
@@ -90,7 +90,7 @@ proc_doc bind {f args} {
     lambda [lrange $proc_args [llength $args] $num_proc_args] $code
 }
 
-proc_doc bind2nd {f arg} "binds arg to the 2nd argument of f" {
+ad_proc -public bind2nd {f arg} "binds arg to the 2nd argument of f" {
     set code "set [lindex [info args $f] 1] {$arg}\n"
     append code [info body $f]
     set proc_args [info args $f]
@@ -147,7 +147,7 @@ ad_proc map {f xs} {
 # fold
 # --------------------------------------------------------------------------------
 
-proc_doc fold {f e xs} {
+ad_proc -public fold {f e xs} {
     Takes a binary function f, a start element e and a list {x1 x2 ...}
     and returns f (...(f (f (f e x1) x2) x3)...).
     <h4>Examples</h4>
@@ -167,7 +167,7 @@ proc_doc fold {f e xs} {
     return $result
 }
 
-proc_doc fold1 {f xs} {
+ad_proc -public fold1 {f xs} {
     Takes a binary function f and a list {x1 x2 x3 ...}
     and returns (...(f (f (f x1 x2) x3) x4)...).
     <p>
@@ -195,7 +195,7 @@ proc_doc fold1 {f xs} {
 # scanl
 # --------------------------------------------------------------------------------
 
-proc_doc scanl {f e xs} "takes a binary function f, a start element e and a list {x1 x2 ...}
+ad_proc -public scanl {f e xs} "takes a binary function f, a start element e and a list {x1 x2 ...}
                          and returns {e (f e x1) (f (f e x1) x2) ...}" {
     set current_element $e
     set result [list $e]
@@ -210,7 +210,7 @@ proc_doc scanl {f e xs} "takes a binary function f, a start element e and a list
 # scanl + 0 [list 1 2 3 4] = {0 1 3 6 10}
 # scanl * 1 [list 1 2 3 4] = {1 1 2 6 24}
 
-proc_doc scanl1 {f xs} "takes a binary function f and a list {x1 x2 x3 ...}
+ad_proc -public scanl1 {f xs} "takes a binary function f and a list {x1 x2 x3 ...}
                        and returns {x1 (f x1 x2) (f (f x1 x2) x3) ...}" {
     if { [null_p $xs] } {
 	set var scanl1
@@ -242,7 +242,7 @@ ad_proc id {x} {
 
 # Example application of id function:
 
-proc_doc qsort {xs {value id}} "sorts a sequence with the quicksort algorithm" {
+ad_proc -public qsort {xs {value id}} "sorts a sequence with the quicksort algorithm" {
     if { [llength $xs]<2 } { return $xs }
     set pivot [head $xs]
     set big_elmts {}
@@ -262,7 +262,7 @@ proc_doc qsort {xs {value id}} "sorts a sequence with the quicksort algorithm" {
 # % qsort {Oracle ArsDigita SAP Vignette} [lambda {s} {string length $s}]
 # SAP Oracle Vignette ArsDigita
 
-proc_doc const {k} {
+ad_proc -public const {k} {
     Returns a unary function that ignores its argument and constantly returns k.
     <h4>Example</h4>
     <ul><li><code>
@@ -298,15 +298,15 @@ ad_proc uncurry {f tuple} {
 # {{3 1} {4 1} {5 9} {2 6}} into {1 1 5 2} (each tuple is replaced
 # by the minimum of its two components). 
 
-proc_doc fst {xs} "returns the first element of a list" {
+ad_proc -public fst {xs} "returns the first element of a list" {
     lindex $xs 0
 }
 
-proc_doc snd {xs} "returns the second element of a list" {
+ad_proc -public snd {xs} "returns the second element of a list" {
     lindex $xs 1
 }
  
-proc_doc thd {xs} "returns the third element of a list" {
+ad_proc -public thd {xs} "returns the third element of a list" {
     lindex $xs 2
 }
 
@@ -316,7 +316,7 @@ proc_doc thd {xs} "returns the third element of a list" {
 # set last_names  [map snd $people]
 # set emails      [map thd $people]
 
-proc_doc flip {f a b} "takes a binary function f and two arguments a and b
+ad_proc -public flip {f a b} "takes a binary function f and two arguments a and b
                        and returns f b a (arguments are flipped)" {
     $f $b $a
 }
@@ -336,7 +336,7 @@ proc_doc flip {f a b} "takes a binary function f and two arguments a and b
 # First try to extract the list {1 5 7 8} using "map", "flip" and "lindex",
 # then reduce it to 21 using "fold".
 
-proc_doc compose {f g x} "function composition: evaluates f (g x)" {
+ad_proc -public compose {f g x} "function composition: evaluates f (g x)" {
     $f [$g $x]
 }
 
@@ -350,11 +350,11 @@ proc_doc compose {f g x} "function composition: evaluates f (g x)" {
 # Standard numerical functions
 # --------------------------------------------------------------------------------
 
-proc_doc abs {x} "returns the absolute value of x" {
+ad_proc -public abs {x} "returns the absolute value of x" {
     expr $x<0 ? -$x : $x
 }
 
-proc_doc gcd {x y} "returns the greatest common divisor of x and y" {
+ad_proc -public gcd {x y} "returns the greatest common divisor of x and y" {
     gcd' [abs $x] [abs $y] 
 }
 
@@ -363,27 +363,27 @@ proc gcd' {x y} {
     gcd' $y [expr $x%$y]
 }
 
-proc_doc lcm {x y} "returns the least common multiple of x and y" {
+ad_proc -public lcm {x y} "returns the least common multiple of x and y" {
     if { $x==0} { return 0 }
     if { $y==0} { return 0 }
     abs [expr $x/[gcd $x $y]*$y]
 }
 
-proc_doc odd_p {n} "returns 1 if n is odd and 0 otherwise" {
+ad_proc -public odd_p {n} "returns 1 if n is odd and 0 otherwise" {
     expr $n%2
 }
 
-proc_doc even_p {n} "returns 1 if n is even and 0 otherwise" {
+ad_proc -public even_p {n} "returns 1 if n is even and 0 otherwise" {
     expr 1-$n%2
 }
 
 # Already exist in OpenACS5
 #
-#proc_doc min {x y} "returns the minimum of x and y" {
+#ad_proc -public min {x y} "returns the minimum of x and y" {
 #    expr $x<$y ? $x : $y
 #}
 #
-#proc_doc max {x y} "returns the maximum of x and y" {
+#ad_proc -public max {x y} "returns the maximum of x and y" {
 #    expr $x>$y ? $x : $y
 #}
 
@@ -391,7 +391,7 @@ proc_doc even_p {n} "returns 1 if n is even and 0 otherwise" {
 # List Aggregate Functions
 # --------------------------------------------------------------------------------
 
-proc_doc and {xs} "reduces a list of boolean values using &&" {
+ad_proc -public and {xs} "reduces a list of boolean values using &&" {
     fold && 1 $xs
 }
 
@@ -399,7 +399,7 @@ proc_doc and {xs} "reduces a list of boolean values using &&" {
 # and {1 1 0 1} = 0
 # and {1 1 1 1} = 1
 
-proc_doc or {xs} "reduces a list of boolean values using ||" {
+ad_proc -public or {xs} "reduces a list of boolean values using ||" {
     fold || 0 $xs
 }
 
@@ -407,7 +407,7 @@ proc_doc or {xs} "reduces a list of boolean values using ||" {
 # or {1 1 0 1} = 1
 # or {0 0 0 0} = 0
 
-proc_doc all {pred xs} {
+ad_proc -public all {pred xs} {
     Takes a predicate pred and a list xs and returns 1
     if all elements of xs fulfill pred.
     <h4>Examples</h4>
@@ -424,7 +424,7 @@ proc_doc all {pred xs} {
     and [map $pred $xs]
 }
 
-proc_doc any {pred xs} "takes a predicate pred and a list xs and returns 1
+ad_proc -public any {pred xs} "takes a predicate pred and a list xs and returns 1
                         if there exists an element of xs that fulfills pred" {
     or [map $pred $xs]
 }
@@ -433,27 +433,27 @@ proc_doc any {pred xs} "takes a predicate pred and a list xs and returns 1
 # any odd_p {2 44 64 80 10} = 0
 # any odd_p {2 44 65 80 10} = 1
 
-proc_doc lmin {xs} "returns the minimum element of the list xs" {
+ad_proc -public lmin {xs} "returns the minimum element of the list xs" {
     fold1 min $xs
 }
 
-proc_doc lmax {xs} "returns the maximum element of the list xs" {
+ad_proc -public lmax {xs} "returns the maximum element of the list xs" {
     fold1 max $xs
 }
 
-proc_doc sum {xs} "returns the sum of the elements of the list xs" {
+ad_proc -public sum {xs} "returns the sum of the elements of the list xs" {
     fold + 0 $xs
 }
 
-proc_doc product {xs} "returns the product of the elements of the list xs" {
+ad_proc -public product {xs} "returns the product of the elements of the list xs" {
     fold * 1 $xs
 }
 
-proc_doc sums {xs} "returns the list of partial sums of the list xs" {
+ad_proc -public sums {xs} "returns the list of partial sums of the list xs" {
     scanl + 0 $xs
 }
 
-proc_doc products {xs} "returns the list of partial products of the list xs" {
+ad_proc -public products {xs} "returns the list of partial products of the list xs" {
     scanl * 1 $xs
 }
 
@@ -461,27 +461,27 @@ proc_doc products {xs} "returns the list of partial products of the list xs" {
 # Standard list processing functions
 # --------------------------------------------------------------------------------
 
-proc_doc head {xs} "first element of a list" {
+ad_proc -public head {xs} "first element of a list" {
     lindex $xs 0
 }
  
-proc_doc last {xs} "last element of a list" {
+ad_proc -public last {xs} "last element of a list" {
     lindex $xs [expr [llength $xs]-1]
 }
 
-proc_doc init {xs} "all elements of a list but the last" {
+ad_proc -public init {xs} "all elements of a list but the last" {
     lrange $xs 0 [expr [llength $xs]-2]
 }
 
-proc_doc tail {xs} "all elements of a list but the first" {
+ad_proc -public tail {xs} "all elements of a list but the first" {
     lrange $xs 1 [expr [llength $xs]-1]
 }
 
-proc_doc take {n xs} "returns the first n elements of xs" {
+ad_proc -public take {n xs} "returns the first n elements of xs" {
     lrange $xs 0 [expr $n-1]
 }
 
-proc_doc drop {n xs} "returns the remaining elements of xs (without the first n)" {
+ad_proc -public drop {n xs} "returns the remaining elements of xs (without the first n)" {
     lrange $xs $n [expr [llength $xs]-1]
 }
 
@@ -502,7 +502,7 @@ ad_proc filter {pred xs} {
     return $result
 }
 
-proc_doc copy {n x} "returns list of n copies of x" {
+ad_proc -public copy {n x} "returns list of n copies of x" {
     set result {}
     for {set i 0} {$i<$n} {incr i} {
 	lappend result $x
@@ -513,7 +513,7 @@ proc_doc copy {n x} "returns list of n copies of x" {
 # Example:
 # copy 10 7 = {7 7 7 7 7 7 7 7 7 7}
 
-proc_doc cycle {n xs} "returns concatenated list of n copies of xs" {
+ad_proc -public cycle {n xs} "returns concatenated list of n copies of xs" {
     set result {}
     for {set i 0} {$i<$n} {incr i} {
 	set result [concat $result $xs]
@@ -524,23 +524,23 @@ proc_doc cycle {n xs} "returns concatenated list of n copies of xs" {
 # Example:
 # cycle 4 {1 2 3} = {1 2 3 1 2 3 1 2 3 1 2 3}
 
-proc_doc cons {x xs} "inserts x at the front of the list xs" {
+ad_proc -public cons {x xs} "inserts x at the front of the list xs" {
     concat [list $x] $xs 
 }
 
-proc_doc reverse {xs} "reverses the list xs" {
+ad_proc -public reverse {xs} "reverses the list xs" {
     fold [bind flip cons] {} $xs
 }
 
-proc_doc elem_p {x xs} "checks if x is contained in s" {
+ad_proc -public elem_p {x xs} "checks if x is contained in s" {
     expr [lsearch $xs $x]==-1 ? 0 : 1
 }
 
-proc_doc not_elem_p {x xs} "checks if x is not contained in s" {
+ad_proc -public not_elem_p {x xs} "checks if x is not contained in s" {
     expr [lsearch $xs $x]==-1 ? 1 : 0
 }
 
-proc_doc nub {xs} "removes duplicates from xs" {
+ad_proc -public nub {xs} "removes duplicates from xs" {
     set result {}
     foreach x $xs {
 	if { [not_elem_p $x $result] } {
@@ -550,11 +550,11 @@ proc_doc nub {xs} "removes duplicates from xs" {
     return $result
 }
 
-proc_doc null_p {xs} "checks if xs is the empty list" {
+ad_proc -public null_p {xs} "checks if xs is the empty list" {
     expr [llength $xs]==0
 }
 
-proc_doc enum_from_to {lo hi} "generates {lo lo+1 ... hi-1 hi}" {
+ad_proc -public enum_from_to {lo hi} "generates {lo lo+1 ... hi-1 hi}" {
     set result {}
     for {set i $lo} {$i<=$hi} {incr i} {
 	lappend result $i
@@ -566,7 +566,7 @@ proc_doc enum_from_to {lo hi} "generates {lo lo+1 ... hi-1 hi}" {
 # zip and zip_with functions
 # --------------------------------------------------------------------------------
 
-proc_doc zip {args} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} and
+ad_proc -public zip {args} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} and
                      returns a list of tuples {x1 y1} {x2 y2} {x3 y3} ...
                      Works analogously with 3 or more lists." {				 
     transpose $args
@@ -580,7 +580,7 @@ proc_doc zip {args} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} and
 # % map [bind flip join _] [zip $first_names $last_names]
 # Nicole_Kidman Tom_Cruise
 
-proc_doc zip_with {f xs ys} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} and
+ad_proc -public zip_with {f xs ys} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} and
                              returns the list {(f x1 y1) (f x2 y2) (f x3 y3) ..." {
     set result {}
     foreach x $xs y $ys {
@@ -598,7 +598,7 @@ proc_doc zip_with {f xs ys} "takes two lists {x1 x2 x3 ...} and {y1 y2 y3 ...} a
 # "Sandra Bullock" "Catherine Zeta-Jones" "Nicole Kidman"
 
 
-proc_doc transpose {lists} "tranposes a matrix (a list of lists)" {
+ad_proc -public transpose {lists} "tranposes a matrix (a list of lists)" {
     set num_lists [llength $lists]
     if !$num_lists { return "" }
     for {set i 0} {$i<$num_lists} {incr i} {
@@ -625,7 +625,7 @@ proc_doc transpose {lists} "tranposes a matrix (a list of lists)" {
 # Other Functions (that maybe are too weird for the ACS)
 # --------------------------------------------------------------------------------
 
-proc_doc iterate {n f x} {
+ad_proc -public iterate {n f x} {
     Returns {x (f x) (f (f x) (f (f (f x))) ...}.
     <h4>Examples</h4>
     <ul>
@@ -642,7 +642,7 @@ proc_doc iterate {n f x} {
     return $result
 }
 
-proc_doc unzip {xs} "unzip takes a list of tuples {x1 y1} {x2 y2} {x3 y3} ... and
+ad_proc -public unzip {xs} "unzip takes a list of tuples {x1 y1} {x2 y2} {x3 y3} ... and
                      returns a tuple of lists {x1 x2 x3 ...} {y1 y2 y3 ...}." {
     set left {}
     set right {}
@@ -674,11 +674,11 @@ proc_doc unzip {xs} "unzip takes a list of tuples {x1 y1} {x2 y2} {x3 y3} ... an
 #
 # --------------------------------------------------------------------------------
 
-proc_doc split_at {n xs} "splits a list using take and drop" {
+ad_proc -public split_at {n xs} "splits a list using take and drop" {
     list [take $n $xs] [drop $n $xs]
 }
 
-proc_doc take_while {p xs} "returns the longest initial segment of xs whose
+ad_proc -public take_while {p xs} "returns the longest initial segment of xs whose
                             elements satisfy p" {
     set index 0    
     foreach x $xs {
@@ -688,7 +688,7 @@ proc_doc take_while {p xs} "returns the longest initial segment of xs whose
     take $index $xs
 }
 
-proc_doc drop_while {p xs} "returns the remaining portion of the list" {
+ad_proc -public drop_while {p xs} "returns the remaining portion of the list" {
     set index 0    
     foreach x $xs {
 	if { ![$p $x] } { break }
@@ -697,11 +697,11 @@ proc_doc drop_while {p xs} "returns the remaining portion of the list" {
     drop $index $xs
 }
 
-proc_doc span {p xs} "splits a list using take_while and drop_while" {
+ad_proc -public span {p xs} "splits a list using take_while and drop_while" {
     list [take_while $p $xs] [drop_while $p $xs]
 }
 
-proc_doc take_until {p xs} "returns the list of elements upto and including the
+ad_proc -public take_until {p xs} "returns the list of elements upto and including the
                             first element of xs which satisfies p" {
     set index 0    
     foreach x $xs {
@@ -719,18 +719,18 @@ proc factorial {n} {
     product [enum_from_to 1 $n]
 }
 
-proc_doc mul {n fraction} "multiplies n with a fraction (given as a tuple)" {
+ad_proc -public mul {n fraction} "multiplies n with a fraction (given as a tuple)" {
     set num [fst $fraction]
     set denom [snd $fraction]
     set g [gcd $n $denom]
     expr ($n/$g)*$num/($denom/$g)
 }
 
-proc_doc choose {n k} "Here's how to compute 'n choose k' like a real nerd." {
+ad_proc -public choose {n k} "Here's how to compute 'n choose k' like a real nerd." {
     fold mul 1 [transpose [list [iterate $k [bind flip - 1] $n] [enum_from_to 1 $k]]]
 }
 
-proc_doc pascal {size} "prints Pascal's triangle" {
+ad_proc -public pascal {size} "prints Pascal's triangle" {
     for {set n 0} {$n<=$size} {incr n} {
 	puts [map [bind choose $n] [enum_from_to 0 $n]]
     }

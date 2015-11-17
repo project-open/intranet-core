@@ -44,8 +44,12 @@ ad_proc -public im_new_object_id { } {
 }
 
 
-proc_doc im_state_widget { {default ""} {select_name "usps_abbrev"}} "Returns a state selection box" {
-
+ad_proc -public im_state_widget { 
+    {default ""} 
+    {select_name "usps_abbrev"}
+} {
+    Returns a state selection box
+} {
     set widget_value "<select name=\"$select_name\">\n"
     if { $default == "" } {
         append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_State]</option>\n"
@@ -64,8 +68,13 @@ proc_doc im_state_widget { {default ""} {select_name "usps_abbrev"}} "Returns a 
     return $widget_value
 }
 
-proc_doc im_country_widget { {default ""} {select_name "country_code"} {size_subtag ""}} "Returns a country selection box" {
-
+ad_proc -public im_country_widget { 
+    {default ""} 
+    {select_name "country_code"} 
+    {size_subtag ""}
+} {
+    Returns a country selection box
+} {
     set widget_value "<select name=\"$select_name\" $size_subtag>\n"
     if { $default == "" } {
 	append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_Country]</option>\n"
