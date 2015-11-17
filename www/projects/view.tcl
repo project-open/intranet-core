@@ -64,16 +64,16 @@ if {0 == $project_id} {
     return
 }
 
-set subproject_filtering_enabled_p [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
+set subproject_filtering_enabled_p [im_parameter -package_id [im_package_core_id] SubprojectStatusFilteringEnabledP "" 0]
 if {$subproject_filtering_enabled_p} {
-    set subproject_filtering_default_status_id [ad_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
+    set subproject_filtering_default_status_id [im_parameter -package_id [im_package_core_id] SubprojectStatusFilteringDefaultStatus "" ""]
     if {0 == $subproject_status_id} {
 	set subproject_status_id $subproject_filtering_default_status_id 
     }
 }
 
-set clone_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
-set execution_project_enabled_p [ad_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
+set clone_project_enabled_p [im_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
+set execution_project_enabled_p [im_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
 set gantt_project_enabled_p [util_memoize [list db_string gp "select count(*) from apm_packages where package_key = 'intranet-ganttproject'"]]
 set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0] 
 

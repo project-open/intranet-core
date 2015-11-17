@@ -26,7 +26,7 @@ if {0 == $user_id} {
 }
 
 set auto_login [im_generate_auto_login -user_id $user_id]
-set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
+set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
 
 ad_return_complaint 1 "
 <pre>

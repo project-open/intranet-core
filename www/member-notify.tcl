@@ -113,7 +113,7 @@ foreach oid $user_id_from_search {
 
 
 # Determine the sender address
-set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
+set sender_email [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
 catch {set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]}
 
 # Trim the subject. Otherwise we'll get MIME-garbage
@@ -128,7 +128,7 @@ set subject [string trim $subject]
 
 if {"" != $attachment} {
     set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
-    set tmp_path [ad_parameter -package_id $package_id "tmp_path"]
+    set tmp_path [im_parameter -package_id $package_id "tmp_path"]
     set tmp_file [ns_mktemp "$tmp_path/attachment_XXXXXX"]
 
     if {[catch {

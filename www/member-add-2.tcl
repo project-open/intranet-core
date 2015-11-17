@@ -91,7 +91,7 @@ set object_rel_url [db_string object_url "select url from im_biz_object_urls whe
 set role_name [db_string role_name "select im_category_from_id(:role_id) from dual" -default "Member"]
 
 # Get the SystemUrl without trailing "/"
-set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
+set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
 set sysurl_len [string length $system_url]
 set last_char [string range $system_url [expr $sysurl_len-1] $sysurl_len]
 if {[string equal "/" $last_char]} {

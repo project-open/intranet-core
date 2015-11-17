@@ -53,7 +53,7 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     }
 
     # Determine the sender address
-    set sender_email [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
+    set sender_email [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
     if [catch {
         set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]
     } errmsg] {
@@ -188,10 +188,10 @@ ad_proc -public im_security_alert {
     # Information about the current system
     # That' interesting, if the security manager manages several systems
     set system_name [ad_system_name]
-    set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set system_owner_email [im_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
 
     # Send where?
-    set target_email [ad_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "support@project-open.com"]
+    set target_email [im_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "support@project-open.com"]
 
     # Extract variables from form and HTTP header
     set header_vars [ns_conn headers]
@@ -246,7 +246,7 @@ peer_ip: $peer_ip
 
 
 ad_proc -public im_send_alert_to_system_owner {subject message} {
-    set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set system_owner_email [im_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
     set current_user_id [ad_conn user_id]
     ns_sendmail $system_owner_email $system_owner_email $subject $message
 }

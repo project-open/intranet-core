@@ -118,10 +118,10 @@ if { 0 == $project_status_id } {
     set project_status_id [im_project_status_open]
 }
 
-set show_filter_with_member_p [ad_parameter -package_id [im_package_core_id] ProjectListPageShowFilterWithMemberP "" 1]
+set show_filter_with_member_p [im_parameter -package_id [im_package_core_id] ProjectListPageShowFilterWithMemberP "" 1]
 
-if {"" == $include_subproject_level} { set include_subproject_level [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
-if {"" == $include_subprojects_p} { set include_subprojects_p [ad_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
+if {"" == $include_subproject_level} { set include_subproject_level [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
+if {"" == $include_subprojects_p} { set include_subprojects_p [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
 
 # Unprivileged users (clients & freelancers) can only see their 
 # own projects and no subprojects.
@@ -138,7 +138,7 @@ if {![im_permission $current_user_id "view_projects_history"]} {
 
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
-    set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
+    set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
 set end_idx [expr $start_idx + $how_many]
 

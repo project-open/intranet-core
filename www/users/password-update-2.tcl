@@ -65,7 +65,7 @@ ad_change_password $user_id $password_1
 
 set password $password_1
 set offer_to_email_new_password_link ""
-if {[ad_parameter EmailChangedPasswordP "" 1]} { 
+if {[im_parameter EmailChangedPasswordP "" 1]} { 
     set offer_to_email_new_password_link "<a href=\"email-changed-password?[export_url_vars user_id password]\">[_ intranet-core.lt_Send_user_new_passwor]</a>"
 }
 

@@ -22,7 +22,7 @@ ad_page_contract {
     { return_url "" }
 }
 
-if {![ad_parameter -package_id [im_package_core_id] TestDemoDevServer "" 0]} {
+if {![im_parameter -package_id [im_package_core_id] TestDemoDevServer "" 0]} {
     ad_return_complaint 1 "<LI>[_ intranet-core.lt_This_is_not_a_TestDem]<BR>
     [_ intranet-core.lt_So_you_probably_dont_]<br>&nbsp;<br>
     [_ intranet-core.lt_If_this_IS_a_TestDemo]"

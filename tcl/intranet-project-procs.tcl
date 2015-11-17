@@ -3372,7 +3372,7 @@ ad_proc -public im_menu_projects_admin_links {
     if {[im_permission $current_user_id "add_projects"]} {
 	lappend result_list [list [_ intranet-core.Add_a_new_project] "/intranet/projects/new"]
 
-	set new_from_template_p [ad_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
+	set new_from_template_p [im_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
 	if {$new_from_template_p} {
 	    lappend result_list [list [lang::message::lookup "" intranet-core.Add_a_new_project_from_Template "Add a new project from Template"] "/intranet/projects/new-from-template"]
 	}

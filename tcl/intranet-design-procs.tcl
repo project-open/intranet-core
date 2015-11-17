@@ -65,7 +65,7 @@ ad_proc -public im_gif {
     if {$debug} { ns_log Notice "im_gif: name=$name" }
 
     set url "/intranet/images"
-    set navbar_postfix [ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
+    set navbar_postfix [im_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "navbar_default"]
     set navbar_gif_url "/intranet/images/[im_navbar_gif_url]"
     set base_path "[acs_root_dir]/packages/intranet-core/www/images/"
     set navbar_path "[acs_root_dir]/packages/intranet-core/www/images/[im_navbar_gif_url]"
@@ -1027,7 +1027,7 @@ ad_proc -public im_navbar {
 	}
 	
 	# Display a maintenance message in red when performing updates etc...
-	set maintenance_message [string trim [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
+	set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
 	
 	# New Navbar
 	return "
@@ -1160,7 +1160,7 @@ ad_proc -public im_navbar_legacy_version_4 {
 
     # Maintenance Bar -
     # Display a maintenance message in red when performing updates etc...
-    set maintenance_message [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
+    set maintenance_message [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
     set maintenance_message [string trim $maintenance_message]
 
     set user_id [ad_conn user_id]
@@ -2116,8 +2116,8 @@ ad_proc -public im_footer {
     <div class=\"footer_hack\">&nbsp;</div>	
     <div id=\"footer\" style=\"visibility: visible\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: 
-       <a href=\"mailto:[ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
-	  [ad_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]</a>.
+       <a href=\"mailto:[im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
+	  [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]</a>.
     </div>
   $footer_html
   </BODY>
@@ -2176,9 +2176,9 @@ ad_proc -public im_stylesheet {} {
 ad_proc -public im_logo {} {
     Intranet System Logo
 } {
-    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
-    set system_logo [ad_parameter -package_id [im_package_core_id] SystemLogo "" ""]
-    set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
+    set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
+    set system_logo [im_parameter -package_id [im_package_core_id] SystemLogo "" ""]
+    set system_logo_link [im_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
 
     if {[string equal $system_logo ""]} {
 	set user_id [ad_conn user_id]
@@ -2216,7 +2216,7 @@ ad_proc -public im_navbar_gif_url_helper {
     if {"" == $user_id} { set user_id [ad_conn user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
-    set navbar_gif_url "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
+    set navbar_gif_url "/intranet/images/[im_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
     set org_navbar_gif_url $navbar_gif_url
 
     # Old parameter? Shell out a warning and use the last part
@@ -2266,7 +2266,7 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
     letter is the number of times that letter appears.  
 } {
 
-    set min_records [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
+    set min_records [im_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
     # Let's run through and make sure we have enough records
     set num_records 0
     foreach { l count } $initial_list {
@@ -2400,8 +2400,8 @@ ad_proc im_report_error { message } {
     @param message The message to write (pulled from <code>$errorInfo</code> if none is specified).
 } {
     set error_url [ad_conn url]
-    set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
-    set publisher_name [ad_parameter -package_id [ad_acs_kernel_id] PublisherName "" ""]
+    set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
+    set publisher_name [im_parameter -package_id [ad_acs_kernel_id] PublisherName "" ""]
     set core_version "2.0"
     set error_user_id [ad_conn user_id]
     set error_first_names ""
@@ -2423,14 +2423,14 @@ where
 "
     } catch_err
 
-    set report_url [ad_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
+    set report_url [im_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { [empty_string_p $report_url] } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
 	set report_url "http://www.project-open.net/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""
-    if {![ad_parameter -package_id [ad_acs_kernel_id] "RestrictErrorsToAdminsP" "" 0] || [permission::permission_p -object_id [ad_conn package_id] -privilege admin] } {
+    if {![im_parameter -package_id [ad_acs_kernel_id] "RestrictErrorsToAdminsP" "" 0] || [permission::permission_p -object_id [ad_conn package_id] -privilege admin] } {
 	set error_info $message
     }
     

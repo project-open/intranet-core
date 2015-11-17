@@ -27,7 +27,7 @@ set context_bar [im_context_bar $page_title]
 # Get the file
 # -------------------------------------------------------------------
 
-set max_n_bytes [ad_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
+set max_n_bytes [im_parameter -package_id [im_package_filestorage_id] MaxNumberOfBytes "" 0]
 set tmp_filename [ns_queryget upload_file.tmpfile]
 im_security_alert_check_tmpnam -location "template-upload-2.tcl" -value $tmp_filename
 set filesize [file size $tmp_filename]

@@ -626,86 +626,60 @@ ad_proc -public im_opt_val {
     return $result
 } 
 
-
 ad_proc -public im_parameter {
-    name
-    package_key
-    {default ""}
+    -localize:boolean
+    -set:boolean
+    {-package_id ""}
+    {-package_key ""}
+    {-parameter ""}
+    {-default ""}
+    {parameter2 ""}
+    {package_key2 ""}
+    {default2 ""}
 } {
-    ToDo: Not tested or used yet<br>
-    Wrapper for ad_parameter with the extra functionality to create
-    the parameter if it didn't exist before.<br>
-    With ]project-open[ we don't need package ids because all ]po[
-    packages are singletons.
-    im_parameter "SystemCSS" "intranet-core" "/intranet/style/style.default.css"
+    Wrapper for im_parameter. With ]project-open[ we don't
+						  need package ids because all ]po[ packages are singletons.
+    The parameters are designed to be compatible with both
+    im_parameter and the new parameter::get
 } {
+    if {"" != $default2} { set default $default2 }
+    if {"" != $parameter2} { set parameter $parameter2 }
 
-    # Get the package_id. That's because a single package (identified
-    # by a "package_key" can be mounted several times in the system.
-    db_1row get_package_id "
-	select	count(*) as param_count, 
-		min(package_id) as package_id
-	from	apm_packages 
-	where	package_key = :package_key"
-
-    # Check if the user has specified an non-existing package key.
-    # param_count > 1 is impossible because all intranet packages
-    # are singleton packages
-    if {0 == $param_count} {
-	ad_return_complaint 1 "<li><b>Internal Error</b><br>
-        Unknown package key '$package_key'.<br>
-        Please contact your support partner and report this error."
-	return ""
+    # Get the package_id. We use min(...) because a single package
+    # (identified by a "package_key" can be mounted several times
+    # in the system.
+    if {"" == $package_id && "" != $package_key} {
+	set package_id [db_string get_package_id "
+                select  min(package_id) as package_id
+                from    apm_packages
+                where   package_key = :package_key
+        "]
     }
-
-    set parameter_p [db_exec_plsql parameter_count {
-        begin
-        :1 := apm.parameter_p(
-		package_key => :package_key,
-		parameter_name => :name
-	);
-	end;
-    }]
-
-    if {!$parameter_p} {
-
-	# didn't exist yet - create the parameter
-
-	set parameter_id [db_exec_plsql create_parameter {
-	    begin
-	    :1 := apm.register_parameter(
-		 parameter_id => :parameter_id,
-		 parameter_name => :parameter_name,
-		 package_key => :package_key,
-		 description => :description,
-		 datatype => :datatype,
-		 default_value => :default_value,
-		 section_name => :section_name,
-		 min_n_values => :min_n_values,
-		 max_n_values => :max_n_values
-	    );
-	    end;
-	}]
-
-	set value $default
-
-    } else {
-
-	# Get the parameter
-	set value [parameter::get -package_id $package_id -parameter $name -default $default]
-
+    if {"" == $package_id && "" != $package_key2} {
+	set package_id [db_string get_package_id "
+                select  min(package_id) as package_id
+                from    apm_packages
+                where   package_key = :package_key2
+        "]
     }
-    
+    if {"" == $package_id} { return $default }
+    if {"" == $parameter} { return $default }
+
+
+    # Get the parameter
+    set value [parameter::get -package_id $package_id -parameter $parameter -default $default]
     return $value
 }
 
+
+
 # Basic Intranet Parameter Shortcuts
 ad_proc im_url_stub {} {
-    return [ad_parameter -package_id [im_package_core_id] IntranetUrlStub "" "/intranet"]
+    return [im_parameter -package_id [im_package_core_id] IntranetUrlStub "" "/intranet"]
 }
 
 ad_proc im_url {} {
-    return [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""][im_url_stub]
+    return [im_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""][im_url_stub]
 }
 
 # ------------------------------------------------------------------
