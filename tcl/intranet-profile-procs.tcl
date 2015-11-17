@@ -380,7 +380,7 @@ namespace eval im_profile {
 	Return a translated profile name for an ID.
     } {
 	# Get the user's locale
-	if {0 == $current_user_id} { set current_user_id [ad_get_user_id] }
+	if {0 == $current_user_id} { set current_user_id [ad_conn user_id] }
 	if {"" == $locale} { set locale [lang::user::locale -user_id $current_user_id] }
 	if {!$translate_p} { set locale "en_US" }
 

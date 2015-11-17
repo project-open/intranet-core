@@ -1,6 +1,6 @@
 set current_url [ns_conn url]
 
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set super_project_id [im_project_super_project_id $project_id]
     im_project_permissions $current_user_id $project_id view read write admin
     if {!$read} { return "" }

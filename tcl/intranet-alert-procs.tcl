@@ -41,7 +41,7 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     # Quick & Dirty implementation: just send out the mail immediately,
     # until there is more time...
 
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     # Get the email of the target user
     set user_email_sql "select email from parties where party_id = :target_id"
@@ -198,7 +198,7 @@ ad_proc -public im_security_alert {
     set url [ns_conn url]
 
     # Get intersting info
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set user_name [db_string uname "select im_name_from_user_id(:user_id)" -default "unknown"]
     set client_ip [ns_set get $header_vars "Client-ip"]
     set referer_url [ns_set get $header_vars "Referer"]
@@ -247,7 +247,7 @@ peer_ip: $peer_ip
 
 ad_proc -public im_send_alert_to_system_owner {subject message} {
     set system_owner_email [ad_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     ns_sendmail $system_owner_email $system_owner_email $subject $message
 }
 

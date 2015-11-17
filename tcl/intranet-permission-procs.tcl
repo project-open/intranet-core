@@ -193,7 +193,7 @@ ad_proc -public im_object_permission {
 } {
     Returns 1 (true) or 0 (false), depending whether the user has the permission on the specified object.
 } {
-    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $user_id} { set user_id [ad_conn user_id] }
     set read_p [util_memoize [list db_string operm "select im_object_permission_p($object_id, $user_id, '$privilege')"]]
     return [string equal $read_p "t"]
 }
@@ -222,7 +222,7 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
     if the current user has no permissions at all, and it may contain
     a name only for ???
 } {
-    if {$current_user_id == ""} { set current_user_id [ad_get_user_id] }
+    if {$current_user_id == ""} { set current_user_id [ad_conn user_id] }
     if {$user_id == ""} { return "" }
 
     # How to display? -1=name only, 0=none, 1=Link
@@ -248,7 +248,7 @@ ad_proc -public im_render_user_id2 {
     if the current user has no permissions at all, and it may contain
     a name only for ???
 } {
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     if {$user_id == ""} { return "" }
 
     # How to display? -1=name only, 0=none, 1=Link

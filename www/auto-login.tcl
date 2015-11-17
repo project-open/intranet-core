@@ -47,7 +47,7 @@ ns_log Notice "auto-login: user_id=$user_id, email=$email, len(auto_login)=[stri
 
 # Check if the user is already logged in.
 # In this case we can just forward the user to the specified page
-set previous_user_id [ad_get_user_id]
+set previous_user_id [ad_conn user_id]
 if {0 != $previous_user_id} { 
     ad_returnredirect $url 
     ad_script_abort

@@ -848,7 +848,7 @@ ad_proc im_select {
     # Get out early as there's nothing to do
     if { [llength $pairs] == 0 } { return "" }
 
-    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_conn user_id]] }
 
     set multiple ""
     if {$multiple_p} { 
@@ -1891,7 +1891,7 @@ ad_proc im_require_login {
     # --------------------------------------------------------
     # Check for OpenACS authenticated session
     #
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     if {0 != $user_id} { 
 	ns_log Notice "im_require_login: Successful OpenACS authentication with user_id=$user_id"
 	return $user_id 
@@ -2193,7 +2193,7 @@ ad_proc im_performance_log {
     set header_vars [ns_conn headers]
 
     # Get intersting info
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
 
     # IP Addresses
     set client_ip [ns_set get $header_vars "Client-ip"]

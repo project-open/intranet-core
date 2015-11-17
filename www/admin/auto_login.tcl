@@ -22,7 +22,7 @@ ad_page_contract {
 }
 
 if {0 == $user_id} {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
 }
 
 set auto_login [im_generate_auto_login -user_id $user_id]

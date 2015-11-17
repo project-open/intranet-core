@@ -70,7 +70,7 @@ ad_proc -public im_component_box {
 } {
     if {"" == $body} { return "" }
 
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set page_url [im_component_page_url]
     set return_url [im_url_with_query]
     set base_url "/intranet/components/component-action"
@@ -138,7 +138,7 @@ ad_proc -public im_component_bay {
 } {
     Checks the database for Plug-ins for this page and component bay.
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     im_security_alert_check_alphanum -location "im_component_bay: location" -value $location
     im_security_alert_check_alphanum -location "im_component_bay: view_name" -value $view_name
 

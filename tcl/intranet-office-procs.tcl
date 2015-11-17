@@ -517,7 +517,7 @@ ad_proc im_office_nuke {
     Nuke (complete delete from the database) a office
 } {
     ns_log Notice "im_office_nuke office_id=$office_id"
-    if {0 == $current_user_id || "" == $current_user_id} { set current_user_id [ad_get_user_id] }
+    if {0 == $current_user_id || "" == $current_user_id} { set current_user_id [ad_conn user_id] }
 
     im_office_permissions $current_user_id $office_id view read write admin
     if {!$admin} { return }

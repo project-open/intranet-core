@@ -168,7 +168,7 @@ namespace eval im_company {
 	This procedure relies that changes to companies will be 
 	reported to this module.
     } {
-	if {"" == $user_id} { set user_id [ad_get_user_id] }
+	if {"" == $user_id} { set user_id [ad_conn user_id] }
 	
 	# Check if we have calculated this result already
 	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_projects_p $with_active_projects_p]
@@ -523,7 +523,7 @@ ad_proc -public im_company_options {
 } {
     Cost company options
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     if {"" != $status} { set status_id [im_id_from_category $status "Intranet Company Status"] }
     if {"" != $exclude_status} { set exclude_status_id [im_id_from_category $exclude_status "Intranet Company Status"] }
     if {"" != $type} { set type_id [im_id_from_category $type "Intranet Company Type"] }
@@ -597,11 +597,11 @@ ad_proc im_company_nuke {
 } {
     ns_log Notice "im_company_nuke company_id=$company_id"
 
-    # Use a predefined user_id to avoid a call to ad_get_user_id.
-    # ad_get_user_id's connection isn't defined during a DELETE REST request.
+    # Use a predefined user_id to avoid a call to ad_conn user_id.
+    # ad_conn user_id's connection isn't defined during a DELETE REST request.
     if {0 == $current_user_id} { 
-	ns_log Notice "im_company_nuke: No current_user_id specified - using ad_get_user_id"
-	set current_user_id [ad_get_user_id] 
+	ns_log Notice "im_company_nuke: No current_user_id specified - using ad_conn user_id"
+	set current_user_id [ad_conn user_id] 
     }
 
     # Log the action
@@ -933,7 +933,7 @@ ad_proc -public im_menu_companies_admin_links {
     Return a list of admin links to be added to the "companies" menu
 } {
     set result_list {}
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set return_url [im_url_with_query]
 
     # Add companies 

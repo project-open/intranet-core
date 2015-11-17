@@ -335,7 +335,7 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
     @param select_label Label of a menu item to highlight
 } {
     # -------- Defaults -----------------------------
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set url_stub [ns_urldecode [im_url_with_query]]
 #    ns_log Notice "im_user_navbar: url_stub=$url_stub"
 
@@ -383,7 +383,7 @@ ad_proc -public im_project_navbar {
 		       search shortcuts, defaults to "projects".
 } {
     # -------- Defaults -----------------------------
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set url_stub [ns_urldecode [im_url_with_query]]
 
     set sel "<td class=tabsel>"
@@ -432,7 +432,7 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
     }
 
     # --------------- Determine the calling page ------------------
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set section ""
     set url_stub [im_url_with_query]
 
@@ -488,7 +488,7 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     Default_letter==none marks a special behavious, hiding the alpha-bar.
 } {
     # -------- Defaults -----------------------------
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set url_stub [ns_urldecode [im_url_with_query]]
 
     set sel "<td class=tabsel>"
@@ -643,7 +643,7 @@ ad_proc -public im_sub_navbar {
     @title string to go into the line below the menu tabs
     @title_class CSS class of the title line
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
     set url_stub [ns_conn url]
@@ -842,7 +842,7 @@ ad_proc -public im_navbar {
     if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } { 
 	return [im_navbar_legacy_version_4 -loginpage $loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
     } else {
-	set user_id [ad_get_user_id]
+	set user_id [ad_conn user_id]
 	set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 	set locale [lang::user::locale -user_id $user_id]
 	if {![info exists loginpage_p]} { set loginpage_p 0 }
@@ -1057,7 +1057,7 @@ ad_proc -public im_navbar_legacy_version_4 {
 
     #    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
 
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
@@ -1163,7 +1163,7 @@ ad_proc -public im_navbar_legacy_version_4 {
     set maintenance_message [ad_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
     set maintenance_message [string trim $maintenance_message]
 
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set user_name [im_name_from_user_id $user_id]
 
     set context_help_html ""
@@ -1329,7 +1329,7 @@ ad_proc -public im_header_plugins {
     Determines the contents for left & right header plugins.
     Returns an array with keys "left" and "right"
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
 
     return [util_memoize [list im_header_plugins_helper -locale $locale -user_id $user_id]]
@@ -1342,7 +1342,7 @@ ad_proc -public im_header_plugins_helper {
     Determines the contents for left & right header plugins.
     Returns an array with keys "left" and "right"
 } {
-    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $user_id} { set user_id [ad_conn user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     set plugin_left_html ""
@@ -1498,7 +1498,7 @@ ad_proc -public im_header {
 	# --------------------------------------------------------------
 	# Defaults & Security
 	set untrusted_user_id [ad_conn untrusted_user_id]
-	set user_id [ad_get_user_id]
+	set user_id [ad_conn user_id]
 	if {0 != $user_id} { set untrusted_user_id $user_id }
 	set user_name [im_name_from_user_id $user_id]
 	set return_url [im_url_with_query]
@@ -1776,7 +1776,7 @@ ad_proc -public im_header_legacy_version_4 {
     # --------------------------------------------------------------
     # Defaults & Security
     set untrusted_user_id [ad_conn untrusted_user_id]
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     if {0 != $user_id} { set untrusted_user_id $user_id }
     set user_name [im_name_from_user_id $user_id]
     set return_url [im_url_with_query]
@@ -2033,7 +2033,7 @@ ad_proc -private im_header_users_online_str { } {
 ad_proc -private im_header_search_form { } {
     Search form for header of page
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set search_installed_p [llength [info procs im_package_search_id]]
 
     if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
@@ -2129,7 +2129,7 @@ ad_proc -public im_footer {
 ad_proc -public im_stylesheet {} {
     Intranet CSS style sheet. 
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set html ""
     set openacs54_p [im_openacs54_p]
     set css "/resources/acs-subsite/site-master.css"
@@ -2181,7 +2181,7 @@ ad_proc -public im_logo {} {
     set system_logo_link [ad_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
 
     if {[string equal $system_logo ""]} {
-	set user_id [ad_get_user_id]
+	set user_id [ad_conn user_id]
 	set skin_name [im_user_skin $user_id]
 	
 	if {[file exists "[acs_root_dir]/packages/intranet-core/www/images/logo.$skin_name.gif"]} {
@@ -2190,7 +2190,7 @@ ad_proc -public im_logo {} {
 	    set system_logo "$system_url/intranet/images/logo.default.gif"
 	}
     }
-    # if { "0" != [ad_get_user_id] } {
+    # if { "0" != [ad_conn user_id] } {
 	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
     # } else {
     #	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"logo.gif\" alt=\"logo\" border='0'></a>\n"
@@ -2201,7 +2201,7 @@ ad_proc -public im_logo {} {
 ad_proc -public im_navbar_gif_url {} {
     Path to access the Navigation Bar corner GIFs
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
 
     return [util_memoize [list im_navbar_gif_url_helper -locale $locale -user_id $user_id] 60]
@@ -2213,7 +2213,7 @@ ad_proc -public im_navbar_gif_url_helper {
 } {
     Path to access the Navigation Bar corner GIFs
 } {
-    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $user_id} { set user_id [ad_conn user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     set navbar_gif_url "/intranet/images/[ad_parameter -package_id [im_package_core_id] SystemNavbarGifPath "" "/intranet/images/navbar_default"]"
@@ -2403,7 +2403,7 @@ ad_proc im_report_error { message } {
     set system_url [ad_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
     set publisher_name [ad_parameter -package_id [ad_acs_kernel_id] PublisherName "" ""]
     set core_version "2.0"
-    set error_user_id [ad_get_user_id]
+    set error_user_id [ad_conn user_id]
     set error_first_names ""
     set error_last_name ""
     set error_user_email ""

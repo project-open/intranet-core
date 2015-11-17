@@ -929,7 +929,7 @@ set user_ids [db_list users "
 	from	persons
 	where	person_id not in (
 			0,
-			[ad_get_user_id],
+			[ad_conn user_id],
 			(select min(person_id) from persons where person_id > 0)
 		)
 "]

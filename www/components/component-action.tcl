@@ -55,7 +55,7 @@ switch $action {
 	if {"/intranet/projects/view" == $page_url && [db_table_exists im_gantt_ms_project_warning]} {
 	    db_dml del_ms_project_warnings "
 		delete from im_gantt_ms_project_warning
-		where user_id = [ad_get_user_id]
+		where user_id = [ad_conn user_id]
 	    "
 	}
 

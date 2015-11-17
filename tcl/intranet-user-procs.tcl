@@ -730,7 +730,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
     set user_view_page "/intranet/users/view"
     set return_url [ad_conn url]?[ad_conn query]
     
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     
     if {![im_permission $user_id view_user_regs]} { return "" }
 
@@ -797,7 +797,7 @@ ad_proc -public im_user_create_new_user {
 } {
     Create a new user from scratch
 } {
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set email [string trim $email]
     set similar_user_id [db_string similar_user "select party_id from parties where lower(email) = lower(:email)" -default 0]
     
@@ -873,7 +873,7 @@ ad_proc -public im_user_update_existing_user {
     # ad_form sideeffects
     set profile_org $profiles
 
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     # Make sure the "person" exists.
     # This may be not the case when creating a user from a party.
@@ -1236,11 +1236,11 @@ ad_proc -public im_user_nuke {
 } {
     ns_log Notice "im_user_nuke: user_id=$user_id"
     
-    # Use a predefined user_id to avoid a call to ad_get_user_id.
-    # ad_get_user_id's connection isn't defined during a DELETE REST request.
+    # Use a predefined user_id to avoid a call to ad_conn user_id.
+    # ad_conn user_id's connection isn't defined during a DELETE REST request.
     if {0 == $current_user_id} { 
-	ns_log Notice "im_user_nuke: No current_user_id specified - using ad_get_user_id"
-	set current_user_id [ad_get_user_id] 
+	ns_log Notice "im_user_nuke: No current_user_id specified - using ad_conn user_id"
+	set current_user_id [ad_conn user_id] 
     }
 
     # Check for permissions
@@ -1794,7 +1794,7 @@ ad_proc -public im_menu_users_admin_links {
     Return a list of admin links to be added to the "users" menu
 } {
     set result_list {}
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_users"]} {

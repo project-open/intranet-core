@@ -40,7 +40,7 @@ ad_page_contract {
 # Permissions
 # --------------------------------------------------------------
 
-set current_user_id [ad_get_user_id]
+set current_user_id [ad_conn user_id]
 if {"" == $user_id} { set user_id $current_user_id }
 if {$user_id != $current_user_id} { ad_returnredirect $return_url }
 

@@ -53,7 +53,7 @@ ad_page_contract {
 
 # No permissions necessary, that's handled by the object's new page
 # Here we just select an object_type_id for the given object.
-set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+set admin_p [im_is_user_site_wide_or_intranet_admin [ad_conn user_id]]
 
 if {[catch {db_1row otype_info "
 	select	pretty_name as object_type_pretty

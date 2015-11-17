@@ -64,7 +64,7 @@ ad_proc -public im_random_employee_component { } {
     return ""
 
     # Get the current user id to not show the current user's portrait
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
 
@@ -302,7 +302,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
 } {
     if {!$read} { return ""}
 
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set subsite_url [subsite::get_element -element url]
     set export_vars [export_url_vars user_id return_url]
 

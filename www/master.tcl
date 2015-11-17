@@ -15,7 +15,7 @@ set show_navbar_p [parameter::get_from_package_key -package_key "intranet-core" 
 
 # Don't show navbar if explicitely disabled and for anonymous user (while logging in)
 if {!$show_navbar_p && "" == [string trim $left_navbar]} { set show_left_navbar_p 0 }
-if {0 == [ad_get_user_id]} { set show_left_navbar_p 0 }
+if {0 == [ad_conn user_id]} { set show_left_navbar_p 0 }
 
 # ----------------------------------------------------
 # Admin Navbar

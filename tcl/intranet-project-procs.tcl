@@ -676,7 +676,7 @@ ad_proc -public im_project_options {
 
     set current_project_id $project_id
     set super_project_id $project_id
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set max_project_name_len 50
 
     # Make sure we don't get a syntax error in the query
@@ -1089,7 +1089,7 @@ ad_proc -public im_project_personal_active_projects_component {
            if there are no projects.
 } {
 
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
 
     if {"" == $order_by_clause} {
 	set order_by_clause  [parameter::get_from_package_key -package_key "intranet-core" -parameter "HomeProjectListSortClause" -default "project_nr DESC"]
@@ -1664,7 +1664,7 @@ ad_proc im_project_clone_base {
 
     set new_project_name $project_name
     set new_project_nr $project_nr
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     # --------------------------
     # Prepare Project SQL Query
@@ -1856,7 +1856,7 @@ ad_proc im_project_clone_members {
 } {
     if {$debug} { ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id" }
     set errors "<li>Starting to clone member information"
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     if {![db_0or1row project_info "
 	select  p.*
@@ -1952,7 +1952,7 @@ ad_proc im_project_clone_costs {
        distributing it to a number of little piles...
 } {
     ns_log Notice "im_project_clone_costs parent_project_id=$parent_project_id new_project_id=$new_project_id"
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     # Extract all cost items related to the current (sub-) project.
     # Don't descend to sub-projects, because this procedure is called for
@@ -2422,12 +2422,12 @@ ad_proc im_project_nuke {
     ns_log Notice "im_project_nuke: project_id=$project_id"
     set detailed_explanation ""
     
-    # Use a predefined user_id to avoid a call to ad_get_user_id.
-    # ad_get_user_id's connection isn't defined during a DELETE REST request.
-    ns_log Notice "im_project_nuke: before ad_get_user_id"
+    # Use a predefined user_id to avoid a call to ad_conn user_id.
+    # ad_conn user_id's connection isn't defined during a DELETE REST request.
+    ns_log Notice "im_project_nuke: before ad_conn user_id"
     if {0 == $current_user_id} { 
-	ns_log Notice "im_project_nuke: No current_user_id specified - using ad_get_user_id"
-	set current_user_id [ad_get_user_id] 
+	ns_log Notice "im_project_nuke: No current_user_id specified - using ad_conn user_id"
+	set current_user_id [ad_conn user_id] 
     }
 
     # Check for permissions
@@ -3071,7 +3071,7 @@ ad_proc -public im_personal_todo_component {
     Returns a HTML table with the list of projects, tasks,
     forum items etc. assigned to the current user. 
 } {
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     # ---------------------------------------------------------------
     # Columns to show:
@@ -3282,7 +3282,7 @@ ad_proc -public im_project_action_select {
     projects that can be executedb by 
     /intranet-core/www/projects/project-action.tcl
 } {
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
 
     return "  <select name=action>
   <option name=empty></option>
@@ -3366,7 +3366,7 @@ ad_proc -public im_menu_projects_admin_links {
     Return a list of admin links to be added to the "projects" menu
 } {
     set result_list {}
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_projects"]} {

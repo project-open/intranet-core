@@ -122,7 +122,7 @@ ad_proc im_category_select {
 
     @param multiple_p You can select multiple categories
 } {
-    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_get_user_id]] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_conn user_id]] }
 
     if {$no_cache_p} {
 	return [im_category_select_helper -multiple_p $multiple_p -translate_p $translate_p -package_key $package_key -locale $locale -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p -super_category_id $super_category_id $category_type $select_name $default]

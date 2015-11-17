@@ -245,7 +245,7 @@ ad_proc -public im_biz_object_add_role {
 	set creation_user_id 0
 	catch { 
 	    set user_ip [ad_conn peeraddr] 
-	    set creation_user_id [ad_get_user_id]
+	    set creation_user_id [ad_conn user_id]
 	}
     }
 
@@ -906,7 +906,7 @@ ad_proc im_biz_object_add_profile_component {
 } {
     # ------------------------------------------------
     # Applicability, Defauls & Security
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set object_type [util_memoize [list db_string acs_object_type "select object_type from acs_objects where object_id = $object_id" -default ""]]
     set perm_cmd "${object_type}_permissions \$current_user_id \$object_id view_p read_p write_p admin_p"
     eval $perm_cmd

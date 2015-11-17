@@ -53,7 +53,7 @@ ad_proc -public im_navbar_tree {
     Creates an <ul> ...</ul> hierarchical list with all major
     objects in the system.
 } {
-    if {0 == $user_id} { set user_id [ad_get_user_id] }
+    if {0 == $user_id} { set user_id [ad_conn user_id] }
     set locale [lang::user::locale -user_id $user_id]
 
     set no_cache_p 1
@@ -707,7 +707,7 @@ ad_proc -public im_navbar_write_tree {
 } {
     Starts writing out the menu tree from a particular location
 } {
-    if {0 == $user_id} { set user_id [ad_get_user_id] }
+    if {0 == $user_id} { set user_id [ad_conn user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     if {$no_cache_p} {
@@ -794,7 +794,7 @@ ad_proc -public im_navbar_sub_tree {
     Creates an <ul> ...</ul> hierarchical list for
     the admin section
 } {
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
     set menu_id [db_string main_menu "select menu_id from im_menus where label=:label" -default 0]
     set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]

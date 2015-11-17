@@ -21,7 +21,7 @@ ad_page_contract {
 # Defaults & Security
 # ------------------------------------------------------
 
-set user_id [ad_get_user_id]
+set user_id [ad_conn user_id]
 set return_url "/intranet-filestorage/"
 
 set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]

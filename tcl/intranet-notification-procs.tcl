@@ -24,7 +24,7 @@ ad_proc -public im_notification_user_component {
     Returns a formatted HTML showing the status of notifications
     for the current user.
 } {
-    if {0 == $user_id} { set user_id [ad_get_user_id] }
+    if {0 == $user_id} { set user_id [ad_conn user_id] }
     set return_url [im_url_with_query]
 
     set params [list \

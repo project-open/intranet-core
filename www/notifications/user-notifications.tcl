@@ -22,8 +22,8 @@
 #	return_url
 
 if {![info exists return_url] || "" == $return_url} { set return_url [im_url_with_query] }
-if {0 == $user_id} { set user_id [ad_get_user_id] }
-set current_user_id [ad_get_user_id]
+if {0 == $user_id} { set user_id [ad_conn user_id] }
+set current_user_id [ad_conn user_id]
 
 if {$current_user_id != $user_id} { ad_return_template }
 

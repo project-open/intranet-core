@@ -139,7 +139,7 @@ ad_proc -public im_menu_ul_list {
 	if {!$enabled_p} { return "" }
     }
 
-    set user_id [ad_get_user_id]
+    set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
 
     if {$no_cache_p} {
@@ -163,7 +163,7 @@ ad_proc -public im_menu_ul_list_helper {
     to be added to index screens (costs) etc. 
 } {
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
-    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_get_user_id]]
+    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_conn user_id]]
 
     array set bind_vars_hash $bind_vars
     set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
@@ -299,7 +299,7 @@ ad_proc -public im_menu_li_helper {
 } {
     array set bind_vars_hash $bind_vars
 
-    if {"" == $user_id} { set user_id [ad_get_user_id] }
+    if {"" == $user_id} { set user_id [ad_conn user_id] }
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
 
     set menu_id 0
@@ -353,7 +353,7 @@ ad_proc -public im_menu_links {
 } {
     set result_list [list]
     set result_list_admin [list] 
-    set current_user_id [ad_get_user_id]
+    set current_user_id [ad_conn user_id]
     set return_url [im_url_with_query]
 
     # Create SubMenu "new FinDocs"
