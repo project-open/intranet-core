@@ -7,7 +7,7 @@
 </if>
 
 <form action=/intranet/projects/project-action>
-<%= [export_form_vars return_url] %>
+<%= [export_vars -form {return_url}] %>
 <table cellpadding=2 cellspacing=2 border=0>
   <tr>
     <multiple name=table_headers>

@@ -699,7 +699,7 @@ ad_proc -public im_group_member_component {
     set html "
 	<form method=POST action=/intranet/member-update>
 	$output_hidden_vars
-	[export_form_vars object_id return_url]
+	[export_vars -form {object_id return_url}]
 	    <table bgcolor=white cellpadding=1 cellspacing=1 border=0>
 	      $header_html
 	      $body_html
@@ -937,12 +937,14 @@ ad_proc im_biz_object_add_profile_component {
 	if {![info exists $var]} { set $var [im_opt_val $var] }
     }
 
+    # ToDo: Test
+
     set role_id [im_biz_object_role_full_member]
     set result "
 	<form method=GET action=/intranet/member-add-2>
-	[export_form_vars passthrough]
-	[export_form_vars {notify_asignee 0}]
-	[eval "export_form_vars $passthrough"]
+	[export_vars -form {passthrough}]
+	[export_vars -form {{notify_asignee 0}}]
+	[eval "export_vars -form {$passthrough}"]
 	<table cellpadding=0 cellspacing=2 border=0>
 	<tr><td>
 	$list_box

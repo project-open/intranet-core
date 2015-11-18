@@ -57,7 +57,7 @@ if {0 != $category_id} {
     set context_bar [im_context_bar $page_title]
 
     set delete_action_html "
-      <form action=category-nuke.tcl method=GET>[export_form_vars category_id] 
+      <form action=category-nuke.tcl method=GET>[export_vars -form {category_id}] 
       <input type=submit name=Submit value=Delete></form>"
     set input_form_html "value=Update"
     set form_action_html "action=\"category-update.tcl\""

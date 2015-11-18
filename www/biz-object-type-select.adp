@@ -5,7 +5,7 @@
 <%= [im_box_header $page_title] %>
 
 <form action='@return_url;noquote@' method=POST>
-<%= [export_form_vars user_id_from_search project_id] %>
+<%= [export_vars -form {user_id_from_search project_id}] %>
 
 <table cellspacing=2 cellpadding=2>
 @pass_through_html;noquote@

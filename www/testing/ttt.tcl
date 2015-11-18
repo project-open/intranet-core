@@ -283,7 +283,7 @@ if { $start_idx > 1 } {
 
 set filter_html "
 <form method=POST action='/intranet/index'>
-[export_form_vars include_subprojects_p]
+[export_vars -form {include_subprojects_p}]
 
 <table border=0 cellpadding=0 cellspacing=0>
 <tr> 

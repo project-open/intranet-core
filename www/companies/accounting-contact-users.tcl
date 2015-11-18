@@ -48,7 +48,7 @@ set page_body "
 [_ intranet-core.lt_Locate_your_new_accou]
 
 <form method=get action=/user-search>
-[export_form_vars group_id target limit_to_users_in_group_id]
+[export_vars -form {group_id target limit_to_users_in_group_id}]
 <input type=hidden name=passthrough value=group_id>
 
 <table border=0>

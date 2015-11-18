@@ -37,7 +37,7 @@
 -->
 
 <form enctype=multipart/form-data method=POST action=upload-2.tcl>
-<%= [export_form_vars user_id return_url] %>
+<%= [export_vars -form {user_id return_url}] %>
 <table cellspacing=0 cellpadding=0>
 <tr>
 <td><input type=file name=upload_file size=25></td>

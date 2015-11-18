@@ -3,7 +3,7 @@
 <property name="main_navbar_label">projects</property>
 
 <form action=clone-2.tcl method=POST>
-<%= [export_form_vars return_url parent_project_id new_parent_project_id company_id clone_postfix] %>
+<%= [export_vars -form {return_url parent_project_id new_parent_project_id company_id clone_postfix}] %>
 
   <table border=0>
     <tr> 

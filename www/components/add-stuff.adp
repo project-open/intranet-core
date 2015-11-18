@@ -5,7 +5,7 @@
 
 
 <form action=add-stuff-2 method=post>
-<%= [export_form_vars return_url] %>
+<%= [export_vars -form {return_url}] %>
 
 <table class="list">
 

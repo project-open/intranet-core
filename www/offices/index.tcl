@@ -31,7 +31,7 @@ ad_page_contract {
     { type_id:integer 0 }
     { start_idx:integer 0 }
     { order_by "Office" }
-    { how_many "" }
+    { how_many 0 }
     { letter:trim "all" }
     { view_name "office_list" }
 }
@@ -268,7 +268,7 @@ ns_log Notice $selection
 
 set filter_html "
 <form method=get action='/intranet/offices/index' name=filter_form>
-[export_form_vars start_idx order_by how_many letter view_name]
+[export_vars -form {start_idx order_by how_many letter view_name}]
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
   <td valign=top>[_ intranet-core.Office_Status]: </td>

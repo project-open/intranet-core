@@ -11,7 +11,7 @@ category IDs.
 </p>
 
 <form action="/intranet/admin/categories/batch-import-2" method=POST>
-<%= [export_form_vars category_type] %>
+<%= [export_vars -form {category_type}] %>
 <table border=0 cellpadding=0 cellspacing=1>
   <tr class=rowodd>
     <td>#intranet-core.Category_Type#</td>

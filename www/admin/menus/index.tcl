@@ -210,7 +210,7 @@ set main_sql "
 
 set table "
 <form action=menu-action method=post>
-[export_form_vars return_url]
+[export_vars -form {return_url}]
 <table class='table-header-rotated'>
 $table_header\n"
 

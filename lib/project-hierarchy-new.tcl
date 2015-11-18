@@ -179,7 +179,7 @@ set category_select [im_category_select -include_empty_p 1 "Intranet Project Sta
 	<if @subproject_filtering_enabled_p@>
 	  <table class=\"table_component_clean\">
 	    <form action=\"@current_url;noquote@\" method=GET>
-	      [export_form_vars project_id] 
+	      [export_vars -form {project_id}] 
 	      <tr>
 	        <td class=form-label>
 	          [lang::message::lookup "" intranet-core.Filter_Status "Filter Status"]

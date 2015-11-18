@@ -36,7 +36,7 @@ set skill_role_id_exists_p [db_string get_data "select count(*) from information
 
 set page_body "
 <form enctype=multipart/form-data method=POST action=upload-users-2.tcl>
-[export_form_vars return_url]
+[export_vars -form {return_url}]
                     <table border=0 cellpadding=3 cellspacing=3>
                       <tr> 
 			<td>[lang::message::lookup "" intranet-core.TitleUploadUserDataExplain "Please choose CSV file:"]</td>

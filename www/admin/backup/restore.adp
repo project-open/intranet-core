@@ -4,7 +4,7 @@
 <property name="admin_navbar_label">admin_backup</property>
 
 <form action="restore-2" method=POST>
-<%= [export_form_vars path] %>
+<%= [export_vars -form {path}] %>
 
 <table cellpadding=1 cellspacing=1 border=0>
 <tr class=rowtitle>

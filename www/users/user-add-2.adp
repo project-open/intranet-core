@@ -11,7 +11,7 @@
 <p>
 <form method="post" action="user-add-3">
 
-<%= [export_form_vars email first_names last_name user_id return_url] %>
+<%= [export_vars -form {email first_names last_name user_id return_url}] %>
 
 <textarea name=message rows=10 cols=70 wrap="<%=[im_html_textarea_wrap]%>">#intranet-core.lt_first_names_last_name_1#</textarea>
 

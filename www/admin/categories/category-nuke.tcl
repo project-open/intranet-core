@@ -42,7 +42,7 @@ set page_focus "im_header_form.keywords"
 
 set page_body "
 <form action=\"category-nuke-2.tcl\" method=GET>
-[export_form_vars category_id]
+[export_vars -form {category_id}]
 <center>Are you sure that you want to nuke the category \"$category\"? This action cannot be undone.<p>
 <input type=submit value=\"Yes, nuke this category now\"></form><hr>
 "

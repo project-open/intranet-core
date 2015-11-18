@@ -8,7 +8,7 @@
 <property name="main_navbar_label">user</property>
 
 <form action=contact-edit-2 method=POST>
-<%= [export_form_vars user_id] %>
+<%= [export_vars -form {user_id}] %>
 <table cellpadding=0 cellspacing=2 border=0>
 <tr valign=top>
   <td>@contact_html;noquote@</td>

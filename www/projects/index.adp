@@ -14,7 +14,7 @@
 	<tr valign=top>
 	<td>
 		<form action="/intranet/projects/project-action" method=POST>
-		<%= [export_form_vars return_url] %>
+		<%= [export_vars -form {return_url}] %>
 		<table class="table_list_page">
 	            <%= $table_header_html %>
 	            <%= $table_body_html %>

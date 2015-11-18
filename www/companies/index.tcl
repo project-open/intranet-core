@@ -496,7 +496,7 @@ if {$filter_advanced_p} {
 	    #intranet-core.Filter_Companies#
          </div>
 	            <form method='get' action='/intranet/companies/index' name='filter_form'>
-		       [export_form_vars start_idx order_by how_many letter view_name]
+		       [export_vars -form {start_idx order_by how_many letter view_name}]
 		       <table border='0' cellpadding='0' cellspacing='0'>
     " 
     if { $view_companies_all_p } {

@@ -18,7 +18,7 @@
 </p>&nbsp;<br>
 
 <form enctype="multipart/form-data" method="POST" action="template-upload-2.tcl">
-<%= [export_form_vars project_id return_url] %>
+<%= [export_vars -form {project_id return_url}] %>
 <table border=0>
   <tr>
     <td><%= [lang::message::lookup "" intranet-core.File "File"] %>:</td>

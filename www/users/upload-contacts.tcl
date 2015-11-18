@@ -49,7 +49,7 @@ append profile_select "</select>\n"
 
 set page_body "
 <form enctype=multipart/form-data method=POST action=upload-contacts-2.tcl>
-[export_form_vars return_url]
+[export_vars -form {return_url}]
                     <table border=0>
                       <tr> 
                         <td align=right>Filename: </td>

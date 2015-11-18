@@ -104,7 +104,7 @@ if {$enabled_p} {
 
 set page_body "
 <form action=\"edit-2.tcl\" method=POST>
-[export_form_vars plugin_id return_url]
+[export_vars -form {plugin_id return_url}]
 
 <TABLE border=0>
 <TBODY>

@@ -6,7 +6,7 @@
 <property name="show_context_help_p">@show_context_help_p;noquote@</property>
 
 <form action=/intranet/projects/project-action-shift-2 method=POST>
-<%= [export_form_vars return_url select_project_id] %>
+<%= [export_vars -form {return_url select_project_id}] %>
 <table border=0>
 <tr>
 <td colspan=2>Shift projects forward or backward in time:</td>

@@ -56,4 +56,4 @@ where revision_id = (select live_revision
 db_release_unused_handles
 
 set context [list [list "./" "Your Portrait"] "Edit comment"]
-set export_vars [export_form_vars user_id return_url]
+set export_vars [export_vars -form {user_id return_url}]

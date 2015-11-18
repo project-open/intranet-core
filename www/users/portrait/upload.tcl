@@ -45,7 +45,7 @@ if {$admin} {
     set context [list [list "./?return_url=$return_url" "Your Portrait"] "Upload Portrait"]
 }
 
-set export_vars [export_form_vars user_id return_url]
+set export_vars [export_vars -form {user_id return_url}]
 
 
 # --------------------------------

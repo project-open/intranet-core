@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Purpose: Standard form to search for a user (through /user-search.tcl)
+    Purpose: Standard form to search for a user
 
     @param target Where to link to.
     @param query_string What to search.

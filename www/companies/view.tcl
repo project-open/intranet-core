@@ -281,7 +281,7 @@ if {$admin} {
     set left_column_action "
 	<tr><td>&nbsp;</td><td>
 	<form action=new method=POST>
-	[export_form_vars company_id return_url]
+	[export_vars -form {company_id return_url}]
 	<input type=submit value='[_ intranet-core.Edit]'>
 	</form></td></tr>"
 }

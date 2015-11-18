@@ -43,7 +43,7 @@ set ad_site_home_link [ad_site_home_link]
 
 set page_body "
 <form method=POST action=\"password-update-2\">
-[export_form_vars user_id name return_url]
+[export_vars -form {user_id name return_url}]
 <table cellpadding=0 cellspacing=2 border=0>
   <tr> 
     <td colspan=2 class=rowtitle align=center>[_ intranet-core.Update_Password]</td>

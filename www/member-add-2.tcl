@@ -34,7 +34,6 @@ ad_page_contract {
 }
 
 set user_id [ad_maybe_redirect_for_registration]
-
 callback im_before_member_add -user_id $user_id_from_search -object_id $object_id 
 
 # expect commands such as: "im_project_permissions" ...
@@ -81,7 +80,7 @@ set object_name [db_string project_name "select acs_object.name(:object_id) from
 set page_title "Notify user"
 set context [list $page_title]
 
-set export_vars [export_form_vars object_id role_id return_url]
+set export_vars [export_vars -form {object_id role_id return_url}]
 foreach uid $user_id_from_search {
      append export_vars "<input type=hidden name=user_id_from_search value=$uid>\n"
 }
@@ -113,4 +112,3 @@ if {"" != $notify_asignee && ![string equal "0" $notify_asignee]} {
 } else {
     ad_returnredirect $return_url
 }
-return

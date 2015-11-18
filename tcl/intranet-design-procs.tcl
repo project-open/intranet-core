@@ -1782,7 +1782,7 @@ ad_proc -private im_header_users_online_str { } {
 }
 
 
-ad_proc -private im_header_search_form { } {
+ad_proc -private im_header_search_form {} {
     Search form for header of page
 } {
     set user_id [ad_conn user_id]
@@ -2189,7 +2189,7 @@ where
     ns_returnerror 500 "
 [im_header_emergency "[_ intranet-core.Request_Error]"]
 <form method=post action=$report_url>
-[export_form_vars error_url error_info error_first_names error_last_name error_user_email system_url publisher_name core_version]
+[export_vars -form {error_url error_info error_first_names error_last_name error_user_email system_url publisher_name core_version}]
 [_ intranet-core.lt_This_file_has_generat]  
 <input type=submit value='[_ intranet-core.Report_this_error]' />
 </form>
@@ -2422,7 +2422,7 @@ ad_proc -public im_skin_select_html {
 
    set skin_select_html "
 	<form method=\"GET\" action=\"/intranet/users/select-skin\">
-	[export_form_vars return_url user_id]
+	[export_vars -form {return_url user_id}]
 	[im_category_select \
 		-translate_p 1 \
 		-include_empty_p 0 \

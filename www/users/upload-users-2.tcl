@@ -120,7 +120,7 @@ set select_options_db "
 	<option value='hourly_rate'>Hourly Rate</option>
 "
 
-set hidden_fields [export_form_vars security_token upload_file locale_numeric update_hourly_rates_skill_profile]
+set hidden_fields [export_vars -form {security_token upload_file locale_numeric update_hourly_rates_skill_profile}]
 
 set update_hourly_rates_skill_profile_txt ""
 if { [info exists update_hourly_rates_skill_profile] } {

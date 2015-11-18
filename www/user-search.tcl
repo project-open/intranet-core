@@ -188,16 +188,14 @@ for $search_html $group_html
 <br>
 
 <form action=\"$target\">
-[export_form_vars passthrough]
+[export_vars -form {passthrough}]
 "
 
 foreach var $passthrough {
     append page_contents "[export_form_vars $var]\n"
 }
 
-
 append page_contents "
-
 <br><!--<h3>[_ intranet-core.Freelance]</h3>-->
 <br>
 <table class='table_list'>

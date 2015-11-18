@@ -121,7 +121,7 @@ order by
 
 set office_html "
 <form method=POST action=\"$office_new_page\">
-[export_form_vars office_id return_url]
+[export_vars -form {office_id return_url}]
 <input type=\"hidden\" name=\"form:mode\" value=\"[_ intranet-core.display]\" />
 <input type=\"hidden\" name=\"form:id\" value=\"[_ intranet-core.office_info]\" />
 

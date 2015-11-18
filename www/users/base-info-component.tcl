@@ -121,7 +121,7 @@ set column_sql "
 
 set contact_html "
 <form method=POST action=/intranet/users/contact-edit>
-[export_form_vars user_id return_url]
+[export_vars -form {user_id return_url}]
 <table cellpadding=0 cellspacing=2 border=0 class=\"component_form\">
   <tr> 
     <td colspan=2 class=rowtitle align=center>[_ intranet-core.Contact_Information]</td>
