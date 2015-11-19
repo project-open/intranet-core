@@ -943,7 +943,7 @@ ad_proc -public im_menu_companies_admin_links {
     # Upload Companies 
 
     if { [im_is_user_site_wide_or_intranet_admin $current_user_id] } {
-	lappend result_list [list [_ intranet-core.Import_Company_CSV] "/intranet/companies/upload-companies?[export_url_vars return_url]"]
+	lappend result_list [list [_ intranet-core.Import_Company_CSV] "/intranet/companies/upload-companies?[export_vars -url {return_url}]"]
     }
 
     # Advanced Filtering 

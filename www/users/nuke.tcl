@@ -59,4 +59,4 @@ set object_type "user"
 
 # set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 
-set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
+set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_vars -url { user_id return_url}]\">[_ intranet-core.lt_delete_this_user_inst]</a>"

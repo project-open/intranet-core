@@ -66,7 +66,7 @@ ad_change_password $user_id $password_1
 set password $password_1
 set offer_to_email_new_password_link ""
 if {[im_parameter EmailChangedPasswordP "" 1]} { 
-    set offer_to_email_new_password_link "<a href=\"email-changed-password?[export_url_vars user_id password]\">[_ intranet-core.lt_Send_user_new_passwor]</a>"
+    set offer_to_email_new_password_link "<a href=\"email-changed-password?[export_vars -url { user_id password}]\">[_ intranet-core.lt_Send_user_new_passwor]</a>"
 }
 
 set page_body "
@@ -75,7 +75,7 @@ set page_body "
 [_ intranet-core.in] [ad_site_home_link]
 <hr>
 [_ intranet-core.lt_You_must_inform_the_u]
-[_ intranet-core.You_can_return_to] <a href=\"one?[export_url_vars user_id]\">$name</a>
+[_ intranet-core.You_can_return_to] <a href=\"one?[export_vars -url { user_id}]\">$name</a>
 <p> $offer_to_email_new_password_link
 [ad_admin_footer]
 "

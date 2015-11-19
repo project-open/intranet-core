@@ -52,7 +52,7 @@ set bind_vars [lindex $sql_statement_and_bind_vars 1]
 db_dml $statement_name $sql_statement -bind $bind_vars
 
 db_release_unused_handles
-ad_returnredirect "/intranet/users/view.tcl?[export_url_vars user_id]"
+ad_returnredirect "/intranet/users/view.tcl?[export_vars -url {user_id}]"
 
 
 

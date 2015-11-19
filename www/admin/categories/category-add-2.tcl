@@ -135,4 +135,4 @@ im_permission_flush
 
 
 db_release_unused_handles
-ad_returnredirect "one?[export_url_vars category_id]"
+ad_returnredirect "one?[export_vars -url {category_id}]"

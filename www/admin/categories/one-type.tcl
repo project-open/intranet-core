@@ -58,10 +58,10 @@ db_foreach all_categories_of_type "
 	group by c.category, c.category_id
 	order by n_interested_users desc" {
 
-    append category_list_html "<li><a href=\"one?[export_url_vars category_id]\">$category</a>\n"
+	    append category_list_html "<li><a href=\"one?[export_vars -url {category_id}]\">$category</a>\n"
 
     if {$n_interested_users > 0} {
-	append category_list_html " (number of interested users: <a href=\"/admin/users/action-choose?[export_url_vars category_id]\">$n_interested_users</a>)\n"
+	append category_list_html " (number of interested users: <a href=\"/admin/users/action-choose?[export_vars -url {category_id}]\">$n_interested_users</a>)\n"
     }
 }
 
@@ -81,7 +81,7 @@ doc_return  200 text/html "[ad_admin_header $page_title]
 $category_list_html
 
 <p>
-<li><a href=\"category-add?[export_url_vars category_type]\">Add a category of this type</a>
+<li><a href=\"category-add?[export_vars -url {category_type}]\">Add a category of this type</a>
 </ul>
 
 [ad_admin_footer]

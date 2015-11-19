@@ -48,7 +48,7 @@ ad_page_contract {
 set user_id [ad_maybe_redirect_for_registration]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set page_title [_ intranet-core.Office]
-set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_url_vars office_id]" "[_ intranet-core.One_office]"] $page_title]
+set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_vars -url {office_id}]" "[_ intranet-core.One_office]"] $page_title]
 
 # -- ------------------------------------------------
 # -- General Settings

@@ -33,4 +33,4 @@ db_dml companies_set_accounting_contact \
 
 db_release_unused_handles
 
-ad_returnredirect view?[export_url_vars company_id]
+ad_returnredirect view?[export_vars -url {company_id}]

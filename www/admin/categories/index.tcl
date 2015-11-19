@@ -160,7 +160,7 @@ if {$show_add_new_category_p} {
 	<tr $bgcolor([expr $ctr % 2])>
 	  <td>$category_id</td>
 	  <td><a href='$toggle_url'>$enabled_p</a></td>
-	  <td><a href=\"one.tcl?[export_url_vars category_id]\">$category</A></td>
+	  <td><a href=\"one.tcl?[export_vars -url {category_id}]\">$category</A></td>
 	  <td>$sort_order</td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
 	  <td>$aux_int1 $aux_int1_cat</td>

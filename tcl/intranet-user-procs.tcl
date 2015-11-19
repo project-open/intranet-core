@@ -743,7 +743,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 
 	# Allow to approve non-approved members
 	set approve_link ""
-	if {"approved" != $member_state} { set approve_link "<a href=\"/acs-admin/users/member-state-change?member_state=approved&amp;[export_url_vars user_id return_url]\">[_ intranet-core.activate]</a>"
+	if {"approved" != $member_state} { set approve_link "<a href=\"/acs-admin/users/member-state-change?member_state=approved&amp;[export_vars -url {user_id return_url}]\">[_ intranet-core.activate]</a>"
 	}
 
 	append rows_html "
@@ -1149,9 +1149,9 @@ ad_proc im_print_employee {person rowspan} "print function for org chart" {
 
 # Removed job title display
 #	if { $rowspan>=2 } {
-#	    return "<a href=\"/intranet/users/view?[export_url_vars user_id]\">$employee_name</a><br><i>$job_title</i>\n"
+	#	    return "<a href=\"/intranet/users/view?[export_vars -url {user_id}]\">$employee_name</a><br><i>$job_title</i>\n"
 #	} else {
-	    return "<a href=\"/intranet/users/view?[export_url_vars user_id]\">$employee_name</a><br>\n"
+	return "<a href=\"/intranet/users/view?[export_vars -url {user_id}]\">$employee_name</a><br>\n"
 #	}
     } else {
 	return "<i>[_ intranet-core.Position_Vacant]</i>"
@@ -1800,7 +1800,7 @@ ad_proc -public im_menu_users_admin_links {
     if {[im_permission $current_user_id "add_users"]} {
 	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
 	lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
-	lappend result_list [list [_ intranet-core.Import_User_CSV] "/intranet/users/upload-contacts?[export_url_vars return_url]"]
+	lappend result_list [list [_ intranet-core.Import_User_CSV] "/intranet/users/upload-contacts?[export_vars -url {return_url}]"]
     }
 
     # Append user-defined menus

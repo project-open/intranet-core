@@ -209,7 +209,7 @@ if { [empty_string_p $companies_html] } {
 if {$ctr > $max_companies} {
     set status_id 0
     set type_id 0
-    append companies_html "<li><A HREF='/intranet/companies/index?[export_url_vars user_id_from_search status_id type_id]'>[_ intranet-core.more_companies]</A>\n"
+    append companies_html "<li><A HREF='/intranet/companies/index?[export_vars -url { user_id_from_search status_id type_id}]'>[_ intranet-core.more_companies]</A>\n"
 }
 
 if {[im_permission $current_user_id view_companies_all]} {

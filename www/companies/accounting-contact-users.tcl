@@ -41,7 +41,7 @@ set company_name [db_string company_name \
 db_release_unused_handles
 
 set page_title "[_ intranet-core.lt_Select_accounting_con]"
-set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars group_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_vars -url { group_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 

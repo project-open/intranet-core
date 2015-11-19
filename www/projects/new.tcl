@@ -467,7 +467,7 @@ if {[form is_request $form_id]} {
 	}
 	
 	set page_title "[_ intranet-core.Edit_project]"
-	set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_url_vars project_id]" "One project"] $page_title]
+	set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_vars -url {project_id}]" "One project"] $page_title]
 	
 	if { [empty_string_p $start_date] } { set start_date $todays_date }
 	if { [empty_string_p $end_date] } { set end_date $todays_date }

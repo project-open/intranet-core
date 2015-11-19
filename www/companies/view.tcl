@@ -176,7 +176,7 @@ if {$see_details} {
     if { [empty_string_p $primary_contact_id] } {
 	
 	if { $admin } {
-	    set primary_contact_text "<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>Add primary contact</a>\n"
+	    set primary_contact_text "<a href=primary-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>Add primary contact</a>\n"
 	} else {
 	    set primary_contact_text "<i>[_ intranet-core.none]</i>"
 	}
@@ -187,7 +187,7 @@ if {$see_details} {
     
 	if { $admin } {
 	    append primary_contact_text "
-	(<a href=primary-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif -translate_p 1 turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_url_vars company_id return_url]>[im_gif -translate_p 1 delete "Delete the primary contact"]</a>)\n"
+	(<a href=primary-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_vars -url { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the primary contact"]</a>)\n"
 	}
     }
 
@@ -203,7 +203,7 @@ if {$see_details} {
     if { [empty_string_p $accounting_contact_id] } {
 	
 	if { $admin } {
-	    set accounting_contact_text "<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[_ intranet-core.lt_Add_accounting_contac]</a>\n"
+	    set accounting_contact_text "<a href=accounting-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[_ intranet-core.lt_Add_accounting_contac]</a>\n"
 	} else {
 	    set accounting_contact_text "<i>[_ intranet-core.none]</i>"
 	}
@@ -212,7 +212,7 @@ if {$see_details} {
 	
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
 	if { $admin } {
-	    append accounting_contact_text "    (<a href=accounting-contact?[export_url_vars company_id limit_to_users_in_group_id]>[im_gif -translate_p 1 turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_url_vars company_id return_url]>[im_gif -translate_p 1 delete "Delete the accounting contact"]</a>)\n"
+	    append accounting_contact_text "    (<a href=accounting-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_vars -url { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the accounting contact"]</a>)\n"
 	}
     }
     

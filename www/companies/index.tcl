@@ -358,8 +358,8 @@ if {[im_permission $current_user_id "add_companies"]} {
 
 if {$user_is_admin_p} {
     append admin_html "
-<li><a href=/intranet/companies/upload-companies?[export_url_vars return_url]>[_ intranet-core.Import_Company_CSV]</a>
-<!-- <li><a href=/intranet/companies/upload-contacts?[export_url_vars return_url]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
+<li><a href=/intranet/companies/upload-companies?[export_vars -url { return_url}]>[_ intranet-core.Import_Company_CSV]</a>
+<!-- <li><a href=/intranet/companies/upload-contacts?[export_vars -url { return_url}]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
 "}
 
 append admin_html "

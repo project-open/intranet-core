@@ -82,7 +82,7 @@ db_foreach packages $sql {
 	<tr class=rowplain colspan=99><td>&nbsp;</td></tr>
 	<tr class=roweven>
 	  <td colspan=2>
-	    <b><A HREF=/shared/parameters?[export_url_vars package_id return_url]>$package_key</A></b></td>
+	    <b><A HREF=/shared/parameters?[export_vars -url {package_id return_url}]>$package_key</A></b></td>
 	  <td><b>$instance_name</b></td>
 	</tr>
 	"

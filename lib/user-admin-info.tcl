@@ -58,15 +58,15 @@ set activate_delete_link ""
 if {$admin} {
     append activate_delete_link "("
     if { "approved" != $member_state } {
-	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_url_vars user_id return_url]>[_ intranet-core.activate]</a>"
+	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars -url {user_id return_url}]>[_ intranet-core.activate]</a>"
     }
     if { "banned" != $member_state } {
-	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_url_vars user_id return_url]>[_ intranet-core.delete]</a>"	
+	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars -url {user_id return_url}]>[_ intranet-core.delete]</a>"	
     } 
     append activate_delete_link ")"
 }
 
-set change_pwd_url "/intranet/users/password-update?[export_url_vars user_id return_url]"
+set change_pwd_url "/intranet/users/password-update?[export_vars -url {user_id return_url}]"
 set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
 
 

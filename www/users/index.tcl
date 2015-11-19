@@ -246,7 +246,7 @@ if {[im_permission $user_id "add_users"]} {
     append admin_html_links "
 	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
         <li><a href=\"/intranet/users/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a></li>
-	<li><a href=/intranet-csv-import/index?[export_url_vars return_url object_type]>[_ intranet-core.Import_User_CSV]</a></li>
+	<li><a href=/intranet-csv-import/index?[export_vars -url {return_url object_type}]>[_ intranet-core.Import_User_CSV]</a></li>
         <!--<li><a href=/intranet/users/upload-users>[lang::message::lookup "" intranet-core.BulkUpdateUsers "CSV Bulk Update Users"]</a></li>-->
     "
 }

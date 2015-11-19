@@ -260,11 +260,11 @@ db_foreach menus $main_sql {
 	set action "add_readable"
 	set letter "r"
         if {$read_p == "t"} {
-            set read "<A href=$toggle_url?object_id=$menu_id&action=remove_readable&[export_url_vars horiz_group_id return_url]><b>R</b></A>\n"
+            set read "<A href=$toggle_url?object_id=$menu_id&action=remove_readable&[export_vars -url {horiz_group_id return_url}]><b>R</b></A>\n"
 	    set action "remove_readable"
 	    set letter "<b>R</b>"
         }
-	set read "<A href=$toggle_url?[export_url_vars horiz_group_id object_id action return_url]>$letter</A>\n"
+	set read "<A href=$toggle_url?[export_vars -url {horiz_group_id object_id action return_url}]>$letter</A>\n"
 
         append table "
   <td align=center>
@@ -285,7 +285,7 @@ db_foreach menus $main_sql {
 append table "
 <tr>
   <td colspan=[expr $num_profiles + 6] align=right>
-    <A href=new?[export_url_vars return_url]>New Menu</a>
+    <A href=new?[export_vars -url {return_url}]>New Menu</a>
   </td>
   <td>
     <input type=submit value='Del'>
@@ -327,7 +327,7 @@ set left_navbar_html "
         <tr>
         <td>
           <ul>
-		<li><A href=new?[export_url_vars return_url]>New Menu</a></li>
+		<li><A href=new?[export_vars -url {return_url}]>New Menu</a></li>
          </ul>
   </td>
 </tr>

@@ -49,7 +49,7 @@ set admin_email [db_string unused "select email from parties where party_id = :a
 
 set page_title [_ intranet-core.lt_New_user_notifiedset_]
 set context [list [list "./" [_ intranet-core.Users]] $page_title]
-set export_vars [export_url_vars user_id]
+set export_vars [export_vars -url { user_id}]
 
 
 if {$send_email_p} {

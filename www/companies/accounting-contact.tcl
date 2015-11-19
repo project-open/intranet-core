@@ -62,7 +62,7 @@ if {$company_id != [im_company_internal]} {
 
 set contact_info ""
 db_foreach address_book_info $sql  {
-    append contact_info "<li>$name, $email  </a>(<a href=accounting-contact-2?[export_url_vars company_id user_id]>[_ intranet-core.lt_make_accounting_conta]</a>)"
+    append contact_info "<li>$name, $email  </a>(<a href=accounting-contact-2?[export_vars -url { company_id user_id}]>[_ intranet-core.lt_make_accounting_conta]</a>)"
 } 
 db_release_unused_handles
 
@@ -89,10 +89,10 @@ if { [empty_string_p $contact_info] } {
     return
 }
 
-set return_url "[im_url_stub]/companies/view?[export_url_vars company_id]"
+set return_url "[im_url_stub]/companies/view?[export_vars -url { company_id}]"
 
 set page_title "[_ intranet-core.lt_Select_accounting_con]"
-set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_url_vars company_id] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_vars -url { company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

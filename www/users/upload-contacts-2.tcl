@@ -756,7 +756,7 @@ foreach csv_line_fields $values_list_of_lists {
 	    if {$profile_id == [im_profile_freelancers]} { set company_type_id [im_company_type_freelance]}
 	    set company_status_id [im_company_status_potential]
 
-	    ns_write "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_url_vars user_id company_type_id company_status_id company_name]\">click here to create it</a>.\n"
+	    ns_write "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_vars -url { user_id company_type_id company_status_id company_name}]\">click here to create it</a>.\n"
 
 	}
     }

@@ -55,4 +55,4 @@ im_permission_flush
 
 # Redirect
 set select_category_type $category_type
-ad_returnredirect "index.tcl?[export_url_vars select_category_type]"
+ad_returnredirect "index.tcl?[export_vars -url {select_category_type}]"

@@ -72,7 +72,7 @@ if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
 
 if {[regexp {\.\.} $company_filename]} {
     set error "Filename contains forbidden characters"
-    ad_returnredirect "/error.tcl?[export_url_vars error]"
+    ad_returnredirect "/error.tcl?[export_vars -url {error}]"
 }
 
 if {![file readable $tmp_filename]} {

@@ -47,7 +47,7 @@ set action_url "/intranet/companies/new-2"
 set focus "menu.var_name"
 
 set page_title "[_ intranet-core.Edit_Company]"
-set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_url_vars company_id]" "[_ intranet-core.One_company]"] $page_title]
+set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_vars -url {company_id}]" "[_ intranet-core.One_company]"] $page_title]
 
 # Should we bother about State and ZIP fields?
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
