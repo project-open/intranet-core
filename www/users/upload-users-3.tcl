@@ -122,7 +122,7 @@ set db_field_name_list [list]
 # ad_return_complaint 1 $target
 
 foreach option_value $target {
-    # ns_log NOTICE "intranet-users-upload-users-3: option_value: $option_value" 
+    # ns_log Notice "intranet-users-upload-users-3: option_value: $option_value" 
     # Sanity Check for '__' in option_value
     if { [string first "__" $option_value ] == -1 } {
 	ad_return_complaint 1  [lang::message::lookup "" intranet-core.ErrorImport "Error during import, please contatc your System Adminsitrator"]
@@ -130,8 +130,8 @@ foreach option_value $target {
     }
     lappend index_list [string range $option_value 0 [expr [string first "__" $option_value]-1]]
     lappend db_field_name_list [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value] ]  
-    ns_log NOTICE "intranet-users-upload-users-3: [string range $option_value 0 [expr [string first "__" $option_value]-1]]"
-    ns_log NOTICE "intranet-users-upload-users-3: [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value]]"
+    ns_log Notice "intranet-users-upload-users-3: [string range $option_value 0 [expr [string first "__" $option_value]-1]]"
+    ns_log Notice "intranet-users-upload-users-3: [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value]]"
 }
 
 # ---------------------------------------------------------------
@@ -164,7 +164,7 @@ set index_username [lsearch -exact $db_field_name_list "username"]
 # Index Last Name
 set index_hourly_rate [lsearch -exact $db_field_name_list "hourly_rate"]
 
-ns_log NOTICE "intranet-users-upload-users-3: [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value]]"
+ns_log Notice "intranet-users-upload-users-3: [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value]]"
 
 set linecount 0
 

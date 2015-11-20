@@ -1,20 +1,20 @@
 <master src="../master">
-<property name="context">@context;noquote@</property>
-<property name="title">#intranet-core.Menu_Backup_Restore#</property>
+<property name="context">@context;literal@</property>
+<property name="doc(title)">#intranet-core.Menu_Backup_Restore#</property>
 <property name="admin_navbar_label">admin_backup</property>
 
 <form action="backup-2" method=POST>
 
-<table cellpadding=1 cellspacing=1 border=0>
+<table cellpadding="1" cellspacing="1" border="0">
 <tr class=rowtitle>
-  <td class=rowtitle colspan=9 align=center>
+  <td class=rowtitle colspan="9" align="center">
     Backup Objects
   </td>
 </tr>
 @object_list_html;noquote@
 <tr>
-  <td colspan=2 align=right>
-    <input type=submit name=submit value="Backup">
+  <td colspan="2" align="right">
+    <input type="submit" name="submit" value="Backup">
   </td>
 </tr>
 </table>

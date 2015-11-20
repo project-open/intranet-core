@@ -199,7 +199,7 @@ ad_proc -public im_component_bay {
 		set component_html [uplevel 1 $component_tcl]
 	    } err_msg]} {
 		global errorInfo
-		ns_log ERROR $errorInfo
+		ns_log Error $errorInfo
 		im_feedback_add_message "serious" $errorInfo "intranet-component-procs.tcl" [lang::message::lookup "" intranet-core.ErrCreatingComponent "Error in component '$plugin_name'. This component will not be available"]
 		set component_html ""
 	    }

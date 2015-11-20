@@ -393,7 +393,7 @@ ad_form -extend -name register -on_request {
 	    if {[catch {
 		acs_user::change_state -user_id $user_id -state $member_state
 	    } err_msg]} {
-		ns_log ERROR "intranet-core/www/users/new.tcl - Unable to update member state for user_id: $user_id"
+		ns_log Error "intranet-core/www/users/new.tcl - Unable to update member state for user_id: $user_id"
 	    }
 
 	    # Update Person 

@@ -55,7 +55,7 @@ if { $max_n_bytes && ($filesize > $max_n_bytes) } {
 # Copy the uploaded file into the template filestorage
 # -------------------------------------------------------------------
 
-ns_log NOTICE "intranet-core::users::upload-users-2: Now copying file: $temp_path/$security_token/$upload_file"
+ns_log Notice "intranet-core::users::upload-users-2: Now copying file: $temp_path/$security_token/$upload_file"
 
 # Create tmp path
 set temp_path_list [parameter::get -package_id [apm_package_id_from_key acs-subsite] -parameter "TmpDir" -default "/tmp"]

@@ -1525,14 +1525,14 @@ ad_proc -public im_header {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
-    # ns_log NOTICE "intranet-design-procs:: Browser: $browser, version_major: $version_major"
+    # ns_log Notice "intranet-design-procs:: Browser: $browser, version_major: $version_major"
 
     # Avoid Quirks mode with IE<10 due to missing doctype 
     # DOCTYPE definition might be added to document in multiple places. 
     
     if {[catch {
 	if { "msie" == $browser && $version_major < 10 } {
-	    # ns_log NOTICE "intranet-design-procs:: Setting META TAG" 
+	    # ns_log Notice "intranet-design-procs:: Setting META TAG" 
 	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
 	}
     } err_msg]} {
