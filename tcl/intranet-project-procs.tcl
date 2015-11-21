@@ -3403,3 +3403,36 @@ ad_proc -public im_menu_projects_admin_links {
 
     return $result_list
 }
+
+
+ad_proc -public -callback im_project_new_redirect -impl intranet-core {
+    {-object_id:required}
+    {-status_id ""}
+    {-type_id ""}
+    {-project_id:required}
+    {-parent_id:required}
+    {-company_id:required}
+    {-project_type_id:required}
+    {-project_name:required}
+    {-project_nr:required}
+    {-workflow_key:required}
+    {-return_url:required}
+} {
+    
+    Redirect to CRM opportunity entry form if package is installed 
+
+} {
+    if {[catch {
+	if { 
+	    0 != [db_string get_installed_p "select package_id from apm_packages where package_key = 'intranet-crm-opportunities'" -default 0] &&
+	    102 == $project_type_id
+	    
+	} {
+	    ad_returnredirect "/intranet-crm-opportunities/new"
+	}
+    } err_msg]} {
+	global errorInfo
+	ns_log Error "Redirection failed:" $errorInfo
+	return
+    }
+}
