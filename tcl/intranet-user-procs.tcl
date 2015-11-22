@@ -1528,6 +1528,11 @@ ad_proc -public im_user_nuke {
 	    db_dml bt_patch_actions "update bt_patch_actions set actor = :default_user where actor = :user_id"
 	}
 
+	# contact message log & mail log 
+	db_dml delete_contact_message_log "delete from contact_message_log where recipient_id = :user_id"
+	db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)"
+        db_dml delete_from_maillog "delete from acs_mail_log_recipient_map where recipient_id = :user_id"
+
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
 	foreach rel_id $rels {
 	    db_dml del_rels "delete from group_element_index where rel_id = :rel_id"
