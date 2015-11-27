@@ -10,7 +10,7 @@ ad_page_contract {
 
 set title "[_ intranet-core.Whos_Online]"
 set context [list $title]
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 
 set whos_online_interval [whos_online::interval]
@@ -35,7 +35,7 @@ set not_shown 0
 
 foreach user_id [whos_online::user_ids] {
     acs_user::get -user_id $user_id -array user
-    set first_request_minutes [expr [whos_online::seconds_since_first_request $user_id] / 60]
+    set first_request_minutes [expr {[whos_online::seconds_since_first_request $user_id] / 60}]
     if {![info exists user(first_names)]} { continue }
     set user_name "$user(first_names) $user(last_name)"
     set user_url "/intranet/users/view?user_id=$user_id"

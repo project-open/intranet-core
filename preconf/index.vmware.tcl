@@ -63,7 +63,7 @@ set ip_address "undefined"
 catch {set ip_address [exec /bin/bash -c "/sbin/ifconfig | grep 'inet addr:' | head -1 | cut -d: -f2 | awk '{ print \$1}'"]} ip_address
 
 set total_memory "undefined"
-catch {set total_memory [expr [exec /bin/bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024]} total_memory
+catch {set total_memory [expr {[exec /bin/bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024}]} total_memory
 
 set url "<a href=\"http://$ip_address/\" target=_new>http://$ip_address/</a>\n"
 

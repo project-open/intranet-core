@@ -1,14 +1,14 @@
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="admin_navbar_label">admin_user_exits</property>
 
 
 <form name=user_exits action=invoke method=POST>
-<input type=hidden name=user_exit value="">
+<input type="hidden" name="user_exit" value="">
 
 <table>
-<tr valign=top>
+<tr valign="top">
 <td>
 	<h1>"User Exits"</h1>
 
@@ -37,7 +37,7 @@
 	    </td>
 	    <td class="list-narrow">
 		<if @exits.executable_p@>
-		<input type=submit value="Invoke" onClick="window.document.user_exits.user_exit.value='@exits.exit_name@'; submit();">
+		<input type="submit" value="Invoke" onClick="window.document.user_exits.user_exit.value='@exits.exit_name@'; submit();">
 	        </if>
 	    </td>
 	  </tr>
@@ -56,25 +56,25 @@
 	  <tr>
 	    <td class="list-narrow">User_Id</td>
 	    <td class="list-narrow">
-	      <input type=text name=user_id value=@default_user_id@ size=6>
+	      <input type="text" name="user_id" value="@default_user_id@" size="6">
 	    </td>
 	  </tr>
 	  <tr>
 	    <td class="list-narrow">Project_Id</td>
 	    <td class="list-narrow">
-	      <input type=text name=project_id value=@default_project_id@ size=6>
+	      <input type="text" name="project_id" value="@default_project_id@" size="6">
 	    </td>
 	  </tr>
 	  <tr>
 	    <td class="list-narrow">Company_Id</td>
 	    <td class="list-narrow">
-	      <input type=text name=company_id value=@default_company_id@ size=6>
+	      <input type="text" name="company_id" value="@default_company_id@" size="6">
 	    </td>
 	  </tr>
 	  <tr>
 	    <td class="list-narrow">Trans_Task_Id</td>
 	    <td class="list-narrow">
-	      <input type=text name=trans_task_id value=@default_trans_task_id@ size=6>
+	      <input type="text" name="trans_task_id" value="@default_trans_task_id@" size="6">
 	    </td>
 	  </tr>
 	</table>

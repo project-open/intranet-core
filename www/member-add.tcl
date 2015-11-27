@@ -31,7 +31,7 @@ ad_page_contract {
     { limit_to_users_in_group_id:naturalnum "" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set object_name [db_string object_name_for_one_object_id "select acs_object.name(:object_id) from dual"]
 set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id" -default ""]
 set page_title "[_ intranet-core.lt_Add_new_member_to_obj]"
@@ -67,7 +67,7 @@ if {"" == $role_id} {
 	set role_id $role_map
     } else {
 	# role_map is a list of object_type - role_id
-	if {[expr [llength $role_map] % 2] != 0} {
+	if {[expr {[llength $role_map] % 2}] != 0} {
 	    ad_return_complaint 1 "<b>Member-add: Configuration error</b>:<br>
 	    Parameter 'AddMemberDefaultRoleMap' does not contain an even number of items.<br>
 	    Please contact your system administrator and tell him or her to modifiy the parameter.

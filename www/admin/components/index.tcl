@@ -25,7 +25,7 @@ ad_page_contract {
     { plugin_id ""}
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -186,7 +186,7 @@ db_foreach all_component_of_type $component_select_sql {
     }
 
     append table "
-<tr $bgcolor([expr $ctr % 2])>
+<tr $bgcolor([expr {$ctr % 2}])>
   <td>
     <nobr><a href=\"[export_vars -base "edit" {{return_url $current_url} plugin_id}]\">$plugin_name</a></nobr>
   </td>
@@ -201,11 +201,11 @@ db_foreach all_component_of_type $component_select_sql {
 	set action "add_readable"
 	set letter "r"
         if {$read_p == "t"} {
-            set read "<A href=$toggle_url?object_id=$plugin_id&action=remove_readable&[export_vars -url {horiz_group_id return_url}]><b>R</b></A>\n"
+            set read "<A href=$toggle_url?object_id=$plugin_id&action=remove_readable&[export_vars {horiz_group_id return_url}]><b>R</b></A>\n"
 	    set action "remove_readable"
 	    set letter "<b>R</b>"
         }
-	set read "<A href=$toggle_url?[export_vars -url {horiz_group_id object_id action return_url}]>$letter</A>\n"
+	set read "<A href=[export_vars -base $toggle_url {horiz_group_id object_id action return_url}]>$letter</A>\n"
 
         append table "
   <td align=center>

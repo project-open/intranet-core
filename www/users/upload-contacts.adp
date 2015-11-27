@@ -3,8 +3,8 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">user</property>
 
 
@@ -26,7 +26,7 @@ to "0".
 
 @page_body;noquote@
 
-<table border=0 cellspacing=0 cellpadding=1 width="70%">
+<table border="0" cellspacing="0" cellpadding="1" width="70%">
 <tr><td>
 
 <h3>Import From Microsoft Outlook 2000</h3>

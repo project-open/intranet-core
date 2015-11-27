@@ -39,7 +39,7 @@ ad_page_contract {
 # Defaults & Security
 # ------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 
@@ -47,7 +47,7 @@ set action_url "/intranet/companies/new-2"
 set focus "menu.var_name"
 
 set page_title "[_ intranet-core.Edit_Company]"
-set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list "view?[export_vars -url {company_id}]" "[_ intranet-core.One_company]"] $page_title]
+set context_bar [im_context_bar [list index "[_ intranet-core.Companies]"] [list [export_vars -base view {company_id}] "[_ intranet-core.One_company]"] $page_title]
 
 # Should we bother about State and ZIP fields?
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
@@ -249,7 +249,7 @@ ad_form -extend -name $form_id -select_query {
 	append errors "  <li>[_ intranet-core._The]"
     }
     
-    if { [exists_and_not_null errors] } {
+    if { ([info exists errors] && $errors ne "") } {
 	ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
 	return
     }
@@ -294,10 +294,10 @@ ad_form -extend -name $form_id -select_query {
     # Create a new Company if it didn't exist yet
     # -----------------------------------------------------------------
     
-    if {![exists_and_not_null office_name]} {
+    if {(![info exists office_name] || $office_name eq "")} {
 	set office_name "$company_name [_ intranet-core.Main_Office]"
     }
-    if {![exists_and_not_null office_path]} {
+    if {(![info exists office_path] || $office_path eq "")} {
 	set office_path "$company_path"
     }
     

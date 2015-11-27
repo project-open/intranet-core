@@ -13,13 +13,13 @@ if { "datatable" == $mode} {
 
 set user_id [ad_conn user_id]
 
-set admin_p [ad_permission_p $object_id admin]
+set admin_p [permission::permission_p -object_id $object_id -privilege admin]
 
-if { ![exists_and_not_null return_url] } {
+if { (![info exists return_url] || $return_url eq "") } {
     set return_url [ad_return_url]
 }
 
-if { ![exists_and_not_null privs] } {
+if { (![info exists privs] || $privs eq "") } {
     set privs { read create write admin }
 }
 
@@ -79,9 +79,9 @@ lappend elements remove_all {
 
 
 
-set perm_url "[site_node_closest_ancestor_package_url]permissions/"
+set perm_url "[lindex [site_node::get_url_from_object_id -object_id [site_node::closest_ancestor_package -include_self -package_key [subsite::package_keys]]] 0]permissions/"
 
-if { ![exists_and_not_null user_add_url] } {
+if { (![info exists user_add_url] || $user_add_url eq "") } {
     set user_add_url "${perm_url}perm-user-add"
 }
 set user_add_url [export_vars -base $user_add_url { object_id expanded {return_url "[ad_return_url]"}}]
@@ -89,7 +89,7 @@ set user_add_url [export_vars -base $user_add_url { object_id expanded {return_u
 
 set actions [list "Add user" $user_add_url "Grant permissions to a new user"]
 
-if { ![empty_string_p $context_id] } {
+if { $context_id ne "" } {
     set inherit_p [permission::inherit_p -object_id $object_id]
 
     if { $inherit_p } {
@@ -137,7 +137,7 @@ set application_group_id [application_group::group_id_from_package_id -package_i
 # We do not include site-wide admins in the list
 
 db_multirow -extend { name_url } permissions permissions {} {
-    if { [string equal $object_type "user"] && $grantee_id != 0 } {
+    if { $object_type eq "user" && $grantee_id != 0 } {
         set name_url [acs_community_member_url -user_id $grantee_id]
 }
 }

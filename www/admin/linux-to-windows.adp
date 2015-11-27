@@ -1,12 +1,12 @@
 <master src="master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 
 <h1>Convert Parameters to Windows</h1>
 
-<table cellpadding=0 cellspacing=0 border=0 width="80%">
+<table cellpadding="0" cellspacing="0" border="0" width="80%">
 <tr>
-  <td colspan=2 valign=top>
+  <td colspan="2" valign="top">
 <p>
 This page automates the steps that you would have to take
 manually to run a preconfigured
@@ -21,12 +21,12 @@ installation from Linux with Windows. In particular this command does:
 </tr>
 
 <tr>
-  <td align=left>Server Name</td>
-  <td align=left>
+  <td align="left">Server Name</td>
+  <td align="left">
     <form action=linux-to-windows-2 method=POST>
-    <input type=text name=install_dir value="@install_dir@"> (something like: "c:/project-open" with forward slashes)
+    <input type="text" name="install_dir" value="@install_dir@"> (something like: "c:/project-open" with forward slashes)
     <br>
-    <input type=submit>
+    <input type="submit">
     </form>
   </td>
 </tr>

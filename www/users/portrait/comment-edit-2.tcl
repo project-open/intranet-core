@@ -10,9 +10,9 @@ ad_page_contract {
     { return_url "" }
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
-if [empty_string_p $user_id] {
+if {$user_id eq ""} {
     set user_id $current_user_id
 }
 
@@ -38,7 +38,7 @@ where revision_id = (select live_revision
   and a.object_id_one = :user_id
   and a.rel_type = 'user_portrait_rel')"
 
-if { ![empty_string_p $return_url] } {
+if { $return_url ne "" } {
     ad_returnredirect $return_url
 } else {
     ad_returnredirect [ad_pvt_home]

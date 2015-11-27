@@ -25,7 +25,7 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "Empty"
 
 

@@ -13,7 +13,7 @@ ad_page_contract {
 # Defaults & Security
 # ------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
 if {!$user_is_admin_p} {

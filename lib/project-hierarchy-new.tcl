@@ -115,7 +115,7 @@ set current_url [ns_conn url]
     # Format the List Table Header
 
     # Set up colspan to be the number of headers + 1 for the # column
-    set colspan [expr [llength $column_headers] + 1]
+    set colspan [expr {[llength $column_headers] + 1}]
 
     set table_header_html "<tr>\n"
     foreach col $column_headers {
@@ -144,18 +144,18 @@ set current_url [ns_conn url]
 	set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
 	set subproject_indent ""
 	for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
-	set subproject_bold_p [expr $project_id == $subproject_id]
+	set subproject_bold_p [expr {$project_id == $subproject_id}]
 	set arrow_left_html ""
 	set arrow_right_html ""
 	if {$subproject_bold_p} { set arrow_left_html [im_gif arrow_left]}
 	if {$subproject_bold_p} { set arrow_right_html [im_gif arrow_right]}
 
-	if {[expr $ctr % 2]} {
+	if {[expr {$ctr % 2}]} {
 	    set bgcolo " class=rowodd "
 	} else {
 	    set bgcolo " class=roweven "
 	}
-	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+	set row_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
 	foreach column_var $column_vars {
 	    append row_html "\t<td valign=top><nobr>"
 	    if {$subproject_bold_p} { append row_html "<b>" }

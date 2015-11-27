@@ -20,7 +20,7 @@ ad_page_contract {
     { return_url {[ad_conn url]} }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 
 set page_title "Parameters"
@@ -76,13 +76,13 @@ set ctr 1
 set package_html ""
 db_foreach packages $sql {
     
-    if {![string equal $package_key $old_package_key]} {
+    if {$package_key ne $old_package_key } {
 	
 	append package_html "
 	<tr class=rowplain colspan=99><td>&nbsp;</td></tr>
 	<tr class=roweven>
 	  <td colspan=2>
-	    <b><A HREF=/shared/parameters?[export_vars -url {package_id return_url}]>$package_key</A></b></td>
+	    <b><A HREF=/shared/[export_vars -base parameters {package_id return_url}]>$package_key</A></b></td>
 	  <td><b>$instance_name</b></td>
 	</tr>
 	"
@@ -94,7 +94,7 @@ db_foreach packages $sql {
     if {"" == $parameter_name} { set parameter_name "<i>No parameters</i>" }
     
     append package_html "
-	<tr $bgcolor([expr $ctr % 2])>
+	<tr $bgcolor([expr {$ctr % 2}])>
 	  <td>&nbsp;&nbsp;&nbsp;</td>
 	  <td><b>$parameter_name</b></td>
 	  <td><b>$attr_value</b></td>
@@ -103,7 +103,7 @@ db_foreach packages $sql {
     
     if {![string equal description ""]} {
 	append package_html "
-	<tr $bgcolor([expr $ctr % 2])>
+	<tr $bgcolor([expr {$ctr % 2}])>
 	  <td>&nbsp;&nbsp;&nbsp;</td>
 	  <td colspan=3>$description</td>
 	</tr>

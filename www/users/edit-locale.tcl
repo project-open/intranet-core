@@ -13,9 +13,9 @@ ad_page_contract {
 
 set instance_name [ad_conn instance_name]
 set context_bar [ad_context_bar]
-if { "" == $user_id  } { set user_id [ad_maybe_redirect_for_registration] }
+if { "" == $user_id  } { set user_id [auth::require_login] }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 im_user_permissions $current_user_id $user_id view read write admin
 if {$user_id != $current_user_id && !$write} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient_3]"
@@ -29,10 +29,10 @@ if {$user_id != $current_user_id && !$write} {
 set locale [lang::user::locale -site_wide]
 set language [lang::user::language -site_wide]
 set package_id [ad_conn package_id]
-set admin_p [ad_permission_p $package_id admin]
+set admin_p [permission::permission_p -object_id $package_id -privilege admin]
 
-if { $return_url == "" } { set return_url "/intranet/users/view?user_id=$user_id" }
-set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
+if { $return_url eq "" } { set return_url "/intranet/users/view?user_id=$user_id" }
+set use_timezone_p [expr {[lang::system::timezone_support_p] && [ad_conn user_id]}]
 
 #
 # LARS:
@@ -64,7 +64,7 @@ if { [form is_valid locale] } {
 }
 
 # are we selecting package level locale as well?
-set package_level_locales_p [expr [lang::system::use_package_level_locales_p] && ![empty_string_p $package_id] && $user_id != 0]
+set package_level_locales_p [expr {[lang::system::use_package_level_locales_p] && $package_id ne "" && $user_id != 0}]
 
 if { $package_level_locales_p } {
     element create locale site_wide_explain -datatype text -widget inform -label "&nbsp;" \
@@ -101,7 +101,7 @@ if { [form is_request locale] } {
     }
     
     set site_wide_locale [lang::user::site_wide_locale -user_id $user_id]
-    if { [empty_string_p $site_wide_locale] } {
+    if { $site_wide_locale eq "" } {
         set site_wide_locale [lang::system::site_wide_locale]
     }
 
@@ -111,7 +111,7 @@ if { [form is_request locale] } {
 
     if { $use_timezone_p } {
         set timezone [lang::user::timezone]
-        if { [empty_string_p $timezone] } {
+        if { $timezone eq "" } {
             set timezone [lang::system::timezone]
         }
         element set_properties locale timezone -value $timezone

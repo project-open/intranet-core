@@ -69,7 +69,7 @@ ad_page_contract {
 # 2. Defaults & Security
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set page_title "Offices"
@@ -82,7 +82,7 @@ set user_view_page "/intranet/users/view"
 set office_view_page "/intranet/offices/view"
 set letter [string toupper $letter]
 
-set end_idx [expr $start_idx + $how_many - 1]
+set end_idx [expr {$start_idx + $how_many - 1}]
 
 
 # ---------------------------------------------------------------
@@ -143,7 +143,7 @@ set office_types [linsert $office_types 0 0 All]
 set criteria [list]
 
 set bind_vars [ns_set create]
-if { ![empty_string_p $status_id] && $status_id != 0 } {
+if { $status_id ne "" && $status_id != 0 } {
     ns_set put $bind_vars status_id $status_id
     lappend criteria "o.office_status_id=:status_id"
 }
@@ -153,7 +153,7 @@ if { $type_id > 0 } {
     lappend criteria "o.office_type_id=:type_id"
 }
 
-if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
+if { $letter ne "" && $letter ne "ALL"  && $letter ne "SCROLL"  } {
     lappend criteria "im_first_letter_default_to_a(c.office_name)=:letter"
 }
 
@@ -170,7 +170,7 @@ switch $order_by {
 }
 
 set where_clause [join $criteria " and\n            "]
-if { ![empty_string_p $where_clause] } {
+if { $where_clause ne "" } {
     set where_clause " and $where_clause"
 }
 
@@ -233,7 +233,7 @@ set sql "
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
-if {[string compare $letter "ALL"]} {
+if {$letter ne "ALL" } {
 
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
@@ -298,7 +298,7 @@ if {[im_permission $current_user_id "add_offices"]} {
 # ---------------------------------------------------------------
 
 # Set up colspan to be the number of headers + 1 for the # column
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 # Format the header names with links that modify the
 # sort order of the SQL query.
@@ -306,13 +306,13 @@ set colspan [expr [llength $column_headers] + 1]
 set table_header_html ""
 set url "index?"
 set query_string [export_ns_set_vars url [list order_by]]
-if { ![empty_string_p $query_string] } {
+if { $query_string ne "" } {
     append url "$query_string&"
 }
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
-    if { [string compare $order_by $col] == 0 } {
+    if { $order_by eq $col  } {
 	append table_header_html "  <td class=rowtitle>$col</td>\n"
     } else {
 	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col</a></td>\n"
@@ -332,7 +332,7 @@ set idx $start_idx
 db_foreach projects_info_query $selection {
 
     # Append together a line of data based on the "column_vars" parameter list
-    append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"
+    append table_body_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
@@ -351,7 +351,7 @@ db_foreach projects_info_query $selection {
 ns_log Notice "offices/index: subsite_id=$subsite_id"
 
 # Show a reasonable message when there are no result rows:
-if { [empty_string_p $table_body_html] } {
+if { $table_body_html eq "" } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
         [_ intranet-core.lt_There_are_currently_n]
@@ -361,7 +361,7 @@ if { [empty_string_p $table_body_html] } {
 if { $ctr == $how_many && $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
-    set next_start_idx [expr $end_idx + 1]
+    set next_start_idx [expr {$end_idx + 1}]
     set next_page_url "index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
@@ -370,7 +370,7 @@ if { $ctr == $how_many && $end_idx < $total_in_limited } {
 if { $start_idx > 0 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
-    set previous_start_idx [expr $start_idx - $how_many]
+    set previous_start_idx [expr {$start_idx - $how_many}]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page_url "index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {

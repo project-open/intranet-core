@@ -1,6 +1,6 @@
 <master src="../master">
-<property name="context">@context;noquote@</property>
-<property name="title">#intranet-core.Group_administration#</property>
+<property name="context">@context;literal@</property>
+<property name="doc(title)">#intranet-core.Group_administration#</property>
 <property name="admin_navbar_label">admin_usermatrix</property>
 
 
@@ -14,7 +14,7 @@
 </tr>
 <tr>
   <td>
-    <li><a href="/intranet/admin/profiles/new?group_type_exact_p=t&group_type=im_profile">Add a new profile</a>
+    <li><a href="/intranet/admin/profiles/new?group_type_exact_p=t&amp;group_type=im_profile">Add a new profile</a>
   </td>
 </tr>
 </table>

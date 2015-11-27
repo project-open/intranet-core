@@ -20,7 +20,7 @@
     </tr>
     <tr class=rowodd>
       <td>#intranet-core.Key_Account#</td>
-      <td><a href=@im_url_stub@/users/view?user_id=@manager_id@>@manager;noquote@</a></td>
+      <td><a href="@im_url_stub@/users/view?user_id=@manager_id@">@manager;noquote@</a></td>
     </tr>
     <tr class=rowodd>
       <td>#intranet-core.Phone#</td>
@@ -81,7 +81,7 @@
         </else>  
       </if>
       <else>
-        <a href=/intranet/users/view?user_id=@primary_contact_id@>@primary_contact_name;noquote@</a>
+        <a href="/intranet/users/view?user_id=@primary_contact_id@">@primary_contact_name;noquote@</a>
 	<if @admin@>
 	  (<a href="@primary_contact_url@">@im_gif_turn;noquote@</a> | 
 	  <a href="@primary_contact_delete_url@">@im_gif_delete;noquote@</a>)
@@ -95,14 +95,14 @@
     <td>
       <if @accounting_contact_id_p@ eq 0>
         <if @admin@>
-	  <a href=@accounting_contact_url@>#intranet-core.lt_Add_accounting_contac#</a>
+	  <a href="@accounting_contact_url@">#intranet-core.lt_Add_accounting_contac#</a>
 	</if>
 	<else>
 	  <i>#intranet-core.none#</i>
 	</else>
       </if>
       <else>
-        <a href=/intranet/users/view?user_id=@accounting_contact_id@>@accounting_contact_name;noquote@</a>
+        <a href="/intranet/users/view?user_id=@accounting_contact_id@">@accounting_contact_name;noquote@</a>
 	<if @admin@>
 	    (<a href="@accounting_contact_url@">@im_gif_turn;noquote@</a> 
 	    | <a href="@accounting_delete_url@">@im_gif_delete;noquote@</a>) 

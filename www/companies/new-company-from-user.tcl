@@ -27,7 +27,7 @@ ad_page_contract {
 
 set freelance_id $user_id
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 if {![im_permission $current_user_id add_companies]} {
     ad_return_complaint 1 "<li>[_ intranet-trans-invoices.lt_You_have_insufficient]"
     return

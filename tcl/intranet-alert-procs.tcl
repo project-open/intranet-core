@@ -64,9 +64,9 @@ ad_proc -public im_send_alert {target_id frequency subject {message ""} } {
     }
 
     # Send out the mail
-    if [catch {
+    if {[catch {
         ns_sendmail $email $sender_email $subject $message
-    } errmsg] {
+    } errmsg]} {
         ns_log Notice "im_send_alert: Error sending to \"$email\": $errmsg"
 
 #	ad_return_complaint 1 " Error sending email to '$email':<br>
@@ -162,7 +162,7 @@ ad_proc -public im_security_alert_check_tmpnam {
     here.
 } {
     # Get a correct sample value
-    set ref [ns_tmpnam]
+    set ref [ad_tmpnam]
 
     set value_path [lrange [split $value "/"] 0 end-1]
     set ref_path [lrange [split $ref "/"] 0 end-1]

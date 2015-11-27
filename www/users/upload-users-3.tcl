@@ -81,7 +81,7 @@ ad_proc -private find_user_id {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title ""
 set page_body ""
 set context_bar [im_context_bar $page_title]
@@ -128,10 +128,12 @@ foreach option_value $target {
 	ad_return_complaint 1  [lang::message::lookup "" intranet-core.ErrorImport "Error during import, please contatc your System Adminsitrator"]
 	return
     }
-    lappend index_list [string range $option_value 0 [expr [string first "__" $option_value]-1]]
-    lappend db_field_name_list [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value] ]  
+
+    lappend index_list [string range $option_value 0 [string first "__" $option_value]-1]
+    lappend db_field_name_list [string range $option_value [string first "__" $option_value]+2 [string length $option_value]]  
     ns_log Notice "intranet-users-upload-users-3: [string range $option_value 0 [expr [string first "__" $option_value]-1]]"
     ns_log Notice "intranet-users-upload-users-3: [string range $option_value [expr [string first "__" $option_value] +2] [string length $option_value]]"
+
 }
 
 # ---------------------------------------------------------------
@@ -146,10 +148,10 @@ set hourly_rate_exists_p 0
 
 # ad_return_complaint 1 $db_field_name_list
 
-if { [lsearch -exact $db_field_name_list "user_id"] != -1 } { set user_id_exists_p 1 }
-if { [lsearch -exact $db_field_name_list "email"] != -1 } { set email_exists_p 1 }
-if { [lsearch -exact $db_field_name_list "username"] != -1 } { set user_name_exists_p 1 }
-if { [lsearch -exact $db_field_name_list "hourly_rate"] != -1 } { set hourly_rate_exists_p 1 }
+if {"user_id" in $db_field_name_list} { set user_id_exists_p 1 }
+if {"email" in $db_field_name_list} { set email_exists_p 1 }
+if {"username" in $db_field_name_list} { set user_name_exists_p 1 }
+if {"hourly_rate" in $db_field_name_list} { set hourly_rate_exists_p 1 }
 
 # Index user_id 
 set index_user_id [lsearch -exact $db_field_name_list "user_id"]

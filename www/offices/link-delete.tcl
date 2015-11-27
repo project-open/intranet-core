@@ -31,4 +31,4 @@ db_dml intranet_offices_delete_office_link "delete from im_office_links where li
 
 db_release_unused_handles
 
-ad_returnredirect "view?[export_vars -url {group_id}]"
+ad_returnredirect [export_vars -base view {group_id}]

@@ -32,7 +32,7 @@ ad_page_contract {
 # Defaults & Security
 # -----------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_employee_p [im_user_is_employee_p $user_id]
 
 set return_url [im_url_with_query]
@@ -158,7 +158,7 @@ if {$see_details} {
   <tr class=rowodd><td>[_ intranet-core.Country]</td><td>$country_name</td></tr>
     "
 
-    if {![empty_string_p $site_concept]} {
+    if {$site_concept ne ""} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { set site_concept "http://$site_concept" }
 	append left_column "<tr class=roweven><td>[_ intranet-core.Web_Site]</td><td><A HREF=\"$site_concept\">$site_concept</A></td></tr>\n"
@@ -173,10 +173,10 @@ if {$see_details} {
 
     set primary_contact_text ""
     set limit_to_users_in_group_id [im_employee_group_id]
-    if { [empty_string_p $primary_contact_id] } {
+    if { $primary_contact_id eq "" } {
 	
 	if { $admin } {
-	    set primary_contact_text "<a href=primary-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>Add primary contact</a>\n"
+	    set primary_contact_text "<a href=[export_vars -base primary-contact { company_id limit_to_users_in_group_id}]>Add primary contact</a>\n"
 	} else {
 	    set primary_contact_text "<i>[_ intranet-core.none]</i>"
 	}
@@ -187,7 +187,7 @@ if {$see_details} {
     
 	if { $admin } {
 	    append primary_contact_text "
-	(<a href=primary-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the primary contact"]</a> | <a href=primary-contact-delete?[export_vars -url { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the primary contact"]</a>)\n"
+	(<a href=[export_vars -base primary-contact { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the primary contact"]</a> | <a href=[export_vars -base primary-contact-delete { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the primary contact"]</a>)\n"
 	}
     }
 
@@ -200,10 +200,10 @@ if {$see_details} {
 
     set accounting_contact_text ""
     set limit_to_users_in_group_id [im_employee_group_id]
-    if { [empty_string_p $accounting_contact_id] } {
+    if { $accounting_contact_id eq "" } {
 	
 	if { $admin } {
-	    set accounting_contact_text "<a href=accounting-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[_ intranet-core.lt_Add_accounting_contac]</a>\n"
+	    set accounting_contact_text "<a href=[export_vars -base accounting-contact { company_id limit_to_users_in_group_id}]>[_ intranet-core.lt_Add_accounting_contac]</a>\n"
 	} else {
 	    set accounting_contact_text "<i>[_ intranet-core.none]</i>"
 	}
@@ -212,7 +212,7 @@ if {$see_details} {
 	
 	append accounting_contact_text "<a href=/intranet/users/view?user_id=$accounting_contact_id>$accounting_contact_name</a>"
 	if { $admin } {
-	    append accounting_contact_text "    (<a href=accounting-contact?[export_vars -url { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the accounting contact"]</a> | <a href=accounting-contact-delete?[export_vars -url { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the accounting contact"]</a>)\n"
+	    append accounting_contact_text "    (<a href=[export_vars -base accounting-contact { company_id limit_to_users_in_group_id}]>[im_gif -translate_p 1 turn "Change the accounting contact"]</a> | <a href=[export_vars -base accounting-contact-delete { company_id return_url}]>[im_gif -translate_p 1 delete "Delete the accounting contact"]</a>)\n"
 	}
     }
     
@@ -224,8 +224,8 @@ if {$see_details} {
 # Continuation ...
 # ------------------------------------------------------
 
-    if { ![empty_string_p $note] } {
-	append left_column "<tr $bgcolor([expr $ctr%2])><td>[_ intranet-core.Notes]</td><td><font size=-1>$note</font>\n</td></tr>\n"
+    if { $note ne "" } {
+	append left_column "<tr $bgcolor([expr {$ctr%2}])><td>[_ intranet-core.Notes]</td><td><font size=-1>$note</font>\n</td></tr>\n"
 	incr ctr
     }
 
@@ -259,7 +259,7 @@ if {$see_details} {
 	set value [expr $$var]
 	if {"" != [string trim $value]} {
 	    append left_column "
-		  <tr $bgcolor([expr $ctr%2])>
+		  <tr $bgcolor([expr {$ctr%2}])>
 		    <td>[lang::message::lookup "" intranet-core.$attribute_name $pretty_name]</td>
 		    <td>$value</td>
 		  </tr>
@@ -324,7 +324,7 @@ db_foreach company_list_active_projects $sql  {
 	incr current_level
     } elseif { $llevel < $current_level } {
 	append projects_html "  </ul>\n"
-	set current_level [expr $current_level - 1]
+	set current_level [expr {$current_level - 1}]
     }	
     append projects_html "<li>
 	<a href=../projects/view?project_id=$project_id>$project_nr</a>: 
@@ -334,10 +334,10 @@ db_foreach company_list_active_projects $sql  {
     if {$ctr > $max_projects} { break }
 }
 
-if { [exists_and_not_null level] && $llevel < $current_level } {
+if { ([info exists level] && $level ne "") && $llevel < $current_level } {
     append projects_html "  </ul>\n"
 }	
-if { [empty_string_p $projects_html] } {
+if { $projects_html eq "" } {
     set projects_html "  <li><i>[_ intranet-core.None]</i>\n"
 }
 

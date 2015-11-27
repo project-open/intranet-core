@@ -21,7 +21,7 @@ ad_page_contract {
     { page_url "" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 set page_title [lang::message::lookup "" intranet-core.Add_Stuff "Add Stuff"]
 set context_bar [im_context_bar $page_title]

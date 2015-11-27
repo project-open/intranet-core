@@ -39,9 +39,9 @@ set users_from_ip_sql "
 "
 set items ""
 db_foreach users_from_ip $users_from_ip_sql {
-    append items "<li><a href=\"/intranet/users/view?[export_vars -url {user_id}]\">$user_name</a> ($email)\n"
+    append items "<li><a href=\"/intranet/users/[export_vars -base view {user_id}]\">$user_name</a> ($email)\n"
 }
-if ![empty_string_p $items] {
+if {$items ne ""} {
     append page_body "
     <h3>User Registrations from $hostname</h3>
     <ul>

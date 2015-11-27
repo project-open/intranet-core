@@ -26,14 +26,14 @@ ad_page_contract {
   category_type:optional
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
     return
 }
 
-if { [info exists category_type] && ![empty_string_p $category_type]} {
+if { [info exists category_type] && $category_type ne ""} {
     set category_type_criterion "c.category_type = :category_type"
     set page_title $category_type
 } else {
@@ -58,10 +58,10 @@ db_foreach all_categories_of_type "
 	group by c.category, c.category_id
 	order by n_interested_users desc" {
 
-	    append category_list_html "<li><a href=\"one?[export_vars -url {category_id}]\">$category</a>\n"
+	    append category_list_html "<li><a href=\"[export_vars -base one {category_id}]\">$category</a>\n"
 
     if {$n_interested_users > 0} {
-	append category_list_html " (number of interested users: <a href=\"/admin/users/action-choose?[export_vars -url {category_id}]\">$n_interested_users</a>)\n"
+	append category_list_html " (number of interested users: <a href=\"/admin/users/[export_vars -base action-choose {category_id}]\">$n_interested_users</a>)\n"
     }
 }
 
@@ -81,7 +81,7 @@ doc_return  200 text/html "[ad_admin_header $page_title]
 $category_list_html
 
 <p>
-<li><a href=\"category-add?[export_vars -url {category_type}]\">Add a category of this type</a>
+<li><a href=\"[export_vars -base category-add {category_type}]\">Add a category of this type</a>
 </ul>
 
 [ad_admin_footer]

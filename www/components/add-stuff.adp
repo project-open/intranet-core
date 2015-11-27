@@ -1,6 +1,6 @@
 <master src="../master">
-  <property name="title">@page_title@</property>
-  <property name="context">@context@</property>
+  <property name="doc(title)">@page_title;literal@</property>
+  <property name="context">@context;literal@</property>
   <property name="admin_navbar_label">admin_components</property>
 
 
@@ -39,8 +39,8 @@
 	  </tr>
 	  </multiple>
   <tr>
-    <td colspan=4 align=right>
-      <input type=submit value="<%= [lang::message::lookup "" intranet-core.Add_to_Page "Add to Page"] %>">
+    <td colspan="4" align="right">
+      <input type="submit" value="<%= [lang::message::lookup "" intranet-core.Add_to_Page "Add to Page"] %>">
     </td>
   </tr>
 </table>

@@ -61,7 +61,7 @@
 	<div id="monitor_frame">
 	   <div id="header_class">
 	      <div id="header_logo">
-		<a href="http://www.project-open.com/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border=0></a>
+		<a href="http://www.project-open.com/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border="0"></a>
 	      </div>
 	      <div id="header_plugin_left">	 
 	      </div>
@@ -98,7 +98,7 @@
 		  </div>
 		  <div id="main_portrait_and_username">
 		  <div id="main_portrait">
-		    <img width=98 height=98 src="/intranet/images/anon_portrait.gif" border=0 title="Portrait" alt="Portrait">
+		    <img width=98 height=98 src="/intranet/images/anon_portrait.gif" border="0" title="Portrait" alt="Portrait">
 		  </div>
 		  <p id="main_username">
 		    Welcome, Unregistered Visitor
@@ -176,13 +176,13 @@
 document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" >');
 </script>
 
-<table width="100%" border=0 cellspacing="6" cellpadding="6">
+<table width="100%" border="0" cellspacing="6" cellpadding="6">
 <tr valign="top">
 	<td colspan="2">
 	Please take a moment to complete this form to help us improve our service.
 	</td>
 </tr>
-<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top"><td colspan="2"></td></tr>
 <tr valign="top">
 	<td width="100"><p>Did this page help you to achieve your goal?</p></td>
 	<td width="303">
@@ -195,7 +195,7 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 		</table>
 	</td>
 </tr>
-<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top"><td colspan="2"></td></tr>
 <tr valign="top">
 	<td><p style="font-size:9px;">Please provide us with comments to improve this page:</p></td>
 	<td>
@@ -206,7 +206,7 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 		</table>
 	</td>
 </tr>
-<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top"><td colspan="2"></td></tr>
 <tr valign="top">
 	<td><p>How useful is the information?</p></td>
 	<td>
@@ -228,10 +228,10 @@ document.write('<input type="hidden" name="response_to_question.@url_question_id
 		</table>
 	</td>
 </tr>
-<tr valign="top"><td colspan=2></td></tr>
+<tr valign="top"><td colspan="2"></td></tr>
 <tr valign="top">
 	<td>&nbsp;</td>
-	<td><input type=submit name=Submit value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></td>
+	<td><input type="submit" name="Submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></td>
 
 </tr>
 </table>

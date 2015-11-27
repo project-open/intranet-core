@@ -9,7 +9,7 @@ ad_page_contract {
     { return_url "index" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "Restore"
 set context_bar [im_context_bar $page_title]
 set context ""
@@ -49,7 +49,7 @@ db_foreach foreach_report $sql {
 
     eval $cmd
 
-#    if [catch { eval $cmd } errmsg] {
+#    if {[catch { eval $cmd } errmsg]} {
 #	append page_body "<pre>$errmsg</pre>\n"
 #    }
     incr ctr

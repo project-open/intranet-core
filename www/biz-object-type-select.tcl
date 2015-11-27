@@ -98,7 +98,7 @@ set pass_through_html ""
 foreach var $pass_through_variables {
    set value [ns_set get $form_vars $var]
    append pass_through_html "
-	<input type=hidden name=\"$var\" value=\"[ad_quotehtml $value]\">
+	<input type=hidden name=\"$var\" value=\"[ns_quotehtml $value]\">
    "
 }
 
@@ -159,8 +159,8 @@ while {$modified} {
 	set c [lindex $rel 1]
 	set parent_level $level($p)
 	set child_level $level($c)
-	if {[expr $parent_level+1] > $child_level} {
-	    set level($c) [expr $parent_level+1]
+	if {[expr {$parent_level+1}] > $child_level} {
+	    set level($c) [expr {$parent_level+1}]
 	    set direct_parent($c) $p
 	    set modified 1
 	}

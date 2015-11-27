@@ -26,7 +26,7 @@ ad_page_contract {
     { return_url "" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -67,7 +67,7 @@ db_0or1row category_properties "
 		c.plugin_id = :plugin_id
 "
 
-# if [catch { } errmsg] {
+# if {[catch { } errmsg]} {
 #     ad_return_complaint 1 "<li>Internal Error<br>
 #         Component \#$plugin_id does not exist (anymore)"
 #     ad_script_abort

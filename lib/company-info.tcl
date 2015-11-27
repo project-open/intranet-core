@@ -11,7 +11,7 @@ ad_page_contract {
 # Defaults & Security
 # -----------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_employee_p [im_user_is_employee_p $user_id]
 
 set return_url [im_url_with_query]
@@ -77,7 +77,7 @@ if {$see_details} {
     set im_url_stub [im_url_stub]
 
 
-    if {![empty_string_p $site_concept]} {
+    if {$site_concept ne ""} {
 	# Add a "http://" before the web site if it starts with "www."...
 	if {[regexp {www\.} $site_concept]} { 
 	    set site_concept "http://$site_concept" 
@@ -92,7 +92,7 @@ if {$see_details} {
     set primary_contact_text ""
     set limit_to_users_in_group_id [im_employee_group_id]
     set primary_contact_id_p 1
-    if { [empty_string_p $primary_contact_id] } {
+    if { $primary_contact_id eq "" } {
 	set primary_contact_id_p 0
 	
 	if { $admin } {
@@ -120,7 +120,7 @@ if {$see_details} {
     set accounting_contact_text ""
     set limit_to_users_in_group_id [im_employee_group_id]
     set accounting_contact_id_p 1
-    if { [empty_string_p $accounting_contact_id] } {
+    if { $accounting_contact_id eq "" } {
 	
 	set accounting_contact_id_p 0
 	if { $admin } {
@@ -145,9 +145,9 @@ if {$see_details} {
     # Continuation ...
     # ------------------------------------------------------
     set note_p 0
-    if { ![empty_string_p $note] } {
+    if { $note ne "" } {
 	set note_p 1
-	if {[expr $ctr % 2]} {
+	if {[expr {$ctr % 2}]} {
 	    set bgcolor " class=rowodd "
 	} else {
 	    set bgcolor " class=roweven "
@@ -167,7 +167,7 @@ if {$see_details} {
 	
 	if {"" != [string trim $value]} {
 	    set value_p 1
-	    if {[expr $ctr % 2]} {
+	    if {[expr {$ctr % 2}]} {
 		set bgcolor " class=rowodd "
 	    } else {
 		set bgcolor " class=roweven "

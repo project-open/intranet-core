@@ -28,7 +28,7 @@ ad_page_contract {
 # Security and Defaults
 #--------------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set current_user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 if {!$current_user_admin_p} {
@@ -36,7 +36,7 @@ if {!$current_user_admin_p} {
     return
 }
 
-if {[string equal "" $return_url]} {
+if {$return_url eq ""} {
     set return_url "/intranet/users/view?user_id=$user_id"
 }
 

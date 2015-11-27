@@ -44,7 +44,7 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]

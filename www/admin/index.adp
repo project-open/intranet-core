@@ -1,13 +1,13 @@
 <master src="master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 
 <!-- left - right - bottom  design -->
 <br>
 
-<table cellpadding=0 cellspacing=0 border=0 width="100%">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-  <td valign=top>
+  <td valign="top">
 
     <H2>Documentation</H2>
     <ul>
@@ -27,7 +27,7 @@
 	<A href="/intranet/admin/auto_login">Auto-Login Backup Configuration</a><br>
 	Returns the address to download a backup remotely.
       <li>
-	<A href=/cms/">Content Management Home</a><br>
+	<A href="/cms/"">Content Management Home</a><br>
 	This module is used as part of the Wiki and CRM packages.
 
     </ul>
@@ -42,7 +42,7 @@
 <h2><font color=red>#intranet-core.Dangerous#</font></h2>
     <ul>
 	<li>
-	  <a href=/intranet/admin/cleanup-demo/>Cleanup Demo Data</a><br>
+	  <a href="/intranet/admin/cleanup-demo/">Cleanup Demo Data</a><br>
 	  This menu allows you to delete all the data in the system and leaves
 	  the database completely empty, except for master data, 
 	  permissions and the administrator accounts. <br>
@@ -51,14 +51,14 @@
 	  be used otherwise.<br>&nbsp;<br>
 
 	<li>
-	  <a href=/intranet/admin/ltc-import/>Import data from LTC-Organiser</a><br>
+	  <a href="/intranet/admin/ltc-import/">Import data from LTC-Organiser</a><br>
 	  This wizard allows you to import data from the MS-Access 
 	  based LTC-Organiser into 
 	  <span class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></span>.
 	  <br>&nbsp;<br>
 
 	<li>
-	  <a href=/intranet/admin/windows-to-linux>Convert parameters from Windows to Linux</a><br>
+	  <a href="/intranet/admin/windows-to-linux">Convert parameters from Windows to Linux</a><br>
           Use this if you have imported a backup dump from a Windows system
 	  to this Linux system.
 	  This script simplemented sets the operating specific parameters
@@ -69,19 +69,19 @@
 	  <br>&nbsp;<br>
 
 	<li>
-	  <a href=/intranet/admin/linux-to-windows>Convert parameters from Linux to Windows</a><br>
+	  <a href="/intranet/admin/linux-to-windows">Convert parameters from Linux to Windows</a><br>
           The reverse of the command above. 
 	  <br>&nbsp;<br>
 
 	<li>
-	  <a href=/intranet/anonymize>#intranet-core.lt_Anonymize_this_server#</a>
+	  <a href="/intranet/anonymize">#intranet-core.lt_Anonymize_this_server#</a>
     </ul>
 
 
 
   </td>
 
-  <td valign=top width="400px">
+  <td valign="top" width="400px">
     <%= [im_component_bay right] %>
     @admin_guide_html;noquote@
 
@@ -90,7 +90,7 @@
 </table><br>
 
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
 <%= [im_component_bay bottom] %>
 </td></tr>

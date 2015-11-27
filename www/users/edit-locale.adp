@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">#intranet-core.Users#</property>
+<property name="doc(title)">#intranet-core.Users#</property>
 <property name="main_navbar_label">user</property>
 
 

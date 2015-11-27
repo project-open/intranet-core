@@ -186,8 +186,8 @@ ad_proc -public im_project_permissions {
     
     # Admin permissions to global + intranet admins + group administrators
     if {$debug} { ns_log Notice "im_project_permissions: user_admin_p" }
-    set user_admin_p [expr $user_is_admin_p || $user_is_project_manager_p]
-    set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+    set user_admin_p [expr {$user_is_admin_p || $user_is_project_manager_p}]
+    set user_admin_p [expr {$user_admin_p || $user_is_wheel_p}]
 
     set write $user_admin_p
     set admin $user_admin_p
@@ -369,13 +369,13 @@ namespace eval im_project {
 		end;
 	"
 
-        if { [empty_string_p $creation_date] } {
+        if { $creation_date eq "" } {
 	    set creation_date [db_string get_sysdate "select sysdate from dual" -default 0]
         }
-        if { [empty_string_p $creation_user] } {
+        if { $creation_user eq "" } {
             set creation_user [auth::get_user_id]
         }
-        if { [empty_string_p $creation_ip] } {
+        if { $creation_ip eq "" } {
             set creation_ip [ns_conn peeraddr]
         }
 
@@ -438,13 +438,13 @@ ad_proc -public im_next_project_nr {
 
     # Adjust the position of the start of date and nr in the invoice_nr
     set date_format_len [string length $date_format]
-    set nr_start_idx [expr 1+$date_format_len]
+    set nr_start_idx [expr {1+$date_format_len}]
     set date_start_idx 1
 
     set num_check_sql ""
     set zeros ""
     for {set i 0} {$i < $nr_digits} {incr i} {
-	set digit_idx [expr 1 + $i]
+	set digit_idx [expr {1 + $i}]
 	append num_check_sql "
 		and ascii(substr(p.nr,$digit_idx,1)) > 47 
 		and ascii(substr(p.nr,$digit_idx,1)) < 58
@@ -468,12 +468,12 @@ ad_proc -public im_next_project_nr {
 	set date_format "${parent_project_nr}_"
 	set todate $date_format
 	set date_format_len [string length $date_format]
-	set nr_start_idx [expr 1+$date_format_len]
+	set nr_start_idx [expr {1+$date_format_len}]
 	set date_start_idx 1
 	set zeros ""
 	set num_check_sql ""
 	for {set i 0} {$i < $nr_digits} {incr i} {
-	    set digit_idx [expr 1 + $i]
+	    set digit_idx [expr {1 + $i}]
 	    append num_check_sql "
 		and ascii(substr(p.nr,$digit_idx,1)) > 47 
 		and ascii(substr(p.nr,$digit_idx,1)) < 58
@@ -499,8 +499,8 @@ ad_proc -public im_next_project_nr {
 
     set last_project_nr [db_string max_project_nr $sql -default $zeros]
     set last_project_nr [string trimleft $last_project_nr "0"]
-    if {[empty_string_p $last_project_nr]} { set last_project_nr 0 }
-    set next_number [expr $last_project_nr + 1]
+    if {$last_project_nr eq ""} { set last_project_nr 0 }
+    set next_number [expr {$last_project_nr + 1}]
 
     # ----------------------------------------------------
     # Put together the new project_nr
@@ -532,23 +532,23 @@ ad_proc -public im_format_project_duration { words {lines ""} {hours ""} {days "
 } {
     set result $words
     set pending ""
-    if {![string equal $words ""]} {
+    if {$words ne "" } {
 	set pending "W, "
     }
 
-    if {![string equal $lines ""]} {
+    if {$lines ne "" } {
 	append result "${pending}${lines}L"
 	set pending ", "
     }
-    if {![string equal $hours ""]} {
+    if {$hours ne "" } {
 	append result "${pending}${hours}H"
 	set pending ", "
     }
-    if {![string equal $days ""]} {
+    if {$days ne "" } {
 	append result "${pending}${days}D"
 	set pending ", "
     }
-    if {![string equal $units ""]} {
+    if {$units ne "" } {
 	append result "${pending}${units}U"
 	set pending ""
     }
@@ -837,12 +837,12 @@ ad_proc -public im_project_options {
     # Compose the SQL
 
     set p_where_clause [join $p_criteria " and\n\t\t\t\t\t"]
-    if { ![empty_string_p $p_where_clause] } {
+    if { $p_where_clause ne "" } {
 	set p_where_clause " and $p_where_clause"
     }
 
     set main_p_where_clause [join $p_criteria " and\n\t\t\t\t\t"]
-    if { ![empty_string_p $main_p_where_clause] } {
+    if { $main_p_where_clause ne "" } {
 	set main_p_where_clause " and $main_p_where_clause"
     }
 
@@ -1011,7 +1011,7 @@ ad_proc -public im_project_select {
     @param main_projects_maxdepth: Determine the maxdepth if exclude_subprojects_p=1
 } {
 
-    if { ![empty_string_p $status] } {
+    if { $status ne "" } {
 	if {"" != $project_status_id} { ad_return_complaint 1 "im_project_select: duplicate 'status' parameter" }
 	set project_status_id [db_string stat "
 		select	category_id 
@@ -1021,7 +1021,7 @@ ad_proc -public im_project_select {
 	" -default ""]
     }
     
-    if { ![empty_string_p $exclude_status] } {
+    if { $exclude_status ne "" } {
 	if {"" != $exclude_status_id} { ad_return_complaint 1 "im_project_select: duplicate 'exclude_status' parameter" }
 	set exclude_status_id [db_string stat "
 		select	category_id 
@@ -1031,7 +1031,7 @@ ad_proc -public im_project_select {
 	" -default ""]
     }
 	
-    if { ![empty_string_p $type] } {
+    if { $type ne "" } {
 	set project_type_id [db_string typ "
 		select	category_id 
 		from	im_categories
@@ -1057,7 +1057,7 @@ ad_proc -public im_project_select {
         set value [lindex $option 0]
         set id [lindex $option 1]
 
-	if { [string equal $id $project_id] } {
+	if {$id eq $project_id} {
 	    append options_html "\t\t<option selected=\"selected\" value=\"$id\">$value</option>\n"
 	} else {
 	    append options_html "\t\t<option value=\"$id\">$value</option>\n"	
@@ -1135,17 +1135,17 @@ ad_proc -public im_project_personal_active_projects_component {
     # Generate SQL Query
 
     set extra_select [join $extra_selects ",\n\t"]
-    if { ![empty_string_p $extra_select] } {
+    if { $extra_select ne "" } {
 	set extra_select ",\n\t$extra_select"
     }
 
     set extra_from [join $extra_froms ",\n\t"]
-    if { ![empty_string_p $extra_from] } {
+    if { $extra_from ne "" } {
 	set extra_from ",\n\t$extra_from"
     }
 
     set extra_where [join $extra_wheres "and\n\t"]
-    if { ![empty_string_p $extra_where] } {
+    if { $extra_where ne "" } {
 	set extra_where "and\n\t$extra_where"
     }
 
@@ -1207,7 +1207,7 @@ ad_proc -public im_project_personal_active_projects_component {
     # Format the List Table Header
 
     # Set up colspan to be the number of headers + 1 for the # column
-    set colspan [expr [llength $column_headers] + 1]
+    set colspan [expr {[llength $column_headers] + 1}]
 
     set table_header_html "<tr class=\"tableheader\">\n"
     foreach col $column_headers {
@@ -1229,14 +1229,14 @@ ad_proc -public im_project_personal_active_projects_component {
     db_foreach personal_project_query $personal_project_query {
 
 	set url [im_maybe_prepend_http $url]
-	if { [empty_string_p $url] } {
+	if { $url eq "" } {
 	    set url_string "&nbsp;"
 	} else {
 	    set url_string "<a href=\"$url\">$url</a>"
 	}
 	
 	# Append together a line of data based on the "column_vars" parameter list
-	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+	set row_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
 	foreach column_var $column_vars {
 	    append row_html "\t<td valign=top>"
 	    set cmd "append row_html $column_var"
@@ -1250,7 +1250,7 @@ ad_proc -public im_project_personal_active_projects_component {
     }
 
     # Show a reasonable message when there are no result rows:
-    if { [empty_string_p $table_body_html] } {
+    if { $table_body_html eq "" } {
 
 	# Let the component disappear if there are no projects...
 	if {!$show_empty_project_list_p} { return "" }
@@ -1411,7 +1411,7 @@ ad_proc im_project_clone {
 					  -clone_timesheet_task_dependencies_p $clone_timesheet_task_dependencies_p \
 					  -clone_trans_tasks_p $clone_trans_tasks_p \
 					  -clone_target_languages_p $clone_target_languages_p \
-					  -clone_level [expr $clone_level + 1] \
+					  -clone_level [expr {$clone_level + 1}] \
 					  -company_id $company_id \
 					  -new_parent_project_id $new_parent_project_id \
 					  $sub_project_id \
@@ -1478,7 +1478,7 @@ ad_proc im_project_clone {
 				    -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 				    -clone_trans_tasks_p $clone_trans_tasks_p \
 				    -clone_target_languages_p $clone_target_languages_p \
-				    -clone_level [expr $clone_level +1] \
+				    -clone_level [expr {$clone_level +1}] \
 				    -company_id $company_id \
 				    $task_id \
 				    $sub_task_name \
@@ -3110,7 +3110,7 @@ ad_proc -public im_personal_todo_component {
 
     set extra_select [join $extra_selects ",\n\t"]
     set extra_where [join $extra_wheres "and\n\t"]
-    if { ![empty_string_p $extra_where] } {
+    if { $extra_where ne "" } {
 	set extra_where "and\n\t$extra_where"
     }
 
@@ -3206,7 +3206,7 @@ ad_proc -public im_personal_todo_component {
     # Format the List Table Header
 
     # Set up colspan to be the number of headers + 1 for the # column
-    set colspan [expr [llength $column_headers] + 1]
+    set colspan [expr {[llength $column_headers] + 1}]
 
     set table_header_html "<tr>\n"
     foreach col $column_headers {
@@ -3228,14 +3228,14 @@ ad_proc -public im_personal_todo_component {
     db_foreach personal_tasks_query $personal_tasks_query {
 
 	set url [im_maybe_prepend_http $url]
-	if { [empty_string_p $url] } {
+	if { $url eq "" } {
 	    set url_string "&nbsp;"
 	} else {
 	    set url_string "<a href=\"$url\">$url</a>"
 	}
 	
 	# Append together a line of data based on the "column_vars" parameter list
-	set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+	set row_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
 	foreach column_var $column_vars {
 	    append row_html "\t<td valign=top>"
 	    set cmd "append row_html $column_var"
@@ -3249,7 +3249,7 @@ ad_proc -public im_personal_todo_component {
     }
 
     # Show a reasonable message when there are no result rows:
-    if { [empty_string_p $table_body_html] } {
+    if { $table_body_html eq "" } {
 
 	# Let the component disappear if there are no projects...
 	if {!$show_empty_project_list_p} { return "" }
@@ -3330,10 +3330,10 @@ ad_proc -public im_project_gantt_main_project {
     if {$pe - $ps <= 0} { return "" }
     if {$te - $ts <= 0} { return "" }
 
-    set left_space_width [expr int($w * ($ps - $ts) / ($te - $ts))]
-    set bar_width [expr int($w * ($pe - $ps) / ($te - $ts))]
-    set bar_width_m2 [expr $bar_width - 2]
-    set right_space_width [expr $w - $left_space_width - 1 - $bar_width - 1]
+    set left_space_width [expr {int($w * ($ps - $ts) / ($te - $ts))}]
+    set bar_width [expr {int($w * ($pe - $ps) / ($te - $ts))}]
+    set bar_width_m2 [expr {$bar_width - 2}]
+    set right_space_width [expr {$w - $left_space_width - 1 - $bar_width - 1}]
 
     # Format the result
     set ls "<img src=$base/gantt_empty_1.gif height=13 width=$left_space_width>"
@@ -3348,7 +3348,7 @@ ad_proc -public im_project_gantt_main_project {
     }
 
     # Longer project - show round corners
-    set bar_width_m8 [expr $bar_width - 8]
+    set bar_width_m8 [expr {$bar_width - 8}]
     set lb "<img src=$base/gantt_left_nobar_4.gif height=13 width=4>"
     set rb "<img src=$base/gantt_right_nobar_4.gif height=13 width=4>"
     set mm "<img src=$base/gantt_middle_nobar_1.gif height=13 width=$bar_width_m8>"

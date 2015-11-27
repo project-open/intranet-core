@@ -1,16 +1,16 @@
 <master>
-<property name="title">#intranet-core.Home#</property>
+<property name="doc(title)">#intranet-core.Home#</property>
 <property name="main_navbar_label">home</property>
-<property name="left_navbar">@left_navbar_html;noquote@</property>
-<property name="sub_navbar">@sub_navbar;noquote@</property>
-<property name="header_stuff">@header_stuff;noquote@</property>
-<property name="show_context_help_p">@show_context_help_p;noquote@</property>
+<property name="left_navbar">@left_navbar_html;literal@</property>
+<property name="sub_navbar">@sub_navbar;literal@</property>
+<property name="header_stuff">@header_stuff;literal@</property>
+<property name="show_context_help_p">@show_context_help_p;literal@</property>
 
 <% if {"" == $view_name || [string equal $view_name "standard"]} { %>
 
-<table cellpadding=0 cellspacing=0 border=0 width="100%">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-  <td colspan=3>
+  <td colspan="3">
     <%= [im_component_bay top] %>
   </td>
 </tr>
@@ -30,7 +30,7 @@
   </td>
 </tr>
 <tr>
-  <td colspan=3>
+  <td colspan="3">
     <%= [im_component_bay bottom] %>
   </td>
 </tr>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">companies</property>
 
 
@@ -27,7 +27,7 @@ who've flooded a site with fake crud.
 
 <center>
 <form method=get action=nuke-2>
-<input type=hidden name=company_id value="@company_id@">
-<input type=submit value="Yes I am sure that I want to delete this @object_type@">
+<input type="hidden" name="company_id" value="@company_id@">
+<input type="submit" value="Yes I am sure that I want to delete this @object_type@">
 </form>
 </center>

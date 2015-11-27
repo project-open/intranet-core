@@ -6,13 +6,13 @@
 	<td class=form-label>#intranet-core.Filter_Status#</td>
         <td class=form-widget>
 	  @category_select;noquote@
-	  <input type=submit value="Go">
+	  <input type="submit" value="Go">
 	</td>
       </tr>
     </form>
   </table>
 </if>
-<table cellpadding=2 cellspacing=2 border=0>
+<table cellpadding="2" cellspacing="2" border="0">
   <tr>
     <td class=rowtitle>@col_txt;noquote@</td>
   </tr>

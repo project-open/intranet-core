@@ -35,10 +35,10 @@
 <div id="slave">
 <div id="fullwidth-list-no-side-bar" class="fullwidth-list-no-side-bar" style="visibility: visible;">
 
-<table cellSpacing=2 cellPadding=2 width="100%" border=0>
-<tr valign=top>
+<table cellSpacing=2 cellPadding=2 width="100%" border="0">
+<tr valign="top">
 	<td>
-	<table cellSpacing=1 cellPadding=1 border=0>
+	<table cellSpacing=1 cellPadding=1 border="0">
 		<tr>
 		<td class=tableheader><b>Intranet Login</b></td></tr>
 		</tr>
@@ -52,7 +52,7 @@
 </tr>
 </table>
 
-<table cellSpacing=0 cellPadding=5 width="100%" border=0>
+<table cellSpacing=0 cellPadding=5 width="100%" border="0">
   <tr><td>
 	<br><br><br>
     Comments? Contact: 

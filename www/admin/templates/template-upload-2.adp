@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="context">@context_bar@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">projects</property>
 
 <p><strong> <%=[lang::message::lookup "" intranet-core.Upload_Successful "Upload Successful"]%></strong></p>

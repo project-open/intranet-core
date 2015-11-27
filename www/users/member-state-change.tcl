@@ -65,13 +65,13 @@ switch $email_verified_p {
     }
     "f" {
 	set action "Require Email from $name"
-	#	set email_message "Your email in [ad_system_name] needs approval. please go to [ad_url]/register/email-confirm?[export_vars -url { row_id}]"
+	#	set email_message "Your email in [ad_system_name] needs approval. please go to [ad_url]/register/[export_vars -base email-confirm { row_id}]"
 	set email_message "Your email in [ad_system_name] needs approval."
 
     }
 }
 
-if [empty_string_p $action] {
+if {$action eq ""} {
     ad_return_complaint 1 "Not valid action: You have not changed the user in any way"
     return
 }
@@ -94,19 +94,19 @@ if {[catch {
     <pre>$errmsg</pre>"
 }
 
-set admin_user_id [ad_verify_and_get_user_id]
+set admin_user_id [ad_conn user_id]
 set email_from [db_string admin_email "select email from parties where party_id = :admin_user_id"]
 set subject "$action"
 set message $email_message
 
-if [empty_string_p $return_url] {
-    set return_url "/acs-admin/users/one?[export_vars -url { user_id}]"
+if {$return_url eq ""} {
+    set return_url [export_vars -base /acs-admin/users/one { user_id}]
 } else {
     ad_returnredirect $return_url
     ad_script_abort
 }
 
 set context [list [list "./" "Users"] "$action"]
-set export_vars [export_vars -url { email email_from subject message return_url}]
+set export_vars [export_vars { email email_from subject message return_url}]
 
 ad_return_template

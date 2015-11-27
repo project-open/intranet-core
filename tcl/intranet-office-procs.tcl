@@ -76,7 +76,7 @@ where
 	# security check.
 	set admin [im_permission $user_id edit_internal_offices]
 	set write $admin
-	set read [expr $admin || [im_permission $user_id view_internal_offices]]
+	set read [expr {$admin || [im_permission $user_id view_internal_offices]}]
 	set view $read
     } else {
 	
@@ -94,9 +94,9 @@ where
     # Internal office: Allow employees to see the offices and
     # Senior Managers to change them (or similar, as defined
     # in the permission module)
-    if {[string equal "internal" $company_type]} {
-	set admin [expr $admin || [im_permission $user_id edit_internal_offices]]
-	set read [expr $read || [im_permission $user_id view_internal_offices]]
+    if {"internal" eq $company_type} {
+	set admin [expr {$admin || [im_permission $user_id edit_internal_offices]}]
+	set read [expr {$read || [im_permission $user_id view_internal_offices]}]
 
 	if {$user_is_office_admin_p} { set admin 1 }
 	if {$user_is_office_member_p} { set read 1}
@@ -246,13 +246,13 @@ namespace eval im_office {
 	@param others The default optional parameters for OpenACS
 	       objects    
     } {
-	if { [empty_string_p $creation_date] } {
+	if { $creation_date eq "" } {
 	    set creation_date [db_string get_sysdate "select sysdate from dual"]
         }
-        if { [empty_string_p $creation_user] } {
+        if { $creation_user eq "" } {
             set creation_user [auth::get_user_id]
         }
-        if { [empty_string_p $creation_ip] } {
+        if { $creation_ip eq "" } {
             set creation_ip [ns_conn peeraddr]
         }
 
@@ -321,8 +321,8 @@ namespace eval im_office {
 
 	# Loop through all members and check if we have to delete of create new group memberships
 	foreach uid $all_members {
-	    set biz_member_p [expr [lsearch $biz_object_members $uid] > -1]
-	    set group_member_p [expr [lsearch $group_members $uid] > -1]
+	    set biz_member_p [expr {[lsearch $biz_object_members $uid] > -1}]
+	    set group_member_p [expr {[lsearch $group_members $uid] > -1}]
 	    ns_log Notice "im_office::office_group_sweeper: uid=$uid, biz_member_p=$biz_member_p, group_member_p=$group_member_p"
 
 	    if {$biz_member_p && !$group_member_p} {
@@ -397,7 +397,7 @@ ad_proc -public im_office_company_component { user_id company_id } {
     set ctr 1
     db_foreach office_list $sql {
 	append component_html "
-		<tr$bgcolor([expr $ctr % 2])>
+		<tr$bgcolor([expr {$ctr % 2}])>
 		  <td>
 		    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
 		  </td>
@@ -481,7 +481,7 @@ ad_proc -public im_office_user_component {
     set ctr 1
     db_foreach office_list $sql {
 	append component_html "
-		<tr$bgcolor([expr $ctr % 2])>
+		<tr$bgcolor([expr {$ctr % 2}])>
 		  <td>
 		    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
 		  </td>

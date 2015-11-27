@@ -9,7 +9,7 @@ if {0 == $user_id} {
     # Just continue and show his data...
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set current_url [im_url_with_query]
 
 # Check the permissions 
@@ -41,7 +41,7 @@ if { $result > 1 } {
 # Administration
 # ---------------------------------------------------------------
 
-if { [info exists registration_ip] && ![empty_string_p $registration_ip] } {
+if { [info exists registration_ip] && $registration_ip ne "" } {
     set registration_ip_link "<a href=/intranet/admin/host?ip=[ns_urlencode $registration_ip]>$registration_ip</a>"
 }
 
@@ -58,15 +58,15 @@ set activate_delete_link ""
 if {$admin} {
     append activate_delete_link "("
     if { "approved" != $member_state } {
-	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars -url {user_id return_url}]>[_ intranet-core.activate]</a>"
+	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars {user_id return_url}]>[_ intranet-core.activate]</a>"
     }
     if { "banned" != $member_state } {
-	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars -url {user_id return_url}]>[_ intranet-core.delete]</a>"	
+	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars {user_id return_url}]>[_ intranet-core.delete]</a>"	
     } 
     append activate_delete_link ")"
 }
 
-set change_pwd_url "/intranet/users/password-update?[export_vars -url {user_id return_url}]"
+set change_pwd_url [export_vars -base /intranet/users/password-update {user_id return_url}]
 set new_company_from_user_url [export_vars -base "/intranet/companies/new-company-from-user" {{user_id $user_id_from_search}}]
 
 

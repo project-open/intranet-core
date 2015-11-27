@@ -17,7 +17,7 @@ ad_page_contract {
 set page_title "Invoke User Exit"
 set context_bar [im_context_bar $page_title]
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "You have insufficient privileges to use this page"
@@ -44,7 +44,7 @@ foreach user_exit_def $user_exit_list {
     set user_exit_name [lindex $user_exit_def 0]
     set user_exit_param1 [lindex $user_exit_def 1]
 
-    if {[string equal $user_exit $user_exit_name]} {
+    if {$user_exit eq $user_exit_name} {
 	catch {
 	    set object_id [expr \$$user_exit_param1]
 	} errmsg

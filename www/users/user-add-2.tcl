@@ -31,12 +31,12 @@ ad_page_contract {
 }
 
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 if {![im_permission $current_user_id add_users]} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
     return
 }
-set admin_user_id [ad_verify_and_get_user_id]
+set admin_user_id [ad_conn user_id]
 db_1row user_info "
 	select	first_names, last_name, email, creation_user
 	from	cc_users
@@ -51,7 +51,7 @@ if {$creation_user != $admin_user_id} {
 
 
 
-if { [empty_string_p $password] } {
+if { $password eq "" } {
     set password [ad_generate_random_string]
 }
 

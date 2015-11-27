@@ -93,10 +93,10 @@ ad_proc -public im_user_permissions {
 	    set admin 1
 	}
 
-	if {[string equal f $view_p]} { set view 0 }
-	if {[string equal f $read_p]} { set read 0 }
-	if {[string equal f $write_p]} { set write 0 }
-	if {[string equal f $admin_p]} { set admin 0 }
+	if {"f" eq $view_p} { set view 0 }
+	if {"f" eq $read_p} { set read 0 }
+	if {"f" eq $write_p} { set write 0 }
+	if {"f" eq $admin_p} { set admin 0 }
 	set first_loop 0
     }
 
@@ -363,7 +363,7 @@ ad_proc -public im_user_timesheet_hours_options {
     Returns the options for a drop-down box with users for the
     timesheet "log for user" pages.
 } {
-    set current_user_id [ad_maybe_redirect_for_registration]
+    set current_user_id [auth::require_login]
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
     set view_hours_all_p [im_permission $current_user_id "view_hours_all"]
@@ -449,7 +449,7 @@ ad_proc -public im_user_timesheet_absences_options {
     Returns the options for a drop-down box with users for the
     absences and timesheet_absences_ "log for user" pages.
 } {
-    set current_user_id [ad_maybe_redirect_for_registration]
+    set current_user_id [auth::require_login]
     set view_absences_all_p [im_permission $current_user_id "view_absences_all"]
     set add_absences_all_p [im_permission $current_user_id "add_absences_all"]
     set view_absences_direct_reports_p [im_permission $current_user_id "view_absences_direct_reports"]
@@ -743,11 +743,11 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
 
 	# Allow to approve non-approved members
 	set approve_link ""
-	if {"approved" != $member_state} { set approve_link "<a href=\"/acs-admin/users/member-state-change?member_state=approved&amp;[export_vars -url {user_id return_url}]\">[_ intranet-core.activate]</a>"
+	if {"approved" != $member_state} { set approve_link "<a href=\"/acs-admin/users/member-state-change?member_state=approved&amp;[export_vars {user_id return_url}]\">[_ intranet-core.activate]</a>"
 	}
 
 	append rows_html "
-<tr $bgcolor([expr $ctr % 2])>
+<tr $bgcolor([expr {$ctr % 2}])>
   <td>$creation_date</td>
   <td><A href=\"$user_view_page?user_id=$user_id\">$name</A></td>
   <td><A href=\"mailto:$email\">$email_breakable</A></td>
@@ -1018,14 +1018,14 @@ ad_proc -public im_user_update_existing_user {
 	"]
 
 	set should_be_member 0
-	if {[lsearch -exact $profile_org $profile_id] >= 0} {
+	if {$profile_id in $profile_org} {
 	    set should_be_member 1
 	}
 	
 	if {$is_member && !$should_be_member} {
 	    if {$debug} { ns_log Notice "/users/new: => remove_member from $profile_name\n" }
 	    
-	    if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+	    if {$profile_id ni $managable_profile_ids} {
 		ad_return_complaint 1 "<li>
 		    [_ intranet-core.lt_You_are_not_allowed_t]"
 		return
@@ -1056,7 +1056,7 @@ ad_proc -public im_user_update_existing_user {
 	    # the current user. Normally, only the managable profiles are
 	    # shown, which means that a user must have played around with
 	    # the HTTP variables in oder to fool us...
-	    if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+	    if {$profile_id ni $managable_profile_ids} {
 		ad_return_complaint 1 "<li>
 		    [_ intranet-core.lt_You_are_not_allowed_t_1]"
 		return
@@ -1149,9 +1149,9 @@ ad_proc im_print_employee {person rowspan} "print function for org chart" {
 
 # Removed job title display
 #	if { $rowspan>=2 } {
-	#	    return "<a href=\"/intranet/users/view?[export_vars -url {user_id}]\">$employee_name</a><br><i>$job_title</i>\n"
+	#	    return "<a href=\"/intranet/users/[export_vars -base view {user_id}]\">$employee_name</a><br><i>$job_title</i>\n"
 #	} else {
-	return "<a href=\"/intranet/users/view?[export_vars -url {user_id}]\">$employee_name</a><br>\n"
+	return "<a href=\"/intranet/users/[export_vars -base view {user_id}]\">$employee_name</a><br>\n"
 #	}
     } else {
 	return "<i>[_ intranet-core.Position_Vacant]</i>"
@@ -1805,7 +1805,7 @@ ad_proc -public im_menu_users_admin_links {
     if {[im_permission $current_user_id "add_users"]} {
 	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
 	lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
-	lappend result_list [list [_ intranet-core.Import_User_CSV] "/intranet/users/upload-contacts?[export_vars -url {return_url}]"]
+	lappend result_list [list [_ intranet-core.Import_User_CSV] [export_vars -base /intranet/users/upload-contacts {return_url}]]
     }
 
     # Append user-defined menus

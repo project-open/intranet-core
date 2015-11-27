@@ -37,7 +37,7 @@ if {![info exists object_id]} {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 if {![info exists include_membership_rels_p] || "" == $include_membership_rels_p} { set include_membership_rels_p 0 }
 if {![info exists hide_object_chk_p] } { set hide_object_chk_p 0 }
 if {![info exists hide_rel_name_p] } { set hide_rel_name_p 0 }

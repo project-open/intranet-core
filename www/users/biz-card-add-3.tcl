@@ -45,7 +45,7 @@ ad_page_contract {
 
 set title "[_ intranet-contacts.Add_a_Biz_Card]"
 set context [list $title]
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 
 # Set default variables
@@ -197,7 +197,7 @@ ad_form -extend -name $form_id -new_request {
 	append errors "<li>[lang::message::lookup "" intranet-contacts.Company_path_exists "The company path '%company_path%' already exists."]"
     }
     
-    if { [exists_and_not_null errors] } {
+    if { ([info exists errors] && $errors ne "") } {
 	ad_return_complaint $exception_count "<ul>$errors</ul>"
 	ad_script_abort
     }
@@ -268,7 +268,7 @@ ad_form -extend -name $form_id -new_request {
 			ad_script_abort
 	    }
 
-	    if {![info exists password] || [empty_string_p $password]} {
+	    if {![info exists password] || $password eq ""} {
 		set password [ad_generate_random_string]
 		set password_confirm $password
 	    }
@@ -438,10 +438,10 @@ ad_form -extend -name $form_id -new_request {
     # Create a new Company if it didn't exist yet
     # -----------------------------------------------------------------
     
-    if {![exists_and_not_null office_name]} {
+    if {(![info exists office_name] || $office_name eq "")} {
 	set office_name "$company_name [_ intranet-core.Main_Office]"
     }
-    if {![exists_and_not_null office_path]} {
+    if {(![info exists office_path] || $office_path eq "")} {
 	set office_path "$company_path"
     }
     

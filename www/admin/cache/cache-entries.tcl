@@ -16,8 +16,8 @@ template::multirow create matches key value value_size full_key date raw_date
 
 foreach name $cached_names {
     if {"" == $pattern || [regexp -nocase -- $pattern $name match]} {
-	set key [ad_quotehtml $name]
-	set safe_key [ad_quotehtml $name]
+	set key [ns_quotehtml $name]
+	set safe_key [ns_quotehtml $name]
 	if {[catch {set value [ns_cache get $cache_name $name]} errmsg]} {
 	    continue
 	}

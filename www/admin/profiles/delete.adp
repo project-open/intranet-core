@@ -21,6 +21,6 @@ serious issues to your system.
 <ul>
 @select_html;noquote@
 </ul>
-<input type=submit name=Submit>
+<input type="submit" name="Submit">
 </form>
 

@@ -1,5 +1,5 @@
 <master src="master">
-<property name="title">#intranet-core.Add_new_member#</property>
+<property name="doc(title)">#intranet-core.Add_new_member#</property>
 <property name="main_navbar_label">user</property>
 
 <h2>@page_title@</h2>
@@ -14,7 +14,7 @@ error. Thanks!<br>&nbsp;<br>
 </font>
 </if>
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr>
   <td valign="top" colspan="2">
     <table cellpadding="0" cellspacing="0" border="0">
@@ -26,20 +26,20 @@ error. Thanks!<br>&nbsp;<br>
   </td>
 </tr>
 <tr>
-   <td valign=top colspan=2>
+   <td valign="top" colspan="2">
 	<%= [im_component_bay top] %>
    </td>
 </tr>
 <tr>
-  <td valign=top>
+  <td valign="top">
     <%= [im_component_bay left] %>
   </td>
-  <td valign=top>
+  <td valign="top">
     <%= [im_component_bay right] %>
   </td>
 </tr>
 <tr>
-   <td valign=top colspan=2>
+   <td valign="top" colspan="2">
 	<%= [im_component_bay bottom] %>
    </td>
 </tr>

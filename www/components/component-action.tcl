@@ -30,7 +30,7 @@ ad_page_contract {
 #
 # -----------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 # Flush the cache for the navigation bar for all users...
 util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
@@ -96,7 +96,7 @@ if {[llength $same_comps] > 0} {
     # Update the components and add random values to their sort order
     foreach pid $same_comps {
 	# Generate a random number between -10 and +10
-	set r [expr [ns_rand 20] - 10]
+	set r [expr {[ns_rand 20] - 10}]
 	db_dml rand_update "
 		update im_component_plugins 
 		set sort_order = sort_order + :r 

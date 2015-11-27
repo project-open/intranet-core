@@ -1,13 +1,13 @@
 <master src="../master">
-  <property name="title">@page_title@</property>
-  <property name="context">@context@</property>
+  <property name="doc(title)">@page_title;literal@</property>
+  <property name="context">@context;literal@</property>
   <property name="main_navbar_label">admin</property>
-  <property name="focus">@page_focus;noquote@</property>
+  <property name="focus">@page_focus;literal@</property>
   <property name="admin_navbar_label">admin_categories</property>
-  <property name="left_navbar">@left_navbar_html;noquote@</property>
+  <property name="left_navbar">@left_navbar_html;literal@</property>
 
 <table width="100%">
-<tr valign=top>
+<tr valign="top">
 <td>
 	<h1>@page_title@</h1>
 	<%= [lang::message::lookup "" intranet-core.Categories_List_Help "

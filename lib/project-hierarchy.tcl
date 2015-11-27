@@ -97,7 +97,7 @@ switch $list_sort_order {
 # Format the List Table Header
 
 # Set up colspan to be the number of headers + 1 for the # column
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 template::multirow create table_headers col_txt
 
@@ -128,7 +128,7 @@ template::multirow foreach multirow {
     set subproject_url [export_vars -base $project_url {{project_id $subproject_id}}]
     set subproject_indent ""
     for {set i 0} {$i < $subproject_level} {incr i} { append subproject_indent $space }
-    set subproject_bold_p [expr $project_id == $subproject_id]
+    set subproject_bold_p [expr {$project_id == $subproject_id}]
     set arrow_left_html ""
     set arrow_right_html ""
     if {$subproject_bold_p} { set arrow_left_html [im_gif arrow_left]}
@@ -137,7 +137,7 @@ template::multirow foreach multirow {
     set select_checkbox "<input type=checkbox name=select_project_id value=$subproject_id id=\"hierarchy_project_id,$subproject_id\">"
     if {!$bulk_actions_p} { set select_checkbox "" }
 
-    set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+    set row_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
     foreach column_var $column_vars {
 	append row_html "\t<td valign=top><nobr>"
 	if {$subproject_bold_p} { append row_html "<b>" }

@@ -1,7 +1,7 @@
 <master src="/packages/intranet-contacts/lib/contacts-master" />
 <property name="focus">contact.first_names</property>
-<property name="title">@title@</property>
-<property name="context">@context@</property>
+<property name="doc(title)">@title;literal@</property>
+<property name="context">@context;literal@</property>
 
 <p>
 <listtemplate name="contact_list"></listtemplate>

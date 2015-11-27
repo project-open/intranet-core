@@ -1,6 +1,6 @@
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">admin</property>
 
 <%= [im_box_header [lang::message::lookup "" intranet-ganttproject.Upload_Template "Upload a Template"]] %>
@@ -19,7 +19,7 @@
 
 <form enctype="multipart/form-data" method="POST" action="template-upload-2.tcl">
 <%= [export_vars -form {project_id return_url}] %>
-<table border=0>
+<table border="0">
   <tr>
     <td><%= [lang::message::lookup "" intranet-core.File "File"] %>:</td>
     <td>

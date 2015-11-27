@@ -26,7 +26,7 @@ ad_page_contract {
     group_id:integer
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 # Avoid hardcoding the url stub
 set target "[im_url_stub]/companies/primary-contact-users-2"
@@ -40,7 +40,7 @@ set company_name [db_string company_name \
 db_release_unused_handles
 
 set page_title "Select primary contact for $company_name"
-set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_vars -url {group_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [[export_vars -base view -url {group_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 

@@ -120,13 +120,13 @@ namespace eval im_company {
 
 	# -----------------------------------------------------------
 
-        if { [empty_string_p $creation_date] } {
+        if { $creation_date eq "" } {
             set creation_date [db_string get_sysdate "select sysdate from dual"]
         }
-        if { [empty_string_p $creation_user] } {
+        if { $creation_user eq "" } {
             set creation_user [auth::get_user_id]
         }
-        if { [empty_string_p $creation_ip] } {
+        if { $creation_ip eq "" } {
             set creation_ip [ns_conn peeraddr]
         }
 
@@ -234,7 +234,7 @@ namespace eval im_company {
         }
    
         set where_clause [join $criteria " and\n\t\t"]
-        if { ![empty_string_p $where_clause] } { set where_clause " and $where_clause" }
+        if { $where_clause ne "" } { set where_clause " and $where_clause" }
 
         # Permission SQL: Normal users can see only "their" companies
 	set perm_sql "
@@ -327,8 +327,8 @@ ad_proc -public im_company_permissions {
     set user_is_group_member_p [im_biz_object_member_p $user_id $company_id]
     set user_is_group_admin_p [im_biz_object_admin_p $user_id $company_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
-    set user_admin_p [expr $user_is_admin_p || $user_is_group_admin_p]
-    set user_admin_p [expr $user_admin_p || $user_is_wheel_p]
+    set user_admin_p [expr {$user_is_admin_p || $user_is_group_admin_p}]
+    set user_admin_p [expr {$user_admin_p || $user_is_wheel_p}]
 
     # Get basic company information
     if {[catch {
@@ -350,7 +350,7 @@ ad_proc -public im_company_permissions {
     # Key Account is also a project manager
     set user_is_key_account_p 0
     if {$user_id == $key_account_id} { set user_is_key_account_p 1 }
-    set admin [expr $user_admin_p || $user_is_key_account_p]
+    set admin [expr {$user_admin_p || $user_is_key_account_p}]
 
     if {$debug} {
 	ns_log Notice "im_company_permissions: user_is_key_account_p=$user_is_key_account_p"
@@ -366,7 +366,7 @@ ad_proc -public im_company_permissions {
     if {[im_permission $user_id edit_companies_all]} { set admin 1 }
 
     # All employees have the right to see the "internal" company
-    if {$user_is_employee_p && [string equal "internal" $company_path]} { 
+    if {$user_is_employee_p && "internal" eq $company_path} { 
 	set read 1 
     }
     
@@ -943,7 +943,7 @@ ad_proc -public im_menu_companies_admin_links {
     # Upload Companies 
 
     if { [im_is_user_site_wide_or_intranet_admin $current_user_id] } {
-	lappend result_list [list [_ intranet-core.Import_Company_CSV] "/intranet/companies/upload-companies?[export_vars -url {return_url}]"]
+	lappend result_list [list [_ intranet-core.Import_Company_CSV] [export_vars -base /intranet/companies/upload-companies {return_url}]]
     }
 
     # Advanced Filtering 

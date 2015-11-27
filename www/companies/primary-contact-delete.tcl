@@ -25,7 +25,7 @@ ad_page_contract {
     return_url
 }
 
-ad_maybe_redirect_for_registration
+auth::require_login
 
 db_dml companies_delete_primary_contact \
 	"update im_companies

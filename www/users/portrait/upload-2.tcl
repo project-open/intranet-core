@@ -20,7 +20,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set page_title [lang::message::lookup "" intranet-core.Upload_Portrait "Upload Portrait"]
 set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
 
@@ -61,7 +61,7 @@ set guessed_file_type [ns_guesstype $upload_file]
 set n_bytes [file size $tmp_filename]
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match client_filename] {
+if {![regexp {([^//\\]+)$} $upload_file match client_filename]} {
     # couldn't find a match
     set client_filename $upload_file
 }
@@ -76,7 +76,7 @@ if {[regexp {\.\.} $client_filename]} {
 # ---------- Make sure client_filename starts with "portrait" -----------
 set client_filename_pieces [split $client_filename "."]
 set client_filename_pices_len [llength $client_filename_pieces]
-set client_filename_ext [lindex $client_filename_pieces [expr $client_filename_pices_len-1]]
+set client_filename_ext [lindex $client_filename_pieces $client_filename_pices_len-1]
 set client_filename "portrait.$client_filename_ext"
 
 

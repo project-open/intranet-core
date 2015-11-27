@@ -20,7 +20,7 @@ if {![info exists contact_view_name]} {
     set contact_view_name "user_contact"
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 # Check the permissions 
 im_user_permissions $current_user_id $user_id_from_search view read write admin
@@ -75,7 +75,7 @@ if {$result == 1} {
 	    set column_name [lang::message::lookup "" intranet-core.$column_name_subs $column_name]
 
 	    # Make sure to have the correct classes
-	    if {[expr $ctr % 2]} {
+	    if {[expr {$ctr % 2}]} {
 		set td_class "class=rowodd"
 	    } else { 
 		set td_class "class=roweven"

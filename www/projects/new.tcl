@@ -50,7 +50,7 @@ callback im_project_new_redirect -object_id $project_id \
 # Defaults
 # -----------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set todays_date [lindex [split [ns_localsqltimestamp] " "] 0]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
@@ -83,7 +83,7 @@ set auto_increment_project_nr_p [parameter::get -parameter ProjectNrAutoIncremen
 set project_name_field_min_len [parameter::get -parameter ProjectNameMinimumLength -package_id [im_package_core_id] -default 5]
 set project_nr_field_min_len [parameter::get -parameter ProjectNrMinimumLength -package_id [im_package_core_id] -default 5]
 
-if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
+if { (![info exists return_url] || $return_url eq "") && ([info exists project_id] && $project_id ne "")} {
     set return_url [export_vars -base "/intranet/projects/view" {project_id}]
 }
 
@@ -91,7 +91,7 @@ if { ![exists_and_not_null return_url] && [exists_and_not_null project_id]} {
 # This is necessary if the project_nr depends on the customer_id.
 set customer_required_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "NewProjectRequiresCustomerP" -default 0]
 
-if { (![info exists project_id] || "" == $project_id) && $company_id == "" && $customer_required_p} {
+if { (![info exists project_id] || "" == $project_id) && $company_id eq "" && $customer_required_p} {
     ad_returnredirect [export_vars -base "new-custselect" {project_id parent_id project_nr workflow_key return_url}]
     ad_script_abort
 }
@@ -433,7 +433,7 @@ set field_cnt [im_dynfield::append_attributes_to_form \
 set edit_existing_project_p 0
 set button_text "[_ intranet-core.Save_Changes]"
 if {[form is_request $form_id]} {
-    if { [exists_and_not_null project_id] } {
+    if { ([info exists project_id] && $project_id ne "") } {
 	# We are editing an already existing project
 	#
 	set edit_existing_project_p 1
@@ -467,11 +467,11 @@ if {[form is_request $form_id]} {
 	}
 	
 	set page_title "[_ intranet-core.Edit_project]"
-	set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list "/intranet/projects/view?[export_vars -url {project_id}]" "One project"] $page_title]
+	set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list [export_vars -base /intranet/projects/view {project_id}] "One project"] $page_title]
 	
-	if { [empty_string_p $start_date] } { set start_date $todays_date }
-	if { [empty_string_p $end_date] } { set end_date $todays_date }
-	if { [empty_string_p $end_time] } { set end_time "12:00" }
+	if { $start_date eq "" } { set start_date $todays_date }
+	if { $end_date eq "" } { set end_date $todays_date }
+	if { $end_time eq "" } { set end_time "12:00" }
 	set button_text "[_ intranet-core.Save_Changes]"
 	    
 	
@@ -505,15 +505,15 @@ if {[form is_request $form_id]} {
 	set project_name [im_opt_val project_name]
 	set button_text "[_ intranet-core.Create_Project]"
 
-	if { ![exists_and_not_null parent_id] } {
+	if { (![info exists parent_id] || $parent_id eq "") } {
 	    
 	    # A brand new project (not a subproject)
 	    set requires_report_p "f"
 	    set parent_id ""
-	    if { ![exists_and_not_null company_id] } {
+	    if { (![info exists company_id] || $company_id eq "") } {
 		set company_id ""
 	    }
-	    if {![exists_and_not_null project_type_id]} { set project_type_id 85 }
+	    if {(![info exists project_type_id] || $project_type_id eq "")} { set project_type_id 85 }
 	    set project_status_id 76
 	    set page_title "[_ intranet-core.Add_New_Project]"
 	    set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
@@ -939,7 +939,7 @@ if {[form is_valid $form_id]} {
     # -----------------------------------------------------------------
     # add the creating current_user to the group
    
-    if { [exists_and_not_null project_lead_id] } {
+    if { ([info exists project_lead_id] && $project_lead_id ne "") } {
 	im_biz_object_add_role $project_lead_id $project_id [im_biz_object_role_project_manager]
     }
 

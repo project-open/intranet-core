@@ -13,10 +13,10 @@ ad_page_contract {
     
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 
-if [empty_string_p $user_id] {
+if {$user_id eq ""} {
     set user_id $current_user_id
 }
 
@@ -29,11 +29,11 @@ if {!$write} {
 }
 
 
-if ![db_0or1row name "
+if {![db_0or1row name "
 	select	first_names, last_name
 	from	persons 
 	where	person_id=:user_id
-"] {
+"]} {
     ad_return_error "Account Unavailable" "
     We can't find you (user #$user_id) in the users table.  Probably your account was deleted for some reason."
     ad_script_abort

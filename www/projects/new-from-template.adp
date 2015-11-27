@@ -1,13 +1,13 @@
 <master src="../master">
-<property name="title">@page_title@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">projects</property>
 
 <form action=new-from-template-2.tcl method=POST>
 <%= [export_vars -form {return_url parent_project_id company_id clone_postfix}] %>
 
-  <table border=0>
+  <table border="0">
     <tr> 
-      <td colspan=2 class=rowtitle>
+      <td colspan="2" class=rowtitle>
         @page_title@
       </td>
     </tr>
@@ -19,12 +19,12 @@
       </td>
     </tr>
     <tr> 
-      <td valign=top> 
-	<div align=right>&nbsp; </div>
+      <td valign="top"> 
+	<div align="right">&nbsp; </div>
       </td>
       <td> 
 	  <p> 
-	    <input type=submit value="@button_text@" name=submit2>
+	    <input type="submit" value="@button_text@" name="submit2">
 	  </p>
       </td>
     </tr>

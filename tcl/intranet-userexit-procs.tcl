@@ -59,7 +59,7 @@ ad_proc -public im_user_exit_call {
 	im_exec_dml log "acs_log__debug('user_exit', :log_str||:result)"
 	return $status
 
-    } elseif { [string equal $::errorCode NONE] } {
+    } elseif {$::errorCode eq "NONE"} {
 
         # The command exited with a normal status, but wrote something
         # to stderr, which is included in $result.
@@ -72,7 +72,7 @@ ad_proc -public im_user_exit_call {
         switch -exact -- [lindex $::errorCode 0] {
 
             CHILDKILLED {
-                foreach { - pid sigName msg } $::errorCode break
+                lassign $::errorCode  - pid sigName msg 
 
                 # A child process, whose process ID was $pid,
                 # died on a signal named $sigName.  A human-
@@ -84,7 +84,7 @@ ad_proc -public im_user_exit_call {
 
             CHILDSTATUS {
 
-                foreach { - pid code } $::errorCode break
+                lassign $::errorCode  - pid code 
 
                 # A child process, whose process ID was $pid,
                 # exited with a non-zero exit status, $code.
@@ -95,7 +95,7 @@ ad_proc -public im_user_exit_call {
 
             CHILDSUSP {
 
-                foreach { - pid sigName msg } $::errorCode break
+                lassign $::errorCode  - pid sigName msg 
 
                 # A child process, whose process ID was $pid,
                 # has been suspended because of a signal named
@@ -108,7 +108,7 @@ ad_proc -public im_user_exit_call {
 
             POSIX {
 
-                foreach { - errName msg } $::errorCode break
+                lassign $::errorCode  - errName msg 
 
                 # One of the kernel calls to launch the command
                 # failed.  The error code is in $errName, and a

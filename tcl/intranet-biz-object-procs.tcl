@@ -509,14 +509,14 @@ ad_proc -public im_group_member_component {
 
     # Check if there is a percentage column from intranet-ganttproject
     set object_type [util_memoize [list db_string otype "select object_type from acs_objects where object_id=$object_id" -default ""]]
-    if {"" == $show_percentage_p && ($object_type == "im_project" || $object_type == "im_timesheet_task")} { set show_percentage_p 1 }
+    if {"" == $show_percentage_p && ($object_type eq "im_project" || $object_type eq "im_timesheet_task")} { set show_percentage_p 1 }
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
     set group_l10n [lang::message::lookup "" intranet-core.Group "Group"]
     
     # ------------------ limit_to_users_in_group_id ---------------------
     set limit_to_group_id_sql ""
-    if {![empty_string_p $limit_to_users_in_group_id]} {
+    if {$limit_to_users_in_group_id ne ""} {
 	set limit_to_group_id_sql "
 	and rels.object_id_two in (
 		select	gdmm.member_id
@@ -527,7 +527,7 @@ ad_proc -public im_group_member_component {
 
     # ------------------ dont_allow_users_in_group_id ---------------------
     set dont_allow_sql ""
-    if {![empty_string_p $dont_allow_users_in_group_id]} {
+    if {$dont_allow_users_in_group_id ne ""} {
 	set dont_allow_sql "
 	and rels.object_id_two not in (
 		select	gdmm.member_id
@@ -630,7 +630,7 @@ ad_proc -public im_group_member_component {
 
 	append output_hidden_vars "<input type=hidden name=member_id value=$user_id>"
 	append body_html "
-		<tr $td_class([expr $count % 2])>
+		<tr $td_class([expr {$count % 2}])>
 			<td>
 	"
 	if {$show_user > 0} {
@@ -657,7 +657,7 @@ ad_proc -public im_group_member_component {
 	append body_html "</tr>"
     }
 
-    if { [empty_string_p $body_html] } {
+    if { $body_html eq "" } {
 	set body_html "<tr><td colspan=$colspan><i>[_ intranet-core.none]</i></td></tr>\n"
     }
 
@@ -668,7 +668,7 @@ ad_proc -public im_group_member_component {
 	    <tr>
 	      <td align=left>
 		<ul>
-		<li><A HREF=\"/intranet/member-add?[export_vars -url {object_id also_add_to_group_id limit_to_users_in_group_id return_url}]\">[_ intranet-core.Add_member]</A>
+		<li><A HREF=\"/intranet/[export_vars -base member-add {object_id also_add_to_group_id limit_to_users_in_group_id return_url}]\">[_ intranet-core.Add_member]</A>
 		</ul>
 	      </td>
 	"
@@ -761,7 +761,7 @@ ad_proc -public im_object_assoc_component {
     set body_html ""
     db_foreach assoc $assoc_sql {
 	append body_html "
-		<tr $td_class([expr $ctr % 2])>
+		<tr $td_class([expr {$ctr % 2}])>
 		<td>$rel_pretty_name</td>
 		<td>$object_type_pretty_name</td>
 		<td>[db_string name "select acs_object__name(:object_id)"]</td>
@@ -831,7 +831,7 @@ ad_proc -public im_biz_object_member_list_format {
 	}
 
 	if {$format_perc_p && "" != $perc} {
-	    set perc [expr round($perc)]
+	    set perc [expr {round($perc)}]
 	    append party_pretty ":${perc}%"
 	}
 	if {"" != $party_id} {

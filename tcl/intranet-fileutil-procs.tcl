@@ -79,7 +79,7 @@ set tcl_platform(platform) [ns_info platform]
 # seems to return "unix" for unix-ish platforms (Linux, Solaris, ...) (?)
 
 
-if {[string compare unix $tcl_platform(platform)]} {
+if {"unix" ne $tcl_platform(platform) } {
     # Not a unix platform => Original implementation
     # Note: This may still fail for directories mounted via SAMBA,
     # i.e. coming from a unix server.
@@ -426,7 +426,7 @@ proc ::fileutil::stripPwd {path} {
     # using list commands.
 
     set pwd [pwd]
-    if {[string equal $pwd $path]} {
+    if {$pwd eq $path} {
 	return "."
     }
 
@@ -643,7 +643,7 @@ if {[package vsatisfies [package provide Tcl] 8.3]} {
         
         # process -r and -t
         set has_t [expr {$params(t) != -1}]
-        set has_r [expr {[string length $params(r)] > 0}]
+        set has_r [expr {$params(r) ne ""}]
         if {$has_t && $has_r} {
             return -code error "Cannot specify both -r and -t"
         } elseif {$has_t} {
@@ -769,8 +769,8 @@ proc ::fileutil::fileType {filename} {
             lappend type executable dos
         } else {
             binary scan [string range $test 60 61] s next
-            set sig [string range $test $next [expr {$next + 1}]]
-            if { $sig == "NE" || $sig == "PE" } {
+            set sig [string range $test $next $next+1]
+            if { $sig eq "NE" || $sig eq "PE" } {
                 lappend type executable [string tolower $sig]
             } else {
                 lappend type executable dos
@@ -823,7 +823,7 @@ proc ::fileutil::fileType {filename} {
     } elseif {[string match "LJ\x1a\x00*" $test] && ([file size $filename] >= 27)} {
 	lappend type metakit bigendian
 	set metakit 1
-    } elseif { $binary && [string match "RIFF*" $test] && [string range $test 8 11] == "WAVE" } {
+    } elseif { $binary && [string match "RIFF*" $test] && [string range $test 8 11] eq "WAVE" } {
         lappend type audio wave
     } elseif { $binary && [string match "ID3*" $test] } {
         lappend type audio mpeg
@@ -1023,7 +1023,7 @@ proc ::fileutil::TempFile {prefix} {
  	    }
  	}
     }
-    if {[string compare $channel ""]} {
+    if {$channel ne "" } {
  	return -code error "Failed to open a temporary file: $channel"
     } else {
  	return -code error "Failed to find an unused temporary file name"
@@ -1070,7 +1070,7 @@ proc ::fileutil::install {args} {
     set src [lindex $args 0]
     set dst [lindex $args 1]
     file copy -force $src $dst
-    if { $params(m) != "" } {
+    if { $params(m) ne "" } {
 	set targets [::fileutil::find $dst]
 	foreach fl $targets {
 	    file attributes $fl -permissions $params(m)

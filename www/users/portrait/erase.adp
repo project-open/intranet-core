@@ -1,6 +1,6 @@
 <master>
-<property name="title">#acs-subsite.Erase_Portrait#</property>
-<property name="context">@context;noquote@</property>
+<property name="doc(title)">#acs-subsite.Erase_Portrait#</property>
+<property name="context">@context;literal@</property>
 <property name="main_navbar_label">user</property>
 
 <p>#acs-subsite.lt_Sure_erase_user_por#</p>

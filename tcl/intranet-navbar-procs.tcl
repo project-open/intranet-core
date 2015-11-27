@@ -780,7 +780,7 @@ ad_proc -public im_navbar_write_tree_helper {
 	append html "<li><a href=\"$url\">$name</a>\n"
 	if {$maxlevel > 0 && $sub_count > 0} {
 	    append html "<ul>\n"
-	    append html [im_navbar_write_tree -label $label -maxlevel [expr $maxlevel-1]]
+	    append html [im_navbar_write_tree -label $label -maxlevel [expr {$maxlevel-1}]]
 	    append html "</ul>\n"
 	}
     }

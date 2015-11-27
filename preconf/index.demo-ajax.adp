@@ -284,7 +284,7 @@ function setBgImage (id,img) {
         </tr>
       </table></td>
   </tr>
-  <tr><td colspan=2><hr style="width:740px" align="left"></td></tr>
+  <tr><td colspan="2"><hr style="width:740px" align="left"></td></tr>
   <tr>
     <td><table cellpadding="0" cellspacing="0" border="0">
         <colgroup>
@@ -317,7 +317,7 @@ function setBgImage (id,img) {
         </tr>
       </table></td>
   </tr>
-  <tr><td colspan=2><hr style="width:740px" align="left"></td></tr>
+  <tr><td colspan="2"><hr style="width:740px" align="left"></td></tr>
   </tbody>
 </table>
 

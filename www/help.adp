@@ -1,20 +1,20 @@
 <master src="master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">help</property>
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=1 cellspacing=1 border=0 width="100%">
+<table cellpadding="1" cellspacing="1" border="0" width="100%">
 <tr>
-  <td valign=top width="50%">
+  <td valign="top" width="50%">
 
-	<table cellpadding=0 cellspacing=0 border=0 width="100%">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr class=rowtitle>
-	  <td class=rowtitle align=center> Context Help
+	  <td class=rowtitle align="center"> Context Help
 	  </td>
 	</tr>
 	<tr>
-	  <td valign=top>
+	  <td valign="top">
 	  </td>
 	</tr>
 	</table>
@@ -22,7 +22,7 @@
     @context_help;noquote@
     <%= [im_component_bay left] %>
   </td>
-  <td valign=top width="50%">
+  <td valign="top" width="50%">
 
     <ul>
       <li>
@@ -44,13 +44,13 @@
   </td>
 </tr>
 <tr>
-  <td colspan=2>
+  <td colspan="2">
     <%= [im_component_bay bottom] %>
   </td>
 </tr>
 </table><br>
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
 
 </td></tr>

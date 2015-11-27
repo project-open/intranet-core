@@ -105,12 +105,12 @@ ad_proc -public db_tree {sql_name sql args} {
 # --------------------------------------------------------------------------------
 
 ad_proc -public tree_height {tree} "returns the height of a tree" {
-    if { [empty_string_p $tree] } { return 0 }
+    if { $tree eq "" } { return 0 }
     expr 1+[fold max 0 [map tree_height [tail $tree]]]
 }
 
 ad_proc -public tree_width {tree} "returns the width of a tree" {
-    if { [empty_string_p $tree] } { return 0 }
+    if { $tree eq "" } { return 0 }
     max 1 [sum [map tree_width [tail $tree]]]
 }
 
@@ -125,7 +125,7 @@ ad_proc -public tree_print {tree {indent 0}} "prints a tree" {
     }
     append result [head $tree]\n
     foreach t [tail $tree] {
-	append result [print_tree $t [expr $indent+2]]
+	append result [print_tree $t [expr {$indent+2}]]
     }
     return $result
 }
@@ -135,12 +135,12 @@ ad_proc -public tree_print {tree {indent 0}} "prints a tree" {
 # --------------------------------------------------------------------------------
 
 ad_proc tree_level {tree n {result {}}} "returns the n-th level of a tree (where 0 is the root tree) as a list of trees" {
-    if { [empty_string_p $tree] } { return $result }
+    if { $tree eq "" } { return $result }
     if { $n==0 } {
 	lappend result $tree
     } else {
 	foreach subtree [tail $tree] {
-	    set result [tree_level $subtree [expr $n-1] $result]
+	    set result [tree_level $subtree [expr {$n-1}] $result]
 	}
     }
     return $result
@@ -155,7 +155,7 @@ ad_proc -public tree_to_table {tree} {
 	append result "<tr>\n"
 	foreach subtree [tree_level $tree $level] {
 	    if { [llength $subtree]==1 } {
-		set rowspan [expr $h-$level]
+		set rowspan [expr {$h-$level}]
 	    } else {
 		set rowspan 1
 	    }	    
@@ -203,7 +203,7 @@ ad_proc tree_to_htable {tree height new_row_p print result} {
     append result "  <td rowspan=$rowspan colspan=$colspan>[$print [head $tree] $rowspan]</td>\n"
     set new_row_p 0
     foreach subtree [tail $tree] {
-	append result [tree_to_htable $subtree [expr $height-1] $new_row_p $print ""] 
+	append result [tree_to_htable $subtree [expr {$height-1}] $new_row_p $print ""] 
 	set new_row_p 1
     }
     return $result

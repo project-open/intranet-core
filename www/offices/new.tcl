@@ -45,10 +45,10 @@ ad_page_contract {
 # -- Defaults and Permissions 
 # -- ------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set page_title [_ intranet-core.Office]
-set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] [list "view?[export_vars -url {office_id}]" "[_ intranet-core.One_office]"] $page_title]
+set context_bar [im_context_bar [list index "[_ intranet-core.Offices]"] [list [export_vars -base view {office_id}] "[_ intranet-core.One_office]"] $page_title]
 
 # -- ------------------------------------------------
 # -- General Settings
@@ -155,7 +155,7 @@ if {[form is_submission $form_id] && [template::form::is_valid $form_id] } {
     set errors [im_verify_form_variables $required_vars]
     set exception_count 0
 
-    if { ![empty_string_p $errors] } {
+    if { $errors ne "" } {
 	incr exception_count
     }
 
@@ -182,7 +182,7 @@ if {[form is_submission $form_id] && [template::form::is_valid $form_id] } {
 	append errors "  <li>[_ intranet-core.lt_An_office_with_the_sa]"
     }
 
-    if { ![empty_string_p $errors] } {
+    if { $errors ne "" } {
 	ad_return_complaint $exception_count "<ul>$errors</ul>"
 	return
     }

@@ -1,12 +1,12 @@
 <master src="../master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr>
-  <td valign=top>
+  <td valign="top">
 
     <H2><font color=red>@page_title;noquote@</font></H2>
     <br>
@@ -29,7 +29,7 @@
     <ol>
 
       <li>
-        <A href=../backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A><br>
+        <A href="../backup/pg_dump">#intranet-core.PostgreSQL_Backup#</A><br>
 	<%= [lang::message::lookup "" intranet-core.DelDemo_Please_backup "
 	Please backup your current database contents before continuing
 	with any of the following commands."] %>
@@ -87,13 +87,13 @@
     </ul>
 
   </td>
-  <td valign=top>
+  <td valign="top">
     <%= [im_component_bay right] %>
   </td>
 </tr>
 </table><br>
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
   <%= [im_component_bay bottom] %>
 </td></tr>

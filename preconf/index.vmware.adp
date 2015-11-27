@@ -5,16 +5,16 @@
 <div id="slave">
 <div id="fullwidth-list-no-side-bar" class="fullwidth-list-no-side-bar" style="visibility: visible;">
 
-<table cellSpacing=2 cellPadding=2 width="100%" border=0>
-<tr valign=top>
+<table cellSpacing=2 cellPadding=2 width="100%" border="0">
+<tr valign="top">
 <td vAlign=top width="50%">
 
-	<table cellSpacing=1 cellPadding=1 border=0 width="100%">
-	<tr><td colspan=4 class=tableheader align=center><b>]po[ Demo Accounts</b></td></tr>
+	<table cellSpacing=1 cellPadding=1 border="0" width="100%">
+	<tr><td colspan="4" class=tableheader align="center"><b>]po[ Demo Accounts</b></td></tr>
 	<tr>
-		<td class="tableheader" align=center>Username</td>
-		<td class="tableheader" align=center>Email</td>
-		<td class="tableheader" align=center>Password</td>
+		<td class="tableheader" align="center">Username</td>
+		<td class="tableheader" align="center">Email</td>
+		<td class="tableheader" align="center">Password</td>
 	</tr>
 	<multiple name=users>
 		<if @users.rownum@ odd><tr class="list-plain"></if>
@@ -30,7 +30,7 @@
 </td>
 <td width="50%">
 
-	<table cellSpacing=1 cellPadding=1 border=0>
+	<table cellSpacing=1 cellPadding=1 border="0">
 	<tr><td class=tableheader><b>Intranet Login</b></td></tr></tr>
 	<tr><td class=tablebody>
 <include src="/packages/acs-subsite/lib/login" return_url="@return_url;noquote@" no_frame_p="1" authority_id="@authority_id@" username="@username;noquote@" email="@email;noquote@" &="__adp_properties">
@@ -42,14 +42,14 @@
 
 	<br>&nbsp;<br>
 
-	<table cellSpacing=1 cellPadding=1 border=0>
-	<tr><td colspan=2 class=tableheader><b>Browser URL</b></td></tr>
+	<table cellSpacing=1 cellPadding=1 border="0">
+	<tr><td colspan="2" class=tableheader><b>Browser URL</b></td></tr>
 	<tr>
 		<td class=tablebody>Browser URL</td>
 		<td class=tablebody><%= $url %></td>
 	</tr>
 	<tr>
-		<td colspan=2 class=tablebody><small>
+		<td colspan="2" class=tablebody><small>
 		Please enter this URL into the browser on your desktop computer<br>
 		in order to access the application.
 		</small></td>
@@ -58,14 +58,14 @@
 
 	<br>&nbsp;<br>
 
-	<table cellSpacing=1 cellPadding=1 border=0>
-	<tr><td colspan=2 class=tableheader><b>System Parameters</b></td></tr>
+	<table cellSpacing=1 cellPadding=1 border="0">
+	<tr><td colspan="2" class=tableheader><b>System Parameters</b></td></tr>
 	<tr>
 		<td class=tablebody>IP-Address</td>
 		<td class=tablebody><%= $ip_address %></td>
 	</tr>
 	<tr>
-		<td colspan=2 class=tablebody><small>
+		<td colspan="2" class=tablebody><small>
 		This is the IP address that this Virtual Machine has obtained automatically via DHCP.
 		</small></td>
 	</tr>
@@ -74,7 +74,7 @@
 		<td class=tablebody><%= $total_memory %> MByte</td>
 	</tr>
 	<tr>
-		<td colspan=2 class=tablebody><small>
+		<td colspan="2" class=tablebody><small>
 		The total memory of the server.<br>
 		We recommend atleast 1024 MByte for a production server.
 		</small></td>
@@ -86,7 +86,7 @@
 </table>
 
 
-<table cellSpacing=0 cellPadding=5 width="100%" border=0>
+<table cellSpacing=0 cellPadding=5 width="100%" border="0">
   <tr><td>
 	<br><br><br>
 	Comments? Contact: 

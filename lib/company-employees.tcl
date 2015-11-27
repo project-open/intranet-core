@@ -5,7 +5,7 @@ ad_page_contract {
     @date 2010-10-30
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_employee_p [im_user_is_employee_p $user_id]
 
 # Check permissions. "See details" is an additional check for

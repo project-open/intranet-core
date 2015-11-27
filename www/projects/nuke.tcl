@@ -40,7 +40,7 @@ set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Proj
 set object_name $project_name
 set object_type "project"
 
-set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_vars -url {project_id return_url}]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
+set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_vars {project_id return_url}]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 set project_url_org [export_vars -base "/intranet/projects/view" {project_id}]
 
 

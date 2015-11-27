@@ -5,7 +5,7 @@ ad_page_contract {
     @date 2010-10-30
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 # Check permissions. "See details" is an additional check for
 # critical information
@@ -36,7 +36,7 @@ db_multirow -extend {llevel current_level project_status_name} active_projects s
     if { $llevel > $current_level } {
 	incr current_level
     } elseif { $llevel < $current_level } {
-	set current_level [expr $current_level - 1]
+	set current_level [expr {$current_level - 1}]
     }
 
     set project_status_name [im_category_from_id $project_status_id]
@@ -51,7 +51,7 @@ db_multirow -extend {llevel current_level project_status_name} active_projects s
 }
 
 set close_ul_p 0
-if { [exists_and_not_null level] && $llevel < $current_level } {
+if { ([info exists level] && $level ne "") && $llevel < $current_level } {
     set close_ul_p 1
 }
 

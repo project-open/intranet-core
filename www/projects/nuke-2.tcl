@@ -27,7 +27,7 @@ ad_page_contract {
 
 set page_title [_ intranet-core.Done]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 set results {}
 foreach pid $project_id {

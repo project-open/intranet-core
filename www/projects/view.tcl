@@ -38,7 +38,7 @@ ad_page_contract {
 # ---------------------------------------------------------------------
 
 # Redirect if this is a task
-if {[exists_and_not_null project_id]} {
+if {([info exists project_id] && $project_id ne "")} {
     set otype [db_string otype "select object_type from acs_objects where object_id = :project_id" -default ""]
     if {"im_timesheet_task" == $otype} {
 	ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{form_mode display} {task_id $project_id}}]
@@ -50,7 +50,7 @@ if {[exists_and_not_null project_id]} {
 
 set show_context_help_p 0
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set return_url [im_url_with_query]
 set current_url [ns_conn url]
 set clone_url "/intranet/projects/clone"
@@ -117,7 +117,7 @@ db_1row select_project  "select * from im_projects where project_id = :project_i
 set page_title "$project_nr - $project_name"
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 
-if { [empty_string_p $parent_id] } {
+if { $parent_id eq "" } {
     set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] "[_ intranet-core.One_project]"]
     set include_subproject_p 1
 } else {

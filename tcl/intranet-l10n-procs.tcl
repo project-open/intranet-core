@@ -48,8 +48,8 @@ ad_proc -public im_l10n_sql_currency_format {
 
     # Format the integer part in groups of 3
     set cur_format "999$cur_format"
-    for {set i 0} {$i < [expr $digits-3]} {incr i} {
-	if {("separators" == $style) && (0 == [expr $i % 3])} {
+    for {set i 0} {$i < [expr {$digits-3}]} {incr i} {
+	if {("separators" == $style) && (0 == [expr {$i % 3}])} {
 	    set cur_format "$thousands_sep$cur_format"
 	}
 	set cur_format "9$cur_format"
@@ -187,8 +187,8 @@ ad_proc -public im_numeric_add_trailing_zeros {
 
     # Determine the other stuff of the number
     set len [string length $num]
-    set frac [expr $len-$pos-1]
-    set missing_frac [expr $rounding_precision-$frac]
+    set frac [expr {$len-$pos-1}]
+    set missing_frac [expr {$rounding_precision-$frac}]
 
     # Deal with the case of no fraction - this may be OK if the case
     # of negative fraction "rounding_precision".
@@ -200,7 +200,7 @@ ad_proc -public im_numeric_add_trailing_zeros {
 
     while {$missing_frac > 0} {
 	set result "${result}0"
-	set missing_frac [expr $missing_frac-1]
+	set missing_frac [expr {$missing_frac-1}]
     }
 
 #    ad_return_complaint 1 "num=$num, prec=$rounding_precision, len=$len, pos=$pos, frac=$frac, mis_frac=$missing_frac, res=$result"
@@ -233,7 +233,7 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 	regexp {([^\.]*)\.(.*)} $cur match digits decimals
     }
 
-    if {![string equal "" $min_decimals]} {
+    if {$min_decimals ne ""} {
 
 	# Pad decimals with trailing "0" until they reach $num_decimals
 	while {[string length $decimals] < $min_decimals} {
@@ -241,15 +241,15 @@ ad_proc im_date_format_locale { cur {min_decimals ""} {max_decimals ""} } {
 	}
     }
 
-    if {![string equal "" $max_decimals]} {
+    if {$max_decimals ne ""} {
 	# Adjust decimals by cutting off digits if too long:
 	if {[string length $decimals] > $max_decimals} {
-	    set decimals [string range $decimals 0 [expr $max_decimals-1]]
+	    set decimals [string range $decimals 0 $max_decimals-1]
 	}
     }
 
     # Format the digits
-    if {[string equal "" $digits]} {
+    if {$digits eq ""} {
 	set digits "0"
     }
 

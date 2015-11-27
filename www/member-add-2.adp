@@ -1,6 +1,6 @@
 <master src="master">
-<property name=title>#intranet-core.Add_a_user#</property>
-<property name="context">@context;noquote@</property>
+<property name="doc(title)">#intranet-core.Add_a_user#</property>
+<property name="context">@context;literal@</property>
 <property name="main_navbar_label">user</property>
 
 <H1>#intranet-core.Send_Notification#</H1>
@@ -32,11 +32,11 @@
 	<tr>
 		<td valign='top'>
 		    <input type="submit" value="#intranet-core.Send_Email#" /><br>
-		    <input type=checkbox name=send_me_a_copy value=1 checked>
+		    <input type="checkbox" name="send_me_a_copy" value="1" checked>
 		    <%= [lang::message::lookup "" intranet-core.Send_me_a_copy "Send me a copy"] %>&nbsp;&nbsp;
 		</td>
 		<td valign='top'>
-		    <input type=submit value="<%= [lang::message::lookup "" intranet-core.DoNotSendNotificationMail "Do NOT notify"] %>" name="cancel">
+		    <input type="submit" value="<%= [lang::message::lookup "" intranet-core.DoNotSendNotificationMail "Do NOT notify"] %>" name="cancel">
 		</td>
 	</tr>
 	</table>

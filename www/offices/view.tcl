@@ -30,7 +30,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 set show_context_help_p 1
@@ -133,7 +133,7 @@ db_foreach column_list_sql $column_sql {
     set column_name [lang::util::suggest_key $column_name]
     if {"" == $visible_for || [eval $visible_for]} {
 	append office_html "
-        <tr $td_class([expr $ctr % 2])>
+        <tr $td_class([expr {$ctr % 2}])>
           <td>[_ intranet-core.$column_name] &nbsp;
         </td><td>"
 	set cmd "append office_html $column_render_tcl"

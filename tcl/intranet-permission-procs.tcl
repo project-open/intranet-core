@@ -109,7 +109,7 @@ ad_proc -public im_view_user_permission {view_user_id current_user_id var_value 
     - if the above doesn't hold for your OR:
     - The variable $var_value is empty (don't show lines with empty variables)
 } {
-    if {[empty_string_p $var_value]} { return 0 }
+    if {$var_value eq ""} { return 0 }
     if {$view_user_id == $current_user_id} { return 1 }
     return [im_permission $current_user_id $perm_token]
 }
@@ -208,7 +208,7 @@ ad_proc -public im_view_user_permission {view_user_id current_user_id var_value 
     - if the above doesn't hold for your OR:
     - The variable $var_value is empty (don't show lines with empty variables)
 } {
-    if {[empty_string_p $var_value]} { return 0 }
+    if {$var_value eq ""} { return 0 }
     if {$view_user_id == $current_user_id} { return 1 }
     return [im_permission $current_user_id $perm_token]
 }
@@ -222,8 +222,8 @@ ad_proc -public im_render_user_id { user_id user_name current_user_id group_id }
     if the current user has no permissions at all, and it may contain
     a name only for ???
 } {
-    if {$current_user_id == ""} { set current_user_id [ad_conn user_id] }
-    if {$user_id == ""} { return "" }
+    if {$current_user_id eq ""} { set current_user_id [ad_conn user_id] }
+    if {$user_id eq ""} { return "" }
 
     # How to display? -1=name only, 0=none, 1=Link
     set show_user_style [im_show_user_style $user_id $current_user_id $group_id]
@@ -249,7 +249,7 @@ ad_proc -public im_render_user_id2 {
     a name only for ???
 } {
     set current_user_id [ad_conn user_id]
-    if {$user_id == ""} { return "" }
+    if {$user_id eq ""} { return "" }
 
     # How to display? -1=name only, 0=none, 1=Link
     set group_id 0
@@ -348,7 +348,7 @@ ad_proc -public im_is_user_site_wide_or_intranet_admin {
     Returns 1 if a user is a site-wide administrator or a 
     member of the intranet administrative group 
 } {
-    if { [empty_string_p $user_id] } { set user_id [ad_verify_and_get_user_id] }
+    if { $user_id eq "" } { set user_id [ad_conn user_id] }
     if { $user_id == 0 } { return 0 }
 
     if { [util_memoize [list acs_user::site_wide_admin_p -user_id $user_id] 60] } { return 1 }

@@ -37,7 +37,7 @@ if {$vars_set > 1} {
 if {$object_id} {set user_id_from_search $object_id}
 if {$user_id} {set user_id_from_search $user_id}
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 
 # Check the permissions 
@@ -86,7 +86,7 @@ set view_id [db_string select_view_id {}]; # Returns most likely '11'
 set ctr 1
 db_multirow -extend {col_name col_value show_p} user_info user_info_sql {} {
     if {"" == $visible_for || [eval $visible_for]} {
-	if {[expr $ctr % 2]} { set td_class "class=rowodd" } else { set td_class "class=roweven" }
+	if {[expr {$ctr % 2}]} { set td_class "class=rowodd" } else { set td_class "class=roweven" }
         set cmd0 "set col_name $column_name"
         eval "$cmd0"
         regsub -all " " $col_name "_" col_name_subs

@@ -27,7 +27,7 @@ ad_proc -public ad_partner_upvar { var {levels 2} } {
     for { set i 1 } { $i <= $levels } { incr i } {
         catch {
             upvar $i $var value
-            if { ![empty_string_p $value] } {
+            if { $value ne "" } {
                 set return_value $value
                 return $return_value
             }
@@ -51,7 +51,7 @@ ad_proc -public im_state_widget {
     Returns a state selection box
 } {
     set widget_value "<select name=\"$select_name\">\n"
-    if { $default == "" } {
+    if { $default eq "" } {
         append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_State]</option>\n"
     }
 
@@ -76,7 +76,7 @@ ad_proc -public im_country_widget {
     Returns a country selection box
 } {
     set widget_value "<select name=\"$select_name\" $size_subtag>\n"
-    if { $default == "" } {
+    if { $default eq "" } {
 	append widget_value "<option value=\"\" selected=\"selected\">[_ intranet-core.Choose_a_Country]</option>\n"
     }
     db_foreach all_countries {

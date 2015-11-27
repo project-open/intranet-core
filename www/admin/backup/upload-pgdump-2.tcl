@@ -13,7 +13,7 @@ ad_page_contract {
 } 
 
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "You have insufficient privileges to use this page"
@@ -34,14 +34,14 @@ if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
 }
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
+if {![regexp {([^//\\]+)$} $upload_file match company_filename]} {
     # couldn't find a match
     set company_filename $upload_file
 }
 
 if {[regexp {\.\.} $company_filename]} {
     set error "Filename contains forbidden characters"
-    ad_returnredirect "/error.tcl?[export_vars -url {error}]"
+    ad_returnredirect [export_vars -base /error.tcl {error}]
 }
 
 if {![file readable $tmp_filename]} {

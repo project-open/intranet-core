@@ -27,7 +27,7 @@ ad_page_contract {
 # Default & Security
 # ------------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set page_title "Upload Projects CSV"
 set page_body "<ul>"
 set context_bar [im_context_bar [list "/intranet/cusomers/" "Projects"] $page_title]
@@ -51,14 +51,14 @@ if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
 }
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match project_filename] {
+if {![regexp {([^//\\]+)$} $upload_file match project_filename]} {
     # couldn't find a match
     set project_filename $upload_file
 }
 
 if {[regexp {\.\.} $project_filename]} {
     set error "Filename contains forbidden characters"
-    ad_returnredirect "/error.tcl?[export_vars -url {error}]"
+    ad_returnredirect [export_vars -base /error.tcl {error}]
 }
 
 if {![file readable $tmp_filename]} {
@@ -205,7 +205,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
         set var_value [string map -nocase {"\"" "'" "\[" "(" "\{" "(" "\}" ")" "\]" ")"} $var_value]
-	if {[string equal "NULL" $var_value]} { set var_value ""}
+	if {"NULL" eq $var_value} { set var_value ""}
 
 	# replace unicode characters by non-accented characters
 	# Watch out! Does not work with Latin-1 characters
@@ -271,7 +271,7 @@ foreach csv_line_fields $values_list_of_lists {
     # -------------------------------------------------------
     # Empty project_name
     # => Skip it completely
-    if {[empty_string_p $project_name]} {
+    if {$project_name eq ""} {
     	ns_write "<li>'$project_name': Skipping, project name can not be empty.\n"
 	continue	
     }
@@ -393,7 +393,7 @@ foreach csv_line_fields $values_list_of_lists {
     	where project_id = :project_id
     "
 
-    if {$primary_contact_id == "" && $user_id != 0} {
+    if {$primary_contact_id eq "" && $user_id != 0} {
     	db_dml update_project_prim_contact "
     		update im_projects
     		set primary_contact_id = :user_id
@@ -401,7 +401,7 @@ foreach csv_line_fields $values_list_of_lists {
     	"
     }
 
-    if {$accounting_contact_id == "" && $user_id != 0} {
+    if {$accounting_contact_id eq "" && $user_id != 0} {
     	db_dml update_project_acc_contact "
     		update im_projects
     		set accounting_contact_id = :user_id

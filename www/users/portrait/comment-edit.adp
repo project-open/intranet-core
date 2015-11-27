@@ -1,7 +1,7 @@
 <master src="../../master">
-<property name="title">#acs-subsite.lt_Edit_comment_for_the_#</property>
+<property name="doc(title)">#acs-subsite.lt_Edit_comment_for_the_#</property>
 <property name="main_navbar_label">user</property>
-<property name="context">@context;noquote@</property>
+<property name="context">@context;literal@</property>
 
 <form method="post" action="comment-edit-2.tcl">
 @export_vars;noquote@

@@ -72,7 +72,7 @@ ad_page_contract {
 # Check for Errors in Input Variables
 # -----------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set form_setid [ns_getform]
 
 set required_vars [list \
@@ -83,7 +83,7 @@ set required_vars [list \
 set errors [im_verify_form_variables $required_vars]
 set exception_count 0
 
-if { ![empty_string_p $errors] } {
+if { $errors ne "" } {
     incr exception_count
 }
 
@@ -129,7 +129,7 @@ if { $exists_p } {
     append errors "  <li>[_ intranet-core._The]"
 }
 
-if { ![empty_string_p $errors] } {
+if { $errors ne "" } {
     ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
     ad_script_abort
 }
@@ -175,10 +175,10 @@ if {$company_exists_p} {
 # Create a new Company if it didn't exist yet
 # -----------------------------------------------------------------
 
-if {![exists_and_not_null office_name]} {
+if {(![info exists office_name] || $office_name eq "")} {
     set office_name "$company_name [_ intranet-core.Main_Office]"
 }
-if {![exists_and_not_null office_path]} {
+if {(![info exists office_path] || $office_path eq "")} {
     set office_path "$company_path"
 }
 

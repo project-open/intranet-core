@@ -99,7 +99,7 @@ ad_proc -public multirow_sort_tree {
 		lappend slist [list $i $order($i)]
 	    }
 	    foreach i [eval lsort -decreasing $sortopt -index 1 \$slist] {
-		lappend roots [list [lindex $i 0] [expr $level+1]]
+		lappend roots [list [lindex $i 0] [expr {$level+1}]]
 	    }
 	}
 
@@ -122,7 +122,7 @@ ad_proc -public unlist {list args} {
     # $toast = buttered
 } {
     foreach value $list name $args {
-	if {![string length $name]} return
+	if {$name eq ""} return
 	upvar 1 $name var
 	set var $value
     }
@@ -137,7 +137,7 @@ ad_proc -public textdate_to_ansi {
 
     set value $date
 
-    if { $value == "" } {
+    if { $value eq "" } {
         # they didn't enter anything
         return ""
     }
@@ -225,7 +225,7 @@ ad_proc -public validate_textdate {
     Adaption of template::data::validate::textdate
 } {
     set error_msg ""
-    if { [exists_and_not_null textdate] } {
+    if { ([info exists textdate] && $textdate ne "") } {
         if { [regexp {^[0-9]{4}-[0-9]{2}-[0-9]{2}$} $textdate match] } {
             if { [catch { [clock scan $textdate] }] } {
                 # the textdate is formatted properly the template::data::transform::textdate proc
@@ -241,7 +241,7 @@ ad_proc -public validate_textdate {
                     set maxdays [template::util::date::get_property days_in_month $datelist]
                     if { $day < 1 || $day > $maxdays } {
                         set month_pretty [template::util::date::get_property long_month_name $datelist]
-                        if { $month == "2" } {
+                        if { $month == 2 } {
                             # February has a different number of days depending on the year
                             append month_pretty " ${year}"
                         }

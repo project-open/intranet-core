@@ -1,5 +1,5 @@
 <master src="../master">
-<property name="title">@page_title@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_categories</property>
 
 <h1>@page_title@</h1>
@@ -12,7 +12,7 @@ category IDs.
 
 <form action="/intranet/admin/categories/batch-import-2" method=POST>
 <%= [export_vars -form {category_type}] %>
-<table border=0 cellpadding=0 cellspacing=1>
+<table border="0" cellpadding="0" cellspacing="1">
   <tr class=rowodd>
     <td>#intranet-core.Category_Type#</td>
     <td>@category_type@</td>
@@ -24,8 +24,8 @@ category IDs.
     </td>
   </tr>
   <tr class=rowodd>
-  <td colspan=2>
-	<input type=submit name=submit value="#intranet-core.Submit#">
+  <td colspan="2">
+	<input type="submit" name="submit" value="#intranet-core.Submit#">
   </td>
 </tr>
 </table>

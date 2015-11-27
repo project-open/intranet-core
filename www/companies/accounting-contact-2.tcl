@@ -24,7 +24,7 @@ ad_page_contract {
     user_id:integer,notnull
 }
 
-ad_maybe_redirect_for_registration
+auth::require_login
 
 db_dml companies_set_accounting_contact \
 	"update im_companies 
@@ -33,4 +33,4 @@ db_dml companies_set_accounting_contact \
 
 db_release_unused_handles
 
-ad_returnredirect view?[export_vars -url {company_id}]
+ad_returnredirect [export_vars -base view {company_id}]

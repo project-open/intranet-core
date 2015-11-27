@@ -3,17 +3,17 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">companies</property>
 
 <form enctype="multipart/form-data" method=POST action="upload-companies-2.tcl">
 <%= [export_vars -form {return_url}] %>
-    <table border=0>
+    <table border="0">
      <tr> 
 	<td>Filename</td>
 	<td> 
-	  <input type=file name=upload_file size=30>
+	  <input type="file" name="upload_file" size="30">
 	<%= [im_gif help "Use the &quot;Browse...&quot; button to locate your file, then click &quot;Open&quot;."] %>
 	</td>
      </tr>
@@ -36,13 +36,13 @@
       <tr> 
 	<td></td>
 	<td> 
-	  <input type=submit value="Submit and Upload">
+	  <input type="submit" value="Submit and Upload">
 	</td>
       </tr>
     </table>
 </form>
 
-<table border=0 cellspacing=0 cellpadding=1 width="70%">
+<table border="0" cellspacing="0" cellpadding="1" width="70%">
 <tr><td>
 
 <font color=red>
@@ -52,7 +52,7 @@ is not an easy task, because it employes much "tigher" rules
 for data consistency then Outlook or other PIM applications.
 <p>
 Also, please
-<a href=/intranet/admin/backup/pg_dump>backup your data</a> before
+<a href="/intranet/admin/backup/pg_dump">backup your data</a> before
 importing.
 </font>
 

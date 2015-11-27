@@ -42,7 +42,7 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-sett user_id [ad_maybe_redirect_for_registration]
+sett user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
 set view_types [list "t" "Mine" "f" "All"]
@@ -76,7 +76,7 @@ lappend column_headers "Status"
 lappend column_vars {$project_status}
 
 # Determine the default status if not set
-if { [empty_string_p $status_id] } {
+if { $status_id eq "" } {
     # Default status is open
     set status_id [im_project_status_open]
 }
@@ -109,22 +109,22 @@ lappend project_types 0 All
 # Now let's generate the sql query
 #
 set criteria [list]
-if { ![empty_string_p $status_id] && $status_id > 0 } {
+if { $status_id ne "" && $status_id > 0 } {
     lappend criteria "p.project_status_id=:status_id"
 }
-if { ![empty_string_p $type_id] && $type_id != 0 } {
+if { $type_id ne "" && $type_id != 0 } {
     lappend criteria "p.project_type_id=:type_id"
 }
 
 
-if { [string compare $mine_p "t"] == 0 } {
+if { $mine_p == "t"  } {
     set mine_restriction ""
 } else {
     set mine_restriction "or perm.permission_all > 0"
 }
 
 
-if { ![empty_string_p $letter] && [string compare $letter "all"] != 0 && [string compare $letter "scroll"] != 0 } {
+if { $letter ne "" && $letter ne "all"  && $letter ne "scroll"  } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:letter"
 }
 if { $include_subprojects_p == "f" } {
@@ -146,7 +146,7 @@ switch $order_by {
 }
 
 set where_clause [join $criteria " and\n            "]
-if { ![empty_string_p $where_clause] } {
+if { $where_clause ne "" } {
     set where_clause " and $where_clause"
 }
 
@@ -200,7 +200,7 @@ WHERE
 "
 
 
-if { [string compare $letter "all"] == 0 } {
+if { $letter eq "all"  } {
     set selection "$sql $order_by_clause"
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
@@ -208,10 +208,10 @@ if { [string compare $letter "all"] == 0 } {
 
 } else {
     # Set up boundaries to limit the amount of rows we display
-    if { [empty_string_p $how_many] || $how_many < 1 } {
+    if { $how_many eq "" || $how_many < 1 } {
 	set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
     }
-    set end_idx [expr $start_idx + $how_many - 1]
+    set end_idx [expr {$start_idx + $how_many - 1}]
     set limited_query [im_select_row_range $sql $start_idx $end_idx]
 
     # We can't get around counting in advance if we want to be able to 
@@ -233,14 +233,14 @@ set idx $start_idx
 db_foreach projects_info_query $selection {
     set url [im_maybe_prepend_http $url]
 
-    if { [empty_string_p $url] } {
+    if { $url eq "" } {
 	set url_string "&nbsp;"
     } else {
 	set url_string "<a href=\"$url\">$url</a>"
     }
 
     # Append together a line of data based on the "column_vars" parameter list
-    append results "\n<tr$bgcolor([expr $ctr % 2])>\n"
+    append results "\n<tr$bgcolor([expr {$ctr % 2}])>\n"
     foreach column_var $column_vars {
 	append results "\n\t<td valign=top>"
 	set cmd "append results $column_var"
@@ -259,7 +259,7 @@ db_foreach projects_info_query $selection {
 if {$ctr==$how_many && $total_in_limited > 0 && $end_idx < $total_in_limited} {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page 
-    set next_start_idx [expr $end_idx + 1]
+    set next_start_idx [expr {$end_idx + 1}]
     set next_page "<a href=index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]>Next Page</a>"
 } else {
     set next_page ""
@@ -268,7 +268,7 @@ if {$ctr==$how_many && $total_in_limited > 0 && $end_idx < $total_in_limited} {
 if { $start_idx > 1 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
-    set previous_start_idx [expr $start_idx - $how_many]
+    set previous_start_idx [expr {$start_idx - $how_many}]
     if { $previous_start_idx < 1 } {
 	set previous_start_idx 1
     }
@@ -387,7 +387,7 @@ if {"" != $admin_html} {
 }
 
 # Set up colspan to be the number of headers + 1 for the # column
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 set project_list_html "
 <table width=100% cellpadding=2 cellspacing=2 border=0>"
@@ -398,20 +398,20 @@ set project_list_html "
 #  </td>
 #</tr>"
 
-if { [empty_string_p $results] } {
+if { $results eq "" } {
     append project_list_html "<tr><td colspan=$colspan><ul><li><b> 
 [lang::message::lookup "" intranet-core.lt_There_are_currently_n "There are currently no entries matching the selected criteria"]
 </b></ul></td></tr>\n"
 } else {
     set url "index?"
     set query_string [export_ns_set_vars url [list order_by]]
-    if { ![empty_string_p $query_string] } {
+    if { $query_string ne "" } {
 	append url "$query_string&"
     }
 
 #    append project_list_html "<tr>\n  <td class=rowtitle>Project #</td>\n"
     foreach col $column_headers {
-	if { [string compare $order_by $col] == 0 } {
+	if { $order_by eq $col  } {
 	    append project_list_html "  <td class=rowtitle>$col</td>\n"
 	} else {
 	    append project_list_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col</a></td>\n"

@@ -26,7 +26,7 @@ ad_page_contract {
     query_string
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 set query_string [ad_urlencode $query_string]
 

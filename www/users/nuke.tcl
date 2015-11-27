@@ -28,7 +28,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 im_user_permissions $current_user_id $user_id view read write admin
 
 if {!$admin} {
@@ -59,4 +59,4 @@ set object_type "user"
 
 # set delete_user_link "<a href=\"delete?user_id=$user_id\">[_ intranet-core.lt_delete_this_user_inst]</a>"
 
-set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_vars -url { user_id return_url}]\">[_ intranet-core.lt_delete_this_user_inst]</a>"
+set delete_user_link "<a href=\"/acs-admin/users/member-state-change?member_state=banned&[export_vars { user_id return_url}]\">[_ intranet-core.lt_delete_this_user_inst]</a>"

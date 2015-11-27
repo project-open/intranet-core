@@ -23,7 +23,7 @@ ad_page_contract {
 }
 
 # User id already verified by filters
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 
@@ -135,7 +135,7 @@ db_foreach projects_info_query $sql {
 }
 
 # Set up colspan to be the number of headers + 1 for the # column
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 set page_body "
 <pre>

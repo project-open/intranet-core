@@ -24,10 +24,10 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "packages.tgz"
 
-set tmp_file "[ns_tmpnam].tgz"
+set tmp_file "[ad_tmpnam].tgz"
 set server_path [acs_root_dir]
 
 if { [catch {
@@ -45,7 +45,7 @@ if { [catch {
     ad_script_abort
 }
 
-if $file_readable {
+if {$file_readable} {
     rp_serve_concrete_file $tmp_file
     ad_script_abort
 }

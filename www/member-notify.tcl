@@ -77,7 +77,7 @@ set message [regsub -all {{([a-zA-Z0-9_]+)}} $message "%\\1%"]
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set ip_addr [ad_conn peeraddr]
 set locale [ad_conn locale]
 set creation_ip [ad_conn peeraddr]
@@ -278,7 +278,7 @@ foreach email $email_list {
 	    -file_ids $attachment_ci_id
     } errmsg]} {
         ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
-	ad_return_error $subject "<p>Error sending out mail:</p><div><code>[ad_quotehtml $errmsg]</code></div>"
+	ad_return_error $subject "<p>Error sending out mail:</p><div><code>[ns_quotehtml $errmsg]</code></div>"
 	ad_script_abort
     }
 }

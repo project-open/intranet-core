@@ -17,7 +17,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set template_path [im_filestorage_template_path]
 set page_title "[_ intranet-translation.Upload_Successful]"
 set context_bar [im_context_bar $page_title]

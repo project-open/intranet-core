@@ -21,7 +21,7 @@ ad_proc -deprecated -warn nmc_IllustraDatetoPrettyDate {sql_date} {
     # was "8.0"
 
     set trimmed_month [string trimleft $month 0]
-    set pretty_month [lindex $allthemonths [expr $trimmed_month - 1]]
+    set pretty_month [lindex $allthemonths $trimmed_month-1]
 
     return "$pretty_month $day, $year"
 
@@ -68,7 +68,7 @@ ad_proc -deprecated -warn util_prepare_update_multi_key {table_name primary_key_
 	set form_var_name [ns_set key $form $form_counter_i]
 	set value [string trim [ns_set value $form $form_counter_i]]
 
-	if { [lsearch -exact $primary_key_name_list $form_var_name] == -1 } {
+	if {$form_var_name ni $primary_key_name_list} {
 
 	    # this is not one of the keys
 	    ad_tcl_list_list_to_ns_set -set_id $bind_vars [list [list $form_var_name $value]]
@@ -113,15 +113,15 @@ ad_proc -deprecated -warn util_prepare_insert {table_name form} {
 ad_proc -deprecated -warn util_PrettySex {m_or_f { default "default" }} {
     to be removed.
 } { 
-    if { $m_or_f == "M" || $m_or_f == "m" } {
+    if { $m_or_f eq "M" || $m_or_f eq "m" } {
 	return "Male"
-    } elseif { $m_or_f == "F" || $m_or_f == "f" } {
+    } elseif { $m_or_f eq "F" || $m_or_f == "f" } {
 	return "Female"
     } else {
 	# Note that we can't compare default to the empty string as in 
 	# many cases, we are going want the default to be the empty
 	# string
-	if { [string compare $default "default"] == 0 } {
+	if { $default eq "default"  } {
 	    return "Unknown (\"$m_or_f\")"
 	} else {
 	    return $default
@@ -132,15 +132,15 @@ ad_proc -deprecated -warn util_PrettySex {m_or_f { default "default" }} {
 ad_proc -deprecated -warn util_PrettySexManWoman {m_or_f { default "default"} } {
     to be removed.
 } { 
-    if { $m_or_f == "M" || $m_or_f == "m" } {
+    if { $m_or_f eq "M" || $m_or_f eq "m" } {
 	return "Man"
-    } elseif { $m_or_f == "F" || $m_or_f == "f" } {
+    } elseif { $m_or_f eq "F" || $m_or_f == "f" } {
 	return "Woman"
     } else {
 	# Note that we can't compare default to the empty string as in 
 	# many cases, we are going want the default to be the empty
 	# string
-	if { [string compare $default "default"] == 0 } {
+	if { $default eq "default"  } {
 	    return "Person of Unknown Sex"
 	} else {
 	    return $default
@@ -275,7 +275,7 @@ ad_proc -deprecated -warn set_csv_variables_after_query {} {
 ad_proc -deprecated -warn util_aolserver_2_p {} {
     to be removed.
 } { 
-    if {[string index [ns_info version] 0] == "2"} {
+    if {[string index [ns_info version] 0] == 2} {
 	return 1
     } else {
 	return 0
@@ -311,7 +311,7 @@ ad_proc -deprecated -warn post_args_to_query_string {} {
 ad_proc -deprecated -warn get_referrer_and_query_string {} {
     to be removed.
 } { 
-    if {[ad_conn method]!="GET"} {
+    if {[ad_conn method] ne "GET"} {
 	set query_return [post_args_to_query_string]
 	return "[get_referrer]?${query_return}"
     } else {
@@ -422,7 +422,7 @@ ad_proc -deprecated -warn database_to_tcl_string_or_null {db sql {null_value ""}
     to be removed.
 } { 
     set selection [ns_db 0or1row $db $sql]
-    if { $selection != "" } {
+    if { $selection ne "" } {
 	return [ns_set value $selection 0]
     } else {
 	# didn't get anything from the database
@@ -547,7 +547,7 @@ Arguments are:
 </ul>} {
     # Run the SQL
     set order_clause ""
-    if { ![empty_string_p $current_sort_order] } {
+    if { $current_sort_order ne "" } {
 	set order_clause " order by [join $current_sort_order ","]"
     }
     
@@ -579,7 +579,7 @@ Arguments are:
 	# Calculate the href for the header link.
 	set this_url [ad_conn url]
 	set exported_vars [export_ns_set_vars "url" $sort_var $vars_to_export]
-	if { ![empty_string_p $exported_vars] } {
+	if { $exported_vars ne "" } {
 	    append exported_vars "&"
 	}
 	
@@ -594,7 +594,7 @@ Arguments are:
 	    # We're treating a string as a list here, since we know that
 	    # $primary_sort_column will be a plain column name, or a 
 	    # column name followed by " desc".
-	    if { [lindex $primary_sort_column 1] == "desc" } {
+	    if { [lindex $primary_sort_column 1] eq "desc" } {
 		append exported_vars "$sort_var=[ns_urlencode [sortable_table_new_sort_order $current_sort_order $just_the_sort_column]]"
 		set sort_icon "<img border=0 src=\"/graphics/up.gif\">"
 	    } else {
@@ -628,7 +628,7 @@ Arguments are:
 	set_variables_after_query
 
 	# check to see if we have reached our max results limit
-	if { [exists_and_not_null max_results] } {
+	if { ([info exists max_results] && $max_results ne "") } {
 	    if { $n_results >= $max_results } { break }
 	    incr n_results
 	}
@@ -636,7 +636,7 @@ Arguments are:
 	# Handle table breaks.
 	if { $i == 0 } {
 	    append table_html "$table_start$headers"
-	} elseif { ![empty_string_p $table_length] } {
+	} elseif { $table_length ne "" } {
 	    if { $i % $table_length == 0 } {
 		append table_html "</table>\n$table_start$headers"
 		set i 0
@@ -644,7 +644,7 @@ Arguments are:
 	}
 
 	# Handle row striping.
-	if { ![empty_string_p $stripe_color_list] } {
+	if { $stripe_color_list ne "" } {
 	    append table_html "<tr bgcolor=\"[lindex $stripe_color_list $color_index]\">"
 	    set color_index [expr ($color_index + 1) % $n_colors]
 	} else {
@@ -660,14 +660,14 @@ Arguments are:
 	    set primary_column_name [lindex $col_desc 0]
 	    set col_display [lindex $col_desc 2]
 	    
-	    if { [empty_string_p $col_display] } {
+	    if { $col_display eq "" } {
 		# Just use the sort column as the value.
 		set col_display "\$$primary_column_name"
 	    }
 
 	    # Insert &nbsp; for empty rows to avoid empty cells.
 	    set value [subst $col_display]
-	    if { [empty_string_p $value] } {
+	    if { $value eq "" } {
 		set value "&nbsp;"
 	    }
 
@@ -680,7 +680,7 @@ Arguments are:
 
     ns_db flush $db
 
-    if { ![empty_string_p $table_html] } {
+    if { $table_html ne "" } {
         append table_html "</table>"
     }
 

@@ -8,7 +8,7 @@
     </ul>
   </if>  
     
-  <li><a href=../projects/view?project_id=@active_projects.project_id@>@active_projects.project_nr@</a>: 
+  <li><a href="../projects/view?project_id=@active_projects.project_id@">@active_projects.project_nr@</a>: 
 	@active_projects.project_name@ (@active_projects.project_status_name;noquote@)
 </multiple>
 
@@ -21,11 +21,11 @@
 </if>
 
 <if @ctr@ gt @max_projects@>
-  <li><a href="/intranet/projects/index?company_id=@company_id@&status_id=0">#intranet-core.more_projects#</a>
+  <li><a href="/intranet/projects/index?company_id=@company_id@&amp;status_id=0">#intranet-core.more_projects#</a>
 </if>
   
 <if @admin@>
-  <p><li><a href=../projects/new?company_id=@company_id@>#intranet-core.Add_a_project#</a>
+  <p><li><a href="../projects/new?company_id=@company_id@">#intranet-core.Add_a_project#</a>
 </if>
 </ul>
 

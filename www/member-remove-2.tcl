@@ -31,7 +31,7 @@ ad_page_contract {
     return_url:optional
 }
 
-set mapping_user [ad_verify_and_get_user_id]
+set mapping_user [ad_conn user_id]
 
 if { ![im_biz_object_admin_p $mapping_user $group_id] } {
     ad_return_complaint 1 "<li>Permission Denied<br>You do not have permission to remove a member from this group."
@@ -45,7 +45,7 @@ db_dml delete_user_from_group \
 
 db_release_unused_handles
 
-if { [exists_and_not_null return_url] } {
+if { ([info exists return_url] && $return_url ne "") } {
     ad_returnredirect $return_url
 } else {
     ad_returnredirect "index"

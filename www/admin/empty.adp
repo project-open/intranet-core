@@ -1,5 +1,5 @@
 <master src="/packages/intranet-core/www/master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 <property name="extra_footer_stuff_before_end_body">asdf asdf asdf asdf</property>
 

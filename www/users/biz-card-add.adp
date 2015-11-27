@@ -19,8 +19,8 @@
 <if @search_results_p@>
 
 <table>
-<tr valign=top>
-<td valign=top>
+<tr valign="top">
+<td valign="top">
     <h2>Companies</h2>
     <p>
     <listtemplate name="company_list"></listtemplate>

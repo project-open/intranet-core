@@ -1,6 +1,6 @@
 <!-- packages/intranet-core/www/users/upload-users.adp -->
 <master src="/packages/intranet-core/www/master">
-<property name="title">@page_title@</property>
+<property name="doc(title)">@page_title;literal@</property>
 
 <h1><%=[lang::message::lookup "" intranet-core.TitleUploadUserData "Update User Data from CSV File"]%></h1>
 

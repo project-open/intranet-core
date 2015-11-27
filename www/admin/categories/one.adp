@@ -1,5 +1,5 @@
 <master src="../master">
-  <property name="title">@page_title@</property>
+  <property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_categories</property>
 
 <if "t" eq @constant_p@>
@@ -19,9 +19,9 @@ However, it is OK to:
 
 
 <form @form_action_html;noquote@ method=POST>
-<table border=0 cellpadding=0 cellspacing=1>
+<table border="0" cellpadding="0" cellspacing="1">
   <tr>
-    <td class=rowtitle colspan=2 align=center>#intranet-core.Category#</td>
+    <td class=rowtitle colspan="2" align="center">#intranet-core.Category#</td>
   </tr>
   <tr>
     <td>#intranet-core.Category_Type#</td>
@@ -29,24 +29,24 @@ However, it is OK to:
   </tr>
   <tr class=roweven>
     <td>#intranet-core.Category_Nr#</td>
-    <td><input size=10 name=category_id value="@category_id@"></td>
+    <td><input size="10" name="category_id" value="@category_id@"></td>
   </tr>
   <tr class=rowodd>
     <td>#intranet-core.Category_name#</td>
-    <td><input size=40 name=category value="@category@"></td>
+    <td><input size="40" name="category" value="@category@"></td>
   </tr>
   <tr class=rowodd>
     <td>Enabled</td>
     <td>
-	<input type=radio name=enabled_p value="t" @enabled_p_checked@>
+	<input type="radio" name="enabled_p" value="t" @enabled_p_checked@>
 	Enabled 
-	<input type=radio name=enabled_p value="f" @enabled_p_unchecked@>
+	<input type="radio" name="enabled_p" value="f" @enabled_p_unchecked@>
 	Not Enabled 
     </td>
   </tr>
   <tr class=rowodd>
     <td>Sort Order</td>
-    <td><input size=5 name=sort_order value="@sort_order@"></td>
+    <td><input size="5" name="sort_order" value="@sort_order@"></td>
   </tr>
   <tr class=roweven>
     <td>
@@ -60,20 +60,20 @@ However, it is OK to:
 
   <tr class=rowodd>
     <td>Int1</td>
-    <td><input size=20 name=aux_int1 value="@aux_int1@"></td>
+    <td><input size="20" name="aux_int1" value="@aux_int1@"></td>
   </tr>
   <tr class=roweven>
     <td>Int2</td>
-    <td><input size=20 name=aux_int2 value="@aux_int2@"></td>
+    <td><input size="20" name="aux_int2" value="@aux_int2@"></td>
   </tr>
 
   <tr class=rowodd>
     <td>String1</td>
-    <td><input size=60 name=aux_string1 value="@aux_string1@"></td>
+    <td><input size="60" name="aux_string1" value="@aux_string1@"></td>
   </tr>
   <tr class=roweven>
     <td>String2</td>
-    <td><input size=60 name=aux_string2 value="@aux_string2@"></td>
+    <td><input size="60" name="aux_string2" value="@aux_string2@"></td>
   </tr>
   <tr class=roweven>
     <td>Visible TCL</td>
@@ -93,15 +93,15 @@ However, it is OK to:
   <tr class=roweven>
     <td>#intranet-core.Parent_Categories#</td>
     <td>
-      <select name=parents size=20 multiple>
+      <select name=parents size="20" multiple>
       @hierarchy_component;noquote@
       </select>
     </td>
   </tr>
 <% } %>
 <tr class=roweven>
-  <td colspan=2>
-	<input type=submit name=submit value="#intranet-core.Submit#" $input_form_html>
+  <td colspan="2">
+	<input type="submit" name="submit" value="#intranet-core.Submit#" $input_form_html>
   </td>
 </tr>
 

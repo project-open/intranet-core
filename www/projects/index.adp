@@ -1,17 +1,17 @@
 <master src="../master">
-<property name="title">@page_title@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">projects</property>
-<property name="sub_navbar">@project_navbar_html;noquote@</property>
-<property name="left_navbar">@left_navbar_html;noquote@</property>
-<property name="show_context_help">@show_context_help_p;noquote@</property>
+<property name="sub_navbar">@project_navbar_html;literal@</property>
+<property name="left_navbar">@left_navbar_html;literal@</property>
+<property name="show_context_help">@show_context_help_p;literal@</property>
 
 <SCRIPT Language=JavaScript src=/resources/diagram/diagram/diagram.js></SCRIPT>
 
 <if 0 eq @plugin_id@>
 
-	<table cellspacing=0 cellpadding=0 border=0 width="100%">
-	<tr valign=top>
+	<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<tr valign="top">
 	<td>
 		<form action="/intranet/projects/project-action" method=POST>
 		<%= [export_vars -form {return_url}] %>

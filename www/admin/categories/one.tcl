@@ -27,7 +27,7 @@ ad_page_contract {
     { new_category 0 }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -97,7 +97,7 @@ if {0 != $category_id} {
     # Increase the category counter until up to date
     set category_id [db_string max_cat_id "select max(category_id) from im_categories" -default\
 			 10000]
-    set category_id [expr $category_id + 1]
+    set category_id [expr {$category_id + 1}]
     while {[db_string max_cat_id "select max(category_id) from im_categories"] >= $category_id} {
 	set category_id [db_nextval im_categories_seq]
     }

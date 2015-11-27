@@ -27,12 +27,12 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 im_user_permissions $current_user_id $user_id view read write admin
 
 set return_url [im_url_with_query]
 
-if [info exists user_id_from_search] {
+if {[info exists user_id_from_search]} {
     set user_id $user_id_from_search
 }
 
@@ -69,7 +69,7 @@ if {[im_permission $current_user_id view_users]} {
 }
 
 # use [info exists ] here?
-if { [empty_string_p $user_name] } {
+if { $user_name eq "" } {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_We_couldnt_find_user__1]"
     return
 }

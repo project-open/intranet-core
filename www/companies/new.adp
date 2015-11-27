@@ -7,8 +7,8 @@
 </head>
 </else>
 
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">companies</property>
 
 <formtemplate id="company"></formtemplate>

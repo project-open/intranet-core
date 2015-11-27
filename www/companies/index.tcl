@@ -74,7 +74,7 @@ ad_page_contract {
 # 2. Defaults & Security
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
@@ -88,10 +88,10 @@ set company_view_page "/intranet/companies/view"
 set view_types [list "mine" "Mine" "all" "All" "unassigned" "Unassigned"]
 set letter [string toupper $letter]
 
-if { [empty_string_p $how_many] || $how_many < 1 } {
+if { $how_many eq "" || $how_many < 1 } {
     set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
-set end_idx [expr $start_idx + $how_many]
+set end_idx [expr {$start_idx + $how_many}]
 
 set criteria [list]
 
@@ -217,7 +217,7 @@ if { 0 != $user_id_from_search} {
 if { $type_id > 0 } {
     lappend criteria "c.company_type_id in ([join [im_sub_categories $type_id] ","])"
 }
-if { ![empty_string_p $letter] && [string compare $letter "ALL"] != 0 && [string compare $letter "SCROLL"] != 0 } {
+if { $letter ne "" && $letter ne "ALL"  && $letter ne "SCROLL"  } {
     lappend criteria "im_first_letter_default_to_a(c.company_name) = :letter"
 }
 
@@ -240,7 +240,7 @@ if { [llength $extra_tables] > 0 } {
 }
 
 set where_clause [join $criteria " and\n            "]
-if { ![empty_string_p $where_clause] } {
+if { $where_clause ne "" } {
     set where_clause " and $where_clause"
 }
 
@@ -297,7 +297,7 @@ set perm_sql [expr "\"$perm_sql_uneval\""]
 # Show the list of all projects only if the user has the
 # "view_companies_all" privilege AND if he explicitely
 # requests to see all projects.
-if {$view_companies_all_p && ![string equal $view_type "mine"]} {
+if {$view_companies_all_p && $view_type ne "mine" } {
     # Just include the list of all customers
     set perm_sql "im_companies c"
 }
@@ -358,8 +358,8 @@ if {[im_permission $current_user_id "add_companies"]} {
 
 if {$user_is_admin_p} {
     append admin_html "
-<li><a href=/intranet/companies/upload-companies?[export_vars -url { return_url}]>[_ intranet-core.Import_Company_CSV]</a>
-<!-- <li><a href=/intranet/companies/upload-contacts?[export_vars -url { return_url}]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
+<li><a href=/intranet/companies/[export_vars -base upload-companies { return_url}]>[_ intranet-core.Import_Company_CSV]</a>
+<!-- <li><a href=/intranet/companies/[export_vars -base upload-contacts { return_url}]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
 "}
 
 append admin_html "
@@ -378,7 +378,7 @@ append admin_html "</ul>"
 # ---------------------------------------------------------------
 
 # Set up colspan to be the number of headers + 1 for the # column
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 # Format the header names with links that modify the
 # sort order of the SQL query.
@@ -386,7 +386,7 @@ set colspan [expr [llength $column_headers] + 1]
 set table_header_html ""
 set url "index?"
 set query_string [export_ns_set_vars url [list order_by]]
-if { ![empty_string_p $query_string] } {
+if { $query_string ne "" } {
     append url "$query_string&"
 }
 
@@ -396,7 +396,7 @@ foreach col $column_headers {
     regsub -all " " $col "_" col_txt
     set col_txt [_ intranet-core.$col_txt]
 
-    if { [string compare $order_by $col] == 0 } {
+    if { $order_by eq $col  } {
 	append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
     } else {
 	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a></td>\n"
@@ -418,7 +418,7 @@ set idx $start_idx
 db_foreach company_info_query $selection -bind $form_vars {
 
     # Append together a line of data based on the "column_vars" parameter list
-    append table_body_html "<tr$bgcolor([expr $ctr % 2])>\n"
+    append table_body_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
@@ -435,7 +435,7 @@ db_foreach company_info_query $selection -bind $form_vars {
 }
 
 # Show a reasonable message when there are no result rows:
-if { [empty_string_p $table_body_html] } {
+if { $table_body_html eq "" } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
         [_ intranet-core.lt_There_are_currently_n]
@@ -447,7 +447,7 @@ ns_log Notice "xxx: ctr=$ctr, how_many=$how_many, end_idx=$end_idx, total_in_lim
 if { $ctr == $how_many && $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
-    set next_start_idx [expr $end_idx + 1]
+    set next_start_idx [expr {$end_idx + 1}]
     set next_page_url "index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
@@ -456,7 +456,7 @@ if { $ctr == $how_many && $end_idx < $total_in_limited } {
 if { $start_idx > 0 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
-    set previous_start_idx [expr $start_idx - $how_many]
+    set previous_start_idx [expr {$start_idx - $how_many}]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page_url "index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {

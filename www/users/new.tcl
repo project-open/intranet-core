@@ -46,7 +46,7 @@ ad_page_contract {
 
 # "Profile" changes its value, possibly because of strange
 # ad_form sideeffects
-if {[exists_and_not_null profile]} {
+if {([info exists profile] && $profile ne "")} {
     ns_log Notice "/users/new: profile=$profile"
     set profile_org $profile
 } else {
@@ -54,7 +54,7 @@ if {[exists_and_not_null profile]} {
     set profile_org [list]
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set current_user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set page_title "[_ intranet-core.Add_a_user]"
 set context [list [list "." "[_ intranet-core.Users]"] "[_ intranet-core.Add_user]"]
@@ -295,7 +295,7 @@ ad_form -extend -name register -on_request {
 } -on_submit {
 
 
-    if {[info exists password] && [info exists password_confirm] && ![string equal $password $password_confirm]} {
+    if {[info exists password] && [info exists password_confirm] && $password ne $password_confirm } {
 	ad_return_complaint 1 [lang::message::lookup "" intranet-core.Passwords_Dont_Match "The password confirmation doesn't match the password"]
 	return
     }
@@ -318,7 +318,7 @@ ad_form -extend -name register -on_request {
 		return
 	    }
 
-	    if {![info exists password] || [empty_string_p $password]} {
+	    if {![info exists password] || $password eq ""} {
 		set password [ad_generate_random_string]
 		set password_confirm $password
 	    }
@@ -522,7 +522,7 @@ ad_form -extend -name register -on_request {
 	    set is_member [db_string is_member "select count(*) from group_distinct_member_map where member_id=:user_id and group_id=:profile_id"]
 
 	    set should_be_member 0
-	    if {[lsearch -exact $profile_org $profile_id] >= 0} {
+	    if {$profile_id in $profile_org} {
 		set should_be_member 1
 	    }
 	    
@@ -531,7 +531,7 @@ ad_form -extend -name register -on_request {
 	    if {$is_member && !$should_be_member} {
 
 		ns_log Notice "/users/new: => remove_member from $profile_name\n"
-		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		if {$profile_id ni $managable_profile_ids} {
 		    ad_return_complaint 1 "<li>
                     [_ intranet-core.lt_You_are_not_allowed_t]"
                    return
@@ -552,7 +552,7 @@ ad_form -extend -name register -on_request {
 		# the current user. Normally, only the managable profiles are
 		# shown, which means that a user must have played around with
 		# the HTTP variables in oder to fool us...
-		if {[lsearch -exact $managable_profile_ids $profile_id] < 0} {
+		if {$profile_id ni $managable_profile_ids} {
 		    ad_return_complaint 1 "<li>
                     [_ intranet-core.lt_You_are_not_allowed_t_1]"
 		    return
@@ -673,7 +673,7 @@ ad_form -extend -name register -on_request {
 } -after_submit {
 
     if {!$editing_existing_user} {
-	if { ![empty_string_p $next_url] } {
+	if { $next_url ne "" } {
 	    # Add user_id and account_message to the URL
 	    ad_returnredirect [export_vars -base $next_url {user_id password return_url {account_message $creation_info(account_message)}}]
 	    ad_script_abort
@@ -681,7 +681,7 @@ ad_form -extend -name register -on_request {
     }
 
     # User is registered and logged in
-    if { ![exists_and_not_null return_url] } {
+    if { (![info exists return_url] || $return_url eq "") } {
 	# Redirect to subsite home page.
 	set return_url [subsite::get_element -element url]
     }
@@ -694,7 +694,7 @@ ad_form -extend -name register -on_request {
 	# lang::user::locale, as we are now a registered user,
 	# but one without a valid locale setting.
 	set locale [ad_get_cookie "ad_locale"]
-	if { ![empty_string_p $locale] } {
+	if { $locale ne "" } {
 	    lang::user::set_locale $locale
 	    ad_set_cookie -replace t -max_age 0 "ad_locale" ""
 	}
@@ -702,7 +702,7 @@ ad_form -extend -name register -on_request {
     
     # Handle account_message
     if {!$editing_existing_user} {
-	if { ![empty_string_p $creation_info(account_message)] && $self_register_p } {
+	if { $creation_info(account_message) ne "" && $self_register_p } {
 	    # Only do this if user is self-registering
 	    # as opposed to creating an account for someone else
 	    ad_returnredirect [export_vars -base "[subsite::get_element -element url]register/account-message" { { message $creation_info(account_message) } return_url }]
@@ -715,7 +715,7 @@ ad_form -extend -name register -on_request {
     }    
 
     # Fallback:
-    if { [exists_and_not_null return_url] } {
+    if { ([info exists return_url] && $return_url ne "") } {
 	ad_returnredirect $return_url
     } else {
 	ad_returnredirect "/intranet/users/"

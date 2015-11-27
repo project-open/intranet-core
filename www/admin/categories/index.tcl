@@ -26,7 +26,7 @@ ad_page_contract {
     { select_category_type "All" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set return_url [im_url_with_query]
 
@@ -108,7 +108,7 @@ if {$show_add_new_category_p} {
 	  <th style='min-width:60px'>Visible TCL</th>
     "
 
-    if {[string equal "All" $select_category_type]} {
+    if {"All" eq $select_category_type} {
 	append category_list_html "<th style='min-width:100px'>Category Type</th>"
     }
     append category_list_html "<th style='min-width:90px'>Description</th></thead></tr>"
@@ -118,7 +118,7 @@ if {$show_add_new_category_p} {
     set bind_vars [ns_set create]
     
     set category_type_criterion "1=1"
-    if {![string equal "All" $select_category_type]} {
+    if {"All" ne $select_category_type } {
 	set category_type_criterion "c.category_type = :select_category_type"
     }
     
@@ -135,7 +135,7 @@ if {$show_add_new_category_p} {
 	    # We got another is-a for the same category
 	    append category_list_html "
 	<tbody>
-        <tr $bgcolor([expr $ctr % 2])>
+        <tr $bgcolor([expr {$ctr % 2}])>
 	  <td></td>
 	  <td></td>
 	  <td></td>
@@ -147,7 +147,7 @@ if {$show_add_new_category_p} {
 	  <td></td>
 	  <td></td>
 	    "
-	    if {[string equal "All" $select_category_type]} {
+	    if {"All" eq $select_category_type} {
 		append category_list_html "<td></td>"
 	    }
 	    append category_list_html "<td></td></tr>\n"
@@ -157,10 +157,10 @@ if {$show_add_new_category_p} {
 	if {"t" == $enabled_p } { set enabled_p "<strong>T</strong>" }
 	
 	append category_list_html "
-	<tr $bgcolor([expr $ctr % 2])>
+	<tr $bgcolor([expr {$ctr % 2}])>
 	  <td>$category_id</td>
 	  <td><a href='$toggle_url'>$enabled_p</a></td>
-	  <td><a href=\"one.tcl?[export_vars -url {category_id}]\">$category</A></td>
+	  <td><a href=\"one.[export_vars -base tcl {category_id}]\">$category</A></td>
 	  <td>$sort_order</td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
 	  <td>$aux_int1 $aux_int1_cat</td>
@@ -169,7 +169,7 @@ if {$show_add_new_category_p} {
 	  <td>$aux_string2</td>
 	  <td>$visible_tcl</td>
         "
-	if {[string equal "All" $select_category_type]} {
+	if {"All" eq $select_category_type} {
 	    append category_list_html "<td>$select_category_type</td>"
 	}
 	append category_list_html "<td>$category_description</td></tr>\n"
@@ -178,7 +178,7 @@ if {$show_add_new_category_p} {
     
     append category_list_html "</tbody></table>"
     
-    if {![string equal "All" $select_category_type]} {
+    if {"All" ne $select_category_type } {
 	set category_type $select_category_type
 	
 	set new_href [export_vars -base "one" {{category_type $select_category_type}}]

@@ -66,7 +66,7 @@ ad_proc -public im_random_employee_component { } {
     # Get the current user id to not show the current user's portrait
     set current_user_id [ad_conn user_id]
     set subsite_url [subsite::get_element -element url]
-    set export_vars [export_vars -url {user_id return_url}]
+    set export_vars [export_vars {user_id return_url}]
 
 
     # --------------------------------------------------------
@@ -167,7 +167,7 @@ ad_proc -public im_random_employee_component { } {
 		from persons 
 		where person_id = :random_user_id
 	" -default ""]
-	set ctr [expr $ctr-1]
+	set ctr [expr {$ctr-1}]
     }
 
     db_1row user_info "
@@ -232,14 +232,14 @@ ad_proc im_portrait_html_helper {
     
     # ------------ Check if there is a portrait in the CR --------
     if {"" == $portrait_gif} {
-	if {![db_0or1row get_cr_item ""] || [empty_string_p $revision_id]} {
+	if {![db_0or1row get_cr_item ""] || $revision_id eq ""} {
 	    # The user doesn't have a portrait yet
 	    set portrait_p 0
 	} else {
 	    set portrait_p 1
 	}
 	
-	if [catch {db_1row get_picture_info "
+	if {[catch {db_1row get_picture_info "
 	select 
 		i.width, 
 		i.height, 
@@ -252,18 +252,18 @@ ad_proc im_portrait_html_helper {
 		i.image_id = cr.revision_id
 		and image_id = :revision_id
 	"
-	} errmsg] {
+	} errmsg]} {
 	    # There was an error obtaining the picture information
 	    set portrait_p 0
 	}
 
 	# Check if there was a portrait
-	if {![exists_and_not_null publish_date]} { 
+	if {(![info exists publish_date] || $publish_date eq "")} { 
 	    set portrait_p 0 
 	}
 
 	if {$portrait_p} {
-	    if { ![empty_string_p $width] && ![empty_string_p $height] } {
+	    if { $width ne "" && $height ne "" } {
 		set widthheight "width=$width height=$height"
 	    } else {
 		set widthheight ""
@@ -304,7 +304,7 @@ ad_proc im_portrait_component { user_id return_url read write admin} {
 
     set current_user_id [ad_conn user_id]
     set subsite_url [subsite::get_element -element url]
-    set export_vars [export_vars -url {user_id return_url}]
+    set export_vars [export_vars {user_id return_url}]
 
     set portrait_p 0
     set portrait_gif [im_portrait_html $user_id "Portrait"]

@@ -20,7 +20,7 @@ ad_page_contract {
 
 } {}
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title  [lang::message::lookup "" intranet-core.UploadUsers "Upload Users"]
 # set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
 set context_bar ""

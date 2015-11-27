@@ -58,7 +58,7 @@ if {0 == $user_id} {
     ad_return_complaint 1 "User 'Unregistered Visitor' is a system user and can not be viewed or modified."
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 
 # Check the permissions 
@@ -156,10 +156,10 @@ db_foreach user_list_projects $sql  {
     if {$ctr > $max_projects} { break }
 }
 
-if { [exists_and_not_null level] && $level < $current_level } {
+if { ([info exists level] && $level ne "") && $level < $current_level } {
     append projects_html "  </ul>\n"
 }	
-if { [empty_string_p $projects_html] } {
+if { $projects_html eq "" } {
     set projects_html "  <li><i>[_ intranet-core.None]</i>\n"
 }
 
@@ -202,14 +202,14 @@ db_foreach user_list_companies $companies_sql  {
     if {$ctr > $max_companies} { break }
 }
 
-if { [empty_string_p $companies_html] } {
+if { $companies_html eq "" } {
     set companies_html "  <li><i>[_ intranet-core.None]</i>\n"
 }
 
 if {$ctr > $max_companies} {
     set status_id 0
     set type_id 0
-    append companies_html "<li><A HREF='/intranet/companies/index?[export_vars -url { user_id_from_search status_id type_id}]'>[_ intranet-core.more_companies]</A>\n"
+    append companies_html "<li><A HREF='/intranet/companies/[export_vars -base index { user_id_from_search status_id type_id}]'>[_ intranet-core.more_companies]</A>\n"
 }
 
 if {[im_permission $current_user_id view_companies_all]} {

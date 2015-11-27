@@ -49,7 +49,7 @@ ad_page_contract {
 # Check Arguments
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -61,7 +61,7 @@ set package_key "intranet-core"
 set exception_count 0
 set exception_text ""
 
-if {![info exists category] || [empty_string_p $category]} {
+if {![info exists category] || $category eq ""} {
     incr exception_count
     append exception_text "<li>Please enter category name"
 }
@@ -103,7 +103,7 @@ insert into im_category_hierarchy
 # ---------------------------------------------------------------
 
 
-if [catch {
+if {[catch {
    
    db_dml update_category_properties "
 UPDATE 
@@ -121,7 +121,7 @@ SET
 	category_description = :category_description
 WHERE 
 	category_id = :category_id" 
-} errmsg ] {
+} errmsg ]} {
     ad_return_complaint "Argument Error" "<ul>$errmsg</ul>"
     return
 
@@ -172,4 +172,4 @@ im_permission_flush
 
 db_release_unused_handles
 set select_category_type $category_type
-ad_returnredirect "index.tcl?[export_vars -url {select_category_type}]"
+ad_returnredirect [export_vars -base index.tcl {select_category_type}]

@@ -14,7 +14,7 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "[lang::message::lookup "" intranet-core.Report_but_on_page "Report a Bug or Misbehaviour"]"
 set context_bar [im_context_bar $page_title]
 

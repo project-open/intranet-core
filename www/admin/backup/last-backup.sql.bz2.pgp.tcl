@@ -39,7 +39,7 @@ set file_list [lsort -decreasing $file_list]
 
 set file [lindex $file_list 0]
 
-if [file readable $file] {
+if {[file readable $file]} {
 
     set type [ns_guesstype $file]
     set type "application/pgp"

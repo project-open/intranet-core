@@ -1,8 +1,8 @@
 <master src="../master">
-<property name="title">@page_header@</property>
-<property name="context">@context;noquote@</property>
+<property name="doc(title)">@page_header;literal@</property>
+<property name="context">@context;literal@</property>
 <property name="admin_navbar_label">admin_views</property>
-<property name="focus">@focus;noquote@</property>
+<property name="focus">@focus;literal@</property>
 
 <h1>@page_title;noquote@</h1>
 

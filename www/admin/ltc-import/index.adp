@@ -1,12 +1,12 @@
 <master src="../master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 
 <!-- left - right - bottom  design -->
 
-<table cellpadding=0 cellspacing=0 border=0 width="70%">
+<table cellpadding="0" cellspacing="0" border="0" width="70%">
 <tr>
-  <td valign=top>
+  <td valign="top">
 
 <H1>@page_title;noquote@</H1>
 
@@ -31,7 +31,7 @@ You need to proceed with the following steps:
     <ol>
 
       <li>
-        <b><A href=../backup/pg_dump>#intranet-core.PostgreSQL_Backup#</A></b>:<br>
+        <b><A href="../backup/pg_dump">#intranet-core.PostgreSQL_Backup#</A></b>:<br>
 	Please backup your current database contents before continuing
 	with any of the following commands.<br>&nbsp;<br>
 
@@ -138,13 +138,13 @@ You need to proceed with the following steps:
     </ul>
 
   </td>
-  <td valign=top>
+  <td valign="top">
     <%= [im_component_bay right] %>
   </td>
 </tr>
 </table><br>
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
   <%= [im_component_bay bottom] %>
 </td></tr>

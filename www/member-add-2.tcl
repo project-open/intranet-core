@@ -33,7 +33,7 @@ ad_page_contract {
     { also_add_to_group_id:integer "" }
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 callback im_before_member_add -user_id $user_id_from_search -object_id $object_id 
 
 # expect commands such as: "im_project_permissions" ...
@@ -92,12 +92,12 @@ set role_name [db_string role_name "select im_category_from_id(:role_id) from du
 # Get the SystemUrl without trailing "/"
 set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
 set sysurl_len [string length $system_url]
-set last_char [string range $system_url [expr $sysurl_len-1] $sysurl_len]
-if {[string equal "/" $last_char]} {
-    set system_url "[string range $system_url 0 [expr $sysurl_len-2]]"
+set last_char [string range $system_url $sysurl_len-1 $sysurl_len]
+if {"/" eq $last_char} {
+    set system_url "[string range $system_url 0 $sysurl_len-2]"
 }
 
-set admin_user_id [ad_verify_and_get_user_id]
+set admin_user_id [ad_conn user_id]
 set administration_name [db_string admin_name "select im_name_from_user_id(:admin_user_id)"]
 
 set object_url "$system_url$object_rel_url$object_id"
@@ -106,7 +106,7 @@ set user_name "%user_name%"
 set first_names_from_search "%first_names%"
 set last_name_from_search "%last_name%"
 
-if {"" != $notify_asignee && ![string equal "0" $notify_asignee]} {
+if {"" != $notify_asignee && "0" ne $notify_asignee } {
     # Show a textarea to edit the alert at member-add-2.tcl
     ad_return_template
 } else {

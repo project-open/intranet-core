@@ -137,7 +137,7 @@ ad_proc -public im_date_julian_to_epoch {
     Returns seconds after 1/1/1970 00:00 GMT
 } {
     set tz_offset_seconds [util_memoize [list db_string tz_offset "select extract(timezone from now())"]]
-    return [expr 86400.0 * ($julian - 2440588.0) - $tz_offset_seconds]
+    return [expr {86400.0 * ($julian - 2440588.0) - $tz_offset_seconds}]
 }
 
 ad_proc -public im_date_ansi_to_epoch { 
@@ -159,7 +159,7 @@ ad_proc -public im_date_ansi_to_epoch {
 	    if {0 == [string range $ss 0 0]} { set ss [string range $ss 1 end] }
 	    if {0 == [string range $mm 0 0]} { set mm [string range $mm 1 end] }
 	    if {0 == [string range $hh 0 0]} { set hh [string range $hh 1 end] }
-	    set epoch [expr $epoch + $ss + 60 * ($mm + 60.0 * $hh)]
+	    set epoch [expr {$epoch + $ss + 60 * ($mm + 60.0 * $hh)}]
 	}
 	return $epoch
     } else {
@@ -241,7 +241,7 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
 	set line [lindex $csv_files $line_num]
 
 	# Skip compeletely empty lines
-	if {[empty_string_p $line]} {
+	if {$line eq ""} {
 	    incr line_num
 	    continue
 	}
@@ -296,7 +296,7 @@ ad_proc im_csv_split {
 
     while {$pos <= $len} {
 	set char [string index $line $pos]
-	set next_char [string index $line [expr $pos+1]]
+	set next_char [string index $line $pos+1]
 	if {$debug} {ns_log notice "im_csv_split: pos=$pos, char=$char, state=$state"}
 
 	switch $state {
@@ -338,7 +338,7 @@ ad_proc im_csv_split {
 		# or by the "separator" if the field was not quoted
 
 		# Check for a duplicated quote when in quoted mode.
-		if {"" != $quote && [string equal $char $quote] && [string equal $next_char $quote]} {
+		if {"" != $quote && $char eq $quote && $next_char eq $quote} {
 		    append field $char
 		    incr pos
 		    incr pos    
@@ -347,7 +347,7 @@ ad_proc im_csv_split {
 
 		    # Check if we have reached the end of the field
 		    # either with the matching quote of with the separator:
-		    if {"" != $quote && [string equal $char $quote] || "" == $quote && [string equal $char $separator]} {
+		    if {"" != $quote && $char eq $quote || "" == $quote && $char eq $separator} {
 
 			if {$debug} {ns_log notice "im_csv_split: field: found quote or term: $char"}
 
@@ -384,7 +384,7 @@ ad_proc im_csv_split {
 		    if {$debug} {ns_log notice "im_csv_split: separator: found a space: '$char'"}
 		    incr pos
 		} else {
-		    if {[string equal $char $separator]} {
+		    if {$char eq $separator} {
 			if {$debug} {ns_log notice "im_csv_split: separator: found separator: '$char'"}
 			incr pos
 			set state "field_start"
@@ -713,12 +713,12 @@ ad_proc -public im_email_from_user_id_helper {
     user_id
 } {
     set user_email "unknown@unknown.com"
-    if ![catch { 
+    if {![catch { 
 	set user_email [db_string get_user_email {
 	select	email
 	from	parties
 	where	party_id = :user_id
-    }] } errmsg] {
+    }] } errmsg]} {
 	# no errors
     }
     return $user_email
@@ -766,7 +766,7 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
 	# Get out early as there's nothing to do
 	return ""
     }
-    if { [empty_string_p $default] } {
+    if { $default eq "" } {
 	set default [ad_partner_upvar $field_name 1]
     }
     set exclude_var_list [list $field_name]
@@ -775,15 +775,15 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
     }
     set url "[ns_conn url]?"
     set query_args [export_ns_set_vars url $exclude_var_list]
-    if { ![empty_string_p $query_args] } {
+    if { $query_args ne "" } {
 	append url "$query_args&"
     }
     # Count up the number of characters we display to help us select either
     # text links or a select box
     set text_length 0
     foreach { value text } $pairs {
-	set text_length [expr $text_length + [string length $text]]
-	if { [string compare $value $default] == 0 } {
+	set text_length [expr {$text_length + [string length $text]}]
+	if { $value eq $default  } {
 	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\" selected>$text</option>\n"
 	} else {
 	    lappend menu_items_select "<option value=\"[ad_urlencode $value]\">$text</option>\n"
@@ -792,7 +792,7 @@ ad_proc im_slider { field_name pairs { default "" } { var_list_not_to_export "" 
     return "
 <form method=get action=\"[ns_conn url]\">
 [export_ns_set_vars form $exclude_var_list]
-<select name=\"[ad_quotehtml $field_name]\">
+<select name=\"[ns_quotehtml $field_name]\">
 [join $menu_items_select ""]
 </select>
 <input type=submit value=\"Go\">
@@ -832,7 +832,7 @@ ad_proc im_select {
 	set size ""
     }
 
-    if { [empty_string_p $default] } {
+    if { $default eq "" } {
 	set default [ad_partner_upvar $field_name 1]
     }
     set url "[ns_conn url]?"
@@ -864,14 +864,14 @@ ad_proc im_select {
 		set item "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
 	    }
 	} else {
-	    if {[string compare $value $default] == 0} {
+	    if {$value eq $default } {
 		set item "<option value=\"[ad_urlencode $value]\" selected>$text_tr</option>"
 	    }
 	}
 	lappend items $item
     }
     return "
-    <select name=\"[ad_quotehtml $field_name]\" $size $multiple $javascript>
+    <select name=\"[ns_quotehtml $field_name]\" $size $multiple $javascript>
     [join $items "\n"]
     </select>
 "
@@ -911,7 +911,7 @@ ad_proc im_verify_form_variables required_vars {
     foreach pair $required_vars {
 	if { [catch { 
 	    upvar [lindex $pair 0] value
-	    if { [empty_string_p [string trim $value]] } {
+	    if { [string trim $value] eq "" } {
 		append err_str "  <li> [lindex $pair 1]\n"
 	    } 
 	} err_msg] } {
@@ -1115,7 +1115,7 @@ ad_proc -public db_html_select_value_options_multiple {
     @author frank.bergmann@project-open.com
 } {
     set select_options ""
-    if { ![empty_string_p $bind] } {
+    if { $bind ne "" } {
 	set options [db_list_of_lists $stmt_name $sql -bind $bind]
     } else {
 	set options [uplevel [list db_list_of_lists $stmt_name $sql]]
@@ -1131,9 +1131,9 @@ ad_proc -public db_html_select_value_options_multiple {
 	}
 
 	if { [lsearch $select_option [lindex $option $value_index]] >= 0 } {
-	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\" selected>$translated_value</option>\n"
+	    append select_options "<option value=\"[ns_quotehtml [lindex $option $value_index]]\" selected>$translated_value</option>\n"
 	} else {
-	    append select_options "<option value=\"[ad_quotehtml [lindex $option $value_index]]\">$translated_value</option>\n"
+	    append select_options "<option value=\"[ns_quotehtml [lindex $option $value_index]]\">$translated_value</option>\n"
 	}
 
     }
@@ -1167,7 +1167,7 @@ ad_proc im_maybe_prepend_http { orig_query_url } {
 } {
     set orig_query_url [string trim $orig_query_url]
     set query_url [string tolower $orig_query_url]
-    if { [empty_string_p $query_url] || [string compare $query_url "http://"] == 0 } {
+    if { $query_url eq "" || $query_url eq "http://"  } {
 	return ""
     }
     if { [regexp {^http://.+} $query_url] } {
@@ -1182,33 +1182,33 @@ ad_proc im_format_address { street_1 street_2 city state zip } {
 } {
     set items [list]
     set street ""
-    if { ![empty_string_p $street_1] } {
+    if { $street_1 ne "" } {
 	append street $street_1
     }
-    if { ![empty_string_p $street_2] } {
-	if { ![empty_string_p $street] } {
+    if { $street_2 ne "" } {
+	if { $street ne "" } {
 	    append street "<br>\n"
 	}
 	append street $street_2
     }
-    if { ![empty_string_p $street] } {
+    if { $street ne "" } {
 	lappend items $street
     }	
     set line_2 ""
-    if { ![empty_string_p $state] } {
+    if { $state ne "" } {
 	set line_2 $state
     }	
-    if { ![empty_string_p $zip] } {
+    if { $zip ne "" } {
 	append line_2 " $zip"
     }	
-    if { ![empty_string_p $city] } {
-	if { [empty_string_p $line_2] } {
+    if { $city ne "" } {
+	if { $line_2 eq "" } {
 	    set line_2 $city
 	} else { 
 	    set line_2 "$city, $line_2"
 	}
     }
-    if { ![empty_string_p $line_2] } {
+    if { $line_2 ne "" } {
 	lappend items $line_2
     }
 
@@ -1238,22 +1238,22 @@ ad_proc im_yes_no_table { yes_action no_action { var_list [list] } { yes_button 
     foreach varname $var_list {
 	if { [eval uplevel {info exists $varname}] } {
 	    upvar $varname value
-	    if { ![empty_string_p $value] } {
-		append hidden_vars "<input type=hidden name=$varname value=\"[ad_quotehtml $value]\">\n"
+	    if { $value ne "" } {
+		append hidden_vars "<input type=hidden name=$varname value=\"[ns_quotehtml $value]\">\n"
 	    }
 	}
     }
     return "
 <table>
   <tr>
-    <td><form method=post action=\"[ad_quotehtml $yes_action]\">
+    <td><form method=post action=\"[ns_quotehtml $yes_action]\">
 	$hidden_vars
-	<input type=submit name=operation value=\"[ad_quotehtml $yes_button]\">
+	<input type=submit name=operation value=\"[ns_quotehtml $yes_button]\">
 	</form>
     </td>
-    <td><form method=get action=\"[ad_quotehtml $no_action]\">
+    <td><form method=get action=\"[ns_quotehtml $no_action]\">
 	$hidden_vars
-	<input type=submit name=operation value=\"[ad_quotehtml $no_button]\">
+	<input type=submit name=operation value=\"[ns_quotehtml $no_button]\">
 	</form>
     </td>
   </tr>
@@ -1266,11 +1266,11 @@ ad_proc im_url_with_query { { url "" } } {
     Returns the current url (or the one specified) with all queries 
     correctly attached
 } {
-    if { [empty_string_p $url] } {
+    if { $url eq "" } {
 	set url [ns_conn url]
     }
     set query [export_ns_set_vars url]
-    if { ![empty_string_p $query] } {
+    if { $query ne "" } {
 	append url "?$query"
     }
     return $url
@@ -1287,7 +1287,7 @@ ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {als
         # If there was an error, let's log a nice error message that includes
         # the statement we executed and any bind variables
         ns_log error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\""
-	if { [empty_string_p $bind] } {
+	if { $bind eq "" } {
 	    set bind_string ""
 	} else {
 	    set bind_string [NsSettoTclString $bind]
@@ -1324,7 +1324,7 @@ ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {als
             # If there was an error, let's log a nice error message that includes
             # the statement we executed and any bind variables
             ns_log error "im_memoize_list: Error executing db_list_of_lists $statement_name \"$sql_query\" -bind \"$bind\""
-            if { [empty_string_p $bind] } {
+            if { $bind eq "" } {
                 set bind_string ""
             } else {
                 set bind_string [NsSettoTclString $bind]
@@ -1334,7 +1334,7 @@ ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {als
         }
         foreach row $db_data {
             foreach col $row {
-                if { ![empty_string_p $str] } {
+                if { $str ne "" } {
                     append str $divider
                 }
                 append str $col
@@ -1342,7 +1342,7 @@ ad_proc im_memoize_list { { -bind "" } statement_name sql_query { force 0 } {als
         }
         set im_memoized_lists($sql_query) $str
     }
-    if { ![empty_string_p $also_memoize_as] } {
+    if { $also_memoize_as ne "" } {
         set im_memoized_lists($also_memoize_as) $str
     }
     return [split $str $divider]
@@ -1366,11 +1366,11 @@ ad_proc im_maybe_insert_link { previous_page next_page { divider " - " } } {
     Formats prev and next links
 } {
     set link ""
-    if { ![empty_string_p $previous_page] } {
+    if { $previous_page ne "" } {
 	append link "$previous_page"
     }
-    if { ![empty_string_p $next_page] } {
-	if { ![empty_string_p $link] } {
+    if { $next_page ne "" } {
+	if { $link ne "" } {
 	    append link $divider
 	}
 	append link "$next_page"
@@ -1384,7 +1384,7 @@ ad_proc im_select_row_range {sql firstrow lastrow} {
     contain rows firstrow - lastrow
     2005-03-05 Frank Bergmann: Now extended to work with PostgreSQL
 } {
-    set rowlimit [expr $lastrow - $firstrow]
+    set rowlimit [expr {$lastrow - $firstrow}]
  
     set oracle_sql "
 SELECT
@@ -1427,8 +1427,8 @@ ad_proc im_email_people_in_group { group_id role from subject message } {
     }
 	
     set criteria [list]
-    if { [empty_string_p $second_group_id] } {
-	if { [string compare $role "all"] != 0 } {
+    if { $second_group_id eq "" } {
+	if { $role ne "all"  } {
 	    return ""
 adde	}
     } else {
@@ -1511,7 +1511,7 @@ ad_proc im_csv_guess_separator { file } {
 	    # Increment the respective counter
 	    set count 0
 	    if {[info exists hash($code)]} { set count $hash($code) }
-	    set hash($code) [expr $count+1]
+	    set hash($code) [expr {$count+1}]
 	}
     }
     
@@ -1589,7 +1589,7 @@ ad_proc -public im_valid_auto_login_p {
 
     # Quick check on tokens
     set expected_auto_login [im_generate_auto_login -user_id $user_id -expiry_date $expiry_date]
-    if {![string equal $auto_login $expected_auto_login]} { return 0 }
+    if {$auto_login ne $expected_auto_login } { return 0 }
 
     if {$check_user_requires_manual_login_p} {
 	# Check if the "require_manual_login" privilege exists to protect high-profile users
@@ -1780,7 +1780,7 @@ ad_proc -public im_ad_hoc_query {
         # Change to next line
         switch $format {
             plain { append result "\n" }
-            html { append result "</tr>\n<tr $bgcolor([expr $row_count % 2])>" }
+            html { append result "</tr>\n<tr $bgcolor([expr {$row_count % 2}])>" }
             csv { append result "\n" }
             xml { append result "<row>\n$row_content</row>\n" }
             json { 
@@ -2242,7 +2242,7 @@ ad_proc -public im_object_super_types {
     set otype $object_type
 
     # while the object type not yet in the list of super-types:
-    while {$otype != "" && ([lsearch $object_type_hierarchy $otype] < 0)} {
+    while {$otype ne "" && ([lsearch $object_type_hierarchy $otype] < 0)} {
 	lappend object_type_hierarchy $otype
 	set otype [db_string super_type "select supertype from acs_object_types where object_type = :otype" -default ""]
     }

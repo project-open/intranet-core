@@ -25,7 +25,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 im_user_permissions $current_user_id $user_id view read write admin
 
 if {!$admin} {

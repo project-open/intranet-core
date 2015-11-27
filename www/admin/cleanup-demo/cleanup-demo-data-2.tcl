@@ -25,7 +25,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_be_a_syst]">
@@ -165,7 +165,7 @@ if {[im_table_exists calendars]} {
     set cal_objects [db_list costs $object_subquery]
     set cnt 0
     foreach oid $cal_objects {
- 	if {0 == [expr $cnt % 37]} { ns_write ".\n" }
+ 	if {0 == [expr {$cnt % 37}]} { ns_write ".\n" }
         catch { db_dml del_cal_o "delete from acs_objects where object_id = :oid" } err_msg
 	incr cnt
     }
@@ -334,7 +334,7 @@ foreach cost_info $cost_infos {
     set cost_id [lindex $cost_info 0]
     set object_type [lindex $cost_info 1]
     
-    if {0 == [expr $cnt % 13]} { ns_write ".\n" }
+    if {0 == [expr {$cnt % 13}]} { ns_write ".\n" }
     ns_log Notice "users/nuke-2: deleting cost: ${object_type}__delete($cost_id)"
     if {$im_invoices__invoice_id_exists_p} {
 	db_dml del_expense_inv "update im_expenses set invoice_id = null where invoice_id = :cost_id"
@@ -579,7 +579,7 @@ set rels [db_list cr "
 "]
 set cnt 0
 foreach rel_id $rels {
-    if {0 == [expr $cnt % 37]} { ns_write ".\n" }
+    if {0 == [expr {$cnt % 37}]} { ns_write ".\n" }
     db_string del_rel "select acs_rel__delete(:rel_id)"
     incr cnt
 }
@@ -907,7 +907,7 @@ foreach object_info $object_infos {
     set object_id [lindex $object_info 0]
     set object_type [lindex $object_info 1]
 
-    if {0 == [expr $cnt % 17]} { ns_write ".\n" }
+    if {0 == [expr {$cnt % 17}]} { ns_write ".\n" }
     catch { db_dml del_object "delete from acs_objects where object_id = :object_id" }
     incr cnt
 }

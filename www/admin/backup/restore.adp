@@ -1,21 +1,21 @@
 <master src="../master">
-<property name="context">@context;noquote@</property>
-<property name="title">#intranet-core.Menu_Restore#</property>
+<property name="context">@context;literal@</property>
+<property name="doc(title)">#intranet-core.Menu_Restore#</property>
 <property name="admin_navbar_label">admin_backup</property>
 
 <form action="restore-2" method=POST>
 <%= [export_vars -form {path}] %>
 
-<table cellpadding=1 cellspacing=1 border=0>
+<table cellpadding="1" cellspacing="1" border="0">
 <tr class=rowtitle>
-  <td class=rowtitle colspan=9 align=center>
+  <td class=rowtitle colspan="9" align="center">
     Restore Objects
   </td>
 </tr>
 @object_list_html;noquote@
 <tr>
-  <td colspan=2 align=right>
-    <input type=submit name=submit value="Restore">
+  <td colspan="2" align="right">
+    <input type="submit" name="submit" value="Restore">
   </td>
 </tr>
 </table>

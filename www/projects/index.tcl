@@ -92,7 +92,7 @@ ad_page_contract {
 
 set show_context_help_p 0
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set subsite_id [ad_conn subsite_id]
 set current_user_id $user_id
@@ -137,10 +137,10 @@ if {![im_permission $current_user_id "view_projects_history"]} {
 }
 
 
-if { [empty_string_p $how_many] || $how_many < 1 } {
+if { $how_many eq "" || $how_many < 1 } {
     set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
 }
-set end_idx [expr $start_idx + $how_many]
+set end_idx [expr {$start_idx + $how_many}]
 
 
 # Set the "menu_select_label" for the project navbar:
@@ -285,7 +285,7 @@ if { [im_permission $current_user_id "view_projects_history"] || [im_permission 
     } 
 }
 
-if { [empty_string_p $company_id] } {
+if { $company_id eq "" } {
     set company_id 0
 }
 
@@ -385,16 +385,16 @@ if {$filter_advanced_p} {
 # ---------------------------------------------------------------
 
 set criteria [list]
-if { ![empty_string_p $project_status_id] && $project_status_id > 0 } {
+if { $project_status_id ne "" && $project_status_id > 0 } {
     lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
 }
-if { ![empty_string_p $project_type_id] && $project_type_id != 0 } {
+if { $project_type_id ne "" && $project_type_id != 0 } {
     lappend criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
 }
 if {0 != $user_id_from_search && "" != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
 }
-if { ![empty_string_p $company_id] && $company_id != 0 } {
+if { $company_id ne "" && $company_id != 0 } {
     lappend criteria "p.company_id=:company_id"
 }
 if {"" != $start_date} {
@@ -403,13 +403,13 @@ if {"" != $start_date} {
 if {"" != $end_date} {
     lappend criteria "p.start_date < :end_date::timestamptz"
 }
-if { ![empty_string_p $upper_letter] && [string compare $upper_letter "ALL"] != 0 && [string compare $upper_letter "SCROLL"] != 0 } {
+if { $upper_letter ne "" && $upper_letter ne "ALL"  && $upper_letter ne "SCROLL"  } {
     lappend criteria "im_first_letter_default_to_a(p.project_name)=:upper_letter"
 }
 if { $include_subprojects_p == "f" } {
     lappend criteria "p.parent_id is null"
 }
-if { $include_subproject_level != "" } {
+if { $include_subproject_level ne "" } {
     lappend criteria "tree_level(p.tree_sortkey) <= $include_subproject_level"
 }
 
@@ -442,29 +442,29 @@ switch [string tolower $order_by] {
 
     }
     default {
-	if {$view_order_by_clause != ""} {
+	if {$view_order_by_clause ne ""} {
 	    set order_by_clause "order by $view_order_by_clause"
 	}
     }
 }
 
 set where_clause [join $criteria " and\n            "]
-if { ![empty_string_p $where_clause] } {
+if { $where_clause ne "" } {
     set where_clause " and $where_clause"
 }
 
 set extra_select [join $extra_selects ",\n\t"]
-if { ![empty_string_p $extra_select] } {
+if { $extra_select ne "" } {
     set extra_select ",\n\t$extra_select"
 }
 
 set extra_from [join $extra_froms ",\n\t"]
-if { ![empty_string_p $extra_from] } {
+if { $extra_from ne "" } {
     set extra_from ",\n\t$extra_from"
 }
 
 set extra_where [join $extra_wheres "and\n\t"]
-if { ![empty_string_p $extra_where] } {
+if { $extra_where ne "" } {
     set extra_where ",\n\t$extra_where"
 }
 
@@ -667,7 +667,7 @@ $order_by_clause
 
 ns_log Notice "/intranet/project/index: Before limiting clause"
 
-if {[string equal $upper_letter "ALL"]} {
+if {$upper_letter eq "ALL"} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
     set how_many -1
@@ -684,8 +684,8 @@ if {[string equal $upper_letter "ALL"]} {
     # Special case: FIRST the users selected the 2nd page of the results
     # and THEN added a filter. Let's reset the results for this case:
     while {$start_idx > 0 && $total_in_limited < $start_idx} {
-	set start_idx [expr $start_idx - $how_many]
-	set end_idx [expr $end_idx - $how_many]
+	set start_idx [expr {$start_idx - $how_many}]
+	set end_idx [expr {$end_idx - $how_many}]
     }
 
     set selection [im_select_row_range $sql $start_idx $end_idx]
@@ -720,7 +720,7 @@ foreach link_entry $links {
     set html ""
     for {set i 0} {$i < [llength $link_entry]} {incr i 2} {
 	set name [lindex $link_entry $i]
-	set url [lindex $link_entry [expr $i+1]]
+	set url [lindex $link_entry $i+1]
 	append html "<a href='$url'>$name</a>"
     }
     append admin_html "<li>$html</li>\n"
@@ -735,7 +735,7 @@ append admin_html "</ul>"
 
 # Set up colspan to be the number of headers + 1 for the # column
 ns_log Notice "/intranet/project/index: Before format header"
-set colspan [expr [llength $column_headers] + 1]
+set colspan [expr {[llength $column_headers] + 1}]
 
 set table_header_html ""
 
@@ -744,7 +744,7 @@ set table_header_html ""
 #
 set url "index?"
 set query_string [export_ns_set_vars url [list order_by]]
-if { ![empty_string_p $query_string] } {
+if { $query_string ne "" } {
     append url "$query_string&"
 }
 
@@ -808,20 +808,20 @@ db_foreach projects_info_query $selection -bind $form_vars {
     set gif_html ""
 
     set url [im_maybe_prepend_http $url]
-    if { [empty_string_p $url] } {
+    if { $url eq "" } {
 	set url_string "&nbsp;"
     } else {
 	set url_string "<a href=\"$url\">$url</a>"
     }
 
     # Append together a line of data based on the "column_vars" parameter list
-    set row_html "<tr$bgcolor([expr $ctr % 2])>\n"
+    set row_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
     foreach column_var $column_vars {
 	append row_html "\t<td valign=top>"
 	set cmd "append row_html $column_var"
-	if [catch {
+	if {[catch {
 	    eval "$cmd"
-	} errmsg] {
+	} errmsg]} {
             # TODO: warn user
 	}
 	append row_html "</td>\n"
@@ -837,7 +837,7 @@ db_foreach projects_info_query $selection -bind $form_vars {
 }
 
 # Show a reasonable message when there are no result rows:
-if { [empty_string_p $table_body_html] } {
+if { $table_body_html eq "" } {
     set table_body_html "
         <tr><td colspan=$colspan><ul><li><b> 
 	[lang::message::lookup "" intranet-core.lt_There_are_currently_n "There are currently no entries matching the selected criteria"]
@@ -847,7 +847,7 @@ if { [empty_string_p $table_body_html] } {
 if { $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
-    set next_start_idx [expr $end_idx + 0]
+    set next_start_idx [expr {$end_idx + 0}]
     set next_page_url "index?start_idx=$next_start_idx&amp;[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
@@ -856,7 +856,7 @@ if { $end_idx < $total_in_limited } {
 if { $start_idx > 0 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
-    set previous_start_idx [expr $start_idx - $how_many]
+    set previous_start_idx [expr {$start_idx - $how_many}]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page_url "index?start_idx=$previous_start_idx&amp;[export_ns_set_vars url [list start_idx]]"
 } else {
@@ -872,7 +872,7 @@ ns_log Notice "/intranet/project/index: before table continuation"
 # => include a link to go to the next page
 #
 if {$total_in_limited > 0 && $end_idx < $total_in_limited} {
-    set next_start_idx [expr $end_idx + 0]
+    set next_start_idx [expr {$end_idx + 0}]
     set next_page "<a href=index?start_idx=$next_start_idx&amp;[export_ns_set_vars url [list start_idx]]>Next Page</a>"
 } else {
     set next_page ""
@@ -883,7 +883,7 @@ if {$total_in_limited > 0 && $end_idx < $total_in_limited} {
 # => add a previous page link
 #
 if { $start_idx > 0 } {
-    set previous_start_idx [expr $start_idx - $how_many]
+    set previous_start_idx [expr {$start_idx - $how_many}]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page "<a href=index?start_idx=$previous_start_idx&amp;[export_ns_set_vars url [list start_idx]]>Previous Page</a>"
 } else {

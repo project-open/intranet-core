@@ -166,7 +166,7 @@ ad_proc im_backup { } {
     # /intranet/backup/im_projects
     # Using the report_id ("im_projects") as selector for various reports
     set path_list [split $url {/}]
-    set len [expr [llength $path_list] - 1]
+    set len [expr {[llength $path_list] - 1}]
 
     # skip: +0:/ +1:intranet, +2:backups, +3:<file>, +4:...
     set report [lindex $path_list 3]
@@ -190,7 +190,7 @@ ad_proc im_backup { } {
 
     db_release_unused_handles
 
-    if {[string equal "csv" $extension]} {
+    if {"csv" eq $extension} {
 	doc_return  200 "application/csv" $report
     } else {
 	doc_return  200 "text/html" "<pre>\n$report\n</pre>\n"
@@ -203,7 +203,7 @@ ad_proc im_backup { } {
 ad_proc -public im_backup_report { backup_id } {
     Execute an export backup
 } {
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
     set separator ";"
 
     if {![im_is_user_site_wide_or_intranet_admin $user_id]} {
@@ -312,10 +312,10 @@ ad_proc -public im_import_categories { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_categories"]} {
+    if {$csv_table ne "im_categories" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -349,7 +349,7 @@ ad_proc -public im_import_categories { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -436,10 +436,10 @@ ad_proc -public im_import_companies { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_companies"]} {
+    if {$csv_table ne "im_companies" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -473,7 +473,7 @@ ad_proc -public im_import_companies { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -580,10 +580,10 @@ ad_proc -public im_import_company_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_company_members"]} {
+    if {$csv_table ne "im_company_members" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -617,7 +617,7 @@ ad_proc -public im_import_company_members { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -699,10 +699,10 @@ ad_proc -public im_import_offices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_offices"]} {
+    if {$csv_table ne "im_offices" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -745,7 +745,7 @@ ad_proc -public im_import_offices { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 	    set cmd "set $var_name \"$var_value\""
@@ -843,10 +843,10 @@ ad_proc -public im_import_office_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_office_members"]} {
+    if {$csv_table ne "im_office_members" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -880,7 +880,7 @@ ad_proc -public im_import_office_members { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -956,10 +956,10 @@ ad_proc -public im_import_projects { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_projects"]} {
+    if {$csv_table ne "im_projects" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -993,7 +993,7 @@ ad_proc -public im_import_projects { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1120,10 +1120,10 @@ ad_proc -public im_import_project_members { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_project_members"]} {
+    if {$csv_table ne "im_project_members" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1157,7 +1157,7 @@ ad_proc -public im_import_project_members { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1239,10 +1239,10 @@ ad_proc -public im_import_users { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_users"]} {
+    if {$csv_table ne "im_users" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1276,7 +1276,7 @@ ad_proc -public im_import_users { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1443,10 +1443,10 @@ ad_proc -public im_import_profiles { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_profiles"]} {
+    if {$csv_table ne "im_profiles" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1479,7 +1479,7 @@ ad_proc -public im_import_profiles { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1591,10 +1591,10 @@ ad_proc -public im_import_freelancers { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_freelancers"]} {
+    if {$csv_table ne "im_freelancers" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1628,7 +1628,7 @@ ad_proc -public im_import_freelancers { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1716,10 +1716,10 @@ ad_proc -public im_import_employees { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_employees"]} {
+    if {$csv_table ne "im_employees" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1753,7 +1753,7 @@ ad_proc -public im_import_employees { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -1878,10 +1878,10 @@ ad_proc -public im_import_freelance_skills { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_freelance_skills"]} {
+    if {$csv_table ne "im_freelance_skills" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -1915,7 +1915,7 @@ ad_proc -public im_import_freelance_skills { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2028,10 +2028,10 @@ ad_proc -public im_import_hours { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_hours"]} {
+    if {$csv_table ne "im_hours" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2065,7 +2065,7 @@ ad_proc -public im_import_hours { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2156,7 +2156,7 @@ ad_proc -public im_import_user_absences { filename } {
     Import the user absences file
 } {
     
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
     
     set err_return ""
     if {![file readable $filename]} {
@@ -2175,10 +2175,10 @@ ad_proc -public im_import_user_absences { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_user_absences"]} {
+    if {$csv_table ne "im_user_absences" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2211,7 +2211,7 @@ ad_proc -public im_import_user_absences { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2327,10 +2327,10 @@ ad_proc -public im_import_trans_project_details { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_trans_project_details"]} {
+    if {$csv_table ne "im_trans_project_details" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2364,7 +2364,7 @@ ad_proc -public im_import_trans_project_details { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2447,10 +2447,10 @@ ad_proc -public im_import_trans_tasks { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_trans_tasks"]} {
+    if {$csv_table ne "im_trans_tasks" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2486,7 +2486,7 @@ ad_proc -public im_import_trans_tasks { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2651,7 +2651,7 @@ ad_proc -public im_import_costs { filename } {
     Import the costs file
 } {
     set parent_list_of_lists [list]
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -2670,10 +2670,10 @@ ad_proc -public im_import_costs { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_costs"]} {
+    if {$csv_table ne "im_costs" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2707,7 +2707,7 @@ ad_proc -public im_import_costs { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -2863,7 +2863,7 @@ ad_proc -public im_import_cost_centers { filename } {
     Import the costs file
 } {
     set parent_list_of_lists [list]
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -2882,10 +2882,10 @@ ad_proc -public im_import_cost_centers { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_cost_centers"]} {
+    if {$csv_table ne "im_cost_centers" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -2919,7 +2919,7 @@ ad_proc -public im_import_cost_centers { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3033,7 +3033,7 @@ ad_proc -public im_import_invoices { filename } {
     Import the invoices file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
     set ref_doc_list_of_list [list]
     set err_return ""
     if {![file readable $filename]} {
@@ -3052,10 +3052,10 @@ ad_proc -public im_import_invoices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_invoices"]} {
+    if {$csv_table ne "im_invoices" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3089,7 +3089,7 @@ ad_proc -public im_import_invoices { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3101,7 +3101,7 @@ ad_proc -public im_import_invoices { filename } {
 	# -------------------------------------------------------
 	# Transform email and names into IDs
 	#
-	if {![empty_string_p $start_block]} {
+	if {$start_block ne ""} {
 	    set start_block_cond " = :start_block"
 	} else {
 	    set start_block_cond " is null"
@@ -3200,7 +3200,7 @@ ad_proc -public im_import_invoice_items { filename } {
     Import the invoice_items file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -3219,10 +3219,10 @@ ad_proc -public im_import_invoice_items { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_invoice_items"]} {
+    if {$csv_table ne "im_invoice_items" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3256,7 +3256,7 @@ ad_proc -public im_import_invoice_items { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3360,7 +3360,7 @@ ad_proc -public im_import_project_invoice_map { filename } {
     Import the project_invoice_map  file
 } {
     
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
     
     set err_return ""
     if {![file readable $filename]} {
@@ -3379,10 +3379,10 @@ ad_proc -public im_import_project_invoice_map { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_project_invoice_map"]} {
+    if {$csv_table ne "im_project_invoice_map" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3416,7 +3416,7 @@ ad_proc -public im_import_project_invoice_map { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 	    
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 	    
@@ -3480,7 +3480,7 @@ ad_proc -public im_import_payments { filename } {
     Import the payments file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -3499,10 +3499,10 @@ ad_proc -public im_import_payments { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_payments"]} {
+    if {$csv_table ne "im_payments" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3536,7 +3536,7 @@ ad_proc -public im_import_payments { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3665,7 +3665,7 @@ ad_proc -public im_import_investments { filename } {
     Import the investments file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -3684,10 +3684,10 @@ ad_proc -public im_import_investments { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_investments"]} {
+    if {$csv_table ne "im_investments" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3720,7 +3720,7 @@ ad_proc -public im_import_investments { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3796,7 +3796,7 @@ ad_proc -public im_import_target_languages { filename } {
     Import the investments file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -3815,10 +3815,10 @@ ad_proc -public im_import_target_languages { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_target_languages"]} {
+    if {$csv_table ne "im_target_languages" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3851,7 +3851,7 @@ ad_proc -public im_import_target_languages { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 
@@ -3913,7 +3913,7 @@ ad_proc -public im_import_trans_prices { filename } {
     Import the prices file
 } {
 
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
 
     set err_return ""
     if {![file readable $filename]} {
@@ -3932,10 +3932,10 @@ ad_proc -public im_import_trans_prices { filename } {
     set csv_version [lindex $csv_version_fields 1]
     set csv_table [lindex $csv_version_fields 2]
     set err_msg [im_backup_accepted_version_nr $csv_version]
-    if {![string equal $csv_system "po"]} {
+    if {$csv_system ne "po" } {
 	append err_msg "'$csv_system' invalid backup dump<br>"
     }
-    if {![string equal $csv_table "im_trans_prices"]} {
+    if {$csv_table ne "im_trans_prices" } {
 	append err_msg "Invalid backup table: '$csv_table'<br>"
     }
     if {"" != $err_msg} {
@@ -3969,7 +3969,7 @@ ad_proc -public im_import_trans_prices { filename } {
 	    set var_value [string trim [lindex $csv_line_fields $j]]
 
 	    # Skip empty columns caused by double quote separation
-	    if {"" == $var_name || [string equal $var_name ";"]} {
+	    if {"" == $var_name || $var_name eq ";"} {
 		continue
 	    }
 

@@ -1,12 +1,12 @@
 <master src="master">
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_home</property>
 
 <h1>Convert Parameters to Linux</h1>
 
-<table cellpadding=0 cellspacing=0 border=0 width="80%">
+<table cellpadding="0" cellspacing="0" border="0" width="80%">
 <tr>
-  <td colspan=2 valign=top>
+  <td colspan="2" valign="top">
 <p>
 This page automates the steps that you would have to take
 manually to run a preconfigured
@@ -21,11 +21,11 @@ installation with Linux. In particular this command does:
 </tr>
 
 <tr>
-  <td align=left>Server Name</td>
-  <td align=left>
+  <td align="left">Server Name</td>
+  <td align="left">
     <form action=windows-to-linux-2 method=POST>
-    <input type=text name=server_name value="@server_name@"><br>
-    <input type=submit>
+    <input type="text" name="server_name" value="@server_name@"><br>
+    <input type="submit">
     </form>
   </td>
 </tr>

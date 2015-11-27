@@ -249,8 +249,8 @@ ad_proc im_category_select_helper {
             set c [lindex $rel 1]
             set parent_level $level($p)
             set child_level $level($c)
-            if {[expr $parent_level+1] > $child_level} {
-                set level($c) [expr $parent_level+1]
+            if {[expr {$parent_level+1}] > $child_level} {
+                set level($c) [expr {$parent_level+1}]
                 set direct_parent($c) $p
                 set modified 1
             }
@@ -468,7 +468,7 @@ ad_proc -public template::widget::im_category_tree {
     # category to display
     set category_type_pos [lsearch $params category_type]
     if { $category_type_pos >= 0 } {
-	set category_type [lindex $params [expr $category_type_pos + 1]]
+	set category_type [lindex $params $category_type_pos+1]
     } else {
 	return "Intranet Category Widget: Error: Didn't find 'category_type' parameter"
     }
@@ -480,7 +480,7 @@ ad_proc -public template::widget::im_category_tree {
     set plain_p 0
     set plain_p_pos [lsearch $params plain_p]
     if { $plain_p_pos >= 0 } {
-	set plain_p [lindex $params [expr $plain_p_pos + 1]]
+	set plain_p [lindex $params $plain_p_pos+1]
     }
 
     # Get the "translate_p" parameter to determine if we should
@@ -489,7 +489,7 @@ ad_proc -public template::widget::im_category_tree {
     set translate_p 0
     set translate_p_pos [lsearch $params translate_p]
     if { $translate_p_pos >= 0 } {
-	set translate_p [lindex $params [expr $translate_p_pos + 1]]
+	set translate_p [lindex $params $translate_p_pos+1]
     }
 
     # Get the "package_key" parameter to determine in which package
@@ -498,7 +498,7 @@ ad_proc -public template::widget::im_category_tree {
     set package_key "intranet-core"
     set package_key_pos [lsearch $params "package_key"]
     if { $package_key_pos >= 0 } {
-	set package_key [lindex $params [expr $package_key_pos + 1]]
+	set package_key [lindex $params $package_key_pos+1]
     }
 
     # Get the "include_empty_p" parameter to determine if we should
@@ -507,7 +507,7 @@ ad_proc -public template::widget::im_category_tree {
     set include_empty_p 1
     set include_empty_p_pos [lsearch $params include_empty_p]
     if { $include_empty_p_pos >= 0 } {
-	set include_empty_p [lindex $params [expr $include_empty_p_pos + 1]]
+	set include_empty_p [lindex $params $include_empty_p_pos+1]
     }
 
     # Get the "include_empty_name" parameter to determine if we should
@@ -516,7 +516,7 @@ ad_proc -public template::widget::im_category_tree {
     set include_empty_name ""
     set include_empty_name_pos [lsearch $params include_empty_name]
     if { $include_empty_name_pos >= 0 } {
-	set include_empty_name [lindex $params [expr $include_empty_name_pos + 1]]
+	set include_empty_name [lindex $params $include_empty_name_pos+1]
     }
 
     array set attributes $tag_attributes
@@ -565,7 +565,7 @@ ad_proc -public template::widget::im_checkbox {
 
     upvar $element_reference element
 
-    if { [exists_and_not_null element(custom)] } {
+    if { ([info exists element(custom)] && $element(custom) ne "") } {
 
 	set params $element(custom)
 
@@ -574,7 +574,7 @@ ad_proc -public template::widget::im_checkbox {
         set checked ""
 	set checked_pos [lsearch $params checked]
 	if { $checked_pos >= 0 } {
-	    set checked [lindex $params [expr $checked_pos + 1]]
+	    set checked [lindex $params $checked_pos+1]
 	}
 
 	if {"" != $checked} {
@@ -736,8 +736,8 @@ ad_proc -public im_category_get_key_value_indent_list {
             set c [lindex $rel 1]
             set parent_level $level($p)
             set child_level $level($c)
-            if {[expr $parent_level+1] > $child_level} {
-                set level($c) [expr $parent_level+1]
+            if {[expr {$parent_level+1}] > $child_level} {
+                set level($c) [expr {$parent_level+1}]
                 set direct_parent($c) $p
                 set modified 1
             }

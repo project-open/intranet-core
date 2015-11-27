@@ -63,7 +63,7 @@ foreach type [db_list wf_notifs "select short_name from notification_types"] {
 			-object_id $notification_object_id \
 			-user_id $user_id]
     
-    set subscribed_p [expr ![empty_string_p $request_id]]
+    set subscribed_p [expr {$request_id ne ""}] 
     
     if { $subscribed_p } {
 	set url [notification::display::unsubscribe_url -request_id $request_id -url $return_url]
@@ -77,7 +77,7 @@ foreach type [db_list wf_notifs "select short_name from notification_types"] {
 	set url $notification_subscribe_url
     }
     
-    if { ![empty_string_p $url] } {
+    if { $url ne "" } {
 	multirow append notifications \
 	    $url \
 	    [string totitle $pretty_name] \

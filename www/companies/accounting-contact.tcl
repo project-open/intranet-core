@@ -23,7 +23,7 @@ ad_page_contract {
     company_id:integer,notnull
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "[_ intranet-core.lt_Add_accounting_contac]"
 set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 
@@ -62,12 +62,12 @@ if {$company_id != [im_company_internal]} {
 
 set contact_info ""
 db_foreach address_book_info $sql  {
-    append contact_info "<li>$name, $email  </a>(<a href=accounting-contact-2?[export_vars -url { company_id user_id}]>[_ intranet-core.lt_make_accounting_conta]</a>)"
+    append contact_info "<li>$name, $email  </a>(<a href=[export_vars -base accounting-contact-2 { company_id user_id}]>[_ intranet-core.lt_make_accounting_conta]</a>)"
 } 
 db_release_unused_handles
 
 
-if { [empty_string_p $contact_info] } {
+if { $contact_info eq "" } {
     set new_client_link "<A HREF=/intranet/users/new>[_ intranet-core.new_client_contact]</A>"
     set new_company_employee_link "<A HREF=/intranet/companies/view?company_id=$company_id>[_ intranet-core.company_employee]</A>"
     set page_body "
@@ -89,10 +89,10 @@ if { [empty_string_p $contact_info] } {
     return
 }
 
-set return_url "[im_url_stub]/companies/view?[export_vars -url { company_id}]"
+set return_url "[im_url_stub]/companies/[export_vars -base view { company_id}]"
 
 set page_title "[_ intranet-core.lt_Select_accounting_con]"
-set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_vars -url { company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [[export_vars -base view -url { company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

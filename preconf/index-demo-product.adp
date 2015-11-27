@@ -35,18 +35,18 @@
 <div id="slave">
 <div id="fullwidth-list-no-side-bar" class="fullwidth-list-no-side-bar" style="visibility: visible;">
 
-<table cellSpacing=2 cellPadding=2 width="100%" border=0>
-<tr valign=top>
+<table cellSpacing=2 cellPadding=2 width="100%" border="0">
+<tr valign="top">
 
-    <td valign=top width="50%">
-        <table cellSpacing=1 cellPadding=1 border=0 width="100%">
+    <td valign="top" width="50%">
+        <table cellSpacing=1 cellPadding=1 border="0" width="100%">
         <tr>
-          <td colspan=4 class=tableheader align=center><b>]po[ Demo Accounts</b></td>
+          <td colspan="4" class=tableheader align="center"><b>]po[ Demo Accounts</b></td>
         </tr>
         <tr>
-          <td class="tableheader" align=center>Username</td>
-          <td class="tableheader" align=center>Email</td>
-          <td class="tableheader" align=center>Password</td>
+          <td class="tableheader" align="center">Username</td>
+          <td class="tableheader" align="center">Email</td>
+          <td class="tableheader" align="center">Password</td>
         </tr>
         <multiple name=users>
           <if @users.rownum@ odd>
@@ -70,8 +70,8 @@
         <br>
 
 	</td>
-	<td valign=top width="50%">
-	<table cellSpacing=1 cellPadding=1 border=0>
+	<td valign="top" width="50%">
+	<table cellSpacing=1 cellPadding=1 border="0">
 		<tr>
 		<td class=tableheader><b>Intranet Login</b></td></tr>
 		</tr>
@@ -86,7 +86,7 @@
 </table>
 
 <!-- 
-<table cellSpacing=0 cellPadding=5 width="100%" border=0>
+<table cellSpacing=0 cellPadding=5 width="100%" border="0">
   <tr><td>
 	<br><br><br>
     Comments? Contact: 

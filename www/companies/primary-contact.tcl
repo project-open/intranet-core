@@ -23,7 +23,7 @@ ad_page_contract {
     company_id:integer,notnull
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "[_ intranet-core.Add_primary_contact]"
 set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 set return_url [im_url_with_query]
@@ -67,15 +67,15 @@ if {$company_id != [im_company_internal]} {
 
 set contact_info ""
 db_foreach address_book_info $sql  {
-    append contact_info "<li>$name, $email  </a>(<a href=primary-contact-2?[export_vars -url {company_id user_id}]>[_ intranet-core.make_primary_contact]</a>)"
+    append contact_info "<li>$name, $email  </a>(<a href=[export_vars -base primary-contact-2 {company_id user_id}]>[_ intranet-core.make_primary_contact]</a>)"
 } 
 
 db_release_unused_handles
 
 
-if { [empty_string_p $contact_info] } {
+if { $contact_info eq "" } {
     set profile "Customers"
-    set new_client_contact_link "<A HREF=/intranet/users/new?[export_vars -url { return_url profile}]>[_ intranet-core.new_client_contact]</A>"
+    set new_client_contact_link "<A HREF=/intranet/users/[export_vars -base new { return_url profile}]>[_ intranet-core.new_client_contact]</A>"
     set company_employee_link "<A HREF=\"/intranet/member-add?object_id=$company_id&also_add_to_group_id=461&return_url=/intranet/companies/view?company%5fid=$company_id\">[_ intranet-core.company_employee]</A>"
     set page_body "
 <H3>[_ intranet-core.lt_No_Company_Employees_]</H3>
@@ -96,10 +96,10 @@ if { [empty_string_p $contact_info] } {
     return
 }
 
-set return_url "[im_url_stub]/companies/view?[export_vars -url {company_id}]"
+set return_url "[im_url_stub]/companies/[export_vars -base view {company_id}]"
 
 set page_title "[_ intranet-core.lt_Select_primary_contac]"
-set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [list view?[export_vars -url {company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
+set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [[export_vars -base view -url {company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>

@@ -124,12 +124,12 @@ proc ::cmdline::getKnownOpt {argvVar optstring optVar valVar} {
 	    "-*" {
 		set option [string range $arg 1 end]
 
-		if {[lsearch -exact $optstring $option] != -1} {
+		if {$option in $optstring} {
 		    # Booleans are set to 1 when present
 		    set value 1
 		    set result 1
 		    set argsList [lrange $argsList 1 end]
-		} elseif {[lsearch -exact $optstring "$option.arg"] != -1} {
+		} elseif {"$option.arg" in $optstring} {
 		    set result 1
 		    set argsList [lrange $argsList 1 end]
 		    if {[llength $argsList] != 0} {
@@ -366,7 +366,7 @@ proc ::cmdline::usage {optlist {usage {options:}}} {
 
 proc ::cmdline::getfiles {patterns quiet} {
     set result {}
-    if {$::tcl_platform(platform) == "windows"} {
+    if {$::tcl_platform(platform) eq "windows"} {
 	foreach pattern $patterns {
 	    set pat [file join $pattern]
 	    set files [glob -nocomplain -- $pat]

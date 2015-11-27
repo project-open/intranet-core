@@ -26,7 +26,7 @@ ad_page_contract {
 # Default & Security
 # ------------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "You have insufficient privileges to use this page"
@@ -129,7 +129,7 @@ ad_form -extend -name view -on_request {
 # List creation
 # ------------------------------------------------------
 
-if { [exists_and_not_null view_id] } {
+if { ([info exists view_id] && $view_id ne "") } {
 	set action_list [list [_ intranet-core.Add_new_Column] [export_vars -base "new-column" {view_id return_url}] [_ intranet-core.Add_new_Column]]
 
 	set elements_list {

@@ -35,7 +35,7 @@ ad_page_contract {
 # Security
 # -----------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 # Determine our permissions for the current object_id.
 # We can build the permissions command this ways because

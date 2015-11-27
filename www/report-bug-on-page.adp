@@ -1,5 +1,5 @@
 <master>
-<property name="title">@page_title;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">help</property>
 
 <% set error_location "[ns_info address] on [ns_info platform]" %>
@@ -11,21 +11,21 @@
 
 
 <form action="@report_url;noquote@" method=POST>
-<input type=hidden name=error_location value=@error_location@>
-<input type=hidden name=system_url value=@system_url@>
-<input type=hidden name=error_first_names value=@first_names;noquote@>
-<input type=hidden name=error_last_name value=@last_name;noquote@>
-<input type=hidden name=error_user_email value=@email;noquote@>
-<input type=hidden name=package_versions value="@package_versions;noquote@">
-<input type=hidden name=publisher_name value="@publisher_name;noquote@">
+<input type="hidden" name="error_location" value="@error_location@">
+<input type="hidden" name="system_url" value="@system_url@">
+<input type="hidden" name="error_first_names" value="@first_names;noquote@">
+<input type="hidden" name="error_last_name" value="@last_name;noquote@">
+<input type="hidden" name="error_user_email" value="@email;noquote@">
+<input type="hidden" name="package_versions" value="@package_versions;noquote@">
+<input type="hidden" name="publisher_name" value="@publisher_name;noquote@">
 
-<table cellpadding=0 cellspacing=0 border=0>
+<table cellpadding="0" cellspacing="0" border="0">
 <tr class=rowtitle>
-	<td colspan=2 class=rowtitle align=center>@page_title@</td>
+	<td colspan="2" class=rowtitle align="center">@page_title@</td>
 </tr>
 <tr class=roweven>
 	<td>#intranet-core.URL#</td>
-	<td><input type=text name=eror_url value="@page_url@" size=40></td>
+	<td><input type="text" name="eror_url" value="@page_url@" size="40"></td>
 </tr>
 <tr class=rowodd>
 	<td>#intranet-core.What_is_wrong#</td>
@@ -38,7 +38,7 @@
 <tr class=roweven>
 	<td></td>
 	<td>
-		<input type=submit>
+		<input type="submit">
 		I agree with the <a href="http://www.project-open.com/en/company/project-open-privacy.html">privacy statement</a>.
 	</td>
 </tr>

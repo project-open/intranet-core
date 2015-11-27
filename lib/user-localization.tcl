@@ -6,7 +6,7 @@ ad_page_contract {
 
 if {$user_id} {set user_id_from_search $user_id}
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set subsite_id [ad_conn subsite_id]
 
 # Check the permissions 
@@ -25,7 +25,7 @@ if {!$read} {
 # ---------------------------------------------------------------
 
 set site_wide_locale [lang::user::locale -user_id $user_id]
-set use_timezone_p [expr [lang::system::timezone_support_p] && [ad_conn user_id]]
+set use_timezone_p [expr {[lang::system::timezone_support_p] && [ad_conn user_id]}]
 
 if {"" == $site_wide_locale} { set site_wide_locale "en_US" }
 if { $use_timezone_p } { set timezone [lang::user::timezone] }

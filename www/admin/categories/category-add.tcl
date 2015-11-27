@@ -47,7 +47,7 @@ ad_page_contract {
 # Check Arguments
 # ---------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -59,12 +59,12 @@ set package_key "intranet-core"
 set exception_count 0
 set exception_text ""
 
-if {![info exists category_id] || [empty_string_p $category_id]} {
+if {![info exists category_id] || $category_id eq ""} {
     incr exception_count
     append exception_text "<li>  [lang::message::lookup "" intranet-core.Category_Id_Missing "Category ID is somehow missing"]</li>"
 }
 
-if {![info exists category] || [empty_string_p $category]} {
+if {![info exists category] || $category eq ""} {
     incr exception_count
     append exception_text "<li> [lang::message::lookup "" intranet-core.Category_Missing "Missing 'Category', please enter a name"]</li>"
 }
@@ -94,7 +94,7 @@ if { $exception_count > 0 } {
 # Update the category
 # ---------------------------------------------------------------
 
-if [catch {
+if {[catch {
 
     db_transaction {
 	db_dml new_category_entry {
@@ -111,7 +111,7 @@ if [catch {
 	    )
 	}
     }
-} errmsg ] {
+} errmsg ]} {
     ad_return_complaint "Argument Error" "<pre>$errmsg</pre>"
     return
 }
@@ -146,4 +146,4 @@ im_permission_flush
 
 db_release_unused_handles
 set select_category_type $category_type
-ad_returnredirect "index.tcl?[export_vars -url {select_category_type}]"
+ad_returnredirect [export_vars -base index.tcl {select_category_type}]

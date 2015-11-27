@@ -47,7 +47,7 @@ db_dml drop "drop table benchmark_insert"
 set clicks4 [clock clicks]
 
 
-set inserts_per_second [expr round($num / (($clicks3 - $clicks2) / 1000000.0)) ]
+set inserts_per_second [expr {round($num / (($clicks3 - $clicks2) / 1000000.0)) }]
 
 
 db_dml store_result "insert into benchmark_results ('insert_benchmark', now(), $inserts_per_second)"

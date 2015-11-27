@@ -70,7 +70,7 @@ ad_proc -public im_gif {
     set base_path "[acs_root_dir]/packages/intranet-core/www/images/"
     set navbar_path "[acs_root_dir]/packages/intranet-core/www/images/[im_navbar_gif_url]"
 
-    if { $translate_p && ![empty_string_p $alt] } {
+    if { $translate_p && $alt ne "" } {
 	set alt_key "intranet-core.[lang::util::suggest_key $alt]"
 	set alt [lang::message::lookup $locale $alt_key $alt]
     }
@@ -260,7 +260,7 @@ ad_proc -public im_admin_category_gif { category_type } {
     or "" otherwise.
 } {
     set html ""
-    set user_id [ad_maybe_redirect_for_registration]
+    set user_id [auth::require_login]
     set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {$user_admin_p} {
 	set html "
@@ -674,7 +674,7 @@ ad_proc -public im_sub_navbar {
 	    set errmsg ""
 	    set visible 0
 	    if [catch {
-	    	set visible [expr $visible_tcl]
+	    	set visible [expr {$visible_tcl}]
 	    } errmsg] {
 		ad_return_complaint 1 "<pre>$errmsg</pre>"	    
 	    }
@@ -709,10 +709,10 @@ ad_proc -public im_sub_navbar {
 
 	# Find out if we need to highligh the current menu item
 	set selected 0
-	set url_length [expr [string length $url] - 1]
+	set url_length [expr {[string length $url] - 1}]
 	set url_stub_chopped [string range $url_stub 0 $url_length]
 
-	if {[string equal $label $select_label] && $current_plugin_id == 0} {
+	if {$label eq $select_label && $current_plugin_id == 0} {
 	    
 	    # Make sure we only highligh one menu item..
 	    set found_selected 1
@@ -727,7 +727,7 @@ ad_proc -public im_sub_navbar {
     }
 
     if {$components_p} {
-	if {[string equal $base_url ""]} {
+	if {$base_url eq ""} {
 	    set base_url $plugin_url
 	}
 
@@ -757,10 +757,10 @@ ad_proc -public im_sub_navbar {
 	    set menu_name [lindex $comp_tuple 2]
 
 	    set url [export_vars -quotehtml -base $base_url {plugin_id {view_name "component"}}]
-	    if {[string equal $menu_name ""]} {
+	    if {$menu_name eq ""} {
 		set menu_name [string map {"Project" "" "Component" "" "  " " "} $plugin_name] 
 	    }
-	    append navbar [im_navbar_tab $url $menu_name [expr $plugin_id==$current_plugin_id]]
+	    append navbar [im_navbar_tab $url $menu_name [expr {$plugin_id==$current_plugin_id}]]
 	}
     }
 
@@ -890,7 +890,7 @@ ad_proc -public im_navbar {
 	    set selected "unselected"
 
 	    # Find out if we need to highligh the current menu item
-	    if {[string equal $label $main_navbar_label]} { set selected "selected" }
+	    if {$label eq $main_navbar_label} { set selected "selected" }
 	    
 	    # Set Menu Item Name 
 	    set name_key "intranet-core.[lang::util::suggest_key $name]"
@@ -1118,12 +1118,12 @@ ad_proc -public im_navbar_legacy_version_4 {
 
         # Find out if we need to highligh the current menu item
         set selected 0
-        set url_length [expr [string length $url] - 1]
+        set url_length [expr {[string length $url] - 1}]
         set url_stub_chopped [string range $url_stub 0 $url_length]
 
         # Check if we should select this one:
         set select_this_one 0
-        if {[string equal $label $main_navbar_label]} { set select_this_one 1 }
+        if {$label eq $main_navbar_label} { set select_this_one 1 }
 
         if {!$found_selected && $select_this_one} {
             # Make sure we only highligh one menu item..
@@ -1501,7 +1501,7 @@ ad_proc -public im_header {
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
     
-    if { [empty_string_p $page_title] } {
+    if { $page_title eq "" } {
 	set page_title [ad_partner_upvar page_title]
     }
     set context_bar [ad_partner_upvar context_bar]
@@ -1517,11 +1517,11 @@ ad_proc -public im_header {
     
     # --------------------------------------------------------------
     
-    if {$search_installed_p && [empty_string_p $page_focus] } {
+    if {$search_installed_p && $page_focus eq "" } {
 	# Default: Focus on Search form at the top of the page
 	set page_focus "surx.query_string"
     }
-    if { [empty_string_p $extra_stuff_for_document_head] } {
+    if { $extra_stuff_for_document_head eq "" } {
 	set extra_stuff_for_document_head [ad_partner_upvar extra_stuff_for_document_head]
     }
 
@@ -1649,7 +1649,7 @@ ad_proc -public im_header {
     }
     
     set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
-    if {$header_skin_select != ""} {
+    if {$header_skin_select ne ""} {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
     # fraber 121020: disable skin, because the others do not work
@@ -1768,7 +1768,7 @@ ad_proc -private im_header_users_online_str { } {
     set proc "num_users"
     set namespace "whos_online"
 
-    if {[string equal $proc [namespace eval $namespace "info procs $proc"]]} {
+    if {$proc eq [namespace eval $namespace "info procs $proc"]} {
 	set num_users_online [lc_numeric [whos_online::num_users]]
 	if {1 == $num_users_online} { 
 	    set users_online_str "<a href=\"/intranet/whos-online\">[_ intranet-core.lt_num_users_online_user]</a>\n"
@@ -1932,7 +1932,7 @@ ad_proc -public im_logo {} {
     set system_logo [im_parameter -package_id [im_package_core_id] SystemLogo "" ""]
     set system_logo_link [im_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
 
-    if {[string equal $system_logo ""]} {
+    if {$system_logo eq ""} {
 	set user_id [ad_conn user_id]
 	set skin_name [im_user_skin $user_id]
 	
@@ -1975,7 +1975,7 @@ ad_proc -public im_navbar_gif_url_helper {
     set navbar_pieces [split $navbar_gif_url "/"]
     set navbar_pieces_len [llength $navbar_pieces]
     if {$navbar_pieces_len > 1} {
-	set navbar_gif_url [lindex $navbar_pieces [expr $navbar_pieces_len-1] ]
+	set navbar_gif_url [lindex $navbar_pieces $navbar_pieces_len-1]
 #	ns_log Notice "im_navbar_gif_url: Found old-stype SystemNavbarGifPath parameter - using only last part: '$org_navbar_gif_url' -> '$navbar_gif_url'"
     }
 
@@ -2035,27 +2035,27 @@ ad_proc im_alpha_nav_bar { letter initial_list {vars_to_ignore ""} } {
     }
 
     set query_args [export_ns_set_vars url $vars_to_ignore_list]
-    if { ![empty_string_p $query_args] } {
+    if { $query_args ne "" } {
 	append url "$query_args&amp;"
     }
     
     set html_list [list]
     foreach l [im_all_letters_lowercase] {
-	if { [lsearch -exact $initial_list $l] == -1 } {
+	if {$l ni $initial_list} {
 	    # This means no user has this initial
 	    lappend html_list "<font color=gray>$l</font>"
-	} elseif { [string compare $l $letter] == 0 } {
+	} elseif { $l eq $letter  } {
 	    lappend html_list "<b>$l</b>"
 	} else {
 	    lappend html_list "<a href=\"${url}letter=$l\">$l</a>"
 	}
     }
-    if { [empty_string_p $letter] || [string compare $letter "all"] == 0 } {
+    if { $letter eq "" || $letter eq "all"  } {
 	lappend html_list "<b>[_ intranet-core.All]</b>"
     } else {
 	lappend html_list "<a href=\"${url}letter=all\">All</a>"
     }
-    if { [string compare $letter "scroll"] == 0 } {
+    if { $letter eq "scroll"  } {
 	lappend html_list "<b>[_ intranet-core.Scroll]</b>"
     } else {
 	lappend html_list "<a href=\"${url}letter=scroll\">[_ intranet-core.Scroll]</a>"
@@ -2078,7 +2078,7 @@ ad_proc im_alpha_bar {
     set default_letter [string tolower $default_letter]
 
     # "none" is a special value for no alpha-bar at all
-    if {[string equal "none" $default_letter]} { return "&nbsp;" }
+    if {"none" eq $default_letter} { return "&nbsp;" }
 
     ns_set delkey $bind_vars "letter"
     set params [list]
@@ -2086,7 +2086,7 @@ ad_proc im_alpha_bar {
     for {set i 0} {$i < $len} {incr i} {
 	set key [ns_set key $bind_vars $i]
 	set value [ns_set value $bind_vars $i]
-	if {![string equal $value ""]} {
+	if {$value ne "" } {
 	    lappend params "$key=[ns_urlencode $value]"
 	}
     }
@@ -2094,16 +2094,16 @@ ad_proc im_alpha_bar {
 
     set html "<ul id=\"alphabar\">"
 
-    if {![string equal $prev_page_url ""]} {
+    if {$prev_page_url ne "" } {
 	append html "<li><a href=\"$prev_page_url\">&lt;&lt</a></li>"
     }
 
     # "no_alpha" is a special value for an alpha-bar without letter and only back/forth
-    if {![string equal "no_alpha" $default_letter]} {
+    if {"no_alpha" ne $default_letter } {
 	foreach letter $alpha_list {
 	    set letter_key "intranet-core.[lang::util::suggest_key $letter]"
 	    set letter_trans [lang::message::lookup "" $letter_key $letter]
-	    if {[string equal $letter $default_letter]} {
+	    if {$letter eq $default_letter} {
 		append html "<li class=\"selected\"><div class=\"navbar_selected\"><a href=\"$url\">$letter_trans</a></div></li>\n"
 	    } else {
 		set url "$target_url?letter=$letter&amp;$param_html"
@@ -2112,7 +2112,7 @@ ad_proc im_alpha_bar {
 	}
     }
 
-    if {![string equal $next_page_url ""]} {
+    if {$next_page_url ne "" } {
 	append html "<li><a href=\"$next_page_url\">&gt;&gt</a></li>"
     }
 
@@ -2176,7 +2176,7 @@ where
     } catch_err
 
     set report_url [im_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
-    if { [empty_string_p $report_url] } {
+    if { $report_url eq "" } {
 	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
 	set report_url "http://www.project-open.net/intranet-forum/forum/new-system-incident"
     } 
@@ -2220,7 +2220,7 @@ ad_proc -public im_context_bar {
 
     @see ad_context_bar_html
 } {
-    if { ![exists_and_not_null node_id] } {
+    if { (![info exists node_id] || $node_id eq "") } {
 	set node_id [ad_conn node_id]
     }
 
@@ -2228,9 +2228,9 @@ ad_proc -public im_context_bar {
 
     if {[llength $args] == 0} {
 	# fix last element to just be literal string
-	set context [lreplace $context end end [lindex [lindex $context end] 1]]
+	set context [lreplace $context end end [lindex $context end 1]]
     } else {
-	if ![string match "\{*" $args] {
+	if {![string match "\{*" $args]} {
 	    # args is not a list, transform it into one.
 	    set args [list $args]
 	}
@@ -2265,7 +2265,7 @@ ad_proc -public im_context_bar_html {
     @see ad_context_bar
 } {
     set out {}
-    foreach element [lrange $context 0 [expr [llength $context] - 2]] {
+    foreach element [lrange $context 0 [llength $context]-2] {
 	append out "<a class=contextbar href=\"[lindex $element 0]\">[lindex $element 1]</a>$separator"
     }
     append out "<span class=contextbar>[lindex $context end]</span>"

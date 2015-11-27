@@ -39,7 +39,7 @@ ad_proc -public im_get_chart { x_axis y_axis data { default_dim "" } } {
 
 
 # set some defaults
-    if { $default_dim == "" || [llength $default_dim] != 5} {
+    if { $default_dim eq "" || [llength $default_dim] != 5} {
 	set margin_left 0
 	set margin_top 30
 	set width 500
@@ -60,7 +60,7 @@ ad_proc -public im_get_chart { x_axis y_axis data { default_dim "" } } {
 <!--
 .xAxis {
     position:absolute;
-    margin-top:[expr $margin_top + $height + 1]px;
+    margin-top:[expr {$margin_top + $height + 1}]px;
     height:40;
     width:100;
     vertical-align:top;
@@ -70,7 +70,7 @@ ad_proc -public im_get_chart { x_axis y_axis data { default_dim "" } } {
 
 .yAxis {
     position:absolute;
-    margin-left:[expr $margin_left + -49]px;
+    margin-left:[expr {$margin_left + -49}]px;
     height:20;
     width:100;
     vertical-align:top;
@@ -93,54 +93,54 @@ ad_proc -public im_get_chart { x_axis y_axis data { default_dim "" } } {
 # add lines, arrow and all other fix elements of the chart
     append html "<div>
 <!-- the axis -->
-<div style=\"position:absolute;margin-top:[expr $margin_top + $height]px;margin-left:[expr $margin_left + 50]px;\"><img src=\"images/black.gif\" height=\"1\" width=\"$width\"/></div>
-<div style=\"position:absolute;margin-left:[expr $margin_left + 50]px;margin-top:$margin_top\"><img src=\"images/black.gif\" height=\"$height\" width=\"1\"/></div>\n"
+<div style=\"position:absolute;margin-top:[expr {$margin_top + $height}]px;margin-left:[expr {$margin_left + 50}]px;\"><img src=\"images/black.gif\" height=\"1\" width=\"$width\"/></div>
+<div style=\"position:absolute;margin-left:[expr {$margin_left + 50}]px;margin-top:$margin_top\"><img src=\"images/black.gif\" height=\"$height\" width=\"1\"/></div>\n"
     if { $arrows == "t" } {
         append html "<!-- the arrows -->
-<div style=\"position:absolute;margin-left:[expr $margin_left + 44]px;margin-top:[expr $margin_top + -8]px\"><img src=\"images/arrow-up.gif\" height=\"15\" width=\"13\"/></div>
-<div style=\"position:absolute;margin-top:[expr $margin_top + $height - 6]px;margin-left:[expr $margin_left + 45 + $width]px;\"><img src=\"images/arrow-right.gif\" height=\"13\" width=\"15\"/></div>"
+<div style=\"position:absolute;margin-left:[expr {$margin_left + 44}]px;margin-top:[expr {$margin_top + -8}]px\"><img src=\"images/arrow-up.gif\" height=\"15\" width=\"13\"/></div>
+<div style=\"position:absolute;margin-top:[expr {$margin_top + $height - 6}]px;margin-left:[expr {$margin_left + 45 + $width}]px;\"><img src=\"images/arrow-right.gif\" height=\"13\" width=\"15\"/></div>"
     }
 # add x scale
-    set x_steps [expr [expr [lindex $x_axis 1] - [lindex $x_axis 0]] / [lindex $x_axis 2]]
+    set x_steps [expr [expr {[lindex $x_axis 1] - [lindex $x_axis 0]}] / [lindex $x_axis 2]]
     for { set x_values 0 } { $x_values < $x_steps } { incr x_values } {
-	set curr_margin_left [expr 1 + $margin_left + [expr $x_values * [expr $width / $x_steps]]]
-	set curr_scale [expr [lindex $x_axis 0] + $x_values * [lindex $x_axis 2]]
-        append html "<div class=\"xAxis\" style=\"margin-left:[expr $curr_margin_left]px;\"><img src=\"images/black.gif\" height=\"10\" width=\"1\" align=\"top\"/><br/>$curr_scale</div>\n"
+	set curr_margin_left [expr 1 + $margin_left + [expr {$x_values * [expr {$width / $x_steps}]}]]
+	set curr_scale [expr {[lindex $x_axis 0] + $x_values * [lindex $x_axis 2]}]
+        append html "<div class=\"xAxis\" style=\"margin-left:[expr {$curr_margin_left}]px;\"><img src=\"images/black.gif\" height=\"10\" width=\"1\" align=\"top\"/><br/>$curr_scale</div>\n"
     }
-append html "<div class=\"xAxis\" style=\"margin-left:[expr $margin_left + $width]px;\"><img src=\"images/clear.gif\" height=\"10\" width=\"1\" align=\"top\"/><br/>[lindex $x_axis 3]</div>\n"
+append html "<div class=\"xAxis\" style=\"margin-left:[expr {$margin_left + $width}]px;\"><img src=\"images/clear.gif\" height=\"10\" width=\"1\" align=\"top\"/><br/>[lindex $x_axis 3]</div>\n"
    
 # add y scale
-    set y_steps [expr [expr [lindex $y_axis 1] - [lindex $y_axis 0]] / [lindex $y_axis 2]]
+    set y_steps [expr [expr {[lindex $y_axis 1] - [lindex $y_axis 0]}] / [lindex $y_axis 2]]
     for { set y_values 0 } { $y_values < $y_steps } { incr y_values } {
-        set curr_margin_top [expr -6 + $margin_top + $height - [expr $y_values * [expr $height / $y_steps]]]
-        set curr_scale [expr [lindex $y_axis 0] + $y_values * [lindex $y_axis 2]]
-	append html "<div class=\"yAxis\" style=\"margin-top:[expr $curr_margin_top]px;\">$curr_scale <img src=\"images/black.gif\" height=\"1\" width=\"10\" align=\"middle\"/></div>\n"
+        set curr_margin_top [expr -6 + $margin_top + $height - [expr {$y_values * [expr {$height / $y_steps}]}]]
+        set curr_scale [expr {[lindex $y_axis 0] + $y_values * [lindex $y_axis 2]}]
+	append html "<div class=\"yAxis\" style=\"margin-top:[expr {$curr_margin_top}]px;\">$curr_scale <img src=\"images/black.gif\" height=\"1\" width=\"10\" align=\"middle\"/></div>\n"
     }
-append html "<div class=\"yAxis\" style=\"margin-top:[expr $margin_top + -10]px;\">[lindex $y_axis 3] <img src=\"images/clear.gif\" height=\"1\" width=\"10\" align=\"middle\"/></div>\n"
+append html "<div class=\"yAxis\" style=\"margin-top:[expr {$margin_top + -10}]px;\">[lindex $y_axis 3] <img src=\"images/clear.gif\" height=\"1\" width=\"10\" align=\"middle\"/></div>\n"
 
 # add values received
     for {set data_count 0 } { $data_count < [llength $data] } { incr data_count } {
 	set curr_data [lindex $data $data_count]
-        set curr_margin_left [expr abs([expr [expr [lindex $curr_data 0] * $width] / [expr [lindex $x_axis 1] - [lindex $x_axis 0]]] + $margin_left + 26)]
-        set curr_margin_top [expr abs(($height - [expr [expr [lindex $curr_data 1] * $height] / [expr [lindex $y_axis 1] - [lindex $y_axis 0]]]) + $margin_top - [expr [lindex $curr_data 2] / 2] + 1)]
+        set curr_margin_left [expr abs([expr [expr {[lindex $curr_data 0] * $width}] / [expr {[lindex $x_axis 1] - [lindex $x_axis 0]}]] + $margin_left + 26)]
+        set curr_margin_top [expr abs(($height - [expr [expr {[lindex $curr_data 1] * $height}] / [expr {[lindex $y_axis 1] - [lindex $y_axis 0]}]]) + $margin_top - [expr {[lindex $curr_data 2] / 2}] + 1)]
         if { [llength $curr_data] == 6 } {
              set curr_image [lindex $curr_data 5]
         } else { 
              set curr_image "images/bullet-red.gif"
         }
-	append html "<div class=\"data\" style=\"margin-top:[expr $curr_margin_top]px;margin-left:[expr $curr_margin_left]px\"><a href=\"[lindex $curr_data 4]\"><img src=\"$curr_image\" width=\"[lindex $curr_data 2]\" height=\"[lindex $curr_data 2]\" alt=\"[lindex $curr_data 3]\" title=\"[lindex $curr_data 3]\" border=\"0\"/></a></div>\n"
+	append html "<div class=\"data\" style=\"margin-top:[expr {$curr_margin_top}]px;margin-left:[expr {$curr_margin_left}]px\"><a href=\"[lindex $curr_data 4]\"><img src=\"$curr_image\" width=\"[lindex $curr_data 2]\" height=\"[lindex $curr_data 2]\" alt=\"[lindex $curr_data 3]\" title=\"[lindex $curr_data 3]\" border=\"0\"/></a></div>\n"
     }
 
 # close div section
     append html "</div>"
-    append html "<div><img src=\"images/clear.gif\" width=\"1\" height=\"[expr $height + 100]\" /></div>"
+    append html "<div><img src=\"images/clear.gif\" width=\"1\" height=\"[expr {$height + 100}]\" /></div>"
     return $html
 }
 
 ad_proc -public im_get_axis { max_value steps } {
     Returns the steps to display on a axis in order to make it look nice
 } {
-    set dirty_step [expr $max_value / $steps]
+    set dirty_step [expr {$max_value / $steps}]
     if { $dirty_step < 0.1 } {
 	return 0.01
     } elseif { $dirty_step < 1 } {

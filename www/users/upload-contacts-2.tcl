@@ -45,7 +45,7 @@ ad_page_contract {
 # Security & Defaults
 # ---------------------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set page_title "Upload Contacts CSV"
 set page_body ""
 set context_bar [im_context_bar $page_title]
@@ -148,7 +148,7 @@ if { $max_n_bytes && ([file size $tmp_filename] > $max_n_bytes) } {
 }
 
 # strip off the C:\directories... crud and just get the file name
-if ![regexp {([^//\\]+)$} $upload_file match company_filename] {
+if {![regexp {([^//\\]+)$} $upload_file match company_filename]} {
     # couldn't find a match
     set company_filename $upload_file
 }
@@ -329,7 +329,7 @@ foreach csv_line_fields $values_list_of_lists {
 
 	set var_value [string trim [lindex $csv_line_fields $j]]
 	set var_value [string map -nocase {"\"" "" "\{" "(" "\}" ")" "\[" "(" "\]" ")"} $var_value]
-	if {[string equal "NULL" $var_value]} { set var_value ""}
+	if {"NULL" eq $var_value} { set var_value ""}
 	append pretty_field_header "<td>$var_name</td>\n"
 	append pretty_field_body "<td>$var_value</td>\n"
 
@@ -756,7 +756,7 @@ foreach csv_line_fields $values_list_of_lists {
 	    if {$profile_id == [im_profile_freelancers]} { set company_type_id [im_company_type_freelance]}
 	    set company_status_id [im_company_status_potential]
 
-	    ns_write "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/new-company-from-user?[export_vars -url { user_id company_type_id company_status_id company_name}]\">click here to create it</a>.\n"
+	    ns_write "<li>'$first_name $last_name': Unable to find the users company '$company'. Please <A href=\"/intranet/companies/[export_vars -base new-company-from-user { user_id company_type_id company_status_id company_name}]\">click here to create it</a>.\n"
 
 	}
     }

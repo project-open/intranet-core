@@ -70,15 +70,15 @@ set im_render_user_id [im_render_user_id $project_lead_id $project_lead $user_id
 # VAW Special: Freelancers shouldnt see star and end date
 # ToDo: Replace this hard coded condition with DynField
 # permissions per field.
-set user_can_see_start_end_date_p [expr [im_user_is_employee_p $current_user_id] || [im_user_is_customer_p $current_user_id]]
+set user_can_see_start_end_date_p [expr {[im_user_is_employee_p $current_user_id] || [im_user_is_customer_p $current_user_id]}]
 
 set show_start_date_p 0
-if { $user_can_see_start_end_date_p && ![empty_string_p $start_date_formatted] } { 
+if { $user_can_see_start_end_date_p && $start_date_formatted ne "" } { 
     set show_start_date_p 1
 }
 
 set show_end_date_p 0
-if { $user_can_see_start_end_date_p && ![empty_string_p $end_date] } {
+if { $user_can_see_start_end_date_p && $end_date ne "" } {
     set show_end_date_p 1
 }
 
@@ -115,4 +115,4 @@ db_multirow -extend {attrib_var value} project_dynfield_attribs dynfield_attribs
 
 
 set edit_project_base_data_p [im_permission $current_user_id edit_project_basedata]
-set user_can_see_start_end_date_p [expr [im_user_is_employee_p $current_user_id] || [im_user_is_customer_p $current_user_id]]
+set user_can_see_start_end_date_p [expr {[im_user_is_employee_p $current_user_id] || [im_user_is_customer_p $current_user_id]}]

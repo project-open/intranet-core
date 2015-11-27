@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <master src="../master">
-<property name="title">@page_title@</property>
-<property name="context">@context_bar@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">user</property>
 
 
@@ -18,7 +18,7 @@
 
 <center>
 <form method=get action=nuke-2>
-<input type=hidden name=user_id value="@user_id@">
-<input type=submit value="#intranet-core.lt_Yes_Im_sure_that_I_wa#">
+<input type="hidden" name="user_id" value="@user_id@">
+<input type="submit" value="#intranet-core.lt_Yes_Im_sure_that_I_wa#">
 </form>
 </center>

@@ -10,7 +10,7 @@ ad_page_contract {
 }
 
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set page_title "Restore"
 set context_bar [im_context_bar $page_title]
 set context ""
@@ -33,7 +33,7 @@ if {!$user_admin_p} {
 set file_list [exec $find_cmd $path -type f]
 foreach line $file_list {
     set files [split $line "/"]
-    set last_file_idx [expr [llength $files] - 1]
+    set last_file_idx [expr {[llength $files] - 1}]
     set file [lindex $files $last_file_idx]
     regexp {([^\.]*)\.[^\.]} $file ttt file_body
 
@@ -56,7 +56,7 @@ set object_list_html ""
 set ctr 0
 db_foreach foreach_report $sql {
     append object_list_html "
-      <tr $bgcolor([expr $ctr % 2])>
+      <tr $bgcolor([expr {$ctr % 2}])>
         <td>$view_id</td>
         <td>$view_name</td>
     "

@@ -27,7 +27,7 @@ ad_proc -public im_project_shift {
     taking into account weekends and global bank holidays
 } {
     ns_log Notice "im_project_shift: project_id=$project_id, shift_days=$shift_days"
-    set shift_epoch [expr $shift_days * 3600 * 24]
+    set shift_epoch [expr {$shift_days * 3600 * 24}]
 
     # -----------------------------------------------------------
     # Pull out the start- and end dates 
@@ -54,8 +54,8 @@ ad_proc -public im_project_shift {
     # Shift the dates
     #
     foreach pid [array names project_start_hash] {
-	set project_start_hash($pid) [expr $project_start_hash($pid) + $shift_epoch]
-	set project_end_hash($pid) [expr $project_end_hash($pid) + $shift_epoch]
+	set project_start_hash($pid) [expr {$project_start_hash($pid) + $shift_epoch}]
+	set project_end_hash($pid) [expr {$project_end_hash($pid) + $shift_epoch}]
     }
 
 
@@ -76,7 +76,7 @@ ad_proc -public im_project_shift {
 
 
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set shift_period [string tolower $shift_period]
 
 if {![regexp {^([\+\-])([0-9]+)([wd]*)$} $shift_period match direction number unit]} {
@@ -85,7 +85,7 @@ if {![regexp {^([\+\-])([0-9]+)([wd]*)$} $shift_period match direction number un
 
 if {"" == $unit} { set unit "d" }
 if {"-" == $direction} { set number [expr -1 * $number] }
-if {"w" == $unit} { set number [expr $number * 7] }
+if {"w" == $unit} { set number [expr {$number * 7}] }
 
 # !!! Shift project
 # ad_return_complaint 1 "$shift_period - $return_url - $select_project_id - '$number' - '$unit' - [llength $select_project_id]"

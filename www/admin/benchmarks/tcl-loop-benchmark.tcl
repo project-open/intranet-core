@@ -31,7 +31,7 @@ for {set i 0} {$i < $num} {incr i} {
 
 set clicks1 [clock clicks]
 
-set tcl_loops_per_second [expr round($num / (($clicks1 - $clicks0) / 1000000.0)) ]
+set tcl_loops_per_second [expr {round($num / (($clicks1 - $clicks0) / 1000000.0)) }]
 
 
 # db_dml store_result "insert into benchmark_results ('tcl_loop_benchmark', now(), $inserts_per_second)"

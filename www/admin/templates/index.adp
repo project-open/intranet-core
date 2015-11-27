@@ -1,16 +1,16 @@
 <master src="../master">
-<property name="context">@context;noquote@</property>
-<property name="title">@page_title@</property>
+<property name="context">@context;literal@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="admin_navbar_label">admin_templates</property>
 
-<table cellpadding=1 cellspacing=1 border=0 width="100%">
+<table cellpadding="1" cellspacing="1" border="0" width="100%">
 <tr>
-  <td colspan=2>
+  <td colspan="2">
 	<%= [im_component_bay top] %>
   </td>
 </tr>
 <tr>
-  <td valign=top width="300px">
+  <td valign="top" width="300px">
 	<%= [im_box_header $page_title] %>
 	<listtemplate name="templates"></listtemplate>
 	<%= [im_box_footer] %>
@@ -33,7 +33,7 @@
   </td>
 </tr>
 <tr>
-  <td colspan=2>
+  <td colspan="2">
 	<%= [im_component_bay bottom] %>
   </td>
 </tr>

@@ -35,7 +35,7 @@ ad_page_contract {
 
 set send_email_p [info exists submit_send]
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 if {![im_permission $current_user_id add_users]} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_no_rights_to]"
     return
@@ -43,20 +43,20 @@ if {![im_permission $current_user_id add_users]} {
     
 set ad_system_name [ad_system_name]
 set ad_url [ad_url]
-set admin_user_id [ad_verify_and_get_user_id]
+set admin_user_id [ad_conn user_id]
 set admin_email [db_string unused "select email from parties where party_id = :admin_user_id"] 
 
 
 set page_title [_ intranet-core.lt_New_user_notifiedset_]
 set context [list [list "./" [_ intranet-core.Users]] $page_title]
-set export_vars [export_vars -url { user_id}]
+set export_vars [export_vars { user_id}]
 
 
 if {$send_email_p} {
     if [catch {ns_sendmail "$email" "$admin_email" "You have been added as a user to [ad_system_name] at [ad_url]" "$message"} errmsg] {
 	ad_return_error "[_ intranet-core.Mail_Failed]" "[_ intranet-core.lt_The_system_was_unable]<br>[_ intranet-core.Here_is_the_error]
 <blockquote><pre>
-[ad_quotehtml $errmsg]
+[ns_quotehtml $errmsg]
 </pre></blockquote>"
         return
     }

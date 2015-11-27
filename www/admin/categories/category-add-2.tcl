@@ -42,7 +42,7 @@ ad_page_contract {
   new_category_type:optional
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "<li>You need to be a system administrator to see this page">
@@ -52,7 +52,7 @@ if {!$user_is_admin_p} {
 set exception_count 0
 set exception_text ""
 
-if {![info exists category_id] || [empty_string_p $category_id]} {
+if {![info exists category_id] || $category_id eq ""} {
     incr exception_count
     append exception_text "<li>Category ID is somehow missing.  This is probably a bug in our software."
 }
@@ -61,7 +61,7 @@ if {![info exists parent_category_id]} {
     set parent_category_id ""
 }
 
-if {![info exists category] || [empty_string_p $category]} {
+if {![info exists category] || $category eq ""} {
     incr exception_count
     append exception_text "<li>Please enter a category"
 }
@@ -76,14 +76,14 @@ if {[info exists mailing_list_info] && [string length $mailing_list_info] > 4000
     append exception_text "<li>Please limit your Mailing list information to 4000 characters"
 }
 
-if {[info exists new_category_type] && ![empty_string_p $new_category_type]} {
+if {[info exists new_category_type] && $new_category_type ne ""} {
     set category_type $new_category_type
 }
 
 
 set naughty_html_text [ad_check_for_naughty_html "$category $category_description $mailing_list_info $category_type $new_category_type"]
 
-if { ![empty_string_p $naughty_html_text] } {
+if { $naughty_html_text ne "" } {
     append exception_text "<li>$naughty_html_text"
     incr exception_count
 }
@@ -109,7 +109,7 @@ db_transaction {
 
     # Even top-level categories have at least one row in category_hierarchy, for which parent_category_id is null.
 
-    if {[empty_string_p $parent_category_id]} {
+    if {$parent_category_id eq ""} {
 	set parent_category_id [db_null]
     }
 
@@ -135,4 +135,4 @@ im_permission_flush
 
 
 db_release_unused_handles
-ad_returnredirect "one?[export_vars -url {category_id}]"
+ad_returnredirect [export_vars -base one {category_id}]

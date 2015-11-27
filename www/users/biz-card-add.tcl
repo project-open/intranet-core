@@ -67,7 +67,7 @@ if {[info exists limit_to_company_id] && "" != $limit_to_company_id && "" == $co
 
 set title "[_ intranet-contacts.Add_a_Biz_Card]"
 set context [list $title]
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 
 # --------------------------------------------------

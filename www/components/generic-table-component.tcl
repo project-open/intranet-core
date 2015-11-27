@@ -33,7 +33,7 @@ if {![info exists table_name]} {
 if {![info exists exclude_columns]} { set exclude_columns "" }
 if {![info exists return_url] || "" == $return_url} { set return_url [im_url_with_query] }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 
 # ------------------------------------------------------------------

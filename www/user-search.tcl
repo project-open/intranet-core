@@ -62,7 +62,7 @@ ad_page_contract {
 # Defaults & Security
 # --------------------------------------------------
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 set display_title "Member Search"
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
@@ -74,17 +74,17 @@ set bgcolor(1) " class=rowodd "
 set errors ""
 set exception_count 0
 
-if { $email == "" && $last_name == "" } {
+if { $email eq "" && $last_name eq "" } {
     incr exception_count
     append errors "<li>[_ intranet-core.lt_You_must_specify_eith]"
 }
 
-if { $email != "" && $last_name != "" } {
+if { $email ne "" && $last_name ne "" } {
     incr exception_count
     append errors "<li>[_ intranet-core.lt_You_can_only_specify_]"
 }
 
-if { $return_url == "" } {
+if { $return_url eq "" } {
     incr exception_count
     set mail_to_administrator_link "<a href=\"mailto:[ad_host_administrator]\">[_ intranet-core.administrator]</a>"
     append errors "<li>[_ intranet-core.lt_Return_Url_was_not_sp]"
@@ -135,7 +135,7 @@ db_foreach allowed_groups $allowed_groups_sql {
 # Build the query
 # --------------------------------------------------
 
-if { $email != "" } {
+if { $email ne "" } {
     set query_string "%[string tolower $email]%"
     set search_html "email \"$email\""
     set search_clause "lower(email) like :query_string"
@@ -219,7 +219,7 @@ foreach user_id [array names user_group_hash] {
 
     if {$view_p} {
 	append page_contents "
-	<tr$bgcolor([expr $ctr % 2])>
+	<tr$bgcolor([expr {$ctr % 2}])>
 	  <td>$user_name</td>
 	  <td>$email</td>
 	  <td align=center><input type=radio name=user_id_from_search value=$user_id></td>
@@ -246,7 +246,7 @@ if {$ctr > 0} {
     # Show a no-member message
     append page_contents "
 
-        <tr$bgcolor([expr $ctr % 2])>
+        <tr$bgcolor([expr {$ctr % 2}])>
           <td colspan=3>[_ intranet-core.No_members_found]</td>
 	</tr>
 	</tbody>

@@ -1,4 +1,4 @@
-<table border=0>
+<table border="0">
 <tbody>
   <tr> 
     <td>#intranet-core.Project_name#</td>
@@ -8,7 +8,7 @@
     <tr> 
       <td>#intranet-core.Parent_Project#</td>
       <td>
-        <a href=/intranet/projects/view?project_id=@parent_id@>@parent_name;noquote@</a>
+        <a href="/intranet/projects/view?project_id=@parent_id@">@parent_name;noquote@</a>
       </td>
     </tr>
   </if>
@@ -98,7 +98,7 @@
         <form action=/intranet/projects/new method=POST>
 	  <input type="hidden" name="project_id" value="@project_id@">
 	  <input type="hidden" name="return_url" value="@return_url@">
-	  <input type=submit value="#intranet-core.Edit#" name=submit3>
+	  <input type="submit" value="#intranet-core.Edit#" name="submit3">
         </form>
       </td>
     </tr>

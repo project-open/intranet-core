@@ -62,7 +62,7 @@ if {"" == $office_name} {
 # Check for Errors in Input Variables
 # -----------------------------------------------------------------
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 set form_setid [ns_getform]
 
 set required_vars [list \
@@ -71,7 +71,7 @@ set required_vars [list \
 set errors [im_verify_form_variables $required_vars]
 set exception_count 0
 
-if { ![empty_string_p $errors] } {
+if { $errors ne "" } {
     incr exception_count
 }
 
@@ -97,7 +97,7 @@ if { $exists_p } {
     append errors "  <li>[_ intranet-core.lt_An_office_with_the_sa]"
 }
 
-if { ![empty_string_p $errors] } {
+if { $errors ne "" } {
     ad_return_complaint $exception_count "<ul>$errors</ul>"
     return
 }

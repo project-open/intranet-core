@@ -10,7 +10,7 @@ ad_page_contract {
     return_url
 }
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 
 # Check the permissions that the current_user has on user_id
 im_user_permissions $current_user_id $user_id view read write admin

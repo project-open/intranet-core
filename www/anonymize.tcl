@@ -29,7 +29,7 @@ if {![im_parameter -package_id [im_package_core_id] TestDemoDevServer "" 0]} {
     return
 }
 
-set user_id [ad_maybe_redirect_for_registration]
+set user_id [auth::require_login]
 
 ad_proc anonymize_name { org_string } {
     Replace org string letter with random letter to
@@ -124,7 +124,7 @@ ad_proc pick_char { char_set } {
     Picks a random char from char_set
 } {
     set len [string length $char_set]
-    set pos [expr round(1000*rand()) % $len]
+    set pos [expr {round(1000*rand()) % $len}]
     set result [string range $char_set $pos $pos]
     return $result
 }
@@ -189,7 +189,7 @@ set im_invoice_items_sql "
 "
 
 db_foreach im_invoice_items_select $im_invoice_items_sql {
-    set new_price "0.[expr round(100*rand())]"
+    set new_price "0.[expr {round(100*rand())}]"
     db_dml im_invoice_items_update "
 	update im_invoice_items set
 		item_name = '[anonymize_name $item_name]',
@@ -206,7 +206,7 @@ if {[im_table_exists im_trans_prices]} {
 	from	im_trans_prices
     "
     db_foreach im_prices_select $im_trans_prices_sql {
-	set new_price [expr round(100*rand()) / 100]
+	set new_price [expr {round(100*rand()) / 100}]
 	db_dml im_trans_prices_update "
 	update im_trans_prices set
 		price = :new_price

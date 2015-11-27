@@ -27,7 +27,7 @@ ad_page_contract {
 set page_title [_ intranet-core.Done]
 set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 
-set current_user_id [ad_maybe_redirect_for_registration]
+set current_user_id [auth::require_login]
 im_company_permissions $current_user_id $company_id view read write admin
 
 if {!$admin} {

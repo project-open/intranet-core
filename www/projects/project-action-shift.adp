@@ -1,23 +1,23 @@
 <master src="../master">
-<property name="title">@page_title@</property>
+<property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">projects</property>
-<property name="left_navbar">@left_navbar_html;noquote@</property>
-<property name="sub_navbar">@sub_navbar;noquote@</property>
-<property name="show_context_help_p">@show_context_help_p;noquote@</property>
+<property name="left_navbar">@left_navbar_html;literal@</property>
+<property name="sub_navbar">@sub_navbar;literal@</property>
+<property name="show_context_help_p">@show_context_help_p;literal@</property>
 
 <form action=/intranet/projects/project-action-shift-2 method=POST>
 <%= [export_vars -form {return_url select_project_id}] %>
-<table border=0>
+<table border="0">
 <tr>
-<td colspan=2>Shift projects forward or backward in time:</td>
+<td colspan="2">Shift projects forward or backward in time:</td>
 </tr>
 
 <tr>
-<td colspan=2><input type=input name=shift_period width=20 value="+1w">
+<td colspan="2"><input type=input name="shift_period" width=20 value="+1w">
 </tr>
 
 <tr>
-<td><input type=submit>
+<td><input type="submit">
 </tr>
 
 </table>
