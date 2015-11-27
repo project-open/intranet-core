@@ -184,7 +184,7 @@ ad_proc -public im_menu_ul_list_helper {
 	if {"" != $visible_tcl} {
 	    set visible 0
 	    set errmsg ""
-	    if [catch {	set visible [expr {$visible_tcl}] } errmsg] {
+	    if [catch {	set visible [expr $visible_tcl] } errmsg] {
 		ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>"
 	    }
 	    if {!$visible} { continue }
@@ -317,7 +317,7 @@ ad_proc -public im_menu_li_helper {
 	set errmsg ""
 
 	if [catch { 
-	    set visible [expr {$visible_tcl}] 
+	    set visible [expr $visible_tcl] 
 	} errmsg] { 
 	    ns_log Error "im_menu_li: Error with visible_tcl: $visible_tcl: '$errmsg'" 
 	}

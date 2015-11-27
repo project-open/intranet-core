@@ -674,7 +674,7 @@ ad_proc -public im_sub_navbar {
 	    set errmsg ""
 	    set visible 0
 	    if [catch {
-	    	set visible [expr {$visible_tcl}]
+	    	set visible [expr $visible_tcl]
 	    } errmsg] {
 		ad_return_complaint 1 "<pre>$errmsg</pre>"	    
 	    }
