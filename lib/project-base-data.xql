@@ -65,6 +65,7 @@
       		aa.attribute_name,
 		w.*
       from
+      		im_dynfield_type_attribute_map m,
       		im_dynfield_widgets w,
       		acs_attributes aa,
       		im_dynfield_attributes a
@@ -74,6 +75,8 @@
       			where page_url = ''
       		) la ON (a.attribute_id = la.attribute_id)
       where
+      		m.attribute_id = a.attribute_id and
+		m.object_type_id = :project_type_id and
       		a.widget_name = w.widget_name and
       		a.acs_attribute_id = aa.attribute_id and
       		aa.object_type = 'im_project' and
@@ -83,6 +86,5 @@
 
     </querytext>
   </fullquery>
-
 </queryset>
 
