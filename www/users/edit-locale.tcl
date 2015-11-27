@@ -123,7 +123,7 @@ if { [form is_valid locale] } {
     set site_wide_locale [element get_value locale site_wide_locale]
 
     if { "0" == [db_string get_data "select count(*) from user_preferences where user_id = :user_id" -default 0] } {
-	db_dml target_languages "insert into user_preferences (user_id) values (:user_id);"
+	db_dml user_preferences "insert into user_preferences (user_id) values (:user_id);"
     }
    
     lang::user::set_locale -user_id $user_id $site_wide_locale
