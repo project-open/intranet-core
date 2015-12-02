@@ -90,7 +90,7 @@ show errors;
 	
 
 -- -----------------------------------------------------------
--- Source additional files for Project/Open Core
+-- Source additional files for ]project-open[ Core
 -- 
 -- views:
 --	Defines how to render (HTML) the columns of "index" 

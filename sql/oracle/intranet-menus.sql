@@ -1,6 +1,6 @@
 -- /packages/intranet/sql/oracle/intranet-menu-create.sql
 --
--- Copyright (c) 2003-2004 Project/Open
+-- Copyright (c) 2003-2004 ]project-open[
 --
 -- All rights reserved. Please check
 -- http://www.project-open.com/license/ for details.
@@ -10,7 +10,7 @@
 ---------------------------------------------------------
 -- Menus
 --
--- Dynamic Menus are necessary to allow Project/Open modules
+-- Dynamic Menus are necessary to allow ]project-open[ modules
 -- to extend the core at some point in the future without
 -- that core would need know about these extensions in
 -- advance.

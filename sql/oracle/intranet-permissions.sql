@@ -1,6 +1,6 @@
 -- /packages/intranet-core/sql/oracle/intranet-permissions.sql
 --
--- Copyright (C) 1999-2004 Project/Open
+-- Copyright (C) 1999-2004 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General
@@ -58,7 +58,7 @@ show errors
 
 
 -------------------------------------------------------------
--- Project/Open Profiles
+-- ]project-open[ Profiles
 --
 -- "Profiles" is a group type that is used to keep 
 -- user permission information in a distinguishable
@@ -68,8 +68,8 @@ BEGIN
  acs_object_type.create_type (
    supertype     => 'group',
    object_type   => 'im_profile',
-   pretty_name   => 'Project/Open Profile',
-   pretty_plural => 'Project/Open Profiles',
+   pretty_name   => ']project-open[ Profile',
+   pretty_plural => ']project-open[ Profiles',
    table_name    => 'im_profiles',
    id_column     => 'profile_id'
  );
@@ -328,7 +328,7 @@ show errors;
 -- Privileges
 --
 -- Privileges are permission tokens relative to the "subsite"
--- (package) object "Project/Open Core".
+-- (package) object "]project-open[ Core".
 -- 
 
 prompt *** Creating Privileges

@@ -240,7 +240,7 @@ BEGIN
     -- First setup the main office
     v_office_id := im_office.new(
         object_type     => 'im_office',
-        office_name     => 'Project/Open Main Office',
+        office_name     => 'Internal Main Office',
         office_path     => 'po_main_office'
     );
 

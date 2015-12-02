@@ -1,6 +1,6 @@
 -- /package/intranet-core/sql/intranet-components.sql
 --
--- Copyright (C) 2004 Project/Open
+-- Copyright (C) 2004 ]project-open[
 --
 -- This program is free software. You can redistribute it
 -- and/or modify it under the terms of the GNU General
@@ -15,7 +15,7 @@
 -- @author      frank.bergmann@project-open.com
 
 -- Implements the data structures for component bays
--- that allow to plug-in components into Project/Open
+-- that allow to plug-in components into ]project-open[
 -- pages at runtime.
 
 ---------------------------------------------------------
