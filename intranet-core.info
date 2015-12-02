@@ -3,7 +3,7 @@
 
 <package key="intranet-core" url="http://openacs.org/repository/apm/packages/intranet-core" type="apm_application">
     <package-name>]project-open[ Core</package-name>
-    <pretty-plural>Project/Open Core</pretty-plural>
+    <pretty-plural>]project-open[ Core</pretty-plural>
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
     <auto-mount>intranet</auto-mount>
