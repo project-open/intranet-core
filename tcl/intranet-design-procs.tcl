@@ -838,100 +838,96 @@ ad_proc -public im_navbar {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
 } {
-    # Switch - Redesigning Navbar/Header for version 5 
-    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } { 
-	return [im_navbar_legacy_version_4 -loginpage $loginpage -show_context_help_p $show_context_help_p $main_navbar_label] 
-    } else {
-	set user_id [ad_conn user_id]
-	set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-	set locale [lang::user::locale -user_id $user_id]
-	if {![info exists loginpage_p]} { set loginpage_p 0 }
-	set ldap_installed_p [util_memoize [list db_string otp_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
-	set url_stub [ns_conn url]
-	set page_title [ad_partner_upvar page_title]
-	set section [ad_partner_upvar section]
-	set return_url [im_url_with_query]
-	
-	# There are two ways to publish a context bar:
-	# 1. Via "context_bar". This var contains a fully formatted context bar
-	# 2. Via "context". "Context" contains a list of lists, with the last
-	#    element being a single name
-	#
-	set context_bar [ad_partner_upvar context_bar]
-	
-	if {"" == $context_bar} {
-	    set context [ad_partner_upvar context]
-	    if {"" == $context} {
-		set context [list $page_title]
-	    }
-	    
-	    set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
-	    set context [concat $context_root $context]
-	    set context_bar [im_context_bar_html $context]
+    set user_id [ad_conn user_id]
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+    set locale [lang::user::locale -user_id $user_id]
+    if {![info exists loginpage_p]} { set loginpage_p 0 }
+    set ldap_installed_p [util_memoize [list db_string otp_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
+    set url_stub [ns_conn url]
+    set page_title [ad_partner_upvar page_title]
+    set section [ad_partner_upvar section]
+    set return_url [im_url_with_query]
+    
+    # There are two ways to publish a context bar:
+    # 1. Via "context_bar". This var contains a fully formatted context bar
+    # 2. Via "context". "Context" contains a list of lists, with the last
+    #    element being a single name
+    #
+    set context_bar [ad_partner_upvar context_bar]
+    
+    if {"" == $context_bar} {
+	set context [ad_partner_upvar context]
+	if {"" == $context} {
+	    set context [list $page_title]
 	}
 	
-	set a_white "<a class=whitelink"
-	set navbar ""
-	set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
+	set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
+	set context [concat $context_root $context]
+	set context_bar [im_context_bar_html $context]
+    }
+    
+    set a_white "<a class=whitelink"
+    set navbar ""
+    set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
+    
+    set ctr 0
+    
+    # Get toplevel menu items
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
+    
+    foreach menu_list $menu_list_list {
 	
-	set ctr 0
-	
-	# Get toplevel menu items
-	set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
-	
-	foreach menu_list $menu_list_list {
-	    
-	    set menu_id [lindex $menu_list 0]
-	    set package_name [lindex $menu_list 1]
-	    set label [lindex $menu_list 2]
-	    set name [lindex $menu_list 3]
-	    set url [lindex $menu_list 4]
-	    set visible_tcl [lindex $menu_list 5]
-	    set selected "unselected"
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
+	set selected "unselected"
 
-	    # Find out if we need to highligh the current menu item
-	    if {$label eq $main_navbar_label} { set selected "selected" }
-	    
-	    # Set Menu Item Name 
-	    set name_key "intranet-core.[lang::util::suggest_key $name]"
-	    set name [lang::message::lookup "" $name_key $name]
-	    
-	    # No menues on register and login page 
-	    if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+	# Find out if we need to highligh the current menu item
+	if {$label eq $main_navbar_label} { set selected "selected" }
+	
+	# Set Menu Item Name 
+	set name_key "intranet-core.[lang::util::suggest_key $name]"
+	set name [lang::message::lookup "" $name_key $name]
+	
+	# No menues on register and login page 
+	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
 
-		switch $label {
-		    "projects" {
-			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label -selected $selected]
-		    }
-		    "user" {
-			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label -selected $selected]
-			
-		    }
-		    "companies" {
-			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label -selected $selected]
-		    }
+	    switch $label {
+		"projects" {
+		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label -selected $selected]
+		}
+		"user" {
+		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label -selected $selected]
 		    
-		    "helpdesk" {
-			append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
-		    }
+		}
+		"companies" {
+		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label -selected $selected]
+		}
+		
+		"helpdesk" {
+		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
+		}
 
-		    "reporting" {
-			# Get first level sub_menus
-			append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
-		    }
-		    
-		    "finance" {
+		"reporting" {
+		    # Get first level sub_menus
+		    append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
+		}
+		
+		"finance" {
 
-			# Requires separate handling since menu data stored in im_menus is used to create 
-			# 	a) admin links in sidebar 
-			# 	b) right sub-menu tabs
-			#	c) top menu tabs
-			# Not in all three locations all active menu items should be shown.
+		    # Requires separate handling since menu data stored in im_menus is used to create 
+		    # 	a) admin links in sidebar 
+		    # 	b) right sub-menu tabs
+		    #	c) top menu tabs
+		    # Not in all three locations all active menu items should be shown.
 
-			set submenus ""
+		    set submenus ""
 
-			# Customer & Provider Docs
-			set menu_select_sql "
+		    # Customer & Provider Docs
+		    set menu_select_sql "
  			       select  	m.name as r_name,
 					m.menu_id as r_id,
 					m.url as r_url
@@ -941,10 +937,10 @@ ad_proc -public im_navbar {
 		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 			"
 
-			if { [db_0or1row get_manu_information $menu_select_sql] } {
-			    append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.CustomerDocuments "Customer Documents"]</a></li>"			
-			}
-			set menu_select_sql "
+		    if { [db_0or1row get_manu_information $menu_select_sql] } {
+			append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.CustomerDocuments "Customer Documents"]</a></li>"			
+		    }
+		    set menu_select_sql "
  			       select  	m.name as r_name,
 					m.menu_id as r_id,
 					m.url as r_url
@@ -953,84 +949,84 @@ ad_proc -public im_navbar {
 		               		and enabled_p = 't'
 		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
 			"
-			if { [db_0or1row get_manu_information $menu_select_sql] } {
-			    append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.ProviderDocuments "Provider Documents"]</a></li>"			
-			}
-
-			# Get a list of Provider links {menu_name menu_link admin_name admin_link}
-			set sub_menu_providers [im_menu_links "invoices_providers"]
-			if { "" != $sub_menu_providers } {
-			    append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label "" -selected "unselected"]"
-			}
-			
-			set sub_menu_customers [im_menu_links "invoices_customers"]
-			if { "" != $sub_menu_customers } {
-			    append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label "" -selected "unselected"]"
-			}
-			
-			# Build
-			if { "" != $submenus } {
-			    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
-			} else {
-			    append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
-			}
+		    if { [db_0or1row get_manu_information $menu_select_sql] } {
+			append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.ProviderDocuments "Provider Documents"]</a></li>"			
 		    }
 
-		    default {
-			# Get first level sub_menus
-			set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
-			if { [llength $level_one_menu_list] > 0 } {
-			    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
-			    foreach level_one_menu_list_item $level_one_menu_list {
-				set level_one_menu_id [lindex $level_one_menu_list_item 0]
-				set level_one_package_name [lindex $level_one_menu_list_item 1]
-				set level_one_label [lindex $level_one_menu_list_item 2]
-				set level_one_name [lindex $level_one_menu_list_item 3]
-				set level_one_url [lindex $level_one_menu_list_item 4]
-				set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
-				append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
-			    }    
-			    append navbar "</ul></li>"
-			} else {
-			    append navbar "<li class=\"$selected\"><a href='$url'><span>$name</span></a></li>"
-			}    
+		    # Get a list of Provider links {menu_name menu_link admin_name admin_link}
+		    set sub_menu_providers [im_menu_links "invoices_providers"]
+		    if { "" != $sub_menu_providers } {
+			append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label "" -selected "unselected"]"
+		    }
+		    
+		    set sub_menu_customers [im_menu_links "invoices_customers"]
+		    if { "" != $sub_menu_customers } {
+			append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label "" -selected "unselected"]"
+		    }
+		    
+		    # Build
+		    if { "" != $submenus } {
+			append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
+		    } else {
+			append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
 		    }
 		}
-	    }	
-	    incr ctr
-	}
-	
-	# Required to create sub-Links
-	set page_url [im_component_page_url]
-	
-	# My Settings 
-	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	    append navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+
+		default {
+		    # Get first level sub_menus
+		    set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
+		    if { [llength $level_one_menu_list] > 0 } {
+			append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
+			foreach level_one_menu_list_item $level_one_menu_list {
+			    set level_one_menu_id [lindex $level_one_menu_list_item 0]
+			    set level_one_package_name [lindex $level_one_menu_list_item 1]
+			    set level_one_label [lindex $level_one_menu_list_item 2]
+			    set level_one_name [lindex $level_one_menu_list_item 3]
+			    set level_one_url [lindex $level_one_menu_list_item 4]
+			    set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
+			    append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
+			}    
+			append navbar "</ul></li>"
+		    } else {
+			append navbar "<li class=\"$selected\"><a href='$url'><span>$name</span></a></li>"
+		    }    
+		}
+	    }
+	}	
+	incr ctr
+    }
+    
+    # Required to create sub-Links
+    set page_url [im_component_page_url]
+    
+    # My Settings 
+    if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+	append navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
 				<ul>
 					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	    "
-	    # Allow changing PW only when LDAP is not installed  
-	    if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"}
-	    
-	    append navbar "
+	# Allow changing PW only when LDAP is not installed  
+	if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"}
+	
+	append navbar "
 		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</a></li>
 		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</a></li>
 		</ul>
         	</li>
     	    "
-	    
-	    # if {$admin_p} {
-	    #    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
-	    #    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	    #    append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
-	    # }
-	}
 	
-	# Display a maintenance message in red when performing updates etc...
-	set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
-	
-	# New Navbar
-	return "
+	# if {$admin_p} {
+	#    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	#    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
+	#    append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
+	# }
+    }
+    
+    # Display a maintenance message in red when performing updates etc...
+    set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
+    
+    # New Navbar
+    return "
 	    <div id=\"main\">
 	       <div id=\"navbar_main_wrapper\">
 		  <ul id=\"navbar_main\" class=\"sm\">$navbar</ul>
@@ -1041,212 +1037,6 @@ ad_proc -public im_navbar {
                   <div id=\"main_maintenance_bar\">$maintenance_message</div>
 	       </div>
 	    </div>
-    "
-    }
-}
-
-
-ad_proc -public im_navbar_legacy_version_4 {
-    { -loginpage 0 }
-    { -show_context_help_p 0 }
-    { main_navbar_label "" }
-} {
-    Setup a top navbar with tabs for each area, highlighted depending
-    on the local URL and enabled depending on the user permissions.
-} {
-
-    #    ns_log Notice "im_navbar: main_navbar_label=$main_navbar_label"
-
-    set user_id [ad_conn user_id]
-    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-    set locale [lang::user::locale -user_id $user_id]
-    if {![info exists loginpage_p]} { set loginpage_p 0 }
-
-    set url_stub [ns_conn url]
-    set page_title [ad_partner_upvar page_title]
-    set section [ad_partner_upvar section]
-    set return_url [im_url_with_query]
-
-    # There are two ways to publish a context bar:
-    # 1. Via "context_bar". This var contains a fully formatted context bar
-    # 2. Via "context". "Context" contains a list of lists, with the last
-    #    element being a single name
-    #
-    set context_bar [ad_partner_upvar context_bar]
-
-    if {"" == $context_bar} {
-        set context [ad_partner_upvar context]
-        if {"" == $context} {
-            set context [list $page_title]
-        }
-
-        set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
-        set context [concat $context_root $context]
-        set context_bar [im_context_bar_html $context]
-    }
-
-    set sel "<td class=tabsel>"
-    set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
-
-    set navbar ""
-    set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
-
-    # make sure only one field gets selected so...
-    # .. check for the first complete match between menu and url.
-    set ctr 0
-    set selected 0
-    set found_selected 0
-    set old_sel "notsel"
-    set cur_sel "notsel"
-
-    # select the toplevel menu items
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
-
-    foreach menu_list $menu_list_list {
-
-        set menu_id [lindex $menu_list 0]
-        set package_name [lindex $menu_list 1]
-        set label [lindex $menu_list 2]
-        set name [lindex $menu_list 3]
-        set url [lindex $menu_list 4]
-        set visible_tcl [lindex $menu_list 5]
-
-        # Shift the old value of cur_sel to old_val
-        set old_sel $cur_sel
-        set cur_sel "notsel"
-
-        # Find out if we need to highligh the current menu item
-        set selected 0
-        set url_length [expr {[string length $url] - 1}]
-        set url_stub_chopped [string range $url_stub 0 $url_length]
-
-        # Check if we should select this one:
-        set select_this_one 0
-        if {$label eq $main_navbar_label} { set select_this_one 1 }
-
-        if {!$found_selected && $select_this_one} {
-            # Make sure we only highligh one menu item..
-            set found_selected 1
-            # Set for the gif
-            set cur_sel "sel"
-            # Set for the other IF-clause later in this loop
-            set selected 1
-        }
-
-        if {$ctr == 0} {
-            set gif "left-$cur_sel"
-        } else {
-            set gif "middle-$old_sel-$cur_sel"
-        }
-
-        set name_key "intranet-core.[lang::util::suggest_key $name]"
-        set name [lang::message::lookup "" $name_key $name]
-
-        if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-            append navbar [im_navbar_tab $url $name $selected]
-        }
-        incr ctr
-    }
-
-
-    if {$admin_p} {
-        set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
-        set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-        append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
-    }
-
-    set page_url [im_component_page_url]
-
-    # Maintenance Bar -
-    # Display a maintenance message in red when performing updates etc...
-    set maintenance_message [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]
-    set maintenance_message [string trim $maintenance_message]
-
-    set user_id [ad_conn user_id]
-    set user_name [im_name_from_user_id $user_id]
-
-    set context_help_html ""
-    set context_comment_html ""
-
-    if {$show_context_help_p} {
-        set context_help_html "
-            <div class=\"main_users_online\">
-              <a href=\"[im_navbar_help_link]\">&nbsp; [im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Context_Help "Context Help"]]</a>
-            </div>
-        "
-    }
-
-    set show_context_comment_p 1
-    if {$show_context_comment_p} {
-        set context_comment_html "
-            <div class=\"main_users_online\">
-              <a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\">&nbsp; [im_gif -translate_p 0 bell [lang::message::lookup "" intranet-core.Report_a_bug_on_this_page "Report a bug on this page"]]</a>
-            </div>
-        "
-    }
-
-    set main_users_and_search "
-          <div class=\"main_users_and_search\">
-            <div class=\"main_users_online\">
-    "
-    if { "register" != [string range [ns_conn url] 1 8] } {
-	append main_users_and_search [lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]
-    }
-
-    append main_users_and_search "
-            </div>
-            $context_help_html
-            $context_comment_html
-        <div class=\"main_users_online\" id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></div>
-            <div class=\"main_users_online\">
-    "
-
-    if { "register" != [string range [ns_conn url] 1 8] } {
-	append main_users_and_search  "&nbsp;[im_header_users_online_str]"
-    }
-
-    append main_users_and_search "
-            </div>
-            <div id=\"main_search_v4\">
-              [im_header_search_form]
-            </div>
-          </div>
-    "
-
-    # set main_users_and_search ""
-
-    if {$loginpage_p} {
-        set user_id 0
-        set main_users_and_search ""
-    }
-
-    return "
-            <div id=\"main\">
-               <div id=\"navbar_main_wrapper_v4\">
-                  <ul id=\"navbar_main_v4\" class=\"sm\">
-                     $navbar
-                  </ul>
-               </div>
-               <div id=\"main_header_v4\">
-                  <div id=\"main_title\">
-                     $page_title
-                  </div>
-                  <div id=\"main_context_bar\">
-                     $context_bar
-                  </div>
-                  <div id=\"main_maintenance_bar\">
-                     $maintenance_message
-                  </div>
-                  <div id=\"main_portrait_and_username\">
-                  <p id=\"main_username\">
-                    Welcome, [im_name_from_user_id $user_id]
-                  </p>
-                  </div>
-                  $main_users_and_search
-                  <div id=\"main_header_deco\"></div>
-               </div>
-            </div>
     "
 }
 
@@ -1388,85 +1178,25 @@ ad_proc -public im_header_logout_component {
 } {
     Switch - Redesigning Navbar/Header for version 5    
 } {
-    if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "LegacyFrameworkVersion4P" -default 1] } {
-	return [im_header_logout_component_legacy_version_4 -page_url $page_url -return_url $return_url -user_id $user_id]
-    } else {
-	# LDAP installed?
-	set ldap_sql "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'"
-	set ldap_installed_p [util_memoize [list db_string otp_installed $ldap_sql -default 0]]
-	
-	set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
-	set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
-	set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
-	
-	set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
-	set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
-	set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
-	set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
-	set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
-	
-	# Disable who's online for "anonymous visitor"
-	if {0 == $user_id} {
-	    set log_out_link ""
-	}
-	return $log_out_link
-    }
-}
-
-
-ad_proc -public im_header_logout_component_legacy_version_4 {
-    -page_url:required
-    -return_url:required
-    -user_id:required
-} {
-    Returns the formatted HTML for the "My Account - Change password - Reset Portlets - Add Portlet"
-    header panel.
-} {
     # LDAP installed?
     set ldap_sql "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'"
     set ldap_installed_p [util_memoize [list db_string otp_installed $ldap_sql -default 0]]
-
+    
     set change_pwd_url "/intranet/users/password-update?user_id=$user_id"
     set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
     set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
-
+    
     set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
     set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
     set reset_stuff_link "<a href=\"$reset_comp_url\">$reset_stuff_text</a> |\n"
     set add_stuff_link "<a href=\"$add_comp_url\">$add_stuff_text</a>\n"
-    set log_out_link "<a style='color: #666666;font-weight: bold;text-decoration:none;margin-right:20px' href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
-
-    set logout_pwchange_str "
-        <a href=\"/intranet/users/view?user_id=$user_id\">[lang::message::lookup "" intranet-core.My_Account "My Account"]</a> |
-    "
-    if {!$ldap_installed_p} {
-        append logout_pwchange_str "<a href=\"$change_pwd_url\">[_ intranet-core.Change_Password]</a> | "
-    }
-
+    set log_out_link "<a class=\"nobr\" href='/register/logout'>[_ intranet-core.Log_Out]</a>\n"
+    
     # Disable who's online for "anonymous visitor"
     if {0 == $user_id} {
-        set users_online_str ""
-        set logout_pwchange_str ""
-        set reset_stuff_link ""
-        set add_stuff_link ""
-        set log_out_link ""
+	set log_out_link ""
     }
-    set header_buttons "
-      <div id=\"header_buttons\">
-        <div id=\"header_logout_tab\">
-            <div id=\"header_logout\">
-                $log_out_link
-            </div>
-        </div>
-         <div id=\"header_settings_tab\">
-            <div id=\"header_settings\">
-               $logout_pwchange_str
-               $reset_stuff_link
-               $add_stuff_link
-            </div>
-         </div>
-      </div>
-    "
+    return $log_out_link
 }
 
 ad_proc -public im_header { 
