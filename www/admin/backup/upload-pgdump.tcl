@@ -36,7 +36,7 @@ set page_body "
                       <tr> 
                         <td></td>
                         <td> 
-                          <input type=submit value=\"[_ intranet-trans-invoices.Submit_and_Upload]\">
+                          <input type=submit value=\"[lang::message::lookup "" intranet-trans-invoices.Submit_and_Upload "Submit and Upload"]\">
                         </td>
                       </tr>
                     </table>
