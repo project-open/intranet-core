@@ -43,6 +43,7 @@ wget -nv -r --exclude-directories=\
 /intranet/admin/categories/toggle,\
 /intranet/admin/menus/toggle,\
 /intranet/admin/views/del-column,\
+/intranet/components/component-action,\
 /intranet-sysconfig/,\
 /intranet-security-update-client/get-exchange-rate,\
 /permissions/,\
