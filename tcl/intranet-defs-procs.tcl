@@ -994,11 +994,10 @@ ad_proc philg_dateentrywidget_default_to_today {column} {
 #     and whatever the user typed will be set in $expiration_date
 
 ad_proc philg_dateentrywidget {column {default_date "1940-11-03"}} {
-    ns_share NS
-
     set output "<SELECT name=$column.month>\n"
+    set months [long_month_list]
     for {set i 0} {$i < 12} {incr i} {
-	append output "<OPTION> [lindex $NS(months) $i]\n"
+	append output "<OPTION> [lindex $months $i]\n"
     }
 
     append output \
