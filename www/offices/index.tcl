@@ -336,7 +336,11 @@ db_foreach projects_info_query $selection {
     foreach column_var $column_vars {
 	append table_body_html "\t<td valign=top>"
 	set cmd "append table_body_html $column_var"
-	eval "$cmd"
+	if {[catch {
+	    eval "$cmd"
+	} err_msg]} {
+	    append table_body_html "Error<br><pre>$err_msg</pre>"
+	}
 	append table_body_html "</td>\n"
     }
     append table_body_html "</tr>\n"
