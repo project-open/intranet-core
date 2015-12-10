@@ -78,7 +78,7 @@ if {0 == $cnt} { ns_write "<li>No inconsistencies found</li>\n" }
 
 
 # ------------------------------------------------------
-# 
+# Employee/Customer/Freelance check
 # ------------------------------------------------------
 
 ns_write "</ul><br>\n"
@@ -124,6 +124,60 @@ if {0 == $cnt} { ns_write "<li>No inconsistencies found</li>\n" }
 
 
 ns_write "</ul>"
+
+
+
+
+
+
+
+
+
+# ------------------------------------------------------
+# Cost Items with missing customer or provider
+# ------------------------------------------------------
+
+ns_write "</ul><br>\n"
+ns_write "<h3>Check that every cost item has a valid customer and provider company</h3>\n"
+ns_write "<ul>\n"
+
+set check_sql "
+	select	c.*,
+		acs_object__name(c.customer_id) as customer_name,
+		acs_object__name(c.provider_id) as provider_name,
+		im_category_from_id(c.cost_type_id) as cost_type
+	from	im_costs c
+	where	(customer_id not in (select company_id from im_companies) 
+		OR provider_id not in (select company_id from im_companies) 
+		) and
+		c.cost_type_id not in ([im_cost_type_expense_item], [im_cost_type_timesheet])
+	order by
+		cost_type,
+		customer_name,
+		provider_name
+"
+set cnt 0
+db_foreach check $check_sql {
+    ns_write "<li>
+	<a href=[export_vars -base "/intranet-cost/view" {cost_id}]>$cost_name</a>: Type=$cost_type (#$cost_type_id), customer=$customer_name (#$customer_id), provider=$provider_name (#$provider_id)<br>
+	Found a cost item with either customer or provider missing.<br>
+	Somebody probably deleted these companies.
+	</li>
+    "
+    incr cnt
+}
+if {0 == $cnt} { ns_write "<li>No inconsistencies found</li>\n" }
+
+
+ns_write "</ul>"
+
+
+
+
+
+
+
+
 
 # ------------------------------------------------------
 # Render the footer of the page
