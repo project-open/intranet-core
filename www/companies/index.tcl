@@ -481,7 +481,7 @@ if {$filter_advanced_p} {
     set left_navbar_html "
       <div class='filter-block'>
          <div class='filter-title'>
-	    #intranet-core.Filter_Companies#
+	    [_ intranet-core.Filter_Companies]
          </div>
             $filter_html
       </div>
@@ -493,7 +493,7 @@ if {$filter_advanced_p} {
     set left_navbar_html "
       <div class='filter-block'>
          <div class='filter-title'>
-	    #intranet-core.Filter_Companies#
+	    [_ intranet-core.Filter_Companies]
          </div>
 	            <form method='get' action='/intranet/companies/index' name='filter_form'>
 		       [export_vars -form {start_idx order_by how_many letter view_name}]
@@ -502,18 +502,18 @@ if {$filter_advanced_p} {
     if { $view_companies_all_p } {
 	append left_navbar_html "
                           <tr>
-                             <td>\#intranet-core.View_1\#  &nbsp;</td>
+                             <td>[_ intranet-core.View_1] &nbsp;</td>
                              <td>[im_select view_type $view_types ""]</td>
                           </tr>
                           <tr>
-                             <td>\#intranet-core.Company_Status_1\#  &nbsp;</td>
+                             <td>[_ intranet-core.Company_Status_1]  &nbsp;</td>
                              <td>[im_category_select -include_empty_p 1 "Intranet Company Status" status_id $status_id]</td>
                           </tr>
 	"
     }
     append left_navbar_html "
 		       <tr>
-		          <td>#intranet-core.Company_Type_1#  &nbsp;</td>
+		          <td>[_ intranet-core.Company_Type_1]  &nbsp;</td>
 		          <td>
 		             [im_category_select -include_empty_p 1 "Intranet Company Type" type_id $type_id]
 		             <input type=submit value='[_ intranet-core.Action_Go]' name=submit>
@@ -529,7 +529,7 @@ if {$filter_advanced_p} {
 append left_navbar_html "
       <div class='filter-block'>
          <div class='filter-title'>
-            #intranet-core.Admin_Companies#
+            [_ intranet-core.Admin_Companies]
          </div>
          $admin_html
       </div>
