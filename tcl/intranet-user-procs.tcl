@@ -1437,6 +1437,7 @@ ad_proc -public im_user_nuke {
 
 	# Timesheet
 	db_dml timesheet "delete from im_hours where user_id = :user_id"
+	db_dml timesheet "update im_user_absences set vacation_replacement_id = null where vacation_replacement_id = :user_id"
 	db_dml timesheet "delete from im_user_absences where owner_id = :user_id"
 	
 	# Remove user from business objects that we don't want to delete...
