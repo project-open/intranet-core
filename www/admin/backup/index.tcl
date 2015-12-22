@@ -19,7 +19,6 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { return_url "/intranet/admin/backup/index" }
-
     item_remove:optional
     filename:multiple,optional
 }
@@ -30,6 +29,8 @@ ad_page_contract {
 
 set user_id [auth::require_login]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+set backup_prefix "pg_dump"
+
 
 if {!$user_is_admin_p} {
     ad_return_complaint 1 "You have insufficient privileges to use this page"
@@ -48,6 +49,28 @@ set group_url "/admin/groups/one"
 set bgcolor(0) " class=rowodd"
 set bgcolor(1) " class=roweven"
 
+
+
+# ------------------------------------------------------
+# Get the list of comments about backups into a hash array
+# ------------------------------------------------------
+
+set comment_sql "
+	select	*
+	from	acs_logs
+	where	log_key like '%$backup_prefix%'
+	order by log_date
+"
+db_foreach comments $comment_sql {
+    set comments ""
+    if {[info exists comment_hash($log_key)]} { set comments $comment_hash($log_key) }
+    append comments $message
+    append comments "\n"
+    set comment_hash($log_key) $comments
+}
+
+# ad_return_complaint 1 [array get comment_hash]
+
 # ------------------------------------------------------
 # Get the list of backup sets for restore
 # ------------------------------------------------------
@@ -58,9 +81,9 @@ set backup_path_exists_p [file exists $backup_path]
 set not_backup_path_exists_p [expr {!$backup_path_exists_p}]
 set file_body ""
 
-multirow create backup_files filename file_body extension date size restore_p
+multirow create backup_files filename file_body extension date size restore_p comments
 
-foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*.{sql,pgdmp,gz,bz2}"]]  {
+foreach file [lsort [glob -nocomplain -type f -directory $backup_path "${backup_prefix}.*.{sql,pgdmp,gz,bz2}"]]  {
     set trim [string range $file [string length $backup_path] end]
 
     if {[regexp {(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([0-9a-z\.]+)$} $trim match file_year file_month file_day file_hour file_second file_extension]} {
@@ -68,6 +91,10 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 	# Get rid of the leading "/" of $match
 	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
 	if { ""==$file_body } { set file_body $file }
+
+	set comments ""
+	if {[info exists comment_hash($file_body)]} { set comments $comment_hash($file_body) }
+	regsub -all {\n} [ns_quotehtml $comments] "<br>" comments
 
 	# File needs to end in "*.sql" in order to be restorable
 	set restore_p [regexp {\.sql$} $file_body]
@@ -77,14 +104,15 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "pg_dump.*
 	    $file_body \
 	    $file_extension \
 	    "$file_year-$file_month-$file_day $file_hour:$file_second" \
-	    "[expr round(10 * [file size $file] / 1024.0 / 1024.0) / 10.0]M"\
-	    $restore_p
+	    "[expr round(10 * [file size $file] / 1024.0 / 1024.0) / 10.0]M" \
+	    $restore_p \
+	    $comments
     }
 }
 
 set actions [list \
 		 [lang::message::lookup "" intranet-core.New_Backup "New Backup"] \
-		 [export_vars -base pg_dump] \
+		 [export_vars -base "/intranet/admin/backup/pg_dump"] \
 		 [lang::message::lookup "" intranet-core.Create_new_backup_dump "Create a new backup dump"] \
 		 [lang::message::lookup "" intranet-core.Upload_backup_dump "Upload Backup"] \
 		 [export_vars -base upload-pgdump] \
@@ -101,6 +129,12 @@ set bulk_actions [list \
 		      [lang::message::lookup "" intranet-core.Backup_Un_Bzip "Un-Bzip"] \
 		      "unbzip-pgdump" \
 		      [lang::message::lookup "" intranet-core.Backup_Uncompress_backup_dump "Uncompress backup dump"] \
+		      [lang::message::lookup "" intranet-core.Backup_Comment "Comment"] \
+		      "comment-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Comment on backup dumps"] \
+		      [lang::message::lookup "" intranet-core.Backup_Delete_Comment "Delete Comment"] \
+		      "comment-delete" \
+		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Delete comments on backup dumps"] \
 ]
 
 
@@ -130,6 +164,12 @@ template::list::create \
 		<if @backup_files.restore_p@>
 		<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
 		</if>
+	    }
+	}
+	comments {
+	    label "[lang::message::lookup {} intranet-core.Backup_Comments Comments]"
+	    display_template {
+		@backup_files.comments;noquote@
 	    }
 	}
     } \

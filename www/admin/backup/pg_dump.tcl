@@ -27,6 +27,7 @@ ad_page_contract {
 if {0 == $user_id} {
     set user_id [auth::require_login]
 }
+set backup_prefix "pg_dump"
 
 
 # Check if the auto-login token was correct
@@ -57,7 +58,7 @@ switch $format {
 set servername [ns_info server]
 set hostname [ns_info hostname]
 
-set filename "pg_dump.$hostname.$servername.$today.$filename_ending"
+set filename "$backup_prefix.$hostname.$servername.$today.$filename_ending"
 
 
 # ------------------------------------------------------------
