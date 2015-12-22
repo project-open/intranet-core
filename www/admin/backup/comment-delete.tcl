@@ -19,6 +19,10 @@ if {!$user_is_admin_p} {
 
 foreach f $filename {
     set f_body [file tail $f]
+
+    # Eliminate a tailing ".bz2" extension
+    regsub {^(.*)\.bz2$} $f_body {\1} f_body
+
     db_dml del_comment "delete from acs_logs where log_key = :f_body"
 }
 

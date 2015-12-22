@@ -9,7 +9,7 @@
 <table>
 <tr>
 <td>Comment</td>
-<td><input type=text name=comment width=40></td>
+<td><textarea name=comment rows=5 cols=80></textarea></td>
 </tr>
 <tr>
 <td></td>

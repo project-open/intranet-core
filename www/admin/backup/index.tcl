@@ -90,10 +90,12 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "${backup_
 
 	# Get rid of the leading "/" of $match
 	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
-	if { ""==$file_body } { set file_body $file }
+	if {"" eq $file_body} { set file_body $file }
 
 	set comments ""
-	if {[info exists comment_hash($file_body)]} { set comments $comment_hash($file_body) }
+	# Eliminate a tailing ".bz2" extension
+	regsub {^(.*)\.bz2$} $file_body {\1} file_body_nobz2
+	if {[info exists comment_hash($file_body_nobz2)]} { set comments $comment_hash($file_body_nobz2) }
 	regsub -all {\n} [ns_quotehtml $comments] "<br>" comments
 
 	# File needs to end in "*.sql" in order to be restorable
@@ -129,50 +131,56 @@ set bulk_actions [list \
 		      [lang::message::lookup "" intranet-core.Backup_Un_Bzip "Un-Bzip"] \
 		      "unbzip-pgdump" \
 		      [lang::message::lookup "" intranet-core.Backup_Uncompress_backup_dump "Uncompress backup dump"] \
-		      [lang::message::lookup "" intranet-core.Backup_Comment "Comment"] \
+		      [lang::message::lookup "" intranet-core.Backup_Add_Comment "Add Comment"] \
 		      "comment-pgdump" \
-		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Comment on backup dumps"] \
+		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Add comment to backup dump"] \
 		      [lang::message::lookup "" intranet-core.Backup_Delete_Comment "Delete Comment"] \
 		      "comment-delete" \
-		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Delete comments on backup dumps"] \
+		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Delete comments from backup dumps"] \
 ]
+
+
+set list_elements {
+    filename {
+	label "[lang::message::lookup {} intranet-core.Backup_File_Name File_Name]"
+	display_template {
+	    <a href="/intranet/admin/backup/download/@backup_files.file_body@">@backup_files.filename@</a>
+	}
+	link_url_eval "/intranet/admin/backup/download/@backup_files.file_body@"
+    }
+    extension {
+	label "[lang::message::lookup {} intranet-core.Backup_Type Type]"
+    }
+    date {
+	label "[lang::message::lookup {} intranet-core.Backup_Date Date]"
+    }
+    size {
+	label "[lang::message::lookup {} intranet-core.Backup_Size Size]"
+	html { align right }
+    }
+    restore {
+	display_template {
+	    <if @backup_files.restore_p@>
+	    <a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
+	    </if>
+	}
+    }
+}
+
+if {0 ne [llength [array get comment_hash]]} {
+    lappend list_elements comments {
+	label "[lang::message::lookup {} intranet-core.Backup_Comments Comments]"
+	display_template {
+	    @backup_files.comments;noquote@
+	}
+    }
+}
 
 
 template::list::create \
     -name backup_files \
     -key filename \
-    -elements {
-	filename {
-	    label "[lang::message::lookup {} intranet-core.Backup_File_Name File_Name]"
-	    display_template {
-		<a href="/intranet/admin/backup/download/@backup_files.file_body@">@backup_files.filename@</a>
-	    }
-	    link_url_eval "/intranet/admin/backup/download/@backup_files.file_body@"
-	}
-	extension {
-	    label "[lang::message::lookup {} intranet-core.Backup_Type Type]"
-	}
-	date {
-	    label "[lang::message::lookup {} intranet-core.Backup_Date Date]"
-	}
-	size {
-	    label "[lang::message::lookup {} intranet-core.Backup_Size Size]"
-	    html { align right }
-	}
-	restore {
-	    display_template {
-		<if @backup_files.restore_p@>
-		<a class=button href="restore-pgdmp?filename=@backup_files.filename@&return_url=$return_url">[lang::message::lookup "" intranet-core.Backup_restore "Restore"]</a>
-		</if>
-	    }
-	}
-	comments {
-	    label "[lang::message::lookup {} intranet-core.Backup_Comments Comments]"
-	    display_template {
-		@backup_files.comments;noquote@
-	    }
-	}
-    } \
+    -elements $list_elements \
     -bulk_actions $bulk_actions \
     -bulk_action_method post \
     -bulk_action_export_vars { return_url } \

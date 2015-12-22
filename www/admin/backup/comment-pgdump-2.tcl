@@ -18,12 +18,14 @@ if {!$user_is_admin_p} {
     return
 }
 
+# Skip an empty comment
+if {"" eq [string trim comment]} { ad_returnredirect $return_url }
+
 foreach f $filenames {
     db_dml insert_comment "
 	insert into acs_logs (log_id, log_level, log_key, message)	
 	values (nextval('t_acs_log_id_seq'), 'notice', :f, :comment)
     "
 }
-
 
 ad_returnredirect $return_url
