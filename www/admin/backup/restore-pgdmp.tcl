@@ -35,7 +35,7 @@ ns_log Debug "restoring pgdmp file: $filename"
 
 # Delete important system tables in order to avoid restore issues
 if {$drop_cascade_p} {
-    catch { db_dml drop_im_projects "drop table im_project CASCADE" }
+    catch { db_dml drop_im_projects "drop table im_projects CASCADE" }
     catch { db_dml drop_im_categories "drop table im_categories CASCADE" }
     catch { db_dml drop_parties "drop table parties CASCADE" }
     catch { db_dml drop_acs_objects "drop table acs_objects CASCADE" }
