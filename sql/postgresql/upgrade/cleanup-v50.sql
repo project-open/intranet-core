@@ -311,7 +311,13 @@ $$ LANGUAGE plpgsql stable;
 create or replace view dual as select now() as sysdate;
 
 -- used to support anonymous plsql blocks in the db_plsql function call in tcl.
-create sequence t_anon_func_seq;
+DO $$
+BEGIN
+	create sequence t_anon_func_seq;
+	EXCEPTION WHEN duplicate_table THEN
+END $$ LANGUAGE plpgsql;
+
+
 create or replace view anon_func_seq as 
 select nextval('t_anon_func_seq') as nextval;
 
@@ -1112,16 +1118,14 @@ $$ language 'sql' immutable strict;
 -- to reliably kill PG 7.1.2, at least if "exists" is involved.   PG 7.2 doesn''t die on my test
 -- case, so it appears to have been fixed.
 create or replace function tree_ancestor_keys(varbit) returns setof varbit as $$
-
-  select tree_ancestor_keys($1, 1)
-
+       select tree_ancestor_keys($1, 1)
 $$ language 'sql' immutable strict;
 
 ----------------------------------------------------------------------------
 
 -- PG substitute for Oracle user_tab_columns view
 
-create view user_tab_columns as
+create or replace view user_tab_columns as
   select upper(c.relname) as table_name,
 	 upper(a.attname) as column_name,
 	 upper(t.typname) as data_type
@@ -1132,7 +1136,7 @@ create view user_tab_columns as
 
 -- PG substitute for Oracle user_col_comments view
 
-create view user_col_comments as
+create or replace view user_col_comments as
   select upper(c.relname) as table_name, 
     upper(a.attname) as column_name, 
     col_description(a.attrelid, a.attnum) as comments
@@ -1141,7 +1145,7 @@ create view user_col_comments as
 
 -- PG substitute for Oracle user_col_comments view
 
-create view user_tab_comments as
+create or replace view user_tab_comments as
   select upper(c.relname) as table_name,
     case
       when c.relkind = 'r' then 'TABLE'
@@ -1153,17 +1157,21 @@ create view user_tab_comments as
   where d.objsubid = 0;
 
 -- Table for storing PL/PGSQL function arguments
+DO $$
+BEGIN
+	create table acs_function_args (
+	       function              varchar(100) not null,
+	       arg_seq		     integer not null,
+	       arg_name		     varchar(100),
+	       arg_default	     varchar(100),
+	       constraint acs_function_args_pk
+	       primary key (function, arg_seq),
+	       constraint acs_function_args_un
+	       unique (function, arg_name)
+	);
+	EXCEPTION WHEN duplicate_table THEN -- ignore
+END $$ LANGUAGE plpgsql;
 
-create table acs_function_args (
-       function              varchar(100) not null,
-       arg_seq		     integer not null,
-       arg_name		     varchar(100),
-       arg_default	     varchar(100),
-       constraint acs_function_args_pk
-       primary key (function, arg_seq),
-       constraint acs_function_args_un
-       unique (function, arg_name)
-);
 
 
 -- Add entries to acs_function_args for one function
