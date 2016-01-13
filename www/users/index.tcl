@@ -505,7 +505,7 @@ if {$filter_advanced_p && [im_table_exists im_dynfield_attributes]} {
     # Add the additional condition to the "where_clause"
     if {"" != $dynfield_extra_where} { 
 	    append extra_where "
-                and person_id in $dynfield_extra_where
+                and p.person_id in $dynfield_extra_where
             "
     }
 }
