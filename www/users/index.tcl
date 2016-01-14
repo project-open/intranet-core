@@ -300,12 +300,12 @@ db_foreach column_list_sql $column_sql {
     set visible_p 0
     if {"" == $visible_for} { set visible_p 1 }
     if {"" != $visible_for} {
-		if {[catch {
-			set visible_p [eval $visible_for]
-		} err_msg]} {
-			append debug_html "<li>Error evaluating column visible_for field:<br><pre>$err_msg</pre></li>\n"
-			util_user_message -replace -message "Configuration Error DynViews - Error evaluating 'visible_for': $err_msg. Please notify your System Administrator"
-		}
+	if {[catch {
+	    set visible_p [eval $visible_for]
+	} err_msg]} {
+	    append debug_html "<li>Error evaluating column visible_for field:<br><pre>$err_msg</pre></li>\n"
+	    util_user_message -replace -message "Configuration Error DynViews - Error evaluating 'visible_for': $err_msg. Please notify your System Administrator"
+	}
     }
 
     if {$visible_p} {
@@ -617,8 +617,9 @@ db_foreach users $query -bind $form_vars {
         if {[catch {
             eval "$cmd"
         } errmsg]} {
-            ns_log Error "/intranet/users/index: No value for '$column_var' found"
-			util_user_message -replace -message "Configuration Error in DynViews - No value for '$column_var' found, please notify your System Administrator"
+	    global errorInfo
+	    ns_log Error "/intranet/users/index: Error evaluating column_var ($column_var): $errorInfo"
+	    util_user_message -replace -message "Configuration Error in DynViews - Error evaluating 'column_var', please notify your System Administrator"
         }
 	append table_body_html "</td>\n"
     }
