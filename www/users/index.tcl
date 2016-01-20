@@ -371,7 +371,7 @@ ad_form \
     -mode $form_mode \
     -export {start_idx order_by how_many letter view_name filter_advanced_p} \
     -form {
-        {user_group_name:text(select),optional {label "\#intranet-core.User_Types\#"} {options $user_types} {value $user_group_name}}
+        {user_group_name:text(select),optional {label #intranet-core.User_Types#} {options $user_types} {value $user_group_name}}
     }
 
 if {$admin_p} {
@@ -683,7 +683,7 @@ set filter_html $__adp_output
 set left_navbar_html "
     <div class=\"filter-block\">
         <div class='filter-title'>
-            \#intranet-core.Filter_Users\#
+            [_ intranet-core.Filter_Users]
         </div>
         $filter_html
         </div>
@@ -693,7 +693,7 @@ if {"" != $admin_html_links } {
     append left_navbar_html "
               <div class='filter-block'>
                  <div class='filter-title'>
-                    \#intranet-core.Admin_Users\#
+                    [_ intranet-core.Admin_Users]
                  </div>
                  <ul>
                         $admin_html_links

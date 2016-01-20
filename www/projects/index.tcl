@@ -281,7 +281,7 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 
 if { [im_permission $current_user_id "view_projects_history"] || [im_permission $current_user_id "view_projects_all"] } {
     ad_form -extend -name $form_id -form {
-        {project_status_id:text(im_category_tree),optional {label \#intranet-core.Project_Status\#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1 include_empty_name $all_l10n}} }
+        {project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1 include_empty_name $all_l10n}} }
     } 
 }
 
@@ -324,14 +324,14 @@ foreach g $managable_profiles {
 }
 
 ad_form -extend -name $form_id -form {
-    {project_type_id:text(im_category_tree),optional {label \#intranet-core.Project_Type\#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1 include_empty_name $all_l10n} } }
+    {project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1 include_empty_name $all_l10n} } }
 }
 
 # The "company_id" field can become very slow if there are
 # many customers in the system.
 if {!$filter_advanced_p} {
     ad_form -extend -name $form_id -form {
-	{company_id:text(select),optional {label \#intranet-core.Customer\#} {options $company_options}}
+	{company_id:text(select),optional {label #intranet-core.Customer#} {options $company_options}}
     }
 }
 
@@ -345,7 +345,7 @@ if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_gr
 	set user_options [linsert $user_options 0 [list $all_l10n ""]]
 
 	ad_form -extend -name $form_id -form {
-	    {user_id_from_search:text(select),optional {label \#intranet-core.With_Member\#} {options $user_options}}
+	    {user_id_from_search:text(select),optional {label #intranet-core.With_Member#} {options $user_options}}
 	}
     }
 }
@@ -967,7 +967,7 @@ set filter_html $__adp_output
 set left_navbar_html "
 	<div class='filter-block'>
         	<div class='filter-title'>
-	           #intranet-core.Filter_Projects# $filter_admin_html
+	           [_ intranet-core.Filter_Projects] $filter_admin_html
         	</div>
             	$filter_html
       	</div>
@@ -977,7 +977,7 @@ set left_navbar_html "
 append left_navbar_html "
       	<div class='filter-block'>
         <div class='filter-title'>
-            #intranet-core.Admin_Projects#
+            [_ intranet-core.Admin_Projects]
         </div>
 	$admin_html
       	</div>

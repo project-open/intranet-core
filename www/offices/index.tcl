@@ -402,7 +402,7 @@ set office_navbar_html [im_office_navbar $letter "/intranet/offices/view" $next_
 set left_navbar_html "
       <div class='filter-block'>
          <div class='filter-title'>
-            #intranet-core.Filter_Offices#
+            [_ intranet-core.Filter_Offices]
          </div>
          $filter_html
       </div>
@@ -412,7 +412,7 @@ if {"" != $admin_html} {
     append left_navbar_html "
       <div class='filter-block'>
          <div class='filter-title'>
-            #intranet-core.Admin_Offices#
+            [_ intranet-core.Admin_Offices]
          </div>
          <ul>
             $admin_html

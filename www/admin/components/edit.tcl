@@ -67,12 +67,6 @@ db_0or1row category_properties "
 		c.plugin_id = :plugin_id
 "
 
-# if {[catch { } errmsg]} {
-#     ad_return_complaint 1 "<li>Internal Error<br>
-#         Component \#$plugin_id does not exist (anymore)"
-#     ad_script_abort
-# }
-
 set left_selected ""
 set right_selected ""
 set bottom_selected ""
