@@ -88,10 +88,7 @@ foreach file [lsort [glob -nocomplain -type f -directory $backup_path "${backup_
 
     if {[regexp {(\d\d\d\d)(\d\d)(\d\d)\.(\d\d)(\d\d)\d\d\.([0-9a-z\.]+)$} $trim match file_year file_month file_day file_hour file_second file_extension]} {
 
-	# Get rid of the leading "/" of $match
-	if {[regexp {^\/(.*)} $trim match body]} { set file_body $body }
-	if {"" eq $file_body} { set file_body $file }
-
+	set file_body [lindex [split $file "/"] end]
 	set comments ""
 	# Eliminate a tailing ".bz2" extension
 	regsub {^(.*)\.bz2$} $file_body {\1} file_body_nobz2
