@@ -4,9 +4,7 @@
 
 
 <if @admin_p@>
-  <div style="float: right;">
-    <a href="admin" class="button">#intranet-core.Administration#</a>
-  </div>
+    <a href="/acs-lang/admin" class="button">#intranet-core.Administration#</a>
 </if>
 
 <formtemplate id="locale"></formtemplate>
