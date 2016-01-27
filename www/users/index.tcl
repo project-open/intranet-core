@@ -22,7 +22,6 @@ ad_page_contract {
 
     @param order_by  Specifies order for the table
     @param view_type Specifies which users to see
-    @param view_name Name of view used to defined the columns
     @param user_group_name Name of the group of users to be shown
 
     @author unknown@arsdigita.com
@@ -34,7 +33,6 @@ ad_page_contract {
     { start_idx:integer 0 }
     { how_many:integer "" }
     { letter:trim "all" }
-    { view_name "" }
     { filter_advanced_p:integer 0 }
 }
 
@@ -211,25 +209,21 @@ if {$user_group_id > 0} {
 
 }
 
-# If no view_name was explicitely specified
-# Then check if there is a specific view for 
-# the user_group.
-if {"" == $view_name} {
-    # Check if there is a specific view for this user group:
-    set specific_view_name "[string tolower $user_group_name]_list"
-    ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
-    set expcific_view_exists [util_memoize [list db_string specific_view_exists "select count(*) from im_views where view_name = '$specific_view_name'"]]
-    if {$expcific_view_exists} {
-	set view_name $specific_view_name
-    }
-}
+# #####
+# Setting view - if there is no specific view for the user_group, default to 'user_list' 
 
-# Check if there was no specific view_name:
-# In this case just show the default user_view
-if {"" == $view_name} {
+set specific_view_name "[string tolower $user_group_name]_list"
+# ns_log Notice "/users/index: Checking if view='$specific_view_name' exists:"
+
+set expcific_view_exists [util_memoize [list db_string specific_view_exists "select count(*) from im_views where view_name = '$specific_view_name'"]]
+if {$expcific_view_exists} {
+    set view_name $specific_view_name
+} else {
     set view_name "user_list"
 }
 
+# #####
+# How many records do we show? 
 
 if { $how_many eq "" || $how_many < 1 } {
     set how_many [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NumberResultsPerPage" -default 50]
@@ -237,7 +231,7 @@ if { $how_many eq "" || $how_many < 1 } {
 set end_idx [expr {$start_idx + $how_many - 1}]
 
 
-# ----------------------------------------------------------
+# #####
 # Do we have to show administration links?
 
 set admin_html_links ""
@@ -246,7 +240,7 @@ if {[im_permission $user_id "add_users"]} {
     append admin_html_links "
 	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
 	<li><a href=\"[export_vars -base "/intranet/users/index" -override {{filter_advanced_p 1}} { filter_advanced_p user_group_name }]\">[_ intranet-core.Advanced_Filtering]</a></li>
-	<li><a href=\"/intranet-csv-import/[export_vars -base index {return_url object_type}]\">[_ ihellntranet-core.Import_User_CSV]</a></li>
+	<li><a href=\"/intranet-csv-import/[export_vars -base index {return_url object_type}]\">[_ intranet-core.Import_User_CSV]</a></li>
 	<!--<li><a href=/intranet/users/upload-users>[lang::message::lookup "" intranet-core.BulkUpdateUsers "CSV Bulk Update Users"]</a></li>-->
     "
 }
@@ -369,7 +363,7 @@ ad_form \
     -name $form_id \
     -action $action_url \
     -mode $form_mode \
-    -export {start_idx order_by how_many letter view_name filter_advanced_p} \
+    -export {start_idx order_by how_many letter filter_advanced_p} \
     -form {
         {user_group_name:text(select),optional {label #intranet-core.User_Types#} {options $user_types} {value $user_group_name}}
     }
