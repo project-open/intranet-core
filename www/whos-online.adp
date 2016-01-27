@@ -6,7 +6,7 @@
 
 <p><listtemplate name="online_users"></listtemplate></p>
 
-<if @not_shown@>
+<if @not_shown@ gt 0>
 <p>
 @not_shown@ <%= [lang::message::lookup "" intranet-core.User_s_not_shown "user(s) not shown"] %>.
 </p>

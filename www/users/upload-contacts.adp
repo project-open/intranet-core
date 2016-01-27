@@ -8,7 +8,7 @@
 <property name="main_navbar_label">user</property>
 
 
-<if @reg_req_email_verify@ >
+<if @reg_req_email_verify@ gt 0>
 <h1>WARNING!!</h1>
 <p>
 Your system is configured in such a way that new users will 
