@@ -2292,3 +2292,76 @@ ad_proc -public im_browser_warning_component { } {
 	</font>
     "
 }
+
+
+ad_proc -public im_color_code {
+    color
+    schema
+} {
+    Returns color code based on pre-defined schemas
+    WIP - add & adjust colors on a need base. 
+} {
+    switch $schema {
+	default {
+	    switch $color {
+		"red_light" {
+		    return "f7cac9"
+		}
+		"red" {
+		    return "f7786b"
+		}
+                "red_dark" {
+                    return "dd4132"
+                }
+                "blue_light" {
+                    return "98ddde"
+                }
+		"blue" {
+		    return "91a8d0"
+		}
+		"blue_dark" {
+		    return "034f84"
+		}
+                "yellow_light" {
+                    return "fae03c"
+                }
+                "yellow" {
+                    return "fae03c"
+                }
+                "yellow_dark" {
+                    return "fae03c"
+                }
+                "grey_light" {
+                    return "9896a4"
+                }
+                "grey" {
+                    return "9896a4"
+                }
+                "grey_dark" {
+                    return "9896a4"
+                }
+                "brown_light" {
+                    return "b18f6a"
+                }
+                "brown" {
+                    return "b18f6a"
+                }
+                "brown_dark" {
+                    return "b18f6a"
+                }
+                "green_light" {
+                    return "79c753"
+                }
+                "green" {
+                    return "79c753"
+                }
+                "green_dark" {
+                    return "79c753"
+                }
+		default {
+                    return "ffffff"
+		}
+	    }
+	}
+    }
+}
