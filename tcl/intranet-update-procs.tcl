@@ -107,10 +107,7 @@ ad_proc -public im_check_for_update_scripts {
     set redirect_p 0
     set missing_modules [list]
     foreach module $core_modules {
-
-#        ns_log Notice "upgrade2: checking module $module"
         set spec_file "[acs_root_dir]/packages/$module/$module.info"
-
         set needs_update_p 0
         catch {
             array set version_hash [apm_read_package_info_file $spec_file]
@@ -120,7 +117,7 @@ ad_proc -public im_check_for_update_scripts {
 
         if {1 == $needs_update_p} {
             set redirect_p 1
-            append url "enable=$module&"
+            append url "package_key=$module&"
             lappend missing_modules $module
         }
     }
@@ -168,7 +165,7 @@ ad_proc -public im_check_for_update_scripts {
 
         if {1 == $needs_update_p} {
             set redirect_p 1
-            append url "enable=$module&"
+            append url "package_key=$module&"
             lappend missing_modules $module
 	    incr ctr
         }
@@ -285,8 +282,6 @@ ad_proc -public im_check_for_update_scripts {
         where   enabled_p = 't'
     "
     db_foreach packages $package_sql {
-
-#        ns_log Notice "upgrade5: checking package $package_key"
         set core_upgrade_dir "$core_dir/$package_key/sql/postgresql/upgrade"
         foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
 
