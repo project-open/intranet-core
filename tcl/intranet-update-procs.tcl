@@ -74,8 +74,6 @@ ad_proc -public im_check_for_update_scripts {
     set redirect_p 0
     set missing_modules [list]
     foreach module $base_modules {
-
-#        ns_log Notice "upgrade1: checking module $module"
         set installed_p [db_string notif "select count(*) from apm_package_versions where package_key = :module"]
         if {!$installed_p} {
             set redirect_p 1
@@ -87,6 +85,51 @@ ad_proc -public im_check_for_update_scripts {
         set upgrade_message "
                 <b>Important packages missing:</b><br>
                 We found that your system lacks important packages.<br>
+                Please click on the link below to install these packages now.<br>
+                <br>&nbsp;<br>
+                <a href=$url>Install packages</a> ([join $missing_modules ", "])
+                <br>&nbsp;<br>
+                <font color=red><b>Please don't forget to restart the server after install.</b></font>
+        "
+        return $upgrade_message
+    }
+
+
+    # ---------------------------------------------------------------------------
+    # 2 - Update acs-* core modules one-by-one (after Upgrade to OpenACS 5.9...)
+
+    set openacs_core_modules [list acs-kernel acs-content-repository acs-subsite]
+# acs-admin acs-api-browser acs-authentication acs-automated-testing acs-bootstrap-installer acs-core-docs
+# acs-datetime acs-developer-support acs-events acs-lang acs-lang-server acs-mail acs-mail-lite
+# acs-messaging acs-reference acs-service-contract acs-tcl acs-templating acs-translations acs-workflow
+
+    set url "/acs-admin/apm/packages-install-2?"
+    set redirect_p 0
+    set missing_modules [list]
+    foreach module $openacs_core_modules {
+        set spec_file "[acs_root_dir]/packages/$module/$module.info"
+        set needs_update_p 0
+        catch {
+            array set version_hash [apm_read_package_info_file $spec_file]
+            set version $version_hash(name)
+            set needs_update_p [apm_higher_version_installed_p $module $version]
+        }
+
+        if {1 == $needs_update_p} {
+            set redirect_p 1
+            append url "package_key=$module&"
+            lappend missing_modules $module
+
+	    # Install one-by-one, so break out of this loop
+	    break
+        }
+    }
+
+    if {$redirect_p} {
+        set upgrade_message "
+                <b>Update the 'OpenACS Core' modules:</b><br>
+                The 'core' modules (intranet-core and intranet-dynfield) need to be
+                updated before other modules can be updated.<br>
                 Please click on the link below to install these packages now.<br>
                 <br>&nbsp;<br>
                 <a href=$url>Install packages</a> ([join $missing_modules ", "])
