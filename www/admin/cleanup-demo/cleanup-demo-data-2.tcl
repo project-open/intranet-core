@@ -341,6 +341,10 @@ foreach cost_info $cost_infos {
     }
 
     db_dml del_expenses "delete from im_expenses where expense_id = :cost_id"
+
+    # Delete permissions for cost item
+    db_dml del_expenses "delete from acs_permissions where object_id = :cost_id"
+
     im_exec_dml del_cost "${object_type}__delete($cost_id)"
     incr cnt
 }
@@ -911,9 +915,6 @@ foreach object_info $object_infos {
     catch { db_dml del_object "delete from acs_objects where object_id = :object_id" }
     incr cnt
 }
-
-
-
 
 
 # ------------------------------------------------------------
