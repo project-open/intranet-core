@@ -96,13 +96,9 @@ ad_proc -public im_check_for_update_scripts {
 
 
     # ---------------------------------------------------------------------------
-    # 2 - Update acs-* core modules one-by-one (after Upgrade to OpenACS 5.9...)
+    # 2a - Update acs-* core modules one-by-one (after Upgrade to OpenACS 5.9...)
 
-    set openacs_core_modules [list acs-kernel acs-content-repository acs-subsite]
-# acs-admin acs-api-browser acs-authentication acs-automated-testing acs-bootstrap-installer acs-core-docs
-# acs-datetime acs-developer-support acs-events acs-lang acs-lang-server acs-mail acs-mail-lite
-# acs-messaging acs-reference acs-service-contract acs-tcl acs-templating acs-translations acs-workflow
-
+    set openacs_core_modules [list acs-kernel acs-content-repository acs-subsite acs-tcl]
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
     set missing_modules [list]
@@ -128,8 +124,44 @@ ad_proc -public im_check_for_update_scripts {
     if {$redirect_p} {
         set upgrade_message "
                 <b>Update the 'OpenACS Core' modules:</b><br>
-                The 'core' modules (intranet-core and intranet-dynfield) need to be
-                updated before other modules can be updated.<br>
+                The 'core' modules (acs-kernel, acs-content-repository, acs-subsite and acs-tcl) 
+                need to be updated before other modules can be updated.<br>
+                Please click on the link below to install these packages now.<br>
+                <br>&nbsp;<br>
+                <a href=$url>Install packages</a> ([join $missing_modules ", "])
+                <br>&nbsp;<br>
+                <font color=red><b>Please don't forget to restart the server after install.</b></font>
+        "
+        return $upgrade_message
+    }
+
+    # ---------------------------------------------------------------------------
+    # 2b - Update acs-* non-core packages
+
+    set openacs_modules [list acs-admin acs-api-browser acs-authentication acs-automated-testing acs-bootstrap-installer acs-content-repository acs-core-docs acs-datetime acs-developer-support acs-events acs-kernel acs-lang acs-mail acs-mail-lite acs-messaging acs-reference acs-service-contract acs-subsite acs-tcl acs-templating acs-translations acs-workflow ajaxhelper attachments bulk-mail calendar categories events file-storage general-comments mail-tracking notifications oacs-dav openacs-default-theme ref-countries ref-currency ref-language ref-timezones ref-us-counties ref-us-states ref-us-zipcodes workflow]
+    set url "/acs-admin/apm/packages-install-2?"
+    set redirect_p 0
+    set missing_modules [list]
+    foreach module $openacs_modules {
+        set spec_file "[acs_root_dir]/packages/$module/$module.info"
+        set needs_update_p 0
+        catch {
+            array set version_hash [apm_read_package_info_file $spec_file]
+            set version $version_hash(name)
+            set needs_update_p [apm_higher_version_installed_p $module $version]
+        }
+
+        if {1 == $needs_update_p} {
+            set redirect_p 1
+            append url "package_key=$module&"
+            lappend missing_modules $module
+        }
+    }
+
+    if {$redirect_p} {
+        set upgrade_message "
+                <b>Update OpenACS modules:</b><br>
+                These modules need to be updated before other modules can be updated.<br>
                 Please click on the link below to install these packages now.<br>
                 <br>&nbsp;<br>
                 <a href=$url>Install packages</a> ([join $missing_modules ", "])
@@ -141,7 +173,7 @@ ad_proc -public im_check_for_update_scripts {
 
 
     # ---------------------------------------------------------------------------
-    # 2 - Update intranet-dynfield & intranet-core
+    # 3 - Update intranet-dynfield & intranet-core
 
     # The base modules that need to be installed first
     set core_modules [list intranet-core]
@@ -182,7 +214,7 @@ ad_proc -public im_check_for_update_scripts {
 
 
     # ---------------------------------------------------------------------------
-    # 3 - Update the rest
+    # 4 - Update the rest
 
     set other_modules [db_list modules "select distinct package_key from apm_package_versions"]
 
@@ -230,7 +262,7 @@ ad_proc -public im_check_for_update_scripts {
 
 
     # ---------------------------------------------------------------------------
-    # 4 - Check for non-executed "intranet-core" upgrade scripts
+    # 5 - Check for non-executed "intranet-core" upgrade scripts
 
 
     # --------------------------------------------------------------
@@ -239,9 +271,6 @@ ad_proc -public im_check_for_update_scripts {
     set core_dir "[acs_root_dir]/packages/intranet-core"
     set core_upgrade_dir "$core_dir/sql/postgresql/upgrade"
     foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
-
-#        ns_log Notice "upgrade4: checking glob file $dir"
-
         # Skip upgrade scripts from 3.0.x
         if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
 
@@ -259,8 +288,6 @@ ad_proc -public im_check_for_update_scripts {
         order by log_key
     "
     db_foreach db_files $sql {
-
-#        ns_log Notice "upgrade4: checking log key $log_key"
         # Add the "/packages/..." part to hash-array for fast comparison.
         if {[regexp {(/packages.*)} $log_key match path]} {
             set db_files($path) $path
@@ -310,7 +337,7 @@ ad_proc -public im_check_for_update_scripts {
 
 
     # ---------------------------------------------------------------------------
-    # 5 - Check for non-executed other upgrade scripts
+    # 6 - Check for non-executed other upgrade scripts
 
 
     # --------------------------------------------------------------
@@ -327,9 +354,6 @@ ad_proc -public im_check_for_update_scripts {
     db_foreach packages $package_sql {
         set core_upgrade_dir "$core_dir/$package_key/sql/postgresql/upgrade"
         foreach dir [lsort [glob -type f -nocomplain "$core_upgrade_dir/upgrade-?.?.?.?.?-?.?.?.?.?.sql"]] {
-
-#            ns_log Notice "upgrade5: checking glob file $dir"
-
             # Skip upgrade scripts from 3.0.x
             if {[regexp {upgrade-3\.0.*\.sql} $dir match path]} { continue }
 
@@ -349,8 +373,6 @@ ad_proc -public im_check_for_update_scripts {
         order by log_key
     "
     db_foreach db_files $sql {
-
-#        ns_log Notice "upgrade4: checking log key $log_key"
         # Add the "/packages/..." part to hash-array for fast comparison.
         if {[regexp {(/packages.*)} $log_key match path]} {
             set db_files($path) $path
