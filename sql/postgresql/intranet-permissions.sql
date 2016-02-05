@@ -58,7 +58,7 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 --
 
 create or replace function im_object_permission_p (integer, integer, varchar)
-returns char as $body$
+returns boolean as $body$
 DECLARE
 	p_object_id	alias for $1;
 	p_user_id	alias for $2;

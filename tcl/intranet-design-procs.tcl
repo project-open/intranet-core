@@ -795,22 +795,6 @@ ad_proc -private im_sub_navbar_menu_helper {
     This routine is cached and called every approx 60 seconds
 } {
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
-
-    # Update from 3.2.2 to 3.2.3 adding the "enabled_p" field:
-    # We need to be able to read the old DB model, otherwise the
-    # users won't be able to upgrade...
-    set enabled_present_p [util_memoize [list db_string enabled_enabled "
-	select  count(*)
-	from	user_tab_columns
-	where   lower(table_name) = 'im_component_plugins'
-		and lower(column_name) = 'enabled_p'
-    "]]
-    if {$enabled_present_p} {
-	set enabled_sql "and (enabled_p is null OR enabled_p = 't')"
-    } else {
-	set enabled_sql ""
-    }
-
     set menu_select_sql "
 	select	menu_id,
 		package_name,
@@ -819,9 +803,9 @@ ad_proc -private im_sub_navbar_menu_helper {
 		url,
 		visible_tcl
 	from	im_menus m
-	where	parent_menu_id = :parent_menu_id
-		$enabled_sql
-		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+	where	parent_menu_id = :parent_menu_id and
+		(enabled_p is null OR enabled_p = 't') and 
+		acs_permission__permission_p(m.menu_id, :user_id, 'read')
 	order by
 		 sort_order
     "
@@ -934,7 +918,7 @@ ad_proc -public im_navbar {
 			       from    	im_menus m
 			       where   	label = 'invoices_customers'
 		               		and enabled_p = 't'
-		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+		               		and acs_permission__permission_p(m.menu_id, :user_id, 'read') = 't'
 			"
 
 		    if { [db_0or1row get_manu_information $menu_select_sql] } {
@@ -947,7 +931,7 @@ ad_proc -public im_navbar {
 			       from    	im_menus m
 			       where   	label = 'invoices_providers'
 		               		and enabled_p = 't'
-		               		and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+		               		and acs_permission__permission_p(m.menu_id, :user_id, 'read') = 't'
 			"
 		    if { [db_0or1row get_manu_information $menu_select_sql] } {
 			append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.ProviderDocuments "Provider Documents"]</a></li>"			
@@ -1143,7 +1127,7 @@ ad_proc -public im_header_plugins_helper {
 
     set plugin_sql "
 	select	c.*,
-		im_object_permission_p(c.plugin_id, :user_id, 'read') as perm
+		acs_permission__permission_p(c.plugin_id, :user_id, 'read') as perm
 	from	im_component_plugins c
 	where	location like 'header%'
 	order by sort_order
