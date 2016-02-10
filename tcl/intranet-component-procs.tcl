@@ -127,6 +127,8 @@ ad_proc -public im_component_box {
         "
     }
 
+    append icons "<a class=\"icon_config\" href=\"#\"><span class=\"icon_config\">config</span></a>"
+
     return "[im_box_header $title $icons]$body[im_box_footer]"
 }
 

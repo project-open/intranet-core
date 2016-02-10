@@ -900,11 +900,13 @@ developer-support-adp-box-off {
 	font-size: 10pt;
 	font-weight: bold;
 	padding-top: 3px;
+	z-index: 2;
 }
 
 .component_icons {
 	float: right;
 	padding-top: 3px;
+	z-index: 1;
 }
 
 
@@ -985,6 +987,13 @@ developer-support-adp-box-off {
   width: 15px;
   height: 15px;
   background: url('/intranet/images/navbar_default/help.png') no-repeat;
+  text-indent: -5000px;
+}
+.component_icons .icon_config {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: url('/intranet/images/navbar_default/config.png') no-repeat;
   text-indent: -5000px;
 }
 .component_icons .icon_seperator {

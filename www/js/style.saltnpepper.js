@@ -113,11 +113,54 @@ jQuery().ready(function(){
 	document.getElementById('fullwidth-list').style.width='100%';
     };
     
-    jQuery(".component_icons").css("opacity","0.1");
-    jQuery(".component_header").hover(function() {
-       jQuery(".component_icons",this).stop().fadeTo("fast",1);
+    // jQuery(".component_icons").css("opacity","1.1");
+
+    jQuery(".icon_seperator").hide();
+    jQuery(".icon_left").hide();
+    jQuery(".icon_up").hide();
+    jQuery(".icon_down").hide();
+    jQuery(".icon_right").hide();
+    jQuery(".icon_close").hide();
+    jQuery(".icon_help").hide();
+    jQuery(".icon_wrench").hide();
+    jQuery(".icon_minimize").hide();
+    jQuery(".icon_maximize").hide();
+
+    jQuery(".component_header",this).hover(function() {
+	if ($(this).width() < 400) {
+	    $(this).children().first().hide();
+	};
+	$(this).children().find(".icon_seperator").show();
+	$(this).children().find(".icon_left").show();
+	$(this).children().find(".icon_up").show();
+	$(this).children().find(".icon_down").show();
+	$(this).children().find(".icon_right").show();
+	$(this).children().find(".icon_close").show();
+	$(this).children().find(".icon_help").show();
+	$(this).children().find(".icon_wrench").show();
+	$(this).children().find(".icon_minimize").show();
+	$(this).children().find(".icon_minimize").show();
+	$(this).children().find(".icon_maximize").show();
+	$(this).children().find('.icon_help').show();
+	$(this).children().find('.icon_config').hide();
+        // jQuery(".component_icons",this).stop().fadeTo("fast",1);
+
     },function(){
-       jQuery(".component_icons",this).stop().fadeTo("normal",0.1);
+       // jQuery(".component_icons",this).stop().fadeTo("normal",0.1);
+        $(this).children().first().show();
+        $(this).children().find(".icon_seperator").hide();
+        $(this).children().find(".icon_left").hide();
+        $(this).children().find(".icon_up").hide();
+        $(this).children().find(".icon_down").hide();
+        $(this).children().find(".icon_right").hide();
+        $(this).children().find(".icon_close").hide();
+        $(this).children().find(".icon_help").hide();
+        $(this).children().find(".icon_wrench").hide();
+        $(this).children().find(".icon_minimize").hide();
+        $(this).children().find(".icon_minimize").hide();
+        $(this).children().find(".icon_maximize").hide();
+        $(this).children().find('.icon_help').hide();
+        $(this).children().find('.icon_config').show();
     });
 
     jQuery(".component-parking div").click(function(){
