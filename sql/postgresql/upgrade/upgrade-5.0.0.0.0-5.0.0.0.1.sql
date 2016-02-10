@@ -15,3 +15,18 @@ BEGIN
 END;$body$ language 'plpgsql';
 
 
+
+update im_menus set sort_order = 2450 where label = 'rules';
+update im_menus set sort_order = 2425, name = 'SQL Selectors' where label = 'selectors_admin';
+update im_menus set sort_order = 850 where label = 'cvs_integration';
+
+update im_menus set name = 'Privileges' where name = 'User Profiles';
+update im_menus set name = 'User Sub-Administration' where name = 'User Matrix';
+
+update im_menus set 
+	name = 'Traffic Light Reports',
+	label = 'traffic_light_reports',
+	url = '/intranet-simple-survey/reporting/traffic-light-reports'
+where
+	label = 'project_reports';
+
