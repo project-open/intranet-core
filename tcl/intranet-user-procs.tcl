@@ -1530,13 +1530,15 @@ ad_proc -public im_user_nuke {
 	}
 
 	# contact message log & mail log 
-	if { [db_table_exists contact_message_log] } { db_dml delete_contact_message_log "delete from contact_message_log where recipient_id = :user_id" }
-	if { [db_table_exists acs_mail_log] } { db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)" }
-	if { [db_table_exists acs_mail_log_recipient_map] } { db_dml delete_from_maillog "delete from acs_mail_log_recipient_map where recipient_id = :user_id" }
-
-	db_dml delete_contact_message_log "delete from contact_message_log where recipient_id = :user_id"
-	db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)"
-        db_dml delete_from_maillog "delete from acs_mail_log_recipient_map where recipient_id = :user_id"
+	if { [db_table_exists contact_message_log] } { 
+	    db_dml delete_contact_message_log "delete from contact_message_log where recipient_id = :user_id"
+	}
+	if { [db_table_exists acs_mail_log] } { 
+	    db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)"
+	}
+	if { [db_table_exists acs_mail_log_recipient_map] } { 
+	    db_dml delete_from_maillog "delete from acs_mail_log_recipient_map where recipient_id = :user_id"
+	}
 
 	set rels [db_list rels "select rel_id from acs_rels where object_id_one = :user_id or object_id_two = :user_id"]
 	foreach rel_id $rels {
