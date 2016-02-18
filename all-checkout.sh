@@ -46,7 +46,7 @@ cvs checkout intranet-bug-tracker
 cvs checkout intranet-calendar
 # cvs checkout intranet-calendar-holidays		# (obsolete)
 cvs checkout intranet-confdb
-cvs checkout intranet-contacts
+#cvs checkout intranet-contacts				# (obsolete)
 cvs checkout intranet-core
 cvs checkout intranet-cost
 cvs checkout intranet-cost-center

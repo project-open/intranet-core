@@ -38,7 +38,7 @@ ad_page_contract {
 # Append the option to create a user who get's a welcome message send
 # Furthermore set the title.
 
-set title "[_ intranet-contacts.Add_a_Biz_Card]"
+set title [lang::message::lookup "" intranet-contacts.Add_a_Biz_Card "Add a Biz Card"]
 set context [list $title]
 set current_user_id [auth::require_login]
 
@@ -144,7 +144,7 @@ set inner_sql "
 		    UNION
 			select
 				so.object_id as user_id,
-		                (rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
+		                (ts_rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
 			from
 				im_search_objects so,
 				im_search_object_types sot

@@ -65,7 +65,7 @@ if {[info exists limit_to_company_id] && "" != $limit_to_company_id && "" == $co
 # Append the option to create a user who get's a welcome message send
 # Furthermore set the title.
 
-set title "[_ intranet-contacts.Add_a_Biz_Card]"
+set title [lang::message::lookup "" intranet-core.Add_a_Biz_Card "Add a Biz Card"]
 set context [list $title]
 set current_user_id [auth::require_login]
 
@@ -115,7 +115,7 @@ if {"" == $found_company_id} {
 # Add a new user action - 
 # Redirect to user new page and set profile according to type of contact
 if {"" != $button_new_user_company} {
-    ad_returnredirect [export_vars -base "/intranet-contacts/biz-card-add-3.tcl" {first_names last_name email company_name profile}]
+    ad_returnredirect [export_vars -base "/intranet/users/biz-card-add-3.tcl" {first_names last_name email company_name profile}]
 }
 
 # ------------------------------------------------------------------
@@ -314,7 +314,7 @@ ad_form -extend -name $form_id -new_request {
 			where	$contact_or_clause
 		    UNION
 			select	so.object_id as user_id,
-		                (rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
+		                (ts_rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
 			from	im_search_objects so,
 				im_search_object_types sot
 			where	so.object_type_id = sot.object_type_id and
@@ -444,7 +444,7 @@ ad_form -extend -name $form_id -new_request {
 		    UNION
 			select
 				so.object_id as company_id,
-		                (rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
+		                (ts_rank(so.fti, :q::tsquery) * sot.rel_weight)::numeric(12,2) as rank
 			from
 				im_search_objects so,
 				im_search_object_types sot

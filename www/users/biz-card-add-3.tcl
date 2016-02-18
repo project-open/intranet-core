@@ -43,7 +43,7 @@ ad_page_contract {
 # Append the option to create a user who get's a welcome message send
 # Furthermore set the title.
 
-set title "[_ intranet-contacts.Add_a_Biz_Card]"
+set title [lang::message::lookup "" intranet-core.Add_a_Biz_Card "Add a Biz Card"]
 set context [list $title]
 set current_user_id [auth::require_login]
 
@@ -83,10 +83,8 @@ set annual_revenue_options [list]
 set country_options [im_country_options]
 set employee_options [im_employee_options]
 
-set form_id "company"
-
 ad_form \
-    -name $form_id \
+    -name "company" \
     -cancel_url $return_url \
     -mode $form_mode \
     -export {next_url user_id return_url} \
@@ -102,59 +100,59 @@ ad_form \
 # Dynamic Fields
 # ------------------------------------------------------
 
-set form_id "company"
-set object_type "im_company"
-
 # Lookup the category representing the category for the
 # user group. 
 set person_subtype_id [db_string subtype "select category_id from im_categories where category_type = 'Intranet User Type' and aux_int1 = :profile" -default ""]
 
-template::form::section -legendtext asdf $form_id [lang::message::lookup "" intranet-core.Person Person]
+template::form::section -legendtext asdf company [lang::message::lookup "" intranet-core.Person Person]
 
 im_dynfield::append_attributes_to_form \
     -object_type "party" \
-    -form_id $form_id \
-    -page_url "/intranet-contacts/biz-card-add" 
+    -form_id "company" \
+    -page_url "/intranet/users/biz-card-add" 
 
 im_dynfield::append_attributes_to_form \
     -object_type "person" \
-    -form_id $form_id \
-    -page_url "/intranet-contacts/biz-card-add" \
+    -form_id "company" \
+    -page_url "/intranet/users/biz-card-add" \
     -object_subtype_id $person_subtype_id
 
-template::form::section -legendtext sdfg $form_id [lang::message::lookup "" intranet-core.Company Company]
+
+template::form::section -legendtext sdfg company [lang::message::lookup "" intranet-core.Company Company]
 
 im_dynfield::append_attributes_to_form \
     -object_type "im_company" \
-    -form_id $form_id \
-    -page_url "/intranet-contacts/biz-card-add" 
+    -form_id "company" \
+    -page_url "/intranet/users/biz-card-add" \
+    -include_also_hard_coded_p 1
 
-template::form::section -legendtext dfgh $form_id [lang::message::lookup "" intranet-core.Office Office]
+template::form::section -legendtext dfgh company [lang::message::lookup "" intranet-core.Office Office]
 
 im_dynfield::append_attributes_to_form \
     -object_type "im_office" \
-    -form_id $form_id \
-    -page_url "/intranet-contacts/biz-card-add" 
+    -form_id "company" \
+    -page_url "/intranet/users/biz-card-add" \
+    -include_also_hard_coded_p 1
 
 
-template::element::set_value $form_id first_names $first_names
-template::element::set_value $form_id last_name $last_name
-catch { template::element::set_value $form_id email $email }
-template::element::set_value $form_id company_name $company_name
-template::element::set_value $form_id company_path $company_path
+template::element::set_value company first_names $first_names
+template::element::set_value company last_name $last_name
+catch { template::element::set_value company email $email }
+template::element::set_value company company_name $company_name
+template::element::set_value company company_path $company_path
 
-template::element::set_value $form_id company_type_id $default_company_type_id
-template::element::set_value $form_id company_status_id [im_company_status_active]
+template::element::set_value company company_type_id $default_company_type_id
+template::element::set_value company company_status_id [im_company_status_active]
 
-template::element::set_value $form_id office_name $office_name
-template::element::set_value $form_id office_path $office_path
+template::element::set_value company office_name $office_name
+template::element::set_value company office_path $office_path
 
-template::element::set_value $form_id office_type_id [im_office_type_main]
-template::element::set_value $form_id office_status_id [im_office_status_active]
+template::element::set_value company office_type_id [im_office_type_main]
+template::element::set_value company office_status_id [im_office_status_active]
 
 
 
-ad_form -extend -name $form_id -new_request {
+ad_form -extend -name company -new_request {
 
     # Set variables for empty form
     set company_id [im_new_object_id]
@@ -194,7 +192,7 @@ ad_form -extend -name $form_id -new_request {
 
     if { $exists_p } {
 	incr exception_count
-	append errors "<li>[lang::message::lookup "" intranet-contacts.Company_path_exists "The company path '%company_path%' already exists."]"
+	append errors "<li>[lang::message::lookup "" intranet-core.Company_path_exists "The company path '%company_path%' already exists."]"
     }
     
     if { ([info exists errors] && $errors ne "") } {
@@ -295,8 +293,8 @@ ad_form -extend -name $form_id -new_request {
 	    set creation_status "error"
 	    if {[info exists creation_info(creation_status)]} { set creation_status $creation_info(creation_status)}
 	    if {"ok" != [string tolower $creation_status]} {
-		ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-contacts.Error_creating_user "Error creating new user"]</b>:<br>
-		[lang::message::lookup "" intranet-contacts.Error_creating_user_status "Status"]: $creation_status<br>
+		ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Error_creating_user "Error creating new user"]</b>:<br>
+		[lang::message::lookup "" intranet-core.Error_creating_user_status "Status"]: $creation_status<br>
 		<pre>\n$creation_info(creation_message)\n$creation_info(element_messages)</pre>
 		"
 		ad_script_abort
@@ -543,18 +541,15 @@ ad_form -extend -name $form_id -new_request {
     # Store dynamic fields
     # -----------------------------------------------------------------
     
-    set form_id "company"
-    set object_type "im_company"
-    
     im_dynfield::append_attributes_to_form \
-	-object_type im_company \
-	-form_id company \
+	-object_type "im_company" \
+	-form_id "company" \
 	-object_id $company_id
     
     im_dynfield::attribute_store \
-	-object_type $object_type \
+	-object_type "im_company" \
 	-object_id $company_id \
-	-form_id $form_id
+	-form_id "company"
     
     
     
