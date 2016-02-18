@@ -301,12 +301,12 @@ SELECT acs_rel_type__create_role('employer', '#acs-translations.role_employer#',
 
 SELECT acs_object_type__create_type(
 	'im_company_employee_rel',			-- object_type
-	'#intranet-contacts.company_employee_rel#',	-- pretty_name
-	'#intranet-contacts.company_employee_rels#',	-- pretty_plural
+	'Company-Employee Relationship',		-- pretty_name
+	'Company-Employee Relationships',		-- pretty_plural
 	'im_biz_object_member',				-- supertype
 	'im_company_employee_rels',			-- table_name
 	'employee_rel_id',				-- id_column
-	'intranet-contacts.comp_emp', 			-- package_name
+	'intranet-core', 				-- package_name
 	'f',						-- abstract_p
 	null,						-- type_extension_table
 	NULL						-- name_method
@@ -397,12 +397,12 @@ SELECT acs_rel_type__create_role('company', '#acs-translations.role_company#', '
 
 SELECT acs_object_type__create_type (
 	'im_key_account_rel',
-	'#intranet-contacts.key_account_rel#',
-	'#intranet-contacts.key_account_rels#',
+	'#intranet-core.key_account_rel#',
+	'#intranet-core.key_account_rels#',
 	'im_biz_object_member',
 	'im_key_account_rels',
 	'key_account_rel_id',
-	'intranet-contacts.key_account', 
+	'intranet-core', 
 	'f',
 	null,
 	NULL
