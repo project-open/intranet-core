@@ -152,6 +152,6 @@ append contact_html "</table>\n</form>\n"
 # ------------------------------------------------------------------
 
 set conf_item_html ""
-if {$show_user_conf_items_p} {
+if {$show_user_conf_items_p && "" != $user_id } {
     set conf_item_html [im_conf_item_list_component -member_id $user_id]
 }
