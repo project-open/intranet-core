@@ -170,6 +170,11 @@ cvs checkout simple-survey
 # cvs checkout trackback				# (obsolete? OpenACS package)
 # cvs checkout tsearch2-driver				# (obsolete OpenACS package)
 # cvs checkout wiki
+cvs checkout upgrade-3.3-3.4
+cvs checkout upgrade-3.4-3.5
+cvs checkout upgrade-3.5-4.0
+cvs checkout upgrade-4.0-4.1
+cvs checkout upgrade-4.1-5.0
 cvs checkout workflow
 # cvs checkout xml-rpc
 cvs checkout xotcl-core
