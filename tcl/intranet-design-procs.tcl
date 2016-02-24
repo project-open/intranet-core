@@ -894,12 +894,10 @@ ad_proc -public im_navbar {
 		"helpdesk" {
 		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
 		}
-
 		"reporting" {
-		    # Get first level sub_menus
 		    append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
+		    # append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id 25973]</li>"
 		}
-		
 		"finance" {
 
 		    # Requires separate handling since menu data stored in im_menus is used to create 
@@ -968,11 +966,17 @@ ad_proc -public im_navbar {
 			    set level_one_name [lindex $level_one_menu_list_item 3]
 			    set level_one_url [lindex $level_one_menu_list_item 4]
 			    set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
+
+			    regsub -all {[^0-9a-zA-Z]} $level_one_name "_" level_one_name_key
+			    set name_l10n [lang::message::lookup "" $level_one_package_name.$level_one_name_key $level_one_name]
+
 			    append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
 			}    
 			append navbar "</ul></li>"
 		    } else {
-			append navbar "<li class=\"$selected\"><a href='$url'><span>$name</span></a></li>"
+			regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+			set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
+			append navbar "<li class=\"$selected\"><a href='$url'><span>$name_l10n</span></a></li>"
 		    }    
 		}
 	    }
@@ -997,13 +1001,14 @@ ad_proc -public im_navbar {
 		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</a></li>
 		</ul>
         	</li>
-    	    "
-	
-	# if {$admin_p} {
-	#    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
-	#    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	#    append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
-	# }
+    	"
+
+	if {$admin_p} {
+	    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
+	    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
+	    # append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
+	    append navbar "<li class='unselected'><a href=\"$admin_url\"><span>[im_gif -translate_p 0 wrench $admin_text]</span></a></li>"
+	}
     }
     
     # Display a maintenance message in red when performing updates etc...
@@ -1032,7 +1037,7 @@ ad_proc -public im_navbar_submenu {
     -label:required
     -selected:required
 } {
-    Builds the sub-menu list and adds an additional sub-menu if "wrenches" are found toadmin the menu item list 
+    Builds the sub-menu list 
 } {
     if { [llength $level_one_menu_list] > 0 } { 
 	set navbar_build_admin "" 
@@ -1042,13 +1047,6 @@ ad_proc -public im_navbar_submenu {
 	    if {4 == [llength $level_one_menu_list_item] } {
 		append navbar_build_admin "<li class='unselected'><a href='[lindex $level_one_menu_list_item 3]'><span>[lindex $level_one_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>"
 	    }
-	}
-	# Show CONFIG sub-menu item for ADMINS 
-	if { "" != $navbar_build_admin } {
-	    append navbar_build "<li class='unselected'><a class='has-submenu' href='#'><span style='color:#53F5D7'>[lang::message::lookup "" intranet-core.AdminLinks "Configure these links"]&nbsp;[im_gif wrench]</span></a><ul>"
-	    append navbar_build "<li class='unselected'><a href='/intranet/admin/menus/index?label_str=$label'><span>\[[lang::message::lookup "" intranet-core.ParentItem "Parent Menu Item"]\]&nbsp;[im_gif wrench]</span></a></li>"
-	    append navbar_build $navbar_build_admin
-	    append navbar_build "</ul></li>"
 	}
 	append navbar_build "</ul></li>"
     } else {
@@ -1615,11 +1613,8 @@ ad_proc -public im_stylesheet {} {
     if {[llength [info procs im_package_calendar_id]]} { template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" -order "5" }
     template::head::add_css -href "/intranet/style/print.css" -media "print" -order "10" 
     template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" -order "15" 
-
     template::head::add_css -href "/intranet/style/smartmenus/sm-core-css.css" -media "screen" -order "25"
-
     template::head::add_css -href "/intranet/style/smartmenus/sm-simple/sm-simple.css" -media "screen" -order "30"
-    # template::head::add_css -href "/intranet/style/smartmenus/sm-tabj/sm-tabj.css" -media "screen" -order "30"
   
     template::head::add_css -href $system_css -media "screen" -order "40" 
     template::head::add_css -href "/resources/acs-templating/lists.css" -media "screen" 
@@ -2368,4 +2363,37 @@ ad_proc -public im_color_code {
 	    }
 	}
     }
+}
+
+
+ad_proc -public im_navbar_submenu_recursive {
+    locale
+    user_id
+    menu_id
+} {
+    Builds menu HTML code for all sub-items of the menu_id provided. 
+    Optimized for smartmenus.org
+} {
+    set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]
+    foreach menu_list $menu_list_list {
+
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
+	set selected "unselected"
+
+	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
+
+	# Check for sub items 
+	if { [db_string sql "select count(*) from im_menus where parent_menu_id = :menu_id" -default 0] } {
+	    append output_ul "<li class='unselected'><a class='has-submenu' href='$url'><span>$name_l10n</span></a>[im_navbar_submenu_recursive $locale $user_id $menu_id]</li>"
+	} else {
+	    append output_ul "<li class='unselected'><a href='$url'><span>$name_l10n</span></a></li>"
+	}   
+    }
+    return "<ul>$output_ul</ul>"
 }
