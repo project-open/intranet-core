@@ -51,8 +51,7 @@ set all_the_headers "HTTP/1.0 200 OK
 MIME-Version: 1.0
 Content-Type: $content_type\r\n"
 util_WriteWithExtraOutputHeaders $all_the_headers
-ns_startcontent -type $content_type
-
+ReturnHeaders $content_type
 
 ns_write [im_header]
 ns_write [im_navbar]

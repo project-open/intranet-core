@@ -27,7 +27,7 @@ MIME-Version: 1.0
 Content-Type: $content_type\r\n"
 
 util_WriteWithExtraOutputHeaders $all_the_headers
-ns_startcontent -type $content_type
+ReturnHeaders $content_type
 
 ns_write "[im_header] [im_navbar]"
 ns_write "<pre>"
