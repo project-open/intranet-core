@@ -287,7 +287,6 @@ set column_sql "
 	order by sort_order
 "
 
-
 db_foreach column_list_sql $column_sql {
     ns_log Notice "/intranet/users/index: visible_for=$visible_for"
 
@@ -326,7 +325,6 @@ db_foreach column_list_sql $column_sql {
     }
 }
 ns_log Notice "/users/index.tcl: column_vars=$column_vars"
-
 
 # ---------------------------------------------------------------
 # 4. Define Filter Categories
@@ -448,10 +446,9 @@ if {"" == $extra_order_by} {
 }
 
 if {$freelancers_exist_p} {
-    lappend extra_select "fl.*"
-    lappend extra_left_join "LEFT OUTER JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
+    lappend extra_selects "fl.*"
+    lappend extra_left_joins "LEFT OUTER JOIN im_freelancers fl ON (fl.user_id = u.user_id)"
 }
-
 
 # Join the "extra_" SQL pieces 
 set extra_from [join $extra_froms ",\n\t"]
