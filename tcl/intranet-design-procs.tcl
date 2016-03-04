@@ -341,7 +341,6 @@ ad_proc -public im_user_navbar { default_letter base_url next_page_url prev_page
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
     # -------- Calculate Alpha Bar with Pass-Through params -------
@@ -388,7 +387,6 @@ ad_proc -public im_project_navbar {
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
     # -------- Calculate Alpha Bar with Pass-Through params -------
@@ -493,7 +491,6 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
 
     set sel "<td class=tabsel>"
     set nosel "<td class=tabnotsel>"
-    set a_white "<a class=whitelink"
     set tdsp "<td>&nbsp;</td>"
 
     # -------- Calculate Alpha Bar with Pass-Through params -------
@@ -602,9 +599,7 @@ ad_proc -public im_navbar_tab {
 } {
     Creates <li> menu item  
 } {
-
     # ds_comment "$name / $selected / $url"
-
     if {$selected} {
 	set selected "selected"
         set navbar_selected "navbar_selected"
@@ -618,7 +613,6 @@ ad_proc -public im_navbar_tab {
     } else {
 	return "<li class=\"$selected\"><a href=\"$url\"><span>$name</span></a></li>\n"
     }
-
 }
 
 
@@ -821,6 +815,10 @@ ad_proc -public im_navbar {
 } {
     Setup a top navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
+    The sub-menus basically consist of the "admin" section of the 
+    respective page and direct sub-menus used in the sub-navbar
+    tabs. Some of these links are unsuitable for a main menus, so
+    they can be excluded
 } {
     set user_id [ad_conn user_id]
     set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
@@ -831,36 +829,15 @@ ad_proc -public im_navbar {
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
     set return_url [im_url_with_query]
-    
-    # There are two ways to publish a context bar:
-    # 1. Via "context_bar". This var contains a fully formatted context bar
-    # 2. Via "context". "Context" contains a list of lists, with the last
-    #    element being a single name
-    #
-    set context_bar [ad_partner_upvar context_bar]
-    
-    if {"" == $context_bar} {
-	set context [ad_partner_upvar context]
-	if {"" == $context} {
-	    set context [list $page_title]
-	}
-	
-	set context_root [list [list "/intranet/" "&\#93;project-open&\#91;"]]
-	set context [concat $context_root $context]
-	set context_bar [im_context_bar_html $context]
-    }
-    
-    set a_white "<a class=whitelink"
-    set navbar ""
     set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
-    
-    set ctr 0
-    
+    set page_url [im_component_page_url]
+    set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
+  
     # Get toplevel menu items
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 60]
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 300]
     
+    set navbar {}
     foreach menu_list $menu_list_list {
-	
 	set menu_id [lindex $menu_list 0]
 	set package_name [lindex $menu_list 1]
 	set label [lindex $menu_list 2]
@@ -879,151 +856,64 @@ ad_proc -public im_navbar {
 	# No menues on register and login page 
 	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
 
+	    # Manually define the "admin" links for important tabs
+	    set admin_menu_list {}
 	    switch $label {
-		"projects" {
-		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_projects_admin_links] -url $url -name $name -label $label -selected $selected]
-		}
-		"user" {
-		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_users_admin_links] -url $url -name $name -label $label -selected $selected]
-		    
-		}
-		"companies" {
-		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_companies_admin_links] -url $url -name $name -label $label -selected $selected]
-		}
-		
-		"helpdesk" {
-		    # append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
-		    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id "helpdesk"]</li>"
-		}
-		"reporting" {
-		    # append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
-		    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id "reporting"]</li>"
-		}
-		"finance" {
+		"projects" { set admin_menu_list [im_menu_projects_admin_links] }
+		"user" { set admin_menu_list [im_menu_users_admin_links] }
+		"companies" { set admin_menu_list [im_menu_companies_admin_links] }
+		"helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
+	    }
 
-		    # Requires separate handling since menu data stored in im_menus is used to create 
-		    # 	a) admin links in sidebar 
-		    # 	b) right sub-menu tabs
-		    #	c) top menu tabs
-		    # Not in all three locations all active menu items should be shown.
-
-		    set submenus ""
-
-		    # Customer & Provider Docs
-		    set menu_select_sql "
- 			       select  	m.name as r_name,
-					m.menu_id as r_id,
-					m.url as r_url
-			       from    	im_menus m
-			       where   	label = 'invoices_customers'
-		               		and enabled_p = 't'
-		               		and acs_permission__permission_p(m.menu_id, :user_id, 'read') = 't'
-			"
-
-		    if { [db_0or1row get_manu_information $menu_select_sql] } {
-			append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.CustomerDocuments "Customer Documents"]</a></li>"			
-		    }
-		    set menu_select_sql "
- 			       select  	m.name as r_name,
-					m.menu_id as r_id,
-					m.url as r_url
-			       from    	im_menus m
-			       where   	label = 'invoices_providers'
-		               		and enabled_p = 't'
-		               		and acs_permission__permission_p(m.menu_id, :user_id, 'read') = 't'
-			"
-		    if { [db_0or1row get_manu_information $menu_select_sql] } {
-			append submenus "<li class='unselected'><a href='$r_url'>[lang::message::lookup "" intranet-invoices.ProviderDocuments "Provider Documents"]</a></li>"			
-		    }
-
-		    # Get a list of Provider links {menu_name menu_link admin_name admin_link}
-		    set sub_menu_providers [im_menu_links "invoices_providers"]
-		    if { "" != $sub_menu_providers } {
-			append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_providers -url "#" -name [lang::message::lookup "" intranet-cost.New_Provider_Documents "New Provider Docs"] -label "" -selected "unselected"]"
-		    }
-		    
-		    set sub_menu_customers [im_menu_links "invoices_customers"]
-		    if { "" != $sub_menu_customers } {
-			append submenus "[im_navbar_submenu -level_one_menu_list $sub_menu_customers -url "#" -name "[lang::message::lookup "" intranet-cost.New_Customer_Documents "New Customer Docs"]" -label "" -selected "unselected"]"
-		    }
-		    
-		    # Build
-		    if { "" != $submenus } {
-			append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>$submenus</ul></li>"
-		    } else {
-			append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
-		    }
-		}
-
-		default {
-		    # Get first level sub_menus
-		    set level_one_menu_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id] 60]	
-		    if { [llength $level_one_menu_list] > 0 } {
-			append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
-			foreach level_one_menu_list_item $level_one_menu_list {
-			    set level_one_menu_id [lindex $level_one_menu_list_item 0]
-			    set level_one_package_name [lindex $level_one_menu_list_item 1]
-			    set level_one_label [lindex $level_one_menu_list_item 2]
-			    set level_one_name [lindex $level_one_menu_list_item 3]
-			    set level_one_url [lindex $level_one_menu_list_item 4]
-			    set level_one_visible_tcl [lindex $level_one_menu_list_item 5]
-
-			    regsub -all {[^0-9a-zA-Z]} $level_one_name "_" level_one_name_key
-			    set name_l10n [lang::message::lookup "" $level_one_package_name.$level_one_name_key $level_one_name]
-
-			    append navbar "<li class='unselected'><a href='$level_one_url'><span>$level_one_name</span></a></li>"
-			}    
-			append navbar "</ul></li>"
-		    } else {
-			regsub -all {[^0-9a-zA-Z]} $name "_" name_key
-			set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
-			append navbar "<li class=\"$selected\"><a href='$url'><span>$name_l10n</span></a></li>"
-		    }    
+	    switch $label {
+		default { 
+		    lappend navbar [im_navbar_main_submenu \
+					-admin_menu_list $admin_menu_list \
+					-menu_id $menu_id \
+					-user_id $user_id \
+					-url $url \
+					-name $name \
+					-label $label \
+					-selected $selected \
+		    ]
 		}
 	    }
 	}	
-	incr ctr
     }
-    
-    # Required to create sub-Links
-    set page_url [im_component_page_url]
-    
-    # My Settings 
+
+
     if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
-	append navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'><span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
-				<ul>
-					<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
+	lappend navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>
+		<span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
+		<ul><li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
     	    "
 	# Allow changing PW only when LDAP is not installed  
-	if {!$ldap_installed_p} { append navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"}
+	if {!$ldap_installed_p} { 
+	   lappend navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"
+	}
 	
-	append navbar "
-		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'>[_ intranet-core.Reset_Portlets]</a></li>
-		<li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'>[_ intranet-core.Add_Portlet]</a></li>
-		</ul>
-        	</li>
+	lappend navbar "
+	    <li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'
+	    >[_ intranet-core.Reset_Portlets]</a></li>
+	    <li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'
+	    >[_ intranet-core.Add_Portlet]</a></li>
+	    </ul></li>
     	"
 
 	if {$admin_p} {
 	    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
 	    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
-	    # append navbar [im_navbar_tab $admin_url [im_gif -translate_p 0 wrench $admin_text] 0]
-	    append navbar "<li class='unselected'><a href=\"$admin_url\"><span>[im_gif -translate_p 0 wrench $admin_text]</span></a></li>"
+	    lappend navbar "<li class='unselected'><a href=\"$admin_url\"><span>[im_gif -translate_p 0 wrench $admin_text]</span></a></li>"
 	}
     }
-    
-    # Display a maintenance message in red when performing updates etc...
-    set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
-    
-    # New Navbar
+
+
     return "
 	    <div id=\"main\">
 	       <div id=\"navbar_main_wrapper\">
-		  <ul id=\"navbar_main\" class=\"sm\">$navbar</ul>
+		  <ul id=\"navbar_main\" class=\"sm\">[join $navbar "\n\n"]</ul>
 	       </div>
 	       <div id=\"main_header\">
-		  <!--<div id=\"main_title\">$page_title</div>-->
-		  <div id=\"main_context_bar\">$context_bar</div>
                   <div id=\"main_maintenance_bar\">$maintenance_message</div>
 	       </div>
 	    </div>
@@ -1031,29 +921,85 @@ ad_proc -public im_navbar {
 }
 
 
-ad_proc -public im_navbar_submenu {
-    -level_one_menu_list:required
+ad_proc -public im_navbar_main_submenu {
+    { -admin_menu_list {}}
+    { -user_id "" }
+    -menu_id:required
     -url:required 
     -name:required
     -label:required
     -selected:required
 } {
-    Builds the sub-menu list 
+    Builds the sub-menu items for each of the main tabs in im_navbar.
 } {
-    if { [llength $level_one_menu_list] > 0 } { 
-	set navbar_build_admin "" 
-	append navbar_build "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a><ul>"
-	foreach level_one_menu_list_item $level_one_menu_list {
-	    append navbar_build "<li class='unselected'><a href='[lindex $level_one_menu_list_item 1]'><span>[lindex $level_one_menu_list_item 0]</span></a></li>"
-	    if {4 == [llength $level_one_menu_list_item] } {
-		append navbar_build_admin "<li class='unselected'><a href='[lindex $level_one_menu_list_item 3]'><span>[lindex $level_one_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>"
-	    }
+    if {"" == $user_id} { set user_id [ad_conn user_id] }
+
+    # Main level of the tab. Opens up a UL for sub-elements
+    set tab "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>\n"
+    append tab "<ul>\n"
+
+    # Add the "admin links" as the first items below the tab
+    foreach admin_menu_list_item $admin_menu_list {
+	set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 1]'><span>[lindex $admin_menu_list_item 0]</span></a></li>\n"
+	if {4 == [llength $admin_menu_list_item] } {
+	    set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 3]'><span>[lindex $admin_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>\n"
 	}
-	append navbar_build "</ul></li>"
+	append tab $item
+    }
+
+    # Add any sub-menus below the "admin links"
+    append tab [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id]
+
+    append tab "</ul>\n"
+
+    # Use simplified tab if there are no sub-elements at all
+    if {0 == [llength $admin_menu_list]} { set tab "<li class='$selected'><a href='$url'><span>$name</span></a></li>" }
+    return $tab
+}
+
+
+ad_proc -public im_navbar_main_submenu_recursive {
+    {-no_outer_ul_p 0}
+    -locale:required
+    -user_id:required
+    -menu_id:required
+} {
+    Builds menu HTML code for all sub-items of the menu_id provided. 
+    Optimized for smartmenus.org
+} {
+    set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]
+    set output_ul ""
+    foreach menu_list $menu_list_list {
+	set menu_id [lindex $menu_list 0]
+	set package_name [lindex $menu_list 1]
+	set label [lindex $menu_list 2]
+	set name [lindex $menu_list 3]
+	set url [lindex $menu_list 4]
+	set visible_tcl [lindex $menu_list 5]
+	set selected "unselected"
+
+	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
+
+	# Check for sub items 
+	set count [util_memoize [list db_string sql "select count(*) from im_menus where parent_menu_id = $menu_id" -default 0]]
+	if {$count} {
+	    append output_ul "<li class='unselected'><a class='has-submenu' href='$url'><span>$name_l10n</span></a>\n"
+	    append output_ul [im_navbar_main_submenu_recursive -locale $locale -user_id $user_id -menu_id $menu_id]
+	    append output_ul "</li>\n"
+	} else {
+	    append output_ul "<li class='unselected'><a href='$url'><span>$name_l10n</span></a></li>\n"
+	}   
+    }
+
+    if {$no_outer_ul_p} {
+	return $output_ul
     } else {
-	append navbar_build "<li class=\"$selected\"><a href='$url'><span>$name</span></a></li>"
+	return "<ul>\n$output_ul\n</ul>\n"
     }
 }
+
+
 
 
 ad_proc -public im_design_user_profile_string { 
@@ -2371,39 +2317,3 @@ ad_proc -public im_color_code {
     }
 }
 
-
-ad_proc -public im_navbar_submenu_recursive {
-    locale
-    user_id
-    menu_id
-} {
-    Builds menu HTML code for all sub-items of the menu_id provided. 
-    Optimized for smartmenus.org
-} {
-    if {[string is alpha $menu_id]} {
-	# convert a label into a menu_id
-	sset menu_id [db_string menu "select menu_id from im_menus where label = '$menu_id'" -default 0]
-    }
-    set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]
-    foreach menu_list $menu_list_list {
-
-	set menu_id [lindex $menu_list 0]
-	set package_name [lindex $menu_list 1]
-	set label [lindex $menu_list 2]
-	set name [lindex $menu_list 3]
-	set url [lindex $menu_list 4]
-	set visible_tcl [lindex $menu_list 5]
-	set selected "unselected"
-
-	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
-	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
-
-	# Check for sub items 
-	if { [db_string sql "select count(*) from im_menus where parent_menu_id = :menu_id" -default 0] } {
-	    append output_ul "<li class='unselected'><a class='has-submenu' href='$url'><span>$name_l10n</span></a>[im_navbar_submenu_recursive $locale $user_id $menu_id]</li>"
-	} else {
-	    append output_ul "<li class='unselected'><a href='$url'><span>$name_l10n</span></a></li>"
-	}   
-    }
-    return "<ul>$output_ul</ul>"
-}
