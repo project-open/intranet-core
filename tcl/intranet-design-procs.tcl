@@ -892,11 +892,12 @@ ad_proc -public im_navbar {
 		}
 		
 		"helpdesk" {
-		    append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
+		    # append navbar [im_navbar_submenu -level_one_menu_list [im_menu_tickets_admin_links] -url $url -name $name -label $label -selected $selected]
+		    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id "helpdesk"]</li>"
 		}
 		"reporting" {
-		    append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
-		    # append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id 25973]</li>"
+		    # append navbar "<li class='$selected'><a href='$url'><span>$name</span></a></li>"
+		    append navbar "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>[im_navbar_submenu_recursive $locale $user_id "reporting"]</li>"
 		}
 		"finance" {
 
@@ -2379,6 +2380,10 @@ ad_proc -public im_navbar_submenu_recursive {
     Builds menu HTML code for all sub-items of the menu_id provided. 
     Optimized for smartmenus.org
 } {
+    if {[string is alpha $menu_id]} {
+	# convert a label into a menu_id
+	sset menu_id [db_string menu "select menu_id from im_menus where label = '$menu_id'" -default 0]
+    }
     set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]
     foreach menu_list $menu_list_list {
 
