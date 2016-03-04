@@ -808,9 +808,11 @@ ad_proc -private im_sub_navbar_menu_helper {
 }
 
 
+
+
 ad_proc -public im_navbar {
-    { -loginpage:boolean 0 }
-    { -show_context_help_p:required 0 }
+    { -loginpage_p 0 }
+    { -show_context_help_p 0 }
     { main_navbar_label "" }
 } {
     Setup a top navbar with tabs for each area, highlighted depending
@@ -821,20 +823,39 @@ ad_proc -public im_navbar {
     they can be excluded
 } {
     set user_id [ad_conn user_id]
-    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
+    set navbar [util_memoize [list im_navbar_helper -user_id $user_id -locale $locale -loginpage_p $loginpage_p -show_context_help_p $show_context_help_p $main_navbar_label]]
+    return $navbar
+}
+
+
+ad_proc -public im_navbar_helper {
+    { -user_id "" } 
+    { -locale "" }
+    { -loginpage_p 0 }
+    { -show_context_help_p 0 }
+    { main_navbar_label "" }
+} {
+    Cache helper for im_navbar
+} {
+    if {"" eq $user_id} { set user_id [ad_conn user_id] }
+    if {"" eq $locale} { set locale [lang::user::locale -user_id $user_id] }
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
-    set ldap_installed_p [util_memoize [list db_string otp_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
+    set ldap_installed_p [util_memoize [list db_string ldap_installed "select count(*) from apm_enabled_package_versions where package_key = 'intranet-ldap'" -default 0]]
     set url_stub [ns_conn url]
     set page_title [ad_partner_upvar page_title]
     set section [ad_partner_upvar section]
     set return_url [im_url_with_query]
-    set main_menu_id [util_memoize [list db_string main_menu "select menu_id from im_menus where label='main'" -default 0]]
+    set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
     set page_url [im_component_page_url]
     set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
+
+    # Don't show menus with the following labels:
+    set skip_labels {users_admin 1 projects_admin 1 companies_admin 1}
   
     # Get toplevel menu items
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id] 300]
+    set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id]
     
     set navbar {}
     foreach menu_list $menu_list_list {
@@ -865,19 +886,16 @@ ad_proc -public im_navbar {
 		"helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
 	    }
 
-	    switch $label {
-		default { 
-		    lappend navbar [im_navbar_main_submenu \
-					-admin_menu_list $admin_menu_list \
-					-menu_id $menu_id \
-					-user_id $user_id \
-					-url $url \
-					-name $name \
-					-label $label \
-					-selected $selected \
-		    ]
-		}
-	    }
+	    lappend navbar [im_navbar_main_submenu \
+				-admin_menu_list $admin_menu_list \
+				-menu_id $menu_id \
+				-user_id $user_id \
+				-url $url \
+				-name $name \
+				-label $label \
+				-selected $selected \
+				-skip_labels $skip_labels \
+	   ]
 	}	
     }
 
@@ -929,6 +947,7 @@ ad_proc -public im_navbar_main_submenu {
     -name:required
     -label:required
     -selected:required
+    { -skip_labels {}}
 } {
     Builds the sub-menu items for each of the main tabs in im_navbar.
 } {
@@ -948,7 +967,7 @@ ad_proc -public im_navbar_main_submenu {
     }
 
     # Add any sub-menus below the "admin links"
-    append tab [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id]
+    append tab [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
 
     append tab "</ul>\n"
 
@@ -963,11 +982,14 @@ ad_proc -public im_navbar_main_submenu_recursive {
     -locale:required
     -user_id:required
     -menu_id:required
+    {-skip_labels {}}
 } {
     Builds menu HTML code for all sub-items of the menu_id provided. 
     Optimized for smartmenus.org
 } {
-    set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]
+    array set skip_hash $skip_labels
+
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $menu_id]]
     set output_ul ""
     foreach menu_list $menu_list_list {
 	set menu_id [lindex $menu_list 0]
@@ -978,14 +1000,17 @@ ad_proc -public im_navbar_main_submenu_recursive {
 	set visible_tcl [lindex $menu_list 5]
 	set selected "unselected"
 
+	# Skip if part of the hash
+	if {[info exists skip_hash($label)]} { continue }
+
 	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
 	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
 
 	# Check for sub items 
-	set count [util_memoize [list db_string sql "select count(*) from im_menus where parent_menu_id = $menu_id" -default 0]]
+	set count [db_string sql "select count(*) from im_menus where parent_menu_id = $menu_id" -default 0]
 	if {$count} {
 	    append output_ul "<li class='unselected'><a class='has-submenu' href='$url'><span>$name_l10n</span></a>\n"
-	    append output_ul [im_navbar_main_submenu_recursive -locale $locale -user_id $user_id -menu_id $menu_id]
+	    append output_ul [im_navbar_main_submenu_recursive -locale $locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
 	    append output_ul "</li>\n"
 	} else {
 	    append output_ul "<li class='unselected'><a href='$url'><span>$name_l10n</span></a></li>\n"
