@@ -1,5 +1,5 @@
 -- upgrade-5.0.0.0.4-5.0.0.0.5.sql
--- SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.0.0.4-5.0.0.0.5.sql','');
+SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.0.0.4-5.0.0.0.5.sql','');
 
 -- acs-mail is deprecated
 -- To ensure backwards compatibility inherit acs_mail_nt__post_request using acs_mail_lite queue
