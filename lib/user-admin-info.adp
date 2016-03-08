@@ -7,7 +7,9 @@
 	</if>
 	<if @registration_ip@ not nil>
 	  <li>
-	    #intranet-core.lt_Registered_from_regis# by <a href="/intranet/users/view?user_id=@creation_user_id;noquote@">@creation_user_name;noquote@</a>
+	    <%= [lang::message::lookup "" intranet-core.Registered_from "Registered from"] %>
+	    <a href="/intranet/admin/host?ip=@registration_ip;noquote@">@registration_ip@</a>
+	    by <a href="/intranet/users/view?user_id=@creation_user_id;noquote@">@creation_user_name;noquote@</a>
 	  </li>
 	</if>
 	<if @admin@ eq 1>

@@ -21,8 +21,8 @@ select
 	u.screen_name,
 	u.username,
 	u.member_state,
-	u.creation_user as creation_user_id,
-	im_name_from_user_id(u.creation_user) as creation_user_name,
+	coalesce(u.creation_user, 0) as creation_user_id,
+	coalesce(im_name_from_user_id(u.creation_user), 'system') as creation_user_name,
 	auth.short_name as authority_short_name,
 	auth.pretty_name as authority_pretty_name
 from
