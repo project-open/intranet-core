@@ -852,8 +852,13 @@ ad_proc -public im_navbar_helper {
     set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
 
     # Don't show menus with the following labels:
-    set skip_labels {users_admin 1 projects_admin 1 companies_admin 1}
-  
+    set skip_labels {
+	users_admin users_employees users_freelancers users_unassigned users_all users_companies
+	projects_admin companies_admin 
+	projects_open projects_closed projects_potential
+    }
+    foreach skip_label $skip_labels { set skip_hash($skip_label) 1 }
+    
     # Get toplevel menu items
     set menu_list_list [im_sub_navbar_menu_helper -locale $locale $user_id $main_menu_id]
     
@@ -894,7 +899,7 @@ ad_proc -public im_navbar_helper {
 				-name $name \
 				-label $label \
 				-selected $selected \
-				-skip_labels $skip_labels \
+				-skip_labels [array get skip_hash] \
 	   ]
 	}	
     }
