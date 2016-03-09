@@ -55,9 +55,6 @@ set page_header [lang::message::lookup "" intranet-core.New_column "New Column"]
 set page_title [lang::message::lookup "" intranet-core.New_column_for_view "New Column for View %view_link%"]
 set context $page_title
 
-
-# ad_return_complaint 1 "xxx: $return_url"
-
 # ------------------------------------------------------------------
 # Build the form
 # ------------------------------------------------------------------

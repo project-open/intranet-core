@@ -164,3 +164,9 @@ end;$BODY$ language 'plpgsql';
 delete from lang_messages
 where	message_key = 'lt_Registered_from_regis' and package_key = 'intranet-core';
 
+
+update im_menus set 
+       parent_menu_id = (select menu_id from im_menus where label = 'projects'),
+       sort_order = 10
+where label = 'project_programs';
+

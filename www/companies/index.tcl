@@ -442,8 +442,6 @@ if { $table_body_html eq "" } {
         </b></ul></td></tr>"
 }
 
-ns_log Notice "xxx: ctr=$ctr, how_many=$how_many, end_idx=$end_idx, total_in_limited=$total_in_limited"
-
 if { $ctr == $how_many && $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page

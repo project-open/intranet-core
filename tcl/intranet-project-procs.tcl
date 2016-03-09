@@ -483,7 +483,7 @@ ad_proc -public im_next_project_nr {
     }
 
     # ----------------------------------------------------
-    # Pull out the largest number that fits the PPPPPPPP_xxxx format
+    # Pull out the largest number that fits the PPPPPPPP_0000 format
 
     set sql "
 	select
@@ -1946,7 +1946,7 @@ ad_proc im_project_clone_costs {
        specific extension table manually. Kinda ugly...
 
     3. Cleanest probably but difficult to maintain either: 
-       Introduce new PL/SQL routines im_xxxx__clone().
+       Introduce new PL/SQL routines im_*__clone().
 
     => Let's kepp the shit together in a single procedure, instead of
        distributing it to a number of little piles...

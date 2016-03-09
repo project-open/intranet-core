@@ -58,7 +58,6 @@ if {[info exists limit_to_company_id] && "" != $limit_to_company_id && "" == $co
     set company_name [join $company_name_list " "]
     set company_name [string map {"&" ""} $company_name]
     set company_name [string map {"  " ""} $company_name]
-    # set event_customer_ids "xxx [regsub -all {&} $event_customer_ids ""]
 }
 
 # --------------------------------------------------

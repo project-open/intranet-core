@@ -236,7 +236,7 @@ foreach email $email_list {
 
     ns_log Notice "member-notify: Sending out to email: '$email'"
 
-    # Replace message %xxx% variables by user's variables
+    # Replace message %...% variables by user's variables
     set message_subst $message
     set found1_p 0
     db_0or1row user_info "

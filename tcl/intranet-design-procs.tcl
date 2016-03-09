@@ -810,6 +810,28 @@ ad_proc -private im_sub_navbar_menu_helper {
 
 
 
+
+ad_proc -public im_menu_admin_admin_links {
+} {
+    Return a list of admin links to be added to the "admin" menu
+} {
+    set result_list {}
+    set current_user_id [ad_conn user_id]
+    set return_url [im_url_with_query]
+
+    # Append user-defined menus
+    set bind_vars [list return_url $return_url]
+    set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "admin" $bind_vars]
+    foreach link $links {
+	lappend result_list $link
+    }
+
+    return $result_list
+}
+
+
+
+
 ad_proc -public im_navbar {
     { -loginpage_p 0 }
     { -show_context_help_p 0 }
@@ -854,8 +876,8 @@ ad_proc -public im_navbar_helper {
     # Don't show menus with the following labels:
     set skip_labels {
 	users_admin users_employees users_freelancers users_unassigned users_all users_companies
-	projects_admin companies_admin 
-	projects_open projects_closed projects_potential
+	projects_admin projects_open projects_closed projects_potential
+	companies_admin customers_active customers_inactive customers_potential
     }
     foreach skip_label $skip_labels { set skip_hash($skip_label) 1 }
     
@@ -958,13 +980,12 @@ ad_proc -public im_navbar_main_submenu {
 } {
     if {"" == $user_id} { set user_id [ad_conn user_id] }
 
-    # Main level of the tab. Opens up a UL for sub-elements
-    set tab "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>\n"
-    append tab "<ul>\n"
+    set tab ""
 
     # Add the "admin links" as the first items below the tab
     foreach admin_menu_list_item $admin_menu_list {
 	set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 1]'><span>[lindex $admin_menu_list_item 0]</span></a></li>\n"
+	# Add a "wrench" with a link to admin the menu
 	if {4 == [llength $admin_menu_list_item] } {
 	    set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 3]'><span>[lindex $admin_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>\n"
 	}
@@ -974,10 +995,14 @@ ad_proc -public im_navbar_main_submenu {
     # Add any sub-menus below the "admin links"
     append tab [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
 
-    append tab "</ul>\n"
+    if {"" eq $tab} { 
+	# Use simplified tab if there are no sub-elements at all
+	set tab "<li class='$selected'><a href='$url'><span>$name</span></a></li>" 
+    } else {
+	# Main level of the tab. Opens up a UL for sub-elements
+	set tab "<li class='$selected'><a class='has-submenu' href='$url'><span>$name</span></a>\n<ul>\n$tab\n</ul>\n"
+    }
 
-    # Use simplified tab if there are no sub-elements at all
-    if {0 == [llength $admin_menu_list]} { set tab "<li class='$selected'><a href='$url'><span>$name</span></a></li>" }
     return $tab
 }
 
