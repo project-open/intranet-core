@@ -1,6 +1,6 @@
 <% set page_title "V[string range [im_core_version] 0 5]" %>
 <%= [im_header -loginpage $page_title] %>
-<%= [im_navbar -loginpage "home"] %>
+<%= [im_navbar -loginpage_p 1] %>
 
 <div id="slave">
 <div id="fullwidth-list-no-side-bar" class="fullwidth-list-no-side-bar" style="visibility: visible;">

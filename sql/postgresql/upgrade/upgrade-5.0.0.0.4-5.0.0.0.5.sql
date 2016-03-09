@@ -157,3 +157,10 @@ begin
 
 end;$BODY$ language 'plpgsql';
 
+
+
+
+-- Fix translation issue
+delete from lang_messages
+where	message_key = 'lt_Registered_from_regis' and package_key = 'intranet-core';
+
