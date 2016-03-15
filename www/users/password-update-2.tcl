@@ -25,8 +25,6 @@ ad_page_contract {
     return_url
 }
 
-
-
 # Check the permissions that the current_user has on user_id
 set current_user_id [auth::require_login]
 im_user_permissions $current_user_id $user_id view read write admin
@@ -58,26 +56,12 @@ if { $exception_count > 0 } {
     return
 }
 
-
-
 ad_change_password $user_id $password_1
-
 
 set password $password_1
 set offer_to_email_new_password_link ""
 if {[im_parameter EmailChangedPasswordP "" 1]} { 
     set offer_to_email_new_password_link "<a href=\"[export_vars -base email-changed-password { user_id password}]\">[_ intranet-core.lt_Send_user_new_passwor]</a>"
 }
-
-set page_body "
-[ad_admin_header "[_ intranet-core.Password_Updated]"]
-<h2>[_ intranet-core.Password_Updated]</h2>
-[_ intranet-core.in] [ad_site_home_link]
-<hr>
-[_ intranet-core.lt_You_must_inform_the_u]
-[_ intranet-core.You_can_return_to] <a href=\"[export_vars -base one { user_id}]\">$name</a>
-<p> $offer_to_email_new_password_link
-[ad_admin_footer]
-"
 
 ad_returnredirect $return_url
