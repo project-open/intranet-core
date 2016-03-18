@@ -980,20 +980,32 @@ ad_proc -public im_navbar_main_submenu {
 } {
     if {"" == $user_id} { set user_id [ad_conn user_id] }
 
-    set tab ""
-
     # Add the "admin links" as the first items below the tab
+    set tab1 ""
     foreach admin_menu_list_item $admin_menu_list {
 	set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 1]'><span>[lindex $admin_menu_list_item 0]</span></a></li>\n"
 	# Add a "wrench" with a link to admin the menu
 	if {4 == [llength $admin_menu_list_item] } {
 	    set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 3]'><span>[lindex $admin_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>\n"
 	}
-	append tab $item
+	append tab1 $item
     }
 
     # Add any sub-menus below the "admin links"
-    append tab [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
+    set tab2 [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
+
+    # Join tab1 and tab2 together
+    if {"" ne $tab1 && "" ne $tab2} {
+	# There are both sub-menus and admin menus, so join together with a separator
+	set tab $tab1
+	append tab "<li class=\"unselected divider\"><hr/></li>\n"
+	append tab $tab2
+    } else {
+	# Only one of the two components contains data, so just join together
+	set tab $tab1
+	append tab $tab2
+    }
+
 
     if {"" eq $tab} { 
 	# Use simplified tab if there are no sub-elements at all
