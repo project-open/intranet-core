@@ -37,7 +37,7 @@ ad_page_contract {
 # Defaults & Security
 # ---------------------------------------------------------------------
 
-# Redirect if this is a task
+# Redirect if this is a task, ticket or opportunity
 if {([info exists project_id] && $project_id ne "")} {
     set otype [db_string otype "select object_type from acs_objects where object_id = :project_id" -default ""]
     if {"im_timesheet_task" == $otype} {
@@ -45,6 +45,9 @@ if {([info exists project_id] && $project_id ne "")} {
     }  
     if {"im_ticket" == $otype} {
         ad_returnredirect [export_vars -base "/intranet-helpdesk/new" {{form_mode display} {ticket_id $project_id}}]
+    }
+    if { [db_string get_project_type "select project_type_id from im_projects where project_id = :project_id" -default 0] == [im_project_type_opportunity] } {
+	ad_returnredirect [export_vars -base "/intranet-crm-opportunities/view" {{opportunity_id $project_id}}]
     }
 }
 
