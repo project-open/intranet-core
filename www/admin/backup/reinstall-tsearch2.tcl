@@ -39,8 +39,7 @@ ns_write "<pre>"
 
 
 set psql_version [im_database_version]
-set pageroot [ns_info pageroot]
-set serverroot [join [lrange [split $pageroot "/"] 0 end-1] "/"]
+set serverroot [acs_root_dir]
 set search_sql_dir "$serverroot/packages/intranet-search-pg/sql/postgresql"
 
 
