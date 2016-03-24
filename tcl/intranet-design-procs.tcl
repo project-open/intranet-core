@@ -908,19 +908,21 @@ ad_proc -public im_navbar_helper {
 
 	    # Manually define the "admin" links for important tabs
 	    set admin_menu_list {}
-	    switch $label {
-		"projects" { set admin_menu_list [im_menu_projects_admin_links] }
-		"user" { set admin_menu_list [im_menu_users_admin_links] }
-		"companies" { set admin_menu_list [im_menu_companies_admin_links] }
-		"helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
-		"timesheet2_timesheet" { 
-		    catch { set admin_menu_list [im_menu_timesheet_admin_links] } err_msg
-		}
-		"timesheet2_absences" { 
-		    catch { set admin_menu_list [im_menu_absences_admin_links] } err_msg
-		}
-		"finance" { 
-		    catch { set admin_menu_list [im_menu_finance_admin_links] } err_msg
+	    if {$admin_p} {
+		switch $label {
+		    "projects" { set admin_menu_list [im_menu_projects_admin_links] }
+		    "user" { set admin_menu_list [im_menu_users_admin_links] }
+		    "companies" { set admin_menu_list [im_menu_companies_admin_links] }
+		    "helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
+		    "timesheet2_timesheet" { 
+			catch { set admin_menu_list [im_menu_timesheet_admin_links] } err_msg
+		    }
+		    "timesheet2_absences" { 
+			catch { set admin_menu_list [im_menu_absences_admin_links] } err_msg
+		    }
+		    "finance" { 
+			catch { set admin_menu_list [im_menu_finance_admin_links] } err_msg
+		    }
 		}
 	    }
 
