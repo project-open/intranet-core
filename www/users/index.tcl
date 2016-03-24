@@ -566,7 +566,8 @@ set idx $start_idx
 
 db_foreach users $query -bind $form_vars {
 
-    ns_log Notice "users/index: user_id=$user_id"
+    # fraber 160324: "user_id" in the query may be overwritten by users_contact.user_id somehow:
+    set user_id $person_id
 
     # Append together a line of data based on the "column_vars" parameter list
     append table_body_html "<tr$bgcolor([expr {$ctr % 2}])>\n"
