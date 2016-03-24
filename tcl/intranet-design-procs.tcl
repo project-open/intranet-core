@@ -916,6 +916,12 @@ ad_proc -public im_navbar_helper {
 		"timesheet2_timesheet" { 
 		    catch { set admin_menu_list [im_menu_timesheet_admin_links] } err_msg
 		}
+		"timesheet2_absences" { 
+		    catch { set admin_menu_list [im_menu_absences_admin_links] } err_msg
+		}
+		"finance" { 
+		    catch { set admin_menu_list [im_menu_finance_admin_links] } err_msg
+		}
 	    }
 
 	    lappend navbar [im_navbar_main_submenu \
