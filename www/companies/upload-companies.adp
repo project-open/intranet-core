@@ -65,7 +65,7 @@ This function is capable of importing a number of
 <span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 "Companies" from Microsoft Outlook 2000 (English). For other versions 
 of Outlook please 
-<A href="http://www.project-open.com/contact/">contact us</a>.
+<A href="http://www.project-open.com/en/contact">contact us</a>.
 </p>
 
 <p>

@@ -35,7 +35,7 @@ to "0".
 This function is capable of importing "Contacts" from
 Microsoft Outlook 2000 (English). For other versions of outlook
 please
-<A href="http://www.project-open.com/contact/">contact us</a>.
+<A href="http://www.project-open.com/en/contact">contact us</a>.
 </p>
 In order to create a suitable CSV file for this function
 please export your Outlook database:
