@@ -1812,7 +1812,8 @@ ad_proc -public im_menu_users_admin_links {
     if {[im_permission $current_user_id "add_users"]} {
 	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
 	lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
-	lappend result_list [list [_ intranet-core.Import_User_CSV] [export_vars -base /intranet/users/upload-contacts {return_url}]]
+	lappend result_list [list [lang::message::lookup "" intranet-core.Import_User_from_CSV "Import Users from CSV"] [export_vars -base "/intranet-csv-import/index" {{object_type person} return_url}]]
+	lappend result_list [list [lang::message::lookup "" intranet-core.Export_User_to_CSV "Export Users to CSV"] [export_vars -base "/intranet-dw-light/users.csv" {}]]
     }
 
     # Append user-defined menus

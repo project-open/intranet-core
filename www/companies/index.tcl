@@ -348,27 +348,20 @@ set selection [im_select_row_range $sql $start_idx $end_idx]
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
+# ---------------------------------------------------------------
 
+ns_log Notice "/intranet/project/index: Before admin links"
 set admin_html "<ul>"
-if {[im_permission $current_user_id "add_companies"]} {
-
-    append admin_html "
-	<li><a href=/intranet/companies/new>[_ intranet-core.Add_a_new_Company]</a>\n"
+set links [im_menu_companies_admin_links]
+foreach link_entry $links {
+    set html ""
+    for {set i 0} {$i < [llength $link_entry]} {incr i 2} {
+        set name [lindex $link_entry $i]
+        set url [lindex $link_entry $i+1]
+        append html "<a href='$url'>$name</a>"
+    }
+    append admin_html "<li>$html</li>\n"
 }
-
-if {$user_is_admin_p} {
-    append admin_html "
-<li><a href=/intranet/companies/[export_vars -base upload-companies { return_url}]>[_ intranet-core.Import_Company_CSV]</a>
-<!-- <li><a href=/intranet/companies/[export_vars -base upload-contacts { return_url}]>[_ intranet-core.lt_Import_Company_Contac]</a> -->
-"}
-
-append admin_html "
-<li><a href=\"/intranet/companies/index?filter_advanced_p=1\">[_ intranet-core.Advanced_Filtering]</a>
-"
-
-# Append user-defined menus
-append admin_html [im_menu_ul_list -no_uls 1 "companies_admin" {}]
-
 
 append admin_html "</ul>"
 

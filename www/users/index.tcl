@@ -231,38 +231,6 @@ if { $how_many eq "" || $how_many < 1 } {
 set end_idx [expr {$start_idx + $how_many - 1}]
 
 
-# #####
-# Do we have to show administration links?
-
-set admin_html_links ""
-if {[im_permission $user_id "add_users"]} {
-    set object_type "person" 
-    append admin_html_links "
-	<li><a href=/intranet/users/new>[_ intranet-core.Add_a_new_User]</a></li>
-	<li><a href=\"[export_vars -base "/intranet/users/index" -override {{filter_advanced_p 1}} { filter_advanced_p user_group_name }]\">[_ intranet-core.Advanced_Filtering]</a></li>
-	<li><a href=\"/intranet-csv-import/[export_vars -base index {return_url object_type}]\">[_ intranet-core.Import_User_CSV]</a></li>
-	<!--<li><a href=/intranet/users/upload-users>[lang::message::lookup "" intranet-core.BulkUpdateUsers "CSV Bulk Update Users"]</a></li>-->
-    "
-}
-
-set parent_menu_sql "select menu_id from im_menus where label= 'users_admin'"
-set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default 0]]
-
-set menu_select_sql "
-        select  m.*
-        from    im_menus m
-        where   parent_menu_id = :parent_menu_id
-                and im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
-        order by sort_order
-"
-
-# Start formatting the menu bar
-set ctr 0
-db_foreach menu_select $menu_select_sql {
-    regsub -all " " $name "_" name_key
-    append admin_html_links "<li><a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a></li>\n"
-}
-
 
 # ---------------------------------------------------------------
 # 3. Define Table Columns
@@ -659,6 +627,28 @@ if { $start_idx > 0 } {
 set table_continuation_html ""
 
 
+
+
+# ----------------------------------------------------------
+# Do we have to show administration links?
+# ---------------------------------------------------------------
+
+ns_log Notice "/intranet/project/index: Before admin links"
+set admin_html "<ul>"
+set links [im_menu_users_admin_links]
+foreach link_entry $links {
+    set html ""
+    for {set i 0} {$i < [llength $link_entry]} {incr i 2} {
+        set name [lindex $link_entry $i]
+        set url [lindex $link_entry $i+1]
+        append html "<a href='$url'>$name</a>"
+    }
+    append admin_html "<li>$html</li>\n"
+}
+
+append admin_html "</ul>"
+
+
 # ---------------------------------------------------------------
 # 10. Join all parts together
 # ---------------------------------------------------------------
@@ -680,14 +670,14 @@ set left_navbar_html "
         </div>
 "
 
-if {"" != $admin_html_links } {
+if {"" ne $admin_html } {
     append left_navbar_html "
               <div class='filter-block'>
                  <div class='filter-title'>
                     [_ intranet-core.Admin_Users]
                  </div>
                  <ul>
-                        $admin_html_links
+                        $admin_html
                  </ul>
               </div>
     "

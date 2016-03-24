@@ -900,6 +900,8 @@ ad_proc -public im_navbar_helper {
 	# Set Menu Item Name 
 	set name_key "intranet-core.[lang::util::suggest_key $name]"
 	set name [lang::message::lookup "" $name_key $name]
+
+	ns_log Notice "im_navbar_helper: label=$label, url=$url"
 	
 	# No menues on register and login page 
 	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
@@ -911,6 +913,9 @@ ad_proc -public im_navbar_helper {
 		"user" { set admin_menu_list [im_menu_users_admin_links] }
 		"companies" { set admin_menu_list [im_menu_companies_admin_links] }
 		"helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
+		"timesheet2_timesheet" { 
+		    catch { set admin_menu_list [im_menu_timesheet_admin_links] } err_msg
+		}
 	    }
 
 	    lappend navbar [im_navbar_main_submenu \
@@ -983,10 +988,13 @@ ad_proc -public im_navbar_main_submenu {
     # Add the "admin links" as the first items below the tab
     set tab1 ""
     foreach admin_menu_list_item $admin_menu_list {
-	set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 1]'><span>[lindex $admin_menu_list_item 0]</span></a></li>\n"
+	set item_text [lindex $admin_menu_list_item 0]
+	set item_url [lindex $admin_menu_list_item 1]
+	set item "<li class='unselected'><a href='$item_url'><span>$item_text</span></a></li>\n"
 	# Add a "wrench" with a link to admin the menu
 	if {4 == [llength $admin_menu_list_item] } {
-	    set item "<li class='unselected'><a href='[lindex $admin_menu_list_item 3]'><span>[lindex $admin_menu_list_item 0]&nbsp;[im_gif wrench]</span></a></li>\n"
+	    set wrench_url [lindex $admin_menu_list_item 3]
+	    set item "<li class='unselected'><span style=\"white-space: nowrap\"><a href='$item_url'>$item_text</a><a href='$wrench_url'>[im_gif wrench]</a></span></li>\n"
 	}
 	append tab1 $item
     }

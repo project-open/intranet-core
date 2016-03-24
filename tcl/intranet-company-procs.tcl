@@ -942,10 +942,6 @@ ad_proc -public im_menu_companies_admin_links {
     }
     # Upload Companies 
 
-    if { [im_is_user_site_wide_or_intranet_admin $current_user_id] } {
-	lappend result_list [list [_ intranet-core.Import_Company_CSV] [export_vars -base /intranet/companies/upload-companies {return_url}]]
-    }
-
     # Advanced Filtering 
     lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/companies/index?filter_advanced_p=1"]
 
@@ -954,6 +950,10 @@ ad_proc -public im_menu_companies_admin_links {
     set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "companies_admin" $bind_vars]
     foreach link $links {
         lappend result_list $link
+    }
+
+    if { [im_is_user_site_wide_or_intranet_admin $current_user_id] } {
+	lappend result_list [list [lang::message::lookup "" intranet-core.Import_Companies_from_CSV "Import Companies from CSV"] [export_vars -base "/intranet-csv-import/index" {{object_type im_company} return_url}]]
     }
 
     return $result_list

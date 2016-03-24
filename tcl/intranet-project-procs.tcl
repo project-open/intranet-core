@@ -3392,6 +3392,8 @@ ad_proc -public im_menu_projects_admin_links {
 		lappend result_list [list [lang::message::lookup "" intranet-core.New_workflow "New %wf_name%"] $new_from_wf_url]
 	    }
 	}
+
+	lappend result_list [list [lang::message::lookup "" intranet-core.Import_Projects_from_CSV "Import Projects from CSV"] [export_vars -base "/intranet-csv-import/index" {{object_type im_project} return_url}]]
     }
 
     # Append user-defined menus

@@ -349,7 +349,7 @@ ad_proc -public im_menu_links {
 } {
     Return a list of links and admin links for a parent menu item:
     1) menu_item_name menu_item_absolute_url
-2) wrench_html menu_item_admin_url
+    2) wrench_html menu_item_admin_url
 } {
     set result_list [list]
     set result_list_admin [list] 
