@@ -1002,7 +1002,12 @@ ad_proc -public im_navbar_main_submenu {
 	# Add a "wrench" with a link to admin the menu
 	if {4 == [llength $admin_menu_list_item] } {
 	    set wrench_url [lindex $admin_menu_list_item 3]
-	    set item "<li class='unselected'><span style=\"white-space: nowrap\"><a href='$item_url'>$item_text</a><a href='$wrench_url'>[im_gif wrench]</a></span></li>\n"
+	    set item "<li class='unselected'>
+		<div class=\"sm-po-sub-menu-item\">
+			<div class='sm-po-sub-menu-item-name'><a href='$item_url'>$item_text</a></div>
+			<div class='sm-po-sub-menu-item-wrench'><img src=\"/intranet/images/navbar_default/wrench.png\" alt=\"\"onclick=\"location.href='$wrench_url';\"/></div>
+		</div>
+		</li>\n"
 	}
 	append tab1 $item
     }

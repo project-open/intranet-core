@@ -2136,7 +2136,7 @@ tr.last td {
     margin-bottom: 2px;
 }
 
-/* SMART MENU DIVIDER */ 
+/* SMART MENU DIVIDER & Wrenches*/ 
 
 ul.sm li.divider {
     background: transparent none repeat scroll 0 0;
@@ -2150,4 +2150,39 @@ ul.sm li.divider hr {
     height: 1px;
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+.sm-po-sub-menu-item {
+    content:"";
+    display: table;
+    clear: both;
+    width: 100%;
+}
+
+.sm-po-sub-menu-item-name {
+
+    float: left;
+    width: auto;
+    max-width: 90%
+}
+
+.sm-po-sub-menu-item-wrench {
+    float: right;
+    width: 12px;
+    max-width: 100%;
+    margin-right: 3px;
+    margin-top: 5px;
+}
+
+.sm-po-sub-menu-item-wrench img {
+    height: auto;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+    .sm-po-sub-menu-item-wrench, 
+    .sm-po-sub-menu-item-name {
+        float: none;
+        width: auto;
+    }
 }
