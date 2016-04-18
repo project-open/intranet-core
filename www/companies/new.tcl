@@ -250,7 +250,7 @@ ad_form -extend -name $form_id -select_query {
     }
     
     if { ([info exists errors] && $errors ne "") } {
-	ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
+	ad_return_complaint $exception_count "<ul>$errors</ul>"
 	return
     }
     
