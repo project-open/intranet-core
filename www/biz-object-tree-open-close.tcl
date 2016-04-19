@@ -55,31 +55,27 @@ if { 0 == $object_id } {
 
 # Assume that there are few entries in the list of closed tree objects.
 foreach oid $object_id {
-    if {[catch {
+
+    db_1row info "
+	select	(count(*) from acs_objects where object_id = :oid) as oid_exists_p,
+		(count(*) from im_biz_object_tree_status where object_id = :oid and user_id = :user_id and page_url = :page_url) as status_exists_p
+	from	dual
+    "
+    # Skip of the object dosn't exist. This may happen with partically saved GanttEditor trees
+    if {!$oid_exists_p} { continue }
+
+    if {!$status_exists_p} {
 	db_dml insert_tree_status "
-	insert into im_biz_object_tree_status (
-		object_id,
-		user_id,
-		page_url,
-		open_p,
-		last_modified
-	) values (
-		:oid,
-		:user_id,
-		:page_url,
-		:open_p,
-		now()
-	)
-        "
-    } err_msg]} {
-	# There was probably already an entry, so update the entry.
+		insert into im_biz_object_tree_status (object_id, user_id, page_url, open_p, last_modified) 
+		values (:oid, :user_id, :page_url, :open_p, now())
+	"
+    } else {
+	# There is already an entry
 	db_dml update_tree_status "
-	update	im_biz_object_tree_status
-	set	open_p = :open_p,
-		last_modified = now()
-	where	object_id = :oid and
-		user_id = :user_id and
-		page_url = :page_url
+		update	im_biz_object_tree_status
+		set	open_p = :open_p,
+			last_modified = now()
+		where	object_id = :oid and user_id = :user_id and page_url = :page_url
         "
     }
 }
