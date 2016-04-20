@@ -57,8 +57,16 @@ if { 0 == $object_id } {
 foreach oid $object_id {
 
     db_1row info "
-	select	(count(*) from acs_objects where object_id = :oid) as oid_exists_p,
-		(count(*) from im_biz_object_tree_status where object_id = :oid and user_id = :user_id and page_url = :page_url) as status_exists_p
+	select	(select	count(*)
+		from	acs_objects
+		where	object_id = :oid
+		) as oid_exists_p,
+		(select	count(*)
+		from	im_biz_object_tree_status
+		where	object_id = :oid and 
+			user_id = :user_id and 
+			page_url = :page_url
+		) as status_exists_p
 	from	dual
     "
     # Skip of the object dosn't exist. This may happen with partically saved GanttEditor trees
