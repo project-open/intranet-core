@@ -164,7 +164,7 @@ if {"" != $attachment_filename && "" != $user_id_from_search} {
 
     if { "" != $attachment_ci_id } {
 	if {[catch { 
-	    db_dml delete_permissions "delete from acs_permissions where object_id = $attachment_ci_id)"
+	    db_dml delete_permissions "delete from acs_permissions where object_id = $attachment_ci_id"
 	    db_dml delete_cr_item "select content_item__del($attachment_ci_id)" 
 	} errmsg ]} {}
     }
