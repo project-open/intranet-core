@@ -130,7 +130,7 @@ if { $exists_p } {
 }
 
 if { $errors ne "" } {
-    ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
+    ad_return_complaint $exception_count "<ul>$errors</ul>"
     ad_script_abort
 }
 
