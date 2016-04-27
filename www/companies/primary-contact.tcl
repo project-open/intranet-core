@@ -25,7 +25,6 @@ ad_page_contract {
 
 set user_id [auth::require_login]
 set page_title "[_ intranet-core.Add_primary_contact]"
-set context_bar [im_context_bar [list /intranet/companies/ "[_ intranet-core.Companies]"] $page_title]
 set return_url [im_url_with_query]
 
 set company_name [db_string company_name {
@@ -99,10 +98,6 @@ if { $contact_info eq "" } {
 set return_url "[im_url_stub]/companies/[export_vars -base view {company_id}]"
 
 set page_title "[_ intranet-core.lt_Select_primary_contac]"
-
-# KH: 20160418
-# Produces error in V5.0, context_bar already set above!
-# set context_bar [im_context_bar [list ./ "[_ intranet-core.Companies]"] [[export_vars -base view -url {company_id}] "[_ intranet-core.One_company]"] "[_ intranet-core.Select_contact]"]
 
 set page_body "
 <ul>
