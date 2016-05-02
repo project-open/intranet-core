@@ -165,25 +165,32 @@ if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_ke
 set min_all_l10n [lang::message::lookup "" intranet-core.Mine_All "Mine/All"]
 set all_l10n [lang::message::lookup "" intranet-core.All "All"]
 
-
-
 # Check that Start & End-Date have correct format
-if {"" != $start_date && ![regexp {^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$} $start_date]} {
-    set date $start_date
-    ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Invalid_Start_Date "Invalid Start Date"]</b>:<br>
-    [lang::message::lookup "" intranet-core.Invalid_Date_Format_msg "<br>
-    Current value: '%date%'<br>
-    Expected format: 'YYYY-MM-DD'"]"
+if { "" != $start_date } {
+    if {[catch {
+        if { $start_date != [clock format [clock scan $start_date] -format %Y-%m-%d] } {
+            ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
+            [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$start_date'<br>"
+        }
+    } err_msg]} {
+        ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
+        [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$start_date'<br>
+        [lang::message::lookup "" intranet-core.Expected_Format "Expected Format"]: 'YYYY-MM-DD'"
+    }
 }
 
-if {"" != $end_date && ![regexp {^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$} $end_date]} {
-    set date $end_date
-    ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Invalid_End_Date "Invalid End Date"]</b>:<br>
-    [lang::message::lookup "" intranet-core.Invalid_Date_Format_msg "<br>
-    Current value: '%date%'<br>
-    Expected format: 'YYYY-MM-DD'"]"
+if { "" != $end_date } {
+    if {[catch {
+        if { $end_date != [clock format [clock scan $end_date] -format %Y-%m-%d] } {
+            ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
+            [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$end_date'<br>"
+        }
+    } err_msg]} {
+        ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
+        [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$end_date'<br>
+        [lang::message::lookup "" intranet-core.Expected_Format "Expected Format"]: 'YYYY-MM-DD'"
+    }
 }
-
 
 # ---------------------------------------------------------------
 # 3. Defined Table Fields
