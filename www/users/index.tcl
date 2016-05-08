@@ -471,6 +471,7 @@ if {$filter_advanced_p && [im_table_exists im_dynfield_attributes]} {
 
 set sql "
 select
+	e.*,
 	p.*,
 	u.*,
 	c.home_phone, c.work_phone, c.cell_phone, c.pager,
