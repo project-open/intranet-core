@@ -1,5 +1,5 @@
--- upgrade-5.0.0.0.6-5.0.0.0.7.sql
-SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.0.0.6-5.0.0.0.7.sql','');
+-- upgrade-5.0.0.0.7-5.0.0.0.8.sql
+SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.0.0.7-5.0.0.0.8.sql','');
 
 -- Create the new group/profile if not already there...
 create or replace function inline_0()
