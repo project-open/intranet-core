@@ -1,8 +1,26 @@
 -- upgrade-5.0.0.0.6-5.0.0.0.7.sql
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.0.0.6-5.0.0.0.7.sql','');
 
--- Create the new group/profile
-select im_profile__new('Skill Profile', 'skill_profile');
+-- Create the new group/profile if not already there...
+create or replace function inline_0()
+returns integer as $body$
+DECLARE
+	v_count		integer;
+BEGIN
+	select	count(*) into v_count from groups
+	where	group_name = 'Skill Profile';
+	IF v_count > 0 THEN return 1; END IF;
+
+	select im_profile__new('Skill Profile', 'skill_profile');
+
+	return 0;
+END;$body$ language 'plpgsql';
+select inline_0();
+drop function inline_0();
+
+
+
+
 
 
 -- Set name and email of the skill profiles
