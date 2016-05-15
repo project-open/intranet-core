@@ -20,7 +20,8 @@ error. Thanks!<br>&nbsp;<br>
     <table cellpadding="0" cellspacing="0" border="0">
     	 <tr>
 	     <td valign="top"><%= $locate_form %></td>
-	     <td valign="top"><%= $select_form %></td>
+	     <td valign="top"><%= $employee_form %></td>
+	     <td valign="top"><%= $skill_profile_form %></td>
 	 </tr>
     </table>
   </td>

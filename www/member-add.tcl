@@ -124,31 +124,41 @@ set locate_form "
 # Get the list of all employees as a shortcut
 #
 set employee_select [im_employee_select_multiple -limit_to_group_id $limit_to_users_in_group_id user_id_from_search "" 12 multiple]
-
-
-set select_form "
+set employee_form "
 <form method=POST action=/intranet/member-add-2>
 [export_entire_form]
 <input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
 <input type=hidden name=passthrough value=\"object_id role_id return_url also_add_to_object_id\">
 <table cellpadding=0 cellspacing=2 border=0>
-  <tr> 
-    <td class=rowtitle align=middle>[_ intranet-core.Employee]</td>
-  </tr>
-  <tr> 
-    <td>
-$employee_select
-    </td>
-  </tr>
-  <tr> 
-    <td>[_ intranet-core.add_as] 
-[im_biz_object_roles_select role_id $object_id $role_id]
-    </td>
-  </tr>
+  <tr><td class=rowtitle align=middle>[_ intranet-core.Employee]</td></tr>
+  <tr><td>$employee_select</td></tr>
+  <tr><td>[_ intranet-core.add_as] [im_biz_object_roles_select role_id $object_id $role_id]</td></tr>
   <tr> 
     <td>
       <input type=submit value=\"[_ intranet-core.Add]\">
       <input type=checkbox name=notify_asignee value=1 $notify_checked>[_ intranet-core.Notify]
+    </td>
+  </tr>
+</table>
+</form>
+"
+
+
+# Get the list of all skill profiles as a shortcut
+#
+set skill_profile_select [im_employee_select_multiple -group_id [im_profile_skill_profile] -limit_to_group_id $limit_to_users_in_group_id user_id_from_search "" 12 multiple]
+set skill_profile_form "
+<form method=POST action=/intranet/member-add-2>
+[export_entire_form]
+<input type=hidden name=target value=\"[im_url_stub]/member-add-2\">
+<input type=hidden name=passthrough value=\"object_id role_id return_url also_add_to_object_id\">
+<table cellpadding=0 cellspacing=2 border=0>
+  <tr><td class=rowtitle align=middle>[lang::message::lookup "" intranet-core.Skill_Profile "Skill Profile"]</td></tr>
+  <tr><td>$skill_profile_select</td></tr>
+  <tr><td>[_ intranet-core.add_as] [im_biz_object_roles_select role_id $object_id $role_id]</td></tr>
+  <tr> 
+    <td>
+      <input type=submit value=\"[_ intranet-core.Add]\">
     </td>
   </tr>
 </table>
