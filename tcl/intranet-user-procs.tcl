@@ -630,6 +630,7 @@ ad_proc im_user_select {
 
 
 ad_proc im_employee_select_multiple {
+    {-group_id ""}
     {-limit_to_group_id ""}
     {-limit_to_direct_reports_of_user_id ""}
     select_name
@@ -638,7 +639,7 @@ ad_proc im_employee_select_multiple {
     {multiple ""}
 } {
     set bind_vars [ns_set create]
-    set employee_group_id [im_employee_group_id]
+    if {"" == $group_id} { set group_id [im_employee_group_id] }
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
     set limit_to_group_sql ""
@@ -658,7 +659,7 @@ ad_proc im_employee_select_multiple {
                 group_distinct_member_map gm
         where
                 u.user_id = gm.member_id
-                and gm.group_id = $employee_group_id
+                and gm.group_id = $group_id
                 $limit_to_group_sql
                 $limit_to_direct_reports_of_user_id_sql
         order by lower(im_name_from_user_id(u.user_id, $name_order))
