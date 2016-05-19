@@ -67,6 +67,7 @@ cvs checkout intranet-crm-tracking
 # cvs checkout intranet-cust-whp			# (customer package)
 # cvs checkout intranet-cust-yada			# (customer package)
 cvs checkout intranet-cvs-integration
+cvs checkout intranet-department-planner
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
 cvs checkout intranet-earned-value-management
@@ -104,6 +105,7 @@ cvs checkout intranet-planning
 # cvs checkout intranet-procedures			# (obsolete)
 cvs checkout intranet-pdf-htmldoc
 cvs checkout intranet-portfolio-management
+cvs checkout intranet-portfolio-planner
 cvs checkout intranet-release-mgmt
 cvs checkout intranet-reporting
 cvs checkout intranet-reporting-cubes
