@@ -11,7 +11,7 @@ BEGIN
 	where	group_name = 'Skill Profile';
 	IF v_count > 0 THEN return 1; END IF;
 
-	select im_profile__new('Skill Profile', 'skill_profile');
+	PERFORM im_profile__new('Skill Profile', 'skill_profile');
 
 	return 0;
 END;$body$ language 'plpgsql';
