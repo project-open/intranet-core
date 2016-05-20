@@ -376,17 +376,8 @@ if {$add_budget_hours_p} {
 
 
 if {$add_budget_p} {
-    template::element::create $form_id project_budget -optional \
-	-label "[_ intranet-core.Project_Budget]"\
-	-html {size 20} 
-		
-    template::element::create $form_id project_budget_currency -optional \
-	-widget "select"\
-	-datatype "text" \
-	-label "[_ intranet-core.Project_Budget_Currency]"\
-	-options "[im_currency_options]" \
-	-after_html "[im_gif -translate_p 1 help "What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs."]"
-
+    template::element::create $form_id project_budget -optional -label "[_ intranet-core.Project_Budget]" -html {size 20} 
+    template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
 } else {
     template::element::create $form_id project_budget -optional -widget hidden
     template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
