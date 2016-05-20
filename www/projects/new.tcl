@@ -188,9 +188,9 @@ template::element::create $form_id return_url \
     -datatype text
 template::element::create $form_id project_name \
     -datatype text\
-    -label "[_ intranet-core.Project_Name]" \
+    -label [_ intranet-core.Project_Name] \
     -html {size 40} \
-    -after_html "[im_gif -translate_p 1 help "Please enter any suitable name for the project. The name must be unique."]"
+    -after_html [im_gif -translate_p 1 help "Please enter any suitable name for the project. The name must be unique."]
 
 
 
@@ -199,17 +199,17 @@ if {$project_nr_field_editable_p} { set project_nr_mode "edit" }
 template::element::create $form_id project_nr \
     -datatype text \
     -mode $project_nr_mode \
-    -label "[lang::message::lookup "" intranet-core.Project_Nr "Project Nr."]" \
+    -label [lang::message::lookup "" intranet-core.Project_Nr "Project Nr."] \
     -html {size $project_nr_field_size maxlength $project_nr_field_size} \
-    -after_html "[im_gif -translate_p 1 help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]"
+    -after_html [im_gif -translate_p 1 help "A project number is composed by 4 digits for the year plus 4 digits for current identification"]
 
 
 if {$enable_project_path_p} {
     template::element::create $form_id project_path \
 	-datatype text \
-	-label "[lang::message::lookup "" intranet-core.Project_Path "Project Path"]" \
+	-label [lang::message::lookup "" intranet-core.Project_Path "Project Path"] \
 	-html {size 40} \
-	-after_html "[im_gif -translate_p 1 help "An optional full path to the project filestorage"]"
+	-after_html [im_gif -translate_p 1 help "An optional full path to the project filestorage"]
 }
 
 
@@ -225,10 +225,10 @@ if {$enable_nested_projects_p} {
     set project_parent_options [im_project_options -exclude_subprojects_p 0 -exclude_status_id [im_project_status_closed] -exclude_type_id [list [im_project_type_ticket] [im_project_type_sla] [im_project_type_opportunity] [im_project_type_task]] -project_id $super_project_id]
 
     template::element::create $form_id parent_id -optional \
-    	-label "[_ intranet-core.Parent_Project]" \
+    	-label [_ intranet-core.Parent_Project] \
         -widget "select" \
 	-options $project_parent_options \
-	-after_html "[im_gif -translate_p 1 help "Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure."]"
+	-after_html [im_gif -translate_p 1 help "Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure."]
 } else {
     template::element::create $form_id parent_id -optional -widget "hidden"
 }
@@ -237,13 +237,13 @@ if {$enable_nested_projects_p} {
 # create customer query
 #
 set customer_list_options [im_company_options -include_empty_p 1 -status "Active or Potential" -type "CustOrIntl"]
-set help_text "[im_gif -translate_p 1 help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]"
+set help_text [im_gif -translate_p 1 help "There is a difference between &quot;Paying Client&quot; and &quot;Final Client&quot;. Here we want to know from whom we are going to receive the money..."]
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/companies/new'>[im_gif -translate_p 1 new "Add a new client"]</A> $help_text"
 }
 
 template::element::create $form_id company_id \
-    -label "[_ intranet-core.Customer]" \
+    -label [_ intranet-core.Customer] \
     -widget "select" \
     -options $customer_list_options \
     -after_html $help_text
@@ -251,7 +251,7 @@ template::element::create $form_id company_id \
 # Include current PM in list of potential PMs if not there
 # already ...
 #
-set project_lead_options "[list [list "[_ intranet-core.--_Please_select_--]" ""]]"
+set project_lead_options [list [list "[_ intranet-core.--_Please_select_--]" ""]]
 set project_lead_id 0
 if {[info exists project_id]} {
     set project_lead_id [db_string project_lead "select	project_lead_id from im_projects where project_id = :project_id" -default 0]
@@ -259,25 +259,25 @@ if {[info exists project_id]} {
 set project_lead_list_options [concat $project_lead_options [im_project_manager_options -include_empty 0 -current_pm_id $project_lead_id]]
 
 template::element::create $form_id project_lead_id -optional\
-    -label "[_ intranet-core.Project_Manager]" \
+    -label [_ intranet-core.Project_Manager] \
     -widget "select" \
     -options $project_lead_list_options
 
 
-set help_text "[im_gif -translate_p 1 help "General type of project. This allows us to create a suitable folder structure."]"
+set help_text [im_gif -translate_p 1 help "General type of project. This allows us to create a suitable folder structure."]
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
 	[im_gif -translate_p 1 new "Add a new project type"]</A> $help_text"
 }
 
 template::element::create $form_id project_type_id \
-    -label "[_ intranet-core.Project_Type]" \
+    -label [_ intranet-core.Project_Type] \
     -widget "im_category_tree" \
     -custom {category_type "Intranet Project Type"} \
     -after_html $help_text
 
 
-set help_text "[im_gif -translate_p 1 help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]"
+set help_text [im_gif -translate_p 1 help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
 	[im_gif -translate_p 1 new "Add a new project status"]</A>$help_text"
@@ -310,7 +310,7 @@ if {[info exists project_id] } {
 if {[info exists project_id] } {
     	if { !$wf_instace_exists_p || [im_permission $user_id edit_project_status]  } {
 	    template::element::create $form_id project_status_id \
-        	-label "[_ intranet-core.Project_Status]" \
+        	-label [_ intranet-core.Project_Status] \
 	        -widget "im_category_tree" \
         	-custom {category_type "Intranet Project Status"} \
 	        -after_html $help_text
@@ -322,7 +322,7 @@ if {[info exists project_id] } {
 	    template::element::create $form_id project_status_id -optional -widget hidden
     } else {
             template::element::create $form_id project_status_id \
-                -label "[_ intranet-core.Project_Status]" \
+                -label [_ intranet-core.Project_Status] \
                 -widget "im_category_tree" \
                 -custom {category_type "Intranet Project Status"} \
                 -after_html $help_text
@@ -334,19 +334,19 @@ if {[info exists project_id] } {
 
 template::element::create $form_id start \
     -datatype "date" widget "date" \
-    -label "[_ intranet-core.Start_Date]" \
+    -label [_ intranet-core.Start_Date] \
     -format "DD Month YYYY" \
     -after_html {<input type="button" style="height:23px; width:23px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendarWithDateWidget('start', 'y-m-d');" >}
 
 template::element::create $form_id end \
     -datatype "date" widget "date" \
-    -label "[_ intranet-core.Delivery_Date]"\
+    -label [_ intranet-core.Delivery_Date] \
     -format "DD Month YYYY HH24:MI" \
     -after_html {<input type="button" style="height:23px; width:23px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendarWithDateWidget('end', 'y-m-d');" >}
 
-set help_text "[im_gif -translate_p 1 help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"]"
+set help_text [im_gif -translate_p 1 help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"]
 template::element::create $form_id on_track_status_id \
-    -label "[_ intranet-core.On_Track_Status]" \
+    -label [_ intranet-core.On_Track_Status] \
     -widget "im_category_tree" \
     -optional \
     -custom {category_type "Intranet Project On Track Status"} \
@@ -360,15 +360,15 @@ if { 1 == [parameter::get -package_id [apm_package_id_from_key intranet-timeshee
     template::element::create $form_id percent_completed \
 	-datatype float \
 	-optional \
-	-label "[_ intranet-core.Percent_Completed]"\
+	-label [_ intranet-core.Percent_Completed] \
 	-after_html "%"
 }
 
 if {$add_budget_hours_p} {
     template::element::create $form_id project_budget_hours -optional \
-	-label "[_ intranet-core.Project_Budget_Hours]"\
+	-label [_ intranet-core.Project_Budget_Hours] \
 	-html {size 20} \
-     	-after_html "[im_gif -translate_p 1 help "How many hours can be logged on this project (both internal and external resource)?"]"
+     	-after_html [im_gif -translate_p 1 help "Limit for the hours to be logged logged on this project?"]
 
 } else {
     template::element::create $form_id project_budget_hours -optional -widget hidden
@@ -376,22 +376,32 @@ if {$add_budget_hours_p} {
 
 
 if {$add_budget_p} {
-    template::element::create $form_id project_budget -optional -label "[_ intranet-core.Project_Budget]" -html {size 20} 
+    template::element::create $form_id project_budget -optional \
+	-label [_ intranet-core.Project_Budget] \
+	-html {size 20} \
+	-after_html [im_gif -translate_p 1 help "Limit for the total cost of the project (both internal and external resource)?"]
+
     template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
 } else {
     template::element::create $form_id project_budget -optional -widget hidden
     template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
 }
 
-template::element::create $form_id company_project_nr \
-    -datatype text \
-    -optional \
-    -label "[lang::message::lookup "" intranet-core.Company_Project_Nr "Customer's ProjectNr"]" \
-    -after_html "[im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]  ]"
+
+if {0} {
+    template::element::create $form_id company_project_nr \
+	-datatype text \
+	-optional \
+	-label [lang::message::lookup "" intranet-core.Company_Project_Nr "Customer's ProjectNr"] \
+	-after_html [im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]]
+} else {
+    template::element::create $form_id company_project_nr -optional -widget hidden
+}
+
 
 template::element::create $form_id description -optional -datatype text\
     -widget textarea \
-    -label "[_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable])"\
+    -label [_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable]) \
     -html {rows 5 cols 50}
 
 # ------------------------------------------------------
@@ -422,7 +432,7 @@ set field_cnt [im_dynfield::append_attributes_to_form \
 # Check if we are editing an already existing project
 #
 set edit_existing_project_p 0
-set button_text "[_ intranet-core.Save_Changes]"
+set button_text [_ intranet-core.Save_Changes]
 if {[form is_request $form_id]} {
     if { ([info exists project_id] && $project_id ne "") } {
 	# We are editing an already existing project
@@ -457,13 +467,13 @@ if {[form is_request $form_id]} {
 		p.project_id=:project_id
 	}
 	
-	set page_title "[_ intranet-core.Edit_project]"
-	set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] [list [export_vars -base /intranet/projects/view {project_id}] "One project"] $page_title]
+	set page_title [_ intranet-core.Edit_project]
+	set context_bar [im_context_bar [list /intranet/projects/ [_ intranet-core.Projects]] [list [export_vars -base /intranet/projects/view {project_id}] "One project"] $page_title]
 	
 	if { $start_date eq "" } { set start_date $todays_date }
 	if { $end_date eq "" } { set end_date $todays_date }
 	if { $end_time eq "" } { set end_time "12:00" }
-	set button_text "[_ intranet-core.Save_Changes]"
+	set button_text [_ intranet-core.Save_Changes]
 	    
 	
     } else {
@@ -494,7 +504,7 @@ if {[form is_request $form_id]} {
 	set "creation_user" $user_id
 	set project_id [im_new_object_id]
 	set project_name [im_opt_val project_name]
-	set button_text "[_ intranet-core.Create_Project]"
+	set button_text [_ intranet-core.Create_Project]
 
 	if { (![info exists parent_id] || $parent_id eq "") } {
 	    
@@ -506,8 +516,8 @@ if {[form is_request $form_id]} {
 	    }
 	    if {(![info exists project_type_id] || $project_type_id eq "")} { set project_type_id 85 }
 	    set project_status_id 76
-	    set page_title "[_ intranet-core.Add_New_Project]"
-	    set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] $page_title]
+	    set page_title [_ intranet-core.Add_New_Project]
+	    set context_bar [im_context_bar [list ./ [_ intranet-core.Projects]] $page_title]
 	    
 	} else {
 	    
@@ -525,8 +535,8 @@ if {[form is_request $form_id]} {
 	    }
 	
 	    set requires_report_p "f"
-	    set page_title "[_ intranet-core.Add_subproject]"
-	    set context_bar [im_context_bar [list ./ "[_ intranet-core.Projects]"] [list "view?project_id=$parent_id" "[_ intranet-core.One_project]"] $page_title]
+	    set page_title [_ intranet-core.Add_subproject]
+	    set context_bar [im_context_bar [list ./ [_ intranet-core.Projects]] [list "view?project_id=$parent_id" [_ intranet-core.One_project]] $page_title]
 	}
     }
     
@@ -568,7 +578,7 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id company_project_nr $company_project_nr
 }
 
-template::form::set_properties $form_id edit_buttons "[list [list "$button_text" ok]]"
+template::form::set_properties $form_id edit_buttons [list [list "$button_text" ok]]
  
 if {[form is_submission $form_id]} {
     form get_values $form_id
@@ -601,7 +611,7 @@ if {[form is_submission $form_id]} {
     set n_error 0
     # check that no variable contains double or single quotes
     if {[var_contains_quotes $project_name]} { 
-	template::element::set_error $form_id project_name "[_ intranet-core.lt_Quotes_in_Project_Nam]"
+	template::element::set_error $form_id project_name [_ intranet-core.lt_Quotes_in_Project_Nam]
 	incr n_error
     }
 
@@ -615,18 +625,18 @@ if {[form is_submission $form_id]} {
     }
 
     if {[var_contains_quotes $project_nr]} { 
-	template::element::set_error $form_id project_nr "[_ intranet-core.lt_Quotes_in_Project_Nr_]"
+	template::element::set_error $form_id project_nr [_ intranet-core.lt_Quotes_in_Project_Nr_]
 	incr n_error
     }
     #if {[var_contains_quotes $project_path]} { 
     #    append errors "<li>[_ intranet-core.lt_Quotes_in_Project_Pat]"
     #}
     if {[regexp {/} $project_nr]} { 
-	template::element::set_error $form_id project_nr "[_ intranet-core.lt_Slashes__in_Project_P]"
+	template::element::set_error $form_id project_nr [_ intranet-core.lt_Slashes__in_Project_P]
 	incr n_error
     }
     if {[regexp {\.} $project_nr]} { 
-	template::element::set_error $form_id project_nr "[_ intranet-core.lt_Dots__in_Project_Path]"
+	template::element::set_error $form_id project_nr [_ intranet-core.lt_Dots__in_Project_Path]
 	incr n_error
     }
 
@@ -640,7 +650,7 @@ if {[form is_submission $form_id]} {
 	incr n_error
     }
     if {[template::util::date::compare $end $start] == -1} {
-	template::element::set_error $form_id end "[_ intranet-core.lt_End_date_must_be_afte]"
+	template::element::set_error $form_id end [_ intranet-core.lt_End_date_must_be_afte]
 	incr n_error
     }
     if { [string length $project_nr] < $project_nr_field_min_len} {
@@ -675,7 +685,7 @@ if {[form is_submission $form_id]} {
 	 } else {
 	     # Report an error
 	     incr n_error
-	     template::element::set_error $form_id project_nr "[_ intranet-core.lt_The_specified_project]"
+	     template::element::set_error $form_id project_nr [_ intranet-core.lt_The_specified_project]
 	 }
      }
 
@@ -697,13 +707,13 @@ if {[form is_submission $form_id]} {
 
     if { $project_name_exists > 0 } {
 	incr n_error
-	template::element::set_error $form_id project_name "[_ intranet-core.lt_The_specified_name_pr]"
+	template::element::set_error $form_id project_name [_ intranet-core.lt_The_specified_name_pr]
     }
 
     # Make sure company_project_nr has a max length 50
     if { [string length $company_project_nr] > 50} {
         incr n_error
-        template::element::set_error $form_id company_project_nr "[_ intranet-core.Max50Chars]"
+        template::element::set_error $form_id company_project_nr [_ intranet-core.Max50Chars]
     }
 
     set previous_company_id [db_string get_previous_company_id "select company_id from im_projects where project_id = :project_id" -default ""]
