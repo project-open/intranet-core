@@ -539,7 +539,7 @@ db_dml im_biz_object_members "delete from im_biz_object_members"
 
 # Remove Project Audits
 ns_write "<li>Cleanup im_projects_audit (if exists)\n"
-if {[im_table_exists im_baselines]} {
+if {[im_table_exists im_projects_audit]} {
     db_dml expense_invoices "delete from im_projects_audit"
 }
 
