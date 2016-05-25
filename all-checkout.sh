@@ -117,6 +117,7 @@ cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-resource-management
 cvs checkout intranet-rest
+cvs checkout intranet-rule-engine
 # cvs checkout intranet-rss-reader			# (internal)
 cvs checkout intranet-riskmanagement
 # cvs checkout intranet-scrum				# (work in progress)
@@ -131,6 +132,7 @@ cvs checkout intranet-sharepoint
 # cvs checkout intranet-soap-lite-server		# (work in progress)
 cvs checkout intranet-spam
 cvs checkout intranet-sql-selectors
+cvs checkout intranet-sugarcrm
 cvs checkout intranet-sysconfig
 cvs checkout intranet-timesheet2
 cvs checkout intranet-timesheet2-invoices
