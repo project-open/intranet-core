@@ -138,7 +138,7 @@ ad_proc -public im_check_for_update_scripts {
     # ---------------------------------------------------------------------------
     # 2b - Update acs-* non-core packages
 
-    set openacs_modules [list acs-admin acs-api-browser acs-authentication acs-automated-testing acs-bootstrap-installer acs-content-repository acs-core-docs acs-datetime acs-developer-support acs-events acs-kernel acs-lang acs-mail acs-mail-lite acs-messaging acs-reference acs-service-contract acs-subsite acs-tcl acs-templating acs-translations acs-workflow ajaxhelper attachments bulk-mail calendar categories file-storage general-comments mail-tracking notifications oacs-dav openacs-default-theme ref-countries ref-currency ref-language ref-timezones ref-us-counties ref-us-states ref-us-zipcodes workflow]
+    set openacs_modules [list acs-admin acs-api-browser acs-authentication acs-automated-testing acs-bootstrap-installer acs-content-repository acs-core-docs acs-datetime acs-developer-support acs-events acs-kernel acs-lang acs-mail-lite acs-messaging acs-reference acs-service-contract acs-subsite acs-tcl acs-templating acs-translations acs-workflow ajaxhelper attachments calendar categories file-storage general-comments notifications oacs-dav openacs-default-theme ref-countries ref-currency ref-language ref-timezones workflow]
     set url "/acs-admin/apm/packages-install-2?"
     set redirect_p 0
     set missing_modules [list]
