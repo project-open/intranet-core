@@ -107,12 +107,9 @@ ad_proc -public im_audit  {
 
     # Call the audit implementation from intranet-audit commercial package if exists
     set err_msg ""
-    set intranet_audit_exists_p [util_memoize [list db_string audit_exists_p "select count(*) from apm_packages where package_key = 'intranet-audit'"]]
-
-    if {$debug_p} { ns_log Notice "im_audit: intranet_audit_exists_p=$intranet_audit_exists_p" }
-
     set audit_id 0
-    if {$intranet_audit_exists_p} {
+    set audit_p [parameter::get_from_package_key -package_key intranet-core -parameter AuditP -default 1]
+    if {$audit_p} {
 	if {[catch {
 	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
 	} err_msg]} {
