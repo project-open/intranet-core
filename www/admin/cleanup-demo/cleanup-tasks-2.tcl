@@ -52,7 +52,7 @@ foreach id $task_id {
 	ns_write "<li>Nuking task \#$id ...<br>\n"
 	db_transaction {
                 # Write Audit Trail
-                im_project_audit -action before_nuke -project_id $id
+                im_audit -action before_nuke -object_id $id
 
 		ns_log Notice "projects/nuke-2: im_timesheet_tasks"
 		db_dml task_actions "delete from im_hours where project_id = :id"

@@ -82,7 +82,7 @@ set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package
 
 
 # Check if the invoices was changed outside of ]po[...
-im_project_audit -project_id $project_id -action view
+im_audit -object_id $project_id -action view
 
 # ---------------------------------------------------------------------
 # Check permissions

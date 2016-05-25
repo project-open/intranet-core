@@ -382,7 +382,7 @@ namespace eval im_project {
         set project_id [db_exec_plsql create_new_project $sql]
 
 	# Write Audit Trail
-	im_project_audit -action after_create -project_id $project_id
+	im_audit -action after_create -object_id $project_id
 
         return $project_id
     }
@@ -2436,8 +2436,8 @@ ad_proc im_project_nuke {
     if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
 
     # Write Audit Trail
-    ns_log Notice "im_project_nuke: before im_project_audit"
-    im_project_audit -user_id $current_user_id -project_id $project_id -action before_nuke
+    ns_log Notice "im_project_nuke: before im_audit"
+    im_audit -user_id $current_user_id -object_id $project_id -action before_nuke
 
     # ---------------------------------------------------------------
     # Delete

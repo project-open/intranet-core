@@ -148,7 +148,7 @@ if {$wf_exists_p} {
 }
 
 # Write Audit Trail
-im_project_audit -project_id $clone_project_id
+im_audit -object_id $clone_project_id
 
 
 if {"" == $return_url && 0 != $clone_project_id} { 
