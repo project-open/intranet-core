@@ -3760,7 +3760,7 @@ UPDATE im_investment
 SET
         name                    = :investment_name,
         investment_status_id    = :investment_status_id,
-        investment_type__id     = :investment_type_id
+        investment_type_id     = :investment_type_id
 WHERE
         investment_id = :investment_id
 "
