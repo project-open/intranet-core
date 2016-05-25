@@ -20,7 +20,10 @@
         <callbacks>
         </callbacks>
         <parameters>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditP" default="1" description="Should the the system write audit logs if supported? Defaults to '1', but depends on the availability of the intranet-audit package."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditProjectProgressIntervalHours"  default="0" description="Should the system take a snapshot of each active main project every few hours? Such an audit snapshot allows displaying project lifecyle and earned value anlysis reports. Taking snapshots has certain performance implications, so consider carefully whether you need this feature. The default is '0' to disable this feature. Use '24' (1 day) to enable tight follow-ups. Use '182' (1 week) in order to save resources."/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditObjectRelationshipsP" default="0" description="Should we audit the acs_rels between the audit object and other objects? Set this parameter to '1' in order to track user group memberships, project assignments etc. Set this parameter to '0' if you run into performance issues with audit."/>
+
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditProjectUpdatesP"  default="0" description="Enable Auditing of project updates by a user? This options saves the user_id and the IP-address of a user changing a project."/>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="/home/ppm/filestorage/backup" description="Path for backup sets"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectCostsP"  default="1" description="Clone project's financial items?"/>

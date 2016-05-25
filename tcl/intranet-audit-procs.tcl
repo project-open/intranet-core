@@ -16,8 +16,7 @@
 ad_library {
     Stubs for object auditing.
     Audit is implemented in the package intranet-audit.
-    This file only contains "stubs" to the calls in
-    intranet-audit.
+    This file only contains "stubs" to the calls in intranet-audit.
 
     @author frank.bergmann@project-open.com
 }
@@ -119,8 +118,6 @@ ad_proc -public im_audit  {
 
     return $audit_id
 }
-
-
 
 
 
@@ -356,7 +353,7 @@ ad_proc -public im_audit_object_value {
     
     # Add information about the object's relationships
     set audit_rels_p [parameter::get_from_package_key \
-		-package_key intranet-audit \
+		-package_key intranet-core \
 		-parameter AuditObjectRelationshipsP \
 		-default 1 \
     ]
