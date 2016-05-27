@@ -38,6 +38,7 @@ cvs checkout diagram
 cvs checkout file-storage
 cvs checkout general-comments
 cvs checkout intranet-amberjack
+cvs checkout intranet-agile
 cvs checkout intranet-audit
 # cvs checkout intranet-asus-server			# (internal)
 cvs checkout intranet-baseline
