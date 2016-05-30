@@ -142,7 +142,6 @@ foreach csv_line_fields $values_list_of_lists {
     set project_name ""
     set project_nr ""
     set project_path ""
-    set project_priority_id ""
     set project_risk ""
     set project_status_id ""
     set project_type_id ""
@@ -174,7 +173,6 @@ foreach csv_line_fields $values_list_of_lists {
     set customer_contact ""
     set on_track_status ""
     set project_manager ""
-    set project_priority ""
     set program ""
     set material ""
     set uom ""
@@ -225,7 +223,6 @@ foreach csv_line_fields $values_list_of_lists {
 # customer_contact
 # on_track_status
 # project_manager
-# project_priority
 # program
 # material
 # uom

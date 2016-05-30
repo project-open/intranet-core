@@ -3078,6 +3078,7 @@ ad_proc -public im_personal_todo_component {
     forum items etc. assigned to the current user. 
 } {
     set current_user_id [ad_conn user_id]
+    set priority ""
 
     # ---------------------------------------------------------------
     # Columns to show:
@@ -3129,7 +3130,7 @@ ad_proc -public im_personal_todo_component {
 		p.project_type_id as type_id,
 		p.start_date,
 		p.end_date,
-		im_category_from_id(p.project_priority_id) as priority,
+		'' as priority,
 		p.percent_completed
 	from
 		im_projects p,
