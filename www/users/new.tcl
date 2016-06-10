@@ -79,6 +79,8 @@ set show_authority_p [parameter::get_from_package_key -package_key intranet-core
 # We need the field if we go for non-email login...
 if {![auth::UseEmailForLoginP]} { set show_username_p 1 }
 
+if {$show_username_p} { set username_mode "edit" } else { set username_mode "display" }
+
 
 # Get the list of profiles managable for current_user_id
 set managable_profiles [im_profile::profile_options_managable_for_user $current_user_id]
@@ -185,7 +187,7 @@ ad_form -name register -export {next_url user_id return_url} -form {
 }
 
 ad_form -extend -name register -form {
-    {username:text(text),optional {mode display} {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
+    {username:text(text),optional {mode $username_mode} {label "[lang::message::lookup {} intranet-core.Username Username]"} {html {size 30}}}
 }
 
 ad_form -extend -name register -form {
