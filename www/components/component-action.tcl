@@ -59,6 +59,14 @@ switch $action {
 	    "
 	}
 
+	# Clear open/close status of trees and therefore reset to defaults
+	if {[db_table_exists im_biz_object_tree_status]} {
+	    db_dml del_tree_status "
+		delete from im_biz_object_tree_status
+		where user_id = [ad_conn user_id]
+	    "
+	}
+	
 	ad_returnredirect "$return_url"
 	ad_script_abort
     }
