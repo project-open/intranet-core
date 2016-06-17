@@ -585,7 +585,7 @@ ad_proc -public im_navbar_help_link {
     regsub -all {_} $url "-" url
 
     # Add the constant part in front of the url:
-    set url "http://www.project-open.com/en/page$url"
+    set url "http://www.project-open.net/en/page$url"
 
     # Return the finished URL
     return $url
