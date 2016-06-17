@@ -388,17 +388,6 @@ if {$add_budget_p} {
 }
 
 
-if {0} {
-    template::element::create $form_id company_project_nr \
-	-datatype text \
-	-optional \
-	-label [lang::message::lookup "" intranet-core.Company_Project_Nr "Customer's ProjectNr"] \
-	-after_html [im_gif -translate_p 0 help [lang::message::lookup "" intranet-core.Company_Project_Nr_Help "The customer's reference to this project. This number will appear in invoices of this project."]]
-} else {
-    template::element::create $form_id company_project_nr -optional -widget hidden
-}
-
-
 template::element::create $form_id description -optional -datatype text\
     -widget textarea \
     -label [_ intranet-core.Description]<br>([_ intranet-core.publicly_searchable]) \
