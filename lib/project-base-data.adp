@@ -70,10 +70,12 @@
     </tr>
   </if>
   <if @company_project_nr@ not nil>
+    <!--
     <tr>
       <td>#intranet-core.Company_Project_Nr#</td>
       <td>@company_project_nr;noquote@</td>
     </tr>
+    -->
   </if>
   <if @description@ not nil>
     <tr>
