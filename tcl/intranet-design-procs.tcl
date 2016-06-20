@@ -642,6 +642,11 @@ ad_proc -public im_sub_navbar {
     set locale [lang::user::locale -user_id $user_id]
     set url_stub [ns_conn url]
 
+    # Skip the Admin submenu
+    set admin_menu_id [im_menu_id_from_label "admin"]
+    if {$parent_menu_id eq $admin_menu_id} { return "" }
+
+
     # Start formatting the menu bar
     set navbar ""
     set found_selected 0
