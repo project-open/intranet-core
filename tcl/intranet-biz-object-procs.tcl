@@ -913,7 +913,7 @@ ad_proc im_biz_object_add_profile_component {
     if {!$write_p} { return "" }
 
     set object_name [acs_object_name $object_id]
-    set page_title [lang::message::lookup "" intranet-helpdesk.Add_profile "Add profile"]
+    set page_title [lang::message::lookup "" intranet-core.Add_profile "Add profile"]
 
     set notify_checked ""
     if {[parameter::get_from_package_key -package_key "intranet-core" -parameter "NotifyNewMembersDefault" -default "1"]} {
