@@ -9,3 +9,5 @@ if { ![info exists admin_navbar_label] } { set admin_navbar_label "" }
 if { ![info exists show_context_help_p] } { set show_context_help_p 1 }
 
 set parent_menu_id [im_menu_id_from_label "admin"]
+set sub_navbar_html [im_sub_navbar $parent_menu_id "" $title "pagedesriptionbar" $admin_navbar_label]
+
