@@ -103,7 +103,6 @@ foreach csv_line_fields $values_list_of_lists {
     set bt_project_id ""
     set company_contact_id ""
     set company_id ""
-    set company_project_nr ""
     set confirm_date ""
     set corporate_sponsor ""
     set cost_bills_cache ""

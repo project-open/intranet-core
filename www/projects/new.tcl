@@ -436,7 +436,6 @@ if {[form is_request $form_id]} {
 		p.project_type_id, 
 		p.project_status_id, 
 		p.description,
-	        p.company_project_nr,
 		p.project_lead_id, 
 		p.project_nr,
 	        p.project_path,
@@ -483,7 +482,6 @@ if {[form is_request $form_id]} {
 	set billable_type_id ""
 	set project_lead_id $user_id
 	set description ""
-	set company_project_nr ""
 	set project_budget ""
 	set project_budget_currency ""
 	set project_budget_hours ""
@@ -564,7 +562,6 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id project_budget $project_budget
     template::element::set_value $form_id project_budget_currency $project_budget_currency
     template::element::set_value $form_id description $description
-    template::element::set_value $form_id company_project_nr $company_project_nr
 }
 
 template::form::set_properties $form_id edit_buttons [list [list "$button_text" ok]]
@@ -697,12 +694,6 @@ if {[form is_submission $form_id]} {
     if { $project_name_exists > 0 } {
 	incr n_error
 	template::element::set_error $form_id project_name [_ intranet-core.lt_The_specified_name_pr]
-    }
-
-    # Make sure company_project_nr has a max length 50
-    if { [string length $company_project_nr] > 50} {
-        incr n_error
-        template::element::set_error $form_id company_project_nr [_ intranet-core.Max50Chars]
     }
 
     set previous_company_id [db_string get_previous_company_id "select company_id from im_projects where project_id = :project_id" -default ""]
@@ -841,14 +832,13 @@ if {[form is_valid $form_id]} {
 		company_id =		:company_id,
 		parent_id =		:parent_id,
 		description =		:description,
-		company_project_nr =	 :company_project_nr,
 		requires_report_p =	:requires_report_p,
-		percent_completed =	 :percent_completed,
+		percent_completed =	:percent_completed,
 		on_track_status_id =	:on_track_status_id,
 		start_date =		$start_date,
 		end_date =		$end_date
 	where
-		project_id =	 :project_id
+		project_id =	 	:project_id
     "
     db_dml project_update $project_update_sql
 
