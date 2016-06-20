@@ -197,7 +197,7 @@ set admin_html "
 set left_navbar_html "
             <div class=\"filter-block\">
                 <div class=\"filter-title\">
-                    [lang::message::lookup "" intranet-helpdesk.Admin_Actions "Admin Actions"]
+                    [lang::message::lookup "" intranet-core.Admin_Actions "Admin Actions"]
                 </div>
                 $admin_html
             </div>
