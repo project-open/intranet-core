@@ -1,4 +1,4 @@
-# /packages/intranet-helpdesk/www/related-objects-component.tcl
+# /packages/intranet-core/www/related-objects-component.tcl
 #
 # Copyright (c) 2003-2008 ]project-open[
 #
@@ -60,7 +60,7 @@ if {!$admin_p} {
 
 set bulk_actions_list {}
 if { !$hide_object_chk_p  } {
-    lappend bulk_actions_list "[lang::message::lookup "" intranet-helpdesk.Delete_Association "Delete Association"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-helpdesk.Remove_checked_items "Remove Checked Items"]"
+    lappend bulk_actions_list "[lang::message::lookup "" intranet-core.Delete_Association "Delete Association"]" "/intranet/related-objects-delete" "[lang::message::lookup "" intranet-core.Remove_checked_items "Remove Checked Items"]"
 }
 
 # Determine the association link. Each object type has its own custom
@@ -99,22 +99,22 @@ list::create \
 	    hide_p $hide_object_chk_p
 	}
 	rel_name {
-	    label "[lang::message::lookup {} intranet-helpdesk.Relationship_Type {Relationship}]"
+	    label "[lang::message::lookup {} intranet-core.Relationship_Type {Relationship}]"
 	    hide_p $hide_rel_name_p
 	}
 	direction_pretty {
-	    label "[lang::message::lookup {} intranet-helpdesk.Direction { }]"
+	    label "[lang::message::lookup {} intranet-core.Direction { }]"
 	    display_template {
 		@rels_multirow.direction_pretty;noquote@
 	    }
 	    hide_p $hide_direction_pretty_p
 	}
 	object_type_pretty {
-	    label "[lang::message::lookup {} intranet-helpdesk.Object_Type {Type}]"
+	    label "[lang::message::lookup {} intranet-core.Object_Type {Type}]"
 	    hide_p $hide_object_type_pretty_p
 	}
 	object_name {
-	    label "[lang::message::lookup {} intranet-helpdesk.Object_Name {Name}]"
+	    label "[lang::message::lookup {} intranet-core.Object_Name {Name}]"
 	    link_url_eval {$object_url}
 	    hide_p $hide_object_name_p
 	}
@@ -216,7 +216,7 @@ db_multirow -extend { object_chk object_url direction_pretty rel_name } rels_mul
 				value=\"$rel_id\" 
 				id=\"rels_list,$rel_id\">
     "
-    set rel_name [lang::message::lookup "" intranet-helpdesk.Rel_$rel_type $rel_type_pretty]
+    set rel_name [lang::message::lookup "" intranet-core.Rel_$rel_type $rel_type_pretty]
     if {"" == $object_name} { set object_name [lang::message::lookup "" intranet-core.Invalid_Object "Invalid Object"] }
 
     switch $direction {
