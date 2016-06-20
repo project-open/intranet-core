@@ -76,7 +76,7 @@
 	<tr>
 		<td colspan="2" class=tablebody><small>
 		The total memory of the server.<br>
-		We recommend atleast 1024 MByte for a production server.
+		We recommend atleast 4096 MByte for a production server.
 		</small></td>
 	</tr>
 	</table>
