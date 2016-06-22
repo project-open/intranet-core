@@ -2372,7 +2372,7 @@ ad_proc -public im_import_trans_project_details { filename } {
 	    ns_log Notice "cmd=$cmd"
 	    set result [eval $cmd]
 	}
-	set company_project_nr [ns_urldecode $company_project_nr]
+
 	# -------------------------------------------------------
 	# Transform categories, email and names into IDs
 	#
@@ -2391,7 +2391,6 @@ ad_proc -public im_import_trans_project_details { filename } {
 	set update_sql "
 UPDATE im_projects
 SET
-	company_project_nr	= :company_project_nr,
 	company_contact_id	= :company_contact_id,
 	source_language_id	= :source_language_id,
 	subject_area_id		= :subject_area_id,
