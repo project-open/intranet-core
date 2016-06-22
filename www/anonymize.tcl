@@ -152,8 +152,7 @@ db_foreach im_projects_select $im_projects_sql {
 	update im_projects set
 		project_name = '[anonymize_name $project_name]',
 		description = '[anonymize_name $description]',
-		note = '[anonymize_name $note]',
-		company_project_nr = '[anonymize_name $company_project_nr]'
+		note = '[anonymize_name $note]'
 	where 
 		project_id = :project_id
     "
