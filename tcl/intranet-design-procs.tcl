@@ -875,6 +875,7 @@ ad_proc -public im_navbar_helper {
     set section [ad_partner_upvar section]
     set return_url [im_url_with_query]
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
+    set main_menu_enabled_p [db_string main_menu_enabled "select count(*) from im_menus where menu_id = :main_menu_id and enabled_p = 't'"]
     set page_url [im_component_page_url]
     set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
 
@@ -945,7 +946,7 @@ ad_proc -public im_navbar_helper {
     }
 
 
-    if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
+    if {$main_menu_enabled_p && !$loginpage_p && "register" ne [string range [ns_conn url] 1 8] } {
 	lappend navbar "<li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>
 		<span>[lang::message::lookup "" intranet-core.MySettings "My Settings"]</span></a>
 		<ul><li class='unselected'><a href='/intranet/users/view?user_id=$user_id'>[_ intranet-core.My_Account]</a></li>
