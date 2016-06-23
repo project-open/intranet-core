@@ -917,6 +917,9 @@ ad_proc -public im_navbar_helper {
 	    if {$admin_p} {
 		switch $label {
 		    "projects" { set admin_menu_list [im_menu_projects_admin_links] }
+		    "crm" {
+			catch { set admin_menu_list [im_menu_crm_admin_links] } err_msg
+		    }
 		    "user" { set admin_menu_list [im_menu_users_admin_links] }
 		    "companies" { set admin_menu_list [im_menu_companies_admin_links] }
 		    "helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
