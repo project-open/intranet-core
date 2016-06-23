@@ -2791,11 +2791,21 @@ ad_proc im_project_nuke {
 	    db_dml del_risks "delete from im_risks where risk_project_id = :project_id"
 	}
 
-	# Baselines
+	# Old im_projects audit
 	if {[im_table_exists im_projects_audit]} {
 	    ns_log Notice "projects/nuke-2: im_projects_audit"
-	    db_dml del_im_projects_audit "delete from im_projects_audit where baseline_id in (select baseline_id from im_baselines where baseline_project_id = :project_id)"
+	    db_dml del_im_projects_audit "delete from im_projects_audit where project_id = :project_id"
 	}
+
+	# Audit
+	if {[im_table_exists im_audits]} {
+	    ns_log Notice "projects/nuke-2: im_audits"
+	    # fraber 2016-06-23: Don't(!) delete the audit log for the nuked project.
+	    # We even have to trace that somebody used nuke...
+	    # db_dml del_im_audits "delete from im_audits where audit_project_id = :project_id"
+	}
+
+	# Baselines
 	if {[im_table_exists im_baselines]} {
 	    ns_log Notice "projects/nuke-2: im_baselines"
 	    db_dml del_risks "delete from im_baselines where baseline_project_id = :project_id"
