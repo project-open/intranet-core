@@ -2317,20 +2317,6 @@ ad_proc -public im_browser_warning_component { } {
     Returns a warning message for old browsers
     that may not display all contents correctly
 } {
-    # Redirect mobile browsers to 
-    set mobile_p [im_browser_is_mobile_p]
-    set mobile_url [parameter::get_from_package_key -package_key "intranet-core" -parameter RedirectMobileBrowsersUrl -default "default"]
-    if {"default" eq $mobile_url} {
-	# Check if senchatouch-timesheet is installed
-	set senchatouch_ts_sql "select count(*) from apm_enabled_package_versions where package_key = 'senchatouch-timesheet'"
-	set senchatouch_ts_installed_p [util_memoize [list db_string senchatouch_installed_p $senchatouch_ts_sql -default 0]]
-	if {$senchatouch_ts_installed_p} { set mobile_url "/senchatouch-timesheet" }
-    }
-    if {$mobile_p && ($mobile_url ne "")} {
-	ad_returnredirect $mobile_url
-    }
-
-
     set browser_warning [im_browser_warning]
     if {"" == $browser_warning} { return "" }
 
