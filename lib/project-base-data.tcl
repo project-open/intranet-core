@@ -40,7 +40,7 @@ set project_info_sql "
 	from
 		im_projects p
 		LEFT OUTER JOIN im_biz_objects bo ON (p.project_Id = bo.object_id),
-		acs_objects o
+		acs_objects o,
 		im_companies ic
 	where 
 		p.project_id = :project_id and
