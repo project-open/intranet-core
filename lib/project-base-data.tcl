@@ -20,7 +20,7 @@ set extra_select [join $extra_selects ",\n\t"]
 
 
 set project_info_sql "
-select	*,
+select	*,			-- company_id is ambigous, so extra_where needs to come separately
 	$extra_select
 from	(
 	select
