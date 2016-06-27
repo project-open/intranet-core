@@ -20,6 +20,9 @@ set extra_select [join $extra_selects ",\n\t"]
 
 
 set project_info_sql "
+select	*,
+	$extra_select
+from	(
 	select
 		p.*,
 		bo.*,
@@ -35,8 +38,7 @@ set project_info_sql "
 		ic.primary_contact_id as company_contact_id,
 		im_name_from_user_id(ic.manager_id) as manager,
 		im_name_from_user_id(ic.primary_contact_id) as company_contact,
-		im_email_from_user_id(ic.primary_contact_id) as company_contact_email,
-		$extra_select
+		im_email_from_user_id(ic.primary_contact_id) as company_contact_email
 	from
 		im_projects p
 		LEFT OUTER JOIN im_biz_objects bo ON (p.project_Id = bo.object_id),
@@ -45,7 +47,8 @@ set project_info_sql "
 	where 
 		p.project_id = :project_id and
 		p.project_id = o.object_id and
-		ip.company_id = ic.company_id
+		p.company_id = ic.company_id
+	) t
 "
     
 if {![db_0or1row project_info_query $project_info_sql] } {
