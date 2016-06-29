@@ -316,7 +316,7 @@ ad_proc -public im_check_for_update_scripts {
                 It seems that there are upgrade scripts in your system that
                 have not yet been executed.<br>
                 This situation may occur during or after an upgrade of
-                V3.1 - V3.3 and is usually not a big issue.
+                V4.1 - V5.0 and is usually not a big issue.
                 However, we recommend to run these upgrade scripts now.<br>
                 Please click on the link below to run these scripts now.<br>
                 <br>&nbsp;<br>
