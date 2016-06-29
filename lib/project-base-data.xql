@@ -22,42 +22,6 @@
     </querytext>
   </fullquery>
 
-  <fullquery name="project_info_query">
-    <querytext>
-	select
-		ic.company_name,
-		ic.company_path,
-		ic.primary_contact_id as company_contact_id,
-		im_name_from_user_id(ic.manager_id) as manager,
-		im_name_from_user_id(ic.primary_contact_id) as company_contact,
-		im_email_from_user_id(ic.primary_contact_id) as company_contact_email,
-		ip.*
-	from
-		im_companies ic,
-		(select
-			p.*,
-			bo.*,
-			o.*,
-			to_char(p.end_date, 'HH24:MI') as end_date_time,
-			to_char(p.start_date, 'YYYY-MM-DD') as start_date_formatted,
-			to_char(p.end_date, 'YYYY-MM-DD') as end_date_formatted,
-			to_char(p.percent_completed, '999990.9%') as percent_completed_formatted,
-			im_name_from_user_id(p.project_lead_id) as project_lead,
-			im_name_from_user_id(p.supervisor_id) as supervisor,
-			$extra_select
-		from
-			im_projects p,
-			im_biz_objects bo,
-			acs_objects o
-		where 
-			p.project_id = :project_id and
-			p.project_id = bo.object_id and
-			p.project_id = o.object_id
-		) ip
-	where	ip.company_id = ic.company_id
-    </querytext>
-  </fullquery>
-
   <fullquery name="dynfield_attribs_sql">
     <querytext>
       select
