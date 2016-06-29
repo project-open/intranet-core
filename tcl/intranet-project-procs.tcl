@@ -50,6 +50,7 @@ ad_proc -public im_project_type_service_contract_open_stack {} { return 108 }
 ad_proc -public im_project_type_consulting {} { return 2501 }
 ad_proc -public im_project_type_gantt {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
+ad_proc -public im_project_type_ticket_container {} { return 2502 }
 ad_proc -public im_project_type_milestone {} { return 2504 }
 ad_proc -public im_project_type_program {} { return 2510 }
 
@@ -94,28 +95,28 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
     Returns 1 if the project is of a specific type of subtype.
     Example: A "Trans + Edit + Proof" project is a "Translation Project".
 } {
-    # Is the projects type_id a sub-category of "Translation Project"?
-    # We take two cases: Either the project is of category "project_type"
-    # OR it is one of the subcategories of "project_type".
+    if {![string is integer $project_type]} {
 
-    # Compatibility after changing "Consulting Project" into "Gantt Project"...
-    if {"Consulting Project" == $project_type} { set project_type "Gantt Project" }
+	# Compatibility after changing "Consulting Project" into "Gantt Project"...
+	if {"Consulting Project" == $project_type} { set project_type "Gantt Project" }
+	if {"Service Level Agreement" == $project_type} { set project_type "Ticket Container" }
+
+	set project_type [db_string ptype "
+		select	category_id
+		from	im_categories
+		where	category = :project_type and category_type = 'Intranet Project Type'
+        " -default 0]
+    }
 
     ns_log Notice "im_project_has_type: project_id=$project_id, project_type=$project_type"
     set sql "
 	select  count(*)
-	from
-	        im_projects p,
-		im_categories c,
+	from	im_projects p,
 	        im_category_hierarchy h
-	where
-	        p.project_id = :project_id
-		and c.category = :project_type
-		and (
-			p.project_type_id = c.category_id
-		or
-		        p.project_type_id = h.child_id
-			and h.parent_id = c.category_id
+	where	p.project_id = :project_id
+		and (	p.project_type_id = :project_type
+		or	p.project_type_id = h.child_id
+			and h.parent_id = :project_type
 		)
     "
     return [db_string project_has_type $sql]
