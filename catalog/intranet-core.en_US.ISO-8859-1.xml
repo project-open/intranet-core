@@ -1385,7 +1385,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Select_topics_here_fo">Select topics here for action</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
   <msg key="lt_Senior_Managersintran">Senior Managers</msg>
-  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
   <msg key="lt_Shows_the_average_num">Average Timesheet Hours per Project</msg>
   <msg key="lt_Shows_the_status_of_a">It shows the status of a project</msg>
   <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project Path' are not allowed</msg>
@@ -1908,7 +1908,7 @@ other way for the user to find out.</msg>
   <msg key="Project_type_Milestone">Milestone</msg>
   <msg key="Project_type_Other">Other</msg>
   <msg key="Project_type_Program">Program</msg>
-  <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
+  <msg key="Project_type_Service_Level_Agreement">Ticket Container</msg>
   <msg key="Project_type_Software_Release">Software Release</msg>
   <msg key="Project_type_Software_Release_Item">Software Release Item</msg>
   <msg key="Project_type_Task">Task</msg>

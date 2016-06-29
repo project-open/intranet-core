@@ -493,7 +493,7 @@
   <msg key="lt_Select_topics_here_fo">Wybierz tutaj tematy działania</msg>
   <msg key="lt_Send_user_new_passwor">Wyślij użytkownikowi emailem nowe hasło</msg>
   <msg key="lt_Senior_Managersintran">Senior menedżerowie</msg>
-  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
   <msg key="lt_Shows_the_status_of_a">Pokazuje status projektu</msg>
   <msg key="lt_Slashes__in_Project_P">Ukośniki ('/') w 'ścieżce Projektu' sa niedozwolone</msg>
   <msg key="lt_So_you_probably_dont_">Prawdopodobnie nie chcesz zniszczyć wszystkich danych, prawda?!?</msg>
@@ -680,7 +680,7 @@
   <msg key="Project_Status">Status Projektu</msg>
   <msg key="Project_status_Closed">Zamknięty</msg>
   <msg key="Project_Type">Rodzaj Projektu</msg>
-  <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
+  <msg key="Project_type_Service_Level_Agreement">Ticket Contrainer</msg>
   <msg key="Project_type_Ticket">Zgłoszenie</msg>
   <msg key="Project_Types">Rodzaje Projektów</msg>
   <msg key="ProjectOpen_News">]project-open[Nowości</msg>

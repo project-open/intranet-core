@@ -1004,7 +1004,7 @@
   <msg key="lt_Select_topics_here_fo">Seleziona qui i messaggi</msg>
   <msg key="lt_Send_user_new_passwor">Invia la nuova password all'utente tramite e-mail</msg>
   <msg key="lt_Senior_Managersintran">Senior Manager</msg>
-  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
   <msg key="lt_Shows_the_average_num">Media delle ore registrate per progetto</msg>
   <msg key="lt_Shows_the_status_of_a">Mostra lo stato di un progetto</msg>
   <msg key="lt_Slashes__in_Project_P">Le barre ('/') non sono consentite in 'Percorso per il progetto'</msg>
@@ -1393,7 +1393,7 @@
   <msg key="Project_type_Consulting_Project">Progetto di consulenza</msg>
   <msg key="Project_type_Milestone">Milestone</msg>
   <msg key="Project_type_Other">Altro</msg>
-  <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
+  <msg key="Project_type_Service_Level_Agreement">Ticket Container</msg>
   <msg key="Project_type_Software_Release">Rilascio software</msg>
   <msg key="Project_type_Software_Release_Item">Elemento di rilascio software</msg>
   <msg key="Project_type_Task">Attività</msg>

@@ -433,6 +433,9 @@ where category = 'Software Development' and category_type = 'Intranet Project Ty
 
 update im_categories set category_description = 'Service contract with a customer. Contains Helpdesk tickets as sub-items' 
 where category = 'Service Level Agreement' and category_type = 'Intranet Project Type';
+update im_categories set category_description = 'Service contract with a customer. Contains Helpdesk tickets as sub-items' 
+where category = 'Ticket Container' and category_type = 'Intranet Project Type';
+
 update im_categories set category_description = 'Milestones appear in the Milestone dashboard' 
 where category = 'Milestone' and category_type = 'Intranet Project Type';
 

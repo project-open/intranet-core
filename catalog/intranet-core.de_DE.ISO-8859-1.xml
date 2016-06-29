@@ -1396,7 +1396,7 @@ Password: %password%
   <msg key="lt_Select_topics_here_fo">Wählen sie einen Beitrag für eine Aktion</msg>
   <msg key="lt_Send_user_new_passwor">Senden sie dem Benutzer ein neues Password per E-Mail</msg>
   <msg key="lt_Senior_Managersintran">Geschäftsführung</msg>
-  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
   <msg key="lt_Shows_the_average_num">Durchscnittliche erfasste Stunden pro Projekte</msg>
   <msg key="lt_Shows_the_status_of_a">Projektstatus anzeigen</msg>
   <msg key="lt_Slashes__in_Project_P">Schrägstriche ('/') sind im Projektpfad nicht erlaubt</msg>
@@ -1911,7 +1911,7 @@ Password: %password%
   <msg key="Project_type_Milestone">Meilenstein</msg>
   <msg key="Project_type_Other">Andere</msg>
   <msg key="Project_type_Program">Programm</msg>
-  <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
+  <msg key="Project_type_Service_Level_Agreement">Ticket Container</msg>
   <msg key="Project_type_Software_Release">Software Release</msg>
   <msg key="Project_type_Software_Release_Item">Software Release Item</msg>
   <msg key="Project_type_Task">Aufgabe</msg>
