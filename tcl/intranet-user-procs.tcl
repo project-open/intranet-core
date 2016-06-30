@@ -340,6 +340,79 @@ ad_proc -public im_user_direct_reports_options_helper {
     return $options
 }
 
+# *********************************************************
+# OPTIONS & SELECTS
+# *********************************************************
+
+ad_proc -public im_user_timesheet_view_hours_options { 
+} {
+
+    Returns the options for a drop-down box with users 
+    taking under consideration the following privilges: 
+    - add_hours_all_p
+    - view_hours_all_p
+    - view_hours_direct_reports_p 
+    
+    Please note: 
+    As of now (160630): 
+    - function has only been used in a custom package
+    - privilege 'view_hours_direct_reports_p' is not yet part of the product 
+
+} {
+    set current_user_id [auth::require_login]
+    set add_hours_all_p [im_permission $current_user_id "add_hours_all"]
+    set view_hours_all_p [im_permission $current_user_id "view_hours_all"]
+    set view_hours_direct_reports_p [im_permission $current_user_id "view_hours_direct_reports"]
+    set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+
+    set all_user_options [im_user_options -include_empty_p 0 -group_name "Employees"]
+    set direct_reports_options [im_user_direct_reports_options -user_id $current_user_id]
+    set direct_report_ids [im_user_direct_reports_ids -user_id $current_user_id]
+
+    foreach t $direct_reports_options {
+	set uid [lindex $t 1]
+	set direct_reports_hash($uid) $uid
+    }
+
+    set other_options [list]
+    foreach t $all_user_options {
+	set uname [lindex $t 0]
+	set uid [lindex $t 1]
+	if {![info exists direct_reports_hash($uid)]} {
+	    lappend other_options $t
+	}
+	set direct_reports_hash($uid) $uid
+    }
+
+    # Show always "mine" 
+    set user_selection_options [list]
+    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Mine Mine] "mine"]
+
+    # Direct Reports 
+    if {$view_hours_direct_reports_p || $add_hours_all_p || $view_hours_all_p} { 
+	if {0 != [llength $direct_reports_options] } {
+	    lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.Direct_reports "Direct reports"] "direct_reports"]
+	    foreach t $direct_reports_options {
+		set uname [lindex $t 0]
+		set uid [lindex $t 1]
+		lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
+	    }
+	}
+    }
+
+    # All
+    if {$add_hours_all_p || $view_hours_all_p} {
+	# All and below
+	lappend user_selection_options [list [lang::message::lookup "" intranet-timesheet2.All "All"] "all"] 
+	foreach t $other_options { 
+	    set uname [lindex $t 0]
+	    set uid [lindex $t 1]
+	    lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
+	}
+    }
+    return $user_selection_options
+}
+
 
 ad_proc im_user_timesheet_hours_select {
     {-include_empty_p 0}
@@ -423,8 +496,6 @@ ad_proc -public im_user_timesheet_hours_options {
     }
     return $user_selection_options
 }
-
-
 
 
 ad_proc im_user_timesheet_absences_select {
@@ -528,10 +599,6 @@ ad_proc -public im_user_timesheet_absences_options {
     return $user_selection_options
 }
 
-
-# *********************************************************
-# OPTIONS & SELECTS
-# *********************************************************
 
 ad_proc -public im_customer_contact_options { 
     { -include_empty_p 1 } 
