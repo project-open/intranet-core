@@ -137,34 +137,31 @@ ad_proc -public im_audit_object_type_sql {
 
     # ---------------------------------------------------------------
     # Construct a SQL that pulls out all information about one object
-    set tables_sql "
-	select	table_name,
-		id_column
+    set base_table_sql "
+	select	table_name as base_table_name,
+		id_column as base_id_column
 	from	acs_object_types
 	where	object_type = :object_type
-UNION
+    "
+    db_1row base_table $base_table_sql
+
+    set ext_table_sql "
 	select	table_name,
 		id_column
 	from	acs_object_type_tables
 	where	object_type = :object_type
     "
 
-    set letters {a b c d e f g h i j k l m n o p q r s t u v w x y z}
+    set letters {b c d e f g h i j k l m n o p q r s t u v w x y z}
     set froms {}
     set wheres { "1=1" }
     set cnt 0
-    db_foreach tables $tables_sql {
+    set sql "select * from $base_table_name a"
+    db_foreach ext_tables $ext_table_sql {
 	set letter [lindex $letters $cnt]
-	lappend froms "$table_name $letter"
-	lappend wheres "$letter.$id_column = :object_id"
+	append sql " LEFT OUTER JOIN $table_name $letter ON (a.$base_id_column = $letter.$id_column)"
 	incr cnt
     }
-
-    set sql "
-	select	*
-	from	[join $froms ", "]
-	where	[join $wheres " and "]
-    "
 
     ns_log Notice "im_audit_object_type_sql: About to return sql=$sql"
     return $sql
