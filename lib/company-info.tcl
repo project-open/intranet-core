@@ -66,8 +66,9 @@ set extra_select [join $extra_selects ",\n\t"]
 
 
 db_1row company_get_info {}
-
 set country_name [db_string company_get_cc {} -default ""]
+set company_type [im_category_from_id $company_type_id]
+set company_status [im_category_from_id $company_status_id]
 
 set page_title $company_name
 set left_column ""

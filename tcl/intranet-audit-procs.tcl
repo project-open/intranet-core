@@ -163,6 +163,8 @@ ad_proc -public im_audit_object_type_sql {
 	incr cnt
     }
 
+    append sql " where a.$base_id_column = :object_id"
+
     ns_log Notice "im_audit_object_type_sql: About to return sql=$sql"
     return $sql
 }

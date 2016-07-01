@@ -31,8 +31,6 @@ select
 	im_name_from_user_id(c.accounting_contact_id) as accounting_contact_name,
 	im_email_from_user_id(c.accounting_contact_id) as accounting_contact_email,
 	im_name_from_user_id(c.manager_id) as manager,
-	im_category_from_id(c.company_status_id) as company_status,
-	im_category_from_id(c.company_type_id) as company_type,
 	im_category_from_id(c.annual_revenue_id) as annual_revenue,
 	to_char(start_date,'Month DD, YYYY') as start_date, 
         o.phone,
