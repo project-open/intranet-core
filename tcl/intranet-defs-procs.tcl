@@ -93,9 +93,6 @@ ad_proc -public im_date_ansi_to_julian {
 
     # Check that Start & End-Date have correct format
     set ansi_ok_p [regexp {^([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])$} $ansi match year month day]
-    if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
-    if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
-
     if {!$ansi_ok_p} {
 	if {!$throw_complaint_p} { return -1 }
 	ad_return_complaint 1 "
@@ -105,6 +102,9 @@ ad_proc -public im_date_ansi_to_julian {
 	"
 	ad_script_abort
     }
+
+    if {0 == [string range $month 0 0]} { set month [string range $month 1 end] }
+    if {0 == [string range $day 0 0]} { set day [string range $day 1 end] }
 
     # Perform the main conversion.
     if {[catch { set julian [dt_ansi_to_julian $year $month $day] } err_msg]} {
