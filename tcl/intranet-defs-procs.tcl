@@ -90,6 +90,7 @@ ad_proc -public im_date_ansi_to_julian {
     -1 instead.
 } {
     if {"" == $ansi} { return -1 }
+    set ansi [string range $ansi 0 9]
 
     # Check that Start & End-Date have correct format
     set ansi_ok_p [regexp {^([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])$} $ansi match year month day]
