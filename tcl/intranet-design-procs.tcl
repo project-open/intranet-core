@@ -1304,8 +1304,7 @@ ad_proc -public im_header {
     set doc(lang) [ad_conn language]
     
     # Determine if we should be displaying the translation UI
-    if {[lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
-    
+    if {"1" eq [lang::util::translator_mode_p]} { template::add_footer -src "/packages/acs-lang/lib/messages-to-translate" }
     set search_form [im_header_search_form]
     set user_profile [im_design_user_profile_string -user_id $untrusted_user_id]
     
