@@ -162,7 +162,10 @@ im_dynfield::append_attributes_to_form \
     -object_type $object_type \
     -form_id $form_id \
     -object_id 0 \
+    -advanced_filter_p 1 \
+    -include_also_hard_coded_p 1 \
     -page_url "/intranet/companies/index"
+
 
 # Set the form values from the HTTP form variable frame
 im_dynfield::set_form_values_from_http -form_id $form_id
