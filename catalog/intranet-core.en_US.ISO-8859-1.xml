@@ -13,8 +13,9 @@
   <msg key="9">9</msg>
   <msg key="1111">1111</msg>
   <msg key="_"></msg>
+  <msg key="_Done">% Done</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
-  <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company's page to edit the existing record</msg>
+  <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company&#39;s page to edit the existing record</msg>
   <msg key="A">A</msg>
   <msg key="a">a</msg>
   <msg key="A_-_Test_approved">A - Test Approved</msg>
@@ -121,6 +122,7 @@
   <msg key="Admin_Offices">Admin Offices</msg>
   <msg key="Admin_Project">Admin Project</msg>
   <msg key="Admin_Projects">Admin Projects</msg>
+  <msg key="Admin_Timesheet">Admin Timesheet</msg>
   <msg key="Admin_Users">Admin Users</msg>
   <msg key="Administer_DynVals">Administer DynValues</msg>
   <msg key="Administration">Administration</msg>
@@ -131,6 +133,7 @@
   <msg key="Advertizing">Advertising</msg>
   <msg key="Advertizing_Project">Advertising Project</msg>
   <msg key="af">af</msg>
+  <msg key="Agile_Project">Agile Project</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Screen Name</msg>
   <msg key="Airfare">Airfare</msg>
@@ -220,7 +223,7 @@
   <msg key="Branch_Office">Branch Office</msg>
   <msg key="Brazil">Brazil</msg>
   <msg key="Browser_Warning">Browser Warning</msg>
-  <msg key="Browser_Warning_Msg">Your browser '%browser% %version_major%.x' may not render all pages correctly with this version of ]project-open[.&lt;br&gt;
+  <msg key="Browser_Warning_Msg">Your browser &#39;%browser% %version_major%.x&#39; may not render all pages correctly with this version of ]project-open[.&lt;br&gt;
 We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="bs">bs</msg>
   <msg key="BT_Fix_for_Version">Fix for Version</msg>
@@ -260,21 +263,21 @@ We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="Cat_Type">Category Type</msg>
   <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categories</msg>
-  <msg key="Categories_List_Help">This page allows you to configure 'categories' (the contents of most drop-down boxes in the system).&lt;br&gt;
+  <msg key="Categories_List_Help">This page allows you to configure &#39;categories&#39; (the contents of most drop-down boxes in the system).&lt;br&gt;
 
 Please &lt;b&gt;do not change categories&lt;/b&gt; unless you know what you are doing. Many categories are used as constants and changing them will break the system.&lt;br&gt;
 
-Instead, please use 'Category translation' to change the way how categories appear in the GUI.&lt;br&gt;
+Instead, please use &#39;Category translation&#39; to change the way how categories appear in the GUI.&lt;br&gt;
 
 In some rare cases changes in category types might require flushing the cache manually or restarting the web server.&lt;br&gt;</msg>
   <msg key="Category">Category</msg>
   <msg key="Category_description">Category description</msg>
   <msg key="Category_Description_Less_Then_4000_Chars">Please limit your category description to 4000 characters</msg>
-  <msg key="Category_En_Us_Mandatory">Please always provide a value for locale: 'en_US', even though it is not needed</msg>
+  <msg key="Category_En_Us_Mandatory">Please always provide a value for locale: &#39;en_US&#39;, even though it is not needed</msg>
   <msg key="Category_Id_Missing">Category ID is missing</msg>
   <msg key="category_key">Category Key</msg>
   <msg key="Category_MailingListInfo_Less_Then_4000_Chars">Please limit your Mailing list information to 4000 characters</msg>
-  <msg key="Category_Missing">Missing 'Category', please enter a name</msg>
+  <msg key="Category_Missing">Missing &#39;Category&#39;, please enter a name</msg>
   <msg key="Category_name">Category name</msg>
   <msg key="category_name">%category_name%</msg>
   <msg key="category_name_1">$category_name</msg>
@@ -287,6 +290,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Cell_phone">Cell phone</msg>
   <msg key="Change">Change</msg>
   <msg key="Change_Password">Change Password</msg>
+  <msg key="Change_Priority">Change Priority</msg>
   <msg key="Change_Ticket">Change Ticket</msg>
   <msg key="Check">Cheque</msg>
   <msg key="Cheque">Cheque</msg>
@@ -307,7 +311,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Client_Type">Client Type</msg>
   <msg key="Clients">Clients</msg>
   <msg key="Clone_Project">Clone this project</msg>
-  <msg key="Clone_Project_Help">You can 'clone' a project in order to save time to setup a similar project.</msg>
+  <msg key="Clone_Project_Help">You can &#39;clone&#39; a project in order to save time to setup a similar project.</msg>
   <msg key="Close">Close</msg>
   <msg key="Closed">Closed</msg>
   <msg key="cms">cms</msg>
@@ -330,6 +334,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Company_Cost_Component">Company Cost Component</msg>
   <msg key="Company_Documents">Company Documents</msg>
   <msg key="company_employee">company employee</msg>
+  <msg key="Company_Employees">Company Employees</msg>
   <msg key="Company_Events">Company Events</msg>
   <msg key="company_group_id">Company Group</msg>
   <msg key="Company_ID">Company ID</msg>
@@ -341,7 +346,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Company_Offices">Company Offices</msg>
   <msg key="company_path">Company path</msg>
   <msg key="Company_Project_Nr">Customer Project#</msg>
-  <msg key="Company_Project_Nr_Help">The customer's reference to this project. This number will appear in invoices of this project.</msg>
+  <msg key="Company_Project_Nr_Help">The customer&#39;s reference to this project. This number will appear in invoices of this project.</msg>
   <msg key="Company_Projects">Company Projects</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
@@ -356,7 +361,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="company_type_id">Company Type</msg>
   <msg key="Company_Types">Company Types</msg>
   <msg key="Company_Wiki_Component">Company Wiki</msg>
-  <msg key="Companys_Contacts">Company's Contacts</msg>
+  <msg key="Companys_Contacts">Company&#39;s Contacts</msg>
   <msg key="Component_Page">Component Page</msg>
   <msg key="Computer_Bios">Computer BIOS</msg>
   <msg key="Computer_Controller">Computer Controller</msg>
@@ -372,6 +377,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Conf_Item">Conf Item</msg>
   <msg key="Conf_Item_Code">Code</msg>
   <msg key="Conf_Item_CVS_Logs">Conf Item CVS Logs</msg>
+  <msg key="Conf_Item_Filestorage">Conf Item Filestorage</msg>
   <msg key="Conf_Item_Members">Conf Item Members</msg>
   <msg key="Conf_Item_Name">Name</msg>
   <msg key="Conf_Item_Nr">Nr</msg>
@@ -382,7 +388,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Conf_Item_Wiki_Component">Conf Item Wiki Component</msg>
   <msg key="Conf_Items">Conf Items</msg>
   <msg key="Config_Item">Conf Item</msg>
-  <msg key="Configuration_Item">Konf Elemente</msg>
+  <msg key="Configuration_Item">Configuration Items</msg>
   <msg key="Configuring_po">Configuring ]po[</msg>
   <msg key="Confirm">Confirm</msg>
   <msg key="Confirm_Date">Confirm Date</msg>
@@ -434,20 +440,27 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
   <msg key="creditSEAT_VWesadp">credit.SEAT_VW.es.adp</msg>
+  <msg key="CRM">CRM</msg>
+  <msg key="CRM_Campaign">CRM Campaign</msg>
   <msg key="CRM_Help">CRM Help</msg>
+  <msg key="CRM_Home">CRM Home</msg>
+  <msg key="CRM_Opportunity">CRM Opportunity</msg>
   <msg key="CRM_Sales">CRM</msg>
   <msg key="Croatia">Croatia</msg>
   <msg key="cs">cs</msg>
   <msg key="Cuba">Cuba</msg>
+  <msg key="Cur_Costs">Cur Costs</msg>
   <msg key="Current_Milestones">Current Milestones</msg>
   <msg key="Custom_Actions">Custom Actions</msg>
   <msg key="Customer">Customer</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
   <msg key="Customer_Info">Customer Info</msg>
+  <msg key="Customer_Information_AJAX">Customer Information</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="Customer_Management">Customer Management</msg>
   <msg key="Customer_Prospects">Customer Prospects</msg>
+  <msg key="Customer_review">Customer Review</msg>
   <msg key="Customers">Customer</msg>
   <msg key="customers">Customers</msg>
   <msg key="Customers_status_Inquiries">Inquiries</msg>
@@ -462,6 +475,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="CVS_Path">CVS Path</msg>
   <msg key="CVS_Port">CVS Port</msg>
   <msg key="CVS_Protocol">CVS Protocol</msg>
+  <msg key="CVS_Repository">CVS Repository</msg>
   <msg key="CVS_System">CVS System</msg>
   <msg key="CVS_User">CVS User</msg>
   <msg key="Cyprus">Cyprus</msg>
@@ -491,6 +505,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="default_payment_method_id">Default Payment Method</msg>
   <msg key="Default_PO_Template">Default Template</msg>
   <msg key="default_po_template_id">Default PO Template</msg>
+  <msg key="Default_TAX">Default Tax</msg>
   <msg key="Default_VAT">Default VAT</msg>
   <msg key="default_vat">Default VAT</msg>
   <msg key="Del">Del</msg>
@@ -525,6 +540,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Description">Description</msg>
   <msg key="Developer_Home">Developer Home</msg>
   <msg key="diagram">Diagram</msg>
+  <msg key="Direction">Direction</msg>
   <msg key="directory_path">directory path</msg>
   <msg key="Discussion">Discussion</msg>
   <msg key="Discussions">Discussions</msg>
@@ -534,7 +550,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Dominican_Republic">Dominican Republic</msg>
   <msg key="Done">Done</msg>
   <msg key="Done_in_NAV">Done in NAV</msg>
-  <msg key="Dont_Send_Email">Don't Send Email</msg>
+  <msg key="Dont_Send_Email">Don&#39;t Send Email</msg>
   <msg key="Download_files">Download files</msg>
   <msg key="Draft_Quality">Draft Quality</msg>
   <msg key="DTP">DTP</msg>
@@ -599,7 +615,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Exchange_Rates">Exchange Rates</msg>
   <msg key="Exchange_Rates_ASUS">Exchange Rates ASUS</msg>
   <msg key="Executing">Executing</msg>
-  <msg key="Execution_Project_Help">An 'Execution Project' is a copy of a project designed to be completely separated from any references to the initial project in order to keep the customer anonymous.</msg>
+  <msg key="Execution_Project_Help">An &#39;Execution Project&#39; is a copy of a project designed to be completely separated from any references to the initial project in order to keep the customer anonymous.</msg>
   <msg key="Expected_Quality">Expected Quality</msg>
   <msg key="Expense">Expense</msg>
   <msg key="Expense_Bundle">Expense Bundle</msg>
@@ -617,6 +633,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Export_Projects_to_CSV">Export Projects to CSV</msg>
   <msg key="Export_Provider_Invoices_CSV">Export Provider Financial Documents CSV</msg>
   <msg key="Export_Providers_to_CSV">Export Providers to CSV</msg>
+  <msg key="Export_User_to_CSV">Export Users to CSV</msg>
   <msg key="Export_Users_Cube">Export Benutzer-Cube</msg>
   <msg key="Export_Users_to_CSV">Export Users to CSV</msg>
   <msg key="Extra_from">Extra from</msg>
@@ -684,8 +701,9 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Future">Future</msg>
   <msg key="g">g</msg>
   <msg key="Gantt">Gantt</msg>
-  <msg key="Gantt_Resourcs">Gantt Resources</msg>
+  <msg key="Gantt_Project">Gantt Project</msg>
   <msg key="Gantt_Resources">Gantt Resources</msg>
+  <msg key="Gantt_Resourcs">Gantt Resources</msg>
   <msg key="Gantt_Schedule">Gantt Schedule</msg>
   <msg key="GBP">GBP</msg>
   <msg key="Gen">Gen</msg>
@@ -871,13 +889,18 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
   <msg key="Id">Id</msg>
+  <msg key="Idea">Idea</msg>
+  <msg key="Ideas">Ideas</msg>
   <msg key="IgnoreParameterTimesheetMaxHoursPerDay">Ignore restriction amount logged hours per day</msg>
   <msg key="Illustration">Illustration</msg>
   <msg key="Import_and_Export">Import and Export</msg>
+  <msg key="Import_Companies_from_CSV">Import Companies from CSV</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
   <msg key="Import_Company_CVS">Import Company CVS</msg>
   <msg key="Import_Nagios_Definitions">Import Nagios Definitions</msg>
+  <msg key="Import_Projects_from_CSV">Import Projects from CSV</msg>
   <msg key="Import_User_CSV">Import User CSV</msg>
+  <msg key="Import_User_from_CSV">Import Users from CSV</msg>
   <msg key="Important">Important</msg>
   <msg key="Importing_Master_Data">Import Master Data</msg>
   <msg key="Importing_Master_Data_message">Please &lt;a href=/intranet/admin/cleanup-demo/&gt;remove&lt;/a&gt; the Tigerpond demo data from the system. After that, you can start to enter your company data in the order users (employees, customers and freelancers), companies (customers and providers) and projects.</msg>
@@ -887,6 +910,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Inactive_Customers">Inactive Customers</msg>
   <msg key="Incident">Incident</msg>
   <msg key="Incident_Ticket">Incident Ticket</msg>
+  <msg key="Include_Deleted">Include Deleted</msg>
+  <msg key="Include_Deleted_Users">Include Deleted Users</msg>
   <msg key="Include_in_Invoice">Include in Invoice</msg>
   <msg key="Inctive_Customers">Inactive Customers</msg>
   <msg key="India">India</msg>
@@ -989,6 +1014,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="jp">jp</msg>
   <msg key="JPY">JPY</msg>
   <msg key="k">k</msg>
+  <msg key="Kanban">Kanban</msg>
   <msg key="Key">Key</msg>
   <msg key="Key_Account">Key Account</msg>
   <msg key="Key_Account_Manager">Key Account Manager</msg>
@@ -1018,7 +1044,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Law_Company">Law Company</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Learn About Your Company</msg>
-  <msg key="Learn_About_Your_Company_Blurb">This component shows you a different company member every time. This way, members of different offices can start to know each other and employees learn about the freelancers that work with the company. User access permissions are maintained, and you can remove or modify _this_ text when you change into 'translation mode'.</msg>
+  <msg key="Learn_About_Your_Company_Blurb">This component shows you a different company member every time. This way, members of different offices can start to know each other and employees learn about the freelancers that work with the company. User access permissions are maintained, and you can remove or modify _this_ text when you change into &#39;translation mode&#39;.</msg>
   <msg key="Lebanon">Lebanon</msg>
   <msg key="left">Left Blue</msg>
   <msg key="Legal">Legal</msg>
@@ -1059,7 +1085,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_acs-content-repositor">acs-content-repository</msg>
   <msg key="lt_acs-developer-support">acs-developer-support</msg>
   <msg key="lt_Actually_counts_the_n">Actually counts the number of main projects (no subprojects) starting in the last 30 days.</msg>
-  <msg key="lt_Add_a_manual_task_to_">Add a 'manual' task to the project.</msg>
+  <msg key="lt_Add_a_manual_task_to_">Add a &#39;manual&#39; task to the project.</msg>
   <msg key="lt_Add_a_new_annual_reve">Add a new annual revenue measure</msg>
   <msg key="lt_Add_a_new_company_sta">Add a new company status</msg>
   <msg key="lt_Add_a_new_company_typ">Add a new company type</msg>
@@ -1082,11 +1108,12 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Alleintranet-timeshee">All</msg>
   <msg key="lt_Allintranet-coreObjec">All Objects</msg>
   <msg key="lt_Allintranet-timesheet">All</msg>
-  <msg key="lt_Also_please_make_sure">Also, please make sure that the client isn't defined multiple with similar names.</msg>
-  <msg key="lt_An_office_with_the_sa">An office with the same name or path already exists. Either choose a new name or go back to the office's page to edit the existing record</msg>
+  <msg key="lt_Also_please_make_sure">Also, please make sure that the client isn&#39;t defined multiple with similar names.</msg>
+  <msg key="lt_An_office_with_the_sa">An office with the same name or path already exists. Either choose a new name or go back to the office&#39;s page to edit the existing record</msg>
   <msg key="lt_An_optional_field_spe">An optional field specifying the project reference code of the client. Is used when printing the invoice. Example: 20030310A12478</msg>
   <msg key="lt_Anonymize_this_server">Anonymize this server (Test servers only)</msg>
   <msg key="lt_as_if_the_user_him_or">as if the user him or herself had unsubscribed</msg>
+  <msg key="lt_Associate_ticket_with">Associate ticket with other objects</msg>
   <msg key="lt_Atril_Dj_Vu_X_Profess">Atril Déjà Vu X Professional</msg>
   <msg key="lt_Atril_Dj_Vu_X_Standar">Atril Déjà Vu X Standard</msg>
   <msg key="lt_Atril_Dj_Vu_X_Workgro">Atril Déjà Vu X Workgroup</msg>
@@ -1099,8 +1126,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Calculates_Quotes_-_P">Preliminary Gross Margin (Past Two Months)</msg>
   <msg key="lt_Calculates_the_averag">Average Project Duration</msg>
   <msg key="lt_Calculates_the_number">Average Timesheet Hours per Employee </msg>
-  <msg key="lt_Cant_find_the_project">Can't find the project with ID '%project_id%'</msg>
-  <msg key="lt_Cant_Nuke_a_Paying_Co">Can't Nuke a Paying Company</msg>
+  <msg key="lt_Cant_find_the_project">Can&#39;t find the project with ID &#39;%project_id%&#39;</msg>
+  <msg key="lt_Cant_Nuke_a_Paying_Co">Can&#39;t Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
   <msg key="lt_Change_the_position_o">Enable, disable, change the position and change the access permissions of plugin-components.</msg>
   <msg key="lt_Change_the_primary_co">Change the primary contact</msg>
@@ -1109,7 +1136,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Choose_this_option_if">Choose this option if you prefer not to reveal any information to ]project-open[ that might identify you or your organization.</msg>
   <msg key="lt_Click_here_to_configu">Click here in order to configure the menu bar</msg>
   <msg key="lt_Click_here_to_get_hel">Click here to get help for this page</msg>
-  <msg key="lt_Click_right_and_choos">Click right and choose 'Save target as' to download the file</msg>
+  <msg key="lt_Click_right_and_choos">Click right and choose &#39;Save target as&#39; to download the file</msg>
   <msg key="lt_Clientesintranet-file">Clients</msg>
   <msg key="lt_Closeintranet-timeshe">Close</msg>
   <msg key="lt_Computer_Input_Device">Input Device</msg>
@@ -1119,8 +1146,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Computer_Sound_Device">Sound Device</msg>
   <msg key="lt_Computer_Storage_Devi">Storage Device</msg>
   <msg key="lt_Computer_Video_Device">Video Device</msg>
-  <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&quot;profile&quot;)
-	can do and what they shouldn't do.</msg>
+  <msg key="lt_Configure_site-wide_d">Configure site-wide defaults on what a group of users (&#34;profile&#34;)
+	can do and what they shouldn&#39;t do.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirm Nuking %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Confirm the nuking of</msg>
   <msg key="lt_Context_Helpintranet-">Context Help</msg>
@@ -1151,9 +1178,12 @@ Please click on the link above for details.
 Best regards,
 %current_user_name%</msg>
   <msg key="lt_Default_Delivery_Note">Default Delivery Note</msg>
+  <msg key="lt_Default_Discount_Perc">Default Discount Perc</msg>
   <msg key="lt_Default_Invoice_Templ">Default Invoice Template</msg>
   <msg key="lt_Default_Payment_Metho">Default Payment Method</msg>
+  <msg key="lt_Default_PM_Fee_Percen">Default PM Fee Perc</msg>
   <msg key="lt_Default_Provider_Bill">Default Provider Bill</msg>
+  <msg key="lt_Default_Surcharge_Per">Default Surcharge Perc</msg>
   <msg key="lt_Delete_the_accounting">Delete the accounting contact</msg>
   <msg key="lt_Delete_the_primary_co">Delete the primary contact</msg>
   <msg key="lt_delete_this_user_inst">delete this user instead</msg>
@@ -1165,14 +1195,14 @@ Best regards,
   <msg key="lt_Directivosintranet-fi">Managers</msg>
   <msg key="lt_Discussionintranet-fo">Discussion</msg>
   <msg key="lt_Do_you_want_to_create">Do you want to create a subproject (a project that is part of an other project)? Leave the field blank (-- Please Select --) if you are unsure.</msg>
-  <msg key="lt_Dots__in_Project_Path">Dots ('.') in 'Project Path' are not allowed</msg>
+  <msg key="lt_Dots__in_Project_Path">Dots (&#39;.&#39;) in &#39;Project Path&#39; are not allowed</msg>
   <msg key="lt_Edit_comments_about_y">Edit comments about you</msg>
   <msg key="lt_Edit_menus_and_change">Edit menus and change their permissions.</msg>
   <msg key="lt_Edit_views_and_change">Edit view and add columns.</msg>
   <msg key="lt_Empleadosintranet-fil">Employees</msg>
   <msg key="lt_Employeesintranet-fil">Employees</msg>
   <msg key="lt_End_date_must_be_afte">End date must be after start date</msg>
-  <msg key="lt_Error_evaluating_comp">Error evaluating component '%plugin_name%' of module '%package_name%'</msg>
+  <msg key="lt_Error_evaluating_comp">Error evaluating component &#39;%plugin_name%&#39; of module &#39;%package_name%&#39;</msg>
   <msg key="lt_Error_getting_the_ema">Error getting the email address of user %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Error: Missing parameter</msg>
   <msg key="lt_Expected_Annual_Reven">(Expected) Annual Revenue</msg>
@@ -1186,10 +1216,10 @@ Message:</msg>
   <msg key="lt_File_translation_Trad">File translation: Trados wordcount multiplied with provider Trados matrix</msg>
   <msg key="lt_Finally_revisit_this_">Finally, revisit this page and an option will appear to add the new client contact.</msg>
   <msg key="lt_first_names_from_sear">
-Please edit the message below and hit &quot;Send Email&quot; to 
+Please edit the message below and hit &#34;Send Email&#34; to 
 notify the selected users.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% has been added to %system_name%.
-Edit the message below and hit &quot;Send Email&quot; to 
+Edit the message below and hit &#34;Send Email&#34; to 
 notify this user.</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name%, 
 
@@ -1211,7 +1241,7 @@ her contributions to the site content.</msg>
 	after you have changed the global permissions in Profiles
 	or User Matrix.</msg>
   <msg key="lt_Flush_Permission_Cach">Flush Permission Cache</msg>
-  <msg key="lt_For_good_measure_here">For good measure, here's what the database had to say...</msg>
+  <msg key="lt_For_good_measure_here">For good measure, here&#39;s what the database had to say...</msg>
   <msg key="lt_for_name_in_ad_site_h">for %name% in %ad_site_home_link%</msg>
   <msg key="lt_Freelance_Bank_Accoun">Freelance Bank Account</msg>
   <msg key="lt_Freelancersintranet-f">Freelancers</msg>
@@ -1223,7 +1253,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Generic_Problem_Ticke">Generic Problem Ticket</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware Manufacturer Customer</msg>
-  <msg key="lt_has_been_marked_delet">has been marked \&quot;deleted\&quot;.</msg>
+  <msg key="lt_has_been_marked_delet">has been marked \&#34;deleted\&#34;.</msg>
   <msg key="lt_Here_you_can_manage_u">Here you can manage users one-by-one.</msg>
   <msg key="lt_Here_you_find_advance">Here you find advance management and configuration options
 	of the underlying</msg>
@@ -1234,15 +1264,15 @@ her contributions to the site content.</msg>
   <msg key="lt_How_many_hours_can_be">How many hours can be logged on this project (both internal and external resource)?</msg>
   <msg key="lt_Human_Resources_Manag">Human Resources Manager</msg>
   <msg key="lt_IBM_Translation_Workb">IBM Translation Workbench</msg>
-  <msg key="lt_If_this_IS_a_TestDemo">If this IS a Test/Demo/Development server, then check '/parameters/*.ini'
-    and set the TestDemoDevServer flag to 'true'.</msg>
+  <msg key="lt_If_this_IS_a_TestDemo">If this IS a Test/Demo/Development server, then check &#39;/parameters/*.ini&#39;
+    and set the TestDemoDevServer flag to &#39;true&#39;.</msg>
   <msg key="lt_Impact_default_curren">Impact (default currency)</msg>
   <msg key="lt_Import_Company_Contac">Import Company Contact CVS</msg>
   <msg key="lt_Import_Projects_from_">Import Projects from H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already...</msg>
   <msg key="lt_Incidentintranet-foru">Incident</msg>
   <msg key="lt_Insufficient_Privileg">Insufficient Privileges</msg>
-  <msg key="lt_Internal_error_unknow">Internal error: unknown view '%view_name%'</msg>
+  <msg key="lt_Internal_error_unknow">Internal error: unknown view &#39;%view_name%&#39;</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Intranet RFC Data Access</msg>
   <msg key="lt_Intranet_RFC_Expense_">Intranet RFC Expense Type</msg>
   <msg key="lt_Intranet_RFC_HJ_Appli">Intranet RFC HJ Application</msg>
@@ -1257,7 +1287,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Intranet_RFC_RR_Colum">Intranet RFC RR Column</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Intranet RFC RR Format</msg>
   <msg key="lt_Intranet_RFC_Workplac">Intranet RFC Workplace</msg>
-  <msg key="lt_Invalid_time_format_e">Invalid time format '%end_time(time)%': Please enter the time in format '12:30'</msg>
+  <msg key="lt_Invalid_time_format_e">Invalid time format &#39;%end_time(time)%&#39;: Please enter the time in format &#39;12:30&#39;</msg>
   <msg key="lt_Invoices_written_with">Revenues </msg>
   <msg key="lt_Is_the_project_going_">Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?</msg>
   <msg key="lt_Is_this_a_billable_co">Is this a billable company?</msg>
@@ -1283,8 +1313,9 @@ her contributions to the site content.</msg>
   <msg key="lt_Manage_Individual_Use">Manage Individual Users</msg>
   <msg key="lt_Manage_OpenACS_Develo">Manage OpenACS Development</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Manage the OpenACS Platform</msg>
+  <msg key="lt_Mark_tickets_as_dupli">Mark tickets as duplicated</msg>
   <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
-  <msg key="lt_Maybe_somebody_has_ch">Maybe somebody has changed the path of the 'Internal' company who identifies your organization.</msg>
+  <msg key="lt_Maybe_somebody_has_ch">Maybe somebody has changed the path of the &#39;Internal&#39; company who identifies your organization.</msg>
   <msg key="lt_Meineintranet-timeshe">My</msg>
   <msg key="lt_Member_state">Member state</msg>
   <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
@@ -1294,7 +1325,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
   <msg key="lt_Mitarbeiterintranet-f">Mitarbeiter</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV Translation Agency</msg>
-  <msg key="lt_Modify_the_access_per">Modify the access permissions for &quot;dynamic variables&quot; or add
+  <msg key="lt_Modify_the_access_per">Modify the access permissions for &#34;dynamic variables&#34; or add
 	new dynamic (custom) variables.</msg>
   <msg key="lt_Modify_the_name_and_d">Modify the name and d</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
@@ -1324,7 +1355,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Nuking_is_a_violent_i">Nuking is a violent irreversible action.  You are instructing the
 system to remove the user and any content that he or she has
 contributed to the site.  This is generally only appropriate in the
-case of test users and, perhaps, dishonest people who've flooded a
+case of test users and, perhaps, dishonest people who&#39;ve flooded a
 site with fake crud.</msg>
   <msg key="lt_num_users_online_user">%num_users_online% user online</msg>
   <msg key="lt_num_users_online_user_1">%num_users_online% users online</msg>
@@ -1332,7 +1363,7 @@ site with fake crud.</msg>
   <msg key="lt_Office_Directory_Path">Office Directory Path</msg>
   <msg key="lt_Office_Equipment_Prov">Office Equipment Provider</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Main Office</msg>
-  <msg key="lt_Office_office_id_does">Office #office_id doesn't exist</msg>
+  <msg key="lt_Office_office_id_does">Office #office_id doesn&#39;t exist</msg>
   <msg key="lt_Password_Confirmation">Password Confirmation</msg>
   <msg key="lt_Pastintranet-timeshee">Past</msg>
   <msg key="lt_Personal_Home_Page_UR">Personal Home Page URL</msg>
@@ -1352,23 +1383,27 @@ site with fake crud.</msg>
   <msg key="lt_Please_use_a_project_">Please use a project name with atleast 6 characters.</msg>
   <msg key="lt_Portrait_of_first_nam">Portrait of %first_names% %last_name%</msg>
   <msg key="lt_Preinstalled_Hard_Dis">Preinstalled Hard Disk</msg>
+  <msg key="lt_Problem_Ticket_Close_">Problem Ticket: Close Associated Incidents</msg>
+  <msg key="lt_Problem_Ticket_Create">Problem Ticket: Create from Incident Ticket</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
   <msg key="lt_Provider_bills_with_e">External Costs</msg>
-  <msg key="lt_Quotes_in_Project_Nam">Quotes in 'Project Name' are not allowed</msg>
-  <msg key="lt_Quotes_in_Project_Nr_">Quotes in 'Project Nr' are not allowed</msg>
-  <msg key="lt_Quotes_in_Project_Pat">Quotes in 'Project Path' are not allowed</msg>
+  <msg key="lt_Quotes_in_Project_Nam">Quotes in &#39;Project Name&#39; are not allowed</msg>
+  <msg key="lt_Quotes_in_Project_Nr_">Quotes in &#39;Project Nr&#39; are not allowed</msg>
+  <msg key="lt_Quotes_in_Project_Pat">Quotes in &#39;Project Path&#39; are not allowed</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
+  <msg key="lt_Reduction_in_Working_">Reduction in Working Hours</msg>
   <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
   <msg key="lt_Report_a_bug_on_this_">Report a bug on this page</msg>
+  <msg key="lt_Resource_Assignation_">Resource Assignation %</msg>
   <msg key="lt_return_to_user_admini">Return to user administration</msg>
-  <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn't have happened,
+  <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn&#39;t have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
   <msg key="lt_Returns_the_average_t">Average Employee Time in the Company</msg>
   <msg key="lt_Returns_the_number_of">Returns the number of hours that have been reported but not yet invoiced. The report excludes projects in status deleted, but otherwise counts all hours that have not yet been assigned to any invoice.</msg>
@@ -1377,33 +1412,36 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Room_Number_of_Beamer">Raum Anzahl der Beamer</msg>
   <msg key="lt_Save_Changesintranet-">Save</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
-  <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&quot;lion\&quot; to search for all users from Lionbridge.</msg>
-  <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&quot;berg\&quot; to search for all users with a last name containing \&quot;berg\&quot;.</msg>
+  <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&#34;lion\&#34; to search for all users from Lionbridge.</msg>
+  <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&#34;berg\&#34; to search for all users with a last name containing \&#34;berg\&#34;.</msg>
   <msg key="lt_Search_for_an_account">Search for an account to merge with this one:</msg>
   <msg key="lt_Select_accounting_con">Select accounting contact for %company_name%</msg>
   <msg key="lt_Select_primary_contac">Select primary contact for %company_name%</msg>
   <msg key="lt_Select_topics_here_fo">Select topics here for action</msg>
   <msg key="lt_Send_user_new_passwor">Send user new password by email</msg>
   <msg key="lt_Senior_Managersintran">Senior Managers</msg>
-  <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
+  <msg key="lt_Service_Level_Agreeme">Service Level Agreement</msg>
+  <msg key="lt_Set_status_Closed__no">Set status: Closed &amp; Notify</msg>
+  <msg key="lt_Set_status_Open__noti">Set status: Open &amp; Notify</msg>
   <msg key="lt_Shows_the_average_num">Average Timesheet Hours per Project</msg>
   <msg key="lt_Shows_the_status_of_a">It shows the status of a project</msg>
-  <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project Path' are not allowed</msg>
-  <msg key="lt_So_you_probably_dont_">So you probably don't want to destroy all data, right?!?</msg>
+  <msg key="lt_Slashes__in_Project_P">Slashes (&#39;/&#39;) in &#39;Project Path&#39; are not allowed</msg>
+  <msg key="lt_So_you_probably_dont_">So you probably don&#39;t want to destroy all data, right?!?</msg>
   <msg key="lt_Software_Company_Comp">Software Company</msg>
   <msg key="lt_Software_Company_Cust">Software Company Customer</msg>
   <msg key="lt_Software_Release_Item">Software Release Item</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
+  <msg key="lt_Strategic_Value_vs_RO">Strategic Value vs. ROI</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
   <msg key="lt_Taskintranet-forumTas">Tasks</msg>
   <msg key="lt_Telephony_Request_Typ">Telephony Request Type</msg>
-  <msg key="lt_The_customers_referen">The Customer's reference to this project.</msg>
+  <msg key="lt_The_customers_referen">The Customer&#39;s reference to this project.</msg>
   <msg key="lt_The_database_choked_o">The database choked on our update:</msg>
   <msg key="lt_the_email_email_is_al">The email %email% is already in the database</msg>
-  <msg key="lt_The_English_translati">The English 'translation' should be identical with the category name.</msg>
+  <msg key="lt_The_English_translati">The English &#39;translation&#39; should be identical with the category name.</msg>
   <msg key="lt_The_note_you_entered_">The note you entered is too long. Please limit the note to 4000 characters</msg>
   <msg key="lt_The_nuking_of_user_us">The nuking of user %user_id% failed.  Probably this is because your installation of the ArsDigita Community System has been customized and there are new tables that reference the users table.  Complain to your programmer!</msg>
-  <msg key="lt_The_parameter_paramet">The parameter '%parameter%' is not defined in the intranet section of your server's parameters file. Please define this parameter, restart your server, and try again.</msg>
+  <msg key="lt_The_parameter_paramet">The parameter &#39;%parameter%&#39; is not defined in the intranet section of your server&#39;s parameters file. Please define this parameter, restart your server, and try again.</msg>
   <msg key="lt_The_project_name_that">The project name that you have chosen is too short.</msg>
   <msg key="lt_The_project_or_one_of">The project or one of its parents has been closed.</msg>
   <msg key="lt_The_screen_name_you_h">The screen name you have selected is already taken.</msg>
@@ -1413,10 +1451,10 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_There_are_currently_n">There are currently no entries matching the selected criteria</msg>
   <msg key="lt_There_is_a_difference">There is a difference between &amp;quot;Paying Client&amp;quot; and &amp;quot;Final Client&amp;quot;. Here we want to know from whom we are going to receive the money...</msg>
   <msg key="lt_There_is_already_a_vi">There is already a %view_similar_user_link%
-                with the email '%email%'
+                with the email &#39;%email%&#39;
                 in the database.</msg>
   <msg key="lt_This_command_destroys">This command destroys your entire server, replacing all strings (project
-	  names, company names, users, descriptions, ...) by &quot;anonymized&quot; random 
+	  names, company names, users, descriptions, ...) by &#34;anonymized&#34; random 
 	  strings in order to generate a demo system.</msg>
   <msg key="lt_This_file_has_generat">This file has generated an error.</msg>
   <msg key="lt_This_is_not_a_TestDem">This is not a Test/Demo/Development server.</msg>
@@ -1427,11 +1465,11 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Translation source language</msg>
   <msg key="lt_Translation_target_la">Translation target language</msg>
-  <msg key="lt_Unable_to_determine_I">Unable to determine 'Internal' company</msg>
+  <msg key="lt_Unable_to_determine_I">Unable to determine &#39;Internal&#39; company</msg>
   <msg key="lt_Update_Basic_Informat">Update Basic Information</msg>
-  <msg key="lt_Update_this_users_pas">Update this user's password</msg>
+  <msg key="lt_Update_this_users_pas">Update this user&#39;s password</msg>
   <msg key="lt_Upload_GanttProject_S">Upload GanttProject File</msg>
-  <msg key="lt_Use_the_Browse_button">Use the 'Browse...' button to locate your file, then click 'Open'.</msg>
+  <msg key="lt_Use_the_Browse_button">Use the &#39;Browse...&#39; button to locate your file, then click &#39;Open&#39;.</msg>
   <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% is undefined for empty lists.</msg>
   <msg key="lt_View_administrative_p">View administrative page for newly created user,</msg>
@@ -1439,29 +1477,30 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_View_time_spent_on_al">View time spent on all projects by everyone</msg>
   <msg key="lt_View_your_hours_on_al">View your hours on all projects</msg>
   <msg key="lt_Vollmitgliedintranet-">Vollmitglied</msg>
-  <msg key="lt_We_cant_nuke_a_paying">We can't nuke a paying company because to do so would screw up accounting records.</msg>
-  <msg key="lt_We_couldnt_find_offic">We couldn't find office #%office_id%; perhaps this office was nuked?</msg>
-  <msg key="lt_We_couldnt_find_user_">We couldn't find user #%user_id_from_search%; perhaps this person was nuked?</msg>
-  <msg key="lt_We_couldnt_find_user__1">We couldn't find user #%user_id%; perhaps this person was nuke?</msg>
+  <msg key="lt_We_cant_nuke_a_paying">We can&#39;t nuke a paying company because to do so would screw up accounting records.</msg>
+  <msg key="lt_We_couldnt_find_offic">We couldn&#39;t find office #%office_id%; perhaps this office was nuked?</msg>
+  <msg key="lt_We_couldnt_find_user_">We couldn&#39;t find user #%user_id_from_search%; perhaps this person was nuked?</msg>
+  <msg key="lt_We_couldnt_find_user__1">We couldn&#39;t find user #%user_id%; perhaps this person was nuke?</msg>
   <msg key="lt_We_have_no_contacts_i">We have no contacts in our database for %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">We need either the short name or the group id to set up the url for the /groups directory</msg>
   <msg key="lt_Web_Site_Development2">Web Site Development2</msg>
-  <msg key="lt_Weve_nuked_user_user_">We've nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
+  <msg key="lt_Weve_nuked_user_user_">We&#39;ve nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
   <msg key="lt_What_is_the_financial">What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs.</msg>
   <msg key="lt_Who_is_the_final_cons">Who is the final consumer (when working for an agency)? Examples: &amp;quot;Shell&amp;quot;, &amp;quot;UBS&amp;quot;, ...</msg>
   <msg key="lt_Wire_Transfer_La_Caix">Wire Transfer La Caixa</msg>
-  <msg key="lt_Yes_Im_sure_that_I_wa">Yes, I'm sure that I want to nuke this person</msg>
+  <msg key="lt_Workplace_move_Reques">Workplace Move Request</msg>
+  <msg key="lt_Yes_Im_sure_that_I_wa">Yes, I&#39;m sure that I want to nuke this person</msg>
   <msg key="lt_You_are_not_a_member_">You are not a member of this project.</msg>
-  <msg key="lt_You_are_not_allowed_t">You are not allowed to remove members from group '%profile_name%'</msg>
-  <msg key="lt_You_are_not_allowed_t_1">You are not allowed to add members to profile '%profile_name%'</msg>
+  <msg key="lt_You_are_not_allowed_t">You are not allowed to remove members from group &#39;%profile_name%&#39;</msg>
+  <msg key="lt_You_are_not_allowed_t_1">You are not allowed to add members to profile &#39;%profile_name%&#39;</msg>
   <msg key="lt_You_are_not_authorize">You are not authorized to see this page</msg>
   <msg key="lt_You_are_trying_to_acc">You are trying to access a view that has not been defined in the database.</msg>
   <msg key="lt_You_can_only_specify_">You can only specify either email or last name, not both.</msg>
   <msg key="lt_You_cannot_be_removed">You cannot be removed from the delinquent list... Log your hours !!!</msg>
-  <msg key="lt_You_dont_have_permiss">You don't have permissions to view this page</msg>
-  <msg key="lt_You_dont_have_suffici">You don't have sufficient privileges to add a new company.</msg>
-  <msg key="lt_You_dont_have_suffici_1">You don't have sufficient privileges to add a new office.</msg>
-  <msg key="lt_You_dont_have_suffici_2">You don't have sufficient privileges to see this page.</msg>
+  <msg key="lt_You_dont_have_permiss">You don&#39;t have permissions to view this page</msg>
+  <msg key="lt_You_dont_have_suffici">You don&#39;t have sufficient privileges to add a new company.</msg>
+  <msg key="lt_You_dont_have_suffici_1">You don&#39;t have sufficient privileges to add a new office.</msg>
+  <msg key="lt_You_dont_have_suffici_2">You don&#39;t have sufficient privileges to see this page.</msg>
   <msg key="lt_You_have_been_removed">You have been removed from the delinquent list</msg>
   <msg key="lt_You_have_insufficient">You have insufficient privileges to view this user.</msg>
   <msg key="lt_You_have_insufficient_1">You have insufficient privileges to pursue this operation.</msg>
@@ -1474,7 +1513,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_You_have_no_rights_to">You have no rights to see this page</msg>
   <msg key="lt_You_have_no_rights_to_1">You have no rights to add members to this object.</msg>
   <msg key="lt_You_have_two_options_">You have two options here:</msg>
-  <msg key="lt_You_havent_logged_you">You haven't logged your hours in the last week.</msg>
+  <msg key="lt_You_havent_logged_you">You haven&#39;t logged your hours in the last week.</msg>
   <msg key="lt_You_logged_num_hours_">You logged %num_hours% hour in the last 7 days.</msg>
   <msg key="lt_You_logged_num_hours__1">You logged %num_hours% hours in the last 7 days.</msg>
   <msg key="lt_You_must_be_a_custome">You must be a customer of %ad_system_name% to see this page</msg>
@@ -1497,7 +1536,7 @@ other way for the user to find out.</msg>
   <msg key="lt_You_need_to_type_in_a_1">You need to type in a last name</msg>
   <msg key="lt_You_need_to_type_in_a_2">You need to type in an email address</msg>
   <msg key="lt_You_need_to_type_in_a_3">You need to type in a password</msg>
-  <msg key="lt_Your_passwords_dont_m">Your passwords don't match!  Presumably, you made a typo while entering one of them.</msg>
+  <msg key="lt_Your_passwords_dont_m">Your passwords don&#39;t match!  Presumably, you made a typo while entering one of them.</msg>
   <msg key="Luxembourg">Luxembourg</msg>
   <msg key="lv">lv</msg>
   <msg key="m">m</msg>
@@ -1529,6 +1568,7 @@ other way for the user to find out.</msg>
   <msg key="Member_state_active">active</msg>
   <msg key="Member_state_deleted">deleted</msg>
   <msg key="Members">Members</msg>
+  <msg key="Membership">Membership</msg>
   <msg key="MemberState_approved">Active</msg>
   <msg key="MemberState_banned">Deleted</msg>
   <msg key="Menu_Administration">Menu Administration</msg>
@@ -1641,6 +1681,7 @@ other way for the user to find out.</msg>
   <msg key="Notify">Notify</msg>
   <msg key="Notify_added_user">Notify added user</msg>
   <msg key="Nr">Num</msg>
+  <msg key="Nuke">Nuke</msg>
   <msg key="Nuke_All_Demo_Users">Nuke All Demo Users</msg>
   <msg key="Nuke_Checked_Projects">Nuke Checked Projects</msg>
   <msg key="Nuke_Checked_Users">Nuke Checked Users</msg>
@@ -1654,6 +1695,8 @@ other way for the user to find out.</msg>
   <msg key="o">o</msg>
   <msg key="Object_All">All</msg>
   <msg key="Object_Mine">Mine</msg>
+  <msg key="Object_Name">Name</msg>
+  <msg key="Object_Type">Type</msg>
   <msg key="Object_Types">Object Types</msg>
   <msg key="OCS_Device_ID">OCS Device ID</msg>
   <msg key="OCS_ID">OCS_ID</msg>
@@ -1677,6 +1720,7 @@ other way for the user to find out.</msg>
   <msg key="Old_Number_Location">Old Number Location</msg>
   <msg key="On_Hold">On Hold</msg>
   <msg key="On_Hold1">On Hold</msg>
+  <msg key="On_Track">On Track</msg>
   <msg key="On_Track_Status">On Track Status</msg>
   <msg key="One">One</msg>
   <msg key="One_Category_Type">One Category Type</msg>
@@ -1695,6 +1739,10 @@ other way for the user to find out.</msg>
   <msg key="OpenACS_platform">OpenACS platform</msg>
   <msg key="OpenACS_Sitemap">OpenACS Sitemap</msg>
   <msg key="Operating_System">Operating System</msg>
+  <msg key="Opportunities">Opportunities</msg>
+  <msg key="Opportunity_Campaign">Campaign</msg>
+  <msg key="OpportunityName">Name</msg>
+  <msg key="OpportunityNumber">Nr</msg>
   <msg key="Optional">Optional</msg>
   <msg key="or_by">or by</msg>
   <msg key="or_Last_Name">or Last Name</msg>
@@ -1764,6 +1812,7 @@ other way for the user to find out.</msg>
   <msg key="Phone">Phone</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
+  <msg key="Plan_Costs">Plan Costs</msg>
   <msg key="Planned">Planned</msg>
   <msg key="PlannedTotal">Planned Total</msg>
   <msg key="Planning">Planning</msg>
@@ -1780,6 +1829,8 @@ other way for the user to find out.</msg>
   <msg key="poesadp">po.es.adp</msg>
   <msg key="poessadp">po.es.adp</msg>
   <msg key="Poland">Poland</msg>
+  <msg key="Portfolio">Portfolio</msg>
+  <msg key="Portfolio_Planner">Portfolio Planner</msg>
   <msg key="Portlet_Components">Portlet Components</msg>
   <msg key="Portrait">Portrait</msg>
   <msg key="Portugal">Portugal</msg>
@@ -1812,6 +1863,7 @@ other way for the user to find out.</msg>
   <msg key="Prio_1">Prio</msg>
   <msg key="Prio_HJ_1">Prio HJ</msg>
   <msg key="Priority">Priority</msg>
+  <msg key="Privileges">Privileges</msg>
   <msg key="Probability_">Probability</msg>
   <msg key="Problem_Ticket">Problem Ticket</msg>
   <msg key="Proc_Num">Proc. Num</msg>
@@ -1833,9 +1885,11 @@ other way for the user to find out.</msg>
   <msg key="Profile_Project_Managers">Project Managers</msg>
   <msg key="Profile_Sales">Sales</msg>
   <msg key="Profile_Senior_Managers">Senior Managers</msg>
+  <msg key="Profile_Skill_Profile">Skill Profile</msg>
   <msg key="Profile_Translation_Vertical">Translation Vertical</msg>
   <msg key="Profiles">Profiles</msg>
   <msg key="Profit">Profit</msg>
+  <msg key="Profit__amp__Loss">Profit &amp; Loss</msg>
   <msg key="Profit_amp_Loss">Profit &amp; Loss</msg>
   <msg key="Profit_and_Loss">Profit &amp; Loss</msg>
   <msg key="Program">Program</msg>
@@ -1885,6 +1939,7 @@ other way for the user to find out.</msg>
   <msg key="Project_Resource_Planning">Resource Planning</msg>
   <msg key="Project_Risks">Project Risks</msg>
   <msg key="Project_Skills">Project skills</msg>
+  <msg key="Project_Sponsor">Project Sponsor</msg>
   <msg key="Project_Status">Project Status</msg>
   <msg key="Project_status_Closed">Closed</msg>
   <msg key="Project_status_Inquiring">Inquiring</msg>
@@ -1908,7 +1963,7 @@ other way for the user to find out.</msg>
   <msg key="Project_type_Milestone">Milestone</msg>
   <msg key="Project_type_Other">Other</msg>
   <msg key="Project_type_Program">Program</msg>
-  <msg key="Project_type_Service_Level_Agreement">Ticket Container</msg>
+  <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
   <msg key="Project_type_Software_Release">Software Release</msg>
   <msg key="Project_type_Software_Release_Item">Software Release Item</msg>
   <msg key="Project_type_Task">Task</msg>
@@ -1956,8 +2011,11 @@ other way for the user to find out.</msg>
   <msg key="Quarter">Quarter</msg>
   <msg key="Queue">Queue</msg>
   <msg key="Quote">Quote</msg>
+  <msg key="Quote_Comment">Quote Comment</msg>
   <msg key="Quote_Out">Quote Out</msg>
   <msg key="Quote_out">Quote out</msg>
+  <msg key="Quote_Sign-off">Quote Sign-Off</msg>
+  <msg key="Quoted">Quoted</msg>
   <msg key="Quoted_Days">Quoted Days</msg>
   <msg key="quoteenadp">quote.en.adp</msg>
   <msg key="quoteesadp">quote.es.adp</msg>
@@ -1969,21 +2027,27 @@ other way for the user to find out.</msg>
   <msg key="Random_Portrait">Random Portrait</msg>
   <msg key="Rank">Rank</msg>
   <msg key="Re-Open">Re-Open</msg>
+  <msg key="Reassign">Reassign</msg>
   <msg key="Recent_Registrations">Recent Registrations</msg>
   <msg key="Red">Red</msg>
   <msg key="Redaccin">Redacción</msg>
+  <msg key="Reduction_in_Working_Hours">Reduction in Working Hours</msg>
+  <msg key="Referral">Referral</msg>
   <msg key="Referral_Source">Referral Source</msg>
   <msg key="Referral_source">Referral source</msg>
+  <msg key="referral_source">Referral Source</msg>
   <msg key="Registered_Users">Registered Users</msg>
   <msg key="Rejected">Rejected</msg>
   <msg key="Related_Objects">Related Objects</msg>
   <msg key="Related_Objects_for_object">Related objects for object</msg>
   <msg key="Related_Tickets">Related Tickets</msg>
+  <msg key="Relationship_Type">Relationship Type</msg>
   <msg key="Release_Item">Release Item</msg>
   <msg key="Release_Items_Component">Release Items Component</msg>
   <msg key="Release_Items_Journal">Release Items Journal</msg>
   <msg key="Repeating_Cost">Repeating Cost</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
+  <msg key="Replacement">Replacement</msg>
   <msg key="Reply">Reply</msg>
   <msg key="Report_a_bug_on_this_page">Report a bug on this page</msg>
   <msg key="Report_but_on_page">Report a Bug or Misbehavior</msg>
@@ -2069,7 +2133,14 @@ other way for the user to find out.</msg>
   <msg key="RFQs">RFQs</msg>
   <msg key="right">Right</msg>
   <msg key="Risk">Risk</msg>
+  <msg key="Risk_vs_ROI">Risk vs. ROI</msg>
   <msg key="ro">ro</msg>
+  <msg key="Role_GIF_key-account">key-account</msg>
+  <msg key="Role_GIF_member">member</msg>
+  <msg key="Role_im_company_Full_Member">Full Member</msg>
+  <msg key="Role_im_company_Key_Account">Key Account</msg>
+  <msg key="Role_im_conf_item_Full_Member">Full Member</msg>
+  <msg key="Role_im_ticket_Full_Member">Full Member</msg>
   <msg key="Romania">Romania</msg>
   <msg key="Room">Room</msg>
   <msg key="Room_City">Raum Ort</msg>
@@ -2080,6 +2151,7 @@ other way for the user to find out.</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>
   <msg key="ru_UA">ru_UA</msg>
+  <msg key="Rule_Engine">Rule Engine</msg>
   <msg key="Russian Federation">Russian Federation</msg>
   <msg key="Russian_Federation">Russian Federation</msg>
   <msg key="s">s</msg>
@@ -2088,13 +2160,16 @@ other way for the user to find out.</msg>
   <msg key="Sales">Sales</msg>
   <msg key="sales">Sales</msg>
   <msg key="Sales_Office">Sales Office</msg>
-  <msg key="saltnpepper">Salt 'n Pepper</msg>
+  <msg key="Sales_Stage">Sales Stage</msg>
+  <msg key="saltnpepper">Salt &#39;n Pepper</msg>
+  <msg key="Sample_system_blurb">We have set up this &#39;Tigerpond&#39; sample company on this server in order to show you what your future ]po[ could look like.</msg>
   <msg key="Saudi Arabia">Saudi Arabia</msg>
   <msg key="Saudi_Arabia">Saudi Arabia</msg>
   <msg key="Save_Changes">Save Changes</msg>
   <msg key="Score">Score</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
+  <msg key="SCRUM_Sprint">SCRUM Sprint</msg>
   <msg key="SDLX_4_Elite">SDLX 4 Elite</msg>
   <msg key="SDLX_4_Professional">SDLX 4 Professional</msg>
   <msg key="SDLX_4_Standard">SDLX 4 Standard</msg>
@@ -2125,6 +2200,10 @@ other way for the user to find out.</msg>
   <msg key="senior_managers">Senior Managers</msg>
   <msg key="Server">Server</msg>
   <msg key="Service">Service</msg>
+  <msg key="Set_status_Closed">Set status: Closed</msg>
+  <msg key="Set_status_Deleted">Set status: Deleted</msg>
+  <msg key="Set_status_Open">Set status: Open</msg>
+  <msg key="Set_status_Resolved">Set status: Resolved</msg>
   <msg key="Set_status_to_inviced">Set status to inviced</msg>
   <msg key="Set_status_to_open">Set status to open</msg>
   <msg key="sh">sh</msg>
@@ -2132,6 +2211,7 @@ other way for the user to find out.</msg>
   <msg key="Show_more">Show more</msg>
   <msg key="ShowAll">Show All</msg>
   <msg key="Sick">Unavailable</msg>
+  <msg key="Sign-off">Sign-Off</msg>
   <msg key="simple-survey">simple-survey</msg>
   <msg key="Simple_Surveys">Simple Surveys</msg>
   <msg key="Singapore">Singapore</msg>
@@ -2139,10 +2219,11 @@ other way for the user to find out.</msg>
   <msg key="Sitemap">Site Map</msg>
   <msg key="Size">Size</msg>
   <msg key="sk">sk</msg>
+  <msg key="Skill_Profile">Skill Profile</msg>
   <msg key="Skin">Skin</msg>
   <msg key="sl">sl</msg>
   <msg key="SLA_Parameter">SLA Parameter</msg>
-  <msg key="SLA_Request">SLA Request</msg>
+  <msg key="SLA_Request">Ticket Container Request</msg>
   <msg key="SLAs">SLAs</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
@@ -2172,6 +2253,7 @@ other way for the user to find out.</msg>
   <msg key="Specs">Specs</msg>
   <msg key="sq">sq</msg>
   <msg key="SQL_Profiling">SQL Profiling</msg>
+  <msg key="SQL_Selectors">SQL Selectors</msg>
   <msg key="Squared">Squared</msg>
   <msg key="sr">sr</msg>
   <msg key="Standard">Standard</msg>
@@ -2181,6 +2263,7 @@ other way for the user to find out.</msg>
   <msg key="Star_Transit_XV">Star Transit XV</msg>
   <msg key="Start">Start</msg>
   <msg key="Start_Date">Start Date</msg>
+  <msg key="Starting_to_use_the_system_blurb">Starting to use ]po[</msg>
   <msg key="State">State</msg>
   <msg key="Status">Status</msg>
   <msg key="Strategic_Consulting">Strategic Consulting</msg>
@@ -2236,7 +2319,10 @@ other way for the user to find out.</msg>
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telephony request</msg>
   <msg key="Template_p">Template?</msg>
+  <msg key="templatede_DEadp">template.de_DE.adp</msg>
+  <msg key="templatede_DEodt">template.de_DE.odt</msg>
   <msg key="templatedeodt">template.de.odt</msg>
+  <msg key="templateen_USadp">template.en_US.adp</msg>
   <msg key="templateenadp">template.en.adp</msg>
   <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>
@@ -2247,10 +2333,12 @@ other way for the user to find out.</msg>
   <msg key="th">th</msg>
   <msg key="The_web_with_Google">The web with Google</msg>
   <msg key="Ticket">Ticket</msg>
+  <msg key="Ticket_Container">Ticket Container</msg>
   <msg key="Ticket_Members">Ticket Members</msg>
   <msg key="Ticket_Owner">Ticket Owner</msg>
   <msg key="Ticket_Status">Ticket Status</msg>
   <msg key="Ticket_Survey_Component">Ticket Survey Component</msg>
+  <msg key="Ticket_Tracker">Ticket Tracker</msg>
   <msg key="Ticket_Type">Ticket Type</msg>
   <msg key="Tickets">Tickets</msg>
   <msg key="Time_plan">Time plan</msg>
@@ -2260,7 +2348,9 @@ other way for the user to find out.</msg>
   <msg key="Timesheet_Confirmation_Journal">Timesheet Confirmation Journal</msg>
   <msg key="Timesheet_Confirmation_Workflow">Timesheet Confirmation Workflow</msg>
   <msg key="Timesheet_Cost">Timesheet Cost</msg>
+  <msg key="Timesheet_Hour">Timesheet Hour</msg>
   <msg key="Timesheet_Hours">Timesheet Hours</msg>
+  <msg key="Timesheet_Hours_New_Admin">Timesheet Hours New Admin</msg>
   <msg key="Timesheet_Management">Timesheet Management</msg>
   <msg key="Timesheet_Productivity">Timesheet Productivity</msg>
   <msg key="Timesheet_Task">Timesheet Task</msg>
@@ -2289,6 +2379,7 @@ other way for the user to find out.</msg>
   <msg key="Trados_60_LSP">Trados 6.0 LSP</msg>
   <msg key="Trados_65_Freelance">Trados 6.5 Freelance</msg>
   <msg key="Trados_MultiTerm_Ix">Trados MultiTerm lx</msg>
+  <msg key="Traffic_Light_Report">RAG Traffic Light Report</msg>
   <msg key="Train">Train</msg>
   <msg key="Training">Training</msg>
   <msg key="Training_Event">Training Event</msg>
@@ -2378,6 +2469,8 @@ other way for the user to find out.</msg>
   <msg key="User_Skills">User Skills</msg>
   <msg key="User_state">User state</msg>
   <msg key="User_Status">User Status</msg>
+  <msg key="User_Story">User Story</msg>
+  <msg key="User_Sub-Administration">User Sub-Administration</msg>
   <msg key="User_Survey_Component">User Surveys</msg>
   <msg key="User_Type">User Type</msg>
   <msg key="User_Types">User Types</msg>
@@ -2398,6 +2491,7 @@ other way for the user to find out.</msg>
   <msg key="VAS">VAS</msg>
   <msg key="VAS_5051">VAS 5051</msg>
   <msg key="VAT_Number">VAT Number</msg>
+  <msg key="vat_number">VAT Number</msg>
   <msg key="Venezuela">Venezuela</msg>
   <msg key="Very_Important">Very Important</msg>
   <msg key="vi">vi</msg>
@@ -2410,6 +2504,7 @@ other way for the user to find out.</msg>
   <msg key="View_Status">View Status</msg>
   <msg key="View_Type">View Type</msg>
   <msg key="w">w</msg>
+  <msg key="Waiting_for_Other">Waiting for Others</msg>
   <msg key="We_have_found_an_exact_match">We have found an exact match for user %found_user_name% (%found_user_email%).</msg>
   <msg key="Web_Site">Web Site</msg>
   <msg key="Web_Site_Design">Web Site Design</msg>
@@ -2419,7 +2514,7 @@ other way for the user to find out.</msg>
   <msg key="Welcome_to_po">Welcome to ]project-open[</msg>
   <msg key="Welcome_User_Name">Welcome %user_name%</msg>
   <msg key="What_is_wrong">What is wrong</msg>
-  <msg key="Whos_Online">Who's Online?</msg>
+  <msg key="Whos_Online">Who&#39;s Online?</msg>
   <msg key="Widget_Examples">Widget Examples</msg>
   <msg key="Widgets">Widgets</msg>
   <msg key="Wiki">Wiki</msg>
@@ -2439,7 +2534,7 @@ other way for the user to find out.</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
   <msg key="With_Member">With Member</msg>
   <msg key="With_members_of_my_dept">My department</msg>
-  <msg key="Wont_fix">Won't fix</msg>
+  <msg key="Wont_fix">Won&#39;t fix</msg>
   <msg key="Wordfast_2">Wordfast</msg>
   <msg key="Wordfast_3">Wordfast 3</msg>
   <msg key="Wordfast_4">Wordfast 4</msg>
@@ -2467,6 +2562,7 @@ other way for the user to find out.</msg>
   <msg key="x">x</msg>
   <msg key="XML-RPC">XML-RPC</msg>
   <msg key="xml-rpc">xml-rpc</msg>
+  <msg key="XoWiki">XoWiki</msg>
   <msg key="y">y</msg>
   <msg key="Year">Year</msg>
   <msg key="Yellow">Yellow</msg>

@@ -51,13 +51,6 @@
 	  be used otherwise.<br>&nbsp;<br>
 
 	<li>
-	  <a href="/intranet/admin/ltc-import/">Import data from LTC-Organiser</a><br>
-	  This wizard allows you to import data from the MS-Access 
-	  based LTC-Organiser into 
-	  <span class="nobr"><span class=brandsec>&\#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&\#91;</span></span>.
-	  <br>&nbsp;<br>
-
-	<li>
 	  <a href="/intranet/admin/windows-to-linux">Convert parameters from Windows to Linux</a><br>
           Use this if you have imported a backup dump from a Windows system
 	  to this Linux system.
