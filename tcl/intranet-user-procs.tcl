@@ -1880,20 +1880,24 @@ ad_proc -public im_menu_users_admin_links {
 } {
     set result_list {}
     set current_user_id [ad_conn user_id]
+    set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_users"]} {
-	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
-	lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
-	lappend result_list [list [lang::message::lookup "" intranet-core.Import_User_from_CSV "Import Users from CSV"] [export_vars -base "/intranet-csv-import/index" {{object_type person} return_url}]]
-	lappend result_list [list [lang::message::lookup "" intranet-core.Export_User_to_CSV "Export Users to CSV"] [export_vars -base "/intranet-dw-light/users.csv" {}]]
+	# lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
     }
 
-    # Append user-defined menus
-    set bind_vars [list return_url $return_url]
-    set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "users_admin" $bind_vars]
-    foreach link $links {
-        lappend result_list $link
+    lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
+    if {$user_is_admin_p} {
+	lappend result_list [list [lang::message::lookup "" intranet-core.Import_User_from_CSV "Import Users from CSV"] [export_vars -base "/intranet-csv-import/index" {{object_type person} return_url}]]
+	lappend result_list [list [lang::message::lookup "" intranet-core.Export_User_to_CSV "Export Users to CSV"] [export_vars -base "/intranet-dw-light/users.csv" {}]]
+
+	# Append user-defined menus
+	set bind_vars [list return_url $return_url]
+	set links [im_menu_ul_list -no_uls 1 -list_of_links 1 "users_admin" $bind_vars]
+	foreach link $links {
+	    lappend result_list $link
+	}
     }
 
     return $result_list
