@@ -916,22 +916,14 @@ ad_proc -public im_navbar_helper {
 	    set admin_menu_list {}
 	    if {$admin_p} {
 		switch $label {
-		    "projects" { set admin_menu_list [im_menu_projects_admin_links] }
-		    "crm" {
-			catch { set admin_menu_list [im_menu_crm_admin_links] } err_msg
-		    }
-		    "user" { set admin_menu_list [im_menu_users_admin_links] }
+		    "crm" { set admin_menu_list [im_menu_crm_admin_links] }
 		    "companies" { set admin_menu_list [im_menu_companies_admin_links] }
+		    "finance" { set admin_menu_list [im_menu_finance_admin_links] }
 		    "helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
-		    "timesheet2_timesheet" { 
-			catch { set admin_menu_list [im_menu_timesheet_admin_links] } err_msg
-		    }
-		    "timesheet2_absences" { 
-			catch { set admin_menu_list [im_menu_absences_admin_links] } err_msg
-		    }
-		    "finance" { 
-			catch { set admin_menu_list [im_menu_finance_admin_links] } err_msg
-		    }
+		    "projects" { set admin_menu_list [im_menu_projects_admin_links] }
+		    "timesheet2_timesheet" { set admin_menu_list [im_menu_timesheet_admin_links] }
+		    "timesheet2_absences" { set admin_menu_list [im_menu_absences_admin_links] }
+		    "user" { set admin_menu_list [im_menu_users_admin_links] }
 		}
 	    }
 
@@ -1003,7 +995,7 @@ ad_proc -public im_navbar_main_submenu {
     if {"" == $user_id} { set user_id [ad_conn user_id] }
 
     # Add the "admin links" as the first items below the tab
-    set tab1 ""
+    set tab_admin ""
     foreach admin_menu_list_item $admin_menu_list {
 	set item_text [lindex $admin_menu_list_item 0]
 	set item_url [lindex $admin_menu_list_item 1]
@@ -1018,22 +1010,22 @@ ad_proc -public im_navbar_main_submenu {
 		</div>
 		</li>\n"
 	}
-	append tab1 $item
+	append tab_admin $item
     }
 
     # Add any sub-menus below the "admin links"
-    set tab2 [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
+    set tab_menu [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
 
-    # Join tab1 and tab2 together
-    if {"" ne $tab1 && "" ne $tab2} {
+    # Join tab_admin and tab_menu together
+    if {"" ne $tab_admin && "" ne $tab_menu} {
 	# There are both sub-menus and admin menus, so join together with a separator
-	set tab $tab1
+	set tab $tab_menu
 	append tab "<li class=\"unselected divider\"><hr/></li>\n"
-	append tab $tab2
+	append tab $tab_admin
     } else {
 	# Only one of the two components contains data, so just join together
-	set tab $tab1
-	append tab $tab2
+	set tab $tab_admin
+	append tab $tab_menu
     }
 
 
