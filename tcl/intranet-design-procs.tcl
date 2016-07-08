@@ -918,6 +918,7 @@ ad_proc -public im_navbar_helper {
 		catch {
 		    switch $label {
 			"crm" { set admin_menu_list [im_menu_crm_admin_links] }
+			"conf_items" { set admin_menu_list [im_menu_conf_items_admin_links] }
 			"companies" { set admin_menu_list [im_menu_companies_admin_links] }
 			"finance" { set admin_menu_list [im_menu_finance_admin_links] }
 			"helpdesk" { set admin_menu_list [im_menu_tickets_admin_links] }
