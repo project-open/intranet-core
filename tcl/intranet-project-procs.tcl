@@ -3388,7 +3388,7 @@ ad_proc -public im_menu_projects_admin_links {
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_projects"]} {
-	lappend result_list [list [_ intranet-core.Add_a_new_project] "/intranet/projects/new"]
+	# lappend result_list [list [_ intranet-core.Add_a_new_project] "/intranet/projects/new"]
 
 	set new_from_template_p [im_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
 	if {$new_from_template_p} {
