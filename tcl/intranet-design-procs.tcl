@@ -675,7 +675,8 @@ ad_proc -public im_sub_navbar {
 	    if [catch {
 	    	set visible [expr $visible_tcl]
 	    } errmsg] {
-		ad_return_complaint 1 "<pre>$errmsg</pre>"	    
+		ad_return_complaint 1 "im_sub_navbar: Error evalualuating menu visible_tcl expression:<br>
+                <pre>visible_tcl=$visible_tcl</pre><br>Error:<br><pre>$errmsg</pre>"
 	    }
 	    	    
 	    if {!$visible} { continue }
@@ -724,6 +725,9 @@ ad_proc -public im_sub_navbar {
 
 	append navbar [im_navbar_tab $url $name $selected]
     }
+
+
+
 
     if {$components_p} {
 	if {$base_url eq ""} {
