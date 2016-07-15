@@ -1103,6 +1103,8 @@ ad_proc -public im_design_user_profile_string {
 } {
     Determine a pretty string for the type of user that it is:
 } {
+    if {"" eq $user_id} { return "" }
+
     set group_sql "
 	select	g.group_name,
 		CASE 
