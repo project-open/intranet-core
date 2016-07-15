@@ -1019,12 +1019,6 @@ developer-support-adp-box-off {
 	overflow: visible;
         min-height: 0;
 }
-.component_body ul {
-  margin: 0;
-  padding-right: 1em;
-  padding-top: 1em;
-  padding-left: 2em;
-}
 
 .component_footer {
   position: relative;
@@ -1033,6 +1027,7 @@ developer-support-adp-box-off {
   color: #ffffff;
   display: none;
 }
+
 .component_footer_hack, .footer_hack {
   position: relative;
   z-index: 101;
