@@ -16,7 +16,7 @@
 </if>
 <else>
   <form method=POST action=contact-edit>
-    <input type="hidden" name="user_id" value="@user_id;noquote@>
+    <input type="hidden" name="user_id" value="@user_id;noquote@">
     <input type="hidden" name="return_url" value="@return_url;noquote@">
     <table cellpadding="0" cellspacing="2" border="0">
       <tr><td colspan="2">#intranet-core.lt_No_contact_informatio#</td></tr>
