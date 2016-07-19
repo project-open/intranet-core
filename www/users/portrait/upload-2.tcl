@@ -110,15 +110,31 @@ if { [catch {
 
 
 # --------------- Let's copy the file into the FS --------------------
+
+# First try to use ImageMagick to convert the file into a thumbnail
+set error_p 0
 if { [catch {
-    ns_log Notice "/bin/mv $tmp_filename $dest_file"
-    exec /bin/cp $tmp_filename $dest_file
+    ns_log Notice "convert $tmp_filename -thumbnail 100x100 -unsharp 0x.5 $dest_file"
+    exec convert $tmp_filename -thumbnail 200x200 -unsharp 0x.5 $dest_file
     ns_log Notice "/bin/chmod ug+w $dest_file"
     exec /bin/chmod ug+w $dest_file
 } err_msg] } {
-    # Probably some permission errors
-    ad_return_complaint  "Error writing upload file"  $err_msg
-    return
+    # ad_return_complaint 1 "Error converting file using ImageMagick:<br><pre>$err_msg</pre>"
+    set error_p 1
+}
+
+# Use a normal copy only if ImageMagic failed
+if {$error_p} {
+    if { [catch {
+	ns_log Notice "/bin/mv $tmp_filename $dest_file"
+	exec /bin/cp $tmp_filename $dest_file
+	ns_log Notice "/bin/chmod ug+w $dest_file"
+	exec /bin/chmod ug+w $dest_file
+    } err_msg] } {
+	# Probably some permission errors
+	ad_return_complaint  "Error writing upload file"  $err_msg
+	set error_p 1
+    }
 }
 
 
