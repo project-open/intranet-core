@@ -72,6 +72,9 @@ db_foreach admin_menu $menu_sql {
     set help_url [im_navbar_help_link -url $url]
     set help_text [lang::message::lookup "" intranet-core.Navbar_Help_Text "Click here to get help for this page"]
 
+    set name_key "intranet-core.[lang::util::suggest_key $name]"
+    set name [lang::message::lookup "" $name_key $name]
+
     append menu_html "
 	<div class='admin_menu_item'>
 		[im_gif $menu_gif] <a href=\"$url\">$name</a>
