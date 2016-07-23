@@ -9,7 +9,7 @@
 # site-map notes or deleting GUI components.
 #
 # You need to install a ~/www/become.tcl file
-# ike this before executing:
+# like this before executing:
 #
 # ad_page_contract {
 #    Dangerous - remove before publishing
@@ -30,7 +30,7 @@ psql -c "update im_component_plugins set enabled_p = 't'"
 # Delete WGET results
 rm -rf ~/spider/localhost
 
-wget -nv -r --exclude-directories=\
+wget -nv -r -l 2 --exclude-directories=\
 /admin/,\
 /acs-admin/,\
 /acs-admin/site-map/,\
