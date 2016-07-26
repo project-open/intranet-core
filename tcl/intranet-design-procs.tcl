@@ -931,8 +931,8 @@ ad_proc -public im_navbar_helper {
 			"timesheet2_absences" { set admin_menu_list [im_menu_absences_admin_links] }
 			"user" { set admin_menu_list [im_menu_users_admin_links] }
 		    }
-		}
-	    } err_msg
+		} err_msg
+	    }
 
 	    lappend navbar [im_navbar_main_submenu \
 				-admin_menu_list $admin_menu_list \
