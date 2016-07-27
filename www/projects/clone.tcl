@@ -69,15 +69,26 @@ set clone_folders_p [parameter::get -package_id [im_package_core_id] -parameter 
 set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1]
 
 set clone_struct {
-    {"Clone Project Members" clone_members_p}
-    {"Clone Costs" clone_costs_p}
-    {"Clone Timesheet Tasks" clone_timesheet_tasks_p}
-    {"Clone Forum Topics" clone_forum_topics_p}
-    {"Clone Filestorage Files" clone_files_p}
-    {"Clone Filestorage Folders" clone_folders_p}
-    {"Clone Sub-projects" clone_subprojects_p}
-    {"Clone Target Languages" clone_target_languages_p}
+    {"Clone Gantt Tasks" clone_timesheet_tasks_p}
+    {"Clone Members and Assignments" clone_members_p}
+    {"Clone Financial Items" clone_costs_p}
 }
+
+# Compatibility with Translation specific systems
+# ToDo: Generalize and handle with parameters etc.
+if {[db_string trans_enabled_p "select count(*) from apm_packages where package_key = 'intranet-translation'"]} {
+    set clone_struct {
+	{"Clone Project Members" clone_members_p}
+	{"Clone Costs" clone_costs_p}
+	{"Clone Timesheet Tasks" clone_timesheet_tasks_p}
+	{"Clone Forum Topics" clone_forum_topics_p}
+	{"Clone Filestorage Files" clone_files_p}
+	{"Clone Filestorage Folders" clone_folders_p}
+	{"Clone Sub-projects" clone_subprojects_p}
+	{"Clone Target Languages" clone_target_languages_p}
+    }
+}
+
 
 set clone_html ""
 foreach struct $clone_struct {

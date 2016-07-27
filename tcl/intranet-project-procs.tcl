@@ -1316,10 +1316,11 @@ ad_proc im_project_clone {
     clone_postfix
 } {
     Recursively clone projects.
+    Returns a list that consists of the return project_id and an error_html.
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
-    ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id"
+    ns_log Notice "im_project_clone: parent_project_id=$parent_project_id, project_name=$project_name, project_nr=$project_nr, clone_postfix=$clone_postfix, clone_costs_p=$clone_costs_p, clone_files_p=$clone_files_p, clone_folders_p=$clone_folders_p, clone_subprojects_p=$clone_subprojects_p, clone_forum_topics_p=$clone_forum_topics_p, clone_members_p=$clone_members_p, clone_timesheet_tasks_p=$clone_timesheet_tasks_p, clone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p, clone_target_languages_p=$clone_target_languages_p, clone_trans_tasks_p=$clone_trans_tasks_p, clone_level=$clone_level, company_id=$company_id, new_parent_project_id=$new_parent_project_id"
 
     if {"" == $clone_members_p} { set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1] }
     if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
@@ -1334,11 +1335,13 @@ ad_proc im_project_clone {
 
     set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
+    # ad_return_complaint 1 "<pre>\nim_project_clone: parent_project_id=$parent_project_id,\nproject_name=$project_name,\nproject_nr=$project_nr,\ncompany_id=$company_id,\nnew_parent_project_id=$new_parent_project_id\nclone_postfix=$clone_postfix,\nclone_costs_p=$clone_costs_p,\nclone_files_p=$clone_files_p,\nclone_folders_p=$clone_folders_p,\nclone_subprojects_p=$clone_subprojects_p,\nclone_forum_topics_p=$clone_forum_topics_p,\nclone_members_p=$clone_members_p,\nclone_timesheet_tasks_p=$clone_timesheet_tasks_p,\nclone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p,\nclone_target_languages_p=$clone_target_languages_p,\nclone_trans_tasks_p=$clone_trans_tasks_p,\nclone_level=$clone_level,\n</pre>"
+
     # --------------------------------------------
     # Clone the project & dynfields
     #
     append errors "<li>Starting to clone base data\n"
-    set cloned_project_id [im_project_clone_base $parent_project_id $project_name $project_nr $company_id $clone_postfix]
+    set cloned_project_id [im_project_clone_base -debug_p $debug_p $parent_project_id $project_name $project_nr $company_id $clone_postfix]
 
     if { 0 != $new_parent_project_id } {
 	db_dml set_parent_id "update im_projects set parent_id = :new_parent_project_id where project_id = :cloned_project_id"
@@ -1349,30 +1352,30 @@ ad_proc im_project_clone {
     # --------------------------------------------
     # Clone the project
 
-    append errors [im_project_clone_base2 $parent_project_id $cloned_project_id]
-    append errors [im_project_clone_url_map $parent_project_id $cloned_project_id]
+    append errors [im_project_clone_base2 -debug_p $debug_p $parent_project_id $cloned_project_id]
+    append errors [im_project_clone_url_map -debug_p $debug_p $parent_project_id $cloned_project_id]
 
     if {$clone_members_p} {
-	append errors [im_project_clone_members $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_members -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
 
     if {$clone_files_p} {
-	append errors [im_project_clone_files $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_files -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_files_p} {
-	append errors [im_project_clone_folders $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_folders -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_trans_tasks_p && [im_table_exists "im_trans_tasks"]} {
-	append errors [im_project_clone_trans_tasks $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_trans_tasks -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_target_languages_p && [im_table_exists "im_target_languages"]} {
-	append errors [im_project_clone_target_languages $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_target_languages -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_forum_topics_p && [im_table_exists "im_forum_topics"]} {
-        append errors [im_project_clone_forum_topics $parent_project_id $cloned_project_id]
+        append errors [im_project_clone_forum_topics -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_costs_p && [im_table_exists "im_costs"]} {
-        append errors [im_project_clone_costs $parent_project_id $cloned_project_id]
+        append errors [im_project_clone_costs -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
 
     if {$debug_p} { ns_write "$errors\n" }
@@ -1400,12 +1403,13 @@ ad_proc im_project_clone {
 		where	project_id = :sub_project_id
 	    "
 	    
-	    ns_write "<li>im_project_clone: sub_project_nr; $sub_project_nr \n"
+	    if {$debug_p} { ns_write "<li>im_project_clone: sub_project_nr; $sub_project_nr \n" }
 
 	    # go for the next project
 	    if {$debug_p} { ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n" }
 	    if {$debug_p} { ns_write "<ul>\n" }
-	    set cloned_subproject_id [im_project_clone \
+	    set cloned_result_tuple [im_project_clone \
+					  -debug_p $debug_p \
 					  -clone_costs_p $clone_costs_p \
 					  -clone_files_p $clone_files_p \
 					  -clone_subprojects_p $clone_subprojects_p \
@@ -1423,6 +1427,8 @@ ad_proc im_project_clone {
 					  $sub_project_nr \
 					  $clone_postfix \
 	    ]
+	    set cloned_subproject_id [lindex $cloned_result_tuple 0]
+	    append errors [lindex $cloned_result_tuple 1]
 	    if {$debug_p} { ns_write "</ul>\n" }
 
 	    # Set project_nr of subprojects based on newly created main project
@@ -1473,22 +1479,26 @@ ad_proc im_project_clone {
 	    # go for the next project
 	    if {$debug_p} { ns_write "<li>im_project_clone: Clone task $sub_task_name\n" }
 	    if {$debug_p} { ns_write "<ul>\n" }
-	    set cloned_task_id [im_project_clone \
-				    -clone_costs_p $clone_costs_p \
-				    -clone_files_p $clone_files_p \
-				    -clone_subprojects_p $clone_subprojects_p \
-				    -clone_forum_topics_p $clone_forum_topics_p \
-				    -clone_members_p $clone_members_p \
-				    -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
-				    -clone_trans_tasks_p $clone_trans_tasks_p \
-				    -clone_target_languages_p $clone_target_languages_p \
-				    -clone_level [expr {$clone_level +1}] \
-				    -company_id $company_id \
-				    $task_id \
-				    $sub_task_name \
-				    $sub_task_nr \
-				    $clone_postfix \
+	    set tuple [im_project_clone \
+			   -debug_p $debug_p \
+			   -clone_costs_p $clone_costs_p \
+			   -clone_files_p $clone_files_p \
+			   -clone_subprojects_p $clone_subprojects_p \
+			   -clone_forum_topics_p $clone_forum_topics_p \
+			   -clone_members_p $clone_members_p \
+			   -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
+			   -clone_trans_tasks_p $clone_trans_tasks_p \
+			   -clone_target_languages_p $clone_target_languages_p \
+			   -clone_level [expr {$clone_level +1}] \
+			   -company_id $company_id \
+			   $task_id \
+			   $sub_task_name \
+			   $sub_task_nr \
+			   $clone_postfix \
 	    ]
+	    set cloned_task_id [lindex $tuple 0]
+	    append errors [lindex $tuple 1]
+
 	    if {$debug_p} { ns_write "</ul>\n" }
 
 	    # We can _now_ reset the subtasks's name to the original one
@@ -1541,11 +1551,11 @@ ad_proc im_project_clone {
     # Copy task dependencies if we are cloning the main project here
     if {0 == $clone_level && $clone_timesheet_task_dependencies_p} {
         # Get the hierarchical project_nr -> project_id relationship of both the original and the cloned project
-	set tupel [im_project_clone_hierarchy_hash -project_id $parent_project_id]
+	set tupel [im_project_clone_hierarchy_hash -debug_p $debug_p -project_id $parent_project_id]
 	array set parent_project_hierarchy_hash_id_nr [lindex $tupel 0]
 	array set parent_project_hierarchy_hash_nr_id [lindex $tupel 1]
 
-	set tupel [im_project_clone_hierarchy_hash -project_id $cloned_project_id]
+	set tupel [im_project_clone_hierarchy_hash -debug_p $debug_p -project_id $cloned_project_id]
 	array set cloned_project_hierarchy_hash_id_nr [lindex $tupel 0]
 	array set cloned_project_hierarchy_hash_nr_id [lindex $tupel 1]
 
@@ -1575,8 +1585,8 @@ ad_proc im_project_clone {
 
 	    # fraber 140228: There seems to be an error with closing the dependencies.
 	    # ToDo: Investigate error further, rather than avoiding the error...
-	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { continue }
-	    if {![info exists $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { continue }
+	    if {![info exists cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { continue }
+	    if {![info exists cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { continue }
 
 	    # Convert the nrs of the original project into ids of the cloned project
 	    set task_id_one_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)
@@ -1614,11 +1624,12 @@ ad_proc im_project_clone {
     im_audit -object_type im_project -action after_create -object_id $cloned_project_id
 
     ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id: Before returning"
-    return $cloned_project_id
+    return [list $cloned_project_id $errors]
 }
 
 
 ad_proc im_project_clone_hierarchy_hash {
+    {-debug_p 1}
     -project_id:required
 } {
     Returns a key-value list of project_nr -> project_id.
@@ -1654,7 +1665,7 @@ ad_proc im_project_clone_hierarchy_hash {
 }
 
 ad_proc im_project_clone_base {
-    {-debug 0}
+    {-debug_p 1}
     parent_project_id
     project_name
     project_nr
@@ -1664,7 +1675,7 @@ ad_proc im_project_clone_base {
     Create the minimum information for a clone project
     with a new name and project_nr for unique constraint reasons.
 } {
-    if {$debug} { ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix" }
+    if {$debug_p} { ns_log Notice "im_project_clone_base parent_project_id=$parent_project_id project_name=$project_name project_nr=$project_nr new_company_id=$new_company_id clone_postfix=$clone_postfix" }
 
     set new_project_name $project_name
     set new_project_nr $project_nr
@@ -1687,10 +1698,9 @@ ad_proc im_project_clone_base {
 	return
     }
 
-    # Take the new_company_id from the procedure parameters
-    # and overwrite the information from the parent project
-    # This is useful if somebody wants to "clone" a project,
-    # but execute the project for the "internal" company.
+    # Take the new_company_id from the procedure parameters and overwrite the information from the 
+    # parent project. This is useful if somebody wants to "clone" a project, but execute the project 
+    # for the "internal" company.
     if {0 != $new_company_id && "" != $new_company_id} {
 	set company_id $new_company_id
     }
@@ -1743,11 +1753,14 @@ ad_proc im_project_clone_base {
 		note = :note,
 		project_lead_id = :project_lead_id,
 		supervisor_id = :supervisor_id,
+		corporate_sponsor = :corporate_sponsor,
 		requires_report_p = :requires_report_p,
 		project_budget = :project_budget,
 		project_budget_currency = :project_budget_currency,
 		project_budget_hours = :project_budget_hours,
 		percent_completed = :percent_completed,
+		sort_order = :sort_order,
+		milestone_p = :milestone_p,
 		on_track_status_id = :on_track_status_id
 	where
 		project_id = :cloned_project_id
@@ -1781,13 +1794,13 @@ ad_proc im_project_clone_base {
 
 
 ad_proc im_project_clone_base2 {
-    {-debug 0}
+    {-debug_p 1}
     parent_project_id
     new_project_id
 } {
     copy project structure
 } {
-    if {$debug} { ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id" }
+    if {$debug_p} { ns_log Notice "im_project_clone_base2 parent_project_id=$parent_project_id new_project_id=$new_project_id" }
     set errors "<li>Starting to clone base2 data: parent_project_id=$parent_project_id new_project_id=$new_project_id"
 
     set query "
@@ -1852,13 +1865,13 @@ ad_proc im_project_clone_base2 {
 
 
 ad_proc im_project_clone_members {
-    {-debug 0}
+    {-debug_p 1}
     parent_project_id 
     new_project_id
 } {
     Copy projects members and administrators
 } {
-    if {$debug} { ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id" }
+    if {$debug_p} { ns_log Notice "im_project_clone_members parent_project_id=$parent_project_id new_project_id=$new_project_id" }
     set errors "<li>Starting to clone member information"
     set current_user_id [ad_conn user_id]
 
@@ -1888,22 +1901,20 @@ ad_proc im_project_clone_members {
     # added to the project.
 
     set rels_sql "
-	select 
-		r.*,
+	select	r.*,
 		m.object_role_id,
+		m.percentage,
 		o.object_type
-	from 
-		acs_rels r 
-			left outer join im_biz_object_members m 
-			on r.rel_id = m.rel_id,
+	from 	acs_rels r 
+		LEFT OUTER join im_biz_object_members m ON r.rel_id = m.rel_id,
 		acs_objects o
-	where 
-		r.object_id_two = o.object_id
+	where	r.object_id_two = o.object_id
 		and r.object_id_one=:parent_project_id
     "
     db_foreach get_rels $rels_sql {
 	if {"" != $object_role_id && "user" == $object_type} {
-	    im_biz_object_add_role $object_id_two $new_project_id $object_role_id
+	    set rel_id [im_biz_object_add_role $object_id_two $new_project_id $object_role_id]
+	    db_dml perc "update im_biz_object_members set percentage = :percentage where rel_id = :rel_id"
 	}
     }
     append errors "<li>Finished to clone member information"
@@ -1911,7 +1922,11 @@ ad_proc im_project_clone_members {
 }
 
     
-ad_proc im_project_clone_url_map {parent_project_id new_project_id} {
+ad_proc im_project_clone_url_map {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy projects URL Map
 } {
     ns_log Notice "im_project_clone_url_map parent_project_id=$parent_project_id new_project_id=$new_project_id"
@@ -1936,6 +1951,7 @@ ad_proc im_project_clone_url_map {parent_project_id new_project_id} {
 
 
 ad_proc im_project_clone_costs {
+    {-debug_p 1}
     parent_project_id 
     new_project_id
 } {
@@ -2153,6 +2169,7 @@ ad_proc im_project_clone_costs {
 }
 
 ad_proc im_project_clone_trans_tasks {
+    {-debug_p 1}
     parent_project_id 
     new_project_id
 } {
@@ -2167,7 +2184,11 @@ ad_proc im_project_clone_trans_tasks {
     return $errors
 }
 
-ad_proc im_project_clone_target_languages {parent_project_id new_project_id} {
+ad_proc im_project_clone_target_languages {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy target languages and assignments
 } {
     ns_log Notice "im_project_clone_target_languages parent_project_id=$parent_project_id new_project_id=$new_project_id"
@@ -2193,7 +2214,11 @@ ad_proc im_project_clone_target_languages {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_payments {parent_project_id new_project_id} {
+ad_proc im_project_clone_payments {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy payments
 } {
     ns_log Notice "im_project_clone_payments parent_project_id=$parent_project_id new_project_id=$new_project_id"
@@ -2238,7 +2263,11 @@ ad_proc im_project_clone_payments {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_forum_topics {parent_project_id new_project_id} {
+ad_proc im_project_clone_forum_topics {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy forum topics
 } {
     ns_log Notice "im_project_clone_forum_topics parent_project_id=$parent_project_id new_project_id=$new_project_id"
@@ -2307,7 +2336,11 @@ ad_proc im_project_clone_forum_topics {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_files {parent_project_id new_project_id} {
+ad_proc im_project_clone_files {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy all files and subdirectories from parent to the new project
 } {
     ns_log Notice "im_project_clone_files parent_project_id=$parent_project_id new_project_id=$new_project_id"
@@ -2339,7 +2372,11 @@ ad_proc im_project_clone_files {parent_project_id new_project_id} {
 }
 
 
-ad_proc im_project_clone_folders {parent_project_id new_project_id} {
+ad_proc im_project_clone_folders {
+    {-debug_p 1}
+    parent_project_id 
+    new_project_id
+} {
     Copy folders and folder permissions to new project
 } {
     ns_log Notice "im_project_clone_folders parent_project_id=$parent_project_id new_project_id=$new_project_id"

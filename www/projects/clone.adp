@@ -14,7 +14,7 @@
     <tr> 
       <td>#intranet-core.Project_Name#</td>
       <td> 
-	<input type="text" size="40" name="project_name" value="@project_name@">
+	<input type="text" size="60" name="project_name" value="@project_name@">
 	<%= [im_gif help [lang::message::lookup "" intranet-core.Please_enter_any_suitable_name "Please enter any suitable name for the project. The name must be unique."]] %>
       </td>
     </tr>

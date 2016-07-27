@@ -31,10 +31,10 @@ ad_page_contract {
     { return_url "" }
     { clone_costs_p 0 }
     { clone_files_p 0 }
-    { clone_subprojects_p 0 }
+    { clone_subprojects_p 1 }
     { clone_forum_topics_p 0 }
     { clone_members_p 0 }
-    { clone_timesheet_tasks_p 0 }
+    { clone_timesheet_tasks_p 1 }
     { clone_target_languages_p 0 }
 }
 
@@ -61,6 +61,11 @@ set project_nr_field_size [im_parameter -package_id [im_package_core_id] Project
 set page_title "Clone Project"
 
 set current_url [ns_conn url]
+
+if {"on" eq $clone_timesheet_tasks_p} { set clone_timesheet_tasks_p 1 }
+if {"on" eq $clone_costs_p} { set clone_costs_p 1 }
+if {"on" eq $clone_members_p} { set clone_members_p 1 }
+if {0 eq $company_id} { set company_id [db_string cid "select company_id from im_projects where project_id = :parent_project_id" -default 0] }
 
 if {![im_permission $current_user_id add_projects]} { 
     ad_return_complaint "Insufficient Privileges" "
@@ -91,25 +96,8 @@ if { "" != $new_parent_project_id } {
     set company_id [db_string get_data "select company_id from im_projects where project_id=:new_parent_project_id" -default 0]
 }
 
-# ----------------------------------------------------
-# Write out HTTP headers to prepare for error output
-
-set content_type "text/html"
-set http_encoding "utf-8"
-
-append content_type "; charset=$http_encoding"
-
-set all_the_headers "HTTP/1.0 200 OK
-MIME-Version: 1.0
-Content-Type: $content_type\r\n"
-
-util_WriteWithExtraOutputHeaders $all_the_headers
-ReturnHeaders $content_type
-ns_write [im_header $page_title]
-ns_write [im_navbar]
-ns_write "<p>\n"
-
-set page_body [im_project_clone \
+set tuple [im_project_clone \
+		   -debug_p 0 \
 		   -clone_costs_p $clone_costs_p \
 		   -clone_files_p $clone_files_p \
 		   -clone_subprojects_p $clone_subprojects_p \
@@ -124,8 +112,10 @@ set page_body [im_project_clone \
 		   $project_nr \
 		   $clone_postfix \
 ]
+set clone_project_id [lindex $tuple 0]
+set clone_errors [lindex $tuple 1]
 
-set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
+#set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
 set clone_project_type_id [db_string project_id "select project_type_id from im_projects where project_id = :clone_project_id" -default 0]
 
 # -----------------------------------------------------------------
@@ -159,12 +149,3 @@ if {"" == $return_url } {
     set return_url "/intranet/projects/"
 }
 
-ns_write "
-	</table>
-
-	<li><a href=\"$return_url\">Return to project page</a>
-	[im_footer]
-"
-
-# ad_returnredirect $return_url
-# doc_return 200 text/html [im_return_template]
