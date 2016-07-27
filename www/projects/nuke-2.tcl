@@ -37,7 +37,8 @@ foreach pid $project_id {
 	ad_script_abort
     }
 
-    lappend results [im_project_nuke $pid]
+    set result [string trim [im_project_nuke $pid]]
+    if {"" ne $result} { lappend results $result }
 }
 
 set result [join $results "\n<br>\n"]
