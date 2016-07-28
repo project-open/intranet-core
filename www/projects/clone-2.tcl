@@ -113,7 +113,8 @@ set tuple [im_project_clone \
 		   $clone_postfix \
 ]
 set clone_project_id [lindex $tuple 0]
-set clone_errors [lindex $tuple 1]
+set cloned_mapping_list [lindex $tuple 1]
+set clone_errors [lindex $tuple 2]
 
 #set clone_project_id [db_string project_id "select max(project_id) from im_projects where project_nr = :project_nr" -default 0]
 set clone_project_type_id [db_string project_id "select project_type_id from im_projects where project_id = :clone_project_id" -default 0]

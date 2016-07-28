@@ -1316,7 +1316,12 @@ ad_proc im_project_clone {
     clone_postfix
 } {
     Recursively clone projects.
-    Returns a list that consists of the return project_id and an error_html.
+    Returns a list that consists of:
+    <ul>
+    <li>the new project_id 
+    <li>a mapping from old to new sub-project IDs and
+    <li>error_html and
+    </ul>
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
@@ -1333,6 +1338,9 @@ ad_proc im_project_clone {
     if {"" == $clone_folders_p} { set clone_folders_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectFsFoldersP" -default 1] }
     if {"" == $clone_subprojects_p} { set clone_subprojects_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectSubprojectsP" -default 1] }
 
+    # Initialize the mapping between old and new project_ids
+    array set mapping_hash {}
+
     set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
     # ad_return_complaint 1 "<pre>\nim_project_clone: parent_project_id=$parent_project_id,\nproject_name=$project_name,\nproject_nr=$project_nr,\ncompany_id=$company_id,\nnew_parent_project_id=$new_parent_project_id\nclone_postfix=$clone_postfix,\nclone_costs_p=$clone_costs_p,\nclone_files_p=$clone_files_p,\nclone_folders_p=$clone_folders_p,\nclone_subprojects_p=$clone_subprojects_p,\nclone_forum_topics_p=$clone_forum_topics_p,\nclone_members_p=$clone_members_p,\nclone_timesheet_tasks_p=$clone_timesheet_tasks_p,\nclone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p,\nclone_target_languages_p=$clone_target_languages_p,\nclone_trans_tasks_p=$clone_trans_tasks_p,\nclone_level=$clone_level,\n</pre>"
@@ -1342,6 +1350,7 @@ ad_proc im_project_clone {
     #
     append errors "<li>Starting to clone base data\n"
     set cloned_project_id [im_project_clone_base -debug_p $debug_p $parent_project_id $project_name $project_nr $company_id $clone_postfix]
+    set mapping_hash($parent_project_id) $cloned_project_id
 
     if { 0 != $new_parent_project_id } {
 	db_dml set_parent_id "update im_projects set parent_id = :new_parent_project_id where project_id = :cloned_project_id"
@@ -1408,7 +1417,7 @@ ad_proc im_project_clone {
 	    # go for the next project
 	    if {$debug_p} { ns_write "<li>im_project_clone: Clone subproject $sub_project_name\n" }
 	    if {$debug_p} { ns_write "<ul>\n" }
-	    set cloned_result_tuple [im_project_clone \
+	    set tuple [im_project_clone \
 					  -debug_p $debug_p \
 					  -clone_costs_p $clone_costs_p \
 					  -clone_files_p $clone_files_p \
@@ -1427,9 +1436,18 @@ ad_proc im_project_clone {
 					  $sub_project_nr \
 					  $clone_postfix \
 	    ]
-	    set cloned_subproject_id [lindex $cloned_result_tuple 0]
-	    append errors [lindex $cloned_result_tuple 1]
+	    set cloned_subproject_id [lindex $tuple 0]
+	    set cloned_mapping_hash_list [lindex $tuple 1]
+	    append errors [lindex $tuple 2]
+
 	    if {$debug_p} { ns_write "</ul>\n" }
+
+	    # Write mapping of old to new project_ids into mapping_hash
+	    array unset cloned_mapping_hash
+	    array set cloned_mapping_hash $cloned_mapping_hash_list
+	    foreach org_id [array names cloned_mapping_hash] {
+		set mapping_hash($org_id) $cloned_mapping_hash($org_id)
+	    }
 
 	    # Set project_nr of subprojects based on newly created main project
 	    set sub_project_nr_new "${project_nr}[format "_%03d" $ctr]" 
@@ -1497,9 +1515,17 @@ ad_proc im_project_clone {
 			   $clone_postfix \
 	    ]
 	    set cloned_task_id [lindex $tuple 0]
-	    append errors [lindex $tuple 1]
+	    set cloned_mapping_hash_list [lindex $tuple 1]
+	    append errors [lindex $tuple 2]
 
 	    if {$debug_p} { ns_write "</ul>\n" }
+
+	    # Write mapping of old to new project_ids into mapping_hash
+	    array unset cloned_mapping_hash
+	    array set cloned_mapping_hash $cloned_mapping_hash_list
+	    foreach org_id [array names cloned_mapping_hash] {
+		set mapping_hash($org_id) $cloned_mapping_hash($org_id)
+	    }
 
 	    # We can _now_ reset the subtasks's name to the original one
 	    db_dml set_parent "
@@ -1550,19 +1576,6 @@ ad_proc im_project_clone {
 
     # Copy task dependencies if we are cloning the main project here
     if {0 == $clone_level && $clone_timesheet_task_dependencies_p} {
-        # Get the hierarchical project_nr -> project_id relationship of both the original and the cloned project
-	set tupel [im_project_clone_hierarchy_hash -debug_p $debug_p -project_id $parent_project_id]
-	array set parent_project_hierarchy_hash_id_nr [lindex $tupel 0]
-	array set parent_project_hierarchy_hash_nr_id [lindex $tupel 1]
-
-	set tupel [im_project_clone_hierarchy_hash -debug_p $debug_p -project_id $cloned_project_id]
-	array set cloned_project_hierarchy_hash_id_nr [lindex $tupel 0]
-	array set cloned_project_hierarchy_hash_nr_id [lindex $tupel 1]
-
-	ns_log Notice "im_project_clone: parent_project_hierarchy_hash_id_nr=[array get parent_project_hierarchy_hash_id_nr]"
-	ns_log Notice "im_project_clone: parent_project_hierarchy_hash_nr_id=[array get parent_project_hierarchy_hash_nr_id]"
-	ns_log Notice "im_project_clone: cloned_project_hierarchy_hash_id_nr=[array get cloned_project_hierarchy_hash_id_nr]"
-	ns_log Notice "im_project_clone: cloned_project_hierarchy_hash_nr_id=[array get cloned_project_hierarchy_hash_nr_id]"
 
 	# Get all dependencies of the original project
 	set dependency_sql "
@@ -1579,18 +1592,10 @@ ad_proc im_project_clone {
 		order by p.tree_sortkey
 	"
 	db_foreach clone_dependencies $dependency_sql {
-	    # Convert the id's of the original project into their project_nrs
-	    set task_id_one_nr $parent_project_hierarchy_hash_id_nr($task_id_one)
-	    set task_id_two_nr $parent_project_hierarchy_hash_id_nr($task_id_two)
-
-	    # fraber 140228: There seems to be an error with closing the dependencies.
-	    # ToDo: Investigate error further, rather than avoiding the error...
-	    if {![info exists cloned_project_hierarchy_hash_nr_id($task_id_one_nr)]} { continue }
-	    if {![info exists cloned_project_hierarchy_hash_nr_id($task_id_two_nr)]} { continue }
 
 	    # Convert the nrs of the original project into ids of the cloned project
-	    set task_id_one_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_one_nr)
-	    set task_id_two_cloned_id $cloned_project_hierarchy_hash_nr_id($task_id_two_nr)
+	    set task_id_one_cloned_id $mapping_hash($task_id_one)
+	    set task_id_two_cloned_id $mapping_hash($task_id_two)
 	    db_dml insert_dependency "
                 insert into im_timesheet_task_dependencies (
 			task_id_one, 
@@ -1624,45 +1629,9 @@ ad_proc im_project_clone {
     im_audit -object_type im_project -action after_create -object_id $cloned_project_id
 
     ns_log Notice "im_project_clone: clone_level=$clone_level, parent_project_id=$parent_project_id: Before returning"
-    return [list $cloned_project_id $errors]
+    return [list $cloned_project_id [array get mapping_hash] $errors]
 }
 
-
-ad_proc im_project_clone_hierarchy_hash {
-    {-debug_p 1}
-    -project_id:required
-} {
-    Returns a key-value list of project_nr -> project_id.
-    The project_nr of sub-projects is prefixed by the project_nr of their parent.
-} {
-    array set id_nr_hash {}
-    array set nr_id_hash {}
-    set sql "
-	select	p.project_id,
-		p.parent_id,
-		p.project_nr,
-		tree_level(p.tree_sortkey) -1 as tree_level
-	from	im_projects main_p,
-		im_projects p
-	where	main_p.project_id = :project_id and
-		p.tree_sortkey between main_p.tree_sortkey and tree_right(main_p.tree_sortkey)
-	order by p.tree_sortkey
-    "
-    db_foreach project_hierarchy $sql {
-	if {0 == $tree_level} { 
-	    # The top project is written without it's parent.
-	    set id_nr_hash($project_id) 0
-	    set nr_id_hash(0) $project_id
-	} else {
-	    if { ![info exists id_nr_hash($parent_id)] } { set id_nr_hash($parent_id) "" }
-	    set project_nr_list $id_nr_hash($parent_id)
-	    lappend project_nr_list $project_nr
-	    set id_nr_hash($project_id) $project_nr_list
-	    set nr_id_hash($project_nr_list) $project_id
-	}
-    }
-    return [list [array get id_nr_hash] [array get nr_id_hash]]
-}
 
 ad_proc im_project_clone_base {
     {-debug_p 1}
