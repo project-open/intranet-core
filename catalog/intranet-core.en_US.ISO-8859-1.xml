@@ -21,6 +21,7 @@
   <msg key="A">A</msg>
   <msg key="a">a</msg>
   <msg key="A_-_Test_approved">A - Test Approved</msg>
+  <msg key="Abap">Abap</msg>
   <msg key="Abbreviation">Abbreviation</msg>
   <msg key="ABC-Bank_EUR">ABC-Bank EUR</msg>
   <msg key="About_You">About You</msg>
@@ -127,6 +128,7 @@
   <msg key="Admin_Project">Admin Project</msg>
   <msg key="Admin_Projects">Admin Projects</msg>
   <msg key="Admin_Timesheet">Admin Timesheet</msg>
+  <msg key="Admin_Training">Admin Training</msg>
   <msg key="Admin_Users">Admin Users</msg>
   <msg key="Administer_DynVals">Administer DynValues</msg>
   <msg key="Administration">Administration</msg>
@@ -294,6 +296,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Cell_Phone">Cell Phone</msg>
   <msg key="Cell_phone">Cell phone</msg>
   <msg key="Change">Change</msg>
+  <msg key="Change_Management">Change Management</msg>
   <msg key="Change_Password">Change Password</msg>
   <msg key="Change_Priority">Change Priority</msg>
   <msg key="Change_Ticket">Change Ticket</msg>
@@ -403,6 +406,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="confirm_date">Confirm Date</msg>
   <msg key="Consistency_Checks">Consistency Checker</msg>
   <msg key="Construction">Construction</msg>
+  <msg key="Consultant">Consultant</msg>
   <msg key="Consultants">Berater</msg>
   <msg key="consultants">Consultants</msg>
   <msg key="Consulting__IT">Consulting &amp; IT</msg>
@@ -501,6 +505,10 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Date">Date</msg>
   <msg key="Date_submitted">Date submitted</msg>
   <msg key="Day">Day</msg>
+  <msg key="DB_DB2">DB DB2</msg>
+  <msg key="DB_MS-SQL_Server">DB MS-SQL-Server</msg>
+  <msg key="DB_Oracle">DB Oracle</msg>
+  <msg key="DB_PostgreSQL">DB PostgreSQL</msg>
   <msg key="de">de</msg>
   <msg key="de_CH">de_CH</msg>
   <msg key="de_DE">de_DE</msg>
@@ -518,6 +526,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Default_TAX">Default Tax</msg>
   <msg key="Default_VAT">Default VAT</msg>
   <msg key="default_vat">Default VAT</msg>
+  <msg key="Defense__Aerospace">Defense / Aerospace</msg>
   <msg key="Del">Del</msg>
   <msg key="DelDemo_Delete_Individual_objects">Delete Individual Objects</msg>
   <msg key="DelDemo_Nuke_all_demo_data">Nuke All Demo Data</msg>
@@ -603,6 +612,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="en_US">en_US</msg>
   <msg key="End">End</msg>
   <msg key="End_Date">End Date</msg>
+  <msg key="Energy__Utilities">Energy / Utilities</msg>
   <msg key="Engineering">Engineering</msg>
   <msg key="ErrCreatingComponent">Error in portlet &#39;%plugin_name%&#39;. This portlet will not be available</msg>
   <msg key="ERROR">ERROR</msg>
@@ -683,6 +693,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Finance_Data_Warehouse_Cube">Finance Data-Warehouse Cube</msg>
   <msg key="Finance_Help">Finance Help</msg>
   <msg key="Finance_Home">Finance Home</msg>
+  <msg key="Financial">Financial</msg>
   <msg key="Financial_Consulting">Financial Controlling</msg>
   <msg key="Financial_Management">Financial Management</msg>
   <msg key="Finished">Finished</msg>
@@ -904,6 +915,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Iceland">Iceland</msg>
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">ICQ Number</msg>
+  <msg key="ICT__Technology">ICT / Technology</msg>
   <msg key="Id">Id</msg>
   <msg key="Id_Decision_Makers">Id. Decision Makers</msg>
   <msg key="Idea">Idea</msg>
@@ -1030,9 +1042,15 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="j">j</msg>
   <msg key="ja">ja</msg>
   <msg key="Japan">Japan</msg>
+  <msg key="Java">Java</msg>
+  <msg key="JavaScript">JavaScript</msg>
+  <msg key="Jira_Project_ID">Jira Project ID</msg>
+  <msg key="Jira_Project_Key">Jira Project Key</msg>
+  <msg key="Jira_Server">Jira Server</msg>
   <msg key="Journal">Journal</msg>
   <msg key="jp">jp</msg>
   <msg key="JPY">JPY</msg>
+  <msg key="Junior_Consultant">Junior Consultant</msg>
   <msg key="k">k</msg>
   <msg key="Kanban">Kanban</msg>
   <msg key="Key">Key</msg>
@@ -1213,6 +1231,7 @@ Best regards,
   <msg key="lt_Deleting_first_names_">Deleting %first_names% %last_name%</msg>
   <msg key="lt_deliverynoteSEAT_VWen">deliverynote.SEAT_VW.en.adp</msg>
   <msg key="lt_deliverynoteSEAT_VWes">deliverynote.SEAT_VW.es.adp</msg>
+  <msg key="lt_Department_Planner_Pr">Department Planner Priority</msg>
   <msg key="lt_Desired_Customer_End_">Desired Customer End Date</msg>
   <msg key="lt_Directivosintranet-fi">Managers</msg>
   <msg key="lt_Discussionintranet-fo">Discussion</msg>
@@ -1581,6 +1600,7 @@ other way for the user to find out.</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Manage_Views">Manage Views</msg>
+  <msg key="Manufacturing">Manufacturing</msg>
   <msg key="Marketing">Marketing</msg>
   <msg key="Material">Material</msg>
   <msg key="Materials">Materials</msg>
@@ -1729,6 +1749,7 @@ other way for the user to find out.</msg>
   <msg key="Object_Type">Type</msg>
   <msg key="Object_Type_Admin">Object Type Admin</msg>
   <msg key="Object_Types">Object Types</msg>
+  <msg key="Objective_C">Objective C</msg>
   <msg key="OCS_Device_ID">OCS Device ID</msg>
   <msg key="OCS_ID">OCS_ID</msg>
   <msg key="OCS_Last_Update">OCS Last Update</msg>
@@ -1774,6 +1795,8 @@ other way for the user to find out.</msg>
   <msg key="Opportunities_for_User">Opportunities</msg>
   <msg key="Opportunity_Campaign">Campaign</msg>
   <msg key="Opportunity_Members">Opportunity_Members</msg>
+  <msg key="opportunity_priority_id">Priority</msg>
+  <msg key="opportunity_sales_stage_id">Sales Stage</msg>
   <msg key="OpportunityName">Name</msg>
   <msg key="OpportunityNumber">Nr</msg>
   <msg key="Optional">Optional</msg>
@@ -1784,9 +1807,14 @@ other way for the user to find out.</msg>
   <msg key="Order_by_clause">Order by clause</msg>
   <msg key="Org_Chart">Org Chart</msg>
   <msg key="Organization_1">Organization</msg>
+  <msg key="OS_AIX">OS AIX</msg>
   <msg key="OS_Comments">OS Comments</msg>
+  <msg key="OS_HP-UX">OS HP-UX</msg>
+  <msg key="OS_Linux">OS Linux</msg>
   <msg key="OS_Name">OS Name</msg>
+  <msg key="OS_OS-X">OS OS-X</msg>
   <msg key="OS_Version">OS Version</msg>
+  <msg key="OS_Windows">OS Windows</msg>
   <msg key="Other">Other</msg>
   <msg key="Otherr">Other</msg>
   <msg key="Ouch">Ouch!</msg>
@@ -1837,14 +1865,17 @@ other way for the user to find out.</msg>
   <msg key="Percent_Completed">Percent Completed</msg>
   <msg key="Percentage">Percentage</msg>
   <msg key="Perception_Analysis">Perception Analysis</msg>
+  <msg key="Perl">Perl</msg>
   <msg key="Permission_Request">Permission Request</msg>
   <msg key="Permissions">Permissions</msg>
   <msg key="Person">Person</msg>
   <msg key="Personal">Human Resources</msg>
   <msg key="Personal_Computer">Personal Computer</msg>
   <msg key="Peru">Peru</msg>
+  <msg key="Pharma__Biotech">Pharma / Biotech</msg>
   <msg key="Philippines">Philippines</msg>
   <msg key="Phone">Phone</msg>
+  <msg key="PHP">PHP</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
   <msg key="Plan_Costs">Plan Costs</msg>
@@ -1898,6 +1929,7 @@ other way for the user to find out.</msg>
   <msg key="Primary_Contact">Primary Contact</msg>
   <msg key="Primary_contact">Primary contact</msg>
   <msg key="primary_contact_id">Primary Contact</msg>
+  <msg key="Primary_Sector">Primary Sector</msg>
   <msg key="Print_date">Print date</msg>
   <msg key="Prio">Prio</msg>
   <msg key="Prio_1">Prio</msg>
@@ -1911,6 +1943,7 @@ other way for the user to find out.</msg>
   <msg key="Proc_Speed">Proc. Speed</msg>
   <msg key="Proc_Text">Proc. Text</msg>
   <msg key="Process">Process</msg>
+  <msg key="Process_Analysis">Process Analysis</msg>
   <msg key="Profile">Profile</msg>
   <msg key="Profile_Accounting">Accounting</msg>
   <msg key="Profile_Consulting_Vertical">Consulting Vertical</msg>
@@ -2028,6 +2061,7 @@ other way for the user to find out.</msg>
   <msg key="Project_Workflow_Journal">Project Workflow Journal</msg>
   <msg key="ProjectOpen_News">]project-open[ News</msg>
   <msg key="Projects">Projects</msg>
+  <msg key="Projects_Actions">Project Actions</msg>
   <msg key="Projects_Admin">Projects Admin</msg>
   <msg key="Projekt_BC">Project BC</msg>
   <msg key="Projekt_BKB">Project BKB</msg>
@@ -2051,6 +2085,7 @@ other way for the user to find out.</msg>
   <msg key="pt">pt</msg>
   <msg key="pt_BR">pt_BR</msg>
   <msg key="pt_PT">pt_PT</msg>
+  <msg key="Public_Sector">Public Sector</msg>
   <msg key="publicly_searchable">publicly searchable</msg>
   <msg key="Puerto Rico">Puerto Rico</msg>
   <msg key="Puerto_Rico">Puerto Rico</msg>
@@ -2059,6 +2094,7 @@ other way for the user to find out.</msg>
   <msg key="Purchasing_Req_BKB">Purchasing Req BKB</msg>
   <msg key="Purchasing_Req_K">Purchasing Req K</msg>
   <msg key="Purchasing_Request">Purchasing Request</msg>
+  <msg key="Python">Python</msg>
   <msg key="q">q</msg>
   <msg key="QCing">QCing</msg>
   <msg key="Qualification">Qualification</msg>
@@ -2099,6 +2135,8 @@ other way for the user to find out.</msg>
   <msg key="Rel_im_biz_object_member">Business Object Relationship</msg>
   <msg key="Rel_im_company_employee_rel">Employee Rel.</msg>
   <msg key="Rel_im_key_account_rel">Key Account Rel.</msg>
+  <msg key="Rel_membership_rel">Membership Rel</msg>
+  <msg key="Rel_user_portrait_rel">User Portrait</msg>
   <msg key="Related_Objects">Related Objects</msg>
   <msg key="Related_Objects_for_object">Related objects for object</msg>
   <msg key="Related_Tickets">Related Tickets</msg>
@@ -2217,6 +2255,7 @@ other way for the user to find out.</msg>
   <msg key="ru">ru</msg>
   <msg key="ru_RU">ru_RU</msg>
   <msg key="ru_UA">ru_UA</msg>
+  <msg key="Ruby">Ruby</msg>
   <msg key="Rule_Engine">Rule Engine</msg>
   <msg key="Russian Federation">Russian Federation</msg>
   <msg key="Russian_Federation">Russian Federation</msg>
@@ -2260,6 +2299,7 @@ other way for the user to find out.</msg>
   <msg key="Send_Email">Send Email</msg>
   <msg key="Send_me_a_copy">Send me a copy</msg>
   <msg key="Send_Notification">Send Notification</msg>
+  <msg key="Senior_Consultant">Senior Consultant</msg>
   <msg key="Senior_Manager">Senior Manager</msg>
   <msg key="Senior_Managers">Senior Managers</msg>
   <msg key="Senior_managers">Senior Managers</msg>
@@ -2267,6 +2307,7 @@ other way for the user to find out.</msg>
   <msg key="SeriousErrFound">Serious Error Found</msg>
   <msg key="Server">Server</msg>
   <msg key="Service">Service</msg>
+  <msg key="Services">Services</msg>
   <msg key="Set_status_Closed">Set status: Closed</msg>
   <msg key="Set_status_Deleted">Set status: Deleted</msg>
   <msg key="Set_status_Open">Set status: Open</msg>
@@ -2276,6 +2317,7 @@ other way for the user to find out.</msg>
   <msg key="Set_status_to_open">Set status to open</msg>
   <msg key="sh">sh</msg>
   <msg key="Sharepoint">Sharepoint</msg>
+  <msg key="Shell">Shell</msg>
   <msg key="Shift_project_forward_or_backward">Shift project forward or backward</msg>
   <msg key="Show_more">Show more</msg>
   <msg key="ShowAll">Show All</msg>
@@ -2322,6 +2364,7 @@ other way for the user to find out.</msg>
   <msg key="Spam_Users">Spam Users</msg>
   <msg key="Specs">Specs</msg>
   <msg key="sq">sq</msg>
+  <msg key="SQL">SQL</msg>
   <msg key="SQL_Profiling">SQL Profiling</msg>
   <msg key="SQL_Selectors">SQL Selectors</msg>
   <msg key="Squared">Squared</msg>
@@ -2378,6 +2421,7 @@ other way for the user to find out.</msg>
   <msg key="TasksFull">Tasks Full</msg>
   <msg key="TasksShort">Tasks Short</msg>
   <msg key="Taxi">Taxi</msg>
+  <msg key="Tcl">Tcl</msg>
   <msg key="Tec">Tec</msg>
   <msg key="Tec-Auto">Tec-Auto</msg>
   <msg key="Tec-Gen">Tec-Gen</msg>
@@ -2550,6 +2594,7 @@ other way for the user to find out.</msg>
   <msg key="User_Sub-Administration">User Sub-Administration</msg>
   <msg key="User_Sub_Administration">User Sub-Administration</msg>
   <msg key="User_Survey_Component">User Survey Portlet</msg>
+  <msg key="User_Training">User Training</msg>
   <msg key="User_Type">User Type</msg>
   <msg key="User_Types">User Types</msg>
   <msg key="User_Wiki_Component">User Wiki Portlet</msg>
@@ -2582,6 +2627,7 @@ other way for the user to find out.</msg>
   <msg key="View_sql">View sql</msg>
   <msg key="View_Status">View Status</msg>
   <msg key="View_Type">View Type</msg>
+  <msg key="Visual_Basic">Visual Basic</msg>
   <msg key="w">w</msg>
   <msg key="Waiting_for_Other">Waiting for Others</msg>
   <msg key="We_have_found_an_exact_match">We have found an exact match for user %found_user_name% (%found_user_email%).</msg>
