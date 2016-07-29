@@ -937,9 +937,9 @@ ad_proc -public im_menu_companies_admin_links {
     set return_url [im_url_with_query]
 
     # Add companies 
-    if {[im_permission $current_user_id "add_companies"]} {
-	lappend result_list [list [_ intranet-core.Add_a_new_company] "/intranet/companies/new"]
-    }
+    #    if {[im_permission $current_user_id "add_companies"]} {
+    # lappend result_list [list [_ intranet-core.Add_a_new_company] "/intranet/companies/new"]
+    #}
     # Upload Companies 
 
     # Advanced Filtering 

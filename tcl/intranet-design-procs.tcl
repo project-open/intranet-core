@@ -1001,7 +1001,10 @@ ad_proc -public im_navbar_main_submenu {
 } {
     if {"" == $user_id} { set user_id [ad_conn user_id] }
 
-    # Add the "admin links" as the first items below the tab
+    # Check for sub-menus
+    set tab_menu [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
+
+    # Add the "admin links" 
     set tab_admin ""
     foreach admin_menu_list_item $admin_menu_list {
 	set item_text [lindex $admin_menu_list_item 0]
@@ -1019,9 +1022,6 @@ ad_proc -public im_navbar_main_submenu {
 	}
 	append tab_admin $item
     }
-
-    # Add any sub-menus below the "admin links"
-    set tab_menu [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $user_id -menu_id $menu_id -skip_labels $skip_labels]
 
     # Join tab_admin and tab_menu together
     if {"" ne $tab_admin && "" ne $tab_menu} {
