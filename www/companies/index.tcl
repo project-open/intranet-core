@@ -356,7 +356,7 @@ set selection [im_select_row_range $sql $start_idx $end_idx]
 
 ns_log Notice "/intranet/project/index: Before admin links"
 
-set skip_labels {customers_active 1 customers_inactive 1 customers_potential 1}
+set skip_labels {customers_active 1 customers_inactive 1 customers_potential 1 companies_admin 1}
 set menu_id [db_string company_menu "select menu_id from im_menus where label = 'companies'" -default 0]
 set action_html [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $current_user_id -menu_id $menu_id -skip_labels $skip_labels]
 if {"" ne $action_html} {

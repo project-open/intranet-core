@@ -721,7 +721,24 @@ set letter $upper_letter
 # Do we have to show administration links?
 
 ns_log Notice "/intranet/project/index: Before admin links"
-set admin_html "<ul>"
+
+
+set skip_labels {projects_admin 1 projects_open 1 projects_closed 1 projects_potential 1}
+set menu_id [db_string company_menu "select menu_id from im_menus where label = 'projects'" -default 0]
+set action_html [im_navbar_main_submenu_recursive -no_outer_ul_p 1 -locale locale -user_id $current_user_id -menu_id $menu_id -skip_labels $skip_labels]
+if {"" ne $action_html} {
+    set action_html "
+      <div class='filter-block'>
+         <div class='filter-title'>[lang::message::lookup "" intranet-core.Projects_Actions "Projects Actions"]</div>
+         <ul>
+         $action_html
+         </ul>
+      </div>
+    "
+}
+
+
+set admin_html ""
 set links [im_menu_projects_admin_links]
 foreach link_entry $links {
     set html ""
@@ -733,7 +750,12 @@ foreach link_entry $links {
     append admin_html "<li>$html</li>\n"
 }
 
-append admin_html "</ul>"
+set admin_html "
+      	<div class='filter-block'>
+        <div class='filter-title'>[_ intranet-core.Admin_Projects]</div>
+        <ul>$admin_html</ul>
+      	</div>
+"
 
 
 # ---------------------------------------------------------------
@@ -982,10 +1004,6 @@ set left_navbar_html "
 "
 
 append left_navbar_html "
-      	<div class='filter-block'>
-        <div class='filter-title'>
-            [_ intranet-core.Admin_Projects]
-        </div>
+	$action_html
 	$admin_html
-      	</div>
 "

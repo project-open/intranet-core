@@ -943,7 +943,7 @@ ad_proc -public im_menu_companies_admin_links {
     # Upload Companies 
 
     # Advanced Filtering 
-    lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/companies/index?filter_advanced_p=1"]
+#    lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/companies/index?filter_advanced_p=1"]
 
     # Append user-defined menus
     set bind_vars [list return_url $return_url]
