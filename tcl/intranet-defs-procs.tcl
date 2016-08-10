@@ -35,6 +35,43 @@ ad_proc -public im_uom_t_line {} { return 327 }
 
 
 # --------------------------------------------------------
+# Show a collapsible help message
+# --------------------------------------------------------
+
+ad_proc -public im_help_collapsible {
+    { -return_url "" }
+    { -current_user_id "" }
+    help_html
+} {
+    Shows the help_html, unless the help has been collapsed.
+} {
+    if {"" eq $return_url} { set return_url [im_url_with_query] }
+    if {"" eq $current_user_id} { set current_user_id [auth::require_login] }
+    set page_url $return_url
+    set quest_pos [string first "?" $page_url]
+    if {$quest_pos > 0} { set page_url [string range $return_url 0 $quest_pos] }
+    set collapse_url "/intranet/biz-object-tree-open-close"
+    set collapsed_o_c [db_string collapsed "
+	select	open_p
+	from	im_biz_object_tree_status
+	where	user_id = :current_user_id and 
+		object_id = 0 and 
+		page_url = :page_url
+    " -default "o"]
+    if {"o" == $collapsed_o_c} {
+	set url [export_vars -base $collapse_url {page_url return_url {open_p "c"} {object_id 0}}]
+	set collapse_html "<a href=$url>[im_gif minus_9]</a> [lang::message::lookup "" intranet-core.Hide_Help "Hide this help text"]"
+    } else {
+	set url [export_vars -base $collapse_url {page_url return_url {open_p "o"} {object_id 0}}]
+	set collapse_html "<a href=$url>[im_gif plus_9]</a> [lang::message::lookup "" intranet-core.Show_Help "Show a help text about this report"]"
+    }
+
+    if {"o" ne $collapsed_o_c} { set help_html "" }
+    append help_html $collapse_html
+    return $help_html
+}
+
+# --------------------------------------------------------
 # 
 # --------------------------------------------------------
 
