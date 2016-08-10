@@ -28,7 +28,7 @@ ad_page_contract {
     
     @author frank.bergmann@project-open.com
 } {
-    { object_id:integer,multiple 0 }
+    { object_id:integer,multiple "" }
     { return_url "" }
     { page_url "default" }
     { user_id "" }
@@ -49,7 +49,7 @@ if {$user_id != $current_user_id} { ad_returnredirect $return_url }
 # Set the status
 # -----------------------------------------------------------
 
-if { 0 == $object_id } {
+if {"" eq $object_id } {
     set object_id [split $object_ids ","]
 }
 
