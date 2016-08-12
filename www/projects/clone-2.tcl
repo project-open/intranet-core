@@ -23,7 +23,7 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     parent_project_id:integer
-    new_parent_project_id:integer
+    { new_parent_project_id:integer "" }
     project_nr
     project_name
     { company_id:integer 0 }
@@ -49,7 +49,7 @@ ad_page_contract {
 #
 # new_parent_project_id: 
 # Id of parent project the new to be clonded project should be assigned to. This new var is necessary since 
-# we introduced a sanity check thats prevents users from  changing the customer of a sub-project.        
+# we introduced a sanity check thats prevents users from changing the customer of a sub-project.
 
 # ---------------------------------------------------------------------
 # Defaults & Security
