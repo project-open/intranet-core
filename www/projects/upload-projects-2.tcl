@@ -33,7 +33,7 @@ set page_body "<ul>"
 set context_bar [im_context_bar [list "/intranet/cusomers/" "Projects"] $page_title]
 
 set write_projects_all_p [im_permission $current_user_id "edit_projects_all"]
-set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 
 if {!$write_projects_all_p && !$user_admin_p} {
     ad_return_complaint "Insufficient Privileges" "<li>You don't have sufficient privileges to perform this action."
