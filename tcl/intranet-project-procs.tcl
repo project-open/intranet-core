@@ -127,7 +127,15 @@ ad_proc -public im_project_main_project { project_id } {
     Returns the project_id of the project's top level main project.
 } {
     im_security_alert_check_integer -location "im_project_main_project: project_id" -value $project_id
-    return [util_memoize [list db_string project_main_project "select project_id from im_projects where tree_sortkey in (select tree_root_key(tree_sortkey) from im_projects where project_id = $project_id)" -default ""]]
+    return [util_memoize [list db_string project_main_project "
+	select	project_id
+	from	im_projects
+	where	tree_sortkey in (
+			select	tree_root_key(tree_sortkey)
+			from	im_projects
+			where	project_id = $project_id
+		)
+    " -default ""]]
 }
 
 
