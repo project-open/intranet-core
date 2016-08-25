@@ -2485,7 +2485,6 @@ ad_proc im_project_nuke {
 	    db_dml del_tickets "delete from im_tickets where ticket_id = :project_id"
 	}
 
-
 	# Permissions
 	ns_log Notice "projects/nuke-2: acs_permissions"
 	db_dml perms "delete from acs_permissions where object_id = :project_id"
@@ -2493,6 +2492,20 @@ ad_proc im_project_nuke {
 	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
 	# entry in im_costs. These might have been created during manual deletion of objects
 	# Very dirty...
+
+	# KH: 160825
+	# Current sql has performance issues if table(s) contain >300k records
+	# LEFT OUTER JOIN should perform better:  
+	# 
+	# SELECT 
+	#    o.object_id, 
+	#    o.object_type
+	# FROM 
+	#     (select object_id, object_type from acs_objects where object_type = 'im_cost') o 
+	#    LEFT OUTER JOIN im_costs c ON o.object_id = c.cost_id 
+	# WHERE 
+	#     c.cost_id IS null 
+
 	ns_log Notice "projects/nuke-2: dangeling_costs"
 	db_dml dangeling_costs "
 		delete from acs_objects 
