@@ -73,6 +73,15 @@ set elements_list {
 	    <a href="@tasks.hours_url@">@tasks.hours@</a>
         }
   }
+  creation_user_name {
+      	label "Created by user"
+        display_template {
+	    <a href="@tasks.user_url@">@tasks.creation_user_name@</a>
+        }
+  }
+  creation_date {
+	label "Created on"
+  }
 }
 
 list::create \
@@ -88,7 +97,7 @@ list::create \
         	return_url
         }
         
-db_multirow -extend {project_url hours_url parent_project_url} tasks get_tasks "
+db_multirow -extend {project_url hours_url user_url parent_project_url} tasks get_tasks "
 	select
 		t.task_id,
 	 	p.*,
@@ -96,12 +105,17 @@ db_multirow -extend {project_url hours_url parent_project_url} tasks get_tasks "
 		im_category_from_id(p.project_type_id) as project_type,
 		im_project_name_from_id(p.parent_id) as parent_project_name,
 		im_project_nr_from_id(p.parent_id) as parent_project_nr,
-		(select sum(hours) from im_hours where project_id = p.project_id) as hours
+		(select sum(hours) from im_hours where project_id = p.project_id) as hours,
+ 		o.creation_user as creation_user_id,
+ 		(select  im_name_from_user_id(o.creation_user)) as creation_user_name,
+ 		o.creation_date
 	from
 		im_projects p,
-		im_timesheet_tasks t
+		im_timesheet_tasks t,
+		acs_objects o
 	where	
-		p.project_id = t.task_id 
+		o.object_id = p.project_id
+		and p.project_id = t.task_id 
 		and p.parent_id is null
 	order 
 		by p.project_id DESC
@@ -109,5 +123,6 @@ db_multirow -extend {project_url hours_url parent_project_url} tasks get_tasks "
 " {
     set project_url [export_vars -base "/intranet-timesheet2-tasks/new" {task_id return_url}]
     set hours_url [export_vars -base "/intranet-timesheet2/hours/one-project" {project_id return_url}]
+    set user_url [export_vars -base "/intranet/users/view" {creation_user_id}]
 }
 
