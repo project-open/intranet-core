@@ -187,6 +187,7 @@ ns_write "<h2>Other checks</h2>"
 ns_write "<ul>\n"
 ns_write "<li><a href='/intranet-reporting/check-project-finance-customer'>Check Project's Financial Items</a></li>"
 ns_write "<li><a href='/intranet-reporting/check-subprojects-customer'>Check Subproject's Customers</a></li>"
+ns_write "<li><a href='/intranet/admin/cleanup-demo/cleanup-orphan-tasks'>Clean up Orphan Tasks</a></li>"
 ns_write "</ul><br>\n"
 
 ns_write [im_footer]
