@@ -234,6 +234,22 @@ end;$body$ language 'plpgsql';
 
 
 -------------------------------------------------------------
+-- Function to check for a valid date
+-------------------------------------------------------------
+
+
+create or replace function is_date(s varchar) 
+returns boolean as $body$
+begin
+	perform s::date;
+	return true;
+	exception when others then
+		return false;
+	end;
+$body$ language plpgsql;
+
+
+-------------------------------------------------------------
 -- Function used to enumerate days between stat_date and end_date
 -------------------------------------------------------------
 
