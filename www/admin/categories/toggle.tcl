@@ -44,5 +44,7 @@ switch $enabled_p {
     }
 }
 
+util_memoize_flush_regexp "im_category_select_helper*"
+
 ad_returnredirect $return_url
 
