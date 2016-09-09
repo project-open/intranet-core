@@ -92,6 +92,8 @@ where
         g.group_id = o.object_id
 	and g.group_id = p.profile_id
         and o.object_type = 'im_profile'
+order by
+        lower(group_name)
 }
 
 set group_ids [list]
