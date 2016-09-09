@@ -50,7 +50,8 @@ set upgrade_message [im_check_for_update_scripts]
 
 # Shows the Admin Guide
 set admin_guide_html ""
-if {[llength [info commands im_sysconfig_admin_guide]] > 0} {
+set portlet_cnt [db_string portlet_cnt "select count(*) from im_component_plugins where enabled_p = 't' and page_url = '/intranet/index' and plugin_name != 'System Configuration Wizard'"]
+if {$portlet_cnt > 0 && [llength [info commands im_sysconfig_admin_guide]] > 0} {
     set title [lang::message::lookup "" intranet-core.Interactive_Administration_Guide "Interactive Administration Guide"]
     set admin_guide_html [im_table_with_title $title [im_sysconfig_admin_guide]]
 }
