@@ -80,7 +80,7 @@ set page_options [linsert $page_options 0 [list "All" ""]]
 # ------------------------------------------------------
 
 set group_list_sql {
-select DISTINCT
+select
         g.group_name,
         g.group_id,
 	p.profile_gif
