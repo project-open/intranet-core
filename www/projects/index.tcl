@@ -749,14 +749,13 @@ foreach link_entry $links {
     }
     append admin_html "<li>$html</li>\n"
 }
-
-set admin_html "
+if {"" ne $admin_html} {
+    set admin_html "
       	<div class='filter-block'>
         <div class='filter-title'>[_ intranet-core.Admin_Projects]</div>
         <ul>$admin_html</ul>
-      	</div>
-"
-
+      	</div>"
+}
 
 # ---------------------------------------------------------------
 # 7. Format the List Table Header
