@@ -119,6 +119,7 @@ if { 0 == $project_status_id } {
 }
 
 set show_filter_with_member_p [im_parameter -package_id [im_package_core_id] ProjectListPageShowFilterWithMemberP "" 1]
+set left_menu_p [parameter::get_from_package_key -package_key "intranet-core" -parameter ShowLeftFunctionalMenupP -default 0]
 
 if {"" == $include_subproject_level} { set include_subproject_level [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
 if {"" == $include_subprojects_p} { set include_subprojects_p [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
@@ -999,8 +1000,11 @@ set left_navbar_html "
         	</div>
             	$filter_html
       	</div>
-      <hr/>
 "
+
+
+#ad_return_complaint 1 "$action_html - $admin_html - $left_menu_p"
+if {"" ne $action_html || "" ne $admin_html || $left_menu_p} {append left_navbar_html "<hr/>" }
 
 append left_navbar_html "
 	$action_html
