@@ -79,7 +79,6 @@ if {$profile == [im_profile_employees]} { set default_company_type_id [im_compan
 
 set company_status_options [list]
 set company_type_options [list]
-set annual_revenue_options [list]
 set country_options [im_country_options]
 set employee_options [im_employee_options]
 
@@ -107,14 +106,10 @@ set person_subtype_id [db_string subtype "select category_id from im_categories 
 template::form::section -legendtext asdf company [lang::message::lookup "" intranet-core.Person Person]
 
 im_dynfield::append_attributes_to_form \
-    -object_type "party" \
-    -form_id "company" \
-    -page_url "/intranet/users/biz-card-add" 
-
-im_dynfield::append_attributes_to_form \
     -object_type "person" \
     -form_id "company" \
     -page_url "/intranet/users/biz-card-add" \
+    -include_also_hard_coded_p 1 \
     -object_subtype_id $person_subtype_id
 
 
@@ -124,7 +119,8 @@ im_dynfield::append_attributes_to_form \
     -object_type "im_company" \
     -form_id "company" \
     -page_url "/intranet/users/biz-card-add" \
-    -include_also_hard_coded_p 1
+    -include_also_hard_coded_p 1 \
+    -exclude_attributes {main_office_id}
 
 template::form::section -legendtext dfgh company [lang::message::lookup "" intranet-core.Office Office]
 
@@ -133,7 +129,6 @@ im_dynfield::append_attributes_to_form \
     -form_id "company" \
     -page_url "/intranet/users/biz-card-add" \
     -include_also_hard_coded_p 1
-
 
 template::element::set_value company first_names $first_names
 template::element::set_value company last_name $last_name
@@ -515,7 +510,6 @@ ad_form -extend -name company -new_request {
 			company_type_id		= :company_type_id,
 			referral_source		= :referral_source,
 			start_date		= :start_date,
-			annual_revenue_id	= :annual_revenue_id,
 			contract_value		= :contract_value,
 			site_concept		= :site_concept,
 			manager_id		= :manager_id,
