@@ -511,7 +511,6 @@ ad_form -extend -name company -new_request {
 			referral_source		= :referral_source,
 			start_date		= :start_date,
 			contract_value		= :contract_value,
-			site_concept		= :site_concept,
 			manager_id		= :manager_id,
 			note			= :note
 		where
