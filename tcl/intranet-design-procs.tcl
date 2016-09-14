@@ -1654,7 +1654,9 @@ ad_proc -public im_stylesheet {} {
     template::head::add_meta -name generator -lang en -content "OpenACS version [ad_acs_version]" 
 
     # Include Default JS/CSS 
-    if {[llength [info procs im_package_calendar_id]]} { template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" -order "5" }
+    if {[llength [info procs im_package_calendar_id]] && [permission::permission_p -object_id [package_calendar_id] -privilege read]} { 
+	template::head::add_css -href "/calendar/resources/calendar.css" -media "screen" -order "5" 
+    }
     template::head::add_css -href "/intranet/style/print.css" -media "print" -order "10" 
     template::head::add_css -href "/resources/acs-templating/mktree.css" -media "screen" -order "15" 
     template::head::add_css -href "/intranet/style/smartmenus/sm-core-css.css" -media "screen" -order "25"
