@@ -479,9 +479,7 @@ ad_form -extend -name $form_id -new_request {
     ns_log Notice "biz-card-add.tcl: Before executing db_multirow"
 
     db_multirow -extend {company_url action_html} company_multirow get_similar_companies $company_sql {
-
-	set company_url [export_vars -base "/intranet/companies/new" { company_id return_url }]
-	
+	set company_url [export_vars -base "/intranet/companies/view" { company_id return_url }]
 	lappend also_add_to_biz_object [list $company_id [im_biz_object_role_full_member]]
 	set action_text [lang::message::lookup "" intranet-core.Create_new_user_for_this_company "New user for company"]
 	set action_url [export_vars -base "/intranet/users/new" {{first_names $org_first_names} {last_name $org_last_name} {email $org_email} profile return_url also_add_to_biz_object}]
