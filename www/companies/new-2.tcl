@@ -130,7 +130,7 @@ if { $exists_p } {
 }
 
 if { $errors ne "" } {
-    ad_return_complaint $exception_count "<ul>$errors</ul>"
+    ad_return_complaint $exception_count "<ul>$errors</ul>" $show_master_p
     ad_script_abort
 }
 
@@ -150,7 +150,6 @@ if {[info exists company_id]} {
 }
 
 if {$company_exists_p} {
-
     # Check company permissions for this user
     im_company_permissions $user_id $company_id view read write admin
     if {!$write} {
@@ -160,16 +159,12 @@ if {$company_exists_p} {
     }
 
 } else {
-
     if {![im_permission $user_id add_companies]} {
         ad_return_complaint "[_ intranet-core.lt_Insufficient_Privileg]" "
             <li>[_ intranet-core.lt_You_dont_have_suffici]" $show_master_p
         return
     }
-
 }
-
-
 
 # -----------------------------------------------------------------
 # Create a new Company if it didn't exist yet
@@ -188,7 +183,16 @@ if {0 == $company_exists_p} {
     # Disabled db_transaction here. This causes
     # a strange erroron V4.0, at least on Windows...
 
-    # ad_return_complaint 1 "office_name: $office_name, company_id: $company_id, im_office_type_main: [im_office_type_main], im_office_status_active: [im_office_status_active], office_path: $office_path"
+    # Catch most common issue and provide more exhaustive hint on how to resolve it 
+    db_0or1row sql "select office_id as office_id_existing, office_name as office_name_existing from im_offices where office_path = :office_path or office_name = :office_name"
+    if { [info exists office_id_existing] } {
+	set err_msg "We have found an office address that is using this the same 'Company Name' or 'Company Short Name': <a href='/intranet/offices/view?office_id=$office_id_existing'>$office_name_existing</a>."
+	append err_msg "<br/>There's a chance that you are trying to add a company that already exists in the system."
+	append err_msg "<br/>If this is not the case, please go back and change attribute 'Company Name' and 'Company Short Name' to a different value."
+	set err_msg [lang::message::lookup "" intranet-core.Office_Path_Already_Exists $err_msg]	
+	ad_return_complaint 1 $err_msg $show_master_p
+    }
+    
     if [catch {
 	# First create a new main_office:
 	set main_office_id [im_office::new \
@@ -198,7 +202,7 @@ if {0 == $company_exists_p} {
 		-office_status_id	[im_office_status_active] \
 		-office_path		$office_path]
     } errmsg] {
-                ad_return_complaint 1 "We haven't been able to create a main office for this company , pls. check if company or office already exists in the system. <br />Details:</br>$errmsg" $show_master_p
+                ad_return_complaint 1 "We haven't been able to create a main office for this company, pls. check if company or office already exists in the system. <br />Details:</br>$errmsg" $show_master_p
     }
 
     # add users to the office as 
