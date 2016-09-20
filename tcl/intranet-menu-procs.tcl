@@ -376,3 +376,169 @@ ad_proc -public im_menu_links {
 
     return $result_list
 }
+
+
+
+# ---------------------------------------------------------------
+# Format invoice creation links as a matrix
+# ---------------------------------------------------------------
+
+ad_proc -public im_menu_invoice_creation_matrix {
+    {-locale "" }
+    {-package_key "intranet-core" }
+    {-user_id ""}
+    parent_menu_label 
+    bind_vars
+} {
+    Returns a HTML table component with links to create
+    various types of im_invoice documents.
+} {
+    set return_url [im_url_with_query]
+    if {"" eq $user_id} { set user_id [auth::require_login] }
+    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+    set admin_p [im_is_user_site_wide_or_intranet_admin [ad_conn user_id]]
+    set parent_menu_id [db_string parent_admin_menu "select menu_id from im_menus where label=:parent_menu_label" -default 0]
+    array set bind_vars_hash $bind_vars
+
+    set menu_select_sql "
+	select	m.*
+	from	im_menus m
+	where	parent_menu_id = :parent_menu_id and
+		(enabled_p is null or enabled_p = 't') and
+		im_object_permission_p(m.menu_id, :user_id, 'read') = 't'
+	order by sort_order
+    "
+
+    set ctr 0
+    set other_links {}
+    db_foreach menu_select $menu_select_sql {
+
+	# Check if the link is visible for the current user
+	if {"" != $visible_tcl} {
+	    set visible 0
+	    set errmsg ""
+	    if [catch {	set visible [expr $visible_tcl] } errmsg] {
+		ad_return_complaint 1 "<pre>$visible_tcl\n$errmsg</pre>"
+	    }
+	    if {!$visible} { continue }
+	}
+
+	# Append the bind_vars to the menu URL
+	foreach var [array names bind_vars_hash] {
+	    # Make sure the URL has got a "?"
+	    if {![regexp {\?} $url match]} { append url "?" }
+	    # Does the link already include a variable?
+	    # The we have to add a "&"
+	    if {[regexp {\?(.)+} $url match]} { append url "&" }
+	    set value $bind_vars_hash($var)
+	    append url "$var=[ad_urlencode $value]"
+	}
+
+	# Add a wrench behind the link?
+	set admin_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
+	set admin_gif [im_gif wrench]
+	set admin_html "<a href='$admin_url'>$admin_gif</a>"
+	if {!$admin_p} { set admin_html "" }
+
+	regsub -all {[^0-9a-zA-Z]} $name "_" name_key
+	set name_l10n [lang::message::lookup "" $package_name.$name_key $name]
+	incr ctr
+
+	# Check for correctly built menu names
+	ns_log Notice "im_invoice_creation_link_matrix: name='$name'"
+	if {[regexp -nocase {new (.*) from (.*)$} $name match type source]} {
+	    set source [string totitle $source]
+	    set type_hash($type) $type
+	    set source_hash($source) $source
+	    ns_log Notice "im_invoice_creation_link_matrix: name='$name', type=$type, source=$source"
+
+	    # Format the link inside the table
+	    set link_text [lang::message::lookup $locale $package_key.New_invoice_type "New %type%"]
+	    set link "<a href='$url'>$name</a> $admin_html"
+	    set key "$type-$source"
+	    set matrix_hash($key) $link
+	    continue
+	} 
+
+	# Regexp didn't work, so add the link to the "others" list
+	lappend other_links  "<a href=\"$url\">[lang::message::lookup "" $package_name.$name_key $name]</a> $admin_html"
+    }
+
+    # --------------------------------------------
+    # Write out the two dimensional table
+    set left_dim_list [im_menu_invoice_creation_matrix_sort_types [array names type_hash]]
+    set top_dim_list [im_menu_invoice_creation_matrix_sort_sources [array names source_hash]]
+    set html "<table border='1' cellpadding='0' cellspacing='0'>\n"
+
+    append html "<tr><td>&nbsp;</td>\n"
+    foreach top $top_dim_list {
+	set from_text [lang::message::lookup $locale $package_key.From_invoice_source "From<br>%top%"]
+	append html "<td>$from_text</td>\n"
+    }
+    append html "</tr>\n"
+
+
+    foreach left $left_dim_list {
+	append html "<tr>\n"
+	append html "<td>$left</td>\n"
+	foreach top $top_dim_list {
+	    set key "$left-$top"
+	    if {[info exists matrix_hash($key)]} {
+		set link $matrix_hash($key)
+		append html "<td>$link</td>\n"
+	    } else {
+		append html "<td>&nbsp;</td>\n"
+	    }
+	}
+	append html "</tr>\n"
+    }
+    append html "</table>\n"
+
+
+    if {0 ne [llength $other_links]} {
+	append html "<h4>[lang::message::lookup "" intranet-core.Related_Links "Related Links"]</h4>\n"
+	append html "<ul>\n<li>[join $other_links "</li>\n<li>"]</li>\n</ul>\n"
+	append html "<br>&nbsp;<br>\n"
+    }
+
+    if {0 == $ctr} { set html "" }
+    return $html
+}
+
+
+
+ad_proc -public im_menu_invoice_creation_matrix_sort_types {
+    list
+} {
+    Sorts the list of invoice types using some custom ordering.
+    This is not particularly pretty, but required for usability.
+} {
+    set order_list [list "Customer Invoice" "Quote" "Delivery Note" "Provider Bill" "Purchase Order"]
+
+    set result [list]
+    foreach term $order_list {
+	set rest [lsearch -inline -all -not $list $term]
+	if {$rest ne $list} { lappend result $term }
+	set list $rest
+    }
+
+    return [concat $result $rest]
+}
+
+ad_proc -public im_menu_invoice_creation_matrix_sort_sources {
+    list
+} {
+    Sorts the list of invoice types using some custom ordering.
+    This is not particularly pretty, but required for usability.
+} {
+    set order_list [list "Scratch" "Timesheet tasks" "Invoice" "Quote" "Delivery note" "Provider Bill" "Purchase Order"]
+
+    set result [list]
+    foreach term $order_list {
+	set rest [lsearch -inline -all -not $list $term]
+	if {$rest ne $list} { lappend result $term }
+	set list $rest
+    }
+
+    return [concat $result $rest]
+}

@@ -63,11 +63,12 @@ ad_proc -public im_help_collapsible {
 	set collapse_html "<a href=$url>[im_gif minus_9]</a> [lang::message::lookup "" intranet-core.Hide_Help "Hide this help text"]"
     } else {
 	set url [export_vars -base $collapse_url {page_url return_url {open_p "o"} {object_id 0}}]
-	set collapse_html "<a href=$url>[im_gif plus_9]</a> [lang::message::lookup "" intranet-core.Show_Help "Show a help text about this report"]"
+	set collapse_html "<a href=$url>[im_gif plus_9]</a> [lang::message::lookup "" intranet-core.Show_Help "Show a help text"]"
     }
 
     if {"o" ne $collapsed_o_c} { set help_html "" }
-    append help_html $collapse_html
+    # append help_html $collapse_html
+    set help_html "$collapse_html $help_html"
     return $help_html
 }
 
