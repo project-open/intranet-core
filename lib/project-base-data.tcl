@@ -67,7 +67,7 @@ set parent_name [util_memoize [list db_string parent_name "select project_name f
 
 
 # ---------------------------------------------------------------------
-# Redirect to timesheet if this is timesheet
+# Redirect to timesheet if this is a Gantt task
 # ---------------------------------------------------------------------
 
 # Redirect if this is a timesheet task (subtype of project)

@@ -112,7 +112,7 @@ where   object_type = 'im_office' and
 
 
 --------------------------------------------------
--- Rests of Timesheet Tasks
+-- Rests of Gantt Tasks
 
 update acs_objects
 set context_id = null

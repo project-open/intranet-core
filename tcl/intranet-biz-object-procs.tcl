@@ -798,7 +798,7 @@ ad_proc -public im_biz_object_member_list_format {
     bom_list 
 } {
     Formats a list of business object memberships for display.
-    Returns a piece of HTML suitable for the Timesheet Task List for example.
+    Returns a piece of HTML suitable for the Gantt Task List for example.
     @param bom_list A list of {user_id role_id perc} entries
 } {
     set member_list ""

@@ -93,7 +93,7 @@
 -- 7000-7999	Intranet Translation Quality
 -- 8000-8999	Intranet Translation Marketplace
 -- 9000-9499	Intranet Material
--- 9500-9699	Intranet Timesheet Tasks
+-- 9500-9699	Intranet Gantt Tasks
 -- 9700-9799	Intranet Cust-Baselkb
 -- 10000-10999	Intranet DynField
 -- 11000-11099	Intranet SQL Selectors
@@ -391,7 +391,7 @@ update im_categories set category_description = 'Unknown project type'
 where category = 'Unknown' and category_type = 'Intranet Project Type';
 update im_categories set category_description = 'The project doesn''t fit in any category' 
 where category = 'Other' and category_type = 'Intranet Project Type';
-update im_categories set category_description = 'Timesheet Task (should not be visible)' 
+update im_categories set category_description = 'Gantt Task (should not be visible)' 
 where category = 'Task' and category_type = 'Intranet Project Type';
 update im_categories set category_description = 'Helpdesk Ticket (should not be visible)' 
 where category = 'Ticket' and category_type = 'Intranet Project Type';

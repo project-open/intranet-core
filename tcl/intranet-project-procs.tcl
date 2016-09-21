@@ -2590,9 +2590,9 @@ ad_proc im_project_nuke {
 	db_dml forum "delete from im_forum_topics where object_id = :project_id"
 
 
-	# Timesheet
+	# Hours
 	ns_log Notice "projects/nuke-2: im_hours"
-	db_dml timesheet "delete from im_hours where project_id = :project_id"
+	db_dml hours "delete from im_hours where project_id = :project_id"
 	
 
 	# Workflow
