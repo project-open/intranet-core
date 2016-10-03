@@ -468,15 +468,16 @@ ad_proc -public im_menu_invoice_creation_matrix {
     # Write out the two dimensional table
     set left_dim_list [im_menu_invoice_creation_matrix_sort_types [array names type_hash]]
     set top_dim_list [im_menu_invoice_creation_matrix_sort_sources [array names source_hash]]
-    set html "<table border='1' cellpadding='0' cellspacing='0'>\n"
+    set html ""
 
-    append html "<tr><td>&nbsp;</td>\n"
+    set width 80
+    append html "<tr><td width='80'>&nbsp;</td>\n"
     foreach top $top_dim_list {
 	set from_text [lang::message::lookup $locale $package_key.From_invoice_source "From<br>%top%"]
-	append html "<td>$from_text</td>\n"
+	append html "<td width='80'>$from_text</td>\n"
+	set width [expr $width + 81]
     }
     append html "</tr>\n"
-
 
     foreach left $left_dim_list {
 	append html "<tr>\n"
@@ -492,8 +493,8 @@ ad_proc -public im_menu_invoice_creation_matrix {
 	}
 	append html "</tr>\n"
     }
-    append html "</table>\n"
 
+    set html "<table border='1' cellpadding='0' cellspacing='0' width='$width'>$html</table>\n"
 
     if {0 ne [llength $other_links]} {
 	append html "<h4>[lang::message::lookup "" intranet-core.Related_Links "Related Links"]</h4>\n"
