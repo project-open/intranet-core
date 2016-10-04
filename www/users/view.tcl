@@ -102,19 +102,18 @@ where
 "]
 
 if { $result > 1 } {
-    ad_return_complaint "[_ intranet-core.Bad_User]" "
+    ad_return_complaint 1 "<b>[_ intranet-core.Bad_User]</b>:<br>
     <li>There is more then one user with the ID $user_id_from_search"
     ad_script_abort
 }
 
 if { $result == 0 } {
-
     set party_id [db_string party "select party_id from parties where party_id=:user_id_from_search" -default 0]
     set person_id [db_string person "select person_id from persons where person_id=:user_id_from_search" -default 0]
     set user_id [db_string user "select user_id from users where user_id=:user_id_from_search" -default 0]
     set object_type [db_string object_type "select object_type from acs_objects where object_id=:user_id_from_search" -default "unknown"]
 
-    ad_return_complaint "[_ intranet-core.Bad_User]" [_ intranet-core.lt_We_couldnt_find_user_]
+    ad_return_complaint 1 "<b>[_ intranet-core.Bad_User]</b>:<br>[_ intranet-core.lt_We_couldnt_find_user_]"
     ad_script_abort
 }
 
