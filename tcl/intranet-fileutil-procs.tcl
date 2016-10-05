@@ -74,12 +74,13 @@ proc ::fileutil::grep {pattern {files {}}} {
 
 
 # 041101 Frank Bergmann <frank.bergmann@project-open.com>
-set tcl_platform(platform) [ns_info platform]
+# set tcl_platform(platform) [ns_info platform]
+# 161005 Frank Bergmann <frank.bergmann@project-open.com>
+# ns_info platform is now deprecated.
 # returns "win32" for windows
 # seems to return "unix" for unix-ish platforms (Linux, Solaris, ...) (?)
 
-
-if {"unix" ne $tcl_platform(platform) } {
+if {"unix" ne $::tcl_platform(platform) } {
     # Not a unix platform => Original implementation
     # Note: This may still fail for directories mounted via SAMBA,
     # i.e. coming from a unix server.
@@ -931,7 +932,6 @@ proc ::fileutil::fileType {filename} {
 #	The directory for temporary files.
 
 proc ::fileutil::TempDir {} {
-    global tcl_platform env
     set attempdirs [list]
 
     foreach tmp {TMPDIR TEMP TMP} {
@@ -940,7 +940,7 @@ proc ::fileutil::TempDir {} {
 	}
     }
 
-    switch $tcl_platform(platform) {
+    switch $::tcl_platform(platform) {
 	windows {
 	    lappend attempdirs "C:\\TEMP" "C:\\TMP" "\\TEMP" "\\TMP"
 	}
