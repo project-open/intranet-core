@@ -2128,9 +2128,12 @@ ad_proc im_linux_distro { } {
 ad_proc im_linux_vmware_p { } {
     Returns 1 if the current system is the default CentOS Linux VMware.
 } {
-    set vmware_p 0
-    catch { set vmware_p [exec  /sbin/lsmod | grep vmnet | wc -l] }
-    return $vmware_p
+    set modules ""
+    catch { set modules [exec /sbin/lsmod] }
+
+    if {[lsearch $modules "vmnet"] > -1} { return 1 }
+    if {[lsearch $modules "vmw_balloon"] > -1} { return 1 }
+    return 0
 }
 
 
