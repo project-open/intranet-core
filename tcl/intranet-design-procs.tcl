@@ -843,6 +843,7 @@ ad_proc -public im_menu_admin_admin_links {
 
 ad_proc -public im_navbar {
     { -loginpage_p 0 }
+    { -loginpage 0 }
     { -show_context_help_p 0 }
     { main_navbar_label "" }
 } {
@@ -851,10 +852,12 @@ ad_proc -public im_navbar {
     The sub-menus basically consist of the "admin" section of the 
     respective page and direct sub-menus used in the sub-navbar
     tabs. Some of these links are unsuitable for a main menus, so
-    they can be excluded
+    they can be excluded.
+    loginpage parameter is deprecated!
 } {
     set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
+    if {$loginpage ne 0} { set loginpage_p $loginpage }
     set navbar [util_memoize [list im_navbar_helper -user_id $user_id -locale $locale -loginpage_p $loginpage_p -show_context_help_p $show_context_help_p $main_navbar_label]]
     return $navbar
 }
