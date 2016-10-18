@@ -320,25 +320,21 @@ set left_navbar_html "
 
         </div>
       <hr/>
-        <table>
-        <tr>
-          <td><div class='filter-title'>[lang::message::lookup "" intranet-core.AdminOptions "Admin Options"]</td> </div>
-        </tr>
-        <tr>
-        <td>
-          <ul>
-		<li><A href=[export_vars -base new {return_url}]>New Menu</a></li>
-         </ul>
+	<table>
+		<tr>
+			<td><div class='filter-title'>[lang::message::lookup "" intranet-core.AdminOptions "Admin Options"]</td> </div>
+		</tr>
+		<tr>
+			<td>
+				<ul>
+					<li><A href=[export_vars -base new {return_url}]>New Menu</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
   </td>
 </tr>
 </table>
-<br>
-      <hr/>
-
-</td>
-</tr>
-</table>
-
 "
 
 # Remove all permission related entries in the system cache
