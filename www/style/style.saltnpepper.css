@@ -1125,7 +1125,6 @@ developer-support-adp-box-off {
 	 border: 1px solid #999;
 	 background-color: #fff;
 	 margin:15px 5px 10px;
-	 right: 0px;
 }
 
 #sideBarTab {
@@ -1135,6 +1134,7 @@ developer-support-adp-box-off {
 	position:absolute;
 	left: 7px;
 	top: -185px;
+	outline:0
 }
 
 .filter-block {
@@ -1675,7 +1675,8 @@ span.list-label {
 }
 
 #sideBarTabImage, #sideBarTab {
- visibility: visible;
+    visibility: visible;
+    opacity: 1;
 }
 
 

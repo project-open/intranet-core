@@ -20,7 +20,7 @@
 	<div id="slave">
 	<div id="slave_content">
 	<div class="filter-list" id="filter-list">
-		<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_saltnpepper/slide-button-active.gif"/></a>
+		<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_default/nav-hamburger-active.png"></a>
 		<div class="filter" id="sidebar">
 			<div id="sideBarContentsInner">
 				<!-- Left Navigation Bar -->

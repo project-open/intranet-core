@@ -24,6 +24,7 @@ function extendContract(){
 	    // [temp] set back to height=auto when animation is done, should be triggered based on event  
 	    var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
 	    poSetCookie('isExtendedCookie',1,90);
+	    $('#sideBarTabImage').fadeTo( "2000",0.5);
 	} else {
 	    // collapse
 	    document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
@@ -35,6 +36,7 @@ function extendContract(){
 	    $('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 	    document.getElementById('slave_content').style.visibility='hidden';
 	    poSetCookie('isExtendedCookie',0,90);
+	    $('#sideBarTabImage').fadeTo( "2000",1);
 	};
     };
 };
@@ -179,6 +181,7 @@ jQuery().ready(function(){
 	if (document.getElementById("slave_content") != null) {
 	    document.getElementById('slave_content').style.visibility='visible';
 	}
+	$('#sideBarTabImage').fadeTo( "2000",0.5);
     }
     
     var input_list = document.getElementsByTagName("input");
