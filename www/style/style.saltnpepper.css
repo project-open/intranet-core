@@ -2158,10 +2158,9 @@ ul.sm li.divider hr {
 }
 
 .sm-po-sub-menu-item-name {
-
     float: left;
     width: auto;
-    max-width: 90%
+    max-width: 85%
 }
 
 .sm-po-sub-menu-item-wrench {
