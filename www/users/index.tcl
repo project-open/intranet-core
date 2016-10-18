@@ -335,7 +335,7 @@ ad_form \
     }
 
 if {$admin_p} {
-    set options_list [list [list [lang::message::lookup "" intranet-core.Include_Deleted "Include Deleted"] "1"]]
+    set options_list [list [list "" "1"]]
     ad_form -extend -name $form_id -form {
 	{include_deleted_users_p:integer(checkbox),optional {label "[lang::message::lookup {} intranet-core.Include_Deleted_Users { }]"} {options $options_list} }
     }
