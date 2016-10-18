@@ -2141,10 +2141,12 @@ ul.sm li.divider {
 }
 
 ul.sm li.divider hr {
-    border: 0;
+    display: block;
     height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    border: 0;
+    border-top: 1px solid #999;
+    margin: 0.5em 0;
+    padding: 0; 
 }
 
 .sm-po-sub-menu-item {
