@@ -148,14 +148,17 @@ set end_idx [expr {$start_idx + $how_many}]
 # projects_open, projects_closed and projects_potential
 # depending on type_id and status_id:
 #
-set menu_select_label ""
-switch $project_status_id {
-    71 { set menu_select_label "projects_potential" }
-    76 { set menu_select_label "projects_open" }
-    81 { set menu_select_label "projects_closed" }
-    default { set menu_select_label "" }
-}
+#set menu_select_label "projects_list"
+#switch $project_status_id {
+#    71 { set menu_select_label "projects_potential" }
+#    76 { set menu_select_label "projects_open" }
+#    81 { set menu_select_label "projects_closed" }
+#    default { set menu_select_label "" }
+#}
 
+# fraber 161020: Disabled the Open/Potential/Closed tabs,
+# because I've never seen them being used.
+set menu_select_label "projects_filter_advanced"
 if {"project_costs" == $view_name} { set menu_select_label "projects_profit_loss" }
 
 

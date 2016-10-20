@@ -107,13 +107,9 @@ if {!$view_companies_all_p} {
 # customers_active, customer_inactive and customers_potential
 # depending on type_id and status_id:
 #
-set menu_select_label ""
+set menu_select_label "companies_advanced_filtering"
 
-# In case a Freelancer logs in show providers, not customers
-if { [im_user_is_freelance_p $current_user_id] } {
-    set type_id [im_company_type_provider]
-}
-
+set ttt {
 if {$type_id == [im_company_type_customer]} {
     switch $status_id {
 	41 { set menu_select_label "customers_potential" }
@@ -122,7 +118,7 @@ if {$type_id == [im_company_type_customer]} {
 	default { set menu_select_label "" }
     }
 }
-
+}
 
 
 
