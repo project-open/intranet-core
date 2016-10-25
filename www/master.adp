@@ -20,18 +20,17 @@
 	<div id="slave">
 	<div id="slave_content">
 	<div class="filter-list" id="filter-list">
-		<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_default/nav-hamburger-active.png"></a>
+		<a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="<%=[lang::message::lookup "" intranet-core.Click_To_Show_Side_Menu "Click to show side menu"]%>" alt="sideBar" src="/intranet/images/navbar_default/nav-hamburger-active.png"></a>
 		<div class="filter" id="sidebar">
 			<div id="sideBarContentsInner">
-				<!-- Left Navigation Bar -->
-				<%= $left_navbar %>
-				<!-- End Left Navigation Bar -->
-				<if @show_navbar_p@ and @show_left_navbar_p@>	
-					<div class="filter-block">
-						<div class="filter-title">#intranet-core.Home#</div>
-					</div>
-					<%= [im_navbar_tree -label "main"] %>
-				</if>
+			     <div title="<%=[lang::message::lookup "" intranet-core.Click_To_Close_Side_Menu "Click to close side menu"]%>" id="sidebar-close-button"></div>
+			     <%= $left_navbar %>
+			     <if @show_navbar_p@ and @show_left_navbar_p@>	
+				<div class="filter-block">
+					<div class="filter-title">#intranet-core.Home#</div>
+				</div>
+				<%= [im_navbar_tree -label "main"] %>
+			     </if>
 			</div>
 		</div>
 		<div class="fullwidth-list" id="fullwidth-list">

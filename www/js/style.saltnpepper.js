@@ -6,37 +6,53 @@ var slideDuration = 200;
 var opacityDuration = 200;
 var rv = 0;
 var isExtended = 1;
+var sidebarMarginLeftExtended = '253px';
+var sidebarMarginLeft = '25px';
 
 function extendContract(){
     if (document.getElementById("sideBarTab") != null) {
 	var node_to_move=document.getElementById("sidebar");
 	if(isExtended == 0){
+
 	    // extend 
 	    if (document.getElementById('sidebar').getAttribute('savedHeight') != null) height = document.getElementById('sidebar').getAttribute('savedHeight') ;
 	    sideBarSlide(0, height, 0, width);
 	    sideBarOpacity(0,1);
 	    isExtended = 1;
+
 	    // move main part
-	    jQuery(".fullwidth-list").animate({marginLeft: "288px"}, slideDuration );
+	    jQuery(".fullwidth-list").animate({marginLeft: sidebarMarginLeftExtended}, slideDuration );
+
 	    // make expand tab arrow image face left (inwards)
 	    $('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
 	    document.getElementById('slave_content').style.visibility='visible';
+
 	    // [temp] set back to height=auto when animation is done, should be triggered based on event  
 	    var time_out=setTimeout("document.getElementById('sidebar').style.height='auto'",2500);
+
+	    // Store status 
 	    poSetCookie('isExtendedCookie',1,90);
-	    $('#sideBarTabImage').fadeTo( "2000",0.5);
+
+	    // Set sidebar graphics
+	    $('#sideBarTabImage').hide();
+	    $('#sideBarTab').hide();
+	    $('#sidebar-close-button').fadeTo( "2000",0.5);
+
 	} else {
 	    // collapse
 	    document.getElementById('sidebar').setAttribute('savedHeight',document.getElementById('sidebar').offsetHeight);
 	    sideBarSlide(height, 135, width, 0);
 	    sideBarOpacity(1,0);
 	    isExtended = 0;
-	    jQuery(".fullwidth-list").animate({marginLeft: "35px"}, slideDuration );
+	    jQuery(".fullwidth-list").animate({marginLeft: sidebarMarginLeft}, slideDuration );
 	    // make expand tab arrow image face right (outwards)
 	    $('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 	    document.getElementById('slave_content').style.visibility='hidden';
 	    poSetCookie('isExtendedCookie',0,90);
 	    $('#sideBarTabImage').fadeTo( "2000",1);
+	    // $('#sideBarTabImage').show();
+            $('#sideBarTabImage').show();
+            $('#sideBarTab').show();
 	};
     };
 };
@@ -48,14 +64,10 @@ function sideBarSlide(fromHeight, toHeight, fromWidth, toWidth) {
 
 function sideBarOpacity(from, to) {
 	$("#sideBarContents").animate( { 'opacity': to }, opacityDuration, "linear" );
-	// $("#filter").animate( { 'opacity': to }, opacityDuration, "linear" );
 };
 
 /*   END: SIDEBAR */
 
-
-// check this http://www.nabble.com/%22$(document).ready(function()-%7B%22-giving-error-%22$-is-not-a-function%22----what-am-I-doing-wrong--td17139297s27240.html
-// jQuery.noConflict();
 
 jQuery().ready(function(){
 
@@ -181,7 +193,10 @@ jQuery().ready(function(){
 	if (document.getElementById("slave_content") != null) {
 	    document.getElementById('slave_content').style.visibility='visible';
 	}
-	$('#sideBarTabImage').fadeTo( "2000",0.5);
+
+        $('#sideBarTabImage').hide();
+        $('#sideBarTab').hide();
+	$('#sidebar-close-button').fadeTo( "2000",0.5);
     }
     
     var input_list = document.getElementsByTagName("input");
@@ -194,6 +209,11 @@ jQuery().ready(function(){
     $('#sideBarTab').click( function() { 
 	extendContract(); 
 	return false; 
+    });
+
+    $('#sidebar-close-button').click( function() {
+        extendContract();
+        return false;
     });
 
     setFooter();

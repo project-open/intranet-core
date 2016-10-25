@@ -1073,68 +1073,77 @@ developer-support-adp-box-off {
 }
 
 .fullwidth-list .component table.month_header td {
-	background:#266591 none repeat scroll 0 50%;
-	color:#000000;
-	font-size:9pt;
-	font-weight:bold;
-	padding:5px 4px 5px 2px;
+    background:#266591 none repeat scroll 0 50%;
+    color:#000000;
+    font-size:9pt;
+    font-weight:bold;
+    padding:5px 4px 5px 2px;
 }
 
 .fullwidth-list .component table.month_header td a {
-	color:#FFF;
+    color:#FFF;
 }
 
 .fullwidth-list .component table.month_header {
-        width: 100%;
+    width: 100%;
 }
 
 .table-display td {
-   padding: 1px;
+    padding: 1px;
 }
-
-
 
 
 .list td.rowtitle, .table-header, .cal-month-title-text {
-   font-size: 10pt; 
-   color: #2e2e2e;
-   /* background-color: #cccac1; */ 
-   background-color: #E1E2E1; 
-   font-weight: bold;
+    font-size: 10pt; 
+    color: #2e2e2e;
+    /* background-color: #cccac1; */ 
+    background-color: #E1E2E1; 
+    font-weight: bold;
 }
 
 .cal-table-display {
-   width: 100%
+    width: 100%
 }
 
 
 #position_filestorage_view_files {
-	margin-left: 45px;
-	margin-top: 20px;
+    margin-left: 45px;
+    margin-top: 20px;
 }
 
 
 /* Sidebar Filter */
 
+#sidebar-close-button {
+    background-image: url("/intranet/images/navbar_default/nav-hamburger-active.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: right;
+    height: 23px;
+    margin-right: 5px;
+    margin-top: 5px;
+    width: 23px;
+}
+
 .filter {
-	 overflow:hidden !important;
-	 position: absolute;
-	 left: 30px;
-	 top: -200px;
-	 width: 243px;
-	 border: 1px solid #999;
-	 background-color: #fff;
-	 margin:15px 5px 10px;
+    overflow:hidden !important;
+    position: absolute;
+    left: 0px;
+    top: -200px;
+    width: 243px;
+    border: 1px solid #999;
+    background-color: #fff;
+    margin:15px 5px 10px;
 }
 
 #sideBarTab {
-	visibility:visible;
-	height:137px;
-	width:28px;
-	position:absolute;
-	left: 7px;
-	top: -185px;
-	outline:0
+    visibility:visible;
+    height:137px;
+    width:28px;
+    position:absolute;
+    left: 7px;
+    top: -185px;
+    outline:0
 }
 
 .filter-block {

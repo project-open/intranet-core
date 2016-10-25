@@ -10,9 +10,8 @@
         <a id="sideBarTab" href="#"><img id="sideBarTabImage" border="0" title="sideBar" alt="sideBar" src="/intranet/images/navbar_default/nav-hamburger-active.png"></a>
 	<div class="filter" id="sidebar">
 		<div id="sideBarContentsInner">
-			<!-- Left Navigation Bar -->
+			<div title="<%=[lang::message::lookup "" intranet-core.Click_To_Close_Side_Menu "Click to close side menu"]%>" id="sidebar-close-button"></div>
 			<%= $left_navbar %>
-			<!-- End Left Navigation Bar -->
 			<div class="filter-block">
 				<div class="filter-title">#intranet-core.Home#</div>
 			</div>
@@ -38,12 +37,3 @@ Please contact your SysAdmin and tell him to change the parameter <br>
 </div>
 </div>
 <%= [im_footer] %>
-
-
-
-
-
-
-
-
-
