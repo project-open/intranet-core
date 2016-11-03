@@ -79,7 +79,7 @@ set page_options [linsert $page_options 0 [list "All" ""]]
 # List of available groups
 # ------------------------------------------------------
 
-set group_list_sql {
+set group_list_sql "
 select
         g.group_name,
         g.group_id,
@@ -92,9 +92,10 @@ where
         g.group_id = o.object_id
 	and g.group_id = p.profile_id
         and o.object_type = 'im_profile'
+	and g.group_id != [im_profile_po_admins]
 order by
         lower(group_name)
-}
+"
 
 set group_ids [list]
 set group_names [list]

@@ -59,45 +59,21 @@ set bgcolor(1) " class=roweven"
 # and generate the dynamic part of the SQL
 # ------------------------------------------------------
 
-set group_list_sql {
+set group_list_sql "
 	select DISTINCT
 	        g.group_name,
 	        g.group_id,
 		p.profile_gif
-	from
-	        acs_objects o,
+	from	acs_objects o,
 	        groups g,
 		im_profiles p
-	where
-	        g.group_id = o.object_id
+	where	g.group_id = o.object_id
 		and g.group_id = p.profile_id
 	        and o.object_type = 'im_profile'
+		and g.group_id != [im_profile_po_admins]
 	order by
 		g.group_name
-}
-
-set ttt {
-		CASE
-			WHEN group_name = 'Employees'		THEN 10 
-			WHEN group_name = 'Customers'		THEN 20 
-			WHEN group_name = 'Freelancers'		THEN 30 
-
-			WHEN group_name = 'Helpdesk'		THEN 100
-			WHEN group_name = 'Freelance Managers'	THEN 110
-			WHEN group_name = 'Sales'		THEN 120
-			WHEN group_name = 'Project Managers'	THEN 130
-			WHEN group_name = 'HR Managers'		THEN 140
-			WHEN group_name = 'Accounting'		THEN 150
-			WHEN group_name = 'Senior Managers'	THEN 160
-			WHEN group_name = 'P/O Admins'		THEN 199
-
-			WHEN group_name = 'The Public'		THEN 200
-			WHEN group_name = 'Registered Users'	THEN 210
-
-		ELSE 999 END as sort_order
-
-}
-
+"
 
 set group_ids [list]
 set group_names [list]
