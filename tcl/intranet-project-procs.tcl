@@ -2940,6 +2940,9 @@ ad_proc im_project_nuke {
 	    if {[im_table_exists im_gantt_assignments]} {
 		db_dml del_rels "delete from im_gantt_assignments where rel_id = :rel_id"
 	    }
+	    if {[im_table_exists im_agile_task_rels]} {
+		db_dml del_rels "delete from im_agile_task_rels where rel_id = :rel_id"
+	    }
 	    db_dml del_rels "delete from im_biz_object_members where rel_id = :rel_id"
 	    db_dml del_rels "delete from membership_rels where rel_id = :rel_id"
 	    if {$im_conf_item_project_rels_exists_p} { db_dml del_rels "delete from im_conf_item_project_rels where rel_id = :rel_id" }
