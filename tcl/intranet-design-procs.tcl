@@ -797,7 +797,9 @@ ad_proc -private im_sub_navbar_menu_helper {
     Get the list of menus in the sub-navbar for the given user.
     This routine is cached and called every approx 60 seconds
 } {
+    set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
+
     set menu_select_sql "
 	select	menu_id,
 		package_name,
@@ -812,7 +814,26 @@ ad_proc -private im_sub_navbar_menu_helper {
 	order by
 		 sort_order
     "
-    set result [db_list_of_lists subnavbar_menus $menu_select_sql]
+    set result [list]
+    db_foreach subnavbar_menus $menu_select_sql {
+
+	# Interpret empty visible_tcl menus as always visible
+	if {"" != $visible_tcl} {
+	    set errmsg ""
+	    set visible $admin_p; # Visible for admins, but not for normal users
+	    if [catch {
+	    	set visible [expr $visible_tcl]
+	    } errmsg] {
+		ns_log Error "im_sub_navbar_menu_helper: Error evalualuating menu visible_tcl=$visible_tcl: $errmsg"
+		append name ": Error in $visible_tcl"
+	    }
+	    	    
+	    if {!$visible} { continue }
+	}
+
+	lappend result [list $menu_id $package_name $label $name $url $visible_tcl]
+
+    }
     return $result
 }
 
