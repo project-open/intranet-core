@@ -656,7 +656,7 @@ ad_proc -public im_sub_navbar {
 
     # Replaced the db_foreach by this construct to save
     # the relatively high amount of SQLs to get the menus
-    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale -bind_vars $bind_vars $user_id $parent_menu_id]]
+    set menu_list_list [util_memoize [list im_sub_navbar_menu_helper -locale $locale $user_id $parent_menu_id]]
 
     foreach menu_list $menu_list_list {
 
@@ -791,7 +791,6 @@ ad_proc -public im_sub_navbar {
 
 ad_proc -private im_sub_navbar_menu_helper { 
     {-locale "" }
-    {-bind_vars "" }
     user_id 
     parent_menu_id 
 } {
@@ -823,7 +822,7 @@ ad_proc -private im_sub_navbar_menu_helper {
 	    set errmsg ""
 	    set visible $admin_p; # Visible for admins, but not for normal users
 	    if [catch {
-		set visible [expr $visible_tcl]
+	    	set visible [expr $visible_tcl]
 	    } errmsg] {
 		ns_log Error "im_sub_navbar_menu_helper: Error evalualuating menu visible_tcl=$visible_tcl: $errmsg"
 		append name ": Error in $visible_tcl"
