@@ -43,7 +43,7 @@ chomp($time);
 
 # Main loop: use "find" to get the list of all packages
 #
-open(FILES, "cd $packages_dir; ls -1 | grep 'intranet-*' |");
+open(FILES, "cd $packages_dir; ls -1 | grep 'intranet-\|sencha' |");
 while (my $file=<FILES>) {
         # Remove trailing "\n"
         chomp($file);
