@@ -76,6 +76,7 @@ ad_proc -public im_component_box {
     set base_url "/intranet/components/component-action"
     set plugin_url [export_vars -quotehtml -base $base_url {plugin_id return_url}]
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
+    set system_id [im_system_id]
 
     if {0 == $plugin_id} { set right_icons ""}
 
@@ -107,6 +108,7 @@ ad_proc -public im_component_box {
 
     if {"t" == $minimized_p} { set body "" }
 
+    set help_url [export_vars -base "http://www.project-open.net/en/portlet-[string tolower [string map {" " -} $plugin_name]]" {system_id}]
     set icons "
        $min_gif
        <div class=\"icon_seperator\"></div>
@@ -116,7 +118,7 @@ ad_proc -public im_component_box {
        <a class=\"icon_right\" href=\"$plugin_url&amp;action=right\"><span class=\"icon_right\">right</span></a>
        <div class=\"icon_seperator\"></div>
        <a class=\"icon_close\" href=\"$plugin_url&amp;action=close\"><span class=\"icon_close\">close</span></a>
-       <a class=\"icon_help\" href=\"http://www.project-open.net/en/portlet-[string tolower [string map {" " -} $plugin_name]]\"><span class=\"icon_help\">?</span></a>
+       <a class=\"icon_help\" href=\"$help_url\"><span class=\"icon_help\">?</span></a>
     "
 
     # Show a wrench for the Admin
