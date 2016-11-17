@@ -63,7 +63,7 @@ ad_proc -public im_id_from_category_helper {
     set id [db_string id_from_cat "
 		select	category_id
 		from	im_categories
-		where	category = :category and
+		where	lower(trim(category)) = lower(trim(:category)) and
 			category_type = :category_type
     " -default ""]
     if {"" != $id} { return $id }
