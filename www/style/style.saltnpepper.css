@@ -2192,3 +2192,20 @@ ul.sm li.divider hr {
         width: auto;
     }
 }
+
+.btn_po_small {
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 10px;
+  background: #336699;
+  padding: 0px 5px 0px 5px;
+  text-decoration: none;
+}
+
+.btn_po_small:hover {
+  background: #330033;
+  text-decoration: none;
+}
