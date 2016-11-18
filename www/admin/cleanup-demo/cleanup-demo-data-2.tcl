@@ -593,6 +593,10 @@ if {[im_table_exists im_indicator_results]} {
     db_dml indicator_results "delete from im_indicator_results"
 }
 
+ns_write "<li>Cleanup Rule Logs\n"
+if {[im_table_exists im_rule_logs]} {
+    db_dml indicator_results "delete from im_rule_logs"
+}
 
 
 ns_write "<li>Cleanup Conf Objects\n"
