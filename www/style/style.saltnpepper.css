@@ -2193,7 +2193,7 @@ ul.sm li.divider hr {
     }
 }
 
-.btn_po_small {
+.btn-po-small {
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
@@ -2205,7 +2205,12 @@ ul.sm li.divider hr {
   text-decoration: none;
 }
 
-.btn_po_small:hover {
+.btn-po-small:hover {
   background: #330033;
   text-decoration: none;
 }
+
+.gantt-bar-panel {
+    background-color: #fff; 
+}
+
