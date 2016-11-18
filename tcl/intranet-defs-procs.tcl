@@ -160,6 +160,15 @@ ad_proc -public im_date_ansi_to_julian {
     return $julian
 }
 
+ad_proc -public im_date_julian_to_dow { 
+    julian 
+} {
+    Returns the Day-of-week for a julian date, similar
+    to im_date_julian_to_components -> dow.
+} {
+    return [expr ($julian % 7) + 1]
+}
+
 ad_proc -public im_date_julian_to_ansi { 
     { -throw_complaint_p 1 }
     julian 
