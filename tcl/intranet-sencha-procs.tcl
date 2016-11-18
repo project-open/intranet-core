@@ -56,7 +56,7 @@ ad_proc -public im_sencha_extjs_version {
 
 
 ad_proc -public im_sencha_extjs_load_libraries {
-    {-css_theme_folder "ext-all.css"}
+    {-css_theme_folder "ext-all-gray.css"}
 } {
     Instructs the OpenACS pages to load the right Sencha libraries
 } {
@@ -74,6 +74,11 @@ ad_proc -public im_sencha_extjs_load_libraries {
 	    ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Unknown_Sencha_Type "Unknown type of Sencha libraries: '%type%'"]</b>:<br>&nbsp;<br>
 	    [lang::message::lookup "" intranet-core.Unknown_Sencha_Type_msg "Please contact your System Administrator"]"
 	}
+    } 
+
+    # Fallback 
+    if { ![file exists "[acs_package_root_dir $package_key]/www/resources/css/$css_theme_folder"] } {
+	set css_theme_folder "ext-all.css"
     }
 
     # Instruct the page to add libraries
