@@ -48,7 +48,9 @@ if {!$write} {
 }
 
 # No role specified? => Return
-if {"" == $role_id} { ad_returnredirect $return_url }
+if {"" eq $role_id} { ad_returnredirect $return_url }
+if {0 eq $object_id } { ad_returnredirect $return_url }
+
 
 set touched_p 0
 foreach uid $user_id_from_search {
