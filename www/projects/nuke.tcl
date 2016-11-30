@@ -105,6 +105,7 @@ template::list::create \
     -key project_id \
     -has_checkboxes \
     -bulk_actions $bulk_actions_list \
+    -bulk_action_method post \
     -bulk_action_export_vars { return_url} \
     -row_pretty_plural "[lang::message::lookup "" intranet-core.Nuke_Project Nuke]" \
     -elements {
