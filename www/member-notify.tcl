@@ -267,6 +267,7 @@ foreach email $email_list {
 				   sender_first_names $sender_first_names \
 				   sender_last_name $sender_last_name \
 				   sender_email $sender_email \
+				   user_id $user_id \
 	]
 	set message_subst [lang::message::format $message $substitution_list]
     }
