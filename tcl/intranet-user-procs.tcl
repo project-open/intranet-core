@@ -1884,7 +1884,7 @@ ad_proc -public im_menu_users_admin_links {
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_users"]} {
-	# lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
+	lappend result_list [list [_ intranet-core.Add_a_new_User] "/intranet/users/new"]
     }
 
 #    lappend result_list [list [_ intranet-core.Advanced_Filtering] "/intranet/users/index?filter_advanced_p=1"]
