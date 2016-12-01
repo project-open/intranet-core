@@ -543,6 +543,9 @@ ad_proc im_office_nuke {
     "
     ns_log Notice "offices/nuke-2: im_forum_topics"
     db_dml forum "delete from im_forum_topics where object_id = :office_id"
+
+    ns_log Notice "offices/nuke-2: im_invoices"
+    db_dml forum "update im_invoices set invoice_office_id = null where invoice_office_id = :office_id"
     
     # Filestorage
     ns_log Notice "offices/nuke-2: im_fs_folder_status"
