@@ -78,6 +78,9 @@ create table im_view_columns (
 	ajax_configuration	text
 );
 
+create unique index im_view_columns_columns_un on im_view_columns (view_id, column_id);
+create unique index im_view_columns_name_un on im_view_columns (view_id, column_name);
+
 
 SELECT im_category_new (1415, 'Ajax', 'Intranet DynView Type');
 
