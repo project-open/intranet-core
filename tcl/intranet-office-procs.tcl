@@ -376,14 +376,15 @@ ad_proc -public im_office_company_component { user_id company_id } {
     set sql "
 	select
 		o.*,
-		im_category_from_id(o.office_type_id) as office_type
+		im_category_from_id(o.office_type_id) as office_type,
+		im_category_from_id(o.office_status_id) as office_status
 	from
 		im_offices o,
 		im_categories c
 	where
 		o.company_id = :company_id
 		and o.office_status_id = c.category_id
-		and lower(c.category) not in ('inactive')
+		-- and lower(c.category) not in ('inactive')
     "
 
     set component_html "
@@ -391,6 +392,7 @@ ad_proc -public im_office_company_component { user_id company_id } {
 	<tr class=rowtitle>
 	  <td class=rowtitle>[_ intranet-core.Office]</td>
 	  <td class=rowtitle>[_ intranet-core.Tel]</td>
+	  <td class=rowtitle>[_ intranet-core.Status]</td>
 	</tr>
     "
 
@@ -398,12 +400,9 @@ ad_proc -public im_office_company_component { user_id company_id } {
     db_foreach office_list $sql {
 	append component_html "
 		<tr$bgcolor([expr {$ctr % 2}])>
-		  <td>
-		    <A href=\"$office_view_page?office_id=$office_id\">$office_name</A>
-		  </td>
-		  <td>
-		    $phone
-		  </td>
+		  <td><A href=\"$office_view_page?office_id=$office_id\">$office_name</A></td>
+		  <td>$phone</td>
+		  <td>$office_status</td>
 		</tr>
         "
 	incr ctr
