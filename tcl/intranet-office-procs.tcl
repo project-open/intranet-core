@@ -414,7 +414,7 @@ ad_proc -public im_office_company_component { user_id company_id } {
     append component_html "
 	<tr>
 	  <td colspan=99 align=right>
-	    <A href=/intranet/offices/>[_ intranet-core.more_]</a>
+	    <A href=/intranet/offices/>[lang::message::lookup "" intranet-core.Show_all_offices "Show all offices"]</a>
 	  </td>
 	</tr>
 	</table>
