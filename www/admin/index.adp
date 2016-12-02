@@ -9,17 +9,18 @@
 <tr>
   <td valign="top">
 
-    <H2>Documentation</H2>
+    <%= [im_table_with_title "Documentation" "
     <ul>
-      <li><A href="http://www.project-open.com/en/" target="_blank">General Documentation</a><br></li>
-      <li><A href="http://www.project-open.com/en/page-intranet-admin-index" target="_blank">Context help for this page <%= [im_gif help] %></a><br></li>
+      <li><A href='http://www.project-open.com/en/' target='_blank'>General Documentation</a><br></li>
+      <li><A href='http://www.project-open.com/en/page-intranet-admin-index' target='_blank'>Context help for this page <%= [im_gif help] %></a><br></li>
     </ul>
+    "] %>
 
-<br>
+    <%= [im_table_with_title "Administration" $menu_html] %>
 
-    <H2>Administration</H2>
 
-	@menu_html;noquote@
+    @admin_guide_html;noquote@
+
 
 <!--
     <ul>
@@ -39,10 +40,10 @@
 
 
 <br>
-<h2><font color=red>#intranet-core.Dangerous#</font></h2>
+    <%= [im_table_with_title "<font color=red>#intranet-core.Dangerous#</font>" "
     <ul>
 	<li>
-	  <a href="/intranet/admin/cleanup-demo/">Cleanup Demo Data</a><br>
+	  <a href='/intranet/admin/cleanup-demo/'>Cleanup Demo Data</a><br>
 	  This menu allows you to delete all the data in the system and leaves
 	  the database completely empty, except for master data, 
 	  permissions and the administrator accounts. <br>
@@ -51,7 +52,7 @@
 	  be used otherwise.<br>&nbsp;<br>
 
 	<li>
-	  <a href="/intranet/admin/windows-to-linux">Convert parameters from Windows to Linux</a><br>
+	  <a href='/intranet/admin/windows-to-linux'>Convert parameters from Windows to Linux</a><br>
           Use this if you have imported a backup dump from a Windows system
 	  to this Linux system.
 	  This script simplemented sets the operating specific parameters
@@ -62,22 +63,20 @@
 	  <br>&nbsp;<br>
 
 	<li>
-	  <a href="/intranet/admin/linux-to-windows">Convert parameters from Linux to Windows</a><br>
+	  <a href='/intranet/admin/linux-to-windows'>Convert parameters from Linux to Windows</a><br>
           The reverse of the command above. 
 	  <br>&nbsp;<br>
 
 	<li>
-	  <a href="/intranet/anonymize">#intranet-core.lt_Anonymize_this_server#</a>
+	  <a href='/intranet/anonymize'>#intranet-core.lt_Anonymize_this_server#</a>
     </ul>
-
+    "] %>
 
 
   </td>
 
   <td valign="top" width="400px">
     <%= [im_component_bay right] %>
-    @admin_guide_html;noquote@
-
   </td>
 </tr>
 </table><br>
