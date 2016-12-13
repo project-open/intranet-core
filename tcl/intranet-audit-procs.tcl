@@ -41,7 +41,7 @@ if {0 != $sweeper_interval_hours} {
 # General hooks that do both audit and callbacks
 # -------------------------------------------------------------------
 
-ad_proc -public im_audit  {
+ad_proc -public im_audit {
     -object_id:required
     {-user_id "" }
     {-object_type "" }
@@ -398,19 +398,16 @@ ad_proc -public im_audit_impl {
 	set user_id [ad_conn user_id] 
 	set peeraddr [ns_conn peeraddr]
     }
+
+    # Get the IP of the browser of the user
+    set header_vars [ns_conn headers]
+    set x_forwarded_for [ns_set get $header_vars "X-Forwarded-For"]
+    if {"" != $x_forwarded_for} {
+	set peeraddr $x_forwarded_for
+    }
+
     if {"" == $action} { set action "update" }
     set action [string tolower $action]
-
-    # Are we behind a firewall or behind a reverse proxy?
-    if {"127.0.0.1" == $peeraddr} {
-
-	# Get the IP of the browser of the user
-	set header_vars [ns_conn headers]
-	set x_forwarded_for [ns_set get $header_vars "X-Forwarded-For"]
-	if {"" != $x_forwarded_for} {
-	    set peeraddr $x_forwarded_for
-	}
-    }
 
     # Get information about the audit object
     set object_type ""
