@@ -235,8 +235,8 @@ ad_proc -public im_biz_object_add_role {
 	   be able to get to their subproject.
 } {
     if {$debug_p} { ns_log Notice "im_biz_object_add_role: percentage=$percentage, propagate=$propagate_superproject_p, user_id=$user_id, object_id=$object_id, role_id=$role_id" }
-    if {"" == $user_id || 0 == $user_id || ![string is integer $user_id]} { 
-	ns_log Error "im_biz_object_add_role: user_id=$user_id, object_id=$object_id, role_id=$role_id: Invalid user_id, skipping"
+    if {"" eq $user_id || "" eq $object_id || 0 eq $user_id || 0 eq $object_id || ![string is integer $user_id] || ![string is integer $object_id]} {
+	ns_log Error "im_biz_object_add_role: user_id=$user_id, object_id=$object_id, role_id=$role_id: invalid user_id or object_id, skipping"
 	ns_log Notice "im_biz_object_add_role: Stack trace:\n[ad_print_stack_trace]"
 	return "" 
     }
