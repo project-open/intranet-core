@@ -1,4 +1,4 @@
- # /packages/intranet-core/www/admin/menus/index.tcl
+# /packages/intranet-core/www/admin/menus/index.tcl
 #
 # Copyright (C) 2004 ]project-open[
 # The code is based on ArsDigita ACS 3.4
@@ -207,9 +207,11 @@ db_foreach menus $main_sql {
   # To improve - using like with bind var syntax in sql failed 
   if { $show_line_p } {
 
-    if {"t" == $enabled_p} {
+    if {"t" eq $enabled_p} { 
+	set enabled_html "<b><font>$enabled_p</font></b>"
         set toggle_link [export_vars -base "toggle" {menu_id {return_url [ad_return_url]} {action "disable"}}]
     } else {
+	set enabled_html "<b><font color=red>$enabled_p</font></b>"
         set toggle_link [export_vars -base "toggle" {menu_id {return_url [ad_return_url]} {action "enable"}}]
     }
 
@@ -225,7 +227,7 @@ db_foreach menus $main_sql {
 	    <a href='/intranet/admin/menus/index?label_str=$label&return_url=$return_url'><img style='vertical-align:middle;' src='/intranet/images/navbar_default/magnifier_zoom_in.png' alt='' /></a>$label<br>
 	    <tt>$visible_tcl</tt>
 	  </td>
-	  <td><a href='$toggle_link'>$enabled_p</a></td>
+	  <td><a href='$toggle_link'>$enabled_html</a></td>
 	  <td>$sort_order</td>
 	  <td>$package_name</td>
     "
