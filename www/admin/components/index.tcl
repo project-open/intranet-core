@@ -265,5 +265,4 @@ set left_navbar_html "
                 </div>
                 $left_navbar_html
         </div>
-      <hr/>
 "
