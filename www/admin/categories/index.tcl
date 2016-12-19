@@ -154,12 +154,16 @@ if {$show_add_new_category_p} {
 	    continue
 	}
 
-	if {"t" == $enabled_p } { set enabled_p "<strong>T</strong>" }
-	
+	if {"t" eq $enabled_p} { 
+	    set enabled_html "<b><font>t</font></b>"
+	} else {
+	    set enabled_html "<b><font color=red>f</font></b>"
+	}
+
 	append category_list_html "
 	<tr $bgcolor([expr {$ctr % 2}])>
 	  <td>$category_id</td>
-	  <td><a href='$toggle_url'>$enabled_p</a></td>
+	  <td><a href='$toggle_url'>$enabled_html</a></td>
 	  <td><a href=\"one.[export_vars -base tcl {category_id}]\">$category</A></td>
 	  <td>$sort_order</td>
 	  <td><A href=\"/intranet/admin/categories/one?category_id=$parent_id\">$parent</A></td>
