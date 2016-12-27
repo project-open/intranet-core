@@ -115,6 +115,7 @@
 -- 17000-17999  Intranet Timesheet2 Workflow (1000)
 -- 18000-18999  Intranet Absences Workflow (1000)
 -- 19000-19999  Intranet Expenses Workflow  (1000)
+
 -- 20000-20999  Intranet Change Management (1000)
 -- 21000-21999  Intranet Translation Language (1000)
 -- 22000-22999  Intranet User Type (1000)
@@ -125,13 +126,21 @@
 -- 27000-27999  Intranet Release Management (1000)
 -- 28000-28999  Customer A reserved (1000)
 -- 29000-29999  Customer B reserved (1000)
+
 -- 30000-39999  Intranet Helpdesk (10000)
+
 -- 40000-40999  Intranet Skin (1000)
 -- 41000-41099  Intranet Salutation (100)
 -- 41100-41999  Intranet GTD Dashboard  
 -- 42000-42999  Intranet VAT Type (1000)
 -- 43000-43999  Intranet REST (1000)
--- 44000-49999  reserved (1000)
+-- 44000-44999  reserved (1000)
+-- 45000-45999  reserved (1000)
+-- 46000-46999  reserved (1000)
+-- 47000-47999  reserved (1000)
+-- 48000-48999  reserved (1000)
+-- 49000-49999  reserved (1000)
+
 -- 50000-59999  Navision Integration (10000)
 -- 50000-50099	Navision free
 -- 50100-50199	Navision Reuse Band
@@ -142,8 +151,10 @@
 -- 50800-50899  Navision Vendor Posting Group
 -- 50900-50999  Navision Payment Method Code
 -- 51000-59999  Navision reserved
+
 -- 60000-60999  Intranet Translation Task Type CSV Importer (1000)
 -- 60000-69999  Customer DHL Malaysia reserved
+
 -- 70000-70999  Intranet Project Priority (1000)
 -- 71000-71999  Intranet Baseline (1000)
 -- 72000-72999  Intranet SLA Management (1000)
@@ -154,6 +165,7 @@
 -- 77000-77999  Intranet Cost Calculation Account Type (1000)
 -- 78000-78999  Intranet Cost Calculation Transaction Type (1000)
 -- 79000-79999  Intranet <to be defined> (1000)
+
 -- 80000-80099  Customer SOR (100)
 -- 80100-80599  Intranet CRM (500)
 -- 80600-80699  Invoice Cycle (Intranet Service Contracts & Intranet Invoices)
@@ -162,6 +174,10 @@
 -- 80800-80899  reserved (100)
 -- 80900-80999  reserved (100)
 -- 80100-80599  Intranet Skill [...] 
+-- 80600-80699  reserved (100)
+-- 80700-80799  reserved (100)
+-- 80800-80899  reserved (100)
+-- 80900-80999  reserved (100)
 -- 81000-81999  Customer SL (1000)
 -- 82000-81999  Events (1000)
 -- 83000-83999  Checklists (1000)
@@ -170,8 +186,19 @@
 -- 86000-86999  Sencha Preferences (1000)
 -- 87000-87999  Horizontal Scaling (1000)
 -- 88000-88999  Agile Methodologies (1000)
--- 89000-89999  reserved (1000)
--- 90000-99999  reserved (10000)
+-- 89000-89999  Jira Integration (1000)
+
+-- 90000-90999  Redmine Integration (1000)
+-- 91000-91999  reserved (1000)
+-- 92000-92999  reserved (1000)
+-- 93000-93999  reserved (1000)
+-- 94000-94999  reserved (1000)
+-- 95000-95999  reserved (1000)
+-- 96000-96999  reserved (1000)
+-- 97000-97999  reserved (1000)
+-- 98000-98999  reserved (1000)
+-- 99000-99999  reserved (1000)
+
 --100000-999999 reserved (900000)
 --1000000-9999999 reserved (9000000)
 
