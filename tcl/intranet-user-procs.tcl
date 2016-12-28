@@ -699,6 +699,7 @@ ad_proc im_user_select {
 ad_proc im_employee_select_multiple {
     {-group_id ""}
     {-limit_to_group_id ""}
+    {-limit_to_cc_id ""}
     {-limit_to_direct_reports_of_user_id ""}
     select_name
     { defaults "" }
@@ -710,9 +711,17 @@ ad_proc im_employee_select_multiple {
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
 
     set limit_to_group_sql ""
+    set limit_to_cc_sql ""
     set limit_to_direct_reports_of_user_id_sql ""
 
-    if {"" != $limit_to_group_id && 0 != $limit_to_group_id && [string is integer $limit_to_group_id]} { set limit_to_group_sql "and u.user_id in (select member_id from group_distinct_member_map where group_id = $limit_to_group_id)" }
+    if {"" != $limit_to_group_id && 0 != $limit_to_group_id && [string is integer $limit_to_group_id]} { 
+	set limit_to_group_sql "and u.user_id in (select member_id from group_distinct_member_map where group_id = $limit_to_group_id)" 
+    }
+    if {"" != $limit_to_cc_id && 0 != $limit_to_cc_id && [string is integer $limit_to_cc_id]} { 
+	set cc_ids [im_sub_cost_center_ids $limit_to_cc_id]
+	lappend cc_ids 0
+	set limit_to_cc_sql "and u.user_id in (select employee_id from im_employees where department_id in ([join $cc_ids ","]))" 
+    }
     if {"" != $limit_to_direct_reports_of_user_id && 0 != $limit_to_direct_reports_of_user_id && [string is integer $limit_to_direct_reports_of_user_id] } {
         set limit_to_direct_reports_of_user_id_sql "and u.user_id in (select employee_id from im_employees where supervisor_id = $limit_to_direct_reports_of_user_id)"
     }
@@ -728,6 +737,7 @@ ad_proc im_employee_select_multiple {
                 u.user_id = gm.member_id
                 and gm.group_id = $group_id
                 $limit_to_group_sql
+                $limit_to_cc_sql
                 $limit_to_direct_reports_of_user_id_sql
         order by lower(im_name_from_user_id(u.user_id, $name_order))
     "
