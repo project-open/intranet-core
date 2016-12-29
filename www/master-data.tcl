@@ -123,6 +123,8 @@ set url_hash(user) "/intranet/users/index"
 
 
 set sql "
+
+select * from (
 select	ot.object_type,
 	ot.pretty_name,
 	count(*) as cnt,
@@ -144,7 +146,9 @@ from	acs_objects o,
 	acs_object_types ot
 where	o.object_type = ot.object_type
 group by ot.object_type
-order by section, ot.object_type
+) t
+where t.section = '0 - Master-data'
+order by section, object_type
 "
 set last_section ""
 db_multirow -extend {url} otypes otypes_query_query $sql {
