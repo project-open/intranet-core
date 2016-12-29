@@ -19,10 +19,11 @@
   </tr>
   <multiple name=otypes>
 
+<!--
           <if @last_section@ ne @otypes.section@>
 	    <tr class="list-narrow"><td colspan=99 align=center><h2>@otypes.section@</h2></td></tr>
 	  </if>
-
+-->
           <if @otypes.rownum@ odd>
             <tr class="list-odd">
           </if> <else>
