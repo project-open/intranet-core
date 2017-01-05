@@ -21,7 +21,7 @@ function extendContract(){
 	    isExtended = 1;
 
 	    // move main part
-	    jQuery(".fullwidth-list").animate({marginLeft: sidebarMarginLeftExtended}, slideDuration );
+	    $(".fullwidth-list").animate({marginLeft: sidebarMarginLeftExtended}, slideDuration );
 
 	    // make expand tab arrow image face left (inwards)
 	    $('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/(\.[^.]+)$/, '-active$1');
@@ -44,7 +44,7 @@ function extendContract(){
 	    sideBarSlide(height, 135, width, 0);
 	    sideBarOpacity(1,0);
 	    isExtended = 0;
-	    jQuery(".fullwidth-list").animate({marginLeft: sidebarMarginLeft}, slideDuration );
+	    $(".fullwidth-list").animate({marginLeft: sidebarMarginLeft}, slideDuration );
 	    // make expand tab arrow image face right (outwards)
 	    $('#sideBarTab').children().get(0).src = $('#sideBarTab').children().get(0).src.replace(/-active(\.[^.]+)$/, '$1');
 	    document.getElementById('slave_content').style.visibility='hidden';
@@ -79,12 +79,12 @@ jQuery().ready(function(){
 	    });
     });
 	
-    jQuery("#header_skin_select > form > select").change(function() {
-	jQuery("#header_skin_select > form").submit();
+    $("#header_skin_select > form > select").change(function() {
+	$("#header_skin_select > form").submit();
     });
     
-    jQuery(".component-parking div").click(function() {	
-	jQuery(".component-parking ul").slideToggle();
+    $(".component-parking div").click(function() {	
+	$(".component-parking ul").slideToggle();
     });
     
     /* In order to make this skin work we need to re-order DIVs */
@@ -127,22 +127,20 @@ jQuery().ready(function(){
 	document.getElementById('fullwidth-list').style.width='100%';
     };
     
-    // jQuery(".component_icons").css("opacity","1.1");
+    // $(".component_icons").css("opacity","1.1");
 
-                    $(".description").css('visibility', 'hidden');
-                    $(".description").css('visibility', 'hidden');
-    jQuery(".icon_seperator").css('visibility', 'hidden');
-    jQuery(".icon_left").css('visibility', 'hidden');
-    jQuery(".icon_up").css('visibility', 'hidden');
-    jQuery(".icon_down").css('visibility', 'hidden');
-    jQuery(".icon_right").css('visibility', 'hidden');
-    jQuery(".icon_close").css('visibility', 'hidden');
-    jQuery(".icon_help").css('visibility', 'hidden');
-    jQuery(".icon_wrench").css('visibility', 'hidden');
-    jQuery(".icon_minimize").css('visibility', 'hidden');
-    jQuery(".icon_maximize").css('visibility', 'hidden');
+    $(".icon_seperator").css('visibility', 'hidden');
+    $(".icon_left").css('visibility', 'hidden');
+    $(".icon_up").css('visibility', 'hidden');
+    $(".icon_down").css('visibility', 'hidden');
+    $(".icon_right").css('visibility', 'hidden');
+    $(".icon_close").css('visibility', 'hidden');
+    $(".icon_help").css('visibility', 'hidden');
+    $(".icon_wrench").css('visibility', 'hidden');
+    $(".icon_minimize").css('visibility', 'hidden');
+    $(".icon_maximize").css('visibility', 'hidden');
 
-    jQuery(".component_header",this).hover(function() {
+    $(".component_header",this).hover(function() {
 	if ($(this).width() < 400) {
 	    $(this).children().first().css('visibility', 'hidden');
 	};
@@ -158,11 +156,11 @@ jQuery().ready(function(){
 	$(this).children().find(".icon_minimize").css('visibility', 'visible');
 	$(this).children().find(".icon_maximize").css('visibility', 'visible');
 	$(this).children().find('.icon_help').css('visibility', 'visible');
-	$(this).children().find('.icon_config').css('visibility', 'hidden');
-        // jQuery(".component_icons",this).stop().fadeTo("fast",1);
+	// $(this).children().find('.icon_config').css('visibility', 'hidden');
+        // $(".component_icons",this).stop().fadeTo("fast",1);
 
     },function(){
-       // jQuery(".component_icons",this).stop().fadeTo("normal",0.1);
+       // $(".component_icons",this).stop().fadeTo("normal",0.1);
         $(this).children().first().css('visibility', 'visible');
         $(this).children().find(".icon_seperator").css('visibility', 'hidden');
         $(this).children().find(".icon_left").css('visibility', 'hidden');
@@ -176,11 +174,11 @@ jQuery().ready(function(){
         $(this).children().find(".icon_minimize").css('visibility', 'hidden');
         $(this).children().find(".icon_maximize").css('visibility', 'hidden');
         $(this).children().find('.icon_help').css('visibility', 'hidden');
-        $(this).children().find('.icon_config').css('visibility', 'visible');
+        // $(this).children().find('.icon_config').css('visibility', 'visible');
     });
 
-    jQuery(".component-parking div").click(function(){
-       jQuery(".component-parking ul").slideToggle();
+    $(".component-parking div").click(function(){
+       $(".component-parking ul").slideToggle();
     });
 
     isExtendedCookie = poGetCookie('isExtendedCookie');
@@ -204,7 +202,7 @@ jQuery().ready(function(){
     var input_list = document.getElementsByTagName("input");
     for (var i = 0; i < input_list.length; i++) {
         if (input_list[i].getAttribute('type') == 'submit') {
-	    jQuery(input_list[i]).addClass('form-button40');
+	    $(input_list[i]).addClass('form-button40');
  	};
     };
     
