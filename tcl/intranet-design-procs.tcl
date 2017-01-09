@@ -879,8 +879,9 @@ ad_proc -public im_navbar {
 } {
     set user_id [ad_conn user_id]
     set locale [lang::user::locale -user_id $user_id]
+    set page_url [im_component_page_url]
     if {$loginpage ne 0} { set loginpage_p $loginpage }
-    set navbar [util_memoize [list im_navbar_helper -user_id $user_id -locale $locale -loginpage_p $loginpage_p -show_context_help_p $show_context_help_p $main_navbar_label]]
+    set navbar [util_memoize [list im_navbar_helper -user_id $user_id -locale $locale -loginpage_p $loginpage_p -show_context_help_p $show_context_help_p -page_url $page_url $main_navbar_label]]
     return $navbar
 }
 
@@ -888,6 +889,7 @@ ad_proc -public im_navbar {
 ad_proc -public im_navbar_helper {
     { -user_id "" } 
     { -locale "" }
+    { -page_url "" }
     { -loginpage_p 0 }
     { -show_context_help_p 0 }
     { main_navbar_label "" }
@@ -896,6 +898,7 @@ ad_proc -public im_navbar_helper {
 } {
     if {"" eq $user_id} { set user_id [ad_conn user_id] }
     if {"" eq $locale} { set locale [lang::user::locale -user_id $user_id] }
+    if {"" eq $page_url} { set page_url [im_component_page_url] }
     set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     if {![info exists loginpage_p]} { set loginpage_p 0 }
     if {1 ne $loginpage_p} { set loginpage_p 0 }
@@ -906,7 +909,6 @@ ad_proc -public im_navbar_helper {
     set return_url [im_url_with_query]
     set main_menu_id [db_string main_menu "select menu_id from im_menus where label='main'" -default 0]
     set main_menu_enabled_p [db_string main_menu_enabled "select count(*) from im_menus where menu_id = :main_menu_id and enabled_p = 't'"]
-    set page_url [im_component_page_url]
     set maintenance_message [string trim [im_parameter -package_id [im_package_core_id] MaintenanceMessage "" ""]]
 
     # Don't show menus with the following labels:
