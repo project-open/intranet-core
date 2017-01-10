@@ -2024,6 +2024,10 @@ th.list-narrow {
     height: auto;
 }
 
+.x-grid-row-selected .x-grid-td {
+    background-color: #fbf9f9;
+}
+
 
 /* notification bar */ 
 
@@ -2123,7 +2127,6 @@ tr.last td {
 	padding-right: 5px;	
 }
 
-
 /* Compatibility with ExtJS */ 
 
 .x-body {
@@ -2140,6 +2143,10 @@ tr.last td {
     margin-top: 4px; 
     margin-bottom: 2px;
 }
+
+
+
+
 
 /* SMART MENU DIVIDER & Wrenches*/ 
 
@@ -2210,7 +2217,8 @@ ul.sm li.divider hr {
   text-decoration: none;
 }
 
-.gantt-bar-panel {
-    background-color: #fff; 
-}
+/* ExtJS */
 
+.extjs-panel {
+    background-color: #fbf9f9 !important; 
+}
