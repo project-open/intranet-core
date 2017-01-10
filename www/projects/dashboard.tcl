@@ -14,8 +14,7 @@
 # See the GNU General Public License for more details.
 
 ad_page_contract {
-    Ticket Dashboard
-
+    Project Dashboard
     @author frank.bergmann@project-open.com
 } {
     { plugin_id:integer 0 }
@@ -32,16 +31,24 @@ set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
+set read_p [db_string report_perms "
+        select  im_object_permission_p(m.menu_id, :current_user_id, 'read')
+        from    im_menus m
+        where   m.label = 'projects_dashboard'
+" -default 'f']
+
+if {"t" ne $read_p } {
+    ad_return_complaint 1 "[lang::message::lookup "" intranet-reporting.You_dont_have_permissions "You don't have the necessary permissions to view this page"]"
+    return
+}
 
 # ---------------------------------------------------------------
 # Sub-Navbar
 # ---------------------------------------------------------------
 
-set letter ""
 set menu_select_label "projects_dashboard"
 set next_page_url ""
 set previous_page_url ""
-set ticket_navbar_html [im_project_navbar -navbar_menu_label "projects" $letter "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many letter ticket_status_id] $menu_select_label]
-
+set dashboard_navbar_html [im_project_navbar -navbar_menu_label "projects" none "/intranet/projects/index" $next_page_url $previous_page_url [list start_idx order_by how_many letter ticket_status_id] $menu_select_label]
 set left_navbar_html ""
 

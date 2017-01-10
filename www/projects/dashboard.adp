@@ -2,7 +2,7 @@
 <property name="doc(title)">@page_title@</property>
 <property name="main_navbar_label">projects</property>
 <property name="left_navbar">@left_navbar_html;literal@</property>
-<property name="sub_navbar">@ticket_navbar_html;literal@</property>
+<property name="sub_navbar">@dashboard_navbar_html;literal@</property>
 
 <if 0 eq @plugin_id@>
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
