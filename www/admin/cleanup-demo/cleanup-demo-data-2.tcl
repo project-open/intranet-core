@@ -807,7 +807,7 @@ db_dml project_context_null "
 "
 ns_write "<li>Cleanup acs_objects\n"
 
-# !!!Make sure no survsimp_responses ...
+# Make sure no survsimp_responses ...
 
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
@@ -921,6 +921,11 @@ foreach object_info $object_infos {
 # Cleanup Demo Users except for SysAdmin & Current User
 # ------------------------------------------------------------
 
+set demo_password_exists_p [im_column_exists persons demo_password]
+if {$demo_password_exists_p} {
+    db_dml demo_passwords "update persons set demo_password = null"
+}
+
 ns_write "<li>Cleanup demo users<br>\n"
 ns_write "<ul>\n"
 ns_write "<li><font color=red>Please note that we can't delete the current user and neither the user 'System Administrator'</font>\n"
@@ -937,15 +942,13 @@ set user_ids [db_list users "
 
 
 foreach id $user_ids {
-
-  ns_write "<li>Nuking user \#$id ...\n"
-  set error [im_user_nuke $id]
-  if {"" == $error} {
-      ns_write " successful\n"
-  } else {
-      ns_write "<br><font color=red>$error</font>\n"
-  }
-
+    ns_write "<li>Nuking user \#$id ...\n"
+    set error [im_user_nuke $id]
+    if {"" == $error} {
+	ns_write " successful\n"
+    } else {
+	ns_write "<br><font color=red>$error</font>\n"
+    }
 }
 
 ns_write "</ul>\n"
