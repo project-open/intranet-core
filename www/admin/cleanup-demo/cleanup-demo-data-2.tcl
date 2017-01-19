@@ -605,12 +605,9 @@ if {[im_table_exists im_timesheet_conf_objects]} {
 }
 
 ns_write "<li>Cleanup Freelance RFQs\n"
-if {[im_table_exists im_freelance_rfqs]} {
-    db_dml expense_invoices "delete from im_object_freelance_skill_map"
-    db_dml expense_invoices "delete from im_freelance_rfq_answers"
-    db_dml expense_invoices "delete from im_freelance_rfqs"
-}
-
+if {[im_table_exists im_object_freelance_skill_map]} { db_dml expense_invoices "delete from im_object_freelance_skill_map" }
+if {[im_table_exists im_freelance_rfqs]} { db_dml expense_invoices "delete from im_freelance_rfqs" }
+if {[im_table_exists im_freelance_rfq_answers]} { db_dml expense_invoices "delete from im_freelance_rfq_answers" }
 
 ns_write "<li>Cleanup Simple Surveys\n"
 
@@ -810,7 +807,7 @@ db_dml project_context_null "
 "
 ns_write "<li>Cleanup acs_objects\n"
 
-# Make sure no survsimp_responses ...
+# !!!Make sure no survsimp_responses ...
 
 db_dml project_objects "delete from acs_objects where object_type = 'im_project'"
 db_list ts_objects "select acs_object__delete(object_id) from acs_objects where object_type = 'im_timesheet_task'"
