@@ -96,11 +96,6 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
     Example: A "Trans + Edit + Proof" project is a "Translation Project".
 } {
     if {![string is integer $project_type]} {
-
-	# Compatibility after changing "Consulting Project" into "Gantt Project"...
-	if {"Consulting Project" == $project_type} { set project_type "Gantt Project" }
-	if {"Service Level Agreement" == $project_type} { set project_type "Ticket Container" }
-
 	set project_type [db_string ptype "
 		select	category_id
 		from	im_categories
@@ -1313,7 +1308,6 @@ ad_proc im_project_clone {
     {-clone_timesheet_tasks_p "" }
     {-clone_timesheet_task_dependencies_p "" }
     {-clone_target_languages_p "" }
-    {-clone_trans_tasks_p "" }
     {-clone_level 0 }
     {-company_id 0}
     {-new_parent_project_id 0}
@@ -1333,11 +1327,10 @@ ad_proc im_project_clone {
     ToDo: Start working with Service Contracts to allow other modules
     to include their clone routines.
 } {
-    ns_log Notice "im_project_clone: parent_project_id=$parent_project_id, project_name=$project_name, project_nr=$project_nr, clone_postfix=$clone_postfix, clone_costs_p=$clone_costs_p, clone_files_p=$clone_files_p, clone_folders_p=$clone_folders_p, clone_subprojects_p=$clone_subprojects_p, clone_forum_topics_p=$clone_forum_topics_p, clone_members_p=$clone_members_p, clone_timesheet_tasks_p=$clone_timesheet_tasks_p, clone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p, clone_target_languages_p=$clone_target_languages_p, clone_trans_tasks_p=$clone_trans_tasks_p, clone_level=$clone_level, company_id=$company_id, new_parent_project_id=$new_parent_project_id"
+    ns_log Notice "im_project_clone: parent_project_id=$parent_project_id, project_name=$project_name, project_nr=$project_nr, clone_postfix=$clone_postfix, clone_costs_p=$clone_costs_p, clone_files_p=$clone_files_p, clone_folders_p=$clone_folders_p, clone_subprojects_p=$clone_subprojects_p, clone_forum_topics_p=$clone_forum_topics_p, clone_members_p=$clone_members_p, clone_timesheet_tasks_p=$clone_timesheet_tasks_p, clone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p, clone_target_languages_p=$clone_target_languages_p, clone_level=$clone_level, company_id=$company_id, new_parent_project_id=$new_parent_project_id"
 
     if {"" == $clone_members_p} { set clone_members_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectMembersP" -default 1] }
     if {"" == $clone_costs_p} { set clone_costs_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectCostsP" -default 0] }
-    if {"" == $clone_trans_tasks_p} { set clone_trans_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTransTasksP" -default 0] }
     if {"" == $clone_timesheet_tasks_p} { set clone_timesheet_tasks_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTimesheetTasksP" -default 1] }
     if {"" == $clone_timesheet_task_dependencies_p} { set clone_timesheet_task_dependencies_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTaskDependenciesP" -default 1] }
     if {"" == $clone_target_languages_p} { set clone_target_languages_p [parameter::get -package_id [im_package_core_id] -parameter "CloneProjectTargetLanguagesP" -default 1] }
@@ -1351,7 +1344,7 @@ ad_proc im_project_clone {
 
     set errors "<p>&nbsp;<li><b>Starting to clone project \#$parent_project_id => $project_nr / $project_name</b><p>\n"
 
-    # ad_return_complaint 1 "<pre>\nim_project_clone: parent_project_id=$parent_project_id,\nproject_name=$project_name,\nproject_nr=$project_nr,\ncompany_id=$company_id,\nnew_parent_project_id=$new_parent_project_id\nclone_postfix=$clone_postfix,\nclone_costs_p=$clone_costs_p,\nclone_files_p=$clone_files_p,\nclone_folders_p=$clone_folders_p,\nclone_subprojects_p=$clone_subprojects_p,\nclone_forum_topics_p=$clone_forum_topics_p,\nclone_members_p=$clone_members_p,\nclone_timesheet_tasks_p=$clone_timesheet_tasks_p,\nclone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p,\nclone_target_languages_p=$clone_target_languages_p,\nclone_trans_tasks_p=$clone_trans_tasks_p,\nclone_level=$clone_level,\n</pre>"
+    # ad_return_complaint 1 "<pre>\nim_project_clone: parent_project_id=$parent_project_id,\nproject_name=$project_name,\nproject_nr=$project_nr,\ncompany_id=$company_id,\nnew_parent_project_id=$new_parent_project_id\nclone_postfix=$clone_postfix,\nclone_costs_p=$clone_costs_p,\nclone_files_p=$clone_files_p,\nclone_folders_p=$clone_folders_p,\nclone_subprojects_p=$clone_subprojects_p,\nclone_forum_topics_p=$clone_forum_topics_p,\nclone_members_p=$clone_members_p,\nclone_timesheet_tasks_p=$clone_timesheet_tasks_p,\nclone_timesheet_task_dependencies_p=$clone_timesheet_task_dependencies_p,\nclone_target_languages_p=$clone_target_languages_p,\nclone_level=$clone_level,\n</pre>"
 
     # --------------------------------------------
     # Clone the project & dynfields
@@ -1381,9 +1374,6 @@ ad_proc im_project_clone {
     }
     if {$clone_files_p} {
 	append errors [im_project_clone_folders -debug_p $debug_p $parent_project_id $cloned_project_id]
-    }
-    if {$clone_trans_tasks_p && [im_table_exists "im_trans_tasks"]} {
-	append errors [im_project_clone_trans_tasks -debug_p $debug_p $parent_project_id $cloned_project_id]
     }
     if {$clone_target_languages_p && [im_table_exists "im_target_languages"]} {
 	append errors [im_project_clone_target_languages -debug_p $debug_p $parent_project_id $cloned_project_id]
@@ -1434,7 +1424,6 @@ ad_proc im_project_clone {
 					  -clone_members_p $clone_members_p \
 					  -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
 					  -clone_timesheet_task_dependencies_p $clone_timesheet_task_dependencies_p \
-					  -clone_trans_tasks_p $clone_trans_tasks_p \
 					  -clone_target_languages_p $clone_target_languages_p \
 					  -clone_level [expr {$clone_level + 1}] \
 					  -company_id $company_id \
@@ -1513,7 +1502,6 @@ ad_proc im_project_clone {
 			   -clone_forum_topics_p $clone_forum_topics_p \
 			   -clone_members_p $clone_members_p \
 			   -clone_timesheet_tasks_p $clone_timesheet_tasks_p \
-			   -clone_trans_tasks_p $clone_trans_tasks_p \
 			   -clone_target_languages_p $clone_target_languages_p \
 			   -clone_level [expr {$clone_level +1}] \
 			   -company_id $company_id \
@@ -1790,49 +1778,6 @@ ad_proc im_project_clone_base2 {
 	append errors "<li>[_ intranet-core.lt_Cant_find_the_project]"
 	return $errors
     }
-
-
-    # -----------------------------------------
-    # Update project fields
-    # Cover all fields that are not been used in project generation
-
-    # Translation Only
-    if {[im_table_exists im_trans_tasks]} {
-	set project_update_sql "
-	update im_projects set
-		company_project_nr =	:company_project_nr,
-		company_contact_id =	:company_contact_id,
-		source_language_id =	:source_language_id,
-		subject_area_id =	:subject_area_id,
-		expected_quality_id =	:expected_quality_id,
-		trans_project_words =	:trans_project_words,
-		trans_project_hours =	:trans_project_hours
-	where
-		project_id = :new_project_id
-	"
-	db_dml project_update $project_update_sql
-    }
-
-    # ToDo: Add stuff for gantt projects
-
-    # DON't clone caches. It's better to leave them emtpy.
-    # They're inconsisten anyway, because we may or may have
-    # not cloned subprojects and their cost elements
-#    if {[im_table_exists im_costs]} {
-#	set project_update_sql "
-#	update im_projects set
-#		cost_quotes_cache =		:cost_quotes_cache,
-#		cost_invoices_cache =		:cost_invoices_cache,
-#		cost_timesheet_planned_cache =	:cost_timesheet_planned_cache,
-#		cost_purchase_orders_cache =	:cost_purchase_orders_cache,
-#		cost_bills_cache =		:cost_bills_cache,
-#		cost_timesheet_logged_cache =	:cost_timesheet_logged_cache
-#	where
-#		project_id = :new_project_id
-#	"
-#	db_dml project_update $project_update_sql
-#
-#    }
 
     append errors "<li>Finished to clone base2 data"
     return $errors
@@ -2143,22 +2088,6 @@ ad_proc im_project_clone_costs {
 
 	
     }
-}
-
-ad_proc im_project_clone_trans_tasks {
-    {-debug_p 1}
-    parent_project_id 
-    new_project_id
-} {
-    Copy translation tasks and assignments
-} {
-    ns_log Notice "im_project_clone_trans_tasks parent_project_id=$parent_project_id new_project_id=$new_project_id"
-    set errors "<li>Starting to clone translation tasks"
-
-    im_exec_dml clone_project_tasks "im_trans_task__project_clone (:parent_project_id, :new_project_id)"
-
-    append errors "<li>Finished to clone translation tasks"
-    return $errors
 }
 
 ad_proc im_project_clone_target_languages {

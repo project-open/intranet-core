@@ -118,7 +118,6 @@ foreach csv_line_fields $values_list_of_lists {
     set cost_timesheet_planned_cache ""
     set description ""
     set end_date ""
-    set expected_quality_id ""
     set gantt_project_id ""
     set invoice_id ""
     set material_id ""
@@ -151,9 +150,7 @@ foreach csv_line_fields $values_list_of_lists {
     set sla_ticket_priority_map ""
     set sort_order ""
     set sort_order ""
-    set source_language_id ""
     set start_date ""
-    set subject_area_id ""
     set supervisor_id ""
     set task_id ""
     set team_size ""
@@ -177,9 +174,6 @@ foreach csv_line_fields $values_list_of_lists {
     set uom ""
     set cost_center_code ""
     set timesheet_task_priority ""
-    set source_language ""
-    set subject_area ""
-    set expected_quality ""
     set customer_project_nr ""
 
     # -------------------------------------------------------
@@ -227,9 +221,6 @@ foreach csv_line_fields $values_list_of_lists {
 # uom
 # cost_center_code
 # timesheet_task_priority
-# source_language
-# subject_area
-# expected_quality
 # customer_project_nr
 
     set company_id [db_string customer "select customer_id from im_companies where lower(company_name) = lower(:customer_name)" -default ""]
