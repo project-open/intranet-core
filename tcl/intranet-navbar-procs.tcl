@@ -84,7 +84,7 @@ ad_proc -public im_navbar_tree_helper {
 	<ul class=mktree>
 	<li><a href=\"/intranet/index\">[lang::message::lookup "" intranet-core.Home Home]</a>
 	<ul>
-		<li><a href=\"$wiki/list_modules\">$general_help_l10n</a>
+		<li><a href=\"$wiki/list-modules\">$general_help_l10n</a>
 		[im_menu_li dashboard]
 		[im_menu_li indicators]
     "
@@ -161,7 +161,7 @@ ad_proc -public im_navbar_tree_project_management {
     set html "
 	<li><a href=\"/intranet/projects/\">[lang::message::lookup "" intranet-core.Project_Management "Project Management"]</a>
 	<ul>
-	<li><a href=\"$wiki/module_project_management\">[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
+	<li><a href=\"$wiki/module-project-management\">[lang::message::lookup "" intranet-core.PM_Help "PM Help"]</a>
     "
     if {[im_permission $user_id add_projects]} {
 	append html "
@@ -264,7 +264,7 @@ ad_proc -public im_navbar_tree_sales_marketing {
     set html "
 	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.CRM_Sales "CRM"]</a>
 	<ul>
-	<li><a href=\"$wiki/module_crm\">[lang::message::lookup "" intranet-core.CRM_Help "CRM Help"]</a>
+	<li><a href=\"$wiki/module-crm\">[lang::message::lookup "" intranet-core.CRM_Help "CRM Help"]</a>
     "
 
     # Add sub-menu with project status
@@ -372,7 +372,7 @@ ad_proc -public im_navbar_tree_human_resources {
     set html "
 	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Human_Resources "Human Resources"]</a>
 	<ul>
-	<li><a href=\"$wiki/module_human_resources\">[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
+	<li><a href=\"$wiki/module-human-resources\">[lang::message::lookup "" intranet-core.HR_Help "HR Help"]</a>
     "
     if {[im_permission $user_id add_users]} {
 	append html "
@@ -498,7 +498,7 @@ ad_proc -public im_navbar_tree_provider_management {
     set html "
 	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Provider_Management "Provider Management"]</a>
 	<ul>
-	<li><a href=\"$wiki/module_provider_management\">[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
+	<li><a href=\"$wiki/module-provider-management\">[lang::message::lookup "" intranet-core.Provider_Help "Provider Help"]</a>
     "
     if {[im_is_user_site_wide_or_intranet_admin $user_id]} {
 	append html "
@@ -559,7 +559,7 @@ ad_proc -public im_navbar_tree_collaboration {
     set html "
 	<li><a href=\"/intranet/\">[lang::message::lookup "" intranet-core.Collaboration "Collaboration &amp; KM"]</a>
 	<ul>
-	<li><a href=\"$wiki/module_collaboration_knowledge\">[lang::message::lookup "" intranet-core.CollabKM_Help "C&amp;KM Help"]</a></li>
+	<li><a href=\"$wiki/module-collaboration-knowledge\">[lang::message::lookup "" intranet-core.CollabKM_Help "C&amp;KM Help"]</a></li>
 		<li><a href=\"/intranet-search/search?type=all&q=search\">[lang::message::lookup "" intranet-search-pg.Search_Engine "Search Engine"]</a></li>
 		<li><a href=\"/calendar/\">[lang::message::lookup "" intranet-calendar.Calendar "Calendar"]</a></li>
 		[im_menu_li -pretty_name [lang::message::lookup "" intranet-core.Bug_Tracker "Bug Tracker"] bug_tracker]
