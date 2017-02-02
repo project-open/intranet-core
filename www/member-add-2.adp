@@ -7,24 +7,21 @@
 #intranet-core.lt_first_names_from_sear#
 </p>
 
-<table>
 <form method="post" action="member-notify">
 @export_vars;noquote@
-
+<table>
 <tr>
   <td>
-<textarea name=subject rows=1 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
-#intranet-core.lt_role_name_of_object_n#
-</textarea>
+	<textarea name=subject rows=1 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
+	#intranet-core.lt_role_name_of_object_n#
+	</textarea>
   </td>
 </tr>
-
 <tr>
   <td>
 	<textarea name=message rows=15 cols=90 wrap="<%=[im_html_textarea_wrap]%>">#intranet-core.lt_Dear_first_names_from#</textarea>
   </td>
 </tr>
-
 <tr>
   <td>
   	<center>
@@ -43,10 +40,6 @@
 	</center>
   </td>
 </tr>
-</form>
 </table>
-
+</form>
 </p>
-
-
-
