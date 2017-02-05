@@ -66,7 +66,7 @@
   <if @view_budget_p@ and @project_budget@ not nil>
     <tr>
       <td>#intranet-core.Project_Budget#</td>
-      <td>@project_budget;noquote@ @project_budget_currency;noquote@</td>
+      <td>@project_budget;noquote@</td>
     </tr>
   </if>
   <if @company_project_nr@ not nil>
