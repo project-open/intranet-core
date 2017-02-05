@@ -133,7 +133,6 @@ foreach csv_line_fields $values_list_of_lists {
     set priority ""
     set program_id ""
     set project_budget ""
-    set project_budget_currency ""
     set project_budget_hours ""
     set project_id ""
     set project_lead_id ""

@@ -106,7 +106,6 @@ my $company_contact_id           = $row->{company_contact_id};
 my $corporate_sponsor            = $row->{corporate_sponsor};
 my $percent_completed            = $row->{percent_completed};
 my $on_track_status_id           = $row->{on_track_status_id};
-my $project_budget_currency      = $row->{project_budget_currency};
 my $project_budget_hours         = $row->{project_budget_hours};
 my $cost_quotes_cache            = $row->{cost_quotes_cache};
 my $cost_invoices_cache          = $row->{cost_invoices_cache};

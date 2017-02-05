@@ -1721,7 +1721,6 @@ ad_proc im_project_clone_base {
 		corporate_sponsor = :corporate_sponsor,
 		requires_report_p = :requires_report_p,
 		project_budget = :project_budget,
-		project_budget_currency = :project_budget_currency,
 		project_budget_hours = :project_budget_hours,
 		percent_completed = :percent_completed,
 		sort_order = :sort_order,

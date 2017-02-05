@@ -380,11 +380,8 @@ if {$add_budget_p} {
 	-label [_ intranet-core.Project_Budget] \
 	-html {size 20} \
 	-after_html [im_gif -translate_p 1 help "Limit for the total cost of the project (both internal and external resource)?"]
-
-    template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
 } else {
     template::element::create $form_id project_budget -optional -widget hidden
-    template::element::create $form_id project_budget_currency -optional -widget hidden -datatype "text"
 }
 
 
@@ -440,7 +437,6 @@ if {[form is_request $form_id]} {
 		p.project_nr,
 	        p.project_path,
 		p.project_budget, 
-		p.project_budget_currency, 
 		p.project_budget_hours,
 		p.on_track_status_id, 
 		p.percent_completed, 
@@ -483,7 +479,6 @@ if {[form is_request $form_id]} {
 	set project_lead_id $user_id
 	set description ""
 	set project_budget ""
-	set project_budget_currency ""
 	set project_budget_hours ""
 	set on_track_status_id ""
 	set percent_completed "0"
@@ -535,10 +530,6 @@ if {[form is_request $form_id]} {
 	set percent_completed 0
     }
 
-    if {"" == $project_budget_currency} {
-	set project_budget_currency $default_currency
-    }
-
     template::element::set_value $form_id project_id $project_id
     template::element::set_value $form_id requires_report_p $requires_report_p
     template::element::set_value $form_id return_url $return_url
@@ -560,7 +551,6 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id percent_completed $percent_completed
     template::element::set_value $form_id project_budget_hours $project_budget_hours
     template::element::set_value $form_id project_budget $project_budget
-    template::element::set_value $form_id project_budget_currency $project_budget_currency
     template::element::set_value $form_id description $description
 }
 
@@ -855,8 +845,7 @@ if {[form is_valid $form_id]} {
     if {$add_budget_p} {
 	set project_update_sql "
 	    update im_projects set
-		project_budget =:project_budget,
-		project_budget_currency =:project_budget_currency
+		project_budget =:project_budget
 	where
 		project_id = :project_id
         "
