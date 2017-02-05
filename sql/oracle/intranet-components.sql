@@ -208,7 +208,7 @@ begin
     --
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Project Members',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/projects/view',
 	location =>	'right',
 	sort_order =>	20,
@@ -237,7 +237,7 @@ declare
 begin
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Office Members',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/offices/view',
 	location =>	'right',
 	sort_order =>	20,
@@ -268,7 +268,7 @@ begin
     -- Office component for CompanyViewPage
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Company Offices',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/companies/view',
 	location =>	'right',
 	sort_order =>	30,
@@ -292,7 +292,7 @@ begin
     -- Office component for UserViewPage
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'User Offices',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/users/view',
 	location =>	'right',
 	sort_order =>	80,
@@ -313,7 +313,7 @@ declare
 begin
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Recent Registrations',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/admin/index',
 	location =>	'right',
 	sort_order =>	30,
@@ -331,7 +331,7 @@ declare
 begin
     v_plugin := im_component_plugin.new (
 	plugin_name =>	'Home Page Help Blurb',
-	package_name =>	'intranet',
+	package_name =>	'intranet-core',
 	page_url =>	'/intranet/index',
 	location =>	'left',
 	sort_order =>	10,

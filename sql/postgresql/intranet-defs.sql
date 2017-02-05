@@ -162,6 +162,7 @@ end;$body$
 LANGUAGE 'plpgsql';
 
 
+-- Deal with PostgreSQL 8.4 tighter casting rules
 CREATE OR REPLACE FUNCTION last_day(date)
 RETURNS date AS $body$
 DECLARE 
@@ -173,7 +174,6 @@ begin
 	return v_date_out;
 end;$body$ LANGUAGE 'plpgsql';
 
--- select last_day(to_date('2012-01-20', 'yyyy-mm-dd'));
 
 
 

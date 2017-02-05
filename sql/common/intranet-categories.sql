@@ -448,8 +448,8 @@ where category = 'Glossary Compilation' and category_type = 'Intranet Project Ty
 update im_categories set category_description = 'Translation project with a sample dynamic workflow (test/demo)' 
 where category = 'Trans Only (Dynamic WF)' and category_type = 'Intranet Project Type';
 
-update im_categories set category_description = 'Generic consulting project or any other project based on a Gantt schedule and Gantt tasks' 
-where category = 'Consulting Project' and category_type = 'Intranet Project Type';
+update im_categories set category_description = 'Generic project or any other project based on a Gantt schedule and Gantt tasks' 
+where category = 'Gantt Project' and category_type = 'Intranet Project Type';
 update im_categories set category_description = 'Strategic consulting ' 
 where category = 'Strategic Consulting' and category_type = 'Intranet Project Type';
 update im_categories set category_description = 'Ongoing software maintenance' 

@@ -52,7 +52,6 @@ insert into im_biz_object_urls (object_type, url_type, url) values (
 'im_profile','edit','/admin/groups/one?group_id=');
 
 
-
 -------------------------------------------------------------
 -- DB-neutral API for permissions
 --
@@ -328,17 +327,11 @@ DECLARE
 	v_category_id   integer;
 BEGIN
 	-- Check that the group does not exist before
-	select	count(*)
-	into	n_groups
-	from	groups
-	where	group_name = v_pretty_name;
+	select	count(*) into n_groups from groups where group_name = v_pretty_name;
 
 	-- only add the group if it did not exist before...
 	IF n_groups = 0 THEN
-		v_group_id := im_profile__new(
-			v_pretty_name,
-			v_profile_gif
-		);
+		v_group_id := im_profile__new(v_pretty_name, v_profile_gif);
 	
 		v_rel_id := composition_rel__new (
 			null,				-- rel_id
@@ -414,6 +407,7 @@ select im_create_profile ('Sales','sales');
 select im_create_profile ('HR Managers','profile'); 
 select im_create_profile ('Freelance Managers','profile'); 
 select im_create_profile ('Helpdesk','computer_key'); 
+select im_create_profile ('Skill Profile','skill_profile'); 
 
 -- Registered Users have fixed ID -1
 delete from im_profiles where profile_id in (-2);

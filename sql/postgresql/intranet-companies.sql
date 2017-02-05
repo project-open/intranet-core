@@ -323,7 +323,7 @@ create table im_company_employee_rels (
 insert into acs_rel_types (
 	rel_type, object_type_one, role_one,
 	min_n_rels_one, max_n_rels_one,
-	object_type_two, role_two,min_n_rels_two, max_n_rels_two
+	object_type_two, role_two, min_n_rels_two, max_n_rels_two
 ) values (
 	'im_company_employee_rel', 'im_company', 'employer', 
 	'1', NULL,
@@ -419,7 +419,7 @@ create table im_key_account_rels (
 insert into acs_rel_types (
 	rel_type, object_type_one, role_one,
 	min_n_rels_one, max_n_rels_one,
-	object_type_two, role_two,min_n_rels_two, max_n_rels_two
+	object_type_two, role_two, min_n_rels_two, max_n_rels_two
 ) values (
 	'im_key_account_rel', 'im_company', 'company',
 	'1', NULL,

@@ -549,7 +549,6 @@ BEGIN
 		corporate_sponsor	= lookup_user(row.corporate_sponsor, ''import_projects.corporate_sponsor''),
 		on_track_status_id	= import_cat(row.on_track_status, ''Intranet Project On Track Status''),
 		project_budget		= row.project_budget::numeric,
-		project_budget_currency	= row.project_budget_currency,
 		project_budget_hours	= row.project_budget_hours::numeric,
 		start_date		= row.start_date::date,
 		end_date		= row.end_date::date,

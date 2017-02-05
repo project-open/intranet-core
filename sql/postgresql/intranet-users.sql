@@ -76,6 +76,7 @@ insert into acs_object_type_tables (object_type,table_name,id_column)
 values ('user', 'users', 'user_id');
 
 
+
 -- Fix bad entries from OpenACS
 update acs_attributes 
 	set table_name = 'persons' 
@@ -102,43 +103,43 @@ create table users_contact (
 				primary key
 				constraint users_contact_pk_fk
 				references users,
-	home_phone		varchar(100),
+	home_phone		text,
 	priv_home_phone		integer,
-	work_phone		varchar(100),
+	work_phone		text,
 	priv_work_phone 	integer,
-	cell_phone		varchar(100),
+	cell_phone		text,
 	priv_cell_phone 	integer,
-	pager			varchar(100),
+	pager			text,
 	priv_pager		integer,
-	fax			varchar(100),
+	fax			text,
 	priv_fax		integer,
 				-- AOL Instant Messenger
-	aim_screen_name		varchar(50),
+	aim_screen_name		text,
 	priv_aim_screen_name	integer,
 				-- MSN Instanet Messenger
-	msn_screen_name		varchar(50),
+	msn_screen_name		text,
 	priv_msn_screen_name	integer,
 				-- also ICQ
-	icq_number		varchar(50),
+	icq_number		text,
 	priv_icq_number		integer,
 				-- Which address should we mail to?
 	m_address		char(1) check (m_address in ('w','h')),
 				-- home address
-	ha_line1		varchar(80),
-	ha_line2		varchar(80),
-	ha_city			varchar(80),
-	ha_state		varchar(80),
-	ha_postal_code		varchar(80),
+	ha_line1		text,
+	ha_line2		text,
+	ha_city			text,
+	ha_state		text,
+	ha_postal_code		text,
 	ha_country_code		char(2) 
 				constraint users_contact_ha_cc_fk
 				references country_codes(iso),
 	priv_ha			integer,
 				-- work address
-	wa_line1		varchar(80),
-	wa_line2		varchar(80),
-	wa_city			varchar(80),
-	wa_state		varchar(80),
-	wa_postal_code		varchar(80),
+	wa_line1		text,
+	wa_line2		text,
+	wa_city			text,
+	wa_state		text,
+	wa_postal_code		text,
 	wa_country_code		char(2)
 				constraint users_contact_wa_cc_fk
 				references country_codes(iso),
@@ -148,56 +149,20 @@ create table users_contact (
 	current_information	text
 );
 
+
 ------------------------------------------------------
--- A unified view on active users
--- (not deleted or banned)
+-- A unified view on active users (not deleted or banned)
 --
 create or replace view users_active as 
 select
-	u.user_id,
-	u.username,
-	u.screen_name,
-	u.last_visit,
-	u.second_to_last_visit,
-	u.n_sessions,
-	u.first_names,
-	u.last_name,
-	c.home_phone,
-	c.priv_home_phone,
-	c.work_phone,
-	c.priv_work_phone,
-	c.cell_phone,
-	c.priv_cell_phone,
-	c.pager,
-	c.priv_pager,
-	c.fax,
-	c.priv_fax,
-	c.aim_screen_name,
-	c.priv_aim_screen_name,
-	c.msn_screen_name,
-	c.priv_msn_screen_name,
-	c.icq_number,
-	c.priv_icq_number,
-	c.m_address,
-	c.ha_line1,
-	c.ha_line2,
-	c.ha_city,
-	c.ha_state,
-	c.ha_postal_code,
-	c.ha_country_code,
-	c.priv_ha,
-	c.wa_line1,
-	c.wa_line2,
-	c.wa_city,
-	c.wa_state,
-	c.wa_postal_code,
-	c.wa_country_code,
-	c.priv_wa,
-	c.note,
- 	c.current_information
-from 
-	registered_users u left outer join users_contact c on u.user_id = c.user_id
-;
+	u.user_id, u.username, u.screen_name, u.last_visit, u.second_to_last_visit, u.n_sessions, u.first_names, u.last_name,
+	c.home_phone, c.priv_home_phone, c.work_phone, c.priv_work_phone, c.cell_phone, c.priv_cell_phone, c.pager, c.priv_pager,
+	c.fax, c.priv_fax, c.aim_screen_name, c.priv_aim_screen_name, c.msn_screen_name, c.priv_msn_screen_name, c.icq_number,
+	c.priv_icq_number, c.m_address, c.ha_line1, c.ha_line2, c.ha_city, c.ha_state, c.ha_postal_code, c.ha_country_code,
+	c.priv_ha, c.wa_line1, c.wa_line2, c.wa_city, c.wa_state, c.wa_postal_code, c.wa_country_code, c.priv_wa,
+	c.note, c.current_information
+from	registered_users u left outer join users_contact c on u.user_id = c.user_id;
+
 
 
 -- ToDo: Localize this function for Japanese
@@ -214,6 +179,34 @@ BEGIN
 
 	return v_full_name;
 END;$body$ language 'plpgsql';
+
+
+create or replace function im_name_from_user_id(int4, int4) returns varchar as $body$
+DECLARE
+	v_user_id	alias for $1;
+	v_name_order	alias for $2;
+	v_full_name	varchar(8000);
+BEGIN
+	IF 2 = v_name_order THEN
+		select 	last_name || ' ' || first_names
+		into 	v_full_name 
+		from 	persons 
+		where person_id = v_user_id;
+	ELSEIF 3 = v_name_order THEN
+		select 	last_name || ', ' || first_names 
+		into 	v_full_name 
+		from 	persons 
+		where person_id = v_user_id;
+	ELSE
+		select 	first_names || ' ' || last_name 
+		into 	v_full_name 
+		from 	persons 
+		where person_id = v_user_id;
+	END IF;
+	return v_full_name;
+END;$body$ language 'plpgsql';
+
+
 
 create or replace function im_email_from_user_id(integer)
 returns varchar as $body$
@@ -273,8 +266,6 @@ BEGIN
 
         RETURN v_rel_id;
 end;$body$ language 'plpgsql';
-
-
 
 
 -------------------------------------------------------------------

@@ -112,9 +112,6 @@ create table im_projects (
 					check (requires_report_p in ('t','f')),
 	-- Total project budget (top-down planned)
 	project_budget			float,
-	project_budget_currency		char(3)
-					constraint im_projects_budget_currency_fk
-					references currency_codes(iso),
 	-- Max number of hours for project.
 	-- Does not require "view_finance" permission
 	project_budget_hours		float,
@@ -159,7 +156,9 @@ create table im_projects (
 	-- To be added to the ProjectNewPage via DynField
 	program_id			integer
 					constraint im_projects_program_id
-					references im_projects
+					references im_projects,
+
+	constraint im_projects_start_end_chk check(end_date >= start_date)
 );
 
 
@@ -537,7 +536,6 @@ END; $body$ LANGUAGE 'plpgsql';
 
 
 
-
 create or replace function im_project_id_parent_list(int4) returns varchar as $body$
 DECLARE
 	p_project_id		alias for $1;
@@ -641,3 +639,61 @@ begin
         return 0;
 end;$body$ language 'plpgsql' VOLATILE;
 
+
+
+
+CREATE OR REPLACE FUNCTION im_project_sub_project_name_path(integer, boolean, boolean)
+  RETURNS character varying AS $BODY$
+DECLARE
+    -- Returns a path of project_names -> bottom-up 
+    -- Output of subproject-name itself and top parent project can be surpressed 
+
+    p_sub_project_id            alias for $1;
+    p_exlude_main_project_p     alias for $2;
+    p_exlude_sub_project_p      alias for $3;
+ 
+    v_subproject_id		integer;
+    v_parent_id             	integer;
+    v_project_name          	varchar;
+    v_ctr           		integer;
+    v_path          		varchar;
+    v_slash         		varchar; 
+ 
+BEGIN
+    v_subproject_id := p_sub_project_id;
+    v_ctr := 0; 
+    v_path := '';
+
+    WHILE v_ctr < 10  LOOP
+        select  parent_id, project_name 
+        into    v_parent_id, v_project_name
+        from    im_projects p
+        where   project_id = v_subproject_id;
+        
+        IF      
+            v_parent_id is not null OR NOT p_exlude_main_project_p 
+        THEN
+            v_slash := '/';
+            IF      '' = v_project_name
+            THEN    
+                    v_slash := '';
+                    RAISE NOTICE 'v_project_name is empty';
+            END IF; 
+
+            IF      (v_ctr = 0 AND NOT p_exlude_sub_project_p) OR v_ctr != 0
+            THEN    v_path := v_project_name || v_slash || v_path; 
+            END IF; 
+
+            v_subproject_id := v_parent_id;
+        END IF;
+
+        IF      v_parent_id is null 
+        THEN    EXIT;
+        ELSE 	v_ctr := v_ctr +1;
+        END IF;     
+
+    END LOOP;
+    return v_path; 
+ 
+end;$BODY$
+  LANGUAGE 'plpgsql'

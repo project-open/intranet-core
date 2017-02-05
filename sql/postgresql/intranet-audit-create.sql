@@ -15,6 +15,8 @@ create table im_audits (
 				constraint im_audits_object_nn
 				not null,
 	audit_object_status_id	integer,
+				constraint im_audits_object_status_fk
+				references im_categories,
 	audit_action		text
 				constraint im_audits_action_ck
 				check (audit_action in ('after_create','before_update','after_update','before_nuke', 'view', 'baseline')),
@@ -90,7 +92,7 @@ DECLARE
 	v_expr		text;
 	v_result	text;
 BEGIN
-	v_expr := p_var_name || '\\t([^\\n]*)';
+	v_expr := p_var_name || '\t([^\n]*)';
 	select	substring(p_audit_value from v_expr) into v_result from dual;
 	IF '' = v_result THEN v_result := null; END IF;
 
@@ -119,7 +121,7 @@ BEGIN
 				aa.audit_date <= p_audit_date
 		);
 
-	v_expr := p_var_name || '\\t([^\\n]*)';
+	v_expr := p_var_name || '\t([^\n]*)';
 	select	substring(v_audit_value from v_expr) into v_result from dual;
 	IF '' = v_result THEN v_result := null; END IF;
 

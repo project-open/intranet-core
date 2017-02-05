@@ -489,7 +489,7 @@ select acs_rel_type__create_type (
 	'member',			-- role_one
 	0,				-- min_n_rels_one
 	null,				-- max_n_rels_one
-	'person',			-- object_type_two
+	'acs_object',			-- object_type_two
 	'member',			-- role_two
 	0,				-- min_n_rels_two
 	null				-- max_n_rels_two

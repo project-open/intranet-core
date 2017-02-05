@@ -68,7 +68,8 @@ create table im_categories (
 	aux_int1		integer,
 	aux_int2		integer,
 	aux_string1		text,
-	aux_string2		text
+	aux_string2		text,
+	visible_tcl		text
 );
 
 -- fraber 040320: Don't allow for duplicated entries!
@@ -239,7 +240,7 @@ BEGIN
 end;$body$ language 'plpgsql';
 
 -- Test query
-select im_category_path_to_category (83);
+-- select im_category_path_to_category (83);
 
 
 
@@ -363,6 +364,38 @@ BEGIN
 
 	return im_category_hierarchy_new (v_child_id, v_parent_id);
 end;$body$ language 'plpgsql';
+
+
+
+----------------------------------------------
+-- Find a free category_id in a range
+--
+CREATE OR REPLACE FUNCTION im_category_find_next_free_id_in_sequence(INTEGER, INTEGER)
+RETURNS INTEGER AS $body$
+declare
+        p_start_seq_id          alias for $1;
+        p_stop_seq_id        	alias for $2;
+	v_count			integer;
+	v_category_id		integer;
+begin
+
+	-- how many in sequence
+	select count(*) into v_count from im_categories where category_id > p_start_seq_id and category_id <= p_stop_seq_id; 
+
+	-- none used, return seq_start 
+        IF 0 = v_count THEN return p_start_seq_id; END IF;
+
+	-- none available in sequence, return 0 
+	IF v_count = (p_stop_seq_id-p_start_seq_id +1) THEN return 0; END IF; 
+	
+	-- there should be at least one free id in sequence, find it: 
+	FOR i IN p_start_seq_id .. p_stop_seq_id LOOP
+		select count(*) into v_category_id from im_categories where category_id = i; 
+		IF v_category_id = 0 THEN return i; END IF; 
+	END LOOP; 
+ 
+end;$body$ LANGUAGE 'plpgsql' VOLATILE;
+
 
 
 
