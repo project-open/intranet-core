@@ -1604,14 +1604,8 @@ drop function inline_0 ();
 -- (/workflow/ for older installations)
 --
 update im_menus set
-        url = '/'
-              || (
-                select name
-                from site_nodes
-                where object_id in (select package_id from apm_packages where package_key = 'acs-workflow'))
-              || '/admin/'
-where
-        label = 'admin_workflow';
+        url = '/acs-workflow/admin'
+where	label = 'admin_workflow';
 
 
 
