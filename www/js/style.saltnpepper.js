@@ -156,8 +156,8 @@ jQuery().ready(function(){
 	$(this).children().find(".icon_minimize").css('visibility', 'visible');
 	$(this).children().find(".icon_maximize").css('visibility', 'visible');
 	$(this).children().find('.icon_help').css('visibility', 'visible');
-	// $(this).children().find('.icon_config').css('visibility', 'hidden');
-        // $(".component_icons",this).stop().fadeTo("fast",1);
+	$(this).children().find('.icon_config').css('visibility', 'hidden');
+        $(".component_icons",this).stop().fadeTo("fast",1);
 
     },function(){
        // $(".component_icons",this).stop().fadeTo("normal",0.1);
@@ -174,7 +174,7 @@ jQuery().ready(function(){
         $(this).children().find(".icon_minimize").css('visibility', 'hidden');
         $(this).children().find(".icon_maximize").css('visibility', 'hidden');
         $(this).children().find('.icon_help').css('visibility', 'hidden');
-        // $(this).children().find('.icon_config').css('visibility', 'visible');
+        $(this).children().find('.icon_config').css('visibility', 'visible');
     });
 
     $(".component-parking div").click(function(){
