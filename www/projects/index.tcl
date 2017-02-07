@@ -597,7 +597,7 @@ set status_where "
 # Only show member projects or projects in his dept.
 
 set dept_perm_sql ""
-if {[im_permission $current_user_id "view_projects_dept"]} {
+if {[im_permission $current_user_id "view_projects_dept"] && [im_table_exists im_cost_centers]} {
    set dept_perm_sql "
 	UNION
 	-- projects of the user department
