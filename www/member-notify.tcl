@@ -127,9 +127,7 @@ set subject [string trim $subject]
 # Save an text attachment to a temporary file
 
 if {"" != $attachment} {
-    set package_id [db_string package_id {select package_id from apm_packages where package_key='acs-workflow'}]
-    set tmp_path [im_parameter -package_id $package_id "tmp_path"]
-    set tmp_file [ns_mktemp "$tmp_path/attachment_XXXXXX"]
+    set tmp_file [ns_mktemp "/tmp/attachment_XXXXXX"]
 
     if {[catch {
 	set fl [open $tmp_file "w"]
