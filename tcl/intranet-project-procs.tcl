@@ -3041,7 +3041,6 @@ ad_proc -public im_project_base_data_component {
 ad_proc -public im_personal_todo_component {
     {-show_empty_project_list_p 1}
     {-view_name "personal_todo_list" }
-
 } {
     Returns a HTML table with the list of projects, tasks,
     forum items etc. assigned to the current user. 
@@ -3077,7 +3076,7 @@ ad_proc -public im_personal_todo_component {
 	if {"" != $extra_where} { lappend extra_wheres $extra_where }
     }
 
-    if {"" == $order_by_clause} {
+    if {![info exists order_by_cause] || "" == $order_by_clause} {
 	set order_by_clause  [parameter::get_from_package_key -package_key "intranet-core" -parameter "HomePersonalToDoListSortClause" -default "task_name DESC"]
     }
 
@@ -3089,6 +3088,58 @@ ad_proc -public im_personal_todo_component {
     if { $extra_where ne "" } {
 	set extra_where "and\n\t$extra_where"
     }
+
+    set extra_from [join $extra_froms ",\n\t"]
+    if {"" ne $extra_from } { set extra_from ",\n\t$extra_from" }
+
+    set ticket_union "
+	UNION
+	        -- tickets assigned to this user
+	select	p.project_id as task_id,
+		p.project_name as task_name,
+		p.company_id as customer_id,
+		p.project_status_id as status_id,
+		p.project_type_id as type_id,
+		p.start_date,
+		p.end_date,
+		im_category_from_id(t.ticket_prio_id) as priority,
+		percent_completed
+	from
+		im_projects p,
+		im_tickets t,
+		acs_rels r
+	where
+		r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		p.project_id = t.ticket_id and
+		-- Exclude closed tickets
+		t.ticket_status_id not in ([join [im_sub_categories 30001] ","])
+    "
+    if {![im_table_exists im_tickets]} { set ticket_union "" }
+
+    set timesheet_task_union "
+	UNION
+	-- tasks assigned to this user
+	select	p.project_id as task_id,
+		p.project_name as task_name,
+		p.company_id as customer_id,
+		p.project_status_id as status_id,
+		p.project_type_id as type_id,
+		p.start_date,
+		p.end_date,
+		t.priority::text,
+		p.percent_completed
+	from
+		im_projects p,
+		im_timesheet_tasks t,
+		acs_rels r
+	where
+		r.object_id_one = p.project_id and
+		r.object_id_two = :current_user_id and
+		p.project_id = t.task_id and
+		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
+    "
+    if {![im_table_exists im_timesheet_tasks]} { set timesheet_task_union "" }
 
     set tasks_sql "
 	-- projects managed by the current user
@@ -3113,46 +3164,8 @@ ad_proc -public im_personal_todo_component {
 		p.parent_id is null and
 		p.project_type_id not in ([im_project_type_task], [im_project_type_ticket], [im_project_type_opportunity]) and
 		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
-	UNION
-	-- tasks assigned to this user
-	select	p.project_id as task_id,
-		p.project_name as task_name,
-		p.company_id as customer_id,
-		p.project_status_id as status_id,
-		p.project_type_id as type_id,
-		p.start_date,
-		p.end_date,
-		t.priority::text,
-		p.percent_completed
-	from
-		im_projects p,
-		im_timesheet_tasks t,
-		acs_rels r
-	where
-		r.object_id_one = p.project_id and
-		r.object_id_two = :current_user_id and
-		p.project_id = t.task_id and
-		p.project_status_id not in ([join [im_sub_categories [im_project_status_closed]] ","])
-	UNION
-	-- tickets assigned to this user
-	select	p.project_id as task_id,
-		p.project_name as task_name,
-		p.company_id as customer_id,
-		p.project_status_id as status_id,
-		p.project_type_id as type_id,
-		p.start_date,
-		p.end_date,
-		im_category_from_id(t.ticket_prio_id) as priority,
-		percent_completed
-	from
-		im_projects p,
-		im_tickets t,
-		acs_rels r
-	where
-		r.object_id_one = p.project_id and
-		r.object_id_two = :current_user_id and
-		p.project_id = t.ticket_id and
-		t.ticket_status_id not in ([join [im_sub_categories [im_ticket_status_closed]] ","])
+        $timesheet_task_union
+        $ticket_union
     "
 
     set personal_tasks_query "
