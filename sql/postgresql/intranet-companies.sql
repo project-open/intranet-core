@@ -306,7 +306,7 @@ SELECT acs_object_type__create_type(
 	'im_biz_object_member',				-- supertype
 	'im_company_employee_rels',			-- table_name
 	'employee_rel_id',				-- id_column
-	'intranet-core-company-employee-rel', 		-- package_name
+	'intranet-core-company-emp-rel', 		-- package_name
 	'f',						-- abstract_p
 	null,						-- type_extension_table
 	NULL						-- name_method
