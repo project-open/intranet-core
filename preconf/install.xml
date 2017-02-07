@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!-- This must be moved to the OpenACS page root when making a release tarball -->
+<application name="project-open" pretty-name="]project-open[" home="http://www.project-open.com/" min_stack_size="512">
+<actions>
+
+	<install package="acs-admin"/>
+	<install package="acs-api-browser"/>
+	<install package="acs-authentication"/>
+	<install package="acs-automated-testing"/>
+	<install package="acs-bootstrap-installer"/>
+	<install package="acs-content-repository"/>
+	<install package="acs-core-docs"/>
+	<install package="acs-datetime"/>
+	<install package="acs-developer-support"/>
+	<install package="acs-events"/>
+	<install package="acs-kernel"/>
+	<install package="acs-lang"/>
+	<install package="acs-mail"/>
+	<install package="acs-mail-lite"/>
+	<install package="acs-messaging"/>
+	<install package="acs-reference"/>
+	<install package="acs-service-contract"/>
+	<install package="acs-subsite"/>
+	<install package="acs-tcl"/>
+	<install package="acs-templating"/>
+	<install package="acs-translations"/>
+	<install package="acs-workflow"/>
+	<install package="ajaxhelper"/>
+	<install package="auth-ldap"/>
+	<install package="auth-ldap-adldapsearch"/>
+	<install package="bug-tracker"/>
+	<install package="bulk-mail"/>
+	<install package="calendar"/>
+	<install package="categories"/>
+	<install package="diagram"/>
+	<install package="events"/>
+	<install package="faq"/>
+	<install package="general-comments"/>
+	<install package="intranet-bug-tracker"/>
+	<install package="intranet-calendar"/>
+	<install package="intranet-confdb"/>
+	<install package="intranet-core"/>
+	<install package="intranet-cost"/>
+	<install package="intranet-cvs-integration"/>
+	<install package="intranet-dw-light"/>
+	<install package="intranet-dynfield"/>
+	<install package="intranet-exchange-rate"/>
+	<install package="intranet-expenses"/>
+	<install package="intranet-expenses-workflow"/>
+	<install package="intranet-filestorage"/>
+	<install package="intranet-forum"/>
+	<install package="intranet-ganttproject"/>
+	<install package="intranet-helpdesk"/>
+	<install package="intranet-hr"/>
+	<install package="intranet-invoices"/>
+	<install package="intranet-invoices-templates"/>
+	<install package="intranet-material"/>
+	<install package="intranet-milestone"/>
+	<install package="intranet-nagios"/>
+	<install package="intranet-notes"/>
+	<install package="intranet-payments"/>
+	<install package="intranet-release-mgmt"/>
+	<install package="intranet-reporting"/>
+	<install package="intranet-reporting-indicators"/>
+	<install package="intranet-reporting-tutorial"/>
+	<install package="intranet-search-pg"/>
+	<install package="intranet-security-update-client"/>
+	<install package="intranet-simple-survey"/>
+	<install package="intranet-sysconfig"/>
+	<install package="intranet-timesheet2"/>
+	<install package="intranet-timesheet2-invoices"/>
+	<install package="intranet-timesheet2-task-popup"/>
+	<install package="intranet-timesheet2-tasks"/>
+	<install package="intranet-timesheet2-workflow"/>
+	<install package="intranet-trans-invoices"/>
+	<install package="intranet-translation"/>
+	<install package="intranet-trans-project-wizard"/>
+	<install package="intranet-update-client"/>
+	<install package="intranet-wiki"/>
+	<install package="intranet-workflow"/>
+	<install package="intranet-xmlrpc"/>
+	<install package="lars-blogger"/>
+	<install package="mail-tracking"/>
+	<install package="notifications"/>
+	<install package="organizations"/>
+	<install package="postal-address"/>
+	<install package="ref-countries"/>
+	<install package="ref-language"/>
+	<install package="ref-timezones"/>
+	<install package="ref-us-counties"/>
+	<install package="ref-us-states"/>
+	<install package="ref-us-zipcodes"/>
+	<install package="rss-support"/>
+	<install package="search"/>
+	<install package="simple-survey"/>
+	<install package="telecom-number"/>
+	<install package="trackback"/>
+	<install package="wiki"/>
+	<install package="workflow"/>
+	<install package="xml-rpc"/>
+
+	<set-parameter package-key="acs-subsite" name="DefaultMaster" value="/packages/intranet-core/www/master"/>
+
+<!--	<mount package="dotlrn" mount-point="/dotlrn" instance-name="dotLRN"/> -->
+
+	<set-parameter package-key="acs-kernel" name="IndexRedirectUrl" value="/intranet/index"/>
+	<set-parameter package-key="acs-kernel" name="CommunityMemberURL" value="/intranet/users/view"/>
+	<set-parameter package-key="acs-bootstrap-installer" name="post_installation_message" value="Enjoy ]project-open[."/>
+
+</actions>
+</application>
