@@ -1,4 +1,4 @@
-<master>
+<master src="/packages/intranet-core/www/master">
 <property name="doc(title)">@page_title@</property>
 <property name="main_navbar_label">companies</property>
 <property name="left_navbar">@left_navbar_html;literal@</property>

@@ -114,7 +114,7 @@ warn $DBI::errstr if $DBI::err;
 print "user_id=$user_id, email=$email, url=$url, first=$first_names, last=$last_name, username=$username, state=$member_state\n";
 print L "$date: user_create: user_id=$user_id, email=$email, url=$url, first=$first_names, last=$last_name, username=$username, state=$member_state\n";
 
-system "cd /opt/ophelia/workflow/_wf; ./create_user.rb client1 $email";
+system "cd /tmp/; pwd";
 
 
 

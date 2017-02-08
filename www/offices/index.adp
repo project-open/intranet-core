@@ -1,4 +1,4 @@
-<master>
+<master src="/packages/intranet-core/www/master">
 <property name="doc(title)">#intranet-core.Offices#</property>
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">offices</property>

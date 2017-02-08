@@ -35,7 +35,7 @@ ad_library {
 	  developer_rel etc. by a project methodology module. 
 	  These relationship types have an effect on the behaviour of 
 	  components  associated to the biz-objects such as the 
-	  P/O Filestorage or the P/O Translation Workflow.
+	  risks or filestorage
       <li>"User Permission Matrix":<BR>
 	  Define what user group is allowed to manage what
 	  other user group. For examples, "Employees" are may

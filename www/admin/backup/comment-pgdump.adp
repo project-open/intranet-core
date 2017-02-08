@@ -1,5 +1,4 @@
-<master>
-
+<master src="/packages/intranet-core/www/master">
 
 <%= [im_box_header "Comments"] %>
 

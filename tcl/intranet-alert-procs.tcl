@@ -188,7 +188,7 @@ ad_proc -public im_security_alert {
     # Information about the current system
     # That' interesting, if the security manager manages several systems
     set system_name [ad_system_name]
-    set system_owner_email [im_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set system_owner_email [im_parameter -package_key "intranet-forum" ReportThisErrorEmail]
 
     # Send where?
     set target_email [im_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "support@project-open.com"]
@@ -246,7 +246,7 @@ peer_ip: $peer_ip
 
 
 ad_proc -public im_send_alert_to_system_owner {subject message} {
-    set system_owner_email [im_parameter -package_id [im_package_forum_id] ReportThisErrorEmail]
+    set system_owner_email [im_parameter -package_key "intranet-forum" "ReportThisErrorEmail"]
     set current_user_id [ad_conn user_id]
     ns_sendmail $system_owner_email $system_owner_email $subject $message
 }

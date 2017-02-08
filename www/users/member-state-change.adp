@@ -1,4 +1,4 @@
-<master>
+<master src="/packages/intranet-core/www/master">
 <property name="doc(title)">@action;literal@</property>
 <property name="context">@context;literal@</property>
 

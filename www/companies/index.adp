@@ -1,4 +1,4 @@
-<master>
+<master src="../master">
 <property name="doc(title)">#intranet-core.Companies#</property>
 <property name="context">#intranet-core.context#</property>
 <property name="main_navbar_label">companies</property>

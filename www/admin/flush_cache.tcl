@@ -1,4 +1,4 @@
-# /packages/intranet-filestorage/www/index.tcl
+# /packages/intranet-core/www/admin/flush_cache.tcl
 #
 # Copyright (C) 2004 ]project-open[
 #

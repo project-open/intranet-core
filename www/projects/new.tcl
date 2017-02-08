@@ -288,7 +288,7 @@ if {$user_admin_p} {
 
 # Suppress the status field if the project has a WF associated
 set wf_case_exists_p 0
-set wf_instace_exists_p 0
+set wf_instance_exists_p 0
 
 if {[info exists project_type_id] && ![info exists project_id] } {
 	# project not yet created 
@@ -302,13 +302,17 @@ if {[info exists project_type_id] && ![info exists project_id] } {
 	}
 }
 
-set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
-if {[info exists project_id] } {
-    if { [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"] > 0 } { set wf_instace_exists_p 1}
+set wf_exists_p 0
+set wf_instance_exists_p 0
+if {[im_table_exists wf_workflows]} {
+    set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
+    if {[info exists project_id] } {
+	if { [db_string wf_exists "select count(*) from wf_cases where object_id = :project_id"] > 0 } { set wf_instance_exists_p 1}
+    }
 }
 
 if {[info exists project_id] } {
-    	if { !$wf_instace_exists_p || [im_permission $user_id edit_project_status]  } {
+    	if { !$wf_instance_exists_p || [im_permission $user_id edit_project_status]  } {
 	    template::element::create $form_id project_status_id \
         	-label [_ intranet-core.Project_Status] \
 	        -widget "im_category_tree" \
@@ -864,7 +868,7 @@ if {[form is_valid $form_id]} {
     # - if there is a WF associated with the project_type
 
     # Check if there is a WF associated with the project type
-    if {"" == $workflow_key} {
+    if {"" == $workflow_key && [im_table_exists wf_workflows]} {
 	set wf_key [db_string wf "select aux_string1 from im_categories where category_id = :project_type_id" -default ""]
 	set wf_exists_p [db_string wf_exists "select count(*) from wf_workflows where workflow_key = :wf_key"]
 	if {$wf_exists_p} { set workflow_key $wf_key }

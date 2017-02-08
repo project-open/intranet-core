@@ -68,7 +68,7 @@ ad_proc -public im_check_for_update_scripts {
     # 1 - Make sure base modules are installed
 
     # The base modules that need to be installed first
-    set base_modules [list workflow notifications acs-datetime acs-workflow acs-mail-lite acs-events]
+    set base_modules [list notifications acs-datetime acs-mail-lite acs-events]
 
     set url "/acs-admin/apm/packages-install?update_only_p=1"
     set redirect_p 0

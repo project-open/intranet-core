@@ -1,4 +1,4 @@
-# /packages/intranet-filestorage/www/upload-2.tcl
+# intranet-core/www/users/portrait/upload-2.tcl
 #
 # Copyright (C) 2003-2004 ]project-open[
 #
@@ -24,11 +24,13 @@ set current_user_id [auth::require_login]
 set page_title [lang::message::lookup "" intranet-core.Upload_Portrait "Upload Portrait"]
 set context_bar [im_context_bar [list "/intranet/users/" "Users"] $page_title]
 
+if {![im_table_exists im_fs_folders]} { ad_return_complaint 1 "intranet-filestorage not installed yet" }
 im_user_permissions $current_user_id $user_id view read write admin
 if {!$write} {
     ad_return_complaint 1 "[_ intranet-hr.lt_You_have_insufficient]"
     return
 }
+
 
 # ---------------------------------------------------------------
 # Get the file from the user.

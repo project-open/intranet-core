@@ -1,4 +1,4 @@
-<master>
+<master src="./master">
 <property name="doc(title)">#intranet-core.Home#</property>
 <property name="main_navbar_label">home</property>
 <property name="left_navbar">@left_navbar_html;literal@</property>

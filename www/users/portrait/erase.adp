@@ -1,4 +1,4 @@
-<master>
+<master src="/packages/intranet-core/www/master">
 <property name="doc(title)">#acs-subsite.Erase_Portrait#</property>
 <property name="context">@context;literal@</property>
 <property name="main_navbar_label">user</property>

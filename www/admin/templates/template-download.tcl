@@ -23,7 +23,7 @@ if {!$user_is_admin_p} {
     return
 }
 
-set path_to_file [parameter::get -package_id [db_string get_view_id "select package_id from apm_packages where package_key = 'intranet-invoices'" -default 0] -parameter "InvoiceTemplatePathUnix" -default ""]
+set path_to_file [parameter::get_from_package_key -package_key "intranet-invoices" -parameter "InvoiceTemplatePathUnix" -default ""]
 append path_to_file "/"  $template_name
 
 if {[catch {
