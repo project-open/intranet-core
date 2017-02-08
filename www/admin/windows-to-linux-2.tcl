@@ -208,7 +208,11 @@ ns_write "<li>Converting PG path from /pgsql/bin/ to /usr/bin/\n"
 db_dml update_pathes "
 	update apm_parameter_values
 	set attr_value = '/usr/bin'
-	where parameter_name = 'PgPathUnix'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'PgPathUnix'
+	)
 "
 
 
