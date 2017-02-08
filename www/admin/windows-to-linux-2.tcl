@@ -203,6 +203,18 @@ db_dml update_pathes "
 
 
 
+# PostgreSQL backup 
+ns_write "<li>Converting PG path from /pgsql/bin/ to /usr/bin/\n"
+db_dml update_pathes "
+	update apm_parameter_values
+	set attr_value = '/usr/bin'
+	where parameter_name = 'PgPathUnix'
+"
+
+
+
+
+
 ns_write "</ul>\n"
 ns_write "<p>You can now return to the <a href=$return_url>previous page</a>.</p>"
 ns_write [im_footer]
