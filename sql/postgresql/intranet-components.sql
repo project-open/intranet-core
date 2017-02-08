@@ -319,7 +319,7 @@ SELECT	im_component_plugin__new (
 	'/intranet/projects/view',		-- page_url
 	null,					-- view_name	
 	20,					-- sort_order
-	'im_table_with_title "[_ intranet-core.Project_Members]" [im_group_member_component $project_id 	$current_user_id $user_admin_p $return_url "" "" 1 ]'	-- component_tcl
+	'im_table_with_title "[_ intranet-core.Project_Members]" [im_group_member_component $project_id $current_user_id $user_admin_p $return_url "" "" 1 ]'
 );
 
 SELECT	im_component_plugin__new (
@@ -335,7 +335,7 @@ SELECT	im_component_plugin__new (
 	'/intranet-timesheet2-tasks/new',	-- page_url
 	null,					-- view_name	
 	20,					-- sort_order
-	'im_table_with_title "[_ intranet-core.Task_Members]" [im_group_member_component $task_id $current_user_id $user_admin_p $return_url "" "" 1 ]'			-- component_tcl
+	'im_table_with_title "[_ intranet-core.Task_Members]" [im_group_member_component $task_id $current_user_id $user_admin_p $return_url "" "" 1 ]'
 );
 
 
@@ -353,7 +353,7 @@ SELECT	im_component_plugin__new (
 	'/intranet/offices/view',		-- page_url
 	null,					-- view_name
 	20,					-- sort_order
-	'im_table_with_title "[_ intranet-core.Office_Members]" [im_group_member_component $office_id $user_id $admin $return_url "" "" 1 ]'			-- component_tcl
+	'im_table_with_title "[_ intranet-core.Office_Members]" [im_group_member_component $office_id $user_id $admin $return_url "" "" 1 ]'
 );
 
 SELECT	im_component_plugin__new (
@@ -369,7 +369,7 @@ SELECT	im_component_plugin__new (
 	'/intranet/companies/view',		-- page_url
 	null,					-- view_name
 	30,					-- sort_order
-	'im_table_with_title "[_ intranet-core.Offices]" [im_office_company_component $user_id $company_id]' -- component_tcl
+	'im_table_with_title "[_ intranet-core.Offices]" [im_office_company_component $user_id $company_id]'
 );
 
 -- Office component for UserViewPage
@@ -386,7 +386,7 @@ SELECT	im_component_plugin__new (
 	'/intranet/users/view',			-- page_url
 	null,					-- view_name
 	80,					-- sort_order
-	'im_table_with_title "[_ intranet-core.Offices]" [im_office_user_component $current_user_id $user_id]' -- component_tcl
+	'im_table_with_title "[_ intranet-core.Offices]" [im_office_user_component $current_user_id $user_id]'
 );
 
 
@@ -439,7 +439,9 @@ SELECT	im_component_plugin__new (
 	'im_help_home_page_blurb_component'	-- component_tcl
 );
 
--- Disable the old help page                                                                                                                                         update im_component_plugins set enabled_p = 'f' where plugin_name = 'Home Page Help Blurb';
+-- Disable the old help page
+update im_component_plugins set enabled_p = 'f' where plugin_name = 'Home Page Help Blurb';
+
 
 
 SELECT	im_component_plugin__new (
@@ -551,24 +553,6 @@ SELECT  im_component_plugin__new (
 
 
 
--- Association Component
-SELECT  im_component_plugin__new (
-	null,					-- plugin_id
-	'im_component_plugin',			-- object_type
-	now(),					-- creation_date
-	null,					-- creation_user
-	null,					-- creation_ip
-	null,					-- context_id
-	'Associated Objects',			-- plugin_name
-	'intranet-core',			-- package_name
-	'right',				-- location
-	'/intranet-confdb/new',			-- page_url
-	null,					-- view_name
-	120,					-- sort_order
-	'im_object_assoc_component -object_id $conf_item_id'	-- component_tcl
-);
-
-
 
 -- List objects associated to user
 SELECT  im_component_plugin__new (
@@ -595,8 +579,8 @@ where page_url = '/intranet/users/view' and plugin_name = 'User Offices';
 
 
 -- ------------------------------------------------------
--- Allow to add queues to tickets etc.
---
+-- 
+
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
 	'im_component_plugin',		-- object_type
@@ -742,279 +726,9 @@ DROP FUNCTION inline_1();
 
 
 
-
-
-
-
-
 -- Move portlets to various dashboard pages
-
 update im_component_plugins set page_url = '/intranet/projects/dashboard' where page_url = '/intranet/projects/index';
 
-
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Top Customers',					-- plugin_name
-	'intranet-reporting-dashboard',				-- package_name
-	'left',							-- location
-	'/intranet/index',					-- page_url
-	null,							-- view_name
-	100,							-- sort_order
-	'im_dashboard_top_customers -diagram_width 580 -diagram_height 300 -diagram_max_customers 8',
-	'lang::message::lookup "" intranet-reporting-dashboard.Top_Customers "Top Customers"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins where plugin_name = 'Top Customers' and page_url = '/intranet/index'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Top Customers (Company Dashboard)',			-- plugin_name
-	'intranet-reporting-dashboard',				-- package_name
-	'left',							-- location
-	'/intranet/companies/dashboard',			-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_dashboard_top_customers -diagram_width 580 -diagram_height 300 -diagram_max_customers 8',
-	'lang::message::lookup "" intranet-reporting-dashboard.Top_Customers "Top Customers"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where  plugin_name = 'Top Customers (Company Dashboard)' and 
-	        page_url = '/intranet/companies/dashboard'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Top Customers (Finance Dashboard)',			-- plugin_name
-	'intranet-reporting-dashboard',				-- package_name
-	'left',							-- location
-	'/intranet-invoices/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_dashboard_top_customers -diagram_width 580 -diagram_height 300 -diagram_max_customers 8',
-	'lang::message::lookup "" intranet-reporting-dashboard.Top_Customers "Top Customers"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Top Customers (Finance Dashboard)' and 
-		page_url = '/intranet-invoices/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-
-
---------------------------------------------------------
--- Timeline indicators for the various dashboards
---------------------------------------------------------
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Project Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet/projects/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_pm]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Project Indicators Timeline' and 
-		page_url = '/intranet/projects/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Customer Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet/companies/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_customers]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Customer Indicators Timeline' and 
-		page_url = '/intranet/companies/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Ticket Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet-helpdesk/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_helpdesk]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Ticket Indicators Timeline' and 
-		page_url = '/intranet-helpdesk/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Timesheet Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet-timesheet2/hours/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_timesheet]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Timesheet Indicators Timeline' and 
-		page_url = '/intranet-timesheet2/hours/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Absences Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet-timesheet2/absences/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_absences]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-select im_category_new (15260, 'Absences', 'Intranet Indicator Section');
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Absences Indicators Timeline' and 
-		page_url = '/intranet-timesheet2/absences/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Users Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet/users/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_hr]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Users Indicators Timeline' and 
-		page_url = '/intranet/users/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,	-- system params
-	'Conf Items Indicators Timeline',				-- plugin_name
-	'intranet-reporting-indicators',			-- package_name
-	'right',						-- location
-	'/intranet-confdb/dashboard',				-- page_url
-	null,							-- view_name
-	10,							-- sort_order
-	'im_indicator_timeline_component -indicator_section_id [im_indicator_section_confdb]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Indicators_Timeline "Indicators Timeline"'
-);
-select im_category_new (15265, 'Conf Items', 'Intranet Indicator Section');
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Conf Items Indicators Timeline' and 
-		page_url = '/intranet-confdb/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,
-	'Pre-Sales Queue',			-- plugin_name
-	'intranet-reporting-dashboard',		-- package_name
-	'left',				-- location
-	'/intranet/projects/dashboard',		-- page_url
-	null,					-- view_name
-	100,					-- sort_order
-	'im_dashboard_histogram_sql -diagram_width 200 -sql "
-		select	im_category_from_id(p.project_status_id) as project_status,
-		        sum(coalesce(presales_probability,project_budget,0) * coalesce(presales_value,0)) as value
-		from	im_projects p
-		where	p.project_status_id not in (select * from im_sub_categories(81))
-		group by project_status_id
-		order by project_status
-	"',
-	'lang::message::lookup "" intranet-reporting-dashboard.Sales_Pipeline "Sales<br>Pipeline"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Pre-Sales Queue' and 
-		page_url = '/intranet/projects/dashboard'
-	),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-
-update im_component_plugins 
-set page_url = '/intranet/projects/dashboard', location = 'left'
-where page_url = '/intranet/index' and plugin_name = 'Late Milestones';
-
-update im_component_plugins 
-set page_url = '/intranet/projects/dashboard', location = 'left'
-where page_url = '/intranet/index' and plugin_name = 'Current Milestones';
 
 update im_component_plugins 
 set page_url = '/intranet/projects/dashboard', location = 'left'
@@ -1024,142 +738,6 @@ update im_component_plugins
 set sort_order = 500, location = 'bottom'
 where plugin_name = 'MS-Project Warning Component' and page_url in ('/intranet/projects/view');
 
-
-
--- Ticket Portlets
-update im_component_plugins 
-set page_url = '/intranet-helpdesk/dashboard', location = 'left'
-where page_url = '/intranet-helpdesk/index';
-
-
-
-
-
-
-
-
--- Absences per department
---
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,
-	'Users per Department',		    	-- plugin_name
-	'intranet-reporting-dashboard',		-- package_name
-	'left',					-- location
-	'/intranet/users/dashboard',		-- page_url
-	null,					-- view_name
-	10,					-- sort_order
-	'im_dashboard_histogram_sql -diagram_width 400 -sql "
-	select	im_cost_center_code_from_id(cost_center_id) || '' - '' || im_cost_center_name_from_id(cost_center_id),
-		round(coalesce(user_sum, 0.0), 1)
-	from	(
-		select	cost_center_id,
-			tree_sortkey,
-			(select count(*) from im_employees e where e.department_id = cc.cost_center_id) as user_sum
-		from	im_cost_centers cc
-		where	1 = 1
-		) t
-	where	user_sum > 0
-	order by tree_sortkey
-	"',
-	'lang::message::lookup "" intranet-reporting-dashboard.Users_per_department "Users per Department"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Users per Department'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-
-
--- Absences per department
---
-SELECT im_component_plugin__new (
-	null, 'im_component_plugin', now(), null, null, null,
-	'Average Absences Days per User',		-- plugin_name
-	'intranet-reporting-dashboard',		-- package_name
-	'left',					-- location
-	'/intranet-timesheet2/absences/dashboard',	-- page_url
-	null,					-- view_name
-	10,					-- sort_order
-	'im_dashboard_histogram_sql -diagram_width 400 -sql "
-	select	im_cost_center_code_from_id(cost_center_id) || '' - '' || im_cost_center_name_from_id(cost_center_id),
-		round(coalesce(1.0 * absence_sum / user_sum, 0.0), 1)
-	from	(
-		select	cost_center_id,
-			tree_sortkey,
-			(select count(*) from im_employees e where e.department_id = cc.cost_center_id
-			) as user_sum,
-			(select	sum(ua.duration_days)
-			 from	im_user_absences ua,
-			 	im_employees e
-			 where	e.department_id = cc.cost_center_id and
-			 	e.employee_id = ua.owner_id and
-				ua.end_date > now()::date - 365
-			) as absence_sum
-		from	im_cost_centers cc
-		where	1 = 1
-		) t
-	where	user_sum > 0
-	order by tree_sortkey
-	"',
-	'lang::message::lookup "" intranet-reporting-dashboard.Average_absence_days_per_user_and_department "Average Absences Days per User"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins 
-	 where plugin_name = 'Average Absences Days per User'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-
-SELECT im_component_plugin__new (
-	null,					-- plugin_id
-	'im_component_plugin',			-- object_type
-	now(),					-- creation_date
-	null,					-- creation_user
-	null,					-- creation_ip
-	null,					-- context_id
-	'30 Day Status Changes',		-- plugin_name
-	'intranet-core',			-- package_name
-	'right',				-- location
-	'/intranet/projects/index',		-- page_url
-	null,					-- view_name
-	180,					-- sort_order
-	'im_dashboard_status_matrix -max_category_len 3 -sql "
-		select	count(*) as cnt,
-			old_status_id,
-			new_status_id
-		from	(select	parent.project_status_id as new_status_id,
-				max_audit_a.audit_object_status_id as old_status_id
-			from	im_projects parent
-				LEFT OUTER JOIN (
-					select	p.project_id,
-						max(a.audit_date) as max_audit_date
-					from	im_projects p
-						LEFT OUTER JOIN im_audits a ON (p.project_id = a.audit_object_id and a.audit_date < now() - ''30 days''::interval)
-					where	p.parent_id is null
-					group by p.project_id, p.project_status_id
-				) max_audit_date ON (parent.project_id = max_audit_date.project_id)
-				LEFT OUTER JOIN im_audits max_audit_a ON (max_audit_a.audit_object_id = parent.project_id and max_audit_a.audit_date = max_audit_date.max_audit_date)
-			where	parent.parent_id is null
-			) t
-		group by old_status_id, new_status_id
-	" -description "Shows how many projects have changed their status in the last 30 days.
-	" -status_list [db_list status_list "select distinct project_status_id from im_projects order by project_status_id"]',
-	'lang::message::lookup "" intranet-reporting-dashboard.Monthly_Project_Status_Changes "30 Day Status Changes"'
-);
-SELECT acs_permission__grant_permission(
-	(select plugin_id from im_component_plugins where plugin_name = '30 Day Status Changes'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
 
 
 

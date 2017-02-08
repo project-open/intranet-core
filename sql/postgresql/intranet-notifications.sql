@@ -22,8 +22,6 @@ returns text as $body$
 declare
 	p_user_id	alias for $1;
 
-	v_workflow_key		varchar(100);
-	v_transition_key	varchar(100);
 	v_acs_lang_package_id	integer;
 	v_locale		varchar(10);
 begin

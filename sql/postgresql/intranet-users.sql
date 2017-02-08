@@ -30,8 +30,7 @@ alter table persons add demo_password varchar(50);
 -- Skin Field
 --
 
-alter table users add skin integer;
-alter table users alter column skin set default 0;
+alter table users add skin_id integer default 0;
 
 
 -------------------------------------------------------------

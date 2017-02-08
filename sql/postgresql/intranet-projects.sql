@@ -93,7 +93,12 @@ create table im_projects (
 	end_date			timestamptz,
 	-- make sure the end date is after the start date
 					constraint im_projects_date_const 
-					check((end_date::date - start_date::date) >= 0),	
+					check((end_date::date - start_date::date) >= 0),
+	-- Does the project belong to a department?
+	-- Department members and managers may have special perms
+	project_cost_center_id		integer
+					constraint im_projects_cost_center_fk
+					references acs_objects,
 	note				text,
 	-- project leader is responsible for the operational execution
 	project_lead_id			integer 
