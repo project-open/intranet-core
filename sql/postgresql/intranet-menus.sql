@@ -2411,18 +2411,6 @@ SELECT im_menu__new (
 SELECT im_menu__new (
 		null, 'im_menu', now(), null, null, null,
 		'intranet-core',		-- package_name
-		'conf_items_admin',		-- label
-		'Conf Items Admin',		-- name
-		'/intranet/admin/object-type-admin?object_type=im_conf_item',
-		900,				-- sort_order
-		(select menu_id from im_menus where label = 'object_type_admin'),		-- parent_menu_id
-		null
-);
-
-
-SELECT im_menu__new (
-		null, 'im_menu', now(), null, null, null,
-		'intranet-core',		-- package_name
 		'crm_admin',			-- label
 		'CRM Admin',			-- name
 		'/intranet/admin/object-type-admin?object_type=im_opportunity',
@@ -2636,57 +2624,6 @@ SELECT acs_permission__grant_permission(
 
 
 
-SELECT im_menu__new (
-		null, 'im_menu', now(), null, null, null,
-		'intranet-invoices',		-- package_name
-		'invoices_list',		-- label
-		'Invoices List',		-- name
-		'/intranet-invoices/list?cost_type_id=3700',
-		10,				-- sort_order
-		(select menu_id from im_menus where label = 'finance'),		-- parent_menu_id
-		null
-);
-SELECT acs_permission__grant_permission(
-	(select menu_id from im_menus where label = 'invoices_list'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-
-
-
-SELECT im_menu__new (
-		null, 'im_menu', now(), null, null, null,
-		'intranet-confdb',		-- package_name
-		'conf_items_list',		-- label
-		'Conf Items List',		-- name
-		'/intranet-confdb/index',
-		10,				-- sort_order
-		(select menu_id from im_menus where label = 'conf_items'),		-- parent_menu_id
-		null
-);
-SELECT acs_permission__grant_permission(
-	(select menu_id from im_menus where label = 'conf_items_list'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
-SELECT im_menu__new (
-		null, 'im_menu', now(), null, null, null,
-		'intranet-confdb',		-- package_name
-		'conf_items_dashboard',		-- label
-		'Conf Items Dashboard',		-- name
-		'/intranet-confdb/dashboard',
-		20,				-- sort_order
-		(select menu_id from im_menus where label = 'conf_items'),		-- parent_menu_id
-		null
-);
-SELECT acs_permission__grant_permission(
-	(select menu_id from im_menus where label = 'conf_items_dashboard'),
-	(select group_id from groups where group_name = 'Employees'), 
-	'read'
-);
-
 
 
 -- SELECT im_menu__new (
@@ -2831,13 +2768,8 @@ where label in (
 	'absences_admin',
 	'tickets_admin',
 	'finance_admin',
-	'conf_items_admin',
 	'expenses_admin'
 );
-
-
--- Move dashboard to intranet-invoices
-update im_component_plugins set page_url = '/intranet-invoices/dashboard' where page_url in ('/intranet-cost/index', '/intranet-cost/dashboard');
 
 
 -- Home
@@ -2904,18 +2836,6 @@ update im_menus set sort_order = 200					where label = 'capacity-planning';
 update im_menus set url = '/intranet-timesheet2/absences/capacity-planning' where label = 'capacity-planning';
 
 
-
--- Finance
-update im_menus set sort_order = 1600					where label = 'finance';
-update im_menus set sort_order = 10, name = 'Finance List'		where label = 'invoices_list';
-update im_menus set sort_order = 20, name = 'Finance Dashboard', url = '/intranet-invoices/dashboard' where label = 'costs_home';
-update im_menus set sort_order = 30, name = 'Finance List Complete'	where label = 'costs';
-update im_menus set sort_order = 80					where label = 'invoices_customers';
-update im_menus set sort_order = 90					where label = 'invoices_providers';
-update im_menus set sort_order = 100					where label = 'finance_exchange_rates';
-update im_menus set parent_menu_id = (select menu_id from im_menus where label = 'finance_admin') where label = 'finance_exchange_rates';
-update im_menus set sort_order = 990					where label = 'invoices_providers_csv';
-
 -- Expenses
 update im_menus set sort_order = 1800					where label = 'expenses';
 update im_menus set sort_order = 10					where label = 'expenses_item_new';
@@ -2975,15 +2895,6 @@ update im_menus set sort_order = 10					where label = 'user_add';
 update im_menus set sort_order = 20					where label = 'biz_card_add';
 update im_menus set sort_order = 100, name = 'Users List'		where label = 'users_advanced_filtering';
 update im_menus set sort_order = 110, name = 'Users Dashboard'		where label = 'users_dashboard';
-
--- Conf Items
-update im_menus set sort_order = 300					where label = 'conf_items';
-update im_menus set parent_menu_id = (select menu_id from im_menus where label = 'master_data') where label = 'conf_items';
-update im_menus set sort_order = 10, name = 'New Conf Item'		where label = 'conf_item_add';
-update im_menus set sort_order = 100					where label = 'conf_items_list';
-update im_menus set sort_order = 110					where label = 'conf_items_dashboard';
-update im_menus set sort_order = 300					where label = 'conf_item_csv_export';
-update im_menus set sort_order = 310					where label = 'conf_item_csv_import';
 
 
 -- Reporting

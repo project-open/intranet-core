@@ -1497,7 +1497,9 @@ ad_proc -public im_user_nuke {
 	db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 	
 	# Costs
-	db_dml invoice_references "update im_invoices set company_contact_id = null where company_contact_id = :user_id"
+	if {[im_table_exists im_invoices]} {
+	    db_dml invoice_references "update im_invoices set company_contact_id = null where company_contact_id = :user_id"
+	}
 	db_dml cuase_objects "update im_costs set cause_object_id = :default_user where cause_object_id = :user_id"
 	db_dml cost_providers "update im_costs set provider_id = :default_user where provider_id = :user_id"
 
@@ -1505,7 +1507,9 @@ ad_proc -public im_user_nuke {
 	db_dml reset_cost_center_managers "update im_cost_centers set manager_id = null where manager_id = :user_id"
 
 	# Payments
-	db_dml reset_payments "update im_payments set last_modifying_user = :default_user where last_modifying_user = :user_id"
+	if {[im_table_exists im_payments]} {
+	    db_dml reset_payments "update im_payments set last_modifying_user = :default_user where last_modifying_user = :user_id"
+	}
 	
 	# Forum
 	db_dml forum "delete from im_forum_topic_user_map where user_id = :user_id"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE queryset PUBLIC "-//OpenACS//DTD XQL 1.0//EN" "/usr/share/emacs/DTDs/xql.dtd">
-<!-- packages/intranet-trans-invoices/www/companies/new-company-from-freelance-postgresql.xql -->
+<!-- packages/intranet-core/www/companies/new-company-from-freelance-postgresql.xql -->
 <!-- @author  (nsadmin@barna.competitiveness.com) -->
 <!-- @creation-date 2004-09-21 -->
 <!-- @arch-tag 8bcf633c-acde-47d0-a846-d6967fdaf1b7 -->

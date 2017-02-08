@@ -175,7 +175,7 @@ ad_proc -callback im_office_view -impl im_office_group_manager {
 
 
 # -----------------------------------------------------------
-# Select a delivery/invoice/... address for a company
+# Select a physical location for a company
 # -----------------------------------------------------------
 
 ad_proc -public im_company_office_select { 
@@ -545,8 +545,10 @@ ad_proc im_office_nuke {
     db_dml forum "delete from im_forum_topics where object_id = :office_id"
 
     ns_log Notice "offices/nuke-2: im_invoices"
-    db_dml forum "update im_invoices set invoice_office_id = null where invoice_office_id = :office_id"
-    
+    if {[im_table_exists im_invoices]} {
+	db_dml forum "update im_invoices set invoice_office_id = null where invoice_office_id = :office_id"
+    }
+
     # Filestorage
     ns_log Notice "offices/nuke-2: im_fs_folder_status"
     db_dml filestorage "

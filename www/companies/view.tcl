@@ -63,7 +63,7 @@ if {!$read} {
 set some_american_readers_p [parameter::get_from_package_key -package_key acs-subsite -parameter SomeAmericanReadersP -default 0]
 
 
-# Check if the invoices was changed outside of ]po[...
+# Check if the object was changed outside of ]po[...
 im_audit -object_type "im_company" -object_id $company_id -action before_view
 
 

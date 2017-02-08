@@ -35,7 +35,7 @@ if {![im_permission $user_id add_projects]} {
 # Defaults
 # ---------------------------------------------------------------
 
-set page_title "[_ intranet-invoices.Select_Customer]"
+set page_title [lang::message::lookup "" intranet-core.Select_Customer "Select Customer"]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 
 
