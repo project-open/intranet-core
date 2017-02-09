@@ -28,7 +28,7 @@
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditObjectRelationshipsP" default="0" description="Should we audit the acs_rels between the audit object and other objects? Set this parameter to '1' in order to track user group memberships, project assignments etc. Set this parameter to '0' if you run into performance issues with audit."/>
 
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AuditProjectUpdatesP"  default="0" description="Enable Auditing of project updates by a user? This options saves the user_id and the IP-address of a user changing a project."/>
-            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="/home/ppm/filestorage/backup" description="Path for backup sets"/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="BackupBasePathUnix"  default="/web/projop/filestorage/backup" description="Path for backup sets"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectCostsP"  default="1" description="Clone project's financial items?"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectFilesP"  default="1" description="Clone project files"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="CloneProjectForumTopicsP"  default="1" description="Clone forum entries?"/>
