@@ -139,20 +139,6 @@ create table im_projects (
 					constraint im_project_company_contact_id_fk
 					references users,
 	sort_order			integer,
-	cost_quotes_cache		numeric(12,2) default 0,
-	cost_invoices_cache		numeric(12,2) default 0,
-	cost_timesheet_planned_cache	numeric(12,2) default 0,
-	cost_purchase_orders_cache	numeric(12,2) default 0,
-	cost_bills_cache		numeric(12,2) default 0,
-	cost_timesheet_logged_cache	numeric(12,2) default 0,
-	cost_delivery_notes_cache	numeric(12,2) default 0,
-	cost_expense_planned_cache	numeric(12,2) default 0,
-	cost_expense_logged_cache	numeric(12,2) default 0,
-	reported_hours_cache		numeric(12,2) default 0,
-	reported_days_cache		numeric(12,2) default 0,
-	-- Dirty field indicates that the cache needs to be recalculated
-	cost_cache_dirty		timestamptz,
-
 	-- Presales Pipeline
 	presales_probability		numeric(5,2),
 	presales_value			numeric(12,2),

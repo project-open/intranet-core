@@ -107,12 +107,6 @@ my $corporate_sponsor            = $row->{corporate_sponsor};
 my $percent_completed            = $row->{percent_completed};
 my $on_track_status_id           = $row->{on_track_status_id};
 my $project_budget_hours         = $row->{project_budget_hours};
-my $cost_quotes_cache            = $row->{cost_quotes_cache};
-my $cost_invoices_cache          = $row->{cost_invoices_cache};
-my $cost_timesheet_planned_cache = $row->{cost_timesheet_planned_cache};
-my $cost_purchase_orders_cache   = $row->{cost_purchase_orders_cache};
-my $cost_bills_cache             = $row->{cost_bills_cache};
-my $cost_timesheet_logged_cache  = $row->{cost_timesheet_logged_cache};
 my $template_p                   = $row->{template_p};
 my $sort_order                   = $row->{sort_order};
 
