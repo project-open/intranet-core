@@ -32,9 +32,6 @@ cvs checkout bug-tracker
 cvs checkout bulk-mail
 cvs checkout calendar
 cvs checkout categories
-cvs checkout chat
-cvs checkout cms
-cvs checkout diagram
 cvs checkout file-storage
 cvs checkout general-comments
 cvs checkout intranet-agile
