@@ -196,7 +196,7 @@
   <msg key="Client_Type">Tipo de Cliente</msg>
   <msg key="Clients">Clientes</msg>
   <msg key="Clone_Project">Clonar este projeto</msg>
-  <msg key="Clone_Project_Help">É possível 'clonar' um projeto para ganhar tempo na hora de criar um projeto similar.
+  <msg key="Clone_Project_Help">É possível &#39;clonar&#39; um projeto para ganhar tempo na hora de criar um projeto similar.
 
 </msg>
   <msg key="Close">Fechar</msg>
@@ -386,7 +386,7 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Exchange_Rates">Taxas de Câmbio</msg>
-  <msg key="Execution_Project_Help">Um 'projeto de execução' é uma cópia de um projeto desenhado para estar completamente separado de referências ao projeto inicial para poder manter o cliente anônimo.</msg>
+  <msg key="Execution_Project_Help">Um &#39;projeto de execução&#39; é uma cópia de um projeto desenhado para estar completamente separado de referências ao projeto inicial para poder manter o cliente anônimo.</msg>
   <msg key="Expected_Quality">Qualidade Esperada</msg>
   <msg key="Expense_Bundle">Despesas</msg>
   <msg key="Expense_Item">Ítem de Despesa</msg>
@@ -687,7 +687,7 @@
   <msg key="Law_Company">Juridico da Empresa</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Conheça sua Empresa</msg>
-  <msg key="Learn_About_Your_Company_Blurb">Este componente mostra cada vez um membro diferente da Empresa. Desta forma, os membros diferentes de distintos escritórios podem começar a se conhecer e os funcionários podem conhecer os freelancers que trabalham para a Empresa.As permissões de acesso do usuário são mantidas, e você pode remover ou modificar o texto quando você muda em ' modelo tradução'.</msg>
+  <msg key="Learn_About_Your_Company_Blurb">Este componente mostra cada vez um membro diferente da Empresa. Desta forma, os membros diferentes de distintos escritórios podem começar a se conhecer e os funcionários podem conhecer os freelancers que trabalham para a Empresa.As permissões de acesso do usuário são mantidas, e você pode remover ou modificar o texto quando você muda em &#39; modelo tradução&#39;.</msg>
   <msg key="Lebanon">Libano</msg>
   <msg key="left">Left Blue</msg>
   <msg key="Level">Nível</msg>
@@ -718,7 +718,7 @@
   <msg key="lt_Aadir_Cosasintranet-c">Adicionar</msg>
   <msg key="lt_Aadirintranet-coreAdd">Adicionar</msg>
   <msg key="lt_acs-automated-testing">lt_acs-automated-testing</msg>
-  <msg key="lt_Add_a_manual_task_to_">Adicionar uma tarefa 'manual' ao proyecto </msg>
+  <msg key="lt_Add_a_manual_task_to_">Adicionar uma tarefa &#39;manual&#39; ao proyecto </msg>
   <msg key="lt_Add_a_new_annual_reve">Adicionar uma nova medida de faturamento anual</msg>
   <msg key="lt_Add_a_new_company_sta">Adicinar um novo Estado de Empresa</msg>
   <msg key="lt_Add_a_new_company_typ">Adicionar um novo tipo de Empresa</msg>
@@ -756,16 +756,16 @@
   <msg key="lt_Calculates_Quotes_-_P">Margem bruto preliminar (após dois meses)</msg>
   <msg key="lt_Calculates_the_averag">Duração média do projeto</msg>
   <msg key="lt_Calculates_the_number">Horas médias de registro por funcionário</msg>
-  <msg key="lt_Cant_find_the_project">Não encontrou o projeto com o ID '%project_id%' </msg>
+  <msg key="lt_Cant_find_the_project">Não encontrou o projeto com o ID &#39;%project_id%&#39; </msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Nâo pode eliminar uma empresa que pagar</msg>
   <msg key="lt_Change_the_accounting">Modificar o contato na contabilidade</msg>
   <msg key="lt_Change_the_position_o">Permitir, desabilitar,  Modificar a posição dos componentes plugin ou desabilitar componentes </msg>
   <msg key="lt_Change_the_primary_co">Alterar o contato principal</msg>
   <msg key="lt_Change_the_system_par">Alterar a parametrização do sistema tal como diretórios, URL, etc?.</msg>
   <msg key="lt_Click_here_to_get_hel">Click aquí para obter ajuda sobre esta página </msg>
-  <msg key="lt_Click_right_and_choos">Para baixar um arquivo click com o botão direito e selecione 'salvar como'</msg>
+  <msg key="lt_Click_right_and_choos">Para baixar um arquivo click com o botão direito e selecione &#39;salvar como&#39;</msg>
   <msg key="lt_Clientesintranet-file">Clientes</msg>
-  <msg key="lt_Configure_site-wide_d">Configurar os valores pre-determinados á nível global do site web, relativos ao que um grupo de usuários (&quot;perfil&quot;) pode e não pode fazer.</msg>
+  <msg key="lt_Configure_site-wide_d">Configurar os valores pre-determinados á nível global do site web, relativos ao que um grupo de usuários (&#34;perfil&#34;) pode e não pode fazer.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirmar apagar de %first_names% %last_name% </msg>
   <msg key="lt_Confirm_the_nuking_of">Confirmar o apagar para</msg>
   <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
@@ -801,6 +801,7 @@
   <msg key="mo">mo</msg>
   <msg key="My_Account">Minha Conta</msg>
   <msg key="N">N</msg>
+  <msg key="Name">Nome</msg>
   <msg key="New_">Novo</msg>
   <msg key="no">não</msg>
   <msg key="No_Importance">Sem importância</msg>
@@ -865,6 +866,7 @@
   <msg key="Update_User">Atualizar Usuário</msg>
   <msg key="Upload_Preview_Image">Carregar pré-visualização de Imagem</msg>
   <msg key="Uruguay">Uruguai</msg>
+  <msg key="Username">Nome de Usuário</msg>
   <msg key="VAS">VAS  </msg>
   <msg key="VAS_5051">VAS 5051  </msg>
   <msg key="Venezuela">Venezuela</msg>

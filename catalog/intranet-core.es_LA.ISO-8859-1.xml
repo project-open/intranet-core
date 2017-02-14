@@ -115,7 +115,7 @@
   <msg key="Bad_Office">Oficina incorrecta</msg>
   <msg key="Bad_User">Usuario incorrecto</msg>
   <msg key="Ban_this_user">Vetar a este usuario</msg>
-  <msg key="Bank_Holiday">&quot;Bank Holiday&quot; (Fiesta Bancaria)</msg>
+  <msg key="Bank_Holiday">&#34;Bank Holiday&#34; (Fiesta Bancaria)</msg>
   <msg key="Bank_Transfer">Transferencia bancaria</msg>
   <msg key="Basic_Information">Datos básicos</msg>
   <msg key="Bau_Maint">Construcción, mantenimiento</msg>
@@ -131,7 +131,7 @@
   <msg key="Bills">Facturas</msg>
   <msg key="Bio">Biografía</msg>
   <msg key="Biz">Negocios</msg>
-  <msg key="Body_Shopping">&quot;Body Shopping&quot; (subcontratación)</msg>
+  <msg key="Body_Shopping">&#34;Body Shopping&#34; (subcontratación)</msg>
   <msg key="Bolivia">Bolivia</msg>
   <msg key="Bosnia and Herzegovina">Bosnia y Herzegovina</msg>
   <msg key="Branch_Office">Filial</msg>
@@ -187,7 +187,7 @@
   <msg key="Client_Type">Tipo de cliente</msg>
   <msg key="Clients">Clientes</msg>
   <msg key="Clone_Project">Clonar este proyecto</msg>
-  <msg key="Clone_Project_Help">Es posible 'clonar' un proyecto para ahorrar tiempo a la hora de crear uno parecido.</msg>
+  <msg key="Clone_Project_Help">Es posible &#39;clonar&#39; un proyecto para ahorrar tiempo a la hora de crear uno parecido.</msg>
   <msg key="Close">Cerrar</msg>
   <msg key="Closed">Cerrado</msg>
   <msg key="CollabKM_Help">Ayuda C&amp;KM</msg>
@@ -282,7 +282,7 @@
   <msg key="da">da</msg>
   <msg key="da_DK">da_DK</msg>
   <msg key="Dangerous">¡¡Peligroso!!</msg>
-  <msg key="Dashboard">&quot;Dashboard&quot; (interfaz gráfica)</msg>
+  <msg key="Dashboard">&#34;Dashboard&#34; (interfaz gráfica)</msg>
   <msg key="Data_Access_1">Acceso a datos</msg>
   <msg key="Date">Fecha</msg>
   <msg key="Day">Día</msg>
@@ -374,7 +374,7 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Exchange_Rates">Tipos de cambio</msg>
-  <msg key="Execution_Project_Help">Un 'Proyecto de ejecución' es una copia de un proyecto diseñada para no contener ninguna referencia al proyecto inicial, para así garantizar el anonimato del cliente.</msg>
+  <msg key="Execution_Project_Help">Un &#39;Proyecto de ejecución&#39; es una copia de un proyecto diseñada para no contener ninguna referencia al proyecto inicial, para así garantizar el anonimato del cliente.</msg>
   <msg key="Expected_Quality">Calidad esperada</msg>
   <msg key="Expense_Bundle">Conjunto de gastos</msg>
   <msg key="Expense_Item">Elemento de gasto</msg>
@@ -664,7 +664,7 @@
   <msg key="Law_Company">Despacho de abogados</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Conozca su compañía</msg>
-  <msg key="Learn_About_Your_Company_Blurb">Este componente le muestra cada vez un miembro distinto de la compañía. Esto permite que los miembros de distintas oficinas se conozcan los unos a los otros y los empleados sepan acerca de los freelancers que colaboran con la compañía. Los privilegios de acceso de los usuarios se mantienen  y es posible borrar o modificar _este_ texto al entrar en el 'modo de traducción'.</msg>
+  <msg key="Learn_About_Your_Company_Blurb">Este componente le muestra cada vez un miembro distinto de la compañía. Esto permite que los miembros de distintas oficinas se conozcan los unos a los otros y los empleados sepan acerca de los freelancers que colaboran con la compañía. Los privilegios de acceso de los usuarios se mantienen  y es posible borrar o modificar _este_ texto al entrar en el &#39;modo de traducción&#39;.</msg>
   <msg key="Lebanon">Líbano</msg>
   <msg key="left">Left Blue</msg>
   <msg key="Licenses">Licencias</msg>
@@ -693,7 +693,7 @@
   <msg key="lt_A_project_number_is_c">Un número de proyecto consta de los 4 dígitos del año actual, seguidos de 4 dígitos de identificación correlativos.</msg>
   <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Añadir</msg>
-  <msg key="lt_Add_a_manual_task_to_">Añadir una tarea 'manual' al proyecto</msg>
+  <msg key="lt_Add_a_manual_task_to_">Añadir una tarea &#39;manual&#39; al proyecto</msg>
   <msg key="lt_Add_a_new_annual_reve">Añadir una nueva medida de facturación manual</msg>
   <msg key="lt_Add_a_new_company_sta">Añadir un nuevo status de compañía</msg>
   <msg key="lt_Add_a_new_company_typ">Añadir un nuevo tipo de compañía</msg>
@@ -731,7 +731,7 @@
   <msg key="lt_Calculates_Invoices_-">Margen neto (después de 2 meses)</msg>
   <msg key="lt_Calculates_Quotes_-_P">Margen neto preliminar (después de 2 meses)</msg>
   <msg key="lt_Calculates_the_number">Media de horas de hoja de tiempos por empleado </msg>
-  <msg key="lt_Cant_find_the_project">No encuentro el proyecto con la ID '%project_id%'</msg>
+  <msg key="lt_Cant_find_the_project">No encuentro el proyecto con la ID &#39;%project_id%&#39;</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">No puedo eliminar una compañía pagadera</msg>
   <msg key="lt_Change_the_accounting">Modificar el contacto en Contabilidad</msg>
   <msg key="lt_Change_the_position_o">Habilitar, deshabilitar, modificar la posición y los permisos de acceso de los componentes plugin</msg>
@@ -739,9 +739,9 @@
   <msg key="lt_Change_the_system_par">Modificar la parametrización del sistema, p.ej. directorios, URLs, etc...</msg>
   <msg key="lt_Choose_this_option_fo">Elija esta opción para obtener información de seguridad detallada. Con esta opción el servicio de actualización de seguridad transmite una información acerca de su configuración, que puede ayudarnos a determinar la configuración de su sistema ]project-open[, incluyendo las versiones de paquete y la información de versión del sistema operativo. Incluye asimismo su dirección de e-mail, para que podamos avisarle en situaciones especiales.</msg>
   <msg key="lt_Choose_this_option_if">Elija esta opción si prefiere no revelar a ]project-open[  ninguna información que pudiera identificarle a usted o a su organización.</msg>
-  <msg key="lt_Click_right_and_choos">Para descargar un archivo haga clic con la tecla derecha y seleccione 'Guardar destino como'</msg>
+  <msg key="lt_Click_right_and_choos">Para descargar un archivo haga clic con la tecla derecha y seleccione &#39;Guardar destino como&#39;</msg>
   <msg key="lt_Clientesintranet-file">Clientes</msg>
-  <msg key="lt_Configure_site-wide_d">Configurar los valores predeterminados a nivel global del sitio web, relativos a lo que un grupo de usuarios (&quot;perfil&quot;) puede hacer y lo que no debería hacer.</msg>
+  <msg key="lt_Configure_site-wide_d">Configurar los valores predeterminados a nivel global del sitio web, relativos a lo que un grupo de usuarios (&#34;perfil&#34;) puede hacer y lo que no debería hacer.</msg>
   <msg key="lt_Confirm_Nuking_first_">Confirmar el borrado de %first_names% %last_name%</msg>
   <msg key="lt_Confirm_the_nuking_of">Confirmar el borrado de</msg>
   <msg key="lt_Corel_Catalyst_25_Sta">Corel Catalyst 2.5 Standard</msg>
@@ -760,14 +760,14 @@
   <msg key="lt_Directivosintranet-fi">Directivos</msg>
   <msg key="lt_Discussionintranet-fo">Debate</msg>
   <msg key="lt_Do_you_want_to_create">¿Quiere crear un subproyecto (un proyecto que forma parte de otro proyecto)? Si no está seguro, deje en blanco el campo (-- Por favor seleccione --).</msg>
-  <msg key="lt_Dots__in_Project_Path">No están permitidos los puntos ('.') en la 'Ruta de proyecto'</msg>
+  <msg key="lt_Dots__in_Project_Path">No están permitidos los puntos (&#39;.&#39;) en la &#39;Ruta de proyecto&#39;</msg>
   <msg key="lt_Edit_comments_about_y">Editar presentación personal</msg>
   <msg key="lt_Edit_menus_and_change">Editar menús y modificar sus permisos.</msg>
   <msg key="lt_Edit_views_and_change">Editar vistas y añadir columnas.</msg>
   <msg key="lt_Empleadosintranet-fil">Empleados</msg>
   <msg key="lt_Employeesintranet-fil">Empleados</msg>
   <msg key="lt_End_date_must_be_afte">La fecha final debe ser posterior a la fecha inicial</msg>
-  <msg key="lt_Error_evaluating_comp">Error al evaluar el componente '%plugin_name%' del módulo '%package_name%'</msg>
+  <msg key="lt_Error_evaluating_comp">Error al evaluar el componente &#39;%plugin_name%&#39; del módulo &#39;%package_name%&#39;</msg>
   <msg key="lt_Error_getting_the_ema">Error al intentar obtener la dirección de e-mail de %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Error: Falta un parámetro</msg>
   <msg key="lt_Expected_Annual_Reven">Facturación anual (prevista)</msg>
@@ -779,8 +779,8 @@
   <msg key="lt_File_translation_Trad">Traducción de archivo: Contaje de palabras de Trados multiplicado por la matriz de proveedor de Trados</msg>
   <msg key="lt_Finally_revisit_this_">Finalmente, vuelva a visitar esta página y aparecerá una opción para incluir la nueva persona de contacto en la compañía cliente.</msg>
   <msg key="lt_first_names_from_sear">
-Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; para avisar a los usuarios seleccionados.</msg>
-  <msg key="lt_first_names_last_name">%first_names% %last_name% ha sido añadido a %system_name%. Edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; para avisar a este usuario.</msg>
+Por favor edite el mensaje de abajo y clique sobre  &#34;Enviar e-mail&#34; para avisar a los usuarios seleccionados.</msg>
+  <msg key="lt_first_names_last_name">%first_names% %last_name% ha sido añadido a %system_name%. Edite el mensaje de abajo y clique sobre  &#34;Enviar e-mail&#34; para avisar a este usuario.</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name%,   ha sido añadido como usuario a %system_name% en  %system_url%  Información de acceso: E-mail: %email% Contraseña: %password% (podrá modificar la contraseña después de iniciar sesión)  Gracias, %administration_name%</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% ha sido informada/o.</msg>
   <msg key="lt_First_unless_first_na">A menos que %first_names% %last_name% no sea un usuario de prueba, probablemente deberá borrar %delete_user_link%.  Borrando se marca el usuario como borrado, pero se conservan intactas sus contribuciones al contenido del sitio.</msg>
@@ -795,7 +795,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_GanttProject_is_a_fre">GanttProject es un editor libre de diagramas de Gantt (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">Tipo de proyecto general. Nos permite crear una estructura de carpetas adecuada.</msg>
   <msg key="lt_Geschftsfhrungintrane">Gerencia</msg>
-  <msg key="lt_has_been_marked_delet">ha sido marcado como \&quot;borrado\&quot;.</msg>
+  <msg key="lt_has_been_marked_delet">ha sido marcado como \&#34;borrado\&#34;.</msg>
   <msg key="lt_Here_you_can_manage_u">Aquí puede administrar individualmente los usuarios.</msg>
   <msg key="lt_Here_you_find_advance">Aquí encontrará funciones de administración y configuración avanzadas de los ... básicos</msg>
   <msg key="lt_Here_you_find_advance_1">Aquí encontrará opciones de configuración avanzada de software de los ... básicos</msg>
@@ -803,13 +803,13 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_How_did_we_get_in_con">¿Cómo entramos en contacto con la compañía?</msg>
   <msg key="lt_How_many_hours_can_be">¿Cuántas horas se pueden registrar en este proyecto (recursos internos y externos)?</msg>
   <msg key="lt_IBM_Translation_Workb">IBM Translation Workbench</msg>
-  <msg key="lt_If_this_IS_a_TestDemo">Si ES un servidor de pruebas/demostración/desarrollo, compruebe '/parameters/*.ini' y ajuste el indicador TestDemoDevServer a 'true'.</msg>
+  <msg key="lt_If_this_IS_a_TestDemo">Si ES un servidor de pruebas/demostración/desarrollo, compruebe &#39;/parameters/*.ini&#39; y ajuste el indicador TestDemoDevServer a &#39;true&#39;.</msg>
   <msg key="lt_Import_Company_Contac">Importar .cvs de datos de contacto de la compañía</msg>
   <msg key="lt_Import_Projects_from_">Importar proyectos desde H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">En proceso: El trabajo comienza de inmediato, proyecto potencial: Puede convertirse en un proyecto en el futuro, no ha comenzado todavía: Estamos esperando a comenzar a trabajar con el mismo, completado: Ya completado...</msg>
   <msg key="lt_Incidentintranet-foru">Incidencia</msg>
   <msg key="lt_Insufficient_Privileg">Privilegios insuficientes</msg>
-  <msg key="lt_Internal_error_unknow">Error interno: Vista '%view_name%' desconocida</msg>
+  <msg key="lt_Internal_error_unknow">Error interno: Vista &#39;%view_name%&#39; desconocida</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Acceso datos RFC Intranet</msg>
   <msg key="lt_Intranet_RFC_Expense_">Tipo de gasto RFC Intranet</msg>
   <msg key="lt_Intranet_RFC_HJ_Appli">Aplicación HJ RFC Intranet</msg>
@@ -824,7 +824,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Intranet_RFC_RR_Colum">Columna RR RFC Intranet</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Formato RR RFC Intranet</msg>
   <msg key="lt_Intranet_RFC_Workplac">Centro trabajo RFC Intranet</msg>
-  <msg key="lt_Invalid_time_format_e">Formato de hora '%end_time(time)%' no válido: Entre por favor la hora según el formato '12:30'</msg>
+  <msg key="lt_Invalid_time_format_e">Formato de hora &#39;%end_time(time)%&#39; no válido: Entre por favor la hora según el formato &#39;12:30&#39;</msg>
   <msg key="lt_Invoices_written_with">Ventas </msg>
   <msg key="lt_Is_the_project_going_">¿Va a cumplir el proyecto el plazo y el presupuesto (verde), requiere estar atento (amarillo) o va a incumplirlos (rojo)?</msg>
   <msg key="lt_Is_this_a_billable_co">¿Se pueden emitir facturas a esta compañía?</msg>
@@ -843,12 +843,12 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_make_accounting_conta">crear contacto en Contabilidad</msg>
   <msg key="lt_Make_the_new_client_c">Convertir el nuevo contacto en la compañía cliente en un %new_company_employee_link% %company_name%.</msg>
   <msg key="lt_Make_the_new_client_c_1">Convertir el nuevo contacto en la compañía cliente en un  %company_employee_link% %company_name%.</msg>
-  <msg key="lt_Manage_Component_Layo">Componentes &quot;plug in&quot;</msg>
+  <msg key="lt_Manage_Component_Layo">Componentes &#34;plug in&#34;</msg>
   <msg key="lt_Manage_Global_System_">Administrar parámetros globales del sistema</msg>
   <msg key="lt_Manage_Individual_Use">Administrar usuarios individuales</msg>
   <msg key="lt_Manage_OpenACS_Develo">Administrar desarrollo de OpenACS</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Administrar la plataforma OpenACS</msg>
-  <msg key="lt_Maybe_somebody_has_ch">Quizá alguien haya modificado la ruta de la compañía 'Interna' que identifica a su organización.</msg>
+  <msg key="lt_Maybe_somebody_has_ch">Quizá alguien haya modificado la ruta de la compañía &#39;Interna&#39; que identifica a su organización.</msg>
   <msg key="lt_Meineintranet-timeshe">Mi</msg>
   <msg key="lt_Member_state_user_sta">Status de miembro: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Status de miembro: %user_state% (%activate_link%, %delete_link%)</msg>
@@ -857,7 +857,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Missing_group_id_and_">Faltan group_id y short_name</msg>
   <msg key="lt_Mitarbeiterintranet-f">Colaboradores</msg>
   <msg key="lt_MLV_Translation_Agenc">Agencia de traducciones PMI</msg>
-  <msg key="lt_Modify_the_access_per">Modifique los permisos de acceso para &quot;dynamic variables&quot; o añada nuevas variables dinámicas (personalizadas).</msg>
+  <msg key="lt_Modify_the_access_per">Modifique los permisos de acceso para &#34;dynamic variables&#34; o añada nuevas variables dinámicas (personalizadas).</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
   <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator</msg>
   <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows</msg>
@@ -880,7 +880,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Note_You_can_find_all">Nota: Podrá encontrar todos los parámetros actuales de la intranet en %arsdigita_link%, aunque este archivo puede que sea más reciente que su versión de ACS.</msg>
   <msg key="lt_Noteintranet-forumNot">Nota</msg>
   <msg key="lt_Nuke_first_names_last">Eliminar %first_names% %last_name%</msg>
-  <msg key="lt_Nuking_is_a_violent_i">La eliminación es una acción &quot;violenta&quot; e irreversible.  Está ordenando al sistema que borre del sitio al usuario y cualquier contenido con el que haya contribuido a aquél.  Generalmente esto sólo es aconsejable en el caso de usuarios de test y, quizás, de personas deshonestas que han inundado el sitio web con basura falsa.</msg>
+  <msg key="lt_Nuking_is_a_violent_i">La eliminación es una acción &#34;violenta&#34; e irreversible.  Está ordenando al sistema que borre del sitio al usuario y cualquier contenido con el que haya contribuido a aquél.  Generalmente esto sólo es aconsejable en el caso de usuarios de test y, quizás, de personas deshonestas que han inundado el sitio web con basura falsa.</msg>
   <msg key="lt_num_users_online_user">%num_users_online% usuarios conectados</msg>
   <msg key="lt_num_users_online_user_1">%num_users_online% usuarios conectados</msg>
   <msg key="lt_Office_Directory_Path">Ruta de la carpeta de la oficina</msg>
@@ -907,9 +907,9 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Project_Change_Reques">Solicitud de cambio de proyecto</msg>
   <msg key="lt_Project_Translation_D">Detalles del proyecto de traducción</msg>
   <msg key="lt_Provider_bills_with_e">costos externos</msg>
-  <msg key="lt_Quotes_in_Project_Nam">No está permitido incluir comillas en 'Nombre de proyecto'</msg>
-  <msg key="lt_Quotes_in_Project_Nr_">No está permitido incluir comillas en 'Proyecto nº'</msg>
-  <msg key="lt_Quotes_in_Project_Pat">No está permitido incluir comillas en 'Ruta proyecto'</msg>
+  <msg key="lt_Quotes_in_Project_Nam">No está permitido incluir comillas en &#39;Nombre de proyecto&#39;</msg>
+  <msg key="lt_Quotes_in_Project_Nr_">No está permitido incluir comillas en &#39;Proyecto nº&#39;</msg>
+  <msg key="lt_Quotes_in_Project_Pat">No está permitido incluir comillas en &#39;Ruta proyecto&#39;</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
@@ -922,8 +922,8 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Return_Url_was_not_sp">No se ha especificado una URL de retorno. Esto no debería haber ocurrido. Contacte por favor con el %mail_to_administrator_link% y explíquele lo ocurrido</msg>
   <msg key="lt_role_name_of_object_n">%role_name% de %object_name%</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
-  <msg key="lt_Search_for_a_substrin">Busque una cadena de caracteres en el e-mail de una personal, p.ej. \&quot;leon\&quot; para encontrar todos los usuarios de Forjas Leonesas.</msg>
-  <msg key="lt_Search_for_a_substrin_1">Busque una cadena de caracteres en los apellidos de una persona, p.ej. \&quot;zapa\&quot; para encontrar todos los usuarios con un apellido que contenga \&quot;zapa\&quot;.</msg>
+  <msg key="lt_Search_for_a_substrin">Busque una cadena de caracteres en el e-mail de una personal, p.ej. \&#34;leon\&#34; para encontrar todos los usuarios de Forjas Leonesas.</msg>
+  <msg key="lt_Search_for_a_substrin_1">Busque una cadena de caracteres en los apellidos de una persona, p.ej. \&#34;zapa\&#34; para encontrar todos los usuarios con un apellido que contenga \&#34;zapa\&#34;.</msg>
   <msg key="lt_Search_for_an_account">Busque una cuenta a combinar con esta:</msg>
   <msg key="lt_Select_accounting_con">Seleccione el contacto en Contabilidad de %company_name%</msg>
   <msg key="lt_Select_primary_contac">Seleccione la persona de contacto principal en %company_name%</msg>
@@ -932,7 +932,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Senior_Managersintran">Directivos</msg>
   <msg key="lt_Service_Level_Agreeme">Acuerdo de Nivel de Servicio</msg>
   <msg key="lt_Shows_the_status_of_a">Muestra el status de un proyecto</msg>
-  <msg key="lt_Slashes__in_Project_P">En la &quot;Ruta del proyecto' no está permitido el uso de barras inclinadas ('/')</msg>
+  <msg key="lt_Slashes__in_Project_P">En la &#34;Ruta del proyecto&#39; no está permitido el uso de barras inclinadas (&#39;/&#39;)</msg>
   <msg key="lt_So_you_probably_dont_">Entonces probablemente no quiera destruir todos los datos, ¿!¿correcto?!?</msg>
   <msg key="lt_Software_Company_Comp">compañía de software</msg>
   <msg key="lt_Software_Company_Cust">Cliente de compañía de software</msg>
@@ -943,10 +943,10 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_The_customers_referen">El nº de proyecto del cliente.</msg>
   <msg key="lt_The_database_choked_o">La base de datos se ha colapsado al realizar nuestra actualización</msg>
   <msg key="lt_the_email_email_is_al">La dirección %email% ya existe en la base de datos</msg>
-  <msg key="lt_The_English_translati">La 'traducción' inglesa debería ser idéntica al nombre de la categoría.</msg>
+  <msg key="lt_The_English_translati">La &#39;traducción&#39; inglesa debería ser idéntica al nombre de la categoría.</msg>
   <msg key="lt_The_note_you_entered_">La nota que ha ingresado es demasiado larga. Limite por favor la extensión de la nota a 4.000 caracteres.</msg>
   <msg key="lt_The_nuking_of_user_us">La eliminación del usuario %user_id% ha fallado.    Probablemente esto sea debido a que su instalación de OpenACS ha sido personalizada e incluye nuevas tablas que referencias a la tabla de usuario.   ¡Quéjese a su programador!  </msg>
-  <msg key="lt_The_parameter_paramet">El parámetro '%parameter%' no está definido en la sección Intranet de su archivo de parámetros del servidor. Por favor defina este parámetro, reinicie su servidor e inténtelo de nuevo.</msg>
+  <msg key="lt_The_parameter_paramet">El parámetro &#39;%parameter%&#39; no está definido en la sección Intranet de su archivo de parámetros del servidor. Por favor defina este parámetro, reinicie su servidor e inténtelo de nuevo.</msg>
   <msg key="lt_The_project_name_that">El nombre que ha escogido para el proyecto es demasiado corto.</msg>
   <msg key="lt_The_project_or_one_of">El proyecto o uno de sus proyectos padre ha sido cerrado.</msg>
   <msg key="lt_The_screen_name_you_h">El alias que ha escogido ya está siendo utilizado por otro usuario.</msg>
@@ -955,8 +955,8 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_The_system_was_unable">El sistema no ha podido enviar el e-mail.  Por favor notifique personalmente al usuario. El problema está causado probablemente por una configuración errónea de su sistema de correo electrónico.</msg>
   <msg key="lt_There_are_currently_n">Actualmente no existen entradas que cumplan los criterios seleccionados</msg>
   <msg key="lt_There_is_a_difference">Hay una diferencia entre &amp;quot;Cliente pagador&amp;quot; y &amp;quot;Cliente final&amp;quot;. En este caso queremos saber de quién vamos a recibir el dinero...</msg>
-  <msg key="lt_There_is_already_a_vi">Ya existe un %view_similar_user_link% con la dirección de e-mail '%email%' en la base de datos.</msg>
-  <msg key="lt_This_command_destroys">Este comando elimina todos los datos actuales de su servidor, reemplazando las cadenas de texto (nombres de proyecto, nombres de compañía, usuarios, descripciones, ...) por cadenas de texto aleatorias &quot;anonimizadas&quot;, que permiten crear un sistema de demostración.</msg>
+  <msg key="lt_There_is_already_a_vi">Ya existe un %view_similar_user_link% con la dirección de e-mail &#39;%email%&#39; en la base de datos.</msg>
+  <msg key="lt_This_command_destroys">Este comando elimina todos los datos actuales de su servidor, reemplazando las cadenas de texto (nombres de proyecto, nombres de compañía, usuarios, descripciones, ...) por cadenas de texto aleatorias &#34;anonimizadas&#34;, que permiten crear un sistema de demostración.</msg>
   <msg key="lt_This_file_has_generat">Este archivo ha generado un error.</msg>
   <msg key="lt_This_is_not_a_TestDem">Este no es un servidor de prueba/demostración/desarrollo.</msg>
   <msg key="lt_This_project_is_part_">Este proyecto forma parte de otro proyecto o contiene subproyectos.</msg>
@@ -966,11 +966,11 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Translation_of_a_manu">Traducción de una tarea añadida manualmente: Utilizaré únicamente las unidades de tarea especificadas manualmente</msg>
   <msg key="lt_Translation_source_la">Idioma de partida de la traducción</msg>
   <msg key="lt_Translation_target_la">Idioma de destino de la traducción</msg>
-  <msg key="lt_Unable_to_determine_I">No puedo determinar la compañía 'Interna'</msg>
+  <msg key="lt_Unable_to_determine_I">No puedo determinar la compañía &#39;Interna&#39;</msg>
   <msg key="lt_Update_Basic_Informat">Actualizar información básica</msg>
   <msg key="lt_Update_this_users_pas">Actualizar la contraseña de este usuario</msg>
   <msg key="lt_Upload_GanttProject_S">Cargar archivo GanttProject</msg>
-  <msg key="lt_Use_the_Browse_button">Utilice el botón 'Examinar...' para encontrar su archivo y haga clic sobre 'Abrir'.</msg>
+  <msg key="lt_Use_the_Browse_button">Utilice el botón &#39;Examinar...&#39; para encontrar su archivo y haga clic sobre &#39;Abrir&#39;.</msg>
   <msg key="lt_User_not_found_in_the">Usuario no hallado en la lista de morosos. ¡¡¿ Quizá ya fue borrado ?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% no definido para listas vacías.</msg>
   <msg key="lt_View_administrative_p">Ver la página de administración del nuevo usuario creado,</msg>
@@ -991,8 +991,8 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="lt_Wire_Transfer_La_Caix">Transferencia bancaria La Caixa</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Sí, estoy seguro de que deseo borrar esta persona</msg>
   <msg key="lt_You_are_not_a_member_">Ud. no es miembro de este proyecto.</msg>
-  <msg key="lt_You_are_not_allowed_t">No tiene privilegios para eliminar miembros del grupo '%profile_name%'</msg>
-  <msg key="lt_You_are_not_allowed_t_1">No tiene privilegios para añadir miembros al perfil '%profile_name%'</msg>
+  <msg key="lt_You_are_not_allowed_t">No tiene privilegios para eliminar miembros del grupo &#39;%profile_name%&#39;</msg>
+  <msg key="lt_You_are_not_allowed_t_1">No tiene privilegios para añadir miembros al perfil &#39;%profile_name%&#39;</msg>
   <msg key="lt_You_are_not_authorize">Carece de permisos para ver esta página</msg>
   <msg key="lt_You_are_trying_to_acc">Está intentando acceder a una vista que no ha sido definida en la base de datos.</msg>
   <msg key="lt_You_can_only_specify_">Puede especificar o bien la dirección de correo electrónico o los apellidos, pero no ambos.</msg>
@@ -1383,7 +1383,7 @@ Por favor edite el mensaje de abajo y clique sobre  &quot;Enviar e-mail&quot; pa
   <msg key="Sales">Ventas</msg>
   <msg key="sales">Ventas</msg>
   <msg key="Sales_Office">Oficina de Ventas</msg>
-  <msg key="saltnpepper">Salt 'n Pepper</msg>
+  <msg key="saltnpepper">Salt &#39;n Pepper</msg>
   <msg key="Saudi Arabia">Arabia Saudí</msg>
   <msg key="Saudi_Arabia">Arabia Saudí</msg>
   <msg key="Save_Changes">Guardar cambios</msg>

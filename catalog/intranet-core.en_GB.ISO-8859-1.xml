@@ -25,7 +25,7 @@
   <msg key="lt_How_many_hours_can_be">For consulting projects enter in the estimated duration of the assignment in hours.</msg>
   <msg key="lt_In_Process_Work_is_st">Refer to the new_project_defs wiki page for a detailed explanation on Project Status types.</msg>
   <msg key="lt_Incidentintranet-foru">Allocation</msg>
-  <msg key="lt_Is_the_project_going_">Refer to the new_project_defs Wiki page for detailed explanation on this field's use. </msg>
+  <msg key="lt_Is_the_project_going_">Refer to the new_project_defs Wiki page for detailed explanation on this field&#39;s use. </msg>
   <msg key="lt_Please_enter_any_suit">Enter in the format YYMMDD {Project Name} . Each name must be unique.</msg>
   <msg key="lt_Project_Translation_D">Translation Project Details</msg>
   <msg key="lt_There_is_a_difference">Clients are named here by their invoicing name. Use the search function to identify companies you only know by their trading name.</msg>

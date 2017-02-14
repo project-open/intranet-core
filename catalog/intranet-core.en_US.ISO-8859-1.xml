@@ -337,8 +337,10 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Comments">Comments?</msg>
   <msg key="Companies">Companies</msg>
   <msg key="Companies_Admin">Companies Admin</msg>
+  <msg key="Companies_Dashboard">Companies Dashboard</msg>
   <msg key="Companies_Filestorage_Component">Company Filestorage Portlet</msg>
   <msg key="Companies_Forum_Component">Company Forum Portlet</msg>
+  <msg key="Companies_List">Companies List</msg>
   <msg key="Company">Company</msg>
   <msg key="Company_Contacts">Company Contacts</msg>
   <msg key="Company_Cost_Component">Company Cost Portlet</msg>
@@ -454,6 +456,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
   <msg key="creditSEAT_VWesadp">credit.SEAT_VW.es.adp</msg>
   <msg key="CRM">CRM</msg>
+  <msg key="CRM_Admin">CRM Admin</msg>
   <msg key="CRM_Campaign">CRM Campaign</msg>
   <msg key="CRM_Help">CRM Help</msg>
   <msg key="CRM_Home">CRM Home</msg>
@@ -505,6 +508,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Date">Date</msg>
   <msg key="Date_submitted">Date submitted</msg>
   <msg key="Day">Day</msg>
+  <msg key="Dayintranet-coreDay">Day</msg>
   <msg key="DB_DB2">DB DB2</msg>
   <msg key="DB_MS-SQL_Server">DB MS-SQL-Server</msg>
   <msg key="DB_Oracle">DB Oracle</msg>
@@ -700,6 +704,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Finland">Finland</msg>
   <msg key="First_Names">First Names</msg>
   <msg key="First_names">First names</msg>
+  <msg key="Fixed_Task_Type">Fixed Task Type</msg>
   <msg key="for">for</msg>
   <msg key="for_Deliv">for Delivery</msg>
   <msg key="for_Edit">for Edit</msg>
@@ -845,7 +850,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Gx">Gx</msg>
   <msg key="h">h</msg>
   <msg key="Hardware">Hardware</msg>
-  <msg key="Hardware_Component">Hardware Portlet</msg>
+  <msg key="Hardware_Component">Hardware</msg>
   <msg key="he">he</msg>
   <msg key="Help">Help</msg>
   <msg key="Help_Request">Help Request</msg>
@@ -1369,9 +1374,11 @@ her contributions to the site content.</msg>
   <msg key="lt_Modify_the_access_per">Modify the access permissions for &#34;dynamic variables&#34; or add
 	new dynamic (custom) variables.</msg>
   <msg key="lt_Modify_the_name_and_d">Modify the name and d</msg>
+  <msg key="lt_Monatintranet-coreMon">Month</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
   <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator</msg>
   <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows</msg>
+  <msg key="lt_nderungen_speichernin">Save Changes</msg>
   <msg key="lt_Negative_Importance_a">Negative Importance</msg>
   <msg key="lt_New_Company_Invoice_f">New Company Invoice</msg>
   <msg key="lt_New_Customer_Invoice_">New Customer Invoice</msg>
@@ -1427,6 +1434,7 @@ site with fake crud.</msg>
   <msg key="lt_Problem_Ticket_Close_">Problem Ticket: Close Associated Incidents</msg>
   <msg key="lt_Problem_Ticket_Create">Problem Ticket: Create from Incident Ticket</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
+  <msg key="lt_Project_Phases__Risks">Project Phases &amp; Risks</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
   <msg key="lt_Provider_bills_with_e">External Costs</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in &#39;Project Name&#39; are not allowed</msg>
@@ -1443,6 +1451,7 @@ site with fake crud.</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
   <msg key="lt_Report_a_bug_on_this_">Report a bug on this page</msg>
   <msg key="lt_Resource_Assignation_">Resource Assignation %</msg>
+  <msg key="lt_Resource_Planning_Rep">Resource Planning Report</msg>
   <msg key="lt_return_to_user_admini">Return to user administration</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url was not specified. This shouldn&#39;t have happened,
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
@@ -1452,6 +1461,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Room_Built-In_Compute">Raum vorhandene Rechner</msg>
   <msg key="lt_Room_Number_of_Beamer">Raum Anzahl der Beamer</msg>
   <msg key="lt_Save_Changesintranet-">Save</msg>
+  <msg key="lt_Scheduling_Constraint">Scheduling Constraint</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
   <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&#34;lion\&#34; to search for all users from Lionbridge.</msg>
   <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&#34;berg\&#34; to search for all users with a last name containing \&#34;berg\&#34;.</msg>
@@ -1526,6 +1536,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_We_have_no_contacts_i">We have no contacts in our database for %company_name%</msg>
   <msg key="lt_We_need_either_the_sh">We need either the short name or the group id to set up the url for the /groups directory</msg>
   <msg key="lt_Web_Site_Development2">Web Site Development2</msg>
+  <msg key="lt_Weekintranet-coreWeek">Week</msg>
   <msg key="lt_Weve_nuked_user_user_">We&#39;ve nuked user %user_id%.  You can %return_to_admin_link% now.</msg>
   <msg key="lt_What_is_the_financial">What is the financial budget of this project? Includes both external (invoices) and internal (timesheet) costs.</msg>
   <msg key="lt_Who_is_the_final_cons">Who is the final consumer (when working for an agency)? Examples: &amp;quot;Shell&amp;quot;, &amp;quot;UBS&amp;quot;, ...</msg>
@@ -1678,6 +1689,7 @@ other way for the user to find out.</msg>
   <msg key="New_Customer_Invoice_from_scratch">New Customer Invoice From Scratch</msg>
   <msg key="New_Customer_Invoice_from_Timesheet_Tasks">New Customer Invoice From Timesheet Tasks</msg>
   <msg key="New_from_NAV">New from NAV</msg>
+  <msg key="New_Hours">New Hours</msg>
   <msg key="New_Number_Location">New Number Location</msg>
   <msg key="New_Opportunity">New Opportunity</msg>
   <msg key="New_Password">New Password</msg>
@@ -1695,6 +1707,8 @@ other way for the user to find out.</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_Travel_Expense">New Travel Expense</msg>
   <msg key="New_User">New User</msg>
+  <msg key="New_User___Company">New User + Company</msg>
+  <msg key="New_User__Company">New User + Company</msg>
   <msg key="New_User_Company">New User + Company</msg>
   <msg key="New_view">New view</msg>
   <msg key="New_Zealand">New Zealand</msg>
@@ -1793,6 +1807,7 @@ other way for the user to find out.</msg>
   <msg key="Operating_System">Operating System</msg>
   <msg key="Opportunities">Opportunities</msg>
   <msg key="Opportunities_for_User">Opportunities</msg>
+  <msg key="Opportunities_List">Opportunities List</msg>
   <msg key="Opportunity_Campaign">Campaign</msg>
   <msg key="Opportunity_Members">Opportunity_Members</msg>
   <msg key="opportunity_priority_id">Priority</msg>
@@ -1901,6 +1916,7 @@ other way for the user to find out.</msg>
   <msg key="poessadp">po.es.adp</msg>
   <msg key="Poland">Poland</msg>
   <msg key="Portfolio">Portfolio</msg>
+  <msg key="Portfolio_Dashboard">Portfolio Dashboard</msg>
   <msg key="Portfolio_Planner">Portfolio Planner</msg>
   <msg key="Portlet_Components">Portlets</msg>
   <msg key="Portrait">Portrait</msg>
@@ -1936,7 +1952,7 @@ other way for the user to find out.</msg>
   <msg key="Prio_HJ_1">Prio HJ</msg>
   <msg key="Priority">Priority</msg>
   <msg key="Privileges">Privileges</msg>
-  <msg key="Probability">Probability (%)</msg>
+  <msg key="Probability">Probability</msg>
   <msg key="Probability_">Probability</msg>
   <msg key="Problem_Ticket">Problem Ticket</msg>
   <msg key="Proc_Num">Proc. Num</msg>
@@ -1973,6 +1989,7 @@ other way for the user to find out.</msg>
   <msg key="Program_Enhan_K">Program Enhan. K</msg>
   <msg key="Program_Enhancement">Program Enhancement</msg>
   <msg key="program_id">Program</msg>
+  <msg key="Programs_List">Programs List</msg>
   <msg key="Project">Project</msg>
   <msg key="Project_">Project Nr.</msg>
   <msg key="Project_Advanced_Filtering">Advanced Filtering</msg>
@@ -2063,6 +2080,10 @@ other way for the user to find out.</msg>
   <msg key="Projects">Projects</msg>
   <msg key="Projects_Actions">Project Actions</msg>
   <msg key="Projects_Admin">Projects Admin</msg>
+  <msg key="Projects_Dashboard">Projects Dashboard</msg>
+  <msg key="Projects_in_Program">Projects in Program</msg>
+  <msg key="Projects_List">Projects List</msg>
+  <msg key="Projects_List_Profit___Loss">Projects List Profit &amp; Loss</msg>
   <msg key="Projekt_BC">Project BC</msg>
   <msg key="Projekt_BKB">Project BKB</msg>
   <msg key="Projekt_Konzern">Project Konzern</msg>
@@ -2224,7 +2245,7 @@ other way for the user to find out.</msg>
   <msg key="rfc_rr_column_15">Report Spalte 15</msg>
   <msg key="rfc_rr_once">Report einmalig ?</msg>
   <msg key="rfc_termin_bem">Bemerkungen Termin</msg>
-  <msg key="rfc_tr_newplace">Neuer Arbeitsplatz</msg>
+  <msg key="rfc_tr_newplace">New Work Place</msg>
   <msg key="rfc_tr_oldplace">Alte Nummer</msg>
   <msg key="rfc_wm_equip">Equipment</msg>
   <msg key="rfc_zustaendig">RFC Zuständigkeit</msg>
@@ -2272,6 +2293,8 @@ other way for the user to find out.</msg>
   <msg key="Saudi_Arabia">Saudi Arabia</msg>
   <msg key="Save_Changes">Save Changes</msg>
   <msg key="Score">Score</msg>
+  <msg key="score_roi">ROI (months)</msg>
+  <msg key="score_strategic_value">Strategic Value (0-10)</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
   <msg key="SCRUM_Sprint">SCRUM Sprint</msg>
@@ -2465,9 +2488,11 @@ other way for the user to find out.</msg>
   <msg key="Timesheet_Confirmation_Journal">Timesheet Confirmation Journal</msg>
   <msg key="Timesheet_Confirmation_Workflow">Timesheet Confirmation Workflow</msg>
   <msg key="Timesheet_Cost">Timesheet Cost</msg>
+  <msg key="Timesheet_Dashboard">Timesheet Dashboard</msg>
   <msg key="Timesheet_Hour">Timesheet Hour</msg>
   <msg key="Timesheet_Hours">Timesheet Hours</msg>
   <msg key="Timesheet_Hours_New_Admin">Timesheet Hours New Admin</msg>
+  <msg key="Timesheet_List">Timesheet List</msg>
   <msg key="Timesheet_Management">Timesheet Management</msg>
   <msg key="Timesheet_Productivity">Timesheet Productivity</msg>
   <msg key="Timesheet_Task">Timesheet Task</msg>
@@ -2602,8 +2627,10 @@ other way for the user to find out.</msg>
   <msg key="Users">Users</msg>
   <msg key="Users___Contact_Information">Users &amp; Contact Information</msg>
   <msg key="Users_Contact_Note">Users Contact Note</msg>
+  <msg key="Users_Dashboard">Users Dashboard</msg>
   <msg key="Users_Filestorage_Component">Users Filestorage Portlet</msg>
   <msg key="Users_Freelance_Component">Users Freelance Portlet</msg>
+  <msg key="Users_List">Users List</msg>
   <msg key="Users_Skills_Component">Users Skills Portlet</msg>
   <msg key="v">v</msg>
   <msg key="Vacation">Vacation</msg>

@@ -3,7 +3,7 @@
 
   <msg key="--_Please_select_--">-- Selecteer --</msg>
   <msg key="1111">1111</msg>
-  <msg key="_">' '</msg>
+  <msg key="_">&#39; &#39;</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">de opgegeven korte naam van het bedrijf bestaat reeds. Kies of een nieuwe naam of ga terug naar de bedrijfspagina om het bestaande record te bewerken</msg>
   <msg key="A">A</msg>
@@ -200,7 +200,7 @@
   <msg key="Client_Type">Klant type</msg>
   <msg key="Clients">Klant </msg>
   <msg key="Clone_Project">Dit project klonen</msg>
-  <msg key="Clone_Project_Help">U kunt een project 'klonen'om tijd te besparen bij het opzetten van een gelijksoortig project.</msg>
+  <msg key="Clone_Project_Help">U kunt een project &#39;klonen&#39;om tijd te besparen bij het opzetten van een gelijksoortig project.</msg>
   <msg key="Close">Sluiten</msg>
   <msg key="Closed">Afgesloten</msg>
   <msg key="CollabKM_Help">C&amp;KM Help</msg>
@@ -405,7 +405,7 @@
   <msg key="EUR_1-10k">EUR 1-10k</msg>
   <msg key="EUR_10-100k">EUR 10-100k</msg>
   <msg key="Exchange_Rates">Wisselkoersen</msg>
-  <msg key="Execution_Project_Help">Een 'Uitvoerbaar project' is een kopie van een project dat is ontwerpen om volledig afgezonderd van iedere referentie naar het initiële project zodat de klant anoniem gehouden kan worden.</msg>
+  <msg key="Execution_Project_Help">Een &#39;Uitvoerbaar project&#39; is een kopie van een project dat is ontwerpen om volledig afgezonderd van iedere referentie naar het initiële project zodat de klant anoniem gehouden kan worden.</msg>
   <msg key="Expected_Quality">Verwachte kwaliteit</msg>
   <msg key="Expense_Bundle">Onkosten bundel</msg>
   <msg key="Expense_Item">Onkosten item</msg>
@@ -714,7 +714,7 @@
   <msg key="Law_Company">Vooruitbetaal klant</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Leer over uw bedrijf</msg>
-  <msg key="Learn_About_Your_Company_Blurb">Deze component laat u telkens een verschillende bedrijfsmedewerker zien. Op deze wijze kunnen medewerkers van verschillende kantoren elkaar en freelancers die voor het bedrijf werken, leren kennen. Gebruikersrechten zijn onderhouden en u kunt deze verwijderen of wijzigen als u overschakelt naar 'vertaal mode'.</msg>
+  <msg key="Learn_About_Your_Company_Blurb">Deze component laat u telkens een verschillende bedrijfsmedewerker zien. Op deze wijze kunnen medewerkers van verschillende kantoren elkaar en freelancers die voor het bedrijf werken, leren kennen. Gebruikersrechten zijn onderhouden en u kunt deze verwijderen of wijzigen als u overschakelt naar &#39;vertaal mode&#39;.</msg>
   <msg key="Lebanon">Libanon</msg>
   <msg key="left">Licht blauw</msg>
   <msg key="Licenses">Licenties</msg>
@@ -744,7 +744,7 @@
   <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Toevoegen</msg>
   <msg key="lt_Abteilungsleiter_CCIT">Afdelingsmanager CCIT</msg>
-  <msg key="lt_Add_a_manual_task_to_">Toevoegen van een 'handmatige' taak aan het project.</msg>
+  <msg key="lt_Add_a_manual_task_to_">Toevoegen van een &#39;handmatige&#39; taak aan het project.</msg>
   <msg key="lt_Add_a_new_annual_reve">Toevoegen van een nieuwe jaaromzet bepaling</msg>
   <msg key="lt_Add_a_new_company_sta">Toevoegen nieuwe bedrijfsstatus</msg>
   <msg key="lt_Add_a_new_company_typ">Toevoegen nieuw type bedrijf</msg>
@@ -782,16 +782,16 @@
   <msg key="lt_Calculates_Invoices_-">Netto marge (afgelopen twee maanden)</msg>
   <msg key="lt_Calculates_Quotes_-_P">Voorlopige bruto marge (afgelopen twee maanden)</msg>
   <msg key="lt_Calculates_the_number">Gemiddelde hoeveelheid geschreven uren per medewerker</msg>
-  <msg key="lt_Cant_find_the_project">Kan het project met ID '%project_id%' niet vinden</msg>
+  <msg key="lt_Cant_find_the_project">Kan het project met ID &#39;%project_id%&#39; niet vinden</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Het is niet mogelijk om een betalend bedrijf definitief te verwijderen</msg>
   <msg key="lt_Change_the_accounting">Wijzigen financieel contactpersoon</msg>
   <msg key="lt_Change_the_position_o">Aan-, uitzetten, veranderen van de positie en wijzigen van de toegangsrechten van plugin componenten</msg>
   <msg key="lt_Change_the_primary_co">Wijzig het primaire contact</msg>
-  <msg key="lt_Change_the_system_par">Verander de systeem parametrisatie zoals mappen, URL's, etc.</msg>
+  <msg key="lt_Change_the_system_par">Verander de systeem parametrisatie zoals mappen, URL&#39;s, etc.</msg>
   <msg key="lt_Choose_this_option_fo">Kies deze optie om gedetailleerde veiligheidsinformatie te zien. Met deze optie verzend de veiligheids update service informatie over uw configuratie dat u mogelijk kan helpen toegang te verkrijgen tot uw ]project-open[ systeem configuratie inclusief pakket versies en OS versie informatie. Tevens is uw email adres bijgesloten zodat we u in specifieke situaties kunnen inlichten.</msg>
   <msg key="lt_Choose_this_option_if">Kies deze optie als u geen informatie wilt vrij geven binnen ]project-open[ die uw organisatie kan identificeren.</msg>
   <msg key="lt_Click_here_to_get_hel">Klik hier om meer help informatie voor deze pagina te verkrijgen</msg>
-  <msg key="lt_Click_right_and_choos">Klik rechts en kies 'Bewaar doel als' om het bestand te downloaden</msg>
+  <msg key="lt_Click_right_and_choos">Klik rechts en kies &#39;Bewaar doel als&#39; om het bestand te downloaden</msg>
   <msg key="lt_Clientesintranet-file">Klanten</msg>
   <msg key="lt_Configure_site-wide_d">Configureren van site-wide standaard instellingen van wat een groep van gebruikers(profiel) wel en niet kan doen.</msg>
   <msg key="lt_Confirm_Nuking_first_">Bevestig het definitief verwijderen van %first_names% %last_name%</msg>
@@ -815,14 +815,14 @@
   <msg key="lt_Directivosintranet-fi">Managers</msg>
   <msg key="lt_Discussionintranet-fo">Discussie</msg>
   <msg key="lt_Do_you_want_to_create">Wilt u een deelproject creeeren (dit is een deelproject van een ander project)? Dit veld leeg laten (-- Selecteren a.u.b --) als u niet zeker bent.</msg>
-  <msg key="lt_Dots__in_Project_Path">Punten ('.')in 'Project pad' zijn niet toegestaan</msg>
+  <msg key="lt_Dots__in_Project_Path">Punten (&#39;.&#39;)in &#39;Project pad&#39; zijn niet toegestaan</msg>
   <msg key="lt_Edit_comments_about_y">Bewerken van opmerkingen over u</msg>
   <msg key="lt_Edit_menus_and_change">Bewerken van menus en wijzigen van hun toegangsrechten.</msg>
   <msg key="lt_Edit_views_and_change">Bewerken overzicht en toevoegen kolommen.</msg>
   <msg key="lt_Empleadosintranet-fil">Personeel</msg>
   <msg key="lt_Employeesintranet-fil">Personeel</msg>
   <msg key="lt_End_date_must_be_afte">Einddatum moet na de startdatum liggen</msg>
-  <msg key="lt_Error_evaluating_comp">Fout bij de evaluatie van component '%plugin_name%' van module '%package_name%'</msg>
+  <msg key="lt_Error_evaluating_comp">Fout bij de evaluatie van component &#39;%plugin_name%&#39; van module &#39;%package_name%&#39;</msg>
   <msg key="lt_Error_getting_the_ema">Fout in het verkrijgen van het email adres van gebruiker %target_id% </msg>
   <msg key="lt_Error_Missing_paramet">Fout: parameter mist</msg>
   <msg key="lt_Expected_Annual_Reven">(Verwachte) jaarlijkse ontvangsten</msg>
@@ -833,8 +833,8 @@
   <msg key="lt_File_editing_Converti">Bestand bewerken: bezig met converteren van het totaal aantal woorden in benodigde uren middels 1000 woorden per uur</msg>
   <msg key="lt_File_translation_Trad">Bestand vertalen: Trados woordtelling vermenigvuldigt met leverancier Trados matrix</msg>
   <msg key="lt_Finally_revisit_this_">Ga tenslotte opnieuw naar deze pagina waarna een optie verschijnt om nieuwe klantcontacten toe te voegen.</msg>
-  <msg key="lt_first_names_from_sear">Bewerk aub onderstaand bericht en druk op &quot;verzend email&quot; om de geselecteerde gebruikers in te lichten.</msg>
-  <msg key="lt_first_names_last_name">%first_names% %last_name% is toegevoegd aan %system_name%. Bewerk onderstaand bericht en druk op &quot;Verzen email&quot; om de gebruikers in te lichten.</msg>
+  <msg key="lt_first_names_from_sear">Bewerk aub onderstaand bericht en druk op &#34;verzend email&#34; om de geselecteerde gebruikers in te lichten.</msg>
+  <msg key="lt_first_names_last_name">%first_names% %last_name% is toegevoegd aan %system_name%. Bewerk onderstaand bericht en druk op &#34;Verzen email&#34; om de gebruikers in te lichten.</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name%, u bent toegevoegd als gebruiker van %system_name% op %system_url%. Login informatie: email: %email% Wachtwoord: %password% (u kunt uw wachtwoord wijzigen nadat u bent ingelogd. Met vriendelijke groet, %administration_name%</msg>
   <msg key="lt_first_names_last_name_2">%first_names% %last_name% is ingelicht.</msg>
   <msg key="lt_First_unless_first_na">Waarschijnlijk moet u %delete_user_link%, uitgezonderd het geval als %first_names% %last_name% een testgebruiker is. Verwijderen markeert de gebruikers als verwijderd, maar laat zijn/haar bijdrage aan de inhoud van de site ongemoeid.</msg>
@@ -850,7 +850,7 @@
   <msg key="lt_General_type_of_proje">Algemene projecttypering. Dit omdat zo een   goede folder struktuur kan worden aangemaakt.</msg>
   <msg key="lt_Geschftsfhrungintrane">Bedrijfsvoering</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware fabrikant klant</msg>
-  <msg key="lt_has_been_marked_delet">is gemarkeerd als \&quot;verwijderd\&quot;</msg>
+  <msg key="lt_has_been_marked_delet">is gemarkeerd als \&#34;verwijderd\&#34;</msg>
   <msg key="lt_Here_you_can_manage_u">Hier kunt u de gebruikers stuk voor stuk beheren.</msg>
   <msg key="lt_Here_you_find_advance">Hier vindt u geavanceerde beheer en configuratie opties voor het onderliggende</msg>
   <msg key="lt_Here_you_find_advance_1">Hier vindt u geavanceerde software configuratie opties van het onderliggende</msg>
@@ -860,13 +860,13 @@
 
 </msg>
   <msg key="lt_IBM_Translation_Workb">IBM vertaal workbench</msg>
-  <msg key="lt_If_this_IS_a_TestDemo">Als dit een Test/Demo/Development server is, dient u de '/parameters/*.ini' te controleren en de vlag TestDemoDevServer op 'waar' te zetten.</msg>
+  <msg key="lt_If_this_IS_a_TestDemo">Als dit een Test/Demo/Development server is, dient u de &#39;/parameters/*.ini&#39; te controleren en de vlag TestDemoDevServer op &#39;waar&#39; te zetten.</msg>
   <msg key="lt_Import_Company_Contac">Importeren bedrijf contact gegevens CVS</msg>
   <msg key="lt_Import_Projects_from_">Importeren van project van H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In uitvoering: Project start direct, Mogelijk project: zou een project kunnen worden, Nog niet gestart: afwachten tot formele toestemming, Afgerond: inmiddels afgerond...</msg>
   <msg key="lt_Incidentintranet-foru">Incident</msg>
   <msg key="lt_Insufficient_Privileg">Onvoldoende rechten</msg>
-  <msg key="lt_Internal_error_unknow">Interne fout: onbekend scherm '%view_name%'</msg>
+  <msg key="lt_Internal_error_unknow">Interne fout: onbekend scherm &#39;%view_name%&#39;</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Intranet verzoek tot wijziging data toegang</msg>
   <msg key="lt_Intranet_RFC_Expense_">Intranet verzoek tot wijziging onkosten type</msg>
   <msg key="lt_Intranet_RFC_HJ_Appli">Intranet verzoek tot wijziging HJ applicatie</msg>
@@ -881,7 +881,7 @@
   <msg key="lt_Intranet_RFC_RR_Colum">Intranet verzoekt tot wijziging RR kolom</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Intranet verzoek tot wijziging RR formaat</msg>
   <msg key="lt_Intranet_RFC_Workplac">Intranet verzoekt tot wijziging werkplek</msg>
-  <msg key="lt_Invalid_time_format_e">Ongeldig tijd formaat '%end_time(time)%': Voer de tijd in het formaat '12:30' in</msg>
+  <msg key="lt_Invalid_time_format_e">Ongeldig tijd formaat &#39;%end_time(time)%&#39;: Voer de tijd in het formaat &#39;12:30&#39; in</msg>
   <msg key="lt_Invoices_written_with">Opbrengsten</msg>
   <msg key="lt_Is_the_project_going_">Loopt het project binnen de planning en het budget (groen), is er extra aandacht nodig (geel) of dreigt het project te mislukken (rood)?</msg>
   <msg key="lt_Is_this_a_billable_co">Is dit een factureerbaar bedrijf?</msg>
@@ -906,7 +906,7 @@
   <msg key="lt_Manage_OpenACS_Develo">Beheren OpenACS ontwikkelomgeving</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Beheren OpenACS Platform</msg>
   <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
-  <msg key="lt_Maybe_somebody_has_ch">Wellicht heeft imeand het pad van het 'Interne' bedrijf dat uw organisatie identificeerd, gewijzigd. </msg>
+  <msg key="lt_Maybe_somebody_has_ch">Wellicht heeft imeand het pad van het &#39;Interne&#39; bedrijf dat uw organisatie identificeerd, gewijzigd. </msg>
   <msg key="lt_Meineintranet-timeshe">Mijn</msg>
   <msg key="lt_Member_state_user_sta">Gebruiker status: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Status lid: %user_state% (%activate_link%, %delete_link%)</msg>
@@ -915,7 +915,7 @@
   <msg key="lt_Missing_group_id_and_">Ontbrekende groep_id en verkorte_naam</msg>
   <msg key="lt_Mitarbeiterintranet-f">Collega</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV vertaalbureau</msg>
-  <msg key="lt_Modify_the_access_per">Wijzigen van de toegangsrechten tot &quot;dynamische variabelen&quot; of toevoegen nieuwe dynamische (maatwerk) variabelen.</msg>
+  <msg key="lt_Modify_the_access_per">Wijzigen van de toegangsrechten tot &#34;dynamische variabelen&#34; of toevoegen nieuwe dynamische (maatwerk) variabelen.</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise </msg>
   <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator </msg>
   <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows </msg>
@@ -967,9 +967,9 @@
   <msg key="lt_Project_Change_Reques">Project wijzigingsverzoek</msg>
   <msg key="lt_Project_Translation_D">Project vertaal details</msg>
   <msg key="lt_Provider_bills_with_e">Externe kosten</msg>
-  <msg key="lt_Quotes_in_Project_Nam">Aanhalingstekens in 'Projectnaam' zijn niet toegestaan</msg>
-  <msg key="lt_Quotes_in_Project_Nr_">Aanhalingstekens in 'Project nr' zijn niet toegestaan</msg>
-  <msg key="lt_Quotes_in_Project_Pat">Aanhalingstekens in 'Project pad' zijn niet toegestaan</msg>
+  <msg key="lt_Quotes_in_Project_Nam">Aanhalingstekens in &#39;Projectnaam&#39; zijn niet toegestaan</msg>
+  <msg key="lt_Quotes_in_Project_Nr_">Aanhalingstekens in &#39;Project nr&#39; zijn niet toegestaan</msg>
+  <msg key="lt_Quotes_in_Project_Pat">Aanhalingstekens in &#39;Project pad&#39; zijn niet toegestaan</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
@@ -982,8 +982,8 @@
   <msg key="lt_Return_Url_was_not_sp">Return-Url is niet gespecificeerd. Dit zou niet mogen voorkomen, neem aub contact op met %mail_to_administrator_link% en laat hem weten wat er is gebeurd.</msg>
   <msg key="lt_role_name_of_object_n">%role_name% van %object_name%</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
-  <msg key="lt_Search_for_a_substrin">Zoek naar een substring in iemands email, bijvoorbeeld \&quot;lion\&quot;om naar alle gebruikers uit Lionbridge te zoeken.</msg>
-  <msg key="lt_Search_for_a_substrin_1">Zoek naar een substring in iemands achternaam, bijvoorbeeld \&quot;berg\&quot;om naar alle gebruikers met \&quot;berg\&quot; in hun achternaam te zoeken.</msg>
+  <msg key="lt_Search_for_a_substrin">Zoek naar een substring in iemands email, bijvoorbeeld \&#34;lion\&#34;om naar alle gebruikers uit Lionbridge te zoeken.</msg>
+  <msg key="lt_Search_for_a_substrin_1">Zoek naar een substring in iemands achternaam, bijvoorbeeld \&#34;berg\&#34;om naar alle gebruikers met \&#34;berg\&#34; in hun achternaam te zoeken.</msg>
   <msg key="lt_Search_for_an_account">Zoek een account om samen te voegen met deze:</msg>
   <msg key="lt_Select_accounting_con">Selecteer financieel contactpersoon voor %company_name%</msg>
   <msg key="lt_Select_primary_contac">Selecteer primair contact voor %company_name%</msg>
@@ -992,7 +992,7 @@
   <msg key="lt_Senior_Managersintran">Senior managers</msg>
   <msg key="lt_Service_Level_Agreeme">Diensten Niveau Overeenkomst</msg>
   <msg key="lt_Shows_the_status_of_a">Dit toont de status van een project </msg>
-  <msg key="lt_Slashes__in_Project_P">Slashes ('/') in 'Project pad' zijn niet toegestaan</msg>
+  <msg key="lt_Slashes__in_Project_P">Slashes (&#39;/&#39;) in &#39;Project pad&#39; zijn niet toegestaan</msg>
   <msg key="lt_So_you_probably_dont_">U wilt waarschijnlijk niet alle data vernietigen, toch?!?</msg>
   <msg key="lt_Software_Company_Comp">Software bedrijf</msg>
   <msg key="lt_Software_Company_Cust">Software bedrijf klant</msg>
@@ -1006,7 +1006,7 @@
   <msg key="lt_The_English_translati">De Engelse vertaling moet identiek zijn met de categorie naam.</msg>
   <msg key="lt_The_note_you_entered_">De opmerking die u heeft ingevoerd is te land. De limiet ligt op 4000 karakters.</msg>
   <msg key="lt_The_nuking_of_user_us">Het definitief verwijderen van de gebruiker %user_id% is mislukt. Waarschijnlijk komt dit omdat uw installatie van het ArsDigita Community System maatwerk is en dat er nieuwe tabellen zijn met een referentie aan de gebruikerstabel. Schakel uw systeemprogrammeur in! </msg>
-  <msg key="lt_The_parameter_paramet">de parameter '%parameter%' is niet gedefinieerd in de intranet sectie van uw server parameters bestand. Definieer deze parameter, herstart de server en probeer het opnieuw.</msg>
+  <msg key="lt_The_parameter_paramet">de parameter &#39;%parameter%&#39; is niet gedefinieerd in de intranet sectie van uw server parameters bestand. Definieer deze parameter, herstart de server en probeer het opnieuw.</msg>
   <msg key="lt_The_project_name_that">De door u gekozen projectnaam is te kort.</msg>
   <msg key="lt_The_project_or_one_of">Het project of een van de bovenliggende projecten is gesloten.</msg>
   <msg key="lt_The_screen_name_you_h">De door u opgegeven schermnaam is al gedefinieerd.</msg>
@@ -1016,7 +1016,7 @@
   <msg key="lt_There_are_currently_n">Er zijn geen resultaten die aan de geselecteerde criteria voldoen
 </msg>
   <msg key="lt_There_is_a_difference">Er is een verschil tussen de opdrachtgever en de werkelijke eindklant. Feitelijk is dit de vraag: van wie ontvangen we het geld...</msg>
-  <msg key="lt_There_is_already_a_vi">Er bestaat al een %view_similar_user_link% met de email '%email%' in de database.</msg>
+  <msg key="lt_There_is_already_a_vi">Er bestaat al een %view_similar_user_link% met de email &#39;%email%&#39; in de database.</msg>
   <msg key="lt_This_command_destroys">Deze opdracht vernietigd uw totale server, doordat alle strings (projectnamen, bedrijfsnamen, gebruikers, omschrijvingen, etc.) door anonieme, willekeurige stings worden vervangen zodat er een demo systeem gegenereerd kan worden.</msg>
   <msg key="lt_This_file_has_generat">Dit bestand heeft een fout gegenereerd.</msg>
   <msg key="lt_This_is_not_a_TestDem">Dit is geen Test/Demo/Ontwikkelserver.</msg>
@@ -1027,11 +1027,11 @@
   <msg key="lt_Translation_of_a_manu">Vertaling van een handmatig toegevoegde taak: Alleen de handmatig gespecificeerde taak eenheden worden meegenomen</msg>
   <msg key="lt_Translation_source_la">Vertaal bron taal</msg>
   <msg key="lt_Translation_target_la">Vertaal doel taal</msg>
-  <msg key="lt_Unable_to_determine_I">Niet mogelijk om het 'Interne' bedrijf vast te stellen</msg>
+  <msg key="lt_Unable_to_determine_I">Niet mogelijk om het &#39;Interne&#39; bedrijf vast te stellen</msg>
   <msg key="lt_Update_Basic_Informat">Bijwerken van de basis informatie</msg>
   <msg key="lt_Update_this_users_pas">Bijwerken van het wachtwoord van deze gebruiker</msg>
   <msg key="lt_Upload_GanttProject_S">Upload een GanttProject bestand</msg>
-  <msg key="lt_Use_the_Browse_button">Gebruik de 'Browse...' knop om uw bestand te vinden en klik dan op 'Open'.</msg>
+  <msg key="lt_Use_the_Browse_button">Gebruik de &#39;Browse...&#39; knop om uw bestand te vinden en klik dan op &#39;Open&#39;.</msg>
   <msg key="lt_User_not_found_in_the">De gebruiker is niet in de zwarte lijst gevonden. Misschien is hij al verwijderd?!!</msg>
   <msg key="lt_var_is_undefined_for_">%var% is niet gedefineerd voor lege lijsten. </msg>
   <msg key="lt_View_administrative_p">Toon administratie pagina voor nieuw aangemaakt gebruiker,</msg>
@@ -1052,8 +1052,8 @@
   <msg key="lt_Wire_Transfer_La_Caix">Wire Transfer La Caixa</msg>
   <msg key="lt_Yes_Im_sure_that_I_wa">Ja, ik ben er zeker van dat ik deze persoon permanent wil verwijderen</msg>
   <msg key="lt_You_are_not_a_member_">U bent geen lid van dit project.</msg>
-  <msg key="lt_You_are_not_allowed_t">Het is u niet toegestaan om leden van de groep '%profile_name%' te verwijderen</msg>
-  <msg key="lt_You_are_not_allowed_t_1">Het is u niet toegestaan om leden aan de groep '%profile_name%' toe te voegen</msg>
+  <msg key="lt_You_are_not_allowed_t">Het is u niet toegestaan om leden van de groep &#39;%profile_name%&#39; te verwijderen</msg>
+  <msg key="lt_You_are_not_allowed_t_1">Het is u niet toegestaan om leden aan de groep &#39;%profile_name%&#39; toe te voegen</msg>
   <msg key="lt_You_are_not_authorize">U bent niet geautoriseerd om deze pagina te zien</msg>
   <msg key="lt_You_are_trying_to_acc">U probeert toegang te krijgen tot een overzicht dat niet in de database is gedefinieerd.</msg>
   <msg key="lt_You_can_only_specify_">U kunt of email of achternaam specificeren, niet beiden.</msg>
@@ -1558,7 +1558,7 @@
   <msg key="sk">sk</msg>
   <msg key="Skin">Uiterlijk</msg>
   <msg key="sl">sl</msg>
-  <msg key="SLAs">DNO's</msg>
+  <msg key="SLAs">DNO&#39;s</msg>
   <msg key="Slovak Republic">Slowakije</msg>
   <msg key="Slovak_Republic">Slowakije</msg>
   <msg key="Slovenia">Slovenië</msg>

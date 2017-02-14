@@ -333,7 +333,7 @@
   <msg key="Last_name">姓</msg>
   <msg key="Last_Visit">最終訪問日</msg>
   <msg key="Last_visit">最終訪問日</msg>
-  <msg key="Learn_About_Your_Company_Blurb">このコンポーネントは毎回、異なった社員をあなたに見せています。 この道、異なったオフィスのメンバーは互いと従業員が会社で働いているフリーランサーに関して学ぶのを知り始めることができます。 ユーザアクセス許容が維持されて、'翻訳モード'に変化するとき、あなたは、_この_テキストを取り除くか、または変更できます。
+  <msg key="Learn_About_Your_Company_Blurb">このコンポーネントは毎回、異なった社員をあなたに見せています。 この道、異なったオフィスのメンバーは互いと従業員が会社で働いているフリーランサーに関して学ぶのを知り始めることができます。 ユーザアクセス許容が維持されて、&#39;翻訳モード&#39;に変化するとき、あなたは、_この_テキストを取り除くか、または変更できます。
 </msg>
   <msg key="Lebanon">レバノン</msg>
   <msg key="Licenses">ライセンス</msg>
@@ -370,7 +370,7 @@
   <msg key="lt_Heuteintranet-timeshe">今日</msg>
   <msg key="lt_Incidentintranet-foru">事案</msg>
   <msg key="lt_Intranet_RFC_Expense_">イントラネットRFC経費タイプ</msg>
-  <msg key="lt_Invalid_time_format_e">時刻フォーマットが無効です'%end_time(time)%'。'12:30'の形式で入力してください。</msg>
+  <msg key="lt_Invalid_time_format_e">時刻フォーマットが無効です&#39;%end_time(time)%&#39;。&#39;12:30&#39;の形式で入力してください。</msg>
   <msg key="lt_Is_the_project_going_">プロジェクトの経過を色分けします。予算については「緑」、対処を必要とする場合は「黄色」、また対処に対してのトラブルは「赤」にします。</msg>
   <msg key="lt_lt_Project_Manager___">プロジェクト管理者</msg>
   <msg key="lt_Manage_Component_Layo">コンポーネント・プラグイン</msg>
@@ -394,9 +394,9 @@
   <msg key="lt_Pastintranet-timeshee">過去</msg>
   <msg key="lt_Personal_Home_Page_UR">個人ホームページURL</msg>
   <msg key="lt_Please_upload_a_portr">写真をアップロードしてください</msg>
-  <msg key="lt_Quotes_in_Project_Nam">'Project Name' の見積は許可されていません。</msg>
-  <msg key="lt_Quotes_in_Project_Nr_">'Project Nr'の見積は許可されていません。</msg>
-  <msg key="lt_Quotes_in_Project_Pat">'Project Path'の見積は許可されていません。</msg>
+  <msg key="lt_Quotes_in_Project_Nam">&#39;Project Name&#39; の見積は許可されていません。</msg>
+  <msg key="lt_Quotes_in_Project_Nr_">&#39;Project Nr&#39;の見積は許可されていません。</msg>
+  <msg key="lt_Quotes_in_Project_Pat">&#39;Project Path&#39;の見積は許可されていません。</msg>
   <msg key="lt_Registered_from_regis">登録 %registration_ip_link%</msg>
   <msg key="lt_Replyintranet-forumRe">返信</msg>
   <msg key="lt_return_to_user_admini">ユーザ管理に戻る</msg>
