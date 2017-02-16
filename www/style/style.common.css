@@ -175,11 +175,13 @@ a.button {
   color: black;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 a.button:link { 
   text-decoration: none;
   border: solid 1px black;
+
 }
 
 a.button:hover { 
