@@ -14,7 +14,7 @@ create table im_audits (
 	audit_object_id		integer
 				constraint im_audits_object_nn
 				not null,
-	audit_object_status_id	integer,
+	audit_object_status_id	integer
 				constraint im_audits_object_status_fk
 				references im_categories,
 	audit_action		text
