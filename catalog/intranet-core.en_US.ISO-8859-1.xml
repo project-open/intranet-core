@@ -64,22 +64,47 @@
   <msg key="Active">Active</msg>
   <msg key="Active_Customers">Active Customers</msg>
   <msg key="Active_or_Potential">Active or Potential</msg>
+  <msg key="Ad_hoc_eac_deviation_percent">% EAC&lt;br&gt;
+Deviation</msg>
   <msg key="Ad_hoc_Edit">Edit</msg>
+  <msg key="Ad_hoc_estimate_at_completion">EAC&lt;br&gt;based&lt;br&gt;on ETC</msg>
+  <msg key="Ad_hoc_estimate_at_completion_based_on_etc">EAC&lt;br&gt;
+based&lt;br&gt;
+on ETC</msg>
+  <msg key="Ad_hoc_estimate_at_completion_manual">EAC&lt;br&gt;
+Manual</msg>
+  <msg key="Ad_hoc_estimate_at_completion_planned">EAC&lt;br&gt;
+Planned</msg>
+  <msg key="Ad_hoc_estimate_to_complete">ETC</msg>
+  <msg key="Ad_hoc_estimate_to_complete_manual">ETC&lt;br&gt;
+Entered</msg>
   <msg key="Ad_hoc_message">Message</msg>
   <msg key="Ad_hoc_Name">Name</msg>
   <msg key="Ad_hoc_Other">Other</msg>
   <msg key="Ad_hoc_owner_email">Owner Email</msg>
   <msg key="Ad_hoc_owner_name">Owner Name</msg>
+  <msg key="Ad_hoc_percent_completed">Percent&lt;br&gt;Completed</msg>
+  <msg key="Ad_hoc_percent_hours_assigned_to_user">% Hours&lt;br&gt;
+Assigned&lt;br&gt;
+to User</msg>
+  <msg key="Ad_hoc_planned_hours_for_user">Planned Hours&lt;br&gt;User</msg>
   <msg key="Ad_hoc_posting_date">Posting date</msg>
   <msg key="Ad_hoc_ProjectNr">Project Nr</msg>
   <msg key="Ad_hoc_Proof">Proof</msg>
   <msg key="Ad_hoc_Source">Source</msg>
   <msg key="Ad_hoc_subject">Subject</msg>
   <msg key="Ad_hoc_Target">Target</msg>
+  <msg key="Ad_hoc_task_percent_completed">Task %&lt;br&gt;Completed</msg>
+  <msg key="Ad_hoc_task_planned_hours">Task&lt;br&gt;Planned&lt;br&gt;Hours</msg>
+  <msg key="Ad_hoc_task_planned_hours_">Task&lt;br&gt;Planned&lt;br&gt;Hours</msg>
   <msg key="Ad_hoc_topic_status">Topic Status</msg>
   <msg key="Ad_hoc_topic_type">Topic Type</msg>
   <msg key="Ad_hoc_Trans">Trans</msg>
   <msg key="Ad_hoc_Units">Units</msg>
+  <msg key="Ad_hoc_user_logged_hours">User&lt;br&gt;Logged&lt;br&gt;Hours</msg>
+  <msg key="Ad_hoc_user_name">User</msg>
+  <msg key="Ad_hoc_user_planned_hours">User&lt;br&gt;Planned&lt;br&gt;Hours</msg>
+  <msg key="Ad_hoc_work_assigned_to_user">% Work&lt;br&gt;Assigned&lt;br&gt;to User</msg>
   <msg key="Add">Add</msg>
   <msg key="Add_a_new_client">Add New Customer</msg>
   <msg key="Add_a_new_Company">New Company</msg>
@@ -1613,6 +1638,7 @@ other way for the user to find out.</msg>
   <msg key="Manage_Views">Manage Views</msg>
   <msg key="Manufacturing">Manufacturing</msg>
   <msg key="Marketing">Marketing</msg>
+  <msg key="Master_Data">Master Data</msg>
   <msg key="Material">Material</msg>
   <msg key="Materials">Materials</msg>
   <msg key="Meals">Meals</msg>
