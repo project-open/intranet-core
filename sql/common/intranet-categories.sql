@@ -121,11 +121,11 @@
 -- 22000-22999  Intranet User Type (1000)
 -- 23000-23999  Intranet Conf Item Type (1000 for intranet-nagios)
 -- 24000-24999  Intranet TinyTM (1000)
--- 25000-25999  Customer UNED Spain reserved (1000)
--- 26000-26999  Customer ILO/ISSA reserved (1000)
+-- 25000-25999  Customer UNED Spain (1000)
+-- 26000-26999  Customer ILO/ISSA (1000)
 -- 27000-27999  Intranet Release Management (1000)
--- 28000-28999  Customer A reserved (1000)
--- 29000-29999  Customer B reserved (1000)
+-- 28000-28999  Customer A (1000)
+-- 29000-29999  Customer B (1000)
 
 -- 30000-39999  Intranet Helpdesk (10000)
 
@@ -134,7 +134,7 @@
 -- 41100-41999  Intranet GTD Dashboard  
 -- 42000-42999  Intranet VAT Type (1000)
 -- 43000-43999  Intranet REST (1000)
--- 44000-44999  reserved (1000)
+-- 44000-44999  Intranet Estimate to Complete (1000)
 -- 45000-45999  reserved (1000)
 -- 46000-46999  reserved (1000)
 -- 47000-47999  reserved (1000)
