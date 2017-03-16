@@ -43,8 +43,11 @@ ns_log Notice "linux-to-windows-2: install_dir=$install_dir"
 # after possibly many minutes of waiting...
 #
 
+ns_log Notice "linux-to-windows-2: Before ad_return_top_of_page"
 ad_return_top_of_page "[im_header]\n[im_navbar]"
+ns_log Notice "linux-to-windows-2: After ad_return_top_of_page"
 ns_write "<h1>$page_title</h1>\n"
+ns_log Notice "linux-to-windows-2: After first ns_write"
 ns_write "<ul>\n"
 
 
