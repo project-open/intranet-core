@@ -33,7 +33,7 @@ if {!$user_is_admin_p} {
 }
 
 set page_title "Linux - to - Windows"
-
+ns_log Notice "linux-to-windows-2: install_dir=$install_dir"
 
 # ------------------------------------------------------------
 # Return the page header.
@@ -51,6 +51,7 @@ ns_write "<ul>\n"
 # Convert all pathes to the Linux style, asuming "$install_dir" as the name
 # of the server
 #
+ns_log Notice "linux-to-windows-2: Converting pathes from /web/<server>;/ to \"$install_dir/"
 ns_write "<li>Converting pathes from /web/&lt;server&gt;/ to \"$install_dir/ \n"
 db_dml update_pathes "
 	update apm_parameter_values
@@ -60,6 +61,7 @@ db_dml update_pathes "
 
 
 # Convert the find command
+ns_log Notice "linux-to-windows-2: Set the find command from /usr/bin/find to /bin/find"
 ns_write "<li>Set the find command from /usr/bin/find to /bin/find\n"
 parameter::set_from_package_key -package_key "intranet-core" -parameter "FindCmd" -value "/bin/find"
 
@@ -67,10 +69,12 @@ parameter::set_from_package_key -package_key "intranet-core" -parameter "FindCmd
 
 # Set pathes for binaries
 set dot_path "$install_dir/bin/dot.bat"
+ns_log Notice "linux-to-windows-2: Set pathes for acs-workflow graphwiz_dot_path to $dot_path"
 ns_write "<li>Set pathes for acs-workflow graphwiz_dot_path the windows dot.bat wrapper"
 parameter::set_from_package_key -package_key "acs-workflow" -parameter "graphviz_dot_path" -value $dot_path
 
 set tmp_path "$install_dir/tmp"
+ns_log Notice "linux-to-windows-2: Set pathes for acs-workflow tmp_path to a suitable Windows value: '$tmp_path'"
 ns_write "<li>Set pathes for acs-workflow tmp_path to a suitable Windows value: '$tmp_path'"
 parameter::set_from_package_key -package_key "acs-workflow" -parameter "tmp_path" -value $tmp_path
 
@@ -94,11 +98,13 @@ foreach tuple $pathes {
     set package [lindex $tuple 0]
     set param [lindex $tuple 1]
     set base_path [lindex $tuple 2]
+    ns_log Notice "linux-to-windows-2: Set path for intranet-filestorage $param to: '$base_path'"
     ns_write "<li>Set path for intranet-filestorage $param to: '$base_path'"
     parameter::set_from_package_key -package_key $package -parameter $param -value $base_path
 }
 
 
+ns_log Notice "linux-to-windows-2: End"
 ns_write "</ul>\n"
 ns_write "<p>You can now return to the <a href=$return_url>previous page</a>.</p>"
 ns_write [im_footer]
