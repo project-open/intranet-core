@@ -1,7 +1,7 @@
 <%= [im_header -loginpage $page_title] %>
 <%= [im_navbar -loginpage_p 1] %>
 
-<link rel="stylesheet" type="text/css" href="index.css" media="all">
+<!-- <link rel="stylesheet" type="text/css" href="index.css" media="all"> -->
 
 <script type="text/javascript">
 // Set a specific image src
