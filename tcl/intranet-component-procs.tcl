@@ -198,7 +198,7 @@ ad_proc -public im_component_bay {
 	if {"" == $sort_order} { set sort_order $default_sort_order }
 	if {"" == $location} { set location $default_location }
 
-	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "GracefulErrorHandlingComponents" -default 1] } {
+	if { [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "GracefulErrorHandlingComponentsP" -default 1] } {
 	    if {[catch {
 		set component_html [uplevel 1 $component_tcl]
 	    } err_msg]} {
