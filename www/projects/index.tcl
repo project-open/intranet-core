@@ -397,10 +397,10 @@ if {$filter_advanced_p} {
 
 set criteria [list]
 if { $project_status_id ne "" && $project_status_id > 0 } {
-    lappend criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
+    lappend criteria "p.project_status_id in ([join [im_sub_categories -include_disabled_p 1 $project_status_id] ","])"
 }
 if { $project_type_id ne "" && $project_type_id != 0 } {
-    lappend criteria "p.project_type_id in ([join [im_sub_categories $project_type_id] ","])"
+    lappend criteria "p.project_type_id in ([join [im_sub_categories -include_disabled_p 1 $project_type_id] ","])"
 }
 if {0 != $user_id_from_search && "" != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
