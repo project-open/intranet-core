@@ -1299,7 +1299,7 @@ ad_proc -public im_header {
     set version_pieces [split $version "."]
     set version_major [lindex $version_pieces 0]
     set version_minor [lindex $version_pieces 1]
-    
+
     # --------------------------------------------------------------
     
     if {$search_installed_p && $page_focus eq "" } {
@@ -1318,7 +1318,7 @@ ad_proc -public im_header {
     if {[catch {
 	if { "msie" == $browser && $version_major < 10 } {
 	    # ns_log Notice "intranet-design-procs:: Setting META TAG" 
-	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$version_major\" />\n"
+	    set extra_stuff_for_document_head "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=10\" />\n"
 	}
     } err_msg]} {
 	ns_log Error "intranet-design-procs: Error handling browser version"
