@@ -1405,7 +1405,9 @@ ad_proc -public im_header {
     set feedback_bar_icon "<span id=\"general_messages_icon\"><span id=\"general_messages_icon_span\"></span></span>&nbsp;"
     
     # Welcome 
-    set welcome_txt "<span class='header_welcome'>[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span> |"
+    set welcome_txt "<span class='header_welcome'>" 
+    append welcome_txt "<a href=\"/intranet/users/view?user_id=$untrusted_user_id\">[lang::message::lookup "" intranet-core.Welcome_User_Name "Welcome %user_name%"]</span></a> |"
+
     set users_online_txt ""
     if { "register" != [string range [ns_conn url] 1 8] } { set users_online_txt "&nbsp;[im_header_users_online_str] |" }
     
