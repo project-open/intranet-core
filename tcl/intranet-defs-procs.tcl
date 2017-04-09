@@ -107,7 +107,6 @@ ad_proc -public im_exec_windows_transform_procname_helper {procname} {
 
     # Processing program name
     set procname [file tail $procname]		;# remove leading /.../.../ crud
-    set args [lrange $args 1 end]		;# other args to pass to procname
     set unixaoldir [im_exec_windows_aoldir]	;# c:/project-open or similar
 
     # CygWin keeps all commands in /bin...
