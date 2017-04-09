@@ -117,12 +117,14 @@ ad_proc -public im_exec_windows_transform_procname_helper {procname} {
     set unixaoldir [im_exec_windows_aoldir]	;# c:/project-open or similar
 
     # CygWin keeps all commands in /bin...
-    if {[file exists ${unixaoldir}/bin/${procname}.exe]} {
-      set procname ${unixaoldir}/bin/${procname}
-    }
-    if {[file exists ${unixaoldir}/bin/${procname}.bat]} {
-      set procname ${unixaoldir}/bin/${procname}
-    }
+    set file "${unixaoldir}/bin/${procname}"
+    if {[file exists $file.exe]} { return $file }
+    if {[file exists $file.bat]} { return $file }
+
+    # PostgreSQL binaries in /pgsql/bin
+    set file "${unixaoldir}/pgsql/bin/${procname}"
+    if {[file exists $file.exe]} { return $file }
+    if {[file exists $file.bat]} { return $file }
 
     return $procname
 }
