@@ -42,12 +42,108 @@ ad_proc -public im_exec {args} {
     Wrapper for ]po[ specific logic for exec,
     particularly under Windows.
 } {
-    ns_log Notice "im_exec $args"
+    global tcl_platform
+    set platform $tcl_platform(platform)
+    ns_log Notice "im_exec: platform=$platform, args=$args"
+    switch $platform {
+	"windows" {return [im_exec_windows $args] }
+	"unix" - "linux" {return [im_exec_linux $args] }
+	default {return [im_exec_linux $args] }
+    }
+}
+
+ad_proc -public im_exec_linux {args} {
+    Linux - just execute args using "exec"
+} {
+    set args [lindex $args 0]
     set cmd [linsert $args 0 exec]
+    ns_log Notice "im_exec_linux: cmd=$cmd"
     set result [eval $cmd]
-    ns_log Notice "im_exec $args -> $result"
+    ns_log Notice "im_exec_linux: args=$args, result=$result"
     return $result
 }
+
+
+ad_proc -public im_exec_windows {args} {
+    Windows spefic for exec, in order to translate to CygWin commands.
+} {
+    # Processing program name
+    set procname [lindex $args 0]		;# /usr/bin/find or similar
+    set procname [im_exec_windows_transform_procname $procname]
+    set args [lrange $args 1 end]		;# other args to pass to procname
+
+    # fraber 170409: ToDo: testing
+    # Processing its arguments 
+    #for {set i 0} {$i < [llength $args]} {incr i} {
+    #    if {[string match [lindex $args $i] "2>/dev/null"]} {
+    #        set args [lreplace $args $i $i "2>nul"]
+    #    }
+    #}
+
+    # Call the original exec
+    set cmd [linsert $args 0 exec]
+    ns_log Notice "im_exec_windows: $cmd"
+    set result [eval $cmd]
+    ns_log Notice "im_exec_windows: $cmd -> $result"
+    return $result
+}
+
+
+ad_proc -public im_exec_windows_transform_procname {procname} {
+    Robust routine to convert any reasonable Linux command with
+    or without absolute pathes into a CygWin command
+} {
+    return [im_exec_windows_transform_procname_helper $procname]
+    #return [util_memoize [list im_exec_windows_transform_procname_helper $procname]]
+}
+
+
+ad_proc -public im_exec_windows_transform_procname_helper {procname} {
+    Robust routine to convert any reasonable Linux command with
+    or without absolute pathes into a CygWin command
+} {
+    # Does the file exist with that path? Then just return...
+    if {[file exists $procname]} { return $procname }
+
+    # Processing program name
+    set procname [file tail $procname]		;# remove leading /.../.../ crud
+    set args [lrange $args 1 end]		;# other args to pass to procname
+    set unixaoldir [im_exec_windows_aoldir]	;# c:/project-open or similar
+
+    # CygWin keeps all commands in /bin...
+    if {[file exists ${unixaoldir}/bin/${procname}.exe]} {
+      set procname ${unixaoldir}/bin/${procname}
+    }
+    if {[file exists ${unixaoldir}/bin/${procname}.bat]} {
+      set procname ${unixaoldir}/bin/${procname}
+    }
+
+    return $procname
+}
+
+
+ad_proc -public im_exec_windows_aoldir {} {
+    Returns the base directory in Windows, something like "c:/project-open"
+} {
+    set unixaoldir ""
+    if {[info exists ::env(AOLDIR)]} {
+	set winaoldir $::env(AOLDIR)
+	set unixaoldir [string map {\\ /} ${winaoldir}]
+    } else {
+	set pageroot [acs_root_dir]
+	# Something like c:/project-open/servers/projop
+	set pageroot_pieces [split $pageroot "/"]
+	set pos [lsearch $pageroot_pieces "servers"]
+	if {$pos > 0} {
+	    set unixaoldir [join [lrange $pageroot_pieces 0 $pos-1] "/"]
+	}
+    }
+    ns_log Notice "im_exec_windows_basedir: unixaoldir=$unixaoldir"
+    return $unixaoldir
+}
+
+
+
 
 # --------------------------------------------------------
 # Show a collapsible help message
