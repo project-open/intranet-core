@@ -35,9 +35,9 @@ ad_proc -public im_portrait_user_file { user_id } {
 
     if { [catch {
         ns_log Notice "im_portrait_user_file: Checking $base_path"
-        exec /bin/mkdir -p $base_path
-        exec /bin/chmod ug+w $base_path
-        set file_list [exec $find_cmd "$base_path/" -maxdepth 1 -type f]
+        file mkdir $base_path
+        im_exec chmod ug+w $base_path
+        set file_list [im_exec $find_cmd "$base_path/" -maxdepth 1 -type f]
     } err_msg] } {
         # Probably some permission errors - return empty string
         set file_list ""
