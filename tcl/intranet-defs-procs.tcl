@@ -2050,9 +2050,6 @@ ad_proc im_database_version { } {
 } {
     set postgres_version ""
     catch {
-	# This is the psql _client_ version.
-	# set postgres_version [exec psql --version]
-
 	# Get the _server_ version of PG
 	set postgres_version [db_string server_version "SHOW server_version"]
 	if {[regexp {([0-9]+\.[0-9]+\.[0-9]+)} $postgres_version match v]} { set postgres_version $v}
@@ -2084,7 +2081,7 @@ ad_proc im_hardware_id { } {
 	
 	# Windows - Use Maurizio's code
 	catch {
-	    set mac_address [string trim [exec "w32oacs_get_mac"]]
+	    set mac_address [string trim [im_exec "w32oacs_get_mac"]]
 	} err_msg
 
     } else {
@@ -2092,7 +2089,7 @@ ad_proc im_hardware_id { } {
 	# Linux and Solaris - extract the MAC address from ifconfig
 	set mac_address ""
 	catch {
-	    set mac_line [exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
+	    set mac_line [im_exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
 	} err_msg
 
 	# Extract the MAC address from the mac_line
@@ -2186,7 +2183,7 @@ ad_proc im_linux_vmware_p { } {
     Returns 1 if the current system is the default CentOS Linux VMware.
 } {
     set modules ""
-    catch { set modules [exec /sbin/lsmod] }
+    catch { set modules [im_exec lsmod] }
 
     if {[lsearch $modules "vmnet"] > -1} { return 1 }
     if {[lsearch $modules "vmw_balloon"] > -1} { return 1 }
