@@ -44,6 +44,8 @@ ad_proc -public im_exec {args} {
 } {
     global tcl_platform
     set platform $tcl_platform(platform)
+    #set platform "windows"
+
     ns_log Notice "im_exec: platform=$platform, args=$args"
     switch $platform {
 	"windows" {return [im_exec_windows $args] }
@@ -67,10 +69,14 @@ ad_proc -public im_exec_linux {args} {
 ad_proc -public im_exec_windows {args} {
     Windows spefic for exec, in order to translate to CygWin commands.
 } {
+    set args [lindex $args 0]
+    ns_log Notice "im_exec_windows: args=$args"
+
     # Processing program name
     set procname [lindex $args 0]		;# /usr/bin/find or similar
     set procname [im_exec_windows_transform_procname $procname]
     set args [lrange $args 1 end]		;# other args to pass to procname
+    ns_log Notice "im_exec_windows: procname=$procname, args=$args"
 
     # fraber 170409: ToDo: testing
     # Processing its arguments 
@@ -81,10 +87,11 @@ ad_proc -public im_exec_windows {args} {
     #}
 
     # Call the original exec
-    set cmd [linsert $args 0 exec]
-    ns_log Notice "im_exec_windows: $cmd"
+    set cmd [linsert $args 0 $procname]
+    set cmd [linsert $cmd 0 "exec"]
+    ns_log Notice "im_exec_windows: cmd=$cmd"
     set result [eval $cmd]
-    ns_log Notice "im_exec_windows: $cmd -> $result"
+    ns_log Notice "im_exec_windows: cmd=$cmd -> $result"
     return $result
 }
 
