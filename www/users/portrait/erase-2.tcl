@@ -35,13 +35,13 @@ set dest_path "$base_path/"
 
 if { [catch {
     ns_log Notice "portraits/erase-2: $find_cmd $dest_path -type f -maxdepth 1 -name 'portrait.*'"
-    set file_list [exec $find_cmd $dest_path -type f -maxdepth 1]
+    set file_list [im_exec $find_cmd $dest_path -type f -maxdepth 1]
     ns_log Notice "portraits/erase-2: file_list=$file_list"
 
     foreach file $file_list {
 	if {[regexp {portrait} $file match]} {
 	    ns_log Notice "portraits/erase-2: /bin/rm $file"
-	    exec /bin/rm $file
+	    file delete -force -- $file
 	}
     }
     
@@ -74,5 +74,7 @@ db_dml portrait_delete "
 	)
 "
 
+# Portrait is cached...
+util_memoize_flush_regexp "im_portrait.*"
 
 ad_returnredirect $return_url

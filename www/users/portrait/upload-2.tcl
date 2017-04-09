@@ -98,11 +98,11 @@ set find_cmd [im_filestorage_find_cmd]
 set dest_path "$base_path/"
 
 if { [catch {
-    set file_list [exec $find_cmd $dest_path -type f -maxdepth 1]
+    set file_list [im_exec $find_cmd $dest_path -type f -maxdepth 1]
     foreach file $file_list {
 	if {[regexp {portrait} $file match]} {
 	    ns_log Notice "portraits/upload-2: /bin/rm $file"
-	    exec /bin/rm $file
+	    im_exec /bin/rm $file
 	}
     }
 } err_msg] } {
@@ -117,9 +117,9 @@ if { [catch {
 set error_p 0
 if { [catch {
     ns_log Notice "convert $tmp_filename -thumbnail 100x100 -unsharp 0x.5 $dest_file"
-    exec convert $tmp_filename -thumbnail 200x200 -unsharp 0x.5 $dest_file
+    im_exec convert $tmp_filename -thumbnail 200x200 -unsharp 0x.5 $dest_file
     ns_log Notice "/bin/chmod ug+w $dest_file"
-    exec /bin/chmod ug+w $dest_file
+    im_exec chmod ug+w $dest_file
 } err_msg] } {
     # ad_return_complaint 1 "Error converting file using ImageMagick:<br><pre>$err_msg</pre>"
     set error_p 1
@@ -129,9 +129,9 @@ if { [catch {
 if {$error_p} {
     if { [catch {
 	ns_log Notice "/bin/mv $tmp_filename $dest_file"
-	exec /bin/cp $tmp_filename $dest_file
+	file copy $tmp_filename $dest_file
 	ns_log Notice "/bin/chmod ug+w $dest_file"
-	exec /bin/chmod ug+w $dest_file
+	im_exec chmod ug+w $dest_file
     } err_msg] } {
 	# Probably some permission errors
 	ad_return_complaint  "Error writing upload file"  $err_msg
