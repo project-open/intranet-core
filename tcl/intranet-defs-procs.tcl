@@ -35,6 +35,21 @@ ad_proc -public im_uom_t_line {} { return 327 }
 
 
 # --------------------------------------------------------
+# Wrapper for ]po[ specific logic for exec
+# --------------------------------------------------------
+
+ad_proc -public im_exec {args} {
+    Wrapper for ]po[ specific logic for exec,
+    particularly under Windows.
+} {
+    ns_log Notice "im_exec $args"
+    set cmd [linsert $args 0 exec]
+    set result [eval $cmd]
+    ns_log Notice "im_exec $args -> $result"
+    return $result
+}
+
+# --------------------------------------------------------
 # Show a collapsible help message
 # --------------------------------------------------------
 
@@ -522,55 +537,6 @@ ad_proc -public im_bash_command { } {
 }
 
 
-ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
-    Execute a DML procedure (function in PostgreSQL) without
-    regard of the database type. Basically, the procedures wraps
-    a "BEGIN ... END;" around Oracle procedures and an
-    "select ... ;" for PostgreSQL.
-
-    @param A neutral SQL statement, for example: im_cost_del(:cost_id)
-} {
-    set driverkey [db_driverkey $dbn]
-    # PostgreSQL has a special implementation here, any other db will
-    # probably work with the default:
-
-    switch $driverkey {
-	postgresql {
-	    set script "
-		db_dml $sql_name \"select $sql;\"
-	    "
-	    uplevel 1 $script
-	}
-        oracle -
-        nsodbc -
-	default {
-	    set script "
-		db_dml $sql_name \"
-			BEGIN
-				$sql;
-			END;
-		\"
-	    "
-	    uplevel 1 $script
-	}
-    }
-}
-
-
-ad_proc -public im_package_core_id {} {
-    Returns the package id of the intranet-core module
-} {
-    return [util_memoize im_package_core_id_helper]
-}
-
-ad_proc -private im_package_core_id_helper {} {
-    return [db_string im_package_core_id {
-        select package_id from apm_packages
-        where package_key = 'intranet-core'
-    } -default 0]
-}
-
-
 # ------------------------------------------------------------------
 # 
 # ------------------------------------------------------------------
@@ -590,7 +556,7 @@ ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
     switch $driverkey {
         postgresql {
             set script "
-                db_string $sql_name \"select $sql\"
+                db_string $sql_name \"select $sql;\"
             "
             uplevel 1 $script
         }
@@ -608,6 +574,20 @@ ad_proc -public im_exec_dml { { -dbn "" } sql_name sql } {
         }
     }
 }
+
+ad_proc -public im_package_core_id {} {
+    Returns the package id of the intranet-core module
+} {
+    return [util_memoize im_package_core_id_helper]
+}
+
+ad_proc -private im_package_core_id_helper {} {
+    return [db_string im_package_core_id {
+        select package_id from apm_packages
+        where package_key = 'intranet-core'
+    } -default 0]
+}
+
 
 
 # ------------------------------------------------------------------
