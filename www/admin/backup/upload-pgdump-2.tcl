@@ -52,6 +52,6 @@ if {![file readable $tmp_filename]} {
 }
 
 # Move the file into the right folder
-exec mv $tmp_filename "[im_backup_path]/$company_filename"
+im_exec mv $tmp_filename "[im_backup_path]/$company_filename"
 
 ad_returnredirect $return_url

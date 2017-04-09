@@ -287,7 +287,7 @@ ad_proc -deprecated -warn ad_chdir_and_exec { dir arg_list } {
     to be removed.
 } { 
     cd $dir
-    eval exec $arg_list
+    eval im_exec $arg_list
 }
 
 ad_proc -deprecated -warn post_args_to_query_string {} {

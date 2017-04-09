@@ -19,8 +19,7 @@ if {!$user_is_admin_p} {
 
 foreach i $filename {
     set tmp [im_backup_path]/[file tail $i]
-    ns_log Debug  "uncompressing pgdmp file: $tmp"
-    catch { exec bzip2 -d $tmp } err_msg
+    catch { im_exec bzip2 -d $tmp } err_msg
 }
 
 ad_returnredirect $return_url

@@ -34,20 +34,16 @@ ns_write "<p>Exporting to path: <tt>$path/$today/</tt></p>\n"
 set joined_ids [join [array names view] ","]
 
 set sql "
-select
-	v.*
-from 
-	im_views v
-where 
-	v.view_id in ($joined_ids)
+select	v.*
+from 	im_views v
+where 	v.view_id in ($joined_ids)
 "
 
 # Prepare the path for the export
 #
 if {![file isdirectory $path]} {
     if { [catch {
-	ns_log Notice "/bin/mkdir $path"
-	exec /bin/mkdir "$path"
+	file mkdir $path
     } err_msg] } {
 	ad_return_complaint 1 "Error creating subfolder $path:<br><pre>$err_msg\m</pre>"
 	return
@@ -57,8 +53,7 @@ if {![file isdirectory $path]} {
 append path "/$today/"
 if {![file isdirectory $path]} {
     if { [catch {
-	ns_log Notice "/bin/mkdir $path"
-	exec /bin/mkdir "$path"
+	file mkdir $path
     } err_msg] } {
 	ad_return_complaint 1 "Error creating subfolder $path:<br><pre>$err_msg\m</pre>"
 	return
@@ -75,12 +70,10 @@ db_foreach foreach_report $sql {
     
     if { [catch {
 	ns_log Notice "/intranet/admin/backup/backup: writing report to $path"
-	
 	set stream_name "$path$view_name.csv"
 	set stream [open $stream_name w]
 	puts $stream $report
 	close $stream
-	
     } err_msg] } {
 	ad_return_complaint 1 "Error writing report to file $stream_name:<br><pre>$err_msg\m</pre>"
 	return
@@ -93,5 +86,4 @@ Successfully finished
 "
 
 ns_write [im_footer]
-
 

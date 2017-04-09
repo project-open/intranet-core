@@ -83,8 +83,8 @@ if {!$download_p} {
     if {![file isdirectory $path]} {
 	if { [catch {
 	    ns_write "<li>Creating directory $path:<br> <tt>/bin/mkdir $path</tt>\n"
-	    ns_log Notice "/bin/mkdir $path"
-	    exec /bin/mkdir "$path"
+	    ns_log Notice "file mkdir $path"
+	    file mkdir $path
 	} err_msg] } {
 	    ns_write "<li>
 		<font color=red>
@@ -106,7 +106,7 @@ if {!$download_p} {
 	if { [catch {
 	    ns_write "<li>Creating directory $path:<br> <tt>/bin/mkdir $path/</tt>\n"
 	    ns_log Notice "/bin/mkdir $path/"
-	    exec /bin/mkdir "$path"
+	    file mkdir $path
 	} err_msg] } {
 	    ad_return_complaint 1 "Error creating subfolder $path:<br><pre>$err_msg\n</pre>"
 	    return
@@ -158,12 +158,11 @@ if { [catch {
 	windows {
 	    # Windows
 	    set pg_user "postgres"
-	    set cmd [list exec ${pgbin}pg_dump -h localhost -U $pg_user -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file projop]
-
+	    set cmd [list im_exec ${pgbin}pg_dump -h localhost -U $pg_user -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file projop]
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
-	    set cmd [list exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+	    set cmd [list im_exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
     }
 
@@ -176,10 +175,9 @@ if { [catch {
     eval $cmd
 
     if {$gzip_p} {
-	exec gzip $dest_file
+	im_exec gzip $dest_file
 	set dest_file "$dest_file.gz"
     }
-
 
 } err_msg] } {
     ns_write "<p>Error writing report to file $path/$filename:<p>
@@ -192,11 +190,7 @@ if {$download_p} {
     ad_script_abort
 }
 
-
-ns_write "
-<p>
-Finished.
-
+ns_write "<p>Finished.
 <a href=$return_url>return to list</a>
 </p>
 "

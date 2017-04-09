@@ -301,7 +301,7 @@ ad_proc -public im_import_categories { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -425,7 +425,7 @@ ad_proc -public im_import_companies { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -569,7 +569,7 @@ ad_proc -public im_import_company_members { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -688,7 +688,7 @@ ad_proc -public im_import_offices { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -832,7 +832,7 @@ ad_proc -public im_import_office_members { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -945,7 +945,7 @@ ad_proc -public im_import_projects { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1109,7 +1109,7 @@ ad_proc -public im_import_project_members { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1228,7 +1228,7 @@ ad_proc -public im_import_users { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1432,7 +1432,7 @@ ad_proc -public im_import_profiles { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1580,7 +1580,7 @@ ad_proc -public im_import_freelancers { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1705,7 +1705,7 @@ ad_proc -public im_import_employees { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -1867,7 +1867,7 @@ ad_proc -public im_import_freelance_skills { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -2017,7 +2017,7 @@ ad_proc -public im_import_hours { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -2164,7 +2164,7 @@ ad_proc -public im_import_user_absences { filename } {
 	return $err_return
     }
     
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
     
@@ -2316,7 +2316,7 @@ ad_proc -public im_import_costs { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -2528,7 +2528,7 @@ ad_proc -public im_import_cost_centers { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -2698,7 +2698,7 @@ ad_proc -public im_import_invoices { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -2865,7 +2865,7 @@ ad_proc -public im_import_invoice_items { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -3025,7 +3025,7 @@ ad_proc -public im_import_project_invoice_map { filename } {
 	return $err_return
     }
     
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
     
@@ -3145,7 +3145,7 @@ ad_proc -public im_import_payments { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 
@@ -3330,7 +3330,7 @@ ad_proc -public im_import_investments { filename } {
 	return $err_return
     }
 
-    set csv_content [exec /bin/cat $filename]
+    set csv_content [im_exec cat $filename]
     set csv_lines [split $csv_content "\n"]
     set csv_lines_len [llength $csv_lines]
 

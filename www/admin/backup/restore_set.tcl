@@ -65,7 +65,7 @@ where
 if {![file isdirectory $backup_path]} {
     if { [catch {
 	ns_log Notice "/bin/mkdir $backup_path"
-	exec /bin/mkdir "$backup_path"
+	file mkdir "$backup_path"
     } err_msg] } {
 	ad_return_complaint 1 "Error creating subfolder $backup_path:<br><pre>$err_msg\m</pre>"
 	return
@@ -74,7 +74,7 @@ if {![file isdirectory $backup_path]} {
 
 
 # Get the list of all backup sets under backup_path
-set file_list [exec $find_cmd $backup_path -type d -maxdepth 1]
+set file_list [im_exec $find_cmd $backup_path -type d -maxdepth 1]
 
 set backup_sets_html "<ul>\n"
 

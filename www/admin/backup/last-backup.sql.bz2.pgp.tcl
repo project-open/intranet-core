@@ -34,17 +34,15 @@ set backup_path [parameter::get -package_id [im_package_core_id] -parameter "Bac
 # ------------------------------------------------------
 
 # Get the list of all backup sets under backup_path
-set file_list [exec $find_cmd $backup_path -name {*.pgp} ]
+set file_list [im_exec $find_cmd $backup_path -name {*.pgp} ]
 set file_list [lsort -decreasing $file_list]
 
 set file [lindex $file_list 0]
 
 if {[file readable $file]} {
-
     set type [ns_guesstype $file]
     set type "application/pgp"
     ns_returnfile 200 $type $file
-
 } else {
     doc_return 500 text/html "[_ intranet-filestorage.lt_Did_not_find_the_spec]"
 }

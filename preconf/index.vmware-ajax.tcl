@@ -97,11 +97,11 @@ if {0 eq $current_user_id} {
 
 set ip_address "undefined"
 catch {
-      set ip_address [exec /bin/bash -c "/sbin/ifconfig | grep 'inet' | head -1 | cut -d: -f2 | awk '{ print \$2}'"]
+      set ip_address [im_exec bash -c "/sbin/ifconfig | grep 'inet' | head -1 | cut -d: -f2 | awk '{ print \$2}'"]
 } ip_address
 
 set total_memory "undefined"
-catch {set total_memory [expr {[exec /bin/bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024}]} total_memory
+catch {set total_memory [expr {[im_exec bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024}]} total_memory
 
 set url "<a href=\"http://$ip_address/\" target=_new>http://$ip_address/</a>\n"
 

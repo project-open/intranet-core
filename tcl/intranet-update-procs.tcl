@@ -433,9 +433,9 @@ ad_proc -public im_update_package {
     set find_cmd [im_filestorage_find_cmd]
 
     if {[catch {
-        set file_list [exec $find_cmd $path -type f]
+        set file_list [im_exec $find_cmd $path -type f]
     } err_msg]} {
-	ad_return_complaint 1 "Error executing 'exec find $path -name '*.sql'':<br>
+	ad_return_complaint 1 "Error executing 'im_exec find $path -name '*.sql'':<br>
         <pre>$err_msg</pre>"
 	ad_script_abort
     }

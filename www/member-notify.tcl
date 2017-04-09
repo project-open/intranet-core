@@ -82,7 +82,7 @@ set ip_addr [ad_conn peeraddr]
 set locale [ad_conn locale]
 set creation_ip [ad_conn peeraddr]
 
-set time_date [exec date "+%s.%N"]
+set time_date [im_exec date "+%s.%N"]
 
 foreach oid $user_id_from_search {
 

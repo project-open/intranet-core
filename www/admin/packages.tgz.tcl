@@ -31,7 +31,7 @@ set tmp_file "[ad_tmpnam].tgz"
 set server_path [acs_root_dir]
 
 if { [catch {
-    exec bash -c "cd $server_path; tar czf $tmp_file packages"
+    im_exec bash -c "cd $server_path; tar czf $tmp_file packages"
 } err_msg] } {
     ad_return_complaint 1 "<b>Error creating TGZ file</b>:<pre>$err_msg</pre>"
     ad_script_abort

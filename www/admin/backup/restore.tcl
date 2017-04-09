@@ -30,7 +30,7 @@ if {!$user_admin_p} {
 # get the list of all backups of business objects i
 # in the backup set
 #
-set file_list [exec $find_cmd $path -type f]
+set file_list [im_exec $find_cmd $path -type f]
 foreach line $file_list {
     set files [split $line "/"]
     set last_file_idx [expr {[llength $files] - 1}]
@@ -42,14 +42,10 @@ foreach line $file_list {
 }
 
 set sql "
-select
-        v.*
-from
-        im_views v
-where
-        v.view_type_id = [im_dynview_type_backup]
-order by
-	sort_order
+select	v.*
+from	im_views v
+where	v.view_type_id = [im_dynview_type_backup]
+order by sort_order
 "
 
 set object_list_html ""

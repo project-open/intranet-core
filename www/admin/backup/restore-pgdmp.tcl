@@ -50,15 +50,17 @@ if {$drop_cascade_p} {
 switch $extension {
     ".pgdmp" {
 	switch $platform {
-	    windows { catch { exec pg_restore -U postgres --dbname $server_name --no-owner --clean $filename } err }
-	    default { catch { exec pg_restore --dbname $server_name --no-owner --clean $filename } err }
+	    windows { catch { im_exec pg_restore -U postgres --dbname $server_name --no-owner --clean $filename } err }
+	    default { catch { 
+		im_exec pg_restore --dbname $server_name --no-owner --clean $filename 
+	    } err }
 	}
     }
     ".sql" {
 	switch $platform {
-	    windows { catch { exec psql -U postgres --dbname $server_name --file $filename } err }
+	    windows { catch { im_exec psql -U postgres --dbname $server_name --file $filename } err }
 	    default { catch { 
-		exec psql --dbname $server_name --file $filename 
+		im_exec psql --dbname $server_name --file $filename 
 	    } err }
 	}
     }

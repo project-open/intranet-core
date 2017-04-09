@@ -2264,9 +2264,9 @@ ad_proc im_project_clone_files {
 	# "cp -a" preserves the ownership information of
 	# the original file, so permissions should be OK.
 	#
-	exec /bin/mkdir -p $parent_base_path
-	exec /bin/mkdir -p $new_base_path
-	exec /bin/cp -a $parent_base_path $new_base_path
+	file mkdir $parent_base_path
+	file mkdir $new_base_path
+	im_exec cp -a $parent_base_path $new_base_path
 
     } err_msg] } {
 	append errors "<li>Error whily copying files from $parent_base_path to $new_base_path:<pre>$err_msg</pre>\n"
