@@ -126,7 +126,7 @@ cvs checkout intranet-trans-project-wizard
 cvs checkout intranet-trans-quality
 cvs checkout intranet-translation
 cvs checkout intranet-ubl
-cvs checkout intranet-update-client
+#cvs checkout intranet-update-client - 170410: Moved to intranet-security-update-client
 cvs checkout intranet-update-server
 cvs checkout intranet-wiki
 cvs checkout intranet-workflow
