@@ -94,11 +94,10 @@ ns_log Notice "dest_file=$dest_file"
 
 
 # --------------- Delete portraits from FS --------------------
-set find_cmd [im_filestorage_find_cmd]
 set dest_path "$base_path/"
 
 if { [catch {
-    set file_list [im_exec $find_cmd $dest_path -type f -maxdepth 1]
+    set file_list [im_exec find $dest_path -type f -maxdepth 1]
     foreach file $file_list {
 	if {[regexp {portrait} $file match]} {
 	    ns_log Notice "portraits/upload-2: /bin/rm $file"

@@ -30,12 +30,11 @@ if {"" == $base_path} {
 
 # --------------- Delete portraits from FS --------------------
 
-set find_cmd [im_filestorage_find_cmd]
 set dest_path "$base_path/"
 
 if { [catch {
-    ns_log Notice "portraits/erase-2: $find_cmd $dest_path -type f -maxdepth 1 -name 'portrait.*'"
-    set file_list [im_exec $find_cmd $dest_path -type f -maxdepth 1]
+    ns_log Notice "portraits/erase-2: find $dest_path -type f -maxdepth 1 -name 'portrait.*'"
+    set file_list [im_exec find $dest_path -type f -maxdepth 1]
     ns_log Notice "portraits/erase-2: file_list=$file_list"
 
     foreach file $file_list {

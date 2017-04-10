@@ -430,10 +430,8 @@ ad_proc -public im_update_package {
     Run all update scripts of a specific package
 } {
     set path "[acs_root_dir]/packages/$package_key"
-    set find_cmd [im_filestorage_find_cmd]
-
     if {[catch {
-        set file_list [im_exec $find_cmd $path -type f]
+        set file_list [im_exec find $path -type f]
     } err_msg]} {
 	ad_return_complaint 1 "Error executing 'im_exec find $path -name '*.sql'':<br>
         <pre>$err_msg</pre>"

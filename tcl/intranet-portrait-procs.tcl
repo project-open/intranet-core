@@ -31,13 +31,11 @@ ad_proc -public im_portrait_user_file { user_id } {
     set base_paths [split $base_path "/"]
     set base_paths_len [llength $base_paths]
 
-    set find_cmd [im_filestorage_find_cmd]
-
     if { [catch {
         ns_log Notice "im_portrait_user_file: Checking $base_path"
         file mkdir $base_path
         im_exec chmod ug+w $base_path
-        set file_list [im_exec $find_cmd "$base_path/" -maxdepth 1 -type f]
+        set file_list [im_exec find "$base_path/" -maxdepth 1 -type f]
     } err_msg] } {
         # Probably some permission errors - return empty string
         set file_list ""
