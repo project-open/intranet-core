@@ -13,21 +13,21 @@ Caption			"Project Management Server"
 !define REGKEY		"SOFTWARE\$(^Name)"
 !define VERSION_MAJ	"5.0.2"
 !define VERSION_MIN	"0.1"
+!define RELEASE		"029"
 !define COMPANY		"]project-open["
 !define	URL		http://www.project-open.com
 !define TARGET		c:\project-open
 #!define NSD_VER 	"aolserver451"
 !define NSD_VER		"naviserver499"
-!define RELEASE		"027"
-SetCompress		off
+SetCompress		auto
 
 # Create installer without the initial tests if already installed?
 #!define NOTEST 1
 # Create installer without files? Used for testing
-!define NOFILE 1
+#!define NOFILE 1
 
 # Output
-OutFile			"c:\download\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe"
+OutFile			"h:\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe"
 
 
 
@@ -41,27 +41,53 @@ OutFile			"c:\download\project-open-Window-Community-${VERSION_MAJ}.alpha2-${REL
 #	outcommented installer file delete,
 #	new NSIS 3.0.1 with strlen-8192
 # 022	Convert upper-case drive letters to lower-case
-
+# 023-026 Playing with different versions from Maurizio's
+#	NaviServer
+# 027	Added descriptions to Windows services
+# 028	Fixing conf files c:/project-open,
+#       Replacing apm_parameter_values c:/project-open string
 
 # -----------------------------------------------------------------------
 # Bugs
 # -----------------------------------------------------------------------
 
-# Uninstaller leaves AOLDIR and CYGWIN env vars
-# Uninstaller doesn't stop ]po[ service monitor before uninstalling
-# Need to revise ]po[ Service Monitor
-# Need to delete all cygwin*, project-open*, projop*, naviserver*,
-#   po-service-monitor*, postgres* registry keys 
-# Create a description for the ]po[ services
-
+# 2 Set ownership to Administrator:Administrators to all CygWin files,
+#	independent of language. Necessary for WS2012.
+# 2 Update po-service-panel using Eclipse or add start/stop scripts for 
+#	the various services
+# 3 Need to revise ]po[ Service Monitor
+# 3 Error saving data on the server side: No authentication found ('').
+# 3 w32oacs_get_mac doesn't exist, called in intranet-defs-procs.tcl
+# 3 centralize all calls to ifconfig or ipconfig
+# 4 change the index.vmware.adp to use the im_hardware_id
+#	MAC address of the interface
+#	intranet-defs-procs.im_hardware_id
+# 4 Handle automatic update after installation
+# 4 Need to delete all cygwin*, project-open*, projop*, naviserver*,
+#	po-service-monitor*, postgres* registry keys 
+# 5 Uninstaller leaves AOLDIR and CYGWIN env vars
+# 7 Handle email sending
+# 8 ZIP download from intranet-filestorage doesn't work
 
 
 # -----------------------------------------------------------------------
 # Bugs Done
 # -----------------------------------------------------------------------
 
-# Uninstaller doesn't delete files
-# Uninstaller doesn't delete ]po[ service monitor
+# 2 Uninstaller doesn't delete files
+# 2 Uninstaller doesn't delete ]po[ service monitor
+# 4 Added descriptions to Windows services installed by ]po[
+# 4 Create a description for the ]po[ services
+# 2 Internal error: couldn't open "c:/tmp/oacs-a039441491512894839.rpc2":
+# 	Need to modify acs_parameters to accodmodate INSTDIR
+# 2 Uninstaller doesn't stop ]po[ service monitor before uninstalling
+# 1 pgsql call doesn't work (from executing upgrade scripts)
+#	Added in config.tcl: ns_section "ns/db/driver/postgres" -> ns_param pgbin
+#	"c:/project-open/pgsql/bin"
+# 5 Portrait upload/delete doesn't work
+# 1 bash -c "..." doesn't work
+# 1 Check CSV Import because of exec change
+# 1 Check /intranet-filestorage/: invalid command name: "::exec_orig"
 
 
 
@@ -146,7 +172,8 @@ ShowUninstDetails show
 # Actions to be executed _before_ actually compiling
 # ---------------------------------------------------
 
-!system 'c:\project-open\bin\cp /installer/project_open_installer.nsi /servers/projop/packages/intranet-core/preconf/
+!system 'c:\project-open\bin\cp /installer/project_open_installer.nsi /servers/projop/packages/intranet-core/preconf/'
+!system 'c:\project-open\bin/bash -c "cd ~/packages/intranet-core"'
 !system 'c:\windows\system32\sc.exe stop po-service-monitor'
 !system 'c:\windows\system32\sc.exe stop po-projop'
 !system 'c:\windows\system32\sc.exe stop postgresql-9.2'
@@ -370,7 +397,7 @@ Section -post SEC0001
 
 
     # ----------------------------------------------------
-    # Register Service Monitor service
+    # Setup Service Monitor service
     #
     DetailPrint ""
     DetailPrint ""
@@ -391,7 +418,7 @@ Section -post SEC0001
 
 
     # ----------------------------------------------------
-    # Register PostgreSQL service
+    # Setup PostgreSQL service
     #
     DetailPrint ""
     DetailPrint ""
@@ -409,23 +436,20 @@ Section -post SEC0001
     nsExec::ExecToLog 'sc create postgresql-9.2 binPath= "$INSTDIR\pgsql\bin\pg_ctl.exe runservice -N postgresql-9.2 -D $INSTDIR/pgsql/data -w" DisplayName= "]po[ PostgreSQL 9.2" start= "delayed-auto" type= own '
     pop $R0
     DetailPrint "Registered ]po[ PostgreSQL Database Service: result=$R0"
-
     nsExec::ExecToLog 'sc start postgresql-9.2'
     pop $R0
-    Sleep 1000
     DetailPrint "Started ]po[ PostgreSQL Database Service: result=$R0"
+    Sleep 500
 
-    ${if} $R0 != 0
-    DetailPrint "Failure updating SQL pathes - sleeping for 5 seconds and retry"
-    Sleep 5000
-    nsExec::ExecToLog `"$INSTDIR\pgsql\bin\psql" -h localhost -c "update apm_parameter_values set attr_value = '$0' || substring(attr_value from 16) where lower(attr_value) like 'c:/project-open/%'" projop projop`
+    DetailPrint "About to update ]po[ PostgreSQL path attributes"
+    DetailPrint "About to execute: $INSTDIR\pgsql\bin\psql -h localhost -c update apm_parameter_values set attr_value = '$0' || substring(attr_value from 'c:/project-open(.*)') where lower(attr_value) like 'c:/project-open/%' projop projop"
+    nsExec::ExecToLog `"$INSTDIR\pgsql\bin\psql" -h localhost -c "update apm_parameter_values set attr_value = '$0' || substring(attr_value from 'c:/project-open(.*)') where lower(attr_value) like 'c:/project-open/%'" projop projop`
     pop $R0
-    DetailPrint "Set ]po[ PostgreSQL pathes: result=$R0"
-    ${endif}
+    DetailPrint "Updated ]po[ PostgreSQL path attributes: result=$R0"
 
 
     # ----------------------------------------------------
-    # Register ]po[ Projop service
+    # Register ]po[ Naviserver service
     #
     DetailPrint ""
     DetailPrint ""
@@ -447,19 +471,28 @@ Section -post SEC0001
     pop $R0
     DetailPrint "Replaced INSTDIR in config.naviserver499.tcl: result=$R0"
     
-    DetailPrint "About to install ]po[ Projop service"
-    nsExec::ExecToLog 'sc create po-projop binPath= "$INSTDIR\usr\local\${NSD_VER}\bin\nsd.exe -S -s projop -t $INSTDIR\servers\projop\etc\config.${NSD_VER}.tcl" DisplayName= "]po[ Projop Service" start= "delayed-auto" type= own'
+    DetailPrint "About to install ]po[ NaviServer service"
+    nsExec::ExecToLog 'sc create po-projop binPath= "$INSTDIR\usr\local\${NSD_VER}\bin\nsd.exe -S -s projop -t $INSTDIR\servers\projop\etc\config.${NSD_VER}.tcl" DisplayName= "]po[ NaviServer Projop" start= "delayed-auto" type= own'
     pop $R0
-    DetailPrint "Registered ]po[ Projop service: result=$R0"
+    DetailPrint "Registered ]po[ NaviServer Projop: result=$R0"
 
     nsExec::ExecToLog 'sc config po-projop depend= postgresql-9.2'
     pop $R0
-    DetailPrint "Created dependency of ]po[ Projop from PostgreSQL: result=$R0"
+    DetailPrint "Created dependency from ]po[ NaviServer Projop to PostgreSQL: result=$R0"
 
-    DetailPrint "Starting ]po[ Projop service - this may take several minutes"
+    DetailPrint "Starting ]po[ NaviServer Projop - this may take several minutes"
     nsExec::ExecToLog 'net start po-projop'
     pop $R0
     DetailPrint "]po[ started: result=$R0"
+
+
+    # ----------------------------------------------------
+    # Add descriptions to ]po[ services
+    #
+    nsExec::ExecToLog 'sc description po-service-monitor "]project-open[ Service Monitor helper - provides a back-end for the ]po[ Service Panel with permissions to start and stop the database and application server"'
+    nsExec::ExecToLog 'sc description postgresql-9.2 "]project-open[ Database Server - provides persistent storage to the ]po[ Application Server"'
+    nsExec::ExecToLog 'sc description po-projop "]project-open[ Application Server - executes the ]po[ application and answers to HTTP requests on port 8000"'
+
 
     # SetRebootFlag true
     SetRebootFlag false
@@ -513,11 +546,11 @@ Section /o -un.Main UNSEC0000
     pop $R0
     DetailPrint "Deleted ]po[ Service Monitor service: result=$R0"
 
-    DetailPrint "About to stop ]po[ Projop service"
+    DetailPrint "About to stop ]po[ NaviServer Projop"
     nsExec::ExecToLog 'sc stop po-projop'
     nsExec::ExecToLog 'sc delete po-projop'
     pop $R0
-    DetailPrint "Deleted ]po[ Projop service: result=$R0"
+    DetailPrint "Deleted ]po[ NaviServer Projop: result=$R0"
 
     DetailPrint "About to stop ]po[ postgresql-9.2 service"
     nsExec::ExecToLog 'sc stop postgresql-9.2'
