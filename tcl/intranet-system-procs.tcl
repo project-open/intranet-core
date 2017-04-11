@@ -210,10 +210,20 @@ ad_proc -public im_bash_command { } {
 
 
 # ---------------------------------------------------------------
-# System MAC Address
+# System IP & MAC Address
+#
+# ns_info address doesn't work anymore in NaviServer
 # ---------------------------------------------------------------
 
 ad_proc im_system_ip_mac_address { } {
+    Retreives the MAC address of the first IP interface
+    on both Linux and Windows machines
+} {
+    return [util_memoize [list im_system_ip_mac_address_helper] 3600]
+}
+
+
+ad_proc im_system_ip_mac_address_helper {} {
     Retreives the MAC address of the first IP interface
     on both Linux and Windows machines
 } {
@@ -377,38 +387,14 @@ ad_proc im_database_version { } {
 
 
 # ---------------------------------------------------------------
-# Get a hardware ID (MAC address of eth0
+# Get a hardware ID
 # ---------------------------------------------------------------
 
 ad_proc im_hardware_id { } {
-    Returns a unique ID for the hardware. We use a MAC address.
-    Returns an empty string if the MAC wasn't found.
-    Example: "00:23:54:DF:77:D3"
+    Returns a unique ID for the hardware. We use a hashed MAC address
+    as a base.  Returns system_id if the MAC wasn't found.
 } {
-    set mac_address ""
-    set mac_line ""
-    global tcl_platform
-    if { [string match $tcl_platform(platform) "windows"] } {
-	
-	# Windows - Use Maurizio's code
-	catch {
-	    set mac_address [string trim [im_exec "w32oacs_get_mac"]]
-	} err_msg
-
-    } else {
-
-	# Linux and Solaris - extract the MAC address from ifconfig
-	set mac_address ""
-	catch {
-	    set mac_line [im_exec bash -c "/sbin/ifconfig | grep HWaddr | tail -n1"]
-	} err_msg
-
-	# Extract the MAC address from the mac_line
-	set mac_line [string tolower $mac_line]
-	regsub -all {:} $mac_line {-} mac_line
-	regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
-	
-    }
+    set mac_address [lindex [im_system_ip_mac_address] 1]
 
     # return the SystemID in case of an error.
     if {"" == $mac_address} { return [im_system_id] }
