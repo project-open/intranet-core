@@ -135,8 +135,6 @@ ad_proc -public im_exec_windows_aoldir {} {
 }
 
 
-
-
 # --------------------------------------------------------
 # OpenACS Version
 # --------------------------------------------------------
@@ -155,7 +153,6 @@ ad_proc -public im_openacs54_p { } {
 # ------------------------------------------------------------------
 # System Functions
 # ------------------------------------------------------------------
-
 
 
 ad_proc -public im_root_dir { } {
@@ -210,6 +207,74 @@ ad_proc -public im_bash_command { } {
 	}    
     }
 }
+
+
+# ---------------------------------------------------------------
+# System MAC Address
+# ---------------------------------------------------------------
+
+ad_proc im_system_mac_address { } {
+    Retreives the MAC address of the first IP interface
+    on both Linux and Windows machines
+} {
+    global tcl_platform
+    set platform $tcl_platform(platform)
+
+    ns_log Notice "im_system_mac_address: platform=$platform"
+    switch $platform {
+	"windows" {return [im_system_mac_address_windows] }
+	"unix" - "linux" {return [im_system_mac_address_linux] }
+    }
+    return [im_system_mac_address_linux]
+}
+
+
+ad_proc im_system_mac_address_linux { } {
+    Retreives the MAC address of the first IP interface on Linux
+} {
+    # Linux and Solaris - extract the MAC address from ifconfig
+    set mac_address ""
+    set mac_lines ""
+    catch {set mac_lines [im_exec ifconfig]} err_msg
+
+    # ad_return_complaint 1 "<pre>$mac_lines</pre>"
+
+    # Extract the MAC address from the mac_lines
+    foreach mac_line [split $mac_lines "\n"] {
+	set mac_line [string tolower $mac_line]
+	if {![regexp {hwaddr} $mac_line] && ![regexp {ether} $mac_line]} { continue }
+	regsub -all {:} $mac_line {-} mac_line
+	regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+	if {"" ne $mac_address} { break }
+    }
+
+    return $mac_address
+}
+
+
+
+ad_proc im_system_mac_address_windows { } {
+    Retreives the MAC address of the first IP interface on Windows
+} {
+    # Extract the MAC address from ifconfig
+    set mac_address ""
+    set mac_lines ""
+    catch {
+	set mac_lines [im_exec ipconfig "/all"]
+    } err_msg
+
+    foreach mac_line [split $mac_lines "\n"] {
+	set mac_line [string tolower $mac_line]
+	# DUID line - similar to MAC, but not suitable
+	if {[regexp {duid.+[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]} $mac_line]} { continue }
+
+	regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+	if {"" ne $mac_address} { break }
+    }
+
+    return $mac_address
+}
+
 
 
 # ---------------------------------------------------------------
@@ -421,5 +486,4 @@ ad_proc im_linux_vmware_p { } {
     if {[lsearch $modules "vmw_balloon"] > -1} { return 1 }
     return 0
 }
-
 
