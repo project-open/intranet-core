@@ -59,8 +59,9 @@ if {"" == $username} {
 # ------------------------------------------------------
 # Gather some information about the current system
 
-set ip_address "undefined"
-catch {set ip_address [im_exec /bin/bash -c "/sbin/ifconfig | grep 'inet' | grep 'netmask' | head -1 | cut -d: -f2 | awk '{ print \$2}'"]} ip_address
+set ip_mac [im_system_ip_mac_address]
+set ip_address [lindex $ip_mac 0]
+set mac_address [lindex $ip_mac 1]
 
 set total_memory "undefined"
 catch {set total_memory [expr {[im_exec /bin/bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024}]} total_memory
