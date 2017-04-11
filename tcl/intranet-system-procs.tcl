@@ -275,15 +275,13 @@ ad_proc im_system_ip_mac_address_windows { } {
 	set mac_line [string tolower $mac_line]
 
 	# Filter out IPv4 address
-	if {"" eq $ip_address && [regexp {ipv4.+?([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)} $mac_line match ip]} {
+	if {"" eq $ip_address && [regexp {ipv4[^\:]*\: ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)} $mac_line match ip]} {
 	    set ip_address $ip
 	}
 
 	if {"" eq $mac_address} {
 	    # DUID line - similar to MAC, but not suitable
-	    if {[regexp {duid.+[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]} $mac_line]} { continue }
-	    
-	    regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+	    regexp {\: ([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])$} $mac_line match mac_address
 	}
     }
 
