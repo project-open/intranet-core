@@ -213,50 +213,58 @@ ad_proc -public im_bash_command { } {
 # System MAC Address
 # ---------------------------------------------------------------
 
-ad_proc im_system_mac_address { } {
+ad_proc im_system_ip_mac_address { } {
     Retreives the MAC address of the first IP interface
     on both Linux and Windows machines
 } {
     global tcl_platform
     set platform $tcl_platform(platform)
 
-    ns_log Notice "im_system_mac_address: platform=$platform"
+    ns_log Notice "im_system_ip_mac_address: platform=$platform"
     switch $platform {
-	"windows" {return [im_system_mac_address_windows] }
-	"unix" - "linux" {return [im_system_mac_address_linux] }
+	"windows" {return [im_system_ip_mac_address_windows] }
+	"unix" - "linux" {return [im_system_ip_mac_address_linux] }
     }
-    return [im_system_mac_address_linux]
+    return [im_system_ip_mac_address_linux]
 }
 
 
-ad_proc im_system_mac_address_linux { } {
+ad_proc im_system_ip_mac_address_linux { } {
     Retreives the MAC address of the first IP interface on Linux
 } {
     # Linux and Solaris - extract the MAC address from ifconfig
+    set ip_address ""
     set mac_address ""
+
     set mac_lines ""
     catch {set mac_lines [im_exec ifconfig]} err_msg
-
-    # ad_return_complaint 1 "<pre>$mac_lines</pre>"
 
     # Extract the MAC address from the mac_lines
     foreach mac_line [split $mac_lines "\n"] {
 	set mac_line [string tolower $mac_line]
-	if {![regexp {hwaddr} $mac_line] && ![regexp {ether} $mac_line]} { continue }
-	regsub -all {:} $mac_line {-} mac_line
-	regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
-	if {"" ne $mac_address} { break }
-    }
 
-    return $mac_address
+	# Filter out MAC address
+	if {"" eq $mac_address && ([regexp {hwaddr} $mac_line] || [regexp {ether} $mac_line]) } {
+	    regsub -all {:} $mac_line {-} mac_line
+	    regexp {([0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z])} $mac_line match mac_address
+	}
+	
+	# Filter out IPv4 address
+	if {"" eq $ip_address && [regexp {inet\ +([0-9\.]+)} $mac_line match ip]} {
+	    set ip_address $ip
+	}
+    }
+    if {"" eq $ip_address} { set ip_address "127.0.0.1" }
+    return [list $ip_address $mac_address]
 }
 
 
 
-ad_proc im_system_mac_address_windows { } {
+ad_proc im_system_ip_mac_address_windows { } {
     Retreives the MAC address of the first IP interface on Windows
 } {
     # Extract the MAC address from ifconfig
+    set ip_address ""
     set mac_address ""
     set mac_lines ""
     catch {
@@ -265,6 +273,12 @@ ad_proc im_system_mac_address_windows { } {
 
     foreach mac_line [split $mac_lines "\n"] {
 	set mac_line [string tolower $mac_line]
+
+	# Filter out IPv4 address
+	if {"" eq $ip_address && [regexp {ipv4.+([0-9\.]+)} $mac_line match ip]} {
+	    set ip_address $ip
+	}
+
 	# DUID line - similar to MAC, but not suitable
 	if {[regexp {duid.+[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]\-[0-9a-z][0-9a-z]} $mac_line]} { continue }
 
@@ -272,7 +286,8 @@ ad_proc im_system_mac_address_windows { } {
 	if {"" ne $mac_address} { break }
     }
 
-    return $mac_address
+    if {"" eq $ip_address} { set ip_address "127.0.0.1" }
+    return [list $ip_address $mac_address]
 }
 
 
