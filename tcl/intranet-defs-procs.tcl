@@ -1222,6 +1222,8 @@ ad_proc -public im_valid_auto_login_p {
     @author Timo Hentschel (thentschel@sussdorff-roy.com)
     @author Frank Bergmann (frank.bergmann@project-open.com)
 } {
+    ns_log Notice "im_valid_auto_login_p: expiry_date=$expiry_date, user_id=$user_id, token=$auto_login"
+
     # Should the Unregistered Visitor to login without password?
     set enable_anonymous_login_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "EnableUnregisteredUserLoginP" -default 0]
 
