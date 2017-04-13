@@ -98,10 +98,8 @@ if {0 eq $current_user_id} {
 set ip_mac [im_system_ip_mac_address]
 set ip_address [lindex $ip_mac 0]
 set mac_address [lindex $ip_mac 1]
-
-set total_memory "undefined"
-catch {set total_memory [expr {[im_exec bash -c "grep MemTotal /proc/meminfo | awk '{print \$2}'"] / 1024}]} total_memory
-
+set total_memory [im_system_memory]
+if {"" ne $total_memory} { set total_memory [expr round($total_memory / 1024.0) / 1024.] }
 set url "<a href=\"http://$ip_address/\" target=_new>http://$ip_address/</a>\n"
 
 set debug ""
