@@ -209,6 +209,25 @@ ad_proc -public im_bash_command { } {
 }
 
 
+
+# ---------------------------------------------------------------
+# Get system memory
+# ---------------------------------------------------------------
+
+ad_proc im_system_memory { } {
+    Retreives the free memory on both Linux and Windows machines
+} {
+    set total_memory_line ""
+    catch {
+	set total_memory_line [im_exec grep MemTotal /proc/meminfo]
+    } err_msg
+
+    set memory ""
+    regexp {MemTotal[^0-9]+([0-9]+)} $total_memory_line match memory
+    return $memory
+}
+
+
 # ---------------------------------------------------------------
 # System IP & MAC Address
 #
