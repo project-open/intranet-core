@@ -2442,9 +2442,10 @@ ad_proc im_project_nuke {
 	
 
 	# Payments
+	ns_log Notice "projects/nuke-2: reset payments"
 	db_dml reset_payments "
 		update im_payments 
-		set cost_id=null 
+		set cost_id = null 
 		where cost_id in (
 			select cost_id 
 			from im_costs 
@@ -2452,10 +2453,12 @@ ad_proc im_project_nuke {
 		)"
 	
 	# Costs
+	ns_log Notice "projects/nuke-2: reset invoice items"
 	db_dml reset_invoice_items "
 		update im_invoice_items 
 		set project_id = null 
 		where project_id = :project_id"
+
 
 	set cost_infos [db_list_of_lists costs "
 		select cost_id, object_type 
@@ -2465,6 +2468,7 @@ ad_proc im_project_nuke {
 	foreach cost_info $cost_infos {
 	    set cost_id [lindex $cost_info 0]
 	    set object_type [lindex $cost_info 1]
+	    ns_log Notice "projects/nuke-2: going to nuke $object_type #$cost_id"
 
             # Delete Multiple-Values associated to this cost item ("Canned Notes")
             db_dml del_multi_values "delete from im_dynfield_attr_multi_value where object_id = :cost_id"
@@ -2496,6 +2500,7 @@ ad_proc im_project_nuke {
 	
 
         # im_notes
+	ns_log Notice "projects/nuke-2: nuking im_notes"
         if {[im_table_exists im_notes]} {
             ns_log Notice "projects/nuke-2: im_notes"
             db_dml notes "
