@@ -2437,9 +2437,17 @@ ad_proc im_project_nuke {
 	ns_log Notice "projects/nuke-2: dangeling_costs"
 	db_dml dangeling_costs "
 		delete from acs_objects 
-		where	object_type = 'im_cost' 
-			and object_id not in (select cost_id from im_costs)"
-	
+		where	objct_id in (
+				select	object_id
+				from	acs_objects
+				where	object_type in (
+					'im_cost', 'im_invoice', 'im_timesheet_invoice', 
+					'im_translation_invoice', 'im_repeating_cost', 
+					'im_expense', 'im_expense_bundle', 'im_investment'
+					) 
+				except (select cost_id from im_costs)
+			)
+	"
 
 	# Payments
 	ns_log Notice "projects/nuke-2: reset payments"
