@@ -78,15 +78,15 @@
      <if @feedback_behaviour_key@ eq 1 or @feedback_behaviour_key@ eq 2>
         <!-- Serious Err or simple Message , feedback bar disappears -->
 	<script type="text/javascript">
-		$('#ajax-status-message').delay(5000).fadeOut();
+		$('#ajax-status-message').delay(8000).fadeOut();
 		window.setTimeout(function () {
 	                // A red dot will briefly appear to drive the attention to a an "Warning icon" that remains on the upper left corner site, near the search bar  
 		     	$('#general_messages_icon_span').html('<span style="border-radius: 50%; width: 200px; height: 200px; background: none repeat scroll 0 0 red;">&nbsp;&nbsp;&nbsp;&nbsp;</span>').hide().fadeIn(500);
-		}, 5000);
+		}, 8000);
 
 		window.setTimeout(function () {
 		     $('#general_messages_icon_span').fadeOut(500);
-		}, 5500);
+		}, 8500);
 
 		window.setTimeout(function () {
 			$('#general_messages_icon_span').html('&nbsp;<span style="cursor: pointer;"><%=[im_gif "error" ""]%></span>');
@@ -98,7 +98,7 @@
 				return false;
 			} );
 			*/
-		}, 5800);
+		}, 8800);
     </script>
     </if>
 </if>
