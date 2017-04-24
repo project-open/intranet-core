@@ -1,0 +1,58 @@
+]project-open[ V5.0 Community Edition 
+
+(c) 2017 ]project-open[ Business Solutions, S.L.,
+         SPAZIO IT – Soluzioni Informatiche s.a.s.
+
+This is the ]project-open[ "Community Edition".
+This version is suitable for organizations with up to 10-15 users. 
+If you plan to run ]project-open[ in larger organizations please 
+contact info@project-open.com and ask for the "Professional" or 
+"Enterprise" editions.
+
+This Windows Port of ]project-open[ is made available under the 
+conditions specified in the GNU General Public License V2 or higher: 
+http://www.gnu.org/licenses/gpl.html
+
+However this installer packages and redistributes several third party 
+software packages with licenses different from the GPL, so you are 
+required to review and agree to ALL of them prior to using the 
+software:
+
+1.  NaviServer License: Mozilla Public License
+2.  Tcl/tk License: 
+    http://www.tcl.tk/software/tcltk/license.html
+3.  tDOM License: 
+    http://www.tdom.org/#SECTid0x80bca38
+4.  XOTcl License: 
+    http://media.wu-wien.ac.at/doc/COPYRIGHT
+5.  Thread License: Copyrighted by the Regents of the University of 
+    California, Sun Microsystems, Inc., Scriptics Corporation, and 
+    other parties: Anybody can do anyhting provided that the copyright 
+    notice is retained.
+6.  TclLib License: BSD License
+7.  OpenSSL License: 
+    http://www.openssl.org/source/license.html
+8.  PostgreSQL License: 
+    http://www.postgresql.org/about/licence
+9.  ]project-open[ Free License: 
+    http://www.project-open.com/en/project-open-license-free
+10. OpenACS License: GPL V2 or higher
+    http://openacs.org/about/licensing/openacs-plain-english-licensing
+11. Microsoft VC++ Redistributable
+12. XoWiki License:  MIT style license (like XOTcl)
+13. Java JRE License: 
+    http://java.com/license
+14. External binaires: as specified in the respective websites
+
+
+DISCLAIMER
+This software is provided "as-is" and without warranty of any kind,
+express, implied or otherwise, including without limitation, any 
+warranty of merchantability or fitness for a particular purpose.
+
+In no event shall ]project-open[ Business Solutions, S.L. be liable 
+for any special, incidental, indirect or consequential damages of 
+any kind, or any damages whatsoever resulting from loss of use, 
+data or profits, whether or not advised of the possibility of damage, 
+and on any theory of liability, arising out or in connection with 
+the use or performance of this software.
