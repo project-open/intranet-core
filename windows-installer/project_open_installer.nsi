@@ -8,14 +8,16 @@
 # Attention: Compile this only with NSIS-strlen-8192
 # -----------------------------------------------------------------------
 
-Name			"]project-open["
-Caption			"Project Management Server" 
+!define PRODUCT		"]project-open["
+!define COMPANY		"]project-open[ Business Consulting, S.L."
+!define DESCRIPTION	"Open-Source Project Management Server"
+!define	URL		http://www.project-open.com
 !define REGKEY		"SOFTWARE\$(^Name)"
 !define VERSION_MAJ	"5.0.2"
-!define VERSION_MIN	"0.1"
-!define RELEASE		"029"
-!define COMPANY		"]project-open["
-!define	URL		http://www.project-open.com
+!define VERSION_MIN	"0.2"
+!define RELEASE		"009"
+Name			"${PRODUCT} ${VERSION_MAJ}.${VERSION_MIN}"
+Caption			"${DESCRIPTION}" 
 !define TARGET		c:\project-open
 #!define NSD_VER 	"aolserver451"
 !define NSD_VER		"naviserver499"
@@ -24,15 +26,41 @@ SetCompress		auto
 # Create installer without the initial tests if already installed?
 #!define NOTEST 1
 # Create installer without files? Used for testing
-#!define NOFILE 1
+!define NOFILE 1
 
 # Output
-OutFile			"h:\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe"
+!define OUTPATH		"c:\download"
+!define OUTBASE		"project-open-Window-Community-${VERSION_MAJ}.${VERSION_MIN}.alpha-${RELEASE}"
+OutFile			"${OUTPATH}\${OUTBASE}.exe"
+
+
+# -----------------------------------------------------------------------
+# Bugs
+# -----------------------------------------------------------------------
+
+# 4	Update the Service Panel to include Klaus new design
+# 2	Filestorage still not working with WS2016
+# 2	Installer Link "Go to ]po[" (open browser) not working
+# 3 1	WS2016 reported as WS2012
+# 2 1	/intranet-filestorage/ on 2016:
+#	Unable to get file list from 'nodosfilewarning/servers/projop/filestorage/home':
+#	find_path=nodosfilewarning/servers/projop/filestorage/home
+#	FIND: Parameter format not correct
+# 4 2	Handle automatic update after installation
+# 4 1	Need to delete all cygwin*, project-open*, projop*, naviserver*,
+#	po-service-monitor*, postgres* registry keys 
+# 4 1	NaviServer doesn't restart after "restart server"
+# 5 4	Uninstaller leaves AOLDIR and CYGWIN env vars
+# 5 3	Logroll doesn't work. Check cacls.exe or xcacls.exe to remove
+#	the special DENY permissions for Administratoren
+# 7 4	Handle email sending
+# 8 2	ZIP download from intranet-filestorage doesn't work
+# 7 4	Service Monitor: parse AOLserver and PG log files for indicator
 
 
 
 # -----------------------------------------------------------------------
-# Versions
+# Bugs Done
 # -----------------------------------------------------------------------
 
 # 020	First version working on D:\project-open\
@@ -46,49 +74,39 @@ OutFile			"h:\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe
 # 027	Added descriptions to Windows services
 # 028	Fixing conf files c:/project-open,
 #       Replacing apm_parameter_values c:/project-open string
-
-# -----------------------------------------------------------------------
-# Bugs
-# -----------------------------------------------------------------------
-
-# 2 Set ownership to Administrator:Administrators to all CygWin files,
-#	independent of language. Necessary for WS2012.
-# 2 Update po-service-panel using Eclipse or add start/stop scripts for 
-#	the various services
-# 3 Need to revise ]po[ Service Monitor
-# 3 Error saving data on the server side: No authentication found ('').
-# 3 w32oacs_get_mac doesn't exist, called in intranet-defs-procs.tcl
-# 3 centralize all calls to ifconfig or ipconfig
-# 4 change the index.vmware.adp to use the im_hardware_id
-#	MAC address of the interface
-#	intranet-defs-procs.im_hardware_id
-# 4 Handle automatic update after installation
-# 4 Need to delete all cygwin*, project-open*, projop*, naviserver*,
-#	po-service-monitor*, postgres* registry keys 
-# 5 Uninstaller leaves AOLDIR and CYGWIN env vars
-# 7 Handle email sending
-# 8 ZIP download from intranet-filestorage doesn't work
-
-
-# -----------------------------------------------------------------------
-# Bugs Done
-# -----------------------------------------------------------------------
-
-# 2 Uninstaller doesn't delete files
-# 2 Uninstaller doesn't delete ]po[ service monitor
-# 4 Added descriptions to Windows services installed by ]po[
-# 4 Create a description for the ]po[ services
-# 2 Internal error: couldn't open "c:/tmp/oacs-a039441491512894839.rpc2":
+# 001	Fixed exec issue, new Service Panel, MAC fix etc.
+# 2	Uninstaller doesn't delete files
+# 2	Uninstaller doesn't delete ]po[ service monitor
+# 4	Added descriptions to Windows services installed by ]po[
+# 4	Create a description for the ]po[ services
+# 2	Internal error: couldn't open "c:/tmp/oacs-a039441491512894839.rpc2":
 # 	Need to modify acs_parameters to accodmodate INSTDIR
-# 2 Uninstaller doesn't stop ]po[ service monitor before uninstalling
-# 1 pgsql call doesn't work (from executing upgrade scripts)
+# 2	Uninstaller doesn't stop ]po[ service monitor before uninstalling
+# 1 	pgsql call doesn't work (from executing upgrade scripts)
 #	Added in config.tcl: ns_section "ns/db/driver/postgres" -> ns_param pgbin
 #	"c:/project-open/pgsql/bin"
-# 5 Portrait upload/delete doesn't work
-# 1 bash -c "..." doesn't work
-# 1 Check CSV Import because of exec change
-# 1 Check /intranet-filestorage/: invalid command name: "::exec_orig"
-
+# 5	Portrait upload/delete doesn't work
+# 1	bash -c "..." doesn't work
+# 1	Check CSV Import because of exec change
+# 1	Check /intranet-filestorage/: invalid command name: "::exec_orig"
+# 3	Update service monitor to reflect new service names
+# 2 8	Update po-service-panel using Eclipse or add start/stop scripts 
+#	for the various services
+# 3 	Need to revise ]po[ Service Monitor
+# 3 1	w32oacs_get_mac doesn't exist, called in intranet-defs-procs.tcl
+# 2 2	Fix issue with IP address on index.vmware-ajax
+# 3 2	Centralize all calls to ifconfig or ipconfig
+# 4 1	Change the index.vmware.adp to use the im_hardware_id
+#	MAC address in intranet-defs-procs.im_hardware_id
+# 1	Rogue chmod breaks installer
+# 3 	GanttEditor: Error saving data on the server side: 
+#	No authentication found ('').
+# 2	Chmod not modifying Registry permissions anymore
+# 3	Chmod now executed using nsExec::ExecToStack
+# 4	Added copyright and description to installer executable
+# 2 1	Set ownership to Administrator:Administrators to all CygWin files,
+#	independent of language. Necessary for WS2012.
+# 3	Display release notes before finishing the installer
 
 
 # -----------------------------------------------------------------------
@@ -102,7 +120,8 @@ OutFile			"h:\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe
 !include project_open_installer_registry.nsh
 !include project_open_installer_ports.nsh
 !include project_open_installer_l10n_strings.nsh
-
+!include strfilter.nsh
+!include GetWindowsVersion.nsh
 
 # MultiUser Symbol Definitions
 !define MULTIUSER_EXECUTIONLEVEL Admin
@@ -124,6 +143,9 @@ OutFile			"h:\project-open-Window-Community-${VERSION_MAJ}.alpha2-${RELEASE}.exe
 !include Sections.nsh
 !include MUI2.nsh
 !include x64.nsh
+!include LogicLib.nsh
+
+
 
 # Variables
 Var StartMenuGroup
@@ -135,8 +157,9 @@ Var instv
 # ---------------------------------------------------
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE ${TARGET}\installer\version_copyright_disclaimer_po.txt
+Page custom windowsVersionPage windowsVersionPageLeave
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
+!insertmacro MUI_PAGE_LICENSE ${TARGET}\installer\version_copyright_disclaimer_po.txt
 !define MUI_DIRECTORYPAGE_VARIABLE $instv
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -153,17 +176,127 @@ Var instv
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 
+
+var Dialog
+Var Label
+Var CheckBox
+var ExitCode
+var WinVerText
+var WinVer
+var WinProductName
+var GetWinVersion
+Function windowsVersionPage
+	!insertmacro MUI_HEADER_TEXT "Release Notes" "Please review the release notes for your Windows version"
+        nsDialogs::Create 1018
+        Pop $Dialog
+	${If} $Dialog == error
+		Abort
+		# ExecShell "open" "http://www.project-open.net/en/"
+	${EndIf}
+
+	${NSD_CreateLabel} 0 0 100% 12u "Please check the release notes for known issues with your Windows version:"
+	Pop $Label
+
+	# Get the Windows version from "ver"
+	nsExec::ExecToStack "cmd /C ver"
+	Pop $ExitCode
+	Pop $WinVerText	
+	# Search for "Windows" and return anything after that word
+	${StrStr} $0 $WinVerText "Version"
+	# Extract only numbers and "." from the string
+	${StrFilter} $0 "1" "." "" $WinVer	
+	${GetWindowsVersion} $R0
+
+	${NSD_CreateLabel} 0 20u 100% 12u "Windows: $R0"
+	Pop $Label
+	${NSD_CreateLabel} 0 32u 100% 12u "Build: $WinVer"
+	Pop $Label
+
+	# Check for 32bit vs. 64bit systems
+	${if} ${RunningX64}
+		${NSD_CreateLabel} 0 44u 100% 12u "Word width: 64bit"
+		Pop $Label   
+	${else}
+		${NSD_CreateLabel} 0 44u 100% 12u "Word width: 32bit"
+		Pop $Label
+	${endIf}
+
+	# Link for reviewing release notes
+	${NSD_CreateLink} 12u 60u 100% 12u "Review release notes for Windows $R0 ($WinVer)"
+	Pop $R9
+	${NSD_OnClick} $R9 windowsVersionPageOnClick
+
+	# Create checkbox in front of "Review release notes..."
+	${NSD_CreateCheckBox} 0u 60u 10u 10u ""
+	Pop $CheckBox
+	${NSD_Check} $CheckBox
+	
+	nsDialogs::Show
+FunctionEnd
+
+Function windowsVersionPageLeave
+	# Open the release notes unless unchecked
+	${NSD_GetState} $CheckBox $0
+	${If} $0 == "1"
+		Push ""
+		Call windowsVersionPageOnClick
+	${EndIf}
+
+	# Warn about 32bit systems
+	${if} ${RunningX64}
+		DetailPrint "Found 64-bit Windows"    
+	${else}
+		MessageBox MB_OK $(message012)
+		Abort
+	${endIf}
+
+FunctionEnd
+
+
+var PoVersionDashes
+var WordWidth
+Function windowsVersionPageOnClick
+	pop $0
+
+	# ]po[ Version with dashes ('-') instead of dots ('.')
+	${StrRep} $PoVersionDashes '${VERSION_MAJ}.${VERSION_MIN}' '.' '-'
+
+	# 32bit vs. 64bit systems
+	${if} ${RunningX64}
+		StrCpy $WordWidth "64bit"
+	${else}
+		StrCpy $WordWidth "32bit"
+	${endIf}
+
+	# Get the Windows version from "ver"
+	nsExec::ExecToStack "cmd /C ver"
+	Pop $ExitCode
+	Pop $WinVerText	
+	# Search for "Windows" and return anything after that word
+	${StrStr} $0 $WinVerText "Version"
+	# Extract only numbers and "." from the string
+	${StrFilter} $0 "1" "." "" $WinVer	
+	${GetWindowsVersion} $GetWinVersion
+	
+	ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"
+	${StrRep} $WinProductName $0 ' ' '%20'
+
+	ExecShell "open" "http://www.project-open.net/en/version-$PoVersionDashes?os=windows&installer=${RELEASE}&get_win_version=$GetWinVersion&build=$WinVer&width=$WordWidth&product_name=$WinProductName" 
+FunctionEnd
+
+
+
 CRCCheck on
 XPStyle on
 ShowInstDetails show
 VIProductVersion "${VERSION}"
-VIAddVersionKey ProductName "${COMPANY}"
+VIAddVersionKey ProductName "${PRODUCT}"
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
 VIAddVersionKey FileVersion "${VERSION}"
-VIAddVersionKey FileDescription ""
-VIAddVersionKey LegalCopyright ""
+VIAddVersionKey FileDescription "${DESCRIPTION}"
+VIAddVersionKey LegalCopyright "Copyright (c) 2003-2017 ${COMPANY} and others"
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
@@ -222,16 +355,6 @@ NoSpaces:
     MessageBox MB_OK $(message002)
     Abort
     ${endif}
-        
-    # ---------------------------------------------------
-    # Check for 64bit Windows
-    #
-    ${if} ${RunningX64}
-        DetailPrint "Found 64-bit Windows"    
-    ${else}
-	MessageBox MB_OK $(message012)
-	Abort
-    ${endIf}
 
     # ---------------------------------------------------
     # 
@@ -397,6 +520,25 @@ Section -post SEC0001
 
 
     # ----------------------------------------------------
+    # Setup CygWin
+    #
+    DetailPrint "About to create CygWin passwd and groups files."
+    nsExec::ExecToLog '"$INSTDIR\bin\mkpasswd.exe" -l > /etc/passwd'
+    pop $R0
+    DetailPrint "Created /etc/passwd: result=$R0"
+    nsExec::ExecToLog '"$INSTDIR\bin\mkgroup.exe" -l > /etc/group'
+    pop $R0
+    DetailPrint "Created /etc/group: result=$R0"
+
+    # Grant everybody access to all files. That's necessary on
+    # Windows 8, 10, Server 2012 and Server 2016 versions
+    DetailPrint "About to set permissions. This may take several minutes."
+    nsExec::ExecToStack '"$INSTDIR\bin\chmod" -R go=u bin etc home installer lib pgsql servers tcl tmp usr var'
+    pop $R0
+    DetailPrint "Modified permissions of /"
+
+    
+    # ----------------------------------------------------
     # Setup Service Monitor service
     #
     DetailPrint ""
@@ -479,6 +621,13 @@ Section -post SEC0001
     nsExec::ExecToLog 'sc config po-projop depend= postgresql-9.2'
     pop $R0
     DetailPrint "Created dependency from ]po[ NaviServer Projop to PostgreSQL: result=$R0"
+
+    DetailPrint "About to set ]po[ NaviServer Projop restart behavior"
+    nsExec::ExecToLog 'sc failure po-projop reset= 30000 actions= restart/30000/restart/30000/restart/30000'
+    pop $R0
+    DetailPrint "Set ]po[ NaviServer Projop restart behavior: result=$R0"
+
+
 
     DetailPrint "Starting ]po[ NaviServer Projop - this may take several minutes"
     nsExec::ExecToLog 'net start po-projop'
@@ -674,10 +823,11 @@ Function LaunchProjectOpen
 FunctionEnd
 
 
+
 # --------------------------------------------------------
 # Upload file to SourceForge after compilation
 # --------------------------------------------------------
 
-# !finalize 'c:\project-open\bin\bash.exe -l -c "/installer/project_open_installer_upload.bat %1'
-# !finalize 'c:\project-open\installer\project_open_installer_upload.bat %1'
-
+#!finalize 'c:\project-open\bin\rm -f ${OUTPATH}\${OUTBASE}.zip'
+#!finalize 'c:\project-open\bin\7z a "${OUTPATH}\${OUTBASE}.zip" %1 C:\project-open\servers\projop\packages\intranet-core\LICENSE.Windows C:\project-open\servers\projop\packages\intranet-core\README.ProjectOpen'
+#!finalize 'c:\project-open\bin\rm -f ${OUTPATH}\${OUTBASE}.exe'
