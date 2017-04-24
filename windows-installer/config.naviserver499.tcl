@@ -93,7 +93,7 @@ ns_section ns/parameters
     ns_param	pidfile			$logroot/nsd.pid
     ns_param	logroll			on
     ns_param	logmaxbackup		10
-    ns_param	maxbackup		10
+    # ns_param	maxbackup		10
     ns_param	debug			$debug
     ns_param	logdebug		$debug
     ns_param	logdev			$dev
