@@ -93,7 +93,7 @@ ad_proc -public im_audit {
 	if {"" == $type_id && "" != $ref_type_id} { set type_id $ref_type_id }
     }
 
-    if {$debug_p} { ns_log Notice "im_audit: object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
+    if {$debug_p} { ns_log Notice "im_audit: user_id=$user_id, object_id=$object_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
 
     # Submit a callback so that customers can extend events
     set err_msg ""
@@ -109,10 +109,11 @@ ad_proc -public im_audit {
     set audit_id 0
     set audit_p [parameter::get_from_package_key -package_key intranet-core -parameter AuditP -default 1]
     if {$audit_p} {
+	if {$debug_p} { ns_log Notice "im_audit: About to call: im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment" }
 	if {[catch {
-	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -comment $comment]
+	    set audit_id [im_audit_impl -user_id $user_id -object_id $object_id -object_type $object_type -status_id $status_id -action $action -debug_p $debug_p -comment $comment]
 	} err_msg]} {
-	    ns_log Error "im_audit: Error executing im_audit_impl: $err_msg"
+	    ns_log Error "im_audit: Error executing im_audit_impl: $err_msg\n[ad_print_stack_trace]"
 	}
     }
 
@@ -393,17 +394,22 @@ ad_proc -public im_audit_impl {
 } {
     if {$debug_p} { ns_log Notice "im_audit_impl: object_id=$object_id, user_id=$user_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
 
+    set is_connected_p [ns_conn isconnected]
     set peeraddr "0.0.0.0"
-    if {0 == $user_id || "" == $user_id} { 
-	set user_id [ad_conn user_id] 
-	set peeraddr [ns_conn peeraddr]
-    }
+    set x_forwarded_for "0.0.0.0"
 
-    # Get the IP of the browser of the user
-    set header_vars [ns_conn headers]
-    set x_forwarded_for [ns_set get $header_vars "X-Forwarded-For"]
-    if {"" != $x_forwarded_for} {
-	set peeraddr $x_forwarded_for
+    if {$is_connected_p} {
+	if {0 == $user_id || "" == $user_id} { 
+	    set user_id [ad_conn user_id] 
+	    set peeraddr [ns_conn peeraddr]
+	}
+
+	# Get the IP of the browser of the user
+	set header_vars [ns_conn headers]
+	set x_forwarded_for [ns_set get $header_vars "X-Forwarded-For"]
+	if {"" != $x_forwarded_for} {
+	    set peeraddr $x_forwarded_for
+	}
     }
 
     if {"" == $action} { set action "update" }
