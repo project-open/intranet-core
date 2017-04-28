@@ -397,12 +397,11 @@ ad_proc -public im_audit_impl {
     set is_connected_p [ns_conn isconnected]
     set peeraddr "0.0.0.0"
     set x_forwarded_for "0.0.0.0"
+    if {"" eq $user_id} { set user_id 0 }
 
     if {$is_connected_p} {
-	if {0 == $user_id || "" == $user_id} { 
-	    set user_id [ad_conn user_id] 
-	    set peeraddr [ns_conn peeraddr]
-	}
+	set peeraddr [ns_conn peeraddr]
+	if {0 eq $user_id} { set user_id [ad_conn user_id] }
 
 	# Get the IP of the browser of the user
 	set header_vars [ns_conn headers]
