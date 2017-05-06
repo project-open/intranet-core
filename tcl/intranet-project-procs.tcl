@@ -2437,7 +2437,7 @@ ad_proc im_project_nuke {
 	ns_log Notice "projects/nuke-2: dangeling_costs"
 	db_dml dangeling_costs "
 		delete from acs_objects 
-		where	objct_id in (
+		where	object_id in (
 				select	object_id
 				from	acs_objects
 				where	object_type in (
