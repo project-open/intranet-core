@@ -59,7 +59,7 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
     set result_list_of_lists [list]
 	
     # get start with 1 because we use the function im_csv_split to get the header
-    set line_num 0
+    set line_num 1
     while {$line_num < $csv_files_len} {
 
 	set line [lindex $csv_files $line_num]
