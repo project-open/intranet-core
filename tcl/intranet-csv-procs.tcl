@@ -65,12 +65,12 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
 	set line [lindex $csv_files $line_num]
 	set line [string trimright $line];   # remove trailing ^M
 	incr line_num
-	ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, line=$line"
+	# ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, line=$line"
 
 	set quote_count [im_count_chars_in_str $line "\""]
-	ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
+	# ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
 	while {$line_num < $csv_files_len && [expr $quote_count % 2]} {
-	    ns_log Notice "im_csv_get_values: In While: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
+	    # ns_log Notice "im_csv_get_values: In While: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
 	    # We found an uneven number of double quotes in the string.
 	    # So there is a long quote-delimited string that continues
 	    # in the next line.
