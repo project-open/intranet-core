@@ -25,6 +25,13 @@ ad_library {
 # CSV File Parser
 # ------------------------------------------------------------------
 
+ad_proc im_count_chars_in_str { str char } {
+    Counts the occurrences of char in str
+} {
+    return [expr [string length $str] - [string length [string map [list $char {}] $str]]]
+}
+
+
 ad_proc im_csv_get_values { file_content {separator ","}} {
     Get the values from a CSV (Comma Separated Values) file
     and generate an list of list of values. Deals with:
@@ -52,13 +59,28 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
     set result_list_of_lists [list]
 	
     # get start with 1 because we use the function im_csv_split to get the header
-    for {set line_num 1} {$line_num < $csv_files_len} {incr line_num} {
+    set line_num 0
+    while {$line_num < $csv_files_len} {
 
 	set line [lindex $csv_files $line_num]
+	set line [string trimright $line];   # remove trailing ^M
+	incr line_num
+	ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, line=$line"
+
+	set quote_count [im_count_chars_in_str $line "\""]
+	ns_log Notice "im_csv_get_values: Before while: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
+	while {$line_num < $csv_files_len && [expr $quote_count % 2]} {
+	    ns_log Notice "im_csv_get_values: In While: line_num=$line_num, quote_count=$quote_count, even=[expr $quote_count % 2]"
+	    # We found an uneven number of double quotes in the string.
+	    # So there is a long quote-delimited string that continues
+	    # in the next line.
+	    append line " [lindex $csv_files $line_num]"
+	    incr line_num
+	    set quote_count [im_count_chars_in_str $line "\""]
+	}	
 
 	# Skip compeletely empty lines
 	if {$line eq ""} {
-	    incr line_num
 	    continue
 	}
 
@@ -66,7 +88,7 @@ ad_proc im_csv_get_values { file_content {separator ","}} {
 	if {[regexp {^\-(.*)} $line match rest_of_line]} { set line $rest_of_line }
 
 
-	if {$debug} {ns_log notice "im_csv_get_values: line=$line num=$line_num"}
+	if {$debug} {ns_log notice "im_csv_get_values: After While: line_num=$line_num, line=$line"}
 	set result_list [im_csv_split $line $separator]
 	lappend result_list_of_lists $result_list
     }
