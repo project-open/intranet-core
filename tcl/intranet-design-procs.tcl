@@ -726,30 +726,23 @@ ad_proc -public im_sub_navbar {
 	append navbar [im_navbar_tab $url $name $selected]
     }
 
-
-
-
     if {$components_p} {
 	if {$base_url eq ""} {
 	    set base_url $plugin_url
 	}
 
 	set components_sql "
-	    SELECT 
-			p.plugin_id AS plugin_id,
+	    SELECT	p.plugin_id AS plugin_id,
 			p.plugin_name AS plugin_name,
 			p.menu_name AS menu_name
-	    FROM 
-			im_component_plugins p,
+	    FROM	im_component_plugins p,
 			im_component_plugin_user_map u
-	    WHERE
-			(enabled_p is null OR enabled_p = 't')
+	    WHERE	(enabled_p is null OR enabled_p = 't')
 			AND p.plugin_id = u.plugin_id 
 			AND page_url = '$plugin_url'
 			AND u.location = 'none' 
 			AND u.user_id = $user_id
-	    ORDER by 
-			p.menu_sort_order, p.sort_order
+	    ORDER by 	p.menu_sort_order, p.sort_order
 	"
 
 	set navbar_components_list [util_memoize [list db_list_of_lists navbar_components $components_sql]]
@@ -758,6 +751,10 @@ ad_proc -public im_sub_navbar {
 	    set plugin_id [lindex $comp_tuple 0]
 	    set plugin_name [lindex $comp_tuple 1]
 	    set menu_name [lindex $comp_tuple 2]
+
+	    regsub -all {[^0-9a-zA-Z]} $plugin_name "_" plugin_name_subs
+	    set plugin_name_key "intranet-core.${plugin_name_subs}"
+	    set plugin_name [lang::message::lookup "" $plugin_name_key $plugin_name]
 
 	    set url [export_vars -quotehtml -base $base_url {plugin_id {view_name "component"}}]
 	    if {$menu_name eq ""} {
