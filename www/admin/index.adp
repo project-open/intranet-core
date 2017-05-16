@@ -3,23 +3,12 @@
 <property name="admin_navbar_label">admin_home</property>
 
 <!-- left - right - bottom  design -->
-<br>
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr><td colspan=2><%= [im_component_bay top] %></td></tr>
 <tr>
   <td valign="top">
-
-    <%= [im_table_with_title "Documentation" "
-    <ul>
-      <li><A href='http://www.project-open.com/en/' target='_blank'>General Documentation</a><br></li>
-      <li><A href='http://www.project-open.com/en/page-intranet-admin-index' target='_blank'>Context help for this page <%= [im_gif help] %></a><br></li>
-    </ul>
-    "] %>
-
     <%= [im_table_with_title "Administration" $menu_html] %>
-
-
-    @admin_guide_html;noquote@
 
 
 <!--
