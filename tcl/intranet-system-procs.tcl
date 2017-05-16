@@ -446,13 +446,18 @@ ad_proc im_core_version { } {
     Returns the version number of the "intranet-core" package.
     Example return value: "3.4.0.5.4"
 } {
-    set core_package_version_sql "
-		select	version_name
+
+    set core_versions [db_list core_versions "
+	select	version_name
+	from	apm_package_versions
+	where	version_id in (
+		select	max(version_id)
 		from	apm_package_versions
-		where	package_key = 'intranet-core' and
+                where	package_key = 'intranet-core' and
 			enabled_p = 't'
-    "
-    set core_version [db_string core_version $core_package_version_sql -default ""]
+        )
+    "]
+    set core_version [lindex $core_versions 0]
     return $core_version
 }
 
