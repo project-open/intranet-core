@@ -842,7 +842,7 @@ ad_proc -public im_user_registration_component { current_user_id { max_rows 8} }
   <td align=center class=rowtitle>[_ intranet-core.Date]</td>
   <td align=center class=rowtitle>[_ intranet-core.Name]</td>
   <td align=center class=rowtitle>[_ intranet-core.Email]</td>
-  <td align=center class=rowtitle>[_ intranet-core.State]</td>
+  <td align=center class=rowtitle>[lang::message::lookup "" intranet-core.Registration_State "Registration<br>State"]</td>
 </tr>
 $rows_html
 <tr class=rowblank align=right>
