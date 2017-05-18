@@ -28,7 +28,6 @@ ad_proc -public im_exec {args} {
 } {
     global tcl_platform
     set platform $tcl_platform(platform)
-    #set platform "windows"
 
     ns_log Notice "im_exec: platform=$platform, args=$args"
     switch $platform {
