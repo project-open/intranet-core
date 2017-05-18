@@ -20,12 +20,12 @@ ad_page_contract {
     @param plugin_id            ID of plugin to change
     @author frank.bergmann@project-open.com
 } {
-    plugin_id
+    plugin_id:integer
     return_url
 }
 
 # -----------------------------------------------------------
-# Permissions - Only Admins can change the default order
+# Permissions - Everybody can change his portlets
 # -----------------------------------------------------------
 
 set user_id [auth::require_login]
@@ -35,9 +35,19 @@ set user_id [auth::require_login]
 # Add components back to page
 # -----------------------------------------------------------
 
+set sort_order 0
+set location "right"
+db_0or1row default_location "
+	select	sort_order, 
+		location
+	from	im_component_plugins
+	where	plugin_id = :plugin_id
+"
+
 db_dml activate_plugin "
 	update	im_component_plugin_user_map
-	set	location = 'right'
+	set	location = :location,
+		sort_order = :sort_order
 	where	plugin_id = :plugin_id
 		and user_id = :user_id
 "
@@ -47,4 +57,4 @@ db_dml activate_plugin "
 util_memoize_flush_regexp "db_list_of_lists navbar_components.*"
 util_memoize_flush_regexp "db_list_of_lists plugin_list_$user_id"
 
-ad_returnredirect "$return_url"
+ad_returnredirect $return_url
