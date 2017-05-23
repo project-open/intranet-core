@@ -42,46 +42,56 @@ ad_proc -public im_category_from_id {
 }
 
 ad_proc -public im_id_from_category { 
-    { -list_p 1}
     category
     category_type
 } {
     Convert a category_name into a category_id.
     Returns "" if the category isn't found.
 } {
-    return [util_memoize [list im_id_from_category_helper -list_p $list_p $category $category_type]]
+    # return [im_id_from_category_helper $category $category_type]
+    return [util_memoize [list im_id_from_category_helper $category $category_type]]
 }
 
 ad_proc -public im_id_from_category_helper { 
-    { -list_p 0}
     category
     category_type
 } {
     Convert a category_name into a category_id.
     Returns "" if the category isn't found.
 } {
-    set id [db_string id_from_cat "
+    ns_log Notice "im_id_from_category_helper: category=$category, category_type=$category_type"
+
+    set category [string trim [string tolower [string trim $category]]]
+    set result [db_string id_from_cat "
 		select	category_id
 		from	im_categories
-		where	lower(trim(category)) = lower(trim(:category)) and
+		where	lower(trim(category)) = :category and
 			category_type = :category_type
     " -default ""]
-    if {"" != $id} { return $id }
-
-    if {$list_p} {
-	set results [list]
-	foreach cat $category {
-	    set id [db_string id_from_cat "
-		select	category_id
-		from	im_categories
-		where	category = :cat and
-			category_type = :category_type
-            " -default ""]
-	    if {"" != $id} { lappend results $id }
-	}
-	return $results
+    if {"" != $result} { 
+	ns_log Notice "im_id_from_category_helper: found result=$result for category=$category"
+	return $result
     }
-    return ""
+
+    # Try with category translations
+    ns_log Notice "im_id_from_category_helper: trying with translation: category=$category, category_type=$category_type"
+    set locales [lang::system::get_locales]
+    set sql "select category_id, category as cat from im_categories where category_type = :category_type"
+    db_foreach cat $sql {
+	if {"" ne $result} { continue }
+	foreach locale $locales {
+	    if {"" ne $result} { continue }
+	    set cat_l10n [string tolower [lang::message::lookup $locale intranet-core.$cat]]
+	    ns_log Notice "im_id_from_category_helper: Checking locale=$locale, cat_l10n=$cat_l10n, category=$category"
+	    if {$cat_l10n eq $category} { 
+		set result $category_id 
+		ns_log Notice "im_id_from_category_helper: result=$result"
+	    }
+	}
+    }
+
+    # Nothing found...
+    return $result
 }
 
 
