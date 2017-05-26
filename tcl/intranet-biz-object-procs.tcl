@@ -565,17 +565,7 @@ ad_proc -public im_group_member_component {
 		LEFT OUTER JOIN im_categories c ON (c.category_id = bo_rels.object_role_id)
 	where
 		rels.object_id_one = :object_id and
-		rels.object_id_two in (select party_id from parties) and
-		rels.object_id_two not in (
-			-- Exclude banned or deleted users
-			select	m.member_id
-			from	group_member_map m,
-				membership_rels mr
-			where	m.rel_id = mr.rel_id and
-				m.group_id = acs__magic_object_id('registered_users') and
-				m.container_id = m.group_id and
-				mr.member_state != 'approved'
-		)
+		rels.object_id_two in (select party_id from parties)
 		$limit_to_group_id_sql 
 		$dont_allow_sql
 	order by 
@@ -619,8 +609,8 @@ ad_proc -public im_group_member_component {
 	set descr [lang::message::lookup "" $descr_otype_key $descr]
 	set role_gif_key "intranet-core.Role_GIF_[lang::util::suggest_key $role_gif]"
 	set role_gif [lang::message::lookup "" $role_gif_key $role_gif]
-	
 	set profile_gif [im_gif -translate_p 0 $role_gif $descr]
+	if {[im_user_deleted_p $user_id]} { set color "red" } else { set color "black" }
 
 	incr count
 	if { $current_user_id == $user_id } { set found 1 }
@@ -637,10 +627,12 @@ ad_proc -public im_group_member_component {
 		<tr $td_class([expr {$count % 2}])>
 			<td>
 	"
+	set name_html $name
+	if {[im_user_deleted_p $user_id]} { set name_html "<font color=red>$name</font>" }
 	if {$show_user > 0} {
-		append body_html "<A HREF=/intranet/users/view?user_id=$user_id>$name</A>"
+		append body_html "<A HREF=/intranet/users/view?user_id=$user_id>$name_html</A>"
 	} else {
-		append body_html $name
+		append body_html $name_html
 	}
 
 	append body_html "$profile_gif</td>"

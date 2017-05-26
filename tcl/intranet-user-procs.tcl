@@ -1916,3 +1916,22 @@ ad_proc -public im_menu_users_admin_links {
 
     return $result_list
 }
+
+
+ad_proc -public im_user_deleted_p {
+    user_id
+} {
+    Returns 1 if a user has been deleted.
+} {
+    set deleted_users [util_memoize [list db_list deleted_users "
+			select	m.member_id
+			from	group_member_map m,
+				membership_rels mr
+			where	m.rel_id = mr.rel_id and
+				m.group_id = acs__magic_object_id('registered_users') and
+				m.container_id = m.group_id and
+				mr.member_state != 'approved'
+   "]]
+
+    return [expr [lsearch $deleted_users $user_id] > -1]
+}
