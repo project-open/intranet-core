@@ -145,7 +145,7 @@ if ("0" ne $modified_lines) {
     system("mv $tar_dir/$tar $tar_dir/$tar2");
 
     # Update the 2nd tar with only version name
-    system("scp -i ~/.ssh/fraber\@shell.sf.net $tar_dir/$tar2 fraber,project-open\@shell.sourceforge.net:/home/frs/project/project-open/project-open/V5.0/");
+    system("scp -i ~/.ssh/fraber\@shell.sf.net $tar_dir/$tar2 fraber,project-open\@shell.sourceforge.net:/home/frs/project/project-open/project-open/V5.0/update/");
 
     # Destroy the shell
     system("echo exit | ssh -t -i ~/.ssh/fraber\@shell.sf.net fraber,project-open\@shell.sourceforge.net shutdown");
