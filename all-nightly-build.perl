@@ -139,7 +139,7 @@ if ("0" ne $modified_lines) {
     system("echo exit | ssh -t -i ~/.ssh/fraber\@shell.sf.net fraber,project-open\@shell.sourceforge.net create");
 
     # Upload the file
-    system("scp -i ~/.ssh/fraber\@shell.sf.net $tar_dir/$tar fraber,project-open\@shell.sourceforge.net:/home/frs/project/project-open/project-open/V5.0/nightly_builds/");
+    system("scp -i ~/.ssh/fraber\@shell.sf.net $tar_dir/$tar fraber,project-open\@shell.sourceforge.net:/home/frs/project/project-open/project-open/V5.0/nightly/");
 
     # Rename the tar 
     system("mv $tar_dir/$tar $tar_dir/$tar2");
