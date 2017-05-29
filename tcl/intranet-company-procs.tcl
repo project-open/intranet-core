@@ -502,7 +502,6 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 }
 
 
-
 # -----------------------------------------------------------
 # Company "select" and "options"
 # -----------------------------------------------------------
@@ -510,7 +509,7 @@ ad_proc -public im_company_contact_select { select_name { default "" } {company_
 
 ad_proc -public im_company_options {
     {-include_empty_p 1}
-    {-include_empty_name "-- Please_select --" }
+    {-include_empty_name "" }
     {-status_id "" }
     {-status "" }
     {-type_id "" }
@@ -538,7 +537,10 @@ ad_proc -public im_company_options {
 			     -with_active_projects_p $with_active_projects_p \
 			     -with_projects_p $with_projects_p \
     ]
-    if {1 == $include_empty_p} { set company_options [linsert $company_options 0 [list $include_empty_name ""]] }
+    if { 1 == $include_empty_p } { 
+	if { "" eq $include_empty_name } { set include_empty_name [lang::message::lookup "" intranet-core.--_Please_select_-- "-- Please_select --"] }
+	set company_options [linsert $company_options 0 [list $include_empty_name ""]] 
+    }
     return $company_options
 }
 
@@ -565,7 +567,7 @@ ad_proc -public im_company_select {
 } {
     ns_log Notice "im_company_select: select_name=$select_name, default=$default, status=$status, type=$type, exclude_status=$exclude_status"
 
-    if {"" == $include_empty_name} {
+    if {"" eq $include_empty_name} {
 	set include_empty_name [lang::message::lookup "" intranet-core.--_Please_select_-- "-- Please_select --"]
     }
 

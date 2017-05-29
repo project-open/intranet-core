@@ -263,26 +263,23 @@ template::element::create $form_id project_lead_id -optional\
     -widget "select" \
     -options $project_lead_list_options
 
-
 set help_text [im_gif -translate_p 1 help "General type of project. This allows us to create a suitable folder structure."]
 if {$user_admin_p} {
-    set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
-	[im_gif -translate_p 1 new "Add a new project type"]</A> $help_text"
+    set  help_text "<a href='/intranet/admin/categories/?select_category_type=Intranet+Project+Type'>
+	[im_gif -translate_p 1 new "Add a new project type"]</a> $help_text"
 }
 
 template::element::create $form_id project_type_id \
     -label [_ intranet-core.Project_Type] \
     -widget "im_category_tree" \
-    -custom {category_type "Intranet Project Type"} \
+    -custom { category_type "Intranet Project Type" translate_p 1 } \
     -after_html $help_text
-
 
 set help_text [im_gif -translate_p 1 help "In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already..."]
 if {$user_admin_p} {
     set  help_text "<A HREF='/intranet/admin/categories/?select_category_type=Intranet+Project+Status'>
 	[im_gif -translate_p 1 new "Add a new project status"]</A>$help_text"
 }
-
 
 # ### ToDo: optimize [START]
 
