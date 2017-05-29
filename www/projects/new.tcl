@@ -313,7 +313,7 @@ if {[info exists project_id] } {
 	    template::element::create $form_id project_status_id \
         	-label [_ intranet-core.Project_Status] \
 	        -widget "im_category_tree" \
-        	-custom {category_type "Intranet Project Status"} \
+        	-custom {category_type "Intranet Project Status" translate_p 1 } \
 	        -after_html $help_text
 	} else {
 	    template::element::create $form_id project_status_id -optional -widget hidden
@@ -325,7 +325,7 @@ if {[info exists project_id] } {
             template::element::create $form_id project_status_id \
                 -label [_ intranet-core.Project_Status] \
                 -widget "im_category_tree" \
-                -custom {category_type "Intranet Project Status"} \
+                -custom {category_type "Intranet Project Status" translate_p 1 } \
                 -after_html $help_text
     }
 }
@@ -350,7 +350,7 @@ template::element::create $form_id on_track_status_id \
     -label [_ intranet-core.On_Track_Status] \
     -widget "im_category_tree" \
     -optional \
-    -custom {category_type "Intranet Project On Track Status"} \
+    -custom {category_type "Intranet Project On Track Status" translate_p 1} \
     -after_html $help_text
 
 if { 1 == [parameter::get -package_id [apm_package_id_from_key intranet-timesheet2-tasks] -parameter "AutomaticProjectAdvanceP" -default 1] } {
