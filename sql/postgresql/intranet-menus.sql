@@ -1502,9 +1502,9 @@ BEGIN
 		null,				-- context_id
 		'intranet-core',		-- package_name
 		'admin_templates',		-- label
-		'Templates',			-- name
+		'Invoice Templates',		-- name
 		'/intranet/admin/templates/',	-- url
-		2601,				-- sort_order
+		1450,				-- sort_order
 		v_main_menu,			-- parent_menu_id
 		'0'				-- p_visible_tcl
 	);
@@ -2925,6 +2925,7 @@ update im_menus set sort_order = 1000, menu_gif_small = 'arrow_right'	where labe
 update im_menus set sort_order = 1100, menu_gif_small = 'arrow_right'	where label = 'admin_dynview';
 update im_menus set sort_order = 1200, menu_gif_small = 'arrow_right'	where label = 'admin_exchange_rates';
 update im_menus set sort_order = 1400, menu_gif_small = 'arrow_right'	where label = 'openacs_shell';
+update im_menus set sort_order = 1450, parent_menu_id = (select menu_id from im_menus where label = 'admin') where label = 'admin_templates';
 update im_menus set sort_order = 1500, menu_gif_small = 'arrow_right'	where label = 'openacs_auth';
 update im_menus set sort_order = 1600, menu_gif_small = 'arrow_right'	where label = 'openacs_l10n';
 update im_menus set sort_order = 1650, menu_gif_small = 'arrow_right'	where label = 'mail_import';
@@ -2954,5 +2955,4 @@ update im_menus set sort_order = 1000, parent_menu_id = (select menu_id from im_
 update im_menus set sort_order = 1100, parent_menu_id = (select menu_id from im_menus where label = 'master_data') where label = 'material';
 update im_menus set sort_order = 1300, parent_menu_id = (select menu_id from im_menus where label = 'master_data') where label = 'admin_exchange_rates';
 update im_menus set sort_order = 2000, parent_menu_id = (select menu_id from im_menus where label = 'master_data') where label = 'admin_survsimp';
-update im_menus set sort_order = 3000, parent_menu_id = (select menu_id from im_menus where label = 'master_data') where label = 'admin_templates';
 
