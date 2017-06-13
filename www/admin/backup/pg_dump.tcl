@@ -161,7 +161,7 @@ if { [catch {
     switch $platform {
 	windows {
 	    # Windows
-	    set pg_user "postgres"
+	    set pg_user "projop"
 	    set cmd [list im_exec ${pgbin}pg_dump -h localhost -U $pg_user -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file projop]
 	}
 	default {
