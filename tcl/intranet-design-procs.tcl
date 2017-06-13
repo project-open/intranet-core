@@ -193,6 +193,7 @@ ad_proc -public im_gif_static {
 	"wrong"		{ return "<img src=$url/delete.gif width=14 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"turn"		{ return "<img src=$url/turn.gif widht=15 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"tool"		{ return "<img src=$url/tool.15.gif widht=20 height=15 border=$border title=\"$alt\" alt=\"$alt\">" }
+
 	"exp-folder"	{ return "<img src=$url/exp-folder.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-minus"	{ return "<img src=$url/exp-minus.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-unknown"	{ return "<img src=$url/exp-unknown.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -201,6 +202,10 @@ ad_proc -public im_gif_static {
 	"exp-word"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-text"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"exp-pdf"	{ return "<img src=$url/$name.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-odp"	{ return "<img src=$url/exp-ppt.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-odt"	{ return "<img src=$url/exp-word.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+	"exp-ods"	{ return "<img src=$url/exp-excel.gif width=19 height=16 border=$border title=\"$alt\" alt=\"$alt\">" }
+
 	"profile"	{ return "<img src=$navbar_gif_url/user.png width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"member"	{ return "<img src=$url/m.gif width=19 height=13 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"key-account"	{ return "<img src=$url/k.gif width=18 height=13 border=$border title=\"$alt\" alt=\"$alt\">" }
@@ -212,6 +217,7 @@ ad_proc -public im_gif_static {
 	"left-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"right-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"right-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
+
 	"middle-sel-notsel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"middle-notsel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
 	"middle-sel-sel"	{ return "<img src=$navbar_gif_url/$name.gif width=19 height=19 border=$border title=\"$alt\" alt=\"$alt\">" }
