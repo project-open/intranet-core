@@ -119,15 +119,19 @@ if {!$download_p} {
 
 }
 
+# Parameters
+set dest_file "$path/$filename"
+global tcl_platform
+set platform [lindex $tcl_platform(platform) 0]
+
 # Where are the PostgreSQL binaries located?
 set pgbin [db_get_pgbin]
 set pgbin_param [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgPathUnix" -default ""]
 if {"" != $pgbin_param} { set pgbin $pgbin_param }
+set pgbin_last_char [string range $pgbin end end]
+if {"" ne $pgbin && "/" ne $pgbin_last_char} { set pgbin "$pgbin/" }
 
-set dest_file "$path/$filename"
 
-global tcl_platform
-set platform [lindex $tcl_platform(platform) 0]
 
 
 # get the PSQL PostgreSQL version
