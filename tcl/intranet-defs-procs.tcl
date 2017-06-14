@@ -1703,7 +1703,13 @@ ad_proc -public im_httpget {
     Wrapper for system HTTP functionality
 } {
     # Use the wrapper library from WU Vienna
-    return [util::http::get -url $url -timeout $timeout -max_depth $depth]
+    set result_list [util::http::get -url $url -timeout $timeout -max_depth $depth]
+    array set result_hash $result_list
+    set result ""
+    if {[info exists result_hash(page)]} {
+	set result $result_hash(page)
+    }
+    return $result
 }
 
 
