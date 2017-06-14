@@ -38,14 +38,14 @@ ad_proc -public lang::message::register_remote {
 	set lang_server_timeout [parameter::get_from_package_key -package_key "acs-lang" -parameter "LangServerTimeout" -default 5]
 	set lang_server_url [export_vars -base $lang_server_base_url {locale package_key message_key message comment package_version sender_email sender_first_names sender_last_name}]
 
-	set http_response [ns_httpget $lang_server_url $lang_server_timeout]
+	set http_response [im_httpget $lang_server_url $lang_server_timeout]
 
     } err_msg]} {
 
 	ad_return_complaint 1 "<b>lang::message::register_remote: Error Submitting Translation</b>:$
 		<pre>$err_msg</pre>
 		While executing the command:<br>
-		<pre>ns_httpget $lang_server_url $lang_server_timeout</pre>
+		<pre>im_httpget $lang_server_url $lang_server_timeout</pre>
 	"
 	ad_script_abort
     }

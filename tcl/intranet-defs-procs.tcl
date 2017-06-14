@@ -1695,3 +1695,29 @@ ad_proc -public im_package_exists_p { package_key } {
 }
 
 
+ad_proc -public im_httpget { 
+    url
+    {timeout 30}
+    {depth 10}
+} {
+    Wrapper for system HTTP functionality
+} {
+    # Use the wrapper library from WU Vienna
+    return [util::http::get -url $url -timeout $timeout -max_depth $depth]
+}
+
+
+ad_proc -public im_httpost { 
+    url
+    {rqset ""}
+    {qsset ""}
+    {type ""}
+    {timeout 30}
+} {
+    Wrapper for system HTTP functionality
+} {
+    # Use the wrapper library from WU Vienna
+    # return [util::http::get -url $url -timeout $timeout -max_depth $depth]
+    ns_httppost $url $rqset $qsset $type $timeout
+}
+
