@@ -188,11 +188,7 @@ template::list::create \
 # Left-Navbar
 # ---------------------------------------------------------------
 
-set admin_html "
-<br><ul>
-<li><a href=\"[export_vars -base reinstall-tsearch2]\">[lang::message::lookup "" intranet-core.Reinstall_TSearch2  "Reinstall TSearch2 Search Engine"]</a>
-</ul><br>
-"
+set admin_html ""
 
 set left_navbar_html "
             <div class=\"filter-block\">
