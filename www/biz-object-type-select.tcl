@@ -120,6 +120,7 @@ set category_select_sql "
                 category_type = :object_type_category
 		and (enabled_p = 't' OR enabled_p is NULL)
 		and category_id not in ([join $exclude_ids ","])
+		and category_id not in ([im_project_type_opportunity], [im_project_type_campaign], [im_project_type_milestone])
         order by lower(category)
 "
 db_foreach category_select $category_select_sql {
