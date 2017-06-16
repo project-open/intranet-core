@@ -2517,6 +2517,16 @@ ad_proc im_project_nuke {
             "
         }
 
+        # Estimate to complete
+	ns_log Notice "projects/nuke-2: nuking im_estimate_to_completes"
+        if {[im_table_exists im_estimate_to_completes]} {
+            ns_log Notice "projects/nuke-2: im_estimate_to_completes"
+            db_dml etc "
+                delete from im_estimate_to_completes
+                where etc_project_id = :project_id
+            "
+        }
+
 	# Forum
 	ns_log Notice "projects/nuke-2: im_forum_topic_user_map"
 	db_dml forum "
