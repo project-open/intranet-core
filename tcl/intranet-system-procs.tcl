@@ -25,6 +25,9 @@ ad_library {
 ad_proc -public im_exec {args} {
     Wrapper for ]po[ specific logic for exec,
     particularly under Windows.
+
+    ToDo: Needs to check if the first argument is -keepnewline
+    in order to correctly execute the "dot" in wf/graph-procs.tcl
 } {
     global tcl_platform
     set platform $tcl_platform(platform)
@@ -49,34 +52,42 @@ ad_proc -public im_exec_linux {args} {
 }
 
 
+
 ad_proc -public im_exec_windows {args} {
     Windows spefic for exec, in order to translate to CygWin commands.
 } {
     set args [lindex $args 0]
     ns_log Notice "im_exec_windows: args=$args"
 
-    # Processing program name
-    set procname [lindex $args 0]		;# /usr/bin/find or similar
-    set procname [im_exec_windows_transform_procname $procname]
-    set args [lrange $args 1 end]		;# other args to pass to procname
-    ns_log Notice "im_exec_windows: procname=$procname, args=$args"
+    # Extract and remove switches
+    set switches [list]
+    set switch [lindex $args 0]
+    while {"-" eq [string range $switch 0 0]} {
+        lappend switches $switch
+        set args [lrange $args 1 end]
+        set switch [lindex $args 0]
+    }
 
-    # fraber 170409: ToDo: testing
-    # Processing its arguments 
-    #for {set i 0} {$i < [llength $args]} {incr i} {
-    #    if {[string match [lindex $args $i] "2>/dev/null"]} {
-    #        set args [lreplace $args $i $i "2>nul"]
-    #    }
-    #}
+    # Processing program name
+    set procname [lindex $args 0]               ;# /usr/bin/find or similar
+    set procname [im_exec_windows_transform_procname $procname]
+    set args [lrange $args 1 end]               ;# other args to pass to procname
+    ns_log Notice "im_exec_windows: procname=$procname, args=$args"
+    set args [linsert $args 0 $procname]
+
+    # Insert switches into command again
+    foreach switch $switches {
+        set args [linsert $args 0 $switch]
+    }
 
     # Call the original exec
-    set cmd [linsert $args 0 $procname]
-    set cmd [linsert $cmd 0 "exec"]
+    set cmd [linsert $args 0 "exec"]
     ns_log Notice "im_exec_windows: cmd=$cmd"
     set result [eval $cmd]
     ns_log Notice "im_exec_windows: cmd=$cmd -> $result"
     return $result
 }
+
 
 
 ad_proc -public im_exec_windows_transform_procname {procname} {
