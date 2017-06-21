@@ -1590,6 +1590,8 @@ ad_proc im_project_clone {
 	db_foreach clone_dependencies $dependency_sql {
 
 	    # Convert the nrs of the original project into ids of the cloned project
+	    if {![info exists mapping_hash($task_id_one)]} { continue }
+	    if {![info exists mapping_hash($task_id_two)]} { continue }
 	    set task_id_one_cloned_id $mapping_hash($task_id_one)
 	    set task_id_two_cloned_id $mapping_hash($task_id_two)
 	    db_dml insert_dependency "
