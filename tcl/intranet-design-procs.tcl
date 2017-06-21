@@ -681,7 +681,7 @@ ad_proc -public im_sub_navbar {
 	    if [catch {
 	    	set visible [expr $visible_tcl]
 	    } errmsg] {
-		ad_return_complaint 1 "im_sub_navbar: Error evalualuating menu visible_tcl expression:<br>
+		ad_return_complaint 1 "im_sub_navbar: Error evaluating menu visible_tcl expression:<br>
                 <pre>visible_tcl=$visible_tcl</pre><br>Error:<br><pre>$errmsg</pre>"
 	    }
 	    	    
