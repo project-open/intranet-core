@@ -101,7 +101,7 @@ if { [catch {
     foreach file $file_list {
 	if {[regexp {portrait} $file match]} {
 	    ns_log Notice "portraits/upload-2: /bin/rm $file"
-	    im_exec /bin/rm $file
+	    im_exec rm $file
 	}
     }
 } err_msg] } {
