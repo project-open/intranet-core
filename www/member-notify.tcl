@@ -41,6 +41,7 @@ ad_page_contract {
     {attachment:allhtml ""}
     {attachment_filename ""}
     {attachment_mime_type ""}
+    {attachment_binary_file ""}
     {send_me_a_copy ""}
     return_url
     {process_mail_queue_now_p 1}
@@ -58,6 +59,7 @@ if { "" != $cancel } {
 ns_log Notice "subject='$subject'"
 ns_log Notice "message_mime_type='$message_mime_type'"
 ns_log Notice "attachment_filename='$attachment_filename'"
+ns_log Notice "attachment_binary_file='$attachment_binary_file'"
 ns_log Notice "attachment_mime_type='$attachment_mime_type'"
 ns_log Notice "send_me_a_copy='$send_me_a_copy'"
 ns_log Notice "return_url='$return_url'"
@@ -125,7 +127,6 @@ set subject [string trim $subject]
 # ---------------------------------------------------------------
 
 # Save an text attachment to a temporary file
-
 if {"" != $attachment} {
     set tmp_file [ns_mktemp "/tmp/attachment_XXXXXX"]
 
@@ -138,10 +139,16 @@ if {"" != $attachment} {
 	ad_script_abort
     }
 
-    if {"" == $attachment_filename} {
-	set attachment_filename $tmp_file
-    }
+    if {"" == $attachment_filename} { set attachment_filename $tmp_file }
 }
+
+
+# The calling page has provided us with a binary file
+if {"" != $attachment_binary_file} {
+    set tmp_file $attachment_binary_file
+    if {"" == $attachment_filename} { set attachment_filename $tmp_file }
+}
+
 
 # Import the file into the content repository.
 # This is necessary for sending it out via Email
