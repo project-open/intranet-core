@@ -181,22 +181,35 @@ if {$gantt_project_enabled_p} {
     if {$read && [im_permission $current_user_id "view_gantt_proj_detail"]} {
 	append export_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project.xml" {project_id}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Export_to_MS_Projectj_or_ProjectLibre "Export to Microsoft Project<br>or ProjectLibre"]</A>
-	<a href=\"http://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a>
+        >[lang::message::lookup "" intranet-ganttproject.Export_to_MS_Projectj "Export to Microsoft Project"]</A>
+<!--	<a href=\"http://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
+	</li>
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project.xml" {project_id}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Export_to_ProjectLibre "Export to ProjectLibre"]</A>
+<!--	<a href=\"http://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
 	</li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Export_to_GanttProject "Export to GanttProject"]</A>
-	<a href=\"http://www.sourceforge.net/projects/ganttproject\"><img src=/intranet/images/external.png></a>
+<!--	<a href=\"http://www.sourceforge.net/projects/ganttproject\"><img src=/intranet/images/external.png></a> -->
 	</li>
-        "
+	<br>\n"
     }
 
     if {$write && [im_permission $current_user_id "view_gantt_proj_detail"]} {
         append export_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type gantt_project}}]\"
-        >[lang::message::lookup "" intranet-ganttproject.Import_from_GP_PL_MSP "Import from MS-Project, PL or GP"]</A>
-	</li>
-        "
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_Microsoft_Project "Import from Microsoft Project"]</A>
+	</li>\n"
+
+        append export_html_content "
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type gantt_project}}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_Project_Libre "Import from Project Libre"]</A>
+	</li>\n"
+
+        append export_html_content "
+        <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-upload" {project_id return_url {import_type gantt_project}}]\"
+        >[lang::message::lookup "" intranet-ganttproject.Import_from_Gantt_Project "Import from Gantt Project"]</A>
+	</li>\n"
 
 	if {0} {
         append export_html_content "
