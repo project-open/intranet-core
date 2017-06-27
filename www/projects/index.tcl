@@ -42,6 +42,7 @@ ad_page_contract {
     { mine_p "f" }
     { project_status_id:integer 0 } 
     { project_type_id:integer 0 } 
+    { exclude_project_type_id:integer 0 } 
     { user_id_from_search 0}
     { company_id:integer 0 } 
     { letter:trim "" }
@@ -401,6 +402,9 @@ if { $project_status_id ne "" && $project_status_id > 0 } {
 }
 if { $project_type_id ne "" && $project_type_id != 0 } {
     lappend criteria "p.project_type_id in ([join [im_sub_categories -include_disabled_p 1 $project_type_id] ","])"
+}
+if { $exclude_project_type_id ne "" && $exclude_project_type_id != 0 } {
+    lappend criteria "p.project_type_id not in ([join [im_sub_categories -include_disabled_p 1 $exclude_project_type_id] ","])"
 }
 if {0 != $user_id_from_search && "" != $user_id_from_search} {
     lappend criteria "p.project_id in (select object_id_one from acs_rels where object_id_two = :user_id_from_search)"
