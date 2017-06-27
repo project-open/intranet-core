@@ -1396,6 +1396,8 @@ select inline_0 ();
 drop function inline_0 ();
 
 
+
+
 -- -------------------------------------------------------
 -- Setup "DynView" menu 
 --
@@ -1971,6 +1973,25 @@ BEGIN
 end;$body$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
+
+
+
+
+select im_menu__new (
+	null,				-- p_menu_id
+	'im_menu',			-- object_type
+	now(),				-- creation_date
+	null,				-- creation_user
+	null,				-- creation_ip
+	null,				-- context_id
+	'intranet-core',		-- package_name
+	'admin_request_monitor',		-- label
+	'Request Monitor',		-- name
+	'/request-monitor/index',	-- url
+	2200,				-- sort_order
+	(select menu_id from im_menus where label = 'admin'),
+	'[im_package_exists_p "xotcl-request-monitor"]'				-- p_visible_tcl
+);
 
 
 
@@ -2936,6 +2957,7 @@ update im_menus set name = 'Package Manager'	      			where label = 'admin_packa
 update im_menus set sort_order = 2000, menu_gif_small = 'arrow_right'	where label = 'admin_parameters';
 update im_menus set name = 'Parameters' 	      			where label = 'admin_parameters';
 update im_menus set sort_order = 2100, menu_gif_small = 'arrow_right'	where label = 'admin_components';
+update im_menus set sort_order = 2200, menu_gif_small = 'arrow_right'	where label = 'openacs_request_monitor';
 update im_menus set sort_order = 2300, menu_gif_small = 'arrow_right'	where label = 'openacs_restart_server';
 update im_menus set sort_order = 2400, menu_gif_small = 'arrow_right'	where label = 'openacs_ds';
 update im_menus set sort_order = 2500, menu_gif_small = 'arrow_right'	where label = 'admin_survsimp';

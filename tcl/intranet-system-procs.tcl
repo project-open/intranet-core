@@ -94,8 +94,8 @@ ad_proc -public im_exec_windows_transform_procname {procname} {
     Robust routine to convert any reasonable Linux command with
     or without absolute pathes into a CygWin command
 } {
-    return [im_exec_windows_transform_procname_helper $procname]
-    #return [util_memoize [list im_exec_windows_transform_procname_helper $procname]]
+    # return [im_exec_windows_transform_procname_helper $procname]
+    return [util_memoize [list im_exec_windows_transform_procname_helper $procname]]
 }
 
 
