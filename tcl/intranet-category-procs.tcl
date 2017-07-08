@@ -184,43 +184,44 @@ ad_proc im_category_select_helper {
 	set visible_tcl_sql ",visible_tcl"
     }
     set sql "
-        select
-                category_id,
-                category,
-                category_description,
-                parent_only_p,
-                enabled_p,
-                coalesce(sort_order,0) as sort_order
-                $visible_tcl_sql
-        from
-                im_categories
-        where
-                category_type = :category_type
+	select
+		category_id,
+		category,
+		category_description,
+		parent_only_p,
+		enabled_p,
+		coalesce(sort_order,0) as sort_order
+		$visible_tcl_sql
+	from
+		im_categories
+	where
+		category_type = :category_type
 		and (enabled_p = 't' OR enabled_p is NULL)
 		$super_category_sql
-        order by lower(category)
+	order by lower(category)
     "
     db_foreach category_select $sql {
 	ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
 	if {"" == $visible_tcl || [eval $visible_tcl]} {
-	    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
+	    set category_l10n [im_category_from_id -locale $locale $category_id]
+	    set cat($category_id) [list $category_id $category_l10n $category_description $parent_only_p $enabled_p $sort_order]
 	    set level($category_id) 0
 	}
     }
 
     # Get the hierarchy into a hash cache
     set sql "
-        select
-                h.parent_id,
-                h.child_id
-        from
-                im_categories c,
-                im_category_hierarchy h
-        where
-                c.category_id = h.parent_id
-                and c.category_type = :category_type
+	select
+		h.parent_id,
+		h.child_id
+	from
+		im_categories c,
+		im_category_hierarchy h
+	where
+		c.category_id = h.parent_id
+		and c.category_type = :category_type
 		$super_category_sql
-        order by lower(category)
+	order by lower(category)
     "
 
     # setup maps child->parent and parent->child for
@@ -229,7 +230,7 @@ ad_proc im_category_select_helper {
     db_foreach hierarchy_select $sql {
 	if {![info exists cat($parent_id)]} { continue}
 	if {![info exists cat($child_id)]} { continue}
-        lappend children [list $parent_id $child_id]
+	lappend children [list $parent_id $child_id]
     }
 
     # Calculate the level(category) and direct_parent(category)
@@ -253,35 +254,35 @@ ad_proc im_category_select_helper {
     set count 0
     set modified 1
     while {$modified} {
-        set modified 0
-        foreach rel $children {
-            set p [lindex $rel 0]
-            set c [lindex $rel 1]
-            set parent_level $level($p)
-            set child_level $level($c)
-            if {[expr {$parent_level+1}] > $child_level} {
-                set level($c) [expr {$parent_level+1}]
-                set direct_parent($c) $p
-                set modified 1
-            }
-        }
-        incr count
-        if {$count > 1000} {
-            ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
-            The category type '$category_type' is badly configured and contains
-            and infinite loop. Please notify your system administrator."
-            return "Infinite Loop Error"
-        }
+	set modified 0
+	foreach rel $children {
+	    set p [lindex $rel 0]
+	    set c [lindex $rel 1]
+	    set parent_level $level($p)
+	    set child_level $level($c)
+	    if {[expr {$parent_level+1}] > $child_level} {
+		set level($c) [expr {$parent_level+1}]
+		set direct_parent($c) $p
+		set modified 1
+	    }
+	}
+	incr count
+	if {$count > 1000} {
+	    ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+	    The category type '$category_type' is badly configured and contains
+	    and infinite loop. Please notify your system administrator."
+	    return "Infinite Loop Error"
+	}
 #	ns_log Notice "im_category_select: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
     }
 
     set base_level 0
     set html ""
     if {$include_empty_p} {
-        append html "<option value=\"\">$include_empty_name</option>\n"
-        if {"" != $include_empty_name} {
-            incr base_level
-        }
+	append html "<option value=\"\">$include_empty_name</option>\n"
+	if {"" != $include_empty_name} {
+	    incr base_level
+	}
     }
 
     # Sort the category list's top level. 
@@ -298,9 +299,9 @@ ad_proc im_category_select_helper {
 		# ad_return_complaint xx "[lindex $cat($p) 5]"
 		set cat_helper([lindex $cat($p) 5]) $p
 	    } else {
-            	# No sort order defined, add to the end of the list
+	    	# No sort order defined, add to the end of the list
 		lappend elements_with_no_sort_order $p
-            }
+	    }
 	}
 
 	foreach p [lsort [array names cat_helper]] {
@@ -320,13 +321,13 @@ ad_proc im_category_select_helper {
     # Now recursively descend and draw the tree, starting
     # with the top level
     foreach p $category_list_final {
-        set p [lindex $cat($p) 0]
-        set enabled_p [lindex $cat($p) 4]
+	set p [lindex $cat($p) 0]
+	set enabled_p [lindex $cat($p) 4]
 	if {"f" == $enabled_p} { continue }
-        set p_level $level($p)
-        if {0 == $p_level} {
-            append html [im_category_select_branch -translate_p $translate_p -package_key $package_key -locale $locale $p $default $base_level [array get cat] [array get direct_parent]]
-        }
+	set p_level $level($p)
+	if {0 == $p_level} {
+	    append html [im_category_select_branch -translate_p $translate_p -package_key $package_key -locale $locale $p $default $base_level [array get cat] [array get direct_parent]]
+	}
     }
 
     if {$multiple_p} {
@@ -378,7 +379,7 @@ ad_proc im_category_select_branch {
     if {$parent == $default} { set selected "selected" }
     set html ""
     if {"f" == $parent_only_p} {
-        set html "<option value=\"$parent\" $selected>$spaces $category</option>\n"
+	set html "<option value=\"$parent\" $selected>$spaces $category</option>\n"
 	incr level
     }
 
@@ -581,7 +582,7 @@ ad_proc -public template::widget::im_checkbox {
 
 	# Get the "checked" parameter that defines if the checkbox should
 	# be checked
-        set checked ""
+	set checked ""
 	set checked_pos [lsearch $params checked]
 	if { $checked_pos >= 0 } {
 	    set checked [lindex $params $checked_pos+1]
@@ -631,7 +632,7 @@ ad_proc -public im_category_is_a_helper {
 		from	im_category_hierarchy
 		where	parent_id = :parent
 			and child_id = :child
-        " -default 0]
+	" -default 0]
     }
 
     set child_id [db_string child "select category_id from im_categories where category = :child and category_type = :category_type" -default ""]
@@ -660,72 +661,65 @@ ad_proc -public im_category_get_key_value_list {
 	set order_by "category_id"
     }
     set sql "
-        select
-                category_id,
-                category
-        from
-                im_categories
-        where
-                category_type = :category_type
-	order by 
+	select	category_id,
+		category
+	from	im_categories
+	where	category_type = :category_type
+	order by
 		$order_by
-        "
+	"
     set category_list [list]
     db_foreach category_select $sql {
-        lappend category_list [list $category_id $category]
+	lappend category_list [list $category_id $category]
     }
     return $category_list
 }
 
 
 ad_proc -public im_category_get_key_value_indent_list {
+    { -locale "" }
     { category_type "" }
 } {
     Extends im_category_get_key_value_list by providing ident information
     Returns list of lists: {category_id category_name indent_level}  
 } {
+    if {"" == $locale} { set locale [lang::user::locale -user_id [ad_conn user_id]] }
 
     # check if any sort order is defined, if not order by category_id
     if { [db_string get_sort_order_values_p "select count(*) from im_categories where category_type = :category_type and sort_order IS NOT NULL and sort_order <> 0" -default 0]  } {
-        set order_by "sort_order"
+	set order_by "sort_order"
     } else {
-        set order_by "category_id"
+	set order_by "category_id"
     }
 
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
     set sql "
-        select
-                category_id,
-                category,
-                category_description,
-                parent_only_p,
-                enabled_p,
+	select	category_id,
+		category,
+		category_description,
+		parent_only_p,
+		enabled_p,
 		COALESCE(sort_order,0) as sort_order
-        from
-                im_categories
-        where
-                category_type = :category_type
+	from	im_categories
+	where	category_type = :category_type
 		and (enabled_p = 't' OR enabled_p is NULL)
-	order by 
+	order by
 		$order_by
-
     "
     db_foreach category_select $sql {
-        set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
-        set level($category_id) 0
+	set category_l10n [im_category_from_id -locale $locale $category_id]
+	set cat($category_id) [list $category_id $category_l10n $category_description $parent_only_p $enabled_p $sort_order]
+	set level($category_id) 0
     }
 
     set sql "
-        select
-                h.parent_id,
-                h.child_id
-        from
-                im_categories c,
-                im_category_hierarchy h
-        where
-                c.category_id = h.parent_id
-                and c.category_type = :category_type
+	select	h.parent_id,
+		h.child_id
+	from	im_categories c,
+		im_category_hierarchy h
+	where	c.category_id = h.parent_id
+		and c.category_type = :category_type
     "
 
     # setup maps child->parent and parent->child for
@@ -734,31 +728,31 @@ ad_proc -public im_category_get_key_value_indent_list {
     db_foreach hierarchy_select $sql {
 	if {![info exists cat($parent_id)]} { continue}
 	if {![info exists cat($child_id)]} { continue}
-        lappend children [list $parent_id $child_id]
+	lappend children [list $parent_id $child_id]
     }
 
     set count 0
     set modified 1
     while {$modified} {
-        set modified 0
-        foreach rel $children {
-            set p [lindex $rel 0]
-            set c [lindex $rel 1]
-            set parent_level $level($p)
-            set child_level $level($c)
-            if {[expr {$parent_level+1}] > $child_level} {
-                set level($c) [expr {$parent_level+1}]
-                set direct_parent($c) $p
-                set modified 1
-            }
-        }
-        incr count
-        if {$count > 1000} {
-            ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
-            The category type '$category_type' is badly configured and contains
-            and infinite loop. Please notify your system administrator."
-            return "Infinite Loop Error"
-        }
+	set modified 0
+	foreach rel $children {
+	    set p [lindex $rel 0]
+	    set c [lindex $rel 1]
+	    set parent_level $level($p)
+	    set child_level $level($c)
+	    if {[expr {$parent_level+1}] > $child_level} {
+		set level($c) [expr {$parent_level+1}]
+		set direct_parent($c) $p
+		set modified 1
+	    }
+	}
+	incr count
+	if {$count > 1000} {
+	    ad_return_complaint 1 "Infinite loop in 'im_category_select'<br>
+	    The category type '$category_type' is badly configured and contains
+	    and infinite loop. Please notify your system administrator."
+	    return "Infinite Loop Error"
+	}
 	#ns_log Notice "im_category_get_key_value_indent_list: count=$count, p=$p, pl=$parent_level, c=$c, cl=$child_level mod=$modified"
     }
 
@@ -915,7 +909,7 @@ ad_proc im_biz_object_category_select_branch {
     set class "plain"
     if {0 == $level} { set class "rowtitle" }
     if {"f" == $parent_only_p} {
-        set html "
+	set html "
 	<tr class=$class>
 	<td class=$class><nobr> 
 	<input type=radio name=\"$type_id_var\" value=$parent $selected >$spaces $category </input>&nbsp;
@@ -931,14 +925,14 @@ ad_proc im_biz_object_category_select_branch {
 
     set sub_list [list]
     foreach cat_id $category_list {
-        if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
-            lappend sub_list [list $cat_id [lindex $cat($cat_id) 5]]
-        }
+	if {[info exists direct_parent($cat_id)] && $parent == $direct_parent($cat_id)} {
+	    lappend sub_list [list $cat_id [lindex $cat($cat_id) 5]]
+	}
     }
 
     foreach sublist [lsort -index 1 $sub_list] {
-        set cat_id [lindex $sublist 0]
-        append html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $cat_id $default $level $cat_array $direct_parent_array]
+	set cat_id [lindex $sublist 0]
+	append html [im_biz_object_category_select_branch -translate_p $translate_p -package_key $package_key -type_id_var $type_id_var $cat_id $default $level $cat_array $direct_parent_array]
     }
     return $html
 }
