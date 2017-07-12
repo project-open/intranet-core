@@ -11,8 +11,8 @@
 	<br/>       
 	Examples:
 	<ul>
-	<li>'template.en.adp': An English HTML ('.adp') template.
-	<li>'invoice.de.odt': A German OpenOffice ('.odt') template apparently for invoices.
+	<li>'template.en_US.adp': An English (US) HTML ('.adp') template.
+	<li>'invoice.de_DE.odt': A German Open Document Text ('.odt') template, apparently for invoices. 
 	</ul>
   "] %><br/>
 </p>&nbsp;<br>
