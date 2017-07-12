@@ -152,7 +152,7 @@ if {$project_exists_p} {
               [im_project_type_ticket] \
               [im_project_type_software_release_item] \
           ]
-          ad_returnredirect [export_vars -base "/intranet/biz-object-type-select" {
+          ad_returnredirect [export_vars -base "/intranet/projects/project-type-select" {
               project_name
 	      parent_id
               also_add_users
