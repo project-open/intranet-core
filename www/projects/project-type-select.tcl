@@ -126,7 +126,6 @@ db_foreach gantt $gantt_project_subtypes_sql {
     append gantt_project_subtypes_html "<tr valign=top>\n"
     append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
     append gantt_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
-    append gantt_project_subtypes_html "This is a sub-type of Gantt Project:\n"
     append gantt_project_subtypes_html $category_description
     append gantt_project_subtypes_html "</div></td>\n"
     append gantt_project_subtypes_html "</tr>\n"
@@ -159,7 +158,6 @@ db_foreach agile $agile_project_subtypes_sql {
     append agile_project_subtypes_html "<tr valign=top>\n"
     append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
     append agile_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
-    append agile_project_subtypes_html "This is a sub-type of Agile Project:\n"
     append agile_project_subtypes_html $category_description
     append agile_project_subtypes_html "</div></td>\n"
     append agile_project_subtypes_html "</tr>\n"
