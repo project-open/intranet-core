@@ -124,7 +124,7 @@ set gantt_project_subtypes_sql "
 db_foreach gantt $gantt_project_subtypes_sql {
     set category_l10n $category
     append gantt_project_subtypes_html "<tr valign=top>\n"
-    append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
+    append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
     append gantt_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
     append gantt_project_subtypes_html $category_description
     append gantt_project_subtypes_html "</div></td>\n"
@@ -156,14 +156,14 @@ set agile_project_subtypes_sql "
 db_foreach agile $agile_project_subtypes_sql {
     set category_l10n $category
     append agile_project_subtypes_html "<tr valign=top>\n"
-    append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
+    append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
     append agile_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
     append agile_project_subtypes_html $category_description
     append agile_project_subtypes_html "</div></td>\n"
     append agile_project_subtypes_html "</tr>\n"
 }
 if {"" ne $agile_project_subtypes_html} {
-   set agile_project_subtypes_html "<tr><td></td><td colspan=2>Sub-Types:</td></tr>\n$agile_project_subtypes_html"
+   set agile_project_subtypes_html "<tr><td></td><td colspan=2>Sub-Types:</td></tr> \n $agile_project_subtypes_html"
 }
 
 

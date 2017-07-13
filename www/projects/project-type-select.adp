@@ -16,7 +16,9 @@
 <td width="500">
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
-	<td width=22>	<input type="radio" name="project_type_id" value="2501"></td>
+	<td width=22>
+		<input type="radio" name="project_type_id" value="2501" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
 	<td>	<b>Classic / Gantt Project</b><br>
 		<%= [im_help_collapsible "<br>
 		A Gantt Project is defined by a number of activities with a planned
@@ -62,7 +64,9 @@
 <td>
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
-	<td width=22>&nbsp;</td>
+	<td width=22>	
+	<input type="radio" name="project_type_id" value="2501" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
 	<td>	<b>Mixed Methodology Project</b><br>
 		<%= [im_help_collapsible "<br>
 		A \"mixed project\" consists of a Gantt Project, but part of 
@@ -93,7 +97,9 @@
 <td>
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
-	<td>	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>"></td>
+	<td>
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
 	<td>	<b>Ticket Container</b><br>
 		<%= [im_help_collapsible "<br>
 		A Ticket Container serves as a tracker for a number of tickets
@@ -104,7 +110,9 @@
 	</td>
 	</tr>
 	<tr valign=top>
-	<td>	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>"></td>
+	<td>	
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
 	<td>	<b>Release Project</b><br>
 		<%= [im_help_collapsible "<br>
 		Groups a number of software release items and provides 
@@ -131,7 +139,9 @@
 	</tr>
 
 	<tr valign=top>
-	<td>	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>"></td>
+	<td>	
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
 	<td>	<b>Program</b><br>
 		A program or "programme" groups a number of projects that usually have a common purpose.
 	</td>
@@ -147,7 +157,7 @@
     <tr valign=top>
     <td width=22></td>
     <td align=left>
-	<input type="submit" value='<%= [lang::message::lookup "" intranet-core.Continue "Continue"] %>'>
+	<input type="submit" value='<%= [lang::message::lookup "" intranet-core.Create_Project "Create Project"] %>'>
     </td>
     </tr>
     </table>
