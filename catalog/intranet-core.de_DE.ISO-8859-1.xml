@@ -127,7 +127,6 @@
   <msg key="Add_New_Office">Neuer Firmensitz</msg>
   <msg key="Add_New_Project">Neues Projekt</msg>
   <msg key="Add_New_User">Neuer Benutzer</msg>
-  <msg key="Add_New_User___Company">Neuer Benutzer + Firma</msg>
   <msg key="Add_new_View">Neue Ansicht</msg>
   <msg key="Add_office">Neuer Firmensitz</msg>
   <msg key="Add_Portlet">Portlet hinzu</msg>
@@ -152,7 +151,6 @@
   <msg key="Admin_Offices">Admin Firmensitze</msg>
   <msg key="Admin_Project">Admin Projekte</msg>
   <msg key="Admin_Projects">Admin Projekte</msg>
-  <msg key="Admin_Timesheet">Admin Zeiterfassung</msg>
   <msg key="Admin_Users">Benutzer verwalten</msg>
   <msg key="Administer_DynVals">Admin DynVals</msg>
   <msg key="Administration">Admin</msg>
@@ -318,10 +316,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Change_Password">Password ändern</msg>
   <msg key="Change_Priority">Priorität Änderung</msg>
   <msg key="Change_Ticket">Änderungsanfrage</msg>
-  <msg key="Check">Cheque</msg>
-  <msg key="Cheque">Check</msg>
-  <msg key="Cheque_EUR">Check EUR</msg>
-  <msg key="Cheque_USD">Check USD</msg>
   <msg key="CHF">CHF</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
@@ -362,10 +356,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Company_Cost_Component">Finanzen</msg>
   <msg key="Company_Documents">Dokumente</msg>
   <msg key="company_employee">Firmenmitarbeiter</msg>
-  <msg key="Company_Employees">Firmenmitarbeiter</msg>
   <msg key="Company_Events">Events</msg>
   <msg key="company_group_id">Firmen Gruppe</msg>
-  <msg key="Company_ID">ID</msg>
   <msg key="Company_Information">Firmenstammdaten</msg>
   <msg key="Company_Invoice">Kundenrechnung</msg>
   <msg key="Company_Name">Firmenname</msg>
@@ -415,7 +407,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Conf_Item_Version">Konf Element Version</msg>
   <msg key="Conf_Item_Wiki_Component">Wiki</msg>
   <msg key="Conf_Items">Konf Elemente</msg>
-  <msg key="Conf_Items_Admin">Admin Konfigurationselemente</msg>
   <msg key="Config_Item">Konf Element</msg>
   <msg key="Configuration_Item">Konf Elemente</msg>
   <msg key="Configuring_po">]po[ konfigurieren</msg>
@@ -470,11 +461,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="creditesadp">credit.es.adp</msg>
   <msg key="creditSEAT_VWenadp">credit.SEAT_VW.en.adp</msg>
   <msg key="creditSEAT_VWesadp">credit.SEAT_VW.es.adp</msg>
-  <msg key="CRM">CRM</msg>
-  <msg key="CRM_Admin">Admin CRM</msg>
   <msg key="CRM_Campaign">CRM Kampagne</msg>
   <msg key="CRM_Help">CRM Hilfe</msg>
-  <msg key="CRM_Home">CRM Übersicht</msg>
   <msg key="CRM_Opportunity">CRM Gelegenheit</msg>
   <msg key="CRM_Sales">CRM</msg>
   <msg key="Croatia">Kroatien</msg>
@@ -507,7 +495,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="CVS_Path">CVS Pfad</msg>
   <msg key="CVS_Port">CVS Port</msg>
   <msg key="CVS_Protocol">CVS Protokoll</msg>
-  <msg key="CVS_Repository">CVS Repository</msg>
   <msg key="CVS_System">CVS System</msg>
   <msg key="CVS_User">CVS Benutzer</msg>
   <msg key="Cyprus">Zypern</msg>
@@ -626,7 +613,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="End">Ende</msg>
   <msg key="End_Date">Enddatum</msg>
   <msg key="Engineering">Maschinenbau</msg>
-  <msg key="ErrCreatingComponent">Fehler in Portlet &#39;%plugin_name%&#39;. Das Portlet wird nicht angezeigt.</msg>
   <msg key="ERROR">Fehler</msg>
   <msg key="es">es</msg>
   <msg key="es_AR">es_AR</msg>
@@ -668,7 +654,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Export_Projects_to_CSV">Projekte nach CSV exportieren</msg>
   <msg key="Export_Provider_Invoices_CSV">Lieferantendokumente nach CSV exportieren</msg>
   <msg key="Export_Providers_to_CSV">Lieferanten nach CSV exportieren</msg>
-  <msg key="Export_User_to_CSV">Benutzer nach CSV exportieren</msg>
   <msg key="Export_Users_Cube">Benutzer-Cube exportieren</msg>
   <msg key="Export_Users_to_CSV">Benutzer nach CSV exportieren</msg>
   <msg key="Extra_from">Extra von</msg>
@@ -679,7 +664,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Fax">Fax</msg>
   <msg key="Feasibility_Study">Machbarkeitsstudie</msg>
   <msg key="Feature_Request">Anfrage Erweiterung</msg>
-  <msg key="Feedback">Rückmeldung</msg>
   <msg key="fi">fi</msg>
   <msg key="File">Datei:</msg>
   <msg key="File_Storage">Dateiablage</msg>
@@ -701,7 +685,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Filter_View">Sicht</msg>
   <msg key="Finance">Finanzen</msg>
   <msg key="finance">Finanzen</msg>
-  <msg key="Finance_Admin">Admin Finanzen</msg>
   <msg key="Finance_Data_Warehouse_Cube">Finanzen Data-Warehouse Würfel</msg>
   <msg key="Finance_Help">Finanzen Hilfe</msg>
   <msg key="Finance_Home">Finanzen Übersicht</msg>
@@ -941,7 +924,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Import_Nagios_Definitions">Nagios Definitionen importieren</msg>
   <msg key="Import_Projects_from_CSV">Projekte von CSV importieren</msg>
   <msg key="Import_User_CSV">Benutzer von CVS importieren </msg>
-  <msg key="Import_User_from_CSV">Benutzer von CVS importieren </msg>
   <msg key="Important">Wichtig</msg>
   <msg key="Importing_Master_Data">Masterdaten importieren</msg>
   <msg key="Importing_Master_Data_message">Please &lt;a href=/intranet/admin/cleanup-demo/&gt;remove&lt;/a&gt; the Tigerpond demo data from the system. After that, you can start to enter your company data in the order users (employees, customers and freelancers), companies (customers and providers) and projects.</msg>
@@ -952,7 +934,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Incident">Vorfall</msg>
   <msg key="Incident_Ticket">Vorfall</msg>
   <msg key="Include_Deleted">Gelöschte Objekte mit anzeigen</msg>
-  <msg key="Include_Deleted_Users">Gelöschte Benutzer mit anzeigen</msg>
   <msg key="Include_in_Invoice">In die Rechnung aufnehmen</msg>
   <msg key="Inctive_Customers">Inaktive Kunden</msg>
   <msg key="India">Indien</msg>
@@ -1140,7 +1121,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="lt_Add_a_new_value_range">Neuer Wertebereich</msg>
   <msg key="lt_Add_accounting_contac">Neuer Rechnungskontakt</msg>
   <msg key="lt_Add_new_member_to_obj">Neues Mitglied für %object_name%</msg>
-  <msg key="lt_Add_New_User__Company">Neuer Benutzer + Firma</msg>
   <msg key="lt_Add_Stuffintranet-cor">Add Stuff</msg>
   <msg key="lt_Alchemy_Catalyst_31_A">Alchemy Catalyst 3.1 A</msg>
   <msg key="lt_Alchemy_Catalyst_31_F">Alchemy Catalyst 3.1 F</msg>
@@ -1156,7 +1136,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="lt_An_optional_field_spe">Ein optionales Feld für den Projektcode des Kunden. Diese Feld wird für die Rechnungserstellung verwendet. Beispiel: 20030310A12478</msg>
   <msg key="lt_Anonymize_this_server">Anonymisieren des aller Anwendungsdaten (nur für Testserver!)</msg>
   <msg key="lt_as_if_the_user_him_or">als ob der Benutzer sich selber entfernt hätte</msg>
-  <msg key="lt_Associate_ticket_with">Anfrage mit anderen Objekten assoziieren</msg>
   <msg key="lt_Atril_Dj_Vu_X_Profess">Atril Déjà Vu X Professional</msg>
   <msg key="lt_Atril_Dj_Vu_X_Standar">Atril Déjà Vu X Standard</msg>
   <msg key="lt_Atril_Dj_Vu_X_Workgro">Atril Déjà Vu X Workgroup</msg>
@@ -1292,7 +1271,6 @@ Password: %password%
   <msg key="lt_Futureintranet-timesh">Zukünftig</msg>
   <msg key="lt_GanttProject_is_a_fre">GanttProject ist ein kostenloses Gantt-Diagramm-Editor (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">Typ des Projektes</msg>
-  <msg key="lt_Generic_Problem_Ticke">Generische Problem Anfrage</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware Hersteller</msg>
   <msg key="lt_has_been_marked_delet">wurde als &#39;gelöscht&#39; markiert.</msg>
@@ -1335,8 +1313,6 @@ Password: %password%
   <msg key="lt_just_mark_the_account">Benutzer als gelöscht markieren</msg>
   <msg key="lt_Key_Accountintranet-f">Kundenbetreuer</msg>
   <msg key="lt_Kontexthilfeintranet-">Kontexthilfe</msg>
-  <msg key="lt_Kundenbetreuerintrane">Kundenbetreuer</msg>
-  <msg key="lt_Kundenintranet-filest">Kunden</msg>
   <msg key="lt_Last_3_monthsintranet">Letze drei Monate</msg>
   <msg key="lt_Linguistic_Validation">Linguistische Validierung</msg>
   <msg key="lt_Locate_your_new_accou">Rechnungskontakt angeben</msg>
@@ -1352,7 +1328,6 @@ Password: %password%
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
-  <msg key="lt_Mark_tickets_as_dupli">Anfrage als dupliziert markieren</msg>
   <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
   <msg key="lt_Maybe_somebody_has_ch">Vielleicht hat jemand den Pfad des ?internen? Unternehmens geändert, der Ihre Organisation identifiziert.</msg>
   <msg key="lt_Meineintranet-timeshe">Meine</msg>
@@ -1403,7 +1378,6 @@ Password: %password%
   <msg key="lt_Password_Confirmation">Password Bestätigung</msg>
   <msg key="lt_Pastintranet-timeshee">Vergangen</msg>
   <msg key="lt_Personal_Home_Page_UR">URL der persönlichen Startseite</msg>
-  <msg key="lt_Pinche_aqu_para_obten">Hier klicken für Hilfe</msg>
   <msg key="lt_Planned_execution_tim">Geplante Durchführungszeit</msg>
   <msg key="lt_Please_back_up_and_tr">Bitte kehren sie auf die letzte Seite zurück und versuchen sie es noch einmal</msg>
   <msg key="lt_Please_click_above_to">Bitte oben klicken um einen kuzen Kommentar hinzuzufügen</msg>
@@ -1421,10 +1395,7 @@ Password: %password%
   <msg key="lt_Please_use_a_project_">Ein Projektname sollte aus mindestens sechs Zeichen bestehen.</msg>
   <msg key="lt_Portrait_of_first_nam">Portrait von %first_names% %last_name%</msg>
   <msg key="lt_Preinstalled_Hard_Dis">Vorinstallierte Festplatte</msg>
-  <msg key="lt_Problem_Ticket_Close_">Problem Anfrage: Assoziierte Vorfälle schließen</msg>
-  <msg key="lt_Problem_Ticket_Create">Problem Anfrage: Neu auf Basis eines Vorfalls</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
-  <msg key="lt_Project_Phases__Risks">Projektphasen und Risiken</msg>
   <msg key="lt_Project_Translation_D">Übersetzungsdetails</msg>
   <msg key="lt_Provider_bills_with_e">Externe Kosten</msg>
   <msg key="lt_Quotes_in_Project_Nam">Anführungszeichen sind im Projektnamen nicht erlaubt</msg>
@@ -1435,13 +1406,11 @@ Password: %password%
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Reduction_in_Working_">Überstundenausgleich</msg>
-  <msg key="lt_Registered_from_regis">Registriert von %registration_ip_link% </msg>
   <msg key="lt_REMEMBER_total_of_10_">ACHTUNG: Insgesamt 10 Einheiten pro Tag! (alle Tage)</msg>
   <msg key="lt_Remove_Delinquent_Use">Entferne den Schuldner von der Liste</msg>
   <msg key="lt_Replyintranet-forumRe">Antwort</msg>
   <msg key="lt_Report_a_bug_on_this_">Fehler auf dieser Seite melden</msg>
   <msg key="lt_Resource_Assignation_">Resource Zuweisung %</msg>
-  <msg key="lt_Resource_Planning_Rep">Bericht Resourcenauslastung</msg>
   <msg key="lt_return_to_user_admini">Zurück zu Benutzerverwaltung</msg>
   <msg key="lt_Return_Url_was_not_sp">Return_Url wurde nicht angegeben. Dies sollte nicht geschehen, wenden Sie sich bitte an den Systemadministrator %mail_to_administrator_link%  und lassen Sie ihn wissen, was passiert ist.</msg>
   <msg key="lt_Returns_the_average_t">Durchschnittliche Zugehörigkeit zu Firma</msg>
@@ -1473,7 +1442,6 @@ Password: %password%
   <msg key="lt_Strategic_Value_vs_RO">Strategischer Wert vs. ROI</msg>
   <msg key="lt_Successfully_finished">Erfolgreich beendet</msg>
   <msg key="lt_Taskintranet-forumTas">Aufgaben</msg>
-  <msg key="lt_Telephony_Request_Typ">Telefon Anfrage</msg>
   <msg key="lt_The_customers_referen">Kundenreferenznummer für dieses Projekt</msg>
   <msg key="lt_The_database_choked_o">Die Datenbank hatte Probleme mit unserem Update:</msg>
   <msg key="lt_the_email_email_is_al">Diese E-Mail Adresse %email% ist bereits in der Datenbank</msg>
@@ -1506,13 +1474,11 @@ Password: %password%
   <msg key="lt_Upload_GanttProject_S">GanttProject-Datei hochladen</msg>
   <msg key="lt_Use_the_Browse_button">Wählen Sie mit dem Dateiauswahlfenster die Datei aus, die Sie hochladen wollen</msg>
   <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
-  <msg key="lt_User_Sub-Administrati">Benutzer Sub-Administrationsmatrix</msg>
   <msg key="lt_var_is_undefined_for_">%var% ist undefiniert in leeren Listen.</msg>
   <msg key="lt_View_administrative_p">Administrationsseite des neuen Benutzers ansehen</msg>
   <msg key="lt_View_the_hours_logged">Anzeige der erfaßten Stunden eines anderen Benutzers</msg>
   <msg key="lt_View_time_spent_on_al">Anzeige der erfaßten Stunden des gesamten Projektteams</msg>
   <msg key="lt_View_your_hours_on_al">Anzeige ihrer erfaßten Studen in allen Projekten</msg>
-  <msg key="lt_Vollmitgliedintranet-">Vollmitglied </msg>
   <msg key="lt_We_cant_nuke_a_paying">Wir können eine bezahlende Firma nicht löschen, da das die Buchhaltung durcheinander bringen würde.</msg>
   <msg key="lt_We_couldnt_find_offic">Wir konnten das Büro #%office_id% nicht finden; vielleicht wurde dieses Büro gelöscht?</msg>
   <msg key="lt_We_couldnt_find_user_">Wir konnten den Benutzer #%user_id_from_search% nicht finden; vielleicht wurde diese Person gelöscht?</msg>
@@ -1645,7 +1611,6 @@ Password: %password%
   <msg key="Name">Name</msg>
   <msg key="NAV_Invoice">NAV Invoice</msg>
   <msg key="nav_order_nr">Auftragsnummer</msg>
-  <msg key="Navbar_Admin_Text">Admin Navigationsleiste</msg>
   <msg key="Navbar_Help_Text">Für Hilfe zu diese Seite bitte hier klicken.</msg>
   <msg key="Needs_Analysis">Braucht Analyse</msg>
   <msg key="NegotiationReview">Verhandlung/Bewertung</msg>
@@ -1663,7 +1628,6 @@ Password: %password%
   <msg key="new_category">Neue Kategorie</msg>
   <msg key="new_client_contact">Neuer Kundenkontakt</msg>
   <msg key="New_column">Neue Spalte</msg>
-  <msg key="New_column_for_view">Neue Spalte für Sicht %view_link%</msg>
   <msg key="New_Company">Neue Firma</msg>
   <msg key="New_Company___Contact">Neue Firma + Kontakt</msg>
   <msg key="New_Company_Contact">Neuen Kontakt hinzufügen</msg>
@@ -1685,11 +1649,9 @@ Password: %password%
   <msg key="New_Quote_from_scratch">Neues Angebot von Hand</msg>
   <msg key="New_Quote_from_Timesheet_Tasks">Neues Angebot auf Basis von erfaßten Stunden</msg>
   <msg key="New_Telephony_Line">Neue Telefonlinie</msg>
-  <msg key="New_Ticket">Neue Anfrage</msg>
   <msg key="New_Trans_Invoice">Neue Übersetzungsrechnung</msg>
   <msg key="New_Travel_Expense">Neue Reisekosten</msg>
   <msg key="New_User">Neuer Benutzer</msg>
-  <msg key="New_User___Company">Neuer Benutzer + Firma</msg>
   <msg key="New_User_Company">Neuer Benutzer + Firma</msg>
   <msg key="New_view">Neue Sicht</msg>
   <msg key="New_Zealand">Neuseeland</msg>
@@ -1741,8 +1703,6 @@ Password: %password%
   <msg key="Object_All">Alle</msg>
   <msg key="Object_Mine">Meine</msg>
   <msg key="Object_Name">Name</msg>
-  <msg key="Object_Type">Objekttyp</msg>
-  <msg key="Object_Type_Admin">Admin Objekttypen</msg>
   <msg key="Object_Types">Objekttypen</msg>
   <msg key="OCS_Device_ID">OCS Geräte ID</msg>
   <msg key="OCS_ID">OCS ID</msg>
@@ -1787,7 +1747,6 @@ Password: %password%
   <msg key="Operating_System">Betriebssystem</msg>
   <msg key="Opportunities">Gelegenheiten</msg>
   <msg key="Opportunities_for_User">Gelegenheiten</msg>
-  <msg key="Opportunities_List">Gelegenheiten Liste</msg>
   <msg key="Opportunity_Campaign">Kampagne</msg>
   <msg key="Opportunity_Members">Mitglieder</msg>
   <msg key="OpportunityName">Name</msg>
@@ -1939,7 +1898,6 @@ Password: %password%
   <msg key="Profile_Localizers">Lokalisierer</msg>
   <msg key="Profile_P_O_Admins">]po[ Admins</msg>
   <msg key="Profile_Project_Managers">Projektmanager</msg>
-  <msg key="Profile_Registered_Users">Registrierte Benutzer</msg>
   <msg key="Profile_Sales">Vertrieb</msg>
   <msg key="Profile_Senior_Managers">Geschäftsleitung</msg>
   <msg key="Profile_Skill_Profile">Skill Profil</msg>
@@ -2010,7 +1968,6 @@ Password: %password%
   <msg key="project_strategic_value">Strategischer Wert</msg>
   <msg key="Project_Survey_Component">Projektumfragen</msg>
   <msg key="Project_Task">Projekt Aufgabe</msg>
-  <msg key="Project_Ticket_Component">Anfragen Portlet</msg>
   <msg key="Project_Timesheet_Component">Zeiterfassungsaufgaben</msg>
   <msg key="Project_Timesheet_Tasks">Zeiterfassungsaufgaben</msg>
   <msg key="Project_Timesheet_Tasks_Information">Aufgaben Abhängigkeiten</msg>
@@ -2020,11 +1977,7 @@ Password: %password%
   <msg key="Project_Translation_Task_Status">Übersetzungsaufgaben Status</msg>
   <msg key="Project_Translation_Wizard">Übersetzungsassistent</msg>
   <msg key="Project_Type">Projekttyp</msg>
-  <msg key="Project_type_Agile_Project">Agiles Projekt</msg>
   <msg key="Project_type_Consulting_Project">Gantt Projekt</msg>
-  <msg key="Project_type_CRM_Campaign">CRM Campagne</msg>
-  <msg key="Project_type_CRM_Opportunity">CRM Gelegenheit</msg>
-  <msg key="Project_type_Gantt_Project">Gantt Projekt</msg>
   <msg key="Project_type_Milestone">Meilenstein</msg>
   <msg key="Project_type_Other">Anderes Projekt</msg>
   <msg key="Project_type_Program">Programm</msg>
@@ -2033,7 +1986,6 @@ Password: %password%
   <msg key="Project_type_Software_Release_Item">Software Release Item</msg>
   <msg key="Project_type_Task">Aufgabe</msg>
   <msg key="Project_type_Ticket">Anfrage</msg>
-  <msg key="Project_type_Ticket_Container">Anfrage Container</msg>
   <msg key="Project_type_Translation_Project">Übersetzungsprojekt</msg>
   <msg key="Project_type_Unknown">Unbekannt</msg>
   <msg key="Project_Types">Projekttypen</msg>
@@ -2107,7 +2059,6 @@ Password: %password%
   <msg key="Referral_Source">Kontaktaufnahme</msg>
   <msg key="Referral_source">Kontaktaufnahme</msg>
   <msg key="referral_source">Quelle</msg>
-  <msg key="Registered_from">Registriert von</msg>
   <msg key="Registered_Users">Registrierte Benutzer</msg>
   <msg key="Rejected">Abgelehnt</msg>
   <msg key="Rel_im_biz_object_member">Generische Beziehung</msg>
@@ -2116,7 +2067,6 @@ Password: %password%
   <msg key="Related_Objects">Verwandte Objekte</msg>
   <msg key="Related_Objects_for_object">Verwandte Objekte</msg>
   <msg key="Related_Tickets">Verwandte Anfragen</msg>
-  <msg key="Relationship_Type">Beziehungstyp</msg>
   <msg key="Release_Item">Release Item</msg>
   <msg key="Release_Items_Component">Release Items</msg>
   <msg key="Release_Items_Journal">Release Items Journal</msg>
@@ -2220,15 +2170,12 @@ Password: %password%
   <msg key="Sales">Verkauf</msg>
   <msg key="sales">Verkäufe</msg>
   <msg key="Sales_Office">Verkaufsbüro</msg>
-  <msg key="Sales_Stage">Phase</msg>
   <msg key="saltnpepper">Salt &#39;n Pepper</msg>
   <msg key="Sample_system_blurb">Wir haben diese &#39;Tigerpond&#39; Firma beispielhaft aufgesetzt, um die Fähigkeiten von ]project-open[ zu demonstrieren.</msg>
   <msg key="Saudi Arabia">Saudi Arabien</msg>
   <msg key="Saudi_Arabia">Saudi Arabien</msg>
   <msg key="Save_Changes">Änderungen speichern</msg>
   <msg key="Score">Score</msg>
-  <msg key="score_roi">ROI (Monate)</msg>
-  <msg key="score_strategic_value">Strategischer Wert (0-10)</msg>
   <msg key="Screen_name">Seitenname</msg>
   <msg key="Scroll">Scrollen</msg>
   <msg key="SCRUM_Sprint">SCRUM Sprint</msg>
@@ -2356,7 +2303,6 @@ Password: %password%
   <msg key="Sys_Memory">Sys Memory</msg>
   <msg key="Sys_Swap">Sys Swap</msg>
   <msg key="SysConfig">Sys Config</msg>
-  <msg key="System_Admin">System Administrator</msg>
   <msg key="System_Administrator">System Administrator</msg>
   <msg key="System_Usage">System Usage</msg>
   <msg key="t">T</msg>
@@ -2400,26 +2346,21 @@ Password: %password%
   <msg key="th">th</msg>
   <msg key="The_web_with_Google">Das Internet mit Google</msg>
   <msg key="Ticket">Anfrage</msg>
-  <msg key="Ticket_Container">Anfrage Container</msg>
   <msg key="Ticket_Members">Mitglieder</msg>
   <msg key="Ticket_Owner">Besitzer</msg>
   <msg key="Ticket_Status">Status</msg>
   <msg key="Ticket_Survey_Component">Umfragen</msg>
-  <msg key="Ticket_Tracker">Anfrage Container</msg>
   <msg key="Ticket_Type">Anfragetyp</msg>
   <msg key="Tickets">Helpdesk</msg>
-  <msg key="Tickets_Admin">Admin Anfragen</msg>
   <msg key="Time_plan">Zeitplan</msg>
   <msg key="Time_sheet">Zeiterfassung</msg>
   <msg key="Timesheet">Zeiterfassung</msg>
-  <msg key="Timesheet_Admin">Admin Timesheet</msg>
   <msg key="Timesheet_Budget">Budget für interne Stunden</msg>
   <msg key="Timesheet_Confirmation_Journal">Zeiterfassung Bestätigung Journal</msg>
   <msg key="Timesheet_Confirmation_Workflow">Zeiterfassung Bestätigung Workflow</msg>
   <msg key="Timesheet_Cost">Zeiterfassung</msg>
   <msg key="Timesheet_Hour">Zeiterfassung Stunde</msg>
   <msg key="Timesheet_Hours">Stunden</msg>
-  <msg key="Timesheet_Hours_New_Admin">Neue Stunden erfassen</msg>
   <msg key="Timesheet_Management">Zeiterfassung</msg>
   <msg key="Timesheet_Productivity">Mitarbeiter Produktivität</msg>
   <msg key="Timesheet_Task">Zeiterfassungsaufgabe</msg>
@@ -2474,7 +2415,6 @@ Password: %password%
   <msg key="Travel_Cost">Reisekosten</msg>
   <msg key="Travel_Costs">Reisekosten</msg>
   <msg key="Treelevel">Baumebene</msg>
-  <msg key="Trust_Relationships">Vertrauensbeziehungen</msg>
   <msg key="ts">ts</msg>
   <msg key="Tunisia">Tunesien</msg>
   <msg key="Turkey">Türkei</msg>
@@ -2528,7 +2468,6 @@ Password: %password%
   <msg key="User_Forum_Component">Forum</msg>
   <msg key="User_Id">Benutzer ID</msg>
   <msg key="User_Localization">Benutzer Lokalisierung</msg>
-  <msg key="User_Mail_Component">Benutzer Email</msg>
   <msg key="User_Matrix">Benutzermatrix</msg>
   <msg key="User_name">Benutzer Name</msg>
   <msg key="User_Notes">Notizen</msg>
@@ -2543,8 +2482,6 @@ Password: %password%
   <msg key="User_state">Benutzer Status</msg>
   <msg key="User_Status">Benutzer Status</msg>
   <msg key="User_Story">User Story</msg>
-  <msg key="User_Sub-Administration">Benutzer Sub-Administration</msg>
-  <msg key="User_Sub_Administration">User Sub-Administration</msg>
   <msg key="User_Survey_Component">Benutzer-bezogene Umfrage</msg>
   <msg key="User_Type">Benutzertyp</msg>
   <msg key="User_Types">Benutzertypen</msg>
@@ -2586,9 +2523,7 @@ Password: %password%
   <msg key="Web_Site_Development">Web Site Development</msg>
   <msg key="Week">Woche</msg>
   <msg key="Week_and_Day">Woche und Tag</msg>
-  <msg key="Weighted_Value">Gewichteter Wert</msg>
   <msg key="Welcome_to_po">Willkommen bei ]project-open[</msg>
-  <msg key="Welcome_to_po_blurb">Bitte lesen Sie die &lt;a href=&#39;http://www.project-open.com/en/list-configuration&#39;&gt;Übersicht Konfiguration&lt;/a&gt; für eine Einführung in die Parametrisierung von &lt;nobr&gt;&amp;#93;project-open&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="Welcome_User_Name">Willkommen, %user_name%!</msg>
   <msg key="What_is_wrong">Was ist falsch</msg>
   <msg key="Whos_Online">Wer ist Online?</msg>

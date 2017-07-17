@@ -64,47 +64,22 @@
   <msg key="Active">Active</msg>
   <msg key="Active_Customers">Active Customers</msg>
   <msg key="Active_or_Potential">Active or Potential</msg>
-  <msg key="Ad_hoc_eac_deviation_percent">% EAC&lt;br&gt;
-Deviation</msg>
   <msg key="Ad_hoc_Edit">Edit</msg>
-  <msg key="Ad_hoc_estimate_at_completion">EAC&lt;br&gt;based&lt;br&gt;on ETC</msg>
-  <msg key="Ad_hoc_estimate_at_completion_based_on_etc">EAC&lt;br&gt;
-based&lt;br&gt;
-on ETC</msg>
-  <msg key="Ad_hoc_estimate_at_completion_manual">EAC&lt;br&gt;
-Manual</msg>
-  <msg key="Ad_hoc_estimate_at_completion_planned">EAC&lt;br&gt;
-Planned</msg>
-  <msg key="Ad_hoc_estimate_to_complete">ETC</msg>
-  <msg key="Ad_hoc_estimate_to_complete_manual">ETC&lt;br&gt;
-Entered</msg>
   <msg key="Ad_hoc_message">Message</msg>
   <msg key="Ad_hoc_Name">Name</msg>
   <msg key="Ad_hoc_Other">Other</msg>
   <msg key="Ad_hoc_owner_email">Owner Email</msg>
   <msg key="Ad_hoc_owner_name">Owner Name</msg>
-  <msg key="Ad_hoc_percent_completed">Percent&lt;br&gt;Completed</msg>
-  <msg key="Ad_hoc_percent_hours_assigned_to_user">% Hours&lt;br&gt;
-Assigned&lt;br&gt;
-to User</msg>
-  <msg key="Ad_hoc_planned_hours_for_user">Planned Hours&lt;br&gt;User</msg>
   <msg key="Ad_hoc_posting_date">Posting date</msg>
   <msg key="Ad_hoc_ProjectNr">Project Nr</msg>
   <msg key="Ad_hoc_Proof">Proof</msg>
   <msg key="Ad_hoc_Source">Source</msg>
   <msg key="Ad_hoc_subject">Subject</msg>
   <msg key="Ad_hoc_Target">Target</msg>
-  <msg key="Ad_hoc_task_percent_completed">Task %&lt;br&gt;Completed</msg>
-  <msg key="Ad_hoc_task_planned_hours">Task&lt;br&gt;Planned&lt;br&gt;Hours</msg>
-  <msg key="Ad_hoc_task_planned_hours_">Task&lt;br&gt;Planned&lt;br&gt;Hours</msg>
   <msg key="Ad_hoc_topic_status">Topic Status</msg>
   <msg key="Ad_hoc_topic_type">Topic Type</msg>
   <msg key="Ad_hoc_Trans">Trans</msg>
   <msg key="Ad_hoc_Units">Units</msg>
-  <msg key="Ad_hoc_user_logged_hours">User&lt;br&gt;Logged&lt;br&gt;Hours</msg>
-  <msg key="Ad_hoc_user_name">User</msg>
-  <msg key="Ad_hoc_user_planned_hours">User&lt;br&gt;Planned&lt;br&gt;Hours</msg>
-  <msg key="Ad_hoc_work_assigned_to_user">% Work&lt;br&gt;Assigned&lt;br&gt;to User</msg>
   <msg key="Add">Add</msg>
   <msg key="Add_a_new_client">Add New Customer</msg>
   <msg key="Add_a_new_Company">New Company</msg>
@@ -143,6 +118,7 @@ to User</msg>
   <msg key="Address_1">Address1</msg>
   <msg key="Address_2">Address2</msg>
   <msg key="Admin">Admin</msg>
+  <msg key="Admin_Actions">Admin Actions</msg>
   <msg key="Admin_category_type">Admin</msg>
   <msg key="Admin_Companies">Admin Companies</msg>
   <msg key="Admin_Home">Admin Home</msg>
@@ -165,6 +141,7 @@ to User</msg>
   <msg key="Advertizing_Project">Advertising Project</msg>
   <msg key="af">af</msg>
   <msg key="Agile_Project">Agile Project</msg>
+  <msg key="Agile_Project-Message">Project using an agile methodology</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Screen Name</msg>
   <msg key="Airfare">Airfare</msg>
@@ -219,7 +196,17 @@ to User</msg>
   <msg key="b">b</msg>
   <msg key="B_-_No_the_best">B - No the best</msg>
   <msg key="Backup">Backup</msg>
+  <msg key="Backup_Add_Comment">Add Comment</msg>
   <msg key="Backup_and_Restore_blurb">Backup your current application data now or load application data from a previous backup.</msg>
+  <msg key="Backup_Bzip">Bzip2</msg>
+  <msg key="Backup_Comment_on_backup_dumps">Add a comment to a backup dump</msg>
+  <msg key="Backup_Compress_the_backup_dump">Compress checked backup dumps using bzip2</msg>
+  <msg key="Backup_Delete">Delete</msg>
+  <msg key="Backup_Delete_checked_backup_dumps">Delete checked backup dumps</msg>
+  <msg key="Backup_Delete_Comment">Delete Comment</msg>
+  <msg key="Backup_restore">Restore</msg>
+  <msg key="Backup_Un_Bzip">Un-Bzip2</msg>
+  <msg key="Backup_Uncompress_backup_dump">Uncompress backup dump</msg>
   <msg key="Bad_Office">Bad Office</msg>
   <msg key="Bad_User">Bad User</msg>
   <msg key="Ban_this_user">Ban this user</msg>
@@ -325,10 +312,6 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Change_Password">Change Password</msg>
   <msg key="Change_Priority">Change Priority</msg>
   <msg key="Change_Ticket">Change Ticket</msg>
-  <msg key="Check">Cheque</msg>
-  <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
-  <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="CHF">CHF</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
@@ -337,6 +320,9 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="City">City</msg>
   <msg key="Cleanup_All_Demo_Users">Cleanup all Demo Users</msg>
   <msg key="Cleanup_Demo_Users">Cleanup Demo Users</msg>
+  <msg key="Click_me">Click me for more information</msg>
+  <msg key="Click_To_Close_Side_Menu">Click to close side menu</msg>
+  <msg key="Click_To_Show_Side_Menu">Click to show side menu</msg>
   <msg key="Client">Client</msg>
   <msg key="Client_Contacts">Client Contacts</msg>
   <msg key="Client_Details">Client Details</msg>
@@ -490,14 +476,14 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Croatia">Croatia</msg>
   <msg key="cs">cs</msg>
   <msg key="Cuba">Cuba</msg>
-  <msg key="Cur_Costs">Cur Costs</msg>
+  <msg key="Cur_Costs">Aktu koszty</msg>
   <msg key="Current_Milestones">Current Milestones</msg>
   <msg key="Custom_Actions">Custom Actions</msg>
   <msg key="Customer">Customer</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
   <msg key="Customer_Info">Customer Info</msg>
-  <msg key="Customer_Information_AJAX">Customer Information</msg>
+  <msg key="Customer_Information_AJAX">Customer Information AJAX</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="Customer_Management">Customer Management</msg>
   <msg key="Customer_Prospects">Customer Prospects</msg>
@@ -509,7 +495,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Customers_status_Qualifying">Qualifying</msg>
   <msg key="Customers_status_Quote_out">Quote out</msg>
   <msg key="Customers_status_Quoting">Quoting</msg>
-  <msg key="CustomersWorkedFor">Customers Worked For</msg>
+  <msg key="CustomersWorkedFor">Worked For Customers</msg>
   <msg key="CustOrIntl">Cust. or Intl.</msg>
   <msg key="CVS_Hostname">CVS Hostname</msg>
   <msg key="CVS_Integration">CVS Integration</msg>
@@ -517,7 +503,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="CVS_Path">CVS Path</msg>
   <msg key="CVS_Port">CVS Port</msg>
   <msg key="CVS_Protocol">CVS Protocol</msg>
-  <msg key="CVS_Repository">CVS Repository</msg>
+  <msg key="CVS_Repository">CSV Repository</msg>
   <msg key="CVS_System">CVS System</msg>
   <msg key="CVS_User">CVS User</msg>
   <msg key="Cyprus">Cyprus</msg>
@@ -552,7 +538,6 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="default_payment_method_id">Default Payment Method</msg>
   <msg key="Default_PO_Template">Default Template</msg>
   <msg key="default_po_template_id">Default PO Template</msg>
-  <msg key="Default_TAX">Default Tax</msg>
   <msg key="Default_VAT">Default VAT</msg>
   <msg key="default_vat">Default VAT</msg>
   <msg key="Defense__Aerospace">Defense / Aerospace</msg>
@@ -585,7 +570,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Denmark">Denmark</msg>
   <msg key="Department">Department</msg>
   <msg key="Department_Planner">Department Planner</msg>
-  <msg key="department_planner_project_priority_id">Dept. Planner Prio</msg>
+  <msg key="department_planner_project_priority_id">Department Planner Priority</msg>
   <msg key="Departments">Departments</msg>
   <msg key="Description">Description</msg>
   <msg key="Developer_Home">Developer Home</msg>
@@ -643,7 +628,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="End_Date">End Date</msg>
   <msg key="Energy__Utilities">Energy / Utilities</msg>
   <msg key="Engineering">Engineering</msg>
-  <msg key="ErrCreatingComponent">Error in portlet &#39;%plugin_name%&#39;. This portlet will not be available</msg>
+  <msg key="ErrCreatingComponent">Error in portlet &#39;$plugin_name&#39;. This portlet will not be available</msg>
   <msg key="ERROR">ERROR</msg>
   <msg key="es">es</msg>
   <msg key="es_AR">es_AR</msg>
@@ -685,7 +670,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Export_Projects_to_CSV">Export Projects to CSV</msg>
   <msg key="Export_Provider_Invoices_CSV">Export Provider Financial Documents CSV</msg>
   <msg key="Export_Providers_to_CSV">Export Providers to CSV</msg>
-  <msg key="Export_User_to_CSV">Export Users to CSV</msg>
+  <msg key="Export_User_to_CSV">Export User to CSV</msg>
   <msg key="Export_Users_Cube">Export Benutzer-Cube</msg>
   <msg key="Export_Users_to_CSV">Export Users to CSV</msg>
   <msg key="Extra_from">Extra from</msg>
@@ -696,7 +681,6 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Fax">Fax</msg>
   <msg key="Feasibility_Study">Feasibility Study</msg>
   <msg key="Feature_Request">Feature Request</msg>
-  <msg key="Feedback">Feedback</msg>
   <msg key="fi">fi</msg>
   <msg key="File">File</msg>
   <msg key="File_Storage">File Storage</msg>
@@ -758,7 +742,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="g">g</msg>
   <msg key="Gantt">Gantt</msg>
   <msg key="Gantt_Editor">Gantt Editor</msg>
-  <msg key="Gantt_Project">Gantt Project</msg>
+  <msg key="Gantt_Project">Gannt Project</msg>
   <msg key="Gantt_Resources">Gantt Resources</msg>
   <msg key="Gantt_Resourcs">Gantt Resources</msg>
   <msg key="Gantt_Schedule">Gantt Schedule</msg>
@@ -882,6 +866,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Helpdesk">Helpdesk</msg>
   <msg key="HelpPage">Help Page</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
+  <msg key="Hide_Help">Hide this help text</msg>
   <msg key="High">High</msg>
   <msg key="High_Quality">High Quality</msg>
   <msg key="Hinzufgen">Add</msg>
@@ -961,7 +946,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Import_Nagios_Definitions">Import Nagios Definitions</msg>
   <msg key="Import_Projects_from_CSV">Import Projects from CSV</msg>
   <msg key="Import_User_CSV">Import User CSV</msg>
-  <msg key="Import_User_from_CSV">Import Users from CSV</msg>
+  <msg key="Import_User_from_CSV">Import User from CSV</msg>
   <msg key="Important">Important</msg>
   <msg key="Importing_Master_Data">Import Master Data</msg>
   <msg key="Importing_Master_Data_message">Please &lt;a href=/intranet/admin/cleanup-demo/&gt;remove&lt;/a&gt; the Tigerpond demo data from the system. After that, you can start to enter your company data in the order users (employees, customers and freelancers), companies (customers and providers) and projects.</msg>
@@ -1083,6 +1068,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Junior_Consultant">Junior Consultant</msg>
   <msg key="k">k</msg>
   <msg key="Kanban">Kanban</msg>
+  <msg key="Kanban-Message">Project using Kanban agile methodology</msg>
   <msg key="Key">Key</msg>
   <msg key="Key_Account">Key Account</msg>
   <msg key="Key_Account_Manager">Key Account Manager</msg>
@@ -1248,12 +1234,10 @@ Please click on the link above for details.
 Best regards,
 %current_user_name%</msg>
   <msg key="lt_Default_Delivery_Note">Default Delivery Note</msg>
-  <msg key="lt_Default_Discount_Perc">Default Discount Perc</msg>
   <msg key="lt_Default_Invoice_Templ">Default Invoice Template</msg>
   <msg key="lt_Default_Payment_Metho">Default Payment Method</msg>
   <msg key="lt_Default_PM_Fee_Percen">Default PM Fee Perc</msg>
   <msg key="lt_Default_Provider_Bill">Default Provider Bill</msg>
-  <msg key="lt_Default_Surcharge_Per">Default Surcharge Perc</msg>
   <msg key="lt_Delete_the_accounting">Delete the accounting contact</msg>
   <msg key="lt_Delete_the_primary_co">Delete the primary contact</msg>
   <msg key="lt_delete_this_user_inst">delete this user instead</msg>
@@ -1367,8 +1351,6 @@ her contributions to the site content.</msg>
   <msg key="lt_just_mark_the_account">just mark the account deleted</msg>
   <msg key="lt_Key_Accountintranet-f">Key Accountant</msg>
   <msg key="lt_Kontexthilfeintranet-">Context help</msg>
-  <msg key="lt_Kundenbetreuerintrane">Kundenbetreuer</msg>
-  <msg key="lt_Kundenintranet-filest">Kunden</msg>
   <msg key="lt_Last_3_monthsintranet">Last 3 months</msg>
   <msg key="lt_Linguistic_Validation">Linguistic Validation</msg>
   <msg key="lt_Locate_your_new_accou">Locate your new accounting contact by</msg>
@@ -1440,7 +1422,6 @@ site with fake crud.</msg>
   <msg key="lt_Password_Confirmation">Password Confirmation</msg>
   <msg key="lt_Pastintranet-timeshee">Past</msg>
   <msg key="lt_Personal_Home_Page_UR">Personal Home Page URL</msg>
-  <msg key="lt_Pinche_aqu_para_obten">Click here to get help</msg>
   <msg key="lt_Planned_execution_tim">Planned execution time</msg>
   <msg key="lt_Please_back_up_and_tr">Please back up, and try again</msg>
   <msg key="lt_Please_click_above_to">Please click above to add a short comment.</msg>
@@ -1461,6 +1442,7 @@ site with fake crud.</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
   <msg key="lt_Project_Phases__Risks">Project Phases &amp; Risks</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
+  <msg key="lt_Projects_List_Profit_">Projects List Profit &amp; Loss</msg>
   <msg key="lt_Provider_bills_with_e">External Costs</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in &#39;Project Name&#39; are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in &#39;Project Nr&#39; are not allowed</msg>
@@ -1470,7 +1452,6 @@ site with fake crud.</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Reduction_in_Working_">Reduction in Working Hours</msg>
-  <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
@@ -1547,13 +1528,12 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Upload_GanttProject_S">Upload GanttProject File</msg>
   <msg key="lt_Use_the_Browse_button">Use the &#39;Browse...&#39; button to locate your file, then click &#39;Open&#39;.</msg>
   <msg key="lt_User_not_found_in_the">User not found in the delinquent list. May be you have already been removed ?!!</msg>
-  <msg key="lt_User_Sub-Administrati">User Sub-Administration Matrix</msg>
+  <msg key="lt_User_Sub-Administrati">Benutzer Sub-Administrationsmatrix</msg>
   <msg key="lt_var_is_undefined_for_">%var% is undefined for empty lists.</msg>
   <msg key="lt_View_administrative_p">View administrative page for newly created user,</msg>
   <msg key="lt_View_the_hours_logged">View the hours logged by someone else</msg>
   <msg key="lt_View_time_spent_on_al">View time spent on all projects by everyone</msg>
   <msg key="lt_View_your_hours_on_al">View your hours on all projects</msg>
-  <msg key="lt_Vollmitgliedintranet-">Vollmitglied</msg>
   <msg key="lt_We_cant_nuke_a_paying">We can&#39;t nuke a paying company because to do so would screw up accounting records.</msg>
   <msg key="lt_We_couldnt_find_offic">We couldn&#39;t find office #%office_id%; perhaps this office was nuked?</msg>
   <msg key="lt_We_couldnt_find_user_">We couldn&#39;t find user #%user_id_from_search%; perhaps this person was nuked?</msg>
@@ -1639,6 +1619,8 @@ other way for the user to find out.</msg>
   <msg key="Manufacturing">Manufacturing</msg>
   <msg key="Marketing">Marketing</msg>
   <msg key="Master_Data">Master Data</msg>
+  <msg key="Master_Date_Help">This page lists a number of object types that are used as master data, together with their administration screen.&lt;br&gt;
+Please click on the links below to get to the respective administration screens.&lt;br&gt;</msg>
   <msg key="Material">Material</msg>
   <msg key="Materials">Materials</msg>
   <msg key="Meals">Meals</msg>
@@ -1660,6 +1642,7 @@ other way for the user to find out.</msg>
   <msg key="Milestone">Milestone</msg>
   <msg key="milestone_p">Milestone?</msg>
   <msg key="Milestones">Milestones</msg>
+  <msg key="Milestones_List">Milestones List</msg>
   <msg key="Mine">Mine</msg>
   <msg key="Mine_All">Mine or All</msg>
   <msg key="Misc">Misc</msg>
@@ -1691,7 +1674,7 @@ other way for the user to find out.</msg>
   <msg key="Navbar_Admin_Text">Click here to administrate the navigation bar</msg>
   <msg key="Navbar_Help_Text">Click here to get help for this page.</msg>
   <msg key="Needs_Analysis">Needs Analysis</msg>
-  <msg key="NegotiationReview">Negotiation/Review</msg>
+  <msg key="NegotiationReview">Review</msg>
   <msg key="Nepal">Nepal</msg>
   <msg key="Netherlands">Netherlands</msg>
   <msg key="Netherlands_Antilles">Netherlands Antilles</msg>
@@ -1706,7 +1689,7 @@ other way for the user to find out.</msg>
   <msg key="new_category">New Category</msg>
   <msg key="new_client_contact">new client contact</msg>
   <msg key="New_column">New column</msg>
-  <msg key="New_column_for_view">New Column for View %view_link%</msg>
+  <msg key="New_column_for_view">New column for view</msg>
   <msg key="New_Company">New Company</msg>
   <msg key="New_Company___Contact">New Company + Contact</msg>
   <msg key="New_Company_Contact">Add a New Company Contact</msg>
@@ -1717,6 +1700,7 @@ other way for the user to find out.</msg>
   <msg key="New_from_NAV">New from NAV</msg>
   <msg key="New_Hours">New Hours</msg>
   <msg key="New_Number_Location">New Number Location</msg>
+  <msg key="New_Office">New Office</msg>
   <msg key="New_Opportunity">New Opportunity</msg>
   <msg key="New_Password">New Password</msg>
   <msg key="New_Payment">New Payment</msg>
@@ -1734,7 +1718,7 @@ other way for the user to find out.</msg>
   <msg key="New_Travel_Expense">New Travel Expense</msg>
   <msg key="New_User">New User</msg>
   <msg key="New_User___Company">New User + Company</msg>
-  <msg key="New_User__Company">New User + Company</msg>
+  <msg key="New_User__Company">Neuer Benutzer + Firma</msg>
   <msg key="New_User_Company">New User + Company</msg>
   <msg key="New_view">New view</msg>
   <msg key="New_Zealand">New Zealand</msg>
@@ -1806,6 +1790,7 @@ other way for the user to find out.</msg>
   <msg key="Office_Type">Office Type</msg>
   <msg key="Office_Wiki_Component">Office Wiki</msg>
   <msg key="Offices">Offices</msg>
+  <msg key="Offices_List">Offices List</msg>
   <msg key="OK">OK</msg>
   <msg key="Ok">Ok</msg>
   <msg key="Ok?">Ok?</msg>
@@ -1919,7 +1904,7 @@ other way for the user to find out.</msg>
   <msg key="PHP">PHP</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
-  <msg key="Plan_Costs">Plan Costs</msg>
+  <msg key="Plan_Costs">Plan koszty</msg>
   <msg key="Planned">Planned</msg>
   <msg key="PlannedTotal">Planned Total</msg>
   <msg key="Planning">Planning</msg>
@@ -1933,10 +1918,10 @@ other way for the user to find out.</msg>
   <msg key="PO_com_web_site_blurb">Provides you with an overview of &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="po_Component">]po[ Component</msg>
   <msg key="PO_Documentation_Wiki">]po[ Documentation Wiki</msg>
-  <msg key="PO_Documentation_Wiki_Blurb">Contains reference information on &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; processes, packages, objects etc.</msg>
+  <msg key="PO_Documentation_Wiki_Blurb">&lt;A href=&#34;http://www.project-open.com/en/&#34;&gt;&lt;B&gt;]po[ Documentation Wiki&lt;/b&gt;&lt;/a&gt;</msg>
   <msg key="PO_Professional_Services">]po[ ProfessionalServices</msg>
   <msg key="PO_Support_Contracts">]po[ Support Contracts</msg>
-  <msg key="PO_Support_Contracts_Blurb">We can also provide you with a support contract to keep your system safe and running.</msg>
+  <msg key="PO_Support_Contracts_Blurb">We can also provide you with a support contract to keep your system safe and running</msg>
   <msg key="poenadp">po.en.adp</msg>
   <msg key="poesadp">po.es.adp</msg>
   <msg key="poessadp">po.es.adp</msg>
@@ -1978,7 +1963,7 @@ other way for the user to find out.</msg>
   <msg key="Prio_HJ_1">Prio HJ</msg>
   <msg key="Priority">Priority</msg>
   <msg key="Privileges">Privileges</msg>
-  <msg key="Probability">Probability</msg>
+  <msg key="Probability">Probability (%)</msg>
   <msg key="Probability_">Probability</msg>
   <msg key="Problem_Ticket">Problem Ticket</msg>
   <msg key="Proc_Num">Proc. Num</msg>
@@ -2037,7 +2022,7 @@ other way for the user to find out.</msg>
   <msg key="Project_GanttProject_Component">Project Gantt Portlet</msg>
   <msg key="Project_Hierarchy">Project Hierarchy</msg>
   <msg key="Project_ID">Project ID</msg>
-  <msg key="Project_Mail_Component">Project Mail Portlet</msg>
+  <msg key="Project_Mail_Component">Mail</msg>
   <msg key="Project_Management">Project Management</msg>
   <msg key="Project_Manager">Project Manager</msg>
   <msg key="Project_Managers">Project Managers</msg>
@@ -2072,7 +2057,7 @@ other way for the user to find out.</msg>
   <msg key="project_strategic_value">Strategic Value</msg>
   <msg key="Project_Survey_Component">Project Surveys</msg>
   <msg key="Project_Task">Project Task</msg>
-  <msg key="Project_Ticket_Component">Project Ticket Portlet</msg>
+  <msg key="Project_Ticket_Component">Project Ticket Component</msg>
   <msg key="Project_Timesheet_Component">Project Timesheet Portlet</msg>
   <msg key="Project_Timesheet_Tasks">Project Timesheet Tasks</msg>
   <msg key="Project_Timesheet_Tasks_Information">Project Timesheet Tasks Information</msg>
@@ -2082,20 +2067,42 @@ other way for the user to find out.</msg>
   <msg key="Project_Translation_Task_Status">Project Translation Task Status</msg>
   <msg key="Project_Translation_Wizard">Project Translation Wizard</msg>
   <msg key="Project_Type">Project Type</msg>
+  <msg key="Project_type_agile">Agile Project</msg>
   <msg key="Project_type_Agile_Project">Agile Project</msg>
+  <msg key="Project_type_agile_short_blurb">An Agile Project is defined by a backlog and a number of sprints or agile project phases.&lt;br&gt;
+Agile projects allow to react flexibly to changes, but provide less detailed planning information, compared to Gantt Projects.</msg>
+  <msg key="Project_type_classic_gantt">Classic / Gantt Project</msg>
   <msg key="Project_type_Consulting_Project">Consulting Project</msg>
   <msg key="Project_type_CRM_Campaign">CRM Campaign</msg>
   <msg key="Project_type_CRM_Opportunity">CRM Opportunity</msg>
   <msg key="Project_type_Gantt_Project">Gantt Project</msg>
+  <msg key="project_type_gantt_short_blurb">A Gantt Project is defined by a number of activities with a planned start- and end date. ]project-open[ will show a Gantt Editor that allows you to graphically edit the project schedule.&lt;br&gt;
+Classical / Gantt projects allow for tight progress tracking, financial controlling, resource management and other.</msg>
   <msg key="Project_type_Milestone">Milestone</msg>
+  <msg key="Project_type_mixed">Mixed Methodology Project</msg>
+  <msg key="Project_type_mixed_short_blurb">A &#34;mixed project&#34; consists of a Gantt Project, but part of the work is done within agile sprints. To setup a mixed project please:
+&lt;ol&gt;
+&lt;li&gt;Create a main project of type Gantt Project.
+&lt;li&gt;Add a &#34;Backlog&#34; sub-project of type &#34;Ticket Container&#34;.
+&lt;li&gt;Add &#34;Sprint 1&#34; sub-projects of type &#34;SCRUM Sprint&#34;.
+&lt;li&gt;Click on &#34;Sprint 1&#34; and then on &#34;add existing items&#34; in order to add user stories or tasks to the sprints. You can include both Gantt tasks and user stories as sprint items.
+&lt;/ol&gt;
+Mixed projects allow for project tracking, financial controlling and resource management on the coarse-grain level, but allow for flexibility in the agile phases.</msg>
   <msg key="Project_type_Other">Other</msg>
+  <msg key="Project_type_other">Other</msg>
   <msg key="Project_type_Program">Program</msg>
+  <msg key="Project_type_program">Program</msg>
+  <msg key="Project_type_program_short_blurb">A program or &#34;programme&#34; groups a number of projects that usually have a common purpose-</msg>
+  <msg key="Project_type_release_project">Release Project</msg>
+  <msg key="Project_type_release_short_blurb">Groups a number of software release items and provides a testing workflow that determines how these items become part of a release to a critical production server.</msg>
+  <msg key="Project_Type_Select_Title">How do you want to get your work done?</msg>
   <msg key="Project_type_Service_Level_Agreement">Service Level Agreement</msg>
   <msg key="Project_type_Software_Release">Software Release</msg>
   <msg key="Project_type_Software_Release_Item">Software Release Item</msg>
   <msg key="Project_type_Task">Task</msg>
   <msg key="Project_type_Ticket">Ticket</msg>
   <msg key="Project_type_Ticket_Container">Ticket Container</msg>
+  <msg key="Project_type_ticket_container">Ticket Container</msg>
   <msg key="Project_type_Translation_Project">Translation Project</msg>
   <msg key="Project_type_Unknown">Unknown</msg>
   <msg key="Project_Types">Project Types</msg>
@@ -2167,7 +2174,7 @@ other way for the user to find out.</msg>
   <msg key="Re-Open">Re-Open</msg>
   <msg key="Reassign">Reassign</msg>
   <msg key="Recent_Registrations">Recent Registrations</msg>
-  <msg key="Recr_Status">Recruiting Status</msg>
+  <msg key="Recr_Status">Recr Status</msg>
   <msg key="Recr_Test">Recruiting Test</msg>
   <msg key="Red">Red</msg>
   <msg key="Redaccin">Redacción</msg>
@@ -2175,7 +2182,7 @@ other way for the user to find out.</msg>
   <msg key="Referral">Referral</msg>
   <msg key="Referral_Source">Referral Source</msg>
   <msg key="Referral_source">Referral source</msg>
-  <msg key="referral_source">Referral Source</msg>
+  <msg key="referral_source">Referência</msg>
   <msg key="Registered_from">Registered from</msg>
   <msg key="Registered_Users">Registered Users</msg>
   <msg key="Rejected">Rejected</msg>
@@ -2194,7 +2201,7 @@ other way for the user to find out.</msg>
   <msg key="Remove_checked_items">Remove checked items</msg>
   <msg key="Repeating_Cost">Repeating Cost</msg>
   <msg key="Repeating_Costs">Repeating Costs</msg>
-  <msg key="Replacement">Replacement</msg>
+  <msg key="Replacement">Ferienvertretung</msg>
   <msg key="Reply">Reply</msg>
   <msg key="Report_a_bug_on_this_page">Report a bug on this page</msg>
   <msg key="Report_but_on_page">Report a Bug or Misbehavior</msg>
@@ -2249,7 +2256,6 @@ other way for the user to find out.</msg>
   <msg key="rfc_pe_schaetz_user_pt">Schätzung Aufwand Fachbereich</msg>
   <msg key="rfc_pe_schaetz_user_wert">Schätzung Fachbereich CHF</msg>
   <msg key="rfc_pr_beschaffung_durch">Lieferant</msg>
-  <msg key="rfc_pr_kundenref">Reference client</msg>
   <msg key="rfc_pr_lieferantenre">Reference</msg>
   <msg key="rfc_pr_produkt">Product</msg>
   <msg key="rfc_pr_triage">Triage</msg>
@@ -2284,14 +2290,14 @@ other way for the user to find out.</msg>
   <msg key="Risk_vs_ROI">Risk vs. ROI</msg>
   <msg key="ro">ro</msg>
   <msg key="Role_GIF_key-account">key-account</msg>
-  <msg key="Role_GIF_member">member</msg>
-  <msg key="Role_GIF_project-manager">project-manager</msg>
+  <msg key="Role_GIF_member">M</msg>
+  <msg key="Role_GIF_project-manager">A</msg>
   <msg key="Role_im_company_Full_Member">Full Member</msg>
   <msg key="Role_im_company_Key_Account">Key Account</msg>
   <msg key="Role_im_conf_item_Full_Member">Full Member</msg>
   <msg key="Role_im_project_Full_Member">Full Member</msg>
   <msg key="Role_im_project_Project_Manager">Project Manager</msg>
-  <msg key="Role_im_ticket_Full_Member">Full Member</msg>
+  <msg key="Role_im_ticket_Full_Member">Ticket Member</msg>
   <msg key="Romania">Romania</msg>
   <msg key="Room">Room</msg>
   <msg key="Room_City">Raum Ort</msg>
@@ -2324,6 +2330,7 @@ other way for the user to find out.</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
   <msg key="SCRUM_Sprint">SCRUM Sprint</msg>
+  <msg key="SCRUM_Sprint-Message">Project using SCRUM agile methodology</msg>
   <msg key="SDLX_4_Elite">SDLX 4 Elite</msg>
   <msg key="SDLX_4_Professional">SDLX 4 Professional</msg>
   <msg key="SDLX_4_Standard">SDLX 4 Standard</msg>
@@ -2345,6 +2352,7 @@ other way for the user to find out.</msg>
   <msg key="Select_Type">Select Type</msg>
   <msg key="Select_Type_for_Object">Select Type for Object</msg>
   <msg key="Selectors">Selectors</msg>
+  <msg key="Sencha_Sales_Pipeline">Sales Pipeline</msg>
   <msg key="Send_Email">Send Email</msg>
   <msg key="Send_me_a_copy">Send me a copy</msg>
   <msg key="Send_Notification">Send Notification</msg>
@@ -2368,6 +2376,7 @@ other way for the user to find out.</msg>
   <msg key="Sharepoint">Sharepoint</msg>
   <msg key="Shell">Shell</msg>
   <msg key="Shift_project_forward_or_backward">Shift project forward or backward</msg>
+  <msg key="Show_Help">Show a help text</msg>
   <msg key="Show_more">Show more</msg>
   <msg key="ShowAll">Show All</msg>
   <msg key="Sick">Unavailable</msg>
@@ -2501,7 +2510,7 @@ other way for the user to find out.</msg>
   <msg key="Ticket_Members">Ticket Members</msg>
   <msg key="Ticket_Owner">Ticket Owner</msg>
   <msg key="Ticket_Status">Ticket Status</msg>
-  <msg key="Ticket_Survey_Component">Ticket Survey Portlet</msg>
+  <msg key="Ticket_Survey_Component">Ticket Survey Component</msg>
   <msg key="Ticket_Tracker">Ticket Tracker</msg>
   <msg key="Ticket_Type">Ticket Type</msg>
   <msg key="Tickets">Tickets</msg>
@@ -2668,7 +2677,7 @@ other way for the user to find out.</msg>
   <msg key="VAS">VAS</msg>
   <msg key="VAS_5051">VAS 5051</msg>
   <msg key="VAT_Number">VAT Number</msg>
-  <msg key="vat_number">VAT Number</msg>
+  <msg key="vat_number">rut</msg>
   <msg key="Venezuela">Venezuela</msg>
   <msg key="Very_Important">Very Important</msg>
   <msg key="vi">vi</msg>

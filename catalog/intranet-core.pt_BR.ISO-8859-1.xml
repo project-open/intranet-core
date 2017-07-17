@@ -178,10 +178,6 @@
   <msg key="Cell_phone">Celular</msg>
   <msg key="Change">Alterar</msg>
   <msg key="Change_Password">Alterar Senha</msg>
-  <msg key="Check">Verificação</msg>
-  <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
-  <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
   <msg key="Choose_a_Country">Escolha um País</msg>
@@ -801,7 +797,6 @@
   <msg key="mo">mo</msg>
   <msg key="My_Account">Minha Conta</msg>
   <msg key="N">N</msg>
-  <msg key="Name">Nome</msg>
   <msg key="New_">Novo</msg>
   <msg key="no">não</msg>
   <msg key="No_Importance">Sem importância</msg>
@@ -866,7 +861,6 @@
   <msg key="Update_User">Atualizar Usuário</msg>
   <msg key="Upload_Preview_Image">Carregar pré-visualização de Imagem</msg>
   <msg key="Uruguay">Uruguai</msg>
-  <msg key="Username">Nome de Usuário</msg>
   <msg key="VAS">VAS  </msg>
   <msg key="VAS_5051">VAS 5051  </msg>
   <msg key="Venezuela">Venezuela</msg>

@@ -182,10 +182,6 @@
   <msg key="Cell_phone">Mobiel nummer</msg>
   <msg key="Change">Aanpassen</msg>
   <msg key="Change_Password">Verander wachtwoord</msg>
-  <msg key="Check">Cheque</msg>
-  <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
-  <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Chile">Chili</msg>
   <msg key="China">China</msg>
   <msg key="Choose_a_Country">Kies een land</msg>
@@ -889,8 +885,6 @@
   <msg key="lt_Just_enter_any_suitab">Voer enkel een passende naam voor het project in. U kunt dit veld eventueel leeg laten.</msg>
   <msg key="lt_just_mark_the_account">markeer enkel de account als verwijderd</msg>
   <msg key="lt_Key_Accountintranet-f">Key accountant</msg>
-  <msg key="lt_Kundenbetreuerintrane">Klant contactpersoon</msg>
-  <msg key="lt_Kundenintranet-filest">Klant</msg>
   <msg key="lt_Last_3_monthsintranet">Afgelopen 3 maanden</msg>
   <msg key="lt_Linguistic_Validation">Taalkundige validatie</msg>
   <msg key="lt_Locate_your_new_accou">Zoek uw nieuwe financieel contactpersoon op</msg>
@@ -974,7 +968,6 @@
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Geregistreerd vanaf %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">Onthoud: totaal van 10 eenheden per dag! (alle dagen)</msg>
   <msg key="lt_Remove_Delinquent_Use">Verwijder gebruiker van zwarte lijst</msg>
   <msg key="lt_Replyintranet-forumRe">Antwoord</msg>
@@ -1038,7 +1031,6 @@
   <msg key="lt_View_the_hours_logged">Toon de uren die door iemand anders zijn ingevoerd</msg>
   <msg key="lt_View_time_spent_on_al">Gespendeerde tijd op alle projecten door alle betrokkenen</msg>
   <msg key="lt_View_your_hours_on_al">Toon alle uren van alle projecten</msg>
-  <msg key="lt_Vollmitgliedintranet-">Volledig lid</msg>
   <msg key="lt_We_cant_nuke_a_paying">We kunnen een betalend bedrijf niet definitief verwijderen omdat we anders de records met betalingen verminken.</msg>
   <msg key="lt_We_couldnt_find_offic">We kunnen geen kantoor #%office_id% vinden; mogelijk is dit kantoor definitief verwijderd?</msg>
   <msg key="lt_We_couldnt_find_user_">We kunnen geen gebruiker #%user_id_from_search% vinden; mogelijk is deze persoon definitief verwijderd?</msg>
@@ -1477,7 +1469,6 @@
   <msg key="rfc_pe_schaetz_user_pt">Schatting uitgaven door specialist</msg>
   <msg key="rfc_pe_schaetz_user_wert">Schatting verzoek tot wijziging door specialist</msg>
   <msg key="rfc_pr_beschaffung_durch">Leverancier</msg>
-  <msg key="rfc_pr_kundenref">Referentie klant</msg>
   <msg key="rfc_pr_lieferantenre">Referentie</msg>
   <msg key="rfc_pr_produkt">Product</msg>
   <msg key="rfc_pr_triage">Triage</msg>

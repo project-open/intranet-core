@@ -176,10 +176,6 @@
   <msg key="Cell_Phone">Portable</msg>
   <msg key="Cell_phone">Portable</msg>
   <msg key="Change_Password">Changer de mot de passe</msg>
-  <msg key="Check">Chèque</msg>
-  <msg key="Cheque">Chèque</msg>
-  <msg key="Cheque_EUR">Chèque EUR</msg>
-  <msg key="Cheque_USD">Chèque USD</msg>
   <msg key="Chile">Chili</msg>
   <msg key="China">Chine</msg>
   <msg key="Choose_a_Country">Choisir un Pays</msg>
@@ -860,8 +856,6 @@ peuvent faire ou non.</msg>
   <msg key="lt_Just_enter_any_suitab">Attribuer un nom approprié au projet.</msg>
   <msg key="lt_just_mark_the_account">marque juste le compte supprimé</msg>
   <msg key="lt_Key_Accountintranet-f">Gestionnaire de compte</msg>
-  <msg key="lt_Kundenbetreuerintrane">Gestionnaire de compte</msg>
-  <msg key="lt_Kundenintranet-filest">Clients</msg>
   <msg key="lt_Last_3_monthsintranet">3 derniers mois</msg>
   <msg key="lt_Linguistic_Validation">Validation linguistique</msg>
   <msg key="lt_Locate_your_new_accou">Localiser votre nouveau contact comptabilité par</msg>
@@ -918,7 +912,6 @@ peuvent faire ou non.</msg>
   <msg key="lt_Password_Confirmation">Confirmation du mot de passe</msg>
   <msg key="lt_Pastintranet-timeshee">Passé</msg>
   <msg key="lt_Personal_Home_Page_UR">URL Home Page Personnel</msg>
-  <msg key="lt_Pinche_aqu_para_obten">Cliquer ici pour obtenir de l&#39;aide</msg>
   <msg key="lt_Please_back_up_and_tr">Veuillez revenir en arrière et réessayer</msg>
   <msg key="lt_Please_click_above_to">Veuillez cliquer ici pour ajouter un bref commentaire</msg>
   <msg key="lt_Please_contact_your_s">Veuillez contacter votre administrateur système</msg>
@@ -943,7 +936,6 @@ peuvent faire ou non.</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">RAPPEL: total de 10 unités par jour! (tous les jours) </msg>
   <msg key="lt_Remove_Delinquent_Use">Supprimer un utilisateur délinquant</msg>
   <msg key="lt_Replyintranet-forumRe">Répondre</msg>
@@ -1008,7 +1000,6 @@ peuvent faire ou non.</msg>
   <msg key="lt_View_the_hours_logged">Visualiser les heures enregistrées par un autre utilisateur</msg>
   <msg key="lt_View_time_spent_on_al">Visualiser le temps passé sur tous les projets pour un utilisateur donné</msg>
   <msg key="lt_View_your_hours_on_al">Visualiser vos heures sur tous les projets</msg>
-  <msg key="lt_Vollmitgliedintranet-">Membre à part entière</msg>
   <msg key="lt_We_cant_nuke_a_paying">Nous ne pouvons pas supprimer définitivement une société payante car cela poserait des problèmes au niveau des relevés comptables.</msg>
   <msg key="lt_We_couldnt_find_offic">Impossible de trouver le site #%office_id%; peut-être a t-il été supprimé ?</msg>
   <msg key="lt_We_couldnt_find_user_">Impossible de trouver l&#39;utilisateur #%user_id_from_search%; peut-être a-t&#39;il été supprimé ?</msg>

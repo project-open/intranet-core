@@ -150,10 +150,6 @@
   <msg key="Cell_Phone">Matkapuhelin numero</msg>
   <msg key="Cell_phone">Matkapuhelin</msg>
   <msg key="Change_Password">Muuta salasana</msg>
-  <msg key="Check">Shekki</msg>
-  <msg key="Cheque">Shekki</msg>
-  <msg key="Cheque_EUR">Shekki EUR</msg>
-  <msg key="Cheque_USD">Shekki USD</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">Kiina</msg>
   <msg key="Choose_a_Country">Valitse Maa</msg>

@@ -113,10 +113,6 @@
   <msg key="Cell_phone">Cep telefonu</msg>
   <msg key="Change">Değiştir</msg>
   <msg key="Change_Password">Şifre Değiştir</msg>
-  <msg key="Check">Çek</msg>
-  <msg key="Cheque">Çek</msg>
-  <msg key="Cheque_EUR">Çek EUR</msg>
-  <msg key="Cheque_USD">Çek USD</msg>
   <msg key="Choose_a_Country">Ülke Seç</msg>
   <msg key="City">Şehir</msg>
   <msg key="Client">Müşteri</msg>
@@ -355,7 +351,6 @@
   <msg key="lt_Provider_bills_with_e">Dış Maliyetler</msg>
   <msg key="lt_Quotes_in_Project_Nam">Proje Adında Tırnak İşareti Bulunmamalı</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Proje Numarasında Tırnak İşareti Bulunmamalı</msg>
-  <msg key="lt_Registered_from_regis">Kayıtlı IP Adresin</msg>
   <msg key="lt_Remove_Delinquent_Use">Listeden Hatalı Kullanıcıyı Sil</msg>
   <msg key="lt_Replyintranet-forumRe">Cevap</msg>
   <msg key="lt_return_to_user_admini">Kullanıcı yönetimine geridön</msg>

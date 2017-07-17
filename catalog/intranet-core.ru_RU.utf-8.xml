@@ -178,10 +178,6 @@
   <msg key="Cell_phone">Сотовый телефон</msg>
   <msg key="Change">Сменить</msg>
   <msg key="Change_Password">Сменить пароль</msg>
-  <msg key="Check">Счет</msg>
-  <msg key="Cheque">Счет</msg>
-  <msg key="Cheque_EUR">Счет в евро</msg>
-  <msg key="Cheque_USD">Счет в долларах США</msg>
   <msg key="Chile">Чили</msg>
   <msg key="China">Китай</msg>
   <msg key="Choose_a_Country">Выберите страну</msg>
@@ -877,8 +873,6 @@
   <msg key="lt_Just_enter_any_suitab">Введите подходящее название для этого проекта. Это поле также можно оставить пустым</msg>
   <msg key="lt_just_mark_the_account">достаточно пометить учетную запись как удаленную</msg>
   <msg key="lt_Key_Accountintranet-f">Главный бухгалтер</msg>
-  <msg key="lt_Kundenbetreuerintrane">Представитель отдела обслуживания</msg>
-  <msg key="lt_Kundenintranet-filest">Клиенты</msg>
   <msg key="lt_Last_3_monthsintranet">Последние 3 месяца</msg>
   <msg key="lt_Linguistic_Validation">Лингвистическая проверка</msg>
   <msg key="lt_Locate_your_new_accou">Найдите ваш новый контакт в бухгалтерии с помощью</msg>
@@ -959,7 +953,6 @@
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Registered from %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">НАПОМИНАНИЕ: итого 10 единиц в день! (каждый день)</msg>
   <msg key="lt_Remove_Delinquent_Use">Удалить нарушителя из списка</msg>
   <msg key="lt_Replyintranet-forumRe">Ответ</msg>
@@ -1022,7 +1015,6 @@
   <msg key="lt_View_the_hours_logged">Просмотреть часы, занесенные другим пользователем</msg>
   <msg key="lt_View_time_spent_on_al">Просмотреть время, затраченное каждым пользователем на все проекты</msg>
   <msg key="lt_View_your_hours_on_al">Просмотреть часы, затраченные вами на все проекты</msg>
-  <msg key="lt_Vollmitgliedintranet-">Полноправный член</msg>
   <msg key="lt_We_cant_nuke_a_paying">Нельзя уничтожить компанию-плательщика, так как это приведет к путанице в записях о платежах.</msg>
   <msg key="lt_We_couldnt_find_offic">Не удалось найти офис № %office_id%. Вероятно, он был уничтожен.</msg>
   <msg key="lt_We_couldnt_find_user_">Не удается найти пользователя № %user_id%. Вероятно, он был уничтожен.</msg>

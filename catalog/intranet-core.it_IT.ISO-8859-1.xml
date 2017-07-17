@@ -194,10 +194,6 @@
   <msg key="Cell_phone">Cellulare</msg>
   <msg key="Change">Modifica</msg>
   <msg key="Change_Password">Modifica password</msg>
-  <msg key="Check">Assegno</msg>
-  <msg key="Cheque">Assegno</msg>
-  <msg key="Cheque_EUR">Assegno EUR</msg>
-  <msg key="Cheque_USD">Assegno USD</msg>
   <msg key="Chile">Cile</msg>
   <msg key="China">Cina</msg>
   <msg key="Choose_a_Country">Scegli un paese</msg>
@@ -903,8 +899,6 @@
   <msg key="lt_Just_enter_any_suitab">Inserisci un qualsiasi nome adatto per il progetto. Puoi anche lasciare questo campo vuoto.</msg>
   <msg key="lt_just_mark_the_account">segna semplicemente l&#39;account come eliminato</msg>
   <msg key="lt_Key_Accountintranet-f">Capo contabile</msg>
-  <msg key="lt_Kundenbetreuerintrane">Kundenbetreuer</msg>
-  <msg key="lt_Kundenintranet-filest">Kunden</msg>
   <msg key="lt_Last_3_monthsintranet">Ultimi 3 mesi</msg>
   <msg key="lt_Linguistic_Validation">Convalida linguistica</msg>
   <msg key="lt_Locate_your_new_accou">Trova il nuovo contatto di contabilità per</msg>
@@ -987,7 +981,6 @@
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Registrato dall&#39;IP %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">RICORDA: numero complessivo di 10 unità per giorno! (tutti i giorni)</msg>
   <msg key="lt_Remove_Delinquent_Use">Rimuovere utente indesiderato dall&#39;elenco</msg>
   <msg key="lt_Replyintranet-forumRe">Risposta</msg>
@@ -1052,7 +1045,6 @@
   <msg key="lt_View_the_hours_logged">Visualizza le ore inserite da un&#39;altra persona</msg>
   <msg key="lt_View_time_spent_on_al">Visualizza il tempo speso su tutti i progetti da parte di tutti gli utenti</msg>
   <msg key="lt_View_your_hours_on_al">Visualizza le ore su tutti i progetti</msg>
-  <msg key="lt_Vollmitgliedintranet-">Membro effettivo</msg>
   <msg key="lt_We_cant_nuke_a_paying">Impossibile eliminare un&#39;azienda pagante. La sua eliminazione può confondere i registri contabili.</msg>
   <msg key="lt_We_couldnt_find_offic">Impossibile trovare l&#39;ufficio n. %office_id%; è stato eliminato?</msg>
   <msg key="lt_We_couldnt_find_user_">Non è possibile trovare questo utente #%user_id_from_search%; è stato eliminato?</msg>

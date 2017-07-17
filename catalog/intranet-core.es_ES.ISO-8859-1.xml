@@ -192,10 +192,6 @@
   <msg key="Cell_phone">Teléfono móvil</msg>
   <msg key="Change">Cambiar</msg>
   <msg key="Change_Password">Cambiar contraseña</msg>
-  <msg key="Check">Cheque</msg>
-  <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
-  <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
   <msg key="Choose_a_Country">Escoja un país</msg>
@@ -902,8 +898,6 @@
   <msg key="lt_Just_enter_any_suitab">Simplemente entre cualquier nombre apropiado para el proyecto. Incluso puede dejar este campo en blanco.</msg>
   <msg key="lt_just_mark_the_account">simplemente marque la cuenta como borrada</msg>
   <msg key="lt_Key_Accountintranet-f">Contable principal</msg>
-  <msg key="lt_Kundenbetreuerintrane">Responsable del cliente</msg>
-  <msg key="lt_Kundenintranet-filest">Clientes</msg>
   <msg key="lt_Last_3_monthsintranet">Últimos 3 meses</msg>
   <msg key="lt_Linguistic_Validation">Validación lingüística</msg>
   <msg key="lt_Locate_your_new_accou">Localice su nuevo contacto en Contabilidad por</msg>
@@ -962,7 +956,6 @@
   <msg key="lt_Password_Confirmation">Confirmación de la contraseña</msg>
   <msg key="lt_Pastintranet-timeshee">Pasado</msg>
   <msg key="lt_Personal_Home_Page_UR">URL de la página web personal</msg>
-  <msg key="lt_Pinche_aqu_para_obten">Pinche aquí para obtener ayuda</msg>
   <msg key="lt_Please_back_up_and_tr">Por favor, realice una copia de seguridad y reintente</msg>
   <msg key="lt_Please_click_above_to">Por favor, haga clic arriba para incluir un breve comentario.</msg>
   <msg key="lt_Please_contact_your_s">Póngase en contacto con el administrador de su sistema</msg>
@@ -987,7 +980,6 @@
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Registrada/o desde %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">RECUERDE: ¡10 unidades por día como total! (todos los días)</msg>
   <msg key="lt_Remove_Delinquent_Use">Eliminar usuario infractor de la lista</msg>
   <msg key="lt_Replyintranet-forumRe">Responder</msg>
@@ -1052,7 +1044,6 @@
   <msg key="lt_View_the_hours_logged">Ver las horas registradas por otro usuario</msg>
   <msg key="lt_View_time_spent_on_al">Ver el tiempo dedicado por cada usuario a todos los proyectos</msg>
   <msg key="lt_View_your_hours_on_al">Ver las horas que he dedicado a todos los proyectos</msg>
-  <msg key="lt_Vollmitgliedintranet-">Miembro pleno</msg>
   <msg key="lt_We_cant_nuke_a_paying">No podemos eliminar una empresa pagadora, porque se alterarían los registros de contabilidad.</msg>
   <msg key="lt_We_couldnt_find_offic">No hemos podido encontrar la oficina #%office_id%. ¿Quizá esta oficina ha sido borrada?</msg>
   <msg key="lt_We_couldnt_find_user_">No hemos podido encontrar el usuario #%user_id_from_search%; ¿esta persona ha sido quizá borrada?</msg>
@@ -1493,7 +1484,6 @@
   <msg key="rfc_pe_schaetz_user_pt">Estimación inversión de recursos área técnica</msg>
   <msg key="rfc_pe_schaetz_user_wert">Estimacion área técnica CHF</msg>
   <msg key="rfc_pr_beschaffung_durch">Proveedor</msg>
-  <msg key="rfc_pr_kundenref">Referencia cliente</msg>
   <msg key="rfc_pr_lieferantenre">Referencia</msg>
   <msg key="rfc_pr_produkt">Producto</msg>
   <msg key="rfc_pr_triage">Prioridades</msg>

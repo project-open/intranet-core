@@ -193,10 +193,6 @@
   <msg key="Cell_phone">手机</msg>
   <msg key="Change">更改</msg>
   <msg key="Change_Password">修改密码</msg>
-  <msg key="Check">支票</msg>
-  <msg key="Cheque">支票</msg>
-  <msg key="Cheque_EUR">支票 欧元</msg>
-  <msg key="Cheque_USD">支票 美元</msg>
   <msg key="Chile">智利</msg>
   <msg key="China">中国</msg>
   <msg key="Choose_a_Country">选择国家</msg>
@@ -913,8 +909,6 @@
   <msg key="lt_Just_enter_any_suitab">只输入任何适合该项目的名字.您甚至可以留空.</msg>
   <msg key="lt_just_mark_the_account">只标识要删除的账户</msg>
   <msg key="lt_Key_Accountintranet-f">关键会计</msg>
-  <msg key="lt_Kundenbetreuerintrane">Kundenbetreuer</msg>
-  <msg key="lt_Kundenintranet-filest">Kunden</msg>
   <msg key="lt_Last_3_monthsintranet">前3个月</msg>
   <msg key="lt_Linguistic_Validation">语言验证</msg>
   <msg key="lt_Locate_your_new_accou">定位您的新会计合同通过</msg>
@@ -998,7 +992,6 @@
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7.0 翻译家</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 标准版</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 翻译家</msg>
-  <msg key="lt_Registered_from_regis">注册来自 %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">请记住: 每日共计10单位! (所有日期)</msg>
   <msg key="lt_Remove_Delinquent_Use">从列表中删除违法用户</msg>
   <msg key="lt_Replyintranet-forumRe">回复</msg>
@@ -1063,7 +1056,6 @@
   <msg key="lt_View_the_hours_logged">查看某个人的时间记录</msg>
   <msg key="lt_View_time_spent_on_al">查看每个人在所有项目上的时间花费</msg>
   <msg key="lt_View_your_hours_on_al">查看您在所有项目上的时间</msg>
-  <msg key="lt_Vollmitgliedintranet-">Vollmitglied</msg>
   <msg key="lt_We_cant_nuke_a_paying">我们无法彻底删除一个支付中公司,因为这样会影响到会计记录</msg>
   <msg key="lt_We_couldnt_find_offic">我们没有找到办公室 #%office_id%;也许办公室已经被彻底删除了?</msg>
   <msg key="lt_We_couldnt_find_user_">我们无法找到用户 #%user_id_from_search%; 也许该用户被彻底删除了?</msg>
@@ -1510,7 +1502,6 @@
   <msg key="rfc_pe_schaetz_user_pt">Schätzung Aufwand Fachbereich  Aufwand </msg>
   <msg key="rfc_pe_schaetz_user_wert">Schätzung Fachbereich CHF  </msg>
   <msg key="rfc_pr_beschaffung_durch">Lieferant</msg>
-  <msg key="rfc_pr_kundenref">引用客户</msg>
   <msg key="rfc_pr_lieferantenre">引用</msg>
   <msg key="rfc_pr_produkt">产品</msg>
   <msg key="rfc_pr_triage">Triage</msg>

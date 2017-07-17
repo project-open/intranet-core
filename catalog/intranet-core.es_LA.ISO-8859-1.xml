@@ -169,10 +169,6 @@
   <msg key="Cell_phone">Teléfono móvil</msg>
   <msg key="Change">Cambiar</msg>
   <msg key="Change_Password">Cambiar contraseña</msg>
-  <msg key="Check">Cheque</msg>
-  <msg key="Cheque">Cheque</msg>
-  <msg key="Cheque_EUR">Cheque EUR</msg>
-  <msg key="Cheque_USD">Cheque USD</msg>
   <msg key="Chile">Chile</msg>
   <msg key="China">China</msg>
   <msg key="Choose_a_Country">Escoja un país</msg>
@@ -832,8 +828,6 @@ Por favor edite el mensaje de abajo y clique sobre  &#34;Enviar e-mail&#34; para
   <msg key="lt_Just_enter_any_suitab">Simplemente entre cualquier nombre adecuado para el proyecto. Incluso puede dejar este campo en blanco.</msg>
   <msg key="lt_just_mark_the_account">simplemente marque la cuenta como borrada</msg>
   <msg key="lt_Key_Accountintranet-f">Contable principal</msg>
-  <msg key="lt_Kundenbetreuerintrane">Responsable de cuenta cliente</msg>
-  <msg key="lt_Kundenintranet-filest">Clientes</msg>
   <msg key="lt_Last_3_monthsintranet">Últimos 3 meses</msg>
   <msg key="lt_Linguistic_Validation">Validación lingüística</msg>
   <msg key="lt_Locate_your_new_accou">Localice su nuevo contacto en Contabilidad por</msg>
@@ -914,7 +908,6 @@ Por favor edite el mensaje de abajo y clique sobre  &#34;Enviar e-mail&#34; para
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
-  <msg key="lt_Registered_from_regis">Registrada/o desde %registration_ip_link%</msg>
   <msg key="lt_REMEMBER_total_of_10_">RECUERDE: ¡total de 10 unidades por día! (todos los días)</msg>
   <msg key="lt_Remove_Delinquent_Use">Eliminar usuario moroso de la lista</msg>
   <msg key="lt_Replyintranet-forumRe">Responder</msg>
@@ -977,7 +970,6 @@ Por favor edite el mensaje de abajo y clique sobre  &#34;Enviar e-mail&#34; para
   <msg key="lt_View_the_hours_logged">Ver las horas registradas por otro usuario</msg>
   <msg key="lt_View_time_spent_on_al">Ver el tiempo dedicado por cada usuario a todos los proyectos</msg>
   <msg key="lt_View_your_hours_on_al">Ver las horas que he dedicado a todos los proyectos</msg>
-  <msg key="lt_Vollmitgliedintranet-">Miembro de pleno derecho</msg>
   <msg key="lt_We_cant_nuke_a_paying">No podemos eliminar una compañía pagadora, porque se alterarían los registros de contabilidad.</msg>
   <msg key="lt_We_couldnt_find_offic">No hemos podido encontrar la oficina %office_id%. ¿Quizá esta oficina ha sido borrada?</msg>
   <msg key="lt_We_couldnt_find_user_">No hemos podido encontrar el usuario %user_id_from_search%; ¿esta persona ha sido quizá borrada?</msg>

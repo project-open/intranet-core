@@ -100,10 +100,6 @@
   <msg key="Cell_Phone">電話(携帯)</msg>
   <msg key="Cell_phone">電話(携帯)</msg>
   <msg key="Change_Password">パスワード変更</msg>
-  <msg key="Check">小切手</msg>
-  <msg key="Cheque">小切手</msg>
-  <msg key="Cheque_EUR">小切手 EUR</msg>
-  <msg key="Cheque_USD">小切手 USD</msg>
   <msg key="Chile">チリ</msg>
   <msg key="China">中国</msg>
   <msg key="Choose_a_Country">国の選択</msg>
@@ -397,7 +393,6 @@
   <msg key="lt_Quotes_in_Project_Nam">&#39;Project Name&#39; の見積は許可されていません。</msg>
   <msg key="lt_Quotes_in_Project_Nr_">&#39;Project Nr&#39;の見積は許可されていません。</msg>
   <msg key="lt_Quotes_in_Project_Pat">&#39;Project Path&#39;の見積は許可されていません。</msg>
-  <msg key="lt_Registered_from_regis">登録 %registration_ip_link%</msg>
   <msg key="lt_Replyintranet-forumRe">返信</msg>
   <msg key="lt_return_to_user_admini">ユーザ管理に戻る</msg>
   <msg key="lt_Select_topics_here_fo">対象のトピックを選択してください</msg>

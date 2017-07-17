@@ -208,7 +208,6 @@
   <msg key="lt_lt_Project_Manager___">Prosjektansvarlig</msg>
   <msg key="lt_num_users_online_user">%num_users_online% bruker online</msg>
   <msg key="lt_num_users_online_user_1">%num_users_online% brukere online</msg>
-  <msg key="lt_Registered_from_regis">Logget inn fra %registration_ip_link%</msg>
   <msg key="m">m</msg>
   <msg key="Mine">Mine</msg>
   <msg key="more_">mer ...</msg>
