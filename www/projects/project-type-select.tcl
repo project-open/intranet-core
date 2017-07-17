@@ -55,6 +55,15 @@ ad_page_contract {
 # Here we just select an object_type_id for the given object.
 set admin_p [im_is_user_site_wide_or_intranet_admin [ad_conn user_id]]
 
+set system_id [im_system_id]
+set po_net "http://www.project-open.net/en"
+set po_gantt [export_vars -base "$po_net/project-type-gantt" {system_id}]
+set po_agile [export_vars -base "$po_net/project-type-agile" {system_id}]
+set po_mixed [export_vars -base "$po_net/project-type-mixed" {system_id}]
+set po_maint [export_vars -base "$po_net/project-type-maintenance" {system_id}]
+set click_me_l10n [lang::message::lookup "" intranet-core.Click_me "Click me for more information"]
+
+
 if {[catch {db_1row otype_info "
 	select	pretty_name as object_type_pretty
 	from	acs_object_types
