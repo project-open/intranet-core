@@ -33,7 +33,7 @@
 	</table>
 </td>
 <td>
-	<a href="http://www.project-open.net/en/project-type-classic&system_id=<%= [im_system_id]%>" target="_">
+	<a href="http://www.project-open.net/en/project-type-gantt?system_id=<%= [im_system_id]%>" target="_">
 	<img  width=442 height=158 src="/intranet/images/project-types/pm-classic.png" title="Click me for more information"></a>
 </td>
 </tr>
@@ -55,7 +55,7 @@
 	</table>
 </td>
 <td>
-	<a href="http://www.project-open.net/en/project-type-agile&system_id=<%= [im_system_id]%>" target="_">
+	<a href="http://www.project-open.net/en/project-type-agile?system_id=<%= [im_system_id]%>" target="_">
 	<img width=442 height=158 src="/intranet/images/project-types/pm-agile.png" title="Click me for more information"></a>
 </td>
 </tr>
@@ -88,7 +88,7 @@
 	</table>
 </td>
 <td>
-	<a href="http://www.project-open.net/en/project-type-mixed&system_id=<%= [im_system_id]%>" target="_">
+	<a href="http://www.project-open.net/en/project-type-mixed?system_id=<%= [im_system_id]%>" target="_">
 	<img  width=442 height=158 src="/intranet/images/project-types/pm-mixed.png" title="Click me for more information"></a>
 </td>
 </tr>
@@ -123,7 +123,7 @@
 	</table>
 </td>
 <td>
-	<a href="http://www.project-open.net/en/project-type-maintenance&system_id=<%= [im_system_id]%>" target="_">
+	<a href="http://www.project-open.net/en/project-type-maintenance?system_id=<%= [im_system_id]%>" target="_">
 	<img  width=442 height=158 src="/intranet/images/project-types/pm-maintenance.png" title="Click me for more information"></a>
 </td>
 </tr>
