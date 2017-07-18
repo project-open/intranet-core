@@ -2496,6 +2496,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="templatede_DEodt">template.de_DE.odt</msg>
   <msg key="templatedeodt">template.de.odt</msg>
   <msg key="templateen_USadp">template.en_US.adp</msg>
+  <msg key="templateen_USodt">template.en_US.odt</msg>
   <msg key="templateenadp">template.en.adp</msg>
   <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>

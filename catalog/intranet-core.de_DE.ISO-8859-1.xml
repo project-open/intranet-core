@@ -524,7 +524,6 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="default_payment_method_id">Standard Zahlungsmethode</msg>
   <msg key="Default_PO_Template">Default Druckvorlage</msg>
   <msg key="default_po_template_id">Vorlage Auftragsbestätigung</msg>
-  <msg key="Default_TAX">Voreinstellung Steuer</msg>
   <msg key="Default_VAT">Default MwSt.</msg>
   <msg key="default_vat">Default MwSt.</msg>
   <msg key="Del">Löschen</msg>
@@ -1199,12 +1198,10 @@ Weitere Informationen finden Sie unter %object_url%
 Mit freundlichen Grüßen,
 %current_user_name%</msg>
   <msg key="lt_Default_Delivery_Note">Vorlage Lieferzettel</msg>
-  <msg key="lt_Default_Discount_Perc">Voreinstellung Discount %</msg>
   <msg key="lt_Default_Invoice_Templ">Vorlage Rechnung</msg>
   <msg key="lt_Default_Payment_Metho">Zahlungsmittel</msg>
   <msg key="lt_Default_PM_Fee_Percen">Voreinstellung PM Gebühr %</msg>
   <msg key="lt_Default_Provider_Bill">Vorlage Lieferantenrechnung</msg>
-  <msg key="lt_Default_Surcharge_Per">Voreinstellung Aufschlag %</msg>
   <msg key="lt_Delete_the_accounting">Löschen Rechnungskontakt</msg>
   <msg key="lt_Delete_the_primary_co">Löschen Primärkontakt</msg>
   <msg key="lt_delete_this_user_inst">löschen diese Benutzer anstatt</msg>
@@ -2336,6 +2333,7 @@ Password: %password%
   <msg key="templatede_DEodt">template.de_DE.odt</msg>
   <msg key="templatedeodt">template.de.odt</msg>
   <msg key="templateen_USadp">template.en_US.adp</msg>
+  <msg key="templateen_USodt">template.en_US.odt</msg>
   <msg key="templateenadp">template.en.adp</msg>
   <msg key="templateenodt">template.en.odt</msg>
   <msg key="templateesadp">template.es.adp</msg>
