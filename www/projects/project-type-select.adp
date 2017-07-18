@@ -144,7 +144,7 @@
 	<td>	
 	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
 	</td>
-	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_program Program"] %></b><br>
+	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_program Program] %></b><br>
 		<%= [lang::message::lookup "" intranet-core.Project_type_program_short_blurb "
 		A program or \"programme\" groups a number of projects that usually have a common purpose."] %>
 	</td>
