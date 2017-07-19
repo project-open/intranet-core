@@ -379,25 +379,25 @@ ad_proc -public im_parameter {
     # (identified by a "package_key" can be mounted several times
     # in the system.
     if {"" == $package_id && "" != $package_key} {
-	set package_id [db_string get_package_id "
+	set package_id [util_memoize [list db_string get_package_id "
                 select  min(package_id) as package_id
                 from    apm_packages
-                where   package_key = :package_key
-        "]
+                where   package_key = '$package_key'
+        "]]
     }
     if {"" == $package_id && "" != $package_key2} {
-	set package_id [db_string get_package_id "
+	set package_id [util_memoize [list db_string get_package_id "
                 select  min(package_id) as package_id
                 from    apm_packages
-                where   package_key = :package_key2
-        "]
+                where   package_key = '$package_key2'
+        "]]
     }
     if {"" == $package_id} { return $default }
     if {"" == $parameter} { return $default }
 
 
     # Get the parameter
-    set value [parameter::get -package_id $package_id -parameter $parameter -default $default]
+    set value [util_memoize [list parameter::get -package_id $package_id -parameter $parameter -default $default]]
     return $value
 }
 
