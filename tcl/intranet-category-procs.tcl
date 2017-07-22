@@ -155,8 +155,7 @@ ad_proc im_category_select_helper {
     select_name
     { default "" }
 } {
-    Returns a formatted "option" widget with hierarchical
-    contents.
+    Returns a formatted "option" widget with hierarchical contents.
     @param super_category_id determines where to start in the category hierarchy
 } {
     if {$plain_p} {
@@ -176,7 +175,6 @@ ad_proc im_category_select_helper {
 
     # Read the categories into the a hash cache
     # Initialize parent and level to "0"
-
     set visible_tcl ""
     set visible_tcl_sql ""
 
@@ -184,19 +182,16 @@ ad_proc im_category_select_helper {
 	set visible_tcl_sql ",visible_tcl"
     }
     set sql "
-	select
-		category_id,
+	select	category_id,
 		category,
 		category_description,
 		parent_only_p,
 		enabled_p,
 		coalesce(sort_order,0) as sort_order
 		$visible_tcl_sql
-	from
-		im_categories
-	where
-		category_type = :category_type
-		and (enabled_p = 't' OR enabled_p is NULL)
+	from	im_categories
+	where	category_type = :category_type and 
+		(enabled_p = 't' OR enabled_p is NULL)
 		$super_category_sql
 	order by lower(category)
     "
@@ -204,7 +199,10 @@ ad_proc im_category_select_helper {
 	ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
 	if {"" == $visible_tcl || [eval $visible_tcl]} {
 	    set category_l10n [im_category_from_id -locale $locale $category_id]
-	    set cat($category_id) [list $category_id $category_l10n $category_description $parent_only_p $enabled_p $sort_order]
+
+	    ns_log Notice "im_category_select_branch: set cat($category_id) \[list $category_id $category $category_description $parent_only_p $enabled_p $sort_order\]"
+
+	    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
 	    set level($category_id) 0
 	}
     }
@@ -326,6 +324,7 @@ ad_proc im_category_select_helper {
 	if {"f" == $enabled_p} { continue }
 	set p_level $level($p)
 	if {0 == $p_level} {
+	    # ns_log Notice "im_category_select_branch: array get cat=[array get cat]"
 	    append html [im_category_select_branch -translate_p $translate_p -package_key $package_key -locale $locale $p $default $base_level [array get cat] [array get direct_parent]]
 	}
     }
@@ -358,13 +357,17 @@ ad_proc im_category_select_branch {
     Returns a list of html "options" displaying an options hierarchy.
 } {
     if {$level > 10} { return "" }
+    # ns_log Notice "im_category_select_branch: cat_array=$cat_array"
 
     array set cat $cat_array
     array set direct_parent $direct_parent_array
 
     set category [lindex $cat($parent) 1]
     if {$translate_p} {
+	# ns_log Notice "im_category_select_branch: package_key=$package_key"
+	# ns_log Notice "im_category_select_branch: category=$category"
 	set category_key "$package_key.[lang::util::suggest_key $category]"
+	# ns_log Notice "im_category_select_branch: lang::message::lookup $locale $category_key $category"
 	set category [lang::message::lookup $locale $category_key $category]
     }
 
@@ -552,6 +555,7 @@ ad_proc -public template::widget::im_category_tree {
     }
 
     if { "edit" == $element(mode)} {
+#	ad_return_complaint 1 "<pre>	append category_html \[im_category_select -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value\]</pre>"
 	append category_html [im_category_select -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value]
     } else {
 	if {"" != $default_value && "\{\}" != $default_value} {
