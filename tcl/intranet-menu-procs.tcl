@@ -473,7 +473,8 @@ ad_proc -public im_menu_invoice_creation_matrix {
     set width 80
     append html "<tr><td width='80'>&nbsp;</td>\n"
     foreach top $top_dim_list {
-	set from_text [lang::message::lookup $locale $package_key.From_invoice_source "From<br>%top%"]
+	set key [lang::util::suggest_key "From_$top"]
+	set from_text [lang::message::lookup $locale $package_key.$key "From<br>%top%"]
 	append html "<td width='80'>$from_text</td>\n"
 	set width [expr $width + 81]
     }
