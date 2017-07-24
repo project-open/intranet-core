@@ -15,6 +15,7 @@
   <msg key="9">9</msg>
   <msg key="1111">1111</msg>
   <msg key="_"></msg>
+  <msg key="_Cost_">Cost</msg>
   <msg key="_Done">% Done</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">specified company short name already exists. Either choose a new name or go back to the company&#39;s page to edit the existing record</msg>
@@ -628,7 +629,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="End_Date">End Date</msg>
   <msg key="Energy__Utilities">Energy / Utilities</msg>
   <msg key="Engineering">Engineering</msg>
-  <msg key="ErrCreatingComponent">Error in portlet &#39;$plugin_name&#39;. This portlet will not be available</msg>
+  <msg key="ErrCreatingComponent">Error in portlet &#39;%plugin_name%&#39;. This portlet will not be available</msg>
   <msg key="ERROR">ERROR</msg>
   <msg key="es">es</msg>
   <msg key="es_AR">es_AR</msg>
@@ -663,6 +664,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Expense_Report">Expense Report</msg>
   <msg key="Expense_Types">Expense Types</msg>
   <msg key="Expenses">Expenses</msg>
+  <msg key="Expenses_Admin">Expenses Admin</msg>
   <msg key="Export_Companies_CSV">Export Companies CSV</msg>
   <msg key="Export_Customer_Invoices_CSV">Export Customer Financial Documents CSV</msg>
   <msg key="Export_Customers_to_CSV">Export Customers to CSV</msg>
@@ -703,9 +705,11 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Finance">Finance</msg>
   <msg key="finance">Finance</msg>
   <msg key="Finance_Admin">Admin Finance</msg>
+  <msg key="Finance_Dashboard">Finance Dashboard</msg>
   <msg key="Finance_Data_Warehouse_Cube">Finance Data-Warehouse Cube</msg>
   <msg key="Finance_Help">Finance Help</msg>
   <msg key="Finance_Home">Finance Home</msg>
+  <msg key="Finance_List">Finance List</msg>
   <msg key="Financial">Financial</msg>
   <msg key="Financial_Consulting">Financial Controlling</msg>
   <msg key="Financial_Management">Financial Management</msg>
@@ -735,6 +739,12 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Freelance_Provider">Freelance Provider</msg>
   <msg key="Freelancers">Freelancers</msg>
   <msg key="freelancers">Freelancers</msg>
+  <msg key="From_Delivery_note">From&lt;br&gt;Delivery&lt;br&gt;Note</msg>
+  <msg key="From_Invoice">From&lt;br&gt;Invoice</msg>
+  <msg key="From_Purchase_order">From&lt;br&gt;Purchase&lt;br&gt;Order</msg>
+  <msg key="From_Quote">From&lt;br&gt;Quote</msg>
+  <msg key="From_Scratch">From&lt;br&gt;Scratch</msg>
+  <msg key="From_Timesheet_tasks">From&lt;br&gt;Gantt&lt;br&gt;Tasks</msg>
   <msg key="Fuel">Fuel</msg>
   <msg key="Full_Member">Full Member</msg>
   <msg key="Functionality">Functionality</msg>
@@ -864,6 +874,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Help">Help</msg>
   <msg key="Help_Request">Help Request</msg>
   <msg key="Helpdesk">Helpdesk</msg>
+  <msg key="Helpdesk_Admin">Helpdesk Admin</msg>
   <msg key="HelpPage">Help Page</msg>
   <msg key="Here_is_the_error">Here is the error:</msg>
   <msg key="Hide_Help">Hide this help text</msg>
@@ -898,6 +909,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Home_phone">Home phone</msg>
   <msg key="Home_Postal_Code">Home Postal Code</msg>
   <msg key="Home_Project_Queue">Home Project Queue</msg>
+  <msg key="Home_Projects">Home Projects</msg>
   <msg key="Home_State">Home State</msg>
   <msg key="Home_Ticket_Component">Home Ticket Portlet</msg>
   <msg key="Home_Timesheet_Component">Home Timesheet Portlet</msg>
@@ -1051,6 +1063,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="IT_System_1">IT System</msg>
   <msg key="IT_System_2">IT System</msg>
   <msg key="Italy">Italy</msg>
+  <msg key="ITSM_Demo_Instructions">ITSM Demo Instructions</msg>
   <msg key="ITSM_Help">ITSM Help</msg>
   <msg key="ITSM_Vertical">ITSM Vertical</msg>
   <msg key="iw">iw</msg>
@@ -1182,6 +1195,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Calculates_Quotes_-_P">Preliminary Gross Margin (Past Two Months)</msg>
   <msg key="lt_Calculates_the_averag">Average Project Duration</msg>
   <msg key="lt_Calculates_the_number">Average Timesheet Hours per Employee </msg>
+  <msg key="lt_Canceledintranet-core">Canceled</msg>
   <msg key="lt_Cant_find_the_project">Can&#39;t find the project with ID &#39;%project_id%&#39;</msg>
   <msg key="lt_Cant_Nuke_a_Paying_Co">Can&#39;t Nuke a Paying Company</msg>
   <msg key="lt_Change_the_accounting">Change the accounting contact</msg>
@@ -1194,6 +1208,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Click_here_to_get_hel">Click here to get help for this page</msg>
   <msg key="lt_Click_right_and_choos">Click right and choose &#39;Save target as&#39; to download the file</msg>
   <msg key="lt_Clientesintranet-file">Clients</msg>
+  <msg key="lt_Closedintranet-coreCl">Closed</msg>
   <msg key="lt_Closeintranet-timeshe">Close</msg>
   <msg key="lt_Computer_Input_Device">Input Device</msg>
   <msg key="lt_Computer_Network_Devi">Network Device</msg>
@@ -1218,7 +1233,10 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="lt_Create_a_new_Discussi">Create a new Discussion</msg>
   <msg key="lt_Create_folder_structu">Create folder structure and create a subproject for each language that you have chosen.</msg>
   <msg key="lt_Create_the_new_folder">Create the new folder structure</msg>
+  <msg key="lt_Createdintranet-coreC">Created</msg>
   <msg key="lt_Customer_and_Provider">Customer and Provider</msg>
+  <msg key="lt_Customer_Documentsint">Customer Document</msg>
+  <msg key="lt_Customer_Invoiceintra">Customer Invoice</msg>
   <msg key="lt_Customer_Satisfaction">Customer Satisfaction</msg>
   <msg key="lt_Customersintranet-fil">Customers</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
@@ -1233,6 +1251,7 @@ Please click on the link above for details.
 
 Best regards,
 %current_user_name%</msg>
+  <msg key="lt_Declinedintranet-core">Declined</msg>
   <msg key="lt_Default_Delivery_Note">Default Delivery Note</msg>
   <msg key="lt_Default_Invoice_Templ">Default Invoice Template</msg>
   <msg key="lt_Default_Payment_Metho">Default Payment Method</msg>
@@ -1241,8 +1260,11 @@ Best regards,
   <msg key="lt_Delete_the_accounting">Delete the accounting contact</msg>
   <msg key="lt_Delete_the_primary_co">Delete the primary contact</msg>
   <msg key="lt_delete_this_user_inst">delete this user instead</msg>
+  <msg key="lt_Deletedintranet-coreD">Deleted</msg>
   <msg key="lt_Deleteintranet-timesh">Delete</msg>
   <msg key="lt_Deleting_first_names_">Deleting %first_names% %last_name%</msg>
+  <msg key="lt_Deliveredintranet-cor">Delivered</msg>
+  <msg key="lt_Delivery_Noteintranet">Delivery Note</msg>
   <msg key="lt_deliverynoteSEAT_VWen">deliverynote.SEAT_VW.en.adp</msg>
   <msg key="lt_deliverynoteSEAT_VWes">deliverynote.SEAT_VW.es.adp</msg>
   <msg key="lt_Department_Planner_Pr">Department Planner Priority</msg>
@@ -1255,12 +1277,16 @@ Best regards,
   <msg key="lt_Edit_menus_and_change">Edit menus and change their permissions.</msg>
   <msg key="lt_Edit_views_and_change">Edit view and add columns.</msg>
   <msg key="lt_Empleadosintranet-fil">Employees</msg>
+  <msg key="lt_Employee_Salaryintran">Employee Salary</msg>
   <msg key="lt_Employeesintranet-fil">Employees</msg>
   <msg key="lt_End_date_must_be_afte">End date must be after start date</msg>
   <msg key="lt_Error_evaluating_comp">Error evaluating portlet &#39;%plugin_name%&#39; of module &#39;%package_name%&#39;</msg>
   <msg key="lt_Error_getting_the_ema">Error getting the email address of user %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Error: Missing parameter</msg>
   <msg key="lt_Expected_Annual_Reven">(Expected) Annual Revenue</msg>
+  <msg key="lt_Expense_Bundleintrane">Expense Bundle</msg>
+  <msg key="lt_Expense_Itemintranet-">Expense Item</msg>
+  <msg key="lt_Expense_Planned_Costi">Expense Planned Cost</msg>
   <msg key="lt_Export_Companies">Export Companies</msg>
   <msg key="lt_Export_Companies_CSV">Export Companies CSV</msg>
   <msg key="lt_Export_Invoices_CSV">Export Invoices CSV</msg>
@@ -1269,7 +1295,9 @@ Message:</msg>
   <msg key="lt_Fehler_auf_dieser_Sei">Report a bug on this page</msg>
   <msg key="lt_File_editing_Converti">File editing: Converting the total wordcount into editing hours using 1000 words per hour</msg>
   <msg key="lt_File_translation_Trad">File translation: Trados wordcount multiplied with provider Trados matrix</msg>
+  <msg key="lt_Filedintranet-coreFil">Filed</msg>
   <msg key="lt_Finally_revisit_this_">Finally, revisit this page and an option will appear to add the new client contact.</msg>
+  <msg key="lt_Finance_List_Complete">Finance List Complete</msg>
   <msg key="lt_first_names_from_sear">
 Please edit the message below and hit &#34;Send Email&#34; to 
 notify the selected users.</msg>
@@ -1303,12 +1331,14 @@ her contributions to the site content.</msg>
   <msg key="lt_Freiberuflerintranet-">Freiberufler</msg>
   <msg key="lt_Full_Memberintranet-f">Full Member</msg>
   <msg key="lt_Futureintranet-timesh">Future</msg>
+  <msg key="lt_Gannt_Projectintranet">Gantt Project</msg>
   <msg key="lt_GanttProject_is_a_fre">GanttProject is a free Gantt chart editor (http://sourceforge.net/project/ganttproject/)</msg>
   <msg key="lt_General_type_of_proje">General type of project. This allows us to create a suitable folder structure.</msg>
   <msg key="lt_Generic_Problem_Ticke">Generic Problem Ticket</msg>
   <msg key="lt_Geschftsfhrungintrane">Geschäftsführung</msg>
   <msg key="lt_Hardware_Manufacturer">Hardware Manufacturer Customer</msg>
   <msg key="lt_has_been_marked_delet">has been marked \&#34;deleted\&#34;.</msg>
+  <msg key="lt_Hellgrnintranet-corel">Light Green</msg>
   <msg key="lt_Here_you_can_manage_u">Here you can manage users one-by-one.</msg>
   <msg key="lt_Here_you_find_advance">Here you find advance management and configuration options
 	of the underlying</msg>
@@ -1326,7 +1356,9 @@ her contributions to the site content.</msg>
   <msg key="lt_Import_Projects_from_">Import Projects from H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already...</msg>
   <msg key="lt_Incidentintranet-foru">Incident</msg>
+  <msg key="lt_Inquiringintranet-cor">Inquiring</msg>
   <msg key="lt_Insufficient_Privileg">Insufficient Privileges</msg>
+  <msg key="lt_InterCo_Invoiceintran">InterCo Invoice</msg>
   <msg key="lt_Internal_error_unknow">Internal error: unknown view &#39;%view_name%&#39;</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Intranet RFC Data Access</msg>
   <msg key="lt_Intranet_RFC_Expense_">Intranet RFC Expense Type</msg>
@@ -1343,15 +1375,19 @@ her contributions to the site content.</msg>
   <msg key="lt_Intranet_RFC_RR_Forma">Intranet RFC RR Format</msg>
   <msg key="lt_Intranet_RFC_Workplac">Intranet RFC Workplace</msg>
   <msg key="lt_Invalid_time_format_e">Invalid time format &#39;%end_time(time)%&#39;: Please enter the time in format &#39;12:30&#39;</msg>
+  <msg key="lt_Invoicedintranet-core">Invoiced</msg>
   <msg key="lt_Invoices_written_with">Revenues </msg>
   <msg key="lt_Is_the_project_going_">Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?</msg>
   <msg key="lt_Is_this_a_billable_co">Is this a billable company?</msg>
   <msg key="lt_It_seems_the_table_we">It seems the table we missed is %table_name%.</msg>
+  <msg key="lt_IterCo_Quoteintranet-">InterCo Quote</msg>
   <msg key="lt_Just_enter_any_suitab">Just enter any suitable name for the project. You can even leave this field blank.</msg>
   <msg key="lt_just_mark_the_account">just mark the account deleted</msg>
+  <msg key="lt_Kanbanintranet-coreKa">Kanban</msg>
   <msg key="lt_Key_Accountintranet-f">Key Accountant</msg>
   <msg key="lt_Kontexthilfeintranet-">Context help</msg>
   <msg key="lt_Last_3_monthsintranet">Last 3 months</msg>
+  <msg key="lt_Left_Blueintranet-cor">Left Blue</msg>
   <msg key="lt_Linguistic_Validation">Linguistic Validation</msg>
   <msg key="lt_Locate_your_new_accou">Locate your new accounting contact by</msg>
   <msg key="lt_Locate_your_new_prima">Locate your new primary contact by</msg>
@@ -1373,6 +1409,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Member_state">Member state</msg>
   <msg key="lt_Member_state_user_sta">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
   <msg key="lt_Member_state_user_sta_1">Member state: %user_state% (%activate_link%, %delete_link%)</msg>
+  <msg key="lt_Milestoneintranet-cor">Milestone</msg>
   <msg key="lt_Mineintranet-coreObje">Mine</msg>
   <msg key="lt_Mineintranet-timeshee">Mine</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
@@ -1419,7 +1456,13 @@ site with fake crud.</msg>
   <msg key="lt_Office_Equipment_Prov">Office Equipment Provider</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Main Office</msg>
   <msg key="lt_Office_office_id_does">Office #office_id doesn&#39;t exist</msg>
+  <msg key="lt_Openintranet-coreOpen">Open</msg>
+  <msg key="lt_Otherintranet-coreOth">Other</msg>
+  <msg key="lt_Outstandingintranet-c">Outstanding</msg>
+  <msg key="lt_Paidintranet-corePaid">Paid</msg>
+  <msg key="lt_Partially_Paidintrane">Partially Paid</msg>
   <msg key="lt_Password_Confirmation">Password Confirmation</msg>
+  <msg key="lt_Past_Dueintranet-core">Past Due</msg>
   <msg key="lt_Pastintranet-timeshee">Past</msg>
   <msg key="lt_Personal_Home_Page_UR">Personal Home Page URL</msg>
   <msg key="lt_Planned_execution_tim">Planned execution time</msg>
@@ -1436,26 +1479,39 @@ site with fake crud.</msg>
   <msg key="lt_Please_upload_a_portr">Please upload a portrait.</msg>
   <msg key="lt_Please_use_a_project_">Please use a project name with atleast 6 characters.</msg>
   <msg key="lt_Portrait_of_first_nam">Portrait of %first_names% %last_name%</msg>
+  <msg key="lt_Potentialintranet-cor">Potential</msg>
   <msg key="lt_Preinstalled_Hard_Dis">Preinstalled Hard Disk</msg>
   <msg key="lt_Problem_Ticket_Close_">Problem Ticket: Close Associated Incidents</msg>
   <msg key="lt_Problem_Ticket_Create">Problem Ticket: Create from Incident Ticket</msg>
+  <msg key="lt_Programintranet-coreP">Program</msg>
   <msg key="lt_Project_Change_Reques">Project Change Request</msg>
   <msg key="lt_Project_Phases__Risks">Project Phases &amp; Risks</msg>
   <msg key="lt_Project_Translation_D">Project Translation Details</msg>
   <msg key="lt_Projects_List_Profit_">Projects List Profit &amp; Loss</msg>
+  <msg key="lt_Provider_Billintranet">Provider Bill</msg>
   <msg key="lt_Provider_bills_with_e">External Costs</msg>
+  <msg key="lt_Provider_Documentsint">Provider Document</msg>
+  <msg key="lt_Provider_Receiptintra">Provider Receipt</msg>
+  <msg key="lt_Purchase_Orderintrane">Purchase Order</msg>
+  <msg key="lt_Qualifyingintranet-co">Qualifying</msg>
+  <msg key="lt_Quote_Outintranet-cor">Quote Out</msg>
+  <msg key="lt_Quoteintranet-coreQuo">Quote</msg>
   <msg key="lt_Quotes_in_Project_Nam">Quotes in &#39;Project Name&#39; are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Quotes in &#39;Project Nr&#39; are not allowed</msg>
   <msg key="lt_Quotes_in_Project_Pat">Quotes in &#39;Project Path&#39; are not allowed</msg>
+  <msg key="lt_Quotingintranet-coreQ">Quoting</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Reduction_in_Working_">Reduction in Working Hours</msg>
+  <msg key="lt_Rejectedintranet-core">Rejected</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
+  <msg key="lt_Repeating_Costintrane">Repeating Cost</msg>
   <msg key="lt_Replyintranet-forumRe">Reply</msg>
   <msg key="lt_Report_a_bug_on_this_">Report a bug on this page</msg>
+  <msg key="lt_Requestedintranet-cor">Requested</msg>
   <msg key="lt_Resource_Assignation_">Resource Assignation %</msg>
   <msg key="lt_Resource_Planning_Rep">Resource Planning Report</msg>
   <msg key="lt_return_to_user_admini">Return to user administration</msg>
@@ -1463,11 +1519,14 @@ site with fake crud.</msg>
 please contact the %mail_to_administrator_link% and let them know what happened.</msg>
   <msg key="lt_Returns_the_average_t">Average Employee Time in the Company</msg>
   <msg key="lt_Returns_the_number_of">Returns the number of hours that have been reported but not yet invoiced. The report excludes projects in status deleted, but otherwise counts all hours that have not yet been assigned to any invoice.</msg>
+  <msg key="lt_Right_Blueintranet-co">Right Blue</msg>
   <msg key="lt_role_name_of_object_n">%role_name% of %object_name%</msg>
   <msg key="lt_Room_Built-In_Compute">Raum vorhandene Rechner</msg>
   <msg key="lt_Room_Number_of_Beamer">Raum Anzahl der Beamer</msg>
+  <msg key="lt_Salt_n_Pepperintranet">Salt&#39;n Pepper</msg>
   <msg key="lt_Save_Changesintranet-">Save</msg>
   <msg key="lt_Scheduling_Constraint">Scheduling Constraint</msg>
+  <msg key="lt_SCRUM_Sprintintranet-">SCRUM Sprint</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
   <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&#34;lion\&#34; to search for all users from Lionbridge.</msg>
   <msg key="lt_Search_for_a_substrin_1">Search for a substring in a persons last name, for example \&#34;berg\&#34; to search for all users with a last name containing \&#34;berg\&#34;.</msg>
@@ -1487,6 +1546,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Software_Company_Comp">Software Company</msg>
   <msg key="lt_Software_Company_Cust">Software Company Customer</msg>
   <msg key="lt_Software_Release_Item">Software Release Item</msg>
+  <msg key="lt_Software_Releaseintra">Software Release</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
   <msg key="lt_Strategic_Value_vs_RO">Strategic Value vs. ROI</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
@@ -1516,6 +1576,10 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_This_file_has_generat">This file has generated an error.</msg>
   <msg key="lt_This_is_not_a_TestDem">This is not a Test/Demo/Development server.</msg>
   <msg key="lt_This_project_is_part_">This project is part of another project or contains subprojects.</msg>
+  <msg key="lt_Ticket_Containerintra">Ticket Container</msg>
+  <msg key="lt_Ticketintranet-coreTi">Ticket</msg>
+  <msg key="lt_Timesheet_Budgetintra">Timesheet Budget</msg>
+  <msg key="lt_Timesheet_Costintrane">Timesheet Cost</msg>
   <msg key="lt_To_avoid_duplicate_pr">To avoid duplicate projects and to determine where the project data are stored on the local file server</msg>
   <msg key="lt_Todayintranet-timeshe">Today</msg>
   <msg key="lt_Trans_Only_Dynamic_WF">Trans Only (Dynamic WF)</msg>
@@ -1523,6 +1587,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Translation_source_la">Translation source language</msg>
   <msg key="lt_Translation_target_la">Translation target language</msg>
   <msg key="lt_Unable_to_determine_I">Unable to determine &#39;Internal&#39; company</msg>
+  <msg key="lt_Unknownintranet-coreU">Unknown</msg>
   <msg key="lt_Update_Basic_Informat">Update Basic Information</msg>
   <msg key="lt_Update_this_users_pas">Update this user&#39;s password</msg>
   <msg key="lt_Upload_GanttProject_S">Upload GanttProject File</msg>
@@ -1649,12 +1714,14 @@ Please click on the links below to get to the respective administration screens.
   <msg key="mk">mk</msg>
   <msg key="Mkt">Mkt</msg>
   <msg key="mo">mo</msg>
+  <msg key="Mobile_Timesheet">Mobile Timesheet</msg>
   <msg key="Modifying">Modifying</msg>
   <msg key="Month">Monat</msg>
   <msg key="Month_and_Day">Month and Day</msg>
   <msg key="more">more...</msg>
   <msg key="more_">more ...</msg>
   <msg key="more_companies">more companies...</msg>
+  <msg key="More_Info">More Info</msg>
   <msg key="more_projects">more projects...</msg>
   <msg key="MS-Excel">MS-Excel</msg>
   <msg key="MS-PowerPoint">MS-PowerPoint</msg>
@@ -1689,7 +1756,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="new_category">New Category</msg>
   <msg key="new_client_contact">new client contact</msg>
   <msg key="New_column">New column</msg>
-  <msg key="New_column_for_view">New column for view</msg>
+  <msg key="New_column_for_view">New column for view %view_link%</msg>
   <msg key="New_Company">New Company</msg>
   <msg key="New_Company___Contact">New Company + Contact</msg>
   <msg key="New_Company_Contact">Add a New Company Contact</msg>
@@ -1699,6 +1766,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="New_Customer_Invoice_from_Timesheet_Tasks">New Customer Invoice From Timesheet Tasks</msg>
   <msg key="New_from_NAV">New from NAV</msg>
   <msg key="New_Hours">New Hours</msg>
+  <msg key="New_invoice_type">Neuer %invoice_type%</msg>
   <msg key="New_Number_Location">New Number Location</msg>
   <msg key="New_Office">New Office</msg>
   <msg key="New_Opportunity">New Opportunity</msg>
@@ -1718,7 +1786,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="New_Travel_Expense">New Travel Expense</msg>
   <msg key="New_User">New User</msg>
   <msg key="New_User___Company">New User + Company</msg>
-  <msg key="New_User__Company">Neuer Benutzer + Firma</msg>
+  <msg key="New_User__Company">New User + Company</msg>
   <msg key="New_User_Company">New User + Company</msg>
   <msg key="New_view">New view</msg>
   <msg key="New_Zealand">New Zealand</msg>
@@ -2000,6 +2068,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Program_Enhan_K">Program Enhan. K</msg>
   <msg key="Program_Enhancement">Program Enhancement</msg>
   <msg key="program_id">Program</msg>
+  <msg key="Programs">Programs</msg>
   <msg key="Programs_List">Programs List</msg>
   <msg key="Project">Project</msg>
   <msg key="Project_">Project Nr.</msg>
@@ -2010,6 +2079,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_Budget_Hours">Project Budget Hours</msg>
   <msg key="Project_Ch">Project</msg>
   <msg key="Project_Configuration_Items">Project Configuration Items</msg>
+  <msg key="Project_Cost_Component">Project Cost Component</msg>
   <msg key="Project_CR">Project CR</msg>
   <msg key="Project_CVS_Logs">Project CVS Logs</msg>
   <msg key="Project_Finance_Summary_Component">Project Finance Summary Portlet</msg>
@@ -2185,12 +2255,14 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="referral_source">Referência</msg>
   <msg key="Registered_from">Registered from</msg>
   <msg key="Registered_Users">Registered Users</msg>
+  <msg key="Registration_State">Registration State</msg>
   <msg key="Rejected">Rejected</msg>
   <msg key="Rel_im_biz_object_member">Business Object Relationship</msg>
   <msg key="Rel_im_company_employee_rel">Employee Rel.</msg>
   <msg key="Rel_im_key_account_rel">Key Account Rel.</msg>
   <msg key="Rel_membership_rel">Membership Rel</msg>
   <msg key="Rel_user_portrait_rel">User Portrait</msg>
+  <msg key="Related_Links">Related Links</msg>
   <msg key="Related_Objects">Related Objects</msg>
   <msg key="Related_Objects_for_object">Related objects for object</msg>
   <msg key="Related_Tickets">Related Tickets</msg>
@@ -2211,6 +2283,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="ReportThisError">Yes, I want to report this error to the ]po[ core team. Show me what is going to be reported.</msg>
   <msg key="Request_Error">Request Error</msg>
   <msg key="Request_For_Change">Request For Change</msg>
+  <msg key="Request_Monitor">Request Monitor</msg>
   <msg key="Requested">Requested</msg>
   <msg key="Reserved">Reserved</msg>
   <msg key="Reset_Portlets">Reset Portlets</msg>
@@ -2325,7 +2398,9 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Saudi_Arabia">Saudi Arabia</msg>
   <msg key="Save_Changes">Save Changes</msg>
   <msg key="Score">Score</msg>
+  <msg key="score_finance_roi">Score: Finance ROI</msg>
   <msg key="score_roi">ROI (months)</msg>
+  <msg key="score_strategic">Score: Strategic</msg>
   <msg key="score_strategic_value">Strategic Value (0-10)</msg>
   <msg key="Screen_name">Screen name</msg>
   <msg key="Scroll">Scroll</msg>
@@ -2476,6 +2551,9 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Task_Resources">Task Resources</msg>
   <msg key="Tasks">Tasks</msg>
   <msg key="Tasks__Incidents">Tasks / Incidents</msg>
+  <msg key="Tasks_for_User">Tasks for User</msg>
+  <msg key="Tasks_in_">Tasks in</msg>
+  <msg key="Tasks_in_Project">Tasks in Project</msg>
   <msg key="TasksFull">Tasks Full</msg>
   <msg key="TasksShort">Tasks Short</msg>
   <msg key="Taxi">Taxi</msg>
@@ -2516,6 +2594,8 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Ticket_Type">Ticket Type</msg>
   <msg key="Tickets">Tickets</msg>
   <msg key="Tickets_Admin">Admin Tickets</msg>
+  <msg key="Tickets_Dashboard">Tickets Dashboard</msg>
+  <msg key="Tickets_List">Tickets List</msg>
   <msg key="Time_plan">Time plan</msg>
   <msg key="Time_sheet">Time sheet</msg>
   <msg key="Timesheet">Timesheet</msg>
@@ -2538,6 +2618,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Today">Today</msg>
   <msg key="Tolls">Tolls</msg>
   <msg key="top">Top</msg>
+  <msg key="Top_Customers">Top Customers</msg>
   <msg key="Top_Menu">Top Menu</msg>
   <msg key="tr">tr</msg>
   <msg key="Trad_Corrida_Gamesa">Trad. Corrida (Gamesa)</msg>
