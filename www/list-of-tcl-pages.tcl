@@ -30,8 +30,8 @@ ad_page_contract {
 
 set page_title "List of Pages with Visits"
 set user_id [auth::require_login]
-# set root_dir $::acs::rootdir
-
+set bgcolor(0) " class=roweven "
+set bgcolor(1) " class=rowodd "
 set root_dir [im_root_dir]
 
 if {[regexp {/([a-z0-9A-Z]+)$} $root_dir match server_name]} {
@@ -62,7 +62,16 @@ foreach tcl_file_abs $tcl_file_list {
 	continue
     }
 
+    # /intranet-core translates into /intranet. This is the only exception.
+    if {[regexp {^/intranet-core/(.*)} $tcl_file_without_www match rest]} { 
+	set tcl_file_without_www "/intranet/$rest"
+    }
+
+    # Skip CVS files
+    if {[regexp {/CVS/} $tcl_file_without_www]} { continue }
+    # Skip non-]po[ files
     if {![regexp {^/intranet} $tcl_file_without_www]} { continue }
+
     if {[regexp {^(.*)\.tcl$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
     if {[regexp {^(.*)\.adp$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
 }
@@ -121,13 +130,18 @@ foreach log_file_abs $log_file_list {
 
 
 # ---------------------------------------------------------------
-# Show pages without visits
+# Show index pages pages with visit status information
 # ---------------------------------------------------------------
 
-
+set ctr 0
+set index_lines [list]
 foreach page $pages {
-    set line "<tr>\n"
-    append line "<td><a href=\"$page\" target=\"_\">$page</a></td>\n"
+    # Skip everything that doesn't end with /index
+    if {![regexp {/index$} $page]} { continue }
+
+    set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
+    incr ctr
+    append line "<td><nobr><a href=\"$page\">$page</a></nobr></td>\n"
 
     set val ""
     if {[info exists url_hash($page)]} { set val $url_hash($page) }
@@ -136,6 +150,28 @@ foreach page $pages {
     append line "<td>$val</td>\n"
     append line "</tr>\n"
     
-    lappend lines $line
+    lappend index_lines $line
+}
+
+
+# ---------------------------------------------------------------
+# Show pages with visit status information
+# ---------------------------------------------------------------
+
+set ctr 0
+set all_lines [list]
+foreach page $pages {
+    set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
+    incr ctr
+    append line "<td><nobr><a href=\"$page\">$page</a></nobr></td>\n"
+
+    set val ""
+    if {[info exists url_hash($page)]} { set val $url_hash($page) }
+    set count [llength $val]
+    if {0 eq $count} { set count "" }
+    append line "<td>$val</td>\n"
+    append line "</tr>\n"
+    
+    lappend all_lines $line
 }
 
