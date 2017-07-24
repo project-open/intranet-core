@@ -57,6 +57,7 @@
   <msg key="acs-subsite">acs-subsite</msg>
   <msg key="acs-tcl">acs-tcl</msg>
   <msg key="acs-templating">acs-templating</msg>
+  <msg key="acs-translations">acs-translations</msg>
   <msg key="acs-workflow">acs-workflow</msg>
   <msg key="Action_Edit">Edit</msg>
   <msg key="Action_Go">Go</msg>
@@ -146,6 +147,7 @@
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Screen Name</msg>
   <msg key="Airfare">Airfare</msg>
+  <msg key="ajaxhelper">ajaxhelper</msg>
   <msg key="al">al</msg>
   <msg key="Albania">Albania</msg>
   <msg key="Algeria">Algeria</msg>
@@ -406,6 +408,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Conf_Item_Name">Name</msg>
   <msg key="Conf_Item_Nr">Nr</msg>
   <msg key="Conf_Item_Parent">Parent</msg>
+  <msg key="Conf_Item_Related_Objects">Related Objects</msg>
   <msg key="Conf_Item_Status">Status</msg>
   <msg key="Conf_Item_Type">Type</msg>
   <msg key="Conf_Item_Version">ConfItem Version</msg>
@@ -709,9 +712,16 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Finance_Data_Warehouse_Cube">Finance Data-Warehouse Cube</msg>
   <msg key="Finance_Help">Finance Help</msg>
   <msg key="Finance_Home">Finance Home</msg>
+  <msg key="Finance_Home_Page_Help">This page shows a section of possible reports and indicators that might help you
+to obtain a quick overview over your company finance.&lt;br&gt;
+The examples included below can be easily modified and extended to suit your needs. &lt;br&gt;
+Please login as System Administrator and click on the wrench (&lt;img src=&#34;/intranet/images/navbar_default/wrench.png&#34; border=0 title=&#34;&#34; alt=&#34;&#34;&gt;)
+symbols to the right of each portlet.</msg>
   <msg key="Finance_List">Finance List</msg>
   <msg key="Financial">Financial</msg>
   <msg key="Financial_Consulting">Financial Controlling</msg>
+  <msg key="Financial_Document">Financial Document</msg>
+  <msg key="Financial_Indicators_Timeline">Financial Indicators Timeline</msg>
   <msg key="Financial_Management">Financial Management</msg>
   <msg key="Finished">Finished</msg>
   <msg key="Finland">Finland</msg>
@@ -756,6 +766,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Gantt_Resources">Gantt Resources</msg>
   <msg key="Gantt_Resourcs">Gantt Resources</msg>
   <msg key="Gantt_Schedule">Gantt Schedule</msg>
+  <msg key="Gantt_Task">Gantt Task</msg>
   <msg key="GBP">GBP</msg>
   <msg key="Gen">Gen</msg>
   <msg key="General_Consulting">General Consulting</msg>
@@ -1457,6 +1468,7 @@ site with fake crud.</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Main Office</msg>
   <msg key="lt_Office_office_id_does">Office #office_id doesn&#39;t exist</msg>
   <msg key="lt_Openintranet-coreOpen">Open</msg>
+  <msg key="lt_Opportunities_Dashboa">Opportunities Dashboard</msg>
   <msg key="lt_Otherintranet-coreOth">Other</msg>
   <msg key="lt_Outstandingintranet-c">Outstanding</msg>
   <msg key="lt_Paidintranet-corePaid">Paid</msg>
@@ -1506,6 +1518,7 @@ site with fake crud.</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Reduction_in_Working_">Reduction in Working Hours</msg>
   <msg key="lt_Rejectedintranet-core">Rejected</msg>
+  <msg key="lt_Relationship_Projects">Relationship Project - Member</msg>
   <msg key="lt_REMEMBER_total_of_10_">REMEMBER: total of 10 units per day! (all the days)</msg>
   <msg key="lt_Remove_Delinquent_Use">Remove Delinquent User from List</msg>
   <msg key="lt_Repeating_Costintrane">Repeating Cost</msg>
@@ -1889,6 +1902,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Opportunities_List">Opportunities List</msg>
   <msg key="Opportunity_Campaign">Campaign</msg>
   <msg key="Opportunity_Members">Opportunity_Members</msg>
+  <msg key="Opportunity_Pipeline">Opportunity Pipeline</msg>
   <msg key="opportunity_priority_id">Priority</msg>
   <msg key="opportunity_sales_stage_id">Sales Stage</msg>
   <msg key="OpportunityName">Name</msg>
@@ -2109,6 +2123,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Proposals">Project Proposals</msg>
   <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
+  <msg key="Project_Queue">Project Queue</msg>
   <msg key="Project_Reports">Project Reports</msg>
   <msg key="Project_Request">Project Request</msg>
   <msg key="Project_Resource_Planning">Resource Planning</msg>
@@ -2391,6 +2406,9 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Sales">Sales</msg>
   <msg key="sales">Sales</msg>
   <msg key="Sales_Office">Sales Office</msg>
+  <msg key="Sales_Pipeline___Volume_vs__Probability">Sales Pipeline - Volume vs. Probability</msg>
+  <msg key="Sales_Pipeline_by_Number">Sales Pipeline by Number</msg>
+  <msg key="Sales_Pipeline_by_Volume">Sales Pipeline by Volume</msg>
   <msg key="Sales_Stage">Sales Stage</msg>
   <msg key="saltnpepper">Salt &#39;n Pepper</msg>
   <msg key="Sample_system_blurb">We have set up this &#39;Tigerpond&#39; sample company on this server in order to show you what your future ]po[ could look like.</msg>
@@ -2618,7 +2636,11 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Today">Today</msg>
   <msg key="Tolls">Tolls</msg>
   <msg key="top">Top</msg>
+  <msg key="Top_10_Opportunities">Top 10 Opportunities</msg>
+  <msg key="Top_10_Unpaid_Customer_Invoices">Top 10 Unpaid Customer Invoices</msg>
+  <msg key="Top_10_Unpaid_Provider_Bills">Top 10 Unpaid Provider Bills</msg>
   <msg key="Top_Customers">Top Customers</msg>
+  <msg key="Top_Customers__Finance_Dashboard_">Top Customers - Finance Dashboard</msg>
   <msg key="Top_Menu">Top Menu</msg>
   <msg key="tr">tr</msg>
   <msg key="Trad_Corrida_Gamesa">Trad. Corrida (Gamesa)</msg>
@@ -2772,6 +2794,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="View_Status">View Status</msg>
   <msg key="View_Type">View Type</msg>
   <msg key="Visual_Basic">Visual Basic</msg>
+  <msg key="VMware-Server">VMware Server</msg>
   <msg key="w">w</msg>
   <msg key="Waiting_for_Other">Waiting for Others</msg>
   <msg key="We_have_found_an_exact_match">We have found an exact match for user %found_user_name% (%found_user_email%).</msg>
@@ -2798,6 +2821,7 @@ We recommend to keep the &#39;Tigerpond&#39; demo data in the system while testi
   <msg key="Win_Product_Key">Win Product_Key</msg>
   <msg key="Win_Userdomain">Win Userdomain</msg>
   <msg key="Win_Workgroup">Win Workgroup</msg>
+  <msg key="Windows-Server">Windows Server</msg>
   <msg key="Windows_95">Windows 95</msg>
   <msg key="Windows_98">Windows 98</msg>
   <msg key="Windows_2000">Windows 2000</msg>

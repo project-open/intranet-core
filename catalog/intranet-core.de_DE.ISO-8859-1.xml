@@ -81,6 +81,7 @@
   <msg key="acs-templating">acs-templating
 
 </msg>
+  <msg key="acs-translations">acs-translations</msg>
   <msg key="acs-workflow">acs-workflow
 
 </msg>
@@ -189,6 +190,7 @@
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Benutzername</msg>
   <msg key="Airfare">Flugkosten</msg>
+  <msg key="ajaxhelper">ajaxhelper</msg>
   <msg key="al">al</msg>
   <msg key="Albania">Albanien</msg>
   <msg key="Algeria">Algerien</msg>
@@ -444,6 +446,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Conf_Item_Name">Name</msg>
   <msg key="Conf_Item_Nr">Nr</msg>
   <msg key="Conf_Item_Parent">Eltern</msg>
+  <msg key="Conf_Item_Related_Objects">Assoziierte Objekte</msg>
   <msg key="Conf_Item_Status">Status</msg>
   <msg key="Conf_Item_Type">Typ</msg>
   <msg key="Conf_Item_Version">Konf Element Version</msg>
@@ -743,11 +746,19 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Finance">Finanzen</msg>
   <msg key="finance">Finanzen</msg>
   <msg key="Finance_Admin">Admin Finanzen</msg>
+  <msg key="Finance_Dashboard">Finanzen Dashboard</msg>
   <msg key="Finance_Data_Warehouse_Cube">Finanzen Data-Warehouse Würfel</msg>
   <msg key="Finance_Help">Finanzen Hilfe</msg>
   <msg key="Finance_Home">Finanzen Übersicht</msg>
+  <msg key="Finance_Home_Page_Help">Diese Seite zeigt eine Auswahl von Berichten und Indikatoren für 
+einen schnellen Überblick über die Finanzsituation Ihrer Firma.&lt;br&gt;
+Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst werden.
+</msg>
+  <msg key="Finance_List">Finanzen Liste</msg>
   <msg key="Financial">Finanzen</msg>
   <msg key="Financial_Consulting">Finanzcontrolling</msg>
+  <msg key="Financial_Document">Finanzdokument</msg>
+  <msg key="Financial_Indicators_Timeline">Zeitleiste Finanzindikatoren</msg>
   <msg key="Financial_Management">Finanzmanagement</msg>
   <msg key="Finished">Beendet</msg>
   <msg key="Finland">Finland</msg>
@@ -792,6 +803,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Gantt_Resources">Gantt Resourcen</msg>
   <msg key="Gantt_Resourcs">Gantt Resourcen</msg>
   <msg key="Gantt_Schedule">Gantt Planung</msg>
+  <msg key="Gantt_Task">Gantt Aufgabe</msg>
   <msg key="GBP">GBP</msg>
   <msg key="Gen">Gen</msg>
   <msg key="General_Consulting">Allgemeine Beratung</msg>
@@ -1316,6 +1328,7 @@ Mit freundlichen Grüßen,
   <msg key="lt_File_editing_Converti">Editieren von Texten: Wortzahl dividiert durch 1000 Wörter pro Stunde</msg>
   <msg key="lt_File_translation_Trad">Übersetzung: Trados Wortzahl multipliziert mit der Trados-Matrix des Lieferanten</msg>
   <msg key="lt_Finally_revisit_this_">Schließlich kommen Sie auf diese Seite zurück und Sie werden eine Option finden um einen neuen Kundenkontakt zu erzeugen.</msg>
+  <msg key="lt_Finance_List_Complete">Vollständige Liste Finanzen</msg>
   <msg key="lt_first_names_from_sear">%first_names_from_search% %last_name_from_search% wurde im System %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% wurde in %system_name% angelegt.</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name%, 
@@ -1462,6 +1475,7 @@ Password: %password%
   <msg key="lt_Office_Equipment_Prov">Lieferant Bürobedarf</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Firmensitz</msg>
   <msg key="lt_Office_office_id_does">Firmensitz #office_id existiert nicht.</msg>
+  <msg key="lt_Opportunities_Dashboa">Gelegenheiten Dashboard</msg>
   <msg key="lt_Password_Confirmation">Password Bestätigung</msg>
   <msg key="lt_Pastintranet-timeshee">Vergangen</msg>
   <msg key="lt_Personal_Home_Page_UR">URL der persönlichen Startseite</msg>
@@ -1497,6 +1511,7 @@ Password: %password%
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
   <msg key="lt_RC-WinTrans_60_Transl">RC-WinTrans 6.0 Translator</msg>
   <msg key="lt_Reduction_in_Working_">Überstundenausgleich</msg>
+  <msg key="lt_Relationship_Projects">Beziehung Projekt - Mitglied</msg>
   <msg key="lt_REMEMBER_total_of_10_">ACHTUNG: Insgesamt 10 Einheiten pro Tag! (alle Tage)</msg>
   <msg key="lt_Remove_Delinquent_Use">Entferne den Schuldner von der Liste</msg>
   <msg key="lt_Replyintranet-forumRe">Antwort</msg>
@@ -1865,6 +1880,7 @@ Password: %password%
   <msg key="Opportunities_List">Gelegenheiten Liste</msg>
   <msg key="Opportunity_Campaign">Kampagne</msg>
   <msg key="Opportunity_Members">Mitglieder</msg>
+  <msg key="Opportunity_Pipeline">Gelegenheiten Pipeline</msg>
   <msg key="opportunity_priority_id">Priorität</msg>
   <msg key="opportunity_sales_stage_id">Verkaufsphase</msg>
   <msg key="OpportunityName">Name</msg>
@@ -2084,6 +2100,7 @@ Password: %password%
   <msg key="Project_project_name">Projekt: %project_name% </msg>
   <msg key="Project_Proposals">Projektvorschlag</msg>
   <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
+  <msg key="Project_Queue">Projektschlange</msg>
   <msg key="Project_Reports">Projektberichte</msg>
   <msg key="Project_Request">Projektanfragen</msg>
   <msg key="Project_Resource_Planning">Ressourcenplanung</msg>
@@ -2356,6 +2373,9 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Sales">Verkauf</msg>
   <msg key="sales">Verkäufe</msg>
   <msg key="Sales_Office">Verkaufsbüro</msg>
+  <msg key="Sales_Pipeline___Volume_vs__Probability">Verkaufstrichter - Volumen gegen Wahrscheinlichkeit</msg>
+  <msg key="Sales_Pipeline_by_Number">Verkaufspipeline nach Anzahl</msg>
+  <msg key="Sales_Pipeline_by_Volume">Gelegenheiten nach Volumen</msg>
   <msg key="Sales_Stage">Phase</msg>
   <msg key="saltnpepper">Salt &#39;n Pepper</msg>
   <msg key="Sample_system_blurb">Wir haben diese &#39;Tigerpond&#39; Firma beispielhaft aufgesetzt, um die Fähigkeiten von ]project-open[ zu demonstrieren.</msg>
@@ -2583,7 +2603,11 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Today">Heute</msg>
   <msg key="Tolls">Mautgebühren</msg>
   <msg key="top">Oben</msg>
+  <msg key="Top_10_Opportunities">Top 10 Gelegenheiten</msg>
+  <msg key="Top_10_Unpaid_Customer_Invoices">Top 10 unbezahlte Kundenrechnungen</msg>
+  <msg key="Top_10_Unpaid_Provider_Bills">Top 10 unbezahlte Lieferantenrechnungen</msg>
   <msg key="Top_Customers">Top Kunden</msg>
+  <msg key="Top_Customers__Finance_Dashboard_">Top Kunden - Finanzen Dashboard</msg>
   <msg key="Top_Menu">Hauptmenü</msg>
   <msg key="tr">tr</msg>
   <msg key="Trad_Corrida_Gamesa">Trad. Corrida (Gamesa)</msg>
@@ -2737,6 +2761,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="View_Status">Zeige Status</msg>
   <msg key="View_Type">Typ Ansicht</msg>
   <msg key="Visual_Basic">Visual Basic</msg>
+  <msg key="VMware-Server">VMware Server</msg>
   <msg key="w">W</msg>
   <msg key="Waiting_for_Other">Warten auf Dritte</msg>
   <msg key="We_have_found_an_exact_match">Wir haben den Benutzer %found_user_name% (%found_user_email%) gefunden.</msg>
@@ -2761,6 +2786,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Win_Product_Key">Win Product Key</msg>
   <msg key="Win_Userdomain">Win Userdomain</msg>
   <msg key="Win_Workgroup">Win Workgroup</msg>
+  <msg key="Windows-Server">Windows Server</msg>
   <msg key="Windows_95">Windows 95</msg>
   <msg key="Windows_98">Windows 98</msg>
   <msg key="Windows_2000">Windows 2000</msg>
