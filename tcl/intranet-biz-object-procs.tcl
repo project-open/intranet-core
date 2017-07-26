@@ -958,3 +958,82 @@ ad_proc im_biz_object_add_profile_component {
     return $result
 }
 
+
+
+
+ad_proc -public im_biz_object_group_sweeper {
+    {-object_id ""}
+} {
+    Sweeper that checks if an im_biz_object_group exists for the
+    specified object_id. It then updates the group membership
+    based on the business object members.
+    This function is to be called from callbacks from both "view"
+    and "after_update" of the respective business object.
+} {
+    ns_log Notice "im_biz_object_group_sweeper: object_id=$object_id"
+
+    set group_id [db_string biz_object_group "select group_id from im_biz_object_groups where biz_object_id = :object_id" -default ""]
+    if {"" == $group_id} {
+	# The object group still needs to be created
+	set object_name [acs_object_name $object_id]
+	set object_type [db_string otype "select pretty_name from acs_objects ao, acs_object_types aot where ao.object_id = :object_id and ao.object_type = aot.object_type" -default "Object"]
+	set group_name "$object_type: $object_name"
+	set group_id [db_string new_biz_object_group "
+	    	select	im_biz_object_group__new(
+			null, :group_name, NULL, NULL, now(), '0.0.0.0',
+			'im_biz_object_group', null, 0, now(), '0.0.0.0', 
+			NULL, :object_id
+		)
+	    "]
+    }
+
+    # -----------------------------------------------------------------
+    # Group_id is defined now
+    # Now compare the buiness object members vs. the group members
+
+    # Get the sorted list of biz_object_members
+    set biz_object_members [db_list biz_object_members "
+		select distinct
+			r.object_id_two
+		from	acs_rels r, 
+			im_biz_object_members bom,
+			persons p
+		where	r.rel_id = bom.rel_id and 
+			r.object_id_one = :object_id and
+			r.object_id_two = p.person_id
+	"]
+    set biz_object_members [lsort -unique -integer $biz_object_members]
+
+    # Get the list of existing group members
+    set group_members [db_list group_members "
+		select	member_id
+		from	group_distinct_member_map
+		where	group_id = :group_id
+	"]
+    set group_members [lsort -unique -integer $group_members]
+
+    # Form the union of the two sets of members
+    set all_members [lsort -unique -integer [concat $biz_object_members $group_members]]
+
+    # Loop through all members and check if we have to delete of create new group memberships
+    foreach uid $all_members {
+	set biz_member_p [expr [lsearch $biz_object_members $uid] > -1]
+	set group_member_p [expr [lsearch $group_members $uid] > -1]
+	ns_log Notice "im_biz_object_group_sweeper: uid=$uid, biz_member_p=$biz_member_p, group_member_p=$group_member_p"
+
+	if {$biz_member_p && !$group_member_p} {
+	    # Business object member, but not part of the group => Create group membership
+	    ns_log Notice "im_biz_object_group_sweeper: uid=$uid: Adding to object group"
+	    set rel_id [relation_add -member_state "approved" "membership_rel" $group_id $uid]
+	    db_dml update_relation "update membership_rels set member_state = 'approved' where rel_id = :rel_id"
+	}
+
+	if {!$biz_member_p && $group_member_p} {
+	    # Not a business object member, but part of the group => Delete from the group
+	    ns_log Notice "im_biz_object_group_sweeper: uid=$uid: Deleting from object group"
+	    group::remove_member -group_id $group_id -user_id $uid
+	}
+    }
+    ns_log Notice "im_biz_object_group_sweeper: finished"
+}
+
