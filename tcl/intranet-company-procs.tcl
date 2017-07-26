@@ -962,37 +962,3 @@ ad_proc -public im_menu_companies_admin_links {
 }
 
 
-
-
-
-
-
-# -----------------------------------------------------------
-# Manage company groups
-# -----------------------------------------------------------
-
-ad_proc -callback im_company_after_update -impl im_company_group_manager {
-    -object_id
-    -status_id
-    -type_id
-} {
-    Callback everytime after a company has been modified.
-} {
-    ns_log Notice "im_company_after_update -impl im_company_group_manager: Starting callback"
-    im_biz_object_group_sweeper -object_id $object_id
-    ns_log Notice "im_company_after_update -impl im_company_group_manager: End callback"
-}
-
-
-ad_proc -callback im_company_view -impl im_company_group_manager {
-    -object_id
-    -status_id
-    -type_id
-} {
-    Callback everytime an company is viewed.
-} {
-    ns_log Notice "im_company_view -impl im_company_group_manager: Starting callback"
-    im_biz_object_group_sweeper -object_id $object_id
-    ns_log Notice "im_company_view -impl im_company_group_manager: End callback"
-}
-
