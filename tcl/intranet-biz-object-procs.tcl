@@ -74,8 +74,14 @@ ad_proc -public im_biz_object_member_p_helper { user_id object_id } {
     set sql "
 	select count(*)
 	from acs_rels
-	where	object_id_one = :object_id
-		and object_id_two = :user_id
+	where	object_id_one = :object_id and 
+		(	object_id_two = :user_id
+		OR	object_id_two in (
+				select	 group_id
+				from	 group_distinct_member_map
+				where	 member_id = :user_id
+			)
+		)
     "
     set result [db_string im_biz_object_member_p $sql]
     return $result
