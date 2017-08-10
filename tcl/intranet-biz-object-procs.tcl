@@ -613,10 +613,13 @@ ad_proc -public im_group_member_component {
 	set member_role_key [lang::util::suggest_key $member_role]
 	set descr_otype_key "intranet-core.Role_${object_type}_$member_role_key"
 	set descr [lang::message::lookup "" $descr_otype_key $descr]
-	set role_gif_key "intranet-core.Role_GIF_[lang::util::suggest_key $role_gif]"
-	set role_gif [lang::message::lookup "" $role_gif_key $role_gif]
+# fraber 170810: Stupid! Why localize the GIF??
+#	set role_gif_key "intranet-core.Role_GIF_[lang::util::suggest_key $role_gif]"
+#	set role_gif [lang::message::lookup "" $role_gif_key $role_gif]
 	set profile_gif [im_gif -translate_p 0 $role_gif $descr]
 	if {[im_user_deleted_p $user_id]} { set color "red" } else { set color "black" }
+
+	ns_log Notice "im_group_member_component: role_gif=$role_gif"
 
 	incr count
 	if { $current_user_id == $user_id } { set found 1 }
