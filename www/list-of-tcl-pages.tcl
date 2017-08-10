@@ -139,9 +139,11 @@ foreach page $pages {
     # Skip everything that doesn't end with /index
     if {![regexp {/index$} $page]} { continue }
 
+    set page_with_tag [export_vars -base $page {{uid $user_id}}]
+
     set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
     incr ctr
-    append line "<td><nobr><a href=\"$page\">$page</a></nobr></td>\n"
+    append line "<td><nobr><a href=\"$page_with_tag\">$page</a></nobr></td>\n"
 
     set val ""
     if {[info exists url_hash($page)]} { set val $url_hash($page) }
