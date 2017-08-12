@@ -261,7 +261,7 @@ ad_proc -public im_biz_object_add_role {
 
     # Determine the object's type
     if {![string is integer $object_id]} { im_security_alert -location "im_biz_object_add_role" -message "Found non-integer object_id" -value $object_id }
-    set object_type [util_memoize [list db_string object_type "select object_type from acs_objects where object_id = $object_id"]]
+    set object_type [util_memoize [list db_string object_type "select object_type from acs_objects where object_id = $object_id" -default ""]]
 
     # Get the existing relationship
     set rel_id ""
@@ -372,6 +372,13 @@ ad_proc -public im_biz_object_add_role {
 		    im_biz_object_add_role -percentage $percentage $user_id $super_project_id $super_role_id
 		}
 	    }
+	}
+
+	"" {
+	    # Nothing
+	    # There was an error getting the object_type of the object.
+	    # Which means the object wasn't there yet.
+	    # This is probably a harmless condition.
 	}
 
 	default {
