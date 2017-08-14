@@ -24,9 +24,10 @@ ad_page_contract {
     { user_id:integer 0}
     { object_id:integer 0}
     { user_id_from_search 0}
-    { view_name "user_view" }
+    { view_name "" }
     { contact_view_name "user_contact" }
     { freelance_view_name "user_view_freelance" }
+    { plugin_id:integer 0 }
 }
 
 # ---------------------------------------------------------------
@@ -219,11 +220,25 @@ if {[im_permission $current_user_id view_companies_all]} {
 
 
 
-# ---------------------------------------------------------------
-# User-Navbar
-# ---------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Projects Submenu
+# ---------------------------------------------------------------------
 
-set letter_none "none"
-set next_page_url ""
-set previous_page_url ""
-set user_navbar_html [im_user_navbar $letter_none "/intranet/users/view" $next_page_url $previous_page_url [list start_idx order_by how_many]]
+# Setup the subnavbar
+set bind_vars [ns_set create]
+ns_set put $bind_vars user_id $user_id
+set parent_menu_id [im_menu_id_from_label "user_page"]
+set menu_label "user_summary"
+set show_context_help_p 1
+
+set user_navbar_html [im_sub_navbar \
+    -components \
+    -current_plugin_id $plugin_id \
+    -base_url "/intranet/users/view?user_id=$user_id" \
+    -plugin_url "/intranet/users/view" \
+    $parent_menu_id \
+    $bind_vars "" "pagedesriptionbar" $menu_label \
+] 
+
+set left_navbar_html ""
+

@@ -44,22 +44,38 @@ if {[regexp {/([a-z0-9A-Z]+)$} $root_dir match server_name]} {
 
 
 # ---------------------------------------------------------------
+# Installed & Enabled Packages
+# ---------------------------------------------------------------
+
+set site_nodes [list]
+set site_node_sql "select distinct name from site_nodes where object_id is not null order by name"
+db_foreach site_nodes $site_node_sql {
+    lappend site_nodes $name
+    set site_node_hash($name) $name
+}
+
+# ad_return_complaint 1 $site_nodes
+
+# ---------------------------------------------------------------
 # List of pages
 # ---------------------------------------------------------------
 
 set packages_dir "$root_dir/packages"
 set packages_dir_len [expr [string length $packages_dir] + 0]
 set tcl_file_list [im_exec find $packages_dir -noleaf -type f]
-
 foreach tcl_file_abs $tcl_file_list {
     set tcl_file_rel [string range $tcl_file_abs $packages_dir_len end]
 
     # Only show files in /www/ folder
     if {[regexp {^(.*)/www/(.*)$} $tcl_file_rel match path tcl_file_body]} { 
+	# Skip files if we don't find the site_node
+	set path_without_leading_slash [string range $path 1 end]
+	if {![info exists site_node_hash($path_without_leading_slash)]} { continue }
+
 	set tcl_file_without_www "$path/$tcl_file_body"
+
     } else {
-	# Skip library files 
-	continue
+	continue; 	# Skip library files 
     }
 
     # /intranet-core translates into /intranet. This is the only exception.
@@ -67,11 +83,8 @@ foreach tcl_file_abs $tcl_file_list {
 	set tcl_file_without_www "/intranet/$rest"
     }
 
-    # Skip CVS files
-    if {[regexp {/CVS/} $tcl_file_without_www]} { continue }
-    # Skip non-]po[ files
-    if {![regexp {^/intranet} $tcl_file_without_www]} { continue }
-
+    if {[regexp {/CVS/} $tcl_file_without_www]} { continue };     # Skip CVS files
+    if {![regexp {^/intranet} $tcl_file_without_www]} { continue };     # Skip non-]po[ files
     if {[regexp {^(.*)\.tcl$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
     if {[regexp {^(.*)\.adp$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
 }
@@ -80,6 +93,7 @@ set pages [qsort [array names page_hash]]
 set page_count [llength $pages]
 
 # ad_return_complaint 1 "<pre>page_count=$page_count<br>[join $pages "<br>"]</pre>"
+
 
 # ---------------------------------------------------------------
 # Log files
