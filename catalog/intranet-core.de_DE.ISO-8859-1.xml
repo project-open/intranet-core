@@ -32,6 +32,7 @@
   <msg key="Absences_Admin">Admin Abwesenheiten</msg>
   <msg key="Absenzen">Absenzen</msg>
   <msg key="Ac_Counting">Rechnungswesen</msg>
+  <msg key="Accepted">Akzeptiert</msg>
   <msg key="Access_denied">Zugang verweigert</msg>
   <msg key="Account_Deleted">Konto gelöscht</msg>
   <msg key="Account_deleted">Konto gelöscht</msg>
@@ -150,7 +151,7 @@
   <msg key="Add_New_User___Company">Neuer Benutzer + Firma</msg>
   <msg key="Add_new_View">Neue Ansicht</msg>
   <msg key="Add_office">Neuer Firmensitz</msg>
-  <msg key="Add_Portlet">Portlet hinzu</msg>
+  <msg key="Add_Portlet">Portlet hinzufügen</msg>
   <msg key="Add_primary_contact">Neuer Hauptkontakt</msg>
   <msg key="Add_Stuff">Hinzufügen</msg>
   <msg key="Add_subproject">Neues Unterprojekt</msg>
@@ -187,6 +188,7 @@
   <msg key="af">af</msg>
   <msg key="Agile_Project">Agiles Projekt</msg>
   <msg key="Agile_Project-Message">Projekte mit agiler Methodologie</msg>
+  <msg key="Agile_Task_List">Agile Aufgabenliste</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Benutzername</msg>
   <msg key="Airfare">Flugkosten</msg>
@@ -306,6 +308,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Bugs">Fehler</msg>
   <msg key="Bulgaria">Bulgarien</msg>
   <msg key="BulkUpdateUsers">Alle Benutzer aktualisieren</msg>
+  <msg key="Burn_Down_Chart">Burndown Chart</msg>
   <msg key="Business">Business</msg>
   <msg key="Business_Sector">Business Sector</msg>
   <msg key="business_sector_id">Business Sector</msg>
@@ -500,7 +503,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Create_new_Note">Neue Notiz</msg>
   <msg key="Create_new_Task">Neue Aufgabe</msg>
   <msg key="Create_Project">Neues Projekt</msg>
-  <msg key="Created">Erstellt am</msg>
+  <msg key="Created">Erstellt</msg>
   <msg key="CreateOffice">Anwenden</msg>
   <msg key="Creation">Registriert</msg>
   <msg key="Creation_User">Angelegt von</msg>
@@ -537,7 +540,8 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Customers_status_Qualifying">Qualifizierend</msg>
   <msg key="Customers_status_Quote_out">Angebot abgegeben</msg>
   <msg key="Customers_status_Quoting">Angebot wird erstellt</msg>
-  <msg key="CustomersWorkedFor">Für folgende Kunden gearbeitet</msg>
+  <msg key="Customers_worked_for">Gearbeitet für Kunden</msg>
+  <msg key="CustomersWorkedFor">Gearbeitet für Kunden</msg>
   <msg key="CustOrIntl">Kunde oder Intern</msg>
   <msg key="CVS_Hostname">CVS Hostname</msg>
   <msg key="CVS_Integration">CVS Integration</msg>
@@ -810,6 +814,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="General_Home">Übersicht</msg>
   <msg key="Generic-Router">Generischer Router</msg>
   <msg key="Generic_PM">Generic PM</msg>
+  <msg key="Generic_Router">Generischer Router</msg>
   <msg key="Generic_Table_Header_ocs_bios">BIOS</msg>
   <msg key="Generic_Table_Header_ocs_controllers">Controller</msg>
   <msg key="Generic_Table_Header_ocs_drives">Festplatten</msg>
@@ -972,6 +977,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Host_Program">Host Programm</msg>
   <msg key="Host_Screen">Host Seite</msg>
   <msg key="Host_Table">Host Tabelle</msg>
+  <msg key="Hot">Heiss</msg>
   <msg key="Hotel">Hotel</msg>
   <msg key="Hour">Stunde</msg>
   <msg key="How_it_should_be_right">Wie es sein sollte</msg>
@@ -1151,6 +1157,8 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Last_3_Weeks">Letzte 3 Wochen</msg>
   <msg key="Last_Name">Nachname</msg>
   <msg key="Last_name">Nachname</msg>
+  <msg key="Last_Projects">Letzte Projekte</msg>
+  <msg key="Last_s">Letzte Projekte</msg>
   <msg key="Last_Visit">Letzer Besuch</msg>
   <msg key="Last_visit">Letzer Besuch</msg>
   <msg key="LastProjects">Letzte Projekte</msg>
@@ -1172,6 +1180,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Linguistic_Val">Linguistische Validierung</msg>
   <msg key="Linux">Linux</msg>
   <msg key="Linux-Server">Linux-Server</msg>
+  <msg key="Linux_Server">Linux Server</msg>
   <msg key="Lit">Litauen</msg>
   <msg key="Lithuania">Litauen</msg>
   <msg key="LoadTotal">Last Total</msg>
@@ -1719,6 +1728,7 @@ Password: %password%
   <msg key="MS-PowerPoint">MS-PowerPoint</msg>
   <msg key="MS-Word">MS-Word</msg>
   <msg key="ms_MY">ms_MY</msg>
+  <msg key="MS_Project_Warning_Component">MS-Project Warnungen</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
   <msg key="My_Account">Mein Konto</msg>
@@ -1742,6 +1752,7 @@ Password: %password%
   <msg key="Network_Device">Netzwerk Gerät</msg>
   <msg key="Network_Router">Netzwerk Router</msg>
   <msg key="Network_Switch">Netzwerk Switch</msg>
+  <msg key="New">Neu</msg>
   <msg key="New Zealand">Neuseeland</msg>
   <msg key="New_">Neueinschaltung</msg>
   <msg key="New_Absence">Neue Abwesenheit</msg>
@@ -1964,6 +1975,7 @@ Password: %password%
   <msg key="PHP">PHP</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
+  <msg key="Plain_Task_Board">Task Board</msg>
   <msg key="Plan_Costs">Geplante Kosten</msg>
   <msg key="Planned">Geplant</msg>
   <msg key="PlannedTotal">Total geplant</msg>
@@ -2065,6 +2077,7 @@ Password: %password%
   <msg key="Project_">Projekt #</msg>
   <msg key="Project_Advanced_Filtering">Erweiterte Filter</msg>
   <msg key="Project_Base_Data">Basisdaten</msg>
+  <msg key="Project_Baselines">Projekt Grundlinien</msg>
   <msg key="Project_Budget">Projekt Budget</msg>
   <msg key="Project_Budget_Currency">Projekt Währung</msg>
   <msg key="Project_Budget_Hours">Projekt Stundenbudget</msg>
@@ -2073,6 +2086,7 @@ Password: %password%
   <msg key="Project_Cost_Component">Projekt Kosten</msg>
   <msg key="Project_CR">Project CR</msg>
   <msg key="Project_CVS_Logs">CVS Logs</msg>
+  <msg key="Project_EVA">Projekt EVA</msg>
   <msg key="Project_Finance_Summary_Component">Finanzzusammenfassung</msg>
   <msg key="Project_Financial_Planning">Projekt Finanzplanung</msg>
   <msg key="Project_Forum_Component">Forum</msg>
@@ -2106,6 +2120,7 @@ Password: %password%
   <msg key="Project_Resource_Planning">Ressourcenplanung</msg>
   <msg key="Project_Risks">Projekt Risiko Report</msg>
   <msg key="project_roi">ROI (Monate)</msg>
+  <msg key="Project_Rule_Audit">Regel Audit</msg>
   <msg key="Project_Skills">Fähigkeiten</msg>
   <msg key="Project_Sponsor">Sponsor</msg>
   <msg key="Project_Status">Projektstatus</msg>
@@ -2182,7 +2197,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="ProposalPrice_Quote">Vorschlag/Angebot</msg>
   <msg key="Prospect">Interessent</msg>
   <msg key="Prospecting">Prospektion</msg>
-  <msg key="Provider">Partner</msg>
+  <msg key="Provider">Lieferant</msg>
   <msg key="Provider_Bill">Lieferantenrechnung</msg>
   <msg key="Provider_Documents">Finanzdokumente Lieferanten</msg>
   <msg key="Provider_Help">Lieferanten Hilfe</msg>
@@ -2268,7 +2283,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Request_For_Change">Request For Change</msg>
   <msg key="Requested">Angefordert</msg>
   <msg key="Reserved">Reserviert</msg>
-  <msg key="Reset_Portlets">Init Portlets</msg>
+  <msg key="Reset_Portlets">Portlets zurücksetzen</msg>
   <msg key="Reset_Stuff">Zurücksetzen</msg>
   <msg key="Resolution_Time">Lösungszeit</msg>
   <msg key="Resolved">Gelöst</msg>
@@ -2453,6 +2468,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="sl">sl</msg>
   <msg key="SLA_Parameter">SLA Parameter</msg>
   <msg key="SLA_Request">Anfrage neuer Ticket Container</msg>
+  <msg key="SLA_Ticket_Aging">Alterung Tickets</msg>
   <msg key="SLAs">SLAs</msg>
   <msg key="Slovak Republic">Slowakische Republik</msg>
   <msg key="Slovak_Republic">Slowakische Republik</msg>
@@ -2530,6 +2546,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Taiwan">Taiwan</msg>
   <msg key="Target_Language">Produktionssprache</msg>
   <msg key="Task">Aufgabe</msg>
+  <msg key="Task_Board">Task Board</msg>
   <msg key="Task_Dependencies">Abhängigkeiten</msg>
   <msg key="Task_Hierarchy">Aufgabenhierarchie</msg>
   <msg key="Task_Members">Aufgabenmitglieder</msg>
@@ -2579,8 +2596,8 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Ticket_Type">Tickettyp</msg>
   <msg key="Tickets">Helpdesk</msg>
   <msg key="Tickets_Admin">Admin Tickets</msg>
-  <msg key="Tickets_Dashboard">Tickets Dashboard</msg>
-  <msg key="Tickets_List">Tickets Liste</msg>
+  <msg key="Tickets_Dashboard">Ticket Dashboard</msg>
+  <msg key="Tickets_List">Ticket Liste</msg>
   <msg key="Time_plan">Zeitplan</msg>
   <msg key="Time_sheet">Zeiterfassung</msg>
   <msg key="Timesheet">Zeiterfassung</msg>
@@ -2602,6 +2619,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="TM_Tools">CAT Tools</msg>
   <msg key="Today">Heute</msg>
   <msg key="Tolls">Mautgebühren</msg>
+  <msg key="Top">Top</msg>
   <msg key="top">Oben</msg>
   <msg key="Top_10_Opportunities">Top 10 Gelegenheiten</msg>
   <msg key="Top_10_Unpaid_Customer_Invoices">Top 10 unbezahlte Kundenrechnungen</msg>
@@ -2695,7 +2713,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="User">Benutzer</msg>
   <msg key="user">Benutzer</msg>
   <msg key="User_Absences_Admin">Admin Absenzen</msg>
-  <msg key="User_Admin_Information">Benutzer Administration Informationen</msg>
+  <msg key="User_Admin_Information">Benutzer Admin Informationen</msg>
   <msg key="User_Administration">Benutzerverwaltung</msg>
   <msg key="user_administration">Benutzerverwaltung</msg>
   <msg key="User_Basic_Information">Benutzer Basis Informationen</msg>
@@ -2716,6 +2734,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="User_Portrait">Benutzer Portrait</msg>
   <msg key="User_Profiles">Benutzerprofile</msg>
   <msg key="User_Related_Objects">Benutzer Beziehungen</msg>
+  <msg key="User_Rule_Audit">Benutzer Regel Audit</msg>
   <msg key="User_search">Benutzer Suche</msg>
   <msg key="User_Skills">Benutzerskills</msg>
   <msg key="User_Skin_Information">Benutzer Skin</msg>
@@ -2792,6 +2811,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Windows_2000">Windows 2000</msg>
   <msg key="Windows_Millenium">Windows ME</msg>
   <msg key="Windows_NT">Windows NT</msg>
+  <msg key="Windows_Server">Windows Server</msg>
   <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
   <msg key="With_Member">Mit Mitglied</msg>
