@@ -32,6 +32,7 @@
   <msg key="Absences_Admin">Admin Absences</msg>
   <msg key="Absenzen">Vacation</msg>
   <msg key="Ac_Counting">Accounting</msg>
+  <msg key="Accepted">Accepted</msg>
   <msg key="Access_denied">Access Denied</msg>
   <msg key="Account_Deleted">Account Deleted</msg>
   <msg key="Account_deleted">Account Deleted</msg>
@@ -144,6 +145,7 @@
   <msg key="af">af</msg>
   <msg key="Agile_Project">Agile Project</msg>
   <msg key="Agile_Project-Message">Project using an agile methodology</msg>
+  <msg key="Agile_Task_List">Agile Task List</msg>
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Screen Name</msg>
   <msg key="Airfare">Airfare</msg>
@@ -262,6 +264,7 @@ We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="Bugs">Bugs</msg>
   <msg key="Bulgaria">Bulgaria</msg>
   <msg key="BulkUpdateUsers">Bulk Update Users</msg>
+  <msg key="Burn_Down_Chart">Burndown Chart</msg>
   <msg key="Business">Business</msg>
   <msg key="Business_Sector">Business Sector</msg>
   <msg key="business_sector_id">Business Sector</msg>
@@ -499,6 +502,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Customers_status_Qualifying">Qualifying</msg>
   <msg key="Customers_status_Quote_out">Quote out</msg>
   <msg key="Customers_status_Quoting">Quoting</msg>
+  <msg key="Customers_worked_for">Worked for Customers</msg>
   <msg key="CustomersWorkedFor">Worked For Customers</msg>
   <msg key="CustOrIntl">Cust. or Intl.</msg>
   <msg key="CVS_Hostname">CVS Hostname</msg>
@@ -773,6 +777,7 @@ symbols to the right of each portlet.</msg>
   <msg key="General_Home">Home</msg>
   <msg key="Generic-Router">Generic-Router</msg>
   <msg key="Generic_PM">Generic PM</msg>
+  <msg key="Generic_Router">Generic Router</msg>
   <msg key="Generic_Table_Header_ocs_bios">BIOS</msg>
   <msg key="Generic_Table_Header_ocs_controllers">Controllers</msg>
   <msg key="Generic_Table_Header_ocs_drives">Drives</msg>
@@ -935,6 +940,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Host_Program">Host Program</msg>
   <msg key="Host_Screen">Host Screen</msg>
   <msg key="Host_Table">Host Table</msg>
+  <msg key="Hot">Hot</msg>
   <msg key="Hotel">Hotel</msg>
   <msg key="Hour">Hour</msg>
   <msg key="How_it_should_be_right">How it should be right</msg>
@@ -1114,6 +1120,8 @@ symbols to the right of each portlet.</msg>
   <msg key="Last_3_Weeks">Last 3 Weeks</msg>
   <msg key="Last_Name">Last Name</msg>
   <msg key="Last_name">Last name</msg>
+  <msg key="Last_Projects">Last Projects</msg>
+  <msg key="Last_s">Last Projects</msg>
   <msg key="Last_Visit">Last Visit</msg>
   <msg key="Last_visit">Last visit</msg>
   <msg key="LastProjects">Last Projects</msg>
@@ -1135,6 +1143,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Linguistic_Val">Linguistic Val.</msg>
   <msg key="Linux">Linux</msg>
   <msg key="Linux-Server">Linux-Server</msg>
+  <msg key="Linux_Server">Linux Server</msg>
   <msg key="Lit">Lit</msg>
   <msg key="Lithuania">Lithuania</msg>
   <msg key="LoadTotal">Load Total</msg>
@@ -1740,6 +1749,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="MS-PowerPoint">MS-PowerPoint</msg>
   <msg key="MS-Word">MS-Word</msg>
   <msg key="ms_MY">ms_MY</msg>
+  <msg key="MS_Project_Warning_Component">MS-Project Warning Portlet</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
   <msg key="My_Account">My Account</msg>
@@ -1763,6 +1773,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Network_Device">Network Device</msg>
   <msg key="Network_Router">Network Router</msg>
   <msg key="Network_Switch">Network Switch</msg>
+  <msg key="New">New</msg>
   <msg key="New Zealand">New Zealand</msg>
   <msg key="New_">New</msg>
   <msg key="New_Absence">New Absence</msg>
@@ -1986,6 +1997,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="PHP">PHP</msg>
   <msg key="pl">pl</msg>
   <msg key="PL_Fachbereich">PL Fachbereich</msg>
+  <msg key="Plain_Task_Board">Task Board</msg>
   <msg key="Plan_Costs">Plan koszty</msg>
   <msg key="Planned">Planned</msg>
   <msg key="PlannedTotal">Planned Total</msg>
@@ -2088,6 +2100,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_">Project Nr.</msg>
   <msg key="Project_Advanced_Filtering">Advanced Filtering</msg>
   <msg key="Project_Base_Data">Project Base Data</msg>
+  <msg key="Project_Baselines">Project Baselines</msg>
   <msg key="Project_Budget">Project Budget</msg>
   <msg key="Project_Budget_Currency">Project Budget Currency</msg>
   <msg key="Project_Budget_Hours">Project Budget Hours</msg>
@@ -2096,6 +2109,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_Cost_Component">Project Cost Component</msg>
   <msg key="Project_CR">Project CR</msg>
   <msg key="Project_CVS_Logs">Project CVS Logs</msg>
+  <msg key="Project_EVA">Project EVA</msg>
   <msg key="Project_Finance_Summary_Component">Project Finance Summary Portlet</msg>
   <msg key="Project_Financial_Planning">Project Financial Planning</msg>
   <msg key="Project_Forum_Component">Project Forum Portlet</msg>
@@ -2129,6 +2143,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_Resource_Planning">Resource Planning</msg>
   <msg key="Project_Risks">Project Risks</msg>
   <msg key="project_roi">ROI (months)</msg>
+  <msg key="Project_Rule_Audit">Rule Audit</msg>
   <msg key="Project_Skills">Project skills</msg>
   <msg key="Project_Sponsor">Project Sponsor</msg>
   <msg key="Project_Status">Project Status</msg>
@@ -2486,6 +2501,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="sl">sl</msg>
   <msg key="SLA_Parameter">SLA Parameter</msg>
   <msg key="SLA_Request">Ticket Container Request</msg>
+  <msg key="SLA_Ticket_Aging">SLA Ticket Aging</msg>
   <msg key="SLAs">SLAs</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
@@ -2563,6 +2579,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Taiwan">Taiwan</msg>
   <msg key="Target_Language">Target Lang</msg>
   <msg key="Task">Task</msg>
+  <msg key="Task_Board">Task Board</msg>
   <msg key="Task_Dependencies">Task Dependencies</msg>
   <msg key="Task_Hierarchy">Task Hierarchy</msg>
   <msg key="Task_Members">Task Members</msg>
@@ -2635,6 +2652,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="TM_Tools">TM Tools</msg>
   <msg key="Today">Today</msg>
   <msg key="Tolls">Tolls</msg>
+  <msg key="Top">Top</msg>
   <msg key="top">Top</msg>
   <msg key="Top_10_Opportunities">Top 10 Opportunities</msg>
   <msg key="Top_10_Unpaid_Customer_Invoices">Top 10 Unpaid Customer Invoices</msg>
@@ -2749,6 +2767,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="User_Portrait">User Portrait</msg>
   <msg key="User_Profiles">User Profiles</msg>
   <msg key="User_Related_Objects">User Related Objects</msg>
+  <msg key="User_Rule_Audit">User Rule Audit</msg>
   <msg key="User_search">User search</msg>
   <msg key="User_Skills">User Skills</msg>
   <msg key="User_Skin_Information">User Skin Information</msg>
@@ -2827,6 +2846,7 @@ We recommend to keep the &#39;Tigerpond&#39; demo data in the system while testi
   <msg key="Windows_2000">Windows 2000</msg>
   <msg key="Windows_Millenium">Windows ME</msg>
   <msg key="Windows_NT">Windows NT</msg>
+  <msg key="Windows_Server">Windows Server</msg>
   <msg key="Windows_XP">Windows XP</msg>
   <msg key="Wire_Transfer">Banktransfer</msg>
   <msg key="With_Member">With Member</msg>
