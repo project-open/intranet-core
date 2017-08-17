@@ -56,6 +56,14 @@ db_foreach site_nodes $site_node_sql {
 
 # ad_return_complaint 1 $site_nodes
 
+
+# ---------------------------------------------------------------
+# Admin pages that don't need to be localized
+# ---------------------------------------------------------------
+
+set admin_path_hash(/intranet-dynfield/) 1
+
+
 # ---------------------------------------------------------------
 # List of pages
 # ---------------------------------------------------------------
@@ -85,8 +93,19 @@ foreach tcl_file_abs $tcl_file_list {
 
     if {[regexp {/CVS/} $tcl_file_without_www]} { continue };     # Skip CVS files
     if {![regexp {^/intranet} $tcl_file_without_www]} { continue };     # Skip non-]po[ files
-    if {[regexp {^(.*)\.tcl$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
-    if {[regexp {^(.*)\.adp$} $tcl_file_without_www match base]} { set page_hash($base) 1 }
+
+    # Cut off the trailing .tcl or .adp extension
+    if {[regexp {^(.*)\.tcl$} $tcl_file_without_www match base]} { set tcl_file_without_www $base }
+    if {[regexp {^(.*)\.adp$} $tcl_file_without_www match base]} { set tcl_file_without_www $base }
+
+    # Don't translate admin pages
+    foreach p [array names admin_path_hash] {
+	set len [expr [string length $p] - 1]
+	if {$p eq [string range $base 0 $len]} { continue }
+    }
+
+    set page_hash($base) 1
+
 }
 
 set pages [qsort [array names page_hash]]
@@ -157,7 +176,7 @@ foreach page $pages {
 
     set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
     incr ctr
-    append line "<td><nobr><a href=\"$page_with_tag\">$page</a></nobr></td>\n"
+    append line "<td><nobr><a href=\"$page_with_tag\" target='_'>$page</a></nobr></td>\n"
 
     set val ""
     if {[info exists url_hash($page)]} { set val $url_hash($page) }
@@ -179,7 +198,7 @@ set all_lines [list]
 foreach page $pages {
     set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
     incr ctr
-    append line "<td><nobr><a href=\"$page\">$page</a></nobr></td>\n"
+    append line "<td><nobr><a href=\"$page\" target='_'>$page</a></nobr></td>\n"
 
     set val ""
     if {[info exists url_hash($page)]} { set val $url_hash($page) }
