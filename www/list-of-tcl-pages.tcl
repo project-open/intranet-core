@@ -29,7 +29,7 @@ ad_page_contract {
 
 
 set page_title "List of Pages with Visits"
-set user_id [auth::require_login]
+set current_user_id [auth::require_login]
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
 set root_dir [im_root_dir]
@@ -150,14 +150,29 @@ foreach log_file_abs $log_file_list {
 	    set url_path $url_raw
 	    set url_params ""
 	}
-	# ad_return_complaint 1 "<pre>url_raw=$url_raw<br>url_path=$url_path<br>url_params=$url_params</pre>"
-	set val ""
-	if {[info exists url_hash($url_path)]} { set val $url_hash($url_path) }
-	lappend val $return_status
-	set url_hash($url_path) $val
-    }
 
+	# ad_return_complaint 1 "<pre>url_raw=$url_raw<br>url_path=$url_path<br>url_params=$url_params</pre>"
+
+	# Parse the user_id and determine the locale of the user
+	set user_id 0
+	set locale "undef"
+	if {[regexp {uid=([0-9]+)} $url_params match uid]} { set user_id $uid}
+	ns_log Notice "list-of-tcl-pages: url_path=$url_path, url_params=$url_params, user_id=$user_id"
+	if {"" ne $user_id && 0 ne $user_id} {
+	    set locale [util_memoize [list db_string uloc "select locale from user_preferences where user_id=$user_id" -default "undef"]]
+	}
+	set locale_hash($locale) $locale
+
+	# Add the return status to a list of states per url
+	set val ""
+	set key "$locale-$url_path"
+	if {[info exists url_hash($key)]} { set val $url_hash($key) }
+	lappend val $return_status
+	set url_hash($key) $val
+    }
 }
+
+set locales [lsort [array names locale_hash]]
 
 # ad_return_complaint 1 "<pre>[join [qsort [array names url_hash]] "<br>"]</pre>"
 
@@ -172,17 +187,17 @@ foreach page $pages {
     # Skip everything that doesn't end with /index
     if {![regexp {/index$} $page]} { continue }
 
-    set page_with_tag [export_vars -base $page {{uid $user_id}}]
+    set page_with_tag [export_vars -base $page {{uid $current_user_id}}]
 
     set line "<tr$bgcolor([expr {$ctr % 2}])>\n"
     incr ctr
     append line "<td><nobr><a href=\"$page_with_tag\" target='_'>$page</a></nobr></td>\n"
-
-    set val ""
-    if {[info exists url_hash($page)]} { set val $url_hash($page) }
-    set count [llength $val]
-    if {0 eq $count} { set count "" }
-    append line "<td>$val</td>\n"
+    foreach locale $locales {
+	set val ""
+	set key "$locale-$page"
+	if {[info exists url_hash($key)]} { set val $url_hash($key) }
+	append line "<td>$val</td>\n"
+    }
     append line "</tr>\n"
     
     lappend index_lines $line

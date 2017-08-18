@@ -6,7 +6,9 @@
 <table border=0>
 <tr class=rowtitle>
 <td class=rowtitle align=center>Page</td>
-<td class=rowtitle align=center>Status</td>
+<td class=rowtitle>
+<%= [join $locales "</td>\n<td class=rowtitle>"] %>
+</td>
 </tr>
 <%= [join $index_lines "\n"] %>
 </table>
