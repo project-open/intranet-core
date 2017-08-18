@@ -105,7 +105,11 @@ foreach col $column_headers {
     set col_txt $col
     if {"" != $col} {
 	regsub -all " " $col "_" col_txt
-	set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+	if {[string first "<" $col_txt] < 0 && [string first "\[" $col_txt] < 0} {
+	    set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+	} else {
+	    set col_txt $col
+	}
     }
     template::multirow append table_headers $col_txt
 }
