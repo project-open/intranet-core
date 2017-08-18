@@ -65,6 +65,7 @@
   <msg key="Actions">Actions</msg>
   <msg key="activate">Activate</msg>
   <msg key="Active">Active</msg>
+  <msg key="Active or Potential">Active or Potential</msg>
   <msg key="Active_Customers">Active Customers</msg>
   <msg key="Active_or_Potential">Active or Potential</msg>
   <msg key="Ad_hoc_Edit">Edit</msg>
@@ -143,6 +144,8 @@
   <msg key="Advertizing">Advertising</msg>
   <msg key="Advertizing_Project">Advertising Project</msg>
   <msg key="af">af</msg>
+  <msg key="After_Creation">After Creation</msg>
+  <msg key="After_Update">After Update</msg>
   <msg key="Agile_Project">Agile Project</msg>
   <msg key="Agile_Project-Message">Project using an agile methodology</msg>
   <msg key="Agile_Task_List">Agile Task List</msg>
@@ -403,6 +406,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Computer_Monitor">Computer Monitor</msg>
   <msg key="Computer_Port">Computer Port</msg>
   <msg key="Computer_Slot">Computer Slot</msg>
+  <msg key="Condition_Selector">Condition Selector</msg>
   <msg key="Conf_Item">Conf Item</msg>
   <msg key="Conf_Item_Code">Code</msg>
   <msg key="Conf_Item_CVS_Logs">Conf Item CVS Logs</msg>
@@ -682,6 +686,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Export_User_to_CSV">Export User to CSV</msg>
   <msg key="Export_Users_Cube">Export Benutzer-Cube</msg>
   <msg key="Export_Users_to_CSV">Export Users to CSV</msg>
+  <msg key="External">External</msg>
   <msg key="Extra_from">Extra from</msg>
   <msg key="Extra_where">Extra where</msg>
   <msg key="f">f</msg>
@@ -1073,6 +1078,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Ireland">Ireland</msg>
   <msg key="is">is</msg>
   <msg key="Israel">Israel</msg>
+  <msg key="Issue">Issue</msg>
   <msg key="IT">IT</msg>
   <msg key="it">it</msg>
   <msg key="IT_Consultancy">IT Consultancy</msg>
@@ -1703,6 +1709,8 @@ other way for the user to find out.</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Manage_Views">Manage Views</msg>
+  <msg key="Manual_List_Selector">Manual List Selector</msg>
+  <msg key="Manual_SQL_Selector">Manual SQL Selector</msg>
   <msg key="Manufacturing">Manufacturing</msg>
   <msg key="Marketing">Marketing</msg>
   <msg key="Master_Data">Master Data</msg>
@@ -2022,6 +2030,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Poland">Poland</msg>
   <msg key="Portfolio">Portfolio</msg>
   <msg key="Portfolio_Dashboard">Portfolio Dashboard</msg>
+  <msg key="Portfolio_List">Porfolio List</msg>
   <msg key="Portfolio_Planner">Portfolio Planner</msg>
   <msg key="Portlet_Components">Portlets</msg>
   <msg key="Portrait">Portrait</msg>
@@ -2134,6 +2143,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Project_Open_Package">]po[ Package</msg>
   <msg key="Project_Open_Process">]po[ Process</msg>
   <msg key="Project_Path">Project Path</msg>
+  <msg key="Project_Portfolio_Planner">Porfolio Planner</msg>
   <msg key="Project_project_name">Project: %project_name%</msg>
   <msg key="Project_Proposals">Project Proposals</msg>
   <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
@@ -2256,6 +2266,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Quarter">Quarter</msg>
   <msg key="Queue">Queue</msg>
   <msg key="Quote">Quote</msg>
+  <msg key="Quote out">Quote Out</msg>
   <msg key="Quote_Comment">Quote Comment</msg>
   <msg key="Quote_Out">Quote Out</msg>
   <msg key="Quote_out">Quote out</msg>

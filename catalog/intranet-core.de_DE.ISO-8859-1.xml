@@ -91,6 +91,7 @@
   <msg key="Actions">Aktionen</msg>
   <msg key="activate">aktivieren</msg>
   <msg key="Active">Aktiv</msg>
+  <msg key="Active or Potential">Active oder potentiell</msg>
   <msg key="Active_Customers">Aktive Kunden</msg>
   <msg key="Active_or_Potential">Active or Potential</msg>
   <msg key="Ad_hoc_eac_deviation_percent">% EAC&lt;br&gt;Abweichung</msg>
@@ -186,6 +187,8 @@
   <msg key="Advertizing">Advertizing</msg>
   <msg key="Advertizing_Project">Werbeprojekt</msg>
   <msg key="af">af</msg>
+  <msg key="After_Creation">After Creation</msg>
+  <msg key="After_Update">After Update</msg>
   <msg key="Agile_Project">Agiles Projekt</msg>
   <msg key="Agile_Project-Message">Projekte mit agiler Methodologie</msg>
   <msg key="Agile_Task_List">Agile Aufgabenliste</msg>
@@ -720,6 +723,7 @@ Wir empfehlen einen aktuellen Browser zu verwenden.</msg>
   <msg key="Export_User_to_CSV">Benutzer nach CSV exportieren</msg>
   <msg key="Export_Users_Cube">Benutzer-Cube exportieren</msg>
   <msg key="Export_Users_to_CSV">Benutzer nach CSV exportieren</msg>
+  <msg key="External">Extern</msg>
   <msg key="Extra_from">Extra von</msg>
   <msg key="Extra_where">Extra wo</msg>
   <msg key="f">F</msg>
@@ -1110,6 +1114,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Ireland">Irland</msg>
   <msg key="is">is</msg>
   <msg key="Israel">Israel</msg>
+  <msg key="Issue">Problem</msg>
   <msg key="IT">IT</msg>
   <msg key="it">it</msg>
   <msg key="IT_Consultancy">IT-Beratung</msg>
@@ -1999,6 +2004,7 @@ Password: %password%
   <msg key="Poland">Polen</msg>
   <msg key="Portfolio">Portfolio</msg>
   <msg key="Portfolio_Dashboard">Portfolio Dashboard</msg>
+  <msg key="Portfolio_List">Porfolio Liste</msg>
   <msg key="Portfolio_Planner">Portfolio Planer</msg>
   <msg key="Portlet_Components">Portlets</msg>
   <msg key="Portrait">Porträt</msg>
@@ -2111,6 +2117,7 @@ Password: %password%
   <msg key="Project_Open_Package">]po[ Package</msg>
   <msg key="Project_Open_Process">]po[ Process</msg>
   <msg key="Project_Path">Pfad</msg>
+  <msg key="Project_Portfolio_Planner">Porfolio Planner</msg>
   <msg key="Project_project_name">Projekt: %project_name% </msg>
   <msg key="Project_Proposals">Projektvorschlag</msg>
   <msg key="Project_Quality_Component">Übersetzungsqualität</msg>
@@ -2225,6 +2232,7 @@ Classische / Gantt Projekte ermöglichen Prozesse wie eine detailierte Kontrolle 
   <msg key="Quarter">Quartal</msg>
   <msg key="Queue">Schlange</msg>
   <msg key="Quote">Angebot</msg>
+  <msg key="Quote out">Angebot gesendet</msg>
   <msg key="Quote_Comment">Angebot Kommentar</msg>
   <msg key="Quote_Out">Angebot ausgesendet</msg>
   <msg key="Quote_out">Angebot ausgesendet</msg>
