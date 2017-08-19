@@ -53,6 +53,9 @@ if {"" == $company_path} { regsub -all {[^a-zA-Z0-9]} [string trim [string tolow
 if {"" == $office_path} { set office_path "${company_path}_main_office" }
 if {"" == $office_name} { set office_name "$company_name [lang::message::lookup "" intranet-core.Main_Office {Main Office}]" }
 
+# Exclude default values for office name & path
+set exclude_office_name_p 1
+
 
 # --------------------------------------------------
 # Environment information for the rest of the page
@@ -104,7 +107,6 @@ ad_form \
 set person_subtype_id [db_string subtype "select category_id from im_categories where category_type = 'Intranet User Type' and aux_int1 = :profile" -default ""]
 
 template::form::section -legendtext asdf company [lang::message::lookup "" intranet-core.Person Person]
-
 im_dynfield::append_attributes_to_form \
     -object_type "person" \
     -form_id "company" \
@@ -114,7 +116,6 @@ im_dynfield::append_attributes_to_form \
 
 
 template::form::section -legendtext sdfg company [lang::message::lookup "" intranet-core.Company Company]
-
 im_dynfield::append_attributes_to_form \
     -object_type "im_company" \
     -form_id "company" \
@@ -122,13 +123,16 @@ im_dynfield::append_attributes_to_form \
     -include_also_hard_coded_p 1 \
     -exclude_attributes {main_office_id}
 
-template::form::section -legendtext dfgh company [lang::message::lookup "" intranet-core.Office Office]
 
+template::form::section -legendtext dfgh company [lang::message::lookup "" intranet-core.Office Office]
+set exclude_office_attributes {office_name office_path office_type_id office_status_id}
+if {!$exclude_office_name_p} { set exclude_office_attributes {} }
 im_dynfield::append_attributes_to_form \
     -object_type "im_office" \
     -form_id "company" \
     -page_url "/intranet/users/biz-card-add" \
-    -include_also_hard_coded_p 1
+    -include_also_hard_coded_p 1 \
+    -exclude_attributes $exclude_office_attributes
 
 template::element::set_value company first_names $first_names
 template::element::set_value company last_name $last_name
@@ -139,11 +143,13 @@ template::element::set_value company company_path $company_path
 template::element::set_value company company_type_id $default_company_type_id
 template::element::set_value company company_status_id [im_company_status_active]
 
-template::element::set_value company office_name $office_name
-template::element::set_value company office_path $office_path
+if {!$exclude_office_name_p} {
+    template::element::set_value company office_name $office_name
+    template::element::set_value company office_path $office_path
+    template::element::set_value company office_type_id [im_office_type_main]
+    template::element::set_value company office_status_id [im_office_status_active]
+}
 
-template::element::set_value company office_type_id [im_office_type_main]
-template::element::set_value company office_status_id [im_office_status_active]
 
 
 
