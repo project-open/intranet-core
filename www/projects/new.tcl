@@ -498,7 +498,7 @@ if {[form is_request $form_id]} {
 		set company_id ""
 	    }
 	    if {(![info exists project_type_id] || $project_type_id eq "")} { set project_type_id 85 }
-	    set project_status_id 76
+	    set project_status_id [parameter::get_from_package_key -package_key "intranet-core" -parameter ProjectNewDefaultStatusId -default 76]
 	    set page_title [_ intranet-core.Add_New_Project]
 	    set context_bar [im_context_bar [list ./ [_ intranet-core.Projects]] $page_title]
 	    
