@@ -1812,6 +1812,7 @@ Password: %password%
   <msg key="no">nein</msg>
   <msg key="No_contacts_found">Keine Einträge gefunden</msg>
   <msg key="No_context_help_available">Keine Kontexthilfe verfügbar</msg>
+  <msg key="No_Department">Ohne Abteilung</msg>
   <msg key="No_Email_Has_Been_Sent">Es wurde keine E-Mail versendet</msg>
   <msg key="No_Importance">keine Wichtigkeit</msg>
   <msg key="No_members_found">Keine Mitglieder gefunden</msg>
@@ -1862,7 +1863,7 @@ Password: %password%
   <msg key="Office_Name">Firmensitz Name</msg>
   <msg key="Office_Path">Firmensitz Pfad</msg>
   <msg key="Office_Status">Firmensitz Status</msg>
-  <msg key="Office_Type">Typ Firmensitz</msg>
+  <msg key="Office_Type">Firmensitz Typ</msg>
   <msg key="Office_Wiki_Component">Wiki</msg>
   <msg key="Offices">Firmensitze</msg>
   <msg key="Offices_List">Firmensitze Liste</msg>

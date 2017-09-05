@@ -2,8 +2,14 @@
 <message_catalog package_key="intranet-core" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Por favor seleccione --</msg>
+  <msg key="1">1</msg>
+  <msg key="2">2</msg>
+  <msg key="4">4</msg>
+  <msg key="5">5</msg>
+  <msg key="5_-_Average_Priority">5 - Prioridad Normal</msg>
+  <msg key="6">6</msg>
   <msg key="1111">1111</msg>
-  <msg key="_">blank</msg>
+  <msg key="_">vacio</msg>
   <msg key="_EUR_100k">EUR 100k</msg>
   <msg key="_The">El identificativo de empresa especificado ya existe. Escoja un nuevo nombre o vuelva a la página de la empresa para editar el registro actual</msg>
   <msg key="A">A</msg>
@@ -286,6 +292,7 @@
   <msg key="Creation_User">Creado por</msg>
   <msg key="creditenadp">credit.en.adp</msg>
   <msg key="creditesadp">credit.es.adp</msg>
+  <msg key="CRM">CRM</msg>
   <msg key="CRM_Help">Ayuda sobre CRM</msg>
   <msg key="CRM_Sales">Gestión de Clientes (CRM)</msg>
   <msg key="Croatia">Croacia</msg>
@@ -453,6 +460,7 @@
   <msg key="Finance_Home">Portada de Finanzas</msg>
   <msg key="Finished">Completado</msg>
   <msg key="Finland">Finlandia</msg>
+  <msg key="First_Names">Nombre</msg>
   <msg key="First_names">Nombre</msg>
   <msg key="for">de</msg>
   <msg key="for_Deliv">para Entrega</msg>
@@ -635,6 +643,7 @@
   <msg key="ICQ">ICQ</msg>
   <msg key="ICQ_Number">Número ICQ</msg>
   <msg key="Id">ID</msg>
+  <msg key="Ideas">Ideas</msg>
   <msg key="Illustration">Ilustración</msg>
   <msg key="Import_Company_CSV">Importar .csv de empresa</msg>
   <msg key="Import_Company_CVS">Importar CVS empresa</msg>
@@ -712,6 +721,7 @@
   <msg key="l">l</msg>
   <msg key="La_Caixa_EUR">La Caixa EUR</msg>
   <msg key="Last_3_months">Últimos 4 meses</msg>
+  <msg key="Last_Name">Apellido</msg>
   <msg key="Last_name">Apellidos</msg>
   <msg key="Last_Visit">Última visita</msg>
   <msg key="Last_visit">Última visita</msg>
@@ -1120,6 +1130,7 @@
   <msg key="Manage_Profiles">Administrar perfiles</msg>
   <msg key="Manage_Views">Administrar vistas</msg>
   <msg key="Marketing">Márketing</msg>
+  <msg key="Master_Data">Datos Maestro</msg>
   <msg key="Materials">Materiales</msg>
   <msg key="Med">Med</msg>
   <msg key="Medium">Media</msg>
@@ -1241,6 +1252,7 @@
   <msg key="OpenACS_platform">Plataforma OpenACS</msg>
   <msg key="OpenACS_Sitemap">Mapa web de OpenACS</msg>
   <msg key="Operating_System">Sistema operativo</msg>
+  <msg key="Opportunities_for_User">Oportunidades</msg>
   <msg key="Optional">Opcional</msg>
   <msg key="or_by">o por</msg>
   <msg key="or_Last_Name">o Apellidos</msg>
@@ -1643,6 +1655,7 @@
   <msg key="The_web_with_Google">En la web con Google</msg>
   <msg key="Ticket">Ticket</msg>
   <msg key="Ticket_Members">Miembros de ticket</msg>
+  <msg key="Tickets">Tickets</msg>
   <msg key="Time_plan">Planificación de tiempos</msg>
   <msg key="Time_sheet">Parte de trabajo</msg>
   <msg key="Timesheet">Horas</msg>
@@ -1802,6 +1815,7 @@
   <msg key="X">X</msg>
   <msg key="x">x</msg>
   <msg key="XML-RPC">XML-RPC</msg>
+  <msg key="XoWiki">XoWiki</msg>
   <msg key="y">y</msg>
   <msg key="Yellow">Amarillo</msg>
   <msg key="Yes">Sí</msg>
