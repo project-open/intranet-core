@@ -63,6 +63,15 @@ ad_proc -public im_project_type_software_release_item {} { return 4597 }
 ad_proc -public im_project_type_bt_container { } { return 4300 }
 ad_proc -public im_project_type_bt_task { } { return 4305 }
 
+ad_proc -public im_project_type_agile {} { return 88000 }
+ad_proc -public im_project_type_scrum {} { return 88010 }
+ad_proc -public im_project_type_kanban {} { return 88020 }
+
+
+# ----------------------------------------------------------------------
+# Status
+# ----------------------------------------------------------------------
+
 
 ad_proc -public im_project_status_potential {} { return 71 }
 ad_proc -public im_project_status_quoting {} { return 74 }
