@@ -31,6 +31,7 @@ set page_title  [lang::message::lookup "" intranet-core.Companies_Dashboard "Com
 set page_focus "im_header_form.keywords"
 set current_url [ns_conn url]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
+set return_url "/intranet/companies/dashboard"
 
 
 # ---------------------------------------------------------------
@@ -41,7 +42,15 @@ set letter ""
 set menu_select_label "companies_dashboard"
 set next_page_url ""
 set previous_page_url ""
-set sub_navbar_html [im_company_navbar $letter "/intranet/companies/dashboard" $next_page_url $previous_page_url [list start_idx order_by how_many letter ticket_status_id] $menu_select_label]
+set sub_navbar_html [im_company_navbar \
+			 -current_plugin_id $plugin_id \
+			 -plugin_url $return_url \
+			 $letter \
+			 $return_url \
+			 $next_page_url $previous_page_url \
+			 [list start_idx order_by how_many letter ticket_status_id] \
+			 $menu_select_label \
+]
 
 set left_navbar_html ""
 
