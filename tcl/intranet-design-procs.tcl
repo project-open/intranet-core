@@ -484,7 +484,16 @@ ad_proc -public im_office_navbar { default_letter base_url next_page_url prev_pa
 }
 
 
-ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_page_url export_var_list {select_label ""} } {
+ad_proc -public im_company_navbar { 
+    {-current_plugin_id "" }
+    {-plugin_url "" }
+    default_letter 
+    base_url 
+    next_page_url 
+    prev_page_url 
+    export_var_list 
+    {select_label ""} 
+} {
     Returns rendered HTML code for a horizontal sub-navigation
     bar for /intranet/companies/.
     The lower part of the navbar also includes an Alpha bar.
@@ -512,7 +521,18 @@ ad_proc -public im_company_navbar { default_letter base_url next_page_url prev_p
     # Get the Subnavbar
     set parent_menu_sql "select menu_id from im_menus where label='companies'"
     set parent_menu_id [util_memoize [list db_string parent_admin_menu $parent_menu_sql -default 0]]
-    set navbar [im_sub_navbar $parent_menu_id $bind_vars $alpha_bar "tabnotsel" $select_label]
+
+    set navbar [im_sub_navbar \
+		    -components \
+		    -current_plugin_id $current_plugin_id \
+		    -plugin_url $plugin_url \
+		    $parent_menu_id \
+		    $bind_vars \
+		    $alpha_bar \
+		    "tabnotsel" \
+		    $select_label \
+    ]
+
     return $navbar
 }
 
