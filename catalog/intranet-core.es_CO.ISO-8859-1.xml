@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="intranet-core" locale="es_CO" charset="ISO-8859-1">
+
+  <msg key="2">3</msg>
+  <msg key="3_-_High_Priority">3 - Prioridad Alta</msg>
+</message_catalog>
