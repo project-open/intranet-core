@@ -209,11 +209,16 @@
   <msg key="Backup_and_Restore_blurb">Backup your current application data now or load application data from a previous backup.</msg>
   <msg key="Backup_Bzip">Bzip2</msg>
   <msg key="Backup_Comment_on_backup_dumps">Add a comment to a backup dump</msg>
+  <msg key="Backup_Comments">Comments</msg>
   <msg key="Backup_Compress_the_backup_dump">Compress checked backup dumps using bzip2</msg>
+  <msg key="Backup_Date">Date</msg>
   <msg key="Backup_Delete">Delete</msg>
   <msg key="Backup_Delete_checked_backup_dumps">Delete checked backup dumps</msg>
   <msg key="Backup_Delete_Comment">Delete Comment</msg>
+  <msg key="Backup_File_Name">File Name</msg>
   <msg key="Backup_restore">Restore</msg>
+  <msg key="Backup_Size">Size</msg>
+  <msg key="Backup_Type">Type</msg>
   <msg key="Backup_Un_Bzip">Un-Bzip2</msg>
   <msg key="Backup_Uncompress_backup_dump">Uncompress backup dump</msg>
   <msg key="Bad_Office">Bad Office</msg>
@@ -466,6 +471,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Create_a_new_Project">Create a new Project</msg>
   <msg key="Create_a_Subproject">Create a Subproject</msg>
   <msg key="Create_Category">Create Category</msg>
+  <msg key="Create_new_backup_dump">Create new backup</msg>
   <msg key="Create_new_company_for_this_user">Create new company for this user</msg>
   <msg key="Create_New_Company_for_User">Create New Company for this User</msg>
   <msg key="Create_new_Incident">Create new Incident</msg>
@@ -746,9 +752,9 @@ symbols to the right of each portlet.</msg>
   <msg key="Financial_Score:_Cost">Cost</msg>
   <msg key="Financial_Score:_NPV">NPV</msg>
   <msg key="Financial_Score:_ROI">ROI</msg>
-  <msg key="Financial_Score_Cost">Cost</msg>
-  <msg key="Financial_Score_NPV">NPV</msg>
-  <msg key="Financial_Score_ROI">ROI</msg>
+  <msg key="Financial_Score_Cost">Score: Cost</msg>
+  <msg key="Financial_Score_NPV">Score: NPV</msg>
+  <msg key="Financial_Score_ROI">Score: ROI</msg>
   <msg key="Finished">Finished</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_Names">First Names</msg>
@@ -1589,7 +1595,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Salt_n_Pepperintranet">Salt&#39;n Pepper</msg>
   <msg key="lt_Save_Changesintranet-">Save</msg>
   <msg key="lt_Scheduling_Constraint">Scheduling Constraint</msg>
-  <msg key="lt_Score_Customer_Relate">Customer Related Benefits</msg>
+  <msg key="lt_Score_Customer_Relate">Score: Customer Related Benefits</msg>
   <msg key="lt_SCRUM_Sprintintranet-">SCRUM Sprint</msg>
   <msg key="lt_SDLX_2003_Professiona">SDLX 2003 Professional</msg>
   <msg key="lt_Search_for_a_substrin">Search for a substring in a persons email, for example \&#34;lion\&#34; to search for all users from Lionbridge.</msg>
@@ -1829,6 +1835,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="New Zealand">New Zealand</msg>
   <msg key="New_">New</msg>
   <msg key="New_Absence">New Absence</msg>
+  <msg key="New_Backup">New Backup</msg>
   <msg key="new_category">New Category</msg>
   <msg key="new_client_contact">new client contact</msg>
   <msg key="New_column">New column</msg>
@@ -2473,6 +2480,8 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Role_im_company_Full_Member">Full Member</msg>
   <msg key="Role_im_company_Key_Account">Key Account</msg>
   <msg key="Role_im_conf_item_Full_Member">Full Member</msg>
+  <msg key="Role_im_office_Full_Member">Full Member</msg>
+  <msg key="Role_im_office_Office_Manager">Office Manager</msg>
   <msg key="Role_im_project_Full_Member">Full Member</msg>
   <msg key="Role_im_project_Project_Manager">Project Manager</msg>
   <msg key="Role_im_ticket_Full_Member">Ticket Member</msg>
@@ -2511,11 +2520,11 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Score:_Revenue">Revenue</msg>
   <msg key="Score:_Risk">Risk</msg>
   <msg key="Score:_Strategic">Strategic</msg>
-  <msg key="Score_Capabilities">Capabilities</msg>
+  <msg key="Score_Capabilities">Score: Capabilities</msg>
   <msg key="score_finance_roi">Score: Finance ROI</msg>
-  <msg key="Score_Revenue">Revenue</msg>
+  <msg key="Score_Revenue">Score: Revenue</msg>
   <msg key="score_roi">ROI (months)</msg>
-  <msg key="Score_Strategic">Strategic</msg>
+  <msg key="Score_Strategic">Score: Strategic</msg>
   <msg key="score_strategic">Score: Strategic</msg>
   <msg key="score_strategic_value">Strategic Value (0-10)</msg>
   <msg key="Screen_name">Screen name</msg>
@@ -2693,6 +2702,19 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Telephony_Request">Telephony Request</msg>
   <msg key="Telephony_request">Telephony request</msg>
   <msg key="Telephony_Request_comment">Request new telephone equipment or a modified telephone number.</msg>
+  <msg key="Template_Help">Help</msg>
+  <msg key="Template_Help_blurb">In this screen you can manage templates for financial documents including invoices,
+quotes, purchase orders etc.&lt;br&gt;
+These templates are available in the screen where you can create new financial documents.&lt;br&gt;
+To activate templates newly uploaded please
+&lt;a href=&#39;/intranet/admin/categories/index.tcl?select_category_type=Intranet Cost Template&#39;&gt;create a category&lt;/a&gt;
+for them.
+You have the option to use either HTML (&#39;.adp&#39;) or OpenOffice &#39;.odt&#39; format.&lt;br&gt;
+To download a template please choose from the right-mouse click menu option &#39;Save as&#39;
+and change file name to the name shown in the table.&lt;br&gt;
+For details on templates please see the
+&lt;a href=&#39;http://www.project-open.com/en/category-intranet-cost-template&#39;&gt;online documentation&lt;/a&gt;.
+</msg>
   <msg key="Template_p">Template?</msg>
   <msg key="templatede_DEadp">template.de_DE.adp</msg>
   <msg key="templatede_DEodt">template.de_DE.odt</msg>
@@ -2834,6 +2856,8 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Update_Password">Update Password</msg>
   <msg key="Update_Server">Update Server</msg>
   <msg key="Update_User">Update User</msg>
+  <msg key="Upload_an_existing_backup">Upload an existing backup</msg>
+  <msg key="Upload_backup_dump">Upload backup</msg>
   <msg key="Upload_Company_CSV">Upload Company CSV</msg>
   <msg key="Upload_Contact_CSV">Upload Contact CSV</msg>
   <msg key="Upload_File">Upload File</msg>
@@ -2906,6 +2930,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="VAT_Number">VAT Number</msg>
   <msg key="vat_number">rut</msg>
   <msg key="Venezuela">Venezuela</msg>
+  <msg key="Version">Version</msg>
   <msg key="Very_Important">Very Important</msg>
   <msg key="vi">vi</msg>
   <msg key="View">View</msg>
