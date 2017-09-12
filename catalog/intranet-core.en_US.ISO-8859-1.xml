@@ -153,6 +153,7 @@
   <msg key="AIM">AIM</msg>
   <msg key="Aim_Screen_Name">AIM Screen Name</msg>
   <msg key="Airfare">Airfare</msg>
+  <msg key="Ajax">Ajax</msg>
   <msg key="ajaxhelper">ajaxhelper</msg>
   <msg key="al">al</msg>
   <msg key="Albania">Albania</msg>
@@ -180,12 +181,15 @@
   <msg key="Argentina">Argentina</msg>
   <msg key="Armenia">Armenia</msg>
   <msg key="ARS">ARS</msg>
+  <msg key="As_late_as_possible">As late as possible</msg>
+  <msg key="As_soon_as_possible">As soon as possible</msg>
   <msg key="Assigned">Assigned</msg>
   <msg key="Assignee">Assignee</msg>
   <msg key="Assigning">Assigning</msg>
   <msg key="Assignments">Assignments</msg>
   <msg key="Associated_with_new_Object">Associated with new Object</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
+  <msg key="attachments">attachments</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Audit_Trail_Absences">Audit Trail Absences</msg>
   <msg key="Audit_Trail_Conf_Items">Audit Trail Conf Items</msg>
@@ -431,6 +435,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Conf_Item_Wiki_Component">Conf Item Wiki</msg>
   <msg key="Conf_Items">Conf Items</msg>
   <msg key="Conf_Items_Admin">Admin Conf Items</msg>
+  <msg key="Conf_Items_Indicators_Timeline">Indicator Timeline</msg>
+  <msg key="ConfDB_Dashboard">Dashboard</msg>
   <msg key="Config_Item">Conf Item</msg>
   <msg key="Configuration_Item">Configuration Items</msg>
   <msg key="Configuring_po">Configuring ]po[</msg>
@@ -501,6 +507,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Current_Milestones">Current Milestones</msg>
   <msg key="Custom_Actions">Custom Actions</msg>
   <msg key="Customer">Customer</msg>
+  <msg key="Customer-Message">A customer pays the &#39;internal company&#39; to perform work or provide goods. There may be sub-types of customers below.</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
   <msg key="Customer_Info">Customer Info</msg>
@@ -525,7 +532,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="CVS_Path">CVS Path</msg>
   <msg key="CVS_Port">CVS Port</msg>
   <msg key="CVS_Protocol">CVS Protocol</msg>
-  <msg key="CVS_Repository">CSV Repository</msg>
+  <msg key="CVS_Repository">CVS Repository</msg>
   <msg key="CVS_System">CVS System</msg>
   <msg key="CVS_User">CVS User</msg>
   <msg key="Cyprus">Cyprus</msg>
@@ -645,6 +652,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Employees">Employees</msg>
   <msg key="employees">Employees</msg>
   <msg key="Empty"></msg>
+  <msg key="En">En</msg>
   <msg key="en">en</msg>
   <msg key="en_AU">en_AU</msg>
   <msg key="en_CA">en_CA</msg>
@@ -755,6 +763,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Financial_Score_Cost">Score: Cost</msg>
   <msg key="Financial_Score_NPV">Score: NPV</msg>
   <msg key="Financial_Score_ROI">Score: ROI</msg>
+  <msg key="Finish_no_later_than">Finish no later than</msg>
   <msg key="Finished">Finished</msg>
   <msg key="Finland">Finland</msg>
   <msg key="First_Names">First Names</msg>
@@ -780,6 +789,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Freelance_List_Component">Freelance List Portlet</msg>
   <msg key="Freelance_Managers">Freelance Managers</msg>
   <msg key="Freelance_Provider">Freelance Provider</msg>
+  <msg key="Freelance_Provider-Message">A provider company set up to represent an individual user working as a freelancers. In ]project-open[ you need to setup a company in order to send and receive invoices and other financial documents.</msg>
   <msg key="Freelancers">Freelancers</msg>
   <msg key="freelancers">Freelancers</msg>
   <msg key="From_Delivery_note">From&lt;br&gt;Delivery&lt;br&gt;Note</msg>
@@ -1007,7 +1017,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Import_and_Export">Import and Export</msg>
   <msg key="Import_Companies_from_CSV">Import Companies from CSV</msg>
   <msg key="Import_Company_CSV">Import Company CSV</msg>
-  <msg key="Import_Company_CVS">Import Company CVS</msg>
+  <msg key="Import_Company_CVS">Import Company CSV</msg>
   <msg key="Import_Nagios_Definitions">Import Nagios Definitions</msg>
   <msg key="Import_Projects_from_CSV">Import Projects from CSV</msg>
   <msg key="Import_User_CSV">Import User CSV</msg>
@@ -1035,6 +1045,7 @@ symbols to the right of each portlet.</msg>
   <msg key="InterCo_Invoice">InterCo Invoice</msg>
   <msg key="InterCo_Quote">InterCo Quote</msg>
   <msg key="Internal">Internal</msg>
+  <msg key="Internal-Message">The &#39;internal&#39; company represents the organization (company or department) running ]po[. There is usually only one internal company in the system.</msg>
   <msg key="Internal_Event">Internal Event</msg>
   <msg key="Intranet">Intranet</msg>
   <msg key="intranet-audit">intranet-audit</msg>
@@ -1117,6 +1128,7 @@ symbols to the right of each portlet.</msg>
   <msg key="it">it</msg>
   <msg key="IT Consultancy">IT Consultancy</msg>
   <msg key="IT_Consultancy">IT Consultancy</msg>
+  <msg key="IT_Consultancy-Message">This is a sample type of customer.</msg>
   <msg key="it_IT">it_IT</msg>
   <msg key="IT_System_1">IT System</msg>
   <msg key="IT_System_2">IT System</msg>
@@ -1171,6 +1183,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Law">Law</msg>
   <msg key="Law Company">Law Company</msg>
   <msg key="Law_Company">Law Company</msg>
+  <msg key="Law_Company-Message">This is a sample type of customer.</msg>
   <msg key="LDAP">LDAP</msg>
   <msg key="Learn_About_Your_Company">Learn About Your Company</msg>
   <msg key="Learn_About_Your_Company_Blurb">This portlet shows you a different company member every time. This way, members of different offices can start to know each other and employees learn about the freelancers that work with the company. User access permissions are maintained, and you can remove or modify _this_ text when you change into &#39;translation mode&#39;.</msg>
@@ -1360,6 +1373,7 @@ Message:</msg>
   <msg key="lt_Filedintranet-coreFil">Filed</msg>
   <msg key="lt_Finally_revisit_this_">Finally, revisit this page and an option will appear to add the new client contact.</msg>
   <msg key="lt_Finance_List_Complete">Finance List Complete</msg>
+  <msg key="lt_Finish_no_earlier_tha">Finish no earlier than</msg>
   <msg key="lt_first_names_from_sear">
 Please edit the message below and hit &#34;Send Email&#34; to 
 notify the selected users.</msg>
@@ -1414,7 +1428,7 @@ her contributions to the site content.</msg>
   <msg key="lt_If_this_IS_a_TestDemo">If this IS a Test/Demo/Development server, then check &#39;/parameters/*.ini&#39;
     and set the TestDemoDevServer flag to &#39;true&#39;.</msg>
   <msg key="lt_Impact_default_curren">Impact (default currency)</msg>
-  <msg key="lt_Import_Company_Contac">Import Company Contact CVS</msg>
+  <msg key="lt_Import_Company_Contac">Import Company Contact CSV</msg>
   <msg key="lt_Import_Projects_from_">Import Projects from H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In Process: Work is starting immediately, Potential Project: May become a project later, Not Started Yet: We are waiting to start working on it, Finished: Finished already...</msg>
   <msg key="lt_Incidentintranet-foru">Incident</msg>
@@ -1480,6 +1494,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Missing_group_id_and_">Missing group_id and short_name</msg>
   <msg key="lt_Mitarbeiterintranet-f">Mitarbeiter</msg>
   <msg key="lt_MLV_Translation_Agenc">MLV Translation Agency</msg>
+  <msg key="lt_MLV_Translation_Agenc-Message">This is a sample type of customer.</msg>
   <msg key="lt_Modify_the_access_per">Modify the access permissions for &#34;dynamic variables&#34; or add
 	new dynamic (custom) variables.</msg>
   <msg key="lt_Modify_the_name_and_d">Modify the name and d</msg>
@@ -1519,6 +1534,7 @@ site with fake crud.</msg>
   <msg key="lt_OCS_Software_Componen">OCS Software Component</msg>
   <msg key="lt_Office_Directory_Path">Office Directory Path</msg>
   <msg key="lt_Office_Equipment_Prov">Office Equipment Provider</msg>
+  <msg key="lt_Office_Equipment_Prov-Message">This is a sample type of provider</msg>
   <msg key="lt_office_name_Main_Offi">%office_name% Main Office</msg>
   <msg key="lt_Office_office_id_does">Office #office_id doesn&#39;t exist</msg>
   <msg key="lt_Only_not_invoiced_hou">Only not invoiced hours</msg>
@@ -1618,6 +1634,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Software_Release_Item">Software Release Item</msg>
   <msg key="lt_Software_Releaseintra">Software Release</msg>
   <msg key="lt_Star_Transit_Satellit">Star Transit Satellite</msg>
+  <msg key="lt_Start_no_earlier_than">Start no earlier than</msg>
   <msg key="lt_Strategic_Value_vs_RO">Strategic Value vs. ROI</msg>
   <msg key="lt_Successfully_finished">Successfully finished</msg>
   <msg key="lt_Taskintranet-forumTas">Tasks</msg>
@@ -1808,6 +1825,8 @@ Please click on the links below to get to the respective administration screens.
   <msg key="MS_Project_Warning_Component">MS-Project Warning Portlet</msg>
   <msg key="MSM">MSM</msg>
   <msg key="MSN_Status">MSN Status</msg>
+  <msg key="Must_finish_on">Must finish on</msg>
+  <msg key="Must_start_on">Must start on</msg>
   <msg key="My_Account">My Account</msg>
   <msg key="My_Tickets_Aging">My Tickets Aging</msg>
   <msg key="My_Tickets_Execution">My Tickets Execution</msg>
@@ -1927,6 +1946,8 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Object_Type_Admin">Object Type Admin</msg>
   <msg key="Object_Types">Object Types</msg>
   <msg key="Objective_C">Objective C</msg>
+  <msg key="ObjectList">Object List</msg>
+  <msg key="ObjectView">Object View</msg>
   <msg key="OCS_Device_ID">OCS Device ID</msg>
   <msg key="OCS_ID">OCS_ID</msg>
   <msg key="OCS_Last_Update">OCS Last Update</msg>
@@ -2001,7 +2022,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="OS_Version">OS Version</msg>
   <msg key="OS_Windows">OS Windows</msg>
   <msg key="Other">Other</msg>
-  <msg key="Other-Message">Other-Message</msg>
+  <msg key="Other-Message">Use this for companies that are neither customers nor providers.</msg>
   <msg key="Otherr">Other</msg>
   <msg key="Ouch">Ouch!</msg>
   <msg key="Our_employees_related">Our Employees (managing the company)</msg>
@@ -2092,10 +2113,13 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Portfolio_Dashboard">Portfolio Dashboard</msg>
   <msg key="Portfolio_List">Porfolio List</msg>
   <msg key="Portfolio_Planner">Portfolio Planner</msg>
+  <msg key="Portlet">Portlet</msg>
   <msg key="Portlet_Components">Portlets</msg>
+  <msg key="Portlets">Portlets</msg>
   <msg key="Portrait">Portrait</msg>
   <msg key="Portugal">Portugal</msg>
   <msg key="POs">POs</msg>
+  <msg key="Pos">Pos</msg>
   <msg key="Position_Vacant">Position Vacant</msg>
   <msg key="Postal_Code">Postal Code</msg>
   <msg key="Postfix_Process">Postfix Process</msg>
@@ -2306,6 +2330,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Prospect">Prospect</msg>
   <msg key="Prospecting">Prospecting</msg>
   <msg key="Provider">Provider</msg>
+  <msg key="Provider-Message">A provider is a company that provides goods and services in exchange for money. There may be sub-types of providers below.</msg>
   <msg key="Provider_Bill">Provider Bill</msg>
   <msg key="Provider_Documents">Provider Documents</msg>
   <msg key="Provider_Help">Provider Help</msg>
@@ -2606,6 +2631,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Software Company">Software Company</msg>
   <msg key="Software_Application">Software Application</msg>
   <msg key="Software_Company">Software Company</msg>
+  <msg key="Software_Company-Message">This is a sample type of customer.</msg>
   <msg key="Software_Component">Software Portlet</msg>
   <msg key="Software_Development">Software Development</msg>
   <msg key="Software_Maintenance">Software Maintenance</msg>
@@ -2640,6 +2666,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Star_Transit_XV">Star Transit XV</msg>
   <msg key="Start">Start</msg>
   <msg key="Start_Date">Start Date</msg>
+  <msg key="Start_no_later_than">Start no later than</msg>
   <msg key="Starting_to_use_the_system_blurb">Starting to use ]po[</msg>
   <msg key="State">State</msg>
   <msg key="Status">Status</msg>
@@ -2849,7 +2876,7 @@ For details on templates please see the
   <msg key="United_Kingdom">United Kingdom</msg>
   <msg key="United_States">United States</msg>
   <msg key="Unknown">Unknown</msg>
-  <msg key="Unknown-Message">Unknown-Message</msg>
+  <msg key="Unknown-Message">Use this for companies where it is not clear whether they will act as a customer of as a provider. Try to avoid this.</msg>
   <msg key="Unsubscribe">Unsubscribe</msg>
   <msg key="Update">Update</msg>
   <msg key="Update_members">Update members</msg>
