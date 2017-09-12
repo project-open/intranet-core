@@ -133,10 +133,9 @@ ad_form \
 	{company_name:text(text) {label "[_ intranet-core.Company_Name]"} {html {size 60}}}
 	{company_path:text(text) {label "[_ intranet-core.Company_Short_Name]"} {html {size 40}}}
 	{referral_source:text(text),optional {label "[_ intranet-core.Referral_Source]"} {html {size 60}}}
-	{company_status_id:text(im_category_tree) {label "[_ intranet-core.Company_Status]"} {custom {category_type "Intranet Company Status" } } }
-	{company_type_id:text(im_category_tree) {label "[_ intranet-core.Company_Type]"} {custom {category_type "Intranet Company Type"} } }
+	{company_status_id:text(im_category_tree) {label "[_ intranet-core.Company_Status]"} {custom {category_type "Intranet Company Status" translate_p 1} } }
+	{company_type_id:text(im_category_tree) {label "[_ intranet-core.Company_Type]"} {custom {category_type "Intranet Company Type" translate_p 1} } }
 	{manager_id:text(select),optional {label "[_ intranet-core.Key_Account]"} {options $employee_options} }
-	
 	{phone:text(text),optional {label "[_ intranet-core.Phone]"} {html {size 20}}}
 	{fax:text(text),optional {label "[_ intranet-core.Fax]"} {html {size 20}}}
 	{address_line1:text(text),optional {label "[_ intranet-core.Address_1]"} {html {size 40}}}
