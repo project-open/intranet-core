@@ -32,7 +32,7 @@ if {!$user_is_admin_p} {
     return
 }
 
-set page_title "Components"
+set page_title [lang::message::lookup "" intranet-core.Portlets "Portlets"]
 set context_bar [im_context_bar $page_title]
 set context ""
 
@@ -112,11 +112,11 @@ set table_header_head "
 
 set table_header_td "
 <tr>
-  <td class=rowtitle>Component</td>
-  <td class=rowtitle>En</td>
-  <td class=rowtitle>Package</td>
-  <td class=rowtitle>Pos</td>
-  <td class=rowtitle>URL</td>
+  <td class=rowtitle>[_ intranet-core.Portlet]</td>
+  <td class=rowtitle>[_ intranet-core.En]</td>
+  <td class=rowtitle>[_ intranet-core.Package]</td>
+  <td class=rowtitle>[_ intranet-core.Pos]</td>
+  <td class=rowtitle>[_ intranet-core.URL]</td>
 "
 
 set main_sql_select ""
@@ -230,7 +230,7 @@ append table "
 # ------------------------------------------------------
 
 if { "" == $package_key_form } { set package_key_form "All" }
-set package_select [im_select -ad_form_option_list_style_p 1 package_key_form $package_options $package_key_form]
+set package_select [im_select -translate_p 0 -ad_form_option_list_style_p 1 package_key_form $package_options $package_key_form]
 
 set left_navbar_html "
 	<table>
