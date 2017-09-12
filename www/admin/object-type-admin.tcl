@@ -12,7 +12,20 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-ad_returnredirect "/intranet/admin/"
+ad_page_contract {
+    Redirect to admin pages for certain object types.
+    @author Frank Bergmann (frank.bergmann@project-open.com)
+} {
+    { object_type "" }
+    { url "/intranet/admin/" }
+}
 
+switch $object_type {
+    im_ticket { set url "/intranet-helpdesk/admin/" }
+
+}
+
+
+ad_returnredirect $url
 
 
