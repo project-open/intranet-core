@@ -58,8 +58,8 @@ ad_form \
     -form {
 	view_id:key(im_views_seq)
 	{view_name:text(text) {label #intranet-core.View_Name#} }
-	{view_type_id:text(im_category_tree),optional {label #intranet-core.View_Type#} {custom {category_type "Intranet DynView Type"}} {value ""} }
-	{view_status_id:text(im_category_tree),optional {label #intranet-core.View_Status#} {custom {category_type "Intranet DynView Status"}} {value ""} }
+	{view_type_id:text(im_category_tree),optional {label #intranet-core.View_Type#} {custom {category_type "Intranet DynView Type" translate_p 1}} {value ""} }
+	{view_status_id:text(im_category_tree),optional {label #intranet-core.View_Status#} {custom {category_type "Intranet DynView Status" translate_p 1}} {value ""} }
 	{sort_order:integer(text),optional {label #intranet-core.Sort_Order#} {html {size 10 maxlength 15}}}
 	{view_sql:text(textarea),optional {label #intranet-core.View_sql#} {html {cols 50 rows 5}}}
     }

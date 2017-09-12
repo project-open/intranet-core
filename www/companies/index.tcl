@@ -147,8 +147,8 @@ ad_form \
 if {$view_companies_all_p} {
 
     ad_form -extend -name $form_id -form {
-        {status_id:text(im_category_tree),optional {label "Status"} {custom {category_type "Intranet Company Status" } } }
-        {type_id:text(im_category_tree),optional {label "Type"} {custom {category_type "Intranet Company Type"} } }
+        {status_id:text(im_category_tree),optional {label "Status"} {custom {category_type "Intranet Company Status" translate_p 1} } }
+        {type_id:text(im_category_tree),optional {label "Type"} {custom {category_type "Intranet Company Type" translate_p 1} } }
     }
 
 }
