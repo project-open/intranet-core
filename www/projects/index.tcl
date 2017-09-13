@@ -231,15 +231,11 @@ set extra_wheres [list]
 set view_order_by_clause ""
 
 set column_sql "
-select
-	vc.*
-from
-	im_view_columns vc
-where
-	view_id=:view_id
+select	vc.*
+from	im_view_columns vc
+where	view_id=:view_id
 	and group_id is null
-order by
-	sort_order"
+order by sort_order"
 
 db_foreach column_list_sql $column_sql {
 
@@ -253,7 +249,7 @@ db_foreach column_list_sql $column_sql {
 	lappend column_headers "$column_name"
 	lappend column_vars "$column_render_tcl"
 	lappend column_headers_admin $admin_html
-	if {"" != $extra_select} { lappend extra_selects $extra_select }
+	if {"" != $extra_select} { lappend extra_selects [eval "set a \"$extra_select\""] }
 	if {"" != $extra_from} { lappend extra_froms $extra_from }
 	if {"" != $extra_where} { lappend extra_wheres $extra_where }
 	if {"" != $order_by_clause &&
