@@ -494,6 +494,54 @@ where object_type = 'im_note';
 
 
 -- ------------------------------------------------------------------
+-- PL/SQL version of lang::message::lookup locale key default
+-- ------------------------------------------------------------------
+
+create or replace function im_lang_lookup(text, text, text)
+returns varchar as $body$
+DECLARE
+	p_locale	alias for $1;
+	p_package_key	alias for $2;
+	p_default	alias for $3;
+
+	v_result	text;
+	v_package	text;
+	v_key		text;
+BEGIN
+	v_package := substring(p_package_key from '^([a-z\-]+)');
+	v_key := substring(p_package_key from '^[a-z\-]+\.(.*)');
+	v_key := regexp_replace(v_key, '[^a-zA-z]', '_');
+
+	select	 message into v_result from lang_messages
+	where	 locale = p_locale and package_key = v_package and message_key = v_key;
+	IF v_result is not null THEN return v_result; END IF;
+
+	select	 message into v_result from lang_messages
+	where	 locale = 'en_US' and package_key = v_package and message_key = v_key;
+	IF v_result is not null THEN return v_result; END IF;
+	
+	return p_default;
+END;$body$ language 'plpgsql';
+
+
+create or replace function im_lang_lookup_category(text, integer)
+returns varchar as $body$
+DECLARE
+	p_locale	alias for $1;
+	p_category_id	alias for $2;
+
+	v_default	text;
+BEGIN
+	v_default = im_category_from_id(p_category_id);
+	return im_lang_lookup(p_locale, 'intranet-core.'||v_default, v_default);
+END;$body$ language 'plpgsql';
+
+
+
+
+
+
+-- ------------------------------------------------------------------
 -- Add a new message key to the localization system with default
 -- translation.
 -- ------------------------------------------------------------------
