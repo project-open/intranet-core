@@ -13,6 +13,7 @@
   <msg key="7">7</msg>
   <msg key="8">8</msg>
   <msg key="9">9</msg>
+  <msg key="24h_Status_Changes">24h Status Changes</msg>
   <msg key="1111">1111</msg>
   <msg key="_"></msg>
   <msg key="_Cost_">Cost</msg>
@@ -190,6 +191,7 @@
   <msg key="Associated_with_new_Object">Associated with new Object</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="attachments">attachments</msg>
+  <msg key="Attribute">Attribute</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Audit_Trail_Absences">Audit Trail Absences</msg>
   <msg key="Audit_Trail_Conf_Items">Audit Trail Conf Items</msg>
@@ -297,6 +299,7 @@ We recommend you to upgrade your browser to a more recent version.</msg>
   <msg key="Canada">Canada</msg>
   <msg key="Canceled">Canceled</msg>
   <msg key="Cant_reproduce">Can not reproduce</msg>
+  <msg key="Capacity_Planning">Capacity Planning</msg>
   <msg key="CapacityPlanning">Capacity Planning</msg>
   <msg key="Cash">Cash</msg>
   <msg key="Cat_Type">Category Type</msg>
@@ -466,9 +469,19 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Contract_Value">Contract Value</msg>
   <msg key="Copies">Copies</msg>
   <msg key="Corel_Catalyst__30">Corel Catalyst 3.0</msg>
+  <msg key="Cost_Bills_Cache">Provider Bills Cache</msg>
   <msg key="Cost_Center">Cost Center</msg>
   <msg key="Cost_Center_Perms">Cost Center Perms</msg>
   <msg key="Cost_Centers">Cost Centers</msg>
+  <msg key="Cost_Delivery_Notes_Cache">Delivery Notes Cache</msg>
+  <msg key="Cost_Expenses_Logged_Cache">Logged Expenses Cache</msg>
+  <msg key="Cost_Expenses_Planned_Cache">Planned Expenses Cache</msg>
+  <msg key="Cost_Invoices_Cache">Customer Invoices Cache</msg>
+  <msg key="Cost_Purchase_Orders_Cache">Purchase Orders Cache</msg>
+  <msg key="Cost_Quotes_Cache">Quotes Cache</msg>
+  <msg key="Cost_Reported_Days_Cache">Reported Days Cache</msg>
+  <msg key="Cost_Timesheet_Logged_Cache">Logged Hours Cache</msg>
+  <msg key="Cost_Timesheet_Planned_Cache">Planned Hours Cache</msg>
   <msg key="Costa Rica">Costa Rica</msg>
   <msg key="Costa_Rica">Costa Rica</msg>
   <msg key="Costs">Costs</msg>
@@ -510,6 +523,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Customer-Message">A customer pays the &#39;internal company&#39; to perform work or provide goods. There may be sub-types of customers below.</msg>
   <msg key="Customer_Contact">Customer Contact</msg>
   <msg key="Customer_Documents">Customer Documents</msg>
+  <msg key="Customer_Indicators_Timeline">Customer Indicator Timeline</msg>
   <msg key="Customer_Info">Customer Info</msg>
   <msg key="Customer_Information_AJAX">Customer Information AJAX</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
@@ -568,7 +582,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="default_payment_days">Default Payment Days</msg>
   <msg key="default_payment_method_id">Default Payment Method</msg>
   <msg key="default_pm_fee_perc">Default PM Fee Percentage</msg>
-  <msg key="Default_PO_Template">Default Template</msg>
+  <msg key="Default_PO_Template">Default Purchase Order Template</msg>
   <msg key="default_po_template_id">Default PO Template</msg>
   <msg key="default_surcharge_perc">Default Surcharge Percentage</msg>
   <msg key="default_tax">Default TAX</msg>
@@ -675,6 +689,8 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="es_US">es_US</msg>
   <msg key="es_UY">es_UY</msg>
   <msg key="es_VE">es_VE</msg>
+  <msg key="Estimate_to_Complete_Details">Estimate to Complete Details</msg>
+  <msg key="Estimate_to_Complete_History">Estimate to Complete History</msg>
   <msg key="Estonia">Estonia</msg>
   <msg key="et">et</msg>
   <msg key="eu">eu</msg>
@@ -2042,6 +2058,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Paraguay">Paraguay</msg>
   <msg key="Parameters">Parameters</msg>
   <msg key="Parent_Categories">Parent Categories</msg>
+  <msg key="Parent_ID">Parent</msg>
   <msg key="Parent_Project">Parent Project</msg>
   <msg key="Parents">Parents</msg>
   <msg key="Parking">Parking</msg>
@@ -2303,6 +2320,11 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Project_type_Ticket">Ticket</msg>
   <msg key="Project_type_Ticket_Container">Ticket Container</msg>
   <msg key="Project_type_ticket_container">Ticket Container</msg>
+  <msg key="Project_type_ticket_container_short_blurb">A Ticket Container serves as a tracker for a number of tickets
+ of a specific type. A Ticket Container may be a top-level project,
+or maybe a sub-project of a Gantt Project.&lt;br&gt;
+Ticket Containers handle permissions, timesheet logging and
+financial controlling for the included tickets.</msg>
   <msg key="Project_type_Translation_Project">Translation Project</msg>
   <msg key="Project_type_Unknown">Unknown</msg>
   <msg key="Project_Types">Project Types</msg>
@@ -2426,6 +2448,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Reset_Stuff">Reset Stuff</msg>
   <msg key="Resolution_Time">Resolution Time</msg>
   <msg key="Resolved">Resolved</msg>
+  <msg key="Resource_Assignments">Resource Assignments</msg>
   <msg key="Resource_Availability_Component">Resource Availability Portlet</msg>
   <msg key="Resource_Management">Resource Management</msg>
   <msg key="Resource_Planning">Resource Planning</msg>
@@ -2510,6 +2533,7 @@ Mixed projects allow for project tracking, financial controlling and resource ma
   <msg key="Role_im_project_Full_Member">Full Member</msg>
   <msg key="Role_im_project_Project_Manager">Project Manager</msg>
   <msg key="Role_im_ticket_Full_Member">Ticket Member</msg>
+  <msg key="Role_im_timesheet_task_Full_Member">Full Member</msg>
   <msg key="Romania">Romania</msg>
   <msg key="Room">Room</msg>
   <msg key="Room_City">Raum Ort</msg>
@@ -2807,6 +2831,7 @@ For details on templates please see the
   <msg key="Top_10_Unpaid_Customer_Invoices">Top 10 Unpaid Customer Invoices</msg>
   <msg key="Top_10_Unpaid_Provider_Bills">Top 10 Unpaid Provider Bills</msg>
   <msg key="Top_Customers">Top Customers</msg>
+  <msg key="Top_Customers__Company_Dashboard_">Top Customers</msg>
   <msg key="Top_Customers__Finance_Dashboard_">Top Customers - Finance Dashboard</msg>
   <msg key="Top_Menu">Top Menu</msg>
   <msg key="tr">tr</msg>
@@ -2955,7 +2980,7 @@ For details on templates please see the
   <msg key="VAS">VAS</msg>
   <msg key="VAS_5051">VAS 5051</msg>
   <msg key="VAT_Number">VAT Number</msg>
-  <msg key="vat_number">rut</msg>
+  <msg key="vat_number">VAT Number</msg>
   <msg key="Venezuela">Venezuela</msg>
   <msg key="Version">Version</msg>
   <msg key="Very_Important">Very Important</msg>

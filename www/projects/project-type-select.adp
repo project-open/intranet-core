@@ -113,7 +113,7 @@
 		<a href="@po_maint;noquote@" target="_"><img src="/intranet/images/external.png"></a>
 		</b><br>
 		<%= [im_help_collapsible "<br>
-		[lang::message::lookup "" intranet-core.Project_type_agile_short_blurb "
+		[lang::message::lookup "" intranet-core.Project_type_ticket_container_short_blurb "
 		A Ticket Container serves as a tracker for a number of tickets
 		of a specific type. A Ticket Container may be a top-level project,
 		or maybe a sub-project of a Gantt Project.<br>
