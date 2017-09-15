@@ -119,7 +119,9 @@ if {!$download_p} {
 
 }
 
+# ------------------------------------------------------------
 # Parameters
+#
 set dest_file "$path/$filename"
 global tcl_platform
 set platform [lindex $tcl_platform(platform) 0]
@@ -131,8 +133,12 @@ if {"" != $pgbin_param} { set pgbin $pgbin_param }
 set pgbin_last_char [string range $pgbin end end]
 if {"" ne $pgbin && "/" ne $pgbin_last_char} { set pgbin "$pgbin/" }
 
-
-
+# Do we need to use special connection parameters for PgDump?
+set pg_host [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpHost" -default ""]
+set pg_user [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpUser" -default ""]
+set pg_port [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpPort" -default ""]
+# set pg_pass [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpPass" -default ""]
+set pg_db ""
 
 # get the PSQL PostgreSQL version
 set psql_version [im_database_version]
@@ -154,21 +160,42 @@ if {"7" == $psql_major} {
     set disable_dollar_quoting "--no-owner" 
 }
 
-
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path"
 
     switch $platform {
 	windows {
 	    # Windows
-	    set pg_user "projop"
-	    set cmd [list im_exec ${pgbin}pg_dump -h localhost -U $pg_user -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file projop]
+	    if {"" eq $pg_host} { set pg_host "localhost" }
+	    if {"" eq $pg_user} { set pg_user "projop" }
+	    set pg_db "projop"
+	    set cmd [list im_exec ${pgbin}pg_dump -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
 	    set cmd [list im_exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
     }
+
+    if {"" ne $pg_port} { 
+	lappend cmd "-p"
+	lappend cmd $pg_port
+    }
+    
+    if {"" ne $pg_host} { 
+	lappend cmd "-h"
+	lappend cmd $pg_host
+    }
+
+    if {"" ne $pg_user} { 
+	lappend cmd "-U"
+	lappend cmd $pg_user
+    }
+
+    if {"" ne $pg_db} { 
+	lappend cmd $pg_db
+    }
+
 
     if {!$download_p} {
 	ns_write "<li>PosgreSQL dump command:<br>\n<tt>$cmd\n</tt>\n"
