@@ -521,3 +521,10 @@ ad_proc im_linux_vmware_p { } {
     return 0
 }
 
+ad_proc im_system_user { } {
+    Returns the name of the user running ]po[
+} {
+    set user "projop"
+    catch { set user [im_exec whoami] }
+    return $user
+}
