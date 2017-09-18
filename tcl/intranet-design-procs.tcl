@@ -1009,21 +1009,13 @@ ad_proc -public im_navbar_helper {
 	   lappend navbar "<li class='sm-submenu-item'><a href='/intranet/users/password-update?user_id=$user_id'>[_ intranet-core.Change_Password]</a></li>"
 	}
 	
-	lappend navbar "
-	    <li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]'
-	    >[_ intranet-core.Reset_Portlets]</a></li>
-	    <li class='unselected'><a href='[export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]'
-	    >[_ intranet-core.Add_Portlet]</a></li>
-	    </ul></li>
-    	"
-
 	if {$admin_p} {
 	    set admin_text [lang::message::lookup "" intranet-core.Navbar_Admin_Text "Click here to configure this navigation bar"]
 	    set admin_url [export_vars -base "/intranet/admin/menus/index" {{top_menu_id $main_menu_id} {top_menu_depth 1} return_url }]
 	    lappend navbar "<li class='unselected'><a href=\"$admin_url\"><span>[im_gif -translate_p 0 wrench $admin_text]</span></a></li>"
 	}
+	lappend navbar "</ul>"
     }
-
 
     return "
 	    <div id=\"main\">
@@ -1450,11 +1442,27 @@ ad_proc -public im_header {
     # Logout 
     set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
     
+    # Portlets 
+    set reset_stuff_link ""
+    set add_stuff_link ""
+
+    set show_portlets_sql "select count(*) from im_component_plugins where page_url = '$page_url'"
+    set show_portlets_p [util_memoize [list db_string show_portlets_p $show_portlets_sql -default 0]]
+
+    if { "register" != [string range [ns_conn url] 1 8] && $show_portlets_p } { 
+	set add_comp_url [export_vars -quotehtml -base "/intranet/components/add-stuff" {page_url return_url}]
+	set reset_comp_url [export_vars -quotehtml -base "/intranet/components/component-action" {page_url {action reset} {plugin_id 0} return_url}]
+	set add_stuff_text [lang::message::lookup "" intranet-core.Add_Portlet "Add Portlet"]
+	set reset_stuff_text [lang::message::lookup "" intranet-core.Reset_Portlets "Reset Portlets"]
+	set reset_stuff_link "&nbsp;<a href=\"$reset_comp_url\">$reset_stuff_text</a>&nbsp;|"
+	set add_stuff_link "&nbsp;<a href=\"$add_comp_url\">$add_stuff_text</a>&nbsp;|"
+    }
+
     # Build buttons 
     if {$loginpage_p} { 
 	set header_buttons "" 
     } else {
-	set header_buttons "${welcome_txt}${users_online_txt}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
+	set header_buttons "${welcome_txt}${users_online_txt}${add_stuff_link}${reset_stuff_link}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
     }
     
     set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
