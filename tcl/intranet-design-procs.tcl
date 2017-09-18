@@ -1446,7 +1446,8 @@ ad_proc -public im_header {
     set reset_stuff_link ""
     set add_stuff_link ""
 
-    set show_portlets_sql "select count(*) from im_component_plugins where page_url = '$page_url'"
+    regsub -all {[^a-z0-9\-\/]} $page_url "" page_url_mangled
+    set show_portlets_sql "select count(*) from im_component_plugins where page_url = '$page_url_mangled'"
     set show_portlets_p [util_memoize [list db_string show_portlets_p $show_portlets_sql -default 0]]
 
     if { "register" != [string range [ns_conn url] 1 8] && $show_portlets_p } { 
