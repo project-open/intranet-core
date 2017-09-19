@@ -3,6 +3,7 @@
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1">1</msg>
+  <msg key="1_-_Highest_Priority">1 - Highest Priority</msg>
   <msg key="2">2</msg>
   <msg key="3">3</msg>
   <msg key="3_-_High_Priority">3 - High Priority</msg>
@@ -11,8 +12,10 @@
   <msg key="5_-_Average_Priority">5 - Average Priority</msg>
   <msg key="6">6</msg>
   <msg key="7">7</msg>
+  <msg key="7_-_Low_Priority">7 - Low Priority</msg>
   <msg key="8">8</msg>
   <msg key="9">9</msg>
+  <msg key="9_-_Lowest_Priority">9 - Lowest Priority</msg>
   <msg key="24h_Status_Changes">24h Status Changes</msg>
   <msg key="1111">1111</msg>
   <msg key="_"></msg>
@@ -755,6 +758,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Filter_Tickets">Filter Tickets</msg>
   <msg key="Filter_Users">Filter Users</msg>
   <msg key="Filter_View">View</msg>
+  <msg key="Final_Customer">Final Customer</msg>
   <msg key="Finance">Finance</msg>
   <msg key="finance">Finance</msg>
   <msg key="Finance_Admin">Admin Finance</msg>
@@ -833,6 +837,7 @@ symbols to the right of each portlet.</msg>
   <msg key="General_Consulting">General Consulting</msg>
   <msg key="General_Home">Home</msg>
   <msg key="Generic-Router">Generic-Router</msg>
+  <msg key="Generic_Association">Generic Association</msg>
   <msg key="Generic_PM">Generic PM</msg>
   <msg key="Generic_Problem_Ticket">Generic Problem Ticket</msg>
   <msg key="Generic_Problem_Ticket_comment">Generic heavy-weight problem responsible for multiple incidents.</msg>
@@ -1235,6 +1240,10 @@ symbols to the right of each portlet.</msg>
   <msg key="Lori_Project">Lori Project</msg>
   <msg key="Low">Low</msg>
   <msg key="lt">lt</msg>
+  <msg key="lt_2_-_Very_High_Priorit">2 - Very High Priority</msg>
+  <msg key="lt_4_-_Medium_High_Prior">4 - Medium High Priority</msg>
+  <msg key="lt_6_-_Medium_Low_Priori">6 - Medium Low Priority</msg>
+  <msg key="lt_8_-_Very_Low_Priority">8 - Very Low Priority</msg>
   <msg key="lt_A_project_number_is_c">A project number is composed by 4 digits for the year plus 4 digits for current identification</msg>
   <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Add</msg>
@@ -1773,6 +1782,7 @@ other way for the user to find out.</msg>
   <msg key="Mac_OS_X">Mac OS X</msg>
   <msg key="Macedonia">Macedonia</msg>
   <msg key="Machine_Translation">Machine Translation</msg>
+  <msg key="Mail_Association">Mail Association</msg>
   <msg key="Mail_Failed">Mail Failed</msg>
   <msg key="Mail_Import">Mail Import</msg>
   <msg key="Main_Menu">Main Menu</msg>
@@ -2854,6 +2864,7 @@ For details on templates please see the
   <msg key="Trados_MultiTerm_Ix">Trados MultiTerm lx</msg>
   <msg key="Traffic_Light_Report">RAG Traffic Light Report</msg>
   <msg key="Train">Train</msg>
+  <msg key="Trainer">Trainer</msg>
   <msg key="Training">Training</msg>
   <msg key="Training_Event">Training Event</msg>
   <msg key="Training_Request">Training Request</msg>

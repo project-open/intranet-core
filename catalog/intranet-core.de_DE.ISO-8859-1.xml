@@ -3,6 +3,7 @@
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1">1</msg>
+  <msg key="1_-_Highest_Priority">1 - Höchste Priorität</msg>
   <msg key="2">2</msg>
   <msg key="3">3</msg>
   <msg key="3_-_High_Priority">3 - Hohe Priorität</msg>
@@ -11,8 +12,10 @@
   <msg key="5_-_Average_Priority">5 - Mittlere Priorität</msg>
   <msg key="6">6</msg>
   <msg key="7">7</msg>
+  <msg key="7_-_Low_Priority">7 - Niedrige Priorität</msg>
   <msg key="8">8</msg>
   <msg key="9">9</msg>
+  <msg key="9_-_Lowest_Priority">9 - Niedrigste Priorität</msg>
   <msg key="24h_Status_Changes">24h Statusänderungen</msg>
   <msg key="1111">1111</msg>
   <msg key="_">&amp;nbsp;</msg>
@@ -94,7 +97,7 @@
   <msg key="Active">Aktiv</msg>
   <msg key="Active or Potential">Active oder potentiell</msg>
   <msg key="Active_Customers">Aktive Kunden</msg>
-  <msg key="Active_or_Potential">Active or Potential</msg>
+  <msg key="Active_or_Potential">Activ oder Potentiell</msg>
   <msg key="Ad_hoc_eac_deviation_percent">% EAC&lt;br&gt;Abweichung</msg>
   <msg key="Ad_hoc_Edit">Bearbeiten</msg>
   <msg key="Ad_hoc_estimate_at_completion">EAC&lt;br&gt;auf Basis&lt;br&gt;von ETC</msg>
@@ -789,6 +792,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Filter_Tickets">Anfragen filtern</msg>
   <msg key="Filter_Users">Benutzer filtern</msg>
   <msg key="Filter_View">Sicht</msg>
+  <msg key="Final_Customer">Endkunde</msg>
   <msg key="Finance">Finanzen</msg>
   <msg key="finance">Finanzen</msg>
   <msg key="Finance_Admin">Admin - Finanzen</msg>
@@ -866,6 +870,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="General_Consulting">Allgemeine Beratung</msg>
   <msg key="General_Home">Übersicht</msg>
   <msg key="Generic-Router">Generischer Router</msg>
+  <msg key="Generic_Association">Generische Assoziierung</msg>
   <msg key="Generic_PM">Generic PM</msg>
   <msg key="Generic_Problem_Ticket">Generisches Problem-Ticket</msg>
   <msg key="Generic_Problem_Ticket_comment">Generisches (schwerwiegendes) Problem, das für mehrere Vorfälle verantwortlich ist</msg>
@@ -1267,6 +1272,10 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Lori_Project">Lori Projekt</msg>
   <msg key="Low">Niedrig</msg>
   <msg key="lt">lt</msg>
+  <msg key="lt_2_-_Very_High_Priorit">2 - Sehr hohe Priorität</msg>
+  <msg key="lt_4_-_Medium_High_Prior">4 - Etwas höhere Priorität</msg>
+  <msg key="lt_6_-_Medium_Low_Priori">6 - Etwas niedrigere Priorität</msg>
+  <msg key="lt_8_-_Very_Low_Priority">8 - Sehr niedrige Priorität</msg>
   <msg key="lt_A_project_number_is_c">Eindeutige Projektnummer</msg>
   <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Hinzufügen</msg>
@@ -1797,6 +1806,7 @@ Passwort: %password%
   <msg key="Mac_OS_X">Mac OS X</msg>
   <msg key="Macedonia">Mazedonien</msg>
   <msg key="Machine_Translation">Maschinen Übersetzung</msg>
+  <msg key="Mail_Association">E-Mail Assoziierung</msg>
   <msg key="Mail_Failed">Mailversand hat nicht funktioniert</msg>
   <msg key="Mail_Import">E-Mail-Import</msg>
   <msg key="Main_Menu">Hauptmenü</msg>
@@ -2868,6 +2878,7 @@ Details finden Sie auf der
   <msg key="Trados_MultiTerm_Ix">Trados MultiTerm lx</msg>
   <msg key="Traffic_Light_Report">Ampelbericht (Rot-Gelb-Grün)</msg>
   <msg key="Train">Bahnkosten</msg>
+  <msg key="Trainer">Dozent</msg>
   <msg key="Training">Schulung</msg>
   <msg key="Training_Event">Schulung</msg>
   <msg key="Training_Request">Schulungsanfrage</msg>
