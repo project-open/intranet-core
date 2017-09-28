@@ -12,6 +12,7 @@
 
 
 <table cellspacing="0" cellpadding="0">
+
 <tr valign=top>
 <td width="500">
 	<table cellspacing="0" cellpadding="0">
@@ -102,6 +103,14 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+
+
+
+
+
+
+
+
 <tr valign=top>
 <td>
 	<table cellspacing="0" cellpadding="0">
@@ -129,6 +138,39 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+
+
+
+<if @translation_p@ gt 0>
+<tr valign=top>
+<td width="500">
+	<table cellspacing="0" cellpadding="0">
+	<tr valign=top>
+	<td width=22>
+		<input type="radio" name="project_type_id" value="2500" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	</td>
+	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_translation "Translation Project"] %>
+		<a href="@po_trans;noquote@" target="_"><img src="/intranet/images/external.png"></a>
+		</b><br>
+		<%= [im_help_collapsible "<br>
+		[lang::message::lookup "" intranet-core.project_type_trans_short_blurb "
+		A Translation Project is defined by a number of documents to be translated."]"] %><br>
+		@trans_project_subtypes_html;noquote@
+	</td>
+	</tr>
+	</table>
+</td>
+<td>
+	<a href="@po_gantt;noquote@" target="_">
+	<!-- <img  width=442 height=158 src="/intranet/images/project-types/pm-classic.png" title="@click_me_l10n@"></a> -->
+</td>
+</tr>
+<tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+</if>
+
+
+
+
 <tr valign=top>
 <td>
 	<table cellspacing="0" cellpadding="0">

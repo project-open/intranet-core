@@ -54,15 +54,16 @@ ad_page_contract {
 # No permissions necessary, that's handled by the object's new page
 # Here we just select an object_type_id for the given object.
 set admin_p [im_is_user_site_wide_or_intranet_admin [ad_conn user_id]]
-
 set system_id [im_system_id]
 set po_net "http://www.project-open.net/en"
 set po_gantt [export_vars -base "$po_net/project-type-gantt" {system_id}]
 set po_agile [export_vars -base "$po_net/project-type-agile" {system_id}]
 set po_mixed [export_vars -base "$po_net/project-type-mixed" {system_id}]
 set po_maint [export_vars -base "$po_net/project-type-maintenance" {system_id}]
+set po_trans [export_vars -base "$po_net/project-type-translation" {system_id}]
 set click_me_l10n [lang::message::lookup "" intranet-core.Click_me "Click me for more information"]
 
+set translation_p [db_string translation_p "select count(*) from apm_packages where package_key = 'intranet-translation'"]
 
 if {[catch {db_1row otype_info "
 	select	pretty_name as object_type_pretty
@@ -174,6 +175,48 @@ db_foreach agile $agile_project_subtypes_sql {
 if {"" ne $agile_project_subtypes_html} {
    set agile_project_subtypes_html "<tr><td></td><td colspan=2>Sub-Types:</td></tr> \n $agile_project_subtypes_html"
 }
+
+
+
+
+
+
+# -----------------------------------------------------------
+# Trans Project Subtypes
+# -----------------------------------------------------------
+
+set trans_project_subtypes_html ""
+set trans_project_subtypes_sql "
+        select	category_id,
+                category,
+                category_description
+        from	im_categories
+        where	(enabled_p = 't' OR enabled_p is NULL) and
+		category_id not in ([join $exclude_ids ","]) and
+		category_id in (select im_sub_categories([im_project_type_translation])) and
+		category_id not in ([im_project_type_translation])
+        order by lower(category)
+"
+db_foreach trans $trans_project_subtypes_sql {
+    set category_l10n $category
+    append trans_project_subtypes_html "<tr valign=top>\n"
+    append trans_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
+    append trans_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
+    append trans_project_subtypes_html $category_description
+    append trans_project_subtypes_html "</div></td>\n"
+    append trans_project_subtypes_html "</tr>\n"
+}
+
+if {"" ne $trans_project_subtypes_html} {
+   set trans_project_subtypes_html "<tr><td></td><td colspan=2>Sub-Types:</td></tr>\n$trans_project_subtypes_html"
+}
+
+
+
+
+
+
+
 
 
 # -----------------------------------------------------------

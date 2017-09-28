@@ -47,6 +47,7 @@ ad_proc -public im_project_type_service_contract_time_material {} { return 107 }
 ad_proc -public im_project_type_service_contract_open_stack {} { return 108 }
 
 # Remove im_project_type_consulting in V4.2 or later
+ad_proc -public im_project_type_translation {} { return 2500 }
 ad_proc -public im_project_type_consulting {} { return 2501 }
 ad_proc -public im_project_type_gantt {} { return 2501 }
 ad_proc -public im_project_type_sla {} { return 2502 }
