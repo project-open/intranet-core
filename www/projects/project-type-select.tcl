@@ -212,13 +212,6 @@ if {"" ne $trans_project_subtypes_html} {
 }
 
 
-
-
-
-
-
-
-
 # -----------------------------------------------------------
 # 
 # -----------------------------------------------------------
@@ -244,6 +237,7 @@ set category_select_sql "
 "
 db_foreach category_select $category_select_sql {
     set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
+    set enabled($category_id) $enabled_p
     set level($category_id) 0
 }
 

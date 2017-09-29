@@ -13,6 +13,8 @@
 
 <table cellspacing="0" cellpadding="0">
 
+<% set enabled_p [info exists enabled(2501)] %>
+<if @enabled_p@ eq 1>
 <tr valign=top>
 <td width="500">
 	<table cellspacing="0" cellpadding="0">
@@ -42,6 +44,10 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+</if>
+
+<% set enabled_p [info exists enabled(88000)] %>
+<if @enabled_p@ eq 1>
 <tr valign="top">
 <td>
 	<table cellspacing="0" cellpadding="0">
@@ -67,6 +73,10 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+</if>
+
+<% set enabled_p [info exists enabled(2501)] %>
+<if @enabled_p@ eq 1>
 <tr valign="top">
 <td>
 	<table cellspacing="0" cellpadding="0">
@@ -103,14 +113,10 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+</if>
 
-
-
-
-
-
-
-
+<% set enabled_p [info exists enabled(2502)] %>
+<if @enabled_p@ eq 1>
 <tr valign=top>
 <td>
 	<table cellspacing="0" cellpadding="0">
@@ -138,7 +144,7 @@
 </td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
-
+</if>
 
 
 <if @translation_p@ gt 0>
