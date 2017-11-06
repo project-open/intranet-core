@@ -56,6 +56,20 @@ if { "" != $cancel } {
     ad_script_abort
 }
 
+# ---------------------------------------------------------------
+# ---------------------------------------------------------------
+
+# Replace {variable} by %variable%
+set message [regsub -all {{([a-zA-Z0-9_]+)}} $message "%\\1%"]
+
+# Replace 0x0D 0x0A (CR-LF) with LF
+set message [regsub -all "\r\n" $message "\n"]
+
+
+# ---------------------------------------------------------------
+# Debugging...
+# ---------------------------------------------------------------
+
 ns_log Notice "subject='$subject'"
 ns_log Notice "message_mime_type='$message_mime_type'"
 ns_log Notice "attachment_filename='$attachment_filename'"
@@ -66,13 +80,6 @@ ns_log Notice "return_url='$return_url'"
 ns_log Notice "process_mail_queue_now_p='$process_mail_queue_now_p'"
 ns_log Notice "message='$message'"
 ns_log Notice "attachment='$attachment'"
-
-
-# ---------------------------------------------------------------
-# Replace {variable} by %variable%
-# ---------------------------------------------------------------
-
-set message [regsub -all {{([a-zA-Z0-9_]+)}} $message "%\\1%"]
 
 
 # ---------------------------------------------------------------
