@@ -9,27 +9,33 @@
   </rdbms>
   <fullquery name="users_info_query">
     <querytext>
-select 
-	u.first_names, 
-	u.last_name, 
+select
+	pe.first_names, 
+	pe.last_name, 
         im_name_from_user_id(u.user_id) as name,
-	u.email,
-        u.url,
-	u.creation_date as registration_date, 
-	u.creation_ip as registration_ip,
+	pa.email,
+        pa.url,
+	o.creation_date as registration_date, 
+	o.creation_ip as registration_ip,
 	to_char(u.last_visit, :date_format) as last_visit,
 	u.screen_name,
 	u.username,
-	u.member_state,
-	u.creation_user as creation_user_id,
-	im_name_from_user_id(u.creation_user) as creation_user_name,
+	(select member_state from membership_rels where rel_id in (
+		select rel_id from acs_rels where object_id_two = u.user_id and object_id_one = -2
+	)) as member_state,
+	o.creation_user as creation_user_id,
+	im_name_from_user_id(o.creation_user) as creation_user_name,
 	auth.short_name as authority_short_name,
 	auth.pretty_name as authority_pretty_name
-from
-	cc_users u
+from	acs_objects o,
+	persons pe,
+	parties pa,
+	users u
 	LEFT OUTER JOIN auth_authorities auth ON (u.authority_id = auth.authority_id)
-where
-	u.user_id = :user_id_from_search
+where	u.user_id = :user_id_from_search and
+	u.user_id = pe.person_id and
+	u.user_id = pa.party_id and
+	u.user_id = o.object_id
 
     </querytext>
   </fullquery>

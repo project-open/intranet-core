@@ -29,6 +29,7 @@ if {!$read} {
 set date_format "YYYY-MM-DD"
 
 set result [db_0or1row users_info_query {}]
+if {"" eq $member_state} { set member_state "undefined" }
 
 if { $result > 1 } {
     ad_return_complaint "[_ intranet-core.Bad_User]" "
@@ -57,12 +58,16 @@ case $member_state {
 set activate_delete_link ""
 if {$admin} {
     append activate_delete_link "("
-    if { "approved" != $member_state } {
-	append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars {user_id return_url}]>[_ intranet-core.activate]</a>"
+
+    switch $member_state {
+	"approved" {
+	    append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars {user_id return_url}]>[_ intranet-core.delete]</a>"	
+	}
+	"banned" {
+	    append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars {user_id return_url}]>[_ intranet-core.activate]</a>&nbsp;"
+	} 
     }
-    if { "banned" != $member_state } {
-	append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars {user_id return_url}]>[_ intranet-core.delete]</a>"	
-    } 
+
     append activate_delete_link ")"
 }
 

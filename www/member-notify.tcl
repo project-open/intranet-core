@@ -56,6 +56,13 @@ if { "" != $cancel } {
     ad_script_abort
 }
 
+# Should we wait a second after sending out an email?
+# This is necessary for 1and1 because of a limit of 
+# max 5000 emails per hour
+set throttle_seconds [parameter::get_from_package_key -package_key "intranet-core" -parameter ThrottleEmailSendingSeconds -default 0.8]
+
+set error_list []
+
 # ---------------------------------------------------------------
 # ---------------------------------------------------------------
 
@@ -284,6 +291,11 @@ foreach email $email_list {
 	set message_subst [lang::message::format $message $substitution_list]
     }
 
+    # Remember the date of the last email
+    if {[im_column_exists persons last_email_sent]} {
+	db_dml update_last_email "update persons set last_email_sent = now() where person_id = :user_id"
+    }
+
     if {[catch {
 	acs_mail_lite::send \
 	    -send_immediately \
@@ -294,9 +306,13 @@ foreach email $email_list {
 	    -file_ids $attachment_ci_id
     } errmsg]} {
         ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
-	ad_return_error $subject "<p>Error sending out mail:</p><div><code>[ns_quotehtml $errmsg]</code></div>"
-	ad_script_abort
+	lappend error_list "<p>Error sending out mail to: $email</p><div><code>[ns_quotehtml $errmsg]</code></div>"
     }
+
+    if {$throttle_seconds > 0} {
+	im_exec sleep $throttle_seconds
+    }
+
 }
 
 
@@ -311,6 +327,12 @@ if {$process_mail_queue_now_p} {
 # ---------------------------------------------------------------
 # This page has not confirmation screen but just returns
 # ---------------------------------------------------------------
+
+
+if {"" ne $error_list} {
+    ad_return_complaint 1 "<ul><li>[join $error_list "\n<li>"]</ul>"
+}
+
 
 ad_returnredirect $return_url
 

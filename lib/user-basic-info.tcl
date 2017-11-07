@@ -56,6 +56,7 @@ if {!$read} {
 # ---------------------------------------------------------------
 
 set result [db_0or1row users_info_query {}]
+if {"" eq $member_state} { set member_state "undefined" }
 
 if { $result > 1 } {
     ad_return_complaint "[_ intranet-core.Bad_User]" "
