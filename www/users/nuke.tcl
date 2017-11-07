@@ -47,9 +47,11 @@ db_1row user_full_name "
 	first_names, last_name,
 	im_name_from_user_id(user_id) as user_name
     from
-	cc_users
+	users u,
+	persons pe
     where 
-	user_id = :user_id
+	user_id = :user_id and
+	user_id = person_id
 "
 
 set page_title "[lang::message::lookup "" intranet-core.Nuke "Nuke"] $user_name"

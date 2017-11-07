@@ -59,13 +59,18 @@ set activate_delete_link ""
 if {$admin} {
     append activate_delete_link "("
 
+set member_state xxxx
     switch $member_state {
 	"approved" {
 	    append activate_delete_link "<a href=/intranet/users/member-state-change?member_state=banned&[export_vars {user_id return_url}]>[_ intranet-core.delete]</a>"	
 	}
 	"banned" {
-	    append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars {user_id return_url}]>[_ intranet-core.activate]</a>&nbsp;"
+	    append activate_delete_link "<a href=/acs-admin/users/member-state-change?member_state=approved&[export_vars {user_id return_url}]>[_ intranet-core.activate]</a>"
 	} 
+	default {
+	    append activate_delete_link "<a href=[export_vars -base "/intranet/users/nuke" {user_id return_url}]>[lang::message::lookup "" intranet-core.nuke Nuke]</a>"
+	}
+
     }
 
     append activate_delete_link ")"

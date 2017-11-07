@@ -35,13 +35,17 @@ if {!$admin} {
 
 
 db_1row user_full_name "
-    select
+    select 
+	first_names, last_name,
 	im_name_from_user_id(user_id) as user_name
     from
-        cc_users
-    where
-        user_id = :user_id
+	users u,
+	persons pe
+    where 
+	user_id = :user_id and
+	user_id = person_id
 "
+
 
 set return_to_admin_link "/intranet/users/"
 
