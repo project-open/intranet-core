@@ -655,10 +655,6 @@ ad_proc -public im_project_subproject_ids {
 }
 
 
-
-
-
-
 ad_proc -public im_project_options { 
     {-include_empty 1}
     {-include_empty_name ""}
@@ -1014,8 +1010,6 @@ ad_proc -public im_project_select {
     { member_user_id ""} 
     { company_id ""} 
     { main_projects_maxdepth 0}
-
-
 } {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the projects in the system. If status is
