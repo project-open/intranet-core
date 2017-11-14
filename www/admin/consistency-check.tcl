@@ -150,7 +150,10 @@ set check_sql "
 	where	(customer_id not in (select company_id from im_companies) 
 		OR provider_id not in (select company_id from im_companies) 
 		) and
-		c.cost_type_id not in ([im_cost_type_expense_item], [im_cost_type_timesheet])
+		c.cost_type_id not in (
+			select * from im_sub_categories([im_cost_type_expense_item]) UNION
+			select * from im_sub_categories([im_cost_type_timesheet])
+		)
 	order by
 		cost_type,
 		customer_name,
