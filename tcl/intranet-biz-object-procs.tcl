@@ -525,6 +525,15 @@ ad_proc -public im_group_member_component {
     if {"" == $show_percentage_p && ($object_type eq "im_project" || $object_type eq "im_timesheet_task")} { set show_percentage_p 1 }
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
+
+    set show_hours_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowHoursP" -default "1"]
+    if {!$show_percentage_p} { set show_hours_p 0 }; # don't show hours without percentages
+    if {$object_type ni {"im_project" "im_timeheet_task"}} { 
+	set show_hours_p 0; # don't show hours for objects other than project or task
+    } else {
+	db_1row project_info "select start_date, end_date from im_projects where project_id = :object_id"
+    }
+
     set group_l10n [lang::message::lookup "" intranet-core.Group "Group"]
     
     # ------------------ limit_to_users_in_group_id ---------------------
@@ -554,6 +563,11 @@ ad_proc -public im_group_member_component {
 	set bo_rels_percentage_sql ",round(bo_rels.percentage) as percentage"
     }
 
+    set bo_rels_hours_sql ""
+    if {$show_hours_p} {
+	set bo_rels_hours_sql ", im_resource_mgmt_work_days (rels.object_id_two, :start_date, :end_date) as work_days"
+    }
+
     # ------------------ Main SQL ----------------------------------------
     set sql_query "
 	select
@@ -568,6 +582,7 @@ ad_proc -public im_group_member_component {
 		c.category_gif as role_gif,
 		c.category_description as role_description
 		$bo_rels_percentage_sql
+		$bo_rels_hours_sql
 	from
 		acs_rels rels
 		LEFT OUTER JOIN im_biz_object_members bo_rels ON (rels.rel_id = bo_rels.rel_id)
@@ -590,6 +605,10 @@ ad_proc -public im_group_member_component {
     if {$show_percentage_p} {
 	incr colspan
 	append header_html "<td class=rowtitle align=middle>[_ intranet-core.Perc]</td>"
+    }
+    if {$show_hours_p} {
+	incr colspan
+	append header_html "<td class=rowtitle align=middle>[_ intranet-core.Hours]</td>"
     }
     if {$add_admin_links} {
 	incr colspan
@@ -655,6 +674,18 @@ ad_proc -public im_group_member_component {
 		  </td>
 	    "
 	}
+
+	if {$show_hours_p} {
+	    set work_days_array [lindex [split $work_days "="] 1]
+	    regsub -all {,} $work_days_array " " work_days_array
+	    set work_days_array [string range $work_days_array 1 end-1]
+	    # ad_return_complaint 1 $work_days_array
+	    if {"" eq $percentage} { set percentage 0 }
+	    set days 0
+	    foreach d $work_days_array { set days [expr $days + $d] }
+	    append body_html "<td align=middle>[expr round($percentage * $days * 8.0 / 100.0) / 100.0]</td>"
+	}
+
 	if {$add_admin_links} {
 	    append body_html "
 		  <td align=middle>
