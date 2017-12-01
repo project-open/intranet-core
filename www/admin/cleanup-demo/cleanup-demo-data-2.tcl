@@ -84,7 +84,13 @@ ns_write "<ul>\n"
 # Delete all data
 # ---------------------------------------------------------------
 
+
+<li><br>&nbsp;<br><b>Please don't interrupt the process</b><br>
+    This script may take several minutes to run.
+
+
 ns_write "<li>Cleanup existing security tokens.\n"
+
 ns_write "A new set of tokens will be generated with the next server restart\n"
 db_dml delete_sec_tokens "delete from secret_tokens"
 db_string reset_token_seq "SELECT pg_catalog.setval('t_sec_security_token_id_seq', 1, true)"
