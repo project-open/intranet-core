@@ -836,11 +836,17 @@ ad_proc -public im_project_options {
     }
 
     # Unprivileged members can only see the projects they're participating
+    # and their sub-projects
     if {![im_permission $current_user_id view_projects_all]} {
 	lappend p_criteria "p.project_id in (
-					select	object_id_one
-					from	acs_rels
-					where	object_id_two = :current_user_id
+					select	unpriv_p.project_id
+					from	im_projects unpriv_p,
+						im_projects unpriv_parent,
+						acs_rels unpriv_r
+					where	unpriv_r.object_id_two = :current_user_id and
+						unpriv_r.object_id_one = unpriv_parent.project_id and
+						unpriv_p.tree_sortkey between unpriv_parent.tree_sortkey and 
+							tree_right(unpriv_parent.tree_sortkey)
 	)"
 	# No restriction on parent project membership, because parent
 	# projects always have the same members as sub-projects.
