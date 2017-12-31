@@ -690,6 +690,11 @@ sub view_pages {
     );
 
     for my $url (@urls) {
+	if ("" eq $url) {
+	    sleep($sleep);
+	    next;
+	}
+
 	my $start = gettimeofday();
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
