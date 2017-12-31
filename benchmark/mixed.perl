@@ -18,6 +18,7 @@ use HTML::Form;
 use Data::Dumper;
 use Time::HiRes qw(gettimeofday);
 use Getopt::Long;
+use threads;
 
 my $debug = 0;
 my $host = 'http://localhost:8000';
@@ -26,19 +27,20 @@ my $pass = 'system';
 my $iterations = 10;
 my $sleep = 10;
 my $max_exp = 15;
+my $threads = 2;
 
 GetOptions (
     "debug=i" => \$debug,
     "sleep=i" => \$sleep,
     "max_exp=i" => \$max_exp,
     "iterations=i" => \$iterations,
+    "threads=i" => \$threads,
     "host=s" => \$host,
     "email=s" => \$email,
     "pass=s" => \$pass
 ) or die ("Error in command line arguments\n");
 
 
-my %url_time_hash = ();
 my @projects;
 my @users;
 
@@ -47,33 +49,48 @@ $| = 1;
 
 print "debug=$debug, sleep=$sleep, max_exp=$max_exp, iterations=$iterations, host=$host, email=$email, pass=$pass\n";
 print_time_histogram_header();
-for (my $iter = 0; $iter < $iterations; $iter++) {
-    %url_time_hash = ();
-    my $ua = login($host);
-    @users = list_users($ua); sleep($sleep);
-    my $rand_user_id = $users[rand @users];
-    become($ua, $rand_user_id);
-    view_home($ua, $rand_user_id); sleep($sleep);
-    @projects = list_projects($ua); sleep($sleep);
-    log_hours($ua, $rand_user_id); sleep($sleep);
-    my $rand_project_id = $projects[rand @projects];
-    view_project($ua, $rand_project_id, $rand_user_id); sleep($sleep);
-    view_pages($ua, $rand_user_id);
-    print_time_histogram();
+
+my @thread_list;
+for (my $t = 0; $t < $threads; $t++) { push @thread_list, $t; }
+foreach (@thread_list) { $_ = threads->create(\&run); sleep(1); }
+foreach (@thread_list) { $_->join(); }
+exit 0;
+
+
+sub run {
+    for (my $iter = 0; $iter < $iterations; $iter++) {
+	my %url_time_hash = ("asdf" => [1]);
+	my $ref = \%url_time_hash;
+
+	my $ua = login($ref, $host);
+	@users = list_users($ref, $ua); sleep($sleep);
+	my $rand_user_id = $users[rand @users];
+	become($ref, $ua, $rand_user_id);
+	view_home($ref, $ua, $rand_user_id); sleep($sleep);
+	@projects = list_projects($ref, $ua); sleep($sleep);
+	log_hours($ref, $ua, $rand_user_id); sleep($sleep);
+	my $rand_project_id = $projects[rand @projects];
+	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep($sleep);
+	view_pages($ref, $ua, $rand_user_id);
+	print_time_histogram($ref);
+    }
+
 }
 
-
 sub log_time {
-    my ($url, $start, $end) = @_;
+    my ($ref, $url, $start, $end) = @_;
+    my %url_time_hash = %$ref;
+
     my $duration = int(10.0 * 1000.0 * ($end - $start)) / 10.0;
     print "log_time($url, $duration)\n" if ($debug > 6);
+    push @{ $ref->{$url} }, $duration;
 
-    push @{ $url_time_hash{$url} }, $duration;
+    # print Dumper(%url_time_hash);
 }
 
 # Returns browser
 sub login {
-    my ($host) = @_;
+    my ($ref, $host) = @_;
     print "login($host)\n" if ($debug > 1);
 
     # Get the Web page: Encode URL and keep cookies
@@ -91,7 +108,7 @@ sub login {
     my $start = gettimeofday();
     my $response = $browser->get($url);
     my $end = gettimeofday();
-    log_time($base_url, $start, $end);
+    log_time($ref, $base_url, $start, $end);
 
     print "login($host): response=".$response->status_line."\n" if ($debug > 3);
     die $response->status_line unless $response->is_success;
@@ -100,14 +117,14 @@ sub login {
 }
 
 sub list_users {
-    my ($browser) = @_;
+    my ($ref, $browser) = @_;
     print "users()\n" if ($debug > 2);
 
     my $users_url = $host.'/intranet/users/index?how_many=100000&user_group_name=employees';
     my $start = gettimeofday();
     my $response = $browser->get($users_url);
     my $end = gettimeofday();
-    log_time($users_url, $start, $end);
+    log_time($ref, $users_url, $start, $end);
 
     print "users(): response=".$response->status_line."\n" if ($debug > 3);
     my $html = $response->decoded_content; 
@@ -124,14 +141,14 @@ sub list_users {
 
 
 sub list_projects {
-    my ($browser) = @_;
+    my ($ref, $browser) = @_;
     print "projects()\n" if ($debug > 2);
 
     my $projects_url = $host.'/intranet/projects/index?how_many=100000';
     my $start = gettimeofday();
     my $response = $browser->get($projects_url);
     my $end = gettimeofday();
-    log_time($projects_url, $start, $end);
+    log_time($ref, $projects_url, $start, $end);
 
     print "projects(): response=".$response->status_line."\n" if ($debug > 3);
     my $html = $response->decoded_content; 
@@ -148,7 +165,7 @@ sub list_projects {
 
 
 sub view_project {
-    my ($browser, $pid, $uid) = @_;
+    my ($ref, $browser, $pid, $uid) = @_;
     print "view_project($pid,$uid)\n" if ($debug > 2);
 
     my @urls = (
@@ -228,7 +245,7 @@ sub view_project {
 	my $start = gettimeofday();
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
-	log_time($url, $start, $end);
+	log_time($ref, $url, $start, $end);
 	print "view_project($pid,$uid): response=".$response->status_line."\n" if ($debug > 5);
     }
 }
@@ -236,7 +253,7 @@ sub view_project {
 
 
 sub view_home {
-    my ($browser, $uid) = @_;
+    my ($ref, $browser, $uid) = @_;
     print "home($uid)\n" if ($debug > 2);
 
     my @urls = (
@@ -307,14 +324,14 @@ sub view_home {
 	my $start = gettimeofday();
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
-	log_time($url, $start, $end);
+	log_time($ref, $url, $start, $end);
 	print "home($uid): response=".$response->status_line."\n" if ($debug > 5);
     }
 }
 
 
 sub view_pages {
-    my ($browser, $uid) = @_;
+    my ($ref, $browser, $uid) = @_;
     print "view_pages($uid)\n" if ($debug > 2);
 
     my @urls = (
@@ -698,7 +715,7 @@ sub view_pages {
 	my $start = gettimeofday();
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
-	log_time($url, $start, $end);
+	log_time($ref, $url, $start, $end);
 	print "view_pages($uid): response=".$response->status_line."\n" if ($debug > 5);
     }
 }
@@ -706,7 +723,7 @@ sub view_pages {
 
 
 sub member_add {
-    my ($browser, $pid, $uid) = @_;
+    my ($ref, $browser, $pid, $uid) = @_;
     print "member_add($pid, $uid)\n" if ($debug > 2);
 
     my $member_url = "$host/intranet/member-add-2?object_id=$pid&user_id_from_search=$uid&role_id=1300&return_url=/intranet/";
@@ -717,11 +734,15 @@ sub member_add {
 
 
 sub become {
-    my ($browser, $uid) = @_;
+    my ($ref, $browser, $uid) = @_;
     print "become($uid)\n" if ($debug > 1);
 
     my $become_url = $host.'/intranet/users/become?user_id='.$uid;
+    my $start = gettimeofday();
     my $response = $browser->get($become_url);
+    my $end = gettimeofday();
+    log_time($ref, $become_url, $start, $end);
+
     print "become($uid): response=".$response->status_line."\n" if ($debug > 3);
     if (!$response->is_success) {
 	die $response->status_line;
@@ -730,7 +751,7 @@ sub become {
 
 
 sub log_hours {
-    my ($browser, $uid) = @_;
+    my ($ref, $browser, $uid) = @_;
     print "log_hours($uid)\n" if ($debug > 1);
 
     my $base_url = "/intranet-timesheet2/hours/new";
@@ -738,7 +759,7 @@ sub log_hours {
     my $start = gettimeofday();
     my $response = $browser->get($url);
     my $end = gettimeofday();
-    log_time($base_url, $start, $end);
+    log_time($ref, $base_url, $start, $end);
 
     print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3);
 
@@ -754,7 +775,7 @@ sub log_hours {
     if (!@forms) { 
 	print "log_hours($uid): no projects found - adding\n";
 	my $rand_pid = $projects[rand @projects];
-	member_add($browser, $rand_pid, $uid);
+	member_add($ref, $browser, $rand_pid, $uid);
 	return; 
     }
 
@@ -768,7 +789,7 @@ sub log_hours {
     if (@hours == 0) { 
 	print "log_hours($uid): no hours found, adding\n";
 	my $rand_pid = $projects[rand @projects];
-	member_add($browser, $rand_pid, $uid);
+	member_add($ref, $browser, $rand_pid, $uid);
 	return; 
     }
 
@@ -789,7 +810,7 @@ sub log_hours {
     $start = gettimeofday();
     $response = $browser->request($request);
     $end = gettimeofday();
-    log_time($base_url."-2", $start, $end);
+    log_time($ref, $base_url."-2", $start, $end);
 
     print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3);
 }
@@ -797,6 +818,7 @@ sub log_hours {
 
 # Print header
 sub print_time_histogram_header {
+    print "tid\t";
     print "cnt\t";
     print "avg\t";
     for (my $i = 0; $i < $max_exp; $i++) { 
@@ -807,10 +829,12 @@ sub print_time_histogram_header {
 }
 
 sub print_time_histogram {
+    my ($ref) = @_;
+    print "print_time_histogram()\n" if ($debug > 5);
+    my %url_time_hash = %{$ref};
+
     my %hist;
-
     my $max_value = 2 ** $max_exp;
-
     my $count = 0;
     my $sum = 0;
 
@@ -832,7 +856,9 @@ sub print_time_histogram {
     }
 
     # Print histogram in one line
+    print threads->tid()."\t";
     print "$count\t";
+    if ($count == 0) { $count = 1; }
     print int(0.5 + $sum / $count)."\t";
     for (my $i = 0; $i < $max_exp; $i++) { 
 	my $bucket = 2 ** $i;
@@ -840,7 +866,5 @@ sub print_time_histogram {
 	print "\t";
     }
     print "\n";
-
-    
 }
 
