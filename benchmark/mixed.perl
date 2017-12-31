@@ -20,7 +20,7 @@ use Time::HiRes qw(gettimeofday);
 use Getopt::Long;
 
 my $debug = 0;
-my $host = 'http://localhost';
+my $host = 'http://localhost:8000';
 my $email = 'sysadmin@tigerpond.com';
 my $pass = 'system';
 my $iterations = 10;
@@ -41,6 +41,9 @@ GetOptions (
 my %url_time_hash = ();
 my @projects;
 my @users;
+
+# Turn on auto-flush for STDOUT
+$| = 1;
 
 print "debug=$debug, sleep=$sleep, max_exp=$max_exp, iterations=$iterations, host=$host, email=$email, pass=$pass\n";
 print_time_histogram_header();
