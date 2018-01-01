@@ -21,21 +21,22 @@ use Getopt::Long;
 use threads;
 
 my $debug = 0;					# 0=no, 1=slow queries, 5=very verbose
+my $threads = 5;				# How many parallel users?
+my $sleep = 10;	 				# Average wait between pages. Real users first read...
 my $host = 'http://localhost:8000';		# :8000 for direct, :80 for NGINX
 my $email = 'sysadmin@tigerpond.com';		# SysAdmin email - default for ]po[
 my $pass = 'system';				# SysAdmin password - default for ]po[
 my $iterations = 10;				# Repeat how many times? First and last are different
-my $sleep = 10;	 				# Wait between pages? Normal users first read...
+
+# More constants than parameters...
 my $max_exp = 14;				# Max 2**14 milliseconds in histogram display
-my $threads = 5;				# How many parallel users?
 my $slow_page_ms = 1000;			# When is a page "slow"? -> 1000ms
 
 GetOptions (
     "debug=i" => \$debug,
-    "sleep=i" => \$sleep,
-    "max_exp=i" => \$max_exp,
-    "iterations=i" => \$iterations,
     "threads=i" => \$threads,
+    "sleep=i" => \$sleep,
+    "iterations=i" => \$iterations,
     "host=s" => \$host,
     "email=s" => \$email,
     "pass=s" => \$pass
@@ -48,7 +49,7 @@ my @users;
 # Turn on auto-flush for STDOUT
 $| = 1;
 
-print "debug=$debug, sleep=$sleep, max_exp=$max_exp, iterations=$iterations, host=$host, email=$email, pass=$pass\n";
+print "debug=$debug, sleep=$sleep, iterations=$iterations, host=$host, email=$email, pass=$pass\n";
 print_time_histogram_header();
 
 my @thread_list;
