@@ -20,14 +20,15 @@ use Time::HiRes qw(gettimeofday);
 use Getopt::Long;
 use threads;
 
-my $debug = 0;
-my $host = 'http://localhost:8000';
-my $email = 'sysadmin@tigerpond.com';
-my $pass = 'system';
-my $iterations = 10;
-my $sleep = 10;
-my $max_exp = 15;
-my $threads = 2;
+my $debug = 0;					# 0=no, 1=slow queries, 5=very verbose
+my $host = 'http://localhost:8000';		# :8000 for direct, :80 for NGINX
+my $email = 'sysadmin@tigerpond.com';		# SysAdmin email - default for ]po[
+my $pass = 'system';				# SysAdmin password - default for ]po[
+my $iterations = 10;				# Repeat how many times? First and last are different
+my $sleep = 10;	 				# Wait between pages? Normal users first read...
+my $max_exp = 14;				# Max 2**14 milliseconds in histogram display
+my $threads = 5;				# How many parallel users?
+my $slow_page_ms = 1000;			# When is a page "slow"? -> 1000ms
 
 GetOptions (
     "debug=i" => \$debug,
@@ -63,14 +64,14 @@ sub run {
 	my $ref = \%url_time_hash;
 
 	my $ua = login($ref, $host);
-	@users = list_users($ref, $ua); sleep(rand $sleep);
+	@users = list_users($ref, $ua); sleep(rand 2*$sleep);
 	my $rand_user_id = $users[rand @users];
 	become($ref, $ua, $rand_user_id);
-	view_home($ref, $ua, $rand_user_id); sleep(rand $sleep);
-	@projects = list_projects($ref, $ua); sleep(rand $sleep);
-	log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
+	view_home($ref, $ua, $rand_user_id); sleep(rand 2*$sleep);
+	@projects = list_projects($ref, $ua); sleep(rand 2*$sleep);
+	log_hours($ref, $ua, $rand_user_id); sleep(rand 2*$sleep);
 	my $rand_project_id = $projects[rand @projects];
-	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
+	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand 2*$sleep);
 	view_pages($ref, $ua, $rand_user_id);
 	print_time_histogram($ref);
     }
@@ -361,7 +362,7 @@ sub view_pages {
 "/intranet-gantt-editor/controller/GanttTreePanelController.js",
 "/intranet-gantt-editor/controller/GanttZoomController.js",
 "/intranet-gantt-editor/view/GanttBarPanel.js",
-"/intranet-ganttproject/gantt-resources-cube?&config=resource_planning_report", "",
+# "/intranet-ganttproject/gantt-resources-cube?&config=resource_planning_report", "", # old and slow > 1500ms
 "/intranet-helpdesk/", "",
 "/intranet-helpdesk/dashboard", "",
 "/intranet-helpdesk/new", "",
@@ -547,14 +548,13 @@ sub view_pages {
 "/intranet-rest/im_cost_center",
 # "/intranet-rest/im_indicator_result",
 "/intranet-rest/im_material",
-"/intranet-rest/im_project",
-"/intranet-rest/im_sencha_preference",
+"/intranet-rest/im_project?query=parent_id%20is%20null",
 "/intranet-rest/user",
 "/intranet-riskmanagement/index", "",
 "/intranet-riskmanagement/new", "",
 "/intranet-riskmanagement/project-risks-report", "",
-"/intranet-search/search?type=all&q=documents", "",
-"/intranet-search/search?type=all&q=task", "",
+# "/intranet-search/search?type=all&q=documents", "", # slow
+# "/intranet-search/search?type=all&q=task", "", # slow
 "/intranet-simple-survey/reporting/traffic-light-report", "",
 "/intranet/style/print.css",
 "/intranet/style/smartmenus/sm-core-css.css",
@@ -571,7 +571,7 @@ sub view_pages {
 "/intranet-timesheet2/absences/new", "",
 "/intranet-timesheet2/hours/dashboard", "",
 "/intranet-timesheet2/hours/index", "",
-"/intranet-timesheet2-workflow/reports/unsubmitted-hours.tcl", "",
+# "/intranet-timesheet2-workflow/reports/unsubmitted-hours.tcl", "", # slow
 "/intranet/users/biz-card-add", "",
 "/intranet/users/dashboard", "",
 "/intranet/users/index", "",
@@ -696,7 +696,7 @@ sub view_pages {
 
     for my $url (@urls) {
 	if ("" eq $url) {
-	    sleep(rand $sleep);
+	    sleep(rand 2*$sleep);
 	    next;
 	}
 
@@ -820,12 +820,21 @@ sub print_time_histogram {
     my $max_value = 2 ** $max_exp;
     my $count = 0;
     my $sum = 0;
+    my %slow_hash = ();
+    my $slow_count = 0;
 
     for my $url (keys %url_time_hash) {
 	print "$url: @{$url_time_hash{$url}}\n" if ($debug > 5);
 	my @entries = @{$url_time_hash{$url}};
 	for my $el (@entries) {
-	    
+	
+	    if ($el > $slow_page_ms) { 
+		my $max_el = $el;
+		if (exists $slow_hash{$url}) { $max_el = $slow_hash{$url}; }
+		$slow_hash{$url} = $max_el; 
+		$slow_count++; 
+	    }
+    
 	    # Aggregate for average
 	    $count++;
 	    $sum = $sum + $el;
@@ -849,5 +858,13 @@ sub print_time_histogram {
 	print "\t";
     }
     print "\n";
+
+    # Show the slowest queries
+    if ($slow_count > 0 && $debug > 0) {
+	for my $slow_url (keys %slow_hash) {
+	    print "slow_page($slow_url) = ".$slow_hash{$slow_url}."\n";
+	}
+    }
+
 }
 
