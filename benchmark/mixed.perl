@@ -67,11 +67,11 @@ sub run {
 	my $rand_user_id = $users[rand @users];
 	become($ref, $ua, $rand_user_id);
 	view_home($ref, $ua, $rand_user_id); sleep(rand $sleep);
-	@projects = list_projects($ref, $ua); sleep(rand $sleep);
-	log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
-	my $rand_project_id = $projects[rand @projects];
-	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
-	view_pages($ref, $ua, $rand_user_id);
+	#@projects = list_projects($ref, $ua); sleep(rand $sleep);
+	#log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
+	#my $rand_project_id = $projects[rand @projects];
+	#view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
+	#view_pages($ref, $ua, $rand_user_id);
 	print_time_histogram($ref);
     }
 
@@ -105,13 +105,22 @@ sub login {
 	);
     my $url = URI->new($auto_login_url);
     $url->query_form(%parameters);
-    my $start = gettimeofday();
-    my $response = $browser->get($url);
-    my $end = gettimeofday();
-    log_time($ref, $base_url, $start, $end);
 
-    print "login($host): response=".$response->status_line."\n" if ($debug > 3);
-    die $response->status_line unless $response->is_success;
+    my $repeat = 1;
+    while ($repeat) {
+	my $start = gettimeofday();
+	my $response = $browser->get($url);
+	my $end = gettimeofday();
+	log_time($ref, $base_url, $start, $end);
+	print "login($host): response=".$response->status_line."\n" if ($debug > 3);
+	if ($response->is_success) {
+	    $repeat = 0;
+	} else {
+	    print "login($host): $response->status_line\n";
+	    print "login($host): ".Dumper($response->status_line)."\n";
+	    $repeat = 1;
+	}
+    }
 
     return $browser
 }
@@ -125,8 +134,8 @@ sub list_users {
     my $response = $browser->get($users_url);
     my $end = gettimeofday();
     log_time($ref, $users_url, $start, $end);
+    print "users(): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
 
-    print "users(): response=".$response->status_line."\n" if ($debug > 3);
     my $html = $response->decoded_content; 
     my @lines = split('\n', $html);
     my @users = ();
@@ -150,7 +159,7 @@ sub list_projects {
     my $end = gettimeofday();
     log_time($ref, $projects_url, $start, $end);
 
-    print "projects(): response=".$response->status_line."\n" if ($debug > 3);
+    print "projects(): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
     my $html = $response->decoded_content; 
     my @lines = split('\n', $html);
     my @projects = ();
@@ -227,18 +236,18 @@ sub view_project {
 "/sencha-core/view/menu/HelpMenu.js",
 "/sencha-core/view/task/TaskManagementMixin.js",
 "/sencha-core/view/theme/TaskStatusTheme.js",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/form/exclamation.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/form/text-bg.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/form/trigger.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/grid/grid3-hd-btn.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/e-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/ne-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/nw-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/s-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/se-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/sizer/sw-handle.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/tree/arrows.gif",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/util/splitter/mini-left.gif"
+"/sencha-extjs-v421/resources/ext-theme-gray/images/form/exclamation.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/form/text-bg.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/form/trigger.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/grid/grid3-hd-btn.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/e-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/ne-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/nw-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/s-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/se-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/sizer/sw-handle.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/tree/arrows.gif",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/util/splitter/mini-left.gif"
 	);
 
     for my $url (@urls) {
@@ -246,7 +255,7 @@ sub view_project {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "view_project($pid,$uid): response=".$response->status_line."\n" if ($debug > 5);
+	print "view_project($pid,$uid): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
@@ -314,10 +323,10 @@ sub view_home {
 "/sencha-core/view/menu/HelpMenu.js",
 "/sencha-core/view/task/TaskManagementMixin.js",
 "/sencha-core/view/theme/TaskStatusTheme.js",
-"/sencha-extjs-v421-dev/ext-all-debug-w-comments.js",
-"/sencha-extjs-v421-dev/resources/css/ext-all-gray.css",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/ext-theme-gray-all.css",
-"/sencha-extjs-v421-dev/resources/ext-theme-gray/images/button/arrow.gif"
+"/sencha-extjs-v421/ext-all.js",
+"/sencha-extjs-v421/resources/css/ext-all-gray.css",
+"/sencha-extjs-v421/resources/ext-theme-gray/ext-theme-gray-all.css",
+"/sencha-extjs-v421/resources/ext-theme-gray/images/button/arrow.gif"
     );
 
     for my $url (@urls) {
@@ -325,7 +334,7 @@ sub view_home {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "home($uid): response=".$response->status_line."\n" if ($debug > 5);
+	print "home($uid,$url): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
@@ -716,7 +725,7 @@ sub view_pages {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "view_pages($uid): response=".$response->status_line."\n" if ($debug > 5);
+	print "view_pages($uid): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
@@ -728,7 +737,7 @@ sub member_add {
 
     my $member_url = "$host/intranet/member-add-2?object_id=$pid&user_id_from_search=$uid&role_id=1300&return_url=/intranet/";
     my $response = $browser->get($member_url);
-    print "member(): response=".$response->status_line."\n" if ($debug > 3);
+    print "member(): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
 }
 
 
@@ -742,11 +751,7 @@ sub become {
     my $response = $browser->get($become_url);
     my $end = gettimeofday();
     log_time($ref, $become_url, $start, $end);
-
-    print "become($uid): response=".$response->status_line."\n" if ($debug > 3);
-    if (!$response->is_success) {
-	die $response->status_line;
-    }
+    print "become($uid): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
 }
 
 
@@ -760,8 +765,7 @@ sub log_hours {
     my $response = $browser->get($url);
     my $end = gettimeofday();
     log_time($ref, $base_url, $start, $end);
-
-    print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3);
+    print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
 
     # Extract forms from HTML. The third form should be called "timesheet"
     my @forms = HTML::Form->parse($response);
@@ -811,8 +815,7 @@ sub log_hours {
     $response = $browser->request($request);
     $end = gettimeofday();
     log_time($ref, $base_url."-2", $start, $end);
-
-    print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3);
+    print "log_hours($uid): response=".$response->status_line."\n" if ($debug > 3 || !$response->is_success);
 }
 
 
