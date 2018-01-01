@@ -73,13 +73,6 @@ proc ::fileutil::grep {pattern {files {}}} {
 # will fail for very deeply nested directory structures.
 
 
-# 041101 Frank Bergmann <frank.bergmann@project-open.com>
-# set tcl_platform(platform) [ns_info platform]
-# 161005 Frank Bergmann <frank.bergmann@project-open.com>
-# ns_info platform is now deprecated.
-# returns "win32" for windows
-# seems to return "unix" for unix-ish platforms (Linux, Solaris, ...) (?)
-
 if {"unix" ne $::tcl_platform(platform) } {
     # Not a unix platform => Original implementation
     # Note: This may still fail for directories mounted via SAMBA,

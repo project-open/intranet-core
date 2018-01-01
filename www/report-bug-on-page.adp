@@ -2,7 +2,7 @@
 <property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">help</property>
 
-<% set error_location "[ns_info address] on [ns_info platform]" %>
+<% set error_location "[ns_info address] on $::tcl_platform(platform)" %>
 <% set report_url [im_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""] %>
 <% set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""] %>
 <% db_1row user_info "select * from cc_users where user_id=[ad_conn user_id]" %>
