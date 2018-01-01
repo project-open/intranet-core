@@ -67,11 +67,11 @@ sub run {
 	my $rand_user_id = $users[rand @users];
 	become($ref, $ua, $rand_user_id);
 	view_home($ref, $ua, $rand_user_id); sleep(rand $sleep);
-	#@projects = list_projects($ref, $ua); sleep(rand $sleep);
-	#log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
-	#my $rand_project_id = $projects[rand @projects];
-	#view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
-	#view_pages($ref, $ua, $rand_user_id);
+	@projects = list_projects($ref, $ua); sleep(rand $sleep);
+	log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
+	my $rand_project_id = $projects[rand @projects];
+	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
+	view_pages($ref, $ua, $rand_user_id);
 	print_time_histogram($ref);
     }
 
@@ -95,7 +95,11 @@ sub login {
 
     # Get the Web page: Encode URL and keep cookies
     my $browser = LWP::UserAgent->new;
+    # Allow the browser to store cookies
     $browser->cookie_jar({});
+    # Allow the browser to redirect after a POST request
+    push @{$browser->requests_redirectable}, 'POST';
+
     my $base_url = '/intranet/auto-login';
     my $auto_login_url = $host.$base_url;
     my %parameters = (
@@ -255,7 +259,8 @@ sub view_project {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "view_project($pid,$uid): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+	print threads->tid()."\t".$hour.":".$min.":".$sec."\t"."view_project($pid,$uid,$url): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
@@ -334,7 +339,8 @@ sub view_home {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "home($uid,$url): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+	print threads->tid()."\t".$hour.":".$min.":".$sec."\t"."home($uid,$url): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
@@ -725,7 +731,8 @@ sub view_pages {
 	my $response = $browser->get($host.$url);
 	my $end = gettimeofday();
 	log_time($ref, $url, $start, $end);
-	print "view_pages($uid): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+	print threads->tid()."\t".$hour.":".$min.":".$sec."\t"."view_pages($uid,$url): response=".$response->status_line."\n" if ($debug > 5 || !$response->is_success);
     }
 }
 
