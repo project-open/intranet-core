@@ -197,7 +197,7 @@ ad_proc im_category_select_helper {
 	order by lower(category)
     "
     db_foreach category_select $sql {
-	ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
+	# ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
 	if {"" == $visible_tcl || [eval $visible_tcl]} {
 	    set category_l10n [im_category_from_id -locale $locale $category_id]
 	    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]

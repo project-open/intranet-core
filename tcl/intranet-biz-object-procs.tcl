@@ -641,8 +641,6 @@ ad_proc -public im_group_member_component {
 	set profile_gif [im_gif -translate_p 0 $role_gif $descr]
 	if {[im_user_deleted_p $user_id]} { set color "red" } else { set color "black" }
 
-	ns_log Notice "im_group_member_component: role_gif=$role_gif"
-
 	incr count
 	if { $current_user_id == $user_id } { set found 1 }
 

@@ -961,8 +961,6 @@ ad_proc -public im_navbar_helper {
 	# Set Menu Item Name 
 	set name_key "intranet-core.[lang::util::suggest_key $name]"
 	set name [lang::message::lookup "" $name_key $name]
-
-	ns_log Notice "im_navbar_helper: label=$label, url=$url"
 	
 	# No menues on register and login page 
 	if {!$loginpage_p && "register" != [string range [ns_conn url] 1 8] } {
