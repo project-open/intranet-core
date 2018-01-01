@@ -292,7 +292,6 @@ db_foreach column_list_sql $column_sql {
 	lappend column_headers_admin $admin_html
     }
 }
-ns_log Notice "/users/index.tcl: column_vars=$column_vars"
 
 # ---------------------------------------------------------------
 # 4. Define Filter Categories

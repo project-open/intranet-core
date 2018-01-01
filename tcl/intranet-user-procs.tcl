@@ -30,7 +30,7 @@ ad_proc -public im_user_permissions {
     Fill the "by-reference" variables read, write and admin
     with the permissions of $current_user_id on $user_id
 } {
-    ns_log Notice "im_user_permissions: current_user_id=$current_user_id, user_id=$user_id"
+    # ns_log Notice "im_user_permissions: current_user_id=$current_user_id, user_id=$user_id"
     im_security_alert_check_integer -location "im_user_permissions: user_id" -value $user_id
 
     upvar $view_var view

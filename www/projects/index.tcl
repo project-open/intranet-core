@@ -675,9 +675,6 @@ $order_by_clause
 # Limit the search results to N data sets only
 # to be able to manage large sites
 #
-
-ns_log Notice "/intranet/project/index: Before limiting clause"
-
 if {$upper_letter eq "ALL"} {
     # Set these limits to negative values to deactivate them
     set total_in_limited -1
@@ -709,10 +706,6 @@ if {$upper_letter eq "ALL"} {
 # Note that we use a nested table because im_slider might
 # return a table with a form in it (if there are too many
 # options
-
-ns_log Notice "/intranet/project/index: Before formatting filter"
-
-
 set mine_p_options [list \
 	[list $all_l10n "f" ] \
 	[list [lang::message::lookup "" intranet-core.With_members_of_my_dept "With member of my department"] "dept"] \
@@ -723,9 +716,6 @@ set letter $upper_letter
 
 # ----------------------------------------------------------
 # Do we have to show administration links?
-
-ns_log Notice "/intranet/project/index: Before admin links"
-
 
 set skip_labels {projects_admin 1 projects_open 1 projects_closed 1 projects_potential 1}
 set menu_id [db_string company_menu "select menu_id from im_menus where label = 'projects'" -default 0]
@@ -766,9 +756,7 @@ if {"" ne $admin_html} {
 # ---------------------------------------------------------------
 
 # Set up colspan to be the number of headers + 1 for the # column
-ns_log Notice "/intranet/project/index: Before format header"
 set colspan [expr {[llength $column_headers] + 1}]
-
 set table_header_html ""
 
 # Format the header names with links that modify the
@@ -801,8 +789,6 @@ append table_header_html "</tr>\n"
 # ---------------------------------------------------------------
 # 8. Format the Result Data
 # ---------------------------------------------------------------
-
-ns_log Notice "/intranet/project/index: Before db_foreach"
 
 set table_body_html ""
 set bgcolor(0) " class=roweven "
@@ -899,7 +885,6 @@ if { $start_idx > 0 } {
 # 9. Format Table Continuation
 # ---------------------------------------------------------------
 
-ns_log Notice "/intranet/project/index: before table continuation"
 # Check if there are rows that we decided not to return
 # => include a link to go to the next page
 #
