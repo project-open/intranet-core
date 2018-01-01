@@ -72,7 +72,7 @@ sub run {
 	@projects = list_projects($ref, $ua); sleep(rand 2*$sleep);
 	log_hours($ref, $ua, $rand_user_id); sleep(rand 2*$sleep);
 	my $rand_project_id = $projects[rand @projects];
-	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand 2*$sleep);
+	if (defined $rand_project_id) { view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand 2*$sleep); }
 	view_pages($ref, $ua, $rand_user_id);
 	print_time_histogram($ref);
     }
