@@ -63,14 +63,14 @@ sub run {
 	my $ref = \%url_time_hash;
 
 	my $ua = login($ref, $host);
-	@users = list_users($ref, $ua); sleep($sleep);
+	@users = list_users($ref, $ua); sleep(rand $sleep);
 	my $rand_user_id = $users[rand @users];
 	become($ref, $ua, $rand_user_id);
-	view_home($ref, $ua, $rand_user_id); sleep($sleep);
-	@projects = list_projects($ref, $ua); sleep($sleep);
-	log_hours($ref, $ua, $rand_user_id); sleep($sleep);
+	view_home($ref, $ua, $rand_user_id); sleep(rand $sleep);
+	@projects = list_projects($ref, $ua); sleep(rand $sleep);
+	log_hours($ref, $ua, $rand_user_id); sleep(rand $sleep);
 	my $rand_project_id = $projects[rand @projects];
-	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep($sleep);
+	view_project($ref, $ua, $rand_project_id, $rand_user_id); sleep(rand $sleep);
 	view_pages($ref, $ua, $rand_user_id);
 	print_time_histogram($ref);
     }
@@ -708,7 +708,7 @@ sub view_pages {
 
     for my $url (@urls) {
 	if ("" eq $url) {
-	    sleep($sleep);
+	    sleep(rand $sleep);
 	    next;
 	}
 
