@@ -256,7 +256,7 @@ set column_sql "
 "
 
 db_foreach column_list_sql $column_sql {
-    ns_log Notice "/intranet/users/index: visible_for=$visible_for"
+    # ns_log Notice "/intranet/users/index: visible_for=$visible_for"
 
     set visible_p 0
     if {"" == $visible_for} { set visible_p 1 }
