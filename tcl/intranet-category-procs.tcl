@@ -200,9 +200,6 @@ ad_proc im_category_select_helper {
 	ns_log Notice "im_category_select_helper: category=$category, visible_tcl=$visible_tcl"
 	if {"" == $visible_tcl || [eval $visible_tcl]} {
 	    set category_l10n [im_category_from_id -locale $locale $category_id]
-
-	    ns_log Notice "im_category_select_branch: set cat($category_id) \[list $category_id $category $category_description $parent_only_p $enabled_p $sort_order\]"
-
 	    set cat($category_id) [list $category_id $category $category_description $parent_only_p $enabled_p $sort_order]
 	    set level($category_id) 0
 	}
