@@ -339,8 +339,6 @@ namespace eval im_profile {
 	set profile_id [profile_id_from_name_not_cached -profile $profile]
 	if {"" == $profile_id} { return "" }
 
-	if {![string is integer $profile_id]} { errrrr }
-
 	# Store the value in the cache
 	ns_cache set im_profile $key $profile_id
 

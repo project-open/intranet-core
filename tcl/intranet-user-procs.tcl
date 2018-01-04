@@ -1323,7 +1323,7 @@ ad_proc -public im_user_nuke {
 
     # Check for permissions
     im_user_permissions $current_user_id $user_id view read write admin
-    if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
+    if {!$admin} { return "User #$current_user_id isn't a system administrator" }
 
     # You can't delete an adminstrator
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]

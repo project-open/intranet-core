@@ -2379,7 +2379,7 @@ ad_proc im_project_nuke {
 } {
     ns_log Notice "im_project_nuke: project_id=$project_id"
     set detailed_explanation ""
-    
+
     # Use a predefined user_id to avoid a call to ad_conn user_id.
     # ad_conn user_id's connection isn't defined during a DELETE REST request.
     ns_log Notice "im_project_nuke: before ad_conn user_id"
@@ -2391,7 +2391,7 @@ ad_proc im_project_nuke {
     # Check for permissions
     ns_log Notice "im_project_nuke: before im_project_permissions"
     im_project_permissions $current_user_id $project_id view read write admin
-    if {!$admin} { return "User #$currrent_user_id isn't a system administrator" }
+    if {!$admin} { return "User #$current_user_id isn't a system administrator" }
 
     # Write Audit Trail
     ns_log Notice "im_project_nuke: before im_audit"
