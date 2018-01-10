@@ -163,14 +163,18 @@ set query "
 select	u.user_id,
 	im_name_from_user_id(u.user_id) as user_name,
 	u.email,
-	gmm.group_id
+	g.group_id
 from 
 	registered_users u,
-	group_distinct_member_map gmm
+	group_distinct_member_map gmm,
+	groups g,
+	im_profiles p
 where 
-	u.user_id = gmm.member_id and
-        gmm.group_id > 0
-	and $search_clause
+	gmm.member_id = u.user_id and
+	gmm.group_id = g.group_id and
+        gmm.group_id > 0 and
+	g.group_id = p.profile_id and
+	$search_clause
 "
 db_foreach user_search_query $query {
     set user_name_hash($user_id) $user_name
