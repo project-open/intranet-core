@@ -89,6 +89,11 @@ insert into im_categories (
 values (1308, 'Trainer', 'Intranet Biz Object Role', 
 	'trainer', 'Trainer');
 
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1309, 'Conf Item Manager', 'Intranet Biz Object Role', 
+	'member', 'Conf Item Manager');
 
 
 

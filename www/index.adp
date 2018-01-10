@@ -16,8 +16,8 @@
 </tr>
 <tr>
   <td valign="top" width="50%">
-    @admin_guide_html;noquote@
     <%= [im_component_bay left] %>
+    @admin_guide_html;noquote@
   </td>
   <td width=2>&nbsp;</td>
   <td valign="top" width="50%">

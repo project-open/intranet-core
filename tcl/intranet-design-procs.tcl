@@ -1296,6 +1296,8 @@ ad_proc -public im_header {
     set user_name [im_name_from_user_id $user_id]
     set return_url [im_url_with_query]
     
+    ns_log Notice "im_header: untrusted_user_id: $untrusted_user_id, user_id: $user_id"
+
     # Is any of the "search" package installed?
     set search_installed_p [llength [info procs im_package_search_id]]
     

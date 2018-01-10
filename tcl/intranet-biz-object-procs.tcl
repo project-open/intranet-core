@@ -26,18 +26,17 @@ ad_proc -public im_biz_object_role_full_member {} { return 1300 }
 ad_proc -public im_biz_object_role_project_manager {} { return 1301 }
 ad_proc -public im_biz_object_role_key_account {} { return 1302 }
 ad_proc -public im_biz_object_role_office_admin {} { return 1303 }
-
-
-# The final customer of a project when the invoicing customer is
-# in the middle
+# The final customer of a project when the invoicing customer is in the middle
 ad_proc -public im_biz_object_role_final_customer {} { return 1304 }
-
 # A generic association between business objects.
 # Don't know what this might be good for in the future...
 ad_proc -public im_biz_object_role_generic {} { return 1305 }
-
 # Associated Email
 ad_proc -public im_biz_object_role_email {} { return 1306 }
+ad_proc -public im_biz_object_role_consultant {} { return 1307 }
+ad_proc -public im_biz_object_role_trainer {} { return 1308 }
+ad_proc -public im_biz_object_role_conf_item_manager {} { return 1309 }
+
 
 
 ad_proc -public im_biz_object_url { object_id {url_type "view"} } {
@@ -246,7 +245,7 @@ ad_proc -public im_biz_object_add_role {
 	ns_log Notice "im_biz_object_add_role: Stack trace:\n[ad_print_stack_trace]"
 	return "" 
     }
-
+    
     # Deal with execution from within a "sweeper" process
     # where ns_conn returns an error
     set user_ip "0.0.0.0"
@@ -258,15 +257,15 @@ ad_proc -public im_biz_object_add_role {
 	    set creation_user_id [ad_conn user_id]
 	}
     }
-
+    
     # Determine the object's type
     if {![string is integer $object_id]} { im_security_alert -location "im_biz_object_add_role" -message "Found non-integer object_id" -value $object_id }
     set object_type [util_memoize [list db_string object_type "select object_type from acs_objects where object_id = $object_id" -default ""]]
     if {"" eq $object_type} {
-	    # The object doesn't exist. This is probably a harmless condition, so just skip.
+	# The object doesn't exist. This is probably a harmless condition, so just skip.
 	return
     }
-
+    
     # Get the existing relationship
     set rel_id ""
     set org_percentage ""
@@ -283,13 +282,13 @@ ad_proc -public im_biz_object_add_role {
     "
 
     # Don't overwrite an admin role
-    if {[lsearch [list [im_biz_object_role_project_manager] [im_biz_object_role_key_account] [im_biz_object_role_office_admin]] $org_role_id] > -1} {
+    if {[lsearch [list [im_biz_object_role_project_manager] [im_biz_object_role_key_account] [im_biz_object_role_office_admin] [im_biz_object_role_conf_item_manager]] $org_role_id] > -1} {
 	set role_id $org_role_id
     }
 
     # Check if the relationship already exists as
     if {[lsearch {} $org_role_id] > -1} { return $rel_id }
-
+    
     if {![info exists rel_id] || 0 == $rel_id || "" == $rel_id} {
 	ns_log Notice "im_biz_object_add_role: oid=$object_id, uid=$user_id, rid=$role_id"
 	set rel_id [db_string create_rel "
@@ -318,12 +317,13 @@ ad_proc -public im_biz_object_add_role {
     }
 
     # Take specific action to create relationships depending on the object types
+    if {$debug_p} { ns_log Notice "im_biz_object_add_role: object_type=$object_type" }
     switch $object_type {
 	im_company {
 	    # Differentiate between employee_rel and key_account_rel
 	    set company_internal_p [db_string internal_p "select count(*) from im_companies where company_id = :object_id and company_path = 'internal'"]
 	    set user_employee_p [im_user_is_employee_p $user_id]
-
+	    
 	    # User emplolyee_rel either if it's our guy and our company OR if it's another guy and an external company
 	    # We can't currently deal with the case of a freelancer as a key account to a customer...
 	    if {(1 == $company_internal_p && 1 == $user_employee_p) || (0 == $company_internal_p && 0 == $user_employee_p) } {
@@ -343,8 +343,7 @@ ad_proc -public im_biz_object_add_role {
 		db_dml update_key_account "update acs_rels set rel_type = 'im_key_account_rel' where rel_id = :rel_id"
 	    }
 	}
-
-
+	
 	im_project - im_timesheet_task - im_ticket {
 	    # Specific actions on projects, tasks and tickets
 
@@ -377,6 +376,26 @@ ad_proc -public im_biz_object_add_role {
 		}
 	    }
 	}
+	
+	im_conf_item {
+	    # Specific actions on configuration item - propagate membersuip up the is-part-of hierarchy
+	    set super_conf_item_id [db_string super_conf_item "select conf_item_parent_id from im_conf_items where conf_item_id = :object_id" -default ""]
+	    if {$debug_p} { ns_log Notice "im_biz_object_add_role: conf_item: propagate up to super_conf_item_id=$super_conf_item_id" }
+	    
+	    set update_parent_p 0
+	    if {"" != $super_conf_item_id} {
+		set already_assigned_p [db_string already_assigned "
+			select count(*) from acs_rels where object_id_one = :super_conf_item_id and object_id_two = :user_id
+		    "]
+		if {!$already_assigned_p} { set update_parent_p 1 }
+	    }
+	    
+	    if {$update_parent_p} {
+		set super_role_id [im_biz_object_role_full_member]
+		im_biz_object_add_role $user_id $super_conf_item_id $super_role_id
+	    }
+	}
+	
 	default {
 	    # Nothing.
 	    # In the future we may want to add more specific rels here.
