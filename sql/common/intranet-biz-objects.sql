@@ -155,3 +155,7 @@ insert into im_biz_object_role_map values ('im_company',85,1302);
 
 
 
+
+insert into im_biz_object_role_map values ('im_conf_item',85,1300);
+insert into im_biz_object_role_map values ('im_conf_item',85,1309);
+
