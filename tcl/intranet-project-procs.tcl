@@ -660,6 +660,7 @@ ad_proc -public im_project_options {
     {-include_empty_name ""}
     {-include_project_ids {} }
     {-exclude_subprojects_p 1}
+    {-exclude_other_projects_p 0}
     {-exclude_tasks_p 1}
     {-exclude_status_id ""}
     {-exclude_type_id ""}
@@ -824,6 +825,19 @@ ad_proc -public im_project_options {
     if {[im_permission $current_user_id "view_projects_all"]} { 
 	set member_user_id 0
     }
+
+    # Exclude any projects which are not the :super_project_id
+    if {$exclude_other_projects_p} {
+	lappend p_criteria "p.project_id in (
+					select	sub_p.project_id
+					from	im_projects sub_p,
+						im_projects main_p
+					where	main_p.project_id = :super_project_id and
+						sub_p.tree_sortkey between main_p.tree_sortkey and tree_right(main_p.tree_sortkey)
+	)"
+    }
+
+
 
     if {0 != $member_user_id && "" != $member_user_id} {
 	lappend p_criteria "p.project_id in (
