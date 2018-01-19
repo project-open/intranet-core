@@ -107,7 +107,7 @@ if (!(-e "$tar_dir/$tar")) {
     system("rm -f $tar_dir/$tar");
 }
 
-system("cd ~/; tar  --create --gzip -f $tar_dir/$tar --exclude='upgrade-3.*' --exclude='upgrade-4.*' --exclude='*~' --exclude-vcs $readme $license $changelog $packages");
+system("cd ~/; tar  --create --gzip -f $tar_dir/$tar --exclude='upgrade-3.*' --exclude='upgrade-4.*' --exclude='*~' --exclude-vcs $dump $readme $license $changelog $packages");
 
 
 # *******************************************************************
@@ -151,7 +151,7 @@ if ("0" ne $modified_lines) {
     system("echo exit | ssh -t -i ~/.ssh/fraber\@shell.sf.net fraber,project-open\@shell.sourceforge.net shutdown");
 
     # Send out a message
-    system("echo $tar_dir/$tar | mail -s 'po50dev: $tar' fraber@fraber.de");
+    system("echo $tar_dir/$tar | mail -s 'po50patches: $tar' fraber@fraber.de");
 
 } else {
     print "all-nightly-build: Nothing changed - no SourceForge upload necessary\n";
