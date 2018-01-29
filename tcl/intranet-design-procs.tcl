@@ -1734,7 +1734,8 @@ ad_proc -public im_stylesheet {} {
     template::head::add_javascript -src "/intranet/js/rounded_corners.inc.js" -order "30" 
 
     # fraber 171212: Not needed anymore, and causing a JS error
-    # template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" -order "40" 
+    # fraber 180128: Still needed - need to remove old pie chart and historgram
+    template::head::add_javascript -src "/resources/diagram/diagram/diagram.js" -order "40" 
     template::head::add_javascript -src "/intranet/js/showhide.js" -order "50" 
     template::head::add_javascript -src "/resources/acs-subsite/core.js" -order "60" 
     template::head::add_javascript -src "/intranet/js/smartmenus/jquery.smartmenus.min.js" -order "70" 
