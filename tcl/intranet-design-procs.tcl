@@ -2228,6 +2228,7 @@ ad_proc -public im_skin_select_html {
     user_id 
     return_url 
 } {
+    if {"" eq $user_id} { return "" }
     if {!$user_id} { return "" }
     if {![string is integer $user_id]} { im_security_alert -location "im_skin_select_html" -message "user_is is not an integer" -value $user_id -severity "Normal" }
 
