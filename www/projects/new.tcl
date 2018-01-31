@@ -907,10 +907,15 @@ if {[form is_valid $form_id]} {
 	-form_id $form_id
 
     # -----------------------------------------------------------------
-    # add the creating current_user to the group
-   
-    if { ([info exists project_lead_id] && $project_lead_id ne "") } {
-	im_biz_object_add_role $project_lead_id $project_id [im_biz_object_role_project_manager]
+    # Add the creating current_user to the group.
+    # Don't add the user if he's already a member,
+    # because that would reset the assignment to "",
+    # which is used at Conti.
+    if {[info exists project_lead_id] && $project_lead_id ne "" && $project_lead_id ne 0} {
+	set lead_id_already_member_p [db_string lead_exists_p "select count(*) from acs_rels where object_id_one = :project_id and object_id_two = :project_lead_id"]
+	if {!$lead_id_already_member_p} {
+	    im_biz_object_add_role $project_lead_id $project_id [im_biz_object_role_project_manager]
+	}
     }
 
 
