@@ -1465,7 +1465,7 @@ ad_proc -public im_header {
     set xowiki_page_name ""
     regsub -all {[^a-z0-9\-]} $page_url_mangled "-" xowiki_page_name
     if {$xowiki_installed_p} {
-	set local_xowiki_exists_p [util_memoize [list db_string page_exists "select count(*) from cr_items where name = 'en:page'||:xowiki_page_name"]]
+	set local_xowiki_exists_p [util_memoize [list db_string page_exists "select count(*) from cr_items where name = 'en:page'||'$xowiki_page_name'"]]
 	if {$local_xowiki_exists_p} {
 	    set local_xowiki_lnk "&nbsp;<b><a href=\"/xowiki/page$xowiki_page_name\">[lang::message::lookup "" intranet-core.Local_Help "Local Help"]</a></b> |"
 	}
