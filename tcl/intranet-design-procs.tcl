@@ -595,7 +595,7 @@ ad_proc -public im_navbar_help_link {
     {-url "" }
 } {
     Determines where to link to www.project-open.com for help.
-    The Wiki convention for page is "page_" followed by the URL
+    The Wiki convention for page is "page-" followed by the URL
     of the page with all non-alphanum characters replaced by "-":
     http://www.project-open.com/en/page-intranet-invoices-view
 } {
