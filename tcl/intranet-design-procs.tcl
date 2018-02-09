@@ -1462,6 +1462,7 @@ ad_proc -public im_header {
     set local_xowiki_lnk ""
     set xowiki_installed_p 1
     set local_help_page_exists_p 0
+    set xowiki_page_name ""
     regsub -all {[^a-z0-9\-]} $page_url_mangled "-" xowiki_page_name
     if {$xowiki_installed_p} {
 	set local_xowiki_exists_p [util_memoize [list db_string page_exists "select count(*) from cr_items where name = 'en:page'||:xowiki_page_name"]]
