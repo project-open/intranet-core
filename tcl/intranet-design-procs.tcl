@@ -1438,7 +1438,7 @@ ad_proc -public im_header {
     } else {
 	set context_help_lnk ""
     }
-    
+
     # Logout 
     set logout_lnk "&nbsp;[im_header_logout_component -page_url $page_url -return_url $return_url -user_id $user_id]"
     
@@ -1459,11 +1459,23 @@ ad_proc -public im_header {
 	set add_stuff_link "&nbsp;<a href=\"$add_comp_url\">$add_stuff_text</a>&nbsp;|"
     }
 
+    set local_xowiki_lnk ""
+    set xowiki_installed_p 1
+    set local_help_page_exists_p 0
+    regsub -all {[^a-z0-9\-]} $page_url_mangled "-" xowiki_page_name
+    if {$xowiki_installed_p} {
+	set local_xowiki_exists_p [util_memoize [list db_string page_exists "select count(*) from cr_items where name = 'en:page'||:xowiki_page_name"]]
+	if {$local_xowiki_exists_p} {
+	    set local_xowiki_lnk "&nbsp;<b><a href=\"/xowiki/page$xowiki_page_name\">[lang::message::lookup "" intranet-core.Local_Help "Local Help"]</a></b> |"
+	}
+    }
+#    ns_log Notice "xxx: $xowiki_page_name - $local_xowiki_exists_p - $local_xowiki_lnk"
+
     # Build buttons 
     if {$loginpage_p} { 
 	set header_buttons "" 
     } else {
-	set header_buttons "${welcome_txt}${users_online_txt}${add_stuff_link}${reset_stuff_link}${context_help_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
+	set header_buttons "${welcome_txt}${users_online_txt}${add_stuff_link}${reset_stuff_link}${context_help_lnk}${local_xowiki_lnk}${report_bug_lnk}<span class='header_logout'>$logout_lnk</span>"
     }
     
     set header_skin_select [im_skin_select_html $untrusted_user_id [im_url_with_query]]
