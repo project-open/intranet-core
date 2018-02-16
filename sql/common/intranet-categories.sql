@@ -136,7 +136,7 @@
 -- 43000-43999  Intranet REST (1000)
 -- 44000-44999  Intranet Estimate to Complete (1000)
 -- 45000-45999  Intranet Cust FTTx (1000)
--- 46000-46999  reserved (1000)
+-- 46000-46999  Intranet Cust FTTx (1000)
 -- 47000-47999  reserved (1000)
 -- 48000-48999  reserved (1000)
 -- 49000-49999  reserved (1000)
