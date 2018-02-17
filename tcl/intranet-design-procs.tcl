@@ -1145,6 +1145,7 @@ ad_proc -public im_design_user_profile_string {
     Determine a pretty string for the type of user that it is:
 } {
     if {"" eq $user_id} { return "" }
+    if {[im_security_alert_check_integer -location im_design_user_profile_string -message "SQL Injection Attempt" -value $user_id]} { set user_id 0 }
 
     set group_sql "
 	select	g.group_name,

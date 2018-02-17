@@ -19,8 +19,8 @@ ad_page_contract {
     @author Guillermo Belcic (guillermo.belcic@project-open.com)
     @author frank.bergmann@project-open.com
 } {
-    user_id
-    skin_id
+    user_id:integer
+    skin_id:integer
     return_url 
 }
 
