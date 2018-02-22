@@ -392,7 +392,7 @@ ad_proc -public im_audit_impl {
 	   The baseline_id is stored in im_audits.baseline_id,
 	   because baselines always refer to projects.
 } {
-    if {$debug_p} { ns_log Notice "im_audit_impl: object_id=$object_id, user_id=$user_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, comment=$comment" }
+    if {$debug_p} { ns_log Notice "im_audit_impl: object_id=$object_id, user_id=$user_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, baseline_id=$baseline_id, comment=$comment" }
 
     set is_connected_p [ns_conn isconnected]
     set peeraddr "0.0.0.0"
@@ -436,7 +436,7 @@ ad_proc -public im_audit_impl {
     set diff [im_audit_calculate_diff -old_value $old_value -new_value $new_value]
 
     set new_audit_id ""
-    if {"" != $diff || "" != $baseline_id} {
+    if {"" ne $diff || "" ne $baseline_id} {
 	# Something has changed...
 	# Create a new im_audit entry and associate it to the object.
 	set new_audit_id [db_nextval im_audit_seq]
@@ -458,7 +458,8 @@ ad_proc -public im_audit_impl {
 			audit_value,
 			audit_diff,
 			audit_note,
-			audit_hash
+			audit_hash,
+			audit_baseline_id
 		) values (
 			:new_audit_id,
 			:object_id,
@@ -472,7 +473,8 @@ ad_proc -public im_audit_impl {
 			:new_value,
 			:diff,
 			:audit_note,
-			:audit_hash
+			:audit_hash,
+			:baseline_id
 		)
 	"
 
