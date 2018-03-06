@@ -545,7 +545,7 @@ ad_proc -public im_group_member_component {
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
 
-    set show_hours_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowHoursP" -default "1"]
+    set show_hours_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowHoursP" -default "0"]
     if {!$show_percentage_p} { set show_hours_p 0 }; # don't show hours without percentages
     if {$object_type ni {"im_project" "im_timeheet_task"}} { 
 	set show_hours_p 0; # don't show hours for objects other than project or task
