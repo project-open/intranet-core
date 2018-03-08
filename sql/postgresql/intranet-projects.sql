@@ -56,9 +56,10 @@ create table im_projects (
 					primary key 
 					constraint im_project_prj_fk 
 					references acs_objects,
-	project_name			varchar(1000) not null,
-	project_nr			varchar(100) not null,
-	project_path			varchar(100) not null,
+	project_name			text not null,
+	project_nr			text not null,
+	project_path			text not null,
+	project_wbs			text,
 	parent_id			integer 
 					constraint im_projects_parent_fk 
 					references im_projects
@@ -73,7 +74,7 @@ create table im_projects (
 					references im_companies,
 	-- Should be customer_project_nr. Refers to the customers
 	-- reference to our project.
-	company_project_nr		varchar(200),
+	company_project_nr		text,
 	-- type of actions pursued during the project 
 	-- implementation, for example "ERP Installation" or
 	-- "ERP Upgrade", ...
@@ -354,14 +355,14 @@ end;$body$ language 'plpgsql';
 create sequence im_url_types_type_id_seq start 1;
 create table im_url_types (
 	url_type_id		integer not null primary key,
-	url_type		varchar(200) not null 
+	url_type		text not null 
 				constraint im_url_types_type_un unique,
 	-- we need a little bit of meta data to know how to ask 
 	-- the user to populate this field
 	to_ask			text not null,
 	-- if we put this information into a table, what is the 
 	-- header for this type of url?
-	to_display		varchar(100) not null,
+	to_display		text not null,
 	display_order		integer default 1
 );
 
