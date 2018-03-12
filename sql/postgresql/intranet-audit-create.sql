@@ -29,6 +29,7 @@ create table im_audits (
 	audit_ip		varchar(50)
 				constraint im_audits_ip_nn
 				not null,
+	audit_baseline_id	integer,			
 	audit_last_id		integer
 				constraint im_audits_last_fk
 				references im_audits,
@@ -158,4 +159,3 @@ BEGIN
 
 	return v_result;
 end; $body$ language 'plpgsql';
-
