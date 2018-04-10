@@ -3,7 +3,7 @@
 
   <msg key="--_Please_select_--">-- Please select --</msg>
   <msg key="1">1</msg>
-  <msg key="1_-_Highest_Priority">1 - Highest Priority</msg>
+  <msg key="1_-_Owner_Permission">1 - Owner Permission</msg>
   <msg key="2">2</msg>
   <msg key="3">3</msg>
   <msg key="3_-_High_Priority">3 - High Priority</msg>
@@ -72,6 +72,10 @@
   <msg key="Active or Potential">Active or Potential</msg>
   <msg key="Active_Customers">Active Customers</msg>
   <msg key="Active_or_Potential">Active or Potential</msg>
+  <msg key="Ad_hoc_construction_estimates">Construction&lt;br&gt;
+Estimates</msg>
+  <msg key="Ad_hoc_down_payments">Down&lt;br&gt;
+Payments</msg>
   <msg key="Ad_hoc_Edit">Edit</msg>
   <msg key="Ad_hoc_message">Message</msg>
   <msg key="Ad_hoc_Name">Name</msg>
@@ -192,11 +196,13 @@
   <msg key="Assigning">Assigning</msg>
   <msg key="Assignments">Assignments</msg>
   <msg key="Associated_with_new_Object">Associated with new Object</msg>
+  <msg key="ASUS_Backup">ASUS Backup</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="attachments">attachments</msg>
   <msg key="Attribute">Attribute</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Audit_Trail_Absences">Audit Trail Absences</msg>
+  <msg key="Audit_Trail_Companies">Audit Trail Companies</msg>
   <msg key="Audit_Trail_Conf_Items">Audit Trail Conf Items</msg>
   <msg key="Audit_Trail_Offices">Audit Trail Offices</msg>
   <msg key="Audit_Trail_Projects">Audit Trail Projects</msg>
@@ -393,12 +399,14 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Company_Name">Company Name</msg>
   <msg key="Company_name">Company Name</msg>
   <msg key="company_name">Company Name</msg>
+  <msg key="Company_Notes">Company Notes</msg>
   <msg key="Company_Offices">Company Offices</msg>
   <msg key="company_path">Company path</msg>
   <msg key="Company_Profit_Component">Company Profit Component</msg>
   <msg key="Company_Project_Nr">Customer Project#</msg>
   <msg key="Company_Project_Nr_Help">The customer&#39;s reference to this project. This number will appear in invoices of this project.</msg>
   <msg key="Company_Projects">Company Projects</msg>
+  <msg key="Company_Rule_Audit">Company Rule Audit</msg>
   <msg key="Company_Short_Name">Company Short Name</msg>
   <msg key="Company_Status">Company Status</msg>
   <msg key="Company_Status_1">Company Status:</msg>
@@ -517,6 +525,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="CRM_Opportunity">CRM Opportunity</msg>
   <msg key="CRM_Sales">CRM</msg>
   <msg key="Croatia">Croatia</msg>
+  <msg key="Cron24">Cron24</msg>
   <msg key="cs">cs</msg>
   <msg key="Cuba">Cuba</msg>
   <msg key="Cur_Costs">Cur Costs</msg>
@@ -531,6 +540,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Customer_Information_AJAX">Customer Information AJAX</msg>
   <msg key="Customer_Invoice">Customer Invoice</msg>
   <msg key="Customer_Management">Customer Management</msg>
+  <msg key="Customer_Material">Customer Material</msg>
   <msg key="Customer_Prospects">Customer Prospects</msg>
   <msg key="Customer_review">Customer Review</msg>
   <msg key="Customers">Customer</msg>
@@ -975,6 +985,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Home_Bug_Tracker_Component">Home Bug Tracker Portlet</msg>
   <msg key="Home_Calendar_Component">Home Calendar Portlet</msg>
   <msg key="Home_City">Home City</msg>
+  <msg key="Home_Connection">Home Connection</msg>
   <msg key="Home_Country">Home Country</msg>
   <msg key="Home_Filestorage_Component">Home Filestorage Portlet</msg>
   <msg key="Home_Forum_Component">Home Forum Portlet</msg>
@@ -1061,6 +1072,8 @@ symbols to the right of each portlet.</msg>
   <msg key="Indonesia">Indonesia</msg>
   <msg key="Inquiries">Inquiries</msg>
   <msg key="Inquiring">Inquiring</msg>
+  <msg key="Intactive_Defunct">Inactive Defunct</msg>
+  <msg key="Intactive_Planned">Inactive Planned</msg>
   <msg key="Interactive_Administration_Guide">Interactive Administration Guide</msg>
   <msg key="Interactive_Shell">Interactive Shell</msg>
   <msg key="InterCo_Invoice">InterCo Invoice</msg>
@@ -1211,6 +1224,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Lebanon">Lebanon</msg>
   <msg key="left">Left Blue</msg>
   <msg key="Legal">Legal</msg>
+  <msg key="Length">Length</msg>
   <msg key="Level">Level</msg>
   <msg key="License">License</msg>
   <msg key="Licenses">Licences</msg>
@@ -1238,6 +1252,8 @@ symbols to the right of each portlet.</msg>
   <msg key="login">login</msg>
   <msg key="logout">Logout</msg>
   <msg key="Lori_Project">Lori Project</msg>
+  <msg key="Lot">Lot</msg>
+  <msg key="Lot_Section">Lot Section</msg>
   <msg key="Low">Low</msg>
   <msg key="lt">lt</msg>
   <msg key="lt_2_-_Very_High_Priorit">2 - Very High Priority</msg>
@@ -1446,6 +1462,7 @@ her contributions to the site content.</msg>
   <msg key="lt_Here_you_find_advance_1">Here you find advance software configuration options
 	of the underlying</msg>
   <msg key="lt_Heuteintranet-timeshe">Today</msg>
+  <msg key="lt_Home_Connection_Const">House Connection</msg>
   <msg key="lt_How_did_we_get_in_con">How did we get in contact with the company?</msg>
   <msg key="lt_How_many_hours_can_be">How many hours can be logged on this project (both internal and external resource)?</msg>
   <msg key="lt_Human_Resources_Manag">Human Resources Manager</msg>
@@ -1565,6 +1582,7 @@ site with fake crud.</msg>
   <msg key="lt_Only_not_invoiced_hou">Only not invoiced hours</msg>
   <msg key="lt_Openintranet-coreOpen">Open</msg>
   <msg key="lt_Opportunities_Dashboa">Opportunities Dashboard</msg>
+  <msg key="lt_Optical_Line_Terminat">Optical Line Termination</msg>
   <msg key="lt_Otherintranet-coreOth">Other</msg>
   <msg key="lt_Outstandingintranet-c">Outstanding</msg>
   <msg key="lt_Paidintranet-corePaid">Paid</msg>
@@ -1634,6 +1652,7 @@ please contact the %mail_to_administrator_link% and let them know what happened.
   <msg key="lt_Room_Built-In_Compute">Raum vorhandene Rechner</msg>
   <msg key="lt_Room_Number_of_Beamer">Raum Anzahl der Beamer</msg>
   <msg key="lt_Salt_n_Pepperintranet">Salt&#39;n Pepper</msg>
+  <msg key="lt_Save_All_Changesintra">Save all changes</msg>
   <msg key="lt_Save_Changesintranet-">Save</msg>
   <msg key="lt_Scheduling_Constraint">Scheduling Constraint</msg>
   <msg key="lt_Score_Customer_Relate">Score: Customer Related Benefits</msg>
@@ -1798,6 +1817,7 @@ other way for the user to find out.</msg>
   <msg key="Manage_Menus">Manage Menus</msg>
   <msg key="Manage_Profiles">Manage Profiles</msg>
   <msg key="Manage_Views">Manage Views</msg>
+  <msg key="Manhole">Manhole</msg>
   <msg key="Manual_List_Selector">Manual List Selector</msg>
   <msg key="Manual_SQL_Selector">Manual SQL Selector</msg>
   <msg key="Manufacturing">Manufacturing</msg>
@@ -1825,6 +1845,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Mexico">Mexico</msg>
   <msg key="Milestone">Milestone</msg>
   <msg key="milestone_p">Milestone?</msg>
+  <msg key="Milestone_Slip_Tracker">Milestone Slip Tracker</msg>
   <msg key="Milestones">Milestones</msg>
   <msg key="Milestones_List">Milestones List</msg>
   <msg key="Mine">Mine</msg>
@@ -1868,12 +1889,14 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Navbar_Help_Text">Click here to get help for this page.</msg>
   <msg key="Needs_Analysis">Needs Analysis</msg>
   <msg key="NegotiationReview">Review</msg>
+  <msg key="Neither_Customer_nor_Freelance">Neither Customer nor Freelancer</msg>
   <msg key="Nepal">Nepal</msg>
   <msg key="Netherlands">Netherlands</msg>
   <msg key="Netherlands_Antilles">Netherlands Antilles</msg>
   <msg key="Netmap">Netmap</msg>
   <msg key="Network">Network</msg>
   <msg key="Network_Device">Network Device</msg>
+  <msg key="Network_Element">Network Element</msg>
   <msg key="Network_Router">Network Router</msg>
   <msg key="Network_Switch">Network Switch</msg>
   <msg key="New">New</msg>
@@ -1954,6 +1977,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Notify_added_user">Notify added user</msg>
   <msg key="Nr">Num</msg>
   <msg key="Nuke">Nuke</msg>
+  <msg key="nuke">Nuke</msg>
   <msg key="Nuke_All_Demo_Users">Nuke All Demo Users</msg>
   <msg key="Nuke_Checked_Projects">Nuke Checked Projects</msg>
   <msg key="Nuke_Checked_Users">Nuke Checked Users</msg>
@@ -1996,6 +2020,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Ok">Ok</msg>
   <msg key="Ok?">Ok?</msg>
   <msg key="Old_Number_Location">Old Number Location</msg>
+  <msg key="OLT">OLT</msg>
   <msg key="On_Hold">On Hold</msg>
   <msg key="On_Hold1">On Hold</msg>
   <msg key="On_Track">On Track</msg>
@@ -2031,6 +2056,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Opportunity_Timesheet_Component">Oportunity Timsheet</msg>
   <msg key="OpportunityName">Name</msg>
   <msg key="OpportunityNumber">Nr</msg>
+  <msg key="Optical_Line_Termination">Optical Line Termination</msg>
   <msg key="Optional">Optional</msg>
   <msg key="or_by">or by</msg>
   <msg key="or_Last_Name">or Last Name</msg>
@@ -2053,6 +2079,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Ouch">Ouch!</msg>
   <msg key="Our_employees_related">Our Employees (managing the company)</msg>
   <msg key="Outdated">Outdated</msg>
+  <msg key="Outline_Nr">Outline Nr.</msg>
   <msg key="Outstanding">Outstanding</msg>
   <msg key="Overtime">Overtime</msg>
   <msg key="Owner">Owner</msg>
@@ -2218,6 +2245,7 @@ Please click on the links below to get to the respective administration screens.
   <msg key="Program_Enhan_K">Program Enhan. K</msg>
   <msg key="Program_Enhancement">Program Enhancement</msg>
   <msg key="program_id">Program</msg>
+  <msg key="Program_Portfolio_List">Program Portfolio List</msg>
   <msg key="Programs">Programs</msg>
   <msg key="Programs_List">Programs List</msg>
   <msg key="Project">Project</msg>
@@ -2367,6 +2395,7 @@ financial controlling for the included tickets.</msg>
   <msg key="Provider_Documents">Provider Documents</msg>
   <msg key="Provider_Help">Provider Help</msg>
   <msg key="Provider_Management">Provider Management</msg>
+  <msg key="Provider_Material">Provider Material</msg>
   <msg key="Provider_Receipt">Provider Receipt</msg>
   <msg key="Provider_Reporting">Provider Reporting</msg>
   <msg key="Providers">Providers</msg>
@@ -2657,6 +2686,7 @@ financial controlling for the included tickets.</msg>
   <msg key="SLA_Request">Ticket Container Request</msg>
   <msg key="SLA_Ticket_Aging">SLA Ticket Aging</msg>
   <msg key="SLAs">SLAs</msg>
+  <msg key="Sleeve">Sleeve</msg>
   <msg key="Slovak Republic">Slovak Republic</msg>
   <msg key="Slovak_Republic">Slovak Republic</msg>
   <msg key="Slovenia">Slovenia</msg>
@@ -2886,10 +2916,13 @@ For details on templates please see the
   <msg key="Translation_Vertical">Translation Vertical</msg>
   <msg key="Transport_Provider">Transport Provider</msg>
   <msg key="Transweb_Express">Transweb Express</msg>
+  <msg key="Trasse_Segment">Trasse Segment</msg>
   <msg key="Travel">Travel</msg>
   <msg key="Travel_Cost">Travel Cost</msg>
   <msg key="Travel_Costs">Travel Costs</msg>
   <msg key="Treelevel">Treelevel</msg>
+  <msg key="Trench">Trench</msg>
+  <msg key="Trench_Segment">Trench Segment</msg>
   <msg key="Trust_Relationships">Trust Relationships</msg>
   <msg key="ts">ts</msg>
   <msg key="Tunisia">Tunisia</msg>
@@ -3012,6 +3045,7 @@ For details on templates please see the
   <msg key="Web_Site">Web Site</msg>
   <msg key="Web_Site_Design">Web Site Design</msg>
   <msg key="Web_Site_Development">Web Site Development</msg>
+  <msg key="WebGIS">WebGIS</msg>
   <msg key="Week">Week</msg>
   <msg key="Week_and_Day">Week and Day</msg>
   <msg key="Weighted_Value">Weighted Value</msg>

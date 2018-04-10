@@ -235,11 +235,13 @@
   <msg key="Assigning">Zuweisen</msg>
   <msg key="Assignments">Assignments</msg>
   <msg key="Associated_with_new_Object">Mit neuem Objekt assoziieren</msg>
+  <msg key="ASUS_Backup">ASUS Backup</msg>
   <msg key="Atril_Dj_Vu_3">Atril Déjà Vu 3</msg>
   <msg key="attachments">attachments</msg>
   <msg key="Attribute">Attribut</msg>
   <msg key="AUD">AUD</msg>
   <msg key="Audit_Trail_Absences">Audit Abwesenheiten</msg>
+  <msg key="Audit_Trail_Companies">Audit Historie Firma</msg>
   <msg key="Audit_Trail_Conf_Items">Audit Konfigurationselemente</msg>
   <msg key="Audit_Trail_Offices">Audit Firmensitze</msg>
   <msg key="Audit_Trail_Projects">Audit Projekte</msg>
@@ -321,6 +323,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Bug_Tracker">Bug-Tracker</msg>
   <msg key="Bug_Tracker_Task">Bug-Tracker-Aufgabe</msg>
   <msg key="Bugs">Fehler</msg>
+  <msg key="Building_Connection">Hausanschluss</msg>
   <msg key="Bulgaria">Bulgarien</msg>
   <msg key="BulkUpdateUsers">Alle Benutzer aktualisieren</msg>
   <msg key="Burn_Down_Chart">Burndown-Chart</msg>
@@ -429,12 +432,14 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Company_Name">Firmenname</msg>
   <msg key="Company_name">Firmenname</msg>
   <msg key="company_name">Firmenname</msg>
+  <msg key="Company_Notes">Notizen zu Firma</msg>
   <msg key="Company_Offices">Firmensitze</msg>
   <msg key="company_path">Pfad</msg>
   <msg key="Company_Profit_Component">Firmen Gewinn und Verlust</msg>
   <msg key="Company_Project_Nr">Kundenprojekt-Nummer</msg>
   <msg key="Company_Project_Nr_Help">Die Projektnummer des Kunden. Diese Nummer wird in Rechnungen verwendet.</msg>
   <msg key="Company_Projects">Firmenprojekte</msg>
+  <msg key="Company_Rule_Audit">Regel Audit Firma</msg>
   <msg key="Company_Short_Name">Firmenkurzname</msg>
   <msg key="Company_Status">Firmenstatus</msg>
   <msg key="Company_Status_1">Firmenstatus</msg>
@@ -475,7 +480,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Conf_Item_Type">Typ</msg>
   <msg key="Conf_Item_Version">Konfigurationselement-Version</msg>
   <msg key="Conf_Item_Wiki_Component">Wiki</msg>
-  <msg key="Conf_Items">Konfigurationselemente</msg>
+  <msg key="Conf_Items">Netz-Elemente</msg>
   <msg key="Conf_Items_Admin">Admin - Konfigurationselemente</msg>
   <msg key="Conf_Items_Indicators_Timeline">Zeitleiste Indikatoren</msg>
   <msg key="ConfDB_Dashboard">Dashboard</msg>
@@ -487,6 +492,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="confirm_date">Bestätigungsdatum</msg>
   <msg key="Consistency_Checks">Konsistenzchecker</msg>
   <msg key="Construction">Konstruktion</msg>
+  <msg key="Construction_Status">Baustatus</msg>
   <msg key="Consultant">Berater</msg>
   <msg key="Consultants">Berater</msg>
   <msg key="consultants">Berater</msg>
@@ -551,6 +557,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="CRM_Opportunity">CRM-Verkaufschance</msg>
   <msg key="CRM_Sales">CRM</msg>
   <msg key="Croatia">Kroatien</msg>
+  <msg key="Cron24">Cron24</msg>
   <msg key="cs">cs</msg>
   <msg key="Cuba">Kuba</msg>
   <msg key="Cur_Costs">Aktuelle Kosten</msg>
@@ -565,6 +572,7 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Customer_Information_AJAX">Kundeninformation</msg>
   <msg key="Customer_Invoice">Kundenrechnung</msg>
   <msg key="Customer_Management">Kundenverwaltung</msg>
+  <msg key="Customer_Material">Kundenseitige Materialien</msg>
   <msg key="Customer_Prospects">Potentielle Kunden</msg>
   <msg key="Customer_review">Kundenbewertung</msg>
   <msg key="Customers">Kunde</msg>
@@ -1008,6 +1016,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Home_Bug_Tracker_Component">Fehlerliste</msg>
   <msg key="Home_Calendar_Component">Kalender</msg>
   <msg key="Home_City">Privat Stadt</msg>
+  <msg key="Home_Connection">Hausanschluss</msg>
   <msg key="Home_Country">Privat Land</msg>
   <msg key="Home_Filestorage_Component">Dateiablage</msg>
   <msg key="Home_Forum_Component">Diskussionsforum</msg>
@@ -1094,6 +1103,8 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Indonesia">Indonesien</msg>
   <msg key="Inquiries">Anfragen</msg>
   <msg key="Inquiring">Anfragend</msg>
+  <msg key="Intactive_Defunct">Inaktiv defekt</msg>
+  <msg key="Intactive_Planned">Inaktiv geplant</msg>
   <msg key="Interactive_Administration_Guide">Interaktiver Administrationsassistent</msg>
   <msg key="Interactive_Shell">Interaktive Shell</msg>
   <msg key="InterCo_Invoice">InterCo-Rechnung</msg>
@@ -1244,6 +1255,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Lebanon">Libanon</msg>
   <msg key="left">Left Blue</msg>
   <msg key="Legal">Rechtswesen</msg>
+  <msg key="Length">Länge</msg>
   <msg key="Level">Ebene</msg>
   <msg key="License">Lizenz</msg>
   <msg key="Licenses">Lizenzen</msg>
@@ -1270,6 +1282,8 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="login">Login</msg>
   <msg key="logout">Abmelden</msg>
   <msg key="Lori_Project">Lori Projekt</msg>
+  <msg key="Lot">Los</msg>
+  <msg key="Lot_Section">Losabschnitt</msg>
   <msg key="Low">Niedrig</msg>
   <msg key="lt">lt</msg>
   <msg key="lt_2_-_Very_High_Priorit">2 - Sehr hohe Priorität</msg>
@@ -1277,7 +1291,6 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="lt_6_-_Medium_Low_Priori">6 - Etwas niedrigere Priorität</msg>
   <msg key="lt_8_-_Very_Low_Priority">8 - Sehr niedrige Priorität</msg>
   <msg key="lt_A_project_number_is_c">Eindeutige Projektnummer</msg>
-  <msg key="lt_Aadir_Cosasintranet-c">Añadir</msg>
   <msg key="lt_Aadirintranet-coreAdd">Hinzufügen</msg>
   <msg key="lt_Abteilungsleiter_CCIT">Abteilungsleiter CCIT</msg>
   <msg key="lt_acs-automated-testing">automated-testing</msg>
@@ -1476,6 +1489,7 @@ Passwort: %password%
   <msg key="lt_Here_you_find_advance">Hier finden sie weitere Konfigurationsoptionen</msg>
   <msg key="lt_Here_you_find_advance_1">Hier finden sie weitere Konfigurationsoptionen</msg>
   <msg key="lt_Heuteintranet-timeshe">Heute</msg>
+  <msg key="lt_Home_Connection_Const">Haus Anschluss</msg>
   <msg key="lt_How_did_we_get_in_con">Wie sind sie in Kontakt mit dieser Firma gekommen?</msg>
   <msg key="lt_How_many_hours_can_be">Wie viele Stunden können für das Projekt aufgezeichnet werden (sowohl interne als auch externe Ressourcen)?</msg>
   <msg key="lt_Human_Resources_Manag">Personalmanager</msg>
@@ -1534,6 +1548,7 @@ Passwort: %password%
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
+  <msg key="lt_Manhole_Construction_">Konstruktionsstatus Schacht</msg>
   <msg key="lt_Mark_tickets_as_dupli">Tickets als doppelt markieren</msg>
   <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
   <msg key="lt_Maybe_somebody_has_ch">Vielleicht hat jemand den Pfad des ?internen? Unternehmens geändert, der Ihre Organisation identifiziert.</msg>
@@ -1591,6 +1606,7 @@ Passwort: %password%
   <msg key="lt_Only_not_invoiced_hou">Nur Stunden, die noch nicht abgerechnet wurden</msg>
   <msg key="lt_Openintranet-coreOpen">Offen</msg>
   <msg key="lt_Opportunities_Dashboa">Verkaufschancen-Dashboard</msg>
+  <msg key="lt_Optical_Line_Terminat">Multifunktionsgehäuse</msg>
   <msg key="lt_Otherintranet-coreOth">Andere</msg>
   <msg key="lt_Outstandingintranet-c">Ausstehend</msg>
   <msg key="lt_Paidintranet-corePaid">Bezahlt</msg>
@@ -1721,6 +1737,7 @@ Passwort: %password%
   <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Quellsprache</msg>
   <msg key="lt_Translation_target_la">Zielsprache</msg>
+  <msg key="lt_Trench_Construction_S">Konstruktionsstatus Trasse</msg>
   <msg key="lt_Tydzieintranet-coreWe">Woche</msg>
   <msg key="lt_Unable_to_determine_I">Das System konnte die Firma mit &#34;Internal&#34; nicht finden.</msg>
   <msg key="lt_Unknownintranet-coreU">Unbekannt</msg>
@@ -1822,6 +1839,7 @@ Passwort: %password%
   <msg key="Manage_Menus">Menüs verwalten</msg>
   <msg key="Manage_Profiles">Profile verwalten</msg>
   <msg key="Manage_Views">Views verwalten</msg>
+  <msg key="Manhole">Schacht</msg>
   <msg key="Manual_List_Selector">Manueller Listenselektor</msg>
   <msg key="Manual_SQL_Selector">Manueller SQL-Selektor</msg>
   <msg key="Manufacturing">Verarbeitendes Gewerbe</msg>
@@ -1848,6 +1866,7 @@ Passwort: %password%
   <msg key="Mexico">Mexico</msg>
   <msg key="Milestone">Meilenstein</msg>
   <msg key="milestone_p">Meilenstein?</msg>
+  <msg key="Milestone_Slip_Tracker">Verzögerung Meilensteine</msg>
   <msg key="Milestones">Meilensteine</msg>
   <msg key="Milestones_List">Meilenstein-Liste</msg>
   <msg key="Mine">Meine</msg>
@@ -1891,12 +1910,14 @@ Passwort: %password%
   <msg key="Navbar_Help_Text">Für Hilfe zu dieser Seite bitte hier klicken.</msg>
   <msg key="Needs_Analysis">Braucht Analyse</msg>
   <msg key="NegotiationReview">Verhandlung/Bewertung</msg>
+  <msg key="Neither_Customer_nor_Freelance">Weder Kunde noch Freiberufler</msg>
   <msg key="Nepal">Nepal</msg>
   <msg key="Netherlands">Niederlande</msg>
   <msg key="Netherlands_Antilles">Niederländische Antillen</msg>
   <msg key="Netmap">Netmap</msg>
   <msg key="Network">Netzwerk</msg>
   <msg key="Network_Device">Netzwerk-Gerät</msg>
+  <msg key="Network_Element">Netzwerk-Element</msg>
   <msg key="Network_Router">Netzwerk-Router</msg>
   <msg key="Network_Switch">Netzwerk-Switch</msg>
   <msg key="New">Neu</msg>
@@ -1977,6 +1998,7 @@ Passwort: %password%
   <msg key="Notify_added_user">Neuen Benutzer benachrichtigen</msg>
   <msg key="Nr">Nr.</msg>
   <msg key="Nuke">Nuken</msg>
+  <msg key="nuke">Nuken</msg>
   <msg key="Nuke_All_Demo_Users">Alle Demobenutzer entfernen</msg>
   <msg key="Nuke_Checked_Projects">geprüfte Projekte Entfernen</msg>
   <msg key="Nuke_Checked_Users">geprüfte Benutzer entfernen</msg>
@@ -2019,6 +2041,7 @@ Passwort: %password%
   <msg key="Ok">Ok</msg>
   <msg key="Ok?">Ok?</msg>
   <msg key="Old_Number_Location">Old Number Location</msg>
+  <msg key="OLT">MVZ</msg>
   <msg key="On_Hold">Angehalten</msg>
   <msg key="On_Hold1">Angehalten</msg>
   <msg key="On_Track">Ampel-Status</msg>
@@ -2054,6 +2077,7 @@ Passwort: %password%
   <msg key="Opportunity_Timesheet_Component">Verkaufsschance - Zeiterfassung</msg>
   <msg key="OpportunityName">Name</msg>
   <msg key="OpportunityNumber">Nr</msg>
+  <msg key="Optical_Line_Termination">Multifunktionsgehäuse</msg>
   <msg key="Optional">Optional</msg>
   <msg key="or_by">oder </msg>
   <msg key="or_Last_Name">oder Nachname</msg>
@@ -2216,7 +2240,7 @@ Passwort: %password%
   <msg key="Profile_Customers">Kunden</msg>
   <msg key="Profile_Employees">Mitarbeiter</msg>
   <msg key="Profile_Freelance_Managers">Ressourcenmanager</msg>
-  <msg key="Profile_Freelancers">Partner</msg>
+  <msg key="Profile_Freelancers">Lieferant</msg>
   <msg key="Profile_Helpdesk">Helpdesk</msg>
   <msg key="Profile_HR_Managers">Personalabteilung</msg>
   <msg key="Profile_ITSM_Vertical">ITSM Vertical</msg>
@@ -2240,6 +2264,7 @@ Passwort: %password%
   <msg key="Program_Enhan_K">Kleinauftrag Konzern</msg>
   <msg key="Program_Enhancement">Programmerweiterung</msg>
   <msg key="program_id">Programm</msg>
+  <msg key="Program_Portfolio_List">Programm Portfolio Liste</msg>
   <msg key="Programs">Programme</msg>
   <msg key="Programs_List">Programm-Liste</msg>
   <msg key="Project">Projektname</msg>
@@ -2384,6 +2409,7 @@ Zeiterfassung und das Financontrolling der enthaltenen Tickets.
   <msg key="Provider_Documents">Finanzdokumente Lieferanten</msg>
   <msg key="Provider_Help">Lieferanten-Hilfe</msg>
   <msg key="Provider_Management">Lieferantenmanagement</msg>
+  <msg key="Provider_Material">Zulieferseitige Materialien</msg>
   <msg key="Provider_Receipt">Lieferantenbeleg</msg>
   <msg key="Provider_Reporting">Lieferantenberichte</msg>
   <msg key="Providers">Lieferanten</msg>
@@ -2674,6 +2700,7 @@ Zeiterfassung und das Financontrolling der enthaltenen Tickets.
   <msg key="SLA_Request">Anfrage neuer Ticket-Container</msg>
   <msg key="SLA_Ticket_Aging">Alterung Tickets</msg>
   <msg key="SLAs">Ticket-Container</msg>
+  <msg key="Sleeve">Muffe</msg>
   <msg key="Slovak Republic">Slowakische Republik</msg>
   <msg key="Slovak_Republic">Slowakische Republik</msg>
   <msg key="Slovenia">Slowenien</msg>
@@ -2900,10 +2927,13 @@ Details finden Sie auf der
   <msg key="Translation_Vertical">Translation Vertical</msg>
   <msg key="Transport_Provider">Transportanbieter</msg>
   <msg key="Transweb_Express">Transweb Express</msg>
+  <msg key="Trasse_Segment">Trasse Segment</msg>
   <msg key="Travel">Reise</msg>
   <msg key="Travel_Cost">Reisekosten</msg>
   <msg key="Travel_Costs">Reisekosten</msg>
   <msg key="Treelevel">Baumebene</msg>
+  <msg key="Trench">Trasse</msg>
+  <msg key="Trench_Segment">Trassensegment</msg>
   <msg key="Trust_Relationships">Vertrauensbeziehungen</msg>
   <msg key="ts">ts</msg>
   <msg key="Tunisia">Tunesien</msg>
@@ -2952,7 +2982,7 @@ Details finden Sie auf der
   <msg key="User_Admin_Information">Benutzer - Admin-Informationen</msg>
   <msg key="User_Administration">Admin - Benutzer</msg>
   <msg key="user_administration">Admin - Benutzer</msg>
-  <msg key="User_Basic_Information">Benutzer ? Basis-Informationen</msg>
+  <msg key="User_Basic_Information">Benutzer - Basis-Informationen</msg>
   <msg key="User_Configuration_Items">Konfigurationselemente</msg>
   <msg key="User_Contact_Information">Benutzer - Kontakt-Informationen</msg>
   <msg key="User_Employee_Component">Mitarbeiterinformationen</msg>
@@ -2967,7 +2997,7 @@ Details finden Sie auf der
   <msg key="User_Notes">Notizen</msg>
   <msg key="User_Notifications">Benutzer - Benachrichtigungen</msg>
   <msg key="User_Offices">Niederlassungen</msg>
-  <msg key="User_Portrait">Benutzer-Portrait</msg>
+  <msg key="User_Portrait">Benutzer - Portrait</msg>
   <msg key="User_Profiles">Benutzerprofile</msg>
   <msg key="User_Related_Objects">Benutzer - Beziehungen</msg>
   <msg key="User_Rule_Audit">Benutzer - Regel-Audit</msg>
@@ -3026,6 +3056,7 @@ Details finden Sie auf der
   <msg key="Web_Site">Webseite</msg>
   <msg key="Web_Site_Design">Webseiten Design</msg>
   <msg key="Web_Site_Development">Web Site Development</msg>
+  <msg key="WebGIS">WebGIS</msg>
   <msg key="Week">Woche</msg>
   <msg key="Week_and_Day">Woche und Tag</msg>
   <msg key="Weighted_Value">Gewichteter Wert</msg>
