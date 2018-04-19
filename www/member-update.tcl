@@ -23,6 +23,7 @@ ad_page_contract {
 } {
     object_id:integer
     days:array,optional
+    hours:array,optional
     percentage:array,optional
     action
     { return_url "" }
@@ -42,6 +43,7 @@ set current_user_id [auth::require_login]
 # all ]project-open[ object types define procedures
 # im_ObjectType_permissions $user_id $object_id view read write admin.
 #
+set object_name [acs_object_name $object_id]
 set object_type [db_string acs_object_type "select object_type from acs_objects where object_id=:object_id"]
 set perm_cmd "${object_type}_permissions \$current_user_id \$object_id view read write admin"
 eval $perm_cmd
@@ -76,6 +78,8 @@ switch $action {
 
     "update_members" {
 	set debug ""
+
+	# Accept assignments based on percentages
 	foreach user_id [array names percentage] {
 	    set perc [string trim $percentage($user_id)]
 	    if {![string is double $perc]} { 
@@ -121,6 +125,166 @@ switch $action {
 		)
 	    "
   	}
+
+	# Accept assignments based on hours
+	foreach user_id [array names hours] {
+	    
+	    set hour [string trim $hours($user_id)]
+	    set work_days_string [db_string work_days "
+		select	im_resource_mgmt_work_days (:user_id, coalesce(p.start_date, now())::date, coalesce(p.end_date,now())::date)
+		from	im_projects p
+		where	p.project_id = :object_id
+	    "]
+	    set work_days_array [lindex [split $work_days_string "="] 1]
+	    regsub -all {,} $work_days_array " " work_days_array
+	    set work_days_array [string range $work_days_array 1 end-1]
+	    set work_days 0
+	    foreach d $work_days_array { set work_days [expr $work_days + $d] }
+	    set work_days [expr $work_days / 100.0]
+
+	    if {0 == $work_days} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Zero_work_days "Zero Work Days"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Zero_work_days_msg "
+				Your object ('%object_name%') has zero work days between it's start- and end-date.<br>
+				For this reason we can not convert your specified number of hours into a percentage.<br>
+		                Please modify the object and fix start- and end-date.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {![string is double $hour]} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Hours_not_a_number "Hours is not a number"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Hours_not_a_number_msg "
+				The hours you have given ('%hour%') is not a number.<br>
+				Please enter something like '12.3'.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {"" != $hour && $hour < 0.0} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Hours_negative "Hours should not be negative"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Hours_not_a_number_msg "
+				The hours you have given ('%hour%') is a negative number.<br>
+				Please enter a positive number such as '12.3'.
+			"]
+		"
+		ad_script_abort
+	    }
+
+	    set perc ""
+	    if {"" ne $hour} {
+		set perc [expr round(100.0 * 100.0 * $hour / 8.0 / $work_days) / 100.0]
+	    }
+
+	    if {"" ne $perc && $perc > $max_perc} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Hour_percentage_too_big "Assignment too high"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Hour_percentage_too_big_msg "
+		                The assigned hours (%hour%) on object '%object_name%' correspond to %perc% % assignment.<br>
+		                This value is beyond %max_perc%.<br>
+				Please enter a smaller value.
+			"]
+		"
+		ad_script_abort
+	    }
+
+	    set touched_p 1
+	    db_dml update_perc "
+		update im_biz_object_members
+		set percentage = :perc
+		where rel_id in (
+			select	rel_id
+			from	acs_rels
+			where	object_id_two = :user_id
+				and object_id_one = :object_id
+		)
+	    "
+	    ns_log Notice "member-update: object_id=$object_id, user_id=$user_id, perc=$perc, hour=$hour, work_days=$work_days"
+  	}
+
+
+	# Accept assignments based on days
+	foreach user_id [array names days] {
+	    
+	    set day [string trim $days($user_id)]
+	    set work_days_string [db_string work_days "
+		select	im_resource_mgmt_work_days (:user_id, coalesce(p.start_date, now())::date, coalesce(p.end_date,now())::date)
+		from	im_projects p
+		where	p.project_id = :object_id
+	    "]
+	    set work_days_array [lindex [split $work_days_string "="] 1]
+	    regsub -all {,} $work_days_array " " work_days_array
+	    set work_days_array [string range $work_days_array 1 end-1]
+	    set work_days 0
+	    foreach d $work_days_array { set work_days [expr $work_days + $d] }
+	    set work_days [expr $work_days / 100.0]
+
+	    if {0 == $work_days} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Zero_work_days "Zero Work Days"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Zero_work_days_msg "
+				Your object ('%object_name%') has zero work days between it's start- and end-date.<br>
+				For this reason we can not convert your specified number of days into a percentage.<br>
+		                Please modify the object and fix start- and end-date.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {![string is double $day]} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Days_not_a_number "Days is not a number"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Days_not_a_number_msg "
+				The number of days you have given ('%day%') is not a number.<br>
+				Please enter something like '12.3'.
+			"]
+		"
+		ad_script_abort
+	    }
+	    if {"" != $day && $day < 0.0} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Days_negative "Days should not be negative"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Days_not_a_number_msg "
+				The number of days you have given ('%day%') is a negative number.<br>
+				Please enter a positive number such as '12.3'.
+			"]
+		"
+		ad_script_abort
+	    }
+
+	    set perc ""
+	    if {"" ne $day} {
+		set perc [expr round(100.0 * 100.0 * $day / $work_days) / 100.0]
+	    }
+
+	    if {"" ne $perc && $perc > $max_perc} { 
+		ad_return_complaint 1 "
+		     <b>[lang::message::lookup "" intranet-core.Day_percentage_too_big "Assignment too high"]</b>:<br>
+			[lang::message::lookup "" intranet-core.Day_percentage_too_big_msg "
+		                The assigned days (%day%) on object '%object_name%' correspond to %perc% % assignment.<br>
+		                This value is beyond %max_perc%.<br>
+				Please enter a smaller value.
+			"]
+		"
+		ad_script_abort
+	    }
+
+	    set touched_p 1
+	    db_dml update_perc "
+		update im_biz_object_members
+		set percentage = :perc
+		where rel_id in (
+			select	rel_id
+			from	acs_rels
+			where	object_id_two = :user_id
+				and object_id_one = :object_id
+		)
+	    "
+	    ns_log Notice "member-update: object_id=$object_id, user_id=$user_id, perc=$perc, day=$day, work_days=$work_days"
+  	}
+
     }
 
     "del_members" {

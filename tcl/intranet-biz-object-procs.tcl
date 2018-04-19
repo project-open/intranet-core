@@ -546,6 +546,9 @@ ad_proc -public im_group_member_component {
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
 
     set show_hours_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowHoursP" -default "0"]
+    set edit_hours_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletEditHoursP" -default "0"]
+    set show_days_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowDaysInsteadOfHoursP" -default "0"]
+
     if {!$show_percentage_p} { set show_hours_p 0 }; # don't show hours without percentages
     if {$object_type ni {"im_project" "im_timeheet_task"}} { 
 	set show_hours_p 0; # don't show hours for objects other than project or task
@@ -579,7 +582,7 @@ ad_proc -public im_group_member_component {
 
     set bo_rels_percentage_sql ""
     if {$show_percentage_p} {
-	set bo_rels_percentage_sql ",round(bo_rels.percentage) as percentage"
+	set bo_rels_percentage_sql ",bo_rels.percentage as percentage"
     }
 
     set bo_rels_hours_sql ""
@@ -627,7 +630,11 @@ ad_proc -public im_group_member_component {
     }
     if {$show_hours_p} {
 	incr colspan
-	append header_html "<td class=rowtitle align=middle>[_ intranet-core.Hours]</td>"
+	if {$show_days_p} {
+	    append header_html "<td class=rowtitle align=middle>[lang::message::lookup "" intranet-core.Days Days]</td>"
+	} else {
+	    append header_html "<td class=rowtitle align=middle>[_ intranet-core.Hours]</td>"
+	}
     }
     if {$add_admin_links} {
 	incr colspan
@@ -685,22 +692,35 @@ ad_proc -public im_group_member_component {
 
 	append body_html "$profile_gif</td>"
 	if {$show_percentage_p} {
-	    append body_html "
-		  <td align=middle>
-		    <input type=input size=4 maxlength=4 name=\"percentage.$user_id\" value=\"$percentage\">
-		  </td>
-	    "
+	    set  html "<td align=middle><input type=input size=4 maxlength=4 name=\"percentage.$user_id\" value=\"$percentage\"></td>"
+	    if {$edit_hours_p} {
+		set html "<td align=right>$percentage%</td>"
+		if {"" eq $percentage || "0" eq $percentage} { set html "<td>&nbsp;</td>" }
+	    }
+	    append body_html $html
 	}
 
 	if {$show_hours_p} {
 	    set work_days_array [lindex [split $work_days "="] 1]
 	    regsub -all {,} $work_days_array " " work_days_array
 	    set work_days_array [string range $work_days_array 1 end-1]
-	    # ad_return_complaint 1 $work_days_array
+
 	    if {"" eq $percentage} { set percentage 0 }
 	    set days 0
 	    foreach d $work_days_array { set days [expr $days + $d] }
-	    append body_html "<td align=middle>[expr round($percentage * $days * 8.0 / 100.0) / 100.0]</td>"
+	    set hours [expr round($percentage * $days * 8.0 / 1000.0) / 10.0]
+	    if {0 == $hours} { set hours "" }
+	    set html "<td align=middle>$hours</td>"
+	    if {$edit_hours_p} {
+
+		if {$show_days_p} {
+		    set days [expr round($percentage * $days / 1000.0) / 10.0]
+		    set html "<td><input type=input size=4 maxlength=4 name=\"days.$user_id\" value=\"$days\"></td>"
+		} else {
+		    set html "<td><input type=input size=4 maxlength=4 name=\"hours.$user_id\" value=\"$hours\"></td>"
+		}
+	    }
+	    append body_html $html
 	}
 
 	if {$add_admin_links} {
