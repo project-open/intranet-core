@@ -1320,6 +1320,7 @@ ad_proc -public im_ad_hoc_query {
     {-border 0}
     {-col_titles {} }
     {-translate_p 1 }
+    {-subtotals_p 1 }
     {-package_key "intranet-core" }
     {-locale ""}
     sql
@@ -1399,6 +1400,8 @@ ad_proc -public im_ad_hoc_query {
 	set col_count 0
 	set row_content ""
         foreach col $row {
+	    set col_name [lindex $col_titles $col_count]
+
             switch $format {
                 plain { append result "$col\t" }
                 html {
@@ -1407,17 +1410,29 @@ ad_proc -public im_ad_hoc_query {
                 }
                 csv { append result "\"$col\";" }
                 xml { 
-		    set col_name [lindex $col_titles $col_count]
 		    append row_content "<$col_name>[ns_quotehtml $col]</$col_name>\n" 
 		}
                 json {
 		    if {0 == $col_count} { set komma "" } else { set komma "," }
-		    set col_name [lindex $col_titles $col_count]
 		    regexp -all {\n} $col {\n} col
 		    regexp -all {\r} $col {} col
 		    append row_content "$komma\"$col_name\": \"[ns_quotehtml $col]\"" 
 		}
             }
+
+	    if {$subtotals_p} {
+		set sum 0
+		if {[info exists subtotals($col_name)]} { set sum $subtotals($col_name) }
+		if {"" ne $col} {
+		    if {"" ne $sum && [string is double $col]} {
+			set sum [expr $sum + $col]
+		    } else {
+			set sum ""
+		    }
+		    set subtotals($col_name) $sum
+		}
+	    }
+
 	    incr col_count
         }
 	
@@ -1435,6 +1450,16 @@ ad_proc -public im_ad_hoc_query {
         incr row_count
     }
 
+    set footer ""
+    if {$subtotals_p} {
+	foreach col_name $bind_rows {
+	    set subtotal ""
+	    if {[info exists subtotals($col_name)]} { set subtotal $subtotals($col_name) }
+	    append footer "<td><b>$subtotal</b></td>"
+	}
+	set footer "<tr>$footer</tr>\n"
+    }
+
     switch $format {
         plain { return "$header\n$result"  }
         html { 
@@ -1444,6 +1469,7 @@ ad_proc -public im_ad_hoc_query {
                 <tr $bgcolor(0)>
                 $result
                 </tr>
+                $footer
                 </table>
             "
         }
