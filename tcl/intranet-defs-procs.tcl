@@ -1319,6 +1319,7 @@ ad_proc -public im_ad_hoc_query {
     {-report_name ""}
     {-border 0}
     {-col_titles {} }
+    {-col_td_attributes {} }
     {-translate_p 1 }
     {-subtotals_p 1 }
     {-package_key "intranet-core" }
@@ -1406,7 +1407,8 @@ ad_proc -public im_ad_hoc_query {
                 plain { append result "$col\t" }
                 html {
                     if {"" == $col} { set col "&nbsp;" }
-                    append result "<td>$col</td>"
+		    set td_attributes [lindex $col_td_attributes $row_count]
+                    append result "<td $td_attributes>$col</td>"
                 }
                 csv { append result "\"$col\";" }
                 xml { 
