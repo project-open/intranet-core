@@ -1461,7 +1461,8 @@ ad_proc -public im_ad_hoc_query {
 	foreach col_name $bind_rows {
 	    set subtotal ""
 	    if {[info exists subtotals($col_name)]} { set subtotal $subtotals($col_name) }
-	    append footer "<td><b>$subtotal</b></td>"
+	    append footer "<td><b>[lc_numeric $subtotal "" $locale]</b></td>"
+	    # append footer "<td><b>$subtotal</b></td>"
 	}
 	set footer "<tr>$footer</tr>\n"
     }
