@@ -1340,6 +1340,9 @@ ad_proc -public im_ad_hoc_query {
     
     regsub -all {[^0-9a-zA-Z]} $report_name "_" report_name_key
 
+    set thousand_separator [lc_get -locale $locale "thousands_sep"]
+    # ad_return_complaint 1 $thousand_separator
+
     # ---------------------------------------------------------------
     # Execute the report. As a result we get:
     #       - bind_rows with list of columns returned and
@@ -1402,7 +1405,7 @@ ad_proc -public im_ad_hoc_query {
 	set row_content ""
         foreach col $row {
 	    set col_name [lindex $col_titles $col_count]
-
+	    set col [string trim $col]
             switch $format {
                 plain { append result "$col\t" }
                 html {
@@ -1426,13 +1429,14 @@ ad_proc -public im_ad_hoc_query {
 		set sum 0
 		if {[info exists subtotals($col_name)]} { set sum $subtotals($col_name) }
 		if {"" ne $col} {
-		    if {"" ne $sum && [string is double $col]} {
+		    if {"" ne $sum && [regexp {^[0-9\,\.]+$} $col]} {
+			set col [regsub -all $thousand_separator $col ""]
 			set sum [expr $sum + $col]
 		    } else {
 			set sum ""
 		    }
-		    set subtotals($col_name) $sum
 		}
+		set subtotals($col_name) $sum
 	    }
 
 	    incr col_count
