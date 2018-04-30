@@ -285,6 +285,8 @@ if {[im_permission $current_user_id "view_projects_all"]} {
     ad_form -extend -name $form_id -form {
         {mine_p:text(select),optional {label "$min_all_l10n"} {options $mine_p_options }}
     } 
+
+    template::element::set_value $form_id mine_p $mine_p
 }
 
 if { [im_permission $current_user_id "view_projects_history"] || [im_permission $current_user_id "view_projects_all"] } {
