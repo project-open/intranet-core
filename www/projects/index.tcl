@@ -124,11 +124,8 @@ set left_menu_p [parameter::get_from_package_key -package_key "intranet-core" -p
 
 if {"" == $include_subproject_level} { set include_subproject_level [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectLevel "" ""] }
 if {"" == $include_subprojects_p} { set include_subprojects_p [im_parameter -package_id [im_package_core_id] ProjectListPageDefaultSubprojectsP "" "f"] }
-
-# Unprivileged users (clients & freelancers) can only see their 
-# own projects and no subprojects.
 if {![im_permission $current_user_id "view_projects_all"]} {
-    if {"f" == $mine_p} { set mine_p "dept" }
+    # Unprivileged users (clients & freelancers) can't see subprojects.
     set include_subprojects_p "f"
     set include_subproject_level ""
 }
@@ -137,7 +134,6 @@ if {![im_permission $current_user_id "view_projects_all"]} {
 if {![im_permission $current_user_id "view_projects_history"]} {
     set project_status_id [im_project_status_open]
 }
-
 
 if { $how_many eq "" || $how_many < 1 } {
     set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage  "" 50]
@@ -395,6 +391,38 @@ if {$filter_advanced_p} {
 # ---------------------------------------------------------------
 
 set criteria [list]
+switch $mine_p {
+    "f" {
+	# The user wants to see all projects.
+	# The "perm_sql" already handles permissions, so we don't have to do anything here.
+    }
+    "dept" {
+	# The user want to see only the projects in his or her department
+	set user_cc_code [db_string cc "select im_cost_center_code_from_id((select department_id from im_employees where employee_id = :current_user_id))" -default ""]
+	if {"" eq $user_cc_code} {
+	     set user_name [acs_object_name $current_user_id]
+	     ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Error "Error"]</b>:<br>[lang::message::lookup "" intranet-core.User_has_no_cc "User '%user_name%' has no department assigned, <br>so we can't show the projects in the user's department."]"
+	}
+	lappend criteria "p.project_cost_center_id in (
+		select	cc.cost_center_id
+		from	im_cost_centers cc
+		where	substring(cc.cost_center_code for (length(:user_cc_code))) = :user_cc_code
+	)"
+    }
+    default {
+        # This should cover the case: mine_p="t"
+	# The user explicitly want to see his or her projects only
+	lappend criteria "p.project_id in (
+	select	p.project_id
+	from	im_projects p,
+		acs_rels r
+	where	r.object_id_one = p.project_id and 
+		r.object_id_two = :user_id
+	)"
+    }
+}
+
+
 if { $project_status_id ne "" && $project_status_id > 0 } {
     lappend criteria "p.project_status_id in ([join [im_sub_categories -include_disabled_p 1 $project_status_id] ","])"
 }
@@ -623,24 +651,10 @@ set perm_sql "
 	)
 "
 
-
 # User can see all projects - no permissions
 if {[im_permission $user_id "view_projects_all"]} {
    set perm_sql "im_projects"
 }
-
-# Explicitely looking for the user's projects
-if {"t" == $mine_p} {
-    set perm_sql "
-	(select	p.*
-	from	im_projects p,
-		acs_rels r
-	where	r.object_id_one = p.project_id and 
-		r.object_id_two = :user_id
-		$where_clause
-	)"
-}
-
 
 set sql "
 SELECT *
