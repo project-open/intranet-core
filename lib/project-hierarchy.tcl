@@ -6,8 +6,6 @@ ad_page_contract {
 
 set current_user_id [ad_conn user_id]
 set super_project_id [im_project_super_project_id $project_id]
-im_project_permissions $current_user_id $project_id view read write admin
-if {!$read} { return "" }
 
 # How to sort the list of subprojects
 set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "order"]
@@ -30,6 +28,9 @@ if {$subproject_filtering_enabled_p} {
     set filter_name [lang::message::lookup "" intranet-core.Filter_Status "Filter Status"]
     set filter_select [im_category_select -include_empty_p 1 "Intranet Project Status" subproject_status_id $subproject_status_id]
 }
+
+im_project_permissions $current_user_id $project_id view_p read_p write_p admin_p
+# Permissions are checked in the .adp
 
 # ---------------------------------------------------------------
 # Columns to show:

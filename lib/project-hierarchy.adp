@@ -1,3 +1,5 @@
+<if @read_p@ eq "1">
+
 <if @subproject_filtering_enabled_p@ eq 1>
   <form action="@return_url;noquote@" method=GET>
   <input type="hidden" name="project_id" value="@project_id@">
@@ -18,3 +20,5 @@
   @table_continuation_html;noquote@
 </table>
 </form>
+
+</if>
