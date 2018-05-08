@@ -1775,11 +1775,12 @@ ad_proc -public im_logo {} {
 	    set system_logo "$system_url/intranet/images/logo.default.gif"
 	}
     }
-    # if { "0" != [ad_conn user_id] } {
-	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
-    # } else {
-    #	return "\n<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"logo.gif\" alt=\"logo\" border='0'></a>\n"
-    # }
+
+    if {"" ne $system_logo_link} {
+	return "<a href=\"$system_logo_link\"><img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'></a>\n"
+    } else {
+	return "<img id='intranetlogo' src=\"$system_logo\" alt=\"logo\" border='0'>"
+    }
 }
 
 
