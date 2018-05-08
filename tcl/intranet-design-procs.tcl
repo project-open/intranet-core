@@ -1763,7 +1763,7 @@ ad_proc -public im_logo {} {
 } {
     set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL "" ""]
     set system_logo [im_parameter -package_id [im_package_core_id] SystemLogo "" ""]
-    set system_logo_link [im_parameter -package_id [im_package_core_id] SystemLogoLink "" "http://www.project-open.com/"]
+    set system_logo_link [im_parameter -package_id [im_package_core_id] SystemLogoLink "" ""]
 
     if {$system_logo eq ""} {
 	set user_id [ad_conn user_id]
