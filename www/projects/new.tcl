@@ -174,7 +174,7 @@ if {$project_exists_p} {
 
 
 
-set form_id "project-ae"
+set form_id "project_form"
 
 template::form::create $form_id
 template::form::section $form_id ""
