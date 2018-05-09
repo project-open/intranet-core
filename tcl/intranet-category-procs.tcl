@@ -292,7 +292,6 @@ ad_proc im_category_select_helper {
 
 	foreach p $category_list_by_id_sorted {
 	    if { ![info exists cat_helper([lindex $cat($p) 5])] } {
-		# ad_return_complaint xx "[lindex $cat($p) 5]"
 		set cat_helper([lindex $cat($p) 5]) $p
 	    } else {
 	    	# No sort order defined, add to the end of the list
@@ -328,9 +327,9 @@ ad_proc im_category_select_helper {
     }
 
     if {$multiple_p} {
-	set select_html "<select name=\"$select_name\" multiple=\"multiple\">"
+	set select_html "<select name=\"$select_name\" id=\"$select_name\" multiple=\"multiple\">"
     } else {
-	set select_html "<select name=\"$select_name\">"
+	set select_html "<select name=\"$select_name\" id=\"$select_name\" >"
     }
 
 	return "
@@ -542,18 +541,7 @@ ad_proc -public template::widget::im_category_tree {
 	set default_value $element(values)
     }
 
-    if {0} {
-	set debug ""
-	foreach key [array names element] {
-	    set value $element($key)
-	    append debug "$key = $value\n"
-	}
-	ad_return_complaint 1 "<pre>$element(name)\n$debug\n</pre>"
-	return
-    }
-
     if { "edit" == $element(mode)} {
-#	ad_return_complaint 1 "<pre>	append category_html \[im_category_select -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value\]</pre>"
 	append category_html [im_category_select -translate_p $translate_p -package_key $package_key -include_empty_p $include_empty_p -include_empty_name $include_empty_name -plain_p $plain_p $category_type $field_name $default_value]
     } else {
 	if {"" != $default_value && "\{\}" != $default_value} {
