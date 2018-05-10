@@ -79,6 +79,7 @@ if {$subproject_filtering_enabled_p} {
 }
 
 set clone_project_enabled_p [im_parameter -package_id [im_package_core_id] EnableCloneProjectLinkP "" 0]
+set new_from_template_enabled_p [im_parameter -package_id [im_package_core_id] EnableNewFromTemplateLinkP "" 0]
 set execution_project_enabled_p [im_parameter -package_id [im_package_core_id] EnableExecutionProjectLinkP "" 0]
 set gantt_project_enabled_p [util_memoize [list db_string gp "select count(*) from apm_packages where package_key = 'intranet-ganttproject'"]]
 set enable_project_path_p [parameter::get -parameter EnableProjectPathP -package_id [im_package_core_id] -default 0] 
@@ -150,16 +151,23 @@ if {$admin} {
 # }
 
 
-set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
-
-set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 'Clone' is an exact copy of your project. You can use this function to standardize repeating projects."]
-
 if {$clone_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    set clone_pr_help [lang::message::lookup "" intranet-core.Clone_Project_Help "A 'Clone' is an exact copy of your project. You can use this function to standardize repeating projects."]
+
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Clone_Project "Clone this project"]</A>[im_gif -translate_p 0 help $clone_pr_help]</li>\n"
 }
 
+if {$new_from_template_enabled_p && $write} {
+    set add_tasks_from_template_help [lang::message::lookup "" intranet-core.Add_tasks_to_project_help "Import all tasks from a template to this project. Existing tasks with the same name will be overwritten."]
+    append admin_html_content "
+    <li><A href=\"[export_vars -base "/intranet/projects/add-tasks-from-template" { { parent_project_id $project_id } }]\">[lang::message::lookup "" intranet-core.Add_tasks_from_template "Add tasks from template"]</A>[im_gif -translate_p 0 help $add_tasks_from_template_help]</li>\n"
+}
+
+
 if {$execution_project_enabled_p && [im_permission $current_user_id add_projects]} {
+    set exec_pr_help [lang::message::lookup "" intranet-core.Execution_Project_Help "An 'Execution Project' is a copy of the current project, but without any references to the project's customers. This options allows you to delegate the management of an 'Execution Project' to freelance project managers etc."]
+
     append admin_html_content "
     <li><A href=\"[export_vars -base $clone_url { {parent_project_id $project_id} {company_id [im_company_internal]} { clone_postfix "Execution Project"} }]\">[lang::message::lookup "" intranet-core.Execution_Project "Create an 'Execution Project'"]
 </A>[im_gif -translate_p 0 help $exec_pr_help]</li>\n"
