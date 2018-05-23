@@ -2954,6 +2954,8 @@ ad_proc -public im_import_invoice_items { filename } {
 	# Prepare the DB statements
 	#
 
+	ad_return_complaint 1 "Backup recovery for invoice_items has been disabled"
+
 	set create_invoice_item_sql "
 INSERT INTO im_invoice_items (
 	item_id,
