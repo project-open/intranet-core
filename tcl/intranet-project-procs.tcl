@@ -2063,22 +2063,21 @@ ad_proc im_project_clone_costs {
 		# create invoice items
 		set invoice_sql "select * from im_invoice_items where invoice_id = :old_cost_id"
 		db_foreach add_invoice_items $invoice_sql {
-		    set new_item_id [db_nextval "im_invoice_items_seq"]
-		    set insert_invoice_items_sql "
-			INSERT INTO im_invoice_items (
-				item_id, item_name, project_id, invoice_id, 
-				item_units, item_uom_id, price_per_unit, currency, 
-				sort_order, item_type_id, item_status_id, description
-			) VALUES (
-				:new_item_id, :item_name, :new_project_id, :new_cost_id, 
-				:item_units, :item_uom_id, :price_per_unit, :currency, 
-				:sort_order, :item_type_id, :item_status_id, :description
-			)
-                    "
-		    db_dml insert_invoice_items $insert_invoice_items_sql
-		
-		}
 
+		    set new_item_id [db_string new_invoice_item "select im_invoice_item__new(
+			null, 'im_invoice_item', now(), :current_user_id, '[ad_conn peeraddr]', null,
+			:item_name, :new_cost_id, :sort_order,
+			:item_units, :item_uom_id, :price_per_unit, :currency,
+			:item_type_id, :item_status_id
+		    )"]
+		    db_dml update_new_invoice_item "
+		    	update im_invoice_items set
+			       		project_id = :new_project_id,
+			       		item_material_id = :item_material_id,
+					description = :description
+			where item_id = :new_item_id
+		    "
+		}
 	    }
 
 	    im_expense {

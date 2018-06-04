@@ -528,3 +528,17 @@ ad_proc im_system_user { } {
     catch { set user [im_exec whoami] }
     return $user
 }
+
+
+ad_proc im_system_url { } {
+    Returns the URL to the system, without a trailing "/"
+} {
+    set system_url [im_parameter -package_id [ad_acs_kernel_id] SystemURL ""]
+    set sysurl_len [string length $system_url]
+    set last_char [string range $system_url $sysurl_len-1 $sysurl_len]
+    if {"/" eq $last_char} {
+	set system_url "[string range $system_url 0 $sysurl_len-2]"
+    }
+    
+    return $system_url
+}

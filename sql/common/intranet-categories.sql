@@ -126,7 +126,6 @@
 -- 27000-27999  Intranet Release Management (1000)
 -- 28000-28999  Customer A (1000)
 -- 29000-29999  Customer B (1000)
-
 -- 30000-39999  Intranet Helpdesk (10000)
 
 -- 40000-40999  Intranet Skin (1000)
@@ -137,8 +136,10 @@
 -- 44000-44999  Intranet Estimate to Complete (1000)
 -- 45000-45999  Intranet Cust FTTx (1000)
 -- 46000-46999  Intranet Cust FTTx (1000)
--- 47000-47999  reserved (1000)
--- 48000-48999  reserved (1000)
+
+-- 47000-47099  Intranet Invoice Item Status (100)
+-- 47100-47199  Intranet Invoice Item Type (100)
+-- 48200-48999  reserved (800)
 -- 49000-49999  reserved (1000)
 
 -- 50000-59999  Navision Integration (10000)
