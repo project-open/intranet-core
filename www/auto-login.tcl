@@ -133,12 +133,14 @@ if {"" != $cmd} {
 # ------------------------------------------------------------------------
 
 set valid_login_with_require [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p 1]
+ns_log Notice "auto-login: valid_login_with_require=$valid_login_with_require"
 
 if {!$valid_login_with_require} {
     # The user has provided a correct auto-login,
     # but is not allowed to login due to require_manual_login
     # => DON'T log the guy in. Instead:
     # => Redirect to URL, so that the user can enter manual login
+    ns_log Notice "auto-login: Redirecting to URL without login: $url"
     ad_returnredirect $url
     ad_script_abort
 }
@@ -146,6 +148,8 @@ if {!$valid_login_with_require} {
 
 # The user is not a privileged one (just a normal employee, 
 # customer or provider), so we log the dude in.
+ns_log Notice "auto-login: Log the dude in: user_id=$user_id"
 ad_user_login -forever=0 $user_id
+ns_log Notice "auto-login: Redirecting to URL with login"
 ad_returnredirect $url
 
