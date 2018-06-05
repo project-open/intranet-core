@@ -1760,3 +1760,23 @@ ad_proc -public im_httpost {
     ns_httppost $url $rqset $qsset $type $timeout
 }
 
+
+
+proc string2hex {string} {
+    set where 0
+    set res {}
+    while {$where<[string length $string]} {
+        set str [string range $string $where [expr $where+15]]
+        if {![binary scan $str H* t] || $t==""} break
+        regsub -all (....) $t {\1 } t4
+        regsub -all (..) $t {\1 } t2
+        set asc ""
+        foreach i $t2 {
+            scan $i %2x c
+            append asc [expr {$c>=32 && $c<=127? [format %c $c]: "."}]
+        }
+        lappend res [format "%7.7x: %-42s %s" $where $t4  $asc]
+        incr where 16
+    }
+    join $res \n
+}
