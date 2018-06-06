@@ -14,8 +14,8 @@
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2003-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
+        <license>GPL version 2 or higher</license>
         <maturity>0</maturity>
-
         <provides url="intranet-core" version="5.0.2.3.0"/>
         <requires url="acs-datetime" version="5.9.0"/>
         <requires url="acs-developer-support" version="5.9.0"/>
