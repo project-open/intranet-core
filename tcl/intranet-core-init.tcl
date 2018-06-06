@@ -18,6 +18,7 @@ ns_cache create im_profile -timeout [im_parameter -package_id [im_package_core_i
 ns_cache create im_company -timeout [im_parameter -package_id [im_package_core_id] CacheTimeoutCompanies "" 3600]
 
 
+
 # ---------------------------------------------------------------
 # Callbacks
 #
@@ -334,3 +335,33 @@ ad_proc -public -callback im_before_member_add {
 } {
     Callback to be executed before a user is added to a project
 } -
+
+
+
+
+# ---------------------------------------------------------------
+# Delete old log entries
+# ---------------------------------------------------------------
+
+set log_max_days [parameter::get_from_package_key -package_key "intranet-core" -parameter PackageLogMaxAgeDays -default "180"]
+
+if {[table exists im_rule_logs]} { 
+    db_foreach rule_logs "
+	select	rule_log_id
+	from	im_rule_logs
+	where	rule_log_date < now()::date - :log_max_days
+    " { db_dml del "delete from im_rule_logs where rule_log_id = :rule_log_id"  }
+}
+
+db_foreach package_logs "
+	select	pv.package_key
+	from	apm_package_versions pv,
+		apm_package_version_attr pva,
+		acs_objects o
+	where	pv.version_id = pva.version_id and
+		pv.version_id = o.object_id and
+		pv.installed_p = 't' and
+		pva.attribute_value like '%(CL)%' and
+		o.creation_date < now()::date - :log_max_days
+" { apm_package_delete $package_key }
+
