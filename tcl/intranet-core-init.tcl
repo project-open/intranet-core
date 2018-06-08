@@ -74,6 +74,7 @@ set object_types {
     membership_rel
     person
     party
+    survsimp_response
     user
 }
 
