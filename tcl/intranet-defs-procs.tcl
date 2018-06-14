@@ -740,6 +740,79 @@ TYPE=text SIZE=5 MAXLENGTH=4>"
 
 
 
+
+ad_proc im_dateentrywidget {
+    column 
+    { value 0 } 
+} {
+    Replacement for ad_dateentrywidget with calendar.
+    Returns form pieces for a date entry widget. A null date may be selected.
+    If you would like the default to be null, call with value= ""
+} {
+    # ns_log Notice "im_dateentrywidget: column=$column, value=$value"
+
+    if {[ns_info name] ne "NaviServer"} {
+        ns_share NS
+    } else {
+        set NS(months) [list January February March April May June \
+                            July August September October November December]
+    }
+
+    if {$value == 0} {
+	# no default, so use today
+	set value  [lindex [split [ns_localsqltimestamp] " "] 0]
+    } 
+
+    if {$value eq ""} {
+	set month ""
+	set day ""
+	set year ""
+    } else {
+	lassign [split $value "-"] year month day
+	# trim the day, in case we get as well a time stamp
+	regexp {^([0-9]+) } $day _ day
+    }
+
+    # ------------------------ Day -----------------------------
+    # append output [subst {<input name="$column.day" id="$column.day" type="text" size="2" maxlength="2" value="$day">}]
+    set output ""
+    append output "<input type=\"hidden\" name=\"$column.format\" value=\"DD-MM-YYYY\" >\n"
+    append output "<select name=\"$column.day\" id=\"$column.day\" >\n"
+    append output "<option value=\"\">--</option>\n"
+    for {set i 1} {$i <= 31} {incr i} {
+	set selected ""
+	if {[string trimleft $day "0"] eq $i} { set selected "selected" }
+	append output "<option value=\"$i\" $selected>$i</option>\n"
+    }
+    append output "</select>\n"
+
+    # ------------------------ Month -----------------------------
+    append output "<select name=\"$column.month\" id=\"$column.month\">\n"
+    append output "<option value=\"\">--</option>\n"
+    regsub "^0" $month "" month
+    for {set i 0} {$i < 12} {incr i} {
+	if { $month ne "" && $i == $month - 1 } {
+	    append output "<option value=[expr 1+$i] selected=\"selected\">[lindex $NS(months) $i]</option>\n"
+	} else {
+	    append output "<option value=[expr 1+$i]>[lindex $NS(months) $i]</option>\n"
+	}
+    }
+    append output [subst "</select>"]
+
+
+
+    append output "&nbsp;"
+    append output [subst {<input name="$column.year" id="$column.year" type="text" size="4" maxlength="4" value="$year">}]
+    append output "<input type=\"button\" style=\"height:20px; width:20px; background: url('/resources/acs-templating/calendar.gif');\" onclick=\"return showCalendarWithDateWidget('$column', 'y-m-d');\">"
+
+     return $output
+}
+
+
+
+
+
+
 ad_proc im_selection_to_select_box { 
     {-translate_p 1} 
     {-package_key "intranet-core" }
