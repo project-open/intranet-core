@@ -140,7 +140,7 @@
 -- 47000-47099  Intranet Invoice Item Status (100)
 -- 47100-47199  Intranet Invoice Item Type (100)
 -- 48200-48999  reserved (800)
--- 49000-49999  reserved (1000)
+-- 49000-49999  Intranet Budget (1000)
 
 -- 50000-59999  Navision Integration (10000)
 -- 50000-50099	Navision free
