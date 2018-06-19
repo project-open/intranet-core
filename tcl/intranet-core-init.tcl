@@ -347,7 +347,7 @@ ad_proc -public -callback im_before_member_add {
 
 set log_max_days [parameter::get_from_package_key -package_key "intranet-core" -parameter PackageLogMaxAgeDays -default "180"]
 
-if {[table exists im_rule_logs]} { 
+if {[im_table exists im_rule_logs]} { 
     db_foreach rule_logs "
 	select	rule_log_id
 	from	im_rule_logs
