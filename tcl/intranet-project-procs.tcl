@@ -812,7 +812,7 @@ ad_proc -public im_project_options {
     }
 
     if {0 != $project_status_id && "" != $project_status_id} {
-	lappend p_criteria "p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
+	lappend p_criteria "p.project_status_id in ([join [im_sub_categories -include_disabled_p 1 $project_status_id] ","])"
 	# No restriction on parent's status id
     }
 
