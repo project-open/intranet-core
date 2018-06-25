@@ -766,7 +766,7 @@ ad_proc -public im_category_get_key_value_indent_list {
 # ---------------------------------------------------------------
 
 ad_proc -public im_sub_categories {
-    {-include_disabled_p 0}
+    {-include_disabled_p 1}
     category_list
 } {
     Takes a single category or a list of categories and
