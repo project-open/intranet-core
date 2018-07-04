@@ -1548,19 +1548,24 @@ ad_proc -public im_user_nuke {
 
 	# Helpdesk + ConfDB
 	if {[im_table_exists im_tickets]} {
-	    db_dml assignees "update im_tickets set ticket_assignee_id = :default_user where ticket_assignee_id = :user_id"
-	    db_dml assignees "update im_tickets set ticket_customer_contact_id = :default_user where ticket_customer_contact_id = :user_id"
+	    db_dml ticket_assignees "update im_tickets set ticket_assignee_id = :default_user where ticket_assignee_id = :user_id"
+	    db_dml ticket_customer_contact "update im_tickets set ticket_customer_contact_id = :default_user where ticket_customer_contact_id = :user_id"
 	}
 
 	# Configuration Items
 	if {[im_table_exists im_conf_items]} {
-	    db_dml assignees "update im_conf_items set conf_item_owner_id = :default_user where conf_item_owner_id = :user_id"
+	    db_dml conf_item_owner "update im_conf_items set conf_item_owner_id = :default_user where conf_item_owner_id = :user_id"
 	}
 
 	# Simple Survey
 	if {[im_table_exists survsimp_responses]} {
-	    db_dml assignees "update survsimp_responses set related_context_id = :default_user where related_context_id = :user_id"
-	    db_dml assignees "update survsimp_responses set related_object_id = :default_user where related_object_id = :user_id"
+	    db_dml survsimp_responses_context "update survsimp_responses set related_context_id = :default_user where related_context_id = :user_id"
+	    db_dml survsimp_responses_rel "update survsimp_responses set related_object_id = :default_user where related_object_id = :user_id"
+	}
+
+	# CRM
+	if {[im_table_exists crm_online_interactions]} {
+	    db_dml interactions "delete from crm_online_interactions where user_id = :user_id"
 	}
 
 	
@@ -1615,11 +1620,11 @@ ad_proc -public im_user_nuke {
 	if { [db_table_exists contact_message_log] } { 
 	    db_dml delete_contact_message_log "delete from contact_message_log where recipient_id = :user_id"
 	}
-	if { [db_table_exists acs_mail_log] } { 
-	    db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)"
-	}
 	if { [db_table_exists acs_mail_log_recipient_map] } { 
 	    db_dml delete_from_maillog "delete from acs_mail_log_recipient_map where recipient_id = :user_id"
+	}
+	if { [db_table_exists acs_mail_log] } { 
+	    db_dml delete_maillog "delete from acs_mail_log where log_id in (select log_id from acs_mail_log_recipient_map where recipient_id = :user_id)"
 	}
 
         # im_sencha_preferences
