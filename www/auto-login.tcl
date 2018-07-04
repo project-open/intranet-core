@@ -85,6 +85,7 @@ if {"" != $password && "" != $email} {
 ns_log Notice "auto-login: Check the auto-login token without looking at require_manual_login"
 
 set valid_login_without_require [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login -check_user_requires_manual_login_p 0]
+ns_log Notice "auto-login: valid_login_without_require=$valid_login_without_require"
 
 if {!$valid_login_without_require} {
     # Wrong auto-login token

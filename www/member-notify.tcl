@@ -111,18 +111,18 @@ foreach oid $user_id_from_search {
 	    set note_user_id [db_string note_user_id "select object_id from im_notes where note_id = :oid" -default ""]
 	    im_user_permissions $current_user_id $note_user_id view read write admin
 	}
-	"" {
+	party - "" {
 	    # Nothing, probably some cache issue
 	    set read 1
 	}
 	default {
-	    ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
+	    ad_return_complaint 1 "<li>Member-Notify: Unknown object type = '$object_type'"
 	    ad_script_abort
 	}
     }
 
     if {!$read} {
-	ad_return_complaint 1 "<li>[_ intranet-core.lt_You_have_insufficient]"
+	ad_return_complaint 1 "<li>Member-Notify: You don't have read permissions on user #$user_id"
 	ad_script_abort
     }
 }
@@ -267,10 +267,14 @@ foreach email $email_list {
 		first_names,
 		last_name,
 		email,
-		1 as found1_p
+		1 as found1_p,
+		o.creation_date::date as creation_date,
+		o.creation_ip
 	from	persons pe,
-		parties pa
+		parties pa,
+		acs_objects o
 	where	pe.person_id = pa.party_id and
+		pe.person_id = o.object_id and
 		lower(pa.email) = :email
     "
 
@@ -287,6 +291,8 @@ foreach email $email_list {
 				   sender_last_name $sender_last_name \
 				   sender_email $sender_email \
 				   user_id $user_id \
+				   creation_date $creation_date \
+				   creation_ip $creation_ip \
 	]
 	set message_subst [lang::message::format $message $substitution_list]
     }
