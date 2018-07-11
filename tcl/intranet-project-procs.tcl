@@ -1119,7 +1119,6 @@ ad_proc -public im_project_personal_active_projects_component {
            Setting this parameter to 0 the component will just disappear
            if there are no projects.
 } {
-
     set user_id [ad_conn user_id]
 
     if {"" == $order_by_clause} {
@@ -1185,8 +1184,13 @@ ad_proc -public im_project_personal_active_projects_component {
 
     # Project Status restriction
     set project_status_restriction ""
-    if {0 != $project_status_id} {
-	set project_status_restriction "and p.project_status_id in ([join [im_sub_categories $project_status_id] ","])"
+    if {0 ne $project_status_id && "" ne $project_status_id} {
+	set accepted_states [list]
+	foreach sid $project_status_id {
+	    set sub_sids [im_sub_categories -include_disabled_p 1 $sid]
+	    foreach sub_sid $sub_sids { lappend accepted_states $sub_sid }
+	}
+	set project_status_restriction "and p.project_status_id in ([join $accepted_states ","])"
     }
 
     # Project Type restriction
