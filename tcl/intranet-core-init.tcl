@@ -351,7 +351,7 @@ if {[im_table_exists im_rule_logs]} {
     db_foreach rule_logs "
 	select	rule_log_id
 	from	im_rule_logs
-	where	rule_log_date < now()::date - :log_max_days
+	where	rule_log_date < now()::date - :log_max_days::integer
     " { db_dml del "delete from im_rule_logs where rule_log_id = :rule_log_id"  }
 }
 
@@ -364,6 +364,6 @@ db_foreach package_logs "
 		pv.version_id = o.object_id and
 		pv.installed_p = 't' and
 		pva.attribute_value like '%(CL)%' and
-		o.creation_date < now()::date - :log_max_days
+		o.creation_date < now()::date - :log_max_days::integer
 " { apm_package_delete $package_key }
 
