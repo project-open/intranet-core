@@ -771,6 +771,8 @@ ad_proc -public im_sub_navbar {
 	    ORDER by 	p.menu_sort_order, p.sort_order
 	"
 
+#	ad_return_complaint 1 "[im_ad_hoc_query -format html $components_sql]<br><pre>$components_sql</pre>"
+
 	set navbar_components_list [util_memoize [list db_list_of_lists navbar_components $components_sql]]
 
 	foreach comp_tuple $navbar_components_list {

@@ -1,8 +1,8 @@
-<master src="/packages/intranet-core/www/master">
+<master>
 <property name="doc(title)">@page_title@</property>
 <property name="main_navbar_label">companies</property>
+<property name="sub_navbar">@sub_navbar;literal@</property>
 <property name="left_navbar">@left_navbar_html;literal@</property>
-<property name="sub_navbar">@sub_navbar_html;literal@</property>
 
 <if 0 eq @plugin_id@>
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
