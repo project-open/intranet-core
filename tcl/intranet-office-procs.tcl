@@ -444,6 +444,13 @@ ad_proc im_office_nuke {
     im_office_permissions $current_user_id $office_id view read write admin
     if {!$admin} { return }
 
+    # Check if referenced by a company
+    set company_p [db_string company_p "select count(*) from im_companies where main_office_id = :office_id"]
+    if {$company_p} { 
+	ns_log Warning "offices/nuke-2: Can't delee office #$office_id because is referenced by a company"
+	return 
+    }
+
     im_audit -user_id $current_user_id -object_type "im_office" -object_id $office_id -action before_nuke
 
     # Permissions
@@ -517,7 +524,7 @@ ad_proc im_office_nuke {
     db_dml party_approved_member_map "
 		delete from party_approved_member_map 
 		where member_id = :office_id"
-	
+
     db_dml delete_offices "
 		delete from im_offices 
 		where office_id = :office_id"
