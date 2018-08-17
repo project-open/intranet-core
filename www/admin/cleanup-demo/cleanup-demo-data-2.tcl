@@ -84,8 +84,9 @@ ns_write "<ul>\n"
 # Delete all data
 # ---------------------------------------------------------------
 
-ns_write "<li><br>&nbsp;<br><b>Please don't interrupt the process</b><br>
+ns_write "<li><b>Please don't interrupt the process</b><br>
     This script may take several minutes to run.
+    <br>&nbsp;<br>
 "
 
 ns_write "<li>Cleanup existing security tokens.\n"
