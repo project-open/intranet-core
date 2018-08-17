@@ -1394,7 +1394,7 @@ ad_proc -public im_ad_hoc_query {
     {-col_titles {} }
     {-col_td_attributes {} }
     {-translate_p 1 }
-    {-subtotals_p 1 }
+    {-subtotals_p 0 }
     {-package_key "intranet-core" }
     {-locale ""}
     sql
