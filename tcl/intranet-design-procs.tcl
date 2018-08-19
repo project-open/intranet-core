@@ -2491,12 +2491,12 @@ ad_proc -public im_color_code {
 ad_proc -public im_hexagon {
     {-width 175}
     {-height 148}
-    {-ratio 1.0}
+    {-scaling_factor 1.0}
     -hexagons:required
 } {
     Returns a HTML DIV with a hexagon according to specs.
     By default, the procedure expects a list of 6 tuples:
-    {text url [x y title image_url js_code]}
+    {text [url title x y image_url onclick mouseover]}
     Only the first two elements are obligatory.
     x and y are integers, specifying the position in terms
     of hexagon row and column.
@@ -2506,9 +2506,9 @@ ad_proc -public im_hexagon {
     #set w 105; set h 87; # 60%, a bit to small
     #set w 140; set h 118; # 80%
     
-    set width [expr round($width * $ratio)]
-    set height [expr round($height * $ratio)]
-    set font_size [expr round(20 * $ratio)]
+    set width [expr round($width * $scaling_factor)]
+    set height [expr round($height * $scaling_factor)]
+    set font_size [expr round(20 * $scaling_factor)]
     set base [expr $width*0.5]; # Base of triangle, half of width = 88
     set hyp [expr sqrt($base*$base - $base*$base/4)]; # Hypotonuse of base triangle = 76
 
@@ -2528,23 +2528,24 @@ ad_proc -public im_hexagon {
     foreach hexagon_tuple $hexagons {
 	set text [lindex $hexagon_tuple 0]
 	set url [lindex $hexagon_tuple 1]
-	set x_pos [lindex $hexagon_tuple 2]
-	set y_pos [lindex $hexagon_tuple 3]
+	set title [lindex $hexagon_tuple 2]
+	set x_pos [lindex $hexagon_tuple 3]
+	set y_pos [lindex $hexagon_tuple 4]
+	set image_url [lindex $hexagon_tuple 5]
+	set onclick [lindex $hexagon_tuple 6]
+	set mouseover [lindex $hexagon_tuple 7]
+
 	if {"" eq $x_pos} { set x_pos [lindex [lindex $pos_list $cnt] 0] }
 	if {"" eq $y_pos} { set y_pos [lindex [lindex $pos_list $cnt] 1] }
 	set x [lindex $x_list $x_pos]
 	set y [lindex $y_list $y_pos]
-	set image_url [lindex $hexagon_tuple 4]
 	if {"" eq $image_url} { set image_url $bg100 }
-	set title [lindex $hexagon_tuple 5]
 	if {"" ne $title} { set title "title='$title'" }
 	set java_script ""
-	set onclick [lindex $hexagon_tuple 6]
-	set mouseover [lindex $hexagon_tuple 7]
 	if {"" ne $onclick} { append java_script "onclick=\"$onclick\"" }
 	if {"" ne $mouseover} { append java_script "onmouseover=\"$mouseover\"" }
-
 	if {"" ne $url} { set text "<a href='$url' target=_>$text</a>" }
+
 	append html "
 <div style=\"position:absolute; display: table;
 top:${y}px; left:${x}px; width:${width}px; height:${height}px; 
