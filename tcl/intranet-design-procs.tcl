@@ -2489,8 +2489,10 @@ ad_proc -public im_color_code {
 # ---------------------------------------------------------------
 
 ad_proc -public im_hexagon {
-    {-width 175}
-    {-height 148}
+    {-hexagon_width ""}
+    {-hexagon_height ""}
+    {-portlet_width ""}
+    {-portlet_height ""}
     {-scaling_factor 1.0}
     -hexagons:required
 } {
@@ -2505,12 +2507,24 @@ ad_proc -public im_hexagon {
     #set w 175; set h 148; set fh 16; # 100%, original GIF size, too large
     #set w 105; set h 87; # 60%, a bit to small
     #set w 140; set h 118; # 80%
-    
-    set width [expr round($width * $scaling_factor)]
-    set height [expr round($height * $scaling_factor)]
+
+    if {"" eq $hexagon_width} { set hexagon_width 175 }
+    if {"" eq $hexagon_height} { set hexagon_height 148 }
+    set hexagon_width [expr round($hexagon_width * $scaling_factor)]
+    set hexagon_height [expr round($hexagon_height * $scaling_factor)]
+
     set font_size [expr round(24 * $scaling_factor)]
-    set base [expr $width*0.5]; # Base of triangle, half of width = 88
+    set base [expr $hexagon_width*0.5]; # Base of triangle, half of hexagon_width = 88
     set hyp [expr sqrt($base*$base - $base*$base/4)]; # Hypotonuse of base triangle = 76
+
+    if {"" eq $portlet_width} { set portlet_width [expr round(4 + $base * 5.0)] }
+    if {"" eq $portlet_height} { 
+	# The default height of the portlet depends on the number of hexagons
+	set hexagon_count [llength $hexagons]
+	set portlet_height_table {0 2 3 3 4 5 5 6 7 7 8 9 9 10 11 11 12 13 13}
+	set portlet_height_mux [lindex $portlet_height_table $hexagon_count]
+	set portlet_height [expr round(4 + $hyp * $portlet_height_mux)] 
+    }
 
     # A normal hexagon has 3 x-positions (0, 1 and 2) and 5 y-positions (0...4)
     # set x0 0; set x1 [expr round($base*1.5 + 4)]; set x2 [expr round($base*3 + 8)]
@@ -2557,11 +2571,14 @@ ad_proc -public im_hexagon {
 	if {"" ne $onclick} { append java_script "onclick=\"$onclick\"" }
 	if {"" ne $mouseover} { append java_script "onmouseover=\"$mouseover\"" }
 	set text [regsub -all {\s+} $text "<br>"]
+	set text [regsub -all {_} $text "<br>"]
+	set text [regsub -all {\(} $text "<small><small><small>"]
+	set text [regsub -all {\)} $text "</small></small></small>"]
 	if {"" ne $url} { set text "<a href='$url' target=_>$text</a>" }
 
 	append html "
 <div style=\"position:absolute; display: table;
-top:${y}px; left:${x}px; width:${width}px; height:${height}px; 
+top:${y}px; left:${x}px; width:${hexagon_width}px; height:${hexagon_height}px; 
 background-size: cover; background-image: url('${image_url}');
 \"/ $java_script $title>
 <div class='hexagon_cell'>$text</div>
@@ -2579,7 +2596,7 @@ background-size: cover; background-image: url('${image_url}');
             line-height: 100%;
 	}
 	</style>
-	<div style='position:relative; height:400px; width:600px;' align=right> 
+	<div style='position:relative; height:${portlet_height}px; width:${portlet_width}px;' align=right> 
 	$html
 	</div>
     "
