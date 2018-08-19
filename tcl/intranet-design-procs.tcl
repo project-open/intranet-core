@@ -2515,7 +2515,17 @@ ad_proc -public im_hexagon {
     # A normal hexagon has 3 x-positions (0, 1 and 2) and 5 y-positions (0...4)
     # set x0 0; set x1 [expr round($base*1.5 + 4)]; set x2 [expr round($base*3 + 8)]
     # set y0 [expr round($hyp*0.0)]; set y1 [expr round($hyp*1.0)]; set y2 [expr round($hyp*2.0)]; ...
-    set pos_list {{1 0} {0 1} {2 1} {1 2} {0 3} {2 3} {1 4}}
+    set pos_list {
+	{1 0} 
+	{0 1} {2 1} 
+	{1 2} 
+	{0 3} {2 3} 
+	{1 4}
+	{0 5} {2 5} 
+	{1 6}
+	{0 7} {2 7} 
+	{1 8}
+    }
     for {set i 0} {$i < 10} {incr i} { lappend x_list [expr round(($base*1.5 + 4) * $i)] }
     for {set i 0} {$i < 20} {incr i} { lappend y_list [expr round($hyp*$i)] }
 
@@ -2546,6 +2556,7 @@ ad_proc -public im_hexagon {
 	set java_script ""
 	if {"" ne $onclick} { append java_script "onclick=\"$onclick\"" }
 	if {"" ne $mouseover} { append java_script "onmouseover=\"$mouseover\"" }
+	set text [regsub -all {\s+} $text "<br>"]
 	if {"" ne $url} { set text "<a href='$url' target=_>$text</a>" }
 
 	append html "
@@ -2568,7 +2579,7 @@ background-size: cover; background-image: url('${image_url}');
             line-height: 100%;
 	}
 	</style>
-	<div style='position:relative; height:400px; width:600px;'> 
+	<div style='position:relative; height:400px; width:600px;' align=right> 
 	$html
 	</div>
     "
