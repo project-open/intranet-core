@@ -2483,3 +2483,92 @@ ad_proc -public im_color_code {
     }
 }
 
+
+# ---------------------------------------------------------------
+# Hexagon
+# ---------------------------------------------------------------
+
+ad_proc -public im_hexagon {
+    {-width 175}
+    {-height 148}
+    {-ratio 1.0}
+    -hexagons:required
+} {
+    Returns a HTML DIV with a hexagon according to specs.
+    By default, the procedure expects a list of 6 tuples:
+    {text url [x y title image_url js_code]}
+    Only the first two elements are obligatory.
+    x and y are integers, specifying the position in terms
+    of hexagon row and column.
+} {
+
+    #set w 175; set h 148; set fh 16; # 100%, original GIF size, too large
+    #set w 105; set h 87; # 60%, a bit to small
+    #set w 140; set h 118; # 80%
+    
+    set width [expr round($width * $ratio)]
+    set height [expr round($height * $ratio)]
+    set font_size [expr round(20 * $ratio)]
+    set base [expr $width*0.5]; # Base of triangle, half of width = 88
+    set hyp [expr sqrt($base*$base - $base*$base/4)]; # Hypotonuse of base triangle = 76
+
+    # A normal hexagon has 3 x-positions (0, 1 and 2) and 5 y-positions (0...4)
+    # set x0 0; set x1 [expr round($base*1.5 + 4)]; set x2 [expr round($base*3 + 8)]
+    # set y0 [expr round($hyp*0.0)]; set y1 [expr round($hyp*1.0)]; set y2 [expr round($hyp*2.0)]; ...
+    set pos_list {{1 0} {0 1} {2 1} {1 2} {0 3} {2 3} {1 4}}
+    for {set i 0} {$i < 10} {incr i} { lappend x_list [expr round(($base*1.5 + 4) * $i)] }
+    for {set i 0} {$i < 20} {incr i} { lappend y_list [expr round($hyp*$i)] }
+
+    # Default image
+    set bg100 "/intranet-sysconfig/images/hexagon-100.png"
+
+    # Hexagon starts by default with top hexagon (y=0) in the middle (x=1)
+    set cnt 0
+    set html ""
+    foreach hexagon_tuple $hexagons {
+	set text [lindex $hexagon_tuple 0]
+	set url [lindex $hexagon_tuple 1]
+	set x_pos [lindex $hexagon_tuple 2]
+	set y_pos [lindex $hexagon_tuple 3]
+	if {"" eq $x_pos} { set x_pos [lindex [lindex $pos_list $cnt] 0] }
+	if {"" eq $y_pos} { set y_pos [lindex [lindex $pos_list $cnt] 1] }
+	set x [lindex $x_list $x_pos]
+	set y [lindex $y_list $y_pos]
+	set image_url [lindex $hexagon_tuple 4]
+	if {"" eq $image_url} { set image_url $bg100 }
+	set title [lindex $hexagon_tuple 5]
+	if {"" ne $title} { set title "title='$title'" }
+	set java_script ""
+	set onclick [lindex $hexagon_tuple 6]
+	set mouseover [lindex $hexagon_tuple 7]
+	if {"" ne $onclick} { append java_script "onclick=\"$onclick\"" }
+	if {"" ne $mouseover} { append java_script "onmouseover=\"$mouseover\"" }
+
+	if {"" ne $url} { set text "<a href='$url' target=_>$text</a>" }
+	append html "
+<div style=\"position:absolute; display: table;
+top:${y}px; left:${x}px; width:${width}px; height:${height}px; 
+background-size: cover; background-image: url('${image_url}');
+\"/ $java_script $title>
+<div class='hexagon_cell'>$text</div>
+</div>"
+	incr cnt
+    }
+
+    set html "
+    <style>
+	div.hexagon_cell {
+	    display: table-cell;
+	    text-align: center;
+	    vertical-align: middle;
+	    font-size: ${font_size}px;
+            line-height: 100%;
+	}
+	</style>
+	<div style='position:relative; height:400px; width:600px;'> 
+	$html
+	</div>
+    "
+    return $html
+}
+
