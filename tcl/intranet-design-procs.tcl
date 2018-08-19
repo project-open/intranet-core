@@ -2508,7 +2508,7 @@ ad_proc -public im_hexagon {
     
     set width [expr round($width * $scaling_factor)]
     set height [expr round($height * $scaling_factor)]
-    set font_size [expr round(20 * $scaling_factor)]
+    set font_size [expr round(24 * $scaling_factor)]
     set base [expr $width*0.5]; # Base of triangle, half of width = 88
     set hyp [expr sqrt($base*$base - $base*$base/4)]; # Hypotonuse of base triangle = 76
 
@@ -2518,9 +2518,6 @@ ad_proc -public im_hexagon {
     set pos_list {{1 0} {0 1} {2 1} {1 2} {0 3} {2 3} {1 4}}
     for {set i 0} {$i < 10} {incr i} { lappend x_list [expr round(($base*1.5 + 4) * $i)] }
     for {set i 0} {$i < 20} {incr i} { lappend y_list [expr round($hyp*$i)] }
-
-    # Default image
-    set bg100 "/intranet-sysconfig/images/hexagon-100.png"
 
     # Hexagon starts by default with top hexagon (y=0) in the middle (x=1)
     set cnt 0
@@ -2539,7 +2536,12 @@ ad_proc -public im_hexagon {
 	if {"" eq $y_pos} { set y_pos [lindex [lindex $pos_list $cnt] 1] }
 	set x [lindex $x_list $x_pos]
 	set y [lindex $y_list $y_pos]
-	if {"" eq $image_url} { set image_url $bg100 }
+	if {"" eq $image_url} { 
+	    # Default image
+	    set image_url "/intranet-sysconfig/images/hexagon-100.png"
+	    # Special image for the middle of the hexagon?
+	    if {1 eq $x_pos && 2 eq $y_pos} { set image_url "/intranet-sysconfig/images/blue-100.png" }
+	}
 	if {"" ne $title} { set title "title='$title'" }
 	set java_script ""
 	if {"" ne $onclick} { append java_script "onclick=\"$onclick\"" }
