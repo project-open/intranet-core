@@ -2538,9 +2538,9 @@ ad_proc -public im_hexagon {
 	set y [lindex $y_list $y_pos]
 	if {"" eq $image_url} { 
 	    # Default image
-	    set image_url "/intranet-sysconfig/images/hexagon-100.png"
+	    set image_url "/intranet/images/hexagon/hexagon-100.png"
 	    # Special image for the middle of the hexagon?
-	    if {1 eq $x_pos && 2 eq $y_pos} { set image_url "/intranet-sysconfig/images/blue-100.png" }
+	    if {1 eq $x_pos && 2 eq $y_pos} { set image_url "/intranet/images/hexagon/blue-100.png" }
 	}
 	if {"" ne $title} { set title "title='$title'" }
 	set java_script ""
