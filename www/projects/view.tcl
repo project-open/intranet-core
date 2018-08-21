@@ -43,13 +43,13 @@ if {([info exists project_id] && $project_id ne "")} {
     # to specific pages displaying those project types
     set project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default ""]
 
-    if {[im_project_type_task] eq $project_type_id} {
+    if {[im_category_is_a $project_type_id [im_project_type_task]]} {
 	ad_returnredirect [export_vars -base "/intranet-timesheet2-tasks/new" {{form_mode display} {task_id $project_id}}]
-    }  
-    if {[im_project_type_ticket] eq $project_type_id} {
+    }
+    if {[im_category_is_a $project_type_id [im_project_type_ticket]]} {
         ad_returnredirect [export_vars -base "/intranet-helpdesk/new" {{form_mode display} {ticket_id $project_id}}]
     }
-    if {[im_project_type_opportunity] eq $project_type_id} {
+    if {[im_category_is_a $project_type_id [im_project_type_opportunity]]} {
 	ad_returnredirect [export_vars -base "/intranet-crm-opportunities/view" {{opportunity_id $project_id}}]
     }
 }
