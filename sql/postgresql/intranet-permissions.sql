@@ -663,6 +663,26 @@ end;$body$ language 'plpgsql';
 
 
 
+
+create or replace function im_privilege_p (integer, varchar)
+returns boolean as $body$
+DECLARE
+	p_grantee_id		alias for $1;
+	p_privilege		alias for $2;
+
+	v_mainsite_id		integer;
+BEGIN
+	-- Get the mainsite_id
+	select	min(object_id) into v_mainsite_id
+	from	acs_objects
+	where	title = 'Main Site';
+
+	return acs_permission__permission_p(v_mainsite_id, p_grantee_id, p_privilege);
+end;$body$ language 'plpgsql';
+
+
+
+
 ------------------------------------------------------------
 -- Check whether user_id is (some kind of) member of group_id.
 create or replace function ad_group_member_p (integer, integer)
