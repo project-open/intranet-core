@@ -20,6 +20,149 @@ ad_library {
     @author frank.bergmann@project-open.com
 }
 
+# ------------------------------------------------------------------
+# CSV File Parser
+# ------------------------------------------------------------------
+
+ad_proc im_csv_parse_file {
+    {-debug 0}
+    line
+    {separator ","}
+} {
+    Splits a CVS file into a list of lists. 
+    Deals with:
+    <ul>
+    <li>Fields enclosed by double quotes
+    <li>Komma or Semicolon separators
+    <li>Quoted field contents
+    </ul>
+    The state machine can be in one of three states:
+    <ul>
+    <li>"before_field": Starting reading a field, either starting
+        with a quote character (double quote, single quote) or
+        with a non-quote character. 
+        A separator indicates an empty field.
+        A \n indicates the end of the line
+    <li>"field": Reading a field, either quoted or not quoted
+        The variable "quote" contains the quote character with reading
+        the field content.
+    <li>"separator": Reading a separator, either a "," or a ";"
+    </ul>
+
+} {
+    set result_list [list];	# A list of lines
+    set line_fields [list];	# A single line that consists of multiple fields
+    set pos 0;	   		# The current "cursor" position in the file
+    set len [string length $line]
+    set quote ""
+    set state "before_field"
+    set field ""
+    set cnt 0
+
+    while {$pos <= $len} {
+	set char [string index $line $pos]
+	set next_char [string index $line $pos+1]
+	if {$debug} {ns_log notice "im_csv_split: pos=$pos, char=$char, state=$state"}
+
+	switch $state {
+	    "before_field" {
+		# We're before a field. Next char may be a quote or not. Skip white spaces. \n means new line.
+		if {"\n" eq $char} {
+		    if {$debug} {ns_log notice "im_csv_split: before_field: found end of line: line=$line_fields"}
+		    lappend result_list $line_fields
+		    set line_fields [list]
+		    incr pos
+		} elseif {[string is space $char] && $char != $separator} {
+		    if {$debug} {ns_log notice "im_csv_split: before_field: found a space: '$char'"}
+		    incr pos
+		} else {
+		    # Skip the char if it was a quote
+		    set quote_pos [string first $char "\"'"]
+		    if {$quote_pos >= 0} {
+			if {$debug} {ns_log notice "im_csv_split: before_field: found quote=$char"};
+			set quote $char; 	# Remember the quote char
+			incr pos;			# skip the char
+		    } else {
+			if {$debug} {ns_log notice "im_csv_split: before_field: unquoted field"}
+			set quote ""
+		    }
+		    set field ""; 		    # Initialize the field value for the "field" state
+		    set state "field";		    # "Switch" to reading the field content
+		}
+	    }
+	    "field" {
+		# We are reading the content of a field until we
+		# reach the end, either marked by a matching quote
+		# or by the "separator" if the field was not quoted.
+
+		# Check for a duplicated quote when in quoted mode.
+		if {"" != $quote && $char eq $quote && $next_char eq $quote} {
+		    append field $char
+		    incr pos
+		    incr pos    
+		} else {
+		    # Check if we have reached the end of the field
+		    # either with the matching quote of with the separator:
+		    if {"" != $quote && $char eq $quote || "" == $quote && $char eq $separator} {
+			if {$debug} {ns_log notice "im_csv_split: field: found quote or term: $char"}
+			# Skip the character if it was a quote
+			if {"" != $quote} { incr pos }
+			# Trim the field if it was not quoted
+			if {"" == $quote} { set field [string trim $field] }
+			lappend line_fields $field
+			set state "separator"
+		    } else {
+			if {$debug} {ns_log notice "im_csv_split: field: found a field char: $char"}
+			append field $char
+			incr pos
+		    }
+		}
+	    }
+	    "separator" {
+		# We got here after finding the end of a "field".
+		# Now we expect a separator or we have to throw an
+		# error otherwise. Skip whitespaces, unless the whitespace is the separator...
+
+		if {"\n" eq $char} {
+		    if {$debug} {ns_log notice "im_csv_split: separator: found end of line: line=$line_fields"}
+		    lappend result_list $line_fields
+		    set line_fields [list]
+		    incr pos
+		} elseif {$separator eq $char} { 
+		    set state "before_field";		    # don't inc pos!
+		}
+
+		if {[string is space $char]} {
+		    if {$debug} {ns_log notice "im_csv_split: separator: found a space: '$char'"}
+		    incr pos
+		} else {
+		    if {$char eq $separator} {
+			if {$debug} {ns_log notice "im_csv_split: separator: found separator: '$char'"}
+			incr pos
+			set state "before_field"
+		    } else {
+			if {$debug} {ns_log error "im_csv_split: separator: didn't find separator: '$char'"}
+			set state "before_field"
+		    }
+		}
+	    }
+	    # Switch, while and proc ending
+	}
+
+	if {$debug} {
+	    incr cnt
+	    if {$cnt > 10000} { ad_return_complaint 1 "<pre>overflow:\ncnt=$cnt\npos=$pos\nline_fields=$line_fields\nresult_list=$result_list</pre>" }
+	}
+    }
+
+    # Add the field to the result if we reach the end of the line
+    # in state "field".
+    if {"field" == $state} { lappend line_fields $field }
+    if {"" ne $line_fields} { lappend result_list $line_fields }
+
+    return $result_list
+}
+
 
 # ------------------------------------------------------------------
 # CSV File Parser
@@ -139,17 +282,12 @@ ad_proc im_csv_split {
 
 	switch $state {
 	    "field_start" {
-
 		# We're before a field. Next char may be a quote
 		# or not. Skip white spaces.
-
 		if {[string is space $char] && $char != $separator} {
-
 		    if {$debug} {ns_log notice "im_csv_split: field_start: found a space: '$char'"}
 		    incr pos
-
 		} else {
-
 		    # Skip the char if it was a quote
 		    set quote_pos [string first $char "\"'"]
 		    if {$quote_pos >= 0} {
@@ -168,12 +306,10 @@ ad_proc im_csv_split {
 		    set state "field"
 		}
 	    }
-
 	    "field" {
-
 		# We are reading the content of a field until we
 		# reach the end, either marked by a matching quote
-		# or by the "separator" if the field was not quoted
+		# or by the "separator" if the field was not quoted.
 
 		# Check for a duplicated quote when in quoted mode.
 		if {"" != $quote && $char eq $quote && $next_char eq $quote} {
@@ -181,35 +317,24 @@ ad_proc im_csv_split {
 		    incr pos
 		    incr pos    
 		} else {
-
-
 		    # Check if we have reached the end of the field
 		    # either with the matching quote of with the separator:
 		    if {"" != $quote && $char eq $quote || "" == $quote && $char eq $separator} {
-
 			if {$debug} {ns_log notice "im_csv_split: field: found quote or term: $char"}
-
 			# Skip the character if it was a quote
 			if {"" != $quote} { incr pos }
-
 			# Trim the field if it was not quoted
 			if {"" == $quote} { set field [string trim $field] }
-
 			lappend result_list $field
 			set state "separator"
-
 		    } else {
-
 			if {$debug} {ns_log notice "im_csv_split: field: found a field char: $char"}
 			append field $char
 			incr pos
-
 		    }
 		}
 	    }
-
 	    "separator" {
-
 		# We got here after finding the end of a "field".
 		# Now we expect a separator or we have to throw an
 		# error otherwise. Skip whitespaces, unless the whitespace is the separator...
