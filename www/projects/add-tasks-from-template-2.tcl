@@ -36,7 +36,8 @@ ad_page_contract {
 
 set current_user_id [auth::require_login]
 set required_field "<font color=red size=+1><B>*</B></font>"
-set page_title [lang::message::lookup "" intranet-core.Add_tasks_from_template "Add tasks from template"]
+set parent_project_name [db_string pname "select acs_object__name(:parent_project_id)"]
+set page_title "$parent_project_name: [lang::message::lookup "" intranet-core.Add_tasks_from_template "Add tasks from template"]"
 
 # Make sure the user can read the parent_project
 im_project_permissions $current_user_id $parent_project_id parent_view parent_read parent_write parent_admin
@@ -59,6 +60,7 @@ set task_list [db_list tasks "
 "]
 
 
+set errors [list]
 foreach task_id $task_list {
     db_1row project_info "
 		select	p.project_nr || '_' || :parent_project_id as sub_task_nr,
@@ -69,6 +71,20 @@ foreach task_id $task_list {
 		from	im_projects p
 		where	project_id = :task_id
     "
+
+    # Check if a 1st level task with that name or nr already exists in the parent project
+    set exists_p [db_string tasks_exists_p "
+	select	count(*)
+	from	im_projects p
+	where	p.parent_id = :parent_project_id and
+		(p.project_name = :sub_task_name_org OR p.project_nr = :sub_task_nr_org)
+    "]
+
+    if {$exists_p} {
+	set project_name $sub_task_name_org
+	lappend errors [lang::message::lookup "" intranet-core.Task_task_already_exists "Task '%project_name%' already exists in project '%parent_project_name%' - skipping."]
+	continue
+    }
 
     # go for the next project
     set tuple [im_project_clone \
@@ -84,7 +100,8 @@ foreach task_id $task_list {
     ]
     set cloned_task_id [lindex $tuple 0]
     set cloned_mapping_hash_list [lindex $tuple 1]
-    append errors [lindex $tuple 2]
+    set error [lindex $tuple 2]
+    if {"" eq $cloned_task_id || 0 eq $cloned_task_id} { lappend errors $error }
 
     # ad_return_complaint 1 "clone=$cloned_task_id, parent=$parent_project_id, template=$template_project_id, tasks=$task_list"
 
@@ -129,6 +146,11 @@ foreach task_id $task_list {
 
 if {"" == $return_url} { 
     set return_url [export_vars -base "/intranet/projects/view" {{project_id $parent_project_id}}]
+}
+
+if {[llength $errors] > 0} {
+    ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.There_were_errors_during_import "There were errors during the import"]</b><br>
+    <ul><li>[join $errors "</li>\n<li>"]</ul>"
 }
 
 ad_returnredirect $return_url
