@@ -4,7 +4,7 @@
 /* CALENDAR */
 
 .fullwidth-list .component table.calendar_table  tbody tr.month_heading td {
-        background-color: #266591;
+    background-color: #266591;
 	color: black;
 }
 
@@ -105,9 +105,18 @@
 	visibility: hidden;
 }
 
+#fullwidth-list {
+	background-image: url(/intranet-cust-adrtel/reports/images/background.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+
 .fullwidth-list-no-side-bar{
    margin-left: 10px;
    margin-right: 0px;
+   background-image: url(/intranet-cust-adrtel/reports/images/background.jpg);
+   background-repeat:no-repeat;
+   background-size: cover;
 }
 
 .filter-button {
@@ -119,19 +128,18 @@
 
 		
 body, p, td {
-   font-family: verdana, arial, helvetica, sans-serif; 
+   font-family: helvetica,verdana, arial,  sans-serif; 
    font-size: 8pt;
    color: #000000;
 }
 
 body {
-   background-color: #fff;  
+   background:FFFFFF;
 }
 
 a {
   color: #2e2e2e;
 }
-
 
 img {
 	border-style: none;
@@ -879,8 +887,8 @@ developer-support-adp-box-off {
 	min-height: 0;
 }
 .component_header_rounded {
-  background-color: #E1E2E1;
-  color: #000000;
+  background-color: #24618E;
+  color: #FFFFFF;
   border: solid 1px #CCCCCC;
 }
 
@@ -1094,6 +1102,7 @@ developer-support-adp-box-off {
 
 
 .list td.rowtitle, .table-header, .cal-month-title-text {
+	color:#FFF!important;
     font-size: 10pt; 
     color: #2e2e2e;
     /* background-color: #cccac1; */ 
@@ -1131,7 +1140,7 @@ developer-support-adp-box-off {
     left: 0px;
     top: -200px;
     width: 243px;
-    border: 1px solid #999;
+    /*border: 1px solid #999;*/
     background-color: #fff;
     margin:15px 5px 10px;
 }
@@ -1148,6 +1157,11 @@ developer-support-adp-box-off {
 
 .filter-block {
     padding: 0px 3px 3px 3px;
+	box-sizing:border-box;
+	background:#FFFFFF;
+	border-radius:7px 7px 0 0;
+	cursor:default;
+	box-shadow: 4px 5px 11px -1px rgba(180,180,180,1);
 }
 
 .filter-button {
@@ -1158,6 +1172,7 @@ developer-support-adp-box-off {
    height: 15px;
    cursor: pointer;
    z-index: 101;
+   background:#FFFFFF;
 }
 
 .filter-block .form-label, 
@@ -1181,6 +1196,8 @@ developer-support-adp-box-off {
    width: 100%;
    padding-top: 5px;
    padding-bottom: 5px;
+	background: #FFFFFF;
+	color: #24618E;
 }
 
 .filter hr {
@@ -1226,10 +1243,10 @@ div#fullwidth-components {
 .table_component th.list-header td.list, 
 .table_component tbody tr th.list,
 .table_component tbody tr td.rowtitle, td.rowtitle {
-   color:#000;
+   color:#FFF;
    font-weight:bold;
    padding:3px;
-   background:#E1E2E1 none repeat scroll 0% 50%;
+   background:#24618E none repeat scroll 0% 50%;
    border-bottom:1px solid #fff;
    padding:5px 4px 5px 2px;
 }
@@ -1242,7 +1259,8 @@ div#fullwidth-components {
 .list th tr td {
    border-bottom:1px solid #fff;
    border-top:1px solid #fff;
-   background:#F4F4F4 url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')
+/*   background:#24618E url('/intranet/images/navbar_saltnpepper/gradback_light_grey.gif')*/
+   color:#FFFFFF;
    repeat-x;
    padding: 4px;
 }
@@ -1276,7 +1294,12 @@ div#fullwidth-components {
 }
 
 .table_list_page tbody tr td.rowtitle a:link {
-	color: #000000;
+	color: #FFFFFF;
+	font-size: 9pt;
+}
+
+.table_list_page tbody tr td.rowtitle a:visited {
+	color: #FFFFFF;
 	font-size: 9pt;
 }
 
@@ -1357,6 +1380,10 @@ table.table_list_simple tr.rowtitle {
     border-bottom: none;
     border-right:1px solid #000000;
     border-left:1px solid #000000;
+	text-align:center;
+	color:#FFFFFF;
+	background: #24618E;
+	font-family:'helvetica'!important;
 }
 
 .fullwidth-list .component .table_list_simple td, 
@@ -1454,8 +1481,8 @@ table.table_list_simple tr.rowtitle {
     .invoiceroweven {font-size: 9pt; background-color: #DDDDDD;}
     .invoicerowodd {font-size: 9pt; background-color: #EEEEEE;}
 
-    .roweven {font-size: 8pt; background-color: #DDDDDD;}
-    .rowodd {font-size: 8pt; background-color: #EEEEEE;}
+    .roweven {font-size: 8pt; background-color: #EEEEEE;}
+    .rowodd {font-size: 8pt; background-color: #FFFFFF;}
     .rowplain {font-size: 8pt; background-color: #FFFFFF;}
 
     .form-label {font-size: 8pt; background-color: #FFF; padding-right:10px;padding-top: 5px;vertical-align: middle;}
@@ -1480,7 +1507,7 @@ table.table_list_simple tr.rowtitle {
     .tablebody {font-size: 8pt; background-color: #FFFFFF;}
 
     .tableheader {
-    	background-color: #EEEEEE;
+    	background: #24618E;
         font-size: 8pt;
         line-height: 20px;
     }
@@ -1490,10 +1517,10 @@ table.table_list_simple tr.rowtitle {
     }
 
     .table_list_page .tableheader {
-		background-color: #E1E2E1;
+		background-color: #24618E;
+		color: #FFFFFF;
 		font-size: 9pt;
 		line-height: 25px;
-		color: #000000;
      }
 
 
@@ -1933,8 +1960,8 @@ input:link.form-button40,
 a.form-button40, 
 a:link.form-button40,
 a:hover.form-button40 {
-/*
-    background-color:#D4D0C8;
+
+	background:#FFFFFF;
     border:2px solid #b7b8b8;
     border-top:1px solid #eee;
     border-left:1px solid #eee;
@@ -1947,7 +1974,8 @@ a:hover.form-button40 {
     font-family: Arial; 
     line-height:normal !important;
     vertical-align: middle;
-*/
+    box-sizing:border-box;
+    border-radius:0.4em;
 }
 
 input.form-button40,
@@ -2093,8 +2121,8 @@ th.list-narrow {
 th.list-table, 
 th.list-table-narrow {
    font-size: 10pt;
-   color: #2e2e2e;
-   background-color: #E1E2E1;
+   color: #FFF;
+   background-color: #24618E;
    font-weight: bold;
    border-bottom: 2px solid #CCCCCC;
    padding: 6px;
@@ -2221,4 +2249,20 @@ ul.sm li.divider hr {
 
 .extjs-panel {
     background-color: #fbf9f9 !important; 
+}
+/* dario likes css so much 
+
+#mine_p , #project_type_id, #project_status_id, #company_id, #user_id_from_search, #opportunity_type_id, #opportunity_sales_stage_id, #project_name, #project_nr, #project_lead_id, #on_track_status_id, input[type=text]#start_date, input[type=text]#end_date  {
+	border-radius: 3px 3px 3px 3px!important;
+	border:1px solid #24618E;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	-moz-border-radius:  3px 3px 3px 3px;
+} */
+
+table tr:first-child > td:first-child{
+  border-radius: 7px 0 0 0;
+}
+
+table tr:first-child > td:last-child{
+  border-radius:0 7px 0 0;
 }
