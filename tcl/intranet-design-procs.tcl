@@ -27,11 +27,11 @@ ad_library {
 
 # 40000-40999  Intranet Skin (1000)
 
-ad_proc -public im_skin_default {} { return 40000 }
-ad_proc -public im_skin_left_blue {} { return 40005 }
-ad_proc -public im_skin_right_blue {} { return 40010 }
-ad_proc -public im_skin_light_green {} { return 40015 }
+ad_proc -public im_skin_default {} { return 40010 }
+ad_proc -public im_skin_left_blue {} { return 40015 }
 ad_proc -public im_skin_saltnpepper {} { return 40020 }
+ad_proc -public im_skin_light_green {} { return 40025 }
+ad_proc -public im_skin_roman {} { return 40030 }
 
 # --------------------------------------------------------
 # im_gif - Try to return the best matching GIF...
@@ -1720,12 +1720,12 @@ ad_proc -public im_stylesheet {} {
     set openacs54_p [im_openacs54_p]
     set css "/resources/acs-subsite/site-master.css"
 
-    # Setting Skin 
+    # Setting Skin
     set skin_name [im_user_skin $user_id]
     set skin_name_version [im_user_skin_version $user_id]
     set skin_path "[acs_root_dir]/packages/intranet-core/www/js/style.$skin_name.js"
     set skin_exists_p [util_memoize [list file exists $skin_path]]
-    if {$skin_exists_p} { set skin $skin_name } else { set skin "default" }
+    if {$skin_exists_p} { set skin $skin_name } else { set skin "saltnpepper" }
     set system_css "/intranet/style/style.$skin.css?v=$skin_name_version"
 
     # META Tags
@@ -2212,14 +2212,11 @@ ad_proc -public im_user_skin_helper {
 } {
     Returns the name of the current skin - uncached
 } {
-    if {"" == $locale} { set locale [lang::user::locale -user_id $user_id] }
-
-    set skin_name ""
-    set skin_id_exists_p [im_column_exists users skin_id]
-    if {$skin_id_exists_p} {
-	set skin_name [db_string sid "select im_category_from_id(skin_id) from users where user_id = :user_id" -default ""]
+    if {![string is integer $user_id]} { 
+	im_security_alert -location "im_skin_select_html" -message "user_is is not an integer" -value $user_id -severity "Normal" 
+	set user_id 0
     }
-#    if {"" == $skin_name} { set skin_name "default" }
+    set skin_name [util_memoize [list db_string sid "select im_category_from_id(skin_id) from users where user_id = $user_id" -default ""]]
     if {"" == $skin_name} { set skin_name "saltnpepper" }
     return $skin_name
 }
@@ -2229,15 +2226,14 @@ ad_proc -public im_user_skin_version_helper {
 } {
     Returns the version number of the current skin - uncached
 } {
-    set skin_id_exists_p [im_column_exists users skin_id]
-    if {$skin_id_exists_p} {
-	# Get Skin Name for this user 
-	set skin_name [im_user_skin $user_id]
-	if {"" == $skin_name} { set skin_name "saltnpepper" }
-        set skin_name_version [db_string sid "select aux_string1 from im_categories where category_type = 'Intranet Skin' and category = :skin_name" -default 0]
-	if { "" == $skin_name_version } { return 0 } else { return $skin_name_version }
-    } else {
+    # Get Skin Name for this user 
+    set skin_name [im_user_skin $user_id]
+    if {"" == $skin_name} { set skin_name "saltnpepper" }
+    set skin_name_version [db_string sid "select aux_string1 from im_categories where category_type = 'Intranet Skin' and category = :skin_name" -default 0]
+    if {"" == $skin_name_version} { 
 	return 0 
+    } else { 
+	return $skin_name_version 
     }
 }
 
@@ -2247,16 +2243,13 @@ ad_proc -public im_skin_select_html {
 } {
     if {0 eq $user_id || "" eq $user_id} { return "" }
     if {![string is integer $user_id]} { im_security_alert -location "im_skin_select_html" -message "user_is is not an integer" -value $user_id -severity "Normal" }
+    
+#    set current_skin_id [util_memoize [list db_string sid "select skin_id from users where user_id = $user_id" -default ""]]
+    set current_skin_id [util_memoize [list db_string sid "select skin_id from users where user_id = $user_id" -default ""]]
 
-    set skin_id_exists_p [im_column_exists users skin_id]
-    if {!$skin_id_exists_p} {
-	im_permission_flush
-	return "Error: Column users.skin_id doesn't exist.<br>Please run intranet-core V3.4.0.4.0 upgrade script."
-    }
+    ns_log Notice "im_skin_select_html: current_skin_id=$current_skin_id"
 
-   set current_skin_id [util_memoize [list db_string skin_id "select skin_id from users where user_id = $user_id" -default ""] 60]
-
-   set skin_select_html "
+    set skin_select_html "
 	<form method=\"GET\" action=\"/intranet/users/select-skin\">
 	[export_vars -form {return_url user_id}]
 	[im_category_select \
@@ -2271,11 +2264,8 @@ ad_proc -public im_skin_select_html {
        <input type=submit value=\"[_ intranet-core.Change]\">
        </form>
     "
-    
     return $skin_select_html
 }
-
-
 
 ad_proc -public im_browser_is_mobile_p {
     {-user_agent ""}
