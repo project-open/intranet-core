@@ -2655,15 +2655,6 @@ ad_proc im_project_nuke {
 		delete from im_trans_tasks 
 		where project_id = :project_id"
 
-	    db_dml trans_tasks "
-		delete from acs_objects
-		where	object_type = 'im_trans_task'
-			and object_id not in (
-				select task_id
-				from im_trans_tasks
-			)
-		"
-
 	    db_dml project_target_languages "
 		delete from im_target_languages 
 		where project_id = :project_id"
