@@ -8,7 +8,7 @@ set current_user_id [ad_conn user_id]
 set super_project_id [im_project_super_project_id $project_id]
 
 # How to sort the list of subprojects
-set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "order"]
+set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "nr"]
 
 # Show we show bulk actions?
 # This is useful for translation systems
@@ -87,6 +87,7 @@ if {$subproject_filtering_enabled_p && "" != $subproject_status_id && 0 != $subp
 }
 
 switch $list_sort_order {
+    nr { set sort_order_sql "lower(children.project_nr)" }
     name { set sort_order_sql "lower(children.project_name)" }
     order { set sort_order_sql "children.sort_order" }
     legacy { set sort_order_sql "children.tree_sortkey"	}

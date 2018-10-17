@@ -696,7 +696,7 @@ ad_proc -public im_project_options {
     # Make sure we don't get a syntax error in the query
     lappend include_project_ids 0
 
-    set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "name"]
+    set list_sort_order [parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter TimesheetAddHoursSortOrder -default "nr"]
 
     # Exclude subprojects does not work with subprojects,
     # if we are showing this box for a sub-sub-project.
@@ -880,6 +880,7 @@ ad_proc -public im_project_options {
     }
 
     switch $list_sort_order {
+	nr { set sort_order "lower(p.project_nr)" }
 	name { set sort_order "lower(p.project_name)" }
 	order { set sort_order "p.sort_order" }
 	legacy { set sort_order "p.tree_sortkey" }

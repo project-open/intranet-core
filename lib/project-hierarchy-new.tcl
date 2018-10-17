@@ -81,6 +81,7 @@ set current_url [ns_conn url]
     }
 
     switch $list_sort_order {
+	nr { set sort_order_sql "lower(children.project_nr)" }
 	name { set sort_order_sql "lower(children.project_name)" }
 	order { set sort_order_sql "children.sort_order" }
 	legacy { set sort_order_sql "children.tree_sortkey"	}
