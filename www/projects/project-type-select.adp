@@ -176,18 +176,26 @@
 
 
 
+<% set enabled_p [expr [info exists enabled(86)] || [info exists enabled(2510)] || [info exists enabled(4599)]] %>
+<if @enabled_p@ eq 1>
 
 <tr valign=top>
 <td>
 	<table cellspacing="0" cellpadding="0">
+
 	<tr valign=top>
 	<td></td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_other "Other"] %></b><br>
-		<%= [lang::message::lookup "" intranet-core.Project_type_agile_short_blurb "
-		The following are project types for specific purposes."] %>
+		<%= [lang::message::lookup "" intranet-core.Project_type_other_short_blurb "
+		'Other' projects serve specific purposes. Please consult the 
+		<a href=http://www.project-open.net/en/category-intranet-project-type target=_
+		>online help on project types</a>."] %>
 	</td>
 	</tr>
+</if>
 
+<% set enabled_p [info exists enabled(2510)] %>
+<if @enabled_p@ eq 1>
 	<tr valign=top>
 	<td>	
 	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
@@ -197,10 +205,14 @@
 		A program or \"programme\" groups a number of projects that usually have a common purpose."] %>
 	</td>
 	</tr>
+</if>
 
+
+<% set enabled_p [info exists enabled(4599)] %>
+<if @enabled_p@ eq 1>
 	<tr valign=top>
 	<td>	
-	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_software_release] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_release_project "Release Project"] %></b><br>
 		<%= [im_help_collapsible "<br>
@@ -210,12 +222,17 @@
 		become part of a release to a critical production server."] "] %>
 	</td>
 	</tr>
+</if>
 
 	</table>
 </td>
 <td></td>
 </tr>
 <tr><td colspan=2><hr style="height:1px;border:none;color:#333;background-color:#333;" /></td></tr>
+
+</if>
+
+
 <tr valign="top">
     <table cellspacing="0" cellpadding="0">
     <tr valign=top>
