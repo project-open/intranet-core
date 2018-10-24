@@ -1486,9 +1486,9 @@ ad_proc -public im_header {
     if {$header_skin_select ne ""} {
 	set header_skin_select "<span id='skin_select'>[_ intranet-core.Skin]:</span> $header_skin_select"
     }
-    # fraber 121020: disable skin, because the others do not work
-    set header_skin_select ""
     if {$loginpage_p} { set header_skin_select "" }
+    set show_skin_select_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ShowSkinSelectP" -default "0"]
+    if {"1" ne $show_skin_select_p} { set header_skin_select "" }
     
     # --------------------------------------------------------------------
     # Temporary (?) fix to get xinha working
