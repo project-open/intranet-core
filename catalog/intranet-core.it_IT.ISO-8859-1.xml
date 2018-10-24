@@ -180,6 +180,7 @@
   <msg key="Body_Shopping">Body Shopping</msg>
   <msg key="Bolivia">Bolivia</msg>
   <msg key="Bosnia and Herzegovina">Bosnia-Erzegovina</msg>
+  <msg key="Bozza">Bozza</msg>
   <msg key="Branch_Office">Filiale</msg>
   <msg key="Brazil">Brasile</msg>
   <msg key="bs">bs</msg>
@@ -204,6 +205,7 @@
   <msg key="Calendar">Calendario</msg>
   <msg key="Canada">Canada</msg>
   <msg key="Canceled">Cancellato</msg>
+  <msg key="Cancellata">Cancellata</msg>
   <msg key="Cancellato">Cancellato</msg>
   <msg key="cancellato">Cancellato</msg>
   <msg key="Cash">Contanti</msg>
@@ -313,7 +315,7 @@
   <msg key="cr_da_creare">Richiesta da Creare</msg>
   <msg key="cr_go">Go - Avvio lavorazione</msg>
   <msg key="cr_inviata">Inviata</msg>
-  <msg key="cr_standby">No Go - Stand-by</msg>
+  <msg key="cr_standby">Stand-by</msg>
   <msg key="cr_valorizzazione">In valorizzazione dal Fornitore: fornitore ingaggiato per la stima</msg>
   <msg key="cr_valutazione">In valutazione (basket economico)</msg>
   <msg key="Create">Crea</msg>
@@ -396,7 +398,7 @@
   <msg key="Delinquent_Update">Aggiornamento criminale</msg>
   <msg key="Deliver">Consegna</msg>
   <msg key="Delivered">Terminato</msg>
-  <msg key="Delivery_Date">Data Release Desiderata</msg>
+  <msg key="Delivery_Date">Data fine Progetto</msg>
   <msg key="Delivery_Note">Bolla di consegna</msg>
   <msg key="deliverynoteenadp">deliverynote.en.adp</msg>
   <msg key="deliverynoteesadp">deliverynote.es.adp</msg>
@@ -553,6 +555,7 @@
   <msg key="g">g</msg>
   <msg key="g_avvio_lav">Go - Avvio lavorazione</msg>
   <msg key="Gantt">Gantt</msg>
+  <msg key="Gantt_Editor">Gantt Editor</msg>
   <msg key="Gen">Generale</msg>
   <msg key="General_Home">Home</msg>
   <msg key="Generic_PM">PM generico</msg>
@@ -665,6 +668,7 @@
   <msg key="he">he</msg>
   <msg key="Help">Aiuto</msg>
   <msg key="Help_Request">Richieste di aiuto</msg>
+  <msg key="Helpdesh">Helpdesh</msg>
   <msg key="Helpdesk">Helpdesk</msg>
   <msg key="HelpPage">Pagina d&#39;aiuto</msg>
   <msg key="Here_is_the_error">Ecco l&#39;errore:</msg>
@@ -738,6 +742,7 @@
   <msg key="In_sviluppo">In sviluppo</msg>
   <msg key="in_sviluppo">In sviluppo</msg>
   <msg key="in_valorizzazione">In valorizzazione dal Fornitore: fornitore ingaggiato per la stima</msg>
+  <msg key="In_verifica">In verifica</msg>
   <msg key="Inactive">Non attivo</msg>
   <msg key="Inactive_Customers">Clienti inattivi</msg>
   <msg key="Incident">Imprevisti</msg>
@@ -1303,7 +1308,7 @@
   <msg key="New_Opportunity">Nuova Quotation</msg>
   <msg key="New_Password">Nuova pasword</msg>
   <msg key="New_Payment">Nuovo pagamento</msg>
-  <msg key="New_Project">Nuovo progetto</msg>
+  <msg key="New_Project">Nuovo Progetto / Programma</msg>
   <msg key="New_Provider">Nuova azienda fornitrice</msg>
   <msg key="New_Provider_Contact">Nuovo contatto fornitore</msg>
   <msg key="New_Quote">Nuovo preventivo</msg>
@@ -1529,7 +1534,7 @@
   <msg key="Project">sub-project</msg>
   <msg key="Project_">N. di progetto</msg>
   <msg key="Project_Advanced_Filtering">Filtro avanzato</msg>
-  <msg key="Project_Base_Data">Scheda Progetto</msg>
+  <msg key="Project_Base_Data">Scheda Progetto / Programma</msg>
   <msg key="Project_Budget">Budget del progetto</msg>
   <msg key="Project_Budget_Currency">Valuta del budget</msg>
   <msg key="Project_Budget_Hours">Ore preventivate</msg>
@@ -1597,6 +1602,7 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Project_Types">Tipi di progetto</msg>
   <msg key="ProjectOpen_News">Novità ]project-open[</msg>
   <msg key="Projects">Progetti</msg>
+  <msg key="Projects__Programs">Progetti / Programmi</msg>
   <msg key="Projects_Actions">Menu Progetto</msg>
   <msg key="Projects_Admin">Ammin. progetti</msg>
   <msg key="Projects_List">Lista Progetti</msg>
@@ -1672,6 +1678,7 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Risk">Risk</msg>
   <msg key="RLE">RLE - RELAZIONI ESTERNE E AFFARI ISTITUZIONALI</msg>
   <msg key="ro">ro</msg>
+  <msg key="roman">Roman Blue</msg>
   <msg key="Romania">Romania</msg>
   <msg key="RR_Column_1">RR colonna</msg>
   <msg key="RR_Format_1">RR formato</msg>
@@ -1776,7 +1783,7 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Star_Transit_30">Star Transit 3.0</msg>
   <msg key="Star_Transit_XV">Star Transit XV</msg>
   <msg key="Start">Avvio</msg>
-  <msg key="Start_Date">Data Richiesta progetto</msg>
+  <msg key="Start_Date">Data inizio Progetto</msg>
   <msg key="State">Stato</msg>
   <msg key="Status">Statu</msg>
   <msg key="Strategic_Consulting">Consulenza strategica</msg>
@@ -1789,7 +1796,11 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Survey">Sondaggio</msg>
   <msg key="sv">sv</msg>
   <msg key="SVR">SVR - COMMERCIALE</msg>
+  <msg key="SVR__PEA_-_MARSILI">SVR ? PEA - MARSILI</msg>
+  <msg key="SVR__PEA_-_Marsili">SVR ? PEA - Marsili</msg>
   <msg key="SVS">SVS - SVILUPPO INFRASTRUTTURE</msg>
+  <msg key="SVS__IPR__PONTECORVO">SVS ? IPR ? PONTECORVO</msg>
+  <msg key="SVS__IPR__Pontecorvo">SVS ? IPR ? Pontecorvo</msg>
   <msg key="sw">sw</msg>
   <msg key="Sweden">Svezia</msg>
   <msg key="Switzerland">Svizzera</msg>
@@ -1821,12 +1832,14 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="templateesadp">template.es.adp</msg>
   <msg key="tender">tender</msg>
   <msg key="Terminato">Terminato</msg>
+  <msg key="test">test</msg>
   <msg key="Test_evaluated">Test valutato</msg>
   <msg key="Test_received">Test ricevuto</msg>
   <msg key="Test_sent">Test spedito</msg>
   <msg key="th">th</msg>
   <msg key="The_web_with_Google">nel Web con Google</msg>
   <msg key="Ticket">Ticket</msg>
+  <msg key="Ticket_Container">Ticket Container</msg>
   <msg key="Ticket_Members">Membri del ticket</msg>
   <msg key="Time_plan">Orario</msg>
   <msg key="Time_sheet">Presenze</msg>
@@ -1938,6 +1951,7 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Users_Contact_Note">Nota contatto utenti</msg>
   <msg key="v">v</msg>
   <msg key="Vacation">Vacanza</msg>
+  <msg key="Validata">Validata</msg>
   <msg key="value">%value%</msg>
   <msg key="VAS">VAS</msg>
   <msg key="VAS_5051">VAS 5051</msg>
@@ -2011,6 +2025,7 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="z_6">Stand-By</msg>
   <msg key="z_7">Cancellato</msg>
   <msg key="z_8">Terminato</msg>
+  <msg key="z_project_type">z_project_type</msg>
   <msg key="Z_RComm_Status">Richiesta da Creare</msg>
   <msg key="zB">zB</msg>
   <msg key="zbus_cont">Business Continuity</msg>
