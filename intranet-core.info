@@ -10,7 +10,7 @@
     <inherit-templates-p>t</inherit-templates-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="5.0.2.4.2" url="http://www.project-open.net/download/apm/intranet-core-5.0.2.4.2.apm">
+    <version name="5.0.2.4.3" url="http://www.project-open.net/download/apm/intranet-core-5.0.2.4.3.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2003-05-14</release-date>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
@@ -101,6 +101,7 @@
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="MemberPortletShowHoursP"  default="0" description="Should assigments in the MemberPortlet be done on hours rather than on percentage? Default is '0', because the assignement based on hours is not very correct (not taking into account holidays or vacation days) and because it doesn't change when changing the start- and end-date of the project."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="MemberPortletShowDaysInsteadOfHoursP"  default="0" description="Should assigments in the MemberPortlet be done on days rather than on hours or percentage? Default is '0'. This parameter is only relavant if MemberPortletShowHoursP=1."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ThrottleEmailSendingSeconds"  default="1" description="Should we wait after sending each email when sending out mass emails in member-notify.tcl? Default is one second."/>
+            <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ShowSkinSelectP"  default="0" description="Should we enable the display of a skin selector? Default is 0, so users are supposed to stick with Salt 'n Pepper skin."/>
         </parameters>
 
     </version>
