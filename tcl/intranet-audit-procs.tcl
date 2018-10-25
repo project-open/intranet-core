@@ -429,6 +429,7 @@ ad_proc -public im_audit_impl {
     "
 
     # Get the new value from the database
+    # new_value can be null in case of broken/inconsistent objects
     set new_value [im_audit_object_value -object_id $object_id -object_type $object_type]
 
     # Calculate the "diff" between old and new value.
@@ -436,7 +437,7 @@ ad_proc -public im_audit_impl {
     set diff [im_audit_calculate_diff -old_value $old_value -new_value $new_value]
 
     set new_audit_id ""
-    if {"" ne $diff || "" ne $baseline_id} {
+    if {"" ne $new_value && ("" ne $diff || "" ne $baseline_id)} {
 	# Something has changed...
 	# Create a new im_audit entry and associate it to the object.
 	set new_audit_id [db_nextval im_audit_seq]
