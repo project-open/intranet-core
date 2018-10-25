@@ -2997,9 +2997,43 @@ ad_proc im_project_nuke {
 	}
 	append detailed_explanation "<pre>$errmsg</pre>"
     }
+    ns_log Notice "im_project_nuke: after db_transaction"
 
     return $detailed_explanation
 }
+
+ad_proc im_project_nuke_move_data_to_other_project {
+    -old_id
+    -new_id
+} {
+    Move valuable data associated to a project/task/ticket to another
+    project/task/ticket before nuking.
+    We will only move cost and time data, but not auxillary stuff, because
+    we believe the user that he has good reason to delete it...
+} {
+    ns_log Notice "im_project_nuke_move_data_to_other_project: before db_transaction"
+    set error ""
+    db_transaction {
+    
+	# Costs
+	ns_log Notice "im_project_nuke_move_data_to_other_project: move invoice items"
+	db_dml reset_invoice_items "update im_invoice_items set project_id = :new_id where project_id = :old_id"
+	db_dml reset_costs "update im_costs set project_id = :new_id where project_id = :old_id"
+	
+	ns_log Notice "im_project_nuke_move_data_to_other_project: im_hours"
+	db_dml hours "update im_hours set project_id = :new_id where project_id = :old_id"
+	
+	ns_log Notice "im_project_nuke_move_data_to_other_project: rels"
+	db_dml rel1 "update acs_rels set object_id_one = :new_id where object_id_one = :old_id"
+	db_dml rel2 "update acs_rels set object_id_two = :new_id where object_id_two = :old_id"
+
+    } on_error {
+	set error $errmsg
+    }
+
+    return $error
+}
+
 
 
 ad_proc im_project_super_project_id {

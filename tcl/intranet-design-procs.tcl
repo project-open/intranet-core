@@ -1571,19 +1571,17 @@ ad_proc -public im_header {
 		 $plugin_right_html
 	      </div>
 	      <div class=\"header_line\">
-			<table cellpadding='0' cellspacing='0' border='0'>
-			<tr>
+		<table cellpadding='0' cellspacing='0' border='0'>
+		    <tr>
 			<td>$feedback_bar_icon</td>
 			<td><span class='header_buttons'>$header_buttons</span></td>
-			</tr>
-			<tr>
-			<td colspan=2><div id=\"main_search\">[im_header_search_form]</div></td>
-			</tr>
-			</table>
+		    </tr>
+		    <tr>
+			<td><div id=\"header_skin_select\">$header_skin_select</div></td>
+			<td><div id=\"main_search\">[im_header_search_form]</div></td>
+		    </tr>
+		</table>
 	      </div>
-	      <div id=\"header_skin_select\">
-		 $header_skin_select
-	      </div>   
 	   </div>
     	 "
     }
