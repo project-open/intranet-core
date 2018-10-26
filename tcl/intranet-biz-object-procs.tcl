@@ -541,7 +541,12 @@ ad_proc -public im_group_member_component {
 
     # Check if there is a percentage column from intranet-ganttproject
     set object_type [util_memoize [list db_string otype "select object_type from acs_objects where object_id=$object_id" -default ""]]
-    if {"" == $show_percentage_p && ($object_type eq "im_project" || $object_type eq "im_timesheet_task")} { set show_percentage_p 1 }
+    if {"" == $show_percentage_p && ($object_type eq "im_project" || $object_type eq "im_timesheet_task")} { 
+	# Do not show percentage in projects with children
+	set children_count [db_string children "select count(*) from im_projects where parent_id = :object_id"]
+	if {0 eq $children_count} { set show_percentage_p 1 }
+    }
+
     if {"" == $show_percentage_p} { set show_percentage_p 0 }
     if {![im_column_exists im_biz_object_members percentage]} { set show_percentage_p 0 }
 
