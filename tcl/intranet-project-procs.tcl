@@ -169,7 +169,22 @@ ad_proc -public im_project_permissions {
 
     # empty project_id would give errors below
     if {"" == $project_id} { set project_id 0 }
-    im_security_alert_check_integer -location "im_project_permissions: project_id" -value $project_id
+    if {[im_security_alert_check_integer -location "im_project_permissions: project_id" -value $project_id]} { set project_id 0 }
+
+    # Fraber 181030: We have to look at permissions of the top-level project.
+    # Actually, we'd also have to look at the permissions of the projects 
+    # "in between" for the case of a sub-pm, but that would be slower.
+    set parent_id [util_memoize [list db_string parent_id "select parent_id from im_projects where project_id = $project_id" -default ""]]
+    if {"" ne $parent_id} {
+	set root_id [db_string root "
+		select	*
+		from	im_projects parent,
+			im_projects child
+		where	child.project_id = :project_id and
+			parent.tree_sortkey = tree_root_key(child.tree_sortkey)
+	" -default ""]
+	if {"" ne $root_id} { set project_id $root_id }
+    }
 
     if {$debug} { ns_log Notice "im_project_permissions: before user_is_admin_p" }
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
