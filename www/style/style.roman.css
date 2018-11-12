@@ -235,16 +235,21 @@ developer-support-adp-box-off {
 #header_skin_select {
     color: #666;
     font-size: 8pt;
-    position: absolute;
-    top: 25px;
-    right: 118px;
-    display: block;
+    position: relative;
+	display:block;
+    /*top: 25px;
+    right: 118px;*/
+	left: 25px;
+	width:120px;
+	height:25px;
 }
 
 #header_skin_select form {
     display: inline;
-    position: absolute;
+    position: relative;
     font-size: 8px;
+	margin:0;
+	padding:0;
 }
 
 #header_skin_select input {
@@ -260,6 +265,7 @@ developer-support-adp-box-off {
     font-size:8pt;
     height: 18px;
     width: 90px;
+	display:inline;
 }
 
 #header_logo {

@@ -36,7 +36,7 @@
 .fullwidth-list .component table.calendar_table tbody tr td.todays_date_weekend,
 .fullwidth-list .component table.calendar_table tbody tr td.not_todays_date_weekend
  {
-        text-align: left;
+	text-align: left;
 	background: #EEEEEE;
 	vertical-align: top;
 }
@@ -223,20 +223,24 @@ developer-support-adp-box-off {
     text-decoration:none;
     font-weight: normal;
 }
-
 #header_skin_select {
     color: #666;
     font-size: 8pt;
-    position: absolute;
-    top: 25px;
-    right: 118px;
-    display: block;
+    position: relative;
+	display:block;
+    /*top: 25px;
+    right: 118px;*/
+	left: 25px;
+	width:120px;
+	height:25px;
 }
 
 #header_skin_select form {
     display: inline;
-    position: absolute;
+    position: relative;
     font-size: 8px;
+	margin:0;
+	padding:0;
 }
 
 #header_skin_select input {
@@ -252,6 +256,7 @@ developer-support-adp-box-off {
     font-size:8pt;
     height: 18px;
     width: 90px;
+	display:inline;
 }
 
 #header_logo {
@@ -2221,4 +2226,40 @@ ul.sm li.divider hr {
 
 .extjs-panel {
     background-color: #fbf9f9 !important; 
+}
+
+
+#header_skin_select {
+    color: #666;
+    font-size: 8pt;
+    position: relative;
+	display:inline;
+    /*top: 25px;
+    right: 118px;*/
+	width:auto;
+	height:auto; 
+    display: inline;
+}
+
+#header_skin_select form {
+    display: inline;
+    position: relative;
+    font-size: 8px;
+	margin:0;
+	padding:0;
+}
+
+#header_skin_select input {
+    display: none;
+    margin:0 0 0 0;
+}
+
+#header_skin_select select {
+    background-color:#CFDBFF;
+    border:1px solid #666666;
+    color:#666666;
+    font-family: Arial;
+    font-size:8pt;
+    height: 18px;
+    width: 90px;
 }
