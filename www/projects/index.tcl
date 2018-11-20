@@ -403,11 +403,26 @@ switch $mine_p {
 	     set user_name [acs_object_name $current_user_id]
 	     ad_return_complaint 1 "<b>[lang::message::lookup "" intranet-core.Error "Error"]</b>:<br>[lang::message::lookup "" intranet-core.User_has_no_cc "User '%user_name%' has no department assigned, <br>so we can't show the projects in the user's department."]"
 	}
-	lappend criteria "p.project_cost_center_id in (
+
+
+	lappend criteria "(
+	p.project_cost_center_id in (
 		select	cc.cost_center_id
 		from	im_cost_centers cc
 		where	substring(cc.cost_center_code for (length(:user_cc_code))) = :user_cc_code
+	) 
+	OR
+	p.project_lead_id in (
+		select	pe.person_id
+		from	im_cost_centers cc,
+			im_employees e,
+			persons pe
+		where	substring(cc.cost_center_code for (length(:user_cc_code))) = :user_cc_code and
+			e.department_id = cc.cost_center_id and
+			e.employee_id = pe.person_id
+	)
 	)"
+
     }
     default {
         # This should cover the case: mine_p="t"
