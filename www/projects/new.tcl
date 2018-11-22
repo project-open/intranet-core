@@ -96,6 +96,22 @@ if { (![info exists project_id] || "" == $project_id) && $company_id eq "" && $c
     ad_script_abort
 }
 
+# Make the start- and end-date of the project read-only if the project has children.
+set start_end_date_mode "edit"
+set start_end_date_msg ""
+set gantt_project_with_children_p [db_string gantt_project_with_children_p "
+select	count(*)
+from	im_projects main_p,
+	im_projects sub_p
+where	main_p.project_id = :project_id and
+	main_p.project_type_id in (select * from im_sub_categories([im_project_type_gantt])) and
+	sub_p.parent_id = main_p.project_id 
+"]
+if {$gantt_project_with_children_p} { 
+   set start_end_date_mode "display" 
+   set start_end_date_msg [im_gif -translate_p 1 help "Read-only, because the values are determined by the Gantt editor"]
+}
+
 # -----------------------------------------------------------
 # Permissions
 # -----------------------------------------------------------
@@ -334,15 +350,15 @@ if {[info exists project_id] } {
 
 
 template::element::create $form_id start \
-    -datatype "date" widget "date" \
+    -datatype "date" widget "date" -mode $start_end_date_mode \
     -label [_ intranet-core.Start_Date] \
-    -format "DD Month YYYY" \
+    -format "DD Month YYYY" -after_html $start_end_date_msg \
     -after_html {<input type="button" style="height:23px; width:23px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendarWithDateWidget('start', 'y-m-d');" >}
 
 template::element::create $form_id end \
-    -datatype "date" widget "date" \
+    -datatype "date" widget "date" -mode $start_end_date_mode \
     -label [_ intranet-core.Delivery_Date] \
-    -format "DD Month YYYY HH24:MI" \
+    -format "DD Month YYYY HH24:MI" -after_html $start_end_date_msg \
     -after_html {<input type="button" style="height:23px; width:23px; background: url('/resources/acs-templating/calendar.gif');" onclick ="return showCalendarWithDateWidget('end', 'y-m-d');" >}
 
 set help_text [im_gif -translate_p 1 help "Is the project going to be in time and budget (green), does it need attention (yellow) or is it doomed (red)?"]
