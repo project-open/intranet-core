@@ -614,8 +614,8 @@ ad_proc -public im_category_is_a_helper {
     if {$child == $parent} { return 1 }
 
     if {"" == $category_type} {
-	if {![string is integer $child]} { ad_return_complaint 1 "First argument is not an integer" }
-	if {![string is integer $parent]} { ad_return_complaint 1 "First argument is not an integer" }
+	if {![string is integer $child]} { ad_return_complaint 1 "First argument ('child') is not an integer" }
+	if {![string is integer $parent]} { ad_return_complaint 1 "Second argument ('parent') is not an integer" }
 
 	return [db_string is_a "
 		select	count(*)

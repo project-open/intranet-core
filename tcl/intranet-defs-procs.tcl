@@ -1801,6 +1801,16 @@ ad_proc -public im_package_exists_p { package_key } {
 }
 
 
+
+ad_proc -public im_object_name { object_id } {
+    Returns cached name of object
+} {
+    if {"" eq $object_id || "null" eq $object_id} { return "" }
+    return [util_memoize [list acs_object_name $object_id]]
+}
+
+
+
 ad_proc -public im_httpget { 
     url
     {timeout 30}
