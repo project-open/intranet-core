@@ -1483,7 +1483,7 @@ ad_proc -public im_ad_hoc_query {
                 plain { append result "$col\t" }
                 html {
                     if {"" == $col} { set col "&nbsp;" }
-		    set td_attributes [lindex $col_td_attributes $row_count]
+		    set td_attributes [lindex $col_td_attributes $col_count]
                     append result "<td $td_attributes>$col</td>"
                 }
                 csv { append result "\"$col\";" }
@@ -1502,7 +1502,7 @@ ad_proc -public im_ad_hoc_query {
 		set sum 0
 		if {[info exists subtotals($col_name)]} { set sum $subtotals($col_name) }
 		if {"" ne $col} {
-		    if {"" ne $sum && [regexp {^[0-9\,\.]+$} $col]} {
+		    if {"" ne $sum && [regexp {^[0-9\,\.\-]+$} $col]} {
 			set col [regsub -all $thousand_separator $col ""]
 			set sum [expr $sum + $col]
 		    } else {
@@ -1531,11 +1531,13 @@ ad_proc -public im_ad_hoc_query {
 
     set footer ""
     if {$subtotals_p} {
+	set col_count 0
 	foreach col_name $bind_rows {
 	    set subtotal ""
 	    if {[info exists subtotals($col_name)]} { set subtotal $subtotals($col_name) }
-	    append footer "<td><b>[lc_numeric $subtotal "" $locale]</b></td>"
-	    # append footer "<td><b>$subtotal</b></td>"
+	    set td_attributes [lindex $col_td_attributes $col_count]
+	    append footer "<td $td_attributes><b>[lc_numeric $subtotal "" $locale]</b></td>"
+	    incr col_count
 	}
 	set footer "<tr>$footer</tr>\n"
     }
