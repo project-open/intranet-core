@@ -25,7 +25,6 @@ cvs checkout acs-translations
 cvs checkout acs-workflow
 cvs checkout ajaxhelper
 cvs checkout attachments
-cvs checkout auth-ldap
 cvs checkout auth-ldap-adldapsearch
 cvs checkout batch-importer
 cvs checkout bug-tracker
@@ -49,6 +48,7 @@ cvs checkout intranet-crm-opportunities
 cvs checkout intranet-crm-tracking
 cvs checkout intranet-csv-import
 cvs checkout intranet-cvs-integration
+cvs checkout intranet-demo-data
 cvs checkout intranet-department-planner
 cvs checkout intranet-dw-light
 cvs checkout intranet-dynfield
@@ -79,7 +79,6 @@ cvs checkout intranet-milestone
 cvs checkout intranet-nagios
 cvs checkout intranet-notes
 cvs checkout intranet-notes-tutorial
-cvs checkout intranet-openoffice
 cvs checkout intranet-ophelia
 cvs checkout intranet-otp
 cvs checkout intranet-payments
@@ -99,6 +98,7 @@ cvs checkout intranet-reporting-translation
 cvs checkout intranet-reporting-tutorial
 cvs checkout intranet-resource-management
 cvs checkout intranet-rest
+cvs checkout intranet-rest-fs-openacs
 cvs checkout intranet-riskmanagement
 cvs checkout intranet-rule-engine
 cvs checkout intranet-scrum
@@ -126,7 +126,6 @@ cvs checkout intranet-trans-project-wizard
 cvs checkout intranet-trans-quality
 cvs checkout intranet-translation
 cvs checkout intranet-ubl
-#cvs checkout intranet-update-client - 170410: Moved to intranet-security-update-client
 cvs checkout intranet-update-server
 cvs checkout intranet-wiki
 cvs checkout intranet-workflow
@@ -149,14 +148,19 @@ cvs checkout rss-support
 cvs checkout search
 cvs checkout sencha-core
 cvs checkout sencha-extjs-v421
+cvs checkout sencha-extjs-v421-dev
+cvs checkout senchatouch-v242
+cvs checkout senchatouch-timesheet
 cvs checkout simple-survey
+cvs checkout tsearch2-driver
 cvs checkout wiki
 cvs checkout workflow
 cvs checkout xml-rpc
 cvs checkout xotcl-core
+cvs checkout xotcl-request-monitor
 cvs checkout xowiki
 
-
+# cvs checkout auth-ldap				# (obsolete)
 # cvs checkout acs-lang-server				# (internal)
 # cvs checkout intranet-asus-server			# (internal)
 # cvs checkout intranet-calendar-holidays		# (obsolete)
@@ -165,10 +169,12 @@ cvs checkout xowiki
 # cvs checkout intranet-freelance-invoices-moravia	# (customer package)
 # cvs checkout intranet-gtd-dashboard			# (work in progress)
 # cvs checkout intranet-html2pdf			# (obsolete)
+# cvs checkout intranet-openoffice			# (obsolete)
 # cvs checkout intranet-otrs-integration		# (work in progress)
 # cvs checkout intranet-procedures			# (obsolete)
 # cvs checkout intranet-rss-reader			# (internal)
 # cvs checkout intranet-scrum				# (work in progress)
+# cvs checkout intranet-update-client			# 170410: Moved to intranet-security-update-client
 # cvs checkout intranet-sencha				# (GPL V3.0 license)
 # cvs checkout intranet-soap-lite-server		# (work in progress)
 # cvs checkout intranet-trans-invoice-authorization	# (work in progress)
@@ -179,4 +185,3 @@ cvs checkout xowiki
 # cvs checkout tclwebtest				# (TCL client for performance testing)
 # cvs checkout telecom-number				# (obsolete? OpenACS package)
 # cvs checkout trackback				# (obsolete? OpenACS package)
-# cvs checkout tsearch2-driver				# (obsolete OpenACS package)
