@@ -107,6 +107,15 @@ if { $show_feedback_p } {
 set feedback_url "<a href=\"[export_vars -base "/intranet/report-bug-on-page" {{page_url [im_url_with_query]}}]\" title='Give us feedback' id='feedback-badge-right' target='new'>"
 append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Feedback"]</span></a>"
 
+
+# Load custom JavaScript into header
+if {[im_table_exists im_page_header_extensions]} {
+    set this_page [im_component_page_url]
+    set header_extensions [db_list header_extensions "select header_extension from im_page_header_extensions where page = :this_page"]
+    foreach ext $header_extensions { append header_stuff "$ext\n" }
+}
+
+
 # Fraber 121008: Write out permission debugging
 # This procedure may fail in a V3.3 and earlier installation
 catch {
