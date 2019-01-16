@@ -16,6 +16,22 @@
 -- @author      frank.bergmann@project-open.com
 
 
+
+
+-- -----------------------------------------------------------
+-- Customization table that allows to add header lines to
+-- pages.
+
+create table im_page_header_extensions (
+	page			text,
+	header_extension	text
+);
+
+-- Speed up page lookups
+create index im_page_header_extensions_page_idx on im_page_header_extensions(page);
+
+
+
 -- Populate all the status/type/url with the different types of 
 -- data we are collecting
 
