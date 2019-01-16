@@ -108,7 +108,11 @@ set feedback_url "<a href=\"[export_vars -base "/intranet/report-bug-on-page" {{
 append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Feedback"]</span></a>"
 
 
-# Load custom JavaScript into header
+# Load custom JavaScript into header. Example: 
+# create table im_page_header_extensions (page text, header_extension text);
+# create index im_page_header_extensions_page_idx on im_page_header_extensions(page);
+# insert into im_page_header_extensions values ('/intranet/index', '<script type='text/javascript' src='/intranet-cust-xxx/beautify.js'></script>');
+# Please note that page URLs include a trailing "index" if they end with "/".
 if {[im_table_exists im_page_header_extensions]} {
     set this_page [im_component_page_url]
     set header_extensions [db_list header_extensions "select header_extension from im_page_header_extensions where page = :this_page"]
