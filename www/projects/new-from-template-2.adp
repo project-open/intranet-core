@@ -2,6 +2,14 @@
 <property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">projects</property>
 
+<script>
+function doubleClickDisableButton(button) {
+        var btn = document.getElementsByName(button);
+	btn[0].setAttribute('visibility', 'hidden');
+}
+
+</script>
+
 <form action=clone-2.tcl method=POST>
 <%= [export_vars -form {return_url parent_project_id new_parent_project_id company_id clone_postfix}] %>
 
@@ -34,7 +42,7 @@
       </td>
       <td> 
 	  <p> 
-	    <input type="submit" value="@button_text@" name="submit2">
+	    <input type="submit" value="@button_text@" name="submit2" onclick="doubleClickDisableButton('submit2')">
 	    <%= [im_gif help "Create the new folder structure"] %>
 	  </p>
       </td>
