@@ -1,4 +1,4 @@
-# /packages/intranet-core/projects/clone-2.tcl
+# /packages/intranet-core/projects/add-tasks-from-template-2.tcl
 #
 # Copyright (C) 1998-2004 various parties
 # The software is based on ArsDigita ACS 3.4
@@ -48,6 +48,35 @@ if {!$parent_read} {
 }
 
 
+
+# ---------------------------------------------------------------------
+# Check for locking / double click protection
+# ---------------------------------------------------------------------
+
+set exists_p [db_0or1row recently_changed "
+	select	extract(epoch from now() - lock_date) as lock_seconds,
+		lock_user,
+		im_name_from_user_id(lock_user) as lock_user_name,
+		lock_ip
+	from	im_biz_objects
+	where	object_id = :parent_project_id
+"]
+
+if {$exists_p && $current_user_id eq $lock_user && $lock_seconds < 2.0} {
+    exec sleep 3
+    ad_returnredirect [export_vars -base "/intranet/projects/view" {{project_id $parent_project_id}}]
+} else {
+    # Set the lock on the ticket
+    db_dml set_lock "
+		update im_biz_objects set
+			lock_ip = '[ns_conn peeraddr]',
+			lock_date = now(),
+			lock_user = :current_user_id
+		where object_id = :parent_project_id
+    "
+}
+
+
 # ---------------------------------------------------------------------
 # Defaults & Security
 # ---------------------------------------------------------------------
@@ -57,6 +86,7 @@ set task_list [db_list tasks "
 		select	project_id
 		from	im_projects
 		where 	parent_id = :template_project_id
+		order by project_id
 "]
 
 
