@@ -664,6 +664,7 @@ ad_proc -public im_sub_navbar {
     @title_class CSS class of the title line
 } {
     set user_id [ad_conn user_id]
+    if {"" eq $user_id} { set user_id 0 }
     set admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
     set locale [lang::user::locale -user_id $user_id]
     set url_stub [ns_conn url]
@@ -2210,7 +2211,7 @@ ad_proc -public im_user_skin_helper {
 } {
     Returns the name of the current skin - uncached
 } {
-    if {![string is integer $user_id]} { 
+    if {"" eq $user_id || ![string is integer $user_id]} { 
 	im_security_alert -location "im_skin_select_html" -message "user_is is not an integer" -value $user_id -severity "Normal" 
 	set user_id 0
     }

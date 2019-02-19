@@ -143,6 +143,7 @@ ad_proc -public im_component_bay {
     Checks the database for Plug-ins for this page and component bay.
 } {
     set user_id [ad_conn user_id]
+    if {"" eq $user_id} { set user_id 0 }
     im_security_alert_check_alphanum -location "im_component_bay: location" -value $location
     im_security_alert_check_alphanum -location "im_component_bay: view_name" -value $view_name
 
