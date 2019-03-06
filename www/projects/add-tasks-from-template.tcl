@@ -36,11 +36,6 @@ ad_page_contract {
 set user_id [auth::require_login]
 set current_url [ns_conn url]
 
-if {![im_permission $user_id add_projects]} {
-    ad_return_complaint "Insufficient Privileges" "
-        <li>You don't have sufficient privileges to see this page."
-}
-
 # Make sure the user can read the parent_project
 im_project_permissions $user_id $parent_project_id parent_view parent_read parent_write parent_admin
 if {!$parent_read} {
