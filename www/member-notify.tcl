@@ -103,6 +103,7 @@ set time_date [im_exec date "+%s.%N"]
 foreach oid $user_id_from_search {
 
     set object_type [util_memoize [list acs_object_type $oid]]
+    set read 0
     switch $object_type {
 	user {
 	    im_user_permissions $current_user_id $oid view read write admin
@@ -122,7 +123,7 @@ foreach oid $user_id_from_search {
     }
 
     if {!$read} {
-	ad_return_complaint 1 "<li>Member-Notify: You don't have read permissions on user #$user_id"
+	ad_return_complaint 1 "<li>Member-Notify: You don't have read permissions on user '[acs_object_name $oid]' (#$oid)"
 	ad_script_abort
     }
 }
