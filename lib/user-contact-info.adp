@@ -6,8 +6,8 @@
     <multiple name="user_columns">
     <if @user_columns.visible_p@ eq 1>
       <tr @user_columns.td_class;noquote@>
-        <td>@user_columns.column_name;noquote@ &nbsp;</td>
-        <td>@user_columns.column_render;noquote@</td>
+        <td width="15%" valign=middle>@user_columns.column_name;noquote@ &nbsp;</td>
+        <td width="85%" valign=middle>@user_columns.column_render;noquote@</td>
       </tr>
     </if>
     </multiple>
