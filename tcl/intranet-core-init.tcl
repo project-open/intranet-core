@@ -345,13 +345,14 @@ ad_proc -public -callback im_before_member_add {
 # Delete old log entries
 # ---------------------------------------------------------------
 
-set log_max_days [parameter::get_from_package_key -package_key "intranet-core" -parameter PackageLogMaxAgeDays -default "180"]
+set rule_log_max_days [parameter::get_from_package_key -package_key "intranet-core" -parameter LogRuleMaxAgeDays -default "180"]
+set package_log_max_days [parameter::get_from_package_key -package_key "intranet-core" -parameter LogPackageMaxAgeDays -default "180"]
 
 if {[im_table_exists im_rule_logs]} { 
     db_foreach rule_logs "
 	select	rule_log_id
 	from	im_rule_logs
-	where	rule_log_date < now()::date - :log_max_days::integer
+	where	rule_log_date < now()::date - :rule_log_max_days::integer
     " { db_dml del "delete from im_rule_logs where rule_log_id = :rule_log_id"  }
 }
 
@@ -364,6 +365,6 @@ db_foreach package_logs "
 		pv.version_id = o.object_id and
 		pv.installed_p = 't' and
 		pva.attribute_value like '%(CL)%' and
-		o.creation_date < now()::date - :log_max_days::integer
+		o.creation_date < now()::date - :package_log_max_days::integer
 " { apm_package_delete $package_key }
 
