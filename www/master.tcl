@@ -116,7 +116,10 @@ append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Fee
 if {[im_table_exists im_page_header_extensions]} {
     set this_page [im_component_page_url]
     set header_extensions [db_list header_extensions "select header_extension from im_page_header_extensions where page = :this_page"]
-    foreach ext $header_extensions { append header_stuff "$ext\n" }
+    foreach ext $header_extensions { 
+	# append header_stuff "$ext\n"
+	template::head::add_javascript -src $ext
+    }
 }
 
 
