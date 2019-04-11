@@ -13,8 +13,6 @@
 # FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# SALO 2018-12-10  AECres customization of the projects filter
-
 # ---------------------------------------------------------------
 # 1. Page Contract
 # ---------------------------------------------------------------
@@ -34,12 +32,6 @@ ad_page_contract {
     @param letter criteria for im_first_letter_default_to_a(project_name)
     @param start_idx the starting index for query
     @param how_many how many rows to return
-
-    @param aec_custom Enable AECres customizations to projects filter
-    @param aec_sales_rep_id Filter by Sales Person
-    @param aec_sales_engineer_id Filter by Sales Engineer
-    @param aec_area_id Filter by AEC Area
-    @param aec_building_type_id Filter by Building Type
 
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
@@ -61,11 +53,6 @@ ad_page_contract {
     { view_name "project_list" }
     { filter_advanced_p:integer 0 }
     { plugin_id:integer 0 }
-    { aec_custom:integer 1 }
-    { aec_sales_rep_id:integer 0 }
-    { aec_sales_engineer_id:integer 0 }
-    { aec_area_id:integer 0 }
-    { aec_building_type_id:integer 0 }
 }
 
 
@@ -118,6 +105,8 @@ set page_focus "im_header_form.keywords"
 set upper_letter [string toupper $letter]
 set return_url [im_url_with_query]
 
+set org_start_date $start_date
+set org_end_date $end_date
 set org_project_status_id $project_status_id
 set org_project_type_id $project_type_id
 
@@ -170,50 +159,39 @@ set menu_select_label "projects_filter_advanced"
 if {"project_costs" == $view_name} { set menu_select_label "projects_profit_loss" }
 
 
+if {"" == $start_date} { set start_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultStartDate -default "2000-01-01"] }
+if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultEndDate -default "2100-01-01"] }
+
+
 set min_all_l10n [lang::message::lookup "" intranet-core.Mine_All "Mine/All"]
 set all_l10n [lang::message::lookup "" intranet-core.All "All"]
 
 # Check that Start & End-Date have correct format
-if {"" == $start_date} { set start_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultStartDate -default "2000-01-01"] }
-if {"" == $end_date} { set end_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultEndDate -default "2100-01-01"] }
-
-if {[regexp {^([0-9]+)\-([0-9]+)\-([0-9]+)} $start_date match year month day]} {
-    if {1 eq [string length $month]} { set month "0$month" }
-    if {1 eq [string length $day]} { set day "0$day" }
-    set start_date "$year-$month-$day"
-}
-
-if {[regexp {^([0-9]+)\-([0-9]+)\-([0-9]+)} $end_date match year month day]} {
-    if {1 eq [string length $month]} { set month "0$month" }
-    if {1 eq [string length $day]} { set day "0$day" }
-    set end_date "$year-$month-$day"
-}
-
-if {[catch {
-    if { $start_date != [clock format [clock scan $start_date] -format %Y-%m-%d] } {
-	ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
+if { "" != $start_date } {
+    if {[catch {
+        if { $start_date != [clock format [clock scan $start_date] -format %Y-%m-%d] } {
+            ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
             [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$start_date'<br>"
-    }
-} err_msg]} {
-    ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
+        }
+    } err_msg]} {
+        ad_return_complaint 1 "<strong>[_ intranet-core.Start_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
         [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$start_date'<br>
         [lang::message::lookup "" intranet-core.Expected_Format "Expected Format"]: 'YYYY-MM-DD'"
+    }
 }
 
-
-if {[catch {
-    if { $end_date != [clock format [clock scan $end_date] -format %Y-%m-%d] } {
-	ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
+if { "" != $end_date } {
+    if {[catch {
+        if { $end_date != [clock format [clock scan $end_date] -format %Y-%m-%d] } {
+            ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.IsNotaValidDate "is not a valid date"].<br>
             [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$end_date'<br>"
-    }
-} err_msg]} {
-    ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
+        }
+    } err_msg]} {
+        ad_return_complaint 1 "<strong>[_ intranet-core.End_Date]</strong> [lang::message::lookup "" intranet-core.DoesNotHaveRightFormat "doesn't have the right format"].<br>
         [lang::message::lookup "" intranet-core.Current_Value "Current value"]: '$end_date'<br>
         [lang::message::lookup "" intranet-core.Expected_Format "Expected Format"]: 'YYYY-MM-DD'"
+    }
 }
-
-set org_start_date $start_date
-set org_end_date $end_date
 
 # ---------------------------------------------------------------
 # 3. Defined Table Fields
@@ -294,8 +272,6 @@ ad_form \
     -export {start_idx order_by how_many view_name include_subprojects_p include_subproject_level letter filter_advanced_p}\
     -form {}
 
-# SALO 2018-12-10  AECres custom: remove the Mine or All filter
-if {!$aec_custom} {
 if {[im_permission $current_user_id "view_projects_all"]} { 
     set mine_p_options [list \
 			    [list $all_l10n "f" ] \
@@ -308,54 +284,11 @@ if {[im_permission $current_user_id "view_projects_all"]} {
 
     template::element::set_value $form_id mine_p $mine_p
 }
-}
-
-# SALO 2018-12-10  AECres custom: add the Sales Person filter
-if {$aec_custom} {
-    set aec_sales_rep_id_l10n "Sales Person"
-    set aec_sales_rep_id_sql "
-	SELECT DISTINCT
-		im_name_from_user_id(aec_sales_rep_id) AS aec_sales_rep_name,
-		aec_sales_rep_id
-	from	im_projects
-	where	aec_sales_rep_id IS NOT NULL
-	order by aec_sales_rep_name
-    "
-    set aec_sales_rep_id_options [util_memoize [list db_list_of_lists aec_sales_rep_id_options $aec_sales_rep_id_sql] 60]
-    set aec_sales_rep_id_options [linsert $aec_sales_rep_id_options 0 [list $all_l10n ""]]
-
-    ad_form -extend -name $form_id -form {
-        {aec_sales_rep_id:text(select),optional {label "$aec_sales_rep_id_l10n"} {options $aec_sales_rep_id_options }}
-    }
-
-    template::element::set_value $form_id aec_sales_rep_id $aec_sales_rep_id
-}
 
 if { [im_permission $current_user_id "view_projects_history"] || [im_permission $current_user_id "view_projects_all"] } {
     ad_form -extend -name $form_id -form {
         {project_status_id:text(im_category_tree),optional {label #intranet-core.Project_Status#} {value $project_status_id} {custom {category_type "Intranet Project Status" translate_p 1 include_empty_name $all_l10n}} }
     } 
-}
-
-# SALO 2018-12-10  AECres custom: add the Sales Engineer filter
-if {$aec_custom} {
-    set aec_sales_engineer_id_l10n "Engineer Person"
-    set aec_sales_engineer_id_sql "
-	SELECT DISTINCT
-		im_name_from_user_id(aec_sales_engineer_id) AS aec_sales_engineer_name,
-		aec_sales_engineer_id
-	from	im_projects
-	where	aec_sales_engineer_id IS NOT NULL
-	order by aec_sales_engineer_name
-    "
-    set aec_sales_engineer_id_options [util_memoize [list db_list_of_lists aec_sales_engineer_id_options $aec_sales_engineer_id_sql] 60]
-    set aec_sales_engineer_id_options [linsert $aec_sales_engineer_id_options 0 [list $all_l10n ""]]
-
-    ad_form -extend -name $form_id -form {
-        {aec_sales_engineer_id:text(select),optional {label "$aec_sales_engineer_id_l10n"} {options $aec_sales_engineer_id_options }}
-    }
-
-    template::element::set_value $form_id aec_sales_engineer_id $aec_sales_engineer_id
 }
 
 if { $company_id eq "" } {
@@ -396,11 +329,8 @@ foreach g $managable_profiles {
     lappend user_select_groups [lindex $g 1]
 }
 
-# SALO 2018-12-10  AECres custom: remove the Project Type filter
-if {!$aec_custom} {
 ad_form -extend -name $form_id -form {
     {project_type_id:text(im_category_tree),optional {label #intranet-core.Project_Type#} {value $project_type_id} {custom {category_type "Intranet Project Type" translate_p 1 include_empty_name $all_l10n} } }
-}
 }
 
 # The "company_id" field can become very slow if there are
@@ -412,8 +342,6 @@ if {!$filter_advanced_p} {
 }
 
 
-# SALO 2018-12-10  AECres custom: remove the With Member filter
-if {!$aec_custom} {
 # Does user have VIEW permissions on company's employees?  
 set employee_group_id [im_employee_group_id]
 if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_group_id, :user_id, 'read') from dual"]} {
@@ -426,49 +354,6 @@ if { "t" == [db_string get_view_perm "select im_object_permission_p(:employee_gr
 	    {user_id_from_search:text(select),optional {label #intranet-core.With_Member#} {options $user_options}}
 	}
     }
-}
-}
-
-# SALO 2018-12-10  AECres custom: add the AEC Area filter
-if {$aec_custom} {
-    set aec_area_id_l10n "AEC Area"
-    set aec_area_id_sql "
-	select	category,
-		category_id
-	from	im_categories
-	where	category_type = 'AEC Area'
-	  and	enabled_p = 't'
-	order by lower(trim(category))
-    "
-    set aec_area_id_options [util_memoize [list db_list_of_lists aec_area_id_options $aec_area_id_sql] 60]
-    set aec_area_id_options [linsert $aec_area_id_options 0 [list $all_l10n ""]]
-
-    ad_form -extend -name $form_id -form {
-        {aec_area_id:text(select),optional {label "$aec_area_id_l10n"} {options $aec_area_id_options }}
-    }
-
-    template::element::set_value $form_id aec_area_id $aec_area_id
-}
-
-# SALO 2018-12-10  AECres custom: add the Building Type filter
-if {$aec_custom} {
-    set aec_building_type_id_l10n "Building Type"
-    set aec_building_type_id_sql "
-	select	category,
-		category_id
-	from	im_categories
-	where	category_type = 'AEC Building Type'
-	  and	enabled_p = 't'
-	order by lower(trim(category))
-    "
-    set aec_building_type_id_options [util_memoize [list db_list_of_lists aec_building_type_id_options $aec_building_type_id_sql] 60]
-    set aec_building_type_id_options [linsert $aec_building_type_id_options 0 [list $all_l10n ""]]
-
-    ad_form -extend -name $form_id -form {
-        {aec_building_type_id:text(select),optional {label "$aec_building_type_id_l10n"} {options $aec_building_type_id_options }}
-    }
-
-    template::element::set_value $form_id aec_building_type_id $aec_building_type_id
 }
 
 ad_form -extend -name $form_id -form {
@@ -584,21 +469,7 @@ if { $include_subproject_level ne "" } {
     lappend criteria "tree_level(p.tree_sortkey) <= $include_subproject_level"
 }
 
-# SALO 2018-12-10  AECres custom: append customized filters
-if {$aec_custom} {
-    if { $aec_sales_rep_id ne "" && $aec_sales_rep_id > 0 } {
-        lappend criteria "p.aec_sales_rep_id = :aec_sales_rep_id"
-    }
-    if { $aec_sales_engineer_id ne "" && $aec_sales_engineer_id > 0 } {
-        lappend criteria "p.aec_sales_engineer_id = :aec_sales_engineer_id"
-    }
-    if { $aec_area_id ne "" && $aec_area_id > 0 } {
-        lappend criteria "p.aec_area_id = :aec_area_id"
-    }
-    if { $aec_building_type_id ne "" && $aec_building_type_id > 0 } {
-        lappend criteria "p.aec_building_type_id = :aec_building_type_id"
-    }
-}
+
 
 set order_by_clause "order by lower(project_nr) DESC"
 switch [string tolower $order_by] {
