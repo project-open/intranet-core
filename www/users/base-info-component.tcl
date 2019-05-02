@@ -30,7 +30,7 @@ if {![info exists user_id]} {
 set td_class(0) "class=roweven"
 set td_class(1) "class=rowodd"
 
-if {"" == $user_id} { set user_id 0 }
+if {$user_id in {"" new}} { set user_id 0 }
 
 if {![info exists return_url] || "" == $return_url} { set return_url [im_url_with_query] }
 set current_user_id [auth::require_login]
