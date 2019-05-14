@@ -1699,7 +1699,8 @@ ad_proc -public im_footer {
     return "
     </div> <!-- monitor_frame -->
     <div class=\"footer_hack\">&nbsp;</div>	
-    <div id=\"footer\" style=\"visibility: visible\">
+<!--   <div id=\"footer\" style=\"visibility: visible\">    -->
+    <div align=center style=\"visibility: visible\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: 
        <a href=\"mailto:[im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
 	  [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]</a>.
