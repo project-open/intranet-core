@@ -1690,20 +1690,20 @@ ad_proc -public im_footer {
 } {
     im_performance_log -location im_footer
 
-
     set footer_html ""
     if {[im_openacs54_p]} {
         set footer_html [template::get_footer_html]
     }
+
+    set mailto [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
+    set subject "\]po\[ Comments about Page: [im_system_url][ns_conn url]"
 
     return "
     </div> <!-- monitor_frame -->
     <div class=\"footer_hack\">&nbsp;</div>	
 <!--   <div id=\"footer\" style=\"visibility: visible\">    -->
     <div align=center style=\"visibility: visible\">
-       [_ intranet-core.Comments] [_ intranet-core.Contact]: 
-       <a href=\"mailto:[im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]\">
-	  [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]</a>.
+       [_ intranet-core.Comments] [_ intranet-core.Contact]: <a href=\"mailto:$mailto?subject=$subject\">$mailto</a>.
     </div>
   $footer_html
   </BODY>
