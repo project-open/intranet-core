@@ -38,7 +38,7 @@ if {"ok" == $account_status && 0 != $user_id} {
     ad_script_abort
 } else {
     set auth_message $result_array(auth_message)
-    doc_return 401 "text/json" "{\"success\: false, \"message\": \"$auth_message\"}"
+    doc_return 401 "text/json" "{\"success\": false, \"message\": \"$auth_message\"}"
     ad_script_abort
 }
 
