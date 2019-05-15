@@ -1,8 +1,8 @@
 <table border="0">
 <tbody>
   <tr> 
-    <td>#intranet-core.Project_name#</td>
-    <td>@project_name;noquote@</td>
+    <td style="min-width:100px">#intranet-core.Project_name#</td>
+    <td style="min-width:200px">@project_name;noquote@</td>
   </tr>
   <if @parent_id@ not nil>
     <tr> 
