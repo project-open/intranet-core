@@ -32,6 +32,8 @@ ad_proc -public im_uom_s_word {} { return 324 }
 ad_proc -public im_uom_t_word {} { return 325 }
 ad_proc -public im_uom_s_line {} { return 326 }
 ad_proc -public im_uom_t_line {} { return 327 }
+ad_proc -public im_uom_month {} { return 328 }
+ad_proc -public im_uom_year {} { return 329 }
 
 
 # --------------------------------------------------------
