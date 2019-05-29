@@ -51,30 +51,23 @@
 -- 105  im_office_roles
 -- 106  im_categories
 -- 107	im_employees
---
 -- 110  users
 -- 111  im_profiles
---
 -- 120  im_freelancers
 -- 121  im_freelance_skills
---
 -- 130  im_forum_topics
 -- 131	im_forum_folders
 -- 132	im_forum_topic_user_map
---
 -- 140  im_filestorage
---
 -- 150  im_translation
 -- 151	im_target_languages
 -- 152	im_project_trans_details
---
+-- 153	im_invoices_tasks
+-- 154	im_invoices_tasks_sum
 -- 160  im_quality
---
 -- 170  im_marketplace
---
 -- 180  im_hours
 -- 181  im_absences
---
 -- 190  im_costs
 -- 191  im_payments
 -- 192  im_invoices
@@ -84,32 +77,35 @@
 -- 196	im_cost_centers
 -- 197	im_investments
 
--- 930 	im_timesheet_task_list_report
-
 --------------------------------------------------------
 -- Views - Sequences 
 --
--- 200-209		Timesheet
--- 210-219		Riskmanagement
--- 220-249		Costs
--- 250-259		Translation Quality
--- 260-269		Workflow
--- 270-279		intranet-helpdesk Tickets
--- 300-309		intranet-portfolio-management
--- 310-319		intranet-budget
--- 320-899		reserved
--- 900-909		Intranet Materials Reserved
--- 900-909		im_material_list
--- 910-919		Intranet Materials Reserved
--- 910-919		im_translation_task_list
--- 920-929		Intranet Portfolio Management
--- 930-939		intranet-reporting
--- 940-949		intranet-confdb
--- 950-959		intranet-idea-management
--- 960-969		intranet-customer-portal
--- 970-979		intranet-events
--- 980-989		intranet-crm
--- 990-999		intranet-planning
+--  200- 209		Timesheet
+--  210- 219		Riskmanagement
+--  220- 249		Costs
+--  250- 259		Translation Quality
+--  260- 269		Workflow
+--  270- 279		intranet-helpdesk Tickets
+--  300- 309		intranet-portfolio-management
+--  310- 319		intranet-budget
+--  320- 329		intranet-cust-fttx
+--
+--  330- 899		reserved - to be used for extensions
+--
+--  900- 909		Intranet Materials Reserved
+--  900- 909		im_material_list
+--  910- 919		Intranet Materials Reserved
+--  910 		im_timesheet_task_list
+--  911 		im_timesheet_task_list_short
+--  920- 929		Intranet Portfolio Management
+--  930 		im_timesheet_task_list_report
+--  930- 939		intranet-reporting
+--  940- 949		intranet-confdb
+--  950- 959		intranet-idea-management
+--  960- 969		intranet-customer-portal
+--  970- 979		intranet-events
+--  980- 989		intranet-crm (-opportunities)
+--  990- 999		intranet-planning
 -- 1000-9999		reserved
 -- 10000-10000000	reserved
 
