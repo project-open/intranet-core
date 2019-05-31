@@ -1503,8 +1503,12 @@ ad_proc -public im_ad_hoc_query {
 	    if {$subtotals_p} {
 		set sum 0
 		if {[info exists subtotals($col_name)]} { set sum $subtotals($col_name) }
+		set col [regsub -all {\&nbsp;} $col ""]
 		if {"" ne $col} {
-		    if {"" ne $sum && [regexp {^[0-9\,\.\-]+$} $col]} {
+		    set col [regsub -all {\</[a-zA-Z]+\>} $col ""]
+		    set col [regsub -all {\<.?div.*?\>} $col ""]
+		    ns_log Notice "im_ad_hoc_query: col_name=$col_name,		col=$col"
+		    if {"" ne $sum && [regexp {^[0-9\,\.\-]+$} $col] && [string is double $col]} {
 			set col [regsub -all $thousand_separator $col ""]
 			set sum [expr $sum + $col]
 		    } else {
@@ -1538,7 +1542,11 @@ ad_proc -public im_ad_hoc_query {
 	    set subtotal ""
 	    if {[info exists subtotals($col_name)]} { set subtotal $subtotals($col_name) }
 	    set td_attributes [lindex $col_td_attributes $col_count]
-	    append footer "<td $td_attributes><b>[lc_numeric $subtotal "" $locale]</b></td>"
+	    set subtotal_value ""
+	    if {"" ne [string trim $subtotal] && [string is double $subtotal]} { 
+		set subtotal_value [expr round(100.0 * $subtotal) / 100.0] 
+	    }
+	    append footer "<td $td_attributes><b>[lc_numeric $subtotal_value "" $locale]</b></td>"
 	    incr col_count
 	}
 	set footer "<tr>$footer</tr>\n"
