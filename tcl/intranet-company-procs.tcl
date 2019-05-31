@@ -155,6 +155,8 @@ namespace eval im_company {
     # (company_name - company_id) tuples
     #
     ad_proc -public company_options { 
+        {-include_empty_p 0}
+    	{-include_empty_name "" }
 	{-user_id ""}
 	{-status_id "" }
 	{-type_id "" }
@@ -162,6 +164,7 @@ namespace eval im_company {
 	{-always_include_company_id "" }
 	{-with_active_projects_p 0}
 	{-with_projects_p 0}
+	{-project_id 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
@@ -171,11 +174,11 @@ namespace eval im_company {
 	if {"" == $user_id} { set user_id [ad_conn user_id] }
 	
 	# Check if we have calculated this result already
-	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_projects_p $with_active_projects_p]
+	set key [list company_options $user_id $status_id $type_id $exclude_status_id $always_include_company_id $with_projects_p $with_active_projects_p $project_id $include_empty_p $include_empty_name]
 	if {[ns_cache get im_company $key value]} { return $value }
 
 	# Calculate the options
-	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id -with_active_projects_p $with_active_projects_p -with_projects_p $with_projects_p]
+	set company_options [company_options_not_cached -user_id $user_id -status_id $status_id -type_id $type_id -exclude_status_id $exclude_status_id -always_include_company_id $always_include_company_id -with_active_projects_p $with_active_projects_p -with_projects_p $with_projects_p -project_id $project_id -include_empty_p $include_empty_p -include_empty_name $include_empty_name]
 
 	# Store the value in the cache
         ns_cache set im_company $key $company_options
@@ -184,6 +187,8 @@ namespace eval im_company {
     }
 
     ad_proc -public company_options_not_cached { 
+        {-include_empty_p 1}
+    	{-include_empty_name "" }
 	-user_id:required
 	{-status_id "" }
 	{-type_id "" }
@@ -191,6 +196,7 @@ namespace eval im_company {
 	{-always_include_company_id "" }
 	{-with_active_projects_p 0}
 	{-with_projects_p 0}
+	{-project_id 0}
     } {
 	Returns a list of company_name - company_id tuples for the
 	given parameters.
@@ -203,6 +209,7 @@ namespace eval im_company {
 	im_security_alert_check_integer -location "company_options_not_cached" -value $type_id
 	im_security_alert_check_integer -location "company_options_not_cached" -value $exclude_status_id
 	im_security_alert_check_integer -location "company_options_not_cached" -value $always_include_company_id
+	im_security_alert_check_integer -location "company_options_not_cached" -value $project_id
 
 	if {"" == $always_include_company_id} { set always_include_company_id 0 }
 
@@ -231,6 +238,20 @@ namespace eval im_company {
    
         if {$with_projects_p} {
             lappend criteria "c.company_id in (select company_id from im_projects where parent_id is null)"
+        }
+   
+        if {$project_id} {
+            lappend criteria "c.company_id in (
+		select company_id from im_projects where project_id = :project_id
+		UNION
+		select c.customer_id from im_costs c where c.project_id = :project_id
+		UNION
+		select c.provider_id from im_costs c where c.project_id = :project_id
+		UNION
+		select c.customer_id from im_costs c, acs_rels r where r.object_id_one = :project_id and r.object_id_two = c.cost_id
+		UNION
+		select c.provider_id from im_costs c, acs_rels r where r.object_id_one = :project_id and r.object_id_two = c.cost_id
+	    )"
         }
    
         set where_clause [join $criteria " and\n\t\t"]
@@ -267,6 +288,11 @@ namespace eval im_company {
 	"
 
 	set options [db_list_of_lists company_options $company_sql]
+
+	if {$include_empty_p} {
+	   set options [linsert $options 0 [list "" $include_empty_name]]
+	}
+
 	return $options
     }
 }
