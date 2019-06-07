@@ -16,7 +16,7 @@ ad_page_contract {
 
 
 if {"" == $password || "" == $email} {
-    doc_return 200 "application/json" "FAIL - no email or password"
+    doc_return 401 "application/json" "{\"success\": false, \"message\": \"No email or password specified\"}"
     ad_script_abort
 }
 
