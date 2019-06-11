@@ -95,6 +95,12 @@ insert into im_categories (
 values (1309, 'Conf Item Manager', 'Intranet Biz Object Role', 
 	'member', 'Conf Item Manager');
 
+insert into im_categories (
+	category_id, category, category_type, 
+	category_gif, category_description) 
+values (1310, 'Budget Item Manager', 'Intranet Biz Object Role', 
+	'member', 'Budget Item Manager');
+
 
 
 -------------------------------------------------------------
