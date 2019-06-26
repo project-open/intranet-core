@@ -78,7 +78,7 @@ ad_proc -public im_user_exit_call {
                 # died on a signal named $sigName.  A human-
                 # readable message appears in $msg.
 
-		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||': '||:result)"
+		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||'- '||:result)"
 		return $status
             }
 
@@ -102,7 +102,7 @@ ad_proc -public im_user_exit_call {
                 # $sigName.  A human-readable description of the
                 # signal appears in $msg.
 
-		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||': '||:result)"
+		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||'- '||:result)"
 		return $status
             }
 
@@ -114,14 +114,14 @@ ad_proc -public im_user_exit_call {
                 # failed.  The error code is in $errName, and a
                 # human-readable message is in $msg.
 
-		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||': '||:result)"
+		im_exec_dml log "acs_log__warn('user_exit', :log_str||:msg||'- '||:result)"
 		return $status
             }
 
         }
     }
 
-    im_exec_dml log "acs_log__warn('user_exit', ':log_str||': Unknown error - should never have got here')"
+    im_exec_dml log "acs_log__warn('user_exit', :log_str || ' - Unknown error - should never have got here')"
     return $status
 }
 
