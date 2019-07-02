@@ -26,6 +26,7 @@ ad_page_contract {
     { object_id:integer 0}
     { forum_order_by "" }
     show_all_correspondance_comments:integer,optional
+    { plugin_id "" }
 }
 
 # -----------------------------------------------------------
@@ -390,3 +391,21 @@ if { "" != $links } {
     "
 }
 
+
+# ---------------------------------------------------------------
+# Company Sub-Menu
+# ---------------------------------------------------------------
+
+# Setup the subnavbar
+set bind_vars [ns_set create]
+if {[info exists company_id]} { ns_set put $bind_vars company_id $company_id }
+if {![info exists company_id]} { set company_id "" }
+
+set company_parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='company'" -default 0]
+set sub_navbar [im_sub_navbar \
+    -components \
+    -current_plugin_id $plugin_id \
+    -base_url "/intranet/companies/view?company_id=$company_id" \
+    -plugin_url "/intranet/companies/view" \
+    $company_parent_menu_id \
+    $bind_vars "" "pagedesriptionbar" "company_summary"] 

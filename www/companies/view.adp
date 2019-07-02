@@ -2,6 +2,7 @@
 <property name="doc(title)">@company_name;literal@</property>
 <property name="main_navbar_label">companies</property>
 <property name="left_navbar">@left_navbar_html;literal@</property>
+<property name="sub_navbar">@sub_navbar;literal@</property>
 
 <!-- left - right - bottom  design -->
 
