@@ -368,7 +368,7 @@ ad_proc -public im_menu_links {
         order by sort_order
 "
     db_foreach menu_select $menu_select_sql {
-        ns_log Notice "im_sub_navbar: menu_name='$name'"
+        ns_log Notice "im_menu_links: menu_name='$name'"
         regsub -all " " $name "_" name_key
         set wrench_url [export_vars -base "/intranet/admin/menus/index" {menu_id return_url}]
 	lappend result_list "[list [_ intranet-invoices.$name_key] $url] [list [im_gif wrench] $wrench_url]"
