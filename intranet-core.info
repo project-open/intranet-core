@@ -105,6 +105,7 @@
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectMineDeptIncludeUsersP"  default="1" description="Should we include projects with members from my department in the 'My Department' option of the 'Mine?' ProjectListPage? Default is 0, because this definition is very wide."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="LogRuleMaxAgeDays"  default="180" description="How long should we keep rule engine logs? Default is 180 days."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="LogPackageMaxAgeDays"  default="180" description="How long should we keep package logs? Default is 180 days."/>
+            <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ExecDebugP"  default="0" description="Show debug messages for im_exec (the function to execute operating system commands)? This is OK, unless the system uses LDAP/ActiveDirectory (auth-ldap-adldapsearch) for authentication, because it would expose user clear text passwords in the log file."/>
         </parameters>
 
     </version>

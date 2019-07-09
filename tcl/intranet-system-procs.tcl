@@ -32,7 +32,8 @@ ad_proc -public im_exec {args} {
     global tcl_platform
     set platform $tcl_platform(platform)
 
-    ns_log Notice "im_exec: platform=$platform, args=$args"
+    set debug_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ExecDebugP" -default "1"]
+    if {$debug_p} { ns_log Notice "im_exec: platform=$platform, args=$args" }
     switch $platform {
 	"windows" {return [im_exec_windows $args] }
 	"unix" - "linux" {return [im_exec_linux $args] }
@@ -45,9 +46,11 @@ ad_proc -public im_exec_linux {args} {
 } {
     set args [lindex $args 0]
     set cmd [linsert $args 0 exec]
-    ns_log Notice "im_exec_linux: cmd=$cmd"
+    set debug_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ExecDebugP" -default "1"]
+
+    if {$debug_p} { ns_log Notice "im_exec_linux: cmd=$cmd" }
     set result [eval $cmd]
-    ns_log Notice "im_exec_linux: args=$args, result=$result"
+    if {$debug_p} { ns_log Notice "im_exec_linux: args=$args, result=$result" }
     return $result
 }
 
@@ -57,7 +60,8 @@ ad_proc -public im_exec_windows {args} {
     Windows spefic for exec, in order to translate to CygWin commands.
 } {
     set args [lindex $args 0]
-    ns_log Notice "im_exec_windows: args=$args"
+    set debug_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "ExecDebugP" -default "1"]
+    if {$debug_p} { ns_log Notice "im_exec_windows: args=$args" }
 
     # Extract and remove switches
     set switches [list]
@@ -72,7 +76,7 @@ ad_proc -public im_exec_windows {args} {
     set procname [lindex $args 0]               ;# /usr/bin/find or similar
     set procname [im_exec_windows_transform_procname $procname]
     set args [lrange $args 1 end]               ;# other args to pass to procname
-    ns_log Notice "im_exec_windows: procname=$procname, args=$args"
+    if {$debug_p} { ns_log Notice "im_exec_windows: procname=$procname, args=$args" }
     set args [linsert $args 0 $procname]
 
     # Insert switches into command again
@@ -82,9 +86,9 @@ ad_proc -public im_exec_windows {args} {
 
     # Call the original exec
     set cmd [linsert $args 0 "exec"]
-    ns_log Notice "im_exec_windows: cmd=$cmd"
+    if {$debug_p} { ns_log Notice "im_exec_windows: cmd=$cmd" }
     set result [eval $cmd]
-    ns_log Notice "im_exec_windows: cmd=$cmd -> $result"
+    if {$debug_p} { ns_log Notice "im_exec_windows: cmd=$cmd -> $result" }
     return $result
 }
 
