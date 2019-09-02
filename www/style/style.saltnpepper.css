@@ -1230,7 +1230,9 @@ div#fullwidth-components {
 .cal-table-display tbody tr td.cal-month-title-text, 
 .table_component th.list-header td.list, 
 .table_component tbody tr th.list,
-.table_component tbody tr td.rowtitle, td.rowtitle {
+.table_component tbody tr td.rowtitle, 
+td.rowtitle,
+th.rowtitle {
    color:#000;
    font-weight:bold;
    padding:3px;
