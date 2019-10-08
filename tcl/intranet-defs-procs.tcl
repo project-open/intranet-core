@@ -1504,6 +1504,7 @@ ad_proc -public im_ad_hoc_query {
 		set sum 0
 		if {[info exists subtotals($col_name)]} { set sum $subtotals($col_name) }
 		set col [regsub -all {\&nbsp;} $col ""]
+		set col [regsub -all {\,} $col ""]
 		if {"" ne $col} {
 		    set col [regsub -all {\</[a-zA-Z]+\>} $col ""]
 		    set col [regsub -all {\<.?div.*?\>} $col ""]
