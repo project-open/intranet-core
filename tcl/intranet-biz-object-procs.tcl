@@ -555,11 +555,13 @@ ad_proc -public im_group_member_component {
     set show_days_p [parameter::get_from_package_key -package_key "intranet-core" -parameter "MemberPortletShowDaysInsteadOfHoursP" -default "0"]
 
     if {!$show_percentage_p} { set show_hours_p 0 }; # don't show hours without percentages
-    if {$object_type ni {"im_project" "im_timeheet_task"}} { 
+    if {$object_type ni {"im_project" "im_timesheet_task"}} { 
 	set show_hours_p 0; # don't show hours for objects other than project or task
     } else {
 	db_1row project_info "select start_date, end_date from im_projects where project_id = :object_id"
     }
+
+#    ad_return_complaint 1 "show_percentage_p=$show_percentage_p, show_hours_p=$show_hours_p, otype=$object_type"
 
     set group_l10n [lang::message::lookup "" intranet-core.Group "Group"]
     
@@ -638,7 +640,8 @@ ad_proc -public im_group_member_component {
 	if {$show_days_p} {
 	    append header_html "<td class=rowtitle align=middle>[lang::message::lookup "" intranet-core.Days Days]</td>"
 	} else {
-	    append header_html "<td class=rowtitle align=middle>[_ intranet-core.Hours]</td>"
+            set hours_help [lang::message::lookup "" intranet-core.Members_Portlet_Hours_help "Working days between start- and end-date, multiplied with the assigned resource percentage."]
+	    append header_html "<td class=rowtitle align=middle>[_ intranet-core.Hours] [im_gif help $hours_help]</td>"
 	}
     }
     if {$add_admin_links} {
