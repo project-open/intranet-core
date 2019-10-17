@@ -168,7 +168,9 @@ ad_proc -public im_project_permissions {
     set admin 0
 
     # empty project_id would give errors below
-    if {"" == $project_id} { set project_id 0 }
+    if {"" eq $project_id} { set project_id 0 }
+    if {"" eq $user_id} { set user_id [ad_conn user_id] }
+
     if {[im_security_alert_check_integer -location "im_project_permissions: project_id" -value $project_id]} { set project_id 0 }
 
     # Fraber 181030: We have to look at permissions of the top-level project.
