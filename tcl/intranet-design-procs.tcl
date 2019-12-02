@@ -1474,7 +1474,7 @@ ad_proc -public im_header {
 	    set local_xowiki_lnk "&nbsp;<b><a href=\"/xowiki/page$xowiki_page_name\">[lang::message::lookup "" intranet-core.Local_Help "Local Help"]</a></b> |"
 	}
     }
-#    ns_log Notice "xxx: $xowiki_page_name - $local_xowiki_exists_p - $local_xowiki_lnk"
+    # ns_log Notice "im_header: $xowiki_page_name - $local_xowiki_exists_p - $local_xowiki_lnk"
 
     # Build buttons 
     if {$loginpage_p} { 
