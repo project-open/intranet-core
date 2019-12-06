@@ -1320,3 +1320,27 @@ ad_proc im_unicode2html {s} {
     }
     set res
 }
+
+
+
+
+ad_proc -public im_numeric {
+    num
+    {fmt {}} 
+    {locale ""}
+} { 
+    Project-Open version of lc_numeric, returning "" in case of an 
+    empty string input, instead of returning a hard error.
+    Given a number and a locale return a formatted version of the number
+    for that locale.
+
+    @param num      Number in canonical form
+    @param fmt      Format string used by the tcl format 
+                    command (should be restricted to the form "%.Nf" if present).
+    @param locale   Locale
+    @return         Localized form of the number
+} { 
+    if {$num eq ""} { return "" }
+
+    return [lc_numeric $num $fmt $locale]
+}
