@@ -1,0 +1,105 @@
+
+  ]project-open[ RPMs
+  Christof Damian <christof.damian@project-open.com>
+  Copyright (c) 2007 ]project-open[
+
+  This is the ]project-open[ Linux RPM. This document describes what the RPMs
+  do and how to use them.
+
+  ______________________________________________________________________
+
+  0. About the RPM
+
+  Copyright (c) 2007 ]project-open[
+  Christof Damian <christof.damian@project-open.com>
+  Copyright (c) 2007 ]project-open[
+  http://www.project-open.com/
+
+  Permission is granted to copy, distribute and/or modify this document 
+  under the terms of the GNU Free Documentation License, Version 1.1 or 
+  any later version published by the Free Software Foundation.
+  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html. 
+
+  Please see LICENSE.ProjectOpen in the doc directory for details
+  about the licensing of the contained software.
+
+  ______________________________________________________________________
+
+  1. Prerequisites:
+
+  The RPM is currently tested only on OpenSuse 10.2, Fedora Core 6 and CentOS
+  4.4 it needs the postgres database version included in the distribution.
+
+  You will also need ImageMagick, also included in your distribution.
+
+  And graphviz, which does seem to come with Suse. For CentOS/RHEL you can
+  find a RPM here: http://dag.wieers.com/rpm/packages/graphviz/
+
+  ______________________________________________________________________
+
+  2. List of RPMs
+
+  The following RPMs are packaged by ]project-open[ and are all needed for the
+  full install:
+
+  aolserver	4.5.0		aolserver
+  aolserver-tcl 8.4.14		a threaded version of tcl for the aolserver
+  tDOM		0.8.0		aolserver XML DOM module
+  nssha1	0.1		aolserver module
+  nspostgres	4.0		aolserver postgres db module
+  nscache	1.5		aolserver module
+  project-open	3.2		project-open install
+
+  You can find all of these in the download area on sourceforge. The aolserver
+  packages are in a tar file for each distribution and the project-open is a
+  seperate rpm download.
+
+  You can identify the files for you distribution by the extension:
+
+  rhel4:  CentOS 4 or Red Hat Enterprise Linux 4
+  os102:  OpenSuse 10.2
+  fc6:	  Fedora Core 6
+
+  The source RPMS are the same for all distributions, that is why only the
+  rhel4 version is provided.
+
+  sourceforge url: https://sourceforge.net/project/showfiles.php?group_id=86419
+  
+  ______________________________________________________________________
+
+  3. What the ]project-open[ RPMs install
+
+  The aolserver, aolserver modules and aolserver-tcl are installed under
+  /usr/local/aolserver
+
+  For project-open a new user and group named 'projop' is created and the
+  software is installed in /home/projop . A new database named 'projop' is
+  created and a database dump in read in. You can find this dump also in
+  /home/projop.
+
+  ______________________________________________________________________
+
+  4. Usage
+
+  You start project open like this
+
+    su -l projop -c "/usr/local/aolserver/bin/nsd -f -t etc/config.tcl"
+  
+  You probably want to add something like that to your inittab, daemontools or
+  init scripts
+
+  ______________________________________________________________________
+
+  6. Upgrade and Removal
+
+  IMPORTANT: If you remove the project-open RPM, the user, his directory and
+  the database will be removed. So don't do that unless you want to LOSE ALL
+  YOUR DATA.
+
+  On upgrade the tcl files will be replaced, but the database will be left
+  untouched. 
+
+
+
+
+

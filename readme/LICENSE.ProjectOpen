@@ -1,0 +1,246 @@
+
+  License Details
+  ]project-open[ V5.0 Virtual Machine
+  Community Edition, 2015-11-30
+
+
+  ______________________________________________________________________
+
+  1. ]po[ Distribution and Included Software
+
+  In legal terms, the ]project-open[ product consists of about
+  150 separately installable and uninstallable software "packages"
+  produced and maintained by Project Open Business Software S.L in
+  Barcelona, Spain. Packages are individually installable units
+  of code as defined by the OpenACS community system.
+
+  In order to provide project management functionality, these
+  150 packages require a rather complex base of about 100 different
+  open-source projects in specific versions and configurations.
+  For this reason, we provide a "Windows Installer" and a "Linux
+  VMware" with suitable configured infrastructure, in addition to
+  the "Upgrade Installer" with the main ]po[ code and some Web
+  libraries.
+
+  We consider the Windows and Linux installers as mere aggregations
+  of software in the sense of the GNU Public License V2
+  ("distributions"). For this reason you will have to agree with the
+  individual license terms and conditions of each of the software
+  products included.
+
+  You need to agree with the license terms of ALL of these packages
+  before using or otherwise interacting with the software.
+
+  ______________________________________________________________________
+
+  2. ]project-open[ "Update Installer"
+
+  ]po[ Update Installers are TAR files that contain the actual
+  ]project-open[ product "packages" together with a database dump.
+  Updates Installers include the following software components:
+
+  ]project-open[	~150 packages under GPL V2 license with
+  			commercial add-on packages available in
+			source code under FL and CL (see below).
+  OpenACS		~50 packages under GPL V2 or higher license
+  Sencha ExtJS 4.2.1	A JavaScript library used here under:
+  https://dev.sencha.com/legal/sencha-sdk-software-license-agreement
+			A GPL V3 version is available but not part of
+			this distribution.
+  Sencha Touch 2.1.1	A JavaScript library used here under:
+  https://www.sencha.com/legal/sencha-touch-software-license-agreement/
+  	       		A GPL V3 version is available.
+  FamFamFam Icons	Creative Commons Attribution 2.5 License
+  	    		http://www.famfamfam.com/lab/icons/silk/
+  Xinha			BSD Style License
+  htmlArea		BSD Style License
+  tinymce		GNU Lesser General Public License V2.1
+
+
+  ______________________________________________________________________
+
+  3. ]project-open[ Required Infrastructure
+
+  The software packages below are required run ]po[. They are included
+  in both the Linux VMware distribution and the Windows Installer.
+  
+  NaviServer		Mozilla Public License
+  PostgreSQL		BSD Style License
+  GNU Tool Chain	GPL V2
+  ImageMagick		http://www.imagemagick.org/script/license.php
+  GraphViz		Eclipse Public License
+
+  ______________________________________________________________________
+
+  3. ]project-open[ Linux VMware Appliance
+
+  This distribution consists of a preconfigured Linux system,
+  saved in a format suitable for VMware vSphere or Player.
+  The distribution contains the following packages in addition
+  to the packages mentioned in sections 2. and 3.
+  
+  CentOS Linux	 	A mere aggregation of many packages
+  VMware Tools		http://www.vmware.com/support/
+  Acrobat Reader	http://www.adobe.com/products/acrobat/acrreula.html
+  LibreOffice		Mozilla Public License V2.0
+  
+
+  ______________________________________________________________________
+
+  4. ]project-open[ Windows Installer
+
+  This distribution has been developed by ]project-open[ based
+  on the work of Maurizio Martignano
+  (maurizio.martignano@spazioit.com), Vlassis Rizopoulos
+  (xfman@ncs.gr) and Jamie Rasmussen (www.jamierasmussen.com)
+  and is distributed under the GPL V2. It consists of a collection
+  of software packages configured for the use with various Microsoft
+  Windows operating systems, in addition to the packages mentioned
+  in sections 2. and 3:
+
+
+  
+  CygWin		A mere aggregation of many packages, plus
+			https://cygwin.com/licensing.html
+  Java			GPL V2 plus additions http://java.com/license
+  ]po[ Tools		GPL V2
+  Zip tools		http://www.info-zip.org/license.html
+  Setx.exe		Mixed (Microsoft Windows 2000 Free Resource Kit)
+  Reg.exe		Mixed (Microsoft Windows 2000 Free Resource Kit)
+  Process.exe		http://www.beyondlogic.org/solutions/processutil/processutil.htm
+
+  You need to agree with the license terms of ALL of these packages
+  before using or otherwise interacting with the software.
+
+
+  ______________________________________________________________________
+  
+  5. ]project-open[ "Free License" (FL)
+  
+  What is FL?
+  
+  FLed code is "commercial software", but with a fixed license fee of EUR 0. 
+  It allows you to use and modify the software for your internal purposes 
+  but restricts your right to redistribute the software. You need to become 
+  a "partner" in order to redistribute the code to customers.
+  
+  License Terms
+  
+  "We," "us," and "our" refers to ]project-open[. "You" and "your" refers to 
+  the individual or entity that wishes to use the programs from ]project-open[.
+   "Programs" refers to the ]project-open[ software product you wish to 
+  download and use and program documentation. "License" refers to your right 
+  to use the programs under the terms of this agreement. This agreement is 
+  governed by the substantive and procedural laws of Spain. You and 
+  ]project-open[ agree to submit to the exclusive jurisdiction of, and venue 
+  in, the courts of Barcelona in any dispute arising out of or relating to 
+  this agreement.
+  
+  We are willing to license the programs to you only upon the condition that 
+  you accept all of the terms contained in this agreement. Read the terms 
+  carefully. Downloading the software will imply that you accept this terms. 
+  If you are not willing to be bound by these terms, please do not download 
+  any software from this site.
+  
+  License Rights
+  
+  This agreement grants you a nonexclusive, nontransferable limited license 
+  to use and to modify the program. If you want to redistribute or otherwise 
+  publish the program or its parts then you must contact us, or an 
+  ]project-open[ reseller, to obtain the appropriate license. We may audit 
+  your use of the programs.
+  
+  Ownership and Restrictions
+  
+  We retain all ownership and intellectual property rights in the programs.
+  
+  You may not:
+  
+      * remove or modify any program markings or any notice of our proprietary 
+        rights;
+      * make the programs available in any manner to any third party;
+      * use the programs to provide third party training;
+      * assign this agreement or give or transfer the programs or an interest 
+        in them to another individual or entity
+  
+  or,
+  
+      * use any ]project-open[ name, trademark or logo.
+  
+  Disclaimer of Warranty and Exclusive Remedies
+  
+  THE PROGRAMS ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. WE FURTHER 
+  DISCLAIM ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION, 
+  ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
+  OR NONINFRINGEMENT.
+  
+  IN NO EVENT SHALL WE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, 
+  PUNITIVE OR CONSEQUENTIAL DAMAGES, OR DAMAGES FOR LOSS OF PROFITS, REVENUE, 
+  DATA OR DATA USE, INCURRED BY YOU OR ANY THIRD PARTY, WHETHER IN AN ACTION 
+  IN CONTRACT OR TORT, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH 
+  DAMAGES. OUR ENTIRE LIABILITY FOR DAMAGES HEREUNDER SHALL IN NO EVENT EXCEED 
+  ONE THOUSAND DOLLARS (U.S. $1,000).
+  
+  No Technical Support
+  
+  Our technical support organization will not provide technical support, phone 
+  support, or updates to you for the programs licensed under this agreement. 
+  You have to close a support contract in order to receive these services.
+  
+  End of Agreement
+  
+  You may terminate this agreement by destroying all copies of the programs. 
+  We have the right to terminate your right to use the programs if you fail 
+  to comply with any of the terms of this agreement, in which case you shall 
+  destroy all copies of the programs.
+  
+  Relationship Between the Parties
+  
+  The relationship between you and us is that of licensee/licensor. Neither 
+  party will represent that it has any authority to assume or create any 
+  obligation, express or implied, on behalf of the other party, nor to 
+  represent the other party as agent, employee, franchisee, or in any other 
+  capacity. Nothing in this agreement shall be construed to limit either 
+  party's right to independently develop or distribute software that is 
+  functionally similar to the other party's products, so long as proprietary 
+  information of the other party is not included in such software.
+  
+  Open Source
+  
+  "Open Source" software - software available without charge for use, 
+  modification and distribution - is often licensed under terms that require 
+  the user to make the user's modifications to the Open Source software or 
+  any software that the user 'combines' with the Open Source software freely 
+  available in source code form. If you use Open Source software in conjunction
+  with the programs, you must ensure that your use does not: (i) create, or 
+  purport to create, obligations of us with respect to the ]project-open[ 
+  programs; or (ii) grant, or purport to grant, to any third party any rights 
+  to or immunities under our intellectual property or proprietary rights in 
+  the ]project-open[ programs. For example, you may not develop a software 
+  program using an ]project-open[ program and an Open Source program where 
+  such use results in a program file(s) that contains code from both the 
+  ]project-open[ program and the Open Source program (including without 
+  limitation libraries) if the Open Source program is licensed under a 
+  license that requires any "modifications" be made freely available. You 
+  also may not combine the ]project-open[ program with programs licensed 
+  under the GNU General Public License ("GPL") in any manner that could 
+  cause, or could be interpreted or asserted to cause, the ]project-open[ 
+  program or any modifications thereto to become subject to the terms of the 
+  GPL.
+  
+  Entire Agreement
+  
+  You agree that this agreement is the complete agreement for the programs 
+  and licenses, and this agreement supersedes all prior or contemporaneous 
+  agreements or representations. If any term of this agreement is found to 
+  be invalid or unenforceable, the remaining provisions will remain effective.
+
+
+
+  ______________________________________________________________________
+  
+  6. ]project-open[ "Commercial License" (CL)
+  
+  The license text is ths same as for the ]project-open[ Free License,
+  except that there is a price to the software.
+

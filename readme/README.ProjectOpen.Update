@@ -1,0 +1,151 @@
+
+  ]project-open[ Software Update README
+  Version VX.Y.Z.V.W, YYYY-MM-DD
+  Frank Bergmann <frank.bergmann@project-open.com>
+  Copyright (c) YYYY ]project-open[
+  http://www.project-open.com/en/list-installers
+
+  This is a ]project-open[ update distribution.
+  This document describes how to update the software.
+
+  Permission is granted to copy, distribute and/or modify this document
+  under the terms of the GNU Free Documentation License, Version 1.1 or
+  any later version published by the Free Software Foundation.
+  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
+
+  Please see LICENSE.project-open for details about the licensing 
+  of the contained software.
+
+  ______________________________________________________________________
+
+  1. Overview
+
+  This ]project-open[ update asumes that you are already running 
+  ]project-open[ on your server. This update only contains the ]po[ 
+  source code that has changes between releases.
+
+  ______________________________________________________________________
+
+  2. Contents
+
+  This ]project-open[ update contains the following files:
+
+  - README.project-open.X.Y.Z.V.W - this file
+  - LICENSE.project-open.X.Y.Z.V.W - the license for the included software
+  - packages/* - the ]project-open[ source code
+
+  This package does not contains the AOLServer application server
+  nor the rest of the ]po[ runtime environment. Please go to
+  http://www.sourceforge.net/projects/project-open/ to download
+  and install the project-open-3.2.VMware.zip or one of the other
+  installers.
+
+  Then follow the steps below to upgrade your system.
+
+  ______________________________________________________________________
+
+  3a. Upgrade Procedure on Linux/Unix
+
+
+  This upgrade procedure assumes that you have extracted this README
+  file in /tmp/ and that ]po[ has been installed as user "projop" 
+  in the folder /web/projop/. Please change the script below according
+  to your actual installation.
+
+  Basically, we will replace the /web/projop/packages folder by
+  the /packages/ directory included in this upgrade:
+
+  # su - projop
+  # mv packages packages.old
+  # mv /tmp/packages.X.Y.Z.V.W packages
+  # killall -9 nsd (restart your AOLServer)
+
+  Please continue the procedure with step 4. below.
+
+  ______________________________________________________________________
+
+  3b. Upgrade Procedure on Win32
+
+
+  This upgrade procedure assumes that you have extracted this README
+  file in C:\temp\ and that ]po[ has been installed in the folder
+  C:\project-open\. Please change the script below according to your 
+  actual installation.
+
+  Basically, we will replace the C:\project-open\packages folder by
+  the C:\temp\packages.X.Y.Z.V.W folder:
+
+  - Go to Control Panel -> Administrative Tools -> Services
+    and stop the "project-open AOLServer" service.
+  - Rename C:\project-open\packages into C:\project-open\packages.old
+  - Move C:\temp\packages.X.Y.Z.V.W to C:\project-open\
+  - Rename C:\temp\packages.X.Y.Z.V.W to C:\project-open\packages\
+  - Start the "project-open AOLServer" service.
+
+  ______________________________________________________________________
+
+  4. Running ]po[ Upgrade Scripts
+
+  
+  Once the code has been updated, we need to update the SQL data model
+  in order to match the code.
+
+  - Login as a ]po[ Administrator
+  - Go to the "Home" page at /intranet/index
+  - Please follow the upgrade instructions in the upper right hand side
+    of the Home page. Depending on the age of your previous version you 
+    may have to restart the server several times.
+  - In the case of major updates the /intranet/index page by be broken.
+    In this case please use /acs-admin/apm/ and check for instructions
+    about the upgrade oder of the packages.
+
+
+  ______________________________________________________________________
+
+  5. Help is available
+
+  Free elp is available at the "Open Discussion" forum at 
+  http://sourceforge.net/projects/project-open/. You will need to create
+  a SourceForge login before you can post to the discussion forum.
+  Please check the forum for other people with similar issues like yours
+  before creating a new thread. If you post, please include the error 
+  message of your browser.
+
+  For professional services please contact us at info@project-open.com.
+
+  ______________________________________________________________________
+
+  6. Stay Tuned
+
+  Please subscribe to the following low-traffic feeds:
+
+  - Important Security News:
+    http://sourceforge.net/export/rss2_projnews.php?group_id=86419
+    ]project-open[ News (once or twice per year: security and major releases)
+
+  - Newsletter:
+    http://www.project-open.net/
+    Please register yourself on our Web site. This way we are going
+    to send you the ]po[ newsletter once or twice per year.
+
+  - Twitter:
+    http://www.twitter.com/projop (@projop)
+
+  - Facebook:
+    http://www.facebook.com/projectopen.org
+
+  - LinkedIn:
+    http://www.linkedin.com/in/fraber
+
+  - ]project-open[ RSS Feed:
+    http://www.project-open.net/rss/project-open-community.rss
+    ]project-open[ News (once or twice per week)
+
+  - ]project-open[ Blog:
+    http://project-open.blogspot.com/feeds/posts/default
+    Our blog with high-level reflections on open-source and project management
+    (once or twice per month).
+
+
+Best regards,
+Frank

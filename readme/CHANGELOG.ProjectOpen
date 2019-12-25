@@ -1,0 +1,842 @@
+==============================================================
+	]project-open[ Change Log
+==============================================================
+
+
+
+==============================================================
+V5.0 Changes
+==============================================================
+
+]project-open[ V5.0 include several major new packages:
+
+- Gantt Editor:
+  A HTML5 editor for Gantt charts, similar to MS-Project, 
+  ProjectLibre and GanttProject, but currently without 
+  critcial path scheduling.
+
+- Task Management:
+  A HTML5 display that shows the tasks assigned to a user
+  in green, yellow or red, depending on execution status of
+  the tasks.
+
+- Charts and Diagrams:
+  V5.0 includes several new HTML5 charts and diagrams for
+  visualizing statistics and performance indicators.
+
+- Portfolio Planner:
+  A HTML5 editor and scenario planner for project portfolios
+  similar to the Gantt Editor, allowing to simulate the
+  resource load of the assigned users and their departments.
+
+- Project Earned Value Diagram:
+  Shows graphically planned work (from the Gantt diagram) vs. 
+  actual progress (% done) vs. logged hours. Currently only
+  shows numbers based on hours.
+
+- Project Milestone "Slip" Tracker:
+  This diagram shows graphically the slip of project 
+  milestones.
+
+
+Platform Changes
+
+- PostgreSQL Database:  
+  V5.0 supports PG 9.2 or higher.
+
+- Application Server:  
+  V5.0 supports NaviServer 4.99.8.
+
+- OpenACS Community System:  
+  V5.0 is now based on OpenACS 5.9
+
+- VMware Linux Version:  
+  V5.0 is based on CentOS 7.
+
+- HTML5 Libraries:
+  The HTML5 libraries Sencha ExtJS 4.2.1 and Sencha Touch 2.4.2
+  are now part of the core architecture.
+
+These changes are the reason for the release of a major version, 
+meaning that upgrades from previous versions are not automatic. 
+Please see the V4.0 -> V5.0 upgrade instructions for details.
+
+
+
+Performance
+
+- Update to PostgreSQL 9.x and NaviServer 4.99:
+  The update increases performance by up to 50% in 
+  typcial application scenarios.
+
+- Optimizations for 40.000 Users: 
+  We have optimized a number of pages in order to deal 
+  with large numbers of customers and customer contacts
+
+- Filter options for large organizations:
+  Most pages now contain filter options suitable for
+  organizations with 5.000 active users.
+
+
+Security
+
+- Polito Inc., a Virginia based cyber security company
+  has tested ]po[ V5.0 before using it internally and
+  found "no significant vulnerabilities".
+
+- OpenACS 5.9 incorporates several important security
+  improvements.
+
+- Improved the built-in IDS (Intrusion Detection System)
+  of ]po[
+
+- Fixed header injection issue in redirect code
+
+- Fixed a security issue in the 2nd tier defense in
+  util_memoize 
+
+
+
+Other
+
+- We never officially released ]po[ V4.1 (please see below),
+  so please continue to read for additional changes.
+
+
+==============================================================
+V4.1 Changes
+==============================================================
+
+]project-open[ V4.1 is mainly a bug fix release with gradual
+improvements thanks to several large customer implantation
+projects.
+
+
+New Packages
+
+- Mobile Timesheet Logging (experimental):
+  A Sencha client for mobile devices (issues on Android?).
+
+- Rule Engine:
+  Allows you to define actions that are executed once a value
+  of a project, a task or any other business object (future)
+  changes or reaches a certain value.
+  For example, a task reaching 100% could trigger a notification
+  email to the project manager.
+
+- CRM Opportunity Tracking:
+  This package maintains a list of opportunities during the
+  qualification and sales cycle (sales pipeline).
+
+- Periodic Invoicing (experimental):
+  This new package introduces the notion of a "service contract"
+  with certain parameters including a monthly fee, a number of
+  free service hours and the price per additional service hour.
+  A (semi-) automatic invoicing functionality allows to process
+  many service contracts in "batch mode".
+
+- Events & Training Management:
+  This new package is now running in production with one
+  customer. It consists of a new business object "event"
+  that handles resource allocation using a calendar view.
+
+
+
+Important Features
+
+- GUI:
+  Added sub-menus to main tabs - still accepting comments
+
+- Absences:
+  Automatically maintaining groups per office in order to allow
+  for bank holidays per office. These bank holidays enter into
+  the resource management calculation algorithm.
+
+
+
+New Experimental Functionality
+
+- Cloud Backup:
+  A new experimental feature allows you to perform backups
+  from your on-premise Windows or Linux installation to a
+  ]project-open[ backup server. In case of an accident we
+  will offer you the option to "resurrect" your machine as
+  a SaaS hosted machine within 24 hours.
+  This is an experimental service. Please let us know if
+  you are interested, in exchange of two years free service.
+  We plan to price this "Cloud Backup" service at EUR 10
+  per month with standard SaaS charges in case of a restore.
+
+- Project Membership based on Groups:
+  A new feature allows you to add groups as "members" to
+  a project, company or other business object. This allows
+  some customers to streamline permission assignment.
+
+- Fast-Track Customer Contact Adding:
+  We have included a new option to enter CRM customer
+  contacts + companies including a duplicate check based
+  of fuzzy full-text search.
+
+
+Bugs Fixed
+
+- Timesheet Approval Workflow
+- Localization:
+  Fixed various non-translatable strings
+- Auto-Login:
+  Fixed behaviour for automatic login from emails sent
+  out by the forum and mailing functionalities.
+
+
+Performance
+
+- A large customer with 40.000 users served as a base
+  for a number of performance enhancements that have
+  become part of the product.
+
+
+Small Stuff
+
+- CRM Mass-Mailing functionality:
+  You can now send thousands of personalized emails
+  messages to customers of other groups.
+
+- Helpdesk:
+  Priority changes now send out better notifications mails.
+
+- New reports:
+  Which??
+
+- Fixed Resource Management:
+  - New report(?)
+
+- Task Management:
+  ]po[ now allows a user to delete a task in a project, if
+  there are no financial items related to the task.
+
+- Workflow Vacation Handling:
+  Users can now specific their replacement when creating a
+  new absence. The absence replacement has the right to
+  process workflow approvals for the absent person during the
+  vacation period.
+
+
+Security
+
+- A scurity testing company performed a one week testing on ]po[
+  and found no major issue. However, there were several minor
+  issues that were fixed in ]po[ V4.1:
+  - Header Injection
+  - Redirect
+  - SQL injection in the category administration section.
+    This bug would have been serious. However, the affected pages
+    are only accessible to the system adminstrator who has the
+    right to perform arbitrary SQL statements anyway.
+  - "util_memoize" Issues:
+    ]po[ contains a two-layered protection against SQL injection
+    attacks. Issues in the use of util_memoize broke the database
+    layer in several pages. However, the second "ad_page_contract"
+    layer prevented actual exploits.
+
+- Improved IDS (Intrusion Detection System):
+  ]po[ now includes a series of "sensors" and an integrated
+  reporting functionality to detect unusual activities in the
+  system.
+
+
+
+==============================================================
+V4.0 Changes
+==============================================================
+
+
+Incompatible Changes
+
+]po[ V4.0 requires new versions of OpenACS, AOLserver and PostgreSQL,
+so customers with AOLserver 3.3.x or PostgreSQL 8.1 or below will have
+to update their entire installation. This is the reason for the change
+in the "major" release number to V4.0. These changes are justified by
+several main improvements:
+
+      * New "XoWiki":
+	XoWiki is a full Media Wiki implementation integrated with the
+	rest of ]po[.
+
+      * AJAX Support:
+	The new OpenACS version (5.7) includes support for a number of
+	AJAX libraries. AJAX support is going to become progressively
+	more important.
+
+
+Major Enhancements & New Packages
+
+      * MS-Project Round-Trip Integration:
+      	V4.0 allows you to start your project in ]po[, import a project
+	schedule from MS-Project, continue to edit information in ]po[,
+	export the results to MS-Project for further editing, import the
+	results and so on.
+
+      *	LDAP and Active Directory Integration:
+      	V4.0 includes a configuration wizard that guides usres through the
+      	process of setting up an integration with Active Directory.
+
+      * System Configurator:
+	A new configurator allows to export a ]po[ configuration into CSV
+	(Excel) format and to apply the configuration to a new server. This
+	configurator allows us to define several "verticals" for ]po[ with
+	very specific configuration, effectively reducing the effort
+	necessary to adapt ]po[ to a user's needs.
+
+      * Project Baselines (Enteprise Edition):
+      	This package package stores "versions" of a project and allows
+	users to compare the current project plan to previous plans.
+	The pac	kage depends on the Audit commercial package and may
+	become part of the ]po[ "enterprise" version.
+
+      *	Financial Planning (Enterprise Edition):
+      	The package allows for financial/cashflow/budget planning per
+	project phase, project member, cost type and date (month, quarter,
+	year). Planned values are integrated into the project's financial
+	summary.
+
+      * Project Portfolio Management:
+      	]po[ now allows to define define portfolios of projects and
+	includes a number of reports and indicators in order to track
+	portfolios.
+	The package also contains "what-if" scenarios to analyze the impact
+	of adding additional projects or changing project priorities.
+
+      * Project Risk Management:
+      	This package allows to manage a risk plan per project. A graphical
+	indicators shows summarized risks.
+
+      * Sharepoint Integration:
+      	The package links ]po[ projects to a Sharepoint server for storing
+	documents.
+
+      * Mail Tracking:
+      	A CRM package capable of associating incoming and outgoing mails
+	with users and projects.
+
+      *	Funambol integration ( Outlook and mobile devices):
+      	The Linux version of ]po[ V4.0 will include an experimental
+	Funambol integration. Funambol  is a SyncMS server allowing to
+	synchronize tasks and calendar items across mobile devices and
+	PIM software including MS-Outlook. We expect to improve this
+	integration during the course of the V4.0 lifecycle.
+
+      *	SLA Management and improved Helpdesk:
+      	A ITSM package that provides "SLA Parameters" to capture
+	contractual rules defined in SLAs and a component for SLA working
+	hours. Indicators automatically track the value of SLA parameters,
+	warning managers if defined SLA levels are close to be violated.
+
+      * CVS Integration:
+      	This ITSM package allows to import CVS commits into ]po[,
+      	automatically associating commits with projects.
+	The package also allows to generate CVS+ACL configuration files,
+	effectively allowing to maintain CVS permission configuration in
+	]po[.
+
+
+New Features:
+
+      * AJAX Date-Pickers for all important forms:
+      	All important forms in ]po[ now include an AJAX date picket widget
+	in order to avoid editing dates in a Web 1.0 type of widget.
+	Reports and similar pages still don't have a date picker, because
+	most users seem to be fine with a YYYY-MM-DD input.
+
+      * Expense Management:
+      	Allows adding notes in multi-expense forms. We have also added two
+	additional reports.
+
+      * Extended HTTPS Support:
+      	You can now wonfigure which pages can only be accessed through
+	HTTPS.
+
+      * Resource Management:
+      	We have added a new New Resource Planning Report.
+
+      * Exchange rates:
+      	]project-open[ can now be configured to get updated exchange rates
+      	automatically.
+
+      * Invoices:
+      	OpenOffice "Writer" Export: Invoices can now be exported in
+	"Writer" format. In the future we might also add a Writer to PDF
+	converter in order to create PDF.
+
+      *	Grouped invoice items:
+      	Create an invoice for a main project that contains grouped &
+	accumulated invoice elements of positions from sub-projects
+	Invoice elements are now related to time sheet tasks.
+
+      *	Translation:
+      	* Invoices can now have Discount/Surcharge Lines
+	* A "Customer Portal" allows customers to request a quote and get
+	  access to their financial documents.
+	* Bulk edit of translation tasks is now possible
+
+      * Admin:
+      	Admin -> User Profiles now allows to filter privileges by keyword.
+
+
+==============================================================
+V3.5 Changes
+==============================================================
+
+
+Major Enhancements & New Packages
+
+      * REST Interface:
+	The REST Web-Services server is now available in version
+	V1.5.1 with includes a number of bug fixes. The fixes are
+	due to active development of several new REST clients:
+	PO-Timesheet  is a REST Java client implementing timesheet
+	management. A Perl REST client is available in
+	/intranet-rest/perl-client-examples/ showing access to ]po[
+	projects. ]po[ partner Winzentis is developing an iPhone App
+	using the REST interface.
+
+      * Resource Management Package:
+	This package currently contains only a single resource report
+	which replaces the V3.4 /intranet-ganttproject/gant-resources-cube.
+	The new report:
+	* fixes a bug of the older report (related to the maximum
+	  length of the URL),
+	* provides better performance (now allows for hundreds of
+	  projects and users) and
+	* integrates absences into the display.
+
+Bug Fixes
+
+V3.5 is mainly a bug-fix release of V3.4, so literally hundreds
+of fixes have been applied.
+
+
+==============================================================
+V3.4 Changes
+==============================================================
+
+Major Enhancements & New Packages
+
+      * GUI Improvements:
+	We have completely restructured the GUI based on CSS "skins".
+
+      * Performance Improvements for large Organizations:
+	We have implemented optimizations to improve performance for
+	organizations with >1000 users: Caching mechanisms (speedup
+	x3 on a number of frequently used pages), SQL optimizations
+	(speedup x10 on some reports, x2 speedups on other pages) and
+	improved support for parallelization on multi-core processors).
+
+      * Integration of Dynamic Workflow:
+	The Petri-Net Workflow was already part of V3.2. In V3.4 we
+	have extended the number of objects to which you can attach
+	a workflow and we provide default workflows for budgets,
+	projects, absences and timesheets.
+
+      * Helpdesk / ITIL Service Desk:
+	The new [ helpdesk ] package implements tickets and ticket
+	queues. You can assign Petri-Net Workflows per ticket type.
+	The [ helpdesk ] package is suitable for all business types,
+	even though our default configuration will implement an ITSM
+	Service Desk.
+
+      * ITIL Configuration Management/Database:
+	The new "Configuration Database" is capable to maintain IT and
+	other inventories. A first integration with OCS Inventory NG is
+	available.
+
+      * ITIL Release Management:
+	Release management allows company to track changes in their
+	software according to Basel II and SOX regulations.
+
+      * CVS & Host Version Control Integration
+	A first integration is available with CVS and Host version
+	management systems. The CVS integration is capable to close
+	tickets in the [ helpdesk ] .
+
+      * RFQ/RFA Module:
+	This new package allows for generic Request for Quotation,
+	Request for Availability and Reverse Auction type of auctions.
+
+      * New Key Performance Indicators (KPI):
+	KPIs already exist as graphical widgets on top of the data-
+	warehouse. We now are going to add a range of frequently used
+	financial and timesheet indicators.
+
+
+New Features
+
+      * New Reports:
+	We have added a number of reports and data-warehouse cubes.
+
+      * Reporting for the current year:
+	Most reports and List Pages now include a start- and end
+	data defaulting to the current year. This feature improves
+	reporting speed for customers working more then 3 years with
+	]project-open[.
+
+      * Timesheet Invoicing Wizard:
+	The improved functionality now supports non-billable materials
+	(type of service) and keeps track of unbilled hours in the
+	current invoicing period and before.
+
+      * Improved Invoicing Screens:
+	A new AJAX functionality allows for comfortable changing of
+	invoicing offices and contacts when changing the customer
+
+      * Financial Documents List Page:
+	Added pagination
+
+
+Bug Fixes
+
+      * V3.4 includes more then 150 individual bug fixes
+
+
+
+==============================================================
+V3.3. Changes
+==============================================================
+
+Bug fixes: We have fixed more then 50 smaller issues and bugs.
+
+New features:
+
+      * Installation & Update: ]po[ now checks that all upgrade
+	scripts have been executed. Non executed upgrade scripts accounted
+	for an important percentage of user complaints in previous versions.
+      * Reporting: Added user-definable reports
+      * Reporting: Added an "Indicators" module that allows
+	to define and track process performance indicators over time.
+      * Invoices: "Canned Notes" implement pre-defined statements
+	to include in invoices and other financial documents.
+      * Backup: The Backup screen now allows to download backup files
+	over the Web, simplifying the backup procedure.
+      * Performance: A number of frequently used procedure are now cached
+	to improve performance.
+      * Rating: Added "Simple Surveys" rating module
+      * CRM: Improved the "intranet-mail-integration" Email
+	integration module so that it is now usable. The module allows to
+	associate incoming email with ]po[ users, effectively maintaining
+	an email track record per customer.
+      * Translation: Added a link for "editors" to rate their
+	"translator" (translation-only)
+      * Translation: Added a "Tandem Translation Module". This
+	module keeps track of the translator-editor tandem combination by
+	counting how frequently an editor has worked with a translator.
+      * Translation: Added TinyTM Integration. We have integrated TinyTM
+	(an open-source translation memory) with ]po[. TinyTM itself is
+	still in "alpha" development/alpha status.
+      * System Integration: Improved the CVS Import: We have added an
+	algorithm to guess the separator of CSV imports ("," vs.
+	";").
+      * System Integration: Added an UBS (Unified Business Language) for
+	accounting applications such as SAP, Oracle or Navision.
+      * Localizatin: Added French as a default language.
+
+Other:
+
+      * We have improved the upgrade procedure. ]po[ now checks for update
+	scripts that need to be executed.
+
+
+
+==============================================================
+V3.2 Changes
+==============================================================
+
+Major Enhancements:
+      * GanttProject Integration:
+        Project Managers can now conveniently define and modify project
+        structures with GanttProject and then upload the result into ]po[
+	("round-trip integration").
+	GanttProject is an open-source MS-Project clone written in Java.
+	The combination of GanttProject and ]po[ offers an open	alternative
+	to MS-Project and MS-Project-Server.
+
+      * "Web 1.5" GUI Overhaul:
+      	We have improved the GUI to allow users to move their GUI components
+      	and to select/disable components. Also, we have added new icons and a
+      	new CSS.
+
+      * Resource Planning and Resource Assignments:
+        You can now add resources to projects and task and determine resource
+        overload across projects.
+
+      * Calendar:
+	The new module shows project and task deadlines per day, week and month.
+	Calendars can be either "shared" or "individual". Support for group
+	calendars will follow soon.
+
+      * Bug-Tracker:
+	]po[ now includes a fully fledged bug-tracker that compares to industry
+	leading bug trackers.
+
+      * Expenses and Travel Costs:
+        The new modules allows you to capture consultant's travel costs and
+        other expenses per project.
+
+      * Reporting Engine:
+	]po[ now includes its own reporting engine, similar to Crystal Reports
+	or Jaspar Reports. A "reporting tutorial" explains step-by-step how to
+	write new reports. A graphical editor is not (yet) available.
+
+      * System Configuration Wizard
+        A new "SysConfig" wizard allows the first-time user to tailor the
+        ]project-open[ installation for business sectors and company size,
+        reducing the overall complexity.
+
+      * "Petri-Net Workflow Engine":
+        ]po[ now includes a fully-fledged workflow with graphical process editor.
+        The WF can be used for example to set and confirm project budgets by
+        senior executives, to priorize projects in a portfolio etc.
+
+      * Project Templates:
+        Project templates (creating new projects based on an existing
+        project template) allows you to standardize and accelerate the
+        generation of projects with similar schedules.
+
+      * Dynamic Fields for Project, Companies and Users:
+	We have greatly extended the "DynField" module to include DynFields
+	in reports and CVS exports. Also, DynFields are now specific to
+	object subtypes (for example: Type of projects).
+
+      * New "Delivery Note" Financial Document Type
+	Delivery notes are a step before issuing an invoice.
+
+
+
+
+New Commercial "Enterprise Extension Modules":
+
+The following modules are closed-source extensions of ]po[ covering the needs
+of large organizations. These modules are available separately from the ]po[
+product at http://www.project-open.com/shop/.
+
+      * GAAP/IAS compliant Auditability
+	This module captures all changes to financial objects and projects.
+
+      * One-Time-Passwords:
+      	Manages a list of TANs (Transaction Numbers) for one-time authentication
+      	of users with special permissions (i.e. senior mannagers, accounting,...).
+
+      * Profit Center Management & Permissions:
+	The modules allows corporations to define fine-grain financial
+	permissions across departments (who can see/modify the invoices of
+	each department) and to calculate profit/loss per department.
+
+      * SAP Integration:
+	Import and export interfaces to SAP FI.
+
+
+Minor Enhancements:
+
+There were more then 500 minor enhancements in the last 6 months improving usability
+and fixing bugs.
+
+
+
+==============================================================
+V3.1.2.0 Changes
+==============================================================
+
+Major Enhancements:
+
+      * Added fields "delivery address" and "contact person" in
+	financial document creation and editing pages.
+      * Added separate counters for financial document numbers (invoices,
+	quotes and purchase orders). The old configuration (a single
+	counter) is still the default.
+      * "Create Company from User" wizard speeds up the creation
+	of new users and their companies
+
+
+]project-translation[ Specific Enhancements:
+
+      * Added a "Aggregrate" checkbox in the translation invoice wizard.
+	Unchecking this checkbox allows to create quotes and invoices with
+	details (delivery date) of the individual translation tasks.
+      * Added an extended search for freelancer capabilities in
+	intranet-freelance
+      * Added a "Translation Project Manager Performance" report to
+	intranet-reporting
+      * Added FreeBudget and WebBudget CVS imports, in addition to Trados.
+      * Translation Workflow File Upload: Introduced a parameter to determine
+	whether the uploaded file needs to be named exactly like the
+	original file.
+      * Translators can now give feedback when uploading translation
+	files. The feedback is converted into a forum item.
+
+
+Minor Enhancements
+
+      * Added a "redirect to log hours" function in ]project-consulting[,
+	forcing people to log a certain amount of hours per week.
+	Added a parameter that specifies the number of hours to be logged.
+	Added a parameter to redirect from "Home", "Projects" or both.
+      * Financial documents can be sent as HTML attachments.
+      * Automatic advancement of the "percent completed" filed in a project,
+	depending on the state of both consulting and translation tasks
+	the Translation Workflow Status
+      * Added date and currency format localization in the InvoiceViewPage.
+	The locale is taken from the invoice template and allows to create
+	correctly localized
+      * Enabled alphabetical sorting of projects in the timesheet page
+	(this was quite difficult because of the hierarchical SQL query
+	that includes subprojects and their tasks..)
+      * Added "Nuke Demo Companies" option to cleanup selected "companies"
+	when taking the system productively
+      * "Search" field now clears up when clicking on it (if Full-Text
+	Search is installed)
+      * Enhanced the permission system for the Filestorage: Now a number
+	of privileges determines the default permissions, instead of the
+	either very permissive or restictive settings before.
+      * Added Windows-to-Linus and Linux-to-Windows conversion of parameters.
+	This function allows users to migrate database backup dumps easier
+	between a Linux version (production?) and a Windows version
+	(testing, development?)
+      * Allowing to accept/reject multiple tasks of intranet-forum on the
+	home page. This makes it much quicker to deal with large amounts
+	of minor bug reports.
+      * Added a number of invoice templates in a new intranet-invoice-templates
+	package
+      * Fixed pagination in Translation ProjectListPage
+      * Added several reports to intranet-reporting
+      * Various fixes of typos and Localization.
+      * Enabling the "State" field in address if the parameter
+	"SomeAmericanReaders" is set.
+
+
+Bug Fixes:
+
+      * Fixed missing "invoice_office_id" in "Tigerpond" preconfigured
+	demos.
+      * Fixed "Finance" tab in projects in the preconfigured Demos:
+	Quotes and POs are summed up correctly but wouldn't appear in the
+	detailed list
+      * Fixed a Windows bug displaying Filestorage files under certain
+	circumstances.
+      * Fixed the Company's financial documents "more info..." link
+      * Fixed roject's "Profit & Loss" view in the "Tigerpond" demo systems.
+	This view was not enabled by default.
+      * Fixed URLs in automatic alert emails: Outlooks breaks the lines
+	after 70 characters, breaking the URL. The text has been reformatted
+	now to avoid this situation (unless you've got a very long hostname...)
+      * Fixed ugly JavaScript error if Full-Text Search is not installed
+      * Fixed a few issues with "Nuke Demo Data". Includes the situation
+	that a user has become manager of a cost center.
+      * Fixed "Advanced Filtering" in the ProjectListPage
+      * Relaxed security permissions for project budgets.
+	Now the "view_budget" privilege controls the visibility, instead
+	of the (usually tighter) "view_finance"
+      * Fixed bug in sending out multipart emails if the Subject includes a
+	newline character.
+
+
+
+
+==============================================================
+V3.1.1.0 Changes
+==============================================================
+
+V3.1.1.0 includes some 80 enhancements, resolved issues, and resolved
+inconsistencies, compared with V3.0.0.6:
+
+Major Enhancements
+
+      * "Delete Demo Data": This functionality in the "Admin" section allows
+	you to delete non-master data from a system. This allows you to take
+	a ]po[ demo configuration (Tigerpond company), to delete any existing
+	projects, users, ... and to use this system to start production use
+	for your company.
+      * "DynField" (also called "SQL metadata model") allows you to add new
+	fields to existing objects and their database tables. DynField
+	currently support Projects, Companies and Persons as objects.
+      * A new Currency Conversion Module is now available. The module allows
+	for true multi-currency profit & loss calculation for the default
+	supported currencies (USD, EUR, AUD, CAD and JPY). The module still
+	needs to be enhanced to include an automatic update of the currency
+	conversion table.
+      * A new Reporting Module is now available available as a closed-source
+	extension module. The module currently includes only three major
+	reports
+      * "New from Template": This function allows you to "clone" a project
+	and to use it as a template for a new one. This is particularly
+	useful for organizations dealing with many similar projects.
+      * Automatic Project Advance: The "% Completed" field of both
+	]project-translation[ and ]project-consulting[ now advances
+	automatically, depending on the status of the project's tasks.
+      * Automatic data import from LTC Organiser.
+
+
+Minor Enhancements
+
+      * ]project-translation[: Translator's comments from the task upload
+	page are now published as forum items.
+      * VAT and Invoice Template default values are now defined on a
+	company's page.
+      * ]project-translation[: The Project List Page for now shows the size
+	of a project with all available UoM (units of measure) and not just
+	words and hours.
+      * ]project-translation[: Added a field "end-date" for translation tasks.
+	This field allows project manager to schedule their projects more
+	fine-grain.
+      * Added an edit page for translation prices.
+      * ]project-translation[: Added a Parameter to allow freelancers to
+	upload a WF file with a name different from the original file, so
+	that they can rename the file locally.
+      * Added separate permissions for editing the "budget" and "budget
+	hours" fields in projects. This allows to separate budget and PM
+	responsabilities.
+      * Added a "financial summary" component to the Project's summary page
+      * Fixed a number of submit button texts ("Edit Quote" instead of "Edit
+	Invoice" on an quote editing screen, ...)
+      * Many typos and Localization fixed
+
+
+Major Bug Fixes
+
+      * Automatic Software Update Service ("ASUS"): Fixed a bug inhibiting
+	software updates for the "anonymous" user.
+      * Filestorage: Config tigher permissions (very permissive before)
+      * Fixed a rounding bug in the "Invoices" list page that could lead
+	to inconsisten invoice sums.
+      * Employees now can edit their master data in all security
+	configurations.
+      * Fixed a permission issue that allows users with "add_finance"
+	permission to delete payments (that should require a separate
+	"add_payments" permission)
+      * Timesheet information are now available as a "Data Warehouse Light"
+	Cube, suitable to be viewed via Pivot Table.
+      * Added default VAT, payment days and financial document templates
+	to companies
+
+
+Minor Bug Fixes
+
+      * Fixed ASUS (Automatic Software Update Service) for "anonymous".
+      * Removed the "internal" company from the default price list of
+	providers
+      * Self-registered users are now included in the search engine.
+      * Fixed Localization issues with the "Assign" button in ]pt[ in
+	languages different from English.
+      * User's absences are now shown correctly in the "Users" list page.
+      * Timesheet "Weekly Report" doesn't show non-employees anymore.
+      * Fixed the sort order for several drop-down boxes
+      * Fixed the error message in the translation price list when entering
+	German ("1,60") values.
+      * Fixed the highlighting of several sub-tabs (such as the "Summary"
+	tab in projects)
+      * Reduced the precision of financial items in several locations to 2
+	digits.
+      * ]project-translation[: Auto assignment now works with any UoM (Units
+	of Measure) and not just Source-Words.
+      * Fixed formatting issue of VAT amounts > 9.999 EUR
+      * Work city" and "work country" are now saved correctly in the Users's
+	contact information page.
+
+

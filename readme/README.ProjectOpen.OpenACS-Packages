@@ -1,0 +1,285 @@
+
+  ]project-open[ OpenACS Installer V3.4.0
+  Frank Bergmann <frank.bergmann@project-open.com>
+  Copyright (c) 2009 ]project-open[
+
+  This is the ]project-open[ installer for OpenACS. This document describes
+  how to install ]po[ on top of an existing OpenACS installation.
+
+  ______________________________________________________________________
+
+  0. About the Installer
+
+  Copyright (c) 2009 ]project-open[
+  Frank Bergmann <frank.bergmann@project-open.com>
+  http://www.project-open.com/
+
+  Permission is granted to copy, distribute and/or modify this document 
+  under the terms of the GNU Free Documentation License, Version 1.1 or 
+  any later version published by the Free Software Foundation.
+  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html. 
+
+  Please see LICENSE.ProjectOpen for details about the licensing of the 
+  contained software.
+
+
+  ______________________________________________________________________
+
+  1. How to Get It
+
+  This installer is available in the "Support Files" download section of
+  at http://sourceforge.net/projects/project-open/ with the name
+  "project-open-OpenACS-3.4.x.y.test.tgz". 
+
+  For discussion please see the "Open Discussions" forum at SourceForge.
+
+  ______________________________________________________________________
+
+  2. Prerequisites
+
+  - OpenACS 5.3:
+    This installer has been developed and tested under OpenACS 5.3.2. 
+    However, we also expect the installer to work with OpenaCS 5.1 and 5.2, 
+    but we haven't tested this yet.
+
+  - PostgreSQL:
+    This installer should run on the following versions of PostgreSQL:
+    8.0.1, 8.0.8, 8.0.12, 8.1.5, 8.1.8, 8.1.9, 8.1.11, 8.2.4, 8.2.5
+    Other PG versions should also be OK, but without the TSearch2 full
+    text search module.
+
+  - AOLServer:
+    ]po[ runs on any AOLServer 3.3oacs or higher. 
+    ]po[ uses "exec" for filestorage. This may lead to memory leaks with
+    some AOLServer versions.
+
+  - Other Software:
+	- ]po[ requires GraphViz to render workflow diagrams.
+
+
+  ______________________________________________________________________
+
+  3. Contents
+
+  The following packages in the /packages/ folder together make up 
+  the ]project-open[ code:
+
+	acs-workflow			GPL	Petri-Net Workflow
+	intranet-calendar		FL	Calendar integration
+	intranet-confdb			FL	ITSM configuration database
+	intranet-core			GPL	]po[ core
+	intranet-cost			FL	Financial
+	intranet-dw-light		FL	Data-warehouse "light"
+	intranet-dynfield		GPL	Dynamic field extensions
+	intranet-exchange-rate		FL	Exchange rates
+	intranet-expenses		FL	Travel expenses
+	intranet-expenses-workflow	FL	Workflow for travel expenses
+	intranet-filestorage		FL	Filestorage
+	intranet-forum			FL	Discussion forums
+	intranet-freelance		FL	Freelance skill database
+	intranet-ganttproject		FL	GanttProject integration
+	intranet-hr			GPL	Human Resources
+	intranet-invoices		FL	Generic invoicing
+	intranet-invoices-templates	FL	Print templates for invoices
+	intranet-material		FL	Material master (service types)
+	intranet-payments		GPL	Invoice payments
+	intranet-release-mgmt		FL	ITSM software release mgmt.
+	intranet-reporting		FL	Reporting engine + some reports
+	intranet-reporting-tutorial	FL	Reporting engine tutorial
+	intranet-search-pg		FL	Full-Text search engine
+	intranet-sysconfig		FL	System Configuration Wizard
+	intranet-timesheet2		GPL	Timesheet mgmt.
+	intranet-timesheet2-invoices	FL	Timesheet invoicing wizard
+	intranet-timesheet2-tasks	FL	Project tasks for timesheet
+	intranet-timesheet2-workflow	FL	Workflow around logged hours
+	intranet-trans-invoices		FL	Translation invoicing wizard
+	intranet-translation		FL	Translation base
+	intranet-workflow		FL	Workflow integration with ]po[
+
+  "GPL" refers to licensing under the GNU Public License, while FL refers
+  to the ]po[ "Free License" (www.project-open.com/en/project-open-license).
+
+  Also, we have included a number of manuals in the /manuals/ folder:
+
+	PO-Configuration-Guide.071121.pdf
+	PO-Dev-Data-Model.061126.pdf
+	PO-Dev-Data-Model-Cookbook.060927.pdf
+	PO-Dev-Expense-Module-Example.061126.pdf
+	PO-Filestorage-User-Guide.061126.pdf
+	PO-Finance-User-Guide.060912.pdf
+	PO-Forum-User-Guide.061126.pdf
+	PO-Operations-Maintenance-Guide.061126.pdf
+	PO-Trans-Freelance-User-Guide.061126.pdf
+	PO-Trans-Workflow-User-Guide.061126.pdf
+	PO-Wiki-Guide.061126.pdf
+
+  
+  ______________________________________________________________________
+
+  4. Installation
+
+  IMPORTANT: Please backup all of your data before installing ]po[.
+
+  In order to install ]po[, please copy the contained packages (in the
+  "packages" folder of this installer) into the /web/<server>/packages/
+  directory of your OpenACS installation.
+
+  Then point your browser to the URL /acs-admin/apm/, choose "Install
+  Packages" and select all "]project-open[ *" packages, except for:
+
+  - IMPORTANT: Please don't install the package "intranet-search-pg".
+    ]po[ will install this package later due to funky TSearch2 quirks.
+
+  - The packages "intranet-helpdesk", "intranet-confdb" and 
+    "intranet-release-mgmt" are in a pre-alpha status. Install these
+    packages only if you want a preview of the upcoming ]po[ solution 
+    for IT Services Management (ITSM).
+
+
+  Then proceed as normal. The package manager will possibly select a 
+  number of additional OpenACS packages to install. All dependencies
+  should be satisfied.
+
+  ______________________________________________________________________
+
+  5. Post-Installation Activities
+
+
+  Please read thought the "PO-Configuration-Guide" (contained in this
+  installer in the /manuals/ folder) for an overview on configuration
+  tasks.
+  ]po[ is based on OpenACS, but we have decided to handle a lot of things 
+  differently from OpenACS, particularly in the are of permissions and 
+  GUI interface. The config guide will help you a lot to understand these 
+  differences.
+
+
+  5.1. System Configuration Wizard
+
+  This  is a wizard that allows you to disable unnecessary functionality
+  in order to get a useful system. To do so, please go to the /intranet/ 
+  URL and click on "Next >>" button in the "System Configuration Wizard" 
+  component. Then select (for an IT consulting company):
+
+	- Business Sector:		Information Technology
+	- Company or Department?:	"Other / Everything"
+	- Simplified or Complete Install?: Complete / Full Installation
+	- Size of your Organization:	Three hierarchical levels
+	- Name and Email:		<whatever you like>
+	- Logo:				<whatever you like>
+	- Trust Model:			<Keep default>
+
+  ]po[ will disable translation specific components and enable the full-text 
+  search engine.
+  Now please restart the server.
+
+
+  5.2. Patch OpenACS:
+
+  There is exactly one patch required for ]po[ to run on OpenACS 5.3.2.
+  Please insert the following lines in /acs-templating/tcl/date-procs.tcl
+  behind the equivalent "sql_date" and "ansi" sections (line 294).
+
+	sql_timestamp {
+		if { [empty_string_p $date] } { return "NULL" }
+		set value ""
+		set format ""
+		set space ""
+		set pad "0000"
+		foreach { index sql_form } { 0 YYYY 1 MM 2 DD 3 HH24 4 MI 5 SS } {
+		set piece [lindex $date $index]
+		if { ![string equal $piece {}] } {
+			append value "$space[string range $pad [string length $piece] end]$piece"
+			append format $space
+			append format $sql_form
+			set space " "
+		}
+		set pad "00"
+		}
+		return "to_timestamp('$value', '$format')"
+	}
+
+
+  5.3. Filestorage Integration
+
+  ]po[ comes with its own filestorage that integrates with existing
+  SAMBA / Windows Fileserver installations. Please see the PO-Filestorage-Guide
+  and the PO-Configuration-Guide for details.
+
+  For a test installation it is OK to create a directory /web/<server>/filestorage/
+  with subdirectories backup, companies, home, projects, templates and users.
+  Then please adapt the parameters in intranet-filestorage and intranet-core
+  to this location, maintaining the respectiv subdirector ("home", "projects" etc.).
+
+
+  5.4. Reporting Engine
+
+  You need to setup the hierarchical menu structure for reports.
+  To do this please point your browser to the URL /intranet/admin/menus/.
+  The page will take several seconds to load. That is all.
+
+
+  5.5 Setup the Site-Master
+
+  Please set the "DefaultMaster" parameter in Admin -> Parameters to the
+  value "/packages/intranet-core/www/po-master" in order to get a uniform
+  ]po[ design suitable for an Intranet.
+
+
+  5.6. Reactivate the ]po[ Calendar
+
+  The basic OpenACS 5.3.2 installation contains an error in the calendar module.
+  For this reason we have disabled the calendar for ]po[ by default.
+
+  To re-enable the calendar please go to Admin -> Components, click on
+  "Home Calendar Component" and set the "Location" to "left".
+
+
+  ______________________________________________________________________
+
+  6. Setup Basic Data:
+
+  ]po[ requires you to enter data in a certain order. Please follow
+  the following steps in order to setup some basic data:
+
+  - Companies:
+	- Go to Companies -> Add a new Company:
+	  Create a new "internal" company (please see the 
+	  PO-Configuration-Guide" about why and how).
+	- Go to Companies -> Add a new Company:
+	  Create a "Sample Customer" with status "active" and 
+	  type "Customer"
+	- Go to Companies -> Add a new Company:
+	  Create a "Sample Provider" with status "active and 
+	  type "Provider"
+	
+  - Users:
+	- Go to Users -> 
+	  Create atleast one user of group "Employee", "Customer" 
+	  and "Freelancer".
+
+  - Projects:
+	- Please create a sample project for each of the types 
+	  "Gantt Project", "Release Item" and "Release Project".
+	  These project types have certain componetns associated
+	  that are only shown with projects of that type.
+
+  - Permissions:
+	- Please go once through all optios of the Admin menu
+	  and consult the PO-Configuration-Guide.
+
+
+
+
+  ______________________________________________________________________
+
+  7. Upgrade and Removal
+
+  IMPORTANT: The ]po[ intranet-*-drop.sql scripts have not been tested
+  yet and will likely produce error.
+
+  Please backup your data before installing ]project-open[, so that you
+  can reverse the installation.
+
+
+

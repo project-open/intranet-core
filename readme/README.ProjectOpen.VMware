@@ -1,0 +1,273 @@
+
+  ]project-open[ V5.0 Virtual Machine
+  Community Edition, 2017-10-30
+
+  This is the ]project-open[ Virtual Machine. This document describes
+  the installation and configuration of the VMware appliance.
+
+  ______________________________________________________________________
+
+  1. Quick Start
+
+  This VMware appliance includes a fully configured ]project-open[
+  server in VMware Workstation format.
+
+  - You need VMware Workstation Player 12 or Player 7 (free personal 
+    license available) or higher to execute the VM.
+
+  - As an alternative, you can use VMware ESXi 5 (free license 
+    available) or higher after converting the VM using VMware vCenter 
+    Converter or similar.
+
+  - Now start the virtual machine. Please login using:
+
+        **********************
+	Username:	projop
+	Password:	projop
+        **********************
+
+    "projop" is also the default password for the KDE Wallet inside
+    the VMware.
+    As an alternative, you can enter as root with password "root".
+    Please change these passwords before using the VMware in a 
+    production environment.
+
+  - Please click on the "]project-open[" icon at the Linux desktop.
+    A browser should open with the first page of ]project-open[.
+    Please login as "System Administrator":
+    
+	Email:		sysadmin@tigerpond.com
+	Password:	system
+
+  - Please follow the System Configuration Wizard to creeate a basic
+    configuration for your business. Don't worry too much about the
+    answers, you can repeat this step later at any time.
+
+
+  ______________________________________________________________________
+
+  2. Licensing
+
+  Please see the attached LICENSE.ProjectOpen file. You need to agree
+  with the license terms of ALL packages before using or otherwise
+  interacting with the software.
+
+
+  ______________________________________________________________________
+
+  3. Prerequisites
+
+  In order to run this ]project-open[ for testing purposes you need at 
+  least:
+
+  - A computer with Windows 7 or higher for VMware Workstation,
+    Player, or a ESXi server.
+  - At least 1 core of a recent AMD or Intel processor
+  - At least 1 GB RAM
+  - At least 50 GB of free disk space
+
+  For a production system with up to 10 "active users" we recommend:
+
+  - A ESXi server,
+  - At least 4 cores of a recent AMD or Intel processor
+  - 8 GB RAM
+  - 200 GB of fast disk space with >5k IOPS.
+    A standard RAID 5 will cause performance problems.
+
+  For larger installations please contact the ]po[ team
+  at info@project-open.com  
+
+______________________________________________________________________
+
+  4. Virtual Machine Installer Contents
+
+  The "project-open-v50.x.zip" file contains the zipped files of
+  a virtual machine. All files are located in a single subdirectory:
+
+  /README.txt
+  /LICENSE.txt
+  /project-open-v50/
+	project-open-v50.vmx
+	project-open-v50.vmdk
+
+  Please refer to the VMware guides on how to import or run a 
+  virtual machine.
+
+  ______________________________________________________________________
+
+  6. Configure the VMware's IP Address
+
+  You will need to determine the IP address for the appliance
+  if you want to access ]po[ from your LAN or Intranet.
+
+  To find out the IP address, double-click the "]po[ @ Localhost" icon
+  in the VMware's desktop. The ]po[ login page includes a status section 
+  in the lower part of the browser:
+
+  - Browser URL:	http://192.168.0.101/	(sample value)
+  - IP Address:		192.168.0.101		(sample value)
+  - Total Memory:	512 MByte		(sample value)
+
+  Now open a Web browser on your computer or another computer and enter 
+  http://192.168.0.101/ (sample value, as above). 
+  You should now get the same page as from inside the VMware.
+
+
+  Troubleshooting:
+
+  If you don't see the IP Address as above, you will need to check at
+  the network configuration of your VMware and your LAN environment:
+
+  1) Did you enable the Network Adapter in your VMware?
+     Please right-click on the "Network Adapter" icon at the bottom of
+     your VMware console.
+
+     => Please make sure the Network Adapter is "connected".
+        The text of the status is a bit misleading I think, you need
+        to read the word "Disconnect"...
+     => Please make sure the Network Adapter modus is set to "Bridged". 
+        Only a bridged setting will allow external computers to connect 
+        to your VMware.
+
+     You will have to refresh the Linux network settings once you have 
+     modified/enabled your Network Adapter. Please go to:
+     System -> Administration -> Network
+     ("System" is located in the left bottom corner of in the tray of the
+     VMware appliance, beside "Applications" and "Places")
+     Then please "Activate" the "eth0" interface. 
+
+  2) Please make sure there is a DHCP server available in your LAN.
+     Otherwise please configure a fixed IP address using 
+     System -> Administration -> Network.
+
+  3) Please check the "Network Manager" icon in the task bar of the Linux
+     guest operating system. The Network Manager allows you to configure
+     your Linux network settings. Please check the Internet for instructions.
+     
+  3) Still not resolved? Then please have a look at
+     www.project-open.com/en/install-vm and
+     www.sourceforge.net/projects/project-open -> OpenDiscussion for
+     issues similar to yours. Please ask a new message ONLY after searching
+     for a solution.
+
+
+  ______________________________________________________________________
+
+  7. Basic configuration of ]project-open[
+
+
+  In order to configure the VMware, please login as:
+
+	Email:		sysadmin@tigerpond.com
+	Password:	system
+
+
+  You will now see the System Configuration Wizard that guides
+  you through the configuration of the ]project-open[ System.
+  The purpose of the wizard is to simplify the system by disabling 
+  unnecessary functionality.
+  But don't worry too much about your answers, you can repeat this 
+  step at any time.
+
+  For a maximum configuration please choose the "Other / Everything,"
+  "Complete / Full Installation" and "Three Hierarchical Levels"
+  options at the bottom of each wizard page.
+
+  After restarting the server (last step of the configurtion) you can
+  go back to the "Home" tab. You will find a nicely preconfigured ]po[ 
+  server with demo data.
+
+  On the "Home" page you will find the "Interactive Administration
+  Guide" with a number of additional configuration tasks.
+
+
+  ______________________________________________________________________
+
+  8. Limits of this VMware
+
+
+  This VMware contains the free "Community" edition of ]project-open[. 
+  This edition does not contain all of ]project-open[ functionality and
+  may not scale as well as the "Professional" and "Enterprise" editions:
+  - No support and warranty:
+    This community edition comes with "no warranty of merchantability and
+    fitness for a particular purpose".
+  - Traceability:
+    The Enterprise edition contains an "audit" package that keeps track
+    of changes to all business objects and allows to identify the user
+    and IP address of every modification.
+  - Business Intelligence and Reporting:
+    The Pro and Enterprise editions include an integrated and pre-
+    configured data-warehouse infrastructure and GUI. They also include
+    a number of add-on reports.
+  - Various functional extensions:
+    The Prop and Enterprise editions include a number of closed-source
+    add-on functionality.
+
+  Please visit http://www.project-open.com/en/products/editions.html
+  for details.
+
+
+  ______________________________________________________________________
+
+  9. Where to go from here?
+
+  - Information & Documentation:
+    Please go to www.project-open.com/en/ and glance
+    through the available material to get an overview.
+
+  - Troubleshooting:
+    Please go to the "Open Discussions" forum at
+    www.sourceforge.net/projects/project-open/.
+    Before posting, please have a look at the existing discussions,
+    because your problem might already be solved by other users.
+    You will need to create a SourceForge login in order to post
+    questions.
+
+  - ]project-open[ Training & Support:
+    ]po[ is an enterprise-level application, and some of its
+    features can only be revealed by face-to-face training.
+    Please consider contracting training and/or support from us.
+    We (the ]po[ team) mainly live from these types of services,
+    so purchasing services will help us to continue working on ]po[.
+    Please contact us at info@project-open.com
+
+  - ]po[ Rollout Methodology:
+    This PDF document is available for the VMware's desktop and
+    on the "Home" page of the ]po[ server.
+    The document provides you with a basic idea of the technical
+    and organizational tasks that are necessary to implement ]po[
+    in an organization. Please don't hesitate to contact us at
+    info@project-open.com for additional support and consulting.
+
+  - ]po[ Configuration Guide:
+    This PDF document is available for the VMware's desktop and
+    on the Home page of the ]po[ server.
+    The document includes detailed chapters on how to configure
+    the ]po[ system to your organization's needs.
+
+
+  ______________________________________________________________________
+
+  10. Stay Tuned
+
+
+  There are several options to stay in regular contact with 
+  ]project-open[:
+
+
+  - Newsletter:
+    http://www.project-open.net/
+    Please register yourself on our Web site. This way we are going
+    to send you the ]po[ newsletter once or twice per year.
+
+  - Important Security News:
+    http://sourceforge.net/export/rss2_projnews.php?group_id=86419
+    ]project-open[ News (once or twice per year: security and major
+    releases)
+
+  - ]project-open[ Blog:
+    http://project-open.blogspot.com/feeds/posts/default
+    Our blog with high-level reflections on open-source and project
+    management (once or twice per month).
+
