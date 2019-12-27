@@ -43,14 +43,20 @@ while (my $package=<FILES>) {
 #	next if ($package ne "acs-admin");
 #	next if ($package ne "intranet-adrtel-sap");
 
+	# Exclude internal or customer packages
 	next if ($package =~ /^intranet-trans/);		# Exclude translation stuff
 	next if ($package =~ /^intranet-cust-/);		# Exclude customer specific
 	next if ($package =~ /^ref-/);				# Exclude OACS data packages
+	next if ($package =~ /^upgrade-/);			# Exclude upgrade packages
+	next if ($package =~ /\.perl$/);			# Exclude perl files
 
+	# Exclude specific packages
+	next if ($package eq "intranet-oryx-ts-extension");		# outdated
 	next if ($package eq "acs_admin_tools");			# tools
 	next if ($package eq "baseCVS");				# internal
 	next if ($package eq "CVSROOT");				# internal
 	next if ($package eq "garbage");				# 
+	next if ($package eq "psets");  				# 
 
 	print "update_readme_files: updating '$package'\n";
 	update_readme_file($package);
@@ -127,7 +133,7 @@ sub update_readme_file {
     }
 
     foreach my $h2 (@h2_list) {
-	print "update_readme_file: h2=$h2\n";
+	print "update_readme_file: h2=$h2\n" if ($debug > 2);
 	print "update_readme_file: h2=$h2_hash{$h2}\n" if ($debug > 2);
     }
 
