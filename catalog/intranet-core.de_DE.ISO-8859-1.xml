@@ -3,7 +3,6 @@
 
   <msg key="--_Please_select_--">-- Bitte wählen --</msg>
   <msg key="1">1</msg>
-  <msg key="1_-_Highest_Priority">1 - Höchste Priorität</msg>
   <msg key="2">2</msg>
   <msg key="3">3</msg>
   <msg key="3_-_High_Priority">3 - Hohe Priorität</msg>
@@ -323,7 +322,6 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="Bug_Tracker">Bug-Tracker</msg>
   <msg key="Bug_Tracker_Task">Bug-Tracker-Aufgabe</msg>
   <msg key="Bugs">Fehler</msg>
-  <msg key="Building_Connection">Hausanschluss</msg>
   <msg key="Bulgaria">Bulgarien</msg>
   <msg key="BulkUpdateUsers">Alle Benutzer aktualisieren</msg>
   <msg key="Burn_Down_Chart">Burndown-Chart</msg>
@@ -492,7 +490,6 @@ Wir empfehlen, einen aktuellen Browser zu verwenden.</msg>
   <msg key="confirm_date">Bestätigungsdatum</msg>
   <msg key="Consistency_Checks">Konsistenzchecker</msg>
   <msg key="Construction">Konstruktion</msg>
-  <msg key="Construction_Status">Baustatus</msg>
   <msg key="Consultant">Berater</msg>
   <msg key="Consultants">Berater</msg>
   <msg key="consultants">Berater</msg>
@@ -1207,6 +1204,7 @@ Die Beispiele unten können einfach modifiziert und an Ihre Bedürfnisse angepasst
   <msg key="Japan">Japan</msg>
   <msg key="Java">Java</msg>
   <msg key="JavaScript">JavaScript</msg>
+  <msg key="Jira_Project">Jira-Projekt</msg>
   <msg key="Jira_Project_ID">Jira-Projekt-ID</msg>
   <msg key="Jira_Project_Key">Jira-Projektschlüssel</msg>
   <msg key="Jira_Server">Jira-Server</msg>
@@ -1548,7 +1546,6 @@ Passwort: %password%
   <msg key="lt_Manage_Individual_Use">Verwalten von einzelnen Benutzern</msg>
   <msg key="lt_Manage_OpenACS_Develo">Verwalten der OpenACS Entwicklungsumgebung</msg>
   <msg key="lt_Manage_the_OpenACS_Pl">Vewalten der OpenACS Platform.</msg>
-  <msg key="lt_Manhole_Construction_">Konstruktionsstatus Schacht</msg>
   <msg key="lt_Mark_tickets_as_dupli">Tickets als doppelt markieren</msg>
   <msg key="lt_Matriz_Automatica_Gam">Matriz Automatica (Gamesa)</msg>
   <msg key="lt_Maybe_somebody_has_ch">Vielleicht hat jemand den Pfad des ?internen? Unternehmens geändert, der Ihre Organisation identifiziert.</msg>
@@ -1737,7 +1734,6 @@ Passwort: %password%
   <msg key="lt_Translation_of_a_manu">Translation of a manually added task: Just taking the manually specified task units</msg>
   <msg key="lt_Translation_source_la">Quellsprache</msg>
   <msg key="lt_Translation_target_la">Zielsprache</msg>
-  <msg key="lt_Trench_Construction_S">Konstruktionsstatus Trasse</msg>
   <msg key="lt_Tydzieintranet-coreWe">Woche</msg>
   <msg key="lt_Unable_to_determine_I">Das System konnte die Firma mit &#34;Internal&#34; nicht finden.</msg>
   <msg key="lt_Unknownintranet-coreU">Unbekannt</msg>
@@ -2353,14 +2349,15 @@ Passwort: %password%
 Klassische/Gantt-Projekte ermöglichen Prozesse wie eine detaillierte Kontrolle des Projektfortschritts, Finanzcontrolling und Ressourcenmanagement.</msg>
   <msg key="Project_type_Milestone">Meilenstein</msg>
   <msg key="Project_type_mixed">Gemischte Methodologie</msg>
-  <msg key="Project_type_mixed_short_blurb">Ein Projekt mit ?gemischter Methodologie? besteht aus einem Gantt-Projekt, bei dem bestimmte Projektphasen agil oder mit SCRUM durchgeführt werden.</msg>
+  <msg key="Project_type_mixed_short_blurb">Ein Projekt mit &#39;gemischter Methodologie&#39; besteht aus einem Gantt-Projekt, bei dem bestimmte Projektphasen agil oder mit SCRUM durchgeführt werden.</msg>
   <msg key="Project_type_Other">Anderes Projekt</msg>
   <msg key="Project_type_other">Andere</msg>
+  <msg key="Project_type_other_short_blurb">&#39;Andere&#39; Projekte dienen spezifischen Zwecken. Bitte sehen Sie die &lt;a href=http://www.project-open.net/en/category-intranet-project-type target=_&gt;Online Hilfe zu Projekttypen&lt;/a&gt; für weitere Informationen.</msg>
   <msg key="Project_type_Program">Programm</msg>
   <msg key="Project_type_program">Programm</msg>
   <msg key="Project_type_program_short_blurb">Ein Programm gruppiert mehrere Projekte, die üblicherweise ein gemeinsames Ziel haben.</msg>
   <msg key="Project_type_release_project">Release-Projekt</msg>
-  <msg key="Project_type_release_short_blurb">Gruppiert mehrere Release Items und stellt einen Test-Workflow bereit.</msg>
+  <msg key="Project_type_release_short_blurb">Gruppiert mehrere Release Items und stellt einen Release-Workflow bereit.</msg>
   <msg key="Project_Type_Select_Title">Mit welcher Methodologie wollen Sie Ihre Projekte durchführen?</msg>
   <msg key="Project_type_Service_Level_Agreement">Ticket-Container</msg>
   <msg key="Project_type_Software_Release">Software Release</msg>

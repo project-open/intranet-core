@@ -457,6 +457,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Confirm">Confirm</msg>
   <msg key="Confirm_Date">Confirm Date</msg>
   <msg key="confirm_date">Confirm Date</msg>
+  <msg key="Confirm_Ticket">Confirm Ticket</msg>
   <msg key="Consistency_Checks">Consistency Checker</msg>
   <msg key="Construction">Construction</msg>
   <msg key="Consultant">Consultant</msg>
@@ -1176,6 +1177,7 @@ symbols to the right of each portlet.</msg>
   <msg key="Japan">Japan</msg>
   <msg key="Java">Java</msg>
   <msg key="JavaScript">JavaScript</msg>
+  <msg key="Jira_Project">Jira Project</msg>
   <msg key="Jira_Project_ID">Jira Project ID</msg>
   <msg key="Jira_Project_Key">Jira Project Key</msg>
   <msg key="Jira_Server">Jira Server</msg>
@@ -2345,6 +2347,7 @@ Classical / Gantt projects allow for tight progress tracking, financial controll
 Mixed projects allow for project tracking, financial controlling and resource management on the coarse-grain level, but allow for flexibility in the agile phases.</msg>
   <msg key="Project_type_Other">Other</msg>
   <msg key="Project_type_other">Other</msg>
+  <msg key="Project_type_other_short_blurb">&#39;Other&#39; projects serve specific purposes. Please consult the &lt;a href=http://www.project-open.net/en/category-intranet-project-type target=_&gt;online help on project types&lt;/a&gt;.</msg>
   <msg key="Project_type_Program">Program</msg>
   <msg key="Project_type_program">Program</msg>
   <msg key="Project_type_program_short_blurb">A program or &#34;programme&#34; groups a number of projects that usually have a common purpose-</msg>
@@ -2485,7 +2488,7 @@ financial controlling for the included tickets.</msg>
   <msg key="Reserved">Reserved</msg>
   <msg key="Reset_Portlets">Reset Portlets</msg>
   <msg key="Reset_Stuff">Reset Stuff</msg>
-  <msg key="Resolution_Time">Resolution Time</msg>
+  <msg key="Resolution_Time">Resolution Time (h)</msg>
   <msg key="Resolved">Resolved</msg>
   <msg key="Resource_Assignments">Resource Assignments</msg>
   <msg key="Resource_Availability_Component">Resource Availability Portlet</msg>
@@ -2573,6 +2576,7 @@ financial controlling for the included tickets.</msg>
   <msg key="Role_im_project_Project_Manager">Project Manager</msg>
   <msg key="Role_im_ticket_Full_Member">Ticket Member</msg>
   <msg key="Role_im_timesheet_task_Full_Member">Full Member</msg>
+  <msg key="roman">Roman Blue</msg>
   <msg key="Romania">Romania</msg>
   <msg key="Room">Room</msg>
   <msg key="Room_City">Raum Ort</msg>

@@ -2,10 +2,7 @@
 <message_catalog package_key="intranet-core" locale="it_IT" charset="ISO-8859-1">
 
   <msg key="--_Please_select_--">-- Seleziona --</msg>
-  <msg key="2_-_High_Priority">2 - Priorità Alta</msg>
-  <msg key="3_-_Average_Priority">3 - Priorità Media</msg>
   <msg key="3_-_High_Priority">3 - Priorità Alta</msg>
-  <msg key="4_-_Low_Priority">4 - Priorità Bassa</msg>
   <msg key="5_-_Average_Priority">5 - Priorità Media</msg>
   <msg key="7_-_Low_Priority">7 - Priorità Bassa</msg>
   <msg key="9_-_Lowest_Priority">9 - Priorità Bassissima</msg>
@@ -166,7 +163,6 @@
   <msg key="Body_Shopping">Body Shopping</msg>
   <msg key="Bolivia">Bolivia</msg>
   <msg key="Bosnia and Herzegovina">Bosnia-Erzegovina</msg>
-  <msg key="Bozza">Bozza</msg>
   <msg key="Branch_Office">Filiale</msg>
   <msg key="Brazil">Brasile</msg>
   <msg key="bs">bs</msg>
@@ -190,8 +186,6 @@
   <msg key="Calendar">Calendario</msg>
   <msg key="Canada">Canada</msg>
   <msg key="Canceled">Cancellato</msg>
-  <msg key="Cancellata">Cancellata</msg>
-  <msg key="Cancellato">Cancellato</msg>
   <msg key="Cash">Contanti</msg>
   <msg key="Catalyst">Catalyst</msg>
   <msg key="Categories">Categorie</msg>
@@ -286,7 +280,6 @@
   <msg key="Costa_Rica">Costa Rica</msg>
   <msg key="Costs">Costi</msg>
   <msg key="Country">Paese</msg>
-  <msg key="cr_standby">Stand-by</msg>
   <msg key="Create">Crea</msg>
   <msg key="Create_a_new_Project">Nuovo progetto</msg>
   <msg key="Create_a_Subproject">Crea un sottoprogetto</msg>
@@ -330,7 +323,6 @@
   <msg key="Czech_Republic">Repubblica Ceca</msg>
   <msg key="d">d</msg>
   <msg key="da">da</msg>
-  <msg key="Da_avviare">Da avviare</msg>
   <msg key="da_DK">da_DK</msg>
   <msg key="Dangerous">Pericolo!</msg>
   <msg key="Dashboard">Dashboard</msg>
@@ -342,7 +334,6 @@
   <msg key="de_DE">de_DE</msg>
   <msg key="Debit_advice">Nota d&#39;addebito</msg>
   <msg key="Declined">Preventivo rifiutato</msg>
-  <msg key="Def_reqScouting">Definizione requisiti / Scouting</msg>
   <msg key="default">Right Blue</msg>
   <msg key="default_bill_template_id">Template parcella predefinito</msg>
   <msg key="default_delnote_template_id">Template bolla di consegna predefinito</msg>
@@ -372,14 +363,12 @@
   <msg key="Department">Department</msg>
   <msg key="Departments">Reparti</msg>
   <msg key="Description">Tag</msg>
-  <msg key="Descrizione_Progetto">Descrizione </msg>
   <msg key="Developer_Home">Home Sviluppo</msg>
   <msg key="Direction">Direzione</msg>
   <msg key="directory_path">percorso cartella</msg>
   <msg key="Discussion">Discussione</msg>
   <msg key="Discussions">Discussioni</msg>
   <msg key="display">display</msg>
-  <msg key="Doc_affidamento">Documentazione affidamento</msg>
   <msg key="Documentation">Documentazione</msg>
   <msg key="Dominican Republic">Repubblica Dominicana</msg>
   <msg key="Dominican_Republic">Repubblica Dominicana</msg>
@@ -437,8 +426,6 @@
   <msg key="EUR_0-1k">0-1k EUR</msg>
   <msg key="EUR_1-10k">1-10k EUR</msg>
   <msg key="EUR_10-100k">10-100k EUR</msg>
-  <msg key="evol_infr">Evolutive Infrastruttura Esistente</msg>
-  <msg key="Evolutive_SAP_">Evolutive SAP</msg>
   <msg key="Exchange_Rates">Tassi di cambio</msg>
   <msg key="Execution_Project_Help">Un &#39;Progetto esecutivo&#39; è una copia di un progetto completamente svincolata da qualunque riferimento al progetto iniziale, per garantire l&#39;anonimità del cliente.</msg>
   <msg key="Expected_Quality">Qualità prevista</msg>
@@ -676,9 +663,6 @@
   <msg key="Import_User_CSV">Importa utenti da CSV</msg>
   <msg key="Important">Importante</msg>
   <msg key="in">in</msg>
-  <msg key="In_affidamento">In affidamento</msg>
-  <msg key="In_sviluppo">In sviluppo</msg>
-  <msg key="In_verifica">In verifica</msg>
   <msg key="Inactive">Non attivo</msg>
   <msg key="Inactive_Customers">Clienti inattivi</msg>
   <msg key="Incident">Imprevisti</msg>
@@ -741,7 +725,6 @@
   <msg key="Key_Account">Key Account</msg>
   <msg key="Key_Account_Manager">Key Account Manager</msg>
   <msg key="ko">ko</msg>
-  <msg key="KO_Tecnico">KO Tecnico</msg>
   <msg key="Korea  values (North)">Valori Corea del Nord</msg>
   <msg key="Korea  values (South)">Valori Corea del Sud</msg>
   <msg key="Korea_(North)">Corea del Nord</msg>
@@ -827,8 +810,6 @@
   <msg key="lt_Atril_Dj_Vu_X_Standar">Atril Déjà Vu X Standard</msg>
   <msg key="lt_Atril_Dj_Vu_X_Workgro">Atril Déjà Vu X Workgroup</msg>
   <msg key="lt_Backup_and_Restore_Data">Backup e ripristino dei dati</msg>
-  <msg key="lt_BIA_per_il_migliorame">BIA per il miglioramento della Sicurezza</msg>
-  <msg key="lt_Big_Data_per_il_Servi">Big Data per il Service e BPM</msg>
   <msg key="lt_Bosnia_and_Herzegovin">Bosnia-Erzegovina</msg>
   <msg key="lt_Bug_Tracker_Container">Bug Tracker Container</msg>
   <msg key="lt_C_-_Test_completely_f">C - Test completamente sbagliato</msg>
@@ -866,17 +847,13 @@
   <msg key="lt_Customersintranet-fil">Clienti</msg>
   <msg key="lt_db_string_category_fr">[db_string category_from_id $sql -default {}]</msg>
   <msg key="lt_Dear_first_names_from">Gentile %first_names_from_search%, fai ora parte di %object_name% come %role_name% in %system_name% presso %object_url% Clicca sul collegamento per ulteriori dettagli. Cordiali saluti, %current_user_name%</msg>
-  <msg key="lt_Def_requisitiScouting">Definizione requisiti / Scouting</msg>
-  <msg key="lt_Definizione_requisiti">Definizione requisiti / Scouting</msg>
   <msg key="lt_Delete_the_accounting">Elimina il contatto contabilità</msg>
   <msg key="lt_Delete_the_primary_co">Elimina il contatto principale</msg>
   <msg key="lt_delete_this_user_inst">elimina questo utente invece</msg>
   <msg key="lt_Deleting_first_names_">Eliminazione di %first_names% %last_name% in corso</msg>
-  <msg key="lt_Demand_Attention_Need">Demand_Attention_Need</msg>
   <msg key="lt_Directivosintranet-fi">Manager</msg>
   <msg key="lt_Discussionintranet-fo">Discussione</msg>
   <msg key="lt_Do_you_want_to_create">Si desidera creare un sottoprogetto (un progetto che è parte di un altro progetto)? Lasciare il campo in bianco (-- Seleziona --) se non si è sicuri.</msg>
-  <msg key="lt_Documentazione_affida">Documentazione affidamento</msg>
   <msg key="lt_Dots__in_Project_Path">I punti (&#39;.&#39;) non sono permessi nel &#34;Percorso del progetto&#34;</msg>
   <msg key="lt_Edit_comments_about_y">Modifica i commenti su di te</msg>
   <msg key="lt_Edit_menus_and_change">Modifica i menu e cambia i permessi</msg>
@@ -887,10 +864,6 @@
   <msg key="lt_Error_evaluating_comp">Errore nella convalida della sezione &#39;%plugin_name%&#39; del modulo &#39;%package_name%&#39;</msg>
   <msg key="lt_Error_getting_the_ema">Errore nel reperire l&#39;indirizzo e-mail dell&#39;utente %target_id%</msg>
   <msg key="lt_Error_Missing_paramet">Errore: parametro mancante</msg>
-  <msg key="lt_Evolutive_In_ambito_H">Evolutive In ambito HRO</msg>
-  <msg key="lt_Evolutive_In_ambito_P">Evolutive In ambito Procurement</msg>
-  <msg key="lt_Evoluzione_canali_di_">Evoluzione canali di comunicazione</msg>
-  <msg key="lt_Evoluzione_Sistemi_Re">Evoluzione Sistemi Retail</msg>
   <msg key="lt_Expected_Annual_Reven">Fatturato annuale (atteso)</msg>
   <msg key="lt_Export_Companies">Esporta aziende</msg>
   <msg key="lt_Export_Companies_CSV">Esporta aziende in CSV</msg>
@@ -928,10 +901,8 @@
   <msg key="lt_Import_Projects_from_">Importa progetti da H:\\</msg>
   <msg key="lt_In_Process_Work_is_st">In corso: il lavoro inizia immediatamente, Progetto potenziale: può diventare un progetto più avanti, Non ancora iniziato: stiamo aspettando di iniziare a lavorare, Finito: già finito...</msg>
   <msg key="lt_Incidentintranet-foru">Imprevisto</msg>
-  <msg key="lt_Infrastruttura_Digita">Infrastruttura Digital</msg>
   <msg key="lt_Insufficient_Privileg">Privilegi insufficienti</msg>
   <msg key="lt_Internal_error_unknow">Errore interno: visualizzazione &#39;%view_name%&#39; sconosciuta </msg>
-  <msg key="lt_Internal_Project_Note">Internal_Project_Note</msg>
   <msg key="lt_Intranet_RFC_Data_Acc">Intranet RFC Data Access</msg>
   <msg key="lt_Intranet_RFC_Expense_">Intranet RFC Expense Type</msg>
   <msg key="lt_Intranet_RFC_HJ_Appli">Intranet RFC HJ Application</msg>
@@ -978,7 +949,6 @@
   <msg key="lt_Mitarbeiterintranet-f">Collaboratore</msg>
   <msg key="lt_MLV_Translation_Agenc">Agenzia di traduzioni MLV</msg>
   <msg key="lt_Modify_the_access_per">Modifica i privilegi di accesso per le &#34;variabili dinamiche&#34; o aggiungi una nuova variabile dinamica (personalizzata).</msg>
-  <msg key="lt_Monitoraggio_Moving_P">Monitoraggio Moving Passeggeri</msg>
   <msg key="lt_Multilizer_60_Enterpr">Multilizer 6.0 Enterprise</msg>
   <msg key="lt_Multilizer_60_Transla">Multilizer 6.0 Translator</msg>
   <msg key="lt_Multilizer_60_Windows">Multilizer 6.0 Windows</msg>
@@ -1034,7 +1004,6 @@
   <msg key="lt_Quotes_in_Project_Nam">Virgolette non consentite in &#39;Nome progetto&#39;</msg>
   <msg key="lt_Quotes_in_Project_Nr_">Le virgolette non sono consentite in &#39;Numero progetto&#39;</msg>
   <msg key="lt_Quotes_in_Project_Pat">Virgolette non consentite in &#39;Percorso per il progetto&#39;</msg>
-  <msg key="lt_RAI_Commerciale_ADRTe">RAI Commerciale ADRTel</msg>
   <msg key="lt_RC-WinTrans_7_Profess">RC-WinTrans 7.0 Professional</msg>
   <msg key="lt_RC-WinTrans_7_Transla">RC-WinTrans 7 Translator</msg>
   <msg key="lt_RC-WinTrans_60_Standa">RC-WinTrans 6.0 Standard</msg>
@@ -1056,7 +1025,6 @@
   <msg key="lt_Send_user_new_passwor">Invia la nuova password all&#39;utente tramite e-mail</msg>
   <msg key="lt_Senior_Managersintran">Senior Manager</msg>
   <msg key="lt_Service_Level_Agreeme">Ticket Container</msg>
-  <msg key="lt_Servizi_al_pax__parki">Servizi al pax ? parking e mobilità</msg>
   <msg key="lt_Shows_the_average_num">Media delle ore registrate per progetto</msg>
   <msg key="lt_Shows_the_status_of_a">Mostra lo stato di un progetto</msg>
   <msg key="lt_Slashes__in_Project_P">Le barre (&#39;/&#39;) non sono consentite in &#39;Percorso per il progetto&#39;</msg>
@@ -1257,7 +1225,6 @@
   <msg key="No_offices_found">Non è stato trovato nessun ufficio</msg>
   <msg key="No_portrait_for_this_user">Nessuna foto per quest&#39;utente.</msg>
   <msg key="Non-IT">Non-IT</msg>
-  <msg key="Non_necessario">Non necessario</msg>
   <msg key="None">Nessuno</msg>
   <msg key="none">nessuno</msg>
   <msg key="Norway">Norvegia</msg>
@@ -1319,11 +1286,9 @@
   <msg key="opportunity_priority_id">Priorità</msg>
   <msg key="OpportunityName">Nome</msg>
   <msg key="OpportunityNumber">Nr</msg>
-  <msg key="OpportunityType">Tipologia Quotation</msg>
   <msg key="Optional">Opzionale</msg>
   <msg key="or_by">oppure tramite</msg>
   <msg key="or_Last_Name">oppure cognome</msg>
-  <msg key="Orange">Orange</msg>
   <msg key="Order_1">Ordine</msg>
   <msg key="Order_by_clause">Ordinare per articolo</msg>
   <msg key="Org_Chart">Scheda azienda</msg>
@@ -1500,7 +1465,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Project_Types">Tipi di progetto</msg>
   <msg key="ProjectOpen_News">Novità ]project-open[</msg>
   <msg key="Projects">Progetti</msg>
-  <msg key="Projects__Programs">Progetti / Programmi</msg>
   <msg key="Projects_Actions">Menu Progetto</msg>
   <msg key="Projects_Admin">Ammin. progetti</msg>
   <msg key="Projects_List">Lista Progetti</msg>
@@ -1527,7 +1491,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="q">q</msg>
   <msg key="QCing">Controllo qualità in corso</msg>
   <msg key="Qualifying">In attesa di dettagli</msg>
-  <msg key="Quotation_Notes">Quotation_Notes</msg>
   <msg key="Quote">Preventivo</msg>
   <msg key="Quote_Out">Preventivo inviato</msg>
   <msg key="Quote_out">Preventivo inviato</msg>
@@ -1567,7 +1530,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="RFC_Priority">Priorità RFC</msg>
   <msg key="RFCs">RFCs</msg>
   <msg key="RFQs">RFQ</msg>
-  <msg key="Rilasciata">Richiesta rilasciata</msg>
   <msg key="Risk">Risk</msg>
   <msg key="ro">ro</msg>
   <msg key="roman">Roman Blue</msg>
@@ -1654,7 +1616,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="sq">sq</msg>
   <msg key="SQL_Profiling">Analisi SQL</msg>
   <msg key="sr">sr</msg>
-  <msg key="Stand-By">Stand-By</msg>
   <msg key="Standard">Standard</msg>
   <msg key="Standard_Quality">Qualità standard</msg>
   <msg key="Star_Transit_27">Star Transit 2.7</msg>
@@ -1673,10 +1634,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Support_Konzern">Support Konzern</msg>
   <msg key="Survey">Sondaggio</msg>
   <msg key="sv">sv</msg>
-  <msg key="SVR__PEA_-_MARSILI">SVR - PEA - MARSILI</msg>
-  <msg key="SVR__PEA_-_Marsili">SVR ? PEA - Marsili</msg>
-  <msg key="SVS__IPR__PONTECORVO">SVS - IPR - PONTECORVO</msg>
-  <msg key="SVS__IPR__Pontecorvo">SVS ? IPR ? Pontecorvo</msg>
   <msg key="sw">sw</msg>
   <msg key="Sweden">Svezia</msg>
   <msg key="Switzerland">Svizzera</msg>
@@ -1705,7 +1662,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Telephony_request">Richiesta telefonica</msg>
   <msg key="templateenadp">template.en.adp</msg>
   <msg key="templateesadp">template.es.adp</msg>
-  <msg key="Terminato">Terminato</msg>
   <msg key="Test_evaluated">Test valutato</msg>
   <msg key="Test_received">Test ricevuto</msg>
   <msg key="Test_sent">Test spedito</msg>
@@ -1887,7 +1843,6 @@ I Ticket Container gestiscono i permessi, la registrazione delle schede attività
   <msg key="Yugoslavia">Jugoslavia</msg>
   <msg key="z">z</msg>
   <msg key="zB">zB</msg>
-  <msg key="zdata_start_act_crm">Data inizio effettiva</msg>
   <msg key="zG">zG</msg>
   <msg key="zh">zh</msg>
   <msg key="zh_CN">zh_CN</msg>

@@ -65,6 +65,9 @@ set click_me_l10n [lang::message::lookup "" intranet-core.Click_me "Click me for
 
 set translation_p [db_string translation_p "select count(*) from apm_packages where package_key = 'intranet-translation'"]
 
+set locale [lang::user::locale -user_id [ad_conn user_id]]
+
+
 if {[catch {db_1row otype_info "
 	select	pretty_name as object_type_pretty
 	from	acs_object_types
@@ -132,7 +135,7 @@ set gantt_project_subtypes_sql "
         order by lower(category)
 "
 db_foreach gantt $gantt_project_subtypes_sql {
-    set category_l10n $category
+    set category_l10n [im_category_from_id -locale $locale $category_id]
     append gantt_project_subtypes_html "<tr valign=top>\n"
     append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
     append gantt_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
@@ -164,7 +167,7 @@ set agile_project_subtypes_sql "
         order by lower(category)
 "
 db_foreach agile $agile_project_subtypes_sql {
-    set category_l10n $category
+    set category_l10n [im_category_from_id -locale $locale $category_id]
     append agile_project_subtypes_html "<tr valign=top>\n"
     append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
     append agile_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
@@ -198,7 +201,7 @@ set trans_project_subtypes_sql "
         order by lower(category)
 "
 db_foreach trans $trans_project_subtypes_sql {
-    set category_l10n $category
+    set category_l10n [im_category_from_id -locale $locale $category_id]
     append trans_project_subtypes_html "<tr valign=top>\n"
     append trans_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
     append trans_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
