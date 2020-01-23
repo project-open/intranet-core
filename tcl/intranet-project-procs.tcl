@@ -2669,23 +2669,15 @@ ad_proc im_project_nuke {
 			where project_id = :project_id
 		)"
 	    ns_log Notice "projects/nuke-2: im_trans_tasks"
-	    db_dml trans_tasks "
-		delete from im_trans_tasks 
-		where project_id = :project_id"
-
-	    db_dml project_target_languages "
-		delete from im_target_languages 
-		where project_id = :project_id"
+	    db_dml trans_tasks "delete from im_trans_tasks where project_id = :project_id"
+	    db_dml project_target_languages "delete from im_target_languages where project_id = :project_id"
 	}
 
 	
 	# Trans RFCs
 	if {[im_table_exists im_trans_rfqs]} {
 	    ns_log Notice "projects/nuke-2: im_trans_rfqs"
-	    db_dml trans_rfq_answers "
-	        delete from im_trans_rfq_answers
-		where answer_project_id = :project_id
-	    "
+	    db_dml trans_rfq_answers "delete from im_trans_rfq_answers where answer_project_id = :project_id"
 	    db_dml trans_rfq_answers "
 	        delete from im_trans_rfq_answers
 		where answer_rfq_id in (
@@ -2694,90 +2686,59 @@ ad_proc im_project_nuke {
 			where rfq_project_id = :project_id
 		)
 	    "
-	    db_dml trans_rfqs "
-		delete from im_trans_rfqs
-		where rfq_project_id = :project_id
-	    "
+	    db_dml trans_rfqs "delete from im_trans_rfqs where rfq_project_id = :project_id"
 	}
 	
 	# Gantt
 	if {[im_table_exists im_timesheet_tasks]} {
-	    
 	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
-	    db_dml task_actions "
-		delete from im_hours
-		where project_id = :project_id
-	    "
+	    db_dml task_actions "delete from im_hours where project_id = :project_id"
 
 	    ns_log Notice "projects/nuke-2: im_timesheet_tasks"
-	    db_dml task_actions "
-		    delete from im_timesheet_tasks
-		    where task_id = :project_id
-	    "
+	    db_dml task_actions "delete from im_timesheet_tasks where task_id = :project_id"
 	}
 
 	# MS-Project Warnings
 	if {[im_table_exists im_gantt_ms_project_warning]} {
 	    ns_log Notice "projects/nuke-2: im_gantt_ms_project_warning"
-	    db_dml im_gantt_ms_project_warnings "
-		    delete from im_gantt_ms_project_warning
-		    where project_id = :project_id
-	    "
+	    db_dml im_gantt_ms_project_warnings "delete from im_gantt_ms_project_warning where project_id = :project_id"
 	}
 
 	# Rule Engine Logs
 	if {[im_table_exists im_rule_logs]} {
 	    ns_log Notice "projects/nuke-2: im_rule_logs"
-	    db_dml im_rule_logs "
-		    delete from im_rule_logs
-		    where rule_log_object_id = :project_id
-	    "
+	    db_dml im_rule_logs "delete from im_rule_logs where rule_log_object_id = :project_id"
 	}
 
 	# Budget Planning
-	if {[im_table_exists im_planning_items]} {
+	if {[im_table_exists im_planning_items]} { 
 	    ns_log Notice "projects/nuke-2: im_planning_items"
-	    db_dml im_planning_itemss "
-		    delete from im_planning_items
-		    where item_object_id = :project_id
-	    "
+	    db_dml delete_planning_items_phase_id "delete from im_planning_items where item_project_phase_id = :project_id"
+	    db_dml delete_planning_items_object_id "delete from im_planning_items where item_object_id = :project_id"
 	}
 
 	# Helpdesk
 	if {[im_table_exists im_tickets]} {
 	    ns_log Notice "projects/nuke-2: im_tickets"
-	    db_dml tickets "
-		    delete from im_tickets
-		    where ticket_id = :project_id
-	    "
+	    db_dml tickets "delete from im_tickets where ticket_id = :project_id "
 	}
 
 	# GanttProject
 	if {[im_table_exists im_timesheet_task_dependencies]} {
 	    ns_log Notice "projects/nuke-2: im_timesheet_task_dependencies"
-	    db_dml del_dependencies "
-		delete from im_timesheet_task_dependencies
-		where (task_id_one = :project_id OR task_id_two = :project_id)
-	    "
+	    db_dml del_dependencies "delete from im_timesheet_task_dependencies where (task_id_one = :project_id OR task_id_two = :project_id)"
 	}
 
 	if {[im_table_exists im_gantt_projects]} {
 	    ns_log Notice "projects/nuke-2: im_gantt_projects"
-	    db_dml del_gantt_projects "
-		delete from im_gantt_projects
-		where project_id = :project_id
-	    "
+	    db_dml del_gantt_projects "delete from im_gantt_projects where project_id = :project_id"
 	}
 
 
 	# Skills
 	if {[im_table_exists im_object_freelance_skill_map]} {
-	
 	    ns_log Notice "projects/nuke-2: im_object_freelance_skill_map"
-	    db_dml del_skills "
-		delete from im_object_freelance_skill_map
-		where object_id = :project_id
-	    "
+	    db_dml del_skills "delete from im_object_freelance_skill_map where object_id = :project_id"
 	}
 	
 	# RFQs
@@ -2939,28 +2900,15 @@ ad_proc im_project_nuke {
 	}
 
 	ns_log Notice "projects/nuke-2: party_approved_member_map"
-	db_dml party_approved_member_map "
-		delete from party_approved_member_map 
-		where party_id = :project_id"
-	db_dml party_approved_member_map "
-		delete from party_approved_member_map 
-		where member_id = :project_id"
-
+	db_dml party_approved_member_map "delete from party_approved_member_map where party_id = :project_id"
+	db_dml party_approved_member_map "delete from party_approved_member_map where member_id = :project_id"
 
 	ns_log Notice "projects/nuke-2: acs_objecs.context_id"
-	db_dml acs_objects_context_index "
-		update acs_objects set context_id = null
-		where context_id = :project_id";
-	db_dml acs_objects_context_index2 "
-		update acs_objects set context_id = null
-		where object_id = :project_id";
-
+	db_dml acs_objects_context_index "update acs_objects set context_id = null where context_id = :project_id";
+	db_dml acs_objects_context_index2 "update acs_objects set context_id = null where object_id = :project_id"
 	
 	ns_log Notice "projects/nuke-2: acs_object_context_index"
-	db_dml acs_object_context_index "
-		delete from acs_object_context_index
-		where object_id = :project_id OR ancestor_id = :project_id"
-
+	db_dml acs_object_context_index "delete from acs_object_context_index where object_id = :project_id OR ancestor_id = :project_id"
 	
 	ns_log Notice "users/nuke2: Main tables"
 
@@ -2976,33 +2924,14 @@ ad_proc im_project_nuke {
 	# Relocate sub-tasks to the parent, so that they won't
 	# appear as main projects
 	set parent_parent_id [db_string parent_id "select parent_id from im_projects where project_id = :project_id" -default ""]
-	db_dml parent_projects "
-		update im_projects 
-		set parent_id = :parent_parent_id
-		where parent_id = :project_id"
+	db_dml parent_projects "update im_projects set parent_id = :parent_parent_id where parent_id = :project_id"
 
-	if {[im_column_exists im_projects program_id]} {
-	    db_dml program_id "
-		update im_projects 
-		set program_id  = null 
-		where program_id = :project_id"
-	}
+	if {[im_column_exists im_projects program_id]} { db_dml program_id "update im_projects set program_id  = null where program_id = :project_id" }
+	if {[im_table_exists biz_object_groups]} { db_dml delete_biz_object_groups "delete from biz_object_groups where biz_object_id = :project_id" }
 
-	if {[im_table_exists biz_object_groups]} {
-	    db_dml delete_biz_object_groups "
-		delete from biz_object_groups 
-		where biz_object_id = :project_id"
-	}
-
-	db_dml delete_projects "
-		delete from im_projects 
-		where project_id = :project_id"
-	db_dml delete_project_biz_objs "
-		delete from im_biz_objects
-		where object_id = :project_id"
-	db_dml delete_project_acs_obj "
-		delete from acs_objects
-		where object_id = :project_id"
+	db_dml delete_projects "delete from im_projects where project_id = :project_id"
+	db_dml delete_project_biz_objs "delete from im_biz_objects where object_id = :project_id"
+	db_dml delete_project_acs_obj "delete from acs_objects where object_id = :project_id"
 
     } on_error {
 	if {[ regexp {integrity constraint \([^.]+\.([^)]+)\)} $errmsg match constraint_name]} {
