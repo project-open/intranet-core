@@ -19,9 +19,15 @@
 	  <li>#intranet-core.User_state#: @user_state;noquote@</li>
 	</else>
 
+	<if @local_authority_p@>
 	<if @admin@ eq 1 or  @user_id@ eq @current_user_id@> 
 	  <li><a href="@change_pwd_url@">#intranet-core.lt_Update_this_users_pas#</a></li>
 	</if>
+	</if>
+	<else>
+	  <li><%= [lang::message::lookup "" intranet-core.User_auth_by_LDAP "User authentication is handled by LDAP."] %><br>
+              <%= [lang::message::lookup "" intranet-core.User_auth_by_LDAP_change_pwd_there "Please change the password there."] %>
+	</else>
 	<if @otp_installed_p@>
 	  <li><a href="@list_otp_pwd_url@">#intranet-otp.Print_OTP_list#</a><li>
 	</if>

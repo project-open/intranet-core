@@ -84,6 +84,18 @@ if {$otp_installed_p} {
     set list_otp_pwd_url [export_vars -base $list_otp_pwd_base_url {user_id {return_url $current_url}}]
 }
 
+
+# Check if we are using a local authority or LDAP
+set authority_short_name [db_string authority_short_name "
+	select	min(short_name)
+	from	auth_authorities
+	where	authority_id in (select authority_id from users where user_id = :user_id)
+" -default "local"]
+set local_authority_p 0
+if {"local" eq $authority_short_name} {set local_authority_p 1 }
+
+
+
 set add_companies_p [im_permission $current_user_id add_companies]
 
 set date_created [db_string get_date_created {}]
