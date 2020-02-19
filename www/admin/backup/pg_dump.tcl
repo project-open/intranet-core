@@ -12,7 +12,7 @@ ad_page_contract {
            This is useful for remote backups.
 } {
     { format "p" }
-    { return_url "index" }
+    { return_url "/intranet/admin/backup/index" }
     { disable_dollar_quoting "--disable-dollar-quoting" }
     { user_id:integer 0}
     { auto_login "" }
