@@ -597,7 +597,7 @@ ad_proc -public im_navbar_help_link {
     Determines where to link to www.project-open.com for help.
     The Wiki convention for page is "page-" followed by the URL
     of the page with all non-alphanum characters replaced by "-":
-    http://www.project-open.com/en/page-intranet-invoices-view
+    https://www.project-open.com/en/page-intranet-invoices-view
 } {
     # Get the URL from the connection
     if {"" == $url} { set url [ad_conn url] }
@@ -611,7 +611,7 @@ ad_proc -public im_navbar_help_link {
     regsub -all {_} $url "-" url
 
     # Add the constant part in front of the url:
-    set url "http://www.project-open.net/en/page$url"
+    set url "https://www.project-open.net/en/page$url"
 
     # Return the finished URL
     return $url
@@ -2013,8 +2013,8 @@ where
 
     set report_url [im_parameter -package_id [im_package_core_id] "ErrorReportURL" "" ""]
     if { $report_url eq "" } {
-	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=http://your.errors/here."
-	set report_url "http://www.project-open.net/intranet-forum/forum/new-system-incident"
+	ns_log Error "Automatic Error Reporting Misconfigured.  Please add a field in the acs/rp section of form ErrorReportURL=https://your.errors/here."
+	set report_url "https://www.project-open.net/intranet-forum/forum/new-system-incident"
     } 
 
     set error_info ""
