@@ -194,6 +194,7 @@ ad_proc -public im_project_permissions {
     set user_is_project_member_p [im_biz_object_member_p $user_id $project_id]
     set user_is_project_manager_p [im_biz_object_admin_p $user_id $project_id]
     set user_is_employee_p [im_user_is_employee_p $user_id]
+    set customer_members_see_projects_p [parameter::get_from_package_key -package_key "intranet-core" -parameter CustomerMembersSeeCustomerProjectsP -default 1]
 
     if {[im_table_exists "im_cost_centers"]} {
 	# Department managers are like project members or PMs
@@ -275,7 +276,8 @@ ad_proc -public im_project_permissions {
 
     # Allow customer' Members to see their customer's projects
     if {$debug} { ns_log Notice "im_project_permissions: customer members" }
-    if {$user_is_company_member_p && $user_is_employee_p} { 
+    # Fraber 2020-02-24: replaced '&& $user_is_employee_p' by parameter, because this is precisely about customers
+    if {$user_is_company_member_p && $customer_members_see_projects_p} { 
 	set view 1
 	set read 1
     }
