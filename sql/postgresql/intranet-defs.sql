@@ -286,6 +286,25 @@ BEGIN
 end;$body$ language 'plpgsql';
 
 
+create or replace function im_week_enumerator (date, date) 
+returns setof date as $body$
+declare
+	p_start_date		alias for $1;
+	p_end_date		alias for $2;
+	row			RECORD;
+BEGIN
+	FOR row IN 
+	    	select distinct
+			to_char(im_day_enumerator, 'YYYY-WW') as week
+		from
+			im_day_enumerator(p_start_date, p_end_date)
+		order by week
+	LOOP
+		RETURN NEXT to_date(row.week, 'YYYY-WW');
+	END LOOP;
+	RETURN;
+end;$body$ language 'plpgsql';
+
 
 create or replace function im_month_enumerator (date, date) 
 returns setof date as $body$
