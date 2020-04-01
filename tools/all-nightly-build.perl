@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 #
 # *******************************************************************
-# Creates a current snapshot of public ]po[ packages.
+# Release a current snapshot of public ]po[ packages.
 #
-# 2015-09-25
+# 2020-03-30
 # Frank Bergmann <frank.bergmann@project-open.com>
 # *******************************************************************
 
-# This file assumes a ~/.ssh/fraber\@shell.sf.net
-# private key in the .ssh directory of the user (po50dev)
-# in order to upload the nightly builds to the SF
-# server:
+# This file assumes a ~/.ssh/fraber\@shell.sf.net private key in the 
+# .ssh directory of the user (po50dev) in order to upload the nightly 
+# builds to the SF server:
+#
 # 1. Create a key pair:
 #    ssh-keygen -t dsa -C "fraber@shell.sf.net"
 #    and save as ~/.ssh/fraber\@shell.sf.net.
@@ -84,15 +84,15 @@ my $sed = "sed -e 's/X.Y.Z.V.W/$version/; s/YYYY-MM-DD/$date/; s/YYYY/$year/'";
 
 print "all-nightly-build: generating README in ~/\n" if $debug;
 system("rm -f ~/$readme");
-system("cat ~/packages/intranet-core/README.ProjectOpen.Update | $sed > ~/$readme");
+system("cat ~/packages/intranet-core/readme/README.ProjectOpen.Update | $sed > ~/$readme");
 
 print "all-nightly-build: generating LICENSE in ~/\n" if $debug;
 system("rm -f ~/$license");
-system("cat ~/packages/intranet-core/LICENSE.ProjectOpen | $sed > ~/$license");
+system("cat ~/packages/intranet-core/readme/LICENSE.ProjectOpen | $sed > ~/$license");
 
 print "all-nightly-build: generating CHANGELOG in ~/\n" if $debug;
 system("rm -f ~/$changelog");
-system("cat ~/packages/intranet-core/CHANGELOG.ProjectOpen | $sed > ~/$changelog");
+system("cat ~/packages/intranet-core/readme/CHANGELOG.ProjectOpen | $sed > ~/$changelog");
 
 
 $packages = "packages/acs-admin packages/acs-api-browser packages/acs-authentication packages/acs-automated-testing packages/acs-bootstrap-installer packages/acs-content-repository packages/acs-core-docs packages/acs-datetime packages/acs-developer-support packages/acs-events packages/acs-kernel packages/acs-lang packages/acs-mail packages/acs-mail-lite packages/acs-messaging packages/acs-reference packages/acs-service-contract packages/acs-subsite packages/acs-tcl packages/acs-templating packages/acs-translations packages/acs-workflow packages/ajaxhelper packages/attachments packages/calendar packages/categories packages/diagram packages/file-storage packages/general-comments packages/intranet-agile packages/intranet-baseline packages/intranet-calendar packages/intranet-confdb packages/intranet-core packages/intranet-cost packages/intranet-crm-opportunities packages/intranet-csv-import packages/intranet-cvs-integration packages/intranet-demo-data packages/intranet-dw-light packages/intranet-dynfield packages/intranet-earned-value-management packages/intranet-exchange-rate packages/intranet-expenses packages/intranet-expenses-workflow packages/intranet-filestorage packages/intranet-forum packages/intranet-gantt-editor packages/intranet-ganttproject packages/intranet-helpdesk packages/intranet-hr packages/intranet-idea-management packages/intranet-invoices packages/intranet-jira packages/intranet-mail-import packages/intranet-material packages/intranet-milestone packages/intranet-nagios packages/intranet-notes packages/intranet-notes-tutorial packages/intranet-payments packages/intranet-planning packages/intranet-portfolio-management packages/intranet-portfolio-planner packages/intranet-project-scoring packages/intranet-release-mgmt packages/intranet-reporting packages/intranet-reporting-dashboard packages/intranet-reporting-finance packages/intranet-reporting-indicators packages/intranet-reporting-openoffice packages/intranet-reporting-tutorial packages/intranet-resource-management packages/intranet-rest packages/intranet-riskmanagement packages/intranet-rule-engine packages/intranet-search-pg packages/intranet-search-pg-files packages/intranet-security-update-client packages/intranet-sharepoint packages/intranet-sla-management packages/intranet-simple-survey packages/intranet-sql-selectors packages/intranet-sysconfig packages/intranet-task-management packages/intranet-timesheet2 packages/intranet-timesheet2-invoices packages/intranet-timesheet2-tasks packages/intranet-timesheet2-workflow packages/intranet-wiki packages/intranet-workflow packages/notifications packages/oacs-dav packages/openacs-default-theme packages/ref-countries packages/ref-currency packages/ref-language packages/ref-timezones packages/rss-support packages/search packages/sencha-core packages/sencha-extjs-v421 packages/senchatouch-timesheet packages/senchatouch-v242 packages/simple-survey packages/tsearch2-driver packages/workflow packages/xotcl-core packages/xotcl-request-monitor packages/xowiki";
