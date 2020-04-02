@@ -107,7 +107,7 @@ if (!(-e "$tar_dir/$tar")) {
     system("rm -f $tar_dir/$tar");
 }
 
-system("cd ~/; tar  --create --gzip -f $tar_dir/$tar --exclude='upgrade-3.*' --exclude='upgrade-4.*' --exclude='*~' --exclude-vcs $readme $license $changelog $packages");
+system("cd ~/; tar  --create --gzip -f $tar_dir/$tar --exclude='upgrade-3.*' --exclude='upgrade-4.*' --exclude='*~' --exclude-vcs $readme $license $changelog $dump $packages");
 
 
 # *******************************************************************
