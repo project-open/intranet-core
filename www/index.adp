@@ -11,12 +11,12 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
   <td colspan="3">
-    @admin_guide_html;noquote@
     <%= [im_component_bay top] %>
   </td>
 </tr>
 <tr>
   <td valign="top" width="50%">
+    @admin_guide_html;noquote@
     <%= [im_component_bay left] %>
   </td>
   <td width=2>&nbsp;</td>
