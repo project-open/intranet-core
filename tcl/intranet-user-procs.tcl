@@ -31,7 +31,7 @@ ad_proc -public im_user_permissions {
     with the permissions of $current_user_id on $user_id
 } {
     # ns_log Notice "im_user_permissions: current_user_id=$current_user_id, user_id=$user_id"
-    im_security_alert_check_integer -location "im_user_permissions: user_id" -value $user_id
+    if {[im_security_alert_check_integer -location "im_user_permissions: user_id" -value $user_id]} { set user_id 0 }
 
     upvar $view_var view
     upvar $read_var read
