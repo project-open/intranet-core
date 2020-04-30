@@ -59,8 +59,6 @@ if {!$write} {
 }
 
 
-# ad_return_complaint 1 [im_opt_val ha_line1]
-
 set num_rows [db_string user_contact_list_size "select count(user_id) from users_contact where user_id = :user_id"]
 ns_set delkey [ns_getform] submit
 if {$num_rows == 0} {
