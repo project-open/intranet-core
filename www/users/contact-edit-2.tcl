@@ -22,6 +22,28 @@ ad_page_contract {
     user_id:integer,notnull
     { update_note "" }
     { notes "" }
+
+    { aim_screen_name "" }
+    { cell_phone "" }
+    { fax "" }
+    { ha_city "" }
+    { ha_country_code "" }
+    { ha_line1 "" }
+    { ha_line2 "" }
+    { ha_postal_code "" }
+    { ha_state "" }
+    { home_phone "" }
+    { icq_number "" }
+    { note "" }
+    { pager "" }
+    { user_id "" }
+    { wa_city "" }
+    { wa_country_code "" }
+    { wa_line1 "" }
+    { wa_line2 "" }
+    { wa_postal_code "" }
+    { wa_state "" }
+    { work_phone "" }
 }
 
 # ---------------------------------------------------------------
@@ -37,6 +59,7 @@ if {!$write} {
 }
 
 
+# ad_return_complaint 1 [im_opt_val ha_line1]
 
 set num_rows [db_string user_contact_list_size "select count(user_id) from users_contact where user_id = :user_id"]
 ns_set delkey [ns_getform] submit
