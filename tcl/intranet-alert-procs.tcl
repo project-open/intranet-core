@@ -177,6 +177,30 @@ ad_proc -public im_security_alert_check_tmpnam {
 }
 
 
+ad_proc -public im_security_alert_check_path {
+    { -location "No location specified"}
+    { -value "No value specified" }
+    { -severity "Severe" }
+} {
+    Checks for a reasonable Unix path in the variable.
+    Should not include special characters.
+} {
+    set breach_p 0
+    foreach v $value {
+	if {![regexp {^[0-9a-zA-Z_\.\-\/]*$} $v match]} {
+	    ad_return_complaint 1 $v
+	    set breach_p 1
+	    im_security_alert \
+		-location $location \
+		-message "Found bad characters in folder" \
+		-value $value \
+		-severity $severity
+	}
+    }
+    return $breach_p
+}
+
+
 ad_proc -public im_security_alert {
     { -location "No location specified"}
     { -message "No message specified"}
