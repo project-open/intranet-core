@@ -188,7 +188,6 @@ ad_proc -public im_security_alert_check_path {
     set breach_p 0
     foreach v $value {
 	if {![regexp {^[0-9a-zA-Z_\.\-\/]*$} $v match]} {
-	    ad_return_complaint 1 $v
 	    set breach_p 1
 	    im_security_alert \
 		-location $location \
