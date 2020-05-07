@@ -1618,6 +1618,7 @@ ad_proc im_require_login {
     if {"" == $form_vars} { set form_vars [ns_set create] }
 
     set user_id [ns_set get $form_vars "user_id"]
+    if {[im_security_alert_check_integer -location "im_require_login" -value $user_id]} { set user_id 0 }
     set auto_login [ns_set get $form_vars "auto_login"]
     set valid_login [im_valid_auto_login_p -user_id $user_id -auto_login $auto_login]
     if {$valid_login} {
