@@ -544,6 +544,7 @@ In some rare cases changes in category types might require flushing the cache ma
   <msg key="Customer_Material">Customer Material</msg>
   <msg key="Customer_Prospects">Customer Prospects</msg>
   <msg key="Customer_review">Customer Review</msg>
+  <msg key="CustomerAndProvider">CustomerAndProvider</msg>
   <msg key="Customers">Customer</msg>
   <msg key="customers">Customers</msg>
   <msg key="Customers_status_Inquiries">Inquiries</msg>
