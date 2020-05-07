@@ -172,7 +172,7 @@
 -- 80600-80699  Invoice Cycle (Intranet Service Contracts & Intranet Invoices)
 -- 80700-80749 	Intranet Translation Purchase Order Task Units
 -- 80750-80799  reserved (50)
--- 80800-80899  reserved (100)
+-- 80800-80899  Customer Ventum reserved (100)
 -- 80900-80999  reserved (100)
 -- 80100-80599  Intranet Skill [...] 
 -- 80600-80699  reserved (100)
