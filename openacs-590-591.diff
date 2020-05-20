@@ -1,5 +1,11 @@
 
 
+=======================================================
+acs-admin/www/auth/
+=======================================================
+
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-admin/www/auth/authority.adp openacs-4.5-9-0/packages/acs-admin/www/auth/authority.adp
 24,36d23
 < <if @import_users_url@ not nil>
@@ -58,6 +64,22 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 < 
 
 
+
+
+
+
+
+
+
+
+
+=======================================================
+=======================================================
+
+
+
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-admin/www/install/index.tcl openacs-4.5-9-0/packages/acs-admin/www/install/index.tcl
 21,24d20
 < 
@@ -67,10 +89,15 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 
 
 
+=======================================================
+server-restart
+=======================================================
+
 
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-admin/www/server-restart.adp openacs-4.5-9-0/packages/acs-admin/www/server-restart.adp
 0a1
 > <master>
+
 
 
 
@@ -90,6 +117,12 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 <     }
 < }
 
+
+
+
+=======================================================
+api-browser
+=======================================================
 
 
 
@@ -230,6 +263,11 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 
 
 
+=======================================================
+authentication-procs.tcl
+=======================================================
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-authentication/tcl/authentication-procs.tcl openacs-4.5-9-0/packages/acs-authentication/tcl/authentication-procs.tcl
 224,232d223
 < 
@@ -244,22 +282,17 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 
 
 
+=======================================================
+bootstrap
+=======================================================
+
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-bootstrap-installer/bootstrap.tcl openacs-4.5-9-0/packages/acs-bootstrap-installer/bootstrap.tcl
 147c147
 < #    apm_bootstrap_load_libraries -procs acs-automated-testing
 ---
 >     apm_bootstrap_load_libraries -procs acs-automated-testing
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-bootstrap-installer/db-init-checks-postgresql.tcl openacs-4.5-9-0/packages/acs-bootstrap-installer/db-init-checks-postgresql.tcl
-39,40c39,40
-<         append my_errors "<li>WARNING: Your installed version of Postgres is too old.  Please install PostgreSQL 9.0 or later.\n"
-< #        set my_error_p 1
----
->         append my_errors "<li>Your installed version of Postgres is too old.  Please install PostgreSQL 9.0 or later.\n"
->         set my_error_p 1
 
 
 
@@ -288,104 +321,12 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-d
 
 
 
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-kernel/sql/postgresql/upgrade/upgrade-5.9.0d4-5.9.0d5.sql openacs-4.5-9-0/packages/acs-kernel/sql/postgresql/upgrade/upgrade-5.9.0d4-5.9.0d5.sql
-134,203c133,136
-< 
-< -- fraber 160104: Regenerated objects dropped by drop-cascade above
-< --
-< 
-< 
-< drop view if exists cr_revisionsx;
-< CREATE VIEW cr_revisionsx AS
-< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
-<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
-<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
-<        cr.revision_id, cr.title, cr.item_id, cr.description, 
-<        cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id 
-< FROM acs_objects, cr_revisions cr, cr_items i, cr_text 
-< WHERE ((acs_objects.object_id = cr.revision_id) 
-<       AND (cr.item_id = i.item_id));
-< 
-< 
-< drop view if exists etp_page_revisionsx;
-< CREATE VIEW etp_page_revisionsx AS
-< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
-<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
-<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
-<        cr.revision_id, cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, 
-<        i.name, i.parent_id, etp_page_revisions.etp_page_revision_id 
-< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, etp_page_revisions 
-< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
-<       (acs_objects.object_id = etp_page_revisions.etp_page_revision_id));
-< 
-< 
-< CREATE VIEW imagesx AS
-< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
-<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
-<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
-<        cr.revision_id, cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, 
-<        i.parent_id, images.image_id, images.width, images.height 
-< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, 
-<        images 
-< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
-<       (acs_objects.object_id = images.image_id));
-< 
-< CREATE VIEW users_email_imagex AS
-< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
-<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
-<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, cr.revision_id, 
-<        cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id, 
-<        users_email_image.email_image_id 
-< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, users_email_image 
-< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
-<       (acs_objects.object_id = users_email_image.email_image_id));
-< 
-< CREATE VIEW fs_urls_full AS
-< SELECT cr_extlinks.extlink_id AS url_id, cr_extlinks.url, cr_items.parent_id AS folder_id, cr_extlinks.label AS name, 
-<        cr_extlinks.description, acs_objects.object_id, acs_objects.object_type, acs_objects.context_id, 
-<        acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, acs_objects.creation_ip, 
-<        acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, acs_objects.title, acs_objects.package_id 
-< FROM cr_extlinks, cr_items, acs_objects 
-< WHERE ((cr_extlinks.extlink_id = cr_items.item_id) AND 
-<       (cr_items.item_id = acs_objects.object_id));
-< 
-< CREATE VIEW workflow_case_log_revx AS
-< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
-<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
-<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, cr.revision_id, 
-<        cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id, 
-<        workflow_case_log_rev.entry_rev_id 
-< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, workflow_case_log_rev 
-< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
-<       (acs_objects.object_id = workflow_case_log_rev.entry_rev_id));
-< 
-< 
----
-> SELECT t2.object_type, content_type__refresh_view(t2.object_type)
-> from acs_object_types t1, acs_object_types t2
-> where t2.tree_sortkey between t1.tree_sortkey and
-> tree_right(t1.tree_sortkey) and t1.object_type = 'content_revision';
-209d141
-< -- fraber 160104: persons has additional .title field in ]po[...
-211c143
-< select o.*, pa.*, pe.person_id, pe.first_names, pe.last_name, u.*, mr.member_state, mr.rel_id
----
-> select o.*, pa.*, pe.*, u.*, mr.member_state, mr.rel_id
-222,238d153
-< 
-< 
-< 
-< 
-< 
-< 
-< 
-< -- fraber 160104: Disable execution. Execute as part of acs-content-repository upgrade.
-< --
-< SELECT t2.object_type, content_type__refresh_view(t2.object_type)
-< from acs_object_types t1, acs_object_types t2
-< where t2.tree_sortkey between t1.tree_sortkey and
-< tree_right(t1.tree_sortkey) and t1.object_type = 'content_revision';
 
+
+
+=======================================================
+translation server
+=======================================================
 
 
 
@@ -612,6 +553,13 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-l
 
 
 
+=======================================================
+mail-lite
+=======================================================
+
+
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl openacs-4.5-9-0/packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl
 424a425
 >         
@@ -625,13 +573,9 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-m
 
 
 
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-service-contract/tcl/msg-type-procs.tcl openacs-4.5-9-0/packages/acs-service-contract/tcl/msg-type-procs.tcl
-39c39
-<     if {$name eq ""} {
----
->     if { $name eq "") } {
-
+=======================================================
+login
+=======================================================
 
 
 
@@ -675,6 +619,12 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-s
 
 
 
+
+=======================================================
+calendar JS
+=======================================================
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-subsite/www/resources/core.js openacs-4.5-9-0/packages/acs-subsite/www/resources/core.js
 1716,1720d1715
 < 
@@ -690,6 +640,13 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-s
 <       cal.selY.dispatchEvent(event);
 <       cal.selD.dispatchEvent(event);
 < 
+
+
+
+
+=======================================================
+]po[ custom page-error
+=======================================================
 
 
 
@@ -1275,6 +1232,11 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 
 
 
+=======================================================
+acs-permissions
+=======================================================
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-tcl/tcl/acs-permissions-procs.tcl openacs-4.5-9-0/packages/acs-tcl/tcl/acs-permissions-procs.tcl
 179,180d178
 < 
@@ -1282,9 +1244,11 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 
 
 
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-tcl/tcl/apm-install-procs.tcl openacs-4.5-9-0/packages/acs-tcl/tcl/apm-install-procs.tcl
-795a796
->         #exec "mv" "$package_path" "$::acs::rootdir/packages"
+
+
+=======================================================
+Not sure
+=======================================================
 
 
 
@@ -1308,11 +1272,12 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 <     } else {
 <         ns_return 200 text/html "$exception_text<br/><br/><button onclick='javascript:window.history.back();'>[lang::message::lookup "" acs-tcl.GoBack "Go back"]</button>"
 <     }
----
-> 				 
-400a392
-> 
 
+
+
+=======================================================
+http-client-procs.tcl: Fix curl issue
+=======================================================
 
 
 
@@ -1331,11 +1296,15 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 <     ad_unset_cookie -domain $domain -secure f ad_secure_token
 <     ad_unset_cookie -domain $domain -secure f ad_user_login
 <     ad_unset_cookie -domain $domain -secure f ad_user_login_secure
-1786c1781
 <     if {0 && [info exists alt_insecure_location] && $suppress_http_port } {
 ---
 >     if { [info exists alt_insecure_location] && $suppress_http_port } {
 
+
+
+=======================================================
+util_current_location with tweaks for ]po[
+=======================================================
 
 
 
@@ -1369,6 +1338,13 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 <     ns_log Debug "util_current_location: proto=$proto, hostname=$hostname, port=$port"
 < 
 
+
+
+
+
+=======================================================
+acs-templating/resources
+=======================================================
 
 
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-templating/resources/forms/blue.adp openacs-4.5-9-0/packages/acs-templating/resources/forms/blue.adp
@@ -1822,22 +1798,17 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 
 
 
+=======================================================
+
+=======================================================
+
+
+
 diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-templating/tcl/date-procs.tcl openacs-4.5-9-0/packages/acs-templating/tcl/date-procs.tcl
 1022,1024d1021
 <     if { [regexp {([0-9]*)-([0-9]*)-([0-9]*)} $value match _year _month _day] } {
 < 	set value "$_year $_month $_day 0 0 0 \{YYYY MONTH DD\}"
 <     }
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-templating/tcl/parse-procs.tcl openacs-4.5-9-0/packages/acs-templating/tcl/parse-procs.tcl
-513,514c513
-<       when compiling ADP source: template::adp_compile -file '$file' -string '$string'<br>\
-<       chunk=<br><pre>[ns_quotehtml $chunk]</pre>"
----
->       when compiling ADP source: template::adp_compile $source_type {$source}"
-
 
 
 
@@ -1868,55 +1839,9 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/calen
 
 
 
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-storage/sql/postgresql/upgrade/upgrade-5.8.1-5.8.2.sql openacs-4.5-9-0/packages/file-storage/sql/postgresql/upgrade/upgrade-5.8.1-5.8.2.sql
-2,7d1
-< -- sanity check for existence of fs_root_folders 
-< CREATE OR REPLACE FUNCTION inline_0 ()
-< RETURNS INTEGER AS $BODY$
-< declare
-<         v_count                 integer;
-< begin
-9,12d2
-< 	select count(*) into v_count from pg_tables where tablename = 'fs_root_folders';
-< 
-<         IF      v_count > 0
-<         THEN
-16,22c6,7
-<        				select 
-< 					o2.object_id as folder_id  
-< 				from 
-< 					acs_objects o1, 
-< 					acs_objects o2 
-< 				where 
-< 					o1.object_id in (select folder_id from fs_root_folders)
----
->        select o2.object_id as folder_id  from acs_objects o1, acs_objects o2
->        where o1.object_id in (select folder_id from fs_root_folders)
-25,33c10
-<          				and o2.object_type = 'content_folder'
-< 			);
-<                 return 0;
-<         END IF;
-<         return 1;
-< 
-< end;$BODY$ LANGUAGE 'plpgsql';
-< SELECT inline_0 ();
-< DROP FUNCTION inline_0 ();
----
->          and o2.object_type = 'content_folder');
-47,48c24,25
-<         v_folder_id                   integer;
-<         v_package_id                  integer;
----
->         v_folder_id                   cr_folders.folder_id%TYPE;
->         v_package_id                  acs_objects.package_id%TYPE;
-112c89
-<         v_folder_id                         integer;
----
->         v_folder_id                         fs_root_folders.folder_id%TYPE;
-
+=======================================================
+file-storage
+=======================================================
 
 
 
@@ -1925,19 +1850,6 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-
 <     catch {
 57d55
 <     } err_msg
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-storage/tcl/file-storage-procs-postgresql.xql openacs-4.5-9-0/packages/file-storage/tcl/file-storage-procs-postgresql.xql
-261,262c261,264
-<       perform acs_object__update_last_modified (:parent_id,:creation_user,:creation_ip);
-<       perform acs_object__update_last_modified (:item_id,:creation_user,:creation_ip);
----
->       perform acs_object__update_last_modified
->       (:parent_id,:creation_user,:creation_ip);
->       perform
->       acs_object__update_last_modified(:item_id,:creation_user,:creation_ip);
 
 
 
@@ -1956,10 +1868,6 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-
 <     db_string update2 "select acs_object__update_last_modified(:item_id, :creation_user, :creation_ip)"
 ---
 >     db_exec_plsql update_last_modified ""
-1099a1096
-> 
-1100a1098
-> 
 1120,1129d1117
 <     # 2019-01-22: Delete permissions and file versions
 <     db_dml del_perms "delete from acs_permissions where object_id = :item_id"
@@ -1976,715 +1884,5 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-
 <     # delete permissions
 <     db_dml del_perms "delete from acs_permissions where object_id = :folder_id"
 
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-storage/www/file-add.tcl openacs-4.5-9-0/packages/file-storage/www/file-add.tcl
-122c122
-< if [catch {set binary [im_exec $unpack_binary]} errormsg] {
----
-> if [catch {set binary [exec $unpack_binary]} errormsg] {
-158c158
-< 	catch { im_exec $unpack_binary -jd $path ${upload_file.tmpfile} } errmsg
----
-> 	catch { exec $unpack_binary -jd $path ${upload_file.tmpfile} } errmsg
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/file-storage/www/folder-zip-add.tcl openacs-4.5-9-0/packages/file-storage/www/folder-zip-add.tcl
-103c103
-<         catch { im_exec $unzip_binary -d $unzip_path ${upload_file.tmpfile} } errmsg
----
->         catch { exec $unzip_binary -d $unzip_path ${upload_file.tmpfile} } errmsg
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/oacs-dav/oacs-dav.info openacs-4.5-9-0/packages/oacs-dav/oacs-dav.info
-11c11
-<     <version name="1.2.0" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0.apm">
----
->     <version name="1.2.0d3" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0d3.apm">
-19c19
-<         <provides url="oacs-dav" version="1.2.0"/>
----
->         <provides url="oacs-dav" version="1.2.0d3"/>
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/rss-support.info openacs-4.5-9-0/packages/rss-support/rss-support.info
-11c11
-<     <version name="0.4" url="http://openacs.org/repository/download/apm/rss-support-0.4.apm">
----
->     <version name="0.4d2" url="http://openacs.org/repository/download/apm/rss-support-0.4d2.apm">
-16c16
-<         <release-date>2016-11-15</release-date>
----
->         <release-date>2015-10-04</release-date>
-37,38c37,38
-<         <provides url="rss-support" version="0.4"/>
-< 	<requires url="acs-kernel" version="5.8.1"/>
----
->         <provides url="rss-support" version="0.4d2"/>
-> 	<requires url="acs-kernel" version="5.9.0"/>
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/tcl/rss-generation-init.tcl openacs-4.5-9-0/packages/rss-support/tcl/rss-generation-init.tcl
-1a2,7
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/tcl/rss-generation-procs.tcl openacs-4.5-9-0/packages/rss-support/tcl/rss-generation-procs.tcl
-55c55
-<     append rss "<title>[ad_quotehtml $channel_title]</title>" \n
----
->     append rss "<title>[ns_quotehtml $channel_title]</title>" \n
-57c57
-<     append rss "<description>[ad_quotehtml $channel_description]</description>" \n
----
->     append rss "<description>[ns_quotehtml $channel_description]</description>" \n
-60c60
-<     append rss "<lastBuildDate>[ad_quotehtml $channel_lastBuildDate]</lastBuildDate>" \n
----
->     append rss "<lastBuildDate>[ns_quotehtml $channel_lastBuildDate]</lastBuildDate>" \n
-62c62
-< 	append rss "<pubDate>[ad_quotehtml $channel_pubDate]</pubDate>" \n
----
-> 	append rss "<pubDate>[ns_quotehtml $channel_pubDate]</pubDate>" \n
-84c84
-<     append rss "<title>[ad_quotehtml $iarray(title)]</title>\n"
----
->     append rss "<title>[ns_quotehtml $iarray(title)]</title>\n"
-86c86
-<     append rss "<link>[ad_quotehtml $iarray(link)]</link>\n"
----
->     append rss "<link>[ns_quotehtml $iarray(link)]</link>\n"
-88c88
-<         set element [ad_quotehtml $iarray(width)]
----
->         set element [ns_quotehtml $iarray(width)]
-92c92
-<         set element [ad_quotehtml $iarray(height)]
----
->         set element [ns_quotehtml $iarray(height)]
-96c96
-<         set element [ad_quotehtml $iarray(description)]
----
->         set element [ns_quotehtml $iarray(description)]
-108c108
-<         append rss "<title>[ad_quotehtml $iarray(title)]</title>" \n
----
->         append rss "<title>[ns_quotehtml $iarray(title)]</title>" \n
-110,111c110,111
-<         append rss "<link>[ad_quotehtml $iarray(link)]</link>" \n
-<         append rss {<guid isPermaLink="true">} [ad_quotehtml $iarray(link)] {</guid>} \n
----
->         append rss "<link>[ns_quotehtml $iarray(link)]</link>" \n
->         append rss {<guid isPermaLink="true">} [ns_quotehtml $iarray(link)] {</guid>} \n
-114c114
-<             append rss "<description>[ad_quotehtml $iarray(description)]</description>" \n
----
->             append rss "<description>[ns_quotehtml $iarray(description)]</description>" \n
-118c118
-<             append rss "<pubDate>[ad_quotehtml $iarray(timestamp)]</pubDate>" \n
----
->             append rss "<pubDate>[ns_quotehtml $iarray(timestamp)]</pubDate>" \n
-122c122
-<             append rss "<category>[ad_quotehtml $iarray(category)]</category>" \n
----
->             append rss "<category>[ns_quotehtml $iarray(category)]</category>" \n
-126c126
-< 	    append rss "<enclosure url=\"[ad_quotehtml $iarray(enclosure_url)]\" length=\"$iarray(enclosure_length)\" type=\"$iarray(enclosure_type)\"/>"
----
-> 	    append rss "<enclosure url=\"[ns_quotehtml $iarray(enclosure_url)]\" length=\"$iarray(enclosure_length)\" type=\"$iarray(enclosure_type)\"/>"
-174c174
-<     append rss [ad_quotehtml $channel_title]
----
->     append rss [ns_quotehtml $channel_title]
-182c182
-<     append rss [ad_quotehtml $channel_description]
----
->     append rss [ns_quotehtml $channel_description]
-188c188
-<         append rss "<dc:date>[ad_quotehtml $channel_pubDate]</dc:date>\n"
----
->         append rss "<dc:date>[ns_quotehtml $channel_pubDate]</dc:date>\n"
-193c193
-<         append rss [ad_quotehtml $channel_copyright]
----
->         append rss [ns_quotehtml $channel_copyright]
-199c199
-<         append rss [ad_quotehtml $channel_managingEditor]
----
->         append rss [ns_quotehtml $channel_managingEditor]
-205c205
-<         append rss [ad_quotehtml $channel_webMaster]
----
->         append rss [ns_quotehtml $channel_webMaster]
-228c228
-<     append rss "<image rdf:resource=\"[ad_quotehtml $imarray(url)]\" />\n"
----
->     append rss "<image rdf:resource=\"[ns_quotehtml $imarray(url)]\" />\n"
-237c237
-<         append rss "<rdf:li rdf:resource=\"[ad_quotehtml $iarray(link)]\" />\n"
----
->         append rss "<rdf:li rdf:resource=\"[ns_quotehtml $iarray(link)]\" />\n"
-246c246
-<     append rss "<title>[ad_quotehtml $imarray(title)]</title>\n"
----
->     append rss "<title>[ns_quotehtml $imarray(title)]</title>\n"
-248c248
-<     append rss "<link>[ad_quotehtml $imarray(link)]</link>\n"
----
->     append rss "<link>[ns_quotehtml $imarray(link)]</link>\n"
-250c250
-<         set element [ad_quotehtml $iarray(width)]
----
->         set element [ns_quotehtml $iarray(width)]
-259,260c259,260
-<         append rss "<item rdf:about=\"[ad_quotehtml $iarray(link)]\">\n"
-<         set element [ad_quotehtml $iarray(title)]
----
->         append rss "<item rdf:about=\"[ns_quotehtml $iarray(link)]\">\n"
->         set element [ns_quotehtml $iarray(title)]
-262c262
-<         append rss "<link>[ad_quotehtml $iarray(link)]</link>\n"
----
->         append rss "<link>[ns_quotehtml $iarray(link)]</link>\n"
-264c264
-<             set element [ad_quotehtml $iarray(description)]
----
->             set element [ns_quotehtml $iarray(description)]
-268c268
-<             set element [ad_quotehtml $iarray(timestamp)]
----
->             set element [ns_quotehtml $iarray(timestamp)]
-272c272
-<             set element [ad_quotehtml $iarray(author)]
----
->             set element [ns_quotehtml $iarray(author)]
-276c276
-<             set element [ad_quotehtml $iarray(category)]
----
->             set element [ns_quotehtml $iarray(category)]
-323c323
-<     append rss [ad_quotehtml $channel_title]
----
->     append rss [ns_quotehtml $channel_title]
-327c327
-<     append rss [ad_quotehtml $channel_link]
----
->     append rss [ns_quotehtml $channel_link]
-331c331
-<     append rss [ad_quotehtml $channel_description]
----
->     append rss [ns_quotehtml $channel_description]
-335c335
-<     append rss [ad_quotehtml $channel_language]
----
->     append rss [ns_quotehtml $channel_language]
-340c340
-<         append rss [ad_quotehtml $channel_copyright]
----
->         append rss [ns_quotehtml $channel_copyright]
-346c346
-<         append rss [ad_quotehtml $channel_managingEditor]
----
->         append rss [ns_quotehtml $channel_managingEditor]
-352c352
-<         append rss [ad_quotehtml $channel_webMaster]
----
->         append rss [ns_quotehtml $channel_webMaster]
-358c358
-<         append rss [ad_quotehtml $channel_rating]
----
->         append rss [ns_quotehtml $channel_rating]
-364c364
-<         append rss [ad_quotehtml $channel_pubDate]
----
->         append rss [ns_quotehtml $channel_pubDate]
-370c370
-<         append rss [ad_quotehtml $channel_lastBuildDate]
----
->         append rss [ns_quotehtml $channel_lastBuildDate]
-380c380
-<         append rss [ad_quotehtml $channel_skipDays]
----
->         append rss [ns_quotehtml $channel_skipDays]
-386c386
-<         append rss [ad_quotehtml $channel_skipHours]
----
->         append rss [ns_quotehtml $channel_skipHours]
-409c409
-<     append rss "<title>[ad_quotehtml $iarray(title)]</title>\n"
----
->     append rss "<title>[ns_quotehtml $iarray(title)]</title>\n"
-411c411
-<     append rss "<link>[ad_quotehtml $iarray(link)]</link>\n"
----
->     append rss "<link>[ns_quotehtml $iarray(link)]</link>\n"
-413c413
-<         set element [ad_quotehtml $iarray(width)]
----
->         set element [ns_quotehtml $iarray(width)]
-417c417
-<         set element [ad_quotehtml $iarray(height)]
----
->         set element [ns_quotehtml $iarray(height)]
-421c421
-<         set element [ad_quotehtml $iarray(description)]
----
->         set element [ns_quotehtml $iarray(description)]
-432c432
-<         set element [ad_quotehtml $iarray(title)]
----
->         set element [ns_quotehtml $iarray(title)]
-434c434
-<         append rss "<link>[ad_quotehtml $iarray(link)]</link>\n"
----
->         append rss "<link>[ns_quotehtml $iarray(link)]</link>\n"
-436c436
-<             set element [ad_quotehtml $iarray(description)]
----
->             set element [ns_quotehtml $iarray(description)]
-577a578,583
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/tcl/rss-generation-service-procs.tcl openacs-4.5-9-0/packages/rss-support/tcl/rss-generation-service-procs.tcl
-120,121c120
-<     if {!([info exists summary_context_id] && \
-< 	    [info exists impl_name])} {
----
->     if {!([info exists summary_context_id] && [info exists impl_name]) } {
-150,151c149
-<     if {!([info exists summary_context_id] && \
-< 	    [info exists impl_name])} {
----
->     if {!([info exists summary_context_id] && [info exists impl_name])} {
-173a172,177
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/tcl/rss-support-procs.tcl openacs-4.5-9-0/packages/rss-support/tcl/rss-support-procs.tcl
-149a150,155
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/tcl/rss-utilities-procs.tcl openacs-4.5-9-0/packages/rss-support/tcl/rss-utilities-procs.tcl
-62a63,68
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/admin/subscrs.tcl openacs-4.5-9-0/packages/rss-support/www/admin/subscrs.tcl
-3a4,8
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/delete-2.tcl openacs-4.5-9-0/packages/rss-support/www/delete-2.tcl
-17a18,23
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/delete.tcl openacs-4.5-9-0/packages/rss-support/www/delete.tcl
-23a24,29
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/doc/index.html openacs-4.5-9-0/packages/rss-support/www/doc/index.html
-6c6
-< <h2>RSS Support</h2>
----
-> <h1>RSS Support</h1>
-25a26
-> <h2>Release Notes</h2>
-26a28
-> <p>Please file bugs in the <a href="http://openacs.org/bugtracker/openacs/">Bug Tracker</a>.</p>
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/my-subscrs.tcl openacs-4.5-9-0/packages/rss-support/www/my-subscrs.tcl
-5a6,11
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/subscr-ae-2.tcl openacs-4.5-9-0/packages/rss-support/www/subscr-ae-2.tcl
-37c37
-< set review_url subscr-ae?[export_vars -url {subscr_id impl_id summary_context_id return_url meta}]
----
-> set review_url [export_vars -base subscr-ae {subscr_id impl_id summary_context_id return_url meta}]
-40a41,46
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/subscr-ae.tcl openacs-4.5-9-0/packages/rss-support/www/subscr-ae.tcl
-82a83,88
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/subscr-run.tcl openacs-4.5-9-0/packages/rss-support/www/subscr-run.tcl
-12a13,18
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/rss-support/www/subscrs-include.tcl openacs-4.5-9-0/packages/rss-support/www/subscrs-include.tcl
-18a19,24
-> 
-> # Local variables:
-> #    mode: tcl
-> #    tcl-indent-level: 4
-> #    indent-tabs-mode: nil
-> # End:
-
-
-
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/sql/postgresql/tsearch2-driver-package-create.sql openacs-4.5-9-0/packages/tsearch2-driver/sql/postgresql/tsearch2-driver-package-create.sql
-1,4c1,8
-< create or replace function ts2_to_tsvector ( varchar, varchar ) returns varchar as '
-< declare
-< ts2_cfg alias for $1;
-< ts2_txt alias for $2;
----
-> --
-> -- procedure ts2_to_tsvector/2
-> --
-> CREATE OR REPLACE FUNCTION ts2_to_tsvector ( 
->        ts2_cfg varchar, 
->        ts2_txt varchar 
-> ) RETURNS varchar AS $$
-> DECLARE
-6,7c10
-< begin
-< 
----
-> BEGIN
-11c14,15
-< end;' language 'plpgsql';
----
-> END;
-> $$ language plpgsql;
-13,16c17,24
-< create or replace function ts2_to_tsquery ( varchar, varchar ) returns tsquery as '
-< declare
-< ts2_cfg alias for $1;
-< ts2_txt alias for $2;
----
-> --
-> -- procedure ts2_to_tsquery/2
-> --
-> CREATE OR REPLACE FUNCTION ts2_to_tsquery ( 
->        ts2_cfg varchar, 
->        ts2_txt varchar 
-> ) RETURNS tsquery AS $$
-> DECLARE
-18c26
-< begin
----
-> BEGIN
-23c31,32
-< end;' language 'plpgsql';
----
-> END;
-> $$ LANGUAGE plpgsql;
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/tcl/tsearch2-driver-install-procs.tcl openacs-4.5-9-0/packages/tsearch2-driver/tcl/tsearch2-driver-install-procs.tcl
-57c57
-< 		if { [exists_and_not_null sql_file_loc] } {
----
-> 		if { ([info exists sql_file_loc] && $sql_file_loc ne "") } {
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/tcl/tsearch2-driver-procs-postgresql.xql openacs-4.5-9-0/packages/tsearch2-driver/tcl/tsearch2-driver-procs-postgresql.xql
-25a26,32
->   <fullquery name="callback::search::search::impl::tsearch2-driver.base_query">
->   <rdbms><type>postgresql</type><version>8.4</version></rdbms>
->     <querytext>
->       where fti @@ to_tsquery(:query)
->     </querytext>
->   </fullquery>
-> 
-39a47,61
->   <fullquery name="callback::search::search::impl::tsearch2-driver.search">
->   <rdbms><type>postgresql</type><version>8.4</version></rdbms>
->     <querytext>
->         select distinct(orig_object_id) from acs_permission__permission_p_recursive_array(array(
->         select txt.object_id
->         from
->         [join $from_clauses ","]
->         $base_query
->         [expr {[llength $where_clauses] > 0 ? " and [join $where_clauses { and }]" : ""}]
->         order by ts_rank(fti,to_tsquery(:query)) desc
->         ), :user_id, 'read')
->         $limit_clause $offset_clause
->     </querytext>
->   </fullquery>
-> 
-46a69,80
->       [expr {[llength $where_clauses] > 0 ? " and [join $where_clauses { and }]" : ""}]
->     </querytext>
->   </fullquery>
-> 
->   <fullquery name="dbqd.tsearch2-driver.tcl.tsearch2-driver-procs.callback::search::search::impl::tsearch2-driver.search_result_count">
->   <rdbms><type>postgresql</type><version>8.4</version></rdbms>
->     <querytext>
->       select count(distinct(orig_object_id)) from acs_permission__permission_p_recursive_array(array(
->       select txt.object_id
->       from
->       [join $from_clauses ","]
->       $base_query
-48a83
->         ), :user_id, 'read')
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/tcl/tsearch2-driver-procs.tcl openacs-4.5-9-0/packages/tsearch2-driver/tcl/tsearch2-driver-procs.tcl
-86a87,94
-> #ad_proc -callback search::search -impl tsearch2-driver {
-> #    {-extra_args {}}
-> #    query
-> #    offset
-> #    limit
-> #    user_id
-> #    df
-> #} 
-89,93c97,101
-<     query
-<     offset
-<     limit
-<     user_id
-<     df
----
->     -query
->     -offset
->     -limit
->     -user_id
->     -df
-127a136,139
->     set where_clauses ""
->     set from_clauses ""
->     if {![info exists user_id]} {set user_id 0}
-> 
-142c154
-<         lappend where_clauses " and o.creation_date > :df"
----
->         lappend where_clauses "o.creation_date > :df"
-146c158
-<         lappend where_clauses " and o.creation_date < :dt"
----
->         lappend where_clauses "o.creation_date < :dt"
-155c167
-< 	    lappend where_clauses "$arg_clauses(where_clause)"
----
-> 	    lappend where_clauses $arg_clauses(where_clause)
-247,256c259,272
-<     set p 0
-<     for {set i 0} {$i < [string length $query]} {incr i} {
-<         if {[string index $query $i] eq "("} {
-<             incr p
-<         }
-<         if {[string index $query $i] eq ")"} {
-<             incr p -1
-<         }
-<     }
-<     if {$p != 0} {
----
->     # set p 0
->     # for {set i 0} {$i < [string length $query]} {incr i} {
->     #     if {[string index $query $i] eq "("} {
->     #         incr p
->     #     }
->     #     if {[string index $query $i] eq ")"} {
->     #         incr p -1
->     #     }
->     # }
->     # if {$p != 0} {
->     #     regsub -all {\(|\)} $query {} query
->     # }
-> 
->     # remove all parens
-258d273
-<     }
-260c275,278
-<     # remove or at beginning of query 
----
->     # remove empty ()
->     regsub -all {\(\s*\)} $query {} query
-> 
->     # remove "or" at beginning of query 
-261a280,283
-> 
->     # remove "not" at end of query 
->     regsub -nocase " not$" $query {} query
-> 
-317,318c339,341
-<         if {[regexp {(^\w*):} $e discard operator] \
-<                 && [lsearch -exact $valid_operators $operator] != -1} {
----
->         if {[regexp {(^\w*):} $e discard operator]
-> 	    && $operator in $valid_operators
->         } {
-358c381,384
-<             if {($last_operator eq "title:" || $last_operator eq "description:") && ($start_q || $end_q)} {
----
->             if {
-> 		($last_operator eq "title:" || $last_operator eq "description:") 
-> 		&& ($start_q || $end_q)
-> 	    } {
-373c399
-<         if {[exists_and_not_null $op]} {
----
->         if {([info exists $op] && [set $op] ne "")} {
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/tsearch2-driver.info openacs-4.5-9-0/packages/tsearch2-driver/tsearch2-driver.info
-10c10
-<     <version name="5.7.0" url="http://openacs.org/repository/download/apm/tsearch2-driver-5.7.0.apm">
----
->     <version name="5.9.0" url="http://openacs.org/repository/download/apm/tsearch2-driver-5.9.0.apm">
-13c13
-<         <release-date>2011-06-12</release-date>
----
->         <release-date>2015-10-04</release-date>
-17,18c17,18
-<         <provides url="tsearch2-driver" version="5.7.0"/>
-<         <requires url="search" version="5.7.0"/>
----
->         <provides url="tsearch2-driver" version="5.9.0"/>
->         <requires url="search" version="5.9.0"/>
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/tsearch2-driver/www/doc/index.html openacs-4.5-9-0/packages/tsearch2-driver/www/doc/index.html
-280a281,284
-> <h2>Release Notes</h2>
-> 
-> <p>Please file bugs in the <a href="http://openacs.org/bugtracker/openacs/">Bug Tracker</a>.</p>
-> 
-
-
-
-
-
-
-
-diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/xotcl-core/tcl/06-package-procs.tcl openacs-4.5-9-0/packages/xotcl-core/tcl/06-package-procs.tcl
-396,398d395
-<         #
-<         # The variable specification is a pair of name and value
-<         #
-401,404d397
-<         #
-<         # We have just a variable name, provide an linked variable to
-<         # access the value.
-<         #
-423,427c416
-<     #
-<     # Substitute the template with the themed template
-<     #
-<     set adp [template::themed_template $adp]
-<     
----
->     #my log "--before adp"   ; # $__vars
-428a418
->     #my log "--after adp"
 
 
