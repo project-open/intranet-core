@@ -105,16 +105,11 @@ set object_type_category [im_dynfield::type_category_for_object_type -object_typ
 # from the HTTP session.
 # -----------------------------------------------------------
 
-
-set form_vars [ns_conn form]
 set pass_through_html ""
 foreach var $pass_through_variables {
-   set value [ns_set get $form_vars $var]
-   append pass_through_html "
-	<input type=hidden name=\"$var\" value=\"[ns_quotehtml $value]\">
-   "
+   set value [im_opt_val -limit_to nohtml $var]
+   append pass_through_html "<input type=hidden name=\"$var\" value=\"[ns_quotehtml $value]\">\n"
 }
-
 
 
 # -----------------------------------------------------------

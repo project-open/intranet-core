@@ -99,18 +99,9 @@ if {!$perm_p} {
 # make sure they are specified in the HTTP session
 # -------------------------------------------------------------
 
-set form_vars [ns_conn form]
-array set form_hash [ns_set array $form_vars]
-
 foreach elem $component_tcl {
     if {[regexp {^\$(.*)} $elem match varname]} {
-	if {![info exists $varname]} {
-	    if {![info exists form_hash($varname)]} { 
-		doc_return 200 "text/html" "<pre>Error: You have to specify variable '$varname' in the URL."
-		ad_script_abort
-	    }
-	    set $varname $form_hash($varname)
-	}
+	set $varname [im_opt_val -limit_to nohtml $varname]
     }
 }
 
