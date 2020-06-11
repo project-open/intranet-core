@@ -42,7 +42,7 @@ callback im_project_new_redirect -object_id $project_id \
     -status_id $project_status_id -type_id $project_type_id \
     -project_id $project_id -parent_id $parent_id \
     -company_id $company_id -project_type_id $project_type_id \
-    -project_name $project_name -project_nr [im_opt_val project_nr] \
+    -project_name $project_name -project_nr [im_opt_val -limit_to nohtml project_nr] \
     -workflow_key $workflow_key -return_url $return_url
 
 
@@ -68,7 +68,7 @@ if {"" != $parent_id} {
     "
 }
 
-set org_project_type_id [im_opt_val project_type_id]
+set org_project_type_id [im_opt_val -limit_to integer project_type_id]
 
 set project_nr_field_size [im_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set project_nr_field_editable_p [im_parameter -package_id [im_package_core_id] ProjectNumberFieldEditableP "" 1]
@@ -412,7 +412,7 @@ template::element::create $form_id description -optional -datatype text\
 # ------------------------------------------------------
 
 set object_type "im_project"
-set dynfield_project_type_id [im_opt_val project_type_id]
+set dynfield_project_type_id [im_opt_val -limit_to integer project_type_id]
 if {[info exists project_id]} {
     set existing_project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
     if {0 != $existing_project_type_id && "" != $existing_project_type_id} {
@@ -502,7 +502,7 @@ if {[form is_request $form_id]} {
 	set "creation_ip_address" [ns_conn peeraddr]
 	set "creation_user" $user_id
 	set project_id [im_new_object_id]
-	set project_name [im_opt_val project_name]
+	set project_name [im_opt_val -limit_to nohtml project_name]
 	set button_text [_ intranet-core.Create_Project]
 
 	if { (![info exists parent_id] || $parent_id eq "") } {
@@ -1003,7 +1003,7 @@ if {$edit_existing_project_p && "" != $project_id} {
 
     # Setup the subnavbar
     set bind_vars [ns_set create]
-    ns_set put $bind_vars project_id [im_opt_val project_id]
+    ns_set put $bind_vars project_id [im_opt_val -limit_to integer project_id]
     set parent_menu_id [db_string parent_menu "select menu_id from im_menus where label='project'" -default 0]
     set menu_label "project_summary"
     set sub_navbar [im_sub_navbar \

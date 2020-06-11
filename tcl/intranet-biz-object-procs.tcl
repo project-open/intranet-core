@@ -1018,7 +1018,7 @@ ad_proc im_biz_object_add_profile_component {
 
     set passthrough {object_id return_url also_add_to_object_id limit_to_users_in_group_id}
     foreach var $passthrough {
-	if {![info exists $var]} { set $var [im_opt_val $var] }
+	if {![info exists $var]} { set $var [im_opt_val -limit_to nohtml $var] }
     }
 
     # ToDo: Test

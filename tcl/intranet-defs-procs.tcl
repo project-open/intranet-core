@@ -309,6 +309,15 @@ ad_proc -public im_opt_val {
     This function is useful for passing optional variables to components, 
     if the component can't be sure that the variable exists in the callers
     context.
+    Vaid limit_to options:
+    <ul>
+    <li>html
+    <li>nohtml
+    <li>allhtml
+    <li>integer
+    <li>alnum
+    <li>
+    </ul>
 } {
     set result ""
 
@@ -322,37 +331,48 @@ ad_proc -public im_opt_val {
 	set form_vars [ns_conn form]
 	if {"" == $form_vars} { set form_vars [ns_set create] }
 	set result [ns_set get $form_vars $var_name]
+    }
 
-	# Check the security of the value taken from HTTP vars
-	set message ""
-	switch $limit_to {
-	    allhtml {
-		# Do nothing - no checks
-	    }
-	    nohtml {
-		# Don't allow any tags
-		if { [string first < $result] >= 0 } {
-		    set message [lang::message::lookup "" intranet-core.No_HTML_allowed_in_varname "No HTML tags allowed in variable '%var_name%'"]
-		}
-	    }
-	    html {
-		set message [ad_html_security_check $result]
-	    }
-	    integer {
-		if {![string is integer $result]} { 
-		    set message [lang::message::lookup "" intranet-core.Variable_is_not_an_integer "Variable '%var_name%' is not an integer"]
-		}
-	    }
-	    default {
-		# Do nothing - no checks
+
+    # Check the security of the value taken from HTTP vars
+    set message ""
+    switch $limit_to {
+	"" - allhtml {
+	    # Do nothing - no checks
+	}
+	nohtml {
+	    # Don't allow any tags
+	    if { [string first < $result] >= 0 } {
+		set message [lang::message::lookup "" intranet-core.No_HTML_allowed_in_varname "No HTML tags allowed in variable '%var_name%'"]
 	    }
 	}
-
-	if {"" != $message} {
-	    im_security_alert -location im_opt_val -message $message -value $result -severity "Severe"
-	    ad_return_complaint 1 "<b>Security Check</b>:<br>$message"
-	    ad_script_abort
+	alnum {
+	    # TCL string is alnum doesn't include underscores "_"!
+	    regsub -all {_} $result "" temp_result
+	    if {![string is $limit_to $temp_result]} { 
+		set message [lang::message::lookup "" intranet-core.Variable_is_not_an_$limit_to "Variable '%var_name%' with value '[ns_quotehtml $result]' is not '$limit_to'"]
+	    }
 	}
+	html {
+	    set message [ad_html_security_check $result]
+	}
+	default {
+	    # Take $limit_to as parameter to "string is"
+	    if {![string is $limit_to $result]} { 
+		set message [lang::message::lookup "" intranet-core.Variable_is_not_an_$limit_to "Variable '%var_name%' with value '[ns_quotehtml $result]' is not '$limit_to'"]
+	    }
+	}
+    }
+
+    if {"" != $message} {
+
+	# Add a stack-trace to the message in order to make it easier to locate the issue
+	append message "\n[ad_print_stack_trace]"
+
+	im_security_alert -location im_opt_val -message $message -value $result -severity "Severe"
+	set result ""
+	ad_return_complaint 1 "<b>Security Check</b>:<br><pre>$message</pre>"
+	ad_script_abort
     }
     
     return $result

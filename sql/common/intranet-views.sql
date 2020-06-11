@@ -414,7 +414,7 @@ delete from im_view_columns where view_id = 28;
 --
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
 extra_select, extra_where, sort_order, visible_for) values (2800,28,NULL,'Log',
-'"<a class=button href=/intranet-timesheet2/hours/new?show_week_p=0&project_id=$project_id&julian_date=[im_opt_val julian_date]
+'"<a class=button href=/intranet-timesheet2/hours/new?show_week_p=0&project_id=$project_id&julian_date=[im_opt_val -limit_to integer julian_date]
 >&nbsp;Log Hours</a>"','','',0,'');
 
 insert into im_view_columns (column_id, view_id, group_id, column_name, column_render_tcl,
