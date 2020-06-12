@@ -106,7 +106,26 @@
 --  970- 979		intranet-events
 --  980- 989		intranet-crm (-opportunities)
 --  990- 999		intranet-planning
--- 1000-9999		reserved
+
+-- 1000-1099		intranet-cust-ventum
+-- 1100-1199		reserved
+-- 1200-1199		reserved
+-- 1300-1199		reserved
+-- 1400-1199		reserved
+-- 1500-1199		reserved
+-- 1600-1199		reserved
+-- 1700-1199		reserved
+-- 1800-1199		reserved
+-- 1900-1199		reserved
+
+-- 2000-9999		reserved
+-- 3000-9999		reserved
+-- 4000-9999		reserved
+-- 5000-9999		reserved
+-- 6000-9999		reserved
+-- 7000-9999		reserved
+-- 8000-9999		reserved
+-- 9000-9999		reserved
 -- 10000-10000000	reserved
 
 
