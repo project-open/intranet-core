@@ -369,7 +369,7 @@ ad_proc -public im_opt_val {
 	# Add a stack-trace to the message in order to make it easier to locate the issue
 	append message "\n[ad_print_stack_trace]"
 
-	im_security_alert -location im_opt_val -message $message -value $result -severity "Severe"
+	im_security_alert -location "im_opt_val" -message $message -value $result -severity "Severe"
 	set result ""
 	ad_return_complaint 1 "<b>Security Check</b>:<br><pre>$message</pre>"
 	ad_script_abort
