@@ -1897,3 +1897,25 @@ proc string2hex {string} {
     }
     join $res \n
 }
+
+
+
+ad_proc -public im_coalesce { 
+    {a ""}
+    {b ""}
+    {c ""}
+    {d ""}
+    {e ""}
+    {f ""}    
+} {
+    Equivalent of SQL coalesce in TCL
+} {
+    if {"" ne $a} { return $a }
+    if {"" ne $b} { return $b }
+    if {"" ne $c} { return $c }
+    if {"" ne $d} { return $d }
+    if {"" ne $e} { return $e }
+    if {"" ne $f} { return $f }
+    return ""
+}
+
