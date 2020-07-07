@@ -142,21 +142,11 @@ set end_idx [expr {$start_idx + $how_many}]
 
 
 # Set the "menu_select_label" for the project navbar:
-# projects_open, projects_closed and projects_potential
-# depending on type_id and status_id:
-#
-#set menu_select_label "projects_list"
-#switch $project_status_id {
-#    71 { set menu_select_label "projects_potential" }
-#    76 { set menu_select_label "projects_open" }
-#    81 { set menu_select_label "projects_closed" }
-#    default { set menu_select_label "" }
-#}
-
-# fraber 161020: Disabled the Open/Potential/Closed tabs,
-# because I've never seen them being used.
 set menu_select_label "projects_filter_advanced"
 if {"project_costs" == $view_name} { set menu_select_label "projects_profit_loss" }
+# Check if a menu exists with the same name as the view_name. That way we can highlight custom views in the menu.
+set view_menu_id [db_string check_view_menu "select menu_id from im_menus where lower(label) = lower(:view_name)" -default 0]
+if {$view_menu_id} { set menu_select_label $view_name }
 
 
 if {"" == $start_date} { set start_date [parameter::get_from_package_key -package_key "intranet-cost" -parameter DefaultStartDate -default "2000-01-01"] }
