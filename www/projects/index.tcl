@@ -862,6 +862,7 @@ db_foreach projects_info_query $selection -bind $form_vars {
 	    eval "$cmd"
 	} errmsg]} {
             # TODO: warn user
+	    append row_html "<font color=red><pre>$errmsg</pre></font>"
 	}
 	append row_html "</td>\n"
     }
