@@ -28,7 +28,7 @@ ad_page_contract {
     
     @author frank.bergmann@project-open.com
 } {
-    { object_id:integer,multiple "" }
+    { object_id:multiple "" }
     { return_url "" }
     { page_url "default" }
     { user_id "" }
@@ -56,6 +56,9 @@ if {"" eq $object_id } {
 # Assume that there are few entries in the list of closed tree objects.
 foreach oid $object_id {
 
+    if {"root" eq $oid} { continue }
+    if {[im_security_alert_check_integer -location "biz-object-tree-open-close.tcl" -value $oid]} { continue }
+
     db_1row info "
 	select	(select	count(*)
 		from	acs_objects
@@ -69,6 +72,7 @@ foreach oid $object_id {
 		) as status_exists_p
 	from	dual
     "
+
     # Skip of the object dosn't exist. This may happen with partically saved GanttEditor trees
     if {!$oid_exists_p} { continue }
 
