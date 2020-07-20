@@ -36,7 +36,7 @@ ad_page_contract {
     @author mbryzek@arsdigita.com
     @author frank.bergmann@project-open.com
 } {
-    { order_by "Project nr" }
+    { order_by:allhtml "Project nr" }
     { include_subprojects_p "" }
     { include_subproject_level "" }
     { mine_p "f" }
@@ -217,12 +217,12 @@ set extra_wheres [list]
 set view_order_by_clause ""
 
 set column_sql "
-select	vc.*
-from	im_view_columns vc
-where	view_id=:view_id
-	and group_id is null
-order by sort_order"
-
+	select	vc.*
+	from	im_view_columns vc
+	where	view_id=:view_id
+		and group_id is null
+	order by sort_order
+"
 db_foreach column_list_sql $column_sql {
 
     set admin_html ""
@@ -244,6 +244,8 @@ db_foreach column_list_sql $column_sql {
 	}
     }
 }
+
+# ad_return_complaint 1 $view_order_by_clause
 
 # ---------------------------------------------------------------
 # Filter with Dynamic Fields
@@ -485,7 +487,6 @@ switch [string tolower $order_by] {
     "per" { 
 	set order_by_clause "order by per_order desc" 
 	lappend extra_selects "(case when p.percent_completed is null then 0 else p.percent_completed end) as per_order"
-
     }
     default {
 	if {$view_order_by_clause ne ""} {
