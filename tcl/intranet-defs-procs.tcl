@@ -348,7 +348,7 @@ ad_proc -public im_opt_val {
 	}
 	alnum {
 	    # TCL string is alnum doesn't include underscores "_"!
-	    regsub -all {_} $result "" temp_result
+	    regsub -all {[_-]} $result "" temp_result
 	    if {![string is $limit_to $temp_result]} { 
 		set message [lang::message::lookup "" intranet-core.Variable_is_not_an_$limit_to "Variable '%var_name%' with value '[ns_quotehtml $result]' is not '$limit_to'"]
 	    }
