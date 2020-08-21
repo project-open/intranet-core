@@ -2783,7 +2783,21 @@ ad_proc im_project_nuke {
 	# Baselines
 	if {[im_table_exists im_baselines]} {
 	    ns_log Notice "projects/nuke-2: im_baselines"
-	    db_dml del_risks "delete from im_baselines where baseline_project_id = :project_id"
+	    db_dml del_baseline_ref "update im_audits set audit_baseline_id = null where audit_baseline_id in (select baseline_id from im_baselines where baseline_project_id = :project_id)"
+	    db_dml del_baseline "delete from im_baselines where baseline_project_id = :project_id"
+	}
+
+
+	# Budget Items
+	if {[im_table_exists im_budget_items]} {
+	    ns_log Notice "projects/nuke-2: im_budget_items"
+
+	    # Get list of budget items, ordered from lowest level items to highest.
+	    # This way the children get deleted before we try to get rid of the parent.
+	    set bis [db_list slas "select budget_item_id from im_budget_items where budget_item_project_id = :project_id order by tree_sortkey DESC"]
+	    foreach bi_id $bis {
+		db_string del_bi "select im_budget_item__delete(:bi_id)"
+	    }
 	}
 	
 	# Filestorage
