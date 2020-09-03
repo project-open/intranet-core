@@ -2798,6 +2798,7 @@ ad_proc im_project_nuke {
 	    foreach bi_id $bis {
 		db_string del_bi "select im_budget_item__delete(:bi_id)"
 	    }
+	    db_dml update_match_task "update im_budget_items set match_task_id = null where match_task_id = :project_id"
 	}
 	
 	# Filestorage
