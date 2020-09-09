@@ -412,13 +412,15 @@ template::element::create $form_id description -optional -datatype text\
 # ------------------------------------------------------
 
 set object_type "im_project"
-set dynfield_project_type_id [im_opt_val -limit_to integer project_type_id]
+# set dynfield_project_type_id [im_opt_val -limit_to integer project_type_id]
+set dynfield_project_type_id $org_project_type_id
 if {[info exists project_id]} {
     set existing_project_type_id [db_string ptype "select project_type_id from im_projects where project_id = :project_id" -default 0]
     if {0 != $existing_project_type_id && "" != $existing_project_type_id} {
 	set dynfield_project_type_id $existing_project_type_id
     }
 }
+
 
 set dynfield_project_id 0
 if {[info exists project_id]} { set dynfield_project_id $project_id }
