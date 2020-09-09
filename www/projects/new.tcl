@@ -115,13 +115,19 @@ if {$gantt_project_with_children_p} {
 # -----------------------------------------------------------
 # Permissions
 # -----------------------------------------------------------
-     
+
 set view_finance_p [im_permission $user_id view_finance]
 set view_budget_p [im_permission $user_id view_budget]
 set view_budget_hours_p [im_permission $user_id view_budget_hours]
 set add_budget_p [im_permission $user_id add_budget]
 set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
+if {"" ne $parent_id} {
+    set view_budget_p 0 
+    set view_budget_hours_p 0
+    set add_budget_p 0
+    set add_budget_hours_p 0
+}
 
 set project_exists_p 0
 if {[info exists project_id]} {
@@ -808,7 +814,7 @@ if {[form is_valid $form_id]} {
 
     # Set the old project type. Used to detect changes in the project
     # type and therefore the need to display new DynField fields in a
-    # second page. !!!
+    # second page. 
     if {0 == $id_count} {
 	set previous_project_type_id 0
 	set previous_project_company_id 0
