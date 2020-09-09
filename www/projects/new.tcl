@@ -123,6 +123,7 @@ set add_budget_p [im_permission $user_id add_budget]
 set add_budget_hours_p [im_permission $user_id add_budget_hours]
 
 if {"" ne $parent_id} {
+    # Hide Budget fields when creating a sub-project
     set view_budget_p 0 
     set view_budget_hours_p 0
     set add_budget_p 0
