@@ -56,6 +56,7 @@ set user_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
 set required_field "<font color=red size=+1><B>*</B></font>"
 set current_url [im_url_with_query]
 set show_context_help_p 1
+set org_project_type_id [im_opt_val -limit_to integer project_type_id]
 
 # Select out information if the parent has been specified.
 # This way we save ourselves the redirect to the biz-object-typeselect
@@ -66,9 +67,8 @@ if {"" != $parent_id} {
         from    im_projects
         where   project_id = :parent_id
     "
+    if {"" eq $org_project_type_id} { set org_project_type_id $project_type_id }
 }
-
-set org_project_type_id [im_opt_val -limit_to integer project_type_id]
 
 set project_nr_field_size [im_parameter -package_id [im_package_core_id] ProjectNumberFieldSize "" 20]
 set project_nr_field_editable_p [im_parameter -package_id [im_package_core_id] ProjectNumberFieldEditableP "" 1]
@@ -557,7 +557,9 @@ if {[form is_request $form_id]} {
     template::element::set_value $form_id parent_id $parent_id
     template::element::set_value $form_id company_id $company_id
     template::element::set_value $form_id project_lead_id $project_lead_id
-    template::element::set_value $form_id project_type_id $project_type_id
+    set set_project_type_id $project_type_id
+    if {"" ne $org_project_type_id} { set set_project_type_id $org_project_type_id }
+    template::element::set_value $form_id project_type_id $set_project_type_id
     template::element::set_value $form_id project_status_id $project_status_id
     set start_date_list [split $start_date "-"]
     template::element::set_value $form_id start $start_date_list
