@@ -531,6 +531,7 @@ if {[form is_request $form_id]} {
 	    
 	    # This means we are adding a subproject.
 	    # Let's select out some defaults for this page
+	    set button_text [lang::message::lookup "" intranet-core.Create_Subproject "Create Subproject"]
 	    db_1row projects_by_parent_id_query {
 		select 
 			p.company_id, 
