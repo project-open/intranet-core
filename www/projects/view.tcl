@@ -142,6 +142,18 @@ set admin_html_content ""
 # You should not assume that the subproject has the same project_type_id as the old project. If at all we should make this a switch.
 if {$admin} {
     append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id}}]\">[_ intranet-core.Create_a_Subproject]</A><br></li>\n"
+
+    set scrum_sprint_type_id [im_project_type_scrum]
+    set scrum_project_name "$project_name SCRUM Sprint"
+    if {[db_string scrum_p "select count(*) from im_categories where category_id = :scrum_sprint_type_id and enabled_p = 't'"]} {
+	append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id} {project_type_id $scrum_sprint_type_id} {project_name $scrum_project_name}}]\">[lang::message::lookup "" intranet-core.Create_a_SCRUM_Sprint "Create a new SCRUM Sprint"]</A><br></li>\n"
+    }
+
+    set ticket_container_type_id [im_project_type_ticket_container]
+    set ticket_project_name "$project_name Ticket Container"
+    if {[db_string ticket_p "select count(*) from im_categories where category_id = :ticket_container_type_id and enabled_p = 't'"]} {
+	append admin_html_content "<li><A href=\"[export_vars -base "/intranet/projects/new" {{parent_id $project_id} {project_type_id $ticket_container_type_id} {project_name $ticket_project_name}}]\">[lang::message::lookup "" intranet-core.Create_a_Ticket_Container "Create a new Ticket Container"]</A><br></li>\n"
+    }
 }
 
 # Fraber 130121: NEVER enable nuke.
