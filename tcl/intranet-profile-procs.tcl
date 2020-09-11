@@ -519,6 +519,10 @@ namespace eval im_profile {
 
 
     ad_proc -public profile_options_of_user { 
+	{ -translate_p 1 }
+	{ -locale ""}
+	{ -include_empty_p 0}
+	{ -include_empty_name "" }
 	user_id 
     } {
 	Returns a list of the profiles of the current user.
@@ -545,11 +549,14 @@ namespace eval im_profile {
 
 	set options [list]
 	db_foreach profile_options_of_user $profile_sql {
-	    regsub -all {[ /]} $group_name "_" group_key
-	    set group_name [lang::message::lookup "" intranet-core.Profile_$group_key $group_name]
+	    if {$translate_p} {
+		regsub -all {[ /]} $group_name "_" group_key
+		set group_name [lang::message::lookup $locale intranet-core.Profile_$group_key $group_name]
+	    }
 	    lappend options [list $group_name $group_id]
 	}
 
+	if {1 == $include_empty_p} { set options [linsert $options 0 [list $include_empty_name ""]] }
 	return $options
     }
 
