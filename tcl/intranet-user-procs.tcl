@@ -1900,6 +1900,9 @@ ad_proc -public im_menu_users_admin_links {
     set result_list {}
     set current_user_id [ad_conn user_id]
     set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
+    set add_users_p [im_permission $current_user_id "add_users"]
+    if {$add_users_p} { set user_is_admin_p 1 }
+
     set return_url [im_url_with_query]
 
     if {[im_permission $current_user_id "add_users"]} {
