@@ -274,6 +274,7 @@ switch $view_name {
 set sub_navbar [im_sub_navbar \
     -components \
     -current_plugin_id $plugin_id \
+    -base_url "/intranet/projects/view?project_id=$main_project_id" \
     $parent_menu_id \
     $bind_vars "" "pagedesriptionbar" $menu_label] 
 
