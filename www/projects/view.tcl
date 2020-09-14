@@ -119,7 +119,12 @@ if {!$read} {
 # Set the context bar as a function on whether this is a subproject or not:
 # ---------------------------------------------------------------------
 
-db_1row select_project  "select * from im_projects where project_id = :project_id"
+db_1row select_project  "
+	select	p.*,
+		(select project_id from im_projects main_p where main_p.tree_sortkey = tree_root_key(p.tree_sortkey)) as main_project_id
+	from	im_projects p
+	where	p.project_id = :project_id
+"
 
 set page_title "$project_nr - $project_name"
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
@@ -253,7 +258,7 @@ if {$gantt_project_enabled_p} {
 
 # Setup the subnavbar
 set bind_vars [ns_set create]
-ns_set put $bind_vars project_id $project_id
+ns_set put $bind_vars project_id $main_project_id
 set parent_menu_id [im_menu_id_from_label "project"]
 set menu_label "project_summary"
 switch $view_name {
@@ -265,13 +270,12 @@ switch $view_name {
     }
 }
 
+
 set sub_navbar [im_sub_navbar \
     -components \
     -current_plugin_id $plugin_id \
-    -base_url "/intranet/projects/view?project_id=$project_id" \
     $parent_menu_id \
     $bind_vars "" "pagedesriptionbar" $menu_label] 
-
 
 
 set left_navbar_html ""
