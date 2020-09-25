@@ -62,8 +62,7 @@ ad_proc -public im_user_permissions {
     }
 
     # Get the list of profiles of user_id (the one to be managed)
-    # together with the information if current_user_id can read/write
-    # it.
+    # together with the information if current_user_id can read/write it.
     # m.group_id are all the groups to whom user_id belongs
     set profile_perm_sql "
 		select
@@ -81,6 +80,7 @@ ad_proc -public im_user_permissions {
 			and o.object_type = 'im_profile'
     "
     set first_loop 1
+    set loop_cnt 0
     db_foreach profile_perm_check $profile_perm_sql {
 	if {$debug} { ns_log Notice "im_user_permissions: $group_id: view=$view_p read=$read_p write=$write_p admin=$admin_p" }
 	if {$first_loop} {
@@ -98,6 +98,15 @@ ad_proc -public im_user_permissions {
 	if {"f" eq $write_p} { set write 0 }
 	if {"f" eq $admin_p} { set admin 0 }
 	set first_loop 0
+	incr loop_cnt
+    }
+
+    if {0 == $loop_cnt} {
+	# The user is not part of any group - full write for everybody...
+	    set view 1
+	    set read 1
+	    set write 1
+	    set admin 1	
     }
 
     # Myself - I can read and write its data
