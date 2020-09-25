@@ -107,6 +107,39 @@ db_dml update "
 
 db_dml update "
 	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/conf_items'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'ConfItemBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/events'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'EventBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
+	set attr_value = '/web/$server_name/filestorage/risks'
+	where parameter_id in (
+		select	parameter_id
+		from	apm_parameters
+		where	parameter_name = 'RiskBasePathUnix'
+	)
+"
+
+
+db_dml update "
+	update apm_parameter_values
 	set attr_value = '/web/$server_name/filestorage/home'
 	where parameter_id in (
 		select	parameter_id
