@@ -29,8 +29,19 @@ set page_title [_ intranet-core.Done]
 set context_bar [im_context_bar [list /intranet/projects/ "[_ intranet-core.Projects]"] $page_title]
 set current_user_id [auth::require_login]
 
+
+# ad_return_complaint 1 $project_id; ad_script_abort
+
+
+set project_sql "
+    	select	p.project_id as pid
+	from	im_projects p
+	where	p.project_id in ([join $project_id ","])
+	order by p.tree_sortkey DESC
+"
+
 set results {}
-foreach pid $project_id {
+db_foreach pid $project_sql {
     im_project_permissions $current_user_id $pid view read write admin
     if {!$admin} {
 	ad_return_complaint 1 "You need to have administration rights for this project."
