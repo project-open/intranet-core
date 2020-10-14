@@ -66,6 +66,12 @@ set elements_list {
 	    <a href="@projects.project_url@">@projects.project_name@</a>
     }
   }
+  nuke {
+    label "[_ intranet-core.Nuke]"
+    display_template {
+	<a href="@projects.nuke_url@">[_ intranet-core.Nuke]</a>
+    }
+  }
   num_subprojects {
   	label "[_ intranet-core.Num_Subprojects]"
   }
@@ -108,7 +114,7 @@ if {"" ne $num_children} {
 }
 
 
-db_multirow -extend {project_url parent_project_url} projects get_projects "
+db_multirow -extend {project_url nuke_url parent_project_url} projects get_projects "
 	select
 	 	p.*,
 		im_category_from_id(p.project_status_id) as project_status,
@@ -137,6 +143,7 @@ db_multirow -extend {project_url parent_project_url} projects get_projects "
 	LIMIT :limit
 " {
     set project_url [export_vars -base "/intranet/projects/view" {project_id return_url}]
+    set nuke_url [export_vars -base "/intranet/projects/nuke" {project_id return_url}]
     set parent_project_url [export_vars -base "/intranet/projects/view" {{project_id $parent_id} return_url}]
 }
 
