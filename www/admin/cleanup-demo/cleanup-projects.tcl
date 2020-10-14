@@ -19,7 +19,9 @@ ad_page_contract {
     @author frank.bergmann@project-open.com
 } {
     { return_url "" }
-    { limit 100000 }
+    { parent_id "" }
+    { num_children:integer "" }
+    { limit:integer 100000 }
 }
 
 # ------------------------------------------------------
@@ -93,7 +95,19 @@ list::create \
         -filters {
         	return_url
         }
-        
+
+set parent_sql ""
+if {"" ne $parent_id} {
+   if {"null" eq $parent_id} { set parent_sql "and p.parent_id is null" }
+   if {[string is integer $parent_id]} { set parent_sql "and p.parent_id = :parent_id" }  
+}
+
+set num_children_sql ""
+if {"" ne $num_children} {
+   if {[string is integer $num_children]} { set num_children_sql "and coalesce(subp.num_subprojects, 0) = :num_children" }
+}
+
+
 db_multirow -extend {project_url parent_project_url} projects get_projects "
 	select
 	 	p.*,
@@ -101,7 +115,7 @@ db_multirow -extend {project_url parent_project_url} projects get_projects "
 		im_category_from_id(p.project_type_id) as project_type,
 		im_project_name_from_id(p.parent_id) as parent_project_name,
 		im_project_nr_from_id(p.parent_id) as parent_project_nr,
-		subp.num_subprojects
+		coalesce(subp.num_subprojects, 0) as num_subprojects
 	from
 		im_projects p
 		left outer join
@@ -117,6 +131,8 @@ db_multirow -extend {project_url parent_project_url} projects get_projects "
 			proj.project_id
 		) subp on (p.project_id = subp.project_id)
 	where	1=1
+		$parent_sql
+		$num_children_sql
 	order by p.project_id DESC
 	LIMIT :limit
 " {
