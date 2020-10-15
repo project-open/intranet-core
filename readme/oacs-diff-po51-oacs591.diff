@@ -1,0 +1,2490 @@
+
+Only in /web/projop/packages/acs-admin/www/apm: version-fs-scan.xql
+Only in /web/projop/packages/acs-admin/www/apm: version-parameters-oracle.xql
+Only in /web/projop/packages/acs-admin/www/apm: version-parameters-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/auth/authority.adp /web/projop/openacs-4.5-9-1/packages/acs-admin/www/auth/authority.adp
+24,38d23
+< 
+< <if @import_users_url@ not nil>
+<   <p>
+<     <b>&raquo;</b> <a href="@import_users_url@">Batch-import users for this authority</a>
+<   </p>
+< </if>
+< 
+< <if @import_groups_url@ not nil>
+<   <p>
+<     <b>&raquo;</b> <a href="@import_groups_url@">Batch-import groups for this authority</a>
+<   </p>
+< </if>
+< 
+< 
+< 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/auth/authority.tcl /web/projop/openacs-4.5-9-1/packages/acs-admin/www/auth/authority.tcl
+310,312d309
+< set import_users_url [export_vars -base "/auth-ldap-adldapsearch/import-users"]
+< 
+< 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/auth/index.adp /web/projop/openacs-4.5-9-1/packages/acs-admin/www/auth/index.adp
+4,6d3
+< <property name="main_navbar_label">admin</property>
+< <property name="title">@page_title;literal@</property>
+< <property name="left_navbar">@left_navbar_html;literal@</property>
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/auth/index.tcl /web/projop/openacs-4.5-9-1/packages/acs-admin/www/auth/index.tcl
+165,186d164
+< 
+< 
+< # ----------------------------------------------------------
+< # Left Navbar
+< # ----------------------------------------------------------
+< 
+< set ldap_wizard_l10n [lang::message::lookup "" intranet-sysconfig.LDAP_Configuration_Wizard "LDAP Configuration Wizard"]
+< set admin_html "
+< <ul>
+< <li><a href=/intranet-sysconfig/ldap/index>$ldap_wizard_l10n</a>
+< </ul>
+< "
+< 
+< set left_navbar_html "
+<         <div class='filter-block'>
+<         <div class='filter-title'>
+<             [lang::message::lookup "" intranet-core.Admin_LDAP_Authorities "Admin LDAP Authorities"]
+<         </div>
+<         $admin_html
+<         </div>
+<         <hr>
+< "
+Only in /web/projop/packages/acs-admin/www: index-oracle.xql
+Only in /web/projop/packages/acs-admin/www: index-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/install/index.tcl /web/projop/openacs-4.5-9-1/packages/acs-admin/www/install/index.tcl
+17,19d16
+< ad_returnredirect "/acs-admin/apm/packages-install"
+< 
+< 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-admin/www/server-restart.tcl /web/projop/openacs-4.5-9-1/packages/acs-admin/www/server-restart.tcl
+30c30
+< # ad_schedule_proc -thread t -once t 2 {*}$cmd
+---
+> ad_schedule_proc -thread t -once t 2 {*}$cmd
+Only in /web/projop/packages/acs-admin/www/users: modify-admin-privileges-oracle.xql
+Only in /web/projop/packages/acs-admin/www/users: modify-admin-privileges-postgresql.xql
+Only in /web/projop/packages/acs-admin/www/users: user-add-2.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-browser/www/package-view.adp /web/projop/openacs-4.5-9-1/packages/acs-api-browser/www/package-view.adp
+1d0
+< <if @show_master_p@>
+3,7c2,4
+< <property name=title>@title;noquote@</property>
+< <property name="context">@context;noquote@</property>
+< </if>
+< 
+< <property name="header">
+---
+> <property name="doc(title)">@title;literal@</property>
+> <property name="context">@context;literal@</property>
+> <property name="head">
+9,11c6
+<        td.wide {
+<        	       width:35%;
+<        }
+---
+> td.wide {width:35%;}
+13a9
+> @dimensional_slider;noquote@
+15,26c11
+< <if "" ne @error_message@>
+< <!-- <font color=red> -->
+< @error_message@
+< <!-- </font> -->
+< </if>
+< 
+< <if "" ne @version_id@>
+< 
+< <!-- @dimensional_slider;noquote@ --> 
+< 
+< <h2>Procedure Files</h2>
+< <if @procs_files_p@>
+---
+> <if @kind@ eq "procs_files">
+31c16
+<     <td style="width:35%"><b><a href="@procs_files.view@?version_id=@version_id@&amp;path=@procs_files.full_path@">@procs_files.path@</a></b></td>
+---
+>     <td class="wide"><strong><a href="@procs_files.view@?version_id=@version_id@&amp;path=@procs_files.full_path@">@procs_files.path@</a></strong></td>
+39,41c24
+< 
+< <if @procs_p@>
+< <h2>Procedures</h2>
+---
+> <if @kind@ eq "procs">
+46c29
+<     <td style="width:35%"><b><a href="http://www.project-open.net/api-doc/proc-view?version_id=@version_id@&amp;proc=@procedures.proc@">@procedures.proc@</a></b></td>
+---
+>     <td class="wide"><strong><a href="proc-view?version_id=@version_id@&amp;proc=@procedures.proc@">@procedures.proc@</a></strong></td>
+54,56c37
+< 
+< <if @sql_files_p@>
+< <h2>SQL Files</h2>
+---
+> <if @kind@ eq "sql_files">
+61c42
+<     <td><b><a href="http://www.project-open.net/api-doc/display-sql?package_key=@package_key@&amp;url=@sql_files.relative_path@&amp;version_id=@version_id@">@sql_files.path@</a></b></td>
+---
+>     <td><strong><a href="display-sql?package_key=@package_key@&amp;url=@sql_files.relative_path@&amp;version_id=@version_id@">@sql_files.path@</a></strong></td>
+69,71c50
+< 
+< <if @content_p@>
+< <h2>Content Pages</h2>
+---
+> <if @kind@ eq "content">
+76,77c55,56
+<       <td style="width:35%">@content_pages.indentation;noquote@
+<        <b><a href="http://www.project-open.net/api-doc/content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
+---
+>       <td class="wide">@content_pages.indentation;noquote@
+>        <strong><a href="content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></strong>
+79c58
+<          <a href="http://www.project-open.net/api-doc/type-view?type=@content_pages.type@"></a>
+---
+>          <a href="type-view?type=@content_pages.type@"></a>
+85c64
+<       <td>@content_pages.indentation;noquote@<b>@content_pages.name@/</b></td>
+---
+>       <td>@content_pages.indentation;noquote@<strong>@content_pages.name@/</strong></td>
+91,92d69
+< 
+< </if>
+\ No newline at end of file
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-browser/www/package-view.tcl /web/projop/openacs-4.5-9-1/packages/acs-api-browser/www/package-view.tcl
+1d0
+< if {![info exists package_key]} {
+13c12
+<         { version_id "" }
+---
+>     version_id:naturalnum,notnull
+29,47d27
+< } else {
+<     set kind "all"
+<     set public_p ""
+<     set about_package_key ""
+< }
+< 
+< set error_message ""
+< set dimensional_slider ""
+< if {![info exists show_master_p]} { set show_master_p 1 }
+< 
+< if {![info exists version_id] || "" == $version_id} {
+<     if {[info exists package_key] && "" != $package_key} {
+<         set version_id [db_string package_version "select min(version_id) from apm_package_versions where package_key = :package_key" -default ""]
+<     }
+< }
+< 
+< if {"" == $version_id} { set error_message "Package '$package_key' is not installed on this server, so there is no documentation available." }
+< if {"all" == $kind} { set kind "procs_files procs sql_files content" }
+< set url "/api-doc"
+79a60
+> 
+81a63,64
+> set dimensional_slider [ad_dimensional $dimensional_list "" \
+>                             [ad_tcl_vars_to_ns_set version_id kind public_p about_package_key]]
+83,97c66
+< # One of the vars is not 
+< set dimensional_slider "[ad_dimensional \
+<         $dimensional_list \
+<         "" \
+<          [ad_tcl_vars_to_ns_set version_id kind public_p about_package_key]]"
+< 
+< set procs_p 0
+< set procs_files_p 0
+< set sql_files_p 0
+< set content_p 0
+< set abs_path "http://www.project-open.net/api-doc/"
+< 
+< 
+< foreach k $kind {
+< switch $k {
+---
+> switch $kind {
+99d67
+<         set procs_files_p 1
+110c78
+<                 set view ${abs_path}procs-file-view
+---
+>                 set view procs-file-view
+118c86
+<                 set view ${abs_path}content-page-view
+---
+>                 set view content-page-view
+125d92
+<         set procs_p 1
+141c108
+<                 if { !$doc_elements(public_p) } {
+---
+>                 if { $doc_elements(protection) ne "public"} {
+149d115
+<         set sql_files_p 1
+162d127
+<         set content_p 1
+211d175
+< }
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-authentication/tcl/authentication-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-authentication/tcl/authentication-procs.tcl
+226,234d225
+< 
+<         # Check for email instead of username
+<         set user_id_from_email [db_string email_p "select min(party_id) from parties where lower(email) = lower(trim(:username))" -default ""]
+<         if {"" ne $user_id_from_email} {
+<             ns_log Notice "auth::authenticate: found that username='$username' is actually a valid email for user_id=$user_id_from_email"
+<             set username [db_string uname "select username from users where user_id = :user_id_from_email"]
+<             ns_log Notice "auth::authenticate: New username='$username' for user_id=$user_id_from_email"
+<         }
+< 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-bootstrap-installer/bootstrap.tcl /web/projop/openacs-4.5-9-1/packages/acs-bootstrap-installer/bootstrap.tcl
+156c156
+<     # apm_bootstrap_load_libraries -procs acs-automated-testing
+---
+>     apm_bootstrap_load_libraries -procs acs-automated-testing
+Only in /web/projop/packages/acs-content-repository/sql/oracle: content-perms.sql
+Only in /web/projop/packages/acs-content-repository/sql/oracle/upgrade: upgrade-5.1.0-5.1.1.sql
+Only in /web/projop/packages/acs-content-repository/sql/postgresql: content-perms.sql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-content-repository/sql/postgresql/upgrade/upgrade-5.9.0d1-5.9.0d2.sql /web/projop/openacs-4.5-9-1/packages/acs-content-repository/sql/postgresql/upgrade/upgrade-5.9.0d1-5.9.0d2.sql
+22,27d21
+< 
+< -- fraber 161128: Delete inconsistent entries                                                                                                       
+< update cr_items set latest_revision = null
+< where latest_revision in (select latest_revision from cr_items except select revision_id from cr_revisions);
+< 
+< 
+31,34d24
+< 
+< -- fraber 161128: Delete inconsistent entries                                                                                                       
+< update cr_items set live_revision = null
+< where live_revision in (select live_revision from cr_items except select revision_id from cr_revisions);
+Only in /web/projop/packages/acs-core-docs/www: ch08s06.html
+Only in /web/projop/packages/acs-core-docs/www: ch10s06.html
+Only in /web/projop/packages/acs-core-docs/www: contributing-code.html
+Only in /web/projop/packages/acs-core-docs/www: cvs-resources.html
+Only in /web/projop/packages/acs-core-docs/www: install-full-text-search.html
+Only in /web/projop/packages/acs-core-docs/www: maintenance.html
+Only in /web/projop/packages/acs-core-docs/www: openacs-cvs-concepts.html
+Only in /web/projop/packages/acs-core-docs/www: release-notes-4-5.html
+Only in /web/projop/packages/acs-core-docs/www: release-notes-4-6-2.html
+Only in /web/projop/packages/acs-core-docs/www: release-notes-4-6-3.html
+Only in /web/projop/packages/acs-core-docs/www: release-notes-4-6.html
+Only in /web/projop/packages/acs-core-docs/www: upgrade-openacs.html
+Only in /web/projop/packages/acs-core-docs/www: using-cvs-with-openacs.html
+Only in /web/projop/packages/acs-datetime/tcl: acs-datetime-procs.xql
+Only in /web/projop/packages/acs-developer-support/www: comments-toggle.tcl
+Only in /web/projop/packages/acs-developer-support/www: set-database-enabled.tcl
+Only in /web/projop/packages/acs-developer-support/www: set-enabled.tcl
+Only in /web/projop/packages/acs-developer-support/www: set-user-switching-enabled.tcl
+Only in /web/projop/packages/acs-kernel/sql/oracle/upgrade: upgrade-4.6.1-4.7d.sql
+Only in /web/projop/packages/acs-kernel/sql/oracle/upgrade: upgrade-4.6-4.6.1.sql
+Only in /web/projop/packages/acs-kernel/sql/postgresql/upgrade: upgrade-4.6.1-4.7d.sql
+Only in /web/projop/packages/acs-kernel/sql/postgresql/upgrade: upgrade-4.6-4.6.1.sql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-kernel/sql/postgresql/upgrade/upgrade-5.9.0d4-5.9.0d5.sql /web/projop/openacs-4.5-9-1/packages/acs-kernel/sql/postgresql/upgrade/upgrade-5.9.0d4-5.9.0d5.sql
+133,202c133,136
+< 
+< -- fraber 160104: Regenerated objects dropped by drop-cascade above
+< --
+< 
+< 
+< drop view if exists cr_revisionsx;
+< CREATE VIEW cr_revisionsx AS
+< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
+<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
+<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
+<        cr.revision_id, cr.title, cr.item_id, cr.description, 
+<        cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id 
+< FROM acs_objects, cr_revisions cr, cr_items i, cr_text 
+< WHERE ((acs_objects.object_id = cr.revision_id) 
+<       AND (cr.item_id = i.item_id));
+< 
+< 
+< drop view if exists etp_page_revisionsx;
+< CREATE VIEW etp_page_revisionsx AS
+< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
+<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
+<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
+<        cr.revision_id, cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, 
+<        i.name, i.parent_id, etp_page_revisions.etp_page_revision_id 
+< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, etp_page_revisions 
+< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
+<       (acs_objects.object_id = etp_page_revisions.etp_page_revision_id));
+< 
+< 
+< CREATE VIEW imagesx AS
+< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
+<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
+<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, 
+<        cr.revision_id, cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, 
+<        i.parent_id, images.image_id, images.width, images.height 
+< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, 
+<        images 
+< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
+<       (acs_objects.object_id = images.image_id));
+< 
+< CREATE VIEW users_email_imagex AS
+< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
+<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
+<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, cr.revision_id, 
+<        cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id, 
+<        users_email_image.email_image_id 
+< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, users_email_image 
+< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
+<       (acs_objects.object_id = users_email_image.email_image_id));
+< 
+< CREATE VIEW fs_urls_full AS
+< SELECT cr_extlinks.extlink_id AS url_id, cr_extlinks.url, cr_items.parent_id AS folder_id, cr_extlinks.label AS name, 
+<        cr_extlinks.description, acs_objects.object_id, acs_objects.object_type, acs_objects.context_id, 
+<        acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, acs_objects.creation_ip, 
+<        acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, acs_objects.title, acs_objects.package_id 
+< FROM cr_extlinks, cr_items, acs_objects 
+< WHERE ((cr_extlinks.extlink_id = cr_items.item_id) AND 
+<       (cr_items.item_id = acs_objects.object_id));
+< 
+< CREATE VIEW workflow_case_log_revx AS
+< SELECT acs_objects.object_id, acs_objects.object_type, acs_objects.title AS object_title, acs_objects.package_id AS object_package_id, 
+<        acs_objects.context_id, acs_objects.security_inherit_p, acs_objects.creation_user, acs_objects.creation_date, 
+<        acs_objects.creation_ip, acs_objects.last_modified, acs_objects.modifying_user, acs_objects.modifying_ip, cr.revision_id, 
+<        cr.title, cr.item_id, cr.description, cr.publish_date, cr.mime_type, cr.nls_language, i.name, i.parent_id, 
+<        workflow_case_log_rev.entry_rev_id 
+< FROM acs_objects, cr_revisions cr, cr_items i, cr_text, workflow_case_log_rev 
+< WHERE (((acs_objects.object_id = cr.revision_id) AND (cr.item_id = i.item_id)) AND 
+<       (acs_objects.object_id = workflow_case_log_rev.entry_rev_id));
+< 
+< 
+---
+> SELECT t2.object_type, content_type__refresh_view(t2.object_type)
+> from acs_object_types t1, acs_object_types t2
+> where t2.tree_sortkey between t1.tree_sortkey and
+> tree_right(t1.tree_sortkey) and t1.object_type = 'content_revision';
+208d141
+< -- fraber 160104: persons has additional .title field in ]po[...
+210c143
+< select o.*, pa.*, pe.person_id, pe.first_names, pe.last_name, u.*, mr.member_state, mr.rel_id
+---
+> select o.*, pa.*, pe.*, u.*, mr.member_state, mr.rel_id
+221,237d153
+< 
+< 
+< 
+< 
+< 
+< 
+< 
+< -- fraber 160104: Disable execution. Execute as part of acs-content-repository upgrade.
+< --
+< 
+< 
+< SELECT t2.object_type, content_type__refresh_view(t2.object_type)
+< from acs_object_types t1, acs_object_types t2
+< where t2.tree_sortkey between t1.tree_sortkey and
+< tree_right(t1.tree_sortkey) and t1.object_type = 'content_revision';
+< 
+< 
+245a162
+> 
+247a165
+> 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-lang/tcl/lang-message-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-lang/tcl/lang-message-procs.tcl
+853c853
+<     if { "1" eq [lang::util::translator_mode_p] } {
+---
+>     if { [lang::util::translator_mode_p] } {
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-lang/tcl/lang-util-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-lang/tcl/lang-util-procs.tcl
+671,673c671
+<         set mode $::acs_translator_mode_p
+<         if {"" eq $mode} { set mode 0 }
+<         return $mode
+---
+>         return $::acs_translator_mode_p
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-lang/tcl/lang-util-procs.xql /web/projop/openacs-4.5-9-1/packages/acs-lang/tcl/lang-util-procs.xql
+16c16
+<         select min(locale)
+---
+>         select locale
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-lang/www/admin/edit-localized-message.tcl /web/projop/openacs-4.5-9-1/packages/acs-lang/www/admin/edit-localized-message.tcl
+18d17
+<     {submit_remote_p "1" }
+51,54d49
+< set delete_url [export_vars -base message-delete { locale package_key message_key show {return_url {[ad_return_url]}} }]
+< 
+< 
+< set submit_remote_options_list [list [list "Submit to translation server" 1]]
+56,57c51
+< 
+< # element create message_new submit_remote_p -optional -label "" -datatype text -widget checkbox -options $submit_remote_options_list
+---
+> set delete_url [export_vars -base message-delete { locale package_key message_key show {return_url {[ad_return_url]}} }]
+66,67c60,68
+<     {message_key_pretty:text(inform) {label "Message Key"} {value "$package_key.$message_key"}}
+<     {description:text(inform) {label "Description"} {after_html {}}}
+---
+> 
+>     {message_key_pretty:text(inform)
+>         {label "Message Key"}
+>         {value "$package_key.$message_key"}
+>     }
+>     {description:text(inform)
+>         {label "Description"}
+>         {after_html {}}
+>     }
+79,82c80,90
+<     {message:text(textarea) {label "$locale_label Message"} {html { rows 6 cols 60 }}}
+<     {comment:text(textarea),optional {label "Comment"} {html { rows 6 cols 60 }}}
+<     {submit_remote_p:text(checkbox),optional {label ""} {options $submit_remote_options_list}}
+<     {submit:text(submit) {label "     Update     "}}
+---
+>     {message:text(textarea)
+>         {label "$locale_label Message"} 
+>         {html { rows 6 cols 40 } }
+>     }
+>     {comment:text(textarea),optional
+>         {label "Comment"}
+>         {html { rows 6 cols 40 }}
+>     }
+>     {submit:text(submit)
+>         {label "     Update     "}
+>     }
+142,143c150,151
+<                from   lang_messages_audit lma
+<                       LEFT OUTER JOIN cc_users cu ON (cu.user_id = lma.overwrite_user)
+---
+>                from lang_messages_audit lma,
+>                     cc_users cu
+146a155
+>                and    cu.user_id = lma.overwrite_user
+178,182d186
+< 
+<     # Register on translation server
+<     if {1 eq $submit_remote_p} {
+<         lang::message::register_remote $locale $package_key $message_key $message
+<     }
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-lang/www/admin/localized-message-new.tcl /web/projop/openacs-4.5-9-1/packages/acs-lang/www/admin/localized-message-new.tcl
+16d15
+<     {submit_remote_p "1" }
+20,21d18
+< set focus ""
+< 
+26,27c23,24
+< set locale_label [ad_locale_get_label $current_locale]
+< set default_locale_label [ad_locale_get_label $default_locale]
+---
+> set locale_label [lang::util::get_label $current_locale]
+> set default_locale_label [lang::util::get_label $default_locale]
+30,31c27,28
+< set context [list [list "package-list?[export_vars { locale }]" $locale_label] \
+<                  [list "message-list?[export_vars { locale package_key show }]" $package_key] \
+---
+> set context [list [list [export_vars -base package-list { locale }] $locale_label] \
+>                  [list [export_vars -base message-list { locale package_key show }] $package_key] \
+41c38
+< if { ![string equal $current_locale $default_locale] } {
+---
+> if { $current_locale ne $default_locale } {
+64,68d60
+< set submit_remote_options_list [list [list "Submit to translation server" 1]]
+< element create message_new submit_remote_p -optional -label "" -datatype text \
+<     -widget checkbox -options $submit_remote_options_list
+<  
+< 
+75,76c67
+<     element set_value message_new submit_remote_p $submit_remote_p
+<     if { [empty_string_p $message_key] } {
+---
+>     if { $message_key eq "" } {
+117,121d107
+<     # Register on translation server
+<     if {1 eq $submit_remote_p} {
+<         lang::message::register_remote $locale $package_key $message_key $message
+<     }
+< 
+126a113,121
+> 
+> set focus ""
+> 
+> ad_return_template
+> # Local variables:
+> #    mode: tcl
+> #    tcl-indent-level: 4
+> #    indent-tabs-mode: nil
+> # End:
+Only in /web/projop/packages/acs-lang/www/admin: #message-list.adp#
+Only in /web/projop/packages/acs-lang/www: locale-set.tcl
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl
+597,602d596
+<          # fraber 2016-11-02: Overwrite fixed_sender in case we got
+<          # issues with corporate mail gateways etc.
+<          if { $fixed_sender ne ""} {
+<              set originator $fixed_sender
+<          }
+< 
+Only in /web/projop/packages/acs-reference: tcl
+Only in /web/projop/packages/acs-service-contract/tcl: acs-service-contract-init-oracle.xql
+Only in /web/projop/packages/acs-service-contract/tcl: acs-service-contract-init-postgresql.xql
+Only in /web/projop/packages/acs-service-contract/www: binding-uninstall-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-subsite/lib/login.adp /web/projop/openacs-4.5-9-1/packages/acs-subsite/lib/login.adp
+6,9d5
+<         <table cellspacing=0 cellpadding=0 border=0>
+<         <tr valign=center>
+<         <td>
+< 
+17a14
+> 
+21,44d17
+< 		</if>
+< 
+<         </td>
+< 	<td width=10>&nbsp;</td>
+<         <td align=right>
+<                 <table>
+<                   <tr><td align=center>Powered by</td></tr>
+<                   <tr>
+<                     <td align=center>
+<                       <a href="http://www.project-open.com/">
+<                         <img
+<                           src="/intranet/images/project_open.70x26.gif"
+<                           alt="Open Source Enterprise Project Management"
+<                           title="Open Source Enterprise Project Management"
+<                           border=0
+<                         >
+<                       </a>
+<                     </td>
+<                   </tr>
+<                 </table>
+<         </td>
+<         </tr>
+<         </table>
+< 
+45a19
+> </if>
+47,48d20
+< 
+< 
+Only in /web/projop/packages/acs-subsite/lib: subsites.xql
+Only in /web/projop/packages/acs-subsite/sql/oracle: attributes-drop.sql
+Only in /web/projop/packages/acs-subsite/sql/oracle: attribute.sql
+Only in /web/projop/packages/acs-subsite/sql/postgresql: attributes-drop.sql
+Only in /web/projop/packages/acs-subsite/sql/postgresql: attribute.sql
+Only in /web/projop/packages/acs-subsite/tcl: plsql-utility-procs-oracle.xql
+Only in /web/projop/packages/acs-subsite/tcl: plsql-utility-procs-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/admin/groups: elements-by-group-type-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/admin/groups: elements-by-group-type-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/admin/groups: elements-by-group-type.xql
+Only in /web/projop/packages/acs-subsite/www/admin/groups: elements-display-list.xql
+Only in /web/projop/packages/acs-subsite/www/admin/groups: one.xql
+Only in /web/projop/packages/acs-subsite/www/admin/group-types: groups-list.xql
+Only in /web/projop/packages/acs-subsite/www/admin/host-node-map: add.tcl
+Only in /web/projop/packages/acs-subsite/www/admin/host-node-map: add.xql
+Only in /web/projop/packages/acs-subsite/www/admin: index-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/admin: index-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/admin: index.xql
+Only in /web/projop/packages/acs-subsite/www/admin: nsstats.tcl
+Only in /web/projop/packages/acs-subsite/www/admin/relations: add.xql
+Only in /web/projop/packages/acs-subsite/www/admin/relations: remove-dependants-exist.adp
+Only in /web/projop/packages/acs-subsite/www/admin/rel-segments/constraints: index.xql
+Only in /web/projop/packages/acs-subsite/www/admin/rel-types/roles: new-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/admin/rel-types/roles: new-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set-2.tcl
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set-2.xql
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set.adp
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/admin/site-map: parameter-set.tcl
+Only in /web/projop/packages/acs-subsite/www/permissions: one.xql
+Only in /web/projop/packages/acs-subsite/www/permissions: perm-modify-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/permissions: perm-modify-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: home.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: unsubscribe-2-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: unsubscribe-2-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: unsubscribe-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: unsubscribe-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/pvt: unsubscribe.xql
+Only in /web/projop/packages/acs-subsite/www/register: user-new.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-subsite/www/resources/core.js /web/projop/openacs-4.5-9-1/packages/acs-subsite/www/resources/core.js
+1716,1720d1715
+< 
+<     if (!idM.value) idM.value = new Date().getMonth();
+<     if (!idD.value) idD.value = new Date().getDate();
+<     if (!idY.value) idY.value = new Date().getFullYear();
+< 
+1778,1784d1772
+< 
+<       // Trigger the "change" event of the date                                                                                                                                           
+<       var event = new Event('change');
+<       cal.selM.dispatchEvent(event);
+<       cal.selY.dispatchEvent(event);
+<       cal.selD.dispatchEvent(event);
+< 
+Only in /web/projop/packages/acs-subsite/www/shared: parameters-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/shared: parameters-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-subsite/www/shared/parameters.tcl /web/projop/openacs-4.5-9-1/packages/acs-subsite/www/shared/parameters.tcl
+13d12
+<     {datatype ""}
+Only in /web/projop/packages/acs-subsite/www/shared: portrait-bits-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/shared: portrait-bits-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/shared: portrait-bits.xql
+Only in /web/projop/packages/acs-subsite/www/user: basic-info-update-2.xql
+Only in /web/projop/packages/acs-subsite/www/user: basic-info-update-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/user: basic-info-update-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/user: basic-info-update.xql
+Only in /web/projop/packages/acs-subsite/www/user/portrait: comment-edit-2.tcl
+Only in /web/projop/packages/acs-subsite/www/user/portrait: erase-2.tcl
+Only in /web/projop/packages/acs-subsite/www/user/portrait: upload-2-oracle.xql
+Only in /web/projop/packages/acs-subsite/www/user/portrait: upload-2-postgresql.xql
+Only in /web/projop/packages/acs-subsite/www/user/portrait: upload-2.tcl
+Only in /web/projop/packages/acs-subsite/www/user/portrait: upload-2.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/lib/page-error.adp /web/projop/openacs-4.5-9-1/packages/acs-tcl/lib/page-error.adp
+1,23d0
+< <%
+< # Write out HTTP headers
+< set header_vars [ns_conn headers]
+< set electron_agent_p 0
+< foreach var [ad_ns_set_keys $header_vars] {
+<     set value [ns_set get $header_vars $var]
+<     ns_log Notice "page-error: header: $var: $value"
+< 
+<     if {"User-Agent" eq $var} {
+< 	if {[regexp {Electron/2} $value match]} { set electron_agent_p 1 }
+<     }
+< }
+< %>
+< 
+< <if 1 eq @electron_agent_p@>
+< 
+< <if @top_message@ not nil>@top_message;noquote@</if>
+< <if @message@ not nil    >@message;noquote@</if>
+< <if @stacktrace@ not nil >@stacktrace;noquote@</if>
+< 
+< </if>
+< <else>
+< <!-- This page goes into /packages/apm-tcl/lib/page-error.adp -->
+26,27d2
+< 
+< 
+29,32d3
+< <if @top_message@ not nil>
+< 	@top_message;noquote@
+< </if>
+< <else>
+34d4
+< </else>
+36,95d5
+< 
+< <% set error_url [im_url_with_query] %>
+< <% set error_location "[ns_info address] on $::tcl_platform(platform)" %>
+< <% set report_url [parameter::get -package_id [im_package_core_id] -parameter "ErrorReportURL" -default ""] %>
+< <% set system_url [parameter::get -package_id [ad_acs_kernel_id] -parameter SystemURL -default ""] %>
+< <% set first_names "undefined" %>
+< <% set last_name "undefined" %>
+< <% set email "undefined" %>
+< <% set username "undefined" %>
+< <% set current_user_id [auth::require_login] %>
+< <% if {"" eq $current_user_id} { set current_user_id 0} %>
+< <% db_0or1row user_info "select * from cc_users where user_id=:current_user_id" %>
+< <% set publisher_name [parameter::get -package_id [ad_acs_kernel_id] -parameter PublisherName -default ""] %>
+< <% set package_versions [db_list package_versions "select v.package_key||':'||v.version_name from (select max(version_id) as version_id, package_key from apm_package_versions group by package_key) m, apm_package_versions v where m.version_id = v.version_id"] %>
+< <% set system_id [im_system_id] %>
+< <% set hardware_id [im_hardware_id] %>
+< <% if {![info exists error_content]} { set error_content "" } %>
+< <% if {![info exists error_content_filename]} { set error_content_filename "" } %>
+< <% if {![info exists error_type]} { set error_type "default" } %>
+< <% if {![info exists top_message]} { set top_message "" } %>
+< <% if {![info exists bottom_message]} { set bottom_message "" } %>
+< 
+< <br>
+< <form action="@report_url;noquote@" method=POST>
+< <input type=submit name=submit value="Report this Error">
+< <br>
+< <input type=checkbox name=privacy_statement_p checked>
+< I agree with the <a href="http://www.project-open.com/en/legal-note" target="_">privacy statement</a>.
+< <br>
+< <input type=hidden name=error_url value=@error_url@>
+< <input type=hidden name=error_location value=@error_location@>
+< <input type=hidden name=system_url value=@system_url@>
+< <input type=hidden name=error_first_names value=@first_names;noquote@>
+< <input type=hidden name=error_last_name value=@last_name;noquote@>
+< <input type=hidden name=error_user_email value=@email;noquote@>
+< <input type=hidden name=error_type value=@error_type;noquote@>
+< <input type=hidden name=package_versions value="@package_versions;noquote@">
+< <input type=hidden name=publisher_name value="@publisher_name;noquote@">
+< <input type=hidden name=system_id value=@system_id@>
+< <input type=hidden name=hardware_id value=@hardware_id@>
+< <input type=hidden name=platform value="<%=$::tcl_platform(platform)%>">
+< <input type=hidden name=os value="<%=$::tcl_platform(os)%>">
+< <input type=hidden name=os_version value="<%=$::tcl_platform(osVersion)%>">
+< 
+< 
+< <if @message@ not nil>
+<   <input type=hidden name=error_message value="@message;noquote@">
+< </if>
+< <if @stacktrace@ not nil>
+<   <input type=hidden name=error_info value="@stacktrace@">
+< </if>
+< <input type=hidden name=error_content value='@error_content@'>
+< <input type=hidden name=error_content_filename value='@error_content_filename@'>
+< </form>
+< <br>
+< 
+< <if @bottom_message@ not nil>
+< 	@bottom_message;noquote@
+< </if>
+< 
+100a11
+> <br>
+102c13
+< <if @stacktrace@ not nil>
+---
+>  <a href="@prev_url@">#acs-tcl.Return_prev#</a>
+104,108c15,23
+<   <p>
+<     Here is a detailed dump of what took place at the time of the error, which may assist a programmer in tracking down the problem:
+<   </p>
+< 
+<   <blockquote><pre>@stacktrace@</pre></blockquote>
+---
+>  <if @bt_instance@ ne "">
+>   <if @auto_submit_p@ gt 0>
+>     <if @user_id@ gt 0> 
+>       <br>
+>       <formtemplate id="bug_edit"></formtemplate>
+>       <br>
+> 	#acs-tcl.Bug_History#
+> 	<br><br>
+> 	  <formtemplate id="bug_history"></formtemplate>
+111,115d25
+<   <p>
+<     The error has been logged and will be investigated by our system programmers.
+<   </p>
+< </else>
+< 
+117d26
+< <!-- if not electron -->
+119c28,32
+< 
+---
+>     </if>
+>   </if>
+>  <else>
+>  <pre>@stacktrace@</pre>
+> </else>
+Only in /web/projop/packages/acs-tcl/lib: page-error.org.adp
+Only in /web/projop/packages/acs-tcl/lib: page-error.org.tcl
+Only in /web/projop/packages/acs-tcl/lib: page-error.org.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/lib/page-error.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/lib/page-error.tcl
+12a13,413
+> set show_patch_status open
+> set user_agent_p 1
+> set error_info $stacktrace
+> set comment_action 0
+> 
+> set return_url $prev_url
+> 
+> if {$user_id eq 0} {
+>     set user_name [_ acs-tcl.Public_User]
+>     set public_userm_email [parameter::get -package_id [ad_acs_kernel_id] -parameter HostAdministrator -default ""]
+> } else {
+>     db_1row get_user_info {}
+>     set public_userm_email $user_email
+> }
+> 
+> set send_email_p [parameter::get -package_id [ad_acs_kernel_id] -parameter SendErrorEmailP -default 0]
+> set system_name [ad_system_name]
+> set subject "[_ acs-tcl.lt_Error_Report_in_ad_sy] ( [_ acs-tcl.File ] $error_file )"
+> set found_in_version ""
+> set send_to [parameter::get -package_id [ad_acs_kernel_id] -parameter HostAdministrator -default "[ad_system_owner]"]
+> 
+> set error_desc_email "
+>  --------------------------------------------------------<br>
+>                    [_ acs-tcl.Error_Report]<br>
+>  --------------------------------------------------------<br>
+> <strong>[_ acs-tcl.Previus]</strong> [ns_quotehtml $return_url]<br>
+> <strong>[_ acs-tcl.Page]</strong> [ns_quotehtml $error_url]<br>
+> <strong>[_ acs-tcl.File]</strong> [ns_quotehtml $error_file]<br>
+> <strong>[_ acs-tcl.User_Name]</strong> [ns_quotehtml $user_name]<br>
+> <strong>[_ acs-tcl.lt_User_Id_of_the_user_t]</strong> [ns_quotehtml $user_id]<br>
+> <strong>IP:</strong> [ns_quotehtml [ns_conn peeraddr]]<br>
+> <strong>[_ acs-tcl.Browser_of_the_user]</strong> [ns_quotehtml [ns_set get [ns_conn headers] User-Agent]]<br>
+> <br>
+> -----------------------------<br>
+> [_ acs-tcl.Error_details]<br>
+> -----------------------------<br>
+> <pre>[ns_quotehtml $error_info]</pre>
+> <br>
+> ------------------------------<br>
+> <br>
+> <br>
+> [_ acs-tcl.lt_NB_This_error_was_sub]"
+> 
+> if { $bug_number eq "" && $send_email_p} {
+>     acs_mail_lite::send -send_immediately \
+> 	-to_addr $send_to -from_addr $public_userm_email \
+> 	-subject $subject \
+> 	-body $error_desc_email
+> }
+> set bt_instance [parameter::get -package_id [ad_acs_kernel_id] \
+> 		     -parameter BugTrackerInstance -default ""]
+> 
+> if { $bt_instance ne "" } {
+>     array set community_info [site_node::get -url "${bt_instance}/[bug_tracker::package_key]"]
+>     set bt_package_id $community_info(package_id)
+>     set auto_submit_p [parameter::get -parameter AutoSubmitErrorsP -package_id $bt_package_id -default 0]
+> } else {
+>     set auto_submit_p 0
+> }
+> 
+> if {$auto_submit_p && $user_id > 0} {
+>     # Is this project using multiple versions?
+>     set versions_p [bug_tracker::versions_p]
+>     
+>     # Paches enabled for this project?
+>     set patches_p [bug_tracker::patches_p]
+>     
+>     set enabled_action_id [form get_action bug_edit]
+>     
+>     set exist_bug [db_string search_bug {} -default ""]
+>     if { $exist_bug eq ""} {
+> 	
+> 	#Submit the new Bug into the Bug - Tracker && Into the
+> 	# Auto_bugs tabble
+> 	set bug_id [db_nextval acs_object_id_seq]
+> 	
+> 	set keyword_ids [list]
+>         foreach {category_id category_name} [bug_tracker::category_types -package_id $bt_package_id] {
+> 	    lappend keyword_ids [bug_tracker::get_default_keyword -parent_id $category_id -package_id $bt_package_id]
+>         }
+> 		
+>         bug_tracker::bug::new \
+> 	    -bug_id $bug_id \
+> 	    -package_id $bt_package_id \
+> 	    -component_id [bug_tracker::conn component_id] \
+> 	    -found_in_version $found_in_version \
+> 	    -summary $subject \
+> 	    -description $error_desc_email \
+> 	    -desc_format text/html \
+> 	    -keyword_ids $keyword_ids \
+> 	    -user_id $user_id
+> 	
+> 	bug_tracker::bugs_exist_p_set_true -package_id $bt_package_id
+>         db_dml insert_auto_bug {}
+>     } else {
+> 	
+> 	#Comment on the Existing Bug even if the user dont want to add
+> 	# commentaries 
+> 	# If the bug is closed or fixed we have to reopen the bug
+>         array set row [list]
+> 	set bug_id $exist_bug
+> 	
+> 	if {$bug_number eq ""} {
+> 	    db_dml increase_reported_times {}
+> 	}
+> 	
+> 	# Get the bug data
+> 	bug_tracker::bug::get -bug_id $bug_id -array bug -enabled_action_id $enabled_action_id
+> 	
+>         set case_id [workflow::case::get_id \
+> 			 -object_id $bug_id \
+> 			 -workflow_short_name [bug_tracker::bug::workflow_short_name]]
+>         foreach available_enabled_action_id [workflow::case::get_available_enabled_action_ids -case_id $case_id] {
+> 	    workflow::case::enabled_action_get -enabled_action_id $available_enabled_action_id -array enabled_action
+> 	    workflow::action::get -action_id $enabled_action(action_id) -array available_action
+> 	    if {[string match "*Reopen*" $available_action(pretty_name)]} {
+> 		bug_tracker::bug::edit \
+> 		    -bug_id $bug_id \
+> 		    -enabled_action_id $available_enabled_action_id \
+> 		    -description "<strong> [_ acs-tcl.reopened_auto ] </strong>" \
+> 		    -desc_format text/html \
+> 		    -array row \
+> 		    -entry_id $bug(entry_id)
+> 	    }
+> 	    if {[string match "*Comment*" $available_action(pretty_name)]} {
+> 		set comment_action $available_enabled_action_id
+> 	    }
+>         }
+> 	
+> 	bug_tracker::bug::edit \
+> 	    -bug_id $bug_id \
+> 	    -enabled_action_id $comment_action \
+> 	    -description $error_desc_email \
+> 	    -desc_format text/html \
+> 	    -array row \
+> 	    -entry_id $bug(entry_id)
+>     }
+>       
+>     set case_id [workflow::case::get_id \
+> 		     -object_id $bug_id \
+> 		     -workflow_short_name [bug_tracker::bug::workflow_short_name]]
+>     set workflow_id [bug_tracker::bug::get_instance_workflow_id -package_id $bt_package_id]
+>     
+> #    set enabled_action_id [form get_action bug_edit]
+>     
+>     # Registration required for all actions
+>     set action_id ""
+>     #if { $enabled_action_id ne "" } {
+>     #	workflow::case::enabled_action_get -enabled_action_id $enabled_action_id -array enabled_action
+>     #	set action_id $enabled_action(action_id)
+>     #    }
+>     
+>     set times_rep [db_string select_times_reported {} -default 0 ]
+>     
+>     ad_form -name bug_edit -export {comment_action reopen_action bt_instance bt_package_id user_id bug_package_id} -form {
+> 	{bug_number_display:text(inform)
+> 	    {label "[bug_tracker::conn Bug] \\\#"}
+> 	    {mode display}
+> 	}
+> 	{component_id:integer(select),optional
+> 	    {label "[_ bug-tracker.Component]"}
+> 	    {options {[bug_tracker::components_get_options]}}
+> 	    {mode display}
+> 	}
+> 	{summary:text(text)
+> 	    {label "[_ bug-tracker.Summary]"}
+> 	    {before_html "<strong>"}
+> 	    {after_html "</strong>"}
+> 	    {mode display}
+> 	    {html {size 50}}
+> 	}
+> 	{pretty_state:text(inform)
+> 	    {label "[_ bug-tracker.Status]"}
+> 	    {before_html "<strong>"}
+> 	    {after_html  "</strong>"}
+> 	    {mode display}
+> 	}
+> 	{resolution:text(select),optional
+> 	    {label "[_ bug-tracker.Resolution]"}
+> 	    {options {[bug_tracker::resolution_get_options]}}
+> 	    {mode display}
+> 	}
+> 	{previus_url:text(inform)
+> 	    {label "[_ acs-tcl.Previus]"}
+> 	    {value $prev_url}
+> 	}
+> 	{err_url:text(inform)
+> 	    {label "[_ acs-tcl.Page]"}
+> 	    {value $error_url}
+> 	}
+> 	{err_file:text(inform)
+> 	    {label "[_ acs-tcl.File]"}
+> 	    {value $error_file}
+> 	}
+> 	{times_reported:text(inform)
+> 	{label "[_ acs-tcl.Times_reported]"}
+> 	    {value $times_rep}
+> 	}
+>     }
+>     
+>     foreach {category_id category_name} [bug_tracker::category_types] {
+> 	ad_form -extend -name bug_edit -form [list \
+> 						  [list "${category_id}:integer(select)" \
+> 						       [list label $category_name] \
+> 						       [list options [bug_tracker::category_get_options -parent_id $category_id]] \
+> 						       [list mode display] \
+> 						      ] \
+> 						 ]
+>     }
+>    ad_form -extend -name bug_edit -form {
+>        {found_in_version:text(select),optional
+> 	   {label "[_ bug-tracker.Found_in_Version]"}
+> 	   {options {[bug_tracker::version_get_options -include_unknown]}}
+> 	   {mode display}
+>        }
+>    }
+>     
+>     workflow::case::role::add_assignee_widgets -case_id $case_id -form_name bug_edit
+>     
+>     ad_form -extend -name bug_edit -form {
+> 	{user_agent:text(inform)
+> 	    {label "[_ bug-tracker.User_Agent]"}
+> 	    {mode display}
+> 	}
+> 	{fix_for_version:text(select),optional
+> 	    {label "[_ bug-tracker.Fix_for_Version]"}
+> 	    {options {[bug_tracker::version_get_options -include_undecided]}}
+> 	    {mode display}
+> 	}
+> 	{fixed_in_version:text(select),optional
+> 	    {label "[_ bug-tracker.Fixed_in_Version]"}
+> 	    {options {[bug_tracker::version_get_options -include_undecided]}}
+> 	    {mode display}
+>     }
+> 	{description:richtext(richtext),optional
+> 	    {label "[_ bug-tracker.Description]"}
+> 	    {html {cols 60 rows 13}}
+> 	}
+> 	{return_url:text(hidden)
+> 	    {value $return_url}
+> 	}
+> 	{bug_number:key}
+> 	{entry_id:integer(hidden),optional}
+>     } -on_submit {
+> 
+> 	array set row [list]
+> 	
+> 	set description [element get_value bug_edit description]
+> 	set error_desc_html "
+>  -------------------------------------------------------- <br>
+>                    [_ acs-tcl.Error_Report] <br>
+>  -------------------------------------------------------- <br>
+> <br><strong>[_ acs-tcl.Previus]</strong> [ns_quotehtml $prev_url]
+> <br><strong>[_ acs-tcl.Page]</strong> [ns_quotehtml $error_url]
+> <br><strong>[_ acs-tcl.File]</strong> [ns_quotehtml $error_file]
+> <br><strong>[_ acs-tcl.User_Name]</strong> [ns_quotehtml $user_name]
+> <br><strong>[_ acs-tcl.lt_User_Id_of_the_user_t]</strong> [ns_quotehtml $user_id]
+> <br>[_ acs-tcl.Browser_of_the_user]</strong> [ns_quotehtml [ns_set get [ns_conn headers] User-Agent]]
+> <br><br><strong>[_ acs-tcl.User_comments]</strong>  
+> <br>
+> [ns_quotehtml [template::util::richtext::get_property contents $description]]<br>
+> <br>"
+>  
+>   foreach available_enabled_action_id [workflow::case::get_available_enabled_action_ids -case_id $case_id] {
+>             workflow::case::enabled_action_get -enabled_action_id $available_enabled_action_id -array enabled_action
+>             workflow::action::get -action_id $enabled_action(action_id) -array available_action
+>             if {[string match "*Comment*" $available_action(pretty_name)]} {
+>                 set comment_action $available_enabled_action_id
+>             }
+>         }
+> 
+>    
+>      bug_tracker::bug::edit \
+>             -bug_id $bug_id \
+>             -enabled_action_id $comment_action \
+>             -description [template::util::richtext::get_property contents $description] \
+>             -desc_format [template::util::richtext::get_property format $description] \
+>             -array row \
+>             -entry_id [element get_value bug_edit entry_id]
+>     
+>      ad_returnredirect $return_url
+>     ad_script_abort
+>    } -edit_request {
+>       # ID form complains if -edit_request is missing
+> }
+> 
+> 
+> if { ![form is_valid bug_edit] } {
+>     
+>     # Get the bug data
+>     bug_tracker::bug::get -bug_id $bug_id -array bug -enabled_action_id $enabled_action_id
+>     
+>     
+>     # Make list of form fields
+>     set element_names {
+>         bug_number component_id summary pretty_state resolution
+>         found_in_version user_agent fix_for_version fixed_in_version
+>         bug_number_display entry_id
+>     }
+>     
+>     # update the element_name list and bug array with category stuff
+>     foreach {category_id category_name} [bug_tracker::category_types] {
+>         lappend element_names $category_id
+>         set bug($category_id) [cr::keyword::item_get_assigned -item_id $bug(bug_id) -parent_id $category_id]
+>         if {$bug($category_id) eq "" } {
+>             set bug($category_id) [bug_tracker::get_default_keyword -parent_id $category_id]
+>         }
+>     }
+>     # Display value for patches
+>     set href [export_vars -base patch-add { { bug_number $bug(bug_number) } { component_id $bug(component_id) } }]
+>     set bug(patches_display) [subst {
+> 	[bug_tracker::get_patch_links -bug_id $bug(bug_id) -show_patch_status $show_patch_status]
+> 	&nbsp; \[ <a href="[ns_quotehtml $href]">[_ bug-tracker.Upload_Patch]</a> \]
+>     }]
+>     
+>     # Hide elements that should be hidden depending on the bug status
+>     foreach element $bug(hide_fields) {
+>         element set_properties bug_edit $element -widget hidden
+>     }
+>     
+>     if { !$versions_p } {
+>         foreach element { found_in_version fix_for_version fixed_in_version } {
+>             if { [info exists bug_edit:$element] } {
+>                 element set_properties bug_edit $element -widget hidden
+>             }
+>         }
+>     }
+>     
+>     if { !$patches_p } {
+>         foreach element { patches } {
+>             if { [info exists bug_edit:$element] } {
+>                 element set_properties bug_edit $element -widget hidden
+>             }
+>         }
+>     }
+>     
+>     # Optionally hide user agent
+>     if { !$user_agent_p } {
+>         element set_properties bug_edit user_agent -widget hidden
+>     }
+>     
+>     
+>     # Set regular element values
+>     foreach element $element_names {
+> 	
+>         # check that the element exists
+>         if { [info exists bug_edit:$element] && [info exists bug($element)] } {
+>             if {[form is_request bug_edit]
+>                 || [string equal [element get_property bug_edit $element mode] "display"] } {
+>                 if { [string first "\#" $bug($element)] == 0 } {
+>                     element set_value bug_edit $element [lang::util::localize $bug($element)]
+>                 } else {
+>                     element set_value bug_edit $element $bug($element)
+>                 }
+>             }
+>         }
+>     }
+>     # Add empty option to resolution code
+>     if { $enabled_action_id ne "" } {
+>         if {"resolution" ni [workflow::action::get_element -action_id $action_id -element edit_fields]} {
+>             element set_properties bug_edit resolution -options [concat {{{} {}}} [element get_property bug_edit resolution options]]
+>         }
+>     } else {
+>         element set_properties bug_edit resolution -widget hidden
+>     }
+> 
+>     # Get values for the role assignment widgets
+>     workflow::case::role::set_assignee_values -case_id $case_id -form_name bug_edit
+> 
+>     # Set values for elements with separate display value
+>     foreach element {
+>         patches
+>     } {
+>         # check that the element exists
+>         if { [info exists bug_edit:$element] } {
+>             element set_properties bug_edit $element -display_value $bug(${element}_display)
+>         }
+>     }
+> 
+>     # Set values for description field
+>     
+>     ad_form -name bug_history -has_submit 1 -form {
+> 	{history:text(inform)
+> 	    {label "[_ acs-tcl.User_comments]"}
+> 	    {value ""}
+> 	}
+>     }
+>     
+>     element set_properties bug_history history \
+> 	-after_html [workflow::case::get_activity_html -case_id $case_id -action_id $action_id]
+> }
+> 
+> }    
+>     
+> 
+> 
+> # Local variables:
+> #    mode: tcl
+> #    tcl-indent-level: 4
+> #    indent-tabs-mode: nil
+> # End:
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/lib/page-error.xql /web/projop/openacs-4.5-9-1/packages/acs-tcl/lib/page-error.xql
+9a10,47
+>   <fullquery name="get_user_info">
+>     <querytext>
+>       
+>       select p.first_names||' '||p.last_name as user_name, pa.email as user_email 
+>       from persons p, parties pa
+>       where pa.party_id = p.person_id
+>       and p.person_id = :user_id
+>       
+>     </querytext>
+>   </fullquery>
+>   <fullquery name="search_bug">
+>     <querytext>
+>       select bug_id
+>       from bt_auto_bugs
+>       where error_file =:error_file
+>       and package_id = :bug_package_id
+>     </querytext>
+>   </fullquery>
+>   <fullquery name="insert_auto_bug">
+>     <querytext>
+>       insert into bt_auto_bugs(bug_id, package_id, error_file)
+>       values (:bug_id, :bug_package_id, :error_file)
+>     </querytext>
+>   </fullquery>
+>   <fullquery name="increase_reported_times">
+>     <querytext>
+>         update bt_auto_bugs 
+> 	set times_reported = times_reported + 1 
+> 	where bug_id = :bug_id 
+>    </querytext>
+>   </fullquery>
+>   <fullquery name="select_times_reported">
+>     <querytext>
+>       select times_reported 
+>       from bt_auto_bugs
+>       where bug_id = :bug_id 
+>     </querytext>
+>   </fullquery>
+Only in /web/projop/packages/acs-tcl/tcl: 00-database-procs-postgresql-postgresql.xql
+Only in /web/projop/packages/acs-tcl/tcl: 00-database-procs-postgresql.tcl
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/tcl/acs-permissions-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/tcl/acs-permissions-procs.tcl
+182,183d181
+<     if {$party_id eq ""} { set party_id 0 }
+< 
+Only in /web/projop/packages/acs-tcl/tcl: defs-procs-oracle.xql
+Only in /web/projop/packages/acs-tcl/tcl: defs-procs-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/tcl/defs-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/tcl/defs-procs.tcl
+372d371
+<     { show_master_p 1 }
+374,376d372
+<     Custom implementation of ad_return_complaint which allows for returning err msg only.
+<     This allows new program paradigm to improve UX, e.g. HTML overlays (see ]po[ CRM module)
+< 
+381a378
+> 
+384d380
+<     if { $show_master_p } {
+394,397d389
+<     } else {
+<         ns_return 200 text/html "$exception_text<br/><br/><button onclick='javascript:window.history.back();'>[lang::message::lookup "" acs-tcl.GoBack "Go back"]</button>"
+<     }
+< 
+Only in /web/projop/packages/acs-tcl/tcl: deprecated-utilities-procs.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/tcl/http-client-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/tcl/http-client-procs.tcl
+1654c1654
+<     set cmd [list exec curl -s -k1]
+---
+>     set cmd [list exec curl -s]
+Only in /web/projop/packages/acs-tcl/tcl: request-processor-init.xql
+Only in /web/projop/packages/acs-tcl/tcl: request-processor-procs-oracle.xql
+Only in /web/projop/packages/acs-tcl/tcl: request-processor-procs-postgresql.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/tcl/security-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/tcl/security-procs.tcl
+2291,2292d2290
+<         security::csp::require frame-src 'self'
+<         security::csp::require frame-src "*.project-open.net"
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/tcl/set-operation-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-tcl/tcl/set-operation-procs.tcl
+11c11,16
+< ad_proc set_member? { s v } {
+---
+> 
+> 
+> 
+> 
+> 
+> ad_proc -deprecated set_member? { s v } {
+23c28
+< ad_proc set_append! { s-name v } {
+---
+> ad_proc -deprecated set_append! { s-name v } {
+36c41
+< ad_proc set_union { u v } {
+---
+> ad_proc -deprecated set_union { u v } {
+50c55
+< ad_proc set_union! { u-name v } {
+---
+> ad_proc -deprecated set_union! { u-name v } {
+70c75
+< ad_proc set_intersection { u v } {
+---
+> ad_proc -deprecated set_intersection { u v } {
+84c89
+< ad_proc set_intersection! { u-name v } {
+---
+> ad_proc -deprecated set_intersection! { u-name v } {
+107c112
+< ad_proc set_difference { u v } {
+---
+> ad_proc -deprecated set_difference { u v } {
+122c127
+< ad_proc set_difference! { u-name v } {
+---
+> ad_proc -deprecated set_difference! { u-name v } {
+Only in /web/projop/packages/acs-tcl/tcl: widgets-procs.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/blue.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/blue.adp
+3c3
+< <table bgcolor=#6699CC cellspacing=0 cellpadding=4 border=0>
+---
+> <table bgcolor="#6699CC" cellspacing="0" cellpadding="4" border="0">
+7c7
+< <table bgcolor=#99CCFF cellspacing=0 cellpadding=6 border=0 width="100%">
+---
+> <table bgcolor="#99CCFF" cellspacing="0" cellpadding="6" border="0" width="100%">
+11c11
+< <table bgcolor=#99CCFF cellspacing=0 cellpadding=2 border=0 width="100%">
+---
+> <table bgcolor="#99CCFF" cellspacing="0" cellpadding="2" border="0" width="100%">
+16c16
+<       <tr><td colspan=2 bgcolor=#eeeeee><b>@elements.section@</b></td></tr>
+---
+>       <tr><td colspan="2" bgcolor="#eeeeee"><strong>@elements.section@</strong></td></tr>
+38c38
+< 	<td><b>@elements.label;noquote@</b>&nbsp;&nbsp;
+---
+> 	<td><strong>@elements.label;noquote@</strong>&nbsp;&nbsp;
+46c46
+<             <if @elements.label@ nil><td colspan=2>></if>
+---
+>             <if @elements.label@ nil><td colspan="2">></if>
+60c60
+<                 <font color="red"><b>\@formerror.@elements.id@;noquote\@</b></font>
+---
+>                 <font color="red"><strong>\@formerror.@elements.id@;noquote\@</strong></font>
+67c67
+< 	      <td bgcolor=#EEEEEE>
+---
+> 	      <td bgcolor="#EEEEEE">
+72c72
+<               <if @elements.label@ nil><td nowrap colspan=2></if>
+---
+>               <if @elements.label@ nil><td nowrap colspan="2"></if>
+76c76
+< 		   color="red"><b>\@formerror.@elements.id@;noquote\@<b></font>
+---
+> 		   color="red"><strong>\@formerror.@elements.id@;noquote\@<strong></font>
+Only in /web/projop/packages/acs-templating/resources/forms: column-sections.adp
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/grid.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/grid.adp
+1c1
+< <table bgcolor=#6699CC cellspacing=0 cellpadding=4 border=0 width="95%">
+---
+> <table bgcolor="#6699CC" cellspacing="0" cellpadding="4" border="0" width="95%">
+3,4c3,4
+<   <td align=left><b>@form_properties.title@</b></td>
+<   <td align=right>&nbsp;</td>
+---
+>   <td align="left"><strong>@form_properties.title@</strong></td>
+>   <td align="right">&nbsp;</td>
+8c8
+<   <tr><td colspan=2><i>No items</i></td></tr>
+---
+>   <tr><td colspan="2"><em>No items</em></td></tr>
+13c13
+< <td colspan=2>
+---
+> <td colspan="2">
+15c15
+< <table bgcolor=#99CCFF cellspacing=0 cellpadding=2 border=0 width="100%">
+---
+> <table bgcolor="#99CCFF" cellspacing="0" cellpadding="2" border="0" width="100%">
+18,19c18,19
+<     <list name=list_tag>
+<       <th align=left>@list_tag:item@</th>
+---
+>     <list name="list_tag">
+>       <th align="left">@list_tag:item@</th>
+28,29c28,29
+<       <if @elements.row@ odd><tr bgcolor=#ffffff></if>
+<       <else><tr bgcolor=#dddddd></else>
+---
+>       <if @elements.row@ odd><tr bgcolor="#ffffff"></if>
+>       <else><tr bgcolor="#dddddd"></else>
+36c36
+<           <table cellpadding=4 cellspacing=0 border=0>
+---
+>           <table cellpadding="4" cellspacing="0" border="0">
+39c39
+<                 <formgroup id=@elements.id@>
+---
+>                 <formgroup id="@elements.id@">
+45c45
+<           <noparse><formerror id=@elements.id@><br><font color="red"><b>\@formerror.@elements.id@\@<b></font></formerror></noparse>
+---
+>           <noparse><formerror id="@elements.id@"><br><font color="red"><strong>\@formerror.@elements.id@\@<strong></font></formerror></noparse>
+50c50
+<             <noparse><formwidget id=@elements.id@></noparse>
+---
+>             <noparse><formwidget id="@elements.id@"></noparse>
+54,56c54,56
+<               <formwidget id=@elements.id@>
+<               <formerror id=@elements.id@><br><font color="red"><b>
+<                 \@formerror.@elements.id@\@<b></font></formerror>
+---
+>               <formwidget id="@elements.id@">
+>               <formerror id="@elements.id@"><br><font color="red"><strong>
+>                 \@formerror.@elements.id@\@<strong></font></formerror>
+78c78
+<       <td align=right colspan=2><input type=submit name=@elements.id@ value="@elements.label@"></td>
+---
+>       <td align="right" colspan="2"><input type="submit" name="@elements.id@" value="@elements.label@"></td>
+90c90
+<      <noparse><formwidget id=@elements.id@></noparse>
+---
+>      <noparse><formwidget id="@elements.id@"></noparse>
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/plainest.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/plainest.adp
+3c3
+< <table bgcolor=#FFFFFF cellspacing=0 cellpadding=4 border=0>
+---
+> <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="4" border="0">
+7c7
+< <table bgcolor=#FFFFFF cellspacing=0 cellpadding=6 border=0 width="100%">
+---
+> <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="6" border="0" width="100%">
+11c11
+< <table bgcolor=#FFFFFF cellspacing=0 cellpadding=2 border=0 width="100%">
+---
+> <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="2" border="0" width="100%">
+16c16
+<       <tr><td colspan=2 bgcolor=#FFFFFF><b>@elements.section@</b></td></tr>
+---
+>       <tr><td colspan="2" bgcolor="#FFFFFF"><strong>@elements.section@</strong></td></tr>
+27c27
+<         <tr><td align=center colspan=2>
+---
+>         <tr><td align="center" colspan="2">
+36c36
+< 	<td><b>@elements.label;noquote@</b>&nbsp;&nbsp;
+---
+> 	<td><strong>@elements.label;noquote@</strong>&nbsp;&nbsp;
+39c39
+<             <font size=-1><noparse><formhelp id=@elements.id@></noparse></font><br>
+---
+>             <font size="-1"><noparse><formhelp id=@elements.id@></noparse></font><br>
+44c44
+<             <if @elements.label@ nil><td colspan=2>></if>
+---
+>             <if @elements.label@ nil><td colspan="2">></if>
+47c47
+<             <table cellpadding=4 cellspacing=0 border=0>
+---
+>             <table cellpadding="4" cellspacing="0" border="0">
+54c54
+<                 <font color="red"><b>\@formerror.@elements.id@;noquote\@</b></font>
+---
+>                 <font color="red"><strong>\@formerror.@elements.id@;noquote\@</strong></font>
+61c61
+< 	      <td bgcolor=#FFFFFF>
+---
+> 	      <td bgcolor="#FFFFFF">
+66c66
+<               <if @elements.label@ nil><td nowrap colspan=2></if>
+---
+>               <if @elements.label@ nil><td nowrap colspan="2"></if>
+70c70
+< 		   color="red"><b>\@formerror.@elements.id@;noquote\@<b></font>
+---
+> 		   color="red"><strong>\@formerror.@elements.id@;noquote\@<strong></font>
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/standard.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/standard.adp
+1d0
+< <table cellspacing="2" cellpadding="2" border="0">
+3d1
+< 
+5c3,4
+<       <tr class="form-section"><th colspan="2">@elements.section;noquote@</th></tr>
+---
+> 		<fieldset id="@elements.form_id;noi18n@:@elements.section;noi18n@" @elements.sec_fieldset;noquote@><!-- section fieldset -->
+>         <legend @elements.sec_legend;noquote@><span>@elements.sec_legendtext@</span></legend>
+9,10c8,9
+<       <if @elements.widget@ eq "hidden">
+<         <noparse><formwidget id=@elements.id@></noparse>
+---
+>       <if @elements.widget;literal@ eq "hidden"> 
+> 		<noparse><div><formwidget id="@elements.id@"></div></noparse>
+14,17c13,14
+< 
+<         <if @elements.widget@ eq "submit">
+<           <tr class="form-element">
+<             <td align="left" colspan="2">
+---
+> 		<if @elements.widget;literal@ eq "submit"><!-- if form submit button wrap it in the form-button class -->
+>   		 <div class="form-button">
+19c16
+<                 <noparse><formwidget id="@elements.id@"></noparse>
+---
+>              <noparse><formwidget id="@elements.id@">&nbsp;</noparse>
+21,22c18,36
+<             </td>
+<           </tr>
+---
+>   		 </div>
+>        </if>
+>         
+> 	   <else> <!-- wrap the form item in the form-item-wrapper class -->
+> 	     <div class="form-item-wrapper">
+>            <noparse>
+> 			 <formerror id="@elements.id@">
+> 			   <span class="form-error">
+> 				 \@formerror.@elements.id@;noquote\@
+> 			   </span> <!-- /form-error -->
+> 			 </formerror>
+> 		   </noparse>
+> 
+> 		   <if @elements.widget;literal@ in radio checkbox> 
+>              <if @elements.legendtext@ defined>
+> 			   <fieldset @elements.fieldset;noi18n@>
+>                  <!-- radio button groups and checkbox groups get their own fieldsets -->
+> 				 <legend @elements.legend;oni18n@><span>@elements.legendtext@</span></legend>
+>              </if>
+24,25d37
+<         <else>
+<           <tr class="form-element">
+28a41,47
+>                  <if @form_properties.mode;literal@ eq display or @elements.widget;literal@ in radio checkbox date inform>
+>                    <!-- no label tag -->
+>                  </if>
+>                  <else>
+> 				   <label for="@elements.id@">
+>                  </else>
+> 
+30c49
+<                   <td class="form-label-error">
+---
+>                    <span class="form-label form-label-error">
+33c52
+<                   <td class="form-label">
+---
+>                    <span class="form-label">
+35a55
+> 
+37,38c57,61
+<                 <if @form_properties.show_required_p@ true>
+<                   <if @elements.optional@ nil and @elements.mode@ ne "display" and @elements.widget@ ne "inform"><span class="form-required-mark">*</span></if>
+---
+> 
+>                <if @form_properties.show_required_p;literal@ true>
+>                  <if @elements.optional@ nil and @elements.mode;literal@ ne "display" and @elements.widget;literal@ ne "inform">
+>                    <strong class="form-required-mark">(#acs-templating.required#)</strong>
+>                  </if>
+40c63,65
+<                </td>
+---
+>                </span><!-- form-label -->
+>                  <if @form_properties.mode;literal@ eq display or @elements.widget;literal@ in radio checkbox date inform>
+>                    <!-- no label tag -->
+43,45c68
+<               <td class="form-label">
+<                 &nbsp;
+<               </td>
+---
+>                                    </label>
+48,50d70
+<               <noparse>
+<                 <if \@formerror.@elements.id@\@ not nil>
+<                   <td class="form-widget-error">
+53c73,79
+<                   <td class="form-widget">
+---
+>                         <if @form_properties.show_required_p;literal@ true>
+>                            <if @elements.optional@ nil and @elements.mode;literal@ ne "display" and @elements.widget;literal@ ne "inform">
+> 			     <span class="form-label form-required-mark">
+> 			       #acs-templating.required#
+> 			     </span>
+> 		           </if>
+> 		        </if>
+55d80
+<               </noparse>
+57c82
+<               <if @elements.widget@ eq radio or @elements.widget@ eq checkbox>
+---
+> 		     <if @elements.widget;literal@ in radio checkbox>
+59c84
+<                   <table class="formgroup">
+---
+>                  <span class="form-widget">
+61,63d85
+<                       <tr>
+<                         <td>\@formgroup.widget;noquote@</td>
+<                         <td class="form-widget">
+64a87
+> 				     \@formgroup.widget;noquote@
+66,68c89
+<                           </label>
+<                         </td>
+<                       </tr>
+---
+> 				   </label><br>
+70c91
+<                   </table>
+---
+>                  </span>
+73d93
+< 
+75a96
+>                  <span class="form-widget">
+76a98
+>                  </span>
+80,90c102,104
+<               <noparse>
+<                 <formerror id="@elements.id@">
+<                   <div class="form-error">
+<                     \@formerror.@elements.id@;noquote\@
+<                   </div>
+<                 </formerror>
+<               </noparse>
+< 
+<               <if @elements.help_text@ not nil and @elements.mode@ ne "display">
+<                 <div class="form-help-text">
+<                   <img src="/shared/images/info.gif" width="12" height="9" alt="[i]" title="Help text" border="0">
+---
+>            <if @elements.help_text@ not nil>
+>              <span class="form-help-text">
+>                <img src="/shared/images/info.gif" width="12" height="9" alt="Help" title="Help text" style="border:0">
+92c106
+<                 </div>
+---
+>              </span> <!-- /form-help-text -->
+95,97c109,115
+<             </td>
+<           </tr>
+< 
+---
+> 		   <if @elements.widget;literal@ in radio checkbox> 
+>              <if @elements.legendtext@ defined>
+>                <!-- radio button groups and checkbox groups get their own fieldsets -->
+> 			   </fieldset>
+>              </if>
+> 		   </if>
+> 		 </div> <!-- form-item-wrapper -->
+101,103d118
+<   </multiple>
+< 
+< </table>
+105,109c120,121
+< <multiple name="elements">
+<   <if @form_properties.show_required_p@ true>
+<     <if @elements.optional@ nil and @elements.mode@ ne "display" and @elements.widget@ ne "inform" and @elements.widget@ ne "hidden" and @elements.widget@ ne "submit">
+<        <span class="form-required-mark">*</span> #acs-templating.required# <% break %>
+<     </if>
+---
+>   <if @elements.section@ not nil>
+>     </fieldset> <!-- section fieldset -->
+112d123
+< 
+Only in /web/projop/packages/acs-templating/resources/forms: standard-withouttabletab.adp
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/tabbed-dialog.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/tabbed-dialog.adp
+1,2c1,2
+< <table cellpadding=0 cellspacing=0 border=0 bgcolor=#999999 width=100% height=0>
+<   <tr bgcolor=#999999>
+---
+> <table cellpadding="0" cellspacing="0" border="0" bgcolor="#999999" width="100%" height="0">
+>   <tr bgcolor="#999999">
+4,5c4,5
+<       <table cellpadding=0 cellspacing=0 border=0 bgcolor=#DDDDDD width="100%">
+<         <tr align=center>
+---
+>       <table cellpadding="0" cellspacing="0" border="0" bgcolor="#DDDDDD" width="100%">
+>         <tr align="center">
+7c7
+<             <if @elements.current@ eq 1><td bgcolor=#FFFFFF></if>
+---
+>             <if @elements.current@ eq 1><td bgcolor="#FFFFFF"></if>
+9,12c9,12
+<               <td bgcolor=#99CCFF>
+<               <table border=0 cellpadding=2 cellspacing=1 width=100% 
+<                  bgcolor=#6699cc>
+<               <tr align=center bgcolor=#99ccff><td>
+---
+>               <td bgcolor="#99CCFF">
+>               <table border="0" cellpadding="2" cellspacing="1" width="100%" 
+>                  bgcolor="#6699cc">
+>               <tr align="center" bgcolor="#99ccff"><td>
+14c14
+<               &nbsp;<font size=-1><noparse><formwidget id=@elements.id@></noparse></font>
+---
+>               &nbsp;<font size="-1"><noparse><formwidget id="@elements.id@"></noparse></font>
+Only in /web/projop/packages/acs-templating/resources/forms: tiny-plain-po.adp
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/resources/forms/wizard.adp /web/projop/openacs-4.5-9-1/packages/acs-templating/resources/forms/wizard.adp
+2c2
+< <table bgcolor=#6699CC cellspacing=0 cellpadding=4 border=0>
+---
+> <table bgcolor="#6699CC" cellspacing="0" cellpadding="4" border="0">
+6c6
+< <table bgcolor=#99CCFF cellspacing=0 cellpadding=6 border=0 width="100%">
+---
+> <table bgcolor="#99CCFF" cellspacing="0" cellpadding="6" border="0" width="100%">
+9c9
+< <table bgcolor=#99CCFF cellspacing=0 cellpadding=2 border=0 width="100%">
+---
+> <table bgcolor="#99CCFF" cellspacing="0" cellpadding="2" border="0" width="100%">
+14c14
+<       <tr><td colspan=2 bgcolor=#eeeeee><b>@elements.section;noquote@</b></td></tr>
+---
+>       <tr><td colspan="2" bgcolor="#eeeeee"><strong>@elements.section;noquote@</strong></td></tr>
+30,31c30,31
+<           <tr><td colspan=2 bgcolor=#eeeeee><b>@elements.label;noquote@</b></td></tr>
+<           <tr><td colspan=2>
+---
+>           <tr><td colspan="2" bgcolor="#eeeeee"><strong>@elements.label;noquote@</strong></td></tr>
+>           <tr><td colspan="2">
+34c34
+<           <tr><td><b>@elements.label@</b>&nbsp;&nbsp;
+---
+>           <tr><td><strong>@elements.label@</strong>&nbsp;&nbsp;
+49c49
+< 		<table cellpadding=4 cellspacing=0 border=0>
+---
+> 		<table cellpadding="4" cellspacing="0" border="0">
+51c51
+< 		<formgroup id=@elements.id@ cols=4>
+---
+> 		<formgroup id="@elements.id@" cols="4">
+55,56c55,56
+< 		    <td align=right>&nbsp;\@formgroup.widget;noquote@</td>      
+< 		    <td align=left><label for="@elements.form_id@:elements:@elements.id@:\@formgroup.option@">\@formgroup.label@</label></td> 
+---
+> 		    <td align="right">&nbsp;\@formgroup.widget;noquote@</td>      
+> 		    <td align="left"><label for="@elements.form_id@:elements:@elements.id@:\@formgroup.option@">\@formgroup.label@</label></td> 
+65c65
+< 		  <font color="red"><b>\@formerror.@elements.id@;noquote\@</b></font>
+---
+> 		  <font color="red"><strong>\@formerror.@elements.id@;noquote\@</strong></font>
+75c75
+<                     <font color="red"><b>\@formerror.@elements.id@;noquote\@</b></font><br>
+---
+>                     <font color="red"><strong>\@formerror.@elements.id@;noquote\@</strong></font><br>
+78,79c78,79
+<               </if><else><td bgcolor=#EEEEEE></else>
+< 		<noparse><formwidget id=@elements.id;noquote@></noparse>
+---
+>               </if><else><td bgcolor="#EEEEEE"></else>
+> 		<noparse><formwidget id="@elements.id;noquote@"></noparse>
+84,86c84,86
+< 		<noparse><formwidget id=@elements.id@>
+< 		<formerror id=@elements.id@><br><font 
+< 		   color="red"><b>\@formerror.@elements.id@;noquote\@<b></font>
+---
+> 		<noparse><formwidget id="@elements.id@">
+> 		<formerror id="@elements.id@"><br><font 
+> 		   color="red"><strong>\@formerror.@elements.id@;noquote\@<strong></font>
+Only in /web/projop/packages/acs-templating/resources: forms.oacs5-9
+Only in /web/projop/packages/acs-templating/resources: lists.oacs5-9
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/tcl/acs-integration-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-templating/tcl/acs-integration-procs.tcl
+123c123
+<         if { "1" eq [lang::util::translator_mode_p] } {
+---
+>         if { [lang::util::translator_mode_p] } {
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-templating/tcl/date-procs.tcl /web/projop/openacs-4.5-9-1/packages/acs-templating/tcl/date-procs.tcl
+1023,1027d1022
+< 
+<       if { [regexp {([0-9]*)-([0-9]*)-([0-9]*)} $value match _year _month _day] } {
+<           set value "$_year $_month $_day 0 0 0 \{YYYY MONTH DD\}"
+<       }
+< 
+Only in /web/projop/packages/ajaxhelper: sql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/ajaxhelper/www/doc/acs-integration-procs.tcl /web/projop/openacs-4.5-9-1/packages/ajaxhelper/www/doc/acs-integration-procs.tcl
+110c110
+<         if { "1" eq [lang::util::translator_mode_p] } {
+---
+>         if { [lang::util::translator_mode_p] } {
+
+Only in /web/projop/packages/calendar/www: cal-nav.adp
+Only in /web/projop/packages/calendar/www: cal-nav.tcl
+Only in /web/projop/packages/calendar/www: graphics
+Only in /web/projop/packages/cronjob: cronjob.info
+Only in /web/projop/packages/cronjob/sql/oracle: cronjob-create.sql
+Only in /web/projop/packages/cronjob/sql/oracle: cronjob-drop.sql
+Only in /web/projop/packages/cronjob/sql/oracle/upgrade: upgrade-0.1d-0.2d1.sql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/cronjob/sql/postgresql/cronjob-create.sql /web/projop/openacs-4.5-9-1/packages/cronjob/sql/postgresql/cronjob-create.sql
+64c64,65
+< 	from cronjobs where cronjob_id = p_cronjob_id;
+---
+> 	from cronjobs
+> 	where cronjob_id = p_cronjob_id;
+92,98c93,96
+< 	insert into cronjobs (
+< 		cronjob_id, user_id, description, approved_p, 
+< 		disabled_p, minute, hr, mon, day, dayofweek, run_sql, run_tcl, email
+< 	) values (
+< 		v_cronjob_id, p_user_id, p_description, p_approved_p, 
+< 		p_disabled_p, p_minute, p_hr, p_mon, p_day, p_dayofweek, p_run_sql, p_run_tcl, p_email
+< 	);
+---
+> 	insert into cronjobs
+> 		(cronjob_id, user_id, description, approved_p, disabled_p, minute, hr, mon, day, dayofweek, run_sql, run_tcl, email)
+> 	values
+> 		(v_cronjob_id, p_user_id, p_description, p_approved_p, p_disabled_p, p_minute, p_hr, p_mon, p_day, p_dayofweek, p_run_sql, p_run_tcl, p_email);
+143d140
+< 
+Only in /web/projop/openacs-4.5-9-1/packages/cronjob/sql/postgresql: cronjob-create.sql.~1.3.~
+
+Only in /web/projop/packages/file-storage/lib: folder-links.xql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/file-storage/sql/postgresql/file-storage-drop.sql /web/projop/openacs-4.5-9-1/packages/file-storage/sql/postgresql/file-storage-drop.sql
+29d28
+< 	v_count                 integer;
+31,33d29
+<     -- Skip if already dropped                                                                                                                                                            
+<     select count(*) into v_count from user_tab_columns where lower(table_name) = 'fs_root_folders';
+<     if v_count = 0 then return 0; end if;
+58,59c54,55
+< drop trigger if exists fs_package_items_delete_trig on fs_root_folders;
+< drop function if exists fs_package_items_delete_trig();
+---
+> drop trigger fs_package_items_delete_trig on fs_root_folders;
+> drop function fs_package_items_delete_trig();
+61,62c57,58
+< drop trigger if exists fs_root_folder_delete_trig on fs_root_folders;
+< drop function if exists fs_root_folder_delete_trig();
+---
+> drop trigger fs_root_folder_delete_trig on fs_root_folders;
+> drop function fs_root_folder_delete_trig();
+76c72
+< drop table if exists fs_root_folders cascade;
+---
+> drop table fs_root_folders cascade;
+78c74
+< drop table if exists fs_rss_subscrs;
+---
+> drop table fs_rss_subscrs;
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/file-storage/sql/postgresql/file-storage-views-create.sql /web/projop/openacs-4.5-9-1/packages/file-storage/sql/postgresql/file-storage-views-create.sql
+9,10c9
+< drop view if exists fs_urls_full;
+< create or replace view fs_urls_full
+---
+> create view fs_urls_full
+24c23
+< create or replace view fs_folders
+---
+> create view fs_folders
+41c40
+< create or replace view fs_files
+---
+> create view fs_files
+60c59
+< create or replace view fs_objects
+---
+> create view fs_objects
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/file-storage/sql/postgresql/file-storage-views-drop.sql /web/projop/openacs-4.5-9-1/packages/file-storage/sql/postgresql/file-storage-views-drop.sql
+9,12c9,12
+< drop view if exists fs_objects;
+< drop view if exists fs_files;
+< drop view if exists fs_folders;
+< drop view if exists fs_urls_full;
+---
+> drop view fs_objects;
+> drop view fs_files;
+> drop view fs_folders;
+> drop view fs_urls_full;
+Only in /web/projop/packages/file-storage/sql/postgresql/upgrade: upgrade-4.0.2.0.0-4.0.2.0.1.sql
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/file-storage/sql/postgresql/upgrade/upgrade-5.8.1-5.8.2.sql /web/projop/openacs-4.5-9-1/packages/file-storage/sql/postgresql/upgrade/upgrade-5.8.1-5.8.2.sql
+2,35d1
+< -- sanity check for existence of fs_root_folders 
+< CREATE OR REPLACE FUNCTION inline_0 ()
+< RETURNS INTEGER AS $BODY$
+< declare
+<         v_count                 integer;
+< begin
+< 
+< 	select count(*) into v_count from pg_tables where tablename = 'fs_root_folders';
+< 
+<         IF      v_count > 0
+<         THEN
+< 		delete from cr_folder_type_map
+<       		where 	content_type not in ( 'file_storage_object', 'content_folder', 'content_extlink')
+< 		       	and folder_id in (
+<        				select 
+< 					o2.object_id as folder_id  
+< 				from 
+< 					acs_objects o1, 
+< 					acs_objects o2 
+< 				where 
+< 					o1.object_id in (select folder_id from fs_root_folders)
+< 				        and o2.tree_sortkey between o1.tree_sortkey
+<          				and tree_right(o1.tree_sortkey)
+<          				and o2.object_type = 'content_folder'
+< 			);
+<                 return 0;
+<         END IF;
+<         return 1;
+< 
+< end;$BODY$ LANGUAGE 'plpgsql';
+< SELECT inline_0 ();
+< DROP FUNCTION inline_0 ();
+< 
+< 
+Only in /web/projop/packages/general-comments/www: comment-add-3-oracle.xql
+Only in /web/projop/packages/general-comments/www: comment-add-3-postgresql.xql
+Only in /web/projop/packages/general-comments/www: comment-add-3.xql
+Only in /web/projop/packages/notifications/sql/postgresql: subscribe_all_employees.sql
+
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/oacs-dav.info /web/projop/openacs-4.5-9-1/packages/oacs-dav/oacs-dav.info
+11c11
+<     <version name="1.2.0" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0.apm">
+---
+>     <version name="1.2.0d3" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0d3.apm">
+14c14
+<         <release-date>2015-10-04</release-date>
+---
+>         <release-date>2017-08-06</release-date>
+19,20c19,20
+<         <provides url="oacs-dav" version="1.2.0"/>
+< 	<requires url="acs-kernel" version="5.9.0"/>
+---
+>         <provides url="oacs-dav" version="1.2.0d3"/>
+> 	<requires url="acs-kernel" version="5.9.1"/>
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/tcl/oacs-dav-procs-oracle.xql /web/projop/openacs-4.5-9-1/packages/oacs-dav/tcl/oacs-dav-procs-oracle.xql
+296a297,309
+>   <fullquery name="oacs_dav::children_have_permission_p.revision_perms">
+>     <querytext>
+>             select count(*)
+>             from cr_revisions
+>             where item_id = :item_id
+>             and  not  exists (select 1
+>                    from acs_object_party_privilege_map m
+>                    where m.object_id = revision_id 
+>                      and m.party_id = :user_id
+>                      and m.privilege = 'delete')
+>     </querytext>
+>   </fullquery>
+>   
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/tcl/oacs-dav-procs-postgresql.xql /web/projop/openacs-4.5-9-1/packages/oacs-dav/tcl/oacs-dav-procs-postgresql.xql
+17,21c17,18
+<             and not  exists (select 1
+<                    from acs_object_party_privilege_map m
+<                    where m.object_id = cr_items.item_id
+<                      and m.party_id = :user_id
+<                      and m.privilege = :privilege)
+---
+> 	    and acs_permission__permission_p(cr_items.item_id, :user_id, :privilege)
+> 
+25,26c22
+<   <fullquery
+<     name="oacs_dav::impl::content_folder::propfind.get_properties">
+---
+>   <fullquery name="oacs_dav::impl::content_folder::propfind.get_properties">
+44,53c40,46
+<         ci1.live_revision = cr.revision_id and
+<         ci1.tree_sortkey between ci2.tree_sortkey and tree_right(ci2.tree_sortkey) and
+<         ci2.item_id=:folder_id and
+<         ci1.item_id = o.object_id and
+<         (tree_level(ci1.tree_sortkey) - tree_level(ci2.tree_sortkey)) <= :depth :: integer and
+<         exists (select 1
+<                   from acs_object_party_privilege_map m
+<                   where m.object_id = ci1.item_id
+<                   and m.party_id = :user_id
+<                   and m.privilege = 'read')
+---
+>          ci1.live_revision = cr.revision_id
+> 	 and ci1.tree_sortkey between ci2.tree_sortkey and tree_right(ci2.tree_sortkey)
+> 	 and ci2.item_id=:folder_id
+> 	 and ci1.item_id = o.object_id
+> 	 and (tree_level(ci1.tree_sortkey) - tree_level(ci2.tree_sortkey)) <= :depth ::integer
+> 	 and acs_permission__permission_p(ci1.item_id, :user_id, 'read')
+> 
+69,78c62,67
+<         ci1.tree_sortkey between ci2.tree_sortkey and tree_right(ci2.tree_sortkey) and
+<         ci2.item_id=:folder_id and
+<         ci1.item_id = o.object_id and
+<         (tree_level(ci1.tree_sortkey) - tree_level(ci2.tree_sortkey)) <= :depth :: integer and
+<         exists (select 1
+<                   from acs_object_party_privilege_map m
+<                   where m.object_id = ci1.item_id
+<                   and m.party_id = :user_id
+<                   and m.privilege = 'read') and
+<         not exists (select 1
+---
+>         ci1.tree_sortkey between ci2.tree_sortkey and tree_right(ci2.tree_sortkey)
+> 	and ci2.item_id = :folder_id
+> 	and ci1.item_id = o.object_id
+> 	and (tree_level(ci1.tree_sortkey) - tree_level(ci2.tree_sortkey)) <= :depth ::integer
+> 	and acs_permission__permission_p(ci1.item_id, :user_id, 'read')
+>         and not exists (select 1
+102,106c91
+<       and exists (select 1
+<                   from acs_object_party_privilege_map m
+<                   where m.object_id = ci.item_id
+<                   and m.party_id = :user_id
+<                   and m.privilege = 'read')
+---
+>       and acs_permission__permission_p(ci.item_id, :user_id, 'read')
+283a269,277
+>   <fullquery name="oacs_dav::children_have_permission_p.revision_perms">
+>     <querytext>
+>       select count(*)
+>       from cr_revisions
+>       where item_id = :item_id
+>       and not acs_permission__permission_p(revision_id, :user_id, 'delete')
+>     </querytext>
+>   </fullquery>
+>   
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/tcl/oacs-dav-procs.tcl /web/projop/openacs-4.5-9-1/packages/oacs-dav/tcl/oacs-dav-procs.tcl
+5c5
+<     Support for tDAV tcl webDAV implemenation
+---
+>     Support for tDAV Tcl webDAV implemenation
+92c92
+<         ns_log debug "\nTDAV: auth_check openacs 5.0 user_id= $auth(user_id)"
+---
+>         ns_log debug "\nTDAV: auth_check OpenACS 5.0 user_id= $auth(user_id)"
+346c346
+<     # a full-featured, consistently used tcl api for CR will fix that
+---
+>     # a full-featured, consistently used Tcl api for CR will fix that
+392c392
+< ad_proc -public oacs_dav::handle_request { uri method args } {
+---
+> ad_proc -public oacs_dav::handle_request { args } {
+986c986
+<     file delete $tmp_filename
+---
+>     file delete -- $tmp_filename
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/tcl/oacs-dav-procs.xql /web/projop/openacs-4.5-9-1/packages/oacs-dav/tcl/oacs-dav-procs.xql
+92,104d91
+<     <fullquery name="oacs_dav::children_have_permission_p.revision_perms">
+<         <querytext>
+<             select count(*)
+<             from cr_revisions
+<             where item_id = :item_id
+<             and  not  exists (select 1
+<                    from acs_object_party_privilege_map m
+<                    where m.object_id = revision_id 
+<                      and m.party_id = :user_id
+<                      and m.privilege = 'delete')
+<         </querytext>
+<     </fullquery>
+< 
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/tcl/tDAV-procs.tcl /web/projop/openacs-4.5-9-1/packages/oacs-dav/tcl/tDAV-procs.tcl
+127c127
+<     file delete $tmpfile
+---
+>     file delete -- $tmpfile
+233c233
+<     catch {[file delete -force $entry]} err
+---
+>     catch {[file delete -force -- $entry]} err
+252c252
+<     catch {[file copy -force $entry $dest]}
+---
+>     catch {[file copy -force -- $entry $dest]}
+271c271
+<     catch {[file copy -force $entry $dest]}
+---
+>     catch {[file copy -force -- $entry $dest]}
+320c320
+<     file delete [tdav::get_lock_file $uri]
+---
+>     file delete -- [tdav::get_lock_file $uri]
+623c623
+< #     Returns a list of HTTP status for the request, and if sucessful a
+---
+> #     Returns a list of HTTP status for the request, and if successful a
+638c638
+<     # why doesn't tcl handle this?
+---
+>     # why doesn't Tcl handle this?
+671c671
+< #     Retreive user properties from tDAV filesystem storage
+---
+> #     Retrieve user properties from tDAV filesystem storage
+719c719
+<     # DAVEB where is this filtering occuring?
+---
+>     # DAVEB where is this filtering occurring?
+812c812
+< #     If sucessful file is created under AOLserver pageroot
+---
+> #     If successful file is created under AOLserver pageroot
+866c866
+< #     If sucessful file corresponding to URI is removed from
+---
+> #     If successful file corresponding to URI is removed from
+1001c1001
+< 		    file copy -force $entry $local_dest
+---
+> 		    file copy -force -- $entry $local_dest
+1007c1007
+< 	    file copy $entry $local_dest
+---
+> 	    file copy -- $entry $local_dest
+1058,1060c1058,1060
+< 		file delete -force $local_dest
+< 		file copy -force $entry $local_dest
+< 		file delete -force $entry
+---
+> 		file delete -force -- $local_dest
+> 		file copy -force -- $entry $local_dest
+> 		file delete -force -- $entry
+1066c1066
+< 	    file copy $entry $local_dest
+---
+> 	    file copy -- $entry $local_dest
+1068c1068
+< 	    file delete -force $entry
+---
+> 	    file delete -force -- $entry
+1529c1529
+<     # change /example/* to /example* to accomodate the
+---
+>     # change /example/* to /example* to accommodate the
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/www/doc/index.adp /web/projop/openacs-4.5-9-1/packages/oacs-dav/www/doc/index.adp
+17,19c17,19
+< create webdav URLs like <i>yoursite/</i>dav/*</p>
+< <p>You can visit the <a href="/webdav-support/">/webdav-support/</a> page to control webdav
+< access on a per-folder basis. Packages that support WebDAV will add
+---
+> create webdav URLs like <em>yoursite/</em>dav/*</p>
+> <p>You can visit the /webdav-support/ page to control webdav access
+> on a per-folder basis. Packages that support WebDAV will add
+42,43c42,43
+< that corresponds with the URI of the package's mount point using
+< <code>oacs_dav::register_folder</code>.</p>
+---
+> that corresponds with the URI of the package&#39;s mount point
+> using <code>oacs_dav::register_folder</code>.</p>
+71,72c71,72
+< "file_storage_object" so items created by PUT are created as
+< file_storage_objects instead of generic content_revisions.</p>
+---
+> "file_storage_object" so items created by PUT are created
+> as file_storage_objects instead of generic content_revisions.</p>
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/www/doc/index.html /web/projop/openacs-4.5-9-1/packages/oacs-dav/www/doc/index.html
+20c20
+<     You can visit the <a href="/webdav-support/">/webdav-support/</a> page to control webdav access on a per-folder basis. Packages that support WebDAV will add folders to this list and an administrator can then activate or deactivate the folders.
+---
+>     You can visit the /webdav-support/ page to control webdav access on a per-folder basis. Packages that support WebDAV will add folders to this list and an administrator can then activate or deactivate the folders.
+
+
+
+
+
+
+
+diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/www/index.vuh /web/projop/openacs-4.5-9-1/packages/oacs-dav/www/index.vuh
+9a10,14
+> # Local variables:
+> #    mode: tcl
+> #    tcl-indent-level: 4
+> #    indent-tabs-mode: nil
+> # End:
+Only in /web/projop/packages/search/tcl: search-procs-postgresql.xql
+Only in /web/projop/packages/search/www: admin
+

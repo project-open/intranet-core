@@ -1,0 +1,80 @@
+
+done	./intranet-core/sql/common/intranet-views.sql
+cancel	./intranet-core/tcl/intranet-defs-procs.tcl	# im_dateentrywidged only used by simple-survey
+done	./intranet-core/tcl/intranet-design-procs.tcl
+done	./intranet-core/windows-installer/project_open_installer.nsi
+insig	./intranet-core/www/admin/user_exits/index.adp
+
+js	./intranet-core/www/js/jquery.feedbackBadge.min.js
+js	./intranet-core/www/js/jquery.min.js
+js	./intranet-core/www/js/smartmenus/jquery.smartmenus.min.js
+
+done	./intranet-core/www/projects/add-tasks-from-template-2.adp
+done	./intranet-core/www/projects/project-type-select.tcl
+ignore	./intranet-core/www/users/upload-users-2.adp
+
+done	./intranet-crm-opportunities/www/new.tcl
+
+???	./intranet-crm-tracking/www/service-teaser-submit.adp
+
+	./intranet-customer-portal/tcl/intranet-customer-portal-procs.tcl
+	./intranet-customer-portal/www/resources/js/BoxSelect.js
+	./intranet-customer-portal/www/upload-files.adp
+
+not nec	./intranet-dynfield/sql/postgresql/intranet-dynfield-create.sql
+ok	./intranet-dynfield/sql/postgresql/upgrade/upgrade-5.0.3.0.3-5.0.3.0.4.sql
+
+done	./intranet-expenses/www/index.tcl
+
+not nec	./intranet-filestorage/lib/filestorage-portlet.adp
+not nec	./intranet-filestorage/tcl/intranet-filestorage-procs.tcl
+
+	./intranet-freelance-rfqs/www/index.tcl
+	./intranet-freelance-rfqs/www/view-rfq.tcl
+
+	./intranet-freelance-translation/tcl/intranet-freelance-translation-procs.tcl
+
+not nec	./intranet-freelance/www/required-skill-add-2.adp
+not nec	./intranet-freelance/www/required-skill-add.adp
+
+done	./intranet-invoices/sql/common/intranet-invoices-common.sql
+done	./intranet-invoices/www/list.tcl
+
+irrel	./intranet-mail-import/www/js/ext-app-mail-assignment.js.adp
+
+works	./intranet-milestone/www/portlet-screenshot-code.html
+
+done	./intranet-release-mgmt/www/add-items.tcl
+done	./intranet-release-mgmt/www/view-list-display.tcl
+
+irrel	./intranet-reporting/www/timesheet-customer-project-xml-xslt.tcl
+done	./intranet-reporting/www/user-contacts.tcl
+
+irrel	./intranet-rest-fs-openacs/posync/controller/Gui.js
+
+cust	./intranet-riskmanagement-adrtel/sql/postgresql/intranet-riskmanagement-adrtel-create.sql
+cust	./intranet-riskmanagement-adrtel/www/index.tcl
+cust	./intranet-riskmanagement/sql/postgresql/intranet-riskmanagement-create.sql
+
+irrel	./intranet-sla-management/www/sla-parameter-indicator-component.tcl
+irrel	./intranet-sla-management/www/sla-parameter-list-component.tcl
+irrel	./intranet-sla-management/www/ticket-priority-component.tcl
+
+not used ./intranet-sysconfig/lib/home-page-configurator.tcl
+done	./intranet-sysconfig/www/ldap/master.tcl
+done	./intranet-sysconfig/www/segment/confirm.adp
+done	./intranet-sysconfig/www/segment/master.tcl
+
+irrel	./intranet-timesheet2-task-popup/tcl/intranet-timesheet2-task-popup-procs.tcl
+
+done	./intranet-timesheet2-workflow/www/conf-objects/index.tcl
+done	./intranet-timesheet2-workflow/www/conf-objects/new.tcl
+
+done	./intranet-timesheet2/www/hours/new.tcl
+done	./intranet-timesheet2/www/hours/other-projects.tcl
+
+./intranet-translation/sql/common/intranet-translation-common.sql
+./intranet-translation/sql/postgresql/intranet-translation-create.sql
+
+ignore	./sencha-core/www/view/task/TaskManagementMixin.js
+
