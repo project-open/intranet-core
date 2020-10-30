@@ -25,15 +25,6 @@
 	<%= [im_gif help [lang::message::lookup "" intranet-core.A_project_number_is_composed_blurb "A project number is composed by 4 digits for the year plus 4 digits for current identification"]] %> &nbsp; 
       </td>
     </tr>
-<!--
-    <tr>
-      <td>#intranet-core.Parent_Project# &nbsp;</td>
-      <td>
-        <%=[im_project_select -include_empty_p 1 -include_empty_name "" -project_status_id [im_project_status_open] -exclude_subprojects_p 0 new_parent_project_id "" "open"]%>
-        <%= [im_gif help [lang::message::lookup "" intranet-core.If_you_plan_to_make_sub_project "If you plan to make the newly created project a sub-project of an existing project, please select a parent project now"]] %> &nbsp;
-      </td>
-    </tr>
--->
     @clone_html;noquote@
     <tr> 
       <td valign="top"> 

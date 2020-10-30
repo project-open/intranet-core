@@ -81,14 +81,6 @@ if {!$parent_read} {
     return
 }
 
-# Make sure the user can read the new parent_project
-im_project_permissions $current_user_id $new_parent_project_id parent_view parent_read parent_write parent_admin
-if {!$parent_read} {
-    ad_return_complaint "Insufficient Privileges" "
-	<li>You don't have sufficient privileges to add a new sub-project to the selected parent project"
-    return
-}
-
 # If the to be cloned project should be a sub-project, we would need to set the company id 
 # to the company_id of the parent-project  
 if { "" != $new_parent_project_id } { 
