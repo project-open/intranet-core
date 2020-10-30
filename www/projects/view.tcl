@@ -242,6 +242,11 @@ if {$gantt_project_enabled_p} {
         >[lang::message::lookup "" intranet-ganttproject.Import_from_Gantt_Project "Import from Gantt Project"]</A>
 	</li>\n"
 
+        append export_html_content "
+        <li><A href=\"[export_vars -base "/intranet-csv-import/index" {project_id return_url {object_type im_timesheet_task}}]\"
+        >[lang::message::lookup "" intranet-core.Import_from_CSV "Import from CSV"]</A>
+	</li>\n"
+
 	if {0} {
         append export_html_content "
 	</ul><br><ul>
