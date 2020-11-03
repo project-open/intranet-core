@@ -2,6 +2,24 @@
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.3.0.2-5.0.3.0.3.sql','');
 
 
+-- Delete zombie entries in cr_items
+--
+delete from acs_objects where object_id in (
+	select	object_id
+	from	acs_objects
+	where	object_type = 'content_item' and
+		object_id not in (select item_id from cr_items)
+);
+
+
+-- Delete permission entries for zombie users
+---
+delete from acs_permissions where grantee_id in (
+	select object_id from acs_objects where object_type = 'user' and object_id not in (select party_id from parties)
+);
+
+
+
 -- Add missing columns to acs_datatype
 --
 create or replace function inline_0 () 

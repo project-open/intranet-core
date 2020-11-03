@@ -1,5 +1,12 @@
 <if @read_p@ eq "1">
 
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+window.addEventListener('load', function() { 
+     document.getElementById('list_check_all').addEventListener('click', function() { acs_ListCheckAll('hierarchy_project_id', this.checked) });
+});
+</script>
+
+
 <if @subproject_filtering_enabled_p@ eq 1>
   <form action="@return_url;noquote@" method=GET>
   <input type="hidden" name="project_id" value="@project_id@">

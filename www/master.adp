@@ -48,7 +48,7 @@
 
 <if @show_feedback_p@ eq "1">
 		@feedback_url;noquote@
-                <script type="text/javascript">
+                <script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
                         $(document).ready(function () {
                                 /* Set up feedback box on right side */
                                 $('#feedback-badge-right').feedbackBadge({
@@ -69,7 +69,7 @@
 <if @user_messages:rowcount@ ne 0>
     <if @feedback_behaviour_key@ eq 0>
     	<!--Critical Err, feedback bar remains -->
-    	<script type="text/javascript">
+    	<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
             $('#general_messages_icon_span').click( function() { $('#ajax-status-message').fadeIn(); return false; } );
             $('#general_messages_icon_span').html('&nbsp;<span style="cursor: pointer;"><%=[im_gif "error" ""]%></span>');
 	</script>
@@ -77,7 +77,7 @@
 
      <if @feedback_behaviour_key@ eq 1 or @feedback_behaviour_key@ eq 2>
         <!-- Serious Err or simple Message , feedback bar disappears -->
-	<script type="text/javascript">
+	<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 		$('#ajax-status-message').delay(8000).fadeOut();
 		window.setTimeout(function () {
 	                // A red dot will briefly appear to drive the attention to a an "Warning icon" that remains on the upper left corner site, near the search bar  

@@ -37,6 +37,14 @@ ad_page_contract {
 }
 
 # --------------------------------------------------------------
+# Check security and allow "root" as object_id
+# --------------------------------------------------------------
+
+if {"root" eq $object_id} { set object_id "0"}
+if {[im_security_alert_check_integer -location "biz-object-tree-open-close.tcl" -value $object_id -severity "Normal"]} { set object_id "0" }
+
+
+# --------------------------------------------------------------
 # Permissions
 # --------------------------------------------------------------
 

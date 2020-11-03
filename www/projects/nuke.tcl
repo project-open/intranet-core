@@ -110,9 +110,8 @@ template::list::create \
     -row_pretty_plural "[lang::message::lookup "" intranet-core.Nuke_Project Nuke]" \
     -elements {
         project_chk {
-            label "<input type=\"checkbox\" checked
+            label "<input type=\"checkbox\" id=check_all checked
                           name=\"_dummy\"
-                          onclick=\"acs_ListCheckAll('subprojects', this.checked)\"
                           title=\"Check/uncheck all rows\">"
             display_template {
                 @subprojects.project_chk;noquote@

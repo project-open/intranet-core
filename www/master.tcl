@@ -111,7 +111,7 @@ append feedback_url "<span>[lang::message::lookup "" intranet-core.Feedback "Fee
 # Load custom JavaScript into header. Example: 
 # create table im_page_header_extensions (page text, header_extension text);
 # create index im_page_header_extensions_page_idx on im_page_header_extensions(page);
-# insert into im_page_header_extensions values ('/intranet/index', '<script type='text/javascript' src='/intranet-cust-xxx/beautify.js'></script>');
+# insert into im_page_header_extensions values ('/intranet/index', '<script type='text/javascript' src='/intranet-cust-xyz/beautify.js'></script>');
 # Please note that page URLs include a trailing "index" if they end with "/".
 if {[im_table_exists im_page_header_extensions]} {
     set this_page [im_component_page_url]
@@ -129,3 +129,29 @@ catch {
     im_ds_display_config_info
 } err_msg
 
+
+
+
+
+#
+# Add the content security policy. Since this is the blank master, we
+# are defensive and check, if the system has already support for it
+# via the CSPEnabledP kernel parameter. Otherwise users would be
+# blocked out.
+#
+if {[parameter::get -parameter CSPEnabledP -package_id [ad_acs_kernel_id] -default 0]
+    && [info commands ::security::csp::render] ne ""
+} {
+    set csp [::security::csp::render]
+    if {$csp ne ""} {
+
+        set ua [ns_set iget [ns_conn headers] user-agent]
+        if {[regexp {Trident/.*rv:([0-9]{1,}[\.0-9]{0,})} $ua]} {
+            set field X-Content-Security-Policy
+        } else {
+            set field Content-Security-Policy
+        }
+
+        ns_set put [ns_conn outputheaders] $field $csp
+    }
+}

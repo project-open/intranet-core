@@ -31,7 +31,7 @@
 	@header_stuff;noquote@
 	<!-- /header stuff -->
 
-	<script type="text/javascript">
+	<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 	function get_popular_tags(popular_tags_link, prefix) {
 	  var http = getHttpObject();
 	  http.open('GET', popular_tags_link, true);
@@ -172,7 +172,7 @@
 <input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden">
 <input value="@title@" name="response_to_question.@title_question_id@" type="hidden">
 <input value="http://www.project-open.com/en/contact-thanks" name="return_url" type="hidden">
-<script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" >');
 </script>
 

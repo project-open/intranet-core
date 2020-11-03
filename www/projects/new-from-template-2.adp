@@ -2,12 +2,14 @@
 <property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label">projects</property>
 
-<script>
-function doubleClickDisableButton(button) {
-        var btn = document.getElementsByName(button);
-	btn[0].setAttribute('visibility', 'hidden');
-}
-
+<!-- Double-click protection for submit button: Disable after first use -->
+<script type='text/javascript' <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+window.addEventListener('load', function() { 
+     document.getElementById('submit2').addEventListener('click', function() { 
+        var btn = document.getElementsByName('submit2');
+	btn[0].setAttribute('disabled', true);
+     });
+});
 </script>
 
 <form action=clone-2.tcl method=POST>
@@ -41,11 +43,13 @@ function doubleClickDisableButton(button) {
 	<div align="right">&nbsp; </div>
       </td>
       <td> 
-	  <p> 
-	    <input type="submit" value="@button_text@" name="submit2" onclick="doubleClickDisableButton('submit2')">
+	  <p>
+	    <input type="submit" id=submit2 value="@button_text@" name="submit2">
 	    <%= [im_gif help "Create the new folder structure"] %>
 	  </p>
       </td>
     </tr>
   </table>
 </form>
+
+

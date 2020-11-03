@@ -646,7 +646,7 @@ ad_proc -public im_group_member_component {
     }
     if {$add_admin_links} {
 	incr colspan
-	append header_html "<td class=rowtitle align=middle><input type='checkbox' name='_dummy' onclick=\"acs_ListCheckAll('delete_user',this.checked)\"></td>"
+	append header_html "<td class=rowtitle align=middle><input id=list_check_all type='checkbox' name='_dummy'></td>"
     }
     append header_html "
       </tr>"
@@ -781,6 +781,13 @@ ad_proc -public im_group_member_component {
 
     # ------------------ Join table header, body and footer ----------------
     set html "
+
+    	<script type=\"text/javascript\" nonce=\"[im_csp_nonce] \">
+	window.addEventListener('load', function() { 
+	     document.getElementById('list_check_all').addEventListener('click', function() { acs_ListCheckAll('delete_user', this.checked) });
+	});
+	</script>
+
 	<form method=POST action=/intranet/member-update>
 	$output_hidden_vars
 	[export_vars -form {object_id return_url}]

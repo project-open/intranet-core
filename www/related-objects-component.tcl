@@ -89,10 +89,7 @@ list::create \
     -actions $actions \
     -elements {
 	object_chk {
-	    label "<input type=\"checkbox\" 
-                          name=\"_dummy\" 
-                          onclick=\"acs_ListCheckAll('rels_list', this.checked)\" 
-                          title=\"Check/uncheck all rows\">"
+	    label "<input id=list_check_all type=\"checkbox\" name=\"_dummy\" title=\"Check/uncheck all rows\">"
 	    display_template {
 		@rels_multirow.object_chk;noquote@
 	    }

@@ -9,7 +9,7 @@
 </form>
 
 <if @mode@ eq datatable>
-<script type="text/javascript">
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 		$(document).ready( function () {
 		    var oTable = $('.jq-datatable').dataTable( {
         	"bJQueryUI": true,

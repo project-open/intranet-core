@@ -1060,7 +1060,7 @@ ad_proc -public im_navbar_main_submenu {
 	    set item "<li class='unselected'>
 		<div class=\"sm-po-sub-menu-item\">
 			<div class='sm-po-sub-menu-item-name'><a href='$item_url'>$item_text</a></div>
-			<div class='sm-po-sub-menu-item-wrench'><img src=\"/intranet/images/navbar_default/wrench.png\" alt=\"\"onclick=\"location.href='$wrench_url';\"/></div>
+			<div class='sm-po-sub-menu-item-wrench'><img src=\"/intranet/images/navbar_default/wrench.png\"/>/div>
 		</div>
 		</li>\n"
 	}
@@ -1508,8 +1508,13 @@ ad_proc -public im_header {
 	# HTML ids of the textareas used for Xinha
 	set htmlarea_ids '[join $::acs_blank_master__htmlareas "','"]'
 	
+	set nonce_html ""
+	if {[info exists ::__csp_nonce] && "" ne $::__csp_nonce} {
+	    set nonce_html "nonce=\"$::__csp_nonce\""
+	}
+
 	append extra_stuff_for_document_head "
-	    	   <script type=\"text/javascript\">
+	    	   <script type=\"text/javascript\" $nonce_html>
 	    	   	   _editor_url = \"$xinha_dir\";
 			   _editor_lang = \"$xinha_lang\";
 	    	   </script>
@@ -1518,7 +1523,7 @@ ad_proc -public im_header {
 
 	set xi "HTMLArea"
 	append body_script_html "
-	        <script type='text/javascript'>
+	        <script type='text/javascript' $nonce_html>
 		<!--
 		 xinha_editors = null;
 		 xinha_init = null;
@@ -1624,8 +1629,14 @@ ad_proc -private im_header_search_form {} {
     if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
 	set alt_go [lang::message::lookup "" intranet-core.Search_Go_Alt "Search through all full-text indexed objects."]
 	return "
+	    	<script type=\"text/javascript\" nonce=\"[im_csp_nonce] \">
+		window.addEventListener('load', function() { 
+		     document.getElementById('tsearch_box').addEventListener('click', function() { this.value = ''; });
+		});
+		</script>
+
 	      <form action=\"/intranet/search/go-search\" method=\"post\" name=\"surx\">
-		<input class=surx name=query_string size=40 value=\"[_ intranet-core.Search]\" onClick=\"javascript:this.value = ''\">
+		<input id=tsearch_box class=surx name=query_string size=40 value=\"[_ intranet-core.Search]\">
 		<input type=\"hidden\" name=\"target\" value=\"content\">
 		<input alt=\"$alt_go\" type=\"submit\" value=\"[_ intranet-core.Action_Go]\" name=\"image\">
 	      </form>

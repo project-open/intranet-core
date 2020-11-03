@@ -2,6 +2,18 @@
 <property name="doc(title)">@page_title;literal@</property>
 <property name="main_navbar_label"></property>
 
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+window.addEventListener('load', function() { 
+    var radios = document.getElementsByName('project_type_id');
+    for(i = 0; i < radios.length; i++) {
+        radios[i].addEventListener('click', function() { 
+	    window.scrollTo(0, document.body.scrollHeight);
+	});
+    }
+});
+</script>
+
+
 <table cellspacing="0" cellpadding="0">
 <tr><td width="950">
 <%= [im_box_header $page_title] %>
@@ -20,7 +32,7 @@
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
 	<td width=22>
-		<input type="radio" name="project_type_id" value="2501" onclick="window.scrollTo(0, document.body.scrollHeight);">
+		<input type="radio" name="project_type_id" value="2501">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_classic_gantt "Classic / Gantt Project"] %>
 		<a href="@po_gantt;noquote@" target="_"><img src="/intranet/images/external.png"></a>
@@ -82,7 +94,7 @@
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
 	<td width=22>	
-	<input type="radio" name="project_type_id" value="2501" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	<input type="radio" name="project_type_id" value="2501">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_mixed "Mixed Methodology Project"] %>
 		<a href="@po_mixed;noquote@" target="_"><img src="/intranet/images/external.png"></a>
@@ -122,7 +134,7 @@
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
 	<td>
-	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_ticket_container] %>">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_ticket_container "Ticket Container"] %>
 		<a href="@po_maint;noquote@" target="_"><img src="/intranet/images/external.png"></a>
@@ -153,7 +165,7 @@
 	<table cellspacing="0" cellpadding="0">
 	<tr valign=top>
 	<td width=22>
-		<input type="radio" name="project_type_id" value="2500" onclick="window.scrollTo(0, document.body.scrollHeight);">
+		<input type="radio" name="project_type_id" value="2500">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_translation "Translation Project"] %>
 		<a href="@po_trans;noquote@" target="_"><img src="/intranet/images/external.png"></a>
@@ -198,7 +210,7 @@
 <if @enabled_p@ eq 1>
 	<tr valign=top>
 	<td>	
-	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_program] %>">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_program Program] %></b><br>
 		<%= [lang::message::lookup "" intranet-core.Project_type_program_short_blurb "
@@ -212,7 +224,7 @@
 <if @enabled_p@ eq 1>
 	<tr valign=top>
 	<td>	
-	<input type="radio" name="project_type_id" value="<%= [im_project_type_software_release] %>" onclick="window.scrollTo(0, document.body.scrollHeight);">
+	<input type="radio" name="project_type_id" value="<%= [im_project_type_software_release] %>">
 	</td>
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_release_project "Release Project"] %></b><br>
 		<%= [im_help_collapsible "<br>

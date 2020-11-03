@@ -117,7 +117,7 @@ tr.on {
 	background:#ffffcc
 }
 </style>
-<script type="text/javascript">
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 function removeBgImage (id) {
 	var element = document.getElementById("outer" + id);
 	element.style.backgroundImage = "none";

@@ -84,5 +84,9 @@ ad_proc -public im_sencha_extjs_load_libraries {
     # Instruct the page to add libraries
     template::head::add_css -href "/$package_key/resources/css/$css_theme_folder" -media "screen" -order 1
     template::head::add_javascript -src "/$package_key/$ext" -order 2
+
+    # Tell CSP security to allow "eval" on this page
+    security::csp::require script-src "'unsafe-eval'"
+    security::csp::require img-src "data:"
 }
 

@@ -4,9 +4,15 @@
 <property name="context">@context_bar;literal@</property>
 <property name="main_navbar_label">projects</property>
 
+<!-- check/uncheck all checkboxes -->
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+window.addEventListener('load', function() { 
+     document.getElementById('check_all').addEventListener('click', function() { acs_ListCheckAll('subprojects', this.checked); });
+});
+</script>
+
 
 <h2>@page_title@</h2>
-
 <p>
 #intranet-core.lt_Confirm_the_nuking_of#
 <a href="@project_url_org@">@project_name_org@</a>.

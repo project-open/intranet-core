@@ -3,7 +3,7 @@
 
 <!-- <link rel="stylesheet" type="text/css" href="index.css" media="all"> -->
 
-<script type="text/javascript">
+<script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 // Set a specific image src
 function setImage (id,img) {
 	var element = document.getElementById(id);

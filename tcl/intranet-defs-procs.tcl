@@ -1879,6 +1879,16 @@ ad_proc -public im_httpost {
 
 
 
+ad_proc -public im_csp_nonce {} {
+    Returns a CSP nonce to "sign" a script tag for CSP Content Security Policy
+} {
+    set nonce ""
+    if {[info exists ::__csp_nonce]} { set nonce $::__csp_nonce }
+    return $nonce
+}
+
+
+
 proc string2hex {string} {
     set where 0
     set res {}
@@ -1897,7 +1907,6 @@ proc string2hex {string} {
     }
     join $res \n
 }
-
 
 
 ad_proc -public im_coalesce { 

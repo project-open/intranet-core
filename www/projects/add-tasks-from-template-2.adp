@@ -23,14 +23,14 @@
       </td>
       <td> 
 	  <p> 
-	    <input type="submit" value="@button_text@" name="submit2" onclick="blockUserActions()">
+	    <input type="submit" value="@button_text@" name="submit2">
 	  </p>
       </td>
     </tr>
   </table>
 </form>
 
-<script>
+<script <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 function blockUserActions() {
 	var a = document.getElementsByName("submit2");
 	var p = document.createElement("p");
@@ -39,5 +39,4 @@ function blockUserActions() {
 	var n = document.forms.length;
 	document.forms[n-1].appendChild(p);
 }
-
 </script>

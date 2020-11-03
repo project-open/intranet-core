@@ -132,7 +132,7 @@ set gantt_project_subtypes_sql "
 db_foreach gantt $gantt_project_subtypes_sql {
     set category_l10n [im_category_from_id -locale $locale $category_id]
     append gantt_project_subtypes_html "<tr valign=top>\n"
-    append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
+    append gantt_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
     append gantt_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
     append gantt_project_subtypes_html $category_description
     append gantt_project_subtypes_html "</div></td>\n"
@@ -164,7 +164,7 @@ set agile_project_subtypes_sql "
 db_foreach agile $agile_project_subtypes_sql {
     set category_l10n [im_category_from_id -locale $locale $category_id]
     append agile_project_subtypes_html "<tr valign=top>\n"
-    append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
+    append agile_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
     append agile_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
     append agile_project_subtypes_html $category_description
     append agile_project_subtypes_html "</div></td>\n"
@@ -198,7 +198,7 @@ set trans_project_subtypes_sql "
 db_foreach trans $trans_project_subtypes_sql {
     set category_l10n [im_category_from_id -locale $locale $category_id]
     append trans_project_subtypes_html "<tr valign=top>\n"
-    append trans_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\" onclick=\"window.scrollTo(0, document.body.scrollHeight);\"></td>\n"
+    append trans_project_subtypes_html "<td><input type=\"radio\" name=\"project_type_id\" value=\"$category_id\"></td>\n"
     append trans_project_subtypes_html "<td><div style='margin-left: 20px;'><b>$category_l10n</b><br>\n"
     append trans_project_subtypes_html $category_description
     append trans_project_subtypes_html "</div></td>\n"

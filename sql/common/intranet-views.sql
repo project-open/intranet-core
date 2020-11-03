@@ -350,7 +350,7 @@ extra_select, extra_where, sort_order, visible_for) values (6,1,NULL,'Contact Em
 delete from im_view_columns where view_id = 25;
 --
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl, visible_for) 
-values (25,2500,0,'<input type=checkbox name=_dummy onclick="acs_ListCheckAll(''hierarchy_project_id'',this.checked)">','$select_checkbox', 'expr $bulk_actions_p');
+values (25,2500,0,'<input id=list_check_all type=checkbox name=_dummy>','$select_checkbox', 'expr $bulk_actions_p');
 
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 
 values (25,2510,10,'Empty','$arrow_right_html');
@@ -401,7 +401,7 @@ extra_select, extra_where, sort_order, visible_for) values (2535,25,NULL,'Delive
 delete from im_view_columns where view_id = 27;
 --
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl, visible_for) 
-values (27,2700,0,'<input type=checkbox onclick="acs_ListCheckAll(''select_project_id'',this.checked)">',
+values (27,2700,0,'<input id=list_check_all type=checkbox>',
 '$select_project_checkbox', 'expr $show_bulk_actions_p');
 
 insert into im_view_columns (view_id, column_id, sort_order, column_name, column_render_tcl) 

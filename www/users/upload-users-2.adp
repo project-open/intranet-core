@@ -3,7 +3,7 @@
 <master src="/packages/intranet-core/www/master">
 <property name="doc(title)">@page_title;literal@</property>
 
-		<script type="text/javascript" charset="utf-8">
+		<script type="text/javascript" charset="utf-8" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 			function reset_import_and_database_selects() {
 				/* 
 				var i = document.getElementById("import_fields");	
