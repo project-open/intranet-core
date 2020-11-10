@@ -150,7 +150,7 @@ set inner_sql "
 				im_search_object_types sot
 			where
 				so.object_type_id = sot.object_type_id and
-				so.fti @@ to_tsquery('default',:q)
+				so.fti @@ to_tsquery('default':regconfig, :q)
 "
 
 # Sum up the ranks of the two searches
