@@ -142,11 +142,12 @@ set pg_db ""
 
 # get the PSQL PostgreSQL version
 set psql_version [im_database_version]
-if {![regexp {([0-9])\.([0-9])\.([0-9])} $psql_version match psql_major psql_minor psql_pathc]} {
+if {![regexp {([0-9]+)\.([0-9]+).([0-9]*)} $psql_version match psql_major psql_minor psql_pathc]} {
     ns_write "
 	<li><font color=red>
 	Error while determining the PostgreSQL version:<br>
-	Your database binary doesn't seem to be accessible.
+	Your database binary doesn't seem to be accessible.<br>
+        psql_version=$psql_version
 	</font></li>
     "
     ad_script_abort
