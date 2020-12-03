@@ -42,9 +42,16 @@
 </if>
 <else>
 	<div class="fullwidth-list-no-side-bar" id="fullwidth-list">
-		<slave>
+<slave>
 	</div>
 </else>
+
+
+
+<multiple name="body_script">    <script type="@body_script.type;literal@"<if @body_script.src@ not nil> src="@body_script.src;literal@"</if><if @body_script.charset@ not nil> charset="@body_script.charset;literal@"</if><if @body_script.defer@ not nil> defer="@body_script.defer;literal@"</if><if @body_script.async@ not nil> async="@body_script.async;literal@"</if><if @body_script.integrity@ not nil> integrity="@body_script.integrity;literal@"</if><if @body_script.crossorigin@ not nil> crossorigin="@body_script.crossorigin;literal@"</if><if @::__csp_nonce@ not nil> nonce="@::__csp_nonce;literal@"</if>><if @body_script.content@ not nil>@body_script.content;literal@</if></script>
+</multiple>
+
+
 
 <if @show_feedback_p@ eq "1">
 		@feedback_url;noquote@
