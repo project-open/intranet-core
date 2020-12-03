@@ -130,17 +130,6 @@ catch {
 } err_msg
 
 
-
-set header [template::get_header_html]
-set footer [template::get_footer_html]
-
-
-#
-# Body event handlers are converted into body_scripts
-#
-template::get_body_event_handlers
-
-
 #
 # Add the content security policy. Since this is the blank master, we
 # are defensive and check, if the system has already support for it
