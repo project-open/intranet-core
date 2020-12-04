@@ -19,6 +19,7 @@ ad_page_contract {
     @cvs-id $Id$
 } -query {
     email
+    subject
     message
     first_names
     last_name
@@ -53,7 +54,9 @@ set export_vars [export_vars { user_id}]
 
 
 if {$send_email_p} {
-    if [catch {ns_sendmail "$email" "$admin_email" "You have been added as a user to [ad_system_name] at [ad_url]" "$message"} errmsg] {
+    if [catch {
+	ns_sendmail "$email" "$admin_email" $subject $message
+    } errmsg] {
 	ad_return_error "[_ intranet-core.Mail_Failed]" "[_ intranet-core.lt_The_system_was_unable]<br>[_ intranet-core.Here_is_the_error]
 <blockquote><pre>
 [ns_quotehtml $errmsg]
