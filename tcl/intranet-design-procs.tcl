@@ -1371,7 +1371,7 @@ ad_proc -public im_header {
     }
     
     template::head::add_css -href "/resources/acs-subsite/default-master.css" -media "all"
-    
+
     # Extract multirows for header META, CSS, STYLE & SCRIPT etc. from global variables
     template::head::prepare_multirows
     set event_handlers [template::get_body_event_handlers]
@@ -1397,7 +1397,7 @@ ad_proc -public im_header {
     }
     
     template::multirow foreach headscript {
-	set row "<script type='$type'"
+	set row "<script type='$type' nonce='$::__csp_nonce'"
 	if {"" != $src} {  append row " src='$src'" }
 	if {"" != $charset} {  append row " charset='$charset'" }
 	if {"" != $defer} {  append row " defer='$defer'" }
@@ -1406,6 +1406,18 @@ ad_proc -public im_header {
 	append row "</script>\n"
 	append extra_stuff_for_document_head $row
     }
+
+    template::multirow foreach body_script {
+	set row "<script type='$type' nonce='$::__csp_nonce'"
+	if {"" != $src} {  append row " src='$src'" }
+	if {"" != $charset} {  append row " charset='$charset'" }
+	if {"" != $defer} {  append row " defer='$defer'" }
+	append row ">"
+	if {"" != $content} {  append row " $content" }
+	append row "</script>\n"
+	append extra_stuff_for_document_head $row
+    }
+
     
     # --------------------------------------------------------------
     
@@ -1563,7 +1575,7 @@ ad_proc -public im_header {
 		$header_html
 		<div id=\"monitor_frame\">
     	"
-
+    
     if { !$no_head_p } {
 	append return_html "
 	      <div id=\"header_class\">
@@ -1709,10 +1721,21 @@ ad_proc -public im_footer {
     set mailto [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
     set subject "\]po\[ Comments about Page: [im_system_url][ns_conn url]"
 
+    # Show body_scripts (from template::add_event_listener in template::list and others)
+    template::multirow foreach body_script {
+	set row "<script type='$type' nonce='$::__csp_nonce'"
+	if {"" != $src} {  append row " src='$src'" }
+	if {"" != $charset} {  append row " charset='$charset'" }
+	if {"" != $defer} {  append row " defer='$defer'" }
+	append row ">"
+	if {"" != $content} {  append row " $content" }
+	append row "</script>\n"
+	append extra_stuff_for_document_head $row
+    }
+
     return "
-    </div> <!-- monitor_frame -->
+    </div>
     <div class=\"footer_hack\">&nbsp;</div>	
-<!--   <div id=\"footer\" style=\"visibility: visible\">    -->
     <div align=center style=\"visibility: visible\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: <a href=\"mailto:$mailto?subject=$subject\">$mailto</a>.
     </div>
