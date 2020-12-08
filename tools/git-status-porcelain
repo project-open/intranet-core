@@ -34,6 +34,7 @@ do
 
     # Format the output - use colors only in terminal
     if test -t 1; then
+	echo ""
 	echo -en "\033[0;35m"
 	echo "${f}"
 	echo -en "\033[0m"
