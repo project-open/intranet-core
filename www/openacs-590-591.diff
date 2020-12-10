@@ -1,0 +1,262 @@
+
+=======================================================
+server-restart
+Restart doesn't work on Windows. Talk to Maurizio.
+=======================================================
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-admin/www/server-restart.tcl openacs-4.5-9-0/packages/acs-admin/www/server-restart.tcl
+17,26d16
+< global tcl_platform
+< set platform $tcl_platform(platform)
+< switch $platform {
+<     "windows" {
+<         # Restart doesn't work on Windows services, so handle it here...
+<         ad_schedule_proc -thread t -once t 2 ns_shutdown -restart
+<     }
+<     default {
+<         # Don't modify default behavior.
+<         # Trust Linux to handle restarts
+28,29d17
+<     }
+< }
+
+
+
+
+=======================================================
+authentication-procs.tcl
+Why not accept email instead of username? It's so easy.
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-authentication/tcl/authentication-procs.tcl openacs-4.5-9-0/packages/acs-authentication/tcl/authentication-procs.tcl
+224,232d223
+< 
+<         # Check for email instead of username
+<         set user_id_from_email [db_string email_p "select min(party_id) from parties where lower(email) = lower(trim(:username))" -default ""]
+<         if {"" ne $user_id_from_email} {
+<             ns_log Notice "auth::authenticate: found that username='$username' is actually a valid email for user_id=$user_id_from_email"
+<             set username [db_string uname "select username from users where user_id = :user_id_from_email"]
+<             ns_log Notice "auth::authenticate: New username='$username' for user_id=$user_id_from_email"
+<         }
+< 
+
+
+
+=======================================================
+bootstrap
+Tip from Brian. Cuts server startup time to half.
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-bootstrap-installer/bootstrap.tcl openacs-4.5-9-0/packages/acs-bootstrap-installer/bootstrap.tcl
+147c147
+< #    apm_bootstrap_load_libraries -procs acs-automated-testing
+---
+>     apm_bootstrap_load_libraries -procs acs-automated-testing
+
+
+
+=======================================================
+Content-Repository
+Upgrade failed because of "dangeling" entries.
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-content-repository/sql/postgresql/upgrade/upgrade-5.9.0d1-5.9.0d2.sql openacs-4.5-9-0/packages/acs-content-repository/sql/postgresql/upgrade/upgrade-5.9.0d1-5.9.0d2.sql
+
+22,27c22
+< 
+< -- fraber 161128: Delete inconsistent entries
+< update cr_items set latest_revision = null 
+< where latest_revision in (select latest_revision from cr_items except select revision_id from cr_revisions);
+31,35c26
+< -- fraber 161128: Delete inconsistent entries
+< update cr_items set live_revision = null 
+< where live_revision in (select live_revision from cr_items except select revision_id from cr_revisions);
+
+
+
+
+=======================================================
+DS
+Wrong URL
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-developer-support/tcl/acs-developer-support-procs.tcl openacs-4.5-9-0/packages/acs-developer-support/tcl/acs-developer-support-procs.tcl
+208c208
+< 		 <a href="$ds_url/request-info?request=$::ad_conn(request)">Request Information</a><br>
+---
+> 		 <a href="$ds_urlrequest-info?request=$::ad_conn(request)">Request Information</a><br>
+
+
+
+
+
+=======================================================
+acs-lang
+Bad HTML...
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-lang/www/admin/message-list.adp openacs-4.5-9-0/packages/acs-lang/www/admin/message-list.adp
+63,65d62
+<                 <nobr>@messages.package_key@</nobr>
+<               </td>
+<               <td>
+
+
+
+
+=======================================================
+mail-lite
+$fixed_sender not respected.
+=======================================================
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl openacs-4.5-9-0/packages/acs-mail-lite/tcl/acs-mail-lite-procs.tcl
+424a425
+>         
+594,599d594
+<         
+<         # fraber 2016-11-02: Overwrite fixed_sender in case we got
+<         # issues with corporate mail gateways etc.
+<         if { $fixed_sender ne ""} {
+<             set originator $fixed_sender
+<         }
+
+
+
+=======================================================
+calendar JS
+Fixed JavaScript error in case of empty date field.
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-subsite/www/resources/core.js openacs-4.5-9-0/packages/acs-subsite/www/resources/core.js
+1716,1720d1715
+< 
+<     if (!idM.value) idM.value = new Date().getMonth();
+<     if (!idD.value) idD.value = new Date().getDate();
+<     if (!idY.value) idY.value = new Date().getFullYear();
+< 
+1778,1784d1772
+< 
+<       // Trigger the "change" event of the date 
+<       var event = new Event('change');
+<       cal.selM.dispatchEvent(event);
+<       cal.selY.dispatchEvent(event);
+<       cal.selD.dispatchEvent(event);
+< 
+
+
+
+=======================================================
+acs-permissions
+Empty party_id causes a hard error in permission_p.
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-tcl/tcl/acs-permissions-procs.tcl openacs-4.5-9-0/packages/acs-tcl/tcl/acs-permissions-procs.tcl
+179,180d178
+< 
+<     if {$party_id eq ""} { set party_id 0 }
+
+
+
+
+=======================================================
+http-client-procs.tcl: Fix curl issue with insecure connections
+@OpenACS: Please add accept_insecure_p or similar to util::http::curl::request.
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-tcl/tcl/http-client-procs.tcl openacs-4.5-9-0/packages/acs-tcl/tcl/http-client-procs.tcl
+1093c1093
+<     set cmd [list exec curl -s -k1]
+---
+>     set cmd [list exec curl -s]
+
+
+
+=======================================================
+date-procs
+Fix issue with ISO date.
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/acs-templating/tcl/date-procs.tcl openacs-4.5-9-0/packages/acs-templating/tcl/date-procs.tcl
+1022,1024d1021
+<     if { [regexp {([0-9]*)-([0-9]*)-([0-9]*)} $value match _year _month _day] } {
+< 	set value "$_year $_month $_day 0 0 0 \{YYYY MONTH DD\}"
+<     }
+
+
+=======================================================
+calendar/view-week-display
+]po[ needs a base_url to point to a different package.
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/calendar/www/view-week-display.tcl openacs-4.5-9-0/packages/calendar/www/view-week-display.tcl
+4d3
+< #  base_url
+28,29d26
+< if {![info exists base_url]} { set base_url "" }
+< 
+219c216
+<         "$base_url?[export_vars {{view day} {date ansi_start_date} page_num}]" \
+---
+>         ?[export_vars {{view day} {date ansi_start_date} page_num}] \
+253c250
+< set previous_week_url "$base_url?[export_vars {page_num {view week} {date $prev_date_ansi}}]\#calendar"
+---
+> set previous_week_url ?[export_vars {page_num {view week} {date $prev_date_ansi}}]\#calendar
+255,256c252
+< set next_week_url "$base_url?[export_vars {page_num {view week} {date $next_date_ansi}}]\#calendar"
+< 
+---
+> set next_week_url ?[export_vars {page_num {view week} {date $next_date_ansi}}]\#calendar
+291c287
+<     set weekday_url   [export_vars -base "${base_url}view" -url -entire_form {{view day} {date $weekday_date}}]
+---
+>     set weekday_url   [export_vars -base [ad_conn url] -url -entire_form {{view day} {date $weekday_date}}]
+
+
+
+=======================================================
+file-storage
+Installation breaks. Ignoring is OK.
+=======================================================
+
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/file-storage/tcl/file-storage-install-procs.tcl openacs-4.5-9-0/packages/file-storage/tcl/file-storage-install-procs.tcl
+55d54
+<     catch {
+57d55
+<     } err_msg
+
+
+
+
+=======================================================
+file-storage
+Unregister can throw a hard error in case of non-existing data.
+This breaks installation.
+=======================================================
+
+
+diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id: openacs-590-591.diff,v 1.2 2020/05/20 16:07:27 cvs Exp $Date' packages/file-storage/tcl/file-storage-procs.tcl openacs-4.5-9-0/packages/file-storage/tcl/file-storage-procs.tcl
+211d210
+<     catch {
+212a212
+> 
+214d213
+<     } err_msg
+
