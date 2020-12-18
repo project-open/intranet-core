@@ -23,7 +23,7 @@ ad_library {
 
 
 
-ad_proc -public cr_filename_to_mime_type { 
+ad_proc -public cr_filename_to_mime_type_disabled { 
     -create:boolean
     filename
 } { 
@@ -68,7 +68,7 @@ ad_proc -public cr_filename_to_mime_type {
 
 
 
-ad_proc -public cr_import_content {
+ad_proc -public cr_import_content_disabled {
     {-storage_type "file"}
     -creation_user
     -creation_ip
