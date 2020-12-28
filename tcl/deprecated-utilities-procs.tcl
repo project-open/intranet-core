@@ -71,7 +71,7 @@ ad_proc -private  ad_user_filter {} {
 
 
 
-ad_proc -warn nmc_IllustraDatetoPrettyDate {sql_date} {
+ad_proc -deprecated -warn nmc_IllustraDatetoPrettyDate {sql_date} {
     to be removed.
 } { 
     regexp {(.*)-(.*)-(.*)$} $sql_date match year month day
@@ -89,7 +89,7 @@ ad_proc -warn nmc_IllustraDatetoPrettyDate {sql_date} {
 
 }
 
-ad_proc -warn util_prepare_update {table_name primary_key_name primary_key_value form} {
+ad_proc -deprecated -warn util_prepare_update {table_name primary_key_name primary_key_value form} {
     to be removed.
 } { 
 
@@ -117,7 +117,7 @@ ad_proc -warn util_prepare_update {table_name primary_key_name primary_key_value
    
 }
 
-ad_proc -warn util_prepare_update_multi_key {table_name primary_key_name_list primary_key_value_list form} {
+ad_proc -deprecated -warn util_prepare_update_multi_key {table_name primary_key_name_list primary_key_value_list form} {
     to be removed.
 } { 
 
@@ -154,7 +154,7 @@ ad_proc -warn util_prepare_update_multi_key {table_name primary_key_name_list pr
     return [list "update $table_name\nset [join $the_sets ",\n"] \n where [join $key_eqns " AND "]" $bind_vars]
 }
 
-ad_proc -warn util_prepare_insert {table_name form} {
+ad_proc -deprecated -warn util_prepare_insert {table_name form} {
     to be removed.
 } { 
 
@@ -172,7 +172,7 @@ ad_proc -warn util_prepare_insert {table_name form} {
     return [list "insert into $table_name\n([join [ad_ns_set_keys $bind_vars] ", "])\n values ([join [ad_ns_set_keys -colon $bind_vars] ", "])" $bind_vars]
 }
 
-ad_proc -warn util_PrettySex {m_or_f { default "default" }} {
+ad_proc -deprecated -warn util_PrettySex {m_or_f { default "default" }} {
     to be removed.
 } { 
     if { $m_or_f eq "M" || $m_or_f eq "m" } {
@@ -191,7 +191,7 @@ ad_proc -warn util_PrettySex {m_or_f { default "default" }} {
     }
 }
 
-ad_proc -warn util_PrettySexManWoman {m_or_f { default "default"} } {
+ad_proc -deprecated -warn util_PrettySexManWoman {m_or_f { default "default"} } {
     to be removed.
 } { 
     if { $m_or_f eq "M" || $m_or_f eq "m" } {
@@ -210,7 +210,7 @@ ad_proc -warn util_PrettySexManWoman {m_or_f { default "default"} } {
     }
 }
 
-ad_proc -warn merge_form_with_ns_set {form set_id} {
+ad_proc -deprecated -warn merge_form_with_ns_set {form set_id} {
     to be removed.
 } { 
 
@@ -227,7 +227,7 @@ ad_proc -warn merge_form_with_ns_set {form set_id} {
 # Aborts the transaction and returns an error message if
 # an error occurred for any of the statements, otherwise
 # returns null string. -jsc
-ad_proc -warn do_dml_transactions {dml_stmt_list} {
+ad_proc -deprecated -warn do_dml_transactions {dml_stmt_list} {
     to be removed.
 } { 
     db_transaction {
@@ -247,7 +247,7 @@ ad_proc -warn do_dml_transactions {dml_stmt_list} {
 # within body, with errmsg bound.
 # This procedure will clobber errmsg in the caller.
 # -jsc
-ad_proc -warn with_transaction {body on_error} {
+ad_proc -deprecated -warn with_transaction {body on_error} {
     to be removed.
 } { 
     upvar errmsg errmsg
@@ -271,7 +271,7 @@ ad_proc -warn with_transaction {body on_error} {
 }
 
 
-ad_proc -warn string_contains_p {small_string big_string} {
+ad_proc -deprecated -warn string_contains_p {small_string big_string} {
     Returns 1 if the BIG_STRING contains the SMALL_STRING, 0 otherwise; syntactic sugar for string first != -1
 
     to be removed.
@@ -283,7 +283,7 @@ ad_proc -warn string_contains_p {small_string big_string} {
     }
 }
 
-ad_proc -warn remove_whitespace {input_string} {
+ad_proc -deprecated -warn remove_whitespace {input_string} {
     to be removed.
 } { 
     if { [regsub -all "\[\015\012\t \]" $input_string "" output_string] } {
@@ -293,7 +293,7 @@ ad_proc -warn remove_whitespace {input_string} {
     }
 }
 
-ad_proc -warn util_just_the_digits {input_string} {
+ad_proc -deprecated -warn util_just_the_digits {input_string} {
     to be removed.
 } { 
     if { [regsub -all {[^0-9]} $input_string "" output_string] } {
@@ -303,14 +303,14 @@ ad_proc -warn util_just_the_digits {input_string} {
     }
 }
 
-ad_proc -warn leap_year_p {year} {
+ad_proc -deprecated -warn leap_year_p {year} {
     to be removed.
 } { 
     expr ( $year % 4 == 0 ) && ( ( $year % 100 != 0 ) || ( $year % 400 == 0 ) )
 }
 
 
-ad_proc -warn set_csv_variables_after_query {} {
+ad_proc -deprecated -warn set_csv_variables_after_query {} {
 
     You can call this after an ns_db getrow or ns_db 1row to set local
     Tcl variables to values from the database.  You get $foo, $EQfoo
@@ -334,7 +334,7 @@ ad_proc -warn set_csv_variables_after_query {} {
 
 # should remove since openacs does not work on anything other than 3+ 
 # since it requires tcl8
-ad_proc -warn util_aolserver_2_p {} {
+ad_proc -deprecated -warn util_aolserver_2_p {} {
     to be removed.
 } { 
     if {[string index [ns_info version] 0] == 2} {
@@ -344,7 +344,7 @@ ad_proc -warn util_aolserver_2_p {} {
     }
 }
 
-ad_proc -warn ad_chdir_and_exec { dir arg_list } { 
+ad_proc -deprecated -warn ad_chdir_and_exec { dir arg_list } { 
     chdirs to $dir and executes the command in $arg_list. We'll probably want to improve this to be thread-safe. 
     to be removed.
 } { 
@@ -352,7 +352,7 @@ ad_proc -warn ad_chdir_and_exec { dir arg_list } {
     eval im_exec $arg_list
 }
 
-ad_proc -warn post_args_to_query_string {} {
+ad_proc -deprecated -warn post_args_to_query_string {} {
     to be removed.
 } { 
     set arg_form [ns_getform]
@@ -370,7 +370,7 @@ ad_proc -warn post_args_to_query_string {} {
 }    
 
 
-ad_proc -warn get_referrer_and_query_string {} {
+ad_proc -deprecated -warn get_referrer_and_query_string {} {
     to be removed.
 } { 
     if {[ad_conn method] ne "GET"} {
@@ -381,7 +381,7 @@ ad_proc -warn get_referrer_and_query_string {} {
     }
 }
 
-ad_proc -warn nmc_GetNewIDNumber {id_name} {
+ad_proc -deprecated -warn nmc_GetNewIDNumber {id_name} {
     to be removed.
 } { 
 
@@ -420,7 +420,7 @@ ad_proc -warn nmc_GetNewIDNumber {id_name} {
 # database columns or in parent programs
 #
 
-ad_proc -warn set_variables_after_query {} {
+ad_proc -deprecated -warn set_variables_after_query_disabled {} {
     to be removed.
 } { 
     uplevel {
@@ -435,7 +435,7 @@ ad_proc -warn set_variables_after_query {} {
 
 # as above, but you must use sub_selection
 
-ad_proc -warn set_variables_after_subquery {} {
+ad_proc -deprecated -warn set_variables_after_subquery_disabled {} {
     to be removed.
 } { 
     uplevel {
@@ -452,7 +452,7 @@ ad_proc -warn set_variables_after_subquery {} {
 #1. specify the name of the "selection" variable
 #2. append a prefix to all the named variables
 
-ad_proc -warn set_variables_after_query_not_selection {selection_variable {name_prefix ""}} {
+ad_proc -deprecated -warn set_variables_after_query_not_selection_disabled {selection_variable {name_prefix ""}} {
     to be removed.
 } { 
     set set_variables_after_query_i 0
@@ -470,7 +470,7 @@ ad_proc -warn set_variables_after_query_not_selection {selection_variable {name_
 # and returns the result (only works when you are after a single row/column
 # intersection)
 
-ad_proc -warn database_to_tcl_string {db sql} {
+ad_proc -deprecated -warn database_to_tcl_string {db sql} {
     to be removed.
 } { 
 
@@ -480,7 +480,7 @@ ad_proc -warn database_to_tcl_string {db sql} {
 
 }
 
-ad_proc -warn database_to_tcl_string_or_null {db sql {null_value ""}} {
+ad_proc -deprecated -warn database_to_tcl_string_or_null {db sql {null_value ""}} {
     to be removed.
 } { 
     set selection [ns_db 0or1row $db $sql]
@@ -494,7 +494,7 @@ ad_proc -warn database_to_tcl_string_or_null {db sql {null_value ""}} {
 
 #for commands like set full_name  ["select first_name, last_name..."]
 
-ad_proc -warn database_cols_to_tcl_string {db sql} {
+ad_proc -deprecated -warn database_cols_to_tcl_string {db sql} {
     to be removed.
 } { 
     set string_to_return ""	
@@ -508,7 +508,7 @@ ad_proc -warn database_cols_to_tcl_string {db sql} {
     return [string trim $string_to_return]
 }
 
-ad_proc -warn database_to_tcl_list {db sql} {
+ad_proc -deprecated -warn database_to_tcl_list {db sql} {
     takes a query like "select product_id from foobar" and returns all the ids as a Tcl list
 
     to be removed.
@@ -521,7 +521,7 @@ ad_proc -warn database_to_tcl_list {db sql} {
     return $list_to_return
 }
 
-ad_proc -warn database_to_tcl_list_list {db sql} {
+ad_proc -deprecated -warn database_to_tcl_list_list {db sql} {
     Returns a list of Tcl lists, with each sublist containing the columns
     returned by the database; if no rows are returned by the database,
     returns the empty list (empty string in Tcl 7.x and 8.x)
@@ -543,7 +543,7 @@ ad_proc -warn database_to_tcl_list_list {db sql} {
     return $list_to_return
 }
 
-ad_proc -warn database_1row_to_tcl_list {db sql} {
+ad_proc -deprecated -warn database_1row_to_tcl_list {db sql} {
     Returns the column values from one row in the database as 
     a Tcl list.  If there isn't exactly one row from this query, 
     throws an error.
@@ -565,7 +565,7 @@ ad_proc -warn database_1row_to_tcl_list {db sql} {
 # column_list is a list of column names optionally followed by " desc".
 # Returns a new list with sort_column as the first element, followed
 # by the columns in column_list excluding any beginning with sort_column.
-ad_proc -warn sortable_table_new_sort_order {column_list sort_column} {
+ad_proc -deprecated -warn sortable_table_new_sort_order {column_list sort_column} {
     to be removed.
 } {
     set new_order [list $sort_column]
@@ -581,7 +581,7 @@ ad_proc -warn sortable_table_new_sort_order {column_list sort_column} {
     return $new_order
 }
 
-ad_proc -warn sortable_table {db select_string display_spec vars_to_export sort_var current_sort_order {table_length ""} {extra_table_parameters ""} {stripe_color_list ""} {max_results ""} {header_font_params ""} {row_font_params ""}} {
+ad_proc -deprecated -warn sortable_table {db select_string display_spec vars_to_export sort_var current_sort_order {table_length ""} {extra_table_parameters ""} {stripe_color_list ""} {max_results ""} {header_font_params ""} {row_font_params ""}} {
     to be removed.
 <p>
 Procedure to format a database query as a table that can be sorted by clicking on the headers.

@@ -32,12 +32,12 @@ git clone https://gitlab.project-open.net/project-open/attachments.git
 git clone https://gitlab.project-open.net/project-open/calendar.git
 git clone https://gitlab.project-open.net/project-open/categories.git
 git clone https://gitlab.project-open.net/project-open/cronjob.git
-#git clone https://gitlab.project-open.net/project-open/diagram.git
+git clone https://gitlab.project-open.net/project-open/diagram.git
 #git clone https://gitlab.project-open.net/project-open/edit-this-page.git
 git clone https://gitlab.project-open.net/project-open/events.git
 #git clone https://gitlab.project-open.net/project-open/faq.git
 git clone https://gitlab.project-open.net/project-open/file-storage.git
-#git clone https://gitlab.project-open.net/project-open/general-comments.git
+git clone https://gitlab.project-open.net/project-open/general-comments.git
 #git clone https://gitlab.project-open.net/project-open/intermedia-driver.git
 #git clone https://gitlab.project-open.net/project-open/intranet-adrtel-sap.git
 git clone https://gitlab.project-open.net/project-open/intranet-agile.git
@@ -199,10 +199,10 @@ git clone https://gitlab.project-open.net/project-open/sencha-filestorage.git
 #git clone https://gitlab.project-open.net/project-open/sencha-member-portlet.git
 git clone https://gitlab.project-open.net/project-open/sencha-reporting-portfolio.git
 #git clone https://gitlab.project-open.net/project-open/senchatouch-notes.git
-#git clone https://gitlab.project-open.net/project-open/senchatouch-timesheet.git
+git clone https://gitlab.project-open.net/project-open/senchatouch-timesheet.git
 #git clone https://gitlab.project-open.net/project-open/senchatouch-v211.git
 #git clone https://gitlab.project-open.net/project-open/senchatouch-v231a.git
-#git clone https://gitlab.project-open.net/project-open/senchatouch-v242.git
+git clone https://gitlab.project-open.net/project-open/senchatouch-v242.git
 git clone https://gitlab.project-open.net/project-open/simple-survey.git
 #git clone https://gitlab.project-open.net/project-open/tclwebtest.git
 git clone https://gitlab.project-open.net/project-open/telecom-number.git
@@ -218,7 +218,7 @@ git clone https://gitlab.project-open.net/project-open/upgrade-4.0-4.1.git
 git clone https://gitlab.project-open.net/project-open/upgrade-4.1-5.0.git
 git clone https://gitlab.project-open.net/project-open/upgrade-5.0-5.1.git
 #git clone https://gitlab.project-open.net/project-open/wiki.git
-#git clone https://gitlab.project-open.net/project-open/workflow.git
+git clone https://gitlab.project-open.net/project-open/workflow.git
 #git clone https://gitlab.project-open.net/project-open/xml-rpc.git
 git clone https://gitlab.project-open.net/project-open/xotcl-core.git
 git clone https://gitlab.project-open.net/project-open/xotcl-request-monitor.git

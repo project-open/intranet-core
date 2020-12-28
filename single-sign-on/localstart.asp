@@ -5,7 +5,7 @@
 
 
 
-<script language="javascript" type="text/javascript" runat="server" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+<script language="javascript" type="text/javascript" runat="server">
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -269,7 +269,7 @@ sUrl = "https://calpms.mnet.moravia-it.com/moravia-login?username="+sUser+"&date
 %>
 
 <head>
-<script language="javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
+<script language="javascript">
   var gWinheight;
   var gDialogsize;
   var ghelpwin;

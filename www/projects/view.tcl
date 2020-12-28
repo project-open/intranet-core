@@ -198,6 +198,11 @@ if { [apm_package_enabled_p "intranet-customer-portal"] && ( [im_profile::member
     <li><A href=\"/intranet-customer-portal/create-dir-structure?project_id=$project_id\">[lang::message::lookup "" intranet-customer-portal.CreateFolderStructure "Create folder structure"]</A></li>\n"
 }
 
+# Append user-defined menus
+set bind_vars [list project_id $project_id]
+append admin_html_content [im_menu_ul_list -no_uls 1 "project_admin" $bind_vars]
+
+
 
 # ---------------------------------------------------------------------
 # Import/Export Box
