@@ -146,6 +146,7 @@ set employee_form "
 
 # Get the list of all skill profiles as a shortcut
 #
+set skill_profile_exists_p [db_string skill_prof "select count(*) from group_distinct_member_map where group_id = [im_profile_skill_profile]"]
 set skill_profile_select [im_employee_select_multiple -group_id [im_profile_skill_profile] -limit_to_group_id $limit_to_users_in_group_id user_id_from_search "" 12 multiple]
 set skill_profile_form "
 <form method=POST action=/intranet/member-add-2>
@@ -165,3 +166,7 @@ set skill_profile_form "
 </form>
 "
 
+if {!$skill_profile_exists_p} {
+    set skill_profile_select ""
+    set skill_profile_form ""
+}
