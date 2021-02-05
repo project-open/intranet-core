@@ -2781,7 +2781,7 @@ ad_proc im_project_nuke {
 	}
 
 	# Baselines
-	if {[im_table_exists im_baselines]} {
+	if {[im_table_exists im_baselines] && [im_column_exists im_audits audit_baseline_id]} {
 	    ns_log Notice "projects/nuke-2: im_baselines"
 	    db_dml del_baseline_ref "update im_audits set audit_baseline_id = null where audit_baseline_id in (select baseline_id from im_baselines where baseline_project_id = :project_id)"
 	    db_dml del_baseline "delete from im_baselines where baseline_project_id = :project_id"
