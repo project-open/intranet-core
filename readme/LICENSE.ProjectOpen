@@ -1,7 +1,7 @@
 
   License Details
-  ]project-open[ V5.0 Virtual Machine
-  Community Edition, 2015-11-30
+  ]project-open[ V5.1 Virtual Machine
+  Community Edition, 2021-01-21
 
 
   ______________________________________________________________________
@@ -98,8 +98,6 @@
   Windows operating systems, in addition to the packages mentioned
   in sections 2. and 3:
 
-
-  
   CygWin		A mere aggregation of many packages, plus
 			https://cygwin.com/licensing.html
   Java			GPL V2 plus additions http://java.com/license
