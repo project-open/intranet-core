@@ -2527,17 +2527,26 @@ ad_proc -public im_hexagon {
     x and y are integers, specifying the position in terms
     of hexagon row and column.
 } {
-
+    set font_size ""
+    
     #set w 175; set h 148; set fh 16; # 100%, original GIF size, too large
     #set w 105; set h 87; # 60%, a bit to small
     #set w 140; set h 118; # 80%
 
-    if {"" eq $hexagon_width} { set hexagon_width 175 }
-    if {"" eq $hexagon_height} { set hexagon_height 148 }
+    # Smaller version
+    if {"" eq $hexagon_width} { set hexagon_width 105 }
+    if {"" eq $hexagon_height} { set hexagon_height 87 }
+
+    if {0} {
+	# Larger version
+	if {"" eq $hexagon_width} { set hexagon_width 175 }
+	if {"" eq $hexagon_height} { set hexagon_height 148 }
+    }
+
     set hexagon_width [expr round($hexagon_width * $scaling_factor)]
     set hexagon_height [expr round($hexagon_height * $scaling_factor)]
 
-    set font_size [expr round(24 * $scaling_factor)]
+    set font_size [expr round(1.0 * $hexagon_width / 6.0 * $scaling_factor)]
     set base [expr $hexagon_width*0.5]; # Base of triangle, half of hexagon_width = 88
     set hyp [expr sqrt($base*$base - $base*$base/4)]; # Hypotonuse of base triangle = 76
 
