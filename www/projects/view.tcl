@@ -200,7 +200,7 @@ if { [apm_package_enabled_p "intranet-customer-portal"] && ( [im_profile::member
 
 # Append user-defined menus
 set bind_vars [list project_id $project_id]
-append admin_html_content [im_menu_ul_list -no_uls 1 "project_admin" $bind_vars]
+append admin_html_content [im_menu_ul_list -no_uls 1 "projects_admin" $bind_vars]
 
 
 
