@@ -877,9 +877,10 @@ ad_proc -public im_project_options {
 						im_projects unpriv_parent,
 						acs_rels unpriv_r
 					where	unpriv_r.object_id_two = :current_user_id and
+						unpriv_parent.parent_id is null and
 						unpriv_r.object_id_one = unpriv_parent.project_id and
 						unpriv_p.tree_sortkey between unpriv_parent.tree_sortkey and 
-							tree_right(unpriv_parent.tree_sortkey)
+						tree_right(unpriv_parent.tree_sortkey)
 	)"
 	# No restriction on parent project membership, because parent
 	# projects always have the same members as sub-projects.
