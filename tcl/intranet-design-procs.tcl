@@ -1640,13 +1640,12 @@ ad_proc -private im_header_search_form {} {
 
     if {[im_permission $user_id "search_intranet"] && $user_id > 0 && $search_installed_p} {
 	set alt_go [lang::message::lookup "" intranet-core.Search_Go_Alt "Search through all full-text indexed objects."]
+	template::head::add_javascript -script "
+                window.addEventListener('load', function() {
+                     document.getElementById('tsearch_box').addEventListener('click', function() { this.value = ''; });
+                });
+        "
 	return "
-	    	<script type=\"text/javascript\" nonce=\"[im_csp_nonce] \">
-		window.addEventListener('load', function() { 
-		     document.getElementById('tsearch_box').addEventListener('click', function() { this.value = ''; });
-		});
-		</script>
-
 	      <form action=\"/intranet/search/go-search\" method=\"post\" name=\"surx\">
 		<input id=tsearch_box class=surx name=query_string size=40 value=\"[_ intranet-core.Search]\">
 		<input type=\"hidden\" name=\"target\" value=\"content\">
