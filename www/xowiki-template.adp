@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
@@ -61,7 +61,7 @@
 	<div id="monitor_frame">
 	   <div id="header_class">
 	      <div id="header_logo">
-		<a href="http://www.project-open.com/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border="0"></a>
+		<a href="https://www.project-open.com/"><img src="/intranet/images/logo.default.gif" alt="intranet logo" border="0"></a>
 	      </div>
 	      <div id="header_plugin_left">	 
 	      </div>
@@ -171,7 +171,7 @@
 <input value="@system_id@" name="response_to_question.@system_id_question_id@" type="hidden">
 <input value="@item_id@" name="response_to_question.@item_id_question_id@" type="hidden">
 <input value="@title@" name="response_to_question.@title_question_id@" type="hidden">
-<input value="http://www.project-open.com/en/contact-thanks" name="return_url" type="hidden">
+<input value="https://www.project-open.com/en/contact-thanks" name="return_url" type="hidden">
 <script language="javascript" type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 document.write('<input type="hidden" name="response_to_question.@url_question_id@" value="'+location.href+'" >');
 </script>

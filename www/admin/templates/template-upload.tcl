@@ -3,7 +3,7 @@
 # Copyright (C) 2009 ]project-open[
 #
 # All rights reserved. Please check
-# http://www.project-open.com/license/ for details.
+# https://www.project-open.com/license/ for details.
 
 ad_page_contract {
     Upload a new template and create a corresponding category entry.

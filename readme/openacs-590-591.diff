@@ -182,12 +182,12 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 > <if @kind@ eq "content">
 76,77c55,56
 <       <td style="width:35%">@content_pages.indentation;noquote@
-<        <b><a href="http://www.project-open.net/api-doc/content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
+<        <b><a href="https://www.project-open.net/api-doc/content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
 ---
 >       <td class="wide">@content_pages.indentation;noquote@
 >        <b><a href="content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
 79c58
-<          <a href="http://www.project-open.net/api-doc/type-view?type=@content_pages.type@"></a>
+<          <a href="https://www.project-open.net/api-doc/type-view?type=@content_pages.type@"></a>
 ---
 >          <a href="type-view?type=@content_pages.type@"></a>
 91,92d69
@@ -234,7 +234,7 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-a
 < set procs_files_p 0
 < set sql_files_p 0
 < set content_p 0
-< set abs_path "http://www.project-open.net/api-doc/"
+< set abs_path "https://www.project-open.net/api-doc/"
 < 
 < 
 < foreach k $kind {
@@ -597,7 +597,7 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-s
 <                   <tr><td align=center>Powered by</td></tr>
 <                   <tr>
 <                     <td align=center>
-<                       <a href="http://www.project-open.com/">
+<                       <a href="https://www.project-open.com/">
 <                         <img
 <                           src="/intranet/images/project_open.70x26.gif"
 <                           alt="Open Source Enterprise Project Management"
@@ -713,7 +713,7 @@ diff -w -r -x CVS -x catalog -I @cvs-id -I @version -I '$Id$Date' packages/acs-t
 < <input type=submit name=submit value="Report this Error">
 < <br>
 < <input type=checkbox name=privacy_statement_p checked>
-< I agree with the <a href="http://www.project-open.com/en/legal-note" target="_">privacy statement</a>.
+< I agree with the <a href="https://www.project-open.com/en/legal-note" target="_">privacy statement</a>.
 < <br>
 < <input type=hidden name=error_url value=@error_url@>
 < <input type=hidden name=error_location value=@error_location@>

@@ -39,7 +39,7 @@
 	<td></td>
 	<td>
 		<input type="submit">
-		I agree with the <a href="http://www.project-open.com/en/company/project-open-privacy.html" target="_">privacy statement</a>.
+		I agree with the <a href="https://www.project-open.com/en/company/project-open-privacy.html" target="_">privacy statement</a>.
 	</td>
 </tr>
 </table>

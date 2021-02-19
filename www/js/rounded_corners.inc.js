@@ -11,9 +11,9 @@
   *  By: Cameron Cooke and Tim Hutchison.                        *
   *                                                              *
   *                                                              *
-  *  Website: http://www.curvycorners.net                        *
+  *  Website: https://www.curvycorners.net                        *
   *  Email:   info@totalinfinity.com                             *
-  *  Forum:   http://www.curvycorners.net/forum/                 *
+  *  Forum:   https://www.curvycorners.net/forum/                 *
   *                                                              *
   *                                                              *
   *  This library is free software; you can redistribute         *

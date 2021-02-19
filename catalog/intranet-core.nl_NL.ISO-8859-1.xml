@@ -1954,11 +1954,11 @@
   <msg key="PM_Help">PM Help</msg>
   <msg key="PO_Admins">P/O Administrators</msg>
   <msg key="po_admins">P/O Admins</msg>
-  <msg key="PO_com_web_site">&lt;A href=&#34;http://www.project-open.com/&#34;&gt;&lt;b&gt; &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; &#39;.com&#39; Web site</msg>
+  <msg key="PO_com_web_site">&lt;A href=&#34;https://www.project-open.com/&#34;&gt;&lt;b&gt; &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; &#39;.com&#39; Web site</msg>
   <msg key="PO_com_web_site_blurb">Voorziet je van een overzicht &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="po_Component">]po[ Component</msg>
   <msg key="PO_Documentation_Wiki">]po[ documentatie Wiki</msg>
-  <msg key="PO_Documentation_Wiki_Blurb">&lt;A href=&#34;http://www.project-open.com/en/&#34;&gt;&lt;B&gt;]po[ Documentation Wiki&lt;/b&gt;&lt;/a&gt;</msg>
+  <msg key="PO_Documentation_Wiki_Blurb">&lt;A href=&#34;https://www.project-open.com/en/&#34;&gt;&lt;B&gt;]po[ Documentation Wiki&lt;/b&gt;&lt;/a&gt;</msg>
   <msg key="PO_Professional_Services">]po[ ProfessionalServices</msg>
   <msg key="PO_Support_Contracts">]po[ support contracten</msg>
   <msg key="PO_Support_Contracts_Blurb">We kunnen ook een support contract aanbieden om het systeem veilig te blijven gebruiken</msg>
@@ -2506,7 +2506,7 @@ Classical / Gantt projects allow for tight progress tracking, financial controll
   <msg key="Telephony_Request_comment">Verzoek nieuwe telefoon uitrusting of een gewijzigd mobiel nummer.</msg>
   <msg key="Template_Help">Help</msg>
   <msg key="Template_Help_blurb">Via dit scherm kan je templates voor financiële documenten managen zoals rekeningen, aanbiedingen, inkooporders etc.&lt;br&gt; Deze templates zijn beschikbaar in het scherm waarin je nieuwe financiële document kan maken.&lt;br&gt; Ga naar &lt;a href=&#39;/intranet/admin/categories/index.tcl?select_category_type=Intranet Cost Template&#39;&gt;maak een categorie&lt;/a&gt; om de nieuwe templates te activeren.  
-Je kan of HTML (&#39;.adp&#39;) of of OpenOffice &#39;.odt&#39; formaat gebruiken. Om een template te downloaden kies je met de rechtermuis klik op de menu optie &#39;Opslaan als&#39; and dan de bestandsnaam wijzigen zoals getoond in de tabel. &lt;br&gt; Zie &lt;a href=&#39;http://www.project-open.com/en/category-intranet-cost-template&#39;&gt;online documentatie&lt;/a&gt; voor verdere details over templates. </msg>
+Je kan of HTML (&#39;.adp&#39;) of of OpenOffice &#39;.odt&#39; formaat gebruiken. Om een template te downloaden kies je met de rechtermuis klik op de menu optie &#39;Opslaan als&#39; and dan de bestandsnaam wijzigen zoals getoond in de tabel. &lt;br&gt; Zie &lt;a href=&#39;https://www.project-open.com/en/category-intranet-cost-template&#39;&gt;online documentatie&lt;/a&gt; voor verdere details over templates. </msg>
   <msg key="Template_p">Template?</msg>
   <msg key="templatede_DEadp">template.de_DE.adp</msg>
   <msg key="templatede_DEodt">template.de_DE.odt</msg>

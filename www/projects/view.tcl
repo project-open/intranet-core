@@ -218,15 +218,15 @@ if {$gantt_project_enabled_p} {
 	append export_html_content "
         <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project.xml" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Export_to_MS_Projectj "Export to Microsoft Project"]</A>
-<!--	<a href=\"http://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
+<!--	<a href=\"https://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
 	</li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/microsoft-project.xml" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Export_to_ProjectLibre "Export to ProjectLibre"]</A>
-<!--	<a href=\"http://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
+<!--	<a href=\"https://www.sourceforge.net/projects/projectlibre\"><img src=/intranet/images/external.png></a> -->
 	</li>
         <li><A href=\"[export_vars -base "/intranet-ganttproject/gantt-project.gan" {project_id}]\"
         >[lang::message::lookup "" intranet-ganttproject.Export_to_GanttProject "Export to GanttProject"]</A>
-<!--	<a href=\"http://www.sourceforge.net/projects/ganttproject\"><img src=/intranet/images/external.png></a> -->
+<!--	<a href=\"https://www.sourceforge.net/projects/ganttproject\"><img src=/intranet/images/external.png></a> -->
 	</li>
 	<br>\n"
     }

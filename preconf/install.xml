@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- This must be moved to the OpenACS page root when making a release tarball -->
-<application name="project-open" pretty-name="]project-open[" home="http://www.project-open.com/" min_stack_size="512">
+<application name="project-open" pretty-name="]project-open[" home="https://www.project-open.com/" min_stack_size="512">
 <actions>
 
 	<install package="acs-admin"/>

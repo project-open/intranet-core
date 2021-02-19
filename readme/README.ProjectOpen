@@ -17,7 +17,7 @@ Community vs. Pro vs. Enterprise Edition:
 -----------------------------------------
 
 For differences between the available editions please see
-http://www.project-open.com/en/products/editions.html
+https://www.project-open.com/en/products/editions.html
 
 
 
@@ -25,7 +25,7 @@ Services:
 ---------
 
 We offer a broad variety of services around ]po[:
-http://www.project-open.com/en/products/editions.html
+https://www.project-open.com/en/products/editions.html
 Services range from a few hours of consulting to help
 you to sort out the last issues in your do-it-yourself
 installation to a full blown corporate rollout.
@@ -35,31 +35,31 @@ Contact info@project-open.com and ask for details.
 Documentation:
 --------------
 
-For documentation please see http://www.project-open.com/:
+For documentation please see https://www.project-open.com/:
 
 - List of ]po[ Modules:
   Modules are groups of functionality like Finance, PM etc.
   There are some 11 different modules available:
-  http://www.project-open.com/en/list-modules
+  https://www.project-open.com/en/list-modules
 
 - List of ]po[ Packages:
   Packages are individually installable/uninstallable 
   pieces of functionality. ]po[ currently consists of some
   150 different packages:
-  http://www.project-open.com/en/list-packages
+  https://www.project-open.com/en/list-packages
 
 - List of ]po[ Business Objects:
   Business objects are high-level entities consisting of 
   one or more database tables. ]po[ consists of some 150
   business objects, of which some 45 important objects are
   documented here:
-  http://www.project-open.com/en/list-object-types
+  https://www.project-open.com/en/list-object-types
 
 - List of ]po[ Processes:
   Processes are high-level descriptions of ]po[ 
   functionality. The documentation of processes is quite
   incomplete, though:
-  http://www.project-open.com/en/list-processes
+  https://www.project-open.com/en/list-processes
 
 
 
@@ -80,12 +80,12 @@ installers is GPLed or FLed.
 - GPL: 
   The vast majority of the code is covered by the 
   Gnu Public License:
-  http://www.gnu.org/copyleft/gpl.html
+  https://www.gnu.org/copyleft/gpl.html
 
 - ]project-open[ "Free License" (FL):
   Please see the LICENSE.ProjectOpen file in this directory or:
-  http://www.project-open.com/en/project-open-license-free
+  https://www.project-open.com/en/project-open-license-free
 
 - ]project-open[ "Commercial License" (CL):
   Please see the LICENSE.ProjectOpen file in this directory or:
-  http://www.project-open.com/en/project-open-license-commercial
+  https://www.project-open.com/en/project-open-license-commercial

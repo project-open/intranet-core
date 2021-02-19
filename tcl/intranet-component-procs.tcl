@@ -108,7 +108,7 @@ ad_proc -public im_component_box {
 
     if {"t" == $minimized_p} { set body "" }
 
-    set help_url [export_vars -base "http://www.project-open.net/en/portlet-[string tolower [string map {" " -} $plugin_name]]" {system_id}]
+    set help_url [export_vars -base "https://www.project-open.net/en/portlet-[string tolower [string map {" " -} $plugin_name]]" {system_id}]
     set icons "
        $min_gif
        <div class=\"icon_seperator\"></div>

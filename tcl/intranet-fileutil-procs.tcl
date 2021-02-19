@@ -10,7 +10,7 @@
 # 
 # RCS: @(#) $Id$
 
-# http://tcllib.sourceforge.net/doc/index.html
+# https://tcllib.sourceforge.net/doc/index.html
 
 # package require Tcl 8.2
 # package require cmdline
@@ -831,7 +831,7 @@ proc ::fileutil::fileType {filename} {
     # possibly pointing into the middle too (attached metakit,
     # attached zip).
 
-    ## Metakit File format: http://www.equi4.com/metakit/metakit-ff.html
+    ## Metakit File format: https://www.equi4.com/metakit/metakit-ff.html
     ## Metakit database attached ? ##
 
     if {!$metakit && ([file size $filename] >= 27)} {
@@ -883,7 +883,7 @@ proc ::fileutil::fileType {filename} {
     }
 
     ## Zip File Format: http://zziplib.sourceforge.net/zzip-parse.html
-    ## http://www.pkware.com/products/enterprise/white_papers/appnote.html
+    ## https://www.pkware.com/products/enterprise/white_papers/appnote.html
 
 
     ;## lastly, is it a link?

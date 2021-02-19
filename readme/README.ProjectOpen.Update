@@ -3,7 +3,7 @@
   Version VX.Y.Z.V.W, YYYY-MM-DD
   Frank Bergmann <frank.bergmann@project-open.com>
   Copyright (c) YYYY ]project-open[
-  http://www.project-open.com/en/list-installers
+  https://www.project-open.com/en/list-installers
 
   This is a ]project-open[ update distribution.
   This document describes how to update the software.
@@ -11,7 +11,7 @@
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.1 or
   any later version published by the Free Software Foundation.
-  A copy of the license is available at http://www.gnu.org/copyleft/fdl.html.
+  A copy of the license is available at https://www.gnu.org/copyleft/fdl.html.
 
   Please see LICENSE.project-open for details about the licensing 
   of the contained software.
@@ -36,7 +36,7 @@
 
   This package does not contains the AOLServer application server
   nor the rest of the ]po[ runtime environment. Please go to
-  http://www.sourceforge.net/projects/project-open/ to download
+  https://www.sourceforge.net/projects/project-open/ to download
   and install the project-open-3.2.VMware.zip or one of the other
   installers.
 
@@ -124,21 +124,21 @@
     ]project-open[ News (once or twice per year: security and major releases)
 
   - Newsletter:
-    http://www.project-open.net/
+    https://www.project-open.net/
     Please register yourself on our Web site. This way we are going
     to send you the ]po[ newsletter once or twice per year.
 
   - Twitter:
-    http://www.twitter.com/projop (@projop)
+    https://www.twitter.com/projop (@projop)
 
   - Facebook:
-    http://www.facebook.com/projectopen.org
+    https://www.facebook.com/projectopen.org
 
   - LinkedIn:
-    http://www.linkedin.com/in/fraber
+    https://www.linkedin.com/in/fraber
 
   - ]project-open[ RSS Feed:
-    http://www.project-open.net/rss/project-open-community.rss
+    https://www.project-open.net/rss/project-open-community.rss
     ]project-open[ News (once or twice per week)
 
   - ]project-open[ Blog:

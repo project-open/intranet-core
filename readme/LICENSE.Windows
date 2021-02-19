@@ -11,7 +11,7 @@ contact info@project-open.com and ask for the "Professional" or
 
 This Windows Port of ]project-open[ is made available under the 
 conditions specified in the GNU General Public License V2 or higher: 
-http://www.gnu.org/licenses/gpl.html
+https://www.gnu.org/licenses/gpl.html
 
 However this installer packages and redistributes several third party 
 software packages with licenses different from the GPL, so you are 
@@ -20,9 +20,9 @@ software:
 
 1.  NaviServer License: Mozilla Public License
 2.  Tcl/tk License: 
-    http://www.tcl.tk/software/tcltk/license.html
+    https://www.tcl.tk/software/tcltk/license.html
 3.  tDOM License: 
-    http://www.tdom.org/#SECTid0x80bca38
+    https://www.tdom.org/#SECTid0x80bca38
 4.  XOTcl License: 
     http://media.wu-wien.ac.at/doc/COPYRIGHT
 5.  Thread License: Copyrighted by the Regents of the University of 
@@ -31,13 +31,13 @@ software:
     notice is retained.
 6.  TclLib License: BSD License
 7.  OpenSSL License: 
-    http://www.openssl.org/source/license.html
+    https://www.openssl.org/source/license.html
 8.  PostgreSQL License: 
-    http://www.postgresql.org/about/licence
+    https://www.postgresql.org/about/licence
 9.  ]project-open[ Free License: 
-    http://www.project-open.com/en/project-open-license-free
+    https://www.project-open.com/en/project-open-license-free
 10. OpenACS License: GPL V2 or higher
-    http://openacs.org/about/licensing/openacs-plain-english-licensing
+    https://openacs.org/about/licensing/openacs-plain-english-licensing
 11. Microsoft VC++ Redistributable
 12. XoWiki License:  MIT style license (like XOTcl)
 13. Java JRE License: 

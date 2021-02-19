@@ -2,7 +2,7 @@
 
 ad_library {
 
-<a href="http://www.photo.net/photo/pcd4228/joshua-tree-10.4.jpg"><img WIDTH=256 HEIGHT=331 src="http://www.photo.net/photo/pcd4228/joshua-tree-10.2.jpg" align=right ALT="Joshua Tree.  Joshua Tree National Park."></a>
+<a href="https://www.photo.net/photo/pcd4228/joshua-tree-10.4.jpg"><img WIDTH=256 HEIGHT=331 src="https://www.photo.net/photo/pcd4228/joshua-tree-10.2.jpg" align=right ALT="Joshua Tree.  Joshua Tree National Park."></a>
 
 Provides functions for
 <ul>

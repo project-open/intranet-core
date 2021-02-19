@@ -248,7 +248,7 @@ ns_section ns/server/${server}/module/nssock
 	ns_param	hostname		$hostname
 	ns_param	port			$httpport
 # setting maxinput higher than practical may leave the server vulnerable to resource DoS attacks
-# see http://www.panoptic.com/wiki/aolserver/166
+# see https://www.panoptic.com/wiki/aolserver/166
 	ns_param	maxinput		[expr {$max_file_upload_mb * 1024 * 1024}] ;# Maximum File Size for uploads in bytes
 	ns_param	maxpost			[expr {$max_file_upload_mb * 1024 * 1024}] ;# Maximum File Size for uploads in bytes
 	ns_param	recvwait		[expr {$max_file_upload_min * 60}] ;# Maximum request time in minutes
@@ -349,7 +349,7 @@ ns_section "ns/server/${server}/module/nsopenssl"
 ns_param		ServerPort		$httpsport
 
 # setting maxinput higher than practical may leave the server vulnerable to resource DoS attacks
-# see http://www.panoptic.com/wiki/aolserver/166
+# see https://www.panoptic.com/wiki/aolserver/166
 # must set maxinput for nsopenssl as well as nssock
 ns_param	    	maxinput		[expr {$max_file_upload_mb * 1024 * 1024}] ;# Maximum File Size for uploads in bytes
 
@@ -377,7 +377,7 @@ ns_section "ns/server/${server}/module/nsopenssl/sslcontext/users"
 	ns_param	Trace			false
 
 # following from bartt's nsd4.tcl, might help stablize openssl connections? 
-# http://www.mail-archive.com/aolserver@listserv.aol.com/msg07092.html
+# https://www.mail-archive.com/aolserver@listserv.aol.com/msg07092.html
 	ns_param	SessionCache		true
 	ns_param	SessionCacheID		1
 	ns_param	SessionCacheSize	512
@@ -413,7 +413,7 @@ ns_section "ns/server/${server}/module/nsopenssl/sslcontext/client"
 	ns_param	Trace			false
 
 # following from bartt's nsd4.tcl, might help stablize openssl connections? 
-# http://www.mail-archive.com/aolserver@listserv.aol.com/msg07092.html
+# https://www.mail-archive.com/aolserver@listserv.aol.com/msg07092.html
 	ns_param	SessionCache		true
 	ns_param	SessionCacheID		1
 	ns_param	SessionCacheSize	512
@@ -434,7 +434,7 @@ ns_section "ns/server/${server}/module/nsopenssl/ssldriver/users"
 	ns_param	hostname		$hostname
 	ns_param	address			$address
 # following added per
-# http://www.mail-archive.com/aolserver@listserv.aol.com/msg07365.html
+# https://www.mail-archive.com/aolserver@listserv.aol.com/msg07365.html
 # Maximum File Size for uploads:
 	ns_param	maxinput		[expr {$max_file_upload_mb * 1024 * 1024}] ;# in bytes
 # Maximum request time

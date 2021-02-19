@@ -11,7 +11,7 @@
 !define PRODUCT		"]project-open["
 !define COMPANY		"]project-open[ Business Consulting, S.L."
 !define DESCRIPTION	"Open-Source Project Management Server"
-!define	URL		http://www.project-open.com
+!define	URL		https://www.project-open.com
 !define REGKEY		"SOFTWARE\$(^Name)"
 !define VERSION_MAJ	"5.0.2"
 !define VERSION_MIN	"0.2"
@@ -191,7 +191,7 @@ Function windowsVersionPage
         Pop $Dialog
 	${If} $Dialog == error
 		Abort
-		# ExecShell "open" "http://www.project-open.net/en/"
+		# ExecShell "open" "https://www.project-open.net/en/"
 	${EndIf}
 
 	${NSD_CreateLabel} 0 0 100% 12u "Please check the release notes for known issues with your Windows version:"
@@ -281,7 +281,7 @@ Function windowsVersionPageOnClick
 	ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"
 	${StrRep} $WinProductName $0 ' ' '%20'
 
-	ExecShell "open" "http://www.project-open.net/en/version-$PoVersionDashes?os=windows&installer=${RELEASE}&get_win_version=$GetWinVersion&build=$WinVer&width=$WordWidth&product_name=$WinProductName" 
+	ExecShell "open" "https://www.project-open.net/en/version-$PoVersionDashes?os=windows&installer=${RELEASE}&get_win_version=$GetWinVersion&build=$WinVer&width=$WordWidth&product_name=$WinProductName" 
 FunctionEnd
 
 
