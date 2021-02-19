@@ -394,6 +394,8 @@ ad_proc -public im_audit_impl {
 } {
     if {$debug_p} { ns_log Notice "im_audit_impl: object_id=$object_id, user_id=$user_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, baseline_id=$baseline_id, comment=$comment" }
 
+    set baseline_exists_p [im_column_exists im_audits audit_baseline_id]
+    
     set is_connected_p [ns_conn isconnected]
     set peeraddr "0.0.0.0"
     set x_forwarded_for "0.0.0.0"
@@ -445,6 +447,13 @@ ad_proc -public im_audit_impl {
 	set audit_note $comment
 	set audit_hash ""
 
+	set baseline_sql1 ""
+	set baseline_sql2 ""
+	if {$baseline_exists_p} {
+	    set baseline_sql1 ", audit_baseline_id"
+	    set baseline_sql2 ", :baseline_id"
+	}
+	
 	db_dml insert_audit "
 		insert into im_audits (
 			audit_id,
@@ -459,8 +468,8 @@ ad_proc -public im_audit_impl {
 			audit_value,
 			audit_diff,
 			audit_note,
-			audit_hash,
-			audit_baseline_id
+			audit_hash
+			$baseline_sql1
 		) values (
 			:new_audit_id,
 			:object_id,
@@ -474,8 +483,8 @@ ad_proc -public im_audit_impl {
 			:new_value,
 			:diff,
 			:audit_note,
-			:audit_hash,
-			:baseline_id
+			:audit_hash
+			$baseline_sql2
 		)
 	"
 

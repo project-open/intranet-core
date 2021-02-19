@@ -1,6 +1,6 @@
 <master>
 <property name="doc(title)">@page_title;literal@</property>
-<property name="main_navbar_label"></property>
+<property name="main_navbar_label">projects</property>
 
 <script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 window.addEventListener('load', function() { 
