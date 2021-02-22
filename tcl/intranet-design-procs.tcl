@@ -1060,7 +1060,7 @@ ad_proc -public im_navbar_main_submenu {
 	    set item "<li class='unselected'>
 		<div class=\"sm-po-sub-menu-item\">
 			<div class='sm-po-sub-menu-item-name'><a href='$item_url'>$item_text</a></div>
-			<div class='sm-po-sub-menu-item-wrench'><img src=\"/intranet/images/navbar_default/wrench.png\"/>/div>
+			<div class='sm-po-sub-menu-item-wrench'><img src=\"/intranet/images/navbar_default/wrench.png\"/></div>
 		</div>
 		</li>\n"
 	}
