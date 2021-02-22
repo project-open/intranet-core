@@ -228,7 +228,7 @@ if {$expcific_view_exists} {
 if { $how_many eq "" || $how_many < 1 } {
     set how_many [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NumberResultsPerPage" -default 50]
 }
-set end_idx [expr {$start_idx + $how_many - 1}]
+set end_idx [expr $start_idx + $how_many]
 
 
 
@@ -561,7 +561,7 @@ append table_header_html "</tr>\n"
 set table_body_html ""
 set bgcolor(0) " class=roweven "
 set bgcolor(1) " class=rowodd "
-set ctr 1
+set ctr 0
 set idx $start_idx
 
 db_foreach users $query -bind $form_vars {
@@ -603,7 +603,7 @@ if { $table_body_html eq "" } {
 if { $ctr == $how_many && $end_idx < $total_in_limited } {
     # This means that there are rows that we decided not to return
     # Include a link to go to the next page
-    set next_start_idx [expr {$end_idx + 1}]
+    set next_start_idx [expr $end_idx]
     set next_page_url "index?start_idx=$next_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
     set next_page_url ""
@@ -612,7 +612,7 @@ if { $ctr == $how_many && $end_idx < $total_in_limited } {
 if { $start_idx > 0 } {
     # This means we didn't start with the first row - there is
     # at least 1 previous row. add a previous page link
-    set previous_start_idx [expr {$start_idx - $how_many}]
+    set previous_start_idx [expr $start_idx - $how_many]
     if { $previous_start_idx < 0 } { set previous_start_idx 0 }
     set previous_page_url "index?start_idx=$previous_start_idx&[export_ns_set_vars url [list start_idx]]"
 } else {
