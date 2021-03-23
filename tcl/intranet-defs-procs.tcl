@@ -390,7 +390,7 @@ ad_proc -public im_parameter {
     {default2 ""}
 } {
     Wrapper for im_parameter. With ]project-open[ we don't
-						  need package ids because all ]po[ packages are singletons.
+    need package ids because all ]po[ packages are singletons.
     The parameters are designed to be compatible with both
     im_parameter and the new parameter::get
 } {
@@ -405,14 +405,14 @@ ad_proc -public im_parameter {
                 select  min(package_id) as package_id
                 from    apm_packages
                 where   package_key = '$package_key'
-        "]]
+        " -default ""]]
     }
     if {"" == $package_id && "" != $package_key2} {
 	set package_id [util_memoize [list db_string get_package_id "
                 select  min(package_id) as package_id
                 from    apm_packages
                 where   package_key = '$package_key2'
-        "]]
+        " -default ""]]
     }
     if {"" == $package_id} { return $default }
     if {"" == $parameter} { return $default }
