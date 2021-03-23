@@ -1149,7 +1149,7 @@ ad_proc -public im_project_personal_active_projects_component {
     # ---------------------------------------------------------------
     # Columns to show:
 
-    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default ""]
     set column_headers [list]
     set column_vars [list]
     set extra_selects [list]
@@ -1167,7 +1167,7 @@ ad_proc -public im_project_personal_active_projects_component {
 	from
 		im_view_columns
 	where
-		view_id=:view_id
+		view_id = :view_id
 		and group_id is null
 	order by
 		sort_order
@@ -3088,7 +3088,7 @@ ad_proc -public im_personal_todo_component {
     # ---------------------------------------------------------------
     # Columns to show:
 
-    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default ""]
     set column_headers [list]
     set column_vars [list]
     set extra_selects [list]
