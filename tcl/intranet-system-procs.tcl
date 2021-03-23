@@ -159,7 +159,7 @@ ad_proc -public im_openacs54_p { } {
     The higher versions support header files.
 } { 
     set o_ver_sql "select substring(max(version_name),1,3) from apm_package_versions where package_key = 'acs-kernel'"
-    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql]]
+    set oacs_version [util_memoize [list db_string o_ver $o_ver_sql -default ""]]
     return [expr 1 > [string compare "5.4" $oacs_version]]
 }
 
