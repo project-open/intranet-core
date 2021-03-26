@@ -2506,7 +2506,7 @@ Projekty mieszane pozwalają na śledzenie procesu, kontrolę finansową oraz za
   <msg key="Week_and_Day">Tydzień i dzień</msg>
   <msg key="Weighted_Value">Wartość ważona</msg>
   <msg key="Welcome_to_po">Witaj w ]project-open[</msg>
-  <msg key="Welcome_to_po_blurb">Spojrzyj na &lt;a href=&#39;http://www.project-open.com/en/list-configuration&#39; &gt;Configuration Overview&lt;/a&gt; i dowiedz się jak skonfigurować ]po[. Rekomendujemy pozostawienie danych demonstracyjnych &#34;Tigerpond&#34; na czas testowania konfiguracji.
+  <msg key="Welcome_to_po_blurb">Spojrzyj na &lt;a href=&#39;https://www.project-open.com/en/list-configuration&#39; &gt;Configuration Overview&lt;/a&gt; i dowiedz się jak skonfigurować ]po[. Rekomendujemy pozostawienie danych demonstracyjnych &#34;Tigerpond&#34; na czas testowania konfiguracji.
 </msg>
   <msg key="Welcome_User_Name">Witaj %user_name%</msg>
   <msg key="What_is_wrong">Co jest nie tak</msg>

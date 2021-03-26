@@ -877,9 +877,10 @@ ad_proc -public im_project_options {
 						im_projects unpriv_parent,
 						acs_rels unpriv_r
 					where	unpriv_r.object_id_two = :current_user_id and
+						unpriv_parent.parent_id is null and
 						unpriv_r.object_id_one = unpriv_parent.project_id and
 						unpriv_p.tree_sortkey between unpriv_parent.tree_sortkey and 
-							tree_right(unpriv_parent.tree_sortkey)
+						tree_right(unpriv_parent.tree_sortkey)
 	)"
 	# No restriction on parent project membership, because parent
 	# projects always have the same members as sub-projects.
@@ -1148,7 +1149,7 @@ ad_proc -public im_project_personal_active_projects_component {
     # ---------------------------------------------------------------
     # Columns to show:
 
-    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default ""]
     set column_headers [list]
     set column_vars [list]
     set extra_selects [list]
@@ -1166,7 +1167,7 @@ ad_proc -public im_project_personal_active_projects_component {
 	from
 		im_view_columns
 	where
-		view_id=:view_id
+		view_id = :view_id
 		and group_id is null
 	order by
 		sort_order
@@ -2781,7 +2782,7 @@ ad_proc im_project_nuke {
 	}
 
 	# Baselines
-	if {[im_table_exists im_baselines]} {
+	if {[im_table_exists im_baselines] && [im_column_exists im_audits audit_baseline_id]} {
 	    ns_log Notice "projects/nuke-2: im_baselines"
 	    db_dml del_baseline_ref "update im_audits set audit_baseline_id = null where audit_baseline_id in (select baseline_id from im_baselines where baseline_project_id = :project_id)"
 	    db_dml del_baseline "delete from im_baselines where baseline_project_id = :project_id"
@@ -3087,7 +3088,7 @@ ad_proc -public im_personal_todo_component {
     # ---------------------------------------------------------------
     # Columns to show:
 
-    set view_id [db_string get_view_id "select view_id from im_views where view_name=:view_name"]
+    set view_id [db_string get_view_id "select view_id from im_views where view_name = :view_name" -default ""]
     set column_headers [list]
     set column_vars [list]
     set extra_selects [list]

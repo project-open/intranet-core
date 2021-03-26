@@ -1929,10 +1929,8 @@ ad_proc -public im_import_freelance_skills { filename } {
 	#
 
 	set skill_type_id [im_import_get_category $skill_type "Intranet Skill Type" ""]
-	set skill_category_type [db_string skill_category "select category_description from im_categories where category_id=:skill_type_id"]
-
+	set skill_category_type [db_string skill_category "select category_description from im_categories where category_id = :skill_type_id" -default ""]
 	set skill_id [im_import_get_category $skill $skill_category_type ""]
-
 	set user_id [im_import_get_user $user_email ""]
 	set claimed_experience_id [im_import_get_category $claimed_experience "Intranet Experience Level" ""]
 	set confirmed_experience_id [im_import_get_category $confirmed_experience "Intranet Experience Level" ""]

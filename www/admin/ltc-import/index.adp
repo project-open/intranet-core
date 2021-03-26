@@ -45,7 +45,7 @@ You need to proceed with the following steps:
       <li>
 	<b>Import the LTC-Organiser database into PostgreSQL</A></b>:<br>
 	Please use the "DBManager Professional Enterprise Edition"
-	from <a href="http://www.dbtools.com.br/">DBTools Software</a>
+	from <a href="https://www.dbtools.com.br/">DBTools Software</a>
 	to load the Microsoft Access database of LTC-Organiser as
 	a whole into the PostgreSQL database.
 	The "professional" software is available as a 20 day trial 

@@ -2166,7 +2166,7 @@ Passwort: %password%
   <msg key="PM_Help">PM-Hilfe</msg>
   <msg key="PO_Admins">]po[ Admins</msg>
   <msg key="po_admins">]po[ Admins</msg>
-  <msg key="PO_com_web_site">&lt;A href=&#34;http://www.project-open.com/&#34;&gt;&lt;b&gt; &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; &#39;.com&#39; Webseite&lt;/a&gt;</msg>
+  <msg key="PO_com_web_site">&lt;A href=&#34;https://www.project-open.com/&#34;&gt;&lt;b&gt; &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; &#39;.com&#39; Webseite&lt;/a&gt;</msg>
   <msg key="PO_com_web_site_blurb">Zeigt eine Übersicht von &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="po_Component">]po[ Component</msg>
   <msg key="PO_Documentation_Wiki">]po[ Documentation Wiki</msg>
@@ -2352,7 +2352,7 @@ Klassische/Gantt-Projekte ermöglichen Prozesse wie eine detaillierte Kontrolle d
   <msg key="Project_type_mixed_short_blurb">Ein Projekt mit &#39;gemischter Methodologie&#39; besteht aus einem Gantt-Projekt, bei dem bestimmte Projektphasen agil oder mit SCRUM durchgeführt werden.</msg>
   <msg key="Project_type_Other">Anderes Projekt</msg>
   <msg key="Project_type_other">Andere</msg>
-  <msg key="Project_type_other_short_blurb">&#39;Andere&#39; Projekte dienen spezifischen Zwecken. Bitte sehen Sie die &lt;a href=http://www.project-open.net/en/category-intranet-project-type target=_&gt;Online Hilfe zu Projekttypen&lt;/a&gt; für weitere Informationen.</msg>
+  <msg key="Project_type_other_short_blurb">&#39;Andere&#39; Projekte dienen spezifischen Zwecken. Bitte sehen Sie die &lt;a href=https://www.project-open.net/en/category-intranet-project-type target=_&gt;Online Hilfe zu Projekttypen&lt;/a&gt; für weitere Informationen.</msg>
   <msg key="Project_type_Program">Programm</msg>
   <msg key="Project_type_program">Programm</msg>
   <msg key="Project_type_program_short_blurb">Ein Programm gruppiert mehrere Projekte, die üblicherweise ein gemeinsames Ziel haben.</msg>
@@ -2812,7 +2812,7 @@ angeboten.&lt;br&gt;
 Sie haben die Möglichkeit, Vorlagen entweder im HTML (&#39;.adp&#39;) 
 oder im OpenOffice (&#39;.odt&#39;) Format anzulegen.&lt;br&gt;
 Details finden Sie auf der 
-&lt;a href=&#39;http://www.project-open.com/en/category-intranet-cost-template&#39;&gt;Hilfeseite zu Vorlagen&lt;/a&gt;.
+&lt;a href=&#39;https://www.project-open.com/en/category-intranet-cost-template&#39;&gt;Hilfeseite zu Vorlagen&lt;/a&gt;.
 </msg>
   <msg key="Template_p">Vorlage?</msg>
   <msg key="templatede_DEadp">template.de_DE.adp</msg>
@@ -3058,7 +3058,7 @@ Details finden Sie auf der
   <msg key="Week_and_Day">Woche und Tag</msg>
   <msg key="Weighted_Value">Gewichteter Wert</msg>
   <msg key="Welcome_to_po">Willkommen bei ]project-open[</msg>
-  <msg key="Welcome_to_po_blurb">Bitte lesen Sie die &lt;a href=&#39;http://www.project-open.com/en/list-configuration&#39;&gt;Übersicht Konfiguration&lt;/a&gt; für eine Einführung in die Parametrisierung von &lt;nobr&gt;&amp;#93;project-open&amp;#91;&lt;/nobr&gt;.</msg>
+  <msg key="Welcome_to_po_blurb">Bitte lesen Sie die &lt;a href=&#39;https://www.project-open.com/en/list-configuration&#39;&gt;Übersicht Konfiguration&lt;/a&gt; für eine Einführung in die Parametrisierung von &lt;nobr&gt;&amp;#93;project-open&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="Welcome_User_Name">Willkommen, %user_name%!</msg>
   <msg key="What_is_wrong">Was ist falsch</msg>
   <msg key="Whos_Online">Wer ist Online?</msg>

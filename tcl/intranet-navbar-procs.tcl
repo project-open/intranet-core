@@ -42,7 +42,7 @@ ad_library {
 ad_proc -public im_navbar_doc_wiki { } {
     Link to ]po[ Wiki. Without trailing "/".
 } {
-    return "http://www.project-open.com/en"
+    return "https://www.project-open.com/en"
 }
 
 ad_proc -public im_navbar_tree { 

@@ -55,13 +55,9 @@ if {$result == 1} {
     # Define the column headers and column contents that 
     # we want to show:
     #
-    set view_id [db_string select_view_id "select view_id from im_views where view_name = '$contact_view_name'" ]
-
-
+    set view_id [db_string select_view_id "select view_id from im_views where view_name = '$contact_view_name'" -default ""]
     set user_id $user_id_from_search
-
     set ctr 1
-
     db_multirow -extend {visible_p td_class column_render} user_columns column_list_sql {} {
         if {"" == $visible_for || [eval $visible_for]} {
 	    set visible_p 1

@@ -3,7 +3,7 @@
 -- Copyright (c) 2007 ]project-open[
 --
 -- All rights including reserved. To inquire license terms please 
--- refer to http://www.project-open.com/modules/<module-key>
+-- refer to https://www.project-open.com/modules/<module-key>
 
 
 create sequence im_audit_seq;

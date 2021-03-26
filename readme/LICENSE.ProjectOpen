@@ -1,7 +1,7 @@
 
   License Details
-  ]project-open[ V5.0 Virtual Machine
-  Community Edition, 2015-11-30
+  ]project-open[ V5.1 Virtual Machine
+  Community Edition, 2021-01-21
 
 
   ______________________________________________________________________
@@ -51,7 +51,7 @@
   https://www.sencha.com/legal/sencha-touch-software-license-agreement/
   	       		A GPL V3 version is available.
   FamFamFam Icons	Creative Commons Attribution 2.5 License
-  	    		http://www.famfamfam.com/lab/icons/silk/
+  	    		https://www.famfamfam.com/lab/icons/silk/
   Xinha			BSD Style License
   htmlArea		BSD Style License
   tinymce		GNU Lesser General Public License V2.1
@@ -67,7 +67,7 @@
   NaviServer		Mozilla Public License
   PostgreSQL		BSD Style License
   GNU Tool Chain	GPL V2
-  ImageMagick		http://www.imagemagick.org/script/license.php
+  ImageMagick		https://www.imagemagick.org/script/license.php
   GraphViz		Eclipse Public License
 
   ______________________________________________________________________
@@ -80,8 +80,8 @@
   to the packages mentioned in sections 2. and 3.
   
   CentOS Linux	 	A mere aggregation of many packages
-  VMware Tools		http://www.vmware.com/support/
-  Acrobat Reader	http://www.adobe.com/products/acrobat/acrreula.html
+  VMware Tools		https://www.vmware.com/support/
+  Acrobat Reader	https://www.adobe.com/products/acrobat/acrreula.html
   LibreOffice		Mozilla Public License V2.0
   
 
@@ -98,16 +98,14 @@
   Windows operating systems, in addition to the packages mentioned
   in sections 2. and 3:
 
-
-  
   CygWin		A mere aggregation of many packages, plus
 			https://cygwin.com/licensing.html
   Java			GPL V2 plus additions http://java.com/license
   ]po[ Tools		GPL V2
-  Zip tools		http://www.info-zip.org/license.html
+  Zip tools		https://www.info-zip.org/license.html
   Setx.exe		Mixed (Microsoft Windows 2000 Free Resource Kit)
   Reg.exe		Mixed (Microsoft Windows 2000 Free Resource Kit)
-  Process.exe		http://www.beyondlogic.org/solutions/processutil/processutil.htm
+  Process.exe		https://www.beyondlogic.org/solutions/processutil/processutil.htm
 
   You need to agree with the license terms of ALL of these packages
   before using or otherwise interacting with the software.

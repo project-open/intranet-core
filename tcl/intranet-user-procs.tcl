@@ -1021,7 +1021,7 @@ ad_proc -public im_user_update_existing_user {
     # Add the user to some companies or projects
     array set also_add_hash $also_add_to_biz_object
     foreach oid [array names also_add_hash] {
-	set object_type [db_string otype "select object_type from acs_objects where object_id=:oid"]
+	set object_type [db_string otype "select object_type from acs_objects where object_id = :oid" -default "im_project"]
 	set perm_cmd "${object_type}_permissions \$current_user_id \$oid object_view object_read object_write object_admin"
 	eval $perm_cmd
 	if {$object_write} {
@@ -1038,7 +1038,7 @@ ad_proc -public im_user_update_existing_user {
 
     # Add the user to the "Registered Users" group, because
     # (s)he would get strange problems otherwise
-    set registered_users [db_string registered_users "select object_id from acs_magic_objects where name='registered_users'"]
+    set registered_users [db_string registered_users "select object_id from acs_magic_objects where name = 'registered_users'"]
     set reg_users_rel_exists_p [db_string member_of_reg_users "
 		select	count(*) 
 		from	group_member_map m, membership_rels mr

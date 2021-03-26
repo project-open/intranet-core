@@ -124,7 +124,7 @@ Nesta Security Proposal
 4. References:
 
 [1] AOLServer Security Guide
-    http://www.aolserver.com/docs/admin/security.html
+    https://www.aolserver.com/docs/admin/security.html
 
 [2] OSSTMM Security Testing Methodology
-    http://www.osstmm.org/
+    https://www.osstmm.org/

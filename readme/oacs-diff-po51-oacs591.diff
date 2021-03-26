@@ -164,7 +164,7 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-bro
 ---
 > <if @kind@ eq "procs">
 46c29
-<     <td style="width:35%"><b><a href="http://www.project-open.net/api-doc/proc-view?version_id=@version_id@&amp;proc=@procedures.proc@">@procedures.proc@</a></b></td>
+<     <td style="width:35%"><b><a href="https://www.project-open.net/api-doc/proc-view?version_id=@version_id@&amp;proc=@procedures.proc@">@procedures.proc@</a></b></td>
 ---
 >     <td class="wide"><strong><a href="proc-view?version_id=@version_id@&amp;proc=@procedures.proc@">@procedures.proc@</a></strong></td>
 54,56c37
@@ -174,7 +174,7 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-bro
 ---
 > <if @kind@ eq "sql_files">
 61c42
-<     <td><b><a href="http://www.project-open.net/api-doc/display-sql?package_key=@package_key@&amp;url=@sql_files.relative_path@&amp;version_id=@version_id@">@sql_files.path@</a></b></td>
+<     <td><b><a href="https://www.project-open.net/api-doc/display-sql?package_key=@package_key@&amp;url=@sql_files.relative_path@&amp;version_id=@version_id@">@sql_files.path@</a></b></td>
 ---
 >     <td><strong><a href="display-sql?package_key=@package_key@&amp;url=@sql_files.relative_path@&amp;version_id=@version_id@">@sql_files.path@</a></strong></td>
 69,71c50
@@ -185,12 +185,12 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-bro
 > <if @kind@ eq "content">
 76,77c55,56
 <       <td style="width:35%">@content_pages.indentation;noquote@
-<        <b><a href="http://www.project-open.net/api-doc/content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
+<        <b><a href="https://www.project-open.net/api-doc/content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></b>
 ---
 >       <td class="wide">@content_pages.indentation;noquote@
 >        <strong><a href="content-page-view?version_id=@version_id@&amp;path=@content_pages.full_path@">@content_pages.name@</a></strong>
 79c58
-<          <a href="http://www.project-open.net/api-doc/type-view?type=@content_pages.type@"></a>
+<          <a href="https://www.project-open.net/api-doc/type-view?type=@content_pages.type@"></a>
 ---
 >          <a href="type-view?type=@content_pages.type@"></a>
 85c64
@@ -251,7 +251,7 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-api-bro
 < set procs_files_p 0
 < set sql_files_p 0
 < set content_p 0
-< set abs_path "http://www.project-open.net/api-doc/"
+< set abs_path "https://www.project-open.net/api-doc/"
 < 
 < 
 < foreach k $kind {
@@ -669,7 +669,7 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-subsite
 <                   <tr><td align=center>Powered by</td></tr>
 <                   <tr>
 <                     <td align=center>
-<                       <a href="http://www.project-open.com/">
+<                       <a href="https://www.project-open.com/">
 <                         <img
 <                           src="/intranet/images/project_open.70x26.gif"
 <                           alt="Open Source Enterprise Project Management"
@@ -846,7 +846,7 @@ diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/acs-tcl/lib
 < <input type=submit name=submit value="Report this Error">
 < <br>
 < <input type=checkbox name=privacy_statement_p checked>
-< I agree with the <a href="http://www.project-open.com/en/legal-note" target="_">privacy statement</a>.
+< I agree with the <a href="https://www.project-open.com/en/legal-note" target="_">privacy statement</a>.
 < <br>
 < <input type=hidden name=error_url value=@error_url@>
 < <input type=hidden name=error_location value=@error_location@>
@@ -2189,9 +2189,9 @@ Only in /web/projop/packages/notifications/sql/postgresql: subscribe_all_employe
 
 diff -w -r -I @cvs-id -I '$Id:' '--exclude=CVS' /web/projop/packages/oacs-dav/oacs-dav.info /web/projop/openacs-4.5-9-1/packages/oacs-dav/oacs-dav.info
 11c11
-<     <version name="1.2.0" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0.apm">
+<     <version name="1.2.0" url="https://openacs.org/repository/download/apm/oacs-dav-1.2.0.apm">
 ---
->     <version name="1.2.0d3" url="http://openacs.org/repository/download/apm/oacs-dav-1.2.0d3.apm">
+>     <version name="1.2.0d3" url="https://openacs.org/repository/download/apm/oacs-dav-1.2.0d3.apm">
 14c14
 <         <release-date>2015-10-04</release-date>
 ---

@@ -11,7 +11,7 @@ ad_library {
     If you don't know what functional programming is,
     here's a good place to start:
     <ul>
-    <li><a href="http://www.haskell.org/aboutHaskell.html">http://www.haskell.org/aboutHaskell.html</a>
+    <li><a href="https://www.haskell.org/aboutHaskell.html">https://www.haskell.org/aboutHaskell.html</a>
     </ul>
     A general naming convention in this file is:
     <p>
@@ -762,5 +762,5 @@ proc multiplication_table {x} {
 # Literature about functional programming on the web
 # --------------------------------------------------------------------------------
 
-# http://www.haskell.org/aboutHaskell.html
-# http://www.md.chalmers.se/~rjmh/Papers/whyfp.html
+# https://www.haskell.org/aboutHaskell.html
+# https://www.md.chalmers.se/~rjmh/Papers/whyfp.html

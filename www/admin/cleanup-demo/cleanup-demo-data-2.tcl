@@ -1,4 +1,4 @@
-# /packages/intranet-core/www/admin/cleanup-demo/ cleanup-demo-data-2.tcl
+# /packages/intranet-core/www/admin/cleanup-demo/cleanup-demo-data-2.tcl
 #
 # Copyright (C) 2003 - 2006 ]project-open[
 #
@@ -584,7 +584,8 @@ ns_write "<li>Cleanup Relationships (except for membership, composition & user_p
 set rels [db_list cr "
 	select rel_id from 
 	acs_rels
-	where rel_type not in ('user_portrait_rel', 'membership_rel', 'composition_rel')
+--	where rel_type not in ('user_portrait_rel', 'membership_rel', 'composition_rel')
+	where rel_type in ('im_key_account_rel', 'im_company_employee_rel', 'im_biz_object_member')
 "]
 set cnt 0
 foreach rel_id $rels {

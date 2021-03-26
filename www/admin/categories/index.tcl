@@ -47,7 +47,7 @@ if {"All" == $select_category_type} { set show_add_new_category_p 0 }
 
 # Calculate the URL in the online help for this category
 regsub -all " " [string tolower $select_category_type] "-" category_key
-set category_help_url "http://www.project-open.com/en/category-$category_key"
+set category_help_url "https://www.project-open.com/en/category-$category_key"
 
 # Include JS for tablesorter
 template::head::add_javascript -src "/intranet/js/jquery.tablesorter.min.js" -order 10000
@@ -243,7 +243,7 @@ if {!$show_add_new_category_p} {
 	set category_type_url [export_vars -base "/intranet/admin/categories/index" {{select_category_type $category_type}}]
 	set help_link [lang::message::lookup "" intranet-core.Context_Help "Context Help"]
 	regsub -all { } $category_type {-} category_type_regsub
-	set help_link_url "http://www.project-open.com/en/category-[string tolower $category_type_regsub]"
+	set help_link_url "https://www.project-open.com/en/category-[string tolower $category_type_regsub]"
     }
     
 	    

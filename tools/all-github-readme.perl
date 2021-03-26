@@ -75,7 +75,7 @@ sub update_readme_file {
 
     # ---------------------------------------------------
     # Get and parse the file
-    my $url = "http://www.project-open.net/en/package-$package?no_template_p=1";
+    my $url = "https://www.project-open.net/en/package-$package?no_template_p=1";
     print "update_readme_file: getting url=$url\n" if ($debug);
     my $html = get $url;
 
@@ -190,9 +190,9 @@ sub update_readme_file {
     my $result = "# " . $title . "\n" .
 	"This package is part of ]project-open[, an open-source enterprise project management system.\n\n" .
 	"For more information about ]project-open[ please see:\n" .
-	"* [Documentation Wiki](http://www.project-open.com/en/)\n" .
+	"* [Documentation Wiki](https://www.project-open.com/en/)\n" .
 	"* [V5.0 Download](https://sourceforge.net/projects/project-open/files/project-open/V5.0/)\n" .
-	"* [Installation Instructions](http://www.project-open.com/en/list-installers)\n" .
+	"* [Installation Instructions](https://www.project-open.com/en/list-installers)\n" .
 	"\n" .
 	"About $title:\n\n" .
 	$first_h1_text . "\n\n";

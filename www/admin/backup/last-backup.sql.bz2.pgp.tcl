@@ -3,7 +3,7 @@
 # Copyright (C) 2003-2004 ]project-open[
 #
 # All rights reserved. Please check
-# http://www.project-open.com/ for licensing details.
+# https://www.project-open.com/ for licensing details.
 
 ad_page_contract {
     Shows the last ".pgp" backup file in the backup

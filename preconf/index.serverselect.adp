@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd"> 
 <%
    set page_title "\]po\[ V4.0 Demo Server Farm"
 %>
@@ -108,7 +108,7 @@ function setBgImage (id,img) {
 
 <body bgcolor="white" text="black">
   <div id="header_class">
-    <div id="header_logo"> <a href="http://www.project-open.com/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
+    <div id="header_logo"> <a href="https://www.project-open.com/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
     <div id="header_plugin_left"> </div>
     <div id="header_plugin_right"> </div>
     <div id="header_skin_select"> </div>
@@ -234,7 +234,7 @@ function setBgImage (id,img) {
 		  <a href="http://po40pmo.project-open.net/index-userselect" style="text-decoration: none; color: #000000">PMO - Project Management Office</a>
 		  </b><br>
 	          <a href="http://po40pmo.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
-		    Everything you need in order to run your PMO.<br>Edition provided in collaboration with </a> <a href="http://www.pentamino.de/" target="_">Pentamino</a>
+		    Everything you need in order to run your PMO.<br>Edition provided in collaboration with </a> <a href="https://www.pentamino.de/" target="_">Pentamino</a>
 		  <br><br>
 		    <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative; opacity:0.8;background-size: 180px 16px;">
 		      <span style="font-weight:bold; color:#000000;height:16px; margin-left:60px">Medium</span>
@@ -257,7 +257,7 @@ function setBgImage (id,img) {
 	        <td><a href="http://po40itsm.project-open.net/index-userselect" style="text-decoration: none; color: #000000">
 		    <b>ITSM and ITIL - IT Services Management</b><br>
 		    Help Desk/Service Desk for internal or external customers.
-		    <br>Edition provided in collaboration with </a> <a href="http://www.krystone.de/" target="_">KryStone</a>
+		    <br>Edition provided in collaboration with </a> <a href="https://www.krystone.de/" target="_">KryStone</a>
 		  </a>
 	          <br><br>
                     <div style="background: url('/intranet/images/demoserver/medium-yellow-3.jpg' ) 0 -0px no-repeat;position:relative;opacity:0.8;background-size: 180px 16px;">

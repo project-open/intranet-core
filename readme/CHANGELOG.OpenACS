@@ -594,7 +594,7 @@
 	*
 	  packages/acs-core-docs/www/xml/engineering-standards/eng-standards-versioning.xml:
 	  added package maturity standards section per
-	  http://openacs.org/forums/message-view?message_id=160957 using
+	  https://openacs.org/forums/message-view?message_id=160957 using
 	  tag conventions found in existing packages
 
 2004-12-04 22:24  torbenb
@@ -1715,7 +1715,7 @@
 	* packages/acs-tcl/tcl/defs-procs.tcl: Add warning in api-doc that
 	  states that ad_return_if_another_copy_is_running needs to be
 	  rewritten. See:
-	  http://openacs.org/forums/message-view?message_id=203381
+	  https://openacs.org/forums/message-view?message_id=203381
 
 2004-09-30 10:42  andrewg
 
@@ -2663,7 +2663,7 @@
 2004-06-29 09:38  jader
 
 	* www/site-master.adp: Changed wording from users to members. See
-	  http://openacs.org/forums/message-view?message_id=192598
+	  https://openacs.org/forums/message-view?message_id=192598
 
 2004-06-29 08:50  joela
 
@@ -2962,7 +2962,7 @@
 
 	* etc/config.tcl: Added maxinput parameter. Set it to 5MB, which
 	  allows OpenACS parameter to kick in more effectively. See
-	  http://openacs.org/forums/message-view?message_id=161698
+	  https://openacs.org/forums/message-view?message_id=161698
 
 2004-06-07 09:56  jeffd
 
@@ -3019,7 +3019,7 @@
 
 	* packages/acs-kernel/acs-kernel.info: Removed a security hole in
 	  new installations: see:
-	  http://openacs.org/forums/message-view?message_id=187394
+	  https://openacs.org/forums/message-view?message_id=187394
 
 2004-05-26 13:51  tils
 

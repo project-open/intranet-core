@@ -1,5 +1,5 @@
 /**
- * Twitter - http://www.twitter.com
+ * Twitter - https://www.twitter.com
  * Copyright (C) 2009 Twitter
  * Author: Dustin Diaz (dustin@twitter.com)
  *

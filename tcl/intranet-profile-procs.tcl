@@ -78,8 +78,8 @@ ad_proc -public im_profile_registered_users {} {
     return [util_memoize [list db_string registered_users "
 		select	object_id 
 		from	acs_magic_objects
-		where	name='registered_users'
-    "]]
+		where	name = 'registered_users'
+    " -default 0]]
 }
 
 

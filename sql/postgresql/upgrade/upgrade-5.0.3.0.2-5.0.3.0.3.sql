@@ -109,7 +109,7 @@ comment on table acs_datatypes is '
  the caller.
 
  The set of pre-defined datatypes is inspired by XForms
- (http://www.w3.org/TR/xforms-datamodel/).
+ (https://www.w3.org/TR/xforms-datamodel/).
 ';
 
 comment on column acs_datatypes.database_type is '

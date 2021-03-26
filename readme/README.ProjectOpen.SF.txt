@@ -5,7 +5,7 @@ There are several versions available:
   This is our current version. It's probably more stable than
   V4.0 already, even though we are officially still in beta.
   Please see the roadmap: 
-  http://www.project-open.com/en/project-open-roadmap
+  https://www.project-open.com/en/project-open-roadmap
 
 - V4.1:
   We skipped an official V4.1 release in favor of V5.0.
@@ -22,6 +22,6 @@ There are several versions available:
   threads and installation guides.
 
 For more information about installers please see:
-http://www.project-open.com/en/list-installers
+https://www.project-open.com/en/list-installers
 For more information about the ]po[ development roadmap:
-http://www.project-open.com/en/project-open-roadmap
+https://www.project-open.com/en/project-open-roadmap

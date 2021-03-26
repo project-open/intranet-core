@@ -48,7 +48,7 @@ set context_help "<i>[lang::message::lookup "" intranet-core.No_context_help_ava
 
 set general_help "
 <ul>
-  <li><A href=http://www.project-open.com/en/>
+  <li><A href=https://www.project-open.com/en/>
 	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
 	Documentation
   </a>
@@ -57,7 +57,7 @@ set general_help "
 
 set developer_help "
 <ul>
-  <li><A href=http://www.project-open.com/en/faq-developers>
+  <li><A href=https://www.project-open.com/en/faq-developers>
 	<span class=brandsec>&#93;</span><span class=brandfirst>project-open</span><span class=brandsec>&#91;</span>
       Documentation</a>
 </ul>

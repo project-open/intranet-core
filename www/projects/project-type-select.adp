@@ -1,6 +1,6 @@
 <master>
 <property name="doc(title)">@page_title;literal@</property>
-<property name="main_navbar_label"></property>
+<property name="main_navbar_label">projects</property>
 
 <script type="text/javascript" <if @::__csp_nonce@ not nil>nonce="@::__csp_nonce;literal@"</if>>
 window.addEventListener('load', function() { 
@@ -200,7 +200,7 @@ window.addEventListener('load', function() {
 	<td>	<b><%= [lang::message::lookup "" intranet-core.Project_type_other "Other"] %></b><br>
 		<%= [lang::message::lookup "" intranet-core.Project_type_other_short_blurb "
 		'Other' projects serve specific purposes. Please consult the 
-		<a href=http://www.project-open.net/en/category-intranet-project-type target=_
+		<a href=https://www.project-open.net/en/category-intranet-project-type target=_
 		>online help on project types</a>."] %>
 	</td>
 	</tr>

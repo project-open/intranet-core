@@ -3,7 +3,7 @@
 # Copyright (C) 2004 - 2009 ]project-open[
 #
 # All rights reserved (this is not GPLed software!).
-# Please check http://www.project-open.com/ for licensing
+# Please check https://www.project-open.com/ for licensing
 # details.
 
 ad_page_contract {

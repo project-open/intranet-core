@@ -169,7 +169,7 @@ ad_proc im_subsite_id { } {
     This deals with the problem that ad_conn is not available when
     executing sweeper procs or DELETE REST commands.
 } {
-    set subsite_id [util_memoize [list db_string subsite_id "select min(package_id) from apm_packages where package_key = 'acs-subsite'"] 100000]
+    set subsite_id [util_memoize [list db_string subsite_id "select min(package_id) from apm_packages where package_key = 'acs-subsite'" -default 0] 100000]
     return $subsite_id
 }
 

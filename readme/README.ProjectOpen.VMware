@@ -1,6 +1,6 @@
 
-  ]project-open[ V5.0 Virtual Machine
-  Community Edition, 2017-10-30
+  ]project-open[ V5.1 Virtual Machine
+  Community Edition, 2021-01-21
 
   This is the ]project-open[ Virtual Machine. This document describes
   the installation and configuration of the VMware appliance.
@@ -81,14 +81,14 @@ ______________________________________________________________________
 
   4. Virtual Machine Installer Contents
 
-  The "project-open-v50.x.zip" file contains the zipped files of
+  The "project-open-v51.x.zip" file contains the zipped files of
   a virtual machine. All files are located in a single subdirectory:
 
   /README.txt
   /LICENSE.txt
-  /project-open-v50/
-	project-open-v50.vmx
-	project-open-v50.vmdk
+  /project-open-v51/
+	project-open-v51.vmx
+	project-open-v51.vmdk
 
   Please refer to the VMware guides on how to import or run a 
   virtual machine.
@@ -204,7 +204,7 @@ ______________________________________________________________________
     The Prop and Enterprise editions include a number of closed-source
     add-on functionality.
 
-  Please visit http://www.project-open.com/en/products/editions.html
+  Please visit https://www.project-open.com/en/products/editions.html
   for details.
 
 
@@ -257,7 +257,7 @@ ______________________________________________________________________
 
 
   - Newsletter:
-    http://www.project-open.net/
+    https://www.project-open.net/
     Please register yourself on our Web site. This way we are going
     to send you the ]po[ newsletter once or twice per year.
 

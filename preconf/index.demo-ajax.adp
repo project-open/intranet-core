@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd"> 
 
 <%
    set version "\]po\[ V4.0:"
@@ -139,7 +139,7 @@ function setBgImage (id,img) {
 
 <body bgcolor="white" text="black">
 <div id="header_class">
-  <div id="header_logo"> <a href="http://www.project-open.com/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
+  <div id="header_logo"> <a href="https://www.project-open.com/"><img id="intranetlogo" src="logo.gif" alt="logo" border="0"></a> </div>
   <div id="header_plugin_left"> </div>
   <div id="header_plugin_right"> </div>
   <div id="header_skin_select"> </div>

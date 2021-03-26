@@ -2153,12 +2153,12 @@ Please click on the links below to get to the respective administration screens.
   <msg key="PM_Help">PM Help</msg>
   <msg key="PO_Admins">P/O Admins</msg>
   <msg key="po_admins">P/O Admins</msg>
-  <msg key="PO_com_web_site">&lt;A href=&#34;http://www.project-open.com/&#34;&gt;&lt;b&gt;
+  <msg key="PO_com_web_site">&lt;A href=&#34;https://www.project-open.com/&#34;&gt;&lt;b&gt;
 &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt; &#39;.com&#39; Web site</msg>
   <msg key="PO_com_web_site_blurb">Provides you with an overview of &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt;.</msg>
   <msg key="po_Component">]po[ Component</msg>
   <msg key="PO_Documentation_Wiki">]po[ Documentation Wiki</msg>
-  <msg key="PO_Documentation_Wiki_Blurb">&lt;A href=&#34;http://www.project-open.com/en/&#34;&gt;&lt;B&gt;]po[ Documentation Wiki&lt;/b&gt;&lt;/a&gt;</msg>
+  <msg key="PO_Documentation_Wiki_Blurb">&lt;A href=&#34;https://www.project-open.com/en/&#34;&gt;&lt;B&gt;]po[ Documentation Wiki&lt;/b&gt;&lt;/a&gt;</msg>
   <msg key="PO_Professional_Services">]po[ ProfessionalServices</msg>
   <msg key="PO_Support_Contracts">]po[ Support Contracts</msg>
   <msg key="PO_Support_Contracts_Blurb">We can also provide you with a support contract to keep your system safe and running</msg>
@@ -2348,7 +2348,7 @@ Classical / Gantt projects allow for tight progress tracking, financial controll
 Mixed projects allow for project tracking, financial controlling and resource management on the coarse-grain level, but allow for flexibility in the agile phases.</msg>
   <msg key="Project_type_Other">Other</msg>
   <msg key="Project_type_other">Other</msg>
-  <msg key="Project_type_other_short_blurb">&#39;Other&#39; projects serve specific purposes. Please consult the &lt;a href=http://www.project-open.net/en/category-intranet-project-type target=_&gt;online help on project types&lt;/a&gt;.</msg>
+  <msg key="Project_type_other_short_blurb">&#39;Other&#39; projects serve specific purposes. Please consult the &lt;a href=https://www.project-open.net/en/category-intranet-project-type target=_&gt;online help on project types&lt;/a&gt;.</msg>
   <msg key="Project_type_Program">Program</msg>
   <msg key="Project_type_program">Program</msg>
   <msg key="Project_type_program_short_blurb">A program or &#34;programme&#34; groups a number of projects that usually have a common purpose-</msg>
@@ -2809,7 +2809,7 @@ You have the option to use either HTML (&#39;.adp&#39;) or OpenOffice &#39;.odt&
 To download a template please choose from the right-mouse click menu option &#39;Save as&#39;
 and change file name to the name shown in the table.&lt;br&gt;
 For details on templates please see the
-&lt;a href=&#39;http://www.project-open.com/en/category-intranet-cost-template&#39;&gt;online documentation&lt;/a&gt;.
+&lt;a href=&#39;https://www.project-open.com/en/category-intranet-cost-template&#39;&gt;online documentation&lt;/a&gt;.
 </msg>
   <msg key="Template_p">Template?</msg>
   <msg key="templatede_DEadp">template.de_DE.adp</msg>
@@ -3055,7 +3055,7 @@ For details on templates please see the
   <msg key="Week_and_Day">Week and Day</msg>
   <msg key="Weighted_Value">Weighted Value</msg>
   <msg key="Welcome_to_po">Welcome to ]project-open[</msg>
-  <msg key="Welcome_to_po_blurb">Please see the &lt;a href=&#39;http://www.project-open.com/en/list-configuration&#39;
+  <msg key="Welcome_to_po_blurb">Please see the &lt;a href=&#39;https://www.project-open.com/en/list-configuration&#39;
 &gt;Configuration Overview&lt;/a&gt; on how to configure &lt;nobr&gt;&amp;#93;po&amp;#91;&lt;/nobr&gt;.
 We recommend to keep the &#39;Tigerpond&#39; demo data in the system while testing the configuration.</msg>
   <msg key="Welcome_User_Name">Welcome %user_name%</msg>

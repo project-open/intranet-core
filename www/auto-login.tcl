@@ -18,7 +18,7 @@ ad_page_contract {
     in a sha1 HASH.
 
     Example use:
-    http://www.project-open.net/intranet/auto-login?user_id=1234&url=/intranet-forum/&auto_login=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
+    https://www.project-open.net/intranet/auto-login?user_id=1234&url=/intranet-forum/&auto_login=E4E412EE1ACA294D4B9AC51B108360EEF7B307C1
 
     @@param user_id	Login as this user
     @@param url		What page to go to

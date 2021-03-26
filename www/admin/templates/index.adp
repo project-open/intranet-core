@@ -32,7 +32,7 @@
 	To download a template please choose from the right-mouse click menu option 'Save as' 
 	and change file name to the name shown in the table.<br>
 	For details on templates please see the
-	<a href='http://www.project-open.com/en/category-intranet-cost-template'>online documentation</a>.
+	<a href='https://www.project-open.com/en/category-intranet-cost-template'>online documentation</a>.
         "] %>
 	<%= [im_box_footer] %>
 

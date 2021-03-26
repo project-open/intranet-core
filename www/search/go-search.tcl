@@ -53,7 +53,7 @@ switch $target {
 	ad_returnredirect "/intranet-search/search?type=im_document&q=$query_string"
     }
     "google" {
-	ad_returnredirect "http://www.google.com/search?q=$query_string&hl=es"
+	ad_returnredirect "https://www.google.com/search?q=$query_string&hl=es"
     }
     default {
 	ad_return_complaint 1 "Error:<br>You have chosen to search for target '$target' that doesn't exist."
