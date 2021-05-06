@@ -4,11 +4,30 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.
 
 -- Delete zombie entries in cr_items
 --
-delete from acs_objects where object_id in (
-	select	object_id
-	from	acs_objects
-	where	object_type = 'content_item' and
+
+delete from acs_object_context_index where object_id in (
+        select  object_id
+        from    acs_objects
+        where   object_type = 'content_item' and
+                object_id not in (select item_id from cr_items)
+);
+delete from acs_object_context_index where ancestor_id in (
+        select  object_id
+        from    acs_objects
+        where   object_type = 'content_item' and
+                object_id not in (select item_id from cr_items)
+);
+update acs_objects set context_id = null where context_id in (
+        select  object_id
+        from    acs_objects
+	where   object_type = 'content_item' and
 		object_id not in (select item_id from cr_items)
+);
+delete from acs_objects where object_id in (
+        select  object_id
+        from    acs_objects
+        where   object_type = 'content_item' and
+                object_id not in (select item_id from cr_items)
 );
 
 
