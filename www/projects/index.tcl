@@ -183,6 +183,7 @@ if { "" != $end_date } {
     }
 }
 
+
 # ---------------------------------------------------------------
 # 3. Defined Table Fields
 # ---------------------------------------------------------------
@@ -1021,3 +1022,11 @@ append left_navbar_html "
 	$action_html
 	$admin_html
 "
+
+
+# Show "Portfolio" menu highlighted when showing the list of portfolios...
+set main_navbar_label "projects"
+if {"project_portfolio_list" eq $view_name} {
+    set main_navbar_label "portfolio"
+}
+
