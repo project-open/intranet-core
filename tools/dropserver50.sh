@@ -46,7 +46,6 @@ fi
 WEBDIR=/web
 HOMEDIR=$WEBDIR/$POUSER
 SERVICEDIR=/web/service/$POUSER
-
 GRAVEYARD=/web/garbage/backup_canceled_servers
 
 echo "drop server for '$POUSER'"

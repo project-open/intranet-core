@@ -108,6 +108,7 @@ git clone https://gitlab.project-open.net/project-open/ref-timezones.git
 git clone https://gitlab.project-open.net/project-open/ref-us-counties.git
 git clone https://gitlab.project-open.net/project-open/ref-us-states.git
 git clone https://gitlab.project-open.net/project-open/ref-us-zipcodes.git
+git clone https://gitlab.project-open.net/project-open/richtext-ckeditor4
 git clone https://gitlab.project-open.net/project-open/rss-support.git
 git clone https://gitlab.project-open.net/project-open/search.git
 git clone https://gitlab.project-open.net/project-open/sencha-core.git
