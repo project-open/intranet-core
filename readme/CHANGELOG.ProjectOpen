@@ -1,18 +1,59 @@
-==============================================================
+y==============================================================
 	]project-open[ Change Log
 ==============================================================
 
 
 
 ==============================================================
-V5.0 Changes
+V5.1 Changes (2021-07-01)
+==============================================================
+
+Major Enhancements & New Packages
+
+- Budget Planning and Tracking:
+  The package allows users to define hierarchical project budgets
+  using drag-and-drop. This feature extends the use of ]po[ to
+  "classical" projects in construction and engineering.
+  It also caters to large enterprises who mainly track project
+  progress vs. budget.
+  The assignment of actual costs to budget line items works
+  automatically using a classification engine, taking into
+  account cost type, material, project phase, creation user
+  and other parameters. Financial staff can override the default
+  classification. A tutorial is available, please contact us.
+
+- Gantt Editor Improvements:
+  The Gantt Editor was introduced in ]po[ V5.0.
+  V5.1 brings a higher resolution in the scheduling engine 
+  and many small fixes and enhancements.
+
+Security
+
+- Fixed Security Issues:
+  V5.1 fixes several important security issues that required
+  important changes in system libraries to fix.
+
+- Implemented CSP (Content Security Policy):
+  The entire application now uses CSP.
+
+
+Platform Changes
+
+- We updated the underlying infrastructure to OpenACS 5.9.1,
+  PostgreSQL 10.x, Naviserver 4.99.8 and CentOS 8.2
+
+- We have finally managed to migrate to GIT. The old CVS
+  server only contains code until V5.0.
+
+==============================================================
+V5.0 Changes (2020-04-27)
 ==============================================================
 
 ]project-open[ V5.0 include several major new packages:
 
 - Gantt Editor:
-  A HTML5 editor for Gantt charts, similar to MS-Project, 
-  ProjectLibre and GanttProject, but currently without 
+  A HTML5 editor for Gantt charts, similar to MS-Project,
+  ProjectLibre and GanttProject, but currently without
   critcial path scheduling.
 
 - Task Management:
@@ -30,35 +71,35 @@ V5.0 Changes
   resource load of the assigned users and their departments.
 
 - Project Earned Value Diagram:
-  Shows graphically planned work (from the Gantt diagram) vs. 
+  Shows graphically planned work (from the Gantt diagram) vs.
   actual progress (% done) vs. logged hours. Currently only
   shows numbers based on hours.
 
 - Project Milestone "Slip" Tracker:
-  This diagram shows graphically the slip of project 
+  This diagram shows graphically the slip of project
   milestones.
 
 
 Platform Changes
 
-- PostgreSQL Database:  
+- PostgreSQL Database:
   V5.0 supports PG 9.2 or higher.
 
-- Application Server:  
+- Application Server:
   V5.0 supports NaviServer 4.99.8.
 
-- OpenACS Community System:  
+- OpenACS Community System:
   V5.0 is now based on OpenACS 5.9
 
-- VMware Linux Version:  
+- VMware Linux Version:
   V5.0 is based on CentOS 7.
 
 - HTML5 Libraries:
   The HTML5 libraries Sencha ExtJS 4.2.1 and Sencha Touch 2.4.2
   are now part of the core architecture.
 
-These changes are the reason for the release of a major version, 
-meaning that upgrades from previous versions are not automatic. 
+These changes are the reason for the release of a major version,
+meaning that upgrades from previous versions are not automatic.
 Please see the V4.0 -> V5.0 upgrade instructions for details.
 
 
@@ -66,11 +107,11 @@ Please see the V4.0 -> V5.0 upgrade instructions for details.
 Performance
 
 - Update to PostgreSQL 9.x and NaviServer 4.99:
-  The update increases performance by up to 50% in 
+  The update increases performance by up to 50% in
   typcial application scenarios.
 
-- Optimizations for 40.000 Users: 
-  We have optimized a number of pages in order to deal 
+- Optimizations for 40.000 Users:
+  We have optimized a number of pages in order to deal
   with large numbers of customers and customer contacts
 
 - Filter options for large organizations:
@@ -93,7 +134,7 @@ Security
 - Fixed header injection issue in redirect code
 
 - Fixed a security issue in the 2nd tier defense in
-  util_memoize 
+  util_memoize
 
 
 
