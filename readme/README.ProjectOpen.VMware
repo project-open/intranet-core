@@ -1,6 +1,6 @@
 
   ]project-open[ V5.1 Virtual Machine
-  Community Edition, 2021-01-21
+  Community Edition, 2021-07-15
 
   This is the ]project-open[ Virtual Machine. This document describes
   the installation and configuration of the VMware appliance.
@@ -57,11 +57,10 @@
 
   3. Prerequisites
 
-  In order to run this ]project-open[ for testing purposes you need at 
-  least:
+  In order to run this ]project-open[ for testing purposes you need:
 
-  - A computer with Windows 7 or higher for VMware Workstation,
-    Player, or a ESXi server.
+  - A computer with Windows 7 or higher for VMware Player,
+    or a server with ESXi.
   - At least 1 core of a recent AMD or Intel processor
   - At least 1 GB RAM
   - At least 50 GB of free disk space

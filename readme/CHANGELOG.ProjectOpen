@@ -1,11 +1,9 @@
-y==============================================================
+==============================================================
 	]project-open[ Change Log
 ==============================================================
 
-
-
 ==============================================================
-V5.1 Changes (2021-07-01)
+V5.1 Changes (2021-07-15)
 ==============================================================
 
 Major Enhancements & New Packages
@@ -24,7 +22,7 @@ Major Enhancements & New Packages
 
 - Gantt Editor Improvements:
   The Gantt Editor was introduced in ]po[ V5.0.
-  V5.1 brings a higher resolution in the scheduling engine 
+  V5.1 brings a higher resolution in the scheduling engine
   and many small fixes and enhancements.
 
 Security
@@ -36,7 +34,6 @@ Security
 - Implemented CSP (Content Security Policy):
   The entire application now uses CSP.
 
-
 Platform Changes
 
 - We updated the underlying infrastructure to OpenACS 5.9.1,
@@ -44,6 +41,8 @@ Platform Changes
 
 - We have finally managed to migrate to GIT. The old CVS
   server only contains code until V5.0.
+
+
 
 ==============================================================
 V5.0 Changes (2020-04-27)
@@ -79,7 +78,6 @@ V5.0 Changes (2020-04-27)
   This diagram shows graphically the slip of project
   milestones.
 
-
 Platform Changes
 
 - PostgreSQL Database:
@@ -102,8 +100,6 @@ These changes are the reason for the release of a major version,
 meaning that upgrades from previous versions are not automatic.
 Please see the V4.0 -> V5.0 upgrade instructions for details.
 
-
-
 Performance
 
 - Update to PostgreSQL 9.x and NaviServer 4.99:
@@ -117,7 +113,6 @@ Performance
 - Filter options for large organizations:
   Most pages now contain filter options suitable for
   organizations with 5.000 active users.
-
 
 Security
 
@@ -136,12 +131,11 @@ Security
 - Fixed a security issue in the 2nd tier defense in
   util_memoize
 
-
-
 Other
 
 - We never officially released ]po[ V4.1 (please see below),
   so please continue to read for additional changes.
+
 
 
 ==============================================================
@@ -181,8 +175,6 @@ New Packages
   customer. It consists of a new business object "event"
   that handles resource allocation using a calendar view.
 
-
-
 Important Features
 
 - GUI:
@@ -192,8 +184,6 @@ Important Features
   Automatically maintaining groups per office in order to allow
   for bank holidays per office. These bank holidays enter into
   the resource management calculation algorithm.
-
-
 
 New Experimental Functionality
 
@@ -218,7 +208,6 @@ New Experimental Functionality
   contacts + companies including a duplicate check based
   of fuzzy full-text search.
 
-
 Bugs Fixed
 
 - Timesheet Approval Workflow
@@ -228,13 +217,11 @@ Bugs Fixed
   Fixed behaviour for automatic login from emails sent
   out by the forum and mailing functionalities.
 
-
 Performance
 
 - A large customer with 40.000 users served as a base
   for a number of performance enhancements that have
   become part of the product.
-
 
 Small Stuff
 
@@ -261,7 +248,6 @@ Small Stuff
   process workflow approvals for the absent person during the
   vacation period.
 
-
 Security
 
 - A scurity testing company performed a one week testing on ]po[
@@ -284,12 +270,9 @@ Security
   reporting functionality to detect unusual activities in the
   system.
 
-
-
 ==============================================================
 V4.0 Changes
 ==============================================================
-
 
 Incompatible Changes
 
@@ -307,7 +290,6 @@ several main improvements:
 	The new OpenACS version (5.7) includes support for a number of
 	AJAX libraries. AJAX support is going to become progressively
 	more important.
-
 
 Major Enhancements & New Packages
 
@@ -379,7 +361,6 @@ Major Enhancements & New Packages
 	effectively allowing to maintain CVS permission configuration in
 	]po[.
 
-
 New Features:
 
       * AJAX Date-Pickers for all important forms:
@@ -423,10 +404,10 @@ New Features:
       	Admin -> User Profiles now allows to filter privileges by keyword.
 
 
+
 ==============================================================
 V3.5 Changes
 ==============================================================
-
 
 Major Enhancements & New Packages
 
@@ -508,7 +489,6 @@ Major Enhancements & New Packages
 	warehouse. We now are going to add a range of frequently used
 	financial and timesheet indicators.
 
-
 New Features
 
       * New Reports:
@@ -531,7 +511,6 @@ New Features
 
       * Financial Documents List Page:
 	Added pagination
-
 
 Bug Fixes
 
@@ -649,9 +628,6 @@ Major Enhancements:
       * New "Delivery Note" Financial Document Type
 	Delivery notes are a step before issuing an invoice.
 
-
-
-
 New Commercial "Enterprise Extension Modules":
 
 The following modules are closed-source extensions of ]po[ covering the needs
@@ -672,7 +648,6 @@ product at https://www.project-open.com/shop/.
 
       * SAP Integration:
 	Import and export interfaces to SAP FI.
-
 
 Minor Enhancements:
 
@@ -751,7 +726,6 @@ Minor Enhancements
       * Enabling the "State" field in address if the parameter
 	"SomeAmericanReaders" is set.
 
-
 Bug Fixes:
 
       * Fixed missing "invoice_office_id" in "Tigerpond" preconfigured
@@ -813,7 +787,6 @@ Major Enhancements
 	automatically, depending on the status of the project's tasks.
       * Automatic data import from LTC Organiser.
 
-
 Minor Enhancements
 
       * ]project-translation[: Translator's comments from the task upload
@@ -838,7 +811,6 @@ Minor Enhancements
 	Invoice" on an quote editing screen, ...)
       * Many typos and Localization fixed
 
-
 Major Bug Fixes
 
       * Automatic Software Update Service ("ASUS"): Fixed a bug inhibiting
@@ -855,7 +827,6 @@ Major Bug Fixes
 	Cube, suitable to be viewed via Pivot Table.
       * Added default VAT, payment days and financial document templates
 	to companies
-
 
 Minor Bug Fixes
 
@@ -879,5 +850,4 @@ Minor Bug Fixes
       * Fixed formatting issue of VAT amounts > 9.999 EUR
       * Work city" and "work country" are now saved correctly in the Users's
 	contact information page.
-
 
