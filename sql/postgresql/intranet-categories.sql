@@ -405,3 +405,7 @@ end;$body$ LANGUAGE 'plpgsql' VOLATILE;
 \i ../common/intranet-categories.sql
 
 
+-- Create a 0 category as a workaround for the status of users/
+-- employees/persons/parties which is 0 because there is no status
+SELECT im_category_new(0, 'Unknown', 'Intranet Object Status');
+
