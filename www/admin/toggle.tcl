@@ -43,6 +43,9 @@ switch $action {
     add_writable {
 	im_exec_dml grant_writable "im_grant_permission($object_id,$horiz_group_id,'write')"
     }
+    add_takeable {
+        im_exec_dml grant_readable "im_grant_permission($object_id,$horiz_group_id,'survsimp_take_survey')"
+    }
     add_administratable {
 	im_exec_dml grant_administratable "im_grant_permission($object_id,$horiz_group_id,'admin')"
     }
@@ -51,6 +54,9 @@ switch $action {
     }
     remove_readable {
         im_exec_dml revoke_readable "im_revoke_permission($object_id,$horiz_group_id,'read')"
+    }
+    remove_takeable {
+        im_exec_dml revoke_takeable "im_revoke_permission($object_id,$horiz_group_id,'survsimp_take_survey')"
     }
     remove_writable {
 	im_exec_dml revoke_writable "im_revoke_permission($object_id,$horiz_group_id,'write')"
