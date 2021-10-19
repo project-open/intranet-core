@@ -237,8 +237,8 @@ db_foreach column_list_sql $column_sql {
 	lappend column_vars "$column_render_tcl"
 	lappend column_headers_admin $admin_html
 	if {"" != $extra_select} { lappend extra_selects [eval "set a \"$extra_select\""] }
-	if {"" != $extra_from} { lappend extra_froms $extra_from }
-	if {"" != $extra_where} { lappend extra_wheres $extra_where }
+	if {"" != $extra_from} { lappend extra_froms [eval "set a \"$extra_from\""] }
+	if {"" != $extra_where} { lappend extra_wheres [eval "set a \"$extra_where\""] }
 	if {"" != $order_by_clause &&
 	    $order_by==$column_name} {
 	    set view_order_by_clause $order_by_clause
