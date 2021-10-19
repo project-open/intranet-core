@@ -497,26 +497,13 @@ switch [string tolower $order_by] {
 }
 
 set where_clause [join $criteria " and\n            "]
-if { $where_clause ne "" } {
-    set where_clause " and $where_clause"
-}
-
+if { $where_clause ne "" } { set where_clause " and $where_clause" }
 set extra_select [join $extra_selects ",\n\t"]
-if { $extra_select ne "" } {
-    set extra_select ",\n\t$extra_select"
-}
-
+if { $extra_select ne "" } { set extra_select ",\n\t$extra_select" }
 set extra_from [join $extra_froms ",\n\t"]
-if { $extra_from ne "" } {
-    set extra_from ",\n\t$extra_from"
-}
-
+if { $extra_from ne "" } { set extra_from ",\n\t$extra_from" }
 set extra_where [join $extra_wheres "and\n\t"]
-if { $extra_where ne "" } {
-    set extra_where ",\n\t$extra_where"
-}
-
-
+if { $extra_where ne "" } { set extra_where " and\n\t$extra_where" }
 
 
 # Create a ns_set with all local variables in order
