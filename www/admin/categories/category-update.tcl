@@ -36,8 +36,8 @@ ad_page_contract {
     sort_order:integer
     aux_int1:integer
     aux_int2:integer
-    aux_string1
-    aux_string2
+    aux_string1:allhtml
+    aux_string2:allhtml
     visible_tcl
     category_description:allhtml
     category_type
