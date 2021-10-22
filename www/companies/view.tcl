@@ -27,6 +27,7 @@ ad_page_contract {
     { forum_order_by "" }
     show_all_correspondance_comments:integer,optional
     { plugin_id "" }
+    { view_name "" }
 }
 
 # -----------------------------------------------------------
@@ -46,6 +47,14 @@ if {0 == $company_id} {set company_id $object_id}
 if {0 == $company_id} {
     ad_return_complaint 1 "<li>[_ intranet-core.lt_You_need_to_specify_a_1]"
     return
+}
+
+if {"" eq $view_name} {
+    if {"" eq $plugin_id} {
+	set view_name "standard"
+    } else {
+	set view_name "component"
+    }
 }
 
 # Check permissions. "See details" is an additional check for
