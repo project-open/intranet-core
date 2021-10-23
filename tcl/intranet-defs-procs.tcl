@@ -84,6 +84,7 @@ ad_proc var_contains_quotes { var } {
     return 0
 }
 
+#" (Fix Emacs thinking to quote everything below because of the quote above
 
 # ------------------------------------------------------------------
 # 
