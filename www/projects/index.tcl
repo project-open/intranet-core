@@ -237,8 +237,8 @@ db_foreach column_list_sql $column_sql {
 	lappend column_vars "$column_render_tcl"
 	lappend column_headers_admin $admin_html
 	if {"" != $extra_select} { lappend extra_selects [eval "set a \"$extra_select\""] }
-	if {"" != $extra_from} { lappend extra_froms $extra_from }
-	if {"" != $extra_where} { lappend extra_wheres $extra_where }
+	if {"" != $extra_from} { lappend extra_froms [eval "set a \"$extra_from\""] }
+	if {"" != $extra_where} { lappend extra_wheres [eval "set a \"$extra_where\""] }
 	if {"" != $order_by_clause &&
 	    $order_by==$column_name} {
 	    set view_order_by_clause $order_by_clause
@@ -497,26 +497,13 @@ switch [string tolower $order_by] {
 }
 
 set where_clause [join $criteria " and\n            "]
-if { $where_clause ne "" } {
-    set where_clause " and $where_clause"
-}
-
+if { $where_clause ne "" } { set where_clause " and $where_clause" }
 set extra_select [join $extra_selects ",\n\t"]
-if { $extra_select ne "" } {
-    set extra_select ",\n\t$extra_select"
-}
-
+if { $extra_select ne "" } { set extra_select ",\n\t$extra_select" }
 set extra_from [join $extra_froms ",\n\t"]
-if { $extra_from ne "" } {
-    set extra_from ",\n\t$extra_from"
-}
-
+if { $extra_from ne "" } { set extra_from ",\n\t$extra_from" }
 set extra_where [join $extra_wheres "and\n\t"]
-if { $extra_where ne "" } {
-    set extra_where ",\n\t$extra_where"
-}
-
-
+if { $extra_where ne "" } { set extra_where " and\n\t$extra_where" }
 
 
 # Create a ns_set with all local variables in order
