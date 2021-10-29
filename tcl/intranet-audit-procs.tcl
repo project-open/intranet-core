@@ -63,6 +63,8 @@ ad_proc -public im_audit {
 		im_project. This way the system can detect changes from outside the system.
     @return $audit_id
 } {
+    ns_log Notice "im_audit: -object_id=$object_id -user_id=$user_id -object_type=$object_type -status_id=$status_id -type_id=$type_id -action=$action -comment=$comment -debug_p=$debug_p"
+    
     # Deal with old action names during the transition period
     if {""              == $action} { set action "after_update" }
     if {"update"        == $action} { set action "after_update" }
@@ -392,10 +394,10 @@ ad_proc -public im_audit_impl {
 	   The baseline_id is stored in im_audits.baseline_id,
 	   because baselines always refer to projects.
 } {
-    if {$debug_p} { ns_log Notice "im_audit_impl: object_id=$object_id, user_id=$user_id, object_type=$object_type, status_id=$status_id, type_id=$type_id, action=$action, baseline_id=$baseline_id, comment=$comment" }
+    ns_log Notice "im_audit_impl: object_id=$object_id user_id=$user_id object_type=$object_type status_id=$status_id type_id=$type_id action=$action baseline_id=$baseline_id comment=$comment"
+    if {$debug_p} { }
 
     set baseline_exists_p [im_column_exists im_audits audit_baseline_id]
-    
     set is_connected_p [ns_conn isconnected]
     set peeraddr "0.0.0.0"
     set x_forwarded_for "0.0.0.0"
