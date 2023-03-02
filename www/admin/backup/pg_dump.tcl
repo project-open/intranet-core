@@ -140,27 +140,6 @@ set pg_port [parameter::get_from_package_key -package_key "intranet-core" -param
 # set pg_pass [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpPass" -default ""]
 set pg_db ""
 
-# get the PSQL PostgreSQL version
-set psql_version [im_database_version]
-if {![regexp {([0-9]+)\.([0-9]+).([0-9]*)} $psql_version match psql_major psql_minor psql_pathc]} {
-    ns_write "
-	<li><font color=red>
-	Error while determining the PostgreSQL version:<br>
-	Your database binary doesn't seem to be accessible.<br>
-        psql_version=$psql_version
-	</font></li>
-    "
-    ad_script_abort
-}
-
-
-# Disable "dollar quoting" on 7.4.x
-if {"7" == $psql_major} { 
-    # Disabling quoting - we can't just set it to "" because
-    # otherwise pg_dump complains. So we use a double "--now-owner"...
-    set disable_dollar_quoting "--no-owner" 
-}
-
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path"
 
