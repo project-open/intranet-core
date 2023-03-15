@@ -1056,6 +1056,76 @@ ad_proc im_biz_object_add_profile_component {
 
 
 
+
+# ---------------------------------------------------------------
+# Allow the user to add other groups to objects
+# ---------------------------------------------------------------
+
+ad_proc im_biz_object_add_group_component {
+    { -group_type "im_biz_object_group" }
+    { -group_name_prefix "" }
+    -object_id:required
+} {
+    Component that returns a formatted HTML form allowing
+    users to add groups to an object
+} {
+    # ------------------------------------------------
+    # Applicability, Defauls & Security
+    set current_user_id [ad_conn user_id]
+    set object_type [util_memoize [list db_string acs_object_type "select object_type from acs_objects where object_id = $object_id" -default ""]]
+    set perm_cmd "${object_type}_permissions \$current_user_id \$object_id view_p read_p write_p admin_p"
+    eval $perm_cmd
+    if {!$write_p} { return "" }
+
+    set bind_vars [ns_set create]
+    ns_set put $bind_vars group_type $group_type
+    ns_set put $bind_vars group_name_prefix $group_name_prefix
+    set groups_sql "
+	select	g.group_id,
+		g.group_name
+	from	groups g,
+		acs_objects o
+	where	g.group_id = o.object_id and
+		o.object_type = :group_type and
+		substring(g.group_name for [string length $group_name_prefix]) = :group_name_prefix
+	order by lower(g.group_name)
+    "
+#    ad_return_complaint 1 "<pre>$groups_sql\n\ngroup_name_prefix=$group_name_prefix\ngroup_type=$group_type\n[im_ad_hoc_query $groups_sql]</pre>"
+    set default ""
+    set list_box [im_selection_to_list_box -translate_p "0" $bind_vars groups_select $groups_sql user_id_from_search $default 10 0]
+    set passthrough {object_id return_url also_add_to_object_id limit_to_users_in_group_id}
+    foreach var $passthrough {
+	if {![info exists $var]} { set $var [im_opt_val $var] }
+    }
+
+    set role_id [im_biz_object_role_full_member]
+    set result "
+	<form method=GET action=/intranet/member-add-2>
+	[export_vars -form {passthrough}]
+	[export_vars -form {{notify_asignee 0}}]
+	[eval "export_vars -form {$passthrough}"]
+	<table cellpadding=0 cellspacing=2 border=0>
+	<tr><td>
+	$list_box
+	</td></tr>
+	<tr><td>
+	[_ intranet-core.add_as] [im_biz_object_roles_select role_id $object_id $role_id]
+	</td></tr>
+	<tr><td>
+	<input type=submit value=\"[_ intranet-core.Add]\">
+	</td></tr>
+	</table>
+	</form>
+    "
+    
+    return $result
+}
+
+
+
+
+
+
 ad_proc -public im_biz_object_group_sweeper {
     {-object_id ""}
 } {
@@ -1068,6 +1138,8 @@ ad_proc -public im_biz_object_group_sweeper {
     ns_log Notice "im_biz_object_group_sweeper: object_id=$object_id"
 
     set group_id [db_string biz_object_group "select group_id from im_biz_object_groups where biz_object_id = :object_id" -default ""]
+    set object_type_pretty [db_string otype "select pretty_name from acs_objects ao, acs_object_types aot where ao.object_id = :object_id and ao.object_type = aot.object_type" -default "Object"]
+
     if {"" == $group_id} {
 	# The object group still needs to be created
 	set object_name [acs_object_name $object_id]
@@ -1096,7 +1168,20 @@ ad_proc -public im_biz_object_group_sweeper {
 		where	r.rel_id = bom.rel_id and 
 			r.object_id_one = :object_id and
 			r.object_id_two = p.person_id
-	"]
+    "]
+    if {"Cost Center" eq $object_type_pretty} {
+	# Cost center members are defined by im_employee.department_id == cost_center_id plus sub-CCs
+	set cc_sql "
+		select	e.employee_id
+		from	im_cost_centers cc,
+			im_cost_centers sub_cc,
+			im_employees e
+		where	cc.cost_center_id = :object_id and
+			substring(sub_cc.cost_center_code for length(cc.cost_center_code)) = cc.cost_center_code and
+			e.department_id = sub_cc.cost_center_id
+        "
+	append biz_object_members [db_list ccs $cc_sql]
+    }
     set biz_object_members [lsort -unique -integer $biz_object_members]
 
     # Get the list of existing group members
