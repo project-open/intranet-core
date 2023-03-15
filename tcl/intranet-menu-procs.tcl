@@ -448,6 +448,7 @@ ad_proc -public im_menu_invoice_creation_matrix {
 	ns_log Notice "im_invoice_creation_link_matrix: name='$name'"
 	if {[regexp -nocase {new (.*) from (.*)$} $name match type source]} {
 	    set source [string totitle $source]
+	    if {"scratch" eq $source} { set source "Scratch" }
 	    set type_hash($type) $type
 	    set source_hash($source) $source
 	    ns_log Notice "im_invoice_creation_link_matrix: name='$name', type=$type, source=$source"
@@ -515,7 +516,7 @@ ad_proc -public im_menu_invoice_creation_matrix_sort_types {
     Sorts the list of invoice types using some custom ordering.
     This is not particularly pretty, but required for usability.
 } {
-    set order_list [list "Customer Invoice" "Quote" "Delivery Note" "Provider Bill" "Purchase Order"]
+    set order_list [list "Customer Invoice" "Quote" "Budgeted Purchase" "Purchase Order" "Provider Purchase Order" "Delivery Note" "Goods Received" "Goods Accepted" "Provider Bill" "Purchase ETC"]
 
     set result [list]
     foreach term $order_list {
@@ -533,14 +534,23 @@ ad_proc -public im_menu_invoice_creation_matrix_sort_sources {
     Sorts the list of invoice types using some custom ordering.
     This is not particularly pretty, but required for usability.
 } {
-    set order_list [list "Scratch" "Timesheet tasks" "Invoice" "Quote" "Delivery note" "Provider Bill" "Purchase Order"]
+    set order_list [list "Scratch" "Timesheet tasks" "Invoice" "Quote" "Budgeted Purchase" "Purchase Order" "Provider Purchase Order" "Delivery note" "Goods Received" "Goods Accepted" "Provider Bill" "Purchase ETC"]
 
+    set order_list_lower [string tolower $order_list]
+    set list_lower [string tolower $list]
+    set rest [string tolower $list]
     set result [list]
-    foreach term $order_list {
-	set rest [lsearch -inline -all -not $list $term]
-	if {$rest ne $list} { lappend result $term }
-	set list $rest
-    }
 
+    for {set i 0} {$i < [llength $order_list_lower]} {incr i} {
+        set term_lower [lindex $order_list_lower $i]
+        set term [lindex $order_list $i]
+        set idx [lsearch $list_lower $term_lower]
+        set term_org [lindex $list $idx]
+        if {$idx > -1} {
+            lappend result $term_org
+            set rest_idx [lsearch $rest $term_lower]
+            set rest [lreplace $rest $rest_idx $rest_idx]
+        }
+    }
     return [concat $result $rest]
 }
