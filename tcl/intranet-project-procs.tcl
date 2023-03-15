@@ -131,6 +131,7 @@ ad_proc -public im_project_has_type_helper { project_id project_type } {
 ad_proc -public im_project_main_project { project_id } {
     Returns the project_id of the project's top level main project.
 } {
+    if {"" eq $project_id} { return "" }
     im_security_alert_check_integer -location "im_project_main_project: project_id" -value $project_id
     return [util_memoize [list db_string project_main_project "
 	select	project_id
