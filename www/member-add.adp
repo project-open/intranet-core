@@ -16,15 +16,9 @@ error. Thanks!<br>&nbsp;<br>
 
 <table cellpadding="0" cellspacing="0" border="0">
 <tr>
-  <td valign="top" colspan="2">
-    <table cellpadding="0" cellspacing="0" border="0">
-    	 <tr>
 	     <td valign="top"><%= $locate_form %></td>
 	     <td valign="top"><%= $employee_form %></td>
-	     <td valign="top"><%= $skill_profile_form %></td>
-	 </tr>
-    </table>
-  </td>
+<!--	     <td valign="top"><%= $skill_profile_form %></td> fraber 2023-02-20: ToDo: Move skill select to separate portlet -->
 </tr>
 <tr>
    <td valign="top" colspan="2">
