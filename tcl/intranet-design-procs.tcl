@@ -653,7 +653,7 @@ ad_proc -public im_sub_navbar {
     {bind_vars ""} 
     {title ""} 
     {title_class "pagedesriptionbar"} 
-    {select_label ""} 
+    {select_label ""}
 } {
     Setup a sub-navbar with tabs for each area, highlighted depending
     on the local URL and enabled depending on the user permissions.
@@ -672,7 +672,6 @@ ad_proc -public im_sub_navbar {
     # Skip the Admin submenu
     set admin_menu_id [im_menu_id_from_label "admin"]
     if {$parent_menu_id eq $admin_menu_id} { return "" }
-
 
     # Start formatting the menu bar
     set navbar ""
@@ -764,18 +763,16 @@ ad_proc -public im_sub_navbar {
 			p.menu_name AS menu_name
 	    FROM	im_component_plugins p,
 			im_component_plugin_user_map u
-	    WHERE	(enabled_p is null OR enabled_p = 't')
+	    WHERE	(p.enabled_p is null OR p.enabled_p = 't')
 			AND p.plugin_id = u.plugin_id 
-			AND page_url = '$plugin_url'
+			AND p.page_url = '$plugin_url'
 			AND u.location = 'none' 
 			AND u.user_id = $user_id
 	    ORDER by 	p.menu_sort_order, p.sort_order
 	"
-
 #	ad_return_complaint 1 "[im_ad_hoc_query -format html $components_sql]<br><pre>$components_sql</pre>"
 
 	set navbar_components_list [util_memoize [list db_list_of_lists navbar_components $components_sql]]
-
 	foreach comp_tuple $navbar_components_list {
 	    set plugin_id [lindex $comp_tuple 0]
 	    set plugin_name [lindex $comp_tuple 1]
