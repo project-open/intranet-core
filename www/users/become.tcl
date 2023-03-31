@@ -33,5 +33,5 @@ if {!$admin} {
     ad_script_abort
 }
 
-ad_user_login $user_id
+ad_user_login -forever $user_id
 ad_returnredirect $return_url
