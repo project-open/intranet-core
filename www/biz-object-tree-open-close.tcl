@@ -28,10 +28,10 @@ ad_page_contract {
     
     @author frank.bergmann@project-open.com
 } {
-    { object_id:multiple "" }
+    { object_id:integer,multiple "" }
     { return_url "" }
     { page_url "default" }
-    { user_id "" }
+    { user_id:integer "" }
     { open_p "" }
     { object_ids "" }
 }
