@@ -121,29 +121,35 @@ set im_project_on_track_bb [im_project_on_track_bb $on_track_status_id]
 # Add DynField Columns to the display
 
 db_multirow -extend {attrib_var value} project_dynfield_attribs dynfield_attribs_sql {} {
+
+    # Check DynField permissions
+    set perm [util_memoize [list db_string perm "select im_object_permission_p($dynfield_attribute_id, $current_user_id, 'read')"]]
+    # ns_log Notice "project-base-data: aa_id=$acs_attribute_id, dynfield_id=$dynfield_attribute_id, name=$attribute_name, perm=$perm"
+    if {"t" ne $perm} { continue }
+
+    # Skip empty values
     set var ${attribute_name}_deref
     set value [expr $$var]
+    if {"" eq [string trim $value]} { continue }
 
-    # Empty values will be skipped anyway
-    if {"" != [string trim $value]} {
-	set attrib_var [lang::message::lookup "" intranet-core.$attribute_name $attribute_pretty_name]
+    set attrib_var [lang::message::lookup "" intranet-core.$attribute_name $attribute_pretty_name]
 
-	set translate_p 0
-	switch $acs_datatype {
-	    boolean - string { set translate_p 1 }
-	}
-	switch $widget {
-	    im_category_tree - checkbox - generic_sql - select { set translate_p 1 }
-	    richtext - textarea - text - date { set translate_p 0 }
-	}
-	
-	set value_l10n $value
-	if {$translate_p} {
-	    # ToDo: Is lang::util::suggest_key the right way? Or should we just use blank substitution?
-	    set value_l10n [lang::message::lookup "" intranet-core.[lang::util::suggest_key $value] $value] 
-	}
-	set value $value_l10n
+    set translate_p 0
+    switch $acs_datatype {
+	boolean - string { set translate_p 1 }
     }
+    switch $widget {
+	im_category_tree - checkbox - generic_sql - select { set translate_p 1 }
+	richtext - textarea - text - date { set translate_p 0 }
+    }
+    
+    set value_l10n $value
+    if {$translate_p} {
+	# ToDo: Is lang::util::suggest_key the right way? Or should we just use blank substitution?
+	set value_l10n [lang::message::lookup "" intranet-core.[lang::util::suggest_key $value] $value] 
+    }
+    set value $value_l10n
+
 }
 
 

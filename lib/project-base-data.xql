@@ -25,6 +25,8 @@
   <fullquery name="dynfield_attribs_sql">
     <querytext>
       select
+		aa.attribute_id as acs_attribute_id,
+		a.attribute_id as dynfield_attribute_id,
       		aa.pretty_name as attribute_pretty_name,
       		aa.attribute_name,
 		w.*
