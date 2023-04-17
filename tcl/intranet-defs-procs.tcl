@@ -1417,6 +1417,7 @@ ad_proc -public im_ad_hoc_query {
     {-col_td_attributes {} }
     {-translate_p 1 }
     {-subtotals_p 0 }
+    {-subtotals_rounding_factor 100.0 }
     {-package_key "intranet-core" }
     {-locale ""}
     sql
@@ -1565,7 +1566,7 @@ ad_proc -public im_ad_hoc_query {
 	    set td_attributes [lindex $col_td_attributes $col_count]
 	    set subtotal_value ""
 	    if {"" ne [string trim $subtotal] && [string is double $subtotal]} { 
-		set subtotal_value [expr round(100.0 * $subtotal) / 100.0] 
+		set subtotal_value [expr round($subtotals_rounding_factor * $subtotal) / $subtotals_rounding_factor] 
 	    }
 	    append footer "<td $td_attributes><b>[lc_numeric $subtotal_value "" $locale]</b></td>"
 	    incr col_count
