@@ -40,6 +40,21 @@ set user_admin_p [im_is_user_site_wide_or_intranet_admin $current_user_id]
 set today [lindex [split [ns_localsqltimestamp] " "] 0]
 
 
+# ----------------------------------------------------------------
+# Timesheet portlet should not be deletable by any user
+# ----------------------------------------------------------------
+
+if {!$user_admin_p} {
+    db_dml del_timesheet_portlet_cust "
+	delete from im_component_plugin_user_map 
+	where	plugin_id in (
+		select	plugin_id 
+		from	im_component_plugins 
+		where	plugin_name = 'Home Timesheet Component'
+	) and
+	user_id = :current_user_id
+    "
+}
 
 # ----------------------------------------------------------------
 # Check update status
@@ -54,8 +69,6 @@ if {[llength [info commands im_sysconfig_admin_guide]] > 0} {
     set title [lang::message::lookup "" intranet-core.Interactive_Administration_Guide "Interactive Administration Guide"]
     set admin_guide_html [im_table_with_title $title [im_sysconfig_admin_guide]]
 }
-
-
 
 # ----------------------------------------------------------------
 # Administration
@@ -72,7 +85,7 @@ set show_left_functional_menu_p [parameter::get_from_package_key -package_key "i
 
 
 # ---------------------------------------------------------------------
-# Projects Submenu
+# Submenu
 # ---------------------------------------------------------------------
 
 # Setup the subnavbar
