@@ -44,7 +44,9 @@ set today [lindex [split [ns_localsqltimestamp] " "] 0]
 # Timesheet portlet should not be deletable by any user
 # ----------------------------------------------------------------
 
-if {!$user_admin_p} {
+# Delete the custom position of the timesheet portlet if redirect is enabled
+set redirect_p [parameter::get -package_id [im_package_timesheet2_id] -parameter "TimesheetRedirectHomeIfEmptyHoursP" -default 0]
+if {$redirect_p && !$user_admin_p} {
     db_dml del_timesheet_portlet_cust "
 	delete from im_component_plugin_user_map 
 	where	plugin_id in (
