@@ -1532,6 +1532,7 @@ ad_proc -public im_ad_hoc_query {
 		    ns_log Notice "im_ad_hoc_query: col_name=$col_name,		col=$col"
 		    if {"" ne $sum && [regexp {^[0-9\,\.\-]+$} $col] && [string is double $col]} {
 			set col [regsub -all $thousand_separator $col ""]
+			if {"" eq $col} { set col 0.0 }
 			set sum [expr $sum + $col]
 		    } else {
 			set sum ""
