@@ -428,3 +428,100 @@ ad_proc im_csv_guess_separator { file } {
 }
 
 
+
+
+
+# ------------------------------------------------------------------
+# CSV output helpers
+# ------------------------------------------------------------------
+
+ad_proc im_cvs_output_findoc_clean_cell {
+    -value:required
+} {
+    Removes HTML tags from cells in order to return the alphanumeric
+    value suitable for a CSV (Excel) format
+} {
+    ns_log Notice "im_cvs_output_findoc_clean_cell: in: val='$value'"
+    regsub -all {[\n\t\r]} $value " " value
+    set value [string trim $value]
+    ns_log Notice "im_cvs_output_findoc_clean_cell: whitespace: val='$value'"
+
+    # Empty value => empty value
+    if {"" eq $value} { return $value }
+    ns_log Notice "im_cvs_output_findoc_clean_cell: work: val='$value'"
+
+    # Remove enclosing tags (always in <tag ...>xxx</tag> structure)
+    set new_value ""
+    while {$value ne $new_value} {
+	set new_value $value
+	set value [im_cvs_output_strip_outer_tag -value $new_value]
+    }
+    ns_log Notice "im_cvs_output_findoc_clean_cell: nowrap: val='$value'"
+
+    # Single tag? Replace with tag...
+    if {[regexp {^\<(\w+)[^\>]*\>$} $value match tag]} {
+	ns_log Notice "im_cvs_output_findoc_clean_cell: single tag: tag=$tag, val='$value'"
+	set value $tag
+    }
+
+    # <option ...>value</option> list? Return the "selected" option.
+    set value [im_csv_output_strip_option_list -value $value]
+
+    set value [string trim $value]
+    ns_log Notice "im_cvs_output_findoc_clean_cell: out: val='$value'"
+    return $value
+}
+
+
+ad_proc im_cvs_output_strip_outer_tag {
+    -value:required
+} {
+    ns_log Notice "im_cvs_output_strip_outer_tag: value=$value"
+    
+    if {[regexp {^\<(\w+)[^\>]*\>(.*)$} $value match start_tag rest]} {
+	# Found a starting tag
+	ns_log Notice "im_cvs_output_strip_outer_tag: value=$value, start_tag=$start_tag, rest=$rest"
+	if {[regexp {^(.*)\</(\w+)\>$} $rest match content end_tag ]} {
+	    # Found an end tag
+	    ns_log Notice "im_cvs_output_strip_outer_tag: value=$value, start_tag=$start_tag, end_tag=$end_tag content=$content"
+	    if {[string tolower $start_tag] eq [string tolower $end_tag]} {
+		ns_log Notice "im_cvs_output_strip_outer_tag: return=$content"
+		return $content
+	    }
+	}
+    }
+    return $value; # unchanged
+}
+
+
+
+ad_proc im_csv_output_strip_option_list {
+    -value:required
+} {
+    set org_value [string trim $value]
+    # Skip if not starting with <option...>
+    if {![regexp -nocase {^\<option[^\>]*\>} $org_value]} {
+	return $org_value
+    }
+
+    ns_log Notice "im_cvs_output_strip_option_list: in: value=$value"
+    regsub -all -nocase {\<\/option\>} $value "\n" value
+    ns_log Notice "im_cvs_output_strip_option_list: subs: value=$value"
+
+    set option_list [split $value "\n"]
+    ns_log Notice "im_cvs_output_strip_option_list: option_list=$option_list"
+
+    # Search for "<option selected>..."
+    set result ""
+    foreach option $option_list {
+	set option [string trim $option]
+	ns_log Notice "im_cvs_output_strip_option_list: option=$option"
+	if {[regexp {\<option[^\>]*selected[^\>]*\>(.*)$} $option match result]} {
+	    return $result
+	}
+    }
+
+    return $org_value
+}
+
+
