@@ -1717,20 +1717,45 @@ ad_proc -public im_footer {
     set mailto [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" "webmaster@localhost"]
     set subject "\]po\[ Comments about Page: [im_system_url][ns_conn url]"
 
+    # fraber 2023-05-22: Moved this code is from master.adp here,
+    # so that even reports (which don't use master template) have
+    # this functionality.
+    #
+    # <multiple name="body_script">
+    # <script type="@body_script.type;literal@"
+    #     <if @body_script.src@ not nil> src="@body_script.src;literal@"</if>
+    #     <if @body_script.charset@ not nil> charset="@body_script.charset;literal@"</if>
+    #     <if @body_script.defer@ not nil> defer="@body_script.defer;literal@"</if>
+    #     <if @body_script.async@ not nil> async="@body_script.async;literal@"</if>
+    #     <if @body_script.integrity@ not nil> integrity="@body_script.integrity;literal@"</if>
+    #     <if @body_script.crossorigin@ not nil> crossorigin="@body_script.crossorigin;literal@"</if>
+    #     <if @::__csp_nonce@ not nil> nonce="@::__csp_nonce;literal@"</if>
+    # >
+    #     <if @body_script.content@ not nil>@body_script.content;literal@</if>
+    # </script>
+    # </multiple>
+
     # Show body_scripts (from template::add_event_listener in template::list and others)
+    set body_scripts ""
     template::multirow foreach body_script {
 	set row "<script type='$type' nonce='$::__csp_nonce'"
 	if {"" != $src} {  append row " src='$src'" }
 	if {"" != $charset} {  append row " charset='$charset'" }
 	if {"" != $defer} {  append row " defer='$defer'" }
+	if {"" != $asybc} {  append row " async='$async'" }
+	if {"" != $integrity} {  append row " integrity='$integrity'" }
+	if {"" != $crossorigin} {  append row " crossorigin='$crossorigin'" }
+
 	append row ">"
 	if {"" != $content} {  append row " $content" }
 	append row "</script>\n"
-	append extra_stuff_for_document_head $row
+	append body_scripts $row
     }
+
 
     return "
     </div>
+    $body_scripts
     <div class=\"footer_hack\">&nbsp;</div>	
     <div align=center style=\"visibility: visible\">
        [_ intranet-core.Comments] [_ intranet-core.Contact]: <a href=\"mailto:$mailto?subject=$subject\">$mailto</a>.
