@@ -1742,7 +1742,7 @@ ad_proc -public im_footer {
 	if {"" != $src} {  append row " src='$src'" }
 	if {"" != $charset} {  append row " charset='$charset'" }
 	if {"" != $defer} {  append row " defer='$defer'" }
-	if {"" != $asybc} {  append row " async='$async'" }
+	if {"" != $async} {  append row " async='$async'" }
 	if {"" != $integrity} {  append row " integrity='$integrity'" }
 	if {"" != $crossorigin} {  append row " crossorigin='$crossorigin'" }
 
