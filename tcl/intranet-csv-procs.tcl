@@ -467,6 +467,10 @@ ad_proc im_cvs_output_findoc_clean_cell {
     # <option ...>value</option> list? Return the "selected" option.
     set value [im_csv_output_strip_option_list -value $value]
 
+    # Strip any tags
+    # fraber 2023-05-30: Maybe we don't need the stuff above anymore then
+    regsub -all {\<[^\>]+\>} $value "" value
+
     set value [string trim $value]
     ns_log Notice "im_cvs_output_findoc_clean_cell: out: val='$value'"
     return $value
