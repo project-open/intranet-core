@@ -137,6 +137,7 @@ ad_proc -public im_component_box {
 
 
 ad_proc -public im_component_bay { 
+    {-page_url ""}
     location 
     {view_name ""} 
 } {
@@ -148,7 +149,7 @@ ad_proc -public im_component_bay {
     im_security_alert_check_alphanum -location "im_component_bay: view_name" -value $view_name
 
     # Get the URL of the current page
-    set url_stub [im_component_page_url]
+    if {"" eq $page_url} { set page_url [im_component_page_url] }
 
     # Check if there is atleast one permission set for im_plugin_components
     set any_perms_set_p [im_component_any_perms_set_p]
@@ -172,7 +173,7 @@ ad_proc -public im_component_bay {
 			    ) m
 			    on (c.plugin_id = m.plugin_id)
 		where
-			c.page_url = '$url_stub' and
+			c.page_url = '$page_url' and
 			(c.enabled_p is null OR c.enabled_p = 't') and
 			(view_name is null or view_name = '$view_name')
 	    ) p
