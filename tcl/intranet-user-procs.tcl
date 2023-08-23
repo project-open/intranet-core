@@ -1503,7 +1503,10 @@ ad_proc -public im_user_nuke {
 	# Deleting cost entries in acs_objects that are "dangeling", i.e. that don't have an
 	# entry in im_costs. These might have been created during manual deletion of objects
 	# Very dirty...
-	db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
+
+	# 2023-08-23: This takes too long at cosine.
+	# ToDo: Rewrite to be optimized
+	# db_dml dangeling_costs "delete from acs_objects where object_type = 'im_cost' and object_id not in (select cost_id from im_costs)"
 	
 	# Costs
 	if {[im_table_exists im_invoices]} {
