@@ -1421,6 +1421,7 @@ ad_proc -public im_ad_hoc_query {
     {-subtotals_rounding_factor 100.0 }
     {-package_key "intranet-core" }
     {-locale ""}
+    {-skip_if_no_rows 0}
     sql
 } {
     Ad-hoc execution of SQL-Queries.
@@ -1576,8 +1577,11 @@ ad_proc -public im_ad_hoc_query {
 	set footer "<tr>$footer</tr>\n"
     }
 
+    if {$skip_if_no_rows && $row_count == 0} { return "" }
     switch $format {
-        plain { return "$header\n$result"  }
+        plain { 
+	    return "$header\n$result"  
+	}
         html { 
 	    return "
                 <table border=$border>
@@ -1589,9 +1593,15 @@ ad_proc -public im_ad_hoc_query {
                 </table>
             "
         }
-        csv { return "$header\n$result"  }
-        xml { return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n" }
-        json { return $result }
+        csv { 
+	    return "$header\n$result"  
+	}
+        xml { 
+	    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n" 
+	}
+        json { 
+	    return $result 
+	}
     }
 }
 
