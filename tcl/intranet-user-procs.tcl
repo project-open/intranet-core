@@ -517,13 +517,14 @@ ad_proc im_user_timesheet_absences_select {
     Returns an html select box named $select_name and defaulted to
     $default with a list of all the available options
 } {
-    set user_options [im_user_timesheet_absences_options -enable_groups_p $enable_groups_p]
-    if {$include_empty_p} { set user_options [linsert $user_options 0 [list $include_empty_name ""]] }
+    set user_options [im_user_timesheet_absences_options -enable_groups_p $enable_groups_p -include_empty_p $include_empty_p -include_empty_name $include_empty_name]
     return [im_options_to_select_box $select_name $user_options $default]
 }
 
 
 ad_proc -public im_user_timesheet_absences_options {
+    {-include_empty_p 0}
+    {-include_empty_name "All"}
     {-enable_groups_p 0}
 } {
     Returns the options for a drop-down box with users for the
@@ -605,6 +606,11 @@ ad_proc -public im_user_timesheet_absences_options {
 	    lappend user_selection_options [list "&nbsp;&nbsp;&nbsp;&nbsp;$uname" $uid]
 	}
     }
+
+    if {$include_empty_p} { 
+	set user_selection_options [linsert $user_selection_options 0 [list $include_empty_name ""]] 
+    }
+
     return $user_selection_options
 }
 
