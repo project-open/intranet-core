@@ -192,7 +192,7 @@
 -- 91000-91099  Intranet File Status (100)
 -- 91100-91199  Intranet File Type (100)
 -- 91200-91999  Intranet File reserved (800)
--- 92000-92999  reserved (1000)
+-- 92000-92999  Attendance Management (1000)
 -- 93000-93999  reserved (1000)
 -- 94000-94999  reserved (1000)
 -- 95000-95999  reserved (1000)
