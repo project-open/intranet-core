@@ -55,6 +55,7 @@ git clone https://gitlab.project-open.net/project-open/intranet-contacts.git
 git clone https://gitlab.project-open.net/project-open/intranet-core.git
 git clone https://gitlab.project-open.net/project-open/intranet-cost.git
 git clone https://gitlab.project-open.net/project-open/intranet-cost-center.git
+git clone https://gitlab.project-open.net/project-open/intranet-cost-interco.git
 git clone https://gitlab.project-open.net/project-open/intranet-crm-opportunities.git
 git clone https://gitlab.project-open.net/project-open/intranet-crm-opportunities-adrtel.git
 git clone https://gitlab.project-open.net/project-open/intranet-crm-software-comparison.git
