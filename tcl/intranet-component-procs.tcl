@@ -254,7 +254,7 @@ ad_proc -public im_component_insert {
 	    # "uplevel" evaluates the 2nd argument!!
 	    append html [uplevel 1 $component_tcl]
 	} err_msg] } {
-	    ad_return_complaint 1 "<li>[_ intranet-core.lt_Error_evaluating_comp]:<br><pre>\n$err_msg\n</pre><br>[_ intranet-core.lt_Please_contact_your_s]:<br>"
+	    ad_return_complaint 1 "<li>[_ intranet-core.lt_Error_evaluating_comp]:<br><pre>\n[ad_print_stack_trace]</pre><br>[_ intranet-core.lt_Please_contact_your_s]:<br>"
 	}
     }
     return $html
