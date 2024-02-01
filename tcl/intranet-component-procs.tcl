@@ -278,7 +278,11 @@ ad_proc -public im_component_page {
     set icon_url [export_vars -quotehtml -base "/intranet/components/activate-component" {plugin_id return_url}]
     set icon "<a class=\"icon_maximize\" href=\"$icon_url\"><span class=\"icon_maximize\">maximize</span></a>"
 	
-    # "uplevel" evaluates the 2nd argument!!
+    regsub -all {[^0-9a-zA-Z]} $plugin_name "_" plugin_name_subs
+    set plugin_name_key "intranet-core.${plugin_name_subs}"
+    set plugin_name [lang::message::lookup "" $plugin_name_key $plugin_name]
+
+    # "uplevel" evaluates the 2nd argument
     set html "[im_box_header $plugin_name $icon][uplevel 1 $component_tcl][im_box_footer]"
 
     if { [catch {
