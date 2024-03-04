@@ -269,10 +269,11 @@ ad_proc im_user_direct_reports_select {
 
 ad_proc -public im_user_direct_reports_options {
     { -user_id 0 }
+    { -include_current_user_p 0 }
 } {
-	Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
+    Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
 } {
-    set options [util_memoize [list im_user_direct_reports_options_helper -user_id $user_id]]
+    set options [util_memoize [list im_user_direct_reports_options_helper -include_current_user_p $include_current_user_p -user_id $user_id]]
     return $options
 }
 
@@ -296,11 +297,17 @@ ad_proc -public im_user_direct_reports_ids {
 
 ad_proc -public im_user_direct_reports_options_helper {
     { -user_id 0 }
+    { -include_current_user_p 0 }
 } {
-	Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
+    Returns a list of (user_id user_name) tuples that are direct_reports of a particular user.
+    ToDo: direct reports doesn't work recursively
 } {
     if {"" == $user_id} { return "" }
     set name_order [parameter::get -package_id [apm_package_id_from_key intranet-core] -parameter "NameOrder" -default 1]
+
+
+    set user_himself_sql "select im_name_from_user_id(user_id) as name, user_id from users where user_id is null"
+    if {$include_current_user_p} { set user_himself_sql "select im_name_from_user_id(user_id) as name, user_id from users where user_id = :user_id" }
 
     set direct_report_employee_sql "select username as name, user_id from users where user_id is null"
     if {[parameter::get_from_package_key -package_key "intranet-timesheet2" -parameter "DirectReportsIncludeCostCenterMembersP" -default "1"]} {
@@ -337,9 +344,12 @@ ad_proc -public im_user_direct_reports_options_helper {
     }
 
     set options [db_list_of_lists user_options "
-		select	name, 
+		select distinct
+                        name, 
 			user_id
 		from	(
+			$user_himself_sql
+			UNION
 			$direct_report_employee_sql
 			UNION
 			$direct_report_cost_center_members_sql
