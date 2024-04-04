@@ -254,15 +254,17 @@ if {$edit_profiles_p} {
 # Add field so that user can be 'deleted' or activated'' right from this screen
 # Until now site-wide admins were necessary to change a users state
 
-set status_options "{{[lang::message::lookup "" intranet-core.Member_state_active "active"]} approved} {{[lang::message::lookup "" intranet-core.Member_state_deleted "deleted"]} banned }"
-set status_option_value [db_string get_status_option_value "select member_state from cc_users where user_id = :user_id" -default 0]
-if {$edit_profiles_p} {
-    ad_form -extend -name register -form {
-        {member_state:text(select)
-            {label "[_ intranet-core.lt_Member_state]"}
-            {options $status_options }
-            {values $status_option_value }
-        }
+if {0} {
+    set status_options "{{[lang::message::lookup "" intranet-core.Member_state_active "active"]} approved} {{[lang::message::lookup "" intranet-core.Member_state_deleted "deleted"]} banned }"
+    set status_option_value [db_string get_status_option_value "select member_state from cc_users where user_id = :user_id" -default 0]
+    if {$edit_profiles_p} {
+	ad_form -extend -name register -form {
+	    {member_state:text(select)
+		{label "[_ intranet-core.lt_Member_state]"}
+		{options $status_options }
+		{values $status_option_value }
+	    }
+	}
     }
 }
 
