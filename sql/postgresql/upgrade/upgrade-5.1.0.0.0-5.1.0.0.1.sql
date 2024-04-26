@@ -65,6 +65,5 @@ end;$body$ language 'plpgsql';
 create trigger persons_initials_default_update_tr after update
 on persons for each row execute procedure persons_initials_default_update_tr ();
 
--- update persons set person_id = person_id where person_id < 10000;
--- select * from persons where initials is not null;
-
+-- Set initials for all users
+update persons set person_id = person_id;
