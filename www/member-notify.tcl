@@ -130,8 +130,8 @@ foreach oid $user_id_from_search {
 
 
 # Determine the sender address
-set sender_email [im_parameter -package_id [ad_acs_kernel_id] SystemOwner "" [ad_system_owner]]
-catch {set sender_email [db_string sender_email "select email as sender_email from parties where party_id = :current_user_id" -default $sender_email]}
+set current_user_email [db_string sender_email "select email from parties where party_id = :current_user_id"]
+set sender_email $current_user_email
 
 # Trim the subject. Otherwise we'll get MIME-garbage
 set subject [string trim $subject]
@@ -223,16 +223,7 @@ if {[im_table_exists im_notes]} {
 }
 set email_list [db_list email_list $email_list_sql]
 
-
-# Include a copy to myself?
-if {"" != $send_me_a_copy} {
-    lappend email_list [db_string user_email "select email from parties where party_id = :current_user_id"]
-}
-
-if {"" == $from_email} {
-    set from_email [db_string from_email "select email from parties where party_id = :current_user_id"]
-}
-
+if {"" == $from_email} { set from_email $current_user_email }
 
 
 # ---------------------------------------------------------------
@@ -314,6 +305,21 @@ foreach email $email_list {
     } errmsg]} {
         ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
 	lappend error_list "<p>Error sending out mail to: $email</p><div><code>[ns_quotehtml $errmsg]</code></div>"
+    }
+
+    if {"" != $send_me_a_copy} {
+	if {[catch {
+	    acs_mail_lite::send \
+		-send_immediately \
+		-to_addr $current_user_email \
+		-from_addr $sender_email \
+		-subject $subject \
+		-body $message_subst \
+		-file_ids $attachment_ci_id
+	} errmsg]} {
+	    ns_log Error "member-notify: Error sending to \"$email\": $errmsg"
+	    lappend error_list "<p>Error sending out mail to: $email</p><div><code>[ns_quotehtml $errmsg]</code></div>"
+	}
     }
 
     if {$throttle_seconds > 0} {
