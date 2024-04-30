@@ -7,6 +7,7 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.
 alter table persons drop if exists initials;
 alter table persons add initials varchar;
 
+SELECT im_dynfield_attribute_new ('person', 'initials', 'Initials', 'textbox_small', 'string', 'f', 0, 'f', 'persons');
 
 -------------------------------------------------------------------
 -- Trigger for initials
