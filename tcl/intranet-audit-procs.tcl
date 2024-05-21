@@ -423,13 +423,12 @@ ad_proc -public im_audit_impl {
     set old_value ""
     set last_audit_id ""
     db_0or1row last_info "
-	select	a.audit_value as old_value,
+	select 	a.audit_value as old_value,
 		o.object_type,
 		o.last_audit_id
-	from	im_audits a,
-		acs_objects o
-	where	o.object_id = :object_id and
-		o.last_audit_id = a.audit_id
+	from 	acs_objects o
+		LEFT OUTER JOIN im_audits a ON (o.last_audit_id = a.audit_id)
+	where 	o.object_id = :object_id
     "
 
     # Get the new value from the database
