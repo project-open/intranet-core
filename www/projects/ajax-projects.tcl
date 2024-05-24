@@ -53,13 +53,16 @@ set projects_sql "
 	order by p.project_name
 "
 set result ""
-if {"" ne $include_empty_p} {
-    append result "|[_ intranet-core.All]"
-}
-
+set count 0
 db_foreach offices $projects_sql {
     if {"" != $result} { append result "|\n" }
     append result "$project_id|$project_name"
+    incr count
 }
+
+if {"" ne $include_empty_p} {
+    set result "|[_ intranet-core.All] ($count)|\n$result"
+}
+
 
 doc_return 200 "text/plain" $result
