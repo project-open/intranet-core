@@ -503,6 +503,13 @@ ad_proc -public im_audit_impl {
 	    "
 	}
 
+	# Action="view": Send out an email to inform the security guy about an unaudited change
+	set audit_missed_grave_p [parameter::get_from_package_key -package_key "intranet-audit" -parameter AuditMissedGraveP -default 0]
+	if {$action in {"view"} && $audit_missed_grave_p} {
+	    set object_name [acs_object_name $object_id]
+	    set message "Unaudited change of #$object_id: $object_name"
+	    im_security_alert -location "im_audit_impl" -message $message -value $object_id -severity "Normal"
+	}
     }
 
     return $new_audit_id
