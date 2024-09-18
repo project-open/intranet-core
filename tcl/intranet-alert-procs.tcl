@@ -233,9 +233,10 @@ ad_proc -public im_security_alert {
 
     set body "$subject
 
+At: $system_name
+Url: $url
 In: $location
 SystemID: $system_id
-At: $system_name
 Managed by: $system_owner_email
 Message: $message
 Value: $value
