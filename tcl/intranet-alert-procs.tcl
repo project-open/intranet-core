@@ -216,11 +216,9 @@ ad_proc -public im_security_alert {
     # Send where?
     set target_email [im_parameter -package_id [im_package_core_id] SecurityBreachEmail -default "support@project-open.com"]
 
-    # Extract variables from form and HTTP header
+    # Extract interesting data
     set header_vars [ns_conn headers]
-    set url [ns_conn url]
-
-    # Get intersting info
+    set url [im_url_with_query]
     set user_id [ad_conn user_id]
     set user_name [db_string uname "select im_name_from_user_id(:user_id)" -default "unknown"]
     set client_ip [ns_set get $header_vars "Client-ip"]
