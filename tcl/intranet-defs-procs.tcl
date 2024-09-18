@@ -1422,6 +1422,7 @@ ad_proc -public im_ad_hoc_query {
     {-package_key "intranet-core" }
     {-locale ""}
     {-skip_if_no_rows 0}
+    {-email_if_rows ""}
     sql
 } {
     Ad-hoc execution of SQL-Queries.
@@ -1577,10 +1578,49 @@ ad_proc -public im_ad_hoc_query {
 	set footer "<tr>$footer</tr>\n"
     }
 
+    # Send out the contents of the query to a user, if there was a result
+    # This is useful for "check reports" where the SQL conditions should 
+    # never occur
+    if {"" ne $email_if_rows  && $row_count > 0} { 
+	set from_email [im_email_from_user_id [auth::require_login]]
+	set subject "im_ad_hoc_query $row_count rows:$header"
+	if {"" ne $report_name} { set subject "$report_name: $row_count rows" }
+	regsub -all {\&nbsp\;} $subject " " subject
+	regsub -all {\<[^\>]*\>} $subject " " subject
+	regsub -all {\ \ \ \ } $subject " " subject
+	regsub -all {\ \ } $subject " " subject
+	regsub -all {\ \ } $subject " " subject
+
+	if {"html" eq $format} {
+	    set mime_type "text/html"
+	    set message "
+                <table border=$border>
+                $header
+                <tr $bgcolor(0)>
+                $result
+                </tr>
+                $footer
+                </table>
+            "
+	} else {
+	    set mime_type "text/plain"
+	    set message "$header\n$result\n$footer"
+	}
+
+	catch {	}
+	acs_mail_lite::send \
+	    -send_immediately \
+	    -mime_type $mime_type \
+	    -to_addr $email_if_rows \
+	    -from_addr $from_email \
+	    -subject $subject \
+	    -body $message
+    }
+
     if {$skip_if_no_rows && $row_count == 0} { return "" }
     switch $format {
         plain { 
-	    return "$header\n$result"  
+	    return "$header\n$result\nfooter"
 	}
         html { 
 	    return "
@@ -1594,7 +1634,7 @@ ad_proc -public im_ad_hoc_query {
             "
         }
         csv { 
-	    return "$header\n$result"  
+	    return "$header\n$result\nfooter"
 	}
         xml { 
 	    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result>\n$result\n</result>\n" 
