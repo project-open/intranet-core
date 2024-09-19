@@ -10,7 +10,7 @@
     <inherit-templates-p>t</inherit-templates-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="5.1.0.0.0" url="https://www.project-open.net/download/apm/intranet-core-5.1.0.0.0.apm">
+    <version name="5.1.0.0.1" url="https://www.project-open.net/download/apm/intranet-core-5.1.0.0.1.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2003-05-14</release-date>
         <vendor url="https://www.project-open.com/">]project-open[</vendor>
@@ -108,6 +108,7 @@
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="LogPackageMaxAgeDays"  default="180" description="How long should we keep package logs? Default is 180 days."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ExecDebugP"  default="0" description="Show debug messages for im_exec (the function to execute operating system commands)? This is OK, unless the system uses LDAP/ActiveDirectory (auth-ldap-adldapsearch) for authentication, because it would expose user clear text passwords in the log file."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="CustomerMembersSeeCustomerProjectsP"  default="0" description="Should customer members of a customer company see all projects of this customer? Default is 0 for security reasons (PM needs to add customers as members to project). Choose 1 to allow customers to collaborate more tightly."/>
+            <parameter scope="instance" datatype="string"  min_n_values="1"  max_n_values="1"  name="AuditIgnoreAdditionalFields" description="Additional fields to ignore for 'pretty' audit formatting. Default is '' for no fields."/>
         </parameters>
     </version>
 </package>

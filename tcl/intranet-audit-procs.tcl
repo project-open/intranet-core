@@ -124,6 +124,7 @@ ad_proc -public im_audit {
 
 
 
+
 # ----------------------------------------------------------------------
 # Audit Procedures
 # ----------------------------------------------------------------------
@@ -572,5 +573,307 @@ ad_proc -public im_audit_sweeper { } {
     nsv_incr intranet_core audit_sweep_semaphore -1
 
     return [string trim "$counter $debug $err_msg"]
+}
+
+
+
+
+# -------------------------------------------------------------------
+# Prettifier: Remove system fields and lines
+# -------------------------------------------------------------------
+
+ad_proc -public im_audit_prettify_diff {
+    {-ignore_fields {}}
+    -object_type
+    -diff
+} {
+    Remove unnecessary lines from an audit diff to make it human readable.
+} {
+    # Initialize the hash with pretty names with some static values
+    array set pretty_name_hash [im_audit_attribute_pretty_names -object_type $object_type]
+    array set ignore_hash [im_audit_attribute_ignore -object_type $object_type]
+    array set deref_hash [im_audit_attribute_deref -object_type $object_type]
+    foreach field $ignore_fields { set ignore_hash($field) 1 }; # custom ignore additions
+
+    # Prettify the audit_diff.
+    # Go through values and dereference them.
+    set audit_diff_pretty ""
+
+    array unset attribute_name_hash
+    foreach field [split [string map {\" ''} $diff] "\n"] {
+	set attribute_name [lindex $field 0]
+	set attribute_value [lrange $field 1 end]
+	
+	# Deal with relatinship names
+	if {[regexp {^acs_rel} $attribute_name match]} {
+	    catch {
+		set attribute_value [im_audit_format_rel_value -object_id $object_id -value $attribute_value]
+	    }
+	}
+	
+	# Should we ignore this field? Or is it duplicate?
+	if {[info exists ignore_hash($attribute_name)]} { continue }
+	if {[info exists attribute_name_hash($attribute_name)]} { continue }
+	set attribute_name_hash($attribute_name) 1
+	
+	# Determine the pretty_name for the field
+	set pretty_name $attribute_name
+	if {[info exists pretty_name_hash($attribute_name)]} { set pretty_name $pretty_name_hash($attribute_name) }
+	
+	# Determine the pretty_value for the field
+	set pretty_value $attribute_value
+	
+	# Apply the dereferencing function if available
+	# This function will pull out the object name for an ID
+	# or the category for a category_id
+	if {[info exists deref_hash($attribute_name)]} {
+	    set deref_function $deref_hash($attribute_name)
+	    set pretty_value [db_string deref "select ${deref_function}(:attribute_value)"]
+	}
+	
+	# Skip the field if the attribute_name is empty.
+	# This could be the last line of the audit_diff or audit_value field
+	if {"" == $attribute_name} { continue }
+	
+	if {"" != $audit_diff_pretty} { append audit_diff_pretty ",\n<br>" }
+	append audit_diff_pretty "$pretty_name = $pretty_value"
+    }
+    
+    return $audit_diff_pretty
+}
+
+
+
+ad_proc -public im_audit_attribute_pretty_names {
+    -object_type:required
+} {
+    Returns a key-value list of pretty names for object attributes
+} {
+    return [im_audit_attribute_pretty_names_helper -object_type $object_type]
+    return [util_memoize [list im_audit_attribute_pretty_names_helper -object_type $object_type]]
+}
+
+
+ad_proc -public im_audit_attribute_pretty_names_helper {
+    -object_type:required
+} {
+    Returns a key-value list of pretty names for object attributes
+} {
+    # Get the list of all define DynField names
+    set dynfield_sql "
+	select	*
+	from	acs_attributes aa,
+		im_dynfield_attributes da
+	where	aa.attribute_id = da.acs_attribute_id and
+		aa.object_type = :object_type
+    "
+    db_foreach dynfields $dynfield_sql {
+	set pretty_name_hash($attribute_name) $pretty_name
+    }
+
+    set pretty_name_hash(project_id) [lang::message::lookup "" intranet-core.Project_ID "Project ID"]
+    set pretty_name_hash(project_name) [lang::message::lookup "" intranet-core.Project_Name "Project Name"]
+    set pretty_name_hash(project_nr) [lang::message::lookup "" intranet-core.Project_Nr "Project Nr"]
+    set pretty_name_hash(project_path) [lang::message::lookup "" intranet-core.Project_Path "Project Path"]
+    set pretty_name_hash(project_type_id) [lang::message::lookup "" intranet-core.Project_Type "Project Type"]
+    set pretty_name_hash(project_status_id) [lang::message::lookup "" intranet-core.Project_Status "Project Status"]
+    set pretty_name_hash(project_lead_id) [lang::message::lookup "" intranet-core.Project_Manager "Project Manager"]
+
+    # Project standard fields
+    set pretty_name_hash(start_date) [lang::message::lookup "" intranet-core.Start_Date "Start Date"]
+    set pretty_name_hash(end_date) [lang::message::lookup "" intranet-core.End_Date "End Date"]
+    set pretty_name_hash(description) [lang::message::lookup "" intranet-core.Description "Description"]
+    set pretty_name_hash(note) [lang::message::lookup "" intranet-core.Note "Note"]
+    set pretty_name_hash(parent_id) [lang::message::lookup "" intranet-core.Parent_ID "Parent"]
+    set pretty_name_hash(company_id) [lang::message::lookup "" intranet-core.Company_ID "Company"]
+    set pretty_name_hash(template_p) [lang::message::lookup "" intranet-core.Template_p "Template?"]
+
+    # Project Cost Cache
+    set pretty_name_hash(cost_bills_cache) [lang::message::lookup "" intranet-core.Cost_Bills_Cache "Bills Cache"]
+    set pretty_name_hash(cost_delivery_notes_cache) [lang::message::lookup "" intranet-core.Cost_Delivery_Notes_Cache "Delivery Notes Cache"]
+    set pretty_name_hash(cost_expenses_logged_cache) [lang::message::lookup "" intranet-core.Cost_Expenses_Logged_Cache "Expenses Logged Cache"]
+    set pretty_name_hash(cost_expenses_planned_cache) [lang::message::lookup "" intranet-core.Cost_Expenses_Planned_Cache "Expenses Planned Cache"]
+    set pretty_name_hash(cost_invoices_cache) [lang::message::lookup "" intranet-core.Cost_Invoices_Cache "Invoices Cache"]
+    set pretty_name_hash(cost_purchase_orders_cache) [lang::message::lookup "" intranet-core.Cost_Purchase_Orders_Cache "Purchase Orders Cache"]
+    set pretty_name_hash(cost_quotes_cache) [lang::message::lookup "" intranet-core.Cost_Quotes_Cache "Quotes Cache"]
+    set pretty_name_hash(cost_timesheet_logged_cache) [lang::message::lookup "" intranet-core.Cost_Timesheet_Logged_Cache "Timesheet Logged Cache"]
+    set pretty_name_hash(cost_timesheet_planned_cache) [lang::message::lookup "" intranet-core.Cost_Timesheet_Planned_Cache "Timesheet Planned Cache"]
+    set pretty_name_hash(reported_days_cache) [lang::message::lookup "" intranet-core.Cost_Reported_Days_Cache "Reported Days Cache"]
+    set pretty_name_hash(reported_hours_cache) [lang::message::lookup "" intranet-core.Cost_Reported_Days_Cache "Reported Days Cache"]
+
+
+    # Ticket fields
+    set pretty_name_hash(ticket_done_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Done_Date "Ticket Done Date"]
+    set pretty_name_hash(ticket_creation_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Creation_Date "Ticket Creation Date"]
+    set pretty_name_hash(ticket_alarm_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Alarm_Date "Ticket Alarm Date"]
+    set pretty_name_hash(ticket_reaction_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Reaction_Date "Ticket Reaction Date"]
+    set pretty_name_hash(ticket_confirmation_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Confirmation_Date "Ticket Confirmation Date"]
+    set pretty_name_hash(ticket_signoff_date) [lang::message::lookup "" intranet-helpdesk.Ticket_Signoff_Date "Ticket Signoff Date"]
+
+    return [array get pretty_name_hash]
+}
+
+
+
+
+ad_proc -public im_audit_attribute_ignore {
+    -object_type:required
+} {
+    Returns a hash of attributes to be ignored in the audit package
+} {
+    return [util_memoize [list im_audit_attribute_ignore_helper -object_type $object_type]]
+    # return [im_audit_attribute_ignore_helper -object_type $object_type]
+}
+
+
+ad_proc -public im_audit_attribute_ignore_helper {
+    -object_type:required
+} {
+    Returns a hash of attributes to be ignored in the audit package
+} {
+    set additional_ignores [parameter::get_from_package_key -package_key intranet-core -parameter AuditIgnoreAdditionalFields -default {}]
+    foreach field $additional_ignores { set ignore_hash($field) 1 }
+
+    # Project Cost Cache (automatically updated)
+    set ignore_hash(cost_bills_cache) 1
+    set ignore_hash(cost_delivery_notes_cache) 1
+    set ignore_hash(cost_expense_logged_cache) 1
+    set ignore_hash(cost_expense_planned_cache) 1
+    set ignore_hash(cost_invoices_cache) 1
+    set ignore_hash(cost_purchase_orders_cache) 1
+    set ignore_hash(cost_quotes_cache) 1
+    set ignore_hash(cost_timesheet_logged_cache) 1
+    set ignore_hash(cost_timesheet_planned_cache) 1
+
+    set ignore_hash(reported_days_cache) 1
+    set ignore_hash(reported_hours_cache) 1
+    set ignore_hash(cost_cache_dirty) 1
+
+    # Obsolete project fields
+    set ignore_hash(corporate_sponsor) 1
+    set ignore_hash(percent_completed) 1
+    set ignore_hash(requires_report_p) 1
+    set ignore_hash(supervisor_id) 1
+    set ignore_hash(team_size) 1
+    set ignore_hash(trans_project_hours) 1
+    set ignore_hash(trans_project_words) 1
+    set ignore_hash(trans_size) 1
+
+    # Ticket automatically updated fields
+    set ignore_hash(ticket_resolution_time) 1
+    set ignore_hash(ticket_resolution_time_per_queue) 1
+    set ignore_hash(ticket_resolution_time_dirty) 1
+
+    # The rule engine stores the last audit value...
+    set ignore_hash(modifying_ip) 1
+    set ignore_hash(last_modified) 1
+    set ignore_hash(rule_engine_last_modified) 1
+    set ignore_hash(rule_engine_old_value) 1
+    set ignore_hash(last_audit_id) 1
+
+    return [array get ignore_hash]
+}
+
+
+ad_proc -public im_audit_attribute_deref {
+    -object_type:required
+} {
+    Returns a hash of deref functions for important attributes
+} {
+    return [util_memoize [list im_audit_attribute_deref_helper -object_type $object_type]]
+    # return [im_audit_attribute_deref_helper -object_type $object_type]
+}
+
+
+ad_proc -public im_audit_attribute_deref_helper {
+    -object_type:required
+} {
+    Returns a hash of deref functions for important attributes
+} {
+    # Get DynField meta-information and write into a hash array
+    set dynfield_sql "
+	select	aa.attribute_name,
+		aa.pretty_name,
+		dw.deref_plpgsql_function
+	from	acs_attributes aa,
+		im_dynfield_attributes da,
+		im_dynfield_widgets dw
+	where	aa.attribute_id = da.acs_attribute_id and
+		da.widget_name = dw.widget_name and
+		aa.object_type = :object_type
+    "
+    db_foreach dynfields $dynfield_sql {
+	set deref_hash($attribute_name) $deref_plpgsql_function
+    }
+
+    # Manually add a few frequently used deref functions
+
+    set deref_hash(project_id) "acs_object__name"
+    set deref_hash(company_id) "acs_object__name"
+    set deref_hash(ticket_id) "acs_object__name"
+
+    set deref_hash(status_id) "im_category_from_id"
+    set deref_hash(project_status_id) "im_category_from_id"
+    set deref_hash(ticket_status_id) "im_category_from_id"
+    set deref_hash(type_id) "im_category_from_id"
+    set deref_hash(project_type_id) "im_category_from_id"
+    set deref_hash(ticket_type_id) "im_category_from_id"
+
+    set deref_hash(ticket_prio_id) "im_category_from_id"
+    set deref_hash(ticket_customer_contact_id) "im_name_from_user_id"
+    set deref_hash(ticket_assignee_id) "acs_object__name"
+    set deref_hash(ticket_queue_id) "acs_object__name"
+
+    return [array get deref_hash]
+}
+
+
+
+
+ad_proc -public im_audit_format_rel_value {
+    -object_id:required
+    -value:required
+} {
+    Returns a formatted pretty string representing a relationship
+} {
+    ns_log Notice "im_audit_format_rel_value: object_id=$object_id, value='$value'"
+    array set rel_hash $value
+
+    set object_id_one ""
+    if {[info exists rel_hash(object_id_one)]} {
+	set object_id_one $rel_hash(object_id_one)
+	unset rel_hash(object_id_one)
+    }
+
+    set object_id_two ""
+    if {[info exists rel_hash(object_id_two)]} {
+	set object_id_two $rel_hash(object_id_two)
+	unset rel_hash(object_id_two)
+    }
+
+    set rel_type ""
+    if {[info exists rel_hash(rel_type)]} {
+	set rel_type $rel_hash(rel_type)
+	unset rel_hash(rel_type)
+    }
+
+    if {$object_id_one == $object_id} {
+	set arrow [im_gif arrow_left]
+	set other_object_id $object_id_two
+    } else {
+	set arrow [im_gif arrow_right]
+	set other_object_id $object_id_one
+    }
+
+    set other_object_name "undefined"
+    if {"" != $other_object_id && [string is integer $other_object_id]} {
+        set other_object_name [util_memoize [list acs_object_name $other_object_id]]
+    }
+    set result "$rel_type $arrow $other_object_name"
+    set list ""
+    foreach key [lsort [array names rel_hash]] {
+	lappend list "$key $rel_hash($key)"
+    }
+    return $result
 }
 
