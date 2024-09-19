@@ -508,7 +508,7 @@ ad_proc -public im_audit_impl {
 	if {$action in {"view"} && $audit_missed_grave_p} {
 	    set object_name [acs_object_name $object_id]
 	    set message "Unaudited change of #$object_id: $object_name"
-	    im_security_alert -location "im_audit_impl" -message $message -value $object_id -severity "Normal"
+	    im_security_alert -location "im_audit_impl" -message $message -value $diff -severity "Normal"
 	}
     }
 
