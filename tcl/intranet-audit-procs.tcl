@@ -150,10 +150,14 @@ ad_proc -public im_audit_object_type_sql {
     db_1row base_table $base_table_sql
 
     set ext_table_sql "
-	select	table_name,
-		id_column
-	from	acs_object_type_tables
-	where	object_type = :object_type
+	select	ott.table_name, 
+		ott.id_column,
+		coalesce(tree_level(ot.tree_sortkey), 99) as tree_level
+	from	acs_object_type_tables ott
+		LEFT OUTER JOIN acs_object_types ot ON (ott.table_name = ot.table_name)
+	where	ott.object_type = 'im_timesheet_task' and
+		ott.table_name != :base_table_name
+	order by tree_level, ott.table_name
     "
 
     set letters {b c d e f g h i j k l m n o p q r s t u v w x y z}
@@ -265,6 +269,11 @@ ad_proc -public im_audit_calculate_diff {
     Calculates the difference between and old an a new value and
     returns only the lines that have changed.
     Each line consists of: variable \t value \n.
+    Some diff values may include duplicate lines, even with different
+    values. For example for im_timesheet_tasks, there may or may not
+    be entries in the im_gantt_projects table. No entry results in an
+    empty project_id field, which will be part of the diff. Adding
+    a im_gantt_projects entry, this project_id field will get a value.
 } {
     if {$debug_p} {
 	ns_log Notice "im_audit_calculate_diff: old_value=$old_value"
@@ -304,6 +313,7 @@ ad_proc -public im_audit_object_value {
 } {
     Concatenates the value of all object fields (according to DynFields)
     to form a single string describing the object's values.
+    Some objects may have optional tables.
 } {
     ns_log Notice "im_audit_object_value: object_id=$object_id, object_type=$object_type"
     im_security_alert_check_integer -location "im_audit_object_value: object_id" -value $object_id
@@ -322,7 +332,8 @@ ad_proc -public im_audit_object_value {
     # Get the SQL to extract all values from the object
     set sql [util_memoize [list im_audit_object_type_sql -object_type $object_type]]
 
-    # Execute the sql. As a result we get "col_names" with list of columns and "lol" with the result list of lists
+    # Execute the sql. As a result we get "col_names" with list of columns and "lol" with the result list of lists.
+    # The order of columns is determined by the superclass-subclass hierarchy and the order of adding columns to the tables.
     set col_names ""
     db_with_handle db {
 	set selection [db_exec select $db query $sql 1]
@@ -347,6 +358,7 @@ ad_proc -public im_audit_object_value {
     set col_values [lindex $lol 0]
 
     set value ""
+    array set duplicate_hash {}
     for {set i 0} {$i < [llength $col_names]} {incr i} {
 	set var [lindex $col_names $i]
 	set val [lindex $col_values $i]
@@ -360,8 +372,15 @@ ad_proc -public im_audit_object_value {
 	if {"max_child_sortkey" == $var} { continue }
 	if {"rule_engine_old_value" == $var} { continue }
 
+	# Ignore repetitions. This is dangerous!
+	# For example, im_gantt_projects.projec_id may or may not be empty
+	# and its a duplicate of im_projects.project_id. 
+	# So fields of a base object type prevail over fields of a sub object type.
+	if {[info exists duplicate_hash($var)]} { continue }
+
 	# Add the line to the "value"
 	append value "$var	$val\n"
+	set duplicate_hash($var) $val
     }
     
     # Add information about the object's relationships
