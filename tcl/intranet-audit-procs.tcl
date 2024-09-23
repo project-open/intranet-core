@@ -258,6 +258,7 @@ ad_proc -public im_audit_object_rels {
 # ----------------------------------------------------------------------
 
 ad_proc -public im_audit_calculate_diff { 
+    {-debug_p 0}
     -old_value:required
     -new_value:required
 } {
@@ -265,6 +266,11 @@ ad_proc -public im_audit_calculate_diff {
     returns only the lines that have changed.
     Each line consists of: variable \t value \n.
 } {
+    if {$debug_p} {
+	ns_log Notice "im_audit_calculate_diff: old_value=$old_value"
+	ns_log Notice "im_audit_calculate_diff: new_value=$new_value"
+    }
+
     foreach old_line [split $old_value "\n"] {
 	set pieces [split $old_line "\t"]
 	set var [lindex $pieces 0]
@@ -280,6 +286,10 @@ ad_proc -public im_audit_calculate_diff {
 	set old_val ""
 	if {[info exists hash($var)]} { set old_val $hash($var) }
 	if {$val != $old_val} { append diff "$new_line\n" }
+    }
+
+    if {$debug_p} {
+	ns_log Notice "im_audit_calculate_diff: diff=$diff"
     }
 
     return $diff   
@@ -438,7 +448,7 @@ ad_proc -public im_audit_impl {
 
     # Calculate the "diff" between old and new value.
     # Return "" if nothing has changed:
-    set diff [im_audit_calculate_diff -old_value $old_value -new_value $new_value]
+    set diff [im_audit_calculate_diff -debug_p $debug_p -old_value $old_value -new_value $new_value]
 
     set new_audit_id ""
     if {"" ne $new_value && ("" ne $diff || "" ne $baseline_id)} {
@@ -507,9 +517,13 @@ ad_proc -public im_audit_impl {
 	# Action="view": Send out an email to inform the security guy about an unaudited change
 	set audit_missed_grave_p [parameter::get_from_package_key -package_key "intranet-audit" -parameter AuditMissedGraveP -default 0]
 	if {$action in {"view"} && $audit_missed_grave_p} {
-	    set object_name [acs_object_name $object_id]
-	    set message "Unaudited change of #$object_id: $object_name"
-	    im_security_alert -location "im_audit_impl" -message $message -value $diff -severity "Normal"
+
+	    set diff_pretty [im_audit_prettify_diff -debug_p $debug_p -object_type $object_type -diff $diff]
+	    if {"" ne $diff_pretty} {
+		set object_name [acs_object_name $object_id]
+		set message "Unaudited change of #$object_id: $object_name, details in audit_id=$new_audit_id"
+		im_security_alert -location "im_audit_impl" -message $message -value $diff -severity "Normal"
+	    }
 	}
     }
 
@@ -583,6 +597,7 @@ ad_proc -public im_audit_sweeper { } {
 # -------------------------------------------------------------------
 
 ad_proc -public im_audit_prettify_diff {
+    {-debug_p 0}
     {-ignore_fields {}}
     -object_type
     -diff
@@ -736,18 +751,20 @@ ad_proc -public im_audit_attribute_ignore_helper {
 
     # Project Cost Cache (automatically updated)
     set ignore_hash(cost_bills_cache) 1
+    set ignore_hash(cost_bills_planned) 1
     set ignore_hash(cost_delivery_notes_cache) 1
     set ignore_hash(cost_expense_logged_cache) 1
     set ignore_hash(cost_expense_planned_cache) 1
+    set ignore_hash(cost_expenses_planned) 1
     set ignore_hash(cost_invoices_cache) 1
     set ignore_hash(cost_purchase_orders_cache) 1
     set ignore_hash(cost_quotes_cache) 1
+    set ignore_hash(cost_timesheet_budget_planned) 1
     set ignore_hash(cost_timesheet_logged_cache) 1
     set ignore_hash(cost_timesheet_planned_cache) 1
-
+    set ignore_hash(cost_cache_dirty) 1
     set ignore_hash(reported_days_cache) 1
     set ignore_hash(reported_hours_cache) 1
-    set ignore_hash(cost_cache_dirty) 1
 
     # Obsolete project fields
     set ignore_hash(corporate_sponsor) 1
@@ -758,6 +775,9 @@ ad_proc -public im_audit_attribute_ignore_helper {
     set ignore_hash(trans_project_hours) 1
     set ignore_hash(trans_project_words) 1
     set ignore_hash(trans_size) 1
+
+    set ignore_hash(paid_currency) 1
+    set ignore_hash(sort_order) 1
 
     # Ticket automatically updated fields
     set ignore_hash(ticket_resolution_time) 1
