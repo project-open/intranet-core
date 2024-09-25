@@ -155,7 +155,7 @@ ad_proc -public im_audit_object_type_sql {
 		coalesce(tree_level(ot.tree_sortkey), 99) as tree_level
 	from	acs_object_type_tables ott
 		LEFT OUTER JOIN acs_object_types ot ON (ott.table_name = ot.table_name)
-	where	ott.object_type = 'im_timesheet_task' and
+	where	ott.object_type = :object_type and
 		ott.table_name != :base_table_name
 	order by tree_level, ott.table_name
     "
@@ -648,6 +648,10 @@ ad_proc -public im_audit_prettify_diff {
 	# Should we ignore this field? Or is it duplicate?
 	if {[info exists ignore_hash($attribute_name)]} { continue }
 	if {[info exists attribute_name_hash($attribute_name)]} { continue }
+
+	# Temporary fix: project_id was duplicated in im_gantt_projects.project_id.
+	if {"im_timesheet_task" eq $object_type && "project_id" eq $attribute_name} { continue }
+
 	set attribute_name_hash($attribute_name) 1
 	
 	# Determine the pretty_name for the field
