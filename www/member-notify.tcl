@@ -52,6 +52,7 @@ ad_page_contract {
 }
 
 if {![info exists user_id_from_search]} { set user_id_from_search "-999" }
+if {![info exists substitution]} { set substitution [list] }
 
 if { "" != $cancel } {
     ad_returnredirect $return_url
