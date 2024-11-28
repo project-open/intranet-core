@@ -839,7 +839,9 @@ proc _ns_stats.loglevel {} {
     if {$toggle ne ""} {
         set old [ns_logctl severity $toggle]
         ns_logctl severity $toggle [expr {! $old}]
-        ns_returnredirect [ns_conn url]?@page=[ns_queryget @page]
+        # ns_returnredirect [ns_conn url]?@page=[ns_queryget @page]
+        set page [ns_queryget "@page"]
+        ad_returnredirect [export_vars -base "/intranet/admin/nsstats" {{"@page" $page}}]
         return
     }
     set values {}
