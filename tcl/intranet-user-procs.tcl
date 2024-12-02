@@ -675,17 +675,10 @@ ad_proc -public im_project_manager_options {
     set options [db_list_of_lists provider_options "
 	select * from (
 		select	im_name_from_user_id(user_id, $name_order) as name, user_id
-		from	im_employees_active
-	    UNION
-		select	im_name_from_user_id(user_id, $name_order) as name, user_id
 		from	users_active u,
 			group_distinct_member_map gm
 		where	u.user_id = gm.member_id
 			and gm.group_id = [im_pm_group_id]
-	    UNION
-		select	im_name_from_user_id(user_id, $name_order) as name, user_id
-		from	users_active u
-		where	u.user_id = :current_pm_id
 	) t
 	order by name
     "]
