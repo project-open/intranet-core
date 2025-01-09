@@ -1,22 +1,20 @@
--- upgrade-5.1.0.0.1-5.1.0.0.2.sql
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.1.0.0.1-5.1.0.0.2.sql','');
 
+alter table im_audits drop constraint im_audits_action_ck;
+alter table im_audits add constraint im_audits_action_ck 
+      check (audit_action in ('after_create','before_update','after_update','before_nuke', 'view', 'view_fixed', 'baseline'));
 
--------------------------------------------------------------
--- Convert an array into rows
--------------------------------------------------------------
 
-drop function if exists im_array2rows (float[]);
-create or replace function im_array2rows (float[])
-returns table(cnt integer, val float) as $body$
-DECLARE
-	p_array			alias for $1;
-	v_i			integer;
-BEGIN
-	FOR v_i IN 1 .. array_upper(p_array, 1) LOOP
-		cnt := v_i;
-		val := p_array[v_i];
-		return next;
-	END LOOP;
-END;$body$ language 'plpgsql';
+/*
 
+set invoice_ids [db_list invoice_ids "select invoice_id from im_invoices"]
+foreach id $invoice_ids {
+  append debug "\n$id"
+  im_audit -object_id $id -action "view"
+}
+set debug
+
+*/
+
+
+update im_audits set audit_action = 'view_fixed' where audit_action = 'view';

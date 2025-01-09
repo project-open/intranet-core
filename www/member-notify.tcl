@@ -15,7 +15,7 @@
 
 
 ad_page_contract {
-    Sends an email with an attachment to a user
+    Sends a single email email with attachment to a list of users.
 
     @param user_id_from_search A list of user_id or note_ids
     @subject A subject line
@@ -47,9 +47,12 @@ ad_page_contract {
     {process_mail_queue_now_p 1}
     {from_email ""}
     {cancel "" }
+    {substitution_var ""}
+    {substitution:multiple,optional}
 }
 
 if {![info exists user_id_from_search]} { set user_id_from_search "-999" }
+if {![info exists substitution]} { set substitution [list] }
 
 if { "" != $cancel } {
     ad_returnredirect $return_url
@@ -245,9 +248,13 @@ db_0or1row user_info "
 		pe.person_id = :current_user_id
 "
 
+# ad_return_complaint 1 "$substitution - [llength $substitution]"
+
 # send to contacts
+set ctr 0
 foreach email $email_list {
 
+    set substitution_val [lindex $substitution $ctr]
     ns_log Notice "member-notify: Sending out to email: '$email'"
 
     # Replace message %...% variables by user's variables
@@ -285,6 +292,7 @@ foreach email $email_list {
 				   user_id $user_id \
 				   creation_date $creation_date \
 				   creation_ip $creation_ip \
+				   $substitution_var $substitution_val \
 	]
 	set message_subst [lang::message::format $message $substitution_list]
     }
