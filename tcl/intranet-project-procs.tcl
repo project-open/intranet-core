@@ -1416,7 +1416,7 @@ ad_proc im_project_clone {
     append errors [im_project_clone_url_map -debug_p $debug_p $parent_project_id $cloned_project_id]
 
     if {$clone_members_p} {
-	append errors [im_project_clone_members -debug_p $debug_p $parent_project_id $cloned_project_id]
+	append errors [im_project_clone_members -debug_p $debug_p -clone_level $clone_level $parent_project_id $cloned_project_id]
     }
 
     if {$clone_files_p} {
@@ -1839,6 +1839,7 @@ ad_proc im_project_clone_base2 {
 
 ad_proc im_project_clone_members {
     {-debug_p 1}
+    {-clone_level 0 }
     parent_project_id 
     new_project_id
 } {
@@ -1863,7 +1864,18 @@ ad_proc im_project_clone_members {
     # - project_leader
     # - supervisor
     set admin_role_id [im_biz_object_role_project_manager]
-    im_biz_object_add_role $current_user_id $new_project_id $admin_role_id 
+    if {$clone_level == 0} {
+	# Add the creator to the new project or task.
+	# However (cosine #6025) we should not add the cloning user to tasks (clone_level > 0).
+	set msg "Going to add current_user_id=$current_user_id as PM at clone_level=$clone_level"
+	append errors "<li>$msg"
+	if {$debug_p} { ns_log Notice "im_project_clone_members: $msg" }
+	im_biz_object_add_role $current_user_id $new_project_id $admin_role_id 
+    } else {
+	set msg "Not going to add current_user_id=$current_user_id as PM, because clone_level=$clone_level > 0"
+	append errors "<li>$msg"
+	if {$debug_p} { ns_log Notice "im_project_clone_members: $msg" }
+    }
     if {"" != $supervisor_id} { im_biz_object_add_role $supervisor_id $new_project_id $admin_role_id }
     if {"" != $project_lead_id} { im_biz_object_add_role $project_lead_id $new_project_id $admin_role_id }
 
