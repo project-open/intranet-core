@@ -1,5 +1,5 @@
--- upgrade-5.1.0.0.1-5.1.0.0.2.sql
-SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.1.0.0.1-5.1.0.0.2.sql','');
+-- upgrade-5.1.0.0.3-5.1.0.0.4.sql
+SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.1.0.0.3-5.1.0.0.4.sql','');
 
 
 -------------------------------------------------------------
