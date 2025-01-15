@@ -4,8 +4,19 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.
 -------------------------------------------------------------
 -- Initials for Gantt Editor
 --
-alter table persons drop if exists initials;
-alter table persons add initials varchar;
+create or replace function inline_0 ()
+returns integer as $body$
+DECLARE
+	v_count                 integer;
+BEGIN
+	select count(*) into v_count from user_tab_columns where lower(table_name) = 'persons' and lower(column_name) = 'initials';
+	IF v_count = 0 THEN 
+		alter table persons add initials varchar;
+	END IF;
+	return 0;
+END;$body$ language 'plpgsql';
+SELECT inline_0 ();
+DROP FUNCTION inline_0 ();
 
 SELECT im_dynfield_attribute_new ('person', 'initials', 'Initials', 'textbox_small', 'string', 'f', 0, 'f', 'persons');
 
