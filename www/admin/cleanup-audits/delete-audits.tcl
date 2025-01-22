@@ -45,7 +45,7 @@ set context ""
 # ------------------------------------------------------
 
 # Write out HTTP header
-im_report_write_http_headers -output_format html
+im_report_write_http_headers -output_format html -report_name "delete-audits"
 
 ns_write "
 	[im_header $page_title]
