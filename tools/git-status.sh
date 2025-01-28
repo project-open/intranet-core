@@ -24,7 +24,7 @@ do
     [ -d "${f}" ] || continue
     
     # Only interested in GIT repositories
-    [ -d "$f/.git" ] || continue
+    [ -f "$f/.git" ] || [ -d "$f/.git" ] || continue
 
     cd $f
 

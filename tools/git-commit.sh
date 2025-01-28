@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# find "$(pwd -P)" -maxdepth 1 -mindepth 1 -type d -exec bash -c "cd {}; pwd; git diff" \;
+# expects a commit message as first argument
+message="$1"
 
-# No directory has been provided, use current
-dir="$1"
-if [ -z "$dir" ]
-then
-    dir="`pwd`"
-fi
-
-# Make sure directory ends with "/"
+# Work in current directory
+dir="`pwd`"
 if [[ $dir != */ ]]
 then
     dir="$dir/*"
@@ -22,9 +17,9 @@ for f in $dir
 do
     # Only interested in directories
     [ -d "${f}" ] || continue
-    
+
     # Only interested in GIT repositories
-    [ -d "$f/.git" ] || continue
+    [ -f "$f/.git" ] || [ -d "$f/.git" ] || continue
 
     cd $f
 
@@ -38,7 +33,6 @@ do
     then
         continue
     fi
-
     
     # Format the output - use colors only in terminal
     if test -t 1; then
@@ -49,6 +43,11 @@ do
     else
 	echo "${f}"
     fi
+
+    echo "git add ."
+    git add .
     
-    git diff
+    echo "git commit -m '$message'"
+    git commit -m "$message"
+    
 done
