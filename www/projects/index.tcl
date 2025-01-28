@@ -480,7 +480,7 @@ switch [string tolower $order_by] {
     "status" { set order_by_clause "order by project_status_id" }
     "client" { set order_by_clause "order by lower(company_name)" }
     "words" { set order_by_clause "order by task_words" }
-    "project nr" { set order_by_clause "order by project_nr desc" }
+    "project nr" { set order_by_clause "order by CASE WHEN substring(project_nr,1,1) = '2' THEN '2'||project_nr ELSE '0'||project_nr END desc" }
     "project manager" { set order_by_clause "order by lower(lead_name)" }
     "url" { set order_by_clause "order by upper(url)" }
     "project name" { set order_by_clause "order by lower(project_name)" }
