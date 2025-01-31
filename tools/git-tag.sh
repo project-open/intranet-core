@@ -1,5 +1,7 @@
 #!/bin/bash
 
+tag="$1"
+
 # Make sure directory ends with "/"
 dir="`pwd`"
 if [[ $dir != */ ]]
@@ -24,11 +26,11 @@ do
     if test -t 1; then
 	echo ""
 	echo -en "\033[0;35m"
-	echo "${f}"
+	echo "git-tag.sh: ${f}"
 	echo -en "\033[0m"
     else
-	echo "${f}"
+	echo "git-tag.sh: ${f}"
     fi
 
-    git push
+    git tag "${tag}"
 done

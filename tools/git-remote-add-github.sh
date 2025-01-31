@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# find "$(pwd -P)" -maxdepth 1 -mindepth 1 -type d -exec bash -c "cd {}; pwd; git diff" \;
+token="$1"
 
-# No directory has been provided, use current
-dir="$1"
-if [ -z "$dir" ]
-then
-    dir="`pwd`"
-fi
 
 # Make sure directory ends with "/"
+dir="`pwd`"
 if [[ $dir != */ ]]
 then
     dir="$dir/*"
@@ -22,33 +17,23 @@ for f in $dir
 do
     # Only interested in directories
     [ -d "${f}" ] || continue
-    
+
     # Only interested in GIT repositories
-    [ -d "$f/.git" ] || continue
+    [ -f "$f/.git" ] || [ -d "$f/.git" ] || continue
 
     cd $f
-
-    # Check for changes
-    modified=0
-    if [ $(git diff | wc -l) -ne 0 ]
-    then
-        modified=1
-    fi
-    if [ $modified -eq 0 ]
-    then
-        continue
-    fi
-
     
     # Format the output - use colors only in terminal
     if test -t 1; then
 	echo ""
 	echo -en "\033[0;35m"
-	echo "${f}"
+	echo "git-remote-add-github.sh: ${f}"
 	echo -en "\033[0m"
     else
 	echo "${f}"
     fi
-    
-    git diff
+
+    git remote remove github > /dev/null 2>&1
+    git remote add github https://fraber:${token}@github.com/project-open/$(basename $f).git
+
 done
