@@ -1,11 +1,12 @@
 #!/usr/bin/perl
 #
-# Modify the version information in all Packages
-# in order to provide the APM with correct install/reinstall
-# options
+# Modify the version information in all Packages in order
+# to provide the APM with correct install/reinstall options
 #
-# 2009-05-21 
-# Frank Bergmann <frank.bergmann@project-open.com>
+# 2009-05-21 Frank Bergmann <frank.bergmann@project-open.com>
+#            Basic version
+# 2025-01-27 Frank Bergmann <frank.bergmann@project-open.com>
+#            Updated to work with GIT
 
 if (@ARGV != 1) {
     die "
@@ -35,7 +36,8 @@ $date = `/bin/date +"%Y-%m-%d"`;
 $time = `/bin/date +"%H-%M"`;
 $debug = 0;
 $base_dir = "/web/projop";			# no trailing "/"!
-$packages_dir = "$base_dir/packages";		# no trailing "/"!
+$packages_dir = "$base_dir/packages-all";	# no trailing "/"!
+print "all-version-packages: packages_dir=$packages_dir\n";
 
 # Remove trailing \n from date & time
 chomp($date);
@@ -47,8 +49,7 @@ open(FILES, "cd $packages_dir; ls -1 | egrep 'intranet-\|sencha' |");
 while (my $file=<FILES>) {
         # Remove trailing "\n"
         chomp($file);
-
-	print "update_info_files: updating '$file'\n";
+	print "all-version-packages: updating file=$file\n" if ($debug > 4);
 	update_info_file($file);
 }
 close(FILES);
@@ -60,7 +61,7 @@ sub update_info_file {
     $filename = $packages_dir . "/" . $module_name . "/" . $module_name . ".info";
     print "update_info_file: filename=$filename\n" if ($debug);
 
-    my $cmd = "cd $packages_dir/$module_name; cvs edit $module_name.info";
+    my $cmd = "cd $packages_dir/$module_name";
     print "update_info_file: cmd=$cmd\n";
     system($cmd);
 

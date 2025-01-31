@@ -31,5 +31,5 @@ do
 	echo "${f}"
     fi
 
-    git pull
+    git push
 done
