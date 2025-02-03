@@ -130,6 +130,15 @@ if {![im_permission $current_user_id "view_projects_all"]} {
     set include_subproject_level ""
 }
 
+# Project types excluded by default
+# - Programs have a separate page
+if {"0" eq $exclude_project_type_id} {
+    if {$project_type_id != [im_project_type_program]} {
+	set exclude_project_type_id [list [im_project_type_program]]
+    }
+}
+
+
 # Restrict status to "Open" projects for unprivileged users
 if {![im_permission $current_user_id "view_projects_history"]} {
     set project_status_id [im_project_status_open]
