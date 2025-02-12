@@ -32,6 +32,7 @@ git submodule add https://gitlab.project-open.net/project-open/diagram.git
 git submodule add https://gitlab.project-open.net/project-open/file-storage.git
 git submodule add https://gitlab.project-open.net/project-open/general-comments.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-agile.git
+git submodule add https://gitlab.project-open.net/project-open/intranet-attendance-management.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-calendar.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-confdb.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-core.git
