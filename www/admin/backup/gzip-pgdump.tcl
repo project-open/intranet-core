@@ -23,7 +23,7 @@ foreach i $filename {
     set tmp [im_backup_path]/$tail
 
     if {$ext in {"gz" "bz" "bz2"}} { continue }
-    catch { im_exec bzip2 $tmp } err_msg
+    catch { im_exec gzip $tmp } err_msg
 }
 
 ad_returnredirect $return_url

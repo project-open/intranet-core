@@ -22,8 +22,8 @@ foreach i $filename {
     set ext [string tolower [lindex [split $tail "."] end]]
     set tmp [im_backup_path]/$tail
 
-    if {$ext in {"gz" "bz" "bz2"}} { continue }
-    catch { im_exec bzip2 $tmp } err_msg
+    if {!($ext in {"gz"})} { continue }
+    catch { im_exec gzip -d $tmp } err_msg
 }
 
 ad_returnredirect $return_url

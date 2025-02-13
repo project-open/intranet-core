@@ -128,6 +128,12 @@ set bulk_actions [list \
 		      [lang::message::lookup "" intranet-core.Backup_Un_Bzip "Un-Bzip"] \
 		      "unbzip-pgdump" \
 		      [lang::message::lookup "" intranet-core.Backup_Uncompress_backup_dump "Uncompress backup dump"] \
+		      [lang::message::lookup "" intranet-core.Backup_Gzip "Gzip"] \
+		      "gzip-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Compress_the_backup_dump_using_gzip "Compress the backup dump using gzip"] \
+		      [lang::message::lookup "" intranet-core.Backup_Un_Gzip "Un-Gzip"] \
+		      "ungzip-pgdump" \
+		      [lang::message::lookup "" intranet-core.Backup_Uncompress_backup_dump "Uncompress backup dump"] \
 		      [lang::message::lookup "" intranet-core.Backup_Add_Comment "Add Comment"] \
 		      "comment-pgdump" \
 		      [lang::message::lookup "" intranet-core.Backup_Comment_on_backup_dumps "Add comment to backup dump"] \

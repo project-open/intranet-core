@@ -18,7 +18,11 @@ if {!$user_is_admin_p} {
 }
 
 foreach i $filename {
-    set tmp [im_backup_path]/[file tail $i]
+    set tail [file tail $i]
+    set ext [string tolower [lindex [split $tail "."] end]]
+    set tmp [im_backup_path]/$tail
+
+    if {$ext not in {"bz"}} { continue }
     catch { im_exec bzip2 -d $tmp } err_msg
 }
 
