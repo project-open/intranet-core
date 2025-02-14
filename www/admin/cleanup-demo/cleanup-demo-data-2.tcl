@@ -258,6 +258,12 @@ if {[im_table_exists users_contact]} {
     db_dml delete_user_users_contact "delete from users_contact"
 }
 
+ns_write "<li>Cleanup rule engine logs\n"
+if {[im_table_exists im_rule_logs]} {
+    db_dml delete_rule_logs "delete from im_rule_logs"
+}
+
+
 ns_write "<li>Cleanup im_component_plugin_user_map\n"
 if {[im_table_exists im_component_plugin_user_map]} {
     db_dml delete_im_component_plugin_user_map "delete from im_component_plugin_user_map"
