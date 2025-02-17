@@ -2,9 +2,9 @@
 #   (c)  klaus.hofeditz@project-open.com and
 #        frank.bergmann@project-open.com
 # 
-#   v0.4.1  - USE WITH CAUTION
+#   v0.5  - USE WITH CAUTION
 #
-#   Last changed: 2020-12-17
+#   Last changed: 2025-02-17
 #
 #   restores po52demo, daily cronjob  
 #
@@ -21,7 +21,7 @@ systemctl stop po@po52demo
 sleep 1
 
 echo "killall -9 nsd; dropdb po52demo"
-/bin/su --login po52demo --command "rm /web/po52demo/log/error*.*"
+/bin/su --login po52demo --command "rm /web/po52demo/log/error*"
 /bin/su --login po52demo --command "killall -9 nsd; dropdb po52demo"
 sleep 1
 
