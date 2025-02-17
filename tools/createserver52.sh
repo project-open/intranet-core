@@ -3,9 +3,9 @@
 #     klaus.hofeditz@project-open.com
 #     frank.bergmann@project-open.com
 #
-#   v0.9  - USE WITH CAUTION
+#   v0.9.1  - USE WITH CAUTION
 #
-#   Last changed: 2020-12-10
+#   Last changed: 2025-02-10
 #
 ################################################################
 # Required software:
@@ -46,9 +46,12 @@ MIN_POPORT=30330
 # To get the DYNU_DOMAIN_ID please use:
 # curl -X GET https://api.dynu.com/v2/dns -H "accept: application/json" -H "API-Key: <api-key>"
 #
+
 DYNU_API_KEY="xxx"
 DYNU_DOMAIN_ID="xxx"
 DYNU_ALIAS="xxx.project-open.net"
+
+
 
 #
 # Directories
@@ -64,7 +67,7 @@ NGINX_CONF_DIR=/etc/nginx/conf.d
 
 function usage () {
     cat <<EOF
-Usage: createserver.sh [options] user [password]
+Usage: createserver52.sh [options] user [password]
 
   -h, --help          help
   -a, --apikey        Dynu API Key, no domain creation if empty
@@ -309,15 +312,15 @@ if [ $DRY != 1 ] ; then
 fi
 
 echo ""
-echo "- Set Localhost"
+echo "- Set SystemURL"
 SQL="UPDATE apm_parameter_values SET attr_value='http://$POUSER.project-open.net' where parameter_id in (select parameter_id from apm_parameters where package_key = 'acs-kernel' and parameter_name = 'SystemURL');"
 echo "- $SQL"
 if [ $DRY != 1 ] ; then
     echo "$SQL" | /bin/su --login $POUSER --command "psql --quiet"
 fi
-    
+
 echo ""
-echo "- Fix issues"
+echo "- Fix timesheet menu issues"
 SQL="UPDATE im_menus set (url, label, parent_menu_id) = ('/intranet-reporting/timesheet-productivity-calendar-view-workdays-simple.tcl', 'timesheet-productivity-calendar-view-workdays-simple', 25975) where menu_id = 30178;"
 echo "- $SQL"
 if [ $DRY != 1 ] ; then
@@ -352,8 +355,7 @@ echo "# Create config: NaviServer: ~/etc/config.tcl"
 echo "##########################################################"
 echo ""
 
-echo "- sed 's/@POUSER@/$POUSER/g; s/@PGPORT@/$PGPORT/g;' < $CONF_FILE > /web/$POUSER/etc/config.tcl"
-
+echo "- sed 's/@POUSER@/$POUSER/g; s/@POPORT@/$POPORT/g; s/@PGPORT@/$PGPORT/g;' < $CONF_FILE > /web/$POUSER/etc/config.tcl"
 if [ $DRY != 1 ] ; then
     sed "s/@POUSER@/$POUSER/g; s/@POPORT@/$POPORT/g; s/@PGPORT@/$PGPORT/g;" < $CONF_FILE > /web/$POUSER/etc/config.tcl
 fi
