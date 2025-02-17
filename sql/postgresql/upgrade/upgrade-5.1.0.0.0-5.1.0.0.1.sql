@@ -68,7 +68,7 @@ begin
 			END IF;	
 		END IF;
 	END LOOP;
-	update persons set initials = v_initials where person_id = new.person_id;
+	update persons set initials = upper(v_initials) where person_id = new.person_id;
 	-- RAISE NOTICE 'persons_initials_default_update_tr: found v_name=%, v_initials=%', v_name, v_initials;
 
 	return new;
