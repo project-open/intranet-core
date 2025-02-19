@@ -81,29 +81,29 @@ begin
 				-- more chars, do nothing
 			END IF;	
 		END IF;
-		IF v_debug THEN RAISE NOTICE 'tr: id=%, v_name="%", v_i=%, v_char=%, v_name_idx=%, v_name_start=%', new.person_id, v_name, v_i, v_char, v_name_idx, v_name_start; END IF;
+		IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%", v_i=%, v_char=%, v_name_idx=%, v_name_start=%', new.person_id, v_name, v_i, v_char, v_name_idx, v_name_start; END IF;
 
 	END LOOP;
-	IF v_debug THEN RAISE NOTICE 'tr: id=%, v_name="%": candidate initials=%', new.person_id, v_name, v_initials; END IF;
+	IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": candidate initials=%', new.person_id, v_name, v_initials; END IF;
 
 	-- Use initials if not already there
 	-- These initials could have three letters in case of Jose Luis Alberga
 	select count(*) into v_exists_p from persons where upper(initials) = v_initials;
 	IF v_exists_p = 0 THEN
-		RAISE NOTICE 'tr: id=%, v_name="%": unique initials=%', new.person_id, v_name, v_initials;
+		RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": unique initials=%', new.person_id, v_name, v_initials;
 		update persons set initials = v_initials where person_id = new.person_id;
 		return new;
 	END IF;
-	IF v_debug THEN RAISE NOTICE 'tr: id=%, v_name="%": already taken: initials=%', new.person_id, v_name, v_initials; END IF;
+	IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": already taken: initials=%', new.person_id, v_name, v_initials; END IF;
 
 	-- Use combinations of first name and 2nd name (ignore 3rd names)
 	v_opts := '{{1,2},{2,2},{2,3},{3,3}}';
 	FOR v_i IN 1..array_length(v_opts,1) LOOP
-	    	IF v_debug THEN RAISE NOTICE 'tr: id=%, v_name="%": v_opts[%]=%', new.person_id, v_name, v_i, v_opts[v_i]; END IF;
+	    	IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": v_opts[%]=%', new.person_id, v_name, v_i, v_opts[v_i]; END IF;
 		v_initials := substring(v_names[0], 1, v_opts[v_i][1]) || substring(v_names[1], 1, v_opts[v_i][2]);
 		select count(*) into v_exists_p from persons where upper(initials) = v_initials;
 		IF v_exists_p = 0 THEN
-			RAISE NOTICE 'tr: id=%, v_name="%": found initials=% in position %', new.person_id, v_name, v_initials, v_i;
+			RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": found initials=% in position %', new.person_id, v_name, v_initials, v_i;
 			update persons set initials = v_initials where person_id = new.person_id;
 			return new;
 		END IF;
