@@ -97,7 +97,7 @@ begin
 	IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": already taken: initials=%', new.person_id, v_name, v_initials; END IF;
 
 	-- Use combinations of first name and 2nd name (ignore 3rd names)
-	v_opts := '{{1,2},{2,2},{2,3},{3,3}}';
+	v_opts := '{{1,2},{1,3},{2,2},{2,3},{3,3},{3,4},{4,4},{4,5},{5,5}}';
 	FOR v_i IN 1..array_length(v_opts,1) LOOP
 	    	IF v_debug THEN RAISE NOTICE 'persons_initials_default_update_tr: id=%, v_name="%": v_opts[%]=%', new.person_id, v_name, v_i, v_opts[v_i]; END IF;
 		v_initials := substring(v_names[0], 1, v_opts[v_i][1]) || substring(v_names[1], 1, v_opts[v_i][2]);
