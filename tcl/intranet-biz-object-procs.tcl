@@ -784,7 +784,10 @@ ad_proc -public im_group_member_component {
 
     	<script type=\"text/javascript\" nonce=\"[im_csp_nonce] \">
 	window.addEventListener('load', function() { 
-	     document.getElementById('list_check_all').addEventListener('click', function() { acs_ListCheckAll('delete_user', this.checked) });
+	     var list = document.getElementById('list_check_all')
+	     if (list) {
+       	         list.addEventListener('click', function() { acs_ListCheckAll('delete_user', this.checked) });
+             }
 	});
 	</script>
 

@@ -10,7 +10,7 @@
     <inherit-templates-p>t</inherit-templates-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="5.2.0.1.5" url="https://www.project-open.net/download/apm/intranet-core-5.2.0.1.5.apm">
+    <version name="5.2.0.1.6" url="https://www.project-open.net/download/apm/intranet-core-5.2.0.1.6.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2003-05-14</release-date>
         <vendor url="https://www.project-open.com/">]project-open[</vendor>
@@ -69,7 +69,7 @@
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="NormalizeProjectNrP"  default="1" description="Limit the project_nr to lower case alphanum characters?"/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="NotifyNewMembersDefault"  default="1" description="Should the &#39;Notify?&#39; checkbox be enabled by default in the AddMembersComponent? Default is 1 for compatibility reasons"/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="NumberResultsPerPage"  default="50" description="How many lines do we want to show in an index page?"/>
-            <parameter scope="instance" datatype="string"  min_n_values="1"  max_n_values="1"  name="OpenOfficeCmd"  default="ooffice" description="Command to execute the ooffice OpenOffice / LibreOffice command. Default is &#39;ooffice&#39;, trusting in exec to resolve the complete path. You can specify a different location via &#39;/usr/bin/ooffice&#39; or similar."/>
+            <parameter scope="instance" datatype="string"  min_n_values="1"  max_n_values="1"  name="OpenOfficeCmd"  default="loffice" description="Command to execute the loffice LibreOffic / OpenOffice command. Default is &#39;loffice&#39;, trusting in exec to resolve the complete path. You can specify a different location via &#39;/usr/bin/loffice&#39; or similar."/>
             <parameter scope="instance" datatype="string"  min_n_values="1"  max_n_values="1"  name="PgPathUnix"  description="Unix path the the PostgreSQL binaries (used only for pg_dump at the moment). Default is an empty string in order to use the default PostgreSQL binaries in the path. A sample value could be &#39;/usr/local/pgsql84/bin/&#39; for a PG 8.4 installation on an otherwise 8.2 default system."/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="ProjectListPageDefaultSubprojectLevel"  default="1" description="Allows to determine the level of subprojects to show if ProjectListPageDefaultSubprojectsP is set to &#34;t&#34;. &#34;1&#34; means only main projects, &#34;2&#34; gives one level of subprojects etc."/>
             <parameter scope="instance" datatype="string"  min_n_values="1"  max_n_values="1"  name="ProjectListPageDefaultSubprojectsP"  default="f" description="Show we show subprojects on the ProjectListPage? The default is &#34;f&#34;, because only main projects should be seen normally. You can control the level of subprojects shown using the ProjectListPageDefaultSubprojectLevel parameter if this parameter is set to &#34;t&#34;."/>
