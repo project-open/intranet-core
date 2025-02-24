@@ -1,6 +1,6 @@
 This is ]project-open[ - Open-source based Web project management
 
-Version 5.1
+Version 5.2
 ===========
 
 
@@ -45,7 +45,7 @@ For documentation please see https://www.project-open.com/:
 - List of ]po[ Packages:
   Packages are individually installable/uninstallable 
   pieces of functionality. ]po[ currently consists of some
-  150 different packages:
+  200 different packages:
   https://www.project-open.com/en/list-packages
 
 - List of ]po[ Business Objects:
