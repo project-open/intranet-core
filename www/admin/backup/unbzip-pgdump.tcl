@@ -22,7 +22,7 @@ foreach i $filename {
     set ext [string tolower [lindex [split $tail "."] end]]
     set tmp [im_backup_path]/$tail
 
-    if {$ext not in {"bz"}} { continue }
+    if {$ext ne "bz2"} { continue }
     catch { im_exec bzip2 -d $tmp } err_msg
 }
 
