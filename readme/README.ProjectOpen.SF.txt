@@ -2,7 +2,7 @@ This is the ]project-open[ enterprise project management system.
 There are several versions available:
 
 - V5.2:
-  This is our current version, to be released 2025-03-01,
+  This is our current version, to be released 2025-03-31,
   but already considered stable.
   https://www.project-open.com/en/project-open-roadmap
 

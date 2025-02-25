@@ -134,6 +134,7 @@ git clone https://gitlab.project-open.net/project-open/intranet-freelance-transl
 git clone https://gitlab.project-open.net/project-open/intranet-funambol.git
 git clone https://gitlab.project-open.net/project-open/intranet-gantt-editor.git
 git clone https://gitlab.project-open.net/project-open/intranet-ganttproject.git
+git clone https://gitlab.project-open.net/project-open/intranet-git-releases.git
 git clone https://gitlab.project-open.net/project-open/intranet-general-comments.git
 git clone https://gitlab.project-open.net/project-open/intranet-gtd-dashboard.git
 git clone https://gitlab.project-open.net/project-open/intranet-helpdesk.git

@@ -3,10 +3,16 @@
 ==============================================================
 
 ==============================================================
-V5.1 Changes (2021-07-15)
+V5.2 Changes (2025-02-25)
 ==============================================================
 
 Major Enhancements & New Packages
+
+- Attendance Management:
+  The package allows employees to track when they start and stop
+  to work without a reference to specific projects.
+  The package is integrated with time sheet management, allowing
+  to compare hours logged on projects with hours present for work.
 
 - Budget Planning and Tracking:
   The package allows users to define hierarchical project budgets
@@ -19,6 +25,27 @@ Major Enhancements & New Packages
   account cost type, material, project phase, creation user
   and other parameters. Financial staff can override the default
   classification. A tutorial is available, please contact us.
+
+Security
+
+- Fixed Security Issues:
+  V5.2 fixes several important security issues.
+
+Platform Changes
+
+- We updated the underlying infrastructure to OpenACS 5.9.1,
+  PostgreSQL 16, Naviserver 4.99.8 and 
+
+- We have finally managed to migrate to GIT. The old CVS
+  server only contains code until V5.0.
+
+
+
+==============================================================
+V5.1 Changes (2021-07-15)
+==============================================================
+
+Major Enhancements & New Packages
 
 - Gantt Editor Improvements:
   The Gantt Editor was introduced in ]po[ V5.0.

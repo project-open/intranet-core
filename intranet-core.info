@@ -10,7 +10,7 @@
     <inherit-templates-p>t</inherit-templates-p>
     <auto-mount>intranet</auto-mount>
 
-    <version name="5.2.0.2.3" url="https://www.project-open.net/download/apm/intranet-core-5.2.0.2.3.apm">
+    <version name="5.2.0.2.4" url="https://www.project-open.net/download/apm/intranet-core-5.2.0.2.4.apm">
         <owner url="mailto:fraber@project-open.com">Frank Bergmann</owner>
         <release-date>2003-05-14</release-date>
         <vendor url="https://www.project-open.com/">]project-open[</vendor>

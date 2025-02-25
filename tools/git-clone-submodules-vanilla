@@ -53,6 +53,7 @@ git submodule add https://gitlab.project-open.net/project-open/intranet-forum.gi
 git submodule add https://gitlab.project-open.net/project-open/intranet-freelance.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-gantt-editor.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-ganttproject.git
+git submodule add https://gitlab.project-open.net/project-open/intranet-git-releases.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-helpdesk.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-hr.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-idea-management.git

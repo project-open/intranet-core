@@ -1,6 +1,6 @@
 
-  ]project-open[ V5.1 Virtual Machine
-  Community Edition, 2021-07-15
+  ]project-open[ V5.2 Virtual Machine
+  Community Edition, 2025-02-24
 
   This is the ]project-open[ Virtual Machine. This document describes
   the installation and configuration of the VMware appliance.
@@ -12,12 +12,10 @@
   This VMware appliance includes a fully configured ]project-open[
   server in VMware Workstation format.
 
-  - You need VMware Workstation Player 12 or Player 7 (free personal 
-    license available) or higher to execute the VM.
+  - You need VMware Workstation 12 or higher to execute the VM.
 
-  - As an alternative, you can use VMware ESXi 5 (free license 
-    available) or higher after converting the VM using VMware vCenter 
-    Converter or similar.
+  - As an alternative, you can use VMware ESXi or higher after
+    converting the VM using VMware vCenter Converter or similar.
 
   - Now start the virtual machine. Please login using:
 
@@ -28,7 +26,6 @@
 
     "projop" is also the default password for the KDE Wallet inside
     the VMware.
-    As an alternative, you can enter as root with password "root".
     Please change these passwords before using the VMware in a 
     production environment.
 
@@ -62,16 +59,15 @@
   - A computer with Windows 7 or higher for VMware Player,
     or a server with ESXi.
   - At least 1 core of a recent AMD or Intel processor
-  - At least 1 GB RAM
-  - At least 50 GB of free disk space
+  - At least 4 GB RAM
+  - At least 40 GB of free disk space
 
   For a production system with up to 10 "active users" we recommend:
 
-  - A ESXi server,
+  - A ESXi server
   - At least 4 cores of a recent AMD or Intel processor
   - 8 GB RAM
   - 200 GB of fast disk space with >5k IOPS.
-    A standard RAID 5 will cause performance problems.
 
   For larger installations please contact the ]po[ team
   at info@project-open.com  
@@ -80,14 +76,14 @@ ______________________________________________________________________
 
   4. Virtual Machine Installer Contents
 
-  The "project-open-v51.x.zip" file contains the zipped files of
+  The "project-open-v52.x.zip" file contains the zipped files of
   a virtual machine. All files are located in a single subdirectory:
 
   /README.txt
   /LICENSE.txt
-  /project-open-v51/
-	project-open-v51.vmx
-	project-open-v51.vmdk
+  /project-open-v52/
+	project-open-v52.vmx
+	project-open-v52.vmdk
 
   Please refer to the VMware guides on how to import or run a 
   virtual machine.
@@ -249,7 +245,6 @@ ______________________________________________________________________
   ______________________________________________________________________
 
   10. Stay Tuned
-
 
   There are several options to stay in regular contact with 
   ]project-open[:

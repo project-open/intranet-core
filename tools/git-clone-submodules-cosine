@@ -86,6 +86,7 @@ git submodule add https://gitlab.project-open.net/project-open/intranet-funambol
 git submodule add https://gitlab.project-open.net/project-open/intranet-gantt-editor.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-ganttproject.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-general-comments.git
+git submodule add https://gitlab.project-open.net/project-open/intranet-git-releases.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-gtd-dashboard.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-helpdesk.git
 git submodule add https://gitlab.project-open.net/project-open/intranet-horizontal-scaling.git

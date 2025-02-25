@@ -50,6 +50,7 @@ git clone https://gitlab.project-open.net/project-open/intranet-forum.git
 git clone https://gitlab.project-open.net/project-open/intranet-freelance.git
 git clone https://gitlab.project-open.net/project-open/intranet-gantt-editor.git
 git clone https://gitlab.project-open.net/project-open/intranet-ganttproject.git
+git clone https://gitlab.project-open.net/project-open/intranet-git-releases.git
 git clone https://gitlab.project-open.net/project-open/intranet-helpdesk.git
 git clone https://gitlab.project-open.net/project-open/intranet-hr.git
 git clone https://gitlab.project-open.net/project-open/intranet-idea-management.git
