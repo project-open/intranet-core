@@ -143,17 +143,17 @@ set pg_db ""
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path"
 
+    set cmd [list im_exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
+
     switch $platform {
 	windows {
 	    # Windows
 	    if {"" eq $pg_host} { set pg_host "localhost" }
 	    if {"" eq $pg_user} { set pg_user "projop" }
 	    set pg_db "projop"
-	    set cmd [list im_exec ${pgbin}pg_dump -i --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
 	default {
 	    # Probably Linux or some kind of Unix derivate
-	    set cmd [list im_exec ${pgbin}pg_dump --no-owner --clean $disable_dollar_quoting --format=$format --file=$dest_file]
 	}
     }
 
