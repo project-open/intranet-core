@@ -23,6 +23,7 @@ ad_page_contract {
 
 set user_id [ad_conn user_id]
 set return_url "/intranet-filestorage/"
+set backup_prefix "pg_dump"
 
 set find_cmd [parameter::get -package_id [im_package_core_id] -parameter "FindCmd" -default "/bin/find"]
 
@@ -34,7 +35,7 @@ set backup_path [parameter::get -package_id [im_package_core_id] -parameter "Bac
 # ------------------------------------------------------
 
 # Get the list of all backup sets under backup_path
-set file_list [im_exec $find_cmd $backup_path -name {*.pgp} ]
+set file_list [glob -nocomplain -type f -directory $backup_path "${backup_prefix}.*.{pgp,gpg}"]
 set file_list [lsort -decreasing $file_list]
 
 set file [lindex $file_list 0]
