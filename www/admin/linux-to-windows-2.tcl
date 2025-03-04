@@ -71,9 +71,9 @@ parameter::set_from_package_key -package_key "intranet-core" -parameter "FindCmd
 
 
 # Set pathes for binaries
-set dot_path "$install_dir/bin/dot.bat"
+set dot_path "$install_dir/bin/dot"
 ns_log Notice "linux-to-windows-2: Set pathes for acs-workflow graphwiz_dot_path to $dot_path"
-ns_write "<li>Set pathes for acs-workflow graphwiz_dot_path the windows dot.bat wrapper"
+ns_write "<li>Set pathes for acs-workflow graphwiz_dot_path the windows dot"
 parameter::set_from_package_key -package_key "acs-workflow" -parameter "graphviz_dot_path" -value $dot_path
 
 set tmp_path "$install_dir/tmp"
