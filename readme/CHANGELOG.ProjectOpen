@@ -3,42 +3,89 @@
 ==============================================================
 
 ==============================================================
-V5.2 Changes (2025-02-25)
+V5.2 Changes (2025-03-11)
 ==============================================================
 
 Major Enhancements & New Packages
 
 - Attendance Management:
-  The package allows employees to track when they start and stop
-  to work without a reference to specific projects.
-  The package is integrated with time sheet management, allowing
-  to compare hours logged on projects with hours present for work.
+  This package enables employees to track their start and
+  end times at work independently of specific projects.
+  It’s fully integrated with timesheet management, allowing
+  easy comparison between hours logged on projects and total
+  hours present at work.
 
 - Budget Planning and Tracking:
-  The package allows users to define hierarchical project budgets
-  using drag-and-drop. This feature extends the use of ]po[ to
-  "classical" projects in construction and engineering.
-  It also caters to large enterprises who mainly track project
-  progress vs. budget.
-  The assignment of actual costs to budget line items works
-  automatically using a classification engine, taking into
-  account cost type, material, project phase, creation user
-  and other parameters. Financial staff can override the default
-  classification. A tutorial is available, please contact us.
+  This feature allows users to define hierarchical project budgets
+  through a simple drag-and-drop interface. It broadens ]po[’s
+  applicability to traditional construction and engineering projects
+  and suits large enterprises focused on tracking project progress
+  against budgets.
+  Actual costs are automatically assigned to budget line items via a
+  smart classification engine, which considers cost type, material,
+  project phase, creation user, and other parameters. Financial staff
+  can override these default classifications when needed.
+  A tutorial is available — please contact us for access.
+
+- Leaflet Map Reporting:
+  Introduced a new Leaflet-based map reporting feature, providing a
+  visual representation of revenues per country.
+
+- Automatic Release Documentation:
+  This package automatically parses and displays GIT information about
+  the current ]po[ release, including changes in submodules.
+
+
+Minor Improvements
+
+- Gantt Editor:
+  - Now displays project baselines for clearer tracking.
+  - Added an "initials" field for users to prevent duplicate initials in
+    large organizations.
+
+- Workflow:
+  - Manually entered workflow comments are now prominently displayed.
+  - Added filters to the workflow inbox: Workflow, author, and role
+  - Introduced batch actions to the workflow inbox to handle multiple
+    workflow cases simultaneously.
+  - Admins can now manually restart workflows
+  - Added vacation replacement functionality.
+  - Enabled running multiple workflows per object.
+  - The vacation approval workflow now shows intersecting absences for
+    better scheduling.
+
+- Profit Center Management:
+  Added a chart visualizing revenue and profit per profit center.
+
+- Reporting:
+  All reports now use their report name when downloaded as CSV.
+
+- Other:
+  - Standardized the use of LibreOffice across the platform.
+  - Implemented thousands of small fixes and enhancements tailored for
+    large organizations.
+
 
 Security
 
-- Fixed Security Issues:
-  V5.2 fixes several important security issues.
+- V5.2 resolves several critical security issues
+- Fixed vulnerability vl-id=2225
+- Added type checking ("-limit_to $type") to all im_opt_val calls
+- Removed most [ns_conn form] calls and added checking to the remaining ones
+- Audit:
+  - Extended audit logging to all business objects
+  - Sending out warning mails in case of unaudited object changes
+
 
 Platform Changes
 
-- We updated the underlying infrastructure to OpenACS 5.9.1,
-  PostgreSQL 16, Naviserver 4.99.8 and 
+- Updated Infrastructure:
+  We upgraded the underlying tech stack to Ubuntu server 24.04,
+  PostgreSQL 16, OpenACS 5.9.1, and Naviserver 4.99.8.
 
-- We have finally managed to migrate to GIT. The old CVS
-  server only contains code until V5.0.
-
+- Migration to GIT:
+  We’ve successfully completed the long-awaited migration to GIT.
+  The old CVS server now only contains code up to V5.0.
 
 
 ==============================================================
@@ -63,8 +110,8 @@ Security
 
 Platform Changes
 
-- We updated the underlying infrastructure to OpenACS 5.9.1,
-  PostgreSQL 10.x, Naviserver 4.99.8 and CentOS 8.2
+- We updated the underlying infrastructure to OpenACS 5.9.0,
+  PostgreSQL 10.x, Naviserver 4.99.7 and CentOS 8.2
 
 - We have finally managed to migrate to GIT. The old CVS
   server only contains code until V5.0.
