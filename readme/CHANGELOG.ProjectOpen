@@ -9,23 +9,26 @@ V5.2 Changes (2025-03-11)
 Major Enhancements & New Packages
 
 - Attendance Management:
-  This package enables employees to track their start and
-  end times at work independently of specific projects.
-  It’s fully integrated with timesheet management, allowing
-  easy comparison between hours logged on projects and total
-  hours present at work.
+  This package allows employees to track their work start and end
+  times independently of specific projects. Fully integrated with
+  timesheet management, it enables seamless comparison between
+  project hours and total hours spent at work.
 
 - Budget Planning and Tracking:
-  This feature allows users to define hierarchical project budgets
-  through a simple drag-and-drop interface. It broadens ]po[’s
-  applicability to traditional construction and engineering projects
-  and suits large enterprises focused on tracking project progress
-  against budgets.
-  Actual costs are automatically assigned to budget line items via a
-  smart classification engine, which considers cost type, material,
-  project phase, creation user, and other parameters. Financial staff
-  can override these default classifications when needed.
-  A tutorial is available — please contact us for access.
+  This feature enables users to define hierarchical project budgets
+  using a simple drag-and-drop interface. It extends ]po[’s
+  applicability to traditional construction and engineering
+  projects while also catering to large enterprises that
+  need to track project progress against budgets.
+  A smart classification engine automatically assigns actual costs
+  to budget line items based on factors such as cost type, material,
+  project phase, creator, and other parameters.
+  Financial staff can override these default classifications as needed.
+  A tutorial is available — contact us for access.
+
+- Single Sign-On:
+  The package allows users to login using Google, Microsoft and
+  potentially other OAuth2 providers.
 
 - Leaflet Map Reporting:
   Introduced a new Leaflet-based map reporting feature, providing a
@@ -39,9 +42,12 @@ Major Enhancements & New Packages
 Minor Improvements
 
 - Gantt Editor:
+  - The scheduling algorithm now allows for thousands of tasks thanks to
+    reduced n*log(n) complexity
   - Now displays project baselines for clearer tracking.
   - Added an "initials" field for users to prevent duplicate initials in
     large organizations.
+
 
 - Workflow:
   - Manually entered workflow comments are now prominently displayed.
@@ -86,6 +92,10 @@ Platform Changes
 - Migration to GIT:
   We’ve successfully completed the long-awaited migration to GIT.
   The old CVS server now only contains code up to V5.0.
+
+- Automatic Release Documentation:
+  This package automatically parses and displays GIT information
+  about the current ]po[ release, including changes in submodules.
 
 
 ==============================================================
