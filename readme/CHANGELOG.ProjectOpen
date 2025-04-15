@@ -3,7 +3,7 @@
 ==============================================================
 
 ==============================================================
-V5.2 Changes (2025-03-11)
+V5.2 Changes (2025-04-15)
 ==============================================================
 
 Major Enhancements & New Packages
@@ -35,8 +35,8 @@ Major Enhancements & New Packages
   visual representation of revenues per country.
 
 - Automatic Release Documentation:
-  This package automatically parses and displays GIT information about
-  the current ]po[ release, including changes in submodules.
+  This package parses and displays GIT information about the current
+  ]po[ release, including changes in submodules.
 
 
 Minor Improvements
@@ -92,10 +92,6 @@ Platform Changes
 - Migration to GIT:
   We’ve successfully completed the long-awaited migration to GIT.
   The old CVS server now only contains code up to V5.0.
-
-- Automatic Release Documentation:
-  This package automatically parses and displays GIT information
-  about the current ]po[ release, including changes in submodules.
 
 
 ==============================================================
