@@ -30,10 +30,6 @@ Major Enhancements & New Packages
   The package allows users to login using Google, Microsoft and
   potentially other OAuth2 providers.
 
-- Leaflet Map Reporting:
-  Introduced a new Leaflet-based map reporting feature, providing a
-  visual representation of revenues per country.
-
 - Automatic Release Documentation:
   This package parses and displays GIT information about the current
   ]po[ release, including changes in submodules.
@@ -47,7 +43,6 @@ Minor Improvements
   - Now displays project baselines for clearer tracking.
   - Added an "initials" field for users to prevent duplicate initials in
     large organizations.
-
 
 - Workflow:
   - Manually entered workflow comments are now prominently displayed.
