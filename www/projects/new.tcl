@@ -640,7 +640,7 @@ if {[form is_submission $form_id]} {
 	template::element::set_error $form_id project_nr [_ intranet-core.lt_Slashes__in_Project_P]
 	incr n_error
     }
-    if {[regexp {\.} $project_nr]} { 
+    if {[regexp {\.} $project_nr] && $normalize_project_nr_p} { 
 	template::element::set_error $form_id project_nr [_ intranet-core.lt_Dots__in_Project_Path]
 	incr n_error
     }
