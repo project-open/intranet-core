@@ -12,14 +12,12 @@
 <table>
 <tr>
   <td>
-	<textarea name=subject rows=1 cols=70 wrap="<%=[im_html_textarea_wrap]%>">
-	#intranet-core.lt_role_name_of_object_n#
-	</textarea>
+	<textarea name=subject rows=1 cols=70 wrap="<%=[im_html_textarea_wrap]%>">@subject_l10n;noquote@</textarea>
   </td>
 </tr>
 <tr>
   <td>
-	<textarea name=message rows=15 cols=90 wrap="<%=[im_html_textarea_wrap]%>">#intranet-core.lt_Dear_first_names_from#</textarea>
+	<textarea name=message rows=15 cols=90 wrap="<%=[im_html_textarea_wrap]%>">@body_l10n;noquote@</textarea>
   </td>
 </tr>
 <tr>

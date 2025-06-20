@@ -31,7 +31,10 @@ ad_page_contract {
     role_id:integer
     return_url
     { also_add_to_group_id:integer "" }
+    { subject_l10n_key "intranet-core.lt_role_name_of_object_ns"}
+    { body_l10n_key "intranet-core.lt_Dear_first_names_froms" }
 }
+       
 
 set user_id [auth::require_login]
 callback im_before_member_add -user_id $user_id_from_search -object_id $object_id 
@@ -114,3 +117,19 @@ if {"" != $notify_asignee && "0" ne $notify_asignee } {
 } else {
     ad_returnredirect $return_url
 }
+
+
+set subject_l10n [lang::message::lookup "" $subject_l10n_key "%role_name% of %object_name%"]
+set body_l10n_default "Dear %first_names_from_search%,
+
+You have been added as a %role_name%
+to %object_name%
+in %system_name% at 
+%object_url%
+
+Please click on the link above for details.
+
+Best regards,
+%current_user_name%
+"
+set body_l10n [lang::message::lookup "" $body_l10n_key $body_l10n_default]
