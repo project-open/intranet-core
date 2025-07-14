@@ -34,7 +34,7 @@ if {[info exists result_array(user_id)]} { set user_id $result_array(user_id) }
 if {"ok" == $account_status && 0 != $user_id} { 
     ad_user_login -forever=0 $user_id
     set token [im_generate_auto_login -user_id $user_id -expiry_date $expiry_date]
-    doc_return 200 "application/json" "{\"success\": true, \"message\": \"success\", \"token\": \"$token\"}"
+    doc_return 200 "application/json" "{\"success\": true, \"message\": \"success\", \"token\": \"$token\", \"user_id\": $user_id}"
     ad_script_abort
 } else {
     set auth_message $result_array(auth_message)
