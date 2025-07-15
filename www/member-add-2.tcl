@@ -107,9 +107,12 @@ set administration_name [db_string admin_name "select im_name_from_user_id(:admi
 
 set object_url "$system_url$object_rel_url$object_id"
 
+set user_id_from_search "%user_id%"
 set user_name "%user_name%"
 set first_names_from_search "%first_names%"
 set last_name_from_search "%last_name%"
+set auto_login_from_search "%auto_login%"
+
 
 if {"" != $notify_asignee && "0" ne $notify_asignee } {
     # Show a textarea to edit the alert at member-add-2.tcl
