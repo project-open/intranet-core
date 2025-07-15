@@ -623,6 +623,23 @@ ad_proc -public im_audit_prettify_diff {
 } {
     Remove unnecessary lines from an audit diff to make it human readable.
 } {
+    set result ""
+    if {[catch {
+	set result [im_audit_prettify_diff_helper -debug_p $debug_p -ignore_fields $ignore_fields -object_type $object_type -diff $diff]
+    } err_msg]} {
+	return "im_audit_prettify_diff: <b>$err_msg</b>\n<pre>[ad_print_stack_trace]</pre>"
+    }
+    return $result
+}
+
+ad_proc -public im_audit_prettify_diff_helper {
+    {-debug_p 0}
+    {-ignore_fields {}}
+    -object_type
+    -diff
+} {
+    Remove unnecessary lines from an audit diff to make it human readable.
+} {
     # Initialize the hash with pretty names with some static values
     array set pretty_name_hash [im_audit_attribute_pretty_names -object_type $object_type]
     array set ignore_hash [im_audit_attribute_ignore -object_type $object_type]
