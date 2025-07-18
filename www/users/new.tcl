@@ -644,8 +644,9 @@ ad_form -extend -name register -on_request {
     # Get (multiple!) object subtypes per user
     set user_subtypes [im_user_subtypes $user_id]
 
-    # Fraber 2024-05-03: cosine issue overwriting values
-    # im_dynfield::append_attributes_to_form -object_subtype_id $user_subtypes -object_type $object_type -form_id $form_id -object_id $user_id
+    # Fraber 2024-05-03: cosine issue overwriting values, so commented out.
+    # Fraber 2025-07-18: weber issue not storing values of new users, so re-enabled.
+    im_dynfield::append_attributes_to_form -object_subtype_id $user_subtypes -object_type $object_type -form_id $form_id -object_id $user_id
     im_dynfield::attribute_store \
 	-object_type $object_type \
 	-object_id $user_id \
