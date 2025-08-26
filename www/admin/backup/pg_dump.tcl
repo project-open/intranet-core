@@ -140,6 +140,17 @@ set pg_port [parameter::get_from_package_key -package_key "intranet-core" -param
 # set pg_pass [parameter::get_from_package_key -package_key "intranet-core" -parameter "PgDumpPass" -default ""]
 set pg_db ""
 
+# Map environment variables from Docker installer to local TCL variables, if present
+array set env_map {oacs_db_host pg_host oacs_db_name pg_db oacs_db_user pg_user oacs_db_port pg_port}
+set debug ""
+foreach env_var [array names env_map] {
+    set tcl_var $env_map($env_var)
+    set val ""
+    if {[info exists ::env($env_var)]} { set val $::env($env_var) }
+    if {"" ne $val} { set $tcl_var $val }
+}
+
+
 if { [catch {
     ns_log Notice "/intranet/admin/pg_dump/pg_dump: writing report to $path"
 
